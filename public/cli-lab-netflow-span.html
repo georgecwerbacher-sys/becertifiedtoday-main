@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NetFlow, SPAN &amp; IP SLA Sim</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      padding-bottom: 88px;
+      box-sizing: border-box;
+    }
+    .wrap {
+      width: min(1100px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card {
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 22px 26px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.15rem, 2vw, 1.65rem);
+      line-height: 1.3;
+    }
+    .objective,
+    .tasks {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .tasks ol {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+    }
+    .tasks li {
+      margin: 6px 0;
+    }
+    .diagram-wrap {
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 14px;
+      text-align: center;
+    }
+    .diagram-wrap img {
+      max-width: 100%;
+      height: auto;
+      vertical-align: middle;
+    }
+    .console-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    @media (max-width: 800px) {
+      .console-row {
+        grid-template-columns: 1fr;
+      }
+    }
+    .console-label {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #c8d7ec;
+    }
+    .terminal-panel {
+      min-width: 0;
+    }
+    .terminal-panel--waiting .terminal {
+      opacity: 0.72;
+    }
+    .terminal-panel--waiting .console-hint {
+      display: block;
+    }
+    .console-hint {
+      display: none;
+      margin: 0 0 8px;
+      font-size: 0.8rem;
+      color: #9fb0cc;
+      font-style: italic;
+      line-height: 1.35;
+    }
+    .terminal {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.82rem;
+      background: #0a0d12;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      padding: 10px 10px 8px;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+    }
+    .console-scroll {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 280px;
+      margin-bottom: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #c8d2e0;
+      line-height: 1.45;
+    }
+    .line-user { color: #7ec8ff; }
+    .line-bad { color: #fca5a5; }
+    .line-sys { color: #94a3b8; }
+    .input-row {
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #243044;
+      padding-top: 8px;
+    }
+    .prompt {
+      flex-shrink: 0;
+      color: #fbbf24;
+      user-select: none;
+      max-width: 100%;
+      word-break: break-word;
+      font-size: 0.78rem;
+    }
+    .cmdline {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      color: #e6edf3;
+      font: inherit;
+      outline: none;
+      padding: 4px 0 4px 4px;
+    }
+    .cmdline:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-secondary {
+      background: #2a3040;
+      border-color: #4b556b;
+    }
+    .pass-banner {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .pass-banner.visible {
+      display: block;
+    }
+    details.hint {
+      margin-top: 10px;
+      color: #9fb0cc;
+      font-size: 0.92rem;
+    }
+    .sim-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(11, 16, 32, 0.94);
+      border-top: 1px solid #2d3b5a;
+      backdrop-filter: blur(10px);
+    }
+    .sim-nav-btn {
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 700;
+      min-width: 5.5rem;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .sim-nav-btn:hover { filter: brightness(1.08); }
+    .sim-nav-home { background: #1a3d6e; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <main class="card">
+      <h1>NetFlow, SPAN &amp; IP SLA Sim</h1>
+      <p class="objective">
+        Use <strong>R1</strong> for Flexible NetFlow exporter and IP SLA scheduling; use <strong>Sw1</strong> for SPAN.
+        Collector for NetFlow is <strong>PC2</strong> at <code>10.14.1.2</code> (UDP <strong>2055</strong>). IP SLA operation <strong>5</strong> is already defined — only schedule it.
+      </p>
+      <div class="tasks">
+        <strong>Tasks</strong>
+        <ol>
+          <li>On <strong>R1</strong>, configure flow exporter <code>MyFlowExporter</code> toward the collector (NetFlow v9, UDP 2055).</li>
+          <li>On <strong>Sw1</strong>, SPAN session <strong>11</strong>: source <code>e0/1</code> (PC1) both directions, destination <code>e1/1</code>.</li>
+          <li>On <strong>R1</strong>, schedule IP SLA <strong>5</strong> to run forever starting now.</li>
+          <li>Save on <strong>R1</strong> and <strong>Sw1</strong>.</li>
+        </ol>
+      </div>
+
+      <div class="diagram-wrap" aria-label="R1 Sw1 PC topology and addressing">
+        <img src="/assets/netflow-span-lab.png" alt="Sw1 with R1 PC1 PC2 VLANs and addressing table" />
+      </div>
+
+      <div class="console-row" aria-label="R1 and Sw1 consoles">
+        <div class="terminal-panel" id="panelR1">
+          <h2 class="console-label">R1</h2>
+          <p class="console-hint" id="hintR1">Flow exporter first, then IP SLA schedule, then save.</p>
+          <div class="terminal" aria-label="R1 CLI">
+            <div class="console-scroll" id="scrollR1"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR1">R1#</span>
+              <input class="cmdline" id="cmdR1" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R1 command line" />
+            </div>
+          </div>
+        </div>
+        <div class="terminal-panel terminal-panel--waiting" id="panelSw1">
+          <h2 class="console-label">Sw1</h2>
+          <p class="console-hint" id="hintSw1">Unlocks after R1 flow exporter. Monitor session 11, then save.</p>
+          <div class="terminal" aria-label="Sw1 CLI">
+            <div class="console-scroll" id="scrollSw1"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptSw1">Sw1#</span>
+              <input class="cmdline" id="cmdSw1" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="Sw1 command line" disabled />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button type="button" class="btn btn-secondary" id="resetBtn">Reset lab</button>
+      </div>
+
+      <div id="passBanner" class="pass-banner" role="status">
+        Lab complete. NetFlow exporter to 10.14.1.2:2055, SPAN session 11, IP SLA 5 scheduled forever, configs saved on R1 and Sw1.
+      </div>
+
+      <details class="hint">
+        <summary>Command sequence (spoiler)</summary>
+        <p><strong>R1 — flow exporter</strong></p>
+        <pre style="overflow-x: auto;">flow exporter MyFlowExporter
+ destination 10.14.1.2
+ transport udp 2055
+ export-protocol netflow-v9</pre>
+        <p><strong>Sw1 — SPAN</strong></p>
+        <pre style="overflow-x: auto;">monitor session 11 source interface e0/1 both
+monitor session 11 destination interface e1/1</pre>
+        <p><strong>R1 — IP SLA</strong></p>
+        <pre style="overflow-x: auto;">ip sla schedule 5 life forever start-time now</pre>
+        <p><strong>Save</strong>: <code>copy running-config startup-config</code> on R1, then Sw1.</p>
+      </details>
+    </main>
+  </div>
+
+  <nav class="sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn" href="/cli-lab-lacp-root-bridge.html">Back</a>
+    <a class="sim-nav-btn sim-nav-home" href="/practice-launcher.html">Home</a>
+    <a class="sim-nav-btn" href="/cli-lab-netflow-span-2.html">Next</a>
+  </nav>
+
+  <script>
+    function normalize(s) {
+      return s.trim().toLowerCase().replace(/\s+/g, " ");
+    }
+
+    function matchCopy(raw) {
+      const u = normalize(raw);
+      return (
+        u === "copy running-config startup-config" ||
+        u === "copy run start" ||
+        u === "copy run startup-config"
+      );
+    }
+
+    function promptForStep(steps, index, host) {
+      if (index >= steps.length) return `${host}#`;
+      const m = steps[index].mode;
+      if (m === "exec") return `${host}#`;
+      if (m === "config") return `${host}(config)#`;
+      if (m === "config-fe") return `${host}(config-flow-exporter)#`;
+      return `${host}#`;
+    }
+
+    const R1_FE = [
+      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
+      {
+        mode: "config",
+        test: (raw) => normalize(raw) === "flow exporter myflowexporter",
+      },
+      { mode: "config-fe", test: (raw) => normalize(raw) === "destination 10.14.1.2" },
+      { mode: "config-fe", test: (raw) => normalize(raw) === "transport udp 2055" },
+      { mode: "config-fe", test: (raw) => normalize(raw) === "export-protocol netflow-v9" },
+      { mode: "config-fe", test: (raw) => normalize(raw) === "end" },
+    ];
+
+    const SW1_SPAN = [
+      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
+      {
+        mode: "config",
+        test: (raw) =>
+          normalize(raw) === "monitor session 11 source interface e0/1 both",
+      },
+      {
+        mode: "config",
+        test: (raw) =>
+          normalize(raw) === "monitor session 11 destination interface e1/1",
+      },
+      { mode: "config", test: (raw) => normalize(raw) === "end" },
+    ];
+
+    const R1_SLA = [
+      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
+      {
+        mode: "config",
+        test: (raw) =>
+          normalize(raw) === "ip sla schedule 5 life forever start-time now",
+      },
+      { mode: "config", test: (raw) => normalize(raw) === "end" },
+    ];
+
+    const scrollR1 = document.getElementById("scrollR1");
+    const scrollSw1 = document.getElementById("scrollSw1");
+    const promptR1 = document.getElementById("promptR1");
+    const promptSw1 = document.getElementById("promptSw1");
+    const cmdR1 = document.getElementById("cmdR1");
+    const cmdSw1 = document.getElementById("cmdSw1");
+    const panelR1 = document.getElementById("panelR1");
+    const panelSw1 = document.getElementById("panelSw1");
+    const hintR1 = document.getElementById("hintR1");
+    const hintSw1 = document.getElementById("hintSw1");
+    const passBanner = document.getElementById("passBanner");
+    const resetBtn = document.getElementById("resetBtn");
+
+    let phase = "R1_FE";
+    let stepR1 = 0;
+    let stepSw1 = 0;
+
+    function appendLine(scrollEl, className, text) {
+      const div = document.createElement("div");
+      div.className = className;
+      div.textContent = text;
+      scrollEl.appendChild(div);
+      scrollEl.scrollTop = scrollEl.scrollHeight;
+    }
+
+    function setWaiting(panel, waiting) {
+      panel.classList.toggle("terminal-panel--waiting", waiting);
+    }
+
+    function disableAllInputs() {
+      cmdR1.disabled = true;
+      cmdSw1.disabled = true;
+    }
+
+    function updateHints() {
+      if (phase === "R1_FE") {
+        hintR1.textContent = "flow exporter MyFlowExporter → destination, transport udp 2055, netflow-v9, end.";
+        hintSw1.textContent = "Waiting for R1 flow exporter.";
+      } else if (phase === "SW1_SPAN") {
+        hintR1.textContent = "Waiting for Sw1.";
+        hintSw1.textContent = "monitor session 11 source e0/1 both, destination e1/1, end.";
+      } else if (phase === "R1_SLA") {
+        hintR1.textContent = "ip sla schedule 5 life forever start-time now, then end.";
+        hintSw1.textContent = "Waiting for R1.";
+      } else if (phase === "R1_SAVE") {
+        hintR1.textContent = "copy running-config startup-config";
+        hintSw1.textContent = "Waiting.";
+      } else if (phase === "SW1_SAVE") {
+        hintR1.textContent = "Done.";
+        hintSw1.textContent = "copy running-config startup-config";
+      } else if (phase === "DONE") {
+        hintR1.textContent = "Lab complete.";
+        hintSw1.textContent = "Lab complete.";
+      } else {
+        hintR1.textContent = "";
+        hintSw1.textContent = "";
+      }
+    }
+
+    function updatePrompts() {
+      if (phase === "R1_FE") {
+        promptR1.textContent = promptForStep(R1_FE, stepR1, "R1");
+      } else if (phase === "R1_SLA") {
+        promptR1.textContent = promptForStep(R1_SLA, stepR1, "R1");
+      } else if (phase === "R1_SAVE") {
+        promptR1.textContent = "R1#";
+      } else {
+        promptR1.textContent = "R1#";
+      }
+
+      if (phase === "SW1_SPAN") {
+        promptSw1.textContent = promptForStep(SW1_SPAN, stepSw1, "Sw1");
+      } else if (phase === "SW1_SAVE") {
+        promptSw1.textContent = "Sw1#";
+      } else {
+        promptSw1.textContent = "Sw1#";
+      }
+    }
+
+    function applyPhaseUI() {
+      disableAllInputs();
+      setWaiting(panelR1, phase !== "R1_FE" && phase !== "R1_SLA" && phase !== "R1_SAVE");
+      setWaiting(panelSw1, phase !== "SW1_SPAN" && phase !== "SW1_SAVE");
+
+      if (phase === "R1_FE" || phase === "R1_SLA" || phase === "R1_SAVE") {
+        cmdR1.disabled = false;
+      }
+      if (phase === "SW1_SPAN" || phase === "SW1_SAVE") {
+        cmdSw1.disabled = false;
+      }
+
+      updateHints();
+      updatePrompts();
+      if (!cmdR1.disabled) cmdR1.focus();
+      else if (!cmdSw1.disabled) cmdSw1.focus();
+    }
+
+    function reset() {
+      phase = "R1_FE";
+      stepR1 = 0;
+      stepSw1 = 0;
+      scrollR1.innerHTML = "";
+      scrollSw1.innerHTML = "";
+      cmdR1.value = "";
+      cmdSw1.value = "";
+      passBanner.classList.remove("visible");
+      appendLine(
+        scrollR1,
+        "line-sys",
+        "ip sla 5 icmp-echo to 10.12.1.2 exists. Add NetFlow exporter (collector PC2 = 10.14.1.2), then schedule SLA."
+      );
+      appendLine(
+        scrollSw1,
+        "line-sys",
+        "SVIs up; PC1 on e0/1 VLAN 12. Configure SPAN after R1 exporter."
+      );
+      applyPhaseUI();
+    }
+
+    function submitR1() {
+      if (phase === "R1_SAVE") {
+        const line = cmdR1.value;
+        appendLine(scrollR1, "line-user", `R1# ${line}`);
+        cmdR1.value = "";
+        if (!line.trim()) return;
+        if (matchCopy(line)) {
+          appendLine(scrollR1, "line-sys", "[OK] R1 saved (simulated). Save on Sw1.");
+          phase = "SW1_SAVE";
+          appendLine(scrollSw1, "line-sys", "copy running-config startup-config");
+          applyPhaseUI();
+        } else {
+          appendLine(scrollR1, "line-bad", "% copy running-config startup-config");
+        }
+        return;
+      }
+
+      const steps = phase === "R1_FE" ? R1_FE : R1_SLA;
+      if (stepR1 >= steps.length) return;
+      const p = promptForStep(steps, stepR1, "R1");
+      const line = cmdR1.value;
+      appendLine(scrollR1, "line-user", `${p} ${line}`);
+      cmdR1.value = "";
+      if (!line.trim()) return;
+
+      if (!steps[stepR1].test(line)) {
+        appendLine(scrollR1, "line-bad", "% Check task order and syntax.");
+        return;
+      }
+
+      stepR1 += 1;
+      if (stepR1 >= steps.length) {
+        if (phase === "R1_FE") {
+          appendLine(scrollR1, "line-sys", "[OK] Flow exporter configured (simulated). Configure Sw1 SPAN.");
+          phase = "SW1_SPAN";
+          stepSw1 = 0;
+          appendLine(scrollSw1, "line-sys", "monitor session 11 …");
+        } else if (phase === "R1_SLA") {
+          appendLine(scrollR1, "line-sys", "[OK] IP SLA 5 scheduled (simulated). Save R1 first.");
+          phase = "R1_SAVE";
+          appendLine(scrollR1, "line-sys", "copy running-config startup-config");
+        }
+        stepR1 = 0;
+        applyPhaseUI();
+      } else {
+        updatePrompts();
+      }
+    }
+
+    function submitSw1() {
+      if (phase === "SW1_SPAN") {
+        if (stepSw1 >= SW1_SPAN.length) return;
+        const p = promptForStep(SW1_SPAN, stepSw1, "Sw1");
+        const line = cmdSw1.value;
+        appendLine(scrollSw1, "line-user", `${p} ${line}`);
+        cmdSw1.value = "";
+        if (!line.trim()) return;
+        if (!SW1_SPAN[stepSw1].test(line)) {
+          appendLine(scrollSw1, "line-bad", "% monitor session 11 source … e0/1 both, destination e1/1, end.");
+          return;
+        }
+        stepSw1 += 1;
+        if (stepSw1 >= SW1_SPAN.length) {
+          appendLine(scrollSw1, "line-sys", "[OK] SPAN session 11 (simulated). Schedule IP SLA on R1.");
+          phase = "R1_SLA";
+          stepR1 = 0;
+          appendLine(scrollR1, "line-sys", "ip sla schedule 5 life forever start-time now");
+          applyPhaseUI();
+        } else {
+          updatePrompts();
+        }
+      } else if (phase === "SW1_SAVE") {
+        const line = cmdSw1.value;
+        appendLine(scrollSw1, "line-user", `Sw1# ${line}`);
+        cmdSw1.value = "";
+        if (!line.trim()) return;
+        if (matchCopy(line)) {
+          appendLine(scrollSw1, "line-sys", "[OK] Sw1 saved (simulated).");
+          phase = "DONE";
+          passBanner.classList.add("visible");
+          disableAllInputs();
+          setWaiting(panelR1, false);
+          setWaiting(panelSw1, false);
+          updateHints();
+          updatePrompts();
+        } else {
+          appendLine(scrollSw1, "line-bad", "% copy running-config startup-config");
+        }
+      }
+    }
+
+    cmdR1.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitR1();
+      }
+    });
+    cmdSw1.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitSw1();
+      }
+    });
+
+    resetBtn.addEventListener("click", reset);
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    reset();
+  </script>
+</body>
+</html>

@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>eBGP Neighbor Sim 2</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      padding-bottom: 88px;
+      box-sizing: border-box;
+    }
+    .wrap {
+      width: min(920px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card {
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 22px 26px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.15rem, 2vw, 1.65rem);
+      line-height: 1.3;
+    }
+    .objective,
+    .tasks {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .tasks ol {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+    }
+    .tasks li {
+      margin: 6px 0;
+    }
+    .diagram-wrap {
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 14px;
+      text-align: center;
+    }
+    .diagram-wrap img {
+      max-width: 100%;
+      height: auto;
+      vertical-align: middle;
+    }
+    .terminal {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.88rem;
+      background: #0a0d12;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      padding: 12px 12px 10px;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      margin-top: 14px;
+    }
+    #scrollback {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 360px;
+      margin-bottom: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #c8d2e0;
+      line-height: 1.45;
+    }
+    .line-user { color: #7ec8ff; }
+    .line-bad { color: #fca5a5; }
+    .line-sys { color: #94a3b8; }
+    .input-row {
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #243044;
+      padding-top: 8px;
+    }
+    #prompt {
+      flex-shrink: 0;
+      color: #fbbf24;
+      user-select: none;
+      max-width: 100%;
+      word-break: break-word;
+    }
+    #cmdline {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      color: #e6edf3;
+      font: inherit;
+      outline: none;
+      padding: 4px 0 4px 4px;
+    }
+    #cmdline:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-secondary {
+      background: #2a3040;
+      border-color: #4b556b;
+    }
+    .pass-banner {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .pass-banner.visible {
+      display: block;
+    }
+    details.hint {
+      margin-top: 10px;
+      color: #9fb0cc;
+      font-size: 0.92rem;
+    }
+    .sim-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(11, 16, 32, 0.94);
+      border-top: 1px solid #2d3b5a;
+      backdrop-filter: blur(10px);
+    }
+    .sim-nav-btn {
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 700;
+      min-width: 5.5rem;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .sim-nav-btn:hover { filter: brightness(1.08); }
+    .sim-nav-home { background: #1a3d6e; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <main class="card">
+      <h1>eBGP Neighbor Sim 2</h1>
+      <p class="objective">
+        eBGP is already configured on <strong>R2</strong> and <strong>R3</strong>. Configure <strong>R1</strong> only.
+        Use <strong>address-family ipv4</strong>, set <code>bgp router-id</code> from <strong>Loopback0</strong>, and advertise the three loopback prefixes with the <strong>exact masks</strong> shown in <code>show ip interface brief</code>.
+      </p>
+      <div class="tasks">
+        <strong>Tasks</strong>
+        <ol>
+          <li>Configure eBGP on R1 for AS <strong>100</strong> toward R2 (AS 200) and R3 (AS 300) using the topology addresses.</li>
+          <li>Under <code>address-family ipv4</code>, activate both neighbors and <code>network</code> Lo0, Lo1, and Lo2.</li>
+          <li>Save the configuration.</li>
+        </ol>
+      </div>
+
+      <div class="diagram-wrap" aria-label="eBGP triangle AS 100 200 300">
+        <img src="/assets/ebgp-neighbor-2-lab.png" alt="R1 R2 R3 eBGP topology and R1 initial interface configuration" />
+      </div>
+
+      <div class="terminal" aria-label="R1 CLI">
+        <div id="scrollback"></div>
+        <div class="input-row">
+          <span id="prompt">R1#</span>
+          <input id="cmdline" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R1 command line" />
+        </div>
+      </div>
+
+      <div class="controls">
+        <button type="button" class="btn btn-secondary" id="resetBtn">Reset lab</button>
+      </div>
+
+      <div id="passBanner" class="pass-banner" role="status">
+        Lab complete. R1 runs BGP AS 100 with router-id from Lo0, neighbors activated in IPv4 AF, loopbacks advertised, config saved.
+      </div>
+
+      <details class="hint">
+        <summary>Command sequence (spoiler)</summary>
+        <ol>
+          <li><code>show ip interface brief</code> — confirm Lo0 = 10.1.1.100</li>
+          <li>
+            <code>router bgp 100</code> → <code>bgp router-id 10.1.1.100</code> → neighbors to 209.165.200.226 / 209.165.202.130
+          </li>
+          <li><code>address-family ipv4</code> → both <code>neighbor … activate</code></li>
+          <li>
+            <code>network 10.1.1.100 mask 255.255.255.255</code> — <code>network 209.165.201.0 mask 255.255.255.248</code> —
+            <code>network 209.165.201.8 mask 255.255.255.248</code>
+          </li>
+          <li><code>end</code> → <code>copy running-config startup-config</code></li>
+        </ol>
+      </details>
+    </main>
+  </div>
+
+  <nav class="sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn" href="/cli-lab-trunk-udld-lacp.html">Back</a>
+    <a class="sim-nav-btn sim-nav-home" href="/practice-launcher.html">Home</a>
+    <a class="sim-nav-btn" href="/cli-lab-lacp-root-bridge.html">Next</a>
+  </nav>
+
+  <script>
+    function normalize(s) {
+      return s.trim().toLowerCase().replace(/\s+/g, " ");
+    }
+
+    function matchCopy(raw) {
+      const u = normalize(raw);
+      return (
+        u === "copy running-config startup-config" ||
+        u === "copy run start" ||
+        u === "copy run startup-config"
+      );
+    }
+
+    function testShowBrief(raw) {
+      const u = normalize(raw);
+      return (
+        u === "show ip interface brief" ||
+        u === "sh ip int brief" ||
+        u === "show ip int brief"
+      );
+    }
+
+    function testAddressFamilyIpv4(raw) {
+      const u = normalize(raw);
+      return u === "address-family ipv4" || u === "address-family ipv4 unicast";
+    }
+
+    function promptForStep(steps, index) {
+      if (index >= steps.length) return "R1#";
+      const m = steps[index].mode;
+      if (m === "exec") return "R1#";
+      if (m === "config") return "R1(config)#";
+      if (m === "config-router") return "R1(config-router)#";
+      if (m === "config-router-af") return "R1(config-router-af)#";
+      return "R1#";
+    }
+
+    const OUT_BRIEF =
+      "Interface              IP-Address      OK? Method Status                Protocol\n" +
+      "Ethernet0/0            209.165.200.225 YES manual up                    up\n" +
+      "Ethernet0/1            209.165.202.129 YES manual up                    up\n" +
+      "Loopback0              10.1.1.100      YES manual up                    up\n" +
+      "Loopback1              209.165.201.1   YES manual up                    up\n" +
+      "Loopback2              209.165.201.9   YES manual up                    up";
+
+    const BGP_ALL = [
+      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
+      { mode: "config", test: (raw) => normalize(raw) === "router bgp 100" },
+      { mode: "config-router", test: (raw) => normalize(raw) === "bgp router-id 10.1.1.100" },
+      {
+        mode: "config-router",
+        test: (raw) => normalize(raw) === "neighbor 209.165.200.226 remote-as 200",
+      },
+      {
+        mode: "config-router",
+        test: (raw) => normalize(raw) === "neighbor 209.165.202.130 remote-as 300",
+      },
+      { mode: "config-router", test: testAddressFamilyIpv4 },
+      {
+        mode: "config-router-af",
+        test: (raw) => normalize(raw) === "neighbor 209.165.200.226 activate",
+      },
+      {
+        mode: "config-router-af",
+        test: (raw) => normalize(raw) === "neighbor 209.165.202.130 activate",
+      },
+      {
+        mode: "config-router-af",
+        test: (raw) => normalize(raw) === "network 10.1.1.100 mask 255.255.255.255",
+      },
+      {
+        mode: "config-router-af",
+        test: (raw) => normalize(raw) === "network 209.165.201.0 mask 255.255.255.248",
+      },
+      {
+        mode: "config-router-af",
+        test: (raw) => normalize(raw) === "network 209.165.201.8 mask 255.255.255.248",
+      },
+      { mode: "config-router-af", test: (raw) => normalize(raw) === "end" },
+    ];
+
+    const scrollback = document.getElementById("scrollback");
+    const promptEl = document.getElementById("prompt");
+    const cmdline = document.getElementById("cmdline");
+    const passBanner = document.getElementById("passBanner");
+    const resetBtn = document.getElementById("resetBtn");
+
+    let phase = "BRIEF";
+    let stepIndex = 0;
+
+    function appendLine(className, text) {
+      const div = document.createElement("div");
+      div.className = className;
+      div.textContent = text;
+      scrollback.appendChild(div);
+      scrollback.scrollTop = scrollback.scrollHeight;
+    }
+
+    function appendBlock(className, text) {
+      const div = document.createElement("div");
+      div.className = className;
+      div.style.whiteSpace = "pre-wrap";
+      div.textContent = text;
+      scrollback.appendChild(div);
+      scrollback.scrollTop = scrollback.scrollHeight;
+    }
+
+    function currentSteps() {
+      if (phase === "BRIEF") return [{ mode: "exec", test: testShowBrief }];
+      if (phase === "BGP") return BGP_ALL;
+      if (phase === "SAVE") return [{ mode: "exec", test: matchCopy }];
+      return [];
+    }
+
+    function setPrompt() {
+      const steps = currentSteps();
+      if (phase === "SAVE") {
+        promptEl.textContent = "R1#";
+        return;
+      }
+      promptEl.textContent = promptForStep(steps, stepIndex);
+    }
+
+    function reset() {
+      phase = "BRIEF";
+      stepIndex = 0;
+      scrollback.innerHTML = "";
+      passBanner.classList.remove("visible");
+      cmdline.disabled = false;
+      cmdline.value = "";
+      appendLine(
+        "line-sys",
+        "R1: interfaces and loopbacks are up. eBGP is on R2/R3 only — configure R1 (AS 100)."
+      );
+      setPrompt();
+      cmdline.focus();
+    }
+
+    function submit() {
+      if (phase === "DONE") return;
+      const steps = currentSteps();
+      if (phase !== "BRIEF" && phase !== "SAVE" && stepIndex >= steps.length) return;
+
+      const prompt = promptEl.textContent;
+      const line = cmdline.value;
+      appendLine("line-user", `${prompt} ${line}`);
+      cmdline.value = "";
+      if (!line.trim()) return;
+
+      if (phase === "BRIEF") {
+        if (testShowBrief(line)) {
+          appendBlock("line-sys", OUT_BRIEF);
+          appendLine("line-sys", "[OK] Router-id from Lo0 = 10.1.1.100. Enter configuration.");
+          phase = "BGP";
+          stepIndex = 0;
+          setPrompt();
+        } else {
+          appendLine("line-bad", "% Type: show ip interface brief");
+        }
+        return;
+      }
+
+      if (phase === "SAVE") {
+        if (matchCopy(line)) {
+          appendLine("line-sys", "[OK] Building configuration... (simulated).");
+          phase = "DONE";
+          passBanner.classList.add("visible");
+          cmdline.disabled = true;
+        } else {
+          appendLine("line-bad", "% copy running-config startup-config");
+        }
+        return;
+      }
+
+      if (!steps[stepIndex].test(line)) {
+        appendLine(
+          "line-bad",
+          "% Follow: router bgp 100, neighbors, address-family ipv4, activate, three network lines, end."
+        );
+        return;
+      }
+
+      stepIndex += 1;
+      if (stepIndex >= steps.length) {
+        appendLine("line-sys", "[OK] eBGP + advertisements (simulated). Save.");
+        phase = "SAVE";
+        stepIndex = 0;
+        setPrompt();
+      } else {
+        setPrompt();
+      }
+    }
+
+    cmdline.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submit();
+      }
+    });
+
+    resetBtn.addEventListener("click", reset);
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    reset();
+  </script>
+</body>
+</html>

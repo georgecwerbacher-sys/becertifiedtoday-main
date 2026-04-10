@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Starting practice…</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #b8c3d6;
+      font-family: system-ui, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <p>Loading…</p>
+  <script>
+    (function () {
+      var studyParam = new URLSearchParams(location.search).get("study");
+      var studyIndex = parseInt(studyParam || "1", 10);
+      if (studyIndex < 1 || studyIndex !== studyIndex) studyIndex = 1;
+
+      fetch("/js/study-config.json", { cache: "no-store" })
+        .then(function (r) {
+          if (!r.ok) throw new Error("cfg");
+          return r.json();
+        })
+        .then(function (cfg) {
+          var study = (cfg.studies || [])[studyIndex - 1];
+          if (!study || !study.ids || !study.ids.length) {
+            location.replace("/practice-launcher.html");
+            return;
+          }
+          try {
+            sessionStorage.removeItem("ccnpQuestionQueue");
+            sessionStorage.removeItem("ccnpQuestionQueueIndex");
+            sessionStorage.removeItem("ccnpReviewMode");
+            sessionStorage.removeItem("ccnpReviewQueue");
+            sessionStorage.setItem(
+              "ccnpLinearScope",
+              JSON.stringify({ ids: study.ids.slice() })
+            );
+          } catch (e) {}
+          location.replace("/question-" + study.ids[0] + ".html");
+        })
+        .catch(function () {
+          location.replace("/practice-launcher.html");
+        });
+    })();
+  </script>
+</body>
+</html>

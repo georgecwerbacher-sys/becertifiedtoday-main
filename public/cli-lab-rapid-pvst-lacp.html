@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rapid PVST+ and LACP Sim</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      padding-bottom: 88px;
+      box-sizing: border-box;
+    }
+    .wrap {
+      width: min(1000px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card {
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 22px 26px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.15rem, 2vw, 1.65rem);
+      line-height: 1.3;
+    }
+    .objective,
+    .tasks {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .tasks ol {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+    }
+    .tasks li {
+      margin: 6px 0;
+    }
+    .diagram-wrap {
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 8px;
+      text-align: center;
+    }
+    .diagram-wrap img {
+      max-width: 100%;
+      height: auto;
+      vertical-align: middle;
+    }
+    .terminal {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.9rem;
+      background: #0a0d12;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      padding: 12px 12px 10px;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+    }
+    #scrollback {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 320px;
+      margin-bottom: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #c8d2e0;
+      line-height: 1.45;
+    }
+    .line-user { color: #7ec8ff; }
+    .line-bad { color: #fca5a5; }
+    .line-sys { color: #94a3b8; }
+    .input-row {
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #243044;
+      padding-top: 8px;
+    }
+    #prompt {
+      flex-shrink: 0;
+      color: #fbbf24;
+      user-select: none;
+    }
+    #cmdline {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      color: #e6edf3;
+      font: inherit;
+      outline: none;
+      padding: 4px 0 4px 4px;
+    }
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-secondary {
+      background: #2a3040;
+      border-color: #4b556b;
+    }
+    .pass-banner {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .pass-banner.visible {
+      display: block;
+    }
+    details.hint {
+      margin-top: 10px;
+      color: #9fb0cc;
+      font-size: 0.92rem;
+    }
+    .sim-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(11, 16, 32, 0.94);
+      border-top: 1px solid #2d3b5a;
+      backdrop-filter: blur(10px);
+    }
+    .sim-nav-btn {
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 700;
+      min-width: 5.5rem;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .sim-nav-btn:hover { filter: brightness(1.08); }
+    .sim-nav-home { background: #1a3d6e; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <main class="card">
+      <h1>Rapid PVST+ and LACP Sim</h1>
+      <p class="objective">
+        The operations team started configuring network devices for a new site. Fix SW20 only to satisfy all goals.
+        No access is provided to SW10 or SW30. Traffic on all trunks must be restricted to active VLANs.
+      </p>
+      <div class="tasks">
+        <strong>Tasks</strong>
+        <ol>
+          <li>Configure Rapid PVST+ on SW20.</li>
+          <li>Fix the SW20-SW30 trunk so PC3 can ping PC1 (10.10.100.10).</li>
+          <li>Fix the LACP port-channel to SW10 so PC3 can ping PC2 (10.10.100.20).</li>
+        </ol>
+      </div>
+      <div class="diagram-wrap" aria-label="Topology and initial SW20 config">
+        <img src="/assets/rapid-pvst-lacp-topology.png" alt="Rapid PVST and LACP simulation topology and SW20 initial configuration screenshot" />
+      </div>
+
+      <div class="terminal" aria-label="Simulated SW20 CLI">
+        <div id="scrollback"></div>
+        <div class="input-row">
+          <span id="prompt">SW20#</span>
+          <input id="cmdline" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="Command line" />
+        </div>
+      </div>
+
+      <div class="controls">
+        <button type="button" class="btn btn-secondary" id="resetBtn">Reset lab</button>
+      </div>
+
+      <div id="passBanner" class="pass-banner" role="status">
+        Lab complete. SW20 now uses Rapid PVST+, trunk to SW30 is corrected, and Port-channel 10 is corrected for LACP trunking with VLAN 500 allowed.
+      </div>
+
+      <details class="hint">
+        <summary>Show one valid command sequence (spoiler)</summary>
+        <ol>
+          <li><code>conf t</code></li>
+          <li><code>spanning-tree mode rapid-pvst</code></li>
+          <li><code>interface e0/0</code></li>
+          <li><code>switchport trunk encapsulation dot1q</code></li>
+          <li><code>switchport mode trunk</code></li>
+          <li><code>switchport trunk allowed vlan 500</code></li>
+          <li><code>exit</code></li>
+          <li><code>interface po10</code></li>
+          <li><code>switchport trunk encapsulation dot1q</code></li>
+          <li><code>switchport mode trunk</code></li>
+          <li><code>switchport trunk allowed vlan 500</code></li>
+          <li><code>end</code></li>
+          <li><code>copy running-config startup-config</code></li>
+        </ol>
+      </details>
+    </main>
+  </div>
+
+  <nav class="sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn" href="/cli-lab-vty-login-v2.html">Back</a>
+    <a class="sim-nav-btn sim-nav-home" href="/practice-launcher.html">Home</a>
+    <a class="sim-nav-btn" href="/cli-lab-vrf-tunnel.html">Next</a>
+  </nav>
+
+  <script>
+    function normalize(s) {
+      return s.trim().toLowerCase().replace(/\s+/g, " ");
+    }
+
+    function matchCopy(n) {
+      const u = normalize(n);
+      return (
+        u === "copy running-config startup-config" ||
+        u === "copy run start" ||
+        u === "copy run startup-config"
+      );
+    }
+
+    const STEPS = [
+      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
+      { mode: "config", test: (raw) => normalize(raw) === "spanning-tree mode rapid-pvst" },
+      { mode: "config", test: (raw) => ["interface e0/0", "int e0/0"].includes(normalize(raw)) },
+      { mode: "config-if", test: (raw) => normalize(raw) === "switchport trunk encapsulation dot1q" },
+      { mode: "config-if", test: (raw) => normalize(raw) === "switchport mode trunk" },
+      { mode: "config-if", test: (raw) => normalize(raw) === "switchport trunk allowed vlan 500" },
+      { mode: "config-if", test: (raw) => normalize(raw) === "exit" },
+      { mode: "config", test: (raw) => ["interface po10", "interface port-channel10", "int po10", "int port-channel10"].includes(normalize(raw)) },
+      { mode: "config-if", test: (raw) => normalize(raw) === "switchport trunk encapsulation dot1q" },
+      { mode: "config-if", test: (raw) => normalize(raw) === "switchport mode trunk" },
+      { mode: "config-if", test: (raw) => normalize(raw) === "switchport trunk allowed vlan 500" },
+      { mode: "config-if", test: (raw) => normalize(raw) === "end" },
+      { mode: "privileged", test: matchCopy },
+    ];
+
+    function promptForStep(index) {
+      if (index >= STEPS.length) return "SW20#";
+      const mode = STEPS[index].mode;
+      if (mode === "exec") return "SW20#";
+      if (mode === "config") return "SW20(config)#";
+      if (mode === "config-if") return "SW20(config-if)#";
+      return "SW20#";
+    }
+
+    const scrollback = document.getElementById("scrollback");
+    const promptEl = document.getElementById("prompt");
+    const cmdline = document.getElementById("cmdline");
+    const passBanner = document.getElementById("passBanner");
+    const resetBtn = document.getElementById("resetBtn");
+
+    let stepIndex = 0;
+
+    function appendLine(className, text) {
+      const div = document.createElement("div");
+      div.className = className;
+      div.textContent = text;
+      scrollback.appendChild(div);
+      scrollback.scrollTop = scrollback.scrollHeight;
+    }
+
+    function setPrompt() {
+      promptEl.textContent = promptForStep(stepIndex);
+    }
+
+    function reset() {
+      stepIndex = 0;
+      scrollback.innerHTML = "";
+      passBanner.classList.remove("visible");
+      cmdline.disabled = false;
+      cmdline.value = "";
+      setPrompt();
+      cmdline.focus();
+      appendLine("line-sys", "You are on SW20. Configure only SW20 to complete all tasks.");
+    }
+
+    function submit() {
+      if (stepIndex >= STEPS.length) return;
+      const prompt = promptForStep(stepIndex);
+      const line = cmdline.value;
+      appendLine("line-user", `${prompt} ${line}`);
+      cmdline.value = "";
+      if (!line.trim()) return;
+
+      if (STEPS[stepIndex].test(line)) {
+        stepIndex += 1;
+        if (stepIndex >= STEPS.length) {
+          promptEl.textContent = "SW20#";
+          passBanner.classList.add("visible");
+          cmdline.disabled = true;
+          appendLine("line-sys", "[OK] Building configuration...\r\n[OK] Complete (simulated).");
+          appendLine("line-sys", "Verification note: STP may take up to ~1 minute before pings succeed.");
+        } else {
+          setPrompt();
+        }
+      } else {
+        appendLine("line-bad", "% Invalid input — follow task order and configure only SW20.");
+      }
+    }
+
+    cmdline.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        submit();
+      }
+    });
+
+    resetBtn.addEventListener("click", reset);
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    reset();
+  </script>
+</body>
+</html>

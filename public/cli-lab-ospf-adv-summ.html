@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OSPF Advertised &amp; Summarized Sim</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      padding-bottom: 88px;
+      box-sizing: border-box;
+    }
+    .wrap {
+      width: min(1280px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card {
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 22px 26px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.15rem, 2vw, 1.65rem);
+      line-height: 1.3;
+    }
+    .objective,
+    .tasks {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .tasks ol {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+    }
+    .tasks li {
+      margin: 6px 0;
+    }
+    .diagram-wrap {
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 14px;
+      text-align: center;
+    }
+    .diagram-wrap img {
+      max-width: 100%;
+      height: auto;
+      vertical-align: middle;
+    }
+    .console-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+    @media (max-width: 1024px) {
+      .console-row {
+        grid-template-columns: 1fr;
+      }
+    }
+    .console-label {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #c8d7ec;
+    }
+    .terminal-panel {
+      min-width: 0;
+    }
+    .terminal-panel--waiting .terminal {
+      opacity: 0.72;
+    }
+    .terminal-panel--waiting .console-hint {
+      display: block;
+    }
+    .console-hint {
+      display: none;
+      margin: 0 0 8px;
+      font-size: 0.78rem;
+      color: #9fb0cc;
+      font-style: italic;
+      line-height: 1.35;
+    }
+    .terminal {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.78rem;
+      background: #0a0d12;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      padding: 10px 10px 8px;
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+    }
+    .console-scroll {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 200px;
+      margin-bottom: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #c8d2e0;
+      line-height: 1.45;
+    }
+    .line-user { color: #7ec8ff; }
+    .line-bad { color: #fca5a5; }
+    .line-sys { color: #94a3b8; }
+    .input-row {
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #243044;
+      padding-top: 8px;
+    }
+    .prompt {
+      flex-shrink: 0;
+      color: #fbbf24;
+      user-select: none;
+      max-width: 100%;
+      word-break: break-word;
+      font-size: 0.72rem;
+    }
+    .cmdline {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      color: #e6edf3;
+      font: inherit;
+      outline: none;
+      padding: 4px 0 4px 4px;
+    }
+    .cmdline:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-secondary {
+      background: #2a3040;
+      border-color: #4b556b;
+    }
+    .pass-banner {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .pass-banner.visible {
+      display: block;
+    }
+    details.hint {
+      margin-top: 10px;
+      color: #9fb0cc;
+      font-size: 0.92rem;
+    }
+    .sim-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(11, 16, 32, 0.94);
+      border-top: 1px solid #2d3b5a;
+      backdrop-filter: blur(10px);
+    }
+    .sim-nav-btn {
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 700;
+      min-width: 5.5rem;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .sim-nav-btn:hover { filter: brightness(1.08); }
+    .sim-nav-home { background: #1a3d6e; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <main class="card">
+      <h1>OSPF Advertised &amp; Summarized Sim</h1>
+      <p class="objective">
+        OSPF is partially configured elsewhere. On <strong>R1</strong>, enable process <strong>1</strong> and attach OSPF to each interface using <code>ip ospf 1 area 0</code> only — <strong>no <code>network</code></strong> statements under <code>router ospf</code>.
+        On ABRs <strong>R2</strong> and <strong>R3</strong>, one summary command each toward area 0: area <strong>10</strong> → <code>10.1.0.0/16</code>, area <strong>20</strong> → <code>10.2.0.0/16</code>.
+      </p>
+      <div class="tasks">
+        <strong>Tasks</strong>
+        <ol>
+          <li>Configure R1 OSPF 1 on Lo0, E0/0, and E0/1 (area 0) without <code>network</code> under the router process.</li>
+          <li>Verify on R1, then on R2 and R3 add <code>area … range …</code> for a single inter-area summary each.</li>
+          <li>Save running-config on R1, R2, and R3.</li>
+        </ol>
+      </div>
+
+      <div class="diagram-wrap" aria-label="OSPF areas and R1 initial config">
+        <img src="/assets/ospf-adv-summ-lab.png" alt="Areas 10 20 0 with R1 R2 R3 and R1 interface summary" />
+      </div>
+
+      <div class="console-row" aria-label="R1 R2 R3 consoles">
+        <div class="terminal-panel" id="panelR1">
+          <h2 class="console-label">R1</h2>
+          <p class="console-hint" id="hintR1">router ospf 1, exit, then ip ospf 1 area 0 on each interface; verify; save last on R1.</p>
+          <div class="terminal" aria-label="R1 CLI">
+            <div class="console-scroll" id="scrollR1"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR1">R1#</span>
+              <input class="cmdline" id="cmdR1" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R1 command line" />
+            </div>
+          </div>
+        </div>
+        <div class="terminal-panel terminal-panel--waiting" id="panelR2">
+          <h2 class="console-label">R2</h2>
+          <p class="console-hint" id="hintR2">ABR for area 10: area 10 range 10.1.0.0 255.255.0.0</p>
+          <div class="terminal" aria-label="R2 CLI">
+            <div class="console-scroll" id="scrollR2"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR2">R2#</span>
+              <input class="cmdline" id="cmdR2" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R2 command line" disabled />
+            </div>
+          </div>
+        </div>
+        <div class="terminal-panel terminal-panel--waiting" id="panelR3">
+          <h2 class="console-label">R3</h2>
+          <p class="console-hint" id="hintR3">ABR for area 20: area 20 range 10.2.0.0 255.255.0.0</p>
+          <div class="terminal" aria-label="R3 CLI">
+            <div class="console-scroll" id="scrollR3"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR3">R3#</span>
+              <input class="cmdline" id="cmdR3" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R3 command line" disabled />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button type="button" class="btn btn-secondary" id="resetBtn">Reset lab</button>
+      </div>
+
+      <div id="passBanner" class="pass-banner" role="status">
+        Lab complete. R1 uses interface OSPF only; R2/R3 summarize areas 10 and 20 into 10.1.0.0/16 and 10.2.0.0/16; all configs saved.
+      </div>
+
+      <details class="hint">
+        <summary>Command sequence (spoiler)</summary>
+        <p><strong>R1</strong></p>
+        <ol>
+          <li><code>router ospf 1</code> → <code>exit</code></li>
+          <li><code>interface loopback0</code> → <code>ip ospf 1 area 0</code></li>
+          <li><code>interface ethernet0/0</code> (or <code>int e0/0</code>) → <code>ip ospf 1 area 0</code></li>
+          <li><code>interface ethernet0/1</code> → <code>ip ospf 1 area 0</code> → <code>end</code></li>
+          <li><code>show ip ospf interface brief</code> → <code>show ip route ospf</code></li>
+        </ol>
+        <p><strong>R2</strong>: <code>router ospf 1</code> → <code>area 10 range 10.1.0.0 255.255.0.0</code> → <code>end</code></p>
+        <p><strong>R3</strong>: <code>router ospf 1</code> → <code>area 20 range 10.2.0.0 255.255.0.0</code> → <code>end</code></p>
+        <p><strong>Save</strong>: <code>copy run start</code> on R1, R2, R3.</p>
+      </details>
+    </main>
+  </div>
+
+  <nav class="sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn" href="/cli-lab-ospf-dr-summarization.html">Back</a>
+    <a class="sim-nav-btn sim-nav-home" href="/practice-launcher.html">Home</a>
+    <a class="sim-nav-btn" href="/cli-lab-ospf-summ-r30.html">Next</a>
+  </nav>
+
+  <script>
+    function normalize(s) {
+      return s.trim().toLowerCase().replace(/\s+/g, " ");
+    }
+
+    function matchCopy(raw) {
+      const u = normalize(raw);
+      return (
+        u === "copy running-config startup-config" ||
+        u === "copy run start" ||
+        u === "copy run startup-config"
+      );
+    }
+
+    function promptForStep(steps, index, host) {
+      if (index >= steps.length) return `${host}#`;
+      const m = steps[index].mode;
+      if (m === "exec") return `${host}#`;
+      if (m === "config") return `${host}(config)#`;
+      if (m === "config-router") return `${host}(config-router)#`;
+      if (m === "config-if") return `${host}(config-if)#`;
+      return `${host}#`;
+    }
+
+    function testIntLo0(raw) {
+      const u = normalize(raw);
+      return u === "interface loopback0" || u === "int loopback0" || u === "int lo0";
+    }
+
+    function testIntE00(raw) {
+      const u = normalize(raw);
+      return (
+        u === "interface ethernet0/0" ||
+        u === "int ethernet0/0" ||
+        u === "interface e0/0" ||
+        u === "int e0/0"
+      );
+    }
+
+    function testIntE01(raw) {
+      const u = normalize(raw);
+      return (
+        u === "interface ethernet0/1" ||
+        u === "int ethernet0/1" ||
+        u === "interface e0/1" ||
+        u === "int e0/1"
+      );
+    }
+
+    function testShowOspfBrief(raw) {
+      const u = normalize(raw);
+      return (
+        u === "show ip ospf interface brief" ||
+        u === "sh ip ospf interface brief" ||
+        u === "show ip ospf int brief"
+      );
+    }
+
+    function testShowRouteOspf(raw) {
+      const u = normalize(raw);
+      return u === "show ip route ospf" || u === "sh ip route ospf";
+    }
+
+    const R1_CFG = [
+      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
+      { mode: "config", test: (raw) => normalize(raw) === "router ospf 1" },
+      { mode: "config-router", test: (raw) => normalize(raw) === "exit" },
+      { mode: "config", test: testIntLo0 },
+      { mode: "config-if", test: (raw) => normalize(raw) === "ip ospf 1 area 0" },
+      { mode: "config-if", test: testIntE00 },
+      { mode: "config-if", test: (raw) => normalize(raw) === "ip ospf 1 area 0" },
+      { mode: "config-if", test: testIntE01 },
+      { mode: "config-if", test: (raw) => normalize(raw) === "ip ospf 1 area 0" },
+      { mode: "config-if", test: (raw) => normalize(raw) === "end" },
+    ];
+
+    const R2_RANGE = [
+      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
+      { mode: "config", test: (raw) => normalize(raw) === "router ospf 1" },
+      {
+        mode: "config-router",
+        test: (raw) =>
+          normalize(raw) === "area 10 range 10.1.0.0 255.255.0.0",
+      },
+      { mode: "config-router", test: (raw) => normalize(raw) === "end" },
+    ];
+
+    const R3_RANGE = [
+      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
+      { mode: "config", test: (raw) => normalize(raw) === "router ospf 1" },
+      {
+        mode: "config-router",
+        test: (raw) =>
+          normalize(raw) === "area 20 range 10.2.0.0 255.255.0.0",
+      },
+      { mode: "config-router", test: (raw) => normalize(raw) === "end" },
+    ];
+
+    const OUT_OSPF_BRIEF =
+      "Interface    PID   Area            IP Address/Mask    Cost  State Nbrs F/C\n" +
+      "Lo0          1     0               10.0.1.1/24        1     LOOP  0/0\n" +
+      "Et0/1        1     0               10.0.3.1/24        10    BDR   1/1\n" +
+      "Et0/0        1     0               10.0.2.1/24        10    BDR   1/1";
+
+    const OUT_ROUTE_OSPF =
+      "Codes: O - OSPF, IA - OSPF inter area\n\n" +
+      "      10.0.0.0/8 is variably subnetted, 9 subnets, 2 masks\n" +
+      "O        10.0.23.0/24 [110/20] via 10.0.3.3, 00:00:09, Ethernet0/1\n" +
+      "                      [110/20] via 10.0.2.2, 00:00:09, Ethernet0/0\n" +
+      "O IA     10.1.102.0/24 [110/20] via 10.0.2.2, 00:00:09, Ethernet0/0\n" +
+      "O IA     10.2.203.0/24 [110/20] via 10.0.3.3, 00:00:09, Ethernet0/1";
+
+    const scrollR1 = document.getElementById("scrollR1");
+    const scrollR2 = document.getElementById("scrollR2");
+    const scrollR3 = document.getElementById("scrollR3");
+    const promptR1 = document.getElementById("promptR1");
+    const promptR2 = document.getElementById("promptR2");
+    const promptR3 = document.getElementById("promptR3");
+    const cmdR1 = document.getElementById("cmdR1");
+    const cmdR2 = document.getElementById("cmdR2");
+    const cmdR3 = document.getElementById("cmdR3");
+    const panelR1 = document.getElementById("panelR1");
+    const panelR2 = document.getElementById("panelR2");
+    const panelR3 = document.getElementById("panelR3");
+    const passBanner = document.getElementById("passBanner");
+    const resetBtn = document.getElementById("resetBtn");
+
+    let phase = "R1_CFG";
+    let stepR1 = 0;
+    let stepR2 = 0;
+    let stepR3 = 0;
+    let verStep = 0;
+
+    function appendLine(scrollEl, className, text) {
+      const div = document.createElement("div");
+      div.className = className;
+      div.textContent = text;
+      scrollEl.appendChild(div);
+      scrollEl.scrollTop = scrollEl.scrollHeight;
+    }
+
+    function appendBlock(scrollEl, className, text) {
+      const div = document.createElement("div");
+      div.className = className;
+      div.style.whiteSpace = "pre-wrap";
+      div.textContent = text;
+      scrollEl.appendChild(div);
+      scrollEl.scrollTop = scrollEl.scrollHeight;
+    }
+
+    function setWaiting(panel, waiting) {
+      panel.classList.toggle("terminal-panel--waiting", waiting);
+    }
+
+    function disableAllInputs() {
+      cmdR1.disabled = true;
+      cmdR2.disabled = true;
+      cmdR3.disabled = true;
+    }
+
+    function updatePrompts() {
+      if (phase === "R1_CFG") {
+        promptR1.textContent = promptForStep(R1_CFG, stepR1, "R1");
+      } else if (phase === "R1_VER") {
+        promptR1.textContent = "R1#";
+      } else if (phase === "R1_SAVE") {
+        promptR1.textContent = "R1#";
+      } else {
+        promptR1.textContent = "R1#";
+      }
+
+      if (phase === "R2_RANGE") {
+        promptR2.textContent = promptForStep(R2_RANGE, stepR2, "R2");
+      } else if (phase === "R2_SAVE") {
+        promptR2.textContent = "R2#";
+      } else {
+        promptR2.textContent = "R2#";
+      }
+
+      if (phase === "R3_RANGE") {
+        promptR3.textContent = promptForStep(R3_RANGE, stepR3, "R3");
+      } else if (phase === "R3_SAVE") {
+        promptR3.textContent = "R3#";
+      } else {
+        promptR3.textContent = "R3#";
+      }
+    }
+
+    function applyPhaseUI() {
+      disableAllInputs();
+      setWaiting(
+        panelR1,
+        phase !== "R1_CFG" && phase !== "R1_VER" && phase !== "R1_SAVE"
+      );
+      setWaiting(panelR2, phase !== "R2_RANGE" && phase !== "R2_SAVE");
+      setWaiting(panelR3, phase !== "R3_RANGE" && phase !== "R3_SAVE");
+
+      if (phase === "R1_CFG" || phase === "R1_VER" || phase === "R1_SAVE") {
+        cmdR1.disabled = false;
+      }
+      if (phase === "R2_RANGE" || phase === "R2_SAVE") cmdR2.disabled = false;
+      if (phase === "R3_RANGE" || phase === "R3_SAVE") cmdR3.disabled = false;
+
+      updatePrompts();
+      if (!cmdR1.disabled) cmdR1.focus();
+      else if (!cmdR2.disabled) cmdR2.focus();
+      else if (!cmdR3.disabled) cmdR3.focus();
+    }
+
+    function reset() {
+      phase = "R1_CFG";
+      stepR1 = 0;
+      stepR2 = 0;
+      stepR3 = 0;
+      verStep = 0;
+      scrollR1.innerHTML = "";
+      scrollR2.innerHTML = "";
+      scrollR3.innerHTML = "";
+      cmdR1.value = "";
+      cmdR2.value = "";
+      cmdR3.value = "";
+      passBanner.classList.remove("visible");
+      appendLine(scrollR1, "line-sys", "No OSPF on R1 yet — use process 1 and interface-level enrollment only.");
+      applyPhaseUI();
+    }
+
+    function submitR1() {
+      if (phase === "R1_SAVE") {
+        const line = cmdR1.value;
+        appendLine(scrollR1, "line-user", `R1# ${line}`);
+        cmdR1.value = "";
+        if (!line.trim()) return;
+        if (matchCopy(line)) {
+          appendLine(scrollR1, "line-sys", "[OK] R1 saved (simulated). Save R2.");
+          phase = "R2_SAVE";
+          appendLine(scrollR2, "line-sys", "copy running-config startup-config");
+          applyPhaseUI();
+        } else {
+          appendLine(scrollR1, "line-bad", "% copy running-config startup-config");
+        }
+        return;
+      }
+
+      if (phase === "R1_VER") {
+        const line = cmdR1.value;
+        appendLine(scrollR1, "line-user", `R1# ${line}`);
+        cmdR1.value = "";
+        if (!line.trim()) return;
+        if (verStep === 0) {
+          if (testShowOspfBrief(line)) {
+            appendBlock(scrollR1, "line-sys", OUT_OSPF_BRIEF);
+            appendLine(scrollR1, "line-sys", "[OK] show ip route ospf next.");
+            verStep = 1;
+          } else {
+            appendLine(scrollR1, "line-bad", "% show ip ospf interface brief");
+          }
+        } else {
+          if (testShowRouteOspf(line)) {
+            appendBlock(scrollR1, "line-sys", OUT_ROUTE_OSPF);
+            appendLine(scrollR1, "line-sys", "[OK] Configure area range on R2.");
+            phase = "R2_RANGE";
+            stepR2 = 0;
+            appendLine(scrollR2, "line-sys", "router ospf 1 → area 10 range …");
+            applyPhaseUI();
+          } else {
+            appendLine(scrollR1, "line-bad", "% show ip route ospf");
+          }
+        }
+        return;
+      }
+
+      if (phase !== "R1_CFG") return;
+      if (stepR1 >= R1_CFG.length) return;
+      const p = promptForStep(R1_CFG, stepR1, "R1");
+      const line = cmdR1.value;
+      appendLine(scrollR1, "line-user", `${p} ${line}`);
+      cmdR1.value = "";
+      if (!line.trim()) return;
+      if (!R1_CFG[stepR1].test(line)) {
+        appendLine(
+          scrollR1,
+          "line-bad",
+          "% router ospf 1, exit, each interface + ip ospf 1 area 0, end."
+        );
+        return;
+      }
+      stepR1 += 1;
+      if (stepR1 >= R1_CFG.length) {
+        appendLine(scrollR1, "line-sys", "[OK] R1 interfaces in OSPF. Verify.");
+        phase = "R1_VER";
+        verStep = 0;
+        appendLine(scrollR1, "line-sys", "show ip ospf interface brief");
+        applyPhaseUI();
+      } else {
+        updatePrompts();
+      }
+    }
+
+    function submitR2() {
+      if (phase === "R2_SAVE") {
+        const line = cmdR2.value;
+        appendLine(scrollR2, "line-user", `R2# ${line}`);
+        cmdR2.value = "";
+        if (!line.trim()) return;
+        if (matchCopy(line)) {
+          appendLine(scrollR2, "line-sys", "[OK] R2 saved (simulated). Save R3.");
+          phase = "R3_SAVE";
+          appendLine(scrollR3, "line-sys", "copy running-config startup-config");
+          applyPhaseUI();
+        } else {
+          appendLine(scrollR2, "line-bad", "% copy running-config startup-config");
+        }
+        return;
+      }
+
+      if (phase !== "R2_RANGE") return;
+      if (stepR2 >= R2_RANGE.length) return;
+      const p = promptForStep(R2_RANGE, stepR2, "R2");
+      const line = cmdR2.value;
+      appendLine(scrollR2, "line-user", `${p} ${line}`);
+      cmdR2.value = "";
+      if (!line.trim()) return;
+      if (!R2_RANGE[stepR2].test(line)) {
+        appendLine(
+          scrollR2,
+          "line-bad",
+          "% area 10 range 10.1.0.0 255.255.0.0 under router ospf 1."
+        );
+        return;
+      }
+      stepR2 += 1;
+      if (stepR2 >= R2_RANGE.length) {
+        appendLine(scrollR2, "line-sys", "[OK] Area 10 summarized (simulated). Configure R3.");
+        phase = "R3_RANGE";
+        stepR3 = 0;
+        appendLine(scrollR3, "line-sys", "router ospf 1 → area 20 range …");
+        applyPhaseUI();
+      } else {
+        updatePrompts();
+      }
+    }
+
+    function submitR3() {
+      if (phase === "R3_SAVE") {
+        const line = cmdR3.value;
+        appendLine(scrollR3, "line-user", `R3# ${line}`);
+        cmdR3.value = "";
+        if (!line.trim()) return;
+        if (matchCopy(line)) {
+          appendLine(scrollR3, "line-sys", "[OK] R3 saved (simulated).");
+          phase = "DONE";
+          passBanner.classList.add("visible");
+          disableAllInputs();
+          setWaiting(panelR1, false);
+          setWaiting(panelR2, false);
+          setWaiting(panelR3, false);
+        } else {
+          appendLine(scrollR3, "line-bad", "% copy running-config startup-config");
+        }
+        return;
+      }
+
+      if (phase !== "R3_RANGE") return;
+      if (stepR3 >= R3_RANGE.length) return;
+      const p = promptForStep(R3_RANGE, stepR3, "R3");
+      const line = cmdR3.value;
+      appendLine(scrollR3, "line-user", `${p} ${line}`);
+      cmdR3.value = "";
+      if (!line.trim()) return;
+      if (!R3_RANGE[stepR3].test(line)) {
+        appendLine(
+          scrollR3,
+          "line-bad",
+          "% area 20 range 10.2.0.0 255.255.0.0 under router ospf 1."
+        );
+        return;
+      }
+      stepR3 += 1;
+      if (stepR3 >= R3_RANGE.length) {
+        appendLine(scrollR3, "line-sys", "[OK] Area 20 summarized (simulated). Save R1, R2, R3.");
+        phase = "R1_SAVE";
+        appendLine(scrollR1, "line-sys", "copy running-config startup-config");
+        applyPhaseUI();
+      } else {
+        updatePrompts();
+      }
+    }
+
+    cmdR1.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitR1();
+      }
+    });
+    cmdR2.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitR2();
+      }
+    });
+    cmdR3.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitR3();
+      }
+    });
+
+    resetBtn.addEventListener("click", reset);
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    reset();
+  </script>
+</body>
+</html>

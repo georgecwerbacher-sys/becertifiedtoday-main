@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question 32 - MAC Table vs TCAM</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+    }
+    .card {
+      width: min(1020px, 95vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+    }
+    .instructions {
+      margin: 0 0 14px;
+      color: #b8c3d6;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .left-box {
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid #6384ba;
+      background: #cfe9ff;
+      color: #10243f;
+      font-weight: 700;
+    }
+    .drop-slot {
+      min-height: 48px;
+      padding: 8px;
+      border-radius: 10px;
+      border: 1px dashed #d9c28a;
+      background: #f7ecd7;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .drop-slot.over {
+      border-style: solid;
+      border-color: #4d89ff;
+    }
+    .drop-slot.correct {
+      border-color: #1f7a58;
+      background: #113e2d;
+    }
+    .drop-slot.incorrect {
+      border-color: #8c3434;
+      background: #442020;
+    }
+    .bank-wrap {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #2c3f62;
+      background: #1a253b;
+    }
+    .bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      min-height: 46px;
+    }
+    .token {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #d9c28a;
+      background: #f7ecd7;
+      color: #2a2112;
+      font-weight: 700;
+      cursor: grab;
+      user-select: none;
+    }
+    .token:active {
+      cursor: grabbing;
+    }
+    .actions {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    button,
+    .next-link {
+      background: #254b8a;
+      color: #e6edf3;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-block;
+    }
+    #result {
+      font-weight: 700;
+    }
+    #nextWrap {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Question 32: Match each switch function to the correct table type.</h1>
+    <p class="instructions">Drag `MAC Address table` or `TCAM table` to each description.</p>
+
+    <div class="row">
+      <div class="left-box">used to build IP Routing tables</div>
+      <div class="drop-slot" data-target="TCAM table"></div>
+    </div>
+    <div class="row">
+      <div class="left-box">used to make Layer 2 forwarding decisions</div>
+      <div class="drop-slot" data-target="MAC Address table"></div>
+    </div>
+    <div class="row">
+      <div class="left-box">records MAC address, port of arrival, VLAN and timestamps</div>
+      <div class="drop-slot" data-target="MAC Address table"></div>
+    </div>
+    <div class="row">
+      <div class="left-box">stores ACL, QoS and other upper-layer information</div>
+      <div class="drop-slot" data-target="TCAM table"></div>
+    </div>
+
+    <div class="bank-wrap">
+      <div id="bank" class="bank">
+        <div class="token" draggable="true" data-value="MAC Address table">MAC Address table</div>
+        <div class="token" draggable="true" data-value="TCAM table">TCAM table</div>
+        <div class="token" draggable="true" data-value="ARP cache">ARP cache</div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="checkBtn" type="button">Check Answer</button>
+      <button id="resetBtn" type="button">Reset</button>
+      <span id="result"></span>
+      <span id="nextWrap"><a class="next-link" href="/question-33.html">Next</a></span>
+    </div>
+  </main>
+
+  <script>
+    const bank = document.getElementById("bank");
+    const slots = document.querySelectorAll(".drop-slot");
+    const checkBtn = document.getElementById("checkBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const result = document.getElementById("result");
+    const nextWrap = document.getElementById("nextWrap");
+    let dragged = null;
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    document.querySelectorAll(".token").forEach((token) => {
+      token.addEventListener("dragstart", () => {
+        dragged = token;
+      });
+    });
+
+    slots.forEach((slot) => {
+      slot.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        slot.classList.add("over");
+      });
+      slot.addEventListener("dragleave", () => slot.classList.remove("over"));
+      slot.addEventListener("drop", (e) => {
+        e.preventDefault();
+        slot.classList.remove("over");
+        if (!dragged) return;
+        const existing = slot.querySelector(".token");
+        if (existing) bank.appendChild(existing);
+        slot.appendChild(dragged);
+      });
+    });
+
+    bank.addEventListener("dragover", (e) => e.preventDefault());
+    bank.addEventListener("drop", (e) => {
+      e.preventDefault();
+      if (dragged) bank.appendChild(dragged);
+    });
+
+    checkBtn.addEventListener("click", () => {
+      let correct = 0;
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect");
+        const token = slot.querySelector(".token");
+        if (token && token.dataset.value === slot.dataset.target) {
+          slot.classList.add("correct");
+          correct += 1;
+        } else {
+          slot.classList.add("incorrect");
+        }
+      });
+      result.textContent = `Score: ${correct}/${slots.length}`;
+      nextWrap.style.display = "inline-block";
+    });
+
+    resetBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+      result.textContent = "";
+      nextWrap.style.display = "none";
+    });
+  </script>
+  <style>
+    .home-key {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+    .home-key:hover {
+      filter: brightness(1.08);
+    }
+  </style>
+  <a class="home-key" href="/practice-launcher.html">Home</a>
+  <script src="/js/practice-questions.js"></script>
+</body>
+</html>

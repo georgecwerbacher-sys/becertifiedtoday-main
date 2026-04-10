@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VRF Configuration Sim</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      padding-bottom: 88px;
+      box-sizing: border-box;
+    }
+    .wrap {
+      width: min(1100px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card {
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 22px 26px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.15rem, 2vw, 1.65rem);
+      line-height: 1.3;
+    }
+    .objective,
+    .tasks {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .tasks ol {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+    }
+    .tasks li {
+      margin: 6px 0;
+    }
+    .diagram-wrap {
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 10px;
+      text-align: center;
+    }
+    .diagram-wrap img {
+      max-width: 100%;
+      height: auto;
+      vertical-align: middle;
+    }
+    .console-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 14px;
+    }
+    @media (max-width: 800px) {
+      .console-row {
+        grid-template-columns: 1fr;
+      }
+    }
+    .console-label {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #c8d7ec;
+    }
+    .terminal-panel {
+      min-width: 0;
+    }
+    .terminal-panel--waiting .terminal {
+      opacity: 0.72;
+    }
+    .terminal-panel--waiting .console-hint {
+      display: block;
+    }
+    .console-hint {
+      display: none;
+      margin: 0 0 8px;
+      font-size: 0.82rem;
+      color: #9fb0cc;
+      font-style: italic;
+    }
+    .terminal {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.88rem;
+      background: #0a0d12;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      padding: 12px 12px 10px;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+    }
+    .console-scroll {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 260px;
+      margin-bottom: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #c8d2e0;
+      line-height: 1.45;
+    }
+    .line-user { color: #7ec8ff; }
+    .line-bad { color: #fca5a5; }
+    .line-sys { color: #94a3b8; }
+    .input-row {
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #243044;
+      padding-top: 8px;
+    }
+    .prompt {
+      flex-shrink: 0;
+      color: #fbbf24;
+      user-select: none;
+    }
+    .cmdline {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      color: #e6edf3;
+      font: inherit;
+      outline: none;
+      padding: 4px 0 4px 4px;
+    }
+    .cmdline:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-secondary {
+      background: #2a3040;
+      border-color: #4b556b;
+    }
+    .pass-banner {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .pass-banner.visible {
+      display: block;
+    }
+    details.hint {
+      margin-top: 10px;
+      color: #9fb0cc;
+      font-size: 0.92rem;
+    }
+    .sim-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(11, 16, 32, 0.94);
+      border-top: 1px solid #2d3b5a;
+      backdrop-filter: blur(10px);
+    }
+    .sim-nav-btn {
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 700;
+      min-width: 5.5rem;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .sim-nav-btn:hover { filter: brightness(1.08); }
+    .sim-nav-home { background: #1a3d6e; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <main class="card">
+      <h1>VRF Configuration Sim</h1>
+      <p class="objective">
+        R10 and R20 are preconfigured with the CORP VRF and reachability over the ISP underlay. Complete the missing pieces so CORP traffic between
+        VLAN 100 (10.100.1.0/24) and VLAN 101 (10.101.2.0/24) uses <strong>Tunnel0</strong> only. Use the <strong>R10</strong> console first; the
+        <strong>R20</strong> console unlocks when R10 is complete.
+      </p>
+      <div class="tasks">
+        <strong>Goals</strong>
+        <ol>
+          <li>Extend CORP between R10 and R20 using Tunnel0 (destination = peer underlay address).</li>
+          <li>Protect Tunnel0 with the preconfigured IPsec profile <code>MyProfile</code>.</li>
+          <li>Add VRF static routes so VLAN 100 and VLAN 101 subnets reach each other via the tunnel (next-hop = peer tunnel IP). Only Tunnel0 should carry inter-site CORP traffic.</li>
+        </ol>
+        <p class="objective" style="margin-top: 12px; margin-bottom: 0;">
+          Underlay addresses used here: R10 <code>e0/1</code> = 10.10.1.1, R20 <code>e0/2</code> = 10.10.2.1. If you apply <code>vrf forwarding CORP</code> and the tunnel IP drops, re-enter the tunnel IPv4 address as in the solution.
+        </p>
+      </div>
+      <div class="diagram-wrap" aria-label="Topology">
+        <img src="/assets/vrf-tunnel-topology.png" alt="VRF lab topology: R10 and R20 with ISP, switches, and Tunnel0" />
+      </div>
+      <div class="diagram-wrap" aria-label="Initial device configurations">
+        <img src="/assets/vrf-initial-config.png" alt="Initial running configuration excerpts for R10, R20, ISP, Sw10, Sw20" />
+      </div>
+
+      <div class="console-row" aria-label="Router consoles">
+        <div class="terminal-panel" id="panelR10">
+          <h2 class="console-label">R10</h2>
+          <div class="terminal" aria-label="R10 CLI">
+            <div class="console-scroll" id="scrollR10"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR10">R10#</span>
+              <input
+                class="cmdline"
+                id="cmdR10"
+                type="text"
+                spellcheck="false"
+                autocomplete="off"
+                autocapitalize="none"
+                aria-label="R10 command line"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="terminal-panel terminal-panel--waiting" id="panelR20">
+          <h2 class="console-label">R20</h2>
+          <p class="console-hint">Complete R10 steps first to use this console.</p>
+          <div class="terminal" aria-label="R20 CLI">
+            <div class="console-scroll" id="scrollR20"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR20">R20#</span>
+              <input
+                class="cmdline"
+                id="cmdR20"
+                type="text"
+                spellcheck="false"
+                autocomplete="off"
+                autocapitalize="none"
+                aria-label="R20 command line"
+                disabled
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button type="button" class="btn btn-secondary" id="resetBtn">Reset lab</button>
+      </div>
+
+      <div id="passBanner" class="pass-banner" role="status">
+        Lab complete. Tunnel0 is extended in VRF CORP with IPsec protection, and static routes point remote CORP subnets to the peer tunnel address.
+      </div>
+
+      <details class="hint">
+        <summary>Show command sequence (spoiler)</summary>
+        <p><strong>R10</strong></p>
+        <ol>
+          <li><code>conf t</code></li>
+          <li><code>interface tunnel0</code></li>
+          <li><code>tunnel source Ethernet0/1</code></li>
+          <li><code>tunnel destination 10.10.2.1</code></li>
+          <li><code>vrf forwarding CORP</code></li>
+          <li><code>ip address 10.100.100.1 255.255.255.0</code></li>
+          <li><code>tunnel protection ipsec profile MyProfile</code></li>
+          <li><code>exit</code></li>
+          <li><code>ip route vrf CORP 10.101.2.0 255.255.255.0 10.100.100.2</code></li>
+          <li><code>end</code></li>
+        </ol>
+        <p><strong>R20</strong></p>
+        <ol>
+          <li><code>conf t</code></li>
+          <li><code>interface tunnel0</code></li>
+          <li><code>tunnel source Ethernet0/2</code></li>
+          <li><code>tunnel destination 10.10.1.1</code></li>
+          <li><code>vrf forwarding CORP</code></li>
+          <li><code>ip address 10.100.100.2 255.255.255.0</code></li>
+          <li><code>tunnel protection ipsec profile MyProfile</code></li>
+          <li><code>exit</code></li>
+          <li><code>ip route vrf CORP 10.100.1.0 255.255.255.0 10.100.100.1</code></li>
+          <li><code>end</code></li>
+        </ol>
+      </details>
+    </main>
+  </div>
+
+  <nav class="sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn" href="/cli-lab-rapid-pvst-lacp.html">Back</a>
+    <a class="sim-nav-btn sim-nav-home" href="/practice-launcher.html">Home</a>
+    <a class="sim-nav-btn" href="/cli-lab-vrf-config-sim2.html">Next</a>
+  </nav>
+
+  <script>
+    function normalize(s) {
+      return s.trim().toLowerCase().replace(/\s+/g, " ");
+    }
+
+    function matchIntTunnel(raw) {
+      const u = normalize(raw);
+      return (
+        u === "interface tunnel0" ||
+        u === "interface tunnel 0" ||
+        u === "int tunnel0" ||
+        u === "int tunnel 0"
+      );
+    }
+
+    function matchVrfCorp(raw) {
+      const u = normalize(raw);
+      return u === "vrf forwarding corp" || u === "ip vrf forwarding corp";
+    }
+
+    function matchTunnelProtect(raw) {
+      return normalize(raw) === "tunnel protection ipsec profile myprofile";
+    }
+
+    const R10_STEPS = [
+      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
+      { mode: "config", test: matchIntTunnel },
+      {
+        mode: "config-if",
+        test: (raw) => {
+          const u = normalize(raw);
+          return u === "tunnel source ethernet0/1" || u === "tunnel source e0/1";
+        },
+      },
+      { mode: "config-if", test: (raw) => normalize(raw) === "tunnel destination 10.10.2.1" },
+      { mode: "config-if", test: matchVrfCorp },
+      {
+        mode: "config-if",
+        test: (raw) => normalize(raw) === "ip address 10.100.100.1 255.255.255.0",
+      },
+      { mode: "config-if", test: matchTunnelProtect },
+      { mode: "config-if", test: (raw) => normalize(raw) === "exit" },
+      {
+        mode: "config",
+        test: (raw) =>
+          normalize(raw) === "ip route vrf corp 10.101.2.0 255.255.255.0 10.100.100.2",
+      },
+      { mode: "config", test: (raw) => normalize(raw) === "end" },
+    ];
+
+    const R20_STEPS = [
+      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
+      { mode: "config", test: matchIntTunnel },
+      {
+        mode: "config-if",
+        test: (raw) => {
+          const u = normalize(raw);
+          return u === "tunnel source ethernet0/2" || u === "tunnel source e0/2";
+        },
+      },
+      { mode: "config-if", test: (raw) => normalize(raw) === "tunnel destination 10.10.1.1" },
+      { mode: "config-if", test: matchVrfCorp },
+      {
+        mode: "config-if",
+        test: (raw) => normalize(raw) === "ip address 10.100.100.2 255.255.255.0",
+      },
+      { mode: "config-if", test: matchTunnelProtect },
+      { mode: "config-if", test: (raw) => normalize(raw) === "exit" },
+      {
+        mode: "config",
+        test: (raw) =>
+          normalize(raw) === "ip route vrf corp 10.100.1.0 255.255.255.0 10.100.100.1",
+      },
+      { mode: "config", test: (raw) => normalize(raw) === "end" },
+    ];
+
+    function promptFor(steps, index, host) {
+      if (index >= steps.length) return `${host}#`;
+      const m = steps[index].mode;
+      if (m === "exec") return `${host}#`;
+      if (m === "config") return `${host}(config)#`;
+      if (m === "config-if") return `${host}(config-if)#`;
+      return `${host}#`;
+    }
+
+    const scrollR10 = document.getElementById("scrollR10");
+    const scrollR20 = document.getElementById("scrollR20");
+    const promptR10 = document.getElementById("promptR10");
+    const promptR20 = document.getElementById("promptR20");
+    const cmdR10 = document.getElementById("cmdR10");
+    const cmdR20 = document.getElementById("cmdR20");
+    const panelR20 = document.getElementById("panelR20");
+    const passBanner = document.getElementById("passBanner");
+    const resetBtn = document.getElementById("resetBtn");
+
+    let stepR10 = 0;
+    let stepR20 = 0;
+
+    function appendLine(scrollEl, className, text) {
+      const div = document.createElement("div");
+      div.className = className;
+      div.textContent = text;
+      scrollEl.appendChild(div);
+      scrollEl.scrollTop = scrollEl.scrollHeight;
+    }
+
+    function setPrompts() {
+      promptR10.textContent = promptFor(R10_STEPS, stepR10, "R10");
+      promptR20.textContent = promptFor(R20_STEPS, stepR20, "R20");
+    }
+
+    function unlockR20() {
+      panelR20.classList.remove("terminal-panel--waiting");
+      cmdR20.disabled = false;
+      appendLine(
+        scrollR20,
+        "line-sys",
+        "R10 steps complete. Enter commands for R20 here (same order as the spoiler)."
+      );
+      cmdR20.focus();
+    }
+
+    function lockR20() {
+      panelR20.classList.add("terminal-panel--waiting");
+      cmdR20.disabled = true;
+      cmdR20.value = "";
+    }
+
+    function reset() {
+      stepR10 = 0;
+      stepR20 = 0;
+      scrollR10.innerHTML = "";
+      scrollR20.innerHTML = "";
+      passBanner.classList.remove("visible");
+      cmdR10.disabled = false;
+      cmdR10.value = "";
+      lockR20();
+      setPrompts();
+      cmdR10.focus();
+      appendLine(scrollR10, "line-sys", "R10: enter commands in order (case-insensitive).");
+    }
+
+    function submitR10() {
+      if (stepR10 >= R10_STEPS.length) return;
+      const p = promptFor(R10_STEPS, stepR10, "R10");
+      const line = cmdR10.value;
+      appendLine(scrollR10, "line-user", `${p} ${line}`);
+      cmdR10.value = "";
+      if (!line.trim()) return;
+
+      if (R10_STEPS[stepR10].test(line)) {
+        stepR10 += 1;
+        if (stepR10 >= R10_STEPS.length) {
+          appendLine(scrollR10, "line-sys", "[OK] R10 configuration complete (simulated).");
+          cmdR10.disabled = true;
+          unlockR20();
+        }
+        setPrompts();
+      } else {
+        appendLine(
+          scrollR10,
+          "line-bad",
+          "% Invalid input — tunnel destination, VRF, tunnel IP, IPsec profile, then VRF static route."
+        );
+      }
+    }
+
+    function submitR20() {
+      if (stepR20 >= R20_STEPS.length || cmdR20.disabled) return;
+      const p = promptFor(R20_STEPS, stepR20, "R20");
+      const line = cmdR20.value;
+      appendLine(scrollR20, "line-user", `${p} ${line}`);
+      cmdR20.value = "";
+      if (!line.trim()) return;
+
+      if (R20_STEPS[stepR20].test(line)) {
+        stepR20 += 1;
+        if (stepR20 >= R20_STEPS.length) {
+          appendLine(scrollR20, "line-sys", "[OK] R20 configuration complete (simulated).");
+          cmdR20.disabled = true;
+          passBanner.classList.add("visible");
+        }
+        setPrompts();
+      } else {
+        appendLine(
+          scrollR20,
+          "line-bad",
+          "% Invalid input — same sequence as R10 with R20 source, destination, and addresses."
+        );
+      }
+    }
+
+    cmdR10.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        submitR10();
+      }
+    });
+
+    cmdR20.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        submitR20();
+      }
+    });
+
+    resetBtn.addEventListener("click", reset);
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    reset();
+  </script>
+</body>
+</html>
