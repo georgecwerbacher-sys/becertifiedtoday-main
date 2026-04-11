@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 129 - JSON from exhibit</title>
+  <title>Question 130 - PKI CSR for HTTPS</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -20,7 +20,7 @@
       color: #e6edf3;
     }
     .card {
-      width: min(980px, 95vw);
+      width: min(960px, 96vw);
       background: #121a2b;
       border: 1px solid #2d3b5a;
       border-radius: 14px;
@@ -28,23 +28,9 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
     h1 {
-      margin: 0 0 12px;
+      margin: 0 0 14px;
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
-    }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
-    }
-    .image-wrap img {
-      display: block;
-      width: 100%;
-      max-width: 720px;
-      height: auto;
-      margin: 0 auto;
     }
     .choice {
       display: block;
@@ -53,10 +39,9 @@
       border-radius: 10px;
       background: #1a253b;
       border: 1px solid #2c3f62;
-      font-size: 0.9rem;
+      font-size: 0.82rem;
       cursor: pointer;
       line-height: 1.45;
-      word-break: break-word;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
     .choice input {
@@ -71,6 +56,8 @@
       font-weight: 700;
       display: none;
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.45;
     }
     .answer.correct {
       background: #113e2d;
@@ -98,27 +85,23 @@
 </head>
 <body>
   <main class="card">
-    <p style="margin:0 0 8px;font-size:0.95rem;color:#9fb0cc;">Refer to the exhibit.</p>
-    <div class="image-wrap">
-      <img src="/assets/question129-bob-johnson-json-exhibit.png" alt="Exhibit: Name Bob Johnson, Age 75, alive, favorite foods Cereal Mustard Onions" />
-    </div>
-    <h1>What is the JSON syntax that represents the data?</h1>
+    <h1>A network engineer is enabling HTTPS access to the core switch, which requires a certificate to be installed on the switch signed by the corporate certificate authority. Which configuration commands are required to issue a certificate signing request from the core switch?</h1>
 
-    <label class="choice"><input type="radio" name="q129" value="A" />A. {"Name":"Bob Johnson","Age": Seventyfive, "Alive":true, "Favorite Foods":["Cereal","Mustard","Onions"]}</label>
-    <label class="choice"><input type="radio" name="q129" value="B" />B. {"Name": "Bob Johnson", "Age": 75, "Alive": true, "Favorite Foods": ["Cereal", "Mustard", "Onions"]}</label>
-    <label class="choice"><input type="radio" name="q129" value="C" />C. {'Name': 'Bob Johnson', 'Age': 75, 'Alive': True, 'Favorite Foods': 'Cereal', 'Mustard', 'Onions'}</label>
-    <label class="choice"><input type="radio" name="q129" value="D" />D. {Name: Bob Johnson, Age: 75, Alive: true, Favorite Foods: [Cereal, Mustard, Onions]}</label>
+    <label class="choice"><input type="radio" name="q130" value="A" />A.<br />Core-Switch(config)#crypto pki trustpoint Core-Switch<br />Core-Switch(ca-trustpoint)#enrollment terminal<br />Core-Switch(config)#crypto pki enroll Core-Switch</label>
+    <label class="choice"><input type="radio" name="q130" value="B" />B.<br />Core-Switch(config)#crypto pki enroll Core-Switch<br />Core-Switch(config)#ip http secure-trustpoint Core-Switch</label>
+    <label class="choice"><input type="radio" name="q130" value="C" />C.<br />Core-Switch(config)#ip http secure-trustpoint Core-Switch<br />Core-Switch(config)#crypto pki enroll Core-Switch</label>
+    <label class="choice"><input type="radio" name="q130" value="D" />D.<br />Core-Switch(config)#crypto pki trustpoint Core-Switch<br />Core-Switch(ca-trustpoint)#enrollment terminal<br />Core-Switch(config)#ip http secure-trustpoint Core-Switch</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-130.html">Next</a>
+      <a class="next-link" href="/practice-launcher.html">Practice launcher</a>
     </div>
   </main>
 
   <script>
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q129"]');
+    const options = document.querySelectorAll('input[name="q130"]');
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -129,14 +112,14 @@
       option.addEventListener("change", () => {
         answerBox.style.display = "block";
         nextWrap.style.display = "block";
-        if (option.value === "B") {
+        if (option.value === "A") {
           answerBox.className = "answer correct";
           answerBox.textContent =
-            "Correct. B. JSON requires double-quoted keys and string values, a number for age (75), lowercase boolean true, and an array in square brackets for the list of foods. A is invalid (Seventyfive is not a number or quoted string). C uses single quotes and Python-style True; D omits required quotes on keys and strings.";
+            "Correct. A. Define a trustpoint, set enrollment terminal so the switch prints a PEM CSR you can give the CA, then run crypto pki enroll from global config to generate that request. ip http secure-trustpoint selects the cert for HTTPS after it is issued and imported—it does not create the CSR.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent =
-            "Incorrect. The correct answer: B. Valid JSON uses double quotes, numeric 75, true, and a bracketed array for favorite foods.";
+            "Incorrect. The correct answer: A. trustpoint + enrollment terminal + crypto pki enroll.";
         }
       });
     });
