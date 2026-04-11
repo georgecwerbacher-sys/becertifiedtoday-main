@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 133 - JSON Person array exhibit</title>
+  <title>Question 134 - BGP path via BR1</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -42,7 +42,7 @@
     .image-wrap img {
       display: block;
       width: 100%;
-      max-width: 900px;
+      max-width: 920px;
       height: auto;
       margin: 0 auto;
     }
@@ -98,25 +98,25 @@
   <main class="card">
     <p style="margin:0 0 8px;font-size:0.95rem;color:#9fb0cc;">Refer to the exhibit.</p>
     <div class="image-wrap">
-      <img src="/assets/question133-person-json-exhibit.png" alt="Exhibit: two people with names and hobbies; four JSON answer options" />
+      <img src="/assets/question134-bgp-br1-br2-pe-topology.png" alt="BGP topology AS100 BR1 BR2, AS200 PE1, AS300 PE2, configs and BR2 route to 209.165.201.0/27 via PE2" />
     </div>
-    <h1>Which JSON syntax is derived from this data?</h1>
+    <h1>Which configuration change will force BR2 to reach 209.165.201.0/27 via BR1?</h1>
 
-    <label class="choice"><input type="radio" name="q133" value="A" />A. Option A</label>
-    <label class="choice"><input type="radio" name="q133" value="B" />B. Option B</label>
-    <label class="choice"><input type="radio" name="q133" value="C" />C. Option C</label>
-    <label class="choice"><input type="radio" name="q133" value="D" />D. Option D</label>
+    <label class="choice"><input type="radio" name="q134" value="A" />A. Set the origin to igp on BR2 toward PE2 inbound</label>
+    <label class="choice"><input type="radio" name="q134" value="B" />B. Set the local preference to 150 on PE1 toward BR1 outbound</label>
+    <label class="choice"><input type="radio" name="q134" value="C" />C. Set the weight attribute to 65,535 on BR1 toward PE1</label>
+    <label class="choice"><input type="radio" name="q134" value="D" />D. Set the MED to 1 on PE2 toward BR2 outbound</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-134.html">Next</a>
+      <a class="next-link" href="/practice-launcher.html">Practice launcher</a>
     </div>
   </main>
 
   <script>
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q133"]');
+    const options = document.querySelectorAll('input[name="q134"]');
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -127,14 +127,14 @@
       option.addEventListener("change", () => {
         answerBox.style.display = "block";
         nextWrap.style.display = "block";
-        if (option.value === "A") {
+        if (option.value === "B") {
           answerBox.className = "answer correct";
           answerBox.textContent =
-            "Correct. A (Option A). It wraps both people in a Person array; each object has first name, last name, and Hobbies as an array of strings. B and D use invalid root syntax ({[); B also repeats Hobbies keys. C leaves hobbies as bare comma-separated values instead of a JSON array.";
+            "Correct. B. Raising LOCAL_PREF on the path through PE1 makes that path more attractive inside AS 100; when BR2 compares BGP paths, a higher local preference on the prefix learned via BR1 beats the default for the eBGP path from PE2, so BR2 prefers via BR1. (In production, LOCAL_PREF is usually set on BR1 inbound from PE1 or toward iBGP peers, because it is not sent on standard eBGP updates—ENCOR items often use this wording.)";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent =
-            "Incorrect. The correct answer: A (Option A).";
+            "Incorrect. The correct answer: B. Use a higher local preference on the PE1/AS100 side of the path. Weight on BR1 only affects BR1. Lower MED on PE2 makes the PE2 path more attractive, not less. Origin alone does not address this design the way the exam expects.";
         }
       });
     });
