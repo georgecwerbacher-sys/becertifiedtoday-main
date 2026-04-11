@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 127 - Type 1 hypervisor</title>
+  <title>Question 128 - NETCONF rpc-reply verification</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -20,7 +20,7 @@
       color: #e6edf3;
     }
     .card {
-      width: min(920px, 94vw);
+      width: min(980px, 95vw);
       background: #121a2b;
       border: 1px solid #2d3b5a;
       border-radius: 14px;
@@ -28,9 +28,23 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
     h1 {
-      margin: 0 0 14px;
+      margin: 0 0 12px;
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
+    }
+    .image-wrap {
+      margin-bottom: 14px;
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .image-wrap img {
+      display: block;
+      width: 100%;
+      max-width: 720px;
+      height: auto;
+      margin: 0 auto;
     }
     .choice {
       display: block;
@@ -81,23 +95,27 @@
 </head>
 <body>
   <main class="card">
-    <h1>What is a Type 1 hypervisor?</h1>
+    <p style="margin:0 0 8px;font-size:0.95rem;color:#9fb0cc;">Refer to the exhibit.</p>
+    <div class="image-wrap">
+      <img src="/assets/question128-netconf-rpc-reply-schema.png" alt="NETCONF schema tree: rpc-reply with ok, data, rpc-error children, session-id" />
+    </div>
+    <h1>Which command is required to verify NETCONF capability reply messages?</h1>
 
-    <label class="choice"><input type="radio" name="q127" value="A" />A. runs directly on a physical server and depends on a previously installed operating system</label>
-    <label class="choice"><input type="radio" name="q127" value="B" />B. runs directly on a physical server and includes its own operating system</label>
-    <label class="choice"><input type="radio" name="q127" value="C" />C. runs on a virtual server and depends on an already installed operating system</label>
-    <label class="choice"><input type="radio" name="q127" value="D" />D. runs on a virtual server and includes its own operating system</label>
+    <label class="choice"><input type="radio" name="q128" value="A" />A. show netconf | section rpc-reply</label>
+    <label class="choice"><input type="radio" name="q128" value="B" />B. show netconf rpc-reply</label>
+    <label class="choice"><input type="radio" name="q128" value="C" />C. show netconf xml rpc-reply</label>
+    <label class="choice"><input type="radio" name="q128" value="D" />D. show netconf schema | section rpc-reply</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-128.html">Next</a>
+      <a class="next-link" href="/practice-launcher.html">Practice launcher</a>
     </div>
   </main>
 
   <script>
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q127"]');
+    const options = document.querySelectorAll('input[name="q128"]');
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -108,14 +126,14 @@
       option.addEventListener("change", () => {
         answerBox.style.display = "block";
         nextWrap.style.display = "block";
-        if (option.value === "B") {
+        if (option.value === "D") {
           answerBox.className = "answer correct";
           answerBox.textContent =
-            "Correct. B. A Type 1 (bare-metal) hypervisor loads on the physical hardware and schedules hardware for VMs itself—it is not hosted inside a separate general-purpose OS the way Type 2 is. Exam wording treats it as including its own control/kernel layer. A describes dependency on a preinstalled host OS (wrong); C and D wrongly say it runs on a virtual server.";
+            "Correct. D. The exhibit is the NETCONF XML schema for an rpc-reply (ok, data, rpc-error, session-id, etc.). On IOS XE, show netconf schema dumps that schema; piping to section rpc-reply isolates the reply subtree. Generic show netconf or non-schema options do not present this structure.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent =
-            "Incorrect. The correct answer: B. Type 1 runs on bare metal with its own hypervisor layer.";
+            "Incorrect. The correct answer: D. Use show netconf schema | section rpc-reply to view the rpc-reply portion of the NETCONF schema.";
         }
       });
     });
