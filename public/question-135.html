@@ -144,7 +144,7 @@
 <body>
   <main class="card">
     <h1>Drag and drop the characteristics from the left onto the orchestration tools they describe on the right.</h1>
-    <p class="instructions">Move each characteristic into <strong>Ansible</strong> or <strong>Puppet</strong>. Each item is used once.</p>
+    <p class="instructions">Move each characteristic into <strong>Ansible</strong> or <strong>Puppet</strong>. Each item is used once. Within each tool’s two drop boxes, <strong>order does not matter</strong>—either slot may hold either of that tool’s two characteristics.</p>
 
     <div class="dd-grid">
       <div class="dd-col">
@@ -234,6 +234,9 @@
         .filter(Boolean);
     }
 
+    const ansibleAllowed = new Set(["push", "multimaster"]);
+    const puppetAllowed = new Set(["pull", "primary-secondary"]);
+
     checkBtn.addEventListener("click", () => {
       const ansibleVals = new Set(valuesInGroup("ansible"));
       const puppetVals = new Set(valuesInGroup("puppet"));
@@ -247,13 +250,13 @@
         s.classList.remove("correct", "incorrect");
         const t = s.querySelector(".token");
         if (!t) s.classList.add("incorrect");
-        else s.classList.add(ansibleOk ? "correct" : "incorrect");
+        else s.classList.add(ansibleAllowed.has(t.dataset.value) ? "correct" : "incorrect");
       });
       document.querySelectorAll(".drop-slot.puppet").forEach((s) => {
         s.classList.remove("correct", "incorrect");
         const t = s.querySelector(".token");
         if (!t) s.classList.add("incorrect");
-        else s.classList.add(puppetOk ? "correct" : "incorrect");
+        else s.classList.add(puppetAllowed.has(t.dataset.value) ? "correct" : "incorrect");
       });
 
       const allOk = ansibleOk && puppetOk;
