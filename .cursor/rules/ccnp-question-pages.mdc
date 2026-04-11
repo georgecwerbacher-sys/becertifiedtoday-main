@@ -13,7 +13,7 @@ When the user adds, pastes, or discusses a **numbered** practice question (e.g. 
 
 2. **Chain navigation**: Set the **Next** link on `public/question-{N-1}.html` to `href="/question-{N}.html"`. On the **new** last question page, Next should point to `/practice-launcher.html` (or the project’s established end-of-chain target).
 
-3. **Registry**: Append `{N}` to `allIds` in `public/js/study-config.json` and add it to the appropriate `studies[].ids` array (match existing grouping, usually the study that contains the previous id).
+3. **Registry**: Re-run `python3 scripts/build-study-config.py` so `public/js/study-config.json` picks up the new file (studies are **1–50**, **51–100**, **101–150**, … by question number; do not hand-edit `ids` unless you have a good reason).
 
 4. If the question includes a **diagram/image**, follow pages like `question-93.html` (`.image-wrap`, asset under `public/` as the project already does).
 
