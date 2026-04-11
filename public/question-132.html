@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 131 - BFD design consideration</title>
+  <title>Question 132 - BFD benefits (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -48,8 +48,21 @@
       vertical-align: top;
       margin-top: 3px;
     }
+    .actions {
+      margin-top: 14px;
+    }
+    .check-btn {
+      background: #254b8a;
+      color: #e6edf3;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
     .answer {
-      margin-top: 18px;
+      margin-top: 16px;
       padding: 14px;
       border-radius: 10px;
       font-weight: 700;
@@ -82,43 +95,62 @@
 </head>
 <body>
   <main class="card">
-    <h1>When using BFD in a network design, which consideration must be made?</h1>
+    <h1>In a campus network design, what are two benefits of using BFD for failure detection? (Choose two)</h1>
 
-    <label class="choice"><input type="radio" name="q131" value="A" />A. BFD is used with first hop routing protocols to provide subsecond convergence.</label>
-    <label class="choice"><input type="radio" name="q131" value="B" />B. BFD is used with NSF and graceful to provide subsecond convergence.</label>
-    <label class="choice"><input type="radio" name="q131" value="C" />C. BFD is more CPU-intensive than using reduced hold timers with routing protocols.</label>
-    <label class="choice"><input type="radio" name="q131" value="D" />D. BFD is used with dynamic routing protocols to provide subsecond convergence.</label>
+    <label class="choice"><input type="checkbox" name="q132" value="A" />A. BFD is an efficient way to reduce memory and CPU usage.</label>
+    <label class="choice"><input type="checkbox" name="q132" value="B" />B. BFD speeds up routing convergence time.</label>
+    <label class="choice"><input type="checkbox" name="q132" value="C" />C. BFD provides path failure detection in less than a second.</label>
+    <label class="choice"><input type="checkbox" name="q132" value="D" />D. BFD enables network peers to continue forwarding packets in the event of a restart.</label>
+    <label class="choice"><input type="checkbox" name="q132" value="E" />E. BFD provides fault tolerance by enabling multiple routers to appear as a single virtual router.</label>
+
+    <div class="actions">
+      <button id="checkBtn" class="check-btn" type="button">Check Answer</button>
+    </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-132.html">Next</a>
+      <a class="next-link" href="/practice-launcher.html">Practice launcher</a>
     </div>
   </main>
 
   <script>
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q131"]');
+    const checkBtn = document.getElementById("checkBtn");
+    const options = document.querySelectorAll('input[name="q132"]');
+    const correctSet = new Set(["B", "C"]);
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
       history.pushState(null, "", location.href);
     });
 
-    options.forEach((option) => {
-      option.addEventListener("change", () => {
+    checkBtn.addEventListener("click", () => {
+      const selected = [...options].filter((o) => o.checked).map((o) => o.value);
+      if (selected.length === 0) {
         answerBox.style.display = "block";
-        nextWrap.style.display = "block";
-        if (option.value === "D") {
-          answerBox.className = "answer correct";
-          answerBox.textContent =
-            "Correct. D. BFD detects path or neighbor loss in milliseconds; IGPs and BGP integrate with it so the control plane reconverges quickly. NSF/graceful restart and FHRP wording in the other choices do not match the usual ENCOR framing.";
-        } else {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent =
-            "Incorrect. The correct answer: D. BFD is used with dynamic routing protocols for fast detection and subsecond convergence.";
-        }
-      });
+        answerBox.className = "answer incorrect";
+        answerBox.textContent = "Select at least one option.";
+        return;
+      }
+
+      answerBox.style.display = "block";
+      nextWrap.style.display = "block";
+
+      const selectedSet = new Set(selected);
+      const isCorrect =
+        selectedSet.size === correctSet.size &&
+        [...correctSet].every((value) => selectedSet.has(value));
+
+      if (isCorrect) {
+        answerBox.className = "answer correct";
+        answerBox.textContent =
+          "Correct. B and C. BFD detects loss of the path or neighbor in milliseconds (well under one second), so routing protocols tear down adjacencies and reconverge sooner. D describes NSF/graceful restart; E describes an FHRP; A is not a primary benefit.";
+      } else {
+        answerBox.className = "answer incorrect";
+        answerBox.textContent =
+          "Incorrect. The correct answers: B and C.";
+      }
     });
   </script>
   <style>
