@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 94 - Virtual switch</title>
+  <title>Question 125 - QoS traffic descriptors</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -29,7 +29,7 @@
     }
     h1 {
       margin: 0 0 14px;
-      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
     .choice {
@@ -41,13 +41,28 @@
       border: 1px solid #2c3f62;
       font-size: 1rem;
       cursor: pointer;
+      line-height: 1.4;
     }
     .choice input {
       margin-right: 10px;
-      transform: translateY(1px);
+      vertical-align: top;
+      margin-top: 3px;
+    }
+    .actions {
+      margin-top: 14px;
+    }
+    .check-btn {
+      background: #254b8a;
+      color: #e6edf3;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
     }
     .answer {
-      margin-top: 18px;
+      margin-top: 16px;
       padding: 14px;
       border-radius: 10px;
       font-weight: 700;
@@ -79,43 +94,62 @@
 </head>
 <body>
   <main class="card">
-    <h1>Which function does a virtual switch provide?</h1>
+    <h1>Which two parameters are examples of a QoS traffic descriptor? (Choose two)</h1>
 
-    <label class="choice"><input type="radio" name="q94" value="A" />A. RAID storage for virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="B" />B. connectivity between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="C" />C. CPU context switching for multitasking between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="D" />D. emulation of power for virtual machines</label>
+    <label class="choice"><input type="checkbox" name="q125" value="A" />A. MPLS EXP bits</label>
+    <label class="choice"><input type="checkbox" name="q125" value="B" />B. bandwidth</label>
+    <label class="choice"><input type="checkbox" name="q125" value="C" />C. DSCP</label>
+    <label class="choice"><input type="checkbox" name="q125" value="D" />D. packet size</label>
+    <label class="choice"><input type="checkbox" name="q125" value="E" />E. ToS</label>
+
+    <div class="actions">
+      <button id="checkBtn" class="check-btn" type="button">Check Answer</button>
+    </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-95.html">Next</a>
+      <a class="next-link" href="/question-126.html">Next</a>
     </div>
   </main>
 
   <script>
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q94"]');
+    const checkBtn = document.getElementById("checkBtn");
+    const options = document.querySelectorAll('input[name="q125"]');
+    const correctSet = new Set(["A", "C"]);
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
       history.pushState(null, "", location.href);
     });
 
-    options.forEach((option) => {
-      option.addEventListener("change", () => {
+    checkBtn.addEventListener("click", () => {
+      const selected = [...options].filter((o) => o.checked).map((o) => o.value);
+      if (selected.length === 0) {
         answerBox.style.display = "block";
-        nextWrap.style.display = "block";
-        if (option.value === "B") {
-          answerBox.className = "answer correct";
-          answerBox.textContent =
-            "Correct. B. A virtual switch (vSwitch) forwards Ethernet frames between VMs on a host and often to physical uplinks—Layer 2 connectivity. RAID is storage; CPU scheduling is the hypervisor; power is not a vSwitch role.";
-        } else {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent =
-            "Incorrect. The correct answer: B. Virtual switches provide network connectivity between virtual machines.";
-        }
-      });
+        answerBox.className = "answer incorrect";
+        answerBox.textContent = "Select at least one option.";
+        return;
+      }
+
+      answerBox.style.display = "block";
+      nextWrap.style.display = "block";
+
+      const selectedSet = new Set(selected);
+      const isCorrect =
+        selectedSet.size === correctSet.size &&
+        [...correctSet].every((value) => selectedSet.has(value));
+
+      if (isCorrect) {
+        answerBox.className = "answer correct";
+        answerBox.textContent =
+          "Correct. A and C. Traffic descriptors include fields used to classify or mark traffic: DSCP (IPv4/IPv6 differentiated services) and MPLS EXP (experimental bits on the top label). Bandwidth and packet size relate to metering, queuing, or matching but are not the usual pair with EXP for this item; ToS names the same byte as DSCP, so the exam pairs distinct markers EXP + DSCP.";
+      } else {
+        answerBox.className = "answer incorrect";
+        answerBox.textContent =
+          "Incorrect. The correct answers: A and C — MPLS EXP bits and DSCP.";
+      }
     });
   </script>
   <style>

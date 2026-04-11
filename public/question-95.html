@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 94 - Virtual switch</title>
+  <title>Question 95 - NTP master and source</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -20,7 +20,7 @@
       color: #e6edf3;
     }
     .card {
-      width: min(920px, 94vw);
+      width: min(980px, 95vw);
       background: #121a2b;
       border: 1px solid #2d3b5a;
       border-radius: 14px;
@@ -28,9 +28,23 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
     h1 {
-      margin: 0 0 14px;
-      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      margin: 0 0 12px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
+    }
+    .image-wrap {
+      margin-bottom: 14px;
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .image-wrap img {
+      display: block;
+      width: 100%;
+      max-width: 640px;
+      height: auto;
+      margin: 0 auto;
     }
     .choice {
       display: block;
@@ -41,10 +55,12 @@
       border: 1px solid #2c3f62;
       font-size: 1rem;
       cursor: pointer;
+      line-height: 1.4;
     }
     .choice input {
       margin-right: 10px;
-      transform: translateY(1px);
+      vertical-align: top;
+      margin-top: 3px;
     }
     .answer {
       margin-top: 18px;
@@ -79,23 +95,27 @@
 </head>
 <body>
   <main class="card">
-    <h1>Which function does a virtual switch provide?</h1>
+    <p style="margin:0 0 8px;font-size:0.95rem;color:#9fb0cc;">Refer to the exhibit.</p>
+    <div class="image-wrap">
+      <img src="/assets/question95-ntp-config.png" alt="IOS: ntp master and ntp source loopback 0 in global config" />
+    </div>
+    <h1>What is the result of the NTP configuration?</h1>
 
-    <label class="choice"><input type="radio" name="q94" value="A" />A. RAID storage for virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="B" />B. connectivity between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="C" />C. CPU context switching for multitasking between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="D" />D. emulation of power for virtual machines</label>
+    <label class="choice"><input type="radio" name="q95" value="A" />A. The router will use the address of loopback 0 to communicate with the NTP server.</label>
+    <label class="choice"><input type="radio" name="q95" value="B" />B. The router will advertise but not listen to NTP broadcast packets.</label>
+    <label class="choice"><input type="radio" name="q95" value="C" />C. The router will be used as an NTP authoritative server only if it synchronized with an outside source.</label>
+    <label class="choice"><input type="radio" name="q95" value="D" />D. The router will be used as an NTP authoritative server, even if it is not synchronized with an outside source.</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-95.html">Next</a>
+      <a class="next-link" href="/question-96.html">Next</a>
     </div>
   </main>
 
   <script>
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q94"]');
+    const options = document.querySelectorAll('input[name="q95"]');
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -106,14 +126,14 @@
       option.addEventListener("change", () => {
         answerBox.style.display = "block";
         nextWrap.style.display = "block";
-        if (option.value === "B") {
+        if (option.value === "D") {
           answerBox.className = "answer correct";
           answerBox.textContent =
-            "Correct. B. A virtual switch (vSwitch) forwards Ethernet frames between VMs on a host and often to physical uplinks—Layer 2 connectivity. RAID is storage; CPU scheduling is the hypervisor; power is not a vSwitch role.";
+            "Correct. D. ntp master makes this device an authoritative NTP server (default stratum 8 if unspecified); it can serve time from its local clock even without an upstream sync. ntp source loopback 0 sets the source address for NTP packets this router originates—it does not mean the router is only an NTP client.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent =
-            "Incorrect. The correct answer: B. Virtual switches provide network connectivity between virtual machines.";
+            "Incorrect. The correct answer: D. ntp master allows the router to act as an authoritative time source even when not synchronized to an external reference.";
         }
       });
     });

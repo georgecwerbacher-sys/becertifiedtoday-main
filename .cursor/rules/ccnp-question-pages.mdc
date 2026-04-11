@@ -1,0 +1,23 @@
+---
+description: When adding CCNP practice questions, create the matching static site page and wire navigation.
+alwaysApply: true
+---
+
+# CCNP practice questions → website pages
+
+When the user adds, pastes, or discusses a **numbered** practice question (e.g. q95, "question 95"), they intend it for the static practice site under `public/`. **Do not only answer in chat**—implement it on the site in the same turn when the content is clear.
+
+## Required steps
+
+1. **Create** `public/question-{N}.html` by copying structure from a recent neighbor (e.g. `public/question-94.html`): same layout, `<title>`, choices, `name="q{N}"` on inputs, `#answerBox` / `#nextWrap`, correct/incorrect script, `body.ccnp-practice-ui` pattern if used, `<script src="/js/practice-questions.js"></script>`, and the floating Home link to `/practice-launcher.html`.
+
+2. **Chain navigation**: Set the **Next** link on `public/question-{N-1}.html` to `href="/question-{N}.html"`. On the **new** last question page, Next should point to `/practice-launcher.html` (or the project’s established end-of-chain target).
+
+3. **Registry**: Append `{N}` to `allIds` in `public/js/study-config.json` and add it to the appropriate `studies[].ids` array (match existing grouping, usually the study that contains the previous id).
+
+4. If the question includes a **diagram/image**, follow pages like `question-93.html` (`.image-wrap`, asset under `public/` as the project already does).
+
+## Skip / clarify
+
+- If there is **no number**, ask which question id to use before creating files.
+- Keep edits **limited** to the new page, the previous question’s Next link, and `study-config.json` unless the user asks for more.

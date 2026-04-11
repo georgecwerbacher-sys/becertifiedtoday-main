@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 94 - Virtual switch</title>
+  <title>Question 102 - Catalyst Center southbound APIs</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -29,7 +29,7 @@
     }
     h1 {
       margin: 0 0 14px;
-      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
     .choice {
@@ -41,10 +41,12 @@
       border: 1px solid #2c3f62;
       font-size: 1rem;
       cursor: pointer;
+      line-height: 1.4;
     }
     .choice input {
       margin-right: 10px;
-      transform: translateY(1px);
+      vertical-align: top;
+      margin-top: 3px;
     }
     .answer {
       margin-top: 18px;
@@ -79,23 +81,23 @@
 </head>
 <body>
   <main class="card">
-    <h1>Which function does a virtual switch provide?</h1>
+    <h1>What do Cisco Catalyst Center southbound APIs provide?</h1>
 
-    <label class="choice"><input type="radio" name="q94" value="A" />A. RAID storage for virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="B" />B. connectivity between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="C" />C. CPU context switching for multitasking between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="D" />D. emulation of power for virtual machines</label>
+    <label class="choice"><input type="radio" name="q102" value="A" />A. Interface between the controller and the network devices</label>
+    <label class="choice"><input type="radio" name="q102" value="B" />B. NETCONF API interface for orchestration communication</label>
+    <label class="choice"><input type="radio" name="q102" value="C" />C. RESTful API interface for orchestrator communication</label>
+    <label class="choice"><input type="radio" name="q102" value="D" />D. Interface between the controller and the consumer</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-95.html">Next</a>
+      <a class="next-link" href="/question-103.html">Next</a>
     </div>
   </main>
 
   <script>
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q94"]');
+    const options = document.querySelectorAll('input[name="q102"]');
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -106,14 +108,14 @@
       option.addEventListener("change", () => {
         answerBox.style.display = "block";
         nextWrap.style.display = "block";
-        if (option.value === "B") {
+        if (option.value === "A") {
           answerBox.className = "answer correct";
           answerBox.textContent =
-            "Correct. B. A virtual switch (vSwitch) forwards Ethernet frames between VMs on a host and often to physical uplinks—Layer 2 connectivity. RAID is storage; CPU scheduling is the hypervisor; power is not a vSwitch role.";
+            "Correct. A. Southbound interfaces face the infrastructure: Catalyst Center uses them toward switches, APs, and other managed devices (e.g., NETCONF/RESTCONF, SNMP). Northbound APIs face applications and consumers; REST toward an orchestrator is typically northbound.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent =
-            "Incorrect. The correct answer: B. Virtual switches provide network connectivity between virtual machines.";
+            "Incorrect. The correct answer: A. Southbound = controller to network devices.";
         }
       });
     });

@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 94 - Virtual switch</title>
+  <title>Question 100 - RSPAN VLAN and access ports</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -20,7 +20,7 @@
       color: #e6edf3;
     }
     .card {
-      width: min(920px, 94vw);
+      width: min(980px, 95vw);
       background: #121a2b;
       border: 1px solid #2d3b5a;
       border-radius: 14px;
@@ -28,9 +28,23 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
     h1 {
-      margin: 0 0 14px;
-      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      margin: 0 0 12px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
+    }
+    .image-wrap {
+      margin-bottom: 14px;
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .image-wrap img {
+      display: block;
+      width: 100%;
+      max-width: 720px;
+      height: auto;
+      margin: 0 auto;
     }
     .choice {
       display: block;
@@ -41,10 +55,12 @@
       border: 1px solid #2c3f62;
       font-size: 1rem;
       cursor: pointer;
+      line-height: 1.4;
     }
     .choice input {
       margin-right: 10px;
-      transform: translateY(1px);
+      vertical-align: top;
+      margin-top: 3px;
     }
     .answer {
       margin-top: 18px;
@@ -79,23 +95,27 @@
 </head>
 <body>
   <main class="card">
-    <h1>Which function does a virtual switch provide?</h1>
+    <p style="margin:0 0 8px;font-size:0.95rem;color:#9fb0cc;">Refer to the exhibit.</p>
+    <div class="image-wrap">
+      <img src="/assets/question100-rspan-vlan.png" alt="VLAN 222 and 223 remote-span, monitor session 1 destination remote vlan 222" />
+    </div>
+    <h1>What happens to access interfaces where VLAN 222 is assigned?</h1>
 
-    <label class="choice"><input type="radio" name="q94" value="A" />A. RAID storage for virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="B" />B. connectivity between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="C" />C. CPU context switching for multitasking between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="D" />D. emulation of power for virtual machines</label>
+    <label class="choice"><input type="radio" name="q100" value="A" />A. They are placed into an inactive state</label>
+    <label class="choice"><input type="radio" name="q100" value="B" />B. A description &quot;RSPAN&quot; is added</label>
+    <label class="choice"><input type="radio" name="q100" value="C" />C. STP BPDU guard is enabled</label>
+    <label class="choice"><input type="radio" name="q100" value="D" />D. They cannot provide PoE</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-95.html">Next</a>
+      <a class="next-link" href="/question-101.html">Next</a>
     </div>
   </main>
 
   <script>
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q94"]');
+    const options = document.querySelectorAll('input[name="q100"]');
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -106,14 +126,14 @@
       option.addEventListener("change", () => {
         answerBox.style.display = "block";
         nextWrap.style.display = "block";
-        if (option.value === "B") {
+        if (option.value === "A") {
           answerBox.className = "answer correct";
           answerBox.textContent =
-            "Correct. B. A virtual switch (vSwitch) forwards Ethernet frames between VMs on a host and often to physical uplinks—Layer 2 connectivity. RAID is storage; CPU scheduling is the hypervisor; power is not a vSwitch role.";
+            "Correct. A. A VLAN configured with remote-span is reserved for Remote SPAN traffic only. Access ports placed in that VLAN are not used for normal data VLAN access and are placed inactive/suspended for that purpose.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent =
-            "Incorrect. The correct answer: B. Virtual switches provide network connectivity between virtual machines.";
+            "Incorrect. The correct answer: A. RSPAN VLANs cannot carry normal access traffic; those ports go inactive.";
         }
       });
     });

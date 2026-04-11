@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 94 - Virtual switch</title>
+  <title>Question 113 - CoPP policy-map control-plane</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -20,7 +20,7 @@
       color: #e6edf3;
     }
     .card {
-      width: min(920px, 94vw);
+      width: min(980px, 95vw);
       background: #121a2b;
       border: 1px solid #2d3b5a;
       border-radius: 14px;
@@ -28,9 +28,23 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
     h1 {
-      margin: 0 0 14px;
-      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      margin: 0 0 12px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
+    }
+    .image-wrap {
+      margin-bottom: 14px;
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .image-wrap img {
+      display: block;
+      width: 100%;
+      max-width: 760px;
+      height: auto;
+      margin: 0 auto;
     }
     .choice {
       display: block;
@@ -41,10 +55,12 @@
       border: 1px solid #2c3f62;
       font-size: 1rem;
       cursor: pointer;
+      line-height: 1.4;
     }
     .choice input {
       margin-right: 10px;
-      transform: translateY(1px);
+      vertical-align: top;
+      margin-top: 3px;
     }
     .answer {
       margin-top: 18px;
@@ -79,23 +95,27 @@
 </head>
 <body>
   <main class="card">
-    <h1>Which function does a virtual switch provide?</h1>
+    <p style="margin:0 0 8px;font-size:0.95rem;color:#9fb0cc;">Refer to the exhibit.</p>
+    <div class="image-wrap">
+      <img src="/assets/question113-copp-policy.png" alt="show policy-map control-plane CISCO class access-group 120 police exceed drop" />
+    </div>
+    <h1>An engineer configures CoPP and enters the show command to verify the implementation. What is the result of the configuration?</h1>
 
-    <label class="choice"><input type="radio" name="q94" value="A" />A. RAID storage for virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="B" />B. connectivity between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="C" />C. CPU context switching for multitasking between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="D" />D. emulation of power for virtual machines</label>
+    <label class="choice"><input type="radio" name="q113" value="A" />A. All traffic will be policed based on access-list 120</label>
+    <label class="choice"><input type="radio" name="q113" value="B" />B. If traffic exceeds the specified rate, it will be transmitted and remarked</label>
+    <label class="choice"><input type="radio" name="q113" value="C" />C. Class-default traffic will be dropped</label>
+    <label class="choice"><input type="radio" name="q113" value="D" />D. ICMP will be denied based on this configuration</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-95.html">Next</a>
+      <a class="next-link" href="/question-114.html">Next</a>
     </div>
   </main>
 
   <script>
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q94"]');
+    const options = document.querySelectorAll('input[name="q113"]');
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -106,14 +126,14 @@
       option.addEventListener("change", () => {
         answerBox.style.display = "block";
         nextWrap.style.display = "block";
-        if (option.value === "B") {
+        if (option.value === "A") {
           answerBox.className = "answer correct";
           answerBox.textContent =
-            "Correct. B. A virtual switch (vSwitch) forwards Ethernet frames between VMs on a host and often to physical uplinks—Layer 2 connectivity. RAID is storage; CPU scheduling is the hypervisor; power is not a vSwitch role.";
+            "Correct. A (exam framing). Policing for the CISCO class is tied to access-group 120; traffic in that class is policed at 8000 bps (15 conform / 5 exceed dropped). Wording is loose: other control-plane traffic hits class-default without this policer, not “every packet on the router.” B is false—exceed action is drop, not transmit/remark. C is false—class-default shows no drop. D—no ACL content in the exhibit to claim ICMP is denied.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent =
-            "Incorrect. The correct answer: B. Virtual switches provide network connectivity between virtual machines.";
+            "Incorrect. The keyed answer: A. B contradicts the output (exceed: drop). C and D are not supported by the exhibit.";
         }
       });
     });

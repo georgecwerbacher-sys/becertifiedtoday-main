@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 94 - Virtual switch</title>
+  <title>Question 111 - ERSPAN source remote IP</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -20,7 +20,7 @@
       color: #e6edf3;
     }
     .card {
-      width: min(920px, 94vw);
+      width: min(980px, 95vw);
       background: #121a2b;
       border: 1px solid #2d3b5a;
       border-radius: 14px;
@@ -28,9 +28,23 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
     h1 {
-      margin: 0 0 14px;
-      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      margin: 0 0 12px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
+    }
+    .image-wrap {
+      margin-bottom: 14px;
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .image-wrap img {
+      display: block;
+      width: 100%;
+      max-width: 760px;
+      height: auto;
+      margin: 0 auto;
     }
     .choice {
       display: block;
@@ -39,12 +53,24 @@
       border-radius: 10px;
       background: #1a253b;
       border: 1px solid #2c3f62;
-      font-size: 1rem;
+      font-size: 0.92rem;
       cursor: pointer;
+      line-height: 1.45;
+    }
+    .choice pre {
+      margin: 8px 0 0;
+      padding: 10px;
+      background: #0d1117;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.78rem;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
     .choice input {
       margin-right: 10px;
-      transform: translateY(1px);
+      vertical-align: top;
+      margin-top: 3px;
     }
     .answer {
       margin-top: 18px;
@@ -79,23 +105,40 @@
 </head>
 <body>
   <main class="card">
-    <h1>Which function does a virtual switch provide?</h1>
+    <p style="margin:0 0 8px;font-size:0.95rem;color:#9fb0cc;">Refer to the exhibit.</p>
+    <div class="image-wrap">
+      <img src="/assets/question111-erspan-source.png" alt="ERSPAN source session configuration CLI" />
+    </div>
+    <h1>An engineer must configure an ERSPAN session with the remote end of the session 10.10.0.1. Which commands must be added to complete the configuration?</h1>
 
-    <label class="choice"><input type="radio" name="q94" value="A" />A. RAID storage for virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="B" />B. connectivity between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="C" />C. CPU context switching for multitasking between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="D" />D. emulation of power for virtual machines</label>
+    <label class="choice"><input type="radio" name="q111" value="A" />A.<pre>Device(config)# monitor session 1 type erspan-source
+Device(config-mon-erspan-src)# destination
+Device(config-mon-erspan-src-dst)# no origin ip address 10.10.0.1
+Device(config-mon-erspan-src-dst)# ip address 10.10.0.1</pre></label>
+
+    <label class="choice"><input type="radio" name="q111" value="B" />B.<pre>Device(config)# monitor session 1 type erspan-destination
+Device(config-mon-erspan-src)# source
+Device(config-mon-erspan-src-dst)# origin ip address 10.1.0.1</pre></label>
+
+    <label class="choice"><input type="radio" name="q111" value="C" />C.<pre>Device(config)# monitor session 1 type erspan-source
+Device(config-mon-erspan-src)# destination
+Device(config-mon-erspan-src-dst)# no origin ip address 10.10.0.1
+Device(config-mon-erspan-src-dst)# ip destination address 10.10.0.1</pre></label>
+
+    <label class="choice"><input type="radio" name="q111" value="D" />D.<pre>Device(config)# monitor session 1 type erspan-source
+Device(config-mon-erspan-src)# destination
+Device(config-mon-erspan-src-dst)# no vrf 1</pre></label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-95.html">Next</a>
+      <a class="next-link" href="/question-112.html">Next</a>
     </div>
   </main>
 
   <script>
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q94"]');
+    const options = document.querySelectorAll('input[name="q111"]');
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -106,14 +149,14 @@
       option.addEventListener("change", () => {
         answerBox.style.display = "block";
         nextWrap.style.display = "block";
-        if (option.value === "B") {
+        if (option.value === "A") {
           answerBox.className = "answer correct";
           answerBox.textContent =
-            "Correct. B. A virtual switch (vSwitch) forwards Ethernet frames between VMs on a host and often to physical uplinks—Layer 2 connectivity. RAID is storage; CPU scheduling is the hypervisor; power is not a vSwitch role.";
+            "Correct. A. On an ERSPAN source session, origin ip address is the local tunnel source; the remote analyzer is set with ip address under destination. The exhibit wrongly used 10.10.0.1 as origin—remove it, then ip address 10.10.0.1 sets the remote. IOS-XE uses ip address here, not ip destination address. Re-enter a correct origin (e.g. 10.1.0.1) if needed after the no statement.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent =
-            "Incorrect. The correct answer: B. Virtual switches provide network connectivity between virtual machines.";
+            "Incorrect. The correct answer: A. Remote ERSPAN endpoint = ip address under erspan-source destination; fix mistaken origin.";
         }
       });
     });

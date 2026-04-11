@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question 119 - TTL and traceroute/ping</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+    }
+    .card {
+      width: min(980px, 95vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+    }
+    .image-wrap {
+      margin-bottom: 12px;
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .image-wrap img {
+      display: block;
+      width: 100%;
+      max-width: 720px;
+      height: auto;
+      margin: 0 auto;
+    }
+    .choice {
+      display: block;
+      margin: 10px 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #1a253b;
+      border: 1px solid #2c3f62;
+      font-size: 1rem;
+      cursor: pointer;
+      line-height: 1.4;
+    }
+    .choice input {
+      margin-right: 10px;
+      vertical-align: top;
+      margin-top: 3px;
+    }
+    .actions {
+      margin-top: 14px;
+    }
+    .check-btn {
+      background: #254b8a;
+      color: #e6edf3;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .answer {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+    }
+    .answer.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+    }
+    .answer.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+    }
+    .next-wrap {
+      margin-top: 18px;
+      display: none;
+    }
+    .next-link {
+      display: inline-block;
+      text-decoration: none;
+      color: #e6edf3;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <p style="margin:0 0 8px;font-size:0.95rem;color:#9fb0cc;">Refer to the exhibits.</p>
+    <div class="image-wrap">
+      <img src="/assets/question119-ttl-topology.png" alt="Topology S1-R1-R2-R3-S2 with subnets" />
+    </div>
+    <div class="image-wrap">
+      <img src="/assets/question119-ttl-wireshark.png" alt="Wireshark ICMP ping TTL 2 from 192.168.1.1 to 192.168.3.1" />
+    </div>
+    <h1>While troubleshooting a routing issue, an engineer issues a ping from S1 to S2. Which two actions result from the initial value of the TTL? (Choose two)</h1>
+
+    <label class="choice"><input type="checkbox" name="q119" value="A" />A. The packet reaches R3, and the TTL expires</label>
+    <label class="choice"><input type="checkbox" name="q119" value="B" />B. R2 replies with a TTL exceeded message</label>
+    <label class="choice"><input type="checkbox" name="q119" value="C" />C. R1 replies with a TTL exceeded message</label>
+    <label class="choice"><input type="checkbox" name="q119" value="D" />D. The packet reaches R2 and the TTL expires</label>
+    <label class="choice"><input type="checkbox" name="q119" value="E" />E. R3 replies with a TTL exceeded message</label>
+    <label class="choice"><input type="checkbox" name="q119" value="F" />F. The packet reaches R1 and the TTL expires</label>
+
+    <div class="actions">
+      <button id="checkBtn" class="check-btn" type="button">Check Answer</button>
+    </div>
+
+    <div id="answerBox" class="answer" aria-live="polite"></div>
+    <div id="nextWrap" class="next-wrap">
+      <a class="next-link" href="/question-120.html">Next</a>
+    </div>
+  </main>
+
+  <script>
+    const answerBox = document.getElementById("answerBox");
+    const nextWrap = document.getElementById("nextWrap");
+    const checkBtn = document.getElementById("checkBtn");
+    const options = document.querySelectorAll('input[name="q119"]');
+    const correctSet = new Set(["B", "D"]);
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    checkBtn.addEventListener("click", () => {
+      const selected = [...options].filter((o) => o.checked).map((o) => o.value);
+      if (selected.length === 0) {
+        answerBox.style.display = "block";
+        answerBox.className = "answer incorrect";
+        answerBox.textContent = "Select at least one option.";
+        return;
+      }
+
+      answerBox.style.display = "block";
+      nextWrap.style.display = "block";
+
+      const selectedSet = new Set(selected);
+      const isCorrect =
+        selectedSet.size === correctSet.size &&
+        [...correctSet].every((value) => selectedSet.has(value));
+
+      if (isCorrect) {
+        answerBox.className = "answer correct";
+        answerBox.textContent =
+          "Correct. B and D. TTL starts at 2. R1 decrements to 1 and forwards. R2 receives TTL 1, decrements to 0, cannot forward—the packet expires at R2. R2 sends ICMP Time Exceeded (TTL exceeded) to the source. The packet never reaches R3 with TTL left to forward.";
+      } else {
+        answerBox.className = "answer incorrect";
+        answerBox.textContent =
+          "Incorrect. The correct answers: B and D. TTL expires on the second router hop (R2) after R1.";
+      }
+    });
+  </script>
+  <style>
+    .home-key {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+    .home-key:hover {
+      filter: brightness(1.08);
+    }
+  </style>
+  <a class="home-key" href="/practice-launcher.html">Home</a>
+  <script src="/js/practice-questions.js"></script>
+</body>
+</html>

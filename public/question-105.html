@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 94 - Virtual switch</title>
+  <title>Question 105 - Type 2 hypervisor</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -29,7 +29,7 @@
     }
     h1 {
       margin: 0 0 14px;
-      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
     .choice {
@@ -41,10 +41,12 @@
       border: 1px solid #2c3f62;
       font-size: 1rem;
       cursor: pointer;
+      line-height: 1.4;
     }
     .choice input {
       margin-right: 10px;
-      transform: translateY(1px);
+      vertical-align: top;
+      margin-top: 3px;
     }
     .answer {
       margin-top: 18px;
@@ -79,23 +81,23 @@
 </head>
 <body>
   <main class="card">
-    <h1>Which function does a virtual switch provide?</h1>
+    <h1>What is a characteristic of a Type 2 hypervisor?</h1>
 
-    <label class="choice"><input type="radio" name="q94" value="A" />A. RAID storage for virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="B" />B. connectivity between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="C" />C. CPU context switching for multitasking between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="D" />D. emulation of power for virtual machines</label>
+    <label class="choice"><input type="radio" name="q105" value="A" />A. It eliminates the need for an underlying operating system.</label>
+    <label class="choice"><input type="radio" name="q105" value="B" />B. It is completely independent of the operating system.</label>
+    <label class="choice"><input type="radio" name="q105" value="C" />C. Its main task is to manage hardware resources between different operating systems.</label>
+    <label class="choice"><input type="radio" name="q105" value="D" />D. It is installed on an operating system and supports other operating systems.</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-95.html">Next</a>
+      <a class="next-link" href="/question-106.html">Next</a>
     </div>
   </main>
 
   <script>
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q94"]');
+    const options = document.querySelectorAll('input[name="q105"]');
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -106,14 +108,14 @@
       option.addEventListener("change", () => {
         answerBox.style.display = "block";
         nextWrap.style.display = "block";
-        if (option.value === "B") {
+        if (option.value === "D") {
           answerBox.className = "answer correct";
           answerBox.textContent =
-            "Correct. B. A virtual switch (vSwitch) forwards Ethernet frames between VMs on a host and often to physical uplinks—Layer 2 connectivity. RAID is storage; CPU scheduling is the hypervisor; power is not a vSwitch role.";
+            "Correct. D. A Type 2 (hosted) hypervisor runs as software on a general-purpose host OS (e.g., VMware Workstation, VirtualBox) and creates VMs on top of it. Type 1 runs directly on hardware without that host OS layer.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent =
-            "Incorrect. The correct answer: B. Virtual switches provide network connectivity between virtual machines.";
+            "Incorrect. The correct answer: D. Type 2 hypervisors are installed on top of an operating system.";
         }
       });
     });

@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 94 - Virtual switch</title>
+  <title>Question 123 - VXLAN VTEP role</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -29,7 +29,7 @@
     }
     h1 {
       margin: 0 0 14px;
-      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
     .choice {
@@ -41,10 +41,12 @@
       border: 1px solid #2c3f62;
       font-size: 1rem;
       cursor: pointer;
+      line-height: 1.4;
     }
     .choice input {
       margin-right: 10px;
-      transform: translateY(1px);
+      vertical-align: top;
+      margin-top: 3px;
     }
     .answer {
       margin-top: 18px;
@@ -79,23 +81,23 @@
 </head>
 <body>
   <main class="card">
-    <h1>Which function does a virtual switch provide?</h1>
+    <h1>What is one role of the VTEP in a VXLAN environment?</h1>
 
-    <label class="choice"><input type="radio" name="q94" value="A" />A. RAID storage for virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="B" />B. connectivity between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="C" />C. CPU context switching for multitasking between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="D" />D. emulation of power for virtual machines</label>
+    <label class="choice"><input type="radio" name="q123" value="A" />A. to maintain VLAN configuration consistency</label>
+    <label class="choice"><input type="radio" name="q123" value="B" />B. to encapsulate the tunnel</label>
+    <label class="choice"><input type="radio" name="q123" value="C" />C. to forward packets to non-USP sites</label>
+    <label class="choice"><input type="radio" name="q123" value="D" />D. to provide EID-to-RLOC mapping</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-95.html">Next</a>
+      <a class="next-link" href="/question-124.html">Next</a>
     </div>
   </main>
 
   <script>
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q94"]');
+    const options = document.querySelectorAll('input[name="q123"]');
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -109,11 +111,11 @@
         if (option.value === "B") {
           answerBox.className = "answer correct";
           answerBox.textContent =
-            "Correct. B. A virtual switch (vSwitch) forwards Ethernet frames between VMs on a host and often to physical uplinks—Layer 2 connectivity. RAID is storage; CPU scheduling is the hypervisor; power is not a vSwitch role.";
+            "Correct. B. A VXLAN Tunnel Endpoint (VTEP) adds and removes the VXLAN encapsulation: inner Ethernet frame plus VXLAN header in UDP over IP to the remote VTEP’s underlay address. EID-to-RLOC is LISP; VLAN consistency is unrelated; “non-USP” is not a standard VTEP role in this context.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent =
-            "Incorrect. The correct answer: B. Virtual switches provide network connectivity between virtual machines.";
+            "Incorrect. The correct answer: B. VTEPs encapsulate and decapsulate VXLAN traffic.";
         }
       });
     });

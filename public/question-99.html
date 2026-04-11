@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 94 - Virtual switch</title>
+  <title>Question 99 - Stateful switchover</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -79,23 +79,23 @@
 </head>
 <body>
   <main class="card">
-    <h1>Which function does a virtual switch provide?</h1>
+    <h1>What is stateful switchover?</h1>
 
-    <label class="choice"><input type="radio" name="q94" value="A" />A. RAID storage for virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="B" />B. connectivity between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="C" />C. CPU context switching for multitasking between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="D" />D. emulation of power for virtual machines</label>
+    <label class="choice"><input type="radio" name="q99" value="A" />A. cluster protocol used to facilitate switch failover</label>
+    <label class="choice"><input type="radio" name="q99" value="B" />B. mechanism to take control from a failed RP while maintaining connectivity</label>
+    <label class="choice"><input type="radio" name="q99" value="C" />C. mechanism used to prevent routing protocol loops during an RP switchover</label>
+    <label class="choice"><input type="radio" name="q99" value="D" />D. First Hop Redundancy Protocol for host gateway connectivity</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-95.html">Next</a>
+      <a class="next-link" href="/question-100.html">Next</a>
     </div>
   </main>
 
   <script>
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q94"]');
+    const options = document.querySelectorAll('input[name="q99"]');
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -109,11 +109,11 @@
         if (option.value === "B") {
           answerBox.className = "answer correct";
           answerBox.textContent =
-            "Correct. B. A virtual switch (vSwitch) forwards Ethernet frames between VMs on a host and often to physical uplinks—Layer 2 connectivity. RAID is storage; CPU scheduling is the hypervisor; power is not a vSwitch role.";
+            "Correct. B. Stateful Switchover (SSO) pairs with redundant route processors (or supervisors): state is synchronized to the standby so it can assume the active role after a failure with minimal disruption—forwarding and sessions stay up where supported.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent =
-            "Incorrect. The correct answer: B. Virtual switches provide network connectivity between virtual machines.";
+            "Incorrect. The correct answer: B. SSO is high availability for redundant RPs/supervisors with stateful failover.";
         }
       });
     });

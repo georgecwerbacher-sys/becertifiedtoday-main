@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 94 - Virtual switch</title>
+  <title>Question 116 - EIGRP vs OSPF similarity</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -29,7 +29,7 @@
     }
     h1 {
       margin: 0 0 14px;
-      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
     .choice {
@@ -41,10 +41,12 @@
       border: 1px solid #2c3f62;
       font-size: 1rem;
       cursor: pointer;
+      line-height: 1.4;
     }
     .choice input {
       margin-right: 10px;
-      transform: translateY(1px);
+      vertical-align: top;
+      margin-top: 3px;
     }
     .answer {
       margin-top: 18px;
@@ -79,23 +81,23 @@
 </head>
 <body>
   <main class="card">
-    <h1>Which function does a virtual switch provide?</h1>
+    <h1>In which way are EIGRP and OSPF similar?</h1>
 
-    <label class="choice"><input type="radio" name="q94" value="A" />A. RAID storage for virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="B" />B. connectivity between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="C" />C. CPU context switching for multitasking between virtual machines</label>
-    <label class="choice"><input type="radio" name="q94" value="D" />D. emulation of power for virtual machines</label>
+    <label class="choice"><input type="radio" name="q116" value="A" />A. Both protocols support unequal-cost load balancing.</label>
+    <label class="choice"><input type="radio" name="q116" value="B" />B. Both protocols use hello packets to discover neighbors.</label>
+    <label class="choice"><input type="radio" name="q116" value="C" />C. Both protocols send updates using unicast addresses.</label>
+    <label class="choice"><input type="radio" name="q116" value="D" />D. Both protocols support autosummarization.</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-95.html">Next</a>
+      <a class="next-link" href="/question-117.html">Next</a>
     </div>
   </main>
 
   <script>
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q94"]');
+    const options = document.querySelectorAll('input[name="q116"]');
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -109,11 +111,11 @@
         if (option.value === "B") {
           answerBox.className = "answer correct";
           answerBox.textContent =
-            "Correct. B. A virtual switch (vSwitch) forwards Ethernet frames between VMs on a host and often to physical uplinks—Layer 2 connectivity. RAID is storage; CPU scheduling is the hypervisor; power is not a vSwitch role.";
+            "Correct. B. EIGRP and OSPF both use periodic Hello packets to discover and maintain neighbors (EIGRP to 224.0.0.10 on segments; OSPF to 224.0.0.5/224.0.0.6 on broadcast/NBMA as appropriate). OSPF does not do unequal-cost load balancing like EIGRP variance; both use multicast for much control traffic, not “updates only unicast”; OSPF has no classic autosummary like legacy EIGRP at class boundaries.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent =
-            "Incorrect. The correct answer: B. Virtual switches provide network connectivity between virtual machines.";
+            "Incorrect. The correct answer: B. Hello-based neighbor discovery is common to both.";
         }
       });
     });
