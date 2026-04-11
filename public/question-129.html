@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 128 - NETCONF rpc-reply verification</title>
+  <title>Question 129 - JSON from exhibit</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -53,9 +53,11 @@
       border-radius: 10px;
       background: #1a253b;
       border: 1px solid #2c3f62;
-      font-size: 1rem;
+      font-size: 0.9rem;
       cursor: pointer;
-      line-height: 1.4;
+      line-height: 1.45;
+      word-break: break-word;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
     .choice input {
       margin-right: 10px;
@@ -68,6 +70,7 @@
       border-radius: 10px;
       font-weight: 700;
       display: none;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     }
     .answer.correct {
       background: #113e2d;
@@ -97,25 +100,25 @@
   <main class="card">
     <p style="margin:0 0 8px;font-size:0.95rem;color:#9fb0cc;">Refer to the exhibit.</p>
     <div class="image-wrap">
-      <img src="/assets/question128-netconf-rpc-reply-schema.png" alt="NETCONF schema tree: rpc-reply with ok, data, rpc-error children, session-id" />
+      <img src="/assets/question129-bob-johnson-json-exhibit.png" alt="Exhibit: Name Bob Johnson, Age 75, alive, favorite foods Cereal Mustard Onions" />
     </div>
-    <h1>Which command is required to verify NETCONF capability reply messages?</h1>
+    <h1>What is the JSON syntax that represents the data?</h1>
 
-    <label class="choice"><input type="radio" name="q128" value="A" />A. show netconf | section rpc-reply</label>
-    <label class="choice"><input type="radio" name="q128" value="B" />B. show netconf rpc-reply</label>
-    <label class="choice"><input type="radio" name="q128" value="C" />C. show netconf xml rpc-reply</label>
-    <label class="choice"><input type="radio" name="q128" value="D" />D. show netconf schema | section rpc-reply</label>
+    <label class="choice"><input type="radio" name="q129" value="A" />A. {"Name":"Bob Johnson","Age": Seventyfive, "Alive":true, "Favorite Foods":["Cereal","Mustard","Onions"]}</label>
+    <label class="choice"><input type="radio" name="q129" value="B" />B. {"Name": "Bob Johnson", "Age": 75, "Alive": true, "Favorite Foods": ["Cereal", "Mustard", "Onions"]}</label>
+    <label class="choice"><input type="radio" name="q129" value="C" />C. {'Name': 'Bob Johnson', 'Age': 75, 'Alive': True, 'Favorite Foods': 'Cereal', 'Mustard', 'Onions'}</label>
+    <label class="choice"><input type="radio" name="q129" value="D" />D. {Name: Bob Johnson, Age: 75, Alive: true, Favorite Foods: [Cereal, Mustard, Onions]}</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-129.html">Next</a>
+      <a class="next-link" href="/practice-launcher.html">Practice launcher</a>
     </div>
   </main>
 
   <script>
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q128"]');
+    const options = document.querySelectorAll('input[name="q129"]');
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -126,14 +129,14 @@
       option.addEventListener("change", () => {
         answerBox.style.display = "block";
         nextWrap.style.display = "block";
-        if (option.value === "D") {
+        if (option.value === "B") {
           answerBox.className = "answer correct";
           answerBox.textContent =
-            "Correct. D. The exhibit is the NETCONF XML schema for an rpc-reply (ok, data, rpc-error, session-id, etc.). On IOS XE, show netconf schema dumps that schema; piping to section rpc-reply isolates the reply subtree. Generic show netconf or non-schema options do not present this structure.";
+            "Correct. B. JSON requires double-quoted keys and string values, a number for age (75), lowercase boolean true, and an array in square brackets for the list of foods. A is invalid (Seventyfive is not a number or quoted string). C uses single quotes and Python-style True; D omits required quotes on keys and strings.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent =
-            "Incorrect. The correct answer: D. Use show netconf schema | section rpc-reply to view the rpc-reply portion of the NETCONF schema.";
+            "Incorrect. The correct answer: B. Valid JSON uses double quotes, numeric 75, true, and a bracketed array for favorite foods.";
         }
       });
     });
