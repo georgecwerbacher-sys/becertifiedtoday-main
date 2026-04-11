@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 132 - BFD benefits (choose two)</title>
+  <title>Question 133 - JSON Person array exhibit</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -20,7 +20,7 @@
       color: #e6edf3;
     }
     .card {
-      width: min(920px, 94vw);
+      width: min(980px, 95vw);
       background: #121a2b;
       border: 1px solid #2d3b5a;
       border-radius: 14px;
@@ -28,9 +28,23 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
     h1 {
-      margin: 0 0 14px;
+      margin: 0 0 12px;
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
+    }
+    .image-wrap {
+      margin-bottom: 14px;
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .image-wrap img {
+      display: block;
+      width: 100%;
+      max-width: 900px;
+      height: auto;
+      margin: 0 auto;
     }
     .choice {
       display: block;
@@ -48,21 +62,8 @@
       vertical-align: top;
       margin-top: 3px;
     }
-    .actions {
-      margin-top: 14px;
-    }
-    .check-btn {
-      background: #254b8a;
-      color: #e6edf3;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-    }
     .answer {
-      margin-top: 16px;
+      margin-top: 18px;
       padding: 14px;
       border-radius: 10px;
       font-weight: 700;
@@ -95,62 +96,47 @@
 </head>
 <body>
   <main class="card">
-    <h1>In a campus network design, what are two benefits of using BFD for failure detection? (Choose two)</h1>
-
-    <label class="choice"><input type="checkbox" name="q132" value="A" />A. BFD is an efficient way to reduce memory and CPU usage.</label>
-    <label class="choice"><input type="checkbox" name="q132" value="B" />B. BFD speeds up routing convergence time.</label>
-    <label class="choice"><input type="checkbox" name="q132" value="C" />C. BFD provides path failure detection in less than a second.</label>
-    <label class="choice"><input type="checkbox" name="q132" value="D" />D. BFD enables network peers to continue forwarding packets in the event of a restart.</label>
-    <label class="choice"><input type="checkbox" name="q132" value="E" />E. BFD provides fault tolerance by enabling multiple routers to appear as a single virtual router.</label>
-
-    <div class="actions">
-      <button id="checkBtn" class="check-btn" type="button">Check Answer</button>
+    <p style="margin:0 0 8px;font-size:0.95rem;color:#9fb0cc;">Refer to the exhibit.</p>
+    <div class="image-wrap">
+      <img src="/assets/question133-person-json-exhibit.png" alt="Exhibit: two people with names and hobbies; four JSON answer options" />
     </div>
+    <h1>Which JSON syntax is derived from this data?</h1>
+
+    <label class="choice"><input type="radio" name="q133" value="A" />A. Option A</label>
+    <label class="choice"><input type="radio" name="q133" value="B" />B. Option B</label>
+    <label class="choice"><input type="radio" name="q133" value="C" />C. Option C</label>
+    <label class="choice"><input type="radio" name="q133" value="D" />D. Option D</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-133.html">Next</a>
+      <a class="next-link" href="/practice-launcher.html">Practice launcher</a>
     </div>
   </main>
 
   <script>
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
-    const checkBtn = document.getElementById("checkBtn");
-    const options = document.querySelectorAll('input[name="q132"]');
-    const correctSet = new Set(["B", "C"]);
+    const options = document.querySelectorAll('input[name="q133"]');
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
       history.pushState(null, "", location.href);
     });
 
-    checkBtn.addEventListener("click", () => {
-      const selected = [...options].filter((o) => o.checked).map((o) => o.value);
-      if (selected.length === 0) {
+    options.forEach((option) => {
+      option.addEventListener("change", () => {
         answerBox.style.display = "block";
-        answerBox.className = "answer incorrect";
-        answerBox.textContent = "Select at least one option.";
-        return;
-      }
-
-      answerBox.style.display = "block";
-      nextWrap.style.display = "block";
-
-      const selectedSet = new Set(selected);
-      const isCorrect =
-        selectedSet.size === correctSet.size &&
-        [...correctSet].every((value) => selectedSet.has(value));
-
-      if (isCorrect) {
-        answerBox.className = "answer correct";
-        answerBox.textContent =
-          "Correct. B and C. BFD detects loss of the path or neighbor in milliseconds (well under one second), so routing protocols tear down adjacencies and reconverge sooner. D describes NSF/graceful restart; E describes an FHRP; A is not a primary benefit.";
-      } else {
-        answerBox.className = "answer incorrect";
-        answerBox.textContent =
-          "Incorrect. The correct answers: B and C.";
-      }
+        nextWrap.style.display = "block";
+        if (option.value === "A") {
+          answerBox.className = "answer correct";
+          answerBox.textContent =
+            "Correct. A (Option A). It wraps both people in a Person array; each object has first name, last name, and Hobbies as an array of strings. B and D use invalid root syntax ({[); B also repeats Hobbies keys. C leaves hobbies as bare comma-separated values instead of a JSON array.";
+        } else {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent =
+            "Incorrect. The correct answer: A (Option A).";
+        }
+      });
     });
   </script>
   <style>
