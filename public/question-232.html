@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 202 - Logging synchronous and terminal length</title>
+  <title>Question 232 - Secure NTP mechanisms</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -94,13 +94,13 @@
 </head>
 <body>
   <main class="card">
-    <h1>A network administrator is implementing a routing configuration change and enables routing debugs to track routing behavior during the change. The logging output on the terminal is interrupting the command typing process. Which two actions can the network administrator take to minimize the possibility of typing commands incorrectly? (Choose two)</h1>
+    <h1>Which two mechanisms are available to secure NTP? (Choose two)</h1>
 
-    <label class="choice"><input type="checkbox" name="q202" value="A" />A. Configure the logging synchronous global configuration command</label>
-    <label class="choice"><input type="checkbox" name="q202" value="B" />B. Configure the logging delimiter feature</label>
-    <label class="choice"><input type="checkbox" name="q202" value="C" />C. Configure the logging synchronous command under the vty</label>
-    <label class="choice"><input type="checkbox" name="q202" value="D" />D. Press the TAB key to reprint the command in a new line</label>
-    <label class="choice"><input type="checkbox" name="q202" value="E" />E. Increase the number of lines on the screen using the terminal length command</label>
+    <label class="choice"><input type="checkbox" name="q232" value="A" />A. IP prefix list-based</label>
+    <label class="choice"><input type="checkbox" name="q232" value="B" />B. IPsec</label>
+    <label class="choice"><input type="checkbox" name="q232" value="C" />C. TACACS-based authentication</label>
+    <label class="choice"><input type="checkbox" name="q232" value="D" />D. IP access list-based</label>
+    <label class="choice"><input type="checkbox" name="q232" value="E" />E. Encrypted authentication</label>
 
     <div class="actions">
       <button id="checkBtn" class="check-btn" type="button">Check Answer</button>
@@ -108,7 +108,7 @@
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-203.html">Next</a>
+      <a class="next-link" href="/question-233.html">Next</a>
     </div>
   </main>
 
@@ -116,8 +116,8 @@
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
     const checkBtn = document.getElementById("checkBtn");
-    const options = document.querySelectorAll('input[name="q202"]');
-    const correctSet = new Set(["C", "E"]);
+    const options = document.querySelectorAll('input[name="q232"]');
+    const correctSet = new Set(["D", "E"]);
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -144,11 +144,11 @@
       if (isCorrect) {
         answerBox.className = "answer correct";
         answerBox.textContent =
-          "Correct. C and E. `logging synchronous` is a **line** command (e.g. under **line vty**), not global (A). It redisplays the prompt and partial command after syslog/debug lines. Adjusting **`terminal length`** (e.g. a higher value or `terminal length 0` for no pager) reduces **--More--** breaks during long output. Delimiter (B) only changes message formatting; TAB (D) is completion, not the documented fix pair.";
+          "Correct. D and E. Use ntp access-group with IPv4/IPv6 ACLs (peer, serve, serve-only, query-only) to limit who may act as a client or server. NTP authentication uses shared keys so associations can verify packets (often described as encrypted authentication in exam wording). TACACS+ does not secure NTP peering; prefix lists are not the primary NTP filter mechanism; IPsec is not the standard pair called out for NTP on IOS.";
       } else {
         answerBox.className = "answer incorrect";
         answerBox.textContent =
-          "Incorrect. The correct answer: C and E. Line `logging synchronous` plus `terminal length` tuning.";
+          "Incorrect. The correct answer: D and E. ACL-based access control and NTP authentication keys.";
       }
     });
   </script>
