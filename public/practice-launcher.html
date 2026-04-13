@@ -41,11 +41,6 @@
       border: 1px solid #3d6dbb;
       background: #1a2742;
     }
-    .start-title {
-      margin: 0 0 8px;
-      font-size: 1.05rem;
-      font-weight: 800;
-    }
     .start-btn {
       display: inline-block;
       text-decoration: none;
@@ -149,14 +144,7 @@
 
     <h2 class="section-heading">Practice questions</h2>
     <div class="practice-block">
-      <section class="start-box" aria-label="Practice questions by study">
-        <p class="start-title">Practice by study</p>
-        <p style="margin:0 0 14px;font-size:0.92rem;color:#b8c3d6;line-height:1.45;">
-          <strong>Study 1</strong> is questions 1–50, <strong>Study 2</strong> is 51–100, <strong>Study 3</strong> is 101–150, and so on (50 per study), based on
-          <code style="font-size:0.85em;">question-NNN.html</code> file numbers. Random shuffles only that study; Linear walks it in order.
-          <strong>Review quiz</strong> uses the same pool: wrong answers are sent to the end of the queue and repeat until you get them right or you leave via Home.
-          Re-run <code style="font-size:0.85em;">python3 scripts/build-study-config.py</code> after adding questions.
-        </p>
+      <section class="start-box" aria-label="Question studies">
         <p id="studyLoadMsg" style="margin:0 0 8px;font-size:0.9rem;color:#9fb0cc;">Loading studies…</p>
         <p id="studyLoadError" role="alert"></p>
         <div id="studyGrid" class="sim-grid" style="display: none" aria-label="Study groups"></div>
@@ -197,7 +185,6 @@
                 "<p class=\"study-meta\">" +
                 range +
                 "</p>" +
-                "<p class=\"sim-box-desc\">Random reorders this block only. Linear goes first to last in this block. Review quiz cycles missed items to the end until the section is cleared.</p>" +
                 "<div class=\"study-actions\">" +
                 "<a class=\"start-btn\" href=\"/begin-questions-random.html?study=" +
                 s.index +
