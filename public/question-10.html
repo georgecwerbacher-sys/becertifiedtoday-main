@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 10 - CoPP SSH</title>
+  <title>Question 10 - RouterB extended ACL options</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -32,6 +32,20 @@
       font-size: clamp(1.1rem, 2vw, 1.55rem);
       line-height: 1.35;
     }
+    .image-wrap {
+      margin-bottom: 14px;
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .image-wrap img {
+      display: block;
+      width: 100%;
+      max-width: 900px;
+      height: auto;
+      margin: 0 auto;
+    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -52,6 +66,8 @@
       border-radius: 10px;
       font-weight: 700;
       display: none;
+      font-size: 0.95rem;
+      line-height: 1.45;
     }
     .answer.correct {
       background: #113e2d;
@@ -79,7 +95,14 @@
 </head>
 <body>
   <main class="card">
-    <h1>Which configuration restricts the amount of SSH that a router accepts to 100 kbps?</h1>
+    <p style="margin: 0 0 8px; font-size: 0.95rem; color: #9fb0cc">Refer to the exhibit.</p>
+    <div class="image-wrap">
+      <img src="/assets/question10-routerb-acl-options.png" alt="RouterB ACL options A through D in a grid" />
+    </div>
+    <h1>
+      Which configuration on RouterB permits IP traffic sourced from 10.100.2.0/24 to any destination and drops all other IPv4 traffic, using extended ACL 101 outbound on both GigabitEthernet0/0/0 and
+      GigabitEthernet0/0/1?
+    </h1>
 
     <label class="choice"><input type="radio" name="q10" value="A" />A. Option A</label>
     <label class="choice"><input type="radio" name="q10" value="B" />B. Option B</label>
@@ -107,12 +130,14 @@
         answerBox.style.display = "block";
         nextWrap.style.display = "block";
 
-        if (option.value === "C") {
+        if (option.value === "D") {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. C. Option C";
+          answerBox.textContent =
+            "Correct. D. Permit 10.100.2.0/24 to any; unmatched traffic hits the implicit deny at the end of the ACL. ip access-group 101 out is applied on both GigabitEthernet0/0/0 and GigabitEthernet0/0/1. A only attaches to one interface; B uses the wrong subnet; C uses a different interface and inbound instead of outbound.";
         } else {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect. The correct answer: C. Option C";
+          answerBox.textContent =
+            "Incorrect. The correct answer: D. One permit for 10.100.2.0/24, implicit deny, outbound on g0/0/0 and g0/0/1.";
         }
       });
     });

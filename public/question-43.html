@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 43 - Ansible vs Chef</title>
+  <title>Question 43 - Ansible vs Chef characteristics</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -20,7 +20,7 @@
       color: #e6edf3;
     }
     .card {
-      width: min(1020px, 95vw);
+      width: min(1100px, 98vw);
       background: #121a2b;
       border: 1px solid #2d3b5a;
       border-radius: 14px;
@@ -28,37 +28,85 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
     h1 {
-      margin: 0 0 12px;
+      margin: 0 0 10px;
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
     .instructions {
-      margin: 0 0 14px;
+      margin: 0 0 12px;
       color: #b8c3d6;
+      font-size: 0.95rem;
     }
-    .row {
+    .dd-layout {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 10px;
+      grid-template-columns: minmax(200px, 1fr) minmax(220px, 1fr) minmax(220px, 1fr);
+      gap: 16px;
+      align-items: start;
     }
-    .left-box {
-      padding: 12px 14px;
+    @media (max-width: 900px) {
+      .dd-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    .bank-label {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #9fb0cc;
+      margin-bottom: 8px;
+    }
+    .bank-wrap {
+      padding: 12px;
       border-radius: 10px;
       border: 1px solid #6384ba;
+      background: #1a253b;
+    }
+    .bank {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 60px;
+    }
+    .token {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #4d89ff;
       background: #cfe9ff;
       color: #10243f;
-      font-weight: 700;
+      font-weight: 600;
+      font-size: 0.88rem;
+      line-height: 1.4;
+      cursor: grab;
+      user-select: none;
+      text-align: left;
+    }
+    .token:active {
+      cursor: grabbing;
+    }
+    .cat-title {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #e6edf3;
+      text-align: center;
+      padding: 8px;
+      border-radius: 8px;
+      background: #2a3550;
+      border: 1px solid #4a5f8a;
+    }
+    .cat-slots {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
     .drop-slot {
-      min-height: 48px;
+      min-height: 52px;
       padding: 8px;
       border-radius: 10px;
-      border: 1px dashed #d9c28a;
-      background: #f7ecd7;
+      border: 1px dashed #d98a8a;
+      background: #f7d7d7;
       display: flex;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
     }
     .drop-slot.over {
       border-style: solid;
@@ -72,35 +120,16 @@
       border-color: #8c3434;
       background: #442020;
     }
-    .bank-wrap {
-      margin-top: 14px;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #2c3f62;
-      background: #1a253b;
-    }
-    .bank {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      min-height: 46px;
-    }
-    .token {
-      padding: 8px 12px;
-      border-radius: 8px;
-      border: 1px solid #d9c28a;
+    .drop-slot .token {
+      border-color: #d9c28a;
       background: #f7ecd7;
       color: #2a2112;
-      font-weight: 700;
-      cursor: grab;
-      user-select: none;
-    }
-    .token:active {
-      cursor: grabbing;
+      width: 100%;
     }
     .actions {
-      margin-top: 14px;
+      margin-top: 16px;
       display: flex;
+      flex-wrap: wrap;
       gap: 10px;
       align-items: center;
     }
@@ -114,10 +143,14 @@
       font-weight: 700;
       text-decoration: none;
       cursor: pointer;
+      font-family: inherit;
       display: inline-block;
     }
     #result {
       font-weight: 700;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      flex: 1 1 200px;
     }
     #nextWrap {
       display: none;
@@ -126,31 +159,36 @@
 </head>
 <body>
   <main class="card">
-    <h1>Question 43: Match each automation characteristic to Ansible or Chef.</h1>
-    <p class="instructions">Drag `Ansible` or `Chef` onto each description.</p>
+    <h1>Drag and drop the automation characteristics from the left onto the corresponding tools on the right.</h1>
+    <p class="instructions">
+      Place three items under <strong>Ansible</strong> and one under <strong>Chef</strong>. Use <strong>Check Answer</strong> when done, or <strong>Reset</strong> to start over.
+    </p>
 
-    <div class="row">
-      <div class="left-box">all functions are performed over SSH</div>
-      <div class="drop-slot" data-target="Ansible"></div>
-    </div>
-    <div class="row">
-      <div class="left-box">Ruby syntax in configuration files</div>
-      <div class="drop-slot" data-target="Chef"></div>
-    </div>
-    <div class="row">
-      <div class="left-box">YAML configuration language</div>
-      <div class="drop-slot" data-target="Ansible"></div>
-    </div>
-    <div class="row">
-      <div class="left-box">based on Python</div>
-      <div class="drop-slot" data-target="Ansible"></div>
-    </div>
-
-    <div class="bank-wrap">
-      <div id="bank" class="bank">
-        <div class="token" draggable="true" data-value="Ansible">Ansible</div>
-        <div class="token" draggable="true" data-value="Chef">Chef</div>
-        <div class="token" draggable="true" data-value="Puppet">Puppet</div>
+    <div class="dd-layout">
+      <div>
+        <div class="bank-label">Characteristics</div>
+        <div class="bank-wrap">
+          <div id="bank" class="bank">
+            <div class="token" draggable="true" data-cat="ansible">all functions are performed over SSH</div>
+            <div class="token" draggable="true" data-cat="chef">Ruby syntax in configuration files</div>
+            <div class="token" draggable="true" data-cat="ansible">YAML configuration language</div>
+            <div class="token" draggable="true" data-cat="ansible">based on Python</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h2 class="cat-title">Ansible</h2>
+        <div class="cat-slots">
+          <div class="drop-slot" data-cat="ansible"></div>
+          <div class="drop-slot" data-cat="ansible"></div>
+          <div class="drop-slot" data-cat="ansible"></div>
+        </div>
+      </div>
+      <div>
+        <h2 class="cat-title">Chef</h2>
+        <div class="cat-slots">
+          <div class="drop-slot" data-cat="chef"></div>
+        </div>
       </div>
     </div>
 
@@ -170,21 +208,17 @@
     const result = document.getElementById("result");
     const nextWrap = document.getElementById("nextWrap");
     let dragged = null;
-    let draggedFromBank = false;
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
       history.pushState(null, "", location.href);
     });
 
-    function bindTokenDrag(token) {
+    document.querySelectorAll(".token").forEach((token) => {
       token.addEventListener("dragstart", () => {
         dragged = token;
-        draggedFromBank = token.parentElement === bank;
       });
-    }
-
-    document.querySelectorAll(".token").forEach(bindTokenDrag);
+    });
 
     slots.forEach((slot) => {
       slot.addEventListener("dragover", (e) => {
@@ -197,40 +231,47 @@
         slot.classList.remove("over");
         if (!dragged) return;
         const existing = slot.querySelector(".token");
-        if (existing) existing.remove();
-
-        if (draggedFromBank) {
-          // Clone bank tokens so answers like "Ansible" can be reused.
-          const clone = dragged.cloneNode(true);
-          bindTokenDrag(clone);
-          slot.appendChild(clone);
-        } else {
-          slot.appendChild(dragged);
-        }
+        if (existing) bank.appendChild(existing);
+        slot.appendChild(dragged);
       });
     });
 
     bank.addEventListener("dragover", (e) => e.preventDefault());
     bank.addEventListener("drop", (e) => {
       e.preventDefault();
-      if (!dragged) return;
-      // Returning a cloned answer to bank deletes it; bank tokens are templates.
-      if (!draggedFromBank) dragged.remove();
+      if (dragged) bank.appendChild(dragged);
     });
 
     checkBtn.addEventListener("click", () => {
+      let filled = 0;
       let correct = 0;
       slots.forEach((slot) => {
         slot.classList.remove("correct", "incorrect");
         const token = slot.querySelector(".token");
-        if (token && token.dataset.value === slot.dataset.target) {
-          slot.classList.add("correct");
-          correct += 1;
-        } else {
-          slot.classList.add("incorrect");
+        if (token) {
+          filled += 1;
+          if (token.dataset.cat === slot.dataset.cat) correct += 1;
         }
       });
-      result.textContent = `Score: ${correct}/${slots.length}`;
+      const allFilled = filled === slots.length;
+      slots.forEach((slot) => {
+        const token = slot.querySelector(".token");
+        if (!token) {
+          slot.classList.add("incorrect");
+          return;
+        }
+        if (token.dataset.cat === slot.dataset.cat) slot.classList.add("correct");
+        else slot.classList.add("incorrect");
+      });
+      if (!allFilled) {
+        result.textContent = `Place all four characteristics (${filled}/4 in slots).`;
+        nextWrap.style.display = "none";
+        return;
+      }
+      const allMatch = correct === slots.length;
+      result.textContent = allMatch
+        ? `Score: ${correct}/${slots.length} — Ansible is agentless over SSH, uses YAML playbooks, and is implemented in Python. Chef cookbooks and recipes use Ruby-style DSL.`
+        : `Score: ${correct}/${slots.length} — Move mismatched items to the other column.`;
       nextWrap.style.display = "inline-block";
     });
 
@@ -238,7 +279,7 @@
       slots.forEach((slot) => {
         slot.classList.remove("correct", "incorrect", "over");
         const token = slot.querySelector(".token");
-        if (token) token.remove();
+        if (token) bank.appendChild(token);
       });
       result.textContent = "";
       nextWrap.style.display = "none";

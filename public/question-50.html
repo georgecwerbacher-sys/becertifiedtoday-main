@@ -137,7 +137,7 @@
 <body>
   <main class="card">
     <h1>Question 50: Drag the blue boxes under the correct tool.</h1>
-    <p class="instructions">`Ansible` and `Puppet` stay fixed. Place each blue statement in the correct field.</p>
+    <p class="instructions">Ansible and Puppet stay fixed. Drag each blue statement into the correct tool; order within a column does not matter.</p>
 
     <div class="layout">
       <section>
@@ -150,16 +150,16 @@
       </section>
 
       <section class="targets">
-        <div class="target-group">
+        <div class="target-group" data-expected="uses playbooks|procedural">
           <div class="target-title">Ansible</div>
-          <div class="drop-slot" data-target="uses playbooks"></div>
-          <div class="drop-slot" data-target="procedural"></div>
+          <div class="drop-slot"></div>
+          <div class="drop-slot"></div>
         </div>
 
-        <div class="target-group">
+        <div class="target-group" data-expected="uses a pull model|declarative">
           <div class="target-title">Puppet</div>
-          <div class="drop-slot" data-target="uses a pull model"></div>
-          <div class="drop-slot" data-target="declarative"></div>
+          <div class="drop-slot"></div>
+          <div class="drop-slot"></div>
         </div>
       </section>
     </div>
@@ -214,19 +214,28 @@
       if (dragged) bank.appendChild(dragged);
     });
 
+    function multisetEqual(a, b) {
+      if (a.length !== b.length) return false;
+      const sa = a.slice().sort();
+      const sb = b.slice().sort();
+      return sa.every((v, i) => v === sb[i]);
+    }
+
     checkBtn.addEventListener("click", () => {
-      let correct = 0;
-      slots.forEach((slot) => {
-        slot.classList.remove("correct", "incorrect");
-        const token = slot.querySelector(".token");
-        if (token && token.dataset.value === slot.dataset.target) {
-          slot.classList.add("correct");
-          correct += 1;
-        } else {
-          slot.classList.add("incorrect");
-        }
+      const groups = document.querySelectorAll(".target-group");
+      let correctGroups = 0;
+      groups.forEach((group) => {
+        const expected = group.dataset.expected.split("|");
+        const actual = [...group.querySelectorAll(".drop-slot .token")].map((t) => t.dataset.value);
+        const ok =
+          expected.length === actual.length && multisetEqual(expected, actual);
+        if (ok) correctGroups += 1;
+        group.querySelectorAll(".drop-slot").forEach((slot) => {
+          slot.classList.remove("correct", "incorrect");
+          slot.classList.add(ok ? "correct" : "incorrect");
+        });
       });
-      result.textContent = `Score: ${correct}/${slots.length}`;
+      result.textContent = `Score: ${correctGroups}/${groups.length}`;
       nextWrap.style.display = "inline-block";
     });
 

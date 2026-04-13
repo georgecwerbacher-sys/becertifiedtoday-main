@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 71 - Complete Static NAT</title>
+  <title>Question 71 - OSPFv2 network statements</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -32,22 +32,10 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
-    }
-    .image-wrap img {
-      display: block;
-      width: calc(100% * 2 / 3);
-      height: auto;
-      margin-left: auto;
-      margin-right: auto;
-    }
     .choice {
-      display: block;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
       margin: 10px 0;
       padding: 12px 14px;
       border-radius: 10px;
@@ -57,8 +45,28 @@
       cursor: pointer;
     }
     .choice input {
-      margin-right: 10px;
-      transform: translateY(1px);
+      margin-top: 4px;
+      flex-shrink: 0;
+    }
+    .choice-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .choice-router {
+      font-weight: 700;
+    }
+    .ios-block {
+      margin: 8px 0 0;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #2c3f62;
+      background: #0f1728;
+      color: #d4e5ff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      overflow-x: auto;
+      white-space: pre;
     }
     .answer {
       margin-top: 18px;
@@ -66,6 +74,8 @@
       border-radius: 10px;
       font-weight: 700;
       display: none;
+      font-size: 0.95rem;
+      line-height: 1.45;
     }
     .answer.correct {
       background: #113e2d;
@@ -93,15 +103,55 @@
 </head>
 <body>
   <main class="card">
-    <div class="image-wrap">
-      <img src="/assets/question71-top.png" alt="Static NAT topology and initial command exhibit" />
-    </div>
-    <h1>After configuring `ip nat inside source static 10.70.5.1 10.45.1.7`, which commands complete the static NAT setup?</h1>
+    <h1>
+      Refer to the exhibit. R2 has interfaces in 172.16.1.0/24 and 172.16.2.0/24. Which configuration enables OSPFv2 process 0 on R2 in area 0 using valid network statements?
+    </h1>
 
-    <label class="choice"><input type="radio" name="q71" value="A" />A. Option A</label>
-    <label class="choice"><input type="radio" name="q71" value="B" />B. Option B</label>
-    <label class="choice"><input type="radio" name="q71" value="C" />C. Option C</label>
-    <label class="choice"><input type="radio" name="q71" value="D" />D. Option D</label>
+    <label class="choice">
+      <input type="radio" name="q71" value="A" />
+      <span class="choice-body">
+        <span class="choice-router">A. R2</span>
+        <pre class="ios-block">router ospf 0
+network 172.16.1.0 255.255.255.0 area 0
+network 172.16.2.0 255.255.255.0 area 0</pre>
+      </span>
+    </label>
+    <label class="choice">
+      <input type="radio" name="q71" value="B" />
+      <span class="choice-body">
+        <span class="choice-router">B. R2</span>
+        <pre class="ios-block">router ospf 0
+network 172.16.1.0 0.0.0.255 area 0
+network 172.16.2.0 255.255.255.0 area 0</pre>
+      </span>
+    </label>
+    <label class="choice">
+      <input type="radio" name="q71" value="C" />
+      <span class="choice-body">
+        <span class="choice-router">C. R1</span>
+        <pre class="ios-block">router ospf 0
+network 192.168.1.0 0.0.0.255 area 0
+network 192.168.2.0 0.0.0.255 area 0</pre>
+      </span>
+    </label>
+    <label class="choice">
+      <input type="radio" name="q71" value="D" />
+      <span class="choice-body">
+        <span class="choice-router">D. R2</span>
+        <pre class="ios-block">router ospf 0
+network 172.16.1.0 0.0.0.255 area 0
+network 172.16.2.0 0.0.0.255 area 0</pre>
+      </span>
+    </label>
+    <label class="choice">
+      <input type="radio" name="q71" value="E" />
+      <span class="choice-body">
+        <span class="choice-router">E. R1</span>
+        <pre class="ios-block">router ospf 0
+network 192.168.1.0 255.255.255.0 area 0
+network 192.168.2.0 255.255.255.0 area 0</pre>
+      </span>
+    </label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
@@ -123,12 +173,14 @@
       option.addEventListener("change", () => {
         answerBox.style.display = "block";
         nextWrap.style.display = "block";
-        if (option.value === "B") {
+        if (option.value === "D") {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. B. Gi0/0 is NAT outside and Gi0/1 is NAT inside.";
+          answerBox.textContent =
+            "Correct. D. OSPF network statements require a wildcard mask, not a subnet mask. R2 should advertise 172.16.1.0/24 and 172.16.2.0/24 with 0.0.0.255. A and E use subnet masks; B mixes wildcard and mask; C is on R1 with the wrong local subnets for this scenario.";
         } else {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect. The correct answer: B. Gi0/0 is NAT outside and Gi0/1 is NAT inside.";
+          answerBox.textContent =
+            "Incorrect. The correct answer: D. Use wildcard 0.0.0.255 for each /24 on R2 in router OSPF configuration.";
         }
       });
     });
