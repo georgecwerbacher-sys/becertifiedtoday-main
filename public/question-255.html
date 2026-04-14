@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question 255 - NetFlow export to Catalyst Center</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+    }
+    .card {
+      width: min(1040px, 98vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+    }
+    .image-wrap {
+      margin-bottom: 14px;
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .image-wrap img {
+      display: block;
+      width: 100%;
+      max-width: 920px;
+      height: auto;
+      margin: 0 auto;
+    }
+    .choice {
+      display: block;
+      margin: 10px 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #1a253b;
+      border: 1px solid #2c3f62;
+      font-size: 1rem;
+      cursor: pointer;
+      line-height: 1.45;
+    }
+    .choice input {
+      margin-right: 10px;
+      transform: translateY(1px);
+    }
+    .answer {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    .answer.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+    }
+    .answer.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+    }
+    .next-wrap {
+      margin-top: 18px;
+      display: none;
+    }
+    .next-link {
+      display: inline-block;
+      text-decoration: none;
+      color: #e6edf3;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <p style="margin: 0 0 8px; font-size: 0.95rem; color: #9fb0cc">Refer to the exhibit.</p>
+    <div class="image-wrap">
+      <img
+        src="/assets/question255-netflow-catalyst-center.png"
+        alt="Four CLI options A through D for NetFlow export on R1 toward 192.168.23.1 UDP 23000 on Gig0/1"
+      />
+    </div>
+    <h1>
+      High bandwidth utilization is occurring on interface Gig0/1 of a router. An engineer must identify the flows that are consuming the most bandwidth. Cisco Catalyst Center is used as a flow exporter and is configured with the IP address 192.168.23.1 and UDP port 23000. Which configuration must be applied to set NetFlow data export and capture on the router?
+    </h1>
+
+    <label class="choice"><input type="radio" name="q255" value="A" />A. Option A</label>
+    <label class="choice"><input type="radio" name="q255" value="B" />B. Option B</label>
+    <label class="choice"><input type="radio" name="q255" value="C" />C. Option C</label>
+    <label class="choice"><input type="radio" name="q255" value="D" />D. Option D</label>
+
+    <div id="answerBox" class="answer" aria-live="polite"></div>
+    <div id="nextWrap" class="next-wrap">
+      <a class="next-link" href="/question-256.html">Next</a>
+    </div>
+  </main>
+
+  <script>
+    const answerBox = document.getElementById("answerBox");
+    const nextWrap = document.getElementById("nextWrap");
+    const options = document.querySelectorAll('input[name="q255"]');
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    options.forEach((option) => {
+      option.addEventListener("change", () => {
+        answerBox.style.display = "block";
+        nextWrap.style.display = "block";
+        if (option.value === "C") {
+          answerBox.className = "answer correct";
+          answerBox.textContent =
+            "Correct. C. Classic (cache-based) NetFlow uses ip flow-export version 9, ip flow-export destination with the collector IP and UDP port, then enables accounting on the interface with ip flow ingress and ip flow egress so flows in both directions are exported to 192.168.23.1:23000. Option A’s ip flow monitor line is incomplete (no monitor name or direction). Option B omits the UDP port and places collect commands under the interface, which is invalid. Option D uses ip flow-top-talkers for local top-talker display, not the export setup for an external collector.";
+        } else {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent =
+            "Incorrect. The correct answer: C. Use NetFlow v9 export to 192.168.23.1 port 23000 and enable ip flow ingress and ip flow egress on GigabitEthernet0/1.";
+        }
+      });
+    });
+  </script>
+  <style>
+    .home-key {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+    .home-key:hover {
+      filter: brightness(1.08);
+    }
+  </style>
+  <a class="home-key" href="/practice-launcher.html">Home</a>
+  <script src="/js/practice-questions.js"></script>
+</body>
+</html>

@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 252 - Python JSONEncoder encode drag and drop</title>
+  <title>Question 261 - AAA authentication login method order</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -32,58 +32,53 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 12px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
-    }
-    .image-wrap img {
-      display: block;
-      width: 100%;
-      max-width: 900px;
-      height: auto;
-      margin: 0 auto;
-    }
     .instructions {
-      margin: 0 0 14px;
+      margin: 0 0 12px;
       color: #b8c3d6;
       font-size: 0.95rem;
       line-height: 1.45;
     }
+    .config-block {
+      margin: 0 0 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid #2c3f62;
+      background: #0d1424;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: #e6edf3;
+      overflow-x: auto;
+    }
     .row {
       display: grid;
-      grid-template-columns: minmax(220px, 1fr) minmax(120px, 200px);
+      grid-template-columns: minmax(100px, 140px) 1fr;
       gap: 12px;
       margin-bottom: 10px;
-      align-items: center;
-    }
-    @media (max-width: 700px) {
-      .row {
-        grid-template-columns: 1fr;
-      }
+      align-items: stretch;
     }
     .left-box {
-      padding: 10px 12px;
+      padding: 12px 14px;
       border-radius: 10px;
       border: 1px solid #6384ba;
       background: #cfe9ff;
       color: #10243f;
       font-weight: 700;
-      font-size: 0.76rem;
-      line-height: 1.35;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
     }
     .drop-slot {
-      min-height: 44px;
+      min-height: 52px;
       padding: 8px;
       border-radius: 10px;
       border: 1px dashed #d98a8a;
       background: #f7d7d7;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
     }
     .drop-slot.over {
       border-style: solid;
@@ -99,7 +94,12 @@
     }
     .drop-slot .token {
       width: 100%;
-      text-align: center;
+    }
+    .drop-slot[data-empty="true"].correct {
+      color: #b8e0c8;
+      font-weight: 700;
+      font-size: 0.85rem;
+      justify-content: center;
     }
     .bank-wrap {
       margin-top: 14px;
@@ -108,21 +108,27 @@
       border: 1px solid #2c3f62;
       background: #1a253b;
     }
+    .bank-label {
+      margin: 0 0 8px;
+      font-size: 0.9rem;
+      color: #9fb0cc;
+      font-weight: 700;
+    }
     .bank {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 10px;
       min-height: 46px;
     }
     .token {
-      padding: 8px 14px;
+      padding: 10px 12px;
       border-radius: 8px;
       border: 1px solid #6384ba;
       background: #cfe9ff;
       color: #10243f;
       font-weight: 700;
-      font-size: 0.88rem;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82rem;
+      line-height: 1.4;
       cursor: grab;
       user-select: none;
     }
@@ -159,35 +165,53 @@
 </head>
 <body>
   <main class="card">
-    <p style="margin: 0 0 8px; font-size: 0.95rem; color: #9fb0cc">Refer to the exhibit.</p>
-    <div class="image-wrap">
-      <img src="/assets/question252-json-encoder-exhibit.png" alt="Python script: obj = json blank blank blank" />
-    </div>
+    <p style="margin: 0 0 8px; font-size: 0.95rem; color: #9fb0cc">Configuration (R1)</p>
+    <pre class="config-block">aaa new-model
+aaa authentication login default group ACE group AAA_RADIUS local-case
+aaa session-id common</pre>
     <h1>
-      Drag and drop the code snippets from the bottom onto the blanks in the script to convert a Python object into a JSON string. Not all options are used.
+      An engineer creates the configuration above. Drag and drop the authentication methods from the left into the order of priority on the right. Not all options are used.
     </h1>
-    <p class="instructions">Complete <code>obj = json.___().___(___)</code> in order: class name, method, argument.</p>
+    <p class="instructions">
+      Place the first method tried in Step 1, the second in Step 2, and the third in Step 3. Leave Step 4 empty (not all slots are used).
+    </p>
 
     <div class="row">
-      <div class="left-box">Blank 1 — json.___()</div>
-      <div class="drop-slot" data-target="JSONEncoder"></div>
+      <div class="left-box">Step 1</div>
+      <div
+        class="drop-slot"
+        data-target="AAA servers of ACE group"
+        data-alt="tacacs servers of group ACE"
+      ></div>
     </div>
     <div class="row">
-      <div class="left-box">Blank 2 — .___( … )</div>
-      <div class="drop-slot" data-target="encode"></div>
+      <div class="left-box">Step 2</div>
+      <div class="drop-slot" data-target="AAA servers of AAA_RADIUS group"></div>
     </div>
     <div class="row">
-      <div class="left-box">Blank 3 — argument inside parentheses</div>
-      <div class="drop-slot" data-target="data"></div>
+      <div class="left-box">Step 3</div>
+      <div class="drop-slot" data-target="local configured username in case-sensitive format"></div>
+    </div>
+    <div class="row">
+      <div class="left-box">Step 4</div>
+      <div class="drop-slot" data-empty="true" data-target=""></div>
     </div>
 
     <div class="bank-wrap">
+      <div class="bank-label">Bank (drag into steps)</div>
       <div id="bank" class="bank">
-        <div class="token" draggable="true" data-value="decode">decode</div>
-        <div class="token" draggable="true" data-value="data">data</div>
-        <div class="token" draggable="true" data-value="JSONEncoder">JSONEncoder</div>
-        <div class="token" draggable="true" data-value="JSONDecoder">JSONDecoder</div>
-        <div class="token" draggable="true" data-value="encode">encode</div>
+        <div class="token" draggable="true" data-value="If no method works, then deny login">
+          If no method works, then deny login
+        </div>
+        <div class="token" draggable="true" data-value="tacacs servers of group ACE">tacacs servers of group ACE</div>
+        <div class="token" draggable="true" data-value="AAA servers of AAA_RADIUS group">AAA servers of AAA_RADIUS group</div>
+        <div class="token" draggable="true" data-value="local configured username in non-case-sensitive format">
+          local configured username in non-case-sensitive format
+        </div>
+        <div class="token" draggable="true" data-value="AAA servers of ACE group">AAA servers of ACE group</div>
+        <div class="token" draggable="true" data-value="local configured username in case-sensitive format">
+          local configured username in case-sensitive format
+        </div>
       </div>
     </div>
 
@@ -195,7 +219,7 @@
       <button id="checkBtn" type="button">Check Answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <span id="result"></span>
-      <span id="nextWrap"><a class="next-link" href="/question-253.html">Next</a></span>
+      <span id="nextWrap"><a class="next-link" href="/question-262.html">Next</a></span>
     </div>
   </main>
 
@@ -241,19 +265,35 @@
       if (dragged) bank.appendChild(dragged);
     });
 
+    function slotOk(slot) {
+      const token = slot.querySelector(".token");
+      if (slot.dataset.empty === "true") {
+        return !token;
+      }
+      if (!token) return false;
+      const v = token.dataset.value;
+      if (v === slot.dataset.target) return true;
+      if (slot.dataset.alt && v === slot.dataset.alt) return true;
+      return false;
+    }
+
     checkBtn.addEventListener("click", () => {
       let correct = 0;
       slots.forEach((slot) => {
         slot.classList.remove("correct", "incorrect");
-        const token = slot.querySelector(".token");
-        if (token && token.dataset.value === slot.dataset.target) {
+        if (slotOk(slot)) {
           slot.classList.add("correct");
           correct += 1;
         } else {
           slot.classList.add("incorrect");
         }
       });
-      result.textContent = `Score: ${correct}/${slots.length}`;
+      if (correct === slots.length) {
+        result.textContent =
+          "Score: 4/4 — Matches aaa authentication login default group ACE group AAA_RADIUS local-case: servers in group ACE first, then servers in group AAA_RADIUS, then local-case (case-sensitive local users); leave Step 4 empty.";
+      } else {
+        result.textContent = `Score: ${correct}/${slots.length}`;
+      }
       nextWrap.style.display = "inline-block";
     });
 

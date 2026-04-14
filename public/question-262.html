@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 252 - Python JSONEncoder encode drag and drop</title>
+  <title>Question 262 - REST API authentication methods</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -32,58 +32,45 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 12px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
-    }
-    .image-wrap img {
-      display: block;
-      width: 100%;
-      max-width: 900px;
-      height: auto;
-      margin: 0 auto;
-    }
     .instructions {
-      margin: 0 0 14px;
+      margin: 0 0 12px;
       color: #b8c3d6;
       font-size: 0.95rem;
       line-height: 1.45;
     }
     .row {
       display: grid;
-      grid-template-columns: minmax(220px, 1fr) minmax(120px, 200px);
+      grid-template-columns: minmax(200px, 1fr) minmax(160px, 0.95fr);
       gap: 12px;
       margin-bottom: 10px;
-      align-items: center;
+      align-items: stretch;
     }
-    @media (max-width: 700px) {
+    @media (max-width: 720px) {
       .row {
         grid-template-columns: 1fr;
       }
     }
     .left-box {
-      padding: 10px 12px;
+      padding: 12px 14px;
       border-radius: 10px;
       border: 1px solid #6384ba;
       background: #cfe9ff;
       color: #10243f;
       font-weight: 700;
-      font-size: 0.76rem;
-      line-height: 1.35;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82rem;
+      line-height: 1.4;
+      display: flex;
+      align-items: center;
     }
     .drop-slot {
-      min-height: 44px;
+      min-height: 52px;
       padding: 8px;
       border-radius: 10px;
       border: 1px dashed #d98a8a;
       background: #f7d7d7;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
     }
     .drop-slot.over {
       border-style: solid;
@@ -99,7 +86,6 @@
     }
     .drop-slot .token {
       width: 100%;
-      text-align: center;
     }
     .bank-wrap {
       margin-top: 14px;
@@ -108,6 +94,12 @@
       border: 1px solid #2c3f62;
       background: #1a253b;
     }
+    .bank-label {
+      margin: 0 0 8px;
+      font-size: 0.9rem;
+      color: #9fb0cc;
+      font-weight: 700;
+    }
     .bank {
       display: flex;
       flex-wrap: wrap;
@@ -115,14 +107,14 @@
       min-height: 46px;
     }
     .token {
-      padding: 8px 14px;
+      padding: 10px 12px;
       border-radius: 8px;
       border: 1px solid #6384ba;
       background: #cfe9ff;
       color: #10243f;
       font-weight: 700;
-      font-size: 0.88rem;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82rem;
+      line-height: 1.35;
       cursor: grab;
       user-select: none;
     }
@@ -151,6 +143,9 @@
     #result {
       font-weight: 700;
       color: #e6edf3;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      max-width: 100%;
     }
     #nextWrap {
       display: none;
@@ -159,35 +154,33 @@
 </head>
 <body>
   <main class="card">
-    <p style="margin: 0 0 8px; font-size: 0.95rem; color: #9fb0cc">Refer to the exhibit.</p>
-    <div class="image-wrap">
-      <img src="/assets/question252-json-encoder-exhibit.png" alt="Python script: obj = json blank blank blank" />
-    </div>
-    <h1>
-      Drag and drop the code snippets from the bottom onto the blanks in the script to convert a Python object into a JSON string. Not all options are used.
-    </h1>
-    <p class="instructions">Complete <code>obj = json.___().___(___)</code> in order: class name, method, argument.</p>
+    <h1>Drag and drop the REST API authentication method from the left to the description on the right.</h1>
+    <p class="instructions">Drag each blue method tile into the pink description row that best matches it, then click Check Answer.</p>
 
     <div class="row">
-      <div class="left-box">Blank 1 — json.___()</div>
-      <div class="drop-slot" data-target="JSONEncoder"></div>
+      <div class="left-box">public API resource</div>
+      <div class="drop-slot" data-target="token-based authentication"></div>
     </div>
     <div class="row">
-      <div class="left-box">Blank 2 — .___( … )</div>
-      <div class="drop-slot" data-target="encode"></div>
+      <div class="left-box">username and password in an encoded string</div>
+      <div class="drop-slot" data-target="HTTP basic authentication"></div>
     </div>
     <div class="row">
-      <div class="left-box">Blank 3 — argument inside parentheses</div>
-      <div class="drop-slot" data-target="data"></div>
+      <div class="left-box">API-dependent secret</div>
+      <div class="drop-slot" data-target="secure vault"></div>
+    </div>
+    <div class="row">
+      <div class="left-box">authorization through identity provider</div>
+      <div class="drop-slot" data-target="OAuth"></div>
     </div>
 
     <div class="bank-wrap">
+      <div class="bank-label">Methods (bank)</div>
       <div id="bank" class="bank">
-        <div class="token" draggable="true" data-value="decode">decode</div>
-        <div class="token" draggable="true" data-value="data">data</div>
-        <div class="token" draggable="true" data-value="JSONEncoder">JSONEncoder</div>
-        <div class="token" draggable="true" data-value="JSONDecoder">JSONDecoder</div>
-        <div class="token" draggable="true" data-value="encode">encode</div>
+        <div class="token" draggable="true" data-value="secure vault">secure vault</div>
+        <div class="token" draggable="true" data-value="OAuth">OAuth</div>
+        <div class="token" draggable="true" data-value="token-based authentication">token-based authentication</div>
+        <div class="token" draggable="true" data-value="HTTP basic authentication">HTTP basic authentication</div>
       </div>
     </div>
 
@@ -195,7 +188,7 @@
       <button id="checkBtn" type="button">Check Answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <span id="result"></span>
-      <span id="nextWrap"><a class="next-link" href="/question-253.html">Next</a></span>
+      <span id="nextWrap"><a class="next-link" href="/question-263.html">Next</a></span>
     </div>
   </main>
 
@@ -253,7 +246,12 @@
           slot.classList.add("incorrect");
         }
       });
-      result.textContent = `Score: ${correct}/${slots.length}`;
+      if (correct === slots.length) {
+        result.textContent =
+          "Score: 4/4 — HTTP Basic sends username and password as a Base64-encoded string. OAuth delegates authorization through an identity/authorization server (identity provider pattern). A secure vault stores and supplies API-dependent secrets. Token-based schemes (for example API keys or bearer tokens) are commonly used to access published API resources.";
+      } else {
+        result.textContent = `Score: ${correct}/${slots.length}`;
+      }
       nextWrap.style.display = "inline-block";
     });
 

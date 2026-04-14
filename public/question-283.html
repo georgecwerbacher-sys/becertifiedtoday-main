@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 252 - Python JSONEncoder encode drag and drop</title>
+  <title>Question 283 - PHP array to JSON drag and drop</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -54,7 +54,7 @@
     }
     .row {
       display: grid;
-      grid-template-columns: minmax(220px, 1fr) minmax(120px, 200px);
+      grid-template-columns: minmax(240px, 1fr) minmax(140px, 200px);
       gap: 12px;
       margin-bottom: 10px;
       align-items: center;
@@ -70,10 +70,14 @@
       border: 1px solid #6384ba;
       background: #cfe9ff;
       color: #10243f;
+      font-weight: 600;
+      font-size: 0.82rem;
+      line-height: 1.4;
+    }
+    .left-box code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.78rem;
       font-weight: 700;
-      font-size: 0.76rem;
-      line-height: 1.35;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
     .drop-slot {
       min-height: 44px;
@@ -121,8 +125,8 @@
       background: #cfe9ff;
       color: #10243f;
       font-weight: 700;
-      font-size: 0.88rem;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       cursor: grab;
       user-select: none;
     }
@@ -161,33 +165,48 @@
   <main class="card">
     <p style="margin: 0 0 8px; font-size: 0.95rem; color: #9fb0cc">Refer to the exhibit.</p>
     <div class="image-wrap">
-      <img src="/assets/question252-json-encoder-exhibit.png" alt="Python script: obj = json blank blank blank" />
+      <img
+        src="/assets/question283-php-json-dnd.png"
+        alt="PHP script with four yellow blanks and a bank of draggable snippets: encodedJSON variable, inputArray assignment, json_decode, inputArray, json_encode"
+      />
     </div>
     <h1>
-      Drag and drop the code snippets from the bottom onto the blanks in the script to convert a Python object into a JSON string. Not all options are used.
+      Drag and drop the code snippets from the bottom onto the blanks in the PHP script to convert a PHP array into JSON format. Not all options are used.
     </h1>
-    <p class="instructions">Complete <code>obj = json.___().___(___)</code> in order: class name, method, argument.</p>
+    <p class="instructions">Place one snippet in each blank in order (1)–(4), matching the exhibit. Then click Check Answer.</p>
 
     <div class="row">
-      <div class="left-box">Blank 1 — json.___()</div>
-      <div class="drop-slot" data-target="JSONEncoder"></div>
+      <div class="left-box">
+        <strong>Blank 1</strong> — After <code>&lt;?php</code>, start the nested associative array: variable assignment and <code>array</code> before the opening <code>(</code> shown in the exhibit.
+      </div>
+      <div class="drop-slot" data-target="$inputArray = array"></div>
     </div>
     <div class="row">
-      <div class="left-box">Blank 2 — .___( … )</div>
-      <div class="drop-slot" data-target="encode"></div>
+      <div class="left-box">
+        <strong>Blank 2</strong> — Function name in <code>$encodedJSON = … ( … , JSON_PRETTY_PRINT);</code> that encodes PHP data to a JSON string.
+      </div>
+      <div class="drop-slot" data-target="json_encode"></div>
     </div>
     <div class="row">
-      <div class="left-box">Blank 3 — argument inside parentheses</div>
-      <div class="drop-slot" data-target="data"></div>
+      <div class="left-box">
+        <strong>Blank 3</strong> — First argument to that function (the array variable to encode).
+      </div>
+      <div class="drop-slot" data-target="$inputArray"></div>
+    </div>
+    <div class="row">
+      <div class="left-box">
+        <strong>Blank 4</strong> — Argument to <code>print()</code> so the JSON string is output.
+      </div>
+      <div class="drop-slot" data-target="$encodedJSON"></div>
     </div>
 
     <div class="bank-wrap">
       <div id="bank" class="bank">
-        <div class="token" draggable="true" data-value="decode">decode</div>
-        <div class="token" draggable="true" data-value="data">data</div>
-        <div class="token" draggable="true" data-value="JSONEncoder">JSONEncoder</div>
-        <div class="token" draggable="true" data-value="JSONDecoder">JSONDecoder</div>
-        <div class="token" draggable="true" data-value="encode">encode</div>
+        <div class="token" draggable="true" data-value="json_decode">json_decode</div>
+        <div class="token" draggable="true" data-value="$encodedJSON">$encodedJSON</div>
+        <div class="token" draggable="true" data-value="$inputArray">$inputArray</div>
+        <div class="token" draggable="true" data-value="json_encode">json_encode</div>
+        <div class="token" draggable="true" data-value="$inputArray = array">$inputArray = array</div>
       </div>
     </div>
 
@@ -195,7 +214,7 @@
       <button id="checkBtn" type="button">Check Answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <span id="result"></span>
-      <span id="nextWrap"><a class="next-link" href="/question-253.html">Next</a></span>
+      <span id="nextWrap"><a class="next-link" href="/question-284.html">Next</a></span>
     </div>
   </main>
 
