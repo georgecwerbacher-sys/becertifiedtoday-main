@@ -148,6 +148,33 @@
     );
   }
 
+  /**
+   * For single-answer radio questions that still rely on a Check button,
+   * auto-run validation on selection and hide the redundant Check control.
+   */
+  function enableAutoCheckForSingleChoice(card) {
+    if (!card || card.dataset.ccnpAutoCheckSingle === "1") return;
+
+    var radios = card.querySelectorAll('input[type="radio"]');
+    if (!radios.length) return;
+
+    var checkBtn = card.querySelector("#checkBtn");
+    if (!checkBtn) return;
+
+    // Avoid changing behavior on checkbox/multi-answer pages.
+    if (card.querySelector('input[type="checkbox"]')) return;
+
+    card.dataset.ccnpAutoCheckSingle = "1";
+    checkBtn.style.display = "none";
+
+    radios.forEach(function (r) {
+      r.addEventListener("change", function () {
+        if (!r.checked) return;
+        checkBtn.click();
+      });
+    });
+  }
+
   function parseQueue() {
     var raw = sessionStorage.getItem(QUEUE_KEY);
     if (!raw) return null;
@@ -348,6 +375,7 @@
     if (!card || document.getElementById("ccnpQToolbar")) return;
 
     bindPointerFriendlyChoices(card);
+    enableAutoCheckForSingleChoice(card);
     stripBottomNextFromCard(card);
     stripDuplicateSimNavNext();
 
