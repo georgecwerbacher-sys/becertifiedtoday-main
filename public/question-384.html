@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question 384 - Python JSON device update drag and drop</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+    }
+    .card {
+      width: min(1100px, 95vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+    }
+    .instructions {
+      margin: 0 0 14px;
+      color: #b9c7dd;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    .image-wrap {
+      margin: 10px 0 14px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #32456b;
+      background: #0f1728;
+    }
+    .image-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .panel {
+      border: 1px solid #32456b;
+      border-radius: 12px;
+      padding: 12px;
+      background: #0f1728;
+    }
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      color: #cfe3ff;
+    }
+    .drop-slot {
+      min-height: 46px;
+      border: 1px dashed #4f6b99;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      margin: 8px 0;
+      background: rgba(79, 107, 153, 0.12);
+    }
+    .drop-slot.over {
+      border-color: #7fb3ff;
+      background: rgba(127, 179, 255, 0.18);
+    }
+    .drop-slot.correct {
+      border-color: #1f7a58;
+      background: rgba(17, 62, 45, 0.55);
+    }
+    .drop-slot.incorrect {
+      border-color: #8c3434;
+      background: rgba(68, 32, 32, 0.6);
+    }
+    .slot-label {
+      color: #b9c7dd;
+      font-size: 0.9rem;
+      margin-right: 8px;
+    }
+    .bank {
+      display: grid;
+      gap: 8px;
+    }
+    .token {
+      border: 1px solid #3d6dbb;
+      background: #254b8a;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 9px 11px;
+      cursor: grab;
+      user-select: none;
+      font-weight: 600;
+      width: fit-content;
+    }
+    .actions {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    button,
+    .next-link {
+      background: #254b8a;
+      color: #e6edf3;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-block;
+    }
+    .answer {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+      line-height: 1.45;
+    }
+    .answer.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+    }
+    .answer.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+    }
+    .next-wrap {
+      margin-top: 16px;
+      display: none;
+    }
+    @media (max-width: 900px) {
+      .board {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>An engineer must create a script to append and modify device entries in a JSON-formatted file. Drag and drop the statements onto the blanks within the code to complete the script. Not all options are used.</h1>
+    <p class="instructions">Use the JSON file content and code skeleton exhibits, then place the correct statements into the five blanks.</p>
+
+    <div class="image-wrap">
+      <img src="/assets/question384-json-file-contents.png" alt="Initial JSON formatted device file contents" />
+    </div>
+    <div class="image-wrap">
+      <img src="/assets/question384-python-json-dnd.png" alt="Python script skeleton with five blanks and six candidate statements" />
+    </div>
+
+    <div class="board">
+      <div class="panel">
+        <h2>Code blanks</h2>
+        <div class="drop-slot" data-accept="import-json">
+          <span class="slot-label">Blank 1 (top import)</span>
+        </div>
+        <div class="drop-slot" data-accept="while-true">
+          <span class="slot-label">Blank 2 (inside try)</span>
+        </div>
+        <div class="drop-slot" data-accept="except">
+          <span class="slot-label">Blank 3 (exception handler)</span>
+        </div>
+        <div class="drop-slot" data-accept="file-open">
+          <span class="slot-label">Blank 4 (open devicesData.json)</span>
+        </div>
+        <div class="drop-slot" data-accept="file-close">
+          <span class="slot-label">Blank 5 (final statement)</span>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Statements</h2>
+        <div id="bank" class="bank">
+          <div class="token" draggable="true" data-value="while-true">while True:</div>
+          <div class="token" draggable="true" data-value="except">except</div>
+          <div class="token" draggable="true" data-value="import-json">import json</div>
+          <div class="token" draggable="true" data-value="file-open-method">File.open()</div>
+          <div class="token" draggable="true" data-value="file-close">File.close()</div>
+          <div class="token" draggable="true" data-value="file-open">File = open</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="checkBtn" type="button">Check Answer</button>
+      <button id="resetBtn" type="button">Reset</button>
+    </div>
+    <div id="result" class="answer" aria-live="polite"></div>
+    <div id="nextWrap" class="next-wrap">
+      <a class="next-link" href="/question-385.html">Next</a>
+    </div>
+  </main>
+
+  <script>
+    const bank = document.getElementById("bank");
+    const slots = document.querySelectorAll(".drop-slot");
+    const checkBtn = document.getElementById("checkBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const result = document.getElementById("result");
+    const nextWrap = document.getElementById("nextWrap");
+    let dragged = null;
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    function wire(token) {
+      token.addEventListener("dragstart", () => {
+        dragged = token;
+      });
+      token.addEventListener("dragend", () => {
+        dragged = null;
+      });
+    }
+
+    document.querySelectorAll(".token").forEach(wire);
+
+    function placeToken(container, token) {
+      if (!container || !token) return;
+      const existing = container.querySelector(".token");
+      if (existing) bank.appendChild(existing);
+      container.appendChild(token);
+    }
+
+    slots.forEach((slot) => {
+      slot.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        slot.classList.add("over");
+      });
+      slot.addEventListener("dragleave", () => {
+        slot.classList.remove("over");
+      });
+      slot.addEventListener("drop", (e) => {
+        e.preventDefault();
+        slot.classList.remove("over");
+        placeToken(slot, dragged);
+      });
+    });
+
+    bank.addEventListener("dragover", (e) => e.preventDefault());
+    bank.addEventListener("drop", (e) => {
+      e.preventDefault();
+      if (dragged) bank.appendChild(dragged);
+    });
+
+    checkBtn.addEventListener("click", () => {
+      const allCorrect = [...slots].every((slot) => {
+        const token = slot.querySelector(".token");
+        return token && token.dataset.value === slot.dataset.accept;
+      });
+
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (!token) {
+          slot.classList.add("incorrect");
+          return;
+        }
+        slot.classList.add(
+          token.dataset.value === slot.dataset.accept ? "correct" : "incorrect"
+        );
+      });
+
+      result.style.display = "block";
+      nextWrap.style.display = "inline-block";
+      if (allCorrect) {
+        result.className = "answer correct";
+        result.textContent = "Correct. The script statements are placed in the proper blanks.";
+      } else {
+        result.className = "answer incorrect";
+        result.textContent = "Incorrect. Recheck the control flow and file handling statements.";
+      }
+    });
+
+    resetBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+        slot.classList.remove("correct", "incorrect", "over");
+      });
+      result.style.display = "none";
+      result.textContent = "";
+      nextWrap.style.display = "none";
+    });
+  </script>
+  <style>
+    .home-key {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+    .home-key:hover {
+      filter: brightness(1.08);
+    }
+  </style>
+  <a class="home-key" href="/practice-launcher.html">Home</a>
+  <script src="/js/practice-questions.js"></script>
+</body>
+</html>

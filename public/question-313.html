@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question 313 - QoS mechanisms drag and drop</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+    }
+    .card {
+      width: min(1040px, 98vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+    }
+    .instructions {
+      margin: 0 0 14px;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: minmax(230px, 1fr) minmax(310px, 1.35fr);
+      gap: 14px;
+      align-items: start;
+    }
+    .panel {
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
+      padding: 12px;
+      background: #1a253b;
+    }
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      color: #f0c040;
+    }
+    .drop-slot {
+      min-height: 52px;
+      padding: 8px;
+      border-radius: 10px;
+      border: 1px dashed #d98a8a;
+      background: #f7d7d7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      color: #1d293d;
+      position: relative;
+    }
+    .drop-slot:last-child {
+      margin-bottom: 0;
+    }
+    .slot-label {
+      font-size: 0.87rem;
+      line-height: 1.35;
+      font-weight: 700;
+      text-align: center;
+      width: 100%;
+    }
+    .drop-slot.over {
+      border-style: solid;
+      border-color: #4d89ff;
+    }
+    .drop-slot.correct {
+      border-color: #1f7a58;
+      background: #113e2d;
+    }
+    .drop-slot.incorrect {
+      border-color: #8c3434;
+      background: #442020;
+    }
+    .drop-slot .token {
+      width: 100%;
+      text-align: center;
+    }
+    .bank-wrap {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #2c3f62;
+      background: #1a253b;
+    }
+    .bank {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 46px;
+    }
+    .token {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #6384ba;
+      background: #cfe9ff;
+      color: #10243f;
+      font-weight: 600;
+      font-size: 0.85rem;
+      line-height: 1.35;
+      cursor: grab;
+      user-select: none;
+      text-align: center;
+    }
+    .token:active {
+      cursor: grabbing;
+    }
+    .actions {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    button,
+    .next-link {
+      background: #254b8a;
+      color: #e6edf3;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-block;
+    }
+    #result {
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    #nextWrap {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>
+      Drag and drop the QoS mechanisms from the left onto their descriptions on the right.
+    </h1>
+    <p class="instructions">
+      Match all three items, then click Check Answer.
+    </p>
+    <div class="board">
+      <div class="panel">
+        <h2>QoS mechanisms</h2>
+        <div class="bank-wrap" style="margin-top:0;padding:0;border:none;background:transparent;">
+          <div id="bank" class="bank">
+            <div class="token" draggable="true" data-value="shaping">shaping</div>
+            <div class="token" draggable="true" data-value="policing">policing</div>
+            <div class="token" draggable="true" data-value="cos">CoS</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Descriptions</h2>
+        <div class="drop-slot" data-accept="shaping">
+          <span class="slot-label">bandwidth management technique which delays datagrams</span>
+        </div>
+        <div class="drop-slot" data-accept="policing">
+          <span class="slot-label">tool to enforce rate-limiting on ingress/egress</span>
+        </div>
+        <div class="drop-slot" data-accept="cos">
+          <span class="slot-label">portion of the 802.1Q header used to classify packets</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="checkBtn" type="button">Check Answer</button>
+      <button id="resetBtn" type="button">Reset</button>
+      <span id="result"></span>
+      <span id="nextWrap"><a class="next-link" href="/question-314.html">Next</a></span>
+    </div>
+  </main>
+
+  <script>
+    const bank = document.getElementById("bank");
+    const slots = document.querySelectorAll(".drop-slot");
+    const checkBtn = document.getElementById("checkBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const result = document.getElementById("result");
+    const nextWrap = document.getElementById("nextWrap");
+    let dragged = null;
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    document.querySelectorAll(".token").forEach((token) => {
+      token.addEventListener("dragstart", () => {
+        dragged = token;
+      });
+    });
+
+    slots.forEach((slot) => {
+      slot.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        slot.classList.add("over");
+      });
+      slot.addEventListener("dragleave", () => slot.classList.remove("over"));
+      slot.addEventListener("drop", (e) => {
+        e.preventDefault();
+        slot.classList.remove("over");
+        if (!dragged) return;
+        const existing = slot.querySelector(".token");
+        if (existing) bank.appendChild(existing);
+        slot.appendChild(dragged);
+      });
+    });
+
+    bank.addEventListener("dragover", (e) => e.preventDefault());
+    bank.addEventListener("drop", (e) => {
+      e.preventDefault();
+      if (dragged) bank.appendChild(dragged);
+    });
+
+    checkBtn.addEventListener("click", () => {
+      const full = [...slots].every((slot) => {
+        const token = slot.querySelector(".token");
+        return token && token.dataset.value === slot.dataset.accept;
+      });
+
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (!token) {
+          slot.classList.add("incorrect");
+          return;
+        }
+        slot.classList.add(
+          token.dataset.value === slot.dataset.accept ? "correct" : "incorrect"
+        );
+      });
+
+      result.textContent = full
+        ? "Correct. You matched all QoS mechanisms to their correct descriptions."
+        : "Incorrect. Check shaping vs policing behavior and the CoS field mapping.";
+      nextWrap.style.display = "inline-block";
+    });
+
+    resetBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+      result.textContent = "";
+      nextWrap.style.display = "none";
+    });
+  </script>
+  <style>
+    .home-key {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+    .home-key:hover {
+      filter: brightness(1.08);
+    }
+  </style>
+  <a class="home-key" href="/practice-launcher.html">Home</a>
+  <script src="/js/practice-questions.js"></script>
+</body>
+</html>
