@@ -150,10 +150,20 @@
         <div id="studyGrid" class="sim-grid" style="display: none" aria-label="Study groups"></div>
       </section>
     </div>
+
+    <h2 class="section-heading">Drag and drop</h2>
+    <div class="practice-block">
+      <section class="start-box" aria-label="Drag and drop practice">
+        <p id="dragDropLoadMsg" style="margin:0 0 8px;font-size:0.9rem;color:#9fb0cc;">Loading drag-and-drop set…</p>
+        <div id="dragDropGrid" class="sim-grid" style="display: none" aria-label="Drag-and-drop groups"></div>
+      </section>
+    </div>
     <script>
       (function () {
         var grid = document.getElementById("studyGrid");
+        var ddGrid = document.getElementById("dragDropGrid");
         var msg = document.getElementById("studyLoadMsg");
+        var ddMsg = document.getElementById("dragDropLoadMsg");
         var errEl = document.getElementById("studyLoadError");
         fetch("/js/study-config.json", { cache: "no-store" })
           .then(function (r) {
@@ -187,7 +197,11 @@
                 "<a class=\"start-btn\" href=\"/begin-questions-linear.html?mode=dragdrop\" style=\"background:#1a3d6e;border-color:#3d6dbb;\">Linear</a>" +
                 "<a class=\"start-btn\" href=\"/begin-questions-review.html?mode=dragdrop\" style=\"background:#1e5c40;border-color:#2a8f5e;\">Review quiz</a>" +
                 "</div>";
-              grid.appendChild(ddArt);
+              ddGrid.appendChild(ddArt);
+              ddGrid.style.display = "grid";
+              if (ddMsg) ddMsg.style.display = "none";
+            } else if (ddMsg) {
+              ddMsg.textContent = "No drag-and-drop questions found.";
             }
 
             studies.forEach(function (s) {
