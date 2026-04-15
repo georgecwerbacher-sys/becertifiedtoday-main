@@ -163,6 +163,33 @@
           .then(function (cfg) {
             if (msg) msg.style.display = "none";
             var studies = cfg.studies || [];
+            var dragDropIds = cfg.dragDropIds || [];
+
+            if (dragDropIds.length) {
+              var ddArt = document.createElement("article");
+              ddArt.className = "sim-box";
+              ddArt.setAttribute("aria-label", "Drag and Drop");
+              var ddRange =
+                "Questions " +
+                dragDropIds[0] +
+                "–" +
+                dragDropIds[dragDropIds.length - 1] +
+                " (" +
+                dragDropIds.length +
+                " total)";
+              ddArt.innerHTML =
+                "<h3 class=\"sim-box-title\">Drag and Drop</h3>" +
+                "<p class=\"study-meta\">" +
+                ddRange +
+                "</p>" +
+                "<div class=\"study-actions\">" +
+                "<a class=\"start-btn\" href=\"/begin-questions-random.html?mode=dragdrop\">Random</a>" +
+                "<a class=\"start-btn\" href=\"/begin-questions-linear.html?mode=dragdrop\" style=\"background:#1a3d6e;border-color:#3d6dbb;\">Linear</a>" +
+                "<a class=\"start-btn\" href=\"/begin-questions-review.html?mode=dragdrop\" style=\"background:#1e5c40;border-color:#2a8f5e;\">Review quiz</a>" +
+                "</div>";
+              grid.appendChild(ddArt);
+            }
+
             studies.forEach(function (s) {
               var art = document.createElement("article");
               art.className = "sim-box";

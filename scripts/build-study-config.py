@@ -21,11 +21,20 @@ QUESTION_RE = re.compile(r"^question-(\d+)\.html$", re.I)
 
 def main() -> None:
     ids: list[int] = []
+    drag_drop_ids: list[int] = []
     for path in PUBLIC.glob("question-*.html"):
         m = QUESTION_RE.match(path.name)
         if m:
-            ids.append(int(m.group(1)))
+            qid = int(m.group(1))
+            ids.append(qid)
+            try:
+                html = path.read_text(encoding="utf-8")
+            except OSError:
+                html = ""
+            if 'class="drop-slot"' in html and 'draggable="true"' in html:
+                drag_drop_ids.append(qid)
     ids.sort()
+    drag_drop_ids.sort()
 
     studies: list[dict] = []
     if ids:
@@ -43,6 +52,7 @@ def main() -> None:
         "groupSize": GROUP_SIZE,
         "studies": studies,
         "allIds": ids,
+        "dragDropIds": drag_drop_ids,
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")

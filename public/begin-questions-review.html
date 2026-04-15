@@ -22,6 +22,7 @@
   <script>
     (function () {
       var studyParam = new URLSearchParams(location.search).get("study");
+      var modeParam = new URLSearchParams(location.search).get("mode");
       var studyIndex = parseInt(studyParam || "1", 10);
       if (studyIndex < 1 || studyIndex !== studyIndex) studyIndex = 1;
 
@@ -31,12 +32,17 @@
           return r.json();
         })
         .then(function (cfg) {
-          var study = (cfg.studies || [])[studyIndex - 1];
-          if (!study || !study.ids || !study.ids.length) {
+          var ids = [];
+          if (modeParam === "dragdrop") {
+            ids = (cfg.dragDropIds || []).slice();
+          } else {
+            var study = (cfg.studies || [])[studyIndex - 1];
+            ids = study && study.ids ? study.ids.slice() : [];
+          }
+          if (!ids.length) {
             location.replace("/practice-launcher.html");
             return;
           }
-          var ids = study.ids.slice();
           for (var i = ids.length - 1; i > 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));
             var t = ids[i];

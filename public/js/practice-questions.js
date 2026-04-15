@@ -175,6 +175,45 @@
     });
   }
 
+  /**
+   * Randomize visible answer option order for standard choice questions.
+   * This shuffles label rows only; input values/correctness logic remain unchanged.
+   */
+  function randomizeChoiceOrder(card) {
+    if (!card || card.dataset.ccnpChoicesRandomized === "1") return;
+
+    var choices = Array.prototype.slice.call(card.querySelectorAll("label.choice"));
+    if (choices.length < 2) return;
+
+    var first = choices[0];
+    var parent = first.parentNode;
+    if (!parent) return;
+
+    // Keep choices as a contiguous block and avoid moving rows
+    // across media/exhibit sections.
+    for (var i = 1; i < choices.length; i++) {
+      if (choices[i].parentNode !== parent) return;
+    }
+    for (var j = 1; j < choices.length; j++) {
+      if (choices[j - 1].nextElementSibling !== choices[j]) return;
+    }
+
+    for (var k = choices.length - 1; k > 0; k--) {
+      var r = Math.floor(Math.random() * (k + 1));
+      var tmp = choices[k];
+      choices[k] = choices[r];
+      choices[r] = tmp;
+    }
+
+    var anchor = first;
+    choices.forEach(function (choice) {
+      parent.insertBefore(choice, anchor);
+      anchor = choice.nextSibling;
+    });
+
+    card.dataset.ccnpChoicesRandomized = "1";
+  }
+
   function parseQueue() {
     var raw = sessionStorage.getItem(QUEUE_KEY);
     if (!raw) return null;
@@ -375,6 +414,7 @@
     if (!card || document.getElementById("ccnpQToolbar")) return;
 
     bindPointerFriendlyChoices(card);
+    randomizeChoiceOrder(card);
     enableAutoCheckForSingleChoice(card);
     stripBottomNextFromCard(card);
     stripDuplicateSimNavNext();
