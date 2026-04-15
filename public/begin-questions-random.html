@@ -32,6 +32,10 @@
           return r.json();
         })
         .then(function (cfg) {
+          var dragDropAll = {};
+          (cfg.dragDropIds || []).concat(cfg.dragDropJsonIds || []).forEach(function (id) {
+            dragDropAll[id] = true;
+          });
           var ids = [];
           if (modeParam === "dragdrop") {
             ids = (cfg.dragDropIds || []).slice();
@@ -39,7 +43,7 @@
             ids = (cfg.dragDropJsonIds || []).slice();
           } else {
             var study = (cfg.studies || [])[studyIndex - 1];
-            ids = study && study.ids ? study.ids.slice() : [];
+            ids = study && study.ids ? study.ids.filter(function (id) { return !dragDropAll[id]; }) : [];
           }
           if (!ids.length) {
             location.replace("/practice-launcher.html");

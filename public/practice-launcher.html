@@ -172,9 +172,22 @@
           })
           .then(function (cfg) {
             if (msg) msg.style.display = "none";
-            var studies = cfg.studies || [];
             var dragDropIds = cfg.dragDropIds || [];
             var dragDropJsonIds = cfg.dragDropJsonIds || [];
+            var dragDropAll = {};
+            dragDropIds.concat(dragDropJsonIds).forEach(function (id) {
+              dragDropAll[id] = true;
+            });
+            var studies = (cfg.studies || []).map(function (s) {
+              var filteredIds = (s.ids || []).filter(function (id) {
+                return !dragDropAll[id];
+              });
+              return {
+                index: s.index,
+                name: s.name,
+                ids: filteredIds
+              };
+            });
 
             function appendDragDropCard(title, ids, mode) {
               if (!ids.length) return;
@@ -204,6 +217,7 @@
             }
 
             studies.forEach(function (s) {
+              if (!(s.ids || []).length) return;
               var art = document.createElement("article");
               art.className = "sim-box";
               art.setAttribute("aria-label", s.name);
