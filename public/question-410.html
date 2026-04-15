@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 402 - SD-Access connected to traditional campus</title>
+  <title>Question 410 - SD-WAN data-plane security</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -90,26 +90,26 @@
 </head>
 <body class="ccnp-practice-ui">
   <main class="card">
-    <h1>What occurs when a Cisco SD-Access fabric is connected to a traditional campus network?</h1>
+    <h1>Which feature provides data-plane security for Cisco Catalyst SD-WAN networks?</h1>
 
     <label class="choice">
-      <input type="radio" name="q402" value="A" />
-      <strong>A.</strong> All clients must be migrated to new IP addresses that match the IP pool within the fabric.
+      <input type="radio" name="q410" value="A" />
+      <strong>A.</strong> TLS/DTLS
     </label>
 
     <label class="choice">
-      <input type="radio" name="q402" value="B" />
-      <strong>B.</strong> Traditional campus clients are seen as fabric clients when a Layer 2 border node is used for the VLAN segment.
+      <input type="radio" name="q410" value="B" />
+      <strong>B.</strong> IPsec
     </label>
 
     <label class="choice">
-      <input type="radio" name="q402" value="C" />
-      <strong>C.</strong> Only Layer 3 connectivity is supported between the fabric and the traditional campus network.
+      <input type="radio" name="q410" value="C" />
+      <strong>C.</strong> SSH
     </label>
 
     <label class="choice">
-      <input type="radio" name="q402" value="D" />
-      <strong>D.</strong> A fabric intermediate node is used to connect the fabric with the traditional campus network.
+      <input type="radio" name="q410" value="D" />
+      <strong>D.</strong> IPS
     </label>
 
     <div class="actions">
@@ -119,7 +119,7 @@
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-403.html">Next</a>
+      <a class="next-link" href="/question-411.html">Next</a>
     </div>
   </main>
 
@@ -128,7 +128,7 @@
     const resetBtn = document.getElementById("resetBtn");
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q402"]');
+    const options = document.querySelectorAll('input[name="q410"]');
     const correct = "B";
 
     history.pushState(null, "", location.href);
@@ -150,8 +150,8 @@
       answerBox.style.display = "block";
       answerBox.className = `answer ${ok ? "correct" : "incorrect"}`;
       answerBox.textContent = ok
-        ? "Correct. With a Layer 2 border for that VLAN, traditional campus endpoints are represented as fabric clients."
-        : "Incorrect. The correct behavior is that clients appear as fabric clients when a Layer 2 border node is used.";
+        ? "Correct. User and application traffic on the SD-WAN overlay is protected on the data plane with IPsec (for example on IPsec tunnel interfaces between sites). TLS/DTLS is used heavily for control-plane sessions such as OMP, not as the primary data-plane encapsulation."
+        : "Incorrect. The correct answer is B (IPsec). TLS/DTLS secures control/management channels; SSH is device management; IPS is inline threat inspection, not the baseline SD-WAN data-plane encryption mechanism.";
       nextWrap.style.display = "inline-block";
     });
 

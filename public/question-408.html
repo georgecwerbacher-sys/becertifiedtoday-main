@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 402 - SD-Access connected to traditional campus</title>
+  <title>Question 408 - SD-Access edge node functions (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -90,26 +90,27 @@
 </head>
 <body class="ccnp-practice-ui">
   <main class="card">
-    <h1>What occurs when a Cisco SD-Access fabric is connected to a traditional campus network?</h1>
+    <h1>Which two functions is a Cisco SD-Access edge node responsible for? (Choose two)</h1>
 
     <label class="choice">
-      <input type="radio" name="q402" value="A" />
-      <strong>A.</strong> All clients must be migrated to new IP addresses that match the IP pool within the fabric.
+      <input type="checkbox" name="q408" value="A" />
+      <strong>A.</strong> provides multiple entry and exit points for fabric traffic
     </label>
-
     <label class="choice">
-      <input type="radio" name="q402" value="B" />
-      <strong>B.</strong> Traditional campus clients are seen as fabric clients when a Layer 2 border node is used for the VLAN segment.
+      <input type="checkbox" name="q408" value="B" />
+      <strong>B.</strong> provides the default exit point for fabric traffic
     </label>
-
     <label class="choice">
-      <input type="radio" name="q402" value="C" />
-      <strong>C.</strong> Only Layer 3 connectivity is supported between the fabric and the traditional campus network.
+      <input type="checkbox" name="q408" value="C" />
+      <strong>C.</strong> provides the default entry point for fabric traffic
     </label>
-
     <label class="choice">
-      <input type="radio" name="q402" value="D" />
-      <strong>D.</strong> A fabric intermediate node is used to connect the fabric with the traditional campus network.
+      <input type="checkbox" name="q408" value="D" />
+      <strong>D.</strong> provides a host database that maps endpoint IDs to a current location
+    </label>
+    <label class="choice">
+      <input type="checkbox" name="q408" value="E" />
+      <strong>E.</strong> authenticates endpoints
     </label>
 
     <div class="actions">
@@ -119,7 +120,7 @@
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-403.html">Next</a>
+      <a class="next-link" href="/question-409.html">Next</a>
     </div>
   </main>
 
@@ -128,8 +129,8 @@
     const resetBtn = document.getElementById("resetBtn");
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q402"]');
-    const correct = "B";
+    const options = document.querySelectorAll('input[name="q408"]');
+    const correct = new Set(["C", "E"]);
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -137,27 +138,36 @@
     });
 
     checkBtn.addEventListener("click", () => {
-      const selected = [...options].find((opt) => opt.checked);
-      if (!selected) {
-        answerBox.style.display = "block";
+      const selected = new Set(
+        [...options].filter((o) => o.checked).map((o) => o.value)
+      );
+
+      answerBox.style.display = "block";
+
+      if (selected.size !== 2) {
         answerBox.className = "answer incorrect";
-        answerBox.textContent = "Select an option before checking the answer.";
+        answerBox.textContent = "Select exactly two answers, then check again.";
         nextWrap.style.display = "none";
         return;
       }
 
-      const ok = selected.value === correct;
-      answerBox.style.display = "block";
-      answerBox.className = `answer ${ok ? "correct" : "incorrect"}`;
-      answerBox.textContent = ok
-        ? "Correct. With a Layer 2 border for that VLAN, traditional campus endpoints are represented as fabric clients."
-        : "Incorrect. The correct behavior is that clients appear as fabric clients when a Layer 2 border node is used.";
+      const isCorrect = [...correct].every((v) => selected.has(v));
+
+      if (isCorrect) {
+        answerBox.className = "answer correct";
+        answerBox.textContent =
+          "Correct. C and E. Fabric edge nodes attach endpoints and are where traffic enters the overlay; they participate in authentication and policy with Cisco ISE. Border nodes handle external entry/exit, and the control plane maintains endpoint location mappings.";
+      } else {
+        answerBox.className = "answer incorrect";
+        answerBox.textContent =
+          "Incorrect. The correct answers are C and E. Multiple or default fabric exit/entry points for external networks are border roles; the host mapping database is a control plane function.";
+      }
       nextWrap.style.display = "inline-block";
     });
 
     resetBtn.addEventListener("click", () => {
-      options.forEach((opt) => {
-        opt.checked = false;
+      options.forEach((o) => {
+        o.checked = false;
       });
       answerBox.style.display = "none";
       answerBox.textContent = "";

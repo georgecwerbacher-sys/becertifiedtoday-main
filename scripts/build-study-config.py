@@ -17,7 +17,7 @@ PUBLIC = ROOT / "public"
 OUT = PUBLIC / "js" / "study-config.json"
 GROUP_SIZE = 50
 QUESTION_RE = re.compile(r"^question-(\d+)\.html$", re.I)
-JSON_DRAGDROP_EXCLUDE_IDS = {271, 309}
+JSON_DRAGDROP_EXCLUDE_IDS = {271, 309, 405}
 
 
 def main() -> None:
