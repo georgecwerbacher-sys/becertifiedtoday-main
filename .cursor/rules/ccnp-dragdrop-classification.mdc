@@ -1,0 +1,33 @@
+---
+description: Classify new drag-and-drop questions into standard vs JSON groups and enforce JSON-style formatting.
+alwaysApply: true
+---
+
+# CCNP drag-and-drop classification and format
+
+When adding or editing a drag-and-drop question page (`public/question-{N}.html`), always place it in the correct drag-and-drop bucket and use the correct layout style.
+
+## Required behavior
+
+1. **Detect drag-and-drop pages**
+   - Treat a page as drag-and-drop when it contains both drop slots and draggable tokens (for example `class="drop-slot"` and `draggable="true"`).
+
+2. **If the drag-and-drop content is JSON-focused**
+   - Use the JSON script style format used by pages like `public/question-314.html`:
+     - two-panel layout (`.layout` with `Python script`/`Code snippets` style sections),
+     - script/template block with inline drop slots,
+     - consistent token/drop-slot styling used by modern JSON drag-and-drop pages.
+   - Ensure it is categorized in the **JSON drag-and-drop** list (`dragDropJsonIds`) after rebuild.
+
+3. **If the drag-and-drop content is NOT JSON-focused**
+   - Keep it in **standard drag-and-drop** (`dragDropIds`), not `dragDropJsonIds`.
+   - Do not force JSON wording/format unless the prompt is actually JSON-based.
+
+4. **Rebuild registry every time**
+   - Run `python3 scripts/build-study-config.py` after drag-and-drop additions/edits so `public/js/study-config.json` reflects correct grouping.
+
+## Guardrails
+
+- Do not hand-edit `public/js/study-config.json` when the generator can handle it.
+- If a specific question must override automatic JSON detection, update `JSON_DRAGDROP_EXCLUDE_IDS` in `scripts/build-study-config.py`.
+- Keep drag-and-drop questions accessible only through drag-and-drop launcher modes, not regular study practice modes.
