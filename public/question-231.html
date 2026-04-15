@@ -20,7 +20,7 @@
       color: #e6edf3;
     }
     .card {
-      width: min(1040px, 98vw);
+      width: min(1100px, 98vw);
       background: #121a2b;
       border: 1px solid #2d3b5a;
       border-radius: 14px;
@@ -29,22 +29,20 @@
     }
     h1 {
       margin: 0 0 8px;
-      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      font-size: clamp(1.02rem, 2vw, 1.4rem);
       line-height: 1.35;
     }
     .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
+      margin: 12px 0 14px;
+      border-radius: 12px;
       overflow: hidden;
-      background: #fff;
+      border: 1px solid #32456b;
+      background: #0f1728;
     }
     .image-wrap img {
       display: block;
       width: 100%;
-      max-width: 900px;
       height: auto;
-      margin: 0 auto;
     }
     .instructions {
       margin: 0 0 14px;
@@ -52,61 +50,62 @@
       font-size: 0.95rem;
       line-height: 1.45;
     }
-    .row {
+    .layout {
       display: grid;
-      grid-template-columns: minmax(200px, 1fr) minmax(140px, 180px);
-      gap: 12px;
-      margin-bottom: 10px;
-      align-items: center;
+      grid-template-columns: minmax(460px, 1.3fr) minmax(220px, 0.7fr);
+      gap: 14px;
+      align-items: start;
     }
-    @media (max-width: 640px) {
-      .row {
-        grid-template-columns: 1fr;
-      }
-    }
-    .left-box {
-      padding: 10px 12px;
+    .panel {
+      border: 1px solid #2c3f62;
       border-radius: 10px;
-      border: 1px solid #6384ba;
-      background: #cfe9ff;
-      color: #10243f;
-      font-weight: 700;
-      font-size: 0.78rem;
-      line-height: 1.35;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      padding: 12px;
+      background: #1a253b;
+    }
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      color: #f0c040;
+    }
+    pre {
+      margin: 0;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #2c3f62;
+      background: #0f1628;
+      color: #dfe7f3;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.89rem;
+      line-height: 1.5;
+      overflow-x: auto;
+      white-space: pre;
     }
     .drop-slot {
-      min-height: 44px;
-      padding: 8px;
+      display: inline-flex;
+      min-width: 90px;
+      min-height: 30px;
+      padding: 3px 8px;
+      margin: 0 2px;
       border-radius: 10px;
       border: 1px dashed #d98a8a;
       background: #f7d7d7;
-      display: flex;
+      color: #1d293d;
+      vertical-align: baseline;
       align-items: center;
       justify-content: center;
     }
     .drop-slot.over {
-      border-style: solid;
       border-color: #4d89ff;
     }
     .drop-slot.correct {
       border-color: #1f7a58;
       background: #113e2d;
+      color: #e6edf3;
     }
     .drop-slot.incorrect {
       border-color: #8c3434;
       background: #442020;
-    }
-    .drop-slot .token {
-      width: 100%;
-      text-align: center;
-    }
-    .bank-wrap {
-      margin-top: 14px;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #2c3f62;
-      background: #1a253b;
+      color: #e6edf3;
     }
     .bank {
       display: flex;
@@ -115,16 +114,18 @@
       min-height: 46px;
     }
     .token {
-      padding: 8px 14px;
+      padding: 8px 12px;
       border-radius: 8px;
       border: 1px solid #6384ba;
       background: #cfe9ff;
       color: #10243f;
       font-weight: 700;
       font-size: 0.9rem;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      line-height: 1.2;
       cursor: grab;
       user-select: none;
+      text-align: center;
+      min-width: 48px;
     }
     .token:active {
       cursor: grabbing;
@@ -155,47 +156,51 @@
     #nextWrap {
       display: none;
     }
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
   <main class="card">
-    <p style="margin: 0 0 8px; font-size: 0.95rem; color: #9fb0cc">Refer to the exhibit.</p>
+    <h1>Drag and drop the code snippets from the bottom onto blanks in the Python script so that the program changes the IP address and saves it as a new JSON file on the disk. Not all options are used.</h1>
+    <p class="instructions">
+      Match each blank in order (Blank 1–4). Two snippets stay unused in the bank.
+    </p>
+
     <div class="image-wrap">
       <img
         src="/assets/question231-python-json-ip-exhibit.png"
         alt="Python script blanks for json file read, loads, dumps, write with snippet bank"
       />
     </div>
-    <h1>Drag and drop the code snippets from the bottom onto blanks in the Python script so that the program changes the IP address and saves it as a new JSON file on the disk. Not all options are used.</h1>
-    <p class="instructions">
-      Match each blank in order (Blank 1–4). Two snippets stay unused in the bank.
-    </p>
 
-    <div class="row">
-      <div class="left-box">Blank 1 — json_file.___()</div>
-      <div class="drop-slot" data-target="read"></div>
-    </div>
-    <div class="row">
-      <div class="left-box">Blank 2 — json.___(json_file_content)</div>
-      <div class="drop-slot" data-target="loads"></div>
-    </div>
-    <div class="row">
-      <div class="left-box">Blank 3 — json.___(decoded_json)</div>
-      <div class="drop-slot" data-target="dumps"></div>
-    </div>
-    <div class="row">
-      <div class="left-box">Blank 4 — json_file.___(encoded_json_compact)</div>
-      <div class="drop-slot" data-target="write"></div>
-    </div>
+    <div class="layout">
+      <div class="panel">
+        <h2>Python script</h2>
+        <pre>import json
 
-    <div class="bank-wrap">
-      <div id="bank" class="bank">
-        <div class="token" draggable="true" data-value="dumps">dumps</div>
-        <div class="token" draggable="true" data-value="open">open</div>
-        <div class="token" draggable="true" data-value="read">read</div>
-        <div class="token" draggable="true" data-value="loads">loads</div>
-        <div class="token" draggable="true" data-value="load">load</div>
-        <div class="token" draggable="true" data-value="write">write</div>
+json_file = open("input.json", "r")
+json_file_content = json_file.<span class="drop-slot" data-target="read"></span>()
+decoded_json = json.<span class="drop-slot" data-target="loads"></span>(json_file_content)
+decoded_json["interface"]["ip"] = "10.10.10.10"
+encoded_json_compact = json.<span class="drop-slot" data-target="dumps"></span>(decoded_json)
+json_file = open("output.json", "w")
+json_file.<span class="drop-slot" data-target="write"></span>(encoded_json_compact)</pre>
+      </div>
+
+      <div class="panel">
+        <h2>Code snippets</h2>
+        <div id="bank" class="bank">
+          <div class="token" draggable="true" data-value="dumps">dumps</div>
+          <div class="token" draggable="true" data-value="open">open</div>
+          <div class="token" draggable="true" data-value="read">read</div>
+          <div class="token" draggable="true" data-value="loads">loads</div>
+          <div class="token" draggable="true" data-value="load">load</div>
+          <div class="token" draggable="true" data-value="write">write</div>
+        </div>
       </div>
     </div>
 

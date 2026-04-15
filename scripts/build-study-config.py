@@ -17,11 +17,13 @@ PUBLIC = ROOT / "public"
 OUT = PUBLIC / "js" / "study-config.json"
 GROUP_SIZE = 50
 QUESTION_RE = re.compile(r"^question-(\d+)\.html$", re.I)
+JSON_DRAGDROP_EXCLUDE_IDS = {271, 309}
 
 
 def main() -> None:
     ids: list[int] = []
     drag_drop_ids: list[int] = []
+    drag_drop_json_ids: list[int] = []
     for path in PUBLIC.glob("question-*.html"):
         m = QUESTION_RE.match(path.name)
         if m:
@@ -31,10 +33,15 @@ def main() -> None:
                 html = path.read_text(encoding="utf-8")
             except OSError:
                 html = ""
-            if 'class="drop-slot"' in html and 'draggable="true"' in html:
+            is_drag_drop = 'class="drop-slot"' in html and 'draggable="true"' in html
+            if is_drag_drop:
                 drag_drop_ids.append(qid)
+                if qid not in JSON_DRAGDROP_EXCLUDE_IDS and "json" in html.lower():
+                    drag_drop_json_ids.append(qid)
     ids.sort()
     drag_drop_ids.sort()
+    drag_drop_json_ids.sort()
+    drag_drop_standard_ids = [i for i in drag_drop_ids if i not in set(drag_drop_json_ids)]
 
     studies: list[dict] = []
     if ids:
@@ -52,7 +59,8 @@ def main() -> None:
         "groupSize": GROUP_SIZE,
         "studies": studies,
         "allIds": ids,
-        "dragDropIds": drag_drop_ids,
+        "dragDropIds": drag_drop_standard_ids,
+        "dragDropJsonIds": drag_drop_json_ids,
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")

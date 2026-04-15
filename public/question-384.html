@@ -49,64 +49,88 @@
       height: auto;
       display: block;
     }
-    .board {
+    .layout {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(460px, 1.3fr) minmax(220px, 0.7fr);
       gap: 14px;
+      align-items: start;
       margin-top: 10px;
     }
     .panel {
-      border: 1px solid #32456b;
-      border-radius: 12px;
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
       padding: 12px;
-      background: #0f1728;
+      background: #1a253b;
     }
     .panel h2 {
       margin: 0 0 10px;
       font-size: 1rem;
-      color: #cfe3ff;
+      color: #f0c040;
+    }
+    pre {
+      margin: 0;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #2c3f62;
+      background: #0f1628;
+      color: #dfe7f3;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.89rem;
+      line-height: 1.5;
+      overflow-x: auto;
+      white-space: pre;
     }
     .drop-slot {
-      min-height: 46px;
-      border: 1px dashed #4f6b99;
-      border-radius: 10px;
-      display: flex;
+      display: inline-flex;
+      min-width: 110px;
+      min-height: 30px;
+      padding: 3px 8px;
+      margin: 0 2px;
+      border-radius: 7px;
+      border: 1px dashed #d98a8a;
+      background: #f7d7d7;
+      color: #1d293d;
+      vertical-align: baseline;
       align-items: center;
-      gap: 8px;
-      padding: 8px;
-      margin: 8px 0;
-      background: rgba(79, 107, 153, 0.12);
+      justify-content: center;
     }
     .drop-slot.over {
-      border-color: #7fb3ff;
-      background: rgba(127, 179, 255, 0.18);
+      border-color: #4d89ff;
+      border-style: solid;
     }
     .drop-slot.correct {
       border-color: #1f7a58;
-      background: rgba(17, 62, 45, 0.55);
+      background: #113e2d;
+      color: #e6edf3;
     }
     .drop-slot.incorrect {
       border-color: #8c3434;
-      background: rgba(68, 32, 32, 0.6);
+      background: #442020;
+      color: #e6edf3;
     }
-    .slot-label {
-      color: #b9c7dd;
-      font-size: 0.9rem;
-      margin-right: 8px;
+    .drop-slot .token {
+      width: 100%;
+      text-align: center;
     }
     .bank {
-      display: grid;
-      gap: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      min-height: 46px;
     }
     .token {
-      border: 1px solid #3d6dbb;
-      background: #254b8a;
-      color: #e6edf3;
-      border-radius: 10px;
-      padding: 9px 11px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #6384ba;
+      background: #cfe9ff;
+      color: #10243f;
+      font-weight: 700;
+      font-size: 0.9rem;
+      line-height: 1.2;
       cursor: grab;
       user-select: none;
-      font-weight: 600;
+      text-align: center;
+      min-width: 48px;
       width: fit-content;
     }
     .actions {
@@ -149,7 +173,7 @@
       display: none;
     }
     @media (max-width: 900px) {
-      .board {
+      .layout {
         grid-template-columns: 1fr;
       }
     }
@@ -167,24 +191,22 @@
       <img src="/assets/question384-python-json-dnd.png" alt="Python script skeleton with five blanks and six candidate statements" />
     </div>
 
-    <div class="board">
+    <div class="layout">
       <div class="panel">
-        <h2>Code blanks</h2>
-        <div class="drop-slot" data-accept="import-json">
-          <span class="slot-label">Blank 1 (top import)</span>
-        </div>
-        <div class="drop-slot" data-accept="while-true">
-          <span class="slot-label">Blank 2 (inside try)</span>
-        </div>
-        <div class="drop-slot" data-accept="except">
-          <span class="slot-label">Blank 3 (exception handler)</span>
-        </div>
-        <div class="drop-slot" data-accept="file-open">
-          <span class="slot-label">Blank 4 (open devicesData.json)</span>
-        </div>
-        <div class="drop-slot" data-accept="file-close">
-          <span class="slot-label">Blank 5 (final statement)</span>
-        </div>
+        <h2>Python script</h2>
+        <pre><span class="drop-slot" data-accept="import-json"></span>
+
+data = []
+try:
+    <span class="drop-slot" data-accept="while-true"></span>
+        hostname = input("Hostname: ")
+        # ... collect fields and append/update records ...
+except <span class="drop-slot" data-accept="except"></span>:
+    pass
+
+File = <span class="drop-slot" data-accept="file-open"></span>("devicesData.json", "w")
+json.dump(data, File, indent=4)
+<span class="drop-slot" data-accept="file-close"></span></pre>
       </div>
       <div class="panel">
         <h2>Statements</h2>

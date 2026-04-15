@@ -20,7 +20,7 @@
       color: #e6edf3;
     }
     .card {
-      width: min(1040px, 98vw);
+      width: min(1100px, 98vw);
       background: #121a2b;
       border: 1px solid #2d3b5a;
       border-radius: 14px;
@@ -29,22 +29,20 @@
     }
     h1 {
       margin: 0 0 8px;
-      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      font-size: clamp(1.02rem, 2vw, 1.4rem);
       line-height: 1.35;
     }
     .image-wrap {
-      margin-bottom: 12px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
+      margin: 12px 0 14px;
+      border-radius: 12px;
       overflow: hidden;
-      background: #fff;
+      border: 1px solid #32456b;
+      background: #0f1728;
     }
     .image-wrap img {
       display: block;
       width: 100%;
-      max-width: 900px;
       height: auto;
-      margin: 0 auto;
     }
     .instructions {
       margin: 0 0 14px;
@@ -52,65 +50,62 @@
       font-size: 0.95rem;
       line-height: 1.45;
     }
-    .row {
+    .layout {
       display: grid;
-      grid-template-columns: minmax(240px, 1fr) minmax(140px, 200px);
-      gap: 12px;
-      margin-bottom: 10px;
-      align-items: center;
+      grid-template-columns: minmax(460px, 1.3fr) minmax(220px, 0.7fr);
+      gap: 14px;
+      align-items: start;
     }
-    @media (max-width: 700px) {
-      .row {
-        grid-template-columns: 1fr;
-      }
-    }
-    .left-box {
-      padding: 10px 12px;
+    .panel {
+      border: 1px solid #2c3f62;
       border-radius: 10px;
-      border: 1px solid #6384ba;
-      background: #cfe9ff;
-      color: #10243f;
-      font-weight: 600;
-      font-size: 0.82rem;
-      line-height: 1.4;
+      padding: 12px;
+      background: #1a253b;
     }
-    .left-box code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: 0.78rem;
-      font-weight: 700;
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      color: #f0c040;
+    }
+    pre {
+      margin: 0;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #2c3f62;
+      background: #0f1628;
+      color: #dfe7f3;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.89rem;
+      line-height: 1.5;
+      overflow-x: auto;
+      white-space: pre;
     }
     .drop-slot {
-      min-height: 44px;
-      padding: 8px;
+      display: inline-flex;
+      min-width: 110px;
+      min-height: 30px;
+      padding: 3px 8px;
+      margin: 0 2px;
       border-radius: 10px;
       border: 1px dashed #d98a8a;
       background: #f7d7d7;
-      display: flex;
+      color: #1d293d;
+      vertical-align: baseline;
       align-items: center;
       justify-content: center;
     }
     .drop-slot.over {
-      border-style: solid;
       border-color: #4d89ff;
     }
     .drop-slot.correct {
       border-color: #1f7a58;
       background: #113e2d;
+      color: #e6edf3;
     }
     .drop-slot.incorrect {
       border-color: #8c3434;
       background: #442020;
-    }
-    .drop-slot .token {
-      width: 100%;
-      text-align: center;
-    }
-    .bank-wrap {
-      margin-top: 14px;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #2c3f62;
-      background: #1a253b;
+      color: #e6edf3;
     }
     .bank {
       display: flex;
@@ -119,16 +114,18 @@
       min-height: 46px;
     }
     .token {
-      padding: 8px 14px;
+      padding: 8px 12px;
       border-radius: 8px;
       border: 1px solid #6384ba;
       background: #cfe9ff;
       color: #10243f;
       font-weight: 700;
-      font-size: 0.85rem;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.9rem;
+      line-height: 1.2;
       cursor: grab;
       user-select: none;
+      text-align: center;
+      min-width: 48px;
     }
     .token:active {
       cursor: grabbing;
@@ -159,54 +156,52 @@
     #nextWrap {
       display: none;
     }
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
   <main class="card">
-    <p style="margin: 0 0 8px; font-size: 0.95rem; color: #9fb0cc">Refer to the exhibit.</p>
-    <div class="image-wrap">
-      <img
-        src="/assets/question283-php-json-dnd.png"
-        alt="PHP script with four yellow blanks and a bank of draggable snippets: encodedJSON variable, inputArray assignment, json_decode, inputArray, json_encode"
-      />
-    </div>
     <h1>
       Drag and drop the code snippets from the bottom onto the blanks in the PHP script to convert a PHP array into JSON format. Not all options are used.
     </h1>
-    <p class="instructions">Place one snippet in each blank in order (1)–(4), matching the exhibit. Then click Check Answer.</p>
+    <p class="instructions">Fill all four blanks, then click Check Answer.</p>
 
-    <div class="row">
-      <div class="left-box">
-        <strong>Blank 1</strong> — After <code>&lt;?php</code>, start the nested associative array: variable assignment and <code>array</code> before the opening <code>(</code> shown in the exhibit.
-      </div>
-      <div class="drop-slot" data-target="$inputArray = array"></div>
-    </div>
-    <div class="row">
-      <div class="left-box">
-        <strong>Blank 2</strong> — Function name in <code>$encodedJSON = … ( … , JSON_PRETTY_PRINT);</code> that encodes PHP data to a JSON string.
-      </div>
-      <div class="drop-slot" data-target="json_encode"></div>
-    </div>
-    <div class="row">
-      <div class="left-box">
-        <strong>Blank 3</strong> — First argument to that function (the array variable to encode).
-      </div>
-      <div class="drop-slot" data-target="$inputArray"></div>
-    </div>
-    <div class="row">
-      <div class="left-box">
-        <strong>Blank 4</strong> — Argument to <code>print()</code> so the JSON string is output.
-      </div>
-      <div class="drop-slot" data-target="$encodedJSON"></div>
+    <div class="image-wrap">
+      <img
+        src="/assets/question283-php-json-dnd.png"
+        alt="PHP script with blanks and draggable code snippets"
+      />
     </div>
 
-    <div class="bank-wrap">
-      <div id="bank" class="bank">
-        <div class="token" draggable="true" data-value="json_decode">json_decode</div>
-        <div class="token" draggable="true" data-value="$encodedJSON">$encodedJSON</div>
-        <div class="token" draggable="true" data-value="$inputArray">$inputArray</div>
-        <div class="token" draggable="true" data-value="json_encode">json_encode</div>
-        <div class="token" draggable="true" data-value="$inputArray = array">$inputArray = array</div>
+    <div class="layout">
+      <div class="panel">
+        <h2>PHP script</h2>
+        <pre>&lt;?php
+
+<span class="drop-slot" data-target="$inputArray = array"></span>(
+  'name' =&gt; 'SwitchA',
+  'interfaces' =&gt; array('Gig1/0/1', 'Gig1/0/2')
+);
+
+$encodedJSON = <span class="drop-slot" data-target="json_encode"></span>(<span class="drop-slot" data-target="$inputArray"></span>, JSON_PRETTY_PRINT);
+
+print(<span class="drop-slot" data-target="$encodedJSON"></span>);
+?&gt;</pre>
+      </div>
+
+      <div class="panel">
+        <h2>Code snippets</h2>
+        <div id="bank" class="bank">
+          <div class="token" draggable="true" data-value="json_decode">json_decode</div>
+          <div class="token" draggable="true" data-value="$encodedJSON">$encodedJSON</div>
+          <div class="token" draggable="true" data-value="$inputArray">$inputArray</div>
+          <div class="token" draggable="true" data-value="json_encode">json_encode</div>
+          <div class="token" draggable="true" data-value="$inputArray = array">$inputArray = array</div>
+        </div>
       </div>
     </div>
 

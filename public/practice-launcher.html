@@ -174,30 +174,29 @@
             if (msg) msg.style.display = "none";
             var studies = cfg.studies || [];
             var dragDropIds = cfg.dragDropIds || [];
+            var dragDropJsonIds = cfg.dragDropJsonIds || [];
 
-            if (dragDropIds.length) {
+            function appendDragDropCard(title, ids, mode) {
+              if (!ids.length) return;
               var ddArt = document.createElement("article");
               ddArt.className = "sim-box";
-              ddArt.setAttribute("aria-label", "Drag and Drop");
+              ddArt.setAttribute("aria-label", title);
               var ddRange =
-                "Questions " +
-                dragDropIds[0] +
-                "–" +
-                dragDropIds[dragDropIds.length - 1] +
-                " (" +
-                dragDropIds.length +
-                " total)";
+                ids.length + " total drag and drops";
               ddArt.innerHTML =
-                "<h3 class=\"sim-box-title\">Drag and Drop</h3>" +
-                "<p class=\"study-meta\">" +
-                ddRange +
-                "</p>" +
+                "<h3 class=\"sim-box-title\">" + title + "</h3>" +
+                "<p class=\"study-meta\">" + ddRange + "</p>" +
                 "<div class=\"study-actions\">" +
-                "<a class=\"start-btn\" href=\"/begin-questions-random.html?mode=dragdrop\">Random</a>" +
-                "<a class=\"start-btn\" href=\"/begin-questions-linear.html?mode=dragdrop\" style=\"background:#1a3d6e;border-color:#3d6dbb;\">Linear</a>" +
-                "<a class=\"start-btn\" href=\"/begin-questions-review.html?mode=dragdrop\" style=\"background:#1e5c40;border-color:#2a8f5e;\">Review quiz</a>" +
+                "<a class=\"start-btn\" href=\"/begin-questions-random.html?mode=" + mode + "\">Random</a>" +
+                "<a class=\"start-btn\" href=\"/begin-questions-linear.html?mode=" + mode + "\" style=\"background:#1a3d6e;border-color:#3d6dbb;\">Linear</a>" +
+                "<a class=\"start-btn\" href=\"/begin-questions-review.html?mode=" + mode + "\" style=\"background:#1e5c40;border-color:#2a8f5e;\">Review quiz</a>" +
                 "</div>";
               ddGrid.appendChild(ddArt);
+            }
+
+            appendDragDropCard("Drag and Drop", dragDropIds, "dragdrop");
+            appendDragDropCard("JSON Script Drag and Drop", dragDropJsonIds, "dragdrop-json");
+            if (ddGrid.children.length) {
               ddGrid.style.display = "grid";
               if (ddMsg) ddMsg.style.display = "none";
             } else if (ddMsg) {

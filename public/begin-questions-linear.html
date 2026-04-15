@@ -35,6 +35,8 @@
           var ids = [];
           if (modeParam === "dragdrop") {
             ids = (cfg.dragDropIds || []).slice();
+          } else if (modeParam === "dragdrop-json") {
+            ids = (cfg.dragDropJsonIds || []).slice();
           } else {
             var study = (cfg.studies || [])[studyIndex - 1];
             ids = study && study.ids ? study.ids.slice() : [];
