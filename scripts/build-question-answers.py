@@ -67,7 +67,9 @@ def extract_target_groups(html: str) -> str | None:
 
 
 def extract_slot_targets_pre(html: str) -> str | None:
-    targets = re.findall(r'<span class="slot"[^>]*data-target="([^"]+)"', html)
+    targets = re.findall(
+        r'<span class="(?:slot|drop-slot)"[^>]*data-target="([^"]+)"', html
+    )
     if not targets:
         return None
     return "Correct. Fill blanks in order: " + " | ".join(targets)

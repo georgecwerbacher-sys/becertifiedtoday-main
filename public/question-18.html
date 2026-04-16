@@ -49,7 +49,7 @@
       line-height: 1.5;
       font-size: 0.95rem;
     }
-    .slot {
+    .drop-slot {
       display: inline-flex;
       min-width: 175px;
       min-height: 30px;
@@ -62,15 +62,15 @@
       margin: 0 4px;
       padding: 2px 8px;
     }
-    .slot.over {
+    .drop-slot.over {
       border-style: solid;
       background: #213861;
     }
-    .slot.correct {
+    .drop-slot.correct {
       border-color: #1f7a58;
       background: #113e2d;
     }
-    .slot.incorrect {
+    .drop-slot.incorrect {
       border-color: #8c3434;
       background: #442020;
     }
@@ -131,9 +131,9 @@
 
     <div class="code-wrap">
 <pre class="code">event manager applet CONF_CHANGE
-<span class="slot" data-target="event syslog pattern"></span> "SYS-5-CONFIG_I"
-action 1.0 cli command <span class="slot" data-target="&quot;enable&quot;"></span>
-action 2.0 cli command "show clock <span class="slot" data-target="| append flash:"></span>ConfSave.txt"
+<span class="drop-slot" data-target="event syslog pattern"></span> "SYS-5-CONFIG_I"
+action 1.0 cli command <span class="drop-slot" data-target="&quot;enable&quot;"></span>
+action 2.0 cli command "show clock <span class="drop-slot" data-target="| append flash:"></span>ConfSave.txt"
 action 3.0 syslog priority informational msg "Configuration changed"</pre>
     </div>
 
@@ -157,7 +157,7 @@ action 3.0 syslog priority informational msg "Configuration changed"</pre>
 
   <script>
     const bank = document.getElementById("bank");
-    const slots = document.querySelectorAll(".slot");
+    const slots = document.querySelectorAll(".drop-slot");
     const checkBtn = document.getElementById("checkBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
