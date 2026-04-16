@@ -100,7 +100,7 @@
       "#ccnpSolutionReveal{display:none;margin-top:12px;margin-bottom:8px;padding:14px;border-radius:10px;font-weight:700;background:#113e2d;border:1px solid #1f7a58;color:#e6edf3;line-height:1.45;}" +
       "#ccnpSolutionReveal.is-visible{display:block;}" +
       "body.ccnp-practice-ui main.card label.choice{cursor:pointer;-webkit-tap-highlight-color:rgba(77,137,255,.22);touch-action:manipulation;user-select:none;-webkit-user-select:none;}" +
-      "body.ccnp-practice-ui main.card label.choice input[type=checkbox],body.ccnp-practice-ui main.card label.choice input[type=radio]{width:1.2em;height:1.2em;min-width:1.2em;min-height:1.2em;margin-right:12px;vertical-align:middle;}";
+      "body.ccnp-practice-ui main.card label.choice input[type=checkbox],body.ccnp-practice-ui main.card label.choice input[type=radio]{width:1.2em;height:1.2em;min-width:1.2em;min-height:1.2em;margin-right:12px;vertical-align:middle;accent-color:#000;}";
     document.head.appendChild(el);
   }
 

@@ -17,6 +17,7 @@ PUBLIC = ROOT / "public"
 OUT = PUBLIC / "js" / "study-config.json"
 GROUP_SIZE = 50
 QUESTION_RE = re.compile(r"^question-(\d+)\.html$", re.I)
+DROP_SLOT_CLASS_RE = re.compile(r'class="[^"]*\bdrop-slot\b[^"]*"', re.I)
 JSON_DRAGDROP_EXCLUDE_IDS = {271, 309, 405}
 
 
@@ -33,7 +34,7 @@ def main() -> None:
                 html = path.read_text(encoding="utf-8")
             except OSError:
                 html = ""
-            is_drag_drop = 'class="drop-slot"' in html and 'draggable="true"' in html
+            is_drag_drop = bool(DROP_SLOT_CLASS_RE.search(html)) and 'draggable="true"' in html
             if is_drag_drop:
                 drag_drop_ids.append(qid)
                 if qid not in JSON_DRAGDROP_EXCLUDE_IDS and "json" in html.lower():
