@@ -32,19 +32,46 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
+    .exhibit-region {
+      margin: 0 0 18px;
     }
-    .image-wrap img {
-      display: block;
-      width: 100%;
-      max-width: 900px;
-      height: auto;
-      margin: 0 auto;
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 10px 12px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.72rem, 1.4vw, 0.84rem);
+      line-height: 1.5;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -97,9 +124,21 @@
 </head>
 <body>
   <main class="card">
-    <p style="margin: 0 0 8px; font-size: 0.95rem; color: #9fb0cc">Refer to the exhibit.</p>
-    <div class="image-wrap">
-      <img src="/assets/question206-acl-egress-out-exhibit.png" alt="Extended ACL EGRESS permit 10.0.0.0/24 any; GigabitEthernet0/0 209.165.200.255/24 with ip access-group EGRESS out" />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-option">
+        <div class="exhibit-option-label">ACL EGRESS and GigabitEthernet0/0</div>
+        <pre class="exhibit-cli" role="region" aria-label="Extended ACL and outbound access-group on Gi0/0">ip access-list extended EGRESS
+ 10 permit ip 10.0.0.0 0.0.0.255 any
+--- output omitted ---
+!
+interface GigabitEthernet0/0
+ ip address 209.165.200.255 255.255.255.0
+ ip access-group EGRESS out
+ duplex auto
+ speed auto
+ media-type rj45</pre>
+      </div>
     </div>
     <h1>An engineer must block all traffic from a router to its directly connected subnet 209.165.200.0/24. The engineer applies access control list EGRESS in the outbound direction on the GigabitEthernet0/0 interface of the router. However, the router can still ping hosts on the 209.165.200.0/24 subnet. Which explanation of this behavior is true?</h1>
 

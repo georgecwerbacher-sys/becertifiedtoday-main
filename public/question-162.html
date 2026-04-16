@@ -32,19 +32,52 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
+    .exhibit-region {
+      margin: 0 0 18px;
     }
-    .image-wrap img {
-      display: block;
-      width: 100%;
-      max-width: 900px;
-      height: auto;
-      margin: 0 auto;
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+      min-width: 0;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.64rem, 1.2vw, 0.76rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -97,12 +130,31 @@
 </head>
 <body>
   <main class="card">
-    <p style="margin: 0 0 8px; font-size: 0.95rem; color: #9fb0cc">Refer to the exhibit.</p>
-    <div class="image-wrap">
-      <img
-        src="/assets/question162-dhcp-option82.png"
-        alt="CPE router DHCP pool LAN and debug: inconsistent relay information, relay information option exists but giaddr is zero"
-      />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-stack">
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">CPE — DHCP and interfaces</div>
+          <pre class="exhibit-cli" role="region" aria-label="DHCP pool LAN and gateway interface">ip dhcp excluded-address 192.168.10.0 192.168.10.10
+!
+ip dhcp pool LAN
+ network 192.168.10.0 255.255.255.0
+ default-router 192.168.10.1
+ dns-server 192.0.2.254
+!
+interface Loopback0
+ ip address 192.168.255.1 255.255.255.255
+!
+interface GigabitEthernet0/1
+ description => LAN <=
+ ip address 192.168.10.1 255.255.255.0</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">CPE — debug ip dhcp server packet</div>
+          <pre class="exhibit-cli" role="region" aria-label="DHCP server debug relay option 82">*Sep 11 11:00:12.520: DHCPD: inconsistent relay information.
+*Sep 11 11:00:12.520: DHCPD: relay information option exists, but giaddr is zero.</pre>
+        </div>
+      </div>
     </div>
     <h1>
       The CPE router acts as a DHCP server for the locally attached LAN. After DHCP snooping is enabled on the switch where the DHCP clients are connected,

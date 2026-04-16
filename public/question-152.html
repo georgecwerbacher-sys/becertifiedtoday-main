@@ -32,24 +32,68 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
+    .exhibit-region {
+      margin: 0 0 18px;
     }
-    .image-wrap img {
-      display: block;
-      width: 100%;
-      max-width: 900px;
-      height: auto;
-      margin: 0 auto;
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
     }
-    .exhibit-label {
-      margin: 0 0 6px;
-      font-size: 0.9rem;
-      color: #9fb0cc;
+    .exhibit-section-caption {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #b8c3d6;
+    }
+    .exhibit-section-caption.spaced {
+      margin-top: 18px;
+    }
+    .exhibit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+      margin-bottom: 4px;
+    }
+    @media (max-width: 820px) {
+      .exhibit-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+      min-width: 0;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.58rem, 1.05vw, 0.7rem);
+      line-height: 1.42;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -102,14 +146,50 @@
 </head>
 <body>
   <main class="card">
-    <p style="margin: 0 0 8px; font-size: 0.95rem; color: #9fb0cc">Refer to the exhibit.</p>
-    <p class="exhibit-label">Options A and B</p>
-    <div class="image-wrap">
-      <img src="/assets/question152-snmp-options-ab.png" alt="SNMPv3 configuration options A and B for NMS 10.15.2.19" />
-    </div>
-    <p class="exhibit-label">Options C and D</p>
-    <div class="image-wrap">
-      <img src="/assets/question152-snmp-options-cd.png" alt="SNMPv3 configuration options C and D for NMS 10.15.2.19" />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <p class="exhibit-section-caption">Options A and B</p>
+      <div class="exhibit-grid" role="region" aria-label="SNMP options A and B">
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option A</div>
+          <pre class="exhibit-cli">ip access-list extended nms
+ permit 1 host 10.15.2.19 any
+snmp-server view ro internet included
+snmp-server view ro ifEntry included
+snmp-server group nms v3 priv notify ro access nms
+snmp-server user user1 nms v3 encrypted auth md5 Password1 pri 3des Password123</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option B</div>
+          <pre class="exhibit-cli">ip access-list standard nms
+ permit 10.15.2.19 0.0.0.0
+snmp-server view ro iso included
+snmp-server view ro ifEntry included
+snmp-server group nms v3 priv read ro access nms
+snmp-server user user1 nms v3 auth sha Password1 pri aes 256 Password123</pre>
+        </div>
+      </div>
+      <p class="exhibit-section-caption spaced">Options C and D</p>
+      <div class="exhibit-grid" role="region" aria-label="SNMP options C and D">
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option C</div>
+          <pre class="exhibit-cli">ip access-list standard nms
+ permit 10.15.2.19 0.0.0.0
+snmp-server view rw iso included
+snmp server view rw ifEntry included
+snmp-server group nms v3 auth write rw access nms
+snmp server user user1 nms v3 auth des Password1 pri des Password123</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option D</div>
+          <pre class="exhibit-cli">ip access list standard nms
+ permit 10.15.2.19 255.255.255.255
+snmp server view ro cisco included
+snmp server view ro ifEntry included
+snmp-server group nms v3 priv read ro access nms
+snmp server user user1 nms v3 auth 3des Password1 pri aes 192 Password123</pre>
+        </div>
+      </div>
     </div>
     <h1>
       An engineer must configure interface and sensor monitoring on a router. The NMS server is located in a trusted zone with IP address 10.15.2.19.

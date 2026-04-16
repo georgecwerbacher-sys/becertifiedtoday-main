@@ -32,19 +32,46 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
+    .exhibit-region {
+      margin: 0 0 18px;
     }
-    .image-wrap img {
-      display: block;
-      width: 100%;
-      max-width: 920px;
-      height: auto;
-      margin: 0 auto;
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 10px 12px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.68rem, 1.25vw, 0.8rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -96,12 +123,27 @@
 </head>
 <body>
   <main class="card">
-    <p style="margin: 0 0 8px; font-size: 0.95rem; color: #9fb0cc">Refer to the exhibit.</p>
-    <div class="image-wrap">
-      <img
-        src="/assets/question269-etherchannel-pagp-debug.png"
-        alt="Log: channel-misconfig STP err-disable on Po2, Et0/1; FEC debug PAgP not enabled on agport Po2"
-      />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-option">
+        <div class="exhibit-option-label">Switch — syslog and FEC / PAgP debug</div>
+        <pre class="exhibit-cli" role="region" aria-label="EtherChannel channel-misconfig err-disable and PAgP FEC debug">%PM-4-ERR_DISABLE: channel-misconfig (STP) error detected on Po2, putting Et0/1 in err-disable state
+FEC: pagp_switch_hotstandby: for agport Po2
+FEC: pagp_switch_hotstandby: PAgP not enabled on agport Po2
+FEC: pagp_switch_port_down: Et0/1 Inform no
+FEC: pagp_switch_invoke_port_down: Et0/1
+FEC: fec_unbundle: Et0/1
+FEC: pagp_switch_change_vgc: gcchngreq == 0 for Et0/1
+FEC: pagp_switch_change_vgc: Et0/1 gcchngreq = 0 gc = 0
+FEC: pagp_switch_delete_port_from_agport_internal: delete_port_from_agport: for port Et0/1
+FEC: delete port (Et0/1) from agport (Po2)
+FEC: pagp_switch_delete_port_from_agport_list: afb->nports-- = 1 [Et0/1]
+FEC: Un-Bndl msg NOT send to PM for port Et0/1 from Po2
+FEC: pagp_switch_reset_load_index: reading load-index for port Po2
+FEC: fec_set_agport_macaddr: Po2 Et0/1 (remove)
+FEC: coerce_hwaddr_unix: get aabb.cc00.2020 for L2 Po2 from Et0/2
+FEC: coerce.hwaddr_unix: set aabb.cc00.2020 for Po2, 1/1</pre>
+      </div>
     </div>
     <h1>After unsuccessfully configuring an EtherChannel link, an engineer enables debugging. Which action will resolve the issue?</h1>
 

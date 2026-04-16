@@ -46,6 +46,41 @@
       height: auto;
       margin: 0 auto;
     }
+    .exhibit-region {
+      margin: 0 0 14px;
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 10px 12px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.74rem, 1.45vw, 0.86rem);
+      line-height: 1.5;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -117,11 +152,11 @@
         alt="R1 Gi0/1 toward host 10.70.5.1; Gi0/0 toward outside network"
       />
     </div>
-    <div class="image-wrap">
-      <img
-        src="/assets/question265-nat-static-cmd.png"
-        alt="ip nat inside source static 10.70.5.1 10.45.1.7"
-      />
+    <div class="exhibit-region">
+      <div class="exhibit-option">
+        <div class="exhibit-option-label">R1 — static NAT</div>
+        <pre class="exhibit-cli" role="region" aria-label="Static NAT global configuration">R1(config)# ip nat inside source static 10.70.5.1 10.45.1.7</pre>
+      </div>
     </div>
     <h1>A network architect has partially configured static NAT. Which commands should be added to complete the configuration?</h1>
 

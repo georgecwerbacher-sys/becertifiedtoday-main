@@ -32,19 +32,46 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
+    .exhibit-region {
+      margin: 0 0 18px;
     }
-    .image-wrap img {
-      display: block;
-      width: calc(100% * 2 / 3);
-      height: auto;
-      margin-left: auto;
-      margin-right: auto;
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 10px 12px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.72rem, 1.4vw, 0.82rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -105,8 +132,24 @@
 </head>
 <body>
   <main class="card">
-    <div class="image-wrap">
-      <img src="/assets/question70-top.png" alt="HSRP output exhibit" />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-option">
+        <div class="exhibit-option-label">show standby</div>
+        <pre class="exhibit-cli" role="region" aria-label="HSRP show standby output">R1#show standby
+Vlan503 - Group 1
+  State is Active
+    1 state change, last state change 32w6d
+  Virtual IP address is 10.0.3.241
+  Active virtual MAC address is 0000.0c07.ac01
+  Local virtual MAC address is 0000.0c07.ac01 (v1 default)
+  Hello time 3 sec, hold time 10 sec
+  Next hello sent in 0.064 secs
+  Preemption enabled
+  Active router is local
+  Standby router is 10.0.3.242, priority 100 (expires in 10.624 sec)
+  Priority 110 (Configured 110)</pre>
+      </div>
     </div>
     <h1>Which two facts does the device output confirm? (Choose two)</h1>
 

@@ -33,7 +33,7 @@
       line-height: 1.35;
     }
     .image-wrap {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       border: 1px solid #2c3f62;
       border-radius: 10px;
       overflow: hidden;
@@ -45,6 +45,62 @@
       height: auto;
       margin-left: auto;
       margin-right: auto;
+    }
+    .exhibit-region {
+      margin: 0 0 18px;
+    }
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-ref-spaced {
+      margin-top: 18px;
+    }
+    .exhibit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+    @media (max-width: 720px) {
+      .exhibit-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+      min-width: 0;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.65rem, 1.25vw, 0.78rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -93,11 +149,82 @@
 </head>
 <body>
   <main class="card">
-    <div class="image-wrap">
-      <img src="/assets/question28-topology.png" alt="Host A to Host B VLAN topology exhibit" />
-    </div>
-    <div class="image-wrap">
-      <img src="/assets/question28-options.png" alt="Option configurations exhibit for VLAN access-map question" />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the topology.</p>
+      <div class="image-wrap">
+        <img src="/assets/question28-topology.png" alt="SW1 and SW2 in VLAN 10: HostA 10.1.1.10 to HostB 10.1.1.20" />
+      </div>
+
+      <p class="exhibit-ref exhibit-ref-spaced">Refer to the configuration options on SW1.</p>
+      <div class="exhibit-grid" role="region" aria-label="VACL option sets A through D">
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option A</div>
+          <pre class="exhibit-cli">SW1(config)# ip access-list extended DENY-HTTP
+SW1(config-ext-nacl)# permit tcp host 10.1.1.10 host 10.1.1.20 eq www
+
+SW1(config)# ip access-list extended MATCH_ALL
+SW1(config-ext-nacl)# permit ip any any
+
+SW1(config)# vlan access-map HOST-A-B 10
+SW1(config-access-map)# match ip address DENY-HTTP
+SW1(config-access-map)# action drop
+SW1(config)# vlan access-map HOST-A-B 20
+SW1(config-access-map)# match ip address MATCH_ALL
+SW1(config-access-map)# action forward
+
+SW1(config)# vlan filter HOST-A-B vlan 10</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option B</div>
+          <pre class="exhibit-cli">SW1(config)# mac access-list extended HOST-A-B
+SW1(config-ext-macl)# permit host aaaa.bbbb.cccc aaaa.bbbb.dddd
+
+SW1(config)# ip access-list extended DENY-HTTP
+SW1(config-ext-nacl)# permit tcp host 10.1.1.10 host 10.1.1.20 eq www
+
+SW1(config)# vlan access-map DROP-MAC 10
+SW1(config-access-map)# match mac address HOST-A-B
+SW1(config-access-map)# action forward
+SW1(config)# vlan access-map HOST-A-B 20
+SW1(config-access-map)# match ip address DENY-HTTP
+SW1(config-access-map)# action drop
+SW1(config)# vlan filter HOST-A-B vlan 10</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option C</div>
+          <pre class="exhibit-cli">SW1(config)# mac access-list extended HOST-A-B
+SW1(config-ext-macl)# permit host aaaa.bbbb.cccc aaaa.bbbb.dddd
+
+SW1(config)# ip access-list extended DENY-HTTP
+SW1(config-ext-nacl)# deny tcp host 10.1.1.10 host 10.1.1.20 eq www
+
+SW1(config)# vlan access-map DROP-MAC 10
+SW1(config-access-map)# match mac address HOST-A-B
+SW1(config-access-map)# action drop
+SW1(config)# vlan access-map HOST-A-B 20
+SW1(config-access-map)# match ip address DENY-HTTP
+SW1(config-access-map)# action drop
+
+SW1(config)# vlan filter HOST-A-B vlan 10</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option D</div>
+          <pre class="exhibit-cli">SW1(config)# ip access-list extended DENY-HTTP
+SW1(config-ext-nacl)# deny tcp host 10.1.1.10 host 10.1.1.20 eq www
+
+SW1(config)# ip access-list extended MATCH_ALL
+SW1(config-ext-nacl)# permit ip any any
+
+SW1(config)# vlan access-map HOST-A-B 10
+SW1(config-access-map)# match ip address DENY-HTTP
+SW1(config-access-map)# action drop
+SW1(config)# vlan access-map HOST-A-B 20
+SW1(config-access-map)# match ip address MATCH_ALL
+SW1(config-access-map)# action forward
+
+SW1(config)# vlan filter HOST-A-B vlan 10</pre>
+        </div>
+      </div>
     </div>
     <h1>An engineer must deny HTTP traffic from host A to host B while allowing all other communication between the hosts. Which command set accomplishes this task?</h1>
 

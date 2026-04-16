@@ -20,7 +20,7 @@
       color: #e6edf3;
     }
     .card {
-      width: min(980px, 95vw);
+      width: min(1040px, 98vw);
       background: #121a2b;
       border: 1px solid #2d3b5a;
       border-radius: 14px;
@@ -32,19 +32,52 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
+    .exhibit-region {
+      margin: 0 0 18px;
     }
-    .image-wrap img {
-      display: block;
-      width: 100%;
-      max-width: 920px;
-      height: auto;
-      margin: 0 auto;
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+      min-width: 0;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.66rem, 1.25vw, 0.78rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -96,12 +129,30 @@
 </head>
 <body>
   <main class="card">
-    <p style="margin:0 0 8px;font-size:0.95rem;color:#9fb0cc;">Refer to the exhibit.</p>
-    <div class="image-wrap">
-      <img
-        src="/assets/question298-restconf-nginx-iox.png"
-        alt="Cisco CLI: show iox-service and show platform software yang-management process; nginx and ncsshd not running"
-      />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-stack">
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">CPE — show iox-service</div>
+          <pre class="exhibit-cli" role="region" aria-label="IOx service status">CPE# show iox-service
+IOx service (CAF)            : Not Running
+IOx service (HA)             : Not Supported
+IOx service (IOxman)         : Not Running
+Libvirtd                     : Running</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">CPE — show platform software yang-management process</div>
+          <pre class="exhibit-cli" role="region" aria-label="YANG management process status">CPE# show platform software yang-management process
+confd                          Running
+nesd                           Running
+syncfd                         Running
+ncsshd                         Not Running
+dmiauthd                       Running
+nginx                          Not Running
+ndbmand                        Running
+pubd                           Running</pre>
+        </div>
+      </div>
     </div>
     <h1>Which action must be performed to allow RESTCONF access to the device?</h1>
 

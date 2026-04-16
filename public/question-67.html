@@ -32,19 +32,66 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
+    .exhibit-region {
+      margin: 0 0 18px;
     }
-    .image-wrap img {
-      display: block;
-      width: calc(100% * 2 / 3);
-      height: auto;
-      margin-left: auto;
-      margin-right: auto;
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-ref-spaced {
+      margin-top: 18px;
+    }
+    .exhibit-top-pair {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .exhibit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+    @media (max-width: 720px) {
+      .exhibit-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+      min-width: 0;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.62rem, 1.2vw, 0.75rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -93,10 +140,81 @@
 </head>
 <body>
   <main class="card">
-    <div class="image-wrap">
-      <img src="/assets/question67-top.png" alt="CoPP Telnet to SSH option exhibit" />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-top-pair">
+      <div class="exhibit-option">
+        <div class="exhibit-option-label">Router — show policy-map control-plane</div>
+        <pre class="exhibit-cli" role="region" aria-label="Control plane policy map">Router#show policy-map control-plane
+ Control Plane
+
+  Service-policy input: CoPP
+
+    Class-map: class-telnet (match-all)
+      0 packets, 0 bytes
+      5 minute offered rate 0000 bps, drop rate 0000 bps
+      Match: access-group 100
+      police:
+        cir 100000 bps, bc 3125 bytes
+        conformed 0 packets, 0 bytes; action:
+          transmit
+        exceeded 0 packets, 0 bytes; action:
+          drop
+
+    Class-map: class-default (match-any)
+      56 packets, 9874 bytes
+      Match: any</pre>
+      </div>
+      <div class="exhibit-option">
+        <div class="exhibit-option-label">Router — show access-list 100</div>
+        <pre class="exhibit-cli" role="region" aria-label="Extended ACL 100">Router#show access-list 100
+Extended IP access list 100
+    10 permit tcp any any eq telnet</pre>
+      </div>
+      </div>
+
+      <p class="exhibit-ref exhibit-ref-spaced">Refer to the configuration options below.</p>
+      <div class="exhibit-grid" role="region" aria-label="CoPP SSH command options A through D">
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option A</div>
+          <pre class="exhibit-cli">access-list 10 permit tcp any eq 22 any
+class-map class-ssh
+ match access-group 10
+policy-map CoPP
+ class class-ssh
+ police 100000 conform-action transmit</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option B</div>
+          <pre class="exhibit-cli">access-list 100 permit udp any any eq 22
+access-list 101 permit tcp any any eq 22
+class-map class-ssh
+ match access-group 101
+policy-map CoPP
+ police 100000 conform-action transmit</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option C</div>
+          <pre class="exhibit-cli">access-list 100 permit tcp any eq 22 any
+class-map class-ssh
+ match access-group 10
+policy-map CoPP
+ class class-ssh
+ police 100000 conform-action transmit</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option D</div>
+          <pre class="exhibit-cli">access-list 100 permit tcp any any eq 22
+access-list 101 permit tcp any any eq 22
+class-map class-ssh
+ match access-group 101
+policy-map CoPP
+ class class-ssh
+ police 100000 conform-action transmit</pre>
+        </div>
+      </div>
     </div>
-    <h1>Select the option that provides the required commands to allow SSH connection to the router.</h1>
+    <h1>Which commands are required to allow SSH connection to the router?</h1>
 
     <label class="choice"><input type="radio" name="q67" value="A" />A. Option A</label>
     <label class="choice"><input type="radio" name="q67" value="B" />B. Option B</label>

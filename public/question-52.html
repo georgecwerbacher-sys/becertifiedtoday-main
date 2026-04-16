@@ -32,19 +32,61 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
+    .exhibit-region {
+      margin: 0 0 18px;
     }
-    .image-wrap img {
-      display: block;
-      width: calc(100% * 2 / 3);
-      height: auto;
-      margin-left: auto;
-      margin-right: auto;
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-ref-spaced {
+      margin-top: 18px;
+    }
+    .exhibit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+    @media (max-width: 720px) {
+      .exhibit-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+      min-width: 0;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.65rem, 1.25vw, 0.78rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -93,10 +135,68 @@
 </head>
 <body>
   <main class="card">
-    <div class="image-wrap">
-      <img src="/assets/question52-top.png" alt="NetFlow and sampling configuration exhibit" />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-option">
+        <div class="exhibit-option-label">Flow record and monitor definitions</div>
+        <pre class="exhibit-cli" role="region" aria-label="NetFlow flow record and monitor configuration">flow record v4Talkers
+ match ipv4 source address
+ match ipv4 destination address
+ collect counter bytes long
+!
+flow record v6Talkers
+ match ipv6 source address
+ match ipv6 destination address
+ collect counter bytes long
+!
+flow monitor v4Talkers
+ record v4Talkers
+!
+flow monitor v6Talkers
+ record v6Talkers</pre>
+      </div>
+
+      <p class="exhibit-ref exhibit-ref-spaced">Refer to the configuration options below.</p>
+      <div class="exhibit-grid" role="region" aria-label="Gi0/0 NetFlow options A through D">
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option A</div>
+          <pre class="exhibit-cli">interface Gi0/0
+ load-interval 600
+ ip flow monitor v4Talkers
+ ipv6 flow monitor v6Talkers</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option B</div>
+          <pre class="exhibit-cli">policy-map Talkers
+ class class-default
+  police cir percent 50
+   conform-action transmit
+   exceed-action drop
+!
+interface Gi0/0
+ service-policy input Talkers
+ ip flow monitor v4Talkers
+ ipv6 flow monitor v6Talkers</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option C</div>
+          <pre class="exhibit-cli">sampler R-1-1024
+ mode random 1 out-of 1024
+!
+interface Gi0/0
+ ip flow monitor v4Talkers sampler R-1-1024 input
+ ipv6 flow monitor v6Talkers sampler R-1-1024 input</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option D</div>
+          <pre class="exhibit-cli">interface Gi0/0
+ no ip route-cache
+ ip flow monitor v4Talkers
+ ipv6 flow monitor v6Talkers</pre>
+        </div>
+      </div>
     </div>
-    <h1>Select the option that minimizes CPU impact while keeping NetFlow data across Gi0/0 intact.</h1>
+    <h1>An administrator must collect basic statistics about the approximate amount of IPv4 and IPv6 flows entering Gi0/0 using NetFlow. However, the administrator is concerned that NetFlow processing during periods of high utilization on Gi0/0 will overwhelm the router CPU. Which configuration minimizes CPU impact and keeps the data flows across Gi0/0 intact?</h1>
 
     <label class="choice"><input type="radio" name="q52" value="A" />A. Option A</label>
     <label class="choice"><input type="radio" name="q52" value="B" />B. Option B</label>

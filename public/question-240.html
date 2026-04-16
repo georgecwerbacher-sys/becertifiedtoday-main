@@ -32,19 +32,46 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #0d1528;
+    .exhibit-region {
+      margin: 0 0 18px;
     }
-    .image-wrap img {
-      display: block;
-      width: 100%;
-      max-width: 900px;
-      height: auto;
-      margin: 0 auto;
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.62rem, 1.15vw, 0.74rem);
+      line-height: 1.42;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -113,9 +140,20 @@
 </head>
 <body>
   <main class="card">
-    <p style="margin: 0 0 8px; font-size: 0.95rem; color: #9fb0cc">Refer to the exhibit.</p>
-    <div class="image-wrap">
-      <img src="/assets/question240-tacacs-debug-exhibit.png" alt="Debug: TPLUS Invalid AUTHEN packet check keys" />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-option">
+        <div class="exhibit-option-label">TACACS+ debug (excerpt)</div>
+        <pre class="exhibit-cli" role="region" aria-label="TPLUS authentication failure check keys">*Apr 6 13:25:03.826: AAA/BIND(00000055): Bind i/f
+*Apr 6 13:25:03.826: AAA/AUTHEN/LOGIN (00000055): Pick method list 'default'
+*Apr 6 13:25:03.826: TPLUS: Queuing AAA Authentication request 85 for processing
+*Apr 6 13:25:03.826: TPLUS(00000055) login timer started 1020 sec timeout
+*Apr 6 13:25:03.826: TPLUS: Using server 10.106.60.182
+*Apr 6 13:25:03.826: TPLUS(00000055)/0/NB_WAIT: wrote entire 38 bytes request
+*Apr 6 13:25:03.886: TPLUS(00000055)/0/READ: read entire 18 bytes response
+*Apr 6 13:25:03.886: TPLUS: received bad AUTHEN packet length = 6, expected 43974
+*Apr 6 13:25:03.886: TPLUS: Invalid AUTHEN packet (check keys)</pre>
+      </div>
     </div>
     <h1>An engineer configured TACACS+ to authenticate remote users but the configuration is not working as expected. Which configuration must be applied to enable access?</h1>
 

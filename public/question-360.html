@@ -20,7 +20,7 @@
       color: #e6edf3;
     }
     .card {
-      width: min(980px, 95vw);
+      width: min(1040px, 98vw);
       background: #121a2b;
       border: 1px solid #2d3b5a;
       border-radius: 14px;
@@ -32,17 +32,46 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin: 12px 0 14px;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid #32456b;
-      background: #0f1728;
+    .exhibit-region {
+      margin: 12px 0 18px;
     }
-    .image-wrap img {
-      width: 100%;
-      height: auto;
-      display: block;
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 10px 12px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.66rem, 1.25vw, 0.78rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -105,8 +134,29 @@
   <main class="card">
     <h1>A network engineer connected two routers using OSPF but the routers are not sharing routes. Which command completes the configuration?</h1>
 
-    <div class="image-wrap">
-      <img src="/assets/question360-ospf-passive-interface.png" alt="OSPF configuration exhibit showing passive-interface default and interface settings" />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-option">
+        <div class="exhibit-option-label">Router — partial running-config</div>
+        <pre class="exhibit-cli" role="region" aria-label="GigabitEthernet5 and 6 plus OSPF passive-interface default">interface GigabitEthernet5
+ description L3 Link to dist-sw01
+ ip address 172.16.252.10 255.255.255.252
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet6
+ description L3 Link to dist-rtr02
+ ip address 172.16.252.17 255.255.255.252
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+router ospf 1
+ no log-adjacency-changes
+ passive-interface default
+ network 172.16.252.0 0.0.3.255 area 0</pre>
+      </div>
     </div>
 
     <label class="choice"><input type="radio" name="q360" value="A" />A. <code>router ospf 1</code><br /><code>no passive-interface GigabitEthernet5</code></label>

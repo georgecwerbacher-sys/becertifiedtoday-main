@@ -32,19 +32,58 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
+    .exhibit-region {
+      margin: 0 0 18px;
     }
-    .image-wrap img {
-      display: block;
-      width: 100%;
-      max-width: 920px;
-      height: auto;
-      margin: 0 auto;
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+    @media (max-width: 820px) {
+      .exhibit-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+      min-width: 0;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.62rem, 1.12vw, 0.74rem);
+      line-height: 1.42;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -96,12 +135,40 @@
 </head>
 <body>
   <main class="card">
-    <p style="margin: 0 0 8px; font-size: 0.95rem; color: #9fb0cc">Refer to the exhibit.</p>
-    <div class="image-wrap">
-      <img
-        src="/assets/question255-netflow-catalyst-center.png"
-        alt="Four CLI options A through D for NetFlow export on R1 toward 192.168.23.1 UDP 23000 on Gig0/1"
-      />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the configuration options below.</p>
+      <div class="exhibit-grid" role="region" aria-label="NetFlow export options A through D on R1 Gig0/1">
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option A</div>
+          <pre class="exhibit-cli">R1(config)# ip flow-export
+R1(config)# ip flow-export destination 192.168.23.1 23000
+R1(config)# interface Gig0/1
+R1(config-if)# ip flow monitor</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option B</div>
+          <pre class="exhibit-cli">R1(config)# ip flow-export
+R1(config)# ip flow-export destination 192.168.23.1
+R1 (config)# interface Gig0/1
+R1(config-if)# collect counter bytes
+R1(config-if)# collect counter packets</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option C</div>
+          <pre class="exhibit-cli">R1(config)# ip flow-export version 9
+R1(config)# ip flow-export destination 192.168.23.1 23000
+R1(config)# interface Gig0/1
+R1(config-if)# ip flow ingress
+R1(config-if)# ip flow egress</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option D</div>
+          <pre class="exhibit-cli">R1(config)# ip flow-export version 9
+R1(config)# ip flow-export destination 192.168.23.1 23000
+R1(config)# interface Gig0/1
+R1(config-if)# ip flow-top-talkers</pre>
+        </div>
+      </div>
     </div>
     <h1>
       High bandwidth utilization is occurring on interface Gig0/1 of a router. An engineer must identify the flows that are consuming the most bandwidth. Cisco Catalyst Center is used as a flow exporter and is configured with the IP address 192.168.23.1 and UDP port 23000. Which configuration must be applied to set NetFlow data export and capture on the router?

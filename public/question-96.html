@@ -32,19 +32,52 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
+    .exhibit-region {
+      margin: 0 0 18px;
     }
-    .image-wrap img {
-      display: block;
-      width: 100%;
-      max-width: 720px;
-      height: auto;
-      margin: 0 auto;
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+      min-width: 0;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.62rem, 1.15vw, 0.74rem);
+      line-height: 1.4;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -95,9 +128,39 @@
 </head>
 <body>
   <main class="card">
-    <p style="margin:0 0 8px;font-size:0.95rem;color:#9fb0cc;">Refer to the exhibit.</p>
-    <div class="image-wrap">
-      <img src="/assets/question96-nat-troubleshoot.png" alt="show ip nat translation, statistics, and syslog: pool NAT exhausted" />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-stack">
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Syslog</div>
+          <pre class="exhibit-cli" role="region" aria-label="NAT allocation failure syslog">*Jun 28 19:24:50.462: %IPNAT-4-ADDR_ALLOC_FAILURE: Address allocation failed for 10.0.3.1, pool NAT might be exhausted
+*Jun 28 19:24:50.462: NAT: translation failed (A), dropping packet s=10.0.3.1 d=203.0.113.8</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">CPE — show ip nat translation</div>
+          <pre class="exhibit-cli" role="region" aria-label="NAT translation table">CPE#show ip nat translation
+Pro  Inside global       Inside local       Outside local      Outside global
+---  ---------------     --------------     ---------------    ----------------
+tcp  198.51.100.5:61082  10.0.1.1:61082     203.0.113.8:23     203.0.113.8:23
+---  198.51.100.5        10.0.1.1           ---                ---
+tcp  198.51.100.6:15350  10.0.2.1:15350     203.0.113.8:23     203.0.113.8:23
+---  198.51.100.6        10.0.2.1           ---                ---</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">CPE — show ip nat statistics</div>
+          <pre class="exhibit-cli" role="region" aria-label="NAT statistics summary">CPE#show ip nat statistics
+Total active translations: 4 (0 static, 4 dynamic; 2 extended)
+Hits: 234  Misses: 0
+Outside interfaces: Ethernet0/0
+Inside interfaces: Ethernet0/1
+
+Dynamic mappings:
+---> Pool NAT
+        pool NAT: netmask 255.255.255.0
+        start 198.51.100.5 end 198.51.100.6
+        total addresses 2, allocated 2 (100%), misses 7</pre>
+        </div>
+      </div>
     </div>
     <h1>An administrator troubleshoots intermittent connectivity from internal hosts to an external public server. Some internal hosts can connect to the server while others receive an ICMP Host Unreachable message and these hosts change over time. What is the cause of this issue?</h1>
 

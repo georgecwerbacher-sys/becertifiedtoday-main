@@ -20,7 +20,7 @@
       color: #e6edf3;
     }
     .card {
-      width: min(980px, 95vw);
+      width: min(1040px, 98vw);
       background: #121a2b;
       border: 1px solid #2d3b5a;
       border-radius: 14px;
@@ -32,19 +32,52 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
+    .exhibit-region {
+      margin: 0 0 18px;
     }
-    .image-wrap img {
-      display: block;
-      width: 100%;
-      max-width: 920px;
-      height: auto;
-      margin: 0 auto;
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+      min-width: 0;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.62rem, 1.15vw, 0.74rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -96,12 +129,42 @@
 </head>
 <body>
   <main class="card">
-    <p style="margin:0 0 8px;font-size:0.95rem;color:#9fb0cc;">Refer to the exhibit.</p>
-    <div class="image-wrap">
-      <img
-        src="/assets/question334-hsrp-vlan1200-options.png"
-        alt="Four command-set options for configuring HSRP on VLAN 1200"
-      />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-stack">
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option A</div>
+          <pre class="exhibit-cli" role="region" aria-label="Option A HSRP commands">SW1(config)#interface vlan 1200
+SW1(config-if)#ip address 172.12.0.2 255.255.255.0
+SW1(config-if)#standby 1200 ip 172.12.0.254
+SW1(config-if)#standby 1200 timers 5 15
+SW1(config-if)#standby 1200 preempt</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option B</div>
+          <pre class="exhibit-cli" role="region" aria-label="Option B HSRP commands">SW1(config)#interface vlan 1200
+SW1(config-if)#ip address 172.12.0.2 255.255.255.0
+SW1(config-if)#standby version 2
+SW1(config-if)#standby 1200 ip 172.12.0.254
+SW1(config-if)#standby 1200 preempt</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option C</div>
+          <pre class="exhibit-cli" role="region" aria-label="Option C HSRP commands">SW1(config)#interface vlan 1200
+SW1(config-if)#ip address 172.12.0.1 255.255.255.0
+SW1(config-if)#standby 1200 ip 172.12.0.254
+SW1(config-if)#standby 1200 timers 5 15
+SW1(config-if)#standby 1200 preempt</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option D</div>
+          <pre class="exhibit-cli" role="region" aria-label="Option D HSRP commands">SW1(config)#interface vlan 1200
+SW1(config-if)#ip address 172.12.0.254 255.255.255.0
+SW1(config-if)#standby version 2
+SW1(config-if)#standby 1200 ip 172.12.0.2
+SW1(config-if)#standby 1200 preempt</pre>
+        </div>
+      </div>
     </div>
     <h1>An engineer must configure HSRP for VLAN 1200 on SW1. The second switch is configured by using the last usable IP address in the network as the virtual IP. Which command set accomplishes this task?</h1>
 

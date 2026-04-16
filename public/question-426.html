@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question 426 - Console outbound Telnet</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+    }
+    .card {
+      width: min(1040px, 98vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+    }
+    .exhibit-label {
+      margin: 16px 0 8px;
+      font-size: 0.95rem;
+      color: #9fb0cc;
+    }
+    .exhibit-label:first-of-type {
+      margin-top: 0;
+    }
+    .image-wrap {
+      margin: 0 0 8px;
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .image-wrap img {
+      display: block;
+      width: 100%;
+      max-width: 920px;
+      height: auto;
+      margin: 0 auto;
+    }
+    .choice {
+      display: block;
+      margin: 10px 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #1a253b;
+      border: 1px solid #2c3f62;
+      font-size: 1rem;
+      cursor: pointer;
+      line-height: 1.45;
+    }
+    .choice input {
+      margin-right: 10px;
+      transform: translateY(2px);
+    }
+    .choice pre {
+      margin: 8px 0 0 28px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #0d1424;
+      border: 1px solid #2c3f62;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.78rem;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+    .actions {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    button,
+    .next-link {
+      background: #254b8a;
+      color: #e6edf3;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-block;
+    }
+    .answer {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    .answer.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+    }
+    .answer.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+    }
+    #nextWrap {
+      display: none;
+    }
+  </style>
+</head>
+<body class="ccnp-practice-ui">
+  <main class="card">
+    <p class="exhibit-label">Refer to the exhibit.</p>
+    <div class="image-wrap">
+      <img
+        src="/assets/question426-console-telnet-error.png"
+        alt="Router1 privileged EXEC: command telnet 192.168.1.1 returns percent telnet connections not permitted from this terminal"
+      />
+    </div>
+
+    <p class="exhibit-label">Options (same as answer choices).</p>
+    <div class="image-wrap">
+      <img
+        src="/assets/question426-console-telnet-options.png"
+        alt="Table of four CLI configuration options labeled A through D for Router1"
+      />
+    </div>
+
+    <h1>
+      An engineer attempts to connect to another device from Router1’s console port. Which configuration is needed to allow telnet connections?
+    </h1>
+
+    <label class="choice">
+      <input type="radio" name="q426" value="A" />
+      <strong>A.</strong>
+      <pre>access-list 100 permit tcp any any eq telnet
+line console 0
+access-class 100 in</pre>
+    </label>
+
+    <label class="choice">
+      <input type="radio" name="q426" value="B" />
+      <strong>B.</strong>
+      <pre>line vty 0 15
+transport output telnet</pre>
+    </label>
+
+    <label class="choice">
+      <input type="radio" name="q426" value="C" />
+      <strong>C.</strong>
+      <pre>line console 0
+transport output telnet</pre>
+    </label>
+
+    <label class="choice">
+      <input type="radio" name="q426" value="D" />
+      <strong>D.</strong>
+      <pre>access-list 100 permit tcp any any eq telnet
+line vty
+access-class 100 out</pre>
+    </label>
+
+    <div class="actions">
+      <button id="checkBtn" type="button">Check Answer</button>
+      <button id="resetBtn" type="button">Reset</button>
+      <span id="nextWrap"><a class="next-link" href="/question-427.html">Next</a></span>
+    </div>
+
+    <div id="answerBox" class="answer" aria-live="polite"></div>
+  </main>
+
+  <script>
+    const checkBtn = document.getElementById("checkBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const answerBox = document.getElementById("answerBox");
+    const nextWrap = document.getElementById("nextWrap");
+    const options = document.querySelectorAll('input[name="q426"]');
+    const correct = "C";
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    checkBtn.addEventListener("click", () => {
+      const selected = [...options].find((opt) => opt.checked);
+      if (!selected) {
+        answerBox.style.display = "block";
+        answerBox.className = "answer incorrect";
+        answerBox.textContent = "Select an option before checking the answer.";
+        nextWrap.style.display = "none";
+        return;
+      }
+
+      const ok = selected.value === correct;
+      answerBox.style.display = "block";
+      answerBox.className = `answer ${ok ? "correct" : "incorrect"}`;
+      answerBox.textContent = ok
+        ? "Correct. C. The message means outbound Telnet from this line (the console) is blocked. Under line console 0, use transport output telnet (or transport output all) so the console may initiate Telnet. access-class … in on the console filters traffic coming into the console, not outbound sessions. transport output on VTY lines only affects virtual terminals, not the engineer’s console session."
+        : "Incorrect. The correct answer is C: line console 0 with transport output telnet allows Telnet initiated from the console.";
+      nextWrap.style.display = "inline-block";
+    });
+
+    resetBtn.addEventListener("click", () => {
+      options.forEach((opt) => {
+        opt.checked = false;
+      });
+      answerBox.style.display = "none";
+      answerBox.textContent = "";
+      nextWrap.style.display = "none";
+    });
+  </script>
+  <style>
+    .home-key {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+    .home-key:hover {
+      filter: brightness(1.08);
+    }
+  </style>
+  <a class="home-key" href="/practice-launcher.html">Home</a>
+  <script src="/js/practice-questions.js"></script>
+</body>
+</html>

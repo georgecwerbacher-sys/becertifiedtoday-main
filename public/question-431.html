@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question 431 - Puppet vs Ansible drag and drop</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+    }
+    .card {
+      width: min(1100px, 96vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+    }
+    .instructions {
+      margin: 0 0 14px;
+      color: #b8c3d6;
+      line-height: 1.45;
+    }
+    .exhibit-label {
+      margin: 0 0 8px;
+      font-size: 0.95rem;
+      color: #9fb0cc;
+    }
+    .image-wrap {
+      margin: 0 0 16px;
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .image-wrap img {
+      display: block;
+      width: 100%;
+      max-width: 900px;
+      height: auto;
+      margin: 0 auto;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 800px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    .bank {
+      background: #1a253b;
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 220px;
+    }
+    .token {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #6384ba;
+      background: #cfe9ff;
+      color: #10243f;
+      font-weight: 700;
+      cursor: grab;
+      user-select: none;
+      font-size: 0.95rem;
+      line-height: 1.35;
+    }
+    .token:active {
+      cursor: grabbing;
+    }
+    .targets-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 520px) {
+      .targets-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .target-group {
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
+      background: #1a253b;
+      padding: 10px;
+    }
+    .target-title {
+      margin: 0 0 10px;
+      font-weight: 700;
+      background: #f7ecd7;
+      color: #2a2112;
+      border: 1px solid #d9c28a;
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+    .drop-slot {
+      min-height: 48px;
+      border-radius: 8px;
+      border: 1px dashed #d98a8a;
+      background: #f7d7d7;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .drop-slot:last-child {
+      margin-bottom: 0;
+    }
+    .drop-slot.over {
+      border-style: solid;
+      border-color: #4d89ff;
+    }
+    .drop-slot.correct {
+      border-color: #1f7a58;
+      background: #113e2d;
+    }
+    .drop-slot.incorrect {
+      border-color: #8c3434;
+      background: #442020;
+    }
+    .actions {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    button,
+    .next-link {
+      background: #254b8a;
+      color: #e6edf3;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-block;
+    }
+    #result {
+      font-weight: 700;
+    }
+    #nextWrap {
+      display: none;
+    }
+  </style>
+</head>
+<body class="ccnp-practice-ui">
+  <main class="card">
+    <h1>Drag and drop the characteristics from the left onto the corresponding orchestration tool on the right.</h1>
+    <p class="instructions">
+      Place two statements under Puppet and two under Ansible. Order within each column does not matter. Click Check when done.
+    </p>
+
+    <p class="exhibit-label">Refer to the exhibit.</p>
+    <div class="image-wrap">
+      <img
+        src="/assets/question431-puppet-ansible-drag.png"
+        alt="Drag-and-drop: four characteristics to place into two slots under Puppet and two under Ansible"
+      />
+    </div>
+
+    <div class="layout">
+      <section>
+        <div id="bank" class="bank">
+          <div class="token" draggable="true" data-value="managed hosts pull configuration from the main node">
+            managed hosts pull configuration from the main node
+          </div>
+          <div class="token" draggable="true" data-value="configuration files are procedural">configuration files are procedural</div>
+          <div class="token" draggable="true" data-value="uses SSH">uses SSH</div>
+          <div class="token" draggable="true" data-value="requires an agent to be installed on hosts">
+            requires an agent to be installed on hosts
+          </div>
+        </div>
+      </section>
+
+      <section class="targets-grid">
+        <div
+          class="target-group"
+          data-expected="managed hosts pull configuration from the main node|requires an agent to be installed on hosts"
+        >
+          <div class="target-title">Puppet</div>
+          <div class="drop-slot"></div>
+          <div class="drop-slot"></div>
+        </div>
+        <div class="target-group" data-expected="configuration files are procedural|uses SSH">
+          <div class="target-title">Ansible</div>
+          <div class="drop-slot"></div>
+          <div class="drop-slot"></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="actions">
+      <button id="checkBtn" type="button">Check Answer</button>
+      <button id="resetBtn" type="button">Reset</button>
+      <span id="result"></span>
+      <span id="nextWrap"><a class="next-link" href="/practice-launcher.html">Next</a></span>
+    </div>
+  </main>
+
+  <script>
+    const bank = document.getElementById("bank");
+    const slots = document.querySelectorAll(".drop-slot");
+    const checkBtn = document.getElementById("checkBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const result = document.getElementById("result");
+    const nextWrap = document.getElementById("nextWrap");
+    let dragged = null;
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    document.querySelectorAll(".token").forEach((token) => {
+      token.addEventListener("dragstart", () => {
+        dragged = token;
+      });
+    });
+
+    slots.forEach((slot) => {
+      slot.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        slot.classList.add("over");
+      });
+      slot.addEventListener("dragleave", () => slot.classList.remove("over"));
+      slot.addEventListener("drop", (e) => {
+        e.preventDefault();
+        slot.classList.remove("over");
+        if (!dragged) return;
+        const existing = slot.querySelector(".token");
+        if (existing) bank.appendChild(existing);
+        slot.appendChild(dragged);
+      });
+    });
+
+    bank.addEventListener("dragover", (e) => e.preventDefault());
+    bank.addEventListener("drop", (e) => {
+      e.preventDefault();
+      if (dragged) bank.appendChild(dragged);
+    });
+
+    function multisetEqual(a, b) {
+      if (a.length !== b.length) return false;
+      const sa = a.slice().sort();
+      const sb = b.slice().sort();
+      return sa.every((v, i) => v === sb[i]);
+    }
+
+    checkBtn.addEventListener("click", () => {
+      const groups = document.querySelectorAll(".target-group");
+      let correctGroups = 0;
+      groups.forEach((group) => {
+        const expected = group.dataset.expected.split("|");
+        const actual = [...group.querySelectorAll(".drop-slot .token")].map((t) => t.dataset.value);
+        const ok = expected.length === actual.length && multisetEqual(expected, actual);
+        if (ok) correctGroups += 1;
+        group.querySelectorAll(".drop-slot").forEach((slot) => {
+          slot.classList.remove("correct", "incorrect");
+          slot.classList.add(ok ? "correct" : "incorrect");
+        });
+      });
+      result.textContent = `Score: ${correctGroups}/${groups.length}`;
+      nextWrap.style.display = "inline-block";
+    });
+
+    resetBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+      result.textContent = "";
+      nextWrap.style.display = "none";
+    });
+  </script>
+  <style>
+    .home-key {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+    .home-key:hover {
+      filter: brightness(1.08);
+    }
+  </style>
+  <a class="home-key" href="/practice-launcher.html">Home</a>
+  <script src="/js/practice-questions.js"></script>
+</body>
+</html>
