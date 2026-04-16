@@ -12,6 +12,8 @@ OUT = PUBLIC / "js" / "question-answers.json"
 
 # Manual entries: use "__IMG__:/path|caption" for image reveals (see public/js/practice-questions.js).
 ANSWER_OVERRIDES: dict[str, str] = {
+    "2": "__IMG__:assets/question-2-answer.png|Correct. Blank 1: access-list-seq-rule; 2: deny; 3: ip; 4: dst-any.",
+    "9": "__IMG__:assets/question-9-answer.png|Correct. Blank 1: dumps; 2: data; 3: separators=(',', ':').",
     "363": "__IMG__:assets/question-363-answer.png|Correct. Filled request template: permit, set, next-hop, and address for next-hop 10.10.10.10.",
 }
 
