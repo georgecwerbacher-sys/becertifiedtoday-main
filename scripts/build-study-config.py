@@ -19,6 +19,7 @@ GROUP_SIZE = 50
 QUESTION_RE = re.compile(r"^question-(\d+)\.html$", re.I)
 DROP_SLOT_CLASS_RE = re.compile(r'class="[^"]*\bdrop-slot\b[^"]*"', re.I)
 JSON_DRAGDROP_EXCLUDE_IDS = {271, 309, 405}
+JSON_DRAGDROP_INCLUDE_IDS = {363}
 
 
 def main() -> None:
@@ -37,7 +38,9 @@ def main() -> None:
             is_drag_drop = bool(DROP_SLOT_CLASS_RE.search(html)) and 'draggable="true"' in html
             if is_drag_drop:
                 drag_drop_ids.append(qid)
-                if qid not in JSON_DRAGDROP_EXCLUDE_IDS and "json" in html.lower():
+                if qid in JSON_DRAGDROP_INCLUDE_IDS or (
+                    qid not in JSON_DRAGDROP_EXCLUDE_IDS and "json" in html.lower()
+                ):
                     drag_drop_json_ids.append(qid)
     ids.sort()
     drag_drop_ids.sort()

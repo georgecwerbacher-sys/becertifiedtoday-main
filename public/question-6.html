@@ -36,11 +36,24 @@
       display: block;
       margin: 10px 0;
       padding: 12px 14px;
+      margin-left: 34px;
       border-radius: 10px;
       background: #1a253b;
       border: 1px solid #2c3f62;
       font-size: 1.02rem;
       cursor: pointer;
+      position: relative;
+    }
+    .choice::before {
+      content: attr(data-letter);
+      position: absolute;
+      left: -34px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 28px;
+      text-align: right;
+      font-weight: 700;
+      color: #b8c3d6;
     }
     .choice input {
       margin-right: 10px;
@@ -92,12 +105,12 @@
 <body>
   <main class="card">
     <h1>Which two operations are valid for RESTCONF? (Choose two)</h1>
-    <label class="choice"><input type="checkbox" name="q6" value="A" />A. HEAD</label>
-    <label class="choice"><input type="checkbox" name="q6" value="B" />B. REMOVE</label>
-    <label class="choice"><input type="checkbox" name="q6" value="C" />C. PULL</label>
-    <label class="choice"><input type="checkbox" name="q6" value="D" />D. GET</label>
-    <label class="choice"><input type="checkbox" name="q6" value="E" />E. ADD</label>
-    <label class="choice"><input type="checkbox" name="q6" value="F" />F. PUSH</label>
+    <label class="choice"><input type="checkbox" name="q6" value="A" /><span class="choice-text">HEAD</span></label>
+    <label class="choice"><input type="checkbox" name="q6" value="B" /><span class="choice-text">REMOVE</span></label>
+    <label class="choice"><input type="checkbox" name="q6" value="C" /><span class="choice-text">PULL</span></label>
+    <label class="choice"><input type="checkbox" name="q6" value="D" /><span class="choice-text">GET</span></label>
+    <label class="choice"><input type="checkbox" name="q6" value="E" /><span class="choice-text">ADD</span></label>
+    <label class="choice"><input type="checkbox" name="q6" value="F" /><span class="choice-text">PUSH</span></label>
 
     <div class="actions">
       <button id="checkBtn" class="check-btn" type="button">Check Answer</button>
@@ -114,12 +127,39 @@
     const nextWrap = document.getElementById("nextWrap");
     const checkBtn = document.getElementById("checkBtn");
     const options = document.querySelectorAll('input[name="q6"]');
+    const choiceNodes = [...document.querySelectorAll("label.choice")];
     const correctSet = new Set(["A", "D"]);
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
       history.pushState(null, "", location.href);
     });
+
+    function shuffleChoices() {
+      const card = document.querySelector("main.card");
+      const actions = card.querySelector(".actions");
+      if (!card || !actions || choiceNodes.length < 2) return;
+
+      const shuffled = [...choiceNodes];
+      for (let i = shuffled.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+
+      shuffled.forEach((choice) => {
+        card.insertBefore(choice, actions);
+      });
+    }
+
+    function applyDisplayLetters() {
+      const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      [...document.querySelectorAll("label.choice")].forEach((choice, index) => {
+        choice.dataset.letter = `${letters[index] || "?"}.`;
+      });
+    }
+
+    shuffleChoices();
+    applyDisplayLetters();
 
     checkBtn.addEventListener("click", () => {
       const selected = [...options].filter((o) => o.checked).map((o) => o.value);
@@ -140,10 +180,10 @@
 
       if (isCorrect) {
         answerBox.className = "answer correct";
-        answerBox.textContent = "Correct. A and D.";
+        answerBox.textContent = "Correct. HEAD and GET.";
       } else {
         answerBox.className = "answer incorrect";
-        answerBox.textContent = "Incorrect. The correct answer: A and D.";
+        answerBox.textContent = "Incorrect. The correct answer: HEAD and GET.";
       }
     });
   </script>

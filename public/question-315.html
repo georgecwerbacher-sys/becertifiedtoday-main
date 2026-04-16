@@ -145,6 +145,12 @@
       font-weight: 700;
       color: #e6edf3;
     }
+    #answerDisplay {
+      margin-top: 8px;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
     #nextWrap {
       display: none;
     }
@@ -201,20 +207,35 @@ json.dump(dictionary_1, out_file, indent=4)
 
     <div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <span id="result"></span>
       <span id="nextWrap"><a class="next-link" href="/question-316.html">Next</a></span>
     </div>
+    <div id="answerDisplay"></div>
   </main>
 
   <script>
     const bank = document.getElementById("bank");
     const slots = document.querySelectorAll(".drop-slot");
     const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
+    const answerDisplay = document.getElementById("answerDisplay");
     const nextWrap = document.getElementById("nextWrap");
     let dragged = null;
+    const expectedByBlank = [
+      "with open(input_file) as text:",
+      "out_file = open(\"Json-Output.json\", \"w\")",
+      "out_file.close()"
+    ];
+
+    function renderExpectedAnswers() {
+      answerDisplay.innerHTML = expectedByBlank
+        .map((value, index) => `Blank ${index + 1}: ${value}`)
+        .join("<br>");
+    }
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -270,6 +291,23 @@ json.dump(dictionary_1, out_file, indent=4)
       result.textContent = full
         ? "Correct. Use with open(input_file), open output in write mode, then close with out_file.close()."
         : "Incorrect. Correct snippets are with open(input_file) as text:, out_file = open(\"Json-Output.json\", \"w\"), and out_file.close().";
+      renderExpectedAnswers();
+      nextWrap.style.display = "inline-block";
+    });
+
+    showBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const existing = slot.querySelector(".token");
+        if (existing) bank.appendChild(existing);
+        const target = bank.querySelector(`.token[data-value="${slot.dataset.accept}"]`);
+        if (target) {
+          slot.appendChild(target);
+          slot.classList.add("correct");
+        }
+      });
+      result.textContent = "Answer shown.";
+      renderExpectedAnswers();
       nextWrap.style.display = "inline-block";
     });
 
@@ -280,6 +318,7 @@ json.dump(dictionary_1, out_file, indent=4)
         if (token) bank.appendChild(token);
       });
       result.textContent = "";
+      answerDisplay.textContent = "";
       nextWrap.style.display = "none";
     });
   </script>

@@ -146,6 +146,12 @@
       font-weight: 700;
       color: #e6edf3;
     }
+    #answerDisplay {
+      margin-top: 8px;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
     #nextWrap {
       display: none;
     }
@@ -196,20 +202,31 @@ with <span class="drop-slot" data-accept="open"></span>("data.json", <span class
 
     <div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <span id="result"></span>
       <span id="nextWrap"><a class="next-link" href="/question-315.html">Next</a></span>
     </div>
+    <div id="answerDisplay"></div>
   </main>
 
   <script>
     const bank = document.getElementById("bank");
     const slots = document.querySelectorAll(".drop-slot");
     const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
+    const answerDisplay = document.getElementById("answerDisplay");
     const nextWrap = document.getElementById("nextWrap");
     let dragged = null;
+    const expectedByBlank = ["print", "open", "w", "dump"];
+
+    function renderExpectedAnswers() {
+      answerDisplay.innerHTML = expectedByBlank
+        .map((value, index) => `Blank ${index + 1}: ${value}`)
+        .join("<br>");
+    }
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -265,6 +282,23 @@ with <span class="drop-slot" data-accept="open"></span>("data.json", <span class
       result.textContent = full
         ? "Correct. The script uses print(), open() with write mode, and json.dump()."
         : "Incorrect. Correct fill order is print, open, w, and dump (not dumps or r).";
+      renderExpectedAnswers();
+      nextWrap.style.display = "inline-block";
+    });
+
+    showBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const existing = slot.querySelector(".token");
+        if (existing) bank.appendChild(existing);
+        const target = bank.querySelector(`.token[data-value="${slot.dataset.accept}"]`);
+        if (target) {
+          slot.appendChild(target);
+          slot.classList.add("correct");
+        }
+      });
+      result.textContent = "Answer shown.";
+      renderExpectedAnswers();
       nextWrap.style.display = "inline-block";
     });
 
@@ -275,6 +309,7 @@ with <span class="drop-slot" data-accept="open"></span>("data.json", <span class
         if (token) bank.appendChild(token);
       });
       result.textContent = "";
+      answerDisplay.textContent = "";
       nextWrap.style.display = "none";
     });
   </script>

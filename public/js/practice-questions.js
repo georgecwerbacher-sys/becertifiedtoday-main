@@ -86,11 +86,24 @@
     return m ? parseInt(m[1], 10) : null;
   }
 
+  /** Resolve paths relative to the current question page (works when site is not at domain root). */
+  function urlFromPage(path) {
+    var s = (path || "").trim();
+    if (!s) return s;
+    if (/^https?:\/\//i.test(s)) return s;
+    try {
+      return new URL(s.replace(/^\//, ""), location.href).href;
+    } catch (e) {
+      return s;
+    }
+  }
+
   function injectStyles() {
     if (document.getElementById("ccnp-practice-questions-style")) return;
     var el = document.createElement("style");
     el.id = "ccnp-practice-questions-style";
     el.textContent =
+      "body.ccnp-practice-ui{display:grid!important;place-items:start center!important;align-content:start!important;padding:16px 12px 40px!important;min-height:100vh!important;box-sizing:border-box!important;}" +
       "body.ccnp-practice-ui a.home-key{display:none!important;}" +
       "body.ccnp-practice-ui .sim-nav .sim-nav-home{display:none!important;}" +
       "body.ccnp-practice-ui main.card .ccnp-q-toolbar{position:sticky;top:0;z-index:200;display:flex!important;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 16px;padding:10px 0 14px;border-bottom:1px solid #2d3b5a;background:rgba(18,26,43,.96);backdrop-filter:blur(8px);}" +
@@ -99,9 +112,69 @@
       ".ccnp-q-toolbar button[aria-pressed=true]{background:#1a3d6e;}" +
       "#ccnpSolutionReveal{display:none;margin-top:12px;margin-bottom:8px;padding:14px;border-radius:10px;font-weight:700;background:#113e2d;border:1px solid #1f7a58;color:#e6edf3;line-height:1.45;}" +
       "#ccnpSolutionReveal.is-visible{display:block;}" +
+      "#ccnpSolutionReveal .ccnp-answer-image-wrap{margin:0;}" +
+      "#ccnpSolutionReveal .ccnp-answer-image-wrap p{margin:0 0 10px;font-weight:700;}" +
+      "#ccnpSolutionReveal .ccnp-answer-image-wrap img{max-width:100%;height:auto;border-radius:10px;border:1px solid #2d3b5a;display:block;}" +
       "body.ccnp-practice-ui main.card label.choice{cursor:pointer;-webkit-tap-highlight-color:rgba(77,137,255,.22);touch-action:manipulation;user-select:none;-webkit-user-select:none;}" +
+      "body.ccnp-practice-ui main.card label.choice[data-choice-letter]{position:relative;margin-left:34px;}" +
+      "body.ccnp-practice-ui main.card label.choice[data-choice-letter]::before{content:attr(data-choice-letter);position:absolute;left:-34px;top:50%;transform:translateY(-50%);width:28px;text-align:right;font-weight:700;color:#b8c3d6;}" +
       "body.ccnp-practice-ui main.card label.choice input[type=checkbox],body.ccnp-practice-ui main.card label.choice input[type=radio]{width:1.2em;height:1.2em;min-width:1.2em;min-height:1.2em;margin-right:12px;vertical-align:middle;accent-color:#000;}";
     document.head.appendChild(el);
+  }
+
+  function stripInlineChoicePrefix(choice) {
+    if (!choice) return;
+    var textSpan = choice.querySelector(".choice-text");
+    if (textSpan) {
+      textSpan.textContent = (textSpan.textContent || "").replace(
+        /^\s*[A-Z][\.\)]\s+/,
+        ""
+      );
+      return;
+    }
+    var nodes = choice.childNodes || [];
+    for (var i = 0; i < nodes.length; i += 1) {
+      var node = nodes[i];
+      if (node.nodeType !== Node.TEXT_NODE) continue;
+      var raw = node.textContent || "";
+      if (!raw.trim()) continue;
+      node.textContent = raw.replace(/^\s*[A-Z][\.\)]\s+/, "");
+      return;
+    }
+  }
+
+  function randomizeAndRelabelChoices(card) {
+    if (!card || card.dataset.ccnpChoicePrepared === "1") return;
+    var labels = Array.prototype.slice
+      .call(card.querySelectorAll("label.choice"))
+      .filter(function (label) {
+        return !!label.querySelector('input[type="radio"], input[type="checkbox"]');
+      });
+    if (!labels.length) return;
+
+    labels.forEach(stripInlineChoicePrefix);
+
+    if (labels.length > 1) {
+      var parent = labels[0].parentNode;
+      var marker = labels[labels.length - 1].nextSibling;
+      var shuffled = labels.slice();
+      for (var i = shuffled.length - 1; i > 0; i -= 1) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = shuffled[i];
+        shuffled[i] = shuffled[j];
+        shuffled[j] = tmp;
+      }
+      shuffled.forEach(function (label) {
+        parent.insertBefore(label, marker);
+      });
+      labels = shuffled;
+    }
+
+    var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    labels.forEach(function (label, index) {
+      label.setAttribute("data-choice-letter", (letters[index] || "?") + ".");
+    });
+    card.dataset.ccnpChoicePrepared = "1";
   }
 
   /**
@@ -201,7 +274,7 @@
       cb(null, window.__ccnpStudyConfig);
       return;
     }
-    fetch("/js/study-config.json", { cache: "no-store" })
+    fetch(urlFromPage("js/study-config.json"), { cache: "no-store" })
       .then(function (res) {
         if (!res.ok) throw new Error("bad");
         return res.json();
@@ -340,7 +413,7 @@
       cb(null, window.__ccnpAnswers);
       return;
     }
-    fetch("/js/question-answers.json", { cache: "no-store" })
+    fetch(urlFromPage("js/question-answers.json"), { cache: "no-store" })
       .then(function (res) {
         if (!res.ok) throw new Error("bad status");
         return res.json();
@@ -374,6 +447,7 @@
     var card = document.querySelector("main.card");
     if (!card || document.getElementById("ccnpQToolbar")) return;
 
+    randomizeAndRelabelChoices(card);
     bindPointerFriendlyChoices(card);
     enableAutoCheckForSingleChoice(card);
     stripBottomNextFromCard(card);
@@ -419,7 +493,33 @@
         if (err) {
           reveal.textContent = "Could not load answer data.";
         } else {
-          reveal.textContent = answers[String(qid)] || "Answer not available.";
+          var raw = answers[String(qid)];
+          if (raw == null) {
+            reveal.textContent = "Answer not available.";
+          } else if (
+            typeof raw === "string" &&
+            raw.indexOf("__IMG__:") === 0
+          ) {
+            var rest = raw.slice(7);
+            var pipe = rest.indexOf("|");
+            var src = (pipe >= 0 ? rest.slice(0, pipe) : rest).trim();
+            var cap =
+              pipe >= 0 ? rest.slice(pipe + 1).trim() : "Correct solution.";
+            reveal.textContent = "";
+            var wrap = document.createElement("div");
+            wrap.className = "ccnp-answer-image-wrap";
+            var p = document.createElement("p");
+            p.textContent = cap;
+            var img = document.createElement("img");
+            img.src = urlFromPage(src);
+            img.alt = cap;
+            img.loading = "lazy";
+            wrap.appendChild(p);
+            wrap.appendChild(img);
+            reveal.appendChild(wrap);
+          } else {
+            reveal.textContent = raw;
+          }
         }
         reveal.dataset.filled = "1";
       });

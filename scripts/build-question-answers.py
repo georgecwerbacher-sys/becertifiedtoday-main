@@ -10,6 +10,11 @@ ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ROOT / "public"
 OUT = PUBLIC / "js" / "question-answers.json"
 
+# Manual entries: use "__IMG__:/path|caption" for image reveals (see public/js/practice-questions.js).
+ANSWER_OVERRIDES: dict[str, str] = {
+    "363": "__IMG__:assets/question-363-answer.png|Correct. Filled request template: permit, set, next-hop, and address for next-hop 10.10.10.10.",
+}
+
 
 def extract_answerbox_correct(html: str) -> str | None:
     m = re.search(r'answerBox\.textContent\s*=\s*"Correct\.\s*([^"]*)"', html)
@@ -84,6 +89,9 @@ def main() -> None:
     out: dict[str, str] = {}
     for path in sorted(PUBLIC.glob("question-*.html"), key=lambda p: int(p.stem.split("-")[1])):
         n = path.stem.split("-")[1]
+        if n in ANSWER_OVERRIDES:
+            out[n] = ANSWER_OVERRIDES[n]
+            continue
         html = path.read_text(encoding="utf-8")
         s = extract_answerbox_correct(html)
         if not s:
