@@ -393,36 +393,6 @@
     }
   }
 
-  /** Strip "Correct." / leading choice letter for #answerBox "Correct. B. …" lines. */
-  function formatAnswerBoxCorrectLine(raw) {
-    if (raw == null || typeof raw !== "string") return raw;
-    var t = raw.replace(/^\s*Correct\.\s*/i, "").trim();
-    var m = t.match(/^([A-Z])\.\s*(.*)$/);
-    if (m) {
-      var rest = (m[2] || "").trim();
-      if (rest.length) return rest;
-    }
-    return t;
-  }
-
-  /** Check-result banner (#answerBox) only: drop "A./B./C." style prefixes. */
-  function stripAnswerFeedbackLetters(text) {
-    if (!text || typeof text !== "string") return text;
-    var s = text;
-    if (/^\s*Correct\./i.test(s)) {
-      return formatAnswerBoxCorrectLine(s);
-    }
-    s = s.replace(/^(Incorrect\. The correct answer:\s*)[A-Z]\.\s+/i, "$1");
-    var m = s.match(
-      /^(Incorrect\. The correct answer is\s*)([A-Z])(?:\.\s*|\:\s*)([\s\S]*)$/i
-    );
-    if (m) {
-      var tail = (m[3] || "").trim();
-      s = tail.length ? "Incorrect. " + tail : "Incorrect.";
-    }
-    return s;
-  }
-
   function loadAnswers(cb) {
     if (window.__ccnpAnswers) {
       cb(null, window.__ccnpAnswers);
@@ -467,23 +437,6 @@
     enableAutoCheckForSingleChoice(card);
     stripBottomNextFromCard(card);
     stripDuplicateSimNavNext();
-
-    var answerBoxEl = document.getElementById("answerBox");
-    if (answerBoxEl) {
-      var applyAnswerBoxFormat = function () {
-        if (!elementVisible(answerBoxEl)) return;
-        var cur = answerBoxEl.textContent || "";
-        var next = stripAnswerFeedbackLetters(cur);
-        if (next !== cur) answerBoxEl.textContent = next;
-      };
-      applyAnswerBoxFormat();
-      var abObs = new MutationObserver(applyAnswerBoxFormat);
-      abObs.observe(answerBoxEl, {
-        characterData: true,
-        subtree: true,
-        childList: true,
-      });
-    }
 
     var toolbar = document.createElement("div");
     toolbar.id = "ccnpQToolbar";

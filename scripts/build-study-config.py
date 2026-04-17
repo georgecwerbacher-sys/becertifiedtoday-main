@@ -19,7 +19,7 @@ GROUP_SIZE = 50
 QUESTION_RE = re.compile(r"^question-(\d+)\.html$", re.I)
 DROP_SLOT_CLASS_RE = re.compile(r'class="[^"]*\bdrop-slot\b[^"]*"', re.I)
 JSON_DRAGDROP_EXCLUDE_IDS = {271, 309, 405}
-JSON_DRAGDROP_INCLUDE_IDS = {18, 363}
+JSON_DRAGDROP_INCLUDE_IDS = {18, 33, 363}
 
 
 def main() -> None:
