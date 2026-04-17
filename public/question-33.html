@@ -32,19 +32,54 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 12px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
+    .exhibit-region {
+      margin: 0 0 14px;
     }
-    .image-wrap img {
-      display: block;
-      width: calc(100% * 2 / 3);
-      height: auto;
-      margin-left: auto;
-      margin-right: auto;
+    .exhibit-ref {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-hint {
+      margin: 10px 0 0;
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: #9fb0cc;
+    }
+    .exhibit-light {
+      background: #fff;
+      color: #111;
+      border-radius: 8px;
+      border: 1px solid #c8c8c8;
+      padding: 10px 12px 12px;
+      min-width: 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+    .exhibit-light-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #ddd;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #222;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .exhibit-light .exhibit-cli {
+      margin: 0;
+      padding: 10px 12px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      color: #111;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.65rem, 1.25vw, 0.78rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .instructions {
       margin: 0 0 14px;
@@ -140,8 +175,37 @@
 </head>
 <body>
   <main class="card">
-    <div class="image-wrap">
-      <img src="/assets/question33-top.png" alt="MAC address table versus TCAM exhibit" />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-light" role="region" aria-label="NETCONF config excerpt for Cisco IOS-XE BGP IPv4 unicast network">
+        <div class="exhibit-light-label">NETCONF / YANG (fragment)</div>
+        <pre class="exhibit-cli">&lt;config xmlns:xc="urn:ietf:params:xml:ns:netconf:base:1.0"
+        xmlns="urn:ietf:params:xml:ns:netconf:base:1.0"&gt;
+  &lt;native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native"
+            xmlns:ios-bgp="http://cisco.com/ns/yang/Cisco-IOS-XE-bgp"&gt;
+    &lt;router&gt;
+      &lt;ios-bgp:bgp&gt;
+        &lt;ios-bgp:address-family&gt;
+          &lt;ios-bgp:no-vrf&gt;
+            &lt;ios-bgp:ipv4&gt;
+              &lt;ios-bgp:af-name&gt;unicast&lt;/ios-bgp:af-name&gt;
+              &lt;ios-bgp:ipv4-unicast&gt;
+                &lt;ios-bgp:network&gt;
+                  &lt;ios-bgp:with-mask&gt;
+                    &lt;ios-bgp:number&gt;[1]&lt;/ios-bgp:number&gt;
+                    &lt;ios-bgp:[2]&gt;[3]&lt;/ios-bgp:mask&gt;
+                  &lt;/ios-bgp:with-mask&gt;
+                &lt;/ios-bgp:network&gt;
+              &lt;/ios-bgp:ipv4-unicast&gt;
+            &lt;/ios-bgp:ipv4&gt;
+          &lt;/ios-bgp:no-vrf&gt;
+        &lt;/ios-bgp:address-family&gt;
+      &lt;/ios-bgp:bgp&gt;
+    &lt;/router&gt;
+  &lt;/native&gt;
+&lt;/config&gt;</pre>
+      </div>
+      <p class="exhibit-hint">Blanks [1]–[3] match the three drop slots in the payload below.</p>
     </div>
     <h1>Question 33: Drag and drop snippets to complete the NETCONF/YANG BGP payload.</h1>
     <p class="instructions">Advertise prefix 192.168.5.0/24. Not all options are used.</p>

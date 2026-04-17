@@ -32,19 +32,62 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
+    .exhibit-region {
+      margin: 0 0 16px;
     }
-    .image-wrap img {
-      display: block;
-      width: calc(100% * 2 / 3);
-      height: auto;
-      margin-left: auto;
-      margin-right: auto;
+    .exhibit-ref {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-ref.sub {
+      margin-top: 16px;
+    }
+    .exhibit-light {
+      background: #fff;
+      color: #111;
+      border-radius: 8px;
+      border: 1px solid #c8c8c8;
+      padding: 10px 12px 12px;
+      min-width: 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+    .exhibit-light-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #ddd;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #222;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .exhibit-light .exhibit-cli {
+      margin: 0;
+      padding: 10px 12px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      color: #111;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.62rem, 1.2vw, 0.76rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .exhibit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+    @media (max-width: 720px) {
+      .exhibit-grid {
+        grid-template-columns: 1fr;
+      }
     }
     .choice {
       display: block;
@@ -93,8 +136,72 @@
 </head>
 <body>
   <main class="card">
-    <div class="image-wrap">
-      <img src="/assets/question39-top.png" alt="Python script options for Catalyst Center device list" />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-light" role="region" aria-label="Python script for Catalyst Center network device API">
+        <div class="exhibit-light-label">Python (shared)</div>
+        <pre class="exhibit-cli">#! /usr/bin/env python3
+from env_lab import dnac
+import json
+import requests
+import urllib3
+from requests.auth import HTTPBasicAuth
+from prettytable import PrettyTable
+
+dnac_devices = PrettyTable(['Hostname', 'Platform Id', 'Software Type', 'Software Version', 'Up Time'])
+dnac_devices.padding_width = 1
+headers = {
+    'content-type': "application/json",
+    'x-auth-token': ""
+}
+
+def dnac_login(host, username, password):
+    url = "https://{}/api/system/v1/auth/token".format(host)
+    response = requests.request("POST", url, auth=HTTPBasicAuth(username, password),
+                                headers=headers, verify=False)
+    return response.json()["Token"]
+
+def network_device_list(dnac, token):
+    url = "https://{}/api/v1/network-device".format(dnac['host'])
+    headers["x-auth-token"] = token
+    response = requests.get(url, headers=headers, verify=False)
+    data = response.json()
+    for item in data['response']:
+        dnac_devices.add_row([item["hostname"], item["platformId"], item["softwareType"],
+                              item["softwareVersion"], item["upTime"]])</pre>
+      </div>
+
+      <p class="exhibit-ref sub">Choose the fragment that completes the script (Options A–D).</p>
+      <div class="exhibit-grid" role="region" aria-label="Four completion options for the Python script">
+        <div class="exhibit-light">
+          <div class="exhibit-light-label">Option A</div>
+          <pre class="exhibit-cli">login = dnac_login(dnac["host"], dnac["username"], dnac["password"])
+
+network_device_list(dnac, login)
+for item in dnac_devices:
+    print(dnac_devices.item)</pre>
+        </div>
+        <div class="exhibit-light">
+          <div class="exhibit-light-label">Option B</div>
+          <pre class="exhibit-cli">login = dnac_login(dnac["host"], dnac["username"], dnac["password"])
+
+network_device_list(dnac, login)
+print(dnac_devices)</pre>
+        </div>
+        <div class="exhibit-light">
+          <div class="exhibit-light-label">Option C</div>
+          <pre class="exhibit-cli">network_device_list(dnac["host"], dnac["username"], dnac["password"])
+login = dnac_login(dnac)
+print(dnac_devices)</pre>
+        </div>
+        <div class="exhibit-light">
+          <div class="exhibit-light-label">Option D</div>
+          <pre class="exhibit-cli">network_device_list(dnac["host"], dnac["username"], dnac["password"])
+login = dnac_login(dnac)
+for item in dnac_devices:
+    print(dnac_devices.item)</pre>
+        </div>
+      </div>
     </div>
     <h1>Which code results in a working Python script that displays a list of network devices from Cisco Catalyst Center?</h1>
 

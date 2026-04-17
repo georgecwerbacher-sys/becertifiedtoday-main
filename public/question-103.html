@@ -32,20 +32,48 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #0d1117;
-      padding: 12px;
+    .exhibit-region {
+      margin: 0 0 16px;
     }
-    .image-wrap img {
-      display: block;
-      width: 100%;
-      max-width: 720px;
-      height: auto;
-      margin: 0 auto;
+    .exhibit-ref {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-light {
+      background: #fff;
+      color: #111;
+      border-radius: 8px;
+      border: 1px solid #c8c8c8;
+      padding: 10px 12px 12px;
+      min-width: 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+    .exhibit-light-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #ddd;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #222;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .exhibit-light .exhibit-cli {
+      margin: 0;
+      padding: 10px 12px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      color: #111;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.68rem, 1.25vw, 0.8rem);
+      line-height: 1.5;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -96,9 +124,21 @@
 </head>
 <body>
   <main class="card">
-    <p style="margin:0 0 8px;font-size:0.95rem;color:#9fb0cc;">Refer to the exhibit.</p>
-    <div class="image-wrap">
-      <img src="/assets/question103-ncclient-filter.png" alt="Python ncclient get_config running datastore" />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-light" role="region" aria-label="Python ncclient NETCONF get running configuration">
+        <div class="exhibit-light-label">Python</div>
+        <pre class="exhibit-cli">import ncclient
+
+with ncclient.manager.connect(
+    host='192.168.1.1',
+    port=830,
+    username='root',
+    password='test123!',
+    allow_agent=False,
+) as m:
+    print(m.get_config('running').data_xml)</pre>
+      </div>
     </div>
     <h1>After running the code in the exhibit. Which step reduces the amount of data that NETCONF server returns to the NETCONF client, to only the interface&apos;s configuration?</h1>
 

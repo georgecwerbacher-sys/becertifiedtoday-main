@@ -32,19 +32,48 @@
       font-size: clamp(1.1rem, 2vw, 1.5rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
+    .exhibit-region {
+      margin: 0 0 16px;
     }
-    .image-wrap img {
-      display: block;
-      width: calc(100% * 2 / 3);
-      height: auto;
-      margin-left: auto;
-      margin-right: auto;
+    .exhibit-ref {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-light {
+      background: #fff;
+      color: #111;
+      border-radius: 8px;
+      border: 1px solid #c8c8c8;
+      padding: 10px 12px 12px;
+      min-width: 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+    .exhibit-light-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #ddd;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #222;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .exhibit-light .exhibit-cli {
+      margin: 0;
+      padding: 10px 12px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      color: #111;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.72rem, 1.35vw, 0.85rem);
+      line-height: 1.5;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -93,10 +122,24 @@
 </head>
 <body>
   <main class="card">
-    <div class="image-wrap">
-      <img src="/assets/question24-top.png" alt="Python code exhibit for question 24" />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-light" role="region" aria-label="Python script with main and magic functions">
+        <div class="exhibit-light-label">Python</div>
+        <pre class="exhibit-cli">def main():
+    print("The answer is " + str(magic(5)))
+
+def magic(num):
+    try:
+        answer = num + 2 * 10
+    except:
+        answer = 100
+    return answer
+
+main()</pre>
+      </div>
     </div>
-    <h1>Refer to the exhibit. What is displayed when the code is run?</h1>
+    <h1>What is displayed when the code is run?</h1>
 
     <label class="choice"><input type="radio" name="q24" value="A" />A. The answer is 25</label>
     <label class="choice"><input type="radio" name="q24" value="B" />B. The answer is 70</label>
@@ -123,12 +166,14 @@
       option.addEventListener("change", () => {
         answerBox.style.display = "block";
         nextWrap.style.display = "block";
-        if (option.value === "D") {
+        if (option.value === "A") {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. D. The answer is 100";
+          answerBox.textContent =
+            "Correct. A. magic(5) evaluates 5 + (2 * 10) = 25 in the try block, so the print shows The answer is 25.";
         } else {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect. The correct answer: D. The answer is 100";
+          answerBox.textContent =
+            "Incorrect. The correct answer: A. With answer = num + 2 * 10, multiplication runs first: 5 + 20 = 25.";
         }
       });
     });

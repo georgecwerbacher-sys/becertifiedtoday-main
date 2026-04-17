@@ -32,18 +32,59 @@
       font-size: clamp(1.1rem, 2vw, 1.5rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
+    .exhibit-region {
+      margin: 0 0 16px;
     }
-    .image-wrap img {
-      display: block;
-      width: 100%;
-      height: auto;
-      margin: 0 auto;
+    .exhibit-ref {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-light {
+      background: #fff;
+      color: #111;
+      border-radius: 8px;
+      border: 1px solid #c8c8c8;
+      padding: 10px 12px 12px;
+      min-width: 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+    .exhibit-light-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #ddd;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #222;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .exhibit-light .exhibit-cli {
+      margin: 0;
+      padding: 10px 12px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      color: #111;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.68rem, 1.3vw, 0.78rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .exhibit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+    @media (max-width: 720px) {
+      .exhibit-grid {
+        grid-template-columns: 1fr;
+      }
     }
     .choice {
       display: block;
@@ -92,9 +133,53 @@
 </head>
 <body>
   <main class="card">
-    <p style="margin:0 0 8px;font-size:0.95rem;color:#9fb0cc;">Refer to the exhibit.</p>
-    <div class="image-wrap">
-      <img src="/assets/question15-json-format-options.png" alt="Four options showing different JSON script formats labeled A through D." />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-grid" role="region" aria-label="Four JSON options labeled A through D">
+        <div class="exhibit-light">
+          <div class="exhibit-light-label">Option A</div>
+          <pre class="exhibit-cli">{
+  "car": [
+    {
+      "type": "Ford",
+      "color": "red",
+      "year": "1998"
+    }
+  ]
+}</pre>
+        </div>
+        <div class="exhibit-light">
+          <div class="exhibit-light-label">Option B</div>
+          <pre class="exhibit-cli">"truck": [
+  {
+    "type": "Dodge",
+    "color": "blue",
+    "year": "2015"
+  }
+]</pre>
+        </div>
+        <div class="exhibit-light">
+          <div class="exhibit-light-label">Option C</div>
+          <pre class="exhibit-cli">[
+  "book": {
+    "title": "Engineering",
+    "grade": "11",
+    "edition": "4".
+  }
+]</pre>
+        </div>
+        <div class="exhibit-light">
+          <div class="exhibit-light-label">Option D</div>
+          <pre class="exhibit-cli">{ "device":
+  {[
+    "type": "switch,
+    "model": "Catalyst",
+    "mac": "00:46:10:06:93:55",
+  ]
+  }
+}</pre>
+        </div>
+      </div>
     </div>
     <h1>Which JSON script is properly formatted?</h1>
 

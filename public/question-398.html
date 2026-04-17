@@ -31,17 +31,62 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin: 12px 0 14px;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid #32456b;
-      background: #0f1728;
+    .exhibit-region {
+      margin: 0 0 16px;
     }
-    .image-wrap img {
-      width: 100%;
-      height: auto;
-      display: block;
+    .exhibit-ref {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-ref.sub {
+      margin-top: 16px;
+    }
+    .exhibit-light {
+      background: #fff;
+      color: #111;
+      border-radius: 8px;
+      border: 1px solid #c8c8c8;
+      padding: 10px 12px 12px;
+      min-width: 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+    .exhibit-light-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #ddd;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #222;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .exhibit-light .exhibit-cli {
+      margin: 0;
+      padding: 10px 12px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      color: #111;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.68rem, 1.35vw, 0.8rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .exhibit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+    @media (max-width: 720px) {
+      .exhibit-grid {
+        grid-template-columns: 1fr;
+      }
     }
     .choice {
       display: block;
@@ -102,11 +147,51 @@
 </head>
 <body class="ccnp-practice-ui">
   <main class="card">
-    <h1>Which Python snippet stores the data structure of the device in JSON format?</h1>
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-light" role="region" aria-label="Python Devices dictionary">
+        <div class="exhibit-light-label">Python</div>
+        <pre class="exhibit-cli">import json
+Devices={'Switches':
+    [
+      {'name': 'AccSw1', 'ip': '2001:db8:1:fffe::1'},
+      {'name': 'AccSw2', 'ip': '2001:db8:1:fffe::2'}
+    ],
+    'Routers':
+      {'CE1': {'ip': '2001:db8:1:ffff::1'},
+       'CE2': {'ip': '2001:db8:1:ffff::2'}
+      }
+}</pre>
+      </div>
 
-    <div class="image-wrap">
-      <img src="/assets/question398-python-json-store-options.png" alt="Python JSON storage options exhibit" />
+      <p class="exhibit-ref sub">Options A through D.</p>
+      <div class="exhibit-grid" role="region" aria-label="Four Python snippet options">
+        <div class="exhibit-light">
+          <div class="exhibit-light-label">Option A</div>
+          <pre class="exhibit-cli">with open("devices.json", "w") as OutFile:
+    Devices = json.load(OutFile)</pre>
+        </div>
+        <div class="exhibit-light">
+          <div class="exhibit-light-label">Option B</div>
+          <pre class="exhibit-cli">OutFile = open("devices.json", "w")
+json.dump(Devices, OutFile)
+OutFile.close()</pre>
+        </div>
+        <div class="exhibit-light">
+          <div class="exhibit-light-label">Option C</div>
+          <pre class="exhibit-cli">with open("devices.json", "w") as OutFile:
+    json.dumps(Devices)</pre>
+        </div>
+        <div class="exhibit-light">
+          <div class="exhibit-light-label">Option D</div>
+          <pre class="exhibit-cli">OutFile = open("devices.json", "w")
+OutFile.write(str(Devices))
+OutFile.close()</pre>
+        </div>
+      </div>
     </div>
+
+    <h1>Which Python snippet stores the data structure of the device in JSON format?</h1>
 
     <label class="choice">
       <input type="radio" name="q398" value="A" />
