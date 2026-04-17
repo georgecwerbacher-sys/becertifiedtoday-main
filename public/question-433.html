@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 392 - Valid JSON nested object</title>
+  <title>Question 433 - SD-Access intermediate fabric node</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -41,7 +41,6 @@
       font-size: 1rem;
       cursor: pointer;
       line-height: 1.45;
-      white-space: pre-line;
     }
     .choice input {
       margin-right: 10px;
@@ -87,34 +86,27 @@
       margin-top: 18px;
       display: none;
     }
-    code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-      font-size: 0.93em;
-    }
   </style>
 </head>
 <body class="ccnp-practice-ui">
   <main class="card">
-    <h1>Which snippet is valid JSON for a switch object that nests name and interfaces?</h1>
+    <h1>What is the function of an intermediate node in a Cisco SD-Access fabric?</h1>
 
     <label class="choice">
-      <input type="radio" name="q392" value="A" />
-      <strong>A.</strong> <code>{“switch”:”name”:”dist1″,”interfaces”:[“gig1″,”gig2″,”gig3”]}</code>
+      <input type="radio" name="q433" value="A" />
+      <strong>A.</strong> to route packets within the fabric based on the Layer 3 information in the header
     </label>
-
     <label class="choice">
-      <input type="radio" name="q392" value="B" />
-      <strong>B.</strong> <code>{‘switch’:(‘name’:’dist1′,’interfaces’:[‘gig1′,’gig2′,’gig3’])}</code>
+      <input type="radio" name="q433" value="B" />
+      <strong>B.</strong> to provide an entry and exit point between the fabric and external resources
     </label>
-
     <label class="choice">
-      <input type="radio" name="q392" value="C" />
-      <strong>C.</strong> <code>{“switch”:{“name”:”dist1″,”interfaces”:[“gig1″,”gig2″,”gig3”]}}</code>
+      <input type="radio" name="q433" value="C" />
+      <strong>C.</strong> to encapsulate and de-encapsulate packets with a VXLAN header
     </label>
-
     <label class="choice">
-      <input type="radio" name="q392" value="D" />
-      <strong>D.</strong> <code>{/”switch/”:{/”name/”:”dist1″,/”interfaces/”:[“gig1″,”gig2″,”gig3”]}}</code>
+      <input type="radio" name="q433" value="D" />
+      <strong>D.</strong> to provide reachability between fabric clients and nonfabric clients on the same subnet
     </label>
 
     <div class="actions">
@@ -124,7 +116,7 @@
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-393.html">Next</a>
+      <a class="next-link" href="/question-434.html">Next</a>
     </div>
   </main>
 
@@ -133,8 +125,8 @@
     const resetBtn = document.getElementById("resetBtn");
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q392"]');
-    const correct = "C";
+    const options = document.querySelectorAll('input[name="q433"]');
+    const correct = "A";
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -154,9 +146,7 @@
       const ok = selected.value === correct;
       answerBox.style.display = "block";
       answerBox.className = `answer ${ok ? "correct" : "incorrect"}`;
-      answerBox.textContent = ok
-        ? "Correct. Option C is valid JSON with proper object nesting."
-        : "Incorrect. Valid JSON uses double-quoted keys and values with proper object structure.";
+      answerBox.textContent = ok ? "Correct. A. Intermediate nodes forward traffic in the routed underlay using outer (underlay) IP headers; border nodes handle fabric exit/entry, and VTEP encapsulation is an edge/border role." : "Incorrect. The correct answer is A. Border nodes connect to external networks; VTEPs add/remove VXLAN; intermediate nodes provide L3 transit between fabric nodes.";
       nextWrap.style.display = "inline-block";
     });
 

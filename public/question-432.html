@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 431 - Puppet vs Ansible drag and drop</title>
+  <title>Question 432 - Automation tools drag and drop</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -92,10 +92,10 @@
     }
     .targets-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 12px;
     }
-    @media (max-width: 520px) {
+    @media (max-width: 720px) {
       .targets-grid {
         grid-template-columns: 1fr;
       }
@@ -169,29 +169,27 @@
 </head>
 <body class="ccnp-practice-ui">
   <main class="card">
-    <h1>Drag and drop the characteristics from the left onto the corresponding orchestration tool on the right.</h1>
+    <h1>Drag and drop the automation characteristics from the left to the corresponding tools on the right.</h1>
     <p class="instructions">
-      Place two statements under Puppet and two under Ansible. Order within each column does not matter. Click Check when done.
+      Ansible has two slots; Chef and Puppet each have one. Order within Ansible does not matter. Click Check when done.
     </p>
 
     <p class="exhibit-label">Refer to the exhibit.</p>
     <div class="image-wrap">
       <img
-        src="/assets/question431-puppet-ansible-drag.png"
-        alt="Drag-and-drop: four characteristics to place into two slots under Puppet and two under Ansible"
+        src="/assets/question432-automation-matching.png"
+        alt="Exhibit: four automation characteristics to match to Ansible, Chef, and Puppet"
       />
     </div>
 
     <div class="layout">
       <section>
         <div id="bank" class="bank">
-          <div class="token" draggable="true" data-value="managed hosts pull configuration from the main node">
-            managed hosts pull configuration from the main node
-          </div>
-          <div class="token" draggable="true" data-value="configuration files are procedural">configuration files are procedural</div>
-          <div class="token" draggable="true" data-value="uses SSH">uses SSH</div>
-          <div class="token" draggable="true" data-value="requires an agent to be installed on hosts">
-            requires an agent to be installed on hosts
+          <div class="token" draggable="true" data-value="uses playbooks and plays">uses playbooks and plays</div>
+          <div class="token" draggable="true" data-value="uses modules and manifests">uses modules and manifests</div>
+          <div class="token" draggable="true" data-value="uses cookbooks and recipes">uses cookbooks and recipes</div>
+          <div class="token" draggable="true" data-value="does not require an admin account on the client">
+            does not require an admin account on the client
           </div>
         </div>
       </section>
@@ -199,15 +197,18 @@
       <section class="targets-grid">
         <div
           class="target-group"
-          data-expected="managed hosts pull configuration from the main node|requires an agent to be installed on hosts"
+          data-expected="uses playbooks and plays|does not require an admin account on the client"
         >
-          <div class="target-title">Puppet</div>
+          <div class="target-title">Ansible</div>
           <div class="drop-slot"></div>
           <div class="drop-slot"></div>
         </div>
-        <div class="target-group" data-expected="configuration files are procedural|uses SSH">
-          <div class="target-title">Ansible</div>
+        <div class="target-group" data-expected="uses cookbooks and recipes">
+          <div class="target-title">Chef</div>
           <div class="drop-slot"></div>
+        </div>
+        <div class="target-group" data-expected="uses modules and manifests">
+          <div class="target-title">Puppet</div>
           <div class="drop-slot"></div>
         </div>
       </section>
@@ -217,7 +218,7 @@
       <button id="checkBtn" type="button">Check Answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <span id="result"></span>
-      <span id="nextWrap"><a class="next-link" href="/question-432.html">Next</a></span>
+      <span id="nextWrap"><a class="next-link" href="/question-433.html">Next</a></span>
     </div>
   </main>
 
