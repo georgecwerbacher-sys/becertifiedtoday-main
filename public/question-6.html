@@ -127,29 +127,12 @@
     const nextWrap = document.getElementById("nextWrap");
     const checkBtn = document.getElementById("checkBtn");
     const options = document.querySelectorAll('input[name="q6"]');
-    const choiceNodes = [...document.querySelectorAll("label.choice")];
     const correctSet = new Set(["A", "D"]);
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
       history.pushState(null, "", location.href);
     });
-
-    function shuffleChoices() {
-      const card = document.querySelector("main.card");
-      const actions = card.querySelector(".actions");
-      if (!card || !actions || choiceNodes.length < 2) return;
-
-      const shuffled = [...choiceNodes];
-      for (let i = shuffled.length - 1; i > 0; i -= 1) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-      }
-
-      shuffled.forEach((choice) => {
-        card.insertBefore(choice, actions);
-      });
-    }
 
     function applyDisplayLetters() {
       const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -158,7 +141,6 @@
       });
     }
 
-    shuffleChoices();
     applyDisplayLetters();
 
     checkBtn.addEventListener("click", () => {

@@ -143,7 +143,8 @@
     }
   }
 
-  function randomizeAndRelabelChoices(card) {
+  /** Strip duplicate inline A./B. text; assign stable A–Z badges in page order (no shuffle). */
+  function prepareChoiceLabels(card) {
     if (!card || card.dataset.ccnpChoicePrepared === "1") return;
     var labels = Array.prototype.slice
       .call(card.querySelectorAll("label.choice"))
@@ -153,22 +154,6 @@
     if (!labels.length) return;
 
     labels.forEach(stripInlineChoicePrefix);
-
-    if (labels.length > 1) {
-      var parent = labels[0].parentNode;
-      var marker = labels[labels.length - 1].nextSibling;
-      var shuffled = labels.slice();
-      for (var i = shuffled.length - 1; i > 0; i -= 1) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var tmp = shuffled[i];
-        shuffled[i] = shuffled[j];
-        shuffled[j] = tmp;
-      }
-      shuffled.forEach(function (label) {
-        parent.insertBefore(label, marker);
-      });
-      labels = shuffled;
-    }
 
     var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     labels.forEach(function (label, index) {
@@ -408,6 +393,36 @@
     }
   }
 
+  /** Strip "Correct." / leading choice letter for #answerBox "Correct. B. …" lines. */
+  function formatAnswerBoxCorrectLine(raw) {
+    if (raw == null || typeof raw !== "string") return raw;
+    var t = raw.replace(/^\s*Correct\.\s*/i, "").trim();
+    var m = t.match(/^([A-Z])\.\s*(.*)$/);
+    if (m) {
+      var rest = (m[2] || "").trim();
+      if (rest.length) return rest;
+    }
+    return t;
+  }
+
+  /** Check-result banner (#answerBox) only: drop "A./B./C." style prefixes. */
+  function stripAnswerFeedbackLetters(text) {
+    if (!text || typeof text !== "string") return text;
+    var s = text;
+    if (/^\s*Correct\./i.test(s)) {
+      return formatAnswerBoxCorrectLine(s);
+    }
+    s = s.replace(/^(Incorrect\. The correct answer:\s*)[A-Z]\.\s+/i, "$1");
+    var m = s.match(
+      /^(Incorrect\. The correct answer is\s*)([A-Z])(?:\.\s*|\:\s*)([\s\S]*)$/i
+    );
+    if (m) {
+      var tail = (m[3] || "").trim();
+      s = tail.length ? "Incorrect. " + tail : "Incorrect.";
+    }
+    return s;
+  }
+
   function loadAnswers(cb) {
     if (window.__ccnpAnswers) {
       cb(null, window.__ccnpAnswers);
@@ -447,11 +462,28 @@
     var card = document.querySelector("main.card");
     if (!card || document.getElementById("ccnpQToolbar")) return;
 
-    randomizeAndRelabelChoices(card);
+    prepareChoiceLabels(card);
     bindPointerFriendlyChoices(card);
     enableAutoCheckForSingleChoice(card);
     stripBottomNextFromCard(card);
     stripDuplicateSimNavNext();
+
+    var answerBoxEl = document.getElementById("answerBox");
+    if (answerBoxEl) {
+      var applyAnswerBoxFormat = function () {
+        if (!elementVisible(answerBoxEl)) return;
+        var cur = answerBoxEl.textContent || "";
+        var next = stripAnswerFeedbackLetters(cur);
+        if (next !== cur) answerBoxEl.textContent = next;
+      };
+      applyAnswerBoxFormat();
+      var abObs = new MutationObserver(applyAnswerBoxFormat);
+      abObs.observe(answerBoxEl, {
+        characterData: true,
+        subtree: true,
+        childList: true,
+      });
+    }
 
     var toolbar = document.createElement("div");
     toolbar.id = "ccnpQToolbar";
