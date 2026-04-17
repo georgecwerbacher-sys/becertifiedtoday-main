@@ -32,19 +32,49 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
+    .exhibit-region {
+      margin: 0 0 16px;
     }
-    .image-wrap img {
-      display: block;
-      width: 100%;
-      max-width: 920px;
-      height: auto;
-      margin: 0 auto;
+    .exhibit-ref {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-light {
+      background: #fff;
+      color: #111;
+      border-radius: 8px;
+      border: 1px solid #c8c8c8;
+      padding: 10px 12px 12px;
+      min-width: 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+    .exhibit-light-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #ddd;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #222;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .exhibit-light .exhibit-cli {
+      margin: 0;
+      padding: 10px 12px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      color: #111;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.58rem, 1.05vw, 0.72rem);
+      line-height: 1.45;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      word-break: break-word;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -96,12 +126,27 @@
 </head>
 <body>
   <main class="card">
-    <p style="margin:0 0 8px;font-size:0.95rem;color:#9fb0cc;">Refer to the exhibit.</p>
-    <div class="image-wrap">
-      <img
-        src="/assets/question291-netconf-get-ip-ge1.png"
-        alt="NETCONF RPC: nc:get with subtree filter native interface GigabitEthernet name 1 and empty ip selection node"
-      />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-light" role="region" aria-label="NETCONF get RPC with subtree filter for GigabitEthernet1 IP">
+        <div class="exhibit-light-label">NETCONF RPC (XML)</div>
+        <pre class="exhibit-cli">&lt;?xml version="1.0"?>
+&lt;nc:rpc message-id="101" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+  &lt;nc:get>
+    &lt;nc:filter type="subtree">
+      &lt;native xmlns="http://cisco.com/ns/yang/ned/ios">
+        &lt;interface>
+          &lt;GigabitEthernet>
+            &lt;name>1&lt;/name>
+            &lt;ip/>
+          &lt;/GigabitEthernet>
+        &lt;/interface>
+      &lt;/native>
+    &lt;/nc:filter>
+  &lt;/nc:get>
+&lt;/nc:rpc>
+]]>]]></pre>
+      </div>
     </div>
     <h1>The NETCONF object is sent to a Cisco IOS XE switch. What is the purpose of the object?</h1>
 

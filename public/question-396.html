@@ -31,17 +31,48 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin: 12px 0 14px;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid #32456b;
-      background: #0f1728;
+    .exhibit-region {
+      margin: 0 0 16px;
     }
-    .image-wrap img {
-      width: 100%;
-      height: auto;
-      display: block;
+    .exhibit-ref {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-light {
+      background: #fff;
+      color: #111;
+      border-radius: 8px;
+      border: 1px solid #c8c8c8;
+      padding: 10px 12px 12px;
+      min-width: 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+    .exhibit-light-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #ddd;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #222;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .exhibit-light .exhibit-cli {
+      margin: 0;
+      padding: 10px 12px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      color: #111;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.62rem, 1.15vw, 0.74rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -104,8 +135,27 @@
   <main class="card">
     <h1>Which class type is returned for the command prompt "type(customer1)"?</h1>
 
-    <div class="image-wrap">
-      <img src="/assets/question396-type-customer1.png" alt="Python prompt showing customer1 variable assignment" />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-light" role="region" aria-label="Python REPL: customer1 nested dict">
+        <div class="exhibit-light-label">Python interpreter</div>
+        <pre class="exhibit-cli">Python 3.10.2 (tags/v3.10.2:a58cbcc, Jan 17 2022, 14:12:15) [MSC v.1929 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt; customer1 = {
+...     "inventory": {
+...         "device": [
+...             {
+...                 "hostname": "asr9k-01",
+...                 "ver": "16.09",
+...                 "vendor": "Cisco",
+...                 "uptime": "39 days",
+...                 "serial": "XX123456",
+...             }
+...         ]
+...     }
+... }
+&gt;&gt;&gt;</pre>
+      </div>
     </div>
 
     <label class="choice">

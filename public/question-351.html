@@ -32,17 +32,63 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin: 12px 0 14px;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid #32456b;
-      background: #0f1728;
+    .exhibit-region {
+      margin: 0 0 16px;
     }
-    .image-wrap img {
-      width: 100%;
-      height: auto;
-      display: block;
+    .exhibit-ref {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-ref.sub {
+      margin-top: 16px;
+    }
+    .exhibit-light {
+      background: #fff;
+      color: #111;
+      border-radius: 8px;
+      border: 1px solid #c8c8c8;
+      padding: 10px 12px 12px;
+      min-width: 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+    .exhibit-light-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #ddd;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #222;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .exhibit-light .exhibit-cli {
+      margin: 0;
+      padding: 10px 12px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      color: #111;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.55rem, 1vw, 0.68rem);
+      line-height: 1.45;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      word-break: break-word;
+      -webkit-overflow-scrolling: touch;
+    }
+    .exhibit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+    @media (max-width: 720px) {
+      .exhibit-grid {
+        grid-template-columns: 1fr;
+      }
     }
     .choice {
       display: block;
@@ -105,8 +151,100 @@
   <main class="card">
     <h1>An engineer attempts to use RESTCONF to configure GigabitEthernet2 on a remote router with IP address 192.168.159.10, but the configuration fails. Which configuration is required to complete the action?</h1>
 
-    <div class="image-wrap">
-      <img src="/assets/question351-restconf-gigabitethernet2-fix.png" alt="Python RESTCONF script exhibit with options A through D" />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-light" role="region" aria-label="Failing RESTCONF Python script">
+        <div class="exhibit-light-label">Python</div>
+        <pre class="exhibit-cli">import requests
+import json
+import urllib3
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+
+def printBytesAsJSON(b):
+    print(json.dumps(json.loads(b), indent=2))
+
+
+data = json.dumps({
+    "Cisco-IOS-XE-native:GigabitEthernet": {
+        "ip": {
+            "address": {
+                "primary": {
+                    "address": "10.10.10.1",
+                    "mask": "255.255.255.0",
+                }
+            }
+        }
+    }
+})
+
+response = requests.get(
+    "https://192.168.159.10/restconf/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=2",
+    auth=("cisco", "cisco"),
+    headers={
+        "Accept": "application/yang-data+json",
+        "Content-Type": "application/yang-data+json",
+    },
+    data=data,
+    verify=False,
+)
+print(response.status_code)</pre>
+      </div>
+
+      <p class="exhibit-ref sub">Options A through D (same as answer choices).</p>
+      <div class="exhibit-grid" role="region" aria-label="Four proposed fixes">
+        <div class="exhibit-light">
+          <div class="exhibit-light-label">Option A</div>
+          <pre class="exhibit-cli">data = json.dumps({
+  "Cisco-IOS-XE-native:GigabitEthernet2": {
+    "ip": {
+      "address": {
+        "primary": {
+          "address": "10.10.10.1",
+          "mask": "255.255.255.0",
+        }
+      }
+    }
+  }
+})</pre>
+        </div>
+        <div class="exhibit-light">
+          <div class="exhibit-light-label">Option B</div>
+          <pre class="exhibit-cli">data = json.dumps({
+  "Cisco-IOS-XE-native:GigabitEthernet": {
+    "ip": {
+      "address": {
+        "interface": {
+          "primary": {
+            "address": "10.10.10.1",
+            "mask": "255.255.255.0",
+          }
+        }
+      }
+    }
+  }
+})</pre>
+        </div>
+        <div class="exhibit-light">
+          <div class="exhibit-light-label">Option C</div>
+          <pre class="exhibit-cli">url = (
+  "https://192.168.159.10/restconf/data/"
+  "Cisco-IOS-XE-native:native/interface/GigabitEthernet2"
+)</pre>
+        </div>
+        <div class="exhibit-light">
+          <div class="exhibit-light-label">Option D</div>
+          <pre class="exhibit-cli">response = requests.patch(
+    "https://192.168.159.10/restconf/data/"
+    "Cisco-IOS-XE-native:native/interface/GigabitEthernet=2",
+    auth=("cisco", "cisco"),
+    headers={...},
+    data=data,
+    verify=False,
+)</pre>
+        </div>
+      </div>
     </div>
 
     <label class="choice"><input type="radio" name="q351" value="A" />A. Option A</label>

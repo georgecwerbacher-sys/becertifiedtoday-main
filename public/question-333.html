@@ -32,19 +32,52 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
+    .exhibit-region {
+      margin: 0 0 16px;
     }
-    .image-wrap img {
-      display: block;
-      width: 100%;
-      max-width: 920px;
-      height: auto;
-      margin: 0 auto;
+    .exhibit-region .exhibit-light + .exhibit-light {
+      margin-top: 12px;
+    }
+    .exhibit-ref {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-light {
+      background: #fff;
+      color: #111;
+      border-radius: 8px;
+      border: 1px solid #c8c8c8;
+      padding: 10px 12px 12px;
+      min-width: 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+    .exhibit-light-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #ddd;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #222;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .exhibit-light .exhibit-cli {
+      margin: 0;
+      padding: 10px 12px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      color: #111;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.58rem, 1.05vw, 0.72rem);
+      line-height: 1.45;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      word-break: break-word;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -96,12 +129,37 @@
 </head>
 <body>
   <main class="card">
-    <p style="margin:0 0 8px;font-size:0.95rem;color:#9fb0cc;">Refer to the exhibit.</p>
-    <div class="image-wrap">
-      <img
-        src="/assets/question333-restconf-bgp-uri.png"
-        alt="Python requests script to fetch RESTCONF BGP data returning HTTP 404 and uri keypath not found error"
-      />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-light" role="region" aria-label="Python RESTCONF GET script">
+        <div class="exhibit-light-label">Python</div>
+        <pre class="exhibit-cli">from requests.auth import HTTPBasicAuth
+import requests
+
+ROUTER = "192.0.2.1"
+BASEURI = "restconf/data/Cisco-IOS-XE-native:native"
+SUBURI = "router/router-bgp"
+
+response = requests.get(
+    f"https://{ROUTER}/{BASEURI}/{SUBURI}",
+    auth=HTTPBasicAuth("admin", "S3cr3tP4ss"),
+    verify=False,
+)
+print(response.status_code, response.reason)
+print(response.text)</pre>
+      </div>
+      <div class="exhibit-light" role="region" aria-label="Script output 404 and RESTCONF error XML">
+        <div class="exhibit-light-label">Terminal output</div>
+        <pre class="exhibit-cli">admin@linux:/tmp$ python3 get-bgp.py
+404 Not Found
+&lt;errors xmlns="urn:ietf:params:xml:ns:yang:ietf-restconf"&gt;
+  &lt;error&gt;
+    &lt;error-message&gt;uri keypath not found&lt;/error-message&gt;
+    &lt;error-tag&gt;invalid-value&lt;/error-tag&gt;
+    &lt;error-type&gt;application&lt;/error-type&gt;
+  &lt;/error&gt;
+&lt;/errors&gt;</pre>
+      </div>
     </div>
     <h1>An engineer is creating a Python script to fetch the BGP configuration from a device using RESTCONF. What does the output indicate?</h1>
 

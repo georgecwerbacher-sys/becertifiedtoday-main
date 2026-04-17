@@ -32,19 +32,49 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .image-wrap {
-      margin-bottom: 14px;
-      border: 1px solid #2c3f62;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
+    .exhibit-region {
+      margin: 0 0 16px;
     }
-    .image-wrap img {
-      display: block;
-      width: 100%;
-      max-width: 920px;
-      height: auto;
-      margin: 0 auto;
+    .exhibit-ref {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-light {
+      background: #fff;
+      color: #111;
+      border-radius: 8px;
+      border: 1px solid #c8c8c8;
+      padding: 10px 12px 12px;
+      min-width: 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+    .exhibit-light-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #ddd;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #222;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .exhibit-light .exhibit-cli {
+      margin: 0;
+      padding: 10px 12px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      color: #111;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.55rem, 1vw, 0.68rem);
+      line-height: 1.45;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      word-break: break-word;
+      -webkit-overflow-scrolling: touch;
     }
     .choice {
       display: block;
@@ -96,12 +126,37 @@
 </head>
 <body>
   <main class="card">
-    <p style="margin:0 0 8px;font-size:0.95rem;color:#9fb0cc;">Refer to the exhibit.</p>
-    <div class="image-wrap">
-      <img
-        src="/assets/question346-netconf-acl-parse.png"
-        alt="Python NETCONF script with get-config filter for extended ACL and xmltodict parsing into variable d1"
-      />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-light" role="region" aria-label="Python NETCONF get-config extended ACL flp and xmltodict parse">
+        <div class="exhibit-light-label">Python</div>
+        <pre class="exhibit-cli">from ncclient import manager
+import xml.etree.ElementTree as et
+import xmltodict
+
+pl1 = ["""&lt;get-config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0"&gt;
+&lt;source&gt;&lt;running/&gt;&lt;/source&gt;
+&lt;filer type="subtree"&gt;
+&lt;native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native"&gt;
+&lt;ip&gt;
+&lt;access-list&gt;
+&lt;extended xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-acl"&gt;
+&lt;name&gt;flp&lt;/name&gt;
+&lt;/extended&gt;
+&lt;/access-list&gt;
+&lt;/ip&gt;
+&lt;/native&gt;
+&lt;/filter&gt;
+&lt;/get-config&gt;"""]
+
+with manager.connect(
+    host=c54, port=830, username=c14, password=c24, timeout=90, hostkey_verify=False
+) as m:
+    for rpc in pl1:
+        r1 = m.dispatch(et.fromstring(rpc))
+        d1 = xmltodict.parse(r1.xml)["rpc-reply"]["data"]["native"]["ip"][
+            "access-list"]["extended"]["access-list-seq-rule"]</pre>
+      </div>
     </div>
     <h1>What does this NETCONF script accomplish for the extended access list?</h1>
 
