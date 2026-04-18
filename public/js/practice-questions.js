@@ -116,34 +116,41 @@
       "#ccnpSolutionReveal .ccnp-answer-image-wrap p{margin:0 0 10px;font-weight:700;}" +
       "#ccnpSolutionReveal .ccnp-answer-image-wrap img{max-width:100%;height:auto;border-radius:10px;border:1px solid #2d3b5a;display:block;}" +
       "body.ccnp-practice-ui main.card label.choice{cursor:pointer;-webkit-tap-highlight-color:rgba(77,137,255,.22);touch-action:manipulation;user-select:none;-webkit-user-select:none;}" +
-      "body.ccnp-practice-ui main.card label.choice[data-choice-letter]{position:relative;margin-left:34px;}" +
-      "body.ccnp-practice-ui main.card label.choice[data-choice-letter]::before{content:attr(data-choice-letter);position:absolute;left:-34px;top:50%;transform:translateY(-50%);width:28px;text-align:right;font-weight:700;color:#b8c3d6;}" +
       "body.ccnp-practice-ui main.card label.choice input[type=checkbox],body.ccnp-practice-ui main.card label.choice input[type=radio]{width:1.2em;height:1.2em;min-width:1.2em;min-height:1.2em;margin-right:12px;vertical-align:middle;accent-color:#000;}";
     document.head.appendChild(el);
   }
 
-  function stripInlineChoicePrefix(choice) {
-    if (!choice) return;
-    var textSpan = choice.querySelector(".choice-text");
+  function choiceLabelNeedsLetter(text) {
+    return !/^\s*[A-Z][\.\)]\s+/.test(text || "");
+  }
+
+  /**
+   * Keep inline A./B./C. in the choice row (no shuffle). For labels that only
+   * have body text (e.g. .choice-text), prefix A. B. … in page order.
+   */
+  function prefixChoiceLetterIfMissing(label, letter) {
+    var pref = letter + ". ";
+    var textSpan = label.querySelector(".choice-text");
     if (textSpan) {
-      textSpan.textContent = (textSpan.textContent || "").replace(
-        /^\s*[A-Z][\.\)]\s+/,
-        ""
-      );
+      var t = (textSpan.textContent || "").trim();
+      if (choiceLabelNeedsLetter(t)) {
+        textSpan.textContent = pref + t;
+      }
       return;
     }
-    var nodes = choice.childNodes || [];
+    var nodes = label.childNodes || [];
     for (var i = 0; i < nodes.length; i += 1) {
       var node = nodes[i];
       if (node.nodeType !== Node.TEXT_NODE) continue;
       var raw = node.textContent || "";
       if (!raw.trim()) continue;
-      node.textContent = raw.replace(/^\s*[A-Z][\.\)]\s+/, "");
+      if (choiceLabelNeedsLetter(raw)) {
+        node.textContent = pref + raw.trim();
+      }
       return;
     }
   }
 
-  /** Strip duplicate inline A./B. text; assign stable A–Z badges in page order (no shuffle). */
   function prepareChoiceLabels(card) {
     if (!card || card.dataset.ccnpChoicePrepared === "1") return;
     var labels = Array.prototype.slice
@@ -153,11 +160,9 @@
       });
     if (!labels.length) return;
 
-    labels.forEach(stripInlineChoicePrefix);
-
     var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     labels.forEach(function (label, index) {
-      label.setAttribute("data-choice-letter", (letters[index] || "?") + ".");
+      prefixChoiceLetterIfMissing(label, letters[index] || "?");
     });
     card.dataset.ccnpChoicePrepared = "1";
   }
