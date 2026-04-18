@@ -67,22 +67,117 @@
       height: auto;
       vertical-align: middle;
     }
-    .console-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 14px;
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
     }
-    @media (max-width: 1024px) {
-      .console-row {
-        grid-template-columns: 1fr;
-      }
+    .device-pick label {
+      margin-left: 10px;
+      cursor: pointer;
+      user-select: none;
     }
-    .console-label {
-      margin: 0 0 8px;
-      font-size: 1rem;
-      font-weight: 800;
-      color: #c8d7ec;
+    .device-pick input {
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
+      outline: none;
+    }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+      pointer-events: none;
+    }
+    .cli-modal-overlay.is-open {
+      display: block;
+    }
+    .cli-modal-dialog {
+      width: min(520px, calc(100vw - 24px));
+      max-height: min(85vh, 680px);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
     }
     .terminal-panel {
       min-width: 0;
@@ -222,6 +317,8 @@
     }
     .sim-nav-btn:hover { filter: brightness(1.08); }
     .sim-nav-home { background: #1a3d6e; }
+    .sim-nav-next { background: #1a3d6e; }
+    .sim-nav-back { background: #243352; border-color: #3d5280; }
   </style>
 </head>
 <body>
@@ -231,6 +328,7 @@
       <p class="objective">
         OSPF is partially configured elsewhere. On <strong>R1</strong>, enable process <strong>1</strong> and attach OSPF to each interface using <code>ip ospf 1 area 0</code> only — <strong>no <code>network</code></strong> statements under <code>router ospf</code>.
         On ABRs <strong>R2</strong> and <strong>R3</strong>, one summary command each toward area 0: area <strong>10</strong> → <code>10.1.0.0/16</code>, area <strong>20</strong> → <code>10.2.0.0/16</code>.
+        Under the topology, choose <strong>Device in prompt</strong>, then <strong>Open Router CLI</strong>.
       </p>
       <div class="tasks">
         <strong>Tasks</strong>
@@ -243,41 +341,14 @@
 
       <div class="diagram-wrap" aria-label="OSPF areas and R1 initial config">
         <img src="/assets/ospf-adv-summ-lab.png" alt="Areas 10 20 0 with R1 R2 R3 and R1 interface summary" />
-      </div>
-
-      <div class="console-row" aria-label="R1 R2 R3 consoles">
-        <div class="terminal-panel" id="panelR1">
-          <h2 class="console-label">R1</h2>
-          <p class="console-hint" id="hintR1">router ospf 1, exit, then ip ospf 1 area 0 on each interface; verify; save last on R1.</p>
-          <div class="terminal" aria-label="R1 CLI">
-            <div class="console-scroll" id="scrollR1"></div>
-            <div class="input-row">
-              <span class="prompt" id="promptR1">R1#</span>
-              <input class="cmdline" id="cmdR1" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R1 command line" />
-            </div>
-          </div>
+        <div class="device-pick" role="group" aria-label="Device in prompt">
+          <strong>Device in prompt:</strong>
+          <label><input type="radio" name="ospfAdvSummDev" value="R1" checked /> R1</label>
+          <label><input type="radio" name="ospfAdvSummDev" value="R2" /> R2</label>
+          <label><input type="radio" name="ospfAdvSummDev" value="R3" /> R3</label>
         </div>
-        <div class="terminal-panel terminal-panel--waiting" id="panelR2">
-          <h2 class="console-label">R2</h2>
-          <p class="console-hint" id="hintR2">ABR for area 10: area 10 range 10.1.0.0 255.255.0.0</p>
-          <div class="terminal" aria-label="R2 CLI">
-            <div class="console-scroll" id="scrollR2"></div>
-            <div class="input-row">
-              <span class="prompt" id="promptR2">R2#</span>
-              <input class="cmdline" id="cmdR2" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R2 command line" disabled />
-            </div>
-          </div>
-        </div>
-        <div class="terminal-panel terminal-panel--waiting" id="panelR3">
-          <h2 class="console-label">R3</h2>
-          <p class="console-hint" id="hintR3">ABR for area 20: area 20 range 10.2.0.0 255.255.0.0</p>
-          <div class="terminal" aria-label="R3 CLI">
-            <div class="console-scroll" id="scrollR3"></div>
-            <div class="input-row">
-              <span class="prompt" id="promptR3">R3#</span>
-              <input class="cmdline" id="cmdR3" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R3 command line" disabled />
-            </div>
-          </div>
+        <div class="device-links">
+          <button type="button" class="device-link" id="openDeviceCliLink">Open Router CLI</button>
         </div>
       </div>
 
@@ -306,10 +377,71 @@
     </main>
   </div>
 
+  <div id="modalR1" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR1" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR1">R1 — simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR1" aria-label="Close R1 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel" id="panelR1">
+          <p class="console-hint" id="hintR1">router ospf 1, exit, then ip ospf 1 area 0 on each interface; verify; save last on R1.</p>
+          <div class="terminal" aria-label="R1 CLI">
+            <div class="console-scroll" id="scrollR1"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR1">R1#</span>
+              <input class="cmdline" id="cmdR1" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R1 command line" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="modalR2" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR2" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR2">R2 — simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR2" aria-label="Close R2 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel terminal-panel--waiting" id="panelR2">
+          <p class="console-hint" id="hintR2">ABR for area 10: area 10 range 10.1.0.0 255.255.0.0</p>
+          <div class="terminal" aria-label="R2 CLI">
+            <div class="console-scroll" id="scrollR2"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR2">R2#</span>
+              <input class="cmdline" id="cmdR2" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R2 command line" disabled />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="modalR3" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR3" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR3">R3 — simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR3" aria-label="Close R3 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel terminal-panel--waiting" id="panelR3">
+          <p class="console-hint" id="hintR3">ABR for area 20: area 20 range 10.2.0.0 255.255.0.0</p>
+          <div class="terminal" aria-label="R3 CLI">
+            <div class="console-scroll" id="scrollR3"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR3">R3#</span>
+              <input class="cmdline" id="cmdR3" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R3 command line" disabled />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <nav class="sim-nav" aria-label="Simulation navigation">
-    <a class="sim-nav-btn" href="/cli-lab-ospf-dr-summarization.html">Back</a>
     <a class="sim-nav-btn sim-nav-home" href="/practice-launcher.html">Home</a>
-    <a class="sim-nav-btn" href="/cli-lab-ospf-summ-r30.html">Next</a>
+    <a class="sim-nav-btn sim-nav-next" href="/cli-lab-ospf-summ-r30.html">Next</a>
+    <a class="sim-nav-btn sim-nav-back" href="/cli-lab-ospf-dr-summarization.html">Back</a>
   </nav>
 
   <script>
@@ -438,6 +570,63 @@
     const panelR3 = document.getElementById("panelR3");
     const passBanner = document.getElementById("passBanner");
     const resetBtn = document.getElementById("resetBtn");
+    const modalR1 = document.getElementById("modalR1");
+    const modalR2 = document.getElementById("modalR2");
+    const modalR3 = document.getElementById("modalR3");
+    const openDeviceCliLink = document.getElementById("openDeviceCliLink");
+
+    function getOspfAdvSummDev() {
+      const sel = document.querySelector('input[name="ospfAdvSummDev"]:checked');
+      return sel ? sel.value : "R1";
+    }
+
+    function closeR1Modal() {
+      modalR1.classList.remove("is-open");
+      modalR1.setAttribute("aria-hidden", "true");
+    }
+    function closeR2Modal() {
+      modalR2.classList.remove("is-open");
+      modalR2.setAttribute("aria-hidden", "true");
+    }
+    function closeR3Modal() {
+      modalR3.classList.remove("is-open");
+      modalR3.setAttribute("aria-hidden", "true");
+    }
+    function closeModals() {
+      closeR1Modal();
+      closeR2Modal();
+      closeR3Modal();
+    }
+
+    function openSelectedCliModal() {
+      closeModals();
+      const d = getOspfAdvSummDev();
+      if (d === "R2") {
+        modalR2.classList.add("is-open");
+        modalR2.setAttribute("aria-hidden", "false");
+      } else if (d === "R3") {
+        modalR3.classList.add("is-open");
+        modalR3.setAttribute("aria-hidden", "false");
+      } else {
+        modalR1.classList.add("is-open");
+        modalR1.setAttribute("aria-hidden", "false");
+      }
+      focusActiveCli();
+    }
+
+    function focusActiveCli() {
+      if (modalR1.classList.contains("is-open") && !cmdR1.disabled) {
+        cmdR1.focus();
+        return;
+      }
+      if (modalR2.classList.contains("is-open") && !cmdR2.disabled) {
+        cmdR2.focus();
+        return;
+      }
+      if (modalR3.classList.contains("is-open") && !cmdR3.disabled) {
+        cmdR3.focus();
+      }
+    }
 
     let phase = "R1_CFG";
     let stepR1 = 0;
@@ -516,12 +705,11 @@
       if (phase === "R3_RANGE" || phase === "R3_SAVE") cmdR3.disabled = false;
 
       updatePrompts();
-      if (!cmdR1.disabled) cmdR1.focus();
-      else if (!cmdR2.disabled) cmdR2.focus();
-      else if (!cmdR3.disabled) cmdR3.focus();
+      focusActiveCli();
     }
 
     function reset() {
+      closeModals();
       phase = "R1_CFG";
       stepR1 = 0;
       stepR2 = 0;
@@ -536,6 +724,7 @@
       passBanner.classList.remove("visible");
       appendLine(scrollR1, "line-sys", "No OSPF on R1 yet — use process 1 and interface-level enrollment only.");
       applyPhaseUI();
+      openDeviceCliLink.focus();
     }
 
     function submitR1() {
@@ -720,6 +909,47 @@
     });
 
     resetBtn.addEventListener("click", reset);
+    openDeviceCliLink.addEventListener("click", openSelectedCliModal);
+    document.getElementById("closeR1").addEventListener("click", () => {
+      closeR1Modal();
+      openDeviceCliLink.focus();
+    });
+    document.getElementById("closeR2").addEventListener("click", () => {
+      closeR2Modal();
+      openDeviceCliLink.focus();
+    });
+    document.getElementById("closeR3").addEventListener("click", () => {
+      closeR3Modal();
+      openDeviceCliLink.focus();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      if (modalR3.classList.contains("is-open")) {
+        e.preventDefault();
+        closeR3Modal();
+        openDeviceCliLink.focus();
+        return;
+      }
+      if (modalR2.classList.contains("is-open")) {
+        e.preventDefault();
+        closeR2Modal();
+        openDeviceCliLink.focus();
+        return;
+      }
+      if (modalR1.classList.contains("is-open")) {
+        e.preventDefault();
+        closeR1Modal();
+        openDeviceCliLink.focus();
+      }
+    });
+
+    document.querySelectorAll('input[name="ospfAdvSummDev"]').forEach((r) => {
+      r.addEventListener("change", () => {
+        closeModals();
+        openDeviceCliLink.focus();
+      });
+    });
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {

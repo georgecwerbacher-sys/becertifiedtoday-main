@@ -79,58 +79,52 @@
       pointer-events: none;
       border-radius: 8px;
     }
-    .diagram-hotspot {
-      position: absolute;
-      z-index: 2;
-      margin: 0;
-      padding: 0;
-      border: 2px dashed transparent;
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
       border-radius: 10px;
-      background: rgba(126, 200, 255, 0);
-      cursor: pointer;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      text-align: center;
+      max-width: 100%;
       box-sizing: border-box;
-      transition: border-color 0.15s ease, background 0.15s ease;
     }
-    .diagram-hotspot:hover,
-    .diagram-hotspot:focus-visible {
-      border-color: rgba(126, 200, 255, 0.65);
-      background: rgba(126, 200, 255, 0.14);
+    .device-pick label {
+      margin-left: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .device-pick input {
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
       outline: none;
-    }
-    .diagram-hotspot--r10 {
-      left: 12%;
-      top: 32%;
-      width: 18%;
-      height: 20%;
-    }
-    .diagram-hotspot--r20 {
-      right: 12%;
-      top: 32%;
-      width: 18%;
-      height: 20%;
-    }
-    .diagram-hotspot--sw20 {
-      right: 22%;
-      top: 60%;
-      width: 16%;
-      height: 16%;
-    }
-    .console-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 14px;
-    }
-    @media (max-width: 800px) {
-      .console-row {
-        grid-template-columns: 1fr;
-      }
-    }
-    .console-label {
-      margin: 0 0 8px;
-      font-size: 1rem;
-      font-weight: 800;
-      color: #c8d7ec;
     }
     .terminal-panel {
       min-width: 0;
@@ -234,30 +228,39 @@
     .pass-banner.visible {
       display: block;
     }
+    /* Floating palettes: dialog is the popup; overlay is invisible and does not block the page */
     .cli-modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
       z-index: 25000;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
+      padding: 0;
       box-sizing: border-box;
-      background: rgba(5, 8, 18, 0.72);
+      background: transparent;
+      pointer-events: none;
     }
     .cli-modal-overlay.is-open {
-      display: flex;
+      display: block;
     }
     .cli-modal-dialog {
-      width: min(460px, 100%);
+      width: min(460px, calc(100vw - 24px));
       max-height: min(85vh, 640px);
       display: flex;
       flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
       background: #121a2b;
       border: 1px solid #3d5280;
       border-radius: 14px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
       overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-dialog.is-dragging {
+      transition: none;
     }
     .cli-modal-header {
       display: flex;
@@ -267,6 +270,13 @@
       padding: 10px 12px;
       border-bottom: 1px solid #2d3b5a;
       background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+    }
+    .cli-modal-header:active {
+      cursor: grabbing;
     }
     .cli-modal-header h2 {
       margin: 0;
@@ -275,6 +285,7 @@
       color: #e6edf3;
     }
     .cli-modal-close {
+      flex-shrink: 0;
       width: 36px;
       height: 36px;
       border: 1px solid #4b556b;
@@ -328,6 +339,8 @@
     }
     .sim-nav-btn:hover { filter: brightness(1.08); }
     .sim-nav-home { background: #1a3d6e; }
+    .sim-nav-next { background: #1a3d6e; }
+    .sim-nav-back { background: #243352; border-color: #3d5280; }
   </style>
 </head>
 <body>
@@ -338,6 +351,7 @@
         R10 and R20 are preconfigured with the CORP VRF and reachability over the ISP underlay. Complete the missing pieces so CORP traffic between
         VLAN 100 (10.100.1.0/24) and VLAN 101 (10.101.2.0/24) uses <strong>Tunnel0</strong> only. Use the <strong>R10</strong> console first; the
         <strong>R20</strong> console unlocks when R10 is complete.
+        Under the topology, choose <strong>Device in prompt</strong>, then use the open button for that device.
       </p>
       <div class="tasks">
         <strong>Goals</strong>
@@ -353,13 +367,18 @@
       <div class="diagram-wrap" aria-label="Topology">
         <div class="diagram-stage">
           <img src="/assets/vrf-tunnel-topology.png" alt="VRF lab topology: R10 and R20 with ISP, switches, and Tunnel0" />
-          <button type="button" class="diagram-hotspot diagram-hotspot--r10" id="hotspotR10" aria-label="Open R10 CLI" title="R10"></button>
-          <button type="button" class="diagram-hotspot diagram-hotspot--r20" id="hotspotR20" aria-label="Open R20 CLI" title="R20"></button>
-          <button type="button" class="diagram-hotspot diagram-hotspot--sw20" id="hotspotSw20" aria-label="Open SW20 config" title="SW20"></button>
         </div>
-      </div>
-      <div class="diagram-wrap" aria-label="Initial device configurations">
-        <img src="/assets/vrf-initial-config.png" alt="Initial running configuration excerpts for R10, R20, ISP, Sw10, Sw20" />
+        <div class="device-pick" role="group" aria-label="Device in prompt">
+          <strong>Device in prompt:</strong>
+          <label><input type="radio" name="vrfTunnelDev" value="R10" checked /> R10</label>
+          <label><input type="radio" name="vrfTunnelDev" value="R20" /> R20</label>
+          <label><input type="radio" name="vrfTunnelDev" value="SW10" /> SW10</label>
+          <label><input type="radio" name="vrfTunnelDev" value="SW20" /> SW20</label>
+          <label><input type="radio" name="vrfTunnelDev" value="ISP" /> ISP</label>
+        </div>
+        <div class="device-links">
+          <button type="button" class="device-link" id="openSelectedCliBtn">Open Router CLI</button>
+        </div>
       </div>
 
       <div class="controls">
@@ -403,7 +422,14 @@
   </div>
 
   <div id="modalR10" class="cli-modal-overlay" aria-hidden="true">
-    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR10">
+    <div
+      id="modalR10Dialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitleR10"
+      tabindex="-1"
+    >
       <header class="cli-modal-header">
         <h2 id="modalTitleR10">R10 — simulated CLI</h2>
         <button type="button" class="cli-modal-close" id="closeR10" aria-label="Close R10 CLI">×</button>
@@ -431,7 +457,14 @@
   </div>
 
   <div id="modalR20" class="cli-modal-overlay" aria-hidden="true">
-    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR20">
+    <div
+      id="modalR20Dialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitleR20"
+      tabindex="-1"
+    >
       <header class="cli-modal-header">
         <h2 id="modalTitleR20">R20 — simulated CLI</h2>
         <button type="button" class="cli-modal-close" id="closeR20" aria-label="Close R20 CLI">×</button>
@@ -461,7 +494,14 @@
   </div>
 
   <div id="modalSw20" class="cli-modal-overlay" aria-hidden="true">
-    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleSw20">
+    <div
+      id="modalSw20Dialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitleSw20"
+      tabindex="-1"
+    >
       <header class="cli-modal-header">
         <h2 id="modalTitleSw20">SW20 — configuration</h2>
         <button type="button" class="cli-modal-close" id="closeSw20" aria-label="Close SW20 window">×</button>
@@ -486,10 +526,77 @@ no shut</div>
     </div>
   </div>
 
+  <div id="modalSw10" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="modalSw10Dialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitleSw10"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="modalTitleSw10">SW10 — configuration</h2>
+        <button type="button" class="cli-modal-close" id="closeSw10Modal" aria-label="Close SW10 window">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" aria-label="SW10 config">
+          <div class="console-scroll">hostname Sw10
+vlan 100
+exit
+!
+interface e0/0
+switchport trunk encapsulation dot1q
+switchport mode trunk
+no shut
+!
+interface e0/1
+switchport mode access
+switchport access vlan 100
+no shut</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalIsp" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="modalIspDialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitleIsp"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="modalTitleIsp">ISP — configuration</h2>
+        <button type="button" class="cli-modal-close" id="closeIsp" aria-label="Close ISP window">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" aria-label="ISP config">
+          <div class="console-scroll">hostname ISP
+!
+interface e0/1
+ ip address 10.10.1.2 255.255.255.0
+ ip ospf 100 area 0.0.0.0
+ no shut
+!
+interface e0/2
+ ip address 10.10.2.2 255.255.255.0
+ ip ospf 100 area 0.0.0.0
+ no shut
+!
+router ospf 100
+ router-id 1.1.1.1</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <nav class="sim-nav" aria-label="Simulation navigation">
-    <a class="sim-nav-btn" href="/cli-lab-rapid-pvst-lacp.html">Back</a>
     <a class="sim-nav-btn sim-nav-home" href="/practice-launcher.html">Home</a>
-    <a class="sim-nav-btn" href="/cli-lab-vrf-config-sim2.html">Next</a>
+    <a class="sim-nav-btn sim-nav-next" href="/cli-lab-vrf-config-sim2.html">Next</a>
+    <a class="sim-nav-btn sim-nav-back" href="/cli-lab-rapid-pvst-lacp.html">Back</a>
   </nav>
 
   <script>
@@ -687,13 +794,27 @@ no shut</div>
     const resetBtn = document.getElementById("resetBtn");
     const modalR10 = document.getElementById("modalR10");
     const modalR20 = document.getElementById("modalR20");
-    const hotspotR10 = document.getElementById("hotspotR10");
-    const hotspotR20 = document.getElementById("hotspotR20");
+    const openSelectedCliBtn = document.getElementById("openSelectedCliBtn");
     const closeR10 = document.getElementById("closeR10");
     const closeR20 = document.getElementById("closeR20");
     const modalSw20 = document.getElementById("modalSw20");
-    const hotspotSw20 = document.getElementById("hotspotSw20");
+    const modalSw10 = document.getElementById("modalSw10");
+    const modalIsp = document.getElementById("modalIsp");
     const closeSw20 = document.getElementById("closeSw20");
+    const closeSw10Modal = document.getElementById("closeSw10Modal");
+    const closeIsp = document.getElementById("closeIsp");
+    const modalR10Dialog = document.getElementById("modalR10Dialog");
+    const modalR20Dialog = document.getElementById("modalR20Dialog");
+    const modalSw20Dialog = document.getElementById("modalSw20Dialog");
+    const modalSw10Dialog = document.getElementById("modalSw10Dialog");
+    const modalIspDialog = document.getElementById("modalIspDialog");
+
+    let modalStackZ = 30000;
+    function bumpOverlayZ(overlay) {
+      if (!overlay) return;
+      modalStackZ += 1;
+      overlay.style.zIndex = String(modalStackZ);
+    }
 
     let stepR10 = 0;
     let stepR20 = 0;
@@ -711,11 +832,53 @@ no shut</div>
       promptR20.textContent = promptFor(R20_STEPS, stepR20, "R20");
     }
 
-    function openModal(modal, inputEl) {
+    function getVrfTunnelDev() {
+      const sel = document.querySelector('input[name="vrfTunnelDev"]:checked');
+      return sel ? sel.value : "R10";
+    }
+
+    function syncOpenCliButtonLabel() {
+      const d = getVrfTunnelDev();
+      let t = "Open Router CLI";
+      if (d === "SW10" || d === "SW20") t = "Open Switch CLI";
+      if (d === "ISP") t = "Open ISP config";
+      openSelectedCliBtn.textContent = t;
+    }
+
+    function closeModalsAll() {
+      [modalR10, modalR20, modalSw10, modalSw20, modalIsp].forEach((m) => {
+        if (!m) return;
+        m.classList.remove("is-open");
+        m.setAttribute("aria-hidden", "true");
+      });
+    }
+
+    function focusActiveCli() {
+      if (modalR10.classList.contains("is-open") && !cmdR10.disabled) {
+        cmdR10.focus();
+        return;
+      }
+      if (modalR20.classList.contains("is-open") && !cmdR20.disabled) {
+        cmdR20.focus();
+      }
+    }
+
+    function openModal(modal) {
       if (!modal) return;
+      bumpOverlayZ(modal);
       modal.classList.add("is-open");
       modal.setAttribute("aria-hidden", "false");
-      if (inputEl && !inputEl.disabled) inputEl.focus();
+      focusActiveCli();
+    }
+
+    function openSelectedCliModal() {
+      closeModalsAll();
+      const d = getVrfTunnelDev();
+      if (d === "R20") openModal(modalR20);
+      else if (d === "SW10") openModal(modalSw10);
+      else if (d === "SW20") openModal(modalSw20);
+      else if (d === "ISP") openModal(modalIsp);
+      else openModal(modalR10);
     }
 
     function closeModal(modal, returnEl) {
@@ -723,6 +886,49 @@ no shut</div>
       modal.classList.remove("is-open");
       modal.setAttribute("aria-hidden", "true");
       if (returnEl) returnEl.focus();
+    }
+
+    /** Drag palette by title bar; clicking the dialog raises it above other palettes. */
+    function wireFloatingModal(dialogEl, overlayEl) {
+      const header = dialogEl.querySelector(".cli-modal-header");
+      if (!dialogEl || !overlayEl || !header) return;
+
+      dialogEl.addEventListener("pointerdown", () => bumpOverlayZ(overlayEl));
+
+      let drag = null;
+
+      header.addEventListener("pointerdown", (e) => {
+        if (e.button !== 0) return;
+        if (e.target.closest(".cli-modal-close")) return;
+        const r = dialogEl.getBoundingClientRect();
+        dialogEl.style.left = `${r.left}px`;
+        dialogEl.style.top = `${r.top}px`;
+        dialogEl.style.transform = "none";
+        dialogEl.classList.add("is-dragging");
+        drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: r.left, oy: r.top };
+        try {
+          header.setPointerCapture(e.pointerId);
+        } catch (_) {}
+        e.preventDefault();
+      });
+
+      header.addEventListener("pointermove", (e) => {
+        if (!drag || e.pointerId !== drag.id) return;
+        dialogEl.style.left = `${drag.ox + (e.clientX - drag.sx)}px`;
+        dialogEl.style.top = `${drag.oy + (e.clientY - drag.sy)}px`;
+      });
+
+      function endDrag(e) {
+        if (!drag || e.pointerId !== drag.id) return;
+        drag = null;
+        dialogEl.classList.remove("is-dragging");
+        try {
+          header.releasePointerCapture(e.pointerId);
+        } catch (_) {}
+      }
+
+      header.addEventListener("pointerup", endDrag);
+      header.addEventListener("pointercancel", endDrag);
     }
 
     function unlockR20() {
@@ -733,16 +939,17 @@ no shut</div>
         "line-sys",
         "R10 steps complete. Enter commands for R20 here (same order as the spoiler)."
       );
-      cmdR20.focus();
+      focusActiveCli();
     }
 
     function lockR20() {
       panelR20.classList.add("terminal-panel--waiting");
-      cmdR20.disabled = true;
+      cmdR20.disabled = false;
       cmdR20.value = "";
     }
 
     function reset() {
+      closeModalsAll();
       stepR10 = 0;
       stepR20 = 0;
       scrollR10.innerHTML = "";
@@ -752,12 +959,12 @@ no shut</div>
       cmdR10.value = "";
       lockR20();
       setPrompts();
-      cmdR10.focus();
       appendLine(scrollR10, "line-sys", "R10: enter commands in order (case-insensitive).");
+      syncOpenCliButtonLabel();
+      openSelectedCliBtn.focus();
     }
 
     function submitR10() {
-      if (stepR10 >= R10_STEPS.length) return;
       const p = promptFor(R10_STEPS, stepR10, "R10");
       const line = cmdR10.value;
       appendLine(scrollR10, "line-user", `${p} ${line}`);
@@ -769,11 +976,19 @@ no shut</div>
         return;
       }
 
+      if (stepR10 >= R10_STEPS.length) {
+        appendLine(
+          scrollR10,
+          "line-bad",
+          "% Invalid input — R10 configuration is already complete (simulated); use show run to review."
+        );
+        return;
+      }
+
       if (R10_STEPS[stepR10].test(line)) {
         stepR10 += 1;
         if (stepR10 >= R10_STEPS.length) {
           appendLine(scrollR10, "line-sys", "[OK] R10 configuration complete (simulated).");
-          cmdR10.disabled = true;
           unlockR20();
         }
         setPrompts();
@@ -784,10 +999,10 @@ no shut</div>
           "% Invalid input — tunnel destination, VRF, tunnel IP, IPsec profile, then VRF static route."
         );
       }
+      focusActiveCli();
     }
 
     function submitR20() {
-      if (stepR20 >= R20_STEPS.length || cmdR20.disabled) return;
       const p = promptFor(R20_STEPS, stepR20, "R20");
       const line = cmdR20.value;
       appendLine(scrollR20, "line-user", `${p} ${line}`);
@@ -799,11 +1014,28 @@ no shut</div>
         return;
       }
 
+      if (stepR10 < R10_STEPS.length) {
+        appendLine(
+          scrollR20,
+          "line-bad",
+          "% Complete R10 configuration first (simulated). You can still use show run anytime."
+        );
+        return;
+      }
+
+      if (stepR20 >= R20_STEPS.length) {
+        appendLine(
+          scrollR20,
+          "line-bad",
+          "% Invalid input — R20 configuration is already complete (simulated); use show run to review."
+        );
+        return;
+      }
+
       if (R20_STEPS[stepR20].test(line)) {
         stepR20 += 1;
         if (stepR20 >= R20_STEPS.length) {
           appendLine(scrollR20, "line-sys", "[OK] R20 configuration complete (simulated).");
-          cmdR20.disabled = true;
           passBanner.classList.add("visible");
         }
         setPrompts();
@@ -814,6 +1046,7 @@ no shut</div>
           "% Invalid input — same sequence as R10 with R20 source, destination, and addresses."
         );
       }
+      focusActiveCli();
     }
 
     cmdR10.addEventListener("keydown", (event) => {
@@ -832,41 +1065,51 @@ no shut</div>
 
     resetBtn.addEventListener("click", reset);
 
-    if (hotspotR10) hotspotR10.addEventListener("click", () => openModal(modalR10, cmdR10));
-    if (hotspotR20) hotspotR20.addEventListener("click", () => openModal(modalR20, cmdR20));
-    if (hotspotSw20) hotspotSw20.addEventListener("click", () => openModal(modalSw20, null));
-    if (closeR10) closeR10.addEventListener("click", () => closeModal(modalR10, hotspotR10));
-    if (closeR20) closeR20.addEventListener("click", () => closeModal(modalR20, hotspotR20));
-    if (closeSw20) closeSw20.addEventListener("click", () => closeModal(modalSw20, hotspotSw20));
-    if (modalR10) {
-      modalR10.addEventListener("click", (event) => {
-        if (event.target === modalR10) closeModal(modalR10, hotspotR10);
+    openSelectedCliBtn.addEventListener("click", openSelectedCliModal);
+
+    if (closeR10) closeR10.addEventListener("click", () => closeModal(modalR10, openSelectedCliBtn));
+    if (closeR20) closeR20.addEventListener("click", () => closeModal(modalR20, openSelectedCliBtn));
+    if (closeSw20) closeSw20.addEventListener("click", () => closeModal(modalSw20, openSelectedCliBtn));
+    if (closeSw10Modal) closeSw10Modal.addEventListener("click", () => closeModal(modalSw10, openSelectedCliBtn));
+    if (closeIsp) closeIsp.addEventListener("click", () => closeModal(modalIsp, openSelectedCliBtn));
+
+    document.querySelectorAll('input[name="vrfTunnelDev"]').forEach((r) => {
+      r.addEventListener("change", () => {
+        closeModalsAll();
+        syncOpenCliButtonLabel();
+        openSelectedCliBtn.focus();
       });
-    }
-    if (modalR20) {
-      modalR20.addEventListener("click", (event) => {
-        if (event.target === modalR20) closeModal(modalR20, hotspotR20);
-      });
-    }
-    if (modalSw20) {
-      modalSw20.addEventListener("click", (event) => {
-        if (event.target === modalSw20) closeModal(modalSw20, hotspotSw20);
-      });
-    }
+    });
+
+    wireFloatingModal(modalR10Dialog, modalR10);
+    wireFloatingModal(modalR20Dialog, modalR20);
+    wireFloatingModal(modalSw20Dialog, modalSw20);
+    wireFloatingModal(modalSw10Dialog, modalSw10);
+    wireFloatingModal(modalIspDialog, modalIsp);
 
     document.addEventListener("keydown", (event) => {
       if (event.key !== "Escape") return;
+      const openModals = [];
+      if (modalIsp && modalIsp.classList.contains("is-open")) {
+        openModals.push({ overlay: modalIsp, close: () => closeModal(modalIsp, openSelectedCliBtn) });
+      }
+      if (modalSw10 && modalSw10.classList.contains("is-open")) {
+        openModals.push({ overlay: modalSw10, close: () => closeModal(modalSw10, openSelectedCliBtn) });
+      }
       if (modalSw20 && modalSw20.classList.contains("is-open")) {
-        closeModal(modalSw20, hotspotSw20);
-        return;
+        openModals.push({ overlay: modalSw20, close: () => closeModal(modalSw20, openSelectedCliBtn) });
       }
       if (modalR20 && modalR20.classList.contains("is-open")) {
-        closeModal(modalR20, hotspotR20);
-        return;
+        openModals.push({ overlay: modalR20, close: () => closeModal(modalR20, openSelectedCliBtn) });
       }
       if (modalR10 && modalR10.classList.contains("is-open")) {
-        closeModal(modalR10, hotspotR10);
+        openModals.push({ overlay: modalR10, close: () => closeModal(modalR10, openSelectedCliBtn) });
       }
+      if (!openModals.length) return;
+      event.preventDefault();
+      const zi = (el) => parseInt(window.getComputedStyle(el).zIndex, 10) || 0;
+      openModals.sort((a, b) => zi(b.overlay) - zi(a.overlay));
+      openModals[0].close();
     });
 
     history.pushState(null, "", location.href);

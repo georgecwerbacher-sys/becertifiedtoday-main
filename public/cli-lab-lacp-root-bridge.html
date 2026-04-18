@@ -67,6 +67,109 @@
       height: auto;
       vertical-align: middle;
     }
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
+      outline: none;
+    }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+      pointer-events: none;
+    }
+    .cli-modal-overlay.is-open {
+      display: block;
+    }
+    .cli-modal-dialog {
+      width: min(520px, calc(100vw - 24px));
+      max-height: min(85vh, 720px);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
     .terminal {
       font-family: "SF Mono", ui-monospace, Consolas, monospace;
       font-size: 0.88rem;
@@ -77,7 +180,7 @@
       min-height: 260px;
       display: flex;
       flex-direction: column;
-      margin-top: 14px;
+      margin-top: 0;
     }
     #scrollback {
       flex: 1;
@@ -188,6 +291,8 @@
     }
     .sim-nav-btn:hover { filter: brightness(1.08); }
     .sim-nav-home { background: #1a3d6e; }
+    .sim-nav-next { background: #1a3d6e; }
+    .sim-nav-back { background: #243352; border-color: #3d5280; }
   </style>
 </head>
 <body>
@@ -197,6 +302,7 @@
       <p class="objective">
         Change <strong>SW10</strong> only. SW20 negotiates an <strong>802.1Q LACP</strong> EtherChannel toward SW10; today e0/0–e0/2 are access ports in VLAN 20 and Po11 is empty.
         Then make SW10 the spanning-tree root for <strong>VLAN 10</strong> and <strong>VLAN 30</strong>. Confirm the port-channel number on the diagram if it differs in an exam.
+        Under the topology, confirm <strong>Device in prompt</strong>, then <strong>Open Switch CLI</strong>.
       </p>
       <div class="tasks">
         <strong>Tasks</strong>
@@ -209,13 +315,11 @@
 
       <div class="diagram-wrap" aria-label="SW10 SW20 SW30 topology and SW10 initial config">
         <img src="/assets/lacp-root-bridge-lab.png" alt="Triangle switches with Po11 between SW10 and SW20" />
-      </div>
-
-      <div class="terminal" aria-label="SW10 CLI">
-        <div id="scrollback"></div>
-        <div class="input-row">
-          <span id="prompt">SW10#</span>
-          <input id="cmdline" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="SW10 command line" />
+        <div class="device-pick" role="note">
+          <strong>Device in prompt:</strong> SW10
+        </div>
+        <div class="device-links">
+          <button type="button" class="device-link" id="openDeviceCliLink">Open Switch CLI</button>
         </div>
       </div>
 
@@ -244,10 +348,28 @@
     </main>
   </div>
 
+  <div id="modalSW10" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleSW10" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleSW10">SW10 — simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeSW10" aria-label="Close SW10 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" aria-label="SW10 CLI">
+          <div id="scrollback"></div>
+          <div class="input-row">
+            <span id="prompt">SW10#</span>
+            <input id="cmdline" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="SW10 command line" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <nav class="sim-nav" aria-label="Simulation navigation">
-    <a class="sim-nav-btn" href="/cli-lab-ebgp-neighbor-2.html">Back</a>
     <a class="sim-nav-btn sim-nav-home" href="/practice-launcher.html">Home</a>
-    <a class="sim-nav-btn" href="/cli-lab-netflow-span.html">Next</a>
+    <a class="sim-nav-btn sim-nav-next" href="/cli-lab-netflow-span.html">Next</a>
+    <a class="sim-nav-btn sim-nav-back" href="/cli-lab-ebgp-neighbor-2.html">Back</a>
   </nav>
 
   <script>
@@ -317,6 +439,31 @@
     const cmdline = document.getElementById("cmdline");
     const passBanner = document.getElementById("passBanner");
     const resetBtn = document.getElementById("resetBtn");
+    const modalSW10 = document.getElementById("modalSW10");
+    const openDeviceCliLink = document.getElementById("openDeviceCliLink");
+
+    function closeModals() {
+      modalSW10.classList.remove("is-open");
+      modalSW10.setAttribute("aria-hidden", "true");
+    }
+
+    function openSelectedCliModal() {
+      closeModals();
+      modalSW10.classList.add("is-open");
+      modalSW10.setAttribute("aria-hidden", "false");
+      focusActiveCli();
+    }
+
+    function focusActiveCli() {
+      if (modalSW10.classList.contains("is-open") && !cmdline.disabled) {
+        cmdline.focus();
+      }
+    }
+
+    function applyPhaseUI() {
+      setPrompt();
+      focusActiveCli();
+    }
 
     let phase = "LACP";
     let stepIndex = 0;
@@ -355,6 +502,7 @@
     }
 
     function reset() {
+      closeModals();
       phase = "LACP";
       stepIndex = 0;
       scrollback.innerHTML = "";
@@ -371,8 +519,8 @@
           " switchport mode access"
       );
       appendLine("line-sys", "SW10 only: align with SW20 LACP trunk EtherChannel, then STP root for VLAN 10 and 30.");
-      setPrompt();
-      cmdline.focus();
+      applyPhaseUI();
+      openDeviceCliLink.focus();
     }
 
     function submit() {
@@ -392,6 +540,7 @@
           phase = "DONE";
           passBanner.classList.add("visible");
           cmdline.disabled = true;
+          applyPhaseUI();
         } else {
           appendLine("line-bad", "% copy running-config startup-config");
         }
@@ -423,15 +572,15 @@
           appendLine("line-sys", "[OK] LACP trunk bundle up. Configure spanning-tree root next.");
           phase = "ROOT";
           stepIndex = 0;
-          setPrompt();
+          applyPhaseUI();
         } else if (phase === "ROOT") {
           appendLine("line-sys", "[OK] Root primary for VLAN 10 and 30 (simulated). Save.");
           phase = "SAVE";
           stepIndex = 0;
-          setPrompt();
+          applyPhaseUI();
         }
       } else {
-        setPrompt();
+        applyPhaseUI();
       }
     }
 
@@ -443,6 +592,19 @@
     });
 
     resetBtn.addEventListener("click", reset);
+    openDeviceCliLink.addEventListener("click", openSelectedCliModal);
+    document.getElementById("closeSW10").addEventListener("click", () => {
+      closeModals();
+      openDeviceCliLink.focus();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      if (!modalSW10.classList.contains("is-open")) return;
+      e.preventDefault();
+      closeModals();
+      openDeviceCliLink.focus();
+    });
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {

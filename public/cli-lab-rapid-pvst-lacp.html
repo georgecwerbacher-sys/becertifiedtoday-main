@@ -62,7 +62,7 @@
       margin-top: 8px;
       text-align: center;
     }
-    /* Display at 50% of native PNG size (373×502); hotspot % still matches image. */
+    /* Display at 50% of native PNG size (373×502). */
     .diagram-stage {
       position: relative;
       display: inline-block;
@@ -81,52 +81,52 @@
       user-select: none;
       -webkit-user-drag: none;
     }
-    .diagram-hotspot {
-      position: absolute;
-      z-index: 2;
-      margin: 0;
-      padding: 0;
-      border: 2px dashed transparent;
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
       border-radius: 10px;
-      background: rgba(126, 200, 255, 0);
-      cursor: pointer;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      text-align: center;
+      max-width: 100%;
       box-sizing: border-box;
-      pointer-events: auto;
-      touch-action: manipulation;
-      transition: border-color 0.15s ease, background 0.15s ease;
-      -webkit-tap-highlight-color: rgba(126, 200, 255, 0.35);
     }
-    .diagram-hotspot:hover,
-    .diagram-hotspot:focus-visible {
-      border-color: rgba(126, 200, 255, 0.65);
-      background: rgba(126, 200, 255, 0.14);
+    .device-pick label {
+      margin-left: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .device-pick input {
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
       outline: none;
-    }
-    /* SW20 — enlarged hit area around blue switch icon (shown at half native PNG size). */
-    .diagram-hotspot--sw20 {
-      left: 56%;
-      top: 56%;
-      width: 28%;
-      height: 24%;
-      border-radius: 10px;
-    }
-    .diagram-hotspot--sw10 {
-      left: 6%;
-      top: 46%;
-      width: 30%;
-      height: 24%;
-      border-radius: 10px;
-    }
-    /* PC3 — laptop bottom-right under SW20 (diagram max-width 373px; % of stage). */
-    .diagram-hotspot--pc3 {
-      left: 50%;
-      top: 79%;
-      width: 46%;
-      height: 18%;
-      border-radius: 10px;
-      /* Idle hint so the target is discoverable (SW20 stays invisible until hover). */
-      border-color: rgba(126, 200, 255, 0.42);
-      background: rgba(126, 200, 255, 0.09);
     }
     .topology-scrape {
       margin-top: 12px;
@@ -361,7 +361,8 @@
       color: #fbbf24;
       user-select: none;
     }
-    #cmdline {
+    #cmdline,
+    #sw10Cmdline {
       flex: 1;
       min-width: 0;
       background: transparent;
@@ -440,6 +441,8 @@
     }
     .sim-nav-btn:hover { filter: brightness(1.08); }
     .sim-nav-home { background: #1a3d6e; }
+    .sim-nav-next { background: #1a3d6e; }
+    .sim-nav-back { background: #243352; border-color: #3d5280; }
     .cli-modal-body #pc3Scrollback {
       max-height: min(220px, 38vh);
     }
@@ -458,6 +461,7 @@
       <p class="objective">
         The operations team started configuring network devices for a new site. Fix SW20 only to satisfy all goals.
         No access is provided to SW10 or SW30. Traffic on all trunks must be restricted to active VLANs.
+        Under the topology, choose <strong>Device in prompt</strong>, then the open button for that device.
       </p>
       <div class="tasks">
         <strong>Tasks</strong>
@@ -467,7 +471,7 @@
           <li>Fix the LACP port-channel to SW10 so PC3 can ping PC2 (10.10.100.20).</li>
         </ol>
       </div>
-      <div class="diagram-wrap" aria-label="Topology diagram with SW20 and PC3 hotspots">
+      <div class="diagram-wrap" aria-label="Topology diagram">
         <div class="diagram-stage">
           <img
             src="/assets/rapid-pvst-lacp-topology.png"
@@ -476,34 +480,25 @@
             height="502"
             decoding="async"
           />
-          <button
-            type="button"
-            class="diagram-hotspot diagram-hotspot--sw10"
-            id="sw10Hotspot"
-            aria-label="SW10 — open device info"
-            title="SW10"
-          ></button>
-          <button
-            type="button"
-            class="diagram-hotspot diagram-hotspot--sw20"
-            id="sw20Hotspot"
-            aria-label="SW20 — open simulated CLI"
-            title="SW20"
-          ></button>
-          <button
-            type="button"
-            class="diagram-hotspot diagram-hotspot--pc3"
-            id="pc3Hotspot"
-            aria-label="PC3 — open console to ping PC1"
-            title="PC3"
-          ></button>
+        </div>
+        <div class="device-pick" role="group" aria-label="Device in prompt">
+          <strong>Device in prompt:</strong>
+          <label><input type="radio" name="rapidPvstLacpDev" value="SW20" checked /> SW20</label>
+          <label><input type="radio" name="rapidPvstLacpDev" value="SW10" /> SW10</label>
+          <label><input type="radio" name="rapidPvstLacpDev" value="PC3" /> PC3</label>
+        </div>
+        <div class="device-links">
+          <button type="button" class="device-link" id="openSelectedCliBtn">Open SW20 CLI</button>
         </div>
         <section class="topology-scrape" aria-label="Topology summary from exhibit">
           <h2>Topology (from exhibit)</h2>
           <ul>
-            <li><strong>SW20</strong> — your only configurable device; click it on the diagram to open the simulated CLI and run <code>show running-config</code> for the starting configuration. Connects toward <strong>SW10</strong> via <strong>Port-channel 10</strong> (LACP) and toward <strong>SW30</strong> on the trunk interface shown (e.g. <code>E0/0</code>).</li>
-            <li><strong>SW10 / SW30</strong> — out of scope; do not configure.</li>
-            <li>Hosts: <strong>PC1</strong> (10.10.100.10) above SW30, <strong>PC2</strong> (10.10.100.20) below SW10, <strong>PC3</strong> below SW20 — reachability depends on VLAN <strong>500</strong> end-to-end over trunks. Click <strong>PC3</strong> on the diagram to open a console and test <code>ping</code> to PC1 after configuring SW20.</li>
+            <li><strong>SW20</strong> — your only configurable device; pick SW20 under the topology, open its CLI, and run <code>show running-config</code> for the starting configuration. Connects toward <strong>SW10</strong> via <strong>Port-channel 10</strong> (LACP) and toward <strong>SW30</strong> on the trunk interface shown (e.g. <code>E0/0</code>).</li>
+            <li>
+              <strong>SW10</strong> — not configurable here; select SW10 and open its read-only CLI, then type
+              <code>show run</code> to view its configuration. <strong>SW30</strong> — out of scope; do not configure.
+            </li>
+            <li>Hosts: <strong>PC1</strong> (10.10.100.10) above SW30, <strong>PC2</strong> (10.10.100.20) below SW10, <strong>PC3</strong> below SW20 — reachability depends on VLAN <strong>500</strong> end-to-end over trunks. Select PC3 and open its console to test <code>ping</code> to PC1 after configuring SW20.</li>
             <li>Initial screenshot may show partial trunk / Po config — your job is to align <strong>Rapid PVST+</strong>, <strong>dot1q</strong> trunks, and <strong>VLAN 500</strong> allowed lists on SW20 only.</li>
           </ul>
         </section>
@@ -625,35 +620,37 @@
       tabindex="-1"
     >
       <header class="cli-modal-header">
-        <h2 id="sw10ModalTitle">SW10 — device info</h2>
+        <h2 id="sw10ModalTitle">SW10 — simulated CLI</h2>
         <button type="button" class="cli-modal-close" id="sw10ModalClose" aria-label="Close SW10 window">
           ×
         </button>
       </header>
       <div class="cli-modal-body">
-        <div class="terminal" aria-label="SW10 configuration snapshot">
-          <div class="line-showrun">hostname Sw10
-vlan 100
-exit
-!
-interface e0/0
-switchport trunk encapsulation dot1q
-switchport mode trunk
-no shut
-!
-interface e0/1
-switchport mode access
-switchport access vlan 100
-no shut</div>
+        <div class="terminal" id="sw10Terminal" aria-label="Simulated SW10 CLI">
+          <div id="sw10Scrollback"></div>
+          <div class="input-row">
+            <span id="sw10Prompt">Sw10#</span>
+            <input
+              id="sw10Cmdline"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="none"
+              aria-label="SW10 command line"
+            />
+          </div>
         </div>
       </div>
+      <footer class="cli-modal-footer">
+        <p class="pc3-modal-hint">Read-only. Type <code>show run</code> or <code>show running-config</code> to display the saved configuration.</p>
+      </footer>
     </div>
   </div>
 
   <nav class="sim-nav" aria-label="Simulation navigation">
-    <a class="sim-nav-btn" href="/cli-lab-vty-login-v2.html">Back</a>
     <a class="sim-nav-btn sim-nav-home" href="/practice-launcher.html">Home</a>
-    <a class="sim-nav-btn" href="/cli-lab-vrf-tunnel.html">Next</a>
+    <a class="sim-nav-btn sim-nav-next" href="/cli-lab-vrf-tunnel.html">Next</a>
+    <a class="sim-nav-btn sim-nav-back" href="/cli-lab-vty-login-v2.html">Back</a>
   </nav>
 
   <script>
@@ -760,6 +757,23 @@ no shut</div>
       " ip address 10.10.1.20 255.255.255.0",
     ].join("\r\n");
 
+    /** SW10 — output for `show run` / `show running-config` (read-only modal). */
+    const SW10_SHOW_RUN = [
+      "hostname Sw10",
+      "vlan 100",
+      "exit",
+      "!",
+      "interface e0/0",
+      "switchport trunk encapsulation dot1q",
+      "switchport mode trunk",
+      "no shut",
+      "!",
+      "interface e0/1",
+      "switchport mode access",
+      "switchport access vlan 100",
+      "no shut",
+    ].join("\r\n");
+
     /** Simulated `show etherchannel summary` after Po10 trunk is configured. */
     const SHOW_ETHERCHANNEL_SUMMARY = [
       "--output omitted--",
@@ -812,18 +826,19 @@ no shut</div>
     const cmdline = document.getElementById("cmdline");
     const passBanner = document.getElementById("passBanner");
     const resetBtn = document.getElementById("resetBtn");
-    const sw20Hotspot = document.getElementById("sw20Hotspot");
-    const sw10Hotspot = document.getElementById("sw10Hotspot");
+    const openSelectedCliBtn = document.getElementById("openSelectedCliBtn");
     const sw20Cli = document.getElementById("sw20Cli");
 
     const pc3ModalOverlay = document.getElementById("pc3ModalOverlay");
     const pc3ModalClose = document.getElementById("pc3ModalClose");
     const pc3Scrollback = document.getElementById("pc3Scrollback");
     const pc3Cmdline = document.getElementById("pc3Cmdline");
-    const pc3Hotspot = document.getElementById("pc3Hotspot");
     const sw10ModalOverlay = document.getElementById("sw10ModalOverlay");
     const sw10ModalClose = document.getElementById("sw10ModalClose");
     const sw10ModalDialog = document.getElementById("sw10ModalDialog");
+    const sw10Scrollback = document.getElementById("sw10Scrollback");
+    const sw10PromptEl = document.getElementById("sw10Prompt");
+    const sw10Cmdline = document.getElementById("sw10Cmdline");
 
     const cliModalDialog = document.getElementById("cliModalDialog");
     const pc3ModalDialog = document.getElementById("pc3ModalDialog");
@@ -875,18 +890,101 @@ no shut</div>
       );
     }
 
+    function getRapidPvstLacpDev() {
+      const sel = document.querySelector('input[name="rapidPvstLacpDev"]:checked');
+      return sel ? sel.value : "SW20";
+    }
+
+    function syncOpenCliButtonLabel() {
+      const d = getRapidPvstLacpDev();
+      openSelectedCliBtn.textContent =
+        d === "SW10" ? "Open Switch CLI" : d === "PC3" ? "Open PC3 Console" : "Open SW20 CLI";
+    }
+
+    function closeModalsAll() {
+      if (cliModalOverlay) {
+        cliModalOverlay.classList.remove("is-open");
+        cliModalOverlay.setAttribute("aria-hidden", "true");
+      }
+      if (pc3ModalOverlay) {
+        pc3ModalOverlay.classList.remove("is-open");
+        pc3ModalOverlay.setAttribute("aria-hidden", "true");
+      }
+      if (sw10ModalOverlay) {
+        sw10ModalOverlay.classList.remove("is-open");
+        sw10ModalOverlay.setAttribute("aria-hidden", "true");
+      }
+    }
+
+    function focusActiveCli() {
+      if (cliModalOpen() && cmdline && !cmdline.disabled) {
+        cmdline.focus();
+        return;
+      }
+      if (pc3ModalOpen() && pc3Cmdline) {
+        pc3Cmdline.focus();
+        return;
+      }
+      if (sw10ModalOpen() && sw10Cmdline) {
+        sw10Cmdline.focus();
+      }
+    }
+
+    function openSelectedCliModal() {
+      closeModalsAll();
+      const d = getRapidPvstLacpDev();
+      if (d === "PC3") openPc3Modal();
+      else if (d === "SW10") openSw10Modal();
+      else openCliModal();
+    }
+
     function closePc3Modal() {
       if (!pc3ModalOverlay) return;
       pc3ModalOverlay.classList.remove("is-open");
       pc3ModalOverlay.setAttribute("aria-hidden", "true");
-      if (pc3Hotspot) pc3Hotspot.focus();
+      if (openSelectedCliBtn) openSelectedCliBtn.focus();
+    }
+
+    function appendLineSw10(className, text) {
+      if (!sw10Scrollback) return;
+      const div = document.createElement("div");
+      div.className = className;
+      div.textContent = text;
+      sw10Scrollback.appendChild(div);
+      sw10Scrollback.scrollTop = sw10Scrollback.scrollHeight;
+    }
+
+    function resetSw10Console() {
+      if (!sw10Scrollback) return;
+      sw10Scrollback.innerHTML = "";
+      if (sw10PromptEl) sw10PromptEl.textContent = "Sw10#";
+      appendLineSw10(
+        "line-sys",
+        "SW10 is not configurable in this lab. Type show run or show running-config.\r\nClose with × or Escape; drag the title bar to move this window."
+      );
+    }
+
+    function submitSw10() {
+      if (!sw10Cmdline) return;
+      const prompt = sw10PromptEl ? sw10PromptEl.textContent : "Sw10#";
+      const line = sw10Cmdline.value;
+      appendLineSw10("line-user", `${prompt} ${line}`);
+      sw10Cmdline.value = "";
+      if (!line.trim()) return;
+
+      if (matchShowRun(line)) {
+        appendLineSw10("line-showrun", SW10_SHOW_RUN);
+        return;
+      }
+
+      appendLineSw10("line-bad", "% Invalid input — only show run / show running-config are simulated here.");
     }
 
     function closeSw10Modal() {
       if (!sw10ModalOverlay) return;
       sw10ModalOverlay.classList.remove("is-open");
       sw10ModalOverlay.setAttribute("aria-hidden", "true");
-      if (sw10Hotspot) sw10Hotspot.focus();
+      if (openSelectedCliBtn) openSelectedCliBtn.focus();
     }
 
     function openPc3Modal() {
@@ -896,7 +994,7 @@ no shut</div>
       pc3ModalOverlay.setAttribute("aria-hidden", "false");
       if (pc3Cmdline) pc3Cmdline.value = "";
       resetPc3Console();
-      if (pc3Cmdline) pc3Cmdline.focus();
+      focusActiveCli();
     }
 
     function openSw10Modal() {
@@ -904,6 +1002,9 @@ no shut</div>
       bumpOverlayZ(sw10ModalOverlay);
       sw10ModalOverlay.classList.add("is-open");
       sw10ModalOverlay.setAttribute("aria-hidden", "false");
+      if (sw10Cmdline) sw10Cmdline.value = "";
+      resetSw10Console();
+      focusActiveCli();
     }
 
     function submitPc3() {
@@ -946,14 +1047,14 @@ no shut</div>
           sw20Cli.classList.remove("terminal-flash");
         }, 950);
       }
-      if (cmdline) cmdline.focus();
+      focusActiveCli();
     }
 
     function closeCliModal() {
       if (!cliModalOverlay) return;
       cliModalOverlay.classList.remove("is-open");
       cliModalOverlay.setAttribute("aria-hidden", "true");
-      if (sw20Hotspot) sw20Hotspot.focus();
+      if (openSelectedCliBtn) openSelectedCliBtn.focus();
     }
 
     /** Drag dialog by header; clicks on the palette raise it above the other. */
@@ -1016,6 +1117,7 @@ no shut</div>
     }
 
     function reset() {
+      closeModalsAll();
       stepIndex = 0;
       pc1PathReady = false;
       scrollback.innerHTML = "";
@@ -1028,12 +1130,11 @@ no shut</div>
         "line-sys",
         "You are on SW20. Configure only SW20 to complete all tasks.\r\nLast command must be copy running-config startup-config — pressing Enter completes the simulation.\r\nClose with × or Escape when done; drag the window by its title bar."
       );
-      if (pc3ModalOpen()) resetPc3Console();
-      if (cliModalOpen()) cmdline.focus();
+      syncOpenCliButtonLabel();
+      openSelectedCliBtn.focus();
     }
 
     function submit() {
-      if (cmdline && cmdline.disabled) return;
       const prompt = promptForStep(stepIndex);
       const line = cmdline.value;
       appendLine("line-user", `${prompt} ${line}`);
@@ -1042,11 +1143,13 @@ no shut</div>
 
       if (matchShowRun(line)) {
         appendLine("line-showrun", SHOW_RUNNING_SNAPSHOT);
+        focusActiveCli();
         return;
       }
 
       if (matchShowEtherchannelSummary(line) && stepIndex >= STEPS.length) {
         appendLine("line-showrun", SHOW_ETHERCHANNEL_SUMMARY);
+        focusActiveCli();
         return;
       }
 
@@ -1055,6 +1158,7 @@ no shut</div>
           "line-bad",
           "% Incomplete or unknown command — simulation already finished after copy running-config startup-config; click Reset lab to try again."
         );
+        focusActiveCli();
         return;
       }
 
@@ -1078,18 +1182,15 @@ no shut</div>
           appendLine("line-sys", "[OK] Building configuration...\r\n[OK] Complete (simulated).");
           appendLine(
             "line-sys",
-            "Simulation complete — final command was copy running-config startup-config. CLI input is locked until you click Reset lab."
+            "Simulation complete — final command was copy running-config startup-config. You can still use show running-config or show etherchannel summary; click Reset lab to start over."
           );
-          if (cmdline) {
-            cmdline.disabled = true;
-            cmdline.setAttribute("aria-disabled", "true");
-          }
         } else {
           setPrompt();
         }
       } else {
         appendLine("line-bad", "% Invalid input — follow task order and configure only SW20.");
       }
+      focusActiveCli();
     }
 
     cmdline.addEventListener("keydown", (event) => {
@@ -1101,21 +1202,17 @@ no shut</div>
 
     resetBtn.addEventListener("click", reset);
 
-    function openSw20Cli() {
-      openCliModal();
+    if (openSelectedCliBtn) {
+      openSelectedCliBtn.addEventListener("click", openSelectedCliModal);
     }
 
-    if (sw20Hotspot) {
-      sw20Hotspot.addEventListener("click", openSw20Cli);
-    }
-
-    if (pc3Hotspot) {
-      pc3Hotspot.addEventListener("click", openPc3Modal);
-    }
-
-    if (sw10Hotspot) {
-      sw10Hotspot.addEventListener("click", openSw10Modal);
-    }
+    document.querySelectorAll('input[name="rapidPvstLacpDev"]').forEach((r) => {
+      r.addEventListener("change", () => {
+        closeModalsAll();
+        syncOpenCliButtonLabel();
+        openSelectedCliBtn.focus();
+      });
+    });
 
     if (pc3Cmdline) {
       pc3Cmdline.addEventListener("keydown", (event) => {
@@ -1132,6 +1229,15 @@ no shut</div>
 
     if (sw10ModalClose) {
       sw10ModalClose.addEventListener("click", closeSw10Modal);
+    }
+
+    if (sw10Cmdline) {
+      sw10Cmdline.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          submitSw10();
+        }
+      });
     }
 
     if (cliModalClose) {

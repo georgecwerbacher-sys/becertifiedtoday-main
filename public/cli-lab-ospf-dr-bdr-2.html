@@ -67,22 +67,117 @@
       height: auto;
       vertical-align: middle;
     }
-    .console-row {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      margin-top: 14px;
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
     }
-    @media (min-width: 1100px) {
-      .console-row {
-        grid-template-columns: repeat(4, 1fr);
-      }
+    .device-pick label {
+      margin-left: 8px;
+      cursor: pointer;
+      user-select: none;
     }
-    .console-label {
-      margin: 0 0 8px;
-      font-size: 1rem;
-      font-weight: 800;
-      color: #c8d7ec;
+    .device-pick input {
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
+      outline: none;
+    }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+      pointer-events: none;
+    }
+    .cli-modal-overlay.is-open {
+      display: block;
+    }
+    .cli-modal-dialog {
+      width: min(520px, calc(100vw - 24px));
+      max-height: min(85vh, 680px);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
     }
     .terminal-panel {
       min-width: 0;
@@ -222,6 +317,8 @@
     }
     .sim-nav-btn:hover { filter: brightness(1.08); }
     .sim-nav-home { background: #1a3d6e; }
+    .sim-nav-next { background: #1a3d6e; }
+    .sim-nav-back { background: #243352; border-color: #3d5280; }
   </style>
 </head>
 <body>
@@ -231,6 +328,7 @@
       <p class="objective">
         OSPF is partially configured. Use each router’s console in order. Area 20 uses point-to-point (no DR/BDR election). Area 10 uses priority on R10 only — do not change any router ID.
         Save on <strong>R3</strong>, <strong>R10</strong>, and <strong>R20</strong> at the end (R2 has no config changes).
+        Under the topology, choose <strong>Device in prompt</strong>, then <strong>Open Router CLI</strong>.
       </p>
       <div class="tasks">
         <strong>Tasks</strong>
@@ -243,52 +341,15 @@
 
       <div class="diagram-wrap" aria-label="OSPF multi-area topology">
         <img src="/assets/ospf-dr-bdr2-lab.png" alt="R3 R20 area 20, R2 R10 area 10, backbone area 0" />
-      </div>
-
-      <div class="console-row" aria-label="Router consoles">
-        <div class="terminal-panel" id="panelR3">
-          <h2 class="console-label">R3</h2>
-          <p class="console-hint" id="hintR3">Start: point-to-point on e0/1 toward R20; later clear, verify, save.</p>
-          <div class="terminal" aria-label="R3 CLI">
-            <div class="console-scroll" id="scrollR3"></div>
-            <div class="input-row">
-              <span class="prompt" id="promptR3">R3#</span>
-              <input class="cmdline" id="cmdR3" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R3 command line" />
-            </div>
-          </div>
+        <div class="device-pick" role="group" aria-label="Device in prompt">
+          <strong>Device in prompt:</strong>
+          <label><input type="radio" name="ospfDrBdr2Dev" value="R3" checked /> R3</label>
+          <label><input type="radio" name="ospfDrBdr2Dev" value="R20" /> R20</label>
+          <label><input type="radio" name="ospfDrBdr2Dev" value="R10" /> R10</label>
+          <label><input type="radio" name="ospfDrBdr2Dev" value="R2" /> R2</label>
         </div>
-        <div class="terminal-panel terminal-panel--waiting" id="panelR20">
-          <h2 class="console-label">R20</h2>
-          <p class="console-hint" id="hintR20">Point-to-point on e0/0; clear; verify; save last on R20.</p>
-          <div class="terminal" aria-label="R20 CLI">
-            <div class="console-scroll" id="scrollR20"></div>
-            <div class="input-row">
-              <span class="prompt" id="promptR20">R20#</span>
-              <input class="cmdline" id="cmdR20" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R20 command line" disabled />
-            </div>
-          </div>
-        </div>
-        <div class="terminal-panel terminal-panel--waiting" id="panelR10">
-          <h2 class="console-label">R10</h2>
-          <p class="console-hint" id="hintR10">Unlocks after area 20 steps. Priority 255 on e0/0; clear; verify R2; save.</p>
-          <div class="terminal" aria-label="R10 CLI">
-            <div class="console-scroll" id="scrollR10"></div>
-            <div class="input-row">
-              <span class="prompt" id="promptR10">R10#</span>
-              <input class="cmdline" id="cmdR10" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R10 command line" disabled />
-            </div>
-          </div>
-        </div>
-        <div class="terminal-panel terminal-panel--waiting" id="panelR2">
-          <h2 class="console-label">R2</h2>
-          <p class="console-hint" id="hintR2">Unlocks for clear OSPF, then show ip ospf neighbor (read-only).</p>
-          <div class="terminal" aria-label="R2 CLI">
-            <div class="console-scroll" id="scrollR2"></div>
-            <div class="input-row">
-              <span class="prompt" id="promptR2">R2#</span>
-              <input class="cmdline" id="cmdR2" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R2 command line" disabled />
-            </div>
-          </div>
+        <div class="device-links">
+          <button type="button" class="device-link" id="openDeviceCliLink">Open Router CLI</button>
         </div>
       </div>
 
@@ -320,10 +381,91 @@
     </main>
   </div>
 
+  <div id="modalR3" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR3b2" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR3b2">R3 — simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR3" aria-label="Close R3 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel" id="panelR3">
+          <p class="console-hint" id="hintR3">Start: point-to-point on e0/1 toward R20; later clear, verify, save.</p>
+          <div class="terminal" aria-label="R3 CLI">
+            <div class="console-scroll" id="scrollR3"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR3">R3#</span>
+              <input class="cmdline" id="cmdR3" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R3 command line" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="modalR20" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR20b2" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR20b2">R20 — simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR20" aria-label="Close R20 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel terminal-panel--waiting" id="panelR20">
+          <p class="console-hint" id="hintR20">Point-to-point on e0/0; clear; verify; save last on R20.</p>
+          <div class="terminal" aria-label="R20 CLI">
+            <div class="console-scroll" id="scrollR20"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR20">R20#</span>
+              <input class="cmdline" id="cmdR20" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R20 command line" disabled />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="modalR10" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR10b2" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR10b2">R10 — simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR10" aria-label="Close R10 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel terminal-panel--waiting" id="panelR10">
+          <p class="console-hint" id="hintR10">Unlocks after area 20 steps. Priority 255 on e0/0; clear; verify R2; save.</p>
+          <div class="terminal" aria-label="R10 CLI">
+            <div class="console-scroll" id="scrollR10"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR10">R10#</span>
+              <input class="cmdline" id="cmdR10" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R10 command line" disabled />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="modalR2" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR2b2" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR2b2">R2 — simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR2" aria-label="Close R2 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel terminal-panel--waiting" id="panelR2">
+          <p class="console-hint" id="hintR2">Unlocks for clear OSPF, then show ip ospf neighbor (read-only).</p>
+          <div class="terminal" aria-label="R2 CLI">
+            <div class="console-scroll" id="scrollR2"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR2">R2#</span>
+              <input class="cmdline" id="cmdR2" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R2 command line" disabled />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <nav class="sim-nav" aria-label="Simulation navigation">
-    <a class="sim-nav-btn" href="/cli-lab-ospf-dr-bdr.html">Back</a>
     <a class="sim-nav-btn sim-nav-home" href="/practice-launcher.html">Home</a>
-    <a class="sim-nav-btn" href="/cli-lab-ospf-dr-summarization.html">Next</a>
+    <a class="sim-nav-btn sim-nav-next" href="/cli-lab-ospf-dr-summarization.html">Next</a>
+    <a class="sim-nav-btn sim-nav-back" href="/cli-lab-ospf-dr-bdr.html">Back</a>
   </nav>
 
   <script>
@@ -411,6 +553,76 @@
     const panelR2 = document.getElementById("panelR2");
     const passBanner = document.getElementById("passBanner");
     const resetBtn = document.getElementById("resetBtn");
+    const modalR3 = document.getElementById("modalR3");
+    const modalR20 = document.getElementById("modalR20");
+    const modalR10 = document.getElementById("modalR10");
+    const modalR2 = document.getElementById("modalR2");
+    const openDeviceCliLink = document.getElementById("openDeviceCliLink");
+
+    function getOspfDrBdr2Dev() {
+      const sel = document.querySelector('input[name="ospfDrBdr2Dev"]:checked');
+      return sel ? sel.value : "R3";
+    }
+
+    function closeR3Modal() {
+      modalR3.classList.remove("is-open");
+      modalR3.setAttribute("aria-hidden", "true");
+    }
+    function closeR20Modal() {
+      modalR20.classList.remove("is-open");
+      modalR20.setAttribute("aria-hidden", "true");
+    }
+    function closeR10Modal() {
+      modalR10.classList.remove("is-open");
+      modalR10.setAttribute("aria-hidden", "true");
+    }
+    function closeR2Modal() {
+      modalR2.classList.remove("is-open");
+      modalR2.setAttribute("aria-hidden", "true");
+    }
+    function closeModals() {
+      closeR3Modal();
+      closeR20Modal();
+      closeR10Modal();
+      closeR2Modal();
+    }
+
+    function openSelectedCliModal() {
+      closeModals();
+      const d = getOspfDrBdr2Dev();
+      if (d === "R20") {
+        modalR20.classList.add("is-open");
+        modalR20.setAttribute("aria-hidden", "false");
+      } else if (d === "R10") {
+        modalR10.classList.add("is-open");
+        modalR10.setAttribute("aria-hidden", "false");
+      } else if (d === "R2") {
+        modalR2.classList.add("is-open");
+        modalR2.setAttribute("aria-hidden", "false");
+      } else {
+        modalR3.classList.add("is-open");
+        modalR3.setAttribute("aria-hidden", "false");
+      }
+      focusActiveCli();
+    }
+
+    function focusActiveCli() {
+      if (modalR3.classList.contains("is-open") && !cmdR3.disabled) {
+        cmdR3.focus();
+        return;
+      }
+      if (modalR20.classList.contains("is-open") && !cmdR20.disabled) {
+        cmdR20.focus();
+        return;
+      }
+      if (modalR10.classList.contains("is-open") && !cmdR10.disabled) {
+        cmdR10.focus();
+        return;
+      }
+      if (modalR2.classList.contains("is-open") && !cmdR2.disabled) {
+        cmdR2.focus();
+      }
+    }
 
     let phase = "R3_PTP";
     let stepR3 = 0;
@@ -487,7 +699,7 @@
       }
     }
 
-    function activePhase() {
+    function applyPhaseUI() {
       disableAllInputs();
       setWaiting(panelR3, true);
       setWaiting(panelR20, true);
@@ -515,13 +727,11 @@
       }
 
       updatePrompts();
-      if (!cmdR3.disabled) cmdR3.focus();
-      else if (!cmdR20.disabled) cmdR20.focus();
-      else if (!cmdR10.disabled) cmdR10.focus();
-      else if (!cmdR2.disabled) cmdR2.focus();
+      focusActiveCli();
     }
 
     function reset() {
+      closeModals();
       phase = "R3_PTP";
       stepR3 = 0;
       stepR20 = 0;
@@ -540,7 +750,8 @@
       cmdR2.value = "";
       passBanner.classList.remove("visible");
       appendLine(scrollR3, "line-sys", "Area 20: use point-to-point on e0/1 toward R20 (no DR/BDR election).");
-      activePhase();
+      applyPhaseUI();
+      openDeviceCliLink.focus();
     }
 
     function testShowNei(raw) {
@@ -562,7 +773,7 @@
             appendLine(scrollR3, "line-sys", "[OK] R3 e0/1 point-to-point. Configure R20 e0/0 next.");
             phase = "R20_PTP";
           }
-          activePhase();
+          applyPhaseUI();
         } else {
           appendLine(scrollR3, "line-bad", "% int e0/1, ip ospf network point-to-point, end.");
         }
@@ -576,7 +787,7 @@
           if (normalize(line) === "clear ip ospf process") {
             stepR3Clear = 1;
             appendLine(scrollR3, "line-sys", OSPF_CLEAR_PROMPT);
-            activePhase();
+            applyPhaseUI();
           } else {
             appendLine(scrollR3, "line-bad", "% clear ip ospf process");
           }
@@ -585,7 +796,7 @@
           phase = "R20_CLEAR";
           stepR20Clear = 0;
           appendLine(scrollR20, "line-sys", "Run clear ip ospf process on R20.");
-          activePhase();
+          applyPhaseUI();
         } else {
           appendLine(scrollR3, "line-bad", "% Confirm with y.");
         }
@@ -599,7 +810,7 @@
           appendLine(scrollR3, "line-sys", "[OK] Use Address 10.2.203.20 to confirm R20. Verify on R20 next.");
           phase = "R20_NEI";
           appendLine(scrollR20, "line-sys", "show ip ospf neighbor");
-          activePhase();
+          applyPhaseUI();
         } else {
           appendLine(scrollR3, "line-bad", "% show ip ospf neighbor");
         }
@@ -612,7 +823,7 @@
           appendLine(scrollR3, "line-sys", "[OK] R3 saved (simulated). Save on R10 next.");
           phase = "SAVE_R10";
           appendLine(scrollR10, "line-sys", "copy running-config startup-config");
-          activePhase();
+          applyPhaseUI();
         } else {
           appendLine(scrollR3, "line-bad", "% copy running-config startup-config");
         }
@@ -634,9 +845,9 @@
             phase = "R3_CLEAR";
             stepR3Clear = 0;
             appendLine(scrollR3, "line-sys", "clear ip ospf process (then R20).");
-            activePhase();
+            applyPhaseUI();
           } else {
-            activePhase();
+            applyPhaseUI();
           }
         } else {
           appendLine(scrollR20, "line-bad", "% int e0/0, ip ospf network point-to-point, end.");
@@ -651,7 +862,7 @@
           if (normalize(line) === "clear ip ospf process") {
             stepR20Clear = 1;
             appendLine(scrollR20, "line-sys", OSPF_CLEAR_PROMPT);
-            activePhase();
+            applyPhaseUI();
           } else {
             appendLine(scrollR20, "line-bad", "% clear ip ospf process");
           }
@@ -659,7 +870,7 @@
           appendLine(scrollR20, "line-sys", "[OK] R20 OSPF reset (simulated). Verify on R3 and R20.");
           phase = "R3_NEI";
           appendLine(scrollR3, "line-sys", "show ip ospf neighbor");
-          activePhase();
+          applyPhaseUI();
         } else {
           appendLine(scrollR20, "line-bad", "% Confirm with y.");
         }
@@ -674,7 +885,7 @@
           phase = "R10_PRI";
           stepR10 = 0;
           appendLine(scrollR10, "line-sys", "ip ospf priority 255 on e0/0 toward R2.");
-          activePhase();
+          applyPhaseUI();
         } else {
           appendLine(scrollR20, "line-bad", "% show ip ospf neighbor");
         }
@@ -713,9 +924,9 @@
             phase = "R2_CLEAR";
             stepR2Clear = 0;
             appendLine(scrollR2, "line-sys", "clear ip ospf process");
-            activePhase();
+            applyPhaseUI();
           } else {
-            activePhase();
+            applyPhaseUI();
           }
         } else {
           appendLine(scrollR10, "line-bad", "% int e0/0, ip ospf priority 255, end.");
@@ -730,7 +941,7 @@
           if (normalize(line) === "clear ip ospf process") {
             stepR10Clear = 1;
             appendLine(scrollR10, "line-sys", OSPF_CLEAR_PROMPT);
-            activePhase();
+            applyPhaseUI();
           } else {
             appendLine(scrollR10, "line-bad", "% clear ip ospf process");
           }
@@ -738,7 +949,7 @@
           appendLine(scrollR10, "line-sys", "[OK] R10 OSPF reset (simulated). Verify on R2.");
           phase = "R2_NEI";
           appendLine(scrollR2, "line-sys", "show ip ospf neighbor — R10 should be DR.");
-          activePhase();
+          applyPhaseUI();
         } else {
           appendLine(scrollR10, "line-bad", "% Confirm with y.");
         }
@@ -751,7 +962,7 @@
           appendLine(scrollR10, "line-sys", "[OK] R10 saved (simulated). Save on R20.");
           phase = "SAVE_R20";
           appendLine(scrollR20, "line-sys", "copy running-config startup-config");
-          activePhase();
+          applyPhaseUI();
         } else {
           appendLine(scrollR10, "line-bad", "% copy running-config startup-config");
         }
@@ -769,7 +980,7 @@
           if (normalize(line) === "clear ip ospf process") {
             stepR2Clear = 1;
             appendLine(scrollR2, "line-sys", OSPF_CLEAR_PROMPT);
-            activePhase();
+            applyPhaseUI();
           } else {
             appendLine(scrollR2, "line-bad", "% clear ip ospf process");
           }
@@ -778,7 +989,7 @@
           phase = "R10_CLEAR";
           stepR10Clear = 0;
           appendLine(scrollR10, "line-sys", "clear ip ospf process");
-          activePhase();
+          applyPhaseUI();
         } else {
           appendLine(scrollR2, "line-bad", "% Confirm with y.");
         }
@@ -792,7 +1003,7 @@
           appendLine(scrollR2, "line-sys", "[OK] R10 is DR (Address 10.1.102.10). Save on R3, R10, R20.");
           phase = "SAVE_R3";
           appendLine(scrollR3, "line-sys", "copy running-config startup-config");
-          activePhase();
+          applyPhaseUI();
         } else {
           appendLine(scrollR2, "line-bad", "% show ip ospf neighbor");
         }
@@ -825,6 +1036,57 @@
     });
 
     resetBtn.addEventListener("click", reset);
+    openDeviceCliLink.addEventListener("click", openSelectedCliModal);
+    document.getElementById("closeR3").addEventListener("click", () => {
+      closeR3Modal();
+      openDeviceCliLink.focus();
+    });
+    document.getElementById("closeR20").addEventListener("click", () => {
+      closeR20Modal();
+      openDeviceCliLink.focus();
+    });
+    document.getElementById("closeR10").addEventListener("click", () => {
+      closeR10Modal();
+      openDeviceCliLink.focus();
+    });
+    document.getElementById("closeR2").addEventListener("click", () => {
+      closeR2Modal();
+      openDeviceCliLink.focus();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      if (modalR2.classList.contains("is-open")) {
+        e.preventDefault();
+        closeR2Modal();
+        openDeviceCliLink.focus();
+        return;
+      }
+      if (modalR10.classList.contains("is-open")) {
+        e.preventDefault();
+        closeR10Modal();
+        openDeviceCliLink.focus();
+        return;
+      }
+      if (modalR20.classList.contains("is-open")) {
+        e.preventDefault();
+        closeR20Modal();
+        openDeviceCliLink.focus();
+        return;
+      }
+      if (modalR3.classList.contains("is-open")) {
+        e.preventDefault();
+        closeR3Modal();
+        openDeviceCliLink.focus();
+      }
+    });
+
+    document.querySelectorAll('input[name="ospfDrBdr2Dev"]').forEach((r) => {
+      r.addEventListener("change", () => {
+        closeModals();
+        openDeviceCliLink.focus();
+      });
+    });
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {

@@ -67,6 +67,109 @@
       height: auto;
       vertical-align: middle;
     }
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
+      outline: none;
+    }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+      pointer-events: none;
+    }
+    .cli-modal-overlay.is-open {
+      display: block;
+    }
+    .cli-modal-dialog {
+      width: min(520px, calc(100vw - 24px));
+      max-height: min(85vh, 720px);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
     .terminal {
       font-family: "SF Mono", ui-monospace, Consolas, monospace;
       font-size: 0.88rem;
@@ -77,7 +180,7 @@
       min-height: 240px;
       display: flex;
       flex-direction: column;
-      margin-top: 14px;
+      margin-top: 0;
     }
     #scrollback {
       flex: 1;
@@ -188,6 +291,8 @@
     }
     .sim-nav-btn:hover { filter: brightness(1.08); }
     .sim-nav-home { background: #1a3d6e; }
+    .sim-nav-next { background: #1a3d6e; }
+    .sim-nav-back { background: #243352; border-color: #3d5280; }
   </style>
 </head>
 <body>
@@ -198,6 +303,7 @@
         OSPF is already running elsewhere; only <strong>R20</strong> needs configuration.
         Use process ID <strong>20</strong>, router-id from <strong>Loopback0</strong>, and enable OSPF on each interface with <code>ip ospf 20 area …</code> — <strong>no <code>network</code> statements</strong> under the OSPF process.
         Then summarize area <strong>40</strong> toward area <strong>0</strong> with a <strong>/18</strong> so the backbone sees a single Type 3 summary.
+        Under the topology, confirm <strong>Device in prompt</strong>, then <strong>Open Router CLI</strong>.
       </p>
       <div class="tasks">
         <strong>Tasks</strong>
@@ -210,13 +316,11 @@
 
       <div class="diagram-wrap" aria-label="Multi-area OSPF topology">
         <img src="/assets/ospf-summ-r20-lab.png" alt="OSPF areas including area 40 toward R20" />
-      </div>
-
-      <div class="terminal" aria-label="R20 CLI">
-        <div id="scrollback"></div>
-        <div class="input-row">
-          <span id="prompt">R20#</span>
-          <input id="cmdline" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R20 command line" />
+        <div class="device-pick" role="note">
+          <strong>Device in prompt:</strong> R20
+        </div>
+        <div class="device-links">
+          <button type="button" class="device-link" id="openDeviceCliLink">Open Router CLI</button>
         </div>
       </div>
 
@@ -245,10 +349,28 @@
     </main>
   </div>
 
+  <div id="modalR20" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR20summ" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR20summ">R20 — simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR20summ" aria-label="Close R20 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" aria-label="R20 CLI">
+          <div id="scrollback"></div>
+          <div class="input-row">
+            <span id="prompt">R20#</span>
+            <input id="cmdline" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R20 command line" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <nav class="sim-nav" aria-label="Simulation navigation">
-    <a class="sim-nav-btn" href="/cli-lab-ospf-summ-r30.html">Back</a>
     <a class="sim-nav-btn sim-nav-home" href="/practice-launcher.html">Home</a>
-    <a class="sim-nav-btn" href="/cli-lab-trunk-udld-lacp.html">Next</a>
+    <a class="sim-nav-btn sim-nav-next" href="/cli-lab-trunk-udld-lacp.html">Next</a>
+    <a class="sim-nav-btn sim-nav-back" href="/cli-lab-ospf-summ-r30.html">Back</a>
   </nav>
 
   <script>
@@ -351,6 +473,31 @@
     const cmdline = document.getElementById("cmdline");
     const passBanner = document.getElementById("passBanner");
     const resetBtn = document.getElementById("resetBtn");
+    const modalR20 = document.getElementById("modalR20");
+    const openDeviceCliLink = document.getElementById("openDeviceCliLink");
+
+    function closeModals() {
+      modalR20.classList.remove("is-open");
+      modalR20.setAttribute("aria-hidden", "true");
+    }
+
+    function openSelectedCliModal() {
+      closeModals();
+      modalR20.classList.add("is-open");
+      modalR20.setAttribute("aria-hidden", "false");
+      focusActiveCli();
+    }
+
+    function focusActiveCli() {
+      if (modalR20.classList.contains("is-open") && !cmdline.disabled) {
+        cmdline.focus();
+      }
+    }
+
+    function applyPhaseUI() {
+      setPrompt();
+      focusActiveCli();
+    }
 
     let phase = "BRIEF";
     let stepIndex = 0;
@@ -389,6 +536,7 @@
     }
 
     function reset() {
+      closeModals();
       phase = "BRIEF";
       stepIndex = 0;
       scrollback.innerHTML = "";
@@ -396,8 +544,8 @@
       cmdline.disabled = false;
       cmdline.value = "";
       appendLine("line-sys", "R20 has no OSPF yet. Other routers are preconfigured. Confirm addresses, then build OSPF 20.");
-      setPrompt();
-      cmdline.focus();
+      applyPhaseUI();
+      openDeviceCliLink.focus();
     }
 
     function submit() {
@@ -417,7 +565,7 @@
           appendLine("line-sys", "[OK] Router-id will be 20.20.20.20. Begin configuration.");
           phase = "LAB";
           stepIndex = 0;
-          setPrompt();
+          applyPhaseUI();
         } else {
           appendLine("line-bad", "% Type: show ip interface brief");
         }
@@ -430,6 +578,7 @@
           phase = "DONE";
           passBanner.classList.add("visible");
           cmdline.disabled = true;
+          applyPhaseUI();
         } else {
           appendLine("line-bad", "% copy running-config startup-config");
         }
@@ -449,9 +598,9 @@
         appendLine("line-sys", "[OK] OSPF and summarization applied (simulated). Save.");
         phase = "SAVE";
         stepIndex = 0;
-        setPrompt();
+        applyPhaseUI();
       } else {
-        setPrompt();
+        applyPhaseUI();
       }
     }
 
@@ -463,6 +612,19 @@
     });
 
     resetBtn.addEventListener("click", reset);
+    openDeviceCliLink.addEventListener("click", openSelectedCliModal);
+    document.getElementById("closeR20summ").addEventListener("click", () => {
+      closeModals();
+      openDeviceCliLink.focus();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      if (!modalR20.classList.contains("is-open")) return;
+      e.preventDefault();
+      closeModals();
+      openDeviceCliLink.focus();
+    });
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {

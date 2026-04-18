@@ -67,23 +67,117 @@
       height: auto;
       vertical-align: middle;
     }
-    .console-row {
-      display: grid;
-      grid-template-columns: 1fr minmax(280px, 34%);
-      gap: 14px;
-      margin-top: 14px;
-      align-items: start;
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
     }
-    @media (max-width: 900px) {
-      .console-row {
-        grid-template-columns: 1fr;
-      }
+    .device-pick label {
+      margin-left: 12px;
+      cursor: pointer;
+      user-select: none;
     }
-    .console-label {
-      margin: 0 0 8px;
-      font-size: 1rem;
-      font-weight: 800;
-      color: #c8d7ec;
+    .device-pick input {
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
+      outline: none;
+    }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+      pointer-events: none;
+    }
+    .cli-modal-overlay.is-open {
+      display: block;
+    }
+    .cli-modal-dialog {
+      width: min(520px, calc(100vw - 24px));
+      max-height: min(85vh, 720px);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
     }
     .terminal-panel {
       min-width: 0;
@@ -222,6 +316,8 @@
     }
     .sim-nav-btn:hover { filter: brightness(1.08); }
     .sim-nav-home { background: #1a3d6e; }
+    .sim-nav-next { background: #1a3d6e; }
+    .sim-nav-back { background: #243352; border-color: #3d5280; }
   </style>
 </head>
 <body>
@@ -231,6 +327,7 @@
       <p class="objective">
         Configure <strong>SW10</strong> only (no access to SW20 or SW30). Restrict trunk allowed VLANs to VLANs that are in use.
         Use <strong>PC2</strong> to verify reachability when that console unlocks. STP may take up to about a minute before pings succeed (simulated as immediate).
+        Under the topology, choose <strong>Device in prompt</strong>, then the open button for that device.
       </p>
       <div class="tasks">
         <strong>Tasks</strong>
@@ -246,30 +343,13 @@
 
       <div class="diagram-wrap" aria-label="Topology and SW10 initial configuration">
         <img src="/assets/trunk-udld-lacp-lab.png" alt="SW10 SW20 SW30 topology and SW10 initial config" />
-      </div>
-
-      <div class="console-row" aria-label="SW10 and PC2">
-        <div class="terminal-panel" id="panelSW10">
-          <h2 class="console-label">SW10</h2>
-          <p class="console-hint" id="hintSW10">Start with the E0/0 trunk toward SW30 (VLAN 300 only on that trunk).</p>
-          <div class="terminal" aria-label="SW10 CLI">
-            <div class="console-scroll" id="scrollSW10"></div>
-            <div class="input-row">
-              <span class="prompt" id="promptSW10">SW10#</span>
-              <input class="cmdline" id="cmdSW10" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="SW10 command line" />
-            </div>
-          </div>
+        <div class="device-pick" role="group" aria-label="Device in prompt">
+          <strong>Device in prompt:</strong>
+          <label><input type="radio" name="trunkUdldLacpDev" value="SW10" checked /> SW10</label>
+          <label><input type="radio" name="trunkUdldLacpDev" value="PC2" /> PC2</label>
         </div>
-        <div class="terminal-panel terminal-panel--waiting" id="panelPC2">
-          <h2 class="console-label">PC2</h2>
-          <p class="console-hint" id="hintPC2">Unlocks after the SW30 trunk is fixed. Ping PC1, then later PC3.</p>
-          <div class="terminal" aria-label="PC2 CLI">
-            <div class="console-scroll" id="scrollPC2"></div>
-            <div class="input-row">
-              <span class="prompt" id="promptPC2">PC2&gt;</span>
-              <input class="cmdline" id="cmdPC2" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="PC2 command line" disabled />
-            </div>
-          </div>
+        <div class="device-links">
+          <button type="button" class="device-link" id="openDeviceCliLink">Open Switch CLI</button>
         </div>
       </div>
 
@@ -302,10 +382,51 @@
     </main>
   </div>
 
+  <div id="modalSW10" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleSW10" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleSW10">SW10 — simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeSW10" aria-label="Close SW10 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel" id="panelSW10">
+          <p class="console-hint" id="hintSW10">Start with the E0/0 trunk toward SW30 (VLAN 300 only on that trunk).</p>
+          <div class="terminal" aria-label="SW10 CLI">
+            <div class="console-scroll" id="scrollSW10"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptSW10">SW10#</span>
+              <input class="cmdline" id="cmdSW10" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="SW10 command line" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="modalPC2" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitlePC2" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitlePC2">PC2 — console</h2>
+        <button type="button" class="cli-modal-close" id="closePC2" aria-label="Close PC2 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel terminal-panel--waiting" id="panelPC2">
+          <p class="console-hint" id="hintPC2">Unlocks after the SW30 trunk is fixed. Ping PC1, then later PC3.</p>
+          <div class="terminal" aria-label="PC2 CLI">
+            <div class="console-scroll" id="scrollPC2"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptPC2">PC2&gt;</span>
+              <input class="cmdline" id="cmdPC2" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="PC2 command line" disabled />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <nav class="sim-nav" aria-label="Simulation navigation">
-    <a class="sim-nav-btn" href="/cli-lab-ospf-summ-r20.html">Back</a>
     <a class="sim-nav-btn sim-nav-home" href="/practice-launcher.html">Home</a>
-    <a class="sim-nav-btn" href="/cli-lab-ebgp-neighbor-2.html">Next</a>
+    <a class="sim-nav-btn sim-nav-next" href="/cli-lab-ebgp-neighbor-2.html">Next</a>
+    <a class="sim-nav-btn sim-nav-back" href="/cli-lab-ospf-summ-r20.html">Back</a>
   </nav>
 
   <script>
@@ -420,6 +541,54 @@
     const hintPC2 = document.getElementById("hintPC2");
     const passBanner = document.getElementById("passBanner");
     const resetBtn = document.getElementById("resetBtn");
+    const modalSW10 = document.getElementById("modalSW10");
+    const modalPC2 = document.getElementById("modalPC2");
+    const openDeviceCliLink = document.getElementById("openDeviceCliLink");
+
+    function getTrunkUdldLacpDev() {
+      const sel = document.querySelector('input[name="trunkUdldLacpDev"]:checked');
+      return sel ? sel.value : "SW10";
+    }
+
+    function syncOpenCliButtonLabel() {
+      openDeviceCliLink.textContent =
+        getTrunkUdldLacpDev() === "SW10" ? "Open Switch CLI" : "Open PC CLI";
+    }
+
+    function closeSW10Modal() {
+      modalSW10.classList.remove("is-open");
+      modalSW10.setAttribute("aria-hidden", "true");
+    }
+    function closePC2Modal() {
+      modalPC2.classList.remove("is-open");
+      modalPC2.setAttribute("aria-hidden", "true");
+    }
+    function closeModals() {
+      closeSW10Modal();
+      closePC2Modal();
+    }
+
+    function openSelectedCliModal() {
+      closeModals();
+      if (getTrunkUdldLacpDev() === "PC2") {
+        modalPC2.classList.add("is-open");
+        modalPC2.setAttribute("aria-hidden", "false");
+      } else {
+        modalSW10.classList.add("is-open");
+        modalSW10.setAttribute("aria-hidden", "false");
+      }
+      focusActiveCli();
+    }
+
+    function focusActiveCli() {
+      if (modalSW10.classList.contains("is-open") && !cmdSW10.disabled) {
+        cmdSW10.focus();
+        return;
+      }
+      if (modalPC2.classList.contains("is-open") && !cmdPC2.disabled) {
+        cmdPC2.focus();
+      }
+    }
 
     let phase = "TRUNK";
     let stepIdx = 0;
@@ -495,7 +664,7 @@
       promptSW10.textContent = promptForStep(steps, stepIdx, "SW10");
     }
 
-    function applyUI() {
+    function applyPhaseUI() {
       const sw10Active =
         phase !== "PING1" &&
         phase !== "PING2" &&
@@ -509,11 +678,11 @@
 
       updateHints();
       updatePromptSW10();
-      if (sw10Active) cmdSW10.focus();
-      else if (pc2Active) cmdPC2.focus();
+      focusActiveCli();
     }
 
     function reset() {
+      closeModals();
       phase = "TRUNK";
       stepIdx = 0;
       scrollSW10.innerHTML = "";
@@ -534,28 +703,30 @@
           " switchport mode trunk"
       );
       appendLine(scrollSW10, "line-sys", "Configure SW10 only. Trunks: allow only VLANs in use.");
-      applyUI();
+      applyPhaseUI();
+      syncOpenCliButtonLabel();
+      openDeviceCliLink.focus();
     }
 
     function advanceFromTrunk() {
       appendLine(scrollSW10, "line-sys", "[OK] Trunk to SW30 fixed (simulated). Verify from PC2.");
       phase = "PING1";
       appendLine(scrollPC2, "line-sys", "Try: ping 10.10.100.10 (STP may take ~1 min in real gear).");
-      applyUI();
+      applyPhaseUI();
     }
 
     function advanceFromPing1() {
       appendLine(scrollPC2, "line-sys", "[OK] Success — configure UDLD on SW10 E0/0 next.");
       phase = "UDLD";
       stepIdx = 0;
-      applyUI();
+      applyPhaseUI();
     }
 
     function advanceFromUdld() {
       appendLine(scrollSW10, "line-sys", "[OK] UDLD aggressive on E0/0 (simulated). Rebuild LACP port-channel next.");
       phase = "PO";
       stepIdx = 0;
-      applyUI();
+      applyPhaseUI();
     }
 
     function advanceFromPo() {
@@ -567,27 +738,27 @@
       appendLine(scrollSW10, "line-sys", "[OK] Port-channel 10 up (simulated). Verify PC2 → PC3.");
       phase = "PING2";
       appendLine(scrollPC2, "line-sys", "Try: ping 10.10.100.30");
-      applyUI();
+      applyPhaseUI();
     }
 
     function advanceFromPing2() {
       appendLine(scrollPC2, "line-sys", "[OK] Success — optional portfast, pathcost long, then save.");
       phase = "PORTFAST";
       stepIdx = 0;
-      applyUI();
+      applyPhaseUI();
     }
 
     function advanceFromPortfast() {
       appendLine(scrollSW10, "line-sys", "[OK] Portfast on E0/1 (simulated).");
       phase = "STP_LONG";
       stepIdx = 0;
-      applyUI();
+      applyPhaseUI();
     }
 
     function advanceFromStp() {
       appendLine(scrollSW10, "line-sys", "[OK] Spanning-tree pathcost method long (simulated).");
       phase = "SAVE";
-      applyUI();
+      applyPhaseUI();
     }
 
     function submitSW10() {
@@ -701,6 +872,38 @@
     });
 
     resetBtn.addEventListener("click", reset);
+    openDeviceCliLink.addEventListener("click", openSelectedCliModal);
+    document.getElementById("closeSW10").addEventListener("click", () => {
+      closeSW10Modal();
+      openDeviceCliLink.focus();
+    });
+    document.getElementById("closePC2").addEventListener("click", () => {
+      closePC2Modal();
+      openDeviceCliLink.focus();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      if (modalPC2.classList.contains("is-open")) {
+        e.preventDefault();
+        closePC2Modal();
+        openDeviceCliLink.focus();
+        return;
+      }
+      if (modalSW10.classList.contains("is-open")) {
+        e.preventDefault();
+        closeSW10Modal();
+        openDeviceCliLink.focus();
+      }
+    });
+
+    document.querySelectorAll('input[name="trunkUdldLacpDev"]').forEach((r) => {
+      r.addEventListener("change", () => {
+        closeModals();
+        syncOpenCliButtonLabel();
+        openDeviceCliLink.focus();
+      });
+    });
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
