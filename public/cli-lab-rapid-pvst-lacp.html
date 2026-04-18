@@ -587,9 +587,9 @@
       </div>
       <footer class="cli-modal-footer">
         <p class="pc3-modal-hint">
-          Simulated ICMP toward PC1. Enter the SW20 commands in order through <code>copy running-config startup-config</code>
-          (no <code>exit</code> needed). Then <code>ping 10.10.10.10</code> or <code>ping 10.10.100.10</code> shows
-          <code>!!!!</code> when the lab sequence was correct.
+          Simulated ICMP toward PC1. <code>!!!!</code> only if SW20 was completed in order <strong>with no</strong>
+          <code>% Invalid input</code> lines along the way — click <strong>Reset lab</strong> and run through again cleanly.
+          Then try <code>ping 10.10.10.10</code> or <code>ping 10.10.100.10</code>.
         </p>
       </footer>
     </div>
@@ -746,6 +746,8 @@
     }
 
     let stepIndex = 0;
+    /** Any mistyped / out-of-order SW20 line — ping verification requires a clean run. */
+    let sw20HadInvalidInput = false;
 
     /** Stack floating palettes above fixed chrome when focused or dragged. */
     let modalStackZ = 30000;
@@ -756,7 +758,7 @@
     }
 
     function isLabComplete() {
-      return stepIndex >= STEPS.length;
+      return stepIndex >= STEPS.length && !sw20HadInvalidInput;
     }
 
     function appendLinePc3(className, text) {
@@ -904,6 +906,7 @@
 
     function reset() {
       stepIndex = 0;
+      sw20HadInvalidInput = false;
       scrollback.innerHTML = "";
       passBanner.classList.remove("visible");
       cmdline.disabled = false;
@@ -948,6 +951,7 @@
           setPrompt();
         }
       } else {
+        sw20HadInvalidInput = true;
         appendLine("line-bad", "% Invalid input — follow task order and configure only SW20.");
       }
     }
