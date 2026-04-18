@@ -46,6 +46,23 @@
       margin-left: auto;
       margin-right: auto;
     }
+    .cli-image-panel {
+      margin: 12px 0 0;
+      max-width: 560px;
+    }
+    .cli-image-display {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+    }
+    .cli-image-display img {
+      display: block;
+      width: 100%;
+      height: auto;
+      filter: grayscale(1) invert(1) contrast(1.2);
+    }
     .exhibit-region {
       margin: 0 0 18px;
     }
@@ -153,6 +170,13 @@
       <p class="exhibit-ref">Refer to the topology.</p>
       <div class="image-wrap">
         <img src="/assets/question22-topology.png" alt="HSRP topology: host, R1 standby, R2 active, EXT-RTR to internet" />
+      </div>
+      <p class="exhibit-ref exhibit-ref-spaced">Current CLI configuration:</p>
+      <div class="exhibit-option cli-image-panel">
+        <div class="exhibit-option-label">Current Configuration</div>
+        <div class="cli-image-display">
+          <img src="/assets/question22-cli.png" alt="CLI output showing interface and standby configuration for R1 and R2" />
+        </div>
       </div>
 
       <p class="exhibit-ref exhibit-ref-spaced">Refer to the candidate configuration changes.</p>
