@@ -67,6 +67,32 @@
       height: auto;
       vertical-align: middle;
     }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
+      outline: none;
+    }
     .console-label {
       margin: 0 0 8px;
       font-size: 1rem;
@@ -165,6 +191,72 @@
     .pass-banner.visible {
       display: block;
     }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+      pointer-events: none;
+    }
+    .cli-modal-overlay.is-open {
+      display: block;
+    }
+    .cli-modal-dialog {
+      width: min(460px, calc(100vw - 24px));
+      max-height: min(85vh, 640px);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
     details.hint {
       margin-top: 10px;
       color: #9fb0cc;
@@ -200,6 +292,8 @@
     }
     .sim-nav-btn:hover { filter: brightness(1.08); }
     .sim-nav-home { background: #1a3d6e; }
+    .sim-nav-next { background: #1a3d6e; }
+    .sim-nav-back { background: #243352; border-color: #3d5280; }
   </style>
 </head>
 <body>
@@ -221,16 +315,10 @@
         </ol>
       </div>
       <div class="diagram-wrap" aria-label="Topology and initial configs">
-        <img src="/assets/vrf-config-sim2-lab.png" alt="R11 R22 ISP topology with Tunnel10 and R22 Sw22 initial configuration" />
-      </div>
-
-      <h2 class="console-label">R22</h2>
-      <p class="console-hint" id="hintR22">Enter commands in order (abbreviations allowed where noted).</p>
-      <div class="terminal" aria-label="R22 CLI">
-        <div class="console-scroll" id="scrollR22"></div>
-        <div class="input-row">
-          <span class="prompt" id="promptR22">R22#</span>
-          <input class="cmdline" id="cmdR22" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R22 command line" />
+        <img src="/assets/vrf-config-sim2-topology.png" alt="WAN topology: ISP, R11 and Sw11 with VLAN 111, R22 and Sw22 with VLAN 222, Tunnel10 between R11 and R22" />
+        <div class="device-links" aria-label="Open device windows">
+          <button type="button" class="device-link" id="openR22Link">Open R22 CLI</button>
+          <button type="button" class="device-link" id="openSw22Link">Open SW22 CLI</button>
         </div>
       </div>
 
@@ -257,15 +345,86 @@
     </main>
   </div>
 
+  <div id="modalR22" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="modalR22Dialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitleR22"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR22">R22 - simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR22" aria-label="Close R22 CLI">x</button>
+      </header>
+      <div class="cli-modal-body">
+        <h2 class="console-label">R22</h2>
+        <p class="console-hint" id="hintR22">Enter commands in order (abbreviations allowed where noted).</p>
+        <div class="terminal" aria-label="R22 CLI">
+          <div class="console-scroll" id="scrollR22"></div>
+          <div class="input-row">
+            <span class="prompt" id="promptR22">R22#</span>
+            <input class="cmdline" id="cmdR22" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R22 command line" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalSw22" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="modalSw22Dialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitleSw22"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="modalTitleSw22">SW22 - simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeSw22" aria-label="Close SW22 CLI">x</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" aria-label="SW22 CLI">
+          <div class="console-scroll" id="scrollSw22"></div>
+          <div class="input-row">
+            <span class="prompt" id="promptSw22">SW22#</span>
+            <input class="cmdline" id="cmdSw22" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="SW22 command line" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <nav class="sim-nav" aria-label="Simulation navigation">
-    <a class="sim-nav-btn" href="/cli-lab-vrf-tunnel.html">Back</a>
     <a class="sim-nav-btn sim-nav-home" href="/practice-launcher.html">Home</a>
-    <a class="sim-nav-btn" href="/cli-lab-ospf-dr-bdr.html">Next</a>
+    <a class="sim-nav-btn sim-nav-next" href="/cli-lab-ospf-dr-bdr.html">Next</a>
+    <a class="sim-nav-btn sim-nav-back" href="/cli-lab-vrf-tunnel.html">Back</a>
   </nav>
 
   <script>
     function normalize(s) {
       return s.trim().toLowerCase().replace(/\s+/g, " ");
+    }
+
+    function matchShowRun(raw) {
+      const u = normalize(raw);
+      return (
+        u === "show running-config" ||
+        u === "show run" ||
+        u === "sh run" ||
+        u === "sh running-config" ||
+        u === "do show run" ||
+        u === "do show running-config" ||
+        u === "do sh run"
+      );
+    }
+
+    /** SW22: only full forms, no abbreviations or do prefix. */
+    function matchShowRunStrictSw22(raw) {
+      const u = normalize(raw);
+      return u === "show run" || u === "show running-config";
     }
 
     function matchCopy(raw) {
@@ -362,6 +521,38 @@
       { mode: "config", test: (raw) => normalize(raw) === "end" },
       { mode: "exec", test: matchCopy },
     ];
+    const R22_SHOW_RUN = [
+      "interface Loopback0",
+      " ip address 10.2.2.2 255.255.255.255",
+      "interface Ethernet0/0",
+      " ip address 209.165.201.2 255.255.255.252",
+      " no shut",
+      "interface Ethernet0/1",
+      " ip address 10.22.22.1 255.255.255.252",
+      " no shut",
+      "!",
+      "router bgp 3",
+      " neighbor 209.165.201.1 remote-as 2",
+      " address-family ipv4",
+      " neighbor 209.165.201.1 activate",
+      " network 209.165.201.0 mask 255.255.255.252",
+    ].join("\r\n");
+    const SW22_SHOW_RUN = [
+      "vlan 222",
+      "!",
+      "interface Ethernet0/0",
+      " no switchport",
+      " ip address 10.22.22.2 255.255.255.252",
+      "interface Vlan222",
+      " ip address 10.10.222.1 255.255.255.0",
+      " no shut",
+      "!",
+      "interface Ethernet0/3",
+      " switchport mode access",
+      " switchport access vlan 222",
+      "!",
+      "ip route 0.0.0.0 0.0.0.0 10.22.22.1",
+    ].join("\r\n");
 
     function promptFor(steps, index, host) {
       if (index >= steps.length) return `${host}#`;
@@ -380,6 +571,15 @@
     const hintR22 = document.getElementById("hintR22");
     const passBanner = document.getElementById("passBanner");
     const resetBtn = document.getElementById("resetBtn");
+    const modalR22 = document.getElementById("modalR22");
+    const modalSw22 = document.getElementById("modalSw22");
+    const openR22Link = document.getElementById("openR22Link");
+    const openSw22Link = document.getElementById("openSw22Link");
+    const closeR22 = document.getElementById("closeR22");
+    const closeSw22 = document.getElementById("closeSw22");
+    const scrollSw22 = document.getElementById("scrollSw22");
+    const promptSw22 = document.getElementById("promptSw22");
+    const cmdSw22 = document.getElementById("cmdSw22");
 
     let stepR22 = 0;
 
@@ -429,6 +629,11 @@
       cmdR22.disabled = false;
       passBanner.classList.remove("visible");
       setPromptAndHint();
+      promptSw22.textContent = "SW22#";
+      scrollSw22.innerHTML = "";
+      cmdSw22.value = "";
+      cmdSw22.disabled = false;
+      appendLine(scrollSw22, "line-sys", "SW22: enter show run or show running-config (full command only).");
       appendLine(
         scrollR22,
         "line-sys",
@@ -438,12 +643,26 @@
     }
 
     function submitR22() {
-      if (stepR22 >= R22_STEPS.length || cmdR22.disabled) return;
+      if (cmdR22.disabled) return;
       const p = promptFor(R22_STEPS, stepR22, "R22");
       const line = cmdR22.value;
       appendLine(scrollR22, "line-user", `${p} ${line}`);
       cmdR22.value = "";
       if (!line.trim()) return;
+
+      if (matchShowRun(line)) {
+        appendLine(scrollR22, "line-sys", R22_SHOW_RUN);
+        return;
+      }
+
+      if (stepR22 >= R22_STEPS.length) {
+        appendLine(
+          scrollR22,
+          "line-bad",
+          "% Invalid input - configuration already complete (simulated); use show run to review."
+        );
+        return;
+      }
 
       if (R22_STEPS[stepR22].test(line)) {
         stepR22 += 1;
@@ -461,12 +680,50 @@
         );
       }
     }
+    function submitSw22() {
+      if (cmdSw22.disabled) return;
+      const line = cmdSw22.value;
+      appendLine(scrollSw22, "line-user", `${promptSw22.textContent} ${line}`);
+      cmdSw22.value = "";
+      if (!line.trim()) return;
+      if (matchShowRunStrictSw22(line)) {
+        appendLine(scrollSw22, "line-sys", SW22_SHOW_RUN);
+        return;
+      }
+      appendLine(scrollSw22, "line-bad", "% Invalid input - use show run or show running-config (no abbreviations).");
+    }
 
     cmdR22.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
         submitR22();
       }
+    });
+    cmdSw22.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitSw22();
+      }
+    });
+    openR22Link.addEventListener("click", () => {
+      modalR22.classList.add("is-open");
+      modalR22.setAttribute("aria-hidden", "false");
+      cmdR22.focus();
+    });
+    openSw22Link.addEventListener("click", () => {
+      modalSw22.classList.add("is-open");
+      modalSw22.setAttribute("aria-hidden", "false");
+      cmdSw22.focus();
+    });
+    closeR22.addEventListener("click", () => {
+      modalR22.classList.remove("is-open");
+      modalR22.setAttribute("aria-hidden", "true");
+      openR22Link.focus();
+    });
+    closeSw22.addEventListener("click", () => {
+      modalSw22.classList.remove("is-open");
+      modalSw22.setAttribute("aria-hidden", "true");
+      openSw22Link.focus();
     });
 
     resetBtn.addEventListener("click", reset);
