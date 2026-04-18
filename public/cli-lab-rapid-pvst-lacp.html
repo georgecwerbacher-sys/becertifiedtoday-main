@@ -110,6 +110,17 @@
       height: 24%;
       border-radius: 10px;
     }
+    /* PC3 — laptop bottom-right under SW20 (diagram max-width 373px; % of stage). */
+    .diagram-hotspot--pc3 {
+      left: 50%;
+      top: 79%;
+      width: 46%;
+      height: 18%;
+      border-radius: 10px;
+      /* Idle hint so the target is discoverable (SW20 stays invisible until hover). */
+      border-color: rgba(126, 200, 255, 0.42);
+      background: rgba(126, 200, 255, 0.09);
+    }
     .topology-scrape {
       margin-top: 12px;
       padding: 12px 14px;
@@ -138,27 +149,87 @@
       position: fixed;
       inset: 0;
       z-index: 25000;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+      padding: 0;
       box-sizing: border-box;
-      background: rgba(5, 8, 18, 0.72);
-      backdrop-filter: blur(6px);
+      background: transparent;
+      pointer-events: none;
     }
     .cli-modal-overlay.is-open {
-      display: flex;
+      display: block;
+    }
+    #pc3ModalOverlay {
+      z-index: 25001;
+    }
+    .terminal--host {
+      font-family: Consolas, "Courier New", ui-monospace, monospace;
+      background: #0c0c0c;
+      border-color: #333;
+      color: #e5e5e5;
+    }
+    .terminal--host #pc3Scrollback {
+      color: #d4d4d4;
+    }
+    .terminal--host .input-row {
+      border-top-color: #333;
+      background: transparent;
+    }
+    #pc3Prompt {
+      color: #3ecf8e;
+    }
+    #pc3Cmdline {
+      flex: 1;
+      min-width: 0;
+      background: transparent !important;
+      border: none !important;
+      border-radius: 0;
+      box-shadow: none !important;
+      outline: none;
+      color: #f3f3f3;
+      font: inherit;
+      padding: 4px 0 4px 4px;
+      caret-color: #3ecf8e;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    #pc3Cmdline:focus {
+      outline: none;
+      box-shadow: none;
+    }
+    #pc3Cmdline:-webkit-autofill,
+    #pc3Cmdline:-webkit-autofill:hover,
+    #pc3Cmdline:-webkit-autofill:focus {
+      -webkit-box-shadow: 0 0 0 32px #0c0c0c inset !important;
+      -webkit-text-fill-color: #f3f3f3 !important;
+    }
+    .line-ping-ok {
+      color: #3ecf8e;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+    }
+    .line-ping-fail {
+      color: #f87171;
+      font-weight: 700;
+      letter-spacing: 0.12em;
     }
     .cli-modal-dialog {
-      width: min(440px, 100%);
+      width: min(440px, calc(100vw - 24px));
       max-height: min(85vh, 640px);
       display: flex;
       flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
       background: #121a2b;
       border: 1px solid #3d5280;
       border-radius: 14px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
       overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-dialog.is-dragging {
+      transition: none;
     }
     .cli-modal-header {
       display: flex;
@@ -169,6 +240,12 @@
       border-bottom: 1px solid #2d3b5a;
       background: rgba(18, 26, 43, 0.98);
       flex-shrink: 0;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+    }
+    .cli-modal-header:active {
+      cursor: grabbing;
     }
     .cli-modal-header h2 {
       margin: 0;
@@ -352,6 +429,15 @@
     }
     .sim-nav-btn:hover { filter: brightness(1.08); }
     .sim-nav-home { background: #1a3d6e; }
+    .cli-modal-body #pc3Scrollback {
+      max-height: min(220px, 38vh);
+    }
+    .pc3-modal-hint {
+      margin: 0;
+      font-size: 0.82rem;
+      color: #9fb0cc;
+      line-height: 1.45;
+    }
   </style>
 </head>
 <body>
@@ -370,7 +456,7 @@
           <li>Fix the LACP port-channel to SW10 so PC3 can ping PC2 (10.10.100.20).</li>
         </ol>
       </div>
-      <div class="diagram-wrap" aria-label="Topology diagram and SW20 CLI hotspot">
+      <div class="diagram-wrap" aria-label="Topology diagram with SW20 and PC3 hotspots">
         <div class="diagram-stage">
           <img
             src="/assets/rapid-pvst-lacp-topology.png"
@@ -386,13 +472,20 @@
             aria-label="SW20 — open simulated CLI"
             title="SW20"
           ></button>
+          <button
+            type="button"
+            class="diagram-hotspot diagram-hotspot--pc3"
+            id="pc3Hotspot"
+            aria-label="PC3 — open console to ping PC1"
+            title="PC3"
+          ></button>
         </div>
         <section class="topology-scrape" aria-label="Topology summary from exhibit">
           <h2>Topology (from exhibit)</h2>
           <ul>
             <li><strong>SW20</strong> — your only configurable device; click it on the diagram to open the simulated CLI and run <code>show running-config</code> for the starting configuration. Connects toward <strong>SW10</strong> via <strong>Port-channel 10</strong> (LACP) and toward <strong>SW30</strong> on the trunk interface shown (e.g. <code>E0/0</code>).</li>
             <li><strong>SW10 / SW30</strong> — out of scope; do not configure.</li>
-            <li>Hosts: <strong>PC1</strong> (10.10.100.10) above SW30, <strong>PC2</strong> (10.10.100.20) below SW10, <strong>PC3</strong> below SW20 — reachability depends on VLAN <strong>500</strong> end-to-end over trunks.</li>
+            <li>Hosts: <strong>PC1</strong> (10.10.100.10) above SW30, <strong>PC2</strong> (10.10.100.20) below SW10, <strong>PC3</strong> below SW20 — reachability depends on VLAN <strong>500</strong> end-to-end over trunks. Click <strong>PC3</strong> on the diagram to open a console and test <code>ping</code> to PC1 after configuring SW20.</li>
             <li>Initial screenshot may show partial trunk / Po config — your job is to align <strong>Rapid PVST+</strong>, <strong>dot1q</strong> trunks, and <strong>VLAN 500</strong> allowed lists on SW20 only.</li>
           </ul>
         </section>
@@ -420,6 +513,7 @@
 
   <div id="cliModalOverlay" class="cli-modal-overlay" aria-hidden="true">
     <div
+      id="cliModalDialog"
       class="cli-modal-dialog"
       role="dialog"
       aria-modal="true"
@@ -456,6 +550,47 @@
           Lab complete. SW20 now uses Rapid PVST+, trunk to SW30 is corrected, and Port-channel 10 is corrected for
           LACP trunking with VLAN 500 allowed.
         </div>
+      </footer>
+    </div>
+  </div>
+
+  <div id="pc3ModalOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="pc3ModalDialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="pc3ModalTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="pc3ModalTitle">PC3 — console</h2>
+        <button type="button" class="cli-modal-close" id="pc3ModalClose" aria-label="Close PC3 console">
+          ×
+        </button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal terminal--host" id="pc3Terminal" aria-label="Simulated PC3 console">
+          <div id="pc3Scrollback"></div>
+          <div class="input-row">
+            <span id="pc3Prompt">C:\PC3&gt;</span>
+            <input
+              id="pc3Cmdline"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="none"
+              aria-label="PC3 command line"
+            />
+          </div>
+        </div>
+      </div>
+      <footer class="cli-modal-footer">
+        <p class="pc3-modal-hint">
+          Simulated ICMP toward PC1. Enter the SW20 commands in order through <code>copy running-config startup-config</code>
+          (no <code>exit</code> needed). Then <code>ping 10.10.10.10</code> or <code>ping 10.10.100.10</code> shows
+          <code>!!!!</code> when the lab sequence was correct.
+        </p>
       </footer>
     </div>
   </div>
@@ -514,6 +649,12 @@
         u === "switchport trunk allowed vlan 500" ||
         u === "switchport trunk allowed vlan add 500"
       );
+    }
+
+    /** PC1 reachability check from PC3 (both IPs accepted for this sim). */
+    function matchPc1Ping(raw) {
+      const u = normalize(raw);
+      return u === "ping 10.10.100.10" || u === "ping 10.10.10.10";
     }
 
     /** Initial SW20 running config shown for `show run` / `show running-config`. */
@@ -587,16 +728,103 @@
     const sw20Hotspot = document.getElementById("sw20Hotspot");
     const sw20Cli = document.getElementById("sw20Cli");
 
+    const pc3ModalOverlay = document.getElementById("pc3ModalOverlay");
+    const pc3ModalClose = document.getElementById("pc3ModalClose");
+    const pc3Scrollback = document.getElementById("pc3Scrollback");
+    const pc3Cmdline = document.getElementById("pc3Cmdline");
+    const pc3Hotspot = document.getElementById("pc3Hotspot");
+
+    const cliModalDialog = document.getElementById("cliModalDialog");
+    const pc3ModalDialog = document.getElementById("pc3ModalDialog");
+
     function cliModalOpen() {
       return cliModalOverlay && cliModalOverlay.classList.contains("is-open");
     }
 
+    function pc3ModalOpen() {
+      return pc3ModalOverlay && pc3ModalOverlay.classList.contains("is-open");
+    }
+
+    let stepIndex = 0;
+
+    /** Stack floating palettes above fixed chrome when focused or dragged. */
+    let modalStackZ = 30000;
+    function bumpOverlayZ(overlay) {
+      if (!overlay) return;
+      modalStackZ += 1;
+      overlay.style.zIndex = String(modalStackZ);
+    }
+
+    function isLabComplete() {
+      return stepIndex >= STEPS.length;
+    }
+
+    function appendLinePc3(className, text) {
+      if (!pc3Scrollback) return;
+      const div = document.createElement("div");
+      div.className = className;
+      div.textContent = text;
+      pc3Scrollback.appendChild(div);
+      pc3Scrollback.scrollTop = pc3Scrollback.scrollHeight;
+    }
+
+    function resetPc3Console() {
+      if (!pc3Scrollback) return;
+      pc3Scrollback.innerHTML = "";
+      appendLinePc3(
+        "line-sys",
+        "Microsoft Windows [Simulated]\r\nTry ping when SW20 is configured (see hint below). Close with × or Escape."
+      );
+    }
+
+    function closePc3Modal() {
+      if (!pc3ModalOverlay) return;
+      pc3ModalOverlay.classList.remove("is-open");
+      pc3ModalOverlay.setAttribute("aria-hidden", "true");
+      if (pc3Hotspot) pc3Hotspot.focus();
+    }
+
+    function openPc3Modal() {
+      if (!pc3ModalOverlay) return;
+      bumpOverlayZ(pc3ModalOverlay);
+      pc3ModalOverlay.classList.add("is-open");
+      pc3ModalOverlay.setAttribute("aria-hidden", "false");
+      if (pc3Cmdline) pc3Cmdline.value = "";
+      resetPc3Console();
+      if (pc3Cmdline) pc3Cmdline.focus();
+    }
+
+    function submitPc3() {
+      const line = pc3Cmdline.value;
+      const prompt = "C:\\PC3>";
+      appendLinePc3("line-user", `${prompt} ${line}`);
+      pc3Cmdline.value = "";
+      if (!line.trim()) return;
+
+      const u = normalize(line);
+
+      if (matchPc1Ping(line)) {
+        const ok = isLabComplete();
+        const displayIp = u === "ping 10.10.10.10" ? "10.10.10.10" : "10.10.100.10";
+        appendLinePc3("line-sys", `Pinging ${displayIp} with 32 bytes of data:`);
+        appendLinePc3(ok ? "line-ping-ok" : "line-ping-fail", ok ? "!!!!" : "....");
+        return;
+      }
+
+      if (u.startsWith("ping ")) {
+        appendLinePc3("line-sys", "Pinging simulated target...");
+        appendLinePc3("line-ping-fail", "....");
+        return;
+      }
+
+      appendLinePc3("line-bad", "Bad command or file name.");
+    }
+
     function openCliModal() {
       if (!cliModalOverlay) return;
-      exitCloseStreak = 0;
+      bumpOverlayZ(cliModalOverlay);
       cliModalOverlay.classList.add("is-open");
       cliModalOverlay.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden";
       if (sw20Cli) {
         sw20Cli.classList.remove("terminal-flash");
         void sw20Cli.offsetWidth;
@@ -611,16 +839,56 @@
 
     function closeCliModal() {
       if (!cliModalOverlay) return;
-      exitCloseStreak = 0;
       cliModalOverlay.classList.remove("is-open");
       cliModalOverlay.setAttribute("aria-hidden", "true");
-      document.body.style.overflow = "";
       if (sw20Hotspot) sw20Hotspot.focus();
     }
 
-    let stepIndex = 0;
-    /** Consecutive `exit` presses required before the modal closes (IOS-like). */
-    let exitCloseStreak = 0;
+    /** Drag dialog by header; clicks on the palette raise it above the other. */
+    function wireFloatingModal(dialogEl, overlayEl) {
+      const header = dialogEl.querySelector(".cli-modal-header");
+      if (!dialogEl || !overlayEl || !header) return;
+
+      dialogEl.addEventListener("pointerdown", () => bumpOverlayZ(overlayEl));
+
+      let drag = null;
+
+      header.addEventListener("pointerdown", (e) => {
+        if (e.button !== 0) return;
+        if (e.target.closest(".cli-modal-close")) return;
+        const r = dialogEl.getBoundingClientRect();
+        dialogEl.style.left = `${r.left}px`;
+        dialogEl.style.top = `${r.top}px`;
+        dialogEl.style.transform = "none";
+        dialogEl.classList.add("is-dragging");
+        drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: r.left, oy: r.top };
+        try {
+          header.setPointerCapture(e.pointerId);
+        } catch (_) {}
+        e.preventDefault();
+      });
+
+      header.addEventListener("pointermove", (e) => {
+        if (!drag || e.pointerId !== drag.id) return;
+        dialogEl.style.left = `${drag.ox + (e.clientX - drag.sx)}px`;
+        dialogEl.style.top = `${drag.oy + (e.clientY - drag.sy)}px`;
+      });
+
+      function endDrag(e) {
+        if (!drag || e.pointerId !== drag.id) return;
+        drag = null;
+        dialogEl.classList.remove("is-dragging");
+        try {
+          header.releasePointerCapture(e.pointerId);
+        } catch (_) {}
+      }
+
+      header.addEventListener("pointerup", endDrag);
+      header.addEventListener("pointercancel", endDrag);
+    }
+
+    wireFloatingModal(cliModalDialog, cliModalOverlay);
+    wireFloatingModal(pc3ModalDialog, pc3ModalOverlay);
 
     function appendLine(className, text) {
       const div = document.createElement("div");
@@ -636,7 +904,6 @@
 
     function reset() {
       stepIndex = 0;
-      exitCloseStreak = 0;
       scrollback.innerHTML = "";
       passBanner.classList.remove("visible");
       cmdline.disabled = false;
@@ -644,8 +911,9 @@
       setPrompt();
       appendLine(
         "line-sys",
-        "You are on SW20. Configure only SW20 to complete all tasks.\r\nFrom SW20(config)# type exit once to close; from other prompts type exit twice."
+        "You are on SW20. Configure only SW20 to complete all tasks.\r\nClose with × or Escape when done. You can drag this window by the title bar."
       );
+      if (pc3ModalOpen()) resetPc3Console();
       if (cliModalOpen()) cmdline.focus();
     }
 
@@ -655,23 +923,6 @@
       appendLine("line-user", `${prompt} ${line}`);
       cmdline.value = "";
       if (!line.trim()) return;
-
-      if (normalize(line) === "exit") {
-        /* One exit from global config (matches leaving config mode to privileged). */
-        if (prompt === "SW20(config)#") {
-          closeCliModal();
-          return;
-        }
-        exitCloseStreak += 1;
-        if (exitCloseStreak >= 2) {
-          closeCliModal();
-        } else {
-          appendLine("line-sys", "Type exit again to close this window.");
-        }
-        return;
-      }
-
-      exitCloseStreak = 0;
 
       if (matchShowRun(line)) {
         appendLine("line-showrun", SHOW_RUNNING_SNAPSHOT);
@@ -718,21 +969,41 @@
       sw20Hotspot.addEventListener("click", openSw20Cli);
     }
 
+    if (pc3Hotspot) {
+      pc3Hotspot.addEventListener("click", openPc3Modal);
+    }
+
+    if (pc3Cmdline) {
+      pc3Cmdline.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          submitPc3();
+        }
+      });
+    }
+
+    if (pc3ModalClose) {
+      pc3ModalClose.addEventListener("click", closePc3Modal);
+    }
+
     if (cliModalClose) {
       cliModalClose.addEventListener("click", closeCliModal);
     }
 
-    if (cliModalOverlay) {
-      cliModalOverlay.addEventListener("click", (e) => {
-        if (e.target === cliModalOverlay) closeCliModal();
-      });
-    }
-
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && cliModalOpen()) {
-        e.preventDefault();
-        closeCliModal();
+      if (e.key !== "Escape") return;
+      const cliOn = cliModalOpen();
+      const pc3On = pc3ModalOpen();
+      if (!cliOn && !pc3On) return;
+      e.preventDefault();
+      const zi = (el) => parseInt(window.getComputedStyle(el).zIndex, 10) || 0;
+      if (cliOn && pc3On) {
+        if (zi(pc3ModalOverlay) >= zi(cliModalOverlay)) closePc3Modal();
+        else closeCliModal();
+        return;
       }
+      if (pc3On) closePc3Modal();
+      else closeCliModal();
     });
 
     history.pushState(null, "", location.href);
