@@ -76,9 +76,14 @@
       height: auto;
       vertical-align: middle;
       border-radius: 8px;
+      /* Let the overlay button receive clicks/taps (img otherwise steals hit-testing in some browsers). */
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
     }
     .diagram-hotspot {
       position: absolute;
+      z-index: 2;
       margin: 0;
       padding: 0;
       border: 2px dashed transparent;
@@ -86,6 +91,8 @@
       background: rgba(126, 200, 255, 0);
       cursor: pointer;
       box-sizing: border-box;
+      pointer-events: auto;
+      touch-action: manipulation;
       transition: border-color 0.15s ease, background 0.15s ease;
       -webkit-tap-highlight-color: rgba(126, 200, 255, 0.35);
     }
@@ -95,13 +102,13 @@
       background: rgba(126, 200, 255, 0.14);
       outline: none;
     }
-    /* SW20 — tight hit target on blue switch (shown at half native PNG size). */
+    /* SW20 — enlarged hit area around blue switch icon (shown at half native PNG size). */
     .diagram-hotspot--sw20 {
-      left: 63%;
-      top: 62%;
-      width: 15%;
-      height: 13%;
-      border-radius: 8px;
+      left: 56%;
+      top: 56%;
+      width: 28%;
+      height: 24%;
+      border-radius: 10px;
     }
     .topology-scrape {
       margin-top: 12px;
@@ -125,39 +132,6 @@
     }
     .topology-scrape li {
       margin: 4px 0;
-    }
-    .initial-config-cli {
-      margin-top: 16px;
-      background: #000;
-      border: 1px solid #2a2a2a;
-      border-radius: 8px;
-      padding: 10px 12px 12px;
-      text-align: left;
-    }
-    .initial-config-cli-label {
-      margin: 0 0 8px;
-      padding-bottom: 6px;
-      border-bottom: 1px solid #333;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #fff;
-    }
-    .initial-config-cli pre {
-      margin: 0;
-      padding: 10px 12px;
-      background: #0a0a0a;
-      border: 1px solid #333;
-      border-radius: 6px;
-      color: #f0f0f0;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-      font-size: clamp(0.68rem, 1.35vw, 0.82rem);
-      line-height: 1.45;
-      white-space: pre;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
     }
     .cli-modal-overlay {
       display: none;
@@ -277,6 +251,17 @@
     .line-user { color: #7ec8ff; }
     .line-bad { color: #fca5a5; }
     .line-sys { color: #94a3b8; }
+    .line-showrun {
+      white-space: pre-wrap;
+      color: #dbe5f0;
+      margin: 6px 0 12px;
+      padding: 10px 10px 12px;
+      border-radius: 6px;
+      background: #06080c;
+      border: 1px solid #263043;
+      font-family: inherit;
+      line-height: 1.45;
+    }
     .input-row {
       display: flex;
       align-items: center;
@@ -385,7 +370,7 @@
           <li>Fix the LACP port-channel to SW10 so PC3 can ping PC2 (10.10.100.20).</li>
         </ol>
       </div>
-      <div class="diagram-wrap" aria-label="Topology and initial SW20 config">
+      <div class="diagram-wrap" aria-label="Topology diagram and SW20 CLI hotspot">
         <div class="diagram-stage">
           <img
             src="/assets/rapid-pvst-lacp-topology.png"
@@ -405,42 +390,12 @@
         <section class="topology-scrape" aria-label="Topology summary from exhibit">
           <h2>Topology (from exhibit)</h2>
           <ul>
-            <li><strong>SW20</strong> — your only configurable device; connects toward <strong>SW10</strong> via <strong>Port-channel 10</strong> (LACP) and toward <strong>SW30</strong> on the trunk interface shown (e.g. <code>E0/0</code>).</li>
+            <li><strong>SW20</strong> — your only configurable device; click it on the diagram to open the simulated CLI and run <code>show running-config</code> for the starting configuration. Connects toward <strong>SW10</strong> via <strong>Port-channel 10</strong> (LACP) and toward <strong>SW30</strong> on the trunk interface shown (e.g. <code>E0/0</code>).</li>
             <li><strong>SW10 / SW30</strong> — out of scope; do not configure.</li>
             <li>Hosts: <strong>PC1</strong> (10.10.100.10) above SW30, <strong>PC2</strong> (10.10.100.20) below SW10, <strong>PC3</strong> below SW20 — reachability depends on VLAN <strong>500</strong> end-to-end over trunks.</li>
             <li>Initial screenshot may show partial trunk / Po config — your job is to align <strong>Rapid PVST+</strong>, <strong>dot1q</strong> trunks, and <strong>VLAN 500</strong> allowed lists on SW20 only.</li>
           </ul>
         </section>
-        <div class="initial-config-cli" aria-label="SW20 initial running configuration">
-          <div class="initial-config-cli-label">SW20 initial configuration</div>
-          <pre>spanning-tree mode pvst
-spanning-tree extend system-id
-spanning-tree pathcost method long
-!
-interface Port-channel10
- switchport mode access
-!
-interface Ethernet0/0
- switchport mode access
-!
-interface Ethernet0/1
- switchport access vlan 500
- switchport mode access
- spanning-tree portfast edge
-!
-interface Ethernet0/2
- switchport trunk encapsulation dot1q
- switchport mode trunk
- channel-group 10 mode active
-!
-interface Ethernet0/3
- switchport trunk encapsulation dot1q
- switchport mode trunk
- channel-group 10 mode active
-!
-interface Vlan1
- ip address 10.10.1.20 255.255.255.0</pre>
-        </div>
       </div>
 
       <details class="hint">
@@ -452,7 +407,6 @@ interface Vlan1
           <li><code>switchport trunk encapsulation dot1q</code></li>
           <li><code>switchport mode trunk</code></li>
           <li><code>switchport trunk allowed vlan 500</code></li>
-          <li><code>exit</code></li>
           <li><code>interface po10</code></li>
           <li><code>switchport trunk encapsulation dot1q</code></li>
           <li><code>switchport mode trunk</code></li>
@@ -526,18 +480,89 @@ interface Vlan1
       );
     }
 
+    function matchShowRun(raw) {
+      const u = normalize(raw);
+      return (
+        u === "show running-config" ||
+        u === "show run" ||
+        u === "sh run" ||
+        u === "sh running-config" ||
+        u === "do show run" ||
+        u === "do show running-config" ||
+        u === "do sh run"
+      );
+    }
+
+    /** Ethernet0/0 as shown in exhibits — accept common IOS abbreviations. */
+    function matchInterfaceE00(raw) {
+      const u = normalize(raw);
+      return (
+        u === "interface e0/0" ||
+        u === "int e0/0" ||
+        u === "interface ethernet 0/0" ||
+        u === "interface ethernet0/0" ||
+        u === "int ethernet 0/0" ||
+        u === "int ethernet0/0" ||
+        u === "interface eth 0/0" ||
+        u === "int eth 0/0"
+      );
+    }
+
+    function matchTrunkVlan500(raw) {
+      const u = normalize(raw);
+      return (
+        u === "switchport trunk allowed vlan 500" ||
+        u === "switchport trunk allowed vlan add 500"
+      );
+    }
+
+    /** Initial SW20 running config shown for `show run` / `show running-config`. */
+    const SHOW_RUNNING_SNAPSHOT = [
+      "Building configuration...",
+      "",
+      "Current configuration : ...",
+      "",
+      "!",
+      "spanning-tree mode pvst",
+      "spanning-tree extend system-id",
+      "spanning-tree pathcost method long",
+      "!",
+      "interface Port-channel10",
+      " switchport mode access",
+      "!",
+      "interface Ethernet0/0",
+      " switchport mode access",
+      "!",
+      "interface Ethernet0/1",
+      " switchport access vlan 500",
+      " switchport mode access",
+      " spanning-tree portfast edge",
+      "!",
+      "interface Ethernet0/2",
+      " switchport trunk encapsulation dot1q",
+      " switchport mode trunk",
+      " channel-group 10 mode active",
+      "!",
+      "interface Ethernet0/3",
+      " switchport trunk encapsulation dot1q",
+      " switchport mode trunk",
+      " channel-group 10 mode active",
+      "!",
+      "interface Vlan1",
+      " ip address 10.10.1.20 255.255.255.0",
+    ].join("\r\n");
+
     const STEPS = [
       { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
       { mode: "config", test: (raw) => normalize(raw) === "spanning-tree mode rapid-pvst" },
-      { mode: "config", test: (raw) => ["interface e0/0", "int e0/0"].includes(normalize(raw)) },
+      { mode: "config", test: matchInterfaceE00 },
       { mode: "config-if", test: (raw) => normalize(raw) === "switchport trunk encapsulation dot1q" },
       { mode: "config-if", test: (raw) => normalize(raw) === "switchport mode trunk" },
-      { mode: "config-if", test: (raw) => normalize(raw) === "switchport trunk allowed vlan 500" },
-      { mode: "config-if", test: (raw) => normalize(raw) === "exit" },
-      { mode: "config", test: (raw) => ["interface po10", "interface port-channel10", "int po10", "int port-channel10"].includes(normalize(raw)) },
+      { mode: "config-if", test: matchTrunkVlan500 },
+      { mode: "config-if", test: (raw) => ["interface po10", "interface port-channel10", "int po10", "int port-channel10"].includes(normalize(raw)) },
       { mode: "config-if", test: (raw) => normalize(raw) === "switchport trunk encapsulation dot1q" },
       { mode: "config-if", test: (raw) => normalize(raw) === "switchport mode trunk" },
-      { mode: "config-if", test: (raw) => normalize(raw) === "switchport trunk allowed vlan 500" },
+      { mode: "config-if", test: matchTrunkVlan500 },
       { mode: "config-if", test: (raw) => normalize(raw) === "end" },
       { mode: "privileged", test: matchCopy },
     ];
@@ -568,6 +593,7 @@ interface Vlan1
 
     function openCliModal() {
       if (!cliModalOverlay) return;
+      exitCloseStreak = 0;
       cliModalOverlay.classList.add("is-open");
       cliModalOverlay.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
@@ -585,6 +611,7 @@ interface Vlan1
 
     function closeCliModal() {
       if (!cliModalOverlay) return;
+      exitCloseStreak = 0;
       cliModalOverlay.classList.remove("is-open");
       cliModalOverlay.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
@@ -592,6 +619,8 @@ interface Vlan1
     }
 
     let stepIndex = 0;
+    /** Consecutive `exit` presses required before the modal closes (IOS-like). */
+    let exitCloseStreak = 0;
 
     function appendLine(className, text) {
       const div = document.createElement("div");
@@ -607,29 +636,61 @@ interface Vlan1
 
     function reset() {
       stepIndex = 0;
+      exitCloseStreak = 0;
       scrollback.innerHTML = "";
       passBanner.classList.remove("visible");
       cmdline.disabled = false;
       cmdline.value = "";
       setPrompt();
-      appendLine("line-sys", "You are on SW20. Configure only SW20 to complete all tasks.");
+      appendLine(
+        "line-sys",
+        "You are on SW20. Configure only SW20 to complete all tasks.\r\nFrom SW20(config)# type exit once to close; from other prompts type exit twice."
+      );
       if (cliModalOpen()) cmdline.focus();
     }
 
     function submit() {
-      if (stepIndex >= STEPS.length) return;
       const prompt = promptForStep(stepIndex);
       const line = cmdline.value;
       appendLine("line-user", `${prompt} ${line}`);
       cmdline.value = "";
       if (!line.trim()) return;
 
+      if (normalize(line) === "exit") {
+        /* One exit from global config (matches leaving config mode to privileged). */
+        if (prompt === "SW20(config)#") {
+          closeCliModal();
+          return;
+        }
+        exitCloseStreak += 1;
+        if (exitCloseStreak >= 2) {
+          closeCliModal();
+        } else {
+          appendLine("line-sys", "Type exit again to close this window.");
+        }
+        return;
+      }
+
+      exitCloseStreak = 0;
+
+      if (matchShowRun(line)) {
+        appendLine("line-showrun", SHOW_RUNNING_SNAPSHOT);
+        return;
+      }
+
+      if (stepIndex >= STEPS.length) {
+        appendLine(
+          "line-bad",
+          "% Incomplete or unknown command — lab is complete; try show running-config to view the simulated config snapshot."
+        );
+        return;
+      }
+
       if (STEPS[stepIndex].test(line)) {
         stepIndex += 1;
         if (stepIndex >= STEPS.length) {
           promptEl.textContent = "SW20#";
           passBanner.classList.add("visible");
-          cmdline.disabled = true;
           appendLine("line-sys", "[OK] Building configuration...\r\n[OK] Complete (simulated).");
           appendLine("line-sys", "Verification note: STP may take up to ~1 minute before pings succeed.");
         } else {
@@ -649,8 +710,7 @@ interface Vlan1
 
     resetBtn.addEventListener("click", reset);
 
-    function openSw20Cli(event) {
-      if (event) event.preventDefault();
+    function openSw20Cli() {
       openCliModal();
     }
 
