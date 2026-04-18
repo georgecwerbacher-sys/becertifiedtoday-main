@@ -587,9 +587,9 @@
       </div>
       <footer class="cli-modal-footer">
         <p class="pc3-modal-hint">
-          Simulated ICMP toward PC1. <code>!!!!</code> only if SW20 was completed in order <strong>with no</strong>
-          <code>% Invalid input</code> lines along the way — click <strong>Reset lab</strong> and run through again cleanly.
-          Then try <code>ping 10.10.10.10</code> or <code>ping 10.10.100.10</code>.
+          Simulated ICMP toward PC1: <code>!!!!</code> after Rapid PVST+ and the <strong>E0/0</strong> trunk to SW30 are
+          entered in order through <code>switchport trunk allowed vlan 500</code> (Po10 / <code>copy run</code> are for
+          the full lab, not required for this ping). Earlier <code>% Invalid input</code> lines are ignored.
         </p>
       </footer>
     </div>
@@ -708,6 +708,12 @@
       { mode: "privileged", test: matchCopy },
     ];
 
+    /**
+     * After completing STEPS[0..5] (through `switchport trunk allowed vlan 500` on E0/0),
+     * stepIndex is 6 — PC1/SW30 path is satisfied for simulated ping (Po10 sequence is separate).
+     */
+    const STEP_INDEX_AFTER_PC1_PATH = 6;
+
     function promptForStep(index) {
       if (index >= STEPS.length) return "SW20#";
       const mode = STEPS[index].mode;
@@ -746,8 +752,6 @@
     }
 
     let stepIndex = 0;
-    /** Any mistyped / out-of-order SW20 line — ping verification requires a clean run. */
-    let sw20HadInvalidInput = false;
 
     /** Stack floating palettes above fixed chrome when focused or dragged. */
     let modalStackZ = 30000;
@@ -757,8 +761,9 @@
       overlay.style.zIndex = String(modalStackZ);
     }
 
-    function isLabComplete() {
-      return stepIndex >= STEPS.length && !sw20HadInvalidInput;
+    /** PC3 ping to PC1 (!!!!) once Rapid PVST + E0/0 trunk to SW30 are configured in order. */
+    function isPingPc1Reachable() {
+      return stepIndex >= STEP_INDEX_AFTER_PC1_PATH;
     }
 
     function appendLinePc3(className, text) {
@@ -806,7 +811,7 @@
       const u = normalize(line);
 
       if (matchPc1Ping(line)) {
-        const ok = isLabComplete();
+        const ok = isPingPc1Reachable();
         const displayIp = u === "ping 10.10.10.10" ? "10.10.10.10" : "10.10.100.10";
         appendLinePc3("line-sys", `Pinging ${displayIp} with 32 bytes of data:`);
         appendLinePc3(ok ? "line-ping-ok" : "line-ping-fail", ok ? "!!!!" : "....");
@@ -906,7 +911,6 @@
 
     function reset() {
       stepIndex = 0;
-      sw20HadInvalidInput = false;
       scrollback.innerHTML = "";
       passBanner.classList.remove("visible");
       cmdline.disabled = false;
@@ -951,7 +955,6 @@
           setPrompt();
         }
       } else {
-        sw20HadInvalidInput = true;
         appendLine("line-bad", "% Invalid input — follow task order and configure only SW20.");
       }
     }
