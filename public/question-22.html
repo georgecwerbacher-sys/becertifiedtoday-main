@@ -48,7 +48,17 @@
     }
     .cli-image-panel {
       margin: 12px 0 0;
+    }
+    .cli-split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
       max-width: 560px;
+    }
+    @media (max-width: 720px) {
+      .cli-split-grid {
+        grid-template-columns: 1fr;
+      }
     }
     .cli-image-display {
       margin: 0;
@@ -59,9 +69,17 @@
     }
     .cli-image-display img {
       display: block;
-      width: 100%;
+      width: 200%;
       height: auto;
       filter: grayscale(1) invert(1) contrast(1.2);
+    }
+    .cli-image-display img.cli-left {
+      transform: translateX(0);
+      transform-origin: left top;
+    }
+    .cli-image-display img.cli-right {
+      transform: translateX(-50%);
+      transform-origin: left top;
     }
     .exhibit-region {
       margin: 0 0 18px;
@@ -172,10 +190,18 @@
         <img src="/assets/question22-topology.png" alt="HSRP topology: host, R1 standby, R2 active, EXT-RTR to internet" />
       </div>
       <p class="exhibit-ref exhibit-ref-spaced">Current CLI configuration:</p>
-      <div class="exhibit-option cli-image-panel">
-        <div class="exhibit-option-label">Current Configuration</div>
-        <div class="cli-image-display">
-          <img src="/assets/question22-cli.png" alt="CLI output showing interface and standby configuration for R1 and R2" />
+      <div class="cli-image-panel cli-split-grid">
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">R1</div>
+          <div class="cli-image-display">
+            <img class="cli-left" src="/assets/question22-cli.png" alt="CLI output showing R1 interface and standby configuration" />
+          </div>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">R2</div>
+          <div class="cli-image-display">
+            <img class="cli-right" src="/assets/question22-cli.png" alt="CLI output showing R2 interface and standby configuration" />
+          </div>
         </div>
       </div>
 
