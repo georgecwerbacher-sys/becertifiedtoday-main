@@ -328,6 +328,10 @@
     .line-user { color: #7ec8ff; }
     .line-bad { color: #fca5a5; }
     .line-sys { color: #94a3b8; }
+    /* Milestone marker (still in DOM for authors); hidden from testers. */
+    .line-sim-hidden {
+      display: none;
+    }
     .line-showrun {
       white-space: pre-wrap;
       color: #dbe5f0;
@@ -504,7 +508,9 @@
           <li><code>switchport trunk encapsulation dot1q</code></li>
           <li><code>switchport mode trunk</code></li>
           <li><code>switchport trunk allowed vlan 500</code></li>
-          <li><code>end</code></li>
+          <li><code>show etherchannel summary</code> (or <code>do show etherchannel summary</code>)</li>
+          <li><code>exit</code></li>
+          <li><code>exit</code></li>
           <li><code>copy running-config startup-config</code></li>
         </ol>
       </details>
@@ -547,8 +553,8 @@
           <button type="button" class="btn btn-secondary" id="resetBtn">Reset lab</button>
         </div>
         <div id="passBanner" class="pass-banner" role="status">
-          Lab complete. SW20 now uses Rapid PVST+, trunk to SW30 is corrected, and Port-channel 10 is corrected for
-          LACP trunking with VLAN 500 allowed.
+          Simulation complete — you entered <code>copy running-config startup-config</code> as the final command (Enter
+          saves and finishes this lab). SW20 is configured with Rapid PVST+, correct trunks, and Po10 LACP with VLAN 500.
         </div>
       </footer>
     </div>
@@ -628,6 +634,16 @@
       );
     }
 
+    function matchShowEtherchannelSummary(raw) {
+      const u = normalize(raw);
+      return (
+        u === "show etherchannel summary" ||
+        u === "do show etherchannel summary" ||
+        u === "sh etherchannel summary" ||
+        u === "do sh etherchannel summary"
+      );
+    }
+
     /** Ethernet0/0 as shown in exhibits — accept common IOS abbreviations. */
     function matchInterfaceE00(raw) {
       const u = normalize(raw);
@@ -699,6 +715,18 @@
       " ip address 10.10.1.20 255.255.255.0",
     ].join("\r\n");
 
+    /** Simulated `show etherchannel summary` after Po10 trunk is configured. */
+    const SHOW_ETHERCHANNEL_SUMMARY = [
+      "--output omitted--",
+      "",
+      "Number of channel-groups in use: 1",
+      "Number of aggregators:           1",
+      "",
+      "Group  Port-channel  Protocol    Ports",
+      "------+-------------+-----------+-----------------------------------------------",
+      "10     Po10(SU)        LACP      Et0/2(P)    Et0/3(P) ",
+    ].join("\r\n");
+
     const STEPS = [
       { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
       { mode: "config", test: (raw) => normalize(raw) === "spanning-tree mode rapid-pvst" },
@@ -710,7 +738,9 @@
       { mode: "config-if", test: (raw) => normalize(raw) === "switchport trunk encapsulation dot1q" },
       { mode: "config-if", test: (raw) => normalize(raw) === "switchport mode trunk" },
       { mode: "config-if", test: matchTrunkVlan500 },
-      { mode: "config-if", test: (raw) => normalize(raw) === "end" },
+      { mode: "config-if", test: matchShowEtherchannelSummary },
+      { mode: "config-if", test: (raw) => normalize(raw) === "exit" },
+      { mode: "config", test: (raw) => normalize(raw) === "exit" },
       { mode: "privileged", test: matchCopy },
     ];
 
@@ -923,17 +953,19 @@
       scrollback.innerHTML = "";
       passBanner.classList.remove("visible");
       cmdline.disabled = false;
+      cmdline.removeAttribute("aria-disabled");
       cmdline.value = "";
       setPrompt();
       appendLine(
         "line-sys",
-        "You are on SW20. Configure only SW20 to complete all tasks.\r\nClose with × or Escape when done. You can drag this window by the title bar."
+        "You are on SW20. Configure only SW20 to complete all tasks.\r\nLast command must be copy running-config startup-config — pressing Enter completes the simulation.\r\nClose with × or Escape when done; drag the window by its title bar."
       );
       if (pc3ModalOpen()) resetPc3Console();
       if (cliModalOpen()) cmdline.focus();
     }
 
     function submit() {
+      if (cmdline && cmdline.disabled) return;
       const prompt = promptForStep(stepIndex);
       const line = cmdline.value;
       appendLine("line-user", `${prompt} ${line}`);
@@ -945,29 +977,45 @@
         return;
       }
 
+      if (matchShowEtherchannelSummary(line) && stepIndex >= STEPS.length) {
+        appendLine("line-showrun", SHOW_ETHERCHANNEL_SUMMARY);
+        return;
+      }
+
       if (stepIndex >= STEPS.length) {
         appendLine(
           "line-bad",
-          "% Incomplete or unknown command — lab is complete; try show running-config to view the simulated config snapshot."
+          "% Incomplete or unknown command — simulation already finished after copy running-config startup-config; click Reset lab to try again."
         );
         return;
       }
 
       if (STEPS[stepIndex].test(line)) {
-        const finishedPc1TrunkVlan = stepIndex === 5;
+        const prevIndex = stepIndex;
+        const finishedPc1TrunkVlan = prevIndex === 5;
         stepIndex += 1;
         if (finishedPc1TrunkVlan) {
           pc1PathReady = true;
           appendLine(
-            "line-sys",
+            "line-sim-hidden",
             "[Sim] SW20–SW30 trunk (E0/0) is ready — open PC3 and ping 10.10.10.10 or 10.10.100.10 for !!!!"
           );
+        }
+        if (prevIndex === 10) {
+          appendLine("line-showrun", SHOW_ETHERCHANNEL_SUMMARY);
         }
         if (stepIndex >= STEPS.length) {
           promptEl.textContent = "SW20#";
           passBanner.classList.add("visible");
           appendLine("line-sys", "[OK] Building configuration...\r\n[OK] Complete (simulated).");
-          appendLine("line-sys", "Verification note: STP may take up to ~1 minute before pings succeed.");
+          appendLine(
+            "line-sys",
+            "Simulation complete — final command was copy running-config startup-config. CLI input is locked until you click Reset lab."
+          );
+          if (cmdline) {
+            cmdline.disabled = true;
+            cmdline.setAttribute("aria-disabled", "true");
+          }
         } else {
           setPrompt();
         }
