@@ -62,10 +62,124 @@
       margin-top: 8px;
       text-align: center;
     }
-    .diagram-wrap img {
-      max-width: 100%;
+    /* Responsive overlay: percentages align to the PNG (746×1004). Adjust if asset changes. */
+    .diagram-stage {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      max-width: 746px;
+      margin: 0 auto;
+      line-height: 0;
+    }
+    .diagram-stage img {
+      width: 100%;
       height: auto;
       vertical-align: middle;
+      border-radius: 8px;
+    }
+    .diagram-hotspot {
+      position: absolute;
+      margin: 0;
+      padding: 0;
+      border: 2px dashed transparent;
+      border-radius: 10px;
+      background: rgba(126, 200, 255, 0);
+      cursor: pointer;
+      box-sizing: border-box;
+      transition: border-color 0.15s ease, background 0.15s ease;
+      -webkit-tap-highlight-color: rgba(126, 200, 255, 0.35);
+    }
+    .diagram-hotspot:hover,
+    .diagram-hotspot:focus-visible {
+      border-color: rgba(126, 200, 255, 0.65);
+      background: rgba(126, 200, 255, 0.14);
+      outline: none;
+    }
+    /* SW20 — blue switch, bottom-right in triangular topology PNG (746×1004). */
+    .diagram-hotspot--sw20 {
+      left: 56%;
+      top: 54%;
+      width: 38%;
+      height: 34%;
+    }
+    .diagram-hotspot-label {
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: rgba(230, 237, 243, 0.92);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+      pointer-events: none;
+    }
+    .topology-scrape {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0c1222;
+      border: 1px solid #2a3b5c;
+      text-align: left;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    .topology-scrape h2 {
+      margin: 0 0 8px;
+      font-size: 0.95rem;
+      color: #e6edf3;
+    }
+    .topology-scrape ul {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+    .topology-scrape li {
+      margin: 4px 0;
+    }
+    .initial-config-cli {
+      margin-top: 16px;
+      background: #000;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 10px 12px 12px;
+      text-align: left;
+    }
+    .initial-config-cli-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .initial-config-cli pre {
+      margin: 0;
+      padding: 10px 12px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 6px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.68rem, 1.35vw, 0.82rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .terminal.terminal-flash {
+      animation: cliFlash 0.9s ease;
+    }
+    @keyframes cliFlash {
+      0% {
+        box-shadow: 0 0 0 0 rgba(37, 75, 138, 0.9);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(37, 75, 138, 0);
+      }
     }
     .terminal {
       font-family: "SF Mono", ui-monospace, Consolas, monospace;
@@ -200,10 +314,66 @@
         </ol>
       </div>
       <div class="diagram-wrap" aria-label="Topology and initial SW20 config">
-        <img src="/assets/rapid-pvst-lacp-topology.png" alt="Rapid PVST and LACP simulation topology and SW20 initial configuration screenshot" />
+        <div class="diagram-stage">
+          <img
+            src="/assets/rapid-pvst-lacp-topology.png"
+            alt="Rapid PVST and LACP simulation topology: SW10, SW20, SW30 triangle with PCs and EtherChannel between SW10 and SW20"
+            width="746"
+            height="1004"
+            decoding="async"
+          />
+          <button
+            type="button"
+            class="diagram-hotspot diagram-hotspot--sw20"
+            id="sw20Hotspot"
+            aria-label="SW20 — open CLI"
+            title="Click SW20 to jump to the CLI"
+          >
+            <span class="diagram-hotspot-label">SW20 · CLI</span>
+          </button>
+        </div>
+        <section class="topology-scrape" aria-label="Topology summary from exhibit">
+          <h2>Topology (from exhibit)</h2>
+          <ul>
+            <li><strong>SW20</strong> — your only configurable device; connects toward <strong>SW10</strong> via <strong>Port-channel 10</strong> (LACP) and toward <strong>SW30</strong> on the trunk interface shown (e.g. <code>E0/0</code>).</li>
+            <li><strong>SW10 / SW30</strong> — out of scope; do not configure.</li>
+            <li>Hosts: <strong>PC1</strong> (10.10.100.10) and <strong>PC2</strong> (10.10.100.20) off SW10; <strong>PC3</strong> off SW30 — reachability depends on VLAN <strong>500</strong> end-to-end over trunks.</li>
+            <li>Initial screenshot may show partial trunk / Po config — your job is to align <strong>Rapid PVST+</strong>, <strong>dot1q</strong> trunks, and <strong>VLAN 500</strong> allowed lists on SW20 only.</li>
+          </ul>
+        </section>
+        <div class="initial-config-cli" aria-label="SW20 initial running configuration">
+          <div class="initial-config-cli-label">SW20 initial configuration</div>
+          <pre>spanning-tree mode pvst
+spanning-tree extend system-id
+spanning-tree pathcost method long
+!
+interface Port-channel10
+ switchport mode access
+!
+interface Ethernet0/0
+ switchport mode access
+!
+interface Ethernet0/1
+ switchport access vlan 500
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface Ethernet0/2
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 10 mode active
+!
+interface Ethernet0/3
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 10 mode active
+!
+interface Vlan1
+ ip address 10.10.1.20 255.255.255.0</pre>
+        </div>
       </div>
 
-      <div class="terminal" aria-label="Simulated SW20 CLI">
+      <div class="terminal" id="sw20Cli" aria-label="Simulated SW20 CLI">
         <div id="scrollback"></div>
         <div class="input-row">
           <span id="prompt">SW20#</span>
@@ -290,6 +460,8 @@
     const cmdline = document.getElementById("cmdline");
     const passBanner = document.getElementById("passBanner");
     const resetBtn = document.getElementById("resetBtn");
+    const sw20Hotspot = document.getElementById("sw20Hotspot");
+    const sw20Cli = document.getElementById("sw20Cli");
 
     let stepIndex = 0;
 
@@ -348,6 +520,23 @@
     });
 
     resetBtn.addEventListener("click", reset);
+
+    function openSw20Cli() {
+      if (!sw20Cli || !cmdline) return;
+      sw20Cli.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      sw20Cli.classList.remove("terminal-flash");
+      void sw20Cli.offsetWidth;
+      sw20Cli.classList.add("terminal-flash");
+      window.clearTimeout(openSw20Cli._flashTimer);
+      openSw20Cli._flashTimer = window.setTimeout(() => {
+        sw20Cli.classList.remove("terminal-flash");
+      }, 950);
+      cmdline.focus();
+    }
+
+    if (sw20Hotspot) {
+      sw20Hotspot.addEventListener("click", openSw20Cli);
+    }
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
