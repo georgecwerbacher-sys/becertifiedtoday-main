@@ -110,6 +110,13 @@
       height: 24%;
       border-radius: 10px;
     }
+    .diagram-hotspot--sw10 {
+      left: 6%;
+      top: 46%;
+      width: 30%;
+      height: 24%;
+      border-radius: 10px;
+    }
     /* PC3 — laptop bottom-right under SW20 (diagram max-width 373px; % of stage). */
     .diagram-hotspot--pc3 {
       left: 50%;
@@ -471,6 +478,13 @@
           />
           <button
             type="button"
+            class="diagram-hotspot diagram-hotspot--sw10"
+            id="sw10Hotspot"
+            aria-label="SW10 — open device info"
+            title="SW10"
+          ></button>
+          <button
+            type="button"
             class="diagram-hotspot diagram-hotspot--sw20"
             id="sw20Hotspot"
             aria-label="SW20 — open simulated CLI"
@@ -598,6 +612,41 @@
           the full lab, not required for this ping). Earlier <code>% Invalid input</code> lines are ignored.
         </p>
       </footer>
+    </div>
+  </div>
+
+  <div id="sw10ModalOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="sw10ModalDialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="sw10ModalTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="sw10ModalTitle">SW10 — device info</h2>
+        <button type="button" class="cli-modal-close" id="sw10ModalClose" aria-label="Close SW10 window">
+          ×
+        </button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" aria-label="SW10 configuration snapshot">
+          <div class="line-showrun">hostname Sw10
+vlan 100
+exit
+!
+interface e0/0
+switchport trunk encapsulation dot1q
+switchport mode trunk
+no shut
+!
+interface e0/1
+switchport mode access
+switchport access vlan 100
+no shut</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -764,6 +813,7 @@
     const passBanner = document.getElementById("passBanner");
     const resetBtn = document.getElementById("resetBtn");
     const sw20Hotspot = document.getElementById("sw20Hotspot");
+    const sw10Hotspot = document.getElementById("sw10Hotspot");
     const sw20Cli = document.getElementById("sw20Cli");
 
     const pc3ModalOverlay = document.getElementById("pc3ModalOverlay");
@@ -771,6 +821,9 @@
     const pc3Scrollback = document.getElementById("pc3Scrollback");
     const pc3Cmdline = document.getElementById("pc3Cmdline");
     const pc3Hotspot = document.getElementById("pc3Hotspot");
+    const sw10ModalOverlay = document.getElementById("sw10ModalOverlay");
+    const sw10ModalClose = document.getElementById("sw10ModalClose");
+    const sw10ModalDialog = document.getElementById("sw10ModalDialog");
 
     const cliModalDialog = document.getElementById("cliModalDialog");
     const pc3ModalDialog = document.getElementById("pc3ModalDialog");
@@ -781,6 +834,10 @@
 
     function pc3ModalOpen() {
       return pc3ModalOverlay && pc3ModalOverlay.classList.contains("is-open");
+    }
+
+    function sw10ModalOpen() {
+      return sw10ModalOverlay && sw10ModalOverlay.classList.contains("is-open");
     }
 
     let stepIndex = 0;
@@ -825,6 +882,13 @@
       if (pc3Hotspot) pc3Hotspot.focus();
     }
 
+    function closeSw10Modal() {
+      if (!sw10ModalOverlay) return;
+      sw10ModalOverlay.classList.remove("is-open");
+      sw10ModalOverlay.setAttribute("aria-hidden", "true");
+      if (sw10Hotspot) sw10Hotspot.focus();
+    }
+
     function openPc3Modal() {
       if (!pc3ModalOverlay) return;
       bumpOverlayZ(pc3ModalOverlay);
@@ -833,6 +897,13 @@
       if (pc3Cmdline) pc3Cmdline.value = "";
       resetPc3Console();
       if (pc3Cmdline) pc3Cmdline.focus();
+    }
+
+    function openSw10Modal() {
+      if (!sw10ModalOverlay) return;
+      bumpOverlayZ(sw10ModalOverlay);
+      sw10ModalOverlay.classList.add("is-open");
+      sw10ModalOverlay.setAttribute("aria-hidden", "false");
     }
 
     function submitPc3() {
@@ -930,6 +1001,7 @@
 
     wireFloatingModal(cliModalDialog, cliModalOverlay);
     wireFloatingModal(pc3ModalDialog, pc3ModalOverlay);
+    wireFloatingModal(sw10ModalDialog, sw10ModalOverlay);
 
     function appendLine(className, text) {
       const div = document.createElement("div");
@@ -1041,6 +1113,10 @@
       pc3Hotspot.addEventListener("click", openPc3Modal);
     }
 
+    if (sw10Hotspot) {
+      sw10Hotspot.addEventListener("click", openSw10Modal);
+    }
+
     if (pc3Cmdline) {
       pc3Cmdline.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
@@ -1054,24 +1130,34 @@
       pc3ModalClose.addEventListener("click", closePc3Modal);
     }
 
+    if (sw10ModalClose) {
+      sw10ModalClose.addEventListener("click", closeSw10Modal);
+    }
+
     if (cliModalClose) {
       cliModalClose.addEventListener("click", closeCliModal);
+    }
+
+    if (sw10ModalOverlay) {
+      sw10ModalOverlay.addEventListener("click", (e) => {
+        if (e.target === sw10ModalOverlay) closeSw10Modal();
+      });
     }
 
     document.addEventListener("keydown", (e) => {
       if (e.key !== "Escape") return;
       const cliOn = cliModalOpen();
       const pc3On = pc3ModalOpen();
-      if (!cliOn && !pc3On) return;
+      const sw10On = sw10ModalOpen();
+      if (!cliOn && !pc3On && !sw10On) return;
       e.preventDefault();
       const zi = (el) => parseInt(window.getComputedStyle(el).zIndex, 10) || 0;
-      if (cliOn && pc3On) {
-        if (zi(pc3ModalOverlay) >= zi(cliModalOverlay)) closePc3Modal();
-        else closeCliModal();
-        return;
-      }
-      if (pc3On) closePc3Modal();
-      else closeCliModal();
+      const openModals = [];
+      if (cliOn) openModals.push({ overlay: cliModalOverlay, close: closeCliModal });
+      if (pc3On) openModals.push({ overlay: pc3ModalOverlay, close: closePc3Modal });
+      if (sw10On) openModals.push({ overlay: sw10ModalOverlay, close: closeSw10Modal });
+      openModals.sort((a, b) => zi(b.overlay) - zi(a.overlay));
+      if (openModals.length) openModals[0].close();
     });
 
     history.pushState(null, "", location.href);

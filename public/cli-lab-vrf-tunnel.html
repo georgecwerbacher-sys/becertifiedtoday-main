@@ -62,10 +62,58 @@
       margin-top: 10px;
       text-align: center;
     }
+    .diagram-stage {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      max-width: 620px;
+      line-height: 0;
+    }
     .diagram-wrap img {
       max-width: 100%;
       height: auto;
       vertical-align: middle;
+    }
+    .diagram-stage img {
+      width: 100%;
+      pointer-events: none;
+      border-radius: 8px;
+    }
+    .diagram-hotspot {
+      position: absolute;
+      z-index: 2;
+      margin: 0;
+      padding: 0;
+      border: 2px dashed transparent;
+      border-radius: 10px;
+      background: rgba(126, 200, 255, 0);
+      cursor: pointer;
+      box-sizing: border-box;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .diagram-hotspot:hover,
+    .diagram-hotspot:focus-visible {
+      border-color: rgba(126, 200, 255, 0.65);
+      background: rgba(126, 200, 255, 0.14);
+      outline: none;
+    }
+    .diagram-hotspot--r10 {
+      left: 12%;
+      top: 32%;
+      width: 18%;
+      height: 20%;
+    }
+    .diagram-hotspot--r20 {
+      right: 12%;
+      top: 32%;
+      width: 18%;
+      height: 20%;
+    }
+    .diagram-hotspot--sw20 {
+      right: 22%;
+      top: 60%;
+      width: 16%;
+      height: 16%;
     }
     .console-row {
       display: grid;
@@ -92,6 +140,9 @@
     }
     .terminal-panel--waiting .console-hint {
       display: block;
+    }
+    .terminal-panel--hidden {
+      display: none;
     }
     .console-hint {
       display: none;
@@ -183,6 +234,65 @@
     .pass-banner.visible {
       display: block;
     }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      box-sizing: border-box;
+      background: rgba(5, 8, 18, 0.72);
+    }
+    .cli-modal-overlay.is-open {
+      display: flex;
+    }
+    .cli-modal-dialog {
+      width: min(460px, 100%);
+      max-height: min(85vh, 640px);
+      display: flex;
+      flex-direction: column;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
     details.hint {
       margin-top: 10px;
       color: #9fb0cc;
@@ -241,51 +351,15 @@
         </p>
       </div>
       <div class="diagram-wrap" aria-label="Topology">
-        <img src="/assets/vrf-tunnel-topology.png" alt="VRF lab topology: R10 and R20 with ISP, switches, and Tunnel0" />
+        <div class="diagram-stage">
+          <img src="/assets/vrf-tunnel-topology.png" alt="VRF lab topology: R10 and R20 with ISP, switches, and Tunnel0" />
+          <button type="button" class="diagram-hotspot diagram-hotspot--r10" id="hotspotR10" aria-label="Open R10 CLI" title="R10"></button>
+          <button type="button" class="diagram-hotspot diagram-hotspot--r20" id="hotspotR20" aria-label="Open R20 CLI" title="R20"></button>
+          <button type="button" class="diagram-hotspot diagram-hotspot--sw20" id="hotspotSw20" aria-label="Open SW20 config" title="SW20"></button>
+        </div>
       </div>
       <div class="diagram-wrap" aria-label="Initial device configurations">
         <img src="/assets/vrf-initial-config.png" alt="Initial running configuration excerpts for R10, R20, ISP, Sw10, Sw20" />
-      </div>
-
-      <div class="console-row" aria-label="Router consoles">
-        <div class="terminal-panel" id="panelR10">
-          <h2 class="console-label">R10</h2>
-          <div class="terminal" aria-label="R10 CLI">
-            <div class="console-scroll" id="scrollR10"></div>
-            <div class="input-row">
-              <span class="prompt" id="promptR10">R10#</span>
-              <input
-                class="cmdline"
-                id="cmdR10"
-                type="text"
-                spellcheck="false"
-                autocomplete="off"
-                autocapitalize="none"
-                aria-label="R10 command line"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="terminal-panel terminal-panel--waiting" id="panelR20">
-          <h2 class="console-label">R20</h2>
-          <p class="console-hint">Complete R10 steps first to use this console.</p>
-          <div class="terminal" aria-label="R20 CLI">
-            <div class="console-scroll" id="scrollR20"></div>
-            <div class="input-row">
-              <span class="prompt" id="promptR20">R20#</span>
-              <input
-                class="cmdline"
-                id="cmdR20"
-                type="text"
-                spellcheck="false"
-                autocomplete="off"
-                autocapitalize="none"
-                aria-label="R20 command line"
-                disabled
-              />
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="controls">
@@ -328,6 +402,90 @@
     </main>
   </div>
 
+  <div id="modalR10" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR10">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR10">R10 — simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR10" aria-label="Close R10 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel">
+          <div class="terminal" aria-label="R10 CLI">
+            <div class="console-scroll" id="scrollR10"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR10">R10#</span>
+              <input
+                class="cmdline"
+                id="cmdR10"
+                type="text"
+                spellcheck="false"
+                autocomplete="off"
+                autocapitalize="none"
+                aria-label="R10 command line"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalR20" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR20">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR20">R20 — simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR20" aria-label="Close R20 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel terminal-panel--waiting" id="panelR20">
+          <p class="console-hint">Complete R10 steps first to use this console.</p>
+          <div class="terminal" aria-label="R20 CLI">
+            <div class="console-scroll" id="scrollR20"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR20">R20#</span>
+              <input
+                class="cmdline"
+                id="cmdR20"
+                type="text"
+                spellcheck="false"
+                autocomplete="off"
+                autocapitalize="none"
+                aria-label="R20 command line"
+                disabled
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalSw20" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleSw20">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleSw20">SW20 — configuration</h2>
+        <button type="button" class="cli-modal-close" id="closeSw20" aria-label="Close SW20 window">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" aria-label="SW20 config">
+          <div class="console-scroll">hostname Sw20
+vlan 101
+exit
+!
+interface e0/0
+switchport trunk encapsulation dot1q
+switchport mode trunk
+no shut
+!
+interface e0/1
+switchport mode access
+switchport access vlan 101
+no shut</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <nav class="sim-nav" aria-label="Simulation navigation">
     <a class="sim-nav-btn" href="/cli-lab-rapid-pvst-lacp.html">Back</a>
     <a class="sim-nav-btn sim-nav-home" href="/practice-launcher.html">Home</a>
@@ -337,6 +495,19 @@
   <script>
     function normalize(s) {
       return s.trim().toLowerCase().replace(/\s+/g, " ");
+    }
+
+    function matchShowRun(raw) {
+      const u = normalize(raw);
+      return (
+        u === "show running-config" ||
+        u === "show run" ||
+        u === "sh run" ||
+        u === "sh running-config" ||
+        u === "do show run" ||
+        u === "do show running-config" ||
+        u === "do sh run"
+      );
     }
 
     function matchIntTunnel(raw) {
@@ -357,6 +528,92 @@
     function matchTunnelProtect(raw) {
       return normalize(raw) === "tunnel protection ipsec profile myprofile";
     }
+
+    const R10_SHOW_RUN = [
+      "hostname R10",
+      "!",
+      "vrf definition CORP",
+      "description Enable ipv4 for VRF CORP with below commands:",
+      "address-family ipv4",
+      "exit-address-family",
+      "!",
+      "interface e0/0",
+      "no shut",
+      "interface e0/0.100",
+      "encapsulation dot1Q 100",
+      "vrf forwarding CORP",
+      "ip address 10.100.1.1 255.255.255.0",
+      "!",
+      "interface e0/1",
+      "ip address 10.10.1.1 255.255.255.0",
+      "ip ospf 100 area 0.0.0.0",
+      "no shut",
+      "!",
+      "router ospf 100",
+      "router-id 10.10.10.10",
+      "!",
+      "crypto isakmp policy 10",
+      "encr aes",
+      "hash md5",
+      "authentication pre-share",
+      "group 2",
+      "crypto isakmp key cisco address 10.10.2.1",
+      "!",
+      "crypto ipsec transform-set MYSET esp-aes esp-md5-hmac",
+      "mode tunnel",
+      "!",
+      "crypto ipsec profile MyProfile",
+      "set transform-set MYSET",
+      "!",
+      "interface tunnel0",
+      "vrf forwarding CORP",
+      "ip address 10.100.100.1 255.255.255.0",
+      "tunnel source Ethernet0/1",
+      "no shut",
+    ].join("\r\n");
+
+    const R20_SHOW_RUN = [
+      "hostname R20",
+      "!",
+      "vrf definition CORP",
+      "description Enable ipv4 for VRF CORP with below commands:",
+      "address-family ipv4",
+      "exit-address-family",
+      "!",
+      "interface e0/0",
+      "no shut",
+      "interface e0/0.101",
+      "encapsulation dot1Q 101",
+      "vrf forwarding CORP",
+      "ip address 10.101.2.1 255.255.255.0",
+      "!",
+      "interface e0/2",
+      "ip address 10.10.2.1 255.255.255.0",
+      "ip ospf 100 area 0.0.0.0",
+      "no shut",
+      "!",
+      "router ospf 100",
+      "router-id 20.20.20.20",
+      "!",
+      "crypto isakmp policy 10",
+      "encr aes",
+      "hash md5",
+      "authentication pre-share",
+      "group 2",
+      "crypto isakmp key cisco address 10.10.1.1",
+      "!",
+      "crypto ipsec transform-set MYSET esp-aes esp-md5-hmac",
+      "mode tunnel",
+      "!",
+      "crypto ipsec profile MyProfile",
+      "set transform-set MYSET",
+      "!",
+      "interface tunnel0",
+      "vrf forwarding CORP",
+      "ip address 10.100.100.2 255.255.255.0",
+      "tunnel source Ethernet0/2",
+      "no shut",
+    ].join("\r\n");
 
     const R10_STEPS = [
       { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
@@ -428,6 +685,15 @@
     const panelR20 = document.getElementById("panelR20");
     const passBanner = document.getElementById("passBanner");
     const resetBtn = document.getElementById("resetBtn");
+    const modalR10 = document.getElementById("modalR10");
+    const modalR20 = document.getElementById("modalR20");
+    const hotspotR10 = document.getElementById("hotspotR10");
+    const hotspotR20 = document.getElementById("hotspotR20");
+    const closeR10 = document.getElementById("closeR10");
+    const closeR20 = document.getElementById("closeR20");
+    const modalSw20 = document.getElementById("modalSw20");
+    const hotspotSw20 = document.getElementById("hotspotSw20");
+    const closeSw20 = document.getElementById("closeSw20");
 
     let stepR10 = 0;
     let stepR20 = 0;
@@ -443,6 +709,20 @@
     function setPrompts() {
       promptR10.textContent = promptFor(R10_STEPS, stepR10, "R10");
       promptR20.textContent = promptFor(R20_STEPS, stepR20, "R20");
+    }
+
+    function openModal(modal, inputEl) {
+      if (!modal) return;
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
+      if (inputEl && !inputEl.disabled) inputEl.focus();
+    }
+
+    function closeModal(modal, returnEl) {
+      if (!modal) return;
+      modal.classList.remove("is-open");
+      modal.setAttribute("aria-hidden", "true");
+      if (returnEl) returnEl.focus();
     }
 
     function unlockR20() {
@@ -484,6 +764,11 @@
       cmdR10.value = "";
       if (!line.trim()) return;
 
+      if (matchShowRun(line)) {
+        appendLine(scrollR10, "line-sys", R10_SHOW_RUN);
+        return;
+      }
+
       if (R10_STEPS[stepR10].test(line)) {
         stepR10 += 1;
         if (stepR10 >= R10_STEPS.length) {
@@ -508,6 +793,11 @@
       appendLine(scrollR20, "line-user", `${p} ${line}`);
       cmdR20.value = "";
       if (!line.trim()) return;
+
+      if (matchShowRun(line)) {
+        appendLine(scrollR20, "line-sys", R20_SHOW_RUN);
+        return;
+      }
 
       if (R20_STEPS[stepR20].test(line)) {
         stepR20 += 1;
@@ -541,6 +831,43 @@
     });
 
     resetBtn.addEventListener("click", reset);
+
+    if (hotspotR10) hotspotR10.addEventListener("click", () => openModal(modalR10, cmdR10));
+    if (hotspotR20) hotspotR20.addEventListener("click", () => openModal(modalR20, cmdR20));
+    if (hotspotSw20) hotspotSw20.addEventListener("click", () => openModal(modalSw20, null));
+    if (closeR10) closeR10.addEventListener("click", () => closeModal(modalR10, hotspotR10));
+    if (closeR20) closeR20.addEventListener("click", () => closeModal(modalR20, hotspotR20));
+    if (closeSw20) closeSw20.addEventListener("click", () => closeModal(modalSw20, hotspotSw20));
+    if (modalR10) {
+      modalR10.addEventListener("click", (event) => {
+        if (event.target === modalR10) closeModal(modalR10, hotspotR10);
+      });
+    }
+    if (modalR20) {
+      modalR20.addEventListener("click", (event) => {
+        if (event.target === modalR20) closeModal(modalR20, hotspotR20);
+      });
+    }
+    if (modalSw20) {
+      modalSw20.addEventListener("click", (event) => {
+        if (event.target === modalSw20) closeModal(modalSw20, hotspotSw20);
+      });
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      if (modalSw20 && modalSw20.classList.contains("is-open")) {
+        closeModal(modalSw20, hotspotSw20);
+        return;
+      }
+      if (modalR20 && modalR20.classList.contains("is-open")) {
+        closeModal(modalR20, hotspotR20);
+        return;
+      }
+      if (modalR10 && modalR10.classList.contains("is-open")) {
+        closeModal(modalR10, hotspotR10);
+      }
+    });
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
