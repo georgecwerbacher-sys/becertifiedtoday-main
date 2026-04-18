@@ -651,10 +651,16 @@
       );
     }
 
-    /** PC1 reachability check from PC3 (both IPs accepted for this sim). */
-    function matchPc1Ping(raw) {
+    /** Extract PC1 ping target IP (allows optional Windows flags after the address). */
+    function parsePingPc1Ip(raw) {
       const u = normalize(raw);
-      return u === "ping 10.10.100.10" || u === "ping 10.10.10.10";
+      if (!u.startsWith("ping ")) return null;
+      const ip = u.slice(5).trim().split(/\s+/)[0];
+      return ip === "10.10.100.10" || ip === "10.10.10.10" ? ip : null;
+    }
+
+    function matchPc1Ping(raw) {
+      return parsePingPc1Ip(raw) !== null;
     }
 
     /** Initial SW20 running config shown for `show run` / `show running-config`. */
@@ -752,6 +758,8 @@
     }
 
     let stepIndex = 0;
+    /** Set when STEPS[5] succeeds (`switchport trunk allowed vlan 500` on E0/0); drives PC3 ping !!!!. */
+    let pc1PathReady = false;
 
     /** Stack floating palettes above fixed chrome when focused or dragged. */
     let modalStackZ = 30000;
@@ -761,9 +769,9 @@
       overlay.style.zIndex = String(modalStackZ);
     }
 
-    /** PC3 ping to PC1 (!!!!) once Rapid PVST + E0/0 trunk to SW30 are configured in order. */
+    /** PC3 ping to PC1 (!!!!) once Rapid PVST + E0/0 trunk to SW30 are configured through VLAN 500 on E0/0. */
     function isPingPc1Reachable() {
-      return stepIndex >= STEP_INDEX_AFTER_PC1_PATH;
+      return pc1PathReady || stepIndex >= STEP_INDEX_AFTER_PC1_PATH;
     }
 
     function appendLinePc3(className, text) {
@@ -812,7 +820,7 @@
 
       if (matchPc1Ping(line)) {
         const ok = isPingPc1Reachable();
-        const displayIp = u === "ping 10.10.10.10" ? "10.10.10.10" : "10.10.100.10";
+        const displayIp = parsePingPc1Ip(line) || "10.10.100.10";
         appendLinePc3("line-sys", `Pinging ${displayIp} with 32 bytes of data:`);
         appendLinePc3(ok ? "line-ping-ok" : "line-ping-fail", ok ? "!!!!" : "....");
         return;
@@ -911,6 +919,7 @@
 
     function reset() {
       stepIndex = 0;
+      pc1PathReady = false;
       scrollback.innerHTML = "";
       passBanner.classList.remove("visible");
       cmdline.disabled = false;
@@ -945,7 +954,15 @@
       }
 
       if (STEPS[stepIndex].test(line)) {
+        const finishedPc1TrunkVlan = stepIndex === 5;
         stepIndex += 1;
+        if (finishedPc1TrunkVlan) {
+          pc1PathReady = true;
+          appendLine(
+            "line-sys",
+            "[Sim] SW20–SW30 trunk (E0/0) is ready — open PC3 and ping 10.10.10.10 or 10.10.100.10 for !!!!"
+          );
+        }
         if (stepIndex >= STEPS.length) {
           promptEl.textContent = "SW20#";
           passBanner.classList.add("visible");
