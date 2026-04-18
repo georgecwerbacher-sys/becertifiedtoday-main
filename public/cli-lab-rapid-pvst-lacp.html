@@ -508,9 +508,9 @@
           <li><code>switchport trunk encapsulation dot1q</code></li>
           <li><code>switchport mode trunk</code></li>
           <li><code>switchport trunk allowed vlan 500</code></li>
-          <li><code>show etherchannel summary</code> (or <code>do show etherchannel summary</code>)</li>
           <li><code>exit</code></li>
           <li><code>exit</code></li>
+          <li><code>show etherchannel summary</code> (from <code>SW20#</code> only)</li>
           <li><code>copy running-config startup-config</code></li>
         </ol>
       </details>
@@ -634,14 +634,10 @@
       );
     }
 
+    /** Exec mode only (SW20#) — not valid from (config-if)# in this sim. */
     function matchShowEtherchannelSummary(raw) {
       const u = normalize(raw);
-      return (
-        u === "show etherchannel summary" ||
-        u === "do show etherchannel summary" ||
-        u === "sh etherchannel summary" ||
-        u === "do sh etherchannel summary"
-      );
+      return u === "show etherchannel summary" || u === "sh etherchannel summary";
     }
 
     /** Ethernet0/0 as shown in exhibits — accept common IOS abbreviations. */
@@ -738,9 +734,9 @@
       { mode: "config-if", test: (raw) => normalize(raw) === "switchport trunk encapsulation dot1q" },
       { mode: "config-if", test: (raw) => normalize(raw) === "switchport mode trunk" },
       { mode: "config-if", test: matchTrunkVlan500 },
-      { mode: "config-if", test: matchShowEtherchannelSummary },
       { mode: "config-if", test: (raw) => normalize(raw) === "exit" },
       { mode: "config", test: (raw) => normalize(raw) === "exit" },
+      { mode: "privileged", test: matchShowEtherchannelSummary },
       { mode: "privileged", test: matchCopy },
     ];
 
@@ -1001,7 +997,7 @@
             "[Sim] SW20–SW30 trunk (E0/0) is ready — open PC3 and ping 10.10.10.10 or 10.10.100.10 for !!!!"
           );
         }
-        if (prevIndex === 10) {
+        if (prevIndex === 12) {
           appendLine("line-showrun", SHOW_ETHERCHANNEL_SUMMARY);
         }
         if (stepIndex >= STEPS.length) {
