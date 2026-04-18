@@ -70,14 +70,109 @@
     .diagram-top {
       margin-bottom: 20px;
     }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
+      outline: none;
+    }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+      pointer-events: none;
+    }
+    .cli-modal-overlay.is-open {
+      display: block;
+    }
+    .cli-modal-dialog {
+      width: min(520px, calc(100vw - 24px));
+      max-height: min(85vh, 640px);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
     .device-pick {
-      margin: 0 0 16px;
+      margin: 12px auto 8px;
       padding: 12px 14px;
       border-radius: 10px;
       background: #0f1729;
       border: 1px solid #2d3b5a;
       color: #b8c3d6;
       font-size: 0.95rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
     }
     .device-pick label {
       margin-left: 12px;
@@ -212,6 +307,13 @@
     .sim-nav-home {
       background: #1a3d6e;
     }
+    .sim-nav-next {
+      background: #1a3d6e;
+    }
+    .sim-nav-back {
+      background: #243352;
+      border-color: #3d5280;
+    }
   </style>
 </head>
 <body>
@@ -219,18 +321,20 @@
     <main class="card">
       <div class="diagram-wrap diagram-top" aria-label="Topology">
         <img src="/assets/vty-login-topology.png" alt="R1, R2, and R3 connected to a central switch" width="274" height="268" />
+        <div class="device-pick" role="group" aria-label="Device in prompt">
+          <strong>Device in prompt:</strong>
+          <label><input type="radio" name="dev" value="R1" checked /> R1</label>
+          <label><input type="radio" name="dev" value="R2" /> R2</label>
+        </div>
+        <div class="device-links" aria-label="Open device CLI">
+          <button type="button" class="device-link" id="openRouterCliLink">Open Router CLI</button>
+        </div>
       </div>
       <h1>VTY Login Sim — Version 2</h1>
       <p class="objective">
-        Exams may ask you to configure <strong>R1</strong> or <strong>R2</strong>. Choose the device below so prompts match; commands are the same.
-        You start in global configuration on that device.
+        Exams may ask you to configure <strong>R1</strong> or <strong>R2</strong>. Choose <strong>Device in prompt</strong> under the topology, then <strong>Open Router CLI</strong>;
+        prompts match the device you pick. Commands are the same. You start in global configuration on that device.
       </p>
-
-      <div class="device-pick" role="group" aria-label="Target device">
-        <strong>Device in prompt:</strong>
-        <label><input type="radio" name="dev" value="R1" checked /> R1</label>
-        <label><input type="radio" name="dev" value="R2" /> R2</label>
-      </div>
 
       <div class="tasks">
         <strong>Three results:</strong>
@@ -240,14 +344,6 @@
           <li>AUX line: <code>exec-timeout 20 0</code> on the auxiliary port (20 minutes inactivity).</li>
         </ol>
         <strong>Finish:</strong> leave configuration (<code>end</code>), then <code>copy running-config startup-config</code> (or <code>copy run start</code>). After the VTY block, use <code>exit</code> to return to global config before <code>line aux 0</code>.
-      </div>
-
-      <div class="terminal" aria-label="Simulated router CLI">
-        <div id="scrollback"></div>
-        <div class="input-row">
-          <span id="prompt">R1(config)#</span>
-          <input id="cmdline" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="Command line" />
-        </div>
       </div>
 
       <div class="controls">
@@ -275,10 +371,35 @@
     </main>
   </div>
 
+  <div id="modalRouter" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="modalRouterDialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitleRouter"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="modalTitleRouter">R1 — simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeRouterCli" aria-label="Close router CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" aria-label="Simulated router CLI">
+          <div id="scrollback"></div>
+          <div class="input-row">
+            <span id="prompt">R1(config)#</span>
+            <input id="cmdline" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="Router command line" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <nav class="sim-nav" aria-label="Simulation navigation">
-    <a class="sim-nav-btn" href="/cli-lab-vty-login.html">Back</a>
     <a class="sim-nav-btn sim-nav-home" href="/practice-launcher.html">Home</a>
-    <a class="sim-nav-btn" href="/cli-lab-rapid-pvst-lacp.html">Next</a>
+    <a class="sim-nav-btn sim-nav-next" href="/cli-lab-rapid-pvst-lacp.html">Next</a>
+    <a class="sim-nav-btn sim-nav-back" href="/cli-lab-vty-login.html">Back</a>
   </nav>
 
   <script>
@@ -341,6 +462,10 @@
     const cmdline = document.getElementById("cmdline");
     const passBanner = document.getElementById("passBanner");
     const resetBtn = document.getElementById("resetBtn");
+    const modalRouter = document.getElementById("modalRouter");
+    const modalTitleRouter = document.getElementById("modalTitleRouter");
+    const openRouterCliLink = document.getElementById("openRouterCliLink");
+    const closeRouterCli = document.getElementById("closeRouterCli");
 
     let stepIndex = 0;
 
@@ -357,6 +482,23 @@
       promptEl.textContent = promptForStep(stepIndex, h);
     }
 
+    function updateModalTitle() {
+      modalTitleRouter.textContent = `${getHostname()} — simulated CLI`;
+    }
+
+    function openRouterCliModal() {
+      updateModalTitle();
+      modalRouter.classList.add("is-open");
+      modalRouter.setAttribute("aria-hidden", "false");
+      cmdline.focus();
+    }
+
+    function closeRouterCliModal() {
+      modalRouter.classList.remove("is-open");
+      modalRouter.setAttribute("aria-hidden", "true");
+      openRouterCliLink.focus();
+    }
+
     function reset() {
       stepIndex = 0;
       scrollback.innerHTML = "";
@@ -364,12 +506,17 @@
       cmdline.disabled = false;
       setPrompt();
       cmdline.value = "";
-      cmdline.focus();
+      updateModalTitle();
       const h = getHostname();
       appendLine(
         "line-sys",
         `You are in global configuration (${h}(config)#). Enter each command and press Enter.`
       );
+      if (modalRouter.classList.contains("is-open")) {
+        cmdline.focus();
+      } else {
+        openRouterCliLink.focus();
+      }
     }
 
     function submit() {
@@ -408,6 +555,15 @@
     });
 
     resetBtn.addEventListener("click", reset);
+    openRouterCliLink.addEventListener("click", openRouterCliModal);
+    closeRouterCli.addEventListener("click", closeRouterCliModal);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      if (!modalRouter.classList.contains("is-open")) return;
+      e.preventDefault();
+      closeRouterCliModal();
+    });
 
     document.querySelectorAll('input[name="dev"]').forEach((r) => {
       r.addEventListener("change", () => {

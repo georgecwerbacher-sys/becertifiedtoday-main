@@ -67,6 +67,119 @@
       height: auto;
       vertical-align: middle;
     }
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .device-pick label {
+      margin-left: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .device-pick input {
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
+      outline: none;
+    }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+      pointer-events: none;
+    }
+    .cli-modal-overlay.is-open {
+      display: block;
+    }
+    .cli-modal-dialog {
+      width: min(520px, calc(100vw - 24px));
+      max-height: min(85vh, 680px);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
     .variant-box {
       margin: 14px 0 0;
       padding: 12px 14px;
@@ -90,23 +203,6 @@
       display: block;
       margin: 6px 0;
       cursor: pointer;
-    }
-    .console-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 14px;
-    }
-    @media (max-width: 800px) {
-      .console-row {
-        grid-template-columns: 1fr;
-      }
-    }
-    .console-label {
-      margin: 0 0 8px;
-      font-size: 1rem;
-      font-weight: 800;
-      color: #c8d7ec;
     }
     .terminal-panel {
       min-width: 0;
@@ -246,6 +342,8 @@
     }
     .sim-nav-btn:hover { filter: brightness(1.08); }
     .sim-nav-home { background: #1a3d6e; }
+    .sim-nav-next { background: #1a3d6e; }
+    .sim-nav-back { background: #243352; border-color: #3d5280; }
   </style>
 </head>
 <body>
@@ -256,6 +354,7 @@
         <strong>R1</strong> has Flexible NetFlow definitions (use monitor <code>Monitor-R1Flow</code> on <code>Ethernet0/0</code>).
         <strong>Sw1</strong>: local SPAN session <strong>12</strong> mirrors <strong>VLAN 12</strong> to <strong>E1/3</strong>.
         Task 3: choose <strong>ICMP echo</strong> to PC1 every 300s or <strong>HTTP GET</strong> version (600s) before you enter the first command — selection locks after R1 Task 1 starts.
+        Under the topology, choose <strong>Device in prompt</strong> (R1 or Sw1), then <strong>Open Router CLI</strong> or <strong>Open Switch CLI</strong> to open that console.
       </p>
       <div class="tasks">
         <strong>Tasks</strong>
@@ -269,6 +368,14 @@
 
       <div class="diagram-wrap" aria-label="Topology and addressing">
         <img src="/assets/netflow-span2-lab.png" alt="R1 Sw1 PC1 PC2 VLANs and IP table" />
+        <div class="device-pick" role="group" aria-label="Device in prompt">
+          <strong>Device in prompt:</strong>
+          <label><input type="radio" name="nfSpanDev" value="R1" checked /> R1</label>
+          <label><input type="radio" name="nfSpanDev" value="Sw1" /> Sw1</label>
+        </div>
+        <div class="device-links" aria-label="Open device CLI">
+          <button type="button" class="device-link" id="openDeviceCliLink">Open Router CLI</button>
+        </div>
       </div>
 
       <div class="variant-box" id="variantBox">
@@ -283,31 +390,6 @@
             <span><strong>Version 2 — HTTP GET</strong> to 10.10.1.100, <code>frequency 600</code></span>
           </label>
         </fieldset>
-      </div>
-
-      <div class="console-row" aria-label="R1 and Sw1 consoles">
-        <div class="terminal-panel" id="panelR1">
-          <h2 class="console-label">R1</h2>
-          <p class="console-hint" id="hintR1">Flow monitor on e0/0 first, then IP SLA, then save.</p>
-          <div class="terminal" aria-label="R1 CLI">
-            <div class="console-scroll" id="scrollR1"></div>
-            <div class="input-row">
-              <span class="prompt" id="promptR1">R1#</span>
-              <input class="cmdline" id="cmdR1" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R1 command line" />
-            </div>
-          </div>
-        </div>
-        <div class="terminal-panel terminal-panel--waiting" id="panelSw1">
-          <h2 class="console-label">Sw1</h2>
-          <p class="console-hint" id="hintSw1">SPAN and verify after R1 NetFlow.</p>
-          <div class="terminal" aria-label="Sw1 CLI">
-            <div class="console-scroll" id="scrollSw1"></div>
-            <div class="input-row">
-              <span class="prompt" id="promptSw1">Sw1#</span>
-              <input class="cmdline" id="cmdSw1" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="Sw1 command line" disabled />
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="controls">
@@ -344,10 +426,66 @@ ip sla schedule 1 life forever start-time now</pre>
     </main>
   </div>
 
+  <div id="modalR1" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="modalR1Dialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitleR1"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR1">R1 — simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR1" aria-label="Close R1 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel" id="panelR1">
+          <p class="console-hint" id="hintR1">Flow monitor on e0/0 first, then IP SLA, then save.</p>
+          <div class="terminal" aria-label="R1 CLI">
+            <div class="console-scroll" id="scrollR1"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR1">R1#</span>
+              <input class="cmdline" id="cmdR1" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R1 command line" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalSw1" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="modalSw1Dialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitleSw1"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="modalTitleSw1">Sw1 — simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeSw1" aria-label="Close Sw1 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel terminal-panel--waiting" id="panelSw1">
+          <p class="console-hint" id="hintSw1">SPAN and verify after R1 NetFlow.</p>
+          <div class="terminal" aria-label="Sw1 CLI">
+            <div class="console-scroll" id="scrollSw1"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptSw1">Sw1#</span>
+              <input class="cmdline" id="cmdSw1" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="Sw1 command line" disabled />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <nav class="sim-nav" aria-label="Simulation navigation">
-    <a class="sim-nav-btn" href="/cli-lab-netflow-span.html">Back</a>
     <a class="sim-nav-btn sim-nav-home" href="/practice-launcher.html">Home</a>
-    <a class="sim-nav-btn" href="/cli-lab-acl-copp.html">Next</a>
+    <a class="sim-nav-btn sim-nav-next" href="/cli-lab-acl-copp.html">Next</a>
+    <a class="sim-nav-btn sim-nav-back" href="/cli-lab-netflow-span.html">Back</a>
   </nav>
 
   <script>
@@ -483,6 +621,58 @@ ip sla schedule 1 life forever start-time now</pre>
     const passBanner = document.getElementById("passBanner");
     const resetBtn = document.getElementById("resetBtn");
     const variantFieldset = document.getElementById("variantFieldset");
+    const modalR1 = document.getElementById("modalR1");
+    const modalSw1 = document.getElementById("modalSw1");
+    const openDeviceCliLink = document.getElementById("openDeviceCliLink");
+    const closeR1Btn = document.getElementById("closeR1");
+    const closeSw1Btn = document.getElementById("closeSw1");
+
+    function getNfSpanLabDevice() {
+      const sel = document.querySelector('input[name="nfSpanDev"]:checked');
+      return sel ? sel.value : "R1";
+    }
+
+    function updateOpenCliButtonLabel() {
+      openDeviceCliLink.textContent =
+        getNfSpanLabDevice() === "Sw1" ? "Open Switch CLI" : "Open Router CLI";
+    }
+
+    function closeR1Modal() {
+      modalR1.classList.remove("is-open");
+      modalR1.setAttribute("aria-hidden", "true");
+    }
+
+    function closeSw1Modal() {
+      modalSw1.classList.remove("is-open");
+      modalSw1.setAttribute("aria-hidden", "true");
+    }
+
+    function closeModals() {
+      closeR1Modal();
+      closeSw1Modal();
+    }
+
+    function openSelectedCliModal() {
+      closeModals();
+      if (getNfSpanLabDevice() === "Sw1") {
+        modalSw1.classList.add("is-open");
+        modalSw1.setAttribute("aria-hidden", "false");
+      } else {
+        modalR1.classList.add("is-open");
+        modalR1.setAttribute("aria-hidden", "false");
+      }
+      focusActiveCli();
+    }
+
+    function focusActiveCli() {
+      if (modalR1.classList.contains("is-open") && !cmdR1.disabled) {
+        cmdR1.focus();
+        return;
+      }
+      if (modalSw1.classList.contains("is-open") && !cmdSw1.disabled) {
+        cmdSw1.focus();
+      }
+    }
 
     let phase = "R1_NF";
     let stepR1 = 0;
@@ -602,11 +792,11 @@ ip sla schedule 1 life forever start-time now</pre>
 
       updateHints();
       updatePrompts();
-      if (!cmdR1.disabled) cmdR1.focus();
-      else if (!cmdSw1.disabled) cmdSw1.focus();
+      focusActiveCli();
     }
 
     function reset() {
+      closeModals();
       phase = "R1_NF";
       stepR1 = 0;
       stepSw1 = 0;
@@ -617,6 +807,7 @@ ip sla schedule 1 life forever start-time now</pre>
       cmdSw1.value = "";
       passBanner.classList.remove("visible");
       setVariantLocked(false);
+      updateOpenCliButtonLabel();
       appendLine(
         scrollR1,
         "line-sys",
@@ -628,6 +819,7 @@ ip sla schedule 1 life forever start-time now</pre>
         "Configure SPAN session 12 after R1 NetFlow."
       );
       applyPhaseUI();
+      openDeviceCliLink.focus();
     }
 
     function submitR1() {
@@ -765,6 +957,38 @@ ip sla schedule 1 life forever start-time now</pre>
     });
 
     resetBtn.addEventListener("click", reset);
+    openDeviceCliLink.addEventListener("click", openSelectedCliModal);
+    closeR1Btn.addEventListener("click", () => {
+      closeR1Modal();
+      openDeviceCliLink.focus();
+    });
+    closeSw1Btn.addEventListener("click", () => {
+      closeSw1Modal();
+      openDeviceCliLink.focus();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      if (modalSw1.classList.contains("is-open")) {
+        e.preventDefault();
+        closeSw1Modal();
+        openDeviceCliLink.focus();
+        return;
+      }
+      if (modalR1.classList.contains("is-open")) {
+        e.preventDefault();
+        closeR1Modal();
+        openDeviceCliLink.focus();
+      }
+    });
+
+    document.querySelectorAll('input[name="nfSpanDev"]').forEach((r) => {
+      r.addEventListener("change", () => {
+        updateOpenCliButtonLabel();
+        closeModals();
+        openDeviceCliLink.focus();
+      });
+    });
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {

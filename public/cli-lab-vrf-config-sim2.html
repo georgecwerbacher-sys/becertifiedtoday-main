@@ -67,6 +67,27 @@
       height: auto;
       vertical-align: middle;
     }
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .device-pick label {
+      margin-left: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .device-pick input {
+      margin-right: 6px;
+      vertical-align: middle;
+    }
     .device-links {
       margin-top: 10px;
       display: flex;
@@ -305,6 +326,7 @@
         <code>vrf definition Finance</code> with <code>address-family ipv4</code> (not legacy <code>ip vrf</code>).
         Extend <strong>VRF Finance</strong> with <strong>Tunnel10</strong>, then place the LAN-facing interface in the VRF and add static routes so
         <strong>VLAN 111</strong> (<code>10.10.111.0/24</code>) and <strong>VLAN 222</strong> (<code>10.10.222.0/24</code>) use the tunnel for inter-site traffic.
+        Under the topology, choose <strong>Device in prompt</strong> (R22 or SW22), then use <strong>Open Router CLI</strong> or <strong>Open Switch CLI</strong> to open the matching console.
       </p>
       <div class="tasks">
         <strong>Tasks</strong>
@@ -316,9 +338,13 @@
       </div>
       <div class="diagram-wrap" aria-label="Topology and initial configs">
         <img src="/assets/vrf-config-sim2-topology.png" alt="WAN topology: ISP, R11 and Sw11 with VLAN 111, R22 and Sw22 with VLAN 222, Tunnel10 between R11 and R22" />
-        <div class="device-links" aria-label="Open device windows">
-          <button type="button" class="device-link" id="openR22Link">Open R22 CLI</button>
-          <button type="button" class="device-link" id="openSw22Link">Open SW22 CLI</button>
+        <div class="device-pick" role="group" aria-label="Device in prompt">
+          <strong>Device in prompt:</strong>
+          <label><input type="radio" name="vrfDev" value="R22" checked /> R22</label>
+          <label><input type="radio" name="vrfDev" value="SW22" /> SW22</label>
+        </div>
+        <div class="device-links" aria-label="Open device CLI">
+          <button type="button" class="device-link" id="openDeviceCliLink">Open Router CLI</button>
         </div>
       </div>
 
@@ -573,8 +599,7 @@
     const resetBtn = document.getElementById("resetBtn");
     const modalR22 = document.getElementById("modalR22");
     const modalSw22 = document.getElementById("modalSw22");
-    const openR22Link = document.getElementById("openR22Link");
-    const openSw22Link = document.getElementById("openSw22Link");
+    const openDeviceCliLink = document.getElementById("openDeviceCliLink");
     const closeR22 = document.getElementById("closeR22");
     const closeSw22 = document.getElementById("closeSw22");
     const scrollSw22 = document.getElementById("scrollSw22");
@@ -582,6 +607,17 @@
     const cmdSw22 = document.getElementById("cmdSw22");
 
     let stepR22 = 0;
+
+    function getVrfLabDevice() {
+      const sel = document.querySelector('input[name="vrfDev"]:checked');
+      return sel ? sel.value : "R22";
+    }
+
+    function updateOpenCliButtonLabel() {
+      const dev = getVrfLabDevice();
+      openDeviceCliLink.textContent =
+        dev === "SW22" ? "Open Switch CLI" : "Open Router CLI";
+    }
 
     const HINTS = [
       "configure terminal",
@@ -622,7 +658,19 @@
         stepR22 < HINTS.length ? HINTS[stepR22] : "Done.";
     }
 
+    function closeR22Modal() {
+      modalR22.classList.remove("is-open");
+      modalR22.setAttribute("aria-hidden", "true");
+    }
+
+    function closeSw22Modal() {
+      modalSw22.classList.remove("is-open");
+      modalSw22.setAttribute("aria-hidden", "true");
+    }
+
     function reset() {
+      closeR22Modal();
+      closeSw22Modal();
       stepR22 = 0;
       scrollR22.innerHTML = "";
       cmdR22.value = "";
@@ -633,13 +681,14 @@
       scrollSw22.innerHTML = "";
       cmdSw22.value = "";
       cmdSw22.disabled = false;
+      updateOpenCliButtonLabel();
       appendLine(scrollSw22, "line-sys", "SW22: enter show run or show running-config (full command only).");
       appendLine(
         scrollR22,
         "line-sys",
         "R11 is complete; WAN up. Configure R22: VRF Finance, Tunnel10, e0/1 in VRF, statics, save."
       );
-      cmdR22.focus();
+      openDeviceCliLink.focus();
     }
 
     function submitR22() {
@@ -705,25 +754,45 @@
         submitSw22();
       }
     });
-    openR22Link.addEventListener("click", () => {
-      modalR22.classList.add("is-open");
-      modalR22.setAttribute("aria-hidden", "false");
-      cmdR22.focus();
-    });
-    openSw22Link.addEventListener("click", () => {
-      modalSw22.classList.add("is-open");
-      modalSw22.setAttribute("aria-hidden", "false");
-      cmdSw22.focus();
+    openDeviceCliLink.addEventListener("click", () => {
+      if (getVrfLabDevice() === "SW22") {
+        modalSw22.classList.add("is-open");
+        modalSw22.setAttribute("aria-hidden", "false");
+        cmdSw22.focus();
+      } else {
+        modalR22.classList.add("is-open");
+        modalR22.setAttribute("aria-hidden", "false");
+        cmdR22.focus();
+      }
     });
     closeR22.addEventListener("click", () => {
-      modalR22.classList.remove("is-open");
-      modalR22.setAttribute("aria-hidden", "true");
-      openR22Link.focus();
+      closeR22Modal();
+      openDeviceCliLink.focus();
     });
     closeSw22.addEventListener("click", () => {
-      modalSw22.classList.remove("is-open");
-      modalSw22.setAttribute("aria-hidden", "true");
-      openSw22Link.focus();
+      closeSw22Modal();
+      openDeviceCliLink.focus();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      if (modalR22.classList.contains("is-open")) {
+        e.preventDefault();
+        closeR22Modal();
+        openDeviceCliLink.focus();
+        return;
+      }
+      if (modalSw22.classList.contains("is-open")) {
+        e.preventDefault();
+        closeSw22Modal();
+        openDeviceCliLink.focus();
+      }
+    });
+
+    document.querySelectorAll('input[name="vrfDev"]').forEach((r) => {
+      r.addEventListener("change", () => {
+        reset();
+      });
     });
 
     resetBtn.addEventListener("click", reset);

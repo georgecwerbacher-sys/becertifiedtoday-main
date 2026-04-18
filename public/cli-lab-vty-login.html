@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VTY Login Sim — R1</title>
+  <title>VTY Login Sim</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -74,6 +74,27 @@
     }
     .diagram-top {
       margin-bottom: 20px;
+    }
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .device-pick label {
+      margin-left: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .device-pick input {
+      margin-right: 6px;
+      vertical-align: middle;
     }
     .device-links {
       margin-top: 10px;
@@ -323,19 +344,24 @@
     <main class="card">
       <div class="diagram-wrap diagram-top" aria-label="Topology">
         <img src="/assets/vty-login-topology.png" alt="R1, R2, and R3 connected to a central switch" width="274" height="268" />
+        <div class="device-pick" role="group" aria-label="Device in prompt">
+          <strong>Device in prompt:</strong>
+          <label><input type="radio" name="dev" value="R1" checked /> R1</label>
+          <label><input type="radio" name="dev" value="R2" /> R2</label>
+        </div>
         <div class="device-links" aria-label="Open device CLI">
-          <button type="button" class="device-link" id="openR1Link">Open R1 CLI</button>
+          <button type="button" class="device-link" id="openRouterCliLink">Open Router CLI</button>
         </div>
       </div>
       <h1>VTY Login Sim</h1>
       <p class="objective">
-        You are consoled into <strong>R1</strong>. Use <strong>Open R1 CLI</strong> under the topology. Configure R1 so the local user can reach privilege 15,
+        Choose <strong>Device in prompt</strong> under the topology, then <strong>Open Router CLI</strong>. Configure that router so the local user can reach privilege 15,
         VTYs use the local database with Telnet and SSH, exec sessions time out after 5 minutes of inactivity, then save the configuration.
-        (This simulator only checks R1 commands; real Telnet from R2/R3 would use the verification steps at the bottom.)
+        (This simulator only checks commands on the device you select; real Telnet from R2/R3 would use the verification steps at the bottom.)
       </p>
 
       <div class="tasks">
-        <strong>Protect R1 — three results:</strong>
+        <strong>Protect the router — three results:</strong>
         <ol>
           <li>Local user <strong>SuperAdmin</strong> / <strong>SuperUser</strong> with highest privilege (15). <code>secret</code> or <code>password</code> is accepted.</li>
           <li>VTY 0–4: <code>login local</code>, <code>transport input telnet ssh</code>.</li>
@@ -355,8 +381,8 @@
 
       <div class="verify">
         <strong>Verification (real gear / lab)</strong><br />
-        From <strong>R2</strong> or <strong>R3</strong>: <code>telnet 192.168.100.1</code> (or the IP on R1 toward the switch).<br />
-        Username: <code>SuperAdmin</code> — Password: <code>SuperUser</code> — expect <code>R1#</code> if login succeeds.
+        From <strong>R2</strong> or <strong>R3</strong>: <code>telnet 192.168.100.1</code> (or the IP on the configured router toward the switch).<br />
+        Username: <code>SuperAdmin</code> — Password: <code>SuperUser</code> — expect privileged EXEC (for example <code>R1#</code> or <code>R2#</code>) if login succeeds.
       </div>
 
       <details class="hint">
@@ -374,25 +400,25 @@
     </main>
   </div>
 
-  <div id="modalR1" class="cli-modal-overlay" aria-hidden="true">
+  <div id="modalRouter" class="cli-modal-overlay" aria-hidden="true">
     <div
-      id="modalR1Dialog"
+      id="modalRouterDialog"
       class="cli-modal-dialog"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="modalTitleR1"
+      aria-labelledby="modalTitleRouter"
       tabindex="-1"
     >
       <header class="cli-modal-header">
-        <h2 id="modalTitleR1">R1 — simulated CLI</h2>
-        <button type="button" class="cli-modal-close" id="closeR1" aria-label="Close R1 CLI">×</button>
+        <h2 id="modalTitleRouter">R1 — simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeRouterCli" aria-label="Close router CLI">×</button>
       </header>
       <div class="cli-modal-body">
-        <div class="terminal" aria-label="Simulated R1 CLI">
+        <div class="terminal" aria-label="Simulated router CLI">
           <div id="scrollback"></div>
           <div class="input-row">
             <span id="prompt">R1(config)#</span>
-            <input id="cmdline" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R1 command line" />
+            <input id="cmdline" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="Router command line" />
           </div>
         </div>
       </div>
@@ -435,23 +461,38 @@
     }
 
     const STEPS = [
-      { prompt: "R1(config)#", test: (raw) => matchUsername(raw) },
-      { prompt: "R1(config)#", test: (raw) => normalize(raw) === "line vty 0 4" },
-      { prompt: "R1(config-line)#", test: (raw) => normalize(raw) === "login local" },
-      { prompt: "R1(config-line)#", test: matchTransport },
-      { prompt: "R1(config-line)#", test: (raw) => normalize(raw) === "exec-timeout 5 0" },
-      { prompt: "R1(config-line)#", test: (raw) => normalize(raw) === "end" },
-      { prompt: "R1#", test: matchCopy },
+      { mode: "config", test: (raw) => matchUsername(raw) },
+      { mode: "config", test: (raw) => normalize(raw) === "line vty 0 4" },
+      { mode: "config-line", test: (raw) => normalize(raw) === "login local" },
+      { mode: "config-line", test: matchTransport },
+      { mode: "config-line", test: (raw) => normalize(raw) === "exec-timeout 5 0" },
+      { mode: "config-line", test: (raw) => normalize(raw) === "end" },
+      { mode: "privileged", test: matchCopy },
     ];
+
+    function getHostname() {
+      const sel = document.querySelector('input[name="dev"]:checked');
+      return sel ? sel.value : "R1";
+    }
+
+    function promptForStep(i, hostname) {
+      if (i >= STEPS.length) return `${hostname}#`;
+      const m = STEPS[i].mode;
+      if (m === "config") return `${hostname}(config)#`;
+      if (m === "config-line") return `${hostname}(config-line)#`;
+      if (m === "privileged") return `${hostname}#`;
+      return `${hostname}#`;
+    }
 
     const scrollback = document.getElementById("scrollback");
     const promptEl = document.getElementById("prompt");
     const cmdline = document.getElementById("cmdline");
     const passBanner = document.getElementById("passBanner");
     const resetBtn = document.getElementById("resetBtn");
-    const modalR1 = document.getElementById("modalR1");
-    const openR1Link = document.getElementById("openR1Link");
-    const closeR1 = document.getElementById("closeR1");
+    const modalRouter = document.getElementById("modalRouter");
+    const modalTitleRouter = document.getElementById("modalTitleRouter");
+    const openRouterCliLink = document.getElementById("openRouterCliLink");
+    const closeRouterCli = document.getElementById("closeRouterCli");
 
     let stepIndex = 0;
 
@@ -464,20 +505,25 @@
     }
 
     function setPrompt() {
-      if (stepIndex >= STEPS.length) return;
-      promptEl.textContent = STEPS[stepIndex].prompt;
+      const h = getHostname();
+      promptEl.textContent = promptForStep(stepIndex, h);
     }
 
-    function openR1Modal() {
-      modalR1.classList.add("is-open");
-      modalR1.setAttribute("aria-hidden", "false");
+    function updateModalTitle() {
+      modalTitleRouter.textContent = `${getHostname()} — simulated CLI`;
+    }
+
+    function openRouterCliModal() {
+      updateModalTitle();
+      modalRouter.classList.add("is-open");
+      modalRouter.setAttribute("aria-hidden", "false");
       cmdline.focus();
     }
 
-    function closeR1Modal() {
-      modalR1.classList.remove("is-open");
-      modalR1.setAttribute("aria-hidden", "true");
-      openR1Link.focus();
+    function closeRouterCliModal() {
+      modalRouter.classList.remove("is-open");
+      modalRouter.setAttribute("aria-hidden", "true");
+      openRouterCliLink.focus();
     }
 
     function reset() {
@@ -487,21 +533,25 @@
       cmdline.disabled = false;
       setPrompt();
       cmdline.value = "";
+      updateModalTitle();
+      const h = getHostname();
       appendLine(
         "line-sys",
-        "You are already in global configuration mode (R1(config)#). Enter each command and press Enter."
+        `You are already in global configuration mode (${h}(config)#). Enter each command and press Enter.`
       );
-      if (modalR1.classList.contains("is-open")) {
+      if (modalRouter.classList.contains("is-open")) {
         cmdline.focus();
       } else {
-        openR1Link.focus();
+        openRouterCliLink.focus();
       }
     }
 
     function submit() {
       if (stepIndex >= STEPS.length) return;
+      const h = getHostname();
+      const p = promptForStep(stepIndex, h);
       const line = cmdline.value;
-      appendLine("line-user", STEPS[stepIndex].prompt + " " + line);
+      appendLine("line-user", p + " " + line);
       cmdline.value = "";
 
       if (!line.trim()) return;
@@ -510,7 +560,7 @@
       if (step.test(line)) {
         stepIndex += 1;
         if (stepIndex >= STEPS.length) {
-          promptEl.textContent = "R1#";
+          promptEl.textContent = `${h}#`;
           passBanner.classList.add("visible");
           cmdline.disabled = true;
           appendLine("line-sys", '[OK] Building configuration...\r\n[OK] Complete (simulated).');
@@ -530,14 +580,20 @@
     });
 
     resetBtn.addEventListener("click", reset);
-    openR1Link.addEventListener("click", openR1Modal);
-    closeR1.addEventListener("click", closeR1Modal);
+    openRouterCliLink.addEventListener("click", openRouterCliModal);
+    closeRouterCli.addEventListener("click", closeRouterCliModal);
 
     document.addEventListener("keydown", (e) => {
       if (e.key !== "Escape") return;
-      if (!modalR1.classList.contains("is-open")) return;
+      if (!modalRouter.classList.contains("is-open")) return;
       e.preventDefault();
-      closeR1Modal();
+      closeRouterCliModal();
+    });
+
+    document.querySelectorAll('input[name="dev"]').forEach((r) => {
+      r.addEventListener("change", () => {
+        reset();
+      });
     });
 
     history.pushState(null, "", location.href);

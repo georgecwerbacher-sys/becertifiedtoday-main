@@ -67,6 +67,119 @@
       height: auto;
       vertical-align: middle;
     }
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .device-pick label {
+      margin-left: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .device-pick input {
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
+      outline: none;
+    }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+      pointer-events: none;
+    }
+    .cli-modal-overlay.is-open {
+      display: block;
+    }
+    .cli-modal-dialog {
+      width: min(520px, calc(100vw - 24px));
+      max-height: min(85vh, 680px);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
     .variant-box {
       margin: 14px 0 0;
       padding: 12px 14px;
@@ -90,17 +203,6 @@
       display: block;
       margin: 6px 0;
       cursor: pointer;
-    }
-    .console-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 14px;
-    }
-    @media (max-width: 800px) {
-      .console-row {
-        grid-template-columns: 1fr;
-      }
     }
     .console-label {
       margin: 0 0 8px;
@@ -246,6 +348,8 @@
     }
     .sim-nav-btn:hover { filter: brightness(1.08); }
     .sim-nav-home { background: #1a3d6e; }
+    .sim-nav-next { background: #1a3d6e; }
+    .sim-nav-back { background: #243352; border-color: #3d5280; }
   </style>
 </head>
 <body>
@@ -256,6 +360,7 @@
         EIGRP is up elsewhere. On <strong>R10</strong>, ACL <strong>150</strong> only permits TCP/UDP/ICMP — add a sequenced entry so <strong>EIGRP</strong> is allowed before the final deny (do not remove lines).
         On <strong>R20</strong>, build <strong>CoPP</strong>: extended ACL 100, class-map, policy-map with <code>police</code> (conform transmit / exceed drop), apply on <strong>control-plane</strong>.
         Pick Task 2 variant <strong>before</strong> your first R10 command; exam wording may differ (ICMP vs Telnet vs SSH).
+        Under the topology, choose <strong>Device in prompt</strong> (R10 or R20), then <strong>Open Router CLI</strong> for that console.
       </p>
       <div class="tasks">
         <strong>Tasks</strong>
@@ -268,6 +373,14 @@
 
       <div class="diagram-wrap" aria-label="Topology reference">
         <img src="/assets/acl-copp-lab.png" alt="Multi-area topology and R1-style reference addressing" />
+        <div class="device-pick" role="group" aria-label="Device in prompt">
+          <strong>Device in prompt:</strong>
+          <label><input type="radio" name="aclDev" value="R10" checked /> R10</label>
+          <label><input type="radio" name="aclDev" value="R20" /> R20</label>
+        </div>
+        <div class="device-links" aria-label="Open device CLI">
+          <button type="button" class="device-link" id="openDeviceCliLink">Open Router CLI</button>
+        </div>
       </div>
 
       <div class="variant-box">
@@ -286,31 +399,6 @@
             <span><strong>Version 3 — SSH</strong> from 192.168.24.0/24 — police <strong>10000</strong> bps</span>
           </label>
         </fieldset>
-      </div>
-
-      <div class="console-row" aria-label="R10 and R20 consoles">
-        <div class="terminal-panel" id="panelR10">
-          <h2 class="console-label">R10</h2>
-          <p class="console-hint" id="hintR10">Inspect neighbors and ACL 150, insert sequence 5 for EIGRP, verify, save.</p>
-          <div class="terminal" aria-label="R10 CLI">
-            <div class="console-scroll" id="scrollR10"></div>
-            <div class="input-row">
-              <span class="prompt" id="promptR10">R10#</span>
-              <input class="cmdline" id="cmdR10" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R10 command line" />
-            </div>
-          </div>
-        </div>
-        <div class="terminal-panel terminal-panel--waiting" id="panelR20">
-          <h2 class="console-label">R20</h2>
-          <p class="console-hint" id="hintR20">Unlocks after R10 sees neighbors. ACL → class-map → policy-map → control-plane.</p>
-          <div class="terminal" aria-label="R20 CLI">
-            <div class="console-scroll" id="scrollR20"></div>
-            <div class="input-row">
-              <span class="prompt" id="promptR20">R20#</span>
-              <input class="cmdline" id="cmdR20" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R20 command line" disabled />
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="controls">
@@ -336,10 +424,66 @@
     </main>
   </div>
 
+  <div id="modalR10" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="modalR10Dialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitleR10"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR10">R10 — simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR10" aria-label="Close R10 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel" id="panelR10">
+          <p class="console-hint" id="hintR10">Inspect neighbors and ACL 150, insert sequence 5 for EIGRP, verify, save.</p>
+          <div class="terminal" aria-label="R10 CLI">
+            <div class="console-scroll" id="scrollR10"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR10">R10#</span>
+              <input class="cmdline" id="cmdR10" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R10 command line" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalR20" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="modalR20Dialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitleR20"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR20">R20 — simulated CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR20" aria-label="Close R20 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel terminal-panel--waiting" id="panelR20">
+          <p class="console-hint" id="hintR20">Unlocks after R10 sees neighbors. ACL → class-map → policy-map → control-plane.</p>
+          <div class="terminal" aria-label="R20 CLI">
+            <div class="console-scroll" id="scrollR20"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR20">R20#</span>
+              <input class="cmdline" id="cmdR20" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R20 command line" disabled />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <nav class="sim-nav" aria-label="Simulation navigation">
-    <a class="sim-nav-btn" href="/cli-lab-netflow-span-2.html">Back</a>
     <a class="sim-nav-btn sim-nav-home" href="/practice-launcher.html">Home</a>
-    <a class="sim-nav-btn" href="/drag-drop-sample.html">Next</a>
+    <a class="sim-nav-btn sim-nav-next" href="/drag-drop-sample.html">Next</a>
+    <a class="sim-nav-btn sim-nav-back" href="/cli-lab-netflow-span-2.html">Back</a>
   </nav>
 
   <script>
@@ -550,6 +694,53 @@
     const passBanner = document.getElementById("passBanner");
     const resetBtn = document.getElementById("resetBtn");
     const variantFieldset = document.getElementById("variantFieldset");
+    const modalR10 = document.getElementById("modalR10");
+    const modalR20 = document.getElementById("modalR20");
+    const openDeviceCliLink = document.getElementById("openDeviceCliLink");
+    const closeR10Btn = document.getElementById("closeR10");
+    const closeR20Btn = document.getElementById("closeR20");
+
+    function getAclLabDevice() {
+      const sel = document.querySelector('input[name="aclDev"]:checked');
+      return sel ? sel.value : "R10";
+    }
+
+    function closeR10Modal() {
+      modalR10.classList.remove("is-open");
+      modalR10.setAttribute("aria-hidden", "true");
+    }
+
+    function closeR20Modal() {
+      modalR20.classList.remove("is-open");
+      modalR20.setAttribute("aria-hidden", "true");
+    }
+
+    function closeModals() {
+      closeR10Modal();
+      closeR20Modal();
+    }
+
+    function openSelectedCliModal() {
+      closeModals();
+      if (getAclLabDevice() === "R20") {
+        modalR20.classList.add("is-open");
+        modalR20.setAttribute("aria-hidden", "false");
+      } else {
+        modalR10.classList.add("is-open");
+        modalR10.setAttribute("aria-hidden", "false");
+      }
+      focusActiveCli();
+    }
+
+    function focusActiveCli() {
+      if (modalR10.classList.contains("is-open") && !cmdR10.disabled) {
+        cmdR10.focus();
+        return;
+      }
+      if (modalR20.classList.contains("is-open") && !cmdR20.disabled) {
+        cmdR20.focus();
+      }
+    }
 
     let phase = "R10_NEI1";
     let stepR10Cfg = 0;
@@ -664,11 +855,11 @@
 
       updateHints();
       updatePrompts();
-      if (!cmdR10.disabled) cmdR10.focus();
-      else if (!cmdR20.disabled) cmdR20.focus();
+      focusActiveCli();
     }
 
     function reset() {
+      closeModals();
       phase = "R10_NEI1";
       stepR10Cfg = 0;
       stepR20 = 0;
@@ -681,6 +872,7 @@
       setVariantLocked(false);
       appendLine(scrollR10, "line-sys", "ACL 150 blocks EIGRP (not TCP/UDP/ICMP). Add EIGRP permit before seq 40.");
       applyPhaseUI();
+      openDeviceCliLink.focus();
     }
 
     function submitR10() {
@@ -830,6 +1022,37 @@
     });
 
     resetBtn.addEventListener("click", reset);
+    openDeviceCliLink.addEventListener("click", openSelectedCliModal);
+    closeR10Btn.addEventListener("click", () => {
+      closeR10Modal();
+      openDeviceCliLink.focus();
+    });
+    closeR20Btn.addEventListener("click", () => {
+      closeR20Modal();
+      openDeviceCliLink.focus();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      if (modalR20.classList.contains("is-open")) {
+        e.preventDefault();
+        closeR20Modal();
+        openDeviceCliLink.focus();
+        return;
+      }
+      if (modalR10.classList.contains("is-open")) {
+        e.preventDefault();
+        closeR10Modal();
+        openDeviceCliLink.focus();
+      }
+    });
+
+    document.querySelectorAll('input[name="aclDev"]').forEach((r) => {
+      r.addEventListener("change", () => {
+        closeModals();
+        openDeviceCliLink.focus();
+      });
+    });
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
