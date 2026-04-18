@@ -207,6 +207,77 @@
   }
 
   /**
+   * Touch fallback for drag-and-drop question pages.
+   * iOS Safari does not reliably fire HTML5 drag events, so we
+   * directly move tokens into drop slots/bank on touch end.
+   */
+  function enableTouchDragDrop(card) {
+    if (!card || card.dataset.ccnpTouchDnD === "1") return;
+    var isTouchCapable =
+      "ontouchstart" in window ||
+      (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
+    if (!isTouchCapable) return;
+
+    var tokens = Array.prototype.slice.call(
+      card.querySelectorAll('.token[draggable="true"]')
+    );
+    var slots = Array.prototype.slice.call(card.querySelectorAll(".drop-slot"));
+    var banks = Array.prototype.slice.call(card.querySelectorAll(".bank, .token-bank"));
+    if (!tokens.length || !slots.length) return;
+
+    card.dataset.ccnpTouchDnD = "1";
+
+    tokens.forEach(function (token) {
+      token.style.touchAction = "none";
+
+      token.addEventListener(
+        "touchstart",
+        function () {
+          token.classList.add("dragging");
+        },
+        { passive: true }
+      );
+
+      token.addEventListener(
+        "touchmove",
+        function (e) {
+          if (e.cancelable) e.preventDefault();
+        },
+        { passive: false }
+      );
+
+      token.addEventListener(
+        "touchend",
+        function (e) {
+          token.classList.remove("dragging");
+          var t = e.changedTouches && e.changedTouches[0];
+          if (!t) return;
+
+          var hit = document.elementFromPoint(t.clientX, t.clientY);
+          if (!hit) return;
+
+          var slot = hit.closest(".drop-slot");
+          if (slot && card.contains(slot)) {
+            var existing = slot.querySelector(".token");
+            if (existing && existing !== token) {
+              var returnBank = banks[0];
+              if (returnBank) returnBank.appendChild(existing);
+            }
+            slot.appendChild(token);
+            return;
+          }
+
+          var bank = hit.closest(".bank, .token-bank");
+          if (bank && card.contains(bank)) {
+            bank.appendChild(token);
+          }
+        },
+        { passive: true }
+      );
+    });
+  }
+
+  /**
    * For single-answer radio questions that still rely on a Check button,
    * auto-run validation on selection and hide the redundant Check control.
    */
@@ -434,6 +505,7 @@
 
     prepareChoiceLabels(card);
     bindPointerFriendlyChoices(card);
+    enableTouchDragDrop(card);
     enableAutoCheckForSingleChoice(card);
     stripBottomNextFromCard(card);
     stripDuplicateSimNavNext();
