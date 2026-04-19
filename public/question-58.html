@@ -108,6 +108,17 @@
       border-color: #8c3434;
       background: #442020;
     }
+    /* Make correct/incorrect feedback obvious on the tokens, not only the slot shell */
+    .drop-slot.correct .token {
+      border-color: #43b689;
+      background: #174a38;
+      color: #dff5eb;
+    }
+    .drop-slot.incorrect .token {
+      border-color: #c55c5c;
+      background: #5c2626;
+      color: #fcdede;
+    }
     .actions {
       margin-top: 14px;
       display: flex;
@@ -132,6 +143,28 @@
     #nextWrap {
       display: none;
     }
+    .answer-exhibit {
+      display: none;
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #2c3f62;
+      background: #0f1628;
+    }
+    .answer-exhibit.is-visible {
+      display: block;
+    }
+    .answer-exhibit img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .answer-exhibit figcaption {
+      margin: 0 0 10px;
+      font-size: 0.92rem;
+      color: #b8c3d6;
+    }
   </style>
 </head>
 <body>
@@ -142,30 +175,24 @@
     <div class="layout">
       <section>
         <div id="bank" class="bank">
-          <div class="token" draggable="true" data-value="The default Administrative Distance is equal to 110">The default Administrative Distance is equal to 110</div>
-          <div class="token" draggable="true" data-value="It is an Advanced Distance Vector routing protocol">It is an Advanced Distance Vector routing protocol</div>
-          <div class="token" draggable="true" data-value="It requires a process ID that is local to the router">It requires a process ID that is local to the router</div>
-          <div class="token" draggable="true" data-value="It uses virtual links to connect two parts of a partitioned backbone through a non-backbone area">It uses virtual links to connect two parts of a partitioned backbone through a non-backbone area</div>
-          <div class="token" draggable="true" data-value="It relies on the Diffused Update Algorithm to calculate the shortest path to a destination">It relies on the Diffused Update Algorithm to calculate the shortest path to a destination</div>
-          <div class="token" draggable="true" data-value="It requires an Autonomous System number to create a routing instance for exchanging routing information">It requires an Autonomous System number to create a routing instance for exchanging routing information</div>
+          <div class="token" draggable="true" data-value="The default Administrative Distance is equal to 110" data-cat="ospf">The default Administrative Distance is equal to 110</div>
+          <div class="token" draggable="true" data-value="It is an Advanced Distance Vector routing protocol" data-cat="eigrp">It is an Advanced Distance Vector routing protocol</div>
+          <div class="token" draggable="true" data-value="It requires a process ID that is local to the router" data-cat="ospf">It requires a process ID that is local to the router</div>
+          <div class="token" draggable="true" data-value="It uses virtual links to connect two parts of a partitioned backbone through a non-backbone area" data-cat="ospf">It uses virtual links to connect two parts of a partitioned backbone through a non-backbone area</div>
+          <div class="token" draggable="true" data-value="It relies on the Diffused Update Algorithm to calculate the shortest path to a destination" data-cat="eigrp">It relies on the Diffused Update Algorithm to calculate the shortest path to a destination</div>
+          <div class="token" draggable="true" data-value="It requires an Autonomous System number to create a routing instance for exchanging routing information" data-cat="eigrp">It requires an Autonomous System number to create a routing instance for exchanging routing information</div>
         </div>
       </section>
 
       <section class="targets">
-        <div
-          class="target-group"
-          data-expected="It is an Advanced Distance Vector routing protocol|It relies on the Diffused Update Algorithm to calculate the shortest path to a destination|It requires an Autonomous System number to create a routing instance for exchanging routing information"
-        >
+        <div class="target-group" data-cat="eigrp">
           <div class="target-title">EIGRP</div>
           <div class="drop-slot"></div>
           <div class="drop-slot"></div>
           <div class="drop-slot"></div>
         </div>
 
-        <div
-          class="target-group"
-          data-expected="The default Administrative Distance is equal to 110|It requires a process ID that is local to the router|It uses virtual links to connect two parts of a partitioned backbone through a non-backbone area"
-        >
+        <div class="target-group" data-cat="ospf">
           <div class="target-title">OSPF</div>
           <div class="drop-slot"></div>
           <div class="drop-slot"></div>
@@ -176,18 +203,27 @@
 
     <div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <span id="result"></span>
       <span id="nextWrap"><a class="next-link" href="/question-59.html">Next</a></span>
     </div>
+
+    <figure id="answerExhibit" class="answer-exhibit">
+      <figcaption>Correct matching (reference)</figcaption>
+      <img id="answerImage" src="/question-58-answer.png?v=20260419" data-src="/question-58-answer.png?v=20260419" width="520" height="590" alt="Correct EIGRP and OSPF drag-and-drop mapping reference." />
+    </figure>
   </main>
 
   <script>
     const bank = document.getElementById("bank");
     const slots = document.querySelectorAll(".drop-slot");
     const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
+    const answerExhibit = document.getElementById("answerExhibit");
+    const answerImage = document.getElementById("answerImage");
     const nextWrap = document.getElementById("nextWrap");
     let dragged = null;
 
@@ -224,28 +260,62 @@
       if (dragged) bank.appendChild(dragged);
     });
 
-    function multisetEqual(a, b) {
-      if (a.length !== b.length) return false;
-      const sa = a.slice().sort();
-      const sb = b.slice().sort();
-      return sa.every((v, i) => v === sb[i]);
-    }
-
     checkBtn.addEventListener("click", () => {
       const groups = document.querySelectorAll(".target-group");
       let correctGroups = 0;
       groups.forEach((group) => {
-        const expected = group.dataset.expected.split("|");
-        const actual = [...group.querySelectorAll(".drop-slot .token")].map((t) => t.dataset.value);
+        const targetCat = group.dataset.cat;
+        const groupSlots = [...group.querySelectorAll(".drop-slot")];
+        const filled = groupSlots.filter((slot) => !!slot.querySelector(".token")).length;
         const ok =
-          expected.length === actual.length && multisetEqual(expected, actual);
+          filled === groupSlots.length &&
+          groupSlots.every((slot) => {
+            const token = slot.querySelector(".token");
+            return token && token.dataset.cat === targetCat;
+          });
         if (ok) correctGroups += 1;
-        group.querySelectorAll(".drop-slot").forEach((slot) => {
+        groupSlots.forEach((slot) => {
           slot.classList.remove("correct", "incorrect");
-          slot.classList.add(ok ? "correct" : "incorrect");
+          const token = slot.querySelector(".token");
+          if (token && token.dataset.cat === targetCat) {
+            slot.classList.add("correct");
+          } else {
+            slot.classList.add("incorrect");
+          }
         });
       });
       result.textContent = `Score: ${correctGroups}/${groups.length}`;
+      nextWrap.style.display = "inline-block";
+    });
+
+    showBtn.addEventListener("click", () => {
+      const groups = document.querySelectorAll(".target-group");
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+
+      groups.forEach((group) => {
+        const targetCat = group.dataset.cat;
+        const groupSlots = [...group.querySelectorAll(".drop-slot")];
+        let slotIndex = 0;
+
+        [...bank.querySelectorAll(".token")].forEach((token) => {
+          if (token.dataset.cat !== targetCat) return;
+          const slot = groupSlots[slotIndex];
+          if (!slot) return;
+          slot.appendChild(token);
+          slot.classList.add("correct");
+          slotIndex += 1;
+        });
+      });
+
+      result.textContent = "Answer shown.";
+      if (!answerImage.getAttribute("src")) {
+        answerImage.setAttribute("src", answerImage.dataset.src);
+      }
+      answerExhibit.classList.add("is-visible");
       nextWrap.style.display = "inline-block";
     });
 
@@ -256,6 +326,7 @@
         if (token) bank.appendChild(token);
       });
       result.textContent = "";
+      answerExhibit.classList.remove("is-visible");
       nextWrap.style.display = "none";
     });
   </script>

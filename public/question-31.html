@@ -122,6 +122,28 @@
     #nextWrap {
       display: none;
     }
+    .answer-exhibit {
+      display: none;
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #2c3f62;
+      background: #0f1628;
+    }
+    .answer-exhibit.is-visible {
+      display: block;
+    }
+    .answer-exhibit img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .answer-exhibit figcaption {
+      margin: 0 0 10px;
+      font-size: 0.92rem;
+      color: #b8c3d6;
+    }
   </style>
 </head>
 <body>
@@ -162,18 +184,27 @@
 
     <div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <span id="result"></span>
       <span id="nextWrap"><a class="next-link" href="/question-32.html">Next</a></span>
     </div>
+
+    <figure id="answerExhibit" class="answer-exhibit">
+      <figcaption>Correct matching (reference)</figcaption>
+      <img id="answerImage" src="/question-31-answer.png?v=20260419" data-src="/question-31-answer.png?v=20260419" width="1024" height="385" alt="Completed LISP matching: map resolver accepts LISP encapsulated map requests; proxy ETR receives traffic from LISP sites to non-LISP sites; route reflector answers route update reflection for LISP peers; ITR receives packets from site-facing interfaces; map server learns EID prefix mapping entries from an ETR." />
+    </figure>
   </main>
 
   <script>
     const bank = document.getElementById("bank");
     const slots = document.querySelectorAll(".drop-slot");
     const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
+    const answerExhibit = document.getElementById("answerExhibit");
+    const answerImage = document.getElementById("answerImage");
     const nextWrap = document.getElementById("nextWrap");
     let dragged = null;
 
@@ -226,6 +257,28 @@
       nextWrap.style.display = "inline-block";
     });
 
+    showBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const existing = slot.querySelector(".token");
+        if (existing) bank.appendChild(existing);
+        const want = slot.dataset.target;
+        const target = [...bank.querySelectorAll(".token")].find(
+          (t) => t.dataset.value === want
+        );
+        if (target) {
+          slot.appendChild(target);
+          slot.classList.add("correct");
+        }
+      });
+      result.textContent = "Answer shown.";
+      if (!answerImage.getAttribute("src")) {
+        answerImage.setAttribute("src", answerImage.dataset.src);
+      }
+      answerExhibit.classList.add("is-visible");
+      nextWrap.style.display = "inline-block";
+    });
+
     resetBtn.addEventListener("click", () => {
       slots.forEach((slot) => {
         slot.classList.remove("correct", "incorrect", "over");
@@ -233,6 +286,7 @@
         if (token) bank.appendChild(token);
       });
       result.textContent = "";
+      answerExhibit.classList.remove("is-visible");
       nextWrap.style.display = "none";
     });
   </script>
