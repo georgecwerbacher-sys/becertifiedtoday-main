@@ -1,5 +1,5 @@
 /**
- * Practice UI: toolbar (Home, Show answer, Next), navigation from:
+ * Practice UI: toolbar/navigation helpers.
  * - Random queue (ccnpQuestionQueue), or
  * - Linear study scope (ccnpLinearScope), or
  * - Global question order (study-config.json allIds), or
@@ -461,6 +461,60 @@
     };
   }
 
+  function resolveBack(qid, cfg) {
+    if (isReviewMode()) {
+      return {
+        href: "/practice-launcher.html",
+        label: "Back",
+      };
+    }
+
+    var queue = parseQueue();
+    if (queue) {
+      var idx = queue.indexOf(qid);
+      if (idx > 0) {
+        return { href: "/question-" + queue[idx - 1] + ".html", label: "Back" };
+      }
+      return {
+        href: "/practice-launcher.html",
+        label: "Back",
+      };
+    }
+
+    var linearIds = parseLinearScope();
+    if (linearIds) {
+      var li = linearIds.indexOf(qid);
+      if (li > 0) {
+        return { href: "/question-" + linearIds[li - 1] + ".html", label: "Back" };
+      }
+      return {
+        href: "/practice-launcher.html",
+        label: "Back",
+      };
+    }
+
+    var all = cfg && Array.isArray(cfg.allIds) && cfg.allIds.length ? cfg.allIds : [];
+    var gi = all.indexOf(qid);
+    if (gi > 0) {
+      return {
+        href: "/question-" + all[gi - 1] + ".html",
+        label: "Back",
+      };
+    }
+    return {
+      href: "/practice-launcher.html",
+      label: "Back",
+    };
+  }
+
+  function isDragDropQuestion(card) {
+    if (!card) return false;
+    return (
+      !!card.querySelector(".drop-slot") &&
+      !!card.querySelector('.token[draggable="true"]')
+    );
+  }
+
   function syncToolbarNext(href, label) {
     var tb = document.getElementById("ccnpToolbarNext");
     if (tb) {
@@ -519,6 +573,12 @@
     toolbar.id = "ccnpQToolbar";
     toolbar.className = "ccnp-q-toolbar";
     toolbar.setAttribute("role", "toolbar");
+    var dragDropPage = isDragDropQuestion(card);
+
+    var back = document.createElement("a");
+    back.id = "ccnpToolbarBack";
+    back.href = "/practice-launcher.html";
+    back.textContent = "Back";
 
     var home = document.createElement("a");
     home.href = "/practice-launcher.html";
@@ -540,11 +600,16 @@
     reveal.setAttribute("role", "region");
     reveal.setAttribute("aria-label", "Revealed answer");
 
+    toolbar.appendChild(back);
     toolbar.appendChild(home);
-    toolbar.appendChild(btn);
+    if (!dragDropPage) {
+      toolbar.appendChild(btn);
+    }
     toolbar.appendChild(nextA);
     card.insertBefore(toolbar, card.firstChild);
-    card.insertBefore(reveal, toolbar.nextSibling);
+    if (!dragDropPage) {
+      card.insertBefore(reveal, toolbar.nextSibling);
+    }
 
     btn.addEventListener("click", function () {
       var visible = reveal.classList.toggle("is-visible");
@@ -624,6 +689,7 @@
         !err && cfg && Array.isArray(cfg.allIds) && cfg.allIds.length
           ? cfg
           : { allIds: [] };
+      var b = resolveBack(qid, c);
       var r = resolveNext(qid, c);
       if (
         !isReviewMode() &&
@@ -636,6 +702,8 @@
           r = { href: intr.href, label: intr.label };
         }
       }
+      back.setAttribute("href", b.href);
+      back.textContent = b.label;
       nextA.setAttribute("href", r.href);
       nextA.textContent = r.label;
       syncToolbarNext(r.href, r.label);
