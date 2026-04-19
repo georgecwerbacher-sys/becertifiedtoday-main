@@ -148,28 +148,6 @@
     #nextWrap {
       display: none;
     }
-    .answer-exhibit {
-      display: none;
-      margin-top: 18px;
-      padding: 12px;
-      border-radius: 12px;
-      border: 1px solid #2c3f62;
-      background: #0f1628;
-    }
-    .answer-exhibit.is-visible {
-      display: block;
-    }
-    .answer-exhibit img {
-      display: block;
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-    }
-    .answer-exhibit figcaption {
-      margin: 0 0 10px;
-      font-size: 0.92rem;
-      color: #b8c3d6;
-    }
     @media (max-width: 900px) {
       .layout {
         grid-template-columns: 1fr;
@@ -218,18 +196,6 @@ interface GigabitEthernet0/0
       <span id="result"></span>
       <span id="nextWrap"><a class="next-link" href="/question-366.html">Next</a></span>
     </div>
-
-    <figure id="answerExhibit" class="answer-exhibit">
-      <figcaption>Completed troubleshooting notes (reference)</figcaption>
-      <img
-        id="answerImage"
-        src="/question-365-answer.png?v=20260419"
-        data-src="/question-365-answer.png?v=20260419"
-        width="1024"
-        height="597"
-        alt="OSPF MTU mismatch: neighbor EXSTART, debug shows smaller interface MTU, cause MTU mismatch, fix ip ospf mtu-ignore on Gi0/0."
-      />
-    </figure>
   </main>
 
   <script>
@@ -239,8 +205,6 @@ interface GigabitEthernet0/0
     const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
-    const answerExhibit = document.getElementById("answerExhibit");
-    const answerImage = document.getElementById("answerImage");
     const nextWrap = document.getElementById("nextWrap");
     let dragged = null;
 
@@ -322,10 +286,6 @@ interface GigabitEthernet0/0
       });
 
       result.textContent = "Answer shown.";
-      if (!answerImage.getAttribute("src")) {
-        answerImage.setAttribute("src", answerImage.dataset.src);
-      }
-      answerExhibit.classList.add("is-visible");
       nextWrap.style.display = "inline-block";
     });
 
@@ -336,7 +296,6 @@ interface GigabitEthernet0/0
         if (token) bank.appendChild(token);
       });
       result.textContent = "";
-      answerExhibit.classList.remove("is-visible");
       nextWrap.style.display = "none";
     });
   </script>

@@ -135,28 +135,6 @@
       margin-top: 16px;
       display: none;
     }
-    .answer-exhibit {
-      display: none;
-      margin-top: 18px;
-      padding: 12px;
-      border-radius: 12px;
-      border: 1px solid #32456b;
-      background: #0f1728;
-    }
-    .answer-exhibit.is-visible {
-      display: block;
-    }
-    .answer-exhibit img {
-      display: block;
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-    }
-    .answer-exhibit figcaption {
-      margin: 0 0 10px;
-      font-size: 0.92rem;
-      color: #b9c7dd;
-    }
     @media (max-width: 900px) {
       .board {
         grid-template-columns: 1fr;
@@ -203,18 +181,6 @@
     <div id="nextWrap" class="next-wrap">
       <a class="next-link" href="/question-363.html">Next</a>
     </div>
-
-    <figure id="answerExhibit" class="answer-exhibit">
-      <figcaption>Correct matching (reference)</figcaption>
-      <img
-        id="answerImage"
-        src="/question-362-answer.png?v=20260419"
-        data-src="/question-362-answer.png?v=20260419"
-        width="1024"
-        height="511"
-        alt="SD-Access fabric: CP node for endpoint ID mapping; border node for external L3; edge node for wired access."
-      />
-    </figure>
   </main>
 
   <script>
@@ -224,8 +190,6 @@
     const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
-    const answerExhibit = document.getElementById("answerExhibit");
-    const answerImage = document.getElementById("answerImage");
     const nextWrap = document.getElementById("nextWrap");
     let dragged = null;
 
@@ -325,10 +289,6 @@
       result.style.display = "block";
       result.className = "answer correct";
       result.textContent = "Answer shown.";
-      if (!answerImage.getAttribute("src")) {
-        answerImage.setAttribute("src", answerImage.dataset.src);
-      }
-      answerExhibit.classList.add("is-visible");
       nextWrap.style.display = "inline-block";
     });
 
@@ -340,7 +300,6 @@
       });
       result.style.display = "none";
       result.textContent = "";
-      answerExhibit.classList.remove("is-visible");
       nextWrap.style.display = "none";
     });
   </script>

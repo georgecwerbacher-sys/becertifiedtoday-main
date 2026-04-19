@@ -157,28 +157,6 @@
     #nextWrap {
       display: none;
     }
-    .answer-exhibit {
-      display: none;
-      margin-top: 18px;
-      padding: 12px;
-      border-radius: 12px;
-      border: 1px solid #2c3f62;
-      background: #0f1628;
-    }
-    .answer-exhibit.is-visible {
-      display: block;
-    }
-    .answer-exhibit img {
-      display: block;
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-    }
-    .answer-exhibit figcaption {
-      margin: 0 0 10px;
-      font-size: 0.92rem;
-      color: #b8c3d6;
-    }
   </style>
 </head>
 <body>
@@ -232,18 +210,6 @@
       <span id="result"></span>
       <span id="nextWrap"><a class="next-link" href="/question-272.html">Next</a></span>
     </div>
-
-    <figure id="answerExhibit" class="answer-exhibit">
-      <figcaption>Correct four characteristics (reference)</figcaption>
-      <img
-        id="answerImage"
-        src="/question-271-answer.png?v=20260419"
-        data-src="/question-271-answer.png?v=20260419"
-        width="1024"
-        height="169"
-        alt="Cisco SD-WAN: centralized policies, control-plane connections, DTLS/TLS tunnels, hub-and-spoke flexibility."
-      />
-    </figure>
   </main>
 
   <script>
@@ -253,8 +219,6 @@
     const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
-    const answerExhibit = document.getElementById("answerExhibit");
-    const answerImage = document.getElementById("answerImage");
     const nextWrap = document.getElementById("nextWrap");
     let dragged = null;
 
@@ -372,10 +336,6 @@
       });
 
       result.textContent = "Answer shown.";
-      if (!answerImage.getAttribute("src")) {
-        answerImage.setAttribute("src", answerImage.dataset.src);
-      }
-      answerExhibit.classList.add("is-visible");
       nextWrap.style.display = "inline-block";
     });
 
@@ -386,7 +346,6 @@
         if (token) bank.appendChild(token);
       });
       result.textContent = "";
-      answerExhibit.classList.remove("is-visible");
       nextWrap.style.display = "none";
     });
   </script>

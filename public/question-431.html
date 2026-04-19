@@ -164,28 +164,6 @@
     #nextWrap {
       display: none;
     }
-    .answer-exhibit {
-      display: none;
-      margin-top: 18px;
-      padding: 12px;
-      border-radius: 12px;
-      border: 1px solid #2c3f62;
-      background: #1a253b;
-    }
-    .answer-exhibit.is-visible {
-      display: block;
-    }
-    .answer-exhibit img {
-      display: block;
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-    }
-    .answer-exhibit figcaption {
-      margin: 0 0 10px;
-      font-size: 0.92rem;
-      color: #b8c3d6;
-    }
   </style>
 </head>
 <body class="ccnp-practice-ui">
@@ -235,18 +213,6 @@
     <div id="nextWrap">
       <a class="next-link" href="/question-432.html">Next</a>
     </div>
-
-    <figure id="answerExhibit" class="answer-exhibit">
-      <figcaption>Puppet and Ansible: correct placement (reference)</figcaption>
-      <img
-        id="answerImage"
-        src=""
-        data-src="/question-431-answer.png?v=20260419"
-        width="1024"
-        height="516"
-        alt="Puppet: pull from main node and agent required. Ansible: SSH and procedural playbooks."
-      />
-    </figure>
   </main>
 
   <script>
@@ -257,8 +223,6 @@
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
     const nextWrap = document.getElementById("nextWrap");
-    const answerExhibit = document.getElementById("answerExhibit");
-    const answerImage = document.getElementById("answerImage");
     /** Row order per column for Show Answer to match the reference image (Check is still multiset / order-agnostic). */
     const exhibitOrderByGroup = [
       [
@@ -376,7 +340,6 @@
     }
 
     checkBtn.addEventListener("click", () => {
-      answerExhibit.classList.remove("is-visible");
       const groups = document.querySelectorAll(".target-group");
       let correctGroups = 0;
       groups.forEach((group) => {
@@ -413,10 +376,6 @@
       result.textContent = "Answer shown.";
       result.classList.remove("incorrect");
       result.classList.add("is-visible", "correct");
-      if (!answerImage.getAttribute("src")) {
-        answerImage.setAttribute("src", answerImage.dataset.src);
-      }
-      answerExhibit.classList.add("is-visible");
       nextWrap.style.display = "inline-block";
     });
 
@@ -428,7 +387,6 @@
       });
       result.textContent = "";
       result.classList.remove("correct", "incorrect", "is-visible");
-      answerExhibit.classList.remove("is-visible");
       nextWrap.style.display = "none";
     });
   </script>
