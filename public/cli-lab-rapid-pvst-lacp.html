@@ -219,8 +219,8 @@
       letter-spacing: 0.12em;
     }
     .cli-modal-dialog {
-      width: min(440px, calc(100vw - 24px));
-      max-height: min(85vh, 640px);
+      width: min(520px, calc(100vw - 24px));
+      max-height: min(85vh, 720px);
       display: flex;
       flex-direction: column;
       position: fixed;
@@ -283,12 +283,6 @@
       flex: 1;
       min-height: 0;
     }
-    .cli-modal-body .terminal {
-      min-height: 0;
-    }
-    .cli-modal-body #scrollback {
-      max-height: min(220px, 38vh);
-    }
     .cli-modal-footer {
       padding: 10px 12px 12px;
       border-top: 1px solid #2d3b5a;
@@ -313,19 +307,20 @@
     }
     .terminal {
       font-family: "SF Mono", ui-monospace, Consolas, monospace;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       background: #0a0d12;
       border: 1px solid #2a3344;
       border-radius: 10px;
       padding: 12px 12px 10px;
-      min-height: 220px;
+      min-height: 240px;
       display: flex;
       flex-direction: column;
+      margin-top: 0;
     }
     #scrollback {
       flex: 1;
       overflow-y: auto;
-      max-height: 320px;
+      max-height: 360px;
       margin-bottom: 8px;
       white-space: pre-wrap;
       word-break: break-word;
@@ -444,7 +439,7 @@
     .sim-nav-next { background: #1a3d6e; }
     .sim-nav-back { background: #243352; border-color: #3d5280; }
     .cli-modal-body #pc3Scrollback {
-      max-height: min(220px, 38vh);
+      max-height: 360px;
     }
     .pc3-modal-hint {
       margin: 0;
@@ -452,6 +447,23 @@
       color: #9fb0cc;
       line-height: 1.45;
     }
+  
+    /* CLI: avoid white native input fill — transparent text fields on dark terminals */
+    .cli-modal-dialog,
+    .terminal {
+      color-scheme: dark;
+    }
+    .terminal input[type="text"],
+    input.cmdline,
+    #cmdline,
+    #cmdlineR2,
+    #cmdlineR3 {
+      color-scheme: dark;
+      -webkit-appearance: none;
+      appearance: none;
+      background-color: transparent !important;
+    }
+
   </style>
 </head>
 <body>

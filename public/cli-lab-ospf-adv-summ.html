@@ -128,7 +128,7 @@
     }
     .cli-modal-dialog {
       width: min(520px, calc(100vw - 24px));
-      max-height: min(85vh, 680px);
+      max-height: min(85vh, 720px);
       display: flex;
       flex-direction: column;
       position: fixed;
@@ -198,19 +198,20 @@
     }
     .terminal {
       font-family: "SF Mono", ui-monospace, Consolas, monospace;
-      font-size: 0.78rem;
+      font-size: 0.88rem;
       background: #0a0d12;
       border: 1px solid #2a3344;
       border-radius: 10px;
-      padding: 10px 10px 8px;
-      min-height: 150px;
+      padding: 12px 12px 10px;
+      min-height: 240px;
       display: flex;
       flex-direction: column;
+      margin-top: 0;
     }
     .console-scroll {
       flex: 1;
       overflow-y: auto;
-      max-height: 200px;
+      max-height: 360px;
       margin-bottom: 8px;
       white-space: pre-wrap;
       word-break: break-word;
@@ -319,6 +320,23 @@
     .sim-nav-home { background: #1a3d6e; }
     .sim-nav-next { background: #1a3d6e; }
     .sim-nav-back { background: #243352; border-color: #3d5280; }
+  
+    /* CLI: avoid white native input fill — transparent text fields on dark terminals */
+    .cli-modal-dialog,
+    .terminal {
+      color-scheme: dark;
+    }
+    .terminal input[type="text"],
+    input.cmdline,
+    #cmdline,
+    #cmdlineR2,
+    #cmdlineR3 {
+      color-scheme: dark;
+      -webkit-appearance: none;
+      appearance: none;
+      background-color: transparent !important;
+    }
+
   </style>
 </head>
 <body>

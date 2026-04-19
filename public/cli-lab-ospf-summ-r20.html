@@ -185,7 +185,7 @@
     #scrollback {
       flex: 1;
       overflow-y: auto;
-      max-height: 380px;
+      max-height: 360px;
       margin-bottom: 8px;
       white-space: pre-wrap;
       word-break: break-word;
@@ -293,6 +293,23 @@
     .sim-nav-home { background: #1a3d6e; }
     .sim-nav-next { background: #1a3d6e; }
     .sim-nav-back { background: #243352; border-color: #3d5280; }
+  
+    /* CLI: avoid white native input fill — transparent text fields on dark terminals */
+    .cli-modal-dialog,
+    .terminal {
+      color-scheme: dark;
+    }
+    .terminal input[type="text"],
+    input.cmdline,
+    #cmdline,
+    #cmdlineR2,
+    #cmdlineR3 {
+      color-scheme: dark;
+      -webkit-appearance: none;
+      appearance: none;
+      background-color: transparent !important;
+    }
+
   </style>
 </head>
 <body>
