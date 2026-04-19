@@ -79,6 +79,16 @@
       border-color: #8c3434;
       background: #442020;
     }
+    .drop-slot.correct .token {
+      border-color: #43b689;
+      background: #174a38;
+      color: #dff5eb;
+    }
+    .drop-slot.incorrect .token {
+      border-color: #c55c5c;
+      background: #5c2626;
+      color: #fcdede;
+    }
     .drop-slot .token {
       width: 100%;
       text-align: center;
@@ -137,6 +147,28 @@
     #nextWrap {
       display: none;
     }
+    .answer-exhibit {
+      display: none;
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #2c3f62;
+      background: #0f1628;
+    }
+    .answer-exhibit.is-visible {
+      display: block;
+    }
+    .answer-exhibit img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .answer-exhibit figcaption {
+      margin: 0 0 10px;
+      font-size: 0.92rem;
+      color: #b8c3d6;
+    }
   </style>
 </head>
 <body>
@@ -145,44 +177,77 @@
       Drag and drop the Cisco Catalyst Center (formerly DNA Center) northbound API characteristics from the left to the right. Not all options are used.
     </h1>
     <p class="instructions">
-      Place exactly three tiles into the northbound column (any order). Leave the two distractors in the bank. Then click Check Answer.
+      Place exactly three tiles into the northbound column. Which of the three slots you use does not matter—only that the three correct traits are there and both distractors stay in the bank.
     </p>
 
     <div class="zone">
       <div class="zone-header">Catalyst Center northbound API</div>
-      <div class="drop-slot" data-zone="nb"></div>
-      <div class="drop-slot" data-zone="nb"></div>
-      <div class="drop-slot" data-zone="nb"></div>
+      <div class="drop-slot" data-zone="nb" data-cat="nb"></div>
+      <div class="drop-slot" data-zone="nb" data-cat="nb"></div>
+      <div class="drop-slot" data-zone="nb" data-cat="nb"></div>
     </div>
 
     <div class="bank-wrap">
       <div id="bank" class="bank">
-        <div class="token" draggable="true" data-value="southbound">supports NETCONF, SSH, SNMP, and others</div>
-        <div class="token" draggable="true" data-value="intent-api">referred to as Intent API</div>
-        <div class="token" draggable="true" data-value="multivendor">multivendor focus</div>
-        <div class="token" draggable="true" data-value="json-only">uses JSON exclusively</div>
-        <div class="token" draggable="true" data-value="rest-http">RESTful API based on HTTP methods</div>
+        <div class="token" draggable="true" data-cat="distractor" data-value="southbound">
+          supports NETCONF, SSH, SNMP, and others
+        </div>
+        <div class="token" draggable="true" data-cat="nb" data-value="intent-api">referred to as Intent API</div>
+        <div class="token" draggable="true" data-cat="distractor" data-value="multivendor">multivendor focus</div>
+        <div class="token" draggable="true" data-cat="nb" data-value="json-only">uses JSON exclusively</div>
+        <div class="token" draggable="true" data-cat="nb" data-value="rest-http">RESTful API based on HTTP methods</div>
       </div>
     </div>
 
     <div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <span id="result"></span>
       <span id="nextWrap"><a class="next-link" href="/question-310.html">Next</a></span>
     </div>
+
+    <figure id="answerExhibit" class="answer-exhibit">
+      <figcaption>Correct three characteristics (reference)</figcaption>
+      <img
+        id="answerImage"
+        src="/question-309-answer.png?v=20260419"
+        data-src="/question-309-answer.png?v=20260419"
+        width="1024"
+        height="409"
+        alt="Catalyst Center northbound API: Intent API, JSON exclusively, RESTful HTTP-based API."
+      />
+    </figure>
   </main>
 
   <script>
     const bank = document.getElementById("bank");
     const slots = document.querySelectorAll('.drop-slot[data-zone="nb"]');
     const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
+    const answerExhibit = document.getElementById("answerExhibit");
+    const answerImage = document.getElementById("answerImage");
     const nextWrap = document.getElementById("nextWrap");
     let dragged = null;
 
-    const NB_SET = new Set(["intent-api", "json-only", "rest-http"]);
+    const NB_EXPECTED = ["intent-api", "json-only", "rest-http"];
+    const NB_SET = new Set(NB_EXPECTED);
+
+    /** Row order for Show Answer to match the reference image (top to bottom). */
+    const exhibitSlotOrder = ["intent-api", "json-only", "rest-http"];
+
+    function multisetEqual(a, b) {
+      if (a.length !== b.length) return false;
+      const sa = [...a].sort();
+      const sb = [...b].sort();
+      return sa.every((v, i) => v === sb[i]);
+    }
+
+    function findTokenByValue(value) {
+      return [...bank.querySelectorAll(".token")].find((t) => t.dataset.value === value);
+    }
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -221,22 +286,58 @@
       const vals = [...slots]
         .map((s) => s.querySelector(".token")?.dataset.value)
         .filter(Boolean);
-      const have = new Set(vals);
-      const full = vals.length === 3 && have.size === 3 && [...NB_SET].every((v) => have.has(v));
+      const full = vals.length === 3 && multisetEqual(vals, NB_EXPECTED);
 
       slots.forEach((slot) => {
         slot.classList.remove("correct", "incorrect", "over");
-        const v = slot.querySelector(".token")?.dataset.value;
-        if (!v) {
+        const token = slot.querySelector(".token");
+        if (!token) {
           slot.classList.add("incorrect");
           return;
         }
-        slot.classList.add(NB_SET.has(v) ? "correct" : "incorrect");
+        const v = token.dataset.value;
+        const ok =
+          token.dataset.cat === slot.dataset.cat && NB_SET.has(v);
+        slot.classList.add(ok ? "correct" : "incorrect");
       });
 
-      result.textContent = full
-        ? "Score: 3/3 — Intent API, JSON payloads, REST over HTTP."
-        : "Place the three northbound traits (Intent API, JSON, REST/HTTP); NETCONF/SSH/SNMP describe southbound device access, not this API surface.";
+      const rightInSlots = [...slots].filter((slot) => {
+        const t = slot.querySelector(".token");
+        return t && t.dataset.cat === slot.dataset.cat && NB_SET.has(t.dataset.value);
+      }).length;
+
+      if (full) {
+        result.textContent =
+          "Score: 3/3 — Intent API, JSON payloads, REST over HTTP. Order in the three northbound slots does not matter.";
+      } else if (vals.length < 3) {
+        result.textContent = `Place exactly three northbound traits (${vals.length}/3 slots filled). Slot order does not matter.`;
+      } else {
+        result.textContent = `Score: ${rightInSlots}/3 — Use Intent API, JSON-only payloads, and REST/HTTP (any order in the column); keep southbound and multivendor distractors in the bank.`;
+      }
+      nextWrap.style.display = "inline-block";
+    });
+
+    showBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+
+      const slotEls = [...slots];
+      exhibitSlotOrder.forEach((val, i) => {
+        const tok = findTokenByValue(val);
+        if (tok && slotEls[i]) {
+          slotEls[i].appendChild(tok);
+          slotEls[i].classList.add("correct");
+        }
+      });
+
+      result.textContent = "Answer shown.";
+      if (!answerImage.getAttribute("src")) {
+        answerImage.setAttribute("src", answerImage.dataset.src);
+      }
+      answerExhibit.classList.add("is-visible");
       nextWrap.style.display = "inline-block";
     });
 
@@ -247,6 +348,7 @@
         if (token) bank.appendChild(token);
       });
       result.textContent = "";
+      answerExhibit.classList.remove("is-visible");
       nextWrap.style.display = "none";
     });
   </script>

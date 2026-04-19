@@ -82,6 +82,16 @@
       border-color: #8c3434;
       background: #442020;
     }
+    .drop-slot.correct .token {
+      border-color: #43b689;
+      background: #174a38;
+      color: #dff5eb;
+    }
+    .drop-slot.incorrect .token {
+      border-color: #c55c5c;
+      background: #5c2626;
+      color: #fcdede;
+    }
     .drop-slot .token {
       width: 100%;
     }
@@ -139,41 +149,61 @@
     #nextWrap {
       display: none;
     }
+    .answer-exhibit {
+      display: none;
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #2c3f62;
+      background: #0f1628;
+    }
+    .answer-exhibit.is-visible {
+      display: block;
+    }
+    .answer-exhibit img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .answer-exhibit figcaption {
+      margin: 0 0 10px;
+      font-size: 0.92rem;
+      color: #b8c3d6;
+    }
   </style>
 </head>
 <body>
   <main class="card">
     <h1>Drag and drop the characteristics from the left onto the routing protocols they describe on the right.</h1>
     <p class="instructions">
-      Drag each tile into one of the slots under EIGRP or OSPF (two slots per protocol).
+      Drag each tile into one of the slots under EIGRP or OSPF (two slots per protocol). Order within EIGRP or within OSPF does not matter.
     </p>
 
     <div class="arch-columns">
       <div class="arch-col">
         <div class="arch-header">EIGRP</div>
-        <div class="drop-slot" data-target="Dual Diffusing Update algorithm"></div>
-        <div
-          class="drop-slot"
-          data-target="metrics are bandwidth, delay, reliability, load, and MTU"
-        ></div>
+        <div class="drop-slot" data-cat="eigrp"></div>
+        <div class="drop-slot" data-cat="eigrp"></div>
       </div>
       <div class="arch-col">
         <div class="arch-header">OSPF</div>
-        <div class="drop-slot" data-target="cost-based metric"></div>
-        <div class="drop-slot" data-target="Dijiktra algorithm"></div>
+        <div class="drop-slot" data-cat="ospf"></div>
+        <div class="drop-slot" data-cat="ospf"></div>
       </div>
     </div>
 
     <div class="bank-wrap">
       <div id="bank" class="bank">
-        <div class="token" draggable="true" data-value="cost-based metric">cost-based metric</div>
-        <div class="token" draggable="true" data-value="Dual Diffusing Update algorithm">
+        <div class="token" draggable="true" data-cat="ospf" data-value="cost-based metric">cost-based metric</div>
+        <div class="token" draggable="true" data-cat="eigrp" data-value="Dual Diffusing Update algorithm">
           Dual Diffusing Update algorithm
         </div>
-        <div class="token" draggable="true" data-value="Dijiktra algorithm">Dijiktra algorithm</div>
+        <div class="token" draggable="true" data-cat="ospf" data-value="Dijiktra algorithm">Dijiktra algorithm</div>
         <div
           class="token"
           draggable="true"
+          data-cat="eigrp"
           data-value="metrics are bandwidth, delay, reliability, load, and MTU"
         >
           metrics are bandwidth, delay, reliability, load, and MTU
@@ -183,18 +213,34 @@
 
     <div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <span id="result"></span>
       <span id="nextWrap"><a class="next-link" href="/question-227.html">Next</a></span>
     </div>
+
+    <figure id="answerExhibit" class="answer-exhibit">
+      <figcaption>Correct matching (reference)</figcaption>
+      <img
+        id="answerImage"
+        src="/question-226-answer.png?v=20260419"
+        data-src="/question-226-answer.png?v=20260419"
+        width="1024"
+        height="214"
+        alt="EIGRP vs OSPF reference: EIGRP uses DUAL and composite metrics; OSPF uses cost and SPF (Dijkstra)."
+      />
+    </figure>
   </main>
 
   <script>
     const bank = document.getElementById("bank");
     const slots = document.querySelectorAll(".drop-slot");
     const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
+    const answerExhibit = document.getElementById("answerExhibit");
+    const answerImage = document.getElementById("answerImage");
     const nextWrap = document.getElementById("nextWrap");
     let dragged = null;
 
@@ -231,19 +277,95 @@
       if (dragged) bank.appendChild(dragged);
     });
 
+    function multisetEqual(a, b) {
+      if (a.length !== b.length) return false;
+      const sa = a.slice().sort();
+      const sb = b.slice().sort();
+      return sa.every((v, i) => v === sb[i]);
+    }
+
+    const eigrpExpected = [
+      "Dual Diffusing Update algorithm",
+      "metrics are bandwidth, delay, reliability, load, and MTU",
+    ];
+    const ospfExpected = ["cost-based metric", "Dijiktra algorithm"];
+
+    function findTokenByValue(value) {
+      return [...bank.querySelectorAll(".token")].find((t) => t.dataset.value === value);
+    }
+
     checkBtn.addEventListener("click", () => {
-      let correct = 0;
+      const eigrpSlots = document.querySelectorAll('.drop-slot[data-cat="eigrp"]');
+      const ospfSlots = document.querySelectorAll('.drop-slot[data-cat="ospf"]');
+      const eigrpActual = [...eigrpSlots]
+        .map((s) => s.querySelector(".token")?.dataset.value)
+        .filter(Boolean);
+      const ospfActual = [...ospfSlots]
+        .map((s) => s.querySelector(".token")?.dataset.value)
+        .filter(Boolean);
+      const eigrpOk = multisetEqual(eigrpActual, eigrpExpected);
+      const ospfOk = multisetEqual(ospfActual, ospfExpected);
+      const allFilled = eigrpActual.length === 2 && ospfActual.length === 2;
+
       slots.forEach((slot) => {
         slot.classList.remove("correct", "incorrect");
         const token = slot.querySelector(".token");
-        if (token && token.dataset.value === slot.dataset.target) {
-          slot.classList.add("correct");
-          correct += 1;
-        } else {
+        if (!token) {
           slot.classList.add("incorrect");
+          return;
+        }
+        const rightCol = token.dataset.cat === slot.dataset.cat;
+        slot.classList.add(rightCol ? "correct" : "incorrect");
+      });
+
+      if (!allFilled) {
+        result.textContent = `Place all four characteristics (${eigrpActual.length + ospfActual.length}/4 in slots).`;
+        nextWrap.style.display = "none";
+        return;
+      }
+
+      const allOk = eigrpOk && ospfOk;
+      const slotScore = [...slots].filter((slot) => {
+        const t = slot.querySelector(".token");
+        return t && t.dataset.cat === slot.dataset.cat;
+      }).length;
+
+      result.textContent = allOk
+        ? "Correct. EIGRP uses DUAL and a composite metric; OSPF uses cost and SPF (Dijkstra)."
+        : `Score: ${slotScore}/4 — Place both EIGRP statements under EIGRP and both OSPF statements under OSPF (order within each column does not matter).`;
+      nextWrap.style.display = "inline-block";
+    });
+
+    showBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+
+      const eigrpSlots = [...document.querySelectorAll('.drop-slot[data-cat="eigrp"]')];
+      const ospfSlots = [...document.querySelectorAll('.drop-slot[data-cat="ospf"]')];
+
+      eigrpExpected.forEach((val, i) => {
+        const tok = findTokenByValue(val);
+        if (tok && eigrpSlots[i]) {
+          eigrpSlots[i].appendChild(tok);
+          eigrpSlots[i].classList.add("correct");
         }
       });
-      result.textContent = `Score: ${correct}/${slots.length}`;
+      ospfExpected.forEach((val, i) => {
+        const tok = findTokenByValue(val);
+        if (tok && ospfSlots[i]) {
+          ospfSlots[i].appendChild(tok);
+          ospfSlots[i].classList.add("correct");
+        }
+      });
+
+      result.textContent = "Answer shown.";
+      if (!answerImage.getAttribute("src")) {
+        answerImage.setAttribute("src", answerImage.dataset.src);
+      }
+      answerExhibit.classList.add("is-visible");
       nextWrap.style.display = "inline-block";
     });
 
@@ -254,6 +376,7 @@
         if (token) bank.appendChild(token);
       });
       result.textContent = "";
+      answerExhibit.classList.remove("is-visible");
       nextWrap.style.display = "none";
     });
   </script>

@@ -82,6 +82,16 @@
       border-color: #8c3434;
       background: #442020;
     }
+    .drop-slot.correct .token {
+      border-color: #43b689;
+      background: #174a38;
+      color: #dff5eb;
+    }
+    .drop-slot.incorrect .token {
+      border-color: #c55c5c;
+      background: #5c2626;
+      color: #fcdede;
+    }
     .drop-slot .token {
       width: 100%;
     }
@@ -139,43 +149,57 @@
     #nextWrap {
       display: none;
     }
+    .answer-exhibit {
+      display: none;
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #2c3f62;
+      background: #0f1628;
+    }
+    .answer-exhibit.is-visible {
+      display: block;
+    }
+    .answer-exhibit img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .answer-exhibit figcaption {
+      margin: 0 0 10px;
+      font-size: 0.92rem;
+      color: #b8c3d6;
+    }
   </style>
 </head>
 <body>
   <main class="card">
     <h1>Drag and drop the characteristics from the left onto the corresponding switching architectures on the right.</h1>
     <p class="instructions">
-      Drag each characteristic into one of the slots under RIB or FIB (two slots per architecture).
+      Drag each characteristic into one of the slots under RIB or FIB (two slots per architecture). Order within RIB or within FIB does not matter.
     </p>
 
     <div class="arch-columns">
       <div class="arch-col">
         <div class="arch-header">RIB</div>
-        <div
-          class="drop-slot"
-          data-target="Each routing protocol has its own information base"
-        ></div>
-        <div
-          class="drop-slot"
-          data-target="It is built from information obtained from dynamic routing protocols and connected and static routes"
-        ></div>
+        <div class="drop-slot" data-cat="rib"></div>
+        <div class="drop-slot" data-cat="rib"></div>
       </div>
       <div class="arch-col">
         <div class="arch-header">FIB</div>
-        <div class="drop-slot" data-target="It is known as CEF"></div>
-        <div
-          class="drop-slot"
-          data-target="It is used to make destination prefix-based switching decision"
-        ></div>
+        <div class="drop-slot" data-cat="fib"></div>
+        <div class="drop-slot" data-cat="fib"></div>
       </div>
     </div>
 
     <div class="bank-wrap">
       <div id="bank" class="bank">
-        <div class="token" draggable="true" data-value="It is known as CEF">It is known as CEF</div>
+        <div class="token" draggable="true" data-cat="fib" data-value="It is known as CEF">It is known as CEF</div>
         <div
           class="token"
           draggable="true"
+          data-cat="fib"
           data-value="It is used to make destination prefix-based switching decision"
         >
           It is used to make destination prefix-based switching decision
@@ -183,6 +207,7 @@
         <div
           class="token"
           draggable="true"
+          data-cat="rib"
           data-value="Each routing protocol has its own information base"
         >
           Each routing protocol has its own information base
@@ -190,6 +215,7 @@
         <div
           class="token"
           draggable="true"
+          data-cat="rib"
           data-value="It is built from information obtained from dynamic routing protocols and connected and static routes"
         >
           It is built from information obtained from dynamic routing protocols and connected and static routes
@@ -199,18 +225,27 @@
 
     <div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <span id="result"></span>
       <span id="nextWrap"><a class="next-link" href="/question-220.html">Next</a></span>
     </div>
+
+    <figure id="answerExhibit" class="answer-exhibit">
+      <figcaption>Correct matching (reference)</figcaption>
+      <img id="answerImage" src="/question-219-answer.png?v=20260419" data-src="/question-219-answer.png?v=20260419" width="1024" height="214" alt="RIB vs FIB reference: RIB per-protocol information base and sources; FIB as CEF for prefix-based forwarding." />
+    </figure>
   </main>
 
   <script>
     const bank = document.getElementById("bank");
     const slots = document.querySelectorAll(".drop-slot");
     const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
+    const answerExhibit = document.getElementById("answerExhibit");
+    const answerImage = document.getElementById("answerImage");
     const nextWrap = document.getElementById("nextWrap");
     let dragged = null;
 
@@ -247,19 +282,99 @@
       if (dragged) bank.appendChild(dragged);
     });
 
+    function multisetEqual(a, b) {
+      if (a.length !== b.length) return false;
+      const sa = a.slice().sort();
+      const sb = b.slice().sort();
+      return sa.every((v, i) => v === sb[i]);
+    }
+
+    const ribExpected = [
+      "Each routing protocol has its own information base",
+      "It is built from information obtained from dynamic routing protocols and connected and static routes",
+    ];
+    const fibExpected = [
+      "It is known as CEF",
+      "It is used to make destination prefix-based switching decision",
+    ];
+
+    function findTokenByValue(value) {
+      return [...bank.querySelectorAll(".token")].find((t) => t.dataset.value === value);
+    }
+
     checkBtn.addEventListener("click", () => {
-      let correct = 0;
+      const ribSlots = document.querySelectorAll('.drop-slot[data-cat="rib"]');
+      const fibSlots = document.querySelectorAll('.drop-slot[data-cat="fib"]');
+      const ribActual = [...ribSlots]
+        .map((s) => s.querySelector(".token")?.dataset.value)
+        .filter(Boolean);
+      const fibActual = [...fibSlots]
+        .map((s) => s.querySelector(".token")?.dataset.value)
+        .filter(Boolean);
+      const ribOk = multisetEqual(ribActual, ribExpected);
+      const fibOk = multisetEqual(fibActual, fibExpected);
+      const allFilled = ribActual.length === 2 && fibActual.length === 2;
+
       slots.forEach((slot) => {
         slot.classList.remove("correct", "incorrect");
         const token = slot.querySelector(".token");
-        if (token && token.dataset.value === slot.dataset.target) {
-          slot.classList.add("correct");
-          correct += 1;
-        } else {
+        const col = slot.dataset.cat;
+        if (!token) {
           slot.classList.add("incorrect");
+          return;
+        }
+        const rightCol = token.dataset.cat === col;
+        slot.classList.add(rightCol ? "correct" : "incorrect");
+      });
+
+      if (!allFilled) {
+        result.textContent = `Place all four characteristics (${ribActual.length + fibActual.length}/4 in slots).`;
+        nextWrap.style.display = "none";
+        return;
+      }
+
+      const allOk = ribOk && fibOk;
+      const slotScore = [...slots].filter((slot) => {
+        const t = slot.querySelector(".token");
+        return t && t.dataset.cat === slot.dataset.cat;
+      }).length;
+
+      result.textContent = allOk
+        ? "Correct. RIB holds per-protocol routing knowledge; the FIB (CEF) is built from the best routes for forwarding lookups."
+        : `Score: ${slotScore}/4 — Both RIB statements must be under RIB and both FIB statements under FIB (order within each column does not matter).`;
+      nextWrap.style.display = "inline-block";
+    });
+
+    showBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+
+      const ribSlots = [...document.querySelectorAll('.drop-slot[data-cat="rib"]')];
+      const fibSlots = [...document.querySelectorAll('.drop-slot[data-cat="fib"]')];
+
+      ribExpected.forEach((val, i) => {
+        const tok = findTokenByValue(val);
+        if (tok && ribSlots[i]) {
+          ribSlots[i].appendChild(tok);
+          ribSlots[i].classList.add("correct");
         }
       });
-      result.textContent = `Score: ${correct}/${slots.length}`;
+      fibExpected.forEach((val, i) => {
+        const tok = findTokenByValue(val);
+        if (tok && fibSlots[i]) {
+          fibSlots[i].appendChild(tok);
+          fibSlots[i].classList.add("correct");
+        }
+      });
+
+      result.textContent = "Answer shown.";
+      if (!answerImage.getAttribute("src")) {
+        answerImage.setAttribute("src", answerImage.dataset.src);
+      }
+      answerExhibit.classList.add("is-visible");
       nextWrap.style.display = "inline-block";
     });
 
@@ -270,6 +385,7 @@
         if (token) bank.appendChild(token);
       });
       result.textContent = "";
+      answerExhibit.classList.remove("is-visible");
       nextWrap.style.display = "none";
     });
   </script>

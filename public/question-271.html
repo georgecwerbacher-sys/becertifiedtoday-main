@@ -81,6 +81,16 @@
       border-color: #8c3434;
       background: #442020;
     }
+    .drop-slot.correct .token {
+      border-color: #43b689;
+      background: #174a38;
+      color: #dff5eb;
+    }
+    .drop-slot.incorrect .token {
+      border-color: #c55c5c;
+      background: #5c2626;
+      color: #fcdede;
+    }
     .drop-slot .token {
       width: 100%;
     }
@@ -147,42 +157,67 @@
     #nextWrap {
       display: none;
     }
+    .answer-exhibit {
+      display: none;
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #2c3f62;
+      background: #0f1628;
+    }
+    .answer-exhibit.is-visible {
+      display: block;
+    }
+    .answer-exhibit img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .answer-exhibit figcaption {
+      margin: 0 0 10px;
+      font-size: 0.92rem;
+      color: #b8c3d6;
+    }
   </style>
 </head>
 <body>
   <main class="card">
     <h1>Drag and drop the characteristics of Cisco SD-WAN from the left onto the right. Not all options are used.</h1>
     <p class="instructions">
-      Place exactly four tiles into the four boxes below (order does not matter). Leave the two incorrect statements in the bank.
+      Place exactly four tiles into the four boxes under <strong>Cisco SD-WAN Characteristics</strong>. Which box you use does not matter—only that all four true statements are in those slots and both false statements stay in the bank.
     </p>
 
     <div class="slot-heading">Cisco SD-WAN Characteristics</div>
     <div class="slot-grid">
-      <div class="drop-slot"></div>
-      <div class="drop-slot"></div>
-      <div class="drop-slot"></div>
-      <div class="drop-slot"></div>
+      <div class="drop-slot" data-cat="sdwan"></div>
+      <div class="drop-slot" data-cat="sdwan"></div>
+      <div class="drop-slot" data-cat="sdwan"></div>
+      <div class="drop-slot" data-cat="sdwan"></div>
     </div>
 
     <div class="bank-wrap">
       <div class="bank-label">Bank</div>
       <div id="bank" class="bank">
-        <div class="token" draggable="true" data-value="manual secure tunnel configuration">manual secure tunnel configuration</div>
-        <div class="token" draggable="true" data-value="uses unique per device feature templates">
+        <div class="token" draggable="true" data-cat="distractor" data-value="manual secure tunnel configuration">
+          manual secure tunnel configuration
+        </div>
+        <div class="token" draggable="true" data-cat="distractor" data-value="uses unique per device feature templates">
           uses unique per device feature templates
         </div>
-        <div class="token" draggable="true" data-value="centralized distribution of policies throughout the network">
+        <div class="token" draggable="true" data-cat="sdwan" data-value="centralized distribution of policies throughout the network">
           centralized distribution of policies throughout the network
         </div>
-        <div class="token" draggable="true" data-value="operates over DTLS/TLS authenticated and secured tunnels">
+        <div class="token" draggable="true" data-cat="sdwan" data-value="operates over DTLS/TLS authenticated and secured tunnels">
           operates over DTLS/TLS authenticated and secured tunnels
         </div>
-        <div class="token" draggable="true" data-value="control plane connections between routers">
+        <div class="token" draggable="true" data-cat="sdwan" data-value="control plane connections between routers">
           control plane connections between routers
         </div>
         <div
           class="token"
           draggable="true"
+          data-cat="sdwan"
           data-value="provides flexibility and scalability through a hub and spoke architecture"
         >
           provides flexibility and scalability through a hub and spoke architecture
@@ -192,18 +227,34 @@
 
     <div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <span id="result"></span>
       <span id="nextWrap"><a class="next-link" href="/question-272.html">Next</a></span>
     </div>
+
+    <figure id="answerExhibit" class="answer-exhibit">
+      <figcaption>Correct four characteristics (reference)</figcaption>
+      <img
+        id="answerImage"
+        src="/question-271-answer.png?v=20260419"
+        data-src="/question-271-answer.png?v=20260419"
+        width="1024"
+        height="169"
+        alt="Cisco SD-WAN: centralized policies, control-plane connections, DTLS/TLS tunnels, hub-and-spoke flexibility."
+      />
+    </figure>
   </main>
 
   <script>
     const bank = document.getElementById("bank");
     const slots = document.querySelectorAll(".drop-slot");
     const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
+    const answerExhibit = document.getElementById("answerExhibit");
+    const answerImage = document.getElementById("answerImage");
     const nextWrap = document.getElementById("nextWrap");
     let dragged = null;
 
@@ -214,8 +265,27 @@
       "provides flexibility and scalability through a hub and spoke architecture",
     ];
 
-    function sortedCopy(arr) {
-      return [...arr].sort();
+    /** Slot order for Show Answer to match the reference image (row-major 2×2). Grading still ignores order. */
+    const exhibitSlotOrder = [
+      "centralized distribution of policies throughout the network",
+      "control plane connections between routers",
+      "operates over DTLS/TLS authenticated and secured tunnels",
+      "provides flexibility and scalability through a hub and spoke architecture",
+    ];
+
+    function multisetEqual(a, b) {
+      if (a.length !== b.length) return false;
+      const sa = [...a].sort();
+      const sb = [...b].sort();
+      return sa.every((v, i) => v === sb[i]);
+    }
+
+    function isSolutionStatement(value) {
+      return CORRECT.includes(value);
+    }
+
+    function findTokenByValue(value) {
+      return [...bank.querySelectorAll(".token")].find((t) => t.dataset.value === value);
     }
 
     history.pushState(null, "", location.href);
@@ -252,26 +322,60 @@
     });
 
     checkBtn.addEventListener("click", () => {
-      const placed = [];
-      slots.forEach((slot) => {
-        const token = slot.querySelector(".token");
-        if (token) placed.push(token.dataset.value);
-      });
-      const ok =
-        placed.length === 4 &&
-        JSON.stringify(sortedCopy(placed)) === JSON.stringify(sortedCopy(CORRECT));
+      const placed = [...slots]
+        .map((slot) => slot.querySelector(".token")?.dataset.value)
+        .filter(Boolean);
+      const allOk = placed.length === 4 && multisetEqual(placed, CORRECT);
 
       slots.forEach((slot) => {
         slot.classList.remove("correct", "incorrect", "over");
-        slot.classList.add(ok ? "correct" : "incorrect");
+        const token = slot.querySelector(".token");
+        if (!token) {
+          slot.classList.add("incorrect");
+          return;
+        }
+        const inCategory =
+          token.dataset.cat === slot.dataset.cat && isSolutionStatement(token.dataset.value);
+        slot.classList.add(inCategory ? "correct" : "incorrect");
       });
 
-      if (ok) {
+      const rightInSlots = [...slots].filter((slot) => {
+        const t = slot.querySelector(".token");
+        return t && t.dataset.cat === slot.dataset.cat && isSolutionStatement(t.dataset.value);
+      }).length;
+
+      if (allOk) {
         result.textContent =
           "Score: 4/4 — Cisco SD-WAN (vManage / WAN Edge) pushes policies from a central controller; control traffic uses authenticated DTLS/TLS tunnels; OMP provides overlay control-plane signaling between WAN components; topologies commonly include hub-and-spoke flexibility. Manual per-tunnel IPsec setup and “unique per device only” templates are not defining characteristics.";
+      } else if (placed.length < 4) {
+        result.textContent = `Place exactly four true characteristics in the grid (${placed.length}/4 slots filled). Order of the four boxes does not matter.`;
       } else {
-        result.textContent = `Place exactly the four correct tiles (any order). Currently ${placed.length}/4 slots filled.`;
+        result.textContent = `Score: ${rightInSlots}/4 — Use all four true SD-WAN statements in the characteristics area (any slot order); keep both false statements in the bank.`;
       }
+      nextWrap.style.display = "inline-block";
+    });
+
+    showBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+
+      const slotEls = [...slots];
+      exhibitSlotOrder.forEach((val, i) => {
+        const tok = findTokenByValue(val);
+        if (tok && slotEls[i]) {
+          slotEls[i].appendChild(tok);
+          slotEls[i].classList.add("correct");
+        }
+      });
+
+      result.textContent = "Answer shown.";
+      if (!answerImage.getAttribute("src")) {
+        answerImage.setAttribute("src", answerImage.dataset.src);
+      }
+      answerExhibit.classList.add("is-visible");
       nextWrap.style.display = "inline-block";
     });
 
@@ -282,6 +386,7 @@
         if (token) bank.appendChild(token);
       });
       result.textContent = "";
+      answerExhibit.classList.remove("is-visible");
       nextWrap.style.display = "none";
     });
   </script>

@@ -78,6 +78,16 @@
       border-color: #8c3434;
       background: #442020;
     }
+    .drop-slot.correct .token {
+      border-color: #43b689;
+      background: #174a38;
+      color: #dff5eb;
+    }
+    .drop-slot.incorrect .token {
+      border-color: #c55c5c;
+      background: #5c2626;
+      color: #fcdede;
+    }
     .bank-wrap {
       margin-top: 8px;
       padding: 12px;
@@ -139,6 +149,28 @@
     #nextWrap {
       display: none;
     }
+    .answer-exhibit {
+      display: none;
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #2c3f62;
+      background: #0f1628;
+    }
+    .answer-exhibit.is-visible {
+      display: block;
+    }
+    .answer-exhibit img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .answer-exhibit figcaption {
+      margin: 0 0 10px;
+      font-size: 0.92rem;
+      color: #b8c3d6;
+    }
   </style>
 </head>
 <body>
@@ -166,27 +198,36 @@
     <div class="bank-wrap">
       <h3>Characteristics</h3>
       <div id="bank" class="bank">
-        <div class="token" draggable="true" data-value="pull">utilizes a pull model</div>
-        <div class="token" draggable="true" data-value="push">utilizes a push model</div>
-        <div class="token" draggable="true" data-value="multimaster">multimaster architecture</div>
-        <div class="token" draggable="true" data-value="primary-secondary">primary/secondary architecture</div>
+        <div class="token" draggable="true" data-value="pull" data-cat="puppet">utilizes a pull model</div>
+        <div class="token" draggable="true" data-value="push" data-cat="ansible">utilizes a push model</div>
+        <div class="token" draggable="true" data-value="multimaster" data-cat="ansible">multimaster architecture</div>
+        <div class="token" draggable="true" data-value="primary-secondary" data-cat="puppet">primary/secondary architecture</div>
       </div>
     </div>
 
     <div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <span id="result"></span>
       <span id="nextWrap"><a class="next-link" href="/question-136.html">Next</a></span>
     </div>
+
+    <figure id="answerExhibit" class="answer-exhibit">
+      <figcaption>Correct matching (reference)</figcaption>
+      <img id="answerImage" src="/question-135-answer.png?v=20260419" data-src="/question-135-answer.png?v=20260419" width="995" height="223" alt="Ansible: push model and multimaster architecture. Puppet: pull model and primary/secondary architecture." />
+    </figure>
   </main>
 
   <script>
     const bank = document.getElementById("bank");
     const slots = document.querySelectorAll(".drop-slot");
     const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
+    const answerExhibit = document.getElementById("answerExhibit");
+    const answerImage = document.getElementById("answerImage");
     const nextWrap = document.getElementById("nextWrap");
     let dragged = null;
     let draggedFromBank = false;
@@ -234,35 +275,87 @@
         .filter(Boolean);
     }
 
-    const ansibleAllowed = new Set(["push", "multimaster"]);
-    const puppetAllowed = new Set(["pull", "primary-secondary"]);
+    function multisetEqual(a, b) {
+      if (a.length !== b.length) return false;
+      const sa = a.slice().sort();
+      const sb = b.slice().sort();
+      return sa.every((v, i) => v === sb[i]);
+    }
+
+    const ansibleExpected = ["push", "multimaster"];
+    const puppetExpected = ["pull", "primary-secondary"];
 
     checkBtn.addEventListener("click", () => {
-      const ansibleVals = new Set(valuesInGroup("ansible"));
-      const puppetVals = new Set(valuesInGroup("puppet"));
-
-      const ansibleOk =
-        ansibleVals.size === 2 && ansibleVals.has("push") && ansibleVals.has("multimaster");
-      const puppetOk =
-        puppetVals.size === 2 && puppetVals.has("pull") && puppetVals.has("primary-secondary");
+      const ansibleOk = multisetEqual(valuesInGroup("ansible"), ansibleExpected);
+      const puppetOk = multisetEqual(valuesInGroup("puppet"), puppetExpected);
 
       document.querySelectorAll(".drop-slot.ansible").forEach((s) => {
         s.classList.remove("correct", "incorrect");
         const t = s.querySelector(".token");
-        if (!t) s.classList.add("incorrect");
-        else s.classList.add(ansibleAllowed.has(t.dataset.value) ? "correct" : "incorrect");
+        if (!t) {
+          s.classList.add("incorrect");
+          return;
+        }
+        const ok = t.dataset.cat === "ansible";
+        s.classList.add(ok ? "correct" : "incorrect");
       });
       document.querySelectorAll(".drop-slot.puppet").forEach((s) => {
         s.classList.remove("correct", "incorrect");
         const t = s.querySelector(".token");
-        if (!t) s.classList.add("incorrect");
-        else s.classList.add(puppetAllowed.has(t.dataset.value) ? "correct" : "incorrect");
+        if (!t) {
+          s.classList.add("incorrect");
+          return;
+        }
+        const ok = t.dataset.cat === "puppet";
+        s.classList.add(ok ? "correct" : "incorrect");
       });
 
       const allOk = ansibleOk && puppetOk;
       result.textContent = allOk
         ? "Correct. Ansible: push from the control node (SSH by default) and a multimaster-style model without a catalog pull agent. Puppet: pull model (agent requests catalog from the master) and primary/secondary (master / agent) style architecture."
-        : "Incorrect. Ansible: utilizes a push model, multimaster architecture. Puppet: utilizes a pull model, primary/secondary architecture.";
+        : "Incorrect. Ansible: push model and multimaster (any order). Puppet: pull model and primary/secondary (any order).";
+      nextWrap.style.display = "inline-block";
+    });
+
+    showBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+
+      const ansibleSlots = [...document.querySelectorAll(".drop-slot.ansible")];
+      const puppetSlots = [...document.querySelectorAll(".drop-slot.puppet")];
+      const findVal = (v) =>
+        [...bank.querySelectorAll(".token")].find((t) => t.dataset.value === v);
+
+      const pushTok = findVal("push");
+      const mmTok = findVal("multimaster");
+      const pullTok = findVal("pull");
+      const psTok = findVal("primary-secondary");
+
+      if (pushTok && ansibleSlots[0]) {
+        ansibleSlots[0].appendChild(pushTok);
+        ansibleSlots[0].classList.add("correct");
+      }
+      if (mmTok && ansibleSlots[1]) {
+        ansibleSlots[1].appendChild(mmTok);
+        ansibleSlots[1].classList.add("correct");
+      }
+      if (pullTok && puppetSlots[0]) {
+        puppetSlots[0].appendChild(pullTok);
+        puppetSlots[0].classList.add("correct");
+      }
+      if (psTok && puppetSlots[1]) {
+        puppetSlots[1].appendChild(psTok);
+        puppetSlots[1].classList.add("correct");
+      }
+
+      result.textContent = "Answer shown.";
+      if (!answerImage.getAttribute("src")) {
+        answerImage.setAttribute("src", answerImage.dataset.src);
+      }
+      answerExhibit.classList.add("is-visible");
       nextWrap.style.display = "inline-block";
     });
 
@@ -273,6 +366,7 @@
         if (token) bank.appendChild(token);
       });
       result.textContent = "";
+      answerExhibit.classList.remove("is-visible");
       nextWrap.style.display = "none";
     });
   </script>
