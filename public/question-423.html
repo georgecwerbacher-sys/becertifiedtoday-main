@@ -140,6 +140,44 @@
     #nextWrap {
       display: none;
     }
+    .answer {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+      line-height: 1.45;
+    }
+    .answer.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+    }
+    .answer.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+    }
+    .answer-exhibit {
+      display: none;
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #2c3f62;
+      background: #1a253b;
+    }
+    .answer-exhibit.is-visible {
+      display: block;
+    }
+    .answer-exhibit img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .answer-exhibit figcaption {
+      margin: 0 0 10px;
+      font-size: 0.92rem;
+      color: #b8c3d6;
+    }
   </style>
 </head>
 <body>
@@ -176,20 +214,55 @@
 
     <div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
       <button id="resetBtn" type="button">Reset</button>
-      <span id="result"></span>
-      <span id="nextWrap"><a class="next-link" href="/question-424.html">Next</a></span>
     </div>
+    <div id="result" class="answer" aria-live="polite"></div>
+    <div id="nextWrap">
+      <a class="next-link" href="/question-424.html">Next</a>
+    </div>
+
+    <figure id="answerExhibit" class="answer-exhibit">
+      <figcaption>PIM Sparse Mode: correct three characteristics (reference)</figcaption>
+      <img
+        id="answerImage"
+        src=""
+        data-src="/question-423-answer.png?v=20260419"
+        width="1024"
+        height="436"
+        alt="PIM Sparse Mode: builds shared distribution trees, requires a rendezvous point, uses a pull model."
+      />
+    </figure>
   </main>
 
   <script>
     const bank = document.getElementById("bank");
     const slots = document.querySelectorAll(".drop-slot");
     const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
     const nextWrap = document.getElementById("nextWrap");
+    const answerExhibit = document.getElementById("answerExhibit");
+    const answerImage = document.getElementById("answerImage");
+    /** Row order for Show Answer to match the reference image (Check is still order-agnostic). */
+    const exhibitSlotOrder = [
+      "builds shared distribute trees",
+      "requires a rendezvous point to deliver multicast traffic",
+      "uses a pull model to distribute multicast traffic",
+    ];
     let dragged = null;
+
+    function findTokenByValue(value) {
+      return [...bank.querySelectorAll(".token")].find((t) => t.dataset.value === value);
+    }
+
+    function placeToken(container, token) {
+      if (!container || !token) return;
+      const existing = container.querySelector(".token");
+      if (existing) bank.appendChild(existing);
+      container.appendChild(token);
+    }
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -212,9 +285,7 @@
         e.preventDefault();
         slot.classList.remove("over");
         if (!dragged) return;
-        const existing = slot.querySelector(".token");
-        if (existing) bank.appendChild(existing);
-        slot.appendChild(dragged);
+        placeToken(slot, dragged);
       });
     });
 
@@ -232,6 +303,7 @@
     }
 
     checkBtn.addEventListener("click", () => {
+      answerExhibit.classList.remove("is-visible");
       const groups = document.querySelectorAll(".target-group");
       let correctGroups = 0;
       groups.forEach((group) => {
@@ -244,7 +316,41 @@
           slot.classList.add(ok ? "correct" : "incorrect");
         });
       });
+      result.style.display = "block";
+      result.className = "answer";
       result.textContent = `Score: ${correctGroups}/${groups.length}`;
+      if (correctGroups === groups.length) {
+        result.classList.add("correct");
+      } else {
+        result.classList.add("incorrect");
+      }
+      nextWrap.style.display = "inline-block";
+    });
+
+    showBtn.addEventListener("click", () => {
+      const groups = document.querySelectorAll(".target-group");
+      groups.forEach((group) => {
+        group.querySelectorAll(".drop-slot").forEach((slot) => {
+          slot.classList.remove("correct", "incorrect", "over");
+          const token = slot.querySelector(".token");
+          if (token) bank.appendChild(token);
+        });
+      });
+      const slotEls = [...document.querySelectorAll(".target-group .drop-slot")];
+      exhibitSlotOrder.forEach((val, i) => {
+        const tok = findTokenByValue(val);
+        if (tok && slotEls[i]) {
+          placeToken(slotEls[i], tok);
+          slotEls[i].classList.add("correct");
+        }
+      });
+      result.style.display = "block";
+      result.className = "answer correct";
+      result.textContent = "Answer shown.";
+      if (!answerImage.getAttribute("src")) {
+        answerImage.setAttribute("src", answerImage.dataset.src);
+      }
+      answerExhibit.classList.add("is-visible");
       nextWrap.style.display = "inline-block";
     });
 
@@ -255,6 +361,9 @@
         if (token) bank.appendChild(token);
       });
       result.textContent = "";
+      result.style.display = "none";
+      result.className = "answer";
+      answerExhibit.classList.remove("is-visible");
       nextWrap.style.display = "none";
     });
   </script>
