@@ -3,57 +3,302 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coming soon</title>
+  <meta name="description" content="Sign up for Be Certified Today — practice modes, scenarios, and drills to prepare for Cisco and other IT certification exams." />
+  <link rel="canonical" href="https://becertifiedtoday.com/" />
+  <meta property="og:site_name" content="Be Certified Today" />
+  <meta property="og:url" content="https://becertifiedtoday.com/" />
+  <title>Be Certified Today — IT certification practice</title>
   <style>
     :root {
       color-scheme: light dark;
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bg: #0b1020;
+      --surface: #121a2b;
+      --border: #2d3b5a;
+      --text: #e6edf3;
+      --muted: #9fb0cc;
+      --accent: #2f66bf;
+      --accent-border: #4f84d8;
+      --accent-hover: #3a74d4;
+    }
+    * {
+      box-sizing: border-box;
     }
     body {
       margin: 0;
       min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 20px clamp(20px, 4vw, 40px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(18, 26, 43, 0.6);
+      backdrop-filter: blur(8px);
+    }
+    .brand {
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .brand:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 4px;
+      border-radius: 4px;
+    }
+    main {
+      flex: 1;
       display: grid;
       place-items: center;
-      background: #0b1020;
-      color: #e6edf3;
+      padding: clamp(32px, 6vw, 56px) clamp(20px, 4vw, 40px);
     }
-    .card {
-      width: min(520px, 88vw);
-      background: #121a2b;
-      border: 1px solid #2d3b5a;
-      border-radius: 14px;
-      padding: 36px 32px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-      text-align: center;
+    .funnel {
+      width: min(560px, 100%);
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b8ab8;
     }
     h1 {
-      margin: 0 0 12px;
-      font-size: clamp(1.5rem, 3vw, 2rem);
+      margin: 0 0 16px;
+      font-size: clamp(1.65rem, 4.2vw, 2.25rem);
       font-weight: 800;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
     }
-    p {
+    .lead {
+      margin: 0 0 28px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.6;
+    }
+    .benefits {
+      margin: 0 0 28px;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+    .benefits li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      color: #b8c3d6;
+      font-size: 0.98rem;
+    }
+    .benefits li::before {
+      content: "";
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      margin-top: 0.45em;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4f84d8, #2f66bf);
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: clamp(22px, 4vw, 28px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    .signup-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .field-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .field-row input[type="email"] {
+      flex: 1 1 200px;
+      min-width: 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0d1528;
+      color: var(--text);
+      font-size: 1rem;
+    }
+    .field-row input[type="email"]::placeholder {
+      color: #5c6d8a;
+    }
+    .field-row input[type="email"]:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 2px;
+      border-color: var(--accent-border);
+    }
+    .btn-primary {
+      flex: 0 0 auto;
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: 1px solid var(--accent-border);
+      background: var(--accent);
+      color: #f0f4fc;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: var(--accent-hover);
+    }
+    .btn-primary:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+    .btn-primary:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+    }
+    .form-hint {
+      margin: 12px 0 0;
+      font-size: 0.85rem;
+      color: #6b7f9e;
+      line-height: 1.45;
+    }
+    #signupThanks {
       margin: 0;
-      color: #9fb0cc;
-      line-height: 1.55;
-      font-size: 1.02rem;
+      padding: 14px 16px;
+      border-radius: 10px;
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      color: #c8e6d4;
+      font-size: 0.95rem;
+      line-height: 1.5;
     }
-    .card p a {
+    .secondary {
+      margin: 22px 0 0;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 0.92rem;
+      color: var(--muted);
+      text-align: center;
+    }
+    .secondary a {
+      color: #a8c4f0;
+      font-weight: 600;
+    }
+    .secondary a:hover {
+      color: #c8daf8;
+    }
+    .secondary a:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    footer {
+      padding: 16px clamp(20px, 4vw, 40px) 24px;
+      text-align: center;
+      font-size: 0.82rem;
+      color: #5c6d8a;
+    }
+    .footer-secret-link {
       color: inherit;
       text-decoration: none;
-      cursor: inherit;
     }
-    .card p a:focus {
-      outline: none;
+    .footer-secret-link:hover {
+      color: inherit;
+    }
+    .footer-secret-link:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+      border-radius: 2px;
     }
   </style>
 </head>
 <body>
-  <main class="card" aria-label="Coming soon">
-    <h1>Coming soon</h1>
-    <p>We are preparing something <a href="/practice-launcher.html">new</a>. Check back later.</p>
-  </main>
+  <div class="page">
+    <header>
+      <a class="brand" href="/">Be Certified Today</a>
+    </header>
+    <main id="main">
+      <div class="funnel">
+        <p class="eyebrow">IT certification practice</p>
+        <h1>Structured drills so you walk into the exam with confidence</h1>
+        <p class="lead">
+          Create an account to unlock practice modes built for real exam formats—multiple choice,
+          drag-and-drop, and scenario-style labs you can repeat until the material sticks.
+        </p>
+        <ul class="benefits" aria-label="What you get">
+          <li>Question banks and study paths organized by exam topic—not random blog posts.</li>
+          <li>Instant feedback so you fix weak areas before you sit for the real test.</li>
+          <li>Room to grow: we’re expanding coverage across Cisco and other IT certs.</li>
+        </ul>
+        <div class="card">
+          <form id="signupForm" class="signup" action="#" method="post" novalidate>
+            <div id="signupFields">
+              <label class="signup-label" for="email">Email</label>
+              <div class="field-row">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  placeholder="you@example.com"
+                  required
+                  inputmode="email"
+                />
+                <button type="submit" class="btn-primary">Get access</button>
+              </div>
+              <p class="form-hint">
+                This button is a placeholder: connect the form to your auth provider, waitlist API, or
+                marketing tool when you’re ready.
+              </p>
+            </div>
+            <p id="signupThanks" hidden role="status">
+              Thanks—your email was captured in the browser only. Replace this step with your real
+              signup or waitlist flow.
+            </p>
+          </form>
+        </div>
+        <p class="secondary">
+          Already have access?
+          <a href="/practice-launcher.html">Open the practice launcher</a>
+        </p>
+      </div>
+    </main>
+    <footer>
+      <a class="footer-secret-link" href="/practice-launcher.html" aria-label="Open practice launcher">©</a>
+      Be Certified Today
+    </footer>
+  </div>
+  <script>
+    (function () {
+      var form = document.getElementById("signupForm");
+      var fields = document.getElementById("signupFields");
+      var thanks = document.getElementById("signupThanks");
+      if (!form || !fields || !thanks) return;
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var input = form.querySelector('input[type="email"]');
+        if (!input || !input.value.trim()) {
+          input.focus();
+          return;
+        }
+        var btn = form.querySelector('button[type="submit"]');
+        if (btn) btn.disabled = true;
+        fields.hidden = true;
+        thanks.hidden = false;
+      });
+    })();
+  </script>
 </body>
 </html>
