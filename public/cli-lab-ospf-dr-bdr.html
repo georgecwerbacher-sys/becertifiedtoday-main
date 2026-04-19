@@ -220,6 +220,35 @@
     .line-user { color: #7ec8ff; }
     .line-bad { color: #fca5a5; }
     .line-sys { color: #94a3b8; }
+    .line-out {
+      color: #cbd5e1;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.88em;
+      white-space: pre-wrap;
+    }
+    .initial-cfg {
+      margin-top: 14px;
+      text-align: left;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+      color: #b8c3d6;
+      font-size: 0.9rem;
+    }
+    .initial-cfg summary {
+      cursor: pointer;
+      color: #e6edf3;
+    }
+    .initial-cfg pre {
+      margin: 10px 0 0;
+      padding: 12px 14px;
+      background: #0b1020;
+      border: 1px solid #2d3b5a;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
     .input-row {
       display: flex;
       align-items: center;
@@ -328,6 +357,7 @@
         OSPF is partially configured on all devices. Use the correct console for each step: finish <strong>R3</strong> first, then <strong>R20</strong>
         (clear process on R20 so the election resets), then <strong>R10</strong>, then save on <strong>R3</strong> and <strong>R10</strong>.
         Under the topology, choose <strong>Device in prompt</strong>, then <strong>Open Router CLI</strong>.
+        You can open <strong>any</strong> router anytime and run <code>show run</code> (or <code>do show run</code> in config on R3/R10) to review the initial configuration.
       </p>
       <div class="tasks">
         <strong>Tasks</strong>
@@ -350,6 +380,39 @@
         <div class="device-links">
           <button type="button" class="device-link" id="openDeviceCliLink">Open Router CLI</button>
         </div>
+        <details class="initial-cfg">
+          <summary>R3 initial configuration (<code>show running-config</code>)</summary>
+          <pre>interface Ethernet0/0
+ ip address 10.0.3.3 255.255.255.0
+!
+interface Ethernet0/1
+ ip address 10.2.203.3 255.255.255.0
+!
+interface Ethernet0/2
+ ip address 10.0.23.3 255.255.255.0
+!
+router ospf 1
+ network 10.0.3.0 0.0.0.255 area 0
+ network 10.0.23.0 0.0.0.255 area 0
+ network 10.2.203.0 0.0.0.255 area 20</pre>
+        </details>
+        <details class="initial-cfg">
+          <summary>R10 initial configuration (<code>show running-config</code>)</summary>
+          <pre>interface Ethernet0/0
+ ip address 10.1.102.10 255.255.255.0
+!
+router ospf 1
+ network 10.1.102.0 0.0.0.255 area 10</pre>
+        </details>
+        <details class="initial-cfg">
+          <summary>R20 initial configuration (<code>show running-config</code>)</summary>
+          <pre>interface Ethernet0/0
+ ip address 10.2.203.20 255.255.255.0
+ ip ospf priority 254
+!
+router ospf 1
+ network 10.2.203.0 0.0.0.255 area 20</pre>
+        </details>
       </div>
 
       <div class="controls">
@@ -393,7 +456,7 @@
       </header>
       <div class="cli-modal-body">
         <div class="terminal-panel" id="panelR3">
-          <p class="console-hint">Start here: raise OSPF priority on <code>e0/1</code> toward R20, then return to exec. Later you will save here.</p>
+          <p class="console-hint">Raise OSPF priority on <code>e0/1</code> toward R20 when the lab is on this step, then return to exec. From <code>R3#</code> use <code>show run</code> anytime to review the starting config; in config mode use <code>do show run</code>. Later you will save here.</p>
           <div class="terminal" aria-label="R3 CLI">
             <div class="console-scroll" id="scrollR3"></div>
             <div class="input-row">
@@ -413,7 +476,7 @@
       </header>
       <div class="cli-modal-body">
         <div class="terminal-panel terminal-panel--waiting" id="panelR20">
-          <p class="console-hint">Unlocks after R3 steps. Run <code>clear ip ospf process</code> and confirm with <code>y</code>.</p>
+          <p class="console-hint">Use <code>show run</code> from <code>R20#</code> anytime to review the starting config. When the lab reaches this step, run <code>clear ip ospf process</code> and confirm with <code>y</code>.</p>
           <div class="terminal" aria-label="R20 CLI">
             <div class="console-scroll" id="scrollR20"></div>
             <div class="input-row">
@@ -433,7 +496,7 @@
       </header>
       <div class="cli-modal-body">
         <div class="terminal-panel terminal-panel--waiting" id="panelR10">
-          <p class="console-hint">Unlocks after R20 clear. Set OSPF priority 0 on <code>e0/0</code>. Save last on this console.</p>
+          <p class="console-hint">From <code>R10#</code> use <code>show run</code> anytime for the starting config; in config mode use <code>do show run</code>. When the lab reaches this step, set OSPF priority 0 on <code>e0/0</code>. Save last on this console.</p>
           <div class="terminal" aria-label="R10 CLI">
             <div class="console-scroll" id="scrollR10"></div>
             <div class="input-row">
@@ -463,6 +526,26 @@
         u === "copy running-config startup-config" ||
         u === "copy run start" ||
         u === "copy run startup-config"
+      );
+    }
+
+    function matchShowRunExec(raw) {
+      const u = normalize(raw);
+      return (
+        u === "show running-config" ||
+        u === "show run" ||
+        u === "sh running-config" ||
+        u === "sh run"
+      );
+    }
+
+    function matchDoShowRun(raw) {
+      const u = normalize(raw);
+      return (
+        u === "do show running-config" ||
+        u === "do show run" ||
+        u === "do sh run" ||
+        u === "do sh running-config"
       );
     }
 
@@ -558,20 +641,22 @@
         modalR3.classList.add("is-open");
         modalR3.setAttribute("aria-hidden", "false");
       }
-      focusActiveCli();
+      applyPhaseUI();
     }
 
     function focusActiveCli() {
-      if (modalR3.classList.contains("is-open") && !cmdR3.disabled) {
-        cmdR3.focus();
+      /* Prefer R10 → R20 → R3 so an open modal with an enabled CLI is always chosen
+         (avoids R3 being checked first while another modal is open but idle). */
+      if (modalR10.classList.contains("is-open") && !cmdR10.disabled) {
+        cmdR10.focus();
         return;
       }
       if (modalR20.classList.contains("is-open") && !cmdR20.disabled) {
         cmdR20.focus();
         return;
       }
-      if (modalR10.classList.contains("is-open") && !cmdR10.disabled) {
-        cmdR10.focus();
+      if (modalR3.classList.contains("is-open") && !cmdR3.disabled) {
+        cmdR3.focus();
       }
     }
 
@@ -586,6 +671,62 @@
       div.textContent = text;
       scrollEl.appendChild(div);
       scrollEl.scrollTop = scrollEl.scrollHeight;
+    }
+
+    function r3ShowRunHasOspfPriority() {
+      return stepR3 >= 3 || stepR3 >= R3_CFG.length;
+    }
+
+    function appendR3ShowRunOutput(scrollEl) {
+      appendLine(scrollEl, "line-sys", "Building configuration...");
+      const hasP = r3ShowRunHasOspfPriority();
+      const lines = [
+        "",
+        "interface Ethernet0/0",
+        " ip address 10.0.3.3 255.255.255.0",
+        "!",
+        "interface Ethernet0/1",
+        " ip address 10.2.203.3 255.255.255.0",
+      ];
+      if (hasP) lines.push(" ip ospf priority 255");
+      lines.push(
+        "!",
+        "interface Ethernet0/2",
+        " ip address 10.0.23.3 255.255.255.0",
+        "!",
+        "router ospf 1",
+        " network 10.0.3.0 0.0.0.255 area 0",
+        " network 10.0.23.0 0.0.0.255 area 0",
+        " network 10.2.203.0 0.0.0.255 area 20",
+      );
+      for (const ln of lines) appendLine(scrollEl, "line-out", ln);
+    }
+
+    function r10ShowRunHasOspfPriority0() {
+      return stepR10 >= 3 || stepR10 >= R10_CFG.length;
+    }
+
+    function appendR10ShowRunOutput(scrollEl) {
+      appendLine(scrollEl, "line-sys", "Building configuration...");
+      const hasP = r10ShowRunHasOspfPriority0();
+      const lines = ["", "interface Ethernet0/0", " ip address 10.1.102.10 255.255.255.0"];
+      if (hasP) lines.push(" ip ospf priority 0");
+      lines.push("!", "router ospf 1", " network 10.1.102.0 0.0.0.255 area 10");
+      for (const ln of lines) appendLine(scrollEl, "line-out", ln);
+    }
+
+    function appendR20ShowRunOutput(scrollEl) {
+      appendLine(scrollEl, "line-sys", "Building configuration...");
+      const lines = [
+        "",
+        "interface Ethernet0/0",
+        " ip address 10.2.203.20 255.255.255.0",
+        " ip ospf priority 254",
+        "!",
+        "router ospf 1",
+        " network 10.2.203.0 0.0.0.255 area 20",
+      ];
+      for (const ln of lines) appendLine(scrollEl, "line-out", ln);
     }
 
     function setWaiting(panel, waiting) {
@@ -634,6 +775,11 @@
       if (phase === "R3_SAVE") cmdR3.disabled = false;
       if (phase === "R10_SAVE") cmdR10.disabled = false;
 
+      /* Preview: whichever modal is open stays typable (show run / do show run anytime). */
+      if (modalR3.classList.contains("is-open")) cmdR3.disabled = false;
+      if (modalR20.classList.contains("is-open")) cmdR20.disabled = false;
+      if (modalR10.classList.contains("is-open")) cmdR10.disabled = false;
+
       updatePrompts();
       focusActiveCli();
     }
@@ -657,6 +803,20 @@
     }
 
     function submitR3() {
+      const lineEarly = cmdR3.value;
+      if (lineEarly.trim()) {
+        const pNow = promptR3.textContent;
+        const execShow = matchShowRunExec(lineEarly) && pNow === "R3#";
+        const configDo =
+          matchDoShowRun(lineEarly) && (pNow === "R3(config)#" || pNow === "R3(config-if)#");
+        if (execShow || configDo) {
+          appendLine(scrollR3, "line-user", `${pNow} ${lineEarly}`);
+          cmdR3.value = "";
+          appendR3ShowRunOutput(scrollR3);
+          return;
+        }
+      }
+
       if (phase === "R3_CFG") {
         if (stepR3 >= R3_CFG.length) return;
         const p = promptForConfig(R3_CFG, stepR3, "R3");
@@ -670,9 +830,14 @@
             appendLine(scrollR3, "line-sys", "[OK] R3 DR preference configured. Use R20 console next.");
             phase = "R20_CLEAR";
             appendLine(scrollR20, "line-sys", "Run clear ip ospf process here (not on R3).");
+            const radR20 = document.querySelector('input[name="ospfDrBdrDev"][value="R20"]');
+            if (radR20) radR20.checked = true;
           }
           updatePrompts();
           applyPhaseUI();
+          if (stepR3 >= R3_CFG.length) {
+            openSelectedCliModal();
+          }
         } else {
           appendLine(scrollR3, "line-bad", "% Invalid — interface e0/1, then ip ospf priority 255, then end.");
         }
@@ -685,15 +850,53 @@
           appendLine(scrollR3, "line-sys", "[OK] R3: configuration saved (simulated).");
           phase = "R10_SAVE";
           appendLine(scrollR10, "line-sys", "Save R10 configuration.");
+          const radR10Save = document.querySelector('input[name="ospfDrBdrDev"][value="R10"]');
+          if (radR10Save) radR10Save.checked = true;
           applyPhaseUI();
+          openSelectedCliModal();
         } else {
           appendLine(scrollR3, "line-bad", "% Invalid — copy running-config startup-config");
         }
+      } else if (cmdR3.value.trim()) {
+        const pIdle = promptR3.textContent;
+        const lineIdle = cmdR3.value;
+        appendLine(scrollR3, "line-user", `${pIdle} ${lineIdle}`);
+        cmdR3.value = "";
+        appendLine(
+          scrollR3,
+          "line-bad",
+          "% Lab is elsewhere — use show run (or do show run in config) to review; configuration steps run when the lab is on R3."
+        );
       }
     }
 
     function submitR20() {
-      if (phase !== "R20_CLEAR") return;
+      const linePeekR20 = cmdR20.value;
+      if (
+        linePeekR20.trim() &&
+        promptR20.textContent === "R20#" &&
+        matchShowRunExec(linePeekR20)
+      ) {
+        appendLine(scrollR20, "line-user", `R20# ${linePeekR20}`);
+        cmdR20.value = "";
+        appendR20ShowRunOutput(scrollR20);
+        return;
+      }
+
+      if (phase !== "R20_CLEAR") {
+        if (linePeekR20.trim()) {
+          const pIdle = promptR20.textContent;
+          appendLine(scrollR20, "line-user", `${pIdle} ${linePeekR20}`);
+          cmdR20.value = "";
+          appendLine(
+            scrollR20,
+            "line-bad",
+            "% Lab is elsewhere — use show run to review; run clear ip ospf process when the lab is on R20."
+          );
+        }
+        return;
+      }
+
       const p = stepR20 === 0 ? "R20#" : OSPF_CLEAR_PROMPT;
       const line = cmdR20.value;
       appendLine(scrollR20, "line-user", `${p} ${line}`);
@@ -716,8 +919,11 @@
           phase = "R10_CFG";
           appendLine(scrollR10, "line-sys", "Set ip ospf priority 0 on e0/0 so R10 does not compete in DR/BDR election.");
           stepR20 = 2;
+          const radR10 = document.querySelector('input[name="ospfDrBdrDev"][value="R10"]');
+          if (radR10) radR10.checked = true;
           updatePrompts();
           applyPhaseUI();
+          openSelectedCliModal();
         } else {
           appendLine(scrollR20, "line-bad", "% Confirm with y or yes.");
         }
@@ -725,6 +931,21 @@
     }
 
     function submitR10() {
+      const lineEarlyR10 = cmdR10.value;
+      if (lineEarlyR10.trim()) {
+        const pNow10 = promptR10.textContent;
+        const execShow10 = matchShowRunExec(lineEarlyR10) && pNow10 === "R10#";
+        const configDo10 =
+          matchDoShowRun(lineEarlyR10) &&
+          (pNow10 === "R10(config)#" || pNow10 === "R10(config-if)#");
+        if (execShow10 || configDo10) {
+          appendLine(scrollR10, "line-user", `${pNow10} ${lineEarlyR10}`);
+          cmdR10.value = "";
+          appendR10ShowRunOutput(scrollR10);
+          return;
+        }
+      }
+
       if (phase === "R10_CFG") {
         if (stepR10 >= R10_CFG.length) return;
         const p = promptForConfig(R10_CFG, stepR10, "R10");
@@ -738,9 +959,13 @@
             appendLine(scrollR10, "line-sys", "[OK] R10 DROTHER behavior configured. Save on R3, then R10.");
             phase = "R3_SAVE";
             appendLine(scrollR3, "line-sys", "Save with copy running-config startup-config.");
+            const radR3 = document.querySelector('input[name="ospfDrBdrDev"][value="R3"]');
+            if (radR3) radR3.checked = true;
             applyPhaseUI();
+            openSelectedCliModal();
           } else {
             updatePrompts();
+            applyPhaseUI();
           }
         } else {
           appendLine(scrollR10, "line-bad", "% Invalid — int e0/0, ip ospf priority 0, end.");
@@ -754,11 +979,21 @@
           appendLine(scrollR10, "line-sys", "[OK] R10: configuration saved (simulated).");
           phase = "DONE";
           passBanner.classList.add("visible");
-          disableAllInputs();
           updatePrompts();
+          applyPhaseUI();
         } else {
           appendLine(scrollR10, "line-bad", "% Invalid — copy running-config startup-config");
         }
+      } else if (cmdR10.value.trim()) {
+        const pIdle10 = promptR10.textContent;
+        const lineIdle10 = cmdR10.value;
+        appendLine(scrollR10, "line-user", `${pIdle10} ${lineIdle10}`);
+        cmdR10.value = "";
+        appendLine(
+          scrollR10,
+          "line-bad",
+          "% Lab is elsewhere — use show run (or do show run in config) to review; configuration steps run when the lab is on R10."
+        );
       }
     }
 
@@ -785,14 +1020,17 @@
     openDeviceCliLink.addEventListener("click", openSelectedCliModal);
     document.getElementById("closeR3").addEventListener("click", () => {
       closeR3Modal();
+      applyPhaseUI();
       openDeviceCliLink.focus();
     });
     document.getElementById("closeR20").addEventListener("click", () => {
       closeR20Modal();
+      applyPhaseUI();
       openDeviceCliLink.focus();
     });
     document.getElementById("closeR10").addEventListener("click", () => {
       closeR10Modal();
+      applyPhaseUI();
       openDeviceCliLink.focus();
     });
 
@@ -801,18 +1039,21 @@
       if (modalR10.classList.contains("is-open")) {
         e.preventDefault();
         closeR10Modal();
+        applyPhaseUI();
         openDeviceCliLink.focus();
         return;
       }
       if (modalR20.classList.contains("is-open")) {
         e.preventDefault();
         closeR20Modal();
+        applyPhaseUI();
         openDeviceCliLink.focus();
         return;
       }
       if (modalR3.classList.contains("is-open")) {
         e.preventDefault();
         closeR3Modal();
+        applyPhaseUI();
         openDeviceCliLink.focus();
       }
     });
@@ -820,6 +1061,7 @@
     document.querySelectorAll('input[name="ospfDrBdrDev"]').forEach((r) => {
       r.addEventListener("change", () => {
         closeModals();
+        applyPhaseUI();
         openDeviceCliLink.focus();
       });
     });
