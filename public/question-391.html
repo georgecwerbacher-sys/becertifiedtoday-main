@@ -135,6 +135,28 @@
       margin-top: 16px;
       display: none;
     }
+    .answer-exhibit {
+      display: none;
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #32456b;
+      background: #0f1728;
+    }
+    .answer-exhibit.is-visible {
+      display: block;
+    }
+    .answer-exhibit img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .answer-exhibit figcaption {
+      margin: 0 0 10px;
+      font-size: 0.92rem;
+      color: #b9c7dd;
+    }
     @media (max-width: 900px) {
       .board {
         grid-template-columns: 1fr;
@@ -180,20 +202,36 @@
 
     <div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
       <button id="resetBtn" type="button">Reset</button>
     </div>
     <div id="result" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
       <a class="next-link" href="/question-392.html">Next</a>
     </div>
+
+    <figure id="answerExhibit" class="answer-exhibit">
+      <figcaption>Correct matching (reference)</figcaption>
+      <img
+        id="answerImage"
+        src="/question-391-answer.png?v=20260419"
+        data-src="/question-391-answer.png?v=20260419"
+        width="1024"
+        height="734"
+        alt="Threat defense: Stealthwatch/SNA for flows; SEG for email; Secure Endpoint for malware; Umbrella for DNS; FTD for IPS/IDS."
+      />
+    </figure>
   </main>
 
   <script>
     const bank = document.getElementById("bank");
     const slots = document.querySelectorAll(".drop-slot");
     const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
+    const answerExhibit = document.getElementById("answerExhibit");
+    const answerImage = document.getElementById("answerImage");
     const nextWrap = document.getElementById("nextWrap");
     let dragged = null;
 
@@ -241,6 +279,10 @@
       if (dragged) bank.appendChild(dragged);
     });
 
+    function takeTokenFromBank(value) {
+      return [...bank.querySelectorAll(".token")].find((t) => t.dataset.value === value);
+    }
+
     checkBtn.addEventListener("click", () => {
       const allCorrect = [...slots].every((slot) => {
         const token = slot.querySelector(".token");
@@ -270,6 +312,32 @@
       }
     });
 
+    showBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+
+      slots.forEach((slot) => {
+        const want = slot.dataset.accept;
+        const tok = takeTokenFromBank(want);
+        if (tok) {
+          slot.appendChild(tok);
+          slot.classList.add("correct");
+        }
+      });
+
+      result.style.display = "block";
+      result.className = "answer correct";
+      result.textContent = "Answer shown.";
+      if (!answerImage.getAttribute("src")) {
+        answerImage.setAttribute("src", answerImage.dataset.src);
+      }
+      answerExhibit.classList.add("is-visible");
+      nextWrap.style.display = "inline-block";
+    });
+
     resetBtn.addEventListener("click", () => {
       slots.forEach((slot) => {
         const token = slot.querySelector(".token");
@@ -278,6 +346,7 @@
       });
       result.style.display = "none";
       result.textContent = "";
+      answerExhibit.classList.remove("is-visible");
       nextWrap.style.display = "none";
     });
   </script>

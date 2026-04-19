@@ -138,6 +138,28 @@
       margin-top: 16px;
       display: none;
     }
+    .answer-exhibit {
+      display: none;
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #32456b;
+      background: #0f1728;
+    }
+    .answer-exhibit.is-visible {
+      display: block;
+    }
+    .answer-exhibit img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .answer-exhibit figcaption {
+      margin: 0 0 10px;
+      font-size: 0.92rem;
+      color: #b9c7dd;
+    }
     @media (max-width: 900px) {
       .board {
         grid-template-columns: 1fr;
@@ -172,22 +194,45 @@
 
     <div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
       <button id="resetBtn" type="button">Reset</button>
     </div>
     <div id="result" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
       <a class="next-link" href="/question-406.html">Next</a>
     </div>
+
+    <figure id="answerExhibit" class="answer-exhibit">
+      <figcaption>Correct three characteristics (reference)</figcaption>
+      <img
+        id="answerImage"
+        src="/question-405-answer.png?v=20260419"
+        data-src="/question-405-answer.png?v=20260419"
+        width="1024"
+        height="430"
+        alt="Catalyst Center southbound API: device packages, NETCONF/SSH/SNMP, multivendor."
+      />
+    </figure>
   </main>
 
   <script>
     const bank = document.getElementById("bank");
     const slots = document.querySelectorAll(".drop-slot");
     const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
+    const answerExhibit = document.getElementById("answerExhibit");
+    const answerImage = document.getElementById("answerImage");
     const nextWrap = document.getElementById("nextWrap");
     const CORRECT = new Set(["multivendor", "netconf-ssh-snmp", "device-packages"]);
+
+    /** Row order for Show Answer to match the reference image (slots are still order-agnostic for Check). */
+    const exhibitSlotOrder = ["device-packages", "netconf-ssh-snmp", "multivendor"];
+
+    function findTokenByValue(value) {
+      return [...bank.querySelectorAll(".token")].find((t) => t.dataset.value === value);
+    }
     let dragged = null;
 
     history.pushState(null, "", location.href);
@@ -279,6 +324,32 @@
       }
     });
 
+    showBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+
+      const slotEls = [...slots];
+      exhibitSlotOrder.forEach((val, i) => {
+        const tok = findTokenByValue(val);
+        if (tok && slotEls[i]) {
+          slotEls[i].appendChild(tok);
+          slotEls[i].classList.add("correct");
+        }
+      });
+
+      result.style.display = "block";
+      result.className = "answer correct";
+      result.textContent = "Answer shown.";
+      if (!answerImage.getAttribute("src")) {
+        answerImage.setAttribute("src", answerImage.dataset.src);
+      }
+      answerExhibit.classList.add("is-visible");
+      nextWrap.style.display = "inline-block";
+    });
+
     resetBtn.addEventListener("click", () => {
       slots.forEach((slot) => {
         const token = slot.querySelector(".token");
@@ -287,6 +358,7 @@
       });
       result.style.display = "none";
       result.textContent = "";
+      answerExhibit.classList.remove("is-visible");
       nextWrap.style.display = "none";
     });
   </script>

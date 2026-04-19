@@ -84,6 +84,16 @@
       border-color: #8c3434;
       background: rgba(68, 32, 32, 0.6);
     }
+    .drop-slot.correct .token {
+      border-color: #43b689;
+      background: #174a38;
+      color: #dff5eb;
+    }
+    .drop-slot.incorrect .token {
+      border-color: #c55c5c;
+      background: #5c2626;
+      color: #fcdede;
+    }
     .bank {
       display: grid;
       gap: 8px;
@@ -138,6 +148,28 @@
       margin-top: 16px;
       display: none;
     }
+    .answer-exhibit {
+      display: none;
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #32456b;
+      background: #0f1728;
+    }
+    .answer-exhibit.is-visible {
+      display: block;
+    }
+    .answer-exhibit img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .answer-exhibit figcaption {
+      margin: 0 0 10px;
+      font-size: 0.92rem;
+      color: #b9c7dd;
+    }
     @media (max-width: 900px) {
       .board {
         grid-template-columns: 1fr;
@@ -148,17 +180,23 @@
 <body class="ccnp-practice-ui">
   <main class="card">
     <h1>Drag and drop the characteristics from the left onto the tools on the right. Not all options are used.</h1>
-    <p class="instructions">Match four characteristics correctly and leave one distractor in the bank.</p>
+    <p class="instructions">
+      Match four characteristics correctly and leave one distractor in the bank. Order within Configuration Management or within Orchestration does not matter.
+    </p>
 
     <div class="board">
       <div class="panel">
         <h2>Characteristics</h2>
         <div id="bank" class="bank">
-          <div class="token" draggable="true" data-value="mutable">works with mutable elements</div>
-          <div class="token" draggable="true" data-value="immutable">works with immutable elements</div>
-          <div class="token" draggable="true" data-value="deploy-config-apps">deploy and configure applications and software</div>
-          <div class="token" draggable="true" data-value="deploy-server">deploy server instances</div>
-          <div class="token" draggable="true" data-value="client-server-only">only works in a client-server architecture</div>
+          <div class="token" draggable="true" data-cat="cm" data-value="mutable">works with mutable elements</div>
+          <div class="token" draggable="true" data-cat="orch" data-value="immutable">works with immutable elements</div>
+          <div class="token" draggable="true" data-cat="cm" data-value="deploy-config-apps">
+            deploy and configure applications and software
+          </div>
+          <div class="token" draggable="true" data-cat="orch" data-value="deploy-server">deploy server instances</div>
+          <div class="token" draggable="true" data-cat="distractor" data-value="client-server-only">
+            only works in a client-server architecture
+          </div>
         </div>
       </div>
 
@@ -166,34 +204,67 @@
         <h2>Tools</h2>
         <div class="zone">
           <div class="zone-title">Configuration Management</div>
-          <div class="drop-slot" data-accept="mutable"></div>
-          <div class="drop-slot" data-accept="deploy-config-apps"></div>
+          <div class="drop-slot" data-cat="cm"></div>
+          <div class="drop-slot" data-cat="cm"></div>
         </div>
         <div class="zone">
           <div class="zone-title">Orchestration</div>
-          <div class="drop-slot" data-accept="immutable"></div>
-          <div class="drop-slot" data-accept="deploy-server"></div>
+          <div class="drop-slot" data-cat="orch"></div>
+          <div class="drop-slot" data-cat="orch"></div>
         </div>
       </div>
     </div>
 
     <div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
       <button id="resetBtn" type="button">Reset</button>
     </div>
     <div id="result" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
       <a class="next-link" href="/question-402.html">Next</a>
     </div>
+
+    <figure id="answerExhibit" class="answer-exhibit">
+      <figcaption>Correct matching (reference)</figcaption>
+      <img
+        id="answerImage"
+        src="/question-401-answer.png?v=20260419"
+        data-src="/question-401-answer.png?v=20260419"
+        width="1024"
+        height="625"
+        alt="Configuration management: mutable and deploy/configure software; Orchestration: immutable and deploy server instances."
+      />
+    </figure>
   </main>
 
   <script>
     const bank = document.getElementById("bank");
     const slots = document.querySelectorAll(".drop-slot");
     const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
+    const answerExhibit = document.getElementById("answerExhibit");
+    const answerImage = document.getElementById("answerImage");
     const nextWrap = document.getElementById("nextWrap");
+
+    const cmExpected = ["mutable", "deploy-config-apps"];
+    const orchExpected = ["immutable", "deploy-server"];
+
+    /** DOM slot order: two CM, then two Orchestration (matches reference image). */
+    const exhibitSlotOrder = ["mutable", "deploy-config-apps", "immutable", "deploy-server"];
+
+    function multisetEqual(a, b) {
+      if (a.length !== b.length) return false;
+      const sa = [...a].sort();
+      const sb = [...b].sort();
+      return sa.every((v, i) => v === sb[i]);
+    }
+
+    function findTokenByValue(value) {
+      return [...bank.querySelectorAll(".token")].find((t) => t.dataset.value === value);
+    }
     let dragged = null;
 
     history.pushState(null, "", location.href);
@@ -241,10 +312,17 @@
     });
 
     checkBtn.addEventListener("click", () => {
-      const allCorrect = [...slots].every((slot) => {
-        const token = slot.querySelector(".token");
-        return token && token.dataset.value === slot.dataset.accept;
-      });
+      const cmSlots = document.querySelectorAll('.drop-slot[data-cat="cm"]');
+      const orchSlots = document.querySelectorAll('.drop-slot[data-cat="orch"]');
+      const cmActual = [...cmSlots]
+        .map((s) => s.querySelector(".token")?.dataset.value)
+        .filter(Boolean);
+      const orchActual = [...orchSlots]
+        .map((s) => s.querySelector(".token")?.dataset.value)
+        .filter(Boolean);
+      const cmOk = multisetEqual(cmActual, cmExpected);
+      const orchOk = multisetEqual(orchActual, orchExpected);
+      const allFilled = cmActual.length === 2 && orchActual.length === 2;
 
       slots.forEach((slot) => {
         slot.classList.remove("correct", "incorrect", "over");
@@ -253,20 +331,59 @@
           slot.classList.add("incorrect");
           return;
         }
-        slot.classList.add(
-          token.dataset.value === slot.dataset.accept ? "correct" : "incorrect"
-        );
+        const rightCol = token.dataset.cat === slot.dataset.cat;
+        slot.classList.add(rightCol ? "correct" : "incorrect");
       });
 
       result.style.display = "block";
       nextWrap.style.display = "inline-block";
-      if (allCorrect) {
+
+      if (!allFilled) {
+        result.className = "answer incorrect";
+        result.textContent = `Place all four characteristics (${cmActual.length + orchActual.length}/4 in slots). Order within each tool column does not matter.`;
+        return;
+      }
+
+      const allOk = cmOk && orchOk;
+      const slotScore = [...slots].filter((slot) => {
+        const t = slot.querySelector(".token");
+        return t && t.dataset.cat === slot.dataset.cat;
+      }).length;
+
+      if (allOk) {
         result.className = "answer correct";
-        result.textContent = "Correct. All characteristics are matched properly.";
+        result.textContent =
+          "Correct. Configuration management targets mutable infrastructure and application configuration; orchestration emphasizes immutable infrastructure and provisioning server instances.";
       } else {
         result.className = "answer incorrect";
-        result.textContent = "Incorrect. Recheck the mapping between configuration management and orchestration characteristics.";
+        result.textContent = `Score: ${slotScore}/4 — Put both configuration-management traits under Configuration Management and both orchestration traits under Orchestration (order within each column does not matter).`;
       }
+    });
+
+    showBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+
+      const slotEls = [...slots];
+      exhibitSlotOrder.forEach((val, i) => {
+        const tok = findTokenByValue(val);
+        if (tok && slotEls[i]) {
+          slotEls[i].appendChild(tok);
+          slotEls[i].classList.add("correct");
+        }
+      });
+
+      result.style.display = "block";
+      result.className = "answer correct";
+      result.textContent = "Answer shown.";
+      if (!answerImage.getAttribute("src")) {
+        answerImage.setAttribute("src", answerImage.dataset.src);
+      }
+      answerExhibit.classList.add("is-visible");
+      nextWrap.style.display = "inline-block";
     });
 
     resetBtn.addEventListener("click", () => {
@@ -277,6 +394,7 @@
       });
       result.style.display = "none";
       result.textContent = "";
+      answerExhibit.classList.remove("is-visible");
       nextWrap.style.display = "none";
     });
   </script>

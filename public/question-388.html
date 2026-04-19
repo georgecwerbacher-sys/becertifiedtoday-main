@@ -76,6 +76,16 @@
       border-color: #8c3434;
       background: rgba(68, 32, 32, 0.6);
     }
+    .drop-slot.correct .token {
+      border-color: #43b689;
+      background: #174a38;
+      color: #dff5eb;
+    }
+    .drop-slot.incorrect .token {
+      border-color: #c55c5c;
+      background: #5c2626;
+      color: #fcdede;
+    }
     .slot-label {
       color: #b9c7dd;
       font-size: 0.9rem;
@@ -135,6 +145,28 @@
       margin-top: 16px;
       display: none;
     }
+    .answer-exhibit {
+      display: none;
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #32456b;
+      background: #0f1728;
+    }
+    .answer-exhibit.is-visible {
+      display: block;
+    }
+    .answer-exhibit img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .answer-exhibit figcaption {
+      margin: 0 0 10px;
+      font-size: 0.92rem;
+      color: #b9c7dd;
+    }
     @media (max-width: 900px) {
       .board {
         grid-template-columns: 1fr;
@@ -145,49 +177,96 @@
 <body>
   <main class="card">
     <h1>Drag and drop the automation characteristics from the left onto the corresponding tools on the right. Not all options are used.</h1>
-    <p class="instructions">Match the three correct characteristics and leave one distractor unused.</p>
+    <p class="instructions">
+      Match the three correct characteristics and leave one distractor unused. The two Puppet rows can hold either Puppet statement in either order.
+    </p>
 
     <div class="board">
       <div class="panel">
         <h2>Tools</h2>
-        <div class="drop-slot" data-accept="puppet-proprietary-ruby">
+        <div class="drop-slot" data-cat="puppet">
           <span class="slot-label">Puppet</span>
         </div>
-        <div class="drop-slot" data-accept="puppet-ha-multi-primary">
+        <div class="drop-slot" data-cat="puppet">
           <span class="slot-label">Puppet</span>
         </div>
-        <div class="drop-slot" data-accept="chef-ruby-syntax">
+        <div class="drop-slot" data-cat="chef">
           <span class="slot-label">Chef</span>
         </div>
       </div>
       <div class="panel">
         <h2>Characteristics</h2>
         <div id="bank" class="bank">
-          <div class="token" draggable="true" data-value="chef-ruby-syntax">uses Ruby syntax in configuration files</div>
-          <div class="token" draggable="true" data-value="puppet-proprietary-ruby">proprietary syntax in configuration files based on Ruby</div>
-          <div class="token" draggable="true" data-value="puppet-ha-multi-primary">high availability offered through a multi-primary architecture</div>
-          <div class="token" draggable="true" data-value="distractor">based on Python</div>
+          <div class="token" draggable="true" data-cat="chef" data-value="chef-ruby-syntax">uses Ruby syntax in configuration files</div>
+          <div class="token" draggable="true" data-cat="puppet" data-value="puppet-proprietary-ruby">
+            proprietary syntax in configuration files based on Ruby
+          </div>
+          <div class="token" draggable="true" data-cat="puppet" data-value="puppet-ha-multi-primary">
+            high availability offered through a multi-primary architecture
+          </div>
+          <div class="token" draggable="true" data-cat="distractor" data-value="distractor">based on Python</div>
         </div>
       </div>
     </div>
 
     <div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
       <button id="resetBtn" type="button">Reset</button>
     </div>
     <div id="result" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
       <a class="next-link" href="/question-389.html">Next</a>
     </div>
+
+    <figure id="answerExhibit" class="answer-exhibit">
+      <figcaption>Correct matching (reference)</figcaption>
+      <img
+        id="answerImage"
+        src="/question-388-answer.png?v=20260419"
+        data-src="/question-388-answer.png?v=20260419"
+        width="1024"
+        height="491"
+        alt="Puppet: proprietary Ruby-based DSL and multi-primary HA; Chef: Ruby syntax in configuration files."
+      />
+    </figure>
   </main>
 
   <script>
     const bank = document.getElementById("bank");
     const slots = document.querySelectorAll(".drop-slot");
     const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
+    const answerExhibit = document.getElementById("answerExhibit");
+    const answerImage = document.getElementById("answerImage");
     const nextWrap = document.getElementById("nextWrap");
+
+    const puppetExpected = ["puppet-proprietary-ruby", "puppet-ha-multi-primary"];
+    const chefExpected = ["chef-ruby-syntax"];
+
+    /** Slot DOM order: two Puppet, then Chef (matches reference image). */
+    const exhibitSlotOrder = [
+      "puppet-proprietary-ruby",
+      "puppet-ha-multi-primary",
+      "chef-ruby-syntax",
+    ];
+
+    function multisetEqual(a, b) {
+      if (a.length !== b.length) return false;
+      const sa = [...a].sort();
+      const sb = [...b].sort();
+      return sa.every((v, i) => v === sb[i]);
+    }
+
+    function isPuppetSolution(value) {
+      return puppetExpected.includes(value);
+    }
+
+    function findTokenByValue(value) {
+      return [...bank.querySelectorAll(".token")].find((t) => t.dataset.value === value);
+    }
     let dragged = null;
 
     history.pushState(null, "", location.href);
@@ -235,10 +314,18 @@
     });
 
     checkBtn.addEventListener("click", () => {
-      const allCorrect = [...slots].every((slot) => {
-        const token = slot.querySelector(".token");
-        return token && token.dataset.value === slot.dataset.accept;
-      });
+      const puppetSlots = document.querySelectorAll('.drop-slot[data-cat="puppet"]');
+      const chefSlots = document.querySelectorAll('.drop-slot[data-cat="chef"]');
+      const puppetActual = [...puppetSlots]
+        .map((s) => s.querySelector(".token")?.dataset.value)
+        .filter(Boolean);
+      const chefActual = [...chefSlots]
+        .map((s) => s.querySelector(".token")?.dataset.value)
+        .filter(Boolean);
+
+      const puppetOk = multisetEqual(puppetActual, puppetExpected);
+      const chefOk = chefActual.length === 1 && multisetEqual(chefActual, chefExpected);
+      const allFilled = puppetActual.length === 2 && chefActual.length === 1;
 
       slots.forEach((slot) => {
         slot.classList.remove("correct", "incorrect", "over");
@@ -247,20 +334,69 @@
           slot.classList.add("incorrect");
           return;
         }
-        slot.classList.add(
-          token.dataset.value === slot.dataset.accept ? "correct" : "incorrect"
-        );
+        const col = slot.dataset.cat;
+        let ok = token.dataset.cat === col;
+        if (ok && col === "puppet") ok = isPuppetSolution(token.dataset.value);
+        if (ok && col === "chef") ok = token.dataset.value === chefExpected[0];
+        if (col === "puppet" || col === "chef") {
+          slot.classList.add(ok ? "correct" : "incorrect");
+        } else {
+          slot.classList.add("incorrect");
+        }
       });
 
       result.style.display = "block";
       nextWrap.style.display = "inline-block";
-      if (allCorrect) {
+
+      if (!allFilled) {
+        result.className = "answer incorrect";
+        result.textContent = `Place all three characteristics (${puppetActual.length + chefActual.length}/3 in slots). Order of the two Puppet rows does not matter.`;
+        return;
+      }
+
+      const allOk = puppetOk && chefOk;
+      const slotScore = [...slots].filter((slot) => {
+        const t = slot.querySelector(".token");
+        if (!t || t.dataset.cat !== slot.dataset.cat) return false;
+        if (slot.dataset.cat === "puppet") return isPuppetSolution(t.dataset.value);
+        if (slot.dataset.cat === "chef") return t.dataset.value === chefExpected[0];
+        return false;
+      }).length;
+
+      if (allOk) {
         result.className = "answer correct";
-        result.textContent = "Correct. Puppet and Chef characteristics are matched properly.";
+        result.textContent =
+          "Correct. Puppet uses a Ruby-derived DSL and can use a multi-primary HA design; Chef recipes use Ruby syntax.";
       } else {
         result.className = "answer incorrect";
-        result.textContent = "Incorrect. Review each characteristic-to-tool mapping.";
+        result.textContent = `Score: ${slotScore}/3 — Both Puppet statements must be under Puppet (in either order); the Chef statement under Chef; keep the distractor in the bank.`;
       }
+    });
+
+    showBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+
+      const slotEls = [...slots];
+      exhibitSlotOrder.forEach((val, i) => {
+        const tok = findTokenByValue(val);
+        if (tok && slotEls[i]) {
+          slotEls[i].appendChild(tok);
+          slotEls[i].classList.add("correct");
+        }
+      });
+
+      result.style.display = "block";
+      result.className = "answer correct";
+      result.textContent = "Answer shown.";
+      if (!answerImage.getAttribute("src")) {
+        answerImage.setAttribute("src", answerImage.dataset.src);
+      }
+      answerExhibit.classList.add("is-visible");
+      nextWrap.style.display = "inline-block";
     });
 
     resetBtn.addEventListener("click", () => {
@@ -271,6 +407,7 @@
       });
       result.style.display = "none";
       result.textContent = "";
+      answerExhibit.classList.remove("is-visible");
       nextWrap.style.display = "none";
     });
   </script>
