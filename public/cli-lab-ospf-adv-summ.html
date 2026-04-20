@@ -345,25 +345,26 @@
       <h1>OSPF Advertised &amp; Summarized Sim</h1>
       <p class="objective">
         OSPF is partially configured elsewhere. On <strong>R1</strong>, enable process <strong>1</strong> and attach OSPF to each interface using <code>ip ospf 1 area 0</code> only — <strong>no <code>network</code></strong> statements under <code>router ospf</code>.
-        On ABRs <strong>R2</strong> and <strong>R3</strong>, one summary command each toward area 0: area <strong>10</strong> → <code>10.1.0.0/16</code>, area <strong>20</strong> → <code>10.2.0.0/16</code>.
-        Under the topology, choose <strong>Device in prompt</strong>, then <strong>Open Router CLI</strong>.
+        This simulation is <strong>R1 only</strong>; open the R1 CLI below.
       </p>
       <div class="tasks">
         <strong>Tasks</strong>
         <ol>
           <li>Configure R1 OSPF 1 on Lo0, E0/0, and E0/1 (area 0) without <code>network</code> under the router process.</li>
-          <li>Verify on R1, then on R2 and R3 add <code>area … range …</code> for a single inter-area summary each.</li>
-          <li>Save running-config on R1, R2, and R3.</li>
+          <li>Verify on R1 with <code>show ip ospf interface brief</code> and <code>show ip route ospf</code>.</li>
+          <li>Save running-config on R1.</li>
         </ol>
       </div>
 
       <div class="diagram-wrap" aria-label="OSPF areas and R1 initial config">
-        <img src="/assets/ospf-adv-summ-lab.png" alt="Areas 10 20 0 with R1 R2 R3 and R1 interface summary" />
+        <img
+          src="/assets/ospf-adv-summ-lab-v2.png"
+          width="906"
+          height="974"
+          alt="Areas 10 20 0 with R1 R2 R3 and R1 interface summary"
+        />
         <div class="device-pick" role="group" aria-label="Device in prompt">
-          <strong>Device in prompt:</strong>
-          <label><input type="radio" name="ospfAdvSummDev" value="R1" checked /> R1</label>
-          <label><input type="radio" name="ospfAdvSummDev" value="R2" /> R2</label>
-          <label><input type="radio" name="ospfAdvSummDev" value="R3" /> R3</label>
+          <strong>Device in prompt:</strong> R1
         </div>
         <div class="device-links">
           <button type="button" class="device-link" id="openDeviceCliLink">Open Router CLI</button>
@@ -375,7 +376,7 @@
       </div>
 
       <div id="passBanner" class="pass-banner" role="status">
-        Lab complete. R1 uses interface OSPF only; R2/R3 summarize areas 10 and 20 into 10.1.0.0/16 and 10.2.0.0/16; all configs saved.
+        Lab complete. R1 uses interface OSPF only and configuration is saved.
       </div>
 
       <details class="hint">
@@ -388,9 +389,7 @@
           <li><code>interface ethernet0/1</code> → <code>ip ospf 1 area 0</code> → <code>end</code></li>
           <li><code>show ip ospf interface brief</code> → <code>show ip route ospf</code></li>
         </ol>
-        <p><strong>R2</strong>: <code>router ospf 1</code> → <code>area 10 range 10.1.0.0 255.255.0.0</code> → <code>end</code></p>
-        <p><strong>R3</strong>: <code>router ospf 1</code> → <code>area 20 range 10.2.0.0 255.255.0.0</code> → <code>end</code></p>
-        <p><strong>Save</strong>: <code>copy run start</code> on R1, R2, R3.</p>
+        <p><strong>Save</strong>: <code>copy run start</code> on R1.</p>
       </details>
     </main>
   </div>
@@ -415,47 +414,6 @@
       </div>
     </div>
   </div>
-  <div id="modalR2" class="cli-modal-overlay" aria-hidden="true">
-    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR2" tabindex="-1">
-      <header class="cli-modal-header">
-        <h2 id="modalTitleR2">R2 — CLI</h2>
-        <button type="button" class="cli-modal-close" id="closeR2" aria-label="Close R2 CLI">×</button>
-      </header>
-      <div class="cli-modal-body">
-        <div class="terminal-panel terminal-panel--waiting" id="panelR2">
-          <p class="console-hint" id="hintR2">ABR for area 10: area 10 range 10.1.0.0 255.255.0.0</p>
-          <div class="terminal" aria-label="R2 CLI">
-            <div class="console-scroll" id="scrollR2"></div>
-            <div class="input-row">
-              <span class="prompt" id="promptR2">R2#</span>
-              <input class="cmdline" id="cmdR2" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R2 command line" disabled />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="modalR3" class="cli-modal-overlay" aria-hidden="true">
-    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR3" tabindex="-1">
-      <header class="cli-modal-header">
-        <h2 id="modalTitleR3">R3 — CLI</h2>
-        <button type="button" class="cli-modal-close" id="closeR3" aria-label="Close R3 CLI">×</button>
-      </header>
-      <div class="cli-modal-body">
-        <div class="terminal-panel terminal-panel--waiting" id="panelR3">
-          <p class="console-hint" id="hintR3">ABR for area 20: area 20 range 10.2.0.0 255.255.0.0</p>
-          <div class="terminal" aria-label="R3 CLI">
-            <div class="console-scroll" id="scrollR3"></div>
-            <div class="input-row">
-              <span class="prompt" id="promptR3">R3#</span>
-              <input class="cmdline" id="cmdR3" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R3 command line" disabled />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <nav class="sim-nav" aria-label="Simulation navigation">
     <a class="sim-nav-btn sim-nav-home" href="/practice-launcher.html">Home</a>
     <a class="sim-nav-btn sim-nav-next" href="/cli-lab-ospf-summ-r30.html">Next</a>
@@ -476,6 +434,11 @@
       );
     }
 
+    function matchShowRun(raw) {
+      const u = normalize(raw);
+      return u === "show run" || u === "show running-config" || u === "sh run" || u === "sh running-config";
+    }
+
     function promptForStep(steps, index, host) {
       if (index >= steps.length) return `${host}#`;
       const m = steps[index].mode;
@@ -493,31 +456,17 @@
 
     function testIntE00(raw) {
       const u = normalize(raw);
-      return (
-        u === "interface ethernet0/0" ||
-        u === "int ethernet0/0" ||
-        u === "interface e0/0" ||
-        u === "int e0/0"
-      );
+      return u === "interface ethernet0/0" || u === "int ethernet0/0" || u === "interface e0/0" || u === "int e0/0";
     }
 
     function testIntE01(raw) {
       const u = normalize(raw);
-      return (
-        u === "interface ethernet0/1" ||
-        u === "int ethernet0/1" ||
-        u === "interface e0/1" ||
-        u === "int e0/1"
-      );
+      return u === "interface ethernet0/1" || u === "int ethernet0/1" || u === "interface e0/1" || u === "int e0/1";
     }
 
     function testShowOspfBrief(raw) {
       const u = normalize(raw);
-      return (
-        u === "show ip ospf interface brief" ||
-        u === "sh ip ospf interface brief" ||
-        u === "show ip ospf int brief"
-      );
+      return u === "show ip ospf interface brief" || u === "sh ip ospf interface brief" || u === "show ip ospf int brief";
     }
 
     function testShowRouteOspf(raw) {
@@ -538,28 +487,6 @@
       { mode: "config-if", test: (raw) => normalize(raw) === "end" },
     ];
 
-    const R2_RANGE = [
-      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
-      { mode: "config", test: (raw) => normalize(raw) === "router ospf 1" },
-      {
-        mode: "config-router",
-        test: (raw) =>
-          normalize(raw) === "area 10 range 10.1.0.0 255.255.0.0",
-      },
-      { mode: "config-router", test: (raw) => normalize(raw) === "end" },
-    ];
-
-    const R3_RANGE = [
-      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
-      { mode: "config", test: (raw) => normalize(raw) === "router ospf 1" },
-      {
-        mode: "config-router",
-        test: (raw) =>
-          normalize(raw) === "area 20 range 10.2.0.0 255.255.0.0",
-      },
-      { mode: "config-router", test: (raw) => normalize(raw) === "end" },
-    ];
-
     const OUT_OSPF_BRIEF =
       "Interface    PID   Area            IP Address/Mask    Cost  State Nbrs F/C\n" +
       "Lo0          1     0               10.0.1.1/24        1     LOOP  0/0\n" +
@@ -574,82 +501,45 @@
       "O IA     10.1.102.0/24 [110/20] via 10.0.2.2, 00:00:09, Ethernet0/0\n" +
       "O IA     10.2.203.0/24 [110/20] via 10.0.3.3, 00:00:09, Ethernet0/1";
 
+    const R1_INITIAL_CONFIG =
+      "interface loopback0\n" +
+      " ip address 10.0.1.1 255.255.255.0\n" +
+      "!\n" +
+      "interface Ethernet0/0\n" +
+      " ip address 10.0.2.1 255.255.255.0\n" +
+      "!\n" +
+      "interface Ethernet0/1\n" +
+      " ip address 10.0.3.1 255.255.255.0\n\n" +
+      "(no OSPF config found):";
+
     const scrollR1 = document.getElementById("scrollR1");
-    const scrollR2 = document.getElementById("scrollR2");
-    const scrollR3 = document.getElementById("scrollR3");
     const promptR1 = document.getElementById("promptR1");
-    const promptR2 = document.getElementById("promptR2");
-    const promptR3 = document.getElementById("promptR3");
     const cmdR1 = document.getElementById("cmdR1");
-    const cmdR2 = document.getElementById("cmdR2");
-    const cmdR3 = document.getElementById("cmdR3");
     const panelR1 = document.getElementById("panelR1");
-    const panelR2 = document.getElementById("panelR2");
-    const panelR3 = document.getElementById("panelR3");
     const passBanner = document.getElementById("passBanner");
     const resetBtn = document.getElementById("resetBtn");
     const modalR1 = document.getElementById("modalR1");
-    const modalR2 = document.getElementById("modalR2");
-    const modalR3 = document.getElementById("modalR3");
     const openDeviceCliLink = document.getElementById("openDeviceCliLink");
-
-    function getOspfAdvSummDev() {
-      const sel = document.querySelector('input[name="ospfAdvSummDev"]:checked');
-      return sel ? sel.value : "R1";
-    }
 
     function closeR1Modal() {
       modalR1.classList.remove("is-open");
       modalR1.setAttribute("aria-hidden", "true");
     }
-    function closeR2Modal() {
-      modalR2.classList.remove("is-open");
-      modalR2.setAttribute("aria-hidden", "true");
-    }
-    function closeR3Modal() {
-      modalR3.classList.remove("is-open");
-      modalR3.setAttribute("aria-hidden", "true");
-    }
-    function closeModals() {
-      closeR1Modal();
-      closeR2Modal();
-      closeR3Modal();
-    }
 
     function openSelectedCliModal() {
-      closeModals();
-      const d = getOspfAdvSummDev();
-      if (d === "R2") {
-        modalR2.classList.add("is-open");
-        modalR2.setAttribute("aria-hidden", "false");
-      } else if (d === "R3") {
-        modalR3.classList.add("is-open");
-        modalR3.setAttribute("aria-hidden", "false");
-      } else {
-        modalR1.classList.add("is-open");
-        modalR1.setAttribute("aria-hidden", "false");
-      }
+      modalR1.classList.add("is-open");
+      modalR1.setAttribute("aria-hidden", "false");
       focusActiveCli();
     }
 
     function focusActiveCli() {
       if (modalR1.classList.contains("is-open") && !cmdR1.disabled) {
         cmdR1.focus();
-        return;
-      }
-      if (modalR2.classList.contains("is-open") && !cmdR2.disabled) {
-        cmdR2.focus();
-        return;
-      }
-      if (modalR3.classList.contains("is-open") && !cmdR3.disabled) {
-        cmdR3.focus();
       }
     }
 
     let phase = "R1_CFG";
     let stepR1 = 0;
-    let stepR2 = 0;
-    let stepR3 = 0;
     let verStep = 0;
 
     function appendLine(scrollEl, className, text) {
@@ -673,88 +563,51 @@
       panel.classList.toggle("terminal-panel--waiting", waiting);
     }
 
-    function disableAllInputs() {
-      cmdR1.disabled = true;
-      cmdR2.disabled = true;
-      cmdR3.disabled = true;
-    }
-
     function updatePrompts() {
       if (phase === "R1_CFG") {
         promptR1.textContent = promptForStep(R1_CFG, stepR1, "R1");
-      } else if (phase === "R1_VER") {
-        promptR1.textContent = "R1#";
-      } else if (phase === "R1_SAVE") {
-        promptR1.textContent = "R1#";
       } else {
         promptR1.textContent = "R1#";
-      }
-
-      if (phase === "R2_RANGE") {
-        promptR2.textContent = promptForStep(R2_RANGE, stepR2, "R2");
-      } else if (phase === "R2_SAVE") {
-        promptR2.textContent = "R2#";
-      } else {
-        promptR2.textContent = "R2#";
-      }
-
-      if (phase === "R3_RANGE") {
-        promptR3.textContent = promptForStep(R3_RANGE, stepR3, "R3");
-      } else if (phase === "R3_SAVE") {
-        promptR3.textContent = "R3#";
-      } else {
-        promptR3.textContent = "R3#";
       }
     }
 
     function applyPhaseUI() {
-      disableAllInputs();
-      setWaiting(
-        panelR1,
-        phase !== "R1_CFG" && phase !== "R1_VER" && phase !== "R1_SAVE"
-      );
-      setWaiting(panelR2, phase !== "R2_RANGE" && phase !== "R2_SAVE");
-      setWaiting(panelR3, phase !== "R3_RANGE" && phase !== "R3_SAVE");
-
-      if (phase === "R1_CFG" || phase === "R1_VER" || phase === "R1_SAVE") {
-        cmdR1.disabled = false;
-      }
-      if (phase === "R2_RANGE" || phase === "R2_SAVE") cmdR2.disabled = false;
-      if (phase === "R3_RANGE" || phase === "R3_SAVE") cmdR3.disabled = false;
-
+      cmdR1.disabled = phase === "DONE";
+      setWaiting(panelR1, false);
       updatePrompts();
       focusActiveCli();
     }
 
     function reset() {
-      closeModals();
+      closeR1Modal();
       phase = "R1_CFG";
       stepR1 = 0;
-      stepR2 = 0;
-      stepR3 = 0;
       verStep = 0;
       scrollR1.innerHTML = "";
-      scrollR2.innerHTML = "";
-      scrollR3.innerHTML = "";
       cmdR1.value = "";
-      cmdR2.value = "";
-      cmdR3.value = "";
       passBanner.classList.remove("visible");
-      appendLine(scrollR1, "line-sys", "No OSPF on R1 yet — use process 1 and interface-level enrollment only.");
+      appendLine(scrollR1, "line-sys", "R1 initial state loaded. Use show run to view starting config.");
       applyPhaseUI();
       openDeviceCliLink.focus();
     }
 
     function submitR1() {
+      const prompt = phase === "R1_CFG" ? promptForStep(R1_CFG, stepR1, "R1") : "R1#";
+      const line = cmdR1.value;
+      appendLine(scrollR1, "line-user", `${prompt} ${line}`);
+      cmdR1.value = "";
+      if (!line.trim()) return;
+
+      if (matchShowRun(line)) {
+        appendBlock(scrollR1, "line-sys", R1_INITIAL_CONFIG);
+        return;
+      }
+
       if (phase === "R1_SAVE") {
-        const line = cmdR1.value;
-        appendLine(scrollR1, "line-user", `R1# ${line}`);
-        cmdR1.value = "";
-        if (!line.trim()) return;
         if (matchCopy(line)) {
-          appendLine(scrollR1, "line-sys", "[OK] R1 saved (simulated). Save R2.");
-          phase = "R2_SAVE";
-          appendLine(scrollR2, "line-sys", "copy running-config startup-config");
+          appendLine(scrollR1, "line-sys", "[OK] R1 saved (simulated).");
+          phase = "DONE";
+          passBanner.classList.add("visible");
           applyPhaseUI();
         } else {
           appendLine(scrollR1, "line-bad", "% copy running-config startup-config");
@@ -763,10 +616,6 @@
       }
 
       if (phase === "R1_VER") {
-        const line = cmdR1.value;
-        appendLine(scrollR1, "line-user", `R1# ${line}`);
-        cmdR1.value = "";
-        if (!line.trim()) return;
         if (verStep === 0) {
           if (testShowOspfBrief(line)) {
             appendBlock(scrollR1, "line-sys", OUT_OSPF_BRIEF);
@@ -775,36 +624,28 @@
           } else {
             appendLine(scrollR1, "line-bad", "% show ip ospf interface brief");
           }
+          return;
+        }
+
+        if (testShowRouteOspf(line)) {
+          appendBlock(scrollR1, "line-sys", OUT_ROUTE_OSPF);
+          appendLine(scrollR1, "line-sys", "[OK] Save config on R1.");
+          phase = "R1_SAVE";
+          applyPhaseUI();
         } else {
-          if (testShowRouteOspf(line)) {
-            appendBlock(scrollR1, "line-sys", OUT_ROUTE_OSPF);
-            appendLine(scrollR1, "line-sys", "[OK] Configure area range on R2.");
-            phase = "R2_RANGE";
-            stepR2 = 0;
-            appendLine(scrollR2, "line-sys", "router ospf 1 → area 10 range …");
-            applyPhaseUI();
-          } else {
-            appendLine(scrollR1, "line-bad", "% show ip route ospf");
-          }
+          appendLine(scrollR1, "line-bad", "% show ip route ospf");
         }
         return;
       }
 
       if (phase !== "R1_CFG") return;
       if (stepR1 >= R1_CFG.length) return;
-      const p = promptForStep(R1_CFG, stepR1, "R1");
-      const line = cmdR1.value;
-      appendLine(scrollR1, "line-user", `${p} ${line}`);
-      cmdR1.value = "";
-      if (!line.trim()) return;
+
       if (!R1_CFG[stepR1].test(line)) {
-        appendLine(
-          scrollR1,
-          "line-bad",
-          "% router ospf 1, exit, each interface + ip ospf 1 area 0, end."
-        );
+        appendLine(scrollR1, "line-bad", "% router ospf 1, exit, each interface + ip ospf 1 area 0, end.");
         return;
       }
+
       stepR1 += 1;
       if (stepR1 >= R1_CFG.length) {
         appendLine(scrollR1, "line-sys", "[OK] R1 interfaces in OSPF. Verify.");
@@ -817,112 +658,10 @@
       }
     }
 
-    function submitR2() {
-      if (phase === "R2_SAVE") {
-        const line = cmdR2.value;
-        appendLine(scrollR2, "line-user", `R2# ${line}`);
-        cmdR2.value = "";
-        if (!line.trim()) return;
-        if (matchCopy(line)) {
-          appendLine(scrollR2, "line-sys", "[OK] R2 saved (simulated). Save R3.");
-          phase = "R3_SAVE";
-          appendLine(scrollR3, "line-sys", "copy running-config startup-config");
-          applyPhaseUI();
-        } else {
-          appendLine(scrollR2, "line-bad", "% copy running-config startup-config");
-        }
-        return;
-      }
-
-      if (phase !== "R2_RANGE") return;
-      if (stepR2 >= R2_RANGE.length) return;
-      const p = promptForStep(R2_RANGE, stepR2, "R2");
-      const line = cmdR2.value;
-      appendLine(scrollR2, "line-user", `${p} ${line}`);
-      cmdR2.value = "";
-      if (!line.trim()) return;
-      if (!R2_RANGE[stepR2].test(line)) {
-        appendLine(
-          scrollR2,
-          "line-bad",
-          "% area 10 range 10.1.0.0 255.255.0.0 under router ospf 1."
-        );
-        return;
-      }
-      stepR2 += 1;
-      if (stepR2 >= R2_RANGE.length) {
-        appendLine(scrollR2, "line-sys", "[OK] Area 10 summarized (simulated). Configure R3.");
-        phase = "R3_RANGE";
-        stepR3 = 0;
-        appendLine(scrollR3, "line-sys", "router ospf 1 → area 20 range …");
-        applyPhaseUI();
-      } else {
-        updatePrompts();
-      }
-    }
-
-    function submitR3() {
-      if (phase === "R3_SAVE") {
-        const line = cmdR3.value;
-        appendLine(scrollR3, "line-user", `R3# ${line}`);
-        cmdR3.value = "";
-        if (!line.trim()) return;
-        if (matchCopy(line)) {
-          appendLine(scrollR3, "line-sys", "[OK] R3 saved (simulated).");
-          phase = "DONE";
-          passBanner.classList.add("visible");
-          disableAllInputs();
-          setWaiting(panelR1, false);
-          setWaiting(panelR2, false);
-          setWaiting(panelR3, false);
-        } else {
-          appendLine(scrollR3, "line-bad", "% copy running-config startup-config");
-        }
-        return;
-      }
-
-      if (phase !== "R3_RANGE") return;
-      if (stepR3 >= R3_RANGE.length) return;
-      const p = promptForStep(R3_RANGE, stepR3, "R3");
-      const line = cmdR3.value;
-      appendLine(scrollR3, "line-user", `${p} ${line}`);
-      cmdR3.value = "";
-      if (!line.trim()) return;
-      if (!R3_RANGE[stepR3].test(line)) {
-        appendLine(
-          scrollR3,
-          "line-bad",
-          "% area 20 range 10.2.0.0 255.255.0.0 under router ospf 1."
-        );
-        return;
-      }
-      stepR3 += 1;
-      if (stepR3 >= R3_RANGE.length) {
-        appendLine(scrollR3, "line-sys", "[OK] Area 20 summarized (simulated). Save R1, R2, R3.");
-        phase = "R1_SAVE";
-        appendLine(scrollR1, "line-sys", "copy running-config startup-config");
-        applyPhaseUI();
-      } else {
-        updatePrompts();
-      }
-    }
-
     cmdR1.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
         submitR1();
-      }
-    });
-    cmdR2.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        submitR2();
-      }
-    });
-    cmdR3.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        submitR3();
       }
     });
 
@@ -932,41 +671,14 @@
       closeR1Modal();
       openDeviceCliLink.focus();
     });
-    document.getElementById("closeR2").addEventListener("click", () => {
-      closeR2Modal();
-      openDeviceCliLink.focus();
-    });
-    document.getElementById("closeR3").addEventListener("click", () => {
-      closeR3Modal();
-      openDeviceCliLink.focus();
-    });
 
     document.addEventListener("keydown", (e) => {
       if (e.key !== "Escape") return;
-      if (modalR3.classList.contains("is-open")) {
-        e.preventDefault();
-        closeR3Modal();
-        openDeviceCliLink.focus();
-        return;
-      }
-      if (modalR2.classList.contains("is-open")) {
-        e.preventDefault();
-        closeR2Modal();
-        openDeviceCliLink.focus();
-        return;
-      }
       if (modalR1.classList.contains("is-open")) {
         e.preventDefault();
         closeR1Modal();
         openDeviceCliLink.focus();
       }
-    });
-
-    document.querySelectorAll('input[name="ospfAdvSummDev"]').forEach((r) => {
-      r.addEventListener("change", () => {
-        closeModals();
-        openDeviceCliLink.focus();
-      });
     });
 
     history.pushState(null, "", location.href);

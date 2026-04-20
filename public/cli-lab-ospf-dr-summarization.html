@@ -358,7 +358,12 @@
       </div>
 
       <div class="diagram-wrap" aria-label="OSPF topology and R2 initial configuration">
-        <img src="/assets/ospf-dr-summ-lab.png" alt="Multi-area OSPF topology and R2 initial config" />
+        <img
+          src="/assets/ospf-dr-summarization-topology-v2.png"
+          width="906"
+          height="974"
+          alt="Multi-area OSPF topology and R2 initial config"
+        />
         <div class="device-pick" role="group" aria-label="Device in prompt">
           <strong>Device in prompt:</strong>
           <label><input type="radio" name="ospfDrSummDev" value="R2" checked /> R2</label>
@@ -478,6 +483,16 @@
       );
     }
 
+    function matchShowRun(raw) {
+      const u = normalize(raw);
+      return (
+        u === "show run" ||
+        u === "show running-config" ||
+        u === "sh run" ||
+        u === "sh running-config"
+      );
+    }
+
     function promptForConfig(steps, index, host) {
       if (index >= steps.length) return `${host}#`;
       const m = steps[index].mode;
@@ -524,6 +539,29 @@
       "      10.0.0.0/8 is variably subnetted, 8 subnets, 3 masks\n" +
       "O        10.0.2.0/24 [110/20] via 10.0.3.1, 00:00:04, Ethernet0/0\n" +
       "O IA     10.1.0.0/16 [110/30] via 10.0.3.1, 00:00:04, Ethernet0/0";
+
+    const R2_SHOW_RUN_INITIAL =
+      "R2 Initial config\n\n" +
+      "interface Loopback0\n" +
+      "ip address 10.0.1.2 255.255.255.0\n" +
+      "!\n" +
+      "interface Ethernet0/0\n" +
+      "ip address 10.0.2.2 255.255.255.0\n" +
+      "!\n" +
+      "interface Ethernet0/1\n" +
+      "ip address 10.1.102.2 255.255.255.0\n" +
+      "!\n" +
+      "interface Ethernet0/2\n" +
+      "ip address 10.0.23.2 255.255.255.0\n" +
+      "!\n" +
+      "router ospf 10\n" +
+      "router-id 10.0.1.2\n" +
+      "network 10.0.1.0 0.0.0.255 area 0\n" +
+      "network 10.0.2.0 0.0.0.255 area 0\n" +
+      "network 10.0.23.0 0.0.0.255 area 0\n" +
+      "network 10.1.102.0 0.0.0.255 area 10\n" +
+      "!\n" +
+      "ip prefix-list deny_R1_Lo0 seq 2 permit 0.0.0.0/0 le 32";
 
     const scrollR2 = document.getElementById("scrollR2");
     const scrollR10 = document.getElementById("scrollR10");
@@ -742,6 +780,10 @@
         appendLine(scrollR2, "line-user", `${p} ${line}`);
         cmdR2.value = "";
         if (!line.trim()) return;
+        if (matchShowRun(line)) {
+          appendBlock(scrollR2, "line-sys", R2_SHOW_RUN_INITIAL);
+          return;
+        }
         if (R2_PRI_CFG[stepR2Pri].test(line)) {
           stepR2Pri += 1;
           if (stepR2Pri >= R2_PRI_CFG.length) {
@@ -759,6 +801,10 @@
         appendLine(scrollR2, "line-user", `${p} ${line}`);
         cmdR2.value = "";
         if (!line.trim()) return;
+        if (matchShowRun(line)) {
+          appendBlock(scrollR2, "line-sys", R2_SHOW_RUN_INITIAL);
+          return;
+        }
         if (stepR2Clear === 0) {
           if (normalize(line) === "clear ip ospf process") {
             stepR2Clear = 1;
@@ -787,6 +833,10 @@
         appendLine(scrollR2, "line-user", `${p} ${line}`);
         cmdR2.value = "";
         if (!line.trim()) return;
+        if (matchShowRun(line)) {
+          appendBlock(scrollR2, "line-sys", R2_SHOW_RUN_INITIAL);
+          return;
+        }
         if (R2_RANGE_CFG[stepR2Range].test(line)) {
           stepR2Range += 1;
           if (stepR2Range >= R2_RANGE_CFG.length) {
@@ -810,6 +860,10 @@
         appendLine(scrollR2, "line-user", `R2# ${line}`);
         cmdR2.value = "";
         if (!line.trim()) return;
+        if (matchShowRun(line)) {
+          appendBlock(scrollR2, "line-sys", R2_SHOW_RUN_INITIAL);
+          return;
+        }
         if (matchCopy(line)) {
           appendLine(scrollR2, "line-sys", "[OK] R2: configuration saved (simulated).");
           phase = "DONE";

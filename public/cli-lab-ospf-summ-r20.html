@@ -404,6 +404,16 @@
       );
     }
 
+    function matchShowRun(raw) {
+      const u = normalize(raw);
+      return (
+        u === "show run" ||
+        u === "show running-config" ||
+        u === "sh run" ||
+        u === "sh running-config"
+      );
+    }
+
     function testShowBrief(raw) {
       const u = normalize(raw);
       return (
@@ -459,6 +469,19 @@
       "Ethernet0/2            10.40.50.20     YES manual up                    up\n" +
       "Ethernet0/3            unassigned      YES unset  administratively down down\n" +
       "Loopback0              20.20.20.20     YES manual up                    up";
+
+    const R20_INITIAL_CONFIG =
+      "R20 Initial Config\n\n" +
+      "(use \"show run\" to get the config)\n\n" +
+      "interface loopback0\n" +
+      " ip address 20.20.20.20 255.255.255.255\n" +
+      "interface e0/0\n" +
+      " ip address 10.0.20.20 255.255.255.0\n" +
+      "interface e0/1\n" +
+      " ip address 10.20.30.20 255.255.255.0\n" +
+      "interface e0/2\n" +
+      " ip address 10.40.50.20 255.255.255.0\n" +
+      "(no OSPF config found)";
 
     const LAB_STEPS = [
       { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
@@ -575,6 +598,11 @@
       appendLine("line-user", `${prompt} ${line}`);
       cmdline.value = "";
       if (!line.trim()) return;
+
+      if (matchShowRun(line)) {
+        appendBlock("line-sys", R20_INITIAL_CONFIG);
+        return;
+      }
 
       if (phase === "BRIEF") {
         if (testShowBrief(line)) {
