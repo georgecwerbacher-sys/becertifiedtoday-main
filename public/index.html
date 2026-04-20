@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Sign up for Be Certified Today — fully interactive practice in the browser (no PDFs): questions, labs, and drag-and-drop for IT certification prep." />
+  <meta name="description" content="Be Certified Today — interactive IT certification practice in the browser (no PDFs). Timed 55-question mock exams with labs and drag-and-drop coming with full access." />
   <link rel="canonical" href="https://becertifiedtoday.com/" />
   <meta property="og:site_name" content="Be Certified Today" />
   <meta property="og:url" content="https://becertifiedtoday.com/" />
@@ -144,74 +144,21 @@
       padding: clamp(22px, 4vw, 28px);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
-    .signup-label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 0.92rem;
-      font-weight: 700;
-      color: var(--text);
+    .coming-soon-card {
+      text-align: center;
     }
-    .field-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .field-row input[type="email"] {
-      flex: 1 1 200px;
-      min-width: 0;
-      padding: 12px 14px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: #0d1528;
-      color: var(--text);
-      font-size: 1rem;
-    }
-    .field-row input[type="email"]::placeholder {
-      color: #5c6d8a;
-    }
-    .field-row input[type="email"]:focus-visible {
-      outline: 2px solid var(--accent-border);
-      outline-offset: 2px;
-      border-color: var(--accent-border);
-    }
-    .btn-primary {
-      flex: 0 0 auto;
-      padding: 12px 20px;
-      border-radius: 10px;
-      border: 1px solid var(--accent-border);
-      background: var(--accent);
-      color: #f0f4fc;
-      font-size: 1rem;
+    .coming-soon-card .coming-soon-label {
+      margin: 0 0 10px;
+      font-size: clamp(1.2rem, 3vw, 1.45rem);
       font-weight: 800;
-      cursor: pointer;
-      white-space: nowrap;
+      letter-spacing: -0.02em;
+      color: var(--text);
     }
-    .btn-primary:hover:not(:disabled) {
-      background: var(--accent-hover);
-    }
-    .btn-primary:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-    }
-    .btn-primary:focus-visible {
-      outline: 2px solid var(--accent-border);
-      outline-offset: 3px;
-    }
-    .form-hint {
-      margin: 12px 0 0;
-      font-size: 0.85rem;
-      color: #6b7f9e;
-      line-height: 1.45;
-    }
-    #signupThanks {
+    .coming-soon-card .coming-soon-text {
       margin: 0;
-      padding: 14px 16px;
-      border-radius: 10px;
-      background: #113e2d;
-      border: 1px solid #1f7a58;
-      color: #c8e6d4;
-      font-size: 0.95rem;
-      line-height: 1.5;
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.55;
     }
     .site-disclaimer {
       max-width: 720px;
@@ -366,6 +313,69 @@
       outline-offset: 3px;
       border-radius: 4px;
     }
+    .mock-section {
+      margin-top: clamp(40px, 8vw, 72px);
+      padding-top: clamp(36px, 6vw, 56px);
+      border-top: 1px solid var(--border);
+    }
+    .mock-section h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 3.2vw, 1.75rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .mock-lead {
+      margin: 0 0 clamp(18px, 3vw, 22px);
+      max-width: 58ch;
+      color: var(--muted);
+      font-size: clamp(0.98rem, 2.2vw, 1.05rem);
+      line-height: 1.6;
+    }
+    .mock-list {
+      margin: 0 0 clamp(20px, 3.5vw, 26px);
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      max-width: 62ch;
+    }
+    .mock-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      color: #b8c3d6;
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.55;
+    }
+    .mock-list li::before {
+      content: "";
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      margin-top: 0.45em;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4f84d8, #2f66bf);
+    }
+    .mock-list li strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+    .mock-soon {
+      margin: 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(13, 21, 40, 0.65);
+      color: #b8c3d6;
+      font-size: clamp(0.88rem, 2vw, 0.95rem);
+      line-height: 1.5;
+      max-width: 58ch;
+    }
+    .mock-soon strong {
+      color: var(--text);
+      font-weight: 700;
+    }
   </style>
 </head>
 <body>
@@ -389,9 +399,10 @@
           <p class="eyebrow">IT certification practice</p>
           <h1>Structured drills so you walk into the exam with confidence</h1>
           <p class="lead">
-            Create an account to unlock practice modes built for real exam formats—multiple choice,
-            drag-and-drop, and scenario-style labs you can repeat until the material sticks.
-            <strong>No PDFs:</strong> everything runs in the browser and responds to what you do.
+            Full access and accounts are <strong>coming soon</strong>. Practice modes are built for real
+            exam formats—multiple choice, drag-and-drop, and scenario-style labs you can repeat until the
+            material sticks. <strong>No PDFs:</strong> everything runs in the browser and responds to what
+            you do.
           </p>
           <ul class="benefits" aria-label="What you get">
             <li>100% interactive—click, type, and drag in the app; not static dumps or slide decks.</li>
@@ -399,32 +410,12 @@
             <li>Instant feedback so you fix weak areas before you sit for the real test.</li>
             <li>Room to grow: we’re expanding coverage across Cisco and other IT certs.</li>
           </ul>
-          <div class="card">
-            <form id="signupForm" class="signup" action="#" method="post" novalidate>
-              <div id="signupFields">
-                <label class="signup-label" for="email">Email</label>
-                <div class="field-row">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autocomplete="email"
-                    placeholder="you@example.com"
-                    required
-                    inputmode="email"
-                  />
-                  <button type="submit" class="btn-primary">Get access</button>
-                </div>
-                <p class="form-hint">
-                  This button is a placeholder: connect the form to your auth provider, waitlist API, or
-                  marketing tool when you’re ready.
-                </p>
-              </div>
-              <p id="signupThanks" hidden role="status">
-                Thanks—your email was captured in the browser only. Replace this step with your real
-                signup or waitlist flow.
-              </p>
-            </form>
+          <div class="card coming-soon-card">
+            <p class="coming-soon-label">Coming soon</p>
+            <p class="coming-soon-text">
+              Sign-up and paid access are not open yet. Use the samples below to try interactive
+              questions, a CLI lab, and a drag-and-drop item in your browser.
+            </p>
           </div>
         </div>
       </div>
@@ -492,6 +483,41 @@
           </ul>
         </div>
       </section>
+
+      <section class="mock-section" aria-labelledby="mock-title">
+        <div class="formats-inner">
+          <p class="formats-head">Full sitting practice</p>
+          <h2 id="mock-title">Timed mock exam — 55 questions, one clock, pass or fail</h2>
+          <p class="mock-lead">
+            Sit for a single timed session that feels closer to test day: a long mixed run with a
+            countdown, no peeking at answers until you finish, and a clear outcome when time is up.
+          </p>
+          <ul class="mock-list" aria-label="Mock exam includes">
+            <li>
+              <strong>55 scored items</strong> in one flow—enough length to test stamina and pacing, not
+              just a quick quiz.
+            </li>
+            <li>
+              <strong>Every item type in play:</strong> multiple-choice, full hands-on CLI labs, and
+              drag-and-drop performance-style tasks—so you rehearse the same cognitive switches as the
+              real exam.
+            </li>
+            <li>
+              <strong>Timer-driven:</strong> the session runs against the clock from start to submit; you
+              see how long you have left and can move forward and back within the exam before you finish.
+            </li>
+            <li>
+              <strong>Pass or fail at the end:</strong> when you submit (or time expires), you get a final
+              result with your score against the cut line plus a breakdown so you know what to revisit.
+            </li>
+          </ul>
+          <p class="mock-soon">
+            <strong>Coming soon.</strong> Timed mock exams will launch with full accounts and paid
+            access; until then, use the shorter samples above to explore each interaction style in the
+            browser.
+          </p>
+        </div>
+      </section>
     </main>
     <aside class="site-disclaimer" aria-label="Legal disclaimer">
       <p>
@@ -510,26 +536,6 @@
       Be Certified Today
     </footer>
   </div>
-  <script>
-    (function () {
-      var form = document.getElementById("signupForm");
-      var fields = document.getElementById("signupFields");
-      var thanks = document.getElementById("signupThanks");
-      if (!form || !fields || !thanks) return;
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        var input = form.querySelector('input[type="email"]');
-        if (!input || !input.value.trim()) {
-          input.focus();
-          return;
-        }
-        var btn = form.querySelector('button[type="submit"]');
-        if (btn) btn.disabled = true;
-        fields.hidden = true;
-        thanks.hidden = false;
-      });
-    })();
-  </script>
   <script>
     (function () {
       var p = location.pathname || "";
