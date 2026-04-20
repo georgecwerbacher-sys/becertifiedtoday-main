@@ -344,15 +344,15 @@
       <h1>Trunk, UDLD &amp; LACP Sim</h1>
       <p class="objective">
         Configure <strong>SW10</strong> only (no access to SW20 or SW30). Restrict trunk allowed VLANs to VLANs that are in use.
-        Use <strong>PC2</strong> to verify reachability when that console unlocks. STP may take up to about a minute before pings succeed (simulated as immediate).
+        Use <strong>PC3</strong> to verify reachability. After <code>switchport trunk allowed vlan 300</code> is entered on SW10, PC3 should reach PC1 at <code>10.10.100.10</code>.
         Under the topology, choose <strong>Device in prompt</strong>, then the open button for that device.
       </p>
       <div class="tasks">
         <strong>Tasks</strong>
         <ol>
-          <li>Fix the trunk toward SW30 on <code>E0/0</code> so PC2 can ping PC1 at <code>10.10.100.10</code>.</li>
+          <li>Fix the trunk toward SW30 on <code>E0/0</code> so PC3 can ping PC1 at <code>10.10.100.10</code>.</li>
           <li>Enable aggressive UDLD on SW10 <code>E0/0</code>.</li>
-          <li>Fix LACP negotiation for the port-channel to SW20 (E0/2–E0/3) so PC2 can ping PC3 at <code>10.10.100.30</code>.</li>
+          <li>Fix LACP negotiation for the port-channel to SW20 (E0/2–E0/3) so PC3 can ping <code>10.10.100.30</code>.</li>
           <li>(Optional) On <code>E0/1</code>, allow forwarding as soon as the link is up (access VLAN 300).</li>
           <li>(Optional) Use 32-bit spanning-tree path cost values on SW10.</li>
           <li>Save the configuration on SW10.</li>
@@ -360,11 +360,16 @@
       </div>
 
       <div class="diagram-wrap" aria-label="Topology and SW10 initial configuration">
-        <img src="/assets/trunk-udld-lacp-lab.png" alt="SW10 SW20 SW30 topology and SW10 initial config" />
+        <img
+          src="/assets/trunk-udld-lacp-lab-v2.png"
+          width="786"
+          height="1024"
+          alt="SW10 SW20 SW30 topology and SW10 initial config"
+        />
         <div class="device-pick" role="group" aria-label="Device in prompt">
           <strong>Device in prompt:</strong>
           <label><input type="radio" name="trunkUdldLacpDev" value="SW10" checked /> SW10</label>
-          <label><input type="radio" name="trunkUdldLacpDev" value="PC2" /> PC2</label>
+          <label><input type="radio" name="trunkUdldLacpDev" value="PC2" /> PC3</label>
         </div>
         <div class="device-links">
           <button type="button" class="device-link" id="openDeviceCliLink">Open Switch CLI</button>
@@ -423,17 +428,17 @@
   <div id="modalPC2" class="cli-modal-overlay" aria-hidden="true">
     <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitlePC2" tabindex="-1">
       <header class="cli-modal-header">
-        <h2 id="modalTitlePC2">PC2 — console</h2>
-        <button type="button" class="cli-modal-close" id="closePC2" aria-label="Close PC2 CLI">×</button>
+        <h2 id="modalTitlePC2">PC3 — console</h2>
+        <button type="button" class="cli-modal-close" id="closePC2" aria-label="Close PC3 CLI">×</button>
       </header>
       <div class="cli-modal-body">
         <div class="terminal-panel terminal-panel--waiting" id="panelPC2">
-          <p class="console-hint" id="hintPC2">Unlocks after the SW30 trunk is fixed. Ping PC1, then later PC3.</p>
-          <div class="terminal" aria-label="PC2 CLI">
+          <p class="console-hint" id="hintPC2">Use ping tests from PC3 at any time.</p>
+          <div class="terminal" aria-label="PC3 CLI">
             <div class="console-scroll" id="scrollPC2"></div>
             <div class="input-row">
-              <span class="prompt" id="promptPC2">PC2&gt;</span>
-              <input class="cmdline" id="cmdPC2" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="PC2 command line" disabled />
+              <span class="prompt" id="promptPC2">PC3&gt;</span>
+              <input class="cmdline" id="cmdPC2" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="PC3 command line" disabled />
             </div>
           </div>
         </div>
@@ -458,6 +463,16 @@
         u === "copy running-config startup-config" ||
         u === "copy run start" ||
         u === "copy run startup-config"
+      );
+    }
+
+    function matchShowRun(raw) {
+      const u = normalize(raw);
+      return (
+        u === "show run" ||
+        u === "show running-config" ||
+        u === "sh run" ||
+        u === "sh running-config"
       );
     }
 
@@ -548,6 +563,26 @@
       { mode: "config", test: (raw) => normalize(raw) === "end" },
     ];
 
+    const SW10_INITIAL_CONFIG =
+      "Sw10 Initial Config (use \"show run\" to get the config)\n\n" +
+      "interface Port-channel10\n" +
+      " switchport trunk allowed vlan 1,300\n" +
+      " switchport trunk encapsulation dot1q\n" +
+      " switchport mode trunk\n" +
+      "!\n" +
+      "interface Ethernet0/0\n" +
+      " switchport mode access\n" +
+      "!\n" +
+      "interface Ethernet0/1\n" +
+      " switchport access vlan 300\n" +
+      "!\n" +
+      "interface Ethernet0/2\n" +
+      "!\n" +
+      "interface Ethernet0/3\n" +
+      "!\n" +
+      "interface Vlan1\n" +
+      " ip address 10.10.1.10 255.255.255.0";
+
     const scrollSW10 = document.getElementById("scrollSW10");
     const scrollPC2 = document.getElementById("scrollPC2");
     const promptSW10 = document.getElementById("promptSW10");
@@ -610,6 +645,8 @@
 
     let phase = "TRUNK";
     let stepIdx = 0;
+    let trunkVlan300Configured = false;
+    let poReady = false;
 
     function currentSteps() {
       if (phase === "TRUNK") return TRUNK;
@@ -644,19 +681,13 @@
     function updateHints() {
       if (phase === "TRUNK") {
         hintSW10.textContent = "E0/0: dot1q trunk, allowed VLAN 300 only, then end.";
-        hintPC2.textContent = "Unlocks after the trunk to SW30 is correct.";
-      } else if (phase === "PING1") {
-        hintSW10.textContent = "Use PC2 to verify.";
-        hintPC2.textContent = "ping 10.10.100.10";
+        hintPC2.textContent = "ping 10.10.100.10 returns !!!! only after switchport trunk allowed vlan 300.";
       } else if (phase === "UDLD") {
         hintSW10.textContent = "E0/0: udld port aggressive, then end.";
-        hintPC2.textContent = "Waiting on SW10.";
+        hintPC2.textContent = "PC3 ping to 10.10.100.10 should keep working after VLAN 300 is allowed.";
       } else if (phase === "PO") {
         hintSW10.textContent = "no interface po10, then range e0/2 - 3 as LACP trunks (1,300), channel-group 10 mode active.";
-        hintPC2.textContent = "Waiting on SW10.";
-      } else if (phase === "PING2") {
-        hintSW10.textContent = "Use PC2 to verify.";
-        hintPC2.textContent = "ping 10.10.100.30";
+        hintPC2.textContent = "Optional: ping 10.10.100.30 succeeds after Po10 is fixed.";
       } else if (phase === "PORTFAST") {
         hintSW10.textContent = "E0/1: access + spanning-tree portfast, then end.";
         hintPC2.textContent = "Optional task — SW10 only.";
@@ -665,7 +696,7 @@
         hintPC2.textContent = "Optional task — SW10 only.";
       } else if (phase === "SAVE") {
         hintSW10.textContent = "copy running-config startup-config";
-        hintPC2.textContent = "Done with PC2.";
+        hintPC2.textContent = "Done with PC3.";
       } else {
         hintSW10.textContent = "Lab complete.";
         hintPC2.textContent = "Lab complete.";
@@ -683,11 +714,8 @@
     }
 
     function applyPhaseUI() {
-      const sw10Active =
-        phase !== "PING1" &&
-        phase !== "PING2" &&
-        phase !== "DONE";
-      const pc2Active = phase === "PING1" || phase === "PING2";
+      const sw10Active = phase !== "DONE";
+      const pc2Active = phase !== "DONE";
 
       cmdSW10.disabled = !sw10Active;
       cmdPC2.disabled = !pc2Active;
@@ -703,6 +731,8 @@
       closeModals();
       phase = "TRUNK";
       stepIdx = 0;
+      trunkVlan300Configured = false;
+      poReady = false;
       scrollSW10.innerHTML = "";
       scrollPC2.innerHTML = "";
       cmdSW10.value = "";
@@ -727,14 +757,8 @@
     }
 
     function advanceFromTrunk() {
-      appendLine(scrollSW10, "line-sys", "[OK] Trunk to SW30 fixed (simulated). Verify from PC2.");
-      phase = "PING1";
-      appendLine(scrollPC2, "line-sys", "Try: ping 10.10.100.10 (STP may take ~1 min in real gear).");
-      applyPhaseUI();
-    }
-
-    function advanceFromPing1() {
-      appendLine(scrollPC2, "line-sys", "[OK] Success — configure UDLD on SW10 E0/0 next.");
+      appendLine(scrollSW10, "line-sys", "[OK] Trunk to SW30 fixed (simulated). Configure UDLD on E0/0 next.");
+      appendLine(scrollPC2, "line-sys", "PC3 can now ping 10.10.100.10 with !!!!.");
       phase = "UDLD";
       stepIdx = 0;
       applyPhaseUI();
@@ -753,14 +777,9 @@
         "line-sys",
         "*May  7 01:24:54.651: %LINEPROTO-5-UPDOWN: Line protocol on Interface Port-channel10, changed state to up"
       );
-      appendLine(scrollSW10, "line-sys", "[OK] Port-channel 10 up (simulated). Verify PC2 → PC3.");
-      phase = "PING2";
-      appendLine(scrollPC2, "line-sys", "Try: ping 10.10.100.30");
-      applyPhaseUI();
-    }
-
-    function advanceFromPing2() {
-      appendLine(scrollPC2, "line-sys", "[OK] Success — optional portfast, pathcost long, then save.");
+      appendLine(scrollSW10, "line-sys", "[OK] Port-channel 10 up (simulated). Verify from PC3.");
+      poReady = true;
+      appendLine(scrollPC2, "line-sys", "PC3 can now ping 10.10.100.30 with !!!!.");
       phase = "PORTFAST";
       stepIdx = 0;
       applyPhaseUI();
@@ -811,7 +830,15 @@
       cmdSW10.value = "";
       if (!line.trim()) return;
 
+      if (matchShowRun(line)) {
+        appendBlock(scrollSW10, "line-sys", SW10_INITIAL_CONFIG);
+        return;
+      }
+
       if (steps[stepIdx].test(line)) {
+        if (phase === "TRUNK" && normalize(line) === "switchport trunk allowed vlan 300") {
+          trunkVlan300Configured = true;
+        }
         stepIdx += 1;
         if (stepIdx >= steps.length) {
           if (phase === "TRUNK") advanceFromTrunk();
@@ -841,39 +868,19 @@
 
     function submitPC2() {
       const line = cmdPC2.value;
-      appendLine(scrollPC2, "line-user", `PC2> ${line}`);
+      appendLine(scrollPC2, "line-user", `PC3> ${line}`);
       cmdPC2.value = "";
       if (!line.trim()) return;
       const u = normalize(line);
-      if (phase === "PING1") {
-        if (u === "ping 10.10.100.10") {
-          appendBlock(
-            scrollPC2,
-            "line-sys",
-            "Type escape sequence to abort.\n" +
-              "Sending 5, 100-byte ICMP Echos to 10.10.100.10, timeout is 2 seconds:\n" +
-              "!!!!!\n" +
-              "Success rate is 100 percent (5/5), round-trip min/avg/max = 1/2/4 ms"
-          );
-          advanceFromPing1();
-        } else {
-          appendLine(scrollPC2, "line-bad", "% Type: ping 10.10.100.10");
-        }
-      } else if (phase === "PING2") {
-        if (u === "ping 10.10.100.30") {
-          appendBlock(
-            scrollPC2,
-            "line-sys",
-            "Type escape sequence to abort.\n" +
-              "Sending 5, 100-byte ICMP Echos to 10.10.100.30, timeout is 2 seconds:\n" +
-              "!!!!!\n" +
-              "Success rate is 100 percent (5/5), round-trip min/avg/max = 1/2/4 ms"
-          );
-          advanceFromPing2();
-        } else {
-          appendLine(scrollPC2, "line-bad", "% Type: ping 10.10.100.30");
-        }
+      if (u === "ping 10.10.100.10") {
+        appendLine(scrollPC2, trunkVlan300Configured ? "line-sys" : "line-bad", trunkVlan300Configured ? "!!!!" : "....");
+        return;
       }
+      if (u === "ping 10.10.100.30") {
+        appendLine(scrollPC2, poReady ? "line-sys" : "line-bad", poReady ? "!!!!" : "....");
+        return;
+      }
+      appendLine(scrollPC2, "line-bad", "% Type: ping 10.10.100.10");
     }
 
     cmdSW10.addEventListener("keydown", (e) => {

@@ -484,29 +484,36 @@
       );
     }
 
+    function matchShowBgpSummary(raw) {
+      const u = normalize(raw);
+      return u === "show ip bgp summary" || u === "sh ip bgp summary";
+    }
+
     /** Baseline running-config shown for show run / do show run (review). */
     const R1_SHOW_RUN_TEXT =
-      "hostname R1\n" +
-      "interface e0/0\n" +
+      "R1 Initial Configuration\n\n" +
+      "interface loopback0\n" +
+      " ip address 10.1.1.100 255.255.255.255\n" +
+      "!\n" +
+      "interface loopback1\n" +
+      " ip address 209.165.201.1 255.255.255.248\n" +
+      "!\n" +
+      "interface loopback2\n" +
+      " ip address 209.165.201.9 255.255.255.248\n" +
+      "!\n" +
+      "interface Ethernet0/0\n" +
       " ip address 209.165.200.225 255.255.255.252\n" +
-      " no shut\n" +
       "!\n" +
-      "interface e0/1\n" +
-      " ip address 209.165.202.130 255.255.255.252\n" +
-      " no shut\n" +
+      "interface Ethernet0/1\n" +
+      " ip address 209.165.202.129 255.255.255.252\n" +
       "!\n" +
-      "interface lo0\n" +
-      " ip address 10.1.1.1 255.255.255.255\n" +
-      "!\n" +
-      "router bgp 110\n" +
-      " bgp router-id 10.1.1.1\n" +
-      " neighbor 209.165.200.226 remote-as 120\n" +
-      " neighbor 209.165.202.129 remote-as 130\n" +
-      "!\n" +
-      "address-family ipv4\n" +
-      " neighbor 209.165.200.226 activate\n" +
-      " neighbor 209.165.202.129 activate\n" +
-      "exit-address-family";
+      "router bgp 100\n" +
+      " bgp router-id 10.1.1.100\n" +
+      " neighbor 209.165.200.226 remote-as 200\n" +
+      " neighbor 209.165.202.130 remote-as 300\n" +
+      " address-family ipv4\n" +
+      "  neighbor 209.165.200.226 activate\n" +
+      "  neighbor 209.165.202.130 activate";
 
     const R2_SHOW_RUN_TEXT =
       "hostname R2\n" +
@@ -552,6 +559,14 @@
       "interface lo200\n" +
       " ip address 209.165.201.15 255.255.255.255";
 
+    const R2_R3_BGP_END_TEXT =
+      "*   10.1.1.100/32    209.165.200.229                        0 300 100 i\n" +
+      "*>                   209.165.200.225          0             0 100 i\n" +
+      "*   209.165.201.0/29 209.165.200.229                        0 300 100 i\n" +
+      "*>                   209.165.200.225          0             0 100 i\n" +
+      "*   209.165.201.8/29 209.165.200.229                        0 300 100 i\n" +
+      "*>                   209.165.200.225          0             0 100 i";
+
     function testShowBrief(raw) {
       const u = normalize(raw);
       return (
@@ -564,6 +579,11 @@
     function testAddressFamilyIpv4(raw) {
       const u = normalize(raw);
       return u === "address-family ipv4" || u === "address-family ipv4 unicast";
+    }
+
+    function testShowBgpSummary(raw) {
+      const u = normalize(raw);
+      return u === "show ip bgp summary" || u === "sh ip bgp summary";
     }
 
     function promptForStep(steps, index) {
@@ -583,6 +603,11 @@
       "Loopback0              10.1.1.100      YES manual up                    up\n" +
       "Loopback1              209.165.201.1   YES manual up                    up\n" +
       "Loopback2              209.165.201.9   YES manual up                    up";
+
+    const OUT_BGP_SUMMARY =
+      "Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd\n" +
+      "209.165.200.226 4          200      13      13        4    0    0 00:08:26        0\n" +
+      "209.165.202.130 4          300      13      13        4    0    0 00:08:35        0";
 
     const BGP_ALL = [
       { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
@@ -758,6 +783,15 @@
         return;
       }
 
+      if (matchShowBgpSummary(line)) {
+        if (phase === "DONE") {
+          appendBlock(scrollbackR2, "line-out", R2_R3_BGP_END_TEXT);
+        } else {
+          appendLine(scrollbackR2, "line-bad", "% Finish R1 configuration and save first.");
+        }
+        return;
+      }
+
       appendLine(
         scrollbackR2,
         "line-bad",
@@ -777,6 +811,15 @@
       if (execShow || doShowFromExec) {
         appendLine(scrollbackR3, "line-sys", "Building configuration...");
         appendBlock(scrollbackR3, "line-out", R3_SHOW_RUN_TEXT);
+        return;
+      }
+
+      if (matchShowBgpSummary(line)) {
+        if (phase === "DONE") {
+          appendBlock(scrollbackR3, "line-out", R2_R3_BGP_END_TEXT);
+        } else {
+          appendLine(scrollbackR3, "line-bad", "% Finish R1 configuration and save first.");
+        }
         return;
       }
 
@@ -827,6 +870,10 @@
       }
 
       if (phase === "SAVE") {
+        if (testShowBgpSummary(line)) {
+          appendBlock(scrollback, "line-out", OUT_BGP_SUMMARY);
+          return;
+        }
         if (matchCopy(line)) {
           appendLine(scrollback, "line-sys", "[OK] Building configuration... (simulated).");
           phase = "DONE";
