@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Be Certified Today — interactive IT certification practice in the browser (no PDFs). Timed 55-question mock exams with labs and drag-and-drop coming with full access." />
+  <meta name="description" content="Be Certified Today — interactive IT certification practice in the browser (no PDFs). Timed 55+ question realistic test simulations with labs and drag-and-drop included." />
   <link rel="canonical" href="https://becertifiedtoday.com/" />
   <meta property="og:site_name" content="Be Certified Today" />
   <meta property="og:url" content="https://becertifiedtoday.com/" />
@@ -93,17 +93,12 @@
       width: 100%;
     }
     .hero-content .funnel {
-      margin-left: auto;
-      margin-right: auto;
+      margin-left: 0;
+      margin-right: 0;
     }
     .funnel {
-      width: min(560px, 100%);
-    }
-    @media (min-width: 900px) {
-      .funnel {
-        width: 100%;
-        max-width: 560px;
-      }
+      width: 100%;
+      max-width: none;
     }
     .eyebrow {
       margin: 0 0 10px;
@@ -344,6 +339,20 @@
       font-size: clamp(0.98rem, 2.2vw, 1.05rem);
       line-height: 1.6;
     }
+    .mock-image {
+      margin: 0 0 clamp(18px, 3vw, 22px);
+      width: min(410px, 50%);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+      background: #0f1729;
+    }
+    .mock-image img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
     .mock-list {
       margin: 0 0 clamp(20px, 3.5vw, 26px);
       padding: 0;
@@ -418,16 +427,19 @@
           <p class="eyebrow">IT certification practice</p>
           <h1>Structured drills so you walk into the exam with confidence</h1>
           <p class="lead">
-            Full access and accounts are <strong>coming soon</strong>. Practice modes are built for real
+            This is the next generation of certification preparation. Practice modes are built for real
             exam formats—multiple choice, drag-and-drop, and scenario-style labs you can repeat until the
-            material sticks. <strong>No PDFs:</strong> everything runs in the browser and responds to what
-            you do.
+            material sticks. <strong>No PDFs or third-party applications:</strong> everything runs in the
+            browser and responds to what you do.
           </p>
           <ul class="benefits" aria-label="What you get">
             <li>100% interactive—click, type, and drag in the app; not static dumps or slide decks.</li>
             <li>Question banks and study paths organized by exam topic—not random blog posts.</li>
-            <li>Instant feedback so you fix weak areas before you sit for the real test.</li>
-            <li>Room to grow: we’re expanding coverage across Cisco and other IT certs.</li>
+            <li>Review quiz mode loops missed answers back to the end so weak topics get extra reps.</li>
+            <li>Progress tracking helps you focus study time where it is needed most.</li>
+            <li>Simple pricing: train for about $1/day with 30-day memberships (no long-term commitments).</li>
+            <li>Realistic practice tests are available without membership for $4.99.</li>
+            <li>New questions are added continuously to keep preparation current.</li>
           </ul>
           <div class="card coming-soon-card">
             <p class="coming-soon-label">Coming soon</p>
@@ -473,9 +485,9 @@
               <article class="format-card" aria-labelledby="format-lab-title">
                 <h3 id="format-lab-title">Hands-on labs</h3>
                 <p>
-                  Browser-based CLI-style simulations walk you through realistic device prompts and
-                  goals—fix the topology, complete the task, and validate against the scenario without
-                  spinning up hardware.
+                  CLI-style simulations present realistic device prompts and objectives in an exam-like
+                  workflow. No software is required to download, and every command is entered directly
+                  on the simulated devices, closely mirroring real test execution.
                 </p>
                 <p class="format-sample">
                   <a href="/begin-landing-sample.html?track=labs">Click here to try a sample</a>
@@ -505,20 +517,31 @@
 
       <section class="mock-section" aria-labelledby="mock-title">
         <div class="formats-inner">
-          <p class="formats-head">Full sitting practice</p>
-          <h2 id="mock-title">Timed mock exam — 55 questions, one clock, pass or fail</h2>
+          <p class="formats-head">Realistic Test Simulation</p>
+          <h2 id="mock-title">Timed test simulation — 55+ questions, one clock, pass or fail</h2>
           <p class="mock-lead">
             Sit for a single timed session that feels closer to test day: a long mixed run with a
             countdown, no peeking at answers until you finish, and a clear outcome when time is up.
           </p>
-          <ul class="mock-list" aria-label="Mock exam includes">
+          <p class="mock-lead" style="margin-top:-6px;">
+            Test simulation details: each attempt is always randomized in both order and selection, pulling different questions, drag-and-drops, and labs.
+          </p>
+          <figure class="mock-image">
+            <img
+              src="/images/mock-test-container.png"
+              width="1024"
+              height="682"
+              alt="Learners taking a timed mock certification exam in a training lab"
+            />
+          </figure>
+          <ul class="mock-list" aria-label="Test simulation includes">
             <li>
-              <strong>55 scored items</strong> in one flow—enough length to test stamina and pacing, not
+              <strong>50+ scored items</strong> in one flow—enough length to test stamina and pacing, not
               just a quick quiz.
             </li>
             <li>
               <strong>Every item type in play:</strong> multiple-choice, full hands-on CLI labs, and
-              drag-and-drop performance-style tasks—so you rehearse the same cognitive switches as the
+              drag-and-drop performance-style tasks—so you rehearse cognitive switches as the
               real exam.
             </li>
             <li>
@@ -530,11 +553,6 @@
               result with your score against the cut line plus a breakdown so you know what to revisit.
             </li>
           </ul>
-          <p class="mock-soon">
-            <strong>Coming soon.</strong> Timed mock exams will launch with full accounts and paid
-            access; until then, use the shorter samples above to explore each interaction style in the
-            browser.
-          </p>
         </div>
       </section>
     </main>
@@ -551,7 +569,7 @@
       </p>
     </aside>
     <footer>
-      <a class="footer-secret-link" href="/practice-launcher.html" aria-label="Open practice launcher">©</a>
+      <a class="footer-secret-link" href="/BCT-CCNP-Encore-Training.html" aria-label="Open practice launcher">©</a>
       Be Certified Today
     </footer>
   </div>

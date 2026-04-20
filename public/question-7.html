@@ -46,6 +46,59 @@
       margin-left: auto;
       margin-right: auto;
     }
+    .exhibit-region {
+      margin: 0 0 18px;
+    }
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+    @media (max-width: 720px) {
+      .exhibit-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+      min-width: 0;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.7rem, 1.4vw, 0.82rem);
+      line-height: 1.5;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -93,8 +146,49 @@
 </head>
 <body>
   <main class="card">
-    <div class="image-wrap">
-      <img src="/assets/acl_allow_traffic.png" alt="Router topology for ACL question" />
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the options.</p>
+      <div class="image-wrap">
+        <img src="/assets/question7-acl-options-cli.png" alt="ACL options A through D shown in CLI format" />
+      </div>
+      <p class="exhibit-ref">Candidate configuration options:</p>
+      <div class="exhibit-grid" role="region" aria-label="ACL options A through D">
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option A</div>
+          <pre class="exhibit-cli">RouterB(config)# access-list 101 permit ip 10.100.2.0 0.0.0.255 any
+RouterB(config)# access-list 101 deny any
+!
+RouterB(config)# int g0/0/0
+RouterB(config-if)# ip access-group 101 out</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option B</div>
+          <pre class="exhibit-cli">RouterB(config)# access-list 101 permit ip 10.100.3.0 0.0.0.255 any
+RouterB(config)# access-list 101 deny any
+RouterB(config)# int g0/0/0
+RouterB(config-if)# ip access-group 101 out
+!
+RouterB(config)# int g0/0/1
+RouterB(config-if)# ip access-group 101 out</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option C</div>
+          <pre class="exhibit-cli">RouterB(config)# access-list 101 permit ip 10.100.2.0 0.0.0.255 any
+RouterB(config)# access-list 101 deny any
+!
+RouterB(config)# int g0/0/2
+RouterB(config-if)# ip access-group 101 in</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option D</div>
+          <pre class="exhibit-cli">RouterB(config)# access-list 101 permit ip 10.100.2.0 0.0.0.255 any
+RouterB(config)# int g0/0/0
+RouterB(config-if)# ip access-group 101 out
+!
+RouterB(config)# int g0/0/1
+RouterB(config-if)# ip access-group 101 out</pre>
+        </div>
+      </div>
     </div>
     <h1>A network administrator must configure router B to allow traffic only from network 10.100.2.0 to networks outside of router B. Which configuration must be applied?</h1>
 
@@ -153,7 +247,7 @@
       filter: brightness(1.08);
     }
   </style>
-  <a class="home-key" href="/practice-launcher.html">Home</a>
+  <a class="home-key" href="/BCT-CCNP-Encore-Training.html">Home</a>
   <script src="/js/practice-questions.js"></script>
 </body>
 </html>

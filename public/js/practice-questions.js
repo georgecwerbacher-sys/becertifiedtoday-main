@@ -399,7 +399,7 @@
     document.querySelectorAll("nav.sim-nav a.sim-nav-btn").forEach(function (a) {
       if (a.classList.contains("sim-nav-home")) return;
       var href = (a.getAttribute("href") || "").trim();
-      if (href === "/practice-launcher.html") a.remove();
+      if (href === "/BCT-CCNP-Encore-Training.html") a.remove();
     });
   }
 
@@ -456,7 +456,7 @@
           return { href: exitHref, label: "Back to home" };
         }
         return {
-          href: "/practice-launcher.html",
+          href: "/BCT-CCNP-Encore-Training.html",
           label: "Back to launcher",
         };
       }
@@ -471,7 +471,7 @@
           return { href: "/question-" + lid + ".html", label: "Next" };
         }
         return {
-          href: "/practice-launcher.html",
+          href: "/BCT-CCNP-Encore-Training.html",
           label: "Back to launcher",
         };
       }
@@ -486,7 +486,7 @@
       };
     }
     return {
-      href: "/practice-launcher.html",
+      href: "/BCT-CCNP-Encore-Training.html",
       label: "Back to launcher",
     };
   }
@@ -494,7 +494,7 @@
   function resolveBack(qid, cfg) {
     if (isReviewMode()) {
       return {
-        href: "/practice-launcher.html",
+        href: "/BCT-CCNP-Encore-Training.html",
         label: "Back",
       };
     }
@@ -506,7 +506,7 @@
         return { href: "/question-" + queue[idx - 1] + ".html", label: "Back" };
       }
       return {
-        href: "/practice-launcher.html",
+        href: "/BCT-CCNP-Encore-Training.html",
         label: "Back",
       };
     }
@@ -518,7 +518,7 @@
         return { href: "/question-" + linearIds[li - 1] + ".html", label: "Back" };
       }
       return {
-        href: "/practice-launcher.html",
+        href: "/BCT-CCNP-Encore-Training.html",
         label: "Back",
       };
     }
@@ -532,7 +532,7 @@
       };
     }
     return {
-      href: "/practice-launcher.html",
+      href: "/BCT-CCNP-Encore-Training.html",
       label: "Back",
     };
   }
@@ -609,11 +609,11 @@
 
     var back = document.createElement("a");
     back.id = "ccnpToolbarBack";
-    back.href = "/practice-launcher.html";
+    back.href = "/BCT-CCNP-Encore-Training.html";
     back.textContent = "Back";
 
     var home = document.createElement("a");
-    home.href = "/practice-launcher.html";
+    home.href = "/BCT-CCNP-Encore-Training.html";
     home.textContent = "Home";
 
     var btn = document.createElement("button");
@@ -624,7 +624,7 @@
 
     var nextA = document.createElement("a");
     nextA.id = "ccnpToolbarNext";
-    nextA.href = "/practice-launcher.html";
+    nextA.href = "/BCT-CCNP-Encore-Training.html";
     nextA.textContent = "Next";
 
     var reveal = document.createElement("div");
@@ -710,7 +710,7 @@
       } catch (errNav) {}
       if (!rq.length) {
         clearReviewState();
-        location.href = "/practice-launcher.html?review=complete";
+        location.href = "/BCT-CCNP-Encore-Training.html?review=complete";
         return;
       }
       location.href = "/question-" + rq[0] + ".html";
