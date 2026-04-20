@@ -52,8 +52,12 @@
         sessionStorage.removeItem("ccnpReviewMode");
         sessionStorage.removeItem("ccnpReviewQueue");
         sessionStorage.removeItem("ccnpQuestionQueueIndex");
+        sessionStorage.removeItem("ccnpUrlMaskPath");
+        sessionStorage.removeItem("ccnpMaskedPageQid");
         sessionStorage.setItem("ccnpQuestionQueue", JSON.stringify(ids));
         sessionStorage.setItem("ccnpQuestionQueueIndex", "0");
+        sessionStorage.setItem("ccnpQueueExitHref", "/");
+        sessionStorage.setItem("ccnpUrlMaskPath", "/sample");
       } catch (e) {}
 
       location.replace("/question-" + ids[0] + ".html");

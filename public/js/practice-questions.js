@@ -10,6 +10,11 @@
   var LINEAR_SCOPE_KEY = "ccnpLinearScope";
   var REVIEW_MODE_KEY = "ccnpReviewMode";
   var REVIEW_QUEUE_KEY = "ccnpReviewQueue";
+  /** When set (e.g. by begin-landing-sample), queue "Next" after the last item goes here instead of the launcher. */
+  var QUEUE_EXIT_HREF_KEY = "ccnpQueueExitHref";
+  /** When set to "/sample", question pages replace the visible URL (history.replaceState) for the landing sample flow. */
+  var URL_MASK_PATH_KEY = "ccnpUrlMaskPath";
+  var MASKED_PAGE_QID_KEY = "ccnpMaskedPageQid";
 
   function isReviewMode() {
     try {
@@ -320,6 +325,27 @@
     }
   }
 
+  function applyUrlMaskForLandingSample(qid) {
+    try {
+      var mask = sessionStorage.getItem(URL_MASK_PATH_KEY);
+      if (mask !== "/sample") return;
+      var q = parseQueue();
+      if (!q || q.indexOf(qid) < 0) return;
+      sessionStorage.setItem(MASKED_PAGE_QID_KEY, String(qid));
+      history.replaceState({ ccnpSampleMask: 1 }, document.title, "/sample");
+    } catch (e) {}
+  }
+
+  /** Same-origin path only; clears storage. Returns null if unset or invalid. */
+  function readAndClearQueueExitHref() {
+    try {
+      var h = sessionStorage.getItem(QUEUE_EXIT_HREF_KEY);
+      sessionStorage.removeItem(QUEUE_EXIT_HREF_KEY);
+      if (h === "/" || h === "/index.html") return h;
+    } catch (e) {}
+    return null;
+  }
+
   function parseLinearScope() {
     var raw = sessionStorage.getItem(LINEAR_SCOPE_KEY);
     if (!raw) return null;
@@ -424,6 +450,10 @@
         var nid = queue[idx + 1];
         if (nid != null) {
           return { href: "/question-" + nid + ".html", label: "Next" };
+        }
+        var exitHref = readAndClearQueueExitHref();
+        if (exitHref) {
+          return { href: exitHref, label: "Back to home" };
         }
         return {
           href: "/practice-launcher.html",
@@ -555,6 +585,8 @@
         return;
       }
     }
+
+    applyUrlMaskForLandingSample(qid);
 
     injectStyles();
     document.body.classList.add("ccnp-practice-ui");

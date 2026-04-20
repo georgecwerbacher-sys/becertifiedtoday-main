@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Sample practice</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #b8c3d6;
+      font-family: system-ui, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <p>Resuming sample…</p>
+  <script>
+    (function () {
+      try {
+        var raw = sessionStorage.getItem("ccnpQuestionQueue");
+        if (!raw) {
+          location.replace("/");
+          return;
+        }
+        var q = JSON.parse(raw);
+        if (!Array.isArray(q) || !q.length) {
+          location.replace("/");
+          return;
+        }
+        var id = sessionStorage.getItem("ccnpMaskedPageQid");
+        var n = id != null ? parseInt(id, 10) : NaN;
+        if (n === n && q.indexOf(n) >= 0) {
+          location.replace("/question-" + n + ".html");
+          return;
+        }
+        location.replace("/question-" + q[0] + ".html");
+      } catch (e) {
+        location.replace("/");
+      }
+    })();
+  </script>
+</body>
+</html>
