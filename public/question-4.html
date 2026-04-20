@@ -61,16 +61,6 @@
       background: #442020;
       border: 1px solid #8c3434;
     }
-    .answer pre {
-      margin: 10px 0 0;
-      padding: 10px 12px;
-      border-radius: 8px;
-      background: #0b1020;
-      border: 1px solid #2d3b5a;
-      color: #e6edf3;
-      font: 0.9rem/1.45 "SF Mono", ui-monospace, Menlo, Consolas, monospace;
-      white-space: pre-wrap;
-    }
     .next-wrap {
       margin-top: 18px;
       display: none;
@@ -103,9 +93,6 @@
     const answerBox = document.getElementById("answerBox");
     const nextWrap = document.getElementById("nextWrap");
     const options = document.querySelectorAll('input[name="q4"]');
-    const optionASolution = `Option A (CLI):\n\nRouterB(config)# access-list 101 permit ip 10.100.2.0 0.0.0.255 any\nRouterB(config)# access-list 101 deny any\n!\nRouterB(config)# int g0/0/0\nRouterB(config-if)# ip access-group 101 out`;
-    const optionBSolution = `Option B (CLI):\n\nRouterB(config)# access-list 101 permit ip 10.100.3.0 0.0.0.255 any\nRouterB(config)# access-list 101 deny any\n\nRouterB(config)# int g0/0/0\nRouterB(config-if)# ip access-group 101 out\n!\nRouterB(config)# int g0/0/1\nRouterB(config-if)# ip access-group 101 out`;
-    const optionCSolution = `Option C (CLI):\n\nRouterB(config)# access-list 101 permit ip 10.100.2.0 0.0.0.255 any\nRouterB(config)# access-list 101 deny any\n!\nRouterB(config)# int g0/0/2\nRouterB(config-if)# ip access-group 101 in`;
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -118,10 +105,10 @@
         nextWrap.style.display = "block";
         if (option.value === "C") {
           answerBox.className = "answer correct";
-          answerBox.innerHTML = `Correct. C. MED (Multi-Exit Discriminator)<pre>${optionASolution}</pre><pre>${optionBSolution}</pre><pre>${optionCSolution}</pre>`;
+          answerBox.textContent = "Correct. C. MED (Multi-Exit Discriminator)";
         } else {
           answerBox.className = "answer incorrect";
-          answerBox.innerHTML = `Incorrect. The correct answer: C. MED (Multi-Exit Discriminator)<pre>${optionASolution}</pre><pre>${optionBSolution}</pre><pre>${optionCSolution}</pre>`;
+          answerBox.textContent = "Incorrect. The correct answer: C. MED (Multi-Exit Discriminator)";
         }
       });
     });
