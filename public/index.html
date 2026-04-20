@@ -4,10 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Sign up for Be Certified Today — practice modes, scenarios, and drills to prepare for Cisco and other IT certification exams." />
+  <meta name="description" content="Sign up for Be Certified Today — fully interactive practice in the browser (no PDFs): questions, labs, and drag-and-drop for IT certification prep." />
   <link rel="canonical" href="https://becertifiedtoday.com/" />
   <meta property="og:site_name" content="Be Certified Today" />
   <meta property="og:url" content="https://becertifiedtoday.com/" />
+  <meta property="og:image" content="https://becertifiedtoday.com/images/hero-classroom.png" />
   <title>Be Certified Today — IT certification practice</title>
   <style>
     :root {
@@ -57,12 +58,50 @@
     }
     main {
       flex: 1;
-      display: grid;
-      place-items: center;
+      display: block;
       padding: clamp(32px, 6vw, 56px) clamp(20px, 4vw, 40px);
+    }
+    .hero-layout {
+      display: grid;
+      gap: clamp(24px, 4vw, 40px);
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+      align-items: center;
+    }
+    .hero-figure {
+      margin: 0;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      background: #0d1528;
+    }
+    .hero-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
     }
     .funnel {
       width: min(560px, 100%);
+    }
+    @media (min-width: 900px) {
+      .hero-layout {
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 42%);
+        gap: clamp(28px, 4vw, 48px);
+      }
+      .hero-copy {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      .hero-figure {
+        grid-column: 2;
+        grid-row: 1;
+      }
+      .funnel {
+        width: 100%;
+        max-width: 520px;
+      }
     }
     .eyebrow {
       margin: 0 0 10px;
@@ -202,6 +241,120 @@
       outline-offset: 3px;
       border-radius: 2px;
     }
+    .formats-section {
+      margin-top: clamp(40px, 8vw, 72px);
+      padding-top: clamp(36px, 6vw, 56px);
+      border-top: 1px solid var(--border);
+    }
+    .formats-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .formats-head {
+      margin: 0 0 clamp(10px, 2vw, 14px);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b8ab8;
+    }
+    .formats-section h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 3.2vw, 1.75rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .formats-lead {
+      margin: 0 0 clamp(24px, 4vw, 32px);
+      max-width: 52ch;
+      color: var(--muted);
+      font-size: clamp(0.98rem, 2.2vw, 1.05rem);
+      line-height: 1.6;
+    }
+    .formats-devices {
+      margin: 0 0 clamp(24px, 4vw, 32px);
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(13, 21, 40, 0.65);
+      color: #b8c3d6;
+      font-size: clamp(0.88rem, 2vw, 0.95rem);
+      line-height: 1.5;
+    }
+    .formats-devices strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+    .formats-grid {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: clamp(16px, 3vw, 22px);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 600px) and (max-width: 959px) {
+      .formats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .formats-grid > li:last-child {
+        grid-column: 1 / -1;
+      }
+    }
+    @media (min-width: 960px) {
+      .formats-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .formats-grid > li:last-child {
+        grid-column: auto;
+      }
+    }
+    .format-card {
+      height: 100%;
+      margin: 0;
+      padding: clamp(18px, 3.5vw, 24px);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+    .format-card h3 {
+      margin: 0 0 10px;
+      font-size: clamp(1.02rem, 2.4vw, 1.12rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+    .format-card p {
+      margin: 0;
+      color: #b8c3d6;
+      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
+      line-height: 1.55;
+    }
+    .format-sample {
+      margin: 14px 0 0;
+      padding-top: 14px;
+      border-top: 1px solid rgba(45, 59, 90, 0.85);
+      font-size: clamp(0.88rem, 2vw, 0.94rem);
+      line-height: 1.5;
+      color: #9fb0cc;
+    }
+    .format-sample a {
+      color: #a8c4f0;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .format-sample a:hover {
+      color: #c8daf8;
+    }
+    .format-sample a:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
   </style>
 </head>
 <body>
@@ -210,46 +363,126 @@
       <a class="brand" href="/">Be Certified Today</a>
     </header>
     <main id="main">
-      <div class="funnel">
-        <p class="eyebrow">IT certification practice</p>
-        <h1>Structured drills so you walk into the exam with confidence</h1>
-        <p class="lead">
-          Create an account to unlock practice modes built for real exam formats—multiple choice,
-          drag-and-drop, and scenario-style labs you can repeat until the material sticks.
-        </p>
-        <ul class="benefits" aria-label="What you get">
-          <li>Question banks and study paths organized by exam topic—not random blog posts.</li>
-          <li>Instant feedback so you fix weak areas before you sit for the real test.</li>
-          <li>Room to grow: we’re expanding coverage across Cisco and other IT certs.</li>
-        </ul>
-        <div class="card">
-          <form id="signupForm" class="signup" action="#" method="post" novalidate>
-            <div id="signupFields">
-              <label class="signup-label" for="email">Email</label>
-              <div class="field-row">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autocomplete="email"
-                  placeholder="you@example.com"
-                  required
-                  inputmode="email"
-                />
-                <button type="submit" class="btn-primary">Get access</button>
-              </div>
-              <p class="form-hint">
-                This button is a placeholder: connect the form to your auth provider, waitlist API, or
-                marketing tool when you’re ready.
-              </p>
-            </div>
-            <p id="signupThanks" hidden role="status">
-              Thanks—your email was captured in the browser only. Replace this step with your real
-              signup or waitlist flow.
+      <div class="hero-layout">
+        <figure class="hero-figure">
+          <img
+            src="/images/hero-classroom.png"
+            width="1024"
+            height="682"
+            alt="Focused learner at a computer in a bright training lab with peers working nearby."
+            decoding="async"
+            fetchpriority="high"
+          />
+        </figure>
+        <div class="hero-copy">
+          <div class="funnel">
+            <p class="eyebrow">IT certification practice</p>
+            <h1>Structured drills so you walk into the exam with confidence</h1>
+            <p class="lead">
+              Create an account to unlock practice modes built for real exam formats—multiple choice,
+              drag-and-drop, and scenario-style labs you can repeat until the material sticks.
+              <strong>No PDFs:</strong> everything runs in the browser and responds to what you do.
             </p>
-          </form>
+            <ul class="benefits" aria-label="What you get">
+              <li>100% interactive—click, type, and drag in the app; not static dumps or slide decks.</li>
+              <li>Question banks and study paths organized by exam topic—not random blog posts.</li>
+              <li>Instant feedback so you fix weak areas before you sit for the real test.</li>
+              <li>Room to grow: we’re expanding coverage across Cisco and other IT certs.</li>
+            </ul>
+            <div class="card">
+              <form id="signupForm" class="signup" action="#" method="post" novalidate>
+                <div id="signupFields">
+                  <label class="signup-label" for="email">Email</label>
+                  <div class="field-row">
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      autocomplete="email"
+                      placeholder="you@example.com"
+                      required
+                      inputmode="email"
+                    />
+                    <button type="submit" class="btn-primary">Get access</button>
+                  </div>
+                  <p class="form-hint">
+                    This button is a placeholder: connect the form to your auth provider, waitlist API, or
+                    marketing tool when you’re ready.
+                  </p>
+                </div>
+                <p id="signupThanks" hidden role="status">
+                  Thanks—your email was captured in the browser only. Replace this step with your real
+                  signup or waitlist flow.
+                </p>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
+
+      <section class="formats-section" aria-labelledby="formats-title">
+        <div class="formats-inner">
+          <p class="formats-head">What you’ll practice</p>
+          <h2 id="formats-title">Questions, labs, and drag-and-drop—all interactive, on every screen</h2>
+          <p class="formats-lead">
+            Each format targets skills the way exams actually ask: recall, configuration logic, and
+            matching concepts to the right bucket. There are <strong>no PDF workbooks</strong>—only
+            live pages you operate. Use them in short sessions or long study blocks.
+          </p>
+          <p class="formats-devices">
+            <strong>PC, tablet, and phone.</strong> The same pages reflow from wide monitors down to
+            handheld widths: comfortable reading, tap-friendly targets on touchscreens, and full
+            keyboard-and-mouse support when you are at a desk.
+          </p>
+          <ul class="formats-grid">
+            <li>
+              <article class="format-card" aria-labelledby="format-q-title">
+                <h3 id="format-q-title">Practice questions</h3>
+                <p>
+                  Multiple-choice sets mirror exam-style stems and distractors. Check answers on the
+                  spot, see why the right option wins, and run banks in random, linear, or review modes
+                  until your weak topics tighten up.
+                </p>
+                <p class="format-sample">
+                  <a href="/begin-landing-sample.html?track=questions">Click here to try a sample</a>
+                  — five interactive questions. Everyone gets the same five; order is shuffled each time.
+                  After the fifth question, you return to the practice hub.
+                </p>
+              </article>
+            </li>
+            <li>
+              <article class="format-card" aria-labelledby="format-lab-title">
+                <h3 id="format-lab-title">Hands-on labs</h3>
+                <p>
+                  Browser-based CLI-style simulations walk you through realistic device prompts and
+                  goals—fix the topology, complete the task, and validate against the scenario without
+                  spinning up hardware.
+                </p>
+                <p class="format-sample">
+                  <a href="/begin-landing-sample.html?track=labs">Click here to try a sample</a>
+                  — open the Rapid PVST + LACP lab (same scenario for every visitor, fully interactive in the
+                  browser).
+                </p>
+              </article>
+            </li>
+            <li>
+              <article class="format-card" aria-labelledby="format-dd-title">
+                <h3 id="format-dd-title">Drag-and-drop</h3>
+                <p>
+                  Move labels, code fragments, or concepts into the right slots—similar to Pearson
+                  performance items. Standard and JSON-style layouts both work with touch drag on
+                  tablets and phones, plus pointer on desktop.
+                </p>
+                <p class="format-sample">
+                  <a href="/begin-landing-sample.html?track=drag">Click here to try a sample</a>
+                  — one drag-and-drop question (the same page for every visitor). When you are done, you
+                  return to the practice hub.
+                </p>
+              </article>
+            </li>
+          </ul>
+        </div>
+      </section>
     </main>
     <footer>
       <a class="footer-secret-link" href="/practice-launcher.html" aria-label="Open practice launcher">©</a>
