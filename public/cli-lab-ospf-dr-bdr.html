@@ -411,39 +411,6 @@
               <div class="device-links">
                 <button type="button" class="device-link" id="openDeviceCliLink">Open Router CLI</button>
               </div>
-              <details class="initial-cfg">
-                <summary>R3 initial configuration (<code>show running-config</code>)</summary>
-                <pre>interface Ethernet0/0
-       ip address 10.0.3.3 255.255.255.0
-      !
-      interface Ethernet0/1
-       ip address 10.2.203.3 255.255.255.0
-      !
-      interface Ethernet0/2
-       ip address 10.0.23.3 255.255.255.0
-      !
-      router ospf 1
-       network 10.0.3.0 0.0.0.255 area 0
-       network 10.0.23.0 0.0.0.255 area 0
-       network 10.2.203.0 0.0.0.255 area 20</pre>
-              </details>
-              <details class="initial-cfg">
-                <summary>R10 initial configuration (<code>show running-config</code>)</summary>
-                <pre>interface Ethernet0/0
-       ip address 10.1.102.10 255.255.255.0
-      !
-      router ospf 1
-       network 10.1.102.0 0.0.0.255 area 10</pre>
-              </details>
-              <details class="initial-cfg">
-                <summary>R20 initial configuration (<code>show running-config</code>)</summary>
-                <pre>interface Ethernet0/0
-       ip address 10.2.203.20 255.255.255.0
-       ip ospf priority 254
-      !
-      router ospf 1
-       network 10.2.203.0 0.0.0.255 area 20</pre>
-              </details>
             </div>
 
       <p class="objective">
