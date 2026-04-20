@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>CCNP practice launcher — Be Certified Today</title>
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_image_trans.png" type="image/png" />
   <style>
     :root {
       color-scheme: light dark;
@@ -62,6 +63,30 @@
     }
     #launcherCard.card {
       width: min(920px, 94vw);
+    }
+    .launcher-logo {
+      display: block;
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 auto 16px;
+      padding: 8px 16px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.22);
+      line-height: 0;
+      text-decoration: none;
+    }
+    .launcher-logo img {
+      display: block;
+      height: clamp(38px, 8vw, 48px);
+      width: auto;
+      max-width: min(260px, 80vw);
+      object-fit: contain;
+    }
+    .launcher-logo:focus-visible {
+      outline: 2px solid #4f84d8;
+      outline-offset: 3px;
+      border-radius: 14px;
     }
     .section-heading {
       margin: 22px 0 12px;
@@ -130,6 +155,14 @@
 </head>
 <body>
   <main id="launcherCard" class="card" aria-label="CCNP practice launcher">
+    <a class="launcher-logo" href="/" title="Be Certified Today home">
+      <img
+        src="/images/logo/becertifiedtoday_logo_text_trans.png"
+        width="989"
+        height="171"
+        alt="Be Certified Today"
+      />
+    </a>
     <h1>CCNP Practice Launcher</h1>
     <p>
       Open this page once in Cursor Simple Browser, then navigate from here.

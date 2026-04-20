@@ -8,7 +8,8 @@
   <link rel="canonical" href="https://becertifiedtoday.com/" />
   <meta property="og:site_name" content="Be Certified Today" />
   <meta property="og:url" content="https://becertifiedtoday.com/" />
-  <meta property="og:image" content="https://becertifiedtoday.com/images/hero-classroom.png" />
+  <meta property="og:image" content="https://becertifiedtoday.com/images/logo/becertifiedtoday_logo_white.png" />
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_image_trans.png" type="image/png" />
   <title>Be Certified Today — IT certification practice</title>
   <style>
     :root {
@@ -39,22 +40,33 @@
       flex-direction: column;
     }
     header {
-      padding: 20px clamp(20px, 4vw, 40px);
+      padding: 16px clamp(20px, 4vw, 40px);
       border-bottom: 1px solid var(--border);
       background: rgba(18, 26, 43, 0.6);
       backdrop-filter: blur(8px);
     }
     .brand {
-      font-weight: 800;
-      font-size: 1.05rem;
-      letter-spacing: -0.02em;
-      color: var(--text);
+      display: inline-flex;
+      align-items: center;
       text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
+      line-height: 0;
+    }
+    .brand img {
+      display: block;
+      height: clamp(40px, 9vw, 52px);
+      width: auto;
+      max-width: min(280px, 72vw);
+      object-fit: contain;
+      object-position: left center;
     }
     .brand:focus-visible {
       outline: 2px solid var(--accent-border);
       outline-offset: 4px;
-      border-radius: 4px;
+      border-radius: 14px;
     }
     main {
       flex: 1;
@@ -381,7 +393,14 @@
 <body>
   <div class="page">
     <header>
-      <a class="brand" href="/">Be Certified Today</a>
+      <a class="brand" href="/">
+        <img
+          src="/images/logo/becertifiedtoday_logo_text_trans.png"
+          width="989"
+          height="171"
+          alt="Be Certified Today — IT training and testing study site"
+        />
+      </a>
     </header>
     <figure class="hero-banner">
       <img
