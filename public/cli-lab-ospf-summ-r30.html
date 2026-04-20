@@ -337,12 +337,47 @@
       background-color: transparent !important;
     }
 
-  </style>
+  
+    .site-logo-corner {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 12000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(11, 16, 32, 0.55);
+      border: 1px solid #2d3b5a;
+      padding: 6px;
+      backdrop-filter: blur(4px);
+    }
+    .site-logo-corner img {
+      display: block;
+      width: 52px;
+      height: 52px;
+    }
+</style>
 </head>
 <body>
+  <a class="site-logo-corner" href="/practice-launcher.html" aria-label="Go to practice launcher">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+  </a>
+
   <div class="wrap">
     <main class="card">
       <h1>OSPF Summarization Sim</h1>
+
+      <div class="diagram-wrap" aria-label="OSPF areas and R30 position">
+              <img src="/assets/ospf-summ-r30-lab.png" alt="OSPF area 0, 40, 50 topology with R30 as ABR for area 50"  width="680" height="731" />
+              <div class="device-pick" role="note">
+                <strong>Device in prompt:</strong> R30
+              </div>
+              <div class="device-links">
+                <button type="button" class="device-link" id="openDeviceCliLink">Open Router CLI</button>
+              </div>
+            </div>
+
       <p class="objective">
         Access only <strong>R30</strong>. Exam IPs may differ — use <code>show ip interface brief</code> to confirm Loopback0 before setting <code>router-id</code>.
         Summarization must produce only <strong>Type 3 LSAs</strong> into area 0 (ABR summary with <code>area 50 range</code>).
@@ -357,15 +392,7 @@
         </ol>
       </div>
 
-      <div class="diagram-wrap" aria-label="OSPF areas and R30 position">
-        <img src="/assets/ospf-summ-r30-lab.png" alt="OSPF area 0, 40, 50 topology with R30 as ABR for area 50" />
-        <div class="device-pick" role="note">
-          <strong>Device in prompt:</strong> R30
-        </div>
-        <div class="device-links">
-          <button type="button" class="device-link" id="openDeviceCliLink">Open Router CLI</button>
-        </div>
-      </div>
+      
 
       <div class="variant-box" id="variantBox">
         <fieldset id="variantFieldset">

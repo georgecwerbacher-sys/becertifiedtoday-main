@@ -359,12 +359,54 @@
       background-color: transparent !important;
     }
 
-  </style>
+  
+    .site-logo-corner {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 12000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(11, 16, 32, 0.55);
+      border: 1px solid #2d3b5a;
+      padding: 6px;
+      backdrop-filter: blur(4px);
+    }
+    .site-logo-corner img {
+      display: block;
+      width: 52px;
+      height: 52px;
+    }
+</style>
 </head>
 <body>
+  <a class="site-logo-corner" href="/practice-launcher.html" aria-label="Go to practice launcher">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+  </a>
+
   <div class="wrap">
     <main class="card">
       <h1>VRF Configuration Sim</h1>
+
+      <div class="diagram-wrap" aria-label="Topology: ISP, R11, R22, Sw11, Sw22, Tunnel 10, Finance VRF">
+              <div class="diagram-stage">
+                <img src="/assets/vrf-tunnel-topology.png" alt="ISP with R11 and R22; Sw11 and Sw22 with Finance VRF VLAN 111 and VLAN 222; Tunnel 10 between R11 and R22"  width="680" height="731" />
+              </div>
+              <div class="device-pick" role="group" aria-label="Device in prompt">
+                <strong>Device in prompt:</strong>
+                <label><input type="radio" name="vrfTunnelDev" value="R10" checked /> R10</label>
+                <label><input type="radio" name="vrfTunnelDev" value="R20" /> R20</label>
+                <label><input type="radio" name="vrfTunnelDev" value="SW10" /> SW10</label>
+                <label><input type="radio" name="vrfTunnelDev" value="SW20" /> SW20</label>
+                <label><input type="radio" name="vrfTunnelDev" value="ISP" /> ISP</label>
+              </div>
+              <div class="device-links">
+                <button type="button" class="device-link" id="openSelectedCliBtn">Open Router CLI</button>
+              </div>
+            </div>
+
       <p class="objective">
         R10 and R20 are preconfigured with the CORP VRF and reachability over the ISP underlay. Complete the missing pieces so CORP traffic between
         VLAN 100 (10.100.1.0/24) and VLAN 101 (10.101.2.0/24) uses <strong>Tunnel0</strong> only. Use the <strong>R10</strong> console first; the
@@ -382,22 +424,7 @@
           Underlay addresses used here: R10 <code>e0/1</code> = 10.10.1.1, R20 <code>e0/2</code> = 10.10.2.1. If you apply <code>vrf forwarding CORP</code> and the tunnel IP drops, re-enter the tunnel IPv4 address as in the solution.
         </p>
       </div>
-      <div class="diagram-wrap" aria-label="Topology: ISP, R11, R22, Sw11, Sw22, Tunnel 10, Finance VRF">
-        <div class="diagram-stage">
-          <img src="/assets/vrf-tunnel-topology.png" alt="ISP with R11 and R22; Sw11 and Sw22 with Finance VRF VLAN 111 and VLAN 222; Tunnel 10 between R11 and R22" />
-        </div>
-        <div class="device-pick" role="group" aria-label="Device in prompt">
-          <strong>Device in prompt:</strong>
-          <label><input type="radio" name="vrfTunnelDev" value="R10" checked /> R10</label>
-          <label><input type="radio" name="vrfTunnelDev" value="R20" /> R20</label>
-          <label><input type="radio" name="vrfTunnelDev" value="SW10" /> SW10</label>
-          <label><input type="radio" name="vrfTunnelDev" value="SW20" /> SW20</label>
-          <label><input type="radio" name="vrfTunnelDev" value="ISP" /> ISP</label>
-        </div>
-        <div class="device-links">
-          <button type="button" class="device-link" id="openSelectedCliBtn">Open Router CLI</button>
-        </div>
-      </div>
+      
 
       <div class="controls">
         <button type="button" class="btn btn-secondary" id="resetBtn">Reset lab</button>

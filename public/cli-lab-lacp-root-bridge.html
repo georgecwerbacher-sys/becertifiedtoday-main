@@ -310,12 +310,47 @@
       background-color: transparent !important;
     }
 
-  </style>
+  
+    .site-logo-corner {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 12000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(11, 16, 32, 0.55);
+      border: 1px solid #2d3b5a;
+      padding: 6px;
+      backdrop-filter: blur(4px);
+    }
+    .site-logo-corner img {
+      display: block;
+      width: 52px;
+      height: 52px;
+    }
+</style>
 </head>
 <body>
+  <a class="site-logo-corner" href="/practice-launcher.html" aria-label="Go to practice launcher">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+  </a>
+
   <div class="wrap">
     <main class="card">
       <h1>LACP &amp; Root Bridge Sim</h1>
+
+      <div class="diagram-wrap" aria-label="SW10 SW20 SW30 topology and SW10 initial config">
+              <img src="/assets/lacp-root-bridge-lab.png" alt="Triangle switches with Po11 between SW10 and SW20"  width="680" height="731" />
+              <div class="device-pick" role="note">
+                <strong>Device in prompt:</strong> SW10
+              </div>
+              <div class="device-links">
+                <button type="button" class="device-link" id="openDeviceCliLink">Open Switch CLI</button>
+              </div>
+            </div>
+
       <p class="objective">
         Change <strong>SW10</strong> only. SW20 negotiates an <strong>802.1Q LACP</strong> EtherChannel toward SW10; today e0/0–e0/2 are access ports in VLAN 20 and Po11 is empty.
         Then make SW10 the spanning-tree root for <strong>VLAN 10</strong> and <strong>VLAN 30</strong>. Confirm the port-channel number on the diagram if it differs in an exam.
@@ -330,15 +365,7 @@
         </ol>
       </div>
 
-      <div class="diagram-wrap" aria-label="SW10 SW20 SW30 topology and SW10 initial config">
-        <img src="/assets/lacp-root-bridge-lab.png" alt="Triangle switches with Po11 between SW10 and SW20" />
-        <div class="device-pick" role="note">
-          <strong>Device in prompt:</strong> SW10
-        </div>
-        <div class="device-links">
-          <button type="button" class="device-link" id="openDeviceCliLink">Open Switch CLI</button>
-        </div>
-      </div>
+      
 
       <div class="controls">
         <button type="button" class="btn btn-secondary" id="resetBtn">Reset lab</button>

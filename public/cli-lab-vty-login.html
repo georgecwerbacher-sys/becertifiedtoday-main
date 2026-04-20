@@ -355,13 +355,39 @@
       background-color: transparent !important;
     }
 
-  </style>
+  
+    .site-logo-corner {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 12000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(11, 16, 32, 0.55);
+      border: 1px solid #2d3b5a;
+      padding: 6px;
+      backdrop-filter: blur(4px);
+    }
+    .site-logo-corner img {
+      display: block;
+      width: 52px;
+      height: 52px;
+    }
+</style>
 </head>
 <body>
+  <a class="site-logo-corner" href="/practice-launcher.html" aria-label="Go to practice launcher">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+  </a>
+
   <div class="wrap">
     <main class="card">
+      <h1>VTY Login Sim</h1>
+
       <div class="diagram-wrap diagram-top" aria-label="Topology">
-        <img src="/assets/vty-login-topology.png" alt="R1, R2, and R3 connected to a central switch" width="274" height="268" />
+        <img src="/assets/vty-login-topology.png" alt="R1, R2, and R3 connected to a central switch"  width="680" height="731" />
         <div class="device-pick" role="group" aria-label="Device in prompt">
           <strong>Device in prompt:</strong>
           <label><input type="radio" name="dev" value="R1" checked /> R1</label>
@@ -371,7 +397,6 @@
           <button type="button" class="device-link" id="openRouterCliLink">Open Router CLI</button>
         </div>
       </div>
-      <h1>VTY Login Sim</h1>
       <p class="objective">
         Choose <strong>Device in prompt</strong> under the topology, then <strong>Open Router CLI</strong>. Configure that router so the local user can reach privilege 15,
         VTYs use the local database with Telnet and SSH, exec sessions time out after 5 minutes of inactivity, then save the configuration.

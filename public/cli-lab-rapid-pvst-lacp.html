@@ -464,12 +464,70 @@
       background-color: transparent !important;
     }
 
-  </style>
+  
+    .site-logo-corner {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 12000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(11, 16, 32, 0.55);
+      border: 1px solid #2d3b5a;
+      padding: 6px;
+      backdrop-filter: blur(4px);
+    }
+    .site-logo-corner img {
+      display: block;
+      width: 52px;
+      height: 52px;
+    }
+</style>
 </head>
 <body>
+  <a class="site-logo-corner" href="/practice-launcher.html" aria-label="Go to practice launcher">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+  </a>
+
   <div class="wrap">
     <main class="card">
       <h1>Rapid PVST+ and LACP Sim</h1>
+
+      <div class="diagram-wrap" aria-label="Topology diagram">
+              <div class="diagram-stage">
+                <img
+                  src="/assets/rapid-pvst-lacp-topology-v2.png"
+                  alt="Rapid PVST and LACP simulation topology: SW10, SW20, SW30 triangle with PCs and EtherChannel between SW10 and SW20"
+                 
+                 
+                  decoding="async"
+                 width="680" height="731" />
+              </div>
+              <div class="device-pick" role="group" aria-label="Device in prompt">
+                <strong>Device in prompt:</strong>
+                <label><input type="radio" name="rapidPvstLacpDev" value="SW20" checked /> SW20</label>
+                <label><input type="radio" name="rapidPvstLacpDev" value="SW10" /> SW10</label>
+                <label><input type="radio" name="rapidPvstLacpDev" value="PC3" /> PC3</label>
+              </div>
+              <div class="device-links">
+                <button type="button" class="device-link" id="openSelectedCliBtn">Open SW20 CLI</button>
+              </div>
+              <section class="topology-scrape" aria-label="Topology summary from exhibit">
+                <h2>Topology (from exhibit)</h2>
+                <ul>
+                  <li><strong>SW20</strong> — your only configurable device; pick SW20 under the topology, open its CLI, and run <code>show running-config</code> for the starting configuration. Connects toward <strong>SW10</strong> via <strong>Port-channel 10</strong> (LACP) and toward <strong>SW30</strong> on the trunk interface shown (e.g. <code>E0/0</code>).</li>
+                  <li>
+                    <strong>SW10</strong> — not configurable here; select SW10 and open its read-only CLI, then type
+                    <code>show run</code> to view its configuration. <strong>SW30</strong> — out of scope; do not configure.
+                  </li>
+                  <li>Hosts: <strong>PC1</strong> (10.10.100.10) above SW30, <strong>PC2</strong> (10.10.100.20) below SW10, <strong>PC3</strong> below SW20 — reachability depends on VLAN <strong>500</strong> end-to-end over trunks. Select PC3 and open its console to test <code>ping</code> to PC1 after configuring SW20.</li>
+                  <li>Initial screenshot may show partial trunk / Po config — your job is to align <strong>Rapid PVST+</strong>, <strong>dot1q</strong> trunks, and <strong>VLAN 500</strong> allowed lists on SW20 only.</li>
+                </ul>
+              </section>
+            </div>
+
       <p class="objective">
         The operations team started configuring network devices for a new site. Fix SW20 only to satisfy all goals.
         No access is provided to SW10 or SW30. Traffic on all trunks must be restricted to active VLANs.
@@ -483,38 +541,7 @@
           <li>Fix the LACP port-channel to SW10 so PC3 can ping PC2 (10.10.100.20).</li>
         </ol>
       </div>
-      <div class="diagram-wrap" aria-label="Topology diagram">
-        <div class="diagram-stage">
-          <img
-            src="/assets/rapid-pvst-lacp-topology-v2.png"
-            alt="Rapid PVST and LACP simulation topology: SW10, SW20, SW30 triangle with PCs and EtherChannel between SW10 and SW20"
-            width="800"
-            height="1024"
-            decoding="async"
-          />
-        </div>
-        <div class="device-pick" role="group" aria-label="Device in prompt">
-          <strong>Device in prompt:</strong>
-          <label><input type="radio" name="rapidPvstLacpDev" value="SW20" checked /> SW20</label>
-          <label><input type="radio" name="rapidPvstLacpDev" value="SW10" /> SW10</label>
-          <label><input type="radio" name="rapidPvstLacpDev" value="PC3" /> PC3</label>
-        </div>
-        <div class="device-links">
-          <button type="button" class="device-link" id="openSelectedCliBtn">Open SW20 CLI</button>
-        </div>
-        <section class="topology-scrape" aria-label="Topology summary from exhibit">
-          <h2>Topology (from exhibit)</h2>
-          <ul>
-            <li><strong>SW20</strong> — your only configurable device; pick SW20 under the topology, open its CLI, and run <code>show running-config</code> for the starting configuration. Connects toward <strong>SW10</strong> via <strong>Port-channel 10</strong> (LACP) and toward <strong>SW30</strong> on the trunk interface shown (e.g. <code>E0/0</code>).</li>
-            <li>
-              <strong>SW10</strong> — not configurable here; select SW10 and open its read-only CLI, then type
-              <code>show run</code> to view its configuration. <strong>SW30</strong> — out of scope; do not configure.
-            </li>
-            <li>Hosts: <strong>PC1</strong> (10.10.100.10) above SW30, <strong>PC2</strong> (10.10.100.20) below SW10, <strong>PC3</strong> below SW20 — reachability depends on VLAN <strong>500</strong> end-to-end over trunks. Select PC3 and open its console to test <code>ping</code> to PC1 after configuring SW20.</li>
-            <li>Initial screenshot may show partial trunk / Po config — your job is to align <strong>Rapid PVST+</strong>, <strong>dot1q</strong> trunks, and <strong>VLAN 500</strong> allowed lists on SW20 only.</li>
-          </ul>
-        </section>
-      </div>
+      
 
       <details class="hint">
         <summary>Show one valid command sequence (spoiler)</summary>

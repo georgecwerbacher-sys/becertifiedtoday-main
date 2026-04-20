@@ -338,12 +338,49 @@
       background-color: transparent !important;
     }
 
-  </style>
+  
+    .site-logo-corner {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 12000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(11, 16, 32, 0.55);
+      border: 1px solid #2d3b5a;
+      padding: 6px;
+      backdrop-filter: blur(4px);
+    }
+    .site-logo-corner img {
+      display: block;
+      width: 52px;
+      height: 52px;
+    }
+</style>
 </head>
 <body>
+  <a class="site-logo-corner" href="/practice-launcher.html" aria-label="Go to practice launcher">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+  </a>
+
   <div class="wrap">
     <main class="card">
       <h1>NetFlow, SPAN &amp; IP SLA Sim</h1>
+
+      <div class="diagram-wrap" aria-label="R1 Sw1 PC topology and addressing">
+              <img src="/assets/netflow-span-lab.png" alt="Sw1 with R1 PC1 PC2 VLANs and addressing table"  width="680" height="731" />
+              <div class="device-pick" role="group" aria-label="Device in prompt">
+                <strong>Device in prompt:</strong>
+                <label><input type="radio" name="nfSpan1Dev" value="R1" checked /> R1</label>
+                <label><input type="radio" name="nfSpan1Dev" value="Sw1" /> Sw1</label>
+              </div>
+              <div class="device-links" aria-label="Open device CLI">
+                <button type="button" class="device-link" id="openDeviceCliLink">Open Router CLI</button>
+              </div>
+            </div>
+
       <p class="objective">
         Use <strong>R1</strong> for Flexible NetFlow exporter and IP SLA scheduling; use <strong>Sw1</strong> for SPAN.
         Collector for NetFlow is <strong>PC2</strong> at <code>10.14.1.2</code> (UDP <strong>2055</strong>). IP SLA operation <strong>5</strong> is already defined — only schedule it.
@@ -359,17 +396,7 @@
         </ol>
       </div>
 
-      <div class="diagram-wrap" aria-label="R1 Sw1 PC topology and addressing">
-        <img src="/assets/netflow-span-lab.png" alt="Sw1 with R1 PC1 PC2 VLANs and addressing table" />
-        <div class="device-pick" role="group" aria-label="Device in prompt">
-          <strong>Device in prompt:</strong>
-          <label><input type="radio" name="nfSpan1Dev" value="R1" checked /> R1</label>
-          <label><input type="radio" name="nfSpan1Dev" value="Sw1" /> Sw1</label>
-        </div>
-        <div class="device-links" aria-label="Open device CLI">
-          <button type="button" class="device-link" id="openDeviceCliLink">Open Router CLI</button>
-        </div>
-      </div>
+      
 
       <div class="controls">
         <button type="button" class="btn btn-secondary" id="resetBtn">Reset lab</button>
