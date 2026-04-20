@@ -403,6 +403,16 @@
       );
     }
 
+    function matchShowRun(raw) {
+      const u = normalize(raw);
+      return (
+        u === "show run" ||
+        u === "show running-config" ||
+        u === "sh run" ||
+        u === "sh running-config"
+      );
+    }
+
     function promptForStep(steps, index) {
       if (index >= steps.length) return "SW10#";
       const m = steps[index].mode;
@@ -450,6 +460,42 @@
       { mode: "config", test: (raw) => normalize(raw) === "spanning-tree vlan 30 root primary" },
       { mode: "config", test: (raw) => normalize(raw) === "end" },
     ];
+
+    const SW10_INITIAL_CONFIG =
+      "Sw10 Initial Config (use \"show run\" to get config)\n\n" +
+      "spanning-tree mode pvst\n" +
+      "spanning-tree extend system-id\n" +
+      "!\n" +
+      "interface Port-channel11\n" +
+      "!\n" +
+      "interface Ethernet0/0\n" +
+      " switchport access vlan 20\n" +
+      " switchport mode access\n" +
+      "!\n" +
+      "interface Ethernet0/1\n" +
+      " switchport access vlan 20\n" +
+      " switchport mode access\n" +
+      "!\n" +
+      "interface Ethernet0/2\n" +
+      " switchport access vlan 20\n" +
+      " switchport mode access\n" +
+      "!\n" +
+      "interface Ethernet0/3\n" +
+      " switchport access vlan 10\n" +
+      " switchport mode access\n" +
+      "!\n" +
+      "interface Ethernet1/0\n" +
+      " switchport access vlan 20\n" +
+      " switchport mode access\n" +
+      "!\n" +
+      "interface Vlan10\n" +
+      " ip address 10.100.10.10 255.255.255.0\n" +
+      "!\n" +
+      "interface Vlan20\n" +
+      " ip address 10.100.20.10 255.255.255.0\n" +
+      "!\n" +
+      "ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr\n" +
+      "ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr";
 
     const scrollback = document.getElementById("scrollback");
     const promptEl = document.getElementById("prompt");
@@ -550,6 +596,11 @@
       appendLine("line-user", `${prompt} ${line}`);
       cmdline.value = "";
       if (!line.trim()) return;
+
+      if (matchShowRun(line)) {
+        appendBlock("line-sys", SW10_INITIAL_CONFIG);
+        return;
+      }
 
       if (phase === "SAVE") {
         if (matchCopy(line)) {

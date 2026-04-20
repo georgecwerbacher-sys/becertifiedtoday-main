@@ -520,6 +520,16 @@ ip sla schedule 1 life forever start-time now</pre>
       );
     }
 
+    function matchShowRun(raw) {
+      const u = normalize(raw);
+      return (
+        u === "show run" ||
+        u === "show running-config" ||
+        u === "sh run" ||
+        u === "sh running-config"
+      );
+    }
+
     function promptForStep(steps, index, host) {
       if (index >= steps.length) return `${host}#`;
       const m = steps[index].mode;
@@ -625,6 +635,61 @@ ip sla schedule 1 life forever start-time now</pre>
         { mode: "config", test: (raw) => normalize(raw) === "end" },
       ];
     }
+
+    const R1_INITIAL_CONFIG =
+      "R1 Initial Config (use \"show run\" to get)\n\n" +
+      "flow exporter Export-R1Flow\n" +
+      " destination 10.10.1.10\n" +
+      " source Loopback0\n" +
+      " transport udp 2055\n" +
+      "!\n" +
+      "flow monitor Monitor-R1Flow\n" +
+      " exporter Export-R1Flow\n" +
+      " cache timeout inactive 30\n" +
+      " cache timeout active 300\n" +
+      " record netflow ipv4 original-input\n" +
+      "!\n" +
+      "interface Loopback0\n" +
+      " ip address 1.1.1.1 255.255.255.255\n" +
+      "!\n" +
+      "interface Ethernet0/0\n" +
+      " ip address 10.10.1.2 255.255.255.0\n" +
+      " ip ospf network point-to-point\n" +
+      "!\n" +
+      "router ospf 10\n" +
+      " router-id 1.1.1.1\n" +
+      " network 1.1.1.1 0.0.0.0 area 0\n" +
+      " network 10.10.1.0 0.0.0.255 area 0";
+
+    const SW1_INITIAL_CONFIG =
+      "Sw1 Initial Config (use \"show run\" to get)\n\n" +
+      "interface Ethernet0/0\n" +
+      " switchport access vlan 10\n" +
+      " switchport mode access\n" +
+      "!\n" +
+      "interface Ethernet0/1\n" +
+      " switchport access vlan 12\n" +
+      " switchport mode access\n" +
+      "!\n" +
+      "interface Ethernet0/2\n" +
+      " switchport access vlan 14\n" +
+      " switchport mode access\n" +
+      "!\n" +
+      "interface Vlan10\n" +
+      " ip address 10.10.1.1 255.255.255.0\n" +
+      " ip ospf network point-to-point\n" +
+      "!\n" +
+      "interface Vlan12\n" +
+      " ip address 10.12.1.1 255.255.255.0\n" +
+      "!\n" +
+      "interface Vlan14\n" +
+      " ip address 10.14.1.1 255.255.255.0\n" +
+      "!\n" +
+      "router ospf 1\n" +
+      " network 10.10.1.0 0.0.0.255 area 0\n" +
+      " network 10.12.1.0 0.0.0.255 area 0\n" +
+      " network 10.14.1.0 0.0.0.255 area 0\n" +
+      "!";
 
     const scrollR1 = document.getElementById("scrollR1");
     const scrollSw1 = document.getElementById("scrollSw1");
@@ -841,6 +906,20 @@ ip sla schedule 1 life forever start-time now</pre>
     }
 
     function submitR1() {
+      if (phase === "R1_NF" || phase === "R1_SLA" || phase === "R1_SAVE") {
+        const p =
+          phase === "R1_SAVE"
+            ? "R1#"
+            : promptForStep(phase === "R1_NF" ? R1_NF : slaSteps, stepR1, "R1");
+        const peek = cmdR1.value;
+        if (matchShowRun(peek)) {
+          appendLine(scrollR1, "line-user", `${p} ${peek}`);
+          cmdR1.value = "";
+          appendBlock(scrollR1, "line-sys", R1_INITIAL_CONFIG);
+          return;
+        }
+      }
+
       if (phase === "R1_SAVE") {
         const line = cmdR1.value;
         appendLine(scrollR1, "line-user", `R1# ${line}`);
@@ -894,6 +973,20 @@ ip sla schedule 1 life forever start-time now</pre>
     }
 
     function submitSw1() {
+      if (phase === "SW1_SPAN" || phase === "SW1_VER" || phase === "SW1_SAVE") {
+        const p =
+          phase === "SW1_SPAN"
+            ? promptForStep(SW1_SPAN, stepSw1, "Sw1")
+            : "Sw1#";
+        const peek = cmdSw1.value;
+        if (matchShowRun(peek)) {
+          appendLine(scrollSw1, "line-user", `${p} ${peek}`);
+          cmdSw1.value = "";
+          appendBlock(scrollSw1, "line-sys", SW1_INITIAL_CONFIG);
+          return;
+        }
+      }
+
       if (phase === "SW1_VER") {
         const line = cmdSw1.value;
         appendLine(scrollSw1, "line-user", `Sw1# ${line}`);
