@@ -236,7 +236,72 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
     .purchase-card {
-      text-align: center;
+      text-align: left;
+    }
+    .purchase-card-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: clamp(22px, 4vw, 40px);
+    }
+    .purchase-card-main {
+      flex: 1 1 min(46ch, 100%);
+      min-width: 0;
+    }
+    /* Right column: square mark (top / corner) + full wordmark below */
+    .purchase-card-brand-col {
+      flex: 0 1 clamp(200px, 28vw, 300px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: clamp(12px, 2.5vw, 18px);
+      align-self: flex-start;
+    }
+    .purchase-card-brand-mark {
+      margin: 0;
+      line-height: 0;
+    }
+    .purchase-card-brand-mark img {
+      display: block;
+      height: clamp(52px, 9vw, 72px);
+      width: auto;
+      max-width: min(76px, 20vw);
+      object-fit: contain;
+      filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.35));
+    }
+    .purchase-card-brand-full {
+      margin: 0;
+      width: 100%;
+      max-width: min(280px, 100%);
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 2px 14px rgba(0, 0, 0, 0.2);
+      line-height: 0;
+      box-sizing: border-box;
+    }
+    .purchase-card-brand-full img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+    @media (max-width: 639px) {
+      .purchase-card-inner {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .purchase-card-brand-col {
+        flex: 0 1 auto;
+        max-width: min(300px, 100%);
+        margin-left: auto;
+        margin-right: auto;
+        align-items: center;
+      }
+      .purchase-card-brand-mark img {
+        height: clamp(44px, 12vw, 60px);
+        max-width: min(68px, 22vw);
+      }
     }
     .purchase-card .purchase-label {
       margin: 0 0 8px;
@@ -725,30 +790,56 @@
             <li>New questions are added continuously to keep preparation current.</li>
           </ul>
           <div class="card purchase-card" id="purchase">
-            <p class="purchase-label">Purchase</p>
-            <h2 class="purchase-heading">30-day full access</h2>
-            <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
-              $19.99 <span>/ 30 days</span>
-            </p>
-            <p class="purchase-lead">
-              One payment unlocks the complete CCNP ENCOR practice library for one month: practice questions,
-              hands-on ENCOR-style CLI labs, drag-and-drop items, and full timed exam simulations.
-            </p>
-            <ul class="purchase-includes">
-              <li>All question banks and study modes</li>
-              <li>Every CLI simulation lab</li>
-              <li>Standard and JSON drag-and-drop sets</li>
-              <li>Timed test simulations (mixed question, lab, and drag-and-drop runs)</li>
-            </ul>
-            <p class="purchase-notes">
-              <strong>No recurring membership.</strong> Thirty days of access for a single price—when it ends,
-              renew only if you want another month.
-              <strong>No additional software</strong> is required; everything runs in your browser.
-              <strong>We do not collect personal information</strong> on this site for marketing or profiling.
-            </p>
-            <button type="button" class="purchase-cta" disabled aria-disabled="true">
-              Coming soon
-            </button>
+            <div class="purchase-card-inner">
+              <div class="purchase-card-main">
+                <p class="purchase-label">Purchase</p>
+                <h2 class="purchase-heading">30-day full access</h2>
+                <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
+                  $19.99 <span>/ 30 days</span>
+                </p>
+                <p class="purchase-lead">
+                  One payment unlocks the complete CCNP ENCOR practice library for one month: practice questions,
+                  hands-on ENCOR-style CLI labs, drag-and-drop items, and full timed exam simulations.
+                </p>
+                <ul class="purchase-includes">
+                  <li>All question banks and study modes</li>
+                  <li>Every CLI simulation lab</li>
+                  <li>Standard and JSON drag-and-drop sets</li>
+                  <li>Timed test simulations (mixed question, lab, and drag-and-drop runs)</li>
+                </ul>
+                <p class="purchase-notes">
+                  <strong>No recurring membership.</strong> Thirty days of access for a single price—when it ends,
+                  renew only if you want another month.
+                  <strong>No additional software</strong> is required; everything runs in your browser.
+                  <strong>We do not collect personal information</strong> on this site for marketing or profiling.
+                </p>
+                <button type="button" class="purchase-cta" disabled aria-disabled="true">
+                  Coming soon
+                </button>
+              </div>
+              <div class="purchase-card-brand-col">
+                <figure class="purchase-card-brand-mark" aria-hidden="true">
+                  <img
+                    src="/images/logo/becertifiedtoday_logo_trans.png"
+                    width="1024"
+                    height="1024"
+                    alt=""
+                    decoding="async"
+                    loading="lazy"
+                  />
+                </figure>
+                <figure class="purchase-card-brand-full" aria-hidden="true">
+                  <img
+                    src="/images/logo/becertifiedtoday_logo_text_trans.png"
+                    width="989"
+                    height="171"
+                    alt=""
+                    decoding="async"
+                    loading="lazy"
+                  />
+                </figure>
+              </div>
+            </div>
           </div>
         </div>
       </div>
