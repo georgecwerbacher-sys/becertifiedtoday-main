@@ -387,6 +387,61 @@
       margin: 0 auto;
       width: 100%;
     }
+    .formats-intro {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: clamp(22px, 5vw, 40px);
+      margin-bottom: clamp(28px, 5vw, 40px);
+    }
+    .formats-intro-copy {
+      flex: 1 1 min(54ch, 100%);
+      min-width: 0;
+    }
+    .formats-intro-copy .formats-head {
+      margin-bottom: clamp(10px, 2vw, 14px);
+    }
+    .formats-intro-copy > h2 {
+      margin-bottom: 12px;
+    }
+    .formats-intro-copy .formats-lead {
+      max-width: none;
+      margin-bottom: clamp(18px, 3vw, 26px);
+    }
+    .formats-intro-copy .formats-devices {
+      margin-bottom: 0;
+    }
+    .formats-intro-figure {
+      flex: 0 1 clamp(260px, 38vw, 380px);
+      margin: 0;
+      align-self: center;
+    }
+    .formats-intro-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: min(440px, 52vh);
+      object-fit: contain;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+      background: rgba(13, 21, 40, 0.35);
+    }
+    @media (max-width: 719px) {
+      .formats-intro {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .formats-intro-figure {
+        flex: 1 1 auto;
+        max-width: min(400px, 100%);
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .formats-intro-figure img {
+        max-height: none;
+      }
+    }
     .formats-head {
       margin: 0 0 clamp(10px, 2vw, 14px);
       font-size: 0.8rem;
@@ -510,19 +565,64 @@
       font-size: clamp(0.98rem, 2.2vw, 1.05rem);
       line-height: 1.6;
     }
-    .mock-image {
-      margin: 0 0 clamp(18px, 3vw, 22px);
-      width: min(410px, 50%);
+    .mock-intro {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: clamp(22px, 5vw, 40px);
+    }
+    .mock-intro-figure {
+      flex: 0 1 clamp(220px, 34vw, 360px);
+      margin: 0;
+      align-self: center;
       border-radius: 14px;
       overflow: hidden;
       border: 1px solid var(--border);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
-      background: #0f1729;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+      background: rgba(13, 21, 40, 0.35);
     }
-    .mock-image img {
+    .mock-intro-figure img {
       display: block;
       width: 100%;
       height: auto;
+      max-height: min(480px, 56vh);
+      object-fit: contain;
+    }
+    .mock-intro-copy {
+      flex: 1 1 min(54ch, 100%);
+      min-width: 0;
+    }
+    .mock-intro-copy .formats-head {
+      margin-bottom: clamp(10px, 2vw, 14px);
+    }
+    .mock-intro-copy > h2 {
+      margin-bottom: 12px;
+    }
+    .mock-intro-copy .mock-lead {
+      max-width: none;
+      margin-bottom: clamp(14px, 2.5vw, 20px);
+    }
+    .mock-intro-copy .mock-lead.mock-lead-detail {
+      margin-top: -6px;
+      margin-bottom: clamp(18px, 3vw, 22px);
+    }
+    .mock-intro-copy .mock-list {
+      max-width: none;
+      margin-bottom: 0;
+    }
+    @media (max-width: 719px) {
+      .mock-intro {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .mock-intro-figure {
+        flex: 1 1 auto;
+        max-width: min(440px, 100%);
+        margin-right: auto;
+      }
+      .mock-intro-figure img {
+        max-height: none;
+      }
     }
     .mock-list {
       margin: 0 0 clamp(20px, 3.5vw, 26px);
@@ -655,19 +755,33 @@
 
       <section class="formats-section" aria-labelledby="formats-title">
         <div class="formats-inner">
-          <p class="formats-head">CCNP ENCOR practice formats</p>
-          <h2 id="formats-title">Practice questions, ENCOR labs, drag-and-drop &amp; timed tests—interactive on every screen</h2>
-          <p class="formats-lead">
-            Each CCNP ENCOR practice format targets skills the way exams actually ask: recall, configuration logic,
-            and matching concepts to the right bucket. Use <strong>ENCOR practice labs</strong>, question banks,
-            drag-and-drop sets, and full timed runs in short sessions or long study blocks—<strong>no PDF workbooks</strong>,
-            only live pages you operate.
-          </p>
-          <p class="formats-devices">
-            <strong>PC, tablet, and phone.</strong> The same pages reflow from wide monitors down to
-            handheld widths: comfortable reading, tap-friendly targets on touchscreens, and full
-            keyboard-and-mouse support when you are at a desk.
-          </p>
+          <div class="formats-intro">
+            <div class="formats-intro-copy">
+              <p class="formats-head">CCNP ENCOR practice formats</p>
+              <h2 id="formats-title">Practice questions, ENCOR labs, drag-and-drop &amp; timed tests—interactive on every screen</h2>
+              <p class="formats-lead">
+                Each CCNP ENCOR practice format targets skills the way exams actually ask: recall, configuration logic,
+                and matching concepts to the right bucket. Use <strong>ENCOR practice labs</strong>, question banks,
+                drag-and-drop sets, and full timed runs in short sessions or long study blocks—<strong>no PDF workbooks</strong>,
+                only live pages you operate.
+              </p>
+              <p class="formats-devices">
+                <strong>PC, tablet, and phone.</strong> The same pages reflow from wide monitors down to
+                handheld widths: comfortable reading, tap-friendly targets on touchscreens, and full
+                keyboard-and-mouse support when you are at a desk.
+              </p>
+            </div>
+            <figure class="formats-intro-figure">
+              <img
+                src="/images/encor-practice-formats-technician.png"
+                width="800"
+                height="1200"
+                alt="Network technician with a laptop working on equipment in a data center server aisle."
+                decoding="async"
+                loading="lazy"
+              />
+            </figure>
+          </div>
           <ul class="formats-grid">
             <li>
               <article class="format-card" aria-labelledby="format-q-title">
@@ -720,42 +834,48 @@
 
       <section class="mock-section" aria-labelledby="mock-title">
         <div class="formats-inner">
-          <p class="formats-head">CCNP ENCOR practice test simulation</p>
-          <h2 id="mock-title">Timed ENCOR-style practice test — 55+ questions, one clock, pass or fail</h2>
-          <p class="mock-lead">
-            Sit for a single timed CCNP ENCOR practice session that feels closer to test day: a long mixed run with a
-            countdown, no peeking at answers until you finish, and a clear outcome when time is up.
-          </p>
-          <p class="mock-lead" style="margin-top:-6px;">
-            Test simulation details: each attempt is always randomized in both order and selection, pulling different questions, drag-and-drops, and labs.
-          </p>
-          <figure class="mock-image">
-            <img
-              src="/images/mock-test-container.png"
-              width="1024"
-              height="682"
-              alt="Learners taking a timed mock certification exam in a training lab"
-            />
-          </figure>
-          <ul class="mock-list" aria-label="Test simulation includes">
-            <li>
-              <strong>50+ scored items</strong> in one flow—enough length to test stamina and pacing, not
-              just a quick quiz.
-            </li>
-            <li>
-              <strong>Every item type in play:</strong> multiple-choice, full hands-on CLI labs, and
-              drag-and-drop performance-style tasks—so you rehearse cognitive switches as the
-              real exam.
-            </li>
-            <li>
-              <strong>Timer-driven:</strong> the session runs against the clock from start to submit; you
-              see how long you have left and can move forward and back within the exam before you finish.
-            </li>
-            <li>
-              <strong>Pass or fail at the end:</strong> when you submit (or time expires), you get a final
-              result with your score against the cut line plus a breakdown so you know what to revisit.
-            </li>
-          </ul>
+          <div class="mock-intro">
+            <figure class="mock-intro-figure">
+              <img
+                src="/images/encor-practice-test-simulation-classroom.png"
+                width="682"
+                height="1024"
+                alt="Student at a computer workstation in a classroom lab, with peers studying at nearby desks."
+                decoding="async"
+                loading="lazy"
+              />
+            </figure>
+            <div class="mock-intro-copy">
+              <p class="formats-head">CCNP ENCOR practice test simulation</p>
+              <h2 id="mock-title">Timed ENCOR-style practice test — 55+ questions, one clock, pass or fail</h2>
+              <p class="mock-lead">
+                Sit for a single timed CCNP ENCOR practice session that feels closer to test day: a long mixed run with a
+                countdown, no peeking at answers until you finish, and a clear outcome when time is up.
+              </p>
+              <p class="mock-lead mock-lead-detail">
+                Test simulation details: each attempt is always randomized in both order and selection, pulling different questions, drag-and-drops, and labs.
+              </p>
+              <ul class="mock-list" aria-label="Test simulation includes">
+                <li>
+                  <strong>50+ scored items</strong> in one flow—enough length to test stamina and pacing, not
+                  just a quick quiz.
+                </li>
+                <li>
+                  <strong>Every item type in play:</strong> multiple-choice, full hands-on CLI labs, and
+                  drag-and-drop performance-style tasks—so you rehearse cognitive switches as the
+                  real exam.
+                </li>
+                <li>
+                  <strong>Timer-driven:</strong> the session runs against the clock from start to submit; you
+                  see how long you have left and can move forward and back within the exam before you finish.
+                </li>
+                <li>
+                  <strong>Pass or fail at the end:</strong> when you submit (or time expires), you get a final
+                  result with your score against the cut line plus a breakdown so you know what to revisit.
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </section>
     </main>
