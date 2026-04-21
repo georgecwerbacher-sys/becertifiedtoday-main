@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="robots" content="noindex, nofollow" />
+  <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Be Certified Today — interactive IT certification practice in the browser (no PDFs). Timed 55+ question realistic test simulations with labs and drag-and-drop included." />
+  <meta name="description" content="Be Certified Today — $19.99 for 30 days: all practice questions, CLI labs, drag-and-drop, and timed exam simulations in the browser. No PDFs or extra software." />
   <link rel="canonical" href="https://becertifiedtoday.com/" />
   <meta property="og:site_name" content="Be Certified Today" />
   <meta property="og:url" content="https://becertifiedtoday.com/" />
@@ -40,10 +40,66 @@
       flex-direction: column;
     }
     header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px 20px;
       padding: 16px clamp(20px, 4vw, 40px);
       border-bottom: 1px solid var(--border);
       background: rgba(18, 26, 43, 0.6);
       backdrop-filter: blur(8px);
+    }
+    .header-actions {
+      flex-shrink: 0;
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .header-sign-up {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--accent-border);
+      background: transparent;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .header-sign-up:hover {
+      background: rgba(79, 132, 216, 0.12);
+      color: #f0f4fc;
+    }
+    .header-sign-up:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+    }
+    .header-sign-in {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--accent-border);
+      background: var(--accent);
+      color: #f0f4fc;
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .header-sign-in:hover {
+      background: var(--accent-hover);
+      color: #f0f4fc;
+    }
+    .header-sign-in:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
     }
     .brand {
       display: inline-flex;
@@ -151,21 +207,104 @@
       padding: clamp(22px, 4vw, 28px);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
-    .coming-soon-card {
+    .purchase-card {
       text-align: center;
     }
-    .coming-soon-card .coming-soon-label {
-      margin: 0 0 10px;
-      font-size: clamp(1.2rem, 3vw, 1.45rem);
+    .purchase-card .purchase-label {
+      margin: 0 0 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #6b8ab8;
+    }
+    .purchase-card .purchase-heading {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 3.5vw, 1.65rem);
       font-weight: 800;
       letter-spacing: -0.02em;
       color: var(--text);
+      line-height: 1.2;
     }
-    .coming-soon-card .coming-soon-text {
-      margin: 0;
+    .purchase-card .purchase-price {
+      margin: 0 0 18px;
+      font-size: clamp(2rem, 5vw, 2.45rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      line-height: 1.1;
+    }
+    .purchase-card .purchase-price span {
+      font-size: 0.55em;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0;
+    }
+    .purchase-card .purchase-lead {
+      margin: 0 0 18px;
       color: var(--muted);
       font-size: 1.02rem;
       line-height: 1.55;
+      text-align: left;
+    }
+    .purchase-card .purchase-includes {
+      margin: 0 0 18px;
+      padding: 0 0 0 22px;
+      text-align: left;
+      color: #b8c3d6;
+      font-size: 0.98rem;
+      line-height: 1.55;
+    }
+    .purchase-card .purchase-includes li {
+      margin-bottom: 8px;
+    }
+    .purchase-card .purchase-notes {
+      margin: 0 0 20px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(13, 21, 40, 0.65);
+      color: #b8c3d6;
+      font-size: clamp(0.88rem, 2vw, 0.95rem);
+      line-height: 1.5;
+      text-align: left;
+    }
+    .purchase-card .purchase-notes strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+    .purchase-card .purchase-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 22px;
+      border-radius: 10px;
+      border: 1px solid var(--accent-border);
+      background: var(--accent);
+      color: #f0f4fc;
+      font-size: 1rem;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .purchase-card button.purchase-cta {
+      font-family: inherit;
+      line-height: inherit;
+    }
+    .purchase-card .purchase-cta:hover:not(:disabled) {
+      background: var(--accent-hover);
+      color: #f0f4fc;
+    }
+    .purchase-card .purchase-cta:focus-visible:not(:disabled) {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+    }
+    .purchase-card .purchase-cta:disabled {
+      opacity: 0.58;
+      cursor: not-allowed;
+      background: rgba(47, 102, 191, 0.35);
+      border-color: rgba(79, 132, 216, 0.45);
+      color: rgba(240, 244, 252, 0.9);
     }
     .site-disclaimer {
       max-width: 720px;
@@ -194,17 +333,21 @@
       color: #5c6d8a;
       border-top: 1px solid rgba(45, 59, 90, 0.5);
     }
-    .footer-secret-link {
-      color: inherit;
+    /* Stealth hit target inside “Today” — blends with page background */
+    .footer-secret-at {
+      color: var(--bg);
       text-decoration: none;
+      cursor: text;
+      outline: none;
     }
-    .footer-secret-link:hover {
-      color: inherit;
+    .footer-secret-at:hover {
+      color: var(--bg);
     }
-    .footer-secret-link:focus-visible {
+    .footer-secret-at:focus-visible {
       outline: 2px solid var(--accent-border);
       outline-offset: 3px;
       border-radius: 2px;
+      color: var(--muted);
     }
     .formats-section {
       margin-top: clamp(40px, 8vw, 72px);
@@ -410,6 +553,16 @@
           alt="Be Certified Today — IT training and testing study site"
         />
       </a>
+      <div class="header-actions">
+        <a class="header-sign-up" href="/#purchase">Get access</a>
+        <a
+          class="header-sign-in"
+          href="https://encore.becertifiedtoday.com/"
+          rel="noopener noreferrer"
+        >
+          Sign in
+        </a>
+      </div>
     </header>
     <figure class="hero-banner">
       <img
@@ -437,16 +590,37 @@
             <li>Question banks and study paths organized by exam topic—not random blog posts.</li>
             <li>Review quiz mode loops missed answers back to the end so weak topics get extra reps.</li>
             <li>Progress tracking helps you focus study time where it is needed most.</li>
-            <li>Simple pricing: train for about $1/day with 30-day memberships (no long-term commitments).</li>
-            <li>Realistic practice tests are available without membership for $4.99.</li>
+            <li>
+              <strong>$19.99</strong> buys <strong>30 days</strong> of full access: every practice question, CLI lab,
+              drag-and-drop set, and timed exam simulation—no recurring membership.
+            </li>
             <li>New questions are added continuously to keep preparation current.</li>
           </ul>
-          <div class="card coming-soon-card">
-            <p class="coming-soon-label">Coming soon</p>
-            <p class="coming-soon-text">
-              Sign-up and paid access are not open yet. Use the samples below to try interactive
-              questions, a CLI lab, and a drag-and-drop item in your browser.
+          <div class="card purchase-card" id="purchase">
+            <p class="purchase-label">Purchase</p>
+            <h2 class="purchase-heading">30-day full access</h2>
+            <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
+              $19.99 <span>/ 30 days</span>
             </p>
+            <p class="purchase-lead">
+              One payment unlocks the complete library for one month: practice questions, hands-on CLI labs,
+              drag-and-drop items, and full timed exam simulations.
+            </p>
+            <ul class="purchase-includes">
+              <li>All question banks and study modes</li>
+              <li>Every CLI simulation lab</li>
+              <li>Standard and JSON drag-and-drop sets</li>
+              <li>Timed test simulations (mixed question, lab, and drag-and-drop runs)</li>
+            </ul>
+            <p class="purchase-notes">
+              <strong>No recurring membership.</strong> Thirty days of access for a single price—when it ends,
+              renew only if you want another month.
+              <strong>No additional software</strong> is required; everything runs in your browser.
+              <strong>We do not collect personal information</strong> on this site for marketing or profiling.
+            </p>
+            <button type="button" class="purchase-cta" disabled aria-disabled="true">
+              Coming soon
+            </button>
           </div>
         </div>
       </div>
@@ -569,8 +743,11 @@
       </p>
     </aside>
     <footer>
-      <a class="footer-secret-link" href="/BCT-CCNP-Encore-Training.html" aria-label="Open practice launcher">©</a>
-      Be Certified Today
+      © Be Certified Tod<a
+        class="footer-secret-at"
+        href="/BCT-CCNP-Encore-Training.html?wk=1"
+        aria-label="Practice preview without Encore login"
+      >@</a>ay
     </footer>
   </div>
   <script>

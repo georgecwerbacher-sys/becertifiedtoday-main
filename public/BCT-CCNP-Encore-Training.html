@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="encore-pending">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,6 +18,10 @@
       place-items: center;
       background: #0b1020;
       color: #e6edf3;
+    }
+    /* Avoid blurred launcher / modal FOUC until head script sets auth state */
+    html.encore-pending body {
+      visibility: hidden;
     }
     .card {
       width: min(820px, 92vw);
@@ -151,9 +155,167 @@
       color: #e6a07a;
       font-size: 0.92rem;
     }
+
+    html:not(.encore-authed) #launcherCard {
+      filter: blur(8px);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .encore-login-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      box-sizing: border-box;
+      background: rgba(8, 11, 22, 0.78);
+      backdrop-filter: blur(6px);
+    }
+
+    html.encore-authed .encore-login-backdrop {
+      display: none !important;
+    }
+
+    .encore-login-dialog {
+      width: min(360px, 100%);
+      padding: 22px 22px 20px;
+      border-radius: 14px;
+      border: 1px solid #2d3b5a;
+      background: #121a2b;
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+    }
+
+    .encore-login-dialog h2 {
+      margin: 0 0 6px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .encore-login-dialog .encore-login-sub {
+      margin: 0 0 16px;
+      font-size: 0.88rem;
+      color: #9fb0cc;
+      line-height: 1.45;
+    }
+
+    .encore-login-dialog label {
+      display: block;
+      margin: 0 0 6px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #b8c3d6;
+    }
+
+    .encore-login-dialog input[type="text"],
+    .encore-login-dialog input[type="password"] {
+      width: 100%;
+      margin: 0 0 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #2d3b5a;
+      background: #0d1528;
+      color: #e6edf3;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    .encore-login-dialog input:focus-visible {
+      outline: 2px solid #4f84d8;
+      outline-offset: 2px;
+      border-color: #4f84d8;
+    }
+
+    .encore-login-dialog button[type="submit"] {
+      width: 100%;
+      margin-top: 4px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      border: 1px solid #4f84d8;
+      background: #2f66bf;
+      color: #f0f4fc;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .encore-login-dialog button[type="submit"]:hover {
+      filter: brightness(1.06);
+    }
+
+    #encoreLoginErr {
+      margin: 10px 0 0;
+      min-height: 1.25em;
+      font-size: 0.88rem;
+      color: #e6a07a;
+    }
   </style>
+  <script>
+    (function () {
+      var AUTH_KEY = "bct_encore_auth_ok";
+      try {
+        var params = new URLSearchParams(location.search);
+        if (params.get("logout") === "1") {
+          sessionStorage.removeItem(AUTH_KEY);
+          try {
+            history.replaceState({}, "", location.pathname + location.hash);
+          } catch (e2) {}
+        }
+        /* Temporary dev/preview: ?wk=1 grants access without password (same tab session as login). */
+        if (params.get("wk") === "1") {
+          sessionStorage.setItem(AUTH_KEY, "1");
+          document.documentElement.classList.add("encore-authed");
+          try {
+            history.replaceState({}, "", location.pathname + location.hash);
+          } catch (e3) {}
+        } else {
+          var ok = sessionStorage.getItem(AUTH_KEY) === "1";
+          document.documentElement.classList.toggle("encore-authed", ok);
+        }
+      } catch (e) {
+        document.documentElement.classList.remove("encore-authed");
+      } finally {
+        document.documentElement.classList.remove("encore-pending");
+      }
+    })();
+  </script>
 </head>
 <body>
+  <div
+    id="encoreLoginBackdrop"
+    class="encore-login-backdrop"
+    role="presentation"
+    aria-hidden="false"
+  >
+    <div
+      class="encore-login-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="encoreLoginTitle"
+      onclick="event.stopPropagation()"
+    >
+      <h2 id="encoreLoginTitle">Encore sign in</h2>
+      <p class="encore-login-sub">
+        Training area access. This session is remembered until you close the browser tab.
+      </p>
+      <form id="encoreLoginForm" autocomplete="on">
+        <label for="encoreUser">Username</label>
+        <input id="encoreUser" name="username" type="text" autocomplete="username" required />
+        <label for="encorePass">Password</label>
+        <input id="encorePass" name="password" type="password" autocomplete="current-password" required />
+        <p id="encoreLoginErr" role="alert" aria-live="polite"></p>
+        <button type="submit">Sign in</button>
+      </form>
+      <p class="encore-login-sub" style="margin:14px 0 0;font-size:0.8rem;">
+        Wrong account or need the prompt again? <a href="?logout=1" style="color:#7eb0e8;">Sign out (this tab)</a>
+      </p>
+    </div>
+  </div>
+
   <main id="launcherCard" class="card" aria-label="CCNP practice launcher">
     <a class="launcher-logo" href="/" title="Be Certified Today home">
       <img
@@ -434,5 +596,50 @@
     </section>
     <div class="hint">Tip: keep this in one Cursor browser tab for a contained workflow.</div>
   </main>
+  <script>
+    (function () {
+      var AUTH_KEY = "bct_encore_auth_ok";
+      var USER_OK = "werby1";
+      var PASS_OK = "Breeze@1234";
+
+      function setAuthed() {
+        sessionStorage.setItem(AUTH_KEY, "1");
+        document.documentElement.classList.add("encore-authed");
+        var bd = document.getElementById("encoreLoginBackdrop");
+        if (bd) bd.setAttribute("aria-hidden", "true");
+      }
+
+      var backdrop = document.getElementById("encoreLoginBackdrop");
+      if (backdrop) {
+        backdrop.setAttribute(
+          "aria-hidden",
+          document.documentElement.classList.contains("encore-authed") ? "true" : "false"
+        );
+      }
+
+      var form = document.getElementById("encoreLoginForm");
+      var err = document.getElementById("encoreLoginErr");
+      if (!form) return;
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (err) err.textContent = "";
+        var userEl = document.getElementById("encoreUser");
+        var passEl = document.getElementById("encorePass");
+        var u = userEl && userEl.value.trim();
+        var pw = passEl ? passEl.value : "";
+        if (u === USER_OK && pw === PASS_OK) {
+          setAuthed();
+        } else if (err) {
+          err.textContent = "Invalid username or password.";
+        }
+      });
+
+      var userInput = document.getElementById("encoreUser");
+      if (userInput && !document.documentElement.classList.contains("encore-authed")) {
+        userInput.focus();
+      }
+    })();
+  </script>
 </body>
 </html>
