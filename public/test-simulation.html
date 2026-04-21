@@ -186,7 +186,7 @@
           "<div style=\"text-align:center;padding:24px;max-width:760px;\">" +
           "<h2 style=\"margin:0 0 10px;\">Test simulation finished</h2>" +
           "<p style=\"margin:0 0 16px;color:#b8c3d6;line-height:1.45;\">" + reason + "</p>" +
-          "<a href=\"/BCT-CCNP-Encore-Training.html\" style=\"display:inline-block;text-decoration:none;background:#2f66bf;border:1px solid #4f84d8;color:#e6edf3;padding:10px 14px;border-radius:10px;font-weight:800;\">Back to launcher</a>" +
+          "<a href=\"/BCT-CCNP-ENCOR-Training.html\" style=\"display:inline-block;text-decoration:none;background:#2f66bf;border:1px solid #4f84d8;color:#e6edf3;padding:10px 14px;border-radius:10px;font-weight:800;\">Back to launcher</a>" +
           "</div></body></html>";
       }
 
@@ -211,7 +211,7 @@
         var selectors = [
           ".sim-nav",
           "#nextWrap",
-          "a[href='/BCT-CCNP-Encore-Training.html']",
+          "a[href='/BCT-CCNP-ENCOR-Training.html']",
           "a[href='/']"
         ];
         selectors.forEach(function (sel) {
@@ -247,12 +247,12 @@
       nextBtn.addEventListener("click", moveNext);
       quitBtn.addEventListener("click", function () {
         clearTestState();
-        location.replace("/BCT-CCNP-Encore-Training.html");
+        location.replace("/BCT-CCNP-ENCOR-Training.html");
       });
 
       loadState();
       if (!queue.length || !endsAt || !Number.isFinite(endsAt)) {
-        location.replace("/BCT-CCNP-Encore-Training.html");
+        location.replace("/BCT-CCNP-ENCOR-Training.html");
         return;
       }
       if (!Number.isFinite(index) || index < 0) index = 0;
