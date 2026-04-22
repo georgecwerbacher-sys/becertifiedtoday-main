@@ -12,9 +12,6 @@
   var REVIEW_QUEUE_KEY = "ccnpReviewQueue";
   /** When set (e.g. by begin-landing-sample), queue "Next" after the last item goes here instead of the launcher. */
   var QUEUE_EXIT_HREF_KEY = "ccnpQueueExitHref";
-  /** When set to "/sample", question pages replace the visible URL (history.replaceState) for the landing sample flow. */
-  var URL_MASK_PATH_KEY = "ccnpUrlMaskPath";
-  var MASKED_PAGE_QID_KEY = "ccnpMaskedPageQid";
 
   function isReviewMode() {
     try {
@@ -89,6 +86,14 @@
     var p = location.pathname || "";
     var m = p.match(/question-(\d+)\.html/i);
     return m ? parseInt(m[1], 10) : null;
+  }
+
+  function isSampleMode() {
+    try {
+      return new URLSearchParams(location.search).get("sample") === "1";
+    } catch (e) {
+      return false;
+    }
   }
 
   /** Resolve paths relative to the current question page (works when site is not at domain root). */
@@ -323,17 +328,6 @@
     } catch (e) {
       return null;
     }
-  }
-
-  function applyUrlMaskForLandingSample(qid) {
-    try {
-      var mask = sessionStorage.getItem(URL_MASK_PATH_KEY);
-      if (mask !== "/sample") return;
-      var q = parseQueue();
-      if (!q || q.indexOf(qid) < 0) return;
-      sessionStorage.setItem(MASKED_PAGE_QID_KEY, String(qid));
-      history.replaceState({ ccnpSampleMask: 1 }, document.title, "/sample");
-    } catch (e) {}
   }
 
   /** Same-origin path only; clears storage. Returns null if unset or invalid. */
@@ -586,8 +580,6 @@
       }
     }
 
-    applyUrlMaskForLandingSample(qid);
-
     injectStyles();
     document.body.classList.add("ccnp-practice-ui");
 
@@ -615,6 +607,9 @@
     var home = document.createElement("a");
     home.href = "/BCT-CCNP-ENCOR-Training.html";
     home.textContent = "Home";
+    if (isSampleMode()) {
+      home.href = "/index.html";
+    }
 
     var btn = document.createElement("button");
     btn.type = "button";
@@ -684,7 +679,12 @@
       });
     });
 
-    home.addEventListener("click", function () {
+    home.addEventListener("click", function (e) {
+      if (isSampleMode()) {
+        e.preventDefault();
+        location.href = "/index.html";
+        return;
+      }
       if (isReviewMode()) clearReviewState();
     });
 

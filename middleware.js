@@ -1,9 +1,8 @@
-import { next, rewrite } from "@vercel/edge";
+import { next } from "@vercel/edge";
 
 const ENCORE_HOST = "encor.becertifiedtoday.com";
 const ENCORE_ORIGIN = `https://${ENCORE_HOST}`;
 const LEGACY_ENCORE_HOST = "encore.becertifiedtoday.com";
-const TRAINING_PATH = "/BCT-CCNP-ENCOR-Training.html";
 
 /** Marketing site stays on apex; app content uses Encore */
 const APEX_HOSTS = new Set(["becertifiedtoday.com", "www.becertifiedtoday.com"]);
@@ -20,9 +19,6 @@ export default function middleware(request) {
   const isPreview = host.endsWith(".vercel.app") || host === "localhost";
 
   if (isPreview) {
-    if (host === ENCORE_HOST && url.pathname === "/") {
-      return rewrite(new URL(TRAINING_PATH, url));
-    }
     return next();
   }
 
@@ -44,11 +40,6 @@ export default function middleware(request) {
     }
     const target = new URL(url.pathname + url.search, ENCORE_ORIGIN);
     return Response.redirect(target.toString(), 308);
-  }
-
-  // Encore: root shows the practice launcher (training HTML)
-  if (host === ENCORE_HOST && url.pathname === "/") {
-    return rewrite(new URL(TRAINING_PATH, url));
   }
 
   return next();

@@ -694,6 +694,26 @@
   </nav>
 
   <script>
+    (function () {
+      var params = new URLSearchParams(location.search);
+      if (params.get("sample") !== "1") return;
+      var homeHref = "/index.html";
+      var homeBtn = document.querySelector(".sim-nav-home");
+      var logoLink = document.querySelector(".site-logo-corner");
+      function forceHome(el) {
+        if (!el) return;
+        el.setAttribute("href", homeHref);
+        el.addEventListener("click", function (e) {
+          e.preventDefault();
+          location.href = homeHref;
+        });
+      }
+      forceHome(homeBtn);
+      forceHome(logoLink);
+    })();
+  </script>
+
+  <script>
     function normalize(s) {
       return s.trim().toLowerCase().replace(/\s+/g, " ");
     }
