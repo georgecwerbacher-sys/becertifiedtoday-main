@@ -131,7 +131,7 @@
   }
 
   function choiceLabelNeedsLetter(text) {
-    return !/^\s*[A-Z][\.\)]\s+/.test(text || "");
+    return !/^\s*[A-Z][\.\)](?:\s+|$)/.test(text || "");
   }
 
   /**

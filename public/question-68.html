@@ -46,6 +46,19 @@
       margin-left: auto;
       margin-right: auto;
     }
+    .cli-exhibit {
+      margin: 0 0 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid #2c3f62;
+      background: #0d1117;
+      color: #d1dae8;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.8rem;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -96,6 +109,34 @@
     <div class="image-wrap">
       <img src="/assets/question68-top.png" alt="NAT configuration and show ip nat statistics output" />
     </div>
+    <pre class="cli-exhibit" aria-label="R1 NAT configuration and show ip nat statistics">R1
+interface Ethernet0/0
+ ip address 10.1.1.10 255.255.255.0
+ ip nat inside
+!
+interface Serial0/0
+ ip address 209.165.201.1 255.255.255.224
+ ip nat outside
+!
+ip nat pool Busi 209.165.201.1 209.165.201.2 netmask 255.255.255.252
+ip nat inside source list 1 pool Busi
+!
+access-list  permit 10.1.1.0 0.0.0.255
+!
+
+R1#show ip nat statistics
+Total active translations: 1 (0 static, 1 dynamic, 0 extended)
+Outside Interfaces:
+Inside Interfaces:
+Ethernet0/0
+Hits: 119  Misses: 1
+Expired translations: 0
+Dynamic mappings:
+-- Inside Source
+access-list 1 pool Busi refcount 1
+pool fred: netmask 255.255.255.252
+start 209.165.201.1 end 209.165.201.2
+type generic, total addresses 2, allocated 1 (50%), misses 0</pre>
     <h1>A network engineer configures NAT on R1 and verifies with `show` commands. What does the output confirm?</h1>
 
     <label class="choice"><input type="radio" name="q68" value="A" />A. R1 is configured with NAT overload parameters</label>
