@@ -46,6 +46,50 @@
       margin-left: auto;
       margin-right: auto;
     }
+    .cli-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 0 0 14px;
+    }
+    @media (max-width: 720px) {
+      .cli-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .cli-box {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+      min-width: 0;
+    }
+    .cli-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .cli-box pre {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.72rem, 1.35vw, 0.82rem);
+      line-height: 1.5;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -95,6 +139,24 @@
   <main class="card">
     <div class="image-wrap">
       <img src="/assets/question88-hsrp.png" alt="HSRP topology and R1 R2 configuration excerpts" />
+    </div>
+    <div class="cli-grid" role="region" aria-label="R1 and R2 HSRP configuration excerpts">
+      <div class="cli-box">
+        <p class="cli-label">R1</p>
+        <pre>track 26 interface Serial0/0.1 line-protocol
+interface GigabitEthernet0/0
+ ip address 10.10.10.2 255.255.255.0
+ standby 100 ip 10.10.10.1
+ standby 100 priority 105
+ standby 100 preempt
+ standby 100 track 26</pre>
+      </div>
+      <div class="cli-box">
+        <p class="cli-label">R2</p>
+        <pre>interface GigabitEthernet0/0
+ ip address 10.10.10.3 255.255.255.0
+ standby 100 ip 10.10.10.1</pre>
+      </div>
     </div>
     <h1>An engineer must modify the existing configuration so that R2 can take over as the primary router when serial interface 0/0.1 on R1 goes down. Which command must the engineer apply?</h1>
 

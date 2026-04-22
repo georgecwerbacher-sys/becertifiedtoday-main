@@ -46,6 +46,49 @@
       margin-left: auto;
       margin-right: auto;
     }
+    .cli-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 0 0 14px;
+    }
+    @media (max-width: 720px) {
+      .cli-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .cli-box {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+    }
+    .cli-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .cli-box pre {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.72rem, 1.35vw, 0.82rem);
+      line-height: 1.5;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -95,6 +138,18 @@
   <main class="card">
     <div class="image-wrap">
       <img src="/assets/question78-top.png" alt="GRE tunnel keepalive commands on BR and HQ" />
+    </div>
+    <div class="cli-grid" role="region" aria-label="GRE keepalive CLI on BR and HQ">
+      <div class="cli-box">
+        <p class="cli-label">BR</p>
+        <pre>BR(config)#interface tunnel1
+BR(config-if)#keepalive 5 3</pre>
+      </div>
+      <div class="cli-box">
+        <p class="cli-label">HQ</p>
+        <pre>HQ(config)#interface tunnel1
+HQ(config-if)#keepalive 5 3</pre>
+      </div>
     </div>
     <h1>What is the effect of these commands on the BR and HQ tunnel interfaces?</h1>
 
