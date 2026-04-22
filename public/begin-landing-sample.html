@@ -21,16 +21,6 @@
   <p>Loading sample…</p>
   <script>
     (function () {
-      function shuffleInPlace(arr) {
-        for (var i = arr.length - 1; i > 0; i--) {
-          var j = Math.floor(Math.random() * (i + 1));
-          var t = arr[i];
-          arr[i] = arr[j];
-          arr[j] = t;
-        }
-        return arr;
-      }
-
       var track = (new URLSearchParams(location.search).get("track") || "questions").toLowerCase();
 
       if (track === "labs") {
@@ -38,29 +28,12 @@
         return;
       }
 
-      var ids;
       if (track === "drag") {
-        ids = [58];
-      } else {
-        ids = [1, 3, 4, 5, 6];
+        location.replace("/question-58.html");
+        return;
       }
 
-      if (ids.length > 1) shuffleInPlace(ids);
-
-      try {
-        sessionStorage.removeItem("ccnpLinearScope");
-        sessionStorage.removeItem("ccnpReviewMode");
-        sessionStorage.removeItem("ccnpReviewQueue");
-        sessionStorage.removeItem("ccnpQuestionQueueIndex");
-        sessionStorage.removeItem("ccnpUrlMaskPath");
-        sessionStorage.removeItem("ccnpMaskedPageQid");
-        sessionStorage.setItem("ccnpQuestionQueue", JSON.stringify(ids));
-        sessionStorage.setItem("ccnpQuestionQueueIndex", "0");
-        sessionStorage.setItem("ccnpQueueExitHref", "/");
-        sessionStorage.setItem("ccnpUrlMaskPath", "/sample");
-      } catch (e) {}
-
-      location.replace("/question-" + ids[0] + ".html");
+      location.replace("/sample-question-1.html");
     })();
   </script>
 </body>
