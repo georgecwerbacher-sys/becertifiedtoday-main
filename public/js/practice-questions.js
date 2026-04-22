@@ -346,6 +346,15 @@
     return null;
   }
 
+  /** Same-origin path only; does not clear storage. */
+  function readQueueExitHref() {
+    try {
+      var h = sessionStorage.getItem(QUEUE_EXIT_HREF_KEY);
+      if (h === "/" || h === "/index.html") return h;
+    } catch (e) {}
+    return null;
+  }
+
   function parseLinearScope() {
     var raw = sessionStorage.getItem(LINEAR_SCOPE_KEY);
     if (!raw) return null;
@@ -504,6 +513,10 @@
       var idx = queue.indexOf(qid);
       if (idx > 0) {
         return { href: "/question-" + queue[idx - 1] + ".html", label: "Back" };
+      }
+      var queueExitHref = readQueueExitHref();
+      if (queueExitHref) {
+        return { href: queueExitHref, label: "Back to home" };
       }
       return {
         href: "/BCT-CCNP-ENCOR-Training.html",
@@ -736,6 +749,8 @@
       }
       back.setAttribute("href", b.href);
       back.textContent = b.label;
+      var homeHref = readQueueExitHref() || "/BCT-CCNP-ENCOR-Training.html";
+      home.setAttribute("href", homeHref);
       nextA.setAttribute("href", r.href);
       nextA.textContent = r.label;
       syncToolbarNext(r.href, r.label);

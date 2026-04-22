@@ -1,7 +1,8 @@
 import { next, rewrite } from "@vercel/edge";
 
-const ENCORE_HOST = "encore.becertifiedtoday.com";
+const ENCORE_HOST = "encor.becertifiedtoday.com";
 const ENCORE_ORIGIN = `https://${ENCORE_HOST}`;
+const LEGACY_ENCORE_HOST = "encore.becertifiedtoday.com";
 const TRAINING_PATH = "/BCT-CCNP-ENCOR-Training.html";
 
 /** Marketing site stays on apex; app content uses Encore */
@@ -28,6 +29,12 @@ export default function middleware(request) {
   // ACME / domain verification
   if (url.pathname.startsWith("/.well-known/")) {
     return next();
+  }
+
+  // Legacy subdomain fallback: encore -> encor
+  if (host === LEGACY_ENCORE_HOST) {
+    const target = new URL(url.pathname + url.search, ENCORE_ORIGIN);
+    return Response.redirect(target.toString(), 308);
   }
 
   // Apex domain: send everything except the marketing home to Encore
