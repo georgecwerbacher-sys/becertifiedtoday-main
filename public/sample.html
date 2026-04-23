@@ -18,10 +18,26 @@
   </style>
 </head>
 <body>
-  <p>Resuming sample…</p>
+  <p>Loading sample…</p>
   <script>
     (function () {
-      location.replace("/sample-question-1.html");
+      var params = new URLSearchParams(location.search || "");
+      var stored = sessionStorage.getItem("ccnpSampleKind");
+      var track = (params.get("track") || stored || "questions").toLowerCase();
+      if (track !== "questions" && track !== "labs" && track !== "drag") {
+        track = "questions";
+      }
+
+      sessionStorage.setItem("ccnpUrlMaskPath", "/sample");
+      sessionStorage.setItem("ccnpSampleKind", track);
+
+      var map = {
+        questions: "/sample-question-1.html",
+        labs: "/cli-lab-rapid-pvst-lacp.html?sample=1",
+        drag: "/question-365.html?sample=1"
+      };
+
+      location.replace(map[track]);
     })();
   </script>
 </body>
