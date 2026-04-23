@@ -47,6 +47,16 @@
       color: #b8c3d6;
       line-height: 1.5;
     }
+    .objective > p {
+      margin: 0 0 8px;
+    }
+    .objective ul {
+      margin: 0;
+      padding-left: 1.25rem;
+    }
+    .objective li {
+      margin: 6px 0;
+    }
     .tasks ol {
       margin: 8px 0 0;
       padding-left: 1.25rem;
@@ -81,6 +91,51 @@
       user-select: none;
       -webkit-user-drag: none;
     }
+    .lab-tasks-inline {
+      margin-top: 14px;
+      margin-bottom: 12px;
+      padding: 14px 14px 12px;
+      border-radius: 10px;
+      border: 1px solid #2d3b5a;
+      background: #0f1729;
+      text-align: left;
+    }
+    .lab-tasks-inline h2 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+      color: #f0c040;
+    }
+    .lab-tasks-lead {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.5;
+      font-size: 0.92rem;
+    }
+    .lab-tasks-list {
+      margin: 0 0 12px;
+      padding-left: 1.25rem;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    .lab-tasks-list li {
+      margin: 8px 0;
+    }
+    .lab-tasks-note {
+      margin: 0 0 4px;
+      font-size: 0.88rem;
+      color: #9fb0cc;
+      line-height: 1.45;
+    }
+    .lab-tasks-helper {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(45, 59, 90, 0.85);
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
     .device-pick {
       margin: 12px auto 8px;
       padding: 12px 14px;
@@ -103,7 +158,8 @@
       vertical-align: middle;
     }
     .device-links {
-      margin-top: 10px;
+      margin-top: 14px;
+      margin-bottom: 4px;
       display: flex;
       justify-content: center;
       gap: 8px;
@@ -150,6 +206,22 @@
     }
     .topology-scrape li {
       margin: 4px 0;
+    }
+    .topology-scrape--in-helper {
+      margin-top: 0;
+      padding: 0;
+      border: none;
+      background: transparent;
+    }
+    .topology-scrape--in-helper h2 {
+      color: #f0c040;
+      font-size: 1rem;
+    }
+    #helperModalOverlay {
+      z-index: 25002;
+    }
+    .helper-modal-dialog {
+      width: min(560px, calc(100vw - 24px));
     }
     .cli-modal-overlay {
       display: none;
@@ -288,9 +360,6 @@
       border-top: 1px solid #2d3b5a;
       flex-shrink: 0;
     }
-    .cli-modal-footer .controls {
-      margin-top: 0;
-    }
     .cli-modal-footer .pass-banner {
       margin-top: 10px;
     }
@@ -367,27 +436,6 @@
       outline: none;
       padding: 4px 0 4px 4px;
     }
-    .controls {
-      margin-top: 12px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .btn {
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      color: #e6edf3;
-      border-radius: 10px;
-      padding: 8px 14px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-    }
-    .btn-secondary {
-      background: #2a3040;
-      border-color: #4b556b;
-    }
     .pass-banner {
       display: none;
       margin-top: 14px;
@@ -401,10 +449,35 @@
     .pass-banner.visible {
       display: block;
     }
-    details.hint {
-      margin-top: 10px;
+    #spoilerModalOverlay {
+      z-index: 25003;
+    }
+    .spoiler-modal-dialog {
+      width: min(440px, calc(100vw - 24px));
+      max-height: min(72vh, 560px);
+    }
+    .spoiler-steps {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: #b8c3d6;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    .spoiler-steps li {
+      margin: 6px 0;
+    }
+    .spoiler-steps code {
+      font-size: 0.86rem;
+      background: rgba(15, 22, 40, 0.9);
+      padding: 1px 6px;
+      border-radius: 4px;
+      border: 1px solid #2d3b5a;
+    }
+    .spoiler-modal-lead {
+      margin: 0 0 10px;
+      font-size: 0.88rem;
       color: #9fb0cc;
-      font-size: 0.92rem;
+      line-height: 1.45;
     }
     .sim-nav {
       position: fixed;
@@ -517,58 +590,47 @@
                 <label><input type="radio" name="rapidPvstLacpDev" value="SW10" /> SW10</label>
                 <label><input type="radio" name="rapidPvstLacpDev" value="PC3" /> PC3</label>
               </div>
-              <div class="device-links">
+              <div class="device-links device-links--cli-only">
                 <button type="button" class="device-link" id="openSelectedCliBtn">Open SW20 CLI</button>
               </div>
-              <section class="topology-scrape" aria-label="Topology summary from exhibit">
-                <h2>Topology (from exhibit)</h2>
-                <ul>
-                  <li><strong>SW20</strong> — your only configurable device; pick SW20 under the topology, open its CLI, and run <code>show running-config</code> for the starting configuration. Connects toward <strong>SW10</strong> via <strong>Port-channel 10</strong> (LACP) and toward <strong>SW30</strong> on the trunk interface shown (e.g. <code>E0/0</code>).</li>
+              <section class="lab-tasks-inline" aria-labelledby="lab-tasks-heading">
+                <h2 id="lab-tasks-heading">Tasks</h2>
+                <p class="lab-tasks-lead">
+                  The operations team started configuring network devices for a new site. Complete the configurations to achieve these goals:
+                </p>
+                <ol class="lab-tasks-list">
+                  <li>Configure Rapid PVST+ on SW20.</li>
                   <li>
-                    <strong>SW10</strong> — not configurable here; select SW10 and open its read-only CLI, then type
-                    <code>show run</code> to view its configuration. <strong>SW30</strong> — out of scope; do not configure.
+                    The trunk between SW20 and SW30 is not operational. Troubleshoot the issue and ensure PC3 can ping PC1 (10.10.100.10)
+                    across the link.
                   </li>
-                  <li>Hosts: <strong>PC1</strong> (10.10.100.10) above SW30, <strong>PC2</strong> (10.10.100.20) below SW10, <strong>PC3</strong> below SW20 — reachability depends on VLAN <strong>500</strong> end-to-end over trunks. Select PC3 and open its console to test <code>ping</code> to PC1 after configuring SW20.</li>
-                  <li>Initial screenshot may show partial trunk / Po config — your job is to align <strong>Rapid PVST+</strong>, <strong>dot1q</strong> trunks, and <strong>VLAN 500</strong> allowed lists on SW20 only.</li>
-                </ul>
+                  <li>
+                    The LACP port channel between SW10 and SW20 is not operational. Troubleshoot the issue and ensure PC3 can ping PC2
+                    (10.10.100.20) across the port channel.
+                  </li>
+                </ol>
+                <p class="lab-tasks-note">
+                  <strong>Note:</strong> No access is provided to SW10 or SW30. Resolve these issues by making changes only to SW20. Traffic on
+                  all trunks should be restricted to only active VLANs.
+                </p>
+                <div class="lab-tasks-helper">
+                  <button type="button" class="device-link" id="openHelperModalBtn">Helper file</button>
+                  <button type="button" class="device-link" id="openSpoilerModalBtn">Spoiler</button>
+                  <button type="button" class="device-link" id="resetBtn">Reset lab</button>
+                </div>
               </section>
             </div>
 
-      <p class="objective">
-        The operations team started configuring network devices for a new site. Fix SW20 only to satisfy all goals.
-        No access is provided to SW10 or SW30. Traffic on all trunks must be restricted to active VLANs.
-        Under the topology, choose <strong>Device in prompt</strong>, then the open button for that device.
-      </p>
-      <div class="tasks">
-        <strong>Tasks</strong>
-        <ol>
-          <li>Configure Rapid PVST+ on SW20.</li>
-          <li>Fix the SW20-SW30 trunk so PC3 can ping PC1 (10.10.100.10).</li>
-          <li>Fix the LACP port-channel to SW10 so PC3 can ping PC2 (10.10.100.20).</li>
-        </ol>
+      <div class="objective">
+        <p>
+          Choose <strong>Device in prompt</strong>, then use the open button above <strong>Tasks</strong>.
+        </p>
+        <ul>
+          <li><strong>Helper file</strong> — for topology notes</li>
+          <li><strong>Spoiler</strong> — for valid command sequence</li>
+          <li><strong>Reset lab</strong> — to start over</li>
+        </ul>
       </div>
-      
-
-      <details class="hint">
-        <summary>Show one valid command sequence (spoiler)</summary>
-        <ol>
-          <li><code>conf t</code></li>
-          <li><code>spanning-tree mode rapid-pvst</code></li>
-          <li><code>interface e0/0</code></li>
-          <li><code>switchport trunk encapsulation dot1q</code></li>
-          <li><code>switchport mode trunk</code></li>
-          <li><code>switchport trunk allowed vlan 500</code></li>
-          <li><code>from PC3 ping 10.10.100.10</code></li>
-          <li><code>interface po10</code></li>
-          <li><code>switchport trunk encapsulation dot1q</code></li>
-          <li><code>switchport mode trunk</code></li>
-          <li><code>switchport trunk allowed vlan 500</code></li>
-          <li><code>exit</code></li>
-          <li><code>exit</code></li>
-          <li><code>show etherchannel summary</code> (from <code>SW20#</code> only)</li>
-          <li><code>copy running-config startup-config</code></li>
-        </ol>
-      </details>
     </main>
   </div>
 
@@ -604,9 +666,6 @@
         </div>
       </div>
       <footer class="cli-modal-footer">
-        <div class="controls">
-          <button type="button" class="btn btn-secondary" id="resetBtn">Reset lab</button>
-        </div>
         <div id="passBanner" class="pass-banner" role="status">
           Simulation complete — you entered <code>copy running-config startup-config</code> as the final command (Enter
           saves and finishes this lab). SW20 is configured with Rapid PVST+, correct trunks, and Po10 LACP with VLAN 500.
@@ -690,6 +749,88 @@
       <footer class="cli-modal-footer">
         <p class="pc3-modal-hint">Read-only. Type <code>show run</code> or <code>show running-config</code> to display the saved configuration.</p>
       </footer>
+    </div>
+  </div>
+
+  <div id="helperModalOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="helperModalDialog"
+      class="cli-modal-dialog helper-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="helperModalTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="helperModalTitle">Helper file</h2>
+        <button type="button" class="cli-modal-close" id="helperModalClose" aria-label="Close helper file">
+          ×
+        </button>
+      </header>
+      <div class="cli-modal-body">
+        <section class="topology-scrape topology-scrape--in-helper" aria-label="Topology summary from exhibit">
+          <h2>Topology (from exhibit)</h2>
+          <ul>
+            <li>
+              <strong>SW20</strong> — your only configurable device; pick SW20 under the topology, open its CLI, and run
+              <code>show running-config</code> for the starting configuration. Connects toward <strong>SW10</strong> via
+              <strong>Port-channel 10</strong> (LACP) and toward <strong>SW30</strong> on the trunk interface shown (e.g.
+              <code>E0/0</code>).
+            </li>
+            <li>
+              <strong>SW10</strong> — not configurable here; select SW10 and open its read-only CLI, then type
+              <code>show run</code> to view its configuration. <strong>SW30</strong> — out of scope; do not configure.
+            </li>
+            <li>
+              Hosts: <strong>PC1</strong> (10.10.100.10) above SW30, <strong>PC2</strong> (10.10.100.20) below SW10,
+              <strong>PC3</strong> below SW20 — reachability depends on VLAN <strong>500</strong> end-to-end over trunks.
+              Select PC3 and open its console to test <code>ping</code> to PC1 after configuring SW20.
+            </li>
+            <li>
+              Initial screenshot may show partial trunk / Po config — your job is to align <strong>Rapid PVST+</strong>,
+              <strong>dot1q</strong> trunks, and <strong>VLAN 500</strong> allowed lists on SW20 only.
+            </li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div id="spoilerModalOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="spoilerModalDialog"
+      class="cli-modal-dialog spoiler-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="spoilerModalTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="spoilerModalTitle">Spoiler</h2>
+        <button type="button" class="cli-modal-close" id="spoilerModalClose" aria-label="Close spoiler">
+          ×
+        </button>
+      </header>
+      <div class="cli-modal-body">
+        <p class="spoiler-modal-lead">One valid command sequence (reveals solution steps).</p>
+        <ol class="spoiler-steps">
+          <li><code>conf t</code></li>
+          <li><code>spanning-tree mode rapid-pvst</code></li>
+          <li><code>interface e0/0</code></li>
+          <li><code>switchport trunk encapsulation dot1q</code></li>
+          <li><code>switchport mode trunk</code></li>
+          <li><code>switchport trunk allowed vlan 500</code></li>
+          <li><code>from PC3 ping 10.10.100.10</code></li>
+          <li><code>interface po10</code></li>
+          <li><code>switchport trunk encapsulation dot1q</code></li>
+          <li><code>switchport mode trunk</code></li>
+          <li><code>switchport trunk allowed vlan 500</code></li>
+          <li><code>exit</code></li>
+          <li><code>exit</code></li>
+          <li><code>show etherchannel summary</code> (from <code>SW20#</code> only)</li>
+          <li><code>copy running-config startup-config</code></li>
+        </ol>
+      </div>
     </div>
   </div>
 
@@ -882,6 +1023,14 @@
     const sw10ModalOverlay = document.getElementById("sw10ModalOverlay");
     const sw10ModalClose = document.getElementById("sw10ModalClose");
     const sw10ModalDialog = document.getElementById("sw10ModalDialog");
+    const helperModalOverlay = document.getElementById("helperModalOverlay");
+    const helperModalDialog = document.getElementById("helperModalDialog");
+    const helperModalClose = document.getElementById("helperModalClose");
+    const openHelperModalBtn = document.getElementById("openHelperModalBtn");
+    const spoilerModalOverlay = document.getElementById("spoilerModalOverlay");
+    const spoilerModalDialog = document.getElementById("spoilerModalDialog");
+    const spoilerModalClose = document.getElementById("spoilerModalClose");
+    const openSpoilerModalBtn = document.getElementById("openSpoilerModalBtn");
     const sw10Scrollback = document.getElementById("sw10Scrollback");
     const sw10PromptEl = document.getElementById("sw10Prompt");
     const sw10Cmdline = document.getElementById("sw10Cmdline");
@@ -899,6 +1048,14 @@
 
     function sw10ModalOpen() {
       return sw10ModalOverlay && sw10ModalOverlay.classList.contains("is-open");
+    }
+
+    function helperModalOpen() {
+      return helperModalOverlay && helperModalOverlay.classList.contains("is-open");
+    }
+
+    function spoilerModalOpen() {
+      return spoilerModalOverlay && spoilerModalOverlay.classList.contains("is-open");
     }
 
     let stepIndex = 0;
@@ -960,6 +1117,14 @@
         sw10ModalOverlay.classList.remove("is-open");
         sw10ModalOverlay.setAttribute("aria-hidden", "true");
       }
+      if (helperModalOverlay) {
+        helperModalOverlay.classList.remove("is-open");
+        helperModalOverlay.setAttribute("aria-hidden", "true");
+      }
+      if (spoilerModalOverlay) {
+        spoilerModalOverlay.classList.remove("is-open");
+        spoilerModalOverlay.setAttribute("aria-hidden", "true");
+      }
     }
 
     function focusActiveCli() {
@@ -974,6 +1139,36 @@
       if (sw10ModalOpen() && sw10Cmdline) {
         sw10Cmdline.focus();
       }
+    }
+
+    function closeHelperModal() {
+      if (!helperModalOverlay) return;
+      helperModalOverlay.classList.remove("is-open");
+      helperModalOverlay.setAttribute("aria-hidden", "true");
+      if (openHelperModalBtn) openHelperModalBtn.focus();
+    }
+
+    function openHelperModal() {
+      if (!helperModalOverlay) return;
+      closeModalsAll();
+      bumpOverlayZ(helperModalOverlay);
+      helperModalOverlay.classList.add("is-open");
+      helperModalOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function closeSpoilerModal() {
+      if (!spoilerModalOverlay) return;
+      spoilerModalOverlay.classList.remove("is-open");
+      spoilerModalOverlay.setAttribute("aria-hidden", "true");
+      if (openSpoilerModalBtn) openSpoilerModalBtn.focus();
+    }
+
+    function openSpoilerModal() {
+      if (!spoilerModalOverlay) return;
+      closeModalsAll();
+      bumpOverlayZ(spoilerModalOverlay);
+      spoilerModalOverlay.classList.add("is-open");
+      spoilerModalOverlay.setAttribute("aria-hidden", "false");
     }
 
     function openSelectedCliModal() {
@@ -1149,6 +1344,8 @@
     wireFloatingModal(cliModalDialog, cliModalOverlay);
     wireFloatingModal(pc3ModalDialog, pc3ModalOverlay);
     wireFloatingModal(sw10ModalDialog, sw10ModalOverlay);
+    wireFloatingModal(helperModalDialog, helperModalOverlay);
+    wireFloatingModal(spoilerModalDialog, spoilerModalOverlay);
 
     function appendLine(className, text) {
       const div = document.createElement("div");
@@ -1246,10 +1443,40 @@
       }
     });
 
-    resetBtn.addEventListener("click", reset);
+    if (resetBtn) {
+      resetBtn.addEventListener("click", reset);
+    }
 
     if (openSelectedCliBtn) {
       openSelectedCliBtn.addEventListener("click", openSelectedCliModal);
+    }
+
+    if (openHelperModalBtn) {
+      openHelperModalBtn.addEventListener("click", openHelperModal);
+    }
+
+    if (helperModalClose) {
+      helperModalClose.addEventListener("click", closeHelperModal);
+    }
+
+    if (helperModalOverlay) {
+      helperModalOverlay.addEventListener("click", (e) => {
+        if (e.target === helperModalOverlay) closeHelperModal();
+      });
+    }
+
+    if (openSpoilerModalBtn) {
+      openSpoilerModalBtn.addEventListener("click", openSpoilerModal);
+    }
+
+    if (spoilerModalClose) {
+      spoilerModalClose.addEventListener("click", closeSpoilerModal);
+    }
+
+    if (spoilerModalOverlay) {
+      spoilerModalOverlay.addEventListener("click", (e) => {
+        if (e.target === spoilerModalOverlay) closeSpoilerModal();
+      });
     }
 
     document.querySelectorAll('input[name="rapidPvstLacpDev"]').forEach((r) => {
@@ -1301,13 +1528,17 @@
       const cliOn = cliModalOpen();
       const pc3On = pc3ModalOpen();
       const sw10On = sw10ModalOpen();
-      if (!cliOn && !pc3On && !sw10On) return;
+      const helperOn = helperModalOpen();
+      const spoilerOn = spoilerModalOpen();
+      if (!cliOn && !pc3On && !sw10On && !helperOn && !spoilerOn) return;
       e.preventDefault();
       const zi = (el) => parseInt(window.getComputedStyle(el).zIndex, 10) || 0;
       const openModals = [];
       if (cliOn) openModals.push({ overlay: cliModalOverlay, close: closeCliModal });
       if (pc3On) openModals.push({ overlay: pc3ModalOverlay, close: closePc3Modal });
       if (sw10On) openModals.push({ overlay: sw10ModalOverlay, close: closeSw10Modal });
+      if (helperOn) openModals.push({ overlay: helperModalOverlay, close: closeHelperModal });
+      if (spoilerOn) openModals.push({ overlay: spoilerModalOverlay, close: closeSpoilerModal });
       openModals.sort((a, b) => zi(b.overlay) - zi(a.overlay));
       if (openModals.length) openModals[0].close();
     });
