@@ -566,8 +566,6 @@
     }
     .sim-nav-btn:hover { filter: brightness(1.08); }
     .sim-nav-home { background: #1a3d6e; }
-    .sim-nav-next { background: #1a3d6e; }
-    .sim-nav-back { background: #243352; border-color: #3d5280; }
     .cli-modal-body #pc3Scrollback {
       max-height: 360px;
     }
@@ -617,9 +615,10 @@
 </style>
 </head>
 <body>
-  <a class="site-logo-corner" href="/index.html" aria-label="Go to training portal home">
-    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
-  </a>
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="site-logo-corner" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="" />
+  </div>
 
   <div class="wrap">
     <main class="card">
@@ -940,8 +939,6 @@ SW20# copy running-config startup-config</pre>
 
   <nav class="sim-nav" aria-label="Simulation navigation">
     <a class="sim-nav-btn sim-nav-home" href="/index.html">Home</a>
-    <a class="sim-nav-btn sim-nav-next" href="/cli-lab-vrf-config-sim.html">Next</a>
-    <a class="sim-nav-btn sim-nav-back" href="/lab-sims-v2/cli-lab-vty-login-v2.html">Back</a>
   </nav>
 
   <script>
@@ -950,17 +947,12 @@ SW20# copy running-config startup-config</pre>
       if (params.get("sample") !== "1") return;
       var homeHref = "/index.html";
       var homeBtn = document.querySelector(".sim-nav-home");
-      var logoLink = document.querySelector(".site-logo-corner");
-      function forceHome(el) {
-        if (!el) return;
-        el.setAttribute("href", homeHref);
-        el.addEventListener("click", function (e) {
-          e.preventDefault();
-          location.href = homeHref;
-        });
-      }
-      forceHome(homeBtn);
-      forceHome(logoLink);
+      if (!homeBtn) return;
+      homeBtn.setAttribute("href", homeHref);
+      homeBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        location.href = homeHref;
+      });
     })();
   </script>
 
