@@ -47,16 +47,6 @@
       color: #b8c3d6;
       line-height: 1.5;
     }
-    .objective > p {
-      margin: 0 0 8px;
-    }
-    .objective ul {
-      margin: 0;
-      padding-left: 1.25rem;
-    }
-    .objective li {
-      margin: 6px 0;
-    }
     .tasks ol {
       margin: 8px 0 0;
       padding-left: 1.25rem;
@@ -91,50 +81,28 @@
       user-select: none;
       -webkit-user-drag: none;
     }
-    .lab-tasks-inline {
-      margin-top: 14px;
-      margin-bottom: 12px;
-      padding: 14px 14px 12px;
-      border-radius: 10px;
-      border: 1px solid #2d3b5a;
-      background: #0f1729;
+    .diagram-wrap .tasks-top {
       text-align: left;
-    }
-    .lab-tasks-inline h2 {
-      margin: 0 0 10px;
-      font-size: 1.05rem;
-      color: #f0c040;
-    }
-    .lab-tasks-lead {
-      margin: 0 0 12px;
-      color: #b8c3d6;
-      line-height: 1.5;
-      font-size: 0.92rem;
-    }
-    .lab-tasks-list {
-      margin: 0 0 12px;
-      padding-left: 1.25rem;
-      color: #b8c3d6;
-      font-size: 0.92rem;
-      line-height: 1.5;
-    }
-    .lab-tasks-list li {
-      margin: 8px 0;
-    }
-    .lab-tasks-note {
-      margin: 0 0 4px;
-      font-size: 0.88rem;
-      color: #9fb0cc;
-      line-height: 1.45;
-    }
-    .lab-tasks-helper {
       margin-top: 14px;
-      padding-top: 12px;
-      border-top: 1px solid rgba(45, 59, 90, 0.85);
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
+      width: 100%;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      box-sizing: border-box;
+    }
+    .diagram-wrap .tasks-top > strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #e6edf3;
+    }
+    .diagram-wrap .tasks-top .tasks-note {
+      margin: 10px 0 0;
+      font-size: 0.92rem;
+      color: #9fb0cc;
     }
     .device-pick {
       margin: 12px auto 8px;
@@ -158,8 +126,7 @@
       vertical-align: middle;
     }
     .device-links {
-      margin-top: 14px;
-      margin-bottom: 4px;
+      margin-top: 10px;
       display: flex;
       justify-content: center;
       gap: 8px;
@@ -207,21 +174,102 @@
     .topology-scrape li {
       margin: 4px 0;
     }
-    .topology-scrape--in-helper {
-      margin-top: 0;
-      padding: 0;
-      border: none;
-      background: transparent;
+    .topology-scrape,
+    .topology-scrape * {
+      font-family: "Times New Roman", Times, serif !important;
     }
-    .topology-scrape--in-helper h2 {
-      color: #f0c040;
+    .topology-scrape li + li {
+      margin-top: 0.35rem;
+    }
+    .topology-scrape .helper-part-two-title {
+      margin: 14px 0 6px;
+      font-size: 0.98rem;
+      color: #e6edf3;
+    }
+    .topology-scrape .helper-part-two,
+    .topology-scrape .helper-part-two li {
       font-size: 1rem;
+      line-height: 1.45;
     }
-    #helperModalOverlay {
-      z-index: 25002;
+    .topology-scrape .helper-cli {
+      margin: 6px 0 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: #0a0a0a;
+      border: 1px solid #2b2b2b;
+      color: #f3f3f3;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+    .topology-scrape .helper-device {
+      margin: 12px 0 4px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .helper-file-wrap {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
     }
     .helper-modal-dialog {
-      width: min(560px, calc(100vw - 24px));
+      width: min(860px, calc(100vw - 24px));
+    }
+    .helper-modal-dialog .topology-scrape {
+      margin-top: 0;
+    }
+    .spoiler-modal-dialog {
+      width: min(760px, calc(100vw - 24px));
+    }
+    .spoiler-content {
+      margin: 0;
+      color: #c7d2e7;
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+    .spoiler-content h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      color: #e6edf3;
+    }
+    .spoiler-cli-stack {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .spoiler-cli-item {
+      background: #000;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 10px 12px 12px;
+    }
+    .spoiler-cli-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .spoiler-cli-pre {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.8rem;
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
     }
     .cli-modal-overlay {
       display: none;
@@ -360,6 +408,9 @@
       border-top: 1px solid #2d3b5a;
       flex-shrink: 0;
     }
+    .cli-modal-footer .controls {
+      margin-top: 0;
+    }
     .cli-modal-footer .pass-banner {
       margin-top: 10px;
     }
@@ -436,6 +487,27 @@
       outline: none;
       padding: 4px 0 4px 4px;
     }
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-secondary {
+      background: #2a3040;
+      border-color: #4b556b;
+    }
     .pass-banner {
       display: none;
       margin-top: 14px;
@@ -449,35 +521,20 @@
     .pass-banner.visible {
       display: block;
     }
-    #spoilerModalOverlay {
-      z-index: 25003;
-    }
-    .spoiler-modal-dialog {
-      width: min(440px, calc(100vw - 24px));
-      max-height: min(72vh, 560px);
-    }
-    .spoiler-steps {
-      margin: 0;
-      padding-left: 1.25rem;
-      color: #b8c3d6;
-      font-size: 0.88rem;
-      line-height: 1.5;
-    }
-    .spoiler-steps li {
-      margin: 6px 0;
-    }
-    .spoiler-steps code {
-      font-size: 0.86rem;
-      background: rgba(15, 22, 40, 0.9);
-      padding: 1px 6px;
-      border-radius: 4px;
-      border: 1px solid #2d3b5a;
-    }
-    .spoiler-modal-lead {
-      margin: 0 0 10px;
-      font-size: 0.88rem;
+    details.hint {
+      margin-top: 10px;
       color: #9fb0cc;
-      line-height: 1.45;
+      font-size: 0.92rem;
+    }
+    .site-personal-note {
+      margin: 12px 0 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      line-height: 1.5;
+      font-size: 0.92rem;
     }
     .sim-nav {
       position: fixed;
@@ -557,16 +614,10 @@
       width: 52px;
       height: 52px;
     }
-    /* Standalone marketing site: no adjacent ENCOR labs in this deployment */
-    .sim-nav-next,
-    .sim-nav-back {
-      display: none;
-    }
 </style>
 </head>
 <body>
-  <script src="/js/sample-url-mask-apply.js"></script>
-  <a class="site-logo-corner" href="/index.html" aria-label="Back to Be Certified Today home">
+  <a class="site-logo-corner" href="/index.html" aria-label="Go to training portal home">
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
   </a>
 
@@ -590,48 +641,180 @@
                 <label><input type="radio" name="rapidPvstLacpDev" value="SW10" /> SW10</label>
                 <label><input type="radio" name="rapidPvstLacpDev" value="PC3" /> PC3</label>
               </div>
-              <div class="device-links device-links--cli-only">
+              <div class="device-links">
                 <button type="button" class="device-link" id="openSelectedCliBtn">Open SW20 CLI</button>
               </div>
-              <section class="lab-tasks-inline" aria-labelledby="lab-tasks-heading">
-                <h2 id="lab-tasks-heading">Tasks</h2>
-                <p class="lab-tasks-lead">
-                  The operations team started configuring network devices for a new site. Complete the configurations to achieve these goals:
+              <div class="tasks tasks-top">
+                <strong>Tasks</strong>
+                <p>
+                  This BeCertifiedToday lab mirrors the kind of cleanup you run into on real tickets. Work through SW20 and get the site back to a healthy state:
                 </p>
-                <ol class="lab-tasks-list">
+                <ol>
                   <li>Configure Rapid PVST+ on SW20.</li>
                   <li>
-                    The trunk between SW20 and SW30 is not operational. Troubleshoot the issue and ensure PC3 can ping PC1 (10.10.100.10)
-                    across the link.
+                    The trunk between SW20 and SW30 is not operational. Troubleshoot the issue and ensure PC3 can ping PC1 (10.10.100.10) across the link.
                   </li>
                   <li>
-                    The LACP port channel between SW10 and SW20 is not operational. Troubleshoot the issue and ensure PC3 can ping PC2
-                    (10.10.100.20) across the port channel.
+                    The LACP port channel between SW10 and SW20 is not operational. Troubleshoot the issue and ensure PC3 can ping PC2 (10.10.100.20) across the
+                    port channel.
                   </li>
                 </ol>
-                <p class="lab-tasks-note">
-                  <strong>Note:</strong> No access is provided to SW10 or SW30. Resolve these issues by making changes only to SW20. Traffic on
-                  all trunks should be restricted to only active VLANs.
+                <p class="tasks-note">
+                  <strong>Note:</strong> No access is provided to SW10 or SW30. Resolve these issues by making changes only to SW20. Traffic on all trunks should be
+                  restricted to only active VLANs.
                 </p>
-                <div class="lab-tasks-helper">
-                  <button type="button" class="device-link" id="openHelperModalBtn">Helper file</button>
-                  <button type="button" class="device-link" id="openSpoilerModalBtn">Spoiler</button>
-                  <button type="button" class="device-link" id="resetBtn">Reset lab</button>
-                </div>
-              </section>
+              </div>
+              <div class="helper-file-wrap">
+                <button type="button" class="device-link" id="openHelperFileBtn">Helper File</button>
+                <button type="button" class="device-link" id="inlineResetLabBtn">Reset lab</button>
+                <button type="button" class="device-link" id="openSpoilerBtn">Spoiler</button>
+              </div>
             </div>
 
-      <div class="objective">
-        <p>
-          Choose <strong>Device in prompt</strong>, then use the open button above <strong>Tasks</strong>.
-        </p>
-        <ul>
-          <li><strong>Helper file</strong> — for topology notes</li>
-          <li><strong>Spoiler</strong> — for valid command sequence</li>
-          <li><strong>Reset lab</strong> — to start over</li>
-        </ul>
-      </div>
+      <p class="objective">
+        Pick a device under <strong>Device in prompt</strong>, then open that device console to run commands.
+      </p>
+      <p class="site-personal-note">
+        Disclaimer: This website is an independent training resource created for educational purposes only. It is not affiliated with, endorsed by, sponsored by, or approved by Cisco Systems, Inc. Cisco and related trademarks are the property of Cisco Systems, Inc. All practice questions, explanations, and study materials on this site are original or based on general knowledge and are intended as a guide to help users prepare for certification exams. Practice questions are not actual Cisco exam questions. Any similarity to official exam content is coincidental.
+      </p>
+
     </main>
+  </div>
+
+  <div id="helperFileOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="helperFileDialog"
+      class="cli-modal-dialog helper-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="helperFileTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="helperFileTitle">Helper File</h2>
+        <button type="button" class="cli-modal-close" id="helperFileClose" aria-label="Close helper file">
+          ×
+        </button>
+      </header>
+      <div class="cli-modal-body">
+        <section class="topology-scrape" aria-label="Topology summary from exhibit">
+          <h2>Helper File</h2>
+          <p class="helper-part-two-title"><strong>Task 1. Configure Rapid PVST+ on SW20.</strong></p>
+          <p class="helper-device">On SW20</p>
+          <pre class="helper-cli">SW20#conf t
+SW20(config)#spanning-tree mode rapid-pvst</pre>
+
+          <p class="helper-part-two-title"><strong>Task 2. Restore the SW20-SW30 trunk and verify PC3 to PC1 reachability.</strong></p>
+          <ul class="helper-part-two">
+            <li>Run <code>show run</code> on SW20 and check interface <code>E0/0</code>.</li>
+            <li>Change <code>E0/0</code> to a dot1q trunk and allow only VLAN 500.</li>
+          </ul>
+          <p class="helper-device">SW20</p>
+          <pre class="helper-cli">SW20(config)#interface e0/0
+SW20(config-if)#switchport trunk encapsulation dot1q
+SW20(config-if)#switchport mode trunk
+SW20(config-if)#switchport trunk allowed vlan 500</pre>
+          <p class="helper-part-two-title"><strong>Verification</strong></p>
+          <pre class="helper-cli">PC3#ping 10.10.100.10
+!!!!!</pre>
+
+          <p class="helper-part-two-title"><strong>Task 3. Restore the LACP port-channel between SW10 and SW20 and verify PC3 to PC2 reachability.</strong></p>
+          <ul class="helper-part-two">
+            <li>Run <code>show run</code> on SW20 and verify Port-channel 10 matches members <code>E0/2</code> and <code>E0/3</code>.</li>
+            <li>Apply trunk settings to <code>Po10</code>. If your topology uses a different bundle number, use that interface.</li>
+            <li>After <code>switchport trunk allowed vlan 500</code> on the port-channel, member links should inherit matching trunk behavior.</li>
+          </ul>
+          <p class="helper-device">SW20</p>
+          <pre class="helper-cli">SW20(config)#int Po10
+SW20(config-if)#switchport trunk encapsulation dot1q
+SW20(config-if)#switchport mode trunk
+SW20(config-if)#switchport trunk allowed vlan 500</pre>
+          <p class="helper-part-two-title"><strong>Verification</strong></p>
+          <pre class="helper-cli">SW20#show etherchannel summary
+--output omitted--
+Number of channel-groups in use: 1
+Number of aggregators:           1
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+10     Po10(SU)        LACP      Et0/2(P)    Et0/3(P)</pre>
+          <p class="helper-device">If Po10 is still down, compare these interfaces for matching trunk config</p>
+          <pre class="helper-cli">interface Port-channel10
+ switchport trunk allowed vlan 500
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+interface Ethernet0/2
+ switchport trunk allowed vlan 500
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 10 mode active
+interface Ethernet0/3
+ switchport trunk allowed vlan 500
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 10 mode active</pre>
+          <p class="helper-part-two-title"><strong>Verification</strong></p>
+          <pre class="helper-cli">PC3#ping 10.10.100.20
+!!!!!</pre>
+
+          <p class="helper-part-two-title"><strong>Save the configuration</strong></p>
+          <pre class="helper-cli">SW20#copy running-config startup-config</pre>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div id="spoilerOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="spoilerDialog"
+      class="cli-modal-dialog spoiler-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="spoilerTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="spoilerTitle">Lab Solution (Spoiler)</h2>
+        <button type="button" class="cli-modal-close" id="spoilerClose" aria-label="Close spoiler">
+          ×
+        </button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="spoiler-content">
+          <h3>One valid command sequence</h3>
+          <p>
+            Note: As soon as Task 1 is complete on SW20 (through <code>switchport trunk allowed vlan 500</code> on
+            <code>e0/0</code>), you can open PC3 and test <code>ping 10.10.100.10</code> at any time for <code>!!!!!</code>.
+          </p>
+          <div class="spoiler-cli-stack" aria-label="Spoiler command sequence by device">
+            <div class="spoiler-cli-item">
+              <div class="spoiler-cli-label">SW20</div>
+              <pre class="spoiler-cli-pre">SW20# conf t
+SW20(config)# spanning-tree mode rapid-pvst
+SW20(config)# interface e0/0
+SW20(config-if)# switchport trunk encapsulation dot1q
+SW20(config-if)# switchport mode trunk
+SW20(config-if)# switchport trunk allowed vlan 500</pre>
+            </div>
+            <div class="spoiler-cli-item">
+              <div class="spoiler-cli-label">PC3</div>
+              <pre class="spoiler-cli-pre">C:\PC3> ping 10.10.100.10</pre>
+            </div>
+            <div class="spoiler-cli-item">
+              <div class="spoiler-cli-label">SW20</div>
+              <pre class="spoiler-cli-pre">SW20(config)# interface po10
+SW20(config-if)# switchport trunk encapsulation dot1q
+SW20(config-if)# switchport mode trunk
+SW20(config-if)# switchport trunk allowed vlan 500
+SW20(config-if)# exit
+SW20(config)# exit
+SW20# show etherchannel summary
+SW20# copy running-config startup-config</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div id="cliModalOverlay" class="cli-modal-overlay" aria-hidden="true">
@@ -666,6 +849,9 @@
         </div>
       </div>
       <footer class="cli-modal-footer">
+        <div class="controls">
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset lab</button>
+        </div>
         <div id="passBanner" class="pass-banner" role="status">
           Simulation complete — you entered <code>copy running-config startup-config</code> as the final command (Enter
           saves and finishes this lab). SW20 is configured with Rapid PVST+, correct trunks, and Po10 LACP with VLAN 500.
@@ -752,97 +938,39 @@
     </div>
   </div>
 
-  <div id="helperModalOverlay" class="cli-modal-overlay" aria-hidden="true">
-    <div
-      id="helperModalDialog"
-      class="cli-modal-dialog helper-modal-dialog"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="helperModalTitle"
-      tabindex="-1"
-    >
-      <header class="cli-modal-header">
-        <h2 id="helperModalTitle">Helper file</h2>
-        <button type="button" class="cli-modal-close" id="helperModalClose" aria-label="Close helper file">
-          ×
-        </button>
-      </header>
-      <div class="cli-modal-body">
-        <section class="topology-scrape topology-scrape--in-helper" aria-label="Topology summary from exhibit">
-          <h2>Topology (from exhibit)</h2>
-          <ul>
-            <li>
-              <strong>SW20</strong> — your only configurable device; pick SW20 under the topology, open its CLI, and run
-              <code>show running-config</code> for the starting configuration. Connects toward <strong>SW10</strong> via
-              <strong>Port-channel 10</strong> (LACP) and toward <strong>SW30</strong> on the trunk interface shown (e.g.
-              <code>E0/0</code>).
-            </li>
-            <li>
-              <strong>SW10</strong> — not configurable here; select SW10 and open its read-only CLI, then type
-              <code>show run</code> to view its configuration. <strong>SW30</strong> — out of scope; do not configure.
-            </li>
-            <li>
-              Hosts: <strong>PC1</strong> (10.10.100.10) above SW30, <strong>PC2</strong> (10.10.100.20) below SW10,
-              <strong>PC3</strong> below SW20 — reachability depends on VLAN <strong>500</strong> end-to-end over trunks.
-              Select PC3 and open its console to test <code>ping</code> to PC1 after configuring SW20.
-            </li>
-            <li>
-              Initial screenshot may show partial trunk / Po config — your job is to align <strong>Rapid PVST+</strong>,
-              <strong>dot1q</strong> trunks, and <strong>VLAN 500</strong> allowed lists on SW20 only.
-            </li>
-          </ul>
-        </section>
-      </div>
-    </div>
-  </div>
-
-  <div id="spoilerModalOverlay" class="cli-modal-overlay" aria-hidden="true">
-    <div
-      id="spoilerModalDialog"
-      class="cli-modal-dialog spoiler-modal-dialog"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="spoilerModalTitle"
-      tabindex="-1"
-    >
-      <header class="cli-modal-header">
-        <h2 id="spoilerModalTitle">Spoiler</h2>
-        <button type="button" class="cli-modal-close" id="spoilerModalClose" aria-label="Close spoiler">
-          ×
-        </button>
-      </header>
-      <div class="cli-modal-body">
-        <p class="spoiler-modal-lead">One valid command sequence (reveals solution steps).</p>
-        <ol class="spoiler-steps">
-          <li><code>conf t</code></li>
-          <li><code>spanning-tree mode rapid-pvst</code></li>
-          <li><code>interface e0/0</code></li>
-          <li><code>switchport trunk encapsulation dot1q</code></li>
-          <li><code>switchport mode trunk</code></li>
-          <li><code>switchport trunk allowed vlan 500</code></li>
-          <li><code>from PC3 ping 10.10.100.10</code></li>
-          <li><code>interface po10</code></li>
-          <li><code>switchport trunk encapsulation dot1q</code></li>
-          <li><code>switchport mode trunk</code></li>
-          <li><code>switchport trunk allowed vlan 500</code></li>
-          <li><code>exit</code></li>
-          <li><code>exit</code></li>
-          <li><code>show etherchannel summary</code> (from <code>SW20#</code> only)</li>
-          <li><code>copy running-config startup-config</code></li>
-        </ol>
-      </div>
-    </div>
-  </div>
-
   <nav class="sim-nav" aria-label="Simulation navigation">
     <a class="sim-nav-btn sim-nav-home" href="/index.html">Home</a>
-    <a class="sim-nav-btn sim-nav-next" href="/cli-lab-vrf-tunnel.html">Next</a>
-    <a class="sim-nav-btn sim-nav-back" href="/cli-lab-vty-login-v2.html">Back</a>
+    <a class="sim-nav-btn sim-nav-next" href="/cli-lab-vrf-config-sim.html">Next</a>
+    <a class="sim-nav-btn sim-nav-back" href="/lab-sims-v2/cli-lab-vty-login-v2.html">Back</a>
   </nav>
 
   <script>
+    (function () {
+      var params = new URLSearchParams(location.search);
+      if (params.get("sample") !== "1") return;
+      var homeHref = "/index.html";
+      var homeBtn = document.querySelector(".sim-nav-home");
+      var logoLink = document.querySelector(".site-logo-corner");
+      function forceHome(el) {
+        if (!el) return;
+        el.setAttribute("href", homeHref);
+        el.addEventListener("click", function (e) {
+          e.preventDefault();
+          location.href = homeHref;
+        });
+      }
+      forceHome(homeBtn);
+      forceHome(logoLink);
+    })();
+  </script>
+
+  <script>
     function normalize(s) {
-      return s.trim().toLowerCase().replace(/\s+/g, " ");
+      return s
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .replace(/[.;]+$/, "");
     }
 
     function matchCopy(n) {
@@ -878,13 +1006,16 @@
       const u = normalize(raw);
       return (
         u === "interface e0/0" ||
+        u === "e0/0" ||
         u === "int e0/0" ||
         u === "interface ethernet 0/0" ||
         u === "interface ethernet0/0" ||
+        u === "ethernet0/0" ||
         u === "int ethernet 0/0" ||
         u === "int ethernet0/0" ||
         u === "interface eth 0/0" ||
-        u === "int eth 0/0"
+        u === "int eth 0/0" ||
+        u === "eth0/0"
       );
     }
 
@@ -974,13 +1105,13 @@
     ].join("\r\n");
 
     const STEPS = [
-      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
+      { mode: "exec", test: (raw) => ["conf t", "config t", "configure terminal"].includes(normalize(raw)) },
       { mode: "config", test: (raw) => normalize(raw) === "spanning-tree mode rapid-pvst" },
       { mode: "config", test: matchInterfaceE00 },
       { mode: "config-if", test: (raw) => normalize(raw) === "switchport trunk encapsulation dot1q" },
       { mode: "config-if", test: (raw) => normalize(raw) === "switchport mode trunk" },
       { mode: "config-if", test: matchTrunkVlan500 },
-      { mode: "config-if", test: (raw) => ["interface po10", "interface port-channel10", "int po10", "int port-channel10"].includes(normalize(raw)) },
+      { mode: "config", test: (raw) => ["interface po10", "interface port-channel10", "interface portchannel10", "int po10", "int port-channel10", "int portchannel10"].includes(normalize(raw)) },
       { mode: "config-if", test: (raw) => normalize(raw) === "switchport trunk encapsulation dot1q" },
       { mode: "config-if", test: (raw) => normalize(raw) === "switchport mode trunk" },
       { mode: "config-if", test: matchTrunkVlan500 },
@@ -1014,6 +1145,15 @@
     const passBanner = document.getElementById("passBanner");
     const resetBtn = document.getElementById("resetBtn");
     const openSelectedCliBtn = document.getElementById("openSelectedCliBtn");
+    const openHelperFileBtn = document.getElementById("openHelperFileBtn");
+    const inlineResetLabBtn = document.getElementById("inlineResetLabBtn");
+    const openSpoilerBtn = document.getElementById("openSpoilerBtn");
+    const helperFileOverlay = document.getElementById("helperFileOverlay");
+    const helperFileDialog = document.getElementById("helperFileDialog");
+    const helperFileClose = document.getElementById("helperFileClose");
+    const spoilerOverlay = document.getElementById("spoilerOverlay");
+    const spoilerDialog = document.getElementById("spoilerDialog");
+    const spoilerClose = document.getElementById("spoilerClose");
     const sw20Cli = document.getElementById("sw20Cli");
 
     const pc3ModalOverlay = document.getElementById("pc3ModalOverlay");
@@ -1023,14 +1163,6 @@
     const sw10ModalOverlay = document.getElementById("sw10ModalOverlay");
     const sw10ModalClose = document.getElementById("sw10ModalClose");
     const sw10ModalDialog = document.getElementById("sw10ModalDialog");
-    const helperModalOverlay = document.getElementById("helperModalOverlay");
-    const helperModalDialog = document.getElementById("helperModalDialog");
-    const helperModalClose = document.getElementById("helperModalClose");
-    const openHelperModalBtn = document.getElementById("openHelperModalBtn");
-    const spoilerModalOverlay = document.getElementById("spoilerModalOverlay");
-    const spoilerModalDialog = document.getElementById("spoilerModalDialog");
-    const spoilerModalClose = document.getElementById("spoilerModalClose");
-    const openSpoilerModalBtn = document.getElementById("openSpoilerModalBtn");
     const sw10Scrollback = document.getElementById("sw10Scrollback");
     const sw10PromptEl = document.getElementById("sw10Prompt");
     const sw10Cmdline = document.getElementById("sw10Cmdline");
@@ -1049,16 +1181,15 @@
     function sw10ModalOpen() {
       return sw10ModalOverlay && sw10ModalOverlay.classList.contains("is-open");
     }
-
-    function helperModalOpen() {
-      return helperModalOverlay && helperModalOverlay.classList.contains("is-open");
+    function helperFileModalOpen() {
+      return helperFileOverlay && helperFileOverlay.classList.contains("is-open");
     }
-
     function spoilerModalOpen() {
-      return spoilerModalOverlay && spoilerModalOverlay.classList.contains("is-open");
+      return spoilerOverlay && spoilerOverlay.classList.contains("is-open");
     }
 
     let stepIndex = 0;
+    let sw20PromptOverride = null;
     /** Set when STEPS[5] succeeds (`switchport trunk allowed vlan 500` on E0/0); drives PC3 ping !!!!. */
     let pc1PathReady = false;
 
@@ -1105,6 +1236,14 @@
     }
 
     function closeModalsAll() {
+      if (helperFileOverlay) {
+        helperFileOverlay.classList.remove("is-open");
+        helperFileOverlay.setAttribute("aria-hidden", "true");
+      }
+      if (spoilerOverlay) {
+        spoilerOverlay.classList.remove("is-open");
+        spoilerOverlay.setAttribute("aria-hidden", "true");
+      }
       if (cliModalOverlay) {
         cliModalOverlay.classList.remove("is-open");
         cliModalOverlay.setAttribute("aria-hidden", "true");
@@ -1117,17 +1256,17 @@
         sw10ModalOverlay.classList.remove("is-open");
         sw10ModalOverlay.setAttribute("aria-hidden", "true");
       }
-      if (helperModalOverlay) {
-        helperModalOverlay.classList.remove("is-open");
-        helperModalOverlay.setAttribute("aria-hidden", "true");
-      }
-      if (spoilerModalOverlay) {
-        spoilerModalOverlay.classList.remove("is-open");
-        spoilerModalOverlay.setAttribute("aria-hidden", "true");
-      }
     }
 
     function focusActiveCli() {
+      if (helperFileModalOpen()) {
+        if (helperFileDialog) helperFileDialog.focus();
+        return;
+      }
+      if (spoilerModalOpen()) {
+        if (spoilerDialog) spoilerDialog.focus();
+        return;
+      }
       if (cliModalOpen() && cmdline && !cmdline.disabled) {
         cmdline.focus();
         return;
@@ -1141,38 +1280,7 @@
       }
     }
 
-    function closeHelperModal() {
-      if (!helperModalOverlay) return;
-      helperModalOverlay.classList.remove("is-open");
-      helperModalOverlay.setAttribute("aria-hidden", "true");
-      if (openHelperModalBtn) openHelperModalBtn.focus();
-    }
-
-    function openHelperModal() {
-      if (!helperModalOverlay) return;
-      closeModalsAll();
-      bumpOverlayZ(helperModalOverlay);
-      helperModalOverlay.classList.add("is-open");
-      helperModalOverlay.setAttribute("aria-hidden", "false");
-    }
-
-    function closeSpoilerModal() {
-      if (!spoilerModalOverlay) return;
-      spoilerModalOverlay.classList.remove("is-open");
-      spoilerModalOverlay.setAttribute("aria-hidden", "true");
-      if (openSpoilerModalBtn) openSpoilerModalBtn.focus();
-    }
-
-    function openSpoilerModal() {
-      if (!spoilerModalOverlay) return;
-      closeModalsAll();
-      bumpOverlayZ(spoilerModalOverlay);
-      spoilerModalOverlay.classList.add("is-open");
-      spoilerModalOverlay.setAttribute("aria-hidden", "false");
-    }
-
     function openSelectedCliModal() {
-      closeModalsAll();
       const d = getRapidPvstLacpDev();
       if (d === "PC3") openPc3Modal();
       else if (d === "SW10") openSw10Modal();
@@ -1195,14 +1303,19 @@
       sw10Scrollback.scrollTop = sw10Scrollback.scrollHeight;
     }
 
+    let sw10Mode = "exec";
+
+    function sw10PromptForMode() {
+      if (sw10Mode === "config") return "Sw10(config)#";
+      if (sw10Mode === "config-if") return "Sw10(config-if)#";
+      return "Sw10#";
+    }
+
     function resetSw10Console() {
       if (!sw10Scrollback) return;
       sw10Scrollback.innerHTML = "";
-      if (sw10PromptEl) sw10PromptEl.textContent = "Sw10#";
-      appendLineSw10(
-        "line-sys",
-        "SW10 is not configurable in this lab. Type show run or show running-config.\r\nClose with × or Escape; drag the title bar to move this window."
-      );
+      sw10Mode = "exec";
+      if (sw10PromptEl) sw10PromptEl.textContent = sw10PromptForMode();
     }
 
     function submitSw10() {
@@ -1212,13 +1325,43 @@
       appendLineSw10("line-user", `${prompt} ${line}`);
       sw10Cmdline.value = "";
       if (!line.trim()) return;
+      const u = normalize(line);
 
-      if (matchShowRun(line)) {
+      if (matchShowRun(line) || (u === "do show run" || u === "do show running-config")) {
         appendLineSw10("line-showrun", SW10_SHOW_RUN);
         return;
       }
 
-      appendLineSw10("line-bad", "% Invalid input — only show run / show running-config are simulated here.");
+      if (sw10Mode === "config-if" && u === "end") {
+        sw10Mode = "exec";
+        if (sw10PromptEl) sw10PromptEl.textContent = sw10PromptForMode();
+        return;
+      }
+      if (sw10Mode === "exec" && (u === "conf t" || u === "config t" || u === "configure terminal")) {
+        sw10Mode = "config";
+        if (sw10PromptEl) sw10PromptEl.textContent = sw10PromptForMode();
+        return;
+      }
+      if (
+        sw10Mode === "config" &&
+        (u.startsWith("interface ") || u.startsWith("int "))
+      ) {
+        sw10Mode = "config-if";
+        if (sw10PromptEl) sw10PromptEl.textContent = sw10PromptForMode();
+        return;
+      }
+      if (sw10Mode === "config-if" && u === "exit") {
+        sw10Mode = "config";
+        if (sw10PromptEl) sw10PromptEl.textContent = sw10PromptForMode();
+        return;
+      }
+      if ((sw10Mode === "config" || sw10Mode === "config-if") && (u === "end" || u === "exit")) {
+        sw10Mode = "exec";
+        if (sw10PromptEl) sw10PromptEl.textContent = sw10PromptForMode();
+        return;
+      }
+
+      appendLineSw10("line-bad", "% Invalid input");
     }
 
     function closeSw10Modal() {
@@ -1226,6 +1369,32 @@
       sw10ModalOverlay.classList.remove("is-open");
       sw10ModalOverlay.setAttribute("aria-hidden", "true");
       if (openSelectedCliBtn) openSelectedCliBtn.focus();
+    }
+    function openHelperFileModal() {
+      if (!helperFileOverlay) return;
+      bumpOverlayZ(helperFileOverlay);
+      helperFileOverlay.classList.add("is-open");
+      helperFileOverlay.setAttribute("aria-hidden", "false");
+      focusActiveCli();
+    }
+    function closeHelperFileModal() {
+      if (!helperFileOverlay) return;
+      helperFileOverlay.classList.remove("is-open");
+      helperFileOverlay.setAttribute("aria-hidden", "true");
+      if (openHelperFileBtn) openHelperFileBtn.focus();
+    }
+    function openSpoilerModal() {
+      if (!spoilerOverlay) return;
+      bumpOverlayZ(spoilerOverlay);
+      spoilerOverlay.classList.add("is-open");
+      spoilerOverlay.setAttribute("aria-hidden", "false");
+      focusActiveCli();
+    }
+    function closeSpoilerModal() {
+      if (!spoilerOverlay) return;
+      spoilerOverlay.classList.remove("is-open");
+      spoilerOverlay.setAttribute("aria-hidden", "true");
+      if (openSpoilerBtn) openSpoilerBtn.focus();
     }
 
     function openPc3Modal() {
@@ -1271,7 +1440,7 @@
         return;
       }
 
-      appendLinePc3("line-bad", "Bad command or file name.");
+      appendLinePc3("line-bad", "% Invalid input");
     }
 
     function openCliModal() {
@@ -1344,8 +1513,8 @@
     wireFloatingModal(cliModalDialog, cliModalOverlay);
     wireFloatingModal(pc3ModalDialog, pc3ModalOverlay);
     wireFloatingModal(sw10ModalDialog, sw10ModalOverlay);
-    wireFloatingModal(helperModalDialog, helperModalOverlay);
-    wireFloatingModal(spoilerModalDialog, spoilerModalOverlay);
+    wireFloatingModal(helperFileDialog, helperFileOverlay);
+    wireFloatingModal(spoilerDialog, spoilerOverlay);
 
     function appendLine(className, text) {
       const div = document.createElement("div");
@@ -1355,13 +1524,33 @@
       scrollback.scrollTop = scrollback.scrollHeight;
     }
 
+    function currentSw20Mode() {
+      const p = promptEl ? promptEl.textContent : "";
+      if (p.indexOf("(config-if)#") !== -1) return "config-if";
+      if (p.indexOf("(config)#") !== -1) return "config";
+      return "exec";
+    }
+
     function setPrompt() {
+      if (sw20PromptOverride === "config-if") {
+        promptEl.textContent = "SW20(config-if)#";
+        return;
+      }
+      if (sw20PromptOverride === "config") {
+        promptEl.textContent = "SW20(config)#";
+        return;
+      }
+      if (sw20PromptOverride === "exec") {
+        promptEl.textContent = "SW20#";
+        return;
+      }
       promptEl.textContent = promptForStep(stepIndex);
     }
 
     function reset() {
       closeModalsAll();
       stepIndex = 0;
+      sw20PromptOverride = null;
       pc1PathReady = false;
       scrollback.innerHTML = "";
       passBanner.classList.remove("visible");
@@ -1369,17 +1558,15 @@
       cmdline.removeAttribute("aria-disabled");
       cmdline.value = "";
       setPrompt();
-      appendLine(
-        "line-sys",
-        "You are on SW20. Configure only SW20 to complete all tasks.\r\nLast command must be copy running-config startup-config — pressing Enter completes the simulation.\r\nClose with × or Escape when done; drag the window by its title bar."
-      );
       syncOpenCliButtonLabel();
       openSelectedCliBtn.focus();
     }
 
     function submit() {
-      const prompt = promptForStep(stepIndex);
+      const prompt = promptEl ? promptEl.textContent : promptForStep(stepIndex);
       const line = cmdline.value;
+      const u = normalize(line);
+      const mode = currentSw20Mode();
       appendLine("line-user", `${prompt} ${line}`);
       cmdline.value = "";
       if (!line.trim()) return;
@@ -1390,17 +1577,138 @@
         return;
       }
 
-      if (matchShowEtherchannelSummary(line) && stepIndex >= STEPS.length) {
+      if (matchShowEtherchannelSummary(line) && stepIndex >= STEP_INDEX_AFTER_PC1_PATH) {
         appendLine("line-showrun", SHOW_ETHERCHANNEL_SUMMARY);
+        focusActiveCli();
+        return;
+      }
+      if (mode === "exec" && matchCopy(line) && stepIndex >= 10) {
+        stepIndex = STEPS.length;
+        sw20PromptOverride = null;
+        promptEl.textContent = "SW20#";
+        passBanner.classList.add("visible");
+        appendLine("line-sys", "[OK] Building configuration...\r\n[OK] Complete (simulated).");
+        appendLine(
+          "line-sys",
+          "Simulation complete — final command was copy running-config startup-config. You can still use show running-config or show etherchannel summary; click Reset lab to start over."
+        );
         focusActiveCli();
         return;
       }
 
       if (stepIndex >= STEPS.length) {
+        if (mode === "exec" && (u === "conf t" || u === "config t" || u === "configure terminal")) {
+          sw20PromptOverride = "config";
+          setPrompt();
+          focusActiveCli();
+          return;
+        }
+        if (mode === "config" && (u === "exit" || u === "end")) {
+          sw20PromptOverride = "exec";
+          setPrompt();
+          focusActiveCli();
+          return;
+        }
+        if (mode === "config-if" && u === "exit") {
+          sw20PromptOverride = "config";
+          setPrompt();
+          focusActiveCli();
+          return;
+        }
+        if (mode === "config-if" && u === "end") {
+          sw20PromptOverride = "exec";
+          setPrompt();
+          focusActiveCli();
+          return;
+        }
         appendLine(
           "line-bad",
-          "% Incomplete or unknown command — simulation already finished after copy running-config startup-config; click Reset lab to try again."
+          "% Invalid input"
         );
+        focusActiveCli();
+        return;
+      }
+
+      if (stepIndex === 10 && u === "end") {
+        sw20PromptOverride = null;
+        stepIndex = 12;
+        setPrompt();
+        focusActiveCli();
+        return;
+      }
+      if (stepIndex === 11 && u === "end") {
+        sw20PromptOverride = null;
+        stepIndex = 12;
+        setPrompt();
+        focusActiveCli();
+        return;
+      }
+      if (mode === "exec" && (u === "conf t" || u === "config t" || u === "configure terminal")) {
+        if (stepIndex === 0) {
+          sw20PromptOverride = null;
+          stepIndex = 1;
+        } else {
+          sw20PromptOverride = "config";
+        }
+        setPrompt();
+        focusActiveCli();
+        return;
+      }
+      if (mode === "config-if" && u === "exit") {
+        if (stepIndex === 10) {
+          sw20PromptOverride = null;
+          stepIndex = 11;
+        } else {
+          sw20PromptOverride = "config";
+        }
+        setPrompt();
+        focusActiveCli();
+        return;
+      }
+      if (mode === "config" && u === "exit") {
+        if (stepIndex === 11) {
+          sw20PromptOverride = null;
+          stepIndex = 12;
+        } else {
+          sw20PromptOverride = "exec";
+        }
+        setPrompt();
+        focusActiveCli();
+        return;
+      }
+      if ((mode === "config" || mode === "config-if") && u === "end") {
+        if (stepIndex === 10 || stepIndex === 11) {
+          sw20PromptOverride = null;
+          stepIndex = 12;
+        } else {
+          sw20PromptOverride = "exec";
+        }
+        setPrompt();
+        focusActiveCli();
+        return;
+      }
+      if (
+        stepIndex === 6 &&
+        (mode === "config" || mode === "config-if") &&
+        ["interface po10", "interface port-channel10", "interface portchannel10", "int po10", "int port-channel10", "int portchannel10"].includes(u)
+      ) {
+        sw20PromptOverride = null;
+        stepIndex = 7;
+        setPrompt();
+        focusActiveCli();
+        return;
+      }
+      if (mode === "config-if" && matchTrunkVlan500(line) && !pc1PathReady) {
+        pc1PathReady = true;
+      }
+      const matchesCurrentStep = stepIndex < STEPS.length && STEPS[stepIndex].test(line);
+      if (
+        mode === "config" &&
+        !matchesCurrentStep &&
+        (matchInterfaceE00(line) || ["interface po10", "interface port-channel10", "interface portchannel10", "int po10", "int port-channel10", "int portchannel10"].includes(u))
+      ) {
+        sw20PromptOverride = "config-if";
+        setPrompt();
         focusActiveCli();
         return;
       }
@@ -1408,9 +1716,11 @@
       if (STEPS[stepIndex].test(line)) {
         const prevIndex = stepIndex;
         const finishedPc1TrunkVlan = prevIndex === 5;
+        sw20PromptOverride = null;
         stepIndex += 1;
         if (finishedPc1TrunkVlan) {
           pc1PathReady = true;
+          sw20PromptOverride = "config";
           appendLine(
             "line-sim-hidden",
             "[Sim] SW20–SW30 trunk (E0/0) is ready — open PC3 and ping 10.10.10.10 or 10.10.100.10 for !!!!"
@@ -1431,7 +1741,7 @@
           setPrompt();
         }
       } else {
-        appendLine("line-bad", "% Invalid input — follow task order and configure only SW20.");
+        appendLine("line-bad", "% Invalid input");
       }
       focusActiveCli();
     }
@@ -1439,49 +1749,28 @@
     cmdline.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
         event.preventDefault();
+        pushLocalHistory(cmdline, cmdline.value);
         submit();
       }
     });
 
-    if (resetBtn) {
-      resetBtn.addEventListener("click", reset);
-    }
+    resetBtn.addEventListener("click", reset);
 
     if (openSelectedCliBtn) {
       openSelectedCliBtn.addEventListener("click", openSelectedCliModal);
     }
-
-    if (openHelperModalBtn) {
-      openHelperModalBtn.addEventListener("click", openHelperModal);
+    if (openHelperFileBtn) {
+      openHelperFileBtn.addEventListener("click", openHelperFileModal);
     }
-
-    if (helperModalClose) {
-      helperModalClose.addEventListener("click", closeHelperModal);
+    if (inlineResetLabBtn) {
+      inlineResetLabBtn.addEventListener("click", reset);
     }
-
-    if (helperModalOverlay) {
-      helperModalOverlay.addEventListener("click", (e) => {
-        if (e.target === helperModalOverlay) closeHelperModal();
-      });
-    }
-
-    if (openSpoilerModalBtn) {
-      openSpoilerModalBtn.addEventListener("click", openSpoilerModal);
-    }
-
-    if (spoilerModalClose) {
-      spoilerModalClose.addEventListener("click", closeSpoilerModal);
-    }
-
-    if (spoilerModalOverlay) {
-      spoilerModalOverlay.addEventListener("click", (e) => {
-        if (e.target === spoilerModalOverlay) closeSpoilerModal();
-      });
+    if (openSpoilerBtn) {
+      openSpoilerBtn.addEventListener("click", openSpoilerModal);
     }
 
     document.querySelectorAll('input[name="rapidPvstLacpDev"]').forEach((r) => {
       r.addEventListener("change", () => {
-        closeModalsAll();
         syncOpenCliButtonLabel();
         openSelectedCliBtn.focus();
       });
@@ -1491,6 +1780,7 @@
       pc3Cmdline.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
           event.preventDefault();
+          pushLocalHistory(pc3Cmdline, pc3Cmdline.value);
           submitPc3();
         }
       });
@@ -1508,10 +1798,54 @@
       sw10Cmdline.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
           event.preventDefault();
+          pushLocalHistory(sw10Cmdline, sw10Cmdline.value);
           submitSw10();
         }
       });
     }
+
+    // Local fallback history handler to keep ArrowUp/ArrowDown behavior
+    // consistent with router/switch template labs.
+    const localHistory = new WeakMap();
+    function getLocalHistoryState(input) {
+      let state = localHistory.get(input);
+      if (state) return state;
+      state = { entries: [], idx: 0 };
+      localHistory.set(input, state);
+      return state;
+    }
+    function pushLocalHistory(input, raw) {
+      const cmd = String(raw || "").trim();
+      if (!cmd) return;
+      const state = getLocalHistoryState(input);
+      if (!state.entries.length || state.entries[state.entries.length - 1] !== cmd) {
+        state.entries.push(cmd);
+      }
+      state.idx = state.entries.length;
+    }
+    function bindLocalHistory(input) {
+      if (!input || input.dataset.localHistoryReady === "1") return;
+      input.dataset.localHistoryReady = "1";
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          pushLocalHistory(input, input.value);
+          return;
+        }
+        const usePrev = e.key === "ArrowUp" || (e.key === "Tab" && !e.shiftKey);
+        const useNext = e.key === "ArrowDown" || (e.key === "Tab" && e.shiftKey);
+        if (!usePrev && !useNext) return;
+        const state = getLocalHistoryState(input);
+        if (!state.entries.length) return;
+        e.preventDefault();
+        if (usePrev) {
+          state.idx = Math.max(0, state.idx - 1);
+        } else {
+          state.idx = Math.min(state.entries.length, state.idx + 1);
+        }
+        input.value = state.idx >= state.entries.length ? "" : state.entries[state.idx];
+      });
+    }
+    [cmdline, sw10Cmdline, pc3Cmdline].forEach(bindLocalHistory);
 
     if (cliModalClose) {
       cliModalClose.addEventListener("click", closeCliModal);
@@ -1522,23 +1856,39 @@
         if (e.target === sw10ModalOverlay) closeSw10Modal();
       });
     }
+    if (helperFileClose) {
+      helperFileClose.addEventListener("click", closeHelperFileModal);
+    }
+    if (helperFileOverlay) {
+      helperFileOverlay.addEventListener("click", (e) => {
+        if (e.target === helperFileOverlay) closeHelperFileModal();
+      });
+    }
+    if (spoilerClose) {
+      spoilerClose.addEventListener("click", closeSpoilerModal);
+    }
+    if (spoilerOverlay) {
+      spoilerOverlay.addEventListener("click", (e) => {
+        if (e.target === spoilerOverlay) closeSpoilerModal();
+      });
+    }
 
     document.addEventListener("keydown", (e) => {
       if (e.key !== "Escape") return;
       const cliOn = cliModalOpen();
       const pc3On = pc3ModalOpen();
       const sw10On = sw10ModalOpen();
-      const helperOn = helperModalOpen();
+      const helperOn = helperFileModalOpen();
       const spoilerOn = spoilerModalOpen();
       if (!cliOn && !pc3On && !sw10On && !helperOn && !spoilerOn) return;
       e.preventDefault();
       const zi = (el) => parseInt(window.getComputedStyle(el).zIndex, 10) || 0;
       const openModals = [];
+      if (spoilerOn) openModals.push({ overlay: spoilerOverlay, close: closeSpoilerModal });
+      if (helperOn) openModals.push({ overlay: helperFileOverlay, close: closeHelperFileModal });
       if (cliOn) openModals.push({ overlay: cliModalOverlay, close: closeCliModal });
       if (pc3On) openModals.push({ overlay: pc3ModalOverlay, close: closePc3Modal });
       if (sw10On) openModals.push({ overlay: sw10ModalOverlay, close: closeSw10Modal });
-      if (helperOn) openModals.push({ overlay: helperModalOverlay, close: closeHelperModal });
-      if (spoilerOn) openModals.push({ overlay: spoilerModalOverlay, close: closeSpoilerModal });
       openModals.sort((a, b) => zi(b.overlay) - zi(a.overlay));
       if (openModals.length) openModals[0].close();
     });
@@ -1550,5 +1900,6 @@
 
     reset();
   </script>
+  <script src="/js/lab-modal-drag.js"></script>
 </body>
 </html>
