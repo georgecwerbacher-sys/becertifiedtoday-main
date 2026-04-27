@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="CCNP ENCOR practice formats: interactive questions, CLI labs, drag-and-drop, and timed test simulation."
+  />
+  <link rel="canonical" href="https://becertifiedtoday.com/CCNP_Encor.html" />
+  <title>CCNP ENCOR Practice Formats | Be Certified Today</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bg: #0b1020;
+      --surface: #121a2b;
+      --border: #2d3b5a;
+      --text: #e6edf3;
+      --muted: #9fb0cc;
+      --accent-border: #4f84d8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px 20px;
+      padding: 16px clamp(20px, 4vw, 40px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(18, 26, 43, 0.6);
+      backdrop-filter: blur(8px);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
+      line-height: 0;
+    }
+    .brand img {
+      display: block;
+      height: clamp(56px, 12vw, 88px);
+      width: auto;
+      max-width: min(100px, 22vw);
+      object-fit: contain;
+      object-position: left center;
+    }
+    .header-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--accent-border);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    main {
+      flex: 1;
+      padding: clamp(32px, 6vw, 56px) clamp(20px, 4vw, 40px);
+    }
+    .formats-section,
+    .mock-section {
+      margin: 0 auto;
+      max-width: 1080px;
+      width: 100%;
+    }
+    .mock-section {
+      margin-top: clamp(40px, 8vw, 72px);
+      padding-top: clamp(36px, 6vw, 56px);
+      border-top: 1px solid var(--border);
+    }
+    .formats-head {
+      margin: 0 0 clamp(10px, 2vw, 14px);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b8ab8;
+    }
+    h1, h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 3.2vw, 1.75rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .formats-lead, .mock-lead {
+      margin: 0 0 clamp(24px, 4vw, 32px);
+      color: var(--muted);
+      font-size: clamp(0.98rem, 2.2vw, 1.05rem);
+      line-height: 1.6;
+    }
+    .formats-intro,
+    .mock-intro {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: clamp(22px, 5vw, 40px);
+    }
+    .formats-intro-copy,
+    .mock-intro-copy {
+      flex: 1 1 min(54ch, 100%);
+      min-width: 0;
+    }
+    .formats-intro-figure,
+    .mock-intro-figure {
+      flex: 0 1 clamp(240px, 36vw, 380px);
+      margin: 0;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+      background: rgba(13, 21, 40, 0.35);
+    }
+    .formats-intro-figure img,
+    .mock-intro-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+    .formats-devices {
+      margin: 0 0 clamp(24px, 4vw, 32px);
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(13, 21, 40, 0.65);
+      color: #b8c3d6;
+      font-size: clamp(0.88rem, 2vw, 0.95rem);
+      line-height: 1.5;
+    }
+    .formats-grid {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: clamp(16px, 3vw, 22px);
+      grid-template-columns: 1fr;
+    }
+    .topic-section {
+      margin: clamp(32px, 6vw, 48px) 0 clamp(28px, 5vw, 36px);
+      padding: 16px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(13, 21, 40, 0.65);
+    }
+    .topic-section h2 {
+      margin: 0 0 10px;
+      font-size: clamp(1.08rem, 2.6vw, 1.28rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .topic-section p {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.55;
+    }
+    .topic-section p:last-of-type {
+      margin-bottom: 0;
+    }
+    .topic-list {
+      margin: 0;
+      padding-left: 20px;
+      color: #b8c3d6;
+      line-height: 1.6;
+    }
+    .topic-list li {
+      margin-bottom: 6px;
+    }
+    @media (min-width: 960px) {
+      .formats-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+    .format-card {
+      height: 100%;
+      margin: 0;
+      padding: clamp(18px, 3.5vw, 24px);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+    .format-card h3 {
+      margin: 0 0 10px;
+      font-size: clamp(1.02rem, 2.4vw, 1.12rem);
+      font-weight: 800;
+      line-height: 1.3;
+    }
+    .format-card p {
+      margin: 0;
+      color: #b8c3d6;
+      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
+      line-height: 1.55;
+    }
+    .format-card-thumb {
+      margin: 0 0 14px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(45, 59, 90, 0.85);
+      aspect-ratio: 16 / 9;
+      background: #0f1729;
+    }
+    .format-card-thumb img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .format-sample {
+      margin: 14px 0 0;
+      padding-top: 14px;
+      border-top: 1px solid rgba(45, 59, 90, 0.85);
+      color: #9fb0cc;
+      line-height: 1.5;
+    }
+    .format-sample a {
+      color: #a8c4f0;
+      font-weight: 700;
+      text-underline-offset: 3px;
+    }
+    .mock-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      max-width: 62ch;
+    }
+    .mock-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      color: #b8c3d6;
+      line-height: 1.55;
+    }
+    .mock-list li::before {
+      content: "";
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      margin-top: 0.45em;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4f84d8, #2f66bf);
+    }
+    .checkout-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(7, 12, 24, 0.75);
+      backdrop-filter: blur(3px);
+    }
+    .checkout-modal.is-open {
+      display: flex;
+    }
+    .checkout-dialog {
+      width: min(760px, 96vw);
+      max-height: min(88vh, 760px);
+      overflow: auto;
+      padding: 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #0f1729;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+    }
+    .checkout-dialog-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .checkout-close {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 700;
+      line-height: 1;
+      padding: 8px 10px;
+      cursor: pointer;
+    }
+    .checkout-close:hover {
+      background: rgba(79, 132, 216, 0.12);
+    }
+    .purchase-track-box {
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--accent-border);
+      background: rgba(47, 102, 191, 0.08);
+    }
+    .purchase-track-title {
+      margin: 0 0 6px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: #a8c4f0;
+    }
+    .purchase-track-sub {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+    .purchase-launch-countdown {
+      margin-bottom: 18px;
+      padding: 16px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--accent-border);
+      background: rgba(47, 102, 191, 0.12);
+      text-align: center;
+    }
+    html.purchase-checkout-live .purchase-launch-countdown {
+      display: none;
+    }
+    .purchase-launch-countdown__title {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .purchase-launch-countdown__sub {
+      margin: 0 0 14px;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .purchase-launch-countdown__timer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px 18px;
+      font-variant-numeric: tabular-nums;
+    }
+    .purchase-launch-countdown__unit {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 3.5rem;
+    }
+    .purchase-launch-countdown__unit strong {
+      font-size: clamp(1.35rem, 3vw, 1.75rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      line-height: 1.2;
+    }
+    .purchase-launch-countdown__unit small {
+      margin-top: 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #6b8ab8;
+    }
+    .purchase-stripe-mount {
+      position: relative;
+      transition: opacity 0.2s ease;
+    }
+    .purchase-stripe-mount--locked {
+      opacity: 0.42;
+      pointer-events: none;
+      user-select: none;
+    }
+    .site-disclaimer {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: clamp(20px, 4vw, 28px) clamp(20px, 4vw, 40px);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .site-disclaimer p {
+      margin: 0 0 10px;
+      font-size: clamp(0.78rem, 1.8vw, 0.84rem);
+      line-height: 1.55;
+      color: #6b7f9e;
+    }
+    footer {
+      padding: 16px clamp(20px, 4vw, 24px);
+      text-align: center;
+      font-size: 0.82rem;
+      color: #5c6d8a;
+      border-top: 1px solid rgba(45, 59, 90, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <a class="brand" href="/">
+        <img
+          src="/images/logo/becertifiedtoday_logo_trans.png"
+          width="1024"
+          height="1024"
+          alt="Be Certified Today — IT training and testing study site"
+        />
+      </a>
+      <a class="header-link" href="/">Back to home</a>
+    </header>
+    <main id="main">
+      <section class="formats-section" aria-labelledby="formats-title">
+        <div class="formats-intro">
+          <div class="formats-intro-copy">
+            <p class="formats-head">CCNP ENCOR practice formats</p>
+            <h1 id="formats-title">Practice questions, labs, drag-and-drop &amp; timed tests—interactive on every screen</h1>
+            <p class="formats-lead">
+              Each practice format targets skills the way exams actually ask: recall, configuration logic, and matching
+              concepts to the right bucket. Use <strong>practice labs</strong>, question banks, drag-and-drop sets, and
+              full timed runs in short sessions or long study blocks—<strong>no PDF workbooks</strong>, only live pages
+              you operate.
+            </p>
+            <p class="formats-devices">
+              <strong>CCNP ENCOR (350-401) is the required core exam.</strong> To complete your CCNP designation, pair
+              ENCOR with one concentration exam: 300-410 ENARSI, 300-415 ENSDWI, 300-420 ENSLD, 300-435 ENAUTO,
+              300-440 ENCC, or 300-445 ENNA.
+              <br />
+              <strong>This page is focused on core foundation training.</strong> Additional concentration training will
+              be added soon.
+            </p>
+          </div>
+          <figure class="formats-intro-figure">
+            <img
+              src="/images/hero-classroom.png"
+              width="800"
+              height="1200"
+              alt="Network technician with a laptop working on equipment in a data center server aisle."
+              decoding="async"
+              loading="lazy"
+            />
+          </figure>
+        </div>
+        <section class="topic-section" aria-labelledby="core-topics-title">
+          <h2 id="core-topics-title">Cisco core exam topics by track</h2>
+          <p>
+            Cisco core exam topics depend on the certification track. The most common request is the
+            <strong>CCNP Enterprise core exam</strong>, while the <strong>CCNA core exam</strong> has a different scope.
+          </p>
+          <p><strong>CCNP Enterprise core (ENCOR 350-401) major areas:</strong></p>
+          <ul class="topic-list" aria-label="CCNP Enterprise core major areas">
+            <li>Architecture</li>
+            <li>Virtualization</li>
+            <li>Infrastructure</li>
+            <li>Network assurance</li>
+            <li>Security</li>
+            <li>Automation</li>
+          </ul>
+          <p>
+            <strong>CCNA core exam focus:</strong> network fundamentals, network access, IP connectivity,
+            IP services, security fundamentals, and automation/programming.
+          </p>
+        </section>
+        <ul class="formats-grid">
+          <li>
+            <article class="format-card" aria-labelledby="format-q-title">
+              <h3 id="format-q-title">Practice questions</h3>
+              <figure class="format-card-thumb">
+                <img
+                  src="/images/practice-questions-sample-thumbnail.jpg"
+                  width="1024"
+                  height="556"
+                  alt="Multiple-choice sample: OSPF designated router question with instant correct feedback."
+                  decoding="async"
+                  loading="lazy"
+                />
+              </figure>
+              <p>
+                Multiple-choice sets mirror exam-style stems and distractors. Check answers on the spot, see why the
+                right option wins, and run banks in random, linear, or review modes until your weak topics tighten up.
+              </p>
+              <p class="format-sample">
+                <a href="/sample?track=questions">Click here to try a sample</a>
+                — five interactive questions. Everyone gets the same five; order is shuffled each time. After the fifth
+                question, you return to the home page.
+              </p>
+            </article>
+          </li>
+          <li>
+            <article class="format-card" aria-labelledby="format-lab-title">
+              <h3 id="format-lab-title">Hands-on labs</h3>
+              <figure class="format-card-thumb">
+                <img
+                  src="/images/hands-on-lab-sample-thumbnail.jpg"
+                  width="1024"
+                  height="705"
+                  alt="Rapid PVST and LACP sample lab: simulated SW20 CLI over the topology diagram."
+                  decoding="async"
+                  loading="lazy"
+                />
+              </figure>
+              <p>
+                CLI-style simulations present realistic device prompts and objectives in an exam-like workflow. No
+                software is required to download, and every command is entered directly on the simulated devices.
+              </p>
+              <p class="format-sample">
+                <a href="/sample?track=labs">Click here to try a sample</a>
+                — open the Rapid PVST + LACP lab (same scenario for every visitor, fully interactive in the browser).
+              </p>
+            </article>
+          </li>
+          <li>
+            <article class="format-card" aria-labelledby="format-dd-title">
+              <h3 id="format-dd-title">Drag-and-drop</h3>
+              <figure class="format-card-thumb">
+                <img
+                  src="/images/drag-drop-sample-thumbnail.jpg"
+                  width="1024"
+                  height="535"
+                  alt="OSPF troubleshooting drag-and-drop sample: snippets moved into CLI-style blanks."
+                  decoding="async"
+                  loading="lazy"
+                />
+              </figure>
+              <p>
+                Move labels, code fragments, or concepts into the right slots—similar to Pearson performance items.
+                Standard and JSON-style layouts both work with touch drag on tablets and phones, plus pointer on desktop.
+              </p>
+              <p class="format-sample">
+                <a href="/sample?track=drag">Click here to try a sample</a>
+                — one drag-and-drop question (the same page for every visitor). When you are done, you return to the
+                home page.
+              </p>
+            </article>
+          </li>
+        </ul>
+      </section>
+
+      <section class="mock-section" aria-labelledby="mock-title">
+        <div class="mock-intro">
+          <figure class="mock-intro-figure">
+            <img
+              src="/images/mock-test-container.png"
+              width="682"
+              height="1024"
+              alt="Student at a computer workstation in a classroom lab, with peers studying at nearby desks."
+              decoding="async"
+              loading="lazy"
+            />
+          </figure>
+          <div class="mock-intro-copy">
+            <p class="formats-head">CCNP ENCOR practice test simulation</p>
+            <h2 id="mock-title">Timed practice test — 55+ questions, one clock, pass or fail</h2>
+            <p class="mock-lead">
+              Sit for a single timed practice session that feels closer to test day: a long mixed run with a countdown,
+              no peeking at answers until you finish, and a clear outcome when time is up.
+            </p>
+            <ul class="mock-list" aria-label="Test simulation includes">
+              <li><strong>50+ scored items</strong> in one flow—enough length to test stamina and pacing.</li>
+              <li><strong>Every item type in play:</strong> multiple-choice, labs, and drag-and-drop tasks.</li>
+              <li><strong>Timer-driven:</strong> the session runs against the clock from start to submit.</li>
+              <li><strong>Pass or fail at the end:</strong> final result includes score and breakdown.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="encor-checkout-modal"
+        class="checkout-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="encor-checkout-title"
+      >
+        <div class="checkout-dialog">
+          <div class="checkout-dialog-head">
+            <p class="formats-head" id="encor-checkout-title">Checkout</p>
+            <button id="encor-checkout-close" class="checkout-close" type="button" aria-label="Close checkout popup">
+              Close
+            </button>
+          </div>
+          <div class="purchase-track-box" aria-label="Upcoming CCNP ENCOR training checkout">
+          <p class="purchase-track-title">Upcoming training checkout</p>
+          <p class="purchase-track-sub">
+            CCNP ENCOR training. All payments are securely processed by Stripe, our third-party payment provider.
+            We do not store your full payment card details on this website. We do not collect customer information for
+            promotion or sale.
+          </p>
+          <div id="purchase-launch-countdown" class="purchase-launch-countdown" role="status" aria-live="polite">
+            <p class="purchase-launch-countdown__title">Checkout opens May 1, 2026</p>
+            <p class="purchase-launch-countdown__sub">
+              Purchasing begins at midnight <strong>US Eastern Time</strong> (<abbr title="America/New_York">ET</abbr>
+              - New York). The payment button stays inactive until then.
+            </p>
+            <div class="purchase-launch-countdown__timer">
+              <span class="purchase-launch-countdown__unit">
+                <strong id="plc-days">0</strong>
+                <small>days</small>
+              </span>
+              <span class="purchase-launch-countdown__unit">
+                <strong id="plc-hours">00</strong>
+                <small>hours</small>
+              </span>
+              <span class="purchase-launch-countdown__unit">
+                <strong id="plc-minutes">00</strong>
+                <small>minutes</small>
+              </span>
+              <span class="purchase-launch-countdown__unit">
+                <strong id="plc-seconds">00</strong>
+                <small>seconds</small>
+              </span>
+            </div>
+          </div>
+          <div id="purchase-stripe-mount" class="purchase-stripe-mount purchase-stripe-mount--locked" inert>
+            <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+            <stripe-buy-button
+              buy-button-id="buy_btn_1TPVMxCbBuDSfnhPm0nxd2tU"
+              publishable-key="pk_live_51TOnkXCbBuDSfnhPP6gIw1tmKQkkUwRGVadPAATqSohi8IzBbC6aPlyKW6LOFbwKlGMmJxx1suyWWuFNHeDSY07N004KeVhUxw"
+            ></stripe-buy-button>
+          </div>
+        </div>
+        </div>
+      </section>
+    </main>
+    <aside class="site-disclaimer" aria-label="Legal disclaimer">
+      <p>
+        <strong>Disclaimer:</strong> This website is an independent training resource created for educational purposes only.
+        It is not affiliated with, endorsed by, sponsored by, or approved by Cisco Systems, Inc. Cisco and related
+        trademarks are the property of Cisco Systems, Inc. All practice questions, explanations, and study materials on
+        this site are original or based on general knowledge and are intended as a guide to help users prepare for
+        certification exams. Practice questions are not actual Cisco exam questions. Any similarity to official exam
+        content is coincidental.
+      </p>
+    </aside>
+    <footer>
+      © Be Certified Today
+    </footer>
+  </div>
+  <script defer src="/js/purchase-launch-countdown.js"></script>
+  <script>
+    (function () {
+      var modal = document.getElementById("encor-checkout-modal");
+      var closeBtn = document.getElementById("encor-checkout-close");
+      if (!modal || !closeBtn) return;
+
+      var openTimer = window.setTimeout(function () {
+        modal.classList.add("is-open");
+      }, 15000);
+
+      function closeModal() {
+        modal.classList.remove("is-open");
+      }
+
+      closeBtn.addEventListener("click", closeModal);
+      modal.addEventListener("click", function (event) {
+        if (event.target === modal) closeModal();
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") closeModal();
+      });
+
+      window.addEventListener("beforeunload", function () {
+        window.clearTimeout(openTimer);
+      });
+    })();
+  </script>
+</body>
+</html>
