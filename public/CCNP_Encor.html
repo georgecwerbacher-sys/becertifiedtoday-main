@@ -45,6 +45,20 @@
       background: rgba(18, 26, 43, 0.6);
       backdrop-filter: blur(8px);
     }
+    .hero-banner {
+      margin: 0;
+      width: 100%;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      background: #0d1528;
+    }
+    .hero-banner img {
+      display: block;
+      width: 100%;
+      height: clamp(150px, 26vw, 320px);
+      object-fit: cover;
+      object-position: center 18%;
+    }
     .brand {
       display: inline-flex;
       align-items: center;
@@ -73,6 +87,13 @@
       text-decoration: none;
       font-weight: 700;
       white-space: nowrap;
+    }
+    .header-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
     main {
       flex: 1;
@@ -122,7 +143,6 @@
       flex: 1 1 min(54ch, 100%);
       min-width: 0;
     }
-    .formats-intro-figure,
     .mock-intro-figure {
       flex: 0 1 clamp(240px, 36vw, 380px);
       margin: 0;
@@ -132,7 +152,6 @@
       box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
       background: rgba(13, 21, 40, 0.35);
     }
-    .formats-intro-figure img,
     .mock-intro-figure img {
       display: block;
       width: 100%;
@@ -391,6 +410,14 @@
       position: relative;
       transition: opacity 0.2s ease;
     }
+    .purchase-stripe-disclaimer {
+      margin: 10px 0 0;
+      padding-top: 10px;
+      border-top: 1px solid rgba(45, 59, 90, 0.75);
+      color: #9fb0cc;
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
     .purchase-stripe-mount--locked {
       opacity: 0.42;
       pointer-events: none;
@@ -429,8 +456,21 @@
           alt="Be Certified Today — IT training and testing study site"
         />
       </a>
-      <a class="header-link" href="/">Back to home</a>
+      <div class="header-actions">
+        <a class="header-link" href="/">Back to home</a>
+        <a id="encor-get-access" class="header-link" href="#encor-checkout-modal">Get access</a>
+      </div>
     </header>
+    <figure class="hero-banner">
+      <img
+        src="/images/encor-hero.png"
+        width="1024"
+        height="682"
+        alt="Engineer reviewing systems inside a data center server room."
+        decoding="async"
+        fetchpriority="high"
+      />
+    </figure>
     <main id="main">
       <section class="formats-section" aria-labelledby="formats-title">
         <div class="formats-intro">
@@ -458,16 +498,6 @@
               be added soon.
             </div>
           </div>
-          <figure class="formats-intro-figure">
-            <img
-              src="/images/encor-hero.png"
-              width="800"
-              height="1200"
-              alt="Network technician with a laptop working on equipment in a data center server aisle."
-              decoding="async"
-              loading="lazy"
-            />
-          </figure>
         </div>
         <section class="topic-section" aria-labelledby="core-topics-title">
           <h2 id="core-topics-title">Cisco core exam topics by track</h2>
@@ -610,9 +640,8 @@
           <div class="purchase-track-box" aria-label="Upcoming CCNP ENCOR training checkout">
           <p class="purchase-track-title">Upcoming training checkout</p>
           <p class="purchase-track-sub">
-            CCNP ENCOR training. All payments are securely processed by Stripe, our third-party payment provider.
-            We do not store your full payment card details on this website. We do not collect customer information for
-            promotion or sale.
+            CCNP ENCOR training. Payments are securely processed by Stripe, our third-party payment provider. We never
+            collect payments directly or request personal information from customers.
           </p>
           <div id="purchase-launch-countdown" class="purchase-launch-countdown" role="status" aria-live="polite">
             <p class="purchase-launch-countdown__title">Checkout opens May 1, 2026</p>
@@ -646,6 +675,13 @@
               publishable-key="pk_live_51TOnkXCbBuDSfnhPP6gIw1tmKQkkUwRGVadPAATqSohi8IzBbC6aPlyKW6LOFbwKlGMmJxx1suyWWuFNHeDSY07N004KeVhUxw"
             ></stripe-buy-button>
           </div>
+          <p class="purchase-stripe-disclaimer">
+            <strong>Disclaimer:</strong> Independent educational training resource. Not affiliated with, endorsed by,
+            sponsored by, or approved by Cisco Systems, Inc. Cisco and related trademarks are the property of Cisco
+            Systems, Inc. Practice questions and study materials are original or based on general knowledge and are for
+            exam preparation guidance only. Practice questions are not actual Cisco exam questions; any similarity to
+            official exam content is coincidental.
+          </p>
         </div>
         </div>
       </section>
@@ -669,6 +705,7 @@
     (function () {
       var modal = document.getElementById("encor-checkout-modal");
       var closeBtn = document.getElementById("encor-checkout-close");
+      var openBtn = document.getElementById("encor-get-access");
       if (!modal || !closeBtn) return;
 
       var openTimer = window.setTimeout(function () {
@@ -680,6 +717,12 @@
       }
 
       closeBtn.addEventListener("click", closeModal);
+      if (openBtn) {
+        openBtn.addEventListener("click", function (event) {
+          event.preventDefault();
+          modal.classList.add("is-open");
+        });
+      }
       modal.addEventListener("click", function (event) {
         if (event.target === modal) closeModal();
       });

@@ -434,6 +434,14 @@
       position: relative;
       transition: opacity 0.2s ease;
     }
+    .purchase-stripe-disclaimer {
+      margin: 10px 0 0;
+      padding-top: 10px;
+      border-top: 1px solid rgba(45, 59, 90, 0.75);
+      color: #9fb0cc;
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
     .purchase-stripe-mount--locked {
       opacity: 0.42;
       pointer-events: none;
@@ -787,7 +795,6 @@
       </a>
       <div class="header-actions">
         <a class="header-sign-up" href="/CCNP_Encor.html">CCNP ENCOR</a>
-        <a class="header-sign-up" href="/#purchase">Get access</a>
       </div>
     </header>
     <figure class="hero-banner">
@@ -913,6 +920,9 @@
                     <p class="purchase-track-title">Upcoming training checkout</p>
                     <p class="purchase-track-sub">
                       CCNP ENCOR training. All payments are securely processed by Stripe, our third-party payment provider.
+                      We do not store your full payment card details on this website. We do not collect customer
+                      information for promotion or sale. No membership required and no one from Becertifiedtoday.com
+                      will ever reach out for payment or personal information at any time.
                     </p>
                     <div id="purchase-launch-countdown" class="purchase-launch-countdown" role="status" aria-live="polite">
                       <p class="purchase-launch-countdown__title">Checkout opens May 1, 2026</p>
@@ -950,6 +960,10 @@
                         publishable-key="pk_live_51TOnkXCbBuDSfnhPP6gIw1tmKQkkUwRGVadPAATqSohi8IzBbC6aPlyKW6LOFbwKlGMmJxx1suyWWuFNHeDSY07N004KeVhUxw"
                       ></stripe-buy-button>
                     </div>
+                    <p class="purchase-stripe-disclaimer">
+                      Stripe securely processes payment. No membership is required, and BeCertifiedToday will never ask
+                      you directly for payment or personal information.
+                    </p>
                   </div>
                 </div>
                 <script defer src="/js/purchase-launch-countdown.js"></script>
