@@ -51,8 +51,8 @@
       overflow: hidden;
       border-bottom: 1px solid var(--border);
       background: #0d1528;
-      /* Sized container so <img> can use height:100%; object-position reliably affects the crop */
-      height: clamp(220px, 34vw, 460px);
+      /* Match index.html: sized band + scaled image for a slightly zoomed-out hero */
+      height: clamp(260px, 42vw, 520px);
     }
     .hero-banner img {
       display: block;
@@ -61,6 +61,8 @@
       object-fit: cover;
       /* Subject is on the right in this asset; bias X right and Y toward top so the face stays in frame */
       object-position: 58% 12%;
+      transform: scale(0.88);
+      transform-origin: center center;
     }
     .brand {
       display: inline-flex;
