@@ -2,6 +2,8 @@ const PUBLIC_PATH_PREFIXES = [
   "/api/stripe/",
   "/api/auth/magic-link/verify",
   "/api/auth/encor-claim-bounce",
+  /** Allow browser gate + UI to check session without a prior cookie (returns JSON only). */
+  "/api/auth/access-status",
   "/images/",
   "/js/",
   "/sample",
@@ -17,6 +19,8 @@ const PROTECTED_PRODUCTS = [
     hostPrefix: "encor.",
     /** Same ENCOR gate on the dedicated Vercel deployment hostname (not matched by encor.* prefix). */
     exactHosts: ["becertifiedtoday-encor.vercel.app"],
+    /** Match becertifiedtoday-encor.vercel.app and preview hosts becertifiedtoday-encor-*.vercel.app */
+    matchEncorVercelAppDeployments: true,
     cookieName: "encor_access_token",
     renewPath: "/encor-renew.html",
     sessionKvPrefix: "encor:session:",
@@ -52,11 +56,19 @@ async function kvGet(url, token, key) {
   return data.result;
 }
 
+/** Production + preview URLs for the ENCOR Vercel project (becertifiedtoday-encor*.vercel.app). */
+function matchesEncorVercelDeploymentHost(h) {
+  if (h === "becertifiedtoday-encor.vercel.app") return true;
+  if (!h.endsWith(".vercel.app")) return false;
+  return h.startsWith("becertifiedtoday-encor");
+}
+
 function matchProtectedProduct(host) {
   const h = host.toLowerCase();
   return (
     PROTECTED_PRODUCTS.find((p) => {
       if (h.startsWith(p.hostPrefix)) return true;
+      if (p.matchEncorVercelAppDeployments && matchesEncorVercelDeploymentHost(h)) return true;
       return Array.isArray(p.exactHosts) && p.exactHosts.some((eh) => eh === h);
     }) || null
   );
@@ -70,7 +82,7 @@ function renewRedirectUrl(product, requestUrl) {
   } catch {
     return new URL(product.renewPath, requestUrl).href;
   }
-  if (Array.isArray(product.exactHosts) && product.exactHosts.includes(hostname)) {
+  if (matchesEncorVercelDeploymentHost(hostname) || (Array.isArray(product.exactHosts) && product.exactHosts.includes(hostname))) {
     const pub = String(process.env.PUBLIC_SITE_URL || "https://becertifiedtoday.com").replace(/\/+$/, "");
     return `${pub}${product.renewPath}`;
   }
@@ -122,7 +134,7 @@ export default async function middleware(request) {
   }
 
   const h = host.toLowerCase();
-  const skipPortalRedirect = Array.isArray(product.exactHosts) && product.exactHosts.includes(h);
+  const skipPortalRedirect = matchesEncorVercelDeploymentHost(h) || (Array.isArray(product.exactHosts) && product.exactHosts.includes(h));
   const portal = product.portalHomePath;
   if (!skipPortalRedirect && portal && (path === "/" || path === "/index.html")) {
     return Response.redirect(new URL(portal, url.origin), 302);
