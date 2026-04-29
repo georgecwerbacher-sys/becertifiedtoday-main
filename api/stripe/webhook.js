@@ -2,7 +2,7 @@ import { getStripe } from "../_lib/stripe.js";
 import { ACCESS_WINDOW_DAYS, requireEnv } from "../_lib/config.js";
 import { grantAccess, revokeAccessByCustomerId } from "../_lib/access-store.js";
 import { createMagicLinkToken } from "../_lib/magic-link.js";
-import { getAppBaseUrl, sendMagicLinkEmail } from "../_lib/mailer.js";
+import { getVerifyBaseUrl, sendMagicLinkEmail } from "../_lib/mailer.js";
 import { kvSetNxEx } from "../_lib/kv.js";
 
 async function readRawBody(req) {
@@ -92,8 +92,8 @@ export default async function handler(req, res) {
       });
 
       const magicToken = await createMagicLinkToken(email);
-      const appBaseUrl = getAppBaseUrl();
-      const magicLink = `${appBaseUrl}/api/auth/magic-link/verify?token=${encodeURIComponent(magicToken)}`;
+      const verifyBaseUrl = getVerifyBaseUrl();
+      const magicLink = `${verifyBaseUrl}/api/auth/magic-link/verify?token=${encodeURIComponent(magicToken)}`;
       await sendMagicLinkEmail({
         toEmail: email,
         url: magicLink,

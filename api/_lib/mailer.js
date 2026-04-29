@@ -35,6 +35,14 @@ export async function sendMagicLinkEmail({ toEmail, url }) {
   return { delivered: true, provider: "resend" };
 }
 
-export function getAppBaseUrl() {
-  return requireEnv("ENCOR_APP_URL").replace(/\/+$/, "");
+function trimBaseUrl(value) {
+  return String(value || "").replace(/\/+$/, "");
+}
+
+export function getVerifyBaseUrl() {
+  return trimBaseUrl(process.env.MAGIC_LINK_VERIFY_BASE_URL || requireEnv("PUBLIC_SITE_URL"));
+}
+
+export function getEncorAppBaseUrl() {
+  return trimBaseUrl(requireEnv("ENCOR_APP_URL"));
 }

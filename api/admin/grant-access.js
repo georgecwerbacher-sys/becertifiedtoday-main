@@ -1,7 +1,7 @@
 import { ACCESS_WINDOW_DAYS, normalizeEmail, requireEnv } from "../_lib/config.js";
 import { grantAccess } from "../_lib/access-store.js";
 import { createMagicLinkToken } from "../_lib/magic-link.js";
-import { getAppBaseUrl, sendMagicLinkEmail } from "../_lib/mailer.js";
+import { getVerifyBaseUrl, sendMagicLinkEmail } from "../_lib/mailer.js";
 
 function isAuthorized(req) {
   const expected = process.env.ADMIN_ACCESS_TOKEN;
@@ -51,8 +51,8 @@ export default async function handler(req, res) {
     let magicLinkSent = false;
     if (sendMagicLink) {
       const token = await createMagicLinkToken(email);
-      const baseUrl = getAppBaseUrl();
-      const magicLink = `${baseUrl}/api/auth/magic-link/verify?token=${encodeURIComponent(token)}`;
+      const verifyBaseUrl = getVerifyBaseUrl();
+      const magicLink = `${verifyBaseUrl}/api/auth/magic-link/verify?token=${encodeURIComponent(token)}`;
       await sendMagicLinkEmail({ toEmail: email, url: magicLink });
       magicLinkSent = true;
     }

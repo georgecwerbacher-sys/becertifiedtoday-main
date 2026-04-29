@@ -9,6 +9,7 @@ Set these in Vercel for the project serving both `becertifiedtoday.com` and `enc
 - `STRIPE_PRICE_ID_ENCOR` - one-time ENCOR product price id (`price_...`)
 - `PUBLIC_SITE_URL` - marketing site base URL (example: `https://becertifiedtoday.com`)
 - `ENCOR_APP_URL` - ENCOR app base URL (example: `https://encor.becertifiedtoday.com`)
+- `MAGIC_LINK_VERIFY_BASE_URL` - optional override for where `/api/auth/magic-link/verify` lives (default: `PUBLIC_SITE_URL`)
 - `KV_REST_API_URL` - Upstash/Vercel KV REST URL
 - `KV_REST_API_TOKEN` - Upstash/Vercel KV REST token
 - `RESEND_API_KEY` - API key for email delivery
