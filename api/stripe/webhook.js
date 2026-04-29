@@ -1,23 +1,9 @@
-/**
- * POST /api/stripe/webhook
- *
- * Env (Vercel → Project → Settings → Environment Variables):
- *   STRIPE_WEBHOOK_SECRET   whsec_...   (Dashboard → Developers → Webhooks → your endpoint → Signing secret)
- *   STRIPE_SECRET_KEY       sk_live_... or sk_test_...  (required — used for SDK + session retrieve)
- *
- * Dashboard: add endpoint URL https://YOUR_DOMAIN/api/stripe/webhook
- * Events: checkout.session.completed (one-time Checkout / Payment Links / Buy Button)
- */
-
-import Stripe from "stripe";
-
-function getStripe() {
-  const key = process.env.STRIPE_SECRET_KEY;
-  if (!key) {
-    return null;
-  }
-  return new Stripe(key);
-}
+import { getStripe } from "../_lib/stripe.js";
+import { ACCESS_WINDOW_DAYS, requireEnv } from "../_lib/config.js";
+import { grantAccess, revokeAccessByCustomerId } from "../_lib/access-store.js";
+import { createMagicLinkToken } from "../_lib/magic-link.js";
+import { getAppBaseUrl, sendMagicLinkEmail } from "../_lib/mailer.js";
+import { kvSetNxEx } from "../_lib/kv.js";
 
 async function readRawBody(req) {
   const chunks = [];
@@ -33,9 +19,11 @@ export default async function handler(req, res) {
     return res.status(405).send("Method Not Allowed");
   }
 
-  const whSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  if (!whSecret) {
-    console.error("STRIPE_WEBHOOK_SECRET is not set");
+  let whSecret;
+  try {
+    whSecret = requireEnv("STRIPE_WEBHOOK_SECRET");
+  } catch (error) {
+    console.error(error.message);
     return res.status(500).send("Webhook not configured");
   }
 
@@ -53,9 +41,11 @@ export default async function handler(req, res) {
     return res.status(400).send("Could not read body");
   }
 
-  const stripe = getStripe();
-  if (!stripe) {
-    console.error("STRIPE_SECRET_KEY is not set");
+  let stripe;
+  try {
+    stripe = getStripe();
+  } catch (error) {
+    console.error(error.message);
     return res.status(500).send("Server misconfiguration");
   }
 
@@ -67,54 +57,70 @@ export default async function handler(req, res) {
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
+  const idempotencyKey = `encor:webhook:event:${event.id}`;
+  const firstProcess = await kvSetNxEx(idempotencyKey, "1", 60 * 60 * 24 * 14);
+  if (!firstProcess) {
+    return res.status(200).json({ received: true, duplicate: true });
+  }
+
   try {
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
-
-      let email =
-        session.customer_details?.email ||
-        session.customer_email ||
-        null;
-
-      if (!email && session.id) {
-        try {
-          const full = await stripe.checkout.sessions.retrieve(session.id, {
-            expand: ["customer"],
-          });
-          email =
-            full.customer_details?.email ||
-            full.customer_email ||
-            (typeof full.customer === "object" && full.customer && !full.customer.deleted
-              ? full.customer.email
-              : null);
-        } catch (e) {
-          console.error("Could not retrieve session for email:", e.message);
-        }
+      if (session.payment_status !== "paid") {
+        return res.status(200).json({ received: true, ignored: "not_paid" });
       }
 
-      const accessDays = Number(session.metadata?.access_days || 30);
-      const productKey = session.metadata?.product || "encor";
+      const fullSession = await stripe.checkout.sessions.retrieve(session.id, {
+        expand: ["customer"],
+      });
+      const customer = fullSession.customer;
+      const stripeCustomerId = typeof customer === "string" ? customer : customer?.id || null;
+      const email =
+        fullSession.customer_details?.email ||
+        fullSession.customer_email ||
+        (typeof customer === "object" && customer && !customer.deleted ? customer.email : null);
 
-      const accessUntil = new Date(Date.now() + accessDays * 24 * 60 * 60 * 1000).toISOString();
+      if (!email) {
+        throw new Error(`No customer email on checkout.session.completed: ${session.id}`);
+      }
 
-      console.log(
-        JSON.stringify({
-          event: "checkout.session.completed",
-          sessionId: session.id,
-          email,
-          productKey,
-          accessDays,
-          accessUntil,
-          amountTotal: session.amount_total,
-          currency: session.currency,
-          metadata: session.metadata,
-        })
-      );
+      const record = await grantAccess({
+        email,
+        stripeCustomerId,
+        checkoutSessionId: fullSession.id,
+        accessDays: Number(fullSession.metadata?.access_days || ACCESS_WINDOW_DAYS),
+      });
 
-      // TODO: upsert access_grants — email + productKey + access_until (see Membership/Checklist.md Phase 4)
+      const magicToken = await createMagicLinkToken(email);
+      const appBaseUrl = getAppBaseUrl();
+      const magicLink = `${appBaseUrl}/api/auth/magic-link/verify?token=${encodeURIComponent(magicToken)}`;
+      await sendMagicLinkEmail({
+        toEmail: email,
+        url: magicLink,
+      });
+
+      console.log("Access granted after checkout", {
+        email: record.email,
+        sessionId: record.checkout_session_id,
+        stripeCustomerId: record.stripe_customer_id,
+        accessExpiresAt: record.access_expires_at,
+      });
+    } else if (event.type === "charge.refunded") {
+      const charge = event.data.object;
+      await revokeAccessByCustomerId(charge.customer || null);
+      console.log("Access revoked after charge.refunded", {
+        chargeId: charge.id,
+        customerId: charge.customer || null,
+      });
+    } else if (event.type === "payment_intent.payment_failed") {
+      const paymentIntent = event.data.object;
+      console.warn("Payment failed for intent", {
+        paymentIntentId: paymentIntent.id,
+        customerId: paymentIntent.customer || null,
+      });
     }
-  } catch (e) {
-    console.error("Handler error:", e);
+  } catch (error) {
+    console.error("Webhook handler error:", error);
     return res.status(500).send("Handler error");
   }
 

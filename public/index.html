@@ -435,9 +435,27 @@
       letter-spacing: 0.06em;
       color: #6b8ab8;
     }
-    .purchase-stripe-mount {
-      position: relative;
-      transition: opacity 0.2s ease;
+    .purchase-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--accent-border);
+      background: #2f66bf;
+      color: #f3f7ff;
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .purchase-cta:hover {
+      background: #3a74d4;
+    }
+    .purchase-cta:disabled {
+      opacity: 0.7;
+      cursor: wait;
     }
     .purchase-stripe-disclaimer {
       margin: 10px 0 0;
@@ -929,49 +947,16 @@
                       information for promotion or sale. No membership required and no one from Becertifiedtoday.com
                       will ever reach out for payment or personal information at any time.
                     </p>
-                    <div id="purchase-launch-countdown" class="purchase-launch-countdown" role="status" aria-live="polite">
-                      <p class="purchase-launch-countdown__title">Checkout opens May 1, 2026</p>
-                      <p class="purchase-launch-countdown__sub">
-                        Purchasing begins at midnight <strong>US Eastern Time</strong> (<abbr title="America/New_York">ET</abbr>
-                        — New York). The payment button stays inactive until then.
-                      </p>
-                      <div class="purchase-launch-countdown__timer">
-                        <span class="purchase-launch-countdown__unit">
-                          <strong id="plc-days">0</strong>
-                          <small>days</small>
-                        </span>
-                        <span class="purchase-launch-countdown__unit">
-                          <strong id="plc-hours">00</strong>
-                          <small>hours</small>
-                        </span>
-                        <span class="purchase-launch-countdown__unit">
-                          <strong id="plc-minutes">00</strong>
-                          <small>minutes</small>
-                        </span>
-                        <span class="purchase-launch-countdown__unit">
-                          <strong id="plc-seconds">00</strong>
-                          <small>seconds</small>
-                        </span>
-                      </div>
-                    </div>
-                    <div
-                      id="purchase-stripe-mount"
-                      class="purchase-stripe-mount purchase-stripe-mount--locked"
-                      inert
-                    >
-                      <script async src="https://js.stripe.com/v3/buy-button.js"></script>
-                      <stripe-buy-button
-                        buy-button-id="buy_btn_1TPVMxCbBuDSfnhPm0nxd2tU"
-                        publishable-key="pk_live_51TOnkXCbBuDSfnhPP6gIw1tmKQkkUwRGVadPAATqSohi8IzBbC6aPlyKW6LOFbwKlGMmJxx1suyWWuFNHeDSY07N004KeVhUxw"
-                      ></stripe-buy-button>
-                    </div>
+                    <button type="button" class="purchase-cta" data-encor-checkout>
+                      Buy ENCOR Access (30 Days)
+                    </button>
                     <p class="purchase-stripe-disclaimer">
                       Stripe securely processes payment. No membership is required, and BeCertifiedToday will never ask
                       you directly for payment or personal information.
                     </p>
                   </div>
                 </div>
-                <script defer src="/js/purchase-launch-countdown.js"></script>
+                <script defer src="/js/encor-checkout.js"></script>
               </div>
               <div class="purchase-card-brand-col">
                 <figure class="purchase-card-brand-mark" aria-hidden="true">
