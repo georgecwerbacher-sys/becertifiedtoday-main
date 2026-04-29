@@ -2,9 +2,25 @@ import { consumeMagicLinkToken, createSessionToken } from "../../_lib/magic-link
 import { getAccessRecord } from "../../_lib/access-store.js";
 import { trackEvent } from "../../_lib/analytics.js";
 import { sessionCookieDomainDirective } from "../../_lib/cookie-domain.js";
+import { createOpaqueToken, kvSetEx } from "../../_lib/kv.js";
 
 function getRedirectBaseUrl() {
   return String(process.env.ENCOR_APP_URL || process.env.PUBLIC_SITE_URL || "").replace(/\/+$/, "");
+}
+
+function bounceKey(id) {
+  return `encor:bounce:${id}`;
+}
+
+/** *.vercel.app cannot receive Domain=.becertifiedtoday.com cookies; bounce via claim on ENCOR origin. */
+function encorHostNeedsCookieBounce(redirectBaseUrl) {
+  try {
+    const urlStr = redirectBaseUrl.includes("://") ? redirectBaseUrl : `https://${redirectBaseUrl}`;
+    const h = new URL(urlStr).hostname.toLowerCase();
+    return h.endsWith(".vercel.app");
+  } catch {
+    return false;
+  }
 }
 
 export default async function handler(req, res) {
@@ -40,13 +56,21 @@ export default async function handler(req, res) {
       return res.status(500).send("Could not create access session");
     }
 
+    await trackEvent("magic_link_verified");
+
+    if (encorHostNeedsCookieBounce(redirectBaseUrl)) {
+      const bounceId = createOpaqueToken();
+      await kvSetEx(bounceKey(bounceId), 300, sessionToken);
+      const claimUrl = `${redirectBaseUrl}/api/auth/encor-claim-bounce?b=${encodeURIComponent(bounceId)}`;
+      return res.redirect(302, claimUrl);
+    }
+
     const maxAge = 60 * 60 * 24 * 30;
     const domainPart = sessionCookieDomainDirective();
     res.setHeader(
       "Set-Cookie",
       `encor_access_token=${sessionToken}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${maxAge}${domainPart}`
     );
-    await trackEvent("magic_link_verified");
     return res.redirect(302, `${redirectBaseUrl}/`);
   } catch (error) {
     console.error("Magic link verification failed:", error);

@@ -1,4 +1,11 @@
-const PUBLIC_PATH_PREFIXES = ["/api/stripe/", "/api/auth/magic-link/verify", "/images/", "/js/", "/sample"];
+const PUBLIC_PATH_PREFIXES = [
+  "/api/stripe/",
+  "/api/auth/magic-link/verify",
+  "/api/auth/encor-claim-bounce",
+  "/images/",
+  "/js/",
+  "/sample",
+];
 const PUBLIC_PATHS_STATIC = ["/favicon.ico", "/robots.txt"];
 
 /**
@@ -8,11 +15,13 @@ const PUBLIC_PATHS_STATIC = ["/favicon.ico", "/robots.txt"];
 const PROTECTED_PRODUCTS = [
   {
     hostPrefix: "encor.",
+    /** Same ENCOR gate on the dedicated Vercel deployment hostname (not matched by encor.* prefix). */
+    exactHosts: ["becertifiedtoday-encor.vercel.app"],
     cookieName: "encor_access_token",
     renewPath: "/encor-renew.html",
     sessionKvPrefix: "encor:session:",
     accessKvPrefix: "encor:access:",
-    /** After auth, `/` is the marketing homepage; send subscribers to the ENCOR practice landing. */
+    /** After auth on encor.* only: `/` was marketing index; send to ENCOR overview. Skip on exactHosts where `/` is already the portal. */
     portalHomePath: "/CCNP_Encor.html",
   },
 ];
@@ -45,7 +54,27 @@ async function kvGet(url, token, key) {
 
 function matchProtectedProduct(host) {
   const h = host.toLowerCase();
-  return PROTECTED_PRODUCTS.find((p) => h.startsWith(p.hostPrefix)) || null;
+  return (
+    PROTECTED_PRODUCTS.find((p) => {
+      if (h.startsWith(p.hostPrefix)) return true;
+      return Array.isArray(p.exactHosts) && p.exactHosts.some((eh) => eh === h);
+    }) || null
+  );
+}
+
+/** Renew page lives on the marketing origin; Vercel ENCOR hostname may not ship that HTML. */
+function renewRedirectUrl(product, requestUrl) {
+  let hostname;
+  try {
+    hostname = new URL(requestUrl).hostname.toLowerCase();
+  } catch {
+    return new URL(product.renewPath, requestUrl).href;
+  }
+  if (Array.isArray(product.exactHosts) && product.exactHosts.includes(hostname)) {
+    const pub = String(process.env.PUBLIC_SITE_URL || "https://becertifiedtoday.com").replace(/\/+$/, "");
+    return `${pub}${product.renewPath}`;
+  }
+  return new URL(product.renewPath, requestUrl).href;
 }
 
 export default async function middleware(request) {
@@ -64,36 +93,38 @@ export default async function middleware(request) {
   const cookies = parseCookies(request.headers.get("cookie"));
   const sessionToken = cookies[product.cookieName];
   if (!sessionToken) {
-    return Response.redirect(new URL(product.renewPath, url.origin), 302);
+    return Response.redirect(renewRedirectUrl(product, request.url), 302);
   }
 
   const kvUrl = process.env.KV_REST_API_URL;
   const kvToken = process.env.KV_REST_API_TOKEN;
   if (!kvUrl || !kvToken) {
-    return Response.redirect(new URL(product.renewPath, url.origin), 302);
+    return Response.redirect(renewRedirectUrl(product, request.url), 302);
   }
 
   const email = await kvGet(kvUrl, kvToken, `${product.sessionKvPrefix}${sessionToken}`);
   if (!email) {
-    return Response.redirect(new URL(product.renewPath, url.origin), 302);
+    return Response.redirect(renewRedirectUrl(product, request.url), 302);
   }
 
   const rawAccess = await kvGet(kvUrl, kvToken, `${product.accessKvPrefix}${String(email).toLowerCase()}`);
   if (!rawAccess) {
-    return Response.redirect(new URL(product.renewPath, url.origin), 302);
+    return Response.redirect(renewRedirectUrl(product, request.url), 302);
   }
 
   try {
     const access = JSON.parse(rawAccess);
     if (!access.access_expires_at || Date.parse(access.access_expires_at) <= Date.now()) {
-      return Response.redirect(new URL(product.renewPath, url.origin), 302);
+      return Response.redirect(renewRedirectUrl(product, request.url), 302);
     }
   } catch (_error) {
-    return Response.redirect(new URL(product.renewPath, url.origin), 302);
+    return Response.redirect(renewRedirectUrl(product, request.url), 302);
   }
 
+  const h = host.toLowerCase();
+  const skipPortalRedirect = Array.isArray(product.exactHosts) && product.exactHosts.includes(h);
   const portal = product.portalHomePath;
-  if (portal && (path === "/" || path === "/index.html")) {
+  if (!skipPortalRedirect && portal && (path === "/" || path === "/index.html")) {
     return Response.redirect(new URL(portal, url.origin), 302);
   }
 }
