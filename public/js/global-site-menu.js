@@ -58,14 +58,14 @@
       nav.appendChild(a);
     }
 
-    function addCertificationsMenu() {
+    function addTrainingAccessMenu() {
       var wrap = document.createElement("div");
       wrap.style.position = "relative";
       wrap.style.display = "inline-flex";
 
       var trigger = document.createElement("button");
       trigger.type = "button";
-      trigger.textContent = "Certifications";
+      trigger.textContent = "Training Access";
       trigger.style.display = "inline-flex";
       trigger.style.alignItems = "center";
       trigger.style.minHeight = "34px";
@@ -99,7 +99,7 @@
 
       var encorLink = document.createElement("a");
       encorLink.textContent = "ENCOR";
-      encorLink.href = "/CCNP_Encor.html";
+      encorLink.href = "https://becertifiedtoday-encor.vercel.app";
       encorLink.style.display = "block";
       encorLink.style.padding = "6px 8px";
       encorLink.style.marginTop = "2px";
@@ -130,7 +130,7 @@
     }
 
     addLink("Home", "/");
-    addCertificationsMenu();
+    addTrainingAccessMenu();
     addLink("Access Help", "/cert-access-help.html");
     addLink("Follow on YouTube", "https://www.youtube.com/@BeCertifiedToday", {
       alignRight: true,
