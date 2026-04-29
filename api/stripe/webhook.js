@@ -4,6 +4,7 @@ import { grantAccess, revokeAccessByCustomerId } from "../_lib/access-store.js";
 import { createMagicLinkToken } from "../_lib/magic-link.js";
 import { getVerifyBaseUrl, sendMagicLinkEmail } from "../_lib/mailer.js";
 import { kvSetNxEx } from "../_lib/kv.js";
+import { trackEvent } from "../_lib/analytics.js";
 
 async function readRawBody(req) {
   const chunks = [];
@@ -98,6 +99,7 @@ export default async function handler(req, res) {
         toEmail: email,
         url: magicLink,
       });
+      await trackEvent("checkout_session_completed");
 
       console.log("Access granted after checkout", {
         email: record.email,

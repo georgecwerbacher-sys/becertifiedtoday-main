@@ -1,5 +1,6 @@
 import { consumeMagicLinkToken, createSessionToken } from "../../_lib/magic-link.js";
 import { getAccessRecord } from "../../_lib/access-store.js";
+import { trackEvent } from "../../_lib/analytics.js";
 
 function getRedirectBaseUrl() {
   return String(process.env.ENCOR_APP_URL || process.env.PUBLIC_SITE_URL || "").replace(/\/+$/, "");
@@ -43,6 +44,7 @@ export default async function handler(req, res) {
       "Set-Cookie",
       `encor_access_token=${sessionToken}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${maxAge}`
     );
+    await trackEvent("magic_link_verified");
     return res.redirect(302, `${redirectBaseUrl}/`);
   } catch (error) {
     console.error("Magic link verification failed:", error);

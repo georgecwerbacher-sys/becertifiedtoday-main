@@ -110,3 +110,8 @@ Additional keys are used for operational behavior only (idempotency markers, ses
   - `days` is optional (defaults to normal access window).
   - `send_magic_link` defaults to true and emails an immediate login link.
 
+- Endpoint: `GET /api/admin/analytics-summary`
+- Required header: `x-admin-token: <ADMIN_ACCESS_TOKEN>`
+- Returns event counts for key funnel activity (today + total).
+- Optional browser view: `/admin-analytics.html`
+

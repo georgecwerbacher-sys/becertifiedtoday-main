@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Analytics Dashboard | Be Certified Today</title>
+  <style>
+    body { margin: 0; font-family: Inter, Arial, sans-serif; background: #0b1020; color: #e6edf3; }
+    main { max-width: 880px; margin: 0 auto; padding: 28px 20px 44px; }
+    h1 { margin: 0 0 14px; font-size: 1.7rem; }
+    p, label { color: #b8c3d6; line-height: 1.55; }
+    .card { background: #121a2b; border: 1px solid #2d3b5a; border-radius: 14px; padding: 18px; margin-top: 14px; }
+    .field { width: 100%; max-width: 520px; min-height: 42px; padding: 10px 12px; border-radius: 10px; border: 1px solid #4f84d8; background: #0f1729; color: #e6edf3; }
+    .cta { display: inline-flex; margin-top: 10px; min-height: 42px; align-items: center; justify-content: center; padding: 10px 16px; border-radius: 10px; border: 1px solid #4f84d8; background: #2f66bf; color: #f3f7ff; font-weight: 700; cursor: pointer; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    th, td { border-bottom: 1px solid #2d3b5a; text-align: left; padding: 10px 8px; color: #d0dced; }
+    th { color: #9fb0cc; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .muted { color: #93a9ce; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Admin analytics dashboard</h1>
+    <p>View site visits and purchase funnel activity. Enter your admin token to load metrics.</p>
+    <section class="card">
+      <label for="token">Admin token</label>
+      <input id="token" class="field" type="password" autocomplete="off" placeholder="ADMIN_ACCESS_TOKEN" />
+      <div>
+        <button id="load" class="cta" type="button">Load analytics</button>
+      </div>
+      <p id="status" class="muted" role="status" aria-live="polite"></p>
+    </section>
+    <section class="card">
+      <p id="day" class="muted"></p>
+      <table>
+        <thead>
+          <tr><th>Event</th><th>Today</th><th>Total</th></tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+  </main>
+  <script>
+    (function () {
+      var load = document.getElementById("load");
+      var token = document.getElementById("token");
+      var status = document.getElementById("status");
+      var rows = document.getElementById("rows");
+      var day = document.getElementById("day");
+      if (!load || !token || !status || !rows || !day) return;
+
+      function draw(data) {
+        rows.innerHTML = "";
+        (data.events || []).forEach(function (item) {
+          var tr = document.createElement("tr");
+          tr.innerHTML =
+            "<td>" + item.event + "</td>" +
+            "<td>" + item.today + "</td>" +
+            "<td>" + item.total + "</td>";
+          rows.appendChild(tr);
+        });
+        day.textContent = "Daily window: " + (data.day || "");
+      }
+
+      load.addEventListener("click", async function () {
+        var t = String(token.value || "").trim();
+        if (!t) {
+          status.textContent = "Enter your admin token first.";
+          return;
+        }
+        status.textContent = "Loading...";
+        try {
+          var response = await fetch("/api/admin/analytics-summary", {
+            headers: { "x-admin-token": t },
+          });
+          if (!response.ok) {
+            status.textContent = "Could not load analytics (check token).";
+            return;
+          }
+          var data = await response.json();
+          draw(data);
+          status.textContent = "Loaded.";
+        } catch (_error) {
+          status.textContent = "Could not load analytics right now.";
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

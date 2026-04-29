@@ -65,6 +65,14 @@ export async function kvSetNxEx(key, value, seconds) {
   return result === "OK";
 }
 
+export async function kvIncr(key) {
+  return kvRequest(["incr", key]);
+}
+
+export async function kvIncrBy(key, amount) {
+  return kvRequest(["incrby", key, amount]);
+}
+
 export function createOpaqueToken() {
   return crypto.randomBytes(24).toString("base64url");
 }

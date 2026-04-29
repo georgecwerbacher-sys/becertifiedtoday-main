@@ -3,6 +3,7 @@ import { getAccessRecord } from "../_lib/access-store.js";
 import { createMagicLinkToken } from "../_lib/magic-link.js";
 import { getVerifyBaseUrl, sendMagicLinkEmail } from "../_lib/mailer.js";
 import { kvSetNxEx } from "../_lib/kv.js";
+import { trackEvent } from "../_lib/analytics.js";
 
 function clientIp(req) {
   const forwarded = req.headers["x-forwarded-for"];
@@ -47,6 +48,7 @@ export default async function handler(req, res) {
     const verifyBaseUrl = getVerifyBaseUrl();
     const magicLink = `${verifyBaseUrl}/api/auth/magic-link/verify?token=${encodeURIComponent(token)}`;
     await sendMagicLinkEmail({ toEmail: email, url: magicLink });
+    await trackEvent("magic_link_requested");
   } catch (error) {
     console.error("request-magic-link failed:", error);
   }

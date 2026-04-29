@@ -1,5 +1,6 @@
 import { ACCESS_WINDOW_DAYS } from "../_lib/config.js";
 import { getStripe } from "../_lib/stripe.js";
+import { trackEvent } from "../_lib/analytics.js";
 
 const ALLOWED_PRODUCT = "encor";
 
@@ -45,6 +46,7 @@ export default async function handler(req, res) {
       },
     });
 
+    await trackEvent("checkout_started");
     return res.status(200).json({ url: session.url });
   } catch (error) {
     console.error("create-checkout-session failed:", error);
