@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Certification Access Help | Be Certified Today</title>
+  <style>
+    body { margin: 0; font-family: Inter, Arial, sans-serif; background: #0b1020; color: #e6edf3; }
+    main { max-width: 840px; margin: 0 auto; padding: 28px 20px 44px; }
+    h1 { margin: 0 0 14px; font-size: 1.8rem; }
+    h2 { margin: 26px 0 10px; font-size: 1.15rem; }
+    p, li { color: #b8c3d6; line-height: 1.6; }
+    ul { margin: 0; padding-left: 22px; }
+    .card { background: #121a2b; border: 1px solid #2d3b5a; border-radius: 14px; padding: 18px; margin-top: 16px; }
+    .field { display: block; margin-top: 8px; width: 100%; max-width: 420px; min-height: 42px; border-radius: 10px; border: 1px solid #4f84d8; background: #0f1729; color: #e6edf3; padding: 10px 12px; }
+    .cta { display: inline-flex; margin-top: 10px; min-height: 42px; align-items: center; justify-content: center; padding: 10px 16px; border-radius: 10px; border: 1px solid #4f84d8; background: #2f66bf; color: #f3f7ff; font-weight: 700; text-decoration: none; cursor: pointer; }
+    .cta:disabled { opacity: 0.7; cursor: wait; }
+    .muted { margin-top: 8px; color: #93a9ce; font-size: 0.92rem; }
+    a { color: #a8c4f0; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Certification access help</h1>
+    <p>Use this page for account access support across all certification training portals, including getting a fresh magic link on another device.</p>
+
+    <section class="card">
+      <h2>Request a new magic link (for another device)</h2>
+      <p>Enter the same email address used during checkout. If your access is active, we will send a fresh sign-in link.</p>
+      <label for="help-email">Email address</label>
+      <input id="help-email" class="field" type="email" autocomplete="email" placeholder="you@example.com" />
+      <button id="help-send-link" class="cta" type="button">Send new magic link</button>
+      <p id="help-status" class="muted" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="card">
+      <h2>How access works</h2>
+      <ul>
+        <li>Checkout grants access to the certification linked to the purchase email.</li>
+        <li>Magic links are one-time and expire after a short window for security.</li>
+        <li>Each device/browser needs its own sign-in via magic link.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Troubleshooting</h2>
+      <ul>
+        <li>Use the newest email link only (older links expire or become invalid once used).</li>
+        <li>Check Spam, Promotions, and All Mail folders.</li>
+        <li>If your access has expired, renew the certification subscription first.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Access training area</h2>
+      <ul>
+        <li>After sign-in, you will be redirected to the training portal linked to your access.</li>
+        <li>Current CCNP ENCOR portal: <a href="https://becertifiedtoday-encor.vercel.app/">becertifiedtoday-encor.vercel.app</a></li>
+      </ul>
+      <p><a href="/CCNP_Encor.html">View certification details</a></p>
+      <p><a href="/">Back to home</a></p>
+    </section>
+  </main>
+  <script>
+    (function () {
+      var button = document.getElementById("help-send-link");
+      var emailInput = document.getElementById("help-email");
+      var status = document.getElementById("help-status");
+      if (!button || !emailInput || !status) return;
+
+      button.addEventListener("click", async function () {
+        var email = String(emailInput.value || "").trim();
+        var restore = button.textContent;
+        button.disabled = true;
+        button.textContent = "Sending...";
+        status.textContent = "";
+        try {
+          await fetch("/api/auth/request-magic-link", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: email }),
+          });
+          status.textContent = "If access is active, a new magic link has been sent.";
+        } catch (_error) {
+          status.textContent = "Request received. Please try again in a minute if needed.";
+        } finally {
+          button.disabled = false;
+          button.textContent = restore;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
