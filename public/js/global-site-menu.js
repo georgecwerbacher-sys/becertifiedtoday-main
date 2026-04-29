@@ -58,79 +58,7 @@
       nav.appendChild(a);
     }
 
-    function addTrainingAccessMenu() {
-      var wrap = document.createElement("div");
-      wrap.style.position = "relative";
-      wrap.style.display = "inline-flex";
-
-      var trigger = document.createElement("button");
-      trigger.type = "button";
-      trigger.textContent = "Training Access";
-      trigger.style.display = "inline-flex";
-      trigger.style.alignItems = "center";
-      trigger.style.minHeight = "34px";
-      trigger.style.padding = "6px 12px";
-      trigger.style.borderRadius = "8px";
-      trigger.style.border = "1px solid #4f84d8";
-      trigger.style.color = "#e6edf3";
-      trigger.style.fontSize = "0.9rem";
-      trigger.style.fontWeight = "700";
-      trigger.style.background = "rgba(79,132,216,0.08)";
-      trigger.style.cursor = "pointer";
-
-      var menu = document.createElement("div");
-      menu.style.position = "absolute";
-      menu.style.top = "42px";
-      menu.style.left = "0";
-      menu.style.minWidth = "170px";
-      menu.style.padding = "8px";
-      menu.style.border = "1px solid #2d3b5a";
-      menu.style.borderRadius = "10px";
-      menu.style.background = "#0f1730";
-      menu.style.display = "none";
-      menu.style.boxShadow = "0 8px 18px rgba(0,0,0,0.35)";
-
-      var ciscoLabel = document.createElement("div");
-      ciscoLabel.textContent = "Cisco";
-      ciscoLabel.style.padding = "6px 8px";
-      ciscoLabel.style.color = "#9fb8e5";
-      ciscoLabel.style.fontWeight = "700";
-      ciscoLabel.style.fontSize = "0.82rem";
-
-      var encorLink = document.createElement("a");
-      encorLink.textContent = "ENCOR";
-      encorLink.href = "https://becertifiedtoday-encor.vercel.app/";
-      encorLink.style.display = "block";
-      encorLink.style.padding = "6px 8px";
-      encorLink.style.marginTop = "2px";
-      encorLink.style.borderRadius = "6px";
-      encorLink.style.color = "#e6edf3";
-      encorLink.style.textDecoration = "none";
-      encorLink.style.background = "rgba(79,132,216,0.08)";
-
-      menu.appendChild(ciscoLabel);
-      menu.appendChild(encorLink);
-      wrap.appendChild(trigger);
-      wrap.appendChild(menu);
-      nav.appendChild(wrap);
-
-      function show() {
-        menu.style.display = "block";
-      }
-      function hide() {
-        menu.style.display = "none";
-      }
-
-      wrap.addEventListener("mouseenter", show);
-      wrap.addEventListener("mouseleave", hide);
-      trigger.addEventListener("focus", show);
-      wrap.addEventListener("focusout", function (event) {
-        if (!wrap.contains(event.relatedTarget)) hide();
-      });
-    }
-
     addLink("Home", "/");
-    addTrainingAccessMenu();
     addLink("Access Help", "/cert-access-help.html");
     addLink("Follow on YouTube", "https://www.youtube.com/@BeCertifiedToday", {
       alignRight: true,
