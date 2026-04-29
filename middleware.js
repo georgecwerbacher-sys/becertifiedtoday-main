@@ -12,6 +12,8 @@ const PROTECTED_PRODUCTS = [
     renewPath: "/encor-renew.html",
     sessionKvPrefix: "encor:session:",
     accessKvPrefix: "encor:access:",
+    /** After auth, `/` is the marketing homepage; send subscribers to the ENCOR practice landing. */
+    portalHomePath: "/CCNP_Encor.html",
   },
 ];
 
@@ -88,5 +90,10 @@ export default async function middleware(request) {
     }
   } catch (_error) {
     return Response.redirect(new URL(product.renewPath, url.origin), 302);
+  }
+
+  const portal = product.portalHomePath;
+  if (portal && (path === "/" || path === "/index.html")) {
+    return Response.redirect(new URL(portal, url.origin), 302);
   }
 }
