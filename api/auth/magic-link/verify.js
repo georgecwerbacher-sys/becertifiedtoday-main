@@ -3,10 +3,7 @@ import { getAccessRecord } from "../../_lib/access-store.js";
 import { trackEvent } from "../../_lib/analytics.js";
 import { sessionCookieDomainDirective } from "../../_lib/cookie-domain.js";
 import { createOpaqueToken, kvSetEx } from "../../_lib/kv.js";
-
-function getRedirectBaseUrl() {
-  return String(process.env.ENCOR_APP_URL || process.env.PUBLIC_SITE_URL || "").replace(/\/+$/, "");
-}
+import { getEncorAppBaseUrl } from "../../_lib/encor-app-url.js";
 
 function bounceKey(id) {
   return `encor:bounce:${id}`;
@@ -35,10 +32,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const redirectBaseUrl = getRedirectBaseUrl();
-    if (!redirectBaseUrl) {
-      return res.status(500).send("Missing ENCOR_APP_URL or PUBLIC_SITE_URL");
-    }
+    const redirectBaseUrl = getEncorAppBaseUrl();
 
     const email = await consumeMagicLinkToken(token);
     if (!email) {
@@ -47,7 +41,7 @@ export default async function handler(req, res) {
 
     const access = await getAccessRecord(email);
     if (!access || Date.parse(access.access_expires_at) <= Date.now()) {
-      const renewBaseUrl = String(process.env.PUBLIC_SITE_URL || redirectBaseUrl).replace(/\/+$/, "");
+      const renewBaseUrl = String(process.env.PUBLIC_SITE_URL || "https://becertifiedtoday.com").replace(/\/+$/, "");
       return res.redirect(302, `${renewBaseUrl}/encor-renew.html`);
     }
 

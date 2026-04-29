@@ -17,15 +17,72 @@
     .cta:disabled { opacity: 0.7; cursor: wait; }
     .muted { margin-top: 8px; color: #93a9ce; font-size: 0.92rem; }
     a { color: #a8c4f0; }
+    .portal-link {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      border: 1px solid #4f84d8;
+      background: #2f66bf;
+      color: #f3f7ff !important;
+      font-weight: 700;
+      text-decoration: none;
+      word-break: break-all;
+    }
+    .portal-link:hover {
+      filter: brightness(1.06);
+    }
+    .mono-hint {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid #2d3b5a;
+      font-size: 0.88rem;
+      color: #c5d4eb;
+      word-break: break-all;
+    }
+    .quick-ref {
+      border-color: #4f84d8;
+      background: rgba(47, 102, 191, 0.12);
+    }
+    .quick-ref p {
+      margin: 0;
+    }
   </style>
 </head>
 <body>
   <main>
     <h1>Certification access help</h1>
-    <p>Use this page for account access support across all certification training portals, including getting a fresh magic link on another device.</p>
+    <p>Use this page to get back into your training during an active access period, or to request a new sign-in link.</p>
+
+    <aside class="card quick-ref" aria-label="Quick reference for ENCOR access">
+      <h2>Quick reference (ENCOR, 30-day access)</h2>
+      <p>
+        For the next 30 days, use
+        <a href="https://becertifiedtoday-encor.vercel.app/">https://becertifiedtoday-encor.vercel.app/</a>.
+        If you cannot get in, open this access-help page and send yourself a new link with the same email you used at
+        checkout (section below).
+      </p>
+    </aside>
 
     <section class="card">
-      <h2>Request a new magic link (for another device)</h2>
+      <h2>CCNP ENCOR — return within your 30 days</h2>
+      <p>
+        <strong>Bookmark or open this link</strong> on the same computer and browser you used after purchase (while your access is active):
+      </p>
+      <p>
+        <a class="portal-link" href="https://becertifiedtoday-encor.vercel.app/">Open ENCOR training portal</a>
+      </p>
+      <p class="mono-hint" aria-label="ENCOR portal URL to copy">https://becertifiedtoday-encor.vercel.app/</p>
+      <p>
+        If the site asks you to renew, you cleared cookies, or you are on a <strong>different device or browser</strong>, use
+        the section below to email yourself a <strong>new magic link</strong> (same email as checkout).
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Request a new magic link (new device or signed out)</h2>
       <p>Enter the same email address used during checkout. If your access is active, we will send a fresh sign-in link.</p>
       <label for="help-email">Email address</label>
       <input id="help-email" class="field" type="email" autocomplete="email" placeholder="you@example.com" />
@@ -54,8 +111,7 @@
     <section class="card">
       <h2>Access training area</h2>
       <ul>
-        <li>After sign-in, you will be redirected to the training portal linked to your access.</li>
-        <li>Current CCNP ENCOR portal: <a href="https://becertifiedtoday-encor.vercel.app/">becertifiedtoday-encor.vercel.app</a></li>
+        <li>ENCOR portal (save for your 30-day window): <a href="https://becertifiedtoday-encor.vercel.app/">https://becertifiedtoday-encor.vercel.app/</a></li>
       </ul>
       <p><a href="/CCNP_Encor.html">View certification details</a></p>
       <p><a href="/">Back to home</a></p>

@@ -43,6 +43,4 @@ export function getVerifyBaseUrl() {
   return trimBaseUrl(process.env.MAGIC_LINK_VERIFY_BASE_URL || requireEnv("PUBLIC_SITE_URL"));
 }
 
-export function getEncorAppBaseUrl() {
-  return trimBaseUrl(requireEnv("ENCOR_APP_URL"));
-}
+export { getEncorAppBaseUrl } from "./encor-app-url.js";

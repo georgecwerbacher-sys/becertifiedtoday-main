@@ -1,5 +1,6 @@
 import { kvDel, kvGet } from "../_lib/kv.js";
 import { readSessionEmail } from "../_lib/magic-link.js";
+import { getEncorAppBaseUrl } from "../_lib/encor-app-url.js";
 
 function bounceKey(id) {
   return `encor:bounce:${id}`;
@@ -39,9 +40,5 @@ export default async function handler(req, res) {
     `encor_access_token=${sessionToken}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${maxAge}`
   );
 
-  const base = String(process.env.ENCOR_APP_URL || "").replace(/\/+$/, "");
-  if (base) {
-    return res.redirect(302, `${base}/`);
-  }
-  return res.redirect(302, "/");
+  return res.redirect(302, `${getEncorAppBaseUrl()}/`);
 }
