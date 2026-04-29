@@ -1,5 +1,7 @@
-# Allow homepage crawl/indexing; block all other paths.
 User-agent: *
-Allow: /$
-Allow: /index.html
-Disallow: /
+Allow: /
+
+# Keep private/admin utility pages out of search results.
+Disallow: /admin-analytics.html
+
+Sitemap: https://becertifiedtoday.com/sitemap.xml
