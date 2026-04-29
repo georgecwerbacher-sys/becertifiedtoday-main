@@ -1,6 +1,7 @@
 import { consumeMagicLinkToken, createSessionToken } from "../../_lib/magic-link.js";
 import { getAccessRecord } from "../../_lib/access-store.js";
 import { trackEvent } from "../../_lib/analytics.js";
+import { sessionCookieDomainDirective } from "../../_lib/cookie-domain.js";
 
 function getRedirectBaseUrl() {
   return String(process.env.ENCOR_APP_URL || process.env.PUBLIC_SITE_URL || "").replace(/\/+$/, "");
@@ -40,9 +41,10 @@ export default async function handler(req, res) {
     }
 
     const maxAge = 60 * 60 * 24 * 30;
+    const domainPart = sessionCookieDomainDirective();
     res.setHeader(
       "Set-Cookie",
-      `encor_access_token=${sessionToken}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${maxAge}`
+      `encor_access_token=${sessionToken}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${maxAge}${domainPart}`
     );
     await trackEvent("magic_link_verified");
     return res.redirect(302, `${redirectBaseUrl}/`);

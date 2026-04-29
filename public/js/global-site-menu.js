@@ -99,7 +99,7 @@
 
       var encorLink = document.createElement("a");
       encorLink.textContent = "ENCOR";
-      encorLink.href = "https://becertifiedtoday-encor.vercel.app";
+      encorLink.href = "https://encor.becertifiedtoday.com/";
       encorLink.style.display = "block";
       encorLink.style.padding = "6px 8px";
       encorLink.style.marginTop = "2px";
