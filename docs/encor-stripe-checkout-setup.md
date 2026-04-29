@@ -100,3 +100,12 @@ Additional keys are used for operational behavior only (idempotency markers, ses
   - Sends a fresh magic link only if access is currently active.
   - Returns an error if access is expired (customer should renew first).
 
+- Endpoint: `POST /api/admin/grant-access`
+- Required header: `x-admin-token: <ADMIN_ACCESS_TOKEN>`
+- Request body:
+  - `{ "email": "admin@example.com", "days": 3650, "send_magic_link": true }`
+- Behavior:
+  - Admin-grants/extends access without checkout.
+  - `days` is optional (defaults to normal access window).
+  - `send_magic_link` defaults to true and emails an immediate login link.
+
