@@ -58,9 +58,6 @@
     addLink("Home", "/");
     addLink("Certifications", "/CCNP_Encor.html");
     addLink("Access Help", "/cert-access-help.html");
-    addLink("ENCOR Portal", "https://becertifiedtoday-encor.vercel.app/", {
-      id: "encor-entry-link",
-    });
     addLink("Follow on YouTube", "https://www.youtube.com/@BeCertifiedToday", {
       youtube: true,
       newTab: true,
