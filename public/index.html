@@ -342,6 +342,40 @@
     .purchase-card {
       text-align: left;
     }
+    .purchase-card--coming-soon {
+      position: relative;
+      overflow: hidden;
+      border-color: #3a455c;
+    }
+    .purchase-soon-dim {
+      filter: grayscale(0.55);
+      opacity: 0.62;
+    }
+    .purchase-card--coming-soon .purchase-stripe-wrap {
+      pointer-events: none;
+    }
+    .purchase-card--coming-soon .purchase-cta:disabled {
+      cursor: not-allowed;
+    }
+    .purchase-coming-soon-badge {
+      position: absolute;
+      top: clamp(14px, 3vw, 22px);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      margin: 0;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-size: clamp(0.82rem, 2vw, 0.95rem);
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #e8eef8;
+      background: rgba(55, 65, 88, 0.98);
+      border: 1px solid rgba(120, 136, 168, 0.5);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+      pointer-events: none;
+    }
     .purchase-card-inner {
       display: flex;
       flex-wrap: wrap;
@@ -1066,29 +1100,32 @@
               </article>
             </li>
           </ul>
-          <div class="card purchase-card" id="purchase">
+          <div class="card purchase-card purchase-card--coming-soon" id="purchase">
+            <p class="purchase-coming-soon-badge">Coming soon</p>
             <div class="purchase-card-inner">
               <div class="purchase-card-main">
-                <p class="purchase-label">Purchase</p>
-                <h2 class="purchase-heading">30-day full access to CCNP ENCOR</h2>
-                <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
-                  $19.99 <span>/ 30 days</span>
-                </p>
-                <p class="purchase-lead">
-                  One payment unlocks full access to all training courses and certification tracks for one month:
-                  practice questions, hands-on CLI labs, drag-and-drop items, and full timed exam simulations.
-                </p>
-                <ul class="purchase-includes">
-                  <li>All courses, question banks, and study modes</li>
-                  <li>Over 500 updated questions</li>
-                  <li>Every CLI simulation lab across available tracks</li>
-                  <li>Standard and JSON drag-and-drop sets across all courses</li>
-                  <li>Timed test simulations (mixed question, lab, and drag-and-drop runs)</li>
-                </ul>
+                <div class="purchase-soon-dim">
+                  <p class="purchase-label">Purchase</p>
+                  <h2 class="purchase-heading">30-day full access to CCNP ENCOR</h2>
+                  <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
+                    $19.99 <span>/ 30 days</span>
+                  </p>
+                  <p class="purchase-lead">
+                    One payment unlocks full access to all training courses and certification tracks for one month:
+                    practice questions, hands-on CLI labs, drag-and-drop items, and full timed exam simulations.
+                  </p>
+                  <ul class="purchase-includes">
+                    <li>All courses, question banks, and study modes</li>
+                    <li>Over 500 updated questions</li>
+                    <li>Every CLI simulation lab across available tracks</li>
+                    <li>Standard and JSON drag-and-drop sets across all courses</li>
+                    <li>Timed test simulations (mixed question, lab, and drag-and-drop runs)</li>
+                  </ul>
+                </div>
                 <p class="format-sample">
                   <a href="/CCNP_Encor.html">Read More about the CCNP Encor</a>
                 </p>
-                <div class="purchase-stripe-wrap">
+                <div class="purchase-stripe-wrap purchase-soon-dim">
                   <div class="purchase-track-box" aria-label="Upcoming CCNP ENCOR training checkout">
                     <p class="purchase-track-title">CCNP Encore Training</p>
                     <p class="purchase-track-sub">
@@ -1097,7 +1134,7 @@
                       information for promotion or sale. No membership required and no one from Becertifiedtoday.com
                       will ever reach out for payment or personal information at any time.
                     </p>
-                    <button type="button" class="purchase-cta" data-encor-checkout>
+                    <button type="button" class="purchase-cta" disabled aria-disabled="true">
                       Buy ENCOR Access (30 Days)
                     </button>
                     <p class="purchase-stripe-disclaimer">
