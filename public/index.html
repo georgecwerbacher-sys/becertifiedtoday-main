@@ -2,23 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <script>
-    (function () {
-      var h = (location.hostname || "").toLowerCase();
-      if (
-        h === "becertifiedtoday-encor.vercel.app" ||
-        h === "ccnp-study.vercel.app" ||
-        h.startsWith("encor.")
-      ) {
-        document.documentElement.classList.add("encor-gate-pending");
-      }
-    })();
-  </script>
-  <style>
-    html.encor-gate-pending body {
-      visibility: hidden !important;
-    }
-  </style>
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta
@@ -46,7 +29,6 @@
     content="Certification practice tests, labs, questions, drag-and-drop, and timed exam simulations in the browser."
   />
   <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
-  <script src="/js/encor-auth-gate.js"></script>
   <title>Certification Practice Tests, Labs &amp; Questions | Be Certified Today</title>
   <script type="application/ld+json">
     {
@@ -104,77 +86,6 @@
       justify-content: flex-end;
       gap: 10px;
     }
-    .header-menu {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-    }
-    .header-menu summary {
-      list-style: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 16px;
-      border-radius: 10px;
-      border: 1px solid var(--accent-border);
-      background: transparent;
-      color: var(--text);
-      font-size: 0.95rem;
-      font-weight: 800;
-      cursor: pointer;
-      user-select: none;
-    }
-    .header-menu summary::-webkit-details-marker {
-      display: none;
-    }
-    .header-menu[open] summary,
-    .header-menu summary:hover {
-      background: rgba(79, 132, 216, 0.12);
-      color: #f0f4fc;
-    }
-    .header-menu summary:focus-visible {
-      outline: 2px solid var(--accent-border);
-      outline-offset: 3px;
-    }
-    .header-menu ul {
-      position: absolute;
-      top: calc(100% + 8px);
-      right: 0;
-      margin: 0;
-      padding: 8px;
-      min-width: 200px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: #0f1729;
-      list-style: none;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.36);
-      z-index: 25;
-    }
-    .header-menu ul a {
-      display: block;
-      padding: 10px 12px;
-      border-radius: 8px;
-      color: #d5e1f3;
-      text-decoration: none;
-      font-size: 0.92rem;
-      font-weight: 700;
-    }
-    .header-menu ul a:hover {
-      background: rgba(79, 132, 216, 0.18);
-      color: #f0f4fc;
-    }
-    .header-menu-group {
-      display: block;
-      padding: 8px 12px 4px;
-      color: #9fb0cc;
-      font-size: 0.74rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-    .header-menu-sub {
-      padding-left: 10px;
-    }
     .header-sign-up {
       display: inline-flex;
       align-items: center;
@@ -195,15 +106,6 @@
     .header-sign-up:focus-visible {
       outline: 2px solid var(--accent-border);
       outline-offset: 3px;
-    }
-    .header-youtube {
-      border-color: #c43b3b;
-      background: #c43b3b;
-      color: #ffffff;
-    }
-    .header-youtube:hover {
-      background: #d34848;
-      color: #ffffff;
     }
     .brand {
       display: inline-flex;
@@ -342,40 +244,6 @@
     .purchase-card {
       text-align: left;
     }
-    .purchase-card--coming-soon {
-      position: relative;
-      overflow: hidden;
-      border-color: #3a455c;
-    }
-    .purchase-soon-dim {
-      filter: grayscale(0.55);
-      opacity: 0.62;
-    }
-    .purchase-card--coming-soon .purchase-stripe-wrap {
-      pointer-events: none;
-    }
-    .purchase-card--coming-soon .purchase-cta:disabled {
-      cursor: not-allowed;
-    }
-    .purchase-coming-soon-badge {
-      position: absolute;
-      top: clamp(14px, 3vw, 22px);
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
-      margin: 0;
-      padding: 10px 22px;
-      border-radius: 999px;
-      font-size: clamp(0.82rem, 2vw, 0.95rem);
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #e8eef8;
-      background: rgba(55, 65, 88, 0.98);
-      border: 1px solid rgba(120, 136, 168, 0.5);
-      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
-      pointer-events: none;
-    }
     .purchase-card-inner {
       display: flex;
       flex-wrap: wrap;
@@ -492,7 +360,7 @@
       color: var(--text);
       font-weight: 700;
     }
-    .purchase-stripe-wrap {
+    .purchase-access-wrap {
       margin-top: 20px;
     }
     .purchase-track-box {
@@ -567,29 +435,11 @@
       letter-spacing: 0.06em;
       color: #6b8ab8;
     }
-    .purchase-cta {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 44px;
-      padding: 12px 18px;
-      border-radius: 10px;
-      border: 1px solid var(--accent-border);
-      background: #2f66bf;
-      color: #f3f7ff;
-      font-size: 0.95rem;
-      font-weight: 800;
-      text-decoration: none;
-      cursor: pointer;
+    .purchase-access-mount {
+      position: relative;
+      transition: opacity 0.2s ease;
     }
-    .purchase-cta:hover {
-      background: #3a74d4;
-    }
-    .purchase-cta:disabled {
-      opacity: 0.7;
-      cursor: wait;
-    }
-    .purchase-stripe-disclaimer {
+    .purchase-access-disclaimer {
       margin: 10px 0 0;
       padding-top: 10px;
       border-top: 1px solid rgba(45, 59, 90, 0.75);
@@ -597,7 +447,7 @@
       font-size: 0.84rem;
       line-height: 1.45;
     }
-    .purchase-stripe-mount--locked {
+    .purchase-access-mount--locked {
       opacity: 0.42;
       pointer-events: none;
       user-select: none;
@@ -628,17 +478,6 @@
       font-size: 0.82rem;
       color: #5c6d8a;
       border-top: 1px solid rgba(45, 59, 90, 0.5);
-    }
-    .footer-admin-link {
-      color: var(--bg);
-      text-decoration: none;
-      margin-left: 2px;
-    }
-    .footer-admin-link:hover,
-    .footer-admin-link:focus-visible {
-      color: var(--bg);
-      text-decoration: none;
-      outline: none;
     }
     .formats-section {
       margin-top: clamp(40px, 8vw, 72px);
@@ -946,55 +785,6 @@
       color: var(--text);
       font-weight: 700;
     }
-    .purchase-modal {
-      position: fixed;
-      inset: 0;
-      z-index: 1200;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
-      background: rgba(7, 12, 24, 0.75);
-      backdrop-filter: blur(3px);
-    }
-    .purchase-modal.is-open {
-      display: flex;
-    }
-    .purchase-modal__dialog {
-      width: min(560px, 96vw);
-      padding: 18px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: #0f1729;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
-    }
-    .purchase-modal__head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 8px;
-    }
-    .purchase-modal__close {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.02);
-      color: var(--text);
-      font-size: 0.9rem;
-      font-weight: 700;
-      line-height: 1;
-      padding: 8px 10px;
-      cursor: pointer;
-    }
-    .purchase-modal__close:hover {
-      background: rgba(79, 132, 216, 0.12);
-    }
-    .purchase-modal__text {
-      margin: 0 0 14px;
-      color: var(--muted);
-      font-size: 0.94rem;
-      line-height: 1.5;
-    }
   </style>
 </head>
 <body>
@@ -1008,6 +798,9 @@
           alt="Be Certified Today — IT training and testing study site"
         />
       </a>
+      <div class="header-actions">
+        <a class="header-sign-up" href="/CCNP_Encor.html">CCNP ENCOR</a>
+      </div>
     </header>
     <figure class="hero-banner">
       <img
@@ -1100,46 +893,42 @@
               </article>
             </li>
           </ul>
-          <div class="card purchase-card purchase-card--coming-soon" id="purchase">
-            <p class="purchase-coming-soon-badge">Coming soon</p>
+          <div class="card purchase-card" id="purchase">
             <div class="purchase-card-inner">
               <div class="purchase-card-main">
-                <div class="purchase-soon-dim">
-                  <p class="purchase-label">Purchase</p>
-                  <h2 class="purchase-heading">30-day full access to CCNP ENCOR</h2>
-                  <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
-                    $19.99 <span>/ 30 days</span>
-                  </p>
-                  <p class="purchase-lead">
-                    One payment unlocks full access to all training courses and certification tracks for one month:
-                    practice questions, hands-on CLI labs, drag-and-drop items, and full timed exam simulations.
-                  </p>
-                  <ul class="purchase-includes">
-                    <li>All courses, question banks, and study modes</li>
-                    <li>Over 500 updated questions</li>
-                    <li>Every CLI simulation lab across available tracks</li>
-                    <li>Standard and JSON drag-and-drop sets across all courses</li>
-                    <li>Timed test simulations (mixed question, lab, and drag-and-drop runs)</li>
-                  </ul>
-                </div>
-                <p class="format-sample">
-                  <a href="/CCNP_Encor.html">Read More about the CCNP Encor</a>
+                <p class="purchase-label">Purchase</p>
+                <h2 class="purchase-heading">30-day full access</h2>
+                <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
+                  $19.99 <span>/ 30 days</span>
                 </p>
-                <div class="purchase-stripe-wrap purchase-soon-dim">
+                <p class="purchase-lead">
+                  One payment unlocks full access to all training courses and certification tracks for one month:
+                  practice questions, hands-on CLI labs, drag-and-drop items, and full timed exam simulations.
+                </p>
+                <ul class="purchase-includes">
+                  <li>All courses, question banks, and study modes</li>
+                  <li>Every CLI simulation lab across available tracks</li>
+                  <li>Standard and JSON drag-and-drop sets across all courses</li>
+                  <li>Timed test simulations (mixed question, lab, and drag-and-drop runs)</li>
+                </ul>
+                <p class="purchase-notes">
+                  <strong>No recurring membership.</strong> Thirty days of access for a single price—when it ends,
+                  renew only if you want another month.
+                  <strong>No additional software</strong> is required; everything runs in your browser.
+                  <strong>Checkout is temporarily unavailable.</strong>
+                  Purchase access will return after the subdomain transition is complete.
+                  <strong>We do not collect customer information for promotion or sale.</strong>
+                  We do not use customer data from purchases for marketing or profiling.
+                </p>
+                <div class="purchase-access-wrap">
                   <div class="purchase-track-box" aria-label="Upcoming CCNP ENCOR training checkout">
-                    <p class="purchase-track-title">CCNP Encore Training</p>
+                    <p class="purchase-track-title">Upcoming training checkout</p>
                     <p class="purchase-track-sub">
-                      CCNP ENCOR training. All payments are securely processed by Stripe, our third-party payment provider.
-                      We do not store your full payment card details on this website. We do not collect customer
-                      information for promotion or sale. No membership required and no one from Becertifiedtoday.com
-                      will ever reach out for payment or personal information at any time.
-                    </p>
-                    <button type="button" class="purchase-cta" disabled aria-disabled="true">
-                      Buy ENCOR Access (30 Days)
-                    </button>
-                    <p class="purchase-stripe-disclaimer">
-                      Stripe securely processes payment. No membership is required, and BeCertifiedToday will never ask
-                      you directly for payment or personal information.
+                      CCNP ENCOR checkout is paused while the site is moved to the updated subdomain.
+                      No payment form is active on this page right now.
+                    </div>
+                    <p class="purchase-access-disclaimer">
+                      No membership is required, and BeCertifiedToday will never ask you directly for payment or personal information.
                     </p>
                   </div>
                 </div>
@@ -1226,34 +1015,9 @@
       </p>
     </aside>
     <footer>
-      © Be Certified Today<a class="footer-admin-link" href="/admin-analytics.html" aria-label="Admin analytics link">@</a>
+      © Be Certified Today
     </footer>
   </div>
-  <section
-    id="encor-purchase-modal"
-    class="purchase-modal"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="encor-purchase-title"
-  >
-    <div class="purchase-modal__dialog">
-      <div class="purchase-modal__head">
-        <p class="formats-head" id="encor-purchase-title">ENCOR Access Required</p>
-        <button id="encor-purchase-close" class="purchase-modal__close" type="button" aria-label="Close purchase popup">
-          Close
-        </button>
-      </div>
-      <p class="purchase-modal__text">
-        Your ENCOR access is inactive or expired. Purchase 30-day access to continue to the ENCOR portal.
-      </p>
-      <button type="button" class="purchase-cta" data-encor-checkout>
-        Buy ENCOR Access (30 Days)
-      </button>
-    </div>
-  </section>
-  <script defer src="/js/encor-checkout.js"></script>
-  <script defer src="/js/encor-entry-gate.js"></script>
-  <script defer src="/js/global-site-menu.js"></script>
   <script>
     (function () {
       var p = location.pathname || "";
@@ -1266,6 +1030,5 @@
       }
     })();
   </script>
-  <script defer src="/js/analytics-events.js"></script>
 </body>
 </html>

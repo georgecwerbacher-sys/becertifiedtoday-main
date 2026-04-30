@@ -2,24 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <script>
-    (function () {
-      var h = (location.hostname || "").toLowerCase();
-      if (
-        h === "becertifiedtoday-encor.vercel.app" ||
-        h === "ccnp-study.vercel.app" ||
-        h.startsWith("encor.")
-      ) {
-        document.documentElement.classList.add("encor-gate-pending");
-      }
-    })();
-  </script>
-  <style>
-    html.encor-gate-pending body {
-      visibility: hidden !important;
-    }
-  </style>
-  <script src="/js/encor-auth-gate.js"></script>
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta
@@ -429,41 +411,6 @@
       letter-spacing: 0.06em;
       color: #6b8ab8;
     }
-    .purchase-stripe-mount {
-      position: relative;
-      transition: opacity 0.2s ease;
-    }
-    .purchase-cta {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 44px;
-      padding: 12px 18px;
-      border-radius: 10px;
-      border: 1px solid var(--accent-border);
-      background: #2f66bf;
-      color: #f3f7ff;
-      font-size: 0.95rem;
-      font-weight: 800;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    .purchase-cta:hover {
-      background: #3a74d4;
-    }
-    .purchase-stripe-disclaimer {
-      margin: 10px 0 0;
-      padding-top: 10px;
-      border-top: 1px solid rgba(45, 59, 90, 0.75);
-      color: #9fb0cc;
-      font-size: 0.84rem;
-      line-height: 1.45;
-    }
-    .purchase-stripe-mount--locked {
-      opacity: 0.42;
-      pointer-events: none;
-      user-select: none;
-    }
     .site-disclaimer {
       max-width: 720px;
       margin: 0 auto;
@@ -497,6 +444,10 @@
           alt="Be Certified Today — IT training and testing study site"
         />
       </a>
+      <div class="header-actions">
+        <a class="header-link" href="/">Back to home</a>
+        <span class="header-link" aria-disabled="true">Checkout coming soon</span>
+      </div>
     </header>
     <figure class="hero-banner">
       <img
@@ -660,39 +611,6 @@
         </div>
       </section>
 
-      <section
-        id="encor-checkout-modal"
-        class="checkout-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="encor-checkout-title"
-      >
-        <div class="checkout-dialog">
-          <div class="checkout-dialog-head">
-            <p class="formats-head" id="encor-checkout-title">Checkout</p>
-            <button id="encor-checkout-close" class="checkout-close" type="button" aria-label="Close checkout popup">
-              Close
-            </button>
-          </div>
-          <div class="purchase-track-box" aria-label="Upcoming CCNP ENCOR training checkout">
-          <p class="purchase-track-title">CCNP ENCOR Training Checkout</p>
-          <p class="purchase-track-sub">
-            CCNP ENCOR training. Payments are securely processed by Stripe, our third-party payment provider. We never
-            collect payments directly or request personal information from customers.
-          </p>
-          <button type="button" class="purchase-cta" data-encor-checkout>
-            Buy ENCOR Access (30 Days)
-          </button>
-          <p class="purchase-stripe-disclaimer">
-            <strong>Disclaimer:</strong> Independent educational training resource. Not affiliated with, endorsed by,
-            sponsored by, or approved by Cisco Systems, Inc. Cisco and related trademarks are the property of Cisco
-            Systems, Inc. Practice questions and study materials are original or based on general knowledge and are for
-            exam preparation guidance only. Practice questions are not actual Cisco exam questions; any similarity to
-            official exam content is coincidental.
-          </p>
-        </div>
-        </div>
-      </section>
     </main>
     <aside class="site-disclaimer" aria-label="Legal disclaimer">
       <p>
@@ -708,43 +626,5 @@
       © Be Certified Today
     </footer>
   </div>
-  <script defer src="/js/encor-checkout.js"></script>
-  <script defer src="/js/global-site-menu.js"></script>
-  <script>
-    (function () {
-      var modal = document.getElementById("encor-checkout-modal");
-      var closeBtn = document.getElementById("encor-checkout-close");
-      var openBtn = document.getElementById("encor-get-access");
-      if (!modal || !closeBtn) return;
-
-      var openTimer = window.setTimeout(function () {
-        modal.classList.add("is-open");
-      }, 15000);
-
-      function closeModal() {
-        modal.classList.remove("is-open");
-      }
-
-      closeBtn.addEventListener("click", closeModal);
-      if (openBtn) {
-        openBtn.addEventListener("click", function (event) {
-          event.preventDefault();
-          modal.classList.add("is-open");
-        });
-      }
-      modal.addEventListener("click", function (event) {
-        if (event.target === modal) closeModal();
-      });
-
-      document.addEventListener("keydown", function (event) {
-        if (event.key === "Escape") closeModal();
-      });
-
-      window.addEventListener("beforeunload", function () {
-        window.clearTimeout(openTimer);
-      });
-    })();
-  </script>
-  <script defer src="/js/analytics-events.js"></script>
 </body>
 </html>
