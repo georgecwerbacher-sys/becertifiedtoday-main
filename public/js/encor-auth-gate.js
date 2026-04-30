@@ -8,10 +8,21 @@
     h = String(location.hostname || "").toLowerCase();
   } catch (_e) {}
 
-  var encorHost = h === "encor.becertifiedtoday.com" || h.startsWith("encor.");
+  var encorHost =
+    h === "encor.becertifiedtoday.com" ||
+    h.startsWith("encor.") ||
+    h === "ccnp-study.vercel.app" ||
+    h === "becertifiedtoday-encor.vercel.app";
   if (!encorHost) return;
 
-  var renew = "https://becertifiedtoday.com/encor-renew.html";
+  var renew =
+    (function () {
+      try {
+        return location.origin + "/encor-renew.html";
+      } catch (_e) {
+        return "https://becertifiedtoday.com/encor-renew.html";
+      }
+    })();
 
   fetch("/api/auth/access-status", { credentials: "include" })
     .then(function (r) {

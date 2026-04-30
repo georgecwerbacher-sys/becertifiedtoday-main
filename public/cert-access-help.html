@@ -49,6 +49,13 @@
     .quick-ref p {
       margin: 0;
     }
+    .active-access {
+      border-color: #3d8f6a;
+      background: rgba(45, 143, 106, 0.14);
+    }
+    .active-access h2 {
+      margin-top: 0;
+    }
   </style>
 </head>
 <body>
@@ -56,13 +63,29 @@
     <h1>Certification access help</h1>
     <p>Use this page to get back into your training during an active access period, or to request a new sign-in link.</p>
 
+    <aside id="encor-active-access" class="card active-access" aria-label="Active access" hidden>
+      <h2>You have active access on this browser</h2>
+      <p>
+        Your registration is recognized here. You can open the locked ENCOR training site directly (same tab or bookmark this for later):
+      </p>
+      <p>
+        <a class="portal-link" href="https://becertifiedtoday-encor.vercel.app/">Open ENCOR training portal</a>
+      </p>
+      <p class="mono-hint" aria-label="ENCOR portal URL to copy">https://becertifiedtoday-encor.vercel.app/</p>
+      <p class="muted" style="margin-bottom: 0">
+        If this message does not appear after you use a magic link, request a new link below or confirm you are using the
+        same email as checkout.
+      </p>
+    </aside>
+
     <aside class="card quick-ref" aria-label="Quick reference for ENCOR access">
       <h2>Quick reference (ENCOR, 30-day access)</h2>
       <p>
         For the next 30 days, use
-        <a href="https://encor.becertifiedtoday.com/">https://encor.becertifiedtoday.com/</a>.
-        If you cannot get in, open this access-help page and send yourself a new link with the same email you used at
-        checkout (section below).
+        <a href="https://becertifiedtoday-encor.vercel.app/">https://becertifiedtoday-encor.vercel.app/</a>.
+        After you use a magic link on this device, return here: a green <strong>Active access</strong> notice at the top
+        means you are registered and can open the training portal in one click. If you are on a new device or signed out,
+        use the section below to request a new link (same email as checkout).
       </p>
     </aside>
 
@@ -72,9 +95,9 @@
         <strong>Bookmark or open this link</strong> on the same computer and browser you used after purchase (while your access is active):
       </p>
       <p>
-        <a class="portal-link" href="https://encor.becertifiedtoday.com/">Open ENCOR training portal</a>
+        <a class="portal-link" href="https://becertifiedtoday-encor.vercel.app/">Open ENCOR training portal</a>
       </p>
-      <p class="mono-hint" aria-label="ENCOR portal URL to copy">https://encor.becertifiedtoday.com/</p>
+      <p class="mono-hint" aria-label="ENCOR portal URL to copy">https://becertifiedtoday-encor.vercel.app/</p>
       <p>
         If the site asks you to renew, you cleared cookies, or you are on a <strong>different device or browser</strong>, use
         the section below to email yourself a <strong>new magic link</strong> (same email as checkout).
@@ -111,7 +134,7 @@
     <section class="card">
       <h2>Access training area</h2>
       <ul>
-        <li>ENCOR portal (save for your 30-day window): <a href="https://encor.becertifiedtoday.com/">https://encor.becertifiedtoday.com/</a></li>
+        <li>ENCOR portal (save for your 30-day window): <a href="https://becertifiedtoday-encor.vercel.app/">https://becertifiedtoday-encor.vercel.app/</a></li>
       </ul>
       <p><a href="/CCNP_Encor.html">View certification details</a></p>
       <p><a href="/">Back to home</a></p>
@@ -119,6 +142,17 @@
   </main>
   <script>
     (function () {
+      fetch("/api/auth/access-status", { credentials: "include" })
+        .then(function (r) {
+          return r.ok ? r.json() : null;
+        })
+        .then(function (data) {
+          if (!data || data.has_access !== true) return;
+          var panel = document.getElementById("encor-active-access");
+          if (panel) panel.hidden = false;
+        })
+        .catch(function () {});
+
       var button = document.getElementById("help-send-link");
       var emailInput = document.getElementById("help-email");
       var status = document.getElementById("help-status");

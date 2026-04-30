@@ -4,26 +4,36 @@ const PUBLIC_PATH_PREFIXES = [
   "/api/auth/encor-claim-bounce",
   /** Allow browser gate + UI to check session without a prior cookie (returns JSON only). */
   "/api/auth/access-status",
+  /** Help page POSTs here before the user has a session on this device. */
+  "/api/auth/request-magic-link",
   "/images/",
   "/js/",
   "/sample",
 ];
-const PUBLIC_PATHS_STATIC = ["/favicon.ico", "/robots.txt"];
+/** Shown right after Stripe checkout (no session yet); must bypass gate on encor.* */
+const PUBLIC_PATHS_STATIC = [
+  "/favicon.ico",
+  "/robots.txt",
+  "/checkout-success.html",
+  "/cert-access-help.html",
+];
 
 /**
  * Per-subdomain gate: add a row for each protected training host (e.g. secplus.).
  * KV prefixes must match access-store / magic-link keys for that product.
  */
+const ENCOR_GATE = {
+  cookieName: "encor_access_token",
+  renewPath: "/encor-renew.html",
+  sessionKvPrefix: "encor:session:",
+  accessKvPrefix: "encor:access:",
+};
+
 const PROTECTED_PRODUCTS = [
-  {
-    hostPrefix: "encor.",
-    cookieName: "encor_access_token",
-    renewPath: "/encor-renew.html",
-    sessionKvPrefix: "encor:session:",
-    accessKvPrefix: "encor:access:",
-    /** After auth on encor.*: `/` rewrites to marketing index; send subscribers to ENCOR overview. */
-    portalHomePath: "/CCNP_Encor.html",
-  },
+  { ...ENCOR_GATE, hostPrefix: "encor." },
+  /** Vercel default hostnames for this project (same KV/session as encor.*). */
+  { ...ENCOR_GATE, hostExact: "ccnp-study.vercel.app" },
+  { ...ENCOR_GATE, hostExact: "becertifiedtoday-encor.vercel.app" },
 ];
 
 function parseCookies(value) {
@@ -56,7 +66,8 @@ function matchProtectedProduct(host) {
   const h = host.toLowerCase();
   return (
     PROTECTED_PRODUCTS.find((p) => {
-      if (h.startsWith(p.hostPrefix)) return true;
+      if (p.hostExact && h === p.hostExact) return true;
+      if (p.hostPrefix && h.startsWith(p.hostPrefix)) return true;
       return false;
     }) || null
   );
@@ -108,10 +119,5 @@ export default async function middleware(request) {
     }
   } catch (_error) {
     return Response.redirect(renewRedirectUrl(product, request.url), 302);
-  }
-
-  const portal = product.portalHomePath;
-  if (portal && (path === "/" || path === "/index.html")) {
-    return Response.redirect(new URL(portal, url.origin), 302);
   }
 }

@@ -1,4 +1,5 @@
 import { ACCESS_WINDOW_DAYS } from "../_lib/config.js";
+import { getEncorAppBaseUrl } from "../_lib/encor-app-url.js";
 import { getStripe } from "../_lib/stripe.js";
 import { trackEvent } from "../_lib/analytics.js";
 
@@ -18,7 +19,9 @@ export default async function handler(req, res) {
     }
 
     const stripe = getStripe();
-    const origin = process.env.PUBLIC_SITE_URL?.replace(/\/+$/, "") || "https://becertifiedtoday.com";
+    const marketingOrigin =
+      process.env.PUBLIC_SITE_URL?.replace(/\/+$/, "") || "https://becertifiedtoday.com";
+    const encorOrigin = getEncorAppBaseUrl();
     const renew = body.renew === true;
     const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : undefined;
 
@@ -31,8 +34,8 @@ export default async function handler(req, res) {
         },
       ],
       customer_email: email || undefined,
-      success_url: `${origin}/checkout-success.html?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/checkout-cancelled.html`,
+      success_url: `${encorOrigin}/checkout-success.html?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${marketingOrigin}/checkout-cancelled.html`,
       metadata: {
         product: ALLOWED_PRODUCT,
         access_days: String(ACCESS_WINDOW_DAYS),
