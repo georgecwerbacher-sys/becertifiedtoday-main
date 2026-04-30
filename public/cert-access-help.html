@@ -17,38 +17,6 @@
     .cta:disabled { opacity: 0.7; cursor: wait; }
     .muted { margin-top: 8px; color: #93a9ce; font-size: 0.92rem; }
     a { color: #a8c4f0; }
-    .portal-link {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 12px 18px;
-      border-radius: 10px;
-      border: 1px solid #4f84d8;
-      background: #2f66bf;
-      color: #f3f7ff !important;
-      font-weight: 700;
-      text-decoration: none;
-      word-break: break-all;
-    }
-    .portal-link:hover {
-      filter: brightness(1.06);
-    }
-    .mono-hint {
-      margin-top: 10px;
-      padding: 10px 12px;
-      border-radius: 8px;
-      background: rgba(0, 0, 0, 0.25);
-      border: 1px solid #2d3b5a;
-      font-size: 0.88rem;
-      color: #c5d4eb;
-      word-break: break-all;
-    }
-    .active-access {
-      border-color: #3d8f6a;
-      background: rgba(45, 143, 106, 0.14);
-    }
-    .active-access h2 {
-      margin-top: 0;
-    }
   </style>
 </head>
 <body>
@@ -56,27 +24,9 @@
     <h1>Certification access help</h1>
     <p>
       After you register (checkout), the link in your email only works <strong>once</strong>. When the browser session
-      ends, use this page to get a <strong>new</strong> link (we can save your email on this device so you only tap
-      <strong>Email me a new sign-in link</strong>). Bookmark this page:
+      ends, use the form below to get a <strong>new</strong> link. You can save your email on this device so you only tap
+      <strong>Email me a new sign-in link</strong> next time.
     </p>
-    <p class="mono-hint" style="margin-top: 8px">
-      <a href="https://becertifiedtoday.com/cert-access-help.html">https://becertifiedtoday.com/cert-access-help.html</a>
-    </p>
-
-    <aside id="encor-active-access" class="card active-access" aria-label="Active access" hidden>
-      <h2>You have active access on this browser</h2>
-      <p>
-        Your registration is recognized here. You can open the locked ENCOR training site directly (same tab or bookmark this for later):
-      </p>
-      <p>
-        <a class="portal-link" href="https://becertifiedtoday-encor.vercel.app/">Open ENCOR training portal</a>
-      </p>
-      <p class="mono-hint" aria-label="ENCOR portal URL to copy">https://becertifiedtoday-encor.vercel.app/</p>
-      <p class="muted" style="margin-bottom: 0">
-        If this message does not appear after you use a magic link, request a new link below or confirm you are using the
-        same email as checkout.
-      </p>
-    </aside>
 
     <section class="card">
       <h2>Request a new magic link (after session or cookie cleared)</h2>
@@ -126,17 +76,6 @@
   </main>
   <script>
     (function () {
-      fetch("/api/auth/access-status", { credentials: "include" })
-        .then(function (r) {
-          return r.ok ? r.json() : null;
-        })
-        .then(function (data) {
-          if (!data || data.has_access !== true) return;
-          var panel = document.getElementById("encor-active-access");
-          if (panel) panel.hidden = false;
-        })
-        .catch(function () {});
-
       var STORAGE_KEY = "encor_checkout_email";
       var button = document.getElementById("help-send-link");
       var quickBtn = document.getElementById("help-send-quick");
