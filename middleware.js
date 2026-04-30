@@ -17,15 +17,11 @@ const PUBLIC_PATHS_STATIC = ["/favicon.ico", "/robots.txt"];
 const PROTECTED_PRODUCTS = [
   {
     hostPrefix: "encor.",
-    /** Same ENCOR gate on the dedicated Vercel deployment hostname (not matched by encor.* prefix). */
-    exactHosts: ["becertifiedtoday-encor.vercel.app"],
-    /** Match becertifiedtoday-encor.vercel.app and preview hosts becertifiedtoday-encor-*.vercel.app */
-    matchEncorVercelAppDeployments: true,
     cookieName: "encor_access_token",
     renewPath: "/encor-renew.html",
     sessionKvPrefix: "encor:session:",
     accessKvPrefix: "encor:access:",
-    /** After auth on encor.* only: `/` was marketing index; send to ENCOR overview. Skip on exactHosts where `/` is already the portal. */
+    /** After auth on encor.*: `/` rewrites to marketing index; send subscribers to ENCOR overview. */
     portalHomePath: "/CCNP_Encor.html",
   },
 ];
@@ -56,36 +52,17 @@ async function kvGet(url, token, key) {
   return data.result;
 }
 
-/** Production + preview URLs for the ENCOR Vercel project (becertifiedtoday-encor*.vercel.app). */
-function matchesEncorVercelDeploymentHost(h) {
-  if (h === "becertifiedtoday-encor.vercel.app") return true;
-  if (!h.endsWith(".vercel.app")) return false;
-  return h.startsWith("becertifiedtoday-encor");
-}
-
 function matchProtectedProduct(host) {
   const h = host.toLowerCase();
   return (
     PROTECTED_PRODUCTS.find((p) => {
       if (h.startsWith(p.hostPrefix)) return true;
-      if (p.matchEncorVercelAppDeployments && matchesEncorVercelDeploymentHost(h)) return true;
-      return Array.isArray(p.exactHosts) && p.exactHosts.some((eh) => eh === h);
+      return false;
     }) || null
   );
 }
 
-/** Renew page lives on the marketing origin; Vercel ENCOR hostname may not ship that HTML. */
 function renewRedirectUrl(product, requestUrl) {
-  let hostname;
-  try {
-    hostname = new URL(requestUrl).hostname.toLowerCase();
-  } catch {
-    return new URL(product.renewPath, requestUrl).href;
-  }
-  if (matchesEncorVercelDeploymentHost(hostname) || (Array.isArray(product.exactHosts) && product.exactHosts.includes(hostname))) {
-    const pub = String(process.env.PUBLIC_SITE_URL || "https://becertifiedtoday.com").replace(/\/+$/, "");
-    return `${pub}${product.renewPath}`;
-  }
   return new URL(product.renewPath, requestUrl).href;
 }
 
@@ -133,10 +110,8 @@ export default async function middleware(request) {
     return Response.redirect(renewRedirectUrl(product, request.url), 302);
   }
 
-  const h = host.toLowerCase();
-  const skipPortalRedirect = matchesEncorVercelDeploymentHost(h) || (Array.isArray(product.exactHosts) && product.exactHosts.includes(h));
   const portal = product.portalHomePath;
-  if (!skipPortalRedirect && portal && (path === "/" || path === "/index.html")) {
+  if (portal && (path === "/" || path === "/index.html")) {
     return Response.redirect(new URL(portal, url.origin), 302);
   }
 }
