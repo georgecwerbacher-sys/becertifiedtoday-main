@@ -61,7 +61,14 @@
 <body>
   <main>
     <h1>Certification access help</h1>
-    <p>Use this page to get back into your training during an active access period, or to request a new sign-in link.</p>
+    <p>
+      After you register (checkout), the link in your email only works <strong>once</strong>. When the browser session
+      ends, use this page to get a <strong>new</strong> link (we can save your email on this device so you only tap
+      <strong>Email me a new sign-in link</strong>). Bookmark this page:
+    </p>
+    <p class="mono-hint" style="margin-top: 8px">
+      <a href="https://becertifiedtoday.com/cert-access-help.html">https://becertifiedtoday.com/cert-access-help.html</a>
+    </p>
 
     <aside id="encor-active-access" class="card active-access" aria-label="Active access" hidden>
       <h2>You have active access on this browser</h2>
@@ -105,20 +112,39 @@
     </section>
 
     <section class="card">
-      <h2>Request a new magic link (new device or signed out)</h2>
-      <p>Enter the same email address used during checkout. If your access is active, we will send a fresh sign-in link.</p>
-      <label for="help-email">Email address</label>
+      <h2>Request a new magic link (after session or cookie cleared)</h2>
+      <p>
+        Each sign-in link in email works once. When your browser session ends or cookies are cleared, you need a
+        <strong>new</strong> link—we still send it by email for security. This page can remember your address on
+        <strong>this device only</strong> so you do not have to type it every time.
+      </p>
+      <div
+        id="help-quick-wrap"
+        style="display: none; margin-bottom: 14px; padding: 12px 14px; border-radius: 10px; border: 1px solid #3d5280; background: rgba(79, 132, 216, 0.08)"
+      >
+        <p style="margin: 0 0 10px; color: #c5d4eb; font-size: 0.95rem">
+          <strong>Quick resend:</strong> we have an email saved on this device
+          <span id="help-quick-email-hint" class="muted"></span>
+        </p>
+        <button id="help-send-quick" class="cta" type="button">Email me a new sign-in link</button>
+      </div>
+      <label for="help-email">Email address (same as checkout)</label>
       <input id="help-email" class="field" type="email" autocomplete="email" placeholder="you@example.com" />
-      <button id="help-send-link" class="cta" type="button">Send new magic link</button>
+      <label class="muted" style="display: flex; gap: 10px; align-items: flex-start; margin-top: 10px; cursor: pointer">
+        <input id="help-remember-email" type="checkbox" checked style="margin-top: 3px" />
+        <span>Remember this email on <strong>this device only</strong> (browser storage). Next time you can use Quick resend without typing.</span>
+      </label>
+      <button id="help-send-link" class="cta" type="button" style="margin-top: 12px">Send new magic link</button>
       <p id="help-status" class="muted" role="status" aria-live="polite"></p>
     </section>
 
     <section class="card">
       <h2>How access works</h2>
       <ul>
-        <li>Checkout grants access to the certification linked to the purchase email.</li>
-        <li>Magic links are one-time and expire after a short window for security.</li>
-        <li>Each device/browser needs its own sign-in via magic link.</li>
+        <li>Checkout ties access to your email for 30 days (same window as your purchase).</li>
+        <li>Each sign-in link in email is one-time and expires soon—that protects your account.</li>
+        <li>After you sign in, a secure cookie can keep you logged in on that browser until it expires or you clear site data.</li>
+        <li>When you need to sign in again, use this page; optional “remember email” avoids retyping on this device.</li>
       </ul>
     </section>
 
@@ -153,10 +179,59 @@
         })
         .catch(function () {});
 
+      var STORAGE_KEY = "encor_checkout_email";
       var button = document.getElementById("help-send-link");
+      var quickBtn = document.getElementById("help-send-quick");
+      var quickWrap = document.getElementById("help-quick-wrap");
+      var quickHint = document.getElementById("help-quick-email-hint");
       var emailInput = document.getElementById("help-email");
+      var rememberCb = document.getElementById("help-remember-email");
       var status = document.getElementById("help-status");
       if (!button || !emailInput || !status) return;
+
+      function getStoredEmail() {
+        try {
+          return String(localStorage.getItem(STORAGE_KEY) || "").trim();
+        } catch (_e) {
+          return "";
+        }
+      }
+      function setStoredEmail(value) {
+        try {
+          if (value) localStorage.setItem(STORAGE_KEY, String(value).trim().toLowerCase());
+          else localStorage.removeItem(STORAGE_KEY);
+        } catch (_e) {}
+      }
+      function applyRememberFromInput() {
+        if (!rememberCb || !rememberCb.checked) {
+          setStoredEmail("");
+          return;
+        }
+        var e = String(emailInput.value || "").trim().toLowerCase();
+        if (e) setStoredEmail(e);
+      }
+      function updateQuickSection() {
+        var stored = getStoredEmail();
+        if (!quickWrap) return;
+        if (stored) {
+          quickWrap.style.display = "block";
+          if (quickHint) quickHint.textContent = "(" + stored + ")";
+          if (!String(emailInput.value || "").trim()) emailInput.value = stored;
+        } else {
+          quickWrap.style.display = "none";
+          if (quickHint) quickHint.textContent = "";
+        }
+      }
+
+      updateQuickSection();
+
+      async function requestMagicLink(email) {
+        await fetch("/api/auth/request-magic-link", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: String(email || "").trim().toLowerCase() }),
+        });
+      }
 
       button.addEventListener("click", async function () {
         var email = String(emailInput.value || "").trim();
@@ -165,12 +240,14 @@
         button.textContent = "Sending...";
         status.textContent = "";
         try {
-          await fetch("/api/auth/request-magic-link", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: email }),
-          });
-          status.textContent = "If access is active, a new magic link has been sent.";
+          if (!email) {
+            status.textContent = "Enter the email you used at checkout.";
+            return;
+          }
+          await requestMagicLink(email);
+          applyRememberFromInput();
+          updateQuickSection();
+          status.textContent = "If access is active, a new magic link has been sent to your inbox.";
         } catch (_error) {
           status.textContent = "Request received. Please try again in a minute if needed.";
         } finally {
@@ -178,6 +255,38 @@
           button.textContent = restore;
         }
       });
+
+      if (quickBtn) {
+        quickBtn.addEventListener("click", async function () {
+          var email = getStoredEmail() || String(emailInput.value || "").trim();
+          var restore = quickBtn.textContent;
+          quickBtn.disabled = true;
+          quickBtn.textContent = "Sending...";
+          status.textContent = "";
+          try {
+            if (!email) {
+              status.textContent = "Enter your email above once, or check Remember, then try again.";
+              return;
+            }
+            emailInput.value = email;
+            await requestMagicLink(email);
+            if (rememberCb && rememberCb.checked) setStoredEmail(email);
+            status.textContent = "If access is active, a new magic link has been sent.";
+          } catch (_e) {
+            status.textContent = "Please try again in a minute if needed.";
+          } finally {
+            quickBtn.disabled = false;
+            quickBtn.textContent = restore;
+          }
+        });
+      }
+
+      if (rememberCb) {
+        rememberCb.addEventListener("change", function () {
+          if (!rememberCb.checked) setStoredEmail("");
+          updateQuickSection();
+        });
+      }
     })();
   </script>
   <script defer src="/js/global-site-menu.js"></script>

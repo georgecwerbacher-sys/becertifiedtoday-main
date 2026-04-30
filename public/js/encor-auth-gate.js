@@ -24,12 +24,21 @@
       }
     })();
 
+  function reveal() {
+    try {
+      document.documentElement.classList.remove("encor-gate-pending");
+    } catch (_e) {}
+  }
+
   fetch("/api/auth/access-status", { credentials: "include" })
     .then(function (r) {
       return r.ok ? r.json() : Promise.reject(new Error("access-status not ok"));
     })
     .then(function (data) {
-      if (data && data.has_access === true) return;
+      if (data && data.has_access === true) {
+        reveal();
+        return;
+      }
       location.replace(renew);
     })
     .catch(function () {

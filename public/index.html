@@ -2,6 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <script>
+    (function () {
+      var h = (location.hostname || "").toLowerCase();
+      if (
+        h === "becertifiedtoday-encor.vercel.app" ||
+        h === "ccnp-study.vercel.app" ||
+        h.startsWith("encor.")
+      ) {
+        document.documentElement.classList.add("encor-gate-pending");
+      }
+    })();
+  </script>
+  <style>
+    html.encor-gate-pending body {
+      visibility: hidden !important;
+    }
+  </style>
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta
