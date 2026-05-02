@@ -384,60 +384,14 @@
       font-size: 0.9rem;
       line-height: 1.45;
     }
-    .purchase-launch-countdown {
-      margin-bottom: 18px;
-      padding: 16px 18px;
-      border-radius: 12px;
-      border: 1px solid var(--accent-border);
-      background: rgba(47, 102, 191, 0.12);
-      text-align: center;
-    }
-    html.purchase-checkout-live .purchase-launch-countdown {
-      display: none;
-    }
-    .purchase-launch-countdown__title {
-      margin: 0 0 6px;
-      font-size: 1rem;
-      font-weight: 800;
-      color: var(--text);
-    }
-    .purchase-launch-countdown__sub {
-      margin: 0 0 14px;
-      font-size: 0.88rem;
-      color: var(--muted);
-      line-height: 1.45;
-    }
-    .purchase-launch-countdown__timer {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px 18px;
-      font-variant-numeric: tabular-nums;
-    }
-    .purchase-launch-countdown__unit {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      min-width: 3.5rem;
-    }
-    .purchase-launch-countdown__unit strong {
-      font-size: clamp(1.35rem, 3vw, 1.75rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      line-height: 1.2;
-    }
-    .purchase-launch-countdown__unit small {
-      margin-top: 4px;
-      font-size: 0.72rem;
+    .purchase-track-sub a {
+      color: #a8c4f0;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #6b8ab8;
+      text-decoration: underline;
+      text-underline-offset: 3px;
     }
-    .purchase-access-mount {
-      position: relative;
-      transition: opacity 0.2s ease;
+    .purchase-track-sub a:hover {
+      color: #c8daf8;
     }
     .purchase-access-disclaimer {
       margin: 10px 0 0;
@@ -446,11 +400,6 @@
       color: #9fb0cc;
       font-size: 0.84rem;
       line-height: 1.45;
-    }
-    .purchase-access-mount--locked {
-      opacity: 0.42;
-      pointer-events: none;
-      user-select: none;
     }
     .site-disclaimer {
       max-width: 720px;
@@ -770,21 +719,6 @@
       color: var(--text);
       font-weight: 700;
     }
-    .mock-soon {
-      margin: 0;
-      padding: 12px 14px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: rgba(13, 21, 40, 0.65);
-      color: #b8c3d6;
-      font-size: clamp(0.88rem, 2vw, 0.95rem);
-      line-height: 1.5;
-      max-width: 58ch;
-    }
-    .mock-soon strong {
-      color: var(--text);
-      font-weight: 700;
-    }
   </style>
 </head>
 <body>
@@ -799,7 +733,11 @@
         />
       </a>
       <div class="header-actions">
-        <a class="header-sign-up" href="/CCNP_Encor.html">CCNP ENCOR</a>
+        <a
+          class="header-sign-up"
+          href="https://becertifiedtoday-encor.vercel.app/"
+          rel="noopener noreferrer"
+        >CCNP ENCOR</a>
       </div>
     </header>
     <figure class="hero-banner">
@@ -915,18 +853,16 @@
                   <strong>No recurring membership.</strong> Thirty days of access for a single price—when it ends,
                   renew only if you want another month.
                   <strong>No additional software</strong> is required; everything runs in your browser.
-                  <strong>Checkout is temporarily unavailable.</strong>
-                  Purchase access will return after the subdomain transition is complete.
                   <strong>We do not collect customer information for promotion or sale.</strong>
                   We do not use customer data from purchases for marketing or profiling.
                 </p>
                 <div class="purchase-access-wrap">
-                  <div class="purchase-track-box" aria-label="Upcoming CCNP ENCOR training checkout">
-                    <p class="purchase-track-title">Upcoming training checkout</p>
+                  <div class="purchase-track-box" aria-label="CCNP ENCOR training">
+                    <p class="purchase-track-title">CCNP ENCOR training</p>
                     <p class="purchase-track-sub">
-                      CCNP ENCOR checkout is paused while the site is moved to the updated subdomain.
-                      No payment form is active on this page right now.
-                    </div>
+                      The ENCOR practice library is live in your browser—questions, labs, drag-and-drop, and timed simulation.
+                      <a href="https://becertifiedtoday-encor.vercel.app/" rel="noopener noreferrer">Open CCNP ENCOR training</a>
+                    </p>
                     <p class="purchase-access-disclaimer">
                       No membership is required, and BeCertifiedToday will never ask you directly for payment or personal information.
                     </p>
@@ -965,7 +901,7 @@
                   Security+ training path with targeted practice sets and exam-style preparation.
                 </p>
                 <p class="format-sample">
-                  <strong>Coming soon:</strong> Security+
+                  Try the samples on this page for question, lab, and drag-and-drop formats; additional CompTIA tracks are added over time.
                 </p>
               </article>
             </li>
@@ -976,7 +912,7 @@
                   Foundation networking track with practice questions, labs, and guided study sets.
                 </p>
                 <p class="format-sample">
-                  Coming soon.
+                  Use the site-wide samples above; CCNA banks use the same interactive modes as they roll out.
                 </p>
               </article>
             </li>
@@ -987,10 +923,10 @@
                   Professional-level training with interactive formats, labs, drag-and-drop, and timed simulation.
                 </p>
                 <p class="format-sample">
-                  <a href="/CCNP_Encor.html">Open CCNP ENCOR training</a>
+                  <a href="https://becertifiedtoday-encor.vercel.app/" rel="noopener noreferrer">Open CCNP ENCOR training</a>
                 </p>
                 <p class="format-sample">
-                  <strong>Coming soon</strong><br />
+                  <strong>CCNP Enterprise concentrations</strong><br />
                   300-410 ENARSI<br />
                   300-415 ENSDWI<br />
                   300-420 ENSLD<br />
