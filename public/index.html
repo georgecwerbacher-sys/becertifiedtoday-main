@@ -612,6 +612,95 @@
       outline-offset: 3px;
       border-radius: 4px;
     }
+    .faq-section {
+      margin-top: clamp(40px, 8vw, 72px);
+      padding-top: clamp(36px, 6vw, 56px);
+      border-top: 1px solid var(--border);
+    }
+    .faq-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .faq-section .formats-lead {
+      margin-bottom: clamp(20px, 4vw, 28px);
+    }
+    .faq-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .faq-details {
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+    .faq-summary {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      padding: clamp(16px, 3vw, 20px) clamp(18px, 3.5vw, 22px);
+      cursor: pointer;
+      font-size: clamp(1rem, 2.3vw, 1.08rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      line-height: 1.35;
+      list-style: none;
+    }
+    .faq-summary::-webkit-details-marker {
+      display: none;
+    }
+    .faq-summary::marker {
+      content: "";
+    }
+    .faq-summary::after {
+      content: "";
+      flex-shrink: 0;
+      width: 0.55em;
+      height: 0.55em;
+      margin-top: 0.35em;
+      border-right: 2px solid #6b8ab8;
+      border-bottom: 2px solid #6b8ab8;
+      transform: rotate(45deg);
+      transition: transform 0.2s ease;
+    }
+    .faq-details[open] > .faq-summary::after {
+      transform: rotate(-135deg);
+      margin-top: 0.5em;
+    }
+    .faq-summary:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: -2px;
+      border-radius: 14px;
+    }
+    .faq-answer {
+      padding: 0 clamp(18px, 3.5vw, 22px) clamp(18px, 3.5vw, 22px);
+      border-top: 1px solid rgba(45, 59, 90, 0.85);
+      color: #b8c3d6;
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.6;
+    }
+    .faq-answer p {
+      margin: 0 0 12px;
+    }
+    .faq-answer p:last-child {
+      margin-bottom: 0;
+    }
+    .faq-answer a {
+      color: #a8c4f0;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .faq-answer a:hover {
+      color: #c8daf8;
+    }
     .mock-section {
       margin-top: clamp(40px, 8vw, 72px);
       padding-top: clamp(36px, 6vw, 56px);
@@ -935,6 +1024,87 @@
                   300-445 ENNA
                 </p>
               </article>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="faq-section" id="faq" aria-labelledby="faq-title">
+        <div class="faq-inner">
+          <p class="formats-head">FAQ</p>
+          <h2 id="faq-title">Access &amp; devices</h2>
+          <p class="formats-lead">
+            How sign-in links work, switching phones or browsers, and using the site on mobile.
+          </p>
+          <ul class="faq-list">
+            <li>
+              <details class="faq-details">
+                <summary class="faq-summary">Do I need a membership?</summary>
+                <div class="faq-answer">
+                  <p>
+                    <strong>No.</strong> Be Certified Today does not sell a recurring membership. You choose access for a
+                    defined period (for example, 30 days of full library access on this site) and only pay again if you
+                    want another period. Sample questions and labs on this homepage stay available without purchase.
+                  </p>
+                </div>
+              </details>
+            </li>
+            <li>
+              <details class="faq-details">
+                <summary class="faq-summary">My link failed on a new device or browser—what should I do?</summary>
+                <div class="faq-answer">
+                  <p>
+                    Access links are validated for the <strong>device and browser</strong> where you open them. If you
+                    switch phones, use another laptop, change browsers, or open a private/incognito window, treat it like
+                    a new environment: go to the ENCOR portal and <strong>request a new access email</strong> using the
+                    same address you used at checkout, and complete the steps <strong>on that device and browser</strong>.
+                  </p>
+                  <p>
+                    Full ENCOR training:
+                    <a href="https://becertifiedtoday-encor.vercel.app/" rel="noopener noreferrer">becertifiedtoday-encor.vercel.app</a>
+                  </p>
+                </div>
+              </details>
+            </li>
+            <li>
+              <details class="faq-details">
+                <summary class="faq-summary">What does a 90-day access link cover?</summary>
+                <div class="faq-answer">
+                  <p>
+                    When your flow includes a <strong>90-day</strong> device or admin-style link, training use on that
+                    paired setup is <strong>unlimited for the whole period</strong>. You are not limited to a fixed number
+                    of logins during those 90 days—just normal, reasonable personal study use on that device.
+                  </p>
+                </div>
+              </details>
+            </li>
+            <li>
+              <details class="faq-details">
+                <summary class="faq-summary">Can I study on a phone or iPad?</summary>
+                <div class="faq-answer">
+                  <p>
+                    <strong>Yes.</strong> Practice runs in the browser on desktops, phones, and tablets (including iPad).
+                    Use an up-to-date Safari, Chrome, or Firefox. Drag-and-drop and lab layouts are built to work with
+                    touch and pointer input.
+                  </p>
+                  <p>
+                    If a page misbehaves on mobile, request a <strong>fresh access link from that same phone or tablet</strong>
+                    so your session matches where you actually train.
+                  </p>
+                </div>
+              </details>
+            </li>
+            <li>
+              <details class="faq-details">
+                <summary class="faq-summary">Will anyone call or email me for payment information?</summary>
+                <div class="faq-answer">
+                  <p>
+                    No. Be Certified Today does not collect customer details for resale or marketing, and nobody from the
+                    site will contact you to ask for payment card numbers or personal information. Complete purchases only
+                    through the official checkout flow; use official magic-link or portal pages for access.
+                  </p>
+                </div>
+              </details>
             </li>
           </ul>
         </div>
