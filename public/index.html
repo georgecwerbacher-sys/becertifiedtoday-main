@@ -107,6 +107,108 @@
       outline: 2px solid var(--accent-border);
       outline-offset: 3px;
     }
+    /* Site-wide primary CTA — CCNP ENCOR training */
+    .cta-main {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 24px;
+      border-radius: 12px;
+      border: 1px solid rgba(120, 170, 255, 0.45);
+      font-size: clamp(0.78rem, 1.9vw, 1.02rem);
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      text-align: center;
+      color: #f4f7ff;
+      background: linear-gradient(165deg, #4f8aea 0%, #2f66bf 48%, #244f9a 100%);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.14) inset,
+        0 6px 22px rgba(47, 102, 191, 0.42);
+      transition: filter 0.15s ease, box-shadow 0.15s ease;
+    }
+    .cta-main:hover {
+      color: #fff;
+      filter: brightness(1.07);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.18) inset,
+        0 8px 28px rgba(47, 102, 191, 0.5);
+    }
+    .cta-main:focus-visible {
+      outline: 2px solid #9ec0ff;
+      outline-offset: 3px;
+    }
+    .cta-main--block {
+      width: 100%;
+    }
+    a.header-cta-main {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(120, 170, 255, 0.5);
+      max-width: min(100%, 22rem);
+      font-size: clamp(0.62rem, 1.35vw, 0.78rem);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+      text-align: center;
+      text-decoration: none;
+      white-space: normal;
+      color: #f4f7ff;
+      background: linear-gradient(165deg, #4f8aea 0%, #2f66bf 50%, #244f9a 100%);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.12) inset,
+        0 4px 18px rgba(47, 102, 191, 0.38);
+      transition: filter 0.15s ease;
+    }
+    a.header-cta-main:hover {
+      color: #fff;
+      filter: brightness(1.07);
+    }
+    a.header-cta-main:focus-visible {
+      outline: 2px solid #9ec0ff;
+      outline-offset: 3px;
+    }
+    .hero-main-cta {
+      margin: 0 0 clamp(28px, 5vw, 40px);
+      padding: clamp(18px, 3.5vw, 22px) clamp(18px, 3vw, 22px);
+      border-radius: 14px;
+      border: 1px solid rgba(45, 59, 90, 0.2);
+      background: #fff;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    .hero-main-cta-label {
+      margin: 0 0 12px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #2f66bf;
+    }
+    .hero-main-cta-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+    }
+    @media (min-width: 480px) {
+      .hero-main-cta-actions .cta-main {
+        align-self: flex-start;
+      }
+    }
+    .hero-main-cta-note {
+      margin: 0;
+      font-size: 0.88rem;
+      color: #3d4d63;
+      line-height: 1.45;
+    }
+    .hero-main-cta-note strong {
+      color: #0a6b3d;
+      font-weight: 700;
+    }
     button.header-sign-up {
       font: inherit;
       cursor: not-allowed;
@@ -383,6 +485,53 @@
       border: 1px solid var(--accent-border);
       background: rgba(47, 102, 191, 0.08);
     }
+    .purchase-track-box--encor-live {
+      padding: clamp(18px, 3vw, 22px) clamp(16px, 3vw, 20px);
+      border-color: rgba(47, 102, 191, 0.35);
+      background: #fff;
+      box-shadow:
+        0 0 0 1px rgba(79, 132, 216, 0.18) inset,
+        0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+    .purchase-track-box--encor-live .purchase-track-title {
+      color: #142a4a;
+    }
+    .purchase-track-box--encor-live .purchase-track-sub {
+      color: #2a3d56;
+    }
+    .purchase-track-box--encor-live .encor-live-lead {
+      color: #085e32;
+    }
+    .purchase-track-box--encor-live .purchase-access-disclaimer {
+      border-top-color: rgba(45, 63, 92, 0.22);
+      color: #4d5f78;
+    }
+    .purchase-track-head {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px 12px;
+      margin: 0 0 10px;
+    }
+    .purchase-track-head .purchase-track-title {
+      margin: 0;
+    }
+    .encor-live-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #041208;
+      background: linear-gradient(155deg, #4ae092 0%, #1fa855 100%);
+      box-shadow:
+        0 0 0 1px rgba(74, 224, 146, 0.65),
+        0 2px 16px rgba(31, 168, 85, 0.45);
+    }
     .purchase-track-title {
       margin: 0 0 6px;
       font-size: 0.92rem;
@@ -405,6 +554,39 @@
     }
     .purchase-track-sub a:hover {
       color: #c8daf8;
+    }
+    .purchase-track-cta-wrap {
+      margin: 16px 0 0;
+    }
+    .format-sample a.cta-main {
+      color: #f4f7ff;
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .format-sample a.cta-main:hover {
+      color: #fff;
+    }
+    .encor-live-lead {
+      color: #c8f5dc;
+      font-weight: 800;
+    }
+    .format-card-encor-live {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px 10px;
+      margin: 0 0 12px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(61, 220, 132, 0.35);
+      background: rgba(34, 168, 90, 0.1);
+      font-size: 0.88rem;
+      font-weight: 700;
+      line-height: 1.35;
+      color: #d4efe3;
+    }
+    .format-card-encor-live-label {
+      letter-spacing: 0.02em;
     }
     .purchase-access-disclaimer {
       margin: 10px 0 0;
@@ -625,6 +807,21 @@
       outline-offset: 3px;
       border-radius: 4px;
     }
+    /* CCNA Training: full sentence link — same color as body, no underline (override .format-sample a) */
+    .format-sample a.format-sample-plain-link {
+      color: inherit;
+      font-weight: inherit;
+      text-decoration: none;
+    }
+    .format-sample a.format-sample-plain-link:hover {
+      color: inherit;
+      text-decoration: none;
+    }
+    .format-sample a.format-sample-plain-link:focus-visible {
+      outline: 1px solid rgba(79, 132, 216, 0.35);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
     .faq-section {
       margin-top: clamp(40px, 8vw, 72px);
       padding-top: clamp(36px, 6vw, 56px);
@@ -835,6 +1032,13 @@
         />
       </a>
       <div class="header-actions">
+        <a
+          class="header-cta-main"
+          href="https://becertifiedtoday-encor.vercel.app/"
+          rel="noopener noreferrer"
+          aria-label="Access Cisco ENCOR training portal today"
+          >ACCESS CISCO ENCOR TRAINING PORTAL TODAY</a
+        >
         <button type="button" class="header-sign-up" disabled aria-label="CCNA Training Portal (coming soon)">
           CCNA Training Portal
         </button>
@@ -872,10 +1076,24 @@
             </li>
             <li>New questions are added continuously to keep preparation current.</li>
           </ul>
+          <div class="hero-main-cta">
+            <p class="hero-main-cta-label">Main training portal</p>
+            <div class="hero-main-cta-actions">
+              <a
+                class="cta-main"
+                href="https://becertifiedtoday-encor.vercel.app/"
+                rel="noopener noreferrer"
+                >ACCESS CISCO ENCOR TRAINING PORTAL TODAY</a
+              >
+              <p class="hero-main-cta-note">
+                <strong>Live now</strong> — full ENCOR question bank, labs, drag-and-drop, and timed simulation in your browser.
+              </p>
+            </div>
+          </div>
           <ul class="formats-grid" aria-label="Sample practice formats">
             <li>
               <article class="format-card" aria-labelledby="home-format-q-title">
-                <h3 id="home-format-q-title">Sample questions</h3>
+                <h3 id="home-format-q-title">CCNP-ENCOR · Sample questions</h3>
                 <figure class="format-card-thumb">
                   <img
                     src="/images/practice-questions-sample-thumbnail.jpg"
@@ -894,7 +1112,7 @@
             </li>
             <li>
               <article class="format-card" aria-labelledby="home-format-lab-title">
-                <h3 id="home-format-lab-title">Sample lab</h3>
+                <h3 id="home-format-lab-title">CCNP-ENCOR · Sample lab</h3>
                 <figure class="format-card-thumb">
                   <img
                     src="/images/hands-on-lab-sample-thumbnail.jpg"
@@ -913,7 +1131,7 @@
             </li>
             <li>
               <article class="format-card" aria-labelledby="home-format-dd-title">
-                <h3 id="home-format-dd-title">Sample drag-and-drop</h3>
+                <h3 id="home-format-dd-title">CCNP-ENCOR · Sample drag-and-drop</h3>
                 <figure class="format-card-thumb">
                   <img
                     src="/images/drag-drop-sample-thumbnail.jpg"
@@ -932,18 +1150,18 @@
             </li>
             <li>
               <article class="format-card" aria-labelledby="home-format-ftp-title">
-                <h3 id="home-format-ftp-title">Sample file-transfer drag-and-drop</h3>
+                <h3 id="home-format-ftp-title">CCNA · Sample file-transfer drag-and-drop</h3>
                 <figure class="format-card-thumb">
                   <img
-                    src="/images/drag-drop-sample-thumbnail.jpg"
+                    src="/images/ftp-tftp-drag-drop-sample-thumbnail.png"
                     width="1024"
-                    height="535"
-                    alt="Drag-and-drop practice: match descriptions to FTP or TFTP."
+                    height="544"
+                    alt="CCNA drag-and-drop practice: match descriptions to FTP or TFTP."
                     decoding="async"
                     loading="lazy"
                   />
                 </figure>
-                <p>CCNA practice: match file-transfer descriptions to FTP and TFTP using the shared sample route.</p>
+                <p>Drag-and-drop practice: match descriptions to FTP or TFTP.</p>
                 <p class="format-sample">
                   <a href="/sample?track=ftp">Open sample</a>
                 </p>
@@ -976,14 +1194,26 @@
                   We do not use customer data from purchases for marketing or profiling.
                 </p>
                 <div class="purchase-access-wrap">
-                  <div class="purchase-track-box" aria-label="CCNP ENCOR training">
-                    <p class="purchase-track-title">CCNP ENCOR training</p>
+                  <div class="purchase-track-box purchase-track-box--encor-live" aria-label="CCNP ENCOR training live">
+                    <div class="purchase-track-head">
+                      <p class="purchase-track-title">CCNP ENCOR training</p>
+                      <span class="encor-live-badge">Live</span>
+                    </div>
                     <p class="purchase-track-sub">
-                      The ENCOR practice library is live in your browser—questions, labs, drag-and-drop, and timed simulation.
-                      <a href="https://becertifiedtoday-encor.vercel.app/" rel="noopener noreferrer">Open CCNP ENCOR training</a>
+                      <strong class="encor-live-lead">CCNP ENCOR training is live—</strong>
+                      the full practice library is up and running in your browser: questions, labs, drag-and-drop, and timed
+                      simulation.
+                    </p>
+                    <p class="purchase-track-cta-wrap">
+                      <a
+                        class="cta-main cta-main--block"
+                        href="https://becertifiedtoday-encor.vercel.app/"
+                        rel="noopener noreferrer"
+                        >ACCESS CISCO ENCOR TRAINING PORTAL TODAY</a
+                      >
                     </p>
                     <p class="purchase-access-disclaimer">
-                      No membership is required, and BeCertifiedToday will never ask you directly for payment or personal information.
+                      No membership required. 30-day full access. No PDFs or downloads, including labs.
                     </p>
                   </div>
                 </div>
@@ -1008,7 +1238,7 @@
       <section class="formats-section" aria-labelledby="formats-title">
         <div class="formats-inner">
           <p class="formats-head">Training paths</p>
-          <h2 id="formats-title">Choose your certification training container</h2>
+          <h2 id="formats-title">CHOOSE YOUR CERTIFICATION TRAINING PORTAL</h2>
           <p class="formats-lead">
             Pick a training path to enter the right practice library and study flow.
           </p>
@@ -1016,6 +1246,16 @@
             <li>
               <article class="format-card" aria-labelledby="comptia-training-title">
                 <h3 id="comptia-training-title">CompTIA Training</h3>
+                <figure class="format-card-thumb">
+                  <img
+                    src="/images/comptia-training-card-thumbnail.png"
+                    width="1024"
+                    height="682"
+                    alt="IT professional with a laptop and a security lock hologram, suggesting cybersecurity training."
+                    decoding="async"
+                    loading="lazy"
+                  />
+                </figure>
                 <p>
                   Security+ training path with targeted practice sets and exam-style preparation.
                 </p>
@@ -1027,31 +1267,61 @@
             <li>
               <article class="format-card" aria-labelledby="ccna-training-title">
                 <h3 id="ccna-training-title">CCNA Training</h3>
+                <figure class="format-card-thumb">
+                  <img
+                    src="/images/ccna-training-card-thumbnail.png"
+                    width="1024"
+                    height="683"
+                    alt="Ethernet cables plugged into a network switch with green status LEDs."
+                    decoding="async"
+                    loading="lazy"
+                  />
+                </figure>
                 <p>
                   Foundation networking track with practice questions, labs, and guided study sets.
                 </p>
                 <p class="format-sample">
-                  Use the site-wide samples above; CCNA banks use the same interactive modes as they roll out.
+                  <a class="format-sample-plain-link" href="/CCNA-Study/ccna-index.html"
+                    >Use the site-wide samples above; CCNA banks use the same interactive modes as they roll out.</a>
                 </p>
               </article>
             </li>
             <li>
               <article class="format-card" aria-labelledby="ccnp-training-title">
                 <h3 id="ccnp-training-title">CCNP Training</h3>
+                <figure class="format-card-thumb">
+                  <img
+                    src="/images/ccnp-training-card-thumbnail.png"
+                    width="1024"
+                    height="682"
+                    alt="Network engineer working with fiber optic cables in a data center server room."
+                    decoding="async"
+                    loading="lazy"
+                  />
+                </figure>
+                <p class="format-card-encor-live">
+                  <span class="encor-live-badge">Live</span>
+                  <span class="format-card-encor-live-label">CCNP ENCOR training is up and running.</span>
+                </p>
                 <p>
                   Professional-level training with interactive formats, labs, drag-and-drop, and timed simulation.
                 </p>
-                <p class="format-sample">
-                  <a href="https://becertifiedtoday-encor.vercel.app/" rel="noopener noreferrer">Open CCNP ENCOR training</a>
+                <p class="format-sample format-sample--main-cta">
+                  <a
+                    class="cta-main cta-main--block"
+                    href="https://becertifiedtoday-encor.vercel.app/"
+                    rel="noopener noreferrer"
+                    >ACCESS CISCO ENCOR TRAINING PORTAL TODAY</a
+                  >
                 </p>
                 <p class="format-sample">
                   <strong>CCNP Enterprise concentrations</strong><br />
-                  300-410 ENARSI<br />
-                  300-415 ENSDWI<br />
-                  300-420 ENSLD<br />
-                  300-435 ENAUTO<br />
-                  300-440 ENCC<br />
-                  300-445 ENNA
+                  300-410 ENARSI -coming soon<br />
+                  300-415 ENSDWI -coming soon<br />
+                  300-420 ENSLD -coming soon<br />
+                  300-435 ENAUTO -coming soon<br />
+                  300-440 ENCC -coming soon<br />
+                  300-445 ENNA -coming soon
                 </p>
               </article>
             </li>
@@ -1075,6 +1345,18 @@
                     <strong>No.</strong> Be Certified Today does not sell a recurring membership. You choose access for a
                     defined period (for example, 30 days of full library access on this site) and only pay again if you
                     want another period. Sample questions and labs on this homepage stay available without purchase.
+                  </p>
+                </div>
+              </details>
+            </li>
+            <li>
+              <details class="faq-details">
+                <summary class="faq-summary">
+                  Do I need additional software like GNS3 or IOU to run the labs?
+                </summary>
+                <div class="faq-answer">
+                  <p>
+                    <strong>No.</strong> No downloads are required to practice the labs—it is all built into the testing engine.
                   </p>
                 </div>
               </details>
