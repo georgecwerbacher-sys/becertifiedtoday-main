@@ -355,7 +355,7 @@ def choice_line(mono: bool, name: str, letter: str, text: str) -> str:
 
 
 def main() -> None:
-    total = 41
+    total = 48
     chain = [
         {
             "slug": "dhcp-relay-dhcpdiscover",
@@ -749,6 +749,102 @@ def main() -> None:
                 "allows application developers to interact with the network",
                 "facilitates communication between the controller and the networking hardware",
             ],
+        },
+        {
+            "slug": "err-disabled-port-security-violation",
+            "title": "CCNA — Err-disabled and port security",
+            "stem": "What causes a port to be placed in the err-disabled state?",
+            "name": "errdis",
+            "correct": "D",
+            "explain": "Correct. D — With port security in shutdown violation mode (common default), a violation can err-disable the port. Latency and an empty port do not cause err-disable. shutdown is administrative down, not err-disabled.",
+            "choices": [
+                "latency",
+                "nothing plugged into the port",
+                "shutdown command issued on the port",
+                "port security violation",
+            ],
+        },
+        {
+            "slug": "northbound-rest-sdn-applications",
+            "title": "CCNA — Controller to applications",
+            "stem": "Which technology is appropriate for communication between an SDN controller and applications running over the network?",
+            "name": "nbapi",
+            "correct": "D",
+            "explain": "Correct. D — Northbound interfaces expose the controller to applications and orchestration; REST over HTTP/HTTPS is a common style. OpenFlow and NETCONF are typically southbound to devices. Southbound API is device-facing, not application-facing.",
+            "choices": ["OpenFlow", "Southbound API", "NETCONF", "REST API"],
+        },
+        {
+            "slug": "physical-access-badge-readers-datacenter",
+            "title": "CCNA — Physical access and badges",
+            "stem": "Which security program element involves installing badge readers on data-center doors to allow workers to enter and exit based on their job roles?",
+            "name": "physbad",
+            "correct": "A",
+            "explain": "Correct. A — Door badge readers control physical entry; that is physical access control. Biometrics is a different factor. RBAC is mainly logical permissions to systems. MFA requires multiple factors and is not what door badges alone describe.",
+            "choices": [
+                "physical access control",
+                "biometrics",
+                "role-based access control",
+                "multifactor authentication",
+            ],
+        },
+        {
+            "slug": "private-ipv4-characteristic-registration",
+            "title": "CCNA — Private IPv4 characteristic",
+            "stem": "What is a characteristic of private IPv4 addressing?",
+            "name": "privch",
+            "correct": "A",
+            "explain": "Correct. A — RFC 1918 space is reused internally and is not uniquely registered for global Internet routing the way public addresses are; organizations use it with NAT at the edge. It is not issued per ASN like that, does not cross the Internet natively, and private space overall is far larger than a single /16.",
+            "choices": [
+                "used without tracking or registration",
+                "issued by IANA in conjunction with an autonomous system number",
+                "traverse the Internet when an outbound ACL is applied",
+                "composed of up to 65,536 available addresses",
+            ],
+        },
+        {
+            "slug": "data-plane-forwarding-lookup",
+            "title": "CCNA — Data plane action",
+            "stem": "Which network action occurs within the data plane?",
+            "name": "dplane",
+            "correct": "A",
+            "explain": "Correct. A — Per-packet destination lookup against forwarding information (often the FIB built from the routing table) is data-plane forwarding. NETCONF RPC handling and routing-protocol processes are control/management plane. Locally generated ICMP echo replies are often handled in software, not the main hardware forwarding path this item targets.",
+            "choices": [
+                "compare the destination IP address to the IP routing table",
+                "make a configuration change from an incoming NETCONF RPC",
+                "run routing protocols (OSPF, EIGRP, RIP, BGP)",
+                "reply to an incoming ICMP echo request",
+            ],
+        },
+        {
+            "slug": "sdn-automation-improvements-choose-two",
+            "title": "CCNA — SDN automation benefits (choose two)",
+            "stem": "What are two improvements provided by automation for network management in an SDN environment? (Choose two)",
+            "name": "sdnauto",
+            "choose_two": True,
+            "correct": ["B", "C"],
+            "explain": "Correct. B and C — Telemetry and analytics build a baseline for behavior and capacity, and automated onboarding (templates, ZTP, controller workflows) reduces manual effort. AI/ML design prevention and proprietary API wording are not the usual paired answers here.",
+            "choices": [
+                "Artificial intelligence identifies and prevents potential design failures",
+                "Data collection and analysis tools establish a baseline for the network",
+                "New devices are onboarded with minimal effort",
+                "Machine learning minimizes the overall error rate when automating troubleshooting processes",
+                "Proprietary Cisco APIs leverage multiple network management tools",
+            ],
+        },
+        {
+            "slug": "ssh-crypto-rsa-key-generation",
+            "title": "CCNA — SSH server key generation",
+            "stem": "A network administrator must configure SSH for remote access to router R1. The requirement is to use a public and private key pair to encrypt management traffic to and from the connecting client. Which configuration, when applied, meets the requirements?",
+            "name": "sshopt",
+            "correct": "B",
+            "explain": "Correct. B — SSH needs a host key pair; crypto key generate rsa modulus 1024 (prefer larger in production) is the standard IOS pattern with ip domain-name or hostname. EC options shown with keysize 1024/2048 do not match typical EC generate syntax. crypto key encrypt rsa name myKey is not the correct generate sequence.",
+            "choices": [
+                "Option A: crypto key generate ec keysize 1024 (after ip domain-name)",
+                "Option B: crypto key generate rsa modulus 1024 (after ip domain-name)",
+                "Option C: crypto key generate ec keysize 2048 (after ip domain-name)",
+                "Option D: crypto key encrypt rsa name myKey (after ip domain-name)",
+            ],
+            "mono": True,
         },
     ]
 

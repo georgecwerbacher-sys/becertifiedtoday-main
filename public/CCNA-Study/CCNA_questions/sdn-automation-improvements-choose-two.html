@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — QoS minimum bandwidth (choose two)</title>
+  <title>CCNA — SDN automation benefits (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -47,6 +47,10 @@
       border: 1px solid #2c3f62;
       font-size: 1.02rem;
       cursor: pointer;
+    }
+    .choice.mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.95rem;
     }
     .choice input {
       margin-right: 10px;
@@ -126,14 +130,14 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>Which two QoS tools are used to guarantee minimum bandwidth to certain traffic? (Choose two.)</h1>
-    <p class="stem-note">Question 1 of 48 · Select exactly two answers, then click Check answer.</p>
+    <h1>What are two improvements provided by automation for network management in an SDN environment? (Choose two)</h1>
+    <p class="stem-note">Question 47 of 48 · Select exactly two answers, then click Check answer.</p>
 
-    <label class="choice"><input type="checkbox" name="qos" value="A" />A. FIFO</label>
-    <label class="choice"><input type="checkbox" name="qos" value="B" />B. CBWFQ</label>
-    <label class="choice"><input type="checkbox" name="qos" value="C" />C. LLC</label>
-    <label class="choice"><input type="checkbox" name="qos" value="D" />D. WFQ</label>
-    <label class="choice"><input type="checkbox" name="qos" value="E" />E. RSVP</label>
+    <label class="choice"><input type="checkbox" name="sdnauto" value="A" />A. Artificial intelligence identifies and prevents potential design failures</label>
+    <label class="choice"><input type="checkbox" name="sdnauto" value="B" />B. Data collection and analysis tools establish a baseline for the network</label>
+    <label class="choice"><input type="checkbox" name="sdnauto" value="C" />C. New devices are onboarded with minimal effort</label>
+    <label class="choice"><input type="checkbox" name="sdnauto" value="D" />D. Machine learning minimizes the overall error rate when automating troubleshooting processes</label>
+    <label class="choice"><input type="checkbox" name="sdnauto" value="E" />E. Proprietary Cisco APIs leverage multiple network management tools</label>
 
     <div class="actions">
       <button id="checkBtn" type="button">Check answer</button>
@@ -144,31 +148,28 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/security-physical-access-tailgating.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/data-plane-forwarding-lookup.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ssh-crypto-rsa-key-generation.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = ["B", "E"];
+      var CORRECT = ["B", "C"];
       var checkBtn = document.getElementById("checkBtn");
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
       function selectedValues() {
         return []
-          .slice.call(document.querySelectorAll('input[name="qos"]:checked'))
-          .map(function (el) {
-            return el.value;
-          })
+          .slice.call(document.querySelectorAll('input[name="sdnauto"]:checked'))
+          .map(function (el) { return el.value; })
           .sort();
       }
 
       function arraysEqual(a, b) {
         if (a.length !== b.length) return false;
-        return a.every(function (v, i) {
-          return v === b[i];
-        });
+        return a.every(function (v, i) { return v === b[i]; });
       }
 
       checkBtn.addEventListener("click", function () {
@@ -179,11 +180,9 @@
           answerBox.textContent = "Choose exactly two answers.";
           return;
         }
-        var ok = arraysEqual(sel, CORRECT.slice().sort());
-        if (ok) {
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent =
-            "Correct. B and E. CBWFQ (class-based weighted fair queuing) reserves minimum bandwidth per class in a policy map. RSVP can reserve bandwidth for flows. FIFO and WFQ do not provide that minimum guarantee; LLC is a Layer 2 protocol, not a QoS queuing tool.";
+          answerBox.textContent = "Correct. B and C \u2014 Telemetry and analytics build a baseline for behavior and capacity, and automated onboarding (templates, ZTP, controller workflows) reduces manual effort. AI/ML design prevention and proprietary API wording are not the usual paired answers here.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
@@ -191,7 +190,7 @@
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="qos"]').forEach(function (el) {
+        document.querySelectorAll('input[name="sdnauto"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";

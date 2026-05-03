@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — QoS minimum bandwidth (choose two)</title>
+  <title>CCNA — Physical access and badges</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -47,6 +47,10 @@
       border: 1px solid #2c3f62;
       font-size: 1.02rem;
       cursor: pointer;
+    }
+    .choice.mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.95rem;
     }
     .choice input {
       margin-right: 10px;
@@ -126,17 +130,15 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>Which two QoS tools are used to guarantee minimum bandwidth to certain traffic? (Choose two.)</h1>
-    <p class="stem-note">Question 1 of 48 · Select exactly two answers, then click Check answer.</p>
+    <h1>Which security program element involves installing badge readers on data-center doors to allow workers to enter and exit based on their job roles?</h1>
+    <p class="stem-note">Question 44 of 48 · Select an answer — feedback appears immediately.</p>
 
-    <label class="choice"><input type="checkbox" name="qos" value="A" />A. FIFO</label>
-    <label class="choice"><input type="checkbox" name="qos" value="B" />B. CBWFQ</label>
-    <label class="choice"><input type="checkbox" name="qos" value="C" />C. LLC</label>
-    <label class="choice"><input type="checkbox" name="qos" value="D" />D. WFQ</label>
-    <label class="choice"><input type="checkbox" name="qos" value="E" />E. RSVP</label>
+    <label class="choice"><input type="radio" name="physbad" value="A" />A. physical access control</label>
+    <label class="choice"><input type="radio" name="physbad" value="B" />B. biometrics</label>
+    <label class="choice"><input type="radio" name="physbad" value="C" />C. role-based access control</label>
+    <label class="choice"><input type="radio" name="physbad" value="D" />D. multifactor authentication</label>
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
@@ -144,54 +146,39 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/security-physical-access-tailgating.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/northbound-rest-sdn-applications.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/private-ipv4-characteristic-registration.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = ["B", "E"];
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 Door badge readers control physical entry; that is physical access control. Biometrics is a different factor. RBAC is mainly logical permissions to systems. MFA requires multiple factors and is not what door badges alone describe.";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValues() {
-        return []
-          .slice.call(document.querySelectorAll('input[name="qos"]:checked'))
-          .map(function (el) {
-            return el.value;
-          })
-          .sort();
-      }
-
-      function arraysEqual(a, b) {
-        if (a.length !== b.length) return false;
-        return a.every(function (v, i) {
-          return v === b[i];
-        });
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedValues();
+      function applyFeedback(value) {
         answerBox.style.display = "block";
-        if (sel.length !== 2) {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Choose exactly two answers.";
-          return;
-        }
-        var ok = arraysEqual(sel, CORRECT.slice().sort());
-        if (ok) {
+        if (value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent =
-            "Correct. B and E. CBWFQ (class-based weighted fair queuing) reserves minimum bandwidth per class in a policy map. RSVP can reserve bandwidth for flows. FIFO and WFQ do not provide that minimum guarantee; LLC is a Layer 2 protocol, not a QoS queuing tool.";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
+      }
+
+      document.querySelectorAll('input[name="physbad"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="qos"]').forEach(function (el) {
+        document.querySelectorAll('input[name="physbad"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";
