@@ -355,7 +355,7 @@ def choice_line(mono: bool, name: str, letter: str, text: str) -> str:
 
 
 def main() -> None:
-    total = 48
+    total = 49
     chain = [
         {
             "slug": "dhcp-relay-dhcpdiscover",
@@ -845,6 +845,15 @@ def main() -> None:
                 "Option D: crypto key encrypt rsa name myKey (after ip domain-name)",
             ],
             "mono": True,
+        },
+        {
+            "slug": "sdn-southbound-openflow-forwarding",
+            "title": "CCNA — Southbound protocol for forwarding",
+            "stem": "What does an SDN controller use as a communication protocol to relay forwarding changes to a southbound API?",
+            "name": "sbflow",
+            "correct": "D",
+            "explain": "Correct. D — OpenFlow is a common southbound protocol: the controller programs flow tables and forwarding behavior on infrastructure devices. REST is more typical northbound (applications to the controller). XML is a markup/encoding format, not the southbound forwarding protocol in this sense. Java is a programming language.",
+            "choices": ["XML", "Java", "REST", "OpenFlow"],
         },
     ]
 

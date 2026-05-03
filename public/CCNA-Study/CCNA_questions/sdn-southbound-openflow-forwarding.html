@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Physical access control (security)</title>
+  <title>CCNA — Southbound protocol for forwarding</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -47,6 +47,10 @@
       border: 1px solid #2c3f62;
       font-size: 1.02rem;
       cursor: pointer;
+    }
+    .choice.mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.95rem;
     }
     .choice input {
       margin-right: 10px;
@@ -126,13 +130,13 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>Which type of security program is violated when a group of employees enters a building using the ID badge of only one person?</h1>
-    <p class="stem-note">Question 2 of 49 · Select an answer — feedback appears immediately.</p>
+    <h1>What does an SDN controller use as a communication protocol to relay forwarding changes to a southbound API?</h1>
+    <p class="stem-note">Question 49 of 49 · Select an answer — feedback appears immediately.</p>
 
-    <label class="choice"><input type="radio" name="sec" value="A" />A. intrusion detection</label>
-    <label class="choice"><input type="radio" name="sec" value="B" />B. user awareness</label>
-    <label class="choice"><input type="radio" name="sec" value="C" />C. physical access control</label>
-    <label class="choice"><input type="radio" name="sec" value="D" />D. network authorization</label>
+    <label class="choice"><input type="radio" name="sbflow" value="A" />A. XML</label>
+    <label class="choice"><input type="radio" name="sbflow" value="B" />B. Java</label>
+    <label class="choice"><input type="radio" name="sbflow" value="C" />C. REST</label>
+    <label class="choice"><input type="radio" name="sbflow" value="D" />D. OpenFlow</label>
 
     <div class="actions">
       <button id="resetBtn" type="button">Reset</button>
@@ -142,15 +146,14 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/qos-minimum-bandwidth-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/etherchannel-lacp-active-active.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ssh-crypto-rsa-key-generation.html">Previous question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 Physical access control. Badge readers, turnstiles, and door policies exist so each person authenticates to enter. Tailgating or piggybacking on one badge breaks that control. Intrusion detection focuses on detecting hostile activity (often in IT systems); user awareness is training; network authorization governs logical network access, not the building door.";
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D \u2014 OpenFlow is a common southbound protocol: the controller programs flow tables and forwarding behavior on infrastructure devices. REST is more typical northbound (applications to the controller). XML is a markup/encoding format, not the southbound forwarding protocol in this sense. Java is a programming language.";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
@@ -165,7 +168,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="sec"]').forEach(function (el) {
+      document.querySelectorAll('input[name="sbflow"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
@@ -174,7 +177,7 @@
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="sec"]').forEach(function (el) {
+        document.querySelectorAll('input[name="sbflow"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";
