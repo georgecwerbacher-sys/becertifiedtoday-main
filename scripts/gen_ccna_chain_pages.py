@@ -991,6 +991,20 @@ def main() -> None:
             "explain": "Correct. D — On Cisco IOS, logging trap sends that severity and all numerically lower (more urgent) severities. Informational is level 6. Alert (1), critical (2), and notice (5) are all more urgent than informational, so they do not include informational messages. Debug (7) is the least urgent and includes informational (6) along with all higher-priority levels.",
             "choices": ["alert", "critical", "notice", "debug"],
         },
+        {
+            "slug": "route-ad-ebgp-eigrp-ospf-r4-server",
+            "title": "CCNA — AD when OSPF, eBGP, and EIGRP compete",
+            "stem": "Refer to the exhibit. Router R4 is dynamically learning the path to the server. If R4 is connected to R1 via OSPF Area 20, to R2 via BGP, and to R3 via EIGRP 777, which path is installed in the routing table of R4?",
+            "name": "admix",
+            "correct": "A",
+            "explain": "Correct. A — For the same prefix, the route with the lowest administrative distance is installed. eBGP defaults to AD 20, EIGRP internal to 90, and OSPF to 110, so an eBGP-learned path via R2 wins. iBGP defaults to 200 and would lose to EIGRP and OSPF here; option B misstates the winning case.",
+            "choices": [
+                "the path through R2, because the EBGP administrative distance is 20",
+                "the path through R2, because the IBGP administrative distance is 200",
+                "the path through R1, because the OSPF administrative distance is 110",
+                "the path through R3, because the EIGRP administrative distance is lower than OSPF and BGP",
+            ],
+        },
     ]
 
     prev = "vty-access-list-ssh-secure"
