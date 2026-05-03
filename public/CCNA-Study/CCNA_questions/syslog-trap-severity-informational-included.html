@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC distribution system port</title>
+  <title>CCNA — Syslog trap level for informational</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -125,12 +125,12 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>Which WLC port connects to a switch to pass normal access-point traffic?</h1>
+    <h1>Which level of severity must be set to get informational syslogs?</h1>
 
-    <label class="choice"><input type="radio" name="wlcds" value="A" />A. distribution system</label>
-    <label class="choice"><input type="radio" name="wlcds" value="B" />B. service</label>
-    <label class="choice"><input type="radio" name="wlcds" value="C" />C. redundancy</label>
-    <label class="choice"><input type="radio" name="wlcds" value="D" />D. console</label>
+    <label class="choice"><input type="radio" name="slogtrap" value="A" />A. alert</label>
+    <label class="choice"><input type="radio" name="slogtrap" value="B" />B. critical</label>
+    <label class="choice"><input type="radio" name="slogtrap" value="C" />C. notice</label>
+    <label class="choice"><input type="radio" name="slogtrap" value="D" />D. debug</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -139,15 +139,14 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/dtp-dynamic-auto-passive-trunk.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/syslog-trap-severity-informational-included.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-ds-port-switch-ap-traffic.html">Previous question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 The distribution system (DS) network connection carries CAPWAP control and data between APs and the controller and bridges wireless client traffic onto the wired LAN. The service port is for out-of-band management; the redundancy port is for WLC high availability; the console is for serial CLI access.";
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D \u2014 On Cisco IOS, logging trap sends that severity and all numerically lower (more urgent) severities. Informational is level 6. Alert (1), critical (2), and notice (5) are all more urgent than informational, so they do not include informational messages. Debug (7) is the least urgent and includes informational (6) along with all higher-priority levels.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -161,7 +160,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="wlcds"]').forEach(function (el) {
+      document.querySelectorAll('input[name="slogtrap"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

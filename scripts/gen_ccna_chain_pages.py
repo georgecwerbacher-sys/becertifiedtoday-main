@@ -982,6 +982,15 @@ def main() -> None:
                 "console",
             ],
         },
+        {
+            "slug": "syslog-trap-severity-informational-included",
+            "title": "CCNA — Syslog trap level for informational",
+            "stem": "Which level of severity must be set to get informational syslogs?",
+            "name": "slogtrap",
+            "correct": "D",
+            "explain": "Correct. D — On Cisco IOS, logging trap sends that severity and all numerically lower (more urgent) severities. Informational is level 6. Alert (1), critical (2), and notice (5) are all more urgent than informational, so they do not include informational messages. Debug (7) is the least urgent and includes informational (6) along with all higher-priority levels.",
+            "choices": ["alert", "critical", "notice", "debug"],
+        },
     ]
 
     prev = "vty-access-list-ssh-secure"
