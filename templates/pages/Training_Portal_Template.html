@@ -286,6 +286,20 @@
       color: #5c6d8a;
       border-top: 1px solid rgba(45, 59, 90, 0.5);
     }
+    footer a.footer-portal-at {
+      color: var(--bg);
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    footer a.footer-portal-at:visited,
+    footer a.footer-portal-at:hover,
+    footer a.footer-portal-at:focus,
+    footer a.footer-portal-at:focus-visible,
+    footer a.footer-portal-at:active {
+      color: var(--bg);
+      text-decoration: none;
+      outline: none;
+    }
     .formats-section {
       margin-top: clamp(40px, 8vw, 72px);
       padding-top: clamp(36px, 6vw, 56px);
@@ -706,7 +720,14 @@
         are trademarks of Cisco and/or its affiliates; use here is for descriptive purposes only.
       </p>
     </aside>
-    <footer>© Be Certified Today · Registered training portal (template)</footer>
+    <footer>
+      © Be Certified Today<a
+        class="footer-portal-at"
+        href="/CCNA-Study/CCNA_Training_Portal.html"
+        aria-label="CCNA Training Portal"
+        >@</a>
+      · Registered training portal (template)
+    </footer>
   </div>
 </body>
 </html>
