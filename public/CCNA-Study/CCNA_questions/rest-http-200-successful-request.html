@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — AD when OSPF, eBGP, and EIGRP compete</title>
+  <title>CCNA — HTTP 200 for successful REST</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -125,12 +125,12 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>Refer to the exhibit. Router R4 is dynamically learning the path to the server. If R4 is connected to R1 via OSPF Area 20, to R2 via BGP, and to R3 via EIGRP 777, which path is installed in the routing table of R4?</h1>
+    <h1>Which HTTP status code is returned after a successful REST API request?</h1>
 
-    <label class="choice"><input type="radio" name="admix" value="A" />A. the path through R2, because the EBGP administrative distance is 20</label>
-    <label class="choice"><input type="radio" name="admix" value="B" />B. the path through R2, because the IBGP administrative distance is 200</label>
-    <label class="choice"><input type="radio" name="admix" value="C" />C. the path through R1, because the OSPF administrative distance is 110</label>
-    <label class="choice"><input type="radio" name="admix" value="D" />D. the path through R3, because the EIGRP administrative distance is lower than OSPF and BGP</label>
+    <label class="choice"><input type="radio" name="http200" value="A" />A. 200</label>
+    <label class="choice"><input type="radio" name="http200" value="B" />B. 301</label>
+    <label class="choice"><input type="radio" name="http200" value="C" />C. 404</label>
+    <label class="choice"><input type="radio" name="http200" value="D" />D. 500</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -139,15 +139,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/syslog-trap-severity-informational-included.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/cloud-topology-public-private-hybrid.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ios-clock-set-exec-date-time.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/router-inter-subnet-forwarding-role.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 For the same prefix, the route with the lowest administrative distance is installed. eBGP defaults to AD 20, EIGRP internal to 90, and OSPF to 110, so an eBGP-learned path via R2 wins. iBGP defaults to 200 and would lose to EIGRP and OSPF here; option B misstates the winning case.";
+      var CORRECT_MSG = "Correct. A \u2014 200 OK is the common success response for many REST operations (201 Created and 204 No Content are also used in some designs). 301 redirects, 404 is not found, 500 is a server error.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -161,7 +161,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="admix"]').forEach(function (el) {
+      document.querySelectorAll('input[name="http200"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

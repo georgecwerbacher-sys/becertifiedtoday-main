@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — AD when OSPF, eBGP, and EIGRP compete</title>
+  <title>CCNA — Harden WLC management (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -125,48 +125,60 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>Refer to the exhibit. Router R4 is dynamically learning the path to the server. If R4 is connected to R1 via OSPF Area 20, to R2 via BGP, and to R3 via EIGRP 777, which path is installed in the routing table of R4?</h1>
+    <h1>Which two protocols must be disabled to increase security for management connections to a Wireless LAN Controller? (Choose two)</h1>
 
-    <label class="choice"><input type="radio" name="admix" value="A" />A. the path through R2, because the EBGP administrative distance is 20</label>
-    <label class="choice"><input type="radio" name="admix" value="B" />B. the path through R2, because the IBGP administrative distance is 200</label>
-    <label class="choice"><input type="radio" name="admix" value="C" />C. the path through R1, because the OSPF administrative distance is 110</label>
-    <label class="choice"><input type="radio" name="admix" value="D" />D. the path through R3, because the EIGRP administrative distance is lower than OSPF and BGP</label>
+    <label class="choice"><input type="checkbox" name="wlch1" value="A" />A. Telnet</label>
+    <label class="choice"><input type="checkbox" name="wlch1" value="B" />B. SSH</label>
+    <label class="choice"><input type="checkbox" name="wlch1" value="C" />C. HTTP</label>
+    <label class="choice"><input type="checkbox" name="wlch1" value="D" />D. HTTPS</label>
+    <label class="choice"><input type="checkbox" name="wlch1" value="E" />E. TFTP</label>
 
     <div class="actions">
+      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/syslog-trap-severity-informational-included.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/cloud-topology-public-private-hybrid.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/sdn-data-plane-forwarding-router.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/dna-center-overall-health-dashboard.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 For the same prefix, the route with the lowest administrative distance is installed. eBGP defaults to AD 20, EIGRP internal to 90, and OSPF to 110, so an eBGP-learned path via R2 wins. iBGP defaults to 200 and would lose to EIGRP and OSPF here; option B misstates the winning case.";
+      var CORRECT = ["A", "C"];
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="wlch1"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = CORRECT_MSG;
+          answerBox.textContent = "Correct. A and C \u2014 Telnet and HTTP are cleartext; disable them in favor of SSH and HTTPS. TFTP is weak but is not the usual paired answer with HTTP/Telnet on this item.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="admix"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>
