@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WAN topology tradeoffs</title>
+  <title>CCNA — PMF and association comeback</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -130,13 +130,13 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>Which WAN topology provides a combination of simplicity, quality, and availability?</h1>
-    <p class="stem-note">Question 38 of 60 · Select an answer — feedback appears immediately.</p>
+    <h1>An administrator must secure the WLC from receiving spoofed association requests. Which steps must be taken to configure the WLC to restrict the requests and force the user to wait 10 ms to retry an association request?</h1>
+    <p class="stem-note">Question 54 of 60 · Select an answer — feedback appears immediately.</p>
 
-    <label class="choice"><input type="radio" name="wanppt" value="A" />A. partial mesh</label>
-    <label class="choice"><input type="radio" name="wanppt" value="B" />B. full mesh</label>
-    <label class="choice"><input type="radio" name="wanppt" value="C" />C. point-to-point</label>
-    <label class="choice"><input type="radio" name="wanppt" value="D" />D. hub-and-spoke</label>
+    <label class="choice"><input type="radio" name="pmfcome" value="A" />A. Enable Security Association Teardown Protection and set the SA Query timeout to 10</label>
+    <label class="choice"><input type="radio" name="pmfcome" value="B" />B. Enable the Protected Management Frame service and set the Comeback timer to 10</label>
+    <label class="choice"><input type="radio" name="pmfcome" value="C" />C. Enable 802.1x Layer 2 security and set the Comeback timer to 10</label>
+    <label class="choice"><input type="radio" name="pmfcome" value="D" />D. Enable MAC filtering and set the SA Query timeout to 10</label>
 
     <div class="actions">
       <button id="resetBtn" type="button">Reset</button>
@@ -146,15 +146,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/switch-egress-queue-during-transmit.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ntp-master-internal-clock-server.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ipv6-compress-db8-interface-command.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/fhrp-benefit-default-gateway-redundancy.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 A point-to-point link between two sites is simple, offers predictable performance, and is often sold with SLAs for availability. Full mesh is complex and costly; hub-and-spoke can bottleneck at the hub; partial mesh is a compromise.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 Protected Management Frames (802.11w) help protect management traffic from trivial spoofing/tampering; the Comeback timer (milliseconds) controls how long a client waits before retrying association after a temporary denial. SA Query timeout addresses a different PMF procedure.";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
@@ -169,7 +169,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="wanppt"]').forEach(function (el) {
+      document.querySelectorAll('input[name="pmfcome"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
@@ -178,7 +178,7 @@
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="wanppt"]').forEach(function (el) {
+        document.querySelectorAll('input[name="pmfcome"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";

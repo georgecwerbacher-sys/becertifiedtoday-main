@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WAN topology tradeoffs</title>
+  <title>CCNA — DTP passive trunk negotiation</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -130,13 +130,13 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>Which WAN topology provides a combination of simplicity, quality, and availability?</h1>
-    <p class="stem-note">Question 38 of 60 · Select an answer — feedback appears immediately.</p>
+    <h1>Refer to the exhibit. Which command must be executed for Gi1/1 on SW1 to passively become a trunk port if Gi1/1 on SW2 is configured in desirable or trunk mode?</h1>
+    <p class="stem-note">Question 60 of 60 · Select an answer — feedback appears immediately.</p>
 
-    <label class="choice"><input type="radio" name="wanppt" value="A" />A. partial mesh</label>
-    <label class="choice"><input type="radio" name="wanppt" value="B" />B. full mesh</label>
-    <label class="choice"><input type="radio" name="wanppt" value="C" />C. point-to-point</label>
-    <label class="choice"><input type="radio" name="wanppt" value="D" />D. hub-and-spoke</label>
+    <label class="choice mono"><input type="radio" name="dtpmode" value="A" />A. switchport mode trunk</label>
+    <label class="choice mono"><input type="radio" name="dtpmode" value="B" />B. switchport mode dot1-tunnel</label>
+    <label class="choice mono"><input type="radio" name="dtpmode" value="C" />C. switchport mode dynamic auto</label>
+    <label class="choice mono"><input type="radio" name="dtpmode" value="D" />D. switchport mode dynamic desirable</label>
 
     <div class="actions">
       <button id="resetBtn" type="button">Reset</button>
@@ -146,15 +146,14 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/switch-egress-queue-during-transmit.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ntp-master-internal-clock-server.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/syslog-severity-informational-level.html">Previous question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 A point-to-point link between two sites is simple, offers predictable performance, and is often sold with SLAs for availability. Full mesh is complex and costly; hub-and-spoke can bottleneck at the hub; partial mesh is a compromise.";
+      var CORRECT_MSG = "Correct. C \u2014 dynamic auto passively waits for DTP from the neighbor; if SW2 is desirable or trunk, the link can form a trunk. dynamic desirable actively negotiates. switchport mode trunk is not the passive auto answer. dot1-tunnel is unrelated to DTP trunk formation here.";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
@@ -169,7 +168,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="wanppt"]').forEach(function (el) {
+      document.querySelectorAll('input[name="dtpmode"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
@@ -178,7 +177,7 @@
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="wanppt"]').forEach(function (el) {
+        document.querySelectorAll('input[name="dtpmode"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";

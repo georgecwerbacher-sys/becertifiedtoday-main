@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WAN topology tradeoffs</title>
+  <title>CCNA — Data plane vs control</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -130,13 +130,13 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>Which WAN topology provides a combination of simplicity, quality, and availability?</h1>
-    <p class="stem-note">Question 38 of 60 · Select an answer — feedback appears immediately.</p>
+    <h1>Which networking function occurs on the data plane?</h1>
+    <p class="stem-note">Question 52 of 60 · Select an answer — feedback appears immediately.</p>
 
-    <label class="choice"><input type="radio" name="wanppt" value="A" />A. partial mesh</label>
-    <label class="choice"><input type="radio" name="wanppt" value="B" />B. full mesh</label>
-    <label class="choice"><input type="radio" name="wanppt" value="C" />C. point-to-point</label>
-    <label class="choice"><input type="radio" name="wanppt" value="D" />D. hub-and-spoke</label>
+    <label class="choice"><input type="radio" name="dplan2" value="A" />A. facilitates spanning-tree elections</label>
+    <label class="choice"><input type="radio" name="dplan2" value="B" />B. processing inbound SSH management traffic</label>
+    <label class="choice"><input type="radio" name="dplan2" value="C" />C. forwarding remote client/server traffic</label>
+    <label class="choice"><input type="radio" name="dplan2" value="D" />D. sending and receiving OSPF Hello packets</label>
 
     <div class="actions">
       <button id="resetBtn" type="button">Reset</button>
@@ -146,15 +146,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/switch-egress-queue-during-transmit.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ntp-master-internal-clock-server.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-wpa2-psk-gui-format.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ipv6-compress-db8-interface-command.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 A point-to-point link between two sites is simple, offers predictable performance, and is often sold with SLAs for availability. Full mesh is complex and costly; hub-and-spoke can bottleneck at the hub; partial mesh is a compromise.";
+      var CORRECT_MSG = "Correct. C \u2014 Forwarding user traffic between client and server is data-plane work. STP, OSPF Hellos, and SSH sessions to the device itself are control or management plane.";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
@@ -169,7 +169,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="wanppt"]').forEach(function (el) {
+      document.querySelectorAll('input[name="dplan2"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
@@ -178,7 +178,7 @@
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="wanppt"]').forEach(function (el) {
+        document.querySelectorAll('input[name="dplan2"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";

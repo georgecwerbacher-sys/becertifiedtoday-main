@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WAN topology tradeoffs</title>
+  <title>CCNA — FHRP benefit</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -130,13 +130,13 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>Which WAN topology provides a combination of simplicity, quality, and availability?</h1>
-    <p class="stem-note">Question 38 of 60 · Select an answer — feedback appears immediately.</p>
+    <h1>What is the benefit of using FHRP (First Hop Redundancy Protocol)?</h1>
+    <p class="stem-note">Question 55 of 60 · Select an answer — feedback appears immediately.</p>
 
-    <label class="choice"><input type="radio" name="wanppt" value="A" />A. partial mesh</label>
-    <label class="choice"><input type="radio" name="wanppt" value="B" />B. full mesh</label>
-    <label class="choice"><input type="radio" name="wanppt" value="C" />C. point-to-point</label>
-    <label class="choice"><input type="radio" name="wanppt" value="D" />D. hub-and-spoke</label>
+    <label class="choice"><input type="radio" name="fhrpb" value="A" />A. balancing traffic across multiple gateways in proportion to their loads</label>
+    <label class="choice"><input type="radio" name="fhrpb" value="B" />B. reduced management overhead on network routers</label>
+    <label class="choice"><input type="radio" name="fhrpb" value="C" />C. reduced ARP traffic on the network</label>
+    <label class="choice"><input type="radio" name="fhrpb" value="D" />D. higher degree of availability</label>
 
     <div class="actions">
       <button id="resetBtn" type="button">Reset</button>
@@ -146,15 +146,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/switch-egress-queue-during-transmit.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ntp-master-internal-clock-server.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-pmf-comeback-spoofed-association.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlan-roam-reassociation-request-frame.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 A point-to-point link between two sites is simple, offers predictable performance, and is often sold with SLAs for availability. Full mesh is complex and costly; hub-and-spoke can bottleneck at the hub; partial mesh is a compromise.";
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D \u2014 FHRPs (HSRP, VRRP, GLBP) provide redundant default gateways so failure of one router does not isolate the subnet. GLBP can load-share, but proportional load balancing in the wording of A is not the universal FHRP benefit. B and C are distractors.";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
@@ -169,7 +169,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="wanppt"]').forEach(function (el) {
+      document.querySelectorAll('input[name="fhrpb"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
@@ -178,7 +178,7 @@
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="wanppt"]').forEach(function (el) {
+        document.querySelectorAll('input[name="fhrpb"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";

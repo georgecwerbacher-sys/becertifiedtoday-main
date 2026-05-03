@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WAN topology tradeoffs</title>
+  <title>CCNA — IPv6 compressed address on interface</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -130,13 +130,13 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>Which WAN topology provides a combination of simplicity, quality, and availability?</h1>
-    <p class="stem-note">Question 38 of 60 · Select an answer — feedback appears immediately.</p>
+    <h1>A network engineer must configure the router R1 GigabitEthernet1/1 interface to connect to the router R2 GigabitEthernet1/1 interface. For the configuration to be applied the engineer must compress the address 2001:0db8:0000:0000:0500:000a:400F:583B. Which command must be issued on the interface?</h1>
+    <p class="stem-note">Question 53 of 60 · Select an answer — feedback appears immediately.</p>
 
-    <label class="choice"><input type="radio" name="wanppt" value="A" />A. partial mesh</label>
-    <label class="choice"><input type="radio" name="wanppt" value="B" />B. full mesh</label>
-    <label class="choice"><input type="radio" name="wanppt" value="C" />C. point-to-point</label>
-    <label class="choice"><input type="radio" name="wanppt" value="D" />D. hub-and-spoke</label>
+    <label class="choice mono"><input type="radio" name="v6if" value="A" />A. ipv6 address 2001:db8::500:a:400F:583B</label>
+    <label class="choice mono"><input type="radio" name="v6if" value="B" />B. ipv6 address 2001 db8:0::500:a:4F:583B</label>
+    <label class="choice mono"><input type="radio" name="v6if" value="C" />C. ipv6 address 2001:0db8::5:a:4F:583B</label>
+    <label class="choice mono"><input type="radio" name="v6if" value="D" />D. ipv6 address 2001::db8:0000::500:a:400F:583B</label>
 
     <div class="actions">
       <button id="resetBtn" type="button">Reset</button>
@@ -146,15 +146,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/switch-egress-queue-during-transmit.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ntp-master-internal-clock-server.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/data-plane-forward-remote-client-traffic.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-pmf-comeback-spoofed-association.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 A point-to-point link between two sites is simple, offers predictable performance, and is often sold with SLAs for availability. Full mesh is complex and costly; hub-and-spoke can bottleneck at the hub; partial mesh is a compromise.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 Leading zeros drop and one :: replaces the contiguous all-zero hextets: 2001:db8::500:a:400F:583B. B is malformed and alters hextets. C miscompresses 0500 as 5. D uses :: twice, which is invalid.";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
@@ -169,7 +169,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="wanppt"]').forEach(function (el) {
+      document.querySelectorAll('input[name="v6if"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
@@ -178,7 +178,7 @@
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="wanppt"]').forEach(function (el) {
+        document.querySelectorAll('input[name="v6if"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";
