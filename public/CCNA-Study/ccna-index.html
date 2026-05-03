@@ -310,15 +310,24 @@
       filter: brightness(1.1);
       color: #fff !important;
     }
-    .promo-secondary {
-      color: #a8c4f0;
+    .promo-soon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      border: 1px dashed rgba(79, 132, 216, 0.3);
+      background: rgba(13, 21, 40, 0.45);
+      color: #6b7f9e;
       font-weight: 700;
       font-size: 0.95rem;
-      text-decoration: underline;
-      text-underline-offset: 3px;
+      font-family: inherit;
+      cursor: not-allowed;
+      user-select: none;
     }
-    .promo-secondary:hover {
-      color: #c8daf8;
+    .promo-soon:disabled {
+      opacity: 1;
     }
     .sample-grid {
       margin: 0;
@@ -570,7 +579,9 @@
             </p>
             <p class="promo-actions">
               <a class="promo-btn" href="/#purchase">Get full access and register</a>
-              <a class="promo-secondary" href="/">Compare all tracks and pricing on the home page</a>
+              <button type="button" class="promo-soon" disabled aria-label="Compare all tracks and pricing. Coming soon.">
+                Coming Soon
+              </button>
             </p>
           </div>
         </section>
