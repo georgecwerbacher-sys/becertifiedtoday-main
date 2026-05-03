@@ -355,7 +355,7 @@ def choice_line(mono: bool, name: str, letter: str, text: str) -> str:
 
 
 def main() -> None:
-    total = 40
+    total = 41
     chain = [
         {
             "slug": "dhcp-relay-dhcpdiscover",
@@ -735,6 +735,20 @@ def main() -> None:
                 "Switchport trunk allowed vlan remove 10-11",
             ],
             "mono": True,
+        },
+        {
+            "slug": "sdn-southbound-api-purpose",
+            "title": "CCNA — Southbound API",
+            "stem": "What is the purpose of a southbound API in a control based networking architecture?",
+            "name": "sbapi",
+            "correct": "D",
+            "explain": "Correct. D — Southbound interfaces let the controller program and read state from network devices (switches, routers, and similar hardware) using protocols such as NETCONF, RESTCONF, OpenFlow, or gRPC. Northbound APIs expose the controller to applications and orchestration above.",
+            "choices": [
+                "facilitates communication between the controller and the applications",
+                "integrates a controller with other automation and orchestration tools",
+                "allows application developers to interact with the network",
+                "facilitates communication between the controller and the networking hardware",
+            ],
         },
     ]
 
