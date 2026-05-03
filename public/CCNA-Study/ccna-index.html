@@ -93,6 +93,33 @@
     .header-link.cta-header:hover {
       background: rgba(47, 102, 191, 0.5);
     }
+    .header-link.cta-header:disabled {
+      background: rgba(13, 21, 40, 0.45);
+      border-style: dashed;
+      border-color: rgba(90, 143, 216, 0.35);
+      opacity: 0.85;
+    }
+    .header-link.cta-header:disabled:hover {
+      background: rgba(13, 21, 40, 0.45);
+      color: #8fa6c6;
+    }
+    button.header-link {
+      font: inherit;
+      cursor: not-allowed;
+    }
+    .header-link:disabled {
+      opacity: 0.55;
+      border-style: dashed;
+      color: #8fa6c6;
+    }
+    .header-link:disabled:hover {
+      background: transparent;
+      color: #8fa6c6;
+    }
+    .link-muted {
+      color: #8fa6c6;
+      font-weight: 700;
+    }
     .brand {
       display: inline-flex;
       align-items: center;
@@ -310,6 +337,22 @@
       filter: brightness(1.1);
       color: #fff !important;
     }
+    button.promo-btn {
+      font: inherit;
+      cursor: not-allowed;
+    }
+    .promo-btn:disabled {
+      filter: none;
+      box-shadow: none;
+      border-style: dashed;
+      border-color: rgba(79, 132, 216, 0.35);
+      background: rgba(13, 21, 40, 0.55);
+      color: #8fa6c6 !important;
+    }
+    .promo-btn:disabled:hover {
+      filter: none;
+      color: #8fa6c6 !important;
+    }
     .promo-soon {
       display: inline-flex;
       align-items: center;
@@ -337,35 +380,53 @@
       gap: clamp(16px, 3vw, 22px);
       grid-template-columns: 1fr;
     }
-    @media (min-width: 640px) {
+    @media (min-width: 768px) {
       .sample-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-    @media (min-width: 1024px) {
-      .sample-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: stretch;
       }
     }
     .topic-card {
       height: 100%;
       margin: 0;
-      padding: clamp(18px, 3.5vw, 22px);
+      padding: 0;
       border-radius: 14px;
       border: 1px solid var(--border);
       background: var(--surface);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
       display: flex;
       flex-direction: column;
+      overflow: hidden;
     }
-    .topic-card h3 {
+    .topic-card-thumb {
+      flex-shrink: 0;
+      min-height: 112px;
+      background: linear-gradient(165deg, rgba(47, 102, 191, 0.28) 0%, rgba(13, 21, 40, 0.65) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+    .topic-card-thumb img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 180px;
+      object-fit: cover;
+      object-position: center;
+    }
+    .topic-card-body {
+      padding: clamp(16px, 3vw, 20px);
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+    }
+    .topic-card-body h3 {
       margin: 0 0 10px;
       font-size: clamp(1.02rem, 2.4vw, 1.12rem);
       font-weight: 800;
       letter-spacing: -0.02em;
       line-height: 1.3;
     }
-    .topic-card p {
+    .topic-card-body p {
       margin: 0 0 14px;
       color: #b8c3d6;
       font-size: clamp(0.9rem, 2.1vw, 0.96rem);
@@ -395,6 +456,24 @@
     .card-action:focus-visible {
       outline: 2px solid var(--accent-border);
       outline-offset: 2px;
+    }
+    button.card-action {
+      font: inherit;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    button.card-action.card-action-soon:disabled {
+      opacity: 1;
+      border-style: dashed;
+      border-color: rgba(79, 132, 216, 0.3);
+      background: rgba(13, 21, 40, 0.5);
+      color: #6b7f9e !important;
+      filter: none;
+      cursor: not-allowed;
+    }
+    button.card-action.card-action-soon:disabled:hover {
+      filter: none;
+      color: #6b7f9e !important;
     }
     .link-list {
       margin: 0;
@@ -467,9 +546,13 @@
         />
       </a>
       <div class="header-actions">
-        <a class="header-link cta-header" href="/#purchase">Get full access</a>
-        <a class="header-link" href="/CCNA-Study/CCNA_Training_Portal.html">CCNA training portal</a>
-        <a class="header-link" href="/">Site home</a>
+        <button type="button" class="header-link cta-header" disabled aria-label="Get full access (coming soon)">
+          Get full access
+        </button>
+        <button type="button" class="header-link" disabled aria-label="CCNA training portal (coming soon)">
+          CCNA training portal
+        </button>
+        <a class="header-link" href="/">Site Home</a>
       </div>
     </header>
 
@@ -578,7 +661,9 @@
               registering is the straight line from “I know the topics” to “I can execute under pressure.”
             </p>
             <p class="promo-actions">
-              <a class="promo-btn" href="/#purchase">Get full access and register</a>
+              <button type="button" class="promo-btn" disabled aria-label="Get full access and register (coming soon)">
+                Get full access and register
+              </button>
               <button type="button" class="promo-soon" disabled aria-label="Compare all tracks and pricing. Coming soon.">
                 Coming Soon
               </button>
@@ -589,47 +674,48 @@
         <section class="subject-section" aria-labelledby="samples-title">
           <h2 class="section-head" id="samples-title">Try the free samples first</h2>
           <p class="section-lead">
-            Four entry points: CCNA question practice, the site sample launcher, CCNA drag-and-drop, and a hands-on lab demo.
+            CCNA question practice and drag-and-drop are live; a browser-based lab sample is <strong>coming soon</strong>.
           </p>
           <ul class="sample-grid" aria-label="CCNA sample activities">
             <li>
               <article class="topic-card" aria-labelledby="card-q-title">
-                <h3 id="card-q-title">Sample questions</h3>
-                <p>
-                  Five linked practice questions with instant feedback—start at question 1 and use Next through question 5.
-                  Works on phones and tablets (tap to answer).
-                </p>
-                <a class="card-action" href="/CCNA-Study/CCNA_Samples/sample-question-1.html">Start sample questions</a>
-              </article>
-            </li>
-            <li>
-              <article class="topic-card" aria-labelledby="card-sample-title">
-                <h3 id="card-sample-title">Sample</h3>
-                <p>
-                  Opens the shared <strong>/sample</strong> launcher (address bar shows a short path after redirect). Default is a
-                  five-question ENCOR-style demo; other tracks include labs, drag-and-drop, and CCNA file-transfer via query string.
-                </p>
-                <a class="card-action" href="/sample">Open sample launcher</a>
+                <div class="topic-card-thumb" aria-hidden="true"></div>
+                <div class="topic-card-body">
+                  <h3 id="card-q-title">Sample questions</h3>
+                  <p>
+                    Five linked practice questions with instant feedback—start at question 1 and use Next through question 5.
+                    Works on phones and tablets (tap to answer).
+                  </p>
+                  <a class="card-action" href="/CCNA-Study/CCNA_Samples/sample-question-1.html">Start sample questions</a>
+                </div>
               </article>
             </li>
             <li>
               <article class="topic-card" aria-labelledby="card-dd-title">
-                <h3 id="card-dd-title">Drag-and-drop</h3>
-                <p>
-                  CCNA exercise: match file-transfer descriptions to FTP and TFTP. Drag on desktop or tap-to-place on touch
-                  devices.
-                </p>
-                <a class="card-action" href="/CCNA-Study/CCNA_Samples/dragdrop-ftp-vs-tftp.html">Open drag-and-drop</a>
+                <div class="topic-card-thumb" aria-hidden="true"></div>
+                <div class="topic-card-body">
+                  <h3 id="card-dd-title">Drag-and-drop</h3>
+                  <p>
+                    CCNA exercise: match file-transfer descriptions to FTP and TFTP. Drag on desktop or tap-to-place on touch
+                    devices.
+                  </p>
+                  <a class="card-action" href="/CCNA-Study/CCNA_Samples/dragdrop-ftp-vs-tftp.html">Open drag-and-drop</a>
+                </div>
               </article>
             </li>
             <li>
               <article class="topic-card" aria-labelledby="card-lab-title">
-                <h3 id="card-lab-title">Sample labs</h3>
-                <p>
-                  Browser CLI lab sample (ENCOR Rapid PVST / LACP scenario) using the site lab route—useful for practicing the lab
-                  UI before CCNA-specific labs are published here.
-                </p>
-                <a class="card-action" href="/sample?track=labs">Open sample lab</a>
+                <div class="topic-card-thumb" aria-hidden="true"></div>
+                <div class="topic-card-body">
+                  <h3 id="card-lab-title">Sample labs</h3>
+                  <p>
+                    A browser CLI lab aligned with this CCNA track will be linked here when it is ready—the same interactive lab
+                    engine used elsewhere on the site.
+                  </p>
+                  <button type="button" class="card-action card-action-soon" disabled aria-label="Sample lab coming soon">
+                    Coming soon
+                  </button>
+                </div>
               </article>
             </li>
           </ul>
@@ -638,7 +724,10 @@
         <section class="subject-section" aria-labelledby="quick-title">
           <h2 class="section-head" id="quick-title">Quick links</h2>
           <ul class="link-list">
-            <li><a href="/CCNA-Study/CCNA_Training_Portal.html">CCNA training portal</a> — practice modes shell (questions, drag-and-drop, labs placeholders).</li>
+            <li>
+              <span class="link-muted">CCNA training portal</span> — coming soon (practice modes shell for questions, drag-and-drop,
+              and labs).
+            </li>
             <li><a href="/sample?track=ftp">CCNA file-transfer sample</a> — same FTP vs TFTP item via masked <code>/sample</code> route.</li>
             <li><a href="/#purchase">Full library pricing</a> — 30-day access details.</li>
             <li><a href="/">Be Certified Today home</a> — catalog and FAQ.</li>

@@ -103,6 +103,15 @@
     .next-link:hover {
       filter: brightness(1.08);
     }
+    button.next-link {
+      font: inherit;
+      cursor: not-allowed;
+    }
+    .next-link:disabled {
+      opacity: 0.55;
+      border-style: dashed;
+      filter: none;
+    }
   </style>
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
 </head>
@@ -123,7 +132,9 @@
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_Training_Portal.html">Back to CCNA portal</a>
+      <button type="button" class="next-link" disabled aria-label="Back to CCNA portal (coming soon)">
+        Back to CCNA portal
+      </button>
     </div>
   </main>
 

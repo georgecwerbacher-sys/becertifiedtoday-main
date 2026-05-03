@@ -107,6 +107,19 @@
       outline: 2px solid var(--accent-border);
       outline-offset: 3px;
     }
+    button.header-sign-up {
+      font: inherit;
+      cursor: not-allowed;
+    }
+    .header-sign-up:disabled {
+      opacity: 0.55;
+      border-style: dashed;
+      color: var(--muted);
+    }
+    .header-sign-up:disabled:hover {
+      background: transparent;
+      color: var(--muted);
+    }
     .brand {
       display: inline-flex;
       align-items: center;
@@ -822,7 +835,9 @@
         />
       </a>
       <div class="header-actions">
-        <a class="header-sign-up" href="/CCNA-Study/CCNA_Training_Portal.html">CCNA Training Portal</a>
+        <button type="button" class="header-sign-up" disabled aria-label="CCNA Training Portal (coming soon)">
+          CCNA Training Portal
+        </button>
       </div>
     </header>
     <figure class="hero-banner">

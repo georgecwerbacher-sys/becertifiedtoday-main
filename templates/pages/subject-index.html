@@ -88,6 +88,19 @@
       outline: 2px solid var(--accent-border);
       outline-offset: 3px;
     }
+    button.header-link {
+      font: inherit;
+      cursor: not-allowed;
+    }
+    .header-link:disabled {
+      opacity: 0.55;
+      border-style: dashed;
+      color: #8fa6c6;
+    }
+    .header-link:disabled:hover {
+      background: transparent;
+      color: #8fa6c6;
+    }
     .brand {
       display: inline-flex;
       align-items: center;
@@ -261,7 +274,9 @@
       </a>
       <div class="header-actions">
         <!-- Optional: training portal or parent subject -->
-        <a class="header-link" href="/CCNA-Study/CCNA_Training_Portal.html">CCNA Training Portal</a>
+        <button type="button" class="header-link" disabled aria-label="CCNA Training Portal (coming soon)">
+          CCNA Training Portal
+        </button>
         <a class="header-link" href="/">Home</a>
       </div>
     </header>
