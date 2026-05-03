@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Lightweight AP and AAA forwarding</title>
+  <title>CCNA — DHCP for dynamic IPv4</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -47,6 +47,10 @@
       border: 1px solid #2c3f62;
       font-size: 1.02rem;
       cursor: pointer;
+    }
+    .choice.mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.95rem;
     }
     .choice input {
       margin-right: 10px;
@@ -126,16 +130,13 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>
-      Which device controls the forwarding of authentication requests for users when connecting to the network using a lightweight
-      access point?
-    </h1>
-    <p class="stem-note">Question 11 of 40 · Select an answer — feedback appears immediately.</p>
+    <h1>Which protocol does an IPv4 host use to obtain a dynamically assigned IP address?</h1>
+    <p class="stem-note">Question 26 of 40 · Select an answer — feedback appears immediately.</p>
 
-    <label class="choice"><input type="radio" name="lapauth" value="A" />A. TACACS server</label>
-    <label class="choice"><input type="radio" name="lapauth" value="B" />B. wireless access point</label>
-    <label class="choice"><input type="radio" name="lapauth" value="C" />C. RADIUS server</label>
-    <label class="choice"><input type="radio" name="lapauth" value="D" />D. wireless LAN controller</label>
+    <label class="choice"><input type="radio" name="dhcpip" value="A" />A. ARP</label>
+    <label class="choice"><input type="radio" name="dhcpip" value="B" />B. DNS</label>
+    <label class="choice"><input type="radio" name="dhcpip" value="C" />C. CDP</label>
+    <label class="choice"><input type="radio" name="dhcpip" value="D" />D. DHCP</label>
 
     <div class="actions">
       <button id="resetBtn" type="button">Reset</button>
@@ -145,15 +146,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/firewall-stateful-connection-forwarding.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/vty-access-list-ssh-secure.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/vrrp-gateway-redundancy-benefit.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/dhcp-pool-default-router-command.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 With lightweight (CAPWAP) APs, the WLC is the central control point: it receives the client authentication flow from the AP and forwards RADIUS/AAA per policy. The RADIUS server terminates the request; TACACS+ is more common for device administration.";
+      var CORRECT_MSG = "Correct. D \u2014 DHCP assigns IPv4 addresses (and common options such as mask, default router, DNS). ARP resolves Layer 2 addresses; DNS resolves names; CDP is Cisco device discovery.";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
@@ -168,7 +169,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="lapauth"]').forEach(function (el) {
+      document.querySelectorAll('input[name="dhcpip"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
@@ -177,7 +178,7 @@
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="lapauth"]').forEach(function (el) {
+        document.querySelectorAll('input[name="dhcpip"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";

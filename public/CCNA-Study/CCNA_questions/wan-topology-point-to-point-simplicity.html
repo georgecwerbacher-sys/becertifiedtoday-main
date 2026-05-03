@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Lightweight AP and AAA forwarding</title>
+  <title>CCNA — WAN topology tradeoffs</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -47,6 +47,10 @@
       border: 1px solid #2c3f62;
       font-size: 1.02rem;
       cursor: pointer;
+    }
+    .choice.mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.95rem;
     }
     .choice input {
       margin-right: 10px;
@@ -126,16 +130,13 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>
-      Which device controls the forwarding of authentication requests for users when connecting to the network using a lightweight
-      access point?
-    </h1>
-    <p class="stem-note">Question 11 of 40 · Select an answer — feedback appears immediately.</p>
+    <h1>Which WAN topology provides a combination of simplicity, quality, and availability?</h1>
+    <p class="stem-note">Question 38 of 40 · Select an answer — feedback appears immediately.</p>
 
-    <label class="choice"><input type="radio" name="lapauth" value="A" />A. TACACS server</label>
-    <label class="choice"><input type="radio" name="lapauth" value="B" />B. wireless access point</label>
-    <label class="choice"><input type="radio" name="lapauth" value="C" />C. RADIUS server</label>
-    <label class="choice"><input type="radio" name="lapauth" value="D" />D. wireless LAN controller</label>
+    <label class="choice"><input type="radio" name="wanppt" value="A" />A. partial mesh</label>
+    <label class="choice"><input type="radio" name="wanppt" value="B" />B. full mesh</label>
+    <label class="choice"><input type="radio" name="wanppt" value="C" />C. point-to-point</label>
+    <label class="choice"><input type="radio" name="wanppt" value="D" />D. hub-and-spoke</label>
 
     <div class="actions">
       <button id="resetBtn" type="button">Reset</button>
@@ -145,15 +146,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/firewall-stateful-connection-forwarding.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/vty-access-list-ssh-secure.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/switch-egress-queue-during-transmit.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ntp-master-internal-clock-server.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 With lightweight (CAPWAP) APs, the WLC is the central control point: it receives the client authentication flow from the AP and forwards RADIUS/AAA per policy. The RADIUS server terminates the request; TACACS+ is more common for device administration.";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C \u2014 A point-to-point link between two sites is simple, offers predictable performance, and is often sold with SLAs for availability. Full mesh is complex and costly; hub-and-spoke can bottleneck at the hub; partial mesh is a compromise.";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
@@ -168,7 +169,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="lapauth"]').forEach(function (el) {
+      document.querySelectorAll('input[name="wanppt"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
@@ -177,7 +178,7 @@
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="lapauth"]').forEach(function (el) {
+        document.querySelectorAll('input[name="wanppt"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";

@@ -233,13 +233,129 @@ def page(
 """
 
 
+def checkbox_choice_line(name: str, letter: str, text: str) -> str:
+    return f'    <label class="choice"><input type="checkbox" name="{name}" value="{letter}" />{letter}. {text}</label>'
+
+
+def page_checkbox(
+    *,
+    title: str,
+    slug: str,
+    num: int,
+    total: int,
+    stem: str,
+    choices_html: str,
+    name: str,
+    correct_letters: list[str],
+    explain: str,
+    prev_slug: str | None,
+    next_slug: str | None,
+) -> str:
+    prev_h = (
+        f'<a class="next-link" href="/CCNA-Study/CCNA_questions/{prev_slug}.html">Previous question</a>'
+        if prev_slug
+        else ""
+    )
+    next_h = (
+        f'<a class="next-link" href="/CCNA-Study/CCNA_questions/{next_slug}.html">Next question</a>'
+        if next_slug
+        else ""
+    )
+    nav_lines = ['    <div class="next-wrap">']
+    if prev_h:
+        nav_lines.append(f"      {prev_h}")
+    if next_h:
+        nav_lines.append(f"      {next_h}")
+    nav_lines.append("    </div>")
+    nav = "\n".join(nav_lines)
+    cor_json = json.dumps(sorted(correct_letters))
+    msg_json = json.dumps(explain)
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+{STYLE}
+  <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
+</head>
+<body>
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <main class="card">
+    <h1>{stem}</h1>
+    <p class="stem-note">Question {num} of {total} · Select exactly two answers, then click Check answer.</p>
+
+{choices_html}
+
+    <div class="actions">
+      <button id="checkBtn" type="button">Check answer</button>
+      <button id="resetBtn" type="button">Reset</button>
+      <a class="home-link" href="/index.html">Home</a>
+    </div>
+
+    <div id="answerBox" class="answer" aria-live="polite"></div>
+
+{nav}
+  </main>
+
+  <script>
+    (function () {{
+      var CORRECT = {cor_json};
+      var checkBtn = document.getElementById("checkBtn");
+      var resetBtn = document.getElementById("resetBtn");
+      var answerBox = document.getElementById("answerBox");
+
+      function selectedValues() {{
+        return []
+          .slice.call(document.querySelectorAll('input[name="{name}"]:checked'))
+          .map(function (el) {{ return el.value; }})
+          .sort();
+      }}
+
+      function arraysEqual(a, b) {{
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) {{ return v === b[i]; }});
+      }}
+
+      checkBtn.addEventListener("click", function () {{
+        var sel = selectedValues();
+        answerBox.style.display = "block";
+        if (sel.length !== 2) {{
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }}
+        if (arraysEqual(sel, CORRECT)) {{
+          answerBox.className = "answer correct";
+          answerBox.textContent = {msg_json};
+        }} else {{
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Incorrect.";
+        }}
+      }});
+
+      resetBtn.addEventListener("click", function () {{
+        document.querySelectorAll('input[name="{name}"]').forEach(function (el) {{
+          el.checked = false;
+        }});
+        answerBox.style.display = "none";
+        answerBox.textContent = "";
+      }});
+    }})();
+  </script>
+</body>
+</html>
+"""
+
+
 def choice_line(mono: bool, name: str, letter: str, text: str) -> str:
     cls = "choice mono" if mono else "choice"
     return f'    <label class="{cls}"><input type="radio" name="{name}" value="{letter}" />{letter}. {text}</label>'
 
 
 def main() -> None:
-    total = 25
+    total = 40
     chain = [
         {
             "slug": "dhcp-relay-dhcpdiscover",
@@ -424,32 +540,247 @@ def main() -> None:
                 "It prevents loops in a Layer 2 LAN by forwarding all traffic to a root bridge, which then makes the final forwarding decision.",
             ],
         },
+        {
+            "slug": "dhcp-ipv4-assigned-by-protocol",
+            "title": "CCNA — DHCP for dynamic IPv4",
+            "stem": "Which protocol does an IPv4 host use to obtain a dynamically assigned IP address?",
+            "name": "dhcpip",
+            "correct": "D",
+            "explain": "Correct. D — DHCP assigns IPv4 addresses (and common options such as mask, default router, DNS). ARP resolves Layer 2 addresses; DNS resolves names; CDP is Cisco device discovery.",
+            "choices": ["ARP", "DNS", "CDP", "DHCP"],
+        },
+        {
+            "slug": "dhcp-pool-default-router-command",
+            "title": "CCNA — DHCP pool default router",
+            "stem": "When DHCP is configured on a router, which command must be entered so the default gateway is automatically distributed?",
+            "name": "dhcprtr",
+            "correct": "A",
+            "explain": "Correct. A — In an ip dhcp pool, default-router <address> sets DHCP Option 3. ip helper-address is for relay on an interface; dns-server sets DNS. default-gateway is not the pool subcommand.",
+            "choices": [
+                "default-router",
+                "default-gateway",
+                "ip helper-address",
+                "dns-server",
+            ],
+        },
+        {
+            "slug": "native-vlan-security-separated",
+            "title": "CCNA — Securing the native VLAN",
+            "stem": "How is the native VLAN secured in a network?",
+            "name": "natsec",
+            "correct": "A",
+            "explain": "Correct. A — Use a dedicated native VLAN ID that is not used for normal user or server traffic within your design (separate from other VLANs). Avoid leaving everything on default VLAN 1; native VLAN IDs should match on both ends of a trunk.",
+            "choices": [
+                "separate from other VLANs within the administrative domain",
+                "give it a value in the private VLAN range",
+                "assign it as VLAN 1",
+                "configure it as a different VLAN ID on each end of the link",
+            ],
+        },
+        {
+            "slug": "stp-portfast-default-immediate-forwarding",
+            "title": "CCNA — PortFast default for access ports",
+            "stem": "Which command causes switch ports to enter the STP forwarding state immediately when a PC is connected on an access port? (Global configuration.)",
+            "name": "pfastd",
+            "correct": "A",
+            "explain": "Correct. A — spanning-tree portfast default enables PortFast by default on nontrunking (access) ports so they skip listening/learning. spanning-tree portfast trunk targets trunks; no spanning-tree portfast disables PortFast. Option B adds BPDU Guard defaults, not the core requirement.",
+            "choices": [
+                "switch(config)#spanning-tree portfast default",
+                "switch(config)#spanning-tree portfast bpduguard default",
+                "switch(config-if)#spanning-tree portfast trunk",
+                "switch(config-if)#no spanning-tree portfast",
+            ],
+            "mono": True,
+        },
+        {
+            "slug": "wireless-wpa2-aes-strongest",
+            "title": "CCNA — Strongest wireless encryption among choices",
+            "stem": "Which implementation provides the strongest encryption combination for the wireless environment?",
+            "name": "wpastr",
+            "correct": "A",
+            "explain": "Correct. A — WPA2 with AES (CCMP) is the strongest listed. WEP is obsolete. WPA with TKIP is weaker than AES. WPA with AES is better than TKIP-only WPA but WPA2+AES is preferred here.",
+            "choices": ["WPA2 + AES", "WPA + AES", "WEP", "WPA + TKIP"],
+        },
+        {
+            "slug": "vm-shared-disk-resource",
+            "title": "CCNA — Shared resource on a hypervisor",
+            "stem": "Which resource is able to be shared among virtual machines deployed on the same physical server?",
+            "name": "vmdisk",
+            "correct": "D",
+            "explain": "Correct. D — VMs share underlying physical hardware including storage (disks or shared datastores). Each VM typically has its own guest OS, applications, and VM configuration file.",
+            "choices": ["applications", "operating system", "VM configuration file", "disk"],
+        },
+        {
+            "slug": "soho-broadband-shared-connection",
+            "title": "CCNA — SOHO network characteristic",
+            "stem": "What is a characteristic of a SOHO network?",
+            "name": "soho",
+            "correct": "B",
+            "explain": "Correct. B — SOHO sites usually use one broadband connection shared by several users or devices behind a small router or firewall. Full mesh switching, thousands of users, and three-tier datacenter designs are enterprise-scale, not SOHO.",
+            "choices": [
+                "connects each switch to every other switch in the network",
+                "enables multiple users to share a single broadband connection",
+                "provides high throughput access for 1000 or more users",
+                "includes at least three tiers of devices to provide load balancing and redundancy",
+            ],
+        },
+        {
+            "slug": "snmp-trap-mib-requirement",
+            "title": "CCNA — SNMP trap and MIB",
+            "stem": "Which condition must be met before an NMS handles an SNMP trap from an agent?",
+            "name": "snmpmib",
+            "correct": "C",
+            "explain": "Correct. C — The NMS needs the MIB definitions for the OIDs in the trap to interpret them meaningfully. The manager does not have to be on the same router, does not need both trap and inform in an interval, and does not need duplicate traps from two agents.",
+            "choices": [
+                "The NMS must be configured on the same router as the SNMP agent",
+                "The NMS must receive a trap and an inform message from the SNMP agent within a configured interval",
+                "The NMS software must be loaded with the MIB associated with the trap",
+                "The NMS must receive the same trap from two different SNMP agents to verify that it is reliable",
+            ],
+        },
+        {
+            "slug": "standard-acl-permit-deny-two-subnets",
+            "title": "CCNA — Standard ACL for two interfaces",
+            "stem": "Refer to the exhibit (standard ACL 99, permit 10.100.100.0/24, deny Gi0/1 subnet). An access list is required to permit traffic from any host on interface G0/0 and deny traffic from interface Gi0/1. Which access list must be applied?",
+            "name": "stdacl",
+            "correct": "A",
+            "explain": "Correct. A — Option A uses ACL 99 (valid standard range), permits 10.100.100.0/24, and denies 192.168.0.0 0.0.255.255 (all 192.168.x.x). Option B’s wildcard 0.255.255.255 matches all 192.0.0.0/8, which is too broad. Option C uses standard ACL 100 (invalid—100–199 is extended). Option D uses 199 in the extended range as “standard,” which is invalid.",
+            "choices": [
+                "Option A: ip access-list standard 99 — permit 10.100.100.0 0.0.0.255 — deny 192.168.0.0 0.0.255.255",
+                "Option B: ip access-list standard 99 — permit 10.100.100.0 0.0.0.255 — deny 192.168.0.0 0.255.255.255",
+                "Option C: ip access-list standard 100 — permit 10.100.100.0 0.0.0.255 — deny 192.168.0.0 0.255.255.255",
+                "Option D: ip access-list standard 199 — permit 10.100.100.0 0.0.0.255 — deny 192.168.0.0 0.0.255.255",
+            ],
+            "mono": True,
+        },
+        {
+            "slug": "netconf-xml-filter-get-config",
+            "title": "CCNA — NETCONF filter to limit reply",
+            "stem": "After running ncclient code to connect to a NETCONF server, which step reduces the amount of data the server returns so the client receives only the interface configuration?",
+            "name": "ncfilt",
+            "correct": "B",
+            "explain": "Correct. B — Pass an XML subtree filter to get_config (or equivalent) so the server returns only the requested YANG subtree. Parsing with XML or JSON libraries happens after data is received and does not reduce what the server sends. JSON filters are not used for NETCONF get_config filtering.",
+            "choices": [
+                "Use the xml library to parse the data returned by the NETCONF server for the interface’s configuration.",
+                "Create an XML filter as a string and pass it to get_config() method as an argument.",
+                "Create a JSON filter as a string and pass it to the get_config() method as an argument.",
+                "Use the JSON library to parse the data returned by the NETCONF server for the interface’s configuration.",
+            ],
+        },
+        {
+            "slug": "sdn-controller-functions-choose-two",
+            "title": "CCNA — SDN controller functions (choose two)",
+            "stem": "What are two functions of an SDN controller? (Choose two)",
+            "name": "sdnfn",
+            "choose_two": True,
+            "correct": ["A", "D"],
+            "explain": "Correct. A and D — The controller coordinates virtual tenant networks (VTNs) and manages topology and centralized control. Layer 2 forwarding is a data-plane switch function. Tracking hosts alone is not the paired answer on this item. DDoS mitigation may be an application but is not one of the two listed core functions here.",
+            "choices": [
+                "coordinating VTNs",
+                "Layer 2 forwarding",
+                "tracking hosts",
+                "managing the topology",
+                "protecting against DDoS attacks",
+            ],
+        },
+        {
+            "slug": "switch-egress-queue-during-transmit",
+            "title": "CCNA — Queuing when port is transmitting",
+            "stem": "If a switch port receives a new frame while it is actively transmitting a previous frame, how does it process the frames?",
+            "name": "egq",
+            "correct": "D",
+            "explain": "Correct. D — The new frame is queued for transmission after the current frame finishes. Ethernet does not drop the previous frame and request L2 retransmission in this way, does not send the new frame first, and cannot transmit two frames on the same path at once.",
+            "choices": [
+                "The previous frame is delivered, the new frame is dropped, and a retransmission request is sent.",
+                "The new frame is delivered first, the previous frame is dropped, and a retransmission request is sent.",
+                "The two frames are processed and delivered at the same time.",
+                "The new frame is placed in a queue for transmission after the previous frame.",
+            ],
+        },
+        {
+            "slug": "wan-topology-point-to-point-simplicity",
+            "title": "CCNA — WAN topology tradeoffs",
+            "stem": "Which WAN topology provides a combination of simplicity, quality, and availability?",
+            "name": "wanppt",
+            "correct": "C",
+            "explain": "Correct. C — A point-to-point link between two sites is simple, offers predictable performance, and is often sold with SLAs for availability. Full mesh is complex and costly; hub-and-spoke can bottleneck at the hub; partial mesh is a compromise.",
+            "choices": ["partial mesh", "full mesh", "point-to-point", "hub-and-spoke"],
+        },
+        {
+            "slug": "ntp-master-internal-clock-server",
+            "title": "CCNA — NTP master on a router",
+            "stem": "Router1 uses ntp server 192.168.0.3 as an NTP client of Router2. Which command must be configured on Router2 so it operates as an authoritative time source using only its internal clock?",
+            "name": "ntpmst",
+            "correct": "B",
+            "explain": "Correct. B — ntp master <stratum> makes the router serve time from its software clock at the given stratum. ntp server on Router2 would make it a client upstream. ntp passive is not the usual answer for this scenario.",
+            "choices": [
+                "Router2(config)#ntp passive",
+                "Router2(config)#ntp master 4",
+                "Router2(config)#ntp server 172.17.0.1",
+                "Router2(config)#ntp server 192.168.0.2",
+            ],
+            "mono": True,
+        },
+        {
+            "slug": "trunk-allowed-vlan-add-no-disruption",
+            "title": "CCNA — Add VLAN to trunk allow list",
+            "stem": "Refer to the exhibit. A network engineer must enable communication between PC A and the File Server without interrupting other VLANs on the trunk. Which command must be configured?",
+            "name": "trkadd",
+            "correct": "C",
+            "explain": "Correct. C — switchport trunk allowed vlan add 13 adds VLAN 13 to the existing allow list without removing other permitted VLANs. allowed vlan none would break all VLANs. remove 10–11 can cut valid traffic. Typo-only variants that replace the list with a single VLAN can drop other VLANs unless carefully scoped.",
+            "choices": [
+                "Switch trunk allowed vlan 12",
+                "Switchport trunk allowed vlan none",
+                "Switchport trunk allowed vlan add 13",
+                "Switchport trunk allowed vlan remove 10-11",
+            ],
+            "mono": True,
+        },
     ]
 
     prev = "vty-access-list-ssh-secure"
     for idx, q in enumerate(chain):
         i = 13 + idx
         slug = q["slug"]
-        ch_lines = "\n".join(
-            choice_line(q.get("mono", False), q["name"], chr(ord("A") + j), t)
-            for j, t in enumerate(q["choices"])
-        )
         next_slug = chain[idx + 1]["slug"] if idx + 1 < len(chain) else None
-        html = page(
-            title=q["title"],
-            slug=slug,
-            num=i,
-            total=total,
-            stem=q["stem"],
-            select_note="Select an answer — feedback appears immediately.",
-            choices_html=ch_lines,
-            name=q["name"],
-            correct=q["correct"],
-            explain=q["explain"],
-            prev_slug=prev,
-            next_slug=next_slug,
-            mono_choices=q.get("mono", False),
-        )
+        if q.get("choose_two"):
+            ch_lines = "\n".join(
+                checkbox_choice_line(q["name"], chr(ord("A") + j), t)
+                for j, t in enumerate(q["choices"])
+            )
+            html = page_checkbox(
+                title=q["title"],
+                slug=slug,
+                num=i,
+                total=total,
+                stem=q["stem"],
+                choices_html=ch_lines,
+                name=q["name"],
+                correct_letters=q["correct"],
+                explain=q["explain"],
+                prev_slug=prev,
+                next_slug=next_slug,
+            )
+        else:
+            ch_lines = "\n".join(
+                choice_line(q.get("mono", False), q["name"], chr(ord("A") + j), t)
+                for j, t in enumerate(q["choices"])
+            )
+            html = page(
+                title=q["title"],
+                slug=slug,
+                num=i,
+                total=total,
+                stem=q["stem"],
+                select_note="Select an answer — feedback appears immediately.",
+                choices_html=ch_lines,
+                name=q["name"],
+                correct=q["correct"],
+                explain=q["explain"],
+                prev_slug=prev,
+                next_slug=next_slug,
+                mono_choices=q.get("mono", False),
+            )
         (OUT / f"{slug}.html").write_text(html, encoding="utf-8")
         prev = slug
 

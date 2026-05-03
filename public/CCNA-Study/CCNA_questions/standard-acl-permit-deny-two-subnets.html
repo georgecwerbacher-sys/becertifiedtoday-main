@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Lightweight AP and AAA forwarding</title>
+  <title>CCNA — Standard ACL for two interfaces</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -47,6 +47,10 @@
       border: 1px solid #2c3f62;
       font-size: 1.02rem;
       cursor: pointer;
+    }
+    .choice.mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.95rem;
     }
     .choice input {
       margin-right: 10px;
@@ -126,16 +130,13 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>
-      Which device controls the forwarding of authentication requests for users when connecting to the network using a lightweight
-      access point?
-    </h1>
-    <p class="stem-note">Question 11 of 40 · Select an answer — feedback appears immediately.</p>
+    <h1>Refer to the exhibit (standard ACL 99, permit 10.100.100.0/24, deny Gi0/1 subnet). An access list is required to permit traffic from any host on interface G0/0 and deny traffic from interface Gi0/1. Which access list must be applied?</h1>
+    <p class="stem-note">Question 34 of 40 · Select an answer — feedback appears immediately.</p>
 
-    <label class="choice"><input type="radio" name="lapauth" value="A" />A. TACACS server</label>
-    <label class="choice"><input type="radio" name="lapauth" value="B" />B. wireless access point</label>
-    <label class="choice"><input type="radio" name="lapauth" value="C" />C. RADIUS server</label>
-    <label class="choice"><input type="radio" name="lapauth" value="D" />D. wireless LAN controller</label>
+    <label class="choice mono"><input type="radio" name="stdacl" value="A" />A. Option A: ip access-list standard 99 — permit 10.100.100.0 0.0.0.255 — deny 192.168.0.0 0.0.255.255</label>
+    <label class="choice mono"><input type="radio" name="stdacl" value="B" />B. Option B: ip access-list standard 99 — permit 10.100.100.0 0.0.0.255 — deny 192.168.0.0 0.255.255.255</label>
+    <label class="choice mono"><input type="radio" name="stdacl" value="C" />C. Option C: ip access-list standard 100 — permit 10.100.100.0 0.0.0.255 — deny 192.168.0.0 0.255.255.255</label>
+    <label class="choice mono"><input type="radio" name="stdacl" value="D" />D. Option D: ip access-list standard 199 — permit 10.100.100.0 0.0.0.255 — deny 192.168.0.0 0.0.255.255</label>
 
     <div class="actions">
       <button id="resetBtn" type="button">Reset</button>
@@ -145,15 +146,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/firewall-stateful-connection-forwarding.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/vty-access-list-ssh-secure.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/snmp-trap-mib-requirement.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/netconf-xml-filter-get-config.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 With lightweight (CAPWAP) APs, the WLC is the central control point: it receives the client authentication flow from the AP and forwards RADIUS/AAA per policy. The RADIUS server terminates the request; TACACS+ is more common for device administration.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 Option A uses ACL 99 (valid standard range), permits 10.100.100.0/24, and denies 192.168.0.0 0.0.255.255 (all 192.168.x.x). Option B\u2019s wildcard 0.255.255.255 matches all 192.0.0.0/8, which is too broad. Option C uses standard ACL 100 (invalid\u2014100\u2013199 is extended). Option D uses 199 in the extended range as \u201cstandard,\u201d which is invalid.";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
@@ -168,7 +169,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="lapauth"]').forEach(function (el) {
+      document.querySelectorAll('input[name="stdacl"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
@@ -177,7 +178,7 @@
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="lapauth"]').forEach(function (el) {
+        document.querySelectorAll('input[name="stdacl"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";

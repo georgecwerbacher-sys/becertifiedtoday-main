@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Lightweight AP and AAA forwarding</title>
+  <title>CCNA — PortFast default for access ports</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -47,6 +47,10 @@
       border: 1px solid #2c3f62;
       font-size: 1.02rem;
       cursor: pointer;
+    }
+    .choice.mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.95rem;
     }
     .choice input {
       margin-right: 10px;
@@ -126,16 +130,13 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>
-      Which device controls the forwarding of authentication requests for users when connecting to the network using a lightweight
-      access point?
-    </h1>
-    <p class="stem-note">Question 11 of 40 · Select an answer — feedback appears immediately.</p>
+    <h1>Which command causes switch ports to enter the STP forwarding state immediately when a PC is connected on an access port? (Global configuration.)</h1>
+    <p class="stem-note">Question 29 of 40 · Select an answer — feedback appears immediately.</p>
 
-    <label class="choice"><input type="radio" name="lapauth" value="A" />A. TACACS server</label>
-    <label class="choice"><input type="radio" name="lapauth" value="B" />B. wireless access point</label>
-    <label class="choice"><input type="radio" name="lapauth" value="C" />C. RADIUS server</label>
-    <label class="choice"><input type="radio" name="lapauth" value="D" />D. wireless LAN controller</label>
+    <label class="choice mono"><input type="radio" name="pfastd" value="A" />A. switch(config)#spanning-tree portfast default</label>
+    <label class="choice mono"><input type="radio" name="pfastd" value="B" />B. switch(config)#spanning-tree portfast bpduguard default</label>
+    <label class="choice mono"><input type="radio" name="pfastd" value="C" />C. switch(config-if)#spanning-tree portfast trunk</label>
+    <label class="choice mono"><input type="radio" name="pfastd" value="D" />D. switch(config-if)#no spanning-tree portfast</label>
 
     <div class="actions">
       <button id="resetBtn" type="button">Reset</button>
@@ -145,15 +146,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/firewall-stateful-connection-forwarding.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/vty-access-list-ssh-secure.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/native-vlan-security-separated.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wireless-wpa2-aes-strongest.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 With lightweight (CAPWAP) APs, the WLC is the central control point: it receives the client authentication flow from the AP and forwards RADIUS/AAA per policy. The RADIUS server terminates the request; TACACS+ is more common for device administration.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 spanning-tree portfast default enables PortFast by default on nontrunking (access) ports so they skip listening/learning. spanning-tree portfast trunk targets trunks; no spanning-tree portfast disables PortFast. Option B adds BPDU Guard defaults, not the core requirement.";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
@@ -168,7 +169,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="lapauth"]').forEach(function (el) {
+      document.querySelectorAll('input[name="pfastd"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
@@ -177,7 +178,7 @@
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="lapauth"]').forEach(function (el) {
+        document.querySelectorAll('input[name="pfastd"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";
