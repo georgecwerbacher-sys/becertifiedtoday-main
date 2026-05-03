@@ -1,0 +1,1062 @@
+<!doctype html>
+<!--
+  CLI lab baseline — same shell / terminal / modal patterns as public/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html.
+  Copy to public/ and extend STEPS, modals, and topology like the full Rapid PVST lab.
+
+  Includes:
+  - Switch CLI: IOS-like prompts (exec / config / config-if), STEPS[] progression, normalize(), % Invalid input
+  - Router CLI: separate read-only device (R1) with exec/config/if navigation + show run snapshot (mirrors SW10 rules)
+  - Device picker, draggable modals, local command history (ArrowUp/Down), pass banner, sim-nav, logo corner
+
+  See also: public/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html for a complete multi-modal lab.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REPLACE: Lab title | Be Certified Today</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      padding-bottom: 88px;
+      box-sizing: border-box;
+    }
+    .wrap {
+      width: min(1000px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card {
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 22px 26px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.15rem, 2vw, 1.65rem);
+      line-height: 1.3;
+    }
+    .objective,
+    .tasks {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .tasks ol {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+    }
+    .tasks li {
+      margin: 6px 0;
+    }
+    .diagram-wrap {
+      background: #ffffff;
+      border: 1px solid #2d3b5a;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 8px;
+      text-align: center;
+    }
+    .diagram-stage {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      max-width: min(520px, 100%);
+      margin: 0 auto;
+      line-height: 0;
+    }
+    .diagram-stage img {
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+      border-radius: 8px;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .device-pick label {
+      margin-left: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .device-pick input {
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
+      outline: none;
+    }
+    .topology-scrape {
+      margin-top: 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0c1222;
+      border: 1px solid #2a3b5c;
+      text-align: left;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    .topology-scrape h2 {
+      margin: 0 0 8px;
+      font-size: 0.95rem;
+      color: #e6edf3;
+    }
+    .topology-scrape .helper-cli {
+      margin: 6px 0 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: #0a0a0a;
+      border: 1px solid #2b2b2b;
+      color: #f3f3f3;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+      pointer-events: none;
+    }
+    .cli-modal-overlay.is-open {
+      display: block;
+    }
+    .cli-modal-dialog {
+      width: min(520px, calc(100vw - 24px));
+      max-height: min(85vh, 720px);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-dialog.is-dragging {
+      transition: none;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+    }
+    .cli-modal-header:active {
+      cursor: grabbing;
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-close:hover {
+      filter: brightness(1.1);
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
+    .cli-modal-footer {
+      padding: 10px 12px 12px;
+      border-top: 1px solid #2d3b5a;
+      flex-shrink: 0;
+    }
+    .terminal {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.88rem;
+      background: #0a0d12;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      padding: 12px 12px 10px;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      margin-top: 0;
+    }
+    .terminal.terminal-flash {
+      animation: cliFlash 0.9s ease;
+    }
+    @keyframes cliFlash {
+      0% {
+        box-shadow: 0 0 0 0 rgba(37, 75, 138, 0.9);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(37, 75, 138, 0);
+      }
+    }
+    .scrollback-area {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 360px;
+      margin-bottom: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #c8d2e0;
+      line-height: 1.45;
+    }
+    .line-user {
+      color: #7ec8ff;
+    }
+    .line-bad {
+      color: #fca5a5;
+    }
+    .line-sys {
+      color: #94a3b8;
+    }
+    .line-showrun {
+      white-space: pre-wrap;
+      color: #dbe5f0;
+      margin: 6px 0 12px;
+      padding: 10px 10px 12px;
+      border-radius: 6px;
+      background: #06080c;
+      border: 1px solid #263043;
+      font-family: inherit;
+      line-height: 1.45;
+    }
+    .input-row {
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #243044;
+      padding-top: 8px;
+    }
+    .prompt-el {
+      flex-shrink: 0;
+      color: #fbbf24;
+      user-select: none;
+    }
+    .cmdline-input {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      color: #e6edf3;
+      font: inherit;
+      outline: none;
+      padding: 4px 0 4px 4px;
+    }
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-secondary {
+      background: #2a3040;
+      border-color: #4b556b;
+    }
+    .pass-banner {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .pass-banner.visible {
+      display: block;
+    }
+    .sim-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(11, 16, 32, 0.94);
+      border-top: 1px solid #2d3b5a;
+      backdrop-filter: blur(10px);
+    }
+    .sim-nav-btn {
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 700;
+      min-width: 5.5rem;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .sim-nav-btn:hover {
+      filter: brightness(1.08);
+    }
+    .sim-nav-home {
+      background: #1a3d6e;
+    }
+    .site-logo-corner {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 12000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(11, 16, 32, 0.55);
+      border: 1px solid #2d3b5a;
+      padding: 6px;
+      backdrop-filter: blur(4px);
+    }
+    .site-logo-corner img {
+      display: block;
+      width: 52px;
+      height: 52px;
+    }
+    .cli-modal-dialog,
+    .terminal {
+      color-scheme: dark;
+    }
+    .terminal input[type="text"],
+    .cmdline-input {
+      color-scheme: dark;
+      -webkit-appearance: none;
+      appearance: none;
+      background-color: transparent !important;
+    }
+    .helper-modal-dialog {
+      width: min(760px, calc(100vw - 24px));
+    }
+    .spoiler-modal-dialog {
+      width: min(640px, calc(100vw - 24px));
+    }
+    .spoiler-cli-pre {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.8rem;
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="site-logo-corner" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="" />
+  </div>
+
+  <div class="wrap">
+    <main class="card">
+      <h1>REPLACE: Lab title</h1>
+
+      <div class="diagram-wrap" aria-label="Topology diagram">
+        <div class="diagram-stage">
+          <img
+            src="/images/hero-classroom.png"
+            width="1024"
+            height="682"
+            alt="REPLACE: Topology diagram description."
+            decoding="async"
+          />
+        </div>
+        <div class="device-pick" role="group" aria-label="Device for CLI">
+          <strong style="color: #e6edf3">Select device</strong>
+          <label><input type="radio" name="labPrimaryDev" value="SW1" checked /> Switch (primary lab)</label>
+          <label><input type="radio" name="labPrimaryDev" value="R1" /> Router (read-only reference)</label>
+        </div>
+        <div class="device-links">
+          <button type="button" class="device-link" id="openSelectedCliBtn">Open SW1 CLI</button>
+          <button type="button" class="device-link" id="openHelperFileBtn">Helper</button>
+          <button type="button" class="device-link" id="inlineResetLabBtn">Reset lab</button>
+          <button type="button" class="device-link" id="openSpoilerBtn">Spoiler</button>
+        </div>
+        <p class="tasks" style="margin-top: 14px; text-align: left">
+          <strong>Tasks (replace)</strong>
+        </p>
+        <ol class="tasks" style="margin-top: 0">
+          <li>On <strong>SW1</strong>: enter configuration mode, set hostname to match the lab (see STEPS in script).</li>
+          <li>On <strong>R1</strong>: optional — use <code>show run</code> to inspect the sample snapshot (read-only).</li>
+        </ol>
+      </div>
+
+      <p class="objective">
+        REPLACE: Objective paragraph. This baseline uses a two-step STEPS array on the switch; extend with interfaces,
+        VLANs, EtherChannel, etc., following the same <code>mode</code> + <code>test()</code> pattern as
+        ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html.
+      </p>
+    </main>
+  </div>
+
+  <!-- Primary switch CLI (editable lab device — STEPS engine) -->
+  <div id="swCliOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="swCliDialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="swCliTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="swCliTitle">SW1 — CLI</h2>
+        <button type="button" class="cli-modal-close" id="swCliClose" aria-label="Close CLI window">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" id="swTerminal" aria-label="Simulated SW1 CLI">
+          <div id="swScrollback" class="scrollback-area"></div>
+          <div class="input-row">
+            <span id="swPrompt" class="prompt-el">SW1#</span>
+            <input
+              id="swCmdline"
+              class="cmdline-input"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="none"
+              aria-label="SW1 command line"
+            />
+          </div>
+        </div>
+      </div>
+      <footer class="cli-modal-footer">
+        <div class="controls">
+          <button type="button" class="btn btn-secondary" id="swResetBtn">Reset lab</button>
+        </div>
+        <div id="passBanner" class="pass-banner" role="status">
+          REPLACE: Pass message when STEPS complete (e.g. hostname set and saved).
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Router CLI (read-only style device — same navigation rules as SW10 in the PVST lab) -->
+  <div id="r1CliOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="r1CliDialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="r1CliTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="r1CliTitle">R1 — CLI</h2>
+        <button type="button" class="cli-modal-close" id="r1CliClose" aria-label="Close R1 window">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" id="r1Terminal" aria-label="Simulated R1 CLI">
+          <div id="r1Scrollback" class="scrollback-area"></div>
+          <div class="input-row">
+            <span id="r1Prompt" class="prompt-el">R1#</span>
+            <input
+              id="r1Cmdline"
+              class="cmdline-input"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="none"
+              aria-label="R1 command line"
+            />
+          </div>
+        </div>
+      </div>
+      <footer class="cli-modal-footer">
+        <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
+          Read-only lab aid: <code>show run</code> / <code>show running-config</code> prints a fixed snapshot. Use
+          <code>conf t</code>, <code>interface …</code>, <code>exit</code>/<code>end</code> to move modes like IOS.
+        </p>
+      </footer>
+    </div>
+  </div>
+
+  <div id="helperFileOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="helperFileDialog"
+      class="cli-modal-dialog helper-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="helperFileTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="helperFileTitle">Helper file</h2>
+        <button type="button" class="cli-modal-close" id="helperFileClose" aria-label="Close helper">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <section class="topology-scrape" aria-label="Helper notes">
+          <h2>REPLACE: Section title</h2>
+          <p>REPLACE: Plain-language notes for the learner.</p>
+          <pre class="helper-cli">REPLACE# show example-command
+! paste reference CLI excerpt here</pre>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div id="spoilerOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="spoilerDialog"
+      class="cli-modal-dialog spoiler-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="spoilerTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="spoilerTitle">Solution (spoiler)</h2>
+        <button type="button" class="cli-modal-close" id="spoilerClose" aria-label="Close spoiler">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <pre class="spoiler-cli-pre">REPLACE: Full solution commands — one block or split per device in your real lab.</pre>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="/index.html">Home</a>
+  </nav>
+
+  <script>
+    (function () {
+      /** ----- Author constants (replace when copying to public/) ----- */
+      var SWITCH_HOST = "SW1";
+      var ROUTER_HOST = "R1";
+
+      /** Snapshot for switch `show running-config` / `show run` while lab runs */
+      var SWITCH_SHOW_RUNNING_SNAPSHOT = [
+        "Building configuration...",
+        "",
+        "hostname SW1",
+        "!",
+        "end",
+      ].join("\r\n");
+
+      /** Router exhibit — printed when user types show run (SW10-style read-only device) */
+      var ROUTER_SHOW_RUN_SNAPSHOT = [
+        "Building configuration...",
+        "",
+        "hostname R1",
+        "!",
+        "interface GigabitEthernet0/0",
+        " ip address 10.0.0.1 255.255.255.0",
+        "!",
+        "end",
+      ].join("\r\n");
+
+      /**
+       * Ordered lab checks: each step runs in the mode listed (matches prompt tier: exec / config / config-if).
+       * Expand this array for real labs (PVST, LACP, etc.) — same pattern as the full PVST/LACP lab STEPS.
+       */
+      var STEPS = [
+        { mode: "exec", test: function (raw) {
+          var u = normalize(raw);
+          return u === "conf t" || u === "config t" || u === "configure terminal";
+        }},
+        { mode: "config", test: function (raw) {
+          return normalize(raw) === "hostname labsim";
+        }},
+      ];
+
+      function normalize(s) {
+        return String(s)
+          .trim()
+          .toLowerCase()
+          .replace(/\s+/g, " ")
+          .replace(/[.;]+$/, "");
+      }
+
+      function matchShowRun(raw) {
+        var u = normalize(raw);
+        return (
+          u === "show running-config" ||
+          u === "show run" ||
+          u === "sh run" ||
+          u === "sh running-config" ||
+          u === "do show run" ||
+          u === "do show running-config" ||
+          u === "do sh run"
+        );
+      }
+
+      function promptForStep(index) {
+        if (index >= STEPS.length) return SWITCH_HOST + "#";
+        var m = STEPS[index].mode;
+        if (m === "exec") return SWITCH_HOST + "#";
+        if (m === "config") return SWITCH_HOST + "(config)#";
+        if (m === "config-if") return SWITCH_HOST + "(config-if)#";
+        return SWITCH_HOST + "#";
+      }
+
+      var stepIndex = 0;
+      var swPromptOverride = null;
+
+      var swCliOverlay = document.getElementById("swCliOverlay");
+      var swCliDialog = document.getElementById("swCliDialog");
+      var swScrollback = document.getElementById("swScrollback");
+      var swPrompt = document.getElementById("swPrompt");
+      var swCmdline = document.getElementById("swCmdline");
+      var swTerminal = document.getElementById("swTerminal");
+      var passBanner = document.getElementById("passBanner");
+      var swResetBtn = document.getElementById("swResetBtn");
+
+      var r1CliOverlay = document.getElementById("r1CliOverlay");
+      var r1CliDialog = document.getElementById("r1CliDialog");
+      var r1Scrollback = document.getElementById("r1Scrollback");
+      var r1Prompt = document.getElementById("r1Prompt");
+      var r1Cmdline = document.getElementById("r1Cmdline");
+
+      var openSelectedCliBtn = document.getElementById("openSelectedCliBtn");
+      var helperFileOverlay = document.getElementById("helperFileOverlay");
+      var helperFileDialog = document.getElementById("helperFileDialog");
+      var spoilerOverlay = document.getElementById("spoilerOverlay");
+      var spoilerDialog = document.getElementById("spoilerDialog");
+
+      var modalStackZ = 30000;
+      function bumpOverlayZ(overlay) {
+        if (!overlay) return;
+        modalStackZ += 1;
+        overlay.style.zIndex = String(modalStackZ);
+      }
+
+      function getLabDev() {
+        var sel = document.querySelector('input[name="labPrimaryDev"]:checked');
+        return sel ? sel.value : "SW1";
+      }
+
+      function syncOpenCliLabel() {
+        var d = getLabDev();
+        openSelectedCliBtn.textContent = d === "R1" ? "Open " + ROUTER_HOST + " CLI" : "Open " + SWITCH_HOST + " CLI";
+      }
+
+      function appendSw(cls, text) {
+        var div = document.createElement("div");
+        div.className = cls;
+        div.textContent = text;
+        swScrollback.appendChild(div);
+        swScrollback.scrollTop = swScrollback.scrollHeight;
+      }
+
+      function appendR1(cls, text) {
+        var div = document.createElement("div");
+        div.className = cls;
+        div.textContent = text;
+        r1Scrollback.appendChild(div);
+        r1Scrollback.scrollTop = r1Scrollback.scrollHeight;
+      }
+
+      function setSwPrompt() {
+        if (swPromptOverride === "config") {
+          swPrompt.textContent = SWITCH_HOST + "(config)#";
+          return;
+        }
+        if (swPromptOverride === "config-if") {
+          swPrompt.textContent = SWITCH_HOST + "(config-if)#";
+          return;
+        }
+        if (swPromptOverride === "exec") {
+          swPrompt.textContent = SWITCH_HOST + "#";
+          return;
+        }
+        swPrompt.textContent = promptForStep(stepIndex);
+      }
+
+      function resetSwLab() {
+        stepIndex = 0;
+        swPromptOverride = null;
+        swScrollback.innerHTML = "";
+        passBanner.classList.remove("visible");
+        swCmdline.disabled = false;
+        swCmdline.value = "";
+        setSwPrompt();
+      }
+
+      function submitSw() {
+        var promptText = swPrompt.textContent;
+        var line = swCmdline.value;
+        appendSw("line-user", promptText + " " + line);
+        swCmdline.value = "";
+        if (!line.trim()) return;
+
+        if (matchShowRun(line)) {
+          appendSw("line-showrun", SWITCH_SHOW_RUNNING_SNAPSHOT);
+          return;
+        }
+
+        if (stepIndex >= STEPS.length) {
+          appendSw("line-bad", "% Invalid input");
+          return;
+        }
+
+        if (STEPS[stepIndex].test(line)) {
+          stepIndex += 1;
+          swPromptOverride = null;
+          if (stepIndex >= STEPS.length) {
+            swPrompt.textContent = SWITCH_HOST + "#";
+            passBanner.classList.add("visible");
+            appendSw("line-sys", "[OK] Lab objectives met (baseline template).");
+          } else {
+            setSwPrompt();
+          }
+        } else {
+          appendSw("line-bad", "% Invalid input");
+        }
+      }
+
+      /** Router: IOS-like modes + show run only for output (pattern from SW10 in PVST lab) */
+      var r1Mode = "exec";
+
+      function r1PromptForMode() {
+        if (r1Mode === "config") return ROUTER_HOST + "(config)#";
+        if (r1Mode === "config-if") return ROUTER_HOST + "(config-if)#";
+        return ROUTER_HOST + "#";
+      }
+
+      function resetR1() {
+        r1Scrollback.innerHTML = "";
+        r1Mode = "exec";
+        r1Prompt.textContent = r1PromptForMode();
+      }
+
+      function submitR1() {
+        var promptText = r1Prompt.textContent;
+        var line = r1Cmdline.value;
+        appendR1("line-user", promptText + " " + line);
+        r1Cmdline.value = "";
+        if (!line.trim()) return;
+
+        var u = normalize(line);
+
+        if (matchShowRun(line)) {
+          appendR1("line-showrun", ROUTER_SHOW_RUN_SNAPSHOT);
+          return;
+        }
+
+        if (r1Mode === "config-if" && u === "exit") {
+          r1Mode = "config";
+          r1Prompt.textContent = r1PromptForMode();
+          return;
+        }
+        if (r1Mode === "exec" && (u === "conf t" || u === "config t" || u === "configure terminal")) {
+          r1Mode = "config";
+          r1Prompt.textContent = r1PromptForMode();
+          return;
+        }
+        if (r1Mode === "config" && (u.startsWith("interface ") || u.startsWith("int "))) {
+          r1Mode = "config-if";
+          r1Prompt.textContent = r1PromptForMode();
+          return;
+        }
+        if (r1Mode === "config" && (u === "exit" || u === "end")) {
+          r1Mode = "exec";
+          r1Prompt.textContent = r1PromptForMode();
+          return;
+        }
+        if (r1Mode === "config-if" && (u === "end" || u === "exit")) {
+          r1Mode = u === "end" ? "exec" : "config";
+          r1Prompt.textContent = r1PromptForMode();
+          return;
+        }
+
+        appendR1("line-bad", "% Invalid input");
+      }
+
+      function wireFloatingModal(dialogEl, overlayEl) {
+        var header = dialogEl.querySelector(".cli-modal-header");
+        if (!dialogEl || !overlayEl || !header) return;
+        dialogEl.addEventListener("pointerdown", function () {
+          bumpOverlayZ(overlayEl);
+        });
+        var drag = null;
+        header.addEventListener("pointerdown", function (e) {
+          if (e.button !== 0) return;
+          if (e.target.closest(".cli-modal-close")) return;
+          var r = dialogEl.getBoundingClientRect();
+          dialogEl.style.left = r.left + "px";
+          dialogEl.style.top = r.top + "px";
+          dialogEl.style.transform = "none";
+          dialogEl.classList.add("is-dragging");
+          drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: r.left, oy: r.top };
+          try {
+            header.setPointerCapture(e.pointerId);
+          } catch (_) {}
+          e.preventDefault();
+        });
+        header.addEventListener("pointermove", function (e) {
+          if (!drag || e.pointerId !== drag.id) return;
+          dialogEl.style.left = drag.ox + (e.clientX - drag.sx) + "px";
+          dialogEl.style.top = drag.oy + (e.clientY - drag.sy) + "px";
+        });
+        function endDrag(e) {
+          if (!drag || e.pointerId !== drag.id) return;
+          drag = null;
+          dialogEl.classList.remove("is-dragging");
+          try {
+            header.releasePointerCapture(e.pointerId);
+          } catch (_) {}
+        }
+        header.addEventListener("pointerup", endDrag);
+        header.addEventListener("pointercancel", endDrag);
+      }
+
+      wireFloatingModal(swCliDialog, swCliOverlay);
+      wireFloatingModal(r1CliDialog, r1CliOverlay);
+      wireFloatingModal(helperFileDialog, helperFileOverlay);
+      wireFloatingModal(spoilerDialog, spoilerOverlay);
+
+      function openSwCli() {
+        bumpOverlayZ(swCliOverlay);
+        swCliOverlay.classList.add("is-open");
+        swCliOverlay.setAttribute("aria-hidden", "false");
+        if (swTerminal) {
+          swTerminal.classList.remove("terminal-flash");
+          void swTerminal.offsetWidth;
+          swTerminal.classList.add("terminal-flash");
+        }
+        swCmdline.focus();
+      }
+      function closeSwCli() {
+        swCliOverlay.classList.remove("is-open");
+        swCliOverlay.setAttribute("aria-hidden", "true");
+      }
+      function openR1Cli() {
+        bumpOverlayZ(r1CliOverlay);
+        r1CliOverlay.classList.add("is-open");
+        r1CliOverlay.setAttribute("aria-hidden", "false");
+        resetR1();
+        r1Cmdline.focus();
+      }
+      function closeR1Cli() {
+        r1CliOverlay.classList.remove("is-open");
+        r1CliOverlay.setAttribute("aria-hidden", "true");
+      }
+
+      function openSelectedCliModal() {
+        if (getLabDev() === "R1") openR1Cli();
+        else openSwCli();
+      }
+
+      openSelectedCliBtn.addEventListener("click", openSelectedCliModal);
+      document.querySelectorAll('input[name="labPrimaryDev"]').forEach(function (r) {
+        r.addEventListener("change", function () {
+          syncOpenCliLabel();
+          openSelectedCliBtn.focus();
+        });
+      });
+
+      swCmdline.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submitSw();
+        }
+      });
+      r1Cmdline.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submitR1();
+        }
+      });
+
+      document.getElementById("swCliClose").addEventListener("click", closeSwCli);
+      document.getElementById("r1CliClose").addEventListener("click", closeR1Cli);
+      swResetBtn.addEventListener("click", resetSwLab);
+      document.getElementById("inlineResetLabBtn").addEventListener("click", resetSwLab);
+
+      document.getElementById("openHelperFileBtn").addEventListener("click", function () {
+        bumpOverlayZ(helperFileOverlay);
+        helperFileOverlay.classList.add("is-open");
+        helperFileOverlay.setAttribute("aria-hidden", "false");
+      });
+      document.getElementById("helperFileClose").addEventListener("click", function () {
+        helperFileOverlay.classList.remove("is-open");
+        helperFileOverlay.setAttribute("aria-hidden", "true");
+      });
+      document.getElementById("openSpoilerBtn").addEventListener("click", function () {
+        bumpOverlayZ(spoilerOverlay);
+        spoilerOverlay.classList.add("is-open");
+        spoilerOverlay.setAttribute("aria-hidden", "false");
+      });
+      document.getElementById("spoilerClose").addEventListener("click", function () {
+        spoilerOverlay.classList.remove("is-open");
+        spoilerOverlay.setAttribute("aria-hidden", "true");
+      });
+
+      /** Local command history (ArrowUp / ArrowDown) — same behavior as full PVST lab */
+      var localHistory = new WeakMap();
+      function getLocalHistoryState(input) {
+        var state = localHistory.get(input);
+        if (state) return state;
+        state = { entries: [], idx: 0 };
+        localHistory.set(input, state);
+        return state;
+      }
+      function pushLocalHistory(input, raw) {
+        var cmd = String(raw || "").trim();
+        if (!cmd) return;
+        var state = getLocalHistoryState(input);
+        if (!state.entries.length || state.entries[state.entries.length - 1] !== cmd) {
+          state.entries.push(cmd);
+        }
+        state.idx = state.entries.length;
+      }
+      function bindLocalHistory(input) {
+        if (!input || input.dataset.localHistoryReady === "1") return;
+        input.dataset.localHistoryReady = "1";
+        input.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            pushLocalHistory(input, input.value);
+            return;
+          }
+          var usePrev = e.key === "ArrowUp" || (e.key === "Tab" && !e.shiftKey);
+          var useNext = e.key === "ArrowDown" || (e.key === "Tab" && e.shiftKey);
+          if (!usePrev && !useNext) return;
+          var state = getLocalHistoryState(input);
+          if (!state.entries.length) return;
+          e.preventDefault();
+          if (usePrev) {
+            state.idx = Math.max(0, state.idx - 1);
+          } else {
+            state.idx = Math.min(state.entries.length, state.idx + 1);
+          }
+          input.value = state.idx >= state.entries.length ? "" : state.entries[state.idx];
+        });
+      }
+      bindLocalHistory(swCmdline);
+      bindLocalHistory(r1Cmdline);
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key !== "Escape") return;
+        if (spoilerOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          spoilerOverlay.classList.remove("is-open");
+          spoilerOverlay.setAttribute("aria-hidden", "true");
+          return;
+        }
+        if (helperFileOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          helperFileOverlay.classList.remove("is-open");
+          helperFileOverlay.setAttribute("aria-hidden", "true");
+          return;
+        }
+        if (swCliOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          closeSwCli();
+          return;
+        }
+        if (r1CliOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          closeR1Cli();
+        }
+      });
+
+      history.pushState(null, "", location.href);
+      window.addEventListener("popstate", function () {
+        history.pushState(null, "", location.href);
+      });
+
+      syncOpenCliLabel();
+      resetSwLab();
+    })();
+  </script>
+</body>
+</html>

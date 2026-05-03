@@ -1,0 +1,712 @@
+<!doctype html>
+<!--
+  Registered-user training portal — main index shell for subscribers after sign-in.
+  Copy into public/ when publishing (e.g. public/training-portal.html); replace REPLACE:
+  strings and wire buttons to your question banks, labs, and timed tests.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="REPLACE: Registered training portal — practice questions, labs, drag-and-drop, timed tests."
+  />
+  <link rel="canonical" href="https://becertifiedtoday.com/REPLACE-portal-path.html" />
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <title>REPLACE: Track name — Training portal | Be Certified Today</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bg: #0b1020;
+      --surface: #121a2b;
+      --border: #2d3b5a;
+      --text: #e6edf3;
+      --muted: #9fb0cc;
+      --accent: #2f66bf;
+      --accent-border: #4f84d8;
+      --accent-hover: #3a74d4;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px 20px;
+      padding: 16px clamp(20px, 4vw, 40px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(18, 26, 43, 0.6);
+      backdrop-filter: blur(8px);
+    }
+    .header-actions {
+      flex-shrink: 0;
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .header-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--accent-border);
+      background: transparent;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .header-link:hover {
+      background: rgba(79, 132, 216, 0.12);
+      color: #f0f4fc;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
+      line-height: 0;
+    }
+    .brand img {
+      display: block;
+      height: clamp(56px, 12vw, 88px);
+      width: auto;
+      max-width: min(100px, 22vw);
+      object-fit: contain;
+      object-position: left center;
+    }
+    main {
+      flex: 1;
+      display: block;
+      padding: clamp(32px, 6vw, 56px) clamp(20px, 4vw, 40px);
+    }
+    .hero-banner {
+      margin: 0;
+      width: 100%;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      background: #0d1528;
+    }
+    .hero-banner img {
+      display: block;
+      width: 100%;
+      height: clamp(150px, 26vw, 320px);
+      object-fit: cover;
+      object-position: center 15%;
+    }
+    .hero-content {
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .funnel {
+      width: 100%;
+      max-width: none;
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b8ab8;
+    }
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(1.65rem, 4.2vw, 2.25rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+    .lead {
+      margin: 0 0 28px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.6;
+    }
+    .benefits {
+      margin: 0 0 28px;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+    .benefits li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      color: #b8c3d6;
+      font-size: 0.98rem;
+    }
+    .benefits li::before {
+      content: "";
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      margin-top: 0.45em;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4f84d8, #2f66bf);
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: clamp(22px, 4vw, 28px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    .purchase-card .purchase-label {
+      margin: 0 0 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #6b8ab8;
+    }
+    .purchase-card .purchase-heading {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 3.5vw, 1.65rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      line-height: 1.2;
+    }
+    .purchase-card .purchase-lead {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.55;
+      text-align: left;
+    }
+    .purchase-card .purchase-includes {
+      margin: 0 0 18px;
+      padding: 0 0 0 22px;
+      text-align: left;
+      color: #b8c3d6;
+      font-size: 0.98rem;
+      line-height: 1.55;
+    }
+    .purchase-card .purchase-includes li {
+      margin-bottom: 8px;
+    }
+    .purchase-card-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: clamp(22px, 4vw, 40px);
+    }
+    .purchase-card-main {
+      flex: 1 1 min(46ch, 100%);
+      min-width: 0;
+    }
+    .purchase-card-brand-col {
+      flex: 0 1 clamp(220px, 32vw, 340px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: clamp(12px, 2.5vw, 18px);
+      align-self: flex-start;
+    }
+    .purchase-card-brand-mark {
+      margin: 0;
+      line-height: 0;
+      padding: 12px 16px;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 2px 14px rgba(0, 0, 0, 0.22);
+    }
+    .purchase-card-brand-mark img {
+      display: block;
+      height: auto;
+      width: auto;
+      max-height: clamp(120px, 20vw, 220px);
+      max-width: min(220px, 48vw);
+      object-fit: contain;
+      filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.35));
+    }
+    @media (max-width: 639px) {
+      .purchase-card-inner {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .purchase-card-brand-col {
+        flex: 0 1 auto;
+        max-width: min(300px, 100%);
+        margin-left: auto;
+        margin-right: auto;
+        align-items: center;
+      }
+    }
+    .site-disclaimer {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: clamp(20px, 4vw, 28px) clamp(20px, 4vw, 40px);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .site-disclaimer p {
+      margin: 0 0 10px;
+      font-size: clamp(0.78rem, 1.8vw, 0.84rem);
+      line-height: 1.55;
+      color: #6b7f9e;
+    }
+    .site-disclaimer p:last-child {
+      margin-bottom: 0;
+    }
+    .site-disclaimer strong {
+      color: #a4b4d0;
+      font-weight: 700;
+    }
+    footer {
+      padding: 16px clamp(20px, 4vw, 24px);
+      text-align: center;
+      font-size: 0.82rem;
+      color: #5c6d8a;
+      border-top: 1px solid rgba(45, 59, 90, 0.5);
+    }
+    .formats-section {
+      margin-top: clamp(40px, 8vw, 72px);
+      padding-top: clamp(36px, 6vw, 56px);
+      border-top: 1px solid var(--border);
+    }
+    .formats-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .formats-head {
+      margin: 0 0 clamp(10px, 2vw, 14px);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b8ab8;
+    }
+    .formats-section h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 3.2vw, 1.75rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .formats-lead {
+      margin: 0 0 clamp(24px, 4vw, 32px);
+      max-width: 52ch;
+      color: var(--muted);
+      font-size: clamp(0.98rem, 2.2vw, 1.05rem);
+      line-height: 1.6;
+    }
+    .section-heading {
+      margin: clamp(28px, 5vw, 36px) 0 12px;
+      font-size: clamp(1.08rem, 2.6vw, 1.22rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .section-heading:first-of-type {
+      margin-top: 0;
+    }
+    .placeholder-strip {
+      margin: 0 0 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px dashed rgba(79, 132, 216, 0.45);
+      background: rgba(13, 21, 40, 0.45);
+      color: #9fb0cc;
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+    .start-box {
+      margin: 0 0 18px;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid #3d6dbb;
+      background: #1a2742;
+    }
+    .sim-grid {
+      display: grid;
+      gap: 14px;
+      margin: 0 0 8px;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+    .sim-box {
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid #3d6dbb;
+      background: #1a2742;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 0;
+    }
+    .sim-box-title {
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+    .study-meta {
+      margin: 0 0 10px;
+      font-size: 0.88rem;
+      color: #9fb0cc;
+    }
+    .study-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .study-actions .start-btn {
+      flex: 1 1 auto;
+      text-align: center;
+      min-width: 7rem;
+    }
+    .start-btn {
+      display: inline-block;
+      text-decoration: none;
+      background: #2f66bf;
+      border: 1px solid #4f84d8;
+      color: #e6edf3;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 800;
+      font: inherit;
+      cursor: pointer;
+    }
+    button.start-btn:hover:not(:disabled) {
+      background: #3a74d4;
+    }
+    button.start-btn:disabled,
+    button.start-btn.is-placeholder {
+      opacity: 0.55;
+      cursor: not-allowed;
+      background: rgba(47, 102, 191, 0.35);
+    }
+    .mock-section {
+      margin-top: clamp(40px, 8vw, 72px);
+      padding-top: clamp(36px, 6vw, 56px);
+      border-top: 1px solid var(--border);
+    }
+    .mock-section h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 3.2vw, 1.75rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .mock-lead {
+      margin: 0 0 clamp(18px, 3vw, 22px);
+      max-width: 58ch;
+      color: var(--muted);
+      font-size: clamp(0.98rem, 2.2vw, 1.05rem);
+      line-height: 1.6;
+    }
+    .mock-intro {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: clamp(22px, 5vw, 40px);
+    }
+    .mock-intro-figure {
+      flex: 0 1 clamp(220px, 34vw, 360px);
+      margin: 0;
+      align-self: center;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+      background: rgba(13, 21, 40, 0.35);
+    }
+    .mock-intro-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: min(480px, 56vh);
+      object-fit: contain;
+    }
+    .mock-intro-copy {
+      flex: 1 1 min(54ch, 100%);
+      min-width: 0;
+    }
+    .mock-list {
+      margin: 0 0 clamp(20px, 3.5vw, 26px);
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      max-width: 62ch;
+    }
+    .mock-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      color: #b8c3d6;
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.55;
+    }
+    .mock-list li::before {
+      content: "";
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      margin-top: 0.45em;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4f84d8, #2f66bf);
+    }
+    .mock-list li strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+    @media (max-width: 719px) {
+      .mock-intro {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .mock-intro-figure {
+        flex: 1 1 auto;
+        max-width: min(440px, 100%);
+        margin-right: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <a class="brand" href="/" aria-label="Be Certified Today — home">
+        <img
+          src="/images/logo/becertifiedtoday_logo_trans.png"
+          width="1024"
+          height="1024"
+          alt=""
+        />
+      </a>
+      <div class="header-actions">
+        <a class="header-link" href="/">Marketing site</a>
+      </div>
+    </header>
+    <figure class="hero-banner">
+      <img
+        src="/images/hero-classroom-v2.png"
+        width="1024"
+        height="682"
+        alt="Focused learner at a computer in a bright training lab with peers working nearby."
+        decoding="async"
+        fetchpriority="high"
+      />
+    </figure>
+    <main id="main">
+      <div class="hero-content">
+        <div class="funnel">
+          <p class="eyebrow">Registered access</p>
+          <h1>Training portal</h1>
+          <p class="lead">
+            Main hub for signed-in learners: practice questions, drag-and-drop, CLI-style labs, and timed test entry.
+            Replace placeholder buttons with links to your published pages or launchers; keep each track’s URLs in its own folder or config.
+          </p>
+          <ul class="benefits" aria-label="Portal highlights">
+            <li>Sections for questions, drag-and-drop, labs, and timed practice in one layout.</li>
+            <li>Card grid matches other Be Certified Today training portals for a consistent experience.</li>
+            <li>Wire buttons to <strong>this track’s</strong> samples only — avoid cross-linking another exam’s library unless intentional.</li>
+          </ul>
+
+          <div class="card purchase-card" id="portal-curriculum">
+            <div class="purchase-card-inner">
+              <div class="purchase-card-main">
+                <p class="purchase-label">Outline</p>
+                <h2 class="purchase-heading">REPLACE: Exam or curriculum title</h2>
+                <p class="purchase-lead">
+                  Replace this block with your official blueprint or study map. Below is sample structure only.
+                </p>
+                <ul class="purchase-includes">
+                  <li><strong>Domain / topic 1:</strong> REPLACE — short note.</li>
+                  <li><strong>Domain / topic 2:</strong> REPLACE — short note.</li>
+                  <li><strong>Domain / topic 3:</strong> REPLACE — short note.</li>
+                  <li><strong>Domain / topic 4:</strong> REPLACE — short note.</li>
+                  <li><strong>Domain / topic 5:</strong> REPLACE — short note.</li>
+                  <li><strong>Domain / topic 6:</strong> REPLACE — short note.</li>
+                </ul>
+              </div>
+              <div class="purchase-card-brand-col">
+                <figure class="purchase-card-brand-mark" aria-hidden="true">
+                  <img
+                    src="/images/logo/becertifiedtoday_logo_trans.png"
+                    width="1024"
+                    height="1024"
+                    alt=""
+                    decoding="async"
+                    loading="lazy"
+                  />
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section class="formats-section" aria-labelledby="formats-title">
+        <div class="formats-inner">
+          <p class="formats-head">Practice formats</p>
+          <h2 id="formats-title">Choose your practice mode</h2>
+          <p class="formats-lead">
+            Mirror of the standard portal sections: wire each card to your track’s launchers (for example
+            <code>/your-track/begin-questions-random.html</code> once it exists).
+          </p>
+
+          <p class="placeholder-strip">
+            Placeholders use disabled buttons. Swap for <code>&lt;a class="start-btn" href="…"&gt;</code> when URLs exist.
+          </p>
+
+          <h3 class="section-heading">Practice questions</h3>
+          <section class="start-box" aria-label="Question studies (placeholder)">
+            <div class="sim-grid" aria-label="Study groups — placeholder">
+              <article class="sim-box">
+                <h4 class="sim-box-title">Sample section 1</h4>
+                <p class="study-meta">Placeholder — random / linear / review launchers for a question range.</p>
+                <div class="study-actions">
+                  <button type="button" class="start-btn is-placeholder" disabled>Random</button>
+                  <button type="button" class="start-btn is-placeholder" disabled>Linear</button>
+                  <button type="button" class="start-btn is-placeholder" disabled>Review</button>
+                </div>
+              </article>
+              <article class="sim-box">
+                <h4 class="sim-box-title">Sample section 2</h4>
+                <p class="study-meta">Duplicate cards as needed or drive from a track-specific <code>study-config</code> JSON.</p>
+                <div class="study-actions">
+                  <button type="button" class="start-btn is-placeholder" disabled>Random</button>
+                  <button type="button" class="start-btn is-placeholder" disabled>Linear</button>
+                  <button type="button" class="start-btn is-placeholder" disabled>Review</button>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <h3 class="section-heading">Drag and drop</h3>
+          <section class="start-box" aria-label="Drag and drop practice (placeholder)">
+            <div class="sim-grid" aria-label="Drag-and-drop groups — placeholder">
+              <article class="sim-box">
+                <h4 class="sim-box-title">D&amp;D set A</h4>
+                <p class="study-meta">Placeholder — random / linear / review for drag-and-drop sets.</p>
+                <div class="study-actions">
+                  <button type="button" class="start-btn is-placeholder" disabled>Random</button>
+                  <button type="button" class="start-btn is-placeholder" disabled>Linear</button>
+                  <button type="button" class="start-btn is-placeholder" disabled>Review</button>
+                </div>
+              </article>
+              <article class="sim-box">
+                <h4 class="sim-box-title">D&amp;D set B</h4>
+                <p class="study-meta">Add pages under your track folder, then enable buttons.</p>
+                <div class="study-actions">
+                  <button type="button" class="start-btn is-placeholder" disabled>Random</button>
+                  <button type="button" class="start-btn is-placeholder" disabled>Linear</button>
+                  <button type="button" class="start-btn is-placeholder" disabled>Review</button>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <h3 class="section-heading">Lab simulations</h3>
+          <section class="start-box" aria-label="Lab simulations (placeholder)">
+            <div class="sim-grid" aria-label="CLI labs — placeholder">
+              <article class="sim-box">
+                <h4 class="sim-box-title">Lab sample 1</h4>
+                <p class="study-meta">Short description of your CLI lab scenario.</p>
+                <button type="button" class="start-btn is-placeholder" disabled>Open simulation</button>
+              </article>
+              <article class="sim-box">
+                <h4 class="sim-box-title">Lab sample 2</h4>
+                <p class="study-meta">Another lab card — single primary action per card.</p>
+                <button type="button" class="start-btn is-placeholder" disabled>Open simulation</button>
+              </article>
+              <article class="sim-box">
+                <h4 class="sim-box-title">Lab sample 3</h4>
+                <p class="study-meta">Add as many <code>sim-box</code> articles as you need.</p>
+                <button type="button" class="start-btn is-placeholder" disabled>Open simulation</button>
+              </article>
+            </div>
+          </section>
+
+          <h3 class="section-heading">Test simulation</h3>
+          <section class="start-box" aria-label="Timed test simulation (placeholder)">
+            <p style="margin: 0 0 10px; color: #b8c3d6; line-height: 1.5;">
+              Placeholder — timed mixed exam entry point (questions + drag-and-drop + lab items). Point to something like
+              <code>/your-track/begin-test-simulation.html</code> when your page exists.
+            </p>
+            <div class="study-actions">
+              <button type="button" class="start-btn is-placeholder" disabled>Start test simulation</button>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="mock-section" aria-labelledby="mock-title">
+        <div class="formats-inner">
+          <div class="mock-intro">
+            <figure class="mock-intro-figure">
+              <img
+                src="/images/encor-practice-test-simulation-classroom.png"
+                width="682"
+                height="1024"
+                alt="Student at a computer workstation in a classroom lab."
+                decoding="async"
+                loading="lazy"
+              />
+            </figure>
+            <div class="mock-intro-copy">
+              <p class="formats-head">Practice test simulation</p>
+              <h2 id="mock-title">Timed mixed practice (placeholder)</h2>
+              <p class="mock-lead">
+                Same narrative block as other portals — describe duration, item mix, timer behavior, and scoring when you publish a real timed exam for this track.
+              </p>
+              <p class="mock-lead">
+                Replace this copy with specifics for your test (question count, time limit, domains covered).
+              </p>
+              <ul class="mock-list" aria-label="Test simulation bullets — placeholder">
+                <li><strong>Mixed item types:</strong> multiple choice, drag-and-drop, simlets — describe your implementation.</li>
+                <li><strong>Timer:</strong> set expectations (for example a fixed countdown per attempt).</li>
+                <li><strong>Outcome:</strong> pass/fail summary and review links — wire when samples exist.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="site-disclaimer" aria-label="Legal disclaimer">
+      <p>
+        Content on this site is for <strong>training and study practice only</strong>. There is
+        <strong>no guarantee</strong> that any question, lab, or scenario here will appear on a
+        live certification exam, or that using this site alone will prepare you to pass.
+      </p>
+      <p>
+        <strong>Be Certified Today is independent.</strong> It is not sponsored by, endorsed by,
+        accredited by, or affiliated with Cisco Systems, Inc. Cisco and Cisco certification names
+        are trademarks of Cisco and/or its affiliates; use here is for descriptive purposes only.
+      </p>
+    </aside>
+    <footer>© Be Certified Today · Registered training portal (template)</footer>
+  </div>
+</body>
+</html>
