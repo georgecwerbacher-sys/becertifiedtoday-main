@@ -2,6 +2,7 @@
 """One-off generator for CCNA question HTML pages (inline template)."""
 from __future__ import annotations
 
+import json
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -129,10 +130,6 @@ STYLE = r"""  <style>
   </style>"""
 
 
-def esc_js(s: str) -> str:
-    return s.replace("\\", "\\\\").replace('"', '\\"').replace("\n", " ")
-
-
 def page(
     *,
     title: str,
@@ -167,7 +164,7 @@ def page(
         nav_lines.append(f"      {next_h}")
     nav_lines.append("    </div>")
     nav = "\n".join(nav_lines)
-    explain_js = esc_js(explain)
+    msg_json = json.dumps(explain)
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -187,7 +184,6 @@ def page(
 {choices_html}
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
@@ -199,31 +195,28 @@ def page(
 
   <script>
     (function () {{
-      var CORRECT = "{correct}";
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT = {json.dumps(correct)};
+      var CORRECT_MSG = {msg_json};
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValue() {{
-        var el = document.querySelector('input[name="{name}"]:checked');
-        return el ? el.value : null;
-      }}
-
-      checkBtn.addEventListener("click", function () {{
-        var sel = selectedValue();
+      function applyFeedback(value) {{
         answerBox.style.display = "block";
-        if (!sel) {{
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select an answer.";
-          return;
-        }}
-        if (sel === CORRECT) {{
+        if (value === CORRECT) {{
           answerBox.className = "answer correct";
-          answerBox.textContent = "{explain_js}";
+          answerBox.textContent = CORRECT_MSG;
         }} else {{
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }}
+      }}
+
+      document.querySelectorAll('input[name="{name}"]').forEach(function (el) {{
+        el.addEventListener("change", function () {{
+          if (el.checked) {{
+            applyFeedback(el.value);
+          }}
+        }});
       }});
 
       resetBtn.addEventListener("click", function () {{
@@ -434,7 +427,7 @@ def main() -> None:
             num=i,
             total=total,
             stem=q["stem"],
-            select_note="Select one answer, then click Check answer.",
+            select_note="Select an answer — feedback appears immediately.",
             choices_html=ch_lines,
             name=q["name"],
             correct=q["correct"],

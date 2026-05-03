@@ -127,7 +127,7 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>What is a role of wireless controllers in an enterprise network?</h1>
-    <p class="stem-note">Question 6 of 24 · Select one answer, then click Check answer.</p>
+    <p class="stem-note">Question 6 of 24 · Select an answer — feedback appears immediately.</p>
 
     <label class="choice"
       ><input type="radio" name="wlc" value="A" />A. serve as the first line of defense in an enterprise network</label
@@ -143,7 +143,6 @@
     >
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
@@ -159,31 +158,27 @@
   <script>
     (function () {
       var CORRECT = "C";
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT_MSG = "Correct. C \u2014 A WLC centralizes configuration, RF policy, SSIDs, and monitoring for many lightweight APs. Edge defense and broad user login are not its primary defining role; standalone APs operate without a controller.";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValue() {
-        var el = document.querySelector('input[name="wlc"]:checked');
-        return el ? el.value : null;
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedValue();
+      function applyFeedback(value) {
         answerBox.style.display = "block";
-        if (!sel) {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select an answer.";
-          return;
-        }
-        if (sel === CORRECT) {
+        if (value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent =
-            "Correct. C — A WLC centralizes configuration, RF policy, SSIDs, and monitoring for many lightweight APs. Edge defense and broad user login are not its primary defining role; standalone APs operate without a controller.";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
+      }
+
+      document.querySelectorAll('input[name="wlc"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
       });
 
       resetBtn.addEventListener("click", function () {

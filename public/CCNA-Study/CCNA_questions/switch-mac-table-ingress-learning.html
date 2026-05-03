@@ -131,7 +131,7 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>What does a switch use to build its MAC address table?</h1>
-    <p class="stem-note">Question 19 of 24 · Select one answer, then click Check answer.</p>
+    <p class="stem-note">Question 19 of 24 · Select an answer — feedback appears immediately.</p>
 
     <label class="choice"><input type="radio" name="maclearn" value="A" />A. VTP</label>
     <label class="choice"><input type="radio" name="maclearn" value="B" />B. DTP</label>
@@ -139,7 +139,6 @@
     <label class="choice"><input type="radio" name="maclearn" value="D" />D. ingress traffic</label>
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
@@ -155,30 +154,27 @@
   <script>
     (function () {
       var CORRECT = "D";
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT_MSG = "Correct. D \u2014 The switch learns source MAC addresses from frames received (ingress) on each port. VTP and DTP are unrelated to MAC learning.";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValue() {
-        var el = document.querySelector('input[name="maclearn"]:checked');
-        return el ? el.value : null;
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedValue();
+      function applyFeedback(value) {
         answerBox.style.display = "block";
-        if (!sel) {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select an answer.";
-          return;
-        }
-        if (sel === CORRECT) {
+        if (value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. D — The switch learns source MAC addresses from frames received (ingress) on each port. VTP and DTP are unrelated to MAC learning.";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
+      }
+
+      document.querySelectorAll('input[name="maclearn"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
       });
 
       resetBtn.addEventListener("click", function () {

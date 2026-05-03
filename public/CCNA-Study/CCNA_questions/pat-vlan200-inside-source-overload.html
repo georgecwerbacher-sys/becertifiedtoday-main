@@ -131,7 +131,7 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>Refer to the exhibit. Which configuration must be applied to the router so PAT translates addresses in VLAN 200 while devices on VLAN 100 use their own IP addresses? Choose the option letter that matches the correct full configuration block.</h1>
-    <p class="stem-note">Question 23 of 24 · Select one answer, then click Check answer.</p>
+    <p class="stem-note">Question 23 of 24 · Select an answer — feedback appears immediately.</p>
 
     <label class="choice mono"><input type="radio" name="pat" value="A" />A. Option A (ACL permit 209.165.201.2 0.0.0.0; nat inside on Gi2/0/1.200; outside on Gi1/0/0)</label>
     <label class="choice mono"><input type="radio" name="pat" value="B" />B. Option B (ACL permit 209.165.201.2 255.255.255.255; same NAT interfaces)</label>
@@ -139,7 +139,6 @@
     <label class="choice mono"><input type="radio" name="pat" value="D" />D. Option D (ACL permit 192.168.100.32 0.0.0.31; same NAT interfaces)</label>
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
@@ -155,30 +154,27 @@
   <script>
     (function () {
       var CORRECT = "C";
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT_MSG = "Correct. C \u2014 The standard ACL for ip nat inside source list should permit only VLAN 200\u2019s inside subnet (commonly 192.168.200.0/24 with wildcard 0.0.0.255 in lab items). VLAN 100 must not be permitted if it should bypass PAT. Options A/B reference 209.165.201.2 (not the inside range for the whole VLAN). B uses a subnet mask where a wildcard is required. D only matches a /27 unless the exhibit limits VLAN 200 to that block. Confirm the third octet against your exhibit (200 vs 100).";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValue() {
-        var el = document.querySelector('input[name="pat"]:checked');
-        return el ? el.value : null;
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedValue();
+      function applyFeedback(value) {
         answerBox.style.display = "block";
-        if (!sel) {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select an answer.";
-          return;
-        }
-        if (sel === CORRECT) {
+        if (value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. C — The standard ACL for ip nat inside source list should permit only VLAN 200’s inside subnet (commonly 192.168.200.0/24 with wildcard 0.0.0.255 in lab items). VLAN 100 must not be permitted if it should bypass PAT. Options A/B reference 209.165.201.2 (not the inside range for the whole VLAN). B uses a subnet mask where a wildcard is required. D only matches a /27 unless the exhibit limits VLAN 200 to that block. Confirm the third octet against your exhibit (200 vs 100).";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
+      }
+
+      document.querySelectorAll('input[name="pat"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
       });
 
       resetBtn.addEventListener("click", function () {

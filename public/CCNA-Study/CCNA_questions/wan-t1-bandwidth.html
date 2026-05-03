@@ -131,7 +131,7 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>What is the maximum bandwidth of a T1 point-to-point connection?</h1>
-    <p class="stem-note">Question 17 of 24 · Select one answer, then click Check answer.</p>
+    <p class="stem-note">Question 17 of 24 · Select an answer — feedback appears immediately.</p>
 
     <label class="choice"><input type="radio" name="t1" value="A" />A. 1.544 Mbps</label>
     <label class="choice"><input type="radio" name="t1" value="B" />B. 2.048 Mbps</label>
@@ -139,7 +139,6 @@
     <label class="choice"><input type="radio" name="t1" value="D" />D. 43.7 Mbps</label>
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
@@ -155,30 +154,27 @@
   <script>
     (function () {
       var CORRECT = "A";
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT_MSG = "Correct. A \u2014 T1 is 1.544 Mbps. 2.048 Mbps is E1; 34.368 Mbps is in the E3 range; ~44 Mbps is T3 territory.";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValue() {
-        var el = document.querySelector('input[name="t1"]:checked');
-        return el ? el.value : null;
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedValue();
+      function applyFeedback(value) {
         answerBox.style.display = "block";
-        if (!sel) {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select an answer.";
-          return;
-        }
-        if (sel === CORRECT) {
+        if (value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. A — T1 is 1.544 Mbps. 2.048 Mbps is E1; 34.368 Mbps is in the E3 range; ~44 Mbps is T3 territory.";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
+      }
+
+      document.querySelectorAll('input[name="t1"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
       });
 
       resetBtn.addEventListener("click", function () {

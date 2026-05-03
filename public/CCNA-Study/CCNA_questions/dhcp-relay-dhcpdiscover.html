@@ -131,7 +131,7 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>A network administrator must enable DHCP services between two sites. What must be configured for the router to pass DHCPDISCOVER messages on to the server?</h1>
-    <p class="stem-note">Question 13 of 24 · Select one answer, then click Check answer.</p>
+    <p class="stem-note">Question 13 of 24 · Select an answer — feedback appears immediately.</p>
 
     <label class="choice"><input type="radio" name="dhcp" value="A" />A. a DHCP Relay Agent</label>
     <label class="choice"><input type="radio" name="dhcp" value="B" />B. DHCP Binding</label>
@@ -139,7 +139,6 @@
     <label class="choice"><input type="radio" name="dhcp" value="D" />D. DHCP Snooping</label>
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
@@ -155,30 +154,27 @@
   <script>
     (function () {
       var CORRECT = "A";
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT_MSG = "Correct. A \u2014 A DHCP relay agent (Cisco: ip helper-address pointing at the DHCP server) forwards DHCP broadcasts as unicast to the server. A DHCP pool is on the server; DHCP snooping is a switch security feature; bindings are lease state.";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValue() {
-        var el = document.querySelector('input[name="dhcp"]:checked');
-        return el ? el.value : null;
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedValue();
+      function applyFeedback(value) {
         answerBox.style.display = "block";
-        if (!sel) {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select an answer.";
-          return;
-        }
-        if (sel === CORRECT) {
+        if (value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. A — A DHCP relay agent (Cisco: ip helper-address pointing at the DHCP server) forwards DHCP broadcasts as unicast to the server. A DHCP pool is on the server; DHCP snooping is a switch security feature; bindings are lease state.";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
+      }
+
+      document.querySelectorAll('input[name="dhcp"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
       });
 
       resetBtn.addEventListener("click", function () {

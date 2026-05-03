@@ -131,7 +131,7 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>Which network plane is centralized and manages routing decisions?</h1>
-    <p class="stem-note">Question 20 of 24 · Select one answer, then click Check answer.</p>
+    <p class="stem-note">Question 20 of 24 · Select an answer — feedback appears immediately.</p>
 
     <label class="choice"><input type="radio" name="cp" value="A" />A. policy plane</label>
     <label class="choice"><input type="radio" name="cp" value="B" />B. control plane</label>
@@ -139,7 +139,6 @@
     <label class="choice"><input type="radio" name="cp" value="D" />D. data plane</label>
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
@@ -155,30 +154,27 @@
   <script>
     (function () {
       var CORRECT = "B";
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT_MSG = "Correct. B \u2014 The control plane runs routing protocols and builds routing/forwarding information (routing decisions). The data plane forwards traffic; the management plane handles administration access.";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValue() {
-        var el = document.querySelector('input[name="cp"]:checked');
-        return el ? el.value : null;
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedValue();
+      function applyFeedback(value) {
         answerBox.style.display = "block";
-        if (!sel) {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select an answer.";
-          return;
-        }
-        if (sel === CORRECT) {
+        if (value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. B — The control plane runs routing protocols and builds routing/forwarding information (routing decisions). The data plane forwards traffic; the management plane handles administration access.";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
+      }
+
+      document.querySelectorAll('input[name="cp"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
       });
 
       resetBtn.addEventListener("click", function () {

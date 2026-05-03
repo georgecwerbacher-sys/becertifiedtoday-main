@@ -131,7 +131,7 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>How does a Cisco Unified Wireless network respond to Wi-Fi channel overlap?</h1>
-    <p class="stem-note">Question 18 of 24 · Select one answer, then click Check answer.</p>
+    <p class="stem-note">Question 18 of 24 · Select an answer — feedback appears immediately.</p>
 
     <label class="choice"><input type="radio" name="rrm" value="A" />A. It alternates automatically between 2.4 GHz and 5 GHz on adjacent access points</label>
     <label class="choice"><input type="radio" name="rrm" value="B" />B. It allows the administrator to assign channels on a per-device or per-interface basis</label>
@@ -139,7 +139,6 @@
     <label class="choice"><input type="radio" name="rrm" value="D" />D. It analyzes client load and background noise and dynamically assigns a channel</label>
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
@@ -155,30 +154,27 @@
   <script>
     (function () {
       var CORRECT = "D";
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT_MSG = "Correct. D \u2014 RRM (Radio Resource Management), including dynamic channel assignment, analyzes RF conditions and assigns channels to reduce overlap. Manual per-AP channel is possible but is not the described automatic response.";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValue() {
-        var el = document.querySelector('input[name="rrm"]:checked');
-        return el ? el.value : null;
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedValue();
+      function applyFeedback(value) {
         answerBox.style.display = "block";
-        if (!sel) {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select an answer.";
-          return;
-        }
-        if (sel === CORRECT) {
+        if (value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. D — RRM (Radio Resource Management), including dynamic channel assignment, analyzes RF conditions and assigns channels to reduce overlap. Manual per-AP channel is possible but is not the described automatic response.";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
+      }
+
+      document.querySelectorAll('input[name="rrm"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
       });
 
       resetBtn.addEventListener("click", function () {
