@@ -1,0 +1,337 @@
+<!doctype html>
+<!--
+  Subject index template — copy to public/ when publishing (e.g. public/architecture-index.html).
+  Replace placeholders and duplicate/remove topic sections as needed.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="REPLACE: Short description of this subject index — topics, exam area, and Be Certified Today."
+  />
+  <link rel="canonical" href="https://becertifiedtoday.com/REPLACE-subject-path.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="REPLACE: Subject name | Be Certified Today" />
+  <meta
+    property="og:description"
+    content="REPLACE: One-line summary for social previews."
+  />
+  <meta property="og:site_name" content="Be Certified Today" />
+  <meta property="og:url" content="https://becertifiedtoday.com/REPLACE-subject-path.html" />
+  <meta property="og:image" content="https://becertifiedtoday.com/images/logo/becertifiedtoday_logo_trans.png" />
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <title>REPLACE: Subject name | Be Certified Today</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bg: #0b1020;
+      --surface: #121a2b;
+      --border: #2d3b5a;
+      --text: #e6edf3;
+      --muted: #9fb0cc;
+      --accent-border: #4f84d8;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px 20px;
+      padding: 16px clamp(20px, 4vw, 40px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(18, 26, 43, 0.6);
+      backdrop-filter: blur(8px);
+    }
+    .header-actions {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .header-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--accent-border);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+    .header-link:hover {
+      background: rgba(79, 132, 216, 0.12);
+      color: #f0f4fc;
+    }
+    .header-link:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
+      line-height: 0;
+    }
+    .brand img {
+      display: block;
+      height: clamp(56px, 12vw, 88px);
+      width: auto;
+      max-width: min(100px, 22vw);
+      object-fit: contain;
+      object-position: left center;
+    }
+    main {
+      flex: 1;
+      padding: clamp(32px, 6vw, 56px) clamp(20px, 4vw, 40px);
+    }
+    .subject-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b8ab8;
+    }
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(1.65rem, 4.2vw, 2.25rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+    .lead {
+      margin: 0 0 clamp(28px, 5vw, 40px);
+      color: var(--muted);
+      font-size: clamp(1.02rem, 2.2vw, 1.12rem);
+      line-height: 1.6;
+      max-width: 62ch;
+    }
+    .subject-section {
+      margin-top: clamp(36px, 6vw, 48px);
+      padding-top: clamp(28px, 5vw, 36px);
+      border-top: 1px solid var(--border);
+    }
+    .subject-section:first-of-type {
+      margin-top: clamp(24px, 4vw, 32px);
+      padding-top: 0;
+      border-top: none;
+    }
+    .section-head {
+      margin: 0 0 clamp(16px, 3vw, 22px);
+      font-size: clamp(1.15rem, 2.8vw, 1.45rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .section-lead {
+      margin: 0 0 clamp(18px, 3vw, 24px);
+      color: var(--muted);
+      font-size: clamp(0.95rem, 2.1vw, 1.02rem);
+      line-height: 1.55;
+      max-width: 62ch;
+    }
+    .topic-grid {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: clamp(16px, 3vw, 22px);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 640px) {
+      .topic-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (min-width: 960px) {
+      .topic-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+    .topic-card {
+      height: 100%;
+      margin: 0;
+      padding: clamp(18px, 3.5vw, 22px);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+    .topic-card h3 {
+      margin: 0 0 10px;
+      font-size: clamp(1.02rem, 2.4vw, 1.12rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+    .topic-card p {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
+      line-height: 1.55;
+    }
+    .topic-card p:last-child {
+      margin-bottom: 0;
+    }
+    .topic-card a {
+      color: #a8c4f0;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .topic-card a:hover {
+      color: #c8daf8;
+    }
+    .link-list {
+      margin: 0;
+      padding: 0 0 0 1.15rem;
+      color: #b8c3d6;
+      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
+      line-height: 1.55;
+    }
+    .link-list li {
+      margin-bottom: 8px;
+    }
+    .link-list li:last-child {
+      margin-bottom: 0;
+    }
+    .site-disclaimer {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: clamp(20px, 4vw, 28px) clamp(20px, 4vw, 40px);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .site-disclaimer p {
+      margin: 0;
+      font-size: clamp(0.78rem, 1.8vw, 0.84rem);
+      line-height: 1.55;
+      color: #6b7f9e;
+    }
+    footer {
+      padding: 16px clamp(20px, 4vw, 24px);
+      text-align: center;
+      font-size: 0.82rem;
+      color: #5c6d8a;
+      border-top: 1px solid rgba(45, 59, 90, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <a class="brand" href="/" aria-label="Be Certified Today — home">
+        <img
+          src="/images/logo/becertifiedtoday_logo_trans.png"
+          width="1024"
+          height="1024"
+          alt="Be Certified Today — IT training and testing study site"
+        />
+      </a>
+      <div class="header-actions">
+        <!-- Optional: training portal or parent subject -->
+        <a class="header-link" href="https://becertifiedtoday-encor.vercel.app/" rel="noopener noreferrer">CCNP ENCOR</a>
+        <a class="header-link" href="/">Home</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="subject-inner">
+        <p class="eyebrow">REPLACE: Exam or program label (e.g. CCNP ENCOR · Topic index)</p>
+        <h1>REPLACE: Subject title</h1>
+        <p class="lead">
+          REPLACE: One or two sentences describing what this index covers—official blueprint areas, how practice is
+          organized on this site, and what learners should open first.
+        </p>
+
+        <!-- Section A: card grid (labs, question banks, tracks) -->
+        <section class="subject-section" aria-labelledby="section-topics-title">
+          <h2 class="section-head" id="section-topics-title">REPLACE: Section title (e.g. Major topics)</h2>
+          <p class="section-lead">
+            REPLACE: Optional intro for this block.
+          </p>
+          <ul class="topic-grid" aria-label="Topic links">
+            <li>
+              <article class="topic-card" aria-labelledby="topic-a-title">
+                <h3 id="topic-a-title">REPLACE: Topic name</h3>
+                <p>REPLACE: Short blurb. Link to a launcher, first question, or study range.</p>
+                <p><a href="/practice-launcher.html">REPLACE: Link label</a></p>
+              </article>
+            </li>
+            <li>
+              <article class="topic-card" aria-labelledby="topic-b-title">
+                <h3 id="topic-b-title">REPLACE: Topic name</h3>
+                <p>REPLACE: Short blurb.</p>
+                <p><a href="/question-1.html">REPLACE: Example question page</a></p>
+              </article>
+            </li>
+            <li>
+              <article class="topic-card" aria-labelledby="topic-c-title">
+                <h3 id="topic-c-title">REPLACE: Topic name</h3>
+                <p>REPLACE: Short blurb.</p>
+                <p><a href="/sample?track=questions">REPLACE: Sample or container link</a></p>
+              </article>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Section B: simple bullet list of resources -->
+        <section class="subject-section" aria-labelledby="section-resources-title">
+          <h2 class="section-head" id="section-resources-title">REPLACE: Section title (e.g. Quick links)</h2>
+          <p class="section-lead">
+            REPLACE: Optional line before the list.
+          </p>
+          <ul class="link-list">
+            <li><a href="/practice-launcher.html">Practice launcher</a> — REPLACE: note</li>
+            <li><a href="/sample?track=labs">Sample CLI lab</a> — REPLACE: note</li>
+            <li><a href="/#faq">FAQ (homepage)</a> — access, devices, and links</li>
+          </ul>
+        </section>
+      </div>
+    </main>
+
+    <aside class="site-disclaimer" aria-label="Legal disclaimer">
+      <p>
+        <strong>Disclaimer:</strong> This website is an independent training resource created for educational purposes only.
+        It is not affiliated with, endorsed by, sponsored by, or approved by Cisco Systems, Inc. Cisco and related
+        trademarks are the property of Cisco Systems, Inc. All practice questions, explanations, and study materials on
+        this site are original or based on general knowledge and are intended as a guide to help users prepare for
+        certification exams. Practice questions are not actual Cisco exam questions. Any similarity to official exam
+        content is coincidental.
+      </p>
+    </aside>
+    <footer>© Be Certified Today</footer>
+  </div>
+</body>
+</html>
