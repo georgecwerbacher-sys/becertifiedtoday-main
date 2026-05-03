@@ -24,7 +24,7 @@
       var params = new URLSearchParams(location.search || "");
       var stored = sessionStorage.getItem("ccnpSampleKind");
       var track = (params.get("track") || stored || "questions").toLowerCase();
-      if (track !== "questions" && track !== "labs" && track !== "drag") {
+      if (track !== "questions" && track !== "labs" && track !== "drag" && track !== "ftp") {
         track = "questions";
       }
 
@@ -34,7 +34,8 @@
       var map = {
         questions: "/CCNP-ENCOR-Study/ENCOR_Samples/sample-question-1.html",
         labs: "/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html?sample=1",
-        drag: "/CCNP-ENCOR-Study/ENCOR_Questions/question-365.html?sample=1"
+        drag: "/CCNP-ENCOR-Study/ENCOR_Questions/question-365.html?sample=1",
+        ftp: "/CCNA-Study/CCNA_Samples/dragdrop-ftp-vs-tftp.html?sample=1"
       };
 
       location.replace(map[track]);

@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="CCNA 200-301 v1.1 exam domains, study weights, and sample practice from Be Certified Today—plus full library access for questions, labs, and simulations."
+  />
+  <link rel="canonical" href="https://becertifiedtoday.com/CCNA-Study/ccna-index.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="CCNA Study | Be Certified Today" />
+  <meta
+    property="og:description"
+    content="Six CCNA knowledge domains, where to focus first, study order, samples, and full-access registration."
+  />
+  <meta property="og:site_name" content="Be Certified Today" />
+  <meta property="og:url" content="https://becertifiedtoday.com/CCNA-Study/ccna-index.html" />
+  <meta property="og:image" content="https://becertifiedtoday.com/images/logo/becertifiedtoday_logo_trans.png" />
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <title>CCNA Study | Be Certified Today</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bg: #0b1020;
+      --surface: #121a2b;
+      --border: #2d3b5a;
+      --text: #e6edf3;
+      --muted: #9fb0cc;
+      --accent-border: #4f84d8;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px 20px;
+      padding: 16px clamp(20px, 4vw, 40px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(18, 26, 43, 0.6);
+      backdrop-filter: blur(8px);
+    }
+    .header-actions {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .header-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 18px;
+      min-height: 44px;
+      border-radius: 10px;
+      border: 1px solid var(--accent-border);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      white-space: nowrap;
+      touch-action: manipulation;
+    }
+    .header-link:hover {
+      background: rgba(79, 132, 216, 0.12);
+      color: #f0f4fc;
+    }
+    .header-link:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+    }
+    .header-link.cta-header {
+      background: rgba(47, 102, 191, 0.35);
+      border-color: #5a8fd8;
+    }
+    .header-link.cta-header:hover {
+      background: rgba(47, 102, 191, 0.5);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
+      line-height: 0;
+    }
+    .brand img {
+      display: block;
+      height: clamp(56px, 12vw, 88px);
+      width: auto;
+      max-width: min(100px, 22vw);
+      object-fit: contain;
+      object-position: left center;
+    }
+    main {
+      flex: 1;
+      padding: clamp(32px, 6vw, 56px) clamp(20px, 4vw, 40px);
+    }
+    .subject-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b8ab8;
+    }
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(1.65rem, 4.2vw, 2.25rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+    .lead {
+      margin: 0 0 clamp(20px, 4vw, 28px);
+      color: var(--muted);
+      font-size: clamp(1.02rem, 2.2vw, 1.12rem);
+      line-height: 1.6;
+      max-width: 68ch;
+    }
+    .domain-intro {
+      margin: 0 0 clamp(28px, 5vw, 40px);
+      padding: clamp(18px, 3vw, 22px);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(26, 39, 59, 0.65);
+      color: #c6d4e8;
+      font-size: clamp(0.98rem, 2.1vw, 1.05rem);
+      line-height: 1.6;
+      max-width: 68ch;
+    }
+    .domain-intro strong {
+      color: var(--text);
+    }
+    .subject-section {
+      margin-top: clamp(36px, 6vw, 48px);
+      padding-top: clamp(28px, 5vw, 36px);
+      border-top: 1px solid var(--border);
+    }
+    .subject-section:first-of-type {
+      margin-top: clamp(24px, 4vw, 32px);
+      padding-top: 0;
+      border-top: none;
+    }
+    .section-head {
+      margin: 0 0 clamp(16px, 3vw, 22px);
+      font-size: clamp(1.15rem, 2.8vw, 1.45rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .section-lead {
+      margin: 0 0 clamp(18px, 3vw, 24px);
+      color: var(--muted);
+      font-size: clamp(0.95rem, 2.1vw, 1.02rem);
+      line-height: 1.55;
+      max-width: 68ch;
+    }
+    .blueprint-note {
+      margin: 0 0 14px;
+      font-size: 0.88rem;
+      color: #8fa6c6;
+      line-height: 1.45;
+      max-width: 68ch;
+    }
+    .blueprint-table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 0 0 clamp(22px, 4vw, 28px);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .blueprint-table {
+      width: 100%;
+      min-width: 520px;
+      border-collapse: collapse;
+      font-size: clamp(0.86rem, 2vw, 0.95rem);
+      line-height: 1.45;
+    }
+    .blueprint-table caption {
+      caption-side: top;
+      text-align: left;
+      padding: 12px 14px;
+      font-weight: 800;
+      color: var(--text);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .blueprint-table th,
+    .blueprint-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      text-align: left;
+    }
+    .blueprint-table thead th {
+      background: rgba(37, 75, 138, 0.35);
+      color: #e6edf3;
+      font-weight: 700;
+    }
+    .blueprint-table tbody tr:last-child th,
+    .blueprint-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    .blueprint-table .w {
+      width: 5.5rem;
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    .focus-block {
+      margin: 0 0 clamp(18px, 3vw, 22px);
+      padding: 16px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(79, 132, 216, 0.35);
+      background: rgba(18, 26, 43, 0.55);
+      color: #b8c3d6;
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.55;
+      max-width: 68ch;
+    }
+    .focus-block strong,
+    .study-order strong {
+      color: var(--text);
+    }
+    .study-order {
+      margin: 0 0 clamp(18px, 3vw, 22px);
+      padding-left: 1.25rem;
+      color: #b8c3d6;
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.6;
+    }
+    .study-order li {
+      margin-bottom: 8px;
+    }
+    .time-tip {
+      margin: 0;
+      padding: 14px 16px;
+      border-left: 4px solid #4f84d8;
+      background: rgba(13, 21, 40, 0.6);
+      color: #b8c3d6;
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.55;
+      max-width: 68ch;
+    }
+    .promo-card {
+      padding: clamp(22px, 4vw, 28px);
+      border-radius: 14px;
+      border: 1px solid rgba(79, 132, 216, 0.45);
+      background: linear-gradient(165deg, rgba(37, 75, 138, 0.28) 0%, var(--surface) 48%);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+    }
+    .promo-card .section-head {
+      margin-bottom: 12px;
+    }
+    .promo-lead {
+      margin: 0 0 18px;
+      color: #c6d4e8;
+      font-size: clamp(1rem, 2.2vw, 1.08rem);
+      line-height: 1.6;
+      max-width: 68ch;
+    }
+    .promo-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
+    .promo-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 14px 22px;
+      border-radius: 10px;
+      border: 1px solid var(--accent-border);
+      background: #2f66bf;
+      color: #f0f4fc !important;
+      font-weight: 800;
+      font-size: 1rem;
+      text-decoration: none !important;
+      touch-action: manipulation;
+      box-shadow: 0 6px 20px rgba(47, 102, 191, 0.35);
+    }
+    .promo-btn:hover {
+      filter: brightness(1.1);
+      color: #fff !important;
+    }
+    .promo-secondary {
+      color: #a8c4f0;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .promo-secondary:hover {
+      color: #c8daf8;
+    }
+    .sample-grid {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: clamp(16px, 3vw, 22px);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 640px) {
+      .sample-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (min-width: 1024px) {
+      .sample-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+    .topic-card {
+      height: 100%;
+      margin: 0;
+      padding: clamp(18px, 3.5vw, 22px);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+      display: flex;
+      flex-direction: column;
+    }
+    .topic-card h3 {
+      margin: 0 0 10px;
+      font-size: clamp(1.02rem, 2.4vw, 1.12rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+    .topic-card p {
+      margin: 0 0 14px;
+      color: #b8c3d6;
+      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
+      line-height: 1.55;
+      flex: 1;
+    }
+    .card-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--accent-border);
+      background: #254b8a;
+      color: #e6edf3 !important;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none !important;
+      text-align: center;
+      touch-action: manipulation;
+    }
+    .card-action:hover {
+      filter: brightness(1.08);
+      color: #f0f4fc !important;
+    }
+    .card-action:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 2px;
+    }
+    .link-list {
+      margin: 0;
+      padding: 0 0 0 1.15rem;
+      color: #b8c3d6;
+      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
+      line-height: 1.55;
+    }
+    .link-list li {
+      margin-bottom: 8px;
+    }
+    .link-list a {
+      color: #a8c4f0;
+      font-weight: 700;
+    }
+    .sources-details {
+      margin: 0;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(13, 21, 40, 0.45);
+      color: #9fb0cc;
+      font-size: 0.9rem;
+    }
+    .sources-details summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--text);
+      touch-action: manipulation;
+    }
+    .sources-details .sources-list {
+      margin: 14px 0 0;
+      padding-left: 1.15rem;
+    }
+    .sources-details .sources-list a {
+      color: #9fbddc;
+      word-break: break-word;
+    }
+    .site-disclaimer {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: clamp(20px, 4vw, 28px) clamp(20px, 4vw, 40px);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .site-disclaimer p {
+      margin: 0;
+      font-size: clamp(0.78rem, 1.8vw, 0.84rem);
+      line-height: 1.55;
+      color: #6b7f9e;
+    }
+    footer {
+      padding: 16px clamp(20px, 4vw, 24px);
+      text-align: center;
+      font-size: 0.82rem;
+      color: #5c6d8a;
+      border-top: 1px solid rgba(45, 59, 90, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <a class="brand" href="/" aria-label="Be Certified Today — home">
+        <img
+          src="/images/logo/becertifiedtoday_logo_trans.png"
+          width="1024"
+          height="1024"
+          alt="Be Certified Today — IT training and testing study site"
+        />
+      </a>
+      <div class="header-actions">
+        <a class="header-link cta-header" href="/#purchase">Get full access</a>
+        <a class="header-link" href="/CCNA-Study/CCNA_Training_Portal.html">CCNA training portal</a>
+        <a class="header-link" href="/">Site home</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="subject-inner">
+        <p class="eyebrow">CCNA (200-301)</p>
+        <h1>CCNA study</h1>
+        <p class="lead">
+          Map your prep to the official blueprint, spend time where the exam spends questions, then prove it with hands-on
+          practice here—samples below are free; the full library is one step away when you are ready to commit.
+        </p>
+
+        <p class="domain-intro">
+          CCNA study lines up with <strong>six main knowledge domains</strong>. Cisco publishes the current <strong>CCNA 200-301
+          v1.1</strong> exam areas as network fundamentals, network access, IP connectivity, IP services, security fundamentals,
+          and automation and programmability. The blueprint puts the <strong>strongest emphasis on IP connectivity</strong>,
+          followed closely by fundamentals and access—exact percentages shift slightly over time, but those three fields carry
+          most of what you will see on routing, switching, and troubleshooting-style items.
+        </p>
+
+        <section class="subject-section" aria-labelledby="blueprint-title">
+          <h2 class="section-head" id="blueprint-title">CCNA study sections</h2>
+          <p class="blueprint-note">
+            Approximate domain weights are taken from Cisco exam guidance—use them to budget study hours, not as a guarantee of
+            item counts on your specific attempt.
+          </p>
+          <div class="blueprint-table-wrap">
+            <table class="blueprint-table">
+              <caption>
+                Where to aim your reading and labs
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Section</th>
+                  <th scope="col" class="w">Weight</th>
+                  <th scope="col">What to study</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Network fundamentals</th>
+                  <td class="w">20%</td>
+                  <td>OSI and TCP/IP models, IPv4 and IPv6, cabling, devices, topologies, subnetting basics</td>
+                </tr>
+                <tr>
+                  <th scope="row">Network access</th>
+                  <td class="w">20%</td>
+                  <td>VLANs, trunking, basic STP, EtherChannel, wireless concepts, switch port configuration</td>
+                </tr>
+                <tr>
+                  <th scope="row">IP connectivity</th>
+                  <td class="w">25%</td>
+                  <td>Routing tables, static routing, OSPF fundamentals, path selection, troubleshooting routing</td>
+                </tr>
+                <tr>
+                  <th scope="row">IP services</th>
+                  <td class="w">10%</td>
+                  <td>NAT, DHCP, DNS, NTP, SNMP, syslog, QoS basics</td>
+                </tr>
+                <tr>
+                  <th scope="row">Security fundamentals</th>
+                  <td class="w">15%</td>
+                  <td>Device hardening, ACLs, authentication, AAA basics, secure management access</td>
+                </tr>
+                <tr>
+                  <th scope="row">Automation and programmability</th>
+                  <td class="w">10%</td>
+                  <td>APIs, controllers, automation concepts, JSON, Python basics, intent-based networking</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="section-head" style="font-size: 1.12rem; margin-top: 8px">What to focus on first</h3>
+          <p class="focus-block">
+            Start with <strong>network fundamentals</strong> and <strong>IP connectivity</strong>: they underpin subnetting,
+            routing, and a large share of drag-and-drop or simulation-style prompts. Then layer in <strong>network access</strong>
+            and <strong>security fundamentals</strong>, which show up on both theory and configuration-style questions.
+          </p>
+
+          <h3 class="section-head" style="font-size: 1.12rem">Study order suggestion</h3>
+          <ol class="study-order">
+            <li>Network fundamentals</li>
+            <li>Subnetting and VLSM</li>
+            <li>Switching and VLANs</li>
+            <li>Routing and OSPF</li>
+            <li>Services such as NAT, DHCP, and NTP</li>
+            <li>Security and automation basics</li>
+          </ol>
+
+          <p class="time-tip">
+            For time management, lean hardest into the two weightiest pillars—<strong>IP connectivity</strong> and
+            <strong>network fundamentals</strong>—before you polish lighter domains. That mirrors where most candidates lose or
+            gain points under time pressure.
+          </p>
+        </section>
+
+        <section class="subject-section" aria-labelledby="register-title">
+          <div class="promo-card">
+            <h2 class="section-head" id="register-title">Turn this roadmap into reps</h2>
+            <p class="promo-lead">
+              Reading the blueprint is not the same as sitting for a timed mix of multiple choice, labs, and drag-and-drop. Full
+              access here gives you the depth to work every domain with feedback: broad question banks, browser CLI simulations,
+              drag-and-drop sets, and exam-style runs—<strong>$19.99 for 30 days</strong>, everything in the browser, no PDF
+              packs or extra software. If you have already worked through the samples and want the same structure at full scale,
+              registering is the straight line from “I know the topics” to “I can execute under pressure.”
+            </p>
+            <p class="promo-actions">
+              <a class="promo-btn" href="/#purchase">Get full access and register</a>
+              <a class="promo-secondary" href="/">Compare all tracks and pricing on the home page</a>
+            </p>
+          </div>
+        </section>
+
+        <section class="subject-section" aria-labelledby="samples-title">
+          <h2 class="section-head" id="samples-title">Try the free samples first</h2>
+          <p class="section-lead">
+            Four entry points: CCNA question practice, the site sample launcher, CCNA drag-and-drop, and a hands-on lab demo.
+          </p>
+          <ul class="sample-grid" aria-label="CCNA sample activities">
+            <li>
+              <article class="topic-card" aria-labelledby="card-q-title">
+                <h3 id="card-q-title">Sample questions</h3>
+                <p>
+                  Five linked practice questions with instant feedback—start at question 1 and use Next through question 5.
+                  Works on phones and tablets (tap to answer).
+                </p>
+                <a class="card-action" href="/CCNA-Study/CCNA_Samples/sample-question-1.html">Start sample questions</a>
+              </article>
+            </li>
+            <li>
+              <article class="topic-card" aria-labelledby="card-sample-title">
+                <h3 id="card-sample-title">Sample</h3>
+                <p>
+                  Opens the shared <strong>/sample</strong> launcher (address bar shows a short path after redirect). Default is a
+                  five-question ENCOR-style demo; other tracks include labs, drag-and-drop, and CCNA file-transfer via query string.
+                </p>
+                <a class="card-action" href="/sample">Open sample launcher</a>
+              </article>
+            </li>
+            <li>
+              <article class="topic-card" aria-labelledby="card-dd-title">
+                <h3 id="card-dd-title">Drag-and-drop</h3>
+                <p>
+                  CCNA exercise: match file-transfer descriptions to FTP and TFTP. Drag on desktop or tap-to-place on touch
+                  devices.
+                </p>
+                <a class="card-action" href="/CCNA-Study/CCNA_Samples/dragdrop-ftp-vs-tftp.html">Open drag-and-drop</a>
+              </article>
+            </li>
+            <li>
+              <article class="topic-card" aria-labelledby="card-lab-title">
+                <h3 id="card-lab-title">Sample labs</h3>
+                <p>
+                  Browser CLI lab sample (ENCOR Rapid PVST / LACP scenario) using the site lab route—useful for practicing the lab
+                  UI before CCNA-specific labs are published here.
+                </p>
+                <a class="card-action" href="/sample?track=labs">Open sample lab</a>
+              </article>
+            </li>
+          </ul>
+        </section>
+
+        <section class="subject-section" aria-labelledby="quick-title">
+          <h2 class="section-head" id="quick-title">Quick links</h2>
+          <ul class="link-list">
+            <li><a href="/CCNA-Study/CCNA_Training_Portal.html">CCNA training portal</a> — practice modes shell (questions, drag-and-drop, labs placeholders).</li>
+            <li><a href="/sample?track=ftp">CCNA file-transfer sample</a> — same FTP vs TFTP item via masked <code>/sample</code> route.</li>
+            <li><a href="/#purchase">Full library pricing</a> — 30-day access details.</li>
+            <li><a href="/">Be Certified Today home</a> — catalog and FAQ.</li>
+          </ul>
+        </section>
+
+        <section class="subject-section" aria-labelledby="sources-title">
+          <h2 class="section-head" id="sources-title">Sources</h2>
+          <details class="sources-details">
+            <summary>Official references and further reading</summary>
+            <ul class="link-list sources-list">
+              <li>
+                <a href="https://learningnetwork.cisco.com/s/ccna-exam-topics" rel="noopener noreferrer">CCNA exam topics — Cisco Learning Network</a>
+              </li>
+              <li>
+                <a href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/enterprise/ccna/exams-and-training.html" rel="noopener noreferrer">CCNA exams and training — Cisco</a>
+              </li>
+              <li>
+                <a href="https://www.infosecinstitute.com/resources/ccna/ccna-exam-information-and-overview/" rel="noopener noreferrer">CCNA exam overview — Infosec Institute</a>
+              </li>
+              <li>
+                <a href="https://www.indeed.com/career-advice/career-development/how-to-get-ccna-certification" rel="noopener noreferrer">How to get CCNA certification — Indeed</a>
+              </li>
+              <li>
+                <a href="https://www.netcomlearning.com/blog/complete-ccna-roadmap-in-2024" rel="noopener noreferrer">CCNA roadmap — NetCom Learning</a>
+              </li>
+              <li>
+                <a href="https://cciedump.spoto.net/newblog/the-complete-guide-to-the-ccna-exam-2026.html" rel="noopener noreferrer">Guide to the CCNA exam — SPOTO</a>
+              </li>
+              <li>
+                <a href="https://www.theknowledgeacademy.com/blog/ccna-200-301-syllabus/" rel="noopener noreferrer">CCNA 200-301 syllabus — The Knowledge Academy</a>
+              </li>
+              <li>
+                <a href="https://www.cisconetsolutions.com/top-10-ccna-exam-topics-2026/" rel="noopener noreferrer">CCNA exam topics discussion — CISCONET Solutions</a>
+              </li>
+              <li>
+                <a href="https://www.networkbulls.com/blog/ccna-course-guide-2026/" rel="noopener noreferrer">CCNA course guide — Network Bulls</a>
+              </li>
+              <li>
+                <a href="https://www.reddit.com/r/ccna/comments/mgr14y/ccna_passing_requirements/" rel="noopener noreferrer">Community discussion — CCNA passing requirements (Reddit)</a>
+              </li>
+            </ul>
+          </details>
+        </section>
+      </div>
+    </main>
+
+    <aside class="site-disclaimer" aria-label="Legal disclaimer">
+      <p>
+        <strong>Disclaimer:</strong> This website is an independent training resource created for educational purposes only.
+        It is not affiliated with, endorsed by, sponsored by, or approved by Cisco Systems, Inc. Cisco and related
+        trademarks are the property of Cisco Systems, Inc. All practice questions, explanations, and study materials on
+        this site are original or based on general knowledge and are intended as a guide to help users prepare for
+        certification exams. Practice questions are not actual Cisco exam questions. Any similarity to official exam
+        content is coincidental.
+      </p>
+    </aside>
+    <footer>© Be Certified Today</footer>
+  </div>
+</body>
+</html>
