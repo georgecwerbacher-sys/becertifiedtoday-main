@@ -17,7 +17,7 @@
   />
   <meta property="og:site_name" content="Be Certified Today" />
   <meta property="og:url" content="https://becertifiedtoday.com/CCNA-Study/ccna-index.html" />
-  <meta property="og:image" content="https://becertifiedtoday.com/images/logo/becertifiedtoday_logo_trans.png" />
+  <meta property="og:image" content="https://becertifiedtoday.com/images/ccna-index-hero-banner.png" />
   <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
   <title>CCNA Study | Be Certified Today</title>
   <style>
@@ -137,6 +137,21 @@
       max-width: min(100px, 22vw);
       object-fit: contain;
       object-position: left center;
+    }
+    .ccna-hero-banner {
+      margin: 0;
+      width: 100%;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      background: #0d1528;
+      height: clamp(200px, 36vw, 400px);
+    }
+    .ccna-hero-banner img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 38%;
     }
     main {
       flex: 1;
@@ -556,6 +571,17 @@
       </div>
     </header>
 
+    <figure class="ccna-hero-banner">
+      <img
+        src="/images/ccna-index-hero-banner.png"
+        width="1024"
+        height="683"
+        alt="Ethernet cables connected to a network switch with green port status LEDs."
+        decoding="async"
+        fetchpriority="high"
+      />
+    </figure>
+
     <main id="main">
       <div class="subject-inner">
         <p class="eyebrow">CCNA (200-301)</p>
@@ -679,7 +705,16 @@
           <ul class="sample-grid" aria-label="CCNA sample activities">
             <li>
               <article class="topic-card" aria-labelledby="card-q-title">
-                <div class="topic-card-thumb" aria-hidden="true"></div>
+                <div class="topic-card-thumb">
+                  <img
+                    src="/images/ccna-sample-questions-thumbnail.png"
+                    width="1024"
+                    height="586"
+                    alt="Multiple-choice sample: switch FCS and interface counters with correct-answer feedback."
+                    decoding="async"
+                    loading="lazy"
+                  />
+                </div>
                 <div class="topic-card-body">
                   <h3 id="card-q-title">Sample questions</h3>
                   <p>
@@ -692,7 +727,16 @@
             </li>
             <li>
               <article class="topic-card" aria-labelledby="card-dd-title">
-                <div class="topic-card-thumb" aria-hidden="true"></div>
+                <div class="topic-card-thumb">
+                  <img
+                    src="/images/ccna-dragdrop-ftp-tftp-thumbnail.png"
+                    width="1024"
+                    height="590"
+                    alt="Drag-and-drop exercise: match descriptions to FTP and TFTP buckets."
+                    decoding="async"
+                    loading="lazy"
+                  />
+                </div>
                 <div class="topic-card-body">
                   <h3 id="card-dd-title">Drag-and-drop</h3>
                   <p>
