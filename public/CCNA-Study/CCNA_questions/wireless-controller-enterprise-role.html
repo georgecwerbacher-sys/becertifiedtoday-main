@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Physical access control (security)</title>
+  <title>CCNA — Wireless LAN controller role</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -126,13 +126,21 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>Which type of security program is violated when a group of employees enters a building using the ID badge of only one person?</h1>
-    <p class="stem-note">Question 2 of 12 · Select one answer, then click Check answer.</p>
+    <h1>What is a role of wireless controllers in an enterprise network?</h1>
+    <p class="stem-note">Question 6 of 12 · Select one answer, then click Check answer.</p>
 
-    <label class="choice"><input type="radio" name="sec" value="A" />A. intrusion detection</label>
-    <label class="choice"><input type="radio" name="sec" value="B" />B. user awareness</label>
-    <label class="choice"><input type="radio" name="sec" value="C" />C. physical access control</label>
-    <label class="choice"><input type="radio" name="sec" value="D" />D. network authorization</label>
+    <label class="choice"
+      ><input type="radio" name="wlc" value="A" />A. serve as the first line of defense in an enterprise network</label
+    >
+    <label class="choice"
+      ><input type="radio" name="wlc" value="B" />B. support standalone or controller-based architectures</label
+    >
+    <label class="choice"
+      ><input type="radio" name="wlc" value="C" />C. centralize the management of access points in an enterprise network</label
+    >
+    <label class="choice"
+      ><input type="radio" name="wlc" value="D" />D. provide secure user logins to devices on the network</label
+    >
 
     <div class="actions">
       <button id="checkBtn" type="button">Check answer</button>
@@ -143,8 +151,8 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/qos-minimum-bandwidth-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/etherchannel-lacp-active-active.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/rstp-port-states-choose-two.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/virtual-server-hypervisor-vswitch.html">Next question</a>
       <a class="next-link" href="/CCNA-Study/ccna-index.html">Back to CCNA study</a>
     </div>
   </main>
@@ -157,7 +165,7 @@
       var answerBox = document.getElementById("answerBox");
 
       function selectedValue() {
-        var el = document.querySelector('input[name="sec"]:checked');
+        var el = document.querySelector('input[name="wlc"]:checked');
         return el ? el.value : null;
       }
 
@@ -172,7 +180,7 @@
         if (sel === CORRECT) {
           answerBox.className = "answer correct";
           answerBox.textContent =
-            "Correct. C — Physical access control. Badge readers, turnstiles, and door policies exist so each person authenticates to enter. Tailgating or piggybacking on one badge breaks that control. Intrusion detection focuses on detecting hostile activity (often in IT systems); user awareness is training; network authorization governs logical network access, not the building door.";
+            "Correct. C — A WLC centralizes configuration, RF policy, SSIDs, and monitoring for many lightweight APs. Edge defense and broad user login are not its primary defining role; standalone APs operate without a controller.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
@@ -180,7 +188,7 @@
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="sec"]').forEach(function (el) {
+        document.querySelectorAll('input[name="wlc"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";

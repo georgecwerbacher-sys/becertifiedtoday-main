@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Physical access control (security)</title>
+  <title>CCNA — Stateful firewall</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -126,13 +126,13 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>Which type of security program is violated when a group of employees enters a building using the ID badge of only one person?</h1>
-    <p class="stem-note">Question 2 of 12 · Select one answer, then click Check answer.</p>
+    <h1>Which device tracks the state of active connections in order to make a decision to forward a packet through?</h1>
+    <p class="stem-note">Question 10 of 12 · Select one answer, then click Check answer.</p>
 
-    <label class="choice"><input type="radio" name="sec" value="A" />A. intrusion detection</label>
-    <label class="choice"><input type="radio" name="sec" value="B" />B. user awareness</label>
-    <label class="choice"><input type="radio" name="sec" value="C" />C. physical access control</label>
-    <label class="choice"><input type="radio" name="sec" value="D" />D. network authorization</label>
+    <label class="choice"><input type="radio" name="fwstate" value="A" />A. firewall</label>
+    <label class="choice"><input type="radio" name="fwstate" value="B" />B. wireless access point</label>
+    <label class="choice"><input type="radio" name="fwstate" value="C" />C. router</label>
+    <label class="choice"><input type="radio" name="fwstate" value="D" />D. wireless LAN controller</label>
 
     <div class="actions">
       <button id="checkBtn" type="button">Check answer</button>
@@ -143,21 +143,21 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/qos-minimum-bandwidth-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/etherchannel-lacp-active-active.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/rest-api-accept-header.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/lightweight-ap-wlc-authentication-forward.html">Next question</a>
       <a class="next-link" href="/CCNA-Study/ccna-index.html">Back to CCNA study</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
+      var CORRECT = "A";
       var checkBtn = document.getElementById("checkBtn");
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
       function selectedValue() {
-        var el = document.querySelector('input[name="sec"]:checked');
+        var el = document.querySelector('input[name="fwstate"]:checked');
         return el ? el.value : null;
       }
 
@@ -172,7 +172,7 @@
         if (sel === CORRECT) {
           answerBox.className = "answer correct";
           answerBox.textContent =
-            "Correct. C — Physical access control. Badge readers, turnstiles, and door policies exist so each person authenticates to enter. Tailgating or piggybacking on one badge breaks that control. Intrusion detection focuses on detecting hostile activity (often in IT systems); user awareness is training; network authorization governs logical network access, not the building door.";
+            "Correct. A — A stateful firewall maintains a connection or session table and uses it (with policy) to permit return traffic for established flows and block unsolicited packets. Plain IP routing is typically stateless.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
@@ -180,7 +180,7 @@
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="sec"]').forEach(function (el) {
+        document.querySelectorAll('input[name="fwstate"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";
