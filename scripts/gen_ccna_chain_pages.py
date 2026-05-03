@@ -239,7 +239,7 @@ def choice_line(mono: bool, name: str, letter: str, text: str) -> str:
 
 
 def main() -> None:
-    total = 24
+    total = 25
     chain = [
         {
             "slug": "dhcp-relay-dhcpdiscover",
@@ -408,6 +408,20 @@ def main() -> None:
                 "It forwards the frame back out of interface Fa0/1.",
                 "It drops the frame immediately.",
                 "It holds the frame until the MAC address timer expires and then drops the frame.",
+            ],
+        },
+        {
+            "slug": "vrrp-gateway-redundancy-benefit",
+            "title": "CCNA — VRRP benefit",
+            "stem": "What is a benefit of VRRP?",
+            "name": "vrrp",
+            "correct": "B",
+            "explain": "Correct. B — VRRP (Virtual Router Redundancy Protocol) groups multiple routers as one virtual default gateway (shared virtual IP/MAC) so clients keep the same gateway if the master fails. It is not load balancing across arbitrary multi-hop paths (A), not a routing-protocol neighbor exchange (C), and not STP (D).",
+            "choices": [
+                "It provides traffic load balancing to destinations that are more than two hops from the source.",
+                "It provides the default gateway redundancy on a LAN using two or more routers.",
+                "It allows neighbors to share routing table information between each other.",
+                "It prevents loops in a Layer 2 LAN by forwarding all traffic to a root bridge, which then makes the final forwarding decision.",
             ],
         },
     ]

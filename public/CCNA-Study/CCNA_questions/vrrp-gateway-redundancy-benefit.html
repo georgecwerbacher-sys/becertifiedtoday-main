@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Unknown destination MAC flooding</title>
+  <title>CCNA — VRRP benefit</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -130,13 +130,13 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>How does a switch process a frame received on Fa0/1 with the destination MAC address of 0e38.7363.657b when the table is missing the address?</h1>
-    <p class="stem-note">Question 24 of 25 · Select an answer — feedback appears immediately.</p>
+    <h1>What is a benefit of VRRP?</h1>
+    <p class="stem-note">Question 25 of 25 · Select an answer — feedback appears immediately.</p>
 
-    <label class="choice"><input type="radio" name="unk" value="A" />A. It floods the frame to all interfaces except Fa0/1.</label>
-    <label class="choice"><input type="radio" name="unk" value="B" />B. It forwards the frame back out of interface Fa0/1.</label>
-    <label class="choice"><input type="radio" name="unk" value="C" />C. It drops the frame immediately.</label>
-    <label class="choice"><input type="radio" name="unk" value="D" />D. It holds the frame until the MAC address timer expires and then drops the frame.</label>
+    <label class="choice"><input type="radio" name="vrrp" value="A" />A. It provides traffic load balancing to destinations that are more than two hops from the source.</label>
+    <label class="choice"><input type="radio" name="vrrp" value="B" />B. It provides the default gateway redundancy on a LAN using two or more routers.</label>
+    <label class="choice"><input type="radio" name="vrrp" value="C" />C. It allows neighbors to share routing table information between each other.</label>
+    <label class="choice"><input type="radio" name="vrrp" value="D" />D. It prevents loops in a Layer 2 LAN by forwarding all traffic to a root bridge, which then makes the final forwarding decision.</label>
 
     <div class="actions">
       <button id="resetBtn" type="button">Reset</button>
@@ -146,15 +146,14 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/pat-vlan200-inside-source-overload.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/vrrp-gateway-redundancy-benefit.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/switch-unknown-unicast-flood.html">Previous question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 Unknown unicast destination MAC causes flooding to all other ports in the VLAN except the ingress port. The switch does not drop, buffer until MAC timeout, or send only back out Fa0/1.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 VRRP (Virtual Router Redundancy Protocol) groups multiple routers as one virtual default gateway (shared virtual IP/MAC) so clients keep the same gateway if the master fails. It is not load balancing across arbitrary multi-hop paths (A), not a routing-protocol neighbor exchange (C), and not STP (D).";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
@@ -169,7 +168,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="unk"]').forEach(function (el) {
+      document.querySelectorAll('input[name="vrrp"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
@@ -178,7 +177,7 @@
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="unk"]').forEach(function (el) {
+        document.querySelectorAll('input[name="vrrp"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";
