@@ -165,7 +165,6 @@ def page(
         nav_lines.append(f"      {prev_h}")
     if next_h:
         nav_lines.append(f"      {next_h}")
-    nav_lines.append('      <a class="next-link" href="/CCNA-Study/ccna-index.html">Back to CCNA study</a>')
     nav_lines.append("    </div>")
     nav = "\n".join(nav_lines)
     explain_js = esc_js(explain)
