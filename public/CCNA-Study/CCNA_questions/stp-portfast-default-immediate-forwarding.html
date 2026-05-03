@@ -33,11 +33,6 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .stem-note {
-      margin: 0 0 18px;
-      color: #b8c3d6;
-      font-size: 0.95rem;
-    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -131,7 +126,6 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>Which command causes switch ports to enter the STP forwarding state immediately when a PC is connected on an access port? (Global configuration.)</h1>
-    <p class="stem-note">Question 29 of 61 · Select an answer — feedback appears immediately.</p>
 
     <label class="choice mono"><input type="radio" name="pfastd" value="A" />A. switch(config)#spanning-tree portfast default</label>
     <label class="choice mono"><input type="radio" name="pfastd" value="B" />B. switch(config)#spanning-tree portfast bpduguard default</label>
@@ -139,7 +133,6 @@
     <label class="choice mono"><input type="radio" name="pfastd" value="D" />D. switch(config-if)#no spanning-tree portfast</label>
 
     <div class="actions">
-      <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
@@ -155,7 +148,6 @@
     (function () {
       var CORRECT = "A";
       var CORRECT_MSG = "Correct. A \u2014 spanning-tree portfast default enables PortFast by default on nontrunking (access) ports so they skip listening/learning. spanning-tree portfast trunk targets trunks; no spanning-tree portfast disables PortFast. Option B adds BPDU Guard defaults, not the core requirement.";
-      var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -175,14 +167,6 @@
             applyFeedback(el.value);
           }
         });
-      });
-
-      resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="pfastd"]').forEach(function (el) {
-          el.checked = false;
-        });
-        answerBox.style.display = "none";
-        answerBox.textContent = "";
       });
     })();
   </script>

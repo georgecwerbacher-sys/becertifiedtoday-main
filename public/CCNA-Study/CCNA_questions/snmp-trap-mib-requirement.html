@@ -33,11 +33,6 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .stem-note {
-      margin: 0 0 18px;
-      color: #b8c3d6;
-      font-size: 0.95rem;
-    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -131,7 +126,6 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>Which condition must be met before an NMS handles an SNMP trap from an agent?</h1>
-    <p class="stem-note">Question 33 of 61 · Select an answer — feedback appears immediately.</p>
 
     <label class="choice"><input type="radio" name="snmpmib" value="A" />A. The NMS must be configured on the same router as the SNMP agent</label>
     <label class="choice"><input type="radio" name="snmpmib" value="B" />B. The NMS must receive a trap and an inform message from the SNMP agent within a configured interval</label>
@@ -139,7 +133,6 @@
     <label class="choice"><input type="radio" name="snmpmib" value="D" />D. The NMS must receive the same trap from two different SNMP agents to verify that it is reliable</label>
 
     <div class="actions">
-      <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
@@ -155,7 +148,6 @@
     (function () {
       var CORRECT = "C";
       var CORRECT_MSG = "Correct. C \u2014 The NMS needs the MIB definitions for the OIDs in the trap to interpret them meaningfully. The manager does not have to be on the same router, does not need both trap and inform in an interval, and does not need duplicate traps from two agents.";
-      var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -175,14 +167,6 @@
             applyFeedback(el.value);
           }
         });
-      });
-
-      resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="snmpmib"]').forEach(function (el) {
-          el.checked = false;
-        });
-        answerBox.style.display = "none";
-        answerBox.textContent = "";
       });
     })();
   </script>

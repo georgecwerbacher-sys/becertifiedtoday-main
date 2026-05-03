@@ -33,11 +33,6 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .stem-note {
-      margin: 0 0 18px;
-      color: #b8c3d6;
-      font-size: 0.95rem;
-    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -131,7 +126,6 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>Refer to the exhibit. A network engineer must enable communication between PC A and the File Server without interrupting other VLANs on the trunk. Which command must be configured?</h1>
-    <p class="stem-note">Question 40 of 61 · Select an answer — feedback appears immediately.</p>
 
     <label class="choice mono"><input type="radio" name="trkadd" value="A" />A. Switch trunk allowed vlan 12</label>
     <label class="choice mono"><input type="radio" name="trkadd" value="B" />B. Switchport trunk allowed vlan none</label>
@@ -139,7 +133,6 @@
     <label class="choice mono"><input type="radio" name="trkadd" value="D" />D. Switchport trunk allowed vlan remove 10-11</label>
 
     <div class="actions">
-      <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
@@ -155,7 +148,6 @@
     (function () {
       var CORRECT = "C";
       var CORRECT_MSG = "Correct. C \u2014 switchport trunk allowed vlan add 13 adds VLAN 13 to the existing allow list without removing other permitted VLANs. allowed vlan none would break all VLANs. remove 10\u201311 can cut valid traffic. Typo-only variants that replace the list with a single VLAN can drop other VLANs unless carefully scoped.";
-      var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -175,14 +167,6 @@
             applyFeedback(el.value);
           }
         });
-      });
-
-      resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="trkadd"]').forEach(function (el) {
-          el.checked = false;
-        });
-        answerBox.style.display = "none";
-        answerBox.textContent = "";
       });
     })();
   </script>

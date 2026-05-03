@@ -33,12 +33,7 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .stem-note {
-      margin: 0 0 18px;
-      color: #b8c3d6;
-      font-size: 0.95rem;
-    }
-    .choice {
+.choice {
       display: block;
       margin: 10px 0;
       padding: 12px 14px;
@@ -127,16 +122,13 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>Which CRUD operation corresponds to the HTTP GET method?</h1>
-    <p class="stem-note">Question 8 of 61 · Select an answer — feedback appears immediately.</p>
-
-    <label class="choice"><input type="radio" name="getcrud" value="A" />A. read</label>
+<label class="choice"><input type="radio" name="getcrud" value="A" />A. read</label>
     <label class="choice"><input type="radio" name="getcrud" value="B" />B. update</label>
     <label class="choice"><input type="radio" name="getcrud" value="C" />C. create</label>
     <label class="choice"><input type="radio" name="getcrud" value="D" />D. delete</label>
 
     <div class="actions">
-      <button id="resetBtn" type="button">Reset</button>
-      <a class="home-link" href="/index.html">Home</a>
+<a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
@@ -151,8 +143,7 @@
     (function () {
       var CORRECT = "A";
       var CORRECT_MSG = "Correct. A \u2014 GET retrieves a representation of a resource without implying a change on the server, which maps to Read in CRUD. POST often maps to Create; PUT/PATCH to Update; DELETE to Delete.";
-      var resetBtn = document.getElementById("resetBtn");
-      var answerBox = document.getElementById("answerBox");
+var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
         answerBox.style.display = "block";
@@ -173,13 +164,6 @@
         });
       });
 
-      resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="getcrud"]').forEach(function (el) {
-          el.checked = false;
-        });
-        answerBox.style.display = "none";
-        answerBox.textContent = "";
-      });
     })();
   </script>
 </body>

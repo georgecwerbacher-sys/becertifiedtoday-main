@@ -33,11 +33,6 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .stem-note {
-      margin: 0 0 18px;
-      color: #b8c3d6;
-      font-size: 0.95rem;
-    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -131,7 +126,6 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>When DHCP is configured on a router, which command must be entered so the default gateway is automatically distributed?</h1>
-    <p class="stem-note">Question 27 of 61 · Select an answer — feedback appears immediately.</p>
 
     <label class="choice"><input type="radio" name="dhcprtr" value="A" />A. default-router</label>
     <label class="choice"><input type="radio" name="dhcprtr" value="B" />B. default-gateway</label>
@@ -139,7 +133,6 @@
     <label class="choice"><input type="radio" name="dhcprtr" value="D" />D. dns-server</label>
 
     <div class="actions">
-      <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
@@ -155,7 +148,6 @@
     (function () {
       var CORRECT = "A";
       var CORRECT_MSG = "Correct. A \u2014 In an ip dhcp pool, default-router <address> sets DHCP Option 3. ip helper-address is for relay on an interface; dns-server sets DNS. default-gateway is not the pool subcommand.";
-      var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -175,14 +167,6 @@
             applyFeedback(el.value);
           }
         });
-      });
-
-      resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="dhcprtr"]').forEach(function (el) {
-          el.checked = false;
-        });
-        answerBox.style.display = "none";
-        answerBox.textContent = "";
       });
     })();
   </script>

@@ -33,11 +33,6 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .stem-note {
-      margin: 0 0 18px;
-      color: #b8c3d6;
-      font-size: 0.95rem;
-    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -131,7 +126,6 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>A network engineer must configure the router R1 GigabitEthernet1/1 interface to connect to the router R2 GigabitEthernet1/1 interface. For the configuration to be applied the engineer must compress the address 2001:0db8:0000:0000:0500:000a:400F:583B. Which command must be issued on the interface?</h1>
-    <p class="stem-note">Question 53 of 61 · Select an answer — feedback appears immediately.</p>
 
     <label class="choice mono"><input type="radio" name="v6if" value="A" />A. ipv6 address 2001:db8::500:a:400F:583B</label>
     <label class="choice mono"><input type="radio" name="v6if" value="B" />B. ipv6 address 2001 db8:0::500:a:4F:583B</label>
@@ -139,7 +133,6 @@
     <label class="choice mono"><input type="radio" name="v6if" value="D" />D. ipv6 address 2001::db8:0000::500:a:400F:583B</label>
 
     <div class="actions">
-      <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
@@ -155,7 +148,6 @@
     (function () {
       var CORRECT = "A";
       var CORRECT_MSG = "Correct. A \u2014 Leading zeros drop and one :: replaces the contiguous all-zero hextets: 2001:db8::500:a:400F:583B. B is malformed and alters hextets. C miscompresses 0500 as 5. D uses :: twice, which is invalid.";
-      var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -175,14 +167,6 @@
             applyFeedback(el.value);
           }
         });
-      });
-
-      resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="v6if"]').forEach(function (el) {
-          el.checked = false;
-        });
-        answerBox.style.display = "none";
-        answerBox.textContent = "";
       });
     })();
   </script>

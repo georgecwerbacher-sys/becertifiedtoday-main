@@ -33,12 +33,7 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .stem-note {
-      margin: 0 0 18px;
-      color: #b8c3d6;
-      font-size: 0.95rem;
-    }
-    .choice {
+.choice {
       display: block;
       margin: 10px 0;
       padding: 12px 14px;
@@ -127,9 +122,7 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>How do servers connect to the network in a virtual environment?</h1>
-    <p class="stem-note">Question 7 of 61 · Select an answer — feedback appears immediately.</p>
-
-    <label class="choice"
+<label class="choice"
       ><input type="radio" name="vswitch" value="A" />A. wireless to an access point that is physically connected to the
       network</label
     >
@@ -146,8 +139,7 @@
     >
 
     <div class="actions">
-      <button id="resetBtn" type="button">Reset</button>
-      <a class="home-link" href="/index.html">Home</a>
+<a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
@@ -162,8 +154,7 @@
     (function () {
       var CORRECT = "D";
       var CORRECT_MSG = "Correct. D \u2014 VMs use virtual NICs connected to a virtual switch on the hypervisor; that switch reaches the physical LAN through the host\u2019s physical NIC (typically to a wired switch), not by plugging a cable directly into the VM.";
-      var resetBtn = document.getElementById("resetBtn");
-      var answerBox = document.getElementById("answerBox");
+var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
         answerBox.style.display = "block";
@@ -184,13 +175,6 @@
         });
       });
 
-      resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="vswitch"]').forEach(function (el) {
-          el.checked = false;
-        });
-        answerBox.style.display = "none";
-        answerBox.textContent = "";
-      });
     })();
   </script>
 </body>

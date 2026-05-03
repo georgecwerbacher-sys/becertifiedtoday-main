@@ -33,12 +33,7 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .stem-note {
-      margin: 0 0 18px;
-      color: #b8c3d6;
-      font-size: 0.95rem;
-    }
-    .choice {
+.choice {
       display: block;
       margin: 10px 0;
       padding: 12px 14px;
@@ -127,16 +122,13 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>Which type of security program is violated when a group of employees enters a building using the ID badge of only one person?</h1>
-    <p class="stem-note">Question 2 of 61 · Select an answer — feedback appears immediately.</p>
-
-    <label class="choice"><input type="radio" name="sec" value="A" />A. intrusion detection</label>
+<label class="choice"><input type="radio" name="sec" value="A" />A. intrusion detection</label>
     <label class="choice"><input type="radio" name="sec" value="B" />B. user awareness</label>
     <label class="choice"><input type="radio" name="sec" value="C" />C. physical access control</label>
     <label class="choice"><input type="radio" name="sec" value="D" />D. network authorization</label>
 
     <div class="actions">
-      <button id="resetBtn" type="button">Reset</button>
-      <a class="home-link" href="/index.html">Home</a>
+<a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
@@ -151,8 +143,7 @@
     (function () {
       var CORRECT = "C";
       var CORRECT_MSG = "Correct. C \u2014 Physical access control. Badge readers, turnstiles, and door policies exist so each person authenticates to enter. Tailgating or piggybacking on one badge breaks that control. Intrusion detection focuses on detecting hostile activity (often in IT systems); user awareness is training; network authorization governs logical network access, not the building door.";
-      var resetBtn = document.getElementById("resetBtn");
-      var answerBox = document.getElementById("answerBox");
+var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
         answerBox.style.display = "block";
@@ -173,13 +164,6 @@
         });
       });
 
-      resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="sec"]').forEach(function (el) {
-          el.checked = false;
-        });
-        answerBox.style.display = "none";
-        answerBox.textContent = "";
-      });
     })();
   </script>
 </body>

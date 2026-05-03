@@ -33,12 +33,7 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .stem-note {
-      margin: 0 0 18px;
-      color: #b8c3d6;
-      font-size: 0.95rem;
-    }
-    .choice {
+.choice {
       display: block;
       margin: 10px 0;
       padding: 12px 14px;
@@ -127,9 +122,7 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>In which situation is private IPv4 addressing appropriate for a new subnet on the network of an organization?</h1>
-    <p class="stem-note">Question 4 of 61 · Select an answer — feedback appears immediately.</p>
-
-    <label class="choice"
+<label class="choice"
       ><input type="radio" name="priv" value="A" />A. There is limited unique address space, and traffic on the new subnet will
       stay local within the organization.</label
     >
@@ -147,8 +140,7 @@
     >
 
     <div class="actions">
-      <button id="resetBtn" type="button">Reset</button>
-      <a class="home-link" href="/index.html">Home</a>
+<a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
@@ -163,8 +155,7 @@
     (function () {
       var CORRECT = "A";
       var CORRECT_MSG = "Correct. A \u2014 RFC 1918 private space (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) is appropriate when public addresses are scarce and the subnet does not need to be globally reachable: internal routing and NAT at the edge handle internet access. Internet-facing subnets that must be advertised need public addresses (D is wrong). VPNs may still carry private prefixes, but that is not the defining case (C). Broadcast scope is a separate design choice (B).";
-      var resetBtn = document.getElementById("resetBtn");
-      var answerBox = document.getElementById("answerBox");
+var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
         answerBox.style.display = "block";
@@ -185,13 +176,6 @@
         });
       });
 
-      resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="priv"]').forEach(function (el) {
-          el.checked = false;
-        });
-        answerBox.style.display = "none";
-        answerBox.textContent = "";
-      });
     })();
   </script>
 </body>

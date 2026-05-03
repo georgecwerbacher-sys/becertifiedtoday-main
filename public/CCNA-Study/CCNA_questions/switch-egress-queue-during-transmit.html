@@ -33,11 +33,6 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .stem-note {
-      margin: 0 0 18px;
-      color: #b8c3d6;
-      font-size: 0.95rem;
-    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -131,7 +126,6 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>If a switch port receives a new frame while it is actively transmitting a previous frame, how does it process the frames?</h1>
-    <p class="stem-note">Question 37 of 61 · Select an answer — feedback appears immediately.</p>
 
     <label class="choice"><input type="radio" name="egq" value="A" />A. The previous frame is delivered, the new frame is dropped, and a retransmission request is sent.</label>
     <label class="choice"><input type="radio" name="egq" value="B" />B. The new frame is delivered first, the previous frame is dropped, and a retransmission request is sent.</label>
@@ -139,7 +133,6 @@
     <label class="choice"><input type="radio" name="egq" value="D" />D. The new frame is placed in a queue for transmission after the previous frame.</label>
 
     <div class="actions">
-      <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
@@ -155,7 +148,6 @@
     (function () {
       var CORRECT = "D";
       var CORRECT_MSG = "Correct. D \u2014 The new frame is queued for transmission after the current frame finishes. Ethernet does not drop the previous frame and request L2 retransmission in this way, does not send the new frame first, and cannot transmit two frames on the same path at once.";
-      var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -175,14 +167,6 @@
             applyFeedback(el.value);
           }
         });
-      });
-
-      resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="egq"]').forEach(function (el) {
-          el.checked = false;
-        });
-        answerBox.style.display = "none";
-        answerBox.textContent = "";
       });
     })();
   </script>

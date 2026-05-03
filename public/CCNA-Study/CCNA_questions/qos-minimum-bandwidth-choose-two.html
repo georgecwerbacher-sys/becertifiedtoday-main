@@ -33,12 +33,7 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .stem-note {
-      margin: 0 0 18px;
-      color: #b8c3d6;
-      font-size: 0.95rem;
-    }
-    .choice {
+.choice {
       display: block;
       margin: 10px 0;
       padding: 12px 14px;
@@ -127,9 +122,7 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>Which two QoS tools are used to guarantee minimum bandwidth to certain traffic? (Choose two.)</h1>
-    <p class="stem-note">Question 1 of 61 · Select exactly two answers, then click Check answer.</p>
-
-    <label class="choice"><input type="checkbox" name="qos" value="A" />A. FIFO</label>
+<label class="choice"><input type="checkbox" name="qos" value="A" />A. FIFO</label>
     <label class="choice"><input type="checkbox" name="qos" value="B" />B. CBWFQ</label>
     <label class="choice"><input type="checkbox" name="qos" value="C" />C. LLC</label>
     <label class="choice"><input type="checkbox" name="qos" value="D" />D. WFQ</label>
@@ -137,8 +130,7 @@
 
     <div class="actions">
       <button id="checkBtn" type="button">Check answer</button>
-      <button id="resetBtn" type="button">Reset</button>
-      <a class="home-link" href="/index.html">Home</a>
+<a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
@@ -152,8 +144,7 @@
     (function () {
       var CORRECT = ["B", "E"];
       var checkBtn = document.getElementById("checkBtn");
-      var resetBtn = document.getElementById("resetBtn");
-      var answerBox = document.getElementById("answerBox");
+var answerBox = document.getElementById("answerBox");
 
       function selectedValues() {
         return []
@@ -190,13 +181,6 @@
         }
       });
 
-      resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="qos"]').forEach(function (el) {
-          el.checked = false;
-        });
-        answerBox.style.display = "none";
-        answerBox.textContent = "";
-      });
     })();
   </script>
 </body>

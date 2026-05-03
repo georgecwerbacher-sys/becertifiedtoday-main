@@ -36,11 +36,6 @@ STYLE = r"""  <style>
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .stem-note {
-      margin: 0 0 18px;
-      color: #b8c3d6;
-      font-size: 0.95rem;
-    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -134,10 +129,7 @@ def page(
     *,
     title: str,
     slug: str,
-    num: int,
-    total: int,
     stem: str,
-    select_note: str,
     choices_html: str,
     name: str,
     correct: str,
@@ -179,12 +171,10 @@ def page(
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>{stem}</h1>
-    <p class="stem-note">Question {num} of {total} · {select_note}</p>
 
 {choices_html}
 
     <div class="actions">
-      <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
@@ -197,7 +187,6 @@ def page(
     (function () {{
       var CORRECT = {json.dumps(correct)};
       var CORRECT_MSG = {msg_json};
-      var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {{
@@ -218,14 +207,6 @@ def page(
           }}
         }});
       }});
-
-      resetBtn.addEventListener("click", function () {{
-        document.querySelectorAll('input[name="{name}"]').forEach(function (el) {{
-          el.checked = false;
-        }});
-        answerBox.style.display = "none";
-        answerBox.textContent = "";
-      }});
     }})();
   </script>
 </body>
@@ -241,8 +222,6 @@ def page_checkbox(
     *,
     title: str,
     slug: str,
-    num: int,
-    total: int,
     stem: str,
     choices_html: str,
     name: str,
@@ -284,13 +263,11 @@ def page_checkbox(
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>{stem}</h1>
-    <p class="stem-note">Question {num} of {total} · Select exactly two answers, then click Check answer.</p>
 
 {choices_html}
 
     <div class="actions">
       <button id="checkBtn" type="button">Check answer</button>
-      <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
@@ -303,7 +280,6 @@ def page_checkbox(
     (function () {{
       var CORRECT = {cor_json};
       var checkBtn = document.getElementById("checkBtn");
-      var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
       function selectedValues() {{
@@ -334,14 +310,6 @@ def page_checkbox(
           answerBox.textContent = "Incorrect.";
         }}
       }});
-
-      resetBtn.addEventListener("click", function () {{
-        document.querySelectorAll('input[name="{name}"]').forEach(function (el) {{
-          el.checked = false;
-        }});
-        answerBox.style.display = "none";
-        answerBox.textContent = "";
-      }});
     }})();
   </script>
 </body>
@@ -355,7 +323,6 @@ def choice_line(mono: bool, name: str, letter: str, text: str) -> str:
 
 
 def main() -> None:
-    total = 61
     chain = [
         {
             "slug": "dhcp-relay-dhcpdiscover",
@@ -1030,8 +997,6 @@ def main() -> None:
             html = page_checkbox(
                 title=q["title"],
                 slug=slug,
-                num=i,
-                total=total,
                 stem=q["stem"],
                 choices_html=ch_lines,
                 name=q["name"],
@@ -1048,10 +1013,7 @@ def main() -> None:
             html = page(
                 title=q["title"],
                 slug=slug,
-                num=i,
-                total=total,
                 stem=q["stem"],
-                select_note="Select an answer — feedback appears immediately.",
                 choices_html=ch_lines,
                 name=q["name"],
                 correct=q["correct"],

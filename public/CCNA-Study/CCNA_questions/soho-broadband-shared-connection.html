@@ -33,11 +33,6 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .stem-note {
-      margin: 0 0 18px;
-      color: #b8c3d6;
-      font-size: 0.95rem;
-    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -131,7 +126,6 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>What is a characteristic of a SOHO network?</h1>
-    <p class="stem-note">Question 32 of 61 · Select an answer — feedback appears immediately.</p>
 
     <label class="choice"><input type="radio" name="soho" value="A" />A. connects each switch to every other switch in the network</label>
     <label class="choice"><input type="radio" name="soho" value="B" />B. enables multiple users to share a single broadband connection</label>
@@ -139,7 +133,6 @@
     <label class="choice"><input type="radio" name="soho" value="D" />D. includes at least three tiers of devices to provide load balancing and redundancy</label>
 
     <div class="actions">
-      <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
@@ -155,7 +148,6 @@
     (function () {
       var CORRECT = "B";
       var CORRECT_MSG = "Correct. B \u2014 SOHO sites usually use one broadband connection shared by several users or devices behind a small router or firewall. Full mesh switching, thousands of users, and three-tier datacenter designs are enterprise-scale, not SOHO.";
-      var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -175,14 +167,6 @@
             applyFeedback(el.value);
           }
         });
-      });
-
-      resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="soho"]').forEach(function (el) {
-          el.checked = false;
-        });
-        answerBox.style.display = "none";
-        answerBox.textContent = "";
       });
     })();
   </script>

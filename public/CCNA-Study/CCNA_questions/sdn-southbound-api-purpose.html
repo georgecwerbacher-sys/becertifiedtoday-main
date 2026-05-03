@@ -33,11 +33,6 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .stem-note {
-      margin: 0 0 18px;
-      color: #b8c3d6;
-      font-size: 0.95rem;
-    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -131,7 +126,6 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>What is the purpose of a southbound API in a control based networking architecture?</h1>
-    <p class="stem-note">Question 41 of 61 · Select an answer — feedback appears immediately.</p>
 
     <label class="choice"><input type="radio" name="sbapi" value="A" />A. facilitates communication between the controller and the applications</label>
     <label class="choice"><input type="radio" name="sbapi" value="B" />B. integrates a controller with other automation and orchestration tools</label>
@@ -139,7 +133,6 @@
     <label class="choice"><input type="radio" name="sbapi" value="D" />D. facilitates communication between the controller and the networking hardware</label>
 
     <div class="actions">
-      <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
@@ -155,7 +148,6 @@
     (function () {
       var CORRECT = "D";
       var CORRECT_MSG = "Correct. D \u2014 Southbound interfaces let the controller program and read state from network devices (switches, routers, and similar hardware) using protocols such as NETCONF, RESTCONF, OpenFlow, or gRPC. Northbound APIs expose the controller to applications and orchestration above.";
-      var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -175,14 +167,6 @@
             applyFeedback(el.value);
           }
         });
-      });
-
-      resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="sbapi"]').forEach(function (el) {
-          el.checked = false;
-        });
-        answerBox.style.display = "none";
-        answerBox.textContent = "";
       });
     })();
   </script>

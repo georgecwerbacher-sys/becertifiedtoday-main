@@ -33,11 +33,6 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .stem-note {
-      margin: 0 0 18px;
-      color: #b8c3d6;
-      font-size: 0.95rem;
-    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -131,7 +126,6 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>What does a router do when configured with the default DNS lookup settings, and a URL is entered on the CLI?</h1>
-    <p class="stem-note">Question 21 of 61 · Select an answer — feedback appears immediately.</p>
 
     <label class="choice"><input type="radio" name="dns" value="A" />A. initiates a ping request to the URL</label>
     <label class="choice"><input type="radio" name="dns" value="B" />B. prompts the user to specify the desired IP address</label>
@@ -139,7 +133,6 @@
     <label class="choice"><input type="radio" name="dns" value="D" />D. sends a broadcast message in an attempt to resolve the URL</label>
 
     <div class="actions">
-      <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
@@ -155,7 +148,6 @@
     (function () {
       var CORRECT = "D";
       var CORRECT_MSG = "Correct. D \u2014 With ip domain-lookup enabled by default, a mistyped or unknown token can trigger a DNS lookup; without configured name servers, the router may use a broadcast DNS query. Lookups time out; they do not run forever.";
-      var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -175,14 +167,6 @@
             applyFeedback(el.value);
           }
         });
-      });
-
-      resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="dns"]').forEach(function (el) {
-          el.checked = false;
-        });
-        answerBox.style.display = "none";
-        answerBox.textContent = "";
       });
     })();
   </script>

@@ -33,11 +33,6 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .stem-note {
-      margin: 0 0 18px;
-      color: #b8c3d6;
-      font-size: 0.95rem;
-    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -131,7 +126,6 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
     <h1>Refer to the exhibit. What is the result if Gig1/11 receives an STP BPDU? Configuration: interface GigabitEthernet1/11 — switchport mode access — spanning-tree portfast — spanning-tree bpduguard enable.</h1>
-    <p class="stem-note">Question 15 of 61 · Select an answer — feedback appears immediately.</p>
 
     <label class="choice"><input type="radio" name="bpdug" value="A" />A. The port transitions to STP blocking</label>
     <label class="choice"><input type="radio" name="bpdug" value="B" />B. The port transitions to the root port</label>
@@ -139,7 +133,6 @@
     <label class="choice"><input type="radio" name="bpdug" value="D" />D. The port goes into error-disable state</label>
 
     <div class="actions">
-      <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
@@ -155,7 +148,6 @@
     (function () {
       var CORRECT = "D";
       var CORRECT_MSG = "Correct. D \u2014 BPDU Guard on a PortFast access port treats an incoming BPDU as an error and puts the port into err-disabled. It does not simply transition to normal STP blocking as the primary outcome.";
-      var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -175,14 +167,6 @@
             applyFeedback(el.value);
           }
         });
-      });
-
-      resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="bpdug"]').forEach(function (el) {
-          el.checked = false;
-        });
-        answerBox.style.display = "none";
-        answerBox.textContent = "";
       });
     })();
   </script>
