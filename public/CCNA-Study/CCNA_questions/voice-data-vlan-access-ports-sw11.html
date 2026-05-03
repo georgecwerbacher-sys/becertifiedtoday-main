@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — LACP / EtherChannel (active mode)</title>
+  <title>CCNA — Voice and data VLANs on access ports</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -47,6 +47,10 @@
       border: 1px solid #2c3f62;
       font-size: 1.02rem;
       cursor: pointer;
+    }
+    .choice.mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.95rem;
     }
     .choice input {
       margin-right: 10px;
@@ -126,16 +130,13 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>
-      A network administrator needs to aggregate 4 ports into a single logical link which must negotiate Layer 2 connectivity to
-      ports on another switch. What must be configured when using active mode on both sides of the connection?
-    </h1>
-    <p class="stem-note">Question 3 of 24 · Select one answer, then click Check answer.</p>
+    <h1>Refer to the exhibit. An administrator must configure interfaces Gi1/1 and Gi1/3 on switch SW11. PC-1 and PC-2 must be placed in the Data VLAN and Phone-1 must be placed in the Voice VLAN. Which configuration meets these requirements?</h1>
+    <p class="stem-note">Question 22 of 24 · Select one answer, then click Check answer.</p>
 
-    <label class="choice"><input type="radio" name="lag" value="A" />A. 802.1q trunks</label>
-    <label class="choice"><input type="radio" name="lag" value="B" />B. Cisco vPC</label>
-    <label class="choice"><input type="radio" name="lag" value="C" />C. LLDP</label>
-    <label class="choice"><input type="radio" name="lag" value="D" />D. LACP</label>
+    <label class="choice"><input type="radio" name="voicevlan" value="A" />A. Option A (Gi1/1 access vlan 8; Gi1/3 access vlan 9, voice vlan 8)</label>
+    <label class="choice"><input type="radio" name="voicevlan" value="B" />B. Option B (Gi1/1 access vlan 9; Gi1/3 mode trunk, voice 8, access 9)</label>
+    <label class="choice"><input type="radio" name="voicevlan" value="C" />C. Option C (Gi1/1 access vlan 8; Gi1/3 access vlan 8, voice vlan 9)</label>
+    <label class="choice"><input type="radio" name="voicevlan" value="D" />D. Option D (Gi1/1 access vlan 8; Gi1/3 mode trunk, voice 8, access 9)</label>
 
     <div class="actions">
       <button id="checkBtn" type="button">Check answer</button>
@@ -146,21 +147,21 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/security-physical-access-tailgating.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/private-ipv4-subnet-appropriate.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ios-dns-lookup-default-behavior.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/pat-vlan200-inside-source-overload.html">Next question</a>
       <a class="next-link" href="/CCNA-Study/ccna-index.html">Back to CCNA study</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
+      var CORRECT = "C";
       var checkBtn = document.getElementById("checkBtn");
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
       function selectedValue() {
-        var el = document.querySelector('input[name="lag"]:checked');
+        var el = document.querySelector('input[name="voicevlan"]:checked');
         return el ? el.value : null;
       }
 
@@ -174,8 +175,7 @@
         }
         if (sel === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent =
-            "Correct. D — LACP (Link Aggregation Control Protocol, IEEE 802.3ad). With channel-group mode active on both switches, LACP PDUs negotiate forming the EtherChannel. 802.1Q tags VLANs on trunks but does not negotiate the bundle; vPC is a Nexus-specific multichassis design; LLDP advertises neighbors but does not negotiate port aggregation.";
+          answerBox.textContent = "Correct. C — Option C: Gi1/1 access VLAN 8 for PC-1 (data). Gi1/3: switchport mode access, access VLAN 8 for the PC, voice VLAN 9 for the phone. Option A swaps voice and data on Gi1/3. B and D use switchport mode trunk on the phone port, which is not the usual access + voice VLAN pattern.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
@@ -183,7 +183,7 @@
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="lag"]').forEach(function (el) {
+        document.querySelectorAll('input[name="voicevlan"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";

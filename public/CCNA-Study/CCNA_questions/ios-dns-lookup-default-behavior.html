@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — LACP / EtherChannel (active mode)</title>
+  <title>CCNA — IOS default DNS lookup</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -47,6 +47,10 @@
       border: 1px solid #2c3f62;
       font-size: 1.02rem;
       cursor: pointer;
+    }
+    .choice.mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.95rem;
     }
     .choice input {
       margin-right: 10px;
@@ -126,16 +130,13 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>
-      A network administrator needs to aggregate 4 ports into a single logical link which must negotiate Layer 2 connectivity to
-      ports on another switch. What must be configured when using active mode on both sides of the connection?
-    </h1>
-    <p class="stem-note">Question 3 of 24 · Select one answer, then click Check answer.</p>
+    <h1>What does a router do when configured with the default DNS lookup settings, and a URL is entered on the CLI?</h1>
+    <p class="stem-note">Question 21 of 24 · Select one answer, then click Check answer.</p>
 
-    <label class="choice"><input type="radio" name="lag" value="A" />A. 802.1q trunks</label>
-    <label class="choice"><input type="radio" name="lag" value="B" />B. Cisco vPC</label>
-    <label class="choice"><input type="radio" name="lag" value="C" />C. LLDP</label>
-    <label class="choice"><input type="radio" name="lag" value="D" />D. LACP</label>
+    <label class="choice"><input type="radio" name="dns" value="A" />A. initiates a ping request to the URL</label>
+    <label class="choice"><input type="radio" name="dns" value="B" />B. prompts the user to specify the desired IP address</label>
+    <label class="choice"><input type="radio" name="dns" value="C" />C. continuously attempts to resolve the URL until the command is cancelled</label>
+    <label class="choice"><input type="radio" name="dns" value="D" />D. sends a broadcast message in an attempt to resolve the URL</label>
 
     <div class="actions">
       <button id="checkBtn" type="button">Check answer</button>
@@ -146,8 +147,8 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/security-physical-access-tailgating.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/private-ipv4-subnet-appropriate.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/control-plane-routing-decisions.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/voice-data-vlan-access-ports-sw11.html">Next question</a>
       <a class="next-link" href="/CCNA-Study/ccna-index.html">Back to CCNA study</a>
     </div>
   </main>
@@ -160,7 +161,7 @@
       var answerBox = document.getElementById("answerBox");
 
       function selectedValue() {
-        var el = document.querySelector('input[name="lag"]:checked');
+        var el = document.querySelector('input[name="dns"]:checked');
         return el ? el.value : null;
       }
 
@@ -174,8 +175,7 @@
         }
         if (sel === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent =
-            "Correct. D — LACP (Link Aggregation Control Protocol, IEEE 802.3ad). With channel-group mode active on both switches, LACP PDUs negotiate forming the EtherChannel. 802.1Q tags VLANs on trunks but does not negotiate the bundle; vPC is a Nexus-specific multichassis design; LLDP advertises neighbors but does not negotiate port aggregation.";
+          answerBox.textContent = "Correct. D — With ip domain-lookup enabled by default, a mistyped or unknown token can trigger a DNS lookup; without configured name servers, the router may use a broadcast DNS query. Lookups time out; they do not run forever.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
@@ -183,7 +183,7 @@
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="lag"]').forEach(function (el) {
+        document.querySelectorAll('input[name="dns"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";

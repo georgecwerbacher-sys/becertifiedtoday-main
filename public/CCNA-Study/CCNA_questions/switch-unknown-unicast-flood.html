@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — LACP / EtherChannel (active mode)</title>
+  <title>CCNA — Unknown destination MAC flooding</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -47,6 +47,10 @@
       border: 1px solid #2c3f62;
       font-size: 1.02rem;
       cursor: pointer;
+    }
+    .choice.mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.95rem;
     }
     .choice input {
       margin-right: 10px;
@@ -126,16 +130,13 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>
-      A network administrator needs to aggregate 4 ports into a single logical link which must negotiate Layer 2 connectivity to
-      ports on another switch. What must be configured when using active mode on both sides of the connection?
-    </h1>
-    <p class="stem-note">Question 3 of 24 · Select one answer, then click Check answer.</p>
+    <h1>How does a switch process a frame received on Fa0/1 with the destination MAC address of 0e38.7363.657b when the table is missing the address?</h1>
+    <p class="stem-note">Question 24 of 24 · Select one answer, then click Check answer.</p>
 
-    <label class="choice"><input type="radio" name="lag" value="A" />A. 802.1q trunks</label>
-    <label class="choice"><input type="radio" name="lag" value="B" />B. Cisco vPC</label>
-    <label class="choice"><input type="radio" name="lag" value="C" />C. LLDP</label>
-    <label class="choice"><input type="radio" name="lag" value="D" />D. LACP</label>
+    <label class="choice"><input type="radio" name="unk" value="A" />A. It floods the frame to all interfaces except Fa0/1.</label>
+    <label class="choice"><input type="radio" name="unk" value="B" />B. It forwards the frame back out of interface Fa0/1.</label>
+    <label class="choice"><input type="radio" name="unk" value="C" />C. It drops the frame immediately.</label>
+    <label class="choice"><input type="radio" name="unk" value="D" />D. It holds the frame until the MAC address timer expires and then drops the frame.</label>
 
     <div class="actions">
       <button id="checkBtn" type="button">Check answer</button>
@@ -146,21 +147,20 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/security-physical-access-tailgating.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/private-ipv4-subnet-appropriate.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/pat-vlan200-inside-source-overload.html">Previous question</a>
       <a class="next-link" href="/CCNA-Study/ccna-index.html">Back to CCNA study</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
+      var CORRECT = "A";
       var checkBtn = document.getElementById("checkBtn");
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
       function selectedValue() {
-        var el = document.querySelector('input[name="lag"]:checked');
+        var el = document.querySelector('input[name="unk"]:checked');
         return el ? el.value : null;
       }
 
@@ -174,8 +174,7 @@
         }
         if (sel === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent =
-            "Correct. D — LACP (Link Aggregation Control Protocol, IEEE 802.3ad). With channel-group mode active on both switches, LACP PDUs negotiate forming the EtherChannel. 802.1Q tags VLANs on trunks but does not negotiate the bundle; vPC is a Nexus-specific multichassis design; LLDP advertises neighbors but does not negotiate port aggregation.";
+          answerBox.textContent = "Correct. A — Unknown unicast destination MAC causes flooding to all other ports in the VLAN except the ingress port. The switch does not drop, buffer until MAC timeout, or send only back out Fa0/1.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
@@ -183,7 +182,7 @@
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="lag"]').forEach(function (el) {
+        document.querySelectorAll('input[name="unk"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";

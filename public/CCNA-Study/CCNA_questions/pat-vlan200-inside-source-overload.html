@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — LACP / EtherChannel (active mode)</title>
+  <title>CCNA — PAT and NAT extended ACL</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -47,6 +47,10 @@
       border: 1px solid #2c3f62;
       font-size: 1.02rem;
       cursor: pointer;
+    }
+    .choice.mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.95rem;
     }
     .choice input {
       margin-right: 10px;
@@ -126,16 +130,13 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>
-      A network administrator needs to aggregate 4 ports into a single logical link which must negotiate Layer 2 connectivity to
-      ports on another switch. What must be configured when using active mode on both sides of the connection?
-    </h1>
-    <p class="stem-note">Question 3 of 24 · Select one answer, then click Check answer.</p>
+    <h1>Refer to the exhibit. Which configuration must be applied to the router so PAT translates addresses in VLAN 200 while devices on VLAN 100 use their own IP addresses? Choose the option letter that matches the correct full configuration block.</h1>
+    <p class="stem-note">Question 23 of 24 · Select one answer, then click Check answer.</p>
 
-    <label class="choice"><input type="radio" name="lag" value="A" />A. 802.1q trunks</label>
-    <label class="choice"><input type="radio" name="lag" value="B" />B. Cisco vPC</label>
-    <label class="choice"><input type="radio" name="lag" value="C" />C. LLDP</label>
-    <label class="choice"><input type="radio" name="lag" value="D" />D. LACP</label>
+    <label class="choice mono"><input type="radio" name="pat" value="A" />A. Option A (ACL permit 209.165.201.2 0.0.0.0; nat inside on Gi2/0/1.200; outside on Gi1/0/0)</label>
+    <label class="choice mono"><input type="radio" name="pat" value="B" />B. Option B (ACL permit 209.165.201.2 255.255.255.255; same NAT interfaces)</label>
+    <label class="choice mono"><input type="radio" name="pat" value="C" />C. Option C (ACL permit 192.168.100.0 0.0.0.255 — verify exhibit: often 192.168.200.0 for VLAN 200; same NAT interfaces)</label>
+    <label class="choice mono"><input type="radio" name="pat" value="D" />D. Option D (ACL permit 192.168.100.32 0.0.0.31; same NAT interfaces)</label>
 
     <div class="actions">
       <button id="checkBtn" type="button">Check answer</button>
@@ -146,21 +147,21 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/security-physical-access-tailgating.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/private-ipv4-subnet-appropriate.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/voice-data-vlan-access-ports-sw11.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/switch-unknown-unicast-flood.html">Next question</a>
       <a class="next-link" href="/CCNA-Study/ccna-index.html">Back to CCNA study</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
+      var CORRECT = "C";
       var checkBtn = document.getElementById("checkBtn");
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
       function selectedValue() {
-        var el = document.querySelector('input[name="lag"]:checked');
+        var el = document.querySelector('input[name="pat"]:checked');
         return el ? el.value : null;
       }
 
@@ -174,8 +175,7 @@
         }
         if (sel === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent =
-            "Correct. D — LACP (Link Aggregation Control Protocol, IEEE 802.3ad). With channel-group mode active on both switches, LACP PDUs negotiate forming the EtherChannel. 802.1Q tags VLANs on trunks but does not negotiate the bundle; vPC is a Nexus-specific multichassis design; LLDP advertises neighbors but does not negotiate port aggregation.";
+          answerBox.textContent = "Correct. C — The standard ACL for ip nat inside source list should permit only VLAN 200’s inside subnet (commonly 192.168.200.0/24 with wildcard 0.0.0.255 in lab items). VLAN 100 must not be permitted if it should bypass PAT. Options A/B reference 209.165.201.2 (not the inside range for the whole VLAN). B uses a subnet mask where a wildcard is required. D only matches a /27 unless the exhibit limits VLAN 200 to that block. Confirm the third octet against your exhibit (200 vs 100).";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
@@ -183,7 +183,7 @@
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="lag"]').forEach(function (el) {
+        document.querySelectorAll('input[name="pat"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";
