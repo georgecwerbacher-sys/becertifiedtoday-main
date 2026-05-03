@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — SDN automation benefits (choose two)</title>
+  <title>CCNA — WLC distribution system port</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -130,17 +130,15 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>What are two improvements provided by automation for network management in an SDN environment? (Choose two)</h1>
-    <p class="stem-note">Question 47 of 61 · Select exactly two answers, then click Check answer.</p>
+    <h1>Which WLC port connects to a switch to pass normal access-point traffic?</h1>
+    <p class="stem-note">Question 61 of 61 · Select an answer — feedback appears immediately.</p>
 
-    <label class="choice"><input type="checkbox" name="sdnauto" value="A" />A. Artificial intelligence identifies and prevents potential design failures</label>
-    <label class="choice"><input type="checkbox" name="sdnauto" value="B" />B. Data collection and analysis tools establish a baseline for the network</label>
-    <label class="choice"><input type="checkbox" name="sdnauto" value="C" />C. New devices are onboarded with minimal effort</label>
-    <label class="choice"><input type="checkbox" name="sdnauto" value="D" />D. Machine learning minimizes the overall error rate when automating troubleshooting processes</label>
-    <label class="choice"><input type="checkbox" name="sdnauto" value="E" />E. Proprietary Cisco APIs leverage multiple network management tools</label>
+    <label class="choice"><input type="radio" name="wlcds" value="A" />A. distribution system</label>
+    <label class="choice"><input type="radio" name="wlcds" value="B" />B. service</label>
+    <label class="choice"><input type="radio" name="wlcds" value="C" />C. redundancy</label>
+    <label class="choice"><input type="radio" name="wlcds" value="D" />D. console</label>
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
@@ -148,49 +146,38 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/data-plane-forwarding-lookup.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ssh-crypto-rsa-key-generation.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/dtp-dynamic-auto-passive-trunk.html">Previous question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = ["B", "C"];
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 The distribution system (DS) network connection carries CAPWAP control and data between APs and the controller and bridges wireless client traffic onto the wired LAN. The service port is for out-of-band management; the redundancy port is for WLC high availability; the console is for serial CLI access.";
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValues() {
-        return []
-          .slice.call(document.querySelectorAll('input[name="sdnauto"]:checked'))
-          .map(function (el) { return el.value; })
-          .sort();
-      }
-
-      function arraysEqual(a, b) {
-        if (a.length !== b.length) return false;
-        return a.every(function (v, i) { return v === b[i]; });
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedValues();
+      function applyFeedback(value) {
         answerBox.style.display = "block";
-        if (sel.length !== 2) {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Choose exactly two answers.";
-          return;
-        }
-        if (arraysEqual(sel, CORRECT)) {
+        if (value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. B and C \u2014 Telemetry and analytics build a baseline for behavior and capacity, and automated onboarding (templates, ZTP, controller workflows) reduces manual effort. AI/ML design prevention and proprietary API wording are not the usual paired answers here.";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
+      }
+
+      document.querySelectorAll('input[name="wlcds"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
       });
 
       resetBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="sdnauto"]').forEach(function (el) {
+        document.querySelectorAll('input[name="wlcds"]').forEach(function (el) {
           el.checked = false;
         });
         answerBox.style.display = "none";

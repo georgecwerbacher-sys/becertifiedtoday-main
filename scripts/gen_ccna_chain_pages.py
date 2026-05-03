@@ -355,7 +355,7 @@ def choice_line(mono: bool, name: str, letter: str, text: str) -> str:
 
 
 def main() -> None:
-    total = 60
+    total = 61
     chain = [
         {
             "slug": "dhcp-relay-dhcpdiscover",
@@ -1000,6 +1000,20 @@ def main() -> None:
                 "switchport mode dynamic desirable",
             ],
             "mono": True,
+        },
+        {
+            "slug": "wlc-ds-port-switch-ap-traffic",
+            "title": "CCNA — WLC distribution system port",
+            "stem": "Which WLC port connects to a switch to pass normal access-point traffic?",
+            "name": "wlcds",
+            "correct": "A",
+            "explain": "Correct. A — The distribution system (DS) network connection carries CAPWAP control and data between APs and the controller and bridges wireless client traffic onto the wired LAN. The service port is for out-of-band management; the redundancy port is for WLC high availability; the console is for serial CLI access.",
+            "choices": [
+                "distribution system",
+                "service",
+                "redundancy",
+                "console",
+            ],
         },
     ]
 
