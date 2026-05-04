@@ -349,6 +349,54 @@
       filter: brightness(1.1);
       color: #fff !important;
     }
+    .promo-btn--disabled,
+    .promo-btn--disabled:hover {
+      opacity: 0.55;
+      cursor: not-allowed;
+      pointer-events: none;
+      filter: none;
+      border-style: dashed;
+      border-color: rgba(90, 143, 216, 0.4);
+      background: rgba(13, 21, 40, 0.45);
+      box-shadow: none;
+      color: #8fa6c6 !important;
+    }
+    .promo-actions--stacked {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 16px;
+    }
+    .portal-launch-callout {
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px dashed rgba(90, 143, 216, 0.45);
+      background: rgba(13, 21, 40, 0.55);
+    }
+    .portal-launch-heading {
+      margin: 0 0 8px;
+      font-size: clamp(1.02rem, 2.4vw, 1.12rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .portal-launch-sub {
+      margin: 0;
+      color: #b8c3d6;
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.55;
+    }
+    .portal-countdown {
+      display: block;
+      margin-top: 10px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+      font-size: clamp(1.15rem, 2.8vw, 1.45rem);
+      color: #e6edf3;
+      letter-spacing: 0.06em;
+    }
+    .portal-countdown.portal-countdown--live {
+      color: #7dcea0;
+    }
     .purchase-tagline {
       margin: 0 0 6px;
       font-size: 0.82rem;
@@ -387,34 +435,91 @@
       line-height: 1.6;
       max-width: 68ch;
     }
-    .purchase-track-head {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 10px;
-      margin: 0 0 12px;
-    }
-    .purchase-track-title {
-      margin: 0;
-      font-size: clamp(1.08rem, 2.5vw, 1.22rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--text);
-    }
-    .purchase-live-badge {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #e6edf3;
-      background: linear-gradient(135deg, #1f7a58, #166644);
-      border: 1px solid #2a9d6a;
-    }
     .purchase-foot {
       margin-bottom: 0 !important;
+    }
+    .timed-mock-section {
+      margin-top: clamp(8px, 2vw, 16px);
+    }
+    .timed-mock-split {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: clamp(20px, 4vw, 36px);
+    }
+    .timed-mock-copy {
+      flex: 1 1 min(36rem, 100%);
+      min-width: min(100%, 260px);
+    }
+    .timed-mock-split .timed-mock-figure {
+      flex: 0 1 clamp(200px, 30vw, 320px);
+      margin: 0;
+      padding: 0;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+      background: rgba(13, 21, 40, 0.35);
+      max-width: 100%;
+      align-self: flex-start;
+    }
+    .timed-mock-split .timed-mock-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: min(520px, 75vh);
+      object-fit: cover;
+      object-position: center 22%;
+    }
+    @media (max-width: 800px) {
+      .timed-mock-split {
+        flex-direction: column;
+      }
+      .timed-mock-split .timed-mock-figure {
+        flex: 1 1 auto;
+        width: 100%;
+        max-width: min(400px, 100%);
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .timed-mock-split .timed-mock-figure img {
+        max-height: min(400px, 55vh);
+      }
+    }
+    .timed-mock-tagline {
+      margin: 0 0 clamp(14px, 2.5vw, 18px);
+      font-size: clamp(1.02rem, 2.4vw, 1.12rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.35;
+      color: var(--text);
+    }
+    .timed-mock-lead {
+      margin-bottom: clamp(18px, 3vw, 22px);
+    }
+    .timed-mock-features {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      max-width: 68ch;
+    }
+    .timed-mock-features li {
+      margin-bottom: 14px;
+      padding-left: 1rem;
+      border-left: 3px solid #4f84d8;
+      color: #b8c3d6;
+      line-height: 1.55;
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+    }
+    .timed-mock-features li:last-child {
+      margin-bottom: 0;
+    }
+    .timed-mock-label {
+      display: block;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
     }
     .sample-grid {
       margin: 0;
@@ -524,6 +629,15 @@
       flex: 1 1 auto;
       min-height: 0;
     }
+    .topic-card-body > .topic-card-textstack {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .topic-card-textstack p {
+      flex: 0 0 auto;
+    }
     .practice-mode-actions {
       display: flex;
       flex-wrap: wrap;
@@ -611,8 +725,8 @@
 
     <main id="main">
       <div class="subject-inner">
-        <p class="eyebrow">CCNA (200-301)</p>
-        <h1>CCNA study</h1>
+        <p class="eyebrow">CCNA Practice Formats</p>
+        <h1>CCNA practice questions, labs, drag-and-drop &amp; timed tests—interactive on every screen</h1>
         <p class="lead">
           Map your prep to the official blueprint, spend time where the exam spends questions, then prove it with hands-on
           practice here—samples below are free; the full library is one step away when you are ready to commit.
@@ -723,20 +837,32 @@
               No additional software is required; everything runs in your browser. We do not collect customer information for
               promotion or sale. We do not use customer data from purchases for marketing or profiling.
             </p>
-            <div class="purchase-track-head">
-              <h3 class="purchase-track-title">CCNA training</h3>
-              <span class="purchase-live-badge">Live</span>
-            </div>
-            <p class="promo-lead">
-              CCNA training—the full practice library is up and running in your browser: questions, labs, drag-and-drop, and timed
-              simulation.
-            </p>
             <p class="promo-lead purchase-foot">
               No membership required. 30-day full access. No PDFs or downloads, including labs.
             </p>
-            <p class="promo-actions">
-              <a class="promo-btn" href="/#purchase">Get 30-day access</a>
-            </p>
+            <div class="promo-actions promo-actions--stacked">
+              <div class="portal-launch-callout" aria-labelledby="portal-launch-heading">
+                <p class="portal-launch-heading" id="portal-launch-heading">CCNA Training Portal</p>
+                <p class="portal-launch-sub">
+                  Going live soon — full dashboard and checkout unlock with the portal. Time remaining:
+                </p>
+                <span
+                  id="portal-countdown"
+                  class="portal-countdown"
+                  data-live-at="2026-05-10T16:00:00.000Z"
+                  role="timer"
+                  aria-live="polite"
+                  aria-atomic="true"
+                  >—</span>
+              </div>
+              <a
+                id="promo-access-cta"
+                class="promo-btn promo-btn--disabled"
+                href="/#purchase"
+                aria-disabled="true"
+                tabindex="-1"
+                >Get 30-day access</a>
+            </div>
           </div>
         </section>
 
@@ -760,10 +886,15 @@
                 </div>
                 <div class="topic-card-body">
                   <h3 id="card-practice-q-title">Practice Questions</h3>
-                  <p>
-                    Open the first item, use <strong>Check answer</strong> for feedback, then <strong>Next question</strong> to move through the chain. Question 5
-                    ends the set.
-                  </p>
+                  <div class="topic-card-textstack">
+                    <p>
+                      Multiple-choice sets mirror exam-style stems and distractors. Check answers on the spot, see why the right option wins, and run banks in random, linear, or review modes until your weak topics tighten up.
+                    </p>
+                    <p>
+                      Open the first item, use <strong>Check answer</strong> for feedback, then <strong>Next question</strong> to move through the chain. Question 5
+                      ends the set.
+                    </p>
+                  </div>
                   <div class="practice-mode-actions" role="group" aria-label="CCNA sample multiple-choice questions">
                     <a class="card-action" href="/sample?track=ccna-questions">Start sample questions</a>
                   </div>
@@ -784,9 +915,14 @@
                 </div>
                 <div class="topic-card-body">
                   <h3 id="card-dd-title">Drag-and-drop</h3>
-                  <p>
-                    Match file-transfer descriptions to FTP and TFTP. Drag on desktop or tap-to-place on touch devices.
-                  </p>
+                  <div class="topic-card-textstack">
+                    <p>
+                      Move labels, code fragments, or concepts into the right slots—similar to Pearson performance items. Standard and JSON-style layouts both work with touch drag on tablets and phones, plus pointer on desktop.
+                    </p>
+                    <p>
+                      Match file-transfer descriptions to FTP and TFTP. Drag on desktop or tap-to-place on touch devices.
+                    </p>
+                  </div>
                   <div class="practice-mode-actions" role="group" aria-label="CCNA sample drag-and-drop">
                     <a class="card-action" href="/sample?track=ftp">Open drag-and-drop</a>
                   </div>
@@ -807,9 +943,14 @@
                 </div>
                 <div class="topic-card-body">
                   <h3 id="card-lab-title">Sample labs</h3>
-                  <p>
-                    <strong>Trunking &amp; LACP</strong> — dual switches, 802.1Q trunks, Po15, guided tasks (preview above).
-                  </p>
+                  <div class="topic-card-textstack">
+                    <p>
+                      CLI-style simulations present realistic device prompts and objectives in an exam-like workflow. No software is required to download, and every command is entered directly on the simulated devices.
+                    </p>
+                    <p>
+                      <strong>Trunking &amp; LACP</strong> — dual switches, 802.1Q trunks, Po15, guided tasks (preview above).
+                    </p>
+                  </div>
                   <div class="practice-mode-actions" role="group" aria-label="CCNA sample CLI lab">
                     <a class="card-action" href="/sample?track=ccna-trunk">Open sample lab</a>
                   </div>
@@ -817,6 +958,47 @@
               </article>
             </li>
           </ul>
+        </section>
+
+        <section class="subject-section timed-mock-section" aria-labelledby="timed-mock-title">
+          <div class="timed-mock-split">
+            <div class="timed-mock-copy">
+              <h2 class="section-head" id="timed-mock-title">CCNP ENCOR practice test simulation</h2>
+              <p class="timed-mock-tagline">Timed practice test — 55+ questions, one clock, pass or fail</p>
+              <p class="domain-intro timed-mock-lead">
+                Sit for a single timed practice session that feels closer to test day: a long mixed run with a countdown, no peeking at
+                answers until you finish, and a clear outcome when time is up.
+              </p>
+              <ul class="timed-mock-features">
+                <li>
+                  <span class="timed-mock-label">50+ scored items</span>
+                  in one flow—enough length to test stamina and pacing.
+                </li>
+                <li>
+                  <span class="timed-mock-label">Every item type in play:</span>
+                  multiple-choice, labs, and drag-and-drop tasks.
+                </li>
+                <li>
+                  <span class="timed-mock-label">Timer-driven:</span>
+                  the session runs against the clock from start to submit.
+                </li>
+                <li>
+                  <span class="timed-mock-label">Pass or fail at the end:</span>
+                  final result includes score and breakdown.
+                </li>
+              </ul>
+            </div>
+            <figure class="timed-mock-figure">
+              <img
+                src="/images/ccna-timed-mock-student-workstation.png"
+                width="683"
+                height="1024"
+                alt="Student focused at a computer workstation during a study session."
+                decoding="async"
+                loading="lazy"
+              />
+            </figure>
+          </div>
         </section>
       </div>
     </main>
@@ -838,5 +1020,51 @@
       </p>
     </aside>
   </div>
+  <script>
+    (function () {
+      var el = document.getElementById("portal-countdown");
+      var cta = document.getElementById("promo-access-cta");
+      if (!el || !el.dataset.liveAt) return;
+      var target = new Date(el.dataset.liveAt).getTime();
+      if (Number.isNaN(target)) return;
+
+      function pad(n) {
+        return n < 10 ? "0" + n : String(n);
+      }
+
+      function formatRemaining(ms) {
+        if (ms <= 0) return null;
+        var totalSec = Math.floor(ms / 1000);
+        var days = Math.floor(totalSec / 86400);
+        var h = Math.floor((totalSec % 86400) / 3600);
+        var m = Math.floor((totalSec % 3600) / 60);
+        var s = totalSec % 60;
+        return days + "d " + pad(h) + "h " + pad(m) + "m " + pad(s) + "s";
+      }
+
+      function tick() {
+        var ms = target - Date.now();
+        if (ms <= 0) {
+          el.textContent = "Live now";
+          el.classList.add("portal-countdown--live");
+          if (cta) {
+            cta.classList.remove("promo-btn--disabled");
+            cta.setAttribute("aria-disabled", "false");
+            cta.removeAttribute("tabindex");
+            cta.removeAttribute("aria-label");
+          }
+          clearInterval(timerId);
+          return;
+        }
+        el.textContent = formatRemaining(ms);
+        if (cta) {
+          cta.setAttribute("aria-label", "Get 30-day access — portal opens in " + formatRemaining(ms));
+        }
+      }
+
+      tick();
+      var timerId = setInterval(tick, 1000);
+    })();
+  </script>
 </body>
 </html>
