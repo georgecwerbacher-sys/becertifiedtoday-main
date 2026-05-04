@@ -779,8 +779,10 @@
             <li>
               <strong>Task 1:</strong> On each switch, 802.1Q trunks on <code>GigabitEthernet0/1</code> and
               <code>GigabitEthernet0/2</code>; native VLAN <code>45</code>; <code>switchport trunk allowed vlan 15,45</code>.
-              On each trunk (and on <code>Port-channel15</code> in Task 2), native and allowed-VLAN lines may be entered in
-              <strong>either order</strong>. After each physical interface block, return to global config with <code>exit</code>.
+              The global VLAN-create lines <code>vlan 15</code> and <code>vlan 45</code> may be entered in
+              <strong>either order</strong>. On each trunk (and on <code>Port-channel15</code> in Task 2), native and allowed-VLAN
+              lines may also be entered in <strong>either order</strong>. After each physical interface block, return to global
+              config with <code>exit</code>.
             </li>
             <li>
               <strong>Task 2:</strong> <code>interface range GigabitEthernet0/1 - 2</code>,
@@ -1237,6 +1239,26 @@ Sw2(config-if)# end</pre>
         return normalize(raw) === "switchport trunk native vlan 45";
       }
 
+      /** Per-switch global VLAN create pair: vlan 15 and vlan 45 may be entered in either order. */
+      var globalVlanPairSw1 = { v15: false, v45: false };
+      var globalVlanPairSw2 = { v15: false, v45: false };
+
+      function testGlobalVlanPair(raw, sw) {
+        var pair = sw === 2 ? globalVlanPairSw2 : globalVlanPairSw1;
+        var u = normalize(raw);
+        if (u === "vlan 15") {
+          if (pair.v15) return false;
+          pair.v15 = true;
+          return true;
+        }
+        if (u === "vlan 45") {
+          if (pair.v45) return false;
+          pair.v45 = true;
+          return true;
+        }
+        return false;
+      }
+
       /** Per-switch Gi0/1, Gi0/2, Po15: native and allowed VLAN lines may be entered in either order. */
       var trunkVlanPairSw1 = {
         gi1: { n: false, a: false },
@@ -1283,13 +1305,18 @@ Sw2(config-if)# end</pre>
         });
       }
 
+      function resetAllGlobalVlanPairFlags() {
+        globalVlanPairSw1.v15 = globalVlanPairSw1.v45 = false;
+        globalVlanPairSw2.v15 = globalVlanPairSw2.v45 = false;
+      }
+
       /** Indices 0..14 = Task 1 (Gi0/1–0/2 trunks + exit after each); 15..24 = Task 2 (range LACP, Po15 trunk, end). */
       var TASK1_LEN = 15;
 
       var LAB_STEPS = [
         { mode: "exec", test: function (raw, sw) { return normalize(raw) === "configure terminal"; }},
-        { mode: "config", test: function (raw, sw) { return normalize(raw) === "vlan 15"; }},
-        { mode: "config", test: function (raw, sw) { return normalize(raw) === "vlan 45"; }},
+        { mode: "config", test: function (raw, sw) { return testGlobalVlanPair(raw, sw); }},
+        { mode: "config", test: function (raw, sw) { return testGlobalVlanPair(raw, sw); }},
         { mode: "config", test: function (raw, sw) { return normalize(raw) === "interface gigabitethernet0/1"; }},
         { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "switchport trunk encapsulation dot1q"; }},
         { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "switchport mode trunk"; }},
@@ -1434,8 +1461,10 @@ Sw2(config-if)# end</pre>
        */
       function trySwNavSoftLine(line, stepIdx, getOvr, setOvrAndRefresh, swNum) {
         if (stepIdx >= LAB_STEPS.length) return false;
-        if (LAB_STEPS[stepIdx].test(line, swNum)) return false;
         var u = normalize(line);
+        if (stepIdx === 0 && u === "configure terminal") return false;
+        if ((stepIdx === 8 || stepIdx === 14 || stepIdx === 18) && u === "exit") return false;
+        if (stepIdx === 24 && u === "end") return false;
         if (u === "configure terminal" && stepIdx > 0 && getOvr() === "exec") {
           setOvrAndRefresh(null);
           return true;
@@ -1473,7 +1502,6 @@ Sw2(config-if)# end</pre>
       function trySwReenterContextLine(line, stepIdx, getOvr, setOvrAndRefresh, swNum) {
         if (stepIdx >= LAB_STEPS.length) return false;
         if (getOvr() !== "config") return false;
-        if (LAB_STEPS[stepIdx].test(line, swNum)) return false;
         var u = normalize(line);
         if (stepIdx >= 4 && stepIdx <= 8 && u === "interface gigabitethernet0/1") {
           setOvrAndRefresh(null);
@@ -1690,6 +1718,7 @@ Sw2(config-if)# end</pre>
         sw2Cmdline.value = "";
         clearLocalHistory(swCmdline);
         clearLocalHistory(sw2Cmdline);
+        resetAllGlobalVlanPairFlags();
         resetAllTrunkVlanPairFlags();
         setSw1Prompt();
         setSw2Prompt();
