@@ -552,6 +552,16 @@
       white-space: pre;
       overflow-x: auto;
     }
+    .spoiler-verify-list {
+      margin: 0;
+      padding: 0 0 4px 1.2em;
+      color: #b8c3d6;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    .spoiler-verify-list li {
+      margin: 0.4em 0;
+    }
   </style>
 </head>
 <body>
@@ -800,12 +810,12 @@
         <button type="button" class="cli-modal-close" id="spoilerClose" aria-label="Close spoiler">×</button>
       </header>
       <div class="cli-modal-body spoiler-cli-body">
-        <div class="spoiler-task" aria-labelledby="spoiler-cap-t1">
-          <p class="spoiler-terminal-cap" id="spoiler-cap-t1">Task 1 &amp; 2 — Sw1</p>
-          <div class="spoiler-terminal" role="region" aria-label="Sw1 CLI solution">
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t1-sw1">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t1-sw1">Task 1 — Sw1 (physical trunks)</p>
+          <div class="spoiler-terminal" role="region" aria-label="Sw1 Task 1 CLI solution">
             <div class="spoiler-terminal-bar">
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
-              <span class="spoiler-terminal-title">Sw1 — Terminal</span>
+              <span class="spoiler-terminal-title">Sw1 — Task 1</span>
             </div>
             <pre class="spoiler-terminal-pre">Sw1# configure terminal
 Sw1(config)# vlan 15
@@ -821,25 +831,15 @@ Sw1(config-if)# switchport trunk encapsulation dot1q
 Sw1(config-if)# switchport mode trunk
 Sw1(config-if)# switchport trunk native vlan 45
 Sw1(config-if)# switchport trunk allowed vlan 15,45
-Sw1(config-if)# exit
-Sw1(config)# interface range GigabitEthernet0/1 - 2
-Sw1(config-if-range)# channel-protocol lacp
-Sw1(config-if-range)# channel-group 15 mode active
-Sw1(config-if-range)# exit
-Sw1(config)# interface Port-channel15
-Sw1(config-if)# switchport trunk encapsulation dot1q
-Sw1(config-if)# switchport mode trunk
-Sw1(config-if)# switchport trunk native vlan 45
-Sw1(config-if)# switchport trunk allowed vlan 15,45
-Sw1(config-if)# end</pre>
+Sw1(config-if)# exit</pre>
           </div>
         </div>
-        <div class="spoiler-task" aria-labelledby="spoiler-cap-t2">
-          <p class="spoiler-terminal-cap" id="spoiler-cap-t2">Task 1 &amp; 2 — Sw2</p>
-          <div class="spoiler-terminal" role="region" aria-label="Sw2 CLI solution">
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t1-sw2">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t1-sw2">Task 1 — Sw2 (physical trunks)</p>
+          <div class="spoiler-terminal" role="region" aria-label="Sw2 Task 1 CLI solution">
             <div class="spoiler-terminal-bar">
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
-              <span class="spoiler-terminal-title">Sw2 — Terminal</span>
+              <span class="spoiler-terminal-title">Sw2 — Task 1</span>
             </div>
             <pre class="spoiler-terminal-pre">Sw2# configure terminal
 Sw2(config)# vlan 15
@@ -855,8 +855,46 @@ Sw2(config-if)# switchport trunk encapsulation dot1q
 Sw2(config-if)# switchport mode trunk
 Sw2(config-if)# switchport trunk native vlan 45
 Sw2(config-if)# switchport trunk allowed vlan 15,45
-Sw2(config-if)# exit
-Sw2(config)# interface range GigabitEthernet0/1 - 2
+Sw2(config-if)# exit</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-v1">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-v1">Verification — after Task 1</p>
+          <ul class="spoiler-verify-list">
+            <li>Finish the Task 1 command sequence on <strong>Sw1</strong> and <strong>Sw2</strong> (you should still be at <code>Sw1(config)#</code> / <code>Sw2(config)#</code>).</li>
+            <li>From <strong>PC1</strong>, run <code>ping 10.15.15.20</code>. The sim allows replies only after Task 1 is complete on both switches.</li>
+            <li>
+              Optional: from privileged EXEC on either switch, <code>show interfaces trunk</code> (the sim prints the Po15-style summary once Task 1 is done on both).
+            </li>
+          </ul>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t2-sw1">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t2-sw1">Task 2 — Sw1 (LACP + Po15 trunk)</p>
+          <div class="spoiler-terminal" role="region" aria-label="Sw1 Task 2 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">Sw1 — Task 2</span>
+            </div>
+            <pre class="spoiler-terminal-pre">Sw1(config)# interface range GigabitEthernet0/1 - 2
+Sw1(config-if-range)# channel-protocol lacp
+Sw1(config-if-range)# channel-group 15 mode active
+Sw1(config-if-range)# exit
+Sw1(config)# interface Port-channel15
+Sw1(config-if)# switchport trunk encapsulation dot1q
+Sw1(config-if)# switchport mode trunk
+Sw1(config-if)# switchport trunk native vlan 45
+Sw1(config-if)# switchport trunk allowed vlan 15,45
+Sw1(config-if)# end</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t2-sw2">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t2-sw2">Task 2 — Sw2 (LACP + Po15 trunk)</p>
+          <div class="spoiler-terminal" role="region" aria-label="Sw2 Task 2 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">Sw2 — Task 2</span>
+            </div>
+            <pre class="spoiler-terminal-pre">Sw2(config)# interface range GigabitEthernet0/1 - 2
 Sw2(config-if-range)# channel-protocol lacp
 Sw2(config-if-range)# channel-group 15 mode active
 Sw2(config-if-range)# exit
@@ -868,9 +906,19 @@ Sw2(config-if)# switchport trunk allowed vlan 15,45
 Sw2(config-if)# end</pre>
           </div>
         </div>
-        <p class="tasks" style="margin: 0; color: #8b9cbb; font-size: 0.85rem">
-          PC1: <code>ping 10.15.15.20</code> after both switches complete Task 1 steps. Then <code>copy run start</code> on Sw1 and Sw2 from enable.
-        </p>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-v2">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-v2">Verification — after Task 2</p>
+          <ul class="spoiler-verify-list">
+            <li>Finish the Task 2 sequence on <strong>Sw1</strong> and <strong>Sw2</strong> through <code>end</code> so both return to privileged EXEC (<code>Sw1#</code> / <code>Sw2#</code>).</li>
+            <li>
+              Optional: from enable, <code>show etherchannel summary</code> (sim output appears only after the full STEPS sequence on both switches). You can also run <code>show interfaces trunk</code> again.
+            </li>
+            <li>
+              <strong>Lab pass:</strong> PC1 ping must have succeeded, then from enable on each switch run
+              <code>copy running-configuration startup-configuration</code> (<code>copy run start</code>) on Sw1 and Sw2.
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -1326,6 +1374,44 @@ Sw2(config-if)# end</pre>
         return LAB_STEPS[stepIdx].mode === "exec";
       }
 
+      /**
+       * IOS-like exit / end / conf t for prompt only — does not advance STEPS or change lab flags.
+       * When the line matches the current LAB step, returns false so normal STEPS handling runs.
+       */
+      function trySwNavSoftLine(line, stepIdx, getOvr, setOvrAndRefresh) {
+        if (stepIdx >= LAB_STEPS.length) return false;
+        if (LAB_STEPS[stepIdx].test(line)) return false;
+        var u = normalize(line);
+        if (u === "configure terminal" && stepIdx > 0 && getOvr() === "exec") {
+          setOvrAndRefresh(null);
+          return true;
+        }
+        if (u === "end") {
+          if (getOvr() !== "exec") setOvrAndRefresh("exec");
+          return true;
+        }
+        if (u !== "exit") return false;
+        if (getOvr() === "exec") return false;
+        var mode = LAB_STEPS[stepIdx].mode;
+        var ovr = getOvr();
+        if (mode === "config-if" || mode === "config-if-range") {
+          if (!ovr) {
+            setOvrAndRefresh("config");
+            return true;
+          }
+          if (ovr === "config") {
+            setOvrAndRefresh("exec");
+            return true;
+          }
+          return false;
+        }
+        if (mode === "config") {
+          setOvrAndRefresh("exec");
+          return true;
+        }
+        return false;
+      }
+
       function promptForMode(host, mode) {
         switch (mode) {
           case "exec":
@@ -1449,6 +1535,7 @@ Sw2(config-if)# end</pre>
         var promptText = pcPrompt.textContent;
         var line = pcCmdline.value;
         var dev = getLabDev();
+        pushLocalHistory(pcCmdline, line);
         appendPc("line-user", promptText + " " + line);
         pcCmdline.value = "";
         if (!line.trim()) return;
@@ -1519,6 +1606,8 @@ Sw2(config-if)# end</pre>
         swCmdline.disabled = false;
         swCmdline.value = "";
         sw2Cmdline.value = "";
+        clearLocalHistory(swCmdline);
+        clearLocalHistory(sw2Cmdline);
         setSw1Prompt();
         setSw2Prompt();
       }
@@ -1526,6 +1615,7 @@ Sw2(config-if)# end</pre>
       function submitSw() {
         var promptText = swPrompt.textContent;
         var line = swCmdline.value;
+        pushLocalHistory(swCmdline, line);
         appendSw("line-user", promptText + " " + line);
         swCmdline.value = "";
         if (!line.trim()) return;
@@ -1580,6 +1670,17 @@ Sw2(config-if)# end</pre>
           return;
         }
 
+        if (
+          trySwNavSoftLine(line, stepIndexSw1, function () {
+            return sw1PromptOverride;
+          }, function (v) {
+            sw1PromptOverride = v;
+            setSw1Prompt();
+          })
+        ) {
+          return;
+        }
+
         if (stepIndexSw1 >= LAB_STEPS.length) {
           appendSw("line-bad", "% Invalid input");
           return;
@@ -1605,6 +1706,7 @@ Sw2(config-if)# end</pre>
       function submitSw2() {
         var promptText = sw2Prompt.textContent;
         var line = sw2Cmdline.value;
+        pushLocalHistory(sw2Cmdline, line);
         appendSw2("line-user", promptText + " " + line);
         sw2Cmdline.value = "";
         if (!line.trim()) return;
@@ -1656,6 +1758,17 @@ Sw2(config-if)# end</pre>
           tryCompleteTrunkLab(function (cls, text) {
             appendSw2(cls, text);
           });
+          return;
+        }
+
+        if (
+          trySwNavSoftLine(line, stepIndexSw2, function () {
+            return sw2PromptOverride;
+          }, function (v) {
+            sw2PromptOverride = v;
+            setSw2Prompt();
+          })
+        ) {
           return;
         }
 
@@ -1852,14 +1965,18 @@ Sw2(config-if)# end</pre>
         }
         state.idx = state.entries.length;
       }
+      function clearLocalHistory(input) {
+        if (!input) return;
+        var state = localHistory.get(input);
+        if (state) {
+          state.entries = [];
+          state.idx = 0;
+        }
+      }
       function bindLocalHistory(input) {
         if (!input || input.dataset.localHistoryReady === "1") return;
         input.dataset.localHistoryReady = "1";
         input.addEventListener("keydown", function (e) {
-          if (e.key === "Enter") {
-            pushLocalHistory(input, input.value);
-            return;
-          }
           var usePrev = e.key === "ArrowUp" || (e.key === "Tab" && !e.shiftKey);
           var useNext = e.key === "ArrowDown" || (e.key === "Tab" && e.shiftKey);
           if (!usePrev && !useNext) return;
