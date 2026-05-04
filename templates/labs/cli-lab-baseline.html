@@ -5,11 +5,12 @@
   public/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html.
 
   Includes:
-  - Primary device CLI: IOS-like prompts (exec / config / config-if / config-std-nacl), STEPS[] + normalize(), % Invalid input
-  - Optional read-only device (R1): show running-config snapshot; configure terminal + interface (full word only)
-  - Device picker, Helper / Spoiler modals, tasks-blue-box (same surface as device picker), draggable modals, command history
+  - Switch (SW1): LAB_STEPS[] { mode, test(raw) }; mode drives prompt via promptForMode(); normalize() accepts common abbreviations
+  - Router (R1): same prompt helper for exec/config/config-if; read-only exhibit + optional mode practice
+  - PC: minimal Windows-style prompt (>) with no real commands
+  - Device picker (Router / Switch / PC), Helper / Spoiler modals, tasks-blue-box, draggable modals, command history
 
-  For a third CLI (e.g. R3), copy the R1 modal + submit/reset/open pattern from cli-lab-ip-services-sim-v2.html.
+  For a fourth IOS CLI (e.g. R3), copy the R1 modal + submit/reset/open pattern from cli-lab-ip-services-sim-v2.html.
 -->
 <html lang="en">
 <head>
@@ -349,6 +350,10 @@
       color: #fbbf24;
       user-select: none;
     }
+    .prompt-el.pc-prompt {
+      color: #c8f0c4;
+      font-weight: 600;
+    }
     .cmdline-input {
       flex: 1;
       min-width: 0;
@@ -578,8 +583,9 @@
         </div>
         <div class="device-pick" role="group" aria-label="Device for CLI">
           <strong style="color: #e6edf3">Select device</strong>
-          <label><input type="radio" name="labPrimaryDev" value="SW1" checked /> Switch (primary lab)</label>
-          <label><input type="radio" name="labPrimaryDev" value="R1" /> Router (read-only reference)</label>
+          <label><input type="radio" name="labPrimaryDev" value="R1" /> Router (IOS read-only)</label>
+          <label><input type="radio" name="labPrimaryDev" value="SW1" checked /> Switch (IOS lab device)</label>
+          <label><input type="radio" name="labPrimaryDev" value="PC" /> PC (command prompt)</label>
         </div>
         <div class="device-links">
           <button type="button" class="device-link" id="openSelectedCliBtn">Open SW1 CLI</button>
@@ -593,12 +599,19 @@
           </p>
           <ol class="tasks">
             <li>
-              On <strong>SW1</strong>: use <code>configure terminal</code> then set hostname per <code>STEPS</code> in the script
-              (full IOS command forms only — no <code>conf t</code> / <code>sh run</code> in this template).
+              On <strong>SW1</strong>: follow <code>LAB_STEPS</code> in the script — each step’s <code>mode</code> sets the displayed
+              prompt; <code>test(raw)</code> advances the lab. <code>normalize()</code> accepts common abbreviations (e.g.
+              <code>conf t</code>, <code>sh run</code>, <code>int …</code>).
             </li>
             <li>
-              On <strong>R1</strong> (read-only): use <code>show running-config</code> to view the sample snapshot; optional
-              <code>configure terminal</code> / <code>interface …</code> for prompt practice (output is static).
+              On <strong>R1</strong> (read-only exhibit): use <code>show running-config</code> for the snapshot; optional
+              <code>configure terminal</code> / <code>interface …</code> for prompt practice. To complete the lab, from
+              privileged exec on <strong>SW1</strong> and <strong>R1</strong> run
+              <code>copy running-configuration startup-configuration</code> (abbrev. <code>copy run start</code>) on each device after SW1 steps are done.
+            </li>
+            <li>
+              On <strong>PC</strong>: template shows a <code>></code> command prompt only — no login; extend
+              <code>submitPc()</code> in script if you need <code>ping</code>, <code>ipconfig</code>, etc.
             </li>
           </ol>
         </div>
@@ -610,18 +623,16 @@
       </div>
 
       <p class="objective">
-        REPLACE: Objective paragraph. Extend <code>STEPS</code> with the same <code>mode</code> + <code>test()</code> pattern as
-        <code>cli-lab-ip-services-sim-v2.html</code> (exec / config / config-if / config-std-nacl). Add optional third device
-        modals there if needed.
-      </p>
-      <p class="objective">
-        <strong>Disclaimer:</strong> REPLACE or remove — independent training resource; not affiliated with Cisco Systems, Inc.;
-        practice content is original or general-knowledge; not actual exam items.
+        <strong>Disclaimer:</strong> This website is an independent training resource created for educational purposes only.
+        It is not affiliated with, endorsed by, sponsored by, or approved by Cisco Systems, Inc. Cisco and related trademarks
+        are the property of Cisco Systems, Inc. All practice questions, explanations, and study materials on this site are
+        original or based on general knowledge and are intended as a guide to help users prepare for certification exams.
+        Practice questions are not actual Cisco exam questions. Any similarity to official exam content is coincidental.
       </p>
     </main>
   </div>
 
-  <!-- Primary switch CLI (editable lab device — STEPS engine) -->
+  <!-- Primary switch CLI (editable lab device — LAB_STEPS engine) -->
   <div id="swCliOverlay" class="cli-modal-overlay" aria-hidden="true">
     <div
       id="swCliDialog"
@@ -657,7 +668,7 @@
           <button type="button" class="btn btn-secondary" id="swResetBtn">Reset lab</button>
         </div>
         <div id="passBanner" class="pass-banner" role="status">
-          REPLACE: Pass message when STEPS complete (e.g. hostname set and saved).
+          Complete all SW1 steps, then from enable mode on SW1 and R1 run copy running-configuration startup-configuration on each device.
         </div>
       </footer>
     </div>
@@ -696,9 +707,49 @@
       </div>
       <footer class="cli-modal-footer">
         <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
-          Read-only exhibit: <code>show running-config</code> prints a fixed snapshot. Use
-          <code>configure terminal</code>, <code>interface …</code>, <code>exit</code> or <code>end</code> to move modes like IOS.
-          Use class <code>line-ping</code> in script for simulated ping output (see IP Services lab).
+          Read-only exhibit: <code>show running-config</code> (or <code>sh run</code> after <code>normalize()</code>) prints a fixed snapshot.
+          Use <code>configure terminal</code> / <code>conf t</code>, <code>interface …</code> / <code>int …</code>,
+          <code>exit</code> or <code>end</code> to move modes. Use class <code>line-ping</code> for simulated ping output (see IP Services lab).
+        </p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- PC: minimal command prompt (>) — no IOS; REPLACE submitPc() to add real behaviors -->
+  <div id="pcCliOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="pcCliDialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="pcCliTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="pcCliTitle">PC — Command Prompt</h2>
+        <button type="button" class="cli-modal-close" id="pcCliClose" aria-label="Close PC window">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" id="pcTerminal" aria-label="Simulated PC command prompt">
+          <div id="pcScrollback" class="scrollback-area"></div>
+          <div class="input-row">
+            <span id="pcPrompt" class="prompt-el pc-prompt">&gt;</span>
+            <input
+              id="pcCmdline"
+              class="cmdline-input"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="none"
+              aria-label="PC command line"
+            />
+          </div>
+        </div>
+      </div>
+      <footer class="cli-modal-footer">
+        <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
+          No login. This baseline does not run PC programs — only echoes lines and shows “not recognized” for non-empty input.
+          Edit <code>submitPc()</code> when copying to <code>public/</code>.
         </p>
       </footer>
     </div>
@@ -774,6 +825,9 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
       /** ----- Author constants (replace when copying to public/) ----- */
       var SWITCH_HOST = "SW1";
       var ROUTER_HOST = "R1";
+      /** PC command prompt label (display only; prompt character is PC_PROMPT) */
+      var PC_HOST = "PC";
+      var PC_PROMPT = ">";
 
       /** Snapshot for primary device `show running-config` while lab runs */
       var SWITCH_SHOW_RUNNING_SNAPSHOT = [
@@ -797,10 +851,14 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
       ].join("\r\n");
 
       /**
-       * Ordered lab checks: each step runs in the mode listed (matches prompt tier: exec / config / config-if).
-       * Expand this array for real labs (PVST, LACP, etc.) — same pattern as the full PVST/LACP lab STEPS.
+       * ## Prompt / modes (IOS-shaped)
+       *
+       * - LAB_STEPS: finite list of { mode, test(raw) }. Steps advance only when test(raw) is true for the CURRENT index.
+       * - mode selects the DISPLAYED prompt via promptForMode(host, mode).
+       * - Add modes as needed: config-router, config-ext-nacl, config-pmap, control-plane, …
+       * - Abbreviations: normalize() expands common forms (conf t, sh run, int …) so tests can match canonical strings.
        */
-      var STEPS = [
+      var LAB_STEPS = [
         { mode: "exec", test: function (raw) {
           return normalize(raw) === "configure terminal";
         }},
@@ -809,27 +867,106 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         }},
       ];
 
+      /**
+       * Lowercase, trim, collapse spaces, strip trailing . or ; then expand helpful IOS abbreviations for matching.
+       */
       function normalize(s) {
-        return String(s)
+        var t = String(s)
           .trim()
           .toLowerCase()
           .replace(/\s+/g, " ")
           .replace(/[.;]+$/, "");
+        if (t === "conf t" || t === "config t") t = "configure terminal";
+        if (t === "sh run" || t === "show run" || t === "sh running-config") t = "show running-config";
+        if (t === "do show run" || t === "do sh run") t = "do show running-config";
+        if (t === "sh ver" || t === "show ver" || t === "sh version") t = "show version";
+        if (t === "copy run start" || t === "copy run st") t = "copy running-configuration startup-configuration";
+        if (t === "copy running-config startup-config") t = "copy running-configuration startup-configuration";
+        if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
+        return t;
       }
+
+      var HELP_DISABLED_MSG = "help feature disabled for tester";
+      var SHOW_VERSION_MSG = "BeCertifiedToday.com version 2026";
+      var COPY_RUN_START_OK_MSG =
+        "Destination filename [startup-config]?\nBuilding configuration...\n[OK]";
+      var BASELINE_SW_STEPS_OK_MSG =
+        "[OK] Switch steps complete. From privileged exec on SW1 and R1, run copy running-configuration startup-configuration (copy run start) on each device to finish the lab.";
+      var BASELINE_LAB_ALL_DONE_MSG =
+        "[OK] Lab complete: objectives met and running-config saved to startup-config on SW1 and R1.";
+      var PASS_BANNER_BASELINE_PENDING =
+        "Complete all SW1 steps, then from enable mode on SW1 and R1 run copy running-configuration startup-configuration on each device.";
 
       function matchShowRun(raw) {
         var u = normalize(raw);
         return u === "show running-config" || u === "do show running-config";
       }
 
-      function promptForStep(index) {
-        if (index >= STEPS.length) return SWITCH_HOST + "#";
-        var m = STEPS[index].mode;
-        if (m === "exec") return SWITCH_HOST + "#";
-        if (m === "config") return SWITCH_HOST + "(config)#";
-        if (m === "config-if") return SWITCH_HOST + "(config-if)#";
-        if (m === "config-std-nacl") return SWITCH_HOST + "(config-std-nacl)#";
-        return SWITCH_HOST + "#";
+      function matchShowVersion(raw) {
+        return normalize(raw) === "show version";
+      }
+
+      function matchCopyRunStart(raw) {
+        return normalize(raw) === "copy running-configuration startup-configuration";
+      }
+
+      var nvramSavedSw = false;
+      var nvramSavedR1 = false;
+
+      function tryCompleteBaselineLab(append) {
+        if (stepIndex < LAB_STEPS.length || !nvramSavedSw || !nvramSavedR1) return;
+        if (passBanner.classList.contains("visible")) return;
+        passBanner.classList.add("visible");
+        passBanner.textContent = BASELINE_LAB_ALL_DONE_MSG;
+        if (append) append("line-sys", BASELINE_LAB_ALL_DONE_MSG);
+      }
+
+      /** Privileged exec (#) for the lab switch prompt (not config submodes). */
+      function swInEnableMode() {
+        if (
+          swPromptOverride === "config" ||
+          swPromptOverride === "config-if" ||
+          swPromptOverride === "config-router" ||
+          swPromptOverride === "config-std-nacl" ||
+          swPromptOverride === "config-ext-nacl" ||
+          swPromptOverride === "config-pmap" ||
+          swPromptOverride === "control-plane"
+        ) {
+          return false;
+        }
+        if (swPromptOverride === "exec") return true;
+        if (stepIndex >= LAB_STEPS.length) return true;
+        return LAB_STEPS[stepIndex].mode === "exec";
+      }
+
+      /** Map logical IOS mode to prompt string for host (SW1, R1, …). */
+      function promptForMode(host, mode) {
+        switch (mode) {
+          case "exec":
+            return host + "#";
+          case "config":
+            return host + "(config)#";
+          case "config-if":
+            return host + "(config-if)#";
+          case "config-router":
+            return host + "(config-router)#";
+          case "config-std-nacl":
+            return host + "(config-std-nacl)#";
+          case "config-ext-nacl":
+            return host + "(config-ext-nacl)#";
+          case "config-pmap":
+            return host + "(config-pmap)#";
+          case "control-plane":
+            return host + "(config-control-plane)#";
+          default:
+            return host + "#";
+        }
+      }
+
+      /** Prompt for the switch while advancing through LAB_STEPS (post-completion → exec). */
+      function promptForLabStepIndex(index) {
+        if (index >= LAB_STEPS.length) return promptForMode(SWITCH_HOST, "exec");
+        return promptForMode(SWITCH_HOST, LAB_STEPS[index].mode);
       }
 
       var stepIndex = 0;
@@ -870,7 +1007,9 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
 
       function syncOpenCliLabel() {
         var d = getLabDev();
-        openSelectedCliBtn.textContent = d === "R1" ? "Open " + ROUTER_HOST + " CLI" : "Open " + SWITCH_HOST + " CLI";
+        if (d === "PC") openSelectedCliBtn.textContent = "Open " + PC_HOST + " prompt";
+        else if (d === "R1") openSelectedCliBtn.textContent = "Open " + ROUTER_HOST + " CLI";
+        else openSelectedCliBtn.textContent = "Open " + SWITCH_HOST + " CLI";
       }
 
       function appendSw(cls, text) {
@@ -889,31 +1028,60 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         r1Scrollback.scrollTop = r1Scrollback.scrollHeight;
       }
 
+      var pcCliOverlay = document.getElementById("pcCliOverlay");
+      var pcCliDialog = document.getElementById("pcCliDialog");
+      var pcScrollback = document.getElementById("pcScrollback");
+      var pcPrompt = document.getElementById("pcPrompt");
+      var pcCmdline = document.getElementById("pcCmdline");
+      var pcTerminal = document.getElementById("pcTerminal");
+
+      function appendPc(cls, text) {
+        var div = document.createElement("div");
+        div.className = cls;
+        div.textContent = text;
+        pcScrollback.appendChild(div);
+        pcScrollback.scrollTop = pcScrollback.scrollHeight;
+      }
+
+      function resetPc() {
+        pcScrollback.innerHTML = "";
+        pcPrompt.textContent = PC_PROMPT;
+      }
+
+      function submitPc() {
+        var promptText = pcPrompt.textContent;
+        var line = pcCmdline.value;
+        appendPc("line-user", promptText + " " + line);
+        pcCmdline.value = "";
+        if (!line.trim()) return;
+        if (normalize(line) === "?") {
+          appendPc("line-sys", HELP_DISABLED_MSG);
+          return;
+        }
+        appendPc(
+          "line-bad",
+          "'" +
+            line.trim() +
+            "' is not recognized as an internal or external command,\noperable program or batch file."
+        );
+      }
+
       function setSwPrompt() {
-        if (swPromptOverride === "config") {
-          swPrompt.textContent = SWITCH_HOST + "(config)#";
+        if (swPromptOverride !== null && swPromptOverride !== undefined) {
+          swPrompt.textContent = promptForMode(SWITCH_HOST, swPromptOverride);
           return;
         }
-        if (swPromptOverride === "config-if") {
-          swPrompt.textContent = SWITCH_HOST + "(config-if)#";
-          return;
-        }
-        if (swPromptOverride === "config-std-nacl") {
-          swPrompt.textContent = SWITCH_HOST + "(config-std-nacl)#";
-          return;
-        }
-        if (swPromptOverride === "exec") {
-          swPrompt.textContent = SWITCH_HOST + "#";
-          return;
-        }
-        swPrompt.textContent = promptForStep(stepIndex);
+        swPrompt.textContent = promptForLabStepIndex(stepIndex);
       }
 
       function resetSwLab() {
         stepIndex = 0;
         swPromptOverride = null;
+        nvramSavedSw = false;
+        nvramSavedR1 = false;
         swScrollback.innerHTML = "";
         passBanner.classList.remove("visible");
+        passBanner.textContent = PASS_BANNER_BASELINE_PENDING;
         swCmdline.disabled = false;
         swCmdline.value = "";
         setSwPrompt();
@@ -926,23 +1094,44 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         swCmdline.value = "";
         if (!line.trim()) return;
 
+        if (normalize(line) === "?") {
+          appendSw("line-sys", HELP_DISABLED_MSG);
+          return;
+        }
+
         if (matchShowRun(line)) {
           appendSw("line-showrun", SWITCH_SHOW_RUNNING_SNAPSHOT);
           return;
         }
 
-        if (stepIndex >= STEPS.length) {
+        if (swInEnableMode() && matchShowVersion(line)) {
+          appendSw("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+
+        if (swInEnableMode() && matchCopyRunStart(line)) {
+          appendSw("line-sys", COPY_RUN_START_OK_MSG);
+          if (stepIndex >= LAB_STEPS.length) nvramSavedSw = true;
+          tryCompleteBaselineLab(function (cls, text) {
+            appendSw(cls, text);
+          });
+          return;
+        }
+
+        if (stepIndex >= LAB_STEPS.length) {
           appendSw("line-bad", "% Invalid input");
           return;
         }
 
-        if (STEPS[stepIndex].test(line)) {
+        if (LAB_STEPS[stepIndex].test(line)) {
           stepIndex += 1;
           swPromptOverride = null;
-          if (stepIndex >= STEPS.length) {
-            swPrompt.textContent = SWITCH_HOST + "#";
-            passBanner.classList.add("visible");
-            appendSw("line-sys", "[OK] Lab objectives met (baseline template).");
+          if (stepIndex >= LAB_STEPS.length) {
+            swPrompt.textContent = promptForMode(SWITCH_HOST, "exec");
+            appendSw("line-sys", BASELINE_SW_STEPS_OK_MSG);
+            tryCompleteBaselineLab(function (cls, text) {
+              appendSw(cls, text);
+            });
           } else {
             setSwPrompt();
           }
@@ -951,13 +1140,11 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         }
       }
 
-      /** Router: IOS-like modes + show running-config (read-only exhibit pattern) */
+      /** Router: IOS-like modes + show running-config (read-only exhibit); prompts use promptForMode like the switch */
       var r1Mode = "exec";
 
       function r1PromptForMode() {
-        if (r1Mode === "config") return ROUTER_HOST + "(config)#";
-        if (r1Mode === "config-if") return ROUTER_HOST + "(config-if)#";
-        return ROUTER_HOST + "#";
+        return promptForMode(ROUTER_HOST, r1Mode);
       }
 
       function resetR1() {
@@ -973,10 +1160,29 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         r1Cmdline.value = "";
         if (!line.trim()) return;
 
+        if (normalize(line) === "?") {
+          appendR1("line-sys", HELP_DISABLED_MSG);
+          return;
+        }
+
         var u = normalize(line);
 
         if (matchShowRun(line)) {
           appendR1("line-showrun", ROUTER_SHOW_RUN_SNAPSHOT);
+          return;
+        }
+
+        if (r1Mode === "exec" && matchShowVersion(line)) {
+          appendR1("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+
+        if (r1Mode === "exec" && matchCopyRunStart(line)) {
+          appendR1("line-sys", COPY_RUN_START_OK_MSG);
+          nvramSavedR1 = true;
+          tryCompleteBaselineLab(function (cls, text) {
+            appendR1(cls, text);
+          });
           return;
         }
 
@@ -1049,6 +1255,7 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
 
       wireFloatingModal(swCliDialog, swCliOverlay);
       wireFloatingModal(r1CliDialog, r1CliOverlay);
+      wireFloatingModal(pcCliDialog, pcCliOverlay);
       wireFloatingModal(helperFileDialog, helperFileOverlay);
       wireFloatingModal(spoilerDialog, spoilerOverlay);
 
@@ -1079,8 +1286,27 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         r1CliOverlay.setAttribute("aria-hidden", "true");
       }
 
+      function openPcCli() {
+        bumpOverlayZ(pcCliOverlay);
+        pcCliOverlay.classList.add("is-open");
+        pcCliOverlay.setAttribute("aria-hidden", "false");
+        resetPc();
+        if (pcTerminal) {
+          pcTerminal.classList.remove("terminal-flash");
+          void pcTerminal.offsetWidth;
+          pcTerminal.classList.add("terminal-flash");
+        }
+        pcCmdline.focus();
+      }
+      function closePcCli() {
+        pcCliOverlay.classList.remove("is-open");
+        pcCliOverlay.setAttribute("aria-hidden", "true");
+      }
+
       function openSelectedCliModal() {
-        if (getLabDev() === "R1") openR1Cli();
+        var d = getLabDev();
+        if (d === "PC") openPcCli();
+        else if (d === "R1") openR1Cli();
         else openSwCli();
       }
 
@@ -1104,9 +1330,16 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
           submitR1();
         }
       });
+      pcCmdline.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submitPc();
+        }
+      });
 
       document.getElementById("swCliClose").addEventListener("click", closeSwCli);
       document.getElementById("r1CliClose").addEventListener("click", closeR1Cli);
+      document.getElementById("pcCliClose").addEventListener("click", closePcCli);
       swResetBtn.addEventListener("click", resetSwLab);
       document.getElementById("inlineResetLabBtn").addEventListener("click", resetSwLab);
 
@@ -1171,6 +1404,7 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
       }
       bindLocalHistory(swCmdline);
       bindLocalHistory(r1Cmdline);
+      bindLocalHistory(pcCmdline);
 
       document.addEventListener("keydown", function (e) {
         if (e.key !== "Escape") return;
@@ -1194,6 +1428,11 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         if (r1CliOverlay.classList.contains("is-open")) {
           e.preventDefault();
           closeR1Cli();
+          return;
+        }
+        if (pcCliOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          closePcCli();
         }
       });
 

@@ -584,7 +584,9 @@
               dynamic one-to-one address mapping using a standard list named <strong>XLATE</strong> so traffic sourced from
               <strong>R3</strong> can be translated into pool <strong>test_pool</strong> on the <strong>10.10.10.0/24</strong>
               network when it is sent toward <strong>R1</strong>. Do not use an NVI configuration. When you are done, confirm
-              reachability with a ping from <strong>R3</strong> to <strong>192.168.100.1</strong>.
+              reachability with a ping from <strong>R3</strong> to <strong>192.168.100.1</strong>. The lab is complete only after
+              that NAT work is done and you run <code>copy running-configuration startup-configuration</code> from privileged exec on
+              <strong>R2</strong>, <strong>R1</strong>, and <strong>R3</strong> (abbrev. <code>copy run start</code>).
             </li>
             <li>
               <strong>Task 2 (R3):</strong> from configuration mode, assign <strong>GigabitEthernet0/2</strong> via DHCP:
@@ -655,8 +657,7 @@
           <button type="button" class="btn btn-secondary" id="swResetBtn">Reset lab</button>
         </div>
         <div id="passBanner" class="pass-banner" role="status">
-          Task 1 checklist on R2 complete (XLATE permits, NAT on GigabitEthernet0/1 and GigabitEthernet0/0, pool test_pool,
-          inside source list). Configure NTP client to 10.1.2.1, R3 DHCP and SSH, then verify ping and SSH per the task list.
+          Task 1: complete the NAT sequence on R2. Then from privileged exec on R2, R1, and R3 run copy running-configuration startup-configuration (copy run start) on each device to complete the lab.
         </div>
       </footer>
     </div>
@@ -697,6 +698,7 @@
         <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
           Read-only exhibit: <code>show running-config</code> prints a fixed snapshot. Use
           <code>configure terminal</code>, <code>interface …</code>, <code>exit</code> or <code>end</code> to move modes like IOS.
+          From privileged exec, <code>copy run start</code> counts toward lab completion.
         </p>
       </footer>
     </div>
@@ -739,6 +741,7 @@
           on GigabitEthernet0/2 and SSH, the sim still shows this static snapshot (commands are not merged into <code>show running-config</code>).
           After Task 1 finishes on <strong>R2</strong>, from R3 exec run <code>ping 192.168.100.1</code> — success shows <code>.!!!!</code>;
           before Task 1 (or after <strong>Reset lab</strong>) the same ping shows <code>....</code> and 0 percent success.
+          From privileged exec, <code>copy run start</code> counts toward lab completion.
         </p>
       </footer>
     </div>
@@ -1217,16 +1220,67 @@ R3(config-line)# end</pre>
       ];
 
       function normalize(s) {
-        return String(s)
+        var t = String(s)
           .trim()
           .toLowerCase()
           .replace(/\s+/g, " ")
           .replace(/[.;]+$/, "");
+        if (t === "sh ver" || t === "show ver" || t === "sh version") t = "show version";
+        if (t === "copy run start" || t === "copy run st") t = "copy running-configuration startup-configuration";
+        if (t === "copy running-config startup-config") t = "copy running-configuration startup-configuration";
+        return t;
       }
+
+      var HELP_DISABLED_MSG = "help feature disabled for tester";
+      var SHOW_VERSION_MSG = "BeCertifiedToday.com version 2026";
+      var COPY_RUN_START_OK_MSG =
+        "Destination filename [startup-config]?\nBuilding configuration...\n[OK]";
+      var IP_NAT_STEPS_DONE_MSG =
+        "[OK] Task 1 NAT sequence complete on R2. From privileged exec on R2, R1, and R3, run copy running-configuration startup-configuration (copy run start) on each device to complete the lab.";
+      var IP_LAB_ALL_DONE_MSG =
+        "[OK] Lab complete: Task 1 done and running-config saved to startup-config on R2, R1, and R3.";
+      var PASS_BANNER_IP_PENDING =
+        "Task 1: complete the NAT sequence on R2. Then from privileged exec on R2, R1, and R3 run copy running-configuration startup-configuration (copy run start) on each device to complete the lab.";
+      var PASS_BANNER_IP_DONE =
+        "Lab complete: NAT on R2 done and startup-config saved on R2, R1, and R3.";
 
       function matchShowRun(raw) {
         var u = normalize(raw);
         return u === "show running-config" || u === "do show running-config";
+      }
+
+      function matchShowVersion(raw) {
+        return normalize(raw) === "show version";
+      }
+
+      function matchCopyRunStart(raw) {
+        return normalize(raw) === "copy running-configuration startup-configuration";
+      }
+
+      var nvramSavedSw = false;
+      var nvramSavedR1 = false;
+      var nvramSavedR3 = false;
+
+      function tryCompleteIpServicesLab(append) {
+        if (stepIndex < STEPS.length || !nvramSavedSw || !nvramSavedR1 || !nvramSavedR3) return;
+        if (passBanner.classList.contains("visible")) return;
+        passBanner.textContent = PASS_BANNER_IP_DONE;
+        passBanner.classList.add("visible");
+        if (append) append("line-sys", IP_LAB_ALL_DONE_MSG);
+      }
+
+      /** R2 (SW prompt): privileged exec (#), not config submodes. */
+      function swIpInEnableMode() {
+        if (
+          swPromptOverride === "config" ||
+          swPromptOverride === "config-if" ||
+          swPromptOverride === "config-std-nacl"
+        ) {
+          return false;
+        }
+        if (swPromptOverride === "exec") return true;
+        if (stepIndex >= STEPS.length) return true;
+        return STEPS[stepIndex].mode === "exec";
       }
 
       function promptForStep(index) {
@@ -1349,8 +1403,12 @@ R3(config-line)# end</pre>
         stepIndex = 0;
         task1R2NatComplete = false;
         swPromptOverride = null;
+        nvramSavedSw = false;
+        nvramSavedR1 = false;
+        nvramSavedR3 = false;
         swScrollback.innerHTML = "";
         passBanner.classList.remove("visible");
+        passBanner.textContent = PASS_BANNER_IP_PENDING;
         swCmdline.disabled = false;
         swCmdline.value = "";
         setSwPrompt();
@@ -1363,8 +1421,27 @@ R3(config-line)# end</pre>
         swCmdline.value = "";
         if (!line.trim()) return;
 
+        if (normalize(line) === "?") {
+          appendSw("line-sys", HELP_DISABLED_MSG);
+          return;
+        }
+
         if (matchShowRun(line)) {
           appendSw("line-showrun", SWITCH_SHOW_RUNNING_SNAPSHOT);
+          return;
+        }
+
+        if (swIpInEnableMode() && matchShowVersion(line)) {
+          appendSw("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+
+        if (swIpInEnableMode() && matchCopyRunStart(line)) {
+          appendSw("line-sys", COPY_RUN_START_OK_MSG);
+          if (stepIndex >= STEPS.length) nvramSavedSw = true;
+          tryCompleteIpServicesLab(function (cls, text) {
+            appendSw(cls, text);
+          });
           return;
         }
 
@@ -1379,8 +1456,10 @@ R3(config-line)# end</pre>
           if (stepIndex >= STEPS.length) {
             task1R2NatComplete = true;
             swPrompt.textContent = SWITCH_HOST + "#";
-            passBanner.classList.add("visible");
-            appendSw("line-sys", "[OK] Task 1 complete on R2: XLATE permits, NAT inside/outside on GigabitEthernet0/1 and GigabitEthernet0/0, pool test_pool, and inside source list.");
+            appendSw("line-sys", IP_NAT_STEPS_DONE_MSG);
+            tryCompleteIpServicesLab(function (cls, text) {
+              appendSw(cls, text);
+            });
           } else {
             setSwPrompt();
           }
@@ -1411,10 +1490,29 @@ R3(config-line)# end</pre>
         r1Cmdline.value = "";
         if (!line.trim()) return;
 
+        if (normalize(line) === "?") {
+          appendR1("line-sys", HELP_DISABLED_MSG);
+          return;
+        }
+
         var u = normalize(line);
 
         if (matchShowRun(line)) {
           appendR1("line-showrun", ROUTER_SHOW_RUN_SNAPSHOT);
+          return;
+        }
+
+        if (r1Mode === "exec" && matchShowVersion(line)) {
+          appendR1("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+
+        if (r1Mode === "exec" && matchCopyRunStart(line)) {
+          appendR1("line-sys", COPY_RUN_START_OK_MSG);
+          nvramSavedR1 = true;
+          tryCompleteIpServicesLab(function (cls, text) {
+            appendR1(cls, text);
+          });
           return;
         }
 
@@ -1469,10 +1567,29 @@ R3(config-line)# end</pre>
         r3Cmdline.value = "";
         if (!line.trim()) return;
 
+        if (normalize(line) === "?") {
+          appendR3("line-sys", HELP_DISABLED_MSG);
+          return;
+        }
+
         var u = normalize(line);
 
         if (matchShowRun(line)) {
           appendR3("line-showrun", ROUTER3_SHOW_RUN_SNAPSHOT);
+          return;
+        }
+
+        if (r3Mode === "exec" && matchShowVersion(line)) {
+          appendR3("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+
+        if (r3Mode === "exec" && matchCopyRunStart(line)) {
+          appendR3("line-sys", COPY_RUN_START_OK_MSG);
+          nvramSavedR3 = true;
+          tryCompleteIpServicesLab(function (cls, text) {
+            appendR3(cls, text);
+          });
           return;
         }
 
