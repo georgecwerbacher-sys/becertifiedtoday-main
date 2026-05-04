@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — DHCP across routed segments</title>
+  <title>CCNA — 1000BASE-LX vs 1000BASE-T</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -126,12 +126,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>When a client and server are not on the same physical network, which device is used to forward requests and replies between client and server for DHCP?</h1>
+    <h1>What is one similarity between 1000BASE-LX and 1000BASE-T Gigabit Ethernet?</h1>
 
-    <label class="choice"><input type="radio" name="dhcprel2" value="A" />A. DHCP relay agent</label>
-    <label class="choice"><input type="radio" name="dhcprel2" value="B" />B. DHCP server</label>
-    <label class="choice"><input type="radio" name="dhcprel2" value="C" />C. DHCPDISCOVER</label>
-    <label class="choice"><input type="radio" name="dhcprel2" value="D" />D. DHCPOFFER</label>
+    <label class="choice"><input type="radio" name="lxtx1" value="A" />A. They use the same Layer 2 frame format on the wire.</label>
+    <label class="choice"><input type="radio" name="lxtx1" value="B" />B. They use the same cable type and connector.</label>
+    <label class="choice"><input type="radio" name="lxtx1" value="C" />C. They use identical physical-layer encoding.</label>
+    <label class="choice"><input type="radio" name="lxtx1" value="D" />D. They are both limited to the same maximum link length.</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -140,15 +140,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/access-layer-8021x-identity-security.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/route-no-match-101016-discard.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/route-no-match-101016-discard.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wpa3-sae-improves-security.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 A DHCP relay agent (ip helper-address) forwards DHCP broadcasts as unicast between the client subnet and the DHCP server. The server answers leases but does not bridge broadcast domains alone. DHCPDISCOVER and DHCPOFFER are message types, not devices.";
+      var CORRECT_MSG = "Correct. A \u2014 Both use standard Ethernet Layer 2 framing (802.3 MAC and LLC fields) at 1 Gb/s; only the physical medium and PHY differ. Cable types, maximum run lengths, and line encoding are not the same between fiber LX and copper T.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -162,7 +162,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="dhcprel2"]').forEach(function (el) {
+      document.querySelectorAll('input[name="lxtx1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

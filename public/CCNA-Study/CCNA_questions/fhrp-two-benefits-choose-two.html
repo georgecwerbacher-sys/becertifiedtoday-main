@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — DHCP across routed segments</title>
+  <title>CCNA — FHRP benefits (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -126,48 +126,60 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>When a client and server are not on the same physical network, which device is used to forward requests and replies between client and server for DHCP?</h1>
+    <h1>What are two benefits of a First Hop Redundancy Protocol such as HSRP or VRRP? (Choose two)</h1>
 
-    <label class="choice"><input type="radio" name="dhcprel2" value="A" />A. DHCP relay agent</label>
-    <label class="choice"><input type="radio" name="dhcprel2" value="B" />B. DHCP server</label>
-    <label class="choice"><input type="radio" name="dhcprel2" value="C" />C. DHCPDISCOVER</label>
-    <label class="choice"><input type="radio" name="dhcprel2" value="D" />D. DHCPOFFER</label>
+    <label class="choice"><input type="checkbox" name="fhrp2b" value="A" />A. Increases aggregate WAN bandwidth through per-packet load balancing across all routers</label>
+    <label class="choice"><input type="checkbox" name="fhrp2b" value="B" />B. Eliminates the need for any dynamic routing protocol in the enterprise</label>
+    <label class="choice"><input type="checkbox" name="fhrp2b" value="C" />C. Advertises a unique host route for every client to optimize forwarding</label>
+    <label class="choice"><input type="checkbox" name="fhrp2b" value="D" />D. Provides redundant default gateway capability for end devices</label>
+    <label class="choice"><input type="checkbox" name="fhrp2b" value="E" />E. Allows nearly transparent failover when the active gateway router fails</label>
 
     <div class="actions">
+      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/access-layer-8021x-identity-security.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/route-no-match-101016-discard.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/three-tier-workstation-to-workstation-path.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ssid-purpose-identifies-wlan.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 A DHCP relay agent (ip helper-address) forwards DHCP broadcasts as unicast between the client subnet and the DHCP server. The server answers leases but does not bridge broadcast domains alone. DHCPDISCOVER and DHCPOFFER are message types, not devices.";
+      var CORRECT = ["D", "E"];
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="fhrp2b"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = CORRECT_MSG;
+          answerBox.textContent = "Correct. D and E \u2014 An FHRP presents a virtual default gateway (VIP/virtual MAC) so clients need not track which physical router is active, and failover to the standby is fast enough to appear transparent to many applications. FHRPs do not by themselves aggregate WAN bandwidth, replace dynamic routing for remote networks, or advertise per-host routes to every client.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="dhcprel2"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>
