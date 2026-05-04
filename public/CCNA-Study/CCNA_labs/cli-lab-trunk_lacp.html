@@ -1,23 +1,16 @@
 <!doctype html>
 <!--
-  CLI lab baseline — patterns aligned with public/CCNA-Study/CCNA_labs/cli-lab-ip-services-sim-v2.html (multi-device,
-  tasks panel, spoiler terminal blocks, full IOS command forms). ENCOR reference:
-  public/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html.
-
-  Includes:
-  - Switch 1 (SW1): LAB_STEPS[] { mode, test(raw) }; mode drives prompt via promptForMode(); normalize() accepts common abbreviations
-  - Switch 2 (SW2): second IOS CLI — read-only exhibit + optional mode practice (same prompt helpers as SW1-style IOS)
-  - PC1 / PC2: one modal; device picker sets prompt (PC1> / PC2>); extend submitPc() for ping, ipconfig, etc.
-  - Device picker (SW1 / SW2 / PC1 / PC2), Helper / Spoiler modals, tasks-blue-box, draggable modals, command history
-
-  For a fifth IOS CLI (e.g. R3), copy the SW2 modal + submit/reset/open pattern from cli-lab-ip-services-sim-v2.html.
+  CCNA / ENCOR-style lab: IEEE 802.1Q trunks (E0/0–E0/1), native VLAN 45, allowed VLANs 15 and 45; then LACP
+  EtherChannel 802.3ad (channel-group 15 mode active) with Port-channel15 trunk. Dual switches SW1/SW2 share the same
+  LAB_STEPS[] sequence; PC1 verifies ping to PC2 after Task 1. Lab complete = both switches finished STEPS + PC1 ping
+  + copy run start from enable on SW1 and SW2.
 -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>REPLACE: Lab title | Be Certified Today</title>
+  <title>CCNA Trunking &amp; LACP Practice Simulation | Be Certified Today</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -334,6 +327,11 @@
       font-family: inherit;
       line-height: 1.45;
     }
+    .line-showrun.line-show-trunk {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      white-space: pre;
+      overflow-x: auto;
+    }
     .input-row {
       display: flex;
       align-items: center;
@@ -564,50 +562,49 @@
 
   <div class="wrap">
     <main class="card">
-      <h1>REPLACE: Lab title</h1>
+      <h1>CCNA Trunking &amp; LACP Practice Simulation</h1>
 
       <div class="diagram-wrap" aria-label="Topology diagram">
         <div class="diagram-stage">
           <img
-            src="/images/hero-classroom.png"
-            width="1024"
-            height="682"
-            alt="REPLACE: Topology diagram description."
+            src="/CCNA-Study/CCNA_labs/trunk-lacp-topology.png"
+            width="596"
+            height="446"
+            alt="Topology: Cisco 3560-24PS switches Sw1 and Sw2 with Port-channel 15 (Po15) on GigabitEthernet0/1 and GigabitEthernet0/2; PC1 on Sw1 VLAN 15 (10.15.15.10/24); PC2 on Sw2 VLAN 15 (10.15.15.20/24)."
             decoding="async"
           />
         </div>
         <div class="device-pick" role="group" aria-label="Device for CLI">
           <strong style="color: #e6edf3">Select device</strong>
-          <label><input type="radio" name="labPrimaryDev" value="SW1" checked /> SW1</label>
-          <label><input type="radio" name="labPrimaryDev" value="SW2" /> SW2</label>
+          <label><input type="radio" name="labPrimaryDev" value="SW1" checked /> Sw1</label>
+          <label><input type="radio" name="labPrimaryDev" value="SW2" /> Sw2</label>
           <label><input type="radio" name="labPrimaryDev" value="PC1" /> PC1</label>
           <label><input type="radio" name="labPrimaryDev" value="PC2" /> PC2</label>
         </div>
         <div class="device-links">
-          <button type="button" class="device-link" id="openSelectedCliBtn">Open SW1 CLI</button>
+          <button type="button" class="device-link" id="openSelectedCliBtn">Open Sw1 CLI</button>
         </div>
         <div class="tasks-blue-box" aria-label="Lab tasks">
           <p class="tasks">
             <strong>Tasks</strong>
           </p>
-          <p class="tasks">
-            REPLACE: One-line overview (e.g. services must be completed in order).
-          </p>
           <ol class="tasks">
             <li>
-              On <strong>SW1</strong>: follow <code>LAB_STEPS</code> in the script — each step’s <code>mode</code> sets the displayed
-              prompt; <code>test(raw)</code> advances the lab. <code>normalize()</code> accepts common abbreviations (e.g.
-              <code>conf t</code>, <code>sh run</code>, <code>int …</code>).
+              <strong>Task 1.</strong> Configure trunks between Sw1 and Sw2 on ports <strong>GigabitEthernet0/1</strong> and
+              <strong>GigabitEthernet0/2</strong> using the <strong>IEEE standard</strong> frame tagging method (802.1Q).
+              <ul style="margin: 6px 0 0; padding-left: 1.2rem">
+                <li>Add <strong>VLAN 45</strong> as untagged (native) on the trunk ports.</li>
+                <li>Only extend <strong>VLAN 15</strong> and the untagged VLAN across the trunk.</li>
+                <li>Verify that <strong>PC1</strong> can ping <strong>PC2</strong> (<code>ping 10.15.15.20</code>) after Task 1 trunks are in place on both switches.</li>
+              </ul>
             </li>
             <li>
-              On <strong>SW2</strong> (read-only exhibit): use <code>show running-config</code> for the snapshot; optional
-              <code>configure terminal</code> / <code>interface …</code> for prompt practice. To complete the lab, from
-              privileged exec on <strong>SW1</strong> and <strong>SW2</strong> run
-              <code>copy running-configuration startup-configuration</code> (abbrev. <code>copy run start</code>) on each device after SW1 steps are done.
-            </li>
-            <li>
-              On <strong>PC1</strong> / <strong>PC2</strong>: pick the host in the device row; the prompt shows <code>PC1&gt;</code> or
-              <code>PC2&gt;</code>. Extend <code>submitPc()</code> for <code>ping</code>, <code>ipconfig</code>, etc.
+              <strong>Task 2.</strong> On Sw1 and Sw2, use <strong>IEEE 802.3ad</strong> link aggregation (LACP).
+              <ul style="margin: 6px 0 0; padding-left: 1.2rem">
+                <li>Combine Gi0/1 and Gi0/2 into a single logical link while leaving the trunk behavior on <strong>Port-channel15</strong>.</li>
+                <li>Assign number <strong>15</strong> to the link (<code>channel-group 15 mode active</code>).</li>
+                <li>Both sides must negotiate aggregation (active LACP).</li>
+              </ul>
             </li>
           </ol>
         </div>
@@ -639,14 +636,14 @@
       tabindex="-1"
     >
       <header class="cli-modal-header">
-        <h2 id="swCliTitle">SW1 — CLI</h2>
+        <h2 id="swCliTitle">Sw1 — CLI</h2>
         <button type="button" class="cli-modal-close" id="swCliClose" aria-label="Close CLI window">×</button>
       </header>
       <div class="cli-modal-body">
-        <div class="terminal" id="swTerminal" aria-label="Simulated SW1 CLI">
+        <div class="terminal" id="swTerminal" aria-label="Simulated Sw1 CLI">
           <div id="swScrollback" class="scrollback-area"></div>
           <div class="input-row">
-            <span id="swPrompt" class="prompt-el">SW1#</span>
+            <span id="swPrompt" class="prompt-el">Sw1#</span>
             <input
               id="swCmdline"
               class="cmdline-input"
@@ -654,7 +651,7 @@
               spellcheck="false"
               autocomplete="off"
               autocapitalize="none"
-              aria-label="SW1 command line"
+              aria-label="Sw1 command line"
             />
           </div>
         </div>
@@ -664,13 +661,13 @@
           <button type="button" class="btn btn-secondary" id="swResetBtn">Reset lab</button>
         </div>
         <div id="passBanner" class="pass-banner" role="status">
-          Complete all SW1 steps, then from enable mode on SW1 and SW2 run copy running-configuration startup-configuration on each device.
+          Complete the STEPS sequence on Sw1 and Sw2, verify PC1 ping to PC2, then from enable mode run copy running-configuration startup-configuration on both switches.
         </div>
       </footer>
     </div>
   </div>
 
-  <!-- SW2 — second switch CLI (read-only exhibit + optional IOS mode practice) -->
+  <!-- SW2 — same STEPS engine as SW1 (symmetric configuration) -->
   <div id="sw2CliOverlay" class="cli-modal-overlay" aria-hidden="true">
     <div
       id="sw2CliDialog"
@@ -681,14 +678,14 @@
       tabindex="-1"
     >
       <header class="cli-modal-header">
-        <h2 id="sw2CliTitle">SW2 — CLI</h2>
+        <h2 id="sw2CliTitle">Sw2 — CLI</h2>
         <button type="button" class="cli-modal-close" id="sw2CliClose" aria-label="Close SW2 window">×</button>
       </header>
       <div class="cli-modal-body">
-        <div class="terminal" id="sw2Terminal" aria-label="Simulated SW2 CLI">
+        <div class="terminal" id="sw2Terminal" aria-label="Simulated Sw2 CLI">
           <div id="sw2Scrollback" class="scrollback-area"></div>
           <div class="input-row">
-            <span id="sw2Prompt" class="prompt-el">SW2#</span>
+            <span id="sw2Prompt" class="prompt-el">Sw2#</span>
             <input
               id="sw2Cmdline"
               class="cmdline-input"
@@ -696,22 +693,23 @@
               spellcheck="false"
               autocomplete="off"
               autocapitalize="none"
-              aria-label="SW2 command line"
+              aria-label="Sw2 command line"
             />
           </div>
         </div>
       </div>
       <footer class="cli-modal-footer">
         <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
-          Read-only exhibit: <code>show running-config</code> (or <code>sh run</code> after <code>normalize()</code>) prints a fixed snapshot.
-          Use <code>configure terminal</code> / <code>conf t</code>, <code>interface …</code> / <code>int …</code>,
-          <code>exit</code> or <code>end</code> to move modes. Use class <code>line-ping</code> for simulated ping output (see IP Services lab).
+          Same command sequence as Sw1. <code>show running-config</code> is a static exhibit. After Task 1 on <strong>both</strong>
+          switches, <code>show interfaces trunk</code> shows the Po15-style summary. After the <strong>full</strong> STEPS sequence on
+          both switches, <code>show etherchannel summary</code> shows the LACP bundle. From privileged exec,
+          <code>copy run start</code> counts toward lab completion.
         </p>
       </footer>
     </div>
   </div>
 
-  <!-- PC1 / PC2 — one modal; picker sets PC1> vs PC2> -->
+  <!-- PC: minimal command prompt (>) — no IOS; REPLACE submitPc() to add real behaviors -->
   <div id="pcCliOverlay" class="cli-modal-overlay" aria-hidden="true">
     <div
       id="pcCliDialog"
@@ -726,10 +724,10 @@
         <button type="button" class="cli-modal-close" id="pcCliClose" aria-label="Close PC window">×</button>
       </header>
       <div class="cli-modal-body">
-        <div class="terminal" id="pcTerminal" aria-label="Simulated PC1 or PC2 command prompt">
+        <div class="terminal" id="pcTerminal" aria-label="Simulated PC command prompt">
           <div id="pcScrollback" class="scrollback-area"></div>
           <div class="input-row">
-            <span id="pcPrompt" class="prompt-el pc-prompt">PC1&gt;</span>
+            <span id="pcPrompt" class="prompt-el pc-prompt">&gt;</span>
             <input
               id="pcCmdline"
               class="cmdline-input"
@@ -737,15 +735,15 @@
               spellcheck="false"
               autocomplete="off"
               autocapitalize="none"
-              aria-label="PC1 or PC2 command line"
+              aria-label="PC command line"
             />
           </div>
         </div>
       </div>
       <footer class="cli-modal-footer">
         <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
-          Select <strong>PC1</strong> or <strong>PC2</strong> in the page device row before opening this window so the prompt matches.
-          Default stub: non-empty input shows “not recognized” unless you extend <code>submitPc()</code> in script.
+          Select <strong>PC1</strong> in the page picker, then run <code>ping 10.15.15.20</code> after Task 1 trunks are configured on
+          both switches. PC2 is display-only for this check.
         </p>
       </footer>
     </div>
@@ -766,10 +764,22 @@
       </header>
       <div class="cli-modal-body">
         <section class="topology-scrape" aria-label="Helper notes">
-          <h2>REPLACE: Section title</h2>
+          <h2>Trunk + LACP checklist</h2>
           <ul class="helper-bullets">
-            <li>REPLACE: First checklist item (plain language).</li>
-            <li>REPLACE: Second item; use inline <code>show …</code> or <code>configure …</code> only inside bullets, not terminal blocks.</li>
+            <li>
+              <strong>Task 1:</strong> On each switch, 802.1Q trunks on <code>GigabitEthernet0/1</code> and
+              <code>GigabitEthernet0/2</code>; native VLAN <code>45</code>; <code>switchport trunk allowed vlan 15,45</code>.
+              After each physical interface block, return to global config with <code>exit</code>.
+            </li>
+            <li>
+              <strong>Task 2:</strong> <code>interface range GigabitEthernet0/1 - 2</code>,
+              <code>channel-protocol lacp</code>, <code>channel-group 15 mode active</code>, then <code>exit</code>; apply the
+              same trunk settings on <code>Port-channel15</code>; leave configuration mode with <code>end</code>.
+            </li>
+            <li>Run the same STEPS sequence on <strong>Sw1</strong> and <strong>Sw2</strong>.</li>
+            <li>After Task 1 on both switches, from PC1 run <code>ping 10.15.15.20</code>.</li>
+            <li>From enable, optional checks: <code>show interfaces trunk</code> and <code>show etherchannel summary</code>.</li>
+            <li>Save on both switches from enable: <code>copy running-configuration startup-configuration</code>.</li>
           </ul>
         </section>
       </div>
@@ -790,77 +800,330 @@
         <button type="button" class="cli-modal-close" id="spoilerClose" aria-label="Close spoiler">×</button>
       </header>
       <div class="cli-modal-body spoiler-cli-body">
-        <div class="spoiler-task" aria-labelledby="spoiler-cap-example">
-          <p class="spoiler-terminal-cap" id="spoiler-cap-example">Example — primary device</p>
-          <div class="spoiler-terminal" role="region" aria-label="Example CLI solution">
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t1">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t1">Task 1 &amp; 2 — Sw1</p>
+          <div class="spoiler-terminal" role="region" aria-label="Sw1 CLI solution">
             <div class="spoiler-terminal-bar">
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
-              <span class="spoiler-terminal-title">SW1 — Terminal</span>
+              <span class="spoiler-terminal-title">Sw1 — Terminal</span>
             </div>
-            <pre class="spoiler-terminal-pre">SW1# configure terminal
-SW1(config)# hostname REPLACE_HOSTNAME</pre>
+            <pre class="spoiler-terminal-pre">Sw1# configure terminal
+Sw1(config)# vlan 15
+Sw1(config)# vlan 45
+Sw1(config)# interface GigabitEthernet0/1
+Sw1(config-if)# switchport trunk encapsulation dot1q
+Sw1(config-if)# switchport mode trunk
+Sw1(config-if)# switchport trunk native vlan 45
+Sw1(config-if)# switchport trunk allowed vlan 15,45
+Sw1(config-if)# exit
+Sw1(config)# interface GigabitEthernet0/2
+Sw1(config-if)# switchport trunk encapsulation dot1q
+Sw1(config-if)# switchport mode trunk
+Sw1(config-if)# switchport trunk native vlan 45
+Sw1(config-if)# switchport trunk allowed vlan 15,45
+Sw1(config-if)# exit
+Sw1(config)# interface range GigabitEthernet0/1 - 2
+Sw1(config-if-range)# channel-protocol lacp
+Sw1(config-if-range)# channel-group 15 mode active
+Sw1(config-if-range)# exit
+Sw1(config)# interface Port-channel15
+Sw1(config-if)# switchport trunk encapsulation dot1q
+Sw1(config-if)# switchport mode trunk
+Sw1(config-if)# switchport trunk native vlan 45
+Sw1(config-if)# switchport trunk allowed vlan 15,45
+Sw1(config-if)# end</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t2">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t2">Task 1 &amp; 2 — Sw2</p>
+          <div class="spoiler-terminal" role="region" aria-label="Sw2 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">Sw2 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">Sw2# configure terminal
+Sw2(config)# vlan 15
+Sw2(config)# vlan 45
+Sw2(config)# interface GigabitEthernet0/1
+Sw2(config-if)# switchport trunk encapsulation dot1q
+Sw2(config-if)# switchport mode trunk
+Sw2(config-if)# switchport trunk native vlan 45
+Sw2(config-if)# switchport trunk allowed vlan 15,45
+Sw2(config-if)# exit
+Sw2(config)# interface GigabitEthernet0/2
+Sw2(config-if)# switchport trunk encapsulation dot1q
+Sw2(config-if)# switchport mode trunk
+Sw2(config-if)# switchport trunk native vlan 45
+Sw2(config-if)# switchport trunk allowed vlan 15,45
+Sw2(config-if)# exit
+Sw2(config)# interface range GigabitEthernet0/1 - 2
+Sw2(config-if-range)# channel-protocol lacp
+Sw2(config-if-range)# channel-group 15 mode active
+Sw2(config-if-range)# exit
+Sw2(config)# interface Port-channel15
+Sw2(config-if)# switchport trunk encapsulation dot1q
+Sw2(config-if)# switchport mode trunk
+Sw2(config-if)# switchport trunk native vlan 45
+Sw2(config-if)# switchport trunk allowed vlan 15,45
+Sw2(config-if)# end</pre>
           </div>
         </div>
         <p class="tasks" style="margin: 0; color: #8b9cbb; font-size: 0.85rem">
-          Optional: keep a legacy single block with <code>spoiler-cli-pre</code> for simple labs.
+          PC1: <code>ping 10.15.15.20</code> after both switches complete Task 1 steps. Then <code>copy run start</code> on Sw1 and Sw2 from enable.
         </p>
-        <pre class="spoiler-cli-pre">REPLACE# show running-config
-! optional second block</pre>
       </div>
     </div>
   </div>
 
   <!-- sim-nav: replace REPLACE_* hrefs and labels when copying to public/. CCNA example: cli-lab-ip-services-sim-v2.html -->
   <nav class="sim-nav" aria-label="Simulation navigation">
-    <a class="sim-nav-btn sim-nav-home" href="/REPLACE_HREF_PORTAL">REPLACE_NAV_PORTAL_LABEL</a>
-    <a class="sim-nav-btn" href="/REPLACE_HREF_STUDY">REPLACE_NAV_STUDY_LABEL</a>
+    <a class="sim-nav-btn sim-nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">CCNA portal</a>
+    <a class="sim-nav-btn" href="/CCNA-Study/ccna-index.html">CCNA study</a>
     <a class="sim-nav-btn" href="/index.html">Site home</a>
   </nav>
 
   <script>
     (function () {
-      /** ----- Author constants (replace when copying to public/) ----- */
-      var SWITCH_HOST = "SW1";
-      var SWITCH2_HOST = "SW2";
+      /** ----- Trunk + LACP lab (SW1 / SW2 symmetric STEPS, PC1 ping, dual save) ----- */
+      var SWITCH_HOST = "Sw1";
+      var SWITCH2_HOST = "Sw2";
       var PC_PROMPT = ">";
 
-      /** Snapshot for primary device `show running-config` while lab runs */
       var SWITCH_SHOW_RUNNING_SNAPSHOT = [
         "Building configuration...",
         "",
-        "hostname SW1",
+        "hostname Sw1",
+        "!",
+        "!",
+        "no profinet",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "spanning-tree mode pvst",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "interface FastEthernet0/1",
+        "!",
+        "interface FastEthernet0/2",
+        " switchport access vlan 15",
+        " switchport mode access",
+        " switchport nonegotiate",
+        "!",
+        "interface FastEthernet0/3",
+        "!",
+        "interface FastEthernet0/4",
+        "!",
+        "interface FastEthernet0/5",
+        "!",
+        "interface FastEthernet0/6",
+        "!",
+        "interface FastEthernet0/7",
+        "!",
+        "interface FastEthernet0/8",
+        "!",
+        "interface FastEthernet0/9",
+        "!",
+        "interface FastEthernet0/10",
+        "!",
+        "interface FastEthernet0/11",
+        "!",
+        "interface FastEthernet0/12",
+        "!",
+        "interface FastEthernet0/13",
+        "!",
+        "interface FastEthernet0/14",
+        "!",
+        "interface FastEthernet0/15",
+        "!",
+        "interface FastEthernet0/16",
+        "!",
+        "interface FastEthernet0/17",
+        "!",
+        "interface FastEthernet0/18",
+        "!",
+        "interface FastEthernet0/19",
+        "!",
+        "interface FastEthernet0/20",
+        "!",
+        "interface FastEthernet0/21",
+        "!",
+        "interface FastEthernet0/22",
+        "!",
+        "interface FastEthernet0/23",
+        "!",
+        "interface FastEthernet0/24",
+        "!",
+        "interface GigabitEthernet0/1",
+        "!",
+        "interface GigabitEthernet0/2",
+        "!",
+        "interface Vlan1",
+        " no ip address",
+        " shutdown",
+        "!",
+        "ip classless",
+        "!",
+        "ip flow-export version 9",
+        "!",
+        "!",
+        "!",
+        "no cdp run",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "line con 0",
+        "!",
+        "line aux 0",
+        "!",
+        "line vty 0 4",
+        " login",
+        "!",
+        "!",
+        "!",
         "!",
         "end",
       ].join("\r\n");
 
-      /** Read-only second-switch exhibit — printed when user types show running-config on SW2 */
       var SWITCH2_SHOW_RUNNING_SNAPSHOT = [
         "Building configuration...",
         "",
-        "hostname SW2",
+        "hostname Sw2",
         "!",
-        "interface GigabitEthernet0/0",
-        " ip address 10.0.0.2 255.255.255.0",
+        "!",
+        "no profinet",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "ip domain-name 9tut.com",
+        "!",
+        "!",
+        "spanning-tree mode pvst",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "interface FastEthernet0/1",
+        "!",
+        "interface FastEthernet0/2",
+        " switchport access vlan 15",
+        " switchport mode access",
+        " switchport nonegotiate",
+        "!",
+        "interface FastEthernet0/3",
+        "!",
+        "interface FastEthernet0/4",
+        "!",
+        "interface FastEthernet0/5",
+        "!",
+        "interface FastEthernet0/6",
+        "!",
+        "interface FastEthernet0/7",
+        "!",
+        "interface FastEthernet0/8",
+        "!",
+        "interface FastEthernet0/9",
+        "!",
+        "interface FastEthernet0/10",
+        "!",
+        "interface FastEthernet0/11",
+        "!",
+        "interface FastEthernet0/12",
+        "!",
+        "interface FastEthernet0/13",
+        "!",
+        "interface FastEthernet0/14",
+        "!",
+        "interface FastEthernet0/15",
+        "!",
+        "interface FastEthernet0/16",
+        "!",
+        "interface FastEthernet0/17",
+        "!",
+        "interface FastEthernet0/18",
+        "!",
+        "interface FastEthernet0/19",
+        "!",
+        "interface FastEthernet0/20",
+        "!",
+        "interface FastEthernet0/21",
+        "!",
+        "interface FastEthernet0/22",
+        "!",
+        "interface FastEthernet0/23",
+        "!",
+        "interface FastEthernet0/24",
+        "!",
+        "interface GigabitEthernet0/1",
+        "!",
+        "interface GigabitEthernet0/2",
+        "!",
+        "interface Vlan1",
+        " no ip address",
+        " shutdown",
+        "!",
+        "ip classless",
+        "!",
+        "ip flow-export version 9",
+        "!",
+        "!",
+        "!",
+        "no cdp run",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "line con 0",
+        "!",
+        "line aux 0",
+        "!",
+        "line vty 0 4",
+        " login",
+        "!",
+        "!",
+        "!",
         "!",
         "end",
       ].join("\r\n");
-
-      /**
-       * ## Prompt / modes (IOS-shaped)
-       *
-       * - LAB_STEPS: finite list of { mode, test(raw) }. Steps advance only when test(raw) is true for the CURRENT index.
-       * - mode selects the DISPLAYED prompt via promptForMode(host, mode).
-       * - Add modes as needed: config-router, config-ext-nacl, config-pmap, control-plane, …
-       * - Abbreviations: normalize() expands common forms (conf t, sh run, int …) so tests can match canonical strings.
-       */
-      var LAB_STEPS = [
-        { mode: "exec", test: function (raw) {
-          return normalize(raw) === "configure terminal";
-        }},
-        { mode: "config", test: function (raw) {
-          return normalize(raw) === "hostname labsim";
-        }},
-      ];
 
       /**
        * Lowercase, trim, collapse spaces, strip trailing . or ; then expand helpful IOS abbreviations for matching.
@@ -875,11 +1138,77 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         if (t === "sh run" || t === "show run" || t === "sh running-config") t = "show running-config";
         if (t === "do show run" || t === "do sh run") t = "do show running-config";
         if (t === "sh ver" || t === "show ver" || t === "sh version") t = "show version";
+        if (t === "show int trunk" || t === "sh int trunk" || t === "sh interfaces trunk") {
+          t = "show interfaces trunk";
+        }
+        if (t === "do show int trunk" || t === "do sh int trunk") {
+          t = "do show interfaces trunk";
+        }
+        if (
+          t === "show ether summ" ||
+          t === "sh ether summ" ||
+          t === "sh etherchannel summary" ||
+          t === "show etherchannel summ"
+        ) {
+          t = "show etherchannel summary";
+        }
+        if (t === "do show ether summ" || t === "do sh ether summ") {
+          t = "do show etherchannel summary";
+        }
         if (t === "copy run start" || t === "copy run st") t = "copy running-configuration startup-configuration";
         if (t === "copy running-config startup-config") t = "copy running-configuration startup-configuration";
+        if (t === "interface port-channel 15") t = "interface port-channel15";
+        if (t === "int po15" || t === "interface po15") t = "interface port-channel15";
+        if (
+          t === "interface range gigabitethernet0/1-2" ||
+          t === "interface range gigabitethernet0/1 -2" ||
+          t === "interface range gigabitethernet0/1 - 2"
+        ) {
+          t = "interface range gigabitethernet0/1 - 2";
+        }
+        if (t === "interface e0/0" || t === "interface ethernet0/0") t = "interface gigabitethernet0/1";
+        if (t === "interface e0/1" || t === "interface ethernet0/1") t = "interface gigabitethernet0/2";
         if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
+        if (t === "interface gi0/1" || t === "interface g0/1") t = "interface gigabitethernet0/1";
+        if (t === "interface gi0/2" || t === "interface g0/2") t = "interface gigabitethernet0/2";
         return t;
       }
+
+      function matchTrunkAllowed1545(raw) {
+        var u = normalize(raw).replace(/\s*,\s*/g, ",");
+        return u === "switchport trunk allowed vlan 15,45";
+      }
+
+      /** Indices 0..14 = Task 1 (Gi0/1–0/2 trunks + exit after each); 15..24 = Task 2 (range LACP, Po15 trunk, end). */
+      var TASK1_LEN = 15;
+
+      var LAB_STEPS = [
+        { mode: "exec", test: function (raw) { return normalize(raw) === "configure terminal"; }},
+        { mode: "config", test: function (raw) { return normalize(raw) === "vlan 15"; }},
+        { mode: "config", test: function (raw) { return normalize(raw) === "vlan 45"; }},
+        { mode: "config", test: function (raw) { return normalize(raw) === "interface gigabitethernet0/1"; }},
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "switchport trunk encapsulation dot1q"; }},
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "switchport mode trunk"; }},
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "switchport trunk native vlan 45"; }},
+        { mode: "config-if", test: function (raw) { return matchTrunkAllowed1545(raw); }},
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "exit"; }},
+        { mode: "config", test: function (raw) { return normalize(raw) === "interface gigabitethernet0/2"; }},
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "switchport trunk encapsulation dot1q"; }},
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "switchport mode trunk"; }},
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "switchport trunk native vlan 45"; }},
+        { mode: "config-if", test: function (raw) { return matchTrunkAllowed1545(raw); }},
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "exit"; }},
+        { mode: "config", test: function (raw) { return normalize(raw) === "interface range gigabitethernet0/1 - 2"; }},
+        { mode: "config-if-range", test: function (raw) { return normalize(raw) === "channel-protocol lacp"; }},
+        { mode: "config-if-range", test: function (raw) { return normalize(raw) === "channel-group 15 mode active"; }},
+        { mode: "config-if-range", test: function (raw) { return normalize(raw) === "exit"; }},
+        { mode: "config", test: function (raw) { return normalize(raw) === "interface port-channel15"; }},
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "switchport trunk encapsulation dot1q"; }},
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "switchport mode trunk"; }},
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "switchport trunk native vlan 45"; }},
+        { mode: "config-if", test: function (raw) { return matchTrunkAllowed1545(raw); }},
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "end"; }},
+      ];
 
       var HELP_DISABLED_MSG = "help feature disabled for tester";
       var SHOW_VERSION_MSG = "BeCertifiedToday.com version 2026";
@@ -889,14 +1218,50 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         "% Error: Run copy running-configuration startup-configuration only from privileged EXEC (#), not from configuration mode.";
       var COPY_RUN_START_AFTER_STEPS_MSG =
         "% Error: Finish the full STEPS sequence on this switch until you return to privileged EXEC (#), then save to startup-config.";
-      var COPY_RUN_START_AFTER_SW1_STEPS_MSG =
-        "% Error: Finish the full STEPS sequence on SW1 first (until SW1#), then save startup-config from privileged EXEC on SW2.";
-      var BASELINE_SW_STEPS_OK_MSG =
-        "[OK] Switch steps complete. From privileged exec on SW1 and SW2, run copy running-configuration startup-configuration (copy run start) on each device to finish the lab.";
-      var BASELINE_LAB_ALL_DONE_MSG =
-        "[OK] Lab complete: objectives met and running-config saved to startup-config on SW1 and SW2.";
-      var PASS_BANNER_BASELINE_PENDING =
-        "Complete all SW1 steps, then from enable mode on SW1 and SW2 run copy running-configuration startup-configuration on each device.";
+      var TRUNK_SW_SEQ_DONE_MSG =
+        "[OK] All STEPS commands entered on this switch. Complete the same sequence on the peer switch, verify PC1 ping to 10.15.15.20, then copy run start on Sw1 and Sw2 from enable.";
+      var TRUNK_LAB_ALL_DONE_MSG =
+        "[OK] Lab complete: trunks + LACP on both switches, PC1 reachability verified, startup-config saved on Sw1 and Sw2.";
+      var PASS_BANNER_TRUNK_PENDING =
+        "Complete the STEPS sequence on Sw1 and Sw2, verify PC1 ping to PC2, then from enable mode run copy running-configuration startup-configuration on both switches.";
+      /** Shown on Sw1/Sw2 after both switches finish Task 1 (Gi0/1–0/2 trunks + exits). */
+      var SHOW_INTERFACES_TRUNK_TASK1_MSG = [
+        "Port        Mode         Encapsulation  Status        Native vlan",
+        "Po15        on           802.1q         trunking      45",
+        "",
+        "Port        Vlans allowed on trunk",
+        "Po15        15,45",
+        "",
+        "Port        Vlans allowed and active in management domain",
+        "Po15        15",
+        "",
+        "Port        Vlans in spanning tree forwarding state and not pruned",
+        "Po15        15",
+      ].join("\n");
+      var SHOW_INTERFACES_TRUNK_WAIT_MSG =
+        "% Trunk summary not available yet — complete Task 1 (both trunks and exits) on Sw1 and Sw2 first.";
+      /** After both switches finish the full STEPS sequence (including Po15 + end). */
+      var SHOW_ETHERCHANNEL_SUMMARY_MSG = [
+        "Flags:  D - down        P - in port-channel",
+        "        I - stand-alone s - suspended",
+        "        H - Hot-standby (LACP only)",
+        "        R - Layer3      S - Layer2",
+        "        U - in use      f - failed to allocate aggregator",
+        "        u - unsuitable for bundling",
+        "        w - waiting to be aggregated",
+        "        d - default port",
+        "",
+        "",
+        "Number of channel-groups in use: 1",
+        "Number of aggregators:           1",
+        "",
+        "Group  Port-channel  Protocol    Ports",
+        "------+-------------+-----------+----------------------------------------------",
+        "",
+        "15     Po15(SU)           LACP   Gi0/1(P) Gi0/2(P)",
+      ].join("\n");
+      var SHOW_ETHERCHANNEL_SUMMARY_WAIT_MSG =
+        "% EtherChannel summary not available yet — complete the full STEPS sequence (including LACP and Port-channel15) on Sw1 and Sw2 first.";
 
       function matchShowRun(raw) {
         var u = normalize(raw);
@@ -907,40 +1272,60 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         return normalize(raw) === "show version";
       }
 
+      function matchShowInterfacesTrunk(raw) {
+        var u = normalize(raw);
+        return u === "show interfaces trunk" || u === "do show interfaces trunk";
+      }
+
+      function matchShowEtherchannelSummary(raw) {
+        var u = normalize(raw);
+        return u === "show etherchannel summary" || u === "do show etherchannel summary";
+      }
+
       function matchCopyRunStart(raw) {
         return normalize(raw) === "copy running-configuration startup-configuration";
       }
 
-      var nvramSavedSw = false;
+      var nvramSavedSw1 = false;
       var nvramSavedSw2 = false;
+      var pc1PingOk = false;
 
-      function tryCompleteBaselineLab(append) {
-        if (stepIndex < LAB_STEPS.length || !nvramSavedSw || !nvramSavedSw2) return;
+      function tryCompleteTrunkLab(append) {
+        if (
+          stepIndexSw1 < LAB_STEPS.length ||
+          stepIndexSw2 < LAB_STEPS.length ||
+          !nvramSavedSw1 ||
+          !nvramSavedSw2 ||
+          !pc1PingOk
+        ) {
+          return;
+        }
         if (passBanner.classList.contains("visible")) return;
         passBanner.classList.add("visible");
-        passBanner.textContent = BASELINE_LAB_ALL_DONE_MSG;
-        if (append) append("line-sys", BASELINE_LAB_ALL_DONE_MSG);
+        passBanner.textContent = TRUNK_LAB_ALL_DONE_MSG;
+        if (append) append("line-sys", TRUNK_LAB_ALL_DONE_MSG);
       }
 
-      /** Privileged exec (#) for the lab switch prompt (not config submodes). */
-      function swInEnableMode() {
-        if (
-          swPromptOverride === "config" ||
-          swPromptOverride === "config-if" ||
-          swPromptOverride === "config-router" ||
-          swPromptOverride === "config-std-nacl" ||
-          swPromptOverride === "config-ext-nacl" ||
-          swPromptOverride === "config-pmap" ||
-          swPromptOverride === "control-plane"
-        ) {
-          return false;
+      function swInEnableMode(stepIdx, ovr) {
+        if (ovr !== null && ovr !== undefined) {
+          if (
+            ovr === "config" ||
+            ovr === "config-if" ||
+            ovr === "config-if-range" ||
+            ovr === "config-router" ||
+            ovr === "config-std-nacl" ||
+            ovr === "config-ext-nacl" ||
+            ovr === "config-pmap" ||
+            ovr === "control-plane"
+          ) {
+            return false;
+          }
+          if (ovr === "exec") return true;
         }
-        if (swPromptOverride === "exec") return true;
-        if (stepIndex >= LAB_STEPS.length) return true;
-        return LAB_STEPS[stepIndex].mode === "exec";
+        if (stepIdx >= LAB_STEPS.length) return true;
+        return LAB_STEPS[stepIdx].mode === "exec";
       }
 
-      /** Map logical IOS mode to prompt string for host (SW1, SW2, …). */
       function promptForMode(host, mode) {
         switch (mode) {
           case "exec":
@@ -949,6 +1334,8 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
             return host + "(config)#";
           case "config-if":
             return host + "(config-if)#";
+          case "config-if-range":
+            return host + "(config-if-range)#";
           case "config-router":
             return host + "(config-router)#";
           case "config-std-nacl":
@@ -964,14 +1351,15 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         }
       }
 
-      /** Prompt for the switch while advancing through LAB_STEPS (post-completion → exec). */
-      function promptForLabStepIndex(index) {
-        if (index >= LAB_STEPS.length) return promptForMode(SWITCH_HOST, "exec");
-        return promptForMode(SWITCH_HOST, LAB_STEPS[index].mode);
+      function promptForLabStepIndex(host, index) {
+        if (index >= LAB_STEPS.length) return promptForMode(host, "exec");
+        return promptForMode(host, LAB_STEPS[index].mode);
       }
 
-      var stepIndex = 0;
-      var swPromptOverride = null;
+      var stepIndexSw1 = 0;
+      var stepIndexSw2 = 0;
+      var sw1PromptOverride = null;
+      var sw2PromptOverride = null;
 
       var swCliOverlay = document.getElementById("swCliOverlay");
       var swCliDialog = document.getElementById("swCliDialog");
@@ -1060,11 +1448,36 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
       function submitPc() {
         var promptText = pcPrompt.textContent;
         var line = pcCmdline.value;
+        var dev = getLabDev();
         appendPc("line-user", promptText + " " + line);
         pcCmdline.value = "";
         if (!line.trim()) return;
         if (normalize(line) === "?") {
           appendPc("line-sys", HELP_DISABLED_MSG);
+          return;
+        }
+        var u = normalize(line);
+        if (dev === "PC1" && (u === "ping 10.15.15.20" || u === "ping 10.15.15.20 -n 4")) {
+          if (stepIndexSw1 >= TASK1_LEN && stepIndexSw2 >= TASK1_LEN) {
+            pc1PingOk = true;
+            appendPc(
+              "line-ping",
+              "Pinging 10.15.15.20 with 32 bytes of data:\n" +
+                "Reply from 10.15.15.20: bytes=32 time<1ms TTL=128\n" +
+                "Reply from 10.15.15.20: bytes=32 time<1ms TTL=128\n" +
+                "Ping statistics for 10.15.15.20:\n" +
+                "    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),\n" +
+                "[OK] PC2 is reachable over VLAN 15 (10.15.15.0/24)."
+            );
+            tryCompleteTrunkLab(function (cls, text) {
+              appendPc(cls, text);
+            });
+          } else {
+            appendPc(
+              "line-bad",
+              "Request timed out.\nComplete Task 1 trunk commands on both Sw1 and Sw2 first, then try again."
+            );
+          }
           return;
         }
         appendPc(
@@ -1075,25 +1488,39 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         );
       }
 
-      function setSwPrompt() {
-        if (swPromptOverride !== null && swPromptOverride !== undefined) {
-          swPrompt.textContent = promptForMode(SWITCH_HOST, swPromptOverride);
+      function setSw1Prompt() {
+        if (sw1PromptOverride !== null && sw1PromptOverride !== undefined) {
+          swPrompt.textContent = promptForMode(SWITCH_HOST, sw1PromptOverride);
           return;
         }
-        swPrompt.textContent = promptForLabStepIndex(stepIndex);
+        swPrompt.textContent = promptForLabStepIndex(SWITCH_HOST, stepIndexSw1);
+      }
+
+      function setSw2Prompt() {
+        if (sw2PromptOverride !== null && sw2PromptOverride !== undefined) {
+          sw2Prompt.textContent = promptForMode(SWITCH2_HOST, sw2PromptOverride);
+          return;
+        }
+        sw2Prompt.textContent = promptForLabStepIndex(SWITCH2_HOST, stepIndexSw2);
       }
 
       function resetSwLab() {
-        stepIndex = 0;
-        swPromptOverride = null;
-        nvramSavedSw = false;
+        stepIndexSw1 = 0;
+        stepIndexSw2 = 0;
+        sw1PromptOverride = null;
+        sw2PromptOverride = null;
+        nvramSavedSw1 = false;
         nvramSavedSw2 = false;
+        pc1PingOk = false;
         swScrollback.innerHTML = "";
+        sw2Scrollback.innerHTML = "";
         passBanner.classList.remove("visible");
-        passBanner.textContent = PASS_BANNER_BASELINE_PENDING;
+        passBanner.textContent = PASS_BANNER_TRUNK_PENDING;
         swCmdline.disabled = false;
         swCmdline.value = "";
-        setSwPrompt();
+        sw2Cmdline.value = "";
+        setSw1Prompt();
+        setSw2Prompt();
       }
 
       function submitSw() {
@@ -1113,61 +1540,66 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
           return;
         }
 
-        if (swInEnableMode() && matchShowVersion(line)) {
+        if (matchShowInterfacesTrunk(line)) {
+          if (stepIndexSw1 >= TASK1_LEN && stepIndexSw2 >= TASK1_LEN) {
+            appendSw("line-showrun line-show-trunk", SHOW_INTERFACES_TRUNK_TASK1_MSG);
+          } else {
+            appendSw("line-sys", SHOW_INTERFACES_TRUNK_WAIT_MSG);
+          }
+          return;
+        }
+
+        if (matchShowEtherchannelSummary(line)) {
+          if (stepIndexSw1 >= LAB_STEPS.length && stepIndexSw2 >= LAB_STEPS.length) {
+            appendSw("line-showrun line-show-trunk", SHOW_ETHERCHANNEL_SUMMARY_MSG);
+          } else {
+            appendSw("line-sys", SHOW_ETHERCHANNEL_SUMMARY_WAIT_MSG);
+          }
+          return;
+        }
+
+        if (swInEnableMode(stepIndexSw1, sw1PromptOverride) && matchShowVersion(line)) {
           appendSw("line-sys", SHOW_VERSION_MSG);
           return;
         }
 
         if (matchCopyRunStart(line)) {
-          if (!swInEnableMode()) {
+          if (!swInEnableMode(stepIndexSw1, sw1PromptOverride)) {
             appendSw("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
             return;
           }
-          if (stepIndex < LAB_STEPS.length) {
+          if (stepIndexSw1 < LAB_STEPS.length) {
             appendSw("line-sys", COPY_RUN_START_AFTER_STEPS_MSG);
             return;
           }
           appendSw("line-sys", COPY_RUN_START_OK_MSG);
-          nvramSavedSw = true;
-          tryCompleteBaselineLab(function (cls, text) {
+          nvramSavedSw1 = true;
+          tryCompleteTrunkLab(function (cls, text) {
             appendSw(cls, text);
           });
           return;
         }
 
-        if (stepIndex >= LAB_STEPS.length) {
+        if (stepIndexSw1 >= LAB_STEPS.length) {
           appendSw("line-bad", "% Invalid input");
           return;
         }
 
-        if (LAB_STEPS[stepIndex].test(line)) {
-          stepIndex += 1;
-          swPromptOverride = null;
-          if (stepIndex >= LAB_STEPS.length) {
+        if (LAB_STEPS[stepIndexSw1].test(line)) {
+          stepIndexSw1 += 1;
+          sw1PromptOverride = null;
+          if (stepIndexSw1 >= LAB_STEPS.length) {
             swPrompt.textContent = promptForMode(SWITCH_HOST, "exec");
-            appendSw("line-sys", BASELINE_SW_STEPS_OK_MSG);
-            tryCompleteBaselineLab(function (cls, text) {
+            appendSw("line-sys", TRUNK_SW_SEQ_DONE_MSG);
+            tryCompleteTrunkLab(function (cls, text) {
               appendSw(cls, text);
             });
           } else {
-            setSwPrompt();
+            setSw1Prompt();
           }
         } else {
           appendSw("line-bad", "% Invalid input");
         }
-      }
-
-      /** SW2: IOS-like modes + show running-config (read-only exhibit); prompts use promptForMode like SW1 */
-      var sw2Mode = "exec";
-
-      function sw2PromptForMode() {
-        return promptForMode(SWITCH2_HOST, sw2Mode);
-      }
-
-      function resetSw2() {
-        sw2Scrollback.innerHTML = "";
-        sw2Mode = "exec";
-        sw2Prompt.textContent = sw2PromptForMode();
       }
 
       function submitSw2() {
@@ -1182,62 +1614,71 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
           return;
         }
 
-        var u = normalize(line);
-
         if (matchShowRun(line)) {
           appendSw2("line-showrun", SWITCH2_SHOW_RUNNING_SNAPSHOT);
           return;
         }
 
-        if (sw2Mode === "exec" && matchShowVersion(line)) {
+        if (matchShowInterfacesTrunk(line)) {
+          if (stepIndexSw1 >= TASK1_LEN && stepIndexSw2 >= TASK1_LEN) {
+            appendSw2("line-showrun line-show-trunk", SHOW_INTERFACES_TRUNK_TASK1_MSG);
+          } else {
+            appendSw2("line-sys", SHOW_INTERFACES_TRUNK_WAIT_MSG);
+          }
+          return;
+        }
+
+        if (matchShowEtherchannelSummary(line)) {
+          if (stepIndexSw1 >= LAB_STEPS.length && stepIndexSw2 >= LAB_STEPS.length) {
+            appendSw2("line-showrun line-show-trunk", SHOW_ETHERCHANNEL_SUMMARY_MSG);
+          } else {
+            appendSw2("line-sys", SHOW_ETHERCHANNEL_SUMMARY_WAIT_MSG);
+          }
+          return;
+        }
+
+        if (swInEnableMode(stepIndexSw2, sw2PromptOverride) && matchShowVersion(line)) {
           appendSw2("line-sys", SHOW_VERSION_MSG);
           return;
         }
 
         if (matchCopyRunStart(line)) {
-          if (sw2Mode !== "exec") {
+          if (!swInEnableMode(stepIndexSw2, sw2PromptOverride)) {
             appendSw2("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
             return;
           }
-          if (stepIndex < LAB_STEPS.length) {
-            appendSw2("line-sys", COPY_RUN_START_AFTER_SW1_STEPS_MSG);
+          if (stepIndexSw2 < LAB_STEPS.length) {
+            appendSw2("line-sys", COPY_RUN_START_AFTER_STEPS_MSG);
             return;
           }
           appendSw2("line-sys", COPY_RUN_START_OK_MSG);
           nvramSavedSw2 = true;
-          tryCompleteBaselineLab(function (cls, text) {
+          tryCompleteTrunkLab(function (cls, text) {
             appendSw2(cls, text);
           });
           return;
         }
 
-        if (sw2Mode === "config-if" && u === "exit") {
-          sw2Mode = "config";
-          sw2Prompt.textContent = sw2PromptForMode();
-          return;
-        }
-        if (sw2Mode === "exec" && u === "configure terminal") {
-          sw2Mode = "config";
-          sw2Prompt.textContent = sw2PromptForMode();
-          return;
-        }
-        if (sw2Mode === "config" && u.startsWith("interface ")) {
-          sw2Mode = "config-if";
-          sw2Prompt.textContent = sw2PromptForMode();
-          return;
-        }
-        if (sw2Mode === "config" && (u === "exit" || u === "end")) {
-          sw2Mode = "exec";
-          sw2Prompt.textContent = sw2PromptForMode();
-          return;
-        }
-        if (sw2Mode === "config-if" && (u === "end" || u === "exit")) {
-          sw2Mode = u === "end" ? "exec" : "config";
-          sw2Prompt.textContent = sw2PromptForMode();
+        if (stepIndexSw2 >= LAB_STEPS.length) {
+          appendSw2("line-bad", "% Invalid input");
           return;
         }
 
-        appendSw2("line-bad", "% Invalid input");
+        if (LAB_STEPS[stepIndexSw2].test(line)) {
+          stepIndexSw2 += 1;
+          sw2PromptOverride = null;
+          if (stepIndexSw2 >= LAB_STEPS.length) {
+            sw2Prompt.textContent = promptForMode(SWITCH2_HOST, "exec");
+            appendSw2("line-sys", TRUNK_SW_SEQ_DONE_MSG);
+            tryCompleteTrunkLab(function (cls, text) {
+              appendSw2(cls, text);
+            });
+          } else {
+            setSw2Prompt();
+          }
+        } else {
+          appendSw2("line-bad", "% Invalid input");
+        }
       }
 
       function wireFloatingModal(dialogEl, overlayEl) {
@@ -1303,7 +1744,6 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         bumpOverlayZ(sw2CliOverlay);
         sw2CliOverlay.classList.add("is-open");
         sw2CliOverlay.setAttribute("aria-hidden", "false");
-        resetSw2();
         if (sw2Terminal) {
           sw2Terminal.classList.remove("terminal-flash");
           void sw2Terminal.offsetWidth;

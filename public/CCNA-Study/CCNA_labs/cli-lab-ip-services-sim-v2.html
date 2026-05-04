@@ -188,17 +188,12 @@
       font-size: 0.95rem;
       color: #e6edf3;
     }
-    .topology-scrape .helper-cli {
-      margin: 6px 0 10px;
-      padding: 8px 10px;
-      border-radius: 8px;
-      background: #0a0a0a;
-      border: 1px solid #2b2b2b;
-      color: #f3f3f3;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
-      font-size: 0.82rem;
-      line-height: 1.45;
-      white-space: pre-wrap;
+    .topology-scrape ul.helper-bullets {
+      margin: 6px 0 4px;
+      padding-left: 1.25em;
+    }
+    .topology-scrape ul.helper-bullets li {
+      margin: 0.45em 0;
     }
     .cli-modal-overlay {
       display: none;
@@ -573,7 +568,7 @@
         </div>
         <div class="tasks-blue-box" aria-label="Lab tasks">
           <p class="tasks">
-            <strong>Task order</strong>
+            <strong>Tasks</strong>
           </p>
           <p class="tasks">
             Services must be configured in the order presented to complete the implementation.
@@ -763,32 +758,31 @@
       <div class="cli-modal-body">
         <section class="topology-scrape" aria-label="Helper notes">
           <h2>IP Services Sim v2 — implementation hints</h2>
-          <p>
-            BeCertifiedToday.com engineers were tasked to support a new site rollout. <strong>Task 1 (R2):</strong> build a
-            standard ACL <strong>XLATE</strong> (permit the right sources for R3), define <code>ip nat pool test_pool …</code>
-            on 10.10.10.0/24, then <code>ip nat inside source list XLATE pool test_pool</code> without NVI. Apply
-            <code>ip nat inside</code> / <code>ip nat outside</code> on the interfaces toward R3 and R1. From R3, ping
-            <code>192.168.100.1</code> after routing and NAT are consistent.
-          </p>
-          <p>
-            <strong>Task 2 (R3):</strong> DHCP client on GigabitEthernet0/2 — from <code>R3(config)#</code> use
-            <code>interface GigabitEthernet0/2</code>, then under the interface prompt <code>ip address dhcp</code>. Ensure the DHCP server
-            (typically R1 or another service router) offers a scope for that segment.
-          </p>
-          <p>
-            <strong>Task 3:</strong> On <strong>R1</strong> from exec, <code>configure terminal</code>,
-            then <code>ntp master 1</code> so R1 is the NTP server. On <strong>R2</strong>, add <code>ntp server 10.1.2.1</code>
-            so R2 is a client only (not a peer) to the address on R1 facing R2.
-          </p>
-          <p>
-            Task 4 (R3): RSA key (<code>crypto key generate rsa</code>), local user <code>root</code> with secret
-            <code>s3cret</code>, <code>line vty 0 4</code> with <code>transport input ssh</code> only, then SSH from R1 to
-            R3’s GigabitEthernet0/2 address.
-          </p>
-          <pre class="helper-cli">R2# show ip nat translations
-R2# show access-lists XLATE
-R3# show ip interface brief
-R1# ssh root@&lt;r3-gigabitethernet0-2-address&gt;</pre>
+          <ul class="helper-bullets">
+            <li>
+              <strong>Task 1 (R2):</strong> Build standard ACL <strong>XLATE</strong> (permit the sources R3 needs), define
+              <code>ip nat pool test_pool</code> on 10.10.10.0/24, then <code>ip nat inside source list XLATE pool test_pool</code>
+              without NVI. Apply <code>ip nat inside</code> and <code>ip nat outside</code> on the interfaces toward R3 and R1.
+              From R3, ping <code>192.168.100.1</code> once routing and NAT line up.
+            </li>
+            <li>
+              <strong>Task 2 (R3):</strong> DHCP client on <code>GigabitEthernet0/2</code>: <code>interface GigabitEthernet0/2</code>,
+              then <code>ip address dhcp</code>. Confirm the DHCP server (often R1) has a scope for that segment.
+            </li>
+            <li>
+              <strong>Task 3:</strong> On <strong>R1</strong>, <code>configure terminal</code> then <code>ntp master 1</code>. On
+              <strong>R2</strong>, <code>ntp server 10.1.2.1</code> so R2 is a client to R1’s address toward R2.
+            </li>
+            <li>
+              <strong>Task 4 (R3):</strong> <code>crypto key generate rsa</code>; user <code>root</code> with secret
+              <code>s3cret</code>; <code>line vty 0 4</code> with <code>transport input ssh</code> only; from R1, SSH to R3’s
+              GigabitEthernet0/2 address as <code>root</code>.
+            </li>
+            <li>
+              <strong>Useful checks:</strong> on R2, <code>show ip nat translations</code> and <code>show access-lists XLATE</code>;
+              on R3, <code>show ip interface brief</code>; from R1, <code>ssh root@</code> plus that G0/2 IP.
+            </li>
+          </ul>
         </section>
       </div>
     </div>
@@ -1235,6 +1229,12 @@ R3(config-line)# end</pre>
       var SHOW_VERSION_MSG = "BeCertifiedToday.com version 2026";
       var COPY_RUN_START_OK_MSG =
         "Destination filename [startup-config]?\nBuilding configuration...\n[OK]";
+      var COPY_RUN_START_EXEC_ONLY_MSG =
+        "% Error: Run copy running-configuration startup-configuration only from privileged EXEC (#), not from configuration mode.";
+      var COPY_RUN_START_AFTER_STEPS_MSG =
+        "% Error: Finish the Task 1 NAT STEPS on R2 until you return to privileged EXEC (R2#), then save to startup-config.";
+      var COPY_RUN_START_AFTER_R2_TASK1_MSG =
+        "% Error: Complete Task 1 NAT STEPS on R2 (until R2#) before saving startup-config on this device.";
       var IP_NAT_STEPS_DONE_MSG =
         "[OK] Task 1 NAT sequence complete on R2. From privileged exec on R2, R1, and R3, run copy running-configuration startup-configuration (copy run start) on each device to complete the lab.";
       var IP_LAB_ALL_DONE_MSG =
@@ -1436,9 +1436,17 @@ R3(config-line)# end</pre>
           return;
         }
 
-        if (swIpInEnableMode() && matchCopyRunStart(line)) {
+        if (matchCopyRunStart(line)) {
+          if (!swIpInEnableMode()) {
+            appendSw("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            return;
+          }
+          if (stepIndex < STEPS.length) {
+            appendSw("line-sys", COPY_RUN_START_AFTER_STEPS_MSG);
+            return;
+          }
           appendSw("line-sys", COPY_RUN_START_OK_MSG);
-          if (stepIndex >= STEPS.length) nvramSavedSw = true;
+          nvramSavedSw = true;
           tryCompleteIpServicesLab(function (cls, text) {
             appendSw(cls, text);
           });
@@ -1507,7 +1515,15 @@ R3(config-line)# end</pre>
           return;
         }
 
-        if (r1Mode === "exec" && matchCopyRunStart(line)) {
+        if (matchCopyRunStart(line)) {
+          if (r1Mode !== "exec") {
+            appendR1("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            return;
+          }
+          if (stepIndex < STEPS.length) {
+            appendR1("line-sys", COPY_RUN_START_AFTER_R2_TASK1_MSG);
+            return;
+          }
           appendR1("line-sys", COPY_RUN_START_OK_MSG);
           nvramSavedR1 = true;
           tryCompleteIpServicesLab(function (cls, text) {
@@ -1584,7 +1600,15 @@ R3(config-line)# end</pre>
           return;
         }
 
-        if (r3Mode === "exec" && matchCopyRunStart(line)) {
+        if (matchCopyRunStart(line)) {
+          if (r3Mode !== "exec") {
+            appendR3("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            return;
+          }
+          if (stepIndex < STEPS.length) {
+            appendR3("line-sys", COPY_RUN_START_AFTER_R2_TASK1_MSG);
+            return;
+          }
           appendR3("line-sys", COPY_RUN_START_OK_MSG);
           nvramSavedR3 = true;
           tryCompleteIpServicesLab(function (cls, text) {

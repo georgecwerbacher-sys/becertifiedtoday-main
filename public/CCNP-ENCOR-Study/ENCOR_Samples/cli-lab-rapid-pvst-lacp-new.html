@@ -191,18 +191,6 @@
       font-size: 1rem;
       line-height: 1.45;
     }
-    .topology-scrape .helper-cli {
-      margin: 6px 0 10px;
-      padding: 8px 10px;
-      border-radius: 8px;
-      background: #0a0a0a;
-      border: 1px solid #2b2b2b;
-      color: #f3f3f3;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
-      font-size: 0.82rem;
-      line-height: 1.45;
-      white-space: pre-wrap;
-    }
     .topology-scrape .helper-device {
       margin: 12px 0 4px;
       font-size: 1rem;
@@ -699,65 +687,51 @@
         <section class="topology-scrape" aria-label="Topology summary from exhibit">
           <h2>Helper File</h2>
           <p class="helper-part-two-title"><strong>Task 1. Configure Rapid PVST+ on SW20.</strong></p>
-          <p class="helper-device">On SW20</p>
-          <pre class="helper-cli">SW20#conf t
-SW20(config)#spanning-tree mode rapid-pvst</pre>
+          <ul class="helper-part-two">
+            <li>On SW20, enter global configuration and set <code>spanning-tree mode rapid-pvst</code>.</li>
+          </ul>
 
           <p class="helper-part-two-title"><strong>Task 2. Restore the SW20-SW30 trunk and verify PC3 to PC1 reachability.</strong></p>
           <ul class="helper-part-two">
-            <li>Run <code>show run</code> on SW20 and check interface <code>E0/0</code>.</li>
-            <li>Change <code>E0/0</code> to a dot1q trunk and allow only VLAN 500.</li>
+            <li>Run <code>show running-config</code> on SW20 and check interface <code>Ethernet0/0</code>.</li>
+            <li>
+              Change <code>Ethernet0/0</code> to an 802.1Q trunk allowing only VLAN <code>500</code>: under that interface use
+              <code>switchport trunk encapsulation dot1q</code>, <code>switchport mode trunk</code>, and
+              <code>switchport trunk allowed vlan 500</code>.
+            </li>
           </ul>
-          <p class="helper-device">SW20</p>
-          <pre class="helper-cli">SW20(config)#interface e0/0
-SW20(config-if)#switchport trunk encapsulation dot1q
-SW20(config-if)#switchport mode trunk
-SW20(config-if)#switchport trunk allowed vlan 500</pre>
-          <p class="helper-part-two-title"><strong>Verification</strong></p>
-          <pre class="helper-cli">PC3#ping 10.10.100.10
-!!!!!</pre>
+          <p class="helper-part-two-title"><strong>Verification (Task 2)</strong></p>
+          <ul class="helper-part-two">
+            <li>From PC3, ping <code>10.10.100.10</code> (PC1) until you get replies.</li>
+          </ul>
 
           <p class="helper-part-two-title"><strong>Task 3. Restore the LACP port-channel between SW10 and SW20 and verify PC3 to PC2 reachability.</strong></p>
           <ul class="helper-part-two">
-            <li>Run <code>show run</code> on SW20 and verify Port-channel 10 matches members <code>E0/2</code> and <code>E0/3</code>.</li>
-            <li>Apply trunk settings to <code>Po10</code>. If your topology uses a different bundle number, use that interface.</li>
-            <li>After <code>switchport trunk allowed vlan 500</code> on the port-channel, member links should inherit matching trunk behavior.</li>
+            <li>Run <code>show running-config</code> on SW20 and confirm Port-channel 10 uses members <code>Ethernet0/2</code> and <code>Ethernet0/3</code>.</li>
+            <li>Apply trunk settings on <code>Port-channel10</code> (or your lab’s bundle interface): same encapsulation, mode, and <code>switchport trunk allowed vlan 500</code> as on the access/trunk links you fixed earlier.</li>
+            <li>After the port-channel allows VLAN 500, member links should show consistent trunk behavior.</li>
           </ul>
-          <p class="helper-device">SW20</p>
-          <pre class="helper-cli">SW20(config)#int Po10
-SW20(config-if)#switchport trunk encapsulation dot1q
-SW20(config-if)#switchport mode trunk
-SW20(config-if)#switchport trunk allowed vlan 500</pre>
-          <p class="helper-part-two-title"><strong>Verification</strong></p>
-          <pre class="helper-cli">SW20#show etherchannel summary
---output omitted--
-Number of channel-groups in use: 1
-Number of aggregators:           1
-
-Group  Port-channel  Protocol    Ports
-------+-------------+-----------+-----------------------------------------------
-10     Po10(SU)        LACP      Et0/2(P)    Et0/3(P)</pre>
-          <p class="helper-device">If Po10 is still down, compare these interfaces for matching trunk config</p>
-          <pre class="helper-cli">interface Port-channel10
- switchport trunk allowed vlan 500
- switchport trunk encapsulation dot1q
- switchport mode trunk
-interface Ethernet0/2
- switchport trunk allowed vlan 500
- switchport trunk encapsulation dot1q
- switchport mode trunk
- channel-group 10 mode active
-interface Ethernet0/3
- switchport trunk allowed vlan 500
- switchport trunk encapsulation dot1q
- switchport mode trunk
- channel-group 10 mode active</pre>
-          <p class="helper-part-two-title"><strong>Verification</strong></p>
-          <pre class="helper-cli">PC3#ping 10.10.100.20
-!!!!!</pre>
+          <p class="helper-part-two-title"><strong>Verification (Task 3 — EtherChannel)</strong></p>
+          <ul class="helper-part-two">
+            <li>
+              On SW20 from privileged exec, run <code>show etherchannel summary</code>. Expect group <code>10</code>,
+              <code>Po10(SU)</code>, protocol LACP, with <code>Et0/2(P)</code> and <code>Et0/3(P)</code> in the port list.
+            </li>
+            <li>
+              If Po10 is still down, compare running-config on <code>Port-channel10</code>, <code>Ethernet0/2</code>, and
+              <code>Ethernet0/3</code>: matching trunk VLAN, encapsulation, and mode; each member should include
+              <code>channel-group 10 mode active</code>.
+            </li>
+          </ul>
+          <p class="helper-part-two-title"><strong>Verification (Task 3 — data path)</strong></p>
+          <ul class="helper-part-two">
+            <li>From PC3, ping <code>10.10.100.20</code> (PC2).</li>
+          </ul>
 
           <p class="helper-part-two-title"><strong>Save the configuration</strong></p>
-          <pre class="helper-cli">SW20#copy running-config startup-config</pre>
+          <ul class="helper-part-two">
+            <li>On SW20 from privileged exec, run <code>copy running-config startup-config</code>.</li>
+          </ul>
         </section>
       </div>
     </div>
