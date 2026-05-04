@@ -169,6 +169,7 @@ def page(
 </head>
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
+  <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
     <h1>{stem}</h1>
 
@@ -261,6 +262,7 @@ def page_checkbox(
 </head>
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
+  <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
     <h1>{stem}</h1>
 

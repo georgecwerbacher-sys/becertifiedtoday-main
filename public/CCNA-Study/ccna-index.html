@@ -490,6 +490,22 @@
       filter: none;
       color: #6b7f9e !important;
     }
+
+    .topic-card-body:has(.practice-mode-actions) > p {
+      flex: 0 1 auto;
+    }
+    .practice-mode-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 2px;
+    }
+    .practice-mode-actions .card-action {
+      flex: 1 1 120px;
+      cursor: pointer;
+      font: inherit;
+      border: 1px solid var(--accent-border);
+    }
     .link-list {
       margin: 0;
       padding: 0 0 0 1.15rem;
@@ -718,24 +734,30 @@
           </p>
           <ul class="sample-grid" aria-label="CCNA sample activities">
             <li>
-              <article class="topic-card" aria-labelledby="card-q-title">
+              <article class="topic-card" aria-labelledby="card-practice-q-title">
                 <div class="topic-card-thumb">
                   <img
                     src="/images/ccna-sample-questions-thumbnail.png"
                     width="1024"
                     height="586"
-                    alt="Multiple-choice sample: switch FCS and interface counters with correct-answer feedback."
+                    alt="Multiple-choice practice: first one hundred CCNA bank questions with Linear, Random, or Review modes."
                     decoding="async"
                     loading="lazy"
                   />
                 </div>
                 <div class="topic-card-body">
-                  <h3 id="card-q-title">Sample questions</h3>
+                  <h3 id="card-practice-q-title">Practice Questions</h3>
                   <p>
-                    Five linked practice questions with instant feedback—start at question 1 and use Next through question 5.
-                    Works on phones and tablets (tap to answer).
+                    One hundred questions in the same order as the published chain (QoS through item 100). Use
+                    <strong>Linear</strong> to go in order, <strong>Random</strong> for a shuffled run once through the set, or
+                    <strong>Review</strong> for a shuffled run where each incorrect answer queues that question at the end until you finish the session.
+                    Use <strong>Next question</strong> on each page to advance; <strong>Finish session</strong> appears on the last item.
                   </p>
-                  <a class="card-action" href="/CCNA-Study/CCNA_Samples/sample-question-1.html">Start sample questions</a>
+                  <div class="practice-mode-actions" role="group" aria-label="Practice question modes">
+                    <button type="button" class="card-action" data-ccna100="linear">Linear</button>
+                    <button type="button" class="card-action" data-ccna100="random">Random</button>
+                    <button type="button" class="card-action" data-ccna100="review">Review</button>
+                  </div>
                 </div>
               </article>
             </li>
@@ -875,5 +897,6 @@
         >@</a>
     </footer>
   </div>
+  <script src="/CCNA-Study/js/ccna-practice-100-hub.js" defer></script>
 </body>
 </html>
