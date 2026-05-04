@@ -33,6 +33,39 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: clamp(1.02rem, 2vw, 1.35rem);
+      font-weight: 700;
+      line-height: 1.35;
+      color: #e6edf3;
+    }
+    .exhibit {
+      margin: 0 0 18px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #2d3b5a;
+      background: #ffffff;
+      text-align: center;
+    }
+    .exhibit img {
+      display: block;
+      width: 100%;
+      max-width: min(100%, 640px);
+      height: auto;
+      margin: 0 auto;
+    }
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -126,7 +159,26 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Refer to the exhibit. PC1 is trying to ping PC3 for the first time and sends out an ARP to S1. Which action is taken by S1? (Assume PC1 is on the port excluded in the correct answer.)</h1>
+    <p class="exhibit-ref">Refer to the exhibit.</p>
+
+    <figure class="exhibit">
+      <figcaption class="visually-hidden">
+        Topology: switch S1 with GigabitEthernet0/0 to PC1, G0/1 to PC2, G0/2 to switch S2, and G0/3 to an uplink; switch S2 connects to PC3 and PC4.
+      </figcaption>
+      <img
+        src="/CCNA-Study/CCNA_questions/arp-first-ping-switch-flood-topology.png"
+        width="454"
+        height="219"
+        alt="Topology: S1 with G0/0 to PC1, G0/1 to PC2, G0/2 to S2, G0/3 uplink; S2 to PC3 and PC4."
+        decoding="async"
+        loading="lazy"
+      />
+    </figure>
+
+    <h1>
+      PC1 is trying to ping PC3 for the first time and sends out an ARP to S1. Which action is taken by S1? (Assume PC1 is on the port
+      excluded in the correct answer.)
+    </h1>
 
     <label class="choice"><input type="radio" name="arpf" value="A" />A. It forwards it out G0/3 only</label>
     <label class="choice"><input type="radio" name="arpf" value="B" />B. It is flooded out every port except G0/0</label>

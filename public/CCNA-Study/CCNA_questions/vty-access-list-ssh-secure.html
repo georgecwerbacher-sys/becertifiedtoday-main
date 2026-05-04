@@ -33,6 +33,87 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: clamp(1.02rem, 2vw, 1.35rem);
+      font-weight: 700;
+      line-height: 1.35;
+      color: #e6edf3;
+    }
+    .cli-exhibit {
+      margin: 0 0 20px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+      background: #0a0e14;
+    }
+    .cli-exhibit-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: linear-gradient(180deg, #2a3344 0%, #1e2636 100%);
+      border-bottom: 1px solid #0f1419;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+    .cli-exhibit-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .cli-exhibit-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #475569;
+    }
+    .cli-exhibit-dots span:nth-child(1) {
+      background: #ef4444;
+    }
+    .cli-exhibit-dots span:nth-child(2) {
+      background: #eab308;
+    }
+    .cli-exhibit-dots span:nth-child(3) {
+      background: #22c55e;
+    }
+    .cli-exhibit-title {
+      flex: 1;
+      text-align: center;
+      padding-right: 46px;
+      box-sizing: border-box;
+    }
+    .cli-exhibit-body {
+      margin: 0;
+      padding: 14px 16px 16px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.72rem, 1.65vw, 0.84rem);
+      line-height: 1.5;
+      color: #c8e6c9;
+      background: #0a0e14;
+      overflow-x: auto;
+      white-space: pre;
+      tab-size: 2;
+      border-top: 1px solid #1e293b;
+    }
+    .cli-exhibit-body code {
+      font: inherit;
+      color: inherit;
+    }
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
 .choice {
       display: block;
       margin: 10px 0;
@@ -116,27 +197,6 @@
     .next-link:hover {
       filter: brightness(1.08);
     }
-    .exhibit {
-      margin: 0 0 18px;
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid #2d3b5a;
-      background: #0d1324;
-    }
-    .exhibit img {
-      display: block;
-      width: 100%;
-      height: auto;
-      max-height: min(72vh, 560px);
-      object-fit: contain;
-      object-position: top left;
-    }
-    .exhibit figcaption {
-      padding: 8px 12px;
-      font-size: 0.9rem;
-      color: #b8c3d6;
-      line-height: 1.35;
-    }
   </style>
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
 </head>
@@ -144,21 +204,39 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>
-      Refer to the exhibit. A network administrator has been tasked with securing VTY access to a router. Which access-list entry
-      accomplishes this task? (All choices use the same source and destination as the management-style line in the exhibit.)
-    </h1>
-<figure class="exhibit">
-      <img
-        src="/CCNA-Study/CCNA_questions/vty-acl-101-exhibit.png"
-        width="1200"
-        height="800"
-        alt="Cisco IOS: extended ACL 101 with OSPF, BGP port 179, GRE, ESP, telnet from 10.1.1.0/24 to 172.16.1.0/24, UDP 500 and 4500, and deny ip any any log; applied inbound on Ethernet0/0 with ip address 10.1.1.25."
-        decoding="async"
-        loading="lazy"
-      />
-      <figcaption>Exhibit: ACL 101 and <code>interface Ethernet0/0</code> with <code>ip access-group 101 in</code>.</figcaption>
+    <p class="exhibit-ref">Refer to the exhibit.</p>
+
+    <figure class="cli-exhibit">
+      <figcaption class="visually-hidden">
+        Exhibit: extended ACL 101 entries and interface Ethernet0/0 with IP 10.1.1.25 and ip access-group 101 applied inbound.
+      </figcaption>
+      <div class="cli-exhibit-header">
+        <div class="cli-exhibit-dots" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="cli-exhibit-title">Router — running configuration (partial)</div>
+      </div>
+      <pre class="cli-exhibit-body"><code>access-list 101 permit ospf any any
+access-list 101 permit tcp any any eq 179
+access-list 101 permit tcp any eq 179 any
+access-list 101 permit gre any any
+access-list 101 permit esp any any
+
+access-list 101 deny ospf any any
+access-list 101 permit tcp 10.1.1.0 0.0.0.255 172.16.1.0 0.0.0.255 eq telnet
+access-list 101 permit udp 10.1.1.0 0.0.0.255 172.16.1.0 0.0.0.255 eq 500
+access-list 101 permit udp 10.1.1.0 0.0.0.255 172.16.1.0 0.0.0.255 eq 4500
+access-list 101 deny ip any any log
+
+interface Ethernet0/0
+ ip address 10.1.1.25 255.255.255.0
+ ip access-group 101 in</code></pre>
     </figure>
+
+    <h1>
+      A network administrator has been tasked with securing VTY access to a router. Which access-list entry accomplishes this task?
+      (All choices use the same source and destination as the management-style Telnet line in the exhibit.)
+    </h1>
 
     <label class="choice"
       ><input type="radio" name="vtyacl" value="A" />A. access-list 101 permit tcp 10.1.1.0 0.0.0.255 172.16.1.0 0.0.0.255 eq
@@ -192,8 +270,9 @@
   <script>
     (function () {
       var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 The exhibit includes a permit for cleartext Telnet to 172.16.1.0/24; that does not secure management. Securing remote CLI means SSH (TCP 22, eq ssh), not Telnet (C), HTTPS for the web UI (D), or SCP alone (B). Use this style of ACE with VTY access-class in, or replace the insecure Telnet line in a similar edge filter.";
-var answerBox = document.getElementById("answerBox");
+      var CORRECT_MSG =
+        "Correct. A \u2014 The exhibit permits cleartext Telnet from 10.1.1.0/24 to 172.16.1.0/24; that does not secure management. Securing remote CLI means SSH (TCP 22, eq ssh), not Telnet (C), HTTPS for the web UI (D), or SCP alone (B). Use this style of ACE with VTY access-class in, or replace the insecure Telnet line in a similar edge filter.";
+      var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
         answerBox.style.display = "block";

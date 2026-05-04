@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Voice and data VLANs on access ports</title>
+  <title>CCNA — STP root bridge for VLAN 110</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -51,9 +51,72 @@
     .exhibit img {
       display: block;
       width: 100%;
-      max-width: min(100%, 640px);
+      max-width: min(100%, 720px);
       height: auto;
       margin: 0 auto;
+    }
+    .cli-exhibit {
+      margin: 0 0 20px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #1e293b;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+      background: #0a0e14;
+    }
+    .cli-exhibit-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: linear-gradient(180deg, #2a3344 0%, #1e2636 100%);
+      border-bottom: 1px solid #0f1419;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+    .cli-exhibit-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .cli-exhibit-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #475569;
+    }
+    .cli-exhibit-dots span:nth-child(1) {
+      background: #ef4444;
+    }
+    .cli-exhibit-dots span:nth-child(2) {
+      background: #eab308;
+    }
+    .cli-exhibit-dots span:nth-child(3) {
+      background: #22c55e;
+    }
+    .cli-exhibit-title {
+      flex: 1;
+      text-align: center;
+      padding-right: 46px;
+      box-sizing: border-box;
+    }
+    .cli-exhibit-body {
+      margin: 0;
+      padding: 14px 16px 16px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.72rem, 1.65vw, 0.84rem);
+      line-height: 1.5;
+      color: #c8e6c9;
+      background: #0a0e14;
+      overflow-x: auto;
+      white-space: pre;
+      tab-size: 2;
+      border-top: 1px solid #1e293b;
+    }
+    .cli-exhibit-body code {
+      font: inherit;
+      color: inherit;
     }
     .visually-hidden {
       position: absolute;
@@ -75,52 +138,6 @@
       border: 1px solid #2c3f62;
       font-size: 1.02rem;
       cursor: pointer;
-    }
-    .choice.mono {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.95rem;
-    }
-    .choice-cli {
-      padding: 12px 14px;
-    }
-    .choice-cli-inner {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-    }
-    .choice-cli-inner > input {
-      flex-shrink: 0;
-      margin-top: 4px;
-      margin-right: 0;
-    }
-    .choice-cli-body {
-      flex: 1;
-      min-width: 0;
-    }
-    .choice-cli-letter {
-      display: block;
-      font-weight: 700;
-      font-size: 0.95rem;
-      margin-bottom: 6px;
-      color: #e6edf3;
-    }
-    .cli-config-snippet code {
-      font: inherit;
-      color: inherit;
-    }
-    .cli-config-snippet {
-      margin: 0;
-      padding: 10px 12px;
-      border-radius: 8px;
-      background: #0a0e14;
-      border: 1px solid #1e293b;
-      color: #c8e6c9;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      font-size: clamp(0.68rem, 1.5vw, 0.8rem);
-      line-height: 1.45;
-      white-space: pre;
-      overflow-x: auto;
-      text-align: left;
     }
     .choice input {
       margin-right: 10px;
@@ -205,87 +222,45 @@
 
     <figure class="exhibit">
       <figcaption class="visually-hidden">
-        Exhibit: VLAN 8 Data and VLAN 9 Voice. Switch SW11 Gi1/1 to PC-2; Gi1/3 to Phone-1 with PC-1 connected behind the phone.
+        Topology: HQ LAN with routers HQ1 and HQ2 each connected to Switch 1 and Switch 2; switches 1–4 in a ring with cross-links
+        (Switch 1–2, 3–4, 1–3, 2–4).
       </figcaption>
       <img
-        src="/CCNA-Study/CCNA_questions/voice-data-vlan-access-ports-sw11-topology.png"
-        width="192"
-        height="254"
-        alt="SW11: Gi1/1 to PC-2; Gi1/3 to IP Phone-1; PC-1 daisy-chained to Phone-1. VLAN 8 Data, VLAN 9 Voice."
+        src="/CCNA-Study/CCNA_questions/stp-root-bridge-vlan110-topology.png"
+        width="454"
+        height="317"
+        alt="HQ LAN: HQ1 and HQ2 connect to Switch 1 and Switch 2; four switches in a redundant square mesh."
         decoding="async"
         loading="lazy"
       />
     </figure>
 
-    <h1>
-      An administrator must configure interfaces Gi1/1 and Gi1/3 on switch SW11. PC-1 and PC-2 must be placed in the Data VLAN and
-      Phone-1 must be placed in the Voice VLAN. Which configuration meets these requirements?
-    </h1>
+    <figure class="cli-exhibit">
+      <figcaption class="visually-hidden">
+        Supplemental output: for VLAN 110, bridge priorities and base MAC addresses for Switch 1 through Switch 4.
+      </figcaption>
+      <div class="cli-exhibit-header">
+        <div class="cli-exhibit-dots" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="cli-exhibit-title">Switch — spanning-tree bridge IDs (VLAN 110)</div>
+      </div>
+      <pre class="cli-exhibit-body"><code>Switch 1
+ VLAN 110 – 32778 0018.184e.3c00
+Switch 2
+ VLAN 110 – 24586 001a.e3ff.a680
+Switch 3
+ VLAN 110 – 28682 0022.55cf.cc00
+Switch 4
+ VLAN 110 – 64000 0e38.7363.657f</code></pre>
+    </figure>
 
-    <label class="choice choice-cli">
-      <div class="choice-cli-inner">
-        <input type="radio" name="voicevlan" value="A" />
-        <div class="choice-cli-body">
-          <span class="choice-cli-letter">A.</span>
-          <pre class="cli-config-snippet"><code>interface GigabitEthernet1/1
- switchport mode access
- switchport access vlan 8
-!
-interface GigabitEthernet1/3
- switchport mode access
- switchport access vlan 9
- switchport voice vlan 8</code></pre>
-        </div>
-      </div>
-    </label>
-    <label class="choice choice-cli">
-      <div class="choice-cli-inner">
-        <input type="radio" name="voicevlan" value="B" />
-        <div class="choice-cli-body">
-          <span class="choice-cli-letter">B.</span>
-          <pre class="cli-config-snippet"><code>interface GigabitEthernet1/1
- switchport mode access
- switchport access vlan 9
-!
-interface GigabitEthernet1/3
- switchport mode trunk
- switchport voice vlan 8
- switchport access vlan 9</code></pre>
-        </div>
-      </div>
-    </label>
-    <label class="choice choice-cli">
-      <div class="choice-cli-inner">
-        <input type="radio" name="voicevlan" value="C" />
-        <div class="choice-cli-body">
-          <span class="choice-cli-letter">C.</span>
-          <pre class="cli-config-snippet"><code>interface GigabitEthernet1/1
- switchport mode access
- switchport access vlan 8
-!
-interface GigabitEthernet1/3
- switchport mode access
- switchport access vlan 8
- switchport voice vlan 9</code></pre>
-        </div>
-      </div>
-    </label>
-    <label class="choice choice-cli">
-      <div class="choice-cli-inner">
-        <input type="radio" name="voicevlan" value="D" />
-        <div class="choice-cli-body">
-          <span class="choice-cli-letter">D.</span>
-          <pre class="cli-config-snippet"><code>interface GigabitEthernet1/1
- switchport mode access
- switchport access vlan 8
-!
-interface GigabitEthernet1/3
- switchport mode trunk
- switchport voice vlan 8
- switchport access vlan 9</code></pre>
-        </div>
-      </div>
-    </label>
+    <h1>Which switch becomes the root of the spanning tree for VLAN 110?</h1>
+
+    <label class="choice"><input type="radio" name="stproot110" value="A" />A. Switch 1</label>
+    <label class="choice"><input type="radio" name="stproot110" value="B" />B. Switch 2</label>
+    <label class="choice"><input type="radio" name="stproot110" value="C" />C. Switch 3</label>
+    <label class="choice"><input type="radio" name="stproot110" value="D" />D. Switch 4</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -294,16 +269,16 @@ interface GigabitEthernet1/3
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ios-dns-lookup-default-behavior.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/pat-vlan200-inside-source-overload.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/stp-bpduguard-portfast-errdisable.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/trunk-native-vlan-untagged.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
+      var CORRECT = "B";
       var CORRECT_MSG =
-        "Correct. C \u2014 Gi1/1 is access VLAN 8 for PC-1 (data). Gi1/3 is access with access VLAN 8 for PC-2 and voice VLAN 9 for the IP phone. Option A reverses data/voice VLANs on Gi1/3. B and D use switchport mode trunk on Gi1/3 instead of the usual access + voice VLAN pattern.";
+        "Correct. B \u2014 The root bridge has the lowest bridge ID. Compare the priority values first (24586 is lower than 28682, 32778, and 64000), so Switch 2 becomes the STP root for VLAN 110.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -317,7 +292,7 @@ interface GigabitEthernet1/3
         }
       }
 
-      document.querySelectorAll('input[name="voicevlan"]').forEach(function (el) {
+      document.querySelectorAll('input[name="stproot110"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
