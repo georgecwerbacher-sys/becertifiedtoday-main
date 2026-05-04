@@ -4,8 +4,8 @@
   Copy to public/ and extend STEPS, modals, and topology like the full Rapid PVST lab.
 
   Includes:
-  - R2 CLI: IOS-like prompts (exec / config / config-std-nacl), STEPS[] progression, normalize(), % Invalid input
-  - R1 / R3 CLI: read-only exhibits with show run snapshot (mirrors SW10-style router rules)
+  - R2 CLI: IOS-like prompts (exec / config / config-if / config-std-nacl), STEPS[] progression, normalize(), % Invalid input
+  - R1 / R3 CLI: read-only exhibits with show running-config snapshot (mirrors SW10-style router rules)
   - Device picker (R1 / R2 / R3), draggable modals, local command history (ArrowUp/Down), pass banner, sim-nav, logo corner
 
   See also: public/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html for a complete multi-modal lab.
@@ -67,15 +67,16 @@
     .tasks-blue-box {
       margin-top: 14px;
       padding: 16px 18px;
-      border-radius: 12px;
-      background: linear-gradient(160deg, #1a4d9e 0%, #153d7a 45%, #0f3268 100%);
-      border: 1px solid rgba(130, 180, 255, 0.45);
-      box-shadow: 0 8px 24px rgba(0, 20, 60, 0.35);
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
       text-align: left;
-      color: #ffffff;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      box-sizing: border-box;
     }
     .tasks-blue-box .tasks {
-      color: #ffffff;
+      color: #b8c3d6;
       margin: 0 0 10px;
     }
     .tasks-blue-box .tasks:last-of-type,
@@ -84,17 +85,17 @@
     }
     .tasks-blue-box .tasks strong,
     .tasks-blue-box ol.tasks strong {
-      color: #ffffff;
+      color: #e6edf3;
       font-weight: 800;
     }
     .tasks-blue-box ol.tasks {
       margin: 8px 0 0;
       padding-left: 1.25rem;
-      color: #ffffff;
+      color: #b8c3d6;
     }
     .tasks-blue-box ol.tasks li {
       margin: 8px 0;
-      color: #ffffff;
+      color: #b8c3d6;
     }
     .diagram-wrap {
       background: #ffffff;
@@ -324,7 +325,8 @@
     .line-sys {
       color: #94a3b8;
     }
-    .line-showrun {
+    .line-showrun,
+    .line-ping {
       white-space: pre-wrap;
       color: #dbe5f0;
       margin: 6px 0 12px;
@@ -554,9 +556,9 @@
         <div class="diagram-stage">
           <img
             src="/CCNA-Study/CCNA_labs/ip-services-sim-v2-topology.png"
-            width="956"
-            height="544"
-            alt="Topology: R1, R2, and R3 in a triangle. R1 E0/0 10.1.2.1 to R2 E0/0 10.1.2.2; R1 E0/2 10.1.3.1 to R3 E0/2 10.1.3.11; R2 E0/1 10.2.3.2 to R3 E0/1 10.2.3.3. R1 Lo1 192.168.100.1; R2 Lo1 192.168.200.1; R3 Lo1 192.168.3.1."
+            width="920"
+            height="446"
+            alt="Topology: R1, R2, and R3 in a triangle. R1 GigabitEthernet0/0 10.1.2.1 to R2 GigabitEthernet0/0 10.1.2.2; R1 GigabitEthernet0/2 10.1.3.1 to R3 GigabitEthernet0/2 (DHCP, e.g. 10.1.3.11); R2 GigabitEthernet0/1 10.2.3.2 to R3 GigabitEthernet0/1 10.2.3.3. R1 Loopback1 192.168.100.1; R2 Loopback1 192.168.2.1; R3 Loopback1 192.168.3.1."
             decoding="async"
           />
         </div>
@@ -578,25 +580,25 @@
           </p>
           <ol class="tasks">
             <li>
-              Configure dynamic one-to-one address mapping on <strong>R2</strong> using a standard list named
-              <strong>XLATE</strong>, which allows all traffic to translate the source address of R3 to a pool named
-              <strong>test_pool</strong> using the <strong>10.10.10.0/24</strong> network for traffic sent from R3 to R1.
-              Avoid using an NVI configuration. Verify reachability by sending a ping to <strong>192.168.100.1</strong> from
-              R3.
+              BeCertifiedToday.com engineers were tasked to support a new site rollout. On <strong>R2</strong>, configure
+              dynamic one-to-one address mapping using a standard list named <strong>XLATE</strong> so traffic sourced from
+              <strong>R3</strong> can be translated into pool <strong>test_pool</strong> on the <strong>10.10.10.0/24</strong>
+              network when it is sent toward <strong>R1</strong>. Do not use an NVI configuration. When you are done, confirm
+              reachability with a ping from <strong>R3</strong> to <strong>192.168.100.1</strong>.
             </li>
             <li>
-              <strong>Task 2 (R3):</strong> from configuration mode, assign <strong>Ethernet0/2</strong> via DHCP:
-              <code>interface e0/2</code> then <code>ip address dhcp</code> (see Spoiler for the exact prompt sequence).
+              <strong>Task 2 (R3):</strong> from configuration mode, assign <strong>GigabitEthernet0/2</strong> via DHCP:
+              <code>interface GigabitEthernet0/2</code> then <code>ip address dhcp</code> (see Spoiler for the exact prompt sequence).
             </li>
             <li>
-              <strong>Task 3:</strong> On <strong>R1</strong>, use <code>config t</code> then <code>ntp master 1</code> to
+              <strong>Task 3:</strong> On <strong>R1</strong>, use <code>configure terminal</code> then <code>ntp master 1</code> to
               act as the NTP server. On <strong>R2</strong>, configure an NTP client to <strong>10.1.2.1</strong> (not a
               peer). See Spoiler for the exact R1 prompt sequence.
             </li>
             <li>
               Configure SSH access from R1 to R3, while excluding access via other remote connection protocols using the
               user <strong>root</strong> and password <strong>s3cret</strong> on router <strong>R3</strong> using RSA. Verify
-              connectivity from router R1 to R3 using a destination address assigned to interface E0/2 on R3.
+              connectivity from router R1 to R3 using a destination address assigned to interface GigabitEthernet0/2 on R3.
             </li>
           </ol>
         </div>
@@ -608,11 +610,11 @@
       </div>
 
       <p class="objective">
-        This simulation focuses on <strong>R2</strong> for a guided NAT checklist (standard ACL <code>XLATE</code>, pool
-        <code>test_pool</code>, and <code>ip nat inside source list</code>). Open <strong>R1</strong> or
-        <strong>R3</strong> for read-only exhibits (NTP server / toward-R2 addressing on R1; DHCP client and SSH lines on
-        R3). Use <strong>Helper</strong> and <strong>Spoiler</strong> for full context. Complete interfaces, inside/outside
-        NAT placement, NTP client on R2, DHCP on R3, and full SSH hardening in a real rack or packet tracer.
+        <strong>Disclaimer:</strong> This website is an independent training resource created for educational purposes only.
+        It is not affiliated with, endorsed by, sponsored by, or approved by Cisco Systems, Inc. Cisco and related trademarks
+        are the property of Cisco Systems, Inc. All practice questions, explanations, and study materials on this site are
+        original or based on general knowledge and are intended as a guide to help users prepare for certification exams.
+        Practice questions are not actual Cisco exam questions. Any similarity to official exam content is coincidental.
       </p>
     </main>
   </div>
@@ -653,8 +655,8 @@
           <button type="button" class="btn btn-secondary" id="swResetBtn">Reset lab</button>
         </div>
         <div id="passBanner" class="pass-banner" role="status">
-          NAT core checklist on R2 complete (ACL XLATE, pool test_pool, inside source list). Configure inside/outside
-          interfaces, NTP client to 10.1.2.1, R3 DHCP and SSH, then verify ping and SSH per the task list.
+          Task 1 checklist on R2 complete (XLATE permits, NAT on GigabitEthernet0/1 and GigabitEthernet0/0, pool test_pool,
+          inside source list). Configure NTP client to 10.1.2.1, R3 DHCP and SSH, then verify ping and SSH per the task list.
         </div>
       </footer>
     </div>
@@ -693,8 +695,8 @@
       </div>
       <footer class="cli-modal-footer">
         <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
-          Read-only exhibit: <code>show run</code> / <code>show running-config</code> prints a fixed snapshot. Use
-          <code>conf t</code>, <code>interface …</code>, <code>exit</code>/<code>end</code> to move modes like IOS.
+          Read-only exhibit: <code>show running-config</code> prints a fixed snapshot. Use
+          <code>configure terminal</code>, <code>interface …</code>, <code>exit</code> or <code>end</code> to move modes like IOS.
         </p>
       </footer>
     </div>
@@ -733,7 +735,10 @@
       </div>
       <footer class="cli-modal-footer">
         <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
-          Read-only exhibit for Task 2 and Task 4: use <code>show run</code> to review sample DHCP client and SSH lines.
+          Read-only exhibit for Task 2 and Task 4: use <code>show running-config</code> to review the baseline; after you configure DHCP
+          on GigabitEthernet0/2 and SSH, the sim still shows this static snapshot (commands are not merged into <code>show running-config</code>).
+          After Task 1 finishes on <strong>R2</strong>, from R3 exec run <code>ping 192.168.100.1</code> — success shows <code>.!!!!</code>;
+          before Task 1 (or after <strong>Reset lab</strong>) the same ping shows <code>....</code> and 0 percent success.
         </p>
       </footer>
     </div>
@@ -756,30 +761,31 @@
         <section class="topology-scrape" aria-label="Helper notes">
           <h2>IP Services Sim v2 — implementation hints</h2>
           <p>
-            Task 1 (R2): build standard ACL <strong>XLATE</strong> (permit sources for R3), define
-            <code>ip nat pool test_pool …</code> on 10.10.10.0/24, then <code>ip nat inside source list XLATE pool test_pool</code>
-            without NVI. Apply <code>ip nat inside</code> / <code>ip nat outside</code> on the correct interfaces toward R3
-            and R1. From R3, ping <code>192.168.100.1</code> after routing and NAT are consistent.
+            BeCertifiedToday.com engineers were tasked to support a new site rollout. <strong>Task 1 (R2):</strong> build a
+            standard ACL <strong>XLATE</strong> (permit the right sources for R3), define <code>ip nat pool test_pool …</code>
+            on 10.10.10.0/24, then <code>ip nat inside source list XLATE pool test_pool</code> without NVI. Apply
+            <code>ip nat inside</code> / <code>ip nat outside</code> on the interfaces toward R3 and R1. From R3, ping
+            <code>192.168.100.1</code> after routing and NAT are consistent.
           </p>
           <p>
-            <strong>Task 2 (R3):</strong> DHCP client on E0/2 — from <code>R3(config)#</code> use
-            <code>interface e0/2</code>, then under the interface prompt <code>ip address dhcp</code>. Ensure the DHCP server
+            <strong>Task 2 (R3):</strong> DHCP client on GigabitEthernet0/2 — from <code>R3(config)#</code> use
+            <code>interface GigabitEthernet0/2</code>, then under the interface prompt <code>ip address dhcp</code>. Ensure the DHCP server
             (typically R1 or another service router) offers a scope for that segment.
           </p>
           <p>
-            <strong>Task 3:</strong> On <strong>R1</strong> from exec, <code>config t</code> (or <code>configure terminal</code>),
+            <strong>Task 3:</strong> On <strong>R1</strong> from exec, <code>configure terminal</code>,
             then <code>ntp master 1</code> so R1 is the NTP server. On <strong>R2</strong>, add <code>ntp server 10.1.2.1</code>
             so R2 is a client only (not a peer) to the address on R1 facing R2.
           </p>
           <p>
             Task 4 (R3): RSA key (<code>crypto key generate rsa</code>), local user <code>root</code> with secret
             <code>s3cret</code>, <code>line vty 0 4</code> with <code>transport input ssh</code> only, then SSH from R1 to
-            R3’s E0/2 address.
+            R3’s GigabitEthernet0/2 address.
           </p>
           <pre class="helper-cli">R2# show ip nat translations
 R2# show access-lists XLATE
 R3# show ip interface brief
-R1# ssh root@&lt;r3-e0-2-address&gt;</pre>
+R1# ssh root@&lt;r3-gigabitethernet0-2-address&gt;</pre>
         </section>
       </div>
     </div>
@@ -806,20 +812,20 @@ R1# ssh root@&lt;r3-e0-2-address&gt;</pre>
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
               <span class="spoiler-terminal-title">R2 — Terminal</span>
             </div>
-            <pre class="spoiler-terminal-pre">! Run configure terminal first if you are at R2#
-R2(config)# ip access-list standard XLATE //Note: The name of the ACL may be different so please check carefully!
-R2(config-std-nacl)#permit 10.2.3.3
-R2(config-std-nacl)#permit 192.168.3.1
-R2(config-std-nacl)#permit 10.1.3.11
-R2(config-std-nacl)#exit
-R2(config)# interface e0/1
-R2(config-if)#ip nat inside
-R2(config-if)#exit
-R2(config)#interface e0/0
-R2(config-if)#ip nat outside
-R2(config-if)#exit
-R2(config)#ip nat pool test_pool 10.10.10.1 10.10.10.254 netmask 255.255.255.0
-R2(config)#ip nat inside source list XLATE pool test_pool</pre>
+            <pre class="spoiler-terminal-pre">R2# configure terminal
+R2(config)# ip access-list standard XLATE
+R2(config-std-nacl)# permit 10.2.3.3
+R2(config-std-nacl)# permit 192.168.3.1
+R2(config-std-nacl)# permit 10.1.3.11
+R2(config-std-nacl)# exit
+R2(config)# interface GigabitEthernet0/1
+R2(config-if)# ip nat inside
+R2(config-if)# exit
+R2(config)# interface GigabitEthernet0/0
+R2(config-if)# ip nat outside
+R2(config-if)# exit
+R2(config)# ip nat pool test_pool 10.10.10.1 10.10.10.254 netmask 255.255.255.0
+R2(config)# ip nat inside source list XLATE pool test_pool</pre>
           </div>
         </div>
 
@@ -830,9 +836,9 @@ R2(config)#ip nat inside source list XLATE pool test_pool</pre>
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
               <span class="spoiler-terminal-title">R3 — Terminal</span>
             </div>
-            <pre class="spoiler-terminal-pre">! Run configure terminal first if you are at R3#
-R3(config)#interface e0/2
-R3(config-if)#ip address dhcp</pre>
+            <pre class="spoiler-terminal-pre">R3# configure terminal
+R3(config)# interface GigabitEthernet0/2
+R3(config-if)# ip address dhcp</pre>
           </div>
         </div>
 
@@ -843,8 +849,8 @@ R3(config-if)#ip address dhcp</pre>
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
               <span class="spoiler-terminal-title">R1 — Terminal</span>
             </div>
-            <pre class="spoiler-terminal-pre">R1#config t
-R1(config)#ntp master 1 //Configure R1 as an NTP server</pre>
+            <pre class="spoiler-terminal-pre">R1# configure terminal
+R1(config)# ntp master 1</pre>
           </div>
         </div>
 
@@ -855,14 +861,13 @@ R1(config)#ntp master 1 //Configure R1 as an NTP server</pre>
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
               <span class="spoiler-terminal-title">R3 — Terminal</span>
             </div>
-            <pre class="spoiler-terminal-pre">R3#configure terminal
-R3(config)#ip domain-name lab.local
-R3(config)#crypto key generate rsa modulus 1024
-R3(config)#username root privilege 15 secret s3cret
-R3(config)#line vty 0 4
-R3(config-line)#login local
-R3(config-line)#transport input ssh
-R3(config-line)#end</pre>
+            <pre class="spoiler-terminal-pre">R3# configure terminal
+R3(config)# crypto key generate rsa modulus 1024
+R3(config)# username root privilege 15 secret s3cret
+R3(config)# line vty 0 4
+R3(config-line)# login local
+R3(config-line)# transport input ssh
+R3(config-line)# end</pre>
           </div>
         </div>
       </div>
@@ -882,71 +887,319 @@ R3(config-line)#end</pre>
       var ROUTER_HOST = "R1";
       var ROUTER3_HOST = "R3";
 
-      /** Snapshot for R2 `show running-config` / `show run` while lab runs */
+      /** Snapshot for R2 `show running-config` while lab runs */
       var SWITCH_SHOW_RUNNING_SNAPSHOT = [
         "Building configuration...",
         "",
+        "!",
         "hostname R2",
         "!",
-        "! --- add NAT, NTP client, and interface nat inside/outside in a real topology ---",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "ip cef",
+        "no ipv6 cef",
+        "!",
+        "!",
+        "!",
+        "!",
+        "license udi pid CISCO2911/K9 sn FTX15243203-",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "ip domain-name 9tut.com",
+        "!",
+        "!",
+        "spanning-tree mode pvst",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "interface Loopback1",
+        " ip address 192.168.2.1 255.255.255.255",
+        "!",
+        "interface GigabitEthernet0/0",
+        " ip address 10.1.2.2 255.255.255.0",
+        " duplex auto",
+        " speed auto",
+        "!",
+        "interface GigabitEthernet0/1",
+        " ip address 10.2.3.2 255.255.255.0",
+        " duplex auto",
+        " speed auto",
+        "!",
+        "interface GigabitEthernet0/2",
+        " no ip address",
+        " duplex auto",
+        " speed auto",
+        " shutdown",
+        "!",
+        "interface Vlan1",
+        " no ip address",
+        " shutdown",
+        "!",
+        "ip classless",
+        "ip route 10.1.3.1 255.255.255.255 10.1.2.1",
+        "ip route 192.168.100.1 255.255.255.255 10.1.2.1",
+        "!",
+        "ip flow-export version 9",
+        "!",
+        "!",
+        "!",
+        "no cdp run",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "line con 0",
+        "!",
+        "line aux 0",
+        "!",
+        "line vty 0 4",
+        " login",
+        "!",
+        "!",
+        "!",
         "end",
       ].join("\r\n");
 
-      /** R1 exhibit — NTP master, 10.1.2.1 on link to R2 (topology) */
+      /** R1 exhibit — baseline running-config (GigabitEthernet0/x, DHCP pool TEST, static toward 10.10.10.0/24) */
       var ROUTER_SHOW_RUN_SNAPSHOT = [
         "Building configuration...",
         "",
         "hostname R1",
         "!",
-        "ntp master 1",
         "!",
-        "interface Ethernet0/0",
-        " ip address 10.1.2.1 255.255.255.0",
         "!",
-        "interface Ethernet0/2",
-        " ip address 10.1.3.1 255.255.255.0",
+        "!",
+        "ip dhcp excluded-address 10.1.3.1 10.1.3.10",
+        "!",
+        "ip dhcp pool TEST",
+        " network 10.1.3.0 255.255.255.0",
+        "!",
+        "!",
+        "!",
+        "ip cef",
+        "no ipv6 cef",
+        "!",
+        "!",
+        "!",
+        "!",
+        "license udi pid CISCO2911/K9 sn FTX1524YQKB-",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "ip domain-name 9tut.com",
+        "!",
+        "!",
+        "spanning-tree mode pvst",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
         "!",
         "interface Loopback1",
-        " ip address 192.168.100.1 255.255.255.0",
+        " ip address 192.168.100.1 255.255.255.255",
+        "!",
+        "interface GigabitEthernet0/0",
+        " ip address 10.1.2.1 255.255.255.0",
+        " duplex auto",
+        " speed auto",
+        "!",
+        "interface GigabitEthernet0/1",
+        " no ip address",
+        " duplex auto",
+        " speed auto",
+        " shutdown",
+        "!",
+        "interface GigabitEthernet0/2",
+        " ip address 10.1.3.1 255.255.255.0",
+        " duplex auto",
+        " speed auto",
+        "!",
+        "interface Vlan1",
+        " no ip address",
+        " shutdown",
+        "!",
+        "ip classless",
+        "ip route 10.10.10.0 255.255.255.0 10.1.2.2",
+        "!",
+        "ip flow-export version 9",
+        "!",
+        "!",
+        "!",
+        "no cdp run",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "line con 0",
+        "!",
+        "line aux 0",
+        "!",
+        "line vty 0 4",
+        " login",
+        " transport input none",
+        "!",
+        "!",
         "!",
         "end",
       ].join("\r\n");
 
-      /** R3 exhibit — DHCP on E0/2, SSH-only VTY */
+      /** R3 exhibit — baseline GigabitEthernet0/x, default route via R2; lab adds DHCP on GigabitEthernet0/2 and SSH on VTY */
       var ROUTER3_SHOW_RUN_SNAPSHOT = [
         "Building configuration...",
         "",
         "hostname R3",
         "!",
-        "interface Ethernet0/2",
-        " ip address dhcp",
         "!",
-        "ip domain-name lab.local",
         "!",
-        "username root privilege 15 secret 5 $1$LAB$hashed",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "ip cef",
+        "no ipv6 cef",
+        "!",
+        "!",
+        "!",
+        "!",
+        "license udi pid CISCO2911/K9 sn FTX15240TK0-",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "ip domain-name 9tut.com",
+        "!",
+        "!",
+        "spanning-tree mode pvst",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "interface Loopback1",
+        " ip address 192.168.3.1 255.255.255.255",
+        "!",
+        "interface GigabitEthernet0/0",
+        " no ip address",
+        " duplex auto",
+        " speed auto",
+        " shutdown",
+        "!",
+        "interface GigabitEthernet0/1",
+        " ip address 10.2.3.3 255.255.255.0",
+        " duplex auto",
+        " speed auto",
+        "!",
+        "interface GigabitEthernet0/2",
+        " no ip address",
+        " duplex auto",
+        " speed auto",
+        "!",
+        "interface Vlan1",
+        " no ip address",
+        " shutdown",
+        "!",
+        "ip classless",
+        "ip route 0.0.0.0 0.0.0.0 10.2.3.2",
+        "!",
+        "ip flow-export version 9",
+        "!",
+        "!",
+        "!",
+        "no cdp run",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "line con 0",
+        "!",
+        "line aux 0",
         "!",
         "line vty 0 4",
-        " login local",
-        " transport input ssh",
+        " login",
+        "!",
+        "!",
         "!",
         "end",
       ].join("\r\n");
 
       /**
-       * R2 NAT checklist: ACL XLATE → permit → exit to config → pool → inside source list (no overload / no NVI).
+       * R2 Task 1 — full IOS sequence: ACL XLATE with three permits, NAT inside/outside on Gi0/1 and Gi0/0, pool, inside source list.
        */
       var STEPS = [
         { mode: "exec", test: function (raw) {
-          var u = normalize(raw);
-          return u === "conf t" || u === "config t" || u === "configure terminal";
+          return normalize(raw) === "configure terminal";
         }},
         { mode: "config", test: function (raw) {
           return normalize(raw) === "ip access-list standard xlate";
         }},
         { mode: "config-std-nacl", test: function (raw) {
-          return normalize(raw) === "permit any";
+          return normalize(raw) === "permit 10.2.3.3";
         }},
         { mode: "config-std-nacl", test: function (raw) {
+          return normalize(raw) === "permit 192.168.3.1";
+        }},
+        { mode: "config-std-nacl", test: function (raw) {
+          return normalize(raw) === "permit 10.1.3.11";
+        }},
+        { mode: "config-std-nacl", test: function (raw) {
+          return normalize(raw) === "exit";
+        }},
+        { mode: "config", test: function (raw) {
+          return normalize(raw) === "interface gigabitethernet0/1";
+        }},
+        { mode: "config-if", test: function (raw) {
+          return normalize(raw) === "ip nat inside";
+        }},
+        { mode: "config-if", test: function (raw) {
+          return normalize(raw) === "exit";
+        }},
+        { mode: "config", test: function (raw) {
+          return normalize(raw) === "interface gigabitethernet0/0";
+        }},
+        { mode: "config-if", test: function (raw) {
+          return normalize(raw) === "ip nat outside";
+        }},
+        { mode: "config-if", test: function (raw) {
           return normalize(raw) === "exit";
         }},
         { mode: "config", test: function (raw) {
@@ -973,15 +1226,7 @@ R3(config-line)#end</pre>
 
       function matchShowRun(raw) {
         var u = normalize(raw);
-        return (
-          u === "show running-config" ||
-          u === "show run" ||
-          u === "sh run" ||
-          u === "sh running-config" ||
-          u === "do show run" ||
-          u === "do show running-config" ||
-          u === "do sh run"
-        );
+        return u === "show running-config" || u === "do show running-config";
       }
 
       function promptForStep(index) {
@@ -995,7 +1240,20 @@ R3(config-line)#end</pre>
       }
 
       var stepIndex = 0;
+      /** Set true when R2 Task 1 (NAT STEPS) completes; cleared on Reset lab. Drives R3 ping to 192.168.100.1. */
+      var task1R2NatComplete = false;
       var swPromptOverride = null;
+
+      var R3_PING_LO1_SUCCESS =
+        "Type escape sequence to abort.\n" +
+        "Sending 5, 100-byte ICMP Echos to 192.168.100.1, timeout is 2 seconds:\n" +
+        ".!!!!\n" +
+        "Success rate is 80 percent (4/5), round-trip min/avg/max = 28/32/36 ms";
+      var R3_PING_LO1_FAIL =
+        "Type escape sequence to abort.\n" +
+        "Sending 5, 100-byte ICMP Echos to 192.168.100.1, timeout is 2 seconds:\n" +
+        "....\n" +
+        "Success rate is 0 percent (0/5)";
 
       var swCliOverlay = document.getElementById("swCliOverlay");
       var swCliDialog = document.getElementById("swCliDialog");
@@ -1089,6 +1347,7 @@ R3(config-line)#end</pre>
 
       function resetSwLab() {
         stepIndex = 0;
+        task1R2NatComplete = false;
         swPromptOverride = null;
         swScrollback.innerHTML = "";
         passBanner.classList.remove("visible");
@@ -1118,9 +1377,10 @@ R3(config-line)#end</pre>
           stepIndex += 1;
           swPromptOverride = null;
           if (stepIndex >= STEPS.length) {
+            task1R2NatComplete = true;
             swPrompt.textContent = SWITCH_HOST + "#";
             passBanner.classList.add("visible");
-            appendSw("line-sys", "[OK] NAT ACL / pool / inside source list sequence complete on R2.");
+            appendSw("line-sys", "[OK] Task 1 complete on R2: XLATE permits, NAT inside/outside on GigabitEthernet0/1 and GigabitEthernet0/0, pool test_pool, and inside source list.");
           } else {
             setSwPrompt();
           }
@@ -1129,7 +1389,7 @@ R3(config-line)#end</pre>
         }
       }
 
-      /** R1 — IOS-like modes + show run (read-only exhibit) */
+      /** R1 — IOS-like modes + show running-config (read-only exhibit) */
       var r1Mode = "exec";
 
       function r1PromptForMode() {
@@ -1163,12 +1423,12 @@ R3(config-line)#end</pre>
           r1Prompt.textContent = r1PromptForMode();
           return;
         }
-        if (r1Mode === "exec" && (u === "conf t" || u === "config t" || u === "configure terminal")) {
+        if (r1Mode === "exec" && u === "configure terminal") {
           r1Mode = "config";
           r1Prompt.textContent = r1PromptForMode();
           return;
         }
-        if (r1Mode === "config" && (u.startsWith("interface ") || u.startsWith("int "))) {
+        if (r1Mode === "config" && u.startsWith("interface ")) {
           r1Mode = "config-if";
           r1Prompt.textContent = r1PromptForMode();
           return;
@@ -1187,7 +1447,7 @@ R3(config-line)#end</pre>
         appendR1("line-bad", "% Invalid input");
       }
 
-      /** R3 — IOS-like modes + show run (read-only exhibit) */
+      /** R3 — IOS-like modes + show running-config (read-only exhibit) */
       var r3Mode = "exec";
 
       function r3PromptForMode() {
@@ -1216,17 +1476,22 @@ R3(config-line)#end</pre>
           return;
         }
 
+        if (r3Mode === "exec" && u === "ping 192.168.100.1") {
+          appendR3("line-ping", task1R2NatComplete ? R3_PING_LO1_SUCCESS : R3_PING_LO1_FAIL);
+          return;
+        }
+
         if (r3Mode === "config-if" && u === "exit") {
           r3Mode = "config";
           r3Prompt.textContent = r3PromptForMode();
           return;
         }
-        if (r3Mode === "exec" && (u === "conf t" || u === "config t" || u === "configure terminal")) {
+        if (r3Mode === "exec" && u === "configure terminal") {
           r3Mode = "config";
           r3Prompt.textContent = r3PromptForMode();
           return;
         }
-        if (r3Mode === "config" && (u.startsWith("interface ") || u.startsWith("int "))) {
+        if (r3Mode === "config" && u.startsWith("interface ")) {
           r3Mode = "config-if";
           r3Prompt.textContent = r3PromptForMode();
           return;
