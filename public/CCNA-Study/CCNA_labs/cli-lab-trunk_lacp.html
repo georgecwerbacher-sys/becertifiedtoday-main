@@ -1194,10 +1194,16 @@ Sw2(config-if)# end</pre>
         if (t === "sh run" || t === "show run" || t === "sh running-config") t = "show running-config";
         if (t === "do show run" || t === "do sh run") t = "do show running-config";
         if (t === "sh ver" || t === "show ver" || t === "sh version") t = "show version";
-        if (t === "show int trunk" || t === "sh int trunk" || t === "sh interfaces trunk") {
+        if (
+          t === "show interface trunk" ||
+          t === "show int trunk" ||
+          t === "sh interface trunk" ||
+          t === "sh int trunk" ||
+          t === "sh interfaces trunk"
+        ) {
           t = "show interfaces trunk";
         }
-        if (t === "do show int trunk" || t === "do sh int trunk") {
+        if (t === "do show interface trunk" || t === "do show int trunk" || t === "do sh int trunk") {
           t = "do show interfaces trunk";
         }
         if (
