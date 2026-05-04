@@ -1,14 +1,15 @@
 <!doctype html>
 <!--
-  CLI lab baseline — same shell / terminal / modal patterns as public/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html.
-  Copy to public/ and extend STEPS, modals, and topology like the full Rapid PVST lab.
+  CLI lab baseline — patterns aligned with public/CCNA-Study/CCNA_labs/cli-lab-ip-services-sim-v2.html (multi-device,
+  tasks panel, spoiler terminal blocks, full IOS command forms). ENCOR reference:
+  public/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html.
 
   Includes:
-  - Switch CLI: IOS-like prompts (exec / config / config-if), STEPS[] progression, normalize(), % Invalid input
-  - Router CLI: separate read-only device (R1) with exec/config/if navigation + show run snapshot (mirrors SW10 rules)
-  - Device picker, draggable modals, local command history (ArrowUp/Down), pass banner, sim-nav, logo corner
+  - Primary device CLI: IOS-like prompts (exec / config / config-if / config-std-nacl), STEPS[] + normalize(), % Invalid input
+  - Optional read-only device (R1): show running-config snapshot; configure terminal + interface (full word only)
+  - Device picker, Helper / Spoiler modals, tasks-blue-box (same surface as device picker), draggable modals, command history
 
-  See also: public/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html for a complete multi-modal lab.
+  For a third CLI (e.g. R3), copy the R1 modal + submit/reset/open pattern from cli-lab-ip-services-sim-v2.html.
 -->
 <html lang="en">
 <head>
@@ -64,6 +65,39 @@
     .tasks li {
       margin: 6px 0;
     }
+    .tasks-blue-box {
+      margin-top: 14px;
+      padding: 16px 18px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      text-align: left;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      box-sizing: border-box;
+    }
+    .tasks-blue-box .tasks {
+      color: #b8c3d6;
+      margin: 0 0 10px;
+    }
+    .tasks-blue-box .tasks:last-of-type,
+    .tasks-blue-box ol.tasks {
+      margin-bottom: 0;
+    }
+    .tasks-blue-box .tasks strong,
+    .tasks-blue-box ol.tasks strong {
+      color: #e6edf3;
+      font-weight: 800;
+    }
+    .tasks-blue-box ol.tasks {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+      color: #b8c3d6;
+    }
+    .tasks-blue-box ol.tasks li {
+      margin: 8px 0;
+      color: #b8c3d6;
+    }
     .diagram-wrap {
       background: #ffffff;
       border: 1px solid #2d3b5a;
@@ -116,6 +150,9 @@
       justify-content: center;
       gap: 8px;
       flex-wrap: wrap;
+    }
+    .device-links-after-tasks {
+      margin-top: 14px;
     }
     .device-link {
       appearance: none;
@@ -289,7 +326,8 @@
     .line-sys {
       color: #94a3b8;
     }
-    .line-showrun {
+    .line-showrun,
+    .line-ping {
       white-space: pre-wrap;
       color: #dbe5f0;
       margin: 6px 0 12px;
@@ -423,7 +461,85 @@
       width: min(760px, calc(100vw - 24px));
     }
     .spoiler-modal-dialog {
-      width: min(640px, calc(100vw - 24px));
+      width: min(720px, calc(100vw - 24px));
+    }
+    .spoiler-cli-body {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .spoiler-task {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .spoiler-terminal-cap {
+      margin: 0;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #7a8fb0;
+    }
+    .spoiler-terminal {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.82rem;
+      background: #0a0d12;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+    .spoiler-terminal-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: linear-gradient(180deg, #151d2e 0%, #101826 100%);
+      border-bottom: 1px solid #243044;
+      color: #9fb0cc;
+      font-size: 0.72rem;
+      font-weight: 600;
+      user-select: none;
+    }
+    .spoiler-terminal-dots {
+      display: inline-flex;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    .spoiler-terminal-dots span {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #3d4f6e;
+      box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35);
+    }
+    .spoiler-terminal-dots span:nth-child(1) {
+      background: #c94b4b;
+    }
+    .spoiler-terminal-dots span:nth-child(2) {
+      background: #c9a24b;
+    }
+    .spoiler-terminal-dots span:nth-child(3) {
+      background: #4bc96d;
+    }
+    .spoiler-terminal-title {
+      flex: 1;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .spoiler-terminal-pre {
+      margin: 0;
+      padding: 12px 12px 14px;
+      color: #c8d2e0;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      max-height: min(52vh, 420px);
+      overflow-y: auto;
     }
     .spoiler-cli-pre {
       margin: 0;
@@ -467,23 +583,40 @@
         </div>
         <div class="device-links">
           <button type="button" class="device-link" id="openSelectedCliBtn">Open SW1 CLI</button>
+        </div>
+        <div class="tasks-blue-box" aria-label="Lab tasks">
+          <p class="tasks">
+            <strong>Task order</strong>
+          </p>
+          <p class="tasks">
+            REPLACE: One-line overview (e.g. services must be completed in order).
+          </p>
+          <ol class="tasks">
+            <li>
+              On <strong>SW1</strong>: use <code>configure terminal</code> then set hostname per <code>STEPS</code> in the script
+              (full IOS command forms only — no <code>conf t</code> / <code>sh run</code> in this template).
+            </li>
+            <li>
+              On <strong>R1</strong> (read-only): use <code>show running-config</code> to view the sample snapshot; optional
+              <code>configure terminal</code> / <code>interface …</code> for prompt practice (output is static).
+            </li>
+          </ol>
+        </div>
+        <div class="device-links device-links-after-tasks" aria-label="Lab aids">
           <button type="button" class="device-link" id="openHelperFileBtn">Helper</button>
           <button type="button" class="device-link" id="inlineResetLabBtn">Reset lab</button>
           <button type="button" class="device-link" id="openSpoilerBtn">Spoiler</button>
         </div>
-        <p class="tasks" style="margin-top: 14px; text-align: left">
-          <strong>Tasks (replace)</strong>
-        </p>
-        <ol class="tasks" style="margin-top: 0">
-          <li>On <strong>SW1</strong>: enter configuration mode, set hostname to match the lab (see STEPS in script).</li>
-          <li>On <strong>R1</strong>: optional — use <code>show run</code> to inspect the sample snapshot (read-only).</li>
-        </ol>
       </div>
 
       <p class="objective">
-        REPLACE: Objective paragraph. This baseline uses a two-step STEPS array on the switch; extend with interfaces,
-        VLANs, EtherChannel, etc., following the same <code>mode</code> + <code>test()</code> pattern as
-        ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html.
+        REPLACE: Objective paragraph. Extend <code>STEPS</code> with the same <code>mode</code> + <code>test()</code> pattern as
+        <code>cli-lab-ip-services-sim-v2.html</code> (exec / config / config-if / config-std-nacl). Add optional third device
+        modals there if needed.
+      </p>
+      <p class="objective">
+        <strong>Disclaimer:</strong> REPLACE or remove — independent training resource; not affiliated with Cisco Systems, Inc.;
+        practice content is original or general-knowledge; not actual exam items.
       </p>
     </main>
   </div>
@@ -563,8 +696,9 @@
       </div>
       <footer class="cli-modal-footer">
         <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
-          Read-only lab aid: <code>show run</code> / <code>show running-config</code> prints a fixed snapshot. Use
-          <code>conf t</code>, <code>interface …</code>, <code>exit</code>/<code>end</code> to move modes like IOS.
+          Read-only exhibit: <code>show running-config</code> prints a fixed snapshot. Use
+          <code>configure terminal</code>, <code>interface …</code>, <code>exit</code> or <code>end</code> to move modes like IOS.
+          Use class <code>line-ping</code> in script for simulated ping output (see IP Services lab).
         </p>
       </footer>
     </div>
@@ -607,14 +741,32 @@
         <h2 id="spoilerTitle">Solution (spoiler)</h2>
         <button type="button" class="cli-modal-close" id="spoilerClose" aria-label="Close spoiler">×</button>
       </header>
-      <div class="cli-modal-body">
-        <pre class="spoiler-cli-pre">REPLACE: Full solution commands — one block or split per device in your real lab.</pre>
+      <div class="cli-modal-body spoiler-cli-body">
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-example">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-example">Example — primary device</p>
+          <div class="spoiler-terminal" role="region" aria-label="Example CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">SW1 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">SW1# configure terminal
+SW1(config)# hostname REPLACE_HOSTNAME</pre>
+          </div>
+        </div>
+        <p class="tasks" style="margin: 0; color: #8b9cbb; font-size: 0.85rem">
+          Optional: keep a legacy single block with <code>spoiler-cli-pre</code> for simple labs.
+        </p>
+        <pre class="spoiler-cli-pre">REPLACE# show running-config
+! optional second block</pre>
       </div>
     </div>
   </div>
 
+  <!-- sim-nav: replace REPLACE_* hrefs and labels when copying to public/. CCNA example: cli-lab-ip-services-sim-v2.html -->
   <nav class="sim-nav" aria-label="Simulation navigation">
-    <a class="sim-nav-btn sim-nav-home" href="/index.html">Home</a>
+    <a class="sim-nav-btn sim-nav-home" href="/REPLACE_HREF_PORTAL">REPLACE_NAV_PORTAL_LABEL</a>
+    <a class="sim-nav-btn" href="/REPLACE_HREF_STUDY">REPLACE_NAV_STUDY_LABEL</a>
+    <a class="sim-nav-btn" href="/index.html">Site home</a>
   </nav>
 
   <script>
@@ -623,7 +775,7 @@
       var SWITCH_HOST = "SW1";
       var ROUTER_HOST = "R1";
 
-      /** Snapshot for switch `show running-config` / `show run` while lab runs */
+      /** Snapshot for primary device `show running-config` while lab runs */
       var SWITCH_SHOW_RUNNING_SNAPSHOT = [
         "Building configuration...",
         "",
@@ -632,7 +784,7 @@
         "end",
       ].join("\r\n");
 
-      /** Router exhibit — printed when user types show run (SW10-style read-only device) */
+      /** Read-only router exhibit — printed when user types show running-config */
       var ROUTER_SHOW_RUN_SNAPSHOT = [
         "Building configuration...",
         "",
@@ -650,8 +802,7 @@
        */
       var STEPS = [
         { mode: "exec", test: function (raw) {
-          var u = normalize(raw);
-          return u === "conf t" || u === "config t" || u === "configure terminal";
+          return normalize(raw) === "configure terminal";
         }},
         { mode: "config", test: function (raw) {
           return normalize(raw) === "hostname labsim";
@@ -668,15 +819,7 @@
 
       function matchShowRun(raw) {
         var u = normalize(raw);
-        return (
-          u === "show running-config" ||
-          u === "show run" ||
-          u === "sh run" ||
-          u === "sh running-config" ||
-          u === "do show run" ||
-          u === "do show running-config" ||
-          u === "do sh run"
-        );
+        return u === "show running-config" || u === "do show running-config";
       }
 
       function promptForStep(index) {
@@ -685,6 +828,7 @@
         if (m === "exec") return SWITCH_HOST + "#";
         if (m === "config") return SWITCH_HOST + "(config)#";
         if (m === "config-if") return SWITCH_HOST + "(config-if)#";
+        if (m === "config-std-nacl") return SWITCH_HOST + "(config-std-nacl)#";
         return SWITCH_HOST + "#";
       }
 
@@ -754,6 +898,10 @@
           swPrompt.textContent = SWITCH_HOST + "(config-if)#";
           return;
         }
+        if (swPromptOverride === "config-std-nacl") {
+          swPrompt.textContent = SWITCH_HOST + "(config-std-nacl)#";
+          return;
+        }
         if (swPromptOverride === "exec") {
           swPrompt.textContent = SWITCH_HOST + "#";
           return;
@@ -803,7 +951,7 @@
         }
       }
 
-      /** Router: IOS-like modes + show run only for output (pattern from SW10 in PVST lab) */
+      /** Router: IOS-like modes + show running-config (read-only exhibit pattern) */
       var r1Mode = "exec";
 
       function r1PromptForMode() {
@@ -837,12 +985,12 @@
           r1Prompt.textContent = r1PromptForMode();
           return;
         }
-        if (r1Mode === "exec" && (u === "conf t" || u === "config t" || u === "configure terminal")) {
+        if (r1Mode === "exec" && u === "configure terminal") {
           r1Mode = "config";
           r1Prompt.textContent = r1PromptForMode();
           return;
         }
-        if (r1Mode === "config" && (u.startsWith("interface ") || u.startsWith("int "))) {
+        if (r1Mode === "config" && u.startsWith("interface ")) {
           r1Mode = "config-if";
           r1Prompt.textContent = r1PromptForMode();
           return;
