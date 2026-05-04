@@ -107,6 +107,19 @@
       outline: 2px solid var(--accent-border);
       outline-offset: 3px;
     }
+    a.header-sign-up.header-sign-up--live {
+      cursor: pointer;
+      border-color: #3d9d72;
+      background: rgba(31, 122, 88, 0.22);
+      color: #e8f4ee;
+    }
+    a.header-sign-up.header-sign-up--live:hover {
+      background: rgba(31, 122, 88, 0.34);
+      color: #fff;
+    }
+    a.header-sign-up.header-sign-up--live:focus-visible {
+      outline-color: #5ccb98;
+    }
     /* Site-wide primary CTA — CCNP ENCOR training */
     .cta-main {
       display: inline-flex;
@@ -171,56 +184,6 @@
     a.header-cta-main:focus-visible {
       outline: 2px solid #9ec0ff;
       outline-offset: 3px;
-    }
-    .hero-main-cta {
-      margin: 0 0 clamp(28px, 5vw, 40px);
-      padding: clamp(18px, 3.5vw, 22px) clamp(18px, 3vw, 22px);
-      border-radius: 14px;
-      border: 1px solid rgba(45, 59, 90, 0.2);
-      background: #fff;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    }
-    .hero-main-cta-label {
-      margin: 0 0 12px;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: #2f66bf;
-    }
-    .hero-main-cta-actions {
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 10px;
-    }
-    @media (min-width: 480px) {
-      .hero-main-cta-actions .cta-main {
-        align-self: flex-start;
-      }
-    }
-    .hero-main-cta-note {
-      margin: 0;
-      font-size: 0.88rem;
-      color: #3d4d63;
-      line-height: 1.45;
-    }
-    .hero-main-cta-note strong {
-      color: #0a6b3d;
-      font-weight: 700;
-    }
-    button.header-sign-up {
-      font: inherit;
-      cursor: not-allowed;
-    }
-    .header-sign-up:disabled {
-      opacity: 0.55;
-      border-style: dashed;
-      color: var(--muted);
-    }
-    .header-sign-up:disabled:hover {
-      background: transparent;
-      color: var(--muted);
     }
     .brand {
       display: inline-flex;
@@ -642,6 +605,10 @@
       padding-top: clamp(36px, 6vw, 56px);
       border-top: 1px solid var(--border);
     }
+    .hero-content .funnel > .formats-section {
+      margin-top: clamp(20px, 4vw, 36px);
+      padding-top: clamp(22px, 4vw, 36px);
+    }
     .formats-inner {
       max-width: 1080px;
       margin: 0 auto;
@@ -745,12 +712,13 @@
       display: grid;
       gap: clamp(16px, 3vw, 22px);
       grid-template-columns: 1fr;
+      align-items: stretch;
     }
     @media (min-width: 600px) and (max-width: 959px) {
       .formats-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
-      .formats-grid > li:last-child {
+      .formats-grid--tri > li:last-child {
         grid-column: 1 / -1;
       }
     }
@@ -758,9 +726,93 @@
       .formats-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
-      .formats-grid > li:last-child {
+      .formats-grid--tri > li:last-child {
         grid-column: auto;
       }
+    }
+    .samples-stack {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(28px, 5vw, 40px);
+      margin: 0 0 clamp(56px, 10vw, 80px);
+    }
+    .samples-block {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+    .samples-block-title {
+      margin: 0 0 8px;
+      font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #7a9fd6;
+    }
+    .samples-block-lead {
+      margin: 0 0 clamp(16px, 3vw, 22px);
+      max-width: 62ch;
+      color: var(--muted);
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.55;
+    }
+    .samples-block-hub {
+      margin: 0 0 clamp(14px, 2.5vw, 18px);
+      max-width: 62ch;
+      color: #b8c3d6;
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.55;
+    }
+    .samples-block-hub a {
+      color: #a8c4f0;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .samples-block-hub a:hover {
+      color: #c8daf8;
+    }
+    .samples-block-hub a:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    .formats-section .format-card .portal-launch-callout {
+      margin: 0 0 clamp(12px, 2vw, 16px);
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(220, 90, 90, 0.55);
+      background: linear-gradient(165deg, rgba(110, 28, 32, 0.55) 0%, rgba(42, 12, 16, 0.82) 100%);
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.25) inset,
+        0 8px 24px rgba(0, 0, 0, 0.28);
+      max-width: none;
+    }
+    .formats-section .format-card .portal-launch-heading {
+      margin: 0 0 8px;
+      font-size: clamp(1.02rem, 2.4vw, 1.12rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      color: var(--text);
+    }
+    .formats-section .format-card .portal-launch-sub {
+      margin: 0;
+      color: #b8c3d6;
+      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
+      line-height: 1.55;
+    }
+    .formats-section .format-card .portal-countdown {
+      display: block;
+      margin-top: 10px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+      font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+      color: #e6edf3;
+      letter-spacing: 0.06em;
+    }
+    .formats-section .format-card .portal-countdown.portal-countdown--live {
+      color: #7dcea0;
     }
     .format-card {
       height: 100%;
@@ -770,6 +822,41 @@
       border: 1px solid var(--border);
       background: var(--surface);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+    .format-card--soon-disabled {
+      overflow: hidden;
+      opacity: 0.72;
+      pointer-events: none;
+      filter: grayscale(0.45) brightness(0.92);
+      border-style: dashed;
+      border-color: rgba(100, 118, 150, 0.45);
+      box-shadow: none;
+    }
+    .format-card-soon-banner {
+      margin: calc(-1 * clamp(18px, 3.5vw, 24px)) calc(-1 * clamp(18px, 3.5vw, 24px)) clamp(12px, 2vw, 16px);
+      padding: 11px clamp(14px, 3vw, 20px);
+      text-align: center;
+      font-size: clamp(0.72rem, 1.85vw, 0.84rem);
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #f2f3f8;
+      background: linear-gradient(90deg, #5c5f6e 0%, #454854 45%, #5c5f6e 100%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .samples-stack .formats-grid > li {
+      display: flex;
+      min-width: 0;
+    }
+    .samples-stack .format-card {
+      flex: 1 1 auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .samples-stack .format-card > .format-sample:last-child {
+      margin-top: auto;
     }
     .format-card h3 {
       margin: 0 0 10px;
@@ -835,6 +922,26 @@
       outline: 1px solid rgba(79, 132, 216, 0.35);
       outline-offset: 2px;
       border-radius: 2px;
+    }
+    .formats-section .formats-grid > li {
+      display: flex;
+      min-width: 0;
+    }
+    .formats-section .formats-grid .format-card {
+      flex: 1 1 auto;
+      width: 100%;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .formats-section .format-card--path-cta-bottom:has(.portal-launch-callout) > .portal-launch-callout {
+      margin-top: auto;
+    }
+    .formats-section .format-card--path-cta-bottom:not(:has(.portal-launch-callout)) > .format-sample--main-cta {
+      margin-top: auto;
+    }
+    .formats-section .formats-grid .format-card:not(.format-card--path-cta-bottom) > .format-sample:last-child {
+      margin-top: auto;
     }
     .faq-section {
       margin-top: clamp(40px, 8vw, 72px);
@@ -909,6 +1016,59 @@
       color: #b8c3d6;
       font-size: clamp(0.92rem, 2.1vw, 0.98rem);
       line-height: 1.6;
+    }
+    .coming-soon-section {
+      margin-top: clamp(28px, 5vw, 48px);
+      padding: clamp(28px, 5vw, 48px) clamp(20px, 4vw, 40px) clamp(36px, 6vw, 56px);
+      border-top: 1px solid var(--border);
+      background: rgba(13, 21, 40, 0.25);
+    }
+    .coming-soon-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: clamp(20px, 3.5vw, 26px) clamp(20px, 3vw, 24px);
+      border-radius: 14px;
+      border: 1px dashed rgba(90, 143, 216, 0.45);
+      background: var(--surface);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+    .coming-soon-label {
+      margin: 0 0 12px;
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #f0e6d4;
+      background: rgba(120, 75, 20, 0.5);
+      border: 1px solid rgba(212, 160, 70, 0.45);
+    }
+    .coming-soon-section h2 {
+      margin: 0 0 clamp(14px, 2.5vw, 18px);
+      font-size: clamp(1.12rem, 2.6vw, 1.28rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .coming-soon-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      color: #b8c3d6;
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.5;
+      font-variant-numeric: tabular-nums;
+    }
+    .coming-soon-list li {
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: rgba(13, 21, 40, 0.5);
+      border: 1px solid rgba(45, 59, 90, 0.75);
     }
     .faq-answer p {
       margin: 0 0 12px;
@@ -1050,12 +1210,15 @@
           class="header-cta-main"
           href="https://becertifiedtoday-encor.vercel.app/"
           rel="noopener noreferrer"
-          aria-label="Access Cisco ENCOR training portal today"
-          >ACCESS CISCO ENCOR TRAINING PORTAL TODAY</a
+          aria-label="Access ENCOR training portal today"
+          >ACCESS ENCOR TRAINING PORTAL TODAY</a
         >
-        <button type="button" class="header-sign-up" disabled aria-label="CCNA Training Portal (coming soon)">
-          CCNA Training Portal
-        </button>
+        <a
+          class="header-sign-up header-sign-up--live"
+          href="/CCNA-Study/ccna-index.html"
+          aria-label="CCNA Training Portal — open CCNA study hub (live)"
+          >CCNA Training Portal</a
+        >
       </div>
     </header>
     <figure class="hero-banner">
@@ -1090,101 +1253,253 @@
             </li>
             <li>New questions are added continuously to keep preparation current.</li>
           </ul>
-          <div class="hero-main-cta">
-            <p class="hero-main-cta-label">Main training portal</p>
-            <div class="hero-main-cta-actions">
-              <a
-                class="cta-main"
-                href="https://becertifiedtoday-encor.vercel.app/"
-                rel="noopener noreferrer"
-                >ACCESS CISCO ENCOR TRAINING PORTAL TODAY</a
-              >
-              <p class="hero-main-cta-note">
-                <strong>Live now</strong> — full ENCOR question bank, labs, drag-and-drop, and timed simulation in your browser.
+          <section class="formats-section" aria-labelledby="formats-title">
+            <div class="formats-inner">
+              <p class="formats-head">Training paths</p>
+              <h2 id="formats-title">CHOOSE YOUR CERTIFICATION TRAINING PORTAL</h2>
+              <p class="formats-lead">
+                Pick a training path to enter the right practice library and study flow.
               </p>
+              <ul class="formats-grid formats-grid--tri" aria-label="Certification training containers">
+                <li>
+                  <article
+                    class="format-card format-card--soon-disabled"
+                    aria-labelledby="comptia-training-title"
+                    aria-describedby="comptia-soon-banner"
+                  >
+                    <p class="format-card-soon-banner" id="comptia-soon-banner" role="status">Security+ coming soon</p>
+                    <h3 id="comptia-training-title">CompTIA Training</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/comptia-training-card-thumbnail.png"
+                        width="1024"
+                        height="682"
+                        alt="IT professional with a laptop and a security lock hologram, suggesting cybersecurity training."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>
+                      Security+ training path with targeted practice sets and exam-style preparation.
+                    </p>
+                  </article>
+                </li>
+                <li>
+                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="ccna-training-title">
+                    <h3 id="ccna-training-title">CCNA Training</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/ccna-training-card-thumbnail.png"
+                        width="1024"
+                        height="683"
+                        alt="Ethernet cables plugged into a network switch with green status LEDs."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <div class="portal-launch-callout" aria-labelledby="ccna-training-portal-heading">
+                      <p class="portal-launch-heading" id="ccna-training-portal-heading">CCNA Training Portal</p>
+                      <p class="portal-launch-sub">
+                        Going live soon — full dashboard and checkout unlock with the portal. Time remaining:
+                      </p>
+                      <span
+                        id="portal-countdown-home"
+                        class="portal-countdown"
+                        data-live-at="2026-05-10T16:00:00.000Z"
+                        role="timer"
+                        aria-live="polite"
+                        aria-atomic="true"
+                        >—</span>
+                    </div>
+                    <p>
+                      Foundation networking track with practice questions, labs, and guided study sets.
+                    </p>
+                    <p class="format-sample format-sample--main-cta">
+                      <a
+                        class="cta-main cta-main--block"
+                        href="/index.html"
+                        aria-label="Access CCNA training and samples on the Be Certified Today home page"
+                        >ACCESS CCNA TRAINING PORTAL TODAY</a
+                      >
+                    </p>
+                  </article>
+                </li>
+                <li>
+                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="ccnp-training-title">
+                    <h3 id="ccnp-training-title">CCNP Training</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/ccnp-training-card-thumbnail.png"
+                        width="1024"
+                        height="682"
+                        alt="Network engineer working with fiber optic cables in a data center server room."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p class="format-card-encor-live">
+                      <span class="encor-live-badge">Live</span>
+                      <span class="format-card-encor-live-label">CCNP ENCOR training is up and running.</span>
+                    </p>
+                    <p>
+                      Professional-level training with interactive formats, labs, drag-and-drop, and timed simulation.
+                    </p>
+                    <p class="format-sample format-sample--main-cta">
+                      <a
+                        class="cta-main cta-main--block"
+                        href="https://becertifiedtoday-encor.vercel.app/"
+                        rel="noopener noreferrer"
+                        >ACCESS ENCOR TRAINING PORTAL TODAY</a
+                      >
+                    </p>
+                  </article>
+                </li>
+              </ul>
             </div>
+          </section>
+          <div class="samples-stack">
+            <section class="samples-block" aria-labelledby="home-ccna-samples-title">
+              <h2 class="samples-block-title" id="home-ccna-samples-title">CCNA samples</h2>
+              <p class="samples-block-lead">
+                Free CCNA-format activities on this site—sample multiple-choice, drag-and-drop, and a dual-switch CLI lab you can run in the browser.
+              </p>
+              <p class="samples-block-hub">
+                <a href="/CCNA-Study/ccna-index.html">CCNA study hub</a> — blueprint domain weights, more samples, purchase details,
+                and study layout.
+              </p>
+              <ul class="formats-grid formats-grid--tri" aria-label="CCNA sample activities">
+                <li>
+                  <article class="format-card" aria-labelledby="home-ccna-q-title">
+                    <h3 id="home-ccna-q-title">CCNA · Sample questions</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/ccna-sample-questions-thumbnail.png"
+                        width="1024"
+                        height="586"
+                        alt="Five CCNA multiple-choice sample questions linked with Next question controls."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>
+                      Open the first item, use <strong>Check answer</strong> for feedback, then <strong>Next question</strong> to move through the chain. Question 5 ends the set.
+                    </p>
+                    <p class="format-sample">
+                      <a href="/sample?track=ccna-questions">Open sample questions</a>
+                    </p>
+                  </article>
+                </li>
+                <li>
+                  <article class="format-card" aria-labelledby="home-ccna-dd-title">
+                    <h3 id="home-ccna-dd-title">CCNA · Sample drag-and-drop</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/ccna-dragdrop-ftp-tftp-thumbnail.png"
+                        width="1024"
+                        height="590"
+                        alt="CCNA drag-and-drop: match descriptions to FTP and TFTP buckets."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>Match file-transfer descriptions to FTP and TFTP. Drag on desktop or tap-to-place on touch devices.</p>
+                    <p class="format-sample">
+                      <a href="/sample?track=ftp">Open sample drag-and-drop</a>
+                    </p>
+                  </article>
+                </li>
+                <li>
+                  <article class="format-card" aria-labelledby="home-ccna-lab-title">
+                    <h3 id="home-ccna-lab-title">CCNA · Sample lab</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/CCNA-Study/CCNA_Samples/ccna-index-sample-lab-thumbnail.png"
+                        width="1024"
+                        height="610"
+                        alt="Trunking and LACP lab: dual-switch topology with Sw1 and Sw2 CLI windows and guided tasks."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>
+                      <strong>Trunking &amp; LACP</strong> — dual switches, 802.1Q trunks, Po15, guided tasks in the browser.
+                    </p>
+                    <p class="format-sample">
+                      <a href="/sample?track=ccna-trunk">Open sample lab</a>
+                    </p>
+                  </article>
+                </li>
+              </ul>
+            </section>
+            <section class="samples-block" aria-labelledby="home-encor-samples-title">
+              <h2 class="samples-block-title" id="home-encor-samples-title">CCNP ENCOR samples</h2>
+              <p class="samples-block-lead">
+                Short ENCOR-format samples on the live ENCOR app—questions, drag-and-drop, and CLI lab.
+              </p>
+              <ul class="formats-grid formats-grid--tri" aria-label="CCNP ENCOR sample activities">
+                <li>
+                  <article class="format-card" aria-labelledby="home-format-q-title">
+                    <h3 id="home-format-q-title">CCNP-ENCOR · Sample questions</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/practice-questions-sample-thumbnail.jpg"
+                        width="1024"
+                        height="556"
+                        alt="Multiple-choice sample: OSPF designated router question with instant correct feedback."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>Try a short five-question interactive sample.</p>
+                    <p class="format-sample">
+                      <a href="https://becertifiedtoday-encor.vercel.app/sample?track=questions" rel="noopener noreferrer"
+                        >Open sample questions</a>
+                    </p>
+                  </article>
+                </li>
+                <li>
+                  <article class="format-card" aria-labelledby="home-format-dd-title">
+                    <h3 id="home-format-dd-title">CCNP-ENCOR · Sample drag-and-drop</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/drag-drop-sample-thumbnail.jpg"
+                        width="1024"
+                        height="535"
+                        alt="OSPF troubleshooting drag-and-drop sample: snippets moved into CLI-style blanks."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>Practice one performance-style drag-and-drop item.</p>
+                    <p class="format-sample">
+                      <a href="https://becertifiedtoday-encor.vercel.app/sample?track=drag" rel="noopener noreferrer"
+                        >Open sample drag-and-drop</a>
+                    </p>
+                  </article>
+                </li>
+                <li>
+                  <article class="format-card" aria-labelledby="home-format-lab-title">
+                    <h3 id="home-format-lab-title">CCNP-ENCOR · Sample lab</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/hands-on-lab-sample-thumbnail.jpg"
+                        width="1024"
+                        height="705"
+                        alt="Rapid PVST and LACP sample lab: simulated SW20 CLI over the topology diagram."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>Run a hands-on CLI simulation in the browser.</p>
+                    <p class="format-sample">
+                      <a href="https://becertifiedtoday-encor.vercel.app/sample?track=labs" rel="noopener noreferrer"
+                        >Open sample lab</a>
+                    </p>
+                  </article>
+                </li>
+              </ul>
+            </section>
           </div>
-          <ul class="formats-grid" aria-label="Sample practice formats">
-            <li>
-              <article class="format-card" aria-labelledby="home-format-q-title">
-                <h3 id="home-format-q-title">CCNP-ENCOR · Sample questions</h3>
-                <figure class="format-card-thumb">
-                  <img
-                    src="/images/practice-questions-sample-thumbnail.jpg"
-                    width="1024"
-                    height="556"
-                    alt="Multiple-choice sample: OSPF designated router question with instant correct feedback."
-                    decoding="async"
-                    loading="lazy"
-                  />
-                </figure>
-                <p>Try a short five-question interactive sample.</p>
-                <p class="format-sample">
-                  <a href="https://becertifiedtoday-encor.vercel.app/sample?track=questions" rel="noopener noreferrer"
-                    >Open sample questions</a>
-                </p>
-              </article>
-            </li>
-            <li>
-              <article class="format-card" aria-labelledby="home-format-lab-title">
-                <h3 id="home-format-lab-title">CCNP-ENCOR · Sample lab</h3>
-                <figure class="format-card-thumb">
-                  <img
-                    src="/images/hands-on-lab-sample-thumbnail.jpg"
-                    width="1024"
-                    height="705"
-                    alt="Rapid PVST and LACP sample lab: simulated SW20 CLI over the topology diagram."
-                    decoding="async"
-                    loading="lazy"
-                  />
-                </figure>
-                <p>Run a hands-on CLI simulation in the browser.</p>
-                <p class="format-sample">
-                  <a href="https://becertifiedtoday-encor.vercel.app/sample?track=labs" rel="noopener noreferrer"
-                    >Open sample lab</a>
-                </p>
-              </article>
-            </li>
-            <li>
-              <article class="format-card" aria-labelledby="home-format-dd-title">
-                <h3 id="home-format-dd-title">CCNP-ENCOR · Sample drag-and-drop</h3>
-                <figure class="format-card-thumb">
-                  <img
-                    src="/images/drag-drop-sample-thumbnail.jpg"
-                    width="1024"
-                    height="535"
-                    alt="OSPF troubleshooting drag-and-drop sample: snippets moved into CLI-style blanks."
-                    decoding="async"
-                    loading="lazy"
-                  />
-                </figure>
-                <p>Practice one performance-style drag-and-drop item.</p>
-                <p class="format-sample">
-                  <a href="https://becertifiedtoday-encor.vercel.app/sample?track=drag" rel="noopener noreferrer"
-                    >Open sample drag-and-drop</a>
-                </p>
-              </article>
-            </li>
-            <li>
-              <article class="format-card" aria-labelledby="home-format-ftp-title">
-                <h3 id="home-format-ftp-title">CCNA · Sample file-transfer drag-and-drop</h3>
-                <figure class="format-card-thumb">
-                  <img
-                    src="/images/ftp-tftp-drag-drop-sample-thumbnail.png"
-                    width="1024"
-                    height="544"
-                    alt="CCNA drag-and-drop practice: match descriptions to FTP or TFTP."
-                    decoding="async"
-                    loading="lazy"
-                  />
-                </figure>
-                <p>Drag-and-drop practice: match descriptions to FTP or TFTP.</p>
-                <p class="format-sample">
-                  <a href="/sample?track=ftp">Open sample</a>
-                </p>
-              </article>
-            </li>
-          </ul>
           <div class="card purchase-card" id="purchase">
             <div class="purchase-card-inner">
               <div class="purchase-card-main">
@@ -1226,7 +1541,7 @@
                         class="cta-main cta-main--block"
                         href="https://becertifiedtoday-encor.vercel.app/"
                         rel="noopener noreferrer"
-                        >ACCESS CISCO ENCOR TRAINING PORTAL TODAY</a
+                        >ACCESS ENCOR TRAINING PORTAL TODAY</a
                       >
                     </p>
                     <p class="purchase-access-disclaimer">
@@ -1251,100 +1566,6 @@
           </div>
         </div>
       </div>
-
-      <section class="formats-section" aria-labelledby="formats-title">
-        <div class="formats-inner">
-          <p class="formats-head">Training paths</p>
-          <h2 id="formats-title">CHOOSE YOUR CERTIFICATION TRAINING PORTAL</h2>
-          <p class="formats-lead">
-            Pick a training path to enter the right practice library and study flow.
-          </p>
-          <ul class="formats-grid" aria-label="Certification training containers">
-            <li>
-              <article class="format-card" aria-labelledby="comptia-training-title">
-                <h3 id="comptia-training-title">CompTIA Training</h3>
-                <figure class="format-card-thumb">
-                  <img
-                    src="/images/comptia-training-card-thumbnail.png"
-                    width="1024"
-                    height="682"
-                    alt="IT professional with a laptop and a security lock hologram, suggesting cybersecurity training."
-                    decoding="async"
-                    loading="lazy"
-                  />
-                </figure>
-                <p>
-                  Security+ training path with targeted practice sets and exam-style preparation.
-                </p>
-                <p class="format-sample">
-                  Try the samples on this page for question, lab, and drag-and-drop formats; additional CompTIA tracks are added over time.
-                </p>
-              </article>
-            </li>
-            <li>
-              <article class="format-card" aria-labelledby="ccna-training-title">
-                <h3 id="ccna-training-title">CCNA Training</h3>
-                <figure class="format-card-thumb">
-                  <img
-                    src="/images/ccna-training-card-thumbnail.png"
-                    width="1024"
-                    height="683"
-                    alt="Ethernet cables plugged into a network switch with green status LEDs."
-                    decoding="async"
-                    loading="lazy"
-                  />
-                </figure>
-                <p>
-                  Foundation networking track with practice questions, labs, and guided study sets.
-                </p>
-                <p class="format-sample">
-                  <a class="format-sample-plain-link" href="/CCNA-Study/ccna-index.html"
-                    >Use the site-wide samples above; CCNA banks use the same interactive modes as they roll out.</a>
-                </p>
-              </article>
-            </li>
-            <li>
-              <article class="format-card" aria-labelledby="ccnp-training-title">
-                <h3 id="ccnp-training-title">CCNP Training</h3>
-                <figure class="format-card-thumb">
-                  <img
-                    src="/images/ccnp-training-card-thumbnail.png"
-                    width="1024"
-                    height="682"
-                    alt="Network engineer working with fiber optic cables in a data center server room."
-                    decoding="async"
-                    loading="lazy"
-                  />
-                </figure>
-                <p class="format-card-encor-live">
-                  <span class="encor-live-badge">Live</span>
-                  <span class="format-card-encor-live-label">CCNP ENCOR training is up and running.</span>
-                </p>
-                <p>
-                  Professional-level training with interactive formats, labs, drag-and-drop, and timed simulation.
-                </p>
-                <p class="format-sample format-sample--main-cta">
-                  <a
-                    class="cta-main cta-main--block"
-                    href="https://becertifiedtoday-encor.vercel.app/"
-                    rel="noopener noreferrer"
-                    >ACCESS CISCO ENCOR TRAINING PORTAL TODAY</a
-                  >
-                </p>
-                <p class="format-sample">
-                  <strong>CCNP Enterprise concentrations</strong><br />
-                  300-410 ENARSI -coming soon<br />
-                  300-415 ENSDWI -coming soon<br />
-                  300-420 ENSLD -coming soon<br />
-                  300-435 ENAUTO -coming soon<br />
-                  300-440 ENCC -coming soon<br />
-                  300-445 ENNA -coming soon
-                </p>
-              </article>
-            </li>
-          </ul>
-        </div>
-      </section>
 
       <section class="faq-section" id="faq" aria-labelledby="faq-title">
         <div class="faq-inner">
@@ -1438,6 +1659,21 @@
           </ul>
         </div>
       </section>
+
+      <section class="coming-soon-section" aria-labelledby="coming-soon-concentrations-title">
+        <div class="coming-soon-inner">
+          <p class="coming-soon-label">Coming soon</p>
+          <h2 id="coming-soon-concentrations-title">CCNP Enterprise concentrations</h2>
+          <ul class="coming-soon-list">
+            <li>300-410 ENARSI -coming soon</li>
+            <li>300-415 ENSDWI -coming soon</li>
+            <li>300-420 ENSLD -coming soon</li>
+            <li>300-435 ENAUTO -coming soon</li>
+            <li>300-440 ENCC -coming soon</li>
+            <li>300-445 ENNA -coming soon</li>
+          </ul>
+        </div>
+      </section>
     </main>
     <aside class="site-disclaimer" aria-label="Legal disclaimer">
       <p>
@@ -1452,8 +1688,8 @@
     <footer>
       © Be Certified Today<a
         class="footer-portal-at"
-        href="/CCNA-Study/CCNA_Training_Portal.html"
-        aria-label="CCNA Training Portal"
+        href="/CCNA-Study/ccna-index.html"
+        aria-label="CCNA study hub"
         >@</a>
     </footer>
   </div>
@@ -1467,6 +1703,40 @@
           sessionStorage.removeItem("ccnpSampleKind");
         } catch (e) {}
       }
+    })();
+    (function () {
+      var el = document.getElementById("portal-countdown-home");
+      if (!el || !el.dataset.liveAt) return;
+      var target = new Date(el.dataset.liveAt).getTime();
+      if (Number.isNaN(target)) return;
+
+      function pad(n) {
+        return n < 10 ? "0" + n : String(n);
+      }
+
+      function formatRemaining(ms) {
+        if (ms <= 0) return null;
+        var totalSec = Math.floor(ms / 1000);
+        var days = Math.floor(totalSec / 86400);
+        var h = Math.floor((totalSec % 86400) / 3600);
+        var m = Math.floor((totalSec % 3600) / 60);
+        var s = totalSec % 60;
+        return days + "d " + pad(h) + "h " + pad(m) + "m " + pad(s) + "s";
+      }
+
+      function tick() {
+        var ms = target - Date.now();
+        if (ms <= 0) {
+          el.textContent = "Live now";
+          el.classList.add("portal-countdown--live");
+          clearInterval(timerId);
+          return;
+        }
+        el.textContent = formatRemaining(ms);
+      }
+
+      tick();
+      var timerId = setInterval(tick, 1000);
     })();
   </script>
 </body>
