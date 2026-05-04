@@ -3,6 +3,34 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* Site logo — top right, links to home (sample questions + drag-and-drop) */
+.site-logo-corner {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 12000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(11, 16, 32, 0.55);
+  border: 1px solid #2d3b5a;
+  padding: 6px;
+  backdrop-filter: blur(4px);
+  text-decoration: none;
+  color: inherit;
+  box-sizing: border-box;
+}
+.site-logo-corner img {
+  display: block;
+  width: 52px;
+  height: 52px;
+}
+.site-logo-corner:focus-visible {
+  outline: 2px solid #4f84d8;
+  outline-offset: 3px;
+}
+
 body {
   touch-action: manipulation;
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0.12);

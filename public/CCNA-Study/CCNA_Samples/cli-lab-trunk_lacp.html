@@ -444,6 +444,14 @@
       width: 52px;
       height: 52px;
     }
+    a.site-logo-corner {
+      text-decoration: none;
+      color: inherit;
+    }
+    a.site-logo-corner:focus-visible {
+      outline: 2px solid #4f84d8;
+      outline-offset: 3px;
+    }
     .cli-modal-dialog,
     .terminal {
       color-scheme: dark;
@@ -566,9 +574,9 @@
 </head>
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
-  <div class="site-logo-corner" aria-hidden="true">
+  <a class="site-logo-corner" href="/index.html" aria-label="Be Certified Today — site home">
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="" />
-  </div>
+  </a>
 
   <div class="wrap">
     <main class="card">
@@ -922,9 +930,7 @@ Sw2(config-if)# end</pre>
 
   <!-- sim-nav: replace REPLACE_* hrefs and labels when copying to public/. CCNA example: cli-lab-ip-services-sim-v2.html -->
   <nav class="sim-nav" aria-label="Simulation navigation">
-    <a class="sim-nav-btn sim-nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">CCNA portal</a>
-    <a class="sim-nav-btn" href="/CCNA-Study/ccna-index.html">CCNA study</a>
-    <a class="sim-nav-btn" href="/index.html">Site home</a>
+    <a class="sim-nav-btn sim-nav-home" href="/CCNA-Study/ccna-index.html">CCNA study</a>
   </nav>
 
   <script>

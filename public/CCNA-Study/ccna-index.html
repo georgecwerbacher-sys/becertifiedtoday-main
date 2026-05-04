@@ -327,6 +327,7 @@
       flex-wrap: wrap;
       gap: 14px;
       align-items: center;
+      margin-top: 8px;
     }
     .promo-btn {
       display: inline-flex;
@@ -348,40 +349,72 @@
       filter: brightness(1.1);
       color: #fff !important;
     }
-    button.promo-btn {
-      font: inherit;
-      cursor: not-allowed;
-    }
-    .promo-btn:disabled {
-      filter: none;
-      box-shadow: none;
-      border-style: dashed;
-      border-color: rgba(79, 132, 216, 0.35);
-      background: rgba(13, 21, 40, 0.55);
-      color: #8fa6c6 !important;
-    }
-    .promo-btn:disabled:hover {
-      filter: none;
-      color: #8fa6c6 !important;
-    }
-    .promo-soon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      padding: 12px 18px;
-      border-radius: 10px;
-      border: 1px dashed rgba(79, 132, 216, 0.3);
-      background: rgba(13, 21, 40, 0.45);
-      color: #6b7f9e;
+    .purchase-tagline {
+      margin: 0 0 6px;
+      font-size: 0.82rem;
       font-weight: 700;
-      font-size: 0.95rem;
-      font-family: inherit;
-      cursor: not-allowed;
-      user-select: none;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #6b8ab8;
     }
-    .promo-soon:disabled {
-      opacity: 1;
+    .purchase-price {
+      margin: 0 0 18px;
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .purchase-price-unit {
+      font-size: 0.55em;
+      font-weight: 700;
+      color: #9fb0cc;
+    }
+    .purchase-includes {
+      margin: 0 0 18px;
+      padding-left: 1.25rem;
+      color: #c6d4e8;
+      font-size: clamp(0.95rem, 2.1vw, 1.02rem);
+      line-height: 1.55;
+      max-width: 68ch;
+    }
+    .purchase-includes li {
+      margin-bottom: 10px;
+    }
+    .purchase-note {
+      margin: 0 0 22px;
+      color: #b8c3d6;
+      font-size: clamp(0.95rem, 2.1vw, 1.02rem);
+      line-height: 1.6;
+      max-width: 68ch;
+    }
+    .purchase-track-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 12px;
+    }
+    .purchase-track-title {
+      margin: 0;
+      font-size: clamp(1.08rem, 2.5vw, 1.22rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .purchase-live-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #e6edf3;
+      background: linear-gradient(135deg, #1f7a58, #166644);
+      border: 1px solid #2a9d6a;
+    }
+    .purchase-foot {
+      margin-bottom: 0 !important;
     }
     .sample-grid {
       margin: 0;
@@ -488,16 +521,21 @@
     }
 
     .topic-card-body:has(.practice-mode-actions) > p {
-      flex: 0 1 auto;
+      flex: 1 1 auto;
+      min-height: 0;
     }
     .practice-mode-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 2px;
+      margin-top: auto;
+      width: 100%;
+      flex-shrink: 0;
     }
     .practice-mode-actions .card-action {
-      flex: 1 1 120px;
+      flex: 1 1 100%;
+      width: 100%;
+      box-sizing: border-box;
       cursor: pointer;
       font: inherit;
       border: 1px solid var(--accent-border);
@@ -665,23 +703,39 @@
           </p>
         </section>
 
-        <section class="subject-section" aria-labelledby="register-title">
+        <section class="subject-section" aria-labelledby="purchase-title">
           <div class="promo-card">
-            <h2 class="section-head" id="register-title">Turn this roadmap into reps</h2>
+            <h2 class="section-head" id="purchase-title">Purchase</h2>
+            <p class="purchase-tagline">30-day full access</p>
+            <p class="purchase-price">$19.99 <span class="purchase-price-unit">/ 30 days</span></p>
             <p class="promo-lead">
-              Reading the blueprint is not the same as sitting for a timed mix of multiple choice, labs, and drag-and-drop. Full
-              access here gives you the depth to work every domain with feedback: broad question banks, browser CLI simulations,
-              drag-and-drop sets, and exam-style runs—<strong>$19.99 for 30 days</strong>, everything in the browser, no PDF
-              packs or extra software. If you have already worked through the samples and want the same structure at full scale,
-              registering is the straight line from “I know the topics” to “I can execute under pressure.”
+              One payment unlocks full access to all training courses and certification tracks for one month: practice questions,
+              hands-on CLI labs, drag-and-drop items, and full timed exam simulations.
+            </p>
+            <ul class="purchase-includes">
+              <li>All courses, question banks, and study modes</li>
+              <li>Every CLI simulation lab across available tracks</li>
+              <li>Standard and JSON drag-and-drop sets across all courses</li>
+              <li>Timed test simulations (mixed question, lab, and drag-and-drop runs)</li>
+            </ul>
+            <p class="purchase-note">
+              No recurring membership. Thirty days of access for a single price—when it ends, renew only if you want another month.
+              No additional software is required; everything runs in your browser. We do not collect customer information for
+              promotion or sale. We do not use customer data from purchases for marketing or profiling.
+            </p>
+            <div class="purchase-track-head">
+              <h3 class="purchase-track-title">CCNA training</h3>
+              <span class="purchase-live-badge">Live</span>
+            </div>
+            <p class="promo-lead">
+              CCNA training—the full practice library is up and running in your browser: questions, labs, drag-and-drop, and timed
+              simulation.
+            </p>
+            <p class="promo-lead purchase-foot">
+              No membership required. 30-day full access. No PDFs or downloads, including labs.
             </p>
             <p class="promo-actions">
-              <button type="button" class="promo-btn" disabled aria-label="Get full access and register (coming soon)">
-                Get full access and register
-              </button>
-              <button type="button" class="promo-soon" disabled aria-label="Compare all tracks and pricing. Coming soon.">
-                Coming Soon
-              </button>
+              <a class="promo-btn" href="/#purchase">Get 30-day access</a>
             </p>
           </div>
         </section>

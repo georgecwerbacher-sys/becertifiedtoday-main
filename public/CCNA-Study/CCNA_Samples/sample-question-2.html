@@ -17,7 +17,7 @@
       place-items: center;
       background: #0b1020;
       color: #e6edf3;
-      padding: 16px;
+      padding: 16px 16px calc(80px + env(safe-area-inset-bottom, 0px));
       box-sizing: border-box;
     }
     .card {
@@ -98,11 +98,48 @@
     .next-link:hover {
       filter: brightness(1.08);
     }
+    .sim-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(11, 16, 32, 0.94);
+      border-top: 1px solid #2d3b5a;
+      backdrop-filter: blur(10px);
+    }
+    .sim-nav-btn {
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 700;
+      min-width: 5.5rem;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .sim-nav-btn:hover {
+      filter: brightness(1.08);
+    }
+    .sim-nav-home {
+      background: #1a3d6e;
+    }
   </style>
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
 </head>
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
+  <a class="site-logo-corner" href="/index.html" aria-label="Be Certified Today — site home">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="" />
+  </a>
   <main class="card">
     <h1>How do TCP and UDP differ in the way that they establish a connection between two endpoints?</h1>
 <label class="choice"><input type="radio" name="q2" value="A" />A. TCP uses the three-way handshake, and UDP does not guarantee message delivery.</label>
@@ -110,15 +147,15 @@
     <label class="choice"><input type="radio" name="q2" value="C" />C. UDP provides reliable message transfer, and TCP is a connectionless protocol.</label>
     <label class="choice"><input type="radio" name="q2" value="D" />D. UDP uses SYN, SYN ACK, and FIN bits in the frame header while TCP uses SYN, SYN ACK, and ACK bits.</label>
 
-    <div class="actions">
-      <a class="home-link" href="/index.html">Home</a>
-    </div>
-
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div id="nextWrap" class="next-wrap">
       <a class="next-link" href="sample-question-3.html">Next question</a>
     </div>
   </main>
+
+  <nav class="sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="/CCNA-Study/ccna-index.html">CCNA study</a>
+  </nav>
 
   <script>
     (function () {
