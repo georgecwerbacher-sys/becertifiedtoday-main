@@ -708,14 +708,6 @@
           </div>
         </div>
       </div>
-      <footer class="cli-modal-footer">
-        <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
-          Same command sequence as Sw1. <code>show running-config</code> is a static exhibit. After Task 1 on <strong>both</strong>
-          switches, <code>show interfaces trunk</code> shows the Po15-style summary. After the <strong>full</strong> STEPS sequence on
-          both switches, <code>show etherchannel summary</code> shows the LACP bundle. From privileged exec,
-          <code>copy run start</code> counts toward lab completion.
-        </p>
-      </footer>
     </div>
   </div>
 
@@ -779,7 +771,8 @@
             <li>
               <strong>Task 1:</strong> On each switch, 802.1Q trunks on <code>GigabitEthernet0/1</code> and
               <code>GigabitEthernet0/2</code>; native VLAN <code>45</code>; <code>switchport trunk allowed vlan 15,45</code>.
-              After each physical interface block, return to global config with <code>exit</code>.
+              On each trunk (and on <code>Port-channel15</code> in Task 2), native and allowed-VLAN lines may be entered in
+              <strong>either order</strong>. After each physical interface block, return to global config with <code>exit</code>.
             </li>
             <li>
               <strong>Task 2:</strong> <code>interface range GigabitEthernet0/1 - 2</code>,
@@ -788,7 +781,10 @@
             </li>
             <li>Run the same STEPS sequence on <strong>Sw1</strong> and <strong>Sw2</strong>.</li>
             <li>After Task 1 on both switches, from PC1 run <code>ping 10.15.15.20</code>.</li>
-            <li>From enable, optional checks: <code>show interfaces trunk</code> and <code>show etherchannel summary</code>.</li>
+            <li>
+              From enable, optional: <code>show interfaces trunk</code> on a switch after <strong>that</strong> switch finishes Task 1
+              (same Po15-style summary on Sw1 and Sw2). <code>show etherchannel summary</code> after the full STEPS sequence on both switches.
+            </li>
             <li>Save on both switches from enable: <code>copy running-configuration startup-configuration</code>.</li>
           </ul>
         </section>
@@ -864,7 +860,8 @@ Sw2(config-if)# exit</pre>
             <li>Finish the Task 1 command sequence on <strong>Sw1</strong> and <strong>Sw2</strong> (you should still be at <code>Sw1(config)#</code> / <code>Sw2(config)#</code>).</li>
             <li>From <strong>PC1</strong>, run <code>ping 10.15.15.20</code>. The sim allows replies only after Task 1 is complete on both switches.</li>
             <li>
-              Optional: from privileged EXEC on either switch, <code>show interfaces trunk</code> (the sim prints the Po15-style summary once Task 1 is done on both).
+              Optional: from privileged EXEC on a switch, <code>show interfaces trunk</code> — same Po15-style summary on Sw1 or Sw2 once
+              <strong>that</strong> switch has finished Task 1.
             </li>
           </ul>
         </div>
@@ -1230,35 +1227,85 @@ Sw2(config-if)# end</pre>
         return u === "switchport trunk allowed vlan 15,45";
       }
 
+      function matchTrunkNative45(raw) {
+        return normalize(raw) === "switchport trunk native vlan 45";
+      }
+
+      /** Per-switch Gi0/1, Gi0/2, Po15: native and allowed VLAN lines may be entered in either order. */
+      var trunkVlanPairSw1 = {
+        gi1: { n: false, a: false },
+        gi2: { n: false, a: false },
+        po: { n: false, a: false },
+      };
+      var trunkVlanPairSw2 = {
+        gi1: { n: false, a: false },
+        gi2: { n: false, a: false },
+        po: { n: false, a: false },
+      };
+
+      function trunkVlanTryPair(pair, raw) {
+        if (matchTrunkNative45(raw)) {
+          if (pair.n) return false;
+          pair.n = true;
+          return true;
+        }
+        if (matchTrunkAllowed1545(raw)) {
+          if (pair.a) return false;
+          pair.a = true;
+          return true;
+        }
+        return false;
+      }
+
+      function testTrunkVlanGi1(raw, sw) {
+        var p = sw === 2 ? trunkVlanPairSw2.gi1 : trunkVlanPairSw1.gi1;
+        return trunkVlanTryPair(p, raw);
+      }
+      function testTrunkVlanGi2(raw, sw) {
+        var p = sw === 2 ? trunkVlanPairSw2.gi2 : trunkVlanPairSw1.gi2;
+        return trunkVlanTryPair(p, raw);
+      }
+      function testTrunkVlanPo(raw, sw) {
+        var p = sw === 2 ? trunkVlanPairSw2.po : trunkVlanPairSw1.po;
+        return trunkVlanTryPair(p, raw);
+      }
+
+      function resetAllTrunkVlanPairFlags() {
+        ["gi1", "gi2", "po"].forEach(function (k) {
+          trunkVlanPairSw1[k].n = trunkVlanPairSw1[k].a = false;
+          trunkVlanPairSw2[k].n = trunkVlanPairSw2[k].a = false;
+        });
+      }
+
       /** Indices 0..14 = Task 1 (Gi0/1–0/2 trunks + exit after each); 15..24 = Task 2 (range LACP, Po15 trunk, end). */
       var TASK1_LEN = 15;
 
       var LAB_STEPS = [
-        { mode: "exec", test: function (raw) { return normalize(raw) === "configure terminal"; }},
-        { mode: "config", test: function (raw) { return normalize(raw) === "vlan 15"; }},
-        { mode: "config", test: function (raw) { return normalize(raw) === "vlan 45"; }},
-        { mode: "config", test: function (raw) { return normalize(raw) === "interface gigabitethernet0/1"; }},
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "switchport trunk encapsulation dot1q"; }},
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "switchport mode trunk"; }},
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "switchport trunk native vlan 45"; }},
-        { mode: "config-if", test: function (raw) { return matchTrunkAllowed1545(raw); }},
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "exit"; }},
-        { mode: "config", test: function (raw) { return normalize(raw) === "interface gigabitethernet0/2"; }},
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "switchport trunk encapsulation dot1q"; }},
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "switchport mode trunk"; }},
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "switchport trunk native vlan 45"; }},
-        { mode: "config-if", test: function (raw) { return matchTrunkAllowed1545(raw); }},
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "exit"; }},
-        { mode: "config", test: function (raw) { return normalize(raw) === "interface range gigabitethernet0/1 - 2"; }},
-        { mode: "config-if-range", test: function (raw) { return normalize(raw) === "channel-protocol lacp"; }},
-        { mode: "config-if-range", test: function (raw) { return normalize(raw) === "channel-group 15 mode active"; }},
-        { mode: "config-if-range", test: function (raw) { return normalize(raw) === "exit"; }},
-        { mode: "config", test: function (raw) { return normalize(raw) === "interface port-channel15"; }},
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "switchport trunk encapsulation dot1q"; }},
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "switchport mode trunk"; }},
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "switchport trunk native vlan 45"; }},
-        { mode: "config-if", test: function (raw) { return matchTrunkAllowed1545(raw); }},
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "end"; }},
+        { mode: "exec", test: function (raw, sw) { return normalize(raw) === "configure terminal"; }},
+        { mode: "config", test: function (raw, sw) { return normalize(raw) === "vlan 15"; }},
+        { mode: "config", test: function (raw, sw) { return normalize(raw) === "vlan 45"; }},
+        { mode: "config", test: function (raw, sw) { return normalize(raw) === "interface gigabitethernet0/1"; }},
+        { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "switchport trunk encapsulation dot1q"; }},
+        { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "switchport mode trunk"; }},
+        { mode: "config-if", test: function (raw, sw) { return testTrunkVlanGi1(raw, sw); }},
+        { mode: "config-if", test: function (raw, sw) { return testTrunkVlanGi1(raw, sw); }},
+        { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "exit"; }},
+        { mode: "config", test: function (raw, sw) { return normalize(raw) === "interface gigabitethernet0/2"; }},
+        { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "switchport trunk encapsulation dot1q"; }},
+        { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "switchport mode trunk"; }},
+        { mode: "config-if", test: function (raw, sw) { return testTrunkVlanGi2(raw, sw); }},
+        { mode: "config-if", test: function (raw, sw) { return testTrunkVlanGi2(raw, sw); }},
+        { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "exit"; }},
+        { mode: "config", test: function (raw, sw) { return normalize(raw) === "interface range gigabitethernet0/1 - 2"; }},
+        { mode: "config-if-range", test: function (raw, sw) { return normalize(raw) === "channel-protocol lacp"; }},
+        { mode: "config-if-range", test: function (raw, sw) { return normalize(raw) === "channel-group 15 mode active"; }},
+        { mode: "config-if-range", test: function (raw, sw) { return normalize(raw) === "exit"; }},
+        { mode: "config", test: function (raw, sw) { return normalize(raw) === "interface port-channel15"; }},
+        { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "switchport trunk encapsulation dot1q"; }},
+        { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "switchport mode trunk"; }},
+        { mode: "config-if", test: function (raw, sw) { return testTrunkVlanPo(raw, sw); }},
+        { mode: "config-if", test: function (raw, sw) { return testTrunkVlanPo(raw, sw); }},
+        { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "end"; }},
       ];
 
       var HELP_DISABLED_MSG = "help feature disabled for tester";
@@ -1269,13 +1316,11 @@ Sw2(config-if)# end</pre>
         "% Error: Run copy running-configuration startup-configuration only from privileged EXEC (#), not from configuration mode.";
       var COPY_RUN_START_AFTER_STEPS_MSG =
         "% Error: Finish the full STEPS sequence on this switch until you return to privileged EXEC (#), then save to startup-config.";
-      var TRUNK_SW_SEQ_DONE_MSG =
-        "[OK] All STEPS commands entered on this switch. Complete the same sequence on the peer switch, verify PC1 ping to 10.15.15.20, then copy run start on Sw1 and Sw2 from enable.";
       var TRUNK_LAB_ALL_DONE_MSG =
         "[OK] Lab complete: trunks + LACP on both switches, PC1 reachability verified, startup-config saved on Sw1 and Sw2.";
       var PASS_BANNER_TRUNK_PENDING =
         "Complete the STEPS sequence on Sw1 and Sw2, verify PC1 ping to PC2, then from enable mode run copy running-configuration startup-configuration on both switches.";
-      /** Shown on Sw1/Sw2 after both switches finish Task 1 (Gi0/1–0/2 trunks + exits). */
+      /** Shown on Sw1 or Sw2 after that switch finishes Task 1 (Gi0/1–0/2 trunks + exits); same text on both. */
       var SHOW_INTERFACES_TRUNK_TASK1_MSG = [
         "Port        Mode         Encapsulation  Status        Native vlan",
         "Po15        on           802.1q         trunking      45",
@@ -1290,7 +1335,7 @@ Sw2(config-if)# end</pre>
         "Po15        15",
       ].join("\n");
       var SHOW_INTERFACES_TRUNK_WAIT_MSG =
-        "% Trunk summary not available yet — complete Task 1 (both trunks and exits) on Sw1 and Sw2 first.";
+        "% Trunk summary not available yet — complete Task 1 (both physical trunks and exits) on this switch first.";
       /** After both switches finish the full STEPS sequence (including Po15 + end). */
       var SHOW_ETHERCHANNEL_SUMMARY_MSG = [
         "Flags:  D - down        P - in port-channel",
@@ -1381,9 +1426,9 @@ Sw2(config-if)# end</pre>
        * IOS-like exit / end / conf t for prompt only — does not advance STEPS or change lab flags.
        * When the line matches the current LAB step, returns false so normal STEPS handling runs.
        */
-      function trySwNavSoftLine(line, stepIdx, getOvr, setOvrAndRefresh) {
+      function trySwNavSoftLine(line, stepIdx, getOvr, setOvrAndRefresh, swNum) {
         if (stepIdx >= LAB_STEPS.length) return false;
-        if (LAB_STEPS[stepIdx].test(line)) return false;
+        if (LAB_STEPS[stepIdx].test(line, swNum)) return false;
         var u = normalize(line);
         if (u === "configure terminal" && stepIdx > 0 && getOvr() === "exec") {
           setOvrAndRefresh(null);
@@ -1419,10 +1464,10 @@ Sw2(config-if)# end</pre>
        * After soft exit to (config)# (override "config"), re-enter the matching interface context so the
        * next STEPS line can be entered from (config-if)# again — does not advance stepIndex.
        */
-      function trySwReenterContextLine(line, stepIdx, getOvr, setOvrAndRefresh) {
+      function trySwReenterContextLine(line, stepIdx, getOvr, setOvrAndRefresh, swNum) {
         if (stepIdx >= LAB_STEPS.length) return false;
         if (getOvr() !== "config") return false;
-        if (LAB_STEPS[stepIdx].test(line)) return false;
+        if (LAB_STEPS[stepIdx].test(line, swNum)) return false;
         var u = normalize(line);
         if (stepIdx >= 4 && stepIdx <= 8 && u === "interface gigabitethernet0/1") {
           setOvrAndRefresh(null);
@@ -1639,8 +1684,19 @@ Sw2(config-if)# end</pre>
         sw2Cmdline.value = "";
         clearLocalHistory(swCmdline);
         clearLocalHistory(sw2Cmdline);
+        resetAllTrunkVlanPairFlags();
         setSw1Prompt();
         setSw2Prompt();
+      }
+
+      /** IOS-style feedback after a successful global VLAN create from (config)# (Sw1/Sw2). */
+      function appendVlanCreateSys(appendFn, line) {
+        var u = normalize(line);
+        if (u === "vlan 15") {
+          appendFn("line-sys", "VLAN 15 not in configuration.\nCreating VLAN 15.");
+        } else if (u === "vlan 45") {
+          appendFn("line-sys", "VLAN 45 not in configuration.\nCreating VLAN 45.");
+        }
       }
 
       function submitSw() {
@@ -1662,7 +1718,7 @@ Sw2(config-if)# end</pre>
         }
 
         if (matchShowInterfacesTrunk(line)) {
-          if (stepIndexSw1 >= TASK1_LEN && stepIndexSw2 >= TASK1_LEN) {
+          if (stepIndexSw1 >= TASK1_LEN) {
             appendSw("line-showrun line-show-trunk", SHOW_INTERFACES_TRUNK_TASK1_MSG);
           } else {
             appendSw("line-sys", SHOW_INTERFACES_TRUNK_WAIT_MSG);
@@ -1707,7 +1763,7 @@ Sw2(config-if)# end</pre>
           }, function (v) {
             sw1PromptOverride = v;
             setSw1Prompt();
-          })
+          }, 1)
         ) {
           return;
         }
@@ -1718,7 +1774,7 @@ Sw2(config-if)# end</pre>
           }, function (v) {
             sw1PromptOverride = v;
             setSw1Prompt();
-          })
+          }, 1)
         ) {
           return;
         }
@@ -1728,12 +1784,19 @@ Sw2(config-if)# end</pre>
           return;
         }
 
-        if (LAB_STEPS[stepIndexSw1].test(line)) {
+        if (LAB_STEPS[stepIndexSw1].test(line, 1)) {
+          appendVlanCreateSys(appendSw, line);
           stepIndexSw1 += 1;
+          if (stepIndexSw1 === 4) {
+            trunkVlanPairSw1.gi1.n = trunkVlanPairSw1.gi1.a = false;
+          } else if (stepIndexSw1 === 10) {
+            trunkVlanPairSw1.gi2.n = trunkVlanPairSw1.gi2.a = false;
+          } else if (stepIndexSw1 === 20) {
+            trunkVlanPairSw1.po.n = trunkVlanPairSw1.po.a = false;
+          }
           sw1PromptOverride = null;
           if (stepIndexSw1 >= LAB_STEPS.length) {
             swPrompt.textContent = promptForMode(SWITCH_HOST, "exec");
-            appendSw("line-sys", TRUNK_SW_SEQ_DONE_MSG);
             tryCompleteTrunkLab(function (cls, text) {
               appendSw(cls, text);
             });
@@ -1764,7 +1827,7 @@ Sw2(config-if)# end</pre>
         }
 
         if (matchShowInterfacesTrunk(line)) {
-          if (stepIndexSw1 >= TASK1_LEN && stepIndexSw2 >= TASK1_LEN) {
+          if (stepIndexSw2 >= TASK1_LEN) {
             appendSw2("line-showrun line-show-trunk", SHOW_INTERFACES_TRUNK_TASK1_MSG);
           } else {
             appendSw2("line-sys", SHOW_INTERFACES_TRUNK_WAIT_MSG);
@@ -1809,7 +1872,7 @@ Sw2(config-if)# end</pre>
           }, function (v) {
             sw2PromptOverride = v;
             setSw2Prompt();
-          })
+          }, 2)
         ) {
           return;
         }
@@ -1820,7 +1883,7 @@ Sw2(config-if)# end</pre>
           }, function (v) {
             sw2PromptOverride = v;
             setSw2Prompt();
-          })
+          }, 2)
         ) {
           return;
         }
@@ -1830,12 +1893,19 @@ Sw2(config-if)# end</pre>
           return;
         }
 
-        if (LAB_STEPS[stepIndexSw2].test(line)) {
+        if (LAB_STEPS[stepIndexSw2].test(line, 2)) {
+          appendVlanCreateSys(appendSw2, line);
           stepIndexSw2 += 1;
+          if (stepIndexSw2 === 4) {
+            trunkVlanPairSw2.gi1.n = trunkVlanPairSw2.gi1.a = false;
+          } else if (stepIndexSw2 === 10) {
+            trunkVlanPairSw2.gi2.n = trunkVlanPairSw2.gi2.a = false;
+          } else if (stepIndexSw2 === 20) {
+            trunkVlanPairSw2.po.n = trunkVlanPairSw2.po.a = false;
+          }
           sw2PromptOverride = null;
           if (stepIndexSw2 >= LAB_STEPS.length) {
             sw2Prompt.textContent = promptForMode(SWITCH2_HOST, "exec");
-            appendSw2("line-sys", TRUNK_SW_SEQ_DONE_MSG);
             tryCompleteTrunkLab(function (cls, text) {
               appendSw2(cls, text);
             });
