@@ -1,0 +1,1879 @@
+<!doctype html>
+<!--
+  CLI lab baseline — same shell / terminal / modal patterns as public/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html.
+  Copy to public/ and extend STEPS, modals, and topology like the full Rapid PVST lab.
+
+  Includes:
+  - R2 CLI: IOS-like prompts (exec / config / config-if / config-std-nacl), STEPS[] progression, normalize(), % Invalid input
+  - R1 / R3 CLI: read-only exhibits with show running-config snapshot (mirrors SW10-style router rules)
+  - Device picker (R1 / R2 / R3), draggable modals, local command history (ArrowUp/Down), pass banner, sim-nav, logo corner
+
+  See also: public/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html for a complete multi-modal lab.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IP Services Sim Version 2 | CCNA lab | Be Certified Today</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      padding-bottom: 88px;
+      box-sizing: border-box;
+    }
+    .wrap {
+      width: min(1000px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card {
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 22px 26px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.15rem, 2vw, 1.65rem);
+      line-height: 1.3;
+    }
+    .objective,
+    .tasks {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .tasks ol {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+    }
+    .tasks li {
+      margin: 6px 0;
+    }
+    .tasks-blue-box {
+      margin-top: 14px;
+      padding: 16px 18px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      text-align: left;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      box-sizing: border-box;
+    }
+    .tasks-blue-box .tasks {
+      color: #b8c3d6;
+      margin: 0 0 10px;
+    }
+    .tasks-blue-box .tasks:last-of-type,
+    .tasks-blue-box ol.tasks {
+      margin-bottom: 0;
+    }
+    .tasks-blue-box .tasks strong,
+    .tasks-blue-box ol.tasks strong {
+      color: #e6edf3;
+      font-weight: 800;
+    }
+    .tasks-blue-box ol.tasks {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+      color: #b8c3d6;
+    }
+    .tasks-blue-box ol.tasks li {
+      margin: 8px 0;
+      color: #b8c3d6;
+    }
+    .diagram-wrap {
+      background: #ffffff;
+      border: 1px solid #2d3b5a;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 8px;
+      text-align: center;
+    }
+    .diagram-stage {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      max-width: min(520px, 100%);
+      margin: 0 auto;
+      line-height: 0;
+    }
+    .diagram-stage img {
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+      border-radius: 8px;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .device-pick label {
+      margin-left: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .device-pick input {
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .device-links-after-tasks {
+      margin-top: 14px;
+    }
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
+      outline: none;
+    }
+    .topology-scrape {
+      margin-top: 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0c1222;
+      border: 1px solid #2a3b5c;
+      text-align: left;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    .topology-scrape h2 {
+      margin: 0 0 8px;
+      font-size: 0.95rem;
+      color: #e6edf3;
+    }
+    .topology-scrape ul.helper-bullets {
+      margin: 6px 0 4px;
+      padding-left: 1.25em;
+    }
+    .topology-scrape ul.helper-bullets li {
+      margin: 0.45em 0;
+    }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+      pointer-events: none;
+    }
+    .cli-modal-overlay.is-open {
+      display: block;
+    }
+    .cli-modal-dialog {
+      width: min(520px, calc(100vw - 24px));
+      max-height: min(85vh, 720px);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-dialog.is-dragging {
+      transition: none;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+    }
+    .cli-modal-header:active {
+      cursor: grabbing;
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-close:hover {
+      filter: brightness(1.1);
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
+    .cli-modal-footer {
+      padding: 10px 12px 12px;
+      border-top: 1px solid #2d3b5a;
+      flex-shrink: 0;
+    }
+    .terminal {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.88rem;
+      background: #0a0d12;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      padding: 12px 12px 10px;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      margin-top: 0;
+    }
+    .terminal.terminal-flash {
+      animation: cliFlash 0.9s ease;
+    }
+    @keyframes cliFlash {
+      0% {
+        box-shadow: 0 0 0 0 rgba(37, 75, 138, 0.9);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(37, 75, 138, 0);
+      }
+    }
+    .scrollback-area {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 360px;
+      margin-bottom: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #c8d2e0;
+      line-height: 1.45;
+    }
+    .line-user {
+      color: #7ec8ff;
+    }
+    .line-bad {
+      color: #fca5a5;
+    }
+    .line-sys {
+      color: #94a3b8;
+    }
+    .line-showrun,
+    .line-ping {
+      white-space: pre-wrap;
+      color: #dbe5f0;
+      margin: 6px 0 12px;
+      padding: 10px 10px 12px;
+      border-radius: 6px;
+      background: #06080c;
+      border: 1px solid #263043;
+      font-family: inherit;
+      line-height: 1.45;
+    }
+    .input-row {
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #243044;
+      padding-top: 8px;
+    }
+    .prompt-el {
+      flex-shrink: 0;
+      color: #fbbf24;
+      user-select: none;
+    }
+    .cmdline-input {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      color: #e6edf3;
+      font: inherit;
+      outline: none;
+      padding: 4px 0 4px 4px;
+    }
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-secondary {
+      background: #2a3040;
+      border-color: #4b556b;
+    }
+    .pass-banner {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .pass-banner.visible {
+      display: block;
+    }
+    .sim-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(11, 16, 32, 0.94);
+      border-top: 1px solid #2d3b5a;
+      backdrop-filter: blur(10px);
+    }
+    .sim-nav-btn {
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 700;
+      min-width: 5.5rem;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .sim-nav-btn:hover {
+      filter: brightness(1.08);
+    }
+    .sim-nav-home {
+      background: #1a3d6e;
+    }
+    .site-logo-corner {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 12000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(11, 16, 32, 0.55);
+      border: 1px solid #2d3b5a;
+      padding: 6px;
+      backdrop-filter: blur(4px);
+    }
+    .site-logo-corner img {
+      display: block;
+      width: 52px;
+      height: 52px;
+    }
+    .cli-modal-dialog,
+    .terminal {
+      color-scheme: dark;
+    }
+    .terminal input[type="text"],
+    .cmdline-input {
+      color-scheme: dark;
+      -webkit-appearance: none;
+      appearance: none;
+      background-color: transparent !important;
+    }
+    .helper-modal-dialog {
+      width: min(760px, calc(100vw - 24px));
+    }
+    .spoiler-modal-dialog {
+      width: min(720px, calc(100vw - 24px));
+    }
+    .spoiler-cli-body {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .spoiler-task {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .spoiler-terminal-cap {
+      margin: 0;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #7a8fb0;
+    }
+    .spoiler-terminal {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.82rem;
+      background: #0a0d12;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+    .spoiler-terminal-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: linear-gradient(180deg, #151d2e 0%, #101826 100%);
+      border-bottom: 1px solid #243044;
+      color: #9fb0cc;
+      font-size: 0.72rem;
+      font-weight: 600;
+      user-select: none;
+    }
+    .spoiler-terminal-dots {
+      display: inline-flex;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    .spoiler-terminal-dots span {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #3d4f6e;
+      box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35);
+    }
+    .spoiler-terminal-dots span:nth-child(1) {
+      background: #c94b4b;
+    }
+    .spoiler-terminal-dots span:nth-child(2) {
+      background: #c9a24b;
+    }
+    .spoiler-terminal-dots span:nth-child(3) {
+      background: #4bc96d;
+    }
+    .spoiler-terminal-title {
+      flex: 1;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .spoiler-terminal-pre {
+      margin: 0;
+      padding: 12px 12px 14px;
+      color: #c8d2e0;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      max-height: min(52vh, 420px);
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="site-logo-corner" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="" />
+  </div>
+
+  <div class="wrap">
+    <main class="card">
+      <h1>IP Services Sim Version 2</h1>
+
+      <div class="diagram-wrap" aria-label="Topology diagram">
+        <div class="diagram-stage">
+          <img
+            src="/CCNA-Study/CCNA_labs/ip-services-sim-v2-topology.png"
+            width="920"
+            height="446"
+            alt="Topology: R1, R2, and R3 in a triangle. R1 GigabitEthernet0/0 10.1.2.1 to R2 GigabitEthernet0/0 10.1.2.2; R1 GigabitEthernet0/2 10.1.3.1 to R3 GigabitEthernet0/2 (DHCP, e.g. 10.1.3.11); R2 GigabitEthernet0/1 10.2.3.2 to R3 GigabitEthernet0/1 10.2.3.3. R1 Loopback1 192.168.100.1; R2 Loopback1 192.168.2.1; R3 Loopback1 192.168.3.1."
+            decoding="async"
+          />
+        </div>
+        <div class="device-pick" role="group" aria-label="Device for CLI">
+          <strong style="color: #e6edf3">Select device</strong>
+          <label><input type="radio" name="labPrimaryDev" value="R1" /> R1</label>
+          <label><input type="radio" name="labPrimaryDev" value="R2" checked /> R2</label>
+          <label><input type="radio" name="labPrimaryDev" value="R3" /> R3</label>
+        </div>
+        <div class="device-links">
+          <button type="button" class="device-link" id="openSelectedCliBtn">Open R2 CLI</button>
+        </div>
+        <div class="tasks-blue-box" aria-label="Lab tasks">
+          <p class="tasks">
+            <strong>Tasks</strong>
+          </p>
+          <p class="tasks">
+            Services must be configured in the order presented to complete the implementation.
+          </p>
+          <ol class="tasks">
+            <li>
+              BeCertifiedToday.com engineers were tasked to support a new site rollout. On <strong>R2</strong>, configure
+              dynamic one-to-one address mapping using a standard list named <strong>XLATE</strong> so traffic sourced from
+              <strong>R3</strong> can be translated into pool <strong>test_pool</strong> on the <strong>10.10.10.0/24</strong>
+              network when it is sent toward <strong>R1</strong>. Do not use an NVI configuration. When you are done, confirm
+              reachability with a ping from <strong>R3</strong> to <strong>192.168.100.1</strong>. The lab is complete only after
+              that NAT work is done and you run <code>copy running-configuration startup-configuration</code> from privileged exec on
+              <strong>R2</strong>, <strong>R1</strong>, and <strong>R3</strong> (abbrev. <code>copy run start</code>).
+            </li>
+            <li>
+              <strong>Task 2 (R3):</strong> from configuration mode, assign <strong>GigabitEthernet0/2</strong> via DHCP:
+              <code>interface GigabitEthernet0/2</code> then <code>ip address dhcp</code> (see Spoiler for the exact prompt sequence).
+            </li>
+            <li>
+              <strong>Task 3:</strong> On <strong>R1</strong>, use <code>configure terminal</code> then <code>ntp master 1</code> to
+              act as the NTP server. On <strong>R2</strong>, configure an NTP client to <strong>10.1.2.1</strong> (not a
+              peer). See Spoiler for the exact R1 prompt sequence.
+            </li>
+            <li>
+              Configure SSH access from R1 to R3, while excluding access via other remote connection protocols using the
+              user <strong>root</strong> and password <strong>s3cret</strong> on router <strong>R3</strong> using RSA. Verify
+              connectivity from router R1 to R3 using a destination address assigned to interface GigabitEthernet0/2 on R3.
+            </li>
+          </ol>
+        </div>
+        <div class="device-links device-links-after-tasks" aria-label="Lab aids">
+          <button type="button" class="device-link" id="openHelperFileBtn">Helper</button>
+          <button type="button" class="device-link" id="inlineResetLabBtn">Reset lab</button>
+          <button type="button" class="device-link" id="openSpoilerBtn">Spoiler</button>
+        </div>
+      </div>
+
+      <p class="objective">
+        <strong>Disclaimer:</strong> This website is an independent training resource created for educational purposes only.
+        It is not affiliated with, endorsed by, sponsored by, or approved by Cisco Systems, Inc. Cisco and related trademarks
+        are the property of Cisco Systems, Inc. All practice questions, explanations, and study materials on this site are
+        original or based on general knowledge and are intended as a guide to help users prepare for certification exams.
+        Practice questions are not actual Cisco exam questions. Any similarity to official exam content is coincidental.
+      </p>
+    </main>
+  </div>
+
+  <!-- Primary router CLI on R2 (editable lab device — STEPS engine) -->
+  <div id="swCliOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="swCliDialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="swCliTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="swCliTitle">R2 — CLI</h2>
+        <button type="button" class="cli-modal-close" id="swCliClose" aria-label="Close CLI window">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" id="swTerminal" aria-label="Simulated R2 CLI">
+          <div id="swScrollback" class="scrollback-area"></div>
+          <div class="input-row">
+            <span id="swPrompt" class="prompt-el">R2#</span>
+            <input
+              id="swCmdline"
+              class="cmdline-input"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="none"
+              aria-label="R2 command line"
+            />
+          </div>
+        </div>
+      </div>
+      <footer class="cli-modal-footer">
+        <div class="controls">
+          <button type="button" class="btn btn-secondary" id="swResetBtn">Reset lab</button>
+        </div>
+        <div id="passBanner" class="pass-banner" role="status">
+          Task 1: complete the NAT sequence on R2. Then from privileged exec on R2, R1, and R3 run copy running-configuration startup-configuration (copy run start) on each device to complete the lab.
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- R1 CLI (read-only exhibit — NTP server / 10.1.2.1 toward R2) -->
+  <div id="r1CliOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="r1CliDialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="r1CliTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="r1CliTitle">R1 — CLI</h2>
+        <button type="button" class="cli-modal-close" id="r1CliClose" aria-label="Close R1 window">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" id="r1Terminal" aria-label="Simulated R1 CLI">
+          <div id="r1Scrollback" class="scrollback-area"></div>
+          <div class="input-row">
+            <span id="r1Prompt" class="prompt-el">R1#</span>
+            <input
+              id="r1Cmdline"
+              class="cmdline-input"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="none"
+              aria-label="R1 command line"
+            />
+          </div>
+        </div>
+      </div>
+      <footer class="cli-modal-footer">
+        <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
+          Read-only exhibit: <code>show running-config</code> prints a fixed snapshot. Use
+          <code>configure terminal</code>, <code>interface …</code>, <code>exit</code> or <code>end</code> to move modes like IOS.
+          From privileged exec, <code>copy run start</code> counts toward lab completion.
+        </p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- R3 CLI (read-only exhibit — DHCP client / SSH server context) -->
+  <div id="r3CliOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="r3CliDialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="r3CliTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="r3CliTitle">R3 — CLI</h2>
+        <button type="button" class="cli-modal-close" id="r3CliClose" aria-label="Close R3 window">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" id="r3Terminal" aria-label="Simulated R3 CLI">
+          <div id="r3Scrollback" class="scrollback-area"></div>
+          <div class="input-row">
+            <span id="r3Prompt" class="prompt-el">R3#</span>
+            <input
+              id="r3Cmdline"
+              class="cmdline-input"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="none"
+              aria-label="R3 command line"
+            />
+          </div>
+        </div>
+      </div>
+      <footer class="cli-modal-footer">
+        <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
+          Read-only exhibit for Task 2 and Task 4: use <code>show running-config</code> to review the baseline; after you configure DHCP
+          on GigabitEthernet0/2 and SSH, the sim still shows this static snapshot (commands are not merged into <code>show running-config</code>).
+          After Task 1 finishes on <strong>R2</strong>, from R3 exec run <code>ping 192.168.100.1</code> — success shows <code>.!!!!</code>;
+          before Task 1 (or after <strong>Reset lab</strong>) the same ping shows <code>....</code> and 0 percent success.
+          From privileged exec, <code>copy run start</code> counts toward lab completion.
+        </p>
+      </footer>
+    </div>
+  </div>
+
+  <div id="helperFileOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="helperFileDialog"
+      class="cli-modal-dialog helper-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="helperFileTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="helperFileTitle">Helper file</h2>
+        <button type="button" class="cli-modal-close" id="helperFileClose" aria-label="Close helper">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <section class="topology-scrape" aria-label="Helper notes">
+          <h2>IP Services Sim v2 — implementation hints</h2>
+          <ul class="helper-bullets">
+            <li>
+              <strong>Task 1 (R2):</strong> Build standard ACL <strong>XLATE</strong> (permit the sources R3 needs), define
+              <code>ip nat pool test_pool</code> on 10.10.10.0/24, then <code>ip nat inside source list XLATE pool test_pool</code>
+              without NVI. Apply <code>ip nat inside</code> and <code>ip nat outside</code> on the interfaces toward R3 and R1.
+              From R3, ping <code>192.168.100.1</code> once routing and NAT line up.
+            </li>
+            <li>
+              <strong>Task 2 (R3):</strong> DHCP client on <code>GigabitEthernet0/2</code>: <code>interface GigabitEthernet0/2</code>,
+              then <code>ip address dhcp</code>. Confirm the DHCP server (often R1) has a scope for that segment.
+            </li>
+            <li>
+              <strong>Task 3:</strong> On <strong>R1</strong>, <code>configure terminal</code> then <code>ntp master 1</code>. On
+              <strong>R2</strong>, <code>ntp server 10.1.2.1</code> so R2 is a client to R1’s address toward R2.
+            </li>
+            <li>
+              <strong>Task 4 (R3):</strong> <code>crypto key generate rsa</code>; user <code>root</code> with secret
+              <code>s3cret</code>; <code>line vty 0 4</code> with <code>transport input ssh</code> only; from R1, SSH to R3’s
+              GigabitEthernet0/2 address as <code>root</code>.
+            </li>
+            <li>
+              <strong>Useful checks:</strong> on R2, <code>show ip nat translations</code> and <code>show access-lists XLATE</code>;
+              on R3, <code>show ip interface brief</code>; from R1, <code>ssh root@</code> plus that G0/2 IP.
+            </li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div id="spoilerOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="spoilerDialog"
+      class="cli-modal-dialog spoiler-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="spoilerTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="spoilerTitle">Solution (spoiler)</h2>
+        <button type="button" class="cli-modal-close" id="spoilerClose" aria-label="Close spoiler">×</button>
+      </header>
+      <div class="cli-modal-body spoiler-cli-body">
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t1">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t1">Task 1 — R2 NAT</p>
+          <div class="spoiler-terminal" role="region" aria-label="Task 1 R2 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R2 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R2# configure terminal
+R2(config)# ip access-list standard XLATE
+R2(config-std-nacl)# permit 10.2.3.3
+R2(config-std-nacl)# permit 192.168.3.1
+R2(config-std-nacl)# permit 10.1.3.11
+R2(config-std-nacl)# exit
+R2(config)# interface GigabitEthernet0/1
+R2(config-if)# ip nat inside
+R2(config-if)# exit
+R2(config)# interface GigabitEthernet0/0
+R2(config-if)# ip nat outside
+R2(config-if)# exit
+R2(config)# ip nat pool test_pool 10.10.10.1 10.10.10.254 netmask 255.255.255.0
+R2(config)# ip nat inside source list XLATE pool test_pool</pre>
+          </div>
+        </div>
+
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t2">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t2">Task 2 — R3 DHCP</p>
+          <div class="spoiler-terminal" role="region" aria-label="Task 2 R3 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R3 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R3# configure terminal
+R3(config)# interface GigabitEthernet0/2
+R3(config-if)# ip address dhcp</pre>
+          </div>
+        </div>
+
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t3">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t3">Task 3 — R1 NTP server</p>
+          <div class="spoiler-terminal" role="region" aria-label="Task 3 R1 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R1 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R1# configure terminal
+R1(config)# ntp master 1</pre>
+          </div>
+        </div>
+
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t4">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t4">Task 4 — R3 SSH</p>
+          <div class="spoiler-terminal" role="region" aria-label="Task 4 R3 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R3 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R3# configure terminal
+R3(config)# crypto key generate rsa modulus 1024
+R3(config)# username root privilege 15 secret s3cret
+R3(config)# line vty 0 4
+R3(config-line)# login local
+R3(config-line)# transport input ssh
+R3(config-line)# end</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">CCNA portal</a>
+    <a class="sim-nav-btn" href="/CCNA-Study/ccna-index.html">CCNA study</a>
+    <a class="sim-nav-btn" href="/index.html">Site home</a>
+  </nav>
+
+  <script>
+    (function () {
+      /** ----- Lab devices ----- */
+      var SWITCH_HOST = "R2";
+      var ROUTER_HOST = "R1";
+      var ROUTER3_HOST = "R3";
+
+      /** Snapshot for R2 `show running-config` while lab runs */
+      var SWITCH_SHOW_RUNNING_SNAPSHOT = [
+        "Building configuration...",
+        "",
+        "!",
+        "hostname R2",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "ip cef",
+        "no ipv6 cef",
+        "!",
+        "!",
+        "!",
+        "!",
+        "license udi pid CISCO2911/K9 sn FTX15243203-",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "ip domain-name 9tut.com",
+        "!",
+        "!",
+        "spanning-tree mode pvst",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "interface Loopback1",
+        " ip address 192.168.2.1 255.255.255.255",
+        "!",
+        "interface GigabitEthernet0/0",
+        " ip address 10.1.2.2 255.255.255.0",
+        " duplex auto",
+        " speed auto",
+        "!",
+        "interface GigabitEthernet0/1",
+        " ip address 10.2.3.2 255.255.255.0",
+        " duplex auto",
+        " speed auto",
+        "!",
+        "interface GigabitEthernet0/2",
+        " no ip address",
+        " duplex auto",
+        " speed auto",
+        " shutdown",
+        "!",
+        "interface Vlan1",
+        " no ip address",
+        " shutdown",
+        "!",
+        "ip classless",
+        "ip route 10.1.3.1 255.255.255.255 10.1.2.1",
+        "ip route 192.168.100.1 255.255.255.255 10.1.2.1",
+        "!",
+        "ip flow-export version 9",
+        "!",
+        "!",
+        "!",
+        "no cdp run",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "line con 0",
+        "!",
+        "line aux 0",
+        "!",
+        "line vty 0 4",
+        " login",
+        "!",
+        "!",
+        "!",
+        "end",
+      ].join("\r\n");
+
+      /** R1 exhibit — baseline running-config (GigabitEthernet0/x, DHCP pool TEST, static toward 10.10.10.0/24) */
+      var ROUTER_SHOW_RUN_SNAPSHOT = [
+        "Building configuration...",
+        "",
+        "hostname R1",
+        "!",
+        "!",
+        "!",
+        "!",
+        "ip dhcp excluded-address 10.1.3.1 10.1.3.10",
+        "!",
+        "ip dhcp pool TEST",
+        " network 10.1.3.0 255.255.255.0",
+        "!",
+        "!",
+        "!",
+        "ip cef",
+        "no ipv6 cef",
+        "!",
+        "!",
+        "!",
+        "!",
+        "license udi pid CISCO2911/K9 sn FTX1524YQKB-",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "ip domain-name 9tut.com",
+        "!",
+        "!",
+        "spanning-tree mode pvst",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "interface Loopback1",
+        " ip address 192.168.100.1 255.255.255.255",
+        "!",
+        "interface GigabitEthernet0/0",
+        " ip address 10.1.2.1 255.255.255.0",
+        " duplex auto",
+        " speed auto",
+        "!",
+        "interface GigabitEthernet0/1",
+        " no ip address",
+        " duplex auto",
+        " speed auto",
+        " shutdown",
+        "!",
+        "interface GigabitEthernet0/2",
+        " ip address 10.1.3.1 255.255.255.0",
+        " duplex auto",
+        " speed auto",
+        "!",
+        "interface Vlan1",
+        " no ip address",
+        " shutdown",
+        "!",
+        "ip classless",
+        "ip route 10.10.10.0 255.255.255.0 10.1.2.2",
+        "!",
+        "ip flow-export version 9",
+        "!",
+        "!",
+        "!",
+        "no cdp run",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "line con 0",
+        "!",
+        "line aux 0",
+        "!",
+        "line vty 0 4",
+        " login",
+        " transport input none",
+        "!",
+        "!",
+        "!",
+        "end",
+      ].join("\r\n");
+
+      /** R3 exhibit — baseline GigabitEthernet0/x, default route via R2; lab adds DHCP on GigabitEthernet0/2 and SSH on VTY */
+      var ROUTER3_SHOW_RUN_SNAPSHOT = [
+        "Building configuration...",
+        "",
+        "hostname R3",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "ip cef",
+        "no ipv6 cef",
+        "!",
+        "!",
+        "!",
+        "!",
+        "license udi pid CISCO2911/K9 sn FTX15240TK0-",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "ip domain-name 9tut.com",
+        "!",
+        "!",
+        "spanning-tree mode pvst",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "interface Loopback1",
+        " ip address 192.168.3.1 255.255.255.255",
+        "!",
+        "interface GigabitEthernet0/0",
+        " no ip address",
+        " duplex auto",
+        " speed auto",
+        " shutdown",
+        "!",
+        "interface GigabitEthernet0/1",
+        " ip address 10.2.3.3 255.255.255.0",
+        " duplex auto",
+        " speed auto",
+        "!",
+        "interface GigabitEthernet0/2",
+        " no ip address",
+        " duplex auto",
+        " speed auto",
+        "!",
+        "interface Vlan1",
+        " no ip address",
+        " shutdown",
+        "!",
+        "ip classless",
+        "ip route 0.0.0.0 0.0.0.0 10.2.3.2",
+        "!",
+        "ip flow-export version 9",
+        "!",
+        "!",
+        "!",
+        "no cdp run",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "line con 0",
+        "!",
+        "line aux 0",
+        "!",
+        "line vty 0 4",
+        " login",
+        "!",
+        "!",
+        "!",
+        "end",
+      ].join("\r\n");
+
+      /**
+       * R2 Task 1 — full IOS sequence: ACL XLATE with three permits, NAT inside/outside on Gi0/1 and Gi0/0, pool, inside source list.
+       */
+      var STEPS = [
+        { mode: "exec", test: function (raw) {
+          return normalize(raw) === "configure terminal";
+        }},
+        { mode: "config", test: function (raw) {
+          return normalize(raw) === "ip access-list standard xlate";
+        }},
+        { mode: "config-std-nacl", test: function (raw) {
+          return normalize(raw) === "permit 10.2.3.3";
+        }},
+        { mode: "config-std-nacl", test: function (raw) {
+          return normalize(raw) === "permit 192.168.3.1";
+        }},
+        { mode: "config-std-nacl", test: function (raw) {
+          return normalize(raw) === "permit 10.1.3.11";
+        }},
+        { mode: "config-std-nacl", test: function (raw) {
+          return normalize(raw) === "exit";
+        }},
+        { mode: "config", test: function (raw) {
+          return normalize(raw) === "interface gigabitethernet0/1";
+        }},
+        { mode: "config-if", test: function (raw) {
+          return normalize(raw) === "ip nat inside";
+        }},
+        { mode: "config-if", test: function (raw) {
+          return normalize(raw) === "exit";
+        }},
+        { mode: "config", test: function (raw) {
+          return normalize(raw) === "interface gigabitethernet0/0";
+        }},
+        { mode: "config-if", test: function (raw) {
+          return normalize(raw) === "ip nat outside";
+        }},
+        { mode: "config-if", test: function (raw) {
+          return normalize(raw) === "exit";
+        }},
+        { mode: "config", test: function (raw) {
+          var u = normalize(raw);
+          return (
+            u.indexOf("ip nat pool test_pool") !== -1 &&
+            u.indexOf("10.10.10.1") !== -1 &&
+            u.indexOf("255.255.255.0") !== -1
+          );
+        }},
+        { mode: "config", test: function (raw) {
+          var u = normalize(raw);
+          return u.indexOf("ip nat inside source list xlate pool test_pool") !== -1;
+        }},
+      ];
+
+      function normalize(s) {
+        var t = String(s)
+          .trim()
+          .toLowerCase()
+          .replace(/\s+/g, " ")
+          .replace(/[.;]+$/, "");
+        if (t === "sh ver" || t === "show ver" || t === "sh version") t = "show version";
+        if (t === "copy run start" || t === "copy run st") t = "copy running-configuration startup-configuration";
+        if (t === "copy running-config startup-config") t = "copy running-configuration startup-configuration";
+        return t;
+      }
+
+      var HELP_DISABLED_MSG = "help feature disabled for tester";
+      var SHOW_VERSION_MSG = "BeCertifiedToday.com version 2026";
+      var COPY_RUN_START_OK_MSG =
+        "Destination filename [startup-config]?\nBuilding configuration...\n[OK]";
+      var COPY_RUN_START_EXEC_ONLY_MSG =
+        "% Error: Run copy running-configuration startup-configuration only from privileged EXEC (#), not from configuration mode.";
+      var COPY_RUN_START_AFTER_STEPS_MSG =
+        "% Error: Finish the Task 1 NAT STEPS on R2 until you return to privileged EXEC (R2#), then save to startup-config.";
+      var COPY_RUN_START_AFTER_R2_TASK1_MSG =
+        "% Error: Complete Task 1 NAT STEPS on R2 (until R2#) before saving startup-config on this device.";
+      var IP_NAT_STEPS_DONE_MSG =
+        "[OK] Task 1 NAT sequence complete on R2. From privileged exec on R2, R1, and R3, run copy running-configuration startup-configuration (copy run start) on each device to complete the lab.";
+      var IP_LAB_ALL_DONE_MSG =
+        "[OK] Lab complete: Task 1 done and running-config saved to startup-config on R2, R1, and R3.";
+      var PASS_BANNER_IP_PENDING =
+        "Task 1: complete the NAT sequence on R2. Then from privileged exec on R2, R1, and R3 run copy running-configuration startup-configuration (copy run start) on each device to complete the lab.";
+      var PASS_BANNER_IP_DONE =
+        "Lab complete: NAT on R2 done and startup-config saved on R2, R1, and R3.";
+
+      function matchShowRun(raw) {
+        var u = normalize(raw);
+        return u === "show running-config" || u === "do show running-config";
+      }
+
+      function matchShowVersion(raw) {
+        return normalize(raw) === "show version";
+      }
+
+      function matchCopyRunStart(raw) {
+        return normalize(raw) === "copy running-configuration startup-configuration";
+      }
+
+      var nvramSavedSw = false;
+      var nvramSavedR1 = false;
+      var nvramSavedR3 = false;
+
+      function tryCompleteIpServicesLab(append) {
+        if (stepIndex < STEPS.length || !nvramSavedSw || !nvramSavedR1 || !nvramSavedR3) return;
+        if (passBanner.classList.contains("visible")) return;
+        passBanner.textContent = PASS_BANNER_IP_DONE;
+        passBanner.classList.add("visible");
+        if (append) append("line-sys", IP_LAB_ALL_DONE_MSG);
+      }
+
+      /** R2 (SW prompt): privileged exec (#), not config submodes. */
+      function swIpInEnableMode() {
+        if (
+          swPromptOverride === "config" ||
+          swPromptOverride === "config-if" ||
+          swPromptOverride === "config-std-nacl"
+        ) {
+          return false;
+        }
+        if (swPromptOverride === "exec") return true;
+        if (stepIndex >= STEPS.length) return true;
+        return STEPS[stepIndex].mode === "exec";
+      }
+
+      function promptForStep(index) {
+        if (index >= STEPS.length) return SWITCH_HOST + "#";
+        var m = STEPS[index].mode;
+        if (m === "exec") return SWITCH_HOST + "#";
+        if (m === "config") return SWITCH_HOST + "(config)#";
+        if (m === "config-if") return SWITCH_HOST + "(config-if)#";
+        if (m === "config-std-nacl") return SWITCH_HOST + "(config-std-nacl)#";
+        return SWITCH_HOST + "#";
+      }
+
+      var stepIndex = 0;
+      /** Set true when R2 Task 1 (NAT STEPS) completes; cleared on Reset lab. Drives R3 ping to 192.168.100.1. */
+      var task1R2NatComplete = false;
+      var swPromptOverride = null;
+
+      var R3_PING_LO1_SUCCESS =
+        "Type escape sequence to abort.\n" +
+        "Sending 5, 100-byte ICMP Echos to 192.168.100.1, timeout is 2 seconds:\n" +
+        ".!!!!\n" +
+        "Success rate is 80 percent (4/5), round-trip min/avg/max = 28/32/36 ms";
+      var R3_PING_LO1_FAIL =
+        "Type escape sequence to abort.\n" +
+        "Sending 5, 100-byte ICMP Echos to 192.168.100.1, timeout is 2 seconds:\n" +
+        "....\n" +
+        "Success rate is 0 percent (0/5)";
+
+      var swCliOverlay = document.getElementById("swCliOverlay");
+      var swCliDialog = document.getElementById("swCliDialog");
+      var swScrollback = document.getElementById("swScrollback");
+      var swPrompt = document.getElementById("swPrompt");
+      var swCmdline = document.getElementById("swCmdline");
+      var swTerminal = document.getElementById("swTerminal");
+      var passBanner = document.getElementById("passBanner");
+      var swResetBtn = document.getElementById("swResetBtn");
+
+      var r1CliOverlay = document.getElementById("r1CliOverlay");
+      var r1CliDialog = document.getElementById("r1CliDialog");
+      var r1Scrollback = document.getElementById("r1Scrollback");
+      var r1Prompt = document.getElementById("r1Prompt");
+      var r1Cmdline = document.getElementById("r1Cmdline");
+
+      var r3CliOverlay = document.getElementById("r3CliOverlay");
+      var r3CliDialog = document.getElementById("r3CliDialog");
+      var r3Scrollback = document.getElementById("r3Scrollback");
+      var r3Prompt = document.getElementById("r3Prompt");
+      var r3Cmdline = document.getElementById("r3Cmdline");
+
+      var openSelectedCliBtn = document.getElementById("openSelectedCliBtn");
+      var helperFileOverlay = document.getElementById("helperFileOverlay");
+      var helperFileDialog = document.getElementById("helperFileDialog");
+      var spoilerOverlay = document.getElementById("spoilerOverlay");
+      var spoilerDialog = document.getElementById("spoilerDialog");
+
+      var modalStackZ = 30000;
+      function bumpOverlayZ(overlay) {
+        if (!overlay) return;
+        modalStackZ += 1;
+        overlay.style.zIndex = String(modalStackZ);
+      }
+
+      function getLabDev() {
+        var sel = document.querySelector('input[name="labPrimaryDev"]:checked');
+        return sel ? sel.value : "R2";
+      }
+
+      function syncOpenCliLabel() {
+        var d = getLabDev();
+        if (d === "R1") openSelectedCliBtn.textContent = "Open " + ROUTER_HOST + " CLI";
+        else if (d === "R3") openSelectedCliBtn.textContent = "Open " + ROUTER3_HOST + " CLI";
+        else openSelectedCliBtn.textContent = "Open " + SWITCH_HOST + " CLI";
+      }
+
+      function appendSw(cls, text) {
+        var div = document.createElement("div");
+        div.className = cls;
+        div.textContent = text;
+        swScrollback.appendChild(div);
+        swScrollback.scrollTop = swScrollback.scrollHeight;
+      }
+
+      function appendR1(cls, text) {
+        var div = document.createElement("div");
+        div.className = cls;
+        div.textContent = text;
+        r1Scrollback.appendChild(div);
+        r1Scrollback.scrollTop = r1Scrollback.scrollHeight;
+      }
+
+      function appendR3(cls, text) {
+        var div = document.createElement("div");
+        div.className = cls;
+        div.textContent = text;
+        r3Scrollback.appendChild(div);
+        r3Scrollback.scrollTop = r3Scrollback.scrollHeight;
+      }
+
+      function setSwPrompt() {
+        if (swPromptOverride === "config") {
+          swPrompt.textContent = SWITCH_HOST + "(config)#";
+          return;
+        }
+        if (swPromptOverride === "config-if") {
+          swPrompt.textContent = SWITCH_HOST + "(config-if)#";
+          return;
+        }
+        if (swPromptOverride === "config-std-nacl") {
+          swPrompt.textContent = SWITCH_HOST + "(config-std-nacl)#";
+          return;
+        }
+        if (swPromptOverride === "exec") {
+          swPrompt.textContent = SWITCH_HOST + "#";
+          return;
+        }
+        swPrompt.textContent = promptForStep(stepIndex);
+      }
+
+      function resetSwLab() {
+        stepIndex = 0;
+        task1R2NatComplete = false;
+        swPromptOverride = null;
+        nvramSavedSw = false;
+        nvramSavedR1 = false;
+        nvramSavedR3 = false;
+        swScrollback.innerHTML = "";
+        passBanner.classList.remove("visible");
+        passBanner.textContent = PASS_BANNER_IP_PENDING;
+        swCmdline.disabled = false;
+        swCmdline.value = "";
+        setSwPrompt();
+      }
+
+      function submitSw() {
+        var promptText = swPrompt.textContent;
+        var line = swCmdline.value;
+        appendSw("line-user", promptText + " " + line);
+        swCmdline.value = "";
+        if (!line.trim()) return;
+
+        if (normalize(line) === "?") {
+          appendSw("line-sys", HELP_DISABLED_MSG);
+          return;
+        }
+
+        if (matchShowRun(line)) {
+          appendSw("line-showrun", SWITCH_SHOW_RUNNING_SNAPSHOT);
+          return;
+        }
+
+        if (swIpInEnableMode() && matchShowVersion(line)) {
+          appendSw("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+
+        if (matchCopyRunStart(line)) {
+          if (!swIpInEnableMode()) {
+            appendSw("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            return;
+          }
+          if (stepIndex < STEPS.length) {
+            appendSw("line-sys", COPY_RUN_START_AFTER_STEPS_MSG);
+            return;
+          }
+          appendSw("line-sys", COPY_RUN_START_OK_MSG);
+          nvramSavedSw = true;
+          tryCompleteIpServicesLab(function (cls, text) {
+            appendSw(cls, text);
+          });
+          return;
+        }
+
+        if (stepIndex >= STEPS.length) {
+          appendSw("line-bad", "% Invalid input");
+          return;
+        }
+
+        if (STEPS[stepIndex].test(line)) {
+          stepIndex += 1;
+          swPromptOverride = null;
+          if (stepIndex >= STEPS.length) {
+            task1R2NatComplete = true;
+            swPrompt.textContent = SWITCH_HOST + "#";
+            appendSw("line-sys", IP_NAT_STEPS_DONE_MSG);
+            tryCompleteIpServicesLab(function (cls, text) {
+              appendSw(cls, text);
+            });
+          } else {
+            setSwPrompt();
+          }
+        } else {
+          appendSw("line-bad", "% Invalid input");
+        }
+      }
+
+      /** R1 — IOS-like modes + show running-config (read-only exhibit) */
+      var r1Mode = "exec";
+
+      function r1PromptForMode() {
+        if (r1Mode === "config") return ROUTER_HOST + "(config)#";
+        if (r1Mode === "config-if") return ROUTER_HOST + "(config-if)#";
+        return ROUTER_HOST + "#";
+      }
+
+      function resetR1() {
+        r1Scrollback.innerHTML = "";
+        r1Mode = "exec";
+        r1Prompt.textContent = r1PromptForMode();
+      }
+
+      function submitR1() {
+        var promptText = r1Prompt.textContent;
+        var line = r1Cmdline.value;
+        appendR1("line-user", promptText + " " + line);
+        r1Cmdline.value = "";
+        if (!line.trim()) return;
+
+        if (normalize(line) === "?") {
+          appendR1("line-sys", HELP_DISABLED_MSG);
+          return;
+        }
+
+        var u = normalize(line);
+
+        if (matchShowRun(line)) {
+          appendR1("line-showrun", ROUTER_SHOW_RUN_SNAPSHOT);
+          return;
+        }
+
+        if (r1Mode === "exec" && matchShowVersion(line)) {
+          appendR1("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+
+        if (matchCopyRunStart(line)) {
+          if (r1Mode !== "exec") {
+            appendR1("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            return;
+          }
+          if (stepIndex < STEPS.length) {
+            appendR1("line-sys", COPY_RUN_START_AFTER_R2_TASK1_MSG);
+            return;
+          }
+          appendR1("line-sys", COPY_RUN_START_OK_MSG);
+          nvramSavedR1 = true;
+          tryCompleteIpServicesLab(function (cls, text) {
+            appendR1(cls, text);
+          });
+          return;
+        }
+
+        if (r1Mode === "config-if" && u === "exit") {
+          r1Mode = "config";
+          r1Prompt.textContent = r1PromptForMode();
+          return;
+        }
+        if (r1Mode === "exec" && u === "configure terminal") {
+          r1Mode = "config";
+          r1Prompt.textContent = r1PromptForMode();
+          return;
+        }
+        if (r1Mode === "config" && u.startsWith("interface ")) {
+          r1Mode = "config-if";
+          r1Prompt.textContent = r1PromptForMode();
+          return;
+        }
+        if (r1Mode === "config" && (u === "exit" || u === "end")) {
+          r1Mode = "exec";
+          r1Prompt.textContent = r1PromptForMode();
+          return;
+        }
+        if (r1Mode === "config-if" && (u === "end" || u === "exit")) {
+          r1Mode = u === "end" ? "exec" : "config";
+          r1Prompt.textContent = r1PromptForMode();
+          return;
+        }
+
+        appendR1("line-bad", "% Invalid input");
+      }
+
+      /** R3 — IOS-like modes + show running-config (read-only exhibit) */
+      var r3Mode = "exec";
+
+      function r3PromptForMode() {
+        if (r3Mode === "config") return ROUTER3_HOST + "(config)#";
+        if (r3Mode === "config-if") return ROUTER3_HOST + "(config-if)#";
+        return ROUTER3_HOST + "#";
+      }
+
+      function resetR3() {
+        r3Scrollback.innerHTML = "";
+        r3Mode = "exec";
+        r3Prompt.textContent = r3PromptForMode();
+      }
+
+      function submitR3() {
+        var promptText = r3Prompt.textContent;
+        var line = r3Cmdline.value;
+        appendR3("line-user", promptText + " " + line);
+        r3Cmdline.value = "";
+        if (!line.trim()) return;
+
+        if (normalize(line) === "?") {
+          appendR3("line-sys", HELP_DISABLED_MSG);
+          return;
+        }
+
+        var u = normalize(line);
+
+        if (matchShowRun(line)) {
+          appendR3("line-showrun", ROUTER3_SHOW_RUN_SNAPSHOT);
+          return;
+        }
+
+        if (r3Mode === "exec" && matchShowVersion(line)) {
+          appendR3("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+
+        if (matchCopyRunStart(line)) {
+          if (r3Mode !== "exec") {
+            appendR3("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            return;
+          }
+          if (stepIndex < STEPS.length) {
+            appendR3("line-sys", COPY_RUN_START_AFTER_R2_TASK1_MSG);
+            return;
+          }
+          appendR3("line-sys", COPY_RUN_START_OK_MSG);
+          nvramSavedR3 = true;
+          tryCompleteIpServicesLab(function (cls, text) {
+            appendR3(cls, text);
+          });
+          return;
+        }
+
+        if (r3Mode === "exec" && u === "ping 192.168.100.1") {
+          appendR3("line-ping", task1R2NatComplete ? R3_PING_LO1_SUCCESS : R3_PING_LO1_FAIL);
+          return;
+        }
+
+        if (r3Mode === "config-if" && u === "exit") {
+          r3Mode = "config";
+          r3Prompt.textContent = r3PromptForMode();
+          return;
+        }
+        if (r3Mode === "exec" && u === "configure terminal") {
+          r3Mode = "config";
+          r3Prompt.textContent = r3PromptForMode();
+          return;
+        }
+        if (r3Mode === "config" && u.startsWith("interface ")) {
+          r3Mode = "config-if";
+          r3Prompt.textContent = r3PromptForMode();
+          return;
+        }
+        if (r3Mode === "config" && (u === "exit" || u === "end")) {
+          r3Mode = "exec";
+          r3Prompt.textContent = r3PromptForMode();
+          return;
+        }
+        if (r3Mode === "config-if" && (u === "end" || u === "exit")) {
+          r3Mode = u === "end" ? "exec" : "config";
+          r3Prompt.textContent = r3PromptForMode();
+          return;
+        }
+
+        appendR3("line-bad", "% Invalid input");
+      }
+
+      function wireFloatingModal(dialogEl, overlayEl) {
+        var header = dialogEl.querySelector(".cli-modal-header");
+        if (!dialogEl || !overlayEl || !header) return;
+        dialogEl.addEventListener("pointerdown", function () {
+          bumpOverlayZ(overlayEl);
+        });
+        var drag = null;
+        header.addEventListener("pointerdown", function (e) {
+          if (e.button !== 0) return;
+          if (e.target.closest(".cli-modal-close")) return;
+          var r = dialogEl.getBoundingClientRect();
+          dialogEl.style.left = r.left + "px";
+          dialogEl.style.top = r.top + "px";
+          dialogEl.style.transform = "none";
+          dialogEl.classList.add("is-dragging");
+          drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: r.left, oy: r.top };
+          try {
+            header.setPointerCapture(e.pointerId);
+          } catch (_) {}
+          e.preventDefault();
+        });
+        header.addEventListener("pointermove", function (e) {
+          if (!drag || e.pointerId !== drag.id) return;
+          dialogEl.style.left = drag.ox + (e.clientX - drag.sx) + "px";
+          dialogEl.style.top = drag.oy + (e.clientY - drag.sy) + "px";
+        });
+        function endDrag(e) {
+          if (!drag || e.pointerId !== drag.id) return;
+          drag = null;
+          dialogEl.classList.remove("is-dragging");
+          try {
+            header.releasePointerCapture(e.pointerId);
+          } catch (_) {}
+        }
+        header.addEventListener("pointerup", endDrag);
+        header.addEventListener("pointercancel", endDrag);
+      }
+
+      wireFloatingModal(swCliDialog, swCliOverlay);
+      wireFloatingModal(r1CliDialog, r1CliOverlay);
+      wireFloatingModal(r3CliDialog, r3CliOverlay);
+      wireFloatingModal(helperFileDialog, helperFileOverlay);
+      wireFloatingModal(spoilerDialog, spoilerOverlay);
+
+      function openSwCli() {
+        bumpOverlayZ(swCliOverlay);
+        swCliOverlay.classList.add("is-open");
+        swCliOverlay.setAttribute("aria-hidden", "false");
+        if (swTerminal) {
+          swTerminal.classList.remove("terminal-flash");
+          void swTerminal.offsetWidth;
+          swTerminal.classList.add("terminal-flash");
+        }
+        swCmdline.focus();
+      }
+      function closeSwCli() {
+        swCliOverlay.classList.remove("is-open");
+        swCliOverlay.setAttribute("aria-hidden", "true");
+      }
+      function openR1Cli() {
+        bumpOverlayZ(r1CliOverlay);
+        r1CliOverlay.classList.add("is-open");
+        r1CliOverlay.setAttribute("aria-hidden", "false");
+        resetR1();
+        r1Cmdline.focus();
+      }
+      function closeR1Cli() {
+        r1CliOverlay.classList.remove("is-open");
+        r1CliOverlay.setAttribute("aria-hidden", "true");
+      }
+      function openR3Cli() {
+        bumpOverlayZ(r3CliOverlay);
+        r3CliOverlay.classList.add("is-open");
+        r3CliOverlay.setAttribute("aria-hidden", "false");
+        resetR3();
+        r3Cmdline.focus();
+      }
+      function closeR3Cli() {
+        r3CliOverlay.classList.remove("is-open");
+        r3CliOverlay.setAttribute("aria-hidden", "true");
+      }
+
+      function openSelectedCliModal() {
+        var d = getLabDev();
+        if (d === "R1") openR1Cli();
+        else if (d === "R3") openR3Cli();
+        else openSwCli();
+      }
+
+      openSelectedCliBtn.addEventListener("click", openSelectedCliModal);
+      document.querySelectorAll('input[name="labPrimaryDev"]').forEach(function (r) {
+        r.addEventListener("change", function () {
+          syncOpenCliLabel();
+          openSelectedCliBtn.focus();
+        });
+      });
+
+      swCmdline.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submitSw();
+        }
+      });
+      r1Cmdline.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submitR1();
+        }
+      });
+      r3Cmdline.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submitR3();
+        }
+      });
+
+      document.getElementById("swCliClose").addEventListener("click", closeSwCli);
+      document.getElementById("r1CliClose").addEventListener("click", closeR1Cli);
+      document.getElementById("r3CliClose").addEventListener("click", closeR3Cli);
+      swResetBtn.addEventListener("click", resetSwLab);
+      document.getElementById("inlineResetLabBtn").addEventListener("click", resetSwLab);
+
+      document.getElementById("openHelperFileBtn").addEventListener("click", function () {
+        bumpOverlayZ(helperFileOverlay);
+        helperFileOverlay.classList.add("is-open");
+        helperFileOverlay.setAttribute("aria-hidden", "false");
+      });
+      document.getElementById("helperFileClose").addEventListener("click", function () {
+        helperFileOverlay.classList.remove("is-open");
+        helperFileOverlay.setAttribute("aria-hidden", "true");
+      });
+      document.getElementById("openSpoilerBtn").addEventListener("click", function () {
+        bumpOverlayZ(spoilerOverlay);
+        spoilerOverlay.classList.add("is-open");
+        spoilerOverlay.setAttribute("aria-hidden", "false");
+      });
+      document.getElementById("spoilerClose").addEventListener("click", function () {
+        spoilerOverlay.classList.remove("is-open");
+        spoilerOverlay.setAttribute("aria-hidden", "true");
+      });
+
+      /** Local command history (ArrowUp / ArrowDown) — same behavior as full PVST lab */
+      var localHistory = new WeakMap();
+      function getLocalHistoryState(input) {
+        var state = localHistory.get(input);
+        if (state) return state;
+        state = { entries: [], idx: 0 };
+        localHistory.set(input, state);
+        return state;
+      }
+      function pushLocalHistory(input, raw) {
+        var cmd = String(raw || "").trim();
+        if (!cmd) return;
+        var state = getLocalHistoryState(input);
+        if (!state.entries.length || state.entries[state.entries.length - 1] !== cmd) {
+          state.entries.push(cmd);
+        }
+        state.idx = state.entries.length;
+      }
+      function bindLocalHistory(input) {
+        if (!input || input.dataset.localHistoryReady === "1") return;
+        input.dataset.localHistoryReady = "1";
+        input.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            pushLocalHistory(input, input.value);
+            return;
+          }
+          var usePrev = e.key === "ArrowUp" || (e.key === "Tab" && !e.shiftKey);
+          var useNext = e.key === "ArrowDown" || (e.key === "Tab" && e.shiftKey);
+          if (!usePrev && !useNext) return;
+          var state = getLocalHistoryState(input);
+          if (!state.entries.length) return;
+          e.preventDefault();
+          if (usePrev) {
+            state.idx = Math.max(0, state.idx - 1);
+          } else {
+            state.idx = Math.min(state.entries.length, state.idx + 1);
+          }
+          input.value = state.idx >= state.entries.length ? "" : state.entries[state.idx];
+        });
+      }
+      bindLocalHistory(swCmdline);
+      bindLocalHistory(r1Cmdline);
+      bindLocalHistory(r3Cmdline);
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key !== "Escape") return;
+        if (spoilerOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          spoilerOverlay.classList.remove("is-open");
+          spoilerOverlay.setAttribute("aria-hidden", "true");
+          return;
+        }
+        if (helperFileOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          helperFileOverlay.classList.remove("is-open");
+          helperFileOverlay.setAttribute("aria-hidden", "true");
+          return;
+        }
+        if (swCliOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          closeSwCli();
+          return;
+        }
+        if (r1CliOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          closeR1Cli();
+          return;
+        }
+        if (r3CliOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          closeR3Cli();
+        }
+      });
+
+      history.pushState(null, "", location.href);
+      window.addEventListener("popstate", function () {
+        history.pushState(null, "", location.href);
+      });
+
+      syncOpenCliLabel();
+      resetSwLab();
+    })();
+  </script>
+</body>
+</html>

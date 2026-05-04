@@ -24,19 +24,23 @@
       var params = new URLSearchParams(location.search || "");
       var stored = sessionStorage.getItem("ccnpSampleKind");
       var track = (params.get("track") || stored || "questions").toLowerCase();
-      if (track !== "questions" && track !== "labs" && track !== "drag" && track !== "ftp") {
-        track = "questions";
-      }
-
-      sessionStorage.setItem("ccnpUrlMaskPath", "/sample");
-      sessionStorage.setItem("ccnpSampleKind", track);
 
       var map = {
         questions: "/CCNP-ENCOR-Study/ENCOR_Samples/sample-question-1.html",
         labs: "/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html?sample=1",
         drag: "/CCNP-ENCOR-Study/ENCOR_Questions/question-365.html?sample=1",
-        ftp: "/CCNA-Study/CCNA_Samples/dragdrop-ftp-vs-tftp.html?sample=1"
+        ftp: "/CCNA-Study/CCNA_Samples/dragdrop-ftp-vs-tftp.html?sample=1",
+        "ccna-questions": "/CCNA-Study/CCNA_Samples/sample-question-1.html?sample=1",
+        "ccna-trunk": "/CCNA-Study/CCNA_Samples/cli-lab-trunk_lacp.html?sample=1",
+        "ccna-ip": "/CCNA-Study/CCNA_Samples/cli-lab-ip-services-sim-v2.html?sample=1"
       };
+
+      if (!Object.prototype.hasOwnProperty.call(map, track)) {
+        track = "questions";
+      }
+
+      sessionStorage.setItem("ccnpUrlMaskPath", "/sample");
+      sessionStorage.setItem("ccnpSampleKind", track);
 
       location.replace(map[track]);
     })();

@@ -116,10 +116,6 @@
       background: transparent;
       color: #8fa6c6;
     }
-    .link-muted {
-      color: #8fa6c6;
-      font-weight: 700;
-    }
     .brand {
       display: inline-flex;
       align-items: center;
@@ -506,43 +502,6 @@
       font: inherit;
       border: 1px solid var(--accent-border);
     }
-    .link-list {
-      margin: 0;
-      padding: 0 0 0 1.15rem;
-      color: #b8c3d6;
-      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
-      line-height: 1.55;
-    }
-    .link-list li {
-      margin-bottom: 8px;
-    }
-    .link-list a {
-      color: #a8c4f0;
-      font-weight: 700;
-    }
-    .sources-details {
-      margin: 0;
-      padding: 14px 16px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: rgba(13, 21, 40, 0.45);
-      color: #9fb0cc;
-      font-size: 0.9rem;
-    }
-    .sources-details summary {
-      cursor: pointer;
-      font-weight: 700;
-      color: var(--text);
-      touch-action: manipulation;
-    }
-    .sources-details .sources-list {
-      margin: 14px 0 0;
-      padding-left: 1.15rem;
-    }
-    .sources-details .sources-list a {
-      color: #9fbddc;
-      word-break: break-word;
-    }
     .site-disclaimer {
       max-width: 720px;
       margin: 0 auto;
@@ -730,7 +689,7 @@
         <section class="subject-section" aria-labelledby="samples-title">
           <h2 class="section-head" id="samples-title">Try the free samples first</h2>
           <p class="section-lead">
-            CCNA question practice and drag-and-drop are live; a browser-based lab sample is <strong>coming soon</strong>.
+            Sample multiple-choice questions, drag-and-drop, and browser CLI labs—open each card to start the matching activity.
           </p>
           <ul class="sample-grid" aria-label="CCNA sample activities">
             <li>
@@ -740,7 +699,7 @@
                     src="/images/ccna-sample-questions-thumbnail.png"
                     width="1024"
                     height="586"
-                    alt="Multiple-choice practice: first one hundred CCNA bank questions with Linear, Random, or Review modes."
+                    alt="Five CCNA multiple-choice sample questions linked with Next question controls."
                     decoding="async"
                     loading="lazy"
                   />
@@ -748,40 +707,12 @@
                 <div class="topic-card-body">
                   <h3 id="card-practice-q-title">Practice Questions</h3>
                   <p>
-                    One hundred questions in the same order as the published chain (QoS through item 100). Use
-                    <strong>Linear</strong> to go in order, <strong>Random</strong> for a shuffled run once through the set, or
-                    <strong>Review</strong> for a shuffled run where each incorrect answer queues that question at the end until you finish the session.
-                    Use <strong>Next question</strong> on each page to advance; <strong>Finish session</strong> appears on the last item.
+                    Open the first item, use <strong>Check answer</strong> for feedback, then <strong>Next question</strong> to move through the chain. Question 5
+                    ends the set.
                   </p>
-                  <div class="practice-mode-actions" role="group" aria-label="Practice question modes">
-                    <button type="button" class="card-action" data-ccna100="linear">Linear</button>
-                    <button type="button" class="card-action" data-ccna100="random">Random</button>
-                    <button type="button" class="card-action" data-ccna100="review">Review</button>
+                  <div class="practice-mode-actions" role="group" aria-label="CCNA sample multiple-choice questions">
+                    <a class="card-action" href="/sample?track=ccna-questions">Start sample questions</a>
                   </div>
-                </div>
-              </article>
-            </li>
-            <li>
-              <article class="topic-card" aria-labelledby="card-extra-q-title">
-                <div class="topic-card-thumb">
-                  <img
-                    src="/images/ccna-sample-questions-thumbnail.png"
-                    width="1024"
-                    height="586"
-                    alt="Multiple-choice: QoS tools that guarantee minimum bandwidth."
-                    decoding="async"
-                    loading="lazy"
-                  />
-                </div>
-                <div class="topic-card-body">
-                  <h3 id="card-extra-q-title">Extra questions — 118-topic chain</h3>
-                  <p>
-                    One hundred eighteen linked items covering QoS, automation, wireless, OSPF, DNA Center, cabling, DHCP security, SDN, access-layer
-                    identity, and more—including multiple “choose two” prompts. Start with QoS and use <strong>Next question</strong> through question
-                    118—same instant feedback pattern as the five-question sample.
-                  </p>
-                  <a class="card-action" href="/CCNA-Study/CCNA_questions/qos-minimum-bandwidth-choose-two.html"
-                    >Start extra questions</a>
                 </div>
               </article>
             </li>
@@ -800,95 +731,42 @@
                 <div class="topic-card-body">
                   <h3 id="card-dd-title">Drag-and-drop</h3>
                   <p>
-                    CCNA exercise: match file-transfer descriptions to FTP and TFTP. Drag on desktop or tap-to-place on touch
-                    devices.
+                    Match file-transfer descriptions to FTP and TFTP. Drag on desktop or tap-to-place on touch devices.
                   </p>
-                  <a class="card-action" href="/CCNA-Study/CCNA_Samples/dragdrop-ftp-vs-tftp.html">Open drag-and-drop</a>
+                  <div class="practice-mode-actions" role="group" aria-label="CCNA sample drag-and-drop">
+                    <a class="card-action" href="/sample?track=ftp">Open drag-and-drop</a>
+                  </div>
                 </div>
               </article>
             </li>
             <li>
               <article class="topic-card" aria-labelledby="card-lab-title">
-                <div class="topic-card-thumb" aria-hidden="true"></div>
+                <div class="topic-card-thumb">
+                  <img
+                    src="/CCNA-Study/CCNA_Samples/ccna-index-sample-lab-thumbnail.png"
+                    width="1024"
+                    height="610"
+                    alt="Trunking and LACP lab: dual-switch topology with Sw1 and Sw2 CLI windows, tasks, and optional spoiler."
+                    decoding="async"
+                    loading="lazy"
+                  />
+                </div>
                 <div class="topic-card-body">
                   <h3 id="card-lab-title">Sample labs</h3>
                   <p>
-                    A browser CLI lab aligned with this CCNA track will be linked here when it is ready—the same interactive lab
-                    engine used elsewhere on the site.
+                    <strong>Trunking &amp; LACP</strong> — dual switches, 802.1Q trunks, Po15, guided tasks (preview above).
                   </p>
-                  <button type="button" class="card-action card-action-soon" disabled aria-label="Sample lab coming soon">
-                    Coming soon
-                  </button>
+                  <div class="practice-mode-actions" role="group" aria-label="CCNA sample CLI lab">
+                    <a class="card-action" href="/sample?track=ccna-trunk">Open sample lab</a>
+                  </div>
                 </div>
               </article>
             </li>
           </ul>
         </section>
-
-        <section class="subject-section" aria-labelledby="quick-title">
-          <h2 class="section-head" id="quick-title">Quick links</h2>
-          <ul class="link-list">
-            <li>
-              <span class="link-muted">CCNA training portal</span> — coming soon (practice modes shell for questions, drag-and-drop,
-              and labs).
-            </li>
-            <li><a href="/sample?track=ftp">CCNA file-transfer sample</a> — same FTP vs TFTP item via masked <code>/sample</code> route.</li>
-            <li><a href="/#purchase">Full library pricing</a> — 30-day access details.</li>
-            <li><a href="/">Be Certified Today home</a> — catalog and FAQ.</li>
-          </ul>
-        </section>
-
-        <section class="subject-section" aria-labelledby="sources-title">
-          <h2 class="section-head" id="sources-title">Sources</h2>
-          <details class="sources-details">
-            <summary>Official references and further reading</summary>
-            <ul class="link-list sources-list">
-              <li>
-                <a href="https://learningnetwork.cisco.com/s/ccna-exam-topics" rel="noopener noreferrer">CCNA exam topics — Cisco Learning Network</a>
-              </li>
-              <li>
-                <a href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/enterprise/ccna/exams-and-training.html" rel="noopener noreferrer">CCNA exams and training — Cisco</a>
-              </li>
-              <li>
-                <a href="https://www.infosecinstitute.com/resources/ccna/ccna-exam-information-and-overview/" rel="noopener noreferrer">CCNA exam overview — Infosec Institute</a>
-              </li>
-              <li>
-                <a href="https://www.indeed.com/career-advice/career-development/how-to-get-ccna-certification" rel="noopener noreferrer">How to get CCNA certification — Indeed</a>
-              </li>
-              <li>
-                <a href="https://www.netcomlearning.com/blog/complete-ccna-roadmap-in-2024" rel="noopener noreferrer">CCNA roadmap — NetCom Learning</a>
-              </li>
-              <li>
-                <a href="https://cciedump.spoto.net/newblog/the-complete-guide-to-the-ccna-exam-2026.html" rel="noopener noreferrer">Guide to the CCNA exam — SPOTO</a>
-              </li>
-              <li>
-                <a href="https://www.theknowledgeacademy.com/blog/ccna-200-301-syllabus/" rel="noopener noreferrer">CCNA 200-301 syllabus — The Knowledge Academy</a>
-              </li>
-              <li>
-                <a href="https://www.cisconetsolutions.com/top-10-ccna-exam-topics-2026/" rel="noopener noreferrer">CCNA exam topics discussion — CISCONET Solutions</a>
-              </li>
-              <li>
-                <a href="https://www.networkbulls.com/blog/ccna-course-guide-2026/" rel="noopener noreferrer">CCNA course guide — Network Bulls</a>
-              </li>
-              <li>
-                <a href="https://www.reddit.com/r/ccna/comments/mgr14y/ccna_passing_requirements/" rel="noopener noreferrer">Community discussion — CCNA passing requirements (Reddit)</a>
-              </li>
-            </ul>
-          </details>
-        </section>
       </div>
     </main>
 
-    <aside class="site-disclaimer" aria-label="Legal disclaimer">
-      <p>
-        <strong>Disclaimer:</strong> This website is an independent training resource created for educational purposes only.
-        It is not affiliated with, endorsed by, sponsored by, or approved by Cisco Systems, Inc. Cisco and related
-        trademarks are the property of Cisco Systems, Inc. All practice questions, explanations, and study materials on
-        this site are original or based on general knowledge and are intended as a guide to help users prepare for
-        certification exams. Practice questions are not actual Cisco exam questions. Any similarity to official exam
-        content is coincidental.
-      </p>
-    </aside>
     <footer>
       © Be Certified Today<a
         class="footer-portal-at"
@@ -896,7 +774,15 @@
         aria-label="CCNA Training Portal"
         >@</a>
     </footer>
+    <aside class="site-disclaimer" aria-label="Legal disclaimer">
+      <p>
+        Disclaimer: This website is an independent training resource created for educational purposes only. It is not affiliated
+        with, endorsed by, sponsored by, or approved by Cisco Systems, Inc. Cisco and related trademarks are the property of Cisco
+        Systems, Inc. All practice questions, explanations, and study materials on this site are original or based on general knowledge
+        and are intended as a guide to help users prepare for certification exams. Practice questions are not actual Cisco exam
+        questions. Any similarity to official exam content is coincidental.
+      </p>
+    </aside>
   </div>
-  <script src="/CCNA-Study/js/ccna-practice-100-hub.js" defer></script>
 </body>
 </html>

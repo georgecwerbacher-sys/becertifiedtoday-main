@@ -380,6 +380,20 @@
       font-weight: 800;
       line-height: 1.25;
     }
+    .sim-box-thumb {
+      margin: -16px -16px 10px -16px;
+      border-radius: 11px 11px 0 0;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(61, 109, 187, 0.65);
+      background: rgba(13, 21, 40, 0.5);
+    }
+    .sim-box-thumb img {
+      display: block;
+      width: 100%;
+      height: clamp(110px, 24vw, 168px);
+      object-fit: cover;
+      object-position: center 12%;
+    }
     .study-meta {
       margin: 0 0 10px;
       font-size: 0.88rem;
@@ -633,7 +647,7 @@
                 <h4 class="sim-box-title">Sample drag and drop</h4>
                 <p class="study-meta">Match file-transfer descriptions to FTP and TFTP.</p>
                 <div class="study-actions">
-                  <a class="start-btn" href="/CCNA-Study/CCNA_Samples/dragdrop-ftp-vs-tftp.html">Open drag-and-drop</a>
+                  <a class="start-btn" href="/sample?track=ftp">Open drag-and-drop</a>
                 </div>
               </article>
               <article class="sim-box">
@@ -652,18 +666,48 @@
           <section class="start-box" aria-label="Lab simulations">
             <div class="sim-grid" aria-label="CLI labs">
               <article class="sim-box">
+                <figure class="sim-box-thumb">
+                  <img
+                    src="/CCNA-Study/CCNA_labs/portal-lab-simulations-thumbnail.png"
+                    width="1024"
+                    height="610"
+                    alt="Trunking and LACP lab: dual-switch topology with Sw1 and Sw2 CLI windows and addressing table."
+                    decoding="async"
+                    loading="lazy"
+                  />
+                </figure>
                 <h4 class="sim-box-title">Trunking &amp; LACP practice simulation</h4>
                 <p class="study-meta">
                   Dual-switch CLI lab: 802.1Q trunks (native VLAN 45, allowed 15,45), LACP EtherChannel Po15, PC1 ping check, save to startup-config.
                 </p>
-                <a class="start-btn" href="/CCNA-Study/CCNA_labs/cli-lab-trunk_lacp.html">Open simulation</a>
+                <a class="start-btn" href="/sample?track=ccna-trunk">Open simulation</a>
               </article>
               <article class="sim-box">
+                <figure class="sim-box-thumb">
+                  <img
+                    src="/CCNA-Study/CCNA_labs/portal-lab-simulations-thumbnail.png"
+                    width="1024"
+                    height="610"
+                    alt="Trunking and LACP lab: dual-switch topology with Sw1 and Sw2 CLI windows and addressing table."
+                    decoding="async"
+                    loading="lazy"
+                  />
+                </figure>
                 <h4 class="sim-box-title">Lab sample 2</h4>
                 <p class="study-meta">Another lab card — match ENCOR portal one-button pattern.</p>
                 <button type="button" class="start-btn is-placeholder" disabled>Open simulation</button>
               </article>
               <article class="sim-box">
+                <figure class="sim-box-thumb">
+                  <img
+                    src="/CCNA-Study/CCNA_labs/portal-lab-simulations-thumbnail.png"
+                    width="1024"
+                    height="610"
+                    alt="Trunking and LACP lab: dual-switch topology with Sw1 and Sw2 CLI windows and addressing table."
+                    decoding="async"
+                    loading="lazy"
+                  />
+                </figure>
                 <h4 class="sim-box-title">Lab sample 3</h4>
                 <p class="study-meta">Add as many <code>sim-box</code> articles as you need.</p>
                 <button type="button" class="start-btn is-placeholder" disabled>Open simulation</button>
