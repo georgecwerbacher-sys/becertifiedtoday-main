@@ -1183,6 +1183,9 @@ Sw2(config-if)# end</pre>
           .replace(/\s+/g, " ")
           .replace(/[.;]+$/, "");
         if (t === "conf t" || t === "config t") t = "configure terminal";
+        if (t.indexOf("interfave") === 0) {
+          t = ("interface" + t.slice(9)).replace(/\s+/g, " ").trim();
+        }
         if (t === "sh run" || t === "show run" || t === "sh running-config") t = "show running-config";
         if (t === "do show run" || t === "do sh run") t = "do show running-config";
         if (t === "sh ver" || t === "show ver" || t === "sh version") t = "show version";
@@ -1407,6 +1410,34 @@ Sw2(config-if)# end</pre>
         }
         if (mode === "config") {
           setOvrAndRefresh("exec");
+          return true;
+        }
+        return false;
+      }
+
+      /**
+       * After soft exit to (config)# (override "config"), re-enter the matching interface context so the
+       * next STEPS line can be entered from (config-if)# again — does not advance stepIndex.
+       */
+      function trySwReenterContextLine(line, stepIdx, getOvr, setOvrAndRefresh) {
+        if (stepIdx >= LAB_STEPS.length) return false;
+        if (getOvr() !== "config") return false;
+        if (LAB_STEPS[stepIdx].test(line)) return false;
+        var u = normalize(line);
+        if (stepIdx >= 4 && stepIdx <= 8 && u === "interface gigabitethernet0/1") {
+          setOvrAndRefresh(null);
+          return true;
+        }
+        if (stepIdx >= 10 && stepIdx <= 14 && u === "interface gigabitethernet0/2") {
+          setOvrAndRefresh(null);
+          return true;
+        }
+        if (stepIdx >= 16 && stepIdx <= 18 && u === "interface range gigabitethernet0/1 - 2") {
+          setOvrAndRefresh(null);
+          return true;
+        }
+        if (stepIdx >= 20 && stepIdx <= 23 && u === "interface port-channel15") {
+          setOvrAndRefresh(null);
           return true;
         }
         return false;
@@ -1681,6 +1712,17 @@ Sw2(config-if)# end</pre>
           return;
         }
 
+        if (
+          trySwReenterContextLine(line, stepIndexSw1, function () {
+            return sw1PromptOverride;
+          }, function (v) {
+            sw1PromptOverride = v;
+            setSw1Prompt();
+          })
+        ) {
+          return;
+        }
+
         if (stepIndexSw1 >= LAB_STEPS.length) {
           appendSw("line-bad", "% Invalid input");
           return;
@@ -1763,6 +1805,17 @@ Sw2(config-if)# end</pre>
 
         if (
           trySwNavSoftLine(line, stepIndexSw2, function () {
+            return sw2PromptOverride;
+          }, function (v) {
+            sw2PromptOverride = v;
+            setSw2Prompt();
+          })
+        ) {
+          return;
+        }
+
+        if (
+          trySwReenterContextLine(line, stepIndexSw2, function () {
             return sw2PromptOverride;
           }, function (v) {
             sw2PromptOverride = v;
