@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — DNA Center Overall Health</title>
+  <title>CCNA — DNA Center inventory defaults (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -125,48 +125,60 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>What is a function of the Cisco DNA Center Overall Health Dashboard?</h1>
+    <h1>Which two events occur automatically when a device is added to Cisco DNA Center? (Choose two)</h1>
 
-    <label class="choice"><input type="radio" name="dnahealth1" value="A" />A. It summarizes daily and weekly CPU usage for servers and workstations in the network.</label>
-    <label class="choice"><input type="radio" name="dnahealth1" value="B" />B. It provides detailed activity logging for the 10 devices and users on the network.</label>
-    <label class="choice"><input type="radio" name="dnahealth1" value="C" />C. It summarizes the operational status of each wireless device on the network.</label>
-    <label class="choice"><input type="radio" name="dnahealth1" value="D" />D. It provides a summary of the top 10 global issues.</label>
+    <label class="choice"><input type="checkbox" name="dnaadd" value="A" />A. The device is assigned to the Global site.</label>
+    <label class="choice"><input type="checkbox" name="dnaadd" value="B" />B. The device is placed into the Unmanaged state.</label>
+    <label class="choice"><input type="checkbox" name="dnaadd" value="C" />C. The device is placed into the Provisioned state.</label>
+    <label class="choice"><input type="checkbox" name="dnaadd" value="D" />D. The device is placed into the Managed state.</label>
+    <label class="choice"><input type="checkbox" name="dnaadd" value="E" />E. The device is assigned to the Local site.</label>
 
     <div class="actions">
+      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-hardening-disable-telnet-http.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/hypervisor-vm-hardware-communication.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/qos-voice-reduce-packet-loss.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/portfast-benefits-choose-two.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 Overall Health summarizes prioritized issues across the fabric (often presented as a short ranked list such as top issues). It is not primarily a server CPU report, per-user activity logging for ten devices, or per-wireless-device operational detail for every AP.";
+      var CORRECT = ["A", "D"];
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="dnaadd"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = CORRECT_MSG;
+          answerBox.textContent = "Correct. A and D \u2014 Newly discovered devices are placed in inventory under the Global site until reassigned, and are treated as managed under DNA Center for supported platforms. Provisioned is an outcome of a provisioning workflow; unmanaged/local site are not the usual paired defaults here.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="dnahealth1"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>

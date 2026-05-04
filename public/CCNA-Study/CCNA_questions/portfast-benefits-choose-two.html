@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — DNA Center Overall Health</title>
+  <title>CCNA — PortFast benefits (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -125,48 +125,60 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>What is a function of the Cisco DNA Center Overall Health Dashboard?</h1>
+    <h1>What are two benefits of using the PortFast feature? (Choose two)</h1>
 
-    <label class="choice"><input type="radio" name="dnahealth1" value="A" />A. It summarizes daily and weekly CPU usage for servers and workstations in the network.</label>
-    <label class="choice"><input type="radio" name="dnahealth1" value="B" />B. It provides detailed activity logging for the 10 devices and users on the network.</label>
-    <label class="choice"><input type="radio" name="dnahealth1" value="C" />C. It summarizes the operational status of each wireless device on the network.</label>
-    <label class="choice"><input type="radio" name="dnahealth1" value="D" />D. It provides a summary of the top 10 global issues.</label>
+    <label class="choice"><input type="checkbox" name="pfb2" value="A" />A. Enabled interfaces are automatically placed in listening state</label>
+    <label class="choice"><input type="checkbox" name="pfb2" value="B" />B. Enabled interfaces wait 50 seconds before they move to the forwarding state</label>
+    <label class="choice"><input type="checkbox" name="pfb2" value="C" />C. Enabled interfaces never generate topology change notifications.</label>
+    <label class="choice"><input type="checkbox" name="pfb2" value="D" />D. Enabled interfaces that move to the learning state generate switch topology change notifications</label>
+    <label class="choice"><input type="checkbox" name="pfb2" value="E" />E. Enabled interfaces come up and move to the forwarding state immediately</label>
 
     <div class="actions">
+      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-hardening-disable-telnet-http.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/hypervisor-vm-hardware-communication.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/dna-center-add-device-two-events.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/unused-switchports-black-hole-vlan.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 Overall Health summarizes prioritized issues across the fabric (often presented as a short ranked list such as top issues). It is not primarily a server CPU report, per-user activity logging for ten devices, or per-wireless-device operational detail for every AP.";
+      var CORRECT = ["C", "E"];
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="pfb2"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = CORRECT_MSG;
+          answerBox.textContent = "Correct. C and E \u2014 PortFast moves an appropriate access port to forwarding immediately and avoids topology change notifications for those link transitions that would flush MAC tables network-wide. PortFast does not place ports in listening or impose a 50-second listen/learn delay.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="dnahealth1"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>

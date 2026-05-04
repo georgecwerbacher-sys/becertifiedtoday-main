@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — DNA Center Overall Health</title>
+  <title>CCNA — Hosts inside 192.168.1.0/26 (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -125,48 +125,60 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>What is a function of the Cisco DNA Center Overall Health Dashboard?</h1>
+    <h1>Refer to the exhibit. R2#show ip route shows: C 192.168.1.0/26 is directly connected, FastEthernet0/1. Which two prefixes are included in this routing table entry? (Choose two)</h1>
 
-    <label class="choice"><input type="radio" name="dnahealth1" value="A" />A. It summarizes daily and weekly CPU usage for servers and workstations in the network.</label>
-    <label class="choice"><input type="radio" name="dnahealth1" value="B" />B. It provides detailed activity logging for the 10 devices and users on the network.</label>
-    <label class="choice"><input type="radio" name="dnahealth1" value="C" />C. It summarizes the operational status of each wireless device on the network.</label>
-    <label class="choice"><input type="radio" name="dnahealth1" value="D" />D. It provides a summary of the top 10 global issues.</label>
+    <label class="choice"><input type="checkbox" name="sub26" value="A" />A. 192.168.1.17</label>
+    <label class="choice"><input type="checkbox" name="sub26" value="B" />B. 192.168.1.61</label>
+    <label class="choice"><input type="checkbox" name="sub26" value="C" />C. 192.168.1.64</label>
+    <label class="choice"><input type="checkbox" name="sub26" value="D" />D. 192.168.1.127</label>
+    <label class="choice"><input type="checkbox" name="sub26" value="E" />E. 192.168.1.254</label>
 
     <div class="actions">
+      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-hardening-disable-telnet-http.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/hypervisor-vm-hardware-communication.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/dhcp-default-gateway-windows-workstation.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/network-automation-drivers-choose-two.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 Overall Health summarizes prioritized issues across the fabric (often presented as a short ranked list such as top issues). It is not primarily a server CPU report, per-user activity logging for ten devices, or per-wireless-device operational detail for every AP.";
+      var CORRECT = ["A", "B"];
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="sub26"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = CORRECT_MSG;
+          answerBox.textContent = "Correct. A and B \u2014 192.168.1.0/26 spans 192.168.1.0\u2013192.168.1.63, so .17 and .61 are inside the prefix. .64 begins the next block; .127 and .254 are outside this /26.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="dnahealth1"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>

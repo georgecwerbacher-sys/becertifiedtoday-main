@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — DNA Center Overall Health</title>
+  <title>CCNA — OSPF DR/BDR election change</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -125,12 +125,12 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>What is a function of the Cisco DNA Center Overall Health Dashboard?</h1>
+    <h1>Refer to the exhibit. R5 is the current DR on the network, and R4 is the BDR. Their interfaces are flapping, so a network engineer wants the OSPF network to elect a different DR and BDR. Which set of configurations must the engineer implement? Option A: R4 Gi0/0 ip ospf priority 20; R5 Gi0/0 ip ospf priority 10. Option B: R2 priority 259; R3 priority 256. Option C: R3 priority 255; R2 priority 240. Option D: R5 priority 120; R4 priority 110.</h1>
 
-    <label class="choice"><input type="radio" name="dnahealth1" value="A" />A. It summarizes daily and weekly CPU usage for servers and workstations in the network.</label>
-    <label class="choice"><input type="radio" name="dnahealth1" value="B" />B. It provides detailed activity logging for the 10 devices and users on the network.</label>
-    <label class="choice"><input type="radio" name="dnahealth1" value="C" />C. It summarizes the operational status of each wireless device on the network.</label>
-    <label class="choice"><input type="radio" name="dnahealth1" value="D" />D. It provides a summary of the top 10 global issues.</label>
+    <label class="choice"><input type="radio" name="ospfdr" value="A" />A. Option A</label>
+    <label class="choice"><input type="radio" name="ospfdr" value="B" />B. Option B</label>
+    <label class="choice"><input type="radio" name="ospfdr" value="C" />C. Option C</label>
+    <label class="choice"><input type="radio" name="ospfdr" value="D" />D. Option D</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -139,15 +139,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-hardening-disable-telnet-http.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/hypervisor-vm-hardware-communication.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/utp-cat5e-cat6a-two-similarities.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ospf-ia-route-metric-display.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 Overall Health summarizes prioritized issues across the fabric (often presented as a short ranked list such as top issues). It is not primarily a server CPU report, per-user activity logging for ten devices, or per-wireless-device operational detail for every AP.";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C \u2014 Priorities must stay 0\u2013255. Raising R3 and R2 above R4/R5 elects new DR/BDR among different routers. Option B is invalid (>255). Options A and D keep the DR/BDR pair among R4/R5 only.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -161,7 +161,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="dnahealth1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="ospfdr"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

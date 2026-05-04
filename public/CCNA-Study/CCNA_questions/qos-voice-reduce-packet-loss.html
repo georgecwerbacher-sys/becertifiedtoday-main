@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — DNA Center Overall Health</title>
+  <title>CCNA — QoS and voice packet loss</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -125,12 +125,12 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>What is a function of the Cisco DNA Center Overall Health Dashboard?</h1>
+    <h1>How does QoS optimize voice traffic?</h1>
 
-    <label class="choice"><input type="radio" name="dnahealth1" value="A" />A. It summarizes daily and weekly CPU usage for servers and workstations in the network.</label>
-    <label class="choice"><input type="radio" name="dnahealth1" value="B" />B. It provides detailed activity logging for the 10 devices and users on the network.</label>
-    <label class="choice"><input type="radio" name="dnahealth1" value="C" />C. It summarizes the operational status of each wireless device on the network.</label>
-    <label class="choice"><input type="radio" name="dnahealth1" value="D" />D. It provides a summary of the top 10 global issues.</label>
+    <label class="choice"><input type="radio" name="qosloss" value="A" />A. reducing bandwidth usage</label>
+    <label class="choice"><input type="radio" name="qosloss" value="B" />B. by reducing packet loss</label>
+    <label class="choice"><input type="radio" name="qosloss" value="C" />C. by differentiating voice and video traffic</label>
+    <label class="choice"><input type="radio" name="qosloss" value="D" />D. by increasing jitter</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -139,15 +139,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-hardening-disable-telnet-http.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/hypervisor-vm-hardware-communication.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/lldp-run-global-isp-handoff.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/dna-center-add-device-two-events.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 Overall Health summarizes prioritized issues across the fabric (often presented as a short ranked list such as top issues). It is not primarily a server CPU report, per-user activity logging for ten devices, or per-wireless-device operational detail for every AP.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 Marking and priority/LLQ queuing protect voice from being dropped during congestion, reducing loss that would harm UDP-based real-time audio. QoS does not increase jitter on purpose and is not mainly about merging voice and video classes in this wording.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -161,7 +161,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="dnahealth1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="qosloss"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
