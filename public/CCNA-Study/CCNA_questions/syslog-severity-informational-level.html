@@ -51,6 +51,48 @@
       margin-right: 10px;
       transform: translateY(1px);
     }
+    .choice-cli {
+      padding: 12px 14px;
+    }
+    .choice-cli-inner {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .choice-cli-inner > input {
+      flex-shrink: 0;
+      margin-top: 4px;
+      margin-right: 0;
+    }
+    .choice-cli-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .choice-cli-letter {
+      display: block;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      color: #e6edf3;
+    }
+    .cli-config-snippet {
+      margin: 0;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #0a0e14;
+      border: 1px solid #1e293b;
+      color: #c8e6c9;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.72rem, 1.6vw, 0.85rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      text-align: left;
+    }
+    .cli-config-snippet code {
+      font: inherit;
+      color: inherit;
+    }
     .actions {
       margin-top: 18px;
       display: flex;
@@ -126,12 +168,48 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>When deploying syslog, which severity level logs informational message?</h1>
+    <h1>When deploying syslog, which severity level logs an informational message?</h1>
 
-    <label class="choice"><input type="radio" name="slogsev" value="A" />A. 0</label>
-    <label class="choice"><input type="radio" name="slogsev" value="B" />B. 2</label>
-    <label class="choice"><input type="radio" name="slogsev" value="C" />C. 4</label>
-    <label class="choice"><input type="radio" name="slogsev" value="D" />D. 6</label>
+    <label class="choice choice-cli">
+      <div class="choice-cli-inner">
+        <input type="radio" name="slogsev" value="A" />
+        <div class="choice-cli-body">
+          <span class="choice-cli-letter">A.</span>
+          <pre class="cli-config-snippet"><code>logging trap emergencies
+! severity 0</code></pre>
+        </div>
+      </div>
+    </label>
+    <label class="choice choice-cli">
+      <div class="choice-cli-inner">
+        <input type="radio" name="slogsev" value="B" />
+        <div class="choice-cli-body">
+          <span class="choice-cli-letter">B.</span>
+          <pre class="cli-config-snippet"><code>logging trap critical
+! severity 2</code></pre>
+        </div>
+      </div>
+    </label>
+    <label class="choice choice-cli">
+      <div class="choice-cli-inner">
+        <input type="radio" name="slogsev" value="C" />
+        <div class="choice-cli-body">
+          <span class="choice-cli-letter">C.</span>
+          <pre class="cli-config-snippet"><code>logging trap warnings
+! severity 4</code></pre>
+        </div>
+      </div>
+    </label>
+    <label class="choice choice-cli">
+      <div class="choice-cli-inner">
+        <input type="radio" name="slogsev" value="D" />
+        <div class="choice-cli-body">
+          <span class="choice-cli-letter">D.</span>
+          <pre class="cli-config-snippet"><code>logging trap informational
+! severity 6</code></pre>
+        </div>
+      </div>
+    </label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>

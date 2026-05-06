@@ -33,6 +33,39 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: clamp(1.02rem, 2vw, 1.35rem);
+      font-weight: 700;
+      line-height: 1.35;
+      color: #e6edf3;
+    }
+    .exhibit {
+      margin: 0 0 18px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #2d3b5a;
+      background: #ffffff;
+      text-align: center;
+    }
+    .exhibit img {
+      display: block;
+      width: 100%;
+      max-width: min(100%, 640px);
+      height: auto;
+      margin: 0 auto;
+    }
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -50,6 +83,48 @@
     .choice input {
       margin-right: 10px;
       transform: translateY(1px);
+    }
+    .choice-cli {
+      padding: 12px 14px;
+    }
+    .choice-cli-inner {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .choice-cli-inner > input {
+      flex-shrink: 0;
+      margin-top: 4px;
+      margin-right: 0;
+    }
+    .choice-cli-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .choice-cli-letter {
+      display: block;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      color: #e6edf3;
+    }
+    .cli-config-snippet code {
+      font: inherit;
+      color: inherit;
+    }
+    .cli-config-snippet {
+      margin: 0;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #0a0e14;
+      border: 1px solid #1e293b;
+      color: #c8e6c9;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.68rem, 1.5vw, 0.8rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      text-align: left;
     }
     .actions {
       margin-top: 18px;
@@ -126,12 +201,71 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Refer to the exhibit (standard ACL 99, permit 10.100.100.0/24, deny Gi0/1 subnet). An access list is required to permit traffic from any host on interface G0/0 and deny traffic from interface Gi0/1. Which access list must be applied?</h1>
+    <p class="exhibit-ref">Refer to the exhibit.</p>
 
-    <label class="choice mono"><input type="radio" name="stdacl" value="A" />A. Option A: ip access-list standard 99 — permit 10.100.100.0 0.0.0.255 — deny 192.168.0.0 0.0.255.255</label>
-    <label class="choice mono"><input type="radio" name="stdacl" value="B" />B. Option B: ip access-list standard 99 — permit 10.100.100.0 0.0.0.255 — deny 192.168.0.0 0.255.255.255</label>
-    <label class="choice mono"><input type="radio" name="stdacl" value="C" />C. Option C: ip access-list standard 100 — permit 10.100.100.0 0.0.0.255 — deny 192.168.0.0 0.255.255.255</label>
-    <label class="choice mono"><input type="radio" name="stdacl" value="D" />D. Option D: ip access-list standard 199 — permit 10.100.100.0 0.0.0.255 — deny 192.168.0.0 0.0.255.255</label>
+    <figure class="exhibit">
+      <figcaption class="visually-hidden">
+        Router with Gi0/0 connected to subnet 10.100.100.0/24 and Gi0/1 connected to subnet 192.168.0.0/16.
+      </figcaption>
+      <img
+        src="/CCNA-Study/CCNA_questions/standard-acl-permit-deny-two-subnets-topology.png"
+        width="352"
+        height="202"
+        alt="Router with Gi0/0 to 10.100.100.0/24 and Gi0/1 to 192.168.0.0/16."
+        decoding="async"
+        loading="lazy"
+      />
+    </figure>
+
+    <h1>
+      An access list is required to permit traffic from any host on interface G0/0 and deny traffic from interface Gi0/1. Which
+      access list must be applied?
+    </h1>
+
+    <label class="choice choice-cli">
+      <div class="choice-cli-inner">
+        <input type="radio" name="stdacl" value="A" />
+        <div class="choice-cli-body">
+          <span class="choice-cli-letter">A.</span>
+          <pre class="cli-config-snippet"><code>ip access-list standard 99
+ permit 10.100.100.0 0.0.0.255
+ deny 192.168.0.0 0.0.255.255</code></pre>
+        </div>
+      </div>
+    </label>
+    <label class="choice choice-cli">
+      <div class="choice-cli-inner">
+        <input type="radio" name="stdacl" value="B" />
+        <div class="choice-cli-body">
+          <span class="choice-cli-letter">B.</span>
+          <pre class="cli-config-snippet"><code>ip access-list standard 99
+ permit 10.100.100.0 0.0.0.255
+ deny 192.168.0.0 0.255.255.255</code></pre>
+        </div>
+      </div>
+    </label>
+    <label class="choice choice-cli">
+      <div class="choice-cli-inner">
+        <input type="radio" name="stdacl" value="C" />
+        <div class="choice-cli-body">
+          <span class="choice-cli-letter">C.</span>
+          <pre class="cli-config-snippet"><code>ip access-list standard 100
+ permit 10.100.100.0 0.0.0.255
+ deny 192.168.0.0 0.255.255.255</code></pre>
+        </div>
+      </div>
+    </label>
+    <label class="choice choice-cli">
+      <div class="choice-cli-inner">
+        <input type="radio" name="stdacl" value="D" />
+        <div class="choice-cli-body">
+          <span class="choice-cli-letter">D.</span>
+          <pre class="cli-config-snippet"><code>ip access-list standard 199
+ permit 10.100.100.0 0.0.0.255
+ deny 192.168.0.0 0.0.255.255</code></pre>
+        </div>
+      </div>
+    </label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>

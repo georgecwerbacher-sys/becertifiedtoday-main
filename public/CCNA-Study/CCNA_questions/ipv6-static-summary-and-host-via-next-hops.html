@@ -33,6 +33,39 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: clamp(1.02rem, 2vw, 1.35rem);
+      font-weight: 700;
+      line-height: 1.35;
+      color: #e6edf3;
+    }
+    .exhibit {
+      margin: 0 0 18px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #2d3b5a;
+      background: #ffffff;
+      text-align: center;
+    }
+    .exhibit img {
+      display: block;
+      width: 100%;
+      max-width: min(100%, 760px);
+      height: auto;
+      margin: 0 auto;
+    }
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -126,7 +159,28 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Refer to the exhibit. Which two commands, when configured on router R1, fulfill these requirements? (Choose two) – Packets toward the entire network 2001:db8:23::/64 must be forwarded through router R2. – Packets toward host 2001:db8:23::14 preferably must be forwarded through R3.</h1>
+    <p class="exhibit-ref">Refer to the exhibit.</p>
+
+    <figure class="exhibit">
+      <figcaption class="visually-hidden">
+        IPv6 topology with routers R1, R2, and R3; links fd00:12::/64 and fd00:13::/64; LAN prefix 2001:db8:23::/64 with host
+        2001:db8:23::14.
+      </figcaption>
+      <img
+        src="/CCNA-Study/CCNA_questions/ipv6-static-summary-and-host-via-next-hops-topology.png"
+        width="384"
+        height="300"
+        alt="R1 connected to R2 and R3 with IPv6 links and LAN prefix 2001:db8:23::/64 including host 2001:db8:23::14."
+        decoding="async"
+        loading="lazy"
+      />
+    </figure>
+
+    <h1>
+      Which two commands, when configured on router R1, fulfill these requirements? (Choose two) Packets toward the entire
+      network 2001:db8:23::/64 must be forwarded through router R2. Packets toward host 2001:db8:23::14 preferably must be
+      forwarded through R3.
+    </h1>
 
     <label class="choice"><input type="checkbox" name="v6stat2" value="A" />A. ipv6 route 2001:db8:23::/128 fd00:12::2</label>
     <label class="choice"><input type="checkbox" name="v6stat2" value="B" />B. ipv6 route 2001:db8:23::14/128 fd00:13::3</label>
