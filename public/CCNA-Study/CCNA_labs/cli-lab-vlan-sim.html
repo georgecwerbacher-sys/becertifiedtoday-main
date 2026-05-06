@@ -1633,10 +1633,9 @@ Sw2(config-if)#switchport voice vlan 177</pre>
       /** IOS-style feedback after a successful global VLAN create from (config)# (Sw1/Sw2). */
       function appendVlanCreateSys(appendFn, line) {
         var u = normalize(line);
-        if (u === "vlan 15") {
-          appendFn("line-sys", "VLAN 15 not in configuration.\nCreating VLAN 15.");
-        } else if (u === "vlan 45") {
-          appendFn("line-sys", "VLAN 45 not in configuration.\nCreating VLAN 45.");
+        var m = u.match(/^vlan (\d+)$/);
+        if (m) {
+          appendFn("line-sys", "VLAN " + m[1] + " not in configuration.\nCreating VLAN " + m[1] + ".");
         }
       }
 
@@ -1717,6 +1716,13 @@ Sw2(config-if)#switchport voice vlan 177</pre>
             setSw1Prompt();
           }, 1)
         ) {
+          return;
+        }
+
+        var sw1Mode = sw1PromptOverride || (stepIndexSw1 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw1].mode : "exec");
+        if (sw1Mode === "config" && /^vlan \d+$/.test(normalize(line))) {
+          // Accept extra VLAN creation commands without failing the simulator flow.
+          appendVlanCreateSys(appendSw, line);
           return;
         }
 
@@ -1826,6 +1832,13 @@ Sw2(config-if)#switchport voice vlan 177</pre>
             setSw2Prompt();
           }, 2)
         ) {
+          return;
+        }
+
+        var sw2ModeNow = sw2PromptOverride || (stepIndexSw2 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw2].mode : "exec");
+        if (sw2ModeNow === "config" && /^vlan \d+$/.test(normalize(line))) {
+          // Accept extra VLAN creation commands without failing the simulator flow.
+          appendVlanCreateSys(appendSw2, line);
           return;
         }
 
