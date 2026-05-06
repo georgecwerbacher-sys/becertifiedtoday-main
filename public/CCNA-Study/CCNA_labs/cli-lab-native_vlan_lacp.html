@@ -1715,6 +1715,8 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
         bumpOverlayZ(swCliOverlay);
         swCliOverlay.classList.add("is-open");
         swCliOverlay.setAttribute("aria-hidden", "false");
+        // Keep CLI blank on open; only show config output after explicit show run.
+        swScrollback.innerHTML = "";
         if (swTerminal) {
           swTerminal.classList.remove("terminal-flash");
           void swTerminal.offsetWidth;
