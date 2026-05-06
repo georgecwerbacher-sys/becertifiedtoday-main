@@ -1,0 +1,2198 @@
+<!doctype html>
+<!--
+  CCNA / ENCOR-style lab: IEEE 802.1Q trunks (E0/0–E0/1), native VLAN 45, allowed VLANs 15 and 45; then LACP
+  EtherChannel 802.3ad (channel-group 15 mode active) with Port-channel15 trunk. Dual switches SW1/SW2 share the same
+  LAB_STEPS[] sequence; PC1 verifies ping to PC2 after Task 1. Lab complete = both switches finished STEPS + PC1 ping
+  + copy run start from enable on SW1 and SW2.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CCNA VLAN Practice Simulation | Be Certified Today</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      padding-bottom: 88px;
+      box-sizing: border-box;
+    }
+    .wrap {
+      width: min(1000px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card {
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 22px 26px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.15rem, 2vw, 1.65rem);
+      line-height: 1.3;
+    }
+    .objective,
+    .tasks {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .tasks ol {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+    }
+    .tasks li {
+      margin: 6px 0;
+    }
+    .tasks-blue-box {
+      margin-top: 14px;
+      padding: 16px 18px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      text-align: left;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      box-sizing: border-box;
+    }
+    .tasks-blue-box .tasks {
+      color: #b8c3d6;
+      margin: 0 0 10px;
+    }
+    .tasks-blue-box .tasks:last-of-type,
+    .tasks-blue-box ol.tasks {
+      margin-bottom: 0;
+    }
+    .tasks-blue-box .tasks strong,
+    .tasks-blue-box ol.tasks strong {
+      color: #e6edf3;
+      font-weight: 800;
+    }
+    .tasks-blue-box ol.tasks {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+      color: #b8c3d6;
+    }
+    .tasks-blue-box ol.tasks li {
+      margin: 8px 0;
+      color: #b8c3d6;
+    }
+    .diagram-wrap {
+      background: #ffffff;
+      border: 1px solid #2d3b5a;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 8px;
+      text-align: center;
+    }
+    .diagram-stage {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      max-width: min(520px, 100%);
+      margin: 0 auto;
+      line-height: 0;
+    }
+    .diagram-stage img {
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+      border-radius: 8px;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .device-pick label {
+      margin-left: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .device-pick input {
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .device-links-after-tasks {
+      margin-top: 14px;
+    }
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
+      outline: none;
+    }
+    .topology-scrape {
+      margin-top: 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0c1222;
+      border: 1px solid #2a3b5c;
+      text-align: left;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    .topology-scrape h2 {
+      margin: 0 0 8px;
+      font-size: 0.95rem;
+      color: #e6edf3;
+    }
+    .topology-scrape ul.helper-bullets {
+      margin: 6px 0 4px;
+      padding-left: 1.25em;
+    }
+    .topology-scrape ul.helper-bullets li {
+      margin: 0.45em 0;
+    }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+      pointer-events: none;
+    }
+    .cli-modal-overlay.is-open {
+      display: block;
+    }
+    .cli-modal-dialog {
+      width: min(520px, calc(100vw - 24px));
+      max-height: min(85vh, 720px);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-dialog.is-dragging {
+      transition: none;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+    }
+    .cli-modal-header:active {
+      cursor: grabbing;
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-close:hover {
+      filter: brightness(1.1);
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
+    .cli-modal-footer {
+      padding: 10px 12px 12px;
+      border-top: 1px solid #2d3b5a;
+      flex-shrink: 0;
+    }
+    .terminal {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.88rem;
+      background: #0a0d12;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      padding: 12px 12px 10px;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      margin-top: 0;
+    }
+    .terminal.terminal-flash {
+      animation: cliFlash 0.9s ease;
+    }
+    @keyframes cliFlash {
+      0% {
+        box-shadow: 0 0 0 0 rgba(37, 75, 138, 0.9);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(37, 75, 138, 0);
+      }
+    }
+    .scrollback-area {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 360px;
+      margin-bottom: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #c8d2e0;
+      line-height: 1.45;
+    }
+    .line-user {
+      color: #7ec8ff;
+    }
+    .line-bad {
+      color: #fca5a5;
+    }
+    .line-sys {
+      color: #94a3b8;
+    }
+    .line-showrun,
+    .line-ping {
+      white-space: pre-wrap;
+      color: #dbe5f0;
+      margin: 6px 0 12px;
+      padding: 10px 10px 12px;
+      border-radius: 6px;
+      background: #06080c;
+      border: 1px solid #263043;
+      font-family: inherit;
+      line-height: 1.45;
+    }
+    .line-showrun.line-show-trunk {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      white-space: pre;
+      overflow-x: auto;
+    }
+    .input-row {
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #243044;
+      padding-top: 8px;
+    }
+    .prompt-el {
+      flex-shrink: 0;
+      color: #fbbf24;
+      user-select: none;
+    }
+    .prompt-el.pc-prompt {
+      color: #c8f0c4;
+      font-weight: 600;
+    }
+    .cmdline-input {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      color: #e6edf3;
+      font: inherit;
+      outline: none;
+      padding: 4px 0 4px 4px;
+    }
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-secondary {
+      background: #2a3040;
+      border-color: #4b556b;
+    }
+    .pass-banner {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .pass-banner.visible {
+      display: block;
+    }
+    .sim-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(11, 16, 32, 0.94);
+      border-top: 1px solid #2d3b5a;
+      backdrop-filter: blur(10px);
+    }
+    .sim-nav-btn {
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 700;
+      min-width: 5.5rem;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .sim-nav-btn:hover {
+      filter: brightness(1.08);
+    }
+    .sim-nav-home {
+      background: #1a3d6e;
+    }
+    .site-logo-corner {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 12000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(11, 16, 32, 0.55);
+      border: 1px solid #2d3b5a;
+      padding: 6px;
+      backdrop-filter: blur(4px);
+    }
+    .site-logo-corner img {
+      display: block;
+      width: 52px;
+      height: 52px;
+    }
+    a.site-logo-corner {
+      text-decoration: none;
+      color: inherit;
+    }
+    a.site-logo-corner:focus-visible {
+      outline: 2px solid #4f84d8;
+      outline-offset: 3px;
+    }
+    .cli-modal-dialog,
+    .terminal {
+      color-scheme: dark;
+    }
+    .terminal input[type="text"],
+    .cmdline-input {
+      color-scheme: dark;
+      -webkit-appearance: none;
+      appearance: none;
+      background-color: transparent !important;
+    }
+    .helper-modal-dialog {
+      width: min(760px, calc(100vw - 24px));
+    }
+    .spoiler-modal-dialog {
+      width: min(720px, calc(100vw - 24px));
+    }
+    .spoiler-cli-body {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .spoiler-task {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .spoiler-terminal-cap {
+      margin: 0;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #7a8fb0;
+    }
+    .spoiler-terminal {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.82rem;
+      background: #0a0d12;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+    .spoiler-terminal-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: linear-gradient(180deg, #151d2e 0%, #101826 100%);
+      border-bottom: 1px solid #243044;
+      color: #9fb0cc;
+      font-size: 0.72rem;
+      font-weight: 600;
+      user-select: none;
+    }
+    .spoiler-terminal-dots {
+      display: inline-flex;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    .spoiler-terminal-dots span {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #3d4f6e;
+      box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35);
+    }
+    .spoiler-terminal-dots span:nth-child(1) {
+      background: #c94b4b;
+    }
+    .spoiler-terminal-dots span:nth-child(2) {
+      background: #c9a24b;
+    }
+    .spoiler-terminal-dots span:nth-child(3) {
+      background: #4bc96d;
+    }
+    .spoiler-terminal-title {
+      flex: 1;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .spoiler-terminal-pre {
+      margin: 0;
+      padding: 12px 12px 14px;
+      color: #c8d2e0;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      max-height: min(52vh, 420px);
+      overflow-y: auto;
+    }
+    .spoiler-cli-pre {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.8rem;
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+    }
+    .spoiler-verify-list {
+      margin: 0;
+      padding: 0 0 4px 1.2em;
+      color: #b8c3d6;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    .spoiler-verify-list li {
+      margin: 0.4em 0;
+    }
+  </style>
+</head>
+<body>
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <a class="site-logo-corner" href="/index.html" aria-label="Be Certified Today — site home">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="" />
+  </a>
+
+  <div class="wrap">
+    <main class="card">
+      <h1>CCNA VLAN Practice Simulation</h1>
+
+      <div class="diagram-wrap" aria-label="Topology diagram">
+        <div class="diagram-stage">
+          <img
+            src="/CCNA-Study/CCNA_labs/ccna-lab-vlan-sim-topology.png"
+            width="596"
+            height="446"
+            alt="Topology: Sw1 and Sw2 connected on e0/0, with VLAN mapping table for data VLANs 77 and 88 and voice VLANs 177 and 188 across interfaces e0/1 to e0/3."
+            decoding="async"
+          />
+        </div>
+        <div class="device-pick" role="group" aria-label="Device for CLI">
+          <strong style="color: #e6edf3">Select device</strong>
+          <label><input type="radio" name="labPrimaryDev" value="SW1" checked /> Sw1</label>
+          <label><input type="radio" name="labPrimaryDev" value="SW2" /> Sw2</label>
+        </div>
+        <div class="device-links">
+          <button type="button" class="device-link" id="openSelectedCliBtn">Open Sw1 CLI</button>
+        </div>
+        <div class="tasks-blue-box" aria-label="Lab tasks">
+          <p class="tasks">
+            <strong>Tasks</strong>
+          </p>
+          <ol class="tasks">
+            <li>
+              All physical cabling is in place and verified. Connectivity for the Switches on ports E0/1, E0/2, and E0/3 must be
+              configured and available for voice and data capabilities.
+            </li>
+            <li>
+              Configure Sw1 and Sw2 with the VLAN naming as indicated.
+            </li>
+            <li>
+              Assign the VLANs to the appropriate interfaces and set a non-trunking, non-tagged, single-VLAN for each interface
+              according to the topology.
+            </li>
+            <li>
+              <strong>(Optional)</strong> Configure both switches to use the L2 vendor-neutral discovery protocol to broadcast device
+              information, including the native VLAN across the e0/0 interfaces.
+            </li>
+            <li>
+              <strong>(Optional)</strong> Configure interfaces E0/1, E0/2, and E0/3 so the interfaces do not pass the configured
+              neighbor discovery protocol.
+            </li>
+          </ol>
+        </div>
+        <div class="device-links device-links-after-tasks" aria-label="Lab aids">
+          <button type="button" class="device-link" id="openHelperFileBtn">Helper</button>
+          <button type="button" class="device-link" id="inlineResetLabBtn">Reset lab</button>
+          <button type="button" class="device-link" id="openSpoilerBtn">Spoiler</button>
+        </div>
+      </div>
+
+      <p class="objective">
+        <strong>Disclaimer:</strong> This website is an independent training resource created for educational purposes only.
+        It is not affiliated with, endorsed by, sponsored by, or approved by Cisco Systems, Inc. Cisco and related trademarks
+        are the property of Cisco Systems, Inc. All practice questions, explanations, and study materials on this site are
+        original or based on general knowledge and are intended as a guide to help users prepare for certification exams.
+        Practice questions are not actual Cisco exam questions. Any similarity to official exam content is coincidental.
+      </p>
+    </main>
+  </div>
+
+  <!-- Primary switch CLI (editable lab device — LAB_STEPS engine) -->
+  <div id="swCliOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="swCliDialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="swCliTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="swCliTitle">Sw1 — CLI</h2>
+        <button type="button" class="cli-modal-close" id="swCliClose" aria-label="Close CLI window">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" id="swTerminal" aria-label="Simulated Sw1 CLI">
+          <div id="swScrollback" class="scrollback-area"></div>
+          <div class="input-row">
+            <span id="swPrompt" class="prompt-el">Sw1#</span>
+            <input
+              id="swCmdline"
+              class="cmdline-input"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="none"
+              aria-label="Sw1 command line"
+            />
+          </div>
+        </div>
+      </div>
+      <footer class="cli-modal-footer">
+        <div class="controls">
+          <button type="button" class="btn btn-secondary" id="swResetBtn">Reset lab</button>
+        </div>
+        <div id="passBanner" class="pass-banner" role="status">
+          Complete all required steps on Sw1 and Sw2, then from enable mode run copy running-config startup-config on both switches.
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- SW2 — same STEPS engine as SW1 (symmetric configuration) -->
+  <div id="sw2CliOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="sw2CliDialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="sw2CliTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="sw2CliTitle">Sw2 — CLI</h2>
+        <button type="button" class="cli-modal-close" id="sw2CliClose" aria-label="Close SW2 window">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" id="sw2Terminal" aria-label="Simulated Sw2 CLI">
+          <div id="sw2Scrollback" class="scrollback-area"></div>
+          <div class="input-row">
+            <span id="sw2Prompt" class="prompt-el">Sw2#</span>
+            <input
+              id="sw2Cmdline"
+              class="cmdline-input"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="none"
+              aria-label="Sw2 command line"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PC: minimal command prompt (>) — no IOS; REPLACE submitPc() to add real behaviors -->
+  <div id="pcCliOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="pcCliDialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="pcCliTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="pcCliTitle">PC1 / PC2 — Command Prompt</h2>
+        <button type="button" class="cli-modal-close" id="pcCliClose" aria-label="Close PC window">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" id="pcTerminal" aria-label="Simulated PC command prompt">
+          <div id="pcScrollback" class="scrollback-area"></div>
+          <div class="input-row">
+            <span id="pcPrompt" class="prompt-el pc-prompt">&gt;</span>
+            <input
+              id="pcCmdline"
+              class="cmdline-input"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="none"
+              aria-label="PC command line"
+            />
+          </div>
+        </div>
+      </div>
+      <footer class="cli-modal-footer">
+        <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
+          Select <strong>PC1</strong> in the page picker, then run <code>ping 10.15.15.20</code> after Task 1 trunks are configured on
+          both switches. PC2 is display-only for this check.
+        </p>
+      </footer>
+    </div>
+  </div>
+
+  <div id="helperFileOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="helperFileDialog"
+      class="cli-modal-dialog helper-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="helperFileTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="helperFileTitle">Helper file</h2>
+        <button type="button" class="cli-modal-close" id="helperFileClose" aria-label="Close helper">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <section class="topology-scrape" aria-label="Helper notes">
+          <h2>VLAN simulation checklist</h2>
+          <ul class="helper-bullets">
+            <li>
+              <strong>Task 1.</strong> Configure Sw1 and Sw2 with the VLAN naming as indicated.
+              <pre class="spoiler-cli-pre">Sw1,Sw2(config)# vlan 77
+Sw1,Sw2(config-vlan)# name IT_User_VLAN
+Sw1,Sw2(config-vlan)# vlan 88
+Sw1,Sw2(config-vlan)# name HR_User_VLAN
+Sw1,Sw2(config-vlan)# vlan 177
+Sw1,Sw2(config-vlan)# name IT_Voice_VLAN
+Sw1,Sw2(config-vlan)# vlan 188
+Sw1,Sw2(config-vlan)# name HR_Voice_VLAN
+Sw1,Sw2(config-vlan)# exit</pre>
+            </li>
+            <li>
+              <strong>Task 2.</strong> Assign the VLANs to the appropriate interfaces and set a non-trunking, non-tagged,
+              single-VLAN for each interface according to the topology.
+              <div>Use access mode for these interfaces.</div>
+              <pre class="spoiler-cli-pre">Sw1(config)# interface range e0/1 - 2
+Sw1(config-if-range)# switchport mode access
+Sw1(config-if-range)# switchport access vlan 77
+Sw1(config-if-range)# interface e0/3
+Sw1(config-if)# switchport mode access
+Sw1(config-if)# switchport access vlan 88
+Sw1(config-if)# switchport voice vlan 188
+Sw1(config-if)# interface e0/1
+Sw1(config-if)# switchport voice vlan 177
+
+Sw2(config)# interface e0/3
+Sw2(config-if)# switchport mode access
+Sw2(config-if)# switchport access vlan 77
+Sw2(config-if)# interface e0/1
+Sw2(config-if)# switchport mode access
+Sw2(config-if)# switchport access vlan 88
+Sw2(config-if)# switchport voice vlan 188
+Sw2(config-if)# interface e0/2
+Sw2(config-if)# switchport voice vlan 177</pre>
+            </li>
+            <li>
+              <strong>(Optional) Task 3.</strong> Configure both switches to use the L2 vendor-neutral discovery protocol to broadcast
+              device information, including the native VLAN across the e0/0 interfaces.
+              <pre class="spoiler-cli-pre">Sw1,Sw2(config)#lldp run
+Sw1,Sw2(config)#int e0/0
+Sw1,Sw2(config-if)#lldp transmit
+Sw1,Sw2(config-if)#lldp receive</pre>
+            </li>
+            <li>
+              <strong>(Optional) Task 4.</strong> Configure interfaces E0/1, E0/2, and E0/3 so the interfaces do not pass the
+              configured neighbor discovery protocol. To be safe, disable both CDP and LLDP.
+              <pre class="spoiler-cli-pre">Sw1,Sw2(config)#int range e0/1 - 2, e0/3
+Sw1,Sw2(config-if-range)#no cdp enable
+Sw1,Sw2(config-if-range)#no lldp transmit
+Sw1,Sw2(config-if-range)#no lldp receive</pre>
+            </li>
+            <li>
+              <strong>Save the configuration:</strong>
+              <pre class="spoiler-cli-pre">Sw1,Sw2# copy running-config startup-config</pre>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div id="spoilerOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="spoilerDialog"
+      class="cli-modal-dialog spoiler-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="spoilerTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="spoilerTitle">Solution (spoiler)</h2>
+        <button type="button" class="cli-modal-close" id="spoilerClose" aria-label="Close spoiler">×</button>
+      </header>
+      <div class="cli-modal-body spoiler-cli-body">
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t1-sw1">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t1-sw1">Task 1 — Sw1</p>
+          <div class="spoiler-terminal" role="region" aria-label="Sw1 Task 1 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">Sw1 — Task 1</span>
+            </div>
+            <pre class="spoiler-terminal-pre">Sw1(config)#vlan 77
+Sw1(config-vlan)#name IT_User_VLAN
+Sw1(config-vlan)#vlan 88
+Sw1(config-vlan)#name HR_User_VLAN
+Sw1(config-vlan)#vlan 177
+Sw1(config-vlan)#name IT_Voice_VLAN
+Sw1(config-vlan)#vlan 188
+Sw1(config-vlan)#name HR_Voice_VLAN
+Sw1(config-vlan)#exit</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t1-sw2">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t1-sw2">Task 1 — Sw2</p>
+          <div class="spoiler-terminal" role="region" aria-label="Sw2 Task 1 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">Sw2 — Task 1</span>
+            </div>
+            <pre class="spoiler-terminal-pre">Sw2(config)#vlan 77
+Sw2(config-vlan)#name IT_User_VLAN
+Sw2(config-vlan)#vlan 88
+Sw2(config-vlan)#name HR_User_VLAN
+Sw2(config-vlan)#vlan 177
+Sw2(config-vlan)#name IT_Voice_VLAN
+Sw2(config-vlan)#vlan 188
+Sw2(config-vlan)#name HR_Voice_VLAN
+Sw2(config-vlan)#exit</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t2-sw1">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t2-sw1">Task 2 — Sw1</p>
+          <div class="spoiler-terminal" role="region" aria-label="Sw1 Task 2 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">Sw1 — Task 2</span>
+            </div>
+            <pre class="spoiler-terminal-pre">Sw1(config)#interface range e0/1 - 2
+Sw1(config-if-range)#switchport mode access
+Sw1(config-if-range)#switchport access vlan 77
+Sw1(config-if-range)#interface e0/3
+Sw1(config-if)#switchport mode access
+Sw1(config-if)#switchport access vlan 88
+Sw1(config-if)#switchport voice vlan 188
+Sw1(config-if)#interface e0/1
+Sw1(config-if)#switchport voice vlan 177</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t2-sw2">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t2-sw2">Task 2 — Sw2</p>
+          <div class="spoiler-terminal" role="region" aria-label="Sw2 Task 2 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">Sw2 — Task 2</span>
+            </div>
+            <pre class="spoiler-terminal-pre">Sw2(config)#interface e0/3
+Sw2(config-if)#switchport mode access
+Sw2(config-if)#switchport access vlan 77
+Sw2(config-if)#interface e0/1
+Sw2(config-if)#switchport mode access
+Sw2(config-if)#switchport access vlan 88
+Sw2(config-if)#switchport voice vlan 188
+Sw2(config-if)#interface e0/2
+Sw2(config-if)#switchport voice vlan 177</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- sim-nav: replace REPLACE_* hrefs and labels when copying to public/. CCNA example: cli-lab-ip-services-sim-v2.html -->
+  <nav class="sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="/CCNA-Study/ccna-index.html">CCNA study</a>
+  </nav>
+
+  <script>
+    (function () {
+      /** ----- Trunk + LACP lab (SW1 / SW2 symmetric STEPS, PC1 ping, dual save) ----- */
+      var SWITCH_HOST = "Sw1";
+      var SWITCH2_HOST = "Sw2";
+      var PC_PROMPT = ">";
+
+      var SWITCH_SHOW_RUNNING_SNAPSHOT = [
+        "Building configuration...",
+        "",
+        "hostname Sw1",
+        "!",
+        "!",
+        "no profinet",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "ip domain-name 9tut.com",
+        "!",
+        "!",
+        "spanning-tree mode pvst",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "interface FastEthernet0/1",
+        "!",
+        "interface FastEthernet0/2",
+        "!",
+        "interface FastEthernet0/3",
+        "!",
+        "interface FastEthernet0/4",
+        "!",
+        "interface FastEthernet0/5",
+        "!",
+        "interface FastEthernet0/6",
+        "!",
+        "interface FastEthernet0/7",
+        "!",
+        "interface FastEthernet0/8",
+        "!",
+        "interface FastEthernet0/9",
+        "!",
+        "interface FastEthernet0/10",
+        " switchport trunk encapsulation dot1q",
+        " switchport mode trunk",
+        "!",
+        "interface FastEthernet0/11",
+        "!",
+        "interface FastEthernet0/12",
+        "!",
+        "interface FastEthernet0/13",
+        "!",
+        "interface FastEthernet0/14",
+        "!",
+        "interface FastEthernet0/15",
+        "!",
+        "interface FastEthernet0/16",
+        "!",
+        "interface FastEthernet0/17",
+        "!",
+        "interface FastEthernet0/18",
+        "!",
+        "interface FastEthernet0/19",
+        "!",
+        "interface FastEthernet0/20",
+        "!",
+        "interface FastEthernet0/21",
+        "!",
+        "interface FastEthernet0/22",
+        "!",
+        "interface FastEthernet0/23",
+        "!",
+        "interface FastEthernet0/24",
+        "!",
+        "interface GigabitEthernet0/1",
+        "!",
+        "interface GigabitEthernet0/2",
+        "!",
+        "interface Vlan1",
+        " no ip address",
+        " shutdown",
+        "!",
+        "ip classless",
+        "!",
+        "ip flow-export version 9",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "line con 0",
+        "!",
+        "line aux 0",
+        "!",
+        "line vty 0 4",
+        " login",
+        "!",
+        "!",
+        "!",
+        "!",
+        "end",
+      ].join("\r\n");
+
+      var SWITCH2_SHOW_RUNNING_SNAPSHOT = [
+        "Building configuration...",
+        "",
+        "hostname Sw2",
+        "!",
+        "!",
+        "no profinet",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "ip domain-name 9tut.com",
+        "!",
+        "!",
+        "spanning-tree mode pvst",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "interface FastEthernet0/1",
+        "!",
+        "interface FastEthernet0/2",
+        " switchport access vlan 15",
+        " switchport mode access",
+        " switchport nonegotiate",
+        "!",
+        "interface FastEthernet0/3",
+        "!",
+        "interface FastEthernet0/4",
+        "!",
+        "interface FastEthernet0/5",
+        "!",
+        "interface FastEthernet0/6",
+        "!",
+        "interface FastEthernet0/7",
+        "!",
+        "interface FastEthernet0/8",
+        "!",
+        "interface FastEthernet0/9",
+        "!",
+        "interface FastEthernet0/10",
+        " switchport trunk encapsulation dot1q",
+        " switchport mode trunk",
+        "!",
+        "interface FastEthernet0/11",
+        "!",
+        "interface FastEthernet0/12",
+        "!",
+        "interface FastEthernet0/13",
+        "!",
+        "interface FastEthernet0/14",
+        "!",
+        "interface FastEthernet0/15",
+        "!",
+        "interface FastEthernet0/16",
+        "!",
+        "interface FastEthernet0/17",
+        "!",
+        "interface FastEthernet0/18",
+        "!",
+        "interface FastEthernet0/19",
+        "!",
+        "interface FastEthernet0/20",
+        "!",
+        "interface FastEthernet0/21",
+        "!",
+        "interface FastEthernet0/22",
+        "!",
+        "interface FastEthernet0/23",
+        "!",
+        "interface FastEthernet0/24",
+        "!",
+        "interface GigabitEthernet0/1",
+        "!",
+        "interface GigabitEthernet0/2",
+        "!",
+        "interface Vlan1",
+        " no ip address",
+        " shutdown",
+        "!",
+        "ip classless",
+        "!",
+        "ip flow-export version 9",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "line con 0",
+        "!",
+        "line aux 0",
+        "!",
+        "line vty 0 4",
+        " login",
+        "!",
+        "!",
+        "!",
+        "!",
+        "end",
+      ].join("\r\n");
+
+      /**
+       * Lowercase, trim, collapse spaces, strip trailing . or ; then expand helpful IOS abbreviations for matching.
+       */
+      function normalize(s) {
+        var t = String(s)
+          .trim()
+          .toLowerCase()
+          .replace(/\s+/g, " ")
+          .replace(/[.;]+$/, "");
+        if (t === "conf t" || t === "config t") t = "configure terminal";
+        if (t.indexOf("interfave") === 0) {
+          t = ("interface" + t.slice(9)).replace(/\s+/g, " ").trim();
+        }
+        if (t === "sh run" || t === "show run" || t === "sh running-config") t = "show running-config";
+        if (t === "do show run" || t === "do sh run") t = "do show running-config";
+        if (t === "sh ver" || t === "show ver" || t === "sh version") t = "show version";
+        if (
+          t === "show interface trunk" ||
+          t === "show int trunk" ||
+          t === "sh interface trunk" ||
+          t === "sh int trunk" ||
+          t === "sh interfaces trunk"
+        ) {
+          t = "show interfaces trunk";
+        }
+        if (t === "do show interface trunk" || t === "do show int trunk" || t === "do sh int trunk") {
+          t = "do show interfaces trunk";
+        }
+        if (
+          t === "show ether summ" ||
+          t === "sh ether summ" ||
+          t === "sh etherchannel summary" ||
+          t === "show etherchannel summ"
+        ) {
+          t = "show etherchannel summary";
+        }
+        if (t === "do show ether summ" || t === "do sh ether summ") {
+          t = "do show etherchannel summary";
+        }
+        if (t === "copy run start" || t === "copy run st") t = "copy running-configuration startup-configuration";
+        if (t === "copy running-config startup-config") t = "copy running-configuration startup-configuration";
+        if (t === "interface port-channel 15") t = "interface port-channel15";
+        if (t === "int po15" || t === "interface po15") t = "interface port-channel15";
+        if (
+          t === "interface range gigabitethernet0/1-2" ||
+          t === "interface range gigabitethernet0/1 -2" ||
+          t === "interface range gigabitethernet0/1 - 2"
+        ) {
+          t = "interface range gigabitethernet0/1 - 2";
+        }
+        if (t === "interface e0/0" || t === "interface ethernet0/0") t = "interface gigabitethernet0/1";
+        if (t === "interface e0/1" || t === "interface ethernet0/1") t = "interface gigabitethernet0/2";
+        if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
+        if (t === "interface gi0/1" || t === "interface g0/1") t = "interface gigabitethernet0/1";
+        if (t === "interface gi0/2" || t === "interface g0/2") t = "interface gigabitethernet0/2";
+        return t;
+      }
+
+      function matchTrunkAllowed1545(raw) {
+        var u = normalize(raw).replace(/\s*,\s*/g, ",");
+        return u === "switchport trunk allowed vlan 15,45";
+      }
+
+      function matchTrunkNative45(raw) {
+        return normalize(raw) === "switchport trunk native vlan 45";
+      }
+
+      /** Per-switch global VLAN create pair: vlan 15 and vlan 45 may be entered in either order. */
+      var globalVlanPairSw1 = { v15: false, v45: false };
+      var globalVlanPairSw2 = { v15: false, v45: false };
+
+      function testGlobalVlanPair(raw, sw) {
+        var pair = sw === 2 ? globalVlanPairSw2 : globalVlanPairSw1;
+        var u = normalize(raw);
+        if (u === "vlan 15") {
+          if (pair.v15) return false;
+          pair.v15 = true;
+          return true;
+        }
+        if (u === "vlan 45") {
+          if (pair.v45) return false;
+          pair.v45 = true;
+          return true;
+        }
+        return false;
+      }
+
+      /** Per-switch Gi0/1, Gi0/2, Po15: native and allowed VLAN lines may be entered in either order. */
+      var trunkVlanPairSw1 = {
+        gi1: { n: false, a: false },
+        gi2: { n: false, a: false },
+        po: { n: false, a: false },
+      };
+      var trunkVlanPairSw2 = {
+        gi1: { n: false, a: false },
+        gi2: { n: false, a: false },
+        po: { n: false, a: false },
+      };
+
+      function trunkVlanTryPair(pair, raw) {
+        if (matchTrunkNative45(raw)) {
+          if (pair.n) return false;
+          pair.n = true;
+          return true;
+        }
+        if (matchTrunkAllowed1545(raw)) {
+          if (pair.a) return false;
+          pair.a = true;
+          return true;
+        }
+        return false;
+      }
+
+      function testTrunkVlanGi1(raw, sw) {
+        var p = sw === 2 ? trunkVlanPairSw2.gi1 : trunkVlanPairSw1.gi1;
+        return trunkVlanTryPair(p, raw);
+      }
+      function testTrunkVlanGi2(raw, sw) {
+        var p = sw === 2 ? trunkVlanPairSw2.gi2 : trunkVlanPairSw1.gi2;
+        return trunkVlanTryPair(p, raw);
+      }
+      function testTrunkVlanPo(raw, sw) {
+        var p = sw === 2 ? trunkVlanPairSw2.po : trunkVlanPairSw1.po;
+        return trunkVlanTryPair(p, raw);
+      }
+
+      function resetAllTrunkVlanPairFlags() {
+        ["gi1", "gi2", "po"].forEach(function (k) {
+          trunkVlanPairSw1[k].n = trunkVlanPairSw1[k].a = false;
+          trunkVlanPairSw2[k].n = trunkVlanPairSw2[k].a = false;
+        });
+      }
+
+      function resetAllGlobalVlanPairFlags() {
+        globalVlanPairSw1.v15 = globalVlanPairSw1.v45 = false;
+        globalVlanPairSw2.v15 = globalVlanPairSw2.v45 = false;
+      }
+
+      /** Indices 0..14 = Task 1 (Gi0/1–0/2 trunks + exit after each); 15..24 = Task 2 (range LACP, Po15 trunk, end). */
+      var TASK1_LEN = 15;
+
+      var LAB_STEPS = [
+        { mode: "exec", test: function (raw, sw) { return normalize(raw) === "configure terminal"; }},
+        { mode: "config", test: function (raw, sw) { return testGlobalVlanPair(raw, sw); }},
+        { mode: "config", test: function (raw, sw) { return testGlobalVlanPair(raw, sw); }},
+        { mode: "config", test: function (raw, sw) { return normalize(raw) === "interface gigabitethernet0/1"; }},
+        { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "switchport trunk encapsulation dot1q"; }},
+        { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "switchport mode trunk"; }},
+        { mode: "config-if", test: function (raw, sw) { return testTrunkVlanGi1(raw, sw); }},
+        { mode: "config-if", test: function (raw, sw) { return testTrunkVlanGi1(raw, sw); }},
+        { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "exit"; }},
+        { mode: "config", test: function (raw, sw) { return normalize(raw) === "interface gigabitethernet0/2"; }},
+        { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "switchport trunk encapsulation dot1q"; }},
+        { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "switchport mode trunk"; }},
+        { mode: "config-if", test: function (raw, sw) { return testTrunkVlanGi2(raw, sw); }},
+        { mode: "config-if", test: function (raw, sw) { return testTrunkVlanGi2(raw, sw); }},
+        { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "exit"; }},
+        { mode: "config", test: function (raw, sw) { return normalize(raw) === "interface range gigabitethernet0/1 - 2"; }},
+        { mode: "config-if-range", test: function (raw, sw) { return normalize(raw) === "channel-protocol lacp"; }},
+        { mode: "config-if-range", test: function (raw, sw) { return normalize(raw) === "channel-group 15 mode active"; }},
+        { mode: "config-if-range", test: function (raw, sw) { return normalize(raw) === "exit"; }},
+        { mode: "config", test: function (raw, sw) { return normalize(raw) === "interface port-channel15"; }},
+        { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "switchport trunk encapsulation dot1q"; }},
+        { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "switchport mode trunk"; }},
+        { mode: "config-if", test: function (raw, sw) { return testTrunkVlanPo(raw, sw); }},
+        { mode: "config-if", test: function (raw, sw) { return testTrunkVlanPo(raw, sw); }},
+        { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "end"; }},
+      ];
+
+      var HELP_DISABLED_MSG = "help feature disabled for tester";
+      var SHOW_VERSION_MSG = "BeCertifiedToday.com version 2026";
+      var COPY_RUN_START_OK_MSG =
+        "Destination filename [startup-config]?\nBuilding configuration...\n[OK]";
+      var COPY_RUN_START_EXEC_ONLY_MSG =
+        "% Error: Run copy running-config startup-config only from privileged EXEC (#), not from configuration mode.";
+      var COPY_RUN_START_AFTER_STEPS_MSG =
+        "% Error: Finish the full STEPS sequence on this switch until you return to privileged EXEC (#), then save to startup-config.";
+      var TRUNK_LAB_ALL_DONE_MSG =
+        "[OK] Lab complete: all steps finished and startup-config saved on Sw1 and Sw2.";
+      var PASS_BANNER_TRUNK_PENDING =
+        "Complete all required steps on Sw1 and Sw2, then from enable mode run copy running-config startup-config on both switches.";
+      /** Shown on Sw1 or Sw2 after that switch finishes Task 1 (Gi0/1–0/2 trunks + exits); same text on both. */
+      var SHOW_INTERFACES_TRUNK_TASK1_MSG = [
+        "Port        Mode         Encapsulation  Status        Native vlan",
+        "Po15        on           802.1q         trunking      45",
+        "",
+        "Port        Vlans allowed on trunk",
+        "Po15        15,45",
+        "",
+        "Port        Vlans allowed and active in management domain",
+        "Po15        15",
+        "",
+        "Port        Vlans in spanning tree forwarding state and not pruned",
+        "Po15        15",
+      ].join("\n");
+      var SHOW_INTERFACES_TRUNK_WAIT_MSG =
+        "% Trunk summary not available yet — complete Task 1 (both physical trunks and exits) on this switch first.";
+      /** After both switches finish the full STEPS sequence (including Po15 + end). */
+      var SHOW_ETHERCHANNEL_SUMMARY_MSG = [
+        "Flags:  D - down        P - in port-channel",
+        "        I - stand-alone s - suspended",
+        "        H - Hot-standby (LACP only)",
+        "        R - Layer3      S - Layer2",
+        "        U - in use      f - failed to allocate aggregator",
+        "        u - unsuitable for bundling",
+        "        w - waiting to be aggregated",
+        "        d - default port",
+        "",
+        "",
+        "Number of channel-groups in use: 1",
+        "Number of aggregators:           1",
+        "",
+        "Group  Port-channel  Protocol    Ports",
+        "------+-------------+-----------+----------------------------------------------",
+        "",
+        "15     Po15(SU)           LACP   Gi0/1(P) Gi0/2(P)",
+      ].join("\n");
+      var SHOW_ETHERCHANNEL_SUMMARY_WAIT_MSG =
+        "% EtherChannel summary not available yet — complete the full STEPS sequence (including LACP and Port-channel15) on Sw1 and Sw2 first.";
+
+      function matchShowRun(raw) {
+        var u = normalize(raw);
+        return u === "show running-config" || u === "do show running-config";
+      }
+
+      function matchShowVersion(raw) {
+        return normalize(raw) === "show version";
+      }
+
+      function matchShowInterfacesTrunk(raw) {
+        var u = normalize(raw);
+        return u === "show interfaces trunk" || u === "do show interfaces trunk";
+      }
+
+      function matchShowEtherchannelSummary(raw) {
+        var u = normalize(raw);
+        return u === "show etherchannel summary" || u === "do show etherchannel summary";
+      }
+
+      function matchCopyRunStart(raw) {
+        return normalize(raw) === "copy running-configuration startup-configuration";
+      }
+
+      var nvramSavedSw1 = false;
+      var nvramSavedSw2 = false;
+      var pc1PingOk = false;
+
+      function tryCompleteTrunkLab(append) {
+        if (
+          stepIndexSw1 < LAB_STEPS.length ||
+          stepIndexSw2 < LAB_STEPS.length ||
+          !nvramSavedSw1 ||
+          !nvramSavedSw2 ||
+          !pc1PingOk
+        ) {
+          return;
+        }
+        if (passBanner.classList.contains("visible")) return;
+        passBanner.classList.add("visible");
+        passBanner.textContent = TRUNK_LAB_ALL_DONE_MSG;
+        if (append) append("line-sys", TRUNK_LAB_ALL_DONE_MSG);
+      }
+
+      function swInEnableMode(stepIdx, ovr) {
+        if (ovr !== null && ovr !== undefined) {
+          if (
+            ovr === "config" ||
+            ovr === "config-if" ||
+            ovr === "config-if-range" ||
+            ovr === "config-router" ||
+            ovr === "config-std-nacl" ||
+            ovr === "config-ext-nacl" ||
+            ovr === "config-pmap" ||
+            ovr === "control-plane"
+          ) {
+            return false;
+          }
+          if (ovr === "exec") return true;
+        }
+        if (stepIdx >= LAB_STEPS.length) return true;
+        return LAB_STEPS[stepIdx].mode === "exec";
+      }
+
+      /**
+       * IOS-like exit / end / conf t for prompt only — does not advance STEPS or change lab flags.
+       * When the line matches the current LAB step, returns false so normal STEPS handling runs.
+       */
+      function trySwNavSoftLine(line, stepIdx, getOvr, setOvrAndRefresh, swNum) {
+        if (stepIdx >= LAB_STEPS.length) return false;
+        var u = normalize(line);
+        if (stepIdx === 0 && u === "configure terminal") return false;
+        if ((stepIdx === 8 || stepIdx === 14 || stepIdx === 18) && u === "exit") return false;
+        if (stepIdx === 24 && u === "end") return false;
+        if (u === "configure terminal" && stepIdx > 0 && getOvr() === "exec") {
+          setOvrAndRefresh(null);
+          return true;
+        }
+        if (u === "end") {
+          if (getOvr() !== "exec") setOvrAndRefresh("exec");
+          return true;
+        }
+        if (u !== "exit") return false;
+        if (getOvr() === "exec") return false;
+        var mode = LAB_STEPS[stepIdx].mode;
+        var ovr = getOvr();
+        if (mode === "config-if" || mode === "config-if-range") {
+          if (!ovr) {
+            setOvrAndRefresh("config");
+            return true;
+          }
+          if (ovr === "config") {
+            setOvrAndRefresh("exec");
+            return true;
+          }
+          return false;
+        }
+        if (mode === "config") {
+          setOvrAndRefresh("exec");
+          return true;
+        }
+        return false;
+      }
+
+      /**
+       * After soft exit to (config)# (override "config"), re-enter the matching interface context so the
+       * next STEPS line can be entered from (config-if)# again — does not advance stepIndex.
+       */
+      function trySwReenterContextLine(line, stepIdx, getOvr, setOvrAndRefresh, swNum) {
+        if (stepIdx >= LAB_STEPS.length) return false;
+        if (getOvr() !== "config") return false;
+        var u = normalize(line);
+        if (stepIdx >= 4 && stepIdx <= 8 && u === "interface gigabitethernet0/1") {
+          setOvrAndRefresh(null);
+          return true;
+        }
+        if (stepIdx >= 10 && stepIdx <= 14 && u === "interface gigabitethernet0/2") {
+          setOvrAndRefresh(null);
+          return true;
+        }
+        if (stepIdx >= 16 && stepIdx <= 18 && u === "interface range gigabitethernet0/1 - 2") {
+          setOvrAndRefresh(null);
+          return true;
+        }
+        if (stepIdx >= 20 && stepIdx <= 23 && u === "interface port-channel15") {
+          setOvrAndRefresh(null);
+          return true;
+        }
+        return false;
+      }
+
+      function promptForMode(host, mode) {
+        switch (mode) {
+          case "exec":
+            return host + "#";
+          case "config":
+            return host + "(config)#";
+          case "config-if":
+            return host + "(config-if)#";
+          case "config-if-range":
+            return host + "(config-if-range)#";
+          case "config-router":
+            return host + "(config-router)#";
+          case "config-std-nacl":
+            return host + "(config-std-nacl)#";
+          case "config-ext-nacl":
+            return host + "(config-ext-nacl)#";
+          case "config-pmap":
+            return host + "(config-pmap)#";
+          case "control-plane":
+            return host + "(config-control-plane)#";
+          default:
+            return host + "#";
+        }
+      }
+
+      function promptForLabStepIndex(host, index) {
+        if (index >= LAB_STEPS.length) return promptForMode(host, "exec");
+        return promptForMode(host, LAB_STEPS[index].mode);
+      }
+
+      var stepIndexSw1 = 0;
+      var stepIndexSw2 = 0;
+      var sw1PromptOverride = null;
+      var sw2PromptOverride = null;
+
+      var swCliOverlay = document.getElementById("swCliOverlay");
+      var swCliDialog = document.getElementById("swCliDialog");
+      var swScrollback = document.getElementById("swScrollback");
+      var swPrompt = document.getElementById("swPrompt");
+      var swCmdline = document.getElementById("swCmdline");
+      var swTerminal = document.getElementById("swTerminal");
+      var passBanner = document.getElementById("passBanner");
+      var swResetBtn = document.getElementById("swResetBtn");
+
+      var sw2CliOverlay = document.getElementById("sw2CliOverlay");
+      var sw2CliDialog = document.getElementById("sw2CliDialog");
+      var sw2Scrollback = document.getElementById("sw2Scrollback");
+      var sw2Prompt = document.getElementById("sw2Prompt");
+      var sw2Cmdline = document.getElementById("sw2Cmdline");
+      var sw2Terminal = document.getElementById("sw2Terminal");
+
+      var openSelectedCliBtn = document.getElementById("openSelectedCliBtn");
+      var helperFileOverlay = document.getElementById("helperFileOverlay");
+      var helperFileDialog = document.getElementById("helperFileDialog");
+      var spoilerOverlay = document.getElementById("spoilerOverlay");
+      var spoilerDialog = document.getElementById("spoilerDialog");
+
+      var modalStackZ = 30000;
+      function bumpOverlayZ(overlay) {
+        if (!overlay) return;
+        modalStackZ += 1;
+        overlay.style.zIndex = String(modalStackZ);
+      }
+
+      function getLabDev() {
+        var sel = document.querySelector('input[name="labPrimaryDev"]:checked');
+        return sel ? sel.value : "SW1";
+      }
+
+      function syncOpenCliLabel() {
+        var d = getLabDev();
+        if (d === "PC1" || d === "PC2") openSelectedCliBtn.textContent = "Open " + d + " prompt";
+        else if (d === "SW2") openSelectedCliBtn.textContent = "Open " + SWITCH2_HOST + " CLI";
+        else openSelectedCliBtn.textContent = "Open " + SWITCH_HOST + " CLI";
+      }
+
+      function appendSw(cls, text) {
+        var div = document.createElement("div");
+        div.className = cls;
+        div.textContent = text;
+        swScrollback.appendChild(div);
+        swScrollback.scrollTop = swScrollback.scrollHeight;
+      }
+
+      function appendSw2(cls, text) {
+        var div = document.createElement("div");
+        div.className = cls;
+        div.textContent = text;
+        sw2Scrollback.appendChild(div);
+        sw2Scrollback.scrollTop = sw2Scrollback.scrollHeight;
+      }
+
+      var pcCliOverlay = document.getElementById("pcCliOverlay");
+      var pcCliDialog = document.getElementById("pcCliDialog");
+      var pcScrollback = document.getElementById("pcScrollback");
+      var pcPrompt = document.getElementById("pcPrompt");
+      var pcCmdline = document.getElementById("pcCmdline");
+      var pcTerminal = document.getElementById("pcTerminal");
+
+      function appendPc(cls, text) {
+        var div = document.createElement("div");
+        div.className = cls;
+        div.textContent = text;
+        pcScrollback.appendChild(div);
+        pcScrollback.scrollTop = pcScrollback.scrollHeight;
+      }
+
+      function syncPcPromptLabel() {
+        var d = getLabDev();
+        if (d === "PC2") pcPrompt.textContent = "PC2>";
+        else if (d === "PC1") pcPrompt.textContent = "PC1>";
+        else pcPrompt.textContent = PC_PROMPT;
+      }
+
+      function resetPc() {
+        pcScrollback.innerHTML = "";
+        syncPcPromptLabel();
+      }
+
+      function submitPc() {
+        var promptText = pcPrompt.textContent;
+        var line = pcCmdline.value;
+        var dev = getLabDev();
+        pushLocalHistory(pcCmdline, line);
+        appendPc("line-user", promptText + " " + line);
+        pcCmdline.value = "";
+        if (!line.trim()) return;
+        if (normalize(line) === "?") {
+          appendPc("line-sys", HELP_DISABLED_MSG);
+          return;
+        }
+        var u = normalize(line);
+        if (dev === "PC1" && (u === "ping 10.15.15.20" || u === "ping 10.15.15.20 -n 4")) {
+          if (stepIndexSw1 >= TASK1_LEN && stepIndexSw2 >= TASK1_LEN) {
+            pc1PingOk = true;
+            appendPc(
+              "line-ping",
+              "Pinging 10.15.15.20 with 32 bytes of data:\n" +
+                "Reply from 10.15.15.20: bytes=32 time<1ms TTL=128\n" +
+                "Reply from 10.15.15.20: bytes=32 time<1ms TTL=128\n" +
+                "Ping statistics for 10.15.15.20:\n" +
+                "    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),\n" +
+                "[OK] PC2 is reachable over VLAN 15 (10.15.15.0/24)."
+            );
+            tryCompleteTrunkLab(function (cls, text) {
+              appendPc(cls, text);
+            });
+          } else {
+            appendPc(
+              "line-bad",
+              "Request timed out.\nComplete Task 1 trunk commands on both Sw1 and Sw2 first, then try again."
+            );
+          }
+          return;
+        }
+        appendPc(
+          "line-bad",
+          "'" +
+            line.trim() +
+            "' is not recognized as an internal or external command,\noperable program or batch file."
+        );
+      }
+
+      function setSw1Prompt() {
+        if (sw1PromptOverride !== null && sw1PromptOverride !== undefined) {
+          swPrompt.textContent = promptForMode(SWITCH_HOST, sw1PromptOverride);
+          return;
+        }
+        swPrompt.textContent = promptForLabStepIndex(SWITCH_HOST, stepIndexSw1);
+      }
+
+      function setSw2Prompt() {
+        if (sw2PromptOverride !== null && sw2PromptOverride !== undefined) {
+          sw2Prompt.textContent = promptForMode(SWITCH2_HOST, sw2PromptOverride);
+          return;
+        }
+        sw2Prompt.textContent = promptForLabStepIndex(SWITCH2_HOST, stepIndexSw2);
+      }
+
+      function resetSwLab() {
+        stepIndexSw1 = 0;
+        stepIndexSw2 = 0;
+        sw1PromptOverride = null;
+        sw2PromptOverride = null;
+        nvramSavedSw1 = false;
+        nvramSavedSw2 = false;
+        pc1PingOk = false;
+        swScrollback.innerHTML = "";
+        sw2Scrollback.innerHTML = "";
+        passBanner.classList.remove("visible");
+        passBanner.textContent = PASS_BANNER_TRUNK_PENDING;
+        swCmdline.disabled = false;
+        swCmdline.value = "";
+        sw2Cmdline.value = "";
+        clearLocalHistory(swCmdline);
+        clearLocalHistory(sw2Cmdline);
+        resetAllGlobalVlanPairFlags();
+        resetAllTrunkVlanPairFlags();
+        setSw1Prompt();
+        setSw2Prompt();
+      }
+
+      /** IOS-style feedback after a successful global VLAN create from (config)# (Sw1/Sw2). */
+      function appendVlanCreateSys(appendFn, line) {
+        var u = normalize(line);
+        if (u === "vlan 15") {
+          appendFn("line-sys", "VLAN 15 not in configuration.\nCreating VLAN 15.");
+        } else if (u === "vlan 45") {
+          appendFn("line-sys", "VLAN 45 not in configuration.\nCreating VLAN 45.");
+        }
+      }
+
+      function submitSw() {
+        var promptText = swPrompt.textContent;
+        var line = swCmdline.value;
+        pushLocalHistory(swCmdline, line);
+        appendSw("line-user", promptText + " " + line);
+        swCmdline.value = "";
+        if (!line.trim()) return;
+
+        if (normalize(line) === "?") {
+          appendSw("line-sys", HELP_DISABLED_MSG);
+          return;
+        }
+
+        if (matchShowRun(line)) {
+          appendSw("line-showrun", SWITCH_SHOW_RUNNING_SNAPSHOT);
+          return;
+        }
+
+        if (matchShowInterfacesTrunk(line)) {
+          if (stepIndexSw1 >= TASK1_LEN) {
+            appendSw("line-showrun line-show-trunk", SHOW_INTERFACES_TRUNK_TASK1_MSG);
+          } else {
+            appendSw("line-sys", SHOW_INTERFACES_TRUNK_WAIT_MSG);
+          }
+          return;
+        }
+
+        if (matchShowEtherchannelSummary(line)) {
+          if (stepIndexSw1 >= LAB_STEPS.length && stepIndexSw2 >= LAB_STEPS.length) {
+            appendSw("line-showrun line-show-trunk", SHOW_ETHERCHANNEL_SUMMARY_MSG);
+          } else {
+            appendSw("line-sys", SHOW_ETHERCHANNEL_SUMMARY_WAIT_MSG);
+          }
+          return;
+        }
+
+        if (swInEnableMode(stepIndexSw1, sw1PromptOverride) && matchShowVersion(line)) {
+          appendSw("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+
+        if (matchCopyRunStart(line)) {
+          if (!swInEnableMode(stepIndexSw1, sw1PromptOverride)) {
+            appendSw("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            return;
+          }
+          if (stepIndexSw1 < LAB_STEPS.length) {
+            appendSw("line-sys", COPY_RUN_START_AFTER_STEPS_MSG);
+            return;
+          }
+          appendSw("line-sys", COPY_RUN_START_OK_MSG);
+          nvramSavedSw1 = true;
+          tryCompleteTrunkLab(function (cls, text) {
+            appendSw(cls, text);
+          });
+          return;
+        }
+
+        if (
+          trySwNavSoftLine(line, stepIndexSw1, function () {
+            return sw1PromptOverride;
+          }, function (v) {
+            sw1PromptOverride = v;
+            setSw1Prompt();
+          }, 1)
+        ) {
+          return;
+        }
+
+        if (
+          trySwReenterContextLine(line, stepIndexSw1, function () {
+            return sw1PromptOverride;
+          }, function (v) {
+            sw1PromptOverride = v;
+            setSw1Prompt();
+          }, 1)
+        ) {
+          return;
+        }
+
+        if (stepIndexSw1 >= LAB_STEPS.length) {
+          appendSw("line-bad", "% Invalid input");
+          return;
+        }
+
+        if (LAB_STEPS[stepIndexSw1].test(line, 1)) {
+          appendVlanCreateSys(appendSw, line);
+          stepIndexSw1 += 1;
+          if (stepIndexSw1 === 4) {
+            trunkVlanPairSw1.gi1.n = trunkVlanPairSw1.gi1.a = false;
+          } else if (stepIndexSw1 === 10) {
+            trunkVlanPairSw1.gi2.n = trunkVlanPairSw1.gi2.a = false;
+          } else if (stepIndexSw1 === 20) {
+            trunkVlanPairSw1.po.n = trunkVlanPairSw1.po.a = false;
+          }
+          sw1PromptOverride = null;
+          if (stepIndexSw1 >= LAB_STEPS.length) {
+            swPrompt.textContent = promptForMode(SWITCH_HOST, "exec");
+            tryCompleteTrunkLab(function (cls, text) {
+              appendSw(cls, text);
+            });
+          } else {
+            setSw1Prompt();
+          }
+        } else {
+          appendSw("line-bad", "% Invalid input");
+        }
+      }
+
+      function submitSw2() {
+        var promptText = sw2Prompt.textContent;
+        var line = sw2Cmdline.value;
+        pushLocalHistory(sw2Cmdline, line);
+        appendSw2("line-user", promptText + " " + line);
+        sw2Cmdline.value = "";
+        if (!line.trim()) return;
+
+        if (normalize(line) === "?") {
+          appendSw2("line-sys", HELP_DISABLED_MSG);
+          return;
+        }
+
+        if (matchShowRun(line)) {
+          appendSw2("line-showrun", SWITCH2_SHOW_RUNNING_SNAPSHOT);
+          return;
+        }
+
+        if (matchShowInterfacesTrunk(line)) {
+          if (stepIndexSw2 >= TASK1_LEN) {
+            appendSw2("line-showrun line-show-trunk", SHOW_INTERFACES_TRUNK_TASK1_MSG);
+          } else {
+            appendSw2("line-sys", SHOW_INTERFACES_TRUNK_WAIT_MSG);
+          }
+          return;
+        }
+
+        if (matchShowEtherchannelSummary(line)) {
+          if (stepIndexSw1 >= LAB_STEPS.length && stepIndexSw2 >= LAB_STEPS.length) {
+            appendSw2("line-showrun line-show-trunk", SHOW_ETHERCHANNEL_SUMMARY_MSG);
+          } else {
+            appendSw2("line-sys", SHOW_ETHERCHANNEL_SUMMARY_WAIT_MSG);
+          }
+          return;
+        }
+
+        if (swInEnableMode(stepIndexSw2, sw2PromptOverride) && matchShowVersion(line)) {
+          appendSw2("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+
+        if (matchCopyRunStart(line)) {
+          if (!swInEnableMode(stepIndexSw2, sw2PromptOverride)) {
+            appendSw2("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            return;
+          }
+          if (stepIndexSw2 < LAB_STEPS.length) {
+            appendSw2("line-sys", COPY_RUN_START_AFTER_STEPS_MSG);
+            return;
+          }
+          appendSw2("line-sys", COPY_RUN_START_OK_MSG);
+          nvramSavedSw2 = true;
+          tryCompleteTrunkLab(function (cls, text) {
+            appendSw2(cls, text);
+          });
+          return;
+        }
+
+        if (
+          trySwNavSoftLine(line, stepIndexSw2, function () {
+            return sw2PromptOverride;
+          }, function (v) {
+            sw2PromptOverride = v;
+            setSw2Prompt();
+          }, 2)
+        ) {
+          return;
+        }
+
+        if (
+          trySwReenterContextLine(line, stepIndexSw2, function () {
+            return sw2PromptOverride;
+          }, function (v) {
+            sw2PromptOverride = v;
+            setSw2Prompt();
+          }, 2)
+        ) {
+          return;
+        }
+
+        if (stepIndexSw2 >= LAB_STEPS.length) {
+          appendSw2("line-bad", "% Invalid input");
+          return;
+        }
+
+        if (LAB_STEPS[stepIndexSw2].test(line, 2)) {
+          appendVlanCreateSys(appendSw2, line);
+          stepIndexSw2 += 1;
+          if (stepIndexSw2 === 4) {
+            trunkVlanPairSw2.gi1.n = trunkVlanPairSw2.gi1.a = false;
+          } else if (stepIndexSw2 === 10) {
+            trunkVlanPairSw2.gi2.n = trunkVlanPairSw2.gi2.a = false;
+          } else if (stepIndexSw2 === 20) {
+            trunkVlanPairSw2.po.n = trunkVlanPairSw2.po.a = false;
+          }
+          sw2PromptOverride = null;
+          if (stepIndexSw2 >= LAB_STEPS.length) {
+            sw2Prompt.textContent = promptForMode(SWITCH2_HOST, "exec");
+            tryCompleteTrunkLab(function (cls, text) {
+              appendSw2(cls, text);
+            });
+          } else {
+            setSw2Prompt();
+          }
+        } else {
+          appendSw2("line-bad", "% Invalid input");
+        }
+      }
+
+      function wireFloatingModal(dialogEl, overlayEl) {
+        var header = dialogEl.querySelector(".cli-modal-header");
+        if (!dialogEl || !overlayEl || !header) return;
+        dialogEl.addEventListener("pointerdown", function () {
+          bumpOverlayZ(overlayEl);
+        });
+        var drag = null;
+        header.addEventListener("pointerdown", function (e) {
+          if (e.button !== 0) return;
+          if (e.target.closest(".cli-modal-close")) return;
+          var r = dialogEl.getBoundingClientRect();
+          dialogEl.style.left = r.left + "px";
+          dialogEl.style.top = r.top + "px";
+          dialogEl.style.transform = "none";
+          dialogEl.classList.add("is-dragging");
+          drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: r.left, oy: r.top };
+          try {
+            header.setPointerCapture(e.pointerId);
+          } catch (_) {}
+          e.preventDefault();
+        });
+        header.addEventListener("pointermove", function (e) {
+          if (!drag || e.pointerId !== drag.id) return;
+          dialogEl.style.left = drag.ox + (e.clientX - drag.sx) + "px";
+          dialogEl.style.top = drag.oy + (e.clientY - drag.sy) + "px";
+        });
+        function endDrag(e) {
+          if (!drag || e.pointerId !== drag.id) return;
+          drag = null;
+          dialogEl.classList.remove("is-dragging");
+          try {
+            header.releasePointerCapture(e.pointerId);
+          } catch (_) {}
+        }
+        header.addEventListener("pointerup", endDrag);
+        header.addEventListener("pointercancel", endDrag);
+      }
+
+      wireFloatingModal(swCliDialog, swCliOverlay);
+      wireFloatingModal(sw2CliDialog, sw2CliOverlay);
+      wireFloatingModal(pcCliDialog, pcCliOverlay);
+      wireFloatingModal(helperFileDialog, helperFileOverlay);
+      wireFloatingModal(spoilerDialog, spoilerOverlay);
+
+      function openSwCli() {
+        bumpOverlayZ(swCliOverlay);
+        swCliOverlay.classList.add("is-open");
+        swCliOverlay.setAttribute("aria-hidden", "false");
+        if (swTerminal) {
+          swTerminal.classList.remove("terminal-flash");
+          void swTerminal.offsetWidth;
+          swTerminal.classList.add("terminal-flash");
+        }
+        swCmdline.focus();
+      }
+      function closeSwCli() {
+        swCliOverlay.classList.remove("is-open");
+        swCliOverlay.setAttribute("aria-hidden", "true");
+      }
+      function openSw2Cli() {
+        bumpOverlayZ(sw2CliOverlay);
+        sw2CliOverlay.classList.add("is-open");
+        sw2CliOverlay.setAttribute("aria-hidden", "false");
+        if (sw2Terminal) {
+          sw2Terminal.classList.remove("terminal-flash");
+          void sw2Terminal.offsetWidth;
+          sw2Terminal.classList.add("terminal-flash");
+        }
+        sw2Cmdline.focus();
+      }
+      function closeSw2Cli() {
+        sw2CliOverlay.classList.remove("is-open");
+        sw2CliOverlay.setAttribute("aria-hidden", "true");
+      }
+
+      function openPcCli() {
+        bumpOverlayZ(pcCliOverlay);
+        pcCliOverlay.classList.add("is-open");
+        pcCliOverlay.setAttribute("aria-hidden", "false");
+        resetPc();
+        if (pcTerminal) {
+          pcTerminal.classList.remove("terminal-flash");
+          void pcTerminal.offsetWidth;
+          pcTerminal.classList.add("terminal-flash");
+        }
+        pcCmdline.focus();
+      }
+      function closePcCli() {
+        pcCliOverlay.classList.remove("is-open");
+        pcCliOverlay.setAttribute("aria-hidden", "true");
+      }
+
+      function openSelectedCliModal() {
+        var d = getLabDev();
+        if (d === "PC1" || d === "PC2") openPcCli();
+        else if (d === "SW2") openSw2Cli();
+        else openSwCli();
+      }
+
+      openSelectedCliBtn.addEventListener("click", openSelectedCliModal);
+      document.querySelectorAll('input[name="labPrimaryDev"]').forEach(function (r) {
+        r.addEventListener("change", function () {
+          syncOpenCliLabel();
+          var d = getLabDev();
+          if (d === "PC1" || d === "PC2") syncPcPromptLabel();
+          openSelectedCliBtn.focus();
+        });
+      });
+
+      swCmdline.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submitSw();
+        }
+      });
+      sw2Cmdline.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submitSw2();
+        }
+      });
+      pcCmdline.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submitPc();
+        }
+      });
+
+      document.getElementById("swCliClose").addEventListener("click", closeSwCli);
+      document.getElementById("sw2CliClose").addEventListener("click", closeSw2Cli);
+      document.getElementById("pcCliClose").addEventListener("click", closePcCli);
+      swResetBtn.addEventListener("click", resetSwLab);
+      document.getElementById("inlineResetLabBtn").addEventListener("click", resetSwLab);
+
+      document.getElementById("openHelperFileBtn").addEventListener("click", function () {
+        bumpOverlayZ(helperFileOverlay);
+        helperFileOverlay.classList.add("is-open");
+        helperFileOverlay.setAttribute("aria-hidden", "false");
+      });
+      document.getElementById("helperFileClose").addEventListener("click", function () {
+        helperFileOverlay.classList.remove("is-open");
+        helperFileOverlay.setAttribute("aria-hidden", "true");
+      });
+      document.getElementById("openSpoilerBtn").addEventListener("click", function () {
+        bumpOverlayZ(spoilerOverlay);
+        spoilerOverlay.classList.add("is-open");
+        spoilerOverlay.setAttribute("aria-hidden", "false");
+      });
+      document.getElementById("spoilerClose").addEventListener("click", function () {
+        spoilerOverlay.classList.remove("is-open");
+        spoilerOverlay.setAttribute("aria-hidden", "true");
+      });
+
+      /** Local command history (ArrowUp / ArrowDown) — same behavior as full PVST lab */
+      var localHistory = new WeakMap();
+      function getLocalHistoryState(input) {
+        var state = localHistory.get(input);
+        if (state) return state;
+        state = { entries: [], idx: 0 };
+        localHistory.set(input, state);
+        return state;
+      }
+      function pushLocalHistory(input, raw) {
+        var cmd = String(raw || "").trim();
+        if (!cmd) return;
+        var state = getLocalHistoryState(input);
+        if (!state.entries.length || state.entries[state.entries.length - 1] !== cmd) {
+          state.entries.push(cmd);
+        }
+        state.idx = state.entries.length;
+      }
+      function clearLocalHistory(input) {
+        if (!input) return;
+        var state = localHistory.get(input);
+        if (state) {
+          state.entries = [];
+          state.idx = 0;
+        }
+      }
+      function bindLocalHistory(input) {
+        if (!input || input.dataset.localHistoryReady === "1") return;
+        input.dataset.localHistoryReady = "1";
+        input.addEventListener("keydown", function (e) {
+          var usePrev = e.key === "ArrowUp" || (e.key === "Tab" && !e.shiftKey);
+          var useNext = e.key === "ArrowDown" || (e.key === "Tab" && e.shiftKey);
+          if (!usePrev && !useNext) return;
+          var state = getLocalHistoryState(input);
+          if (!state.entries.length) return;
+          e.preventDefault();
+          if (usePrev) {
+            state.idx = Math.max(0, state.idx - 1);
+          } else {
+            state.idx = Math.min(state.entries.length, state.idx + 1);
+          }
+          input.value = state.idx >= state.entries.length ? "" : state.entries[state.idx];
+        });
+      }
+      bindLocalHistory(swCmdline);
+      bindLocalHistory(sw2Cmdline);
+      bindLocalHistory(pcCmdline);
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key !== "Escape") return;
+        if (spoilerOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          spoilerOverlay.classList.remove("is-open");
+          spoilerOverlay.setAttribute("aria-hidden", "true");
+          return;
+        }
+        if (helperFileOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          helperFileOverlay.classList.remove("is-open");
+          helperFileOverlay.setAttribute("aria-hidden", "true");
+          return;
+        }
+        if (swCliOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          closeSwCli();
+          return;
+        }
+        if (sw2CliOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          closeSw2Cli();
+          return;
+        }
+        if (pcCliOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          closePcCli();
+        }
+      });
+
+      history.pushState(null, "", location.href);
+      window.addEventListener("popstate", function () {
+        history.pushState(null, "", location.href);
+      });
+
+      syncOpenCliLabel();
+      resetSwLab();
+    })();
+  </script>
+</body>
+</html>
