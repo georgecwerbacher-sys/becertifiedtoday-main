@@ -5,12 +5,9 @@
   public/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html.
 
   Includes:
-  - Switch 1 (SW1): LAB_STEPS[] { mode, test(raw) }; mode drives prompt via promptForMode(); normalize() accepts common abbreviations
-  - Switch 2 (SW2): second IOS CLI — read-only exhibit + optional mode practice (same prompt helpers as SW1-style IOS)
-  - PC1 / PC2: one modal; device picker sets prompt (PC1> / PC2>); extend submitPc() for ping, ipconfig, etc.
-  - Device picker (SW1 / SW2 / PC1 / PC2), Helper / Spoiler modals, tasks-blue-box, draggable modals, command history
-
-  For a fifth IOS CLI (e.g. R3), copy the SW2 modal + submit/reset/open pattern from cli-lab-ip-services-sim-v2.html.
+  - R1: LAB_STEPS[] static-route lab; promptForMode(); normalize() abbreviations
+  - R2: read-only CLI (only show ip interface brief); R3: full IOS CLI modal (show run, conf t, copy run start, …)
+  - Device picker (R1 / R2 / R3), Helper / Spoiler modals, tasks-blue-box, draggable modals, command history
 -->
 <html lang="en">
 <head>
@@ -655,7 +652,7 @@
           <button type="button" class="btn btn-secondary" id="swResetBtn">Reset lab</button>
         </div>
         <div id="passBanner" class="pass-banner" role="status">
-          Complete all R1 steps, then from enable mode on R1 and R2 run copy running-configuration startup-configuration on each device.
+          Complete all R1 steps, then from enable mode on R1 and R3 run copy running-configuration startup-configuration on each device.
         </div>
       </footer>
     </div>
@@ -694,35 +691,34 @@
       </div>
       <footer class="cli-modal-footer">
         <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
-          Read-only exhibit: <code>show running-config</code> (or <code>sh run</code> after <code>normalize()</code>) prints a fixed snapshot.
-          Use <code>configure terminal</code> / <code>conf t</code>, <code>interface …</code> / <code>int …</code>,
-          <code>exit</code> or <code>end</code> to move modes. Use class <code>line-ping</code> for simulated ping output (see IP Services lab).
+          R2 is read-only in this lab. Only <code>show ip interface brief</code> (and short forms like <code>sh ip int br</code>) is accepted;
+          any other input returns a reminder not to modify R2.
         </p>
       </footer>
     </div>
   </div>
 
-  <!-- R3 CLI modal -->
-  <div id="pcCliOverlay" class="cli-modal-overlay" aria-hidden="true">
+  <!-- R3 — third router CLI (same shell pattern as R2) -->
+  <div id="sw3CliOverlay" class="cli-modal-overlay" aria-hidden="true">
     <div
-      id="pcCliDialog"
+      id="sw3CliDialog"
       class="cli-modal-dialog"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="pcCliTitle"
+      aria-labelledby="sw3CliTitle"
       tabindex="-1"
     >
       <header class="cli-modal-header">
-        <h2 id="pcCliTitle">R3 — CLI</h2>
-        <button type="button" class="cli-modal-close" id="pcCliClose" aria-label="Close PC window">×</button>
+        <h2 id="sw3CliTitle">R3 — CLI</h2>
+        <button type="button" class="cli-modal-close" id="sw3CliClose" aria-label="Close R3 window">×</button>
       </header>
       <div class="cli-modal-body">
-        <div class="terminal" id="pcTerminal" aria-label="Simulated R3 CLI">
-          <div id="pcScrollback" class="scrollback-area"></div>
+        <div class="terminal" id="sw3Terminal" aria-label="Simulated R3 CLI">
+          <div id="sw3Scrollback" class="scrollback-area"></div>
           <div class="input-row">
-            <span id="pcPrompt" class="prompt-el pc-prompt">R3#</span>
+            <span id="sw3Prompt" class="prompt-el">R3#</span>
             <input
-              id="pcCmdline"
+              id="sw3Cmdline"
               class="cmdline-input"
               type="text"
               spellcheck="false"
@@ -735,8 +731,7 @@
       </div>
       <footer class="cli-modal-footer">
         <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
-          Select <strong>R3</strong> in the page device row before opening this window.
-          Default stub: non-empty input shows "not recognized" unless you extend <code>submitPc()</code> in script.
+          R3 CLI
         </p>
       </footer>
     </div>
@@ -854,7 +849,7 @@ end</pre>
       /** ----- Author constants (replace when copying to public/) ----- */
       var SWITCH_HOST = "R1";
       var SWITCH2_HOST = "R2";
-      var PC_PROMPT = "R3#";
+      var SWITCH3_HOST = "R3";
 
       /** Snapshot for primary device `show running-config` while lab runs */
       var SWITCH_SHOW_RUNNING_SNAPSHOT = [
@@ -1184,18 +1179,41 @@ end</pre>
        * - Add modes as needed: config-router, config-ext-nacl, config-pmap, control-plane, …
        * - Abbreviations: normalize() expands common forms (conf t, sh run, int …) so tests can match canonical strings.
        */
+      var R1_PRIMARY_HOST_ROUTE = "ip route 10.0.41.10 255.255.255.255 10.0.12.2";
+      var R1_BACKUP_HOST_ROUTE = "ip route 10.0.41.10 255.255.255.255 10.0.13.3 254";
+      var R1_DEFAULT_ROUTE = "ip route 0.0.0.0 0.0.0.0 10.0.13.3";
+      var r1PrimaryRouteDone = false;
+      var r1BackupRouteDone = false;
+      var r1DefaultRouteDone = false;
+
+      function r1RoutesComplete() {
+        return r1PrimaryRouteDone && r1BackupRouteDone && r1DefaultRouteDone;
+      }
+
+      function markR1RouteIfMatched(raw) {
+        var u = normalize(raw);
+        if (u === R1_PRIMARY_HOST_ROUTE) {
+          r1PrimaryRouteDone = true;
+          return true;
+        }
+        if (u === R1_BACKUP_HOST_ROUTE) {
+          r1BackupRouteDone = true;
+          return true;
+        }
+        if (u === R1_DEFAULT_ROUTE) {
+          r1DefaultRouteDone = true;
+          return true;
+        }
+        return false;
+      }
+
+      /** R1 lab sequence: enter config mode, complete route tasks, then return to exec. */
       var LAB_STEPS = [
         { mode: "exec", test: function (raw) { return normalize(raw) === "configure terminal"; } },
-        { mode: "config", test: function (raw) { return normalize(raw) === "interface gigabitethernet0/0"; } },
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "ip address 192.168.10.1 255.255.255.0"; } },
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "no shutdown"; } },
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "exit"; } },
-        { mode: "config", test: function (raw) { return normalize(raw) === "interface gigabitethernet0/1"; } },
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "ip address 10.0.12.1 255.255.255.252"; } },
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "no shutdown"; } },
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "exit"; } },
-        { mode: "config", test: function (raw) { return normalize(raw) === "ip route 192.168.20.0 255.255.255.0 10.0.12.2"; } },
-        { mode: "config", test: function (raw) { return normalize(raw) === "end"; } }
+        { mode: "config", test: function (raw) {
+          var u = normalize(raw);
+          return u === "end" || u === "exit";
+        }}
       ];
 
       /**
@@ -1251,14 +1269,17 @@ end</pre>
         "% Error: Run copy running-configuration startup-configuration only from privileged EXEC (#), not from configuration mode.";
       var COPY_RUN_START_AFTER_STEPS_MSG =
         "% Error: Finish the full STEPS sequence on this switch until you return to privileged EXEC (#), then save to startup-config.";
+      var R1_ROUTES_INCOMPLETE_MSG =
+        "% Incomplete: configure the primary host route, floating backup route, and default route before leaving config mode.";
       var COPY_RUN_START_AFTER_R1_STEPS_MSG =
-        "% Error: Finish the full STEPS sequence on R1 first (until R1#), then save startup-config from privileged EXEC on R2.";
+        "% Error: Finish the full STEPS sequence on R1 first (until R1#), then save startup-config from privileged EXEC on R3.";
+      var R2_READ_ONLY_MSG = "No modifications should be made to R2";
       var BASELINE_SW_STEPS_OK_MSG =
-        "[OK] R1 routing steps complete. From privileged exec on R1 and R2, run copy running-configuration startup-configuration (copy run start) on each device to finish the lab.";
+        "[OK] R1 routing steps complete. From privileged exec on R1 and R3, run copy running-configuration startup-configuration (copy run start) on each device to finish the lab. (R2 is read-only.)";
       var BASELINE_LAB_ALL_DONE_MSG =
-        "[OK] Lab complete: objectives met and running-config saved to startup-config on R1 and R2.";
+        "[OK] Lab complete: objectives met and running-config saved to startup-config on R1 and R3.";
       var PASS_BANNER_BASELINE_PENDING =
-        "Complete all R1 steps, then from enable mode on R1 and R2 run copy running-configuration startup-configuration on each device.";
+        "Complete all R1 steps, then from enable mode on R1 and R3 run copy running-configuration startup-configuration on each device.";
 
       function matchShowRun(raw) {
         var u = normalize(raw);
@@ -1286,10 +1307,10 @@ end</pre>
       }
 
       var nvramSavedSw = false;
-      var nvramSavedSw2 = false;
+      var nvramSavedSw3 = false;
 
       function tryCompleteBaselineLab(append) {
-        if (stepIndex < LAB_STEPS.length || !nvramSavedSw || !nvramSavedSw2) return;
+        if (stepIndex < LAB_STEPS.length || !nvramSavedSw || !nvramSavedSw3) return;
         if (passBanner.classList.contains("visible")) return;
         passBanner.classList.add("visible");
         passBanner.textContent = BASELINE_LAB_ALL_DONE_MSG;
@@ -1404,115 +1425,19 @@ end</pre>
         sw2Scrollback.scrollTop = sw2Scrollback.scrollHeight;
       }
 
-      var pcCliOverlay = document.getElementById("pcCliOverlay");
-      var pcCliDialog = document.getElementById("pcCliDialog");
-      var pcScrollback = document.getElementById("pcScrollback");
-      var pcPrompt = document.getElementById("pcPrompt");
-      var pcCmdline = document.getElementById("pcCmdline");
-      var pcTerminal = document.getElementById("pcTerminal");
+      var sw3CliOverlay = document.getElementById("sw3CliOverlay");
+      var sw3CliDialog = document.getElementById("sw3CliDialog");
+      var sw3Scrollback = document.getElementById("sw3Scrollback");
+      var sw3Prompt = document.getElementById("sw3Prompt");
+      var sw3Cmdline = document.getElementById("sw3Cmdline");
+      var sw3Terminal = document.getElementById("sw3Terminal");
 
-      function appendPc(cls, text) {
+      function appendSw3(cls, text) {
         var div = document.createElement("div");
         div.className = cls;
         div.textContent = text;
-        pcScrollback.appendChild(div);
-        pcScrollback.scrollTop = pcScrollback.scrollHeight;
-      }
-
-      function syncPcPromptLabel() {
-        var d = getLabDev();
-        if (d === "R3") pcPrompt.textContent = "R3#";
-        else pcPrompt.textContent = PC_PROMPT;
-      }
-
-      function resetPc() {
-        pcScrollback.innerHTML = "";
-        syncPcPromptLabel();
-      }
-
-      function routeReadyForPing() {
-        return stepIndex >= LAB_STEPS.length;
-      }
-
-      function submitPc() {
-        var promptText = pcPrompt.textContent;
-        var line = pcCmdline.value;
-        appendPc("line-user", promptText + " " + line);
-        pcCmdline.value = "";
-        if (!line.trim()) return;
-        if (normalize(line) === "?") {
-          appendPc("line-sys", HELP_DISABLED_MSG);
-          return;
-        }
-        var cmd = normalize(line);
-        if (matchShowRun(line)) {
-          appendPc("line-showrun", SWITCH3_SHOW_RUNNING_SNAPSHOT);
-          return;
-        }
-        if (promptText === "R3#" && matchShowIpInterfaceBrief(line)) {
-          appendPc("line-showrun", SHOW_IP_INT_BRIEF_R3);
-          return;
-        }
-        if (cmd === "ipconfig") {
-          if (promptText === "PC2>") {
-            appendPc(
-              "line-sys",
-              "IP Address. . . . . . . . . . . . : 192.168.20.10\nSubnet Mask . . . . . . . . . . . . : 255.255.255.0\nDefault Gateway . . . . . . . . . . : 192.168.20.1"
-            );
-          } else {
-            appendPc(
-              "line-sys",
-              "IP Address. . . . . . . . . . . . : 192.168.10.10\nSubnet Mask . . . . . . . . . . . . : 255.255.255.0\nDefault Gateway . . . . . . . . . . : 192.168.10.1"
-            );
-          }
-          return;
-        }
-        if (cmd === "ping 192.168.20.10" && promptText === "PC1>") {
-          if (routeReadyForPing()) {
-            appendPc("line-ping", "Pinging 192.168.20.10 with 32 bytes of data:");
-            appendPc("line-ping", "Reply from 192.168.20.10: bytes=32 time<1ms TTL=126");
-            appendPc("line-ping", "Reply from 192.168.20.10: bytes=32 time<1ms TTL=126");
-            appendPc("line-ping", "Reply from 192.168.20.10: bytes=32 time<1ms TTL=126");
-            appendPc("line-ping", "Reply from 192.168.20.10: bytes=32 time<1ms TTL=126");
-            appendPc("line-ping", "Ping statistics for 192.168.20.10:");
-            appendPc("line-ping", "    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss)");
-          } else {
-            appendPc("line-ping", "Pinging 192.168.20.10 with 32 bytes of data:");
-            appendPc("line-ping", "Request timed out.");
-            appendPc("line-ping", "Request timed out.");
-            appendPc("line-ping", "Request timed out.");
-            appendPc("line-ping", "Request timed out.");
-            appendPc("line-ping", "Ping statistics for 192.168.20.10:");
-            appendPc("line-ping", "    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss)");
-          }
-          return;
-        }
-        if (cmd === "ping 192.168.10.10" && promptText === "PC2>") {
-          if (routeReadyForPing()) {
-            appendPc("line-ping", "Pinging 192.168.10.10 with 32 bytes of data:");
-            appendPc("line-ping", "Reply from 192.168.10.10: bytes=32 time<1ms TTL=126");
-            appendPc("line-ping", "Reply from 192.168.10.10: bytes=32 time<1ms TTL=126");
-            appendPc("line-ping", "Reply from 192.168.10.10: bytes=32 time<1ms TTL=126");
-            appendPc("line-ping", "Reply from 192.168.10.10: bytes=32 time<1ms TTL=126");
-            appendPc("line-ping", "Ping statistics for 192.168.10.10:");
-            appendPc("line-ping", "    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss)");
-          } else {
-            appendPc("line-ping", "Pinging 192.168.10.10 with 32 bytes of data:");
-            appendPc("line-ping", "Request timed out.");
-            appendPc("line-ping", "Request timed out.");
-            appendPc("line-ping", "Request timed out.");
-            appendPc("line-ping", "Request timed out.");
-            appendPc("line-ping", "Ping statistics for 192.168.10.10:");
-            appendPc("line-ping", "    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss)");
-          }
-          return;
-        }
-        appendPc(
-          "line-bad",
-          "'" +
-            line.trim() +
-            "' is not recognized as an internal or external command,\noperable program or batch file."
-        );
+        sw3Scrollback.appendChild(div);
+        sw3Scrollback.scrollTop = sw3Scrollback.scrollHeight;
       }
 
       function setSwPrompt() {
@@ -1526,8 +1451,11 @@ end</pre>
       function resetSwLab() {
         stepIndex = 0;
         swPromptOverride = null;
+        r1PrimaryRouteDone = false;
+        r1BackupRouteDone = false;
+        r1DefaultRouteDone = false;
         nvramSavedSw = false;
-        nvramSavedSw2 = false;
+        nvramSavedSw3 = false;
         swScrollback.innerHTML = "";
         passBanner.classList.remove("visible");
         passBanner.textContent = PASS_BANNER_BASELINE_PENDING;
@@ -1580,6 +1508,14 @@ end</pre>
           return;
         }
 
+        if (stepIndex === 1 && markR1RouteIfMatched(line)) {
+          return;
+        }
+        if (stepIndex === 1 && (normalize(line) === "end" || normalize(line) === "exit") && !r1RoutesComplete()) {
+          appendSw("line-sys", R1_ROUTES_INCOMPLETE_MSG);
+          return;
+        }
+
         if (stepIndex >= LAB_STEPS.length) {
           appendSw("line-bad", "% Invalid input");
           return;
@@ -1602,17 +1538,10 @@ end</pre>
         }
       }
 
-      /** R2: IOS-like modes + show running-config (read-only exhibit); prompts use promptForMode like R1 */
-      var sw2Mode = "exec";
-
-      function sw2PromptForMode() {
-        return promptForMode(SWITCH2_HOST, sw2Mode);
-      }
-
+      /** R2: read-only — only show ip interface brief is accepted */
       function resetSw2() {
         sw2Scrollback.innerHTML = "";
-        sw2Mode = "exec";
-        sw2Prompt.textContent = sw2PromptForMode();
+        sw2Prompt.textContent = promptForMode(SWITCH2_HOST, "exec");
       }
 
       function submitSw2() {
@@ -1622,72 +1551,103 @@ end</pre>
         sw2Cmdline.value = "";
         if (!line.trim()) return;
 
+        if (matchShowIpInterfaceBrief(line)) {
+          appendSw2("line-showrun", SHOW_IP_INT_BRIEF_R2);
+          return;
+        }
+
+        appendSw2("line-sys", R2_READ_ONLY_MSG);
+      }
+
+      /** R3: IOS-like modes + show running-config (same pattern as R2) */
+      var sw3Mode = "exec";
+
+      function sw3PromptForMode() {
+        return promptForMode(SWITCH3_HOST, sw3Mode);
+      }
+
+      function resetSw3() {
+        sw3Scrollback.innerHTML = "";
+        sw3Mode = "exec";
+        sw3Prompt.textContent = sw3PromptForMode();
+      }
+
+      function submitSw3() {
+        var promptText = sw3Prompt.textContent;
+        var line = sw3Cmdline.value;
+        appendSw3("line-user", promptText + " " + line);
+        sw3Cmdline.value = "";
+        if (!line.trim()) return;
+
         if (normalize(line) === "?") {
-          appendSw2("line-sys", HELP_DISABLED_MSG);
+          appendSw3("line-sys", HELP_DISABLED_MSG);
           return;
         }
 
         var u = normalize(line);
 
         if (matchShowRun(line)) {
-          appendSw2("line-showrun", SWITCH2_SHOW_RUNNING_SNAPSHOT);
+          appendSw3("line-showrun", SWITCH3_SHOW_RUNNING_SNAPSHOT);
           return;
         }
 
-        if (sw2Mode === "exec" && matchShowVersion(line)) {
-          appendSw2("line-sys", SHOW_VERSION_MSG);
+        if (sw3Mode === "exec" && matchShowVersion(line)) {
+          appendSw3("line-sys", SHOW_VERSION_MSG);
           return;
         }
 
-        if (sw2Mode === "exec" && matchShowIpInterfaceBrief(line)) {
-          appendSw2("line-showrun", SHOW_IP_INT_BRIEF_R2);
+        if (sw3Mode === "exec" && matchShowIpInterfaceBrief(line)) {
+          appendSw3("line-showrun", SHOW_IP_INT_BRIEF_R3);
           return;
         }
 
         if (matchCopyRunStart(line)) {
-          if (sw2Mode !== "exec") {
-            appendSw2("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+          if (sw3Mode !== "exec") {
+            appendSw3("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
             return;
           }
           if (stepIndex < LAB_STEPS.length) {
-            appendSw2("line-sys", COPY_RUN_START_AFTER_R1_STEPS_MSG);
+            appendSw3("line-sys", COPY_RUN_START_AFTER_R1_STEPS_MSG);
             return;
           }
-          appendSw2("line-sys", COPY_RUN_START_OK_MSG);
-          nvramSavedSw2 = true;
+          appendSw3("line-sys", COPY_RUN_START_OK_MSG);
+          nvramSavedSw3 = true;
           tryCompleteBaselineLab(function (cls, text) {
-            appendSw2(cls, text);
+            appendSw3(cls, text);
           });
           return;
         }
 
-        if (sw2Mode === "config-if" && u === "exit") {
-          sw2Mode = "config";
-          sw2Prompt.textContent = sw2PromptForMode();
+        if (sw3Mode === "config-if" && u === "exit") {
+          sw3Mode = "config";
+          sw3Prompt.textContent = sw3PromptForMode();
           return;
         }
-        if (sw2Mode === "exec" && u === "configure terminal") {
-          sw2Mode = "config";
-          sw2Prompt.textContent = sw2PromptForMode();
+        if (sw3Mode === "exec" && u === "configure terminal") {
+          sw3Mode = "config";
+          sw3Prompt.textContent = sw3PromptForMode();
           return;
         }
-        if (sw2Mode === "config" && u.startsWith("interface ")) {
-          sw2Mode = "config-if";
-          sw2Prompt.textContent = sw2PromptForMode();
+        if (sw3Mode === "config" && u.startsWith("interface ")) {
+          sw3Mode = "config-if";
+          sw3Prompt.textContent = sw3PromptForMode();
           return;
         }
-        if (sw2Mode === "config" && (u === "exit" || u === "end")) {
-          sw2Mode = "exec";
-          sw2Prompt.textContent = sw2PromptForMode();
+        if (sw3Mode === "config" && u === "ip route 0.0.0.0 0.0.0.0 209.165.201.1") {
           return;
         }
-        if (sw2Mode === "config-if" && (u === "end" || u === "exit")) {
-          sw2Mode = u === "end" ? "exec" : "config";
-          sw2Prompt.textContent = sw2PromptForMode();
+        if (sw3Mode === "config" && (u === "exit" || u === "end")) {
+          sw3Mode = "exec";
+          sw3Prompt.textContent = sw3PromptForMode();
+          return;
+        }
+        if (sw3Mode === "config-if" && (u === "end" || u === "exit")) {
+          sw3Mode = u === "end" ? "exec" : "config";
+          sw3Prompt.textContent = sw3PromptForMode();
           return;
         }
 
-        appendSw2("line-bad", "% Invalid input");
+        appendSw3("line-bad", "% Invalid input");
       }
 
       function wireFloatingModal(dialogEl, overlayEl) {
@@ -1730,7 +1690,7 @@ end</pre>
 
       wireFloatingModal(swCliDialog, swCliOverlay);
       wireFloatingModal(sw2CliDialog, sw2CliOverlay);
-      wireFloatingModal(pcCliDialog, pcCliOverlay);
+      wireFloatingModal(sw3CliDialog, sw3CliOverlay);
       wireFloatingModal(helperFileDialog, helperFileOverlay);
       wireFloatingModal(spoilerDialog, spoilerOverlay);
 
@@ -1766,26 +1726,26 @@ end</pre>
         sw2CliOverlay.setAttribute("aria-hidden", "true");
       }
 
-      function openPcCli() {
-        bumpOverlayZ(pcCliOverlay);
-        pcCliOverlay.classList.add("is-open");
-        pcCliOverlay.setAttribute("aria-hidden", "false");
-        resetPc();
-        if (pcTerminal) {
-          pcTerminal.classList.remove("terminal-flash");
-          void pcTerminal.offsetWidth;
-          pcTerminal.classList.add("terminal-flash");
+      function openSw3Cli() {
+        bumpOverlayZ(sw3CliOverlay);
+        sw3CliOverlay.classList.add("is-open");
+        sw3CliOverlay.setAttribute("aria-hidden", "false");
+        resetSw3();
+        if (sw3Terminal) {
+          sw3Terminal.classList.remove("terminal-flash");
+          void sw3Terminal.offsetWidth;
+          sw3Terminal.classList.add("terminal-flash");
         }
-        pcCmdline.focus();
+        sw3Cmdline.focus();
       }
-      function closePcCli() {
-        pcCliOverlay.classList.remove("is-open");
-        pcCliOverlay.setAttribute("aria-hidden", "true");
+      function closeSw3Cli() {
+        sw3CliOverlay.classList.remove("is-open");
+        sw3CliOverlay.setAttribute("aria-hidden", "true");
       }
 
       function openSelectedCliModal() {
         var d = getLabDev();
-        if (d === "R3") openPcCli();
+        if (d === "R3") openSw3Cli();
         else if (d === "R2") openSw2Cli();
         else openSwCli();
       }
@@ -1794,8 +1754,6 @@ end</pre>
       document.querySelectorAll('input[name="labPrimaryDev"]').forEach(function (r) {
         r.addEventListener("change", function () {
           syncOpenCliLabel();
-          var d = getLabDev();
-          if (d === "R3") syncPcPromptLabel();
           openSelectedCliBtn.focus();
         });
       });
@@ -1812,16 +1770,16 @@ end</pre>
           submitSw2();
         }
       });
-      pcCmdline.addEventListener("keydown", function (e) {
+      sw3Cmdline.addEventListener("keydown", function (e) {
         if (e.key === "Enter") {
           e.preventDefault();
-          submitPc();
+          submitSw3();
         }
       });
 
       document.getElementById("swCliClose").addEventListener("click", closeSwCli);
       document.getElementById("sw2CliClose").addEventListener("click", closeSw2Cli);
-      document.getElementById("pcCliClose").addEventListener("click", closePcCli);
+      document.getElementById("sw3CliClose").addEventListener("click", closeSw3Cli);
       swResetBtn.addEventListener("click", resetSwLab);
       document.getElementById("inlineResetLabBtn").addEventListener("click", resetSwLab);
 
@@ -1886,7 +1844,7 @@ end</pre>
       }
       bindLocalHistory(swCmdline);
       bindLocalHistory(sw2Cmdline);
-      bindLocalHistory(pcCmdline);
+      bindLocalHistory(sw3Cmdline);
 
       document.addEventListener("keydown", function (e) {
         if (e.key !== "Escape") return;
@@ -1912,9 +1870,9 @@ end</pre>
           closeSw2Cli();
           return;
         }
-        if (pcCliOverlay.classList.contains("is-open")) {
+        if (sw3CliOverlay.classList.contains("is-open")) {
           e.preventDefault();
-          closePcCli();
+          closeSw3Cli();
         }
       });
 
