@@ -1776,6 +1776,27 @@ Sw2(config-if)#switchport voice vlan 177</pre>
           // Allow access-vlan style range commands in interface-range mode outside strict step flow.
           return;
         }
+        if (sw1PromptOverride === "config-if-range" && normalize(line).indexOf("interface ") === 0) {
+          // Allow direct hop from interface-range mode to a single interface context.
+          sw1PromptOverride = "config-if";
+          setSw1Prompt();
+          return;
+        }
+        if (
+          sw1PromptOverride === "config-if" &&
+          (normalize(line) === "switchport mode access" ||
+            /^switchport voice vlan \d+$/.test(normalize(line)) ||
+            /^switchport access vlan \d+$/.test(normalize(line)))
+        ) {
+          // Accept common interface access/voice VLAN commands in config-if mode.
+          return;
+        }
+        if (sw1PromptOverride === "config-if" && normalize(line).indexOf("interface ") === 0) {
+          // Allow direct interface-to-interface hops from config-if mode.
+          sw1PromptOverride = "config-if";
+          setSw1Prompt();
+          return;
+        }
         if (sw1Mode === "config" && normalize(line).indexOf("interface ") === 0) {
           // Allow generic interface navigation from config mode outside strict step commands.
           sw1PromptOverride = "config-if";
@@ -1930,6 +1951,27 @@ Sw2(config-if)#switchport voice vlan 177</pre>
           (normalize(line) === "switchport mode access" || /^switchport access vlan \d+$/.test(normalize(line)))
         ) {
           // Allow access-vlan style range commands in interface-range mode outside strict step flow.
+          return;
+        }
+        if (sw2PromptOverride === "config-if-range" && normalize(line).indexOf("interface ") === 0) {
+          // Allow direct hop from interface-range mode to a single interface context.
+          sw2PromptOverride = "config-if";
+          setSw2Prompt();
+          return;
+        }
+        if (
+          sw2PromptOverride === "config-if" &&
+          (normalize(line) === "switchport mode access" ||
+            /^switchport voice vlan \d+$/.test(normalize(line)) ||
+            /^switchport access vlan \d+$/.test(normalize(line)))
+        ) {
+          // Accept common interface access/voice VLAN commands in config-if mode.
+          return;
+        }
+        if (sw2PromptOverride === "config-if" && normalize(line).indexOf("interface ") === 0) {
+          // Allow direct interface-to-interface hops from config-if mode.
+          sw2PromptOverride = "config-if";
+          setSw2Prompt();
           return;
         }
         if (sw2ModeNow === "config" && normalize(line).indexOf("interface ") === 0) {
