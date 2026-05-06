@@ -569,7 +569,7 @@
       <div class="diagram-wrap" aria-label="Topology diagram">
         <div class="diagram-stage">
           <img
-            src="/images/hero-classroom.png"
+            src="/images/ccna-static-routing-topology.png"
             width="1024"
             height="682"
             alt="Two-router topology for static routing between LANs."
@@ -757,11 +757,31 @@
       </header>
       <div class="cli-modal-body">
         <section class="topology-scrape" aria-label="Helper notes">
-          <h2>Addressing and routing checklist</h2>
+          <h2>Task CLI checklist</h2>
           <ul class="helper-bullets">
-            <li>R1 <code>G0/0</code>: 192.168.10.1/24 (LAN for PC1), R1 <code>G0/1</code>: 10.0.12.1/30 (WAN link to R2).</li>
-            <li>R2 WAN side is 10.0.12.2 and remote LAN is 192.168.20.0/24; configure an R1 static route to that LAN via 10.0.12.2.</li>
-            <li>Verify with <code>show running-config</code> and test with <code>ping 192.168.20.10</code> from PC1.</li>
+            <li>
+              <strong>Task 1 CLI (R1):</strong>
+              <pre class="spoiler-cli-pre">R1(config)# ip route 10.0.41.10 255.255.255.255 10.0.12.2</pre>
+            </li>
+            <li>
+              <strong>Task 2 CLI (R1 floating route):</strong>
+              <pre class="spoiler-cli-pre">R1(config)# ip route 10.0.41.10 255.255.255.255 10.0.13.3 254</pre>
+            </li>
+            <li>
+              <strong>Task 3 CLI (default routes):</strong>
+              <pre class="spoiler-cli-pre">R1(config)# ip route 0.0.0.0 0.0.0.0 10.0.13.3
+R3(config)# ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
+            </li>
+            <li>
+              <strong>Test CLI:</strong>
+              <pre class="spoiler-cli-pre">R1# show ip route
+R1# ping 10.0.41.10</pre>
+            </li>
+            <li>
+              <strong>Save CLI:</strong>
+              <pre class="spoiler-cli-pre">R1# copy running-config startup-config
+R3# copy running-config startup-config</pre>
+            </li>
           </ul>
         </section>
       </div>
@@ -1201,6 +1221,30 @@ end</pre>
 
       var HELP_DISABLED_MSG = "help feature disabled for tester";
       var SHOW_VERSION_MSG = "BeCertifiedToday.com version 2026";
+      var SHOW_IP_INT_BRIEF_R1 = [
+        "Interface                  IP-Address      OK? Method Status                Protocol",
+        "Ethernet0/0                10.0.12.1       YES manual up                    up",
+        "Ethernet0/1                10.0.13.1       YES manual up                    up",
+        "Ethernet0/2                unassigned      YES unset  administratively down down",
+        "Ethernet0/3                unassigned      YES unset  administratively down down",
+        "Loopback0                  10.1.1.1        YES manual up                    up",
+      ].join("\n");
+      var SHOW_IP_INT_BRIEF_R2 = [
+        "Interface                  IP-Address      OK? Method Status                Protocol",
+        "Ethernet0/0                10.0.12.2       YES manual up                    up",
+        "Ethernet0/1                10.0.24.2       YES manual up                    up",
+        "Ethernet0/2                unassigned      YES unset  administratively down down",
+        "Ethernet0/3                unassigned      YES unset  administratively down down",
+        "Loopback0                  10.2.2.2        YES manual up                    up",
+      ].join("\n");
+      var SHOW_IP_INT_BRIEF_R3 = [
+        "Interface                  IP-Address      OK? Method Status                Protocol",
+        "Ethernet0/0                10.0.13.3       YES manual up                    up",
+        "Ethernet0/1                10.0.34.3       YES manual up                    up",
+        "Ethernet0/2                209.165.201.3   YES manual up                    up",
+        "Ethernet0/3                unassigned      YES unset  administratively down down",
+        "Loopback0                  10.3.3.3        YES manual up                    up",
+      ].join("\n");
       var COPY_RUN_START_OK_MSG =
         "Destination filename [startup-config]?\nBuilding configuration...\n[OK]";
       var COPY_RUN_START_EXEC_ONLY_MSG =
@@ -1223,6 +1267,18 @@ end</pre>
 
       function matchShowVersion(raw) {
         return normalize(raw) === "show version";
+      }
+
+      function matchShowIpInterfaceBrief(raw) {
+        var u = normalize(raw);
+        return (
+          u === "show ip interface brief" ||
+          u === "show ip int brief" ||
+          u === "show ip int br" ||
+          u === "sh ip interface brief" ||
+          u === "sh ip int brief" ||
+          u === "sh ip int br"
+        );
       }
 
       function matchCopyRunStart(raw) {
@@ -1393,6 +1449,10 @@ end</pre>
           appendPc("line-showrun", SWITCH3_SHOW_RUNNING_SNAPSHOT);
           return;
         }
+        if (promptText === "R3#" && matchShowIpInterfaceBrief(line)) {
+          appendPc("line-showrun", SHOW_IP_INT_BRIEF_R3);
+          return;
+        }
         if (cmd === "ipconfig") {
           if (promptText === "PC2>") {
             appendPc(
@@ -1493,6 +1553,11 @@ end</pre>
           return;
         }
 
+        if (swInEnableMode() && matchShowIpInterfaceBrief(line)) {
+          appendSw("line-showrun", SHOW_IP_INT_BRIEF_R1);
+          return;
+        }
+
         if (swInEnableMode() && matchShowVersion(line)) {
           appendSw("line-sys", SHOW_VERSION_MSG);
           return;
@@ -1571,6 +1636,11 @@ end</pre>
 
         if (sw2Mode === "exec" && matchShowVersion(line)) {
           appendSw2("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+
+        if (sw2Mode === "exec" && matchShowIpInterfaceBrief(line)) {
+          appendSw2("line-showrun", SHOW_IP_INT_BRIEF_R2);
           return;
         }
 
