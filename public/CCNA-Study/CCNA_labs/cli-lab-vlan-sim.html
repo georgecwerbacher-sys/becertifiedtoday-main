@@ -1653,6 +1653,17 @@ Sw2(config-if)#switchport voice vlan 177</pre>
         }
       }
 
+      /** Mark global VLAN pair state for SW1/SW2 and report whether this was vlan 15/45. */
+      function markGlobalVlan(raw, sw) {
+        var pair = sw === 2 ? globalVlanPairSw2 : globalVlanPairSw1;
+        var u = normalize(raw);
+        if (u !== "vlan 15" && u !== "vlan 45") return { recognized: false, newlySet: false };
+        var key = u === "vlan 15" ? "v15" : "v45";
+        if (pair[key]) return { recognized: true, newlySet: false };
+        pair[key] = true;
+        return { recognized: true, newlySet: true };
+      }
+
       function submitSw() {
         var promptText = swPrompt.textContent;
         var line = swCmdline.value;
@@ -1733,6 +1744,27 @@ Sw2(config-if)#switchport voice vlan 177</pre>
           return;
         }
 
+        var sw1Mode = sw1PromptOverride || (stepIndexSw1 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw1].mode : "exec");
+        var sw1VlanMark = markGlobalVlan(line, 1);
+        if (sw1VlanMark.recognized && (sw1Mode === "config" || sw1Mode === "config-vlan")) {
+          appendVlanCreateSys(appendSw, line);
+          // Advance VLAN-create steps whenever the remaining expected step is one of the VLAN pair slots.
+          if (sw1VlanMark.newlySet && (stepIndexSw1 === 1 || stepIndexSw1 === 2)) {
+            stepIndexSw1 += 1;
+          }
+          sw1PromptOverride = stepIndexSw1 >= 3 ? null : "config-vlan";
+          setSw1Prompt();
+          return;
+        }
+
+        if (sw1Mode === "config-vlan" && /^vlan \d+$/.test(normalize(line))) {
+          // Allow creating/switching VLAN IDs directly from vlan submode.
+          appendVlanCreateSys(appendSw, line);
+          sw1PromptOverride = "config-vlan";
+          setSw1Prompt();
+          return;
+        }
+
         if (sw1PromptOverride === "config-vlan" && /^name\s+\S+/.test(normalize(line))) {
           // Accept VLAN name assignment in vlan submode without affecting step engine.
           return;
@@ -1764,7 +1796,6 @@ Sw2(config-if)#switchport voice vlan 177</pre>
             setSw1Prompt();
           }
         } else {
-          var sw1Mode = sw1PromptOverride || (stepIndexSw1 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw1].mode : "exec");
           if (sw1Mode === "config" && /^vlan \d+$/.test(normalize(line))) {
             // Accept extra VLAN creation commands without failing the simulator flow.
             appendVlanCreateSys(appendSw, line);
@@ -1856,6 +1887,27 @@ Sw2(config-if)#switchport voice vlan 177</pre>
           return;
         }
 
+        var sw2ModeNow = sw2PromptOverride || (stepIndexSw2 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw2].mode : "exec");
+        var sw2VlanMark = markGlobalVlan(line, 2);
+        if (sw2VlanMark.recognized && (sw2ModeNow === "config" || sw2ModeNow === "config-vlan")) {
+          appendVlanCreateSys(appendSw2, line);
+          // Advance VLAN-create steps whenever the remaining expected step is one of the VLAN pair slots.
+          if (sw2VlanMark.newlySet && (stepIndexSw2 === 1 || stepIndexSw2 === 2)) {
+            stepIndexSw2 += 1;
+          }
+          sw2PromptOverride = stepIndexSw2 >= 3 ? null : "config-vlan";
+          setSw2Prompt();
+          return;
+        }
+
+        if (sw2ModeNow === "config-vlan" && /^vlan \d+$/.test(normalize(line))) {
+          // Allow creating/switching VLAN IDs directly from vlan submode.
+          appendVlanCreateSys(appendSw2, line);
+          sw2PromptOverride = "config-vlan";
+          setSw2Prompt();
+          return;
+        }
+
         if (sw2PromptOverride === "config-vlan" && /^name\s+\S+/.test(normalize(line))) {
           // Accept VLAN name assignment in vlan submode without affecting step engine.
           return;
@@ -1887,7 +1939,6 @@ Sw2(config-if)#switchport voice vlan 177</pre>
             setSw2Prompt();
           }
         } else {
-          var sw2ModeNow = sw2PromptOverride || (stepIndexSw2 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw2].mode : "exec");
           if (sw2ModeNow === "config" && /^vlan \d+$/.test(normalize(line))) {
             // Accept extra VLAN creation commands without failing the simulator flow.
             appendVlanCreateSys(appendSw2, line);
