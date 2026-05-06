@@ -1,9 +1,13 @@
 <!doctype html>
 <!--
-  CCNA / ENCOR-style lab: IEEE 802.1Q trunks (E0/0–E0/1), native VLAN 45, allowed VLANs 15 and 45; then LACP
-  EtherChannel 802.3ad (channel-group 15 mode active) with Port-channel15 trunk. Dual switches SW1/SW2 share the same
-  LAB_STEPS[] sequence; PC1 verifies ping to PC2 after Task 1. Lab complete = both switches finished STEPS + PC1 ping
-  + copy run start from enable on SW1 and SW2.
+  Template baseline for new CLI labs:
+  New CLI lab page like cli-lab-trunk_lacp.html: LAB_STEPS + normalize, dual submit handlers, swInEnableMode,
+  copy/save gating with real [OK] only when allowed, optional gated show * outputs, trySwNavSoftLine-style exit/end
+  (including config-vlan and generic interface range -> (config-if-range)# prompt transitions), pushLocalHistory
+  inside submit + bindLocalHistory, reset clears history and flags, helper bullets + spoiler with per-task
+  verification, draggable modals + Escape, show version output (BeCertifiedToday.com version 2026) in exec mode,
+  and VLAN submode behavior where vlan <id> enters (config-vlan)#, name <...> is accepted, exit returns to (config)#,
+  and VLAN create feedback prints "VLAN <id> not in configuration." then "Creating VLAN <id>.".
 -->
 <html lang="en">
 <head>
@@ -1445,6 +1449,7 @@ Sw2(config-if)# end</pre>
         if (ovr !== null && ovr !== undefined) {
           if (
             ovr === "config" ||
+            ovr === "config-vlan" ||
             ovr === "config-if" ||
             ovr === "config-if-range" ||
             ovr === "config-router" ||
@@ -1471,6 +1476,13 @@ Sw2(config-if)# end</pre>
         if (stepIdx === 0 && u === "configure terminal") return false;
         if ((stepIdx === 8 || stepIdx === 14 || stepIdx === 18) && u === "exit") return false;
         if (stepIdx === 24 && u === "end") return false;
+        var currentMode = getOvr() || LAB_STEPS[stepIdx].mode;
+        if (u.indexOf("interface range ") === 0 && currentMode === "config") {
+          // Let LAB_STEPS consume the exact expected command for progression.
+          if (LAB_STEPS[stepIdx].test(line, swNum)) return false;
+          setOvrAndRefresh("config-if-range");
+          return true;
+        }
         if (u === "configure terminal" && stepIdx > 0 && getOvr() === "exec") {
           setOvrAndRefresh(null);
           return true;
@@ -1483,6 +1495,10 @@ Sw2(config-if)# end</pre>
         if (getOvr() === "exec") return false;
         var mode = LAB_STEPS[stepIdx].mode;
         var ovr = getOvr();
+        if (ovr === "config-vlan") {
+          setOvrAndRefresh("config");
+          return true;
+        }
         if (mode === "config-if" || mode === "config-if-range") {
           if (!ovr) {
             setOvrAndRefresh("config");
@@ -1534,6 +1550,8 @@ Sw2(config-if)# end</pre>
             return host + "#";
           case "config":
             return host + "(config)#";
+          case "config-vlan":
+            return host + "(config-vlan)#";
           case "config-if":
             return host + "(config-if)#";
           case "config-if-range":
@@ -1733,10 +1751,9 @@ Sw2(config-if)# end</pre>
       /** IOS-style feedback after a successful global VLAN create from (config)# (Sw1/Sw2). */
       function appendVlanCreateSys(appendFn, line) {
         var u = normalize(line);
-        if (u === "vlan 15") {
-          appendFn("line-sys", "VLAN 15 not in configuration.\nCreating VLAN 15.");
-        } else if (u === "vlan 45") {
-          appendFn("line-sys", "VLAN 45 not in configuration.\nCreating VLAN 45.");
+        var m = u.match(/^vlan (\d+)$/);
+        if (m) {
+          appendFn("line-sys", "VLAN " + m[1] + " not in configuration.\nCreating VLAN " + m[1] + ".");
         }
       }
 
@@ -1819,6 +1836,7 @@ Sw2(config-if)# end</pre>
         ) {
           return;
         }
+        if (sw1PromptOverride === "config-vlan" && /^name\s+\S+/.test(normalize(line))) return;
 
         if (stepIndexSw1 >= LAB_STEPS.length) {
           appendSw("line-bad", "% Invalid input");
@@ -1827,6 +1845,7 @@ Sw2(config-if)# end</pre>
 
         if (LAB_STEPS[stepIndexSw1].test(line, 1)) {
           appendVlanCreateSys(appendSw, line);
+          var isVlanCreateSw1 = /^vlan \d+$/.test(normalize(line));
           stepIndexSw1 += 1;
           if (stepIndexSw1 === 4) {
             trunkVlanPairSw1.gi1.n = trunkVlanPairSw1.gi1.a = false;
@@ -1835,7 +1854,7 @@ Sw2(config-if)# end</pre>
           } else if (stepIndexSw1 === 20) {
             trunkVlanPairSw1.po.n = trunkVlanPairSw1.po.a = false;
           }
-          sw1PromptOverride = null;
+          sw1PromptOverride = isVlanCreateSw1 ? "config-vlan" : null;
           if (stepIndexSw1 >= LAB_STEPS.length) {
             swPrompt.textContent = promptForMode(SWITCH_HOST, "exec");
             tryCompleteTrunkLab(function (cls, text) {
@@ -1845,6 +1864,13 @@ Sw2(config-if)# end</pre>
             setSw1Prompt();
           }
         } else {
+          var sw1Mode = sw1PromptOverride || (stepIndexSw1 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw1].mode : "exec");
+          if (sw1Mode === "config" && /^vlan \d+$/.test(normalize(line))) {
+            appendVlanCreateSys(appendSw, line);
+            sw1PromptOverride = "config-vlan";
+            setSw1Prompt();
+            return;
+          }
           appendSw("line-bad", "% Invalid input");
         }
       }
@@ -1928,6 +1954,7 @@ Sw2(config-if)# end</pre>
         ) {
           return;
         }
+        if (sw2PromptOverride === "config-vlan" && /^name\s+\S+/.test(normalize(line))) return;
 
         if (stepIndexSw2 >= LAB_STEPS.length) {
           appendSw2("line-bad", "% Invalid input");
@@ -1936,6 +1963,7 @@ Sw2(config-if)# end</pre>
 
         if (LAB_STEPS[stepIndexSw2].test(line, 2)) {
           appendVlanCreateSys(appendSw2, line);
+          var isVlanCreateSw2 = /^vlan \d+$/.test(normalize(line));
           stepIndexSw2 += 1;
           if (stepIndexSw2 === 4) {
             trunkVlanPairSw2.gi1.n = trunkVlanPairSw2.gi1.a = false;
@@ -1944,7 +1972,7 @@ Sw2(config-if)# end</pre>
           } else if (stepIndexSw2 === 20) {
             trunkVlanPairSw2.po.n = trunkVlanPairSw2.po.a = false;
           }
-          sw2PromptOverride = null;
+          sw2PromptOverride = isVlanCreateSw2 ? "config-vlan" : null;
           if (stepIndexSw2 >= LAB_STEPS.length) {
             sw2Prompt.textContent = promptForMode(SWITCH2_HOST, "exec");
             tryCompleteTrunkLab(function (cls, text) {
@@ -1954,6 +1982,13 @@ Sw2(config-if)# end</pre>
             setSw2Prompt();
           }
         } else {
+          var sw2ModeNow = sw2PromptOverride || (stepIndexSw2 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw2].mode : "exec");
+          if (sw2ModeNow === "config" && /^vlan \d+$/.test(normalize(line))) {
+            appendVlanCreateSys(appendSw2, line);
+            sw2PromptOverride = "config-vlan";
+            setSw2Prompt();
+            return;
+          }
           appendSw2("line-bad", "% Invalid input");
         }
       }
