@@ -1769,6 +1769,13 @@ Sw2(config-if)#switchport voice vlan 177</pre>
           // Accept VLAN name assignment in vlan submode without affecting step engine.
           return;
         }
+        if (
+          sw1PromptOverride === "config-if-range" &&
+          (normalize(line) === "switchport mode access" || /^switchport access vlan \d+$/.test(normalize(line)))
+        ) {
+          // Allow access-vlan style range commands in interface-range mode outside strict step flow.
+          return;
+        }
         if (sw1Mode === "config" && normalize(line).indexOf("interface ") === 0) {
           // Allow generic interface navigation from config mode outside strict step commands.
           sw1PromptOverride = "config-if";
@@ -1916,6 +1923,13 @@ Sw2(config-if)#switchport voice vlan 177</pre>
 
         if (sw2PromptOverride === "config-vlan" && /^name\s+\S+/.test(normalize(line))) {
           // Accept VLAN name assignment in vlan submode without affecting step engine.
+          return;
+        }
+        if (
+          sw2PromptOverride === "config-if-range" &&
+          (normalize(line) === "switchport mode access" || /^switchport access vlan \d+$/.test(normalize(line)))
+        ) {
+          // Allow access-vlan style range commands in interface-range mode outside strict step flow.
           return;
         }
         if (sw2ModeNow === "config" && normalize(line).indexOf("interface ") === 0) {
