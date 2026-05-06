@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Drag and drop — SNMP manager and agent identifier commands to functions</title>
+  <title>Drag and drop - DNS lookup components</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -63,16 +63,14 @@
       background: #cfe9ff;
       color: #10243f;
       font-weight: 700;
-      font-size: 0.86rem;
+      font-size: 0.9rem;
       line-height: 1.35;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
       cursor: grab;
       user-select: none;
-      text-align: left;
+      text-align: center;
     }
-    .token:active {
-      cursor: grabbing;
-    }
+    .token:active { cursor: grabbing; }
     .match-list {
       display: flex;
       flex-direction: column;
@@ -80,7 +78,7 @@
     }
     .match-row {
       display: grid;
-      grid-template-columns: 1fr minmax(140px, 0.42fr);
+      grid-template-columns: 1fr minmax(170px, 0.44fr);
       gap: 10px;
       align-items: stretch;
       padding: 10px 12px;
@@ -94,14 +92,14 @@
       background: #f7d7dd;
       border-radius: 8px;
       padding: 10px 12px;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       line-height: 1.45;
       display: flex;
       align-items: center;
     }
     .drop-slot {
       display: flex;
-      min-height: 72px;
+      min-height: 64px;
       padding: 6px 8px;
       border-radius: 8px;
       border: 1px dashed #d98a8a;
@@ -111,24 +109,10 @@
       justify-content: center;
       box-sizing: border-box;
     }
-    .drop-slot.over {
-      border-style: solid;
-      border-color: #4d89ff;
-    }
-    .drop-slot.correct {
-      border-color: #1f7a58;
-      background: #113e2d;
-      color: #e6edf3;
-    }
-    .drop-slot.incorrect {
-      border-color: #8c3434;
-      background: #442020;
-      color: #e6edf3;
-    }
-    .drop-slot .token {
-      width: 100%;
-      cursor: grab;
-    }
+    .drop-slot.over { border-style: solid; border-color: #4d89ff; }
+    .drop-slot.correct { border-color: #1f7a58; background: #113e2d; color: #e6edf3; }
+    .drop-slot.incorrect { border-color: #8c3434; background: #442020; color: #e6edf3; }
+    .drop-slot .token { width: 100%; }
     .actions {
       margin-top: 14px;
       display: flex;
@@ -136,8 +120,7 @@
       align-items: center;
       flex-wrap: wrap;
     }
-    button,
-    .home-link {
+    button {
       background: #254b8a;
       color: #e6edf3;
       border: 1px solid #3d6dbb;
@@ -145,78 +128,40 @@
       padding: 10px 14px;
       font-weight: 700;
       cursor: pointer;
-      display: inline-block;
-      text-decoration: none;
       font-family: inherit;
       font-size: 0.95rem;
     }
-    #result {
-      font-weight: 700;
-      color: #e6edf3;
-      flex: 1 1 220px;
-      min-width: 0;
-    }
-    @media (max-width: 720px) {
-      .match-row {
-        grid-template-columns: 1fr;
-      }
-    }
-    @media (max-width: 900px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-    }
+    #result { font-weight: 700; color: #e6edf3; flex: 1 1 220px; min-width: 0; }
+    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
     .sim-nav {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 10000;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 10000;
+      display: flex; justify-content: center; gap: 10px;
       padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
       background: rgba(11, 16, 32, 0.94);
-      border-top: 1px solid #2d3b5a;
-      backdrop-filter: blur(10px);
+      border-top: 1px solid #2d3b5a; backdrop-filter: blur(10px);
     }
     .sim-nav-btn {
-      text-decoration: none;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      color: #e6edf3;
-      border-radius: 10px;
-      padding: 10px 18px;
-      font-weight: 700;
-      min-width: 5.5rem;
-      text-align: center;
-      box-sizing: border-box;
+      text-decoration: none; background: #1a3d6e; border: 1px solid #3d6dbb; color: #e6edf3;
+      border-radius: 10px; padding: 10px 18px; font-weight: 700; min-width: 5.5rem; text-align: center; box-sizing: border-box;
     }
-    .sim-nav-btn:hover {
-      filter: brightness(1.08);
-    }
-    .sim-nav-home {
-      background: #1a3d6e;
-    }
+    .sim-nav-btn:hover { filter: brightness(1.08); }
   </style>
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
 </head>
 <body class="dragdrop-exercise">
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>Drag and drop the SNMP manager and agent identifier commands from the left onto the functions on the right.</h1>
+    <h1>Drag and drop the DNS lookup components from the left onto the functions on the right.</h1>
 
     <div class="layout">
       <div class="panel">
-        <h2>SNMP manager and agent identifier commands</h2>
+        <h2>DNS components</h2>
         <div id="bank" class="bank">
-          <div class="token" draggable="true" data-value="group">show snmp group</div>
-          <div class="token" draggable="true" data-value="community">show snmp community</div>
-          <div class="token" draggable="true" data-value="chassis">show snmp chassis</div>
-          <div class="token" draggable="true" data-value="engineid">show snmp engineID</div>
-          <div class="token" draggable="true" data-value="host">show snmp host</div>
+          <div class="token" draggable="true" data-value="domain">domain</div>
+          <div class="token" draggable="true" data-value="cache">cache</div>
+          <div class="token" draggable="true" data-value="name-resolver">name resolver</div>
+          <div class="token" draggable="true" data-value="dns">DNS</div>
+          <div class="token" draggable="true" data-value="no-domain-lookup">no ip domain-lookup</div>
         </div>
       </div>
 
@@ -224,24 +169,24 @@
         <h2>Functions</h2>
         <div class="match-list">
           <div class="match-row">
-            <p class="match-desc">displays information about the SNMP recipient</p>
-            <div class="drop-slot" data-target="host"></div>
+            <p class="match-desc">service that maps hostname to IP addresses</p>
+            <div class="drop-slot" data-target="dns"></div>
           </div>
           <div class="match-row">
-            <p class="match-desc">displays the IP address of the remote SNMP device</p>
-            <div class="drop-slot" data-target="engineid"></div>
+            <p class="match-desc">local database of address mappings that improves name resolution performance</p>
+            <div class="drop-slot" data-target="cache"></div>
           </div>
           <div class="match-row">
-            <p class="match-desc">displays the SNMP access string</p>
-            <div class="drop-slot" data-target="community"></div>
+            <p class="match-desc">in response to client requests, queries a name server for IP address information</p>
+            <div class="drop-slot" data-target="name-resolver"></div>
           </div>
           <div class="match-row">
-            <p class="match-desc">displays the SNMP security model in use</p>
-            <div class="drop-slot" data-target="group"></div>
+            <p class="match-desc">component of a URL that indicates the location or organization type</p>
+            <div class="drop-slot" data-target="domain"></div>
           </div>
           <div class="match-row">
-            <p class="match-desc">displays the SNMP server serial number</p>
-            <div class="drop-slot" data-target="chassis"></div>
+            <p class="match-desc">disables DNS services on a Cisco device</p>
+            <div class="drop-slot" data-target="no-domain-lookup"></div>
           </div>
         </div>
       </div>
@@ -256,7 +201,7 @@
   </main>
 
   <nav class="sim-nav" aria-label="Simulation navigation">
-    <a class="sim-nav-btn sim-nav-home" href="/CCNA-Study/ccna-index.html">CCNA study</a>
+    <a class="sim-nav-btn" href="/CCNA-Study/ccna-index.html">CCNA study</a>
   </nav>
 
   <script>
@@ -266,96 +211,43 @@
       var showBtn = document.getElementById("showBtn");
       var resetBtn = document.getElementById("resetBtn");
       var result = document.getElementById("result");
-      var dragged = null;
-      var picked = null;
+      var dragged = null, picked = null;
 
-      function allSlots() {
-        return document.querySelectorAll(".drop-slot[data-target]");
-      }
-
-      function clearPick() {
-        document.querySelectorAll(".token.is-picked").forEach(function (n) {
-          n.classList.remove("is-picked");
-        });
-        picked = null;
-      }
-
-      function setPick(token) {
-        clearPick();
-        picked = token;
-        if (picked) picked.classList.add("is-picked");
-      }
-
+      function allSlots() { return document.querySelectorAll(".drop-slot[data-target]"); }
+      function clearPick() { document.querySelectorAll(".token.is-picked").forEach(function(n){n.classList.remove("is-picked");}); picked = null; }
+      function setPick(token) { clearPick(); picked = token; if (picked) picked.classList.add("is-picked"); }
       function moveTokenToSlot(slot, token) {
         if (!token || !slot) return;
         var existing = slot.querySelector(".token");
         if (existing && existing !== token) bank.appendChild(existing);
         slot.appendChild(token);
       }
-
       (function shuffleBank() {
         var nodes = [].slice.call(bank.querySelectorAll(".token"));
-        while (nodes.length) {
-          bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
-        }
+        while (nodes.length) bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
       })();
-
-      history.pushState(null, "", location.href);
-      window.addEventListener("popstate", function () {
-        history.pushState(null, "", location.href);
-      });
 
       var mainEl = document.querySelector("main.card");
       mainEl.addEventListener("click", function (e) {
         var tok = e.target.closest(".token");
         if (tok) {
-          if (picked === tok) {
-            clearPick();
-            return;
-          }
-          var parentSlot =
-            tok.parentNode && tok.parentNode.classList && tok.parentNode.classList.contains("drop-slot")
-              ? tok.parentNode
-              : null;
-          if (picked && parentSlot) {
-            moveTokenToSlot(parentSlot, picked);
-            clearPick();
-            return;
-          }
-          setPick(tok);
-          return;
+          if (picked === tok) { clearPick(); return; }
+          var parentSlot = tok.parentNode && tok.parentNode.classList && tok.parentNode.classList.contains("drop-slot")
+            ? tok.parentNode : null;
+          if (picked && parentSlot) { moveTokenToSlot(parentSlot, picked); clearPick(); return; }
+          setPick(tok); return;
         }
-
         var slot = e.target.closest(".drop-slot");
-        if (slot && picked) {
-          moveTokenToSlot(slot, picked);
-          clearPick();
-          return;
-        }
-
-        if (bank.contains(e.target) && picked) {
-          if (!bank.contains(picked)) {
-            bank.appendChild(picked);
-          }
-          clearPick();
-        }
+        if (slot && picked) { moveTokenToSlot(slot, picked); clearPick(); return; }
+        if (bank.contains(e.target) && picked) { if (!bank.contains(picked)) bank.appendChild(picked); clearPick(); }
       });
 
       document.querySelectorAll(".token").forEach(function (token) {
-        token.addEventListener("dragstart", function () {
-          clearPick();
-          dragged = token;
-        });
+        token.addEventListener("dragstart", function () { clearPick(); dragged = token; });
       });
-
       allSlots().forEach(function (slot) {
-        slot.addEventListener("dragover", function (e) {
-          e.preventDefault();
-          slot.classList.add("over");
-        });
-        slot.addEventListener("dragleave", function () {
-          slot.classList.remove("over");
-        });
+        slot.addEventListener("dragover", function (e) { e.preventDefault(); slot.classList.add("over"); });
+        slot.addEventListener("dragleave", function () { slot.classList.remove("over"); });
         slot.addEventListener("drop", function (e) {
           e.preventDefault();
           slot.classList.remove("over");
@@ -364,20 +256,11 @@
           dragged = null;
         });
       });
-
-      bank.addEventListener("dragover", function (e) {
-        e.preventDefault();
-      });
-      bank.addEventListener("drop", function (e) {
-        e.preventDefault();
-        if (dragged) bank.appendChild(dragged);
-        dragged = null;
-      });
+      bank.addEventListener("dragover", function (e) { e.preventDefault(); });
+      bank.addEventListener("drop", function (e) { e.preventDefault(); if (dragged) bank.appendChild(dragged); dragged = null; });
 
       function takeFromBank(value) {
-        return [].slice.call(bank.querySelectorAll(".token")).find(function (t) {
-          return t.getAttribute("data-value") === value;
-        });
+        return [].slice.call(bank.querySelectorAll(".token")).find(function (t) { return t.getAttribute("data-value") === value; });
       }
 
       checkBtn.addEventListener("click", function () {
@@ -386,19 +269,14 @@
           slot.classList.remove("correct", "incorrect", "over");
           var want = slot.getAttribute("data-target");
           var t = slot.querySelector(".token");
-          if (!t) {
-            slot.classList.add("incorrect");
-            allOk = false;
-            return;
-          }
+          if (!t) { slot.classList.add("incorrect"); allOk = false; return; }
           var ok = t.getAttribute("data-value") === want;
           slot.classList.add(ok ? "correct" : "incorrect");
           if (!ok) allOk = false;
         });
-
         result.textContent = allOk
-          ? "Correct. Each SNMP manager and agent identifier command is paired with the right function."
-          : "Incorrect. Some commands are in the wrong slots or a slot is empty — adjust and check again.";
+          ? "Correct. Each DNS lookup component is matched to the right function."
+          : "Incorrect. Some components are in the wrong slots or a slot is empty - adjust and check again.";
       });
 
       showBtn.addEventListener("click", function () {
@@ -408,16 +286,10 @@
           var t = slot.querySelector(".token");
           if (t) bank.appendChild(t);
         });
-
         allSlots().forEach(function (slot) {
-          var want = slot.getAttribute("data-target");
-          var tok = takeFromBank(want);
-          if (tok) {
-            slot.appendChild(tok);
-            slot.classList.add("correct");
-          }
+          var tok = takeFromBank(slot.getAttribute("data-target"));
+          if (tok) { slot.appendChild(tok); slot.classList.add("correct"); }
         });
-
         result.textContent = "Answer shown.";
       });
 
@@ -431,9 +303,7 @@
         result.textContent = "";
         (function reshuffle() {
           var nodes = [].slice.call(bank.querySelectorAll(".token"));
-          while (nodes.length) {
-            bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
-          }
+          while (nodes.length) bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
         })();
       });
     })();

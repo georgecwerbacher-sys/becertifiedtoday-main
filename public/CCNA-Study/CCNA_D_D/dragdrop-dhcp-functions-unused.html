@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Drag and drop — SNMP manager and agent identifier commands to functions</title>
+  <title>Drag and drop - DHCP functions (not all used)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -63,12 +63,11 @@
       background: #cfe9ff;
       color: #10243f;
       font-weight: 700;
-      font-size: 0.86rem;
+      font-size: 0.9rem;
       line-height: 1.35;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
       cursor: grab;
       user-select: none;
-      text-align: left;
+      text-align: center;
     }
     .token:active {
       cursor: grabbing;
@@ -80,7 +79,7 @@
     }
     .match-row {
       display: grid;
-      grid-template-columns: 1fr minmax(140px, 0.42fr);
+      grid-template-columns: minmax(120px, 0.35fr) 1fr;
       gap: 10px;
       align-items: stretch;
       padding: 10px 12px;
@@ -88,20 +87,21 @@
       border: 2px solid rgba(232, 140, 160, 0.55);
       background: rgba(232, 140, 160, 0.1);
     }
-    .match-desc {
+    .slot-label {
       margin: 0;
       color: #1d293d;
       background: #f7d7dd;
       border-radius: 8px;
       padding: 10px 12px;
-      font-size: 0.88rem;
-      line-height: 1.45;
+      font-size: 1.2rem;
+      font-weight: 700;
       display: flex;
       align-items: center;
+      justify-content: center;
     }
     .drop-slot {
       display: flex;
-      min-height: 72px;
+      min-height: 62px;
       padding: 6px 8px;
       border-radius: 8px;
       border: 1px dashed #d98a8a;
@@ -127,7 +127,6 @@
     }
     .drop-slot .token {
       width: 100%;
-      cursor: grab;
     }
     .actions {
       margin-top: 14px;
@@ -136,8 +135,7 @@
       align-items: center;
       flex-wrap: wrap;
     }
-    button,
-    .home-link {
+    button {
       background: #254b8a;
       color: #e6edf3;
       border: 1px solid #3d6dbb;
@@ -146,7 +144,6 @@
       font-weight: 700;
       cursor: pointer;
       display: inline-block;
-      text-decoration: none;
       font-family: inherit;
       font-size: 0.95rem;
     }
@@ -155,11 +152,6 @@
       color: #e6edf3;
       flex: 1 1 220px;
       min-width: 0;
-    }
-    @media (max-width: 720px) {
-      .match-row {
-        grid-template-columns: 1fr;
-      }
     }
     @media (max-width: 900px) {
       .layout {
@@ -206,42 +198,40 @@
 <body class="dragdrop-exercise">
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>Drag and drop the SNMP manager and agent identifier commands from the left onto the functions on the right.</h1>
+    <h1>Drag and drop the functions of DHCP from the left onto any of the positions on the right. Not all functions are used.</h1>
 
     <div class="layout">
       <div class="panel">
-        <h2>SNMP manager and agent identifier commands</h2>
+        <h2>Functions</h2>
         <div id="bank" class="bank">
-          <div class="token" draggable="true" data-value="group">show snmp group</div>
-          <div class="token" draggable="true" data-value="community">show snmp community</div>
-          <div class="token" draggable="true" data-value="chassis">show snmp chassis</div>
-          <div class="token" draggable="true" data-value="engineid">show snmp engineID</div>
-          <div class="token" draggable="true" data-value="host">show snmp host</div>
+          <div class="token" draggable="true" data-value="dns-map">associates hostnames to IP addresses</div>
+          <div class="token" draggable="true" data-value="client-server">provides local control for network segments using a client-server scheme</div>
+          <div class="token" draggable="true" data-value="pool">maintains an address pool</div>
+          <div class="token" draggable="true" data-value="dns-option">offers domain name server configuration</div>
+          <div class="token" draggable="true" data-value="reduce-admin">reduces the administrative burden for onboarding end users</div>
+          <div class="token" draggable="true" data-value="lease">assigns IP addresses to local hosts for a configurable lease time</div>
+          <div class="token" draggable="true" data-value="authoritative">uses authoritative servers for record keeping</div>
         </div>
       </div>
 
       <div class="panel">
-        <h2>Functions</h2>
+        <h2>Positions</h2>
         <div class="match-list">
           <div class="match-row">
-            <p class="match-desc">displays information about the SNMP recipient</p>
-            <div class="drop-slot" data-target="host"></div>
+            <p class="slot-label">1</p>
+            <div class="drop-slot" data-slot="1"></div>
           </div>
           <div class="match-row">
-            <p class="match-desc">displays the IP address of the remote SNMP device</p>
-            <div class="drop-slot" data-target="engineid"></div>
+            <p class="slot-label">2</p>
+            <div class="drop-slot" data-slot="2"></div>
           </div>
           <div class="match-row">
-            <p class="match-desc">displays the SNMP access string</p>
-            <div class="drop-slot" data-target="community"></div>
+            <p class="slot-label">3</p>
+            <div class="drop-slot" data-slot="3"></div>
           </div>
           <div class="match-row">
-            <p class="match-desc">displays the SNMP security model in use</p>
-            <div class="drop-slot" data-target="group"></div>
-          </div>
-          <div class="match-row">
-            <p class="match-desc">displays the SNMP server serial number</p>
-            <div class="drop-slot" data-target="chassis"></div>
+            <p class="slot-label">4</p>
+            <div class="drop-slot" data-slot="4"></div>
           </div>
         </div>
       </div>
@@ -268,9 +258,10 @@
       var result = document.getElementById("result");
       var dragged = null;
       var picked = null;
+      var ACCEPTED = ["client-server", "pool", "reduce-admin", "lease"];
 
       function allSlots() {
-        return document.querySelectorAll(".drop-slot[data-target]");
+        return document.querySelectorAll(".drop-slot[data-slot]");
       }
 
       function clearPick() {
@@ -374,6 +365,12 @@
         dragged = null;
       });
 
+      function slotTokens() {
+        return [].slice.call(allSlots())
+          .map(function (slot) { return slot.querySelector(".token"); })
+          .filter(Boolean);
+      }
+
       function takeFromBank(value) {
         return [].slice.call(bank.querySelectorAll(".token")).find(function (t) {
           return t.getAttribute("data-value") === value;
@@ -381,24 +378,32 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
+        var ok = true;
+        var used = {};
+
         allSlots().forEach(function (slot) {
           slot.classList.remove("correct", "incorrect", "over");
-          var want = slot.getAttribute("data-target");
           var t = slot.querySelector(".token");
           if (!t) {
             slot.classList.add("incorrect");
-            allOk = false;
+            ok = false;
             return;
           }
-          var ok = t.getAttribute("data-value") === want;
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
+          var v = t.getAttribute("data-value");
+          if (ACCEPTED.indexOf(v) === -1 || used[v]) {
+            slot.classList.add("incorrect");
+            ok = false;
+            return;
+          }
+          used[v] = true;
+          slot.classList.add("correct");
         });
 
-        result.textContent = allOk
-          ? "Correct. Each SNMP manager and agent identifier command is paired with the right function."
-          : "Incorrect. Some commands are in the wrong slots or a slot is empty — adjust and check again.";
+        if (Object.keys(used).length !== 4) ok = false;
+
+        result.textContent = ok
+          ? "Correct. You selected only DHCP functions, and the unused statements were left out."
+          : "Incorrect. Fill all four positions with valid DHCP functions; some statements should remain unused.";
       });
 
       showBtn.addEventListener("click", function () {
@@ -409,9 +414,8 @@
           if (t) bank.appendChild(t);
         });
 
-        allSlots().forEach(function (slot) {
-          var want = slot.getAttribute("data-target");
-          var tok = takeFromBank(want);
+        allSlots().forEach(function (slot, idx) {
+          var tok = takeFromBank(ACCEPTED[idx]);
           if (tok) {
             slot.appendChild(tok);
             slot.classList.add("correct");

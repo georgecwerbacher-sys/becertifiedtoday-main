@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Drag and drop — SNMP manager and agent identifier commands to functions</title>
+  <title>Drag and drop — 802.11 wireless standards matching</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -63,7 +63,7 @@
       background: #cfe9ff;
       color: #10243f;
       font-weight: 700;
-      font-size: 0.86rem;
+      font-size: 0.9rem;
       line-height: 1.35;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
       cursor: grab;
@@ -80,7 +80,7 @@
     }
     .match-row {
       display: grid;
-      grid-template-columns: 1fr minmax(140px, 0.42fr);
+      grid-template-columns: 1fr minmax(160px, 0.42fr);
       gap: 10px;
       align-items: stretch;
       padding: 10px 12px;
@@ -94,7 +94,7 @@
       background: #f7d7dd;
       border-radius: 8px;
       padding: 10px 12px;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       line-height: 1.45;
       display: flex;
       align-items: center;
@@ -136,8 +136,7 @@
       align-items: center;
       flex-wrap: wrap;
     }
-    button,
-    .home-link {
+    button {
       background: #254b8a;
       color: #e6edf3;
       border: 1px solid #3d6dbb;
@@ -146,7 +145,6 @@
       font-weight: 700;
       cursor: pointer;
       display: inline-block;
-      text-decoration: none;
       font-family: inherit;
       font-size: 0.95rem;
     }
@@ -206,42 +204,42 @@
 <body class="dragdrop-exercise">
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>Drag and drop the SNMP manager and agent identifier commands from the left onto the functions on the right.</h1>
+    <h1>Drag and drop the 802.11 wireless standards from the left onto the matching statements on the right.</h1>
 
     <div class="layout">
       <div class="panel">
-        <h2>SNMP manager and agent identifier commands</h2>
+        <h2>802.11 wireless standards</h2>
         <div id="bank" class="bank">
-          <div class="token" draggable="true" data-value="group">show snmp group</div>
-          <div class="token" draggable="true" data-value="community">show snmp community</div>
-          <div class="token" draggable="true" data-value="chassis">show snmp chassis</div>
-          <div class="token" draggable="true" data-value="engineid">show snmp engineID</div>
-          <div class="token" draggable="true" data-value="host">show snmp host</div>
+          <div class="token" draggable="true" data-value="11b">802.11b</div>
+          <div class="token" draggable="true" data-value="11a">802.11a</div>
+          <div class="token" draggable="true" data-value="11ac">802.11ac</div>
+          <div class="token" draggable="true" data-value="11n">802.11n</div>
+          <div class="token" draggable="true" data-value="11g">802.11g</div>
         </div>
       </div>
 
       <div class="panel">
-        <h2>Functions</h2>
+        <h2>Matching statements</h2>
         <div class="match-list">
           <div class="match-row">
-            <p class="match-desc">displays information about the SNMP recipient</p>
-            <div class="drop-slot" data-target="host"></div>
+            <p class="match-desc">Operates in the 2.4 GHz band only and supports a maximum data rate of 11 Mbps.</p>
+            <div class="drop-slot" data-target="11b"></div>
           </div>
           <div class="match-row">
-            <p class="match-desc">displays the IP address of the remote SNMP device</p>
-            <div class="drop-slot" data-target="engineid"></div>
+            <p class="match-desc">Operates in the 5 GHz band only and supports a maximum data rate of 54 Mbps.</p>
+            <div class="drop-slot" data-target="11a"></div>
           </div>
           <div class="match-row">
-            <p class="match-desc">displays the SNMP access string</p>
-            <div class="drop-slot" data-target="community"></div>
+            <p class="match-desc">Operates in both 2.4 GHz and 5 GHz bands.</p>
+            <div class="drop-slot" data-target="11n"></div>
           </div>
           <div class="match-row">
-            <p class="match-desc">displays the SNMP security model in use</p>
-            <div class="drop-slot" data-target="group"></div>
+            <p class="match-desc">Operates in the 5 GHz band only and supports a maximum data rate that can exceed 100 Mbps.</p>
+            <div class="drop-slot" data-target="11ac"></div>
           </div>
           <div class="match-row">
-            <p class="match-desc">displays the SNMP server serial number</p>
-            <div class="drop-slot" data-target="chassis"></div>
+            <p class="match-desc">Operates in the 2.4 GHz band only and supports a maximum data rate of 54 Mbps.</p>
+            <div class="drop-slot" data-target="11g"></div>
           </div>
         </div>
       </div>
@@ -397,8 +395,8 @@
         });
 
         result.textContent = allOk
-          ? "Correct. Each SNMP manager and agent identifier command is paired with the right function."
-          : "Incorrect. Some commands are in the wrong slots or a slot is empty — adjust and check again.";
+          ? "Correct. Each 802.11 standard is matched to the correct statement."
+          : "Incorrect. Some standards are in the wrong slots or a slot is empty - adjust and check again.";
       });
 
       showBtn.addEventListener("click", function () {

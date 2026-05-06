@@ -39,7 +39,7 @@
     document.querySelectorAll("[data-ccna100]").forEach(function (el) {
       el.addEventListener("click", function () {
         var m = el.getAttribute("data-ccna100");
-        if (m === "linear" || m === "random" || m === "review") start(m);
+        if (m === "random" || m === "review") start(m);
       });
     });
   }
