@@ -797,45 +797,47 @@ R3# copy running-config startup-config</pre>
         <button type="button" class="cli-modal-close" id="spoilerClose" aria-label="Close spoiler">×</button>
       </header>
       <div class="cli-modal-body spoiler-cli-body">
-        <div class="spoiler-task" aria-labelledby="spoiler-cap-example">
-          <p class="spoiler-terminal-cap" id="spoiler-cap-example">Example — primary device</p>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-task1">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-task1">Task 1</p>
           <div class="spoiler-terminal" role="region" aria-label="Example CLI solution">
             <div class="spoiler-terminal-bar">
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
               <span class="spoiler-terminal-title">R1 — Terminal</span>
             </div>
-            <pre class="spoiler-terminal-pre">R1# configure terminal
-R1(config)# interface g0/0
-R1(config-if)# ip address 192.168.10.1 255.255.255.0
-R1(config-if)# no shutdown
-R1(config-if)# exit
-R1(config)# interface g0/1
-R1(config-if)# ip address 10.0.12.1 255.255.255.252
-R1(config-if)# no shutdown
-R1(config-if)# exit
-R1(config)# ip route 192.168.20.0 255.255.255.0 10.0.12.2
-R1(config)# end
-R1# copy running-configuration startup-configuration</pre>
+            <pre class="spoiler-terminal-pre">R1(config)#ip route 10.0.41.10 255.255.255.255 10.0.12.2</pre>
           </div>
         </div>
-        <p class="tasks" style="margin: 0; color: #8b9cbb; font-size: 0.85rem">
-          Optional: keep a legacy single block with <code>spoiler-cli-pre</code> for simple labs.
-        </p>
-        <pre class="spoiler-cli-pre">R2# show running-config
-Building configuration...
-!
-hostname R2
-!
-interface GigabitEthernet0/0
- ip address 10.0.12.2 255.255.255.252
- no shutdown
-!
-interface GigabitEthernet0/1
- ip address 192.168.20.1 255.255.255.0
- no shutdown
-!
-ip route 192.168.10.0 255.255.255.0 10.0.12.1
-end</pre>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-task2">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-task2">Task 2</p>
+          <div class="spoiler-terminal" role="region" aria-label="Task 2 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R1 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R1(config)#ip route 10.0.41.10 255.255.255.255 10.0.13.3 254</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-task3">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-task3">Task 3</p>
+          <div class="spoiler-terminal" role="region" aria-label="Task 3 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R1 / R3 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R1(config)#ip route 0.0.0.0 0.0.0.0 10.0.13.3
+R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-end">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-end">End</p>
+          <div class="spoiler-terminal" role="region" aria-label="End commands">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R1 / R3 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R1#, R3#copy running-config startup-config</pre>
+          </div>
+        </div>
       </div>
     </div>
   </div>
