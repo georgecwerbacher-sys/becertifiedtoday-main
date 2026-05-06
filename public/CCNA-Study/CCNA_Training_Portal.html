@@ -202,6 +202,7 @@
     .purchase-card .purchase-includes {
       margin: 0 0 18px;
       padding: 0 0 0 22px;
+      list-style-position: inside;
       text-align: left;
       color: #b8c3d6;
       font-size: 0.98rem;
@@ -222,6 +223,7 @@
     }
     .purchase-card-brand-col {
       flex: 0 1 clamp(220px, 32vw, 340px);
+      margin-left: auto;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
@@ -240,6 +242,15 @@
       display: block;
       height: auto;
       width: auto;
+      max-height: clamp(120px, 20vw, 220px);
+      max-width: min(220px, 48vw);
+      object-fit: contain;
+      filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.35));
+    }
+    .purchase-card-brand-logo {
+      display: block;
+      width: auto;
+      height: auto;
       max-height: clamp(120px, 20vw, 220px);
       max-width: min(220px, 48vw);
       object-fit: contain;
@@ -568,48 +579,47 @@
     <main id="main">
       <div class="hero-content">
         <div class="funnel">
-          <p class="eyebrow">CCNA track</p>
+          <p class="eyebrow">Welcome</p>
           <h1>CCNA Training Portal</h1>
           <p class="lead">
-            Same dashboard layout as the ENCOR training portal — practice questions, drag-and-drop, CLI-style labs, and a timed
-            simulation section. The practice block starts a hundred-question session (random or review modes) plus a drag-and-drop item; labs and timed
-            simulation entries remain placeholders until those pages exist.
+            A next-generation, all-in-one training solution built to give you the confidence to move forward fully prepared.
+            Train with structured content, timed practice, and simulation workflows designed around real ENCOR exam objectives.
           </p>
           <ul class="benefits" aria-label="Portal highlights">
-            <li>Organized sections for questions, drag-and-drop, labs, and timed practice.</li>
-            <li>Card grid pattern matches ENCOR portal styling for a consistent experience.</li>
-            <li>No ENCOR library links here — wire each button to your own <code>public/ccna/</code> samples.</li>
+            <li>Professional study flow with organized sections, clear navigation, and focused practice modes.</li>
+            <li>Hands-on preparation through question sets, drag-and-drop tasks, and CLI lab simulation access.</li>
+            <li>Exam-readiness support with timed simulation and repeatable sessions to reinforce performance.</li>
           </ul>
 
           <div class="card purchase-card" id="ccna-domains">
             <div class="purchase-card-inner">
               <div class="purchase-card-main">
                 <p class="purchase-label">Outline</p>
-                <h2 class="purchase-heading">CCNA (200-301) domains — sample copy</h2>
+                <h2 class="purchase-heading">CCNA subject areas covered</h2>
                 <p class="purchase-lead">
-                  Replace this block with your curriculum map. Official CCNA broadly spans network fundamentals, LAN switching,
-                  routing, IP services, security fundamentals, and automation basics.
+                  This training path is organized to follow the CCNA testing curriculum in the same sequence learners are expected
+                  to perform on exam day: core theory first, then command workflow, validation steps, and mixed-format practice
+                  across each domain listed below.
                 </p>
                 <ul class="purchase-includes">
-                  <li><strong>Network fundamentals:</strong> models, cabling, IPv4/IPv6 addressing — placeholder.</li>
-                  <li><strong>LAN switching:</strong> VLANs, STP, EtherChannel — placeholder.</li>
-                  <li><strong>Routing:</strong> static routes, OSPFv2, single-area concepts — placeholder.</li>
-                  <li><strong>IP services:</strong> NAT/NTP/DHCP/DNS overview — placeholder.</li>
-                  <li><strong>Security fundamentals:</strong> ACLs, wireless basics, device hardening — placeholder.</li>
-                  <li><strong>Automation:</strong> REST, JSON, scripting introduction — placeholder.</li>
+                  <li><strong>Network fundamentals:</strong> models, cabling, IPv4/IPv6 addressing.</li>
+                  <li><strong>LAN switching:</strong> VLANs, STP, EtherChannel.</li>
+                  <li><strong>Routing:</strong> static routes, OSPFv2, single-area concepts.</li>
+                  <li><strong>IP services:</strong> NAT/NTP/DHCP/DNS overview.</li>
+                  <li><strong>Security fundamentals:</strong> ACLs, wireless basics, device hardening.</li>
+                  <li><strong>Automation:</strong> REST, JSON, scripting introduction.</li>
                 </ul>
               </div>
               <div class="purchase-card-brand-col">
-                <figure class="purchase-card-brand-mark" aria-hidden="true">
-                  <img
-                    src="/images/logo/becertifiedtoday_logo_trans.png"
-                    width="1024"
-                    height="1024"
-                    alt=""
-                    decoding="async"
-                    loading="lazy"
-                  />
-                </figure>
+                <img
+                  class="purchase-card-brand-logo"
+                  src="/images/becertifiedtoday-logo.png"
+                  width="1024"
+                  height="1024"
+                  alt=""
+                  decoding="async"
+                  loading="lazy"
+                />
               </div>
             </div>
           </div>
@@ -621,16 +631,16 @@
           <p class="formats-head">CCNA practice formats</p>
           <h2 id="formats-title">Choose your practice mode</h2>
           <p class="formats-lead">
-            Mirror of the ENCOR portal sections: wire each card to your CCNA samples (e.g.
-            <code>/ccna/begin-questions-random.html</code> once you add it).
+            Each practice format targets skills the way exams actually ask: recall, configuration logic, and matching concepts to the right bucket.
+            Use practice labs, question banks, drag-and-drop sets, and full timed runs in short sessions or longer study blocks - no PDF workbooks,
+            only live pages you operate.
           </p>
-
-          <p class="placeholder-strip">
-            Placeholders use disabled buttons. Swap for <code>&lt;a class="start-btn" href="…"&gt;</code> when URLs exist.
-          </p>
-
           <h3 class="section-heading">Practice Questions</h3>
           <section class="start-box" aria-label="Question studies">
+            <p class="study-meta">
+              <strong>Random:</strong> Changes the order of questions in each session. <strong>Review:</strong> Questions answered
+              incorrectly are added back into the mix so you can try them again.
+            </p>
             <div class="sim-grid" aria-label="Study groups">
               <article class="sim-box">
                 <h4 class="sim-box-title">Practice Questions (1–100)</h4>
@@ -681,6 +691,9 @@
 
           <h3 class="section-heading">Lab Simulations</h3>
           <section class="start-box" aria-label="Lab simulations">
+            <p class="study-meta">
+              Labs are designed so help features and unneeded commands are disabled. Follow the required command sequence closely, and type full commands when abbreviations are not accepted.
+            </p>
             <div class="sim-grid" aria-label="CLI labs">
               <article class="sim-box">
                 <figure class="sim-box-thumb">
@@ -755,10 +768,18 @@
 
           <h3 class="section-heading">Test Simulation</h3>
           <section class="start-box" aria-label="Timed test simulation (placeholder)">
-            <p style="margin: 0 0 10px; color: #b8c3d6; line-height: 1.5;">
-              Placeholder — timed mixed exam entry point (questions + drag-drop + lab items). Point to something like
-              <code>/ccna/begin-test-simulation.html</code> when your sample exists.
+            <p style="margin: 0 0 10px; color: #e6edf3; line-height: 1.4; font-size: 1.05rem; font-weight: 800;">
+              Timed practice test — 50 questions, 4 drag-and-drops, 2 labs, one clock
             </p>
+            <p style="margin: 0 0 10px; color: #b8c3d6; line-height: 1.5;">
+              Sit for a single timed practice session that feels closer to test day: a long mixed run with a countdown, no peeking at answers until you finish, and a clear outcome when time is up.
+            </p>
+            <ul style="margin: 0 0 12px 1.2rem; color: #b8c3d6; line-height: 1.55; padding: 0;">
+              <li><strong>56 mixed items per run</strong> — 50 questions, 4 drag-and-drops, 2 CLI labs — randomized in order.</li>
+              <li><strong>Every item type in play</strong> — multiple-choice, labs, and drag-and-drop tasks.</li>
+              <li><strong>Timer-driven</strong> — the session runs against the clock from start to submit.</li>
+              <li><strong>Pass or fail at the end.</strong></li>
+            </ul>
             <div class="study-actions">
               <button type="button" class="start-btn is-placeholder" disabled>Start test simulation</button>
             </div>
