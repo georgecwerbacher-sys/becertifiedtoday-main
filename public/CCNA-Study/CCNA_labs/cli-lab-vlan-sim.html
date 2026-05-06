@@ -1345,6 +1345,7 @@ Sw2(config-if)#switchport voice vlan 177</pre>
         if (ovr !== null && ovr !== undefined) {
           if (
             ovr === "config" ||
+            ovr === "config-vlan" ||
             ovr === "config-if" ||
             ovr === "config-if-range" ||
             ovr === "config-router" ||
@@ -1383,6 +1384,10 @@ Sw2(config-if)#switchport voice vlan 177</pre>
         if (getOvr() === "exec") return false;
         var mode = LAB_STEPS[stepIdx].mode;
         var ovr = getOvr();
+        if (ovr === "config-vlan") {
+          setOvrAndRefresh("config");
+          return true;
+        }
         if (mode === "config-if" || mode === "config-if-range") {
           if (!ovr) {
             setOvrAndRefresh("config");
@@ -1434,6 +1439,8 @@ Sw2(config-if)#switchport voice vlan 177</pre>
             return host + "#";
           case "config":
             return host + "(config)#";
+          case "config-vlan":
+            return host + "(config-vlan)#";
           case "config-if":
             return host + "(config-if)#";
           case "config-if-range":
@@ -1719,13 +1726,6 @@ Sw2(config-if)#switchport voice vlan 177</pre>
           return;
         }
 
-        var sw1Mode = sw1PromptOverride || (stepIndexSw1 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw1].mode : "exec");
-        if (sw1Mode === "config" && /^vlan \d+$/.test(normalize(line))) {
-          // Accept extra VLAN creation commands without failing the simulator flow.
-          appendVlanCreateSys(appendSw, line);
-          return;
-        }
-
         if (stepIndexSw1 >= LAB_STEPS.length) {
           appendSw("line-bad", "% Invalid input");
           return;
@@ -1733,6 +1733,7 @@ Sw2(config-if)#switchport voice vlan 177</pre>
 
         if (LAB_STEPS[stepIndexSw1].test(line, 1)) {
           appendVlanCreateSys(appendSw, line);
+          var isVlanCreateSw1 = /^vlan \d+$/.test(normalize(line));
           stepIndexSw1 += 1;
           if (stepIndexSw1 === 4) {
             trunkVlanPairSw1.gi1.n = trunkVlanPairSw1.gi1.a = false;
@@ -1741,7 +1742,7 @@ Sw2(config-if)#switchport voice vlan 177</pre>
           } else if (stepIndexSw1 === 20) {
             trunkVlanPairSw1.po.n = trunkVlanPairSw1.po.a = false;
           }
-          sw1PromptOverride = null;
+          sw1PromptOverride = isVlanCreateSw1 ? "config-vlan" : null;
           if (stepIndexSw1 >= LAB_STEPS.length) {
             swPrompt.textContent = promptForMode(SWITCH_HOST, "exec");
             tryCompleteTrunkLab(function (cls, text) {
@@ -1751,6 +1752,14 @@ Sw2(config-if)#switchport voice vlan 177</pre>
             setSw1Prompt();
           }
         } else {
+          var sw1Mode = sw1PromptOverride || (stepIndexSw1 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw1].mode : "exec");
+          if (sw1Mode === "config" && /^vlan \d+$/.test(normalize(line))) {
+            // Accept extra VLAN creation commands without failing the simulator flow.
+            appendVlanCreateSys(appendSw, line);
+            sw1PromptOverride = "config-vlan";
+            setSw1Prompt();
+            return;
+          }
           appendSw("line-bad", "% Invalid input");
         }
       }
@@ -1835,13 +1844,6 @@ Sw2(config-if)#switchport voice vlan 177</pre>
           return;
         }
 
-        var sw2ModeNow = sw2PromptOverride || (stepIndexSw2 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw2].mode : "exec");
-        if (sw2ModeNow === "config" && /^vlan \d+$/.test(normalize(line))) {
-          // Accept extra VLAN creation commands without failing the simulator flow.
-          appendVlanCreateSys(appendSw2, line);
-          return;
-        }
-
         if (stepIndexSw2 >= LAB_STEPS.length) {
           appendSw2("line-bad", "% Invalid input");
           return;
@@ -1849,6 +1851,7 @@ Sw2(config-if)#switchport voice vlan 177</pre>
 
         if (LAB_STEPS[stepIndexSw2].test(line, 2)) {
           appendVlanCreateSys(appendSw2, line);
+          var isVlanCreateSw2 = /^vlan \d+$/.test(normalize(line));
           stepIndexSw2 += 1;
           if (stepIndexSw2 === 4) {
             trunkVlanPairSw2.gi1.n = trunkVlanPairSw2.gi1.a = false;
@@ -1857,7 +1860,7 @@ Sw2(config-if)#switchport voice vlan 177</pre>
           } else if (stepIndexSw2 === 20) {
             trunkVlanPairSw2.po.n = trunkVlanPairSw2.po.a = false;
           }
-          sw2PromptOverride = null;
+          sw2PromptOverride = isVlanCreateSw2 ? "config-vlan" : null;
           if (stepIndexSw2 >= LAB_STEPS.length) {
             sw2Prompt.textContent = promptForMode(SWITCH2_HOST, "exec");
             tryCompleteTrunkLab(function (cls, text) {
@@ -1867,6 +1870,14 @@ Sw2(config-if)#switchport voice vlan 177</pre>
             setSw2Prompt();
           }
         } else {
+          var sw2ModeNow = sw2PromptOverride || (stepIndexSw2 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw2].mode : "exec");
+          if (sw2ModeNow === "config" && /^vlan \d+$/.test(normalize(line))) {
+            // Accept extra VLAN creation commands without failing the simulator flow.
+            appendVlanCreateSys(appendSw2, line);
+            sw2PromptOverride = "config-vlan";
+            setSw2Prompt();
+            return;
+          }
           appendSw2("line-bad", "% Invalid input");
         }
       }
