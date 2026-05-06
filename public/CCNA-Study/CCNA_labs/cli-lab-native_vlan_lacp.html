@@ -1552,6 +1552,18 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
 
         if (trySwNavSoftLine(line)) return;
 
+        // Accept required task commands on SW1/SW3 while in interface config mode.
+        if (swPromptOverride === "config-if") {
+          var swIfCmd = normalize(line);
+          if (
+            swIfCmd === "switchport trunk allowed vlan 5,6" ||
+            swIfCmd === "switchport trunk native vlan 77" ||
+            swIfCmd === "channel-group 34 mode active"
+          ) {
+            return;
+          }
+        }
+
         if (stepIndex >= LAB_STEPS.length) {
           appendSw("line-bad", "% Invalid input");
           return;
@@ -1636,6 +1648,17 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
             appendSw2(cls, text);
           });
           return;
+        }
+
+        // Accept required task commands on SW2/SW4 while in interface config mode.
+        if (sw2Mode === "config-if") {
+          if (
+            u === "switchport trunk native vlan 77" ||
+            u === "switchport trunk allowed vlan 6" ||
+            u === "channel-group 34 mode passive"
+          ) {
+            return;
+          }
         }
 
         if (sw2Mode === "config-if" && u === "exit") {
