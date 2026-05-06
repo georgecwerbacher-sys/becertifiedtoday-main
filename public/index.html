@@ -476,6 +476,24 @@
       border-top-color: rgba(45, 63, 92, 0.22);
       color: #4d5f78;
     }
+    .purchase-track-box--one-time-live {
+      padding: clamp(18px, 3vw, 22px) clamp(16px, 3vw, 20px);
+      border-color: rgba(31, 168, 85, 0.6);
+      background: rgba(31, 168, 85, 0.15);
+      box-shadow:
+        0 0 0 1px rgba(74, 224, 146, 0.25) inset,
+        0 10px 24px rgba(12, 60, 31, 0.35);
+    }
+    .purchase-track-box--one-time-live .purchase-track-title {
+      color: #d8ffe9;
+    }
+    .purchase-track-box--one-time-live .purchase-track-sub {
+      color: #c7f2da;
+    }
+    .purchase-track-box--one-time-live .purchase-access-disclaimer {
+      border-top-color: rgba(74, 224, 146, 0.35);
+      color: #b9e8cc;
+    }
     .purchase-track-head {
       display: flex;
       align-items: center;
@@ -1543,16 +1561,17 @@
                   We do not use customer data from purchases for marketing or profiling.
                 </p>
                 <div class="purchase-access-wrap">
-                  <div class="purchase-track-box" aria-label="One-time simulation exam purchase">
+                  <div class="purchase-track-box purchase-track-box--one-time-live" aria-label="One-time simulation exam purchase">
                     <div class="purchase-track-head">
-                      <p class="purchase-track-title">One-time simulation exam</p>
+                      <p class="purchase-track-title">One-time simulation exam (ENCOR for CCNP)</p>
+                      <span class="encor-live-badge">Live</span>
                     </div>
                     <p class="purchase-track-sub">
                       ENCOR one-time simulation is live now. CCNA one-time simulation is coming soon.
                     </p>
                     <p class="purchase-track-cta-wrap">
-                      <a class="cta-main cta-main--block" href="https://becertifiedtoday-encor.vercel.app/encor/test-simulation.html" rel="noopener noreferrer" aria-label="Purchase one-time simulation exam">
-                        PURCHASE ONE-TIME SIMULATION EXAM
+                      <a class="cta-main cta-main--block" href="https://becertifiedtoday-encor.vercel.app/encor/test-simulation.html" rel="noopener noreferrer" aria-label="Purchase one-time simulation exam for ENCOR for CCNP">
+                        PURCHASE ONE-TIME ENCOR (CCNP) SIMULATION EXAM
                       </a>
                     </p>
                     <p class="purchase-access-disclaimer">
