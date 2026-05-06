@@ -659,7 +659,7 @@
           <button type="button" class="btn btn-secondary" id="swResetBtn">Reset lab</button>
         </div>
         <div id="passBanner" class="pass-banner" role="status">
-          Complete all SW1 steps, then from enable mode on SW1 and SW2 run copy running-configuration startup-configuration on each device.
+          Complete all required tasks, then from enable mode on SW-1, SW-2, SW3, and SW-4 run copy running-config startup-config on each switch.
         </div>
       </footer>
     </div>
@@ -816,22 +816,61 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
         <button type="button" class="cli-modal-close" id="spoilerClose" aria-label="Close spoiler">×</button>
       </header>
       <div class="cli-modal-body spoiler-cli-body">
-        <div class="spoiler-task" aria-labelledby="spoiler-cap-example">
-          <p class="spoiler-terminal-cap" id="spoiler-cap-example">Example — primary device</p>
-          <div class="spoiler-terminal" role="region" aria-label="Example CLI solution">
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t1">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t1">Task 1 — SW-1</p>
+          <div class="spoiler-terminal" role="region" aria-label="Task 1 SW-1 CLI solution">
             <div class="spoiler-terminal-bar">
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
-              <span class="spoiler-terminal-title">SW1 — Terminal</span>
+              <span class="spoiler-terminal-title">SW-1 — Task 1</span>
             </div>
-            <pre class="spoiler-terminal-pre">SW1# configure terminal
-SW1(config)# hostname REPLACE_HOSTNAME</pre>
+            <pre class="spoiler-terminal-pre">SW-1(config)#int e0/0
+SW-1(config-if)#switchport trunk allowed vlan 5,6</pre>
           </div>
         </div>
-        <p class="tasks" style="margin: 0; color: #8b9cbb; font-size: 0.85rem">
-          Optional: keep a legacy single block with <code>spoiler-cli-pre</code> for simple labs.
-        </p>
-        <pre class="spoiler-cli-pre">REPLACE# show running-config
-! optional second block</pre>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t2">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t2">Task 2 — SW-1 / SW-2</p>
+          <div class="spoiler-terminal" role="region" aria-label="Task 2 SW-1 SW-2 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">SW-1 / SW-2 — Task 2</span>
+            </div>
+            <pre class="spoiler-terminal-pre">SW-1#,SW-2(config)#int e0/1
+SW-1#,SW-2(config-if)#switchport trunk native vlan 77</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t3">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t3">Task 3 — SW-2</p>
+          <div class="spoiler-terminal" role="region" aria-label="Task 3 SW-2 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">SW-2 — Task 3</span>
+            </div>
+            <pre class="spoiler-terminal-pre">SW-2(config)#int e0/2
+SW-2(config-if)#switchport trunk allowed vlan 6</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t4-sw3">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t4-sw3">Task 4 — SW-3</p>
+          <div class="spoiler-terminal" role="region" aria-label="Task 4 SW-3 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">SW-3 — Task 4</span>
+            </div>
+            <pre class="spoiler-terminal-pre">SW-3(config)#int range e0/0 - 1
+SW-3(config-if-range)#channel-group 34 mode active</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t4-sw4">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t4-sw4">Task 4 — SW-4</p>
+          <div class="spoiler-terminal" role="region" aria-label="Task 4 SW-4 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">SW-4 — Task 4</span>
+            </div>
+            <pre class="spoiler-terminal-pre">SW-4(config)#int range e0/0 - 1
+SW-4(config-if-range)#channel-group 34 mode passive</pre>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -853,6 +892,114 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         "",
         "hostname SW1",
         "!",
+        "!",
+        "no profinet",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "spanning-tree mode pvst",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "interface FastEthernet0/1",
+        " switchport trunk encapsulation dot1q",
+        " switchport mode trunk",
+        "!",
+        "interface FastEthernet0/2",
+        "!",
+        "interface FastEthernet0/3",
+        "!",
+        "interface FastEthernet0/4",
+        "!",
+        "interface FastEthernet0/5",
+        "!",
+        "interface FastEthernet0/6",
+        "!",
+        "interface FastEthernet0/7",
+        "!",
+        "interface FastEthernet0/8",
+        "!",
+        "interface FastEthernet0/9",
+        "!",
+        "interface FastEthernet0/10",
+        " switchport trunk encapsulation dot1q",
+        " switchport mode trunk",
+        "!",
+        "interface FastEthernet0/11",
+        "!",
+        "interface FastEthernet0/12",
+        "!",
+        "interface FastEthernet0/13",
+        "!",
+        "interface FastEthernet0/14",
+        "!",
+        "interface FastEthernet0/15",
+        "!",
+        "interface FastEthernet0/16",
+        "!",
+        "interface FastEthernet0/17",
+        "!",
+        "interface FastEthernet0/18",
+        "!",
+        "interface FastEthernet0/19",
+        "!",
+        "interface FastEthernet0/20",
+        "!",
+        "interface FastEthernet0/21",
+        "!",
+        "interface FastEthernet0/22",
+        "!",
+        "interface FastEthernet0/23",
+        "!",
+        "interface FastEthernet0/24",
+        "!",
+        "interface GigabitEthernet0/1",
+        "!",
+        "interface GigabitEthernet0/2",
+        "!",
+        "interface Vlan1",
+        " no ip address",
+        " shutdown",
+        "!",
+        "ip classless",
+        "!",
+        "ip flow-export version 9",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "line con 0",
+        "!",
+        "line aux 0",
+        "!",
+        "line vty 0 4",
+        " login",
+        "!",
+        "!",
+        "!",
+        "!",
         "end",
       ].join("\r\n");
 
@@ -862,8 +1009,351 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         "",
         "hostname SW2",
         "!",
-        "interface GigabitEthernet0/0",
-        " ip address 10.0.0.2 255.255.255.0",
+        "!",
+        "no profinet",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "spanning-tree mode pvst",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "interface FastEthernet0/1",
+        " switchport trunk encapsulation dot1q",
+        " switchport mode trunk",
+        "!",
+        "interface FastEthernet0/2",
+        " switchport trunk encapsulation dot1q",
+        " switchport mode trunk",
+        "!",
+        "interface FastEthernet0/3",
+        "!",
+        "interface FastEthernet0/4",
+        "!",
+        "interface FastEthernet0/5",
+        "!",
+        "interface FastEthernet0/6",
+        "!",
+        "interface FastEthernet0/7",
+        "!",
+        "interface FastEthernet0/8",
+        "!",
+        "interface FastEthernet0/9",
+        "!",
+        "interface FastEthernet0/10",
+        "!",
+        "interface FastEthernet0/11",
+        "!",
+        "interface FastEthernet0/12",
+        "!",
+        "interface FastEthernet0/13",
+        "!",
+        "interface FastEthernet0/14",
+        "!",
+        "interface FastEthernet0/15",
+        "!",
+        "interface FastEthernet0/16",
+        "!",
+        "interface FastEthernet0/17",
+        "!",
+        "interface FastEthernet0/18",
+        "!",
+        "interface FastEthernet0/19",
+        "!",
+        "interface FastEthernet0/20",
+        "!",
+        "interface FastEthernet0/21",
+        "!",
+        "interface FastEthernet0/22",
+        "!",
+        "interface FastEthernet0/23",
+        "!",
+        "interface FastEthernet0/24",
+        "!",
+        "interface GigabitEthernet0/1",
+        "!",
+        "interface GigabitEthernet0/2",
+        "!",
+        "interface Vlan1",
+        " no ip address",
+        " shutdown",
+        "!",
+        "ip classless",
+        "!",
+        "ip flow-export version 9",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "line con 0",
+        "!",
+        "line aux 0",
+        "!",
+        "line vty 0 4",
+        " login",
+        "!",
+        "!",
+        "!",
+        "!",
+        "end",
+      ].join("\r\n");
+
+      /** SW3 exhibit — printed when SW3 is selected and user runs show running-config */
+      var SWITCH3_SHOW_RUNNING_SNAPSHOT = [
+        "Building configuration...",
+        "",
+        "hostname SW3",
+        "!",
+        "!",
+        "no profinet",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "spanning-tree mode pvst",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "interface FastEthernet0/1",
+        "!",
+        "interface FastEthernet0/2",
+        " switchport trunk encapsulation dot1q",
+        " switchport mode trunk",
+        "!",
+        "interface FastEthernet0/3",
+        "!",
+        "interface FastEthernet0/4",
+        "!",
+        "interface FastEthernet0/5",
+        "!",
+        "interface FastEthernet0/6",
+        "!",
+        "interface FastEthernet0/7",
+        "!",
+        "interface FastEthernet0/8",
+        "!",
+        "interface FastEthernet0/9",
+        "!",
+        "interface FastEthernet0/10",
+        " switchport trunk encapsulation dot1q",
+        " switchport mode trunk",
+        "!",
+        "interface FastEthernet0/11",
+        " switchport trunk encapsulation dot1q",
+        " switchport mode trunk",
+        "!",
+        "interface FastEthernet0/12",
+        "!",
+        "interface FastEthernet0/13",
+        "!",
+        "interface FastEthernet0/14",
+        "!",
+        "interface FastEthernet0/15",
+        "!",
+        "interface FastEthernet0/16",
+        "!",
+        "interface FastEthernet0/17",
+        "!",
+        "interface FastEthernet0/18",
+        "!",
+        "interface FastEthernet0/19",
+        "!",
+        "interface FastEthernet0/20",
+        "!",
+        "interface FastEthernet0/21",
+        "!",
+        "interface FastEthernet0/22",
+        "!",
+        "interface FastEthernet0/23",
+        "!",
+        "interface FastEthernet0/24",
+        "!",
+        "interface GigabitEthernet0/1",
+        "!",
+        "interface GigabitEthernet0/2",
+        "!",
+        "interface Vlan1",
+        " no ip address",
+        " shutdown",
+        "!",
+        "ip classless",
+        "!",
+        "ip flow-export version 9",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "line con 0",
+        "!",
+        "line aux 0",
+        "!",
+        "line vty 0 4",
+        " login",
+        "!",
+        "!",
+        "!",
+        "!",
+        "end",
+      ].join("\r\n");
+
+      /** SW4 exhibit — printed when SW4 is selected and user runs show running-config */
+      var SWITCH4_SHOW_RUNNING_SNAPSHOT = [
+        "Building configuration...",
+        "",
+        "hostname SW4",
+        "!",
+        "!",
+        "no profinet",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "spanning-tree mode pvst",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "interface FastEthernet0/1",
+        "!",
+        "interface FastEthernet0/2",
+        " switchport trunk encapsulation dot1q",
+        " switchport mode trunk",
+        "!",
+        "interface FastEthernet0/3",
+        "!",
+        "interface FastEthernet0/4",
+        "!",
+        "interface FastEthernet0/5",
+        "!",
+        "interface FastEthernet0/6",
+        "!",
+        "interface FastEthernet0/7",
+        "!",
+        "interface FastEthernet0/8",
+        "!",
+        "interface FastEthernet0/9",
+        "!",
+        "interface FastEthernet0/10",
+        " switchport trunk encapsulation dot1q",
+        " switchport mode trunk",
+        "!",
+        "interface FastEthernet0/11",
+        " switchport trunk encapsulation dot1q",
+        " switchport mode trunk",
+        "!",
+        "interface FastEthernet0/12",
+        "!",
+        "interface FastEthernet0/13",
+        "!",
+        "interface FastEthernet0/14",
+        "!",
+        "interface FastEthernet0/15",
+        "!",
+        "interface FastEthernet0/16",
+        "!",
+        "interface FastEthernet0/17",
+        "!",
+        "interface FastEthernet0/18",
+        "!",
+        "interface FastEthernet0/19",
+        "!",
+        "interface FastEthernet0/20",
+        "!",
+        "interface FastEthernet0/21",
+        "!",
+        "interface FastEthernet0/22",
+        "!",
+        "interface FastEthernet0/23",
+        "!",
+        "interface FastEthernet0/24",
+        "!",
+        "interface GigabitEthernet0/1",
+        "!",
+        "interface GigabitEthernet0/2",
+        "!",
+        "interface Vlan1",
+        " no ip address",
+        " shutdown",
+        "!",
+        "ip classless",
+        "!",
+        "ip flow-export version 9",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "line con 0",
+        "!",
+        "line aux 0",
+        "!",
+        "line vty 0 4",
+        " login",
+        "!",
+        "!",
+        "!",
         "!",
         "end",
       ].join("\r\n");
@@ -906,6 +1396,17 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
 
       var HELP_DISABLED_MSG = "help feature disabled for tester";
       var SHOW_VERSION_MSG = "BeCertifiedToday.com version 2026";
+      var SHOW_INTERFACES_TRUNK_READY_MSG =
+        "Port        Mode         Encapsulation  Status        Native vlan\n" +
+        "Fa0/1       on           802.1q         trunking      77\n" +
+        "Fa0/10      on           802.1q         trunking      1";
+      var SHOW_INTERFACES_TRUNK_WAIT_MSG =
+        "% Incomplete: finish required switch tasks first, then run show interfaces trunk.";
+      var SHOW_ETHERCHANNEL_READY_MSG =
+        "Group  Port-channel  Protocol    Ports\n" +
+        "34     Po34(SU)      LACP        Fa0/10(P) Fa0/11(P)";
+      var SHOW_ETHERCHANNEL_WAIT_MSG =
+        "% Incomplete: run required LACP tasks first, then show etherchannel summary.";
       var COPY_RUN_START_OK_MSG =
         "Destination filename [startup-config]?\nBuilding configuration...\n[OK]";
       var COPY_RUN_START_EXEC_ONLY_MSG =
@@ -915,11 +1416,11 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
       var COPY_RUN_START_AFTER_SW1_STEPS_MSG =
         "% Error: Finish the full STEPS sequence on SW1 first (until SW1#), then save startup-config from privileged EXEC on SW2.";
       var BASELINE_SW_STEPS_OK_MSG =
-        "[OK] Switch steps complete. From privileged exec on SW1 and SW2, run copy running-configuration startup-configuration (copy run start) on each device to finish the lab.";
+        "[OK] Required switch tasks complete. From privileged exec on SW-1, SW-2, SW3, and SW-4, run copy running-config startup-config on each switch to finish the lab.";
       var BASELINE_LAB_ALL_DONE_MSG =
-        "[OK] Lab complete: objectives met and running-config saved to startup-config on SW1 and SW2.";
+        "[OK] Lab complete: running-config saved to startup-config on SW-1, SW-2, SW3, and SW-4.";
       var PASS_BANNER_BASELINE_PENDING =
-        "Complete all SW1 steps, then from enable mode on SW1 and SW2 run copy running-configuration startup-configuration on each device.";
+        "Complete all required tasks, then from enable mode on SW-1, SW-2, SW3, and SW-4 run copy running-config startup-config on each switch.";
 
       function matchShowRun(raw) {
         var u = normalize(raw);
@@ -930,15 +1431,27 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         return normalize(raw) === "show version";
       }
 
+      function matchShowInterfacesTrunk(raw) {
+        var u = normalize(raw);
+        return u === "show interfaces trunk" || u === "show interface trunk";
+      }
+
+      function matchShowEtherchannelSummary(raw) {
+        var u = normalize(raw);
+        return u === "show etherchannel summary" || u === "show ether-channel summary";
+      }
+
       function matchCopyRunStart(raw) {
         return normalize(raw) === "copy running-configuration startup-configuration";
       }
 
       var nvramSavedSw = false;
       var nvramSavedSw2 = false;
+      var nvramSavedSw3 = false;
+      var nvramSavedSw4 = false;
 
       function tryCompleteBaselineLab(append) {
-        if (stepIndex < LAB_STEPS.length || !nvramSavedSw || !nvramSavedSw2) return;
+        if (stepIndex < LAB_STEPS.length || !nvramSavedSw || !nvramSavedSw2 || !nvramSavedSw3 || !nvramSavedSw4) return;
         if (passBanner.classList.contains("visible")) return;
         passBanner.classList.add("visible");
         passBanner.textContent = BASELINE_LAB_ALL_DONE_MSG;
@@ -1085,6 +1598,7 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         var promptText = pcPrompt.textContent;
         var line = pcCmdline.value;
         appendPc("line-user", promptText + " " + line);
+        pushLocalHistory(pcCmdline, line);
         pcCmdline.value = "";
         if (!line.trim()) return;
         if (normalize(line) === "?") {
@@ -1107,16 +1621,53 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         swPrompt.textContent = promptForLabStepIndex(stepIndex);
       }
 
+      function trySwNavSoftLine(line) {
+        var u = normalize(line);
+        if (u === "configure terminal" && swInEnableMode()) {
+          swPromptOverride = "config";
+          setSwPrompt();
+          return true;
+        }
+        if (u.indexOf("interface ") === 0 && swPromptOverride === "config") {
+          swPromptOverride = "config-if";
+          setSwPrompt();
+          return true;
+        }
+        if (u === "exit" && swPromptOverride === "config-if") {
+          swPromptOverride = "config";
+          setSwPrompt();
+          return true;
+        }
+        if (u === "exit" && swPromptOverride === "config") {
+          swPromptOverride = "exec";
+          setSwPrompt();
+          return true;
+        }
+        if (u === "end" && (swPromptOverride === "config" || swPromptOverride === "config-if")) {
+          swPromptOverride = "exec";
+          setSwPrompt();
+          return true;
+        }
+        return false;
+      }
+
       function resetSwLab() {
         stepIndex = 0;
         swPromptOverride = null;
         nvramSavedSw = false;
         nvramSavedSw2 = false;
+        nvramSavedSw3 = false;
+        nvramSavedSw4 = false;
         swScrollback.innerHTML = "";
         passBanner.classList.remove("visible");
         passBanner.textContent = PASS_BANNER_BASELINE_PENDING;
         swCmdline.disabled = false;
         swCmdline.value = "";
+        clearLocalHistory(swCmdline);
+        clearLocalHistory(sw2Cmdline);
+        clearLocalHistory(pcCmdline);
+        resetSw2();
+        resetPc();
         setSwPrompt();
       }
 
@@ -1124,6 +1675,7 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         var promptText = swPrompt.textContent;
         var line = swCmdline.value;
         appendSw("line-user", promptText + " " + line);
+        pushLocalHistory(swCmdline, line);
         swCmdline.value = "";
         if (!line.trim()) return;
 
@@ -1133,12 +1685,20 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         }
 
         if (matchShowRun(line)) {
-          appendSw("line-showrun", SWITCH_SHOW_RUNNING_SNAPSHOT);
+          appendSw("line-showrun", getLabDev() === "SW3" ? SWITCH3_SHOW_RUNNING_SNAPSHOT : SWITCH_SHOW_RUNNING_SNAPSHOT);
           return;
         }
 
         if (swInEnableMode() && matchShowVersion(line)) {
           appendSw("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+        if (swInEnableMode() && matchShowInterfacesTrunk(line)) {
+          appendSw("line-showrun", stepIndex >= LAB_STEPS.length ? SHOW_INTERFACES_TRUNK_READY_MSG : SHOW_INTERFACES_TRUNK_WAIT_MSG);
+          return;
+        }
+        if (swInEnableMode() && matchShowEtherchannelSummary(line)) {
+          appendSw("line-showrun", stepIndex >= LAB_STEPS.length ? SHOW_ETHERCHANNEL_READY_MSG : SHOW_ETHERCHANNEL_WAIT_MSG);
           return;
         }
 
@@ -1152,12 +1712,15 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
             return;
           }
           appendSw("line-sys", COPY_RUN_START_OK_MSG);
-          nvramSavedSw = true;
+          if (getLabDev() === "SW3") nvramSavedSw3 = true;
+          else nvramSavedSw = true;
           tryCompleteBaselineLab(function (cls, text) {
             appendSw(cls, text);
           });
           return;
         }
+
+        if (trySwNavSoftLine(line)) return;
 
         if (stepIndex >= LAB_STEPS.length) {
           appendSw("line-bad", "% Invalid input");
@@ -1198,6 +1761,7 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         var promptText = sw2Prompt.textContent;
         var line = sw2Cmdline.value;
         appendSw2("line-user", promptText + " " + line);
+        pushLocalHistory(sw2Cmdline, line);
         sw2Cmdline.value = "";
         if (!line.trim()) return;
 
@@ -1209,12 +1773,20 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         var u = normalize(line);
 
         if (matchShowRun(line)) {
-          appendSw2("line-showrun", SWITCH2_SHOW_RUNNING_SNAPSHOT);
+          appendSw2("line-showrun", getLabDev() === "SW4" ? SWITCH4_SHOW_RUNNING_SNAPSHOT : SWITCH2_SHOW_RUNNING_SNAPSHOT);
           return;
         }
 
         if (sw2Mode === "exec" && matchShowVersion(line)) {
           appendSw2("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+        if (sw2Mode === "exec" && matchShowInterfacesTrunk(line)) {
+          appendSw2("line-showrun", stepIndex >= LAB_STEPS.length ? SHOW_INTERFACES_TRUNK_READY_MSG : SHOW_INTERFACES_TRUNK_WAIT_MSG);
+          return;
+        }
+        if (sw2Mode === "exec" && matchShowEtherchannelSummary(line)) {
+          appendSw2("line-showrun", stepIndex >= LAB_STEPS.length ? SHOW_ETHERCHANNEL_READY_MSG : SHOW_ETHERCHANNEL_WAIT_MSG);
           return;
         }
 
@@ -1228,7 +1800,8 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
             return;
           }
           appendSw2("line-sys", COPY_RUN_START_OK_MSG);
-          nvramSavedSw2 = true;
+          if (getLabDev() === "SW4") nvramSavedSw4 = true;
+          else nvramSavedSw2 = true;
           tryCompleteBaselineLab(function (cls, text) {
             appendSw2(cls, text);
           });
@@ -1437,10 +2010,6 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         if (!input || input.dataset.localHistoryReady === "1") return;
         input.dataset.localHistoryReady = "1";
         input.addEventListener("keydown", function (e) {
-          if (e.key === "Enter") {
-            pushLocalHistory(input, input.value);
-            return;
-          }
           var usePrev = e.key === "ArrowUp" || (e.key === "Tab" && !e.shiftKey);
           var useNext = e.key === "ArrowDown" || (e.key === "Tab" && e.shiftKey);
           if (!usePrev && !useNext) return;
@@ -1454,6 +2023,10 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
           }
           input.value = state.idx >= state.entries.length ? "" : state.entries[state.idx];
         });
+      }
+      function clearLocalHistory(input) {
+        if (!input) return;
+        localHistory.set(input, { entries: [], idx: 0 });
       }
       bindLocalHistory(swCmdline);
       bindLocalHistory(sw2Cmdline);
