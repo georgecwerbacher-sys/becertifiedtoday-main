@@ -696,13 +696,7 @@
           </div>
         </div>
       </div>
-      <footer class="cli-modal-footer">
-        <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
-          Read-only exhibit: <code>show running-config</code> (or <code>sh run</code> after <code>normalize()</code>) prints a fixed snapshot.
-          Use <code>configure terminal</code> / <code>conf t</code>, <code>interface …</code> / <code>int …</code>,
-          <code>exit</code> or <code>end</code> to move modes. Use class <code>line-ping</code> for simulated ping output (see IP Services lab).
-        </p>
-      </footer>
+      <footer class="cli-modal-footer"></footer>
     </div>
   </div>
 
@@ -1293,6 +1287,7 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
         if (
           swPromptOverride === "config" ||
           swPromptOverride === "config-if" ||
+          swPromptOverride === "config-if-range" ||
           swPromptOverride === "config-router" ||
           swPromptOverride === "config-std-nacl" ||
           swPromptOverride === "config-ext-nacl" ||
@@ -1315,6 +1310,10 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
             return host + "(config)#";
           case "config-if":
             return host + "(config-if)#";
+          case "config-if-range":
+            // Lab-specific format request for SW3/SW4 range interface mode.
+            if (host === "SW3" || host === "SW4") return "SW-" + host.slice(2) + "(config-if-range)#";
+            return host + "(config-if-range)#";
           case "config-router":
             return host + "(config-router)#";
           case "config-std-nacl":
@@ -1332,8 +1331,9 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
 
       /** Prompt for the switch while advancing through LAB_STEPS (post-completion → exec). */
       function promptForLabStepIndex(index) {
-        if (index >= LAB_STEPS.length) return promptForMode(SWITCH_HOST, "exec");
-        return promptForMode(SWITCH_HOST, LAB_STEPS[index].mode);
+        var host = currentSwHost();
+        if (index >= LAB_STEPS.length) return promptForMode(host, "exec");
+        return promptForMode(host, LAB_STEPS[index].mode);
       }
 
       var stepIndex = 0;
@@ -1371,6 +1371,12 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
       function getLabDev() {
         var sel = document.querySelector('input[name="labPrimaryDev"]:checked');
         return sel ? sel.value : "SW1";
+      }
+      function currentSwHost() {
+        return getLabDev() === "SW3" ? "SW3" : SWITCH_HOST;
+      }
+      function currentSw2Host() {
+        return getLabDev() === "SW4" ? "SW4" : SWITCH2_HOST;
       }
 
       function syncOpenCliLabel() {
@@ -1444,8 +1450,9 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
       }
 
       function setSwPrompt() {
+        var host = currentSwHost();
         if (swPromptOverride !== null && swPromptOverride !== undefined) {
-          swPrompt.textContent = promptForMode(SWITCH_HOST, swPromptOverride);
+          swPrompt.textContent = promptForMode(host, swPromptOverride);
           return;
         }
         swPrompt.textContent = promptForLabStepIndex(stepIndex);
@@ -1455,6 +1462,11 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
         var u = normalize(line);
         if (u === "configure terminal" && swInEnableMode()) {
           swPromptOverride = "config";
+          setSwPrompt();
+          return true;
+        }
+        if (u === "interface range e0/0 - 1" && swPromptOverride === "config" && getLabDev() === "SW3") {
+          swPromptOverride = "config-if-range";
           setSwPrompt();
           return true;
         }
@@ -1468,12 +1480,20 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
           setSwPrompt();
           return true;
         }
+        if (u === "exit" && swPromptOverride === "config-if-range") {
+          swPromptOverride = "config";
+          setSwPrompt();
+          return true;
+        }
         if (u === "exit" && swPromptOverride === "config") {
           swPromptOverride = "exec";
           setSwPrompt();
           return true;
         }
-        if (u === "end" && (swPromptOverride === "config" || swPromptOverride === "config-if")) {
+        if (
+          u === "end" &&
+          (swPromptOverride === "config" || swPromptOverride === "config-if" || swPromptOverride === "config-if-range")
+        ) {
           swPromptOverride = "exec";
           setSwPrompt();
           return true;
@@ -1553,7 +1573,7 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
         if (trySwNavSoftLine(line)) return;
 
         // Accept required task commands on SW1/SW3 while in interface config mode.
-        if (swPromptOverride === "config-if") {
+        if (swPromptOverride === "config-if" || swPromptOverride === "config-if-range") {
           var swIfCmd = normalize(line);
           if (
             swIfCmd === "switchport trunk allowed vlan 5,6" ||
@@ -1573,7 +1593,7 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
           stepIndex += 1;
           swPromptOverride = null;
           if (stepIndex >= LAB_STEPS.length) {
-            swPrompt.textContent = promptForMode(SWITCH_HOST, "exec");
+            swPrompt.textContent = promptForMode(currentSwHost(), "exec");
             appendSw("line-sys", BASELINE_SW_STEPS_OK_MSG);
             tryCompleteBaselineLab(function (cls, text) {
               appendSw(cls, text);
@@ -1590,7 +1610,7 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
       var sw2Mode = "exec";
 
       function sw2PromptForMode() {
-        return promptForMode(SWITCH2_HOST, sw2Mode);
+        return promptForMode(currentSw2Host(), sw2Mode);
       }
 
       function resetSw2() {
@@ -1651,7 +1671,7 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
         }
 
         // Accept required task commands on SW2/SW4 while in interface config mode.
-        if (sw2Mode === "config-if") {
+        if (sw2Mode === "config-if" || sw2Mode === "config-if-range") {
           if (
             u === "switchport trunk native vlan 77" ||
             u === "switchport trunk allowed vlan 6" ||
@@ -1666,6 +1686,17 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
           sw2Prompt.textContent = sw2PromptForMode();
           return;
         }
+        if (sw2Mode === "config-if-range" && u === "exit") {
+          sw2Mode = "config";
+          sw2Prompt.textContent = sw2PromptForMode();
+          return;
+        }
+        if (sw2Mode === "config-if" && u.startsWith("interface ")) {
+          // Allow hopping directly between interfaces from config-if in the lab simulator.
+          sw2Mode = "config-if";
+          sw2Prompt.textContent = sw2PromptForMode();
+          return;
+        }
         if (sw2Mode === "exec" && u === "configure terminal") {
           sw2Mode = "config";
           sw2Prompt.textContent = sw2PromptForMode();
@@ -1676,12 +1707,17 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
           sw2Prompt.textContent = sw2PromptForMode();
           return;
         }
+        if (sw2Mode === "config" && u === "interface range e0/0 - 1" && getLabDev() === "SW4") {
+          sw2Mode = "config-if-range";
+          sw2Prompt.textContent = sw2PromptForMode();
+          return;
+        }
         if (sw2Mode === "config" && (u === "exit" || u === "end")) {
           sw2Mode = "exec";
           sw2Prompt.textContent = sw2PromptForMode();
           return;
         }
-        if (sw2Mode === "config-if" && (u === "end" || u === "exit")) {
+        if ((sw2Mode === "config-if" || sw2Mode === "config-if-range") && (u === "end" || u === "exit")) {
           sw2Mode = u === "end" ? "exec" : "config";
           sw2Prompt.textContent = sw2PromptForMode();
           return;
@@ -1738,6 +1774,8 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
         bumpOverlayZ(swCliOverlay);
         swCliOverlay.classList.add("is-open");
         swCliOverlay.setAttribute("aria-hidden", "false");
+        document.getElementById("swCliTitle").textContent = currentSwHost() + " — CLI";
+        setSwPrompt();
         // Keep CLI blank on open; only show config output after explicit show run.
         swScrollback.innerHTML = "";
         if (swTerminal) {
@@ -1755,6 +1793,7 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
         bumpOverlayZ(sw2CliOverlay);
         sw2CliOverlay.classList.add("is-open");
         sw2CliOverlay.setAttribute("aria-hidden", "false");
+        document.getElementById("sw2CliTitle").textContent = currentSw2Host() + " — CLI";
         resetSw2();
         if (sw2Terminal) {
           sw2Terminal.classList.remove("terminal-flash");
