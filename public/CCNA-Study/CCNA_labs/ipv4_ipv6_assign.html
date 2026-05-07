@@ -764,27 +764,87 @@
         <h2 id="helperFileTitle">Helper file</h2>
         <button type="button" class="cli-modal-close" id="helperFileClose" aria-label="Close helper">×</button>
       </header>
-      <div class="cli-modal-body">
-        <section class="topology-scrape" aria-label="Helper notes">
-          <h2>Task 1 — IPv4 host assignment</h2>
-          <ul class="helper-bullets">
-            <li>Configure R1 with the first usable host IP address in the IPv4 network, and R2 with the last usable host IP address.</li>
-            <li>In <code>10.0.12.4/30</code> (increment 4): network = <code>10.0.12.4</code>, broadcast = <code>10.0.12.7</code>. First usable host = <code>10.0.12.5</code> (R1); last usable host = <code>10.0.12.6</code> (R2).</li>
-            <li>On R1: <code>interface e0/0</code> → <code>ip address 10.0.12.5 255.255.255.252</code> → <code>no shut</code>.</li>
-            <li>On R2: <code>interface e0/0</code> → <code>ip address 10.0.12.6 255.255.255.252</code> → <code>no shut</code>.</li>
-            <li>Verify connectivity with <code>R1# ping 10.0.12.6</code> (a leading <code>.</code> from ARP is normal; the rest should be <code>!</code>).</li>
-          </ul>
-          <h2>Task 2 — IPv6 host assignment</h2>
-          <ul class="helper-bullets">
-            <li>Do <strong>not</strong> assign the subnet router anycast address (the lowest address in the subnet, which has all host bits set to 0).</li>
-            <li>IPv6 has no broadcast address, so all addresses except the anycast/network address are usable host addresses.</li>
-            <li>For this lab, configure R1 with <code>2001:db8:12::10/126</code> and R2 with <code>2001:db8:12::3/126</code>.</li>
-            <li>On R1: <code>interface e0/0</code> → <code>ipv6 address 2001:db8:12::10/126</code>.</li>
-            <li>On R2: <code>interface e0/0</code> → <code>ipv6 address 2001:db8:12::3/126</code>.</li>
-            <li>Verify with <code>R1# ping 2001:db8:12::3</code>; expect <code>!!!!!</code>.</li>
-            <li>Save: from privileged exec on R1 <em>and</em> R2 run <code>copy running-config startup-config</code>.</li>
-          </ul>
-        </section>
+      <div class="cli-modal-body spoiler-cli-body">
+        <div class="spoiler-task" aria-labelledby="helper-cap-task1-r1">
+          <p class="spoiler-terminal-cap" id="helper-cap-task1-r1">Task 1 — R1</p>
+          <div class="spoiler-terminal" role="region" aria-label="R1 IPv4 commands">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R1 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R1# configure terminal
+R1(config)# interface e0/0
+R1(config-if)# ip address 10.0.12.5 255.255.255.252
+R1(config-if)# no shut</pre>
+          </div>
+        </div>
+
+        <div class="spoiler-task" aria-labelledby="helper-cap-task1-r2">
+          <p class="spoiler-terminal-cap" id="helper-cap-task1-r2">Task 1 — R2</p>
+          <div class="spoiler-terminal" role="region" aria-label="R2 IPv4 commands">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R2 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R2# configure terminal
+R2(config)# interface e0/0
+R2(config-if)# ip address 10.0.12.6 255.255.255.252
+R2(config-if)# no shut</pre>
+          </div>
+        </div>
+
+        <div class="spoiler-task" aria-labelledby="helper-cap-task1-verify">
+          <p class="spoiler-terminal-cap" id="helper-cap-task1-verify">Verification — between Task 1 and Task 2</p>
+          <div class="spoiler-terminal" role="region" aria-label="R1 IPv4 ping verify">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R1 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R1# ping 10.0.12.6</pre>
+          </div>
+        </div>
+
+        <div class="spoiler-task" aria-labelledby="helper-cap-task2-r1">
+          <p class="spoiler-terminal-cap" id="helper-cap-task2-r1">Task 2 — R1</p>
+          <div class="spoiler-terminal" role="region" aria-label="R1 IPv6 commands">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R1 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R1# configure terminal
+R1(config)# ipv6 unicast-routing
+R1(config)# interface e0/0
+R1(config-if)# ipv6 address 2001:db8:12::11/126</pre>
+          </div>
+        </div>
+
+        <div class="spoiler-task" aria-labelledby="helper-cap-task2-r2">
+          <p class="spoiler-terminal-cap" id="helper-cap-task2-r2">Task 2 — R2</p>
+          <div class="spoiler-terminal" role="region" aria-label="R2 IPv6 commands">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R2 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R2# configure terminal
+R2(config)# ipv6 unicast-routing
+R2(config)# interface e0/0
+R2(config-if)# ipv6 address 2001:db8:12::13/126</pre>
+          </div>
+        </div>
+
+        <div class="spoiler-task" aria-labelledby="helper-cap-task2-verify">
+          <p class="spoiler-terminal-cap" id="helper-cap-task2-verify">Task 2 — Verify &amp; save</p>
+          <div class="spoiler-terminal" role="region" aria-label="R1 and R2 verify and save">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R1 / R2 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R1# ping 2001:db8:12::13
+
+R1# copy running-config startup-config
+R2# copy running-config startup-config</pre>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -852,7 +912,9 @@ R1# ping 10.0.12.6
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
               <span class="spoiler-terminal-title">R1 — Terminal</span>
             </div>
-            <pre class="spoiler-terminal-pre">R1(config)# interface e0/0
+            <pre class="spoiler-terminal-pre">R1# configure terminal
+R1(config)# ipv6 unicast-routing
+R1(config)# interface e0/0
 R1(config-if)# ipv6 address 2001:db8:12::11/126</pre>
           </div>
         </div>
@@ -864,7 +926,9 @@ R1(config-if)# ipv6 address 2001:db8:12::11/126</pre>
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
               <span class="spoiler-terminal-title">R2 — Terminal</span>
             </div>
-            <pre class="spoiler-terminal-pre">R2(config)# interface e0/0
+            <pre class="spoiler-terminal-pre">R2# configure terminal
+R2(config)# ipv6 unicast-routing
+R2(config)# interface e0/0
 R2(config-if)# ipv6 address 2001:db8:12::13/126</pre>
           </div>
         </div>
@@ -1088,15 +1152,65 @@ R2# copy running-config startup-config</pre>
        * - Add modes as needed: config-router, config-ext-nacl, config-pmap, control-plane, …
        * - Abbreviations: normalize() expands common forms (conf t, sh run, int …) so tests can match canonical strings.
        */
-      // Stub LAB_STEPS — minimal sequence that completes in privileged exec; the lab is freeform around
-      // ip/ipv6 host assignment so submit handlers also accept common interface commands without strict gating.
+      // ---- Lab sequence helpers ----
+      function isInterfaceE00(raw) {
+        var u = normalize(raw);
+        return u === "interface e0/0" || u === "interface ethernet0/0" || u === "interface ethernet 0/0";
+      }
+      function isNoShut(raw) {
+        var u = normalize(raw);
+        return u === "no shutdown" || u === "no shut";
+      }
+      function isPing(raw, target) {
+        return normalize(raw) === "ping " + target;
+      }
+      var PING_IPV4_R2_OUTPUT =
+        "Type escape sequence to abort.\n" +
+        "Sending 5, 100-byte ICMP Echos to 10.0.12.6, timeout is 2 seconds:\n" +
+        ".!!!!\n" +
+        "Success rate is 80 percent (4/5), round-trip min/avg/max = 1/1/2 ms";
+      var PING_IPV6_R2_OUTPUT =
+        "Type escape sequence to abort.\n" +
+        "Sending 5, 100-byte ICMP Echos to 2001:DB8:12::13, timeout is 2 seconds:\n" +
+        "!!!!!\n" +
+        "Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms";
+
+      // R1 sequence — strict order from the Helper file. Each navigation step is explicit so the
+      // displayed prompt always matches the user's current IOS mode. Steps with `emit` print IOS
+      // output (e.g. ping result) before advancing.
       var LAB_STEPS = [
-        { mode: "exec", test: function (raw) {
-          return normalize(raw) === "configure terminal";
-        }},
-        { mode: "config", test: function (raw) {
-          return normalize(raw) === "end";
-        }},
+        { mode: "exec",      test: function (raw) { return normalize(raw) === "configure terminal"; } },
+        { mode: "config",    test: isInterfaceE00 },
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "ip address 10.0.12.5 255.255.255.252"; } },
+        { mode: "config-if", test: isNoShut },
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "exit"; } },
+        { mode: "config",    test: function (raw) { return normalize(raw) === "exit"; } },
+        { mode: "exec",      test: function (raw) { return isPing(raw, "10.0.12.6"); },
+          emit: function (append) { append("line-ping", PING_IPV4_R2_OUTPUT); } },
+        { mode: "exec",      test: function (raw) { return normalize(raw) === "configure terminal"; } },
+        { mode: "config",    test: function (raw) { return normalize(raw) === "ipv6 unicast-routing"; } },
+        { mode: "config",    test: isInterfaceE00 },
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "ipv6 address 2001:db8:12::11/126"; } },
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "exit"; } },
+        { mode: "config",    test: function (raw) { return normalize(raw) === "exit"; } },
+        { mode: "exec",      test: function (raw) { return isPing(raw, "2001:db8:12::13"); },
+          emit: function (append) { append("line-ping", PING_IPV6_R2_OUTPUT); } },
+      ];
+
+      // R2 sequence — strict order from the Helper file (no ping verification on R2).
+      var R2_STEPS = [
+        { mode: "exec",      test: function (raw) { return normalize(raw) === "configure terminal"; } },
+        { mode: "config",    test: isInterfaceE00 },
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "ip address 10.0.12.6 255.255.255.252"; } },
+        { mode: "config-if", test: isNoShut },
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "exit"; } },
+        { mode: "config",    test: function (raw) { return normalize(raw) === "exit"; } },
+        { mode: "exec",      test: function (raw) { return normalize(raw) === "configure terminal"; } },
+        { mode: "config",    test: function (raw) { return normalize(raw) === "ipv6 unicast-routing"; } },
+        { mode: "config",    test: isInterfaceE00 },
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "ipv6 address 2001:db8:12::13/126"; } },
+        { mode: "config-if", test: function (raw) { return normalize(raw) === "exit"; } },
+        { mode: "config",    test: function (raw) { return normalize(raw) === "exit"; } },
       ];
 
       /**
@@ -1128,6 +1242,8 @@ R2# copy running-config startup-config</pre>
         "% Error: Finish the full STEPS sequence on this switch until you return to privileged EXEC (#), then save to startup-config.";
       var COPY_RUN_START_AFTER_SW1_STEPS_MSG =
         "% Error: Finish the full STEPS sequence on R1 first (until R1#), then save startup-config from privileged EXEC on R2.";
+      var COPY_RUN_START_AFTER_R2_STEPS_MSG =
+        "% Error: Finish the full STEPS sequence on R2 (interface configuration) until you return to privileged EXEC (#) before saving.";
       var BASELINE_SW_STEPS_OK_MSG =
         "[OK] Router steps complete. From privileged exec on R1 and R2, run copy running-configuration startup-configuration (copy run start) on each device to finish the lab.";
       var BASELINE_LAB_ALL_DONE_MSG =
@@ -1152,7 +1268,9 @@ R2# copy running-config startup-config</pre>
       var nvramSavedSw2 = false;
 
       function tryCompleteBaselineLab(append) {
-        if (stepIndex < LAB_STEPS.length || !nvramSavedSw || !nvramSavedSw2) return;
+        if (stepIndex < LAB_STEPS.length) return;
+        if (stepIndexSw2 < R2_STEPS.length) return;
+        if (!nvramSavedSw || !nvramSavedSw2) return;
         if (passBanner.classList.contains("visible")) return;
         passBanner.classList.add("visible");
         passBanner.textContent = BASELINE_LAB_ALL_DONE_MSG;
@@ -1424,10 +1542,11 @@ R2# copy running-config startup-config</pre>
         clearLocalHistory(swCmdline);
         // Reset companion device terminals + history so a Reset Lab returns the whole sim to baseline.
         if (typeof sw2Scrollback !== "undefined" && sw2Scrollback) sw2Scrollback.innerHTML = "";
-        if (typeof sw2Mode !== "undefined") {
-          sw2Mode = "exec";
-          if (typeof sw2Prompt !== "undefined" && sw2Prompt && typeof sw2PromptForMode === "function") {
-            sw2Prompt.textContent = sw2PromptForMode();
+        if (typeof sw2PromptOverride !== "undefined") {
+          stepIndexSw2 = 0;
+          sw2PromptOverride = null;
+          if (typeof sw2Prompt !== "undefined" && sw2Prompt && typeof setSw2Prompt === "function") {
+            setSw2Prompt();
           }
         }
         if (typeof sw2Cmdline !== "undefined" && sw2Cmdline) {
@@ -1483,24 +1602,12 @@ R2# copy running-config startup-config</pre>
           return;
         }
 
-        if (trySwNavSoftLine(line)) return;
-
-        if (
-          (swPromptOverride === "config-if" || swPromptOverride === "config-if-range") &&
-          isPermissiveIfCommand(line)
-        ) {
-          return;
-        }
-        if (swPromptOverride === "config-vlan" && isPermissiveVlanCommand(line)) {
-          return;
-        }
-
-        if (stepIndex >= LAB_STEPS.length) {
-          appendSw("line-bad", "% Invalid input");
-          return;
-        }
-
-        if (LAB_STEPS[stepIndex].test(line)) {
+        // 1) Strict step match first — consumes navigation commands (configure terminal/interface/exit)
+        //    when they are the next expected step, so the displayed prompt stays aligned with the lab.
+        if (stepIndex < LAB_STEPS.length && LAB_STEPS[stepIndex].test(line)) {
+          if (typeof LAB_STEPS[stepIndex].emit === "function") {
+            LAB_STEPS[stepIndex].emit(appendSw);
+          }
           stepIndex += 1;
           swPromptOverride = null;
           if (stepIndex >= LAB_STEPS.length) {
@@ -1512,22 +1619,123 @@ R2# copy running-config startup-config</pre>
           } else {
             setSwPrompt();
           }
-        } else {
-          appendSw("line-bad", "% Invalid input");
+          return;
         }
+
+        // 2) Off-script navigation (exit/end/configure terminal/interface ... when not the next step).
+        if (trySwNavSoftLine(line)) return;
+
+        // 3) Permissive accept for common interface/VLAN commands so the simulator stays usable.
+        if (
+          (swPromptOverride === "config-if" || swPromptOverride === "config-if-range") &&
+          isPermissiveIfCommand(line)
+        ) {
+          return;
+        }
+        if (swPromptOverride === "config-vlan" && isPermissiveVlanCommand(line)) {
+          return;
+        }
+
+        appendSw("line-bad", "% Invalid input");
       }
 
-      /** SW2: IOS-like modes + show running-config (read-only exhibit); prompts use promptForMode like SW1 */
-      var sw2Mode = "exec";
+      /** R2: full LAB_STEPS engine mirroring R1 with its own step index + prompt override. */
+      var stepIndexSw2 = 0;
+      var sw2PromptOverride = null;
 
-      function sw2PromptForMode() {
-        return promptForMode(SWITCH2_HOST, sw2Mode);
+      function sw2InEnableMode() {
+        if (
+          sw2PromptOverride === "config" ||
+          sw2PromptOverride === "config-vlan" ||
+          sw2PromptOverride === "config-if" ||
+          sw2PromptOverride === "config-if-range" ||
+          sw2PromptOverride === "config-router" ||
+          sw2PromptOverride === "config-std-nacl" ||
+          sw2PromptOverride === "config-ext-nacl" ||
+          sw2PromptOverride === "config-pmap" ||
+          sw2PromptOverride === "control-plane"
+        ) {
+          return false;
+        }
+        if (sw2PromptOverride === "exec") return true;
+        if (stepIndexSw2 >= R2_STEPS.length) return true;
+        return R2_STEPS[stepIndexSw2].mode === "exec";
+      }
+
+      function promptForLabStepIndexR2(index) {
+        if (index >= R2_STEPS.length) return promptForMode(SWITCH2_HOST, "exec");
+        return promptForMode(SWITCH2_HOST, R2_STEPS[index].mode);
+      }
+
+      function setSw2Prompt() {
+        if (sw2PromptOverride !== null && sw2PromptOverride !== undefined) {
+          sw2Prompt.textContent = promptForMode(SWITCH2_HOST, sw2PromptOverride);
+          return;
+        }
+        sw2Prompt.textContent = promptForLabStepIndexR2(stepIndexSw2);
+      }
+
+      function trySw2NavSoftLine(line) {
+        var u = normalize(line);
+        if (u === "configure terminal" && sw2InEnableMode()) {
+          sw2PromptOverride = "config";
+          setSw2Prompt();
+          return true;
+        }
+        if (u.indexOf("interface range ") === 0 &&
+            (sw2PromptOverride === "config" || sw2PromptOverride === "config-if" || sw2PromptOverride === "config-if-range")) {
+          sw2PromptOverride = "config-if-range";
+          setSw2Prompt();
+          return true;
+        }
+        if (u.indexOf("interface ") === 0 &&
+            (sw2PromptOverride === "config" || sw2PromptOverride === "config-if" || sw2PromptOverride === "config-if-range")) {
+          sw2PromptOverride = "config-if";
+          setSw2Prompt();
+          return true;
+        }
+        if (/^vlan \d+$/.test(u) &&
+            (sw2PromptOverride === "config" || sw2PromptOverride === "config-vlan")) {
+          appendVlanCreateSys(appendSw2, line);
+          sw2PromptOverride = "config-vlan";
+          setSw2Prompt();
+          return true;
+        }
+        if (u === "exit" && sw2PromptOverride === "config-if-range") {
+          sw2PromptOverride = "config";
+          setSw2Prompt();
+          return true;
+        }
+        if (u === "exit" && sw2PromptOverride === "config-if") {
+          sw2PromptOverride = "config";
+          setSw2Prompt();
+          return true;
+        }
+        if (u === "exit" && sw2PromptOverride === "config-vlan") {
+          sw2PromptOverride = "config";
+          setSw2Prompt();
+          return true;
+        }
+        if (u === "exit" && sw2PromptOverride === "config") {
+          sw2PromptOverride = "exec";
+          setSw2Prompt();
+          return true;
+        }
+        if (u === "end" &&
+            (sw2PromptOverride === "config" || sw2PromptOverride === "config-vlan" ||
+             sw2PromptOverride === "config-if" || sw2PromptOverride === "config-if-range")) {
+          sw2PromptOverride = "exec";
+          setSw2Prompt();
+          return true;
+        }
+        return false;
       }
 
       function resetSw2() {
         sw2Scrollback.innerHTML = "";
-        sw2Mode = "exec";
-        sw2Prompt.textContent = sw2PromptForMode();
+        stepIndexSw2 = 0;
+        sw2PromptOverride = null;
+        setSw2Prompt();
       }
 
       function submitSw2() {
@@ -1543,21 +1751,23 @@ R2# copy running-config startup-config</pre>
           return;
         }
 
-        var u = normalize(line);
-
         if (matchShowRun(line)) {
           appendSw2("line-showrun", SWITCH2_SHOW_RUNNING_SNAPSHOT);
           return;
         }
 
-        if (sw2Mode === "exec" && matchShowVersion(line)) {
+        if (sw2InEnableMode() && matchShowVersion(line)) {
           appendSw2("line-sys", SHOW_VERSION_MSG);
           return;
         }
 
         if (matchCopyRunStart(line)) {
-          if (sw2Mode !== "exec") {
+          if (!sw2InEnableMode()) {
             appendSw2("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            return;
+          }
+          if (stepIndexSw2 < R2_STEPS.length) {
+            appendSw2("line-sys", COPY_RUN_START_AFTER_R2_STEPS_MSG);
             return;
           }
           if (stepIndex < LAB_STEPS.length) {
@@ -1572,70 +1782,36 @@ R2# copy running-config startup-config</pre>
           return;
         }
 
-        // Soft mode-navigation handler for R2 (mirrors trySwNavSoftLine on R1).
-        if (sw2Mode === "exec" && u === "configure terminal") {
-          sw2Mode = "config";
-          sw2Prompt.textContent = sw2PromptForMode();
-          return;
-        }
-        if (
-          u.indexOf("interface range ") === 0 &&
-          (sw2Mode === "config" || sw2Mode === "config-if" || sw2Mode === "config-if-range")
-        ) {
-          sw2Mode = "config-if-range";
-          sw2Prompt.textContent = sw2PromptForMode();
-          return;
-        }
-        if (
-          u.indexOf("interface ") === 0 &&
-          (sw2Mode === "config" || sw2Mode === "config-if" || sw2Mode === "config-if-range")
-        ) {
-          sw2Mode = "config-if";
-          sw2Prompt.textContent = sw2PromptForMode();
-          return;
-        }
-        if (/^vlan \d+$/.test(u) && (sw2Mode === "config" || sw2Mode === "config-vlan")) {
-          appendVlanCreateSys(appendSw2, line);
-          sw2Mode = "config-vlan";
-          sw2Prompt.textContent = sw2PromptForMode();
-          return;
-        }
-        if (u === "exit" && sw2Mode === "config-if-range") {
-          sw2Mode = "config";
-          sw2Prompt.textContent = sw2PromptForMode();
-          return;
-        }
-        if (u === "exit" && sw2Mode === "config-vlan") {
-          sw2Mode = "config";
-          sw2Prompt.textContent = sw2PromptForMode();
-          return;
-        }
-        if (sw2Mode === "config-if" && u === "exit") {
-          sw2Mode = "config";
-          sw2Prompt.textContent = sw2PromptForMode();
-          return;
-        }
-        if (sw2Mode === "config" && (u === "exit" || u === "end")) {
-          sw2Mode = "exec";
-          sw2Prompt.textContent = sw2PromptForMode();
-          return;
-        }
-        if (
-          u === "end" &&
-          (sw2Mode === "config-if" || sw2Mode === "config-if-range" || sw2Mode === "config-vlan")
-        ) {
-          sw2Mode = "exec";
-          sw2Prompt.textContent = sw2PromptForMode();
+        // 1) Strict step match first (so navigation steps stay aligned with the displayed prompt).
+        if (stepIndexSw2 < R2_STEPS.length && R2_STEPS[stepIndexSw2].test(line)) {
+          if (typeof R2_STEPS[stepIndexSw2].emit === "function") {
+            R2_STEPS[stepIndexSw2].emit(appendSw2);
+          }
+          stepIndexSw2 += 1;
+          sw2PromptOverride = null;
+          if (stepIndexSw2 >= R2_STEPS.length) {
+            sw2Prompt.textContent = promptForMode(SWITCH2_HOST, "exec");
+            appendSw2("line-sys", BASELINE_SW_STEPS_OK_MSG);
+            tryCompleteBaselineLab(function (cls, text) {
+              appendSw2(cls, text);
+            });
+          } else {
+            setSw2Prompt();
+          }
           return;
         }
 
+        // 2) Off-script navigation.
+        if (trySw2NavSoftLine(line)) return;
+
+        // 3) Permissive accept for common interface/VLAN commands.
         if (
-          (sw2Mode === "config-if" || sw2Mode === "config-if-range") &&
+          (sw2PromptOverride === "config-if" || sw2PromptOverride === "config-if-range") &&
           isPermissiveIfCommand(line)
         ) {
           return;
         }
-        if (sw2Mode === "config-vlan" && isPermissiveVlanCommand(line)) {
+        if (sw2PromptOverride === "config-vlan" && isPermissiveVlanCommand(line)) {
           return;
         }
 
@@ -1705,7 +1881,8 @@ R2# copy running-config startup-config</pre>
         bumpOverlayZ(sw2CliOverlay);
         sw2CliOverlay.classList.add("is-open");
         sw2CliOverlay.setAttribute("aria-hidden", "false");
-        resetSw2();
+        // Sync the prompt to the current step state without clearing scrollback or step progress.
+        setSw2Prompt();
         if (sw2Terminal) {
           sw2Terminal.classList.remove("terminal-flash");
           void sw2Terminal.offsetWidth;
