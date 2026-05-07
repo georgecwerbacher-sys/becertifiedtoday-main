@@ -901,7 +901,7 @@ R2(config-if)# no shut</pre>
             <pre class="spoiler-terminal-pre">R1(config-if)# exit
 R1(config)# exit
 R1# ping 10.0.12.6
-.!!!!  ! ping successful</pre>
+!!!!  ! ping successful</pre>
           </div>
         </div>
 
@@ -1164,16 +1164,80 @@ R2# copy running-config startup-config</pre>
       function isPing(raw, target) {
         return normalize(raw) === "ping " + target;
       }
-      var PING_IPV4_R2_OUTPUT =
-        "Type escape sequence to abort.\n" +
-        "Sending 5, 100-byte ICMP Echos to 10.0.12.6, timeout is 2 seconds:\n" +
-        ".!!!!\n" +
-        "Success rate is 80 percent (4/5), round-trip min/avg/max = 1/1/2 ms";
-      var PING_IPV6_R2_OUTPUT =
-        "Type escape sequence to abort.\n" +
-        "Sending 5, 100-byte ICMP Echos to 2001:DB8:12::13, timeout is 2 seconds:\n" +
-        "!!!!!\n" +
-        "Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms";
+      function validIpv4(s) {
+        var parts = String(s || "").split(".");
+        if (parts.length !== 4) return false;
+        return parts.every(function (part) {
+          if (!/^\d+$/.test(part)) return false;
+          var n = Number(part);
+          return n >= 0 && n <= 255;
+        });
+      }
+      function isIpv4AddressCommand(raw) {
+        var m = normalize(raw).match(/^ip address (\S+) (\S+)$/);
+        return !!m && validIpv4(m[1]) && validIpv4(m[2]);
+      }
+      function isIpv6AddressCommand(raw) {
+        var m = normalize(raw).match(/^ipv6 address ([0-9a-f:]+)\/(\d{1,3})$/);
+        if (!m) return false;
+        var prefixLength = Number(m[2]);
+        return m[1].indexOf(":") !== -1 && prefixLength >= 1 && prefixLength <= 128;
+      }
+      var r1Ipv4AddressCorrect = false;
+      var r2Ipv4AddressCorrect = false;
+      var r1Ipv6AddressCorrect = false;
+      var r2Ipv6AddressCorrect = false;
+      function markR1Ipv4Address(raw) {
+        if (!isIpv4AddressCommand(raw)) return false;
+        r1Ipv4AddressCorrect = normalize(raw) === "ip address 10.0.12.5 255.255.255.252";
+        return true;
+      }
+      function markR2Ipv4Address(raw) {
+        if (!isIpv4AddressCommand(raw)) return false;
+        r2Ipv4AddressCorrect = normalize(raw) === "ip address 10.0.12.6 255.255.255.252";
+        return true;
+      }
+      function markR1Ipv6Address(raw) {
+        if (!isIpv6AddressCommand(raw)) return false;
+        r1Ipv6AddressCorrect = normalize(raw) === "ipv6 address 2001:db8:12::11/126";
+        return true;
+      }
+      function markR2Ipv6Address(raw) {
+        if (!isIpv6AddressCommand(raw)) return false;
+        r2Ipv6AddressCorrect = normalize(raw) === "ipv6 address 2001:db8:12::13/126";
+        return true;
+      }
+      function labAddressingCorrect() {
+        return r1Ipv4AddressCorrect && r2Ipv4AddressCorrect && r1Ipv6AddressCorrect && r2Ipv6AddressCorrect;
+      }
+      function ipv4PingOutput() {
+        var ok = r1Ipv4AddressCorrect && r2Ipv4AddressCorrect;
+        return (
+          "Type escape sequence to abort.\n" +
+          "Sending 4, 100-byte ICMP Echos to 10.0.12.6, timeout is 2 seconds:\n" +
+          (ok ? "!!!!\n" : "....\n") +
+          (ok
+            ? "Success rate is 100 percent (4/4), round-trip min/avg/max = 1/1/2 ms"
+            : "Success rate is 0 percent (0/4)")
+        );
+      }
+      function ipv6PingOutput() {
+        var ok = r1Ipv6AddressCorrect && r2Ipv6AddressCorrect;
+        return (
+          "Type escape sequence to abort.\n" +
+          "Sending 4, 100-byte ICMP Echos to 2001:DB8:12::13, timeout is 2 seconds:\n" +
+          (ok ? "!!!!\n" : "....\n") +
+          (ok
+            ? "Success rate is 100 percent (4/4), round-trip min/avg/max = 1/1/2 ms"
+            : "Success rate is 0 percent (0/4)")
+        );
+      }
+      var IPV6_UNICAST_ROUTING_OK_MSG = "Device now supports IPv6 configurations.";
+      function appendIpv6UnicastRoutingFeedback(append, line) {
+        if (normalize(line) === "ipv6 unicast-routing") {
+          append("line-sys", IPV6_UNICAST_ROUTING_OK_MSG);
+        }
+      }
 
       // R1 sequence — strict order from the Helper file. Each navigation step is explicit so the
       // displayed prompt always matches the user's current IOS mode. Steps with `emit` print IOS
@@ -1181,34 +1245,36 @@ R2# copy running-config startup-config</pre>
       var LAB_STEPS = [
         { mode: "exec",      test: function (raw) { return normalize(raw) === "configure terminal"; } },
         { mode: "config",    test: isInterfaceE00 },
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "ip address 10.0.12.5 255.255.255.252"; } },
+        { mode: "config-if", test: markR1Ipv4Address },
         { mode: "config-if", test: isNoShut },
         { mode: "config-if", test: function (raw) { return normalize(raw) === "exit"; } },
         { mode: "config",    test: function (raw) { return normalize(raw) === "exit"; } },
         { mode: "exec",      test: function (raw) { return isPing(raw, "10.0.12.6"); },
-          emit: function (append) { append("line-ping", PING_IPV4_R2_OUTPUT); } },
+          emit: function (append) { append("line-ping", ipv4PingOutput()); } },
         { mode: "exec",      test: function (raw) { return normalize(raw) === "configure terminal"; } },
-        { mode: "config",    test: function (raw) { return normalize(raw) === "ipv6 unicast-routing"; } },
+        { mode: "config",    test: function (raw) { return normalize(raw) === "ipv6 unicast-routing"; },
+          emit: function (append) { append("line-sys", IPV6_UNICAST_ROUTING_OK_MSG); } },
         { mode: "config",    test: isInterfaceE00 },
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "ipv6 address 2001:db8:12::11/126"; } },
+        { mode: "config-if", test: markR1Ipv6Address },
         { mode: "config-if", test: function (raw) { return normalize(raw) === "exit"; } },
         { mode: "config",    test: function (raw) { return normalize(raw) === "exit"; } },
         { mode: "exec",      test: function (raw) { return isPing(raw, "2001:db8:12::13"); },
-          emit: function (append) { append("line-ping", PING_IPV6_R2_OUTPUT); } },
+          emit: function (append) { append("line-ping", ipv6PingOutput()); } },
       ];
 
       // R2 sequence — strict order from the Helper file (no ping verification on R2).
       var R2_STEPS = [
         { mode: "exec",      test: function (raw) { return normalize(raw) === "configure terminal"; } },
         { mode: "config",    test: isInterfaceE00 },
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "ip address 10.0.12.6 255.255.255.252"; } },
+        { mode: "config-if", test: markR2Ipv4Address },
         { mode: "config-if", test: isNoShut },
         { mode: "config-if", test: function (raw) { return normalize(raw) === "exit"; } },
         { mode: "config",    test: function (raw) { return normalize(raw) === "exit"; } },
         { mode: "exec",      test: function (raw) { return normalize(raw) === "configure terminal"; } },
-        { mode: "config",    test: function (raw) { return normalize(raw) === "ipv6 unicast-routing"; } },
+        { mode: "config",    test: function (raw) { return normalize(raw) === "ipv6 unicast-routing"; },
+          emit: function (append) { append("line-sys", IPV6_UNICAST_ROUTING_OK_MSG); } },
         { mode: "config",    test: isInterfaceE00 },
-        { mode: "config-if", test: function (raw) { return normalize(raw) === "ipv6 address 2001:db8:12::13/126"; } },
+        { mode: "config-if", test: markR2Ipv6Address },
         { mode: "config-if", test: function (raw) { return normalize(raw) === "exit"; } },
         { mode: "config",    test: function (raw) { return normalize(raw) === "exit"; } },
       ];
@@ -1270,6 +1336,7 @@ R2# copy running-config startup-config</pre>
       function tryCompleteBaselineLab(append) {
         if (stepIndex < LAB_STEPS.length) return;
         if (stepIndexSw2 < R2_STEPS.length) return;
+        if (!labAddressingCorrect()) return;
         if (!nvramSavedSw || !nvramSavedSw2) return;
         if (passBanner.classList.contains("visible")) return;
         passBanner.classList.add("visible");
@@ -1395,8 +1462,8 @@ R2# copy running-config startup-config</pre>
       /** Permissive acceptance for common interface/VLAN commands the lab does not strictly gate. */
       function isPermissiveIfCommand(line) {
         var u = normalize(line);
-        return /^ip address\s+\S+/.test(u) ||
-               /^ipv6 address\s+\S+/.test(u) ||
+        return isIpv4AddressCommand(line) ||
+               isIpv6AddressCommand(line) ||
                u === "no shutdown" || u === "shutdown" ||
                /^description\s+\S+/.test(u) ||
                u === "switchport mode access" || u === "switchport mode trunk" ||
@@ -1408,6 +1475,31 @@ R2# copy running-config startup-config</pre>
       }
       function isPermissiveVlanCommand(line) {
         return /^name\s+\S+/.test(normalize(line));
+      }
+      /** Global-config commands that should never error out, even when the strict step expected something else. */
+      function isPermissiveConfigCommand(line) {
+        var u = normalize(line);
+        return u === "ipv6 unicast-routing" || u === "no ipv6 unicast-routing";
+      }
+      /** Effective displayed mode for R1 (override > next-step mode > exec when complete). */
+      function currentSwMode() {
+        if (swPromptOverride !== null && swPromptOverride !== undefined) return swPromptOverride;
+        if (stepIndex >= LAB_STEPS.length) return "exec";
+        return LAB_STEPS[stepIndex].mode;
+      }
+      /** Effective displayed mode for R2. */
+      function currentSw2Mode() {
+        if (sw2PromptOverride !== null && sw2PromptOverride !== undefined) return sw2PromptOverride;
+        if (stepIndexSw2 >= R2_STEPS.length) return "exec";
+        return R2_STEPS[stepIndexSw2].mode;
+      }
+      function applyR1InterfaceSideEffects(line) {
+        if (isIpv4AddressCommand(line)) markR1Ipv4Address(line);
+        if (isIpv6AddressCommand(line)) markR1Ipv6Address(line);
+      }
+      function applyR2InterfaceSideEffects(line) {
+        if (isIpv4AddressCommand(line)) markR2Ipv4Address(line);
+        if (isIpv6AddressCommand(line)) markR2Ipv6Address(line);
       }
 
       /** Prompt for the switch while advancing through LAB_STEPS (post-completion → exec). */
@@ -1532,6 +1624,10 @@ R2# copy running-config startup-config</pre>
       function resetSwLab() {
         stepIndex = 0;
         swPromptOverride = null;
+        r1Ipv4AddressCorrect = false;
+        r2Ipv4AddressCorrect = false;
+        r1Ipv6AddressCorrect = false;
+        r2Ipv6AddressCorrect = false;
         nvramSavedSw = false;
         nvramSavedSw2 = false;
         swScrollback.innerHTML = "";
@@ -1630,9 +1726,15 @@ R2# copy running-config startup-config</pre>
           (swPromptOverride === "config-if" || swPromptOverride === "config-if-range") &&
           isPermissiveIfCommand(line)
         ) {
+          applyR1InterfaceSideEffects(line);
           return;
         }
         if (swPromptOverride === "config-vlan" && isPermissiveVlanCommand(line)) {
+          return;
+        }
+        // Allow common global-config commands (e.g. ipv6 unicast-routing) at any time in (config)#.
+        if (currentSwMode() === "config" && isPermissiveConfigCommand(line)) {
+          appendIpv6UnicastRoutingFeedback(appendSw, line);
           return;
         }
 
@@ -1809,9 +1911,15 @@ R2# copy running-config startup-config</pre>
           (sw2PromptOverride === "config-if" || sw2PromptOverride === "config-if-range") &&
           isPermissiveIfCommand(line)
         ) {
+          applyR2InterfaceSideEffects(line);
           return;
         }
         if (sw2PromptOverride === "config-vlan" && isPermissiveVlanCommand(line)) {
+          return;
+        }
+        // Allow common global-config commands (e.g. ipv6 unicast-routing) at any time in (config)#.
+        if (currentSw2Mode() === "config" && isPermissiveConfigCommand(line)) {
+          appendIpv6UnicastRoutingFeedback(appendSw2, line);
           return;
         }
 
