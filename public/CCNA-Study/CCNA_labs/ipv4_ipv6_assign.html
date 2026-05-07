@@ -1,0 +1,1886 @@
+<!doctype html>
+<!--
+  CLI lab baseline — patterns aligned with public/CCNA-Study/CCNA_labs/cli-lab-ip-services-sim-v2.html (multi-device,
+  tasks panel, spoiler terminal blocks, full IOS command forms). ENCOR reference:
+  public/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html.
+
+  Includes:
+  - Switch 1 (SW1): LAB_STEPS[] { mode, test(raw) }; mode drives prompt via promptForMode(); normalize() accepts common abbreviations
+  - Switch 2 (SW2): second IOS CLI — read-only exhibit + optional mode practice (same prompt helpers as SW1-style IOS)
+  - PC1 / PC2: one modal; device picker sets prompt (PC1> / PC2>); extend submitPc() for ping, ipconfig, etc.
+  - Device picker (SW1 / SW2 / PC1 / PC2), Helper / Spoiler modals, tasks-blue-box, draggable modals, command history
+
+  For a fifth IOS CLI (e.g. R3), copy the SW2 modal + submit/reset/open pattern from cli-lab-ip-services-sim-v2.html.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ipv4 and IPV6 Assignmnet Simulation | CCNA lab | Be Certified Today</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      padding-bottom: 88px;
+      box-sizing: border-box;
+    }
+    .wrap {
+      width: min(1000px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card {
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 22px 26px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.15rem, 2vw, 1.65rem);
+      line-height: 1.3;
+    }
+    .objective,
+    .tasks {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .tasks ol {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+    }
+    .tasks li {
+      margin: 6px 0;
+    }
+    .tasks-blue-box {
+      margin-top: 14px;
+      padding: 16px 18px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      text-align: left;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      box-sizing: border-box;
+    }
+    .tasks-blue-box .tasks {
+      color: #b8c3d6;
+      margin: 0 0 10px;
+    }
+    .tasks-blue-box .tasks:last-of-type,
+    .tasks-blue-box ol.tasks {
+      margin-bottom: 0;
+    }
+    .tasks-blue-box .tasks strong,
+    .tasks-blue-box ol.tasks strong {
+      color: #e6edf3;
+      font-weight: 800;
+    }
+    .tasks-blue-box ol.tasks {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+      color: #b8c3d6;
+    }
+    .tasks-blue-box ol.tasks li {
+      margin: 8px 0;
+      color: #b8c3d6;
+    }
+    .diagram-wrap {
+      background: #ffffff;
+      border: 1px solid #2d3b5a;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 8px;
+      text-align: center;
+    }
+    .diagram-stage {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      max-width: min(520px, 100%);
+      margin: 0 auto;
+      line-height: 0;
+    }
+    .diagram-stage img {
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+      border-radius: 8px;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .device-pick label {
+      margin-left: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .device-pick input {
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .device-links-after-tasks {
+      margin-top: 14px;
+    }
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
+      outline: none;
+    }
+    .topology-scrape {
+      margin-top: 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0c1222;
+      border: 1px solid #2a3b5c;
+      text-align: left;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    .topology-scrape h2 {
+      margin: 0 0 8px;
+      font-size: 0.95rem;
+      color: #e6edf3;
+    }
+    .topology-scrape ul.helper-bullets {
+      margin: 6px 0 4px;
+      padding-left: 1.25em;
+    }
+    .topology-scrape ul.helper-bullets li {
+      margin: 0.45em 0;
+    }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+      pointer-events: none;
+    }
+    .cli-modal-overlay.is-open {
+      display: block;
+    }
+    .cli-modal-dialog {
+      width: min(520px, calc(100vw - 24px));
+      max-height: min(85vh, 720px);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-dialog.is-dragging {
+      transition: none;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+    }
+    .cli-modal-header:active {
+      cursor: grabbing;
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-close:hover {
+      filter: brightness(1.1);
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
+    .cli-modal-footer {
+      padding: 10px 12px 12px;
+      border-top: 1px solid #2d3b5a;
+      flex-shrink: 0;
+    }
+    .terminal {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.88rem;
+      background: #0a0d12;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      padding: 12px 12px 10px;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      margin-top: 0;
+    }
+    .terminal.terminal-flash {
+      animation: cliFlash 0.9s ease;
+    }
+    @keyframes cliFlash {
+      0% {
+        box-shadow: 0 0 0 0 rgba(37, 75, 138, 0.9);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(37, 75, 138, 0);
+      }
+    }
+    .scrollback-area {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 360px;
+      margin-bottom: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #c8d2e0;
+      line-height: 1.45;
+    }
+    .line-user {
+      color: #7ec8ff;
+    }
+    .line-bad {
+      color: #fca5a5;
+    }
+    .line-sys {
+      color: #94a3b8;
+    }
+    .line-showrun,
+    .line-ping {
+      white-space: pre-wrap;
+      color: #dbe5f0;
+      margin: 6px 0 12px;
+      padding: 10px 10px 12px;
+      border-radius: 6px;
+      background: #06080c;
+      border: 1px solid #263043;
+      font-family: inherit;
+      line-height: 1.45;
+    }
+    .input-row {
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #243044;
+      padding-top: 8px;
+    }
+    .prompt-el {
+      flex-shrink: 0;
+      color: #fbbf24;
+      user-select: none;
+    }
+    .prompt-el.pc-prompt {
+      color: #c8f0c4;
+      font-weight: 600;
+    }
+    .cmdline-input {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      color: #e6edf3;
+      font: inherit;
+      outline: none;
+      padding: 4px 0 4px 4px;
+    }
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-secondary {
+      background: #2a3040;
+      border-color: #4b556b;
+    }
+    .pass-banner {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .pass-banner.visible {
+      display: block;
+    }
+    .sim-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(11, 16, 32, 0.94);
+      border-top: 1px solid #2d3b5a;
+      backdrop-filter: blur(10px);
+    }
+    .sim-nav-btn {
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 700;
+      min-width: 5.5rem;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .sim-nav-btn:hover {
+      filter: brightness(1.08);
+    }
+    .sim-nav-home {
+      background: #1a3d6e;
+    }
+    .site-logo-corner {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 12000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(11, 16, 32, 0.55);
+      border: 1px solid #2d3b5a;
+      padding: 6px;
+      backdrop-filter: blur(4px);
+    }
+    .site-logo-corner img {
+      display: block;
+      width: 52px;
+      height: 52px;
+    }
+    .cli-modal-dialog,
+    .terminal {
+      color-scheme: dark;
+    }
+    .terminal input[type="text"],
+    .cmdline-input {
+      color-scheme: dark;
+      -webkit-appearance: none;
+      appearance: none;
+      background-color: transparent !important;
+    }
+    .helper-modal-dialog {
+      width: min(760px, calc(100vw - 24px));
+    }
+    .spoiler-modal-dialog {
+      width: min(720px, calc(100vw - 24px));
+    }
+    .spoiler-cli-body {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .spoiler-task {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .spoiler-terminal-cap {
+      margin: 0;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #7a8fb0;
+    }
+    .spoiler-terminal {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.82rem;
+      background: #0a0d12;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+    .spoiler-terminal-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: linear-gradient(180deg, #151d2e 0%, #101826 100%);
+      border-bottom: 1px solid #243044;
+      color: #9fb0cc;
+      font-size: 0.72rem;
+      font-weight: 600;
+      user-select: none;
+    }
+    .spoiler-terminal-dots {
+      display: inline-flex;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    .spoiler-terminal-dots span {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #3d4f6e;
+      box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35);
+    }
+    .spoiler-terminal-dots span:nth-child(1) {
+      background: #c94b4b;
+    }
+    .spoiler-terminal-dots span:nth-child(2) {
+      background: #c9a24b;
+    }
+    .spoiler-terminal-dots span:nth-child(3) {
+      background: #4bc96d;
+    }
+    .spoiler-terminal-title {
+      flex: 1;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .spoiler-terminal-pre {
+      margin: 0;
+      padding: 12px 12px 14px;
+      color: #c8d2e0;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      max-height: min(52vh, 420px);
+      overflow-y: auto;
+    }
+    .spoiler-cli-pre {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.8rem;
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="site-logo-corner" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="" />
+  </div>
+
+  <div class="wrap">
+    <main class="card">
+      <h1>ipv4 and IPV6 Assignmnet Simulation</h1>
+
+      <div class="diagram-wrap" aria-label="Topology diagram">
+        <div class="diagram-stage">
+          <img
+            src="/CCNA-Study/CCNA_labs/ipv4-ipv6-assign-topology.png"
+            width="469"
+            height="303"
+            alt="Topology: R1 (Ethernet0/0) ↔ R2 (Ethernet0/0); IPv4 10.0.12.4/30, IPv6 2001:db8:12::/126."
+            decoding="async"
+          />
+        </div>
+        <div class="device-pick" role="group" aria-label="Device for CLI">
+          <strong style="color: #e6edf3">Select device</strong>
+          <label><input type="radio" name="labPrimaryDev" value="R1" checked /> R1</label>
+          <label><input type="radio" name="labPrimaryDev" value="R2" /> R2</label>
+        </div>
+        <div class="device-links">
+          <button type="button" class="device-link" id="openSelectedCliBtn">Open R1 CLI</button>
+        </div>
+        <div class="tasks-blue-box" aria-label="Lab tasks">
+          <p class="tasks">
+            <strong>Tasks</strong>
+          </p>
+          <p class="tasks">
+            Complete IPv4 and IPv6 host assignment on R1/R2 and validate reachability.
+          </p>
+          <ol class="tasks">
+            <li>
+              <strong>Task 1</strong>
+              <ul>
+                <li>Configure R1 with the first usable host IP address in the IPv4 network.</li>
+                <li>Configure R2 with the last usable host IP address in the IPv4 network.</li>
+                <li>Verify connectivity using ping.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Task 2</strong>
+              <ul>
+                <li>Do not assign the subnet router anycast address to either router.</li>
+                <li>Configure R1 with the first usable host IP address in the IPv6 network.</li>
+                <li>Configure R2 with the last usable host IP address in the IPv6 network.</li>
+                <li>Verify connectivity using ping.</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+        <div class="device-links device-links-after-tasks" aria-label="Lab aids">
+          <button type="button" class="device-link" id="openHelperFileBtn">Helper</button>
+          <button type="button" class="device-link" id="inlineResetLabBtn">Reset lab</button>
+          <button type="button" class="device-link" id="openSpoilerBtn">Spoiler</button>
+        </div>
+      </div>
+
+      <p class="objective">
+        <strong>Disclaimer:</strong> This website is an independent training resource created for educational purposes only.
+        It is not affiliated with, endorsed by, sponsored by, or approved by Cisco Systems, Inc. Cisco and related trademarks
+        are the property of Cisco Systems, Inc. All practice questions, explanations, and study materials on this site are
+        original or based on general knowledge and are intended as a guide to help users prepare for certification exams.
+        Practice questions are not actual Cisco exam questions. Any similarity to official exam content is coincidental.
+      </p>
+    </main>
+  </div>
+
+  <!-- Primary switch CLI (editable lab device — LAB_STEPS engine) -->
+  <div id="swCliOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="swCliDialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="swCliTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="swCliTitle">R1 — CLI</h2>
+        <button type="button" class="cli-modal-close" id="swCliClose" aria-label="Close CLI window">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" id="swTerminal" aria-label="Simulated R1 CLI">
+          <div id="swScrollback" class="scrollback-area"></div>
+          <div class="input-row">
+            <span id="swPrompt" class="prompt-el">R1#</span>
+            <input
+              id="swCmdline"
+              class="cmdline-input"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="none"
+              aria-label="R1 command line"
+            />
+          </div>
+        </div>
+      </div>
+      <footer class="cli-modal-footer">
+        <div class="controls">
+          <button type="button" class="btn btn-secondary" id="swResetBtn">Reset lab</button>
+        </div>
+        <div id="passBanner" class="pass-banner" role="status">
+          Complete all R1 steps, then from enable mode on R1 and R2 run copy running-configuration startup-configuration on each device.
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- SW2 — second switch CLI (read-only exhibit + optional IOS mode practice) -->
+  <div id="sw2CliOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="sw2CliDialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="sw2CliTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="sw2CliTitle">R2 — CLI</h2>
+        <button type="button" class="cli-modal-close" id="sw2CliClose" aria-label="Close R2 window">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" id="sw2Terminal" aria-label="Simulated R2 CLI">
+          <div id="sw2Scrollback" class="scrollback-area"></div>
+          <div class="input-row">
+            <span id="sw2Prompt" class="prompt-el">R2#</span>
+            <input
+              id="sw2Cmdline"
+              class="cmdline-input"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="none"
+              aria-label="R2 command line"
+            />
+          </div>
+        </div>
+      </div>
+      <footer class="cli-modal-footer">
+        <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
+          Read-only exhibit: <code>show running-config</code> (or <code>sh run</code> after <code>normalize()</code>) prints a fixed snapshot.
+          Use <code>configure terminal</code> / <code>conf t</code>, <code>interface …</code> / <code>int …</code>,
+          <code>exit</code> or <code>end</code> to move modes. Use class <code>line-ping</code> for simulated ping output (see IP Services lab).
+        </p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- PC1 / PC2 — one modal; picker sets PC1> vs PC2> -->
+  <div id="pcCliOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="pcCliDialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="pcCliTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="pcCliTitle">PC1 / PC2 — Command Prompt</h2>
+        <button type="button" class="cli-modal-close" id="pcCliClose" aria-label="Close PC window">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" id="pcTerminal" aria-label="Simulated PC1 or PC2 command prompt">
+          <div id="pcScrollback" class="scrollback-area"></div>
+          <div class="input-row">
+            <span id="pcPrompt" class="prompt-el pc-prompt">PC1&gt;</span>
+            <input
+              id="pcCmdline"
+              class="cmdline-input"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="none"
+              aria-label="PC1 or PC2 command line"
+            />
+          </div>
+        </div>
+      </div>
+      <footer class="cli-modal-footer">
+        <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
+          Select <strong>PC1</strong> or <strong>PC2</strong> in the page device row before opening this window so the prompt matches.
+          Default stub: non-empty input shows “not recognized” unless you extend <code>submitPc()</code> in script.
+        </p>
+      </footer>
+    </div>
+  </div>
+
+  <div id="helperFileOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="helperFileDialog"
+      class="cli-modal-dialog helper-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="helperFileTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="helperFileTitle">Helper file</h2>
+        <button type="button" class="cli-modal-close" id="helperFileClose" aria-label="Close helper">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <section class="topology-scrape" aria-label="Helper notes">
+          <h2>Task 1 — IPv4 host assignment</h2>
+          <ul class="helper-bullets">
+            <li>Configure R1 with the first usable host IP address in the IPv4 network, and R2 with the last usable host IP address.</li>
+            <li>In <code>10.0.12.4/30</code> (increment 4): network = <code>10.0.12.4</code>, broadcast = <code>10.0.12.7</code>. First usable host = <code>10.0.12.5</code> (R1); last usable host = <code>10.0.12.6</code> (R2).</li>
+            <li>On R1: <code>interface e0/0</code> → <code>ip address 10.0.12.5 255.255.255.252</code> → <code>no shut</code>.</li>
+            <li>On R2: <code>interface e0/0</code> → <code>ip address 10.0.12.6 255.255.255.252</code> → <code>no shut</code>.</li>
+            <li>Verify connectivity with <code>R1# ping 10.0.12.6</code> (a leading <code>.</code> from ARP is normal; the rest should be <code>!</code>).</li>
+          </ul>
+          <h2>Task 2 — IPv6 host assignment</h2>
+          <ul class="helper-bullets">
+            <li>Do <strong>not</strong> assign the subnet router anycast address (the lowest address in the subnet, which has all host bits set to 0).</li>
+            <li>IPv6 has no broadcast address, so all addresses except the anycast/network address are usable host addresses.</li>
+            <li>For this lab, configure R1 with <code>2001:db8:12::10/126</code> and R2 with <code>2001:db8:12::3/126</code>.</li>
+            <li>On R1: <code>interface e0/0</code> → <code>ipv6 address 2001:db8:12::10/126</code>.</li>
+            <li>On R2: <code>interface e0/0</code> → <code>ipv6 address 2001:db8:12::3/126</code>.</li>
+            <li>Verify with <code>R1# ping 2001:db8:12::3</code>; expect <code>!!!!!</code>.</li>
+            <li>Save: from privileged exec on R1 <em>and</em> R2 run <code>copy running-config startup-config</code>.</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div id="spoilerOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="spoilerDialog"
+      class="cli-modal-dialog spoiler-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="spoilerTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="spoilerTitle">Solution (spoiler)</h2>
+        <button type="button" class="cli-modal-close" id="spoilerClose" aria-label="Close spoiler">×</button>
+      </header>
+      <div class="cli-modal-body spoiler-cli-body">
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-task1-r1">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-task1-r1">Task 1 — R1 (IPv4, first usable host <code>10.0.12.5</code>)</p>
+          <div class="spoiler-terminal" role="region" aria-label="R1 IPv4 solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R1 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R1# configure terminal
+R1(config)# interface e0/0
+R1(config-if)# ip address 10.0.12.5 255.255.255.252
+R1(config-if)# no shut</pre>
+          </div>
+        </div>
+
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-task1-r2">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-task1-r2">Task 1 — R2 (IPv4, last usable host <code>10.0.12.6</code>)</p>
+          <div class="spoiler-terminal" role="region" aria-label="R2 IPv4 solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R2 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R2# configure terminal
+R2(config)# interface e0/0
+R2(config-if)# ip address 10.0.12.6 255.255.255.252
+R2(config-if)# no shut</pre>
+          </div>
+        </div>
+
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-task1-verify">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-task1-verify">Task 1 — Verify (ping from R1)</p>
+          <div class="spoiler-terminal" role="region" aria-label="R1 IPv4 ping verify">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R1 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R1(config-if)# exit
+R1(config)# exit
+R1# ping 10.0.12.6
+.!!!!  ! ping successful</pre>
+          </div>
+        </div>
+
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-task2-r1">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-task2-r1">Task 2 — R1 (IPv6 host <code>2001:db8:12::11</code>)</p>
+          <div class="spoiler-terminal" role="region" aria-label="R1 IPv6 solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R1 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R1(config)# interface e0/0
+R1(config-if)# ipv6 address 2001:db8:12::11/126</pre>
+          </div>
+        </div>
+
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-task2-r2">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-task2-r2">Task 2 — R2 (IPv6 host <code>2001:db8:12::13</code>)</p>
+          <div class="spoiler-terminal" role="region" aria-label="R2 IPv6 solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R2 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R2(config)# interface e0/0
+R2(config-if)# ipv6 address 2001:db8:12::13/126</pre>
+          </div>
+        </div>
+
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-task2-verify">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-task2-verify">Task 2 — Verify ping &amp; save startup-config</p>
+          <div class="spoiler-terminal" role="region" aria-label="R1 IPv6 ping verify and save">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R1 / R2 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R1# ping 2001:db8:12::13
+!!!!!  ! successful
+
+R1# copy running-config startup-config
+R2# copy running-config startup-config</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">CCNA Study</a>
+  </nav>
+
+  <script>
+    (function () {
+      /** ----- Author constants (replace when copying to public/) ----- */
+      var SWITCH_HOST = "R1";
+      var SWITCH2_HOST = "R2";
+      var PC_PROMPT = ">";
+
+      /** Snapshot for primary device `show running-config` while lab runs */
+      var SWITCH_SHOW_RUNNING_SNAPSHOT = [
+        "Building configuration...",
+        "",
+        "hostname R1",
+        "!",
+        "boot-start-marker",
+        "boot-end-marker",
+        "!",
+        "!",
+        "!",
+        "no aaa new-model",
+        "clock timezone EET 2 0",
+        "mmi polling-interval 60",
+        "no mmi auto-configure",
+        "no mmi pvc",
+        "mmi snmp-timeout 180",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "ip cef",
+        "!",
+        "multilink bundle-name authenticated",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "redundancy",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "interface Ethernet0/0",
+        " shutdown",
+        "!",
+        "interface Ethernet0/1",
+        " shutdown",
+        "!",
+        "interface Ethernet0/2",
+        " shutdown",
+        "!",
+        "interface Ethernet0/3",
+        " shutdown",
+        "!",
+        "ip forward-protocol nd",
+        "!",
+        "!",
+        "no ip http server",
+        "no ip http secure-server",
+        "!",
+        "!",
+        "!",
+        "!",
+        "control-plane",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "line con 0",
+        " logging synchronous",
+        "line aux 0",
+        "line vty 0 4",
+        " login",
+        " transport input none",
+        "!",
+        "end",
+      ].join("\r\n");
+
+      /** Read-only second-switch exhibit — printed when user types show running-config on SW2 */
+      var SWITCH2_SHOW_RUNNING_SNAPSHOT = [
+        "Building configuration...",
+        "",
+        "hostname R2",
+        "!",
+        "boot-start-marker",
+        "boot-end-marker",
+        "!",
+        "!",
+        "!",
+        "no aaa new-model",
+        "clock timezone EET 2 0",
+        "mmi polling-interval 60",
+        "no mmi auto-configure",
+        "no mmi pvc",
+        "mmi snmp-timeout 180",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "ip cef",
+        "!",
+        "multilink bundle-name authenticated",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "redundancy",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "interface Ethernet0/0",
+        " shutdown",
+        "!",
+        "interface Ethernet0/1",
+        " shutdown",
+        "!",
+        "interface Ethernet0/2",
+        " shutdown",
+        "!",
+        "interface Ethernet0/3",
+        " shutdown",
+        "!",
+        "ip forward-protocol nd",
+        "!",
+        "!",
+        "no ip http server",
+        "no ip http secure-server",
+        "!",
+        "!",
+        "!",
+        "!",
+        "control-plane",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "line con 0",
+        " logging synchronous",
+        "line aux 0",
+        "line vty 0 4",
+        " login",
+        " transport input none",
+        "!",
+        "end",
+      ].join("\r\n");
+
+      /**
+       * ## Prompt / modes (IOS-shaped)
+       *
+       * - LAB_STEPS: finite list of { mode, test(raw) }. Steps advance only when test(raw) is true for the CURRENT index.
+       * - mode selects the DISPLAYED prompt via promptForMode(host, mode).
+       * - Add modes as needed: config-router, config-ext-nacl, config-pmap, control-plane, …
+       * - Abbreviations: normalize() expands common forms (conf t, sh run, int …) so tests can match canonical strings.
+       */
+      // Stub LAB_STEPS — minimal sequence that completes in privileged exec; the lab is freeform around
+      // ip/ipv6 host assignment so submit handlers also accept common interface commands without strict gating.
+      var LAB_STEPS = [
+        { mode: "exec", test: function (raw) {
+          return normalize(raw) === "configure terminal";
+        }},
+        { mode: "config", test: function (raw) {
+          return normalize(raw) === "end";
+        }},
+      ];
+
+      /**
+       * Lowercase, trim, collapse spaces, strip trailing . or ; then expand helpful IOS abbreviations for matching.
+       */
+      function normalize(s) {
+        var t = String(s)
+          .trim()
+          .toLowerCase()
+          .replace(/\s+/g, " ")
+          .replace(/[.;]+$/, "");
+        if (t === "conf t" || t === "config t") t = "configure terminal";
+        if (t === "sh run" || t === "show run" || t === "sh running-config") t = "show running-config";
+        if (t === "do show run" || t === "do sh run") t = "do show running-config";
+        if (t === "sh ver" || t === "show ver" || t === "sh version") t = "show version";
+        if (t === "copy run start" || t === "copy run st") t = "copy running-configuration startup-configuration";
+        if (t === "copy running-config startup-config") t = "copy running-configuration startup-configuration";
+        if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
+        return t;
+      }
+
+      var HELP_DISABLED_MSG = "help feature disabled for tester";
+      var SHOW_VERSION_MSG = "BeCertifiedToday.com version 2026";
+      var COPY_RUN_START_OK_MSG =
+        "Destination filename [startup-config]?\nBuilding configuration...\n[OK]";
+      var COPY_RUN_START_EXEC_ONLY_MSG =
+        "% Error: Run copy running-configuration startup-configuration only from privileged EXEC (#), not from configuration mode.";
+      var COPY_RUN_START_AFTER_STEPS_MSG =
+        "% Error: Finish the full STEPS sequence on this switch until you return to privileged EXEC (#), then save to startup-config.";
+      var COPY_RUN_START_AFTER_SW1_STEPS_MSG =
+        "% Error: Finish the full STEPS sequence on R1 first (until R1#), then save startup-config from privileged EXEC on R2.";
+      var BASELINE_SW_STEPS_OK_MSG =
+        "[OK] Router steps complete. From privileged exec on R1 and R2, run copy running-configuration startup-configuration (copy run start) on each device to finish the lab.";
+      var BASELINE_LAB_ALL_DONE_MSG =
+        "[OK] Lab complete: objectives met and running-config saved to startup-config on R1 and R2.";
+      var PASS_BANNER_BASELINE_PENDING =
+        "Complete all R1 steps, then from enable mode on R1 and R2 run copy running-configuration startup-configuration on each device.";
+
+      function matchShowRun(raw) {
+        var u = normalize(raw);
+        return u === "show running-config" || u === "do show running-config";
+      }
+
+      function matchShowVersion(raw) {
+        return normalize(raw) === "show version";
+      }
+
+      function matchCopyRunStart(raw) {
+        return normalize(raw) === "copy running-configuration startup-configuration";
+      }
+
+      var nvramSavedSw = false;
+      var nvramSavedSw2 = false;
+
+      function tryCompleteBaselineLab(append) {
+        if (stepIndex < LAB_STEPS.length || !nvramSavedSw || !nvramSavedSw2) return;
+        if (passBanner.classList.contains("visible")) return;
+        passBanner.classList.add("visible");
+        passBanner.textContent = BASELINE_LAB_ALL_DONE_MSG;
+        if (append) append("line-sys", BASELINE_LAB_ALL_DONE_MSG);
+      }
+
+      /** Privileged exec (#) for the lab switch prompt (not config submodes). */
+      function swInEnableMode() {
+        if (
+          swPromptOverride === "config" ||
+          swPromptOverride === "config-vlan" ||
+          swPromptOverride === "config-if" ||
+          swPromptOverride === "config-if-range" ||
+          swPromptOverride === "config-router" ||
+          swPromptOverride === "config-std-nacl" ||
+          swPromptOverride === "config-ext-nacl" ||
+          swPromptOverride === "config-pmap" ||
+          swPromptOverride === "control-plane"
+        ) {
+          return false;
+        }
+        if (swPromptOverride === "exec") return true;
+        if (stepIndex >= LAB_STEPS.length) return true;
+        return LAB_STEPS[stepIndex].mode === "exec";
+      }
+
+      /** Map logical IOS mode to prompt string for host (SW1, SW2, …). */
+      function promptForMode(host, mode) {
+        switch (mode) {
+          case "exec":
+            return host + "#";
+          case "config":
+            return host + "(config)#";
+          case "config-vlan":
+            return host + "(config-vlan)#";
+          case "config-if":
+            return host + "(config-if)#";
+          case "config-if-range":
+            return host + "(config-if-range)#";
+          case "config-router":
+            return host + "(config-router)#";
+          case "config-std-nacl":
+            return host + "(config-std-nacl)#";
+          case "config-ext-nacl":
+            return host + "(config-ext-nacl)#";
+          case "config-pmap":
+            return host + "(config-pmap)#";
+          case "control-plane":
+            return host + "(config-control-plane)#";
+          default:
+            return host + "#";
+        }
+      }
+
+      /** Dynamic IOS-style VLAN create feedback for `vlan <id>` from (config)#/(config-vlan)#. */
+      function appendVlanCreateSys(appendFn, line) {
+        var m = normalize(line).match(/^vlan (\d+)$/);
+        if (m) appendFn("line-sys", "VLAN " + m[1] + " not in configuration.\nCreating VLAN " + m[1] + ".");
+      }
+
+      /**
+       * Soft mode-navigation helper for R1: handles configure terminal / interface /
+       * interface range / vlan / exit / end transitions outside the strict LAB_STEPS engine.
+       * Returns true if the line was consumed as a navigation command.
+       */
+      function trySwNavSoftLine(line) {
+        var u = normalize(line);
+        if (u === "configure terminal" && swInEnableMode()) {
+          swPromptOverride = "config";
+          setSwPrompt();
+          return true;
+        }
+        if (u.indexOf("interface range ") === 0 &&
+            (swPromptOverride === "config" || swPromptOverride === "config-if" || swPromptOverride === "config-if-range")) {
+          swPromptOverride = "config-if-range";
+          setSwPrompt();
+          return true;
+        }
+        if (u.indexOf("interface ") === 0 &&
+            (swPromptOverride === "config" || swPromptOverride === "config-if" || swPromptOverride === "config-if-range")) {
+          swPromptOverride = "config-if";
+          setSwPrompt();
+          return true;
+        }
+        if (/^vlan \d+$/.test(u) &&
+            (swPromptOverride === "config" || swPromptOverride === "config-vlan")) {
+          appendVlanCreateSys(appendSw, line);
+          swPromptOverride = "config-vlan";
+          setSwPrompt();
+          return true;
+        }
+        if (u === "exit" && swPromptOverride === "config-if-range") {
+          swPromptOverride = "config";
+          setSwPrompt();
+          return true;
+        }
+        if (u === "exit" && swPromptOverride === "config-if") {
+          swPromptOverride = "config";
+          setSwPrompt();
+          return true;
+        }
+        if (u === "exit" && swPromptOverride === "config-vlan") {
+          swPromptOverride = "config";
+          setSwPrompt();
+          return true;
+        }
+        if (u === "exit" && swPromptOverride === "config") {
+          swPromptOverride = "exec";
+          setSwPrompt();
+          return true;
+        }
+        if (u === "end" &&
+            (swPromptOverride === "config" || swPromptOverride === "config-vlan" ||
+             swPromptOverride === "config-if" || swPromptOverride === "config-if-range")) {
+          swPromptOverride = "exec";
+          setSwPrompt();
+          return true;
+        }
+        return false;
+      }
+
+      /** Permissive acceptance for common interface/VLAN commands the lab does not strictly gate. */
+      function isPermissiveIfCommand(line) {
+        var u = normalize(line);
+        return /^ip address\s+\S+/.test(u) ||
+               /^ipv6 address\s+\S+/.test(u) ||
+               u === "no shutdown" || u === "shutdown" ||
+               /^description\s+\S+/.test(u) ||
+               u === "switchport mode access" || u === "switchport mode trunk" ||
+               /^switchport access vlan \d+$/.test(u) ||
+               /^switchport voice vlan \d+$/.test(u) ||
+               /^switchport trunk allowed vlan \S+/.test(u) ||
+               /^switchport trunk native vlan \d+$/.test(u) ||
+               /^channel-group \d+ mode (active|passive|on|desirable|auto)$/.test(u);
+      }
+      function isPermissiveVlanCommand(line) {
+        return /^name\s+\S+/.test(normalize(line));
+      }
+
+      /** Prompt for the switch while advancing through LAB_STEPS (post-completion → exec). */
+      function promptForLabStepIndex(index) {
+        if (index >= LAB_STEPS.length) return promptForMode(SWITCH_HOST, "exec");
+        return promptForMode(SWITCH_HOST, LAB_STEPS[index].mode);
+      }
+
+      var stepIndex = 0;
+      var swPromptOverride = null;
+
+      var swCliOverlay = document.getElementById("swCliOverlay");
+      var swCliDialog = document.getElementById("swCliDialog");
+      var swScrollback = document.getElementById("swScrollback");
+      var swPrompt = document.getElementById("swPrompt");
+      var swCmdline = document.getElementById("swCmdline");
+      var swTerminal = document.getElementById("swTerminal");
+      var passBanner = document.getElementById("passBanner");
+      var swResetBtn = document.getElementById("swResetBtn");
+
+      var sw2CliOverlay = document.getElementById("sw2CliOverlay");
+      var sw2CliDialog = document.getElementById("sw2CliDialog");
+      var sw2Scrollback = document.getElementById("sw2Scrollback");
+      var sw2Prompt = document.getElementById("sw2Prompt");
+      var sw2Cmdline = document.getElementById("sw2Cmdline");
+      var sw2Terminal = document.getElementById("sw2Terminal");
+
+      var openSelectedCliBtn = document.getElementById("openSelectedCliBtn");
+      var helperFileOverlay = document.getElementById("helperFileOverlay");
+      var helperFileDialog = document.getElementById("helperFileDialog");
+      var spoilerOverlay = document.getElementById("spoilerOverlay");
+      var spoilerDialog = document.getElementById("spoilerDialog");
+
+      var modalStackZ = 30000;
+      function bumpOverlayZ(overlay) {
+        if (!overlay) return;
+        modalStackZ += 1;
+        overlay.style.zIndex = String(modalStackZ);
+      }
+
+      function getLabDev() {
+        var sel = document.querySelector('input[name="labPrimaryDev"]:checked');
+        return sel ? sel.value : "R1";
+      }
+
+      function syncOpenCliLabel() {
+        var d = getLabDev();
+        if (d === "R2") openSelectedCliBtn.textContent = "Open " + SWITCH2_HOST + " CLI";
+        else openSelectedCliBtn.textContent = "Open " + SWITCH_HOST + " CLI";
+      }
+
+      function appendSw(cls, text) {
+        var div = document.createElement("div");
+        div.className = cls;
+        div.textContent = text;
+        swScrollback.appendChild(div);
+        swScrollback.scrollTop = swScrollback.scrollHeight;
+      }
+
+      function appendSw2(cls, text) {
+        var div = document.createElement("div");
+        div.className = cls;
+        div.textContent = text;
+        sw2Scrollback.appendChild(div);
+        sw2Scrollback.scrollTop = sw2Scrollback.scrollHeight;
+      }
+
+      var pcCliOverlay = document.getElementById("pcCliOverlay");
+      var pcCliDialog = document.getElementById("pcCliDialog");
+      var pcScrollback = document.getElementById("pcScrollback");
+      var pcPrompt = document.getElementById("pcPrompt");
+      var pcCmdline = document.getElementById("pcCmdline");
+      var pcTerminal = document.getElementById("pcTerminal");
+
+      function appendPc(cls, text) {
+        var div = document.createElement("div");
+        div.className = cls;
+        div.textContent = text;
+        pcScrollback.appendChild(div);
+        pcScrollback.scrollTop = pcScrollback.scrollHeight;
+      }
+
+      function syncPcPromptLabel() {
+        var d = getLabDev();
+        if (d === "PC2") pcPrompt.textContent = "PC2>";
+        else if (d === "PC1") pcPrompt.textContent = "PC1>";
+        else pcPrompt.textContent = PC_PROMPT;
+      }
+
+      function resetPc() {
+        pcScrollback.innerHTML = "";
+        syncPcPromptLabel();
+      }
+
+      function submitPc() {
+        var promptText = pcPrompt.textContent;
+        var line = pcCmdline.value;
+        appendPc("line-user", promptText + " " + line);
+        pushLocalHistory(pcCmdline, line);
+        pcCmdline.value = "";
+        if (!line.trim()) return;
+        if (normalize(line) === "?") {
+          appendPc("line-sys", HELP_DISABLED_MSG);
+          return;
+        }
+        appendPc(
+          "line-bad",
+          "'" +
+            line.trim() +
+            "' is not recognized as an internal or external command,\noperable program or batch file."
+        );
+      }
+
+      function setSwPrompt() {
+        if (swPromptOverride !== null && swPromptOverride !== undefined) {
+          swPrompt.textContent = promptForMode(SWITCH_HOST, swPromptOverride);
+          return;
+        }
+        swPrompt.textContent = promptForLabStepIndex(stepIndex);
+      }
+
+      function resetSwLab() {
+        stepIndex = 0;
+        swPromptOverride = null;
+        nvramSavedSw = false;
+        nvramSavedSw2 = false;
+        swScrollback.innerHTML = "";
+        passBanner.classList.remove("visible");
+        passBanner.textContent = PASS_BANNER_BASELINE_PENDING;
+        swCmdline.disabled = false;
+        swCmdline.value = "";
+        clearLocalHistory(swCmdline);
+        // Reset companion device terminals + history so a Reset Lab returns the whole sim to baseline.
+        if (typeof sw2Scrollback !== "undefined" && sw2Scrollback) sw2Scrollback.innerHTML = "";
+        if (typeof sw2Mode !== "undefined") {
+          sw2Mode = "exec";
+          if (typeof sw2Prompt !== "undefined" && sw2Prompt && typeof sw2PromptForMode === "function") {
+            sw2Prompt.textContent = sw2PromptForMode();
+          }
+        }
+        if (typeof sw2Cmdline !== "undefined" && sw2Cmdline) {
+          sw2Cmdline.value = "";
+          clearLocalHistory(sw2Cmdline);
+        }
+        if (typeof pcScrollback !== "undefined" && pcScrollback) pcScrollback.innerHTML = "";
+        if (typeof pcCmdline !== "undefined" && pcCmdline) {
+          pcCmdline.value = "";
+          clearLocalHistory(pcCmdline);
+        }
+        if (typeof syncPcPromptLabel === "function") syncPcPromptLabel();
+        setSwPrompt();
+      }
+
+      function submitSw() {
+        var promptText = swPrompt.textContent;
+        var line = swCmdline.value;
+        appendSw("line-user", promptText + " " + line);
+        pushLocalHistory(swCmdline, line);
+        swCmdline.value = "";
+        if (!line.trim()) return;
+
+        if (normalize(line) === "?") {
+          appendSw("line-sys", HELP_DISABLED_MSG);
+          return;
+        }
+
+        if (matchShowRun(line)) {
+          appendSw("line-showrun", SWITCH_SHOW_RUNNING_SNAPSHOT);
+          return;
+        }
+
+        if (swInEnableMode() && matchShowVersion(line)) {
+          appendSw("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+
+        if (matchCopyRunStart(line)) {
+          if (!swInEnableMode()) {
+            appendSw("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            return;
+          }
+          if (stepIndex < LAB_STEPS.length) {
+            appendSw("line-sys", COPY_RUN_START_AFTER_STEPS_MSG);
+            return;
+          }
+          appendSw("line-sys", COPY_RUN_START_OK_MSG);
+          nvramSavedSw = true;
+          tryCompleteBaselineLab(function (cls, text) {
+            appendSw(cls, text);
+          });
+          return;
+        }
+
+        if (trySwNavSoftLine(line)) return;
+
+        if (
+          (swPromptOverride === "config-if" || swPromptOverride === "config-if-range") &&
+          isPermissiveIfCommand(line)
+        ) {
+          return;
+        }
+        if (swPromptOverride === "config-vlan" && isPermissiveVlanCommand(line)) {
+          return;
+        }
+
+        if (stepIndex >= LAB_STEPS.length) {
+          appendSw("line-bad", "% Invalid input");
+          return;
+        }
+
+        if (LAB_STEPS[stepIndex].test(line)) {
+          stepIndex += 1;
+          swPromptOverride = null;
+          if (stepIndex >= LAB_STEPS.length) {
+            swPrompt.textContent = promptForMode(SWITCH_HOST, "exec");
+            appendSw("line-sys", BASELINE_SW_STEPS_OK_MSG);
+            tryCompleteBaselineLab(function (cls, text) {
+              appendSw(cls, text);
+            });
+          } else {
+            setSwPrompt();
+          }
+        } else {
+          appendSw("line-bad", "% Invalid input");
+        }
+      }
+
+      /** SW2: IOS-like modes + show running-config (read-only exhibit); prompts use promptForMode like SW1 */
+      var sw2Mode = "exec";
+
+      function sw2PromptForMode() {
+        return promptForMode(SWITCH2_HOST, sw2Mode);
+      }
+
+      function resetSw2() {
+        sw2Scrollback.innerHTML = "";
+        sw2Mode = "exec";
+        sw2Prompt.textContent = sw2PromptForMode();
+      }
+
+      function submitSw2() {
+        var promptText = sw2Prompt.textContent;
+        var line = sw2Cmdline.value;
+        appendSw2("line-user", promptText + " " + line);
+        pushLocalHistory(sw2Cmdline, line);
+        sw2Cmdline.value = "";
+        if (!line.trim()) return;
+
+        if (normalize(line) === "?") {
+          appendSw2("line-sys", HELP_DISABLED_MSG);
+          return;
+        }
+
+        var u = normalize(line);
+
+        if (matchShowRun(line)) {
+          appendSw2("line-showrun", SWITCH2_SHOW_RUNNING_SNAPSHOT);
+          return;
+        }
+
+        if (sw2Mode === "exec" && matchShowVersion(line)) {
+          appendSw2("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+
+        if (matchCopyRunStart(line)) {
+          if (sw2Mode !== "exec") {
+            appendSw2("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            return;
+          }
+          if (stepIndex < LAB_STEPS.length) {
+            appendSw2("line-sys", COPY_RUN_START_AFTER_SW1_STEPS_MSG);
+            return;
+          }
+          appendSw2("line-sys", COPY_RUN_START_OK_MSG);
+          nvramSavedSw2 = true;
+          tryCompleteBaselineLab(function (cls, text) {
+            appendSw2(cls, text);
+          });
+          return;
+        }
+
+        // Soft mode-navigation handler for R2 (mirrors trySwNavSoftLine on R1).
+        if (sw2Mode === "exec" && u === "configure terminal") {
+          sw2Mode = "config";
+          sw2Prompt.textContent = sw2PromptForMode();
+          return;
+        }
+        if (
+          u.indexOf("interface range ") === 0 &&
+          (sw2Mode === "config" || sw2Mode === "config-if" || sw2Mode === "config-if-range")
+        ) {
+          sw2Mode = "config-if-range";
+          sw2Prompt.textContent = sw2PromptForMode();
+          return;
+        }
+        if (
+          u.indexOf("interface ") === 0 &&
+          (sw2Mode === "config" || sw2Mode === "config-if" || sw2Mode === "config-if-range")
+        ) {
+          sw2Mode = "config-if";
+          sw2Prompt.textContent = sw2PromptForMode();
+          return;
+        }
+        if (/^vlan \d+$/.test(u) && (sw2Mode === "config" || sw2Mode === "config-vlan")) {
+          appendVlanCreateSys(appendSw2, line);
+          sw2Mode = "config-vlan";
+          sw2Prompt.textContent = sw2PromptForMode();
+          return;
+        }
+        if (u === "exit" && sw2Mode === "config-if-range") {
+          sw2Mode = "config";
+          sw2Prompt.textContent = sw2PromptForMode();
+          return;
+        }
+        if (u === "exit" && sw2Mode === "config-vlan") {
+          sw2Mode = "config";
+          sw2Prompt.textContent = sw2PromptForMode();
+          return;
+        }
+        if (sw2Mode === "config-if" && u === "exit") {
+          sw2Mode = "config";
+          sw2Prompt.textContent = sw2PromptForMode();
+          return;
+        }
+        if (sw2Mode === "config" && (u === "exit" || u === "end")) {
+          sw2Mode = "exec";
+          sw2Prompt.textContent = sw2PromptForMode();
+          return;
+        }
+        if (
+          u === "end" &&
+          (sw2Mode === "config-if" || sw2Mode === "config-if-range" || sw2Mode === "config-vlan")
+        ) {
+          sw2Mode = "exec";
+          sw2Prompt.textContent = sw2PromptForMode();
+          return;
+        }
+
+        if (
+          (sw2Mode === "config-if" || sw2Mode === "config-if-range") &&
+          isPermissiveIfCommand(line)
+        ) {
+          return;
+        }
+        if (sw2Mode === "config-vlan" && isPermissiveVlanCommand(line)) {
+          return;
+        }
+
+        appendSw2("line-bad", "% Invalid input");
+      }
+
+      function wireFloatingModal(dialogEl, overlayEl) {
+        var header = dialogEl.querySelector(".cli-modal-header");
+        if (!dialogEl || !overlayEl || !header) return;
+        dialogEl.addEventListener("pointerdown", function () {
+          bumpOverlayZ(overlayEl);
+        });
+        var drag = null;
+        header.addEventListener("pointerdown", function (e) {
+          if (e.button !== 0) return;
+          if (e.target.closest(".cli-modal-close")) return;
+          var r = dialogEl.getBoundingClientRect();
+          dialogEl.style.left = r.left + "px";
+          dialogEl.style.top = r.top + "px";
+          dialogEl.style.transform = "none";
+          dialogEl.classList.add("is-dragging");
+          drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: r.left, oy: r.top };
+          try {
+            header.setPointerCapture(e.pointerId);
+          } catch (_) {}
+          e.preventDefault();
+        });
+        header.addEventListener("pointermove", function (e) {
+          if (!drag || e.pointerId !== drag.id) return;
+          dialogEl.style.left = drag.ox + (e.clientX - drag.sx) + "px";
+          dialogEl.style.top = drag.oy + (e.clientY - drag.sy) + "px";
+        });
+        function endDrag(e) {
+          if (!drag || e.pointerId !== drag.id) return;
+          drag = null;
+          dialogEl.classList.remove("is-dragging");
+          try {
+            header.releasePointerCapture(e.pointerId);
+          } catch (_) {}
+        }
+        header.addEventListener("pointerup", endDrag);
+        header.addEventListener("pointercancel", endDrag);
+      }
+
+      wireFloatingModal(swCliDialog, swCliOverlay);
+      wireFloatingModal(sw2CliDialog, sw2CliOverlay);
+      wireFloatingModal(pcCliDialog, pcCliOverlay);
+      wireFloatingModal(helperFileDialog, helperFileOverlay);
+      wireFloatingModal(spoilerDialog, spoilerOverlay);
+
+      function openSwCli() {
+        bumpOverlayZ(swCliOverlay);
+        swCliOverlay.classList.add("is-open");
+        swCliOverlay.setAttribute("aria-hidden", "false");
+        if (swTerminal) {
+          swTerminal.classList.remove("terminal-flash");
+          void swTerminal.offsetWidth;
+          swTerminal.classList.add("terminal-flash");
+        }
+        swCmdline.focus();
+      }
+      function closeSwCli() {
+        swCliOverlay.classList.remove("is-open");
+        swCliOverlay.setAttribute("aria-hidden", "true");
+      }
+      function openSw2Cli() {
+        bumpOverlayZ(sw2CliOverlay);
+        sw2CliOverlay.classList.add("is-open");
+        sw2CliOverlay.setAttribute("aria-hidden", "false");
+        resetSw2();
+        if (sw2Terminal) {
+          sw2Terminal.classList.remove("terminal-flash");
+          void sw2Terminal.offsetWidth;
+          sw2Terminal.classList.add("terminal-flash");
+        }
+        sw2Cmdline.focus();
+      }
+      function closeSw2Cli() {
+        sw2CliOverlay.classList.remove("is-open");
+        sw2CliOverlay.setAttribute("aria-hidden", "true");
+      }
+
+      function openPcCli() {
+        bumpOverlayZ(pcCliOverlay);
+        pcCliOverlay.classList.add("is-open");
+        pcCliOverlay.setAttribute("aria-hidden", "false");
+        resetPc();
+        if (pcTerminal) {
+          pcTerminal.classList.remove("terminal-flash");
+          void pcTerminal.offsetWidth;
+          pcTerminal.classList.add("terminal-flash");
+        }
+        pcCmdline.focus();
+      }
+      function closePcCli() {
+        pcCliOverlay.classList.remove("is-open");
+        pcCliOverlay.setAttribute("aria-hidden", "true");
+      }
+
+      function openSelectedCliModal() {
+        var d = getLabDev();
+        if (d === "R2") openSw2Cli();
+        else openSwCli();
+      }
+
+      openSelectedCliBtn.addEventListener("click", openSelectedCliModal);
+      document.querySelectorAll('input[name="labPrimaryDev"]').forEach(function (r) {
+        r.addEventListener("change", function () {
+          syncOpenCliLabel();
+          openSelectedCliBtn.focus();
+        });
+      });
+
+      swCmdline.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submitSw();
+        }
+      });
+      sw2Cmdline.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submitSw2();
+        }
+      });
+      pcCmdline.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submitPc();
+        }
+      });
+
+      document.getElementById("swCliClose").addEventListener("click", closeSwCli);
+      document.getElementById("sw2CliClose").addEventListener("click", closeSw2Cli);
+      document.getElementById("pcCliClose").addEventListener("click", closePcCli);
+      swResetBtn.addEventListener("click", resetSwLab);
+      document.getElementById("inlineResetLabBtn").addEventListener("click", resetSwLab);
+
+      document.getElementById("openHelperFileBtn").addEventListener("click", function () {
+        bumpOverlayZ(helperFileOverlay);
+        helperFileOverlay.classList.add("is-open");
+        helperFileOverlay.setAttribute("aria-hidden", "false");
+      });
+      document.getElementById("helperFileClose").addEventListener("click", function () {
+        helperFileOverlay.classList.remove("is-open");
+        helperFileOverlay.setAttribute("aria-hidden", "true");
+      });
+      document.getElementById("openSpoilerBtn").addEventListener("click", function () {
+        bumpOverlayZ(spoilerOverlay);
+        spoilerOverlay.classList.add("is-open");
+        spoilerOverlay.setAttribute("aria-hidden", "false");
+      });
+      document.getElementById("spoilerClose").addEventListener("click", function () {
+        spoilerOverlay.classList.remove("is-open");
+        spoilerOverlay.setAttribute("aria-hidden", "true");
+      });
+
+      /** Local command history (ArrowUp / ArrowDown) — same behavior as full PVST lab */
+      var localHistory = new WeakMap();
+      function getLocalHistoryState(input) {
+        var state = localHistory.get(input);
+        if (state) return state;
+        state = { entries: [], idx: 0 };
+        localHistory.set(input, state);
+        return state;
+      }
+      function pushLocalHistory(input, raw) {
+        var cmd = String(raw || "").trim();
+        if (!cmd) return;
+        var state = getLocalHistoryState(input);
+        if (!state.entries.length || state.entries[state.entries.length - 1] !== cmd) {
+          state.entries.push(cmd);
+        }
+        state.idx = state.entries.length;
+      }
+      function clearLocalHistory(input) {
+        if (!input) return;
+        var state = getLocalHistoryState(input);
+        state.entries = [];
+        state.idx = 0;
+      }
+      function bindLocalHistory(input) {
+        if (!input || input.dataset.localHistoryReady === "1") return;
+        input.dataset.localHistoryReady = "1";
+        input.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            pushLocalHistory(input, input.value);
+            return;
+          }
+          var usePrev = e.key === "ArrowUp" || (e.key === "Tab" && !e.shiftKey);
+          var useNext = e.key === "ArrowDown" || (e.key === "Tab" && e.shiftKey);
+          if (!usePrev && !useNext) return;
+          var state = getLocalHistoryState(input);
+          if (!state.entries.length) return;
+          e.preventDefault();
+          if (usePrev) {
+            state.idx = Math.max(0, state.idx - 1);
+          } else {
+            state.idx = Math.min(state.entries.length, state.idx + 1);
+          }
+          input.value = state.idx >= state.entries.length ? "" : state.entries[state.idx];
+        });
+      }
+      bindLocalHistory(swCmdline);
+      bindLocalHistory(sw2Cmdline);
+      bindLocalHistory(pcCmdline);
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key !== "Escape") return;
+        if (spoilerOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          spoilerOverlay.classList.remove("is-open");
+          spoilerOverlay.setAttribute("aria-hidden", "true");
+          return;
+        }
+        if (helperFileOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          helperFileOverlay.classList.remove("is-open");
+          helperFileOverlay.setAttribute("aria-hidden", "true");
+          return;
+        }
+        if (swCliOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          closeSwCli();
+          return;
+        }
+        if (sw2CliOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          closeSw2Cli();
+          return;
+        }
+        if (pcCliOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          closePcCli();
+        }
+      });
+
+      history.pushState(null, "", location.href);
+      window.addEventListener("popstate", function () {
+        history.pushState(null, "", location.href);
+      });
+
+      syncOpenCliLabel();
+      resetSwLab();
+    })();
+  </script>
+</body>
+</html>
