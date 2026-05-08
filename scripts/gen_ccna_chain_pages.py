@@ -44,6 +44,20 @@ STYLE = r"""  <style>
       font-weight: 600;
       color: #e6edf3;
     }
+    .stem-after-exhibit-list {
+      margin: 8px 0 12px;
+      padding-left: 1.35rem;
+      font-size: clamp(1.02rem, 1.9vw, 1.32rem);
+      line-height: 1.45;
+      font-weight: 600;
+      color: #e6edf3;
+    }
+    .stem-after-exhibit-list li {
+      margin: 6px 0;
+    }
+    .stem-after-exhibit-tail {
+      margin-top: 10px;
+    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -270,6 +284,8 @@ def page(
     mono_choices: bool = False,
     post_stem_html: str | None = None,
     stem_after_exhibit: str | None = None,
+    stem_after_exhibit_bullets: list[str] | None = None,
+    stem_after_exhibit_tail: str | None = None,
 ) -> str:
     mono = " mono" if mono_choices else ""
     prev_h = (
@@ -293,11 +309,31 @@ def page(
     exhibit_block = post_stem_html if post_stem_html else ""
     stem_h = html.escape(stem)
     if post_stem_html and stem_after_exhibit:
-        main_open = (
-            f"    <h1>{stem_h}</h1>\n"
-            f"{exhibit_block}\n"
-            f'    <p class="stem-after-exhibit">{html.escape(stem_after_exhibit)}</p>\n'
-        )
+        if stem_after_exhibit_bullets:
+            bullet_lines = "".join(
+                f"      <li>{html.escape(b)}</li>\n" for b in stem_after_exhibit_bullets
+            )
+            tail_p = ""
+            if stem_after_exhibit_tail:
+                tail_p = (
+                    f'    <p class="stem-after-exhibit stem-after-exhibit-tail">'
+                    f"{html.escape(stem_after_exhibit_tail)}</p>\n"
+                )
+            main_open = (
+                f"    <h1>{stem_h}</h1>\n"
+                f"{exhibit_block}\n"
+                f'    <p class="stem-after-exhibit">{html.escape(stem_after_exhibit)}</p>\n'
+                f'    <ul class="stem-after-exhibit-list">\n'
+                f"{bullet_lines}"
+                f"    </ul>\n"
+                f"{tail_p}"
+            )
+        else:
+            main_open = (
+                f"    <h1>{stem_h}</h1>\n"
+                f"{exhibit_block}\n"
+                f'    <p class="stem-after-exhibit">{html.escape(stem_after_exhibit)}</p>\n'
+            )
     else:
         main_open = f"    <h1>{stem_h}</h1>\n{exhibit_block}\n"
     return f"""<!doctype html>
@@ -582,6 +618,20 @@ def main() -> None:
             ],
         },
         {
+            "slug": "wlan-design-nonoverlapping-2-4-channels-1-6-11",
+            "title": "CCNA — WLAN infrastructure channel design",
+            "stem": "What is recommended for the wireless infrastructure design of an organization?",
+            "name": "wlandes1",
+            "correct": "B",
+            "explain": "Correct. B — In 2.4 GHz, channels 1, 6, and 11 are the common non-overlapping set; assigning them across nearby access points limits adjacent-channel interference. Clustering APs on one channel (A) increases contention, not throughput. Adjacent APs should not share the same channel when they hear each other (D). Non-overlapping channels mainly control interference; \u201cload balancing\u201d alone is a weak match for why channels differ (C).",
+            "choices": [
+                "group access points together to increase throughput on a given channel",
+                "configure the first three access points to use channels 1, 6, and 11",
+                "include at least two access points on nonoverlapping channels to support load balancing",
+                "assign physically adjacent access points to the same Wi-Fi channel",
+            ],
+        },
+        {
             "slug": "switch-mac-table-ingress-learning",
             "title": "CCNA — MAC address table learning",
             "stem": "What does a switch use to build its MAC address table?",
@@ -621,6 +671,20 @@ def main() -> None:
                 "prompts the user to specify the desired IP address",
                 "continuously attempts to resolve the URL until the command is cancelled",
                 "sends a broadcast message in an attempt to resolve the URL",
+            ],
+        },
+        {
+            "slug": "dns-lookup-operation-definition",
+            "title": "CCNA — DNS lookup operation",
+            "stem": "What is a DNS lookup operation?",
+            "name": "dnslkop1",
+            "correct": "D",
+            "explain": "Correct. D — A DNS lookup is the process where a resolver sends a query to a DNS server and the server returns the answer records (most often mapping a hostname to an IPv4/IPv6 address in forward lookups). The option wording reverses \u201cname\u201d and \u201cIP\u201d in places, but it is the only choice that describes that query/response resolution behavior. A states that DNS uses destination port 53, which is true of the service, but it is not the definition of a lookup. B and C are not standard DNS lookup behavior.",
+            "choices": [
+                "serves requests over destination port 53",
+                "DNS server pings the destination to verify that it is available",
+                "DNS server forwards the client to an alternate IP address when the primary IP is down",
+                "responds to a request for IP address to domain name resolution to the DNS server",
             ],
         },
         {
@@ -942,6 +1006,20 @@ def main() -> None:
             ],
         },
         {
+            "slug": "private-ipv4-appropriate-use-internal-only",
+            "title": "CCNA — Appropriate use of private IPv4",
+            "stem": "What is an appropriate use for private IPv4 addressing?",
+            "name": "privuse1",
+            "correct": "D",
+            "explain": "Correct. D — RFC 1918 addresses are for internal networks that are not globally unique on the Internet; they suit hosts that only need to reach other internal systems. A public-facing firewall interface normally uses a public address. Outbound Internet access from private hosts relies on NAT or proxying, not private addressing by itself as the full story in B or C.",
+            "choices": [
+                "on the public-facing interface of a firewall",
+                "to allow hosts inside to communicate in both directions with hosts outside the organization",
+                "on internal hosts that stream data solely to external resources",
+                "on hosts that communicate only with other internal hosts",
+            ],
+        },
+        {
             "slug": "data-plane-forwarding-lookup",
             "title": "CCNA — Data plane action",
             "stem": "Which network action occurs within the data plane?",
@@ -985,6 +1063,22 @@ def main() -> None:
                 "Option D: crypto key encrypt rsa name myKey (after ip domain-name)",
             ],
             "mono": True,
+        },
+        {
+            "slug": "pki-components-crl-ca-choose-two",
+            "title": "CCNA — PKI components (choose two)",
+            "stem": "Which two components comprise part of a PKI? (Choose two)",
+            "name": "pki2",
+            "choose_two": True,
+            "correct": ["C", "E"],
+            "explain": "Correct. C and E \u2014 A public key infrastructure relies on trusted CAs that issue and sign certificates, and on revocation data such as Certificate Revocation Lists (CRLs) so relying parties can tell which certificates are no longer valid. RSA security tokens (A) are separate authenticators. Cleartext passwords (B) and preshared keys (D) are not core PKI elements.",
+            "choices": [
+                "RSA token",
+                "clear-text password that authenticates connections",
+                "one or more CRLs",
+                "preshared key that authenticates connections",
+                "CA that grants certificates",
+            ],
         },
         {
             "slug": "sdn-southbound-openflow-forwarding",
@@ -1048,6 +1142,36 @@ def main() -> None:
             "mono": True,
         },
         {
+            "slug": "ipv6-compress-hq-serial-s0-700-400f",
+            "title": "CCNA — IPv6 compressed address (Serial0/0)",
+            "stem": "An engineer must configure the IPv6 address 2001:0db8:0000:0000:0700:0003:400F:572B on the Serial0/0 interface of the HQ router and wants to compress it for easier configuration. Which command must be issued on the router interface?",
+            "name": "v6hqser",
+            "correct": "A",
+            "explain": "Correct. A — Drop leading zeros in each hextet and replace the contiguous all-zero block with a single :: → 2001:db8::700:3:400F:572B. B wrongly shortens 400F to 4F inside the hextet. C uses an invalid character (letter O) and miscompresses 0700 as 7. D uses :: twice, which is not allowed.",
+            "choices": [
+                "ipv6 address 2001:db8::700:3:400F:572B",
+                "ipv6 address 2001:db8:0::700:3:4F:572B",
+                "ipv6 address 2001:Odb8::7:3:4F:572B",
+                "ipv6 address 2001::db8:0000::700:3:400F:572B",
+            ],
+            "mono": True,
+        },
+        {
+            "slug": "ipv6-compress-2001-eb8-c1-2200-0331",
+            "title": "CCNA — IPv6 compression 2001:EB8:C1:2200",
+            "stem": "A network administrator is setting up a new IPv6 network using the 64-bit address 2001:0EB8:00C1:2200:0001:0000:0000:0331/64. To simplify the configuration, the administrator has decided to compress the address. Which IP address must the administrator configure?",
+            "name": "v6cmp331",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D — Drop leading zeros in each hextet (0EB8\u2192EB8, 00C1\u2192C1, 0001\u21921, 0331\u2192331) and replace the contiguous pair of all-zero hextets with a single :: \u2192 2001:EB8:C1:2200:1::331/64. A keeps an extra :0000: segment instead of ::. B mangles the first hextet (2001). C incorrectly shortens 2200 to 22.",
+            "choices": [
+                "ipv6 address 2001:EB8:C1:2200:1:0000:331/64",
+                "ipv6 address 21:EB8:C1:2200:1::331/64",
+                "ipv6 address 2001:EB8:C1:22:1::331/64",
+                "ipv6 address 2001:EB8:C1:2200:1::331/64",
+            ],
+        },
+        {
             "slug": "wlc-pmf-comeback-spoofed-association",
             "title": "CCNA — PMF and association comeback",
             "stem": "An administrator must secure the WLC from receiving spoofed association requests. Which steps must be taken to configure the WLC to restrict the requests and force the user to wait 10 ms to retry an association request?",
@@ -1087,6 +1211,20 @@ def main() -> None:
                 "Probe Request",
                 "Reassociation Request",
                 "Association Request",
+            ],
+        },
+        {
+            "slug": "wlan-probe-response-frame-type",
+            "title": "CCNA — Probe response frame type",
+            "stem": "Which 802.11 frame type is indicated by a probe response after a client sends a probe request?",
+            "name": "probetype1",
+            "correct": "B",
+            "explain": "Correct. B — Probe Request and Probe Response are both 802.11 management frames (used during scanning/discovery). Control frames coordinate medium access (for example RTS/CTS/ACK). Data frames carry MSDUs. \u201cAction\u201d names a management subtype, not the top-level type category paired with control and data.",
+            "choices": [
+                "action",
+                "management",
+                "control",
+                "data",
             ],
         },
         {
@@ -1367,6 +1505,20 @@ def main() -> None:
             ],
         },
         {
+            "slug": "firewall-permit-deny-traffic-rules",
+            "title": "CCNA — Permit or deny traffic by rules",
+            "stem": "Which device permits or denies network traffic based on a set of rules?",
+            "name": "fwrules1",
+            "correct": "D",
+            "explain": "Correct. D — A firewall enforces security policy (rules) to permit or deny traffic. A wireless access point provides client access; a switch forwards frames at Layer 2; a wireless LAN controller manages lightweight access points.",
+            "choices": [
+                "access point",
+                "switch",
+                "wireless controller",
+                "firewall",
+            ],
+        },
+        {
             "slug": "portfast-benefit-user-data-sooner",
             "title": "CCNA — Benefit of PortFast",
             "stem": "What is the benefit of configuring PortFast on an interface?",
@@ -1486,6 +1638,20 @@ def main() -> None:
             ],
         },
         {
+            "slug": "layer3-switch-flood-broadcast-within-vlan",
+            "title": "CCNA — Layer 3 switch function",
+            "stem": "What is a function of a Layer 3 switch?",
+            "name": "l3swfn1",
+            "correct": "D",
+            "explain": "Correct. D — A multilayer switch still switches at Layer 2 inside each VLAN, so broadcast frames are flooded to other ports in the same VLAN (same broadcast domain). Inter-VLAN forwarding uses IP routing, not MAC-only bridging (C). Routed interfaces or SVIs do not carry broadcast between VLANs the way B suggests. Option A mischaracterizes how traffic is moved between subnets.",
+            "choices": [
+                "move frames between endpoints limited to IP addresses",
+                "transmit broadcast traffic when operating in Layer 3 mode exclusively",
+                "forward Ethernet frames between VLANs using only MAC addresses",
+                "flood broadcast traffic within a VLAN",
+            ],
+        },
+        {
             "slug": "qos-pq-voice-over-data-traffic",
             "title": "CCNA — PQ for voice on data-heavy links",
             "stem": "Which QoS tool can you use to optimize voice traffic on a network that is primarily intended for data traffic?",
@@ -1600,6 +1766,65 @@ def main() -> None:
             ],
         },
         {
+            "slug": "r5-disable-discovery-gi0-1-cdp-lldp-verify",
+            "title": "CCNA — CDP/LLDP per interface on R5",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "For security reasons, automatic neighbor discovery must be disabled on the R5 Gi0/1 interface. These tasks must be completed:",
+            "stem_after_exhibit_bullets": [
+                "Disable all neighbor discovery methods on R5 interface Gi0/1.",
+                "Permit neighbor discovery on R5 interface Gi0/2.",
+                "Verify there are no dynamically learned neighbors on R5 interface Gi0/1.",
+            ],
+            "stem_after_exhibit_tail": "Display the IP address of R6\u2019s interface Gi0/2. Which configuration must be used?",
+            "name": "r5disc1",
+            "correct": "C",
+            "mono": True,
+            "explain": "Correct. C — On Gi0/1, no cdp enable stops CDP on that interface only while cdp run keeps CDP on other interfaces such as Gi0/2. no lldp run disables LLDP globally so it is not active on Gi0/1. Option A globally disables CDP (hurts Gi0/2) and leaves LLDP on Gi0/1. Option B places no cdp run under the interface, which is invalid (global command). Option D matches C for config but uses only show cdp neighbor; neighbor detail output is the usual place to read the neighbor management IP for R6.",
+            "post_stem_html": '''    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/r5-r6-internet-topology-neighbor-discovery.png" alt="Topology: Internet connected to R5 Gi0/1; R5 Gi0/2 linked to R6 Gi0/2." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>''',
+            "choices": [
+                """Option A
+
+R5(config)#int Gi0/1
+R5(config-if)#no cdp enable
+R5(config-if)#exit
+R5(config)#lldp run
+R5(config)#no cdp run
+R5#sh cdp neighbor detail
+R5#sh lldp neighbor""",
+                """Option B
+
+R5(config)#int Gi0/1
+R5(config-if)#no cdp run
+R5(config-if)#exit
+R5(config)#lldp run
+R5(config)#cdp enable
+R5#sh cdp neighbor
+R5#sh lldp neighbor""",
+                """Option C
+
+R5(config)#int Gi0/1
+R5(config-if)#no cdp enable
+R5(config-if)#exit
+R5(config)#no lldp run
+R5(config)#cdp run
+R5#sh cdp neighbor detail
+R5#sh lldp neighbor""",
+                """Option D
+
+R5(config)#int Gi0/1
+R5(config-if)#no cdp enable
+R5(config-if)#exit
+R5(config)#no lldp run
+R5(config)#cdp run
+R5#sh cdp neighbor
+R5#sh lldp neighbor""",
+            ],
+        },
+        {
             "slug": "qos-voice-reduce-packet-loss",
             "title": "CCNA — QoS and voice packet loss",
             "stem": "How does QoS optimize voice traffic?",
@@ -1671,6 +1896,58 @@ def main() -> None:
                 "listens to multicast traffic for packet forwarding",
                 "provides DDoS mitigation",
                 "propagates VLAN information between switches",
+            ],
+        },
+        {
+            "slug": "dhcp-snooping-trust-server-same-switch-vlan1",
+            "title": "CCNA — DHCP snooping trust toward server",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "The DHCP server and clients are connected to the same switch. What is the next step to complete the DHCP configuration to allow clients on VLAN 1 to receive addresses from the DHCP server?",
+            "name": "dhcpsnpt1",
+            "correct": "A",
+            "explain": "Correct. A — When DHCP snooping is in use, access ports are untrusted by default and the switch drops DHCP server messages that arrive on untrusted ports. The interface toward the legitimate DHCP server must be set trusted (ip dhcp snooping trust) so offers and acknowledgments from that server are accepted. The ip dhcp relay information option command controls Option 82 insertion for DHCP relay agents across subnets, not marking the server port on the same VLAN. Trusting the client-facing port (D) would be the wrong side.",
+            "post_stem_html": '''    <div class="exhibit-stack">
+      <div class="cli-device" role="region" aria-label="Transcript of switch DHCP snooping commands">
+        <h2>Switch (transcript)</h2>
+        <pre>Switch# show ip dhcp snooping
+Switch DHCP snooping is enabled
+Switch DHCP gleaning is disabled
+DHCP snooping is configured on following VLANs: 1
+DHCP snooping is operational on following VLANs: 1
+DHCP snooping is configured on the following L3 Interfaces:
+Insertion of option 82 is disabled
+circuit-id default format: vlan-mod-port
+remote-id: aabb.cc00.6500 (MAC)
+Option 82 on untrusted port is not allowed
+Verification of hwaddr field is enabled
+Verification of giaddr field is enabled
+DHCP snooping trust/rate is configured on the following interfaces:
+Interface              Trusted    Allow option    Rate limit (pps)
+---------------------------------------------------------------</pre>
+        <pre>Switch# show ip dhcp snooping statistics detail
+Packets Processed by DHCP Snooping = 34
+IDB not known                        = 0
+Queue full                           = 0
+Interface is in errdisabled          = 0
+Rate limit exceeded                  = 0
+Received on untrusted ports          = 32
+Nonzero giaddr                       = 0
+Source mac not equal to chaddr       = 0
+No binding entry                     = 0
+Insertion of opt82 fail              = 0
+Unknown packet                       = 0
+Interface Down                       = 0
+Unknown output interface             = 0
+Misdirected Packets                  = 0
+Packets with Invalid Size            = 0
+Packets with Invalid Option          = 0</pre>
+      </div>
+    </div>''',
+            "choices": [
+                "Configure the ip dhcp snooping trust command on the interface that is connected to the DHCP server",
+                "Configure the ip dhcp relay information option command on the interface that is connected to the DHCP server",
+                "Configure the ip dhcp relay information option command on the interface that is connected to the DHCP client",
+                "Configure the ip dhcp snooping trust command on the interface that is connected to the DHCP client",
             ],
         },
         {
@@ -1952,6 +2229,20 @@ interface FastEthernet0/2
             ],
         },
         {
+            "slug": "sdn-controller-dynamic-changes-southbound-api",
+            "title": "CCNA — SDN controller changes the network",
+            "stem": "Which type of API allows SDN controllers to dynamically make changes to the network?",
+            "name": "sdndyn1",
+            "correct": "B",
+            "explain": "Correct. B — Southbound interfaces connect the controller to infrastructure devices so it can install forwarding state, push configuration, and read telemetry (for example via OpenFlow, NETCONF, or similar). Northbound APIs are for applications and orchestration above the controller. REST and SOAP describe implementation styles, not the controller-to-device plane.",
+            "choices": [
+                "northbound API",
+                "southbound API",
+                "SOAP API",
+                "REST API",
+            ],
+        },
+        {
             "slug": "ipv6-link-local-scope-neighbor-discovery",
             "title": "CCNA — IPv6 link-local addresses",
             "stem": "Which statement best describes IPv6 link-local addresses (for example within the FE80::/10 scope)?",
@@ -2019,6 +2310,48 @@ interface FastEthernet0/2
                 "It is a numbered standard IPv4 ACL range entry.",
                 "It is reserved exclusively for IPv6 traffic filtering.",
                 "It always references a route-map instead of permit/deny statements.",
+            ],
+        },
+        {
+            "slug": "vty-access-class-permit-any-after-deny-pc1",
+            "title": "CCNA — VTY access-class and standard ACL",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "The access list denies Telnet access from PC-1 to RTR-1 and should allow it from other hosts. PC-2 gets \u201c% Connection refused by remote host\u201d when trying to Telnet. Without permitting Telnet from PC-1, what must be done to allow the traffic?",
+            "name": "vtyacl1",
+            "correct": "A",
+            "explain": "Correct. A — A standard ACL ends with an implicit deny any. If ACL 10 only lists a deny for PC-1\u2019s address, every other source (including PC-2) still hits that implicit deny when access-class applies it inbound on the VTY lines. Add an explicit permit any after the PC-1 deny so other hosts are allowed while PC-1 remains denied. Removing the access-class (B) would drop the filter entirely and typically allow PC-1 again. Applying the ACL outbound on G0/0 (C) filters forwarded traffic through the interface, not VTY management sessions to the router. Removing the VTY password (D) does not fix ACL filtering.",
+            "post_stem_html": '''    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/vty-access-class-rtr1-sw1-pc-topology.png" alt="Topology: RTR-1 G0/0 10.150.1.254/24 to SW1; PC-1 10.150.1.1 and PC-2 10.150.1.2 on the same LAN." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="cli-device" role="region" aria-label="RTR-1 partial running configuration">
+        <h2>RTR-1 (partial config)</h2>
+        <pre>hostname RTR-1
+!
+interface GigabitEthernet0/0
+ ip address 10.150.1.254 255.255.255.0
+ duplex auto
+ speed auto
+!
+access-list 10 deny host 10.150.1.1
+!
+line con 0
+ password 7 083238384A11
+ login
+!
+line vty 0 4
+ access-class 10 in
+ password 7 083238384A11
+ login
+!
+end</pre>
+      </div>
+    </div>''',
+            "choices": [
+                "Add the access-list 10 permit any command to the configuration",
+                "Remove the access-class 10 in command from line vty 0 4.",
+                "Add the ip access-group 10 out command to interface g0/0.",
+                "Remove the password command from line vty 0 4.",
             ],
         },
         {
@@ -2301,6 +2634,8 @@ ipv6 route 2001:DB8:4::/64 2001:DB8:4::302""",
                 mono_choices=q.get("mono", False),
                 post_stem_html=q.get("post_stem_html"),
                 stem_after_exhibit=q.get("stem_after_exhibit"),
+                stem_after_exhibit_bullets=q.get("stem_after_exhibit_bullets"),
+                stem_after_exhibit_tail=q.get("stem_after_exhibit_tail"),
             )
         (OUT / f"{slug}.html").write_text(html, encoding="utf-8")
         prev = slug
