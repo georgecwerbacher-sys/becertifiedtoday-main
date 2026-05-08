@@ -1556,6 +1556,66 @@ def main() -> None:
             "choices": ["192.168.12.2", "192.168.13.3", "192.168.14.4", "192.168.15.5"],
         },
         {
+            "slug": "floating-static-default-route-router-a-command",
+            "title": "CCNA — Floating static default route",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "Which command must be issued to enable a floating static default route on router A?",
+            "name": "fltdef1",
+            "correct": "A",
+            "explain": "Correct. A — A floating static route is a backup static route configured with a higher administrative distance than the primary route so it is only used when preferred routing is lost. Option A points to the backup next hop (192.168.2.1) with AD 10. Option B is a normal static default with the default AD. Option C sets AD 10 on the primary next hop and does not represent the intended backup path. Option D is for hosts/switches without IP routing, not for a routed fallback default route on a router.",
+            "post_stem_html": '''    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/floating-static-default-route-router-a-topology.png" alt="Topology with Router A, B, and C showing 192.168.1.0/24, 192.168.2.0/24, and 192.168.3.0/24 links plus a sample ip route default command on Router A." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>''',
+            "choices": [
+                "ip route 0.0.0.0 0.0.0.0 192.168.2.1 10",
+                "ip route 0.0.0.0 0.0.0.0 192.168.1.2",
+                "ip route 0.0.0.0 0.0.0.0 192.168.1.2 10",
+                "ip default-gateway 192.168.2.1",
+            ],
+        },
+        {
+            "slug": "r1-backup-default-route-via-r2-ad10",
+            "title": "CCNA — Backup default route via R2",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "Router R1 currently is configured to use R3 as the primary route to the Internet, and the route uses the default administrative distance settings. A network engineer must configure R1 so that it uses R2 as a backup, but only if R3 goes down. Which command must the engineer configure on R1 so that it correctly uses R2 as a backup route, without changing the administrative distance configuration on the link to R3?",
+            "name": "fltdef2",
+            "correct": "C",
+            "explain": "Correct. C — A floating backup static route must have a higher administrative distance than the primary static default (which is AD 1 by default). Pointing the backup to R2 with AD 10 makes it install only when the primary path via R3 disappears. B and D use AD 1, so they are not floating backups. A uses an exit interface form with AD 6 and does not match the explicit backup next-hop path indicated for R2 in this scenario.",
+            "post_stem_html": '''    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/r1-backup-default-route-via-r2-ad10-topology.png" alt="Topology with R1 connected to LAN 192.168.1.0/24 and WAN links to R2 (209.165.200.224/27) and R3 (209.165.201.0/27), where R2 is backup Internet path." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>''',
+            "choices": [
+                "ip route 0.0.0.0 0.0.0.0 g0/1 6",
+                "ip route 0.0.0.0 0.0.0.0 g0/1 1",
+                "ip route 0.0.0.0 0.0.0.0 209.165.201.5 10",
+                "ip route 0.0.0.0 0.0.0.0 209.165.200.226 1",
+            ],
+        },
+        {
+            "slug": "r1-management-network-static-route-new-server",
+            "title": "CCNA — Static route for new management server",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "An engineer is updating the R1 configuration to connect a new server to the management network. The PCs on the management network must be blocked from pinging the default gateway of the new server. Which command must be configured on R1 to complete the task?",
+            "name": "r1mgmt1",
+            "correct": "C",
+            "explain": "Correct. C — The valid static route for the new server subnet is a /24 route to 172.16.2.0 via the intended next-hop router at 192.168.1.5. Option A points to a different next hop and does not match the required path. Option B is a host route to 172.16.2.2 and does not represent the full new server subnet requirement. Option D uses an invalid mask/prefix combination for the host route shown.",
+            "post_stem_html": '''    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/r1-management-network-static-route-new-server-topology.png" alt="Management network with PC1/PC2 to R1, transit link 192.168.1.0/24 from R1 to R2, and server network 172.16.2.0/24 with new server 172.16.2.2 behind R2." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>''',
+            "choices": [
+                "R1(config)#ip route 172.16.2.0 255.255.255.0 192.168.1.15",
+                "R1(config)#ip route 172.16.2.2 255.255.255.255 gi0/0",
+                "R1(config)#ip route 172.16.2.0 255.255.255.0 192.168.1.5",
+                "R1(config)#ip route 172.16.2.2 255.255.255.248 gi0/1",
+            ],
+        },
+        {
             "slug": "ansible-playbook-task-vlan-config",
             "title": "CCNA — Ansible for VLAN config (choose two)",
             "stem": "Which two components are needed to create an Ansible script that configures a VLAN on a switch? (Choose two)",
