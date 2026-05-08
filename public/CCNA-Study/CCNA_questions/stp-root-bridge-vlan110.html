@@ -33,101 +33,12 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .exhibit-ref {
-      margin: 0 0 12px;
-      font-size: clamp(1.02rem, 2vw, 1.35rem);
-      font-weight: 700;
-      line-height: 1.35;
+    .stem-after-exhibit {
+      margin: 12px 0 6px;
+      font-size: clamp(1.02rem, 1.9vw, 1.32rem);
+      line-height: 1.42;
+      font-weight: 600;
       color: #e6edf3;
-    }
-    .exhibit {
-      margin: 0 0 18px;
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid #2d3b5a;
-      background: #ffffff;
-      text-align: center;
-    }
-    .exhibit img {
-      display: block;
-      width: 100%;
-      max-width: min(100%, 720px);
-      height: auto;
-      margin: 0 auto;
-    }
-    .cli-exhibit {
-      margin: 0 0 20px;
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid #1e293b;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
-      background: #0a0e14;
-    }
-    .cli-exhibit-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 12px;
-      background: linear-gradient(180deg, #2a3344 0%, #1e2636 100%);
-      border-bottom: 1px solid #0f1419;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: #94a3b8;
-    }
-    .cli-exhibit-dots {
-      display: flex;
-      gap: 6px;
-    }
-    .cli-exhibit-dots span {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #475569;
-    }
-    .cli-exhibit-dots span:nth-child(1) {
-      background: #ef4444;
-    }
-    .cli-exhibit-dots span:nth-child(2) {
-      background: #eab308;
-    }
-    .cli-exhibit-dots span:nth-child(3) {
-      background: #22c55e;
-    }
-    .cli-exhibit-title {
-      flex: 1;
-      text-align: center;
-      padding-right: 46px;
-      box-sizing: border-box;
-    }
-    .cli-exhibit-body {
-      margin: 0;
-      padding: 14px 16px 16px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      font-size: clamp(0.72rem, 1.65vw, 0.84rem);
-      line-height: 1.5;
-      color: #c8e6c9;
-      background: #0a0e14;
-      overflow-x: auto;
-      white-space: pre;
-      tab-size: 2;
-      border-top: 1px solid #1e293b;
-    }
-    .cli-exhibit-body code {
-      font: inherit;
-      color: inherit;
-    }
-    .visually-hidden {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
     }
     .choice {
       display: block;
@@ -138,6 +49,65 @@
       border: 1px solid #2c3f62;
       font-size: 1.02rem;
       cursor: pointer;
+    }
+    .choice.mono.cli-router-choice {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #2a3f5c;
+      background: linear-gradient(180deg, rgba(26, 37, 59, 0.95), rgba(10, 16, 28, 0.98));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    .cli-router-choice-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: rgba(15, 22, 40, 0.95);
+      border-bottom: 1px solid #2a3f5c;
+    }
+    .cli-router-choice-controls input {
+      margin-right: 0;
+      transform: none;
+      flex-shrink: 0;
+    }
+    .cli-router-choice-badge {
+      flex: 0 0 auto;
+      min-width: 1.5rem;
+      text-align: center;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 0.78rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: rgba(37, 75, 138, 0.55);
+      border: 1px solid rgba(93, 140, 220, 0.45);
+      color: #e6edf3;
+    }
+    .cli-router-choice-title {
+      flex: 1 1 auto;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #8b9cc4;
+    }
+    pre.cli-router-console {
+      margin: 0;
+      padding: 12px 14px;
+      background: #060a11;
+      color: #c8dcf0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.78rem;
+      line-height: 1.42;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      border-left: 3px solid #c9a227;
+      min-height: 2rem;
     }
     .choice input {
       margin-right: 10px;
@@ -211,6 +181,74 @@
     .next-link:hover {
       filter: brightness(1.08);
     }
+    .exhibit-stack {
+      margin: 14px 0 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    figure.exhibit-photo {
+      margin: 0;
+      border-radius: 10px;
+      border: 1px solid #2d3b5a;
+      overflow: hidden;
+      background: #0d1320;
+    }
+    figure.exhibit-photo img {
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+      display: block;
+    }
+    figure.exhibit-photo figcaption {
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      color: #8b9cc4;
+      border-top: 1px solid #2d3b5a;
+      background: #0f1628;
+    }
+    .cli-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 720px) {
+      .cli-grid.two-cols {
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+      }
+    }
+    .cli-device {
+      border-radius: 10px;
+      border: 1px solid #2d3b5a;
+      background: #0d1320;
+      overflow: hidden;
+      min-height: 0;
+    }
+    .cli-device h2 {
+      margin: 0;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      background: #1a253b;
+      border-bottom: 1px solid #2d3b5a;
+      color: #b6c8e8;
+    }
+    .cli-device pre {
+      margin: 0;
+      padding: 12px 14px;
+      font-size: 0.72rem;
+      line-height: 1.4;
+      overflow-x: auto;
+      white-space: pre;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: #e6edf3;
+    }
+    .cli-device pre + pre {
+      border-top: 1px solid #2d3b5a;
+    }
   </style>
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
 </head>
@@ -218,44 +256,7 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <p class="exhibit-ref">Refer to the exhibit.</p>
-
-    <figure class="exhibit">
-      <figcaption class="visually-hidden">
-        Topology: HQ LAN with routers HQ1 and HQ2 each connected to Switch 1 and Switch 2; switches 1–4 in a ring with cross-links
-        (Switch 1–2, 3–4, 1–3, 2–4).
-      </figcaption>
-      <img
-        src="/CCNA-Study/CCNA_questions/stp-root-bridge-vlan110-topology.png"
-        width="454"
-        height="317"
-        alt="HQ LAN: HQ1 and HQ2 connect to Switch 1 and Switch 2; four switches in a redundant square mesh."
-        decoding="async"
-        loading="lazy"
-      />
-    </figure>
-
-    <figure class="cli-exhibit">
-      <figcaption class="visually-hidden">
-        Supplemental output: for VLAN 110, bridge priorities and base MAC addresses for Switch 1 through Switch 4.
-      </figcaption>
-      <div class="cli-exhibit-header">
-        <div class="cli-exhibit-dots" aria-hidden="true">
-          <span></span><span></span><span></span>
-        </div>
-        <div class="cli-exhibit-title">Switch — spanning-tree bridge IDs (VLAN 110)</div>
-      </div>
-      <pre class="cli-exhibit-body"><code>Switch 1
- VLAN 110 – 32778 0018.184e.3c00
-Switch 2
- VLAN 110 – 24586 001a.e3ff.a680
-Switch 3
- VLAN 110 – 28682 0022.55cf.cc00
-Switch 4
- VLAN 110 – 64000 0e38.7363.657f</code></pre>
-    </figure>
-
-    <h1>Which switch becomes the root of the spanning tree for VLAN 110?</h1>
+    <h1>Refer to the exhibit. Which switch becomes the root of the spanning tree for VLAN 110?</h1>
 
     <label class="choice"><input type="radio" name="stproot110" value="A" />A. Switch 1</label>
     <label class="choice"><input type="radio" name="stproot110" value="B" />B. Switch 2</label>
@@ -277,8 +278,7 @@ Switch 4
   <script>
     (function () {
       var CORRECT = "B";
-      var CORRECT_MSG =
-        "Correct. B \u2014 The root bridge has the lowest bridge ID. Compare the priority values first (24586 is lower than 28682, 32778, and 64000), so Switch 2 becomes the STP root for VLAN 110.";
+      var CORRECT_MSG = "Correct. B \u2014 The root bridge has the lowest bridge ID. Compare the priority values first (24586 is lower than 28682, 32778, and 64000), so Switch 2 becomes the STP root for VLAN 110.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {

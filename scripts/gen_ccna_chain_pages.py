@@ -2,6 +2,7 @@
 """One-off generator for CCNA question HTML pages (inline template)."""
 from __future__ import annotations
 
+import html
 import json
 import pathlib
 
@@ -36,6 +37,13 @@ STYLE = r"""  <style>
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
+    .stem-after-exhibit {
+      margin: 12px 0 6px;
+      font-size: clamp(1.02rem, 1.9vw, 1.32rem);
+      line-height: 1.42;
+      font-weight: 600;
+      color: #e6edf3;
+    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -46,9 +54,64 @@ STYLE = r"""  <style>
       font-size: 1.02rem;
       cursor: pointer;
     }
-    .choice.mono {
+    .choice.mono.cli-router-choice {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #2a3f5c;
+      background: linear-gradient(180deg, rgba(26, 37, 59, 0.95), rgba(10, 16, 28, 0.98));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    .cli-router-choice-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: rgba(15, 22, 40, 0.95);
+      border-bottom: 1px solid #2a3f5c;
+    }
+    .cli-router-choice-controls input {
+      margin-right: 0;
+      transform: none;
+      flex-shrink: 0;
+    }
+    .cli-router-choice-badge {
+      flex: 0 0 auto;
+      min-width: 1.5rem;
+      text-align: center;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 0.78rem;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.95rem;
+      background: rgba(37, 75, 138, 0.55);
+      border: 1px solid rgba(93, 140, 220, 0.45);
+      color: #e6edf3;
+    }
+    .cli-router-choice-title {
+      flex: 1 1 auto;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #8b9cc4;
+    }
+    pre.cli-router-console {
+      margin: 0;
+      padding: 12px 14px;
+      background: #060a11;
+      color: #c8dcf0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.78rem;
+      line-height: 1.42;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      border-left: 3px solid #c9a227;
+      min-height: 2rem;
     }
     .choice input {
       margin-right: 10px;
@@ -122,6 +185,74 @@ STYLE = r"""  <style>
     .next-link:hover {
       filter: brightness(1.08);
     }
+    .exhibit-stack {
+      margin: 14px 0 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    figure.exhibit-photo {
+      margin: 0;
+      border-radius: 10px;
+      border: 1px solid #2d3b5a;
+      overflow: hidden;
+      background: #0d1320;
+    }
+    figure.exhibit-photo img {
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+      display: block;
+    }
+    figure.exhibit-photo figcaption {
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      color: #8b9cc4;
+      border-top: 1px solid #2d3b5a;
+      background: #0f1628;
+    }
+    .cli-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 720px) {
+      .cli-grid.two-cols {
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+      }
+    }
+    .cli-device {
+      border-radius: 10px;
+      border: 1px solid #2d3b5a;
+      background: #0d1320;
+      overflow: hidden;
+      min-height: 0;
+    }
+    .cli-device h2 {
+      margin: 0;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      background: #1a253b;
+      border-bottom: 1px solid #2d3b5a;
+      color: #b6c8e8;
+    }
+    .cli-device pre {
+      margin: 0;
+      padding: 12px 14px;
+      font-size: 0.72rem;
+      line-height: 1.4;
+      overflow-x: auto;
+      white-space: pre;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: #e6edf3;
+    }
+    .cli-device pre + pre {
+      border-top: 1px solid #2d3b5a;
+    }
   </style>"""
 
 
@@ -137,6 +268,8 @@ def page(
     prev_slug: str | None,
     next_slug: str | None,
     mono_choices: bool = False,
+    post_stem_html: str | None = None,
+    stem_after_exhibit: str | None = None,
 ) -> str:
     mono = " mono" if mono_choices else ""
     prev_h = (
@@ -157,6 +290,16 @@ def page(
     nav_lines.append("    </div>")
     nav = "\n".join(nav_lines)
     msg_json = json.dumps(explain)
+    exhibit_block = post_stem_html if post_stem_html else ""
+    stem_h = html.escape(stem)
+    if post_stem_html and stem_after_exhibit:
+        main_open = (
+            f"    <h1>{stem_h}</h1>\n"
+            f"{exhibit_block}\n"
+            f'    <p class="stem-after-exhibit">{html.escape(stem_after_exhibit)}</p>\n'
+        )
+    else:
+        main_open = f"    <h1>{stem_h}</h1>\n{exhibit_block}\n"
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -171,9 +314,7 @@ def page(
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>{stem}</h1>
-
-{choices_html}
+{main_open}{choices_html}
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -320,8 +461,24 @@ def page_checkbox(
 
 
 def choice_line(mono: bool, name: str, letter: str, text: str) -> str:
-    cls = "choice mono" if mono else "choice"
-    return f'    <label class="{cls}"><input type="radio" name="{name}" value="{letter}" />{letter}. {text}</label>'
+    if mono:
+        body = html.escape(f"{letter}. {text}", quote=False)
+        return (
+            "\n".join(
+                [
+                    '    <label class="choice mono cli-router-choice">',
+                    '      <span class="cli-router-choice-controls">',
+                    f'        <input type="radio" name="{name}" value="{letter}" aria-label="Select answer option {letter}" />',
+                    f'        <span class="cli-router-choice-badge" aria-hidden="true">{html.escape(letter)}</span>',
+                    '        <span class="cli-router-choice-title">Router CLI — candidate config</span>',
+                    "      </span>",
+                    f'      <pre class="cli-router-console">{body}</pre>',
+                    "    </label>",
+                ]
+            )
+            + "\n"
+        )
+    return f'    <label class="choice"><input type="radio" name="{name}" value="{letter}" />{letter}. {html.escape(text, quote=False)}</label>'
 
 
 def main() -> None:
@@ -1599,110 +1756,155 @@ def main() -> None:
         {
             "slug": "gigabit-lx-t-l2-frame-similarity",
             "title": "CCNA — 1000BASE-LX vs 1000BASE-T",
-            "stem": "What is one similarity between 1000BASE-LX and 1000BASE-T Gigabit Ethernet?",
+            "stem": "What is a similarity between 1000BASE-LX and 1000BASE-T standards?",
             "name": "lxtx1",
             "correct": "A",
-            "explain": "Correct. A — Both use standard Ethernet Layer 2 framing (802.3 MAC and LLC fields) at 1 Gb/s; only the physical medium and PHY differ. Cable types, maximum run lengths, and line encoding are not the same between fiber LX and copper T.",
+            "explain": "Correct. A — Both are IEEE 802.3 Gigabit Ethernet variants and share the same Ethernet data link framing (header, addresses, length/type, payload, FCS trailer). LX is fiber with fiber connectors; 1000BASE-T uses twisted pair and RJ-45. Distance limits differ (for example roughly 100 m for T vs longer fiber reaches for LX depending on fiber type).",
             "choices": [
-                "They use the same Layer 2 frame format on the wire.",
-                "They use the same cable type and connector.",
-                "They use identical physical-layer encoding.",
-                "They are both limited to the same maximum link length.",
+                "Both use the same data-link header and trailer formats",
+                "Both cable types support LP connectors",
+                "Both cable types support RJ-45 connectors",
+                "Both support up to 550 meters between nodes",
             ],
         },
         {
             "slug": "wpa3-sae-improves-security",
             "title": "CCNA — WPA3 improvement",
-            "stem": "Which feature improves wireless security when moving from WPA2-Personal to WPA3-Personal?",
+            "stem": "How does WPA3 improve security?",
             "name": "wpa3s1",
             "correct": "A",
-            "explain": "Correct. A — WPA3-Personal uses Simultaneous Authentication of Equals (SAE) instead of PSK-only four-way handshakes vulnerable to offline dictionary attacks. TKIP and WEP are legacy and weaker. 802.1X is an enterprise authentication framework, not the defining WPA3-Personal upgrade.",
+            "explain": "Correct. A — WPA3-Personal uses Simultaneous Authentication of Equals (SAE) for passphrase-based networks, which mitigates offline dictionary attacks better than WPA2-Personal PSK alone. A 4-way handshake can still run for key confirmation but is not the defining WPA3 upgrade. RC4 and TKIP are legacy; WPA3 expects strong ciphers such as AES-GCMP.",
             "choices": [
-                "Simultaneous Authentication of Equals (SAE)",
-                "Temporal Key Integrity Protocol (TKIP)",
-                "Wired Equivalent Privacy (WEP) key rotation",
-                "802.1X-only authentication for all clients",
+                "It uses SAE for authentication.",
+                "It uses a 4-way handshake for authentication.",
+                "It uses RC4 for encryption.",
+                "It uses TKIP for encryption.",
             ],
         },
         {
             "slug": "capwap-lightweight-ap-mode",
             "title": "CCNA — CAPWAP and WLC AP mode",
-            "stem": "When an access point uses CAPWAP to tunnel traffic to a wireless LAN controller, which AP mode is required?",
+            "stem": "Which mode must be set for APs to communicate to a Wireless LAN Controller using the Control and Provisioning of Wireless Access Points (CAPWAP) protocol?",
             "name": "capwapm1",
             "correct": "D",
-            "explain": "Correct. D — Split-MAC designs use lightweight (CAPWAP-joined) APs that depend on the WLC for control and often data forwarding. Autonomous APs do not require a WLC in the same way. Bridge and sniffer are specialized roles, not the default CAPWAP operational mode for normal WLAN service.",
+            "explain": "Correct. D — Lightweight (split-MAC) access points discover and tunnel control (and optionally data) to the WLC using CAPWAP. Autonomous APs run the WLAN services locally and do not join a controller this way. Bridge and route are not the CAPWAP split-MAC operating mode names in this context.",
             "choices": [
-                "Autonomous mode",
-                "Bridge mode",
-                "Sniffer mode",
-                "Lightweight mode",
+                "bridge",
+                "route",
+                "autonomous",
+                "lightweight",
             ],
         },
         {
             "slug": "etherchannel-lacp-active-switch2",
             "title": "CCNA — LACP EtherChannel not forming",
-            "stem": "Switch1 and Switch2 are connected with parallel links configured as one EtherChannel. Both sides use LACP, but the port channel does not come up. On Switch1 the member ports are in passive LACP mode, and on Switch2 the member ports are also passive. Which change on Switch2 typically allows the EtherChannel to establish?",
+            "stem": "Refer to the exhibit. Which change to the configuration on Switch2 allows the two switches to establish an EtherChannel?",
             "name": "ethch2",
             "correct": "B",
-            "explain": "Correct. B — LACP negotiates when at least one side is active (or both active). Passive–passive does not initiate negotiation, so the bundle often fails to form. “mode on” forces a channel without LACP and is not the minimal LACP fix here. Raising the port-channel number or setting both sides passive does not solve negotiation.",
+            "explain": "Correct. B — With LACP, negotiation starts when at least one side is active; passive on both sides normally never brings the channel up. Changing Switch2 to active LACP fixes that. \"Mode on\" forces a static EtherChannel without LACP. Desirable is a PAgP mode, not LACP. PAgP auto with another side also passive does not form a channel either.",
             "choices": [
-                "Configure the member interfaces to channel-group mode on.",
-                "Configure LACP active on the Switch2 member interfaces.",
-                "Use a higher port-channel interface number on Switch2.",
-                "Configure LACP passive on Switch1 and Switch2.",
+                "Change the protocol to EtherChannel mode on",
+                "Change the LACP mode to active",
+                "Change the LACP mode to desirable",
+                "Change the protocol to PAgP and use auto mode",
             ],
+            "post_stem_html": '''    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/etherchannel-lacp-passive-exhibit.png" alt="" width="980" decoding="async" loading="lazy" />
+      </figure>
+      <div class="cli-grid two-cols" role="group" aria-label="Transcript of exhibit CLI">
+        <div class="cli-device">
+          <h2>Switch1</h2>
+          <pre>Switch1# show etherchannel summary
+Flags:  D - down        P - bundled in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3          S - Layer2
+        U - in use        f - failed to allocate aggregator
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+Number of channel-groups in use: 1
+Number of aggregators:           1
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+1      Po1(SD)         LACP      Fa0/2(I)     Fa0/1(I)</pre>
+          <pre>Switch1# show running-config
+interface Port-channel1
+!
+interface FastEthernet0/1
+ channel-group 1 mode passive
+!
+interface FastEthernet0/2
+ channel-group 1 mode passive</pre>
+        </div>
+        <div class="cli-device">
+          <h2>Switch2</h2>
+          <pre>Switch2# show running-config
+interface Port-channel1
+!
+interface FastEthernet0/1
+ channel-group 1 mode passive
+!
+interface FastEthernet0/2
+ channel-group 1 mode passive</pre>
+        </div>
+      </div>
+    </div>''',
         },
         {
             "slug": "wireless-auth-layer2",
             "title": "CCNA — Wireless authentication layer",
-            "stem": "At which layer of the OSI model does wireless client authentication to the access point typically occur?",
+            "stem": "Where does wireless authentication happen?",
             "name": "wlauth1",
             "correct": "D",
-            "explain": "Correct. D — 802.11 association and the four-way handshake / EAP exchange are part of the MAC sublayer (Layer 2) before the client gets IP connectivity. IP addressing and upper-layer sessions occur after Layer 2 success.",
-            "choices": ["Layer 7", "Layer 4", "Layer 3", "Layer 2"],
+            "explain": "Correct. D — 802.11 Open System / association, 802.1X/EAP when used, and the WPA/WPA2/WPA3 four-way handshake operate at the MAC layer (Layer 2) before the station has an IP address on the WLAN. The SSID names the WLAN; the radio and band are physical-layer concerns, not where authentication is defined.",
+            "choices": ["SSID", "radio", "band", "Layer 2"],
         },
         {
             "slug": "three-tier-workstation-to-workstation-path",
             "title": "CCNA — Three-tier campus path",
-            "stem": "In a classic three-tier campus design, which path best describes traffic from one access-layer workstation to another workstation on a different access switch (same enterprise)?",
+            "stem": "What is the path for traffic sent from one user workstation to another workstation on a separate switch in a three-layer architecture model?",
             "name": "tier3p1",
             "correct": "D",
-            "explain": "Correct. D — Inter-VLAN or inter-access-switch traffic is commonly switched up to distribution (routing/L3 boundary), across the core, down another distribution block, then to the destination access switch. Workstations do not talk core-to-core only or skip distribution when those layers exist for routed interconnects.",
+            "explain": "Correct. D — In a hierarchical campus, traffic between endpoints on different access switches is typically routed or switched up to the distribution layer (often the VLAN/L3 boundary), crosses the core to the destination distribution pair/block, then down to that access switch. Paths that skip distribution for inter-switch traffic when those layers exist, or bounce access–distribution–distribution without the core backbone in the logical model taught for three-layer designs, miss that pattern.",
             "choices": [
-                "access – core – access",
-                "access – distribution – access",
                 "access – core – distribution – access",
+                "access – distribution – distribution – access",
+                "access – core – access",
                 "access – distribution – core – distribution – access",
             ],
         },
         {
             "slug": "fhrp-two-benefits-choose-two",
             "title": "CCNA — FHRP benefits (choose two)",
-            "stem": "What are two benefits of a First Hop Redundancy Protocol such as HSRP or VRRP? (Choose two)",
+            "stem": "What are two benefits of FHRPs? (Choose two)",
             "name": "fhrp2b",
             "choose_two": True,
             "correct": ["D", "E"],
-            "explain": "Correct. D and E — An FHRP presents a virtual default gateway (VIP/virtual MAC) so clients need not track which physical router is active, and failover to the standby is fast enough to appear transparent to many applications. FHRPs do not by themselves aggregate WAN bandwidth, replace dynamic routing for remote networks, or advertise per-host routes to every client.",
+            "explain": "Correct. D and E — First Hop Redundancy Protocols (HSRP, VRRP, GLBP, etc.) present a shared virtual gateway (IP/virtual MAC) to clients while multiple routers cooperate, and the standby can take over quickly if the active device fails—default gateway failover. They do not prevent Layer 2 loops (that is spanning tree); they do not provide encryption by themselves; and they are not EtherChannel/link bundling.",
             "choices": [
-                "Increases aggregate WAN bandwidth through per-packet load balancing across all routers",
-                "Eliminates the need for any dynamic routing protocol in the enterprise",
-                "Advertises a unique host route for every client to optimize forwarding",
-                "Provides redundant default gateway capability for end devices",
-                "Allows nearly transparent failover when the active gateway router fails",
+                "They prevent loops in the Layer 2 network.",
+                "They allow encrypted traffic.",
+                "They are able to bundle multiple ports to increase bandwidth",
+                "They enable automatic failover of the default gateway.",
+                "They allow multiple devices to serve as a single virtual gateway for clients in the network",
             ],
         },
         {
             "slug": "ssid-purpose-identifies-wlan",
             "title": "CCNA — Purpose of the SSID",
-            "stem": "What is the primary purpose of a Service Set Identifier (SSID) in an IEEE 802.11 WLAN?",
+            "stem": "What is the purpose of an SSID?",
             "name": "ssidpur1",
             "correct": "D",
-            "explain": "Correct. D — The SSID names the logical wireless LAN (BSS/ESS) clients join. It is not the same as the BSSID (AP radio MAC), a single security key, or a VLAN tag carried only on wired trunks.",
+            "explain": "Correct. D — The SSID is the human-readable name of a wireless LAN (BSS/ESS) that clients select when they join a network. Security comes from encryption and authentication mechanisms (for example WPA2/WPA3), not from the SSID alone. Traffic differentiation and per-AP identification are better described by other concepts (QoS VLAN design, BSSID/AP radio MAC), not the primary role of the SSID.",
             "choices": [
-                "It uniquely identifies each access point radio hardware address.",
-                "It is the only value used to encrypt every 802.11 data frame.",
-                "It must match the native VLAN ID on the switch trunk.",
-                "It identifies a wireless LAN that clients associate to.",
+                "It provides network security",
+                "It differentiates traffic entering access points",
+                "It identifies an individual access point on a WLAN",
+                "It identifies a WLAN",
             ],
         },
         {
@@ -1712,28 +1914,351 @@ def main() -> None:
             "name": "ssidch2",
             "choose_two": True,
             "correct": ["A", "D"],
-            "explain": "Correct. A and D — SSIDs are commonly included in beacon and probe frames so clients can discover networks, and 802.11 defines a maximum SSID length (32 octets). SSIDs are not required to equal VLAN IDs, and the SSID string itself is not what encrypts payload frames (security comes from WPA/WPA2/WPA3 and keying).",
+            "explain": "Correct. A and D — Administrators can advertise the SSID in beacons (broadcast) or suppress it so the WLAN is harder to casually discover (“hidden”), though probing can still uncover it; 802.11 limits SSID payload to 32 octets. Individual AP radios are distinguished by BSSIDs (typically AP radio MACs), clients by their WLAN station addresses, and access security is enforced by WPA/WPA2/WPA3 and credentials, not merely the SSID name.",
             "choices": [
-                "It can be broadcast in beacon frames.",
-                "It must be identical to the access VLAN number on the switch.",
-                "It encrypts all Layer 2 wireless frames by itself.",
-                "It has a defined maximum length.",
-                "It is always hidden from client scans for security.",
+                "It can be hidden or broadcast in a WLAN",
+                "It uniquely identifies an access point in a WLAN",
+                "It uniquely identifies a client in a WLAN",
+                "It is at most 32 characters long",
+                "It provides secured access to a WLAN",
             ],
         },
         {
             "slug": "qos-llq-interactive-voice-video",
             "title": "CCNA — LLQ for voice and video",
-            "stem": "Which queuing mechanism is most appropriate to give strict priority with a policed cap to delay-sensitive interactive voice and video on a congested WAN interface?",
+            "stem": "In QoS, which prioritization method is appropriate for interactive voice and video?",
             "name": "qosllq1",
             "correct": "D",
-            "explain": "Correct. D — Low-latency queuing (LLQ) combines strict priority for real-time traffic with a bandwidth cap so priority traffic cannot starve other classes. FIFO has no differentiation. Weighted fair queuing alone does not define strict priority the same way. Custom queuing is legacy and not the usual CCNA answer for VoIP strict priority.",
+            "explain": "Correct. D — Low-latency queuing (LLQ) attaches a strict-priority queue (often capped) for real-time classes such as voice and conferencing video before other queues are serviced, reducing delay and jitter. Expedited forwarding (EF) names a differentiated-services per-hop behavior and marking mindset; policing rate-limits traffic; plain round-robin does not grant the strict sequencing LLQ implies on Cisco platforms.",
             "choices": [
-                "First-in, first-out (FIFO)",
-                "Weighted fair queuing only",
-                "Custom queuing",
-                "Low-latency queuing (LLQ)",
+                "expedited forwarding",
+                "traffic policing",
+                "round-robin scheduling",
+                "low-latency queuing",
             ],
+        },
+        {
+            "slug": "sdn-southbound-api-controller-to-infrastructure",
+            "title": "CCNA — Southbound API interaction",
+            "stem": "Which communication interaction takes place when a southbound API is used?",
+            "name": "sdnsbapi1",
+            "correct": "B",
+            "explain": "Correct. B — Southbound interfaces let the SDN controller program and monitor network devices (for example switches and routers) using protocols such as OpenFlow or NETCONF. Northbound APIs face applications and orchestration; end hosts are not the primary southbound peers.",
+            "choices": [
+                "between the SDN controller and PCs on the network",
+                "between the SDN controller and switches and routers on the network",
+                "between the SDN controller and services and applications on the network",
+                "between network applications and switches and routers on the network",
+            ],
+        },
+        {
+            "slug": "ipv6-link-local-scope-neighbor-discovery",
+            "title": "CCNA — IPv6 link-local addresses",
+            "stem": "Which statement best describes IPv6 link-local addresses (for example within the FE80::/10 scope)?",
+            "name": "v6lla1",
+            "correct": "C",
+            "explain": "Correct. C — Link-local IPv6 addresses are only meaningful on a single Layer 3 link; hosts use them with Neighbor Discovery (RS/RA/NS/NA) and link-local next hops before global addressing is available. They are not globally routable like GUA prefixes, do not by themselves identify every workload worldwide, and are not about duplicating switch ASIC MAC tables.",
+            "choices": [
+                "They traverse the IPv6 backbone like globally unique provider addresses.",
+                "They uniquely identify workloads across hybrid cloud providers without gateways.",
+                "They operate only within a single routed link segment and back Neighbor Discovery procedures.",
+                "They duplicate MAC addresses burned into switch ASIC forwarding tables.",
+            ],
+        },
+        {
+            "slug": "nat-inside-global-address-from-example",
+            "title": "CCNA — NAT inside global naming",
+            "stem": "NAT translates workstation 192.168.72.205 to IPv4 address 203.0.113.205 when forwarding traffic out to hosts on the public Internet. Inside Cisco IOS NAT terminology how is address 203.0.113.205 classified?",
+            "name": "natig1",
+            "correct": "A",
+            "explain": "Correct. A — Inside global denotes the ISP-visible address mapped to represent an interior host toward the external network—in this illustration the PAT/NAT translated public-facing address replacing 192.168.72.205. Inside local is the private workstation address before NAT. Outside addresses describe remote destinations from the translating router\'s vantage point differently than this mapping.",
+            "choices": [
+                "inside global",
+                "outside local",
+                "inside local",
+                "outside global",
+            ],
+        },
+        {
+            "slug": "switch-collision-domain-per-port",
+            "title": "CCNA — Switches and collision domains",
+            "stem": "Compared to shared Ethernet hubs how do modern Layer 2 switches handle collision domains on access ports?",
+            "name": "cdom1",
+            "correct": "B",
+            "explain": "Correct. B — Each switch port is its own collision domain when devices run at full duplex; frames are switched between ports without shared coax-style collisions. Hubs repeat electrical signals so all attached hosts share one collision domain. VLAN membership controls broadcast scope, not what defines classic collision boundaries here.",
+            "choices": [
+                "They collapse every port into a single shared collision domain like classic hubs.",
+                "They place each port in its own collision domain when operating at full duplex.",
+                "They disable collision detection until trunk ports negotiate LACP.",
+                "They map collision domains one-to-one with SVI interfaces only.",
+            ],
+        },
+        {
+            "slug": "icmp-echo-request-reply-ping",
+            "title": "CCNA — ICMP echo for ping",
+            "stem": "Successful IPv4 router-to-router connectivity tests that use the ping utility rely on which ICMP message pair?",
+            "name": "icmp1",
+            "correct": "B",
+            "explain": "Correct. B — Ping sends ICMP Echo Request (type 8) and expects ICMP Echo Reply (type 0). Destination Unreachable (type 3) signals failures. Time Exceeded (type 11) supports traceroute. Redirect (type 5) is unrelated to echo/reply exchange.",
+            "choices": [
+                "ICMP Time Exceeded (type 11) and Redirect (type 5)",
+                "ICMP Echo Request (type 8) and Echo Reply (type 0)",
+                "ICMP Router Advertisement (type 9) and Router Solicitation (type 10)",
+                "ICMP Parameter Problem (type 12) and Fragmentation Needed (type 4)",
+            ],
+        },
+        {
+            "slug": "acl-numbered-fifteen-standard-range",
+            "title": "CCNA — Numbered standard ACL range",
+            "stem": "An engineer configures a numbered IPv4 ACL using list number 15 on a Cisco IOS router. Which description matches ACL number 15?",
+            "name": "acl15a",
+            "correct": "B",
+            "explain": "Correct. B — Legacy numbered standard IPv4 ACLs use 1–99 (and additional 1300–1999 range on many platforms). Extended numbered ACLs use 100–199 plus higher expansion ranges. IPv6 ACLs use different syntax; prefix lists are separate constructs.",
+            "choices": [
+                "It is a numbered extended IPv4 ACL by default.",
+                "It is a numbered standard IPv4 ACL range entry.",
+                "It is reserved exclusively for IPv6 traffic filtering.",
+                "It always references a route-map instead of permit/deny statements.",
+            ],
+        },
+        {
+            "slug": "switchport-priority-extend-trust-ip-phone-access",
+            "title": "CCNA — Priority extend through IP phone",
+            "stem": "An engineer is configuring data and voice services to pass through the same port. The designated switch interface fastethernet0/1 must transmit packets using the same priority for data when they are received from the access port of the IP phone. Which configuration must be used?",
+            "name": "prexph1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D — On a Cisco access port facing an IP phone, \"switchport priority extend trust\" causes the switch to trust the ingress CoS markings from stations connected to the phone's PC/access port when those frames traverse the phone to the switch uplink—preserving priority rather than overwriting it. Using \"priority extend cos <value>\" applies a fixed CoS instead of trusting received priorities. Voice VLAN options \"untagged\" and \"dot1p\" steer how voice traffic tagging/priority signaling is negotiated on the auxiliary voice VLAN—they do not substitute for priority extension on bridged downstream data frames.",
+            "choices": [
+                "interface fastethernet0/1\nswitchport priority extend cos 7",
+                "interface fastethernet0/1\nswitchport voice vlan untagged",
+                "interface fastethernet0/1\nswitchport voice vlan dot1p",
+                "interface fastethernet0/1\nswitchport priority extend trust",
+            ],
+        },
+        {
+            "slug": "spanning-tree-portfast-supported-access-ports",
+            "title": "CCNA — PortFast and port roles",
+            "stem": "Which port type supports the spanning-tree portfast command without additional configuration?",
+            "name": "stpftport1",
+            "correct": "A",
+            "explain": "Correct. A — PortFast is designed for Layer 2 ports that connect single end devices (access/edge ports): the port can go to forwarding immediately without the listen/learn delay. Routed (Layer 3 main or sub) interfaces are not STP switchports in the usual sense. Trunks carry multiple VLANs toward other bridges; enabling PortFast there can be dangerous and on many platforms requires explicit extra syntax (for example portfast trunk / edge trunk) rather than the basic access-style command alone.",
+            "choices": [
+                "access ports",
+                "Layer 3 main interfaces",
+                "Layer 3 subinterfaces",
+                "trunk ports",
+            ],
+        },
+        {
+            "slug": "syslog-facility-definition",
+            "title": "CCNA — Syslog facility",
+            "stem": "What is a syslog facility?",
+            "name": "sysfac1",
+            "correct": "D",
+            "explain": "Correct. D — In syslog each message carries a facility code (for example KERNEL, MAIL, LOCAL0–LOCAL7) that classifies which subsystem or IOS process bucket produced the entry. Severity is separate (level of urgency). The logging host/server is the collector; SNMP-style passwords for syslog are outside this definition.",
+            "choices": [
+                "host that is configured for the system to send log messages",
+                "password that authenticates a Network Management System to receive log messages",
+                "group of log messages associated with the configured severity level",
+                "set of values that represent the processes that can generate a log message",
+            ],
+        },
+        {
+            "slug": "public-cloud-two-characteristics-choose-two",
+            "title": "CCNA — Public cloud traits (choose two)",
+            "stem": "What are two characteristics of a public cloud implementation? (Choose two)",
+            "name": "pubcld2",
+            "choose_two": True,
+            "correct": ["A", "C"],
+            "explain": "Correct. A and C — A public CSP builds and operates the shared underlying platform once and sells capacity to many tenants (multi-organization sharing), while customers usually reach those services across the Internet. Full bespoke control over every facet of deployment (B) is more aligned with private/on‑prem extremes. Dedicated single-company stacks (D) resemble private/hosted offerings. Combining third‑party utility with privately owned/on‑prem workloads (E) describes hybrid—not the defining pair for public-only.",
+            "choices": [
+                "It is owned and maintained by one party, but it is shared among multiple organizations",
+                "It enables an organization to fully customize how it deploys network resources",
+                "It provides services that are accessed over the Internet",
+                "It is a data center on the public Internet that maintains cloud services for only one company",
+                "It supports network resources from a centralized third-party provider and privately-owned virtual resources",
+            ],
+        },
+        {
+            "slug": "ipsec-pure-traffic-unicast-ip",
+            "title": "CCNA — Traffic carried by pure IPsec",
+            "stem": "Which type of traffic is sent with pure IPsec?",
+            "name": "ipsecpure1",
+            "correct": "D",
+            "explain": "Correct. D — IPsec protects IP packets—most training scenarios highlight unicast IPv4/IPv6 flows between peers or across a tunnel to a central site. Layer 2 broadcasts (for example ARP-style discovery in A), raw STP exchanges (C), and classic L2 bridging behavior are outside what “pure” IPsec terminates; multicast (B) needs specific design and is not the textbook match when contrasted with straightforward site-to-site host-to-server unicast.",
+            "choices": [
+                "broadcast packets from a switch that is attempting to locate a MAC address at one of several remote sites",
+                "multicast traffic from a server at one site to hosts at another location",
+                "spanning-tree updates between switches that are at two different sites",
+                "unicast messages from a host at a remote site to a server at headquarters",
+            ],
+        },
+        {
+            "slug": "dhcp-workstation-blocked-8021x",
+            "title": "CCNA — Blocking DHCP on a port",
+            "stem": "What prevents a workstation from receiving a DHCP address?",
+            "name": "dhcpblk1",
+            "correct": "D",
+            "explain": "Correct. D — IEEE 802.1X port-based access control keeps the port unauthorized until the client authenticates; until then user data (including DHCP) is not allowed on the voice/data VLAN. Some items misprint this option as “802.10”—the standard is 802.1X. DTP only negotiates trunking. VTP distributes VLAN information. STP can delay forwarding on an access link without PortFast, but it does not implement the same deliberate access-denial gate as 802.1X.",
+            "choices": [
+                "DTP",
+                "STP",
+                "VTP",
+                "IEEE 802.1X",
+            ],
+        },
+        {
+            "slug": "ftp-control-data-connections-capability",
+            "title": "CCNA — FTP capabilities",
+            "stem": "What is a capability of FTP in network management operations?",
+            "name": "ftpmgmt1",
+            "correct": "A",
+            "explain": "Correct. A — FTP opens a TCP control channel (commands, usually port 21) and a separate TCP data channel for transferring file contents (active or passive negotiation). It does not rely on UDP for transfers. Classic FTP does not inherently encrypt payload or credentials without FTPS/TLS; it is also standards-based (RFC 959), not a proprietary session-layer scheme.",
+            "choices": [
+                "uses separate control and data connections to move files between server and client",
+                "devices are directly connected and use UDP to pass file information",
+                "encrypts data before sending between data resources",
+                "offers proprietary support at the session layer when transferring data",
+            ],
+        },
+        {
+            "slug": "static-default-route-r1-r2-two-sites-exhibit",
+            "title": "CCNA — Static routing across WAN",
+            "stem": "A network engineer is in the process of establishing IP connectivity between two sites. Routers R1 and R2 are partially configured with IP addressing. Both routers have the ability to access devices on their respective LANs. Refer to the exhibit. Which command set configures the IP connectivity between devices located on both LANs in each site?",
+            "name": "sr12sites1",
+            "correct": "B",
+            "mono": True,
+            "explain": "Correct. B — R1 learns 10.1.1.0/24 only through R2; a default route to R2 WAN address 209.165.200.226 sends all unknown prefixes (including R2 LAN) across the interconnect. Likewise R2 points its default toward R1 WAN 209.165.200.225. Option A points each router at its own WAN address. Options C/D use incorrect prefixes/outgoing-interface choices (routes toward local subnets or meaningless host-route wording on LAN interfaces). More specific statics to each LAN would also work but are not listed.",
+            "choices": [
+                "R1\nip route 0.0.0.0 0.0.0.0 209.165.200.225\nR2\nip route 0.0.0.0 0.0.0.0 209.165.200.226",
+                "R1\nip route 0.0.0.0 0.0.0.0 209.165.200.226\nR2\nip route 0.0.0.0 0.0.0.0 209.165.200.225",
+                "R1\nip route 192.168.1.0 255.255.255.0 GigabitEthernet0/0\nR2\nip route 10.1.1.1 255.255.255.0 GigabitEthernet0/0",
+                "R1\nip route 192.168.1.1 255.255.255.0 GigabitEthernet0/1\nR2\nip route 10.1.1.1 255.255.255.0 GigabitEthernet0/1",
+            ],
+            "post_stem_html": '''    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/static-route-r1-r2-two-sites-topology.png" alt="" width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>''',
+        },
+        {
+            "slug": "collapsed-core-small-organization-cost",
+            "title": "CCNA — Collapsed core use case",
+            "stem": "Which type of organization should use a collapsed-core architecture?",
+            "name": "colcore1",
+            "correct": "B",
+            "explain": "Correct. B — A collapsed core folds core and distribution duties into one simplified layer, cutting device count and capex—well suited to smaller sites with modest scale. Large enterprises that demand modular growth, pervasive redundancy, or strict hierarchical boundaries instead implement (or migrate toward) a traditional three‑tier campus or spine/leaf variants. Dramatic impending growth usually steers planners beyond a purely collapsed topology.",
+            "choices": [
+                "large and requires a flexible, scalable network design",
+                "small and needs to reduce networking costs currently",
+                "large and must minimize downtime when hardware fails",
+                "small but is expected to grow dramatically in the near future",
+            ],
+        },
+        {
+            "slug": "ipv6-route-r17-ping-r18-wan-interface",
+            "title": "CCNA — IPv6 static route toward R18 WAN",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "Which IPv6 configuration is required for R17 to successfully ping the WAN interface on R18?",
+            "name": "v617r181",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A — The router enables IPv6 routing with ipv6 unicast-routing, keeps the pictured interface addresses on FastEthernet0/0 (toward R16) and FastEthernet1/0 (toward R18), and installs a recursion-free static toward 2001:db8:4::/64 via the on-link neighbor 2001:db8:3::301—the address R18 owns on Fa1/0 facing R17—so echo requests reach Fa0/0 on R18 in 2001:db8:4::/64. Option B sends traffic toward local Fa0/0 instead of R18. Option C omits ipv6 unicast-routing, swaps LAN addressing on the wrong physical interfaces, and uses an irrelevant next hop on the PC segment. Option D omits ipv6 unicast-routing, adds only CEF, and references PC2 as a next hop that is not adjacent on the R17–R18 link.",
+            "choices": [
+                """Option A
+
+R17#
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+!
+interface FastEthernet0/0
+no ip address
+duplex auto
+speed auto
+ipv6 address 2001:DB8:2::201/64
+!
+interface FastEthernet1/0
+no ip address
+duplex auto
+speed auto
+ipv6 address 2001:DB8:3::201/64
+!
+no cdp log mismatch duplex
+ipv6 route 2001:DB8:4::/64 2001:DB8:3::301""",
+                """Option B
+
+R17#
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+!
+interface FastEthernet0/0
+no ip address
+duplex auto
+speed auto
+ipv6 address 2001:DB8:2::201/64
+!
+interface FastEthernet1/0
+no ip address
+duplex auto
+speed auto
+ipv6 address 2001:DB8:3::201/64
+!
+no cdp log mismatch duplex
+ipv6 route 2001:DB8:4::/64 2001:DB8:2::201""",
+                """Option C
+
+R17#
+!
+no ip domain lookup
+ip cef
+!
+interface FastEthernet0/0
+no ip address
+duplex auto
+speed auto
+ipv6 address 2001:DB8:3::201/64
+!
+interface FastEthernet1/0
+no ip address
+duplex auto
+speed auto
+ipv6 address 2001:DB8:2::201/64
+!
+no cdp log mismatch duplex
+ipv6 route 2001:DB8:4::/64 2001:DB8:5::101""",
+                """Option D
+
+R17#
+!
+no ip domain lookup
+ip cef
+ipv6 cef
+!
+interface FastEthernet0/0
+no ip address
+duplex auto
+speed auto
+ipv6 address 2001:DB8:2::201/64
+!
+interface FastEthernet1/0
+no ip address
+duplex auto
+speed auto
+ipv6 address 2001:DB8:3::201/64
+!
+no cdp log mismatch duplex
+ipv6 route 2001:DB8:4::/64 2001:DB8:4::302""",
+            ],
+            "post_stem_html": '''    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/ipv6-route-r17-r18-wan-exhibit.png" alt="" width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>''',
         },
     ]
 
@@ -1774,6 +2299,8 @@ def main() -> None:
                 prev_slug=prev,
                 next_slug=next_slug,
                 mono_choices=q.get("mono", False),
+                post_stem_html=q.get("post_stem_html"),
+                stem_after_exhibit=q.get("stem_after_exhibit"),
             )
         (OUT / f"{slug}.html").write_text(html, encoding="utf-8")
         prev = slug

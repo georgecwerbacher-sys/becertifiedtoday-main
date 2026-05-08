@@ -33,6 +33,13 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
+    .stem-after-exhibit {
+      margin: 12px 0 6px;
+      font-size: clamp(1.02rem, 1.9vw, 1.32rem);
+      line-height: 1.42;
+      font-weight: 600;
+      color: #e6edf3;
+    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -43,9 +50,64 @@
       font-size: 1.02rem;
       cursor: pointer;
     }
-    .choice.mono {
+    .choice.mono.cli-router-choice {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #2a3f5c;
+      background: linear-gradient(180deg, rgba(26, 37, 59, 0.95), rgba(10, 16, 28, 0.98));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    .cli-router-choice-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: rgba(15, 22, 40, 0.95);
+      border-bottom: 1px solid #2a3f5c;
+    }
+    .cli-router-choice-controls input {
+      margin-right: 0;
+      transform: none;
+      flex-shrink: 0;
+    }
+    .cli-router-choice-badge {
+      flex: 0 0 auto;
+      min-width: 1.5rem;
+      text-align: center;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 0.78rem;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.95rem;
+      background: rgba(37, 75, 138, 0.55);
+      border: 1px solid rgba(93, 140, 220, 0.45);
+      color: #e6edf3;
+    }
+    .cli-router-choice-title {
+      flex: 1 1 auto;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #8b9cc4;
+    }
+    pre.cli-router-console {
+      margin: 0;
+      padding: 12px 14px;
+      background: #060a11;
+      color: #c8dcf0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.78rem;
+      line-height: 1.42;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      border-left: 3px solid #c9a227;
+      min-height: 2rem;
     }
     .choice input {
       margin-right: 10px;
@@ -119,6 +181,74 @@
     .next-link:hover {
       filter: brightness(1.08);
     }
+    .exhibit-stack {
+      margin: 14px 0 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    figure.exhibit-photo {
+      margin: 0;
+      border-radius: 10px;
+      border: 1px solid #2d3b5a;
+      overflow: hidden;
+      background: #0d1320;
+    }
+    figure.exhibit-photo img {
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+      display: block;
+    }
+    figure.exhibit-photo figcaption {
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      color: #8b9cc4;
+      border-top: 1px solid #2d3b5a;
+      background: #0f1628;
+    }
+    .cli-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 720px) {
+      .cli-grid.two-cols {
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+      }
+    }
+    .cli-device {
+      border-radius: 10px;
+      border: 1px solid #2d3b5a;
+      background: #0d1320;
+      overflow: hidden;
+      min-height: 0;
+    }
+    .cli-device h2 {
+      margin: 0;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      background: #1a253b;
+      border-bottom: 1px solid #2d3b5a;
+      color: #b6c8e8;
+    }
+    .cli-device pre {
+      margin: 0;
+      padding: 12px 14px;
+      font-size: 0.72rem;
+      line-height: 1.4;
+      overflow-x: auto;
+      white-space: pre;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: #e6edf3;
+    }
+    .cli-device pre + pre {
+      border-top: 1px solid #2d3b5a;
+    }
   </style>
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
 </head>
@@ -126,12 +256,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which queuing mechanism is most appropriate to give strict priority with a policed cap to delay-sensitive interactive voice and video on a congested WAN interface?</h1>
+    <h1>In QoS, which prioritization method is appropriate for interactive voice and video?</h1>
 
-    <label class="choice"><input type="radio" name="qosllq1" value="A" />A. First-in, first-out (FIFO)</label>
-    <label class="choice"><input type="radio" name="qosllq1" value="B" />B. Weighted fair queuing only</label>
-    <label class="choice"><input type="radio" name="qosllq1" value="C" />C. Custom queuing</label>
-    <label class="choice"><input type="radio" name="qosllq1" value="D" />D. Low-latency queuing (LLQ)</label>
+    <label class="choice"><input type="radio" name="qosllq1" value="A" />A. expedited forwarding</label>
+    <label class="choice"><input type="radio" name="qosllq1" value="B" />B. traffic policing</label>
+    <label class="choice"><input type="radio" name="qosllq1" value="C" />C. round-robin scheduling</label>
+    <label class="choice"><input type="radio" name="qosllq1" value="D" />D. low-latency queuing</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -141,13 +271,14 @@
 
     <div class="next-wrap">
       <a class="next-link" href="/CCNA-Study/CCNA_questions/ssid-two-characteristics-choose-two.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/sdn-southbound-api-controller-to-infrastructure.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 Low-latency queuing (LLQ) combines strict priority for real-time traffic with a bandwidth cap so priority traffic cannot starve other classes. FIFO has no differentiation. Weighted fair queuing alone does not define strict priority the same way. Custom queuing is legacy and not the usual CCNA answer for VoIP strict priority.";
+      var CORRECT_MSG = "Correct. D \u2014 Low-latency queuing (LLQ) attaches a strict-priority queue (often capped) for real-time classes such as voice and conferencing video before other queues are serviced, reducing delay and jitter. Expedited forwarding (EF) names a differentiated-services per-hop behavior and marking mindset; policing rate-limits traffic; plain round-robin does not grant the strict sequencing LLQ implies on Cisco platforms.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {

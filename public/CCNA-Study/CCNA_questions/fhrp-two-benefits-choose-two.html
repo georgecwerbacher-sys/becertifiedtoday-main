@@ -33,6 +33,13 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
+    .stem-after-exhibit {
+      margin: 12px 0 6px;
+      font-size: clamp(1.02rem, 1.9vw, 1.32rem);
+      line-height: 1.42;
+      font-weight: 600;
+      color: #e6edf3;
+    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -43,9 +50,64 @@
       font-size: 1.02rem;
       cursor: pointer;
     }
-    .choice.mono {
+    .choice.mono.cli-router-choice {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #2a3f5c;
+      background: linear-gradient(180deg, rgba(26, 37, 59, 0.95), rgba(10, 16, 28, 0.98));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    .cli-router-choice-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: rgba(15, 22, 40, 0.95);
+      border-bottom: 1px solid #2a3f5c;
+    }
+    .cli-router-choice-controls input {
+      margin-right: 0;
+      transform: none;
+      flex-shrink: 0;
+    }
+    .cli-router-choice-badge {
+      flex: 0 0 auto;
+      min-width: 1.5rem;
+      text-align: center;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 0.78rem;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.95rem;
+      background: rgba(37, 75, 138, 0.55);
+      border: 1px solid rgba(93, 140, 220, 0.45);
+      color: #e6edf3;
+    }
+    .cli-router-choice-title {
+      flex: 1 1 auto;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #8b9cc4;
+    }
+    pre.cli-router-console {
+      margin: 0;
+      padding: 12px 14px;
+      background: #060a11;
+      color: #c8dcf0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.78rem;
+      line-height: 1.42;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      border-left: 3px solid #c9a227;
+      min-height: 2rem;
     }
     .choice input {
       margin-right: 10px;
@@ -119,6 +181,74 @@
     .next-link:hover {
       filter: brightness(1.08);
     }
+    .exhibit-stack {
+      margin: 14px 0 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    figure.exhibit-photo {
+      margin: 0;
+      border-radius: 10px;
+      border: 1px solid #2d3b5a;
+      overflow: hidden;
+      background: #0d1320;
+    }
+    figure.exhibit-photo img {
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+      display: block;
+    }
+    figure.exhibit-photo figcaption {
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      color: #8b9cc4;
+      border-top: 1px solid #2d3b5a;
+      background: #0f1628;
+    }
+    .cli-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 720px) {
+      .cli-grid.two-cols {
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+      }
+    }
+    .cli-device {
+      border-radius: 10px;
+      border: 1px solid #2d3b5a;
+      background: #0d1320;
+      overflow: hidden;
+      min-height: 0;
+    }
+    .cli-device h2 {
+      margin: 0;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      background: #1a253b;
+      border-bottom: 1px solid #2d3b5a;
+      color: #b6c8e8;
+    }
+    .cli-device pre {
+      margin: 0;
+      padding: 12px 14px;
+      font-size: 0.72rem;
+      line-height: 1.4;
+      overflow-x: auto;
+      white-space: pre;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: #e6edf3;
+    }
+    .cli-device pre + pre {
+      border-top: 1px solid #2d3b5a;
+    }
   </style>
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
 </head>
@@ -126,13 +256,13 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>What are two benefits of a First Hop Redundancy Protocol such as HSRP or VRRP? (Choose two)</h1>
+    <h1>What are two benefits of FHRPs? (Choose two)</h1>
 
-    <label class="choice"><input type="checkbox" name="fhrp2b" value="A" />A. Increases aggregate WAN bandwidth through per-packet load balancing across all routers</label>
-    <label class="choice"><input type="checkbox" name="fhrp2b" value="B" />B. Eliminates the need for any dynamic routing protocol in the enterprise</label>
-    <label class="choice"><input type="checkbox" name="fhrp2b" value="C" />C. Advertises a unique host route for every client to optimize forwarding</label>
-    <label class="choice"><input type="checkbox" name="fhrp2b" value="D" />D. Provides redundant default gateway capability for end devices</label>
-    <label class="choice"><input type="checkbox" name="fhrp2b" value="E" />E. Allows nearly transparent failover when the active gateway router fails</label>
+    <label class="choice"><input type="checkbox" name="fhrp2b" value="A" />A. They prevent loops in the Layer 2 network.</label>
+    <label class="choice"><input type="checkbox" name="fhrp2b" value="B" />B. They allow encrypted traffic.</label>
+    <label class="choice"><input type="checkbox" name="fhrp2b" value="C" />C. They are able to bundle multiple ports to increase bandwidth</label>
+    <label class="choice"><input type="checkbox" name="fhrp2b" value="D" />D. They enable automatic failover of the default gateway.</label>
+    <label class="choice"><input type="checkbox" name="fhrp2b" value="E" />E. They allow multiple devices to serve as a single virtual gateway for clients in the network</label>
 
     <div class="actions">
       <button id="checkBtn" type="button">Check answer</button>
@@ -175,7 +305,7 @@
         }
         if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. D and E \u2014 An FHRP presents a virtual default gateway (VIP/virtual MAC) so clients need not track which physical router is active, and failover to the standby is fast enough to appear transparent to many applications. FHRPs do not by themselves aggregate WAN bandwidth, replace dynamic routing for remote networks, or advertise per-host routes to every client.";
+          answerBox.textContent = "Correct. D and E \u2014 First Hop Redundancy Protocols (HSRP, VRRP, GLBP, etc.) present a shared virtual gateway (IP/virtual MAC) to clients while multiple routers cooperate, and the standby can take over quickly if the active device fails\u2014default gateway failover. They do not prevent Layer 2 loops (that is spanning tree); they do not provide encryption by themselves; and they are not EtherChannel/link bundling.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";

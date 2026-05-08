@@ -33,38 +33,12 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
-    .exhibit-ref {
-      margin: 0 0 12px;
-      font-size: clamp(1.02rem, 2vw, 1.35rem);
-      font-weight: 700;
-      line-height: 1.35;
+    .stem-after-exhibit {
+      margin: 12px 0 6px;
+      font-size: clamp(1.02rem, 1.9vw, 1.32rem);
+      line-height: 1.42;
+      font-weight: 600;
       color: #e6edf3;
-    }
-    .exhibit {
-      margin: 0 0 18px;
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid #2d3b5a;
-      background: #ffffff;
-      text-align: center;
-    }
-    .exhibit img {
-      display: block;
-      width: 100%;
-      max-width: min(100%, 640px);
-      height: auto;
-      margin: 0 auto;
-    }
-    .visually-hidden {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
     }
     .choice {
       display: block;
@@ -76,55 +50,68 @@
       font-size: 1.02rem;
       cursor: pointer;
     }
-    .choice.mono {
+    .choice.mono.cli-router-choice {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #2a3f5c;
+      background: linear-gradient(180deg, rgba(26, 37, 59, 0.95), rgba(10, 16, 28, 0.98));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    .cli-router-choice-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: rgba(15, 22, 40, 0.95);
+      border-bottom: 1px solid #2a3f5c;
+    }
+    .cli-router-choice-controls input {
+      margin-right: 0;
+      transform: none;
+      flex-shrink: 0;
+    }
+    .cli-router-choice-badge {
+      flex: 0 0 auto;
+      min-width: 1.5rem;
+      text-align: center;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 0.78rem;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.95rem;
+      background: rgba(37, 75, 138, 0.55);
+      border: 1px solid rgba(93, 140, 220, 0.45);
+      color: #e6edf3;
+    }
+    .cli-router-choice-title {
+      flex: 1 1 auto;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #8b9cc4;
+    }
+    pre.cli-router-console {
+      margin: 0;
+      padding: 12px 14px;
+      background: #060a11;
+      color: #c8dcf0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.78rem;
+      line-height: 1.42;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      border-left: 3px solid #c9a227;
+      min-height: 2rem;
     }
     .choice input {
       margin-right: 10px;
       transform: translateY(1px);
-    }
-    .choice-cli {
-      padding: 12px 14px;
-    }
-    .choice-cli-inner {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-    }
-    .choice-cli-inner > input {
-      flex-shrink: 0;
-      margin-top: 4px;
-      margin-right: 0;
-    }
-    .choice-cli-body {
-      flex: 1;
-      min-width: 0;
-    }
-    .choice-cli-letter {
-      display: block;
-      font-weight: 700;
-      font-size: 0.95rem;
-      margin-bottom: 6px;
-      color: #e6edf3;
-    }
-    .cli-config-snippet code {
-      font: inherit;
-      color: inherit;
-    }
-    .cli-config-snippet {
-      margin: 0;
-      padding: 10px 12px;
-      border-radius: 8px;
-      background: #0a0e14;
-      border: 1px solid #1e293b;
-      color: #c8e6c9;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      font-size: clamp(0.68rem, 1.5vw, 0.8rem);
-      line-height: 1.45;
-      white-space: pre;
-      overflow-x: auto;
-      text-align: left;
     }
     .actions {
       margin-top: 18px;
@@ -194,6 +181,74 @@
     .next-link:hover {
       filter: brightness(1.08);
     }
+    .exhibit-stack {
+      margin: 14px 0 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    figure.exhibit-photo {
+      margin: 0;
+      border-radius: 10px;
+      border: 1px solid #2d3b5a;
+      overflow: hidden;
+      background: #0d1320;
+    }
+    figure.exhibit-photo img {
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+      display: block;
+    }
+    figure.exhibit-photo figcaption {
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      color: #8b9cc4;
+      border-top: 1px solid #2d3b5a;
+      background: #0f1628;
+    }
+    .cli-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 720px) {
+      .cli-grid.two-cols {
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+      }
+    }
+    .cli-device {
+      border-radius: 10px;
+      border: 1px solid #2d3b5a;
+      background: #0d1320;
+      overflow: hidden;
+      min-height: 0;
+    }
+    .cli-device h2 {
+      margin: 0;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      background: #1a253b;
+      border-bottom: 1px solid #2d3b5a;
+      color: #b6c8e8;
+    }
+    .cli-device pre {
+      margin: 0;
+      padding: 12px 14px;
+      font-size: 0.72rem;
+      line-height: 1.4;
+      overflow-x: auto;
+      white-space: pre;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: #e6edf3;
+    }
+    .cli-device pre + pre {
+      border-top: 1px solid #2d3b5a;
+    }
   </style>
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
 </head>
@@ -201,71 +256,44 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <p class="exhibit-ref">Refer to the exhibit.</p>
+    <h1>Refer to the exhibit (standard ACL 99, permit 10.100.100.0/24, deny Gi0/1 subnet). An access list is required to permit traffic from any host on interface G0/0 and deny traffic from interface Gi0/1. Which access list must be applied?</h1>
 
-    <figure class="exhibit">
-      <figcaption class="visually-hidden">
-        Router with Gi0/0 connected to subnet 10.100.100.0/24 and Gi0/1 connected to subnet 192.168.0.0/16.
-      </figcaption>
-      <img
-        src="/CCNA-Study/CCNA_questions/standard-acl-permit-deny-two-subnets-topology.png"
-        width="352"
-        height="202"
-        alt="Router with Gi0/0 to 10.100.100.0/24 and Gi0/1 to 192.168.0.0/16."
-        decoding="async"
-        loading="lazy"
-      />
-    </figure>
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="stdacl" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. Option A: ip access-list standard 99 — permit 10.100.100.0 0.0.0.255 — deny 192.168.0.0 0.0.255.255</pre>
+    </label>
 
-    <h1>
-      An access list is required to permit traffic from any host on interface G0/0 and deny traffic from interface Gi0/1. Which
-      access list must be applied?
-    </h1>
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="stdacl" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. Option B: ip access-list standard 99 — permit 10.100.100.0 0.0.0.255 — deny 192.168.0.0 0.255.255.255</pre>
+    </label>
 
-    <label class="choice choice-cli">
-      <div class="choice-cli-inner">
-        <input type="radio" name="stdacl" value="A" />
-        <div class="choice-cli-body">
-          <span class="choice-cli-letter">A.</span>
-          <pre class="cli-config-snippet"><code>ip access-list standard 99
- permit 10.100.100.0 0.0.0.255
- deny 192.168.0.0 0.0.255.255</code></pre>
-        </div>
-      </div>
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="stdacl" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. Option C: ip access-list standard 100 — permit 10.100.100.0 0.0.0.255 — deny 192.168.0.0 0.255.255.255</pre>
     </label>
-    <label class="choice choice-cli">
-      <div class="choice-cli-inner">
-        <input type="radio" name="stdacl" value="B" />
-        <div class="choice-cli-body">
-          <span class="choice-cli-letter">B.</span>
-          <pre class="cli-config-snippet"><code>ip access-list standard 99
- permit 10.100.100.0 0.0.0.255
- deny 192.168.0.0 0.255.255.255</code></pre>
-        </div>
-      </div>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="stdacl" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. Option D: ip access-list standard 199 — permit 10.100.100.0 0.0.0.255 — deny 192.168.0.0 0.0.255.255</pre>
     </label>
-    <label class="choice choice-cli">
-      <div class="choice-cli-inner">
-        <input type="radio" name="stdacl" value="C" />
-        <div class="choice-cli-body">
-          <span class="choice-cli-letter">C.</span>
-          <pre class="cli-config-snippet"><code>ip access-list standard 100
- permit 10.100.100.0 0.0.0.255
- deny 192.168.0.0 0.255.255.255</code></pre>
-        </div>
-      </div>
-    </label>
-    <label class="choice choice-cli">
-      <div class="choice-cli-inner">
-        <input type="radio" name="stdacl" value="D" />
-        <div class="choice-cli-body">
-          <span class="choice-cli-letter">D.</span>
-          <pre class="cli-config-snippet"><code>ip access-list standard 199
- permit 10.100.100.0 0.0.0.255
- deny 192.168.0.0 0.0.255.255</code></pre>
-        </div>
-      </div>
-    </label>
+
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
