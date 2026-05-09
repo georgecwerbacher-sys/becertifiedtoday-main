@@ -1139,6 +1139,16 @@ Sw2(config-if)#switchport voice vlan 177</pre>
         return t;
       }
 
+      /** Echo shorthand interfaces as full Ethernet names in the scrollback (submitSw / submitSw2). */
+      function expandInterfaceEcho(raw) {
+        var s = String(raw || "").trim();
+        var m = /^(interface|int)\s+e(\d+)\/(\d+)$/i.exec(s);
+        if (m) {
+          return "interface Ethernet" + m[2] + "/" + m[3];
+        }
+        return s;
+      }
+
       function matchTrunkAllowed1545(raw) {
         var u = normalize(raw).replace(/\s*,\s*/g, ",");
         return u === "switchport trunk allowed vlan 15,45";
