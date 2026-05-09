@@ -8,7 +8,7 @@
   - Switch 1 (SW1): LAB_STEPS[] { mode, test(raw) }; mode drives prompt via promptForMode(); normalize() accepts common abbreviations
   - Switch 2 (SW2): second IOS CLI — read-only exhibit + optional mode practice (same prompt helpers as SW1-style IOS)
   - Third IOS device (Sw3): same modal / submit pattern as R1 (sw2 block).
-  - Device picker (R1 / SW1 / SW3), Helper / Spoiler modals, tasks-blue-box, draggable modals, command history
+  - Device picker (R1 / SW1 / SW3 / PC1), PC1 = Windows-style command prompt; Helper / Spoiler modals, draggable modals, command history
 
   For a fifth IOS CLI (e.g. R3), copy the SW2 modal + submit/reset/open pattern from cli-lab-ip-services-sim-v2.html.
 -->
@@ -121,8 +121,8 @@
       position: relative;
       display: inline-block;
       width: 100%;
-      max-width: min(520px, 100%);
-      margin: 0 auto;
+      max-width: min(560px, 100%);
+      margin: 0 auto 14px;
       line-height: 0;
     }
     .diagram-stage img {
@@ -304,6 +304,18 @@
     }
     .terminal.terminal-flash {
       animation: cliFlash 0.9s ease;
+    }
+    .terminal-pc {
+      background: #0f0f10;
+      border: 1px solid #3a3a40;
+      font-family: Consolas, "Lucida Console", ui-monospace, monospace;
+      font-size: 0.86rem;
+    }
+    .terminal-pc .prompt-el {
+      color: #d4d4d4;
+    }
+    .terminal-pc .cmdline-input {
+      color: #e8e8e8;
     }
     @keyframes cliFlash {
       0% {
@@ -577,11 +589,22 @@
       <h1>Named ACL and DHCP Snooping Simulation V2</h1>
 
       <div class="diagram-wrap" aria-label="Topology diagram">
+        <div class="diagram-stage">
+          <img
+            src="/CCNA-Study/CCNA_labs/images/named-acl-dhcp-snooping-v2-topology.jpg"
+            width="359"
+            height="512"
+            alt="Topology: R1 to Internet; Sw103 and Sw104 distribution; Sw101 and Sw102 access; PC1 on 172.16.101.0/24, PC2 on 172.16.102.0/24; /30 transit links labeled."
+            decoding="async"
+            loading="eager"
+          />
+        </div>
         <div class="device-pick" role="group" aria-label="Device for CLI">
           <strong style="color: #e6edf3">Select device</strong>
           <label><input type="radio" name="labPrimaryDev" value="R1" /> R1</label>
           <label><input type="radio" name="labPrimaryDev" value="SW1" checked /> SW1</label>
           <label><input type="radio" name="labPrimaryDev" value="SW3" /> SW3</label>
+          <label><input type="radio" name="labPrimaryDev" value="PC1" /> PC1</label>
         </div>
         <div class="device-links">
           <button type="button" class="device-link" id="openSelectedCliBtn">Open Sw1 CLI</button>
@@ -760,6 +783,45 @@
     </div>
   </div>
 
+  <!-- PC1 — Windows-style command prompt (not IOS) -->
+  <div id="pcCliOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="pcCliDialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="pcCliTitle"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="pcCliTitle">PC1 — Command Prompt</h2>
+        <button type="button" class="cli-modal-close" id="pcCliClose" aria-label="Close command prompt">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal terminal-pc" id="pcTerminal" aria-label="Simulated PC1 Windows command prompt">
+          <div id="pcScrollback" class="scrollback-area"></div>
+          <div class="input-row">
+            <span id="pcPrompt" class="prompt-el pc-prompt">PC1:\&gt;</span>
+            <input
+              id="pcCmdline"
+              class="cmdline-input"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="none"
+              aria-label="PC1 command line"
+            />
+          </div>
+        </div>
+      </div>
+      <footer class="cli-modal-footer">
+        <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
+          PC session: try <code>ipconfig</code>, <code>ping</code>, or <code>telnet</code> to a device IP (e.g. <code>172.16.1.6</code>). This is a CMD-style shell, not Cisco IOS.
+        </p>
+      </footer>
+    </div>
+  </div>
+
   <div id="helperFileOverlay" class="cli-modal-overlay" aria-hidden="true">
     <div
       id="helperFileDialog"
@@ -775,11 +837,74 @@
       </header>
       <div class="cli-modal-body">
         <section class="topology-scrape" aria-label="Helper notes">
-          <h2>REPLACE: Section title</h2>
+          <h2>Task 1 — Local account on Sw103 (Telnet, VTY 0–4)</h2>
+          <p>
+            On <strong>Sw103</strong>, create the user, then allow Telnet only on VTY 0–4 with local login:
+          </p>
+          <pre class="spoiler-cli-pre">username devnet privilege 15 algorithm-type sha256 secret access8cli
+line vty 0 4
+ transport input telnet
+ login local</pre>
+          <p>
+            <strong>Note:</strong> Privilege level 15 is privileged EXEC (enable mode) and allows all commands by default. You cannot use the
+            keyword <code>password</code> after <code>algorithm-type sha256</code>; use <code>secret</code> instead.
+          </p>
+          <h2 style="margin-top: 1rem; font-size: 0.95rem">Verification</h2>
+          <p>
+            Find an address on Sw103 to Telnet to (from PC1). On Sw103, use <code>show ip interface brief</code>. Example: if
+            <code>Ethernet0/2</code> is <code>172.16.1.6</code>:
+          </p>
+          <pre class="spoiler-cli-pre">Sw103# show ip interface brief
+
+Interface        IP-Address      OK? Method    Status Protocol
+...
+Ethernet0/2      172.16.1.6      YES manual    up     up</pre>
+          <p>From <strong>PC1</strong> (your IP may differ):</p>
+          <pre class="spoiler-cli-pre">PC1&gt; telnet 172.16.1.6
+Trying 172.16.1.6 ... Open
+User Access Verification
+Username: devnet
+Password: access8cli
+Sw103#</pre>
+
+          <h2 style="margin-top: 1.25rem; font-size: 0.95rem">
+            Task 2 — Extended ACL <code>INTERNET_ACL</code> and apply on R1
+          </h2>
           <ul class="helper-bullets">
-            <li>REPLACE: First checklist item (plain language).</li>
-            <li>REPLACE: Second item; use inline <code>show …</code> or <code>configure …</code> only inside bullets, not terminal blocks.</li>
+            <li>Allow HTTPS from <code>172.16.0.0/16</code> (TCP port 443).</li>
+            <li>Allow Telnet only for VLAN 101 (use <code>172.16.101.0/24</code> from the topology — confirm with <code>show run</code> on Sw101 for <code>Ethernet0/0</code> in VLAN 101).</li>
+            <li>Deny other traffic with <code>log-input</code> (ingress interface, source MAC, source/dest IP and ports).</li>
           </ul>
+          <p>On <strong>R1</strong>, add ACEs to the existing named extended ACL:</p>
+          <pre class="spoiler-cli-pre">ip access-list extended INTERNET_ACL
+ permit tcp 172.16.0.0 0.0.255.255 any eq 443
+ permit tcp 172.16.101.0 0.0.0.255 any eq telnet
+ deny ip any any log-input</pre>
+          <p>
+            Apply inbound on both LAN-facing interfaces (<code>Ethernet0/0</code> and <code>Ethernet0/3</code>):
+          </p>
+          <pre class="spoiler-cli-pre">interface Ethernet0/0
+ ip access-group INTERNET_ACL in
+interface Ethernet0/3
+ ip access-group INTERNET_ACL in</pre>
+          <p>
+            <strong><code>log-input</code> vs <code>log</code>:</strong> <code>log</code> logs a basic match. <code>log-input</code> adds ingress
+            interface, source MAC, and source/destination IPs and ports. Use <code>log-input</code> here for the required detail.
+          </p>
+
+          <h2 style="margin-top: 1.25rem; font-size: 0.95rem">Task 3 — DHCP snooping on Sw101</h2>
+          <ul class="helper-bullets">
+            <li>Enable DHCP snooping for VLAN 101.</li>
+            <li>Disable DHCP Option-82 data insertion.</li>
+            <li>Enable DHCP snooping MAC address verification.</li>
+          </ul>
+          <pre class="spoiler-cli-pre">Sw101(config)# ip dhcp snooping
+Sw101(config)# ip dhcp snooping vlan 101
+Sw101(config)# no ip dhcp snooping information option
+Sw101(config)# ip dhcp snooping verify mac-address</pre>
+          <p><strong>Save</strong> on each device when done:</p>
+          <pre class="spoiler-cli-pre">copy running-config startup-config</pre>
+          <p style="margin-bottom: 0">Run from privileged EXEC on <strong>R1</strong>, <strong>Sw101</strong>, and <strong>Sw103</strong> as needed.</p>
         </section>
       </div>
     </div>
@@ -1166,6 +1291,9 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         if (t === "copy running-config startup-config") t = "copy running-configuration startup-configuration";
         if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
         if (t === "no shut") t = "no shutdown";
+        if (t === "sh ip int br" || t === "sh ip int brief") t = "show ip interface brief";
+        if (t === "show ip int brief") t = "show ip interface brief";
+        if (t === "sh ip interface brief") t = "show ip interface brief";
         return t;
       }
 
@@ -1196,13 +1324,47 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         return normalize(raw) === "show version";
       }
 
+      function matchShowIpInterfaceBrief(raw) {
+        return normalize(raw) === "show ip interface brief";
+      }
+
+      /** Sw1 exhibit for `show ip interface brief` (privileged EXEC) */
+      var SW1_SHOW_IP_INTERFACE_BRIEF = [
+        "Interface        IP-Address           OK?      Method             Status    Protocol",
+        "...",
+        "Ethernet0/2      172.16.1.6           YES      manual                 up          up",
+      ].join("\n");
+
       function matchCopyRunStart(raw) {
         return normalize(raw) === "copy running-configuration startup-configuration";
+      }
+
+      /** Task 1 — local user on Sw1/Sw103-style CLI */
+      function matchSw1LocalUserCmd(u) {
+        return (
+          u ===
+          "username devnet privilege 15 algorithm-type sha256 secret access8cli"
+        );
       }
 
       var nvramSavedSw = false;
       var nvramSavedSw2 = false;
       var nvramSavedSw3 = false;
+
+      /** Task 1 (Sw1): local user + VTY Telnet — all required before PC1 can telnet to 172.16.1.6 */
+      var sw1Task1UserDone = false;
+      var sw1Task1LineVtyDone = false;
+      var sw1Task1TransportTelnetDone = false;
+      var sw1Task1LoginLocalDone = false;
+
+      function sw1Task1TelnetReady() {
+        return (
+          sw1Task1UserDone &&
+          sw1Task1LineVtyDone &&
+          sw1Task1TransportTelnetDone &&
+          sw1Task1LoginLocalDone
+        );
+      }
 
       function isModeNavigationCommand(normalizedCmd) {
         return (
@@ -1225,6 +1387,7 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
       function swInEnableMode() {
         if (
           swPromptOverride === "config" ||
+          swPromptOverride === "config-line" ||
           swPromptOverride === "config-if" ||
           swPromptOverride === "config-router" ||
           swPromptOverride === "config-std-nacl" ||
@@ -1246,6 +1409,8 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
             return host + "#";
           case "config":
             return host + "(config)#";
+          case "config-line":
+            return host + "(config-line)#";
           case "config-if":
             return host + "(config-if)#";
           case "config-router":
@@ -1271,6 +1436,8 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
 
       var stepIndex = 0;
       var swPromptOverride = null;
+      /** PC1 telnet mini-flow: null | { stage: "user" | "pass", host: string } */
+      var pcTelnetState = null;
 
       var swCliOverlay = document.getElementById("swCliOverlay");
       var swCliDialog = document.getElementById("swCliDialog");
@@ -1295,6 +1462,13 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
       var sw3Cmdline = document.getElementById("sw3Cmdline");
       var sw3Terminal = document.getElementById("sw3Terminal");
 
+      var pcCliOverlay = document.getElementById("pcCliOverlay");
+      var pcCliDialog = document.getElementById("pcCliDialog");
+      var pcScrollback = document.getElementById("pcScrollback");
+      var pcPrompt = document.getElementById("pcPrompt");
+      var pcCmdline = document.getElementById("pcCmdline");
+      var pcTerminal = document.getElementById("pcTerminal");
+
       var openSelectedCliBtn = document.getElementById("openSelectedCliBtn");
       var helperFileOverlay = document.getElementById("helperFileOverlay");
       var helperFileDialog = document.getElementById("helperFileDialog");
@@ -1315,7 +1489,8 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
 
       function syncOpenCliLabel() {
         var d = getLabDev();
-        if (d === "SW3") openSelectedCliBtn.textContent = "Open " + SWITCH3_HOST + " CLI";
+        if (d === "PC1") openSelectedCliBtn.textContent = "Open PC1 command prompt";
+        else if (d === "SW3") openSelectedCliBtn.textContent = "Open " + SWITCH3_HOST + " CLI";
         else if (d === "R1") openSelectedCliBtn.textContent = "Open R1 CLI";
         else openSelectedCliBtn.textContent = "Open " + SWITCH_HOST + " CLI";
       }
@@ -1344,6 +1519,141 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         sw3Scrollback.scrollTop = sw3Scrollback.scrollHeight;
       }
 
+      function normalizePcCmd(s) {
+        return String(s).trim().toLowerCase().replace(/\s+/g, " ");
+      }
+
+      function appendPc(cls, text) {
+        var div = document.createElement("div");
+        div.className = cls;
+        div.textContent = text;
+        pcScrollback.appendChild(div);
+        pcScrollback.scrollTop = pcScrollback.scrollHeight;
+      }
+
+      function resetPc() {
+        pcScrollback.innerHTML = "";
+        pcTelnetState = null;
+        pcPrompt.textContent = "PC1:\\>";
+      }
+
+      function submitPc() {
+        var promptText = pcPrompt.textContent;
+        var line = pcCmdline.value;
+        var rawTrim = String(line || "").trim();
+        pcCmdline.value = "";
+        if (!rawTrim) return;
+
+        var u = normalizePcCmd(line);
+
+        if (pcTelnetState) {
+          if (pcTelnetState.stage === "user") {
+            appendPc("line-user", promptText + " " + rawTrim);
+            if (rawTrim !== "devnet") {
+              appendPc("line-sys", "% Authentication failed");
+              pcTelnetState = null;
+              return;
+            }
+            appendPc(
+              "line-sys",
+              'Password: ********* //Type "access8cli" here\nUsername:'
+            );
+            pcTelnetState.stage = "pass";
+            return;
+          }
+          if (pcTelnetState.stage === "pass") {
+            appendPc("line-sys", "Password: *********");
+            if (rawTrim !== "access8cli") {
+              appendPc("line-sys", "% Authentication failed");
+              pcTelnetState = null;
+              return;
+            }
+            pcTelnetState = null;
+            appendPc("line-sys", "host unreachable");
+            return;
+          }
+        }
+
+        appendPc("line-user", promptText + " " + rawTrim);
+
+        if (u === "?" || u === "help") {
+          appendPc("line-sys", "Commands: ipconfig, ping host, telnet host, cls");
+          return;
+        }
+        if (u === "cls" || u === "clear") {
+          pcScrollback.innerHTML = "";
+          return;
+        }
+        if (u === "ipconfig" || u === "ipconfig /all") {
+          appendPc(
+            "line-showrun",
+            [
+              "Windows IP Configuration",
+              "",
+              "Ethernet adapter Local Area Connection:",
+              "",
+              "   Connection-specific DNS Suffix  . :",
+              "   IPv4 Address. . . . . . . . . . . : 172.16.101.10",
+              "   Subnet Mask . . . . . . . . . . . : 255.255.255.0",
+              "   Default Gateway . . . . . . . . . : 172.16.101.1",
+            ].join("\n")
+          );
+          return;
+        }
+        if (u.indexOf("ping ") === 0) {
+          var pingTarget = rawTrim.slice(5).trim();
+          if (!pingTarget) {
+            appendPc("line-sys", "Usage: ping host");
+            return;
+          }
+          appendPc(
+            "line-sys",
+            "Pinging " +
+              pingTarget +
+              " with 32 bytes of data:\nReply from " +
+              pingTarget +
+              ": bytes=32 time<1ms TTL=128\nReply from " +
+              pingTarget +
+              ": bytes=32 time<1ms TTL=128\n\nPing statistics for " +
+              pingTarget +
+              ":\n    Packets: Sent = 2, Received = 2, Lost = 0 (0% loss)."
+          );
+          return;
+        }
+        if (u.indexOf("telnet ") === 0) {
+          var host = rawTrim.slice(7).trim();
+          if (!host) {
+            appendPc("line-sys", "Usage: telnet host");
+            return;
+          }
+          var sw103Ip = host === "172.16.1.6";
+          if (sw103Ip && !sw1Task1TelnetReady()) {
+            appendPc(
+              "line-sys",
+              "Trying " +
+                host +
+                " ...\nCould not open connection to the host, on port 23: Connect failed\n\n[Complete Task 1 on SW1: username, line vty 0 4, transport input telnet, login local.]"
+            );
+            return;
+          }
+          appendPc(
+            "line-sys",
+            "Trying " +
+              host +
+              " ...Open\n\nUser Access Verification\n\nUsername: devnet //Type \"devnet\" here"
+          );
+          pcTelnetState = { stage: "user", host: host };
+          return;
+        }
+
+        appendPc(
+          "line-bad",
+          "'" +
+            rawTrim +
+            "' is not recognized as an internal or external command,\noperable program or batch file."
+        );
+      }
+
       function setSwPrompt() {
         if (swPromptOverride !== null && swPromptOverride !== undefined) {
           swPrompt.textContent = promptForMode(SWITCH_HOST, swPromptOverride);
@@ -1363,6 +1673,10 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         passBanner.textContent = PASS_BANNER_BASELINE_PENDING;
         swCmdline.disabled = false;
         swCmdline.value = "";
+        sw1Task1UserDone = false;
+        sw1Task1LineVtyDone = false;
+        sw1Task1TransportTelnetDone = false;
+        sw1Task1LoginLocalDone = false;
         setSwPrompt();
       }
 
@@ -1391,6 +1705,11 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
 
         if (swInEnableMode() && matchShowVersion(line)) {
           appendSw("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+
+        if (swInEnableMode() && matchShowIpInterfaceBrief(line)) {
+          appendSw("line-showrun", SW1_SHOW_IP_INTERFACE_BRIEF);
           return;
         }
 
@@ -1439,6 +1758,55 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         }
         if (swInEnableMode() && (u.indexOf("show ") === 0 || u.indexOf("sh ") === 0)) {
           appendSw("line-sys", SHOW_DISABLED_MSG);
+          return;
+        }
+
+        if (swPromptOverride === "config-line") {
+          if (u === "transport input telnet" || u === "login local") {
+            if (u === "transport input telnet") sw1Task1TransportTelnetDone = true;
+            if (u === "login local") sw1Task1LoginLocalDone = true;
+            return;
+          }
+          if (u === "exit") {
+            swPromptOverride = "config";
+            setSwPrompt();
+            return;
+          }
+          if (u === "end") {
+            swPromptOverride = "exec";
+            setSwPrompt();
+            return;
+          }
+          appendSw("line-bad", "% Invalid input");
+          return;
+        }
+
+        var sw1GlobalConfig =
+          swPromptOverride === "config" ||
+          (stepIndex > 0 &&
+            stepIndex < LAB_STEPS.length &&
+            LAB_STEPS[stepIndex].mode === "config" &&
+            !swPromptOverride);
+        if (sw1GlobalConfig) {
+          if (matchSw1LocalUserCmd(u)) {
+            sw1Task1UserDone = true;
+            return;
+          }
+          if (u === "line vty 0 4") {
+            sw1Task1LineVtyDone = true;
+            swPromptOverride = "config-line";
+            setSwPrompt();
+            return;
+          }
+        }
+
+        if (
+          u === "configure terminal" &&
+          stepIndex >= LAB_STEPS.length &&
+          swInEnableMode()
+        ) {
+          swPromptOverride = "config";
+          setSwPrompt();
           return;
         }
 
@@ -1696,6 +2064,7 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
       wireFloatingModal(swCliDialog, swCliOverlay);
       wireFloatingModal(sw2CliDialog, sw2CliOverlay);
       wireFloatingModal(sw3CliDialog, sw3CliOverlay);
+      wireFloatingModal(pcCliDialog, pcCliOverlay);
       wireFloatingModal(helperFileDialog, helperFileOverlay);
       wireFloatingModal(spoilerDialog, spoilerOverlay);
 
@@ -1748,9 +2117,27 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         sw3CliOverlay.setAttribute("aria-hidden", "true");
       }
 
+      function openPcCli() {
+        bumpOverlayZ(pcCliOverlay);
+        pcCliOverlay.classList.add("is-open");
+        pcCliOverlay.setAttribute("aria-hidden", "false");
+        resetPc();
+        if (pcTerminal) {
+          pcTerminal.classList.remove("terminal-flash");
+          void pcTerminal.offsetWidth;
+          pcTerminal.classList.add("terminal-flash");
+        }
+        pcCmdline.focus();
+      }
+      function closePcCli() {
+        pcCliOverlay.classList.remove("is-open");
+        pcCliOverlay.setAttribute("aria-hidden", "true");
+      }
+
       function openSelectedCliModal() {
         var d = getLabDev();
-        if (d === "SW3") openSw3Cli();
+        if (d === "PC1") openPcCli();
+        else if (d === "SW3") openSw3Cli();
         else if (d === "R1") openSw2Cli();
         else openSwCli();
       }
@@ -1781,10 +2168,17 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
           submitSw3();
         }
       });
+      pcCmdline.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submitPc();
+        }
+      });
 
       document.getElementById("swCliClose").addEventListener("click", closeSwCli);
       document.getElementById("sw2CliClose").addEventListener("click", closeSw2Cli);
       document.getElementById("sw3CliClose").addEventListener("click", closeSw3Cli);
+      document.getElementById("pcCliClose").addEventListener("click", closePcCli);
       swResetBtn.addEventListener("click", resetSwLab);
       document.getElementById("inlineResetLabBtn").addEventListener("click", resetSwLab);
 
@@ -1850,6 +2244,7 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
       bindLocalHistory(swCmdline);
       bindLocalHistory(sw2Cmdline);
       bindLocalHistory(sw3Cmdline);
+      bindLocalHistory(pcCmdline);
 
       document.addEventListener("keydown", function (e) {
         if (e.key !== "Escape") return;
@@ -1878,6 +2273,11 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         if (sw3CliOverlay.classList.contains("is-open")) {
           e.preventDefault();
           closeSw3Cli();
+          return;
+        }
+        if (pcCliOverlay.classList.contains("is-open")) {
+          e.preventDefault();
+          closePcCli();
         }
       });
 
