@@ -569,12 +569,12 @@
       <div class="diagram-wrap" aria-label="Topology diagram">
         <div class="device-pick" role="group" aria-label="Device for CLI">
           <strong style="color: #e6edf3">Select device</strong>
-          <label><input type="radio" name="labPrimaryDev" value="SW1" checked /> SW1</label>
+          <label><input type="radio" name="labPrimaryDev" value="SW1" checked /> Sw1</label>
           <label><input type="radio" name="labPrimaryDev" value="R1" /> R1</label>
           <label><input type="radio" name="labPrimaryDev" value="PC1" /> PC1</label>
         </div>
         <div class="device-links">
-          <button type="button" class="device-link" id="openSelectedCliBtn">Open SW1 CLI</button>
+          <button type="button" class="device-link" id="openSelectedCliBtn">Open Sw1 CLI</button>
         </div>
         <div class="tasks-blue-box" aria-label="Lab tasks">
           <p class="tasks">
@@ -585,15 +585,15 @@
           </p>
           <ol class="tasks">
             <li>
-              On <strong>SW1</strong>: follow <code>LAB_STEPS</code> in the script — each step’s <code>mode</code> sets the displayed
+              On <strong>Sw1</strong>: follow <code>LAB_STEPS</code> in the script — each step’s <code>mode</code> sets the displayed
               prompt; <code>test(raw)</code> advances the lab. <code>normalize()</code> accepts common abbreviations (e.g.
               <code>conf t</code>, <code>sh run</code>, <code>int …</code>).
             </li>
             <li>
-              On <strong>SW2</strong> (read-only exhibit): use <code>show running-config</code> for the snapshot; optional
+              On <strong>R1</strong> (read-only exhibit): use <code>show running-config</code> for the snapshot; optional
               <code>configure terminal</code> / <code>interface …</code> for prompt practice. To complete the lab, from
-              privileged exec on <strong>SW1</strong> and <strong>SW2</strong> run
-              <code>copy running-configuration startup-configuration</code> (abbrev. <code>copy run start</code>) on each device after SW1 steps are done.
+              privileged exec on <strong>Sw1</strong> and <strong>R1</strong> run
+              <code>copy running-configuration startup-configuration</code> (abbrev. <code>copy run start</code>) on each device after Sw1 steps are done.
             </li>
             <li>
               On <strong>PC1</strong>: use the device row to open the PC prompt. Extend <code>submitPc()</code> for
@@ -632,14 +632,14 @@
       tabindex="-1"
     >
       <header class="cli-modal-header">
-        <h2 id="swCliTitle">SW1 — CLI</h2>
+        <h2 id="swCliTitle">Sw1 — CLI</h2>
         <button type="button" class="cli-modal-close" id="swCliClose" aria-label="Close CLI window">×</button>
       </header>
       <div class="cli-modal-body">
-        <div class="terminal" id="swTerminal" aria-label="Simulated SW1 CLI">
+        <div class="terminal" id="swTerminal" aria-label="Simulated Sw1 CLI">
           <div id="swScrollback" class="scrollback-area"></div>
           <div class="input-row">
-            <span id="swPrompt" class="prompt-el">SW1#</span>
+            <span id="swPrompt" class="prompt-el">Sw1#</span>
             <input
               id="swCmdline"
               class="cmdline-input"
@@ -647,7 +647,7 @@
               spellcheck="false"
               autocomplete="off"
               autocapitalize="none"
-              aria-label="SW1 command line"
+              aria-label="Sw1 command line"
             />
           </div>
         </div>
@@ -657,13 +657,13 @@
           <button type="button" class="btn btn-secondary" id="swResetBtn">Reset lab</button>
         </div>
         <div id="passBanner" class="pass-banner" role="status">
-          Complete all SW1 steps, then from enable mode on SW1 and SW2 run copy running-configuration startup-configuration on each device.
+          Complete all Sw1 steps, then from enable mode on Sw1 and R1 run copy running-configuration startup-configuration on each device.
         </div>
       </footer>
     </div>
   </div>
 
-  <!-- SW2 — second switch CLI (read-only exhibit + optional IOS mode practice) -->
+  <!-- R1 — second router CLI (read-only exhibit + optional IOS mode practice) -->
   <div id="sw2CliOverlay" class="cli-modal-overlay" aria-hidden="true">
     <div
       id="sw2CliDialog"
@@ -675,7 +675,7 @@
     >
       <header class="cli-modal-header">
         <h2 id="sw2CliTitle">R1 — CLI</h2>
-        <button type="button" class="cli-modal-close" id="sw2CliClose" aria-label="Close SW2 window">×</button>
+        <button type="button" class="cli-modal-close" id="sw2CliClose" aria-label="Close R1 window">×</button>
       </header>
       <div class="cli-modal-body">
         <div class="terminal" id="sw2Terminal" aria-label="Simulated R1 CLI">
@@ -783,10 +783,10 @@
           <div class="spoiler-terminal" role="region" aria-label="Example CLI solution">
             <div class="spoiler-terminal-bar">
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
-              <span class="spoiler-terminal-title">SW1 — Terminal</span>
+              <span class="spoiler-terminal-title">Sw1 — Terminal</span>
             </div>
-            <pre class="spoiler-terminal-pre">SW1# configure terminal
-SW1(config)# hostname REPLACE_HOSTNAME</pre>
+            <pre class="spoiler-terminal-pre">Sw1# configure terminal
+Sw1(config)# hostname REPLACE_HOSTNAME</pre>
           </div>
         </div>
         <p class="tasks" style="margin: 0; color: #8b9cbb; font-size: 0.85rem">
@@ -805,7 +805,7 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
   <script>
     (function () {
       /** ----- Author constants (replace when copying to public/) ----- */
-      var SWITCH_HOST = "SW1";
+      var SWITCH_HOST = "Sw1";
       var SWITCH2_HOST = "R1";
       var PC_PROMPT = ">";
 
@@ -813,19 +813,184 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
       var SWITCH_SHOW_RUNNING_SNAPSHOT = [
         "Building configuration...",
         "",
-        "hostname SW1",
+        "hostname Sw1",
+        "!",
+        "boot-start-marker",
+        "boot-end-marker",
+        "!",
+        "!",
+        "!",
+        "no aaa new-model",
+        "clock timezone EET 2 0",
+        "mmi polling-interval 60",
+        "no mmi auto-configure",
+        "no mmi pvc",
+        "mmi snmp-timeout 180",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "ip cef",
+        "!",
+        "multilink bundle-name authenticated",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "redundancy",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "interface Ethernet0/0",
+        " shutdown",
+        "!",
+        "interface Ethernet0/1",
+        " shutdown",
+        "!",
+        "interface Ethernet0/2",
+        " shutdown",
+        "!",
+        "interface Ethernet0/3",
+        " shutdown",
+        "!",
+        "interface Ethernet0/4",
+        " shutdown",
+        "!",
+        "ip forward-protocol nd",
+        "!",
+        "!",
+        "no ip http server",
+        "no ip http secure-server",
+        "!",
+        "!",
+        "!",
+        "!",
+        "control-plane",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "line con 0",
+        " logging synchronous",
+        "line aux 0",
+        "line vty 0 4",
+        " login",
+        " transport input none",
         "!",
         "end",
       ].join("\r\n");
 
-      /** Read-only second-switch exhibit — printed when user types show running-config on SW2 */
+      /** Read-only R1 exhibit — printed when user types show running-config on R1 */
       var SWITCH2_SHOW_RUNNING_SNAPSHOT = [
         "Building configuration...",
         "",
-        "hostname SW2",
+        "hostname R1",
         "!",
-        "interface GigabitEthernet0/0",
-        " ip address 10.0.0.2 255.255.255.0",
+        "boot-start-marker",
+        "boot-end-marker",
+        "!",
+        "!",
+        "!",
+        "no aaa new-model",
+        "clock timezone EET 2 0",
+        "mmi polling-interval 60",
+        "no mmi auto-configure",
+        "no mmi pvc",
+        "mmi snmp-timeout 180",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "ip cef",
+        "!",
+        "multilink bundle-name authenticated",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "redundancy",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "interface Ethernet0/0",
+        " shutdown",
+        "!",
+        "interface Ethernet0/1",
+        " shutdown",
+        "!",
+        "interface Ethernet0/2",
+        " shutdown",
+        "!",
+        "interface Ethernet0/3",
+        " shutdown",
+        "!",
+        "interface Ethernet0/4",
+        " shutdown",
+        "!",
+        "ip forward-protocol nd",
+        "!",
+        "!",
+        "no ip http server",
+        "no ip http secure-server",
+        "!",
+        "!",
+        "!",
+        "!",
+        "control-plane",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "!",
+        "line con 0",
+        " logging synchronous",
+        "line aux 0",
+        "line vty 0 4",
+        " login",
+        " transport input none",
         "!",
         "end",
       ].join("\r\n");
@@ -863,6 +1028,7 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         if (t === "copy run start" || t === "copy run st") t = "copy running-configuration startup-configuration";
         if (t === "copy running-config startup-config") t = "copy running-configuration startup-configuration";
         if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
+        if (t === "no shut") t = "no shutdown";
         return t;
       }
 
@@ -876,13 +1042,13 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
       var COPY_RUN_START_AFTER_STEPS_MSG =
         "% Error: Finish the full STEPS sequence on this switch until you return to privileged EXEC (#), then save to startup-config.";
       var COPY_RUN_START_AFTER_SW1_STEPS_MSG =
-        "% Error: Finish the full STEPS sequence on SW1 first (until SW1#), then save startup-config from privileged EXEC on SW2.";
+        "% Error: Finish the full STEPS sequence on Sw1 first (until Sw1#), then save startup-config from privileged EXEC on R1.";
       var BASELINE_SW_STEPS_OK_MSG =
-        "[OK] Switch steps complete. From privileged exec on SW1 and SW2, run copy running-configuration startup-configuration (copy run start) on each device to finish the lab.";
+        "[OK] Switch steps complete. From privileged exec on Sw1 and R1, run copy running-configuration startup-configuration (copy run start) on each device to finish the lab.";
       var BASELINE_LAB_ALL_DONE_MSG =
-        "[OK] Lab complete: objectives met, PC1 IP settings match the solution, and running-config is saved to startup-config on SW1 and R1.";
+        "[OK] Lab complete: objectives met, PC1 IP settings match the solution, and running-config is saved to startup-config on Sw1 and R1.";
       var PASS_BANNER_BASELINE_PENDING =
-        "Complete all SW1 steps, set correct PC1 IP/mask/gateway, then from enable mode on SW1 and R1 run copy running-configuration startup-configuration on each device.";
+        "Complete all Sw1 steps, set correct PC1 IP/mask/gateway, then from enable mode on Sw1 and R1 run copy running-configuration startup-configuration on each device.";
       // REPLACE per lab: only this exact tuple unlocks successful completion.
       var PC1_SOLUTION_IP = "192.168.10.10";
       var PC1_SOLUTION_MASK = "255.255.255.0";
@@ -1101,7 +1267,7 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
             parts[2] === PC1_SOLUTION_GATEWAY
           ) {
             pc1AddressingSolved = true;
-            appendPc("line-sys", "[OK] PC1 addressing accepted. You can now complete final save steps on SW1 and R1.");
+            appendPc("line-sys", "[OK] PC1 addressing accepted. You can now complete final save steps on Sw1 and R1.");
             tryCompleteBaselineLab(function (cls, text) {
               appendPc(cls, text);
             });
@@ -1336,6 +1502,9 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         if (sw2Mode === "config-if" && (u === "end" || u === "exit")) {
           sw2Mode = u === "end" ? "exec" : "config";
           sw2Prompt.textContent = sw2PromptForMode();
+          return;
+        }
+        if (sw2Mode === "config-if" && u === "no shutdown") {
           return;
         }
 
