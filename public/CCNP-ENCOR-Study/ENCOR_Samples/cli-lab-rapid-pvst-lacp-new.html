@@ -932,11 +932,25 @@ SW20# copy running-config startup-config</pre>
 
   <script>
     function normalize(s) {
-      return s
+      let t = String(s || "")
         .trim()
         .toLowerCase()
         .replace(/\s+/g, " ")
         .replace(/[.;]+$/, "");
+      if (t === "conf t" || t === "config t") t = "configure terminal";
+      if (t === "sh ver" || t === "show ver" || t === "sh version") t = "show version";
+      if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
+      return t;
+    }
+
+    function isModeNavigationCommand(normalizedCmd) {
+      const u = normalizedCmd;
+      return (
+        u === "configure terminal" ||
+        u === "end" ||
+        u === "exit" ||
+        u.indexOf("interface ") === 0
+      );
     }
 
     function matchCopy(n) {
@@ -965,6 +979,10 @@ SW20# copy running-config startup-config</pre>
     function matchShowEtherchannelSummary(raw) {
       const u = normalize(raw);
       return u === "show etherchannel summary" || u === "sh etherchannel summary";
+    }
+
+    function matchShowVersion(raw) {
+      return normalize(raw) === "show version";
     }
 
     /** Ethernet0/0 as shown in exhibits — accept common IOS abbreviations. */
@@ -1057,6 +1075,9 @@ SW20# copy running-config startup-config</pre>
       "switchport access vlan 100",
       "no shut",
     ].join("\r\n");
+
+    const SHOW_DISABLED_MSG = "this command is disabled for this lab";
+    const SHOW_VERSION_MSG = "BeCertifiedToday.com version 2026";
 
     /** Simulated `show etherchannel summary` after Po10 trunk is configured. */
     const SHOW_ETHERCHANNEL_SUMMARY = [
@@ -1288,13 +1309,27 @@ SW20# copy running-config startup-config</pre>
       if (!sw10Cmdline) return;
       const prompt = sw10PromptEl ? sw10PromptEl.textContent : "Sw10#";
       const line = sw10Cmdline.value;
-      appendLineSw10("line-user", `${prompt} ${line}`);
+      const trimmed = String(line || "").trim();
+      const normalized = normalize(line);
+      const hideInputLine = isModeNavigationCommand(normalized);
+      if (!hideInputLine) {
+        appendLineSw10("line-user", `${prompt} ${line}`);
+      }
       sw10Cmdline.value = "";
-      if (!line.trim()) return;
+      if (!trimmed) return;
       const u = normalize(line);
 
       if (matchShowRun(line) || (u === "do show run" || u === "do show running-config")) {
         appendLineSw10("line-showrun", SW10_SHOW_RUN);
+        return;
+      }
+
+      if (sw10Mode === "exec" && matchShowVersion(line)) {
+        appendLineSw10("line-sys", SHOW_VERSION_MSG);
+        return;
+      }
+      if (sw10Mode === "exec" && (u.indexOf("show ") === 0 || u.indexOf("sh ") === 0)) {
+        appendLineSw10("line-sys", SHOW_DISABLED_MSG);
         return;
       }
 
@@ -1531,11 +1566,17 @@ SW20# copy running-config startup-config</pre>
     function submit() {
       const prompt = promptEl ? promptEl.textContent : promptForStep(stepIndex);
       const line = cmdline.value;
-      const u = normalize(line);
-      const mode = currentSw20Mode();
-      appendLine("line-user", `${prompt} ${line}`);
+      const trimmed = String(line || "").trim();
+      const normalized = normalize(line);
+      const hideInputLine = isModeNavigationCommand(normalized);
+      if (!hideInputLine) {
+        appendLine("line-user", `${prompt} ${line}`);
+      }
       cmdline.value = "";
-      if (!line.trim()) return;
+      if (!trimmed) return;
+
+      const u = normalized;
+      const mode = currentSw20Mode();
 
       if (matchShowRun(line)) {
         appendLine("line-showrun", SHOW_RUNNING_SNAPSHOT);
@@ -1548,6 +1589,23 @@ SW20# copy running-config startup-config</pre>
         focusActiveCli();
         return;
       }
+
+      if (mode === "exec" && matchShowVersion(line)) {
+        appendLine("line-sys", SHOW_VERSION_MSG);
+        focusActiveCli();
+        return;
+      }
+      if (mode === "exec" && (u.indexOf("show ") === 0 || u.indexOf("sh ") === 0)) {
+        if (matchShowEtherchannelSummary(line)) {
+          appendLine("line-bad", "% Invalid input");
+          focusActiveCli();
+          return;
+        }
+        appendLine("line-sys", SHOW_DISABLED_MSG);
+        focusActiveCli();
+        return;
+      }
+
       if (mode === "exec" && matchCopy(line) && stepIndex >= 10) {
         stepIndex = STEPS.length;
         sw20PromptOverride = null;

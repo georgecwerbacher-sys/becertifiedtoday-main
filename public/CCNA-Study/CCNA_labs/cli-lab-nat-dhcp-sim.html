@@ -1488,6 +1488,7 @@ Sw1#</pre>
         "Pro  Inside global     Inside local       Outside local      Outside global";
 
       var HELP_DISABLED_MSG = "help feature disabled for tester";
+      var SHOW_DISABLED_MSG = "this command is disabled for this lab";
       var SHOW_VERSION_MSG = "BeCertifiedToday.com version 2026";
       var COPY_RUN_START_OK_MSG =
         "Destination filename [startup-config]?\nBuilding configuration...\n[OK]";
@@ -1528,6 +1529,15 @@ Sw1#</pre>
         passBanner.classList.add("visible");
         passBanner.textContent = BASELINE_LAB_ALL_DONE_MSG;
         if (append) append("line-sys", BASELINE_LAB_ALL_DONE_MSG);
+      }
+
+      function isModeNavigationCommand(normalizedCmd) {
+        return (
+          normalizedCmd === "configure terminal" ||
+          normalizedCmd === "end" ||
+          normalizedCmd === "exit" ||
+          normalizedCmd.indexOf("interface ") === 0
+        );
       }
 
       /** Privileged exec (#) for the lab switch prompt (not config submodes). */
@@ -1739,9 +1749,14 @@ Sw1#</pre>
       function submitSw() {
         var promptText = swPrompt.textContent;
         var line = swCmdline.value;
-        appendSw("line-user", promptText + " " + line);
+        var trimmed = String(line || "").trim();
+        var normalized = normalize(line);
+        var hideInputLine = isModeNavigationCommand(normalized);
+        if (!hideInputLine) {
+          appendSw("line-user", promptText + " " + line);
+        }
         swCmdline.value = "";
-        if (!line.trim()) return;
+        if (!trimmed) return;
 
         if (normalize(line) === "?") {
           appendSw("line-sys", HELP_DISABLED_MSG);
@@ -1800,6 +1815,12 @@ Sw1#</pre>
           return;
         }
 
+        var u = normalized;
+        if (swInEnableMode() && (u.indexOf("show ") === 0 || u.indexOf("sh ") === 0)) {
+          appendSw("line-sys", SHOW_DISABLED_MSG);
+          return;
+        }
+
         if (stepIndex >= LAB_STEPS.length) {
           var r1u = normalize(line);
           if (swPromptOverride === "config" && (r1u === "end" || r1u === "exit")) {
@@ -1817,6 +1838,10 @@ Sw1#</pre>
           }
           if (swInEnableMode() && matchShowVersion(line)) {
             appendSw("line-sys", SHOW_VERSION_MSG);
+            return;
+          }
+          if (swInEnableMode() && (r1u.indexOf("show ") === 0 || r1u.indexOf("sh ") === 0)) {
+            appendSw("line-sys", SHOW_DISABLED_MSG);
             return;
           }
           appendSw("line-bad", "% Invalid input");
@@ -1861,9 +1886,14 @@ Sw1#</pre>
       function submitSw2() {
         var promptText = sw2Prompt.textContent;
         var line = sw2Cmdline.value;
-        appendSw2("line-user", promptText + " " + line);
+        var trimmed = String(line || "").trim();
+        var normalizedCmd = normalize(line);
+        var hideInputLine = isModeNavigationCommand(normalizedCmd);
+        if (!hideInputLine) {
+          appendSw2("line-user", promptText + " " + line);
+        }
         sw2Cmdline.value = "";
-        if (!line.trim()) return;
+        if (!trimmed) return;
 
         if (normalize(line) === "?") {
           appendSw2("line-sys", HELP_DISABLED_MSG);
@@ -1905,6 +1935,11 @@ Sw1#</pre>
 
         if (sw2Mode === "exec" && matchShowVersion(line)) {
           appendSw2("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+
+        if (sw2Mode === "exec" && (u.indexOf("show ") === 0 || u.indexOf("sh ") === 0)) {
+          appendSw2("line-sys", SHOW_DISABLED_MSG);
           return;
         }
 

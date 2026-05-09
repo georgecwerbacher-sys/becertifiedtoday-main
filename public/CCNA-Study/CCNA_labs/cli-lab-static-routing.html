@@ -1240,6 +1240,7 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
       }
 
       var HELP_DISABLED_MSG = "help feature disabled for tester";
+      var SHOW_DISABLED_MSG = "this command is disabled for this lab";
       var SHOW_VERSION_MSG = "BeCertifiedToday.com version 2026";
       var SHOW_IP_INT_BRIEF_R1 = [
         "Interface                  IP-Address      OK? Method Status                Protocol",
@@ -1317,6 +1318,15 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
         passBanner.classList.add("visible");
         passBanner.textContent = BASELINE_LAB_ALL_DONE_MSG;
         if (append) append("line-sys", BASELINE_LAB_ALL_DONE_MSG);
+      }
+
+      function isModeNavigationCommand(normalizedCmd) {
+        return (
+          normalizedCmd === "configure terminal" ||
+          normalizedCmd === "end" ||
+          normalizedCmd === "exit" ||
+          normalizedCmd.indexOf("interface ") === 0
+        );
       }
 
       /** Privileged exec (#) for the lab switch prompt (not config submodes). */
@@ -1469,9 +1479,14 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
       function submitSw() {
         var promptText = swPrompt.textContent;
         var line = swCmdline.value;
-        appendSw("line-user", promptText + " " + line);
+        var trimmed = String(line || "").trim();
+        var normalized = normalize(line);
+        var hideInputLine = isModeNavigationCommand(normalized);
+        if (!hideInputLine) {
+          appendSw("line-user", promptText + " " + line);
+        }
         swCmdline.value = "";
-        if (!line.trim()) return;
+        if (!trimmed) return;
 
         if (normalize(line) === "?") {
           appendSw("line-sys", HELP_DISABLED_MSG);
@@ -1507,6 +1522,12 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
           tryCompleteBaselineLab(function (cls, text) {
             appendSw(cls, text);
           });
+          return;
+        }
+
+        var u = normalized;
+        if (swInEnableMode() && (u.indexOf("show ") === 0 || u.indexOf("sh ") === 0)) {
+          appendSw("line-sys", SHOW_DISABLED_MSG);
           return;
         }
 
@@ -1569,12 +1590,27 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
       function submitSw2() {
         var promptText = sw2Prompt.textContent;
         var line = sw2Cmdline.value;
-        appendSw2("line-user", promptText + " " + line);
+        var trimmed = String(line || "").trim();
+        var normalized = normalize(line);
+        var hideInputLine = isModeNavigationCommand(normalized);
+        if (!hideInputLine) {
+          appendSw2("line-user", promptText + " " + line);
+        }
         sw2Cmdline.value = "";
-        if (!line.trim()) return;
+        if (!trimmed) return;
 
         if (matchShowIpInterfaceBrief(line)) {
           appendSw2("line-showrun", SHOW_IP_INT_BRIEF_R2);
+          return;
+        }
+
+        if (matchShowVersion(line)) {
+          appendSw2("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+
+        if (normalized.indexOf("show ") === 0 || normalized.indexOf("sh ") === 0) {
+          appendSw2("line-sys", SHOW_DISABLED_MSG);
           return;
         }
 
@@ -1597,9 +1633,14 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
       function submitSw3() {
         var promptText = sw3Prompt.textContent;
         var line = sw3Cmdline.value;
-        appendSw3("line-user", promptText + " " + line);
+        var trimmed = String(line || "").trim();
+        var normalized = normalize(line);
+        var hideInputLine = isModeNavigationCommand(normalized);
+        if (!hideInputLine) {
+          appendSw3("line-user", promptText + " " + line);
+        }
         sw3Cmdline.value = "";
-        if (!line.trim()) return;
+        if (!trimmed) return;
 
         if (normalize(line) === "?") {
           appendSw3("line-sys", HELP_DISABLED_MSG);
@@ -1620,6 +1661,11 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
 
         if (sw3Mode === "exec" && matchShowIpInterfaceBrief(line)) {
           appendSw3("line-showrun", SHOW_IP_INT_BRIEF_R3);
+          return;
+        }
+
+        if (sw3Mode === "exec" && (u.indexOf("show ") === 0 || u.indexOf("sh ") === 0)) {
+          appendSw3("line-sys", SHOW_DISABLED_MSG);
           return;
         }
 

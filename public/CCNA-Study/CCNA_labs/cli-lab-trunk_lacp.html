@@ -1352,6 +1352,7 @@ Sw2(config-if)# end</pre>
       ];
 
       var HELP_DISABLED_MSG = "help feature disabled for tester";
+      var SHOW_DISABLED_MSG = "this command is disabled for this lab";
       var SHOW_VERSION_MSG = "BeCertifiedToday.com version 2026";
       var COPY_RUN_START_OK_MSG =
         "Destination filename [startup-config]?\nBuilding configuration...\n[OK]";
@@ -1443,6 +1444,15 @@ Sw2(config-if)# end</pre>
         passBanner.classList.add("visible");
         passBanner.textContent = TRUNK_LAB_ALL_DONE_MSG;
         if (append) append("line-sys", TRUNK_LAB_ALL_DONE_MSG);
+      }
+
+      function isModeNavigationCommand(normalizedCmd) {
+        return (
+          normalizedCmd === "configure terminal" ||
+          normalizedCmd === "end" ||
+          normalizedCmd === "exit" ||
+          normalizedCmd.indexOf("interface ") === 0
+        );
       }
 
       function swInEnableMode(stepIdx, ovr) {
@@ -1761,9 +1771,14 @@ Sw2(config-if)# end</pre>
         var promptText = swPrompt.textContent;
         var line = swCmdline.value;
         pushLocalHistory(swCmdline, line);
-        appendSw("line-user", promptText + " " + line);
+        var trimmed = String(line || "").trim();
+        var normalized = normalize(line);
+        var hideInputLine = isModeNavigationCommand(normalized);
+        if (!hideInputLine) {
+          appendSw("line-user", promptText + " " + line);
+        }
         swCmdline.value = "";
-        if (!line.trim()) return;
+        if (!trimmed) return;
 
         if (normalize(line) === "?") {
           appendSw("line-sys", HELP_DISABLED_MSG);
@@ -1836,6 +1851,16 @@ Sw2(config-if)# end</pre>
         ) {
           return;
         }
+
+        var uShow = normalize(line);
+        if (
+          swInEnableMode(stepIndexSw1, sw1PromptOverride) &&
+          (uShow.indexOf("show ") === 0 || uShow.indexOf("sh ") === 0)
+        ) {
+          appendSw("line-sys", SHOW_DISABLED_MSG);
+          return;
+        }
+
         if (sw1PromptOverride === "config-vlan" && /^name\s+\S+/.test(normalize(line))) return;
 
         if (stepIndexSw1 >= LAB_STEPS.length) {
@@ -1879,9 +1904,14 @@ Sw2(config-if)# end</pre>
         var promptText = sw2Prompt.textContent;
         var line = sw2Cmdline.value;
         pushLocalHistory(sw2Cmdline, line);
-        appendSw2("line-user", promptText + " " + line);
+        var trimmed = String(line || "").trim();
+        var normalized = normalize(line);
+        var hideInputLine = isModeNavigationCommand(normalized);
+        if (!hideInputLine) {
+          appendSw2("line-user", promptText + " " + line);
+        }
         sw2Cmdline.value = "";
-        if (!line.trim()) return;
+        if (!trimmed) return;
 
         if (normalize(line) === "?") {
           appendSw2("line-sys", HELP_DISABLED_MSG);
@@ -1954,6 +1984,16 @@ Sw2(config-if)# end</pre>
         ) {
           return;
         }
+
+        var uShow2 = normalize(line);
+        if (
+          swInEnableMode(stepIndexSw2, sw2PromptOverride) &&
+          (uShow2.indexOf("show ") === 0 || uShow2.indexOf("sh ") === 0)
+        ) {
+          appendSw2("line-sys", SHOW_DISABLED_MSG);
+          return;
+        }
+
         if (sw2PromptOverride === "config-vlan" && /^name\s+\S+/.test(normalize(line))) return;
 
         if (stepIndexSw2 >= LAB_STEPS.length) {

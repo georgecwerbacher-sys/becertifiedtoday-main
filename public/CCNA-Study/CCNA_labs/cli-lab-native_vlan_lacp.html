@@ -1220,6 +1220,7 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
       }
 
       var HELP_DISABLED_MSG = "help feature disabled for tester";
+      var SHOW_DISABLED_MSG = "this command is disabled for this lab";
       var SHOW_VERSION_MSG = "BeCertifiedToday.com version 2026";
       var SHOW_INTERFACES_TRUNK_READY_MSG =
         "Port        Mode         Encapsulation  Status        Native vlan\n" +
@@ -1281,6 +1282,15 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
         passBanner.classList.add("visible");
         passBanner.textContent = BASELINE_LAB_ALL_DONE_MSG;
         if (append) append("line-sys", BASELINE_LAB_ALL_DONE_MSG);
+      }
+
+      function isModeNavigationCommand(normalizedCmd) {
+        return (
+          normalizedCmd === "configure terminal" ||
+          normalizedCmd === "end" ||
+          normalizedCmd === "exit" ||
+          normalizedCmd.indexOf("interface ") === 0
+        );
       }
 
       /** Privileged exec (#) for the lab switch prompt (not config submodes). */
@@ -1525,10 +1535,15 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
       function submitSw() {
         var promptText = swPrompt.textContent;
         var line = swCmdline.value;
-        appendSw("line-user", promptText + " " + line);
+        var trimmed = String(line || "").trim();
+        var normalized = normalize(line);
+        var hideInputLine = isModeNavigationCommand(normalized);
+        if (!hideInputLine) {
+          appendSw("line-user", promptText + " " + line);
+        }
         pushLocalHistory(swCmdline, line);
         swCmdline.value = "";
-        if (!line.trim()) return;
+        if (!trimmed) return;
 
         if (normalize(line) === "?") {
           appendSw("line-sys", HELP_DISABLED_MSG);
@@ -1572,6 +1587,12 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
         }
 
         if (trySwNavSoftLine(line)) return;
+
+        var u = normalized;
+        if (swInEnableMode() && (u.indexOf("show ") === 0 || u.indexOf("sh ") === 0)) {
+          appendSw("line-sys", SHOW_DISABLED_MSG);
+          return;
+        }
 
         // Accept required task commands on SW1/SW3 while in interface config mode.
         if (swPromptOverride === "config-if" || swPromptOverride === "config-if-range") {
@@ -1623,10 +1644,15 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
       function submitSw2() {
         var promptText = sw2Prompt.textContent;
         var line = sw2Cmdline.value;
-        appendSw2("line-user", promptText + " " + line);
+        var trimmed = String(line || "").trim();
+        var normalizedCmd = normalize(line);
+        var hideInputLine = isModeNavigationCommand(normalizedCmd);
+        if (!hideInputLine) {
+          appendSw2("line-user", promptText + " " + line);
+        }
         pushLocalHistory(sw2Cmdline, line);
         sw2Cmdline.value = "";
-        if (!line.trim()) return;
+        if (!trimmed) return;
 
         if (normalize(line) === "?") {
           appendSw2("line-sys", HELP_DISABLED_MSG);
@@ -1650,6 +1676,11 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
         }
         if (sw2Mode === "exec" && matchShowEtherchannelSummary(line)) {
           appendSw2("line-showrun", stepIndex >= LAB_STEPS.length ? SHOW_ETHERCHANNEL_READY_MSG : SHOW_ETHERCHANNEL_WAIT_MSG);
+          return;
+        }
+
+        if (sw2Mode === "exec" && (u.indexOf("show ") === 0 || u.indexOf("sh ") === 0)) {
+          appendSw2("line-sys", SHOW_DISABLED_MSG);
           return;
         }
 
