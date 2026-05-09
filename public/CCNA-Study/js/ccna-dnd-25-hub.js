@@ -43,7 +43,11 @@
     var order = shuffle(SLUGS);
     var first = order[0];
     var qs = mode === "review" ? "?mode=review" : "?mode=random";
-    window.location.href = BASE + first + ".html" + qs;
+    var session = { v: 1, mode: mode, order: order };
+    try {
+      sessionStorage.setItem("ccnaDnd25", JSON.stringify(session));
+    } catch (e) {}
+    window.location.href = BASE + first + ".html" + qs + "#ccnaDd=0";
   }
 
   function bind() {
