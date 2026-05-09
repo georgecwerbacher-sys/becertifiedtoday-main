@@ -1,7 +1,12 @@
 (function () {
   try {
     var originalPath = location.pathname || "";
-    sessionStorage.setItem("ccnaLastRealPath", originalPath);
+    var isSamplePath =
+      originalPath.toLowerCase() === "/sample" ||
+      originalPath.toLowerCase() === "/sample/";
+    if (!isSamplePath) {
+      sessionStorage.setItem("ccnaLastRealPath", originalPath);
+    }
     var mask = sessionStorage.getItem("ccnpUrlMaskPath");
     if (!mask && /(?:\?|&)sample=1(?:&|$)/.test(location.search || "")) {
       mask = "/sample";
