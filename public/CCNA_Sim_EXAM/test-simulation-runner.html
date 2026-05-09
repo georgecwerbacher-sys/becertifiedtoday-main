@@ -1075,10 +1075,19 @@
 
     var params = new URLSearchParams(window.location.search);
     var sessionId = params.get("session_id");
+    var bypass =
+      params.get("bypass") === "1" ||
+      params.get("demo") === "1";
 
     loadBlueprintLine();
 
-    if (!sessionId) {
+    if (bypass) {
+      sessionOk = true;
+      gateStatus.textContent = "Bypass mode (testing): loading exam without checkout…";
+      gateStatus.className = "status-ok";
+      await prepareExamData();
+      await startExamUI();
+    } else if (!sessionId) {
       gateStatus.textContent =
         "No checkout session. Open this runner from the landing page after purchase, or use the Stripe return link.";
       gateStatus.className = "status-bad";
