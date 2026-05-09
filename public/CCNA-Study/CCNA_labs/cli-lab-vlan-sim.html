@@ -895,15 +895,15 @@ Sw2(config-vlan)#exit</pre>
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
               <span class="spoiler-terminal-title">Sw1 — Task 2</span>
             </div>
-            <pre class="spoiler-terminal-pre">Sw1(config)#interface range e0/1 - 2
-Sw1(config-if-range)#switchport mode access
-Sw1(config-if-range)#switchport access vlan 77
-Sw1(config-if-range)#interface e0/3
-Sw1(config-if)#switchport mode access
-Sw1(config-if)#switchport access vlan 88
-Sw1(config-if)#switchport voice vlan 188
-Sw1(config-if)#interface e0/1
-Sw1(config-if)#switchport voice vlan 177</pre>
+            <pre class="spoiler-terminal-pre">Sw1(config)# interface range e0/1 - 2
+Sw1(config-if-range)# switchport mode access
+Sw1(config-if-range)# switchport access vlan 77
+Sw1(config-if-range)# interface e0/3
+Sw1(config-if)# switchport mode access
+Sw1(config-if)# switchport access vlan 88
+Sw1(config-if)# switchport voice vlan 188
+Sw1(config-if)# interface e0/1
+Sw1(config-if)# switchport voice vlan 177</pre>
           </div>
         </div>
         <div class="spoiler-task" aria-labelledby="spoiler-cap-t2-sw2">
@@ -913,15 +913,78 @@ Sw1(config-if)#switchport voice vlan 177</pre>
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
               <span class="spoiler-terminal-title">Sw2 — Task 2</span>
             </div>
-            <pre class="spoiler-terminal-pre">Sw2(config)#interface e0/3
-Sw2(config-if)#switchport mode access
-Sw2(config-if)#switchport access vlan 77
-Sw2(config-if)#interface e0/1
-Sw2(config-if)#switchport mode access
-Sw2(config-if)#switchport access vlan 88
-Sw2(config-if)#switchport voice vlan 188
-Sw2(config-if)#interface e0/2
-Sw2(config-if)#switchport voice vlan 177</pre>
+            <pre class="spoiler-terminal-pre">Sw2(config)# interface e0/3
+Sw2(config-if)# switchport mode access
+Sw2(config-if)# switchport access vlan 77
+Sw2(config-if)# interface e0/1
+Sw2(config-if)# switchport mode access
+Sw2(config-if)# switchport access vlan 88
+Sw2(config-if)# switchport voice vlan 188
+Sw2(config-if)# interface e0/2
+Sw2(config-if)# switchport voice vlan 177</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t3-sw1">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t3-sw1">(Optional) Task 3 — Sw1</p>
+          <div class="spoiler-terminal" role="region" aria-label="Sw1 Task 3 optional LLDP solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">Sw1 — Task 3 (LLDP)</span>
+            </div>
+            <pre class="spoiler-terminal-pre">Sw1(config)#lldp run
+Sw1(config)#int e0/0
+Sw1(config-if)#lldp transmit
+Sw1(config-if)#lldp receive</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t3-sw2">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t3-sw2">(Optional) Task 3 — Sw2</p>
+          <div class="spoiler-terminal" role="region" aria-label="Sw2 Task 3 optional LLDP solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">Sw2 — Task 3 (LLDP)</span>
+            </div>
+            <pre class="spoiler-terminal-pre">Sw2(config)#lldp run
+Sw2(config)#int e0/0
+Sw2(config-if)#lldp transmit
+Sw2(config-if)#lldp receive</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t4-sw1">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t4-sw1">(Optional) Task 4 — Sw1</p>
+          <div class="spoiler-terminal" role="region" aria-label="Sw1 Task 4 optional disable CDP LLDP solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">Sw1 — Task 4 (access ports)</span>
+            </div>
+            <pre class="spoiler-terminal-pre">Sw1(config)#int range e0/1 - 2, e0/3
+Sw1(config-if-range)#no cdp enable
+Sw1(config-if-range)#no lldp transmit
+Sw1(config-if-range)#no lldp receive</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t4-sw2">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t4-sw2">(Optional) Task 4 — Sw2</p>
+          <div class="spoiler-terminal" role="region" aria-label="Sw2 Task 4 optional disable CDP LLDP solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">Sw2 — Task 4 (access ports)</span>
+            </div>
+            <pre class="spoiler-terminal-pre">Sw2(config)#int range e0/1 - 2, e0/3
+Sw2(config-if-range)#no cdp enable
+Sw2(config-if-range)#no lldp transmit
+Sw2(config-if-range)#no lldp receive</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-save">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-save">Save configuration</p>
+          <div class="spoiler-terminal" role="region" aria-label="Save running-config to startup-config">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">Sw1 &amp; Sw2 — save</span>
+            </div>
+            <pre class="spoiler-terminal-pre">Sw1# copy running-config startup-config
+Sw2# copy running-config startup-config</pre>
           </div>
         </div>
       </div>
