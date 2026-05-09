@@ -1,16 +1,8 @@
 <!doctype html>
 <!--
-  CLI lab baseline — patterns aligned with public/CCNA-Study/CCNA_labs/cli-lab-ip-services-sim-v2.html (multi-device,
-  tasks panel, spoiler terminal blocks, full IOS command forms). ENCOR reference:
-  public/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html.
-
-  Includes:
-  - Switch 1 (SW1): LAB_STEPS[] { mode, test(raw) }; mode drives prompt via promptForMode(); normalize() accepts common abbreviations
-  - Switch 2 (SW2): second IOS CLI — read-only exhibit + optional mode practice (same prompt helpers as SW1-style IOS)
-  - Third IOS device (Sw3): same modal / submit pattern as R1 (sw2 block).
-  - Device picker (R1 / SW1 / SW3 / PC1), PC1 = Windows-style command prompt; Helper / Spoiler modals, draggable modals, command history
-
-  For a fifth IOS CLI (e.g. R3), copy the SW2 modal + submit/reset/open pattern from cli-lab-ip-services-sim-v2.html.
+  CCNA CLI lab — Named ACL and DHCP Snooping Simulation V2 (R1, SW1, SW3, PC1).
+  Baseline patterns: templates/labs/cli-lab-baseline.html, templates/containers/cli-container-template.html.
+  Kin labs for multi-modal wiring: cli-lab-nat-dhcp-sim.html, cli-lab-ospf_config_sim_v3.html.
 -->
 <html lang="en">
 <head>
@@ -706,7 +698,7 @@
           <button type="button" class="btn btn-secondary" id="swResetBtn">Reset lab</button>
         </div>
         <div id="passBanner" class="pass-banner" role="status">
-          Complete all Sw1 steps, then from enable mode on SW1, R1, and Sw3 run copy running-configuration startup-configuration on each device.
+          Finish the Tasks, then complete the lab from R1#, Sw101#, and Sw103# with copy running-config startup-config on each device.
         </div>
       </footer>
     </div>
@@ -902,9 +894,11 @@ interface Ethernet0/3
 Sw101(config)# ip dhcp snooping vlan 101
 Sw101(config)# no ip dhcp snooping information option
 Sw101(config)# ip dhcp snooping verify mac-address</pre>
-          <p><strong>Save</strong> on each device when done:</p>
-          <pre class="spoiler-cli-pre">copy running-config startup-config</pre>
-          <p style="margin-bottom: 0">Run from privileged EXEC on <strong>R1</strong>, <strong>Sw101</strong>, and <strong>Sw103</strong> as needed.</p>
+          <p><strong>Lab completion — save</strong> from privileged EXEC on each device (simulation CLI: <strong>R1</strong>, <strong>SW1</strong> = Sw101, <strong>SW3</strong> = Sw103):</p>
+          <pre class="spoiler-cli-pre">R1# copy running-config startup-config
+Sw101# copy running-config startup-config
+Sw103# copy running-config startup-config</pre>
+          <p style="margin-bottom: 0">Use <code>copy run start</code> if you prefer; it normalizes to the same save.</p>
         </section>
       </div>
     </div>
@@ -1321,13 +1315,20 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
       var COPY_RUN_START_AFTER_STEPS_MSG =
         "% Error: Finish the full STEPS sequence on this switch until you return to privileged EXEC (#), then save to startup-config.";
       var COPY_RUN_START_AFTER_SW1_STEPS_MSG =
-        "% Error: Finish the full STEPS sequence on Sw1 first (until Sw1#), then save startup-config from privileged EXEC on R1.";
+        "% Error: Finish the full STEPS sequence on Sw1 (Sw101) first until Sw1#, then complete saves from R1#, Sw101#, and Sw103# with copy running-config startup-config.";
       var BASELINE_SW_STEPS_OK_MSG =
-        "[OK] Switch steps complete. From privileged exec on Sw1, R1, and Sw3, run copy running-configuration startup-configuration (copy run start) on each device to finish the lab.";
+        "[OK] Sw1 baseline sequence complete. Finish the lab from privileged EXEC on R1, Sw101, and Sw103 — on each: copy running-config startup-config.";
       var BASELINE_LAB_ALL_DONE_MSG =
-        "[OK] Lab complete: objectives met, and running-config is saved to startup-config on Sw1, R1, and Sw3.";
+        "[OK] Lab complete: copy running-config startup-config saved on R1, Sw101, and Sw103.";
       var PASS_BANNER_BASELINE_PENDING =
-        "Complete all Sw1 steps, then from enable mode on Sw1, R1, and Sw3 run copy running-configuration startup-configuration on each device.";
+        "Finish the Tasks, then complete the lab from R1#, Sw101#, and Sw103# with copy running-config startup-config on each device.";
+      var INVALID_INPUT_MSG = "% Invalid input";
+      /** Wrong VLAN/interface numbers etc.: steer learners to the authoritative lab text */
+      var INVALID_INPUT_NUMERIC_HINT_MSG =
+        "% Invalid input — check the lab Tasks and Verification sections for the exact values.";
+      function invalidInputMsgForNormalizedCmd(u) {
+        return /\d/.test(String(u || "")) ? INVALID_INPUT_NUMERIC_HINT_MSG : INVALID_INPUT_MSG;
+      }
 
       function matchShowRun(raw) {
         var u = normalize(raw);
@@ -1816,7 +1817,7 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
             setSwPrompt();
             return;
           }
-          appendSw("line-bad", "% Invalid input");
+          appendSw("line-bad", invalidInputMsgForNormalizedCmd(u));
           return;
         }
 
@@ -1854,7 +1855,7 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         }
 
         if (stepIndex >= LAB_STEPS.length) {
-          appendSw("line-bad", "% Invalid input");
+          appendSw("line-bad", invalidInputMsgForNormalizedCmd(u));
           return;
         }
 
@@ -1871,7 +1872,7 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
             setSwPrompt();
           }
         } else {
-          appendSw("line-bad", "% Invalid input");
+          appendSw("line-bad", invalidInputMsgForNormalizedCmd(u));
         }
       }
       // END sync block: templates/containers/cli-container-template.html -> submitSw()
@@ -1959,7 +1960,7 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
           ) {
             return;
           }
-          appendSw2("line-bad", "% Invalid input");
+          appendSw2("line-bad", invalidInputMsgForNormalizedCmd(u));
           return;
         }
 
@@ -2007,7 +2008,7 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
           return;
         }
 
-        appendSw2("line-bad", "% Invalid input");
+        appendSw2("line-bad", invalidInputMsgForNormalizedCmd(u));
       }
 
       /** Sw3: same IOS-like behavior as R1 (sw2) */
@@ -2103,7 +2104,7 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
           return;
         }
 
-        appendSw3("line-bad", "% Invalid input");
+        appendSw3("line-bad", invalidInputMsgForNormalizedCmd(u));
       }
 
       function wireFloatingModal(dialogEl, overlayEl) {
@@ -2233,6 +2234,51 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         });
       });
 
+      /** Local command history (ArrowUp / ArrowDown) — bind BEFORE Enter→submit so Enter pushes the raw line before submitSw clears it */
+      var localHistory = new WeakMap();
+      function getLocalHistoryState(input) {
+        var state = localHistory.get(input);
+        if (state) return state;
+        state = { entries: [], idx: 0 };
+        localHistory.set(input, state);
+        return state;
+      }
+      function pushLocalHistory(input, raw) {
+        var cmd = String(raw || "").trim();
+        if (!cmd) return;
+        var state = getLocalHistoryState(input);
+        if (!state.entries.length || state.entries[state.entries.length - 1] !== cmd) {
+          state.entries.push(cmd);
+        }
+        state.idx = state.entries.length;
+      }
+      function bindLocalHistory(input) {
+        if (!input || input.dataset.localHistoryReady === "1") return;
+        input.dataset.localHistoryReady = "1";
+        input.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            pushLocalHistory(input, input.value);
+            return;
+          }
+          var usePrev = e.key === "ArrowUp" || (e.key === "Tab" && !e.shiftKey);
+          var useNext = e.key === "ArrowDown" || (e.key === "Tab" && e.shiftKey);
+          if (!usePrev && !useNext) return;
+          var state = getLocalHistoryState(input);
+          if (!state.entries.length) return;
+          e.preventDefault();
+          if (usePrev) {
+            state.idx = Math.max(0, state.idx - 1);
+          } else {
+            state.idx = Math.min(state.entries.length, state.idx + 1);
+          }
+          input.value = state.idx >= state.entries.length ? "" : state.entries[state.idx];
+        });
+      }
+      bindLocalHistory(swCmdline);
+      bindLocalHistory(sw2Cmdline);
+      bindLocalHistory(sw3Cmdline);
+      bindLocalHistory(pcCmdline);
+
       swCmdline.addEventListener("keydown", function (e) {
         if (e.key === "Enter") {
           e.preventDefault();
@@ -2283,51 +2329,6 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         spoilerOverlay.classList.remove("is-open");
         spoilerOverlay.setAttribute("aria-hidden", "true");
       });
-
-      /** Local command history (ArrowUp / ArrowDown) — same behavior as full PVST lab */
-      var localHistory = new WeakMap();
-      function getLocalHistoryState(input) {
-        var state = localHistory.get(input);
-        if (state) return state;
-        state = { entries: [], idx: 0 };
-        localHistory.set(input, state);
-        return state;
-      }
-      function pushLocalHistory(input, raw) {
-        var cmd = String(raw || "").trim();
-        if (!cmd) return;
-        var state = getLocalHistoryState(input);
-        if (!state.entries.length || state.entries[state.entries.length - 1] !== cmd) {
-          state.entries.push(cmd);
-        }
-        state.idx = state.entries.length;
-      }
-      function bindLocalHistory(input) {
-        if (!input || input.dataset.localHistoryReady === "1") return;
-        input.dataset.localHistoryReady = "1";
-        input.addEventListener("keydown", function (e) {
-          if (e.key === "Enter") {
-            pushLocalHistory(input, input.value);
-            return;
-          }
-          var usePrev = e.key === "ArrowUp" || (e.key === "Tab" && !e.shiftKey);
-          var useNext = e.key === "ArrowDown" || (e.key === "Tab" && e.shiftKey);
-          if (!usePrev && !useNext) return;
-          var state = getLocalHistoryState(input);
-          if (!state.entries.length) return;
-          e.preventDefault();
-          if (usePrev) {
-            state.idx = Math.max(0, state.idx - 1);
-          } else {
-            state.idx = Math.min(state.entries.length, state.idx + 1);
-          }
-          input.value = state.idx >= state.entries.length ? "" : state.entries[state.idx];
-        });
-      }
-      bindLocalHistory(swCmdline);
-      bindLocalHistory(sw2Cmdline);
-      bindLocalHistory(sw3Cmdline);
-      bindLocalHistory(pcCmdline);
 
       document.addEventListener("keydown", function (e) {
         if (e.key !== "Escape") return;

@@ -14,6 +14,12 @@
   Labs with a completion gate (e.g. PC addressing) also call tryCompleteBaselineLab() when steps finish — see
   templates/labs/cli-lab-baseline.html (sync block). The fragment below omits that if you paste into a minimal page.
 
+  Local command history (ArrowUp / ArrowDown): register bindLocalHistory(swCmdline) before keydown Enter→submitSw so the
+  Enter handler that pushes history runs before submitSw clears the input. Wire-up: templates/labs/cli-lab-baseline.html.
+
+  Generic invalid IOS commands that include digits (wrong VLAN, interface, etc.): use invalidInputMsgForNormalizedCmd(u)
+  instead of a bare "% Invalid input" so learners see the Tasks/Verification hint (aligned with cli-lab-baseline / named-acl lab).
+
   Wrong number / wrong token (tester uses plausible syntax but not the lab answer):
   - LAB_STEPS still uses exact tests (only the correct value advances).
   - Before if (LAB_STEPS[stepIndex].test(line)), add branches: for the current stepIndex, if normalize(line)
@@ -73,6 +79,13 @@
       return "interface Ethernet" + m[2] + "/" + m[3];
     }
     return s;
+  }
+
+  var INVALID_INPUT_MSG = "% Invalid input";
+  var INVALID_INPUT_NUMERIC_HINT_MSG =
+    "% Invalid input — check the lab Tasks and Verification sections for the exact values.";
+  function invalidInputMsgForNormalizedCmd(u) {
+    return /\d/.test(String(u || "")) ? INVALID_INPUT_NUMERIC_HINT_MSG : INVALID_INPUT_MSG;
   }
 
   // Drop-in block for submitSw() in lab pages.
@@ -151,7 +164,7 @@
     }
 
     if (stepIndex >= LAB_STEPS.length) {
-      appendSw("line-bad", "% Invalid input");
+      appendSw("line-bad", invalidInputMsgForNormalizedCmd(u));
       return;
     }
 
@@ -175,7 +188,7 @@
         setSwPrompt();
       }
     } else {
-      appendSw("line-bad", "% Invalid input");
+      appendSw("line-bad", invalidInputMsgForNormalizedCmd(u));
     }
   }
 </script>
