@@ -1199,6 +1199,7 @@ R3(config-line)# end</pre>
           .toLowerCase()
           .replace(/\s+/g, " ")
           .replace(/[.;]+$/, "");
+        if (t === "conf t" || t === "config t") t = "configure terminal";
         if (t === "sh ver" || t === "show ver" || t === "sh version") t = "show version";
         if (t === "copy run start" || t === "copy run st") t = "copy running-configuration startup-configuration";
         if (t === "copy running-config startup-config") t = "copy running-configuration startup-configuration";
@@ -1433,6 +1434,32 @@ R3(config-line)# end</pre>
           return;
         }
 
+        // Allow IOS-like mode navigation even when off the strict next step.
+        var u = normalize(line);
+        var currentMode = swPrompt.textContent;
+        if (u === "end" && currentMode !== SWITCH_HOST + "#") {
+          swPromptOverride = "exec";
+          setSwPrompt();
+          return;
+        }
+        if (u === "exit") {
+          if (currentMode === SWITCH_HOST + "(config-if)#") {
+            swPromptOverride = "config";
+            setSwPrompt();
+            return;
+          }
+          if (currentMode === SWITCH_HOST + "(config-std-nacl)#") {
+            swPromptOverride = "config";
+            setSwPrompt();
+            return;
+          }
+          if (currentMode === SWITCH_HOST + "(config)#") {
+            swPromptOverride = "exec";
+            setSwPrompt();
+            return;
+          }
+        }
+
         if (stepIndex >= STEPS.length) {
           appendSw("line-bad", "% Invalid input");
           return;
@@ -1509,6 +1536,23 @@ R3(config-line)# end</pre>
           tryCompleteIpServicesLab(function (cls, text) {
             appendR1(cls, text);
           });
+          return;
+        }
+
+        // IOS-like mode navigation shortcuts.
+        if (u === "end" && r1Mode !== "exec") {
+          r1Mode = "exec";
+          r1Prompt.textContent = r1PromptForMode();
+          return;
+        }
+        if (u === "exit" && r1Mode === "config-if") {
+          r1Mode = "config";
+          r1Prompt.textContent = r1PromptForMode();
+          return;
+        }
+        if (u === "exit" && r1Mode === "config") {
+          r1Mode = "exec";
+          r1Prompt.textContent = r1PromptForMode();
           return;
         }
 
@@ -1599,6 +1643,23 @@ R3(config-line)# end</pre>
 
         if (r3Mode === "exec" && u === "ping 192.168.100.1") {
           appendR3("line-ping", task1R2NatComplete ? R3_PING_LO1_SUCCESS : R3_PING_LO1_FAIL);
+          return;
+        }
+
+        // IOS-like mode navigation shortcuts.
+        if (u === "end" && r3Mode !== "exec") {
+          r3Mode = "exec";
+          r3Prompt.textContent = r3PromptForMode();
+          return;
+        }
+        if (u === "exit" && r3Mode === "config-if") {
+          r3Mode = "config";
+          r3Prompt.textContent = r3PromptForMode();
+          return;
+        }
+        if (u === "exit" && r3Mode === "config") {
+          r3Mode = "exec";
+          r3Prompt.textContent = r3PromptForMode();
           return;
         }
 
