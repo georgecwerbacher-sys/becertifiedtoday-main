@@ -733,7 +733,7 @@ access-list 192 permit ip 192.168.0.0 0.0.3.255 any</pre>
           <button type="button" class="btn btn-secondary" id="swResetBtn">Reset lab</button>
         </div>
         <div id="passBanner" class="pass-banner" role="status">
-          Complete all R1 steps, then from enable mode on R1 and Sw1 run copy running-configuration startup-configuration on each device.
+          End lab with: R1#,Sw1#copy running-config startup-config
         </div>
       </footer>
     </div>
@@ -918,9 +918,8 @@ Sw1#</pre>
             <code>-l</code> supplies the username (<strong>CCNA</strong> in this case).
           </p>
 
-          <p class="helper-verify">Save the configuration</p>
-          <pre class="helper-cli">R1#copy running-config startup-config
-Sw1#copy running-config startup-config</pre>
+          <p class="helper-verify">End lab with:</p>
+          <pre class="helper-cli">R1#,Sw1#copy running-config startup-config</pre>
         </section>
       </div>
     </div>
@@ -972,6 +971,23 @@ R1(config)#ntp source-interface Loopback0</pre>
             </div>
             <pre class="spoiler-terminal-pre">Sw1#configure terminal
 Sw1(config)#ntp server 209.165.202.134</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-task2-verify">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-task2-verify">Verification (after Task 2, before Task 3)</p>
+          <div class="spoiler-terminal" role="region" aria-label="Task 2 verification on Sw1">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">Sw1 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">Sw1#show ntp status
+Clock is synchronized, stratum 16, reference is 209.165.202.134
+nominal freq is 250.0000 Hz, actual freq is 249.9990 Hz, precision is 2**24
+reference time is 292B2168.00000016 (9:29:12.022 UTC Tue Feb 5 2058)
+clock offset is 0.00 msec, root delay is 0.00 msec
+root dispersion is 10.84 msec, peer dispersion is 0.00 msec.
+loopfilter state is 'CTRL' (Normal Controlled Loop), drift is - 0.000001193
+s/s system poll interval is 4, last update was 8 sec ago.</pre>
           </div>
         </div>
         <div class="spoiler-task" aria-labelledby="spoiler-cap-task3">
@@ -1338,11 +1354,11 @@ Sw1(config)#ip ssh version 2</pre>
       var COPY_RUN_START_AFTER_SW2_STEPS_MSG =
         "% Error: Finish the Sw1 configuration sequence (NTP, helper-address on E0/1, exit, crypto key, SSH v2), then type end or exit to reach Sw1# before saving.";
       var BASELINE_SW_STEPS_OK_MSG =
-        "[OK] R1 is at privileged EXEC. From R1# and Sw1#, run copy running-configuration startup-configuration (copy run start) on each device after Sw1 tasks are complete.";
+        "[OK] R1 is at privileged EXEC. End lab with: R1#,Sw1#copy running-config startup-config";
       var BASELINE_LAB_ALL_DONE_MSG =
         "[OK] Lab complete: objectives met and running-config saved to startup-config on R1 and Sw1.";
       var PASS_BANNER_BASELINE_PENDING =
-        "Complete all R1 steps, then from enable mode on R1 and Sw1 run copy running-configuration startup-configuration on each device.";
+        "End lab with: R1#,Sw1#copy running-config startup-config";
 
       function matchShowRun(raw) {
         var u = normalize(raw);
