@@ -25,7 +25,9 @@
     return (
       path.indexOf("/ccna-study/ccna_questions/") !== -1 ||
       path.indexOf("/ccna-study/ccna_d_d/") !== -1 ||
-      path.indexOf("/ccna-study/ccna_labs/") !== -1
+      path.indexOf("/ccna-study/ccna_labs/") !== -1 ||
+      path.indexOf("/ccna_sim_exam/embed/dnd/") !== -1 ||
+      path.indexOf("/ccna_sim_exam/embed/lab/") !== -1
     );
   }
 
@@ -75,7 +77,9 @@
   var MAP_BY_PATH = [
     { pathPart: "/ccna-study/ccna_questions/", mapUrl: "/CCNA-Study/data/ccna-question-topic-map.json" },
     { pathPart: "/ccna-study/ccna_d_d/", mapUrl: "/CCNA-Study/data/ccna-dnd-topic-map.json" },
-    { pathPart: "/ccna-study/ccna_labs/", mapUrl: "/CCNA-Study/data/ccna-lab-topic-map.json" }
+    { pathPart: "/ccna-study/ccna_labs/", mapUrl: "/CCNA-Study/data/ccna-lab-topic-map.json" },
+    { pathPart: "/ccna_sim_exam/embed/dnd/", mapUrl: "/CCNA-Study/data/ccna-dnd-topic-map.json" },
+    { pathPart: "/ccna_sim_exam/embed/lab/", mapUrl: "/CCNA-Study/data/ccna-lab-topic-map.json" }
   ];
 
   function getSlugAndMap() {
@@ -185,7 +189,10 @@
 
   function isCcnaLabPath() {
     var p = (location.pathname || "").toLowerCase();
-    return p.indexOf("/ccna-study/ccna_labs/") !== -1;
+    return (
+      p.indexOf("/ccna-study/ccna_labs/") !== -1 ||
+      p.indexOf("/ccna_sim_exam/embed/lab/") !== -1
+    );
   }
 
   function applyExamSimEmbedStyles() {

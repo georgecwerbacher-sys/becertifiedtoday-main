@@ -611,8 +611,9 @@
       itemBody.innerHTML = inner;
     }
 
-    var DND_PAGE_BASE = "/CCNA-Study/CCNA_D_D/";
-    var LAB_PAGE_BASE = "/CCNA-Study/CCNA_labs/";
+    /** Same-origin embed paths (vercel.json rewrites → study assets); iframe URL stays under exam folder. */
+    var DND_PAGE_BASE = "/CCNA_Sim_EXAM/embed/dnd/";
+    var LAB_PAGE_BASE = "/CCNA_Sim_EXAM/embed/lab/";
 
     function renderDnd(idx) {
       var item = items[idx];
