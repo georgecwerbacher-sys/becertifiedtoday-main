@@ -531,6 +531,21 @@
       border-top-color: rgba(251, 191, 36, 0.4);
       color: #fcd34d;
     }
+    .purchase-track-box--ccna-pending.purchase-track-box--inactive {
+      opacity: 0.5;
+      filter: grayscale(1);
+      pointer-events: none;
+      user-select: none;
+      cursor: not-allowed;
+      box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.25) inset;
+    }
+    .purchase-track-box--inactive .cta-main--inactive {
+      cursor: not-allowed;
+      background: linear-gradient(165deg, #475569 0%, #334155 48%, #1e293b 100%);
+      border-color: rgba(148, 163, 184, 0.35);
+      box-shadow: none;
+      color: #cbd5e1;
+    }
     .purchase-track-head {
       display: flex;
       align-items: center;
@@ -639,6 +654,28 @@
       font-size: 0.82rem;
       color: #7d8ea3;
       line-height: 1.45;
+    }
+
+    .portal-test-sim-bypass {
+      margin: 18px 0 0;
+      padding-top: 16px;
+      border-top: 1px dashed rgba(157, 178, 209, 0.35);
+      font-size: 0.84rem;
+      color: #9fb0cc;
+      line-height: 1.5;
+    }
+    .portal-test-sim-bypass a {
+      font-weight: 700;
+      color: #a8c4f0;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .portal-test-sim-bypass a:hover {
+      color: #cfe2ff;
+    }
+    .portal-test-sim-bypass-hint {
+      color: #7d8ea3;
+      font-weight: 400;
     }
 
     .sim-box-practice-wide {
@@ -1070,7 +1107,11 @@
                     <strong>$4.99 one-time.</strong> No recurring membership. Opens preparation and purchase on becertifiedtoday-encor.vercel.app.
                   </p>
                 </div>
-                <div class="purchase-track-box purchase-track-box--ccna-pending" aria-label="One-time CCNA simulation exam purchase">
+                <div
+                  class="purchase-track-box purchase-track-box--ccna-pending purchase-track-box--inactive"
+                  aria-label="One-time CCNA simulation exam (unavailable)"
+                  aria-disabled="true"
+                >
                   <div class="purchase-track-head">
                     <p class="purchase-track-title">One-time simulation exam (CCNA)</p>
                     <span class="sim-pending-badge">Pending</span>
@@ -1079,9 +1120,7 @@
                     CCNA timed practice test: 120 minutes, 40 questions, 8 drag-and-drops, 3 labs. Opens the timed-test landing page; Stripe Checkout when configured on this site.
                   </p>
                   <p class="purchase-track-cta-wrap">
-                    <a class="cta-main cta-main--block" href="/CCNA_Sim_EXAM/begin-test-simulation.html" aria-label="Open CCNA timed test landing page"
-                      >PURCHASE ONE-TIME CCNA SIMULATION EXAM</a
-                    >
+                    <span class="cta-main cta-main--block cta-main--inactive" aria-disabled="true" tabindex="-1">PURCHASE ONE-TIME CCNA SIMULATION EXAM</span>
                   </p>
                   <p class="purchase-access-disclaimer">
                     <strong>$4.99 one-time.</strong> No recurring membership. Opens preparation and purchase on becertifiedtoday.com.
@@ -1089,6 +1128,11 @@
                 </div>
               </div>
             </div>
+            <p class="portal-test-sim-bypass">
+              <strong>Testing:</strong>
+              <a href="/CCNA_Sim_EXAM/test-simulation-runner.html?bypass=1">Begin timed test now</a>
+              <span class="portal-test-sim-bypass-hint"> — skips Stripe checkout</span>
+            </p>
             <p class="portal-test-sim-stripe-note">
               CCNA timed test landing page:
               <a href="/CCNA_Sim_EXAM/begin-test-simulation.html" style="color: #9fb0cc">/CCNA_Sim_EXAM/begin-test-simulation.html</a>.

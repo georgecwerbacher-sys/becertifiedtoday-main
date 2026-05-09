@@ -525,6 +525,21 @@
       border-top-color: rgba(180, 83, 9, 0.35);
       color: #92400e;
     }
+    .purchase-track-box--ccna-pending.purchase-track-box--inactive {
+      opacity: 0.5;
+      filter: grayscale(1);
+      pointer-events: none;
+      user-select: none;
+      cursor: not-allowed;
+      box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.35) inset;
+    }
+    .purchase-track-box--inactive .cta-main--inactive {
+      cursor: not-allowed;
+      background: linear-gradient(165deg, #94a3b8 0%, #64748b 48%, #475569 100%);
+      border-color: rgba(148, 163, 184, 0.45);
+      box-shadow: none;
+      color: #f1f5f9;
+    }
     .sim-pending-badge {
       display: inline-flex;
       align-items: center;
@@ -1630,7 +1645,11 @@
                         <strong>$4.99 one-time.</strong> No recurring membership. Opens preparation and purchase on becertifiedtoday-encor.vercel.app.
                       </p>
                     </div>
-                    <div class="purchase-track-box purchase-track-box--ccna-pending" aria-label="One-time CCNA simulation exam purchase">
+                    <div
+                      class="purchase-track-box purchase-track-box--ccna-pending purchase-track-box--inactive"
+                      aria-label="One-time CCNA simulation exam (unavailable)"
+                      aria-disabled="true"
+                    >
                       <div class="purchase-track-head">
                         <p class="purchase-track-title">One-time simulation exam (CCNA)</p>
                         <span class="sim-pending-badge">Pending</span>
@@ -1639,9 +1658,7 @@
                         CCNA timed practice test: 120 minutes, 40 questions, 8 drag-and-drops, 3 labs. Opens the timed-test landing page; Stripe Checkout when configured on this site.
                       </p>
                       <p class="purchase-track-cta-wrap">
-                        <a class="cta-main cta-main--block" href="/CCNA_Sim_EXAM/begin-test-simulation.html" aria-label="Open CCNA timed test landing page">
-                          PURCHASE ONE-TIME CCNA SIMULATION EXAM
-                        </a>
+                        <span class="cta-main cta-main--block cta-main--inactive" aria-disabled="true" tabindex="-1">PURCHASE ONE-TIME CCNA SIMULATION EXAM</span>
                       </p>
                       <p class="purchase-access-disclaimer">
                         <strong>$4.99 one-time.</strong> No recurring membership. Opens preparation and purchase on becertifiedtoday.com.
