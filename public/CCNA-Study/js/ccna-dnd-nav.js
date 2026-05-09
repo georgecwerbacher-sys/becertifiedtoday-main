@@ -5,6 +5,26 @@
   var BASE = "/CCNA-Study/CCNA_D_D/";
   var finishHref = "/CCNA-Study/CCNA_Training_Portal.html";
 
+  function examSimEmbed() {
+    try {
+      return new URLSearchParams(location.search).get("examSim") === "1";
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function applyExamSimEmbedStyles() {
+    if (document.head.querySelector("style[data-ccna-dnd-exam-sim]")) return;
+    var s = document.createElement("style");
+    s.setAttribute("data-ccna-dnd-exam-sim", "1");
+    s.textContent =
+      "nav.sim-nav{display:none!important}" +
+      ".actions{display:none!important}" +
+      "body.dragdrop-exercise{padding-bottom:16px!important;place-items:start}" +
+      "body.dragdrop-exercise{padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))!important}";
+    document.head.appendChild(s);
+  }
+
   function slugFromPath() {
     var m = location.pathname.match(/\/CCNA_D_D\/([^/]+)\.html$/i);
     return m ? decodeURIComponent(m[1]) : "";
@@ -39,6 +59,10 @@
 
   function run() {
     if (!document.body || !document.body.classList.contains("dragdrop-exercise")) return;
+    if (examSimEmbed()) {
+      applyExamSimEmbedStyles();
+      return;
+    }
     var slug = slugFromPath();
     if (!slug) return;
     var session = readSession();

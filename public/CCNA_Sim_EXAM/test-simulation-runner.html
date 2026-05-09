@@ -115,42 +115,18 @@
       border-color: #4f84d8;
       background: rgba(47, 102, 191, 0.12);
     }
-    .exam-dnd .dnd-instructions {
-      margin: 0 0 12px;
-      font-size: 0.88rem;
-      color: var(--muted);
+    .exam-dnd-embed {
+      width: 100%;
+      min-height: min(72vh, 880px);
     }
-    .exam-dnd .dnd-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-    .exam-dnd .chip {
-      padding: 8px 14px;
-      border-radius: 8px;
-      border: 1px dashed #6b8ab8;
-      background: rgba(47, 102, 191, 0.15);
-      cursor: grab;
-      font-size: 0.88rem;
-      user-select: none;
-    }
-    .exam-dnd .chip:active {
-      cursor: grabbing;
-    }
-    .exam-dnd .slot {
-      min-height: 44px;
-      min-width: 140px;
-      padding: 8px 12px;
-      border-radius: 8px;
-      border: 2px solid #3d5a80;
-      background: rgba(13, 21, 40, 0.6);
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-    .exam-dnd .slot.filled {
-      border-color: #4f84d8;
-      color: var(--text);
+    .exam-dnd-iframe {
+      display: block;
+      width: 100%;
+      height: min(72vh, 880px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #0f1729;
+      box-sizing: border-box;
     }
     .exam-lab .lab-note {
       margin: 0;
@@ -706,42 +682,25 @@
       itemBody.innerHTML = inner;
     }
 
+    var DND_PAGE_BASE = "/CCNA-Study/CCNA_D_D/";
+
     function renderDnd(idx) {
       var item = items[idx];
-      var label = item.slug ? item.slug.replace(/-/g, " ") : "Drag and drop";
+      var fn = item.fileName;
+      if (!fn) {
+        itemBody.innerHTML =
+          '<p style="color:#9fb0cc">Drag and drop exercise unavailable for this placeholder item.</p>';
+        return;
+      }
+      var url = new URL(DND_PAGE_BASE + fn, window.location.origin);
+      url.searchParams.set("examSim", "1");
+      var src = url.pathname + url.search;
       itemBody.innerHTML =
-        '<div class="exam-dnd">' +
-        '<p class="dnd-instructions">Practice shell — drop both terms. Real exercises load from <strong>' +
-        escapeHtml(item.fileName || label) +
-        "</strong> in the full build. Only <strong>Next</strong> advances.</p>" +
-        '<div class="dnd-row" id="chipRow"></div>' +
-        '<div class="dnd-row"><div class="slot" id="slotA" data-slot="a">Drop zone A</div><div class="slot" id="slotB" data-slot="b">Drop zone B</div></div>' +
+        '<div class="exam-dnd-embed">' +
+        '<iframe class="exam-dnd-iframe" id="examDndFrame" title="Drag and drop exercise" src="' +
+        escapeHtml(src) +
+        '"></iframe>' +
         "</div>";
-      var chips = ["Term A", "Term B", "Extra"];
-      var row = document.getElementById("chipRow");
-      chips.forEach(function (text, i) {
-        var el = document.createElement("span");
-        el.className = "chip";
-        el.draggable = true;
-        el.textContent = text;
-        el.dataset.chipId = String(i);
-        el.addEventListener("dragstart", function (e) {
-          e.dataTransfer.setData("text/plain", text);
-        });
-        row.appendChild(el);
-      });
-      ["slotA", "slotB"].forEach(function (sid) {
-        var slot = document.getElementById(sid);
-        slot.addEventListener("dragover", function (e) {
-          e.preventDefault();
-        });
-        slot.addEventListener("drop", function (e) {
-          e.preventDefault();
-          var text = e.dataTransfer.getData("text/plain");
-          slot.textContent = text;
-          slot.classList.add("filled");
-        });
-      });
     }
 
     function openLabSpoiler(item) {
@@ -806,11 +765,40 @@
       return letter === truth;
     }
 
+    function scoreDndSlotsDirectMatch(doc) {
+      var slots = doc.querySelectorAll(".drop-slot[data-target]");
+      if (!slots.length) return false;
+      for (var i = 0; i < slots.length; i++) {
+        var slot = slots[i];
+        var target = (slot.getAttribute("data-target") || "").trim();
+        var tok = slot.querySelector(".token");
+        if (!tok) return false;
+        var val = (tok.getAttribute("data-value") || "").trim();
+        if (!val || val.toLowerCase() !== target.toLowerCase()) return false;
+      }
+      return true;
+    }
+
     function scoreDndItem() {
-      var a = document.getElementById("slotA");
-      var b = document.getElementById("slotB");
-      if (!a || !b) return false;
-      return a.classList.contains("filled") && b.classList.contains("filled");
+      var iframe = document.getElementById("examDndFrame");
+      if (!iframe) return false;
+      try {
+        var doc = iframe.contentDocument;
+        if (!doc || doc.readyState !== "complete") return false;
+        var checkBtn = doc.getElementById("checkBtn");
+        if (checkBtn) {
+          checkBtn.click();
+          var slots = doc.querySelectorAll(".drop-slot[data-target]");
+          if (!slots.length) return false;
+          for (var i = 0; i < slots.length; i++) {
+            if (!slots[i].classList.contains("correct")) return false;
+          }
+          return true;
+        }
+        return scoreDndSlotsDirectMatch(doc);
+      } catch (e) {
+        return false;
+      }
     }
 
     function scoreLabItem() {
