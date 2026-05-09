@@ -1405,53 +1405,54 @@ R2# copy running-config startup-config</pre>
        */
       function trySwNavSoftLine(line) {
         var u = normalize(line);
-        if (u === "configure terminal" && swInEnableMode()) {
+        var mode = currentSwMode();
+        if (u === "configure terminal" && mode === "exec") {
           swPromptOverride = "config";
           setSwPrompt();
           return true;
         }
         if (u.indexOf("interface range ") === 0 &&
-            (swPromptOverride === "config" || swPromptOverride === "config-if" || swPromptOverride === "config-if-range")) {
+            (mode === "config" || mode === "config-if" || mode === "config-if-range")) {
           swPromptOverride = "config-if-range";
           setSwPrompt();
           return true;
         }
         if (u.indexOf("interface ") === 0 &&
-            (swPromptOverride === "config" || swPromptOverride === "config-if" || swPromptOverride === "config-if-range")) {
+            (mode === "config" || mode === "config-if" || mode === "config-if-range")) {
           swPromptOverride = "config-if";
           setSwPrompt();
           return true;
         }
         if (/^vlan \d+$/.test(u) &&
-            (swPromptOverride === "config" || swPromptOverride === "config-vlan")) {
+            (mode === "config" || mode === "config-vlan")) {
           appendVlanCreateSys(appendSw, line);
           swPromptOverride = "config-vlan";
           setSwPrompt();
           return true;
         }
-        if (u === "exit" && swPromptOverride === "config-if-range") {
+        if (u === "exit" && mode === "config-if-range") {
           swPromptOverride = "config";
           setSwPrompt();
           return true;
         }
-        if (u === "exit" && swPromptOverride === "config-if") {
+        if (u === "exit" && mode === "config-if") {
           swPromptOverride = "config";
           setSwPrompt();
           return true;
         }
-        if (u === "exit" && swPromptOverride === "config-vlan") {
+        if (u === "exit" && mode === "config-vlan") {
           swPromptOverride = "config";
           setSwPrompt();
           return true;
         }
-        if (u === "exit" && swPromptOverride === "config") {
+        if (u === "exit" && mode === "config") {
           swPromptOverride = "exec";
           setSwPrompt();
           return true;
         }
         if (u === "end" &&
-            (swPromptOverride === "config" || swPromptOverride === "config-vlan" ||
-             swPromptOverride === "config-if" || swPromptOverride === "config-if-range")) {
+            (mode === "config" || mode === "config-vlan" ||
+             mode === "config-if" || mode === "config-if-range")) {
           swPromptOverride = "exec";
           setSwPrompt();
           return true;
@@ -1698,6 +1699,27 @@ R2# copy running-config startup-config</pre>
           return;
         }
 
+        // Forgiving verify path: allow required ping checks even if user is still in
+        // config/config-if and auto-advance to the corresponding verify checkpoint.
+        if (isPing(line, "10.0.12.6") && stepIndex >= 4 && stepIndex <= 6) {
+          appendSw("line-ping", ipv4PingOutput());
+          stepIndex = 7;
+          swPromptOverride = null;
+          setSwPrompt();
+          return;
+        }
+        if (isPing(line, "2001:db8:12::13") && stepIndex >= 11 && stepIndex <= 13) {
+          appendSw("line-ping", ipv6PingOutput());
+          stepIndex = LAB_STEPS.length;
+          swPromptOverride = null;
+          swPrompt.textContent = promptForMode(SWITCH_HOST, "exec");
+          appendSw("line-sys", BASELINE_SW_STEPS_OK_MSG);
+          tryCompleteBaselineLab(function (cls, text) {
+            appendSw(cls, text);
+          });
+          return;
+        }
+
         // 1) Strict step match first — consumes navigation commands (configure terminal/interface/exit)
         //    when they are the next expected step, so the displayed prompt stays aligned with the lab.
         if (stepIndex < LAB_STEPS.length && LAB_STEPS[stepIndex].test(line)) {
@@ -1779,53 +1801,54 @@ R2# copy running-config startup-config</pre>
 
       function trySw2NavSoftLine(line) {
         var u = normalize(line);
-        if (u === "configure terminal" && sw2InEnableMode()) {
+        var mode = currentSw2Mode();
+        if (u === "configure terminal" && mode === "exec") {
           sw2PromptOverride = "config";
           setSw2Prompt();
           return true;
         }
         if (u.indexOf("interface range ") === 0 &&
-            (sw2PromptOverride === "config" || sw2PromptOverride === "config-if" || sw2PromptOverride === "config-if-range")) {
+            (mode === "config" || mode === "config-if" || mode === "config-if-range")) {
           sw2PromptOverride = "config-if-range";
           setSw2Prompt();
           return true;
         }
         if (u.indexOf("interface ") === 0 &&
-            (sw2PromptOverride === "config" || sw2PromptOverride === "config-if" || sw2PromptOverride === "config-if-range")) {
+            (mode === "config" || mode === "config-if" || mode === "config-if-range")) {
           sw2PromptOverride = "config-if";
           setSw2Prompt();
           return true;
         }
         if (/^vlan \d+$/.test(u) &&
-            (sw2PromptOverride === "config" || sw2PromptOverride === "config-vlan")) {
+            (mode === "config" || mode === "config-vlan")) {
           appendVlanCreateSys(appendSw2, line);
           sw2PromptOverride = "config-vlan";
           setSw2Prompt();
           return true;
         }
-        if (u === "exit" && sw2PromptOverride === "config-if-range") {
+        if (u === "exit" && mode === "config-if-range") {
           sw2PromptOverride = "config";
           setSw2Prompt();
           return true;
         }
-        if (u === "exit" && sw2PromptOverride === "config-if") {
+        if (u === "exit" && mode === "config-if") {
           sw2PromptOverride = "config";
           setSw2Prompt();
           return true;
         }
-        if (u === "exit" && sw2PromptOverride === "config-vlan") {
+        if (u === "exit" && mode === "config-vlan") {
           sw2PromptOverride = "config";
           setSw2Prompt();
           return true;
         }
-        if (u === "exit" && sw2PromptOverride === "config") {
+        if (u === "exit" && mode === "config") {
           sw2PromptOverride = "exec";
           setSw2Prompt();
           return true;
         }
         if (u === "end" &&
-            (sw2PromptOverride === "config" || sw2PromptOverride === "config-vlan" ||
-             sw2PromptOverride === "config-if" || sw2PromptOverride === "config-if-range")) {
+            (mode === "config" || mode === "config-vlan" ||
+             mode === "config-if" || mode === "config-if-range")) {
           sw2PromptOverride = "exec";
           setSw2Prompt();
           return true;

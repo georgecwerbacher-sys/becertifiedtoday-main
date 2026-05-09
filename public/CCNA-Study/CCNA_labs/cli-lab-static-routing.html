@@ -1510,12 +1510,32 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
           return;
         }
 
-        if (stepIndex === 1 && markR1RouteIfMatched(line)) {
-          return;
-        }
-        if (stepIndex === 1 && (normalize(line) === "end" || normalize(line) === "exit") && !r1RoutesComplete()) {
-          appendSw("line-sys", R1_ROUTES_INCOMPLETE_MSG);
-          return;
+        if (stepIndex === 1) {
+          var r1u = normalize(line);
+          if (r1u === "configure terminal") {
+            swPromptOverride = "config";
+            setSwPrompt();
+            return;
+          }
+          if (markR1RouteIfMatched(line)) {
+            return;
+          }
+          if (r1u === "end" || r1u === "exit") {
+            if (!r1RoutesComplete()) {
+              // Allow leaving config mode like IOS; lab step remains incomplete.
+              swPromptOverride = "exec";
+              setSwPrompt();
+              return;
+            }
+            stepIndex += 1;
+            swPromptOverride = null;
+            swPrompt.textContent = promptForMode(SWITCH_HOST, "exec");
+            appendSw("line-sys", BASELINE_SW_STEPS_OK_MSG);
+            tryCompleteBaselineLab(function (cls, text) {
+              appendSw(cls, text);
+            });
+            return;
+          }
         }
 
         if (stepIndex >= LAB_STEPS.length) {
