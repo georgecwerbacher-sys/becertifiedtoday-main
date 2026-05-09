@@ -1010,11 +1010,36 @@ R1(config-if)# ip ospf priority 255</pre>
         "% This lab forbids OSPF network statements under the routing process. Use ip ospf " +
         OSPF_LAB_PROCESS_ID +
         " area 0 on Ethernet0/0 and Ethernet0/1 instead.";
+      var OSPF_LAB_VERIFY_INSTRUCTIONS_MSG =
+        "% Invalid input. Verify the lab instructions (Tasks and Helper) for the required values.";
+
       /** True if line looks like router OSPF: network <prefix> <wildcard> area <area-id> … */
       function isOspfRouterNetworkStatement(normalizedLine) {
         var u = String(normalizedLine || "");
         if (u.indexOf("network ") !== 0) return false;
         return u.indexOf(" area ") !== -1;
+      }
+
+      /** Normalized line is <code>router ospf &lt;digits&gt;</code>. */
+      function isRouterOspfNumericProcess(normalizedLine) {
+        return /^router ospf \d+$/.test(String(normalizedLine || ""));
+      }
+
+      /** Normalized line is <code>router-id &lt;token&gt;</code>. */
+      function isRouterIdTokenLine(normalizedLine) {
+        return /^router-id \S+$/.test(String(normalizedLine || ""));
+      }
+
+      /** Returns OSPF process ID or <code>null</code> if not <code>ip ospf &lt;n&gt; area 0</code>. */
+      function parseIpOspfArea0Pid(normalizedLine) {
+        var m = String(normalizedLine || "").match(/^ip ospf (\d+) area 0$/);
+        return m ? m[1] : null;
+      }
+
+      /** Returns priority or <code>null</code> if not <code>ip ospf priority &lt;n&gt;</code>. */
+      function parseIpOspfPriorityValue(normalizedLine) {
+        var m = String(normalizedLine || "").match(/^ip ospf priority (\d+)$/);
+        return m ? m[1] : null;
       }
 
       function matchShowRun(raw) {
@@ -1241,6 +1266,44 @@ R1(config-if)# ip ospf priority 255</pre>
 
         if (stepIndex >= LAB_STEPS.length) {
           appendSw2("line-bad", "% Invalid input");
+          return;
+        }
+
+        if (
+          stepIndex === 1 &&
+          isRouterOspfNumericProcess(u) &&
+          u !== "router ospf " + OSPF_LAB_PROCESS_ID
+        ) {
+          appendSw2("line-sys", OSPF_LAB_VERIFY_INSTRUCTIONS_MSG);
+          return;
+        }
+
+        if (
+          stepIndex === 2 &&
+          isRouterIdTokenLine(u) &&
+          u !== "router-id " + OSPF_LAB_ROUTER_ID
+        ) {
+          appendSw2("line-sys", OSPF_LAB_VERIFY_INSTRUCTIONS_MSG);
+          return;
+        }
+
+        var badIfPid = parseIpOspfArea0Pid(u);
+        if (
+          (stepIndex === 5 || stepIndex === 9) &&
+          badIfPid !== null &&
+          badIfPid !== OSPF_LAB_PROCESS_ID
+        ) {
+          appendSw2("line-sys", OSPF_LAB_VERIFY_INSTRUCTIONS_MSG);
+          return;
+        }
+
+        var badPri = parseIpOspfPriorityValue(u);
+        if (
+          (stepIndex === 6 || stepIndex === 10) &&
+          badPri !== null &&
+          badPri !== OSPF_LAB_DR_PRIORITY
+        ) {
+          appendSw2("line-sys", OSPF_LAB_VERIFY_INSTRUCTIONS_MSG);
           return;
         }
 

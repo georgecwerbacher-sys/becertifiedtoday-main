@@ -13,6 +13,15 @@
 
   Labs with a completion gate (e.g. PC addressing) also call tryCompleteBaselineLab() when steps finish — see
   templates/labs/cli-lab-baseline.html (sync block). The fragment below omits that if you paste into a minimal page.
+
+  Wrong number / wrong token (tester uses plausible syntax but not the lab answer):
+  - LAB_STEPS still uses exact tests (only the correct value advances).
+  - Before if (LAB_STEPS[stepIndex].test(line)), add branches: for the current stepIndex, if normalize(line)
+    matches the *shape* of the command (e.g. /^router ospf \d+$/, /^router-id \S+$/, /^ip ospf (\d+) area 0$/)
+    but !== the required canonical string, append appendSw("line-sys", LAB_VERIFY_INSTRUCTIONS_MSG); return;
+  - Use one shared message, e.g.:
+    "% Invalid input. Verify the lab instructions (Tasks and Helper) for the required values."
+  - Full worked example: public/CCNA-Study/CCNA_labs/cli-lab-ospf_config_sim_v3.html (submitSw2, OSPF_LAB_VERIFY_INSTRUCTIONS_MSG).
 -->
 <div id="swCliOverlay" class="cli-modal-overlay" aria-hidden="true">
   <div
@@ -135,6 +144,16 @@
       appendSw("line-bad", "% Invalid input");
       return;
     }
+
+    // Optional — wrong plausible value: prompt tester to re-read Tasks/Helper (see file header + OSPF lab).
+    // var LAB_VERIFY_INSTRUCTIONS_MSG =
+    //   "% Invalid input. Verify the lab instructions (Tasks and Helper) for the required values.";
+    // var u = normalized;
+    // if (stepIndex === 1 && /^router ospf \d+$/.test(u) && u !== "router ospf " + REQUIRED_PROCESS_ID) {
+    //   appendSw("line-sys", LAB_VERIFY_INSTRUCTIONS_MSG);
+    //   return;
+    // }
+    // Add similar blocks per step (router-id token, ip ospf pid, priority, VLAN id, etc.).
 
     if (LAB_STEPS[stepIndex].test(line)) {
       stepIndex += 1;
