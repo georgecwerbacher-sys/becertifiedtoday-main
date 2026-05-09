@@ -1,5 +1,7 @@
 (function () {
   try {
+    var originalPath = location.pathname || "";
+    sessionStorage.setItem("ccnaLastRealPath", originalPath);
     var mask = sessionStorage.getItem("ccnpUrlMaskPath");
     if (!mask && /(?:\?|&)sample=1(?:&|$)/.test(location.search || "")) {
       mask = "/sample";
@@ -72,7 +74,18 @@
   ];
 
   function getSlugAndMap() {
-    var path = (location.pathname || "").toLowerCase();
+    var pathRaw = location.pathname || "";
+    if (
+      pathRaw.toLowerCase() === "/sample" ||
+      pathRaw.toLowerCase() === "/sample/" ||
+      pathRaw.toLowerCase().indexOf("/sample?") === 0
+    ) {
+      try {
+        var remembered = sessionStorage.getItem("ccnaLastRealPath");
+        if (remembered) pathRaw = remembered;
+      } catch (e) {}
+    }
+    var path = pathRaw.toLowerCase();
     var match = /\/([^/]+)\.html$/.exec(path);
     if (!match) return null;
     var fileName = decodeURIComponent(match[1]) + ".html";
