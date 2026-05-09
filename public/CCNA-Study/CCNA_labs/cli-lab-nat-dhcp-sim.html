@@ -940,22 +940,64 @@ Sw1#copy running-config startup-config</pre>
         <button type="button" class="cli-modal-close" id="spoilerClose" aria-label="Close spoiler">×</button>
       </header>
       <div class="cli-modal-body spoiler-cli-body">
-        <div class="spoiler-task" aria-labelledby="spoiler-cap-example">
-          <p class="spoiler-terminal-cap" id="spoiler-cap-example">Example — primary device</p>
-          <div class="spoiler-terminal" role="region" aria-label="Example CLI solution">
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-task1">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-task1">Task 1 — R1 NAT/PAT</p>
+          <div class="spoiler-terminal" role="region" aria-label="Task 1 R1 CLI solution">
             <div class="spoiler-terminal-bar">
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
               <span class="spoiler-terminal-title">R1 — Terminal</span>
             </div>
-            <pre class="spoiler-terminal-pre">R1# configure terminal
-R1(config)# hostname REPLACE_HOSTNAME</pre>
+            <pre class="spoiler-terminal-pre">R1#configure terminal
+R1(config)#ip nat inside source list 192 interface e0/0 overload</pre>
           </div>
         </div>
-        <p class="tasks" style="margin: 0; color: #8b9cbb; font-size: 0.85rem">
-          Optional: keep a legacy single block with <code>spoiler-cli-pre</code> for simple labs.
-        </p>
-        <pre class="spoiler-cli-pre">REPLACE# show running-config
-! optional second block</pre>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-task2">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-task2">Task 2 — R1 NTP (server)</p>
+          <div class="spoiler-terminal" role="region" aria-label="Task 2 R1 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">R1 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">R1#configure terminal
+R1(config)#ntp master
+R1(config)#ntp source-interface Loopback0</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-task2-sw1">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-task2-sw1">Task 2 — Sw1 NTP client (209.165.202.134 = R1 Lo0)</p>
+          <div class="spoiler-terminal" role="region" aria-label="Task 2 Sw1 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">Sw1 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">Sw1#configure terminal
+Sw1(config)#ntp server 209.165.202.134</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-task3">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-task3">Task 3 — Sw1 DHCP relay</p>
+          <div class="spoiler-terminal" role="region" aria-label="Task 3 Sw1 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">Sw1 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">Sw1#configure terminal
+Sw1(config)#interface e0/1
+Sw1(config-if)#ip helper-address 172.16.0.9</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-task4">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-task4">Task 4 — Sw1 SSH</p>
+          <div class="spoiler-terminal" role="region" aria-label="Task 4 Sw1 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">Sw1 — Terminal</span>
+            </div>
+            <pre class="spoiler-terminal-pre">Sw1#configure terminal
+Sw1(config)#crypto key generate rsa modulus 2048
+Sw1(config)#ip ssh version 2</pre>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1564,6 +1606,16 @@ R1(config)# hostname REPLACE_HOSTNAME</pre>
           return;
         }
 
+        if (stepIndex > 0 && stepIndex < LAB_STEPS.length) {
+          var leaveCfg = normalize(line);
+          if (LAB_STEPS[stepIndex].mode === "config" && (leaveCfg === "end" || leaveCfg === "exit")) {
+            stepIndex = 0;
+            swPromptOverride = null;
+            setSwPrompt();
+            return;
+          }
+        }
+
         if (LAB_STEPS[stepIndex].test(line)) {
           stepIndex += 1;
           swPromptOverride = null;
@@ -1635,6 +1687,28 @@ R1(config)# hostname REPLACE_HOSTNAME</pre>
         }
 
         if (sw2StepIndex < SW1_LAB_STEPS.length) {
+          var ch = normalize(line);
+          if (sw2Mode === "config" && sw2StepIndex > 0 && (ch === "end" || ch === "exit")) {
+            sw2StepIndex = 0;
+            sw2Mode = "exec";
+            sw2Prompt.textContent = sw2PromptForMode();
+            return;
+          }
+          if (sw2Mode === "config-if" && ch === "end") {
+            sw2StepIndex = 0;
+            sw2Mode = "exec";
+            sw2Prompt.textContent = sw2PromptForMode();
+            return;
+          }
+          if (sw2Mode === "config-if" && ch === "exit") {
+            var stChk = SW1_LAB_STEPS[sw2StepIndex];
+            if (!(stChk.mode === "config-if" && stChk.test(line))) {
+              sw2StepIndex = 0;
+              sw2Mode = "exec";
+              sw2Prompt.textContent = sw2PromptForMode();
+              return;
+            }
+          }
           var st = SW1_LAB_STEPS[sw2StepIndex];
           if (sw2Mode !== st.mode || !st.test(line)) {
             appendSw2("line-bad", "% Invalid input");
