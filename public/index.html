@@ -448,6 +448,19 @@
     .purchase-access-wrap {
       margin-top: 20px;
     }
+    .purchase-one-time-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 768px) {
+      .purchase-one-time-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .purchase-one-time-grid .purchase-track-box {
+      margin-top: 0;
+    }
     .purchase-track-box {
       margin-top: 18px;
       padding: 14px 16px;
@@ -1561,22 +1574,45 @@
                   We do not use customer data from purchases for marketing or profiling.
                 </p>
                 <div class="purchase-access-wrap">
-                  <div class="purchase-track-box purchase-track-box--one-time-live" aria-label="One-time simulation exam purchase">
-                    <div class="purchase-track-head">
-                      <p class="purchase-track-title">One-time simulation exam (ENCOR for CCNP)</p>
-                      <span class="encor-live-badge">Live</span>
+                  <div class="purchase-one-time-grid">
+                    <div class="purchase-track-box purchase-track-box--encor-live" aria-label="One-time ENCOR simulation exam purchase">
+                      <div class="purchase-track-head">
+                        <p class="purchase-track-title">One-time simulation exam (ENCOR for CCNP)</p>
+                        <span class="encor-live-badge">Live</span>
+                      </div>
+                      <p class="purchase-track-sub">
+                        ENCOR timed practice test: 120 minutes, mixed multiple-choice, drag-and-drop, and lab items. Stripe Checkout when configured on the ENCOR training site.
+                      </p>
+                      <p class="purchase-track-cta-wrap">
+                        <a
+                          class="cta-main cta-main--block"
+                          href="https://becertifiedtoday-encor.vercel.app/encor/test-simulation.html"
+                          rel="noopener noreferrer"
+                          aria-label="Purchase one-time simulation exam for ENCOR for CCNP"
+                          >PURCHASE ONE-TIME ENCOR (CCNP) SIMULATION EXAM</a
+                        >
+                      </p>
+                      <p class="purchase-access-disclaimer">
+                        <strong>$4.99 one-time.</strong> No recurring membership. Opens preparation and purchase on becertifiedtoday-encor.vercel.app.
+                      </p>
                     </div>
-                    <p class="purchase-track-sub">
-                      ENCOR one-time simulation is live now. CCNA one-time simulation is coming soon.
-                    </p>
-                    <p class="purchase-track-cta-wrap">
-                      <a class="cta-main cta-main--block" href="https://becertifiedtoday-encor.vercel.app/encor/test-simulation.html" rel="noopener noreferrer" aria-label="Purchase one-time simulation exam for ENCOR for CCNP">
-                        PURCHASE ONE-TIME ENCOR (CCNP) SIMULATION EXAM
-                      </a>
-                    </p>
-                    <p class="purchase-access-disclaimer">
-                      <strong>$4.99 one-time.</strong> No recurring membership. ENCOR available now; CCNA coming soon.
-                    </p>
+                    <div class="purchase-track-box purchase-track-box--one-time-live" aria-label="One-time CCNA simulation exam purchase">
+                      <div class="purchase-track-head">
+                        <p class="purchase-track-title">One-time simulation exam (CCNA)</p>
+                        <span class="encor-live-badge">Live</span>
+                      </div>
+                      <p class="purchase-track-sub">
+                        CCNA timed practice test: 120 minutes, 40 questions, 8 drag-and-drops, 3 labs. Stripe Checkout when configured on this site.
+                      </p>
+                      <p class="purchase-track-cta-wrap">
+                        <a class="cta-main cta-main--block" href="/CCNA-Study/ccna-test-simulation.html" aria-label="Purchase one-time CCNA timed test simulation">
+                          PURCHASE ONE-TIME CCNA SIMULATION EXAM
+                        </a>
+                      </p>
+                      <p class="purchase-access-disclaimer">
+                        <strong>$4.99 one-time.</strong> No recurring membership. Opens preparation and purchase on becertifiedtoday.com.
+                      </p>
+                    </div>
                   </div>
                   <div class="purchase-track-box purchase-track-box--encor-live" aria-label="CCNP ENCOR training live">
                     <div class="purchase-track-head">

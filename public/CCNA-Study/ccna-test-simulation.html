@@ -4,125 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA timed test simulation | Be Certified Today</title>
-  <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
-  <style>
-    :root {
-      color-scheme: light dark;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      --bg: #0b1020;
-      --text: #e6edf3;
-      --muted: #9fb0cc;
-      --accent: #2f66bf;
-    }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--text);
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 28px 20px;
-      box-sizing: border-box;
-    }
-    .card {
-      max-width: 560px;
-      width: 100%;
-      background: #121a2b;
-      border: 1px solid #2d3b5a;
-      border-radius: 14px;
-      padding: 22px 26px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    }
-    h1 {
-      margin: 0 0 12px;
-      font-size: 1.35rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-    p {
-      margin: 0 0 12px;
-      color: var(--muted);
-      line-height: 1.55;
-      font-size: 0.98rem;
-    }
-    .status-ok {
-      color: #8bd487;
-    }
-    .status-bad {
-      color: #f08888;
-    }
-    a {
-      color: var(--accent);
-    }
-  </style>
+  <title>Redirecting…</title>
+  <script>
+    (function () {
+      var q = location.search || "";
+      var h = location.hash || "";
+      location.replace("/CCNA_Sim_EXAM/test-simulation-runner.html" + q + h);
+    })();
+  </script>
+  <meta http-equiv="refresh" content="0;url=/CCNA_Sim_EXAM/test-simulation-runner.html" />
 </head>
 <body>
-  <main class="card">
-    <h1>CCNA timed test simulation</h1>
-    <p id="status">Confirming your purchase…</p>
-    <p id="blueprint" class="status-ok" hidden></p>
-    <p>
-      <a href="/CCNA-Study/CCNA_Training_Portal.html">Back to CCNA Training Portal</a>
-    </p>
-  </main>
-  <script type="module">
-    const statusEl = document.getElementById("status");
-    const blueprintEl = document.getElementById("blueprint");
-    const params = new URLSearchParams(window.location.search);
-    const sessionId = params.get("session_id");
-
-    async function loadBlueprint() {
-      try {
-        const r = await fetch("/CCNA-Study/data/ccna-test-simulation-blueprint.json");
-        const b = await r.json();
-        blueprintEl.textContent =
-          "Blueprint (v" +
-          b.schemaVersion +
-          "): " +
-          b.durationMinutes +
-          " min · " +
-          b.multipleChoiceCount +
-          " questions · " +
-          b.dragDropCount +
-          " drag-and-drops · " +
-          b.labCount +
-          " labs (" +
-          b.totalItems +
-          " items).";
-        blueprintEl.hidden = false;
-      } catch (_) {}
-    }
-
-    loadBlueprint();
-
-    if (!sessionId) {
-      statusEl.textContent =
-        "No checkout session in this URL. Use Purchase timed test from the portal, or open the link Stripe emailed after payment.";
-      statusEl.className = "status-bad";
-      return;
-    }
-
-    try {
-      const res = await fetch(
-        "/api/verify-checkout-session?session_id=" + encodeURIComponent(sessionId)
-      );
-      const data = await res.json();
-      if (data.ok) {
-        statusEl.textContent =
-          "Payment confirmed. The full 120-minute timed runner with 40 questions, 8 drag-and-drops, and 3 labs will plug in here.";
-        statusEl.className = "status-ok";
-      } else {
-        statusEl.textContent =
-          data.error || "Could not confirm this checkout session. Contact support if you were charged.";
-        statusEl.className = "status-bad";
-      }
-    } catch (e) {
-      statusEl.textContent =
-        "Could not reach the server to verify checkout. Try again or confirm API routes are deployed.";
-      statusEl.className = "status-bad";
-    }
-  </script>
+  <p><a href="/CCNA_Sim_EXAM/test-simulation-runner.html">Continue to CCNA timed test runner</a></p>
 </body>
 </html>

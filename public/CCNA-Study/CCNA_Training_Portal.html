@@ -459,7 +459,154 @@
       cursor: not-allowed;
       background: rgba(47, 102, 191, 0.35);
     }
-    
+
+    /* One-time simulation exam purchase boxes (ENCOR external + CCNA on-site) */
+    .purchase-access-wrap {
+      margin-top: 18px;
+    }
+    .purchase-one-time-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 768px) {
+      .purchase-one-time-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .purchase-track-box {
+      padding: clamp(18px, 3vw, 22px) clamp(16px, 3vw, 20px);
+      border-radius: 12px;
+      border: 1px solid var(--accent-border);
+      background: rgba(47, 102, 191, 0.08);
+    }
+    .purchase-track-box--encor-live {
+      border-color: rgba(47, 102, 191, 0.35);
+      background: #fff;
+      box-shadow:
+        0 0 0 1px rgba(79, 132, 216, 0.18) inset,
+        0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+    .purchase-track-box--encor-live .purchase-track-title {
+      color: #142a4a;
+    }
+    .purchase-track-box--encor-live .purchase-track-sub {
+      color: #2a3d56;
+    }
+    .purchase-track-box--encor-live .purchase-access-disclaimer {
+      border-top-color: rgba(45, 63, 92, 0.22);
+      color: #4d5f78;
+    }
+    .purchase-track-box--one-time-live {
+      border-color: rgba(31, 168, 85, 0.6);
+      background: rgba(31, 168, 85, 0.15);
+      box-shadow:
+        0 0 0 1px rgba(74, 224, 146, 0.25) inset,
+        0 10px 24px rgba(12, 60, 31, 0.35);
+    }
+    .purchase-track-box--one-time-live .purchase-track-title {
+      color: #d8ffe9;
+    }
+    .purchase-track-box--one-time-live .purchase-track-sub {
+      color: #c7f2da;
+    }
+    .purchase-track-box--one-time-live .purchase-access-disclaimer {
+      border-top-color: rgba(74, 224, 146, 0.35);
+      color: #b9e8cc;
+    }
+    .purchase-track-head {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px 12px;
+      margin: 0 0 10px;
+    }
+    .purchase-track-head .purchase-track-title {
+      margin: 0;
+    }
+    .encor-live-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #041208;
+      background: linear-gradient(155deg, #4ae092 0%, #1fa855 100%);
+      box-shadow:
+        0 0 0 1px rgba(74, 224, 146, 0.65),
+        0 2px 16px rgba(31, 168, 85, 0.45);
+    }
+    .purchase-track-title {
+      margin: 0 0 6px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: #a8c4f0;
+    }
+    .purchase-track-sub {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+    .purchase-track-cta-wrap {
+      margin: 16px 0 0;
+    }
+    .purchase-access-disclaimer {
+      margin: 10px 0 0;
+      padding-top: 10px;
+      border-top: 1px solid rgba(45, 59, 90, 0.75);
+      color: #9fb0cc;
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+    .cta-main {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 24px;
+      border-radius: 12px;
+      border: 1px solid rgba(120, 170, 255, 0.45);
+      font-size: clamp(0.72rem, 1.8vw, 0.95rem);
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      text-align: center;
+      color: #f4f7ff;
+      background: linear-gradient(165deg, #4f8aea 0%, #2f66bf 48%, #244f9a 100%);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.14) inset,
+        0 6px 22px rgba(47, 102, 191, 0.42);
+      transition: filter 0.15s ease, box-shadow 0.15s ease;
+    }
+    .cta-main:hover {
+      color: #fff;
+      filter: brightness(1.07);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.18) inset,
+        0 8px 28px rgba(47, 102, 191, 0.5);
+    }
+    .cta-main:focus-visible {
+      outline: 2px solid #9ec0ff;
+      outline-offset: 3px;
+    }
+    .cta-main--block {
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .portal-test-sim-stripe-note {
+      margin: 14px 0 0;
+      font-size: 0.82rem;
+      color: #7d8ea3;
+      line-height: 1.45;
+    }
+
     .sim-box-practice-wide {
       grid-column: 1 / -1;
     }
@@ -866,15 +1013,53 @@
               <li><strong>Timer-driven</strong> — the session runs against the clock from start to submit.</li>
               <li><strong>Pass or fail at the end.</strong></li>
             </ul>
-            <div class="study-actions">
-              <button type="button" class="start-btn" id="ccnaTestSimPurchaseBtn">
-                Purchase timed test (Stripe)
-              </button>
+            <div class="purchase-access-wrap">
+              <div class="purchase-one-time-grid">
+                <div class="purchase-track-box purchase-track-box--encor-live" aria-label="One-time ENCOR simulation exam purchase">
+                  <div class="purchase-track-head">
+                    <p class="purchase-track-title">One-time simulation exam (ENCOR for CCNP)</p>
+                    <span class="encor-live-badge">Live</span>
+                  </div>
+                  <p class="purchase-track-sub">
+                    ENCOR timed practice test: 120 minutes, mixed multiple-choice, drag-and-drop, and lab items. Stripe Checkout when configured on the ENCOR training site.
+                  </p>
+                  <p class="purchase-track-cta-wrap">
+                    <a
+                      class="cta-main cta-main--block"
+                      href="https://becertifiedtoday-encor.vercel.app/encor/test-simulation.html"
+                      rel="noopener noreferrer"
+                      aria-label="Purchase one-time simulation exam for ENCOR for CCNP"
+                      >PURCHASE ONE-TIME ENCOR (CCNP) SIMULATION EXAM</a
+                    >
+                  </p>
+                  <p class="purchase-access-disclaimer">
+                    <strong>$4.99 one-time.</strong> No recurring membership. Opens preparation and purchase on becertifiedtoday-encor.vercel.app.
+                  </p>
+                </div>
+                <div class="purchase-track-box purchase-track-box--one-time-live" aria-label="One-time CCNA simulation exam purchase">
+                  <div class="purchase-track-head">
+                    <p class="purchase-track-title">One-time simulation exam (CCNA)</p>
+                    <span class="encor-live-badge">Live</span>
+                  </div>
+                  <p class="purchase-track-sub">
+                    CCNA timed practice test: 120 minutes, 40 questions, 8 drag-and-drops, 3 labs. Stripe Checkout when configured on this site.
+                  </p>
+                  <p class="purchase-track-cta-wrap">
+                    <a class="cta-main cta-main--block" href="/CCNA-Study/ccna-test-simulation.html" aria-label="Open CCNA timed test simulation"
+                      >PURCHASE ONE-TIME CCNA SIMULATION EXAM</a
+                    >
+                  </p>
+                  <p class="purchase-access-disclaimer">
+                    <strong>$4.99 one-time.</strong> No recurring membership. Opens preparation and purchase on becertifiedtoday.com.
+                  </p>
+                </div>
+              </div>
             </div>
-            <p style="margin: 12px 0 0; font-size: 0.82rem; color: #7d8ea3; line-height: 1.45">
-              Uses Checkout after you set <code>STRIPE_SECRET_KEY</code>, <code>STRIPE_PRICE_CCNA_TEST_SIM</code>, and
-              <code>PUBLIC_SITE_URL</code> in Vercel. Blueprint:
-              <a href="/CCNA-Study/data/ccna-test-simulation-blueprint.json" style="color: #9fb0cc">ccna-test-simulation-blueprint.json</a>.
+            <p class="portal-test-sim-stripe-note">
+              CCNA Checkout requires <code>STRIPE_SECRET_KEY</code>, <code>STRIPE_PRICE_CCNA_TEST_SIM</code>, and <code>PUBLIC_SITE_URL</code> on
+              Vercel. After payment, success lands at
+              <a href="/CCNA_Sim_EXAM/test-simulation-runner.html" style="color: #9fb0cc">/CCNA_Sim_EXAM/test-simulation-runner.html</a>
+              (<code>/CCNA-Study/ccna-test-simulation.html</code> redirects there).
             </p>
           </section>
         </div>
@@ -944,6 +1129,5 @@
   </div>
   <script src="/CCNA-Study/js/ccna-practice-100-hub.js" defer></script>
   <script src="/CCNA-Study/js/ccna-dnd-25-hub.js" defer></script>
-  <script src="/CCNA-Study/js/ccna-test-checkout.js" defer></script>
 </body>
 </html>

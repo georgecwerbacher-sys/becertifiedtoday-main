@@ -6,6 +6,8 @@
  *   STRIPE_SECRET_KEY           — sk_live_… or sk_test_…
  *   STRIPE_PRICE_CCNA_TEST_SIM  — price_… for one-time payment (create in Stripe Dashboard)
  *   PUBLIC_SITE_URL             — no trailing slash, e.g. https://becertifiedtoday.com
+ *
+ * Checkout redirects use /CCNA_Sim_EXAM/ paths (CCNA domain); see public/CCNA_Sim_EXAM/.
  */
 import Stripe from "stripe";
 
@@ -49,8 +51,8 @@ export default async function handler(req, res) {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${site}/CCNA-Study/ccna-test-simulation.html?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${site}/CCNA-Study/CCNA_Training_Portal.html`,
+      success_url: `${site}/CCNA_Sim_EXAM/test-simulation-runner.html?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${site}/CCNA_Sim_EXAM/begin-test-simulation.html`,
       metadata: {
         productId,
         blueprint: "ccna-test-simulation-blueprint@v1",
