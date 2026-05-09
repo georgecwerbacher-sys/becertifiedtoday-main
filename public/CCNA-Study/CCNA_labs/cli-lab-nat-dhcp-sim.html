@@ -1265,12 +1265,74 @@ Sw1(config)#ip ssh version 2</pre>
         return normalize(raw) === "ip nat inside source list 192 interface ethernet0/0 overload";
       }
 
+      /** Lab NTP reference (R1 Loopback0). Any valid IPv4 is accepted for `ntp server`; only this IP yields sync output on `show ntp status`. */
+      var SW1_NTP_LAB_SERVER = "209.165.202.134";
+
+      function parseSw1NtpServerIpv4(raw) {
+        var u = normalize(raw);
+        var m = /^ntp server (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.exec(u);
+        if (!m) return null;
+        var oct = [];
+        for (var i = 1; i <= 4; i++) {
+          var o = parseInt(m[i], 10);
+          if (isNaN(o) || o < 0 || o > 255) return null;
+          oct.push(String(o));
+        }
+        return oct.join(".");
+      }
+
       function matchSw1NtpServer(raw) {
-        return normalize(raw) === "ntp server 209.165.202.134";
+        return parseSw1NtpServerIpv4(raw) !== null;
+      }
+
+      var NTP_STATUS_SYNC_OUTPUT = [
+        "Clock is synchronized, stratum 16, reference is 209.165.202.134",
+        "nominal freq is 250.0000 Hz, actual freq is 249.9990 Hz, precision is 2**24",
+        "reference time is 292B2168.00000016 (9:29:12.022 UTC Tue Feb 5 2058)",
+        "clock offset is 0.00 msec, root delay is 0.00 msec",
+        "root dispersion is 10.84 msec, peer dispersion is 0.00 msec.",
+        "loopfilter state is 'CTRL' (Normal Controlled Loop), drift is - 0.000001193",
+        "s/s system poll interval is 4, last update was 8 sec ago.",
+      ].join("\n");
+
+      function ntpStatusOutputUnsync(refIp) {
+        return [
+          "Clock is unsynchronized, stratum 16, reference is " + refIp,
+          "nominal freq is 250.0000 Hz, actual freq is 249.9990 Hz, precision is 2**24",
+          "No association with a configured NTP server that matches the lab reference (" + SW1_NTP_LAB_SERVER + ").",
+        ].join("\n");
+      }
+
+      function ntpStatusOutputNoServer() {
+        return [
+          "Clock is unsynchronized, stratum 16, no reference clock",
+          "No NTP server line has been accepted in this lab sequence yet.",
+        ].join("\n");
+      }
+
+      function matchShowNtpStatus(raw) {
+        var u = normalize(raw);
+        return u === "show ntp status" || u === "do show ntp status";
+      }
+
+      /** DHCP relay target (R1 toward Sw1). Any valid IPv4 accepted for `ip helper-address`; verification uses this match. */
+      var SW1_HELPER_LAB_ADDRESS = "172.16.0.9";
+
+      function parseSw1HelperIpv4(raw) {
+        var u = normalize(raw);
+        var m = /^ip helper-address (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.exec(u);
+        if (!m) return null;
+        var oct = [];
+        for (var i = 1; i <= 4; i++) {
+          var o = parseInt(m[i], 10);
+          if (isNaN(o) || o < 0 || o > 255) return null;
+          oct.push(String(o));
+        }
+        return oct.join(".");
       }
 
       function matchSw1Helper(raw) {
-        return normalize(raw) === "ip helper-address 172.16.0.9";
+        return parseSw1HelperIpv4(raw) !== null;
       }
 
       function matchSw1CryptoRsa(raw) {
@@ -1338,8 +1400,79 @@ Sw1(config)#ip ssh version 2</pre>
         t = t.replace(/interface e0\//g, "interface ethernet0/");
         if (t === "ip ssh ver 2") t = "ip ssh version 2";
         if (t === "ntp source loopback0") t = "ntp source-interface loopback0";
+        if (t === "sh ntp status" || t === "sh ntp stat") t = "show ntp status";
+        if (t === "do sh ntp status" || t === "do sh ntp stat") t = "do show ntp status";
+        if (t === "show ip int brief" || t === "sh ip int brief" || t === "sh ip int brie") t = "show ip interface brief";
+        if (t === "sh ip interface brief") t = "show ip interface brief";
+        if (t === "sh ip nat translations" || t === "sh ip nat trans") t = "show ip nat translations";
+        if (t === "do sh ip nat translations" || t === "do sh ip nat trans") t = "do show ip nat translations";
         return t;
       }
+
+      function matchPcShowIpIntBrief(raw) {
+        return normalize(raw) === "show ip interface brief";
+      }
+
+      /** PC1 Task 3 verification: only after correct DHCP relay (172.16.0.9 on Sw1 E0/1). */
+      var PC1_SHOW_IP_BRIEF_DHCP_OK = [
+        "Interface       IP-Address      OK? Method Status                Protocol ",
+        "Ethernet0/0     192.168.1.11    YES DHCP   up                    up ",
+      ].join("\n");
+
+      var PC1_SHOW_IP_BRIEF_DHCP_FAIL = [
+        "Interface       IP-Address      OK? Method Status                Protocol ",
+        "Ethernet0/0     unassigned      NO  DHCP   down                  down ",
+      ].join("\n");
+
+      function matchPcPing101810(raw) {
+        return normalize(raw) === "ping 10.0.18.10";
+      }
+
+      function matchPcSshToSw1(raw) {
+        return normalize(raw) === "ssh -l ccna 192.168.1.1";
+      }
+
+      /** PC1: reachability check after Task 3 (same gate as show ip interface brief DHCP OK). */
+      var PC1_PING_101810_OK = [
+        "Type escape sequence to abort.",
+        "Sending 5, 100-byte ICMP Echos to 10.0.18.10, timeout is 2 seconds:",
+        "..!!!",
+        "Success rate is 60 percent (3/5), round-trip min/avg/max = 0/0/0 ms",
+      ].join("\n");
+
+      var PC1_PING_101810_FAIL = [
+        "Type escape sequence to abort.",
+        "Sending 5, 100-byte ICMP Echos to 10.0.18.10, timeout is 2 seconds:",
+        ".....",
+        "Success rate is 0 percent (0/5)",
+      ].join("\n");
+
+      var PC1_SSH_SW1_OK = [
+        "Password: ****",
+        "Sw1#",
+      ].join("\n");
+
+      var PC1_SSH_SW1_FAIL = [
+        "Password: ****",
+        "% Connection refused by remote host",
+      ].join("\n");
+
+      function matchR1ShowIpNatTranslations(raw) {
+        var u = normalize(raw);
+        return u === "show ip nat translations" || u === "do show ip nat translations";
+      }
+
+      /** R1: after Task 1+3 path (R1 lab steps done, correct DHCP relay); else header only. */
+      var R1_SHOW_IP_NAT_TRANSLATIONS_OK = [
+        "Pro  Inside global     Inside local       Outside local      Outside global",
+        "icmp 10.0.18.9:2       192.168.1.11:2     10.0.18.10:2       10.0.18.10:2",
+        "icmp 10.0.18.9:3       192.168.1.11:3     10.0.18.10:3       10.0.18.10:3",
+        "icmp 10.0.18.9:4       192.168.1.11:4     10.0.18.10:4       10.0.18.10:4",
+        "icmp 10.0.18.9:5       192.168.1.11:5     10.0.18.10:5       10.0.18.10:5",
+      ].join("\n");
+
+      var R1_SHOW_IP_NAT_TRANSLATIONS_EMPTY =
+        "Pro  Inside global     Inside local       Outside local      Outside global";
 
       var HELP_DISABLED_MSG = "help feature disabled for tester";
       var SHOW_VERSION_MSG = "BeCertifiedToday.com version 2026";
@@ -1435,6 +1568,10 @@ Sw1(config)#ip ssh version 2</pre>
       var stepIndex = 0;
       var swPromptOverride = null;
       var sw2StepIndex = 0;
+      /** Canonical IPv4 from last accepted `ntp server` on Sw1 (null until step passes). */
+      var sw1ConfiguredNtpServer = null;
+      /** Canonical IPv4 from last accepted `ip helper-address` on Sw1 E0/1 (null until step passes). Compare to SW1_HELPER_LAB_ADDRESS for Task 3 verification. */
+      var sw1ConfiguredHelperAddress = null;
 
       var swCliOverlay = document.getElementById("swCliOverlay");
       var swCliDialog = document.getElementById("swCliDialog");
@@ -1527,6 +1664,30 @@ Sw1(config)#ip ssh version 2</pre>
           appendPc("line-sys", HELP_DISABLED_MSG);
           return;
         }
+        if (matchPcShowIpIntBrief(line)) {
+          if (sw1ConfiguredHelperAddress === SW1_HELPER_LAB_ADDRESS) {
+            appendPc("line-showrun", PC1_SHOW_IP_BRIEF_DHCP_OK);
+          } else {
+            appendPc("line-showrun", PC1_SHOW_IP_BRIEF_DHCP_FAIL);
+          }
+          return;
+        }
+        if (matchPcPing101810(line)) {
+          if (sw1ConfiguredHelperAddress === SW1_HELPER_LAB_ADDRESS) {
+            appendPc("line-showrun", PC1_PING_101810_OK);
+          } else {
+            appendPc("line-showrun", PC1_PING_101810_FAIL);
+          }
+          return;
+        }
+        if (matchPcSshToSw1(line)) {
+          if (sw2StepIndex >= SW1_LAB_STEPS.length) {
+            appendPc("line-showrun", PC1_SSH_SW1_OK);
+          } else {
+            appendPc("line-showrun", PC1_SSH_SW1_FAIL);
+          }
+          return;
+        }
         appendPc(
           "line-bad",
           "'" +
@@ -1550,6 +1711,8 @@ Sw1(config)#ip ssh version 2</pre>
         nvramSavedSw2 = false;
         swScrollback.innerHTML = "";
         sw2StepIndex = 0;
+        sw1ConfiguredNtpServer = null;
+        sw1ConfiguredHelperAddress = null;
         sw2Mode = "exec";
         sw2Scrollback.innerHTML = "";
         sw2Prompt.textContent = sw2PromptForMode();
@@ -1579,6 +1742,31 @@ Sw1(config)#ip ssh version 2</pre>
 
         if (swInEnableMode() && matchShowVersion(line)) {
           appendSw("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+
+        if (matchR1ShowIpNatTranslations(line)) {
+          if (stepIndex < LAB_STEPS.length) {
+            appendSw("line-bad", "% Invalid input");
+            return;
+          }
+          var natU = normalize(line);
+          if (natU === "show ip nat translations") {
+            if (!swInEnableMode()) {
+              appendSw("line-bad", "% Invalid input");
+              return;
+            }
+          } else {
+            if (swPromptOverride !== "config") {
+              appendSw("line-bad", "% Invalid input");
+              return;
+            }
+          }
+          if (sw1ConfiguredHelperAddress === SW1_HELPER_LAB_ADDRESS) {
+            appendSw("line-showrun", R1_SHOW_IP_NAT_TRANSLATIONS_OK);
+          } else {
+            appendSw("line-showrun", R1_SHOW_IP_NAT_TRANSLATIONS_EMPTY);
+          }
           return;
         }
 
@@ -1676,6 +1864,32 @@ Sw1(config)#ip ssh version 2</pre>
           return;
         }
 
+        if (matchShowNtpStatus(line)) {
+          var ntpU = normalize(line);
+          if (sw2Mode === "exec" && ntpU === "do show ntp status") {
+            appendSw2("line-bad", "% Invalid input");
+            return;
+          }
+          if (sw2Mode === "config" && ntpU !== "do show ntp status") {
+            appendSw2("line-bad", "% Invalid input");
+            return;
+          }
+          if (sw2Mode !== "exec" && sw2Mode !== "config") {
+            appendSw2("line-bad", "% Invalid input");
+            return;
+          }
+          if (sw1ConfiguredNtpServer === null) {
+            appendSw2("line-showrun", ntpStatusOutputNoServer());
+            return;
+          }
+          if (sw1ConfiguredNtpServer === SW1_NTP_LAB_SERVER) {
+            appendSw2("line-showrun", NTP_STATUS_SYNC_OUTPUT);
+          } else {
+            appendSw2("line-showrun", ntpStatusOutputUnsync(sw1ConfiguredNtpServer));
+          }
+          return;
+        }
+
         if (sw2Mode === "exec" && matchShowVersion(line)) {
           appendSw2("line-sys", SHOW_VERSION_MSG);
           return;
@@ -1732,6 +1946,12 @@ Sw1(config)#ip ssh version 2</pre>
           }
           var prev = sw2StepIndex;
           sw2StepIndex += 1;
+          if (prev === 1) {
+            sw1ConfiguredNtpServer = parseSw1NtpServerIpv4(line);
+          }
+          if (prev === 3) {
+            sw1ConfiguredHelperAddress = parseSw1HelperIpv4(line);
+          }
           if (prev === 0) sw2Mode = "config";
           else if (prev === 2) sw2Mode = "config-if";
           else if (prev === 4) sw2Mode = "config";
