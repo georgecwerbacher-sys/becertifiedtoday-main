@@ -1,0 +1,143 @@
+<!--
+  Reusable CLI container template for lab pages.
+  Includes IOS-like prompt navigation in submitSw():
+  - exit from config -> exec
+  - end -> exec
+  - configure terminal from exec override -> config
+-->
+<div id="swCliOverlay" class="cli-modal-overlay" aria-hidden="true">
+  <div
+    id="swCliDialog"
+    class="cli-modal-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="swCliTitle"
+    tabindex="-1"
+  >
+    <header class="cli-modal-header">
+      <h2 id="swCliTitle">SW1 - CLI</h2>
+      <button type="button" class="cli-modal-close" id="swCliClose" aria-label="Close CLI window">x</button>
+    </header>
+    <div class="cli-modal-body">
+      <div class="terminal" id="swTerminal" aria-label="Simulated SW1 CLI">
+        <div id="swScrollback" class="scrollback-area"></div>
+        <div class="input-row">
+          <span id="swPrompt" class="prompt-el">SW1#</span>
+          <input
+            id="swCmdline"
+            class="cmdline-input"
+            type="text"
+            spellcheck="false"
+            autocomplete="off"
+            autocapitalize="none"
+            aria-label="SW1 command line"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function isModeNavigationCommand(normalizedCmd) {
+    return (
+      normalizedCmd === "configure terminal" ||
+      normalizedCmd === "end" ||
+      normalizedCmd === "exit" ||
+      normalizedCmd.indexOf("interface ") === 0
+    );
+  }
+
+  // Drop-in block for submitSw() in lab pages.
+  function submitSw() {
+    var promptText = swPrompt.textContent;
+    var line = swCmdline.value;
+    var trimmed = String(line || "").trim();
+    var normalized = normalize(line);
+    var hideInputLine = isModeNavigationCommand(normalized);
+    if (!hideInputLine) {
+      appendSw("line-user", promptText + " " + line);
+    }
+    swCmdline.value = "";
+    if (!trimmed) return;
+
+    if (normalize(line) === "?") {
+      appendSw("line-sys", HELP_DISABLED_MSG);
+      return;
+    }
+
+    if (matchShowRun(line)) {
+      appendSw("line-showrun", SWITCH_SHOW_RUNNING_SNAPSHOT);
+      return;
+    }
+
+    if (swInEnableMode() && matchShowVersion(line)) {
+      appendSw("line-sys", SHOW_VERSION_MSG);
+      return;
+    }
+
+    if (matchCopyRunStart(line)) {
+      if (!swInEnableMode()) {
+        appendSw("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+        return;
+      }
+      if (stepIndex < LAB_STEPS.length) {
+        appendSw("line-sys", COPY_RUN_START_AFTER_STEPS_MSG);
+        return;
+      }
+      appendSw("line-sys", COPY_RUN_START_OK_MSG);
+      nvramSavedSw = true;
+      tryCompleteBaselineLab(function (cls, text) {
+        appendSw(cls, text);
+      });
+      return;
+    }
+
+    // IOS-like prompt navigation even when not matching the next lab step.
+    var u = normalized;
+    if (u === "end" && swPromptOverride !== "exec") {
+      swPromptOverride = "exec";
+      setSwPrompt();
+      return;
+    }
+    if (u === "exit") {
+      if (swPromptOverride === "config") {
+        swPromptOverride = "exec";
+        setSwPrompt();
+        return;
+      }
+      if (!swPromptOverride && stepIndex < LAB_STEPS.length && LAB_STEPS[stepIndex].mode === "config") {
+        swPromptOverride = "exec";
+        setSwPrompt();
+        return;
+      }
+    }
+    if (u === "configure terminal" && swPromptOverride === "exec") {
+      swPromptOverride = "config";
+      setSwPrompt();
+      return;
+    }
+    if (swInEnableMode() && (u.indexOf("show ") === 0 || u.indexOf("sh ") === 0)) {
+      appendSw("line-sys", SHOW_DISABLED_MSG);
+      return;
+    }
+
+    if (stepIndex >= LAB_STEPS.length) {
+      appendSw("line-bad", "% Invalid input");
+      return;
+    }
+
+    if (LAB_STEPS[stepIndex].test(line)) {
+      stepIndex += 1;
+      swPromptOverride = null;
+      if (stepIndex >= LAB_STEPS.length) {
+        swPrompt.textContent = promptForMode(SWITCH_HOST, "exec");
+        appendSw("line-sys", BASELINE_SW_STEPS_OK_MSG);
+      } else {
+        setSwPrompt();
+      }
+    } else {
+      appendSw("line-bad", "% Invalid input");
+    }
+  }
+</script>

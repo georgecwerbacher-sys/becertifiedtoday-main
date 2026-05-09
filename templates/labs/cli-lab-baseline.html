@@ -567,21 +567,11 @@
       <h1>REPLACE: Lab title</h1>
 
       <div class="diagram-wrap" aria-label="Topology diagram">
-        <div class="diagram-stage">
-          <img
-            src="/images/hero-classroom.png"
-            width="1024"
-            height="682"
-            alt="REPLACE: Topology diagram description."
-            decoding="async"
-          />
-        </div>
         <div class="device-pick" role="group" aria-label="Device for CLI">
           <strong style="color: #e6edf3">Select device</strong>
           <label><input type="radio" name="labPrimaryDev" value="SW1" checked /> SW1</label>
-          <label><input type="radio" name="labPrimaryDev" value="SW2" /> SW2</label>
+          <label><input type="radio" name="labPrimaryDev" value="R1" /> R1</label>
           <label><input type="radio" name="labPrimaryDev" value="PC1" /> PC1</label>
-          <label><input type="radio" name="labPrimaryDev" value="PC2" /> PC2</label>
         </div>
         <div class="device-links">
           <button type="button" class="device-link" id="openSelectedCliBtn">Open SW1 CLI</button>
@@ -606,8 +596,8 @@
               <code>copy running-configuration startup-configuration</code> (abbrev. <code>copy run start</code>) on each device after SW1 steps are done.
             </li>
             <li>
-              On <strong>PC1</strong> / <strong>PC2</strong>: pick the host in the device row; the prompt shows <code>PC1&gt;</code> or
-              <code>PC2&gt;</code>. Extend <code>submitPc()</code> for <code>ping</code>, <code>ipconfig</code>, etc.
+              On <strong>PC1</strong>: use the device row to open the PC prompt. Extend <code>submitPc()</code> for
+              <code>ping</code>, <code>ipconfig</code>, etc.
             </li>
           </ol>
         </div>
@@ -628,7 +618,10 @@
     </main>
   </div>
 
-  <!-- Primary switch CLI (editable lab device — LAB_STEPS engine) -->
+  <!--
+    Primary switch CLI container.
+    Keep this block in sync with templates/containers/cli-container-template.html.
+  -->
   <div id="swCliOverlay" class="cli-modal-overlay" aria-hidden="true">
     <div
       id="swCliDialog"
@@ -681,14 +674,14 @@
       tabindex="-1"
     >
       <header class="cli-modal-header">
-        <h2 id="sw2CliTitle">SW2 — CLI</h2>
+        <h2 id="sw2CliTitle">R1 — CLI</h2>
         <button type="button" class="cli-modal-close" id="sw2CliClose" aria-label="Close SW2 window">×</button>
       </header>
       <div class="cli-modal-body">
-        <div class="terminal" id="sw2Terminal" aria-label="Simulated SW2 CLI">
+        <div class="terminal" id="sw2Terminal" aria-label="Simulated R1 CLI">
           <div id="sw2Scrollback" class="scrollback-area"></div>
           <div class="input-row">
-            <span id="sw2Prompt" class="prompt-el">SW2#</span>
+            <span id="sw2Prompt" class="prompt-el">R1#</span>
             <input
               id="sw2Cmdline"
               class="cmdline-input"
@@ -696,22 +689,17 @@
               spellcheck="false"
               autocomplete="off"
               autocapitalize="none"
-              aria-label="SW2 command line"
+              aria-label="R1 command line"
             />
           </div>
         </div>
       </div>
       <footer class="cli-modal-footer">
-        <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
-          Read-only exhibit: <code>show running-config</code> (or <code>sh run</code> after <code>normalize()</code>) prints a fixed snapshot.
-          Use <code>configure terminal</code> / <code>conf t</code>, <code>interface …</code> / <code>int …</code>,
-          <code>exit</code> or <code>end</code> to move modes. Use class <code>line-ping</code> for simulated ping output (see IP Services lab).
-        </p>
       </footer>
     </div>
   </div>
 
-  <!-- PC1 / PC2 — one modal; picker sets PC1> vs PC2> -->
+  <!-- PC1 command prompt modal -->
   <div id="pcCliOverlay" class="cli-modal-overlay" aria-hidden="true">
     <div
       id="pcCliDialog"
@@ -722,11 +710,11 @@
       tabindex="-1"
     >
       <header class="cli-modal-header">
-        <h2 id="pcCliTitle">PC1 / PC2 — Command Prompt</h2>
+        <h2 id="pcCliTitle">PC1 — Command Prompt</h2>
         <button type="button" class="cli-modal-close" id="pcCliClose" aria-label="Close PC window">×</button>
       </header>
       <div class="cli-modal-body">
-        <div class="terminal" id="pcTerminal" aria-label="Simulated PC1 or PC2 command prompt">
+        <div class="terminal" id="pcTerminal" aria-label="Simulated PC1 command prompt">
           <div id="pcScrollback" class="scrollback-area"></div>
           <div class="input-row">
             <span id="pcPrompt" class="prompt-el pc-prompt">PC1&gt;</span>
@@ -737,14 +725,14 @@
               spellcheck="false"
               autocomplete="off"
               autocapitalize="none"
-              aria-label="PC1 or PC2 command line"
+              aria-label="PC1 command line"
             />
           </div>
         </div>
       </div>
       <footer class="cli-modal-footer">
         <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
-          Select <strong>PC1</strong> or <strong>PC2</strong> in the page device row before opening this window so the prompt matches.
+          Select <strong>PC1</strong> in the page device row before opening this window.
           Default stub: non-empty input shows “not recognized” unless you extend <code>submitPc()</code> in script.
         </p>
       </footer>
@@ -810,18 +798,15 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
     </div>
   </div>
 
-  <!-- sim-nav: replace REPLACE_* hrefs and labels when copying to public/. CCNA example: cli-lab-ip-services-sim-v2.html -->
   <nav class="sim-nav" aria-label="Simulation navigation">
-    <a class="sim-nav-btn sim-nav-home" href="/REPLACE_HREF_PORTAL">REPLACE_NAV_PORTAL_LABEL</a>
-    <a class="sim-nav-btn" href="/REPLACE_HREF_STUDY">REPLACE_NAV_STUDY_LABEL</a>
-    <a class="sim-nav-btn" href="/index.html">Site home</a>
+    <a class="sim-nav-btn sim-nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">CCNA Study</a>
   </nav>
 
   <script>
     (function () {
       /** ----- Author constants (replace when copying to public/) ----- */
       var SWITCH_HOST = "SW1";
-      var SWITCH2_HOST = "SW2";
+      var SWITCH2_HOST = "R1";
       var PC_PROMPT = ">";
 
       /** Snapshot for primary device `show running-config` while lab runs */
@@ -882,6 +867,7 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
       }
 
       var HELP_DISABLED_MSG = "help feature disabled for tester";
+      var SHOW_DISABLED_MSG = "this command is disabled for this lab";
       var SHOW_VERSION_MSG = "BeCertifiedToday.com version 2026";
       var COPY_RUN_START_OK_MSG =
         "Destination filename [startup-config]?\nBuilding configuration...\n[OK]";
@@ -894,9 +880,13 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
       var BASELINE_SW_STEPS_OK_MSG =
         "[OK] Switch steps complete. From privileged exec on SW1 and SW2, run copy running-configuration startup-configuration (copy run start) on each device to finish the lab.";
       var BASELINE_LAB_ALL_DONE_MSG =
-        "[OK] Lab complete: objectives met and running-config saved to startup-config on SW1 and SW2.";
+        "[OK] Lab complete: objectives met, PC1 IP settings match the solution, and running-config is saved to startup-config on SW1 and R1.";
       var PASS_BANNER_BASELINE_PENDING =
-        "Complete all SW1 steps, then from enable mode on SW1 and SW2 run copy running-configuration startup-configuration on each device.";
+        "Complete all SW1 steps, set correct PC1 IP/mask/gateway, then from enable mode on SW1 and R1 run copy running-configuration startup-configuration on each device.";
+      // REPLACE per lab: only this exact tuple unlocks successful completion.
+      var PC1_SOLUTION_IP = "192.168.10.10";
+      var PC1_SOLUTION_MASK = "255.255.255.0";
+      var PC1_SOLUTION_GATEWAY = "192.168.10.1";
 
       function matchShowRun(raw) {
         var u = normalize(raw);
@@ -913,13 +903,49 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
 
       var nvramSavedSw = false;
       var nvramSavedSw2 = false;
+      var pc1AddressingSolved = false;
+
+      function isModeNavigationCommand(normalizedCmd) {
+        return (
+          normalizedCmd === "configure terminal" ||
+          normalizedCmd === "end" ||
+          normalizedCmd === "exit" ||
+          normalizedCmd.indexOf("interface ") === 0
+        );
+      }
 
       function tryCompleteBaselineLab(append) {
-        if (stepIndex < LAB_STEPS.length || !nvramSavedSw || !nvramSavedSw2) return;
+        if (stepIndex < LAB_STEPS.length || !nvramSavedSw || !nvramSavedSw2 || !pc1AddressingSolved) return;
         if (passBanner.classList.contains("visible")) return;
         passBanner.classList.add("visible");
         passBanner.textContent = BASELINE_LAB_ALL_DONE_MSG;
         if (append) append("line-sys", BASELINE_LAB_ALL_DONE_MSG);
+      }
+
+      function isValidIpv4(ip) {
+        var parts = String(ip || "").split(".");
+        if (parts.length !== 4) return false;
+        for (var i = 0; i < parts.length; i += 1) {
+          if (!/^\d+$/.test(parts[i])) return false;
+          if (parts[i].length > 1 && parts[i].charAt(0) === "0") return false;
+          var n = Number(parts[i]);
+          if (n < 0 || n > 255) return false;
+        }
+        return true;
+      }
+
+      function isValidSubnetMask(mask) {
+        var validMasks = {
+          "128.0.0.0": true, "192.0.0.0": true, "224.0.0.0": true, "240.0.0.0": true,
+          "248.0.0.0": true, "252.0.0.0": true, "254.0.0.0": true, "255.0.0.0": true,
+          "255.128.0.0": true, "255.192.0.0": true, "255.224.0.0": true, "255.240.0.0": true,
+          "255.248.0.0": true, "255.252.0.0": true, "255.254.0.0": true, "255.255.0.0": true,
+          "255.255.128.0": true, "255.255.192.0": true, "255.255.224.0": true, "255.255.240.0": true,
+          "255.255.248.0": true, "255.255.252.0": true, "255.255.254.0": true, "255.255.255.0": true,
+          "255.255.255.128": true, "255.255.255.192": true, "255.255.255.224": true, "255.255.255.240": true,
+          "255.255.255.248": true, "255.255.255.252": true, "255.255.255.254": true, "255.255.255.255": true
+        };
+        return !!validMasks[String(mask || "")];
       }
 
       /** Privileged exec (#) for the lab switch prompt (not config submodes). */
@@ -1009,8 +1035,8 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
 
       function syncOpenCliLabel() {
         var d = getLabDev();
-        if (d === "PC1" || d === "PC2") openSelectedCliBtn.textContent = "Open " + d + " prompt";
-        else if (d === "SW2") openSelectedCliBtn.textContent = "Open " + SWITCH2_HOST + " CLI";
+        if (d === "PC1") openSelectedCliBtn.textContent = "Open PC1 prompt";
+        else if (d === "R1") openSelectedCliBtn.textContent = "Open R1 CLI";
         else openSelectedCliBtn.textContent = "Open " + SWITCH_HOST + " CLI";
       }
 
@@ -1047,8 +1073,7 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
 
       function syncPcPromptLabel() {
         var d = getLabDev();
-        if (d === "PC2") pcPrompt.textContent = "PC2>";
-        else if (d === "PC1") pcPrompt.textContent = "PC1>";
+        if (d === "PC1") pcPrompt.textContent = "PC1>";
         else pcPrompt.textContent = PC_PROMPT;
       }
 
@@ -1065,6 +1090,35 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         if (!line.trim()) return;
         if (normalize(line) === "?") {
           appendPc("line-sys", HELP_DISABLED_MSG);
+          return;
+        }
+        var raw = String(line || "").trim();
+        var parts = raw.split(/\s+/);
+        if (parts.length === 3 && isValidIpv4(parts[0]) && isValidSubnetMask(parts[1]) && isValidIpv4(parts[2])) {
+          if (
+            parts[0] === PC1_SOLUTION_IP &&
+            parts[1] === PC1_SOLUTION_MASK &&
+            parts[2] === PC1_SOLUTION_GATEWAY
+          ) {
+            pc1AddressingSolved = true;
+            appendPc("line-sys", "[OK] PC1 addressing accepted. You can now complete final save steps on SW1 and R1.");
+            tryCompleteBaselineLab(function (cls, text) {
+              appendPc(cls, text);
+            });
+          } else {
+            pc1AddressingSolved = false;
+            appendPc(
+              "line-sys",
+              "% Address format is valid, but values do not match the required lab solution."
+            );
+          }
+          return;
+        }
+        if (parts.length === 3) {
+          appendPc(
+            "line-sys",
+            "% Invalid format. Enter exactly: <ip-address> <subnet-mask> <gateway> (example: 192.168.10.10 255.255.255.0 192.168.10.1)."
+          );
           return;
         }
         appendPc(
@@ -1088,6 +1142,7 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         swPromptOverride = null;
         nvramSavedSw = false;
         nvramSavedSw2 = false;
+        pc1AddressingSolved = false;
         swScrollback.innerHTML = "";
         passBanner.classList.remove("visible");
         passBanner.textContent = PASS_BANNER_BASELINE_PENDING;
@@ -1096,12 +1151,18 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         setSwPrompt();
       }
 
+      // BEGIN sync block: templates/containers/cli-container-template.html -> submitSw()
       function submitSw() {
         var promptText = swPrompt.textContent;
         var line = swCmdline.value;
-        appendSw("line-user", promptText + " " + line);
+        var trimmed = String(line || "").trim();
+        var normalized = normalize(line);
+        var hideInputLine = isModeNavigationCommand(normalized);
+        if (!hideInputLine) {
+          appendSw("line-user", promptText + " " + line);
+        }
         swCmdline.value = "";
-        if (!line.trim()) return;
+        if (!trimmed) return;
 
         if (normalize(line) === "?") {
           appendSw("line-sys", HELP_DISABLED_MSG);
@@ -1135,6 +1196,37 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
           return;
         }
 
+        // Allow IOS-like prompt navigation even when not matching the next lab step.
+        var u = normalized;
+        if (u === "end" && swPromptOverride !== "exec") {
+          swPromptOverride = "exec";
+          setSwPrompt();
+          return;
+        }
+        if (u === "exit") {
+          if (swPromptOverride === "config") {
+            swPromptOverride = "exec";
+            setSwPrompt();
+            return;
+          }
+          // If no override is set but current step mode is config, still allow exiting to exec.
+          if (!swPromptOverride && stepIndex < LAB_STEPS.length && LAB_STEPS[stepIndex].mode === "config") {
+            swPromptOverride = "exec";
+            setSwPrompt();
+            return;
+          }
+        }
+        // If user is at exec via override, allow re-entering config prompt without advancing steps.
+        if (u === "configure terminal" && swPromptOverride === "exec") {
+          swPromptOverride = "config";
+          setSwPrompt();
+          return;
+        }
+        if (swInEnableMode() && (u.indexOf("show ") === 0 || u.indexOf("sh ") === 0)) {
+          appendSw("line-sys", SHOW_DISABLED_MSG);
+          return;
+        }
+
         if (stepIndex >= LAB_STEPS.length) {
           appendSw("line-bad", "% Invalid input");
           return;
@@ -1156,6 +1248,7 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
           appendSw("line-bad", "% Invalid input");
         }
       }
+      // END sync block: templates/containers/cli-container-template.html -> submitSw()
 
       /** SW2: IOS-like modes + show running-config (read-only exhibit); prompts use promptForMode like SW1 */
       var sw2Mode = "exec";
@@ -1173,16 +1266,21 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
       function submitSw2() {
         var promptText = sw2Prompt.textContent;
         var line = sw2Cmdline.value;
-        appendSw2("line-user", promptText + " " + line);
+        var trimmed = String(line || "").trim();
+        var normalized = normalize(line);
+        var hideInputLine = isModeNavigationCommand(normalized);
+        if (!hideInputLine) {
+          appendSw2("line-user", promptText + " " + line);
+        }
         sw2Cmdline.value = "";
-        if (!line.trim()) return;
+        if (!trimmed) return;
 
         if (normalize(line) === "?") {
           appendSw2("line-sys", HELP_DISABLED_MSG);
           return;
         }
 
-        var u = normalize(line);
+        var u = normalized;
 
         if (matchShowRun(line)) {
           appendSw2("line-showrun", SWITCH2_SHOW_RUNNING_SNAPSHOT);
@@ -1191,6 +1289,10 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
 
         if (sw2Mode === "exec" && matchShowVersion(line)) {
           appendSw2("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+        if (sw2Mode === "exec" && (u.indexOf("show ") === 0 || u.indexOf("sh ") === 0)) {
+          appendSw2("line-sys", SHOW_DISABLED_MSG);
           return;
         }
 
@@ -1335,8 +1437,8 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
 
       function openSelectedCliModal() {
         var d = getLabDev();
-        if (d === "PC1" || d === "PC2") openPcCli();
-        else if (d === "SW2") openSw2Cli();
+        if (d === "PC1") openPcCli();
+        else if (d === "R1") openSw2Cli();
         else openSwCli();
       }
 
@@ -1345,7 +1447,7 @@ SW1(config)# hostname REPLACE_HOSTNAME</pre>
         r.addEventListener("change", function () {
           syncOpenCliLabel();
           var d = getLabDev();
-          if (d === "PC1" || d === "PC2") syncPcPromptLabel();
+          if (d === "PC1") syncPcPromptLabel();
           openSelectedCliBtn.focus();
         });
       });
