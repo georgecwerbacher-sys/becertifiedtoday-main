@@ -1281,6 +1281,7 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         var t = String(s)
           .trim()
           .toLowerCase()
+          .replace(/^#+\s*/, "")
           .replace(/\s+/g, " ")
           .replace(/[.;]+$/, "");
         if (t === "conf t" || t === "config t") t = "configure terminal";
@@ -1290,11 +1291,24 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         if (t === "copy run start" || t === "copy run st") t = "copy running-configuration startup-configuration";
         if (t === "copy running-config startup-config") t = "copy running-configuration startup-configuration";
         if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
+        if (/^interface e\d+\/\d+$/.test(t)) {
+          t = t.replace(/^interface e/, "interface ethernet");
+        }
         if (t === "no shut") t = "no shutdown";
         if (t === "sh ip int br" || t === "sh ip int brief") t = "show ip interface brief";
         if (t === "show ip int brief") t = "show ip interface brief";
         if (t === "sh ip interface brief") t = "show ip interface brief";
         return t;
+      }
+
+      /** Echo line for IOS scrollback: abbrev `interface e0/0` / `int e0/0` → `interface Ethernet0/0` */
+      function expandInterfaceEcho(raw) {
+        var s = String(raw || "").trim();
+        var m = /^(interface|int)\s+e(\d+)\/(\d+)$/i.exec(s);
+        if (m) {
+          return "interface Ethernet" + m[2] + "/" + m[3];
+        }
+        return s;
       }
 
       var HELP_DISABLED_MSG = "help feature disabled for tester";
@@ -1337,6 +1351,30 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
 
       function matchCopyRunStart(raw) {
         return normalize(raw) === "copy running-configuration startup-configuration";
+      }
+
+      /** Task 3 (Sw101): DHCP snooping — any order; allowed from Sw1(config)# anytime (no Task 1/2 or baseline gate) */
+      function matchSw1DhcpSnoopingCmd(u) {
+        return (
+          u === "ip dhcp snooping" ||
+          u === "ip dhcp snooping vlan 101" ||
+          u === "no ip dhcp snooping information option" ||
+          u === "ip dhcp snooping verify mac-address"
+        );
+      }
+
+      /** True when prompt is global configuration (not line/console submode). */
+      function sw1InGlobalConfig() {
+        if (swPromptOverride === "config-line") return false;
+        if (swPromptOverride === "config") return true;
+        if (
+          stepIndex < LAB_STEPS.length &&
+          LAB_STEPS[stepIndex].mode === "config" &&
+          !swPromptOverride
+        ) {
+          return true;
+        }
+        return false;
       }
 
       /** Task 1 — local user on Sw1/Sw103-style CLI */
@@ -1687,8 +1725,9 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         var trimmed = String(line || "").trim();
         var normalized = normalize(line);
         var hideInputLine = isModeNavigationCommand(normalized);
-        if (!hideInputLine) {
-          appendSw("line-user", promptText + " " + line);
+        var echoLine = expandInterfaceEcho(trimmed);
+        if (!hideInputLine || normalized.indexOf("interface ") === 0) {
+          appendSw("line-user", promptText + " " + echoLine);
         }
         swCmdline.value = "";
         if (!trimmed) return;
@@ -1781,6 +1820,10 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
           return;
         }
 
+        if (sw1InGlobalConfig() && matchSw1DhcpSnoopingCmd(u)) {
+          return;
+        }
+
         var sw1GlobalConfig =
           swPromptOverride === "config" ||
           (stepIndex > 0 &&
@@ -1852,8 +1895,9 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         var trimmed = String(line || "").trim();
         var normalized = normalize(line);
         var hideInputLine = isModeNavigationCommand(normalized);
-        if (!hideInputLine) {
-          appendSw2("line-user", promptText + " " + line);
+        var echoLine = expandInterfaceEcho(trimmed);
+        if (!hideInputLine || normalized.indexOf("interface ") === 0) {
+          appendSw2("line-user", promptText + " " + echoLine);
         }
         sw2Cmdline.value = "";
         if (!trimmed) return;
@@ -1896,6 +1940,29 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
           return;
         }
 
+        if (sw2Mode === "config-ext-nacl") {
+          if (u === "exit") {
+            sw2Mode = "config";
+            sw2Prompt.textContent = sw2PromptForMode();
+            return;
+          }
+          if (u === "end") {
+            sw2Mode = "exec";
+            sw2Prompt.textContent = sw2PromptForMode();
+            return;
+          }
+          if (
+            u.indexOf("permit ") === 0 ||
+            u.indexOf("deny ") === 0 ||
+            u.indexOf("remark ") === 0 ||
+            u.indexOf("evaluate ") === 0
+          ) {
+            return;
+          }
+          appendSw2("line-bad", "% Invalid input");
+          return;
+        }
+
         if (sw2Mode === "config-if" && u === "exit") {
           sw2Mode = "config";
           sw2Prompt.textContent = sw2PromptForMode();
@@ -1905,6 +1972,14 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
           sw2Mode = "config";
           sw2Prompt.textContent = sw2PromptForMode();
           return;
+        }
+        if (sw2Mode === "config" && u.indexOf("ip access-list extended ") === 0) {
+          var aclTail = u.slice("ip access-list extended ".length).trim();
+          if (aclTail === "internet_acl") {
+            sw2Mode = "config-ext-nacl";
+            sw2Prompt.textContent = sw2PromptForMode();
+            return;
+          }
         }
         if (sw2Mode === "config" && u.startsWith("interface ")) {
           sw2Mode = "config-if";
@@ -1919,6 +1994,13 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         if (sw2Mode === "config-if" && (u === "end" || u === "exit")) {
           sw2Mode = u === "end" ? "exec" : "config";
           sw2Prompt.textContent = sw2PromptForMode();
+          return;
+        }
+        if (sw2Mode === "config-if" && u.startsWith("interface ")) {
+          sw2Prompt.textContent = sw2PromptForMode();
+          return;
+        }
+        if (sw2Mode === "config-if" && u === "ip access-group internet_acl in") {
           return;
         }
         if (sw2Mode === "config-if" && u === "no shutdown") {
@@ -1947,8 +2029,9 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         var trimmed = String(line || "").trim();
         var normalized = normalize(line);
         var hideInputLine = isModeNavigationCommand(normalized);
-        if (!hideInputLine) {
-          appendSw3("line-user", promptText + " " + line);
+        var echoLine = expandInterfaceEcho(trimmed);
+        if (!hideInputLine || normalized.indexOf("interface ") === 0) {
+          appendSw3("line-user", promptText + " " + echoLine);
         }
         sw3Cmdline.value = "";
         if (!trimmed) return;

@@ -1202,8 +1202,23 @@ R3(config-line)# end</pre>
         if (t === "sh ver" || t === "show ver" || t === "sh version") t = "show version";
         if (t === "copy run start" || t === "copy run st") t = "copy running-configuration startup-configuration";
         if (t === "copy running-config startup-config") t = "copy running-configuration startup-configuration";
+        if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
+        if (/^interface e\d+\/\d+$/.test(t)) {
+          t = t.replace(/^interface e/, "interface ethernet");
+        }
+
         return t;
       }
+
+      function expandInterfaceEcho(raw) {
+        var s = String(raw || "").trim();
+        var m = /^(interface|int)\s+e(\d+)\/(\d+)$/i.exec(s);
+        if (m) {
+          return "interface Ethernet" + m[2] + "/" + m[3];
+        }
+        return s;
+      }
+
 
       var HELP_DISABLED_MSG = "help feature disabled for tester";
       var SHOW_VERSION_MSG = "BeCertifiedToday.com version 2026";
@@ -1397,7 +1412,9 @@ R3(config-line)# end</pre>
       function submitSw() {
         var promptText = swPrompt.textContent;
         var line = swCmdline.value;
-        appendSw("line-user", promptText + " " + line);
+        var trimmed = String(line || "").trim();
+        var echoLine = expandInterfaceEcho(trimmed);
+        appendSw("line-user", promptText + " " + echoLine);
         swCmdline.value = "";
         if (!line.trim()) return;
 
@@ -1474,7 +1491,9 @@ R3(config-line)# end</pre>
       function submitR1() {
         var promptText = r1Prompt.textContent;
         var line = r1Cmdline.value;
-        appendR1("line-user", promptText + " " + line);
+        var trimmed = String(line || "").trim();
+        var echoLine = expandInterfaceEcho(trimmed);
+        appendR1("line-user", promptText + " " + echoLine);
         r1Cmdline.value = "";
         if (!line.trim()) return;
 
@@ -1559,7 +1578,9 @@ R3(config-line)# end</pre>
       function submitR3() {
         var promptText = r3Prompt.textContent;
         var line = r3Cmdline.value;
-        appendR3("line-user", promptText + " " + line);
+        var trimmed = String(line || "").trim();
+        var echoLine = expandInterfaceEcho(trimmed);
+        appendR3("line-user", promptText + " " + echoLine);
         r3Cmdline.value = "";
         if (!line.trim()) return;
 

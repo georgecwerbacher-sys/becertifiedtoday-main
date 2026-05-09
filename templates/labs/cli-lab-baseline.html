@@ -1033,9 +1033,22 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         if (t === "copy run start" || t === "copy run st") t = "copy running-configuration startup-configuration";
         if (t === "copy running-config startup-config") t = "copy running-configuration startup-configuration";
         if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
+        if (/^interface e\d+\/\d+$/.test(t)) {
+          t = t.replace(/^interface e/, "interface ethernet");
+        }
         if (t === "no shut") t = "no shutdown";
         return t;
       }
+
+      function expandInterfaceEcho(raw) {
+        var s = String(raw || "").trim();
+        var m = /^(interface|int)\s+e(\d+)\/(\d+)$/i.exec(s);
+        if (m) {
+          return "interface Ethernet" + m[2] + "/" + m[3];
+        }
+        return s;
+      }
+
 
       var HELP_DISABLED_MSG = "help feature disabled for tester";
       var SHOW_DISABLED_MSG = "this command is disabled for this lab";
@@ -1329,8 +1342,9 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         var trimmed = String(line || "").trim();
         var normalized = normalize(line);
         var hideInputLine = isModeNavigationCommand(normalized);
-        if (!hideInputLine) {
-          appendSw("line-user", promptText + " " + line);
+        var echoLine = expandInterfaceEcho(trimmed);
+        if (!hideInputLine || normalized.indexOf("interface ") === 0) {
+          appendSw("line-user", promptText + " " + echoLine);
         }
         swCmdline.value = "";
         if (!trimmed) return;
@@ -1440,8 +1454,9 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         var trimmed = String(line || "").trim();
         var normalized = normalize(line);
         var hideInputLine = isModeNavigationCommand(normalized);
-        if (!hideInputLine) {
-          appendSw2("line-user", promptText + " " + line);
+        var echoLine = expandInterfaceEcho(trimmed);
+        if (!hideInputLine || normalized.indexOf("interface ") === 0) {
+          appendSw2("line-user", promptText + " " + echoLine);
         }
         sw2Cmdline.value = "";
         if (!trimmed) return;

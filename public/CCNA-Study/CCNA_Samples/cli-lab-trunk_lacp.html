@@ -1231,9 +1231,21 @@ Sw2(config-if)# end</pre>
         if (t === "interface e0/0" || t === "interface ethernet0/0") t = "interface gigabitethernet0/1";
         if (t === "interface e0/1" || t === "interface ethernet0/1") t = "interface gigabitethernet0/2";
         if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
+        if (/^interface e\d+\/\d+$/.test(t)) {
+          t = t.replace(/^interface e/, "interface ethernet");
+        }
         if (t === "interface gi0/1" || t === "interface g0/1") t = "interface gigabitethernet0/1";
         if (t === "interface gi0/2" || t === "interface g0/2") t = "interface gigabitethernet0/2";
         return t;
+      }
+
+      function expandInterfaceEcho(raw) {
+        var s = String(raw || "").trim();
+        var m = /^(interface|int)\s+e(\d+)\/(\d+)$/i.exec(s);
+        if (m) {
+          return "interface Ethernet" + m[2] + "/" + m[3];
+        }
+        return s;
       }
 
       function matchTrunkAllowed1545(raw) {
@@ -1744,7 +1756,9 @@ Sw2(config-if)# end</pre>
         var promptText = swPrompt.textContent;
         var line = swCmdline.value;
         pushLocalHistory(swCmdline, line);
-        appendSw("line-user", promptText + " " + line);
+        var trimmed = String(line || "").trim();
+        var echoLine = expandInterfaceEcho(trimmed);
+        appendSw("line-user", promptText + " " + echoLine);
         swCmdline.value = "";
         if (!line.trim()) return;
 
@@ -1853,7 +1867,9 @@ Sw2(config-if)# end</pre>
         var promptText = sw2Prompt.textContent;
         var line = sw2Cmdline.value;
         pushLocalHistory(sw2Cmdline, line);
-        appendSw2("line-user", promptText + " " + line);
+        var trimmed = String(line || "").trim();
+        var echoLine = expandInterfaceEcho(trimmed);
+        appendSw2("line-user", promptText + " " + echoLine);
         sw2Cmdline.value = "";
         if (!line.trim()) return;
 

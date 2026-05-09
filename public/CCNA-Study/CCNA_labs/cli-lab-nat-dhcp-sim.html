@@ -1363,6 +1363,9 @@ Sw1#</pre>
       function matchSw1InterfaceE01(raw) {
         var t = normalize(raw);
         if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
+        if (/^interface e\d+\/\d+$/.test(t)) {
+          t = t.replace(/^interface e/, "interface ethernet");
+        }
         t = t.replace(/interface e0\//g, "interface ethernet0/");
         return t === "interface ethernet0/1";
       }
@@ -1752,8 +1755,9 @@ Sw1#</pre>
         var trimmed = String(line || "").trim();
         var normalized = normalize(line);
         var hideInputLine = isModeNavigationCommand(normalized);
-        if (!hideInputLine) {
-          appendSw("line-user", promptText + " " + line);
+        var echoLine = expandInterfaceEcho(trimmed);
+        if (!hideInputLine || normalized.indexOf("interface ") === 0) {
+          appendSw("line-user", promptText + " " + echoLine);
         }
         swCmdline.value = "";
         if (!trimmed) return;
@@ -1887,10 +1891,11 @@ Sw1#</pre>
         var promptText = sw2Prompt.textContent;
         var line = sw2Cmdline.value;
         var trimmed = String(line || "").trim();
-        var normalizedCmd = normalize(line);
-        var hideInputLine = isModeNavigationCommand(normalizedCmd);
-        if (!hideInputLine) {
-          appendSw2("line-user", promptText + " " + line);
+        var normalized = normalize(line);
+        var hideInputLine = isModeNavigationCommand(normalized);
+        var echoLine = expandInterfaceEcho(trimmed);
+        if (!hideInputLine || normalized.indexOf("interface ") === 0) {
+          appendSw2("line-user", promptText + " " + echoLine);
         }
         sw2Cmdline.value = "";
         if (!trimmed) return;

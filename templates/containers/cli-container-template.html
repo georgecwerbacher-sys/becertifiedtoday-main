@@ -66,6 +66,15 @@
     );
   }
 
+  function expandInterfaceEcho(raw) {
+    var s = String(raw || "").trim();
+    var m = /^(interface|int)\s+e(\d+)\/(\d+)$/i.exec(s);
+    if (m) {
+      return "interface Ethernet" + m[2] + "/" + m[3];
+    }
+    return s;
+  }
+
   // Drop-in block for submitSw() in lab pages.
   function submitSw() {
     var promptText = swPrompt.textContent;
@@ -73,8 +82,9 @@
     var trimmed = String(line || "").trim();
     var normalized = normalize(line);
     var hideInputLine = isModeNavigationCommand(normalized);
-    if (!hideInputLine) {
-      appendSw("line-user", promptText + " " + line);
+    var echoLine = expandInterfaceEcho(trimmed);
+    if (!hideInputLine || normalized.indexOf("interface ") === 0) {
+      appendSw("line-user", promptText + " " + echoLine);
     }
     swCmdline.value = "";
     if (!trimmed) return;

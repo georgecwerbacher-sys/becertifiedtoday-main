@@ -940,7 +940,19 @@ SW20# copy running-config startup-config</pre>
       if (t === "conf t" || t === "config t") t = "configure terminal";
       if (t === "sh ver" || t === "show ver" || t === "sh version") t = "show version";
       if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
+      if (/^interface e\d+\/\d+$/.test(t)) {
+        t = t.replace(/^interface e/, "interface ethernet");
+      }
       return t;
+    }
+
+    function expandInterfaceEcho(raw) {
+      const s = String(raw || "").trim();
+      const m = /^(interface|int)\s+e(\d+)\/(\d+)$/i.exec(s);
+      if (m) {
+        return "interface Ethernet" + m[2] + "/" + m[3];
+      }
+      return s;
     }
 
     function isModeNavigationCommand(normalizedCmd) {
@@ -1312,8 +1324,9 @@ SW20# copy running-config startup-config</pre>
       const trimmed = String(line || "").trim();
       const normalized = normalize(line);
       const hideInputLine = isModeNavigationCommand(normalized);
-      if (!hideInputLine) {
-        appendLineSw10("line-user", `${prompt} ${line}`);
+      const echoLine = expandInterfaceEcho(trimmed);
+      if (!hideInputLine || normalized.indexOf("interface ") === 0) {
+        appendLineSw10("line-user", `${prompt} ${echoLine}`);
       }
       sw10Cmdline.value = "";
       if (!trimmed) return;
@@ -1569,8 +1582,9 @@ SW20# copy running-config startup-config</pre>
       const trimmed = String(line || "").trim();
       const normalized = normalize(line);
       const hideInputLine = isModeNavigationCommand(normalized);
-      if (!hideInputLine) {
-        appendLine("line-user", `${prompt} ${line}`);
+      const echoLine = expandInterfaceEcho(trimmed);
+      if (!hideInputLine || normalized.indexOf("interface ") === 0) {
+        appendLine("line-user", `${prompt} ${echoLine}`);
       }
       cmdline.value = "";
       if (!trimmed) return;

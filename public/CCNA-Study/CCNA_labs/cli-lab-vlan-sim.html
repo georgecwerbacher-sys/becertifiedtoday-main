@@ -1131,6 +1131,9 @@ Sw2(config-if)#switchport voice vlan 177</pre>
         if (t === "interface e0/0" || t === "interface ethernet0/0") t = "interface gigabitethernet0/1";
         if (t === "interface e0/1" || t === "interface ethernet0/1") t = "interface gigabitethernet0/2";
         if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
+        if (/^interface e\d+\/\d+$/.test(t)) {
+          t = t.replace(/^interface e/, "interface ethernet");
+        }
         if (t === "interface gi0/1" || t === "interface g0/1") t = "interface gigabitethernet0/1";
         if (t === "interface gi0/2" || t === "interface g0/2") t = "interface gigabitethernet0/2";
         return t;
@@ -1681,8 +1684,9 @@ Sw2(config-if)#switchport voice vlan 177</pre>
         var trimmed = String(line || "").trim();
         var normalized = normalize(line);
         var hideInputLine = isModeNavigationCommand(normalized);
-        if (!hideInputLine) {
-          appendSw("line-user", promptText + " " + line);
+        var echoLine = expandInterfaceEcho(trimmed);
+        if (!hideInputLine || normalized.indexOf("interface ") === 0) {
+          appendSw("line-user", promptText + " " + echoLine);
         }
         swCmdline.value = "";
         if (!trimmed) return;
@@ -1872,8 +1876,9 @@ Sw2(config-if)#switchport voice vlan 177</pre>
         var trimmed = String(line || "").trim();
         var normalized = normalize(line);
         var hideInputLine = isModeNavigationCommand(normalized);
-        if (!hideInputLine) {
-          appendSw2("line-user", promptText + " " + line);
+        var echoLine = expandInterfaceEcho(trimmed);
+        if (!hideInputLine || normalized.indexOf("interface ") === 0) {
+          appendSw2("line-user", promptText + " " + echoLine);
         }
         sw2Cmdline.value = "";
         if (!trimmed) return;
