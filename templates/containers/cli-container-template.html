@@ -1,9 +1,18 @@
 <!--
   Reusable CLI container template for lab pages.
-  Includes IOS-like prompt navigation in submitSw():
+  DOM: overlay → dialog → header (title + close) → body → .terminal → #swScrollback + .input-row (#swPrompt + #swCmdline).
+  Optional: add a .cli-modal-footer (e.g. Reset lab) like cli-lab-baseline / R1-only labs.
+
+  Single graded device as R1 (or any host): keep the same DOM shape; use sw2* ids and mirror submitSw() as submitSw2()
+  with lab-specific SWITCH2_SHOW_RUNNING_SNAPSHOT, prompt override / enable-mode helpers, and nvram flag names.
+
+  submitSw() IOS-like prompt navigation:
   - exit from config -> exec
   - end -> exec
   - configure terminal from exec override -> config
+
+  Labs with a completion gate (e.g. PC addressing) also call tryCompleteBaselineLab() when steps finish — see
+  templates/labs/cli-lab-baseline.html (sync block). The fragment below omits that if you paste into a minimal page.
 -->
 <div id="swCliOverlay" class="cli-modal-overlay" aria-hidden="true">
   <div

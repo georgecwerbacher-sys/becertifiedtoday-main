@@ -1,23 +1,14 @@
 <!doctype html>
 <!--
-  CLI lab baseline — patterns aligned with public/CCNA-Study/CCNA_labs/cli-lab-ip-services-sim-v2.html (multi-device,
-  tasks panel, spoiler terminal blocks, full IOS command forms). ENCOR reference:
-  public/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html.
-
-  Includes:
-  - Switch 1 (SW1): LAB_STEPS[] { mode, test(raw) }; mode drives prompt via promptForMode(); normalize() accepts common abbreviations
-  - Switch 2 (SW2): second IOS CLI — read-only exhibit + optional mode practice (same prompt helpers as SW1-style IOS)
-  - PC1 / PC2: one modal; device picker sets prompt (PC1> / PC2>); extend submitPc() for ping, ipconfig, etc.
-  - Device picker (SW1 / SW2 / PC1 / PC2), Helper / Spoiler modals, tasks-blue-box, draggable modals, command history
-
-  For a fifth IOS CLI (e.g. R3), copy the SW2 modal + submit/reset/open pattern from cli-lab-ip-services-sim-v2.html.
+  CCNA CLI lab — OSPF Configuration Simulation V3: graded OSPF on R1 (no network statements; interface ip ospf / DR priority).
+  Baseline patterns: templates/labs/cli-lab-baseline.html, templates/containers/cli-container-template.html.
 -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>REPLACE: Lab title | Be Certified Today</title>
+  <title>OSPF Configuration Simulation V3 | Be Certified Today</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -99,6 +90,16 @@
       margin: 8px 0;
       color: #b8c3d6;
     }
+    .tasks-blue-box ul.tasks-sub {
+      margin: 8px 0 12px;
+      padding-left: 1.35rem;
+      text-align: left;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .tasks-blue-box ul.tasks-sub li {
+      margin: 6px 0;
+    }
     .diagram-wrap {
       background: #ffffff;
       border: 1px solid #2d3b5a;
@@ -123,6 +124,10 @@
       pointer-events: none;
       user-select: none;
       -webkit-user-drag: none;
+    }
+    /* Main topology art is ~750px wide — allow it to use full width on the card */
+    .diagram-stage--ospf-v3 {
+      max-width: min(760px, 100%);
     }
     .device-pick {
       margin: 12px auto 8px;
@@ -196,6 +201,28 @@
     }
     .topology-scrape ul.helper-bullets li {
       margin: 0.45em 0;
+    }
+    .topology-scrape h3 {
+      margin: 1rem 0 0.35rem;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #c8d2e0;
+    }
+    .topology-scrape p {
+      margin: 0.45em 0;
+    }
+    .topology-scrape .helper-cli-pre {
+      margin: 8px 0 14px;
+      padding: 10px 12px;
+      background: #0a0a0a;
+      border: 1px solid #2a3b5c;
+      border-radius: 6px;
+      color: #c8d2e0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.74rem;
+      line-height: 1.4;
+      white-space: pre;
+      overflow-x: auto;
     }
     .cli-modal-overlay {
       display: none;
@@ -541,19 +568,6 @@
       max-height: min(52vh, 420px);
       overflow-y: auto;
     }
-    .spoiler-cli-pre {
-      margin: 0;
-      padding: 8px 10px;
-      background: #0a0a0a;
-      border: 1px solid #333;
-      border-radius: 4px;
-      color: #f0f0f0;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: 0.8rem;
-      line-height: 1.45;
-      white-space: pre;
-      overflow-x: auto;
-    }
   </style>
 </head>
 <body>
@@ -564,47 +578,59 @@
 
   <div class="wrap">
     <main class="card">
-      <h1>REPLACE: Lab title</h1>
+      <h1>OSPF Configuration Simulation V3</h1>
 
       <div class="diagram-wrap" aria-label="Topology diagram">
-        <div class="device-pick" role="group" aria-label="Device for CLI">
-          <strong style="color: #e6edf3">Select device</strong>
-          <label><input type="radio" name="labPrimaryDev" value="SW1" checked /> Sw1</label>
-          <label><input type="radio" name="labPrimaryDev" value="R1" /> R1</label>
-          <label><input type="radio" name="labPrimaryDev" value="PC1" /> PC1</label>
+        <div class="diagram-stage diagram-stage--ospf-v3">
+          <img
+            src="/CCNA-Study/CCNA_labs/images/ospf-config-sim-v3-topology.png"
+            width="750"
+            height="572"
+            alt="Three-router triangle: R1 at top linked to R2 over 10.0.22.0/30 and to R3 over 10.0.33.0/29; R2 and R3 linked over 10.0.233.0/28; loopbacks 10.2.2.2/32 and 10.3.3.3/32."
+            decoding="async"
+          />
         </div>
         <div class="device-links">
-          <button type="button" class="device-link" id="openSelectedCliBtn">Open Sw1 CLI</button>
+          <button type="button" class="device-link" id="openSelectedCliBtn">Open R1 CLI</button>
         </div>
         <div class="tasks-blue-box" aria-label="Lab tasks">
           <p class="tasks">
             <strong>Tasks</strong>
           </p>
           <p class="tasks">
-            REPLACE: One-line overview (e.g. services must be completed in order).
+            Refer to the topology. All physical cabling is in place. Routers 2 and 3 are inaccessible. Configure OSPF routing
+            for the network and ensure R1 has joined Area 0 <strong>without using <code>network</code> statements</strong>.
           </p>
-          <ol class="tasks">
+          <p class="tasks">
+            <strong>Task 1.</strong> Configure OSPF on R1 with a process ID and router-ID only as follows:
+          </p>
+          <ul class="tasks tasks-sub">
+            <li>use process ID 33</li>
+            <li>use E0/1 IP as the router ID</li>
+          </ul>
+          <p class="tasks">
+            <strong>Task 2.</strong>
+          </p>
+          <ul class="tasks tasks-sub">
             <li>
-              On <strong>Sw1</strong>: follow <code>LAB_STEPS</code> in the script — each step’s <code>mode</code> sets the displayed
-              prompt; <code>test(raw)</code> advances the lab. <code>normalize()</code> accepts common abbreviations (e.g.
-              <code>conf t</code>, <code>sh run</code>, <code>int …</code>).
+              Configure R1 to establish neighbor adjacencies with R2 and R3. The <code>network</code> statement under the OSPF
+              process must not be used.
             </li>
-            <li>
-              On <strong>R1</strong> (read-only exhibit): use <code>show running-config</code> for the snapshot; optional
-              <code>configure terminal</code> / <code>interface …</code> for prompt practice. To complete the lab, from
-              privileged exec on <strong>Sw1</strong> and <strong>R1</strong> run
-              <code>copy running-configuration startup-configuration</code> (abbrev. <code>copy run start</code>) on each device after Sw1 steps are done.
-            </li>
-            <li>
-              On <strong>PC1</strong>: use the device row to open the PC prompt. Extend <code>submitPc()</code> for
-              <code>ping</code>, <code>ipconfig</code>, etc.
-            </li>
-          </ol>
+            <li>Configure R1 to always become the DR for Area 0.</li>
+          </ul>
+          <p class="tasks">
+            When configuration is complete, from privileged exec on <strong>R1</strong> run
+            <code>copy running-configuration startup-configuration</code> (abbrev. <code>copy run start</code>). The sim grades
+            the command sequence in <code>LAB_STEPS</code>.
+          </p>
         </div>
         <div class="device-links device-links-after-tasks" aria-label="Lab aids">
           <button type="button" class="device-link" id="openHelperFileBtn">Helper</button>
           <button type="button" class="device-link" id="inlineResetLabBtn">Reset lab</button>
           <button type="button" class="device-link" id="openSpoilerBtn">Spoiler</button>
+        </div>
+        <div id="passBanner" class="pass-banner" role="status">
+          Complete all R1 configuration steps, then from enable mode on R1 run copy running-configuration startup-configuration.
         </div>
       </div>
 
@@ -618,52 +644,7 @@
     </main>
   </div>
 
-  <!--
-    Primary switch CLI container.
-    Keep this block in sync with templates/containers/cli-container-template.html.
-  -->
-  <div id="swCliOverlay" class="cli-modal-overlay" aria-hidden="true">
-    <div
-      id="swCliDialog"
-      class="cli-modal-dialog"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="swCliTitle"
-      tabindex="-1"
-    >
-      <header class="cli-modal-header">
-        <h2 id="swCliTitle">Sw1 — CLI</h2>
-        <button type="button" class="cli-modal-close" id="swCliClose" aria-label="Close CLI window">×</button>
-      </header>
-      <div class="cli-modal-body">
-        <div class="terminal" id="swTerminal" aria-label="Simulated Sw1 CLI">
-          <div id="swScrollback" class="scrollback-area"></div>
-          <div class="input-row">
-            <span id="swPrompt" class="prompt-el">Sw1#</span>
-            <input
-              id="swCmdline"
-              class="cmdline-input"
-              type="text"
-              spellcheck="false"
-              autocomplete="off"
-              autocapitalize="none"
-              aria-label="Sw1 command line"
-            />
-          </div>
-        </div>
-      </div>
-      <footer class="cli-modal-footer">
-        <div class="controls">
-          <button type="button" class="btn btn-secondary" id="swResetBtn">Reset lab</button>
-        </div>
-        <div id="passBanner" class="pass-banner" role="status">
-          Complete all Sw1 steps, then from enable mode on Sw1 and R1 run copy running-configuration startup-configuration on each device.
-        </div>
-      </footer>
-    </div>
-  </div>
-
-  <!-- R1 — second router CLI (read-only exhibit + optional IOS mode practice) -->
+  <!-- R1 — graded CLI: same modal shape as templates/containers/cli-container-template.html (ids sw* → sw2*). -->
   <div id="sw2CliOverlay" class="cli-modal-overlay" aria-hidden="true">
     <div
       id="sw2CliDialog"
@@ -695,46 +676,9 @@
         </div>
       </div>
       <footer class="cli-modal-footer">
-      </footer>
-    </div>
-  </div>
-
-  <!-- PC1 command prompt modal -->
-  <div id="pcCliOverlay" class="cli-modal-overlay" aria-hidden="true">
-    <div
-      id="pcCliDialog"
-      class="cli-modal-dialog"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="pcCliTitle"
-      tabindex="-1"
-    >
-      <header class="cli-modal-header">
-        <h2 id="pcCliTitle">PC1 — Command Prompt</h2>
-        <button type="button" class="cli-modal-close" id="pcCliClose" aria-label="Close PC window">×</button>
-      </header>
-      <div class="cli-modal-body">
-        <div class="terminal" id="pcTerminal" aria-label="Simulated PC1 command prompt">
-          <div id="pcScrollback" class="scrollback-area"></div>
-          <div class="input-row">
-            <span id="pcPrompt" class="prompt-el pc-prompt">PC1&gt;</span>
-            <input
-              id="pcCmdline"
-              class="cmdline-input"
-              type="text"
-              spellcheck="false"
-              autocomplete="off"
-              autocapitalize="none"
-              aria-label="PC1 command line"
-            />
-          </div>
+        <div class="controls">
+          <button type="button" class="btn btn-secondary" id="swResetBtn">Reset lab</button>
         </div>
-      </div>
-      <footer class="cli-modal-footer">
-        <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
-          Select <strong>PC1</strong> in the page device row before opening this window.
-          Default stub: non-empty input shows “not recognized” unless you extend <code>submitPc()</code> in script.
-        </p>
       </footer>
     </div>
   </div>
@@ -754,11 +698,79 @@
       </header>
       <div class="cli-modal-body">
         <section class="topology-scrape" aria-label="Helper notes">
-          <h2>REPLACE: Section title</h2>
+          <h2>OSPF on R1 — helper walkthrough</h2>
+
+          <h3>Task 1. Process ID and router-ID</h3>
+          <p>Configure OSPF on R1 with a process ID and router-ID only as follows:</p>
           <ul class="helper-bullets">
-            <li>REPLACE: First checklist item (plain language).</li>
-            <li>REPLACE: Second item; use inline <code>show …</code> or <code>configure …</code> only inside bullets, not terminal blocks.</li>
+            <li>use process ID <strong>33</strong></li>
+            <li>use <strong>E0/1</strong> IP as the router ID</li>
           </ul>
+          <p>
+            First use <code>show ip interface brief</code> on R1 to confirm the Ethernet0/1 address (this sim’s graded CLI does not
+            implement that command; use it on real gear or read the value from <code>show running-config</code> / the topology).
+          </p>
+          <pre class="helper-cli-pre">R1# show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol
+Ethernet0/0            10.0.22.1       YES Manual up                    up
+Ethernet0/1            10.0.33.1       YES Manual up                    up</pre>
+          <p>
+            → The IP address of E0/1 is <strong>10.0.33.1</strong>, so use it for <code>router-id</code>.
+          </p>
+          <p>
+            <strong>Note:</strong> Always verify the E0/1 address in your environment; it may differ from the example.
+          </p>
+          <p>On R1:</p>
+          <pre class="helper-cli-pre">R1(config)# router ospf 33
+R1(config-router)# router-id 10.0.33.1</pre>
+
+          <h3>Task 2. Adjacencies without <code>network</code>, and DR</h3>
+          <ul class="helper-bullets">
+            <li>
+              Configure R1 to establish OSPF neighbor adjacencies with R2 and R3. Do <strong>not</strong> use a
+              <code>network</code> statement under the OSPF process.
+            </li>
+            <li>Configure R1 to always become the <strong>DR</strong> for Area 0 on its segments.</li>
+          </ul>
+          <p>On R1 (enable OSPF on both WAN interfaces; high priority for DR):</p>
+          <pre class="helper-cli-pre">R1(config-router)# exit
+R1(config)# interface e0/0
+R1(config-if)# ip ospf 33 area 0
+R1(config-if)# ip ospf priority 255
+R1(config-if)# interface e0/1
+R1(config-if)# ip ospf 33 area 0
+R1(config-if)# ip ospf priority 255</pre>
+
+          <h3>Verification</h3>
+          <p>
+            On real equipment you may clear the OSPF process so DR/BDR is re-elected after changing priority (not implemented in
+            this sim):
+          </p>
+          <pre class="helper-cli-pre">R1(config-if)# exit
+R1(config)# exit
+R1# clear ip ospf process
+Reset ALL OSPF processes? [no]: y</pre>
+          <p>Then use <code>show ip ospf neighbor</code> or <code>show ip ospf interface</code>:</p>
+          <pre class="helper-cli-pre">R1# show ip ospf neighbor
+Neighbor ID     Pri   State        Dead Time   Address      Interface
+10.2.2.2          1   FULL/BDR     00:00:35    10.0.22.2    Ethernet0/0
+10.3.3.3          1   FULL/BDR     00:00:35    10.0.33.3    Ethernet0/1</pre>
+          <p>or</p>
+          <pre class="helper-cli-pre">R1# show ip ospf interface
+Ethernet0/0 is up, line protocol is up
+  Internet address is 10.0.22.1/30, Area 0
+  Process ID 33, Router ID 10.0.33.1, Network Type BROADCAST, Cost: 1
+  Transmit Delay is 1 sec, State DR, Priority 255
+  ...
+Ethernet0/1 is up, line protocol is up
+  Internet address is 10.0.33.1/29, Area 0
+  Process ID 33, Router ID 10.0.33.1, Network Type BROADCAST, Cost: 1
+  Transmit Delay is 1 sec, State DR, Priority 255
+  ...</pre>
+          <p>→ On R1, Ethernet0/0 and Ethernet0/1 should show <strong>DR</strong> with neighbors as <strong>BDR</strong> when R2/R3 use default priority.</p>
+
+          <h3>Save the configuration</h3>
+          <pre class="helper-cli-pre">R1# copy running-config startup-config</pre>
         </section>
       </div>
     </div>
@@ -783,17 +795,21 @@
           <div class="spoiler-terminal" role="region" aria-label="Example CLI solution">
             <div class="spoiler-terminal-bar">
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
-              <span class="spoiler-terminal-title">Sw1 — Terminal</span>
+              <span class="spoiler-terminal-title">R1 — Terminal</span>
             </div>
-            <pre class="spoiler-terminal-pre">Sw1# configure terminal
-Sw1(config)# hostname REPLACE_HOSTNAME</pre>
+            <pre class="spoiler-terminal-pre">R1# configure terminal
+R1(config)# router ospf 33
+R1(config-router)# router-id 10.0.33.1
+R1(config-router)# exit
+R1(config)# interface Ethernet0/0
+R1(config-if)# ip ospf 33 area 0
+R1(config-if)# ip ospf priority 255
+R1(config-if)# exit
+R1(config)# interface Ethernet0/1
+R1(config-if)# ip ospf 33 area 0
+R1(config-if)# ip ospf priority 255</pre>
           </div>
         </div>
-        <p class="tasks" style="margin: 0; color: #8b9cbb; font-size: 0.85rem">
-          Optional: keep a legacy single block with <code>spoiler-cli-pre</code> for simple labs.
-        </p>
-        <pre class="spoiler-cli-pre">REPLACE# show running-config
-! optional second block</pre>
       </div>
     </div>
   </div>
@@ -805,104 +821,9 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
   <script>
     (function () {
       /** ----- Author constants (replace when copying to public/) ----- */
-      var SWITCH_HOST = "Sw1";
       var SWITCH2_HOST = "R1";
-      var PC_PROMPT = ">";
 
-      /** Snapshot for primary device `show running-config` while lab runs */
-      var SWITCH_SHOW_RUNNING_SNAPSHOT = [
-        "Building configuration...",
-        "",
-        "hostname Sw1",
-        "!",
-        "boot-start-marker",
-        "boot-end-marker",
-        "!",
-        "!",
-        "!",
-        "no aaa new-model",
-        "clock timezone EET 2 0",
-        "mmi polling-interval 60",
-        "no mmi auto-configure",
-        "no mmi pvc",
-        "mmi snmp-timeout 180",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "ip cef",
-        "!",
-        "multilink bundle-name authenticated",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "redundancy",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "interface Ethernet0/0",
-        " shutdown",
-        "!",
-        "interface Ethernet0/1",
-        " shutdown",
-        "!",
-        "interface Ethernet0/2",
-        " shutdown",
-        "!",
-        "interface Ethernet0/3",
-        " shutdown",
-        "!",
-        "interface Ethernet0/4",
-        " shutdown",
-        "!",
-        "ip forward-protocol nd",
-        "!",
-        "!",
-        "no ip http server",
-        "no ip http secure-server",
-        "!",
-        "!",
-        "!",
-        "!",
-        "control-plane",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "!",
-        "line con 0",
-        " logging synchronous",
-        "line aux 0",
-        "line vty 0 4",
-        " login",
-        " transport input none",
-        "!",
-        "end",
-      ].join("\r\n");
-
-      /** Read-only R1 exhibit — printed when user types show running-config on R1 */
+      /** R1 — printed when user types show running-config on R1 */
       var SWITCH2_SHOW_RUNNING_SNAPSHOT = [
         "Building configuration...",
         "",
@@ -1000,6 +921,10 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         "end",
       ].join("\r\n");
 
+      var OSPF_LAB_PROCESS_ID = "33";
+      var OSPF_LAB_ROUTER_ID = "10.0.33.1";
+      var OSPF_LAB_DR_PRIORITY = "255";
+
       /**
        * ## Prompt / modes (IOS-shaped)
        *
@@ -1013,7 +938,34 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
           return normalize(raw) === "configure terminal";
         }},
         { mode: "config", test: function (raw) {
-          return normalize(raw) === "hostname labsim";
+          return normalize(raw) === "router ospf " + OSPF_LAB_PROCESS_ID;
+        }},
+        { mode: "config-router", test: function (raw) {
+          return normalize(raw) === "router-id " + OSPF_LAB_ROUTER_ID;
+        }},
+        { mode: "config-router", test: function (raw) {
+          return normalize(raw) === "exit";
+        }},
+        { mode: "config", test: function (raw) {
+          return normalize(raw) === "interface ethernet0/0";
+        }},
+        { mode: "config-if", test: function (raw) {
+          return normalize(raw) === "ip ospf " + OSPF_LAB_PROCESS_ID + " area 0";
+        }},
+        { mode: "config-if", test: function (raw) {
+          return normalize(raw) === "ip ospf priority " + OSPF_LAB_DR_PRIORITY;
+        }},
+        { mode: "config-if", test: function (raw) {
+          return normalize(raw) === "exit";
+        }},
+        { mode: "config", test: function (raw) {
+          return normalize(raw) === "interface ethernet0/1";
+        }},
+        { mode: "config-if", test: function (raw) {
+          return normalize(raw) === "ip ospf " + OSPF_LAB_PROCESS_ID + " area 0";
+        }},
+        { mode: "config-if", test: function (raw) {
+          return normalize(raw) === "ip ospf priority " + OSPF_LAB_DR_PRIORITY;
         }},
       ];
 
@@ -1033,6 +985,8 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         if (t === "copy run start" || t === "copy run st") t = "copy running-configuration startup-configuration";
         if (t === "copy running-config startup-config") t = "copy running-configuration startup-configuration";
         if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
+        if (t === "interface e0/0" || t === "interface et0/0") t = "interface ethernet0/0";
+        if (t === "interface e0/1" || t === "interface et0/1") t = "interface ethernet0/1";
         if (t === "no shut") t = "no shutdown";
         return t;
       }
@@ -1044,20 +998,24 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         "Destination filename [startup-config]?\nBuilding configuration...\n[OK]";
       var COPY_RUN_START_EXEC_ONLY_MSG =
         "% Error: Run copy running-configuration startup-configuration only from privileged EXEC (#), not from configuration mode.";
-      var COPY_RUN_START_AFTER_STEPS_MSG =
-        "% Error: Finish the full STEPS sequence on this switch until you return to privileged EXEC (#), then save to startup-config.";
-      var COPY_RUN_START_AFTER_SW1_STEPS_MSG =
-        "% Error: Finish the full STEPS sequence on Sw1 first (until Sw1#), then save startup-config from privileged EXEC on R1.";
+      var COPY_RUN_START_AFTER_R1_STEPS_MSG =
+        "% Error: Finish the full STEPS sequence on R1 first (until R1#), then save startup-config from privileged EXEC.";
       var BASELINE_SW_STEPS_OK_MSG =
-        "[OK] Switch steps complete. From privileged exec on Sw1 and R1, run copy running-configuration startup-configuration (copy run start) on each device to finish the lab.";
+        "[OK] Router steps complete. From privileged exec on R1, run copy running-configuration startup-configuration (copy run start) to finish saving.";
       var BASELINE_LAB_ALL_DONE_MSG =
-        "[OK] Lab complete: objectives met, PC1 IP settings match the solution, and running-config is saved to startup-config on Sw1 and R1.";
+        "[OK] Lab complete: OSPF objectives met and running-config is saved to startup-config on R1.";
       var PASS_BANNER_BASELINE_PENDING =
-        "Complete all Sw1 steps, set correct PC1 IP/mask/gateway, then from enable mode on Sw1 and R1 run copy running-configuration startup-configuration on each device.";
-      // REPLACE per lab: only this exact tuple unlocks successful completion.
-      var PC1_SOLUTION_IP = "192.168.10.10";
-      var PC1_SOLUTION_MASK = "255.255.255.0";
-      var PC1_SOLUTION_GATEWAY = "192.168.10.1";
+        "Complete all R1 configuration steps, then from enable mode on R1 run copy running-configuration startup-configuration.";
+      var OSPF_NETWORK_FORBIDDEN_MSG =
+        "% This lab forbids OSPF network statements under the routing process. Use ip ospf " +
+        OSPF_LAB_PROCESS_ID +
+        " area 0 on Ethernet0/0 and Ethernet0/1 instead.";
+      /** True if line looks like router OSPF: network <prefix> <wildcard> area <area-id> … */
+      function isOspfRouterNetworkStatement(normalizedLine) {
+        var u = String(normalizedLine || "");
+        if (u.indexOf("network ") !== 0) return false;
+        return u.indexOf(" area ") !== -1;
+      }
 
       function matchShowRun(raw) {
         var u = normalize(raw);
@@ -1072,9 +1030,7 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         return normalize(raw) === "copy running-configuration startup-configuration";
       }
 
-      var nvramSavedSw = false;
       var nvramSavedSw2 = false;
-      var pc1AddressingSolved = false;
 
       function isModeNavigationCommand(normalizedCmd) {
         return (
@@ -1086,58 +1042,32 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
       }
 
       function tryCompleteBaselineLab(append) {
-        if (stepIndex < LAB_STEPS.length || !nvramSavedSw || !nvramSavedSw2 || !pc1AddressingSolved) return;
+        if (stepIndex < LAB_STEPS.length || !nvramSavedSw2) return;
         if (passBanner.classList.contains("visible")) return;
         passBanner.classList.add("visible");
         passBanner.textContent = BASELINE_LAB_ALL_DONE_MSG;
         if (append) append("line-sys", BASELINE_LAB_ALL_DONE_MSG);
       }
 
-      function isValidIpv4(ip) {
-        var parts = String(ip || "").split(".");
-        if (parts.length !== 4) return false;
-        for (var i = 0; i < parts.length; i += 1) {
-          if (!/^\d+$/.test(parts[i])) return false;
-          if (parts[i].length > 1 && parts[i].charAt(0) === "0") return false;
-          var n = Number(parts[i]);
-          if (n < 0 || n > 255) return false;
-        }
-        return true;
-      }
-
-      function isValidSubnetMask(mask) {
-        var validMasks = {
-          "128.0.0.0": true, "192.0.0.0": true, "224.0.0.0": true, "240.0.0.0": true,
-          "248.0.0.0": true, "252.0.0.0": true, "254.0.0.0": true, "255.0.0.0": true,
-          "255.128.0.0": true, "255.192.0.0": true, "255.224.0.0": true, "255.240.0.0": true,
-          "255.248.0.0": true, "255.252.0.0": true, "255.254.0.0": true, "255.255.0.0": true,
-          "255.255.128.0": true, "255.255.192.0": true, "255.255.224.0": true, "255.255.240.0": true,
-          "255.255.248.0": true, "255.255.252.0": true, "255.255.254.0": true, "255.255.255.0": true,
-          "255.255.255.128": true, "255.255.255.192": true, "255.255.255.224": true, "255.255.255.240": true,
-          "255.255.255.248": true, "255.255.255.252": true, "255.255.255.254": true, "255.255.255.255": true
-        };
-        return !!validMasks[String(mask || "")];
-      }
-
-      /** Privileged exec (#) for the lab switch prompt (not config submodes). */
-      function swInEnableMode() {
+      /** Privileged exec (#) for R1 (not config submodes). */
+      function r1InEnableMode() {
         if (
-          swPromptOverride === "config" ||
-          swPromptOverride === "config-if" ||
-          swPromptOverride === "config-router" ||
-          swPromptOverride === "config-std-nacl" ||
-          swPromptOverride === "config-ext-nacl" ||
-          swPromptOverride === "config-pmap" ||
-          swPromptOverride === "control-plane"
+          r1PromptOverride === "config" ||
+          r1PromptOverride === "config-if" ||
+          r1PromptOverride === "config-router" ||
+          r1PromptOverride === "config-std-nacl" ||
+          r1PromptOverride === "config-ext-nacl" ||
+          r1PromptOverride === "config-pmap" ||
+          r1PromptOverride === "control-plane"
         ) {
           return false;
         }
-        if (swPromptOverride === "exec") return true;
+        if (r1PromptOverride === "exec") return true;
         if (stepIndex >= LAB_STEPS.length) return true;
         return LAB_STEPS[stepIndex].mode === "exec";
       }
 
-      /** Map logical IOS mode to prompt string for host (SW1, SW2, …). */
+      /** Map logical IOS mode to prompt string for a device hostname. */
       function promptForMode(host, mode) {
         switch (mode) {
           case "exec":
@@ -1161,21 +1091,15 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         }
       }
 
-      /** Prompt for the switch while advancing through LAB_STEPS (post-completion → exec). */
+      /** Prompt for R1 while advancing through LAB_STEPS (post-completion → exec). */
       function promptForLabStepIndex(index) {
-        if (index >= LAB_STEPS.length) return promptForMode(SWITCH_HOST, "exec");
-        return promptForMode(SWITCH_HOST, LAB_STEPS[index].mode);
+        if (index >= LAB_STEPS.length) return promptForMode(SWITCH2_HOST, "exec");
+        return promptForMode(SWITCH2_HOST, LAB_STEPS[index].mode);
       }
 
       var stepIndex = 0;
-      var swPromptOverride = null;
+      var r1PromptOverride = null;
 
-      var swCliOverlay = document.getElementById("swCliOverlay");
-      var swCliDialog = document.getElementById("swCliDialog");
-      var swScrollback = document.getElementById("swScrollback");
-      var swPrompt = document.getElementById("swPrompt");
-      var swCmdline = document.getElementById("swCmdline");
-      var swTerminal = document.getElementById("swTerminal");
       var passBanner = document.getElementById("passBanner");
       var swResetBtn = document.getElementById("swResetBtn");
 
@@ -1199,26 +1123,6 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         overlay.style.zIndex = String(modalStackZ);
       }
 
-      function getLabDev() {
-        var sel = document.querySelector('input[name="labPrimaryDev"]:checked');
-        return sel ? sel.value : "SW1";
-      }
-
-      function syncOpenCliLabel() {
-        var d = getLabDev();
-        if (d === "PC1") openSelectedCliBtn.textContent = "Open PC1 prompt";
-        else if (d === "R1") openSelectedCliBtn.textContent = "Open R1 CLI";
-        else openSelectedCliBtn.textContent = "Open " + SWITCH_HOST + " CLI";
-      }
-
-      function appendSw(cls, text) {
-        var div = document.createElement("div");
-        div.className = cls;
-        div.textContent = text;
-        swScrollback.appendChild(div);
-        swScrollback.scrollTop = swScrollback.scrollHeight;
-      }
-
       function appendSw2(cls, text) {
         var div = document.createElement("div");
         div.className = cls;
@@ -1227,213 +1131,37 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         sw2Scrollback.scrollTop = sw2Scrollback.scrollHeight;
       }
 
-      var pcCliOverlay = document.getElementById("pcCliOverlay");
-      var pcCliDialog = document.getElementById("pcCliDialog");
-      var pcScrollback = document.getElementById("pcScrollback");
-      var pcPrompt = document.getElementById("pcPrompt");
-      var pcCmdline = document.getElementById("pcCmdline");
-      var pcTerminal = document.getElementById("pcTerminal");
-
-      function appendPc(cls, text) {
-        var div = document.createElement("div");
-        div.className = cls;
-        div.textContent = text;
-        pcScrollback.appendChild(div);
-        pcScrollback.scrollTop = pcScrollback.scrollHeight;
-      }
-
-      function syncPcPromptLabel() {
-        var d = getLabDev();
-        if (d === "PC1") pcPrompt.textContent = "PC1>";
-        else pcPrompt.textContent = PC_PROMPT;
-      }
-
-      function resetPc() {
-        pcScrollback.innerHTML = "";
-        syncPcPromptLabel();
-      }
-
-      function submitPc() {
-        var promptText = pcPrompt.textContent;
-        var line = pcCmdline.value;
-        appendPc("line-user", promptText + " " + line);
-        pcCmdline.value = "";
-        if (!line.trim()) return;
-        if (normalize(line) === "?") {
-          appendPc("line-sys", HELP_DISABLED_MSG);
+      function setR1Prompt() {
+        if (r1PromptOverride !== null && r1PromptOverride !== undefined) {
+          sw2Prompt.textContent = promptForMode(SWITCH2_HOST, r1PromptOverride);
           return;
         }
-        var raw = String(line || "").trim();
-        var parts = raw.split(/\s+/);
-        if (parts.length === 3 && isValidIpv4(parts[0]) && isValidSubnetMask(parts[1]) && isValidIpv4(parts[2])) {
-          if (
-            parts[0] === PC1_SOLUTION_IP &&
-            parts[1] === PC1_SOLUTION_MASK &&
-            parts[2] === PC1_SOLUTION_GATEWAY
-          ) {
-            pc1AddressingSolved = true;
-            appendPc("line-sys", "[OK] PC1 addressing accepted. You can now complete final save steps on Sw1 and R1.");
-            tryCompleteBaselineLab(function (cls, text) {
-              appendPc(cls, text);
-            });
-          } else {
-            pc1AddressingSolved = false;
-            appendPc(
-              "line-sys",
-              "% Address format is valid, but values do not match the required lab solution."
-            );
-          }
-          return;
-        }
-        if (parts.length === 3) {
-          appendPc(
-            "line-sys",
-            "% Invalid format. Enter exactly: <ip-address> <subnet-mask> <gateway> (example: 192.168.10.10 255.255.255.0 192.168.10.1)."
-          );
-          return;
-        }
-        appendPc(
-          "line-bad",
-          "'" +
-            line.trim() +
-            "' is not recognized as an internal or external command,\noperable program or batch file."
-        );
-      }
-
-      function setSwPrompt() {
-        if (swPromptOverride !== null && swPromptOverride !== undefined) {
-          swPrompt.textContent = promptForMode(SWITCH_HOST, swPromptOverride);
-          return;
-        }
-        swPrompt.textContent = promptForLabStepIndex(stepIndex);
+        sw2Prompt.textContent = promptForLabStepIndex(stepIndex);
       }
 
       function resetSwLab() {
         stepIndex = 0;
-        swPromptOverride = null;
-        nvramSavedSw = false;
+        r1PromptOverride = null;
         nvramSavedSw2 = false;
-        pc1AddressingSolved = false;
-        swScrollback.innerHTML = "";
+        sw2Scrollback.innerHTML = "";
+        sw2Cmdline.disabled = false;
+        sw2Cmdline.value = "";
         passBanner.classList.remove("visible");
         passBanner.textContent = PASS_BANNER_BASELINE_PENDING;
-        swCmdline.disabled = false;
-        swCmdline.value = "";
-        setSwPrompt();
+        setR1Prompt();
       }
 
-      // BEGIN sync block: templates/containers/cli-container-template.html -> submitSw()
-      function submitSw() {
-        var promptText = swPrompt.textContent;
-        var line = swCmdline.value;
-        var trimmed = String(line || "").trim();
-        var normalized = normalize(line);
-        var hideInputLine = isModeNavigationCommand(normalized);
-        if (!hideInputLine) {
-          appendSw("line-user", promptText + " " + line);
-        }
-        swCmdline.value = "";
-        if (!trimmed) return;
-
-        if (normalize(line) === "?") {
-          appendSw("line-sys", HELP_DISABLED_MSG);
-          return;
-        }
-
-        if (matchShowRun(line)) {
-          appendSw("line-showrun", SWITCH_SHOW_RUNNING_SNAPSHOT);
-          return;
-        }
-
-        if (swInEnableMode() && matchShowVersion(line)) {
-          appendSw("line-sys", SHOW_VERSION_MSG);
-          return;
-        }
-
-        if (matchCopyRunStart(line)) {
-          if (!swInEnableMode()) {
-            appendSw("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
-            return;
-          }
-          if (stepIndex < LAB_STEPS.length) {
-            appendSw("line-sys", COPY_RUN_START_AFTER_STEPS_MSG);
-            return;
-          }
-          appendSw("line-sys", COPY_RUN_START_OK_MSG);
-          nvramSavedSw = true;
-          tryCompleteBaselineLab(function (cls, text) {
-            appendSw(cls, text);
-          });
-          return;
-        }
-
-        // Allow IOS-like prompt navigation even when not matching the next lab step.
-        var u = normalized;
-        if (u === "end" && swPromptOverride !== "exec") {
-          swPromptOverride = "exec";
-          setSwPrompt();
-          return;
-        }
-        if (u === "exit") {
-          if (swPromptOverride === "config") {
-            swPromptOverride = "exec";
-            setSwPrompt();
-            return;
-          }
-          // If no override is set but current step mode is config, still allow exiting to exec.
-          if (!swPromptOverride && stepIndex < LAB_STEPS.length && LAB_STEPS[stepIndex].mode === "config") {
-            swPromptOverride = "exec";
-            setSwPrompt();
-            return;
-          }
-        }
-        // If user is at exec via override, allow re-entering config prompt without advancing steps.
-        if (u === "configure terminal" && swPromptOverride === "exec") {
-          swPromptOverride = "config";
-          setSwPrompt();
-          return;
-        }
-        if (swInEnableMode() && (u.indexOf("show ") === 0 || u.indexOf("sh ") === 0)) {
-          appendSw("line-sys", SHOW_DISABLED_MSG);
-          return;
-        }
-
-        if (stepIndex >= LAB_STEPS.length) {
-          appendSw("line-bad", "% Invalid input");
-          return;
-        }
-
-        if (LAB_STEPS[stepIndex].test(line)) {
-          stepIndex += 1;
-          swPromptOverride = null;
-          if (stepIndex >= LAB_STEPS.length) {
-            swPrompt.textContent = promptForMode(SWITCH_HOST, "exec");
-            appendSw("line-sys", BASELINE_SW_STEPS_OK_MSG);
-            tryCompleteBaselineLab(function (cls, text) {
-              appendSw(cls, text);
-            });
-          } else {
-            setSwPrompt();
-          }
-        } else {
-          appendSw("line-bad", "% Invalid input");
-        }
-      }
-      // END sync block: templates/containers/cli-container-template.html -> submitSw()
-
-      /** SW2: IOS-like modes + show running-config (read-only exhibit); prompts use promptForMode like SW1 */
-      var sw2Mode = "exec";
-
-      function sw2PromptForMode() {
-        return promptForMode(SWITCH2_HOST, sw2Mode);
-      }
-
-      function resetSw2() {
+      /** Clear R1 scrollback when opening modal; lab progress (stepIndex) is preserved. */
+      function resetR1TerminalView() {
         sw2Scrollback.innerHTML = "";
-        sw2Mode = "exec";
-        sw2Prompt.textContent = sw2PromptForMode();
+        sw2Cmdline.value = "";
+        setR1Prompt();
       }
 
+      // BEGIN sync block: templates/containers/cli-container-template.html → submitSw()
+      // R1 mapping: appendSw→appendSw2, swPrompt/swCmdline→sw2*, swPromptOverride→r1PromptOverride,
+      // setSwPrompt→setR1Prompt, swInEnableMode→r1InEnableMode, SWITCH_SHOW_RUNNING_SNAPSHOT→SWITCH2_SHOW_RUNNING_SNAPSHOT,
+      // nvramSavedSw→nvramSavedSw2; lab-specific COPY_RUN_START_AFTER_R1_STEPS_MSG.
       function submitSw2() {
         var promptText = sw2Prompt.textContent;
         var line = sw2Cmdline.value;
@@ -1451,29 +1179,28 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
           return;
         }
 
-        var u = normalized;
+        if (isOspfRouterNetworkStatement(normalized)) {
+          appendSw2("line-sys", OSPF_NETWORK_FORBIDDEN_MSG);
+          return;
+        }
 
         if (matchShowRun(line)) {
           appendSw2("line-showrun", SWITCH2_SHOW_RUNNING_SNAPSHOT);
           return;
         }
 
-        if (sw2Mode === "exec" && matchShowVersion(line)) {
+        if (r1InEnableMode() && matchShowVersion(line)) {
           appendSw2("line-sys", SHOW_VERSION_MSG);
-          return;
-        }
-        if (sw2Mode === "exec" && (u.indexOf("show ") === 0 || u.indexOf("sh ") === 0)) {
-          appendSw2("line-sys", SHOW_DISABLED_MSG);
           return;
         }
 
         if (matchCopyRunStart(line)) {
-          if (sw2Mode !== "exec") {
+          if (!r1InEnableMode()) {
             appendSw2("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
             return;
           }
           if (stepIndex < LAB_STEPS.length) {
-            appendSw2("line-sys", COPY_RUN_START_AFTER_SW1_STEPS_MSG);
+            appendSw2("line-sys", COPY_RUN_START_AFTER_R1_STEPS_MSG);
             return;
           }
           appendSw2("line-sys", COPY_RUN_START_OK_MSG);
@@ -1484,37 +1211,56 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
           return;
         }
 
-        if (sw2Mode === "config-if" && u === "exit") {
-          sw2Mode = "config";
-          sw2Prompt.textContent = sw2PromptForMode();
+        var u = normalized;
+        if (u === "end" && r1PromptOverride !== "exec") {
+          r1PromptOverride = "exec";
+          setR1Prompt();
           return;
         }
-        if (sw2Mode === "exec" && u === "configure terminal") {
-          sw2Mode = "config";
-          sw2Prompt.textContent = sw2PromptForMode();
+        if (u === "exit") {
+          if (r1PromptOverride === "config") {
+            r1PromptOverride = "exec";
+            setR1Prompt();
+            return;
+          }
+          if (!r1PromptOverride && stepIndex < LAB_STEPS.length && LAB_STEPS[stepIndex].mode === "config") {
+            r1PromptOverride = "exec";
+            setR1Prompt();
+            return;
+          }
+        }
+        if (u === "configure terminal" && r1PromptOverride === "exec") {
+          r1PromptOverride = "config";
+          setR1Prompt();
           return;
         }
-        if (sw2Mode === "config" && u.startsWith("interface ")) {
-          sw2Mode = "config-if";
-          sw2Prompt.textContent = sw2PromptForMode();
-          return;
-        }
-        if (sw2Mode === "config" && (u === "exit" || u === "end")) {
-          sw2Mode = "exec";
-          sw2Prompt.textContent = sw2PromptForMode();
-          return;
-        }
-        if (sw2Mode === "config-if" && (u === "end" || u === "exit")) {
-          sw2Mode = u === "end" ? "exec" : "config";
-          sw2Prompt.textContent = sw2PromptForMode();
-          return;
-        }
-        if (sw2Mode === "config-if" && u === "no shutdown") {
+        if (r1InEnableMode() && (u.indexOf("show ") === 0 || u.indexOf("sh ") === 0)) {
+          appendSw2("line-sys", SHOW_DISABLED_MSG);
           return;
         }
 
-        appendSw2("line-bad", "% Invalid input");
+        if (stepIndex >= LAB_STEPS.length) {
+          appendSw2("line-bad", "% Invalid input");
+          return;
+        }
+
+        if (LAB_STEPS[stepIndex].test(line)) {
+          stepIndex += 1;
+          r1PromptOverride = null;
+          if (stepIndex >= LAB_STEPS.length) {
+            sw2Prompt.textContent = promptForMode(SWITCH2_HOST, "exec");
+            appendSw2("line-sys", BASELINE_SW_STEPS_OK_MSG);
+            tryCompleteBaselineLab(function (cls, text) {
+              appendSw2(cls, text);
+            });
+          } else {
+            setR1Prompt();
+          }
+        } else {
+          appendSw2("line-bad", "% Invalid input");
+        }
       }
+      // END sync block: templates/containers/cli-container-template.html → submitSw()
 
       function wireFloatingModal(dialogEl, overlayEl) {
         var header = dialogEl.querySelector(".cli-modal-header");
@@ -1554,32 +1300,15 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         header.addEventListener("pointercancel", endDrag);
       }
 
-      wireFloatingModal(swCliDialog, swCliOverlay);
       wireFloatingModal(sw2CliDialog, sw2CliOverlay);
-      wireFloatingModal(pcCliDialog, pcCliOverlay);
       wireFloatingModal(helperFileDialog, helperFileOverlay);
       wireFloatingModal(spoilerDialog, spoilerOverlay);
 
-      function openSwCli() {
-        bumpOverlayZ(swCliOverlay);
-        swCliOverlay.classList.add("is-open");
-        swCliOverlay.setAttribute("aria-hidden", "false");
-        if (swTerminal) {
-          swTerminal.classList.remove("terminal-flash");
-          void swTerminal.offsetWidth;
-          swTerminal.classList.add("terminal-flash");
-        }
-        swCmdline.focus();
-      }
-      function closeSwCli() {
-        swCliOverlay.classList.remove("is-open");
-        swCliOverlay.setAttribute("aria-hidden", "true");
-      }
       function openSw2Cli() {
         bumpOverlayZ(sw2CliOverlay);
         sw2CliOverlay.classList.add("is-open");
         sw2CliOverlay.setAttribute("aria-hidden", "false");
-        resetSw2();
+        resetR1TerminalView();
         if (sw2Terminal) {
           sw2Terminal.classList.remove("terminal-flash");
           void sw2Terminal.offsetWidth;
@@ -1592,62 +1321,15 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         sw2CliOverlay.setAttribute("aria-hidden", "true");
       }
 
-      function openPcCli() {
-        bumpOverlayZ(pcCliOverlay);
-        pcCliOverlay.classList.add("is-open");
-        pcCliOverlay.setAttribute("aria-hidden", "false");
-        resetPc();
-        if (pcTerminal) {
-          pcTerminal.classList.remove("terminal-flash");
-          void pcTerminal.offsetWidth;
-          pcTerminal.classList.add("terminal-flash");
-        }
-        pcCmdline.focus();
-      }
-      function closePcCli() {
-        pcCliOverlay.classList.remove("is-open");
-        pcCliOverlay.setAttribute("aria-hidden", "true");
-      }
+      openSelectedCliBtn.addEventListener("click", openSw2Cli);
 
-      function openSelectedCliModal() {
-        var d = getLabDev();
-        if (d === "PC1") openPcCli();
-        else if (d === "R1") openSw2Cli();
-        else openSwCli();
-      }
-
-      openSelectedCliBtn.addEventListener("click", openSelectedCliModal);
-      document.querySelectorAll('input[name="labPrimaryDev"]').forEach(function (r) {
-        r.addEventListener("change", function () {
-          syncOpenCliLabel();
-          var d = getLabDev();
-          if (d === "PC1") syncPcPromptLabel();
-          openSelectedCliBtn.focus();
-        });
-      });
-
-      swCmdline.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          submitSw();
-        }
-      });
       sw2Cmdline.addEventListener("keydown", function (e) {
         if (e.key === "Enter") {
           e.preventDefault();
           submitSw2();
         }
       });
-      pcCmdline.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          submitPc();
-        }
-      });
-
-      document.getElementById("swCliClose").addEventListener("click", closeSwCli);
       document.getElementById("sw2CliClose").addEventListener("click", closeSw2Cli);
-      document.getElementById("pcCliClose").addEventListener("click", closePcCli);
       swResetBtn.addEventListener("click", resetSwLab);
       document.getElementById("inlineResetLabBtn").addEventListener("click", resetSwLab);
 
@@ -1710,9 +1392,7 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
           input.value = state.idx >= state.entries.length ? "" : state.entries[state.idx];
         });
       }
-      bindLocalHistory(swCmdline);
       bindLocalHistory(sw2Cmdline);
-      bindLocalHistory(pcCmdline);
 
       document.addEventListener("keydown", function (e) {
         if (e.key !== "Escape") return;
@@ -1728,19 +1408,10 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
           helperFileOverlay.setAttribute("aria-hidden", "true");
           return;
         }
-        if (swCliOverlay.classList.contains("is-open")) {
-          e.preventDefault();
-          closeSwCli();
-          return;
-        }
         if (sw2CliOverlay.classList.contains("is-open")) {
           e.preventDefault();
           closeSw2Cli();
           return;
-        }
-        if (pcCliOverlay.classList.contains("is-open")) {
-          e.preventDefault();
-          closePcCli();
         }
       });
 
@@ -1749,7 +1420,6 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         history.pushState(null, "", location.href);
       });
 
-      syncOpenCliLabel();
       resetSwLab();
     })();
   </script>
