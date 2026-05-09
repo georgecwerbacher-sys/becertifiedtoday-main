@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CCNA Objective Coverage Tracker</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      background: #0b1020;
+      color: #e6edf3;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+    .card {
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 12px;
+      padding: 16px;
+    }
+    h1, h2, h3, p {
+      margin: 0;
+    }
+    h1 {
+      font-size: 1.35rem;
+      margin-bottom: 6px;
+    }
+    .muted {
+      color: #9fb0cc;
+    }
+    .totals {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+    .pill {
+      border: 1px solid #355184;
+      border-radius: 10px;
+      background: #0f1729;
+      padding: 10px 12px;
+    }
+    .domains {
+      display: grid;
+      gap: 12px;
+    }
+    .domain-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    ul {
+      margin: 0;
+      padding-left: 1.1rem;
+    }
+    li {
+      margin: 0.25rem 0;
+      line-height: 1.35;
+    }
+    .low {
+      color: #fbbf24;
+    }
+    .none {
+      color: #fca5a5;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .btn {
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card">
+      <h1>CCNA Objective Coverage Tracker</h1>
+      <p class="muted">Maps CCNA question pages to 200-301 objective IDs so visitors can see which domains and objectives need more work.</p>
+      <div class="actions">
+        <a class="btn" href="/CCNA-Study/CCNA_Training_Portal.html">Back to Portal</a>
+      </div>
+    </section>
+
+    <section class="card totals" id="totals"></section>
+
+    <section class="card">
+      <h2 style="margin-bottom:8px;">Sections needing work</h2>
+      <ul id="needsWork"></ul>
+    </section>
+
+    <section class="card">
+      <h2 style="margin-bottom:8px;">Coverage by domain</h2>
+      <div class="domains" id="domains"></div>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      var totalsEl = document.getElementById("totals");
+      var needsWorkEl = document.getElementById("needsWork");
+      var domainsEl = document.getElementById("domains");
+
+      function makePill(label, value) {
+        var div = document.createElement("div");
+        div.className = "pill";
+        div.innerHTML = "<div class='muted'>" + label + "</div><div style='font-size:1.1rem;font-weight:800;margin-top:2px;'>" + value + "</div>";
+        return div;
+      }
+
+      fetch("/CCNA-Study/data/ccna-question-topic-tracker.json")
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          totalsEl.appendChild(makePill("Total questions", String(data.totals.questionCount)));
+          totalsEl.appendChild(makePill("Assigned questions", String(data.totals.assignedQuestionCount)));
+          totalsEl.appendChild(makePill("Unassigned questions", String(data.totals.unassignedQuestionCount)));
+          totalsEl.appendChild(makePill("Assignment coverage", data.totals.assignedPercent + "%"));
+
+          var needsWorkItems = [];
+          data.domains.forEach(function (domain) {
+            if (domain.coveragePercent < 100) {
+              needsWorkItems.push(
+                domain.id + " " + domain.name + " - " + domain.coveredObjectiveCount + "/" + domain.objectiveCount + " objectives mapped"
+              );
+            }
+            domain.objectives.forEach(function (obj) {
+              if (obj.questionCount === 0) {
+                needsWorkItems.push(obj.id + " " + obj.text + " - no mapped questions yet");
+              }
+            });
+          });
+
+          if (!needsWorkItems.length) {
+            var liDone = document.createElement("li");
+            liDone.textContent = "All objectives currently have question coverage.";
+            needsWorkEl.appendChild(liDone);
+          } else {
+            needsWorkItems.slice(0, 60).forEach(function (line) {
+              var li = document.createElement("li");
+              li.textContent = line;
+              needsWorkEl.appendChild(li);
+            });
+          }
+
+          data.domains.forEach(function (domain) {
+            var box = document.createElement("div");
+            box.className = "pill";
+
+            var head = document.createElement("div");
+            head.className = "domain-head";
+            head.innerHTML =
+              "<h3>" + domain.id + " " + domain.name + "</h3>" +
+              "<span class='muted'>" + domain.coveredObjectiveCount + "/" + domain.objectiveCount + " objectives (" + domain.coveragePercent + "%)</span>";
+            box.appendChild(head);
+
+            var ul = document.createElement("ul");
+            domain.objectives.forEach(function (obj) {
+              var li = document.createElement("li");
+              var cls = obj.questionCount === 0 ? "none" : (obj.questionCount <= 1 ? "low" : "");
+              li.className = cls;
+              li.textContent = obj.id + " - " + obj.questionCount + " question(s): " + obj.text;
+              ul.appendChild(li);
+            });
+            box.appendChild(ul);
+            domainsEl.appendChild(box);
+          });
+        })
+        .catch(function () {
+          totalsEl.appendChild(makePill("Error", "Could not load tracker data"));
+        });
+    })();
+  </script>
+</body>
+</html>
+

@@ -15,7 +15,11 @@
 
   function inTargetPage() {
     var path = (location.pathname || "").toLowerCase();
-    return path.indexOf("/ccna-study/ccna_questions/") !== -1 || path.indexOf("/ccna-study/ccna_d_d/") !== -1;
+    return (
+      path.indexOf("/ccna-study/ccna_questions/") !== -1 ||
+      path.indexOf("/ccna-study/ccna_d_d/") !== -1 ||
+      path.indexOf("/ccna-study/ccna_labs/") !== -1
+    );
   }
 
   function moveHomeLinkToBottom() {
@@ -54,6 +58,98 @@
     document.addEventListener("DOMContentLoaded", moveHomeLinkToBottom);
   } else {
     moveHomeLinkToBottom();
+  }
+})();
+
+(function () {
+  "use strict";
+
+  var OBJECTIVES_URL = "/CCNA-Study/data/ccna-exam-objectives-200-301-v1.1.json";
+  var MAP_BY_PATH = [
+    { pathPart: "/ccna-study/ccna_questions/", mapUrl: "/CCNA-Study/data/ccna-question-topic-map.json" },
+    { pathPart: "/ccna-study/ccna_d_d/", mapUrl: "/CCNA-Study/data/ccna-dnd-topic-map.json" },
+    { pathPart: "/ccna-study/ccna_labs/", mapUrl: "/CCNA-Study/data/ccna-lab-topic-map.json" }
+  ];
+
+  function getSlugAndMap() {
+    var path = (location.pathname || "").toLowerCase();
+    var match = /\/([^/]+)\.html$/.exec(path);
+    if (!match) return null;
+    var fileName = decodeURIComponent(match[1]) + ".html";
+    for (var i = 0; i < MAP_BY_PATH.length; i++) {
+      if (path.indexOf(MAP_BY_PATH[i].pathPart) !== -1) {
+        return { fileName: fileName, mapUrl: MAP_BY_PATH[i].mapUrl };
+      }
+    }
+    return null;
+  }
+
+  function renderObjectiveTag() {
+    var target = getSlugAndMap();
+    if (!target) return;
+    var host = document.querySelector("main.card") || document.querySelector("main");
+    if (!host || host.querySelector(".ccna-objective-tag")) return;
+
+    Promise.all([
+      fetch(OBJECTIVES_URL).then(function (r) { return r.json(); }),
+      fetch(target.mapUrl).then(function (r) { return r.json(); })
+    ]).then(function (res) {
+      var objectives = res[0];
+      var map = res[1];
+      if (!map || !map.assignments) return;
+
+      var linkedIds = map.assignments[target.fileName] || [];
+      var domainLookup = {};
+      var objectiveLookup = {};
+      (objectives.domains || []).forEach(function (domain) {
+        domainLookup[domain.id] = domain.name;
+        (domain.objectives || []).forEach(function (obj) {
+          objectiveLookup[obj.id] = { domainName: domain.name, text: obj.text };
+        });
+      });
+
+      var labels = linkedIds.map(function (id) {
+        if (domainLookup[id]) return id + " (" + domainLookup[id] + ")";
+        if (objectiveLookup[id]) return id + " (" + objectiveLookup[id].domainName + "): " + objectiveLookup[id].text;
+        return null;
+      }).filter(Boolean);
+
+      if (!labels.length) labels = ["Unassigned objective (needs mapping)"];
+
+      var box = document.createElement("div");
+      box.className = "ccna-objective-tag";
+      box.style.marginTop = "12px";
+      box.style.padding = "10px 12px";
+      box.style.borderRadius = "10px";
+      box.style.border = "1px solid #2d3b5a";
+      box.style.background = "#0f1729";
+      box.style.color = "#b8c3d6";
+      box.style.fontSize = "0.86rem";
+      box.style.lineHeight = "1.45";
+
+      var title = document.createElement("div");
+      title.style.fontWeight = "700";
+      title.style.color = "#e6edf3";
+      title.style.marginBottom = "4px";
+      title.textContent = "CCNA objective section";
+      box.appendChild(title);
+
+      labels.forEach(function (line) {
+        var row = document.createElement("div");
+        row.textContent = "• " + line;
+        box.appendChild(row);
+      });
+
+      host.appendChild(box);
+    }).catch(function () {
+      // Silent fail keeps pages working if map files are absent.
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", renderObjectiveTag);
+  } else {
+    renderObjectiveTag();
   }
 })();
 
