@@ -20,6 +20,7 @@
     s.textContent =
       "nav.sim-nav{display:none!important}" +
       ".actions{display:none!important}" +
+      ".ccna-objective-tag{display:none!important}" +
       "body.dragdrop-exercise{padding-bottom:16px!important;place-items:start}" +
       "body.dragdrop-exercise{padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))!important}";
     document.head.appendChild(s);
