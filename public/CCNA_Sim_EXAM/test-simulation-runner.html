@@ -128,34 +128,24 @@
       background: #0f1729;
       box-sizing: border-box;
     }
-    .exam-lab .lab-note {
-      margin: 0;
-      padding: 14px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: #0f1729;
-      font-size: 0.92rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-    .lab-spoiler-row {
-      margin-top: 16px;
-      padding-top: 14px;
-      border-top: 1px solid var(--border);
-    }
-    .exam-lab-spoiler-btn {
-      padding: 10px 18px;
-      border-radius: 10px;
-      font: inherit;
-      font-weight: 800;
+    .exam-lab-hint {
+      margin: 0 0 12px;
       font-size: 0.88rem;
-      cursor: pointer;
-      border: 1px solid #60a5fa;
-      background: linear-gradient(165deg, rgba(59, 130, 246, 0.35) 0%, rgba(29, 78, 216, 0.45) 100%);
-      color: var(--text);
+      color: var(--muted);
+      line-height: 1.45;
     }
-    .exam-lab-spoiler-btn:hover {
-      filter: brightness(1.08);
+    .exam-lab-embed {
+      width: 100%;
+      min-height: min(72vh, 920px);
+    }
+    .exam-lab-iframe {
+      display: block;
+      width: 100%;
+      height: min(72vh, 920px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #0f1729;
+      box-sizing: border-box;
     }
     .exam-footer {
       position: fixed;
@@ -204,57 +194,6 @@
     .exam-done h2 {
       margin: 0 0 12px;
       font-size: 1.35rem;
-    }
-    /* Lab spoiler overlay only (MCQ / D&D have no spoiler) */
-    .spoiler-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.65);
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-    .spoiler-overlay[hidden] {
-      display: none !important;
-    }
-    .spoiler-dialog {
-      max-width: 520px;
-      width: 100%;
-      max-height: min(70vh, 480px);
-      overflow: auto;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 18px 20px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-    }
-    .spoiler-dialog h3 {
-      margin: 0 0 12px;
-      font-size: 1.05rem;
-    }
-    .spoiler-dialog pre {
-      margin: 0;
-      padding: 12px;
-      border-radius: 8px;
-      background: #0a0a0a;
-      border: 1px solid #333;
-      font-size: 0.8rem;
-      line-height: 1.45;
-      white-space: pre-wrap;
-      word-break: break-word;
-      color: #e6edf3;
-    }
-    .spoiler-close {
-      margin-top: 14px;
-      padding: 8px 16px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: rgba(47, 102, 191, 0.2);
-      color: var(--text);
-      font-weight: 700;
-      cursor: pointer;
     }
     a {
       color: var(--accent);
@@ -397,14 +336,6 @@
     <button type="button" id="btnQuit">Quit</button>
   </footer>
 
-  <div class="spoiler-overlay" id="spoilerOverlay" hidden aria-hidden="true">
-    <div class="spoiler-dialog" role="dialog" aria-labelledby="spoilerTitle">
-      <h3 id="spoilerTitle">Spoiler</h3>
-      <pre id="spoilerContent"></pre>
-      <button type="button" class="spoiler-close" id="spoilerClose">Close</button>
-    </div>
-  </div>
-
   <script type="module">
     /** localStorage: bcc_ccna_portal_30d_v1 = { "expiresAt": <epoch ms> } — active 30-day CCNA portal access */
     /** localStorage: bcc_ccna_test_sim_temp_v1 — temp entitlement for one-time test purchase (cleared when session ends if no 30-day pass) */
@@ -426,8 +357,6 @@
     var examPanel = document.getElementById("examPanel");
     var examTimer = document.getElementById("examTimer");
     var itemBody = document.getElementById("itemBody");
-    var spoilerOverlay = document.getElementById("spoilerOverlay");
-    var spoilerContent = document.getElementById("spoilerContent");
     var resultsPanel = document.getElementById("resultsPanel");
     var examFooter = document.getElementById("examFooter");
 
@@ -683,6 +612,7 @@
     }
 
     var DND_PAGE_BASE = "/CCNA-Study/CCNA_D_D/";
+    var LAB_PAGE_BASE = "/CCNA-Study/CCNA_labs/";
 
     function renderDnd(idx) {
       var item = items[idx];
@@ -703,38 +633,24 @@
         "</div>";
     }
 
-    function openLabSpoiler(item) {
-      var snippet =
-        "Spoiler (lab): Follow the task list in order—confirm interface names, addressing, VLANs or routing as specified, run the verification commands asked for, and save configuration where the lab requires it.";
-      if (item && (item.fileName || item.slug)) {
-        snippet +=
-          " Embedded lab file: " +
-          escapeHtml(item.fileName || item.slug + ".html") +
-          ".";
-      }
-      spoilerContent.textContent = snippet;
-      spoilerOverlay.hidden = false;
-      spoilerOverlay.setAttribute("aria-hidden", "false");
-    }
-
     function renderLab(idx) {
       var item = items[idx];
-      var labTitle = item.slug ? item.slug.replace(/-/g, " ") : "CLI lab";
-      itemBody.innerHTML =
-        '<div class="exam-lab">' +
-        '<p class="lab-note"><strong>' +
-        escapeHtml(labTitle) +
-        "</strong> — CLI lab placeholder. The production runner embeds <code>" +
-        escapeHtml(item.fileName || "") +
-        "</code>. Use <strong>Next</strong> when you have completed the required steps (simulated pass for scoring).</p>" +
-        '<p class="lab-spoiler-row"><button type="button" class="exam-lab-spoiler-btn" id="labSpoilerBtn">Spoiler</button></p>' +
-        "</div>";
-      var btn = document.getElementById("labSpoilerBtn");
-      if (btn) {
-        btn.addEventListener("click", function () {
-          openLabSpoiler(item);
-        });
+      var fn = item.fileName;
+      if (!fn) {
+        itemBody.innerHTML =
+          '<p style="color:#9fb0cc">CLI lab unavailable for this placeholder item.</p>';
+        return;
       }
+      var url = new URL(LAB_PAGE_BASE + fn, window.location.origin);
+      url.searchParams.set("examSim", "1");
+      var src = url.pathname + url.search;
+      itemBody.innerHTML =
+        '<div class="exam-lab-embed">' +
+        '<p class="exam-lab-hint">Complete the lab below, then press <strong>Next</strong> when finished (advance counts as completed for scoring).</p>' +
+        '<iframe class="exam-lab-iframe" id="examLabFrame" title="CLI lab simulation" src="' +
+        escapeHtml(src) +
+        '"></iframe>' +
+        "</div>";
     }
 
     async function renderCurrentItem() {
@@ -969,17 +885,6 @@
         attemptResults.push(rec);
       }
       await finalizeAttempt("quit");
-    });
-
-    document.getElementById("spoilerClose").addEventListener("click", function () {
-      spoilerOverlay.hidden = true;
-      spoilerOverlay.setAttribute("aria-hidden", "true");
-    });
-    spoilerOverlay.addEventListener("click", function (e) {
-      if (e.target === spoilerOverlay) {
-        spoilerOverlay.hidden = true;
-        spoilerOverlay.setAttribute("aria-hidden", "true");
-      }
     });
 
     document.getElementById("resultsContinue").addEventListener("click", function () {

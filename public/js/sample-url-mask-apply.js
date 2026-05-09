@@ -171,3 +171,42 @@
   }
 })();
 
+/** CCNA timed exam embed (?examSim=1): hide chrome so iframe matches runner footer UX */
+(function () {
+  "use strict";
+
+  function examSimActive() {
+    try {
+      return new URLSearchParams(location.search).get("examSim") === "1";
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function isCcnaLabPath() {
+    var p = (location.pathname || "").toLowerCase();
+    return p.indexOf("/ccna-study/ccna_labs/") !== -1;
+  }
+
+  function applyExamSimEmbedStyles() {
+    if (!examSimActive()) return;
+    if (document.head.querySelector("style[data-bcc-exam-sim-embed]")) return;
+    var s = document.createElement("style");
+    s.setAttribute("data-bcc-exam-sim-embed", "1");
+    var css =
+      "nav.sim-nav{display:none!important}" + ".ccna-objective-tag{display:none!important}";
+    if (isCcnaLabPath()) {
+      css +=
+        "body{padding-bottom:max(16px,env(safe-area-inset-bottom,0px))!important}";
+    }
+    s.textContent = css;
+    document.head.appendChild(s);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", applyExamSimEmbedStyles);
+  } else {
+    applyExamSimEmbedStyles();
+  }
+})();
+
