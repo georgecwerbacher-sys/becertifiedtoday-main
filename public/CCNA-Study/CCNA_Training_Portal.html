@@ -852,22 +852,30 @@
           </section>
 
           <h3 class="section-heading">Test Simulation</h3>
-          <section class="start-box" aria-label="Timed test simulation (placeholder)">
+          <section class="start-box" aria-label="Timed test simulation">
             <p style="margin: 0 0 10px; color: #e6edf3; line-height: 1.4; font-size: 1.05rem; font-weight: 800;">
-              Timed practice test — 50 questions, 4 drag-and-drops, 2 labs, one clock
+              Timed practice test — 120 minutes · 40 questions · 8 drag-and-drops · 3 labs · one clock
             </p>
             <p style="margin: 0 0 10px; color: #b8c3d6; line-height: 1.5;">
-              Sit for a single timed practice session that feels closer to test day: a long mixed run with a countdown, no peeking at answers until you finish, and a clear outcome when time is up.
+              Single mixed session like test day: multiple-choice, drag-and-drop, and CLI labs in random order. Purchase unlocks one run;
+              full runner UI connects here after Stripe is configured on Vercel.
             </p>
             <ul style="margin: 0 0 12px 1.2rem; color: #b8c3d6; line-height: 1.55; padding: 0;">
-              <li><strong>56 mixed items per run</strong> — 50 questions, 4 drag-and-drops, 2 CLI labs — randomized in order.</li>
+              <li><strong>51 mixed items per run</strong> — 40 questions, 8 drag-and-drops, 3 labs — randomized in order.</li>
               <li><strong>Every item type in play</strong> — multiple-choice, labs, and drag-and-drop tasks.</li>
               <li><strong>Timer-driven</strong> — the session runs against the clock from start to submit.</li>
               <li><strong>Pass or fail at the end.</strong></li>
             </ul>
             <div class="study-actions">
-              <button type="button" class="start-btn is-placeholder" disabled>Start test simulation</button>
+              <button type="button" class="start-btn" id="ccnaTestSimPurchaseBtn">
+                Purchase timed test (Stripe)
+              </button>
             </div>
+            <p style="margin: 12px 0 0; font-size: 0.82rem; color: #7d8ea3; line-height: 1.45">
+              Uses Checkout after you set <code>STRIPE_SECRET_KEY</code>, <code>STRIPE_PRICE_CCNA_TEST_SIM</code>, and
+              <code>PUBLIC_SITE_URL</code> in Vercel. Blueprint:
+              <a href="/CCNA-Study/data/ccna-test-simulation-blueprint.json" style="color: #9fb0cc">ccna-test-simulation-blueprint.json</a>.
+            </p>
           </section>
         </div>
       </section>
@@ -936,5 +944,6 @@
   </div>
   <script src="/CCNA-Study/js/ccna-practice-100-hub.js" defer></script>
   <script src="/CCNA-Study/js/ccna-dnd-25-hub.js" defer></script>
+  <script src="/CCNA-Study/js/ccna-test-checkout.js" defer></script>
 </body>
 </html>
