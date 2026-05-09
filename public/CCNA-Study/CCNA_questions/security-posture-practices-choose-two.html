@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — IPv6 static route toward R18 WAN</title>
+  <title>CCNA — Security posture (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -270,168 +270,60 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Refer to the exhibit.</h1>
-    <div class="exhibit-stack">
-      <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/ipv6-route-r17-r18-wan-exhibit.png" alt="" width="900" decoding="async" loading="lazy" />
-      </figure>
-    </div>
-    <p class="stem-after-exhibit">Which IPv6 configuration is required for R17 to successfully ping the WAN interface on R18?</p>
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="v617r181" value="A" aria-label="Select answer option A" />
-        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">A. Option A
+    <h1>Which two practices are recommended for an acceptable security posture in a network? (Choose two)</h1>
 
-R17#
-!
-no ip domain lookup
-ip cef
-ipv6 unicast-routing
-!
-interface FastEthernet0/0
-no ip address
-duplex auto
-speed auto
-ipv6 address 2001:DB8:2::201/64
-!
-interface FastEthernet1/0
-no ip address
-duplex auto
-speed auto
-ipv6 address 2001:DB8:3::201/64
-!
-no cdp log mismatch duplex
-ipv6 route 2001:DB8:4::/64 2001:DB8:3::301</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="v617r181" value="B" aria-label="Select answer option B" />
-        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">B. Option B
-
-R17#
-!
-no ip domain lookup
-ip cef
-ipv6 unicast-routing
-!
-interface FastEthernet0/0
-no ip address
-duplex auto
-speed auto
-ipv6 address 2001:DB8:2::201/64
-!
-interface FastEthernet1/0
-no ip address
-duplex auto
-speed auto
-ipv6 address 2001:DB8:3::201/64
-!
-no cdp log mismatch duplex
-ipv6 route 2001:DB8:4::/64 2001:DB8:2::201</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="v617r181" value="C" aria-label="Select answer option C" />
-        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">C. Option C
-
-R17#
-!
-no ip domain lookup
-ip cef
-!
-interface FastEthernet0/0
-no ip address
-duplex auto
-speed auto
-ipv6 address 2001:DB8:3::201/64
-!
-interface FastEthernet1/0
-no ip address
-duplex auto
-speed auto
-ipv6 address 2001:DB8:2::201/64
-!
-no cdp log mismatch duplex
-ipv6 route 2001:DB8:4::/64 2001:DB8:5::101</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="v617r181" value="D" aria-label="Select answer option D" />
-        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">D. Option D
-
-R17#
-!
-no ip domain lookup
-ip cef
-ipv6 cef
-!
-interface FastEthernet0/0
-no ip address
-duplex auto
-speed auto
-ipv6 address 2001:DB8:2::201/64
-!
-interface FastEthernet1/0
-no ip address
-duplex auto
-speed auto
-ipv6 address 2001:DB8:3::201/64
-!
-no cdp log mismatch duplex
-ipv6 route 2001:DB8:4::/64 2001:DB8:4::302</pre>
-    </label>
-
+    <label class="choice"><input type="checkbox" name="secpst1" value="A" />A. Maintain network equipment in a secure location</label>
+    <label class="choice"><input type="checkbox" name="secpst1" value="B" />B. Backup device configurations to encrypted USB drives for secure retrieval</label>
+    <label class="choice"><input type="checkbox" name="secpst1" value="C" />C. Use a cryptographic keychain to authenticate to network devices</label>
+    <label class="choice"><input type="checkbox" name="secpst1" value="D" />D. Place internal email and file servers in a designated DMZ</label>
+    <label class="choice"><input type="checkbox" name="secpst1" value="E" />E. Disable unused or unnecessary ports, interfaces and services</label>
 
     <div class="actions">
+      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/collapsed-core-small-organization-cost.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ipv6-anycast-unicast-multiple-interfaces.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/commodity-switches-data-plane-forwarding.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wan-topology-full-mesh-reliability.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 The router enables IPv6 routing with ipv6 unicast-routing, keeps the pictured interface addresses on FastEthernet0/0 (toward R16) and FastEthernet1/0 (toward R18), and installs a recursion-free static toward 2001:db8:4::/64 via the on-link neighbor 2001:db8:3::301\u2014the address R18 owns on Fa1/0 facing R17\u2014so echo requests reach Fa0/0 on R18 in 2001:db8:4::/64. Option B sends traffic toward local Fa0/0 instead of R18. Option C omits ipv6 unicast-routing, swaps LAN addressing on the wrong physical interfaces, and uses an irrelevant next hop on the PC segment. Option D omits ipv6 unicast-routing, adds only CEF, and references PC2 as a next hop that is not adjacent on the R17\u2013R18 link.";
+      var CORRECT = ["A", "E"];
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="secpst1"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = CORRECT_MSG;
+          answerBox.textContent = "Correct. A and E \u2014 Physically securing equipment and disabling unused ports, interfaces, and services reduce risk and attack surface. Internal email and file servers normally belong inside the trusted network, not a DMZ. Encrypted USB backups can be acceptable but are not the paired best-practice answer with these distractors.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="v617r181"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>

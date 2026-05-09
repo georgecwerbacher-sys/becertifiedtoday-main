@@ -3,21 +3,29 @@
 
   var BASE = "/CCNA-Study/CCNA_D_D/";
   var SLUGS = [
-    "dragdrop-snmp-verify-commands",
     "dragdrop-80211-standards-matching",
-    "dragdrop-dhcp-functions-unused",
-    "dragdrop-ipv6-address-type-characteristics",
-    "dragdrop-enable-secret-command-sequence",
-    "dragdrop-networking-types-statements-unused",
-    "dragdrop-dns-lookup-components",
-    "dragdrop-aaa-terms-descriptions",
-    "dragdrop-lightweight-ap-operation-modes",
-    "dragdrop-device-management-types-by-description",
-    "dragdrop-tcpip-protocols-primary-transport",
-    "dragdrop-rapid-pvst-forwarding-state-actions",
     "dragdrop-aaa-services-by-description",
+    "dragdrop-aaa-terms-descriptions",
+    "dragdrop-device-management-dna-traditional-netflow-cli",
+    "dragdrop-device-management-types-by-description",
+    "dragdrop-dhcp-functions-unused",
+    "dragdrop-dns-lookup-components",
+    "dragdrop-enable-secret-command-sequence",
+    "dragdrop-ipv6-address-type-characteristics",
+    "dragdrop-ipv6-anycast-multicast-unicast-details",
+    "dragdrop-lightweight-ap-operation-modes",
+    "dragdrop-networking-statements-by-type-v2",
+    "dragdrop-networking-types-statements-unused",
+    "dragdrop-qos-terms-descriptions",
+    "dragdrop-qos-traffic-types-delivery-mechanisms",
+    "dragdrop-radius-tacacs-aaa-functions",
+    "dragdrop-rapid-pvst-forwarding-state-actions",
+    "dragdrop-security-program-elements-descriptions",
+    "dragdrop-snmp-verify-commands",
     "dragdrop-tcp-udp-details-by-category",
-    "dragdrop-networking-statements-by-type-v2"
+    "dragdrop-tcpip-protocols-primary-transport",
+    "dragdrop-traditional-controller-networking-statements",
+    "dragdrop-wireless-ap-architecture-facts-unused",
   ];
 
   function shuffle(arr) {

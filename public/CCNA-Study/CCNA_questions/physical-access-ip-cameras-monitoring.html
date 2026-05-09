@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — IPv6 static route toward R18 WAN</title>
+  <title>CCNA — Physical access control</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -270,132 +270,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Refer to the exhibit.</h1>
-    <div class="exhibit-stack">
-      <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/ipv6-route-r17-r18-wan-exhibit.png" alt="" width="900" decoding="async" loading="lazy" />
-      </figure>
-    </div>
-    <p class="stem-after-exhibit">Which IPv6 configuration is required for R17 to successfully ping the WAN interface on R18?</p>
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="v617r181" value="A" aria-label="Select answer option A" />
-        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">A. Option A
+    <h1>Which action implements physical access control as part of the security program of an organization?</h1>
 
-R17#
-!
-no ip domain lookup
-ip cef
-ipv6 unicast-routing
-!
-interface FastEthernet0/0
-no ip address
-duplex auto
-speed auto
-ipv6 address 2001:DB8:2::201/64
-!
-interface FastEthernet1/0
-no ip address
-duplex auto
-speed auto
-ipv6 address 2001:DB8:3::201/64
-!
-no cdp log mismatch duplex
-ipv6 route 2001:DB8:4::/64 2001:DB8:3::301</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="v617r181" value="B" aria-label="Select answer option B" />
-        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">B. Option B
-
-R17#
-!
-no ip domain lookup
-ip cef
-ipv6 unicast-routing
-!
-interface FastEthernet0/0
-no ip address
-duplex auto
-speed auto
-ipv6 address 2001:DB8:2::201/64
-!
-interface FastEthernet1/0
-no ip address
-duplex auto
-speed auto
-ipv6 address 2001:DB8:3::201/64
-!
-no cdp log mismatch duplex
-ipv6 route 2001:DB8:4::/64 2001:DB8:2::201</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="v617r181" value="C" aria-label="Select answer option C" />
-        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">C. Option C
-
-R17#
-!
-no ip domain lookup
-ip cef
-!
-interface FastEthernet0/0
-no ip address
-duplex auto
-speed auto
-ipv6 address 2001:DB8:3::201/64
-!
-interface FastEthernet1/0
-no ip address
-duplex auto
-speed auto
-ipv6 address 2001:DB8:2::201/64
-!
-no cdp log mismatch duplex
-ipv6 route 2001:DB8:4::/64 2001:DB8:5::101</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="v617r181" value="D" aria-label="Select answer option D" />
-        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">D. Option D
-
-R17#
-!
-no ip domain lookup
-ip cef
-ipv6 cef
-!
-interface FastEthernet0/0
-no ip address
-duplex auto
-speed auto
-ipv6 address 2001:DB8:2::201/64
-!
-interface FastEthernet1/0
-no ip address
-duplex auto
-speed auto
-ipv6 address 2001:DB8:3::201/64
-!
-no cdp log mismatch duplex
-ipv6 route 2001:DB8:4::/64 2001:DB8:4::302</pre>
-    </label>
-
+    <label class="choice"><input type="radio" name="phyipc1" value="A" />A. setting up IP cameras to monitor key infrastructure</label>
+    <label class="choice"><input type="radio" name="phyipc1" value="B" />B. backing up syslogs at a remote location</label>
+    <label class="choice"><input type="radio" name="phyipc1" value="C" />C. configuring enable passwords on network devices</label>
+    <label class="choice"><input type="radio" name="phyipc1" value="D" />D. configuring a password for the console port</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -404,15 +284,15 @@ ipv6 route 2001:DB8:4::/64 2001:DB8:4::302</pre>
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/collapsed-core-small-organization-cost.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ipv6-anycast-unicast-multiple-interfaces.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/owe-opportunistic-wireless-encryption.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/qos-marking-tos-ipv4-field.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 The router enables IPv6 routing with ipv6 unicast-routing, keeps the pictured interface addresses on FastEthernet0/0 (toward R16) and FastEthernet1/0 (toward R18), and installs a recursion-free static toward 2001:db8:4::/64 via the on-link neighbor 2001:db8:3::301\u2014the address R18 owns on Fa1/0 facing R17\u2014so echo requests reach Fa0/0 on R18 in 2001:db8:4::/64. Option B sends traffic toward local Fa0/0 instead of R18. Option C omits ipv6 unicast-routing, swaps LAN addressing on the wrong physical interfaces, and uses an irrelevant next hop on the PC segment. Option D omits ipv6 unicast-routing, adds only CEF, and references PC2 as a next hop that is not adjacent on the R17\u2013R18 link.";
+      var CORRECT_MSG = "Correct. A \u2014 Cameras monitor physical areas and critical infrastructure as part of a physical security program. Remote syslog backup is operational logging. Enable and console passwords protect device administration, not facility perimeter control.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -426,7 +306,7 @@ ipv6 route 2001:DB8:4::/64 2001:DB8:4::302</pre>
         }
       }
 
-      document.querySelectorAll('input[name="v617r181"]').forEach(function (el) {
+      document.querySelectorAll('input[name="phyipc1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

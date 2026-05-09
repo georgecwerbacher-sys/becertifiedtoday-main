@@ -643,24 +643,24 @@
             </p>
             <div class="sim-grid" aria-label="Study groups">
               <article class="sim-box">
-                <h4 class="sim-box-title">Practice Questions (1-100)</h4>
+                <h4 class="sim-box-title">Practice questions (1–100)</h4>
                 <p class="study-meta">
-                  <strong>Random</strong> shuffles the active bank once. <strong>Review</strong> shuffles them; whenever feedback is
-                  incorrect, that question is appended to the end of your queue until you finish the session.
+                  First hundred items from the live question bank. <strong>Random</strong> shuffles this bank once.
+                  <strong>Review</strong> shuffles and re-queues any item you miss until the session completes.
                 </p>
-                <div class="study-actions" role="group" aria-label="Practice question modes">
-                  <button type="button" class="start-btn" data-ccna100="random">Random</button>
-                  <button type="button" class="start-btn" data-ccna100="review">Review</button>
+                <div class="study-actions" role="group" aria-label="Practice question modes bank 1">
+                  <button type="button" class="start-btn" data-ccna100="random" data-ccna100-bank="1">Random</button>
+                  <button type="button" class="start-btn" data-ccna100="review" data-ccna100-bank="1">Review</button>
                 </div>
               </article>
               <article class="sim-box">
-                <h4 class="sim-box-title">Practice Questions (101-200)</h4>
+                <h4 class="sim-box-title">Practice questions (101–199)</h4>
                 <p class="study-meta">
-                  New additions in this range (currently 101-139) are included in the same active question session modes.
+                  Remaining items in the same bank (99 questions). Same <strong>Random</strong> and <strong>Review</strong> behavior as the first set, scoped to this half only.
                 </p>
-                <div class="study-actions" role="group" aria-label="Practice question modes">
-                  <button type="button" class="start-btn" data-ccna100="random">Random</button>
-                  <button type="button" class="start-btn" data-ccna100="review">Review</button>
+                <div class="study-actions" role="group" aria-label="Practice question modes bank 2">
+                  <button type="button" class="start-btn" data-ccna100="random" data-ccna100-bank="2">Random</button>
+                  <button type="button" class="start-btn" data-ccna100="review" data-ccna100-bank="2">Review</button>
                 </div>
               </article>
             </div>
@@ -670,9 +670,10 @@
           <section class="start-box" aria-label="Drag and drop practice">
             <div class="sim-grid" aria-label="Drag-and-drop groups">
               <article class="sim-box">
-                <h4 class="sim-box-title">Drag and Drop (1-25)</h4>
+                <h4 class="sim-box-title">Drag and drop (all exercises)</h4>
                 <p class="study-meta">
-                  Start a drag-and-drop session from the active 1-25 container using random or review mode.
+                  Full drag-and-drop bank (23 matching labs). <strong>Random</strong> picks a shuffled order;
+                  <strong>Review</strong> uses the same mode flag as the sample hub for repeated practice.
                 </p>
                 <div class="study-actions">
                   <button type="button" class="start-btn" data-ccnadd25="random">Random</button>
