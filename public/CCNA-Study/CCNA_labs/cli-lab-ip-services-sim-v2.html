@@ -766,31 +766,103 @@
       <div class="cli-modal-body">
         <section class="topology-scrape" aria-label="Helper notes">
           <h2>IP Services Sim v2 — implementation hints</h2>
-          <ul class="helper-bullets">
-            <li>
-              <strong>Task 1 (R2):</strong> Build standard ACL <strong>XLATE</strong> (permit the sources R3 needs), define
-              <code>ip nat pool test_pool</code> on 10.10.10.0/24, then <code>ip nat inside source list XLATE pool test_pool</code>
-              without NVI. Apply <code>ip nat inside</code> and <code>ip nat outside</code> on the interfaces toward R3 and R1.
-              From R3, ping <code>192.168.100.1</code> once routing and NAT line up.
-            </li>
-            <li>
-              <strong>Task 2 (R3):</strong> DHCP client on <code>GigabitEthernet0/2</code>: <code>interface GigabitEthernet0/2</code>,
-              then <code>ip address dhcp</code>. Confirm the DHCP server (often R1) has a scope for that segment.
-            </li>
-            <li>
-              <strong>Task 3:</strong> On <strong>R1</strong>, <code>configure terminal</code> then <code>ntp master 1</code>. On
-              <strong>R2</strong>, <code>ntp server 10.1.2.1</code> so R2 is a client to R1’s address toward R2.
-            </li>
-            <li>
-              <strong>Task 4 (R3):</strong> <code>crypto key generate rsa</code>; user <code>root</code> with secret
-              <code>s3cret</code>; <code>line vty 0 4</code> with <code>transport input ssh</code> only; from R1, SSH to R3’s
-              GigabitEthernet0/2 address as <code>root</code>.
-            </li>
-            <li>
-              <strong>Useful checks:</strong> on R2, <code>show ip nat translations</code> and <code>show access-lists XLATE</code>;
-              on R3, <code>show ip interface brief</code>; from R1, <code>ssh root@</code> plus that G0/2 IP.
-            </li>
-          </ul>
+          <p class="tasks" style="margin: 0 0 14px; color: #b8c3d6; font-size: 0.92rem; line-height: 1.5">
+            Task 1 sequence must match the lab STEPS on <strong>R2</strong>. After NAT works, from <strong>R3</strong> exec run
+            <code>ping 192.168.100.1</code>.
+          </p>
+          <div class="spoiler-cli-body">
+            <div class="spoiler-task" aria-labelledby="helper-cap-t1">
+              <p class="spoiler-terminal-cap" id="helper-cap-t1">Task 1 — R2 (NAT, ACL XLATE)</p>
+              <div class="spoiler-terminal" role="region" aria-label="Helper Task 1 R2 CLI">
+                <div class="spoiler-terminal-bar">
+                  <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+                  <span class="spoiler-terminal-title">R2 — Terminal</span>
+                </div>
+                <pre class="spoiler-terminal-pre">R2# configure terminal
+R2(config)# ip access-list standard XLATE
+R2(config-std-nacl)# permit 10.2.3.3
+R2(config-std-nacl)# permit 192.168.3.1
+R2(config-std-nacl)# permit 10.1.3.11
+R2(config-std-nacl)# exit
+R2(config)# interface GigabitEthernet0/1
+R2(config-if)# ip nat inside
+R2(config-if)# exit
+R2(config)# interface GigabitEthernet0/0
+R2(config-if)# ip nat outside
+R2(config-if)# exit
+R2(config)# ip nat pool test_pool 10.10.10.1 10.10.10.254 netmask 255.255.255.0
+R2(config)# ip nat inside source list XLATE pool test_pool</pre>
+              </div>
+            </div>
+
+            <div class="spoiler-task" aria-labelledby="helper-cap-t2">
+              <p class="spoiler-terminal-cap" id="helper-cap-t2">Task 2 — R3 (DHCP client on Gi0/2)</p>
+              <div class="spoiler-terminal" role="region" aria-label="Helper Task 2 R3 CLI">
+                <div class="spoiler-terminal-bar">
+                  <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+                  <span class="spoiler-terminal-title">R3 — Terminal</span>
+                </div>
+                <pre class="spoiler-terminal-pre">R3# configure terminal
+R3(config)# interface GigabitEthernet0/2
+R3(config-if)# ip address dhcp</pre>
+              </div>
+            </div>
+
+            <div class="spoiler-task" aria-labelledby="helper-cap-t3-r1">
+              <p class="spoiler-terminal-cap" id="helper-cap-t3-r1">Task 3 — R1 (NTP server)</p>
+              <div class="spoiler-terminal" role="region" aria-label="Helper Task 3 R1 CLI">
+                <div class="spoiler-terminal-bar">
+                  <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+                  <span class="spoiler-terminal-title">R1 — Terminal</span>
+                </div>
+                <pre class="spoiler-terminal-pre">R1# configure terminal
+R1(config)# ntp master 1</pre>
+              </div>
+            </div>
+
+            <div class="spoiler-task" aria-labelledby="helper-cap-t3-r2">
+              <p class="spoiler-terminal-cap" id="helper-cap-t3-r2">Task 3 — R2 (NTP client to R1)</p>
+              <div class="spoiler-terminal" role="region" aria-label="Helper Task 3 R2 NTP CLI">
+                <div class="spoiler-terminal-bar">
+                  <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+                  <span class="spoiler-terminal-title">R2 — Terminal</span>
+                </div>
+                <pre class="spoiler-terminal-pre">R2# configure terminal
+R2(config)# ntp server 10.1.2.1</pre>
+              </div>
+            </div>
+
+            <div class="spoiler-task" aria-labelledby="helper-cap-t4">
+              <p class="spoiler-terminal-cap" id="helper-cap-t4">Task 4 — R3 (SSH)</p>
+              <div class="spoiler-terminal" role="region" aria-label="Helper Task 4 R3 SSH CLI">
+                <div class="spoiler-terminal-bar">
+                  <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+                  <span class="spoiler-terminal-title">R3 — Terminal</span>
+                </div>
+                <pre class="spoiler-terminal-pre">R3# configure terminal
+R3(config)# crypto key generate rsa modulus 1024
+R3(config)# username root privilege 15 secret s3cret
+R3(config)# line vty 0 4
+R3(config-line)# login local
+R3(config-line)# transport input ssh
+R3(config-line)# end</pre>
+              </div>
+            </div>
+
+            <div class="spoiler-task" aria-labelledby="helper-cap-verify">
+              <p class="spoiler-terminal-cap" id="helper-cap-verify">Useful verification commands</p>
+              <div class="spoiler-terminal" role="region" aria-label="Helper verification CLI examples">
+                <div class="spoiler-terminal-bar">
+                  <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+                  <span class="spoiler-terminal-title">Mixed — show / SSH</span>
+                </div>
+                <pre class="spoiler-terminal-pre">R2# show ip nat translations
+R2# show access-lists XLATE
+R3# show ip interface brief
+R1# ssh root@&lt;R3_Gi0/2_address&gt;</pre>
+              </div>
+            </div>
+          </div>
         </section>
       </div>
     </div>
