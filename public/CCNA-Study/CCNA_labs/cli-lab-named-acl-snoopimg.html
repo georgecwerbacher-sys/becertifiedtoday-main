@@ -924,22 +924,61 @@ Sw3# copy running-config startup-config</pre>
         <button type="button" class="cli-modal-close" id="spoilerClose" aria-label="Close spoiler">×</button>
       </header>
       <div class="cli-modal-body spoiler-cli-body">
-        <div class="spoiler-task" aria-labelledby="spoiler-cap-example">
-          <p class="spoiler-terminal-cap" id="spoiler-cap-example">Example — primary device</p>
-          <div class="spoiler-terminal" role="region" aria-label="Example CLI solution">
-            <div class="spoiler-terminal-bar">
-              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
-              <span class="spoiler-terminal-title">Sw1 — Terminal</span>
-            </div>
-            <pre class="spoiler-terminal-pre">Sw1# configure terminal
-Sw1(config)# hostname REPLACE_HOSTNAME</pre>
-          </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t1">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t1">Task 1 — Sw3</p>
+          <pre class="spoiler-cli-pre">Sw3# configure terminal
+Sw3(config)# username devnet privilege 15 algorithm-type sha256 secret access8cli
+Sw3(config)# line vty 0 4
+Sw3(config-line)# transport input telnet
+Sw3(config-line)# login local
+Sw3(config-line)# end
+Sw3#</pre>
         </div>
-        <p class="tasks" style="margin: 0; color: #8b9cbb; font-size: 0.85rem">
-          Optional: keep a legacy single block with <code>spoiler-cli-pre</code> for simple labs.
-        </p>
-        <pre class="spoiler-cli-pre">REPLACE# show running-config
-! optional second block</pre>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-vfy-sw3">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-vfy-sw3">Verification — Sw3</p>
+          <pre class="spoiler-cli-pre">Sw3# show ip interface brief
+
+Interface        IP-Address      OK? Method    Status Protocol
+...
+Ethernet0/2      172.16.1.6      YES manual    up     up</pre>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-vfy-pc1">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-vfy-pc1">Verification — PC1</p>
+          <pre class="spoiler-cli-pre">PC1&gt; telnet 172.16.1.6
+Trying 172.16.1.6 ... Open
+User Access Verification
+Username: devnet
+Password: access8cli
+Sw3#</pre>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t2">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t2">Task 2 — R1</p>
+          <pre class="spoiler-cli-pre">R1# configure terminal
+R1(config)# ip access-list extended INTERNET_ACL
+R1(config-ext-nacl)# permit tcp 172.16.0.0 0.0.255.255 any eq 443
+R1(config-ext-nacl)# permit tcp 172.16.101.0 0.0.0.255 any eq telnet
+R1(config-ext-nacl)# deny ip any any log-input
+R1(config-ext-nacl)# exit
+R1(config)# interface Ethernet0/0
+R1(config-if)# ip access-group INTERNET_ACL in
+R1(config-if)# exit
+R1(config)# interface Ethernet0/3
+R1(config-if)# ip access-group INTERNET_ACL in</pre>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t3">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t3">Task 3 — Sw1</p>
+          <pre class="spoiler-cli-pre">Sw1# configure terminal
+Sw1(config)# ip dhcp snooping
+Sw1(config)# ip dhcp snooping vlan 101
+Sw1(config)# no ip dhcp snooping information option
+Sw1(config)# ip dhcp snooping verify mac-address</pre>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-save">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-save">Lab completion — save (privileged EXEC on each)</p>
+          <pre class="spoiler-cli-pre">R1# copy running-config startup-config
+Sw1# copy running-config startup-config
+Sw3# copy running-config startup-config</pre>
+        </div>
       </div>
     </div>
   </div>
