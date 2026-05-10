@@ -105,6 +105,23 @@
       margin-top: 8px;
       text-align: center;
     }
+    .diagram-stage {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      max-width: min(640px, 100%);
+      margin: 0 auto;
+      line-height: 0;
+    }
+    .diagram-stage img {
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+      border-radius: 8px;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
     .device-pick {
       margin: 12px auto 8px;
       padding: 12px 14px;
@@ -538,7 +555,16 @@
     <main class="card">
       <h1>IP Services Sim Version 2</h1>
 
-      <div class="diagram-wrap" aria-label="Lab tasks and device selection">
+      <div class="diagram-wrap" aria-label="Topology diagram and device selection">
+        <div class="diagram-stage">
+          <img
+            src="/CCNA-Study/CCNA_labs/images/ip-services-sim-v2-topology.png"
+            width="920"
+            height="446"
+            alt="Topology: R1 (NTP server, DHCP pool TEST) on 10.1.2.0/24 and 10.1.3.0/24, R2 (NAT gateway, ip nat inside Gi0/1, ip nat outside Gi0/0, pool test_pool 10.10.10.0/24) between R1 and R3, R3 (DHCP client on Gi0/2, SSH server) on 10.2.3.0/24."
+            decoding="async"
+          />
+        </div>
         <div class="device-pick" role="group" aria-label="Device for CLI">
           <strong style="color: #e6edf3">Select device</strong>
           <label><input type="radio" name="labPrimaryDev" value="R1" /> R1</label>
