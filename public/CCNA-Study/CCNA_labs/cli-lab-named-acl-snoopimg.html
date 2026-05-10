@@ -829,24 +829,27 @@
       </header>
       <div class="cli-modal-body">
         <section class="topology-scrape" aria-label="Helper notes">
-          <h2>Task 1 — Local account on Sw103 (Telnet, VTY 0–4)</h2>
+          <h2>Task 1 — Local account on Sw3 (Telnet, VTY 0–4)</h2>
           <p>
-            On <strong>Sw103</strong>, create the user, then allow Telnet only on VTY 0–4 with local login:
+            On <strong>Sw3</strong>, create the user, then allow Telnet only on VTY 0–4 with local login:
           </p>
-          <pre class="spoiler-cli-pre">username devnet privilege 15 algorithm-type sha256 secret access8cli
-line vty 0 4
- transport input telnet
- login local</pre>
+          <pre class="spoiler-cli-pre">Sw3# configure terminal
+Sw3(config)# username devnet privilege 15 algorithm-type sha256 secret access8cli
+Sw3(config)# line vty 0 4
+Sw3(config-line)# transport input telnet
+Sw3(config-line)# login local
+Sw3(config-line)# end
+Sw3#</pre>
           <p>
             <strong>Note:</strong> Privilege level 15 is privileged EXEC (enable mode) and allows all commands by default. You cannot use the
             keyword <code>password</code> after <code>algorithm-type sha256</code>; use <code>secret</code> instead.
           </p>
           <h2 style="margin-top: 1rem; font-size: 0.95rem">Verification</h2>
           <p>
-            Find an address on Sw103 to Telnet to (from PC1). On Sw103, use <code>show ip interface brief</code>. Example: if
+            Find an address on Sw3 to Telnet to (from PC1). On Sw3, use <code>show ip interface brief</code>. Example: if
             <code>Ethernet0/2</code> is <code>172.16.1.6</code>:
           </p>
-          <pre class="spoiler-cli-pre">Sw103# show ip interface brief
+          <pre class="spoiler-cli-pre">Sw3# show ip interface brief
 
 Interface        IP-Address      OK? Method    Status Protocol
 ...
@@ -857,47 +860,50 @@ Trying 172.16.1.6 ... Open
 User Access Verification
 Username: devnet
 Password: access8cli
-Sw103#</pre>
+Sw3#</pre>
 
           <h2 style="margin-top: 1.25rem; font-size: 0.95rem">
             Task 2 — Extended ACL <code>INTERNET_ACL</code> and apply on R1
           </h2>
           <ul class="helper-bullets">
             <li>Allow HTTPS from <code>172.16.0.0/16</code> (TCP port 443).</li>
-            <li>Allow Telnet only for VLAN 101 (use <code>172.16.101.0/24</code> from the topology — confirm with <code>show run</code> on Sw101 for <code>Ethernet0/0</code> in VLAN 101).</li>
+            <li>Allow Telnet only for VLAN 101 (use <code>172.16.101.0/24</code> from the topology — confirm with <code>show run</code> on Sw1 for <code>Ethernet0/0</code> in VLAN 101).</li>
             <li>Deny other traffic with <code>log-input</code> (ingress interface, source MAC, source/dest IP and ports).</li>
           </ul>
           <p>On <strong>R1</strong>, add ACEs to the existing named extended ACL:</p>
-          <pre class="spoiler-cli-pre">ip access-list extended INTERNET_ACL
- permit tcp 172.16.0.0 0.0.255.255 any eq 443
- permit tcp 172.16.101.0 0.0.0.255 any eq telnet
- deny ip any any log-input</pre>
+          <pre class="spoiler-cli-pre">R1# configure terminal
+R1(config)# ip access-list extended INTERNET_ACL
+R1(config-ext-nacl)# permit tcp 172.16.0.0 0.0.255.255 any eq 443
+R1(config-ext-nacl)# permit tcp 172.16.101.0 0.0.0.255 any eq telnet
+R1(config-ext-nacl)# deny ip any any log-input
+R1(config-ext-nacl)# exit</pre>
           <p>
             Apply inbound on both LAN-facing interfaces (<code>Ethernet0/0</code> and <code>Ethernet0/3</code>):
           </p>
-          <pre class="spoiler-cli-pre">interface Ethernet0/0
- ip access-group INTERNET_ACL in
-interface Ethernet0/3
- ip access-group INTERNET_ACL in</pre>
+          <pre class="spoiler-cli-pre">R1(config)# interface Ethernet0/0
+R1(config-if)# ip access-group INTERNET_ACL in
+R1(config-if)# exit
+R1(config)# interface Ethernet0/3
+R1(config-if)# ip access-group INTERNET_ACL in</pre>
           <p>
             <strong><code>log-input</code> vs <code>log</code>:</strong> <code>log</code> logs a basic match. <code>log-input</code> adds ingress
             interface, source MAC, and source/destination IPs and ports. Use <code>log-input</code> here for the required detail.
           </p>
 
-          <h2 style="margin-top: 1.25rem; font-size: 0.95rem">Task 3 — DHCP snooping on Sw101</h2>
+          <h2 style="margin-top: 1.25rem; font-size: 0.95rem">Task 3 — DHCP snooping on Sw1</h2>
           <ul class="helper-bullets">
             <li>Enable DHCP snooping for VLAN 101.</li>
             <li>Disable DHCP Option-82 data insertion.</li>
             <li>Enable DHCP snooping MAC address verification.</li>
           </ul>
-          <pre class="spoiler-cli-pre">Sw101(config)# ip dhcp snooping
-Sw101(config)# ip dhcp snooping vlan 101
-Sw101(config)# no ip dhcp snooping information option
-Sw101(config)# ip dhcp snooping verify mac-address</pre>
-          <p><strong>Lab completion — save</strong> from privileged EXEC on each device (simulation CLI: <strong>R1</strong>, <strong>SW1</strong> = Sw101, <strong>SW3</strong> = Sw103):</p>
+          <pre class="spoiler-cli-pre">Sw1(config)# ip dhcp snooping
+Sw1(config)# ip dhcp snooping vlan 101
+Sw1(config)# no ip dhcp snooping information option
+Sw1(config)# ip dhcp snooping verify mac-address</pre>
+          <p><strong>Lab completion — save</strong> from privileged EXEC on each device (simulation CLI: <strong>R1</strong>, <strong>SW1</strong> = Sw1, <strong>SW3</strong> = Sw3):</p>
           <pre class="spoiler-cli-pre">R1# copy running-config startup-config
-Sw101# copy running-config startup-config
-Sw103# copy running-config startup-config</pre>
+Sw1# copy running-config startup-config
+Sw3# copy running-config startup-config</pre>
           <p style="margin-bottom: 0">Use <code>copy run start</code> if you prefer; it normalizes to the same save.</p>
         </section>
       </div>
@@ -1198,12 +1204,14 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         "!",
         "interface Ethernet0/0",
         " ip address 172.16.1.17 255.255.255.252",
+        " ip access-group INTERNET_ACL in",
         "!",
         "interface Ethernet0/1",
         " ip address 209.165.201.1 255.255.255.252",
         "!",
         "interface Ethernet0/3",
         " ip address 172.16.1.21 255.255.255.252",
+        " ip access-group INTERNET_ACL in",
         "!",
         "ip route 0.0.0.0 0.0.0.0 209.165.201.2",
         "!",
