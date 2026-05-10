@@ -1502,15 +1502,17 @@ R3(config-line)# end</pre>
           return;
         }
 
-        // Allow IOS-like mode navigation even when off the strict next step.
+        // Allow IOS-like mode navigation even when off the strict next step,
+        // but only when the next STEPS entry doesn't itself consume this command.
         var u = normalize(line);
         var currentMode = swPrompt.textContent;
-        if (u === "end" && currentMode !== SWITCH_HOST + "#") {
+        var nextStepConsumesLine = stepIndex < STEPS.length && STEPS[stepIndex].test(line);
+        if (u === "end" && currentMode !== SWITCH_HOST + "#" && !nextStepConsumesLine) {
           swPromptOverride = "exec";
           setSwPrompt();
           return;
         }
-        if (u === "exit") {
+        if (u === "exit" && !nextStepConsumesLine) {
           if (currentMode === SWITCH_HOST + "(config-if)#") {
             swPromptOverride = "config";
             setSwPrompt();
@@ -1894,6 +1896,11 @@ R3(config-line)# end</pre>
         });
       });
 
+      // Bind history BEFORE the Enter→submit listener so it captures input.value before submitSw clears it.
+      bindLocalHistory(swCmdline);
+      bindLocalHistory(r1Cmdline);
+      bindLocalHistory(r3Cmdline);
+
       swCmdline.addEventListener("keydown", function (e) {
         if (e.key === "Enter") {
           e.preventDefault();
@@ -1978,10 +1985,6 @@ R3(config-line)# end</pre>
           input.value = state.idx >= state.entries.length ? "" : state.entries[state.idx];
         });
       }
-      bindLocalHistory(swCmdline);
-      bindLocalHistory(r1Cmdline);
-      bindLocalHistory(r3Cmdline);
-
       document.addEventListener("keydown", function (e) {
         if (e.key !== "Escape") return;
         if (spoilerOverlay.classList.contains("is-open")) {
