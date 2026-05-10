@@ -1180,6 +1180,8 @@ Sw2# copy running-config startup-config</pre>
         if (t === "do show ether summ" || t === "do sh ether summ") {
           t = "do show etherchannel summary";
         }
+        if (t === "sh history" || t === "sh hist" || t === "show hist") t = "show history";
+        if (t === "do sh history" || t === "do sh hist" || t === "do show hist") t = "do show history";
         if (t === "copy run start" || t === "copy run st") t = "copy running-configuration startup-configuration";
         if (t === "copy running-config startup-config") t = "copy running-configuration startup-configuration";
         if (t === "interface port-channel 15") t = "interface port-channel15";

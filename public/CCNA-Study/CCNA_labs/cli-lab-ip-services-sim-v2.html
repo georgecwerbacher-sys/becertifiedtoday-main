@@ -1201,12 +1201,23 @@ R3(config-line)# end</pre>
           .replace(/[.;]+$/, "");
         if (t === "conf t" || t === "config t") t = "configure terminal";
         if (t === "sh ver" || t === "show ver" || t === "sh version") t = "show version";
+        if (t === "sh run" || t === "show run" || t === "sh running-config") t = "show running-config";
+        if (t === "do show run" || t === "do sh run") t = "do show running-config";
+        if (t === "sh history" || t === "sh hist" || t === "show hist") t = "show history";
+        if (t === "do sh history" || t === "do sh hist" || t === "do show hist") t = "do show history";
         if (t === "copy run start" || t === "copy run st") t = "copy running-configuration startup-configuration";
         if (t === "copy running-config startup-config") t = "copy running-configuration startup-configuration";
+        if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
         if (/^interface e\d+\/\d+$/.test(t)) {
           t = t.replace(/^interface e/, "interface ethernet");
         }
-
+        if (/^interface (gi|g)\d+\/\d+$/.test(t)) {
+          t = t.replace(/^interface (gi|g)/, "interface gigabitethernet");
+        }
+        if (/^interface (fa|f)\d+\/\d+$/.test(t)) {
+          t = t.replace(/^interface (fa|f)/, "interface fastethernet");
+        }
+        if (t === "no shut") t = "no shutdown";
         return t;
       }
 
@@ -1239,6 +1250,12 @@ R3(config-line)# end</pre>
         "Task 1: complete the NAT sequence on R2. Then from privileged exec on R2, R1, and R3 run copy running-configuration startup-configuration (copy run start) on each device to complete the lab.";
       var PASS_BANNER_IP_DONE =
         "Lab complete: NAT on R2 done and startup-config saved on R2, R1, and R3.";
+      var INVALID_INPUT_MSG = "% Invalid input";
+      var INVALID_INPUT_NUMERIC_HINT_MSG =
+        "% Invalid input — check the lab Tasks and Verification sections for the exact values.";
+      function invalidInputMsgForNormalizedCmd(u) {
+        return /\d/.test(String(u || "")) ? INVALID_INPUT_NUMERIC_HINT_MSG : INVALID_INPUT_MSG;
+      }
 
       function matchShowRun(raw) {
         var u = normalize(raw);
@@ -1249,8 +1266,24 @@ R3(config-line)# end</pre>
         return normalize(raw) === "show version";
       }
 
+      function matchShowHistory(raw) {
+        var u = normalize(raw);
+        return u === "show history" || u === "do show history";
+      }
+
       function matchCopyRunStart(raw) {
         return normalize(raw) === "copy running-configuration startup-configuration";
+      }
+
+      function formatHistoryFor(input) {
+        var state = getLocalHistoryState(input);
+        if (!state.entries.length) return "  (history is empty)";
+        return state.entries
+          .slice(-10)
+          .map(function (cmd, i) {
+            return "  " + (i + 1) + "  " + cmd;
+          })
+          .join("\n");
       }
 
       var nvramSavedSw = false;
@@ -1442,6 +1475,11 @@ R3(config-line)# end</pre>
           return;
         }
 
+        if (matchShowHistory(line)) {
+          appendSw("line-showrun", formatHistoryFor(swCmdline));
+          return;
+        }
+
         if (swIpInEnableMode() && matchShowVersion(line)) {
           appendSw("line-sys", SHOW_VERSION_MSG);
           return;
@@ -1496,7 +1534,7 @@ R3(config-line)# end</pre>
         }
 
         if (stepIndex >= STEPS.length) {
-          appendSw("line-bad", "% Invalid input");
+          appendSw("line-bad", invalidInputMsgForNormalizedCmd(u));
           return;
         }
 
@@ -1514,7 +1552,7 @@ R3(config-line)# end</pre>
             setSwPrompt();
           }
         } else {
-          appendSw("line-bad", "% Invalid input");
+          appendSw("line-bad", invalidInputMsgForNormalizedCmd(u));
         }
       }
 
@@ -1555,6 +1593,11 @@ R3(config-line)# end</pre>
 
         if (matchShowRun(line)) {
           appendR1("line-showrun", ROUTER_SHOW_RUN_SNAPSHOT);
+          return;
+        }
+
+        if (matchShowHistory(line)) {
+          appendR1("line-showrun", formatHistoryFor(r1Cmdline));
           return;
         }
 
@@ -1628,7 +1671,7 @@ R3(config-line)# end</pre>
           return;
         }
 
-        appendR1("line-bad", "% Invalid input");
+        appendR1("line-bad", invalidInputMsgForNormalizedCmd(u));
       }
 
       /** R3 — IOS-like modes + show running-config (read-only exhibit) */
@@ -1668,6 +1711,11 @@ R3(config-line)# end</pre>
 
         if (matchShowRun(line)) {
           appendR3("line-showrun", ROUTER3_SHOW_RUN_SNAPSHOT);
+          return;
+        }
+
+        if (matchShowHistory(line)) {
+          appendR3("line-showrun", formatHistoryFor(r3Cmdline));
           return;
         }
 
@@ -1746,7 +1794,7 @@ R3(config-line)# end</pre>
           return;
         }
 
-        appendR3("line-bad", "% Invalid input");
+        appendR3("line-bad", invalidInputMsgForNormalizedCmd(u));
       }
 
       function wireFloatingModal(dialogEl, overlayEl) {

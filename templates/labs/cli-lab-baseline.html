@@ -1030,6 +1030,8 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         if (t === "sh run" || t === "show run" || t === "sh running-config") t = "show running-config";
         if (t === "do show run" || t === "do sh run") t = "do show running-config";
         if (t === "sh ver" || t === "show ver" || t === "sh version") t = "show version";
+        if (t === "sh history" || t === "sh hist" || t === "show hist") t = "show history";
+        if (t === "do sh history" || t === "do sh hist" || t === "do show hist") t = "do show history";
         if (t === "copy run start" || t === "copy run st") t = "copy running-configuration startup-configuration";
         if (t === "copy running-config startup-config") t = "copy running-configuration startup-configuration";
         if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
@@ -1087,8 +1089,24 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         return normalize(raw) === "show version";
       }
 
+      function matchShowHistory(raw) {
+        var u = normalize(raw);
+        return u === "show history" || u === "do show history";
+      }
+
       function matchCopyRunStart(raw) {
         return normalize(raw) === "copy running-configuration startup-configuration";
+      }
+
+      function formatHistoryFor(input) {
+        var state = getLocalHistoryState(input);
+        if (!state.entries.length) return "  (history is empty)";
+        return state.entries
+          .slice(-10)
+          .map(function (cmd, i) {
+            return "  " + (i + 1) + "  " + cmd;
+          })
+          .join("\n");
       }
 
       var nvramSavedSw = false;
@@ -1365,6 +1383,11 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
           return;
         }
 
+        if (matchShowHistory(line)) {
+          appendSw("line-showrun", formatHistoryFor(swCmdline));
+          return;
+        }
+
         if (swInEnableMode() && matchShowVersion(line)) {
           appendSw("line-sys", SHOW_VERSION_MSG);
           return;
@@ -1476,6 +1499,11 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
 
         if (matchShowRun(line)) {
           appendSw2("line-showrun", SWITCH2_SHOW_RUNNING_SNAPSHOT);
+          return;
+        }
+
+        if (matchShowHistory(line)) {
+          appendSw2("line-showrun", formatHistoryFor(sw2Cmdline));
           return;
         }
 
