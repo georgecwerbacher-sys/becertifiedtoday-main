@@ -766,9 +766,12 @@ SW-1(config-if)#switchport trunk allowed vlan 5,6</pre>
             <li>
               <strong>Task 2.</strong> Configure both SW-1 and SW-2's E0/1 ports to send and receive untagged traffic over VLAN 77.
               Only traffic from native VLAN are sent untagged so we need to configure VLAN 77 the native VLAN.
-              <div>On both SW-1 and SW-2:</div>
-              <pre class="spoiler-cli-pre">SW-1#,SW-2(config)#int e0/1
-SW-1#,SW-2(config-if)#switchport trunk native vlan 77</pre>
+              <div>On SW-1:</div>
+              <pre class="spoiler-cli-pre">SW-1(config)#int e0/1
+SW-1(config-if)#switchport trunk native vlan 77</pre>
+              <div>On SW-2:</div>
+              <pre class="spoiler-cli-pre">SW-2(config)#int e0/1
+SW-2(config-if)#switchport trunk native vlan 77</pre>
             </li>
             <li>
               <strong>Task 3.</strong> Configure SW-2 E0/2 port to permit only VLAN 6.
@@ -822,15 +825,26 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
 SW-1(config-if)#switchport trunk allowed vlan 5,6</pre>
           </div>
         </div>
-        <div class="spoiler-task" aria-labelledby="spoiler-cap-t2">
-          <p class="spoiler-terminal-cap" id="spoiler-cap-t2">Task 2 — SW-1 / SW-2</p>
-          <div class="spoiler-terminal" role="region" aria-label="Task 2 SW-1 SW-2 CLI solution">
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t2-sw1">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t2-sw1">Task 2 — SW-1</p>
+          <div class="spoiler-terminal" role="region" aria-label="Task 2 SW-1 CLI solution">
             <div class="spoiler-terminal-bar">
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
-              <span class="spoiler-terminal-title">SW-1 / SW-2 — Task 2</span>
+              <span class="spoiler-terminal-title">SW-1 — Task 2</span>
             </div>
-            <pre class="spoiler-terminal-pre">SW-1#,SW-2(config)#int e0/1
-SW-1#,SW-2(config-if)#switchport trunk native vlan 77</pre>
+            <pre class="spoiler-terminal-pre">SW-1(config)#int e0/1
+SW-1(config-if)#switchport trunk native vlan 77</pre>
+          </div>
+        </div>
+        <div class="spoiler-task" aria-labelledby="spoiler-cap-t2-sw2">
+          <p class="spoiler-terminal-cap" id="spoiler-cap-t2-sw2">Task 2 — SW-2</p>
+          <div class="spoiler-terminal" role="region" aria-label="Task 2 SW-2 CLI solution">
+            <div class="spoiler-terminal-bar">
+              <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="spoiler-terminal-title">SW-2 — Task 2</span>
+            </div>
+            <pre class="spoiler-terminal-pre">SW-2(config)#int e0/1
+SW-2(config-if)#switchport trunk native vlan 77</pre>
           </div>
         </div>
         <div class="spoiler-task" aria-labelledby="spoiler-cap-t3">

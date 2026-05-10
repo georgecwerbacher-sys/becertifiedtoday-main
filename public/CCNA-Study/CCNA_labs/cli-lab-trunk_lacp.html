@@ -187,12 +187,31 @@
       font-size: 0.95rem;
       color: #e6edf3;
     }
-    .topology-scrape ul.helper-bullets {
-      margin: 6px 0 4px;
-      padding-left: 1.25em;
+    .topology-scrape .helper-cli {
+      margin: 8px 0 12px;
+      padding: 12px 14px;
+      background: #06080c;
+      border: 1px solid #263043;
+      border-radius: 8px;
+      color: #dbe5f0;
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.78rem;
+      line-height: 1.45;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
-    .topology-scrape ul.helper-bullets li {
-      margin: 0.45em 0;
+    .topology-scrape p.helper-cli-cap {
+      margin: 12px 0 0;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .topology-scrape p.helper-cli-desc {
+      margin: 4px 0 8px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: #b8c3d6;
     }
     .cli-modal-overlay {
       display: none;
@@ -779,28 +798,106 @@
       <div class="cli-modal-body">
         <section class="topology-scrape" aria-label="Helper notes">
           <h2>Trunk + LACP checklist</h2>
-          <ul class="helper-bullets">
-            <li>
-              <strong>Task 1:</strong> On each switch, 802.1Q trunks on <code>GigabitEthernet0/1</code> and
-              <code>GigabitEthernet0/2</code>; native VLAN <code>45</code>; <code>switchport trunk allowed vlan 15,45</code>.
-              The global VLAN-create lines <code>vlan 15</code> and <code>vlan 45</code> may be entered in
-              <strong>either order</strong>. On each trunk (and on <code>Port-channel15</code> in Task 2), native and allowed-VLAN
-              lines may also be entered in <strong>either order</strong>. After each physical interface block, return to global
-              config with <code>exit</code>.
-            </li>
-            <li>
-              <strong>Task 2:</strong> <code>interface range GigabitEthernet0/1 - 2</code>,
-              <code>channel-protocol lacp</code>, <code>channel-group 15 mode active</code>, then <code>exit</code>; apply the
-              same trunk settings on <code>Port-channel15</code>; leave configuration mode with <code>end</code>.
-            </li>
-            <li>Run the same STEPS sequence on <strong>Sw1</strong> and <strong>Sw2</strong>.</li>
-            <li>After Task 1 on both switches, from PC1 run <code>ping 10.15.15.20</code>.</li>
-            <li>
-              From enable, optional: <code>show interfaces trunk</code> on a switch after <strong>that</strong> switch finishes Task 1
-              (same Po15-style summary on Sw1 and Sw2). <code>show etherchannel summary</code> after the full STEPS sequence on both switches.
-            </li>
-            <li>Save on both switches from enable: <code>copy running-configuration startup-configuration</code>.</li>
-          </ul>
+
+          <p class="helper-cli-cap">Sw1 — Task 1 (physical trunks)</p>
+          <p class="helper-cli-desc">
+            On <strong>Sw1</strong>, enter configuration mode, create VLANs <strong>15</strong> and <strong>45</strong>, then set
+            <code>GigabitEthernet0/1</code> and <code>GigabitEthernet0/2</code> to 802.1Q trunks: native VLAN <strong>45</strong>, allowed VLANs
+            <strong>15</strong> and <strong>45</strong>. Use <code>exit</code> after each interface to return to global configuration.
+          </p>
+          <pre class="helper-cli">Sw1# configure terminal
+Sw1(config)# vlan 15
+Sw1(config)# vlan 45
+Sw1(config)# interface GigabitEthernet0/1
+Sw1(config-if)# switchport trunk encapsulation dot1q
+Sw1(config-if)# switchport mode trunk
+Sw1(config-if)# switchport trunk native vlan 45
+Sw1(config-if)# switchport trunk allowed vlan 15,45
+Sw1(config-if)# exit
+Sw1(config)# interface GigabitEthernet0/2
+Sw1(config-if)# switchport trunk encapsulation dot1q
+Sw1(config-if)# switchport mode trunk
+Sw1(config-if)# switchport trunk native vlan 45
+Sw1(config-if)# switchport trunk allowed vlan 15,45
+Sw1(config-if)# exit</pre>
+
+          <p class="helper-cli-cap">Sw2 — Task 1 (physical trunks)</p>
+          <p class="helper-cli-desc">
+            Apply the <strong>same Task&nbsp;1 trunk layout</strong> on <strong>Sw2</strong> so both switches expose VLANs 15 and 45 on
+            <code>GigabitEthernet0/1</code> and <code>GigabitEthernet0/2</code> before you build the EtherChannel in Task&nbsp;2.
+          </p>
+          <pre class="helper-cli">Sw2# configure terminal
+Sw2(config)# vlan 15
+Sw2(config)# vlan 45
+Sw2(config)# interface GigabitEthernet0/1
+Sw2(config-if)# switchport trunk encapsulation dot1q
+Sw2(config-if)# switchport mode trunk
+Sw2(config-if)# switchport trunk native vlan 45
+Sw2(config-if)# switchport trunk allowed vlan 15,45
+Sw2(config-if)# exit
+Sw2(config)# interface GigabitEthernet0/2
+Sw2(config-if)# switchport trunk encapsulation dot1q
+Sw2(config-if)# switchport mode trunk
+Sw2(config-if)# switchport trunk native vlan 45
+Sw2(config-if)# switchport trunk allowed vlan 15,45
+Sw2(config-if)# exit</pre>
+
+          <p class="helper-cli-cap">Sw1 — Task 2 (LACP + Port-channel15 trunk)</p>
+          <p class="helper-cli-desc">
+            Still in global configuration on <strong>Sw1</strong> (after Task&nbsp;1), bundle <code>GigabitEthernet0/1</code> and
+            <code>GigabitEthernet0/2</code> into port-channel <strong>15</strong> using <strong>LACP</strong> (<code>mode active</code>), then
+            apply the same trunk parameters on <code>Port-channel15</code> as on the physical trunks. Use <code>end</code> to return to
+            privileged EXEC.
+          </p>
+          <pre class="helper-cli">Sw1(config)# interface range GigabitEthernet0/1 - 2
+Sw1(config-if-range)# channel-protocol lacp
+Sw1(config-if-range)# channel-group 15 mode active
+Sw1(config-if-range)# exit
+Sw1(config)# interface Port-channel15
+Sw1(config-if)# switchport trunk encapsulation dot1q
+Sw1(config-if)# switchport mode trunk
+Sw1(config-if)# switchport trunk native vlan 45
+Sw1(config-if)# switchport trunk allowed vlan 15,45
+Sw1(config-if)# end</pre>
+
+          <p class="helper-cli-cap">Sw2 — Task 2 (LACP + Port-channel15 trunk)</p>
+          <p class="helper-cli-desc">
+            Repeat the <strong>same Task&nbsp;2 sequence</strong> on <strong>Sw2</strong>: LACP bundle on the two GigabitEthernet links, then
+            trunk configuration on <code>Port-channel15</code>, and <code>end</code> to exit configuration mode.
+          </p>
+          <pre class="helper-cli">Sw2(config)# interface range GigabitEthernet0/1 - 2
+Sw2(config-if-range)# channel-protocol lacp
+Sw2(config-if-range)# channel-group 15 mode active
+Sw2(config-if-range)# exit
+Sw2(config)# interface Port-channel15
+Sw2(config-if)# switchport trunk encapsulation dot1q
+Sw2(config-if)# switchport mode trunk
+Sw2(config-if)# switchport trunk native vlan 45
+Sw2(config-if)# switchport trunk allowed vlan 15,45
+Sw2(config-if)# end</pre>
+
+          <p class="helper-cli-cap">Verification — PC1 (after Task 1 on both switches)</p>
+          <p class="helper-cli-desc">
+            With Task&nbsp;1 complete on <strong>both</strong> switches, open the PC1 command prompt and confirm Layer&nbsp;3 reachability to
+            PC2 (<code>10.15.15.20</code>). The simulation only allows successful replies once both sides have the trunk STEPS in place.
+          </p>
+          <pre class="helper-cli">PC1&gt; ping 10.15.15.20</pre>
+
+          <p class="helper-cli-cap">Optional — switch EXEC</p>
+          <p class="helper-cli-desc">
+            From privileged EXEC you may inspect trunk status after Task&nbsp;1 on a switch, and EtherChannel status after the full STEPS
+            sequence on both switches. Example commands on <strong>Sw1</strong> (run similar checks on <strong>Sw2</strong> if you like):
+          </p>
+          <pre class="helper-cli">Sw1# show interfaces trunk
+Sw1# show etherchannel summary</pre>
+
+          <p class="helper-cli-cap">Save — privileged EXEC on each switch</p>
+          <p class="helper-cli-desc">
+            When the lab sequence is complete and PC1 reachability is verified, save the running configuration to startup on
+            <strong>Sw1</strong> and <strong>Sw2</strong> from enable mode (<code>copy run start</code> normalizes to the same command).
+          </p>
+          <pre class="helper-cli">Sw1# copy running-configuration startup-configuration
+Sw2# copy running-configuration startup-configuration</pre>
         </section>
       </div>
     </div>

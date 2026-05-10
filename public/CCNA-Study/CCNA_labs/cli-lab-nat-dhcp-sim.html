@@ -215,8 +215,8 @@
       margin: 6px 0 4px;
       padding-left: 1.25em;
     }
-    .topology-scrape ul.helper-bullets li {
-      margin: 0.45em 0;
+    .topology-scrape ul.helper-bullets.helper-bullets-overview {
+      margin-bottom: 14px;
     }
     .topology-scrape .helper-task-title {
       margin: 1.25em 0 0.5em;
@@ -835,33 +835,43 @@ access-list 192 permit ip 192.168.0.0 0.0.3.255 any</pre>
       <div class="cli-modal-body">
         <section class="topology-scrape" aria-label="Helper notes">
           <h2>NAT, NTP, DHCP relay, and SSH — lab helper</h2>
+          <ul class="helper-bullets helper-bullets-overview">
+            <li><strong>Task 1 — R1:</strong> finish NAT/PAT (overload).</li>
+            <li><strong>Task 2 — R1 / Sw1:</strong> NTP server on R1 (Lo0); NTP client on Sw1.</li>
+            <li><strong>Task 3 — Sw1 / PC1:</strong> DHCP relay toward R1; PC1 uses DHCP.</li>
+            <li><strong>Task 4 — Sw1 / PC1:</strong> RSA SSH and test from PC1.</li>
+            <li>Save running-config to startup on <strong>R1</strong> and <strong>Sw1</strong> when done.</li>
+          </ul>
 
           <h3 class="helper-task-title">Task 1. Complete the configuration of NAT/PAT on the R1 router using the predefined configuration.</h3>
-          <p>
-            Interface inside, outside, and access-list have been configured already, so only one more command is needed for this task.
-          </p>
-          <p><strong>On R1:</strong></p>
-          <pre class="helper-cli">R1(config)#ip nat inside source list 192 interface e0/0 overload</pre>
-          <p>We should use PAT instead of NAT because more than one host needs to go outside.</p>
+          <ul class="helper-bullets">
+            <li>Inside, outside, and the access list are already configured — add the remaining NAT/PAT command below.</li>
+            <li>Use PAT (overload), not static NAT, because more than one host shares the outside.</li>
+          </ul>
+          <pre class="helper-cli">R1# configure terminal
+R1(config)# ip nat inside source list 192 interface e0/0 overload</pre>
           <p class="helper-verify">Verification</p>
-          <p>
-            Complete <strong>Task 3</strong> first (PC1 obtains an IP from DHCP) before verifying Task 1. Otherwise you can use extended ping from
-            <strong>Sw1</strong> to <code>10.0.18.10</code> with source <code>Ethernet0/1</code>, then verify with
-            <code>show ip nat translations</code>.
-          </p>
+          <ul class="helper-bullets">
+            <li>Finish <strong>Task 3</strong> first so PC1 gets DHCP, then verify NAT; or use extended ping from <strong>Sw1</strong> to <code>10.0.18.10</code> with source <code>Ethernet0/1</code>.</li>
+            <li>Confirm translations with <code>show ip nat translations</code> on <strong>R1</strong>.</li>
+          </ul>
 
           <h3 class="helper-task-title">
             Task 2. Configure NTP on R1 and Sw1 (NTP server = R1; source = Loopback 0; client = Sw1).
           </h3>
-          <p><strong>On R1:</strong></p>
-          <pre class="helper-cli">R1(config)#ntp master
-R1(config)#ntp source-interface Loopback0</pre>
-          <p><strong>On Sw1:</strong></p>
-          <pre class="helper-cli">Sw1(config)#ntp server 209.165.202.134
-! Loopback0 of R1</pre>
+          <pre class="helper-cli">R1# configure terminal
+R1(config)# ntp master
+R1(config)# ntp source-interface Loopback0</pre>
+          <pre class="helper-cli">Sw1# configure terminal
+Sw1(config)# ntp server 209.165.202.134
+! use R1 Loopback0 address (209.165.202.134)</pre>
           <p class="helper-verify">Verification</p>
-          <p>Wait about one minute, then on Sw1:</p>
-          <pre class="helper-cli">Sw1#show ntp status
+          <ul class="helper-bullets">
+            <li>Wait about one minute, then run <code>show ntp status</code> on <strong>Sw1</strong> (example output below).</li>
+            <li>You should see Sw1 synchronized with the NTP server on <strong>R1</strong>.</li>
+            <li>If the clock is still unsynchronized, run <code>ping 209.165.202.134</code> from Sw1 to confirm reachability.</li>
+          </ul>
+          <pre class="helper-cli">Sw1# show ntp status
 Clock is synchronized, stratum 16, reference is 209.165.202.134
 nominal freq is 250.0000 Hz, actual freq is 249.9990 Hz, precision is 2**24
 reference time is 292B2168.00000016 (9:29:12.022 UTC Tue Feb 5 2058)
@@ -869,31 +879,29 @@ clock offset is 0.00 msec, root delay is 0.00 msec
 root dispersion is 10.84 msec, peer dispersion is 0.00 msec.
 loopfilter state is 'CTRL' (Normal Controlled Loop), drift is - 0.000001193
 s/s system poll interval is 4, last update was 8 sec ago.</pre>
-          <p>
-            → Sw1’s clock is synchronized with the NTP server on <strong>R1</strong>. If you still see “Clock is unsynchronized,” run
-            <code>ping 209.165.202.134</code> from Sw1 to confirm reachability to the NTP server.
-          </p>
 
           <h3 class="helper-task-title">
             Task 3. R1 has a DHCP pool; PC1 uses DHCP. Configure a relay agent on Sw1.
           </h3>
-          <p><strong>On Sw1:</strong></p>
-          <pre class="helper-cli">Sw1(config)#interface e0/1
-Sw1(config-if)#ip helper-address 172.16.0.9</pre>
+          <pre class="helper-cli">Sw1# configure terminal
+Sw1(config)# interface e0/1
+Sw1(config-if)# ip helper-address 172.16.0.9</pre>
           <p class="helper-verify">Verification</p>
-          <p>Confirm PC1 received an IPv4 address:</p>
-          <pre class="helper-cli">PC1#show ip int brief
+          <ul class="helper-bullets">
+            <li>On <strong>PC1</strong>, confirm an IPv4 address with <code>show ip int brief</code> (example below).</li>
+            <li>From PC1, <code>ping 10.0.18.10</code> to test NAT from Task 1.</li>
+            <li>On <strong>R1</strong>, check <code>show ip nat translations</code>.</li>
+          </ul>
+          <pre class="helper-cli">PC1# show ip int brief
 Interface       IP-Address      OK? Method Status                Protocol
 Ethernet0/0     192.168.1.11    YES DHCP   up                    up</pre>
-          <p>Then verify NAT from Task 1:</p>
-          <pre class="helper-cli">PC1#ping 10.0.18.10
+          <pre class="helper-cli">PC1# ping 10.0.18.10
 
 Type escape sequence to abort.
 Sending 5, 100-byte ICMP Echos to 10.0.18.10, timeout is 2 seconds:
 ..!!!
 Success rate is 60 percent (3/5), round-trip min/avg/max = 0/0/0 ms</pre>
-          <p>Check NAT translations on R1:</p>
-          <pre class="helper-cli">R1#sh ip nat translations
+          <pre class="helper-cli">R1# show ip nat translations
 Pro  Inside global     Inside local       Outside local      Outside global
 icmp 10.0.18.9:2       192.168.1.11:2     10.0.18.10:2       10.0.18.10:2
 icmp 10.0.18.9:3       192.168.1.11:3     10.0.18.10:3       10.0.18.10:3
@@ -903,23 +911,26 @@ icmp 10.0.18.9:5       192.168.1.11:5     10.0.18.10:5       10.0.18.10:5</pre>
           <h3 class="helper-task-title">
             Task 4. Complete SSH on Sw1 (RSA 2048 bits; SSH version 2). User and domain are already configured.
           </h3>
-          <p><strong>On Sw1:</strong></p>
-          <pre class="helper-cli">Sw1(config)#crypto key generate rsa modulus 2048
-! Generate 2048-bit RSA keys
-Sw1(config)#ip ssh version 2
-! Enable SSH version 2</pre>
+          <pre class="helper-cli">Sw1# configure terminal
+Sw1(config)# crypto key generate rsa modulus 2048
+Sw1(config)# ip ssh version 2</pre>
           <p class="helper-verify">Verification</p>
-          <p>From <strong>PC1</strong>, SSH to Sw1 (Cisco CLI SSH client):</p>
-          <pre class="helper-cli">PC1#ssh -l CCNA 192.168.1.1
+          <ul class="helper-bullets">
+            <li>From <strong>PC1</strong>, connect with the Cisco CLI SSH client (session below).</li>
+            <li><code>ssh -l CCNA …</code> sets username <strong>CCNA</strong>; enter that user’s password when prompted.</li>
+          </ul>
+          <pre class="helper-cli">PC1# ssh -l CCNA 192.168.1.1
 Password: ****
 ! type "CCNA" here
 Sw1#</pre>
-          <p class="helper-note">
-            <code>-l</code> supplies the username (<strong>CCNA</strong> in this case).
-          </p>
 
-          <p class="helper-verify">End lab with:</p>
-          <pre class="helper-cli">R1#,Sw1#copy running-config startup-config</pre>
+          <p class="helper-verify">End lab with (privileged EXEC on each device)</p>
+          <ul class="helper-bullets">
+            <li><strong>R1:</strong> <code>copy running-config startup-config</code></li>
+            <li><strong>Sw1:</strong> <code>copy running-config startup-config</code></li>
+          </ul>
+          <pre class="helper-cli">R1# copy running-config startup-config
+Sw1# copy running-config startup-config</pre>
         </section>
       </div>
     </div>
@@ -946,8 +957,8 @@ Sw1#</pre>
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
               <span class="spoiler-terminal-title">R1 — Terminal</span>
             </div>
-            <pre class="spoiler-terminal-pre">R1#configure terminal
-R1(config)#ip nat inside source list 192 interface e0/0 overload</pre>
+            <pre class="spoiler-terminal-pre">R1# configure terminal
+R1(config)# ip nat inside source list 192 interface e0/0 overload</pre>
           </div>
         </div>
         <div class="spoiler-task" aria-labelledby="spoiler-cap-task2">
@@ -957,9 +968,9 @@ R1(config)#ip nat inside source list 192 interface e0/0 overload</pre>
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
               <span class="spoiler-terminal-title">R1 — Terminal</span>
             </div>
-            <pre class="spoiler-terminal-pre">R1#configure terminal
-R1(config)#ntp master
-R1(config)#ntp source-interface Loopback0</pre>
+            <pre class="spoiler-terminal-pre">R1# configure terminal
+R1(config)# ntp master
+R1(config)# ntp source-interface Loopback0</pre>
           </div>
         </div>
         <div class="spoiler-task" aria-labelledby="spoiler-cap-task2-sw1">
@@ -969,8 +980,8 @@ R1(config)#ntp source-interface Loopback0</pre>
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
               <span class="spoiler-terminal-title">Sw1 — Terminal</span>
             </div>
-            <pre class="spoiler-terminal-pre">Sw1#configure terminal
-Sw1(config)#ntp server 209.165.202.134</pre>
+            <pre class="spoiler-terminal-pre">Sw1# configure terminal
+Sw1(config)# ntp server 209.165.202.134</pre>
           </div>
         </div>
         <div class="spoiler-task" aria-labelledby="spoiler-cap-task2-verify">
@@ -980,7 +991,7 @@ Sw1(config)#ntp server 209.165.202.134</pre>
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
               <span class="spoiler-terminal-title">Sw1 — Terminal</span>
             </div>
-            <pre class="spoiler-terminal-pre">Sw1#show ntp status
+            <pre class="spoiler-terminal-pre">Sw1# show ntp status
 Clock is synchronized, stratum 16, reference is 209.165.202.134
 nominal freq is 250.0000 Hz, actual freq is 249.9990 Hz, precision is 2**24
 reference time is 292B2168.00000016 (9:29:12.022 UTC Tue Feb 5 2058)
@@ -997,9 +1008,9 @@ s/s system poll interval is 4, last update was 8 sec ago.</pre>
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
               <span class="spoiler-terminal-title">Sw1 — Terminal</span>
             </div>
-            <pre class="spoiler-terminal-pre">Sw1#configure terminal
-Sw1(config)#interface e0/1
-Sw1(config-if)#ip helper-address 172.16.0.9</pre>
+            <pre class="spoiler-terminal-pre">Sw1# configure terminal
+Sw1(config)# interface e0/1
+Sw1(config-if)# ip helper-address 172.16.0.9</pre>
           </div>
         </div>
         <div class="spoiler-task" aria-labelledby="spoiler-cap-task4">
@@ -1009,9 +1020,9 @@ Sw1(config-if)#ip helper-address 172.16.0.9</pre>
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
               <span class="spoiler-terminal-title">Sw1 — Terminal</span>
             </div>
-            <pre class="spoiler-terminal-pre">Sw1#configure terminal
-Sw1(config)#crypto key generate rsa modulus 2048
-Sw1(config)#ip ssh version 2</pre>
+            <pre class="spoiler-terminal-pre">Sw1# configure terminal
+Sw1(config)# crypto key generate rsa modulus 2048
+Sw1(config)# ip ssh version 2</pre>
           </div>
         </div>
         <div class="spoiler-task" aria-labelledby="spoiler-cap-task4-verify">
@@ -1021,7 +1032,7 @@ Sw1(config)#ip ssh version 2</pre>
               <span class="spoiler-terminal-dots" aria-hidden="true"><span></span><span></span><span></span></span>
               <span class="spoiler-terminal-title">PC1 — Command Prompt</span>
             </div>
-            <pre class="spoiler-terminal-pre">PC1#ssh -l CCNA 192.168.1.1
+            <pre class="spoiler-terminal-pre">PC1# ssh -l CCNA 192.168.1.1
 Password: ****
 ! type "CCNA" here
 Sw1#</pre>
