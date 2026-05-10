@@ -697,13 +697,6 @@
           </div>
         </div>
       </div>
-      <footer class="cli-modal-footer">
-        <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
-          Read-only exhibit: <code>show running-config</code> prints a fixed snapshot. Use
-          <code>configure terminal</code>, <code>interface …</code>, <code>exit</code> or <code>end</code> to move modes like IOS.
-          From privileged exec, <code>copy run start</code> counts toward lab completion.
-        </p>
-      </footer>
     </div>
   </div>
 
@@ -738,15 +731,6 @@
           </div>
         </div>
       </div>
-      <footer class="cli-modal-footer">
-        <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
-          Read-only exhibit for Task 2 and Task 4: use <code>show running-config</code> to review the baseline; after you configure DHCP
-          on GigabitEthernet0/2 and SSH, the sim still shows this static snapshot (commands are not merged into <code>show running-config</code>).
-          After Task 1 finishes on <strong>R2</strong>, from R3 exec run <code>ping 192.168.100.1</code> — success shows <code>.!!!!</code>;
-          before Task 1 (or after <strong>Reset lab</strong>) the same ping shows <code>....</code> and 0 percent success.
-          From privileged exec, <code>copy run start</code> counts toward lab completion.
-        </p>
-      </footer>
     </div>
   </div>
 
@@ -1306,6 +1290,8 @@ R3(config-line)# end</pre>
         if (t === "copy run start" || t === "copy run st") t = "copy running-configuration startup-configuration";
         if (t === "copy running-config startup-config") t = "copy running-configuration startup-configuration";
         if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
+        /* Common typo: inteface → interface (IOS rejects it too). */
+        if (t.indexOf("inteface ") === 0) t = "interface " + t.slice(9);
         if (/^interface e\d+\/\d+$/.test(t)) {
           t = t.replace(/^interface e/, "interface ethernet");
         }
@@ -1315,6 +1301,8 @@ R3(config-line)# end</pre>
         if (/^interface (fa|f)\d+\/\d+$/.test(t)) {
           t = t.replace(/^interface (fa|f)/, "interface fastethernet");
         }
+        /* R3 lab topology: only Gi0/2 exists; map mis-typed Ethernet0/2 to GigabitEthernet0/2. */
+        if (t === "interface ethernet0/2") t = "interface gigabitethernet0/2";
         if (t === "no shut") t = "no shutdown";
         return t;
       }
@@ -1728,6 +1716,11 @@ R3(config-line)# end</pre>
           return;
         }
 
+        /* Task 3 — read-only: NTP stratum master (independent of R2 Task 1 order). */
+        if (r1Mode === "config" && u === "ntp master 1") {
+          return;
+        }
+
         // IOS-like mode navigation shortcuts.
         if (u === "end" && r1Mode !== "exec") {
           r1Mode = "exec";
@@ -1780,6 +1773,7 @@ R3(config-line)# end</pre>
       function r3PromptForMode() {
         if (r3Mode === "config") return ROUTER3_HOST + "(config)#";
         if (r3Mode === "config-if") return ROUTER3_HOST + "(config-if)#";
+        if (r3Mode === "config-line") return ROUTER3_HOST + "(config-line)#";
         return ROUTER3_HOST + "#";
       }
 
@@ -1851,9 +1845,36 @@ R3(config-line)# end</pre>
           return;
         }
 
+        /* Task 2 / Task 4 — read-only practice (accepted like IOS; not merged into show run). */
+        if (r3Mode === "config-if" && u === "ip address dhcp") {
+          return;
+        }
+        if (r3Mode === "config" && u === "crypto key generate rsa modulus 1024") {
+          return;
+        }
+        if (r3Mode === "config" && u === "username root privilege 15 secret s3cret") {
+          return;
+        }
+        if (r3Mode === "config" && u === "line vty 0 4") {
+          r3Mode = "config-line";
+          r3Prompt.textContent = r3PromptForMode();
+          return;
+        }
+        if (r3Mode === "config-line" && u === "login local") {
+          return;
+        }
+        if (r3Mode === "config-line" && u === "transport input ssh") {
+          return;
+        }
+
         // IOS-like mode navigation shortcuts.
         if (u === "end" && r3Mode !== "exec") {
           r3Mode = "exec";
+          r3Prompt.textContent = r3PromptForMode();
+          return;
+        }
+        if (u === "exit" && r3Mode === "config-line") {
+          r3Mode = "config";
           r3Prompt.textContent = r3PromptForMode();
           return;
         }
@@ -1864,12 +1885,6 @@ R3(config-line)# end</pre>
         }
         if (u === "exit" && r3Mode === "config") {
           r3Mode = "exec";
-          r3Prompt.textContent = r3PromptForMode();
-          return;
-        }
-
-        if (r3Mode === "config-if" && u === "exit") {
-          r3Mode = "config";
           r3Prompt.textContent = r3PromptForMode();
           return;
         }
