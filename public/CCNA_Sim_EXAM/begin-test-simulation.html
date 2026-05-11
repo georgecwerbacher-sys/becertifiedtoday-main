@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta
     name="description"
-    content="CCNA timed test simulation landing — purchase access or start your 120-minute session if you already have access."
+    content="CCNA timed test simulation — one-time purchase via Stripe Checkout on becertifiedtoday.com."
   />
   <title>CCNA timed test simulation — landing | Be Certified Today</title>
   <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
@@ -93,23 +93,14 @@
     .sim-lead strong {
       color: #0f172a;
     }
-    .sim-two-col {
-      display: grid;
+    .sim-stack {
+      display: flex;
+      flex-direction: column;
       gap: 20px;
-      grid-template-columns: 1fr;
-    }
-    @media (min-width: 720px) {
-      .sim-two-col {
-        grid-template-columns: 1fr 1fr;
-        align-items: stretch;
-      }
-    }
-    .sim-col {
-      border-radius: 10px;
-      padding: 18px 18px 20px;
-      min-height: 0;
     }
     .sim-col-included {
+      border-radius: 10px;
+      padding: 18px 18px 20px;
       background: var(--included-bg);
       border: 1px solid var(--included-border);
     }
@@ -142,19 +133,13 @@
     .sim-col-included li {
       margin-bottom: 8px;
     }
-    .sim-col-actions {
-      border: 2px solid var(--navy);
-      background: #fff;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      padding: 0;
-      overflow: hidden;
-    }
-    .sim-action-block {
+    .sim-purchase-card {
+      border-radius: 10px;
       padding: 18px 18px 20px;
+      border: 2px solid var(--navy);
+      background: #f8fafc;
     }
-    .sim-action-block h3 {
+    .sim-purchase-card h3 {
       margin: 0 0 8px;
       font-size: 0.72rem;
       font-weight: 800;
@@ -162,51 +147,11 @@
       text-transform: uppercase;
       color: var(--navy);
     }
-    .sim-action-block p {
+    .sim-purchase-card > p {
       margin: 0 0 14px;
       font-size: 0.9rem;
       line-height: 1.5;
       color: #475569;
-    }
-    .sim-action-block--buy {
-      background: #f8fafc;
-      border-bottom: 1px solid #e2e8f0;
-    }
-    .sim-action-block--start {
-      background: #fff;
-    }
-    .sim-divider {
-      text-align: center;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: #94a3b8;
-      padding: 8px 12px;
-      background: #f1f5f9;
-      border-bottom: 1px solid #e2e8f0;
-    }
-    .sim-btn-start {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      padding: 14px 18px;
-      border-radius: 10px;
-      font: inherit;
-      font-weight: 800;
-      font-size: 0.88rem;
-      letter-spacing: 0.04em;
-      text-decoration: none;
-      text-align: center;
-      cursor: pointer;
-      color: #fff;
-      border: none;
-      background: linear-gradient(165deg, #22c55e 0%, #15803d 100%);
-      box-shadow: 0 4px 14px rgba(21, 128, 61, 0.35);
-    }
-    .sim-btn-start:hover {
-      filter: brightness(1.06);
     }
     .sim-banner-paid {
       margin: 0 0 18px;
@@ -221,13 +166,9 @@
     .sim-banner-paid[hidden] {
       display: none;
     }
-    .sim-hub-link {
-      margin-top: 10px;
-      font-size: 0.82rem;
-    }
-    .sim-hub-link a {
-      color: var(--navy);
-      font-weight: 700;
+    .sim-banner-paid a {
+      color: var(--navy-deep);
+      font-weight: 800;
     }
     .sim-btn-primary {
       display: inline-flex;
@@ -253,24 +194,19 @@
       opacity: 0.55;
       cursor: not-allowed;
     }
-    .sim-btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      padding: 12px 18px;
+    .sim-portal-cta {
+      margin: 16px 0 0;
+      padding: 12px 14px;
       border-radius: 10px;
-      font: inherit;
-      font-weight: 700;
-      font-size: 0.85rem;
-      text-align: center;
-      text-decoration: none;
-      color: var(--navy);
-      border: 2px solid var(--navy);
+      border: 1px solid #cbd5e1;
       background: #fff;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: #334155;
     }
-    .sim-btn-secondary:hover {
-      background: #f8fafc;
+    .sim-portal-cta a {
+      color: var(--navy);
+      font-weight: 800;
     }
     .sim-back {
       margin: 24px 0 0;
@@ -293,7 +229,7 @@
     .sim-fineprint code {
       font-size: 0.85em;
     }
-    .sim-test-bypass--in-actions {
+    .sim-test-bypass {
       margin-top: 14px;
       padding-top: 14px;
       border-top: 1px dashed #e2e8f0;
@@ -316,19 +252,19 @@
   <div class="sim-shell">
     <main class="sim-card">
       <div id="stripeReturnBanner" class="sim-banner-paid" hidden>
-        Checkout returned to this page. You can <strong>start the timed test</strong> below when you are ready.
+        Session id detected on this URL. <a id="stripeReturnContinueLink" href="/CCNA_Sim_EXAM/test-simulation-runner.html">Open timed test runner</a> to verify payment and
+        start when you are ready.
       </div>
 
       <h1>CCNA timed test simulation</h1>
       <p class="sim-lead">
-        This is the <strong>landing page</strong> for the timed simulation: use <strong>Purchase timed test access</strong> for a
-        <strong>one-time</strong> paid run, or <strong>Start timed test</strong> if you already have access (Stripe return link, saved session on this device, or
-        <strong>active CCNA portal access</strong> (30-day or 90-day pass on this browser). One-time purchase unlocks <strong>one timed attempt</strong> in a single
-        <strong>120-minute</strong> window with one clock; portal access includes timed simulations while the pass is active.
+        Use this page for a <strong>one-time</strong> paid run via <strong>Purchase timed test access</strong> (Stripe Checkout). After payment you are sent to the timed
+        runner with your checkout session. If you already have <strong>CCNA portal access</strong> (30-day or 90-day) on this browser, open the
+        <a href="/CCNA-Study/CCNA_Training_Portal.html"><strong>CCNA Training Portal</strong></a> to start the timed simulation there — not here.
       </p>
 
-      <div class="sim-two-col">
-        <div class="sim-col sim-col-included">
+      <div class="sim-stack">
+        <div class="sim-col-included">
           <h2>What&rsquo;s included</h2>
           <ul>
             <li>Random multiple-choice items from the CCNA question bank</li>
@@ -341,50 +277,39 @@
             <li><strong>Next only</strong> — you cannot return to an earlier item</li>
             <li><strong>Reset</strong>, <strong>Next</strong>, and <strong>Quit</strong> in the exam footer</li>
             <li><strong>CLI labs only:</strong> the <strong>Spoiler</strong> button opens a short hint (multiple-choice and drag-and-drop have no spoiler; no Helper UI)</li>
-            <li>When the last item is answered, time runs out, or you quit: a <strong>results</strong> page shows overall score and performance by exam objective</li>
+            <li>When the last item is answered or time runs out: a <strong>results</strong> page shows overall score and performance by exam objective. <strong>Quit</strong> sends you straight back to the <a href="/CCNA-Study/ccna-index.html">CCNA study hub</a>.</li>
             <li>
-              After <strong>Continue</strong> on results: if you have <strong>active CCNA portal access</strong>, you return to the CCNA Training Portal; otherwise one-time test access ends and you return here to purchase again when ready
+              After <strong>Continue</strong> on results: if you have <strong>active CCNA portal access</strong>, you return to the CCNA Training Portal; otherwise one-time test access ends and you can purchase again from this page when ready.
             </li>
           </ul>
         </div>
-        <div class="sim-col sim-col-actions">
-          <div class="sim-action-block sim-action-block--buy">
-            <h3>No access yet — pay here</h3>
-            <p>
-              Complete Checkout on this site to unlock one run. On the Stripe payment page you can enter a
-              <strong>promotion code</strong> if you have one. After payment, Stripe sends you back with a session you can use to open the
-              runner; you can also return here anytime to start when ready.
-            </p>
-            <button type="button" class="sim-btn-primary" id="ccnaTestSimPurchaseBtn">Purchase timed test access</button>
-            <p class="sim-fineprint">
-              Requires Stripe keys on Vercel (<code>STRIPE_SECRET_KEY</code>, <code>STRIPE_PRICE_CCNA_TEST_SIM</code>, <code>PUBLIC_SITE_URL</code>).
-            </p>
-          </div>
-          <div class="sim-divider" role="presentation">or</div>
-          <div class="sim-action-block sim-action-block--start">
-            <h3>Have access — begin test</h3>
-            <p>
-              If you have an <strong>active CCNA portal pass</strong> (30-day or 90-day) on this browser, or completed the <strong>one-time</strong> Stripe Checkout here, open the
-              timed runner to verify access and start when you are ready.
-            </p>
-            <a class="sim-btn-start" id="startTimedTestLink" href="/CCNA_Sim_EXAM/test-simulation-runner.html">Start timed test</a>
-            <p class="sim-hub-link">
-              <a href="/CCNA_Sim_EXAM/test-simulation.html">Exam hub</a>
-              ·
-              <a href="/CCNA-Study/CCNA_Training_Portal.html">CCNA Training Portal</a>
-              ·
-              <a href="/index.html">Site home</a>
-            </p>
-            <p class="sim-fineprint sim-test-bypass sim-test-bypass--in-actions">
-              <strong>Testing:</strong>
-              <a href="/CCNA_Sim_EXAM/test-simulation-runner.html?bypass=1">Begin test now</a> (skips Stripe checkout)
-            </p>
-          </div>
+        <div class="sim-purchase-card">
+          <h3>One-time access — pay here</h3>
+          <p>
+            Complete Checkout on this site to unlock one run. On the Stripe payment page you can enter a <strong>promotion code</strong> if you have one. After payment, Stripe
+            sends you to the timed runner with a session you can use to start when you are ready.
+          </p>
+          <button type="button" class="sim-btn-primary" id="ccnaTestSimPurchaseBtn">Purchase timed test access</button>
+          <p class="sim-fineprint">
+            Requires Stripe keys on Vercel (<code>STRIPE_SECRET_KEY</code>, <code>STRIPE_PRICE_CCNA_TEST_SIM</code>, <code>PUBLIC_SITE_URL</code>).
+          </p>
+          <p class="sim-portal-cta">
+            <strong>Portal subscribers:</strong> timed simulations are started from the
+            <a href="/CCNA-Study/CCNA_Training_Portal.html">CCNA Training Portal</a> (registered / 30-day or 90-day access on this device).
+          </p>
+          <p class="sim-fineprint sim-test-bypass">
+            <strong>Testing:</strong>
+            <a href="/CCNA_Sim_EXAM/test-simulation-runner.html?bypass=1">Begin test now</a> (skips Stripe checkout)
+          </p>
         </div>
       </div>
 
       <p class="sim-back">
         <a href="/CCNA-Study/CCNA_Training_Portal.html">&larr; Back to CCNA practice home</a>
+        ·
+        <a href="/CCNA_Sim_EXAM/test-simulation.html">Exam hub</a>
+        ·
+        <a href="/index.html">Site home</a>
       </p>
     </main>
   </div>
@@ -392,19 +317,26 @@
   <script src="/CCNA-Study/js/ccna-test-checkout.js" defer></script>
   <script>
     (function () {
-      var params = new URLSearchParams(window.location.search);
-      var sid = params.get("session_id");
-      var banner = document.getElementById("stripeReturnBanner");
-      var start = document.getElementById("startTimedTestLink");
-      if (sid && banner) {
+      var RUNNER = "/CCNA_Sim_EXAM/test-simulation-runner.html";
+
+      function stripeReturnBannerIfSession() {
+        var params = new URLSearchParams(window.location.search);
+        var sid = params.get("session_id");
+        var banner = document.getElementById("stripeReturnBanner");
+        var link = document.getElementById("stripeReturnContinueLink");
+        if (!sid || !banner || !link) return;
         banner.hidden = false;
-      }
-      if (sid && start) {
         try {
-          var u = new URL(start.getAttribute("href") || "", window.location.origin);
+          var u = new URL(RUNNER, window.location.origin);
           u.searchParams.set("session_id", sid);
-          start.setAttribute("href", u.pathname + u.search);
+          link.setAttribute("href", u.pathname + u.search);
         } catch (_) {}
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", stripeReturnBannerIfSession);
+      } else {
+        stripeReturnBannerIfSession();
       }
     })();
   </script>

@@ -329,7 +329,8 @@
         <button type="button" id="resultsContinue">Continue</button>
         <p class="results-note">
           One-time test access ends after this summary unless you have an active CCNA portal pass (30-day or 90-day). Continue returns you to the training
-          portal or the timed-test access page when you finish or run out of time; if you quit early, Continue returns you to the CCNA study hub.
+          portal or the timed-test access page when you finish or run out of time. Use <strong>Quit</strong> in the exam footer to leave immediately and return to the
+          <a href="/CCNA-Study/ccna-index.html">CCNA study hub</a> without this summary.
           Scaled results use a <strong>1000</strong>-point score with a <strong>800</strong> passing threshold (70% MCQ, 10% drag-and-drop, 20% labs).
         </p>
       </div>
@@ -357,8 +358,6 @@
     var sessionOk = false;
     var attemptResults = [];
     var objectiveLabels = {};
-    /** Set in finalizeAttempt; used by redirectAfterResults after Continue. */
-    var lastFinalizeReason = null;
 
     var gatePanel = document.getElementById("gatePanel");
     var gateStatus = document.getElementById("gateStatus");
@@ -406,7 +405,7 @@
       } catch (e) {}
     }
 
-    /** After a successful verify we store cs_… here so "Start timed test" works without session_id in the URL. */
+    /** After a successful verify we store cs_… here so the runner can reopen without session_id in the URL. */
     function readStoredStripeSessionId() {
       try {
         var raw = localStorage.getItem(LS_TEMP_TEST);
@@ -420,13 +419,6 @@
     }
 
     function redirectAfterResults() {
-      var reason = lastFinalizeReason;
-      lastFinalizeReason = null;
-      if (reason === "quit") {
-        if (!portalPassActive()) clearTempTestAccess();
-        window.location.href = "/CCNA-Study/ccna-index.html";
-        return;
-      }
       if (portalPassActive()) {
         window.location.href = "/CCNA-Study/CCNA_Training_Portal.html";
       } else {
@@ -893,9 +885,6 @@
       } else if (reason === "timeout") {
         headline = "Time expired";
         reasonText = "The timer hit zero. Results include every item scored before the clock stopped.";
-      } else if (reason === "quit") {
-        headline = "Attempt ended early";
-        reasonText = "You quit before the final item. Results cover scored items only.";
       }
       document.getElementById("resultsHeadline").textContent = headline;
       document.getElementById("resultsReason").textContent = reasonText;
@@ -987,7 +976,6 @@
     }
 
     async function finalizeAttempt(reason) {
-      lastFinalizeReason = reason;
       stopExamTimer();
       examFooter.hidden = true;
       examPanel.hidden = true;
@@ -1041,8 +1029,7 @@
 
     document.getElementById("btnQuit").addEventListener("click", async function () {
       if (!sessionOk || !examStarted) return;
-      if (!confirm("Quit ends this attempt. You will see a short summary; Continue then returns you to the CCNA study hub. Proceed?"))
-        return;
+      if (!confirm("Quit ends this attempt and returns you to the CCNA study hub. Proceed?")) return;
       try {
         if (itemIndex < items.length) {
           var rec = await scoreCurrentItem();
@@ -1051,7 +1038,12 @@
       } catch (e) {
         console.error("ccna-sim quit score", e);
       }
-      await finalizeAttempt("quit");
+      stopExamTimer();
+      examFooter.hidden = true;
+      examPanel.hidden = true;
+      gatePanel.hidden = true;
+      if (!portalPassActive()) clearTempTestAccess();
+      window.location.href = "/CCNA-Study/ccna-index.html";
     });
 
     document.getElementById("resultsContinue").addEventListener("click", function () {
@@ -1104,7 +1096,7 @@
       await startExamUI();
     } else if (!sessionId) {
       gateStatus.textContent =
-        "No paid checkout session found. Use Purchase on the timed-test landing page, or open the Stripe return link from your receipt (it includes session_id). If you already paid on this browser, try Start timed test from the landing page. If you have an active CCNA portal pass (30-day or 90-day) on this browser, open the runner from the same device where the portal stored your access.";
+        "No paid checkout session found. Use Purchase timed test access on the one-time landing page, or open the Stripe return link from your receipt (it includes session_id). If you already paid on this browser, reopen the runner here — saved checkout data on this device may restore access without session_id in the URL. If you have an active CCNA portal pass (30-day or 90-day), start the timed test from the CCNA Training Portal on this browser.";
       gateStatus.className = "status-bad";
     } else {
       try {

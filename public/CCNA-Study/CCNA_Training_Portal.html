@@ -460,143 +460,6 @@
       background: rgba(47, 102, 191, 0.35);
     }
 
-    /* One-time simulation exam purchase boxes (ENCOR external + CCNA on-site) */
-    .purchase-access-wrap {
-      margin-top: 18px;
-    }
-    .purchase-one-time-grid {
-      display: grid;
-      gap: 18px;
-      grid-template-columns: 1fr;
-    }
-    @media (min-width: 768px) {
-      .purchase-one-time-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-    .purchase-track-box {
-      padding: clamp(18px, 3vw, 22px) clamp(16px, 3vw, 20px);
-      border-radius: 12px;
-      border: 1px solid var(--accent-border);
-      background: rgba(47, 102, 191, 0.08);
-    }
-    .purchase-track-box--encor-live {
-      border-color: rgba(47, 102, 191, 0.35);
-      background: #fff;
-      box-shadow:
-        0 0 0 1px rgba(79, 132, 216, 0.18) inset,
-        0 8px 24px rgba(0, 0, 0, 0.12);
-    }
-    .purchase-track-box--encor-live .purchase-track-title {
-      color: #142a4a;
-    }
-    .purchase-track-box--encor-live .purchase-track-sub {
-      color: #2a3d56;
-    }
-    .purchase-track-box--encor-live .purchase-access-disclaimer {
-      border-top-color: rgba(45, 63, 92, 0.22);
-      color: #4d5f78;
-    }
-    .purchase-track-box--one-time-live {
-      border-color: rgba(31, 168, 85, 0.6);
-      background: rgba(31, 168, 85, 0.15);
-      box-shadow:
-        0 0 0 1px rgba(74, 224, 146, 0.25) inset,
-        0 10px 24px rgba(12, 60, 31, 0.35);
-    }
-    .purchase-track-box--one-time-live .purchase-track-title {
-      color: #d8ffe9;
-    }
-    .purchase-track-box--one-time-live .purchase-track-sub {
-      color: #c7f2da;
-    }
-    .purchase-track-box--one-time-live .purchase-access-disclaimer {
-      border-top-color: rgba(74, 224, 146, 0.35);
-      color: #b9e8cc;
-    }
-    .purchase-track-box--ccna-pending {
-      border-color: rgba(245, 158, 11, 0.55);
-      background: rgba(245, 158, 11, 0.14);
-      box-shadow:
-        0 0 0 1px rgba(251, 191, 36, 0.3) inset,
-        0 10px 24px rgba(120, 53, 15, 0.25);
-    }
-    .purchase-track-box--ccna-pending .purchase-track-title {
-      color: #fef3c7;
-    }
-    .purchase-track-box--ccna-pending .purchase-track-sub {
-      color: #fde68a;
-    }
-    .purchase-track-box--ccna-pending .purchase-access-disclaimer {
-      border-top-color: rgba(251, 191, 36, 0.4);
-      color: #fcd34d;
-    }
-    .purchase-track-box--ccna-pending.purchase-track-box--inactive {
-      opacity: 0.5;
-      filter: grayscale(1);
-      pointer-events: none;
-      user-select: none;
-      cursor: not-allowed;
-      box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.25) inset;
-    }
-    .purchase-track-box--inactive .cta-main--inactive {
-      cursor: not-allowed;
-      background: linear-gradient(165deg, #475569 0%, #334155 48%, #1e293b 100%);
-      border-color: rgba(148, 163, 184, 0.35);
-      box-shadow: none;
-      color: #cbd5e1;
-    }
-    .purchase-track-head {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px 12px;
-      margin: 0 0 10px;
-    }
-    .purchase-track-head .purchase-track-title {
-      margin: 0;
-    }
-    .encor-live-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 5px 12px;
-      border-radius: 999px;
-      font-size: 0.68rem;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #041208;
-      background: linear-gradient(155deg, #4ae092 0%, #1fa855 100%);
-      box-shadow:
-        0 0 0 1px rgba(74, 224, 146, 0.65),
-        0 2px 16px rgba(31, 168, 85, 0.45);
-    }
-    .purchase-track-title {
-      margin: 0 0 6px;
-      font-size: 0.92rem;
-      font-weight: 800;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      color: #a8c4f0;
-    }
-    .purchase-track-sub {
-      margin: 0 0 14px;
-      color: var(--muted);
-      font-size: 0.9rem;
-      line-height: 1.45;
-    }
-    .purchase-track-cta-wrap {
-      margin: 16px 0 0;
-    }
-    .purchase-access-disclaimer {
-      margin: 10px 0 0;
-      padding-top: 10px;
-      border-top: 1px solid rgba(45, 59, 90, 0.75);
-      color: #9fb0cc;
-      font-size: 0.84rem;
-      line-height: 1.45;
-    }
     .cta-main {
       display: inline-flex;
       align-items: center;
@@ -632,53 +495,7 @@
       width: 100%;
       box-sizing: border-box;
     }
-    .sim-pending-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 5px 12px;
-      border-radius: 999px;
-      font-size: 0.68rem;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #422006;
-      background: linear-gradient(155deg, #fde68a 0%, #f59e0b 100%);
-      box-shadow:
-        0 0 0 1px rgba(245, 158, 11, 0.55),
-        0 2px 12px rgba(217, 119, 6, 0.35);
-    }
-
-    .portal-test-sim-stripe-note {
-      margin: 14px 0 0;
-      font-size: 0.82rem;
-      color: #7d8ea3;
-      line-height: 1.45;
-    }
-
-    .portal-test-sim-bypass {
-      margin: 18px 0 0;
-      padding-top: 16px;
-      border-top: 1px dashed rgba(157, 178, 209, 0.35);
-      font-size: 0.84rem;
-      color: #9fb0cc;
-      line-height: 1.5;
-    }
-    .portal-test-sim-bypass a {
-      font-weight: 700;
-      color: #a8c4f0;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-    .portal-test-sim-bypass a:hover {
-      color: #cfe2ff;
-    }
-    .portal-test-sim-bypass-hint {
-      color: #7d8ea3;
-      font-weight: 400;
-    }
-
-    .portal-sim-active-cta {
+    .portal-sim-verified-wrap {
       margin: 0 0 18px;
       padding: 18px 20px;
       border-radius: 12px;
@@ -686,13 +503,23 @@
       background: rgba(31, 168, 85, 0.12);
       box-shadow: 0 0 0 1px rgba(74, 224, 146, 0.2) inset;
     }
-    .portal-sim-active-cta p {
+    .portal-sim-verified-wrap p {
       margin: 0 0 14px;
       color: #c7f2da;
       line-height: 1.45;
       font-size: 0.95rem;
     }
-    .portal-sim-active-cta .cta-main {
+    .portal-sim-verified-wrap .cta-main {
+      text-align: center;
+    }
+    .portal-sim-locked-wrap {
+      margin: 0 0 8px;
+      padding: 16px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.45);
+    }
+    .portal-sim-locked-wrap .cta-main {
       text-align: center;
     }
 
@@ -1075,8 +902,8 @@
               Timed practice test — 120 minutes · 50 questions · 5 drag-and-drops · 4 labs · one clock
             </p>
             <p style="margin: 0 0 10px; color: #b8c3d6; line-height: 1.5;">
-              Single mixed session like test day: multiple-choice, drag-and-drop, and CLI labs in random order. Purchase unlocks one run;
-              full runner UI connects here after Stripe is configured on Vercel.
+              Single mixed session like test day: multiple-choice, drag-and-drop, and CLI labs in random order. Use <strong>Begin test</strong> below to open the timed
+              runner.
             </p>
             <ul style="margin: 0 0 12px 1.2rem; color: #b8c3d6; line-height: 1.55; padding: 0;">
               <li><strong>59 mixed items per run</strong> — 50 questions, 5 drag-and-drops, 4 labs — randomized in order. Results use a 1000-point scale (pass 800) weighted 70% / 10% / 20%.</li>
@@ -1084,81 +911,26 @@
               <li><strong>Timer-driven</strong> — the session runs against the clock from start to submit.</li>
               <li><strong>Pass or fail at the end.</strong></li>
             </ul>
-            <div id="portal-sim-active-cta" class="portal-sim-active-cta" hidden>
+            <div id="portal-sim-verified-wrap" class="portal-sim-verified-wrap" hidden>
               <p>
-                Your <strong>CCNA portal subscription</strong> (30-day or 90-day) is active on this device. You can start the timed simulation
-                <strong>without</strong> separate Stripe checkout for the one-time exam.
+                <strong>Verified access</strong> — your CCNA portal pass (30-day or 90-day) is active on this device. Use the link below to begin the full timed simulated
+                exam (Stripe checkout is not used for this path).
               </p>
               <a
                 class="cta-main cta-main--block"
-                href="/CCNA_Sim_EXAM/test-simulation-runner.html"
-                aria-label="Begin CCNA timed test with active portal access"
-                >Begin timed test</a
+                href="/CCNA_Sim_EXAM/test-simulation-runner.html?bypass=1"
+                aria-label="Begin CCNA timed test"
+                >Begin test</a
               >
             </div>
-            <div id="portal-sim-purchase-wrap" class="purchase-access-wrap">
-              <div class="purchase-one-time-grid">
-                <div class="purchase-track-box purchase-track-box--encor-live" aria-label="One-time ENCOR simulation exam purchase">
-                  <div class="purchase-track-head">
-                    <p class="purchase-track-title">One-time simulation exam (ENCOR for CCNP)</p>
-                    <span class="encor-live-badge">Live</span>
-                  </div>
-                  <p class="purchase-track-sub">
-                    ENCOR timed practice test: 120 minutes, mixed multiple-choice, drag-and-drop, and lab items. Stripe Checkout when configured on the ENCOR training site.
-                  </p>
-                  <p class="purchase-track-cta-wrap">
-                    <a
-                      class="cta-main cta-main--block"
-                      href="https://becertifiedtoday-encor.vercel.app/encor/test-simulation.html"
-                      rel="noopener noreferrer"
-                      aria-label="Purchase one-time simulation exam for ENCOR for CCNP"
-                      >PURCHASE ONE-TIME ENCOR (CCNP) SIMULATION EXAM</a
-                    >
-                  </p>
-                  <p class="purchase-access-disclaimer">
-                    <strong>$4.99 one-time.</strong> No recurring membership. Opens preparation and purchase on becertifiedtoday-encor.vercel.app.
-                  </p>
-                </div>
-                <div
-                  class="purchase-track-box purchase-track-box--one-time-live"
-                  aria-label="One-time CCNA simulation exam purchase"
-                >
-                  <div class="purchase-track-head">
-                    <p class="purchase-track-title">One-time simulation exam (CCNA)</p>
-                    <span class="encor-live-badge">Live</span>
-                  </div>
-                  <p class="purchase-track-sub">
-                    CCNA timed practice test: 120 minutes, 50 questions, 5 drag-and-drops, 4 labs. Opens the timed-test landing page for Stripe Checkout on this site.
-                  </p>
-                  <p class="purchase-track-cta-wrap">
-                    <a
-                      class="cta-main cta-main--block"
-                      href="/CCNA_Sim_EXAM/begin-test-simulation.html"
-                      aria-label="Purchase one-time simulation exam for CCNA"
-                      >PURCHASE ONE-TIME CCNA SIMULATION EXAM</a
-                    >
-                  </p>
-                  <p class="purchase-access-disclaimer">
-                    <strong>$9.99 one-time.</strong> No recurring membership. Opens preparation and purchase on becertifiedtoday.com.
-                  </p>
-                </div>
-              </div>
+            <div id="portal-sim-locked-wrap" class="portal-sim-locked-wrap">
+              <a
+                class="cta-main cta-main--block"
+                href="/CCNA_Sim_EXAM/test-simulation-runner.html?bypass=1"
+                aria-label="Begin CCNA timed test"
+                >Begin test</a
+              >
             </div>
-            <p class="portal-test-sim-bypass">
-              <strong>Testing:</strong>
-              <a href="/CCNA_Sim_EXAM/test-simulation-runner.html?bypass=1">Begin timed test now</a>
-              <span class="portal-test-sim-bypass-hint"> — skips Stripe checkout</span>
-            </p>
-            <p class="portal-test-sim-stripe-note">
-              CCNA timed test landing page:
-              <a href="/CCNA_Sim_EXAM/begin-test-simulation.html" style="color: #9fb0cc">/CCNA_Sim_EXAM/begin-test-simulation.html</a>.
-              Checkout requires <code>STRIPE_SECRET_KEY</code>, <code>STRIPE_PRICE_CCNA_TEST_SIM</code>, and <code>PUBLIC_SITE_URL</code> on Vercel.
-              After payment, success lands at
-              <a href="/CCNA_Sim_EXAM/test-simulation-runner.html" style="color: #9fb0cc">/CCNA_Sim_EXAM/test-simulation-runner.html</a>
-              (<code>/CCNA-Study/ccna-test-simulation.html</code> redirects there).
-              With an active <strong>CCNA portal pass</strong> (30-day or 90-day) on this browser, you can open the runner directly (no one-time purchase). This page shows
-              <strong>Begin timed test</strong> above when that pass is detected.
-            </p>
           </section>
         </div>
       </section>
@@ -1230,16 +1002,15 @@
   <script src="js/ccna-dnd-25-hub.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      var wrap = document.getElementById("portal-sim-purchase-wrap");
-      var cta = document.getElementById("portal-sim-active-cta");
-      if (!wrap || !cta || typeof bccPortalAccessActive !== "function") return;
+      var verified = document.getElementById("portal-sim-verified-wrap");
+      var locked = document.getElementById("portal-sim-locked-wrap");
+      if (!verified || !locked || typeof bccPortalAccessActive !== "function") return;
       if (bccPortalAccessActive()) {
-        cta.hidden = false;
-        wrap.hidden = true;
-        var bypass = document.querySelector(".portal-test-sim-bypass");
-        var note = document.querySelector(".portal-test-sim-stripe-note");
-        if (bypass) bypass.hidden = true;
-        if (note) note.hidden = true;
+        verified.hidden = false;
+        locked.hidden = true;
+      } else {
+        verified.hidden = true;
+        locked.hidden = false;
       }
     });
   </script>
