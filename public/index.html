@@ -120,6 +120,35 @@
     a.header-sign-up.header-sign-up--live:focus-visible {
       outline-color: #5ccb98;
     }
+    a.header-sign-up.header-sign-up--locked {
+      cursor: not-allowed;
+      pointer-events: none;
+      opacity: 0.55;
+      filter: grayscale(0.9);
+      border-color: rgba(100, 116, 139, 0.65);
+      background: rgba(51, 65, 85, 0.35);
+      color: #94a3b8;
+    }
+    .header-ccna-live-timer {
+      font-size: clamp(0.68rem, 1.6vw, 0.78rem);
+      font-weight: 700;
+      color: #94a3b8;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.35;
+      max-width: min(220px, 42vw);
+      text-align: right;
+    }
+    .header-ccna-live-timer.header-ccna-live-timer--live {
+      color: #7dcea0;
+      max-width: none;
+    }
+    a.cta-main.cta-main--locked {
+      cursor: not-allowed;
+      pointer-events: none;
+      opacity: 0.55;
+      filter: grayscale(0.85);
+      box-shadow: none;
+    }
     /* Site-wide primary CTA — CCNP ENCOR training */
     .cta-main {
       display: inline-flex;
@@ -1240,6 +1269,213 @@
       color: var(--text);
       font-weight: 700;
     }
+    /* First-visit CCNA timed sim promo (dismiss stored in localStorage) */
+    .ccna-sim-promo-root {
+      position: fixed;
+      inset: 0;
+      z-index: 20000;
+      display: none;
+      place-items: center;
+      padding: clamp(16px, 4vw, 28px);
+      box-sizing: border-box;
+    }
+    .ccna-sim-promo-root.ccna-sim-promo-root--open {
+      display: grid;
+    }
+    .ccna-sim-promo-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(4, 8, 18, 0.72);
+      backdrop-filter: blur(6px);
+    }
+    .ccna-sim-promo-panel {
+      position: relative;
+      z-index: 1;
+      width: min(520px, 100%);
+      max-height: min(90vh, 640px);
+      overflow: auto;
+      margin: 0;
+      padding: clamp(20px, 4vw, 28px) clamp(18px, 3.5vw, 26px) 22px;
+      border-radius: 16px;
+      border: 1px solid rgba(79, 132, 216, 0.45);
+      background: linear-gradient(165deg, rgba(22, 32, 52, 0.98) 0%, rgba(14, 20, 36, 0.99) 100%);
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+        0 24px 64px rgba(0, 0, 0, 0.55);
+      color: var(--text);
+      -webkit-overflow-scrolling: touch;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .ccna-sim-promo-root.ccna-sim-promo-root--open .ccna-sim-promo-panel {
+        animation: ccnaSimPromoIn 0.28s ease-out;
+      }
+    }
+    @keyframes ccnaSimPromoIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    .ccna-sim-promo-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #cbd5e1;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .ccna-sim-promo-close:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+    .ccna-sim-promo-close:focus-visible {
+      outline: 2px solid #9ec0ff;
+      outline-offset: 2px;
+    }
+    .ccna-sim-promo-eyebrow {
+      margin: 0 0 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #7dcea0;
+    }
+    .ccna-sim-promo-panel h2 {
+      margin: 0 36px 12px 0;
+      font-size: clamp(1.15rem, 3vw, 1.35rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .ccna-sim-promo-lead {
+      margin: 0 0 16px;
+      font-size: clamp(0.9rem, 2.1vw, 0.98rem);
+      line-height: 1.55;
+      color: #b8c3d6;
+    }
+    .ccna-sim-promo-lead strong {
+      color: #e8f4ee;
+    }
+    .ccna-sim-promo-list {
+      margin: 0 0 18px;
+      padding-left: 1.15rem;
+      font-size: clamp(0.86rem, 2vw, 0.94rem);
+      line-height: 1.55;
+      color: #c5d0e3;
+    }
+    .ccna-sim-promo-list li {
+      margin-bottom: 8px;
+    }
+    .ccna-sim-promo-code-label {
+      margin: 0 0 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+    }
+    .ccna-sim-promo-code-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .ccna-sim-promo-code-row code {
+      flex: 1 1 auto;
+      min-width: 0;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(100, 116, 139, 0.55);
+      background: rgba(11, 16, 32, 0.85);
+      font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.04em;
+      color: #e2e8f0;
+    }
+    .ccna-sim-promo-copy {
+      flex-shrink: 0;
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(120, 170, 255, 0.45);
+      background: rgba(47, 102, 191, 0.35);
+      color: #f0f4fc;
+      font-weight: 800;
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+    }
+    .ccna-sim-promo-copy:hover {
+      filter: brightness(1.08);
+    }
+    .ccna-sim-promo-copy:focus-visible {
+      outline: 2px solid #9ec0ff;
+      outline-offset: 2px;
+    }
+    .ccna-sim-promo-hint {
+      margin: 0 0 18px;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: #8899b5;
+    }
+    .ccna-sim-promo-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .ccna-sim-promo-actions a.ccna-sim-promo-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(61, 157, 114, 0.65);
+      font-weight: 800;
+      font-size: 0.86rem;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      color: #f0fdf4;
+      background: linear-gradient(165deg, rgba(52, 168, 118, 0.95) 0%, rgba(24, 94, 66, 0.98) 100%);
+      box-shadow: 0 6px 22px rgba(24, 94, 66, 0.35);
+    }
+    .ccna-sim-promo-actions a.ccna-sim-promo-primary:hover {
+      filter: brightness(1.06);
+    }
+    .ccna-sim-promo-actions a.ccna-sim-promo-primary:focus-visible {
+      outline: 2px solid #86efac;
+      outline-offset: 3px;
+    }
+    .ccna-sim-promo-secondary {
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(100, 116, 139, 0.55);
+      background: transparent;
+      color: #cbd5e1;
+      font: inherit;
+      font-weight: 700;
+      font-size: 0.86rem;
+      cursor: pointer;
+    }
+    .ccna-sim-promo-secondary:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+    }
+    .ccna-sim-promo-secondary:focus-visible {
+      outline: 2px solid #9ec0ff;
+      outline-offset: 2px;
+    }
   </style>
 </head>
 <body>
@@ -1262,11 +1498,16 @@
           >CCNP-ENCOR Training Portal</a
         >
         <a
-          class="header-sign-up header-sign-up--live"
+          id="header-ccna-portal-link"
+          class="header-sign-up header-sign-up--locked"
           href="/CCNA-Study/ccna-index.html"
-          aria-label="CCNA Training Portal — open CCNA study hub (live)"
+          data-live-at="2026-05-15T16:00:00.000Z"
+          aria-disabled="true"
+          tabindex="-1"
+          aria-label="CCNA Training Portal — opens Friday 12:00 PM Eastern"
           >CCNA Training Portal</a
         >
+        <span id="header-ccna-live-timer" class="header-ccna-live-timer" role="timer" aria-live="polite"></span>
       </div>
     </header>
     <figure class="hero-banner">
@@ -1348,7 +1589,7 @@
                     <div class="portal-launch-callout" aria-labelledby="ccna-training-portal-heading">
                       <p class="portal-launch-heading" id="ccna-training-portal-heading">CCNA Training Portal</p>
                       <p class="portal-launch-sub">
-                        Going live soon — full dashboard and checkout unlock with the portal. Time remaining:
+                        Opens live <strong>Friday 12:00 PM Eastern</strong> — full dashboard and checkout unlock with the portal. Time remaining:
                       </p>
                       <span
                         id="portal-countdown-home"
@@ -1364,9 +1605,12 @@
                     </p>
                     <p class="format-sample format-sample--main-cta">
                       <a
-                        class="cta-main cta-main--block"
+                        id="home-ccna-portal-cta"
+                        class="cta-main cta-main--block cta-main--locked"
                         href="/CCNA-Study/ccna-index.html"
-                        aria-label="Open CCNA study hub and training portal"
+                        aria-disabled="true"
+                        tabindex="-1"
+                        aria-label="CCNA training portal — opens Friday 12 PM Eastern"
                         >ACCESS CCNA TRAINING PORTAL TODAY</a
                       >
                     </p>
@@ -1793,6 +2037,55 @@
         >Any questions?</a>
     </footer>
   </div>
+  <div
+    id="ccnaSimPromoRoot"
+    class="ccna-sim-promo-root"
+    hidden
+    role="presentation"
+    aria-hidden="true"
+  >
+    <div class="ccna-sim-promo-backdrop" data-ccna-sim-promo-dismiss tabindex="-1"></div>
+    <div
+      class="ccna-sim-promo-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="ccnaSimPromoTitle"
+      tabindex="-1"
+    >
+      <button type="button" class="ccna-sim-promo-close" data-ccna-sim-promo-dismiss aria-label="Close offer dialog">
+        ×
+      </button>
+      <p class="ccna-sim-promo-eyebrow">New here?</p>
+      <h2 id="ccnaSimPromoTitle">Try the CCNA timed simulation — 50% off</h2>
+      <p class="ccna-sim-promo-lead">
+        Full exam-style run in the browser: <strong>questions</strong>, <strong>drag-and-drop</strong>, and
+        <strong>CLI labs</strong>, then a <strong>comprehensive score card</strong> (overall score and objective breakdown)
+        when you finish. One <strong>2-hour</strong> clock for the whole session.
+      </p>
+      <ul class="ccna-sim-promo-list">
+        <li>No app downloads — everything runs on Be Certified Today in your browser.</li>
+        <li>
+          No Be Certified Today email membership or site account: pay once through Stripe to unlock a run; take the test and
+          review results in your session on this device.
+        </li>
+      </ul>
+      <p class="ccna-sim-promo-code-label">Stripe promotion code (50% off)</p>
+      <div class="ccna-sim-promo-code-row">
+        <code id="ccnaSimPromoCode">CCNA_Sim_4_U</code>
+        <button type="button" class="ccna-sim-promo-copy" id="ccnaSimPromoCopyBtn">Copy code</button>
+      </div>
+      <p class="ccna-sim-promo-hint">On Checkout, click &ldquo;Add promotion code&rdquo; and paste <strong>CCNA_Sim_4_U</strong> before you pay.</p>
+      <div class="ccna-sim-promo-actions">
+        <a
+          class="ccna-sim-promo-primary"
+          id="ccnaSimPromoCta"
+          href="/CCNA_Sim_EXAM/begin-test-simulation.html?promo=CCNA_Sim_4_U"
+          >Continue to timed test</a
+        >
+        <button type="button" class="ccna-sim-promo-secondary" data-ccna-sim-promo-dismiss>Not now</button>
+      </div>
+    </div>
+  </div>
   <script>
     (function () {
       var p = location.pathname || "";
@@ -1805,10 +2098,17 @@
       }
     })();
     (function () {
-      var el = document.getElementById("portal-countdown-home");
-      if (!el || !el.dataset.liveAt) return;
-      var target = new Date(el.dataset.liveAt).getTime();
+      /** CCNA portal public launch: Friday 12:00 PM US/Eastern (May 2026 = EDT, i.e. 16:00 UTC). */
+      var CCNA_LIVE_AT = "2026-05-15T16:00:00.000Z";
+      var target = Date.parse(CCNA_LIVE_AT);
       if (Number.isNaN(target)) return;
+
+      var countdownEl = document.getElementById("portal-countdown-home");
+      var headerLink = document.getElementById("header-ccna-portal-link");
+      var headerTimer = document.getElementById("header-ccna-live-timer");
+      var portalCta = document.getElementById("home-ccna-portal-cta");
+
+      if (countdownEl) countdownEl.dataset.liveAt = CCNA_LIVE_AT;
 
       function pad(n) {
         return n < 10 ? "0" + n : String(n);
@@ -1824,19 +2124,155 @@
         return days + "d " + pad(h) + "h " + pad(m) + "m " + pad(s) + "s";
       }
 
-      function tick() {
-        var ms = target - Date.now();
-        if (ms <= 0) {
-          el.textContent = "Live now";
-          el.classList.add("portal-countdown--live");
-          clearInterval(timerId);
-          return;
+      function unlockPortalUi() {
+        if (headerLink) {
+          headerLink.classList.remove("header-sign-up--locked");
+          headerLink.classList.add("header-sign-up--live");
+          headerLink.setAttribute("aria-disabled", "false");
+          headerLink.removeAttribute("tabindex");
+          headerLink.setAttribute("aria-label", "CCNA Training Portal — open CCNA study hub (live)");
         }
-        el.textContent = formatRemaining(ms);
+        if (portalCta) {
+          portalCta.classList.remove("cta-main--locked");
+          portalCta.setAttribute("aria-disabled", "false");
+          portalCta.removeAttribute("tabindex");
+          portalCta.setAttribute("aria-label", "Open CCNA study hub and training portal");
+        }
+        if (headerTimer) {
+          headerTimer.textContent = "Live — Fri 12 PM ET";
+          headerTimer.classList.add("header-ccna-live-timer--live");
+        }
       }
 
+      function tick() {
+        var ms = target - Date.now();
+        if (countdownEl) {
+          if (ms <= 0) {
+            countdownEl.textContent = "Live now";
+            countdownEl.classList.add("portal-countdown--live");
+          } else {
+            countdownEl.textContent = formatRemaining(ms);
+          }
+        }
+        if (headerTimer) {
+          if (ms <= 0) {
+            headerTimer.textContent = "Live — Fri 12 PM ET";
+            headerTimer.classList.add("header-ccna-live-timer--live");
+          } else {
+            headerTimer.textContent = "Fri 12 PM ET in " + formatRemaining(ms);
+          }
+        }
+        if (ms <= 0) {
+          unlockPortalUi();
+          if (timerId != null) clearInterval(timerId);
+        }
+      }
+
+      var timerId = null;
       tick();
-      var timerId = setInterval(tick, 1000);
+      timerId = setInterval(tick, 1000);
+    })();
+    (function () {
+      var STORAGE_KEY = "bct_ccna_sim_welcome_popup_v1";
+      var PROMO = "CCNA_Sim_4_U";
+      var root = document.getElementById("ccnaSimPromoRoot");
+      var panel = root && root.querySelector(".ccna-sim-promo-panel");
+      var copyBtn = document.getElementById("ccnaSimPromoCopyBtn");
+      var cta = document.getElementById("ccnaSimPromoCta");
+      if (!root || !panel) return;
+
+      var path = location.pathname || "";
+      var onHome = path === "/" || path === "/index.html";
+      if (!onHome) return;
+      try {
+        if (localStorage.getItem(STORAGE_KEY)) return;
+      } catch (_) {
+        return;
+      }
+
+      var prevOverflow = "";
+      var open = false;
+
+      function markSeen() {
+        try {
+          localStorage.setItem(STORAGE_KEY, "1");
+        } catch (_) {}
+      }
+
+      function closePromo() {
+        if (!open) return;
+        open = false;
+        root.classList.remove("ccna-sim-promo-root--open");
+        root.setAttribute("hidden", "");
+        root.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = prevOverflow;
+        document.removeEventListener("keydown", onKey);
+      }
+
+      function openPromo() {
+        if (open) return;
+        open = true;
+        prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        root.removeAttribute("hidden");
+        root.classList.add("ccna-sim-promo-root--open");
+        root.setAttribute("aria-hidden", "false");
+        panel.focus();
+        document.addEventListener("keydown", onKey);
+      }
+
+      function onKey(ev) {
+        if (ev.key === "Escape") {
+          ev.preventDefault();
+          markSeen();
+          closePromo();
+        }
+      }
+
+      root.querySelectorAll("[data-ccna-sim-promo-dismiss]").forEach(function (el) {
+        el.addEventListener("click", function () {
+          markSeen();
+          closePromo();
+        });
+      });
+
+      if (copyBtn) {
+        copyBtn.addEventListener("click", function () {
+          function ok() {
+            var t = "Copied";
+            var prev = copyBtn.textContent;
+            copyBtn.textContent = t;
+            copyBtn.disabled = true;
+            setTimeout(function () {
+              copyBtn.textContent = prev;
+              copyBtn.disabled = false;
+            }, 1600);
+          }
+          function fail() {
+            window.prompt("Copy this code:", PROMO);
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(PROMO).then(ok).catch(fail);
+          } else {
+            fail();
+          }
+        });
+      }
+
+      if (cta) {
+        cta.addEventListener("click", function () {
+          markSeen();
+        });
+      }
+
+      setTimeout(function () {
+        try {
+          if (localStorage.getItem(STORAGE_KEY)) return;
+        } catch (_) {
+          return;
+        }
+        openPromo();
+      }, 600);
     })();
   </script>
 </body>

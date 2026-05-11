@@ -238,6 +238,51 @@
       font-weight: 700;
       color: var(--navy);
     }
+    .sim-promo-callout {
+      margin: 0 0 20px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid #86efac;
+      background: linear-gradient(165deg, #ecfdf5 0%, #d1fae5 100%);
+      color: #14532d;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .sim-promo-callout[hidden] {
+      display: none;
+    }
+    .sim-promo-callout strong {
+      color: #052e16;
+    }
+    .sim-promo-callout code {
+      font-size: 0.95em;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid #86efac;
+    }
+    .sim-promo-callout-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .sim-promo-callout-copy {
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid #16a34a;
+      background: #fff;
+      color: #14532d;
+      font: inherit;
+      font-weight: 800;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .sim-promo-callout-copy:hover {
+      background: #f0fdf4;
+    }
   </style>
 </head>
 <body>
@@ -254,6 +299,13 @@
       <div id="stripeReturnBanner" class="sim-banner-paid" hidden>
         Session id detected on this URL. <a id="stripeReturnContinueLink" href="/CCNA_Sim_EXAM/test-simulation-runner.html">Open timed test runner</a> to verify payment and
         start when you are ready.
+      </div>
+
+      <div id="simPromoFromQuery" class="sim-promo-callout" hidden>
+        <strong>50% off:</strong> on Stripe Checkout, use promotion code <code id="simPromoCodeDisplay">CCNA_Sim_4_U</code> before you pay.
+        <div class="sim-promo-callout-row">
+          <button type="button" class="sim-promo-callout-copy" id="simPromoCopyBtn">Copy code</button>
+        </div>
       </div>
 
       <h1>CCNA timed test simulation</h1>
@@ -319,6 +371,8 @@
     (function () {
       var RUNNER = "/CCNA_Sim_EXAM/test-simulation-runner.html";
 
+      var PROMO_CODE = "CCNA_Sim_4_U";
+
       function stripeReturnBannerIfSession() {
         var params = new URLSearchParams(window.location.search);
         var sid = params.get("session_id");
@@ -333,10 +387,40 @@
         } catch (_) {}
       }
 
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", stripeReturnBannerIfSession);
-      } else {
+      function promoBannerFromQuery() {
+        var params = new URLSearchParams(window.location.search);
+        var raw = (params.get("promo") || "").trim();
+        if (!raw || raw.toUpperCase().replace(/-/g, "_") !== PROMO_CODE.toUpperCase().replace(/-/g, "_")) return;
+        var box = document.getElementById("simPromoFromQuery");
+        var copyBtn = document.getElementById("simPromoCopyBtn");
+        if (box) box.hidden = false;
+        if (!copyBtn) return;
+        copyBtn.addEventListener("click", function () {
+          function revert() {
+            copyBtn.textContent = "Copy code";
+            copyBtn.disabled = false;
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(PROMO_CODE).then(function () {
+              copyBtn.textContent = "Copied";
+              copyBtn.disabled = true;
+              setTimeout(revert, 1500);
+            });
+          } else {
+            window.prompt("Copy this code:", PROMO_CODE);
+          }
+        });
+      }
+
+      function initTopBanners() {
         stripeReturnBannerIfSession();
+        promoBannerFromQuery();
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initTopBanners);
+      } else {
+        initTopBanners();
       }
     })();
   </script>
