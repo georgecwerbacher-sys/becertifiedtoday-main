@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — SW1 PC2 missing from MAC table</title>
+  <title>CCNA — WLC LAG configuration requirement</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -293,81 +293,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Refer to the exhibit.</h1>
-    <div class="exhibit-stack">
-      <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/switch-sw1-pc2-mac-missing-fa02-topology.png" alt="Topology: SW1 with PC1 on Fa0/1 in VLAN 2 (MAC 0007.ec53.4289) and PC2 on Fa0/2 in VLAN 2 (MAC 0007.ec89.7513)." width="900" decoding="async" loading="lazy" />
-      </figure>
-      <div class="cli-device" role="region" aria-label="Sw1 show run and show mac-address-table output">
-        <h2>Sw1# show run</h2>
-        <pre>Building configuration...
+    <h1>What is a requirement when configuring or removing LAG on a WLC?</h1>
 
-interface FastEthernet0/1
- switchport access vlan 2
- switchport mode access
-!
-interface FastEthernet0/2
- switchport access vlan 2
- switchport trunk allowed vlan 3
- switchport mode trunk</pre>
-        <h2>Sw1# show mac-address-table</h2>
-        <pre>          Mac Address Table
--------------------------------------------
-
-Vlan    Mac Address       Type        Ports
-----    -----------       --------    -----
-   2    0007.ec53.4289    DYNAMIC     Fa0/1</pre>
-      </div>
-    </div>
-    <p class="stem-after-exhibit">An engineer has started to configure replacement switch SW1. To verify part of the configuration, the engineer issued the commands as shown and noticed that the entry for PC2 is missing. Which change must be applied to SW1 so that PC1 and PC2 communicate normally?</p>
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="sw1pc2mac1" value="A" aria-label="Select answer option A" />
-        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">A. SW1(config)#interface fa0/2
-SW1(config-if)#no switchport access vlan 2
-SW1(config-if)#no switchport trunk allowed vlan 3
-SW1(config-if)#switchport trunk allowed vlan 2</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="sw1pc2mac1" value="B" aria-label="Select answer option B" />
-        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">B. SW1(config)#interface fa0/1
-SW1(config-if)#no switchport access vlan 2
-SW1(config-if)#switchport trunk native vlan 2
-SW1(config-if)#switchport trunk allowed vlan 3</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="sw1pc2mac1" value="C" aria-label="Select answer option C" />
-        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">C. SW1(config)#interface fa0/2
-SW1(config-if)#no switchport mode trunk
-SW1(config-if)#no switchport trunk allowed vlan 3
-SW1(config-if)#switchport mode access</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="sw1pc2mac1" value="D" aria-label="Select answer option D" />
-        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">D. SW1(config)#interface fa0/1
-SW1(config-if)#no switchport access vlan 2
-SW1(config-if)#switchport access vlan 3
-SW1(config-if)#switchport trunk allowed vlan 2</pre>
-    </label>
-
+    <label class="choice"><input type="radio" name="wlclagreq1" value="A" />A. The incoming and outgoing ports for traffic flow must be specified if LAG is enabled.</label>
+    <label class="choice"><input type="radio" name="wlclagreq1" value="B" />B. The controller must be rebooted after enabling or reconfiguring LAG.</label>
+    <label class="choice"><input type="radio" name="wlclagreq1" value="C" />C. The management interface must be reassigned if LAG is disabled.</label>
+    <label class="choice"><input type="radio" name="wlclagreq1" value="D" />D. Multiple untagged interfaces on the same port must be supported.</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -376,15 +307,15 @@ SW1(config-if)#switchport trunk allowed vlan 2</pre>
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/switch-host-a-to-d-unknown-dest-flood-exhibit.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/gigabit-lx-t-l2-frame-similarity.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-lag-link-redundancy-load-balance.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/poe-static-mode-guaranteed-power.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 The topology shows both PCs in VLAN 2 (PC2 on Fa0/2 with MAC 0007.ec89.7513). The running configuration shows Fa0/2 in trunk mode with only VLAN 3 allowed on the trunk, while PC1 stays on access VLAN 2 at Fa0/1; the MAC table only lists VLAN 2 on Fa0/1 (PC1\u2019s 0007.ec53.4289), so PC2 does not appear for VLAN 2 as expected. Removing trunk mode and the restricted allowed-VLAN list, then configuring the port as access, restores a normal access edge so PC2 can be learned in VLAN 2 and talk to PC1. Option A keeps trunking and adjusts allowed VLANs in the wrong direction for this access-host scenario. Option B edits Fa0/1 and mixes access/trunk semantics on the wrong interface. Option D applies contradictory access and trunk commands on Fa0/1.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 On Cisco Wireless LAN Controllers, changing LAG (enabling, disabling, or reconfiguring the bundle) requires a controller reboot so the distribution-port layout is applied correctly. You do not satisfy LAG by separately declaring arbitrary incoming/outgoing port flows for traffic (A). Disabling LAG does not universally force a management-interface reassignment as the stated blanket requirement (C). Multiple untagged interfaces on one physical port is not a WLC LAG requirement (D).";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -398,7 +329,7 @@ SW1(config-if)#switchport trunk allowed vlan 2</pre>
         }
       }
 
-      document.querySelectorAll('input[name="sw1pc2mac1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="wlclagreq1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

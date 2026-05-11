@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — SW1 PC2 missing from MAC table</title>
+  <title>CCNA — R1 SSH secure remote access (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -292,118 +292,67 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-  <main class="card">
-    <h1>Refer to the exhibit.</h1>
+    <main class="card">
+    <h1 class="choose-two-stem">Refer to the exhibit.</h1>
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/switch-sw1-pc2-mac-missing-fa02-topology.png" alt="Topology: SW1 with PC1 on Fa0/1 in VLAN 2 (MAC 0007.ec53.4289) and PC2 on Fa0/2 in VLAN 2 (MAC 0007.ec89.7513)." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/r1-ssh-secure-remote-access-choose-two-topology.png" alt="Topology: router R1 with GigabitEthernet0/1 toward LAN 10.0.1.0/24 (PC1 and PC2) and Serial0/1 toward the Internet." width="900" decoding="async" loading="lazy" />
       </figure>
-      <div class="cli-device" role="region" aria-label="Sw1 show run and show mac-address-table output">
-        <h2>Sw1# show run</h2>
-        <pre>Building configuration...
-
-interface FastEthernet0/1
- switchport access vlan 2
- switchport mode access
-!
-interface FastEthernet0/2
- switchport access vlan 2
- switchport trunk allowed vlan 3
- switchport mode trunk</pre>
-        <h2>Sw1# show mac-address-table</h2>
-        <pre>          Mac Address Table
--------------------------------------------
-
-Vlan    Mac Address       Type        Ports
-----    -----------       --------    -----
-   2    0007.ec53.4289    DYNAMIC     Fa0/1</pre>
-      </div>
     </div>
-    <p class="stem-after-exhibit">An engineer has started to configure replacement switch SW1. To verify part of the configuration, the engineer issued the commands as shown and noticed that the entry for PC2 is missing. Which change must be applied to SW1 so that PC1 and PC2 communicate normally?</p>
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="sw1pc2mac1" value="A" aria-label="Select answer option A" />
-        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">A. SW1(config)#interface fa0/2
-SW1(config-if)#no switchport access vlan 2
-SW1(config-if)#no switchport trunk allowed vlan 3
-SW1(config-if)#switchport trunk allowed vlan 2</pre>
-    </label>
+    <p class="stem-after-exhibit">Which two commands must be configured on router R1 to enable the router to accept secure remote-access connections? (Choose two)</p>
 
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="sw1pc2mac1" value="B" aria-label="Select answer option B" />
-        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">B. SW1(config)#interface fa0/1
-SW1(config-if)#no switchport access vlan 2
-SW1(config-if)#switchport trunk native vlan 2
-SW1(config-if)#switchport trunk allowed vlan 3</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="sw1pc2mac1" value="C" aria-label="Select answer option C" />
-        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">C. SW1(config)#interface fa0/2
-SW1(config-if)#no switchport mode trunk
-SW1(config-if)#no switchport trunk allowed vlan 3
-SW1(config-if)#switchport mode access</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="sw1pc2mac1" value="D" aria-label="Select answer option D" />
-        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">D. SW1(config)#interface fa0/1
-SW1(config-if)#no switchport access vlan 2
-SW1(config-if)#switchport access vlan 3
-SW1(config-if)#switchport trunk allowed vlan 2</pre>
-    </label>
-
+    <label class="choice"><input type="checkbox" name="r1sshsec2" value="A" />A. transport input telnet</label>
+    <label class="choice"><input type="checkbox" name="r1sshsec2" value="B" />B. username cisco password 0 cisco</label>
+    <label class="choice"><input type="checkbox" name="r1sshsec2" value="C" />C. login console</label>
+    <label class="choice"><input type="checkbox" name="r1sshsec2" value="D" />D. ip ssh pubkey-chain</label>
+    <label class="choice"><input type="checkbox" name="r1sshsec2" value="E" />E. crypto key generate rsa</label>
 
     <div class="actions">
+      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/switch-host-a-to-d-unknown-dest-flood-exhibit.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/gigabit-lx-t-l2-frame-similarity.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ssh-ip-domain-name-before-rsa-key.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/qos-traffic-shaping-buffer-excess.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 The topology shows both PCs in VLAN 2 (PC2 on Fa0/2 with MAC 0007.ec89.7513). The running configuration shows Fa0/2 in trunk mode with only VLAN 3 allowed on the trunk, while PC1 stays on access VLAN 2 at Fa0/1; the MAC table only lists VLAN 2 on Fa0/1 (PC1\u2019s 0007.ec53.4289), so PC2 does not appear for VLAN 2 as expected. Removing trunk mode and the restricted allowed-VLAN list, then configuring the port as access, restores a normal access edge so PC2 can be learned in VLAN 2 and talk to PC1. Option A keeps trunking and adjusts allowed VLANs in the wrong direction for this access-host scenario. Option B edits Fa0/1 and mixes access/trunk semantics on the wrong interface. Option D applies contradictory access and trunk commands on Fa0/1.";
+      var CORRECT = ["B", "E"];
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="r1sshsec2"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = CORRECT_MSG;
+          answerBox.textContent = "Correct. B and E \u2014 SSH is the secure remote shell; the device needs an RSA host key pair (crypto key generate rsa) so the SSH server can run, and a local username (username ... password|secret ...) is commonly required when virtual lines use login local for authenticated SSH sessions. transport input telnet (A) enables cleartext Telnet, not secure remote access. login console (C) is not the standard VTY pattern for SSH acceptance. ip ssh pubkey-chain (D) can support public-key user authentication but is not one of the two baseline requirements compared with generating keys and defining a user for typical password-based SSH access in CCNA-style scenarios.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="sw1pc2mac1"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>

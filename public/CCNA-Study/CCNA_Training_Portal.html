@@ -681,6 +681,10 @@
     .sim-box-practice-wide {
       grid-column: 1 / -1;
     }
+    .sim-box.ccna-practice-bank--remainder {
+      border-color: rgba(201, 162, 39, 0.45);
+      box-shadow: inset 0 0 0 1px rgba(201, 162, 39, 0.12);
+    }
     .mock-section {
       margin-top: clamp(40px, 8vw, 72px);
       padding-top: clamp(36px, 6vw, 56px);
@@ -856,32 +860,10 @@
           <h3 class="section-heading">Practice Questions</h3>
           <section class="start-box" aria-label="Question studies">
             <p class="study-meta">
-              <strong>Random:</strong> Changes the order of questions in each session. <strong>Review:</strong> Questions answered
-              incorrectly are added back into the mix so you can try them again.
+              Three banks of up to <strong>100</strong> questions each (positions 1–100, 101–200, and 201 through the end of the list).
+              Each bank has its own <strong>Random</strong> and <strong>Review</strong> session. Individual questions are not listed here—open a bank to practice.
             </p>
-            <div class="sim-grid" aria-label="Study groups">
-              <article class="sim-box">
-                <h4 class="sim-box-title">Practice questions (1–100)</h4>
-                <p class="study-meta">
-                  First hundred items from the live question bank. <strong>Random</strong> shuffles this bank once.
-                  <strong>Review</strong> shuffles and re-queues any item you miss until the session completes.
-                </p>
-                <div class="study-actions" role="group" aria-label="Practice question modes bank 1">
-                  <button type="button" class="start-btn" data-ccna100="random" data-ccna100-bank="1">Random</button>
-                  <button type="button" class="start-btn" data-ccna100="review" data-ccna100-bank="1">Review</button>
-                </div>
-              </article>
-              <article class="sim-box">
-                <h4 class="sim-box-title">Practice questions (101–199)</h4>
-                <p class="study-meta">
-                  Remaining items in the same bank (99 questions). Same <strong>Random</strong> and <strong>Review</strong> behavior as the first set, scoped to this half only.
-                </p>
-                <div class="study-actions" role="group" aria-label="Practice question modes bank 2">
-                  <button type="button" class="start-btn" data-ccna100="random" data-ccna100-bank="2">Random</button>
-                  <button type="button" class="start-btn" data-ccna100="review" data-ccna100-bank="2">Review</button>
-                </div>
-              </article>
-            </div>
+            <div class="sim-grid" id="ccna-practice-banks-grid" aria-label="Practice question banks (three groups)"></div>
           </section>
 
           <h3 class="section-heading">Drag and Drop</h3>
@@ -1207,7 +1189,7 @@
         >Any questions?</a>
     </footer>
   </div>
-  <script src="/CCNA-Study/js/ccna-practice-100-hub.js" defer></script>
-  <script src="/CCNA-Study/js/ccna-dnd-25-hub.js" defer></script>
+  <script src="js/ccna-practice-100-hub.js" defer></script>
+  <script src="js/ccna-dnd-25-hub.js" defer></script>
 </body>
 </html>

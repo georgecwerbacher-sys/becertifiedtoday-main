@@ -454,6 +454,8 @@ def page_checkbox(
     explain: str,
     prev_slug: str | None,
     next_slug: str | None,
+    post_stem_html: str | None = None,
+    stem_after_exhibit: str | None = None,
 ) -> str:
     prev_h = (
         f'<a class="next-link" href="/CCNA-Study/CCNA_questions/{prev_slug}.html">Previous question</a>'
@@ -474,6 +476,21 @@ def page_checkbox(
     nav = "\n".join(nav_lines)
     cor_json = json.dumps(sorted(correct_letters))
     msg_json = json.dumps(explain)
+    exhibit_block = post_stem_html if post_stem_html else ""
+    stem_inner = format_checkbox_stem(stem)
+    if post_stem_html and stem_after_exhibit:
+        main_open = (
+            f'    <h1 class="choose-two-stem">{stem_inner}</h1>\n'
+            f"{exhibit_block}\n"
+            f'    <p class="stem-after-exhibit">{html.escape(stem_after_exhibit)}</p>\n'
+        )
+    elif post_stem_html:
+        main_open = (
+            f'    <h1 class="choose-two-stem">{stem_inner}</h1>\n'
+            f"{exhibit_block}\n"
+        )
+    else:
+        main_open = f'    <h1 class="choose-two-stem">{stem_inner}</h1>\n'
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -488,8 +505,7 @@ def page_checkbox(
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
     <main class="card">
-    <h1 class="choose-two-stem">{format_checkbox_stem(stem)}</h1>
-
+{main_open}
 {choices_html}
 
     <div class="actions">
@@ -676,6 +692,20 @@ def main() -> None:
                 "configure the first three access points to use channels 1, 6, and 11",
                 "include at least two access points on nonoverlapping channels to support load balancing",
                 "assign physically adjacent access points to the same Wi-Fi channel",
+            ],
+        },
+        {
+            "slug": "wlan-nonoverlapping-channels-discontinuous-frequency",
+            "title": "CCNA — Nonoverlapping Wi-Fi channels requirement",
+            "stem": "What is a requirement for nonoverlapping Wi-Fi channels?",
+            "name": "wifinonov1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 Nonoverlapping channels are channel numbers whose center frequencies are far enough apart that their modulated bandwidths do not interfere; that is a property of sufficiently separated (discontinuous) frequency ranges. Security profiles (A), PHY data rates (B), and SSID strings (D) do not define whether two channel assignments overlap in spectrum.",
+            "choices": [
+                "different security settings",
+                "different transmission speeds",
+                "discontinuous frequency ranges",
+                "unique SSIDs",
             ],
         },
         {
@@ -2194,6 +2224,22 @@ R5#sh lldp neighbor""",
             ],
         },
         {
+            "slug": "stp-portfast-bypass-states-choose-two",
+            "title": "CCNA — PortFast bypassed STP states (choose two)",
+            "stem": "Which two spanning-tree states are bypassed on an interface running PortFast? (Choose two)",
+            "name": "stpfastst2",
+            "choose_two": True,
+            "correct": ["D", "E"],
+            "explain": "Correct. D and E \u2014 On a classic 802.1D STP port, the normal progression toward forwarding includes listening and learning before forwarding. PortFast on an appropriate edge port skips those transitional states so the port can forward immediately. Forwarding (A) is the target state, not bypassed. Blocking (B) is not the pair described as skipped on link-up for PortFast edge behavior. disabled (C) is not one of the five STP port states in the same sense and is not what PortFast short-circuits.",
+            "choices": [
+                "forwarding",
+                "blocking",
+                "disabled",
+                "learning",
+                "listening",
+            ],
+        },
+        {
             "slug": "unused-switchports-black-hole-vlan",
             "title": "CCNA — Unused ports security",
             "stem": "A network administrator is asked to configure VLANs 2, 3 and 4 for a new implementation. Some ports must be assigned to the new VLANs with unused remaining. Which action should be taken for the unused ports?",
@@ -2464,20 +2510,23 @@ D        10.0.1.0/28 [90/10] via 192.168.0.7, 00:33:32, GigabitEthernet0/0</pre>
             "correct": "C",
             "explain": "Correct. C \u2014 The MAC address table has no entry for host D\u2019s destination MAC, so the frame is unknown unicast at Layer 2. The switch floods it out every other port in that VLAN except the ingress port (Fa0/1). A port-security violation could err-disable a port, but nothing in the exhibit indicates that. A single unknown-unicast frame does not by itself imply a broadcast storm. The switch does not remove unrelated CAM entries when forwarding or flooding (D misstates both flooding and how the CAM table is updated).",
             "post_stem_html": """    <div class="exhibit-stack">
-      <div class="cli-device" role="region" aria-label="Switch MAC address table and frame summary">
-        <h2>SW1# show mac address-table dynamic</h2>
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/switch-host-a-to-d-unknown-dest-flood-topology.png" alt="Topology: one switch with Host A on Fa0/1, Host B on Fa0/2, Host C on Fa0/3, and Host D on Fa0/4." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="cli-device" role="region" aria-label="SwitchA show mac-address table output">
+        <h2>SwitchA# show mac-address table</h2>
         <pre>          Mac Address Table
 -------------------------------------------
 
 Vlan    Mac Address       Type        Ports
 ----    -----------       --------    -----
-   1    aaaa.aaaa.aaaa    DYNAMIC     Fa0/1
-   1    bbbb.bbbb.bbbb    DYNAMIC     Fa0/2
-   1    cccc.cccc.cccc    DYNAMIC     Fa0/3
+   2    000c.65dc.bb7b    DYNAMIC     Fa0/1
+   2    0010.11dc.3e91    DYNAMIC     Fa0/2
+   2    0041.48d7.c782    DYNAMIC     Fa0/3
 
-Host A uses MAC address aaaa.aaaa.aaaa on Fa0/1.
-Host D uses MAC address dddd.dddd.dddd (not present in the table).
-The frame arrives on Fa0/1 with destination MAC dddd.dddd.dddd.</pre>
+Host A uses MAC address 000c.65dc.bb7b on Fa0/1.
+Host D uses MAC address 00aa.bbcc.dd01 (not present in the table).
+The frame arrives on Fa0/1 with destination MAC 00aa.bbcc.dd01.</pre>
       </div>
     </div>""",
             "choices": [
@@ -2495,32 +2544,30 @@ The frame arrives on Fa0/1 with destination MAC dddd.dddd.dddd.</pre>
             "name": "sw1pc2mac1",
             "correct": "C",
             "mono": True,
-            "explain": "Correct. C \u2014 Fa0/2 is administratively set to trunk mode with only VLAN 3 allowed, so host traffic from PC2 is not handled as a normal access port in VLAN 2 alongside PC1 on Fa0/1. Removing trunk mode and the restricted allowed-VLAN list, then configuring the port as access, restores a standard access edge so PC2 can appear in the MAC address table for the user data VLAN and exchange frames with PC1. Option A keeps trunking and adjusts allowed VLANs in the wrong direction for this access-host scenario. Option B edits Fa0/1 and mixes access/trunk semantics on the wrong interface. Option D applies contradictory access and trunk commands on Fa0/1.",
+            "explain": "Correct. C \u2014 The topology shows both PCs in VLAN 2 (PC2 on Fa0/2 with MAC 0007.ec89.7513). The running configuration shows Fa0/2 in trunk mode with only VLAN 3 allowed on the trunk, while PC1 stays on access VLAN 2 at Fa0/1; the MAC table only lists VLAN 2 on Fa0/1 (PC1\u2019s 0007.ec53.4289), so PC2 does not appear for VLAN 2 as expected. Removing trunk mode and the restricted allowed-VLAN list, then configuring the port as access, restores a normal access edge so PC2 can be learned in VLAN 2 and talk to PC1. Option A keeps trunking and adjusts allowed VLANs in the wrong direction for this access-host scenario. Option B edits Fa0/1 and mixes access/trunk semantics on the wrong interface. Option D applies contradictory access and trunk commands on Fa0/1.",
             "post_stem_html": """    <div class="exhibit-stack">
-      <div class="cli-device" role="region" aria-label="SW1 verification commands">
-        <h2>SW1# show mac address-table dynamic</h2>
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/switch-sw1-pc2-mac-missing-fa02-topology.png" alt="Topology: SW1 with PC1 on Fa0/1 in VLAN 2 (MAC 0007.ec53.4289) and PC2 on Fa0/2 in VLAN 2 (MAC 0007.ec89.7513)." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="cli-device" role="region" aria-label="Sw1 show run and show mac-address-table output">
+        <h2>Sw1# show run</h2>
+        <pre>Building configuration...
+
+interface FastEthernet0/1
+ switchport access vlan 2
+ switchport mode access
+!
+interface FastEthernet0/2
+ switchport access vlan 2
+ switchport trunk allowed vlan 3
+ switchport mode trunk</pre>
+        <h2>Sw1# show mac-address-table</h2>
         <pre>          Mac Address Table
 -------------------------------------------
 
 Vlan    Mac Address       Type        Ports
 ----    -----------       --------    -----
-   2    1111.1111.1111    DYNAMIC     Fa0/1</pre>
-        <h2>SW1# show running-config interface fa0/2</h2>
-        <pre>interface FastEthernet0/2
- switchport access vlan 2
- switchport trunk allowed vlan 3
- switchport mode trunk</pre>
-        <h2>SW1# show interfaces fa0/2 switchport</h2>
-        <pre>Name: Fa0/2
-Switchport: Enabled
-Administrative Mode: trunk
-Operational Mode: trunk
-Administrative Trunking Encapsulation: dot1q
-Operational Trunking Encapsulation: dot1q
-Negotiation of Trunking: On
-Access Mode VLAN: 2 (default)
-Trunking Native Mode VLAN: 1 (default)
-Trunking VLANs Enabled: 3</pre>
+   2    0007.ec53.4289    DYNAMIC     Fa0/1</pre>
       </div>
     </div>""",
             "choices": [
@@ -2702,6 +2749,118 @@ interface FastEthernet0/2
         </div>
       </div>
     </div>''',
+        },
+        {
+            "slug": "etherchannel-lacp-trunk-dynamic-industry-standard",
+            "title": "CCNA — LACP trunk EtherChannel dynamic",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "Which configuration enables an EtherChannel to form dynamically between SW1 and SW2 by using an industry-standard protocol, and to support full IP connectivity between all PCs?",
+            "post_stem_html": '''    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/etherchannel-lacp-trunk-dynamic-industry-standard-topology.png" alt="Topology: R1, SW1, SW2 with Po1 between switches and PCs in VLANs 6, 14, 77, 108, 109" width="980" decoding="async" loading="lazy" />
+      </figure>
+    </div>''',
+            "name": "echlacptr1",
+            "correct": "C",
+            "mono": True,
+            "explain": "Correct. C \u2014 The topology places hosts in different VLANs on either side of SW1\u2013SW2, so Po1 must be an 802.1Q trunk to carry those VLANs toward R1 for inter-VLAN routing. IEEE 802.3ad LACP is the industry-standard negotiation protocol for a dynamic EtherChannel; active on SW1 with passive on SW2 forms the bundle. Option A relies on mode on (no LACP negotiation) and PAgP auto (Cisco PAgP), not LACP. Option B puts trunk and access ports in the same channel-group (incompatible member parameters) and mixes PAgP auto with desirable rather than LACP. Option D mixes LACP active on SW1 with PAgP desirable on SW2, so the protocols do not match and the channel will not form reliably.",
+            "choices": [
+                """Option A
+
+SW1#
+interface Gi0/1
+switchport
+switchport mode trunk
+channel-group 1 mode on
+!
+interface Gi0/2
+switchport
+switchport mode trunk
+channel-group 1 mode auto
+
+SW2#
+interface Gi0/1
+switchport
+switchport mode trunk
+channel-group 1 mode auto
+!
+interface Gi0/2
+switchport
+switchport mode trunk
+channel-group 1 mode on
+interface port-channel 1
+switchport
+switchport mode trunk""",
+                """Option B
+
+SW1#
+interface Gi0/1
+switchport
+switchport mode trunk
+channel-group 1 mode auto
+!
+interface Gi0/2
+switchport
+switchport mode access
+channel-group 1 mode active
+
+SW2#
+interface gi0/1
+switchport
+switchport mode access
+channel-group 1 mode desirable
+!
+interface Gi0/2
+switchport
+switchport mode access
+channel-group 1 mode desirable""",
+                """Option C
+
+SW1#
+interface Gi0/1
+switchport
+switchport mode trunk
+channel-group 1 mode active
+!
+interface Gi0/2
+switchport
+switchport mode trunk
+channel-group 1 mode active
+
+SW2#
+interface Gi0/1
+switchport
+switchport mode trunk
+channel-group 1 mode passive
+!
+interface Gi0/2
+switchport
+switchport mode trunk
+channel-group 1 mode passive""",
+                """Option D
+
+SW1#
+interface Gi0/1
+switchport
+switchport mode access
+channel-group 1 mode active
+!
+interface Gi0/2
+switchport
+switchport mode access
+channel-group 1 mode active
+
+SW2#
+interface Gi0/1
+switchport
+switchport mode access
+channel-group 1 mode desirable
+!
+interface Gi0/2
+switchport
+switchport mode access
+channel-group 1 mode desirable""",
+            ],
         },
         {
             "slug": "wireless-auth-layer2",
@@ -3392,6 +3551,20 @@ ipv6 route 2001:DB8:4::/64 2001:DB8:4::302""",
             ],
         },
         {
+            "slug": "wlc-lag-configure-remove-reboot-requirement",
+            "title": "CCNA — WLC LAG configuration requirement",
+            "stem": "What is a requirement when configuring or removing LAG on a WLC?",
+            "name": "wlclagreq1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 On Cisco Wireless LAN Controllers, changing LAG (enabling, disabling, or reconfiguring the bundle) requires a controller reboot so the distribution-port layout is applied correctly. You do not satisfy LAG by separately declaring arbitrary incoming/outgoing port flows for traffic (A). Disabling LAG does not universally force a management-interface reassignment as the stated blanket requirement (C). Multiple untagged interfaces on one physical port is not a WLC LAG requirement (D).",
+            "choices": [
+                "The incoming and outgoing ports for traffic flow must be specified if LAG is enabled.",
+                "The controller must be rebooted after enabling or reconfiguring LAG.",
+                "The management interface must be reassigned if LAG is disabled.",
+                "Multiple untagged interfaces on the same port must be supported.",
+            ],
+        },
+        {
             "slug": "poe-static-mode-guaranteed-power",
             "title": "CCNA — PoE static mode",
             "stem": "Which PoE mode enables powered-device detection and guarantees power when the device is detected?",
@@ -3455,6 +3628,28 @@ switchport voice vlan 30""",
                 "crypto key generate rsa modulus 1024",
                 "ip domain-name domain",
                 "ip ssh authentication-retries 2",
+            ],
+        },
+        {
+            "slug": "r1-ssh-secure-remote-access-choose-two",
+            "title": "CCNA — R1 SSH secure remote access (choose two)",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "Which two commands must be configured on router R1 to enable the router to accept secure remote-access connections? (Choose two)",
+            "name": "r1sshsec2",
+            "choose_two": True,
+            "correct": ["B", "E"],
+            "explain": "Correct. B and E \u2014 SSH is the secure remote shell; the device needs an RSA host key pair (crypto key generate rsa) so the SSH server can run, and a local username (username ... password|secret ...) is commonly required when virtual lines use login local for authenticated SSH sessions. transport input telnet (A) enables cleartext Telnet, not secure remote access. login console (C) is not the standard VTY pattern for SSH acceptance. ip ssh pubkey-chain (D) can support public-key user authentication but is not one of the two baseline requirements compared with generating keys and defining a user for typical password-based SSH access in CCNA-style scenarios.",
+            "post_stem_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/r1-ssh-secure-remote-access-choose-two-topology.png" alt="Topology: router R1 with GigabitEthernet0/1 toward LAN 10.0.1.0/24 (PC1 and PC2) and Serial0/1 toward the Internet." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "choices": [
+                "transport input telnet",
+                "username cisco password 0 cisco",
+                "login console",
+                "ip ssh pubkey-chain",
+                "crypto key generate rsa",
             ],
         },
         {
@@ -3595,6 +3790,27 @@ switchport voice vlan 30""",
                 "confreg 0x2142",
                 "login authentication my-auth-list",
                 "service password-encryption",
+            ],
+        },
+        {
+            "slug": "r1-username-engineer2-scrypt-local-database",
+            "title": "CCNA — R1 local user strongest password",
+            "stem": "An engineer must configure R1 for a new user account. The account must meet these requirements:",
+            "stem_after_exhibit": "Which command must the engineer configure on the router?",
+            "post_stem_html": """    <ul class="stem-after-exhibit-list">
+      <li>It must be configured in the local database.</li>
+      <li>The username is engineer2</li>
+      <li>It must use the strongest password configurable.</li>
+    </ul>""",
+            "name": "r1usereng2",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A \u2014 For a local username, `secret` stores a hashed password instead of reversible Type 7 encoding. Adding `algorithm-type scrypt` selects scrypt-based hashing, which is among the strongest password-hashing options Cisco offers for locally defined users on current IOS/IOS-XE compared with legacy Type 5 (MD5-based) or Type 7 passwords. Option B uses Type 5. Option C uses `password 7`, which is weak reversible obfuscation. Option D references Type 4 / an invalid or non-recommended pattern versus explicit scrypt configuration.",
+            "choices": [
+                """R1(config)# username engineer2 algorithm-type scrypt secret test2021""",
+                """R1(config)# username engineer2 secret 5 password $1$bUu$kZbBS1Pyh4QzwXyZ""",
+                """R1(config)# username engineer2 privilege 1 password 7 test2021""",
+                """R1(config)# username engineer2 secret 4 $1Sb1Ju$kZbBSlFyh4QxwXyZ""",
             ],
         },
         {
@@ -3749,6 +3965,20 @@ SW1(config)#ntp server 192.168.1.1""",
             ],
         },
         {
+            "slug": "sdn-controller-function-making-routing-decisions",
+            "title": "CCNA — SDN controller function",
+            "stem": "What is the function of the controller in a software-defined network?",
+            "name": "sdnctrlfn2",
+            "correct": "B",
+            "explain": "Correct. B \u2014 The SDN controller centralizes control-plane intelligence: it decides how traffic should be forwarded (routes, paths, flow rules) and programs the infrastructure. Packet forwarding, hardware multicast replication, and fragmentation/reassembly are data-plane or end-system tasks, not the controller\u2019s primary role.",
+            "choices": [
+                "forwarding packets",
+                "making routing decisions",
+                "multicast replication at the hardware level",
+                "fragmenting and reassembling packets",
+            ],
+        },
+        {
             "slug": "sdn-plane-forwards-user-traffic",
             "title": "CCNA — SDN data plane",
             "stem": "Which SDN plane forwards user-generated traffic?",
@@ -3851,6 +4081,8 @@ SW1(config)#ntp server 192.168.1.1""",
                 explain=q["explain"],
                 prev_slug=prev,
                 next_slug=next_slug,
+                post_stem_html=q.get("post_stem_html"),
+                stem_after_exhibit=q.get("stem_after_exhibit"),
             )
         else:
             ch_lines = "\n".join(

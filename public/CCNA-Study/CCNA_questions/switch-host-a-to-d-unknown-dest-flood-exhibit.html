@@ -295,20 +295,23 @@
   <main class="card">
     <h1>Refer to the exhibit.</h1>
     <div class="exhibit-stack">
-      <div class="cli-device" role="region" aria-label="Switch MAC address table and frame summary">
-        <h2>SW1# show mac address-table dynamic</h2>
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/switch-host-a-to-d-unknown-dest-flood-topology.png" alt="Topology: one switch with Host A on Fa0/1, Host B on Fa0/2, Host C on Fa0/3, and Host D on Fa0/4." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="cli-device" role="region" aria-label="SwitchA show mac-address table output">
+        <h2>SwitchA# show mac-address table</h2>
         <pre>          Mac Address Table
 -------------------------------------------
 
 Vlan    Mac Address       Type        Ports
 ----    -----------       --------    -----
-   1    aaaa.aaaa.aaaa    DYNAMIC     Fa0/1
-   1    bbbb.bbbb.bbbb    DYNAMIC     Fa0/2
-   1    cccc.cccc.cccc    DYNAMIC     Fa0/3
+   2    000c.65dc.bb7b    DYNAMIC     Fa0/1
+   2    0010.11dc.3e91    DYNAMIC     Fa0/2
+   2    0041.48d7.c782    DYNAMIC     Fa0/3
 
-Host A uses MAC address aaaa.aaaa.aaaa on Fa0/1.
-Host D uses MAC address dddd.dddd.dddd (not present in the table).
-The frame arrives on Fa0/1 with destination MAC dddd.dddd.dddd.</pre>
+Host A uses MAC address 000c.65dc.bb7b on Fa0/1.
+Host D uses MAC address 00aa.bbcc.dd01 (not present in the table).
+The frame arrives on Fa0/1 with destination MAC 00aa.bbcc.dd01.</pre>
       </div>
     </div>
     <p class="stem-after-exhibit">Host A sent a data frame destined for host D. What does the switch do when it receives the frame from host A?</p>
