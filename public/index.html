@@ -1269,7 +1269,7 @@
       color: var(--text);
       font-weight: 700;
     }
-    /* First-visit CCNA timed sim promo (dismiss stored in localStorage) */
+    /* CCNA timed sim promo on home — opens after delay or scroll */
     .ccna-sim-promo-root {
       position: fixed;
       inset: 0;
@@ -1380,6 +1380,41 @@
       font-variant-numeric: tabular-nums;
       letter-spacing: -0.02em;
       color: #86efac;
+    }
+    .ccna-sim-promo-limited-pill {
+      align-self: center;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(250, 204, 21, 0.45);
+      background: rgba(250, 204, 21, 0.1);
+      color: #fde68a;
+    }
+    .ccna-sim-promo-price-note {
+      margin: 0 0 10px;
+      font-size: clamp(0.88rem, 2vw, 0.96rem);
+      line-height: 1.5;
+      color: #c5d0e3;
+    }
+    .ccna-sim-promo-price-note strong {
+      color: #e8f4ee;
+    }
+    .ccna-sim-promo-purchase-origin {
+      margin: 0 0 16px;
+      font-size: clamp(0.82rem, 1.9vw, 0.9rem);
+      line-height: 1.55;
+      color: #94a3b8;
+    }
+    .ccna-sim-promo-purchase-origin a {
+      color: #a5c8ff;
+      font-weight: 700;
+      word-break: break-word;
+    }
+    .ccna-sim-promo-purchase-origin a:hover {
+      text-decoration: underline;
     }
     .ccna-sim-promo-lead {
       margin: 0 0 16px;
@@ -2084,6 +2119,14 @@
       <p class="ccna-sim-promo-price">
         <del class="ccna-sim-promo-price-was">$9.99</del>
         <span class="ccna-sim-promo-price-now">$4.99</span>
+        <span class="ccna-sim-promo-limited-pill">Limited time</span>
+      </p>
+      <p class="ccna-sim-promo-price-note">
+        <strong>$4.99 one-time.</strong> No recurring membership. <strong>$9.99</strong> crossed out above; pay <strong>$4.99</strong> for a limited time with the code below.
+      </p>
+      <p class="ccna-sim-promo-purchase-origin">
+        Preparation and purchase open on
+        <a href="https://becertifiedtoday-encor.vercel.app/" target="_blank" rel="noopener noreferrer">becertifiedtoday-encor.vercel.app</a>.
       </p>
       <p class="ccna-sim-promo-lead">
         Full exam-style run in the browser: <strong>questions</strong>, <strong>drag-and-drop</strong>, and
