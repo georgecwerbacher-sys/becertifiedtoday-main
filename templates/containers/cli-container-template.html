@@ -20,6 +20,10 @@
   when using SW2 — before keydown Enter→submitSw / submitSw2 so history runs before submit clears the input.
   Wire-up: templates/labs/cli-lab-baseline.html.
 
+  Draggable dialog + stacking: if pointerdown on the dialog calls bumpOverlayZ (raise modal), skip when the event target
+  is inside interactive controls (button, input, textarea, select, label, a[href]); otherwise z-index can reorder mid-tap
+  and drop clicks (Run, Enter). Example: public/CCNA-Study/CCNA_labs/cli-lab-trunk_lacp.html wireFloatingModal.
+
   Generic invalid IOS commands that include digits (wrong VLAN, interface, etc.): use invalidInputMsgForNormalizedCmd(u)
   instead of a bare "% Invalid input" so learners see the Tasks/Verification hint (aligned with cli-lab-baseline / named-acl lab).
 

@@ -1,13 +1,11 @@
 <!doctype html>
 <!--
-  Template baseline for new CLI labs:
-  New CLI lab page like cli-lab-trunk_lacp.html: LAB_STEPS + normalize, dual submit handlers, swInEnableMode,
-  copy/save gating with real [OK] only when allowed, optional gated show * outputs, trySwNavSoftLine-style exit/end
-  (including config-vlan and generic interface range -> (config-if-range)# prompt transitions), pushLocalHistory
-  inside submit + bindLocalHistory, reset clears history and flags, helper bullets + spoiler with per-task
-  verification, draggable modals + Escape, show version output (BeCertifiedToday.com version 2026) in exec mode,
-  and VLAN submode behavior where vlan <id> enters (config-vlan)#, name <...> is accepted, exit returns to (config)#,
-  and VLAN create feedback prints "VLAN <id> not in configuration." then "Creating VLAN <id>.".
+  CLI shell: templates/containers/cli-container-template.html (overlay → dialog → .terminal → #swScrollback + .input-row).
+  Wire-up: bindLocalHistory(swCmdline|sw2|pc) before keydown Enter→submit* (see template). Lab-specific: dual Sw1/Sw2 STEPS,
+  PC prompt, wireFloatingModal must not bump z-index on button/input pointerdown (tap/Enter reliability), optional Run command.
+
+  Patterns: LAB_STEPS + normalize, trySwNavSoftLine, pushLocalHistory inside submit, reset clears history/flags, spoiler,
+  draggable modals + Escape, VLAN submode (vlan <id>, name, exit), VLAN create feedback strings.
 -->
 <html lang="en">
 <head>
@@ -374,20 +372,6 @@
       color: #c8f0c4;
       font-weight: 600;
     }
-    .cli-cmd-form {
-      flex: 1;
-      min-width: 0;
-      display: flex;
-      margin: 0;
-      padding: 0;
-      border: none;
-      background: transparent;
-    }
-    .cli-cmd-form .cmdline-input {
-      flex: 1;
-      min-width: 0;
-      width: 100%;
-    }
     .cmdline-input {
       flex: 1;
       min-width: 0;
@@ -703,17 +687,15 @@
           <div id="swScrollback" class="scrollback-area"></div>
           <div class="input-row">
             <span id="swPrompt" class="prompt-el">Sw1#</span>
-            <form class="cli-cmd-form" aria-label="Sw1 commands">
-              <input
-                id="swCmdline"
-                class="cmdline-input"
-                type="text"
-                spellcheck="false"
-                autocomplete="off"
-                autocapitalize="none"
-                aria-label="Sw1 command line"
-              />
-            </form>
+            <input
+              id="swCmdline"
+              class="cmdline-input"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="none"
+              aria-label="Sw1 command line"
+            />
           </div>
         </div>
       </div>
@@ -750,17 +732,15 @@
           <div id="sw2Scrollback" class="scrollback-area"></div>
           <div class="input-row">
             <span id="sw2Prompt" class="prompt-el">Sw2#</span>
-            <form class="cli-cmd-form" aria-label="Sw2 commands">
-              <input
-                id="sw2Cmdline"
-                class="cmdline-input"
-                type="text"
-                spellcheck="false"
-                autocomplete="off"
-                autocapitalize="none"
-                aria-label="Sw2 command line"
-              />
-            </form>
+            <input
+              id="sw2Cmdline"
+              class="cmdline-input"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="none"
+              aria-label="Sw2 command line"
+            />
           </div>
         </div>
       </div>
@@ -793,17 +773,15 @@
           <div id="pcScrollback" class="scrollback-area"></div>
           <div class="input-row">
             <span id="pcPrompt" class="prompt-el pc-prompt">&gt;</span>
-            <form class="cli-cmd-form" aria-label="PC commands">
-              <input
-                id="pcCmdline"
-                class="cmdline-input"
-                type="text"
-                spellcheck="false"
-                autocomplete="off"
-                autocapitalize="none"
-                aria-label="PC command line"
-              />
-            </form>
+            <input
+              id="pcCmdline"
+              class="cmdline-input"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="none"
+              aria-label="PC command line"
+            />
           </div>
         </div>
       </div>
@@ -1377,6 +1355,16 @@ Sw2(config-if)# end</pre>
         if (t === "interface gi0/1" || t === "interface g0/1") t = "interface gigabitethernet0/1";
         if (t === "interface gi0/2" || t === "interface g0/2") t = "interface gigabitethernet0/2";
         return t;
+      }
+
+      /** Echo line shown in scrollback; expands shorthand like "int e0/0" (templates/containers/cli-container-template.html). */
+      function expandInterfaceEcho(raw) {
+        var s = String(raw || "").trim();
+        var m = /^(interface|int)\s+e(\d+)\/(\d+)$/i.exec(s);
+        if (m) {
+          return "interface Ethernet" + m[2] + "/" + m[3];
+        }
+        return s;
       }
 
       function matchTrunkAllowed1545(raw) {
@@ -2281,70 +2269,7 @@ Sw2(config-if)# end</pre>
         });
       });
 
-      /**
-       * Enter: native form submit (implicit submit on Return in single-field forms).
-       * keyup backup if submit never fires (keyup skips if input already cleared by submit).
-       * Run command buttons for hosts that swallow keyboard events entirely.
-       */
-      function cliEnterLineKey(e) {
-        if (!e || e.isComposing) return false;
-        if (e.key === "Enter" || e.key === "NumpadEnter") return true;
-        if (e.code === "Enter" || e.code === "NumpadEnter") return true;
-        var c = typeof e.keyCode !== "undefined" ? e.keyCode : e.which;
-        return c === 13;
-      }
-      function wireCliCmdForm(inputEl, submitFn) {
-        var form = inputEl && inputEl.closest ? inputEl.closest("form") : null;
-        if (form) {
-          form.addEventListener("submit", function (e) {
-            e.preventDefault();
-            submitFn();
-          });
-        }
-        inputEl.addEventListener("keyup", function (e) {
-          if (!cliEnterLineKey(e)) return;
-          if (!String(inputEl.value || "").trim()) return;
-          submitFn();
-        });
-      }
-      wireCliCmdForm(swCmdline, submitSw);
-      wireCliCmdForm(sw2Cmdline, submitSw2);
-      wireCliCmdForm(pcCmdline, submitPc);
-      (function () {
-        var r1 = document.getElementById("swCliRunBtn");
-        var r2 = document.getElementById("sw2CliRunBtn");
-        var r3 = document.getElementById("pcCliRunBtn");
-        if (r1) r1.addEventListener("click", submitSw);
-        if (r2) r2.addEventListener("click", submitSw2);
-        if (r3) r3.addEventListener("click", submitPc);
-      })();
-
-      document.getElementById("swCliClose").addEventListener("click", closeSwCli);
-      document.getElementById("sw2CliClose").addEventListener("click", closeSw2Cli);
-      document.getElementById("pcCliClose").addEventListener("click", closePcCli);
-      swResetBtn.addEventListener("click", resetSwLab);
-      document.getElementById("inlineResetLabBtn").addEventListener("click", resetSwLab);
-
-      document.getElementById("openHelperFileBtn").addEventListener("click", function () {
-        bumpOverlayZ(helperFileOverlay);
-        helperFileOverlay.classList.add("is-open");
-        helperFileOverlay.setAttribute("aria-hidden", "false");
-      });
-      document.getElementById("helperFileClose").addEventListener("click", function () {
-        helperFileOverlay.classList.remove("is-open");
-        helperFileOverlay.setAttribute("aria-hidden", "true");
-      });
-      document.getElementById("openSpoilerBtn").addEventListener("click", function () {
-        bumpOverlayZ(spoilerOverlay);
-        spoilerOverlay.classList.add("is-open");
-        spoilerOverlay.setAttribute("aria-hidden", "false");
-      });
-      document.getElementById("spoilerClose").addEventListener("click", function () {
-        spoilerOverlay.classList.remove("is-open");
-        spoilerOverlay.setAttribute("aria-hidden", "true");
-      });
-
-      /** Local command history (ArrowUp / ArrowDown) — same behavior as full PVST lab */
+      /** Local command history (ArrowUp / ArrowDown); bind before keydown Enter→submit (templates/containers/cli-container-template.html). */
       var localHistory = new WeakMap();
       function getLocalHistoryState(input) {
         var state = localHistory.get(input);
@@ -2391,6 +2316,52 @@ Sw2(config-if)# end</pre>
       bindLocalHistory(swCmdline);
       bindLocalHistory(sw2Cmdline);
       bindLocalHistory(pcCmdline);
+
+      function wireCliEnterKeydown(inputEl, submitFn) {
+        inputEl.addEventListener("keydown", function (e) {
+          if (e.key !== "Enter" && e.key !== "NumpadEnter" && e.keyCode !== 13) return;
+          if (e.isComposing) return;
+          e.preventDefault();
+          submitFn();
+        });
+      }
+      wireCliEnterKeydown(swCmdline, submitSw);
+      wireCliEnterKeydown(sw2Cmdline, submitSw2);
+      wireCliEnterKeydown(pcCmdline, submitPc);
+      /** Run command: backup when the host swallows keyboard events. */
+      (function () {
+        var r1 = document.getElementById("swCliRunBtn");
+        var r2 = document.getElementById("sw2CliRunBtn");
+        var r3 = document.getElementById("pcCliRunBtn");
+        if (r1) r1.addEventListener("click", submitSw);
+        if (r2) r2.addEventListener("click", submitSw2);
+        if (r3) r3.addEventListener("click", submitPc);
+      })();
+
+      document.getElementById("swCliClose").addEventListener("click", closeSwCli);
+      document.getElementById("sw2CliClose").addEventListener("click", closeSw2Cli);
+      document.getElementById("pcCliClose").addEventListener("click", closePcCli);
+      swResetBtn.addEventListener("click", resetSwLab);
+      document.getElementById("inlineResetLabBtn").addEventListener("click", resetSwLab);
+
+      document.getElementById("openHelperFileBtn").addEventListener("click", function () {
+        bumpOverlayZ(helperFileOverlay);
+        helperFileOverlay.classList.add("is-open");
+        helperFileOverlay.setAttribute("aria-hidden", "false");
+      });
+      document.getElementById("helperFileClose").addEventListener("click", function () {
+        helperFileOverlay.classList.remove("is-open");
+        helperFileOverlay.setAttribute("aria-hidden", "true");
+      });
+      document.getElementById("openSpoilerBtn").addEventListener("click", function () {
+        bumpOverlayZ(spoilerOverlay);
+        spoilerOverlay.classList.add("is-open");
+        spoilerOverlay.setAttribute("aria-hidden", "false");
+      });
+      document.getElementById("spoilerClose").addEventListener("click", function () {
+        spoilerOverlay.classList.remove("is-open");
+        spoilerOverlay.setAttribute("aria-hidden", "true");
+      });
 
       document.addEventListener("keydown", function (e) {
         if (e.key !== "Escape") return;
