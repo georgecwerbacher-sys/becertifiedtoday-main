@@ -19,9 +19,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const secret = process.env.STRIPE_SECRET_KEY;
-  const priceId = process.env.STRIPE_PRICE_CCNA_TEST_SIM;
-  const site = process.env.PUBLIC_SITE_URL || "";
+  const secret = (process.env.STRIPE_SECRET_KEY || "").trim();
+  const priceId = (process.env.STRIPE_PRICE_CCNA_TEST_SIM || "").trim();
+  const site = (process.env.PUBLIC_SITE_URL || "").trim();
 
   if (!secret || !priceId || !site) {
     return res.status(503).json({
@@ -66,10 +66,13 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ url: session.url });
   } catch (e) {
-    console.error("Stripe checkout session error:", e.message);
+    const message = e?.message || String(e);
+    const code = e?.code || e?.type || undefined;
+    console.error("Stripe checkout session error:", message, code || "");
     return res.status(500).json({
       error: "Could not create checkout session",
-      detail: process.env.NODE_ENV === "development" ? e.message : undefined,
+      detail: message,
+      code: code || undefined,
     });
   }
 }
