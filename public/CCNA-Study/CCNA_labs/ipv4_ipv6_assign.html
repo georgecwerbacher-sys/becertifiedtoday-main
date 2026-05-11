@@ -1489,7 +1489,9 @@ R2# copy running-config startup-config</pre>
                /^switchport trunk native vlan \d+$/.test(u) ||
                /^channel-group \d+ mode (active|passive|on|desirable|auto)$/.test(u) ||
                u === "lldp transmit" || u === "no lldp transmit" ||
-               u === "lldp receive" || u === "no lldp receive";
+               u === "lldp receive" || u === "no lldp receive" ||
+               u === "no cdp enable" || u === "cdp enable" ||
+               u === "no cdp run" || u === "cdp run";
       }
       function isPermissiveVlanCommand(line) {
         return /^name\s+\S+/.test(normalize(line));

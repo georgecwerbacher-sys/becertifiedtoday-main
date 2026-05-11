@@ -1196,6 +1196,10 @@ Sw2# copy running-config startup-config</pre>
         if (t === "interface e0/0" || t === "interface ethernet0/0") t = "interface gigabitethernet0/1";
         if (t === "interface e0/1" || t === "interface ethernet0/1") t = "interface gigabitethernet0/2";
         if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
+        /* Spoiler shorthand: Gi0/1–2 range plus optional e0/3 in the list → canonical lab string */
+        if (/^interface range e0\/1 - 2(\s*,\s*e0\/3)?$/.test(t)) {
+          t = "interface range gigabitethernet0/1 - 2";
+        }
         if (/^interface e\d+\/\d+$/.test(t)) {
           t = t.replace(/^interface e/, "interface ethernet");
         }
@@ -1443,6 +1447,15 @@ Sw2# copy running-config startup-config</pre>
           u === "no lldp receive"
         );
       }
+      function isPermissiveCdpIf(line) {
+        var u = normalize(line);
+        return (
+          u === "no cdp enable" ||
+          u === "cdp enable" ||
+          u === "no cdp run" ||
+          u === "cdp run"
+        );
+      }
 
       function swInEnableMode(stepIdx, ovr) {
         if (ovr !== null && ovr !== undefined) {
@@ -1476,7 +1489,10 @@ Sw2# copy running-config startup-config</pre>
         if ((stepIdx === 8 || stepIdx === 14 || stepIdx === 18) && u === "exit") return false;
         if (stepIdx === 24 && u === "end") return false;
         var currentMode = getOvr() || LAB_STEPS[stepIdx].mode;
-        if (u.indexOf("interface range ") === 0 && currentMode === "config") {
+        if (
+          u.indexOf("interface range ") === 0 &&
+          (currentMode === "config" || currentMode === "config-if")
+        ) {
           // Let LAB_STEPS consume the exact expected command for progression.
           if (LAB_STEPS[stepIdx].test(line, swNum)) return false;
           setOvrAndRefresh("config-if-range");
@@ -1924,7 +1940,10 @@ Sw2# copy running-config startup-config</pre>
         if (sw1Mode === "config" && isPermissiveLldpGlobal(line)) {
           return;
         }
-        if ((sw1Mode === "config-if" || sw1Mode === "config-if-range") && isPermissiveLldpIf(line)) {
+        if (
+          (sw1Mode === "config-if" || sw1Mode === "config-if-range") &&
+          (isPermissiveLldpIf(line) || isPermissiveCdpIf(line))
+        ) {
           return;
         }
 
@@ -2122,7 +2141,10 @@ Sw2# copy running-config startup-config</pre>
         if (sw2ModeNow === "config" && isPermissiveLldpGlobal(line)) {
           return;
         }
-        if ((sw2ModeNow === "config-if" || sw2ModeNow === "config-if-range") && isPermissiveLldpIf(line)) {
+        if (
+          (sw2ModeNow === "config-if" || sw2ModeNow === "config-if-range") &&
+          (isPermissiveLldpIf(line) || isPermissiveCdpIf(line))
+        ) {
           return;
         }
 
