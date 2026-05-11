@@ -2244,9 +2244,35 @@
         });
       }
 
-      setTimeout(function () {
+      var promoShowConsumed = false;
+      var promoTimer = null;
+
+      function disconnectPromoTriggers() {
+        if (promoTimer != null) {
+          clearTimeout(promoTimer);
+          promoTimer = null;
+        }
+        window.removeEventListener("scroll", onScrollPastFold);
+      }
+
+      function triggerPromoOnce() {
+        if (promoShowConsumed) return;
+        promoShowConsumed = true;
+        disconnectPromoTriggers();
         openPromo();
-      }, 600);
+      }
+
+      function onScrollPastFold() {
+        var y = window.scrollY || document.documentElement.scrollTop || 0;
+        var vh = window.innerHeight || 0;
+        if (vh > 0 && y >= vh) {
+          triggerPromoOnce();
+        }
+      }
+
+      promoTimer = setTimeout(triggerPromoOnce, 10000);
+      window.addEventListener("scroll", onScrollPastFold, { passive: true });
+      onScrollPastFold();
     })();
   </script>
 </body>
