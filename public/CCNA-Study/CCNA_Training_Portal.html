@@ -678,6 +678,24 @@
       font-weight: 400;
     }
 
+    .portal-sim-active-cta {
+      margin: 0 0 18px;
+      padding: 18px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(74, 224, 146, 0.45);
+      background: rgba(31, 168, 85, 0.12);
+      box-shadow: 0 0 0 1px rgba(74, 224, 146, 0.2) inset;
+    }
+    .portal-sim-active-cta p {
+      margin: 0 0 14px;
+      color: #c7f2da;
+      line-height: 1.45;
+      font-size: 0.95rem;
+    }
+    .portal-sim-active-cta .cta-main {
+      text-align: center;
+    }
+
     .sim-box-practice-wide {
       grid-column: 1 / -1;
     }
@@ -1054,19 +1072,31 @@
           <h3 class="section-heading">Test Simulation</h3>
           <section class="start-box" aria-label="Timed test simulation">
             <p style="margin: 0 0 10px; color: #e6edf3; line-height: 1.4; font-size: 1.05rem; font-weight: 800;">
-              Timed practice test — 120 minutes · 40 questions · 8 drag-and-drops · 3 labs · one clock
+              Timed practice test — 120 minutes · 50 questions · 5 drag-and-drops · 4 labs · one clock
             </p>
             <p style="margin: 0 0 10px; color: #b8c3d6; line-height: 1.5;">
               Single mixed session like test day: multiple-choice, drag-and-drop, and CLI labs in random order. Purchase unlocks one run;
               full runner UI connects here after Stripe is configured on Vercel.
             </p>
             <ul style="margin: 0 0 12px 1.2rem; color: #b8c3d6; line-height: 1.55; padding: 0;">
-              <li><strong>51 mixed items per run</strong> — 40 questions, 8 drag-and-drops, 3 labs — randomized in order.</li>
+              <li><strong>59 mixed items per run</strong> — 50 questions, 5 drag-and-drops, 4 labs — randomized in order. Results use a 1000-point scale (pass 800) weighted 70% / 10% / 20%.</li>
               <li><strong>Every item type in play</strong> — multiple-choice, labs, and drag-and-drop tasks.</li>
               <li><strong>Timer-driven</strong> — the session runs against the clock from start to submit.</li>
               <li><strong>Pass or fail at the end.</strong></li>
             </ul>
-            <div class="purchase-access-wrap">
+            <div id="portal-sim-active-cta" class="portal-sim-active-cta" hidden>
+              <p>
+                Your <strong>CCNA portal subscription</strong> (30-day or 90-day) is active on this device. You can start the timed simulation
+                <strong>without</strong> separate Stripe checkout for the one-time exam.
+              </p>
+              <a
+                class="cta-main cta-main--block"
+                href="/CCNA_Sim_EXAM/test-simulation-runner.html"
+                aria-label="Begin CCNA timed test with active portal access"
+                >Begin timed test</a
+              >
+            </div>
+            <div id="portal-sim-purchase-wrap" class="purchase-access-wrap">
               <div class="purchase-one-time-grid">
                 <div class="purchase-track-box purchase-track-box--encor-live" aria-label="One-time ENCOR simulation exam purchase">
                   <div class="purchase-track-head">
@@ -1090,19 +1120,23 @@
                   </p>
                 </div>
                 <div
-                  class="purchase-track-box purchase-track-box--ccna-pending purchase-track-box--inactive"
-                  aria-label="One-time CCNA simulation exam (unavailable)"
-                  aria-disabled="true"
+                  class="purchase-track-box purchase-track-box--one-time-live"
+                  aria-label="One-time CCNA simulation exam purchase"
                 >
                   <div class="purchase-track-head">
                     <p class="purchase-track-title">One-time simulation exam (CCNA)</p>
-                    <span class="sim-pending-badge">Pending</span>
+                    <span class="encor-live-badge">Live</span>
                   </div>
                   <p class="purchase-track-sub">
-                    CCNA timed practice test: 120 minutes, 40 questions, 8 drag-and-drops, 3 labs. Opens the timed-test landing page; Stripe Checkout when configured on this site.
+                    CCNA timed practice test: 120 minutes, 50 questions, 5 drag-and-drops, 4 labs. Opens the timed-test landing page for Stripe Checkout on this site.
                   </p>
                   <p class="purchase-track-cta-wrap">
-                    <span class="cta-main cta-main--block cta-main--inactive" aria-disabled="true" tabindex="-1">PURCHASE ONE-TIME CCNA SIMULATION EXAM</span>
+                    <a
+                      class="cta-main cta-main--block"
+                      href="/CCNA_Sim_EXAM/begin-test-simulation.html"
+                      aria-label="Purchase one-time simulation exam for CCNA"
+                      >PURCHASE ONE-TIME CCNA SIMULATION EXAM</a
+                    >
                   </p>
                   <p class="purchase-access-disclaimer">
                     <strong>$9.99 one-time.</strong> No recurring membership. Opens preparation and purchase on becertifiedtoday.com.
@@ -1122,7 +1156,8 @@
               After payment, success lands at
               <a href="/CCNA_Sim_EXAM/test-simulation-runner.html" style="color: #9fb0cc">/CCNA_Sim_EXAM/test-simulation-runner.html</a>
               (<code>/CCNA-Study/ccna-test-simulation.html</code> redirects there).
-              With an active <strong>30-day portal pass</strong> on this browser, you can open that runner directly (no one-time purchase).
+              With an active <strong>CCNA portal pass</strong> (30-day or 90-day) on this browser, you can open the runner directly (no one-time purchase). This page shows
+              <strong>Begin timed test</strong> above when that pass is detected.
             </p>
           </section>
         </div>
@@ -1193,5 +1228,20 @@
   <script src="js/ccna-portal-30d-storage.js" defer></script>
   <script src="js/ccna-practice-100-hub.js" defer></script>
   <script src="js/ccna-dnd-25-hub.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var wrap = document.getElementById("portal-sim-purchase-wrap");
+      var cta = document.getElementById("portal-sim-active-cta");
+      if (!wrap || !cta || typeof bccPortalAccessActive !== "function") return;
+      if (bccPortalAccessActive()) {
+        cta.hidden = false;
+        wrap.hidden = true;
+        var bypass = document.querySelector(".portal-test-sim-bypass");
+        var note = document.querySelector(".portal-test-sim-stripe-note");
+        if (bypass) bypass.hidden = true;
+        if (note) note.hidden = true;
+      }
+    });
+  </script>
 </body>
 </html>

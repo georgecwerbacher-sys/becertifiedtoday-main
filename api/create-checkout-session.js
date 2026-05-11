@@ -64,7 +64,7 @@ export default async function handler(req, res) {
       cancel_url: `${site}/CCNA_Sim_EXAM/begin-test-simulation.html`,
       metadata: {
         productId,
-        blueprint: "ccna-test-simulation-blueprint@v1",
+        blueprint: "ccna-test-simulation-blueprint@v3",
       },
       payment_intent_data: {
         metadata: {

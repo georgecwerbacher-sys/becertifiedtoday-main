@@ -7,6 +7,7 @@
   <title>CCNA timed test — runner | Be Certified Today</title>
   <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
   <link rel="canonical" href="https://becertifiedtoday.com/CCNA_Sim_EXAM/test-simulation-runner.html" />
+  <script src="/CCNA-Study/js/ccna-portal-30d-storage.js"></script>
   <style>
     :root {
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
@@ -323,8 +324,9 @@
       <div class="results-actions">
         <button type="button" id="resultsContinue">Continue</button>
         <p class="results-note">
-          One-time test access ends after this summary unless you have an active 30-day portal pass. Continue returns you to the training
-          portal or the timed-test access page accordingly.
+          One-time test access ends after this summary unless you have an active CCNA portal pass (30-day or 90-day). Continue returns you to the training
+          portal or the timed-test access page when you finish or run out of time; if you quit early, Continue returns you to the CCNA study hub.
+          Scaled results use a <strong>1000</strong>-point score with a <strong>800</strong> passing threshold (70% MCQ, 10% drag-and-drop, 20% labs).
         </p>
       </div>
     </div>
@@ -337,9 +339,10 @@
   </footer>
 
   <script type="module">
-    /** localStorage: bcc_ccna_portal_30d_v1 = { "expiresAt": <epoch ms> } — set via bccSetPortal30DayEntitlement() from ccna-portal-30d-storage.js after 30-day purchase */
-    /** localStorage: bcc_ccna_test_sim_temp_v1 — temp entitlement for one-time test purchase (cleared when session ends if no 30-day pass) */
+    /** Portal pass: bcc_ccna_portal_30d_v1 and/or bcc_ccna_portal_90d_v1 — see ccna-portal-30d-storage.js */
+    /** localStorage: bcc_ccna_test_sim_temp_v1 — one-time Stripe checkout session (cleared when session ends if no portal pass) */
     var LS_PORTAL_30D = "bcc_ccna_portal_30d_v1";
+    var LS_PORTAL_90D = "bcc_ccna_portal_90d_v1";
     var LS_TEMP_TEST = "bcc_ccna_test_sim_temp_v1";
     var TOTAL_SECONDS = 120 * 60;
     var timerId = null;
@@ -350,6 +353,8 @@
     var sessionOk = false;
     var attemptResults = [];
     var objectiveLabels = {};
+    /** Set in finalizeAttempt; used by redirectAfterResults after Continue. */
+    var lastFinalizeReason = null;
 
     var gatePanel = document.getElementById("gatePanel");
     var gateStatus = document.getElementById("gateStatus");
@@ -360,19 +365,29 @@
     var resultsPanel = document.getElementById("resultsPanel");
     var examFooter = document.getElementById("examFooter");
 
-    function portal30Active() {
-      try {
-        var raw = localStorage.getItem(LS_PORTAL_30D);
-        if (!raw) return false;
-        var o = JSON.parse(raw);
-        return typeof o.expiresAt === "number" && o.expiresAt > Date.now();
-      } catch (e) {
-        return false;
+    function portalPassActive() {
+      if (typeof window.bccPortalAccessActive === "function") {
+        return window.bccPortalAccessActive();
       }
+      try {
+        var raw30 = localStorage.getItem(LS_PORTAL_30D);
+        if (raw30) {
+          var o30 = JSON.parse(raw30);
+          if (typeof o30.expiresAt === "number" && o30.expiresAt > Date.now()) return true;
+        }
+      } catch (e) {}
+      try {
+        var raw90 = localStorage.getItem(LS_PORTAL_90D);
+        if (raw90) {
+          var o90 = JSON.parse(raw90);
+          if (typeof o90.expiresAt === "number" && o90.expiresAt > Date.now()) return true;
+        }
+      } catch (e) {}
+      return false;
     }
 
     function grantTempTestAccess(stripeSessionId) {
-      if (portal30Active()) return;
+      if (portalPassActive()) return;
       try {
         localStorage.setItem(
           LS_TEMP_TEST,
@@ -401,7 +416,14 @@
     }
 
     function redirectAfterResults() {
-      if (portal30Active()) {
+      var reason = lastFinalizeReason;
+      lastFinalizeReason = null;
+      if (reason === "quit") {
+        if (!portalPassActive()) clearTempTestAccess();
+        window.location.href = "/CCNA-Study/ccna-index.html";
+        return;
+      }
+      if (portalPassActive()) {
         window.location.href = "/CCNA-Study/CCNA_Training_Portal.html";
       } else {
         clearTempTestAccess();
@@ -473,17 +495,25 @@
       return map;
     }
 
-    function buildRichDeck(qMap, dMap, lMap) {
+    function buildRichDeck(qMap, dMap, lMap, opts) {
+      opts = opts || {};
+      var fixedLabs = Array.isArray(opts.fixedLabs) && opts.fixedLabs.length ? opts.fixedLabs : null;
+      var labCount =
+        fixedLabs != null ? fixedLabs.length : opts.labCount != null ? opts.labCount : 3;
+      var mcqN = opts.mcqCount != null ? opts.mcqCount : 50;
+      var dndN = opts.dndCount != null ? opts.dndCount : 5;
+
       var qa = qMap.assignments || {};
       var da = dMap.assignments || {};
       var la = lMap.assignments || {};
       var mcqKeys = Object.keys(qa);
       var dndKeys = Object.keys(da);
       var labKeys = Object.keys(la);
-      if (mcqKeys.length < 40 || dndKeys.length < 8 || labKeys.length < 3) return null;
-      var mcqPick = shuffle(mcqKeys).slice(0, 40);
-      var dndPick = shuffle(dndKeys).slice(0, 8);
-      var labPick = shuffle(labKeys).slice(0, 3);
+      if (mcqKeys.length < mcqN || dndKeys.length < dndN) return null;
+      if (!fixedLabs && labKeys.length < labCount) return null;
+      var mcqPick = shuffle(mcqKeys).slice(0, mcqN);
+      var dndPick = shuffle(dndKeys).slice(0, dndN);
+      var labPick = fixedLabs ? shuffle(fixedLabs.slice()) : shuffle(labKeys).slice(0, labCount);
       var deck = [];
       mcqPick.forEach(function (fn) {
         deck.push({
@@ -512,24 +542,57 @@
       return shuffle(deck);
     }
 
-    function buildFallbackDeck() {
+    function buildFallbackDeck(mcqCount, dndCount, labCount) {
+      var m = typeof mcqCount === "number" && mcqCount > 0 ? mcqCount : 50;
+      var d = typeof dndCount === "number" && dndCount > 0 ? dndCount : 5;
+      var n = typeof labCount === "number" && labCount > 0 ? labCount : 3;
       var deck = [];
       var i;
-      for (i = 0; i < 40; i++) {
+      for (i = 0; i < m; i++) {
         deck.push({ type: "mcq", fileName: null, slug: null, objectiveIds: [] });
       }
-      for (i = 0; i < 8; i++) {
+      for (i = 0; i < d; i++) {
         deck.push({ type: "dnd", fileName: null, slug: null, objectiveIds: [] });
       }
-      for (i = 0; i < 3; i++) {
+      for (i = 0; i < n; i++) {
         deck.push({ type: "lab", fileName: null, slug: null, objectiveIds: [] });
       }
       return shuffle(deck);
     }
 
+    var scoreScaledConfig = {
+      maxMcq: 700,
+      maxDnd: 100,
+      maxLab: 200,
+      passing: 800,
+      maxTotal: 1000,
+    };
+
     async function prepareExamData() {
       attemptResults = [];
       objectiveLabels = {};
+      var bp = {};
+      try {
+        bp = await fetch("/CCNA-Study/data/ccna-test-simulation-blueprint.json").then(function (r) {
+          return r.json();
+        });
+      } catch (e) {}
+
+      var w = bp.weights || {};
+      var scaleMax = bp.scaledScoreMax != null ? bp.scaledScoreMax : 1000;
+      scoreScaledConfig.maxTotal = scaleMax;
+      scoreScaledConfig.passing = bp.passingScaledScore != null ? bp.passingScaledScore : 800;
+      scoreScaledConfig.maxMcq = scaleMax * (typeof w.multipleChoiceFraction === "number" ? w.multipleChoiceFraction : 0.7);
+      scoreScaledConfig.maxDnd = scaleMax * (typeof w.dragDropFraction === "number" ? w.dragDropFraction : 0.1);
+      scoreScaledConfig.maxLab = scaleMax * (typeof w.labFraction === "number" ? w.labFraction : 0.2);
+
+      var fixedLabs = Array.isArray(bp.labFiles) && bp.labFiles.length ? bp.labFiles : null;
+      var labCount =
+        fixedLabs != null ? fixedLabs.length : bp.labCount != null ? bp.labCount : 3;
+      var mcqN = bp.multipleChoiceCount != null ? bp.multipleChoiceCount : 50;
+      var dndN = bp.dragDropCount != null ? bp.dragDropCount : 5;
+      var expectedTotal = mcqN + dndN + labCount;
+
       try {
         var rq = await fetch("/CCNA-Study/data/ccna-question-topic-map.json").then(function (r) {
           return r.json();
@@ -544,13 +607,18 @@
           return r.json();
         });
         objectiveLabels = buildObjectiveLabels(ro);
-        var rich = buildRichDeck(rq, rd, rl);
-        if (rich && rich.length === 51) {
+        var rich = buildRichDeck(rq, rd, rl, {
+          fixedLabs: fixedLabs,
+          labCount: labCount,
+          mcqCount: mcqN,
+          dndCount: dndN,
+        });
+        if (rich && rich.length === expectedTotal) {
           items = rich;
           return;
         }
       } catch (e) {}
-      items = buildFallbackDeck();
+      items = buildFallbackDeck(mcqN, dndN, labCount);
     }
 
     function extractH1(html) {
@@ -768,6 +836,41 @@
       return 0;
     }
 
+    function computeScaledScore(attemptResults, deck, cfg) {
+      cfg = cfg || scoreScaledConfig;
+      var den = { mcq: 0, dnd: 0, lab: 0 };
+      deck.forEach(function (it) {
+        if (it.type === "mcq") den.mcq++;
+        else if (it.type === "dnd") den.dnd++;
+        else if (it.type === "lab") den.lab++;
+      });
+      var mcqCorrect = 0;
+      var dndCorrect = 0;
+      var labCorrect = 0;
+      attemptResults.forEach(function (r) {
+        if (!r.correct) return;
+        if (r.type === "mcq") mcqCorrect++;
+        else if (r.type === "dnd") dndCorrect++;
+        else if (r.type === "lab") labCorrect++;
+      });
+      var mcqPts = den.mcq ? (cfg.maxMcq * mcqCorrect) / den.mcq : 0;
+      var dndPts = den.dnd ? (cfg.maxDnd * dndCorrect) / den.dnd : 0;
+      var labPts = den.lab ? (cfg.maxLab * labCorrect) / den.lab : 0;
+      var total = Math.round(mcqPts + dndPts + labPts);
+      return {
+        total: total,
+        pass: total >= cfg.passing,
+        mcqCorrect: mcqCorrect,
+        dndCorrect: dndCorrect,
+        labCorrect: labCorrect,
+        den: den,
+        mcqPts: mcqPts,
+        dndPts: dndPts,
+        labPts: labPts,
+        cfg: cfg,
+      };
+    }
+
     async function populateResults(reason) {
       var headline = "Attempt summary";
       var reasonText = "";
@@ -784,21 +887,53 @@
       document.getElementById("resultsHeadline").textContent = headline;
       document.getElementById("resultsReason").textContent = reasonText;
 
-      var correct = 0;
-      var total = attemptResults.length;
-      attemptResults.forEach(function (r) {
-        if (r.correct) correct++;
-      });
-      var pct = total ? Math.round((correct / total) * 1000) / 10 : 0;
+      var scaled = computeScaledScore(attemptResults, items, scoreScaledConfig);
+      var passLabel = scaled.pass ? "Pass" : "Did not pass";
       document.getElementById("resultsScore").textContent =
-        "Score: " + correct + " / " + total + " correct (" + pct + "%).";
+        "Scaled score: " +
+        scaled.total +
+        " / " +
+        scaled.cfg.maxTotal +
+        " — " +
+        passLabel +
+        " (passing score " +
+        scaled.cfg.passing +
+        ").";
 
       var unscored = attemptResults.filter(function (r) {
         return r.correct === null || r.correct === undefined;
       }).length;
-      document.getElementById("resultsNote").textContent = unscored
-        ? "Some items could not be scored automatically. Objective rows still reflect topic mapping where available."
-        : "Rows below roll up items by official objective IDs from the CCNA topic maps.";
+      var breakdown =
+        "Weighted scoring: multiple-choice " +
+        scaled.mcqCorrect +
+        "/" +
+        scaled.den.mcq +
+        " → up to " +
+        Math.round(scaled.cfg.maxMcq) +
+        " pts (" +
+        Math.round(scaled.mcqPts) +
+        " earned); drag-and-drop " +
+        scaled.dndCorrect +
+        "/" +
+        scaled.den.dnd +
+        " → up to " +
+        Math.round(scaled.cfg.maxDnd) +
+        " pts (" +
+        Math.round(scaled.dndPts) +
+        " earned); labs " +
+        scaled.labCorrect +
+        "/" +
+        scaled.den.lab +
+        " → up to " +
+        Math.round(scaled.cfg.maxLab) +
+        " pts (" +
+        Math.round(scaled.labPts) +
+        " earned).";
+      var tail = unscored
+        ? " Some items could not be scored automatically; unscored items earn 0 in their section."
+        : "";
+      document.getElementById("resultsNote").textContent =
+        breakdown + tail + " Rows below roll up items by official objective IDs from the CCNA topic maps.";
 
       var rollup = {};
       attemptResults.forEach(function (r) {
@@ -839,6 +974,7 @@
     }
 
     async function finalizeAttempt(reason) {
+      lastFinalizeReason = reason;
       stopExamTimer();
       examFooter.hidden = true;
       examPanel.hidden = true;
@@ -892,7 +1028,7 @@
 
     document.getElementById("btnQuit").addEventListener("click", async function () {
       if (!sessionOk || !examStarted) return;
-      if (!confirm("Quit ends this attempt. You will see a summary, then leave based on your access type (portal vs one-time). Continue?"))
+      if (!confirm("Quit ends this attempt. You will see a short summary; Continue then returns you to the CCNA study hub. Proceed?"))
         return;
       if (itemIndex < items.length) {
         var rec = await scoreCurrentItem();
@@ -942,16 +1078,16 @@
       gateStatus.className = "status-ok";
       await prepareExamData();
       await startExamUI();
-    } else if (portal30Active()) {
+    } else if (portalPassActive()) {
       sessionOk = true;
-      gateStatus.textContent = "30-day portal access active. Loading exam bank…";
+      gateStatus.textContent = "CCNA portal access active. Loading exam bank…";
       gateStatus.className = "status-ok";
       await prepareExamData();
       gateStatus.textContent = "Access confirmed. The timed exam starts below.";
       await startExamUI();
     } else if (!sessionId) {
       gateStatus.textContent =
-        "No paid checkout session found. Use Purchase on the timed-test landing page, or open the Stripe return link from your receipt (it includes session_id). If you already paid on this browser, try Start timed test from the landing page. If you have an active 30-day CCNA portal pass, open the runner from the same browser where the portal recognized your access.";
+        "No paid checkout session found. Use Purchase on the timed-test landing page, or open the Stripe return link from your receipt (it includes session_id). If you already paid on this browser, try Start timed test from the landing page. If you have an active CCNA portal pass (30-day or 90-day) on this browser, open the runner from the same device where the portal stored your access.";
       gateStatus.className = "status-bad";
     } else {
       try {

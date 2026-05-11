@@ -1,11 +1,24 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 3,
   "productId": "ccna-test-simulation",
   "title": "CCNA timed practice test simulation",
   "durationMinutes": 120,
-  "multipleChoiceCount": 40,
-  "dragDropCount": 8,
-  "labCount": 3,
-  "totalItems": 51,
-  "notes": "Counts are the exam blueprint for routing random selection and Stripe Checkout metadata. Bump schemaVersion when this changes."
+  "multipleChoiceCount": 50,
+  "dragDropCount": 5,
+  "labCount": 4,
+  "totalItems": 59,
+  "passingScaledScore": 800,
+  "scaledScoreMax": 1000,
+  "weights": {
+    "multipleChoiceFraction": 0.7,
+    "dragDropFraction": 0.1,
+    "labFraction": 0.2
+  },
+  "labFiles": [
+    "cli-lab-ospf_config_sim_v3.html",
+    "cli-lab-vlan-sim.html",
+    "cli-lab-trunk_lacp.html",
+    "cli-lab-native_vlan_lacp.html"
+  ],
+  "notes": "Scoring: 1000-point scale; pass at 800. Sections — MCQ 70%, D&D 10%, labs 20% of total. Bump schemaVersion if counts or roster change."
 }
