@@ -1893,11 +1893,8 @@ Sw2(config-if)# end</pre>
         pushLocalHistory(swCmdline, line);
         var trimmed = String(line || "").trim();
         var normalized = normalize(line);
-        var hideInputLine = isModeNavigationCommand(normalized);
         var echoLine = expandInterfaceEcho(trimmed);
-        if (!hideInputLine || normalized.indexOf("interface ") === 0) {
-          appendSw("line-user", promptText + " " + echoLine);
-        }
+        appendSw("line-user", promptText + " " + echoLine);
         swCmdline.value = "";
         if (!trimmed) return;
 
@@ -2027,11 +2024,8 @@ Sw2(config-if)# end</pre>
         pushLocalHistory(sw2Cmdline, line);
         var trimmed = String(line || "").trim();
         var normalized = normalize(line);
-        var hideInputLine = isModeNavigationCommand(normalized);
         var echoLine = expandInterfaceEcho(trimmed);
-        if (!hideInputLine || normalized.indexOf("interface ") === 0) {
-          appendSw2("line-user", promptText + " " + echoLine);
-        }
+        appendSw2("line-user", promptText + " " + echoLine);
         sw2Cmdline.value = "";
         if (!trimmed) return;
 
@@ -2199,6 +2193,16 @@ Sw2(config-if)# end</pre>
       wireFloatingModal(helperFileDialog, helperFileOverlay);
       wireFloatingModal(spoilerDialog, spoilerOverlay);
 
+      function focusCmdlineWhenReady(cmdline) {
+        if (!cmdline) return;
+        cmdline.focus();
+        requestAnimationFrame(function () {
+          cmdline.focus();
+        });
+        setTimeout(function () {
+          cmdline.focus();
+        }, 0);
+      }
       function openSwCli() {
         bumpOverlayZ(swCliOverlay);
         swCliOverlay.classList.add("is-open");
@@ -2208,7 +2212,7 @@ Sw2(config-if)# end</pre>
           void swTerminal.offsetWidth;
           swTerminal.classList.add("terminal-flash");
         }
-        swCmdline.focus();
+        focusCmdlineWhenReady(swCmdline);
       }
       function closeSwCli() {
         swCliOverlay.classList.remove("is-open");
@@ -2223,7 +2227,7 @@ Sw2(config-if)# end</pre>
           void sw2Terminal.offsetWidth;
           sw2Terminal.classList.add("terminal-flash");
         }
-        sw2Cmdline.focus();
+        focusCmdlineWhenReady(sw2Cmdline);
       }
       function closeSw2Cli() {
         sw2CliOverlay.classList.remove("is-open");
@@ -2240,7 +2244,7 @@ Sw2(config-if)# end</pre>
           void pcTerminal.offsetWidth;
           pcTerminal.classList.add("terminal-flash");
         }
-        pcCmdline.focus();
+        focusCmdlineWhenReady(pcCmdline);
       }
       function closePcCli() {
         pcCliOverlay.classList.remove("is-open");
@@ -2277,6 +2281,7 @@ Sw2(config-if)# end</pre>
         inputEl.addEventListener("keydown", function (e) {
           if (!isCliEnterKey(e)) return;
           e.preventDefault();
+          e.stopPropagation();
           submitFn();
         });
         if (form) {
@@ -2286,9 +2291,37 @@ Sw2(config-if)# end</pre>
           });
         }
       }
+      /** Enter when focus is on dialog/scrollback (not the input) still runs the pending line. */
+      function wireDialogEnterSubmit(dialog, overlay, cmdline, submitFn) {
+        if (!dialog || !overlay || !cmdline || typeof submitFn !== "function") return;
+        dialog.addEventListener(
+          "keydown",
+          function (e) {
+            if (!isCliEnterKey(e)) return;
+            if (!overlay.classList.contains("is-open")) return;
+            if (document.activeElement === cmdline) return;
+            e.preventDefault();
+            e.stopPropagation();
+            submitFn();
+          },
+          true
+        );
+      }
+      function wireScrollbackRefocus(scrollback, cmdline) {
+        if (!scrollback || !cmdline) return;
+        scrollback.addEventListener("click", function () {
+          cmdline.focus();
+        });
+      }
       wireCliLineSubmit(swCmdline, submitSw);
       wireCliLineSubmit(sw2Cmdline, submitSw2);
       wireCliLineSubmit(pcCmdline, submitPc);
+      wireDialogEnterSubmit(swCliDialog, swCliOverlay, swCmdline, submitSw);
+      wireDialogEnterSubmit(sw2CliDialog, sw2CliOverlay, sw2Cmdline, submitSw2);
+      wireDialogEnterSubmit(pcCliDialog, pcCliOverlay, pcCmdline, submitPc);
+      wireScrollbackRefocus(swScrollback, swCmdline);
+      wireScrollbackRefocus(sw2Scrollback, sw2Cmdline);
+      wireScrollbackRefocus(pcScrollback, pcCmdline);
 
       document.getElementById("swCliClose").addEventListener("click", closeSwCli);
       document.getElementById("sw2CliClose").addEventListener("click", closeSw2Cli);
