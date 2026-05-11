@@ -1776,14 +1776,15 @@ R2# copy running-config startup-config</pre>
         if (trySwNavSoftLine(line)) return;
 
         // 3) Permissive accept for common interface/VLAN commands so the simulator stays usable.
+        //    Use currentSwMode(), not only swPromptOverride: strict LAB_STEPS also show (config-if)# with override null.
         if (
-          (swPromptOverride === "config-if" || swPromptOverride === "config-if-range") &&
+          (currentSwMode() === "config-if" || currentSwMode() === "config-if-range") &&
           isPermissiveIfCommand(line)
         ) {
           applyR1InterfaceSideEffects(line);
           return;
         }
-        if (swPromptOverride === "config-vlan" && isPermissiveVlanCommand(line)) {
+        if (currentSwMode() === "config-vlan" && isPermissiveVlanCommand(line)) {
           return;
         }
         // Allow common global-config commands (e.g. ipv6 unicast-routing) at any time in (config)#.
@@ -1982,15 +1983,15 @@ R2# copy running-config startup-config</pre>
         // 2) Off-script navigation.
         if (trySw2NavSoftLine(line)) return;
 
-        // 3) Permissive accept for common interface/VLAN commands.
+        // 3) Permissive accept for common interface/VLAN commands (strict steps or soft-nav).
         if (
-          (sw2PromptOverride === "config-if" || sw2PromptOverride === "config-if-range") &&
+          (currentSw2Mode() === "config-if" || currentSw2Mode() === "config-if-range") &&
           isPermissiveIfCommand(line)
         ) {
           applyR2InterfaceSideEffects(line);
           return;
         }
-        if (sw2PromptOverride === "config-vlan" && isPermissiveVlanCommand(line)) {
+        if (currentSw2Mode() === "config-vlan" && isPermissiveVlanCommand(line)) {
           return;
         }
         // Allow common global-config commands (e.g. ipv6 unicast-routing) at any time in (config)#.

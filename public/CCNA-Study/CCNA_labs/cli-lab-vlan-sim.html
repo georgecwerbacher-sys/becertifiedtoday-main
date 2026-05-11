@@ -1429,6 +1429,21 @@ Sw2# copy running-config startup-config</pre>
         );
       }
 
+      /** LLDP practice lines from spoilers — accepted whenever IOS mode matches (including mid–LAB_STEPS). */
+      function isPermissiveLldpGlobal(line) {
+        var u = normalize(line);
+        return u === "lldp run" || u === "no lldp run";
+      }
+      function isPermissiveLldpIf(line) {
+        var u = normalize(line);
+        return (
+          u === "lldp transmit" ||
+          u === "no lldp transmit" ||
+          u === "lldp receive" ||
+          u === "no lldp receive"
+        );
+      }
+
       function swInEnableMode(stepIdx, ovr) {
         if (ovr !== null && ovr !== undefined) {
           if (
@@ -1868,25 +1883,25 @@ Sw2# copy running-config startup-config</pre>
           return;
         }
 
-        if (sw1PromptOverride === "config-vlan" && /^name\s+\S+/.test(normalize(line))) {
+        if (sw1Mode === "config-vlan" && /^name\s+\S+/.test(normalize(line))) {
           // Accept VLAN name assignment in vlan submode without affecting step engine.
           return;
         }
         if (
-          sw1PromptOverride === "config-if-range" &&
+          sw1Mode === "config-if-range" &&
           (normalize(line) === "switchport mode access" || /^switchport access vlan \d+$/.test(normalize(line)))
         ) {
           // Allow access-vlan style range commands in interface-range mode outside strict step flow.
           return;
         }
-        if (sw1PromptOverride === "config-if-range" && normalize(line).indexOf("interface ") === 0) {
+        if (sw1Mode === "config-if-range" && normalize(line).indexOf("interface ") === 0) {
           // Allow direct hop from interface-range mode to a single interface context.
           sw1PromptOverride = "config-if";
           setSw1Prompt();
           return;
         }
         if (
-          sw1PromptOverride === "config-if" &&
+          sw1Mode === "config-if" &&
           (normalize(line) === "switchport mode access" ||
             /^switchport voice vlan \d+$/.test(normalize(line)) ||
             /^switchport access vlan \d+$/.test(normalize(line)))
@@ -1894,7 +1909,7 @@ Sw2# copy running-config startup-config</pre>
           // Accept common interface access/voice VLAN commands in config-if mode.
           return;
         }
-        if (sw1PromptOverride === "config-if" && normalize(line).indexOf("interface ") === 0) {
+        if (sw1Mode === "config-if" && normalize(line).indexOf("interface ") === 0) {
           // Allow direct interface-to-interface hops from config-if mode.
           sw1PromptOverride = "config-if";
           setSw1Prompt();
@@ -1904,6 +1919,12 @@ Sw2# copy running-config startup-config</pre>
           // Allow generic interface navigation from config mode outside strict step commands.
           sw1PromptOverride = "config-if";
           setSw1Prompt();
+          return;
+        }
+        if (sw1Mode === "config" && isPermissiveLldpGlobal(line)) {
+          return;
+        }
+        if ((sw1Mode === "config-if" || sw1Mode === "config-if-range") && isPermissiveLldpIf(line)) {
           return;
         }
 
@@ -2060,25 +2081,25 @@ Sw2# copy running-config startup-config</pre>
           return;
         }
 
-        if (sw2PromptOverride === "config-vlan" && /^name\s+\S+/.test(normalize(line))) {
+        if (sw2ModeNow === "config-vlan" && /^name\s+\S+/.test(normalize(line))) {
           // Accept VLAN name assignment in vlan submode without affecting step engine.
           return;
         }
         if (
-          sw2PromptOverride === "config-if-range" &&
+          sw2ModeNow === "config-if-range" &&
           (normalize(line) === "switchport mode access" || /^switchport access vlan \d+$/.test(normalize(line)))
         ) {
           // Allow access-vlan style range commands in interface-range mode outside strict step flow.
           return;
         }
-        if (sw2PromptOverride === "config-if-range" && normalize(line).indexOf("interface ") === 0) {
+        if (sw2ModeNow === "config-if-range" && normalize(line).indexOf("interface ") === 0) {
           // Allow direct hop from interface-range mode to a single interface context.
           sw2PromptOverride = "config-if";
           setSw2Prompt();
           return;
         }
         if (
-          sw2PromptOverride === "config-if" &&
+          sw2ModeNow === "config-if" &&
           (normalize(line) === "switchport mode access" ||
             /^switchport voice vlan \d+$/.test(normalize(line)) ||
             /^switchport access vlan \d+$/.test(normalize(line)))
@@ -2086,7 +2107,7 @@ Sw2# copy running-config startup-config</pre>
           // Accept common interface access/voice VLAN commands in config-if mode.
           return;
         }
-        if (sw2PromptOverride === "config-if" && normalize(line).indexOf("interface ") === 0) {
+        if (sw2ModeNow === "config-if" && normalize(line).indexOf("interface ") === 0) {
           // Allow direct interface-to-interface hops from config-if mode.
           sw2PromptOverride = "config-if";
           setSw2Prompt();
@@ -2096,6 +2117,12 @@ Sw2# copy running-config startup-config</pre>
           // Allow generic interface navigation from config mode outside strict step commands.
           sw2PromptOverride = "config-if";
           setSw2Prompt();
+          return;
+        }
+        if (sw2ModeNow === "config" && isPermissiveLldpGlobal(line)) {
+          return;
+        }
+        if ((sw2ModeNow === "config-if" || sw2ModeNow === "config-if-range") && isPermissiveLldpIf(line)) {
           return;
         }
 
