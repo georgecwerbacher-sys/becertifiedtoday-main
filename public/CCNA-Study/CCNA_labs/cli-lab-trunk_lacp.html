@@ -370,6 +370,20 @@
       color: #c8f0c4;
       font-weight: 600;
     }
+    .cli-cmd-form {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: transparent;
+    }
+    .cli-cmd-form .cmdline-input {
+      flex: 1;
+      min-width: 0;
+      width: 100%;
+    }
     .cmdline-input {
       flex: 1;
       min-width: 0;
@@ -685,15 +699,17 @@
           <div id="swScrollback" class="scrollback-area"></div>
           <div class="input-row">
             <span id="swPrompt" class="prompt-el">Sw1#</span>
-            <input
-              id="swCmdline"
-              class="cmdline-input"
-              type="text"
-              spellcheck="false"
-              autocomplete="off"
-              autocapitalize="none"
-              aria-label="Sw1 command line"
-            />
+            <form class="cli-cmd-form" aria-label="Sw1 command submit">
+              <input
+                id="swCmdline"
+                class="cmdline-input"
+                type="text"
+                spellcheck="false"
+                autocomplete="off"
+                autocapitalize="none"
+                aria-label="Sw1 command line"
+              />
+            </form>
           </div>
         </div>
       </div>
@@ -727,15 +743,17 @@
           <div id="sw2Scrollback" class="scrollback-area"></div>
           <div class="input-row">
             <span id="sw2Prompt" class="prompt-el">Sw2#</span>
-            <input
-              id="sw2Cmdline"
-              class="cmdline-input"
-              type="text"
-              spellcheck="false"
-              autocomplete="off"
-              autocapitalize="none"
-              aria-label="Sw2 command line"
-            />
+            <form class="cli-cmd-form" aria-label="Sw2 command submit">
+              <input
+                id="sw2Cmdline"
+                class="cmdline-input"
+                type="text"
+                spellcheck="false"
+                autocomplete="off"
+                autocapitalize="none"
+                aria-label="Sw2 command line"
+              />
+            </form>
           </div>
         </div>
       </div>
@@ -761,15 +779,17 @@
           <div id="pcScrollback" class="scrollback-area"></div>
           <div class="input-row">
             <span id="pcPrompt" class="prompt-el pc-prompt">&gt;</span>
-            <input
-              id="pcCmdline"
-              class="cmdline-input"
-              type="text"
-              spellcheck="false"
-              autocomplete="off"
-              autocapitalize="none"
-              aria-label="PC command line"
-            />
+            <form class="cli-cmd-form" aria-label="PC command submit">
+              <input
+                id="pcCmdline"
+                class="cmdline-input"
+                type="text"
+                spellcheck="false"
+                autocomplete="off"
+                autocapitalize="none"
+                aria-label="PC command line"
+              />
+            </form>
           </div>
         </div>
       </div>
@@ -2244,24 +2264,31 @@ Sw2(config-if)# end</pre>
         });
       });
 
-      swCmdline.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") {
+      /** Enter / Return: broad key match + form submit fallback (mobile / embedded browsers). */
+      function isCliEnterKey(e) {
+        if (!e) return false;
+        if (e.key === "Enter" || e.key === "NumpadEnter") return true;
+        var c = typeof e.keyCode !== "undefined" ? e.keyCode : e.which;
+        return c === 13;
+      }
+      function wireCliLineSubmit(inputEl, submitFn) {
+        if (!inputEl || typeof submitFn !== "function") return;
+        var form = inputEl.closest ? inputEl.closest("form") : null;
+        inputEl.addEventListener("keydown", function (e) {
+          if (!isCliEnterKey(e)) return;
           e.preventDefault();
-          submitSw();
+          submitFn();
+        });
+        if (form) {
+          form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            submitFn();
+          });
         }
-      });
-      sw2Cmdline.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          submitSw2();
-        }
-      });
-      pcCmdline.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          submitPc();
-        }
-      });
+      }
+      wireCliLineSubmit(swCmdline, submitSw);
+      wireCliLineSubmit(sw2Cmdline, submitSw2);
+      wireCliLineSubmit(pcCmdline, submitPc);
 
       document.getElementById("swCliClose").addEventListener("click", closeSwCli);
       document.getElementById("sw2CliClose").addEventListener("click", closeSw2Cli);
