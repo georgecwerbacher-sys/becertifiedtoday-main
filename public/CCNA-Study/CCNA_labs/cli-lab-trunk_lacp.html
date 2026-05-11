@@ -370,6 +370,20 @@
       color: #c8f0c4;
       font-weight: 600;
     }
+    .cli-cmd-form {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: transparent;
+    }
+    .cli-cmd-form .cmdline-input {
+      flex: 1;
+      min-width: 0;
+      width: 100%;
+    }
     .cmdline-input {
       flex: 1;
       min-width: 0;
@@ -685,21 +699,26 @@
           <div id="swScrollback" class="scrollback-area"></div>
           <div class="input-row">
             <span id="swPrompt" class="prompt-el">Sw1#</span>
-            <input
-              id="swCmdline"
-              class="cmdline-input"
-              type="text"
-              spellcheck="false"
-              autocomplete="off"
-              autocapitalize="none"
-              aria-label="Sw1 command line"
-            />
+            <form class="cli-cmd-form" aria-label="Sw1 commands">
+              <input
+                id="swCmdline"
+                class="cmdline-input"
+                type="text"
+                spellcheck="false"
+                autocomplete="off"
+                autocapitalize="none"
+                aria-label="Sw1 command line"
+              />
+            </form>
           </div>
         </div>
       </div>
       <footer class="cli-modal-footer">
         <div class="controls">
           <button type="button" class="btn btn-secondary" id="swResetBtn">Reset lab</button>
+          <button type="button" class="btn btn-secondary" id="swCliRunBtn" title="Same as Enter in the command line">
+            Run command
+          </button>
         </div>
         <div id="passBanner" class="pass-banner" role="status">
           Complete the STEPS sequence on Sw1 and Sw2, verify PC1 ping to PC2, then from enable mode run copy running-configuration startup-configuration on both switches.
@@ -727,18 +746,27 @@
           <div id="sw2Scrollback" class="scrollback-area"></div>
           <div class="input-row">
             <span id="sw2Prompt" class="prompt-el">Sw2#</span>
-            <input
-              id="sw2Cmdline"
-              class="cmdline-input"
-              type="text"
-              spellcheck="false"
-              autocomplete="off"
-              autocapitalize="none"
-              aria-label="Sw2 command line"
-            />
+            <form class="cli-cmd-form" aria-label="Sw2 commands">
+              <input
+                id="sw2Cmdline"
+                class="cmdline-input"
+                type="text"
+                spellcheck="false"
+                autocomplete="off"
+                autocapitalize="none"
+                aria-label="Sw2 command line"
+              />
+            </form>
           </div>
         </div>
       </div>
+      <footer class="cli-modal-footer">
+        <div class="controls">
+          <button type="button" class="btn btn-secondary" id="sw2CliRunBtn" title="Same as Enter in the command line">
+            Run command
+          </button>
+        </div>
+      </footer>
     </div>
   </div>
 
@@ -761,19 +789,26 @@
           <div id="pcScrollback" class="scrollback-area"></div>
           <div class="input-row">
             <span id="pcPrompt" class="prompt-el pc-prompt">&gt;</span>
-            <input
-              id="pcCmdline"
-              class="cmdline-input"
-              type="text"
-              spellcheck="false"
-              autocomplete="off"
-              autocapitalize="none"
-              aria-label="PC command line"
-            />
+            <form class="cli-cmd-form" aria-label="PC commands">
+              <input
+                id="pcCmdline"
+                class="cmdline-input"
+                type="text"
+                spellcheck="false"
+                autocomplete="off"
+                autocapitalize="none"
+                aria-label="PC command line"
+              />
+            </form>
           </div>
         </div>
       </div>
       <footer class="cli-modal-footer">
+        <div class="controls">
+          <button type="button" class="btn btn-secondary" id="pcCliRunBtn" title="Same as Enter in the command line">
+            Run command
+          </button>
+        </div>
         <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
           Select <strong>PC1</strong> in the page picker, then run <code>ping 10.15.15.20</code> after Task 1 trunks are configured on
           both switches. PC2 is display-only for this check.
@@ -2238,28 +2273,38 @@ Sw2(config-if)# end</pre>
         });
       });
 
-      /** Same pattern as cli-lab-vlan-sim.html (proven in dev + prod); include keyCode 13 for older UAs. */
+      /**
+       * Enter: native form submit (implicit submit on Return in single-field forms).
+       * keyup backup if submit never fires (keyup skips if input already cleared by submit).
+       * Run command buttons for hosts that swallow keyboard events entirely.
+       */
       function cliEnterLineKey(e) {
-        if (!e) return false;
+        if (!e || e.isComposing) return false;
         if (e.key === "Enter" || e.key === "NumpadEnter") return true;
+        if (e.code === "Enter" || e.code === "NumpadEnter") return true;
         var c = typeof e.keyCode !== "undefined" ? e.keyCode : e.which;
         return c === 13;
       }
-      swCmdline.addEventListener("keydown", function (e) {
-        if (!cliEnterLineKey(e)) return;
-        e.preventDefault();
-        submitSw();
-      });
-      sw2Cmdline.addEventListener("keydown", function (e) {
-        if (!cliEnterLineKey(e)) return;
-        e.preventDefault();
-        submitSw2();
-      });
-      pcCmdline.addEventListener("keydown", function (e) {
-        if (!cliEnterLineKey(e)) return;
-        e.preventDefault();
-        submitPc();
-      });
+      function wireCliCmdForm(inputEl, submitFn) {
+        var form = inputEl && inputEl.closest ? inputEl.closest("form") : null;
+        if (form) {
+          form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            submitFn();
+          });
+        }
+        inputEl.addEventListener("keyup", function (e) {
+          if (!cliEnterLineKey(e)) return;
+          if (!String(inputEl.value || "").trim()) return;
+          submitFn();
+        });
+      }
+      wireCliCmdForm(swCmdline, submitSw);
+      wireCliCmdForm(sw2Cmdline, submitSw2);
+      wireCliCmdForm(pcCmdline, submitPc);
+      document.getElementById("swCliRunBtn").addEventListener("click", submitSw);
+      document.getElementById("sw2CliRunBtn").addEventListener("click", submitSw2);
+      document.getElementById("pcCliRunBtn").addEventListener("click", submitPc);
 
       document.getElementById("swCliClose").addEventListener("click", closeSwCli);
       document.getElementById("sw2CliClose").addEventListener("click", closeSw2Cli);
