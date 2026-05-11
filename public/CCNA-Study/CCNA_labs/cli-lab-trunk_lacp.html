@@ -296,6 +296,10 @@
       border-top: 1px solid #2d3b5a;
       flex-shrink: 0;
     }
+    .cli-modal-footer .btn {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: rgba(255, 255, 255, 0.12);
+    }
     .terminal {
       font-family: "SF Mono", ui-monospace, Consolas, monospace;
       font-size: 0.88rem;
@@ -2167,7 +2171,11 @@ Sw2(config-if)# end</pre>
       function wireFloatingModal(dialogEl, overlayEl) {
         var header = dialogEl.querySelector(".cli-modal-header");
         if (!dialogEl || !overlayEl || !header) return;
-        dialogEl.addEventListener("pointerdown", function () {
+        dialogEl.addEventListener("pointerdown", function (e) {
+          /* Bumping z-index on every tap (incl. buttons) can reorder the dialog mid-gesture and drop click/tap. */
+          if (e.target && e.target.closest && e.target.closest("button, input, textarea, select, label, a[href]")) {
+            return;
+          }
           bumpOverlayZ(overlayEl);
         });
         var drag = null;
@@ -2302,9 +2310,14 @@ Sw2(config-if)# end</pre>
       wireCliCmdForm(swCmdline, submitSw);
       wireCliCmdForm(sw2Cmdline, submitSw2);
       wireCliCmdForm(pcCmdline, submitPc);
-      document.getElementById("swCliRunBtn").addEventListener("click", submitSw);
-      document.getElementById("sw2CliRunBtn").addEventListener("click", submitSw2);
-      document.getElementById("pcCliRunBtn").addEventListener("click", submitPc);
+      (function () {
+        var r1 = document.getElementById("swCliRunBtn");
+        var r2 = document.getElementById("sw2CliRunBtn");
+        var r3 = document.getElementById("pcCliRunBtn");
+        if (r1) r1.addEventListener("click", submitSw);
+        if (r2) r2.addEventListener("click", submitSw2);
+        if (r3) r3.addEventListener("click", submitPc);
+      })();
 
       document.getElementById("swCliClose").addEventListener("click", closeSwCli);
       document.getElementById("sw2CliClose").addEventListener("click", closeSw2Cli);
