@@ -670,7 +670,7 @@
     </div>
   </div>
 
-  <!-- SW2 — second switch CLI (read-only exhibit + optional IOS mode practice) -->
+  <!-- R2 CLI -->
   <div id="sw2CliOverlay" class="cli-modal-overlay" aria-hidden="true">
     <div
       id="sw2CliDialog"
@@ -701,13 +701,6 @@
           </div>
         </div>
       </div>
-      <footer class="cli-modal-footer">
-        <p style="margin: 0; font-size: 0.82rem; color: #9fb0cc; line-height: 1.45">
-          Read-only exhibit: <code>show running-config</code> (or <code>sh run</code> after <code>normalize()</code>) prints a fixed snapshot.
-          Use <code>configure terminal</code> / <code>conf t</code>, <code>interface …</code> / <code>int …</code>,
-          <code>exit</code> or <code>end</code> to move modes. Use class <code>line-ping</code> for simulated ping output (see IP Services lab).
-        </p>
-      </footer>
     </div>
   </div>
 
@@ -900,8 +893,7 @@ R2(config-if)# no shut</pre>
             </div>
             <pre class="spoiler-terminal-pre">R1(config-if)# exit
 R1(config)# exit
-R1# ping 10.0.12.6
-!!!!  ! ping successful</pre>
+R1# ping 10.0.12.6</pre>
           </div>
         </div>
 
@@ -941,7 +933,8 @@ R2(config-if)# ipv6 address 2001:db8:12::13/126</pre>
               <span class="spoiler-terminal-title">R1 / R2 — Terminal</span>
             </div>
             <pre class="spoiler-terminal-pre">R1# ping 2001:db8:12::13
-!!!!!  ! successful
+
+R2# ping 2001:db8:12::13
 
 R1# copy running-config startup-config
 R2# copy running-config startup-config</pre>
@@ -1210,27 +1203,21 @@ R2# copy running-config startup-config</pre>
       function labAddressingCorrect() {
         return r1Ipv4AddressCorrect && r2Ipv4AddressCorrect && r1Ipv6AddressCorrect && r2Ipv6AddressCorrect;
       }
+      /** Compact ping echo when IPv4 (both routers) or IPv6 (both routers) addressing matches the lab. */
+      function pingLabReply(ok) {
+        return ok ? "!!!!!  ! successful" : "....  ! unsuccessful";
+      }
+      function labIpv4PingOk() {
+        return r1Ipv4AddressCorrect && r2Ipv4AddressCorrect;
+      }
+      function labIpv6PingOk() {
+        return r1Ipv6AddressCorrect && r2Ipv6AddressCorrect;
+      }
       function ipv4PingOutput() {
-        var ok = r1Ipv4AddressCorrect && r2Ipv4AddressCorrect;
-        return (
-          "Type escape sequence to abort.\n" +
-          "Sending 4, 100-byte ICMP Echos to 10.0.12.6, timeout is 2 seconds:\n" +
-          (ok ? "!!!!\n" : "....\n") +
-          (ok
-            ? "Success rate is 100 percent (4/4), round-trip min/avg/max = 1/1/2 ms"
-            : "Success rate is 0 percent (0/4)")
-        );
+        return pingLabReply(labIpv4PingOk());
       }
       function ipv6PingOutput() {
-        var ok = r1Ipv6AddressCorrect && r2Ipv6AddressCorrect;
-        return (
-          "Type escape sequence to abort.\n" +
-          "Sending 4, 100-byte ICMP Echos to 2001:DB8:12::13, timeout is 2 seconds:\n" +
-          (ok ? "!!!!\n" : "....\n") +
-          (ok
-            ? "Success rate is 100 percent (4/4), round-trip min/avg/max = 1/1/2 ms"
-            : "Success rate is 0 percent (0/4)")
-        );
+        return pingLabReply(labIpv6PingOk());
       }
       var IPV6_UNICAST_ROUTING_OK_MSG = "Device now supports IPv6 configurations.";
       function appendIpv6UnicastRoutingFeedback(append, line) {
@@ -1262,7 +1249,7 @@ R2# copy running-config startup-config</pre>
           emit: function (append) { append("line-ping", ipv6PingOutput()); } },
       ];
 
-      // R2 sequence — strict order from the Helper file (no ping verification on R2).
+      // R2 sequence — strict order from the Helper file. Optional IPv6 ping handled in submitSw2 after STEPS complete.
       var R2_STEPS = [
         { mode: "exec",      test: function (raw) { return normalize(raw) === "configure terminal"; } },
         { mode: "config",    test: isInterfaceE00 },
@@ -1950,6 +1937,16 @@ R2# copy running-config startup-config</pre>
           tryCompleteBaselineLab(function (cls, text) {
             appendSw2(cls, text);
           });
+          return;
+        }
+
+        /* Privileged EXEC: IPv6 ping practice (spoiler shows ping from R2). */
+        if (
+          sw2InEnableMode() &&
+          stepIndexSw2 >= R2_STEPS.length &&
+          (isPing(line, "2001:db8:12::13") || isPing(line, "2001:db8:12::11"))
+        ) {
+          appendSw2("line-ping", ipv6PingOutput());
           return;
         }
 
