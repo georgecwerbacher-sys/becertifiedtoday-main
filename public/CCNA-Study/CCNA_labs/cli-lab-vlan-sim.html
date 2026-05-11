@@ -1482,22 +1482,36 @@ Sw2# copy running-config startup-config</pre>
        * IOS-like exit / end / conf t for prompt only — does not advance STEPS or change lab flags.
        * When the line matches the current LAB step, returns false so normal STEPS handling runs.
        */
-      function trySwNavSoftLine(line, stepIdx, getOvr, setOvrAndRefresh, swNum) {
-        if (stepIdx >= LAB_STEPS.length) return false;
+      /** Canonical range line after normalize() — matches `int range e0/1 - 2, e0/3` and Gi spellings. */
+      var LAB_INTERFACE_RANGE_GI012 = "interface range gigabitethernet0/1 - 2";
+
+      function isNonRangeInterfaceNavLine(line) {
         var u = normalize(line);
+        return u.indexOf("interface ") === 0 && u.indexOf("interface range ") !== 0;
+      }
+
+      function trySwNavSoftLine(line, stepIdx, getOvr, setOvrAndRefresh, swNum) {
+        var u = normalize(line);
+        /* Always allow spoiler/lab Gi0/1–2 range when already in a config hierarchy (incl. after STEPS complete). */
+        if (u === LAB_INTERFACE_RANGE_GI012) {
+          var ovr = getOvr();
+          var stepMode = stepIdx < LAB_STEPS.length ? LAB_STEPS[stepIdx].mode : "exec";
+          var rangeCtxMode = ovr !== null && ovr !== undefined ? ovr : stepMode;
+          if (
+            rangeCtxMode === "config" ||
+            rangeCtxMode === "config-if" ||
+            rangeCtxMode === "config-if-range"
+          ) {
+            if (stepIdx < LAB_STEPS.length && LAB_STEPS[stepIdx].test(line, swNum)) return false;
+            setOvrAndRefresh("config-if-range");
+            return true;
+          }
+        }
+        if (stepIdx >= LAB_STEPS.length) return false;
         if (stepIdx === 0 && u === "configure terminal") return false;
         if ((stepIdx === 8 || stepIdx === 14 || stepIdx === 18) && u === "exit") return false;
         if (stepIdx === 24 && u === "end") return false;
         var currentMode = getOvr() || LAB_STEPS[stepIdx].mode;
-        if (
-          u.indexOf("interface range ") === 0 &&
-          (currentMode === "config" || currentMode === "config-if")
-        ) {
-          // Let LAB_STEPS consume the exact expected command for progression.
-          if (LAB_STEPS[stepIdx].test(line, swNum)) return false;
-          setOvrAndRefresh("config-if-range");
-          return true;
-        }
         if (u === "configure terminal" && stepIdx > 0 && getOvr() === "exec") {
           setOvrAndRefresh(null);
           return true;
@@ -1548,7 +1562,7 @@ Sw2# copy running-config startup-config</pre>
           setOvrAndRefresh(null);
           return true;
         }
-        if (stepIdx >= 16 && stepIdx <= 18 && u === "interface range gigabitethernet0/1 - 2") {
+        if (stepIdx >= 16 && stepIdx <= 18 && u === LAB_INTERFACE_RANGE_GI012) {
           setOvrAndRefresh(null);
           return true;
         }
@@ -1910,7 +1924,7 @@ Sw2# copy running-config startup-config</pre>
           // Allow access-vlan style range commands in interface-range mode outside strict step flow.
           return;
         }
-        if (sw1Mode === "config-if-range" && normalize(line).indexOf("interface ") === 0) {
+        if (sw1Mode === "config-if-range" && isNonRangeInterfaceNavLine(line)) {
           // Allow direct hop from interface-range mode to a single interface context.
           sw1PromptOverride = "config-if";
           setSw1Prompt();
@@ -1925,13 +1939,13 @@ Sw2# copy running-config startup-config</pre>
           // Accept common interface access/voice VLAN commands in config-if mode.
           return;
         }
-        if (sw1Mode === "config-if" && normalize(line).indexOf("interface ") === 0) {
+        if (sw1Mode === "config-if" && isNonRangeInterfaceNavLine(line)) {
           // Allow direct interface-to-interface hops from config-if mode.
           sw1PromptOverride = "config-if";
           setSw1Prompt();
           return;
         }
-        if (sw1Mode === "config" && normalize(line).indexOf("interface ") === 0) {
+        if (sw1Mode === "config" && isNonRangeInterfaceNavLine(line)) {
           // Allow generic interface navigation from config mode outside strict step commands.
           sw1PromptOverride = "config-if";
           setSw1Prompt();
@@ -2111,7 +2125,7 @@ Sw2# copy running-config startup-config</pre>
           // Allow access-vlan style range commands in interface-range mode outside strict step flow.
           return;
         }
-        if (sw2ModeNow === "config-if-range" && normalize(line).indexOf("interface ") === 0) {
+        if (sw2ModeNow === "config-if-range" && isNonRangeInterfaceNavLine(line)) {
           // Allow direct hop from interface-range mode to a single interface context.
           sw2PromptOverride = "config-if";
           setSw2Prompt();
@@ -2126,13 +2140,13 @@ Sw2# copy running-config startup-config</pre>
           // Accept common interface access/voice VLAN commands in config-if mode.
           return;
         }
-        if (sw2ModeNow === "config-if" && normalize(line).indexOf("interface ") === 0) {
+        if (sw2ModeNow === "config-if" && isNonRangeInterfaceNavLine(line)) {
           // Allow direct interface-to-interface hops from config-if mode.
           sw2PromptOverride = "config-if";
           setSw2Prompt();
           return;
         }
-        if (sw2ModeNow === "config" && normalize(line).indexOf("interface ") === 0) {
+        if (sw2ModeNow === "config" && isNonRangeInterfaceNavLine(line)) {
           // Allow generic interface navigation from config mode outside strict step commands.
           sw2PromptOverride = "config-if";
           setSw2Prompt();
