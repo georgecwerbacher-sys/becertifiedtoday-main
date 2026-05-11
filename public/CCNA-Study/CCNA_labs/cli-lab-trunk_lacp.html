@@ -2268,20 +2268,33 @@ Sw2(config-if)# end</pre>
         });
       });
 
-      /** Enter / Return: broad key match + form submit fallback (mobile / embedded browsers). */
+      /** Enter / Return: key, code, and legacy keyCode (some mobile / embedded UAs omit key). */
       function isCliEnterKey(e) {
         if (!e) return false;
-        if (e.key === "Enter" || e.key === "NumpadEnter") return true;
+        if (e.key === "Enter" || e.key === "NumpadEnter" || e.key === "\n" || e.key === "\r") return true;
+        if (e.code === "Enter" || e.code === "NumpadEnter") return true;
         var c = typeof e.keyCode !== "undefined" ? e.keyCode : e.which;
         return c === 13;
       }
       function wireCliLineSubmit(inputEl, submitFn) {
         if (!inputEl || typeof submitFn !== "function") return;
         var form = inputEl.closest ? inputEl.closest("form") : null;
-        inputEl.addEventListener("keydown", function (e) {
+        /* Capture runs before bubble so we beat other handlers; stopImmediatePropagation avoids same-node interference. */
+        inputEl.addEventListener(
+          "keydown",
+          function (e) {
+            if (!isCliEnterKey(e)) return;
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            submitFn();
+          },
+          true
+        );
+        /* Fallback when keydown does not run the handler (seen in some WebViews / IME). */
+        inputEl.addEventListener("keyup", function (e) {
           if (!isCliEnterKey(e)) return;
+          if (!String(inputEl.value || "").trim()) return;
           e.preventDefault();
-          e.stopPropagation();
           submitFn();
         });
         if (form) {
@@ -2291,7 +2304,7 @@ Sw2(config-if)# end</pre>
           });
         }
       }
-      /** Enter when focus is on dialog/scrollback (not the input) still runs the pending line. */
+      /** Enter when focus is outside the cmdline but the line should still submit (use e.target — activeElement can lie). */
       function wireDialogEnterSubmit(dialog, overlay, cmdline, submitFn) {
         if (!dialog || !overlay || !cmdline || typeof submitFn !== "function") return;
         dialog.addEventListener(
@@ -2299,7 +2312,7 @@ Sw2(config-if)# end</pre>
           function (e) {
             if (!isCliEnterKey(e)) return;
             if (!overlay.classList.contains("is-open")) return;
-            if (document.activeElement === cmdline) return;
+            if (e.target === cmdline) return;
             e.preventDefault();
             e.stopPropagation();
             submitFn();
