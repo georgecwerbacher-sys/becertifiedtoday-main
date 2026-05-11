@@ -1,6 +1,6 @@
 /**
  * GET /api/verify-checkout-session?session_id=cs_…
- * Confirms payment_status for the success landing page before unlocking the test UI.
+ * Confirms checkout completion for the success landing page (paid or $0 after coupon).
  *
  * Env: STRIPE_SECRET_KEY
  */
@@ -42,7 +42,9 @@ export default async function handler(req, res) {
       expand: ["payment_intent"],
     });
 
-    const paid = session.payment_status === "paid";
+    const paid =
+      session.payment_status === "paid" ||
+      session.payment_status === "no_payment_required";
     const productId = session.metadata?.productId || null;
 
     return res.status(200).json({

@@ -5,7 +5,7 @@
  * Env:
  *   STRIPE_SECRET_KEY           — sk_live_… / sk_test_… (or rk_* restricted key with Checkout)
  *   STRIPE_PRICE_CCNA_TEST_SIM  — price_… for one-time payment (create in Stripe Dashboard)
- *   PUBLIC_SITE_URL             — no trailing slash, e.g. https://becertifiedtoday.com
+ *   PUBLIC_SITE_URL             — site origin; trailing slashes are stripped (avoids // in redirect URLs)
  *
  * Checkout shows a promotion-code field when allow_promotion_codes is true. Create
  * coupons + promotion codes in Stripe Dashboard (Product catalog → Coupons, or Billing → Coupons).
@@ -23,7 +23,7 @@ export default async function handler(req, res) {
 
   const sk = getStripeSecretKey(process.env.STRIPE_SECRET_KEY);
   const priceId = (process.env.STRIPE_PRICE_CCNA_TEST_SIM || "").trim();
-  const site = (process.env.PUBLIC_SITE_URL || "").trim();
+  const site = (process.env.PUBLIC_SITE_URL || "").trim().replace(/\/+$/, "");
 
   if (!sk.secret) {
     return res.status(503).json({
