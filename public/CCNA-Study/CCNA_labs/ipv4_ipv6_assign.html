@@ -1143,7 +1143,7 @@ R2# copy running-config startup-config</pre>
        * - LAB_STEPS: finite list of { mode, test(raw) }. Steps advance only when test(raw) is true for the CURRENT index.
        * - mode selects the DISPLAYED prompt via promptForMode(host, mode).
        * - Add modes as needed: config-router, config-ext-nacl, config-pmap, control-plane, …
-       * - Abbreviations: normalize() expands common forms (conf t, sh run, int …) so tests can match canonical strings.
+       * - Abbreviations: normalize() expands common forms (conf t, sh run, int …, into …) so tests can match canonical strings.
        */
       // ---- Lab sequence helpers ----
       function isInterfaceE00(raw) {
@@ -1281,6 +1281,7 @@ R2# copy running-config startup-config</pre>
         if (t === "sh ver" || t === "show ver" || t === "sh version") t = "show version";
         if (t === "copy run start" || t === "copy run st") t = "copy running-configuration startup-configuration";
         if (t === "copy running-config startup-config") t = "copy running-configuration startup-configuration";
+        if (t.indexOf("into ") === 0) t = "interface " + t.slice(5);
         if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
         if (/^interface e\d+\/\d+$/.test(t)) {
           t = t.replace(/^interface e/, "interface ethernet");
@@ -1290,6 +1291,10 @@ R2# copy running-config startup-config</pre>
 
       function expandInterfaceEcho(raw) {
         var s = String(raw || "").trim();
+        var intoM = /^into\s+e(\d+)\/(\d+)$/i.exec(s);
+        if (intoM) {
+          return "interface Ethernet" + intoM[1] + "/" + intoM[2];
+        }
         var m = /^(interface|int)\s+e(\d+)\/(\d+)$/i.exec(s);
         if (m) {
           return "interface Ethernet" + m[2] + "/" + m[3];
@@ -1482,7 +1487,9 @@ R2# copy running-config startup-config</pre>
                /^switchport voice vlan \d+$/.test(u) ||
                /^switchport trunk allowed vlan \S+/.test(u) ||
                /^switchport trunk native vlan \d+$/.test(u) ||
-               /^channel-group \d+ mode (active|passive|on|desirable|auto)$/.test(u);
+               /^channel-group \d+ mode (active|passive|on|desirable|auto)$/.test(u) ||
+               u === "lldp transmit" || u === "no lldp transmit" ||
+               u === "lldp receive" || u === "no lldp receive";
       }
       function isPermissiveVlanCommand(line) {
         return /^name\s+\S+/.test(normalize(line));
@@ -1490,7 +1497,10 @@ R2# copy running-config startup-config</pre>
       /** Global-config commands that should never error out, even when the strict step expected something else. */
       function isPermissiveConfigCommand(line) {
         var u = normalize(line);
-        return u === "ipv6 unicast-routing" || u === "no ipv6 unicast-routing";
+        return u === "ipv6 unicast-routing" || u === "no ipv6 unicast-routing" ||
+               u === "lldp run" || u === "no lldp run" ||
+               u === "lldp transmit" || u === "no lldp transmit" ||
+               u === "lldp receive" || u === "no lldp receive";
       }
       /** Effective displayed mode for R1 (override > next-step mode > exec when complete). */
       function currentSwMode() {
