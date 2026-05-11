@@ -37,6 +37,9 @@ STYLE = r"""  <style>
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
+    h1.choose-two-stem {
+      line-height: 1.5;
+    }
     .stem-after-exhibit {
       margin: 12px 0 6px;
       font-size: clamp(1.02rem, 1.9vw, 1.32rem);
@@ -267,6 +270,26 @@ STYLE = r"""  <style>
     .cli-device pre + pre {
       border-top: 1px solid #2d3b5a;
     }
+    .exhibit-terminal-white {
+      margin: 0;
+      border-radius: 10px;
+      border: 1px solid #b8b8b8;
+      overflow: hidden;
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+    .exhibit-terminal-white pre {
+      margin: 0;
+      padding: 14px 16px;
+      font-size: 0.78rem;
+      line-height: 1.45;
+      overflow-x: auto;
+      white-space: pre;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: #0a0a0a;
+      background: #ffffff;
+      tab-size: 8;
+    }
   </style>"""
 
 
@@ -396,6 +419,30 @@ def checkbox_choice_line(name: str, letter: str, text: str) -> str:
     return f'    <label class="choice"><input type="checkbox" name="{name}" value="{letter}" />{letter}. {text}</label>'
 
 
+def checkbox_choice_line_mono(name: str, letter: str, text: str) -> str:
+    body = html.escape(f"{letter}. {text}", quote=False)
+    return (
+        "\n".join(
+            [
+                '    <label class="choice mono cli-router-choice">',
+                '      <span class="cli-router-choice-controls">',
+                f'        <input type="checkbox" name="{name}" value="{letter}" aria-label="Select answer option {letter}" />',
+                f'        <span class="cli-router-choice-badge" aria-hidden="true">{html.escape(letter)}</span>',
+                '        <span class="cli-router-choice-title">Switch CLI — candidate config</span>',
+                "      </span>",
+                f'      <pre class="cli-router-console">{body}</pre>',
+                "    </label>",
+            ]
+        )
+        + "\n"
+    )
+
+
+def format_checkbox_stem(stem: str) -> str:
+    """HTML-escape stem and preserve intentional line breaks for choose-two pages."""
+    return html.escape(stem, quote=False).replace("\n", "<br />")
+
+
 def page_checkbox(
     *,
     title: str,
@@ -440,8 +487,8 @@ def page_checkbox(
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-  <main class="card">
-    <h1>{stem}</h1>
+    <main class="card">
+    <h1 class="choose-two-stem">{format_checkbox_stem(stem)}</h1>
 
 {choices_html}
 
@@ -765,6 +812,179 @@ def main() -> None:
                 "default-gateway",
                 "ip helper-address",
                 "dns-server",
+            ],
+        },
+        {
+            "slug": "dhcp-relay-r4-fa01-acl100-exhibit",
+            "title": "CCNA — DHCP relay and WAN ACL on R4",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "Which configuration enables DHCP addressing for hosts connected to interface FastEthernet0/1 on router R4?",
+            "name": "dhcpr4fa1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 Configure ip helper-address on the interface that faces DHCP clients (FastEthernet0/1 here) so broadcasts are relayed to the DHCP server at 10.0.1.1. Extended ACL 100 is applied inbound on FastEthernet0/10, so replies from the server must be permitted there: DHCP uses UDP, and a typical match is UDP from the server (source UDP bootps / 67) to the router\u2019s LAN address 10.148.2.1. Option A uses TCP. Options B and C attach the helper to FastEthernet0/0, which is not the client-facing interface in the exhibit, and B\u2019s ACE mixes invalid TCP-style syntax for bootps.",
+            "post_stem_html": """    <div class="exhibit-stack">
+      <div class="cli-device" role="region" aria-label="R4 partial running configuration">
+        <h2>R4 (partial)</h2>
+        <pre>interface FastEthernet0/10
+ description WAN_INTERFACE
+ ip address 10.0.1.2 255.255.255.252
+ ip access-group 100 in
+!
+interface FastEthernet0/1
+ description LAN INTERFACE
+ ip address 10.148.2.1 255.255.255.0
+ duplex auto
+ speed auto
+!
+ip forward-protocol nd
+!
+access-list 100 permit eigrp any any
+access-list 100 permit icmp any any
+access-list 100 permit tcp 10.149.3.0 0.0.0.255 host 10.0.1.2 eq 22
+access-list 100 permit tcp any any eq 80
+access-list 100 permit tcp any any eq 443
+access-list 100 deny ip any any log</pre>
+      </div>
+    </div>""",
+            "choices": [
+                """interface FastEthernet0/1
+ip helper-address 10.0.1.1
+!
+access-list 100 permit tcp host 10.0.1.1 eq 67 host 10.148.2.1""",
+                """interface FastEthernet0/0
+ip helper-address 10.0.1.1
+!
+access-list 100 permit host 10.0.1.1 host 10.148.2.1 eq bootps""",
+                """interface FastEthernet0/0
+ip helper-address 10.0.1.1
+!
+access-list 100 permit udp host 10.0.1.1 eq bootps host 10.148.2.1""",
+                """interface FastEthernet0/1
+ip helper-address 10.0.1.1
+!
+access-list 100 permit udp host 10.0.1.1 eq bootps host 10.148.2.1""",
+            ],
+        },
+        {
+            "slug": "ospf-r14-r86-broadcast-dr-adjacency",
+            "title": "CCNA — OSPFv2 broadcast adjacency and DR",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "Which configuration allows routers R14 and R86 to form an OSPFv2 adjacency while acting as a central point for exchanging OSPF information between routers?",
+            "post_stem_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/ospf-r14-r86-fa0-topology.png" alt="Topology: R14 Fa0/0 linked to R86 Fa0/0 on 10.73.65.64/30; Loopback0 10.10.1.14/32 on R14 and 10.10.1.86/32 on R86." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "name": "ospfr1486",
+            "correct": "B",
+            "mono": True,
+            "explain": "Correct. B \u2014 On a broadcast OSPF segment the designated router (DR) is the central point for reliable LS flooding on the LAN; with two routers, setting a higher OSPF priority on one router (255 on R14) makes it the DR while the neighbor becomes BDR, and both reach full adjacency. Cisco OSPFv2 also compares interface MTU during the database exchange: both sides use MTU 1500 here. Option A mismatches MTU (1400 vs 1500) so the adjacency typically stalls in EXSTART/EXCHANGE. Option D also mismatches MTU. Option C is invalid because ip ospf priority belongs under the interface, not under router ospf.",
+            "choices": [
+                """Option A
+
+R14#
+interface FastEthernet0/0
+ip address 10.73.65.65 255.255.255.252
+ip ospf network broadcast
+ip ospf priority 0
+ip mtu 1400
+
+router ospf 10
+router-id 10.10.1.14
+network 10.10.1.14 0.0.0.0 area 0
+network 10.73.65.64 0.0.0.3 area 0
+
+R86#
+interface Loopback0
+ip address 10.10.1.86 255.255.255.255
+
+interface FastEthernet0/0
+ip address 10.73.65.66 255.255.255.252
+ip ospf network broadcast
+ip mtu 1500
+
+router ospf 10
+router-id 10.10.1.86
+network 10.10.1.86 0.0.0.0 area 0
+network 10.73.65.64 0.0.0.3 area 0""",
+                """Option B
+
+R14#
+interface FastEthernet0/0
+ip address 10.73.65.65 255.255.255.252
+ip ospf network broadcast
+ip ospf priority 255
+ip mtu 1500
+
+router ospf 10
+router-id 10.10.1.14
+network 10.10.1.14 0.0.0.0 area 0
+network 10.73.65.64 0.0.0.3 area 0
+
+R86#
+interface FastEthernet0/0
+ip address 10.73.65.66 255.255.255.252
+ip ospf network broadcast
+ip mtu 1500
+
+router ospf 10
+router-id 10.10.1.86
+network 10.10.1.86 0.0.0.0 area 0
+network 10.73.65.64 0.0.0.3 area 0""",
+                """Option C
+
+R14#
+interface Loopback0
+ip ospf 10 area 0
+
+interface FastEthernet0/0
+ip address 10.73.65.65 255.255.255.252
+ip ospf network broadcast
+ip ospf 10 area 0
+ip mtu 1500
+
+router ospf 10
+ip ospf priority 255
+router-id 10.10.1.14
+
+R86#
+
+interface Loopback0
+ip ospf 10 area 0
+
+interface FastEthernet0/0
+ip address 10.73.65.66 255.255.255.252
+ip ospf network broadcast
+ip ospf 10 area 0
+ip mtu 1500
+
+router ospf 10
+router-id 10.10.1.86""",
+                """Option D
+
+R14#
+interface FastEthernet0/0
+ip address 10.73.65.65 255.255.255.252
+ip ospf network broadcast
+ip ospf priority 255
+ip mtu 1500
+
+router ospf 10
+router-id 10.10.1.14
+network 10.10.1.14 0.0.0.0 area 0
+network 10.73.65.64 0.0.0.3 area 0
+
+R86#
+interface FastEthernet0/0
+ip address 10.73.65.66 255.255.255.252
+ip ospf network broadcast
+ip mtu 1400
+
+router ospf 10
+router-id 10.10.1.86
+network 10.10.1.86 0.0.0.0 area 0
+network 10.73.65.64 0.0.0.3 area 0""",
             ],
         },
         {
@@ -1280,6 +1500,49 @@ def main() -> None:
             "mono": True,
         },
         {
+            "slug": "dtp-sw1-sw2-printer-vlan5-trunk",
+            "title": "CCNA — DTP trunk to SW_2 and VLAN 5 for printer",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "An administrator must connect SW_1 and the printer to the network. SW_2 requires DTP to be used for the connection to SW_1. The printer is configured as an access port with VLAN 5. Which set of commands completes the connectivity?",
+            "name": "dtpprnt1",
+            "correct": "B",
+            "mono": True,
+            "explain": "Correct. B \u2014 The topology shows the printer on SW_1 and an inter-switch link on Et0/2 toward SW_2 and the LAN. The CLI excerpt shows that link administratively in dynamic auto but operationally trunking with dot1q and only VLAN 5 enabled on the trunk\u2014consistent with DTP negotiation from an active neighbor and a restricted allowed-VLAN list. To reach that state from configuration, use dynamic desirable (or trunk) toward SW_2 so DTP forms the trunk, and switchport trunk allowed vlan add 5 so VLAN 5 crosses the link for the printer access VLAN. Option A misstates pruning/allowed-VLAN syntax. Option C uses private VLAN association text that does not replace normal access VLAN 5 across a trunk. Option D alone does not add VLAN 5 to the allowed list and is a weaker match when both ends might stay passive.",
+            "post_stem_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/dtp-sw1-sw2-printer-lan-topology.png" alt="Topology: printer on SW_1 Ethernet 1/1; SW_1 Ethernet 0/2 to SW_2 Ethernet 0/2; SW_2 to LAN cloud." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="cli-device" role="region" aria-label="SW_1 show interfaces Et0/2 switchport output">
+        <h2>SW_1# show interfaces Et0/2 switchport</h2>
+        <pre>Name: Et0/2
+Switchport: Enabled
+Administrative Mode: dynamic auto
+Operational Mode: trunk
+Administrative Trunking Encapsulation: negotiate
+Operational Trunking Encapsulation: dot1q
+Negotiation of Trunking: On
+Access Mode VLAN: 1 (default)
+Administrative Native VLAN tagging: enabled
+Voice VLAN: none
+Administrative private VLAN: none
+Operational private-vlan: none
+Trunking VLANs Enabled: 5
+Pruning VLANs Enabled: 2-1001
+Capture Mode: Disabled</pre>
+      </div>
+    </div>""",
+            "choices": [
+                """switchport mode trunk
+switchport trunk pruning vlan add 5""",
+                """switchport mode dynamic desirable
+switchport trunk allowed vlan add 5""",
+                """switchport mode dynamic auto
+switchport private-vlan association host 5""",
+                """switchport mode dynamic auto
+switchport trunk encapsulation negotiate""",
+            ],
+        },
+        {
             "slug": "wlc-ds-port-switch-ap-traffic",
             "title": "CCNA — WLC distribution system port",
             "stem": "Which WLC port connects to a switch to pass normal access-point traffic?",
@@ -1565,7 +1828,7 @@ def main() -> None:
             "explain": "Correct. A — A floating static route is a backup static route configured with a higher administrative distance than the primary route so it is only used when preferred routing is lost. Option A points to the backup next hop (192.168.2.1) with AD 10. Option B is a normal static default with the default AD. Option C sets AD 10 on the primary next hop and does not represent the intended backup path. Option D is for hosts/switches without IP routing, not for a routed fallback default route on a router.",
             "post_stem_html": '''    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/floating-static-default-route-router-a-topology.png" alt="Topology with Router A, B, and C showing 192.168.1.0/24, 192.168.2.0/24, and 192.168.3.0/24 links plus a sample ip route default command on Router A." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/floating-static-default-route-router-a-topology.png" alt="Topology: Routers A, B, and C in a triangle. A–B 192.168.2.0/24 (.1 on A Gi0/0/0, .2 on B Gi0/0/0); A–C 192.168.1.0/24 (.1 on A Gi0/0/1, .2 on C Gi0/0/0); B–C 192.168.3.0/24 (.2 on B Gi0/0/1, .1 on C Gi0/0/1)." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>''',
             "choices": [
@@ -2045,6 +2308,26 @@ Packets with Invalid Option          = 0</pre>
             "choices": ["Option A", "Option B", "Option C", "Option D"],
         },
         {
+            "slug": "ospf-dr-election-router-a-area-zero",
+            "title": "CCNA — OSPF DR election for router A (area 0)",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "Which action must be taken to ensure that router A is elected as the DR for OSPF area 0?",
+            "name": "ospfadra0",
+            "correct": "B",
+            "explain": "Correct. B \u2014 On each OSPF broadcast or NBMA segment, the DR is elected using the highest OSPF interface priority on that segment (then router ID as a tie-breaker when priorities match). Giving router A\u2019s interface(s) on the segment a higher priority than routers B and C makes A the DR for that segment in area 0. The lowest priority (A) would not prefer A as DR. A fixed router ID (C) only helps break ties after priority; it does not by itself guarantee A wins if neighbors have higher priority or a higher RID with equal priority. Neighbor statements toward B and C (D) are not the normal control for DR election on Ethernet and do not replace priority/RID rules.",
+            "post_stem_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/ospf-dr-election-router-a-area-zero-topology.png" alt="Topology: Routers A, B, and C in a triangle. A–B 192.168.2.0/24 (.1 on A Gi0/0/0, .2 on B Gi0/0/0); A–C 192.168.1.0/24 (.1 on A Gi0/0/1, .2 on C Gi0/0/0); B–C 192.168.3.0/24 (.2 on B Gi0/0/1, .1 on C Gi0/0/1)." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "choices": [
+                "Configure the OSPF priority on router A with the lowest value between the three routers",
+                "Configure the router A interfaces with the highest OSPF priority value within the area.",
+                "Configure router A with a fixed OSPF router ID.",
+                "Configure router B and router C as OSPF neighbors of router A.",
+            ],
+        },
+        {
             "slug": "ospf-ia-route-metric-display",
             "title": "CCNA — OSPF metric in bracket notation",
             "stem": "Refer to the exhibit. R1#show ip route includes: O IA 192.168.10.32/28 [110/193] via 192.168.30.10, Serial0/0.1 (and other routes). What is the metric of the route to the 192.168.10.33/28 subnet?",
@@ -2091,6 +2374,175 @@ Packets with Invalid Option          = 0</pre>
             ],
         },
         {
+            "slug": "ssh-loopback-source-next-hop-10-0-1-15-exhibit",
+            "title": "CCNA — Next hop for SSH to 10.0.1.15 from Loopback0",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "Traffic sourced from the loopback0 interface is trying to connect via ssh to the host at 10.0.1.15. What is the next hop to the destination address?",
+            "name": "sshnxhop1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 The routing table lists several matches for addresses inside 10.0.1.0/24, but 10.0.1.0/28 is a longer prefix than /24. Longest-prefix match therefore selects the EIGRP entry for 10.0.1.0/28 with next hop 192.168.0.7. Traffic originated from Loopback0 still uses the same destination lookup; the source only sets the packet\u2019s source IP. 192.168.0.4 is the next hop for the less-specific OSPF /24; 192.168.0.40 and 192.168.0.35 apply to /32 host routes; 192.168.3.5 is the connected Loopback0 address, not a next hop toward 10.0.1.15.",
+            "post_stem_html": """    <div class="exhibit-stack">
+      <div class="cli-device" role="region" aria-label="R1 show ip route output">
+        <h2>R1# show ip route</h2>
+        <pre>Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route
+
+Gateway of last resort is not set
+C        192.168.3.5 is directly connected, Loopback0
+     10.0.0.0/8 is variably subnetted, 4 subnets, 2 masks
+O        10.0.1.3/32 [110/100] via 192.168.0.40, 00:33:32, Serial0
+C        10.0.1.0/24 is directly connected, Serial0
+O        10.0.1.190/32 [110/5] via 192.168.0.35, 00:33:32, Serial0
+O        10.0.1.0/24 [110/10] via 192.168.0.4, 00:33:32, GigabitEthernet0/0
+D        10.0.1.0/28 [90/10] via 192.168.0.7, 00:33:32, GigabitEthernet0/0</pre>
+      </div>
+    </div>""",
+            "choices": [
+                "192.168.0.7",
+                "192.168.0.4",
+                "192.168.0.40",
+                "192.168.3.5",
+            ],
+        },
+        {
+            "slug": "site-ab-tenge-sfp-sr-vs-lr-smf-intermittent-exhibit",
+            "title": "CCNA — SiteA/SiteB intermittent connectivity (optics)",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "Shortly after SiteA was connected to SiteB over a new single-mode fiber path, users at SiteA report intermittent connectivity issues with applications hosted at SiteB. What is the cause of the intermittent connectivity issue?",
+            "name": "siteabsfp1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 The topology shows a multi-kilometer inter-site link; the CLIs show mismatched optics: SiteA reports SFP-SR (short-reach, typically multimode at 850 nm) while SiteB reports SFP-LR (long-reach, single-mode at 1310 nm). The scenario states a single-mode fiber span; SR is the wrong class of transceiver for that path compared with LR, and SR is also far outside its intended reach versus that distance, so the link can be marginal or intermittently usable even when the interface stays up. B is unlikely because the stem specifies single-mode fiber was installed. C does not fit: utilization affects queuing delay, not the classic pattern of flaky reachability from a layer-1 mismatch. D is unsupported: the exhibit does not list input or CRC errors.",
+            "post_stem_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/site-ab-tenge-sfp-sr-vs-lr-smf-topology.png" alt="Topology: Site A cloud linked to Site B cloud; distance between sites about 7 km." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="cli-grid two-cols" role="group" aria-label="SiteA and SiteB show interface output">
+        <div class="cli-device" role="region" aria-label="SiteA show interface TenGigabitEthernet0/1/0">
+          <h2>SiteA# show interface TenGigabitEthernet0/1/0</h2>
+          <pre>TenGigabitEthernet0/1/0 is up, line protocol is up
+  Hardware is BUILT-IN-EPA-8x10G, address is aabb.cc00.0100 (bia aabb.cc00.0100)
+  Description: Connection to SiteB
+  Internet address is 10.10.10.1/30
+  MTU 8146 bytes, BW 10000000 Kbit/sec, DLY 10 usec,
+     reliability 255/255, txload 1/255, rxload 1/255
+  Full Duplex, 10000Mbps, link type is force-up, media type is SFP-SR
+  5 minute input rate 264797000 bits/sec, 26672 packets/sec
+  5 minute output rate 122464000 bits/sec, 15724 packets/sec</pre>
+        </div>
+        <div class="cli-device" role="region" aria-label="SiteB show interface TenGigabitEthernet0/1/0">
+          <h2>SiteB# show interface TenGigabitEthernet0/1/0</h2>
+          <pre>TenGigabitEthernet0/1/0 is up, line protocol is up
+  Hardware is BUILT-IN-EPA-8x10G, address is 0000.0c00.750c (bia 0000.0c00.750c)
+  Description: Connection to SiteA
+  Internet address is 10.10.10.2/30
+  MTU 8146 bytes, BW 10000000 Kbit/sec, DLY 10 usec,
+     reliability 255/255, txload 1/255, rxload 1/255
+  Full Duplex, 10000Mbps, link type is force-up, media type is SFP-LR
+  5 minute input rate 123245000 bits/sec, 15343 packets/sec
+  5 minute output rate 265746000 bits/sec, 12453 packets/sec</pre>
+        </div>
+      </div>
+    </div>""",
+            "choices": [
+                "An incorrect type of transceiver has been inserted into a device on the link.",
+                "The wrong cable type was used to make the connection.",
+                "Heavy usage is causing high latency.",
+                "Physical network errors are being transmitted between the two sites.",
+            ],
+        },
+        {
+            "slug": "switch-host-a-to-d-unknown-dest-flood-exhibit",
+            "title": "CCNA — Switch receives frame from Host A to Host D",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "Host A sent a data frame destined for host D. What does the switch do when it receives the frame from host A?",
+            "name": "swahostd1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 The MAC address table has no entry for host D\u2019s destination MAC, so the frame is unknown unicast at Layer 2. The switch floods it out every other port in that VLAN except the ingress port (Fa0/1). A port-security violation could err-disable a port, but nothing in the exhibit indicates that. A single unknown-unicast frame does not by itself imply a broadcast storm. The switch does not remove unrelated CAM entries when forwarding or flooding (D misstates both flooding and how the CAM table is updated).",
+            "post_stem_html": """    <div class="exhibit-stack">
+      <div class="cli-device" role="region" aria-label="Switch MAC address table and frame summary">
+        <h2>SW1# show mac address-table dynamic</h2>
+        <pre>          Mac Address Table
+-------------------------------------------
+
+Vlan    Mac Address       Type        Ports
+----    -----------       --------    -----
+   1    aaaa.aaaa.aaaa    DYNAMIC     Fa0/1
+   1    bbbb.bbbb.bbbb    DYNAMIC     Fa0/2
+   1    cccc.cccc.cccc    DYNAMIC     Fa0/3
+
+Host A uses MAC address aaaa.aaaa.aaaa on Fa0/1.
+Host D uses MAC address dddd.dddd.dddd (not present in the table).
+The frame arrives on Fa0/1 with destination MAC dddd.dddd.dddd.</pre>
+      </div>
+    </div>""",
+            "choices": [
+                "It shuts down the port Fa0/1 and places it in err-disable mode.",
+                "It experiences a broadcast storm.",
+                "It floods the frame out of all ports except port Fa0/1.",
+                "It drops the frame from the switch CAM table.",
+            ],
+        },
+        {
+            "slug": "switch-sw1-pc2-mac-missing-fa02-trunk-exhibit",
+            "title": "CCNA — SW1 PC2 missing from MAC table",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "An engineer has started to configure replacement switch SW1. To verify part of the configuration, the engineer issued the commands as shown and noticed that the entry for PC2 is missing. Which change must be applied to SW1 so that PC1 and PC2 communicate normally?",
+            "name": "sw1pc2mac1",
+            "correct": "C",
+            "mono": True,
+            "explain": "Correct. C \u2014 Fa0/2 is administratively set to trunk mode with only VLAN 3 allowed, so host traffic from PC2 is not handled as a normal access port in VLAN 2 alongside PC1 on Fa0/1. Removing trunk mode and the restricted allowed-VLAN list, then configuring the port as access, restores a standard access edge so PC2 can appear in the MAC address table for the user data VLAN and exchange frames with PC1. Option A keeps trunking and adjusts allowed VLANs in the wrong direction for this access-host scenario. Option B edits Fa0/1 and mixes access/trunk semantics on the wrong interface. Option D applies contradictory access and trunk commands on Fa0/1.",
+            "post_stem_html": """    <div class="exhibit-stack">
+      <div class="cli-device" role="region" aria-label="SW1 verification commands">
+        <h2>SW1# show mac address-table dynamic</h2>
+        <pre>          Mac Address Table
+-------------------------------------------
+
+Vlan    Mac Address       Type        Ports
+----    -----------       --------    -----
+   2    1111.1111.1111    DYNAMIC     Fa0/1</pre>
+        <h2>SW1# show running-config interface fa0/2</h2>
+        <pre>interface FastEthernet0/2
+ switchport access vlan 2
+ switchport trunk allowed vlan 3
+ switchport mode trunk</pre>
+        <h2>SW1# show interfaces fa0/2 switchport</h2>
+        <pre>Name: Fa0/2
+Switchport: Enabled
+Administrative Mode: trunk
+Operational Mode: trunk
+Administrative Trunking Encapsulation: dot1q
+Operational Trunking Encapsulation: dot1q
+Negotiation of Trunking: On
+Access Mode VLAN: 2 (default)
+Trunking Native Mode VLAN: 1 (default)
+Trunking VLANs Enabled: 3</pre>
+      </div>
+    </div>""",
+            "choices": [
+                """SW1(config)#interface fa0/2
+SW1(config-if)#no switchport access vlan 2
+SW1(config-if)#no switchport trunk allowed vlan 3
+SW1(config-if)#switchport trunk allowed vlan 2""",
+                """SW1(config)#interface fa0/1
+SW1(config-if)#no switchport access vlan 2
+SW1(config-if)#switchport trunk native vlan 2
+SW1(config-if)#switchport trunk allowed vlan 3""",
+                """SW1(config)#interface fa0/2
+SW1(config-if)#no switchport mode trunk
+SW1(config-if)#no switchport trunk allowed vlan 3
+SW1(config-if)#switchport mode access""",
+                """SW1(config)#interface fa0/1
+SW1(config-if)#no switchport access vlan 2
+SW1(config-if)#switchport access vlan 3
+SW1(config-if)#switchport trunk allowed vlan 2""",
+            ],
+        },
+        {
             "slug": "gigabit-lx-t-l2-frame-similarity",
             "title": "CCNA — 1000BASE-LX vs 1000BASE-T",
             "stem": "What is a similarity between 1000BASE-LX and 1000BASE-T standards?",
@@ -2116,6 +2568,66 @@ Packets with Invalid Option          = 0</pre>
                 "It uses a 4-way handshake for authentication.",
                 "It uses RC4 for encryption.",
                 "It uses TKIP for encryption.",
+            ],
+        },
+        {
+            "slug": "wireless-wpa3-perfect-forward-secrecy",
+            "title": "CCNA — WPA3 and forward secrecy",
+            "stem": "Which wireless security protocol relies on Perfect Forward Secrecy?",
+            "name": "wpapfs1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 WPA3 (notably WPA3-Personal with SAE / Dragonfly) derives fresh pairwise keys so compromise of a long-term passphrase does not let an attacker decrypt recorded traffic from earlier sessions\u2014the property described as forward secrecy / perfect forward secrecy in training materials. WPA and WPA2-PSK do not provide that guarantee in the same way; WEP is obsolete and fundamentally weak.",
+            "choices": ["WPA", "WPA3", "WPA2", "WEP"],
+        },
+        {
+            "slug": "subnet-en0-configured-ip-ifconfig-exhibit",
+            "title": "CCNA — Subnet from en0 IPv4 configuration",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "A network engineer must provide configured IP addressing details to investigate a firewall rule issue. Which subnet and mask identify what is configured on the en0 interface?",
+            "name": "en0sub1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 The exhibit shows IPv4 10.8.138.14 with netmask 0xffffe000 (255.255.224.0), which is a /19. The network is 10.8.128.0/19 (hosts 10.8.128.1\u201310.8.159.254, broadcast 10.8.159.255). 10.8.0.0/16 is too broad. 10.8.64.0/18 does not include 10.8.138.x. 10.8.138.0/24 would imply a /24 mask (for example 0xffffff00), not /19.",
+            "post_stem_html": """    <div class="exhibit-stack">
+      <div class="exhibit-terminal-white" role="region" aria-label="ifconfig output for en0">
+        <pre>MacOs$ ifconfig
+
+en0: flags=8863&lt;UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST&gt; mtu 1500
+	options=400&lt;CHANNEL_IO&gt;
+	ether f0:18:98:8d:34:34
+	inet6 fe80::492:c09f:57cc:3343%en0 prefixlen 64 secured scopeid 0x6
+	inet 10.8.138.14 netmask 0xffffe000 broadcast 10.8.159.255
+	nd6 options=201&lt;PERFORMNUD,DAD&gt;
+	media: autoselect
+	status: active</pre>
+      </div>
+    </div>""",
+            "choices": [
+                "10.8.0.0/16",
+                "10.8.64.0/18",
+                "10.8.128.0/19",
+                "10.8.138.0/24",
+            ],
+        },
+        {
+            "slug": "subnet-split-10-70-128-19-two-vlans-choose-two",
+            "title": "CCNA — Split 10.70.128.0/19 into /27 and /23 (choose two)",
+            "stem": "A network engineer must configure two new subnets using the address block 10.70.128.0/19 to meet these requirements:\n\n\u2022 The first subnet must support 24 hosts.\n\u2022 The second subnet must support 472 hosts.\n\u2022 Both subnets must use the longest subnet mask possible from the address block.\n\nWhich two configurations must be used to configure the new subnets and meet a requirement to use the first available address in each subnet for the router interfaces? (Choose two)",
+            "name": "sub70192",
+            "choose_two": True,
+            "mono": True,
+            "correct": ["B", "C"],
+            "explain": "Correct. B and C \u2014 Twenty-four hosts need at least five host bits (/27, 30 usable). Four hundred seventy-two hosts need at least nine host bits (/23, 510 usable). Those are the longest masks that still fit each size inside 10.70.128.0/19. Option B places the first usable address on 10.70.147.16/27 (10.70.147.17). Option C places the first usable address on 10.70.148.0/23 (10.70.148.1). Option A uses /26, which is wider than necessary for 24 hosts. Option D\u2019s address is not the first host of its /23 (that subnet\u2019s first host would be 10.70.158.1 for 10.70.158.0/23). Option E is a valid tight /27, but the pair that matches the usual ordering with a /23 for 472 hosts here is B and C.",
+            "choices": [
+                """interface vlan 4722
+ip address 10.70.133.17 255.255.255.192""",
+                """interface vlan 3002
+ip address 10.70.147.17 255.255.255.224""",
+                """interface vlan 1148
+ip address 10.70.148.1 255.255.254.0""",
+                """interface vlan 1234
+ip address 10.70.159.1 255.255.254.0""",
+                """interface vlan 155
+ip address 10.70.155.65 255.255.255.224""",
             ],
         },
         {
@@ -2846,6 +3358,26 @@ ipv6 route 2001:DB8:4::/64 2001:DB8:4::302""",
             "choices": ["shaping", "marking", "policing", "classification"],
         },
         {
+            "slug": "qos-trust-boundary-access-phone-pc-exhibit",
+            "title": "CCNA — QoS trust boundary and marking",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "Which plan must be implemented to ensure optimal QoS marking practices on this network?",
+            "name": "qostrustbnd1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 IP phones mark voice traffic consistently and are treated as trusted sources at the access edge. PCs are untrusted: they can set arbitrary DSCP/CoS, so traffic from SW2 should be classified and marked on the switch rather than trusted. Broadly trusting all markings at the access layer (A, C, D) is not optimal, and relying on remarking only at MLS1 or R1 does not replace a proper access-layer trust boundary for the PC.",
+            "post_stem_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/qos-trust-boundary-access-sw1-phone-sw2-pc-topology.png" alt="Topology: MPLS cloud to R1, R1 to MLS1; MLS1 to access switches SW1 (IP phone) and SW2 (PC)." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "choices": [
+                "As traffic enters from the access layer on SW1 and SW2, trust all traffic markings",
+                "Trust the IP phone markings on SW1 and mark traffic entering SW2 at SW2",
+                "As traffic traverses MLS1 remark the traffic, but trust all markings at the access layer",
+                "Remark traffic as it traverses R1 and trust all markings at the access layer",
+            ],
+        },
+        {
             "slug": "wlc-lag-link-redundancy-load-balance",
             "title": "CCNA — LAG on a Cisco WLC",
             "stem": "What is one reason to implement LAG on a Cisco WLC?",
@@ -3304,8 +3836,9 @@ SW1(config)#ntp server 192.168.1.1""",
         slug = q["slug"]
         next_slug = chain[idx + 1]["slug"] if idx + 1 < len(chain) else None
         if q.get("choose_two"):
+            ch_fn = checkbox_choice_line_mono if q.get("mono") else checkbox_choice_line
             ch_lines = "\n".join(
-                checkbox_choice_line(q["name"], chr(ord("A") + j), t)
+                ch_fn(q["name"], chr(ord("A") + j), t)
                 for j, t in enumerate(q["choices"])
             )
             html = page_checkbox(

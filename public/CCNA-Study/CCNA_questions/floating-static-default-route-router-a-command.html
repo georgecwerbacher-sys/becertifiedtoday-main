@@ -33,6 +33,9 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
+    h1.choose-two-stem {
+      line-height: 1.5;
+    }
     .stem-after-exhibit {
       margin: 12px 0 6px;
       font-size: clamp(1.02rem, 1.9vw, 1.32rem);
@@ -263,6 +266,26 @@
     .cli-device pre + pre {
       border-top: 1px solid #2d3b5a;
     }
+    .exhibit-terminal-white {
+      margin: 0;
+      border-radius: 10px;
+      border: 1px solid #b8b8b8;
+      overflow: hidden;
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+    .exhibit-terminal-white pre {
+      margin: 0;
+      padding: 14px 16px;
+      font-size: 0.78rem;
+      line-height: 1.45;
+      overflow-x: auto;
+      white-space: pre;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: #0a0a0a;
+      background: #ffffff;
+      tab-size: 8;
+    }
   </style>
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
 </head>
@@ -273,7 +296,7 @@
     <h1>Refer to the exhibit.</h1>
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/floating-static-default-route-router-a-topology.png" alt="Topology with Router A, B, and C showing 192.168.1.0/24, 192.168.2.0/24, and 192.168.3.0/24 links plus a sample ip route default command on Router A." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/floating-static-default-route-router-a-topology.png" alt="Topology: Routers A, B, and C in a triangle. A–B 192.168.2.0/24 (.1 on A Gi0/0/0, .2 on B Gi0/0/0); A–C 192.168.1.0/24 (.1 on A Gi0/0/1, .2 on C Gi0/0/0); B–C 192.168.3.0/24 (.2 on B Gi0/0/1, .1 on C Gi0/0/1)." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>
     <p class="stem-after-exhibit">Which command must be issued to enable a floating static default route on router A?</p>
