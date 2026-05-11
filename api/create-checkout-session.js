@@ -3,13 +3,15 @@
  * Body (JSON, optional): { "productId": "ccna-test-simulation" }
  *
  * Env:
- *   STRIPE_SECRET_KEY           — sk_live_… or sk_test_…
+ *   STRIPE_SECRET_KEY           — sk_live_… / sk_test_… (or rk_* restricted key with Checkout)
  *   STRIPE_PRICE_CCNA_TEST_SIM  — price_… for one-time payment (create in Stripe Dashboard)
  *   PUBLIC_SITE_URL             — no trailing slash, e.g. https://becertifiedtoday.com
  *
- * Checkout redirects use /CCNA_Sim_EXAM/ paths (CCNA domain); see public/CCNA_Sim_EXAM/.
+ * Checkout shows a promotion-code field when allow_promotion_codes is true. Create
+ * coupons + promotion codes in Stripe Dashboard (Product catalog → Coupons, or Billing → Coupons).
  */
 import Stripe from "stripe";
+import { getStripeSecretKey } from "./stripe-secret-key.js";
 
 const DEFAULT_PRODUCT = "ccna-test-simulation";
 
@@ -19,14 +21,20 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const secret = (process.env.STRIPE_SECRET_KEY || "").trim();
+  const sk = getStripeSecretKey(process.env.STRIPE_SECRET_KEY);
   const priceId = (process.env.STRIPE_PRICE_CCNA_TEST_SIM || "").trim();
   const site = (process.env.PUBLIC_SITE_URL || "").trim();
 
-  if (!secret || !priceId || !site) {
+  if (!sk.secret) {
     return res.status(503).json({
       error: "Checkout is not configured",
-      hint: "Set STRIPE_SECRET_KEY, STRIPE_PRICE_CCNA_TEST_SIM, and PUBLIC_SITE_URL on Vercel.",
+      hint: sk.error,
+    });
+  }
+  if (!priceId || !site) {
+    return res.status(503).json({
+      error: "Checkout is not configured",
+      hint: "Set STRIPE_PRICE_CCNA_TEST_SIM and PUBLIC_SITE_URL on Vercel.",
     });
   }
 
@@ -45,12 +53,13 @@ export default async function handler(req, res) {
 
   const productId = body.productId || DEFAULT_PRODUCT;
 
-  const stripe = new Stripe(secret);
+  const stripe = new Stripe(sk.secret);
 
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       line_items: [{ price: priceId, quantity: 1 }],
+      allow_promotion_codes: true,
       success_url: `${site}/CCNA_Sim_EXAM/test-simulation-runner.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${site}/CCNA_Sim_EXAM/begin-test-simulation.html`,
       metadata: {
@@ -69,10 +78,18 @@ export default async function handler(req, res) {
     const message = e?.message || String(e);
     const code = e?.code || e?.type || undefined;
     console.error("Stripe checkout session error:", message, code || "");
-    return res.status(500).json({
+    const payload = {
       error: "Could not create checkout session",
       detail: message,
       code: code || undefined,
-    });
+    };
+    if (/expired api key/i.test(message)) {
+      payload.hint =
+        "This secret key is no longer valid. In Stripe → Developers → API keys, copy the current Secret key (sk_live_ / sk_test_) or Restricted key (rk_live_ / rk_test_) and update STRIPE_SECRET_KEY on Vercel.";
+    } else if (/invalid api key/i.test(message) && /sk_/.test(message)) {
+      payload.hint =
+        "Confirm STRIPE_SECRET_KEY is the Secret key (sk_ or rk_) from Stripe → Developers → API keys, not publishable (pk_), webhook (whsec_), or another product.";
+    }
+    return res.status(500).json(payload);
   }
 }

@@ -337,7 +337,7 @@
   </footer>
 
   <script type="module">
-    /** localStorage: bcc_ccna_portal_30d_v1 = { "expiresAt": <epoch ms> } — active 30-day CCNA portal access */
+    /** localStorage: bcc_ccna_portal_30d_v1 = { "expiresAt": <epoch ms> } — set via bccSetPortal30DayEntitlement() from ccna-portal-30d-storage.js after 30-day purchase */
     /** localStorage: bcc_ccna_test_sim_temp_v1 — temp entitlement for one-time test purchase (cleared when session ends if no 30-day pass) */
     var LS_PORTAL_30D = "bcc_ccna_portal_30d_v1";
     var LS_TEMP_TEST = "bcc_ccna_test_sim_temp_v1";
@@ -385,6 +385,19 @@
       try {
         localStorage.removeItem(LS_TEMP_TEST);
       } catch (e) {}
+    }
+
+    /** After a successful verify we store cs_… here so "Start timed test" works without session_id in the URL. */
+    function readStoredStripeSessionId() {
+      try {
+        var raw = localStorage.getItem(LS_TEMP_TEST);
+        if (!raw) return null;
+        var o = JSON.parse(raw);
+        if (o && typeof o.stripeSessionId === "string" && o.stripeSessionId.indexOf("cs_") === 0) {
+          return o.stripeSessionId;
+        }
+      } catch (e) {}
+      return null;
     }
 
     function redirectAfterResults() {
@@ -915,7 +928,8 @@
     }
 
     var params = new URLSearchParams(window.location.search);
-    var sessionId = params.get("session_id");
+    var sessionIdFromUrl = params.get("session_id");
+    var sessionId = sessionIdFromUrl || readStoredStripeSessionId();
     var bypass =
       params.get("bypass") === "1" ||
       params.get("demo") === "1";
@@ -928,17 +942,35 @@
       gateStatus.className = "status-ok";
       await prepareExamData();
       await startExamUI();
+    } else if (portal30Active()) {
+      sessionOk = true;
+      gateStatus.textContent = "30-day portal access active. Loading exam bank…";
+      gateStatus.className = "status-ok";
+      await prepareExamData();
+      gateStatus.textContent = "Access confirmed. The timed exam starts below.";
+      await startExamUI();
     } else if (!sessionId) {
       gateStatus.textContent =
-        "No checkout session. Open this runner from the landing page after purchase, or use the Stripe return link.";
+        "No paid checkout session found. Use Purchase on the timed-test landing page, or open the Stripe return link from your receipt (it includes session_id). If you already paid on this browser, try Start timed test from the landing page. If you have an active 30-day CCNA portal pass, open the runner from the same browser where the portal recognized your access.";
       gateStatus.className = "status-bad";
     } else {
       try {
+        if (!sessionIdFromUrl) {
+          gateStatus.textContent = "Restoring access from this device…";
+          gateStatus.className = "status-ok";
+        }
         var res = await fetch("/api/verify-checkout-session?session_id=" + encodeURIComponent(sessionId));
         var data = await res.json();
         if (data.ok) {
           sessionOk = true;
           grantTempTestAccess(sessionId);
+          if (!sessionIdFromUrl && sessionId) {
+            try {
+              var u = new URL(window.location.href);
+              u.searchParams.set("session_id", sessionId);
+              history.replaceState({}, "", u.pathname + u.search + u.hash);
+            } catch (_) {}
+          }
           gateStatus.textContent = "Access confirmed. Loading exam bank…";
           gateStatus.className = "status-ok";
           await prepareExamData();

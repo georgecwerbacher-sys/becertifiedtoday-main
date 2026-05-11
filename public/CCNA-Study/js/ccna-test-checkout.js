@@ -24,6 +24,9 @@
           data.error ||
           data.hint ||
           ("HTTP " + res.status + ": configure Stripe env vars on Vercel.");
+        if (data.hint && msg !== data.hint) {
+          msg += "\n\n" + data.hint;
+        }
         if (data.detail) {
           msg += "\n\n" + data.detail;
           if (data.code) msg += " (" + data.code + ")";

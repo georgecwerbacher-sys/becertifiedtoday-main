@@ -7,6 +7,7 @@
  */
 import Stripe from "stripe";
 import getRawBody from "raw-body";
+import { getStripeSecretKey } from "./stripe-secret-key.js";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -14,10 +15,10 @@ export default async function handler(req, res) {
     return res.status(405).end("Method not allowed");
   }
 
-  const secret = process.env.STRIPE_SECRET_KEY;
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  const sk = getStripeSecretKey(process.env.STRIPE_SECRET_KEY);
+  const webhookSecret = (process.env.STRIPE_WEBHOOK_SECRET || "").trim();
 
-  if (!secret || !webhookSecret) {
+  if (!sk.secret || !webhookSecret) {
     return res.status(503).json({ error: "Webhook not configured" });
   }
 
@@ -34,7 +35,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Could not read body" });
   }
 
-  const stripe = new Stripe(secret);
+  const stripe = new Stripe(sk.secret);
   let event;
 
   try {

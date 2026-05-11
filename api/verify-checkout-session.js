@@ -5,6 +5,7 @@
  * Env: STRIPE_SECRET_KEY
  */
 import Stripe from "stripe";
+import { getStripeSecretKey } from "./stripe-secret-key.js";
 
 function sessionIdFromReq(req) {
   try {
@@ -23,9 +24,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ ok: false, error: "Method not allowed" });
   }
 
-  const secret = process.env.STRIPE_SECRET_KEY;
-  if (!secret) {
-    return res.status(503).json({ ok: false, error: "Stripe not configured" });
+  const sk = getStripeSecretKey(process.env.STRIPE_SECRET_KEY);
+  if (!sk.secret) {
+    return res.status(503).json({ ok: false, error: sk.error });
   }
 
   const sessionId = sessionIdFromReq(req);
@@ -34,7 +35,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ ok: false, error: "Missing session_id" });
   }
 
-  const stripe = new Stripe(secret);
+  const stripe = new Stripe(sk.secret);
 
   try {
     const session = await stripe.checkout.sessions.retrieve(sessionId, {
