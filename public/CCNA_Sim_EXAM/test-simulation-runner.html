@@ -405,7 +405,7 @@
       } catch (e) {}
     }
 
-    /** After a successful verify we store cs_… here so the runner can reopen without session_id in the URL. */
+    /** After a successful verify we store cs_… here so reopening the runner works without session_id in the URL (query is masked once the exam starts). */
     function readStoredStripeSessionId() {
       try {
         var raw = localStorage.getItem(LS_TEMP_TEST);
@@ -451,6 +451,19 @@
         clearInterval(timerId);
         timerId = null;
       }
+    }
+
+    /** Drop checkout/session query params from the address bar once the exam UI is running (session stays in localStorage). */
+    function maskRunnerUrlInAddressBar() {
+      try {
+        if (!window.history || typeof window.history.replaceState !== "function") return;
+        var path = window.location.pathname || "";
+        var hash = window.location.hash || "";
+        if (!path) return;
+        if (window.location.search) {
+          history.replaceState({}, "", path + hash);
+        }
+      } catch (_) {}
     }
 
     function tickTimer() {
@@ -1006,6 +1019,7 @@
       if (timerId) clearInterval(timerId);
       timerId = setInterval(tickTimer, 1000);
       await renderCurrentItem();
+      maskRunnerUrlInAddressBar();
     }
 
     document.getElementById("btnNext").addEventListener("click", async function () {
@@ -1109,13 +1123,6 @@
         if (data.ok) {
           sessionOk = true;
           grantTempTestAccess(sessionId);
-          if (!sessionIdFromUrl && sessionId) {
-            try {
-              var u = new URL(window.location.href);
-              u.searchParams.set("session_id", sessionId);
-              history.replaceState({}, "", u.pathname + u.search + u.hash);
-            } catch (_) {}
-          }
           gateStatus.textContent = "Access confirmed. Loading exam bank…";
           gateStatus.className = "status-ok";
           await prepareExamData();
