@@ -1,9 +1,18 @@
 /**
  * POST /api/stripe-webhook
- * Configure in Stripe Dashboard → Developers → Webhooks → endpoint URL: https://<domain>/api/stripe-webhook
+ * Stripe Dashboard → Developers → Webhooks → Add endpoint.
+ *
+ * The endpoint URL must be the deployment that owns this codebase (same project as CCNA Checkout), e.g.
+ *   https://becertifiedtoday.com/api/stripe-webhook
+ * A different Vercel app (e.g. becertifiedtoday-encor.vercel.app) has its own /api/stripe-webhook — use a
+ * separate Stripe webhook entry + signing secret per deployment if you use one Stripe account for multiple sites.
+ *
  * Events: checkout.session.completed (add others as needed).
  *
- * Env: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET (whsec_…)
+ * Env: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET (whsec_… — copy from the endpoint that matches THIS deployment)
+ *
+ * This handler does not send email. For receipts, use Stripe Dashboard → Settings → Emails.
+ * To send custom mail here, add a provider (e.g. Resend) and call it from checkout.session.completed.
  */
 import Stripe from "stripe";
 import getRawBody from "raw-body";

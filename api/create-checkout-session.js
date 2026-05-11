@@ -5,13 +5,15 @@
  * Env:
  *   STRIPE_SECRET_KEY           — sk_live_… / sk_test_… (or rk_* restricted key with Checkout)
  *   STRIPE_PRICE_CCNA_TEST_SIM  — price_… for one-time payment (create in Stripe Dashboard)
- *   PUBLIC_SITE_URL             — site origin; trailing slashes are stripped (avoids // in redirect URLs)
+ *   PUBLIC_SITE_URL             — site origin (e.g. https://becertifiedtoday.com). Missing https:// is added;
+ *                                 trailing slashes, paths, and stray quotes are stripped to avoid broken redirects.
  *
  * Checkout shows a promotion-code field when allow_promotion_codes is true. Create
  * coupons + promotion codes in Stripe Dashboard (Product catalog → Coupons, or Billing → Coupons).
  */
 import Stripe from "stripe";
 import { getStripeSecretKey } from "./stripe-secret-key.js";
+import { normalizePublicSiteUrl } from "./normalize-public-site-url.js";
 
 const DEFAULT_PRODUCT = "ccna-test-simulation";
 
@@ -23,7 +25,7 @@ export default async function handler(req, res) {
 
   const sk = getStripeSecretKey(process.env.STRIPE_SECRET_KEY);
   const priceId = (process.env.STRIPE_PRICE_CCNA_TEST_SIM || "").trim();
-  const site = (process.env.PUBLIC_SITE_URL || "").trim().replace(/\/+$/, "");
+  const site = normalizePublicSiteUrl(process.env.PUBLIC_SITE_URL);
 
   if (!sk.secret) {
     return res.status(503).json({
@@ -34,7 +36,8 @@ export default async function handler(req, res) {
   if (!priceId || !site) {
     return res.status(503).json({
       error: "Checkout is not configured",
-      hint: "Set STRIPE_PRICE_CCNA_TEST_SIM and PUBLIC_SITE_URL on Vercel.",
+      hint:
+        "Set STRIPE_PRICE_CCNA_TEST_SIM and PUBLIC_SITE_URL on Vercel. PUBLIC_SITE_URL must match the hostname customers use after checkout (often https://becertifiedtoday.com or https://www.… — wrong host breaks the return to the timed test).",
     });
   }
 
