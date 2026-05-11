@@ -2055,7 +2055,7 @@
       <button type="button" class="ccna-sim-promo-close" data-ccna-sim-promo-dismiss aria-label="Close offer dialog">
         ×
       </button>
-      <p class="ccna-sim-promo-eyebrow">New here?</p>
+      <p class="ccna-sim-promo-eyebrow">Special offer</p>
       <h2 id="ccnaSimPromoTitle">Try the CCNA timed simulation — 50% off</h2>
       <p class="ccna-sim-promo-lead">
         Full exam-style run in the browser: <strong>questions</strong>, <strong>drag-and-drop</strong>, and
@@ -2173,31 +2173,18 @@
       timerId = setInterval(tick, 1000);
     })();
     (function () {
-      var STORAGE_KEY = "bct_ccna_sim_welcome_popup_v1";
       var PROMO = "CCNA_Sim_4_U";
       var root = document.getElementById("ccnaSimPromoRoot");
       var panel = root && root.querySelector(".ccna-sim-promo-panel");
       var copyBtn = document.getElementById("ccnaSimPromoCopyBtn");
-      var cta = document.getElementById("ccnaSimPromoCta");
       if (!root || !panel) return;
 
       var path = location.pathname || "";
       var onHome = path === "/" || path === "/index.html";
       if (!onHome) return;
-      try {
-        if (localStorage.getItem(STORAGE_KEY)) return;
-      } catch (_) {
-        return;
-      }
 
       var prevOverflow = "";
       var open = false;
-
-      function markSeen() {
-        try {
-          localStorage.setItem(STORAGE_KEY, "1");
-        } catch (_) {}
-      }
 
       function closePromo() {
         if (!open) return;
@@ -2224,14 +2211,12 @@
       function onKey(ev) {
         if (ev.key === "Escape") {
           ev.preventDefault();
-          markSeen();
           closePromo();
         }
       }
 
       root.querySelectorAll("[data-ccna-sim-promo-dismiss]").forEach(function (el) {
         el.addEventListener("click", function () {
-          markSeen();
           closePromo();
         });
       });
@@ -2259,18 +2244,7 @@
         });
       }
 
-      if (cta) {
-        cta.addEventListener("click", function () {
-          markSeen();
-        });
-      }
-
       setTimeout(function () {
-        try {
-          if (localStorage.getItem(STORAGE_KEY)) return;
-        } catch (_) {
-          return;
-        }
         openPromo();
       }, 600);
     })();
