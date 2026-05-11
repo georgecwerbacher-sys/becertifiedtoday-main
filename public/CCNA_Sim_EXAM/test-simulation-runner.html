@@ -43,7 +43,7 @@
       background: rgba(18, 26, 43, 0.95);
       position: sticky;
       top: 0;
-      z-index: 40;
+      z-index: 101;
     }
     .exam-timer {
       font-variant-numeric: tabular-nums;
@@ -61,6 +61,9 @@
       width: min(920px, 100%);
       margin: 0 auto;
       padding: clamp(20px, 4vw, 32px) clamp(16px, 4vw, 24px) 120px;
+      /* Keep exam cards/iframes under fixed controls so Quit/Next stay clickable. */
+      position: relative;
+      z-index: 0;
     }
     .exam-card {
       background: var(--surface);
@@ -161,7 +164,8 @@
       border-top: 1px solid var(--border);
       background: rgba(11, 16, 32, 0.92);
       backdrop-filter: blur(8px);
-      z-index: 30;
+      z-index: 100;
+      pointer-events: auto;
     }
     .exam-footer button {
       padding: 12px 22px;
@@ -804,6 +808,15 @@
     }
 
     async function scoreCurrentItem() {
+      if (itemIndex < 0 || itemIndex >= items.length || !items[itemIndex]) {
+        return {
+          itemIndex: itemIndex,
+          type: "unknown",
+          slug: null,
+          objectiveIds: [],
+          correct: false,
+        };
+      }
       var item = items[itemIndex];
       var base = {
         itemIndex: itemIndex,
@@ -1030,9 +1043,13 @@
       if (!sessionOk || !examStarted) return;
       if (!confirm("Quit ends this attempt. You will see a short summary; Continue then returns you to the CCNA study hub. Proceed?"))
         return;
-      if (itemIndex < items.length) {
-        var rec = await scoreCurrentItem();
-        attemptResults.push(rec);
+      try {
+        if (itemIndex < items.length) {
+          var rec = await scoreCurrentItem();
+          attemptResults.push(rec);
+        }
+      } catch (e) {
+        console.error("ccna-sim quit score", e);
       }
       await finalizeAttempt("quit");
     });
