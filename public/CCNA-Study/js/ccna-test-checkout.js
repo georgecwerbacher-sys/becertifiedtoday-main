@@ -1,5 +1,5 @@
 /**
- * Starts Stripe Checkout for the CCNA timed test simulation (requires API + env on Vercel).
+ * Starts Stripe Checkout for the CCNA Timed Test Simulation (requires API + env on Vercel).
  */
 (function () {
   async function startCheckout(button) {

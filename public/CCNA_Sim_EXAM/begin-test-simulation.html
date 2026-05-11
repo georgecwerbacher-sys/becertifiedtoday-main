@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta
     name="description"
-    content="CCNA timed test simulation — one-time purchase via Stripe Checkout on becertifiedtoday.com."
+    content="CCNA Timed Test Simulation — one-time purchase via Stripe Checkout on becertifiedtoday.com."
   />
-  <title>CCNA timed test simulation — landing | Be Certified Today</title>
+  <title>CCNA Timed Test Simulation — landing | Be Certified Today</title>
   <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
   <link rel="canonical" href="https://becertifiedtoday.com/CCNA_Sim_EXAM/begin-test-simulation.html" />
   <style>
@@ -194,20 +194,6 @@
       opacity: 0.55;
       cursor: not-allowed;
     }
-    .sim-portal-cta {
-      margin: 16px 0 0;
-      padding: 12px 14px;
-      border-radius: 10px;
-      border: 1px solid #cbd5e1;
-      background: #fff;
-      font-size: 0.88rem;
-      line-height: 1.5;
-      color: #334155;
-    }
-    .sim-portal-cta a {
-      color: var(--navy);
-      font-weight: 800;
-    }
     .sim-back {
       margin: 24px 0 0;
       font-size: 0.92rem;
@@ -219,24 +205,6 @@
     }
     .sim-back a:hover {
       text-decoration: underline;
-    }
-    .sim-fineprint {
-      margin-top: 14px;
-      font-size: 0.78rem;
-      color: #64748b;
-      line-height: 1.45;
-    }
-    .sim-fineprint code {
-      font-size: 0.85em;
-    }
-    .sim-test-bypass {
-      margin-top: 14px;
-      padding-top: 14px;
-      border-top: 1px dashed #e2e8f0;
-    }
-    .sim-test-bypass a {
-      font-weight: 700;
-      color: var(--navy);
     }
     .sim-promo-callout {
       margin: 0 0 20px;
@@ -283,6 +251,24 @@
     .sim-promo-callout-copy:hover {
       background: #f0fdf4;
     }
+    .sim-disclaimer {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 clamp(16px, 4vw, 28px) clamp(24px, 4vw, 36px);
+    }
+    .sim-disclaimer p {
+      margin: 0;
+      padding: 16px 18px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      background: rgba(255, 255, 255, 0.72);
+      font-size: 0.78rem;
+      line-height: 1.55;
+      color: #475569;
+    }
+    .sim-disclaimer strong {
+      color: #334155;
+    }
   </style>
 </head>
 <body>
@@ -291,7 +277,7 @@
       <img src="/images/logo/becertifiedtoday_logo_trans.png" width="1024" height="1024" alt="" />
       <span>CCNA practice</span>
     </div>
-    <div class="sim-topbar-title">CCNA (200-301) — timed test simulation</div>
+    <div class="sim-topbar-title">CCNA — Timed Test Simulation</div>
   </header>
 
   <div class="sim-shell">
@@ -308,11 +294,10 @@
         </div>
       </div>
 
-      <h1>CCNA timed test simulation</h1>
+      <h1>CCNA Timed Test Simulation</h1>
       <p class="sim-lead">
-        Use this page for a <strong>one-time</strong> paid run via <strong>Purchase timed test access</strong> (Stripe Checkout). After payment you are sent to the timed
-        runner with your checkout session. If you already have <strong>CCNA portal access</strong> (30-day or 90-day) on this browser, open the
-        <a href="/CCNA-Study/CCNA_Training_Portal.html"><strong>CCNA Training Portal</strong></a> to start the timed simulation there — not here.
+        <strong>Welcome</strong> to the CCNA simulated exam. The exam timer is set for <strong>120 minutes</strong>, the same total time as the real CCNA certification exam. No
+        downloads and no third-party apps are required—everything runs in your browser on BeCertifiedToday.com.
       </p>
 
       <div class="sim-stack">
@@ -324,11 +309,15 @@
             <li>Random CLI lab simulations</li>
             <li>One continuous <strong>120-minute</strong> countdown for the full session (single clock)</li>
           </ul>
-          <h3 class="sim-subhead">Runner options</h3>
+          <h3 class="sim-subhead">Simulation Test Options</h3>
           <ul>
-            <li><strong>Next only</strong> — you cannot return to an earlier item</li>
+            <li>
+              <strong>Next only</strong> — you cannot return to an earlier item. A page refresh or trying to go back to a previous page in the browser will exit the simulated exam.
+            </li>
             <li><strong>Reset</strong>, <strong>Next</strong>, and <strong>Quit</strong> in the exam footer</li>
-            <li><strong>CLI labs only:</strong> the <strong>Spoiler</strong> button opens a short hint (multiple-choice and drag-and-drop have no spoiler; no Helper UI)</li>
+            <li>
+              <strong>CLI labs only:</strong> <strong>Spoiler</strong> shows the exact commands—use it only if you need them. CLI labs are designed with helper shortcuts and unneeded commands disabled. Multiple-choice and drag-and-drop have no Spoiler.
+            </li>
             <li>When the last item is answered or time runs out: a <strong>results</strong> page shows overall score and performance by exam objective. <strong>Quit</strong> sends you straight back to the <a href="/CCNA-Study/ccna-index.html">CCNA study hub</a>.</li>
             <li>
               After <strong>Continue</strong> on results: if you have <strong>active CCNA portal access</strong>, you return to the CCNA Training Portal; otherwise one-time test access ends and you can purchase again from this page when ready.
@@ -342,17 +331,6 @@
             sends you to the timed runner with a session you can use to start when you are ready.
           </p>
           <button type="button" class="sim-btn-primary" id="ccnaTestSimPurchaseBtn">Purchase timed test access</button>
-          <p class="sim-fineprint">
-            Requires Stripe keys on Vercel (<code>STRIPE_SECRET_KEY</code>, <code>STRIPE_PRICE_CCNA_TEST_SIM</code>, <code>PUBLIC_SITE_URL</code>).
-          </p>
-          <p class="sim-portal-cta">
-            <strong>Portal subscribers:</strong> timed simulations are started from the
-            <a href="/CCNA-Study/CCNA_Training_Portal.html">CCNA Training Portal</a> (registered / 30-day or 90-day access on this device).
-          </p>
-          <p class="sim-fineprint sim-test-bypass">
-            <strong>Testing:</strong>
-            <a href="/CCNA_Sim_EXAM/test-simulation-runner.html?bypass=1">Begin test now</a> (skips Stripe checkout)
-          </p>
         </div>
       </div>
 
@@ -365,6 +343,15 @@
       </p>
     </main>
   </div>
+
+  <aside class="sim-disclaimer" aria-label="Legal disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> This website is an independent training resource created for educational purposes only. It is not affiliated with, endorsed by, sponsored
+      by, or approved by Cisco Systems, Inc. Cisco and related trademarks are the property of Cisco Systems, Inc. All practice questions, explanations, and study materials on
+      this site are original or based on general knowledge and are intended as a guide to help users prepare for certification exams. Practice questions are not actual Cisco
+      exam questions. Any similarity to official exam content is coincidental.
+    </p>
+  </aside>
 
   <script src="/CCNA-Study/js/ccna-test-checkout.js" defer></script>
   <script>
