@@ -109,6 +109,23 @@
       outline: 2px solid #5ccb98;
       outline-offset: 3px;
     }
+    a.ccna-portal-header-btn.ccna-portal-header-btn--unavailable {
+      pointer-events: none;
+      cursor: not-allowed;
+      opacity: 0.52;
+      filter: grayscale(0.9);
+      border-color: rgba(100, 116, 139, 0.55);
+      background: rgba(51, 65, 85, 0.38);
+      color: #94a3b8;
+    }
+    a.ccna-portal-header-btn.ccna-portal-header-btn--unavailable:hover {
+      background: rgba(51, 65, 85, 0.38);
+      color: #94a3b8;
+      filter: grayscale(0.9);
+    }
+    a.ccna-portal-header-btn.ccna-portal-header-btn--unavailable:focus-visible {
+      outline-color: rgba(148, 163, 184, 0.6);
+    }
     a.cta-main.cta-main--locked {
       cursor: not-allowed;
       pointer-events: none;
@@ -1487,10 +1504,14 @@
         />
       </a>
       <div class="header-actions">
+        <!-- Re-enable: remove class ccna-portal-header-btn--unavailable and restore tabindex (omit) on #ccnaPortalHeaderBtn. -->
         <a
           id="ccnaPortalHeaderBtn"
-          class="ccna-portal-header-btn"
+          class="ccna-portal-header-btn ccna-portal-header-btn--unavailable"
           href="/CCNA-Study/CCNA_Training_Portal.html"
+          aria-disabled="true"
+          tabindex="-1"
+          title="CCNA Training Portal — opening soon"
           >CCNA Training Portal</a
         >
       </div>
@@ -2181,6 +2202,10 @@
       }
 
       portalBtn.addEventListener("click", function (ev) {
+        if (portalBtn.classList.contains("ccna-portal-header-btn--unavailable")) {
+          ev.preventDefault();
+          return;
+        }
         var allowed = typeof window.bccPortalAccessActive === "function" && window.bccPortalAccessActive();
         if (allowed) return;
         ev.preventDefault();
