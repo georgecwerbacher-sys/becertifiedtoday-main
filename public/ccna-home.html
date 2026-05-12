@@ -382,6 +382,81 @@
       color: var(--text);
       line-height: 1.2;
     }
+    .purchase-card .purchase-ccna-portal-preview {
+      margin: 0 0 clamp(20px, 3.5vw, 26px);
+      padding-bottom: clamp(18px, 3vw, 22px);
+      border-bottom: 1px solid var(--border);
+    }
+    .purchase-card .purchase-ccna-portal-preview h3 {
+      margin: 0 0 10px;
+      font-size: clamp(1.02rem, 2.4vw, 1.12rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      color: var(--text);
+    }
+    .purchase-card .purchase-ccna-portal-preview .format-card-thumb {
+      margin: 0 0 14px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(45, 59, 90, 0.85);
+      aspect-ratio: 16 / 9;
+      background: #0f1729;
+    }
+    .purchase-card .purchase-ccna-portal-preview .format-card-thumb img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    .purchase-card .purchase-ccna-portal-preview .portal-launch-callout {
+      margin: 0 0 clamp(12px, 2vw, 16px);
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(220, 90, 90, 0.55);
+      background: linear-gradient(165deg, rgba(110, 28, 32, 0.55) 0%, rgba(42, 12, 16, 0.82) 100%);
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.25) inset,
+        0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+    .purchase-card .purchase-ccna-portal-preview .portal-launch-heading {
+      margin: 0 0 8px;
+      font-size: clamp(1.02rem, 2.4vw, 1.12rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      color: var(--text);
+    }
+    .purchase-card .purchase-ccna-portal-preview .portal-launch-sub {
+      margin: 0;
+      color: #b8c3d6;
+      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
+      line-height: 1.55;
+    }
+    .purchase-card .purchase-ccna-portal-preview .portal-countdown {
+      display: block;
+      margin-top: 10px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+      font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+      color: #e6edf3;
+      letter-spacing: 0.06em;
+    }
+    .purchase-card .purchase-ccna-portal-preview .portal-countdown.portal-countdown--live {
+      color: #7dcea0;
+    }
+    .purchase-card .purchase-ccna-portal-preview .purchase-ccna-portal-lead {
+      margin: 0;
+      color: #b8c3d6;
+      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
+      line-height: 1.55;
+    }
+    .purchase-card .purchase-ccna-portal-preview .format-sample--main-cta {
+      margin: 14px 0 0;
+      padding-top: 14px;
+      border-top: 1px solid rgba(45, 59, 90, 0.85);
+    }
     .purchase-card .purchase-live-callout {
       margin: 0 0 18px;
       padding: 14px 16px;
@@ -1615,49 +1690,6 @@
                     </p>
                   </article>
                 </li>
-                <li>
-                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="ccna-training-title">
-                    <h3 id="ccna-training-title">CCNA Training</h3>
-                    <figure class="format-card-thumb">
-                      <img
-                        src="/images/ccna-training-card-thumbnail.png"
-                        width="1024"
-                        height="683"
-                        alt="Ethernet cables plugged into a network switch with green status LEDs."
-                        decoding="async"
-                        loading="lazy"
-                      />
-                    </figure>
-                    <div class="portal-launch-callout" aria-labelledby="ccna-training-portal-heading">
-                      <p class="portal-launch-heading" id="ccna-training-portal-heading">CCNA Training Portal</p>
-                      <p class="portal-launch-sub">
-                        Opens live <strong>Friday 12:00 PM Eastern</strong> — full dashboard and checkout unlock with the portal. Time remaining:
-                      </p>
-                      <span
-                        id="portal-countdown-home"
-                        class="portal-countdown"
-                        data-live-at="2026-05-15T16:00:00.000Z"
-                        role="timer"
-                        aria-live="polite"
-                        aria-atomic="true"
-                        >—</span>
-                    </div>
-                    <p>
-                      Foundation networking track with practice questions, labs, and guided study sets.
-                    </p>
-                    <p class="format-sample format-sample--main-cta">
-                      <a
-                        id="home-ccna-portal-cta"
-                        class="cta-main cta-main--block cta-main--locked"
-                        href="/CCNA-Study/ccna-index.html"
-                        aria-disabled="true"
-                        tabindex="-1"
-                        aria-label="CCNA training portal — opens Friday 12 PM Eastern"
-                        >ACCESS CCNA TRAINING PORTAL TODAY</a
-                      >
-                    </p>
-                  </article>
-                </li>
               </ul>
             </div>
           </section>
@@ -1737,6 +1769,46 @@
               <div class="purchase-card-main">
                 <p class="purchase-label">Purchase</p>
                 <h2 class="purchase-heading">30-day full access</h2>
+                <div class="purchase-ccna-portal-preview" aria-labelledby="purchase-ccna-training-title">
+                  <h3 id="purchase-ccna-training-title">CCNA Training</h3>
+                  <figure class="format-card-thumb">
+                    <img
+                      src="/images/ccna-training-card-thumbnail.png"
+                      width="1024"
+                      height="683"
+                      alt="Ethernet cables plugged into a network switch with green status LEDs."
+                      decoding="async"
+                      loading="lazy"
+                    />
+                  </figure>
+                  <div class="portal-launch-callout" aria-labelledby="purchase-ccna-portal-heading">
+                    <p class="portal-launch-heading" id="purchase-ccna-portal-heading">CCNA Training Portal</p>
+                    <p class="portal-launch-sub">
+                      Opens live <strong>Friday 12:00 PM Eastern</strong> — full dashboard and checkout unlock with the portal. Time remaining:
+                    </p>
+                    <span
+                      id="portal-countdown-purchase"
+                      class="portal-countdown"
+                      data-live-at="2026-05-15T16:00:00.000Z"
+                      role="timer"
+                      aria-live="polite"
+                      aria-atomic="true"
+                      >—</span>
+                  </div>
+                  <p class="purchase-ccna-portal-lead">
+                    Foundation networking track with practice questions, labs, and guided study sets.
+                  </p>
+                  <p class="format-sample format-sample--main-cta">
+                    <a
+                      id="home-ccna-portal-cta-purchase"
+                      class="cta-main cta-main--block cta-main--locked"
+                      href="/CCNA-Study/ccna-index.html"
+                      aria-disabled="true"
+                      tabindex="-1"
+                      aria-label="CCNA training portal — opens Friday 12 PM Eastern"
+                      >ACCESS CCNA TRAINING PORTAL TODAY</a>
+                  </p>
+                </div>
                 <div class="purchase-live-callout" aria-labelledby="purchase-live-heading">
                   <p class="purchase-live-heading" id="purchase-live-heading">Checkout goes live soon</p>
                   <p class="purchase-live-sub">
@@ -2043,15 +2115,15 @@
       var target = Date.parse(CCNA_LIVE_AT);
       var purchaseTarget = Date.parse(PURCHASE_CHECKOUT_LIVE_AT);
 
-      var countdownEl = document.getElementById("portal-countdown-home");
+      var portalCountdownEl = document.getElementById("portal-countdown-purchase");
       var purchaseCountdownEl = document.getElementById("purchase-countdown-30d");
       var headerLink = document.getElementById("header-ccna-portal-link");
       var headerTimer = document.getElementById("header-ccna-live-timer");
-      var portalCta = document.getElementById("home-ccna-portal-cta");
+      var portalCta = document.getElementById("home-ccna-portal-cta-purchase");
 
       if (Number.isNaN(target) && Number.isNaN(purchaseTarget)) return;
 
-      if (countdownEl && !Number.isNaN(target)) countdownEl.dataset.liveAt = CCNA_LIVE_AT;
+      if (portalCountdownEl && !Number.isNaN(target)) portalCountdownEl.dataset.liveAt = CCNA_LIVE_AT;
       if (purchaseCountdownEl && !Number.isNaN(purchaseTarget)) {
         purchaseCountdownEl.dataset.liveAt = PURCHASE_CHECKOUT_LIVE_AT;
       }
@@ -2093,12 +2165,12 @@
       function tick() {
         var now = Date.now();
         var msPortal = Number.isNaN(target) ? -1 : target - now;
-        if (countdownEl && !Number.isNaN(target)) {
+        if (portalCountdownEl && !Number.isNaN(target)) {
           if (msPortal <= 0) {
-            countdownEl.textContent = "Live now";
-            countdownEl.classList.add("portal-countdown--live");
+            portalCountdownEl.textContent = "Live now";
+            portalCountdownEl.classList.add("portal-countdown--live");
           } else {
-            countdownEl.textContent = formatRemaining(msPortal);
+            portalCountdownEl.textContent = formatRemaining(msPortal);
           }
         }
         if (headerTimer && !Number.isNaN(target)) {
@@ -2121,7 +2193,7 @@
         if (!Number.isNaN(target) && msPortal <= 0) {
           unlockPortalUi();
         }
-        var portalExpired = !countdownEl || Number.isNaN(target) || target <= now;
+        var portalExpired = !portalCountdownEl || Number.isNaN(target) || target <= now;
         var purchaseExpired = !purchaseCountdownEl || Number.isNaN(purchaseTarget) || purchaseTarget <= now;
         if (portalExpired && purchaseExpired && timerId != null) {
           clearInterval(timerId);
