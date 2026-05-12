@@ -86,61 +86,28 @@
       justify-content: flex-end;
       gap: 10px;
     }
-    .header-sign-up {
+    a.ccna-portal-header-btn {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       padding: 10px 18px;
       border-radius: 10px;
-      border: 1px solid var(--accent-border);
-      background: transparent;
-      color: var(--text);
+      border: 1px solid #3d9d72;
+      background: rgba(31, 122, 88, 0.22);
+      color: #e8f4ee;
       font-size: 0.95rem;
       font-weight: 800;
       text-decoration: none;
       white-space: nowrap;
+      letter-spacing: 0.03em;
     }
-    .header-sign-up:hover {
-      background: rgba(79, 132, 216, 0.12);
-      color: #f0f4fc;
-    }
-    .header-sign-up:focus-visible {
-      outline: 2px solid var(--accent-border);
-      outline-offset: 3px;
-    }
-    a.header-sign-up.header-sign-up--live {
-      cursor: pointer;
-      border-color: #3d9d72;
-      background: rgba(31, 122, 88, 0.22);
-      color: #e8f4ee;
-    }
-    a.header-sign-up.header-sign-up--live:hover {
+    a.ccna-portal-header-btn:hover {
       background: rgba(31, 122, 88, 0.34);
       color: #fff;
     }
-    a.header-sign-up.header-sign-up--live:focus-visible {
-      outline-color: #5ccb98;
-    }
-    a.header-sign-up.header-sign-up--locked {
-      cursor: not-allowed;
-      pointer-events: none;
-      opacity: 0.55;
-      filter: grayscale(0.9);
-      border-color: rgba(100, 116, 139, 0.65);
-      background: rgba(51, 65, 85, 0.35);
-      color: #94a3b8;
-    }
-    .header-ccna-live-timer {
-      font-size: clamp(0.68rem, 1.6vw, 0.78rem);
-      font-weight: 700;
-      color: #94a3b8;
-      font-variant-numeric: tabular-nums;
-      line-height: 1.35;
-      max-width: min(220px, 42vw);
-      text-align: right;
-    }
-    .header-ccna-live-timer.header-ccna-live-timer--live {
-      color: #7dcea0;
-      max-width: none;
+    a.ccna-portal-header-btn:focus-visible {
+      outline: 2px solid #5ccb98;
+      outline-offset: 3px;
     }
     a.cta-main.cta-main--locked {
       cursor: not-allowed;
@@ -183,35 +150,6 @@
     }
     .cta-main--block {
       width: 100%;
-    }
-    a.header-cta-main {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 18px;
-      border-radius: 10px;
-      border: 1px solid rgba(120, 170, 255, 0.5);
-      font-size: 0.95rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      line-height: 1;
-      text-align: center;
-      text-decoration: none;
-      white-space: nowrap;
-      color: #f4f7ff;
-      background: linear-gradient(165deg, #4f8aea 0%, #2f66bf 50%, #244f9a 100%);
-      box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.12) inset,
-        0 4px 18px rgba(47, 102, 191, 0.38);
-      transition: filter 0.15s ease;
-    }
-    a.header-cta-main:hover {
-      color: #fff;
-      filter: brightness(1.07);
-    }
-    a.header-cta-main:focus-visible {
-      outline: 2px solid #9ec0ff;
-      outline-offset: 3px;
     }
     .brand {
       display: inline-flex;
@@ -1540,7 +1478,7 @@
 <body>
   <div class="page">
     <header>
-      <a class="brand" href="/">
+      <a class="brand" href="/" aria-label="Be Certified Today — home">
         <img
           src="/images/logo/becertifiedtoday_logo_trans.png"
           width="1024"
@@ -1549,26 +1487,13 @@
         />
       </a>
       <div class="header-actions">
-        <a class="header-sign-up" href="/">Training paths</a>
-        <a class="header-sign-up" href="/ccna-home.html">CCNA overview</a>
         <a
-          class="header-cta-main"
+          class="ccna-portal-header-btn"
           href="https://becertifiedtoday-encor.vercel.app/"
           rel="noopener noreferrer"
-          aria-label="CCNP-ENCOR Training Portal"
-          >CCNP-ENCOR Training Portal</a
+          aria-label="CCNP ENCOR training portal (opens becertifiedtoday-encor.vercel.app)"
+          >CCNP ENCOR Training Portal</a
         >
-        <a
-          id="header-ccna-portal-link"
-          class="header-sign-up header-sign-up--locked"
-          href="/CCNA-Study/ccna-index.html"
-          data-live-at="2026-05-15T16:00:00.000Z"
-          aria-disabled="true"
-          tabindex="-1"
-          aria-label="CCNA Training Portal — opens Friday 12:00 PM Eastern"
-          >CCNA Training Portal</a
-        >
-        <span id="header-ccna-live-timer" class="header-ccna-live-timer" role="timer" aria-live="polite"></span>
       </div>
     </header>
     <figure class="hero-banner">
