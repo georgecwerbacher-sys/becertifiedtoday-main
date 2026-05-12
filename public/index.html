@@ -29,6 +29,19 @@
     content="Certification practice tests, labs, questions, drag-and-drop, and timed exam simulations in the browser."
   />
   <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <script>
+    (function () {
+      try {
+        var raw = location.pathname || "";
+        var isHome = raw === "/" || raw === "/index.html";
+        if (!isHome) return;
+        var q = new URLSearchParams(location.search || "");
+        if (q.get("skipPath") === "1") return;
+        if (localStorage.getItem("bct_training_path_portal_seen") === "1") return;
+        location.replace("/choose-training-path.html" + (location.search || ""));
+      } catch (_) {}
+    })();
+  </script>
   <title>Certification Practice Tests, Labs &amp; Questions | Be Certified Today</title>
   <script type="application/ld+json">
     {
