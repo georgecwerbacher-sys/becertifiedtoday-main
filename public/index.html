@@ -2,16 +2,245 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex, follow" />
-  <title>Redirecting… | Be Certified Today</title>
+  <meta
+    name="description"
+    content="Choose CCNA or CCNP on Be Certified Today: open the CCNA overview, the CCNP ENCOR overview, or jump to study hubs and samples from each page."
+  />
   <link rel="canonical" href="https://becertifiedtoday.com/" />
-  <script>
-    location.replace("/");
-  </script>
-  <meta http-equiv="refresh" content="0;url=/" />
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <title>Choose your training path | Be Certified Today</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bg: #0b1020;
+      --surface: #121a2b;
+      --border: #2d3b5a;
+      --text: #e6edf3;
+      --muted: #9fb0cc;
+      --accent: #2f66bf;
+      --accent-border: #4f84d8;
+      --accent-hover: #3a74d4;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px 20px;
+      padding: 16px clamp(18px, 4vw, 40px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(18, 26, 43, 0.65);
+      backdrop-filter: blur(8px);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+    }
+    .brand img {
+      height: 40px;
+      width: auto;
+      display: block;
+    }
+    main {
+      flex: 1;
+      padding: clamp(28px, 5vw, 48px) clamp(18px, 4vw, 40px) 40px;
+      max-width: 980px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .intro {
+      margin: 0 0 clamp(24px, 4vw, 36px);
+      text-align: center;
+    }
+    .intro h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 4vw, 1.85rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .intro p {
+      margin: 0 auto;
+      max-width: 42rem;
+      font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+      color: var(--muted);
+    }
+    .paths {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(18px, 3vw, 24px);
+    }
+    @media (min-width: 720px) {
+      .paths {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .path-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: clamp(22px, 4vw, 28px);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    }
+    .path-card h2 {
+      margin: 0 0 10px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+    .path-card p {
+      margin: 0 0 18px;
+      flex: 1;
+      font-size: 0.94rem;
+      color: var(--muted);
+    }
+    .path-card .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 10px;
+      font: inherit;
+      font-weight: 800;
+      font-size: 0.86rem;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      text-align: center;
+      border: 1px solid var(--accent-border);
+      color: #f0f4fc;
+      background: linear-gradient(165deg, var(--accent-hover) 0%, var(--accent) 100%);
+      box-shadow: 0 4px 18px rgba(47, 102, 191, 0.35);
+    }
+    .path-card .cta:hover {
+      filter: brightness(1.06);
+    }
+    .path-card .cta:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+    }
+    .path-card--encor .cta {
+      border-color: rgba(61, 157, 114, 0.75);
+      background: linear-gradient(165deg, rgba(52, 168, 118, 0.95) 0%, rgba(24, 94, 66, 0.98) 100%);
+      box-shadow: 0 4px 18px rgba(24, 94, 66, 0.35);
+      color: #f0fdf4;
+    }
+    .path-card--encor .cta:focus-visible {
+      outline-color: #86efac;
+    }
+    .badge {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(79, 132, 216, 0.2);
+      color: #b8d4ff;
+      border: 1px solid rgba(79, 132, 216, 0.45);
+    }
+    .path-card--encor .badge {
+      background: linear-gradient(165deg, rgba(52, 168, 118, 0.35) 0%, rgba(24, 94, 66, 0.5) 100%);
+      color: #ecfdf5;
+      border: 1px solid rgba(61, 157, 114, 0.75);
+      box-shadow: 0 2px 10px rgba(24, 94, 66, 0.28);
+    }
+  </style>
 </head>
 <body>
-  <p><a href="/">Continue to Be Certified Today</a></p>
+  <div class="page">
+    <header>
+      <a class="brand" href="/" id="path-brand-preview">
+        <img src="/images/logo/becertifiedtoday_logo_trans.png" width="1024" height="1024" alt="" decoding="async" />
+        <span>Be Certified Today</span>
+      </a>
+    </header>
+    <main id="main">
+      <div class="intro">
+        <h1>Choose your training path</h1>
+        <p>
+          First-time here? Pick the certification track you want to work in. You can switch tracks anytime from the full site; we only use this screen to send you to the right
+          place first.
+        </p>
+      </div>
+      <ul class="paths" aria-label="Training paths">
+        <li>
+          <article class="path-card" aria-labelledby="path-ccna-title">
+            <span class="badge">Associate</span>
+            <h2 id="path-ccna-title">CCNA</h2>
+            <p>
+              Cisco Certified Network Associate (200-301) study hub on this site: domain weights, practice questions, labs, drag-and-drop, and CCNA timed test simulation options.
+            </p>
+            <a class="cta" id="path-ccna" href="/ccna-home.html">Open CCNA study hub</a>
+          </article>
+        </li>
+        <li>
+          <article class="path-card path-card--encor" aria-labelledby="path-encor-title">
+            <span class="badge">Professional</span>
+            <h2 id="path-encor-title">CCNP</h2>
+            <p>
+              Professional-level ENCOR practice on the dedicated training portal: interactive questions, CLI labs, drag-and-drop, and timed exam-style simulation in the browser.
+            </p>
+            <a
+              class="cta"
+              id="path-encor"
+              href="/ccnp-home.html"
+              >Open CCNP study hub</a
+            >
+          </article>
+        </li>
+      </ul>
+    </main>
+  </div>
+  <script>
+    (function () {
+      var KEY = "bct_training_path_portal_seen";
+      function mark() {
+        try {
+          localStorage.setItem(KEY, "1");
+        } catch (_) {}
+      }
+      function bind(id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener("click", mark);
+      }
+      bind("path-ccna");
+      bind("path-encor");
+      bind("path-brand-preview");
+    })();
+  </script>
 </body>
 </html>
