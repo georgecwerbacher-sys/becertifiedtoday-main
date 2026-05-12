@@ -382,6 +382,42 @@
       color: var(--text);
       line-height: 1.2;
     }
+    .purchase-card .purchase-live-callout {
+      margin: 0 0 18px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(220, 90, 90, 0.55);
+      background: linear-gradient(165deg, rgba(110, 28, 32, 0.55) 0%, rgba(42, 12, 16, 0.82) 100%);
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.25) inset,
+        0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+    .purchase-card .purchase-live-heading {
+      margin: 0 0 8px;
+      font-size: clamp(1.02rem, 2.4vw, 1.12rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      color: var(--text);
+    }
+    .purchase-card .purchase-live-sub {
+      margin: 0;
+      color: #b8c3d6;
+      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
+      line-height: 1.55;
+    }
+    .purchase-card .purchase-live-countdown {
+      display: block;
+      margin-top: 10px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+      font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+      color: #e6edf3;
+      letter-spacing: 0.06em;
+    }
+    .purchase-card .purchase-live-countdown.portal-countdown--live {
+      color: #7dcea0;
+    }
     .purchase-card .purchase-price {
       margin: 0 0 18px;
       font-size: clamp(2rem, 5vw, 2.45rem);
@@ -1224,7 +1260,7 @@
       color: var(--text);
       font-weight: 700;
     }
-    /* CCNA timed sim promo on home — opens after 15s delay or scroll */
+    /* CCNA timed sim promo on home — opens after 15s delay only */
     .ccna-sim-promo-root {
       position: fixed;
       inset: 0;
@@ -1701,6 +1737,20 @@
               <div class="purchase-card-main">
                 <p class="purchase-label">Purchase</p>
                 <h2 class="purchase-heading">30-day full access</h2>
+                <div class="purchase-live-callout" aria-labelledby="purchase-live-heading">
+                  <p class="purchase-live-heading" id="purchase-live-heading">Checkout goes live soon</p>
+                  <p class="purchase-live-sub">
+                    Full <strong>30-day</strong> checkout unlocks <strong>Friday 5:00 PM Eastern</strong>. Time remaining:
+                  </p>
+                  <span
+                    id="purchase-countdown-30d"
+                    class="purchase-live-countdown"
+                    data-live-at="2026-05-15T21:00:00.000Z"
+                    role="timer"
+                    aria-live="polite"
+                    aria-atomic="true"
+                    >—</span>
+                </div>
                 <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
                   $19.99 <span>/ 30 days</span>
                 </p>
@@ -1987,17 +2037,24 @@
       }
     })();
     (function () {
-      /** CCNA portal public launch: Friday 12:00 PM US/Eastern (May 2026 = EDT, i.e. 16:00 UTC). */
+      /** CCNA portal card: Friday 12:00 PM US/Eastern (May 2026 = EDT, 16:00 UTC). Purchase block: Friday 5:00 PM Eastern (21:00 UTC). */
       var CCNA_LIVE_AT = "2026-05-15T16:00:00.000Z";
+      var PURCHASE_CHECKOUT_LIVE_AT = "2026-05-15T21:00:00.000Z";
       var target = Date.parse(CCNA_LIVE_AT);
-      if (Number.isNaN(target)) return;
+      var purchaseTarget = Date.parse(PURCHASE_CHECKOUT_LIVE_AT);
 
       var countdownEl = document.getElementById("portal-countdown-home");
+      var purchaseCountdownEl = document.getElementById("purchase-countdown-30d");
       var headerLink = document.getElementById("header-ccna-portal-link");
       var headerTimer = document.getElementById("header-ccna-live-timer");
       var portalCta = document.getElementById("home-ccna-portal-cta");
 
-      if (countdownEl) countdownEl.dataset.liveAt = CCNA_LIVE_AT;
+      if (Number.isNaN(target) && Number.isNaN(purchaseTarget)) return;
+
+      if (countdownEl && !Number.isNaN(target)) countdownEl.dataset.liveAt = CCNA_LIVE_AT;
+      if (purchaseCountdownEl && !Number.isNaN(purchaseTarget)) {
+        purchaseCountdownEl.dataset.liveAt = PURCHASE_CHECKOUT_LIVE_AT;
+      }
 
       function pad(n) {
         return n < 10 ? "0" + n : String(n);
@@ -2034,26 +2091,41 @@
       }
 
       function tick() {
-        var ms = target - Date.now();
-        if (countdownEl) {
-          if (ms <= 0) {
+        var now = Date.now();
+        var msPortal = Number.isNaN(target) ? -1 : target - now;
+        if (countdownEl && !Number.isNaN(target)) {
+          if (msPortal <= 0) {
             countdownEl.textContent = "Live now";
             countdownEl.classList.add("portal-countdown--live");
           } else {
-            countdownEl.textContent = formatRemaining(ms);
+            countdownEl.textContent = formatRemaining(msPortal);
           }
         }
-        if (headerTimer) {
-          if (ms <= 0) {
+        if (headerTimer && !Number.isNaN(target)) {
+          if (msPortal <= 0) {
             headerTimer.textContent = "Live — Fri 12 PM ET";
             headerTimer.classList.add("header-ccna-live-timer--live");
           } else {
-            headerTimer.textContent = "Fri 12 PM ET in " + formatRemaining(ms);
+            headerTimer.textContent = "Fri 12 PM ET in " + formatRemaining(msPortal);
           }
         }
-        if (ms <= 0) {
+        var msPurchase = Number.isNaN(purchaseTarget) ? -1 : purchaseTarget - now;
+        if (purchaseCountdownEl && !Number.isNaN(purchaseTarget)) {
+          if (msPurchase <= 0) {
+            purchaseCountdownEl.textContent = "Live now";
+            purchaseCountdownEl.classList.add("portal-countdown--live");
+          } else {
+            purchaseCountdownEl.textContent = formatRemaining(msPurchase);
+          }
+        }
+        if (!Number.isNaN(target) && msPortal <= 0) {
           unlockPortalUi();
-          if (timerId != null) clearInterval(timerId);
+        }
+        var portalExpired = !countdownEl || Number.isNaN(target) || target <= now;
+        var purchaseExpired = !purchaseCountdownEl || Number.isNaN(purchaseTarget) || purchaseTarget <= now;
+        if (portalExpired && purchaseExpired && timerId != null) {
+          clearInterval(timerId);
+          timerId = null;
         }
       }
 
@@ -2141,7 +2213,6 @@
           clearTimeout(promoTimer);
           promoTimer = null;
         }
-        window.removeEventListener("scroll", onScrollPastFold);
       }
 
       function triggerPromoOnce() {
@@ -2151,17 +2222,7 @@
         openPromo();
       }
 
-      function onScrollPastFold() {
-        var y = window.scrollY || document.documentElement.scrollTop || 0;
-        var vh = window.innerHeight || 0;
-        if (vh > 0 && y >= vh) {
-          triggerPromoOnce();
-        }
-      }
-
       promoTimer = setTimeout(triggerPromoOnce, 15000);
-      window.addEventListener("scroll", onScrollPastFold, { passive: true });
-      onScrollPastFold();
     })();
     document.addEventListener("DOMContentLoaded", function () {
       var gateRoot = document.getElementById("ccnaPortalGateRoot");
