@@ -1224,7 +1224,7 @@
       color: var(--text);
       font-weight: 700;
     }
-    /* CCNA timed sim promo on home — opens after delay or scroll */
+    /* CCNA timed sim promo on home — opens after 15s delay or scroll */
     .ccna-sim-promo-root {
       position: fixed;
       inset: 0;
@@ -2159,7 +2159,7 @@
         }
       }
 
-      promoTimer = setTimeout(triggerPromoOnce, 10000);
+      promoTimer = setTimeout(triggerPromoOnce, 15000);
       window.addEventListener("scroll", onScrollPastFold, { passive: true });
       onScrollPastFold();
     })();
