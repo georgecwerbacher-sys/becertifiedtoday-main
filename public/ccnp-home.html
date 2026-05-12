@@ -1,0 +1,2215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="CCNP ENCOR practice on Be Certified Today: live training portal, sample questions, drag-and-drop, CLI labs, and timed simulation. Links open the ENCOR training app."
+  />
+  <meta
+    name="keywords"
+    content="certification practice test, IT certification practice labs, certification practice questions, drag and drop practice, timed exam simulation, CLI lab simulation, certification practice browser"
+  />
+  <link rel="canonical" href="https://becertifiedtoday.com/ccnp-home.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="CCNP ENCOR practice — labs, questions &amp; simulations | Be Certified Today" />
+  <meta
+    property="og:description"
+    content="CCNP ENCOR: sample questions, labs, drag-and-drop, and timed simulation via the live training portal."
+  />
+  <meta property="og:site_name" content="Be Certified Today" />
+  <meta property="og:url" content="https://becertifiedtoday.com/ccnp-home.html" />
+  <meta property="og:image" content="https://becertifiedtoday.com/images/logo/becertifiedtoday_logo_trans.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CCNP ENCOR practice — labs, questions &amp; simulations | Be Certified Today" />
+  <meta
+    name="twitter:description"
+    content="CCNP ENCOR practice: questions, labs, drag-and-drop, and timed simulation in the browser."
+  />
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <title>CCNP ENCOR practice — labs, questions &amp; simulations | Be Certified Today</title>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Be Certified Today",
+      "url": "https://becertifiedtoday.com/ccnp-home.html",
+      "description": "CCNP ENCOR practice portal: questions, labs, drag-and-drop, and timed exam preparation in the browser."
+    }
+  </script>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bg: #0b1020;
+      --surface: #121a2b;
+      --border: #2d3b5a;
+      --text: #e6edf3;
+      --muted: #9fb0cc;
+      --accent: #2f66bf;
+      --accent-border: #4f84d8;
+      --accent-hover: #3a74d4;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px 20px;
+      padding: 16px clamp(20px, 4vw, 40px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(18, 26, 43, 0.6);
+      backdrop-filter: blur(8px);
+    }
+    .header-actions {
+      flex-shrink: 0;
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .header-sign-up {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--accent-border);
+      background: transparent;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .header-sign-up:hover {
+      background: rgba(79, 132, 216, 0.12);
+      color: #f0f4fc;
+    }
+    .header-sign-up:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+    }
+    a.header-sign-up.header-sign-up--live {
+      cursor: pointer;
+      border-color: #3d9d72;
+      background: rgba(31, 122, 88, 0.22);
+      color: #e8f4ee;
+    }
+    a.header-sign-up.header-sign-up--live:hover {
+      background: rgba(31, 122, 88, 0.34);
+      color: #fff;
+    }
+    a.header-sign-up.header-sign-up--live:focus-visible {
+      outline-color: #5ccb98;
+    }
+    a.header-sign-up.header-sign-up--locked {
+      cursor: not-allowed;
+      pointer-events: none;
+      opacity: 0.55;
+      filter: grayscale(0.9);
+      border-color: rgba(100, 116, 139, 0.65);
+      background: rgba(51, 65, 85, 0.35);
+      color: #94a3b8;
+    }
+    .header-ccna-live-timer {
+      font-size: clamp(0.68rem, 1.6vw, 0.78rem);
+      font-weight: 700;
+      color: #94a3b8;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.35;
+      max-width: min(220px, 42vw);
+      text-align: right;
+    }
+    .header-ccna-live-timer.header-ccna-live-timer--live {
+      color: #7dcea0;
+      max-width: none;
+    }
+    a.cta-main.cta-main--locked {
+      cursor: not-allowed;
+      pointer-events: none;
+      opacity: 0.55;
+      filter: grayscale(0.85);
+      box-shadow: none;
+    }
+    /* Site-wide primary CTA — CCNP ENCOR training */
+    .cta-main {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 24px;
+      border-radius: 12px;
+      border: 1px solid rgba(120, 170, 255, 0.45);
+      font-size: clamp(0.78rem, 1.9vw, 1.02rem);
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      text-align: center;
+      color: #f4f7ff;
+      background: linear-gradient(165deg, #4f8aea 0%, #2f66bf 48%, #244f9a 100%);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.14) inset,
+        0 6px 22px rgba(47, 102, 191, 0.42);
+      transition: filter 0.15s ease, box-shadow 0.15s ease;
+    }
+    .cta-main:hover {
+      color: #fff;
+      filter: brightness(1.07);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.18) inset,
+        0 8px 28px rgba(47, 102, 191, 0.5);
+    }
+    .cta-main:focus-visible {
+      outline: 2px solid #9ec0ff;
+      outline-offset: 3px;
+    }
+    .cta-main--block {
+      width: 100%;
+    }
+    a.header-cta-main {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid rgba(120, 170, 255, 0.5);
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      text-align: center;
+      text-decoration: none;
+      white-space: nowrap;
+      color: #f4f7ff;
+      background: linear-gradient(165deg, #4f8aea 0%, #2f66bf 50%, #244f9a 100%);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.12) inset,
+        0 4px 18px rgba(47, 102, 191, 0.38);
+      transition: filter 0.15s ease;
+    }
+    a.header-cta-main:hover {
+      color: #fff;
+      filter: brightness(1.07);
+    }
+    a.header-cta-main:focus-visible {
+      outline: 2px solid #9ec0ff;
+      outline-offset: 3px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
+      line-height: 0;
+    }
+    .brand img {
+      display: block;
+      height: clamp(56px, 12vw, 88px);
+      width: auto;
+      max-width: min(100px, 22vw);
+      object-fit: contain;
+      object-position: left center;
+    }
+    .brand:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 4px;
+      border-radius: 14px;
+    }
+    main {
+      flex: 1;
+      display: block;
+      padding: clamp(32px, 6vw, 56px) clamp(20px, 4vw, 40px);
+    }
+    .hero-banner {
+      margin: 0;
+      width: 100%;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      background: #0d1528;
+      /* Taller band + scaled image = read as “zoomed out” vs tight cover crop */
+      height: clamp(260px, 42vw, 520px);
+    }
+    .hero-banner img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* Wide classroom shot; keep framing centered */
+      object-position: 50% 48%;
+      transform: scale(0.88);
+      transform-origin: center center;
+    }
+    .hero-content {
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .hero-content .funnel {
+      margin-left: 0;
+      margin-right: 0;
+    }
+    .funnel {
+      width: 100%;
+      max-width: none;
+      display: flex;
+      flex-direction: column;
+    }
+    #purchase {
+      order: 1;
+    }
+    .formats-section {
+      order: 2;
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b8ab8;
+    }
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(1.65rem, 4.2vw, 2.25rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+    .lead {
+      margin: 0 0 28px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.6;
+    }
+    .benefits {
+      margin: 0 0 28px;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+    .benefits li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      color: #b8c3d6;
+      font-size: 0.98rem;
+    }
+    .benefits li::before {
+      content: "";
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      margin-top: 0.45em;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4f84d8, #2f66bf);
+    }
+    .courses-roadmap {
+      margin: 0 0 clamp(28px, 5vw, 36px);
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(13, 21, 40, 0.65);
+      color: #b8c3d6;
+      font-size: clamp(0.95rem, 2.1vw, 1.02rem);
+      line-height: 1.55;
+    }
+    .courses-roadmap strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+    .courses-roadmap a {
+      color: #a8c4f0;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .courses-roadmap a:hover {
+      color: #c8daf8;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: clamp(22px, 4vw, 28px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    .purchase-card {
+      text-align: left;
+    }
+    .purchase-card-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: clamp(22px, 4vw, 40px);
+    }
+    .purchase-card-main {
+      flex: 1 1 min(46ch, 100%);
+      min-width: 0;
+    }
+    /* Right column: large square trans logo */
+    .purchase-card-brand-col {
+      flex: 0 1 clamp(220px, 32vw, 340px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: clamp(12px, 2.5vw, 18px);
+      align-self: flex-start;
+    }
+    .purchase-card-brand-mark {
+      margin: 0;
+      line-height: 0;
+      padding: 12px 16px;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 2px 14px rgba(0, 0, 0, 0.22);
+    }
+    .purchase-card-brand-mark img {
+      display: block;
+      height: auto;
+      width: auto;
+      max-height: clamp(120px, 20vw, 220px);
+      max-width: min(220px, 48vw);
+      object-fit: contain;
+      filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.35));
+    }
+    @media (max-width: 639px) {
+      .purchase-card-inner {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .purchase-card-brand-col {
+        flex: 0 1 auto;
+        max-width: min(300px, 100%);
+        margin-left: auto;
+        margin-right: auto;
+        align-items: center;
+      }
+      .purchase-card-brand-mark img {
+        max-height: clamp(100px, 28vw, 180px);
+        max-width: min(200px, 55vw);
+      }
+    }
+    .purchase-card .purchase-label {
+      margin: 0 0 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #6b8ab8;
+    }
+    .purchase-card .purchase-heading {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 3.5vw, 1.65rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      line-height: 1.2;
+    }
+    .purchase-card .purchase-price {
+      margin: 0 0 18px;
+      font-size: clamp(2rem, 5vw, 2.45rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      line-height: 1.1;
+    }
+    .purchase-card .purchase-price span {
+      font-size: 0.55em;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0;
+    }
+    .purchase-card .purchase-lead {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.55;
+      text-align: left;
+    }
+    .purchase-card .purchase-includes {
+      margin: 0 0 18px;
+      padding: 0 0 0 22px;
+      text-align: left;
+      color: #b8c3d6;
+      font-size: 0.98rem;
+      line-height: 1.55;
+    }
+    .purchase-card .purchase-includes li {
+      margin-bottom: 8px;
+    }
+    .purchase-card .purchase-notes {
+      margin: 0 0 20px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(13, 21, 40, 0.65);
+      color: #b8c3d6;
+      font-size: clamp(0.88rem, 2vw, 0.95rem);
+      line-height: 1.5;
+      text-align: left;
+    }
+    .purchase-card .purchase-notes strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+    .purchase-access-wrap {
+      margin-top: 20px;
+    }
+    .purchase-one-time-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 768px) {
+      .purchase-one-time-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .purchase-one-time-grid .purchase-track-box {
+      margin-top: 0;
+    }
+    .purchase-track-box {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--accent-border);
+      background: rgba(47, 102, 191, 0.08);
+    }
+    .purchase-track-box--encor-live {
+      padding: clamp(18px, 3vw, 22px) clamp(16px, 3vw, 20px);
+      border-color: rgba(47, 102, 191, 0.35);
+      background: #fff;
+      box-shadow:
+        0 0 0 1px rgba(79, 132, 216, 0.18) inset,
+        0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+    .purchase-track-box--encor-live .purchase-track-title {
+      color: #142a4a;
+    }
+    .purchase-track-box--encor-live .purchase-track-sub {
+      color: #2a3d56;
+    }
+    .purchase-track-box--encor-live .encor-live-lead {
+      color: #085e32;
+    }
+    .purchase-track-box--encor-live .purchase-access-disclaimer {
+      border-top-color: rgba(45, 63, 92, 0.22);
+      color: #4d5f78;
+    }
+    .purchase-track-box--one-time-live {
+      padding: clamp(18px, 3vw, 22px) clamp(16px, 3vw, 20px);
+      border-color: rgba(31, 168, 85, 0.6);
+      background: rgba(31, 168, 85, 0.15);
+      box-shadow:
+        0 0 0 1px rgba(74, 224, 146, 0.25) inset,
+        0 10px 24px rgba(12, 60, 31, 0.35);
+    }
+    .purchase-track-box--one-time-live .purchase-track-title {
+      color: #d8ffe9;
+    }
+    .purchase-track-box--one-time-live .purchase-track-sub {
+      color: #c7f2da;
+    }
+    .purchase-track-box--one-time-live .purchase-access-disclaimer {
+      border-top-color: rgba(74, 224, 146, 0.35);
+      color: #b9e8cc;
+    }
+    .purchase-track-head {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px 12px;
+      margin: 0 0 10px;
+    }
+    .purchase-track-head .purchase-track-title {
+      margin: 0;
+    }
+    .encor-live-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #041208;
+      background: linear-gradient(155deg, #4ae092 0%, #1fa855 100%);
+      box-shadow:
+        0 0 0 1px rgba(74, 224, 146, 0.65),
+        0 2px 16px rgba(31, 168, 85, 0.45);
+    }
+    .purchase-track-title {
+      margin: 0 0 6px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: #a8c4f0;
+    }
+    .purchase-track-sub {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+    .purchase-track-sub a {
+      color: #a8c4f0;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .purchase-track-sub a:hover {
+      color: #c8daf8;
+    }
+    .purchase-track-cta-wrap {
+      margin: 16px 0 0;
+    }
+    .format-sample a.cta-main {
+      color: #f4f7ff;
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .format-sample a.cta-main:hover {
+      color: #fff;
+    }
+    .encor-live-lead {
+      color: #c8f5dc;
+      font-weight: 800;
+    }
+    .format-card-encor-live {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px 10px;
+      margin: 0 0 12px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(61, 220, 132, 0.35);
+      background: rgba(34, 168, 90, 0.1);
+      font-size: 0.88rem;
+      font-weight: 700;
+      line-height: 1.35;
+      color: #d4efe3;
+    }
+    .format-card-encor-live-label {
+      letter-spacing: 0.02em;
+    }
+    .purchase-access-disclaimer {
+      margin: 10px 0 0;
+      padding-top: 10px;
+      border-top: 1px solid rgba(45, 59, 90, 0.75);
+      color: #9fb0cc;
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+    .site-disclaimer {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: clamp(20px, 4vw, 28px) clamp(20px, 4vw, 40px);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .site-disclaimer p {
+      margin: 0 0 10px;
+      font-size: clamp(0.78rem, 1.8vw, 0.84rem);
+      line-height: 1.55;
+      color: #6b7f9e;
+    }
+    .site-disclaimer p:last-child {
+      margin-bottom: 0;
+    }
+    .site-disclaimer strong {
+      color: #a4b4d0;
+      font-weight: 700;
+    }
+    footer {
+      padding: 16px clamp(20px, 4vw, 24px);
+      text-align: center;
+      font-size: 0.82rem;
+      color: #5c6d8a;
+      border-top: 1px solid rgba(45, 59, 90, 0.5);
+    }
+    footer a.footer-portal-at {
+      color: var(--bg);
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    footer a.footer-portal-at:visited,
+    footer a.footer-portal-at:hover,
+    footer a.footer-portal-at:focus,
+    footer a.footer-portal-at:focus-visible,
+    footer a.footer-portal-at:active {
+      color: var(--bg);
+      text-decoration: none;
+      outline: none;
+    }
+    footer a.footer-mailto {
+      color: #8ab4ff;
+      text-decoration: underline;
+      margin-left: 0.35em;
+      -webkit-tap-highlight-color: transparent;
+    }
+    footer a.footer-mailto:hover,
+    footer a.footer-mailto:focus-visible {
+      filter: brightness(1.08);
+    }
+    .formats-section {
+      margin-top: clamp(40px, 8vw, 72px);
+      padding-top: clamp(36px, 6vw, 56px);
+      border-top: 1px solid var(--border);
+    }
+    .hero-content .funnel > .formats-section {
+      margin-top: clamp(20px, 4vw, 36px);
+      padding-top: clamp(22px, 4vw, 36px);
+    }
+    .formats-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .formats-intro {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: clamp(22px, 5vw, 40px);
+      margin-bottom: clamp(28px, 5vw, 40px);
+    }
+    .formats-intro-copy {
+      flex: 1 1 min(54ch, 100%);
+      min-width: 0;
+    }
+    .formats-intro-copy .formats-head {
+      margin-bottom: clamp(10px, 2vw, 14px);
+    }
+    .formats-intro-copy > h2 {
+      margin-bottom: 12px;
+    }
+    .formats-intro-copy .formats-lead {
+      max-width: none;
+      margin-bottom: clamp(18px, 3vw, 26px);
+    }
+    .formats-intro-copy .formats-devices {
+      margin-bottom: 0;
+    }
+    .formats-intro-figure {
+      flex: 0 1 clamp(260px, 38vw, 380px);
+      margin: 0;
+      align-self: center;
+    }
+    .formats-intro-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: min(440px, 52vh);
+      object-fit: contain;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+      background: rgba(13, 21, 40, 0.35);
+    }
+    @media (max-width: 719px) {
+      .formats-intro {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .formats-intro-figure {
+        flex: 1 1 auto;
+        max-width: min(400px, 100%);
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .formats-intro-figure img {
+        max-height: none;
+      }
+    }
+    .formats-head {
+      margin: 0 0 clamp(10px, 2vw, 14px);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b8ab8;
+    }
+    .formats-section h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 3.2vw, 1.75rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .formats-lead {
+      margin: 0 0 clamp(24px, 4vw, 32px);
+      max-width: 52ch;
+      color: var(--muted);
+      font-size: clamp(0.98rem, 2.2vw, 1.05rem);
+      line-height: 1.6;
+    }
+    .formats-devices {
+      margin: 0 0 clamp(24px, 4vw, 32px);
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(13, 21, 40, 0.65);
+      color: #b8c3d6;
+      font-size: clamp(0.88rem, 2vw, 0.95rem);
+      line-height: 1.5;
+    }
+    .formats-devices strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+    .formats-grid {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: clamp(16px, 3vw, 22px);
+      grid-template-columns: 1fr;
+      align-items: stretch;
+    }
+    @media (min-width: 600px) and (max-width: 959px) {
+      .formats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .formats-grid--tri > li:last-child {
+        grid-column: 1 / -1;
+      }
+    }
+    @media (min-width: 960px) {
+      .formats-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .formats-grid--tri > li:last-child {
+        grid-column: auto;
+      }
+    }
+    .samples-stack {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(28px, 5vw, 40px);
+      margin: 0 0 clamp(56px, 10vw, 80px);
+    }
+    .samples-block {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+    .samples-block-title {
+      margin: 0 0 8px;
+      font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #7a9fd6;
+    }
+    .samples-block-lead {
+      margin: 0 0 clamp(16px, 3vw, 22px);
+      max-width: 62ch;
+      color: var(--muted);
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.55;
+    }
+    .samples-block-hub {
+      margin: 0 0 clamp(14px, 2.5vw, 18px);
+      max-width: 62ch;
+      color: #b8c3d6;
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.55;
+    }
+    .samples-block-hub a {
+      color: #a8c4f0;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .samples-block-hub a:hover {
+      color: #c8daf8;
+    }
+    .samples-block-hub a:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    .formats-section .format-card .portal-launch-callout {
+      margin: 0 0 clamp(12px, 2vw, 16px);
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(220, 90, 90, 0.55);
+      background: linear-gradient(165deg, rgba(110, 28, 32, 0.55) 0%, rgba(42, 12, 16, 0.82) 100%);
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.25) inset,
+        0 8px 24px rgba(0, 0, 0, 0.28);
+      max-width: none;
+    }
+    .formats-section .format-card .portal-launch-heading {
+      margin: 0 0 8px;
+      font-size: clamp(1.02rem, 2.4vw, 1.12rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      color: var(--text);
+    }
+    .formats-section .format-card .portal-launch-sub {
+      margin: 0;
+      color: #b8c3d6;
+      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
+      line-height: 1.55;
+    }
+    .formats-section .format-card .portal-countdown {
+      display: block;
+      margin-top: 10px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+      font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+      color: #e6edf3;
+      letter-spacing: 0.06em;
+    }
+    .formats-section .format-card .portal-countdown.portal-countdown--live {
+      color: #7dcea0;
+    }
+    .format-card {
+      height: 100%;
+      margin: 0;
+      padding: clamp(18px, 3.5vw, 24px);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+    .format-card--soon-disabled {
+      overflow: hidden;
+      opacity: 0.72;
+      pointer-events: none;
+      filter: grayscale(0.45) brightness(0.92);
+      border-style: dashed;
+      border-color: rgba(100, 118, 150, 0.45);
+      box-shadow: none;
+    }
+    .format-card-soon-banner {
+      margin: calc(-1 * clamp(18px, 3.5vw, 24px)) calc(-1 * clamp(18px, 3.5vw, 24px)) clamp(12px, 2vw, 16px);
+      padding: 11px clamp(14px, 3vw, 20px);
+      text-align: center;
+      font-size: clamp(0.72rem, 1.85vw, 0.84rem);
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #f2f3f8;
+      background: linear-gradient(90deg, #5c5f6e 0%, #454854 45%, #5c5f6e 100%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .samples-stack .formats-grid > li {
+      display: flex;
+      min-width: 0;
+    }
+    .samples-stack .format-card {
+      flex: 1 1 auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .samples-stack .format-card > .format-sample:last-child {
+      margin-top: auto;
+    }
+    .format-card h3 {
+      margin: 0 0 10px;
+      font-size: clamp(1.02rem, 2.4vw, 1.12rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+    .format-card p {
+      margin: 0;
+      color: #b8c3d6;
+      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
+      line-height: 1.55;
+    }
+    .format-card-thumb {
+      margin: 0 0 14px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(45, 59, 90, 0.85);
+      aspect-ratio: 16 / 9;
+      background: #0f1729;
+    }
+    .format-card-thumb img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    .format-sample {
+      margin: 14px 0 0;
+      padding-top: 14px;
+      border-top: 1px solid rgba(45, 59, 90, 0.85);
+      font-size: clamp(0.88rem, 2vw, 0.94rem);
+      line-height: 1.5;
+      color: #9fb0cc;
+    }
+    .format-sample a {
+      color: #a8c4f0;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .format-sample a:hover {
+      color: #c8daf8;
+    }
+    .format-sample a:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    /* CCNA Training: full sentence link — same color as body, no underline (override .format-sample a) */
+    .format-sample a.format-sample-plain-link {
+      color: inherit;
+      font-weight: inherit;
+      text-decoration: none;
+    }
+    .format-sample a.format-sample-plain-link:hover {
+      color: inherit;
+      text-decoration: none;
+    }
+    .format-sample a.format-sample-plain-link:focus-visible {
+      outline: 1px solid rgba(79, 132, 216, 0.35);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+    .formats-section .formats-grid > li {
+      display: flex;
+      min-width: 0;
+    }
+    .formats-section .formats-grid .format-card {
+      flex: 1 1 auto;
+      width: 100%;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .formats-section .format-card--path-cta-bottom:has(.portal-launch-callout) > .portal-launch-callout {
+      margin-top: auto;
+    }
+    .formats-section .format-card--path-cta-bottom:not(:has(.portal-launch-callout)) > .format-sample--main-cta {
+      margin-top: auto;
+    }
+    .formats-section .formats-grid .format-card:not(.format-card--path-cta-bottom) > .format-sample:last-child {
+      margin-top: auto;
+    }
+    .faq-section {
+      margin-top: clamp(40px, 8vw, 72px);
+      padding-top: clamp(36px, 6vw, 56px);
+      border-top: 1px solid var(--border);
+    }
+    .faq-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .faq-section .formats-lead {
+      margin-bottom: clamp(20px, 4vw, 28px);
+    }
+    .faq-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .faq-details {
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+    .faq-summary {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      padding: clamp(16px, 3vw, 20px) clamp(18px, 3.5vw, 22px);
+      cursor: pointer;
+      font-size: clamp(1rem, 2.3vw, 1.08rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      line-height: 1.35;
+      list-style: none;
+    }
+    .faq-summary::-webkit-details-marker {
+      display: none;
+    }
+    .faq-summary::marker {
+      content: "";
+    }
+    .faq-summary::after {
+      content: "";
+      flex-shrink: 0;
+      width: 0.55em;
+      height: 0.55em;
+      margin-top: 0.35em;
+      border-right: 2px solid #6b8ab8;
+      border-bottom: 2px solid #6b8ab8;
+      transform: rotate(45deg);
+      transition: transform 0.2s ease;
+    }
+    .faq-details[open] > .faq-summary::after {
+      transform: rotate(-135deg);
+      margin-top: 0.5em;
+    }
+    .faq-summary:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: -2px;
+      border-radius: 14px;
+    }
+    .faq-answer {
+      padding: 0 clamp(18px, 3.5vw, 22px) clamp(18px, 3.5vw, 22px);
+      border-top: 1px solid rgba(45, 59, 90, 0.85);
+      color: #b8c3d6;
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.6;
+    }
+    .coming-soon-section {
+      margin-top: clamp(28px, 5vw, 48px);
+      padding: clamp(28px, 5vw, 48px) clamp(20px, 4vw, 40px) clamp(36px, 6vw, 56px);
+      border-top: 1px solid var(--border);
+      background: rgba(13, 21, 40, 0.25);
+    }
+    .coming-soon-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: clamp(20px, 3.5vw, 26px) clamp(20px, 3vw, 24px);
+      border-radius: 14px;
+      border: 1px dashed rgba(90, 143, 216, 0.45);
+      background: var(--surface);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+    .coming-soon-label {
+      margin: 0 0 12px;
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #f0e6d4;
+      background: rgba(120, 75, 20, 0.5);
+      border: 1px solid rgba(212, 160, 70, 0.45);
+    }
+    .coming-soon-section h2 {
+      margin: 0 0 clamp(14px, 2.5vw, 18px);
+      font-size: clamp(1.12rem, 2.6vw, 1.28rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .coming-soon-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      color: #b8c3d6;
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.5;
+      font-variant-numeric: tabular-nums;
+    }
+    .coming-soon-list li {
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: rgba(13, 21, 40, 0.5);
+      border: 1px solid rgba(45, 59, 90, 0.75);
+    }
+    .faq-answer p {
+      margin: 0 0 12px;
+    }
+    .faq-answer p:last-child {
+      margin-bottom: 0;
+    }
+    .faq-answer a {
+      color: #a8c4f0;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .faq-answer a:hover {
+      color: #c8daf8;
+    }
+    .mock-section {
+      margin-top: clamp(40px, 8vw, 72px);
+      padding-top: clamp(36px, 6vw, 56px);
+      border-top: 1px solid var(--border);
+    }
+    .mock-section h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 3.2vw, 1.75rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .mock-lead {
+      margin: 0 0 clamp(18px, 3vw, 22px);
+      max-width: 58ch;
+      color: var(--muted);
+      font-size: clamp(0.98rem, 2.2vw, 1.05rem);
+      line-height: 1.6;
+    }
+    .mock-intro {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: clamp(22px, 5vw, 40px);
+    }
+    .mock-intro-figure {
+      flex: 0 1 clamp(220px, 34vw, 360px);
+      margin: 0;
+      align-self: center;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+      background: rgba(13, 21, 40, 0.35);
+    }
+    .mock-intro-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: min(480px, 56vh);
+      object-fit: contain;
+    }
+    .mock-intro-copy {
+      flex: 1 1 min(54ch, 100%);
+      min-width: 0;
+    }
+    .mock-intro-copy .formats-head {
+      margin-bottom: clamp(10px, 2vw, 14px);
+    }
+    .mock-intro-copy > h2 {
+      margin-bottom: 12px;
+    }
+    .mock-intro-copy .mock-lead {
+      max-width: none;
+      margin-bottom: clamp(14px, 2.5vw, 20px);
+    }
+    .mock-intro-copy .mock-lead.mock-lead-detail {
+      margin-top: -6px;
+      margin-bottom: clamp(18px, 3vw, 22px);
+    }
+    .mock-intro-copy .mock-list {
+      max-width: none;
+      margin-bottom: 0;
+    }
+    @media (max-width: 719px) {
+      .mock-intro {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .mock-intro-figure {
+        flex: 1 1 auto;
+        max-width: min(440px, 100%);
+        margin-right: auto;
+      }
+      .mock-intro-figure img {
+        max-height: none;
+      }
+    }
+    .mock-list {
+      margin: 0 0 clamp(20px, 3.5vw, 26px);
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      max-width: 62ch;
+    }
+    .mock-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      color: #b8c3d6;
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.55;
+    }
+    .mock-list li::before {
+      content: "";
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      margin-top: 0.45em;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4f84d8, #2f66bf);
+    }
+    .mock-list li strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+    /* CCNA timed sim promo on home — opens after delay or scroll */
+    .ccna-sim-promo-root {
+      position: fixed;
+      inset: 0;
+      z-index: 20000;
+      display: none;
+      place-items: center;
+      padding: clamp(16px, 4vw, 28px);
+      box-sizing: border-box;
+    }
+    .ccna-sim-promo-root.ccna-sim-promo-root--open {
+      display: grid;
+    }
+    .ccna-sim-promo-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(4, 8, 18, 0.72);
+      backdrop-filter: blur(6px);
+    }
+    .ccna-sim-promo-panel {
+      position: relative;
+      z-index: 1;
+      width: min(520px, 100%);
+      max-height: min(90vh, 640px);
+      overflow: auto;
+      margin: 0;
+      padding: clamp(20px, 4vw, 28px) clamp(18px, 3.5vw, 26px) 22px;
+      border-radius: 16px;
+      border: 1px solid rgba(79, 132, 216, 0.45);
+      background: linear-gradient(165deg, rgba(22, 32, 52, 0.98) 0%, rgba(14, 20, 36, 0.99) 100%);
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+        0 24px 64px rgba(0, 0, 0, 0.55);
+      color: var(--text);
+      -webkit-overflow-scrolling: touch;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .ccna-sim-promo-root.ccna-sim-promo-root--open .ccna-sim-promo-panel {
+        animation: ccnaSimPromoIn 0.28s ease-out;
+      }
+    }
+    @keyframes ccnaSimPromoIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    .ccna-sim-promo-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #cbd5e1;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .ccna-sim-promo-close:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+    .ccna-sim-promo-close:focus-visible {
+      outline: 2px solid #9ec0ff;
+      outline-offset: 2px;
+    }
+    .ccna-sim-promo-eyebrow {
+      margin: 0 0 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #7dcea0;
+    }
+    .ccna-sim-promo-panel h2 {
+      margin: 0 36px 8px 0;
+      font-size: clamp(1.15rem, 3vw, 1.35rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .ccna-sim-promo-price {
+      margin: 0 0 14px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 12px 14px;
+    }
+    .ccna-sim-promo-price-was {
+      margin: 0;
+      font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: #94a3b8;
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+      text-decoration-color: rgba(248, 113, 113, 0.85);
+    }
+    .ccna-sim-promo-price-now {
+      font-size: clamp(1.4rem, 3.5vw, 1.75rem);
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+      color: #86efac;
+    }
+    .ccna-sim-promo-limited-pill {
+      align-self: center;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(250, 204, 21, 0.45);
+      background: rgba(250, 204, 21, 0.1);
+      color: #fde68a;
+    }
+    .ccna-sim-promo-price-note {
+      margin: 0 0 10px;
+      font-size: clamp(0.88rem, 2vw, 0.96rem);
+      line-height: 1.5;
+      color: #c5d0e3;
+    }
+    .ccna-sim-promo-price-note strong {
+      color: #e8f4ee;
+    }
+    .ccna-sim-promo-purchase-origin {
+      margin: 0 0 16px;
+      font-size: clamp(0.82rem, 1.9vw, 0.9rem);
+      line-height: 1.55;
+      color: #94a3b8;
+    }
+    .ccna-sim-promo-purchase-origin a {
+      color: #a5c8ff;
+      font-weight: 700;
+      word-break: break-word;
+    }
+    .ccna-sim-promo-purchase-origin a:hover {
+      text-decoration: underline;
+    }
+    .ccna-sim-promo-lead {
+      margin: 0 0 16px;
+      font-size: clamp(0.9rem, 2.1vw, 0.98rem);
+      line-height: 1.55;
+      color: #b8c3d6;
+    }
+    .ccna-sim-promo-lead strong {
+      color: #e8f4ee;
+    }
+    .ccna-sim-promo-list {
+      margin: 0 0 18px;
+      padding-left: 1.15rem;
+      font-size: clamp(0.86rem, 2vw, 0.94rem);
+      line-height: 1.55;
+      color: #c5d0e3;
+    }
+    .ccna-sim-promo-list li {
+      margin-bottom: 8px;
+    }
+    .ccna-sim-promo-code-label {
+      margin: 0 0 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+    }
+    .ccna-sim-promo-code-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .ccna-sim-promo-code-row code {
+      flex: 1 1 auto;
+      min-width: 0;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(100, 116, 139, 0.55);
+      background: rgba(11, 16, 32, 0.85);
+      font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.04em;
+      color: #e2e8f0;
+    }
+    .ccna-sim-promo-copy {
+      flex-shrink: 0;
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(120, 170, 255, 0.45);
+      background: rgba(47, 102, 191, 0.35);
+      color: #f0f4fc;
+      font-weight: 800;
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+    }
+    .ccna-sim-promo-copy:hover {
+      filter: brightness(1.08);
+    }
+    .ccna-sim-promo-copy:focus-visible {
+      outline: 2px solid #9ec0ff;
+      outline-offset: 2px;
+    }
+    .ccna-sim-promo-hint {
+      margin: 0 0 18px;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: #8899b5;
+    }
+    .ccna-sim-promo-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .ccna-sim-promo-actions a.ccna-sim-promo-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(61, 157, 114, 0.65);
+      font-weight: 800;
+      font-size: 0.86rem;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      color: #f0fdf4;
+      background: linear-gradient(165deg, rgba(52, 168, 118, 0.95) 0%, rgba(24, 94, 66, 0.98) 100%);
+      box-shadow: 0 6px 22px rgba(24, 94, 66, 0.35);
+    }
+    .ccna-sim-promo-actions a.ccna-sim-promo-primary:hover {
+      filter: brightness(1.06);
+    }
+    .ccna-sim-promo-actions a.ccna-sim-promo-primary:focus-visible {
+      outline: 2px solid #86efac;
+      outline-offset: 3px;
+    }
+    .ccna-sim-promo-secondary {
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(100, 116, 139, 0.55);
+      background: transparent;
+      color: #cbd5e1;
+      font: inherit;
+      font-weight: 700;
+      font-size: 0.86rem;
+      cursor: pointer;
+    }
+    .ccna-sim-promo-secondary:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+    }
+    .ccna-sim-promo-secondary:focus-visible {
+      outline: 2px solid #9ec0ff;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <a class="brand" href="/">
+        <img
+          src="/images/logo/becertifiedtoday_logo_trans.png"
+          width="1024"
+          height="1024"
+          alt="Be Certified Today — IT training and testing study site"
+        />
+      </a>
+      <div class="header-actions">
+        <a class="header-sign-up" href="/">Training paths</a>
+        <a class="header-sign-up" href="/ccna-home.html">CCNA overview</a>
+        <a
+          class="header-cta-main"
+          href="https://becertifiedtoday-encor.vercel.app/"
+          rel="noopener noreferrer"
+          aria-label="CCNP-ENCOR Training Portal"
+          >CCNP-ENCOR Training Portal</a
+        >
+        <a
+          id="header-ccna-portal-link"
+          class="header-sign-up header-sign-up--locked"
+          href="/CCNA-Study/ccna-index.html"
+          data-live-at="2026-05-15T16:00:00.000Z"
+          aria-disabled="true"
+          tabindex="-1"
+          aria-label="CCNA Training Portal — opens Friday 12:00 PM Eastern"
+          >CCNA Training Portal</a
+        >
+        <span id="header-ccna-live-timer" class="header-ccna-live-timer" role="timer" aria-live="polite"></span>
+      </div>
+    </header>
+    <figure class="hero-banner">
+      <img
+        src="/images/index-header-engineer.png"
+        width="1024"
+        height="606"
+        alt="Students working at desktop computers in a bright, modern computer lab."
+        decoding="async"
+        fetchpriority="high"
+      />
+    </figure>
+    <main id="main">
+      <div class="hero-content">
+        <div class="funnel">
+          <p class="eyebrow">Certification practice · tests, labs &amp; questions</p>
+          <h1>Structured certification practice so you walk into exam day with confidence</h1>
+          <p class="lead">
+            Prepare with <strong>certification practice tests</strong>, hands-on <strong>CLI labs</strong>,
+            extensive <strong>practice questions</strong>, drag-and-drop items, and timed exam simulations—modes built
+            for real exam formats you can repeat until the material sticks.
+            <strong>No PDFs or third-party applications:</strong> everything runs in the browser and responds to what you do.
+          </p>
+          <ul class="benefits" aria-label="What you get">
+            <li>100% interactive—click, type, and drag in the app; not static dumps or slide decks.</li>
+            <li>Question banks and study paths organized by exam topic—not random blog posts.</li>
+            <li>Review quiz mode loops missed answers back to the end so weak topics get extra reps.</li>
+            <li>Progress tracking helps you focus study time where it is needed most.</li>
+            <li>
+              <strong>$19.99</strong> buys <strong>30 days</strong> of full access: every practice question, CLI lab,
+              drag-and-drop set, and timed exam simulation—no recurring membership.
+            </li>
+            <li>New questions are added continuously to keep preparation current.</li>
+          </ul>
+          <section class="formats-section" aria-labelledby="formats-title">
+            <div class="formats-inner">
+              <p class="formats-head">Training paths</p>
+              <h2 id="formats-title">CHOOSE YOUR CERTIFICATION TRAINING PORTAL</h2>
+              <p class="formats-lead">
+                Pick a training path to enter the right practice library and study flow.
+              </p>
+              <ul class="formats-grid formats-grid--tri" aria-label="Certification training containers">
+                <li>
+                  <article
+                    class="format-card format-card--soon-disabled"
+                    aria-labelledby="comptia-training-title"
+                    aria-describedby="comptia-soon-banner"
+                  >
+                    <p class="format-card-soon-banner" id="comptia-soon-banner" role="status">Security+ coming soon</p>
+                    <h3 id="comptia-training-title">CompTIA Training</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/comptia-training-card-thumbnail.png"
+                        width="1024"
+                        height="682"
+                        alt="IT professional with a laptop and a security lock hologram, suggesting cybersecurity training."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>
+                      Security+ training path with targeted practice sets and exam-style preparation.
+                    </p>
+                  </article>
+                </li>
+                <li>
+                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="ccnp-training-title">
+                    <h3 id="ccnp-training-title">CCNP Training</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/ccnp-training-card-thumbnail.png"
+                        width="1024"
+                        height="682"
+                        alt="Network engineer working with fiber optic cables in a data center server room."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p class="format-card-encor-live">
+                      <span class="encor-live-badge">Live</span>
+                      <span class="format-card-encor-live-label">CCNP ENCOR training is up and running.</span>
+                    </p>
+                    <p>
+                      Professional-level training with interactive formats, labs, drag-and-drop, and timed simulation.
+                    </p>
+                    <p class="format-sample format-sample--main-cta">
+                      <a
+                        class="cta-main cta-main--block"
+                        href="https://becertifiedtoday-encor.vercel.app/"
+                        rel="noopener noreferrer"
+                        >ACCESS ENCOR TRAINING PORTAL TODAY</a
+                      >
+                    </p>
+                  </article>
+                </li>
+              </ul>
+            </div>
+          </section>
+          <div class="samples-stack">
+            <section class="samples-block" aria-labelledby="home-encor-samples-title">
+              <h2 class="samples-block-title" id="home-encor-samples-title">CCNP ENCOR samples</h2>
+              <p class="samples-block-lead">
+                Short ENCOR-format samples on the live ENCOR app—questions, drag-and-drop, and CLI lab.
+              </p>
+              <ul class="formats-grid formats-grid--tri" aria-label="CCNP ENCOR sample activities">
+                <li>
+                  <article class="format-card" aria-labelledby="home-format-q-title">
+                    <h3 id="home-format-q-title">CCNP-ENCOR · Sample questions</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/practice-questions-sample-thumbnail.jpg"
+                        width="1024"
+                        height="556"
+                        alt="Multiple-choice sample: OSPF designated router question with instant correct feedback."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>Try a short five-question interactive sample.</p>
+                    <p class="format-sample">
+                      <a href="https://becertifiedtoday-encor.vercel.app/sample?track=questions" rel="noopener noreferrer"
+                        >Open sample questions</a>
+                    </p>
+                  </article>
+                </li>
+                <li>
+                  <article class="format-card" aria-labelledby="home-format-dd-title">
+                    <h3 id="home-format-dd-title">CCNP-ENCOR · Sample drag-and-drop</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/drag-drop-sample-thumbnail.jpg"
+                        width="1024"
+                        height="535"
+                        alt="OSPF troubleshooting drag-and-drop sample: snippets moved into CLI-style blanks."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>Practice one performance-style drag-and-drop item.</p>
+                    <p class="format-sample">
+                      <a href="https://becertifiedtoday-encor.vercel.app/sample?track=drag" rel="noopener noreferrer"
+                        >Open sample drag-and-drop</a>
+                    </p>
+                  </article>
+                </li>
+                <li>
+                  <article class="format-card" aria-labelledby="home-format-lab-title">
+                    <h3 id="home-format-lab-title">CCNP-ENCOR · Sample lab</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/hands-on-lab-sample-thumbnail.jpg"
+                        width="1024"
+                        height="705"
+                        alt="Rapid PVST and LACP sample lab: simulated SW20 CLI over the topology diagram."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>Run a hands-on CLI simulation in the browser.</p>
+                    <p class="format-sample">
+                      <a href="https://becertifiedtoday-encor.vercel.app/sample?track=labs" rel="noopener noreferrer"
+                        >Open sample lab</a>
+                    </p>
+                  </article>
+                </li>
+              </ul>
+            </section>
+          </div>
+          <div class="card purchase-card" id="purchase">
+            <div class="purchase-card-inner">
+              <div class="purchase-card-main">
+                <p class="purchase-label">Purchase</p>
+                <h2 class="purchase-heading">30-day full access</h2>
+                <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
+                  $19.99 <span>/ 30 days</span>
+                </p>
+                <p class="purchase-lead">
+                  One payment unlocks full access to all training courses and certification tracks for one month:
+                  practice questions, hands-on CLI labs, drag-and-drop items, and full timed exam simulations.
+                </p>
+                <ul class="purchase-includes">
+                  <li>All courses, question banks, and study modes</li>
+                  <li>Every CLI simulation lab across available tracks</li>
+                  <li>Standard and JSON drag-and-drop sets across all courses</li>
+                  <li>Timed test simulations (mixed question, lab, and drag-and-drop runs)</li>
+                </ul>
+                <p class="purchase-notes">
+                  <strong>No recurring membership.</strong> Thirty days of access for a single price—when it ends,
+                  renew only if you want another month.
+                  <strong>No additional software</strong> is required; everything runs in your browser.
+                  <strong>We do not collect customer information for promotion or sale.</strong>
+                  We do not use customer data from purchases for marketing or profiling.
+                </p>
+                <div class="purchase-access-wrap">
+                  <div class="purchase-one-time-grid">
+                    <div class="purchase-track-box purchase-track-box--encor-live" aria-label="One-time ENCOR simulation exam purchase">
+                      <div class="purchase-track-head">
+                        <p class="purchase-track-title">One-time simulation exam (ENCOR for CCNP)</p>
+                        <span class="encor-live-badge">Live</span>
+                      </div>
+                      <p class="purchase-track-sub">
+                        ENCOR timed practice test: 120 minutes, mixed multiple-choice, drag-and-drop, and lab items. Stripe Checkout when configured on the ENCOR training site.
+                      </p>
+                      <p class="purchase-track-cta-wrap">
+                        <a
+                          class="cta-main cta-main--block"
+                          href="https://becertifiedtoday-encor.vercel.app/encor/test-simulation.html"
+                          rel="noopener noreferrer"
+                          aria-label="Purchase one-time simulation exam for ENCOR for CCNP"
+                          >PURCHASE ONE-TIME ENCOR (CCNP) SIMULATION EXAM</a
+                        >
+                      </p>
+                      <p class="purchase-access-disclaimer">
+                        <strong>$4.99 one-time.</strong> No recurring membership. Opens preparation and purchase on becertifiedtoday-encor.vercel.app.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="purchase-track-box purchase-track-box--encor-live" aria-label="CCNP ENCOR training live">
+                    <div class="purchase-track-head">
+                      <p class="purchase-track-title">CCNP ENCOR training</p>
+                      <span class="encor-live-badge">Live</span>
+                    </div>
+                    <p class="purchase-track-sub">
+                      <strong class="encor-live-lead">CCNP ENCOR training is live—</strong>
+                      the full practice library is up and running in your browser: questions, labs, drag-and-drop, and timed
+                      simulation.
+                    </p>
+                    <p class="purchase-track-cta-wrap">
+                      <a
+                        class="cta-main cta-main--block"
+                        href="https://becertifiedtoday-encor.vercel.app/"
+                        rel="noopener noreferrer"
+                        >ACCESS ENCOR TRAINING PORTAL TODAY</a
+                      >
+                    </p>
+                    <p class="purchase-access-disclaimer">
+                      No membership required. 30-day full access. No PDFs or downloads, including labs.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="purchase-card-brand-col">
+                <figure class="purchase-card-brand-mark" aria-hidden="true">
+                  <img
+                    src="/images/logo/becertifiedtoday_logo_trans.png"
+                    width="1024"
+                    height="1024"
+                    alt=""
+                    decoding="async"
+                    loading="lazy"
+                  />
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section class="faq-section" id="faq" aria-labelledby="faq-title">
+        <div class="faq-inner">
+          <p class="formats-head">FAQ</p>
+          <h2 id="faq-title">Access &amp; devices</h2>
+          <p class="formats-lead">
+            How sign-in links work, switching phones or browsers, and using the site on mobile.
+          </p>
+          <ul class="faq-list">
+            <li>
+              <details class="faq-details">
+                <summary class="faq-summary">Do I need a membership?</summary>
+                <div class="faq-answer">
+                  <p>
+                    <strong>No.</strong> Be Certified Today does not sell a recurring membership. You choose access for a
+                    defined period (for example, 30 days of full library access on this site) and only pay again if you
+                    want another period. Sample questions and labs on this homepage stay available without purchase.
+                  </p>
+                </div>
+              </details>
+            </li>
+            <li>
+              <details class="faq-details">
+                <summary class="faq-summary">
+                  Do I need additional software like GNS3 or IOU to run the labs?
+                </summary>
+                <div class="faq-answer">
+                  <p>
+                    <strong>No.</strong> No downloads are required to practice the labs—it is all built into the testing engine.
+                  </p>
+                </div>
+              </details>
+            </li>
+            <li>
+              <details class="faq-details">
+                <summary class="faq-summary">My link failed on a new device or browser—what should I do?</summary>
+                <div class="faq-answer">
+                  <p>
+                    Access links are validated for the <strong>device and browser</strong> where you open them. If you
+                    switch phones, use another laptop, change browsers, or open a private/incognito window, treat it like
+                    a new environment: go to the ENCOR portal and <strong>request a new access email</strong> using the
+                    same address you used at checkout, and complete the steps <strong>on that device and browser</strong>.
+                  </p>
+                  <p>
+                    Full ENCOR training:
+                    <a href="https://becertifiedtoday-encor.vercel.app/" rel="noopener noreferrer">becertifiedtoday-encor.vercel.app</a>
+                  </p>
+                </div>
+              </details>
+            </li>
+            <li>
+              <details class="faq-details">
+                <summary class="faq-summary">What does a 90-day access link cover?</summary>
+                <div class="faq-answer">
+                  <p>
+                    When your flow includes a <strong>90-day</strong> device or admin-style link, training use on that
+                    paired setup is <strong>unlimited for the whole period</strong>. You are not limited to a fixed number
+                    of logins during those 90 days—just normal, reasonable personal study use on that device.
+                  </p>
+                </div>
+              </details>
+            </li>
+            <li>
+              <details class="faq-details">
+                <summary class="faq-summary">Can I study on a phone or iPad?</summary>
+                <div class="faq-answer">
+                  <p>
+                    <strong>Yes.</strong> Practice runs in the browser on desktops, phones, and tablets (including iPad).
+                    Use an up-to-date Safari, Chrome, or Firefox. Drag-and-drop and lab layouts are built to work with
+                    touch and pointer input.
+                  </p>
+                  <p>
+                    If a page misbehaves on mobile, request a <strong>fresh access link from that same phone or tablet</strong>
+                    so your session matches where you actually train.
+                  </p>
+                </div>
+              </details>
+            </li>
+            <li>
+              <details class="faq-details">
+                <summary class="faq-summary">Will anyone call or email me for payment information?</summary>
+                <div class="faq-answer">
+                  <p>
+                    No. Be Certified Today does not collect customer details for resale or marketing, and nobody from the
+                    site will contact you to ask for payment card numbers or personal information. Complete purchases only
+                    through the official checkout flow; use official magic-link or portal pages for access.
+                  </p>
+                </div>
+              </details>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="coming-soon-section" aria-labelledby="coming-soon-concentrations-title">
+        <div class="coming-soon-inner">
+          <p class="coming-soon-label">Coming soon</p>
+          <h2 id="coming-soon-concentrations-title">CCNP Enterprise concentrations</h2>
+          <ul class="coming-soon-list">
+            <li>300-410 ENARSI -coming soon</li>
+            <li>300-415 ENSDWI -coming soon</li>
+            <li>300-420 ENSLD -coming soon</li>
+            <li>300-435 ENAUTO -coming soon</li>
+            <li>300-440 ENCC -coming soon</li>
+            <li>300-445 ENNA -coming soon</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+    <aside class="site-disclaimer" aria-label="Legal disclaimer">
+      <p>
+        <strong>Disclaimer:</strong> This website is an independent training resource created for educational purposes only.
+        It is not affiliated with, endorsed by, sponsored by, or approved by Cisco Systems, Inc. Cisco and related
+        trademarks are the property of Cisco Systems, Inc. All practice questions, explanations, and study materials on
+        this site are original or based on general knowledge and are intended as a guide to help users prepare for
+        certification exams. Practice questions are not actual Cisco exam questions. Any similarity to official exam
+        content is coincidental.
+      </p>
+    </aside>
+    <footer>
+      © Be Certified Today<a
+        class="footer-portal-at"
+        href="/CCNA-Study/ccna-index.html"
+        aria-label="CCNA study hub"
+        >@</a>
+      ·
+      <a
+        class="footer-mailto"
+        href="mailto:becertified2day@gmail.com?subject=Question%20for%20Be%20Certified%20Today"
+        aria-label="Any questions? Email becertified2day at gmail dot com"
+        >Any questions?</a>
+    </footer>
+  </div>
+  <div
+    id="ccnaSimPromoRoot"
+    class="ccna-sim-promo-root"
+    hidden
+    role="presentation"
+    aria-hidden="true"
+  >
+    <div class="ccna-sim-promo-backdrop" data-ccna-sim-promo-dismiss tabindex="-1"></div>
+    <div
+      class="ccna-sim-promo-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="ccnaSimPromoTitle"
+      tabindex="-1"
+    >
+      <button type="button" class="ccna-sim-promo-close" data-ccna-sim-promo-dismiss aria-label="Close offer dialog">
+        ×
+      </button>
+      <p class="ccna-sim-promo-eyebrow">Special offer</p>
+      <h2 id="ccnaSimPromoTitle">Try the CCNA timed simulation — 50% off</h2>
+      <p class="ccna-sim-promo-price">
+        <del class="ccna-sim-promo-price-was">$9.99</del>
+        <span class="ccna-sim-promo-price-now">$4.99</span>
+        <span class="ccna-sim-promo-limited-pill">Limited time</span>
+      </p>
+      <p class="ccna-sim-promo-price-note">
+        <strong>$4.99 one-time.</strong> No recurring membership. <strong>$9.99</strong> crossed out above; pay <strong>$4.99</strong> for a limited time with the code below.
+      </p>
+      <p class="ccna-sim-promo-purchase-origin">
+        Preparation and purchase open on
+        <a href="https://becertifiedtoday-encor.vercel.app/" target="_blank" rel="noopener noreferrer">becertifiedtoday-encor.vercel.app</a>.
+      </p>
+      <p class="ccna-sim-promo-lead">
+        Full exam-style run in the browser: <strong>questions</strong>, <strong>drag-and-drop</strong>, and
+        <strong>CLI labs</strong>, then a <strong>comprehensive score card</strong> (overall score and objective breakdown)
+        when you finish. One <strong>2-hour</strong> clock for the whole session.
+      </p>
+      <ul class="ccna-sim-promo-list">
+        <li>No app downloads — everything runs on BeCertifiedToday.com in your browser.</li>
+        <li>
+          No Be Certified Today email membership or site account: pay once through Stripe to unlock a run; take the test and
+          review results in your session on this device.
+        </li>
+      </ul>
+      <p class="ccna-sim-promo-code-label">Stripe promotion code (50% off)</p>
+      <div class="ccna-sim-promo-code-row">
+        <code id="ccnaSimPromoCode">CCNA_Sim_4_U</code>
+        <button type="button" class="ccna-sim-promo-copy" id="ccnaSimPromoCopyBtn">Copy code</button>
+      </div>
+      <p class="ccna-sim-promo-hint">On Checkout, click &ldquo;Add promotion code&rdquo; and paste <strong>CCNA_Sim_4_U</strong> before you pay.</p>
+      <div class="ccna-sim-promo-actions">
+        <a
+          class="ccna-sim-promo-primary"
+          id="ccnaSimPromoCta"
+          href="/CCNA_Sim_EXAM/begin-test-simulation.html?promo=CCNA_Sim_4_U"
+          >Continue to timed test</a
+        >
+        <button type="button" class="ccna-sim-promo-secondary" data-ccna-sim-promo-dismiss>Not now</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var p = location.pathname || "";
+      if (p === "/" || p === "/index.html" || p === "/ccna-home.html" || p === "/ccnp-home.html") {
+        try {
+          sessionStorage.removeItem("ccnpUrlMaskPath");
+          sessionStorage.removeItem("ccnpMaskedPageQid");
+          sessionStorage.removeItem("ccnpSampleKind");
+        } catch (e) {}
+      }
+    })();
+    (function () {
+      var pathNav = location.pathname || "";
+      if (pathNav.indexOf("ccnp-home") !== -1) return;
+      /** CCNA portal public launch: Friday 12:00 PM US/Eastern (May 2026 = EDT, i.e. 16:00 UTC). */
+      var CCNA_LIVE_AT = "2026-05-15T16:00:00.000Z";
+      var target = Date.parse(CCNA_LIVE_AT);
+      if (Number.isNaN(target)) return;
+
+      var countdownEl = document.getElementById("portal-countdown-home");
+      var headerLink = document.getElementById("header-ccna-portal-link");
+      var headerTimer = document.getElementById("header-ccna-live-timer");
+      var portalCta = document.getElementById("home-ccna-portal-cta");
+
+      if (countdownEl) countdownEl.dataset.liveAt = CCNA_LIVE_AT;
+
+      function pad(n) {
+        return n < 10 ? "0" + n : String(n);
+      }
+
+      function formatRemaining(ms) {
+        if (ms <= 0) return null;
+        var totalSec = Math.floor(ms / 1000);
+        var days = Math.floor(totalSec / 86400);
+        var h = Math.floor((totalSec % 86400) / 3600);
+        var m = Math.floor((totalSec % 3600) / 60);
+        var s = totalSec % 60;
+        return days + "d " + pad(h) + "h " + pad(m) + "m " + pad(s) + "s";
+      }
+
+      function unlockPortalUi() {
+        if (headerLink) {
+          headerLink.classList.remove("header-sign-up--locked");
+          headerLink.classList.add("header-sign-up--live");
+          headerLink.setAttribute("aria-disabled", "false");
+          headerLink.removeAttribute("tabindex");
+          headerLink.setAttribute("aria-label", "CCNA Training Portal — open CCNA study hub (live)");
+        }
+        if (portalCta) {
+          portalCta.classList.remove("cta-main--locked");
+          portalCta.setAttribute("aria-disabled", "false");
+          portalCta.removeAttribute("tabindex");
+          portalCta.setAttribute("aria-label", "Open CCNA study hub and training portal");
+        }
+        if (headerTimer) {
+          headerTimer.textContent = "Live — Fri 12 PM ET";
+          headerTimer.classList.add("header-ccna-live-timer--live");
+        }
+      }
+
+      function tick() {
+        var ms = target - Date.now();
+        if (countdownEl) {
+          if (ms <= 0) {
+            countdownEl.textContent = "Live now";
+            countdownEl.classList.add("portal-countdown--live");
+          } else {
+            countdownEl.textContent = formatRemaining(ms);
+          }
+        }
+        if (headerTimer) {
+          if (ms <= 0) {
+            headerTimer.textContent = "Live — Fri 12 PM ET";
+            headerTimer.classList.add("header-ccna-live-timer--live");
+          } else {
+            headerTimer.textContent = "Fri 12 PM ET in " + formatRemaining(ms);
+          }
+        }
+        if (ms <= 0) {
+          unlockPortalUi();
+          if (timerId != null) clearInterval(timerId);
+        }
+      }
+
+      var timerId = null;
+      tick();
+      timerId = setInterval(tick, 1000);
+    })();
+    (function () {
+      var PROMO = "CCNA_Sim_4_U";
+      var root = document.getElementById("ccnaSimPromoRoot");
+      var panel = root && root.querySelector(".ccna-sim-promo-panel");
+      var copyBtn = document.getElementById("ccnaSimPromoCopyBtn");
+      if (!root || !panel) return;
+
+      var path = location.pathname || "";
+      var onHome = path === "/ccna-home.html";
+      if (!onHome) return;
+
+      var prevOverflow = "";
+      var open = false;
+
+      function closePromo() {
+        if (!open) return;
+        open = false;
+        root.classList.remove("ccna-sim-promo-root--open");
+        root.setAttribute("hidden", "");
+        root.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = prevOverflow;
+        document.removeEventListener("keydown", onKey);
+      }
+
+      function openPromo() {
+        if (open) return;
+        open = true;
+        prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        root.removeAttribute("hidden");
+        root.classList.add("ccna-sim-promo-root--open");
+        root.setAttribute("aria-hidden", "false");
+        panel.focus();
+        document.addEventListener("keydown", onKey);
+      }
+
+      function onKey(ev) {
+        if (ev.key === "Escape") {
+          ev.preventDefault();
+          closePromo();
+        }
+      }
+
+      root.querySelectorAll("[data-ccna-sim-promo-dismiss]").forEach(function (el) {
+        el.addEventListener("click", function () {
+          closePromo();
+        });
+      });
+
+      if (copyBtn) {
+        copyBtn.addEventListener("click", function () {
+          function ok() {
+            var t = "Copied";
+            var prev = copyBtn.textContent;
+            copyBtn.textContent = t;
+            copyBtn.disabled = true;
+            setTimeout(function () {
+              copyBtn.textContent = prev;
+              copyBtn.disabled = false;
+            }, 1600);
+          }
+          function fail() {
+            window.prompt("Copy this code:", PROMO);
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(PROMO).then(ok).catch(fail);
+          } else {
+            fail();
+          }
+        });
+      }
+
+      var promoShowConsumed = false;
+      var promoTimer = null;
+
+      function disconnectPromoTriggers() {
+        if (promoTimer != null) {
+          clearTimeout(promoTimer);
+          promoTimer = null;
+        }
+        window.removeEventListener("scroll", onScrollPastFold);
+      }
+
+      function triggerPromoOnce() {
+        if (promoShowConsumed) return;
+        promoShowConsumed = true;
+        disconnectPromoTriggers();
+        openPromo();
+      }
+
+      function onScrollPastFold() {
+        var y = window.scrollY || document.documentElement.scrollTop || 0;
+        var vh = window.innerHeight || 0;
+        if (vh > 0 && y >= vh) {
+          triggerPromoOnce();
+        }
+      }
+
+      promoTimer = setTimeout(triggerPromoOnce, 10000);
+      window.addEventListener("scroll", onScrollPastFold, { passive: true });
+      onScrollPastFold();
+    })();
+  </script>
+</body>
+</html>
