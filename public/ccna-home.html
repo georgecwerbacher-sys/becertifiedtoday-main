@@ -391,81 +391,6 @@
       color: var(--text);
       line-height: 1.2;
     }
-    .purchase-card .purchase-ccna-portal-preview {
-      margin: 0 0 clamp(20px, 3.5vw, 26px);
-      padding-bottom: clamp(18px, 3vw, 22px);
-      border-bottom: 1px solid var(--border);
-    }
-    .purchase-card .purchase-ccna-portal-preview h3 {
-      margin: 0 0 10px;
-      font-size: clamp(1.02rem, 2.4vw, 1.12rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.3;
-      color: var(--text);
-    }
-    .purchase-card .purchase-ccna-portal-preview .format-card-thumb {
-      margin: 0 0 14px;
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid rgba(45, 59, 90, 0.85);
-      aspect-ratio: 16 / 9;
-      background: #0f1729;
-    }
-    .purchase-card .purchase-ccna-portal-preview .format-card-thumb img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
-    .purchase-card .purchase-ccna-portal-preview .portal-launch-callout {
-      margin: 0 0 clamp(12px, 2vw, 16px);
-      padding: 14px 16px;
-      border-radius: 10px;
-      border: 1px solid rgba(220, 90, 90, 0.55);
-      background: linear-gradient(165deg, rgba(110, 28, 32, 0.55) 0%, rgba(42, 12, 16, 0.82) 100%);
-      box-shadow:
-        0 0 0 1px rgba(0, 0, 0, 0.25) inset,
-        0 8px 24px rgba(0, 0, 0, 0.28);
-    }
-    .purchase-card .purchase-ccna-portal-preview .portal-launch-heading {
-      margin: 0 0 8px;
-      font-size: clamp(1.02rem, 2.4vw, 1.12rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.3;
-      color: var(--text);
-    }
-    .purchase-card .purchase-ccna-portal-preview .portal-launch-sub {
-      margin: 0;
-      color: #b8c3d6;
-      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
-      line-height: 1.55;
-    }
-    .purchase-card .purchase-ccna-portal-preview .portal-countdown {
-      display: block;
-      margin-top: 10px;
-      font-variant-numeric: tabular-nums;
-      font-weight: 800;
-      font-size: clamp(1.05rem, 2.6vw, 1.35rem);
-      color: #e6edf3;
-      letter-spacing: 0.06em;
-    }
-    .purchase-card .purchase-ccna-portal-preview .portal-countdown.portal-countdown--live {
-      color: #7dcea0;
-    }
-    .purchase-card .purchase-ccna-portal-preview .purchase-ccna-portal-lead {
-      margin: 0;
-      color: #b8c3d6;
-      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
-      line-height: 1.55;
-    }
-    .purchase-card .purchase-ccna-portal-preview .format-sample--main-cta {
-      margin: 14px 0 0;
-      padding-top: 14px;
-      border-top: 1px solid rgba(45, 59, 90, 0.85);
-    }
     .purchase-card .purchase-live-callout {
       margin: 0 0 18px;
       padding: 14px 16px;
@@ -523,6 +448,9 @@
       line-height: 1.55;
       text-align: left;
     }
+    .purchase-card .purchase-lead--tight {
+      margin-bottom: 10px;
+    }
     .purchase-card .purchase-includes {
       margin: 0 0 18px;
       padding: 0 0 0 22px;
@@ -549,21 +477,63 @@
       color: var(--text);
       font-weight: 700;
     }
-    .purchase-access-wrap {
-      margin-top: 20px;
+    .purchase-cta-stack {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(22px, 4vw, 32px);
     }
-    .purchase-one-time-grid {
-      display: grid;
-      gap: 18px;
-      grid-template-columns: 1fr;
-    }
-    @media (min-width: 768px) {
-      .purchase-one-time-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-    .purchase-one-time-grid .purchase-track-box {
+    .purchase-primary-cta .purchase-track-box {
       margin-top: 0;
+    }
+    .purchase-tier-eyebrow {
+      margin: 0 0 8px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #7dcea0;
+    }
+    .purchase-tier-eyebrow--secondary {
+      color: #8ab4ff;
+    }
+    .purchase-secondary-shell {
+      margin: 0;
+      padding-top: clamp(20px, 3.5vw, 28px);
+      border-top: 1px solid rgba(45, 59, 90, 0.85);
+    }
+    .purchase-subheading {
+      margin: 0 0 14px;
+      font-size: clamp(1.05rem, 2.4vw, 1.22rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      color: var(--text);
+    }
+    .purchase-hub-secondary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin-top: 16px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      border: 1px solid rgba(79, 132, 216, 0.65);
+      background: transparent;
+      color: #c8daf8;
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-decoration: none;
+      text-align: center;
+      box-sizing: border-box;
+      max-width: 100%;
+    }
+    .purchase-hub-secondary:hover {
+      background: rgba(79, 132, 216, 0.12);
+      color: #f0f4fc;
+    }
+    .purchase-hub-secondary:focus-visible {
+      outline: 2px solid #9ec0ff;
+      outline-offset: 3px;
     }
     .purchase-track-box {
       margin-top: 18px;
@@ -1330,7 +1300,7 @@
       color: var(--text);
       font-weight: 700;
     }
-    /* CCNA timed sim promo on home — opens after 15s delay only */
+    /* CCNA timed sim promo on home — opens once user scrolls past ~one viewport (fold) */
     .ccna-sim-promo-root {
       position: fixed;
       inset: 0;
@@ -1617,24 +1587,22 @@
             extensive <strong>practice questions</strong>, drag-and-drop items, and timed exam simulations—modes built
             for real exam formats you can repeat until the material sticks.
             <strong>No PDFs or third-party applications:</strong> everything runs in the browser and responds to what you do.
+            For CCNA, <strong>start with the one-time timed simulation</strong> to match exam length and pacing; add
+            <strong>30-day access</strong> when you want the full question bank, labs, and portal practice modes.
           </p>
           <ul class="benefits" aria-label="What you get">
             <li>100% interactive—click, type, and drag in the app; not static dumps or slide decks.</li>
             <li>Question banks and study paths organized by exam topic—not random blog posts.</li>
             <li>Review quiz mode loops missed answers back to the end so weak topics get extra reps.</li>
             <li>Progress tracking helps you focus study time where it is needed most.</li>
-            <li>
-              <strong>$19.99</strong> buys <strong>30 days</strong> of full access: every practice question, CLI lab,
-              drag-and-drop set, and timed exam simulation—no recurring membership.
-            </li>
             <li>New questions are added continuously to keep preparation current.</li>
           </ul>
           <section class="formats-section" aria-labelledby="formats-title">
             <div class="formats-inner">
               <p class="formats-head">Training paths</p>
-              <h2 id="formats-title">CHOOSE YOUR CERTIFICATION TRAINING PORTAL</h2>
+              <h2 id="formats-title">Certification training portals — coming soon</h2>
               <p class="formats-lead">
-                Pick a training path to enter the right practice library and study flow.
+                More vendor paths will appear here as each portal launches. For CCNA now, use the header link or the samples below.
               </p>
               <ul class="formats-grid formats-grid--tri" aria-label="Certification training containers">
                 <li>
@@ -1737,107 +1705,78 @@
           <div class="card purchase-card" id="purchase">
             <div class="purchase-card-inner">
               <div class="purchase-card-main">
-                <p class="purchase-label">Purchase</p>
-                <h2 class="purchase-heading">30-day full access</h2>
-                <div class="purchase-ccna-portal-preview" aria-labelledby="purchase-ccna-training-title">
-                  <h3 id="purchase-ccna-training-title">CCNA Training</h3>
-                  <figure class="format-card-thumb">
-                    <img
-                      src="/images/ccna-training-card-thumbnail.png"
-                      width="1024"
-                      height="683"
-                      alt="Ethernet cables plugged into a network switch with green status LEDs."
-                      decoding="async"
-                      loading="lazy"
-                    />
-                  </figure>
-                  <div class="portal-launch-callout" aria-labelledby="purchase-ccna-portal-heading">
-                    <p class="portal-launch-heading" id="purchase-ccna-portal-heading">CCNA Training Portal</p>
-                    <p class="portal-launch-sub">
-                      Opens live <strong>Friday 12:00 PM Eastern</strong> — full dashboard and checkout unlock with the portal. Time remaining:
-                    </p>
-                    <span
-                      id="portal-countdown-purchase"
-                      class="portal-countdown"
-                      data-live-at="2026-05-15T16:00:00.000Z"
-                      role="timer"
-                      aria-live="polite"
-                      aria-atomic="true"
-                      >—</span>
-                  </div>
-                  <p class="purchase-ccna-portal-lead">
-                    Foundation networking track with practice questions, labs, and guided study sets.
-                  </p>
-                  <p class="format-sample format-sample--main-cta">
-                    <a
-                      id="home-ccna-portal-cta-purchase"
-                      class="cta-main cta-main--block cta-main--locked"
-                      href="/ccna-index.html"
-                      aria-disabled="true"
-                      tabindex="-1"
-                      aria-label="CCNA training portal — opens Friday 12 PM Eastern"
-                      >ACCESS CCNA TRAINING PORTAL TODAY</a>
-                  </p>
-                </div>
-                <div class="purchase-live-callout" aria-labelledby="purchase-live-heading">
-                  <p class="purchase-live-heading" id="purchase-live-heading">Checkout goes live soon</p>
-                  <p class="purchase-live-sub">
-                    Full <strong>30-day</strong> checkout unlocks <strong>Friday 5:00 PM Eastern</strong>. Time remaining:
-                  </p>
-                  <span
-                    id="purchase-countdown-30d"
-                    class="purchase-live-countdown"
-                    data-live-at="2026-05-15T21:00:00.000Z"
-                    role="timer"
-                    aria-live="polite"
-                    aria-atomic="true"
-                    >—</span>
-                </div>
-                <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
-                  $19.99 <span>/ 30 days</span>
+                <p class="purchase-label">Get CCNA access</p>
+                <h2 class="purchase-heading">Two ways to prepare</h2>
+                <p class="purchase-lead purchase-lead--tight">
+                  One purchase for a full exam-length run, or thirty days for the whole practice library and training portal.
                 </p>
-                <p class="purchase-lead">
-                  One payment unlocks full access to all training courses and certification tracks for one month:
-                  practice questions, hands-on CLI labs, drag-and-drop items, and full timed exam simulations.
-                </p>
-                <ul class="purchase-includes">
-                  <li>All courses, question banks, and study modes</li>
-                  <li>Every CLI simulation lab across available tracks</li>
-                  <li>Standard and JSON drag-and-drop sets across all courses</li>
-                  <li>Timed test simulations (mixed question, lab, and drag-and-drop runs)</li>
-                </ul>
-                <p class="purchase-notes">
-                  <strong>No recurring membership.</strong> Thirty days of access for a single price—when it ends,
-                  renew only if you want another month.
-                  <strong>No additional software</strong> is required; everything runs in your browser.
-                  <strong>We do not collect customer information for promotion or sale.</strong>
-                  We do not use customer data from purchases for marketing or profiling.
-                </p>
-                <div class="purchase-access-wrap">
-                  <div class="purchase-one-time-grid">
+                <div class="purchase-cta-stack">
+                  <div class="purchase-primary-cta">
+                    <p class="purchase-tier-eyebrow">Start here — exam-day rehearsal</p>
                     <div
                       class="purchase-track-box purchase-track-box--one-time-live"
                       aria-label="One-time CCNA simulation exam purchase"
                     >
                       <div class="purchase-track-head">
-                        <p class="purchase-track-title">One-time simulation exam (CCNA)</p>
+                        <p class="purchase-track-title">Timed CCNA simulation (one session)</p>
                         <span class="encor-live-badge">Live</span>
                       </div>
                       <p class="purchase-track-sub">
-                        CCNA timed practice test: 120 minutes, 50 questions, 5 drag-and-drops, 4 labs. Opens the timed-test landing page for Stripe Checkout on this site.
+                        Same clock and mix as test day: <strong>120 minutes</strong>, <strong>50</strong> multiple-choice,
+                        <strong>5</strong> drag-and-drop, <strong>4</strong> CLI labs, randomized order, pass/fail-style summary when you finish.
+                        Checkout runs on this site.
                       </p>
                       <p class="purchase-track-cta-wrap">
                         <a
                           class="cta-main cta-main--block"
                           href="/CCNA_Sim_EXAM/begin-test-simulation.html"
-                          aria-label="Purchase one-time simulation exam for CCNA"
-                          >PURCHASE ONE-TIME CCNA SIMULATION EXAM</a
+                          aria-label="Purchase one-time CCNA timed simulation for nine ninety-nine"
+                          >Get timed simulation — $9.99</a
                         >
                       </p>
                       <p class="purchase-access-disclaimer">
-                        <strong>$9.99 one-time.</strong> No recurring membership. Opens preparation and purchase on becertifiedtoday.com.
+                        <strong>$9.99 one-time.</strong> No subscription. Best when you want one serious dry run before you schedule the real exam.
                       </p>
                     </div>
+                  </div>
+                  <div class="purchase-secondary-shell">
+                    <p class="purchase-tier-eyebrow purchase-tier-eyebrow--secondary">Then go deep — training portal</p>
+                    <h3 class="purchase-subheading">30-day full library access</h3>
+                    <div class="purchase-live-callout" aria-labelledby="purchase-live-heading">
+                      <p class="purchase-live-heading" id="purchase-live-heading">30-day checkout opens soon</p>
+                      <p class="purchase-live-sub">
+                        Full <strong>30-day</strong> purchase unlocks <strong>Friday 5:00 PM Eastern</strong>. Time remaining:
+                      </p>
+                      <span
+                        id="purchase-countdown-30d"
+                        class="purchase-live-countdown"
+                        data-live-at="2026-05-15T21:00:00.000Z"
+                        role="timer"
+                        aria-live="polite"
+                        aria-atomic="true"
+                        >—</span>
+                    </div>
+                    <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
+                      $19.99 <span>/ 30 days</span>
+                    </p>
+                    <p class="purchase-lead">
+                      One payment unlocks every CCNA practice mode we publish for a month: question banks, CLI labs,
+                      drag-and-drop sets, and additional timed runs—plus the organized training portal when checkout is live.
+                    </p>
+                    <ul class="purchase-includes">
+                      <li>All courses, question banks, and study modes</li>
+                      <li>Every CLI simulation lab across available tracks</li>
+                      <li>Standard and JSON drag-and-drop sets across all courses</li>
+                      <li>Timed test simulations (mixed question, lab, and drag-and-drop runs)</li>
+                    </ul>
+                    <p class="purchase-notes">
+                      <strong>No recurring membership.</strong> Thirty days of access for a single price—when it ends,
+                      renew only if you want another month.
+                      <strong>No additional software</strong> is required; everything runs in your browser.
+                      <strong>We do not collect customer information for promotion or sale.</strong>
+                      We do not use customer data from purchases for marketing or profiling.
+                    </p>
+                    <a class="purchase-hub-secondary" href="/ccna-index.html">Browse CCNA study hub (samples &amp; topics)</a>
                   </div>
                 </div>
               </div>
@@ -2067,22 +2006,14 @@
       }
     })();
     (function () {
-      /** CCNA portal card: Friday 12:00 PM US/Eastern (May 2026 = EDT, 16:00 UTC). Purchase block: Friday 5:00 PM Eastern (21:00 UTC). */
-      var CCNA_LIVE_AT = "2026-05-15T16:00:00.000Z";
+      /** 30-day checkout countdown: Friday 5:00 PM US/Eastern (May 2026 = EDT, 21:00 UTC). */
       var PURCHASE_CHECKOUT_LIVE_AT = "2026-05-15T21:00:00.000Z";
-      var target = Date.parse(CCNA_LIVE_AT);
       var purchaseTarget = Date.parse(PURCHASE_CHECKOUT_LIVE_AT);
-
-      var portalCountdownEl = document.getElementById("portal-countdown-purchase");
       var purchaseCountdownEl = document.getElementById("purchase-countdown-30d");
-      var headerLink = document.getElementById("header-ccna-portal-link");
-      var headerTimer = document.getElementById("header-ccna-live-timer");
-      var portalCta = document.getElementById("home-ccna-portal-cta-purchase");
 
-      if (Number.isNaN(target) && Number.isNaN(purchaseTarget)) return;
+      if (Number.isNaN(purchaseTarget)) return;
 
-      if (portalCountdownEl && !Number.isNaN(target)) portalCountdownEl.dataset.liveAt = CCNA_LIVE_AT;
-      if (purchaseCountdownEl && !Number.isNaN(purchaseTarget)) {
+      if (purchaseCountdownEl) {
         purchaseCountdownEl.dataset.liveAt = PURCHASE_CHECKOUT_LIVE_AT;
       }
 
@@ -2100,45 +2031,8 @@
         return days + "d " + pad(h) + "h " + pad(m) + "m " + pad(s) + "s";
       }
 
-      function unlockPortalUi() {
-        if (headerLink) {
-          headerLink.classList.remove("header-sign-up--locked");
-          headerLink.classList.add("header-sign-up--live");
-          headerLink.setAttribute("aria-disabled", "false");
-          headerLink.removeAttribute("tabindex");
-          headerLink.setAttribute("aria-label", "CCNA Training Portal — open CCNA study hub (live)");
-        }
-        if (portalCta) {
-          portalCta.classList.remove("cta-main--locked");
-          portalCta.setAttribute("aria-disabled", "false");
-          portalCta.removeAttribute("tabindex");
-          portalCta.setAttribute("aria-label", "Open CCNA study hub and training portal");
-        }
-        if (headerTimer) {
-          headerTimer.textContent = "Live — Fri 12 PM ET";
-          headerTimer.classList.add("header-ccna-live-timer--live");
-        }
-      }
-
       function tick() {
         var now = Date.now();
-        var msPortal = Number.isNaN(target) ? -1 : target - now;
-        if (portalCountdownEl && !Number.isNaN(target)) {
-          if (msPortal <= 0) {
-            portalCountdownEl.textContent = "Live now";
-            portalCountdownEl.classList.add("portal-countdown--live");
-          } else {
-            portalCountdownEl.textContent = formatRemaining(msPortal);
-          }
-        }
-        if (headerTimer && !Number.isNaN(target)) {
-          if (msPortal <= 0) {
-            headerTimer.textContent = "Live — Fri 12 PM ET";
-            headerTimer.classList.add("header-ccna-live-timer--live");
-          } else {
-            headerTimer.textContent = "Fri 12 PM ET in " + formatRemaining(msPortal);
-          }
-        }
         var msPurchase = Number.isNaN(purchaseTarget) ? -1 : purchaseTarget - now;
         if (purchaseCountdownEl && !Number.isNaN(purchaseTarget)) {
           if (msPurchase <= 0) {
@@ -2148,12 +2042,8 @@
             purchaseCountdownEl.textContent = formatRemaining(msPurchase);
           }
         }
-        if (!Number.isNaN(target) && msPortal <= 0) {
-          unlockPortalUi();
-        }
-        var portalExpired = !portalCountdownEl || Number.isNaN(target) || target <= now;
         var purchaseExpired = !purchaseCountdownEl || Number.isNaN(purchaseTarget) || purchaseTarget <= now;
-        if (portalExpired && purchaseExpired && timerId != null) {
+        if (purchaseExpired && timerId != null) {
           clearInterval(timerId);
           timerId = null;
         }
@@ -2236,13 +2126,18 @@
       }
 
       var promoShowConsumed = false;
-      var promoTimer = null;
+      var scrollOpts = { passive: true };
+      var onScrollFold = null;
 
       function disconnectPromoTriggers() {
-        if (promoTimer != null) {
-          clearTimeout(promoTimer);
-          promoTimer = null;
+        if (onScrollFold) {
+          window.removeEventListener("scroll", onScrollFold, scrollOpts);
+          onScrollFold = null;
         }
+      }
+
+      function foldThresholdPx() {
+        return Math.max(200, Math.floor(window.innerHeight * 0.92));
       }
 
       function triggerPromoOnce() {
@@ -2252,7 +2147,18 @@
         openPromo();
       }
 
-      promoTimer = setTimeout(triggerPromoOnce, 15000);
+      function tryOpenPromoPastFold() {
+        if (promoShowConsumed) return;
+        if (window.scrollY < foldThresholdPx()) return;
+        triggerPromoOnce();
+      }
+
+      onScrollFold = function () {
+        tryOpenPromoPastFold();
+      };
+
+      window.addEventListener("scroll", onScrollFold, scrollOpts);
+      tryOpenPromoPastFold();
     })();
     document.addEventListener("DOMContentLoaded", function () {
       var gateRoot = document.getElementById("ccnaPortalGateRoot");
