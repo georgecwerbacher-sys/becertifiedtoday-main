@@ -109,6 +109,15 @@
       outline: 2px solid #5ccb98;
       outline-offset: 3px;
     }
+    a.ccna-portal-header-btn.ccna-portal-header-btn--active {
+      border-color: #5ccb98;
+      background: rgba(46, 168, 122, 0.42);
+      box-shadow: 0 0 0 1px rgba(92, 203, 152, 0.35);
+    }
+    a.ccna-portal-header-btn.ccna-portal-header-btn--active:hover {
+      background: rgba(46, 168, 122, 0.52);
+      color: #fff;
+    }
     a.ccna-portal-header-btn.ccna-portal-header-btn--unavailable {
       pointer-events: none;
       cursor: not-allowed;
@@ -718,20 +727,6 @@
       font-size: 0.82rem;
       color: #5c6d8a;
       border-top: 1px solid rgba(45, 59, 90, 0.5);
-    }
-    footer a.footer-portal-at {
-      color: var(--bg);
-      text-decoration: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    footer a.footer-portal-at:visited,
-    footer a.footer-portal-at:hover,
-    footer a.footer-portal-at:focus,
-    footer a.footer-portal-at:focus-visible,
-    footer a.footer-portal-at:active {
-      color: var(--bg);
-      text-decoration: none;
-      outline: none;
     }
     footer a.footer-mailto {
       color: #8ab4ff;
@@ -1591,14 +1586,13 @@
         />
       </a>
       <div class="header-actions">
-        <!-- Re-enable: remove class ccna-portal-header-btn--unavailable and restore tabindex (omit) on #ccnaPortalHeaderBtn. -->
+        <!-- Top CCNA entry: study hub (always available). Timed portal remains under Purchase / CCNA_Training_Portal. -->
         <a
           id="ccnaPortalHeaderBtn"
-          class="ccna-portal-header-btn ccna-portal-header-btn--unavailable"
-          href="/CCNA-Study/CCNA_Training_Portal.html"
-          aria-disabled="true"
-          tabindex="-1"
-          title="CCNA Training Portal — opening soon"
+          class="ccna-portal-header-btn ccna-portal-header-btn--active"
+          href="/ccna-index.html"
+          title="CCNA study hub — topics, samples, and training portal entry"
+          aria-label="CCNA study hub — open CCNA index and training resources"
           >CCNA Training Portal</a
         >
       </div>
@@ -1968,12 +1962,7 @@
       </p>
     </aside>
     <footer>
-      © Be Certified Today<a
-        class="footer-portal-at"
-        href="/ccna-index.html"
-        aria-label="CCNA study hub"
-        >@</a>
-      ·
+      © Be Certified Today ·
       <a
         class="footer-mailto"
         href="mailto:becertified2day@gmail.com?subject=Question%20for%20Be%20Certified%20Today"
@@ -2304,6 +2293,8 @@
       }
 
       portalBtn.addEventListener("click", function (ev) {
+        var hubHref = portalBtn.getAttribute("href") || "";
+        if (hubHref.indexOf("ccna-index") !== -1) return;
         if (portalBtn.classList.contains("ccna-portal-header-btn--unavailable")) {
           ev.preventDefault();
           return;
