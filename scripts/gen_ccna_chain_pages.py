@@ -4812,6 +4812,26 @@ interface GigabitEthernet0/1
                 "ip route 172.21.34.0 255.255.255.128 10.73.65.66",
             ],
         },
+        {
+            "slug": "floating-static-router1-primary-default-route",
+            "title": "CCNA — Router1 primary default for floating backup",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/floating-static-router1-primary-default-route-topology.png" alt="Topology: LAN to Router1 GigabitEthernet0/1; Primary ISP on Router1 GigabitEthernet1/0; Backup ISP on Router1 GigabitEthernet1/1." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. A company is configuring a failover plan and must implement the default routes in such a way that a floating static route will assume traffic forwarding when the primary link goes down. Which primary route configuration must be used?",
+            "name": "r1fltpri1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 The primary IPv4 default static route should use the normal static form with the default administrative distance (1). The separate backup \u201cfloating\u201d static is the same prefix/mask with a higher AD so it only installs when the primary is unavailable; the primary line itself is not labeled floating. ip route does not take tracked or floating keywords in the way shown in B and C. Option A appends an interface name after the next hop in an order that is not the usual Cisco static syntax (when specifying both, the typical form is exit interface then next hop).",
+            "choices": [
+                "ip route 0.0.0.0 0.0.0.0 192.168.0.2 GigabitEthernet1/0",
+                "ip route 0.0.0.0 0.0.0.0 192.168.0.2 tracked",
+                "ip route 0.0.0.0 0.0.0.0 192.168.0.2 floating",
+                "ip route 0.0.0.0 0.0.0.0 192.168.0.2",
+            ],
+        },
     ]
 
     prev = "vty-access-list-ssh-secure"

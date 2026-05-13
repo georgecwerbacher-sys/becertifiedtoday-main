@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — R14 static route to 172.21.34.0/25 via R86</title>
+  <title>CCNA — Router1 primary default for floating backup</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -315,45 +315,45 @@
   <main class="card">
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/static-route-r14-172-21-34-25-via-r86-topology.png" alt="Topology: R14 Fa0/0 to R86 Fa0/0 on 10.73.65.64/30 (.65 on R14, .66 on R86); R14 Loopback0 10.10.1.14/32; R86 Loopback0 10.10.1.86/32." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/floating-static-router1-primary-default-route-topology.png" alt="Topology: LAN to Router1 GigabitEthernet0/1; Primary ISP on Router1 GigabitEthernet1/0; Backup ISP on Router1 GigabitEthernet1/1." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>
-    <h1>Refer to the exhibit. A static route must be configured on R14 to forward traffic for the 172.21.34.0/25 network that resides on R86. Which command must be used to fulfill the request?</h1>
+    <h1>Refer to the exhibit. A company is configuring a failover plan and must implement the default routes in such a way that a floating static route will assume traffic forwarding when the primary link goes down. Which primary route configuration must be used?</h1>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r14st17221" value="A" aria-label="Select answer option A" />
+        <input type="radio" name="r1fltpri1" value="A" aria-label="Select answer option A" />
         <span class="cli-router-choice-badge" aria-hidden="true">A</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">A. ip route 172.21.34.0 255.255.255.192 10.73.65.65</pre>
+      <pre class="cli-router-console">A. ip route 0.0.0.0 0.0.0.0 192.168.0.2 GigabitEthernet1/0</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r14st17221" value="B" aria-label="Select answer option B" />
+        <input type="radio" name="r1fltpri1" value="B" aria-label="Select answer option B" />
         <span class="cli-router-choice-badge" aria-hidden="true">B</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">B. ip route 172.21.34.0 255.255.255.0 10.73.65.65</pre>
+      <pre class="cli-router-console">B. ip route 0.0.0.0 0.0.0.0 192.168.0.2 tracked</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r14st17221" value="C" aria-label="Select answer option C" />
+        <input type="radio" name="r1fltpri1" value="C" aria-label="Select answer option C" />
         <span class="cli-router-choice-badge" aria-hidden="true">C</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">C. ip route 172.21.34.0 255.255.128.0 10.73.65.64</pre>
+      <pre class="cli-router-console">C. ip route 0.0.0.0 0.0.0.0 192.168.0.2 floating</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r14st17221" value="D" aria-label="Select answer option D" />
+        <input type="radio" name="r1fltpri1" value="D" aria-label="Select answer option D" />
         <span class="cli-router-choice-badge" aria-hidden="true">D</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">D. ip route 172.21.34.0 255.255.255.128 10.73.65.66</pre>
+      <pre class="cli-router-console">D. ip route 0.0.0.0 0.0.0.0 192.168.0.2</pre>
     </label>
 
 
@@ -364,15 +364,14 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/dhcp-relay-gi00-helper-server-subnet-exhibit.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/floating-static-router1-primary-default-route.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/static-route-r14-172-21-34-25-via-r86.html">Previous question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 The static route must match the destination prefix and mask exactly (/25 is 255.255.255.128) and point to a valid next hop on the directly connected link toward R86. R86\u2019s address on 10.73.65.64/30 is 10.73.65.66. Option A uses a /26 mask and next hop 10.73.65.65, which is R14\u2019s own interface address on the link. Option B advertises the wrong mask (/24). Option C uses an incorrect mask for the /25 destination and uses 10.73.65.64, the subnet network address, as the next hop.";
+      var CORRECT_MSG = "Correct. D \u2014 The primary IPv4 default static route should use the normal static form with the default administrative distance (1). The separate backup \u201cfloating\u201d static is the same prefix/mask with a higher AD so it only installs when the primary is unavailable; the primary line itself is not labeled floating. ip route does not take tracked or floating keywords in the way shown in B and C. Option A appends an interface name after the next hop in an order that is not the usual Cisco static syntax (when specifying both, the typical form is exit interface then next hop).";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -386,7 +385,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="r14st17221"]').forEach(function (el) {
+      document.querySelectorAll('input[name="r1fltpri1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
