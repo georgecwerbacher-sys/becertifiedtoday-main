@@ -1,12 +1,13 @@
 /**
  * POST /api/create-checkout-session
- * Body (JSON, optional): { "productId": "ccna-test-simulation" }
+ * Body (JSON, optional): { "productId": "ccna-test-simulation" | "ccna-portal-30d" }
  *
  * Env:
- *   STRIPE_SECRET_KEY           — sk_live_… / sk_test_… (or rk_* restricted key with Checkout)
- *   STRIPE_PRICE_CCNA_TEST_SIM  — price_… for one-time payment (create in Stripe Dashboard)
- *   PUBLIC_SITE_URL             — site origin (e.g. https://becertifiedtoday.com). Missing https:// is added;
- *                                 trailing slashes, paths, and stray quotes are stripped to avoid broken redirects.
+ *   STRIPE_SECRET_KEY              — sk_live_… / sk_test_… (or rk_* restricted key with Checkout)
+ *   STRIPE_PRICE_CCNA_TEST_SIM     — price_… for one-time timed test simulation
+ *   STRIPE_PRICE_CCNA_PORTAL_30D   — price_… for 30-day training portal / library access
+ *   PUBLIC_SITE_URL                — site origin (e.g. https://becertifiedtoday.com). Missing https:// is added;
+ *                                    trailing slashes, paths, and stray quotes are stripped to avoid broken redirects.
  *
  * Checkout shows a promotion-code field when allow_promotion_codes is true. Create
  * coupons + promotion codes in Stripe Dashboard (Product catalog → Coupons, or Billing → Coupons).
@@ -17,6 +18,21 @@ import { normalizePublicSiteUrl } from "./normalize-public-site-url.js";
 
 const DEFAULT_PRODUCT = "ccna-test-simulation";
 
+const PRODUCTS = {
+  "ccna-test-simulation": {
+    priceEnv: "STRIPE_PRICE_CCNA_TEST_SIM",
+    successPath: "/CCNA_Sim_EXAM/test-simulation-runner.html?session_id={CHECKOUT_SESSION_ID}",
+    cancelPath: "/CCNA_Sim_EXAM/begin-test-simulation.html",
+    blueprint: "ccna-test-simulation-blueprint@v3",
+  },
+  "ccna-portal-30d": {
+    priceEnv: "STRIPE_PRICE_CCNA_PORTAL_30D",
+    successPath: "/CCNA-Study/ccna-portal-30d-checkout-success.html?session_id={CHECKOUT_SESSION_ID}",
+    cancelPath: "/ccna-home.html#purchase",
+    blueprint: "ccna-portal-30d@v1",
+  },
+};
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
@@ -24,7 +40,6 @@ export default async function handler(req, res) {
   }
 
   const sk = getStripeSecretKey(process.env.STRIPE_SECRET_KEY);
-  const priceId = (process.env.STRIPE_PRICE_CCNA_TEST_SIM || "").trim();
   const site = normalizePublicSiteUrl(process.env.PUBLIC_SITE_URL);
 
   if (!sk.secret) {
@@ -33,11 +48,10 @@ export default async function handler(req, res) {
       hint: sk.error,
     });
   }
-  if (!priceId || !site) {
+  if (!site) {
     return res.status(503).json({
       error: "Checkout is not configured",
-      hint:
-        "Set STRIPE_PRICE_CCNA_TEST_SIM and PUBLIC_SITE_URL on Vercel. PUBLIC_SITE_URL must match the hostname customers use after checkout (often https://becertifiedtoday.com or https://www.… — wrong host breaks the return to the timed test).",
+      hint: "Set PUBLIC_SITE_URL on Vercel to your public origin (e.g. https://becertifiedtoday.com).",
     });
   }
 
@@ -54,7 +68,25 @@ export default async function handler(req, res) {
     body = {};
   }
 
-  const productId = body.productId || DEFAULT_PRODUCT;
+  const rawPid = typeof body.productId === "string" ? body.productId.trim() : "";
+  const productId = rawPid || DEFAULT_PRODUCT;
+
+  if (!PRODUCTS[productId]) {
+    return res.status(400).json({
+      error: "Unknown productId",
+      hint: `Supported values: ${Object.keys(PRODUCTS).join(", ")}.`,
+    });
+  }
+
+  const cfg = PRODUCTS[productId];
+  const priceId = (process.env[cfg.priceEnv] || "").trim();
+
+  if (!priceId) {
+    return res.status(503).json({
+      error: "Checkout is not configured",
+      hint: `Set ${cfg.priceEnv} in Vercel (Stripe Dashboard → Products → Price API id). PUBLIC_SITE_URL must match the hostname customers use after checkout.`,
+    });
+  }
 
   const stripe = new Stripe(sk.secret);
 
@@ -63,11 +95,11 @@ export default async function handler(req, res) {
       mode: "payment",
       line_items: [{ price: priceId, quantity: 1 }],
       allow_promotion_codes: true,
-      success_url: `${site}/CCNA_Sim_EXAM/test-simulation-runner.html?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${site}/CCNA_Sim_EXAM/begin-test-simulation.html`,
+      success_url: `${site}${cfg.successPath}`,
+      cancel_url: `${site}${cfg.cancelPath}`,
       metadata: {
         productId,
-        blueprint: "ccna-test-simulation-blueprint@v3",
+        blueprint: cfg.blueprint,
       },
       payment_intent_data: {
         metadata: {

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>30-day access activated | Be Certified Today</title>
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bg: #0b1020;
+      --text: #e6edf3;
+      --muted: #9fb0cc;
+      --border: #2d3b5a;
+      --accent: #2f66bf;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      padding: clamp(24px, 5vw, 48px) clamp(18px, 4vw, 32px);
+      padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+    }
+    .wrap {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.25rem, 3.5vw, 1.5rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+    .status {
+      margin: 0 0 20px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(18, 26, 43, 0.65);
+      font-size: 0.95rem;
+    }
+    .status--ok {
+      border-color: rgba(74, 224, 146, 0.45);
+      color: #c7f2da;
+    }
+    .status--err {
+      border-color: rgba(248, 113, 113, 0.45);
+      color: #fecaca;
+    }
+    a.cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 8px;
+      padding: 14px 22px;
+      min-height: 48px;
+      border-radius: 12px;
+      border: 1px solid rgba(120, 170, 255, 0.45);
+      font-weight: 800;
+      font-size: 0.95rem;
+      text-decoration: none;
+      color: #f4f7ff;
+      background: linear-gradient(165deg, #4f8aea 0%, #2f66bf 48%, #244f9a 100%);
+      touch-action: manipulation;
+    }
+    a.cta:hover {
+      filter: brightness(1.06);
+      color: #fff;
+    }
+    a.link-muted {
+      display: inline-block;
+      margin-top: 16px;
+      color: #a8c4f0;
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+    a.link-muted:hover {
+      color: #c8daf8;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>30-day CCNA library access</h1>
+    <p id="lead">
+      After Stripe confirms payment, we store <strong>30 days</strong> of portal access in <strong>this browser only</strong>.
+      Use the same device when you train.
+    </p>
+    <div id="status" class="status" role="status" aria-live="polite">Verifying payment…</div>
+    <p id="actions" hidden>
+      <a class="cta" href="/CCNA-Study/CCNA_Training_Portal.html">Open CCNA training portal</a>
+    </p>
+    <a class="link-muted" href="/ccna-home.html#purchase">&larr; Back to CCNA home</a>
+  </div>
+  <script src="/CCNA-Study/js/ccna-portal-30d-storage.js"></script>
+  <script>
+    (function () {
+      var statusEl = document.getElementById("status");
+      var actionsEl = document.getElementById("actions");
+      var leadEl = document.getElementById("lead");
+
+      function qs(name) {
+        try {
+          return new URLSearchParams(window.location.search).get(name);
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function showError(msg) {
+        statusEl.textContent = msg;
+        statusEl.classList.add("status--err");
+        if (leadEl) leadEl.hidden = true;
+      }
+
+      function showOk() {
+        statusEl.textContent =
+          "Access is active for 30 days on this browser. Open the training portal to use question banks, labs, drag-and-drop, and timed runs.";
+        statusEl.classList.add("status--ok");
+        if (actionsEl) actionsEl.hidden = false;
+      }
+
+      async function run() {
+        var sessionId = qs("session_id");
+        if (!sessionId || sessionId.indexOf("cs_") !== 0) {
+          showError("Missing or invalid checkout session. Return from Stripe after payment, or start checkout again from CCNA home.");
+          return;
+        }
+
+        try {
+          var res = await fetch("/api/verify-checkout-session?session_id=" + encodeURIComponent(sessionId));
+          var data = await res.json().catch(function () {
+            return {};
+          });
+
+          if (!res.ok || !data.ok) {
+            showError(
+              (data && data.error) ||
+                "Payment could not be confirmed. If you already paid, use the link from Stripe again on this same browser, or contact support with your receipt."
+            );
+            return;
+          }
+
+          if (data.productId !== "ccna-portal-30d") {
+            showError(
+              "This checkout session is not for 30-day library access. Use the correct return link from your purchase email, or open the timed test runner if you bought the one-time simulation."
+            );
+            return;
+          }
+
+          var expiresAt = Date.now() + 30 * 86400000;
+          if (typeof bccSetPortal30DayEntitlement !== "function" || !bccSetPortal30DayEntitlement(expiresAt)) {
+            showError(
+              "Payment verified, but this browser blocked saving access (private mode, full storage, or blocked cookies). Allow site data for becertifiedtoday.com and open this link again."
+            );
+            return;
+          }
+
+          showOk();
+        } catch (e) {
+          showError("Could not reach the server to verify payment. Check your connection and reload this page.");
+        }
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", run);
+      } else {
+        run();
+      }
+    })();
+  </script>
+</body>
+</html>

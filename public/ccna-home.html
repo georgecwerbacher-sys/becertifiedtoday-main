@@ -206,6 +206,12 @@
     .cta-main--block {
       width: 100%;
     }
+    button.cta-main {
+      font: inherit;
+      cursor: pointer;
+      appearance: none;
+      max-width: 100%;
+    }
     .brand {
       display: inline-flex;
       align-items: center;
@@ -1913,26 +1919,30 @@
                   <div class="purchase-secondary-shell">
                     <p class="purchase-tier-eyebrow purchase-tier-eyebrow--secondary">Then go deep — training portal</p>
                     <h3 class="purchase-subheading">30-day full library access</h3>
-                    <div class="purchase-live-callout" aria-labelledby="purchase-live-heading">
-                      <p class="purchase-live-heading" id="purchase-live-heading">30-day checkout opens soon</p>
-                      <p class="purchase-live-sub">
-                        Full <strong>30-day</strong> purchase unlocks <strong>Friday 5:00 PM Eastern</strong>. Time remaining:
-                      </p>
-                      <span
-                        id="purchase-countdown-30d"
-                        class="purchase-live-countdown"
-                        data-live-at="2026-05-15T21:00:00.000Z"
-                        role="timer"
-                        aria-live="polite"
-                        aria-atomic="true"
-                        >—</span>
-                    </div>
                     <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
                       $19.99 <span>/ 30 days</span>
                     </p>
+                    <p class="purchase-track-sub">
+                      Checkout runs on this site with <strong>Stripe</strong>. After payment, finish opening the
+                      <strong>return page</strong> on <strong>this same browser</strong> so your 30-day access saves here. You can apply a
+                      <strong>promotion code</strong> on Stripe&rsquo;s payment step when your Dashboard allows it.
+                    </p>
+                    <p class="purchase-track-cta-wrap">
+                      <button
+                        type="button"
+                        class="cta-main cta-main--block"
+                        id="ccnaPortal30dPurchaseBtn"
+                        aria-label="Purchase 30-day CCNA library access for nineteen ninety-nine"
+                      >
+                        Get 30-day access — $19.99
+                      </button>
+                    </p>
+                    <p class="purchase-access-disclaimer">
+                      <strong>$19.99 / 30 days.</strong> No subscription. Access is tied to this browser—use the same device when you study.
+                    </p>
                     <p class="purchase-lead">
                       One payment unlocks every CCNA practice mode we publish for a month: question banks, CLI labs,
-                      drag-and-drop sets, and additional timed runs—plus the organized training portal when checkout is live.
+                      drag-and-drop sets, and additional timed runs—plus the organized training portal.
                     </p>
                     <ul class="purchase-includes">
                       <li>All courses, question banks, and study modes</li>
@@ -2150,6 +2160,7 @@
     </div>
   </div>
   <script src="/CCNA-Study/js/ccna-portal-30d-storage.js" defer></script>
+  <script src="/CCNA-Study/js/ccna-portal-30d-checkout.js" defer></script>
   <script>
     (function () {
       var p = location.pathname || "";
@@ -2160,54 +2171,6 @@
           sessionStorage.removeItem("ccnpSampleKind");
         } catch (e) {}
       }
-    })();
-    (function () {
-      /** 30-day checkout countdown: Friday 5:00 PM US/Eastern (May 2026 = EDT, 21:00 UTC). */
-      var PURCHASE_CHECKOUT_LIVE_AT = "2026-05-15T21:00:00.000Z";
-      var purchaseTarget = Date.parse(PURCHASE_CHECKOUT_LIVE_AT);
-      var purchaseCountdownEl = document.getElementById("purchase-countdown-30d");
-
-      if (Number.isNaN(purchaseTarget)) return;
-
-      if (purchaseCountdownEl) {
-        purchaseCountdownEl.dataset.liveAt = PURCHASE_CHECKOUT_LIVE_AT;
-      }
-
-      function pad(n) {
-        return n < 10 ? "0" + n : String(n);
-      }
-
-      function formatRemaining(ms) {
-        if (ms <= 0) return null;
-        var totalSec = Math.floor(ms / 1000);
-        var days = Math.floor(totalSec / 86400);
-        var h = Math.floor((totalSec % 86400) / 3600);
-        var m = Math.floor((totalSec % 3600) / 60);
-        var s = totalSec % 60;
-        return days + "d " + pad(h) + "h " + pad(m) + "m " + pad(s) + "s";
-      }
-
-      function tick() {
-        var now = Date.now();
-        var msPurchase = Number.isNaN(purchaseTarget) ? -1 : purchaseTarget - now;
-        if (purchaseCountdownEl && !Number.isNaN(purchaseTarget)) {
-          if (msPurchase <= 0) {
-            purchaseCountdownEl.textContent = "Live now";
-            purchaseCountdownEl.classList.add("portal-countdown--live");
-          } else {
-            purchaseCountdownEl.textContent = formatRemaining(msPurchase);
-          }
-        }
-        var purchaseExpired = !purchaseCountdownEl || Number.isNaN(purchaseTarget) || purchaseTarget <= now;
-        if (purchaseExpired && timerId != null) {
-          clearInterval(timerId);
-          timerId = null;
-        }
-      }
-
-      var timerId = null;
-      tick();
-      timerId = setInterval(tick, 1000);
     })();
     (function () {
       var PROMO = "CCNA_Sim_4_U";
