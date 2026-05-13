@@ -420,6 +420,62 @@
       font-size: 0.88rem;
       color: #9fb0cc;
     }
+    .ccna-practice-subject-filter {
+      margin: 0 0 18px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(79, 132, 216, 0.45);
+      background: rgba(13, 21, 40, 0.55);
+    }
+    .ccna-practice-subject-filter .ccna-practice-subject-title {
+      margin: 0 0 6px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .ccna-practice-subject-filter .ccna-practice-subject-lead {
+      margin: 0 0 12px;
+      font-size: 0.86rem;
+      color: #9fb0cc;
+      line-height: 1.5;
+    }
+    .ccna-practice-subject-filter .ccna-practice-subject-lead a {
+      color: #a5c8ff;
+      font-weight: 700;
+      text-decoration: underline;
+    }
+    .ccna-practice-subject-filter label[for="ccna-practice-domain-select"] {
+      display: block;
+      margin: 0 0 6px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #6b8ab8;
+    }
+    .ccna-practice-domain-select {
+      display: block;
+      width: 100%;
+      max-width: min(100%, 440px);
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .ccna-practice-domain-select:focus {
+      outline: 2px solid rgba(79, 132, 216, 0.65);
+      outline-offset: 2px;
+    }
+    .ccna-practice-subject-hint {
+      margin: 10px 0 0;
+      font-size: 0.8rem;
+      color: #7d8ca8;
+      line-height: 1.45;
+    }
     .study-actions {
       display: flex;
       flex-wrap: wrap;
@@ -666,7 +722,9 @@
                 <p class="purchase-lead">
                   This training path is organized to follow the CCNA testing curriculum in the same sequence learners are expected
                   to perform on exam day: core theory first, then command workflow, validation steps, and mixed-format practice
-                  across each domain listed below.
+                  across each domain listed below. For question banks, use
+                  <a href="#ccna-practice-subject-filter">Practice by subject</a> under <strong>CCNA practice formats</strong> to
+                  limit <strong>Random</strong> and <strong>Review</strong> to one domain at a time.
                 </p>
                 <ul class="purchase-includes">
                   <li><strong>Network fundamentals:</strong> models, cabling, IPv4/IPv6 addressing.</li>
@@ -706,8 +764,35 @@
           <section class="start-box" aria-label="Question studies">
             <p class="study-meta">
               Three banks of up to <strong>100</strong> questions each (positions 1–100, 101–200, and 201 through the end of the list).
-              Each bank has its own <strong>Random</strong> and <strong>Review</strong> session. Individual questions are not listed here—open a bank to practice.
+              Each bank has its own <strong>Random</strong> and <strong>Review</strong> session. Use <strong>Practice by subject</strong> below to
+              restrict Random and Review to questions tagged for one CCNA domain (same groups as the outline above). Individual questions are not listed here—open a bank to practice.
             </p>
+            <div class="ccna-practice-subject-filter" id="ccna-practice-subject-filter">
+              <p class="ccna-practice-subject-title">Practice by subject</p>
+              <p class="ccna-practice-subject-lead">
+                Matches the <a href="#ccna-domains">CCNA subject areas covered</a> outline (Cisco 200-301 domain numbers). Leave on
+                <strong>All subjects</strong> for the full bank slice, or pick one domain before you click <strong>Random</strong> or
+                <strong>Review</strong>.
+              </p>
+              <label for="ccna-practice-domain-select">Limit session to</label>
+              <select
+                id="ccna-practice-domain-select"
+                class="ccna-practice-domain-select"
+                aria-describedby="ccna-practice-domain-hint"
+              >
+                <option value="">All subjects (full bank slice)</option>
+                <option value="1">1 — Network fundamentals</option>
+                <option value="2">2 — LAN switching (network access)</option>
+                <option value="3">3 — Routing (IP connectivity)</option>
+                <option value="4">4 — IP services</option>
+                <option value="5">5 — Security fundamentals</option>
+                <option value="6">6 — Automation &amp; programmability</option>
+              </select>
+              <p id="ccna-practice-domain-hint" class="ccna-practice-subject-hint">
+                Questions are included if any mapped objective matches the domain. Items with no topic map entry stay in
+                &ldquo;All subjects&rdquo; only.
+              </p>
+            </div>
             <div class="sim-grid" id="ccna-practice-banks-grid" aria-label="Practice question banks (three groups)"></div>
           </section>
 

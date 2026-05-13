@@ -290,6 +290,26 @@ STYLE = r"""  <style>
       background: #ffffff;
       tab-size: 8;
     }
+    .exhibit-router-cli {
+      margin: 0;
+      border-radius: 10px;
+      border: 1px solid #2a2a2a;
+      overflow: hidden;
+      background: #0a0a0a;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 4px 18px rgba(0, 0, 0, 0.45);
+    }
+    .exhibit-router-cli pre {
+      margin: 0;
+      padding: 14px 16px;
+      font-size: 0.72rem;
+      line-height: 1.42;
+      overflow-x: auto;
+      white-space: pre;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: #f0f0f0;
+      background: #0a0a0a;
+      tab-size: 8;
+    }
   </style>"""
 
 
@@ -309,6 +329,7 @@ def page(
     stem_after_exhibit: str | None = None,
     stem_after_exhibit_bullets: list[str] | None = None,
     stem_after_exhibit_tail: str | None = None,
+    prepend_html: str | None = None,
 ) -> str:
     mono = " mono" if mono_choices else ""
     prev_h = (
@@ -359,6 +380,8 @@ def page(
             )
     else:
         main_open = f"    <h1>{stem_h}</h1>\n{exhibit_block}\n"
+    if prepend_html:
+        main_open = f"{prepend_html.rstrip()}\n{main_open}"
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -4058,6 +4081,181 @@ SW1(config)#ntp server 192.168.1.1""",
                 "The lowest IP address is incremented by 1 and selected as the router ID.",
             ],
         },
+        {
+            "slug": "router-subnet-10pct-host-growth-r789",
+            "title": "CCNA — LAN subnets on R7–R9 with 10% growth",
+            "stem": "An IP subnet must be configured on each router that provides enough addresses for the number of assigned hosts and anticipates no more than 10% growth for new hosts. Which configuration script must be used?",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/router-subnet-10pct-host-growth-r789-topology.png" alt="Topology: R7, R8, and R9 in a triangle. R7 Fa1/0 to a LAN cloud labeled 923 hosts; R8 Fa0/0 to a cloud labeled 225 hosts; R9 Fa1/1 to a cloud labeled 3641 hosts." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "post_stem_html": """    <ul class="stem-after-exhibit-list">
+      <li><strong>R7</strong> FastEthernet1/0 LAN: <strong>923</strong> hosts (per exhibit).</li>
+      <li><strong>R8</strong> FastEthernet0/0 LAN: <strong>225</strong> hosts (per exhibit).</li>
+      <li><strong>R9</strong> FastEthernet1/1 LAN: <strong>3,641</strong> hosts (per exhibit).</li>
+    </ul>
+    <p class="stem-after-exhibit stem-after-exhibit-tail">Each interface gets its own IPv4 prefix. Usable host addresses must cover assigned hosts plus up to <strong>10% more</strong> (round up to whole hosts before choosing the subnet mask).</p>""",
+            "name": "r789subn1",
+            "correct": "C",
+            "mono": True,
+            "explain": "Correct. C — With 10% headroom, R7 needs at least ceil(923×1.1)=1,016 usable addresses (/22: 1,022). R8 needs at least ceil(225×1.1)=248 (/24: 254). R9 needs at least ceil(3,641×1.1)=4,006 (/20: 4,094). Option C uses /22, /24, and /20 and right-sizes each segment. Option A’s /20, /19, and /18 are valid but waste address space. Option B fails R9 (/21 allows 2,046 hosts). Option D’s /18, /19, and /17 are oversized versus the requirement.",
+            "choices": [
+                """Option A
+
+R7#
+configure terminal
+interface Fa1/0
+ip address 10.1.56.1 255.255.240.0
+no shutdown
+
+R8#
+configure terminal
+interface Fa0/0
+ip address 10.9.32.1 255.255.224.0
+no shutdown
+R9#
+configure terminal
+interface Fa1/1
+ip address 10.23.96.1 255.255.192.0
+no shutdown""",
+                """Option B
+
+R7#
+configure terminal
+interface Fa1/0
+ip address 10.1.56.1 255.255.248.0
+no shutdown
+
+R8#
+configure terminal
+interface Fa0/0
+ip address 10.9.32.1 255.255.254.0
+no shutdown
+
+R9#
+configure terminal
+interface Fa1/1
+ip address 10.23.96.1 255.255.248.0
+no shutdown""",
+                """Option C
+
+R7#
+configure terminal
+interface Fa1/0
+ip address 10.1.56.1 255.255.252.0
+no shutdown
+
+R8#
+configure terminal
+interface Fa0/0
+ip address 10.9.32.1 255.255.255.0
+no shutdown
+
+R9#
+configure terminal
+interface Fa1/1
+ip address 10.23.96.1 255.255.240.0
+no shutdown""",
+                """Option D
+
+R7#
+configure terminal
+interface Fa1/0
+ip address 10.1.56.1 255.255.192.0
+no shutdown
+
+R8#
+configure terminal
+interface Fa0/0
+ip address 10.9.32.1 255.255.224.0
+no shutdown
+
+R9#
+configure terminal
+interface Fa1/1
+ip address 10.23.96.1 255.255.128.0
+no shutdown""",
+            ],
+        },
+        {
+            "slug": "show-ip-route-eigrp-learned-prefix",
+            "title": "CCNA — Prefix learned via EIGRP",
+            "stem": "Refer to the exhibit. Which network prefix was learned via EIGRP?",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route CLI output">
+        <pre>R1#show ip route | begin gateway
+Gateway of last resort is 209.165.200.254 to network 0.0.0.0
+S*    0.0.0.0/0 [1/0] via 209.165.200.254, Serial0/0/1
+                is directly connected, Serial0/0/1
+      172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks
+C        172.16.1.0/24 is directly connected, FastEthernet0/0
+L        172.16.1.1/32 is directly connected, FastEthernet0/0
+R        172.16.2.0/24 [120/2] via 207.165.200.250, 00:00:25, Serial0/0/0
+O        192.168.1.0/24 [110/4437] via 207.165.200.254, 00:00:15, Serial0/0/1
+D        192.168.2.0/24 [90/84437] via 207.165.200.254, 00:00:15, Serial0/0/1
+      207.165.200.0/24 is variably subnetted, 5 subnets, 2 masks
+S        207.165.200.244/30 [1/1] via 207.165.200.254, 00:00:25, Serial0/0/1
+C        207.165.200.248/30 is directly connected, Serial0/0/0
+L        207.165.200.249/32 is directly connected, Serial0/0/0
+C        207.165.200.252/30 is directly connected, Serial0/0/1
+L        207.165.200.253/32 is directly connected, Serial0/0/1</pre>
+      </div>
+    </div>""",
+            "name": "eigrpprfx1",
+            "correct": "C",
+            "explain": "Correct. C — In the exhibit, internal EIGRP routes use code D (DUAL). The line D 192.168.2.0/24 [90/84437] is the EIGRP-learned prefix. O 192.168.1.0/24 is OSPF (AD 110). R 172.16.2.0/24 is RIP (AD 120). S and S* are static routes (including the default). Codes C and L mark connected and local routes.",
+            "choices": [
+                "172.16.0.0/16",
+                "207.165.200.0/24",
+                "192.168.2.0/24",
+                "192.168.1.0/24",
+            ],
+        },
+        {
+            "slug": "lacp-etherchannel-sw1-sw2-mode-fix",
+            "title": "CCNA — LACP EtherChannel SW1–SW2",
+            "stem": "An engineer built a new L2 LACP EtherChannel between SW1 and SW2 and executed these show commands to verify the work. Which additional task allows the two switches to establish an LACP port channel?",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/lacp-etherchannel-sw1-sw2-topology.png" alt="Topology: SW1 and SW2 with two parallel links—SW1 Fa0/1 to SW2 Fa0/1 and SW1 Fa0/2 to SW2 Fa0/2." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="SW1 and SW2 show run for port-channel member interfaces">
+        <pre>SW1#show run interface fastEthernet0/1
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan 100,200,300
+channel-group 1 mode on
+
+SW1#show run interface fastEthernet0/2
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan 100,200,300
+channel-group 1 mode on
+
+SW2#show run interface fastEthernet 0/1
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan 100,200,300
+channel-group 1 mode active
+
+SW2#show run interface fastEthernet 0/2
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan 100,200,300
+channel-group 1 mode active</pre>
+      </div>
+    </div>""",
+            "name": "lacpsw12",
+            "correct": "B",
+            "explain": "Correct. B — mode on places interfaces in a static (non-negotiated) EtherChannel: no LACP or PAgP PDUs. SW2 uses LACP (mode active). An LACP port channel requires LACP on both ends—set SW1 to mode active or mode passive on those ports (with an active neighbor, passive can still form a bundle). Option A uses PAgP (desirable), not the right fix for LACP with SW2. Option C’s auto is PAgP. Option D is not the main issue; the mismatch is on versus LACP.",
+            "choices": [
+                "Change the channel-group mode on SW1 to desirable.",
+                "Change the channel-group mode on SW1 to active or passive.",
+                "Change the channel-group mode on SW2 to auto.",
+                "Configure the interface port-channel 1 command on both switches.",
+            ],
+        },
     ]
 
     prev = "vty-access-list-ssh-secure"
@@ -4104,6 +4302,7 @@ SW1(config)#ntp server 192.168.1.1""",
                 stem_after_exhibit=q.get("stem_after_exhibit"),
                 stem_after_exhibit_bullets=q.get("stem_after_exhibit_bullets"),
                 stem_after_exhibit_tail=q.get("stem_after_exhibit_tail"),
+                prepend_html=q.get("prepend_html"),
             )
         (OUT / f"{slug}.html").write_text(html, encoding="utf-8")
         prev = slug
