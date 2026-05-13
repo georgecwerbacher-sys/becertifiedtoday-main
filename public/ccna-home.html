@@ -362,51 +362,10 @@
       gap: clamp(22px, 4vw, 40px);
     }
     .purchase-card-main {
-      flex: 1 1 min(46ch, 100%);
+      flex: 1 1 100%;
+      width: 100%;
       min-width: 0;
-    }
-    /* Right column: large square trans logo */
-    .purchase-card-brand-col {
-      flex: 0 1 clamp(220px, 32vw, 340px);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: clamp(12px, 2.5vw, 18px);
-      align-self: flex-start;
-    }
-    .purchase-card-brand-mark {
-      margin: 0;
-      line-height: 0;
-      padding: 12px 16px;
-      border-radius: 14px;
-      background: #fff;
-      box-shadow: 0 2px 14px rgba(0, 0, 0, 0.22);
-    }
-    .purchase-card-brand-mark img {
-      display: block;
-      height: auto;
-      width: auto;
-      max-height: clamp(120px, 20vw, 220px);
-      max-width: min(220px, 48vw);
-      object-fit: contain;
-      filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.35));
-    }
-    @media (max-width: 639px) {
-      .purchase-card-inner {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .purchase-card-brand-col {
-        flex: 0 1 auto;
-        max-width: min(300px, 100%);
-        margin-left: auto;
-        margin-right: auto;
-        align-items: center;
-      }
-      .purchase-card-brand-mark img {
-        max-height: clamp(100px, 28vw, 180px);
-        max-width: min(200px, 55vw);
-      }
+      max-width: none;
     }
     .purchase-card .purchase-label {
       margin: 0 0 8px;
@@ -2037,18 +1996,6 @@
                     <a class="purchase-hub-secondary" href="/CCNA-Study/CCNA_Training_Portal.html">Browse CCNA training portal (samples &amp; topics)</a>
                   </div>
                 </div>
-              </div>
-              <div class="purchase-card-brand-col">
-                <figure class="purchase-card-brand-mark" aria-hidden="true">
-                  <img
-                    src="/images/logo/becertifiedtoday_logo_trans.png"
-                    width="1024"
-                    height="1024"
-                    alt=""
-                    decoding="async"
-                    loading="lazy"
-                  />
-                </figure>
               </div>
             </div>
           </div>
