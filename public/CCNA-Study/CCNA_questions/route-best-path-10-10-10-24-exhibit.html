@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — LACP EtherChannel SW1–SW2</title>
+  <title>CCNA — Best path to 10.10.10.24 from routing table</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,42 +313,19 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <div class="exhibit-stack">
-      <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/lacp-etherchannel-sw1-sw2-topology.png" alt="Topology: SW1 and SW2 with two parallel links—SW1 Fa0/1 to SW2 Fa0/1 and SW1 Fa0/2 to SW2 Fa0/2." width="900" decoding="async" loading="lazy" />
-      </figure>
-      <div class="exhibit-router-cli" role="region" aria-label="SW1 and SW2 show run for port-channel member interfaces">
-        <pre>SW1#show run interface fastEthernet0/1
-switchport trunk encapsulation dot1q
-switchport mode trunk
-switchport trunk allowed vlan 100,200,300
-channel-group 1 mode on
-
-SW1#show run interface fastEthernet0/2
-switchport trunk encapsulation dot1q
-switchport mode trunk
-switchport trunk allowed vlan 100,200,300
-channel-group 1 mode on
-
-SW2#show run interface fastEthernet 0/1
-switchport trunk encapsulation dot1q
-switchport mode trunk
-switchport trunk allowed vlan 100,200,300
-channel-group 1 mode active
-
-SW2#show run interface fastEthernet 0/2
-switchport trunk encapsulation dot1q
-switchport mode trunk
-switchport trunk allowed vlan 100,200,300
-channel-group 1 mode active</pre>
+    <div class="exhibit-router-cli" role="region" aria-label="Routing table excerpt for 10.10.10.0/24">
+        <pre>EIGRP 10.10.10.0/24[90/1441] via F0/10
+EIGRP 10.10.10.0/24[90/144] via F0/11
+EIGRP 10.10.10.0/24[90/1441] via F0/12
+OSPF 10.10.10.0/24[110/20] via F0/13
+OSPF 10.10.10.0/24[110/30] via F0/14</pre>
       </div>
-    </div>
-    <h1>An engineer built a new L2 LACP EtherChannel between SW1 and SW2 and executed these show commands to verify the work. Which additional task allows the two switches to establish an LACP port channel?</h1>
+    <h1>Refer to the exhibit. Packets received by the router from BGP enter via a serial interface at 209.165.201.10. Each route is present within the routing table. Which interface is used to forward traffic with a destination IP of 10.10.10.24?</h1>
 
-    <label class="choice"><input type="radio" name="lacpsw12" value="A" />A. Change the channel-group mode on SW1 to desirable.</label>
-    <label class="choice"><input type="radio" name="lacpsw12" value="B" />B. Change the channel-group mode on SW1 to active or passive.</label>
-    <label class="choice"><input type="radio" name="lacpsw12" value="C" />C. Change the channel-group mode on SW2 to auto.</label>
-    <label class="choice"><input type="radio" name="lacpsw12" value="D" />D. Configure the interface port-channel 1 command on both switches.</label>
+    <label class="choice"><input type="radio" name="routefwd101024" value="A" />A. F0/10</label>
+    <label class="choice"><input type="radio" name="routefwd101024" value="B" />B. F0/11</label>
+    <label class="choice"><input type="radio" name="routefwd101024" value="C" />C. F0/12</label>
+    <label class="choice"><input type="radio" name="routefwd101024" value="D" />D. F0/13</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -357,15 +334,15 @@ channel-group 1 mode active</pre>
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/show-ip-route-eigrp-learned-prefix.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/switch2-lldp-timer-holdtime.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/switchport-trunk-fa01-vlans-10-15-complete.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ip-address-dhcp-interface-client.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 mode on places interfaces in a static (non-negotiated) EtherChannel: no LACP or PAgP PDUs. SW2 uses LACP (mode active). An LACP port channel requires LACP on both ends\u2014set SW1 to mode active or mode passive on those ports (with an active neighbor, passive can still form a bundle). Option A uses PAgP (desirable), not the right fix for LACP with SW2. Option C\u2019s auto is PAgP. Option D is not the main issue; the mismatch is on versus LACP.";
+      var CORRECT_MSG = "Correct. B \u2014 The destination 10.10.10.24 matches 10.10.10.0/24. Among competing routes, the lowest administrative distance wins: internal EIGRP (90) is preferred over OSPF (110), so OSPF paths F0/13 and F0/14 are not used. Among the EIGRP entries, the lowest reported metric (Feasible Distance) is 144, which points out FastEthernet0/11. The BGP ingress note does not change AD-based selection for this IPv4 prefix.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -379,7 +356,7 @@ channel-group 1 mode active</pre>
         }
       }
 
-      document.querySelectorAll('input[name="lacpsw12"]').forEach(function (el) {
+      document.querySelectorAll('input[name="routefwd101024"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

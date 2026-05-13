@@ -479,6 +479,7 @@ def page_checkbox(
     next_slug: str | None,
     post_stem_html: str | None = None,
     stem_after_exhibit: str | None = None,
+    prepend_html: str | None = None,
 ) -> str:
     prev_h = (
         f'<a class="next-link" href="/CCNA-Study/CCNA_questions/{prev_slug}.html">Previous question</a>'
@@ -514,6 +515,8 @@ def page_checkbox(
         )
     else:
         main_open = f'    <h1 class="choose-two-stem">{stem_inner}</h1>\n'
+    if prepend_html:
+        main_open = f"{prepend_html.rstrip()}\n{main_open}"
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -4256,6 +4259,314 @@ channel-group 1 mode active</pre>
                 "Configure the interface port-channel 1 command on both switches.",
             ],
         },
+        {
+            "slug": "switch2-lldp-timer-holdtime",
+            "title": "CCNA — LLDP timer and holdtime on Switch2",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="Switch2 show lldp output">
+        <pre>Switch2#show lldp
+Global LLDP Information
+    Status : ACTIVE
+    LLDP advertisements are sent every 30 seconds
+    LLDP hold time advertised is 120 seconds
+    LLDP interface reinitialization delay is 2 seconds</pre>
+      </div>""",
+            "stem": "A network engineer must update the configuration on Switch2 so that it sends LLDP packets every minute and the information sent via LLDP is refreshed every 3 minutes. Which configuration must the engineer apply?",
+            "name": "lldpsw2tm",
+            "correct": "B",
+            "explain": "Correct. B — lldp timer sets the LLDP advertisement transmission interval in seconds (60 = one packet per minute). lldp holdtime sets how long receiving devices keep the advertised LLDP information before discarding it—also in seconds (180 = 3 minutes). tlv-select chooses which TLV types are sent, not timing. Options with lldp timer 1 send every second, not every minute.",
+            "choices": [
+                "Switch2(config)# lldp timer 60\nSwitch2(config)# lldp tlv-select 180",
+                "Switch2(config)# lldp timer 60\nSwitch2(config)# lldp holdtime 180",
+                "Switch2(config)# lldp timer 1\nSwitch2(config)# lldp tlv-select 3",
+                "Switch2(config)# lldp timer 1\nSwitch2(config)# lldp holdtime 3",
+            ],
+            "mono": True,
+        },
+        {
+            "slug": "ssh-vty-access-class-10-139-58-28",
+            "title": "CCNA — SSH allowed sources via VTY access-class",
+            "stem": "An engineer is configuring remote access to a router from IP subnet 10.139.58.0/28. The domain name, crypto keys, and SSH have been configured. Which configuration enables the traffic on the destination router?",
+            "name": "sshvty10139",
+            "correct": "B",
+            "explain": "Correct. B — Restrict SSH logins with access-class on the VTY lines (not access-group, which applies ACLs to interfaces). SSH uses TCP port 22; for 10.139.58.0/28 the wildcard mask is 0.0.0.15. A is wrong because SSH is TCP (not UDP) and 0.0.0.7 does not match all addresses in a /28. C uses access-group on line vty, which is invalid. D mixes standard ACL syntax with TCP/port matching (needs extended ACL), uses an inappropriate ACL number for standard lists, and pins SSH filtering on an interface rather than the VTY.",
+            "choices": [
+                "interface FastEthernet0/0\nip address 10.122.49.1 255.255.255.252\nip access-group 10 in\n!\nip access-list standard 10\npermit udp 10.139.58.0 0.0.0.7 host 10.122.49.1 eq 22",
+                "line vty 0 15\naccess-class 120 in\n!\nip access-list extended 120\npermit tcp 10.139.58.0 0.0.0.15 any eq 22",
+                "line vty 0 15\naccess-group 120 in\n!\nip access-list extended 120\npermit tcp 10.139.58.0 0.0.0.15 any eq 22",
+                "interface FastEthernet0/0\nip address 10.122.49.1 255.255.255.252\nip access-group 110 in\n!\nip access-list standard 110\npermit tcp 10.139.58.0 0.0.0.15 eq 22 host 10.122.49.1",
+            ],
+            "mono": True,
+        },
+        {
+            "slug": "ssh-secure-remote-cli-protocol",
+            "title": "CCNA — Secure remote CLI access protocol",
+            "stem": "Which protocol is used for secure remote CLI access?",
+            "name": "sshclisec",
+            "correct": "C",
+            "explain": "Correct. C — SSH (Secure Shell) encrypts the session and provides secure remote CLI access to routers and switches. Telnet sends traffic in clear text. HTTP/HTTPS are used for web-based management, not as the primary Cisco IOS remote CLI transport.",
+            "choices": [
+                "HTTP",
+                "Telnet",
+                "SSH",
+                "HTTPS",
+            ],
+        },
+        {
+            "slug": "private-ipv4-characteristic-no-registry",
+            "title": "CCNA — Private IPv4 addressing characteristic",
+            "stem": "What is a characteristic of private IPv4 addressing?",
+            "name": "privnosreg",
+            "correct": "C",
+            "explain": "Correct. C — RFC 1918 private addresses are intended for internal networks and are reused across organizations without global registration or unique allocation like public IPv4. They do not traverse the public Internet without NAT. Option B describes public addressing coordination, not private RFC 1918 space. Option D is false—ACLs do not make private hosts globally routable. Option A only describes the size of one common block (for example 192.168.0.0/16), not the defining characteristic of private IPv4 addressing overall.",
+            "choices": [
+                "composed of up to 65,536 available addresses",
+                "issued by IANA in conjunction with an autonomous system number",
+                "used without tracking or registration",
+                "traverse the Internet when an outbound ACL is applied",
+            ],
+        },
+        {
+            "slug": "enterprise-network-wlc-auth-roaming",
+            "title": "CCNA — WLC authentication and roaming",
+            "stem": "What provides centralized control of authentication and roaming in an enterprise network?",
+            "name": "wlcaurent",
+            "correct": "D",
+            "explain": "Correct. D — In a lightweight (split-MAC) WLAN, the wireless LAN controller centralizes policies, AAA-backed authentication, and roaming coordination; access points forward traffic and radio functions while control stays at the WLC. A LAN switch and firewall do not perform that WLAN control-plane role, and a lightweight AP is the managed edge device—not the central controller.",
+            "choices": [
+                "a LAN switch",
+                "a firewall",
+                "a lightweight access point",
+                "a wireless LAN controller",
+            ],
+        },
+        {
+            "slug": "nat-pat-standard-acl1-gi01-exhibit",
+            "title": "CCNA — PAT with standard ACL (exhibit)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/nat-pat-standard-acl1-topology.png" alt="Topology: PC1 172.16.0.1 and PC2 172.16.0.2 on the LAN; NAT router GigabitEthernet0/0 toward LAN and GigabitEthernet0/1 toward Internet." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="NAT overload and standard access list 1">
+        <pre>interface GigabitEthernet0/0
+ ip address 172.16.0.5 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1
+ ip address 209.165.202.130 255.255.255.224
+ duplex auto
+ speed auto
+!
+ip nat inside source list 1 interface GigabitEthernet0/1 overload
+!
+access-list 1 permit 172.16.0.1
+access-list 1 permit 172.16.0.2</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. Which IPv4 host addresses are permitted to use PAT overload translation through GigabitEthernet0/1?",
+            "name": "natacl1gi01",
+            "correct": "A",
+            "explain": "Correct. A — The NAT statement ties PAT (overload) to traffic permitted by standard access list 1. Only sources explicitly permitted by ACL 1—172.16.0.1 and 172.16.0.2—match list 1 for translation; other hosts on 172.16.0.0/24 are not listed and do not match the ACL used by ip nat inside source list 1.",
+            "choices": [
+                "172.16.0.1 and 172.16.0.2 only",
+                "every host on 172.16.0.0/24 except 172.16.0.5",
+                "every host on 172.16.0.0/24",
+                "only the GigabitEthernet0/0 interface address",
+            ],
+        },
+        {
+            "slug": "ipv6-vlan2000-unique-local-ula",
+            "title": "CCNA — IPv6 ULA on SVI VLAN 2000",
+            "stem": "A network engineer must implement an IPv6 configuration on the vlan 2000 interface to create a routable locally-unique unicast address that is blocked from being advertised to the internet. Which configuration must the engineer apply?",
+            "name": "ipv6ula2k",
+            "correct": "B",
+            "explain": "Correct. B — Addresses from fd00::/8 are IPv6 Unique Local Addresses (ULA): site-scope unicast, globally ambiguous by design and filtered from global BGP toward the Internet—similar in intent to RFC 1918 for IPv4. Option A uses ff00::/8, which is multicast, not unicast. Option D uses fe80::/10 (link-local), which is not routed beyond the link. Option C begins with fc00::/8 (reserved half of ULA under RFC 4193); deployable unique locals use fd00::/8 with a generated global ID—fd00::… is the conventional assignment.",
+            "choices": [
+                "interface vlan 2000\nipv6 address ff00:0000:aaaa::1234:2343/64",
+                "interface vlan 2000\nipv6 address fd00::1234:2343/64",
+                "interface vlan 2000\nipv6 address fc00:0000:aaaa:a15d:1234:2343:8aca/64",
+                "interface vlan 2000\nipv6 address fe80:0000:aaaa::1234:2343/64",
+            ],
+            "mono": True,
+        },
+        {
+            "slug": "ospf-r1-r2-point-to-point-no-dr-bdr",
+            "title": "CCNA — OSPF point-to-point without DR/BDR",
+            "stem": "OSPF must be configured between routers R1 and R2. Which OSPF configuration must be applied to router R1 to avoid a DR/BDR election?",
+            "name": "ospfr1r2pt",
+            "correct": "D",
+            "explain": "Correct. D — Setting ip ospf network point-to-point on the link uses a topology where OSPF does not perform DR/BDR election (point-to-point adjacency between two routers). The default broadcast network type on Ethernet still elects a DR/BDR. Changing cost or hello interval does not remove DR/BDR behavior on a broadcast segment.",
+            "choices": [
+                "router ospf 1\nnetwork 192.168.1.1 0.0.0.0 area 0\ninterface e1/1\nip address 192.160.1.1 255.255.255.252\nip ospf network broadcast",
+                "router ospf 1\nnetwork 192.168.1.1 0.0.0.0 area 0\ninterface e1/1\nip address 192.168.1.1 255.255.255.252\nip ospf cost 0",
+                "router ospf 1\nnetwork 192.168.1.1 0.0.0.0 area 0\nhello interval 15\ninterface e1/1\nip address 192.168.1.1 255.255.255.252",
+                "router ospf 1\nnetwork 192.168.1.1 0.0.0.0 area 0\ninterface e1/1\nip address 192.168.1.1 255.255.255.252\nip ospf network point-to-point",
+            ],
+            "mono": True,
+        },
+        {
+            "slug": "switchport-trunk-fa01-vlans-10-15-complete",
+            "title": "CCNA — Voice and data VLANs on Fa0/1 (IP phone and PC)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/switchport-fa01-phone-pc-voice-data-topology.png" alt="Topology: PC on data VLAN 15 connected to a Cisco IP phone using voice VLAN 10, phone uplink to switch SW on FastEthernet0/1." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="SW show running-config for FastEthernet0/1">
+        <pre>SW#show run
+Building configuration...
+!
+interface FastEthernet0/1
+ switchport access vlan 15
+!
+end</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibits. An administrator must configure FastEthernet0/1 so PC data traffic is in VLAN 15 and the Cisco IP phone uses VLAN 10 for voice. The VLANs exist in the VLAN database. Which command sequence completes the configuration?",
+            "name": "trnkfa1015",
+            "correct": "D",
+            "explain": "Correct. D — With a PC connected through a Cisco IP phone on one access port, configure switchport mode access, switchport access vlan 15 for untagged PC data, and switchport voice vlan 10 for the IP phone voice VLAN (typically 802.1Q tagged toward the switch when CDP advertises the voice VLAN). Options A and B build an 802.1Q trunk, which does not match this phone-and-PC access design. Option C mixes invalid VLAN/private-vlan commands under the interface.",
+            "choices": [
+                "interface FastEthernet0/1\nswitchport trunk native vlan 10\nswitchport trunk allowed vlan 10,15",
+                "interface FastEthernet0/1\nswitchport mode trunk\nswitchport trunk allowed vlan 10,15",
+                "interface FastEthernet0/1\nswitchport trunk allowed vlan add 10\nvlan 10\nprivate-vlan isolated",
+                "interface FastEthernet0/1\nswitchport mode access\nswitchport access vlan 15\nswitchport voice vlan 10",
+            ],
+            "mono": True,
+        },
+        {
+            "slug": "route-best-path-10-10-10-24-exhibit",
+            "title": "CCNA — Best path to 10.10.10.24 from routing table",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="Routing table excerpt for 10.10.10.0/24">
+        <pre>EIGRP 10.10.10.0/24[90/1441] via F0/10
+EIGRP 10.10.10.0/24[90/144] via F0/11
+EIGRP 10.10.10.0/24[90/1441] via F0/12
+OSPF 10.10.10.0/24[110/20] via F0/13
+OSPF 10.10.10.0/24[110/30] via F0/14</pre>
+      </div>""",
+            "stem": "Refer to the exhibit. Packets received by the router from BGP enter via a serial interface at 209.165.201.10. Each route is present within the routing table. Which interface is used to forward traffic with a destination IP of 10.10.10.24?",
+            "name": "routefwd101024",
+            "correct": "B",
+            "explain": "Correct. B — The destination 10.10.10.24 matches 10.10.10.0/24. Among competing routes, the lowest administrative distance wins: internal EIGRP (90) is preferred over OSPF (110), so OSPF paths F0/13 and F0/14 are not used. Among the EIGRP entries, the lowest reported metric (Feasible Distance) is 144, which points out FastEthernet0/11. The BGP ingress note does not change AD-based selection for this IPv4 prefix.",
+            "choices": [
+                "F0/10",
+                "F0/11",
+                "F0/12",
+                "F0/13",
+            ],
+        },
+        {
+            "slug": "ip-address-dhcp-interface-client",
+            "title": "CCNA — ip address dhcp on an interface",
+            "stem": "What is the purpose of the ip address dhcp command?",
+            "name": "ipaddrhcp1",
+            "correct": "D",
+            "explain": "Correct. D — On a routed interface, ip address dhcp makes the router obtain its IPv4 address, mask, and default gateway from a DHCP server (DHCP client behavior). A DHCP server uses a DHCP pool and service configuration, not this command. Relay/helper uses ip helper-address (or IPv6 dhcp relay) on the client-facing router interface, not ip address dhcp.",
+            "choices": [
+                "to configure an interface as a DHCP server",
+                "to configure an interface as a DHCP relay",
+                "to configure an interface as a DHCP helper",
+                "to configure an interface as a DHCP client",
+            ],
+        },
+        {
+            "slug": "endpoint-network-function-client-server",
+            "title": "CCNA — Function of a network endpoint",
+            "stem": "What is a function of an endpoint on a network?",
+            "name": "endptfn1",
+            "correct": "B",
+            "explain": "Correct. B — Endpoints are the hosts at the edge of the network—client and server devices that attach to the infrastructure to originate or consume traffic. Wireless service delivery (C) is typically an AP/controller role. Inter-VLAN forwarding (D) is a Layer 3 device function. Option A describes one possible application, not the general role of an endpoint.",
+            "choices": [
+                "allows users to record data and transmit to a file server",
+                "connects server and client devices to a network",
+                "provides wireless services to users in a building",
+                "forwards traffic between VLANs on a network",
+            ],
+        },
+        {
+            "slug": "ipv6-internal-device-unique-local-address",
+            "title": "CCNA — IPv6 internal-only reachability",
+            "stem": "A network engineer is installing an IPv6-only capable device. The client has requested that the device IP address be reachable only from the internal network. Which type of IPv6 address must the engineer assign?",
+            "name": "ipv6intula1",
+            "correct": "A",
+            "explain": "Correct. A — Unique Local Addresses (ULA, fd00::/8 in common deployments) are IPv6 unicast addresses meant for private internal routing: they are globally ambiguous and filtered from the public Internet, similar in intent to RFC 1918 for IPv4. Link-local addresses are only link-scoped and are not used as the stable enterprise-routable address for reachability across internal subnets. Global unicast (aggregatable global) addresses are Internet-routable. IPv4-compatible IPv6 addresses (::/96 form) are obsolete and not appropriate here.",
+            "choices": [
+                "unique local address",
+                "link-local address",
+                "IPv4-compatible IPv6 address",
+                "aggregatable global address",
+            ],
+        },
+        {
+            "slug": "etherchannel-port-channel10-lacp-modes-choose-two",
+            "title": "CCNA — Port channel 10 LACP modes (choose two)",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="Switch show etherchannel summary">
+        <pre>Switch#show etherchannel summary
+
+[output omitted]
+
+Group   Port-channel  Protocol   Ports
+------+--------------+---------+---------------------
+10      Po10(SU)       LACP      Gi0/0(P)  Gi0/1(P)
+20      Po20(SU)       LACP      Gi0/2(P)  Gi0/3(P)</pre>
+      </div>""",
+            "stem": "Refer to the exhibit. Which two commands when used together create port channel 10? (Choose two)",
+            "name": "po10lacp2",
+            "choose_two": True,
+            "mono": True,
+            "correct": ["A", "C"],
+            "explain": "Correct. A and C — The summary shows port channel 10 using the LACP protocol with Gi0/0 and Gi0/1 in the bundle. mode active and mode passive are LACP (IEEE 802.3ad) negotiation keywords used with channel-group 10. mode desirable and mode auto are Cisco PAgP modes and would not match the LACP protocol column. mode on builds a static EtherChannel without LACP PDUs.",
+            "choices": [
+                "int range g0/0-1\nchannel-group 10 mode active",
+                "int range g0/0-1\nchannel-group 10 mode desirable",
+                "int range g0/0-1\nchannel-group 10 mode passive",
+                "int range g0/0-1\nchannel-group 10 mode auto",
+                "int range g0/0-1\nchannel-group 10 mode on",
+            ],
+        },
+        {
+            "slug": "ospf-dr-r1-priority-r3-zero-choose-two",
+            "title": "CCNA — Make R1 the OSPF DR (choose two)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/ospf-dr-r1-r2-r3-area0-lan-topology.png" alt="Topology: R1, R2, and R3 on F0/0 to a central switch; OSPF Area 0 LAN 192.168.100.0/24 with routers at .1, .2, and .3." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="R1 show ip ospf neighbor">
+        <pre>R1#show ip ospf neighbor
+
+Neighbor ID     Pri   State      Dead Time   Address         Interface
+192.168.100.2     1   FULL/BDR   00:00:35    192.168.100.2   FastEthernet0/0
+192.168.100.3     1   FULL/DR    00:00:34    192.168.100.3   FastEthernet0/0</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. Which two configurations must the engineer apply on this network so that R1 becomes the DR? (Choose two)",
+            "name": "ospfdr1r3",
+            "choose_two": True,
+            "mono": True,
+            "correct": ["A", "C"],
+            "explain": "Correct. A and C — The topology and neighbor output show R3 as DR and R2 as BDR on FastEthernet0/0 with priority 1. Raising R1\u2019s OSPF priority on that segment (200) makes R1 win the election, and setting R3\u2019s interface priority to 0 removes R3 from DR/BDR contention. Router ID (B) only breaks ties when priorities match. R1 priority 0 (D) disqualifies R1. Raising R3 to 200 (E) strengthens the current DR.",
+            "choices": [
+                "R1(config)#interface FastEthernet0/0\nR1(config-if)#ip ospf priority 200",
+                "R1(config)#router ospf 1\nR1(config-router)#router-id 192.168.100.1",
+                "R3(config)#interface FastEthernet0/0\nR3(config-if)#ip ospf priority 0",
+                "R1(config)#interface FastEthernet0/0\nR1(config-if)#ip ospf priority 0",
+                "R3(config)#interface FastEthernet0/0\nR3(config-if)#ip ospf priority 200",
+            ],
+        },
+        {
+            "slug": "r1-ntp-server-requirements-config",
+            "title": "CCNA — R1 NTP server with auth, source, stratum, ACL",
+            "stem": "R1 as an NTP server must have:\n• NTP authentication enabled\n• NTP packets sourced from interface Loopback 0\n• NTP stratum 2\n• NTP packets only permitted to client IP 209.165.200.225\n\nHow should R1 be configured?",
+            "name": "ntp1r1srv",
+            "correct": "D",
+            "explain": "Correct. D — ntp authenticate and ntp authentication-key enable keyed NTP; ntp source Loopback0 sets the source address for NTP packets; ntp master 2 advertises stratum 2 from the local clock (there is no ntp stratum EXEC-style command in this form). ntp access-group 10 serve-only applies IPv4 ACL 10 so only permitted sources receive NTP server replies; access-list 10 permit host 209.165.200.225 matches the allowed client. Option A misuses a numbered standard ACL with UDP/port syntax (that requires an extended ACL). Option B uses ntp stratum 2, which is not valid IOS configuration. Option C uses ntp interface Loopback0 instead of ntp source, repeats the invalid ntp stratum line, and uses an incomplete ACL line. Note: IOS uses the keyword serve-only (not server-only) in ntp access-group.",
+            "choices": [
+                "ntp authenticate\nntp authentication-key 2 sha1 CISCO123\nntp source Loopback0\nntp access-group server-only 10\nntp master 2\n!\naccess-list 10 permit udp host 209.165.200.225 any eq 123",
+                "ntp authenticate\nntp authentication-key 2 md5 CISCO123\nntp source Loopback0\nntp access-group server-only 10\nntp stratum 2\n!\naccess-list 10 permit udp host 209.165.200.225 any eq 123",
+                "ntp authenticate\nntp authentication-key 2 md5 CISCO123\nntp interface Loopback0\nntp access-group server-only 10\nntp stratum 2\n!\naccess-list 10 permit 209.165.200.225",
+                "ntp authenticate\nntp authentication-key 2 md5 CISCO123\nntp source Loopback0\nntp access-group 10 serve-only\nntp master 2\n!\naccess-list 10 permit host 209.165.200.225",
+            ],
+            "mono": True,
+        },
     ]
 
     prev = "vty-access-list-ssh-secure"
@@ -4281,6 +4592,7 @@ channel-group 1 mode active</pre>
                 next_slug=next_slug,
                 post_stem_html=q.get("post_stem_html"),
                 stem_after_exhibit=q.get("stem_after_exhibit"),
+                prepend_html=q.get("prepend_html"),
             )
         else:
             ch_lines = "\n".join(

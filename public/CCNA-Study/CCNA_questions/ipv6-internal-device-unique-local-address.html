@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — LACP EtherChannel SW1–SW2</title>
+  <title>CCNA — IPv6 internal-only reachability</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,42 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <div class="exhibit-stack">
-      <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/lacp-etherchannel-sw1-sw2-topology.png" alt="Topology: SW1 and SW2 with two parallel links—SW1 Fa0/1 to SW2 Fa0/1 and SW1 Fa0/2 to SW2 Fa0/2." width="900" decoding="async" loading="lazy" />
-      </figure>
-      <div class="exhibit-router-cli" role="region" aria-label="SW1 and SW2 show run for port-channel member interfaces">
-        <pre>SW1#show run interface fastEthernet0/1
-switchport trunk encapsulation dot1q
-switchport mode trunk
-switchport trunk allowed vlan 100,200,300
-channel-group 1 mode on
+    <h1>A network engineer is installing an IPv6-only capable device. The client has requested that the device IP address be reachable only from the internal network. Which type of IPv6 address must the engineer assign?</h1>
 
-SW1#show run interface fastEthernet0/2
-switchport trunk encapsulation dot1q
-switchport mode trunk
-switchport trunk allowed vlan 100,200,300
-channel-group 1 mode on
-
-SW2#show run interface fastEthernet 0/1
-switchport trunk encapsulation dot1q
-switchport mode trunk
-switchport trunk allowed vlan 100,200,300
-channel-group 1 mode active
-
-SW2#show run interface fastEthernet 0/2
-switchport trunk encapsulation dot1q
-switchport mode trunk
-switchport trunk allowed vlan 100,200,300
-channel-group 1 mode active</pre>
-      </div>
-    </div>
-    <h1>An engineer built a new L2 LACP EtherChannel between SW1 and SW2 and executed these show commands to verify the work. Which additional task allows the two switches to establish an LACP port channel?</h1>
-
-    <label class="choice"><input type="radio" name="lacpsw12" value="A" />A. Change the channel-group mode on SW1 to desirable.</label>
-    <label class="choice"><input type="radio" name="lacpsw12" value="B" />B. Change the channel-group mode on SW1 to active or passive.</label>
-    <label class="choice"><input type="radio" name="lacpsw12" value="C" />C. Change the channel-group mode on SW2 to auto.</label>
-    <label class="choice"><input type="radio" name="lacpsw12" value="D" />D. Configure the interface port-channel 1 command on both switches.</label>
+    <label class="choice"><input type="radio" name="ipv6intula1" value="A" />A. unique local address</label>
+    <label class="choice"><input type="radio" name="ipv6intula1" value="B" />B. link-local address</label>
+    <label class="choice"><input type="radio" name="ipv6intula1" value="C" />C. IPv4-compatible IPv6 address</label>
+    <label class="choice"><input type="radio" name="ipv6intula1" value="D" />D. aggregatable global address</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -357,15 +327,15 @@ channel-group 1 mode active</pre>
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/show-ip-route-eigrp-learned-prefix.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/switch2-lldp-timer-holdtime.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/endpoint-network-function-client-server.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/etherchannel-port-channel10-lacp-modes-choose-two.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 mode on places interfaces in a static (non-negotiated) EtherChannel: no LACP or PAgP PDUs. SW2 uses LACP (mode active). An LACP port channel requires LACP on both ends\u2014set SW1 to mode active or mode passive on those ports (with an active neighbor, passive can still form a bundle). Option A uses PAgP (desirable), not the right fix for LACP with SW2. Option C\u2019s auto is PAgP. Option D is not the main issue; the mismatch is on versus LACP.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 Unique Local Addresses (ULA, fd00::/8 in common deployments) are IPv6 unicast addresses meant for private internal routing: they are globally ambiguous and filtered from the public Internet, similar in intent to RFC 1918 for IPv4. Link-local addresses are only link-scoped and are not used as the stable enterprise-routable address for reachability across internal subnets. Global unicast (aggregatable global) addresses are Internet-routable. IPv4-compatible IPv6 addresses (::/96 form) are obsolete and not appropriate here.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -379,7 +349,7 @@ channel-group 1 mode active</pre>
         }
       }
 
-      document.querySelectorAll('input[name="lacpsw12"]').forEach(function (el) {
+      document.querySelectorAll('input[name="ipv6intula1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

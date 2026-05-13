@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — LACP EtherChannel SW1–SW2</title>
+  <title>CCNA — Port channel 10 LACP modes (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,79 +312,116 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-  <main class="card">
-    <div class="exhibit-stack">
-      <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/lacp-etherchannel-sw1-sw2-topology.png" alt="Topology: SW1 and SW2 with two parallel links—SW1 Fa0/1 to SW2 Fa0/1 and SW1 Fa0/2 to SW2 Fa0/2." width="900" decoding="async" loading="lazy" />
-      </figure>
-      <div class="exhibit-router-cli" role="region" aria-label="SW1 and SW2 show run for port-channel member interfaces">
-        <pre>SW1#show run interface fastEthernet0/1
-switchport trunk encapsulation dot1q
-switchport mode trunk
-switchport trunk allowed vlan 100,200,300
-channel-group 1 mode on
+    <main class="card">
+    <div class="exhibit-router-cli" role="region" aria-label="Switch show etherchannel summary">
+        <pre>Switch#show etherchannel summary
 
-SW1#show run interface fastEthernet0/2
-switchport trunk encapsulation dot1q
-switchport mode trunk
-switchport trunk allowed vlan 100,200,300
-channel-group 1 mode on
+[output omitted]
 
-SW2#show run interface fastEthernet 0/1
-switchport trunk encapsulation dot1q
-switchport mode trunk
-switchport trunk allowed vlan 100,200,300
-channel-group 1 mode active
-
-SW2#show run interface fastEthernet 0/2
-switchport trunk encapsulation dot1q
-switchport mode trunk
-switchport trunk allowed vlan 100,200,300
-channel-group 1 mode active</pre>
+Group   Port-channel  Protocol   Ports
+------+--------------+---------+---------------------
+10      Po10(SU)       LACP      Gi0/0(P)  Gi0/1(P)
+20      Po20(SU)       LACP      Gi0/2(P)  Gi0/3(P)</pre>
       </div>
-    </div>
-    <h1>An engineer built a new L2 LACP EtherChannel between SW1 and SW2 and executed these show commands to verify the work. Which additional task allows the two switches to establish an LACP port channel?</h1>
+    <h1 class="choose-two-stem">Refer to the exhibit. Which two commands when used together create port channel 10? (Choose two)</h1>
 
-    <label class="choice"><input type="radio" name="lacpsw12" value="A" />A. Change the channel-group mode on SW1 to desirable.</label>
-    <label class="choice"><input type="radio" name="lacpsw12" value="B" />B. Change the channel-group mode on SW1 to active or passive.</label>
-    <label class="choice"><input type="radio" name="lacpsw12" value="C" />C. Change the channel-group mode on SW2 to auto.</label>
-    <label class="choice"><input type="radio" name="lacpsw12" value="D" />D. Configure the interface port-channel 1 command on both switches.</label>
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="po10lacp2" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. int range g0/0-1
+channel-group 10 mode active</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="po10lacp2" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. int range g0/0-1
+channel-group 10 mode desirable</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="po10lacp2" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. int range g0/0-1
+channel-group 10 mode passive</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="po10lacp2" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. int range g0/0-1
+channel-group 10 mode auto</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="po10lacp2" value="E" aria-label="Select answer option E" />
+        <span class="cli-router-choice-badge" aria-hidden="true">E</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">E. int range g0/0-1
+channel-group 10 mode on</pre>
+    </label>
+
 
     <div class="actions">
+      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/show-ip-route-eigrp-learned-prefix.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/switch2-lldp-timer-holdtime.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ipv6-internal-device-unique-local-address.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ospf-dr-r1-priority-r3-zero-choose-two.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 mode on places interfaces in a static (non-negotiated) EtherChannel: no LACP or PAgP PDUs. SW2 uses LACP (mode active). An LACP port channel requires LACP on both ends\u2014set SW1 to mode active or mode passive on those ports (with an active neighbor, passive can still form a bundle). Option A uses PAgP (desirable), not the right fix for LACP with SW2. Option C\u2019s auto is PAgP. Option D is not the main issue; the mismatch is on versus LACP.";
+      var CORRECT = ["A", "C"];
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="po10lacp2"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = CORRECT_MSG;
+          answerBox.textContent = "Correct. A and C \u2014 The summary shows port channel 10 using the LACP protocol with Gi0/0 and Gi0/1 in the bundle. mode active and mode passive are LACP (IEEE 802.3ad) negotiation keywords used with channel-group 10. mode desirable and mode auto are Cisco PAgP modes and would not match the LACP protocol column. mode on builds a static EtherChannel without LACP PDUs.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="lacpsw12"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>
