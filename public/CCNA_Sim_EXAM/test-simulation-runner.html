@@ -328,7 +328,7 @@
       <div class="results-actions">
         <button type="button" id="resultsContinue">Continue</button>
         <p class="results-note">
-          One-time test access ends after this summary unless you have an active CCNA portal pass (30-day or 90-day). Continue returns you to the training
+          One-time test access ends after this summary unless you have an active <strong>30-day</strong> CCNA portal pass. Continue returns you to the training
           portal or the timed-test access page when you finish or run out of time. Use <strong>Quit</strong> in the exam footer to leave immediately and return to the
           <a href="/CCNA-Study/CCNA_Training_Portal.html">CCNA study hub</a> without this summary.
           Scaled results use a <strong>1000</strong>-point score with a <strong>800</strong> passing threshold (70% MCQ, 10% drag-and-drop, 20% labs).
@@ -344,10 +344,9 @@
   </footer>
 
   <script type="module">
-    /** Portal pass: bcc_ccna_portal_30d_v1 and/or bcc_ccna_portal_90d_v1 — see ccna-portal-30d-storage.js */
+    /** Portal pass: bcc_ccna_portal_30d_v1 — see ccna-portal-30d-storage.js */
     /** localStorage: bcc_ccna_test_sim_temp_v1 — one-time Stripe checkout session (cleared when session ends if no portal pass) */
     var LS_PORTAL_30D = "bcc_ccna_portal_30d_v1";
-    var LS_PORTAL_90D = "bcc_ccna_portal_90d_v1";
     var LS_TEMP_TEST = "bcc_ccna_test_sim_temp_v1";
     var TOTAL_SECONDS = 120 * 60;
     var timerId = null;
@@ -377,13 +376,6 @@
         if (raw30) {
           var o30 = JSON.parse(raw30);
           if (typeof o30.expiresAt === "number" && o30.expiresAt > Date.now()) return true;
-        }
-      } catch (e) {}
-      try {
-        var raw90 = localStorage.getItem(LS_PORTAL_90D);
-        if (raw90) {
-          var o90 = JSON.parse(raw90);
-          if (typeof o90.expiresAt === "number" && o90.expiresAt > Date.now()) return true;
         }
       } catch (e) {}
       return false;
@@ -1110,7 +1102,7 @@
       await startExamUI();
     } else if (!sessionId) {
       gateStatus.textContent =
-        "No paid checkout session found. Use Purchase timed test access on the one-time landing page, or open the Stripe return link from your receipt (it includes session_id). If you already paid on this browser, reopen the runner here — saved checkout data on this device may restore access without session_id in the URL. If you have an active CCNA portal pass (30-day or 90-day), start the timed test from the CCNA Training Portal on this browser.";
+        "No paid checkout session found. Use Purchase timed test access on the one-time landing page, or open the Stripe return link from your receipt (it includes session_id). If you already paid on this browser, reopen the runner here — saved checkout data on this device may restore access without session_id in the URL. If you have an active 30-day CCNA portal pass, start the timed test from the CCNA Training Portal on this browser.";
       gateStatus.className = "status-bad";
     } else {
       try {
