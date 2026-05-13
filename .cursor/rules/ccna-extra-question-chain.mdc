@@ -21,13 +21,15 @@ alwaysApply: true
 
 6. **Index**: Update the extra-questions blurb in `public/CCNA-Study/ccna-index.html` (topic count and short description) when the chain grows, if that page mentions counts.
 
+7. **Answer verification (official Cisco only)**: When checking stems, keys, and explanations, rely on **certified / official Cisco sources** (documentation, Cisco Learning Network, DevNet as appropriate)—not dumps or unvetted third-party sites. Do not embed non-Cisco `http(s)://` URLs in chain HTML or `gen_ccna_chain_pages.py` strings; run `python3 scripts/lint-practice-question-urls.py` (or `npm run lint:question-urls`) after edits that could add links. See `.cursor/rules/answer-verification-cisco-sources.mdc`.
+
 ## Exhibits: Cisco CLI output scraped from screenshots
 
 When the user supplies or you transcribe **router/switch IOS-style command output** (e.g. `show ip route`, `show run`, `show interfaces`), **do not embed PNG screenshots** for that text.
 
 1. Paste the **verbatim transcript** into a `<pre>` inside **`exhibit-router-cli`** (dark console: near-black background, light monospace text). That wrapper is defined in `scripts/gen_ccna_chain_pages.py` shared `STYLE`; use it via **`prepend_html`** or **`post_stem_html`** on the chain entry, matching patterns like `show-ip-route-eigrp-learned-prefix`.
 2. Preserve spacing and line breaks as in the source output; escape HTML-sensitive sequences only as needed inside the generator string.
-3. **Diagrams / topology figures** — keep using **`figure.exhibit-photo`** + image asset under `public/CCNA-Study/CCNA_questions/` when the exhibit is visual topology, not plain CLI text.
+3. **Diagrams / topology figures** — keep using **`figure.exhibit-photo`** + image asset under **`public/CCNA-Study/CCNA_questions/images/`** (not the HTML root) when the exhibit is visual topology, not plain CLI text. Reference them in `prepend_html` / `post_stem_html` as `/CCNA-Study/CCNA_questions/images/<filename>.png`.
 4. **Non-Cisco host terminals** (e.g. macOS **`ifconfig`** / light-background transcripts) — **`exhibit-terminal-white`** remains appropriate when a white terminal window is clearer.
 5. Older entries may still use **`cli-device`** (labeled dark panels with optional `<h2>`). For **new** questions, prefer **`exhibit-router-cli`** for single-pane IOS transcripts unless you need the multi-device **`cli-device`** chrome.
 

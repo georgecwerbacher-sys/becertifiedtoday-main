@@ -1,0 +1,28 @@
+---
+description: Verify practice-question answers using official Cisco sources only; lint keeps non-Cisco URLs out of published question files.
+globs: public/CCNA-Study/CCNA_questions/*.html,public/question-*.html,scripts/gen_ccna_chain_pages.py
+alwaysApply: false
+---
+
+# Answer verification — official Cisco sources only
+
+This policy is about **how you confirm correctness** (stems, distractors, keys, explanations): use **certified / official Cisco material** only—Cisco product documentation, configuration guides, command references, and Cisco-operated learning properties—not exam dumps, random blogs, or unvetted forums.
+
+**Good places to verify answers (examples, not exhaustive):**
+
+- [Cisco Documentation](https://www.cisco.com/c/en/us/support/docs/index.html) (`*.cisco.com` technical docs)
+- [Cisco Learning Network](https://learningnetwork.cisco.com/) (when you need exam blueprint or curriculum alignment)
+- [Cisco Developer / DevNet](https://developer.cisco.com/) where relevant to APIs or programmability topics
+
+Prefer paraphrase and IOS behavior you can tie to Cisco docs; do not treat third-party “brain dumps” as authoritative.
+
+## Published site files (guardrail)
+
+Question pages should **not** embed `http(s)://` links to non-Cisco hosts in explanations or stems (keeps the site aligned with the verification policy above). If a citation link is truly needed in HTML, use **`cisco.com` or `*.cisco.com` only**.
+
+After edits that might introduce URLs:
+
+`python3 scripts/lint-practice-question-urls.py`  
+or `npm run lint:question-urls` (alias: `npm run lint:ccna-urls`)
+
+That script exits **non-zero** if disallowed URLs appear in the scanned question files or in `scripts/gen_ccna_chain_pages.py`.

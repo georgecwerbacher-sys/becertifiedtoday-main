@@ -17,6 +17,8 @@ When the user adds, pastes, or discusses a **numbered** practice question (e.g. 
 
 4. If the question includes a **diagram/image**, follow pages like `question-93.html` (`.image-wrap`, asset under `public/` as the project already does).
 
+5. **Answer verification (official Cisco only)**: Confirm correctness using **Cisco official documentation and learning resources**, not third-party dumps. Do not embed non-Cisco `http(s)://` URLs in `public/question-*.html`. After edits that could add links, run `python3 scripts/lint-practice-question-urls.py` or `npm run lint:question-urls`. See `.cursor/rules/answer-verification-cisco-sources.mdc`.
+
 ## Skip / clarify
 
 - If there is **no number**, ask which question id to use before creating files.

@@ -8,6 +8,7 @@ import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 OUT = ROOT / "public/CCNA-Study/CCNA_questions"
+# Topology / exhibit raster files live in OUT/images/ (see .cursor/rules/ccna-extra-question-chain.mdc).
 
 STYLE = r"""  <style>
     :root {
@@ -929,7 +930,7 @@ access-list 100 permit udp host 10.0.1.1 eq bootps host 10.148.2.1""",
             "stem_after_exhibit": "Which configuration allows routers R14 and R86 to form an OSPFv2 adjacency while acting as a central point for exchanging OSPF information between routers?",
             "post_stem_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/ospf-r14-r86-fa0-topology.png" alt="Topology: R14 Fa0/0 linked to R86 Fa0/0 on 10.73.65.64/30; Loopback0 10.10.1.14/32 on R14 and 10.10.1.86/32 on R86." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/ospf-r14-r86-fa0-topology.png" alt="Topology: R14 Fa0/0 linked to R86 Fa0/0 on 10.73.65.64/30; Loopback0 10.10.1.14/32 on R14 and 10.10.1.86/32 on R86." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>""",
             "name": "ospfr1486",
@@ -1566,7 +1567,7 @@ network 10.73.65.64 0.0.0.3 area 0""",
             "explain": "Correct. B \u2014 The topology shows the printer on SW_1 and an inter-switch link on Et0/2 toward SW_2 and the LAN. The CLI excerpt shows that link administratively in dynamic auto but operationally trunking with dot1q and only VLAN 5 enabled on the trunk\u2014consistent with DTP negotiation from an active neighbor and a restricted allowed-VLAN list. To reach that state from configuration, use dynamic desirable (or trunk) toward SW_2 so DTP forms the trunk, and switchport trunk allowed vlan add 5 so VLAN 5 crosses the link for the printer access VLAN. Option A misstates pruning/allowed-VLAN syntax. Option C uses private VLAN association text that does not replace normal access VLAN 5 across a trunk. Option D alone does not add VLAN 5 to the allowed list and is a weaker match when both ends might stay passive.",
             "post_stem_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/dtp-sw1-sw2-printer-lan-topology.png" alt="Topology: printer on SW_1 Ethernet 1/1; SW_1 Ethernet 0/2 to SW_2 Ethernet 0/2; SW_2 to LAN cloud." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/dtp-sw1-sw2-printer-lan-topology.png" alt="Topology: printer on SW_1 Ethernet 1/1; SW_1 Ethernet 0/2 to SW_2 Ethernet 0/2; SW_2 to LAN cloud." width="900" decoding="async" loading="lazy" />
       </figure>
       <div class="cli-device" role="region" aria-label="SW_1 show interfaces Et0/2 switchport output">
         <h2>SW_1# show interfaces Et0/2 switchport</h2>
@@ -1884,7 +1885,7 @@ switchport trunk encapsulation negotiate""",
             "explain": "Correct. A — A floating static route is a backup static route configured with a higher administrative distance than the primary route so it is only used when preferred routing is lost. Option A points to the backup next hop (192.168.2.1) with AD 10. Option B is a normal static default with the default AD. Option C sets AD 10 on the primary next hop and does not represent the intended backup path. Option D is for hosts/switches without IP routing, not for a routed fallback default route on a router.",
             "post_stem_html": '''    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/floating-static-default-route-router-a-topology.png" alt="Topology: Routers A, B, and C in a triangle. A–B 192.168.2.0/24 (.1 on A Gi0/0/0, .2 on B Gi0/0/0); A–C 192.168.1.0/24 (.1 on A Gi0/0/1, .2 on C Gi0/0/0); B–C 192.168.3.0/24 (.2 on B Gi0/0/1, .1 on C Gi0/0/1)." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/floating-static-default-route-router-a-topology.png" alt="Topology: Routers A, B, and C in a triangle. A–B 192.168.2.0/24 (.1 on A Gi0/0/0, .2 on B Gi0/0/0); A–C 192.168.1.0/24 (.1 on A Gi0/0/1, .2 on C Gi0/0/0); B–C 192.168.3.0/24 (.2 on B Gi0/0/1, .1 on C Gi0/0/1)." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>''',
             "choices": [
@@ -1904,7 +1905,7 @@ switchport trunk encapsulation negotiate""",
             "explain": "Correct. C — A floating backup static route must have a higher administrative distance than the primary static default (which is AD 1 by default). Pointing the backup to R2 with AD 10 makes it install only when the primary path via R3 disappears. B and D use AD 1, so they are not floating backups. A uses an exit interface form with AD 6 and does not match the explicit backup next-hop path indicated for R2 in this scenario.",
             "post_stem_html": '''    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/r1-backup-default-route-via-r2-ad10-topology.png" alt="Topology with R1 connected to LAN 192.168.1.0/24 and WAN links to R2 (209.165.200.224/27) and R3 (209.165.201.0/27), where R2 is backup Internet path." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/r1-backup-default-route-via-r2-ad10-topology.png" alt="Topology with R1 connected to LAN 192.168.1.0/24 and WAN links to R2 (209.165.200.224/27) and R3 (209.165.201.0/27), where R2 is backup Internet path." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>''',
             "choices": [
@@ -1924,7 +1925,7 @@ switchport trunk encapsulation negotiate""",
             "explain": "Correct. C — The valid static route for the new server subnet is a /24 route to 172.16.2.0 via the intended next-hop router at 192.168.1.5. Option A points to a different next hop and does not match the required path. Option B is a host route to 172.16.2.2 and does not represent the full new server subnet requirement. Option D uses an invalid mask/prefix combination for the host route shown.",
             "post_stem_html": '''    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/r1-management-network-static-route-new-server-topology.png" alt="Management network with PC1/PC2 to R1, transit link 192.168.1.0/24 from R1 to R2, and server network 172.16.2.0/24 with new server 172.16.2.2 behind R2." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/r1-management-network-static-route-new-server-topology.png" alt="Management network with PC1/PC2 to R1, transit link 192.168.1.0/24 from R1 to R2, and server network 172.16.2.0/24 with new server 172.16.2.2 behind R2." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>''',
             "choices": [
@@ -2161,7 +2162,7 @@ switchport trunk encapsulation negotiate""",
             "explain": "Correct. C — On Gi0/1, no cdp enable stops CDP on that interface only while cdp run keeps CDP on other interfaces such as Gi0/2. no lldp run disables LLDP globally so it is not active on Gi0/1. Option A globally disables CDP (hurts Gi0/2) and leaves LLDP on Gi0/1. Option B places no cdp run under the interface, which is invalid (global command). Option D matches C for config but uses only show cdp neighbor; neighbor detail output is the usual place to read the neighbor management IP for R6.",
             "post_stem_html": '''    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/r5-r6-internet-topology-neighbor-discovery.png" alt="Topology: Internet connected to R5 Gi0/1; R5 Gi0/2 linked to R6 Gi0/2." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/r5-r6-internet-topology-neighbor-discovery.png" alt="Topology: Internet connected to R5 Gi0/1; R5 Gi0/2 linked to R6 Gi0/2." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>''',
             "choices": [
@@ -2389,7 +2390,7 @@ Packets with Invalid Option          = 0</pre>
             "explain": "Correct. B \u2014 On each OSPF broadcast or NBMA segment, the DR is elected using the highest OSPF interface priority on that segment (then router ID as a tie-breaker when priorities match). Giving router A\u2019s interface(s) on the segment a higher priority than routers B and C makes A the DR for that segment in area 0. The lowest priority (A) would not prefer A as DR. A fixed router ID (C) only helps break ties after priority; it does not by itself guarantee A wins if neighbors have higher priority or a higher RID with equal priority. Neighbor statements toward B and C (D) are not the normal control for DR election on Ethernet and do not replace priority/RID rules.",
             "post_stem_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/ospf-dr-election-router-a-area-zero-topology.png" alt="Topology: Routers A, B, and C in a triangle. A–B 192.168.2.0/24 (.1 on A Gi0/0/0, .2 on B Gi0/0/0); A–C 192.168.1.0/24 (.1 on A Gi0/0/1, .2 on C Gi0/0/0); B–C 192.168.3.0/24 (.2 on B Gi0/0/1, .1 on C Gi0/0/1)." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/ospf-dr-election-router-a-area-zero-topology.png" alt="Topology: Routers A, B, and C in a triangle. A–B 192.168.2.0/24 (.1 on A Gi0/0/0, .2 on B Gi0/0/0); A–C 192.168.1.0/24 (.1 on A Gi0/0/1, .2 on C Gi0/0/0); B–C 192.168.3.0/24 (.2 on B Gi0/0/1, .1 on C Gi0/0/1)." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>""",
             "choices": [
@@ -2491,7 +2492,7 @@ D        10.0.1.0/28 [90/10] via 192.168.0.7, 00:33:32, GigabitEthernet0/0</pre>
             "explain": "Correct. A \u2014 The topology shows a multi-kilometer inter-site link; the CLIs show mismatched optics: SiteA reports SFP-SR (short-reach, typically multimode at 850 nm) while SiteB reports SFP-LR (long-reach, single-mode at 1310 nm). The scenario states a single-mode fiber span; SR is the wrong class of transceiver for that path compared with LR, and SR is also far outside its intended reach versus that distance, so the link can be marginal or intermittently usable even when the interface stays up. B is unlikely because the stem specifies single-mode fiber was installed. C does not fit: utilization affects queuing delay, not the classic pattern of flaky reachability from a layer-1 mismatch. D is unsupported: the exhibit does not list input or CRC errors.",
             "post_stem_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/site-ab-tenge-sfp-sr-vs-lr-smf-topology.png" alt="Topology: Site A cloud linked to Site B cloud; distance between sites about 7 km." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/site-ab-tenge-sfp-sr-vs-lr-smf-topology.png" alt="Topology: Site A cloud linked to Site B cloud; distance between sites about 7 km." width="900" decoding="async" loading="lazy" />
       </figure>
       <div class="cli-grid two-cols" role="group" aria-label="SiteA and SiteB show interface output">
         <div class="cli-device" role="region" aria-label="SiteA show interface TenGigabitEthernet0/1/0">
@@ -2537,7 +2538,7 @@ D        10.0.1.0/28 [90/10] via 192.168.0.7, 00:33:32, GigabitEthernet0/0</pre>
             "explain": "Correct. C \u2014 The MAC address table has no entry for host D\u2019s destination MAC, so the frame is unknown unicast at Layer 2. The switch floods it out every other port in that VLAN except the ingress port (Fa0/1). A port-security violation could err-disable a port, but nothing in the exhibit indicates that. A single unknown-unicast frame does not by itself imply a broadcast storm. The switch does not remove unrelated CAM entries when forwarding or flooding (D misstates both flooding and how the CAM table is updated).",
             "post_stem_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/switch-host-a-to-d-unknown-dest-flood-topology.png" alt="Topology: one switch with Host A on Fa0/1, Host B on Fa0/2, Host C on Fa0/3, and Host D on Fa0/4." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/switch-host-a-to-d-unknown-dest-flood-topology.png" alt="Topology: one switch with Host A on Fa0/1, Host B on Fa0/2, Host C on Fa0/3, and Host D on Fa0/4." width="900" decoding="async" loading="lazy" />
       </figure>
       <div class="cli-device" role="region" aria-label="SwitchA show mac-address table output">
         <h2>SwitchA# show mac-address table</h2>
@@ -2573,7 +2574,7 @@ The frame arrives on Fa0/1 with destination MAC 00aa.bbcc.dd01.</pre>
             "explain": "Correct. C \u2014 The topology shows both PCs in VLAN 2 (PC2 on Fa0/2 with MAC 0007.ec89.7513). The running configuration shows Fa0/2 in trunk mode with only VLAN 3 allowed on the trunk, while PC1 stays on access VLAN 2 at Fa0/1; the MAC table only lists VLAN 2 on Fa0/1 (PC1\u2019s 0007.ec53.4289), so PC2 does not appear for VLAN 2 as expected. Removing trunk mode and the restricted allowed-VLAN list, then configuring the port as access, restores a normal access edge so PC2 can be learned in VLAN 2 and talk to PC1. Option A keeps trunking and adjusts allowed VLANs in the wrong direction for this access-host scenario. Option B edits Fa0/1 and mixes access/trunk semantics on the wrong interface. Option D applies contradictory access and trunk commands on Fa0/1.",
             "post_stem_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/switch-sw1-pc2-mac-missing-fa02-topology.png" alt="Topology: SW1 with PC1 on Fa0/1 in VLAN 2 (MAC 0007.ec53.4289) and PC2 on Fa0/2 in VLAN 2 (MAC 0007.ec89.7513)." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/switch-sw1-pc2-mac-missing-fa02-topology.png" alt="Topology: SW1 with PC1 on Fa0/1 in VLAN 2 (MAC 0007.ec53.4289) and PC2 on Fa0/2 in VLAN 2 (MAC 0007.ec89.7513)." width="900" decoding="async" loading="lazy" />
       </figure>
       <div class="cli-device" role="region" aria-label="Sw1 show run and show mac-address-table output">
         <h2>Sw1# show run</h2>
@@ -2732,7 +2733,7 @@ ip address 10.70.155.65 255.255.255.224""",
             ],
             "post_stem_html": '''    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/etherchannel-lacp-passive-exhibit.png" alt="" width="980" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/etherchannel-lacp-passive-exhibit.png" alt="" width="980" decoding="async" loading="lazy" />
       </figure>
       <div class="cli-grid two-cols" role="group" aria-label="Transcript of exhibit CLI">
         <div class="cli-device">
@@ -2783,7 +2784,7 @@ interface FastEthernet0/2
             "stem_after_exhibit": "Which configuration enables an EtherChannel to form dynamically between SW1 and SW2 by using an industry-standard protocol, and to support full IP connectivity between all PCs?",
             "post_stem_html": '''    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/etherchannel-lacp-trunk-dynamic-industry-standard-topology.png" alt="Topology: R1, SW1, SW2 with Po1 between switches and PCs in VLANs 6, 14, 77, 108, 109" width="980" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/etherchannel-lacp-trunk-dynamic-industry-standard-topology.png" alt="Topology: R1, SW1, SW2 with Po1 between switches and PCs in VLANs 6, 14, 77, 108, 109" width="980" decoding="async" loading="lazy" />
       </figure>
     </div>''',
             "name": "echlacptr1",
@@ -3079,7 +3080,7 @@ channel-group 1 mode desirable""",
             "explain": "Correct. A — A standard ACL ends with an implicit deny any. If ACL 10 only lists a deny for PC-1\u2019s address, every other source (including PC-2) still hits that implicit deny when access-class applies it inbound on the VTY lines. Add an explicit permit any after the PC-1 deny so other hosts are allowed while PC-1 remains denied. Removing the access-class (B) would drop the filter entirely and typically allow PC-1 again. Applying the ACL outbound on G0/0 (C) filters forwarded traffic through the interface, not VTY management sessions to the router. Removing the VTY password (D) does not fix ACL filtering.",
             "post_stem_html": '''    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/vty-access-class-rtr1-sw1-pc-topology.png" alt="Topology: RTR-1 G0/0 10.150.1.254/24 to SW1; PC-1 10.150.1.1 and PC-2 10.150.1.2 on the same LAN." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/vty-access-class-rtr1-sw1-pc-topology.png" alt="Topology: RTR-1 G0/0 10.150.1.254/24 to SW1; PC-1 10.150.1.1 and PC-2 10.150.1.2 on the same LAN." width="900" decoding="async" loading="lazy" />
       </figure>
       <div class="cli-device" role="region" aria-label="RTR-1 partial running configuration">
         <h2>RTR-1 (partial config)</h2>
@@ -3228,7 +3229,7 @@ end</pre>
             ],
             "post_stem_html": '''    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/static-route-r1-r2-two-sites-topology.png" alt="" width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/static-route-r1-r2-two-sites-topology.png" alt="" width="900" decoding="async" loading="lazy" />
       </figure>
     </div>''',
         },
@@ -3346,7 +3347,7 @@ ipv6 route 2001:DB8:4::/64 2001:DB8:4::302""",
             ],
             "post_stem_html": '''    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/ipv6-route-r17-r18-wan-exhibit.png" alt="" width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/ipv6-route-r17-r18-wan-exhibit.png" alt="" width="900" decoding="async" loading="lazy" />
       </figure>
     </div>''',
         },
@@ -3552,7 +3553,7 @@ ipv6 route 2001:DB8:4::/64 2001:DB8:4::302""",
             "explain": "Correct. B \u2014 IP phones mark voice traffic consistently and are treated as trusted sources at the access edge. PCs are untrusted: they can set arbitrary DSCP/CoS, so traffic from SW2 should be classified and marked on the switch rather than trusted. Broadly trusting all markings at the access layer (A, C, D) is not optimal, and relying on remarking only at MLS1 or R1 does not replace a proper access-layer trust boundary for the PC.",
             "post_stem_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/qos-trust-boundary-access-sw1-phone-sw2-pc-topology.png" alt="Topology: MPLS cloud to R1, R1 to MLS1; MLS1 to access switches SW1 (IP phone) and SW2 (PC)." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/qos-trust-boundary-access-sw1-phone-sw2-pc-topology.png" alt="Topology: MPLS cloud to R1, R1 to MLS1; MLS1 to access switches SW1 (IP phone) and SW2 (PC)." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>""",
             "choices": [
@@ -3667,7 +3668,7 @@ switchport voice vlan 30""",
             "explain": "Correct. B and E \u2014 SSH is the secure remote shell; the device needs an RSA host key pair (crypto key generate rsa) so the SSH server can run, and a local username (username ... password|secret ...) is commonly required when virtual lines use login local for authenticated SSH sessions. transport input telnet (A) enables cleartext Telnet, not secure remote access. login console (C) is not the standard VTY pattern for SSH acceptance. ip ssh pubkey-chain (D) can support public-key user authentication but is not one of the two baseline requirements compared with generating keys and defining a user for typical password-based SSH access in CCNA-style scenarios.",
             "post_stem_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/r1-ssh-secure-remote-access-choose-two-topology.png" alt="Topology: router R1 with GigabitEthernet0/1 toward LAN 10.0.1.0/24 (PC1 and PC2) and Serial0/1 toward the Internet." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/r1-ssh-secure-remote-access-choose-two-topology.png" alt="Topology: router R1 with GigabitEthernet0/1 toward LAN 10.0.1.0/24 (PC1 and PC2) and Serial0/1 toward the Internet." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>""",
             "choices": [
@@ -4090,7 +4091,7 @@ SW1(config)#ntp server 192.168.1.1""",
             "stem": "An IP subnet must be configured on each router that provides enough addresses for the number of assigned hosts and anticipates no more than 10% growth for new hosts. Which configuration script must be used?",
             "prepend_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/router-subnet-10pct-host-growth-r789-topology.png" alt="Topology: R7, R8, and R9 in a triangle. R7 Fa1/0 to a LAN cloud labeled 923 hosts; R8 Fa0/0 to a cloud labeled 225 hosts; R9 Fa1/1 to a cloud labeled 3641 hosts." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/router-subnet-10pct-host-growth-r789-topology.png" alt="Topology: R7, R8, and R9 in a triangle. R7 Fa1/0 to a LAN cloud labeled 923 hosts; R8 Fa0/0 to a cloud labeled 225 hosts; R9 Fa1/1 to a cloud labeled 3641 hosts." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>""",
             "post_stem_html": """    <ul class="stem-after-exhibit-list">
@@ -4221,7 +4222,7 @@ L        207.165.200.253/32 is directly connected, Serial0/0/1</pre>
             "stem": "An engineer built a new L2 LACP EtherChannel between SW1 and SW2 and executed these show commands to verify the work. Which additional task allows the two switches to establish an LACP port channel?",
             "prepend_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/lacp-etherchannel-sw1-sw2-topology.png" alt="Topology: SW1 and SW2 with two parallel links—SW1 Fa0/1 to SW2 Fa0/1 and SW1 Fa0/2 to SW2 Fa0/2." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/lacp-etherchannel-sw1-sw2-topology.png" alt="Topology: SW1 and SW2 with two parallel links—SW1 Fa0/1 to SW2 Fa0/1 and SW1 Fa0/2 to SW2 Fa0/2." width="900" decoding="async" loading="lazy" />
       </figure>
       <div class="exhibit-router-cli" role="region" aria-label="SW1 and SW2 show run for port-channel member interfaces">
         <pre>SW1#show run interface fastEthernet0/1
@@ -4344,7 +4345,7 @@ Global LLDP Information
             "title": "CCNA — PAT with standard ACL (exhibit)",
             "prepend_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/nat-pat-standard-acl1-topology.png" alt="Topology: PC1 172.16.0.1 and PC2 172.16.0.2 on the LAN; NAT router GigabitEthernet0/0 toward LAN and GigabitEthernet0/1 toward Internet." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/nat-pat-standard-acl1-topology.png" alt="Topology: PC1 172.16.0.1 and PC2 172.16.0.2 on the LAN; NAT router GigabitEthernet0/0 toward LAN and GigabitEthernet0/1 toward Internet." width="900" decoding="async" loading="lazy" />
       </figure>
       <div class="exhibit-router-cli" role="region" aria-label="NAT overload and standard access list 1">
         <pre>interface GigabitEthernet0/0
@@ -4409,7 +4410,7 @@ access-list 1 permit 172.16.0.2</pre>
             "title": "CCNA — Voice and data VLANs on Fa0/1 (IP phone and PC)",
             "prepend_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/switchport-fa01-phone-pc-voice-data-topology.png" alt="Topology: PC on data VLAN 15 connected to a Cisco IP phone using voice VLAN 10, phone uplink to switch SW on FastEthernet0/1." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/switchport-fa01-phone-pc-voice-data-topology.png" alt="Topology: PC on data VLAN 15 connected to a Cisco IP phone using voice VLAN 10, phone uplink to switch SW on FastEthernet0/1." width="900" decoding="async" loading="lazy" />
       </figure>
       <div class="exhibit-router-cli" role="region" aria-label="SW show running-config for FastEthernet0/1">
         <pre>SW#show run
@@ -4528,7 +4529,7 @@ Group   Port-channel  Protocol   Ports
             "title": "CCNA — Make R1 the OSPF DR (choose two)",
             "prepend_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/ospf-dr-r1-r2-r3-area0-lan-topology.png" alt="Topology: R1, R2, and R3 on F0/0 to a central switch; OSPF Area 0 LAN 192.168.100.0/24 with routers at .1, .2, and .3." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/ospf-dr-r1-r2-r3-area0-lan-topology.png" alt="Topology: R1, R2, and R3 on F0/0 to a central switch; OSPF Area 0 LAN 192.168.100.0/24 with routers at .1, .2, and .3." width="900" decoding="async" loading="lazy" />
       </figure>
       <div class="exhibit-router-cli" role="region" aria-label="R1 show ip ospf neighbor">
         <pre>R1#show ip ospf neighbor
@@ -4566,6 +4567,110 @@ Neighbor ID     Pri   State      Dead Time   Address         Interface
                 "ntp authenticate\nntp authentication-key 2 md5 CISCO123\nntp source Loopback0\nntp access-group 10 serve-only\nntp master 2\n!\naccess-list 10 permit host 209.165.200.225",
             ],
             "mono": True,
+        },
+        {
+            "slug": "r1-floating-static-ospf-backup-server",
+            "title": "CCNA — R1: OSPF primary, static backup to server network",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r1-floating-static-ospf-backup-server-topology.png" alt="Topology: PC1 on 192.168.1.0/24 to R1 Gi0/1; R1 Gi0/0 to R2 Gi0/1 on 172.16.2.0/24 (OSPF); R2 Gi0/0 on 10.1.1.0/24 to server 10.1.1.10." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="cli-device" role="region" aria-label="R1 show ip route during outage">
+        <h2>During outage</h2>
+        <pre>R1#show ip route 10.1.1.10
+% Network not in table</pre>
+      </div>
+      <div class="cli-device" role="region" aria-label="R1 show ip route normal operation">
+        <h2>Normal operation</h2>
+        <pre>R1#show ip route 10.1.1.10
+Routing entry for 10.1.1.0/24
+  Known via "ospf 1", distance 110, metric 2, type intra area
+  Last update from 172.16.2.2 on GigabitEthernet0/0, 00:00:18 ago
+  Routing Descriptor Blocks:
+  * 172.16.2.2, from 10.1.1.10, 00:00:18 ago, via GigabitEthernet0/0
+      Route metric is 2, traffic share count is 1</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. Which route must be configured on R1 so that OSPF routing is used when OSPF is up, but the server is still reachable when OSPF goes down?",
+            "name": "r1ospflt1",
+            "correct": "B",
+            "explain": "Correct. B — The detail output shows OSPF (process 1) for 10.1.1.0/24 with administrative distance 110 via GigabitEthernet0/0. A floating static backup must use a higher AD so the OSPF route stays preferred while it is in the routing table; AD 125 satisfies that. The static should match the same /24 prefix OSPF advertises so OSPF is not bypassed by a more-specific host route. When OSPF withdraws the route (as in the outage output), the static remains and restores reachability. Options A and C use AD 100, which is lower than 110, so the static would beat OSPF even when OSPF is up. Option D points to host 10.1.1.10/32; a /32 is longer than the OSPF /24, so traffic to the server would follow the static even while OSPF is up.",
+            "choices": [
+                "ip route 10.1.1.10 255.255.255.255 172.16.2.2 100",
+                "ip route 10.1.1.0 255.255.255.0 gi0/1 125",
+                "ip route 10.1.1.0 255.255.255.0 172.16.2.2 100",
+                "ip route 10.1.1.10 255.255.255.255 gi0/0 125",
+            ],
+            "mono": True,
+        },
+        {
+            "slug": "ospf-r1-r2-p2p-link-network-command",
+            "title": "CCNA — OSPF on R1–R2 point-to-point link",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/ospf-r1-r2-p2p-link-network-command-topology.png" alt="Topology: R1 Serial0/1 to R2 Serial0/1 on 10.0.0.0/30; R1 Gi0/1 on 10.0.1.0/24; R2 Gi0/1 on 10.0.2.0/24." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. Which command configures OSPF on the point-to-point link between routers R1 and R2?",
+            "name": "ospfp2pnet1",
+            "correct": "A",
+            "explain": "Correct. A — The exhibit shows R1 and R2 connected on 10.0.0.0/30 over Serial0/1 (10.0.0.1 and 10.0.0.2). In router OSPF configuration mode, network <address> <wildcard-mask> area <id> enables OSPF on interfaces whose primary IPv4 addresses match that statement. network 10.0.0.0 0.0.0.255 area 0 matches addresses 10.0.0.0–10.0.0.255, which includes the /30 on the serial link, so OSPF runs on that interconnect. Option B is not valid syntax for enabling OSPF on a typical point-to-point link (neighbor is used in specific NBMA contexts; the value shown is a prefix, not a neighbor router ID or IP). Option C sets interface DR priority on broadcast/multi-access segments and does not enable OSPF or assign an area. Option D sets the OSPF router ID only; it does not place any interface into OSPF.",
+            "choices": [
+                "network 10.0.0.0 0.0.0.255 area 0",
+                "neighbor 10.1.2.0 cost 180",
+                "ip ospf priority 100",
+                "router-id 10.0.0.15",
+            ],
+            "mono": True,
+        },
+        {
+            "slug": "ten-gigabitethernet0-0-0-slow-transfer-show-interface",
+            "title": "CCNA — TenGigabitEthernet0/0/0 slow transfer (show interface)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="show interfaces TenGigabitEthernet0/0/0">
+        <pre>Router#show interfaces TenGigabitEthernet0/0/0
+TenGigabitEthernet0/0/0 is up, line protocol is up
+Hardware is BUILT-IN-2T+6X1GE, address is 74a0.2f7a.0123 (bia 74a0.2f7a.0123)
+Description: Uplink
+Internet address is 10.1.1.1/24
+MTU 1500 bytes, BW 10000000 Kbit/sec, DLY 10 usec,
+reliability 255/255, txload 1/255, rxload 1/255
+Encapsulation ARPA, loopback not set
+Keepalive not supported
+Full Duplex, 10000Mbps, link type is force-up, media type is unknown media type
+output flow control is on, input flow-control is on
+ARP type: ARPA, ARP Timeout 04:00:00
+Last input 00:00:00, output 00:05:40, output hang never
+Last clearing of "show interface" counters never
+Input queue: 0/375/0/0 (size/max/drops/flushes); Total output drops: 0
+Queueing strategy: fifo
+Output queue: 0/40 (size/max)
+5 minute input rate 6160000 bits/sec, 1113 packets/sec
+5 minute output rate 11213000 bits/sec, 1553 packets/sec
+12662416065 packets input, 12607032232894 bytes, 0 no buffer
+Received 14117163 broadcasts (0 IP multicasts)
+0 runts, 0 giants, 0 throttles
+0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+0 watchdog, 26271385 multicast, 0 pause input
+7907770090 packets output, 5072790424092 bytes, 0 underruns
+0 output errors, 8662414049 collisions, 1 interface resets
+0 unknown protocol drops
+0 babbles, 0 late collision, 0 deferred
+0 lost carrier, 0 no carrier, 0 pause output
+0 output buffer failures, 0 output buffers swapped out
+1 carrier transitions</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. Traffic that is flowing over interface TenGigabitEthernet0/0/0 experiences slow transfer speeds. What is the reason for the issue?",
+            "name": "tengig0slow1",
+            "correct": "D",
+            "explain": "Correct. D — The interface reports Full Duplex at 10000 Mbps with very low txload/rxload (1/255), so heavy congestion (A) is not indicated. Input and output queue drops are zero, so queuing drops (B) are not the cause. Bandwidth matches 10 Gb/s, so there is no speed mismatch on this side (C). A huge collision counter on a link operating as full duplex is a classic sign of a duplex mismatch: the far end is likely half duplex while this side is full duplex, so frames collide and throughput collapses even though the line stays up.",
+            "choices": [
+                "heavy traffic congestion",
+                "queuing drops",
+                "a speed conflict",
+                "a duplex incompatibility",
+            ],
         },
     ]
 

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — SiteA/SiteB intermittent connectivity (optics)</title>
+  <title>CCNA — OSPF on R1–R2 point-to-point link</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,43 +313,49 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Refer to the exhibit.</h1>
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/site-ab-tenge-sfp-sr-vs-lr-smf-topology.png" alt="Topology: Site A cloud linked to Site B cloud; distance between sites about 7 km." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/ospf-r1-r2-p2p-link-network-command-topology.png" alt="Topology: R1 Serial0/1 to R2 Serial0/1 on 10.0.0.0/30; R1 Gi0/1 on 10.0.1.0/24; R2 Gi0/1 on 10.0.2.0/24." width="900" decoding="async" loading="lazy" />
       </figure>
-      <div class="cli-grid two-cols" role="group" aria-label="SiteA and SiteB show interface output">
-        <div class="cli-device" role="region" aria-label="SiteA show interface TenGigabitEthernet0/1/0">
-          <h2>SiteA# show interface TenGigabitEthernet0/1/0</h2>
-          <pre>TenGigabitEthernet0/1/0 is up, line protocol is up
-  Hardware is BUILT-IN-EPA-8x10G, address is aabb.cc00.0100 (bia aabb.cc00.0100)
-  Description: Connection to SiteB
-  Internet address is 10.10.10.1/30
-  MTU 8146 bytes, BW 10000000 Kbit/sec, DLY 10 usec,
-     reliability 255/255, txload 1/255, rxload 1/255
-  Full Duplex, 10000Mbps, link type is force-up, media type is SFP-SR
-  5 minute input rate 264797000 bits/sec, 26672 packets/sec
-  5 minute output rate 122464000 bits/sec, 15724 packets/sec</pre>
-        </div>
-        <div class="cli-device" role="region" aria-label="SiteB show interface TenGigabitEthernet0/1/0">
-          <h2>SiteB# show interface TenGigabitEthernet0/1/0</h2>
-          <pre>TenGigabitEthernet0/1/0 is up, line protocol is up
-  Hardware is BUILT-IN-EPA-8x10G, address is 0000.0c00.750c (bia 0000.0c00.750c)
-  Description: Connection to SiteA
-  Internet address is 10.10.10.2/30
-  MTU 8146 bytes, BW 10000000 Kbit/sec, DLY 10 usec,
-     reliability 255/255, txload 1/255, rxload 1/255
-  Full Duplex, 10000Mbps, link type is force-up, media type is SFP-LR
-  5 minute input rate 123245000 bits/sec, 15343 packets/sec
-  5 minute output rate 265746000 bits/sec, 12453 packets/sec</pre>
-        </div>
-      </div>
     </div>
-    <p class="stem-after-exhibit">Shortly after SiteA was connected to SiteB over a new single-mode fiber path, users at SiteA report intermittent connectivity issues with applications hosted at SiteB. What is the cause of the intermittent connectivity issue?</p>
-    <label class="choice"><input type="radio" name="siteabsfp1" value="A" />A. An incorrect type of transceiver has been inserted into a device on the link.</label>
-    <label class="choice"><input type="radio" name="siteabsfp1" value="B" />B. The wrong cable type was used to make the connection.</label>
-    <label class="choice"><input type="radio" name="siteabsfp1" value="C" />C. Heavy usage is causing high latency.</label>
-    <label class="choice"><input type="radio" name="siteabsfp1" value="D" />D. Physical network errors are being transmitted between the two sites.</label>
+    <h1>Refer to the exhibit. Which command configures OSPF on the point-to-point link between routers R1 and R2?</h1>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ospfp2pnet1" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. network 10.0.0.0 0.0.0.255 area 0</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ospfp2pnet1" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. neighbor 10.1.2.0 cost 180</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ospfp2pnet1" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. ip ospf priority 100</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ospfp2pnet1" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. router-id 10.0.0.15</pre>
+    </label>
+
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -358,15 +364,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ssh-loopback-source-next-hop-10-0-1-15-exhibit.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/switch-host-a-to-d-unknown-dest-flood-exhibit.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-floating-static-ospf-backup-server.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ten-gigabitethernet0-0-0-slow-transfer-show-interface.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 The topology shows a multi-kilometer inter-site link; the CLIs show mismatched optics: SiteA reports SFP-SR (short-reach, typically multimode at 850 nm) while SiteB reports SFP-LR (long-reach, single-mode at 1310 nm). The scenario states a single-mode fiber span; SR is the wrong class of transceiver for that path compared with LR, and SR is also far outside its intended reach versus that distance, so the link can be marginal or intermittently usable even when the interface stays up. B is unlikely because the stem specifies single-mode fiber was installed. C does not fit: utilization affects queuing delay, not the classic pattern of flaky reachability from a layer-1 mismatch. D is unsupported: the exhibit does not list input or CRC errors.";
+      var CORRECT_MSG = "Correct. A \u2014 The exhibit shows R1 and R2 connected on 10.0.0.0/30 over Serial0/1 (10.0.0.1 and 10.0.0.2). In router OSPF configuration mode, network <address> <wildcard-mask> area <id> enables OSPF on interfaces whose primary IPv4 addresses match that statement. network 10.0.0.0 0.0.0.255 area 0 matches addresses 10.0.0.0\u201310.0.0.255, which includes the /30 on the serial link, so OSPF runs on that interconnect. Option B is not valid syntax for enabling OSPF on a typical point-to-point link (neighbor is used in specific NBMA contexts; the value shown is a prefix, not a neighbor router ID or IP). Option C sets interface DR priority on broadcast/multi-access segments and does not enable OSPF or assign an area. Option D sets the OSPF router ID only; it does not place any interface into OSPF.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -380,7 +386,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="siteabsfp1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="ospfp2pnet1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
