@@ -31,6 +31,17 @@
     * {
       box-sizing: border-box;
     }
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
     body {
       margin: 0;
       min-height: 100vh;
@@ -586,6 +597,69 @@
       border-color: rgba(201, 162, 39, 0.45);
       box-shadow: inset 0 0 0 1px rgba(201, 162, 39, 0.12);
     }
+
+    .blueprint-h3 {
+      margin: clamp(22px, 4vw, 28px) 0 10px;
+      font-size: clamp(1.05rem, 2.4vw, 1.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      color: var(--text);
+    }
+    .blueprint-h3:first-of-type {
+      margin-top: clamp(8px, 2vw, 14px);
+    }
+    .blueprint-note {
+      margin: 0 0 14px;
+      font-size: 0.88rem;
+      line-height: 1.55;
+      color: #8899b5;
+    }
+    .blueprint-table-wrap {
+      margin: 0 0 clamp(18px, 3vw, 24px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(13, 21, 40, 0.35);
+    }
+    .blueprint-domain-table {
+      width: 100%;
+      min-width: 520px;
+      border-collapse: collapse;
+      font-size: clamp(0.86rem, 2vw, 0.95rem);
+    }
+    .blueprint-domain-table th,
+    .blueprint-domain-table td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .blueprint-domain-table th {
+      background: rgba(18, 26, 43, 0.9);
+      font-weight: 800;
+      color: #c8daf8;
+    }
+    .blueprint-domain-table tbody tr:last-child th,
+    .blueprint-domain-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    .blueprint-domain-table td:nth-child(2) {
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      color: #a8c4f0;
+    }
+    .study-order-list {
+      margin: 0 0 18px;
+      padding-left: 1.25rem;
+      color: #b8c3d6;
+      line-height: 1.6;
+    }
+    .study-order-list li {
+      margin-bottom: 6px;
+    }
   </style>
 </head>
 <body>
@@ -619,8 +693,8 @@
           <p class="eyebrow">Welcome</p>
           <h1>CCNA Training Portal</h1>
           <p class="lead">
-            A next-generation, all-in-one training solution built to give you the confidence to move forward fully prepared.
-            Train with structured content, timed practice, and simulation workflows designed around real ENCOR exam objectives.
+            Map your prep to the official blueprint, spend time where the exam spends questions, then prove it with hands-on
+            practice here—samples below are free; the full library is one step away when you are ready to commit.
           </p>
           <ul class="benefits" aria-label="Portal highlights">
             <li>Professional study flow with organized sections, clear navigation, and focused practice modes.</li>
@@ -629,6 +703,104 @@
           </ul>
 
           <div class="card purchase-card" id="ccna-domains">
+            <div class="purchase-card-inner">
+              <div class="purchase-card-main">
+                <p class="purchase-label">Study path</p>
+                <h2 class="purchase-heading">CCNA 200-301 blueprint and domain weights</h2>
+                <p class="purchase-lead">
+                  CCNA study lines up with six main knowledge domains. Cisco publishes the current CCNA 200-301 v1.1 exam areas
+                  as network fundamentals, network access, IP connectivity, IP services, security fundamentals, and automation
+                  and programmability. The blueprint puts the strongest emphasis on IP connectivity, followed closely by
+                  fundamentals and access—exact percentages shift slightly over time, but those three fields carry most of what
+                  you will see on routing, switching, and troubleshooting-style items.
+                </p>
+                <h3 class="blueprint-h3">CCNA study sections</h3>
+                <p class="blueprint-note">
+                  Approximate domain weights are taken from Cisco exam guidance—use them to budget study hours, not as a
+                  guarantee of item counts on your specific attempt.
+                </p>
+                <h3 class="blueprint-h3">Where to aim your reading and labs</h3>
+                <div class="blueprint-table-wrap">
+                  <table class="blueprint-domain-table">
+                    <caption class="visually-hidden">
+                      Approximate CCNA 200-301 domain weights and study focus areas
+                    </caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Section</th>
+                        <th scope="col">Weight</th>
+                        <th scope="col">What to study</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">Network fundamentals</th>
+                        <td>20%</td>
+                        <td>OSI and TCP/IP models, IPv4 and IPv6, cabling, devices, topologies, subnetting basics</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Network access</th>
+                        <td>20%</td>
+                        <td>VLANs, trunking, basic STP, EtherChannel, wireless concepts, switch port configuration</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">IP connectivity</th>
+                        <td>25%</td>
+                        <td>Routing tables, static routing, OSPF fundamentals, path selection, troubleshooting routing</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">IP services</th>
+                        <td>10%</td>
+                        <td>NAT, DHCP, DNS, NTP, SNMP, syslog, QoS basics</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Security fundamentals</th>
+                        <td>15%</td>
+                        <td>Device hardening, ACLs, authentication, AAA basics, secure management access</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Automation and programmability</th>
+                        <td>10%</td>
+                        <td>APIs, controllers, automation concepts, JSON, Python basics, intent-based networking</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <h3 class="blueprint-h3">What to focus on first</h3>
+                <p class="purchase-lead">
+                  Start with network fundamentals and IP connectivity: they underpin subnetting, routing, and a large share of
+                  drag-and-drop or simulation-style prompts. Then layer in network access and security fundamentals, which show
+                  up on both theory and configuration-style questions.
+                </p>
+                <h3 class="blueprint-h3">Study order suggestion</h3>
+                <ol class="study-order-list">
+                  <li>Network fundamentals</li>
+                  <li>Subnetting and VLSM</li>
+                  <li>Switching and VLANs</li>
+                  <li>Routing and OSPF</li>
+                  <li>Services such as NAT, DHCP, and NTP</li>
+                  <li>Security and automation basics</li>
+                </ol>
+                <p class="purchase-lead">
+                  For time management, lean hardest into the two weightiest pillars—IP connectivity and network fundamentals—before
+                  you polish lighter domains. That mirrors where most candidates lose or gain points under time pressure.
+                </p>
+              </div>
+              <div class="purchase-card-brand-col">
+                <img
+                  class="purchase-card-brand-logo"
+                  src="/images/becertifiedtoday-logo.png"
+                  width="1024"
+                  height="1024"
+                  alt=""
+                  decoding="async"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="card purchase-card" id="ccna-curriculum-outline">
             <div class="purchase-card-inner">
               <div class="purchase-card-main">
                 <p class="purchase-label">Outline</p>
@@ -684,7 +856,7 @@
             <div class="ccna-practice-subject-filter" id="ccna-practice-subject-filter">
               <p class="ccna-practice-subject-title">Practice by subject</p>
               <p class="ccna-practice-subject-lead">
-                Matches the <a href="#ccna-domains">CCNA subject areas covered</a> outline (Cisco 200-301 domain numbers). Leave on
+                Matches the <a href="#ccna-domains">CCNA blueprint domain weights</a> (Cisco 200-301 domain numbers). Leave on
                 <strong>All subjects</strong> for the full bank slice, or pick one domain before you click <strong>Random</strong> or
                 <strong>Review</strong>.
               </p>

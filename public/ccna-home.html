@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta
     name="description"
     content="Cisco CCNA certification exam prep for CCNA 200-301: CCNA practice questions, timed CCNA practice test, drag-and-drop and CLI labs, plus a CCNA study hub and exam simulation. Cisco IT certification and network certification training in your browser—no PDFs."
@@ -40,6 +40,9 @@
     }
   </script>
   <style>
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
     :root {
       color-scheme: light dark;
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
@@ -58,12 +61,15 @@
     body {
       margin: 0;
       min-height: 100vh;
+      min-height: 100dvh;
       background: var(--bg);
       color: var(--text);
       line-height: 1.5;
+      overflow-x: clip;
     }
     .page {
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
     }
@@ -73,7 +79,10 @@
       align-items: center;
       justify-content: space-between;
       gap: 14px 20px;
-      padding: 16px clamp(20px, 4vw, 40px);
+      padding-top: max(16px, env(safe-area-inset-top, 0px));
+      padding-right: max(clamp(20px, 4vw, 40px), env(safe-area-inset-right, 0px));
+      padding-bottom: 16px;
+      padding-left: max(clamp(20px, 4vw, 40px), env(safe-area-inset-left, 0px));
       border-bottom: 1px solid var(--border);
       background: rgba(18, 26, 43, 0.6);
       backdrop-filter: blur(8px);
@@ -91,6 +100,7 @@
       align-items: center;
       justify-content: center;
       padding: 10px 18px;
+      min-height: 44px;
       border-radius: 10px;
       border: 1px solid #3d9d72;
       background: rgba(31, 122, 88, 0.22);
@@ -100,6 +110,7 @@
       text-decoration: none;
       white-space: nowrap;
       letter-spacing: 0.03em;
+      touch-action: manipulation;
     }
     a.ccna-portal-header-btn:hover {
       background: rgba(31, 122, 88, 0.34);
@@ -135,6 +146,22 @@
     a.ccna-portal-header-btn.ccna-portal-header-btn--unavailable:focus-visible {
       outline-color: rgba(148, 163, 184, 0.6);
     }
+    /* De-emphasized but still navigable (unlike --unavailable) */
+    a.ccna-portal-header-btn.ccna-portal-header-btn--muted {
+      opacity: 0.78;
+      filter: grayscale(0.72);
+      border-color: rgba(100, 116, 139, 0.55);
+      background: rgba(51, 65, 85, 0.38);
+      color: #94a3b8;
+    }
+    a.ccna-portal-header-btn.ccna-portal-header-btn--muted:hover {
+      background: rgba(71, 85, 105, 0.5);
+      color: #cbd5e1;
+      filter: grayscale(0.55);
+    }
+    a.ccna-portal-header-btn.ccna-portal-header-btn--muted:focus-visible {
+      outline-color: rgba(148, 163, 184, 0.65);
+    }
     a.cta-main.cta-main--locked {
       cursor: not-allowed;
       pointer-events: none;
@@ -149,6 +176,7 @@
       justify-content: center;
       gap: 8px;
       padding: 14px 24px;
+      min-height: 48px;
       border-radius: 12px;
       border: 1px solid rgba(120, 170, 255, 0.45);
       font-size: clamp(0.78rem, 1.9vw, 1.02rem);
@@ -162,6 +190,7 @@
         0 1px 0 rgba(255, 255, 255, 0.14) inset,
         0 6px 22px rgba(47, 102, 191, 0.42);
       transition: filter 0.15s ease, box-shadow 0.15s ease;
+      touch-action: manipulation;
     }
     .cta-main:hover {
       color: #fff;
@@ -186,6 +215,7 @@
       background: #fff;
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
       line-height: 0;
+      touch-action: manipulation;
     }
     .brand img {
       display: block;
@@ -203,7 +233,10 @@
     main {
       flex: 1;
       display: block;
-      padding: clamp(32px, 6vw, 56px) clamp(20px, 4vw, 40px);
+      padding-top: clamp(32px, 6vw, 56px);
+      padding-right: calc(clamp(20px, 4vw, 40px) + env(safe-area-inset-right, 0px));
+      padding-bottom: calc(clamp(32px, 6vw, 56px) + env(safe-area-inset-bottom, 0px));
+      padding-left: calc(clamp(20px, 4vw, 40px) + env(safe-area-inset-left, 0px));
     }
     .hero-banner {
       margin: 0;
@@ -516,6 +549,7 @@
       width: 100%;
       margin-top: 16px;
       padding: 12px 18px;
+      min-height: 48px;
       border-radius: 10px;
       border: 1px solid rgba(79, 132, 216, 0.65);
       background: transparent;
@@ -526,6 +560,7 @@
       text-align: center;
       box-sizing: border-box;
       max-width: 100%;
+      touch-action: manipulation;
     }
     .purchase-hub-secondary:hover {
       background: rgba(79, 132, 216, 0.12);
@@ -534,6 +569,105 @@
     .purchase-hub-secondary:focus-visible {
       outline: 2px solid #9ec0ff;
       outline-offset: 3px;
+    }
+    .purchase-blueprint-callout {
+      margin: 0 0 clamp(20px, 4vw, 28px);
+      padding: clamp(16px, 3vw, 22px) clamp(16px, 3vw, 22px);
+      border-radius: 12px;
+      border: 1px solid rgba(79, 132, 216, 0.38);
+      background: rgba(13, 21, 40, 0.55);
+    }
+    .purchase-blueprint-title {
+      margin: 0 0 12px;
+      font-size: clamp(1.02rem, 2.3vw, 1.18rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      color: var(--text);
+    }
+    .purchase-blueprint-lead {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: clamp(0.92rem, 2vw, 1rem);
+      line-height: 1.55;
+    }
+    .purchase-blueprint-note {
+      margin: 0 0 14px;
+      font-size: 0.86rem;
+      line-height: 1.5;
+      color: #8899b5;
+    }
+    .purchase-blueprint-table-wrap {
+      margin: 0 0 16px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(11, 16, 32, 0.45);
+    }
+    .purchase-domain-table {
+      width: 100%;
+      min-width: 480px;
+      border-collapse: collapse;
+      font-size: clamp(0.84rem, 1.9vw, 0.94rem);
+    }
+    .purchase-domain-table th,
+    .purchase-domain-table td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .purchase-domain-table thead th {
+      background: rgba(18, 26, 43, 0.92);
+      font-weight: 800;
+      color: #c8daf8;
+    }
+    .purchase-domain-table tbody th {
+      font-weight: 700;
+      color: var(--text);
+    }
+    .purchase-domain-table tbody tr:last-child th,
+    .purchase-domain-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    .purchase-domain-table td:nth-child(2) {
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      color: #a8c4f0;
+    }
+    .purchase-blueprint-order-title {
+      margin: 0 0 8px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #6b8ab8;
+    }
+    .purchase-blueprint-order {
+      margin: 0 0 14px;
+      padding-left: 1.2rem;
+      color: #b8c3d6;
+      font-size: clamp(0.9rem, 2vw, 0.98rem);
+      line-height: 1.55;
+    }
+    .purchase-blueprint-order li {
+      margin-bottom: 4px;
+    }
+    .purchase-blueprint-more {
+      margin: 0;
+      font-size: clamp(0.9rem, 2vw, 0.98rem);
+      line-height: 1.55;
+    }
+    .purchase-blueprint-more a {
+      color: #a8c4f0;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .purchase-blueprint-more a:hover {
+      color: #c8daf8;
     }
     .purchase-track-box {
       margin-top: 18px;
@@ -692,7 +826,10 @@
       font-weight: 700;
     }
     footer {
-      padding: 16px clamp(20px, 4vw, 24px);
+      padding-top: 16px;
+      padding-right: max(clamp(20px, 4vw, 24px), env(safe-area-inset-right, 0px));
+      padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+      padding-left: max(clamp(20px, 4vw, 24px), env(safe-area-inset-left, 0px));
       text-align: center;
       font-size: 0.82rem;
       color: #5c6d8a;
@@ -703,6 +840,8 @@
       text-decoration: underline;
       margin-left: 0.35em;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      padding: 10px 12px;
     }
     footer a.footer-mailto:hover,
     footer a.footer-mailto:focus-visible {
@@ -1307,7 +1446,10 @@
       z-index: 20000;
       display: none;
       place-items: center;
-      padding: clamp(16px, 4vw, 28px);
+      padding-top: max(clamp(16px, 4vw, 28px), env(safe-area-inset-top, 0px));
+      padding-right: max(clamp(16px, 4vw, 28px), env(safe-area-inset-right, 0px));
+      padding-bottom: max(clamp(16px, 4vw, 28px), env(safe-area-inset-bottom, 0px));
+      padding-left: max(clamp(16px, 4vw, 28px), env(safe-area-inset-left, 0px));
       box-sizing: border-box;
     }
     .ccna-sim-promo-root.ccna-sim-promo-root--open {
@@ -1335,6 +1477,13 @@
         0 24px 64px rgba(0, 0, 0, 0.55);
       color: var(--text);
       -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      overflow-wrap: break-word;
+    }
+    @supports (max-height: 85dvh) {
+      .ccna-sim-promo-panel {
+        max-height: min(85dvh, 640px);
+      }
     }
     @media (prefers-reduced-motion: no-preference) {
       .ccna-sim-promo-root.ccna-sim-promo-root--open .ccna-sim-promo-panel {
@@ -1353,10 +1502,10 @@
     }
     .ccna-sim-promo-close {
       position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 40px;
-      height: 40px;
+      top: max(10px, env(safe-area-inset-top, 0px));
+      right: max(10px, env(safe-area-inset-right, 0px));
+      width: 44px;
+      height: 44px;
       border: none;
       border-radius: 10px;
       background: rgba(255, 255, 255, 0.06);
@@ -1364,6 +1513,7 @@
       font-size: 1.35rem;
       line-height: 1;
       cursor: pointer;
+      touch-action: manipulation;
     }
     .ccna-sim-promo-close:hover {
       background: rgba(255, 255, 255, 0.12);
@@ -1472,7 +1622,8 @@
     }
     .ccna-sim-promo-copy {
       flex-shrink: 0;
-      padding: 10px 16px;
+      padding: 12px 16px;
+      min-height: 44px;
       border-radius: 10px;
       border: 1px solid rgba(120, 170, 255, 0.45);
       background: rgba(47, 102, 191, 0.35);
@@ -1481,6 +1632,7 @@
       font-size: 0.82rem;
       letter-spacing: 0.05em;
       cursor: pointer;
+      touch-action: manipulation;
     }
     .ccna-sim-promo-copy:hover {
       filter: brightness(1.08);
@@ -1506,6 +1658,7 @@
       align-items: center;
       justify-content: center;
       padding: 14px 20px;
+      min-height: 48px;
       border-radius: 12px;
       border: 1px solid rgba(61, 157, 114, 0.65);
       font-weight: 800;
@@ -1515,6 +1668,7 @@
       color: #f0fdf4;
       background: linear-gradient(165deg, rgba(52, 168, 118, 0.95) 0%, rgba(24, 94, 66, 0.98) 100%);
       box-shadow: 0 6px 22px rgba(24, 94, 66, 0.35);
+      touch-action: manipulation;
     }
     .ccna-sim-promo-actions a.ccna-sim-promo-primary:hover {
       filter: brightness(1.06);
@@ -1525,6 +1679,7 @@
     }
     .ccna-sim-promo-secondary {
       padding: 12px 16px;
+      min-height: 48px;
       border-radius: 10px;
       border: 1px solid rgba(100, 116, 139, 0.55);
       background: transparent;
@@ -1533,6 +1688,7 @@
       font-weight: 700;
       font-size: 0.86rem;
       cursor: pointer;
+      touch-action: manipulation;
     }
     .ccna-sim-promo-secondary:hover {
       background: rgba(255, 255, 255, 0.06);
@@ -1541,6 +1697,24 @@
     .ccna-sim-promo-secondary:focus-visible {
       outline: 2px solid #9ec0ff;
       outline-offset: 2px;
+    }
+    @media (max-width: 540px) {
+      .ccna-sim-promo-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .ccna-sim-promo-actions a.ccna-sim-promo-primary,
+      .ccna-sim-promo-actions .ccna-sim-promo-secondary {
+        width: 100%;
+        justify-content: center;
+      }
+      .ccna-sim-promo-code-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .ccna-sim-promo-copy {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -1556,13 +1730,13 @@
         />
       </a>
       <div class="header-actions">
-        <!-- Top CCNA entry: study hub (always available). Timed portal remains under Purchase / CCNA_Training_Portal. -->
+        <!-- Header: CCNA training portal (muted). Purchase block below links to the same portal for samples and practice. -->
         <a
           id="ccnaPortalHeaderBtn"
-          class="ccna-portal-header-btn ccna-portal-header-btn--active"
-          href="/ccna-index.html"
-          title="CCNA study hub — topics, samples, and training portal entry"
-          aria-label="CCNA study hub — open CCNA index and training resources"
+          class="ccna-portal-header-btn ccna-portal-header-btn--muted"
+          href="/CCNA-Study/CCNA_Training_Portal.html"
+          title="CCNA training portal — timed practice and portal entry"
+          aria-label="CCNA training portal — open CCNA training portal page"
           >CCNA Training Portal</a
         >
       </div>
@@ -1710,6 +1884,90 @@
                 <p class="purchase-lead purchase-lead--tight">
                   One purchase for a full exam-length run, or thirty days for the whole practice library and training portal.
                 </p>
+                <div class="purchase-blueprint-callout" aria-labelledby="purchase-blueprint-title">
+                  <h3 class="purchase-blueprint-title" id="purchase-blueprint-title">
+                    Match your prep to how Cisco weights CCNA 200-301
+                  </h3>
+                  <p class="purchase-blueprint-lead">
+                    The live exam follows Cisco&rsquo;s published domains. CCNA 200-301 v1.1 groups content into six areas: network
+                    fundamentals, network access, IP connectivity, IP services, security fundamentals, and automation and
+                    programmability. Official guidance puts the heaviest emphasis on <strong>IP connectivity</strong>, with
+                    <strong>network fundamentals</strong> and <strong>network access</strong> close behind—those three carry most of
+                    what you see on routing, switching, and troubleshooting-style items (exact percentages can shift slightly between
+                    blueprint updates).
+                  </p>
+                  <p class="purchase-blueprint-note">
+                    Approximate weights below come from Cisco exam guidance—use them to budget study hours, not as a guarantee of how
+                    many questions you will see on a specific attempt.
+                  </p>
+                  <div class="purchase-blueprint-table-wrap">
+                    <table class="purchase-domain-table" aria-label="Approximate CCNA domain weights and study focus">
+                      <thead>
+                        <tr>
+                          <th scope="col">Domain</th>
+                          <th scope="col">Weight</th>
+                          <th scope="col">What to study</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row">Network fundamentals</th>
+                          <td>20%</td>
+                          <td>OSI and TCP/IP models, IPv4/IPv6, cabling, devices, topologies, subnetting basics</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Network access</th>
+                          <td>20%</td>
+                          <td>VLANs, trunking, basic STP, EtherChannel, wireless concepts, switch port configuration</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">IP connectivity</th>
+                          <td>25%</td>
+                          <td>Routing tables, static routing, OSPF fundamentals, path selection, troubleshooting routing</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">IP services</th>
+                          <td>10%</td>
+                          <td>NAT, DHCP, DNS, NTP, SNMP, syslog, QoS basics</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Security fundamentals</th>
+                          <td>15%</td>
+                          <td>Device hardening, ACLs, authentication, AAA basics, secure management access</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Automation and programmability</th>
+                          <td>10%</td>
+                          <td>APIs, controllers, automation concepts, JSON, Python basics, intent-based networking</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p class="purchase-blueprint-lead">
+                    <strong>What to focus on first:</strong> network fundamentals and IP connectivity underpin subnetting, routing, and
+                    a large share of drag-and-drop or simulation-style prompts. Add network access and security fundamentals next—they
+                    show up on both theory and configuration-style questions.
+                  </p>
+                  <p class="purchase-blueprint-order-title">Suggested study order</p>
+                  <ol class="purchase-blueprint-order">
+                    <li>Network fundamentals</li>
+                    <li>Subnetting and VLSM</li>
+                    <li>Switching and VLANs</li>
+                    <li>Routing and OSPF</li>
+                    <li>Services (NAT, DHCP, NTP)</li>
+                    <li>Security and automation basics</li>
+                  </ol>
+                  <p class="purchase-blueprint-lead">
+                    Under time pressure, leaning hardest into <strong>IP connectivity</strong> and <strong>network fundamentals</strong>
+                    before you polish lighter domains mirrors where most candidates lose or gain points. The timed simulation rehearses
+                    that mixed pressure; 30-day access lets you drill every domain in the portal with the same topic filters you will use
+                    after purchase.
+                  </p>
+                  <p class="purchase-blueprint-more">
+                    <a href="/CCNA-Study/CCNA_Training_Portal.html#ccna-domains">Open the full blueprint study path on the training portal</a>
+                    (free samples; paid modes when you are ready).
+                  </p>
+                </div>
                 <div class="purchase-cta-stack">
                   <div class="purchase-primary-cta">
                     <p class="purchase-tier-eyebrow">Start here — exam-day rehearsal</p>
@@ -1776,7 +2034,7 @@
                       <strong>We do not collect customer information for promotion or sale.</strong>
                       We do not use customer data from purchases for marketing or profiling.
                     </p>
-                    <a class="purchase-hub-secondary" href="/ccna-index.html">Browse CCNA study hub (samples &amp; topics)</a>
+                    <a class="purchase-hub-secondary" href="/CCNA-Study/CCNA_Training_Portal.html">Browse CCNA training portal (samples &amp; topics)</a>
                   </div>
                 </div>
               </div>
@@ -2200,7 +2458,7 @@
 
       portalBtn.addEventListener("click", function (ev) {
         var hubHref = portalBtn.getAttribute("href") || "";
-        if (hubHref.indexOf("ccna-index") !== -1) return;
+        if (hubHref.indexOf("CCNA_Training_Portal") !== -1) return;
         if (portalBtn.classList.contains("ccna-portal-header-btn--unavailable")) {
           ev.preventDefault();
           return;

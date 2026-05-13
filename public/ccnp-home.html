@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta
     name="description"
     content="CCNP ENCOR practice on Be Certified Today: live training portal, sample questions, drag-and-drop, CLI labs, and timed simulation. Links open the ENCOR training app."
@@ -40,6 +40,9 @@
     }
   </script>
   <style>
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
     :root {
       color-scheme: light dark;
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
@@ -58,12 +61,15 @@
     body {
       margin: 0;
       min-height: 100vh;
+      min-height: 100dvh;
       background: var(--bg);
       color: var(--text);
       line-height: 1.5;
+      overflow-x: clip;
     }
     .page {
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
     }
@@ -73,7 +79,10 @@
       align-items: center;
       justify-content: space-between;
       gap: 14px 20px;
-      padding: 16px clamp(20px, 4vw, 40px);
+      padding-top: max(16px, env(safe-area-inset-top, 0px));
+      padding-right: max(clamp(20px, 4vw, 40px), env(safe-area-inset-right, 0px));
+      padding-bottom: 16px;
+      padding-left: max(clamp(20px, 4vw, 40px), env(safe-area-inset-left, 0px));
       border-bottom: 1px solid var(--border);
       background: rgba(18, 26, 43, 0.6);
       backdrop-filter: blur(8px);
@@ -91,6 +100,7 @@
       align-items: center;
       justify-content: center;
       padding: 10px 18px;
+      min-height: 44px;
       border-radius: 10px;
       border: 1px solid #3d9d72;
       background: rgba(31, 122, 88, 0.22);
@@ -100,6 +110,7 @@
       text-decoration: none;
       white-space: nowrap;
       letter-spacing: 0.03em;
+      touch-action: manipulation;
     }
     a.ccna-portal-header-btn:hover {
       background: rgba(31, 122, 88, 0.34);
@@ -123,6 +134,7 @@
       justify-content: center;
       gap: 8px;
       padding: 14px 24px;
+      min-height: 48px;
       border-radius: 12px;
       border: 1px solid rgba(120, 170, 255, 0.45);
       font-size: clamp(0.78rem, 1.9vw, 1.02rem);
@@ -136,6 +148,7 @@
         0 1px 0 rgba(255, 255, 255, 0.14) inset,
         0 6px 22px rgba(47, 102, 191, 0.42);
       transition: filter 0.15s ease, box-shadow 0.15s ease;
+      touch-action: manipulation;
     }
     .cta-main:hover {
       color: #fff;
@@ -160,6 +173,7 @@
       background: #fff;
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
       line-height: 0;
+      touch-action: manipulation;
     }
     .brand img {
       display: block;
@@ -177,7 +191,10 @@
     main {
       flex: 1;
       display: block;
-      padding: clamp(32px, 6vw, 56px) clamp(20px, 4vw, 40px);
+      padding-top: clamp(32px, 6vw, 56px);
+      padding-right: calc(clamp(20px, 4vw, 40px) + env(safe-area-inset-right, 0px));
+      padding-bottom: calc(clamp(32px, 6vw, 56px) + env(safe-area-inset-bottom, 0px));
+      padding-left: calc(clamp(20px, 4vw, 40px) + env(safe-area-inset-left, 0px));
     }
     .hero-banner {
       margin: 0;
@@ -585,7 +602,10 @@
       font-weight: 700;
     }
     footer {
-      padding: 16px clamp(20px, 4vw, 24px);
+      padding-top: 16px;
+      padding-right: max(clamp(20px, 4vw, 24px), env(safe-area-inset-right, 0px));
+      padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+      padding-left: max(clamp(20px, 4vw, 24px), env(safe-area-inset-left, 0px));
       text-align: center;
       font-size: 0.82rem;
       color: #5c6d8a;
@@ -610,6 +630,8 @@
       text-decoration: underline;
       margin-left: 0.35em;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      padding: 10px 12px;
     }
     footer a.footer-mailto:hover,
     footer a.footer-mailto:focus-visible {
@@ -1214,7 +1236,10 @@
       z-index: 20000;
       display: none;
       place-items: center;
-      padding: clamp(16px, 4vw, 28px);
+      padding-top: max(clamp(16px, 4vw, 28px), env(safe-area-inset-top, 0px));
+      padding-right: max(clamp(16px, 4vw, 28px), env(safe-area-inset-right, 0px));
+      padding-bottom: max(clamp(16px, 4vw, 28px), env(safe-area-inset-bottom, 0px));
+      padding-left: max(clamp(16px, 4vw, 28px), env(safe-area-inset-left, 0px));
       box-sizing: border-box;
     }
     .ccna-sim-promo-root.ccna-sim-promo-root--open {
@@ -1242,6 +1267,13 @@
         0 24px 64px rgba(0, 0, 0, 0.55);
       color: var(--text);
       -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      overflow-wrap: break-word;
+    }
+    @supports (max-height: 85dvh) {
+      .ccna-sim-promo-panel {
+        max-height: min(85dvh, 640px);
+      }
     }
     @media (prefers-reduced-motion: no-preference) {
       .ccna-sim-promo-root.ccna-sim-promo-root--open .ccna-sim-promo-panel {
@@ -1260,10 +1292,10 @@
     }
     .ccna-sim-promo-close {
       position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 40px;
-      height: 40px;
+      top: max(10px, env(safe-area-inset-top, 0px));
+      right: max(10px, env(safe-area-inset-right, 0px));
+      width: 44px;
+      height: 44px;
       border: none;
       border-radius: 10px;
       background: rgba(255, 255, 255, 0.06);
@@ -1271,6 +1303,7 @@
       font-size: 1.35rem;
       line-height: 1;
       cursor: pointer;
+      touch-action: manipulation;
     }
     .ccna-sim-promo-close:hover {
       background: rgba(255, 255, 255, 0.12);
@@ -1402,7 +1435,8 @@
     }
     .ccna-sim-promo-copy {
       flex-shrink: 0;
-      padding: 10px 16px;
+      padding: 12px 16px;
+      min-height: 44px;
       border-radius: 10px;
       border: 1px solid rgba(120, 170, 255, 0.45);
       background: rgba(47, 102, 191, 0.35);
@@ -1411,6 +1445,7 @@
       font-size: 0.82rem;
       letter-spacing: 0.05em;
       cursor: pointer;
+      touch-action: manipulation;
     }
     .ccna-sim-promo-copy:hover {
       filter: brightness(1.08);
@@ -1436,6 +1471,7 @@
       align-items: center;
       justify-content: center;
       padding: 14px 20px;
+      min-height: 48px;
       border-radius: 12px;
       border: 1px solid rgba(61, 157, 114, 0.65);
       font-weight: 800;
@@ -1445,6 +1481,7 @@
       color: #f0fdf4;
       background: linear-gradient(165deg, rgba(52, 168, 118, 0.95) 0%, rgba(24, 94, 66, 0.98) 100%);
       box-shadow: 0 6px 22px rgba(24, 94, 66, 0.35);
+      touch-action: manipulation;
     }
     .ccna-sim-promo-actions a.ccna-sim-promo-primary:hover {
       filter: brightness(1.06);
@@ -1455,6 +1492,7 @@
     }
     .ccna-sim-promo-secondary {
       padding: 12px 16px;
+      min-height: 48px;
       border-radius: 10px;
       border: 1px solid rgba(100, 116, 139, 0.55);
       background: transparent;
@@ -1463,6 +1501,7 @@
       font-weight: 700;
       font-size: 0.86rem;
       cursor: pointer;
+      touch-action: manipulation;
     }
     .ccna-sim-promo-secondary:hover {
       background: rgba(255, 255, 255, 0.06);
@@ -1471,6 +1510,24 @@
     .ccna-sim-promo-secondary:focus-visible {
       outline: 2px solid #9ec0ff;
       outline-offset: 2px;
+    }
+    @media (max-width: 540px) {
+      .ccna-sim-promo-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .ccna-sim-promo-actions a.ccna-sim-promo-primary,
+      .ccna-sim-promo-actions .ccna-sim-promo-secondary {
+        width: 100%;
+        justify-content: center;
+      }
+      .ccna-sim-promo-code-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .ccna-sim-promo-copy {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -1872,7 +1929,7 @@
     <footer>
       © Be Certified Today<a
         class="footer-portal-at"
-        href="/ccna-index.html"
+        href="/CCNA-Study/CCNA_Training_Portal.html"
         aria-label="CCNA study hub"
         >@</a>
       ·
