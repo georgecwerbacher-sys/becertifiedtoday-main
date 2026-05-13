@@ -3,7 +3,7 @@
 
   var KEY = "ccnaPractice100";
   var BASE = "/CCNA-Study/CCNA_questions/";
-  var finishHref = "/CCNA-Study/ccna-index.html";
+  var finishHref = "/ccna-index.html";
 
   function slugFromPath() {
     var m = location.pathname.match(/\/([^/]+)\.html$/);

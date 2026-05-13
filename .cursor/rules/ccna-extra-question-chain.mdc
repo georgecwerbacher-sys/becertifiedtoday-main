@@ -19,7 +19,7 @@ alwaysApply: true
 
 5. **Topic map**: Add an entry for `"{slug}.html"` under `assignments` in `public/CCNA-Study/data/ccna-question-topic-map.json` (keep keys sorted).
 
-6. **Index**: Update the extra-questions blurb in `public/CCNA-Study/ccna-index.html` (topic count and short description) when the chain grows, if that page mentions counts.
+6. **Index**: Update the extra-questions blurb in `public/ccna-index.html` (topic count and short description) when the chain grows, if that page mentions counts.
 
 7. **Answer verification (official Cisco only)**: When checking stems, keys, and explanations, rely on **certified / official Cisco sources** (documentation, Cisco Learning Network, DevNet as appropriate)—not dumps or unvetted third-party sites. Do not embed non-Cisco `http(s)://` URLs in chain HTML or `gen_ccna_chain_pages.py` strings; run `python3 scripts/lint-practice-question-urls.py` (or `npm run lint:question-urls`) after edits that could add links. See `.cursor/rules/answer-verification-cisco-sources.mdc`.
 
