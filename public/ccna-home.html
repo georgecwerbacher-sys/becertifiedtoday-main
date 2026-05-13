@@ -191,7 +191,7 @@
       width: 100%;
     }
     button.cta-main {
-      font: inherit;
+      /* Do not use font: inherit — it overrides .cta-main font-weight and looks lighter than anchor CTAs. */
       cursor: pointer;
       appearance: none;
       max-width: 100%;
@@ -1560,7 +1560,8 @@
       gap: 10px;
       align-items: center;
     }
-    .ccna-sim-promo-actions a.ccna-sim-promo-primary {
+    .ccna-sim-promo-actions a.ccna-sim-promo-primary,
+    .ccna-sim-promo-actions button.ccna-sim-promo-primary {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -1568,6 +1569,7 @@
       min-height: 48px;
       border-radius: 12px;
       border: 1px solid rgba(61, 157, 114, 0.65);
+      font: inherit;
       font-weight: 800;
       font-size: 0.86rem;
       letter-spacing: 0.04em;
@@ -1576,11 +1578,18 @@
       background: linear-gradient(165deg, rgba(52, 168, 118, 0.95) 0%, rgba(24, 94, 66, 0.98) 100%);
       box-shadow: 0 6px 22px rgba(24, 94, 66, 0.35);
       touch-action: manipulation;
+      cursor: pointer;
     }
-    .ccna-sim-promo-actions a.ccna-sim-promo-primary:hover {
+    .ccna-sim-promo-actions button.ccna-sim-promo-primary {
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .ccna-sim-promo-actions a.ccna-sim-promo-primary:hover,
+    .ccna-sim-promo-actions button.ccna-sim-promo-primary:hover {
       filter: brightness(1.06);
     }
-    .ccna-sim-promo-actions a.ccna-sim-promo-primary:focus-visible {
+    .ccna-sim-promo-actions a.ccna-sim-promo-primary:focus-visible,
+    .ccna-sim-promo-actions button.ccna-sim-promo-primary:focus-visible {
       outline: 2px solid #86efac;
       outline-offset: 3px;
     }
@@ -1619,6 +1628,7 @@
         align-items: stretch;
       }
       .ccna-sim-promo-actions a.ccna-sim-promo-primary,
+      .ccna-sim-promo-actions button.ccna-sim-promo-primary,
       .ccna-sim-promo-actions .ccna-sim-promo-secondary,
       .ccna-sim-promo-actions a.ccna-sim-promo-secondary {
         width: 100%;
@@ -1925,6 +1935,7 @@
                         type="button"
                         class="cta-main cta-main--block"
                         id="ccnaPortal30dPurchaseBtn"
+                        data-ccna-portal-30d-checkout
                         aria-label="Purchase 30-day CCNA library access for nineteen ninety-nine"
                       >
                         Get 30-day access — $19.99
@@ -2136,11 +2147,14 @@
         <strong>30-day membership</strong> below—no recurring subscription.
       </p>
       <div class="ccna-sim-promo-actions">
-        <a
+        <button
+          type="button"
           class="ccna-sim-promo-primary"
-          href="https://becertifiedtoday.com/ccna-home.html#purchase"
-          data-ccna-portal-gate-dismiss
-          >Purchase 30-day access</a>
+          data-ccna-portal-30d-checkout
+          aria-label="Purchase 30-day CCNA library access and go to Stripe checkout"
+        >
+          Purchase 30-day access
+        </button>
         <a
           class="ccna-sim-promo-secondary"
           href="https://becertifiedtoday.com/ccna-home.html"

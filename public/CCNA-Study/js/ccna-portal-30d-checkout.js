@@ -56,10 +56,10 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    var btn = document.getElementById("ccnaPortal30dPurchaseBtn");
-    if (!btn) return;
-    btn.addEventListener("click", function () {
-      startCheckout(btn);
+    document.querySelectorAll("[data-ccna-portal-30d-checkout]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        startCheckout(btn);
+      });
     });
   });
 })();
