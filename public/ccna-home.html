@@ -146,22 +146,6 @@
     a.ccna-portal-header-btn.ccna-portal-header-btn--unavailable:focus-visible {
       outline-color: rgba(148, 163, 184, 0.6);
     }
-    /* De-emphasized but still navigable (unlike --unavailable) */
-    a.ccna-portal-header-btn.ccna-portal-header-btn--muted {
-      opacity: 0.78;
-      filter: grayscale(0.72);
-      border-color: rgba(100, 116, 139, 0.55);
-      background: rgba(51, 65, 85, 0.38);
-      color: #94a3b8;
-    }
-    a.ccna-portal-header-btn.ccna-portal-header-btn--muted:hover {
-      background: rgba(71, 85, 105, 0.5);
-      color: #cbd5e1;
-      filter: grayscale(0.55);
-    }
-    a.ccna-portal-header-btn.ccna-portal-header-btn--muted:focus-visible {
-      outline-color: rgba(148, 163, 184, 0.65);
-    }
     a.cta-main.cta-main--locked {
       cursor: not-allowed;
       pointer-events: none;
@@ -1653,13 +1637,13 @@
         />
       </a>
       <div class="header-actions">
-        <!-- Header: CCNA training portal (muted). Purchase block below links to the same portal for samples and practice. -->
+        <!-- Header: CCNA training portal — paid 30/90-day access passes through; others see purchase dialog. -->
         <a
           id="ccnaPortalHeaderBtn"
-          class="ccna-portal-header-btn ccna-portal-header-btn--muted"
+          class="ccna-portal-header-btn ccna-portal-header-btn--active"
           href="/CCNA-Study/CCNA_Training_Portal.html"
-          title="CCNA training portal — timed practice and portal entry"
-          aria-label="CCNA training portal — open CCNA training portal page"
+          title="CCNA training portal — requires active 30-day or 90-day access on this browser"
+          aria-label="CCNA training portal — open when you have active library access, or see how to purchase"
           >CCNA Training Portal</a
         >
       </div>
@@ -2148,13 +2132,14 @@
         ×
       </button>
       <p class="ccna-sim-promo-eyebrow">CCNA Training Portal</p>
-      <h2 id="ccnaPortalGateTitle">30-day access on this device</h2>
+      <h2 id="ccnaPortalGateTitle">30-day access required</h2>
       <p class="ccna-sim-promo-lead">
-        The CCNA Training Portal opens when you have <strong>active 30-day or 90-day</strong> library access stored in this browser (after you complete checkout on this site).
-        If you have not purchased yet, use <strong>30-day full access</strong> below—no recurring membership.
+        The CCNA Training Portal is for learners with <strong>active 30-day or 90-day</strong> library access on
+        <strong>this browser</strong> (after Stripe checkout on this site). If you have not purchased yet, get
+        <strong>30-day membership</strong> below—no recurring subscription.
       </p>
       <div class="ccna-sim-promo-actions">
-        <a class="ccna-sim-promo-primary" href="/ccna-home.html#purchase" data-ccna-portal-gate-dismiss>Get 30-day access</a>
+        <a class="ccna-sim-promo-primary" href="/ccna-home.html#purchase" data-ccna-portal-gate-dismiss>Get 30-day membership</a>
         <button type="button" class="ccna-sim-promo-secondary" data-ccna-portal-gate-dismiss>Close</button>
       </div>
     </div>
@@ -2318,8 +2303,6 @@
       }
 
       portalBtn.addEventListener("click", function (ev) {
-        var hubHref = portalBtn.getAttribute("href") || "";
-        if (hubHref.indexOf("CCNA_Training_Portal") !== -1) return;
         if (portalBtn.classList.contains("ccna-portal-header-btn--unavailable")) {
           ev.preventDefault();
           return;
