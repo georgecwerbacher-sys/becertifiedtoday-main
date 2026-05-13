@@ -183,7 +183,7 @@
     false
   );
 
-  /** CCNA_Training_Portal.html: three sim-boxes (100 + 100 + remainder); no per-question list. */
+  /** CCNA_Training_Portal.html: one sim-box per 100 hub positions (ceil); last box may be partial. */
   function injectPortalPracticeBanks() {
     var grid = document.getElementById("ccna-practice-banks-grid");
     if (!grid) return;
@@ -192,8 +192,7 @@
     if (!Array.isArray(all)) return;
     if (grid.querySelector("[data-ccna-practice-bank-index]")) return;
 
-    var maxPortalBanks = 3;
-    var nBanks = maxPortalBanks;
+    var nBanks = practiceBankCount();
 
     function formatRange(first, last) {
       if (first >= last) return String(first);
@@ -217,12 +216,12 @@
       h4.id = "ccna-bank-title-" + b;
       var isLastBank = b === nBanks;
       var isPartial = countInBank > 0 && countInBank < 100;
+      if (isLastBank && isPartial) {
+        article.classList.add("ccna-practice-bank--remainder");
+      }
       var titleInner;
       if (countInBank === 0) {
         titleInner = formatRange(firstNum, slotEnd);
-      } else if (isLastBank && isPartial && firstNum >= 201) {
-        titleInner = String(firstNum) + " through end";
-        article.classList.add("ccna-practice-bank--remainder");
       } else {
         titleInner = formatRange(firstNum, endIdx);
       }

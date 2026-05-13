@@ -586,92 +586,6 @@
       border-color: rgba(201, 162, 39, 0.45);
       box-shadow: inset 0 0 0 1px rgba(201, 162, 39, 0.12);
     }
-    .mock-section {
-      margin-top: clamp(40px, 8vw, 72px);
-      padding-top: clamp(36px, 6vw, 56px);
-      border-top: 1px solid var(--border);
-    }
-    .mock-section h2 {
-      margin: 0 0 12px;
-      font-size: clamp(1.35rem, 3.2vw, 1.75rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.25;
-    }
-    .mock-lead {
-      margin: 0 0 clamp(18px, 3vw, 22px);
-      max-width: 58ch;
-      color: var(--muted);
-      font-size: clamp(0.98rem, 2.2vw, 1.05rem);
-      line-height: 1.6;
-    }
-    .mock-intro {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-start;
-      gap: clamp(22px, 5vw, 40px);
-    }
-    .mock-intro-figure {
-      flex: 0 1 clamp(220px, 34vw, 360px);
-      margin: 0;
-      align-self: center;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
-      background: rgba(13, 21, 40, 0.35);
-    }
-    .mock-intro-figure img {
-      display: block;
-      width: 100%;
-      height: auto;
-      max-height: min(480px, 56vh);
-      object-fit: contain;
-    }
-    .mock-intro-copy {
-      flex: 1 1 min(54ch, 100%);
-      min-width: 0;
-    }
-    .mock-list {
-      margin: 0 0 clamp(20px, 3.5vw, 26px);
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 12px;
-      max-width: 62ch;
-    }
-    .mock-list li {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      color: #b8c3d6;
-      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
-      line-height: 1.55;
-    }
-    .mock-list li::before {
-      content: "";
-      flex-shrink: 0;
-      width: 8px;
-      height: 8px;
-      margin-top: 0.45em;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #4f84d8, #2f66bf);
-    }
-    .mock-list li strong {
-      color: var(--text);
-      font-weight: 700;
-    }
-    @media (max-width: 719px) {
-      .mock-intro {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .mock-intro-figure {
-        flex: 1 1 auto;
-        max-width: min(440px, 100%);
-        margin-right: auto;
-      }
-    }
   </style>
 </head>
 <body>
@@ -763,9 +677,9 @@
           <h3 class="section-heading">Practice Questions</h3>
           <section class="start-box" aria-label="Question studies">
             <p class="study-meta">
-              Three banks of up to <strong>100</strong> questions each (positions 1–100, 101–200, and 201 through the end of the list).
-              Each bank has its own <strong>Random</strong> and <strong>Review</strong> session. Use <strong>Practice by subject</strong> below to
-              restrict Random and Review to questions tagged for one CCNA domain (same groups as the outline above). Individual questions are not listed here—open a bank to practice.
+              Questions are grouped in banks of up to <strong>100</strong> by position in the hub list (1–100, 101–200, and so on). When a bank fills,
+              another bank appears automatically for the next hundred. Each bank has its own <strong>Random</strong> and <strong>Review</strong> session. Use <strong>Practice by subject</strong> below to
+              restrict Random and Review to questions tagged for one CCNA domain (same groups as the outline above). Individual questions are not listed here—open a bank below to practice.
             </p>
             <div class="ccna-practice-subject-filter" id="ccna-practice-subject-filter">
               <p class="ccna-practice-subject-title">Practice by subject</p>
@@ -793,7 +707,7 @@
                 &ldquo;All subjects&rdquo; only.
               </p>
             </div>
-            <div class="sim-grid" id="ccna-practice-banks-grid" aria-label="Practice question banks (three groups)"></div>
+            <div class="sim-grid" id="ccna-practice-banks-grid" aria-label="Practice question banks (up to 100 items each)"></div>
           </section>
 
           <h3 class="section-heading">Drag and Drop</h3>
@@ -1017,41 +931,6 @@
               >
             </div>
           </section>
-        </div>
-      </section>
-
-      <section class="mock-section" aria-labelledby="mock-title">
-        <div class="formats-inner">
-          <div class="mock-intro">
-            <figure class="mock-intro-figure">
-              <img
-                src="/images/ccna-training-card-thumbnail.png"
-                width="1024"
-                height="683"
-                alt="Ethernet cables plugged into a network switch with green status LEDs."
-                decoding="async"
-                loading="lazy"
-              />
-            </figure>
-            <div class="mock-intro-copy">
-              <p class="formats-head">Timed CCNA exam</p>
-              <h2 id="mock-title">CCNA Practice Test Simulation</h2>
-              <p class="mock-lead">
-                You have 120 minutes to complete the CCNA exam. Questions are drawn randomly from a bank of 500, so each attempt is
-                unique and demands solid command of the material.
-              </p>
-              <p class="mock-lead">
-                The exam includes multiple-choice questions, drag-and-drop items, and at least three labs, with only Next and Quit
-                available for navigation. Once you advance past a question, you cannot return to it, and if you exit the exam, the
-                attempt ends immediately.
-              </p>
-              <p class="mock-lead">
-                Because each attempt costs $300, it's worth approaching the exam with a disciplined strategy, careful pacing, and
-                full confidence in your preparation. At the conclusion, a score report is generated showing pass or fail along with
-                your performance details.
-              </p>
-            </div>
-          </div>
         </div>
       </section>
     </main>
