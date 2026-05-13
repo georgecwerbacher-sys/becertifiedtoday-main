@@ -4672,6 +4672,146 @@ Received 14117163 broadcasts (0 IP multicasts)
                 "a duplex incompatibility",
             ],
         },
+        {
+            "slug": "ospf-serial-neighbor-stuck-exchange-mtu",
+            "title": "CCNA — OSPF neighbor stuck in EXCHANGE (MTU)",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="Router A show ip ospf neighbor">
+        <pre>A#show ip ospf neighbor
+Neighbor ID     Pri   State       Dead Time   Address       Interface
+172.1.1.1         1   EXCHANGE/-  00:00:36    172.16.32.1   Serial0.1</pre>
+      </div>""",
+            "stem": "An engineer assumes a configuration task from a peer. Router A must establish an OSPF neighbor relationship with neighbor 172.1.1.1. The output displays the status of the adjacency after 2 hours. What is the next step in the configuration process for the routers to establish an adjacency?",
+            "name": "ospfexmtu1",
+            "correct": "D",
+            "explain": "Correct. D — During the database exchange, OSPF can compare the interface IP MTU carried in Database Description packets (unless disabled). When the MTUs on the two ends of the link differ, the adjacency often stays in EXSTART or EXCHANGE instead of reaching FULL. Align the MTU on router A with router B (or use ip ospf mtu-ignore on the interface) so the exchange can complete. OSPF router IDs must be unique but do not need to match an interface IP (A) or any particular \u201cnon-host\u201d pattern (B). A serial subinterface is already a common point-to-point style link; simply \u201cconfiguring point-to-point\u201d without fixing MTU does not address the usual cause of a long-lived EXCHANGE state in this scenario (C).",
+            "choices": [
+                "Set the router B OSPF ID to the same value as its IP address",
+                "Set the router B OSPF ID to a nonhost address",
+                "Configure a point-to-point link between router A and router B",
+                "Configure router A to use the same MTU size as router B",
+            ],
+        },
+        {
+            "slug": "routing-cpe-longest-match-192-168-1-250",
+            "title": "CCNA — Longest match for 192.168.1.250",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="CPE show ip route">
+        <pre>CPE#show ip route
+     192.168.1.0/24 is variably subnetted, 3 subnets, 3 masks
+B    192.168.1.0/24 [20/1] via 192.168.12.2, 00:00:06
+R    192.168.1.128/25 [120/5] via 192.168.13.3, 00:02:22, Ethernet0/1
+O    192.168.1.192/26 [110/11] via 192.168.14.4, 00:02:22, Ethernet0/2
+D    192.168.1.224/27 [90/1024640] via 192.168.15.5, 00:01:33, Ethernet0/3</pre>
+      </div>""",
+            "stem": "All traffic enters the CPE router from interface Serial0/3 with an IP address of 192.168.50.1. Web traffic from the WAN is destined for a LAN network where servers are load-balanced. An IP packet with a destination address of the HTTP virtual IP of 192.168.1.250 must be forwarded. Which routing table entry does the router use?",
+            "name": "cperlmp250",
+            "correct": "D",
+            "explain": "Correct. D — The router chooses the route with the longest prefix length that contains the destination. 192.168.1.250 matches 192.168.1.0/24, 192.168.1.128/25, 192.168.1.192/26, and 192.168.1.224/27, but /27 is the most specific, so the EIGRP-learned 192.168.1.224/27 entry wins. Administrative distance and metric are used to break ties among routes of the same prefix length, not to prefer a shorter prefix over a longer one.",
+            "choices": [
+                "192.168.1.0/24 via 192.168.12.2",
+                "192.168.1.128/25 via 192.168.13.3",
+                "192.168.1.192/26 via 192.168.14.4",
+                "192.168.1.224/27 via 192.168.15.5",
+            ],
+        },
+        {
+            "slug": "switch-pc1-access-duplex-mismatch-performance",
+            "title": "CCNA — PC1 access port poor performance (duplex)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/switch-pc1-access-duplex-mismatch-performance-topology.png" alt="Topology: PC1 FastEthernet0 with manual 100 Mbps full duplex connected to switch Fa0/1." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="Switch show interface status">
+        <pre>Switch#show interface status
+Port      Name  Status      Vlan  Duplex  Speed  Type
+Fa0/1           connected   1     auto    auto   10/100BaseTX</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. Traffic is performing poorly even though the port shows connected. Which interface condition is causing the performance problem?",
+            "name": "swpc1dpx1",
+            "correct": "A",
+            "explain": "Correct. A — The switch port uses autonegotiation for speed and duplex (auto/auto). When the far end disables autonegotiation and is fixed at 100 Mbps full duplex, the switch cannot complete normal autonegotiation and typically falls back to half duplex on a 100BASE-TX link while the PC stays full duplex\u2014classic duplex mismatch with collisions, retries, and low throughput even though the link stays up. The Type column is 10/100BaseTX (copper), not fiber (B). Speed is not mismatched in the usual \u201c10 vs 100\u201d sense here (C). There is no sign of the wrong transceiver or media family on the switch port (D).",
+            "choices": [
+                "There is a duplex mismatch on the interface",
+                "There is an issue with the fiber on the switch interface",
+                "There is a speed mismatch on the interface",
+                "There is an interface type mismatch",
+            ],
+        },
+        {
+            "slug": "ipv6-ho-fa01-eui64-from-mac-topology",
+            "title": "CCNA — HO fa0/1 IPv6 EUI-64 from MAC",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/ipv6-ho-fa01-eui64-from-mac-topology.png" alt="Topology: Server to HO router fa0/1 (MAC C601.420F.0007) through ISP cloud; IPv6 prefix 2001:db8:0:1::/64 on the path toward router B, switch S2, and Host A." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. An engineer is configuring the HO router. Which IPv6 address configuration must be applied to the router fa0/1 interface for the router to assign a unique 64-bit IPv6 address to itself?",
+            "name": "ipv6hoeui1",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A \u2014 For a global unicast /64 on HO, the host portion is built with EUI-64 from the interface MAC C601.420F.0007: split the 48-bit address after the third byte and insert FFFE (C601.42 \u2192 C601.42FFFE \u2192 0F0007), forming the 64-bit interface identifier used with prefix 2001:db8:0:1::/64, which compresses to 2001:DB8:0:1:C601:42FF:FE0F:7/64. Option B corrupts the FFFE placement. Option C inserts an ad hoc FFFF pattern that does not follow the MAC. Option D embeds fe80-style text in what must be a global unicast address on that prefix.",
+            "choices": [
+                "ipv6 address 2001:DB8:0:1:C601:42FF:FE0F:7/64",
+                "ipv6 address 2001:DB8:0:1:C601:42FE:800F:7/64",
+                "ipv6 address 2001:DB8:0:1:FFFF:C601:420F:7/64",
+                "ipv6 address 2001:DB8:0:1:FE80:C601:420F:7/64",
+            ],
+        },
+        {
+            "slug": "dhcp-relay-gi00-helper-server-subnet-exhibit",
+            "title": "CCNA — DHCP relay (topology and show run)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/dhcp-relay-gi00-helper-server-subnet-exhibit-topology.png" alt="Topology: DHCP client on router GigabitEthernet0/0; DHCP server 172.16.2.2 on GigabitEthernet0/1." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="Router show running-config interfaces">
+        <pre>Router#show run
+Building configuration...
+!
+interface GigabitEthernet0/0
+ ip address 10.10.10.1 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1
+ ip address 172.16.2.1 255.255.255.0
+ duplex auto
+ speed auto
+!
+</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. An engineer is configuring a new router on the network and applied the configuration shown. Which additional configuration allows the DHCP client to obtain its IP address from the DHCP server?",
+            "name": "dhcprelayrt1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 DHCP clients discover servers with broadcasts that do not cross routed boundaries. On the router interface that faces the clients (GigabitEthernet0/0 here), ip helper-address 172.16.2.2 relays DHCP (and related) broadcasts to the DHCP server\u2019s unicast address so the client can complete DORA on a different subnet. Option A refers to relay information (Option 82) settings, not enabling basic relay. ip dhcp smart-relay (B) is an alternate-path relay enhancement, not the first-step fix. ip address dhcp on GigabitEthernet0/0 (D) would make the router obtain its own interface address from DHCP, not relay for LAN hosts.",
+            "choices": [
+                "Configure the ip dhcp relay information command under interface Gi0/1",
+                "Configure the ip dhcp smart-relay command globally on the router",
+                "Configure the ip helper-address 172.16.2.2 command under interface Gi0/0",
+                "Configure the ip address dhcp command under interface Gi0/0",
+            ],
+        },
+        {
+            "slug": "static-route-r14-172-21-34-25-via-r86",
+            "title": "CCNA — R14 static route to 172.21.34.0/25 via R86",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/static-route-r14-172-21-34-25-via-r86-topology.png" alt="Topology: R14 Fa0/0 to R86 Fa0/0 on 10.73.65.64/30 (.65 on R14, .66 on R86); R14 Loopback0 10.10.1.14/32; R86 Loopback0 10.10.1.86/32." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. A static route must be configured on R14 to forward traffic for the 172.21.34.0/25 network that resides on R86. Which command must be used to fulfill the request?",
+            "name": "r14st17221",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 The static route must match the destination prefix and mask exactly (/25 is 255.255.255.128) and point to a valid next hop on the directly connected link toward R86. R86\u2019s address on 10.73.65.64/30 is 10.73.65.66. Option A uses a /26 mask and next hop 10.73.65.65, which is R14\u2019s own interface address on the link. Option B advertises the wrong mask (/24). Option C uses an incorrect mask for the /25 destination and uses 10.73.65.64, the subnet network address, as the next hop.",
+            "choices": [
+                "ip route 172.21.34.0 255.255.255.192 10.73.65.65",
+                "ip route 172.21.34.0 255.255.255.0 10.73.65.65",
+                "ip route 172.21.34.0 255.255.128.0 10.73.65.64",
+                "ip route 172.21.34.0 255.255.255.128 10.73.65.66",
+            ],
+        },
     ]
 
     prev = "vty-access-list-ssh-secure"

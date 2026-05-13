@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — TenGigabitEthernet0/0/0 slow transfer (show interface)</title>
+  <title>CCNA — HO fa0/1 IPv6 EUI-64 from MAC</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -314,46 +314,48 @@
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
     <div class="exhibit-stack">
-      <div class="exhibit-router-cli" role="region" aria-label="show interfaces TenGigabitEthernet0/0/0">
-        <pre>Router#show interfaces TenGigabitEthernet0/0/0
-TenGigabitEthernet0/0/0 is up, line protocol is up
-Hardware is BUILT-IN-2T+6X1GE, address is 74a0.2f7a.0123 (bia 74a0.2f7a.0123)
-Description: Uplink
-Internet address is 10.1.1.1/24
-MTU 1500 bytes, BW 10000000 Kbit/sec, DLY 10 usec,
-reliability 255/255, txload 1/255, rxload 1/255
-Encapsulation ARPA, loopback not set
-Keepalive not supported
-Full Duplex, 10000Mbps, link type is force-up, media type is unknown media type
-output flow control is on, input flow-control is on
-ARP type: ARPA, ARP Timeout 04:00:00
-Last input 00:00:00, output 00:05:40, output hang never
-Last clearing of "show interface" counters never
-Input queue: 0/375/0/0 (size/max/drops/flushes); Total output drops: 0
-Queueing strategy: fifo
-Output queue: 0/40 (size/max)
-5 minute input rate 6160000 bits/sec, 1113 packets/sec
-5 minute output rate 11213000 bits/sec, 1553 packets/sec
-12662416065 packets input, 12607032232894 bytes, 0 no buffer
-Received 14117163 broadcasts (0 IP multicasts)
-0 runts, 0 giants, 0 throttles
-0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
-0 watchdog, 26271385 multicast, 0 pause input
-7907770090 packets output, 5072790424092 bytes, 0 underruns
-0 output errors, 8662414049 collisions, 1 interface resets
-0 unknown protocol drops
-0 babbles, 0 late collision, 0 deferred
-0 lost carrier, 0 no carrier, 0 pause output
-0 output buffer failures, 0 output buffers swapped out
-1 carrier transitions</pre>
-      </div>
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/ipv6-ho-fa01-eui64-from-mac-topology.png" alt="Topology: Server to HO router fa0/1 (MAC C601.420F.0007) through ISP cloud; IPv6 prefix 2001:db8:0:1::/64 on the path toward router B, switch S2, and Host A." width="900" decoding="async" loading="lazy" />
+      </figure>
     </div>
-    <h1>Refer to the exhibit. Traffic that is flowing over interface TenGigabitEthernet0/0/0 experiences slow transfer speeds. What is the reason for the issue?</h1>
+    <h1>Refer to the exhibit. An engineer is configuring the HO router. Which IPv6 address configuration must be applied to the router fa0/1 interface for the router to assign a unique 64-bit IPv6 address to itself?</h1>
 
-    <label class="choice"><input type="radio" name="tengig0slow1" value="A" />A. heavy traffic congestion</label>
-    <label class="choice"><input type="radio" name="tengig0slow1" value="B" />B. queuing drops</label>
-    <label class="choice"><input type="radio" name="tengig0slow1" value="C" />C. a speed conflict</label>
-    <label class="choice"><input type="radio" name="tengig0slow1" value="D" />D. a duplex incompatibility</label>
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ipv6hoeui1" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. ipv6 address 2001:DB8:0:1:C601:42FF:FE0F:7/64</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ipv6hoeui1" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. ipv6 address 2001:DB8:0:1:C601:42FE:800F:7/64</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ipv6hoeui1" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. ipv6 address 2001:DB8:0:1:FFFF:C601:420F:7/64</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ipv6hoeui1" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. ipv6 address 2001:DB8:0:1:FE80:C601:420F:7/64</pre>
+    </label>
+
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -362,15 +364,15 @@ Received 14117163 broadcasts (0 IP multicasts)
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ospf-r1-r2-p2p-link-network-command.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ospf-serial-neighbor-stuck-exchange-mtu.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/switch-pc1-access-duplex-mismatch-performance.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/dhcp-relay-gi00-helper-server-subnet-exhibit.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 The interface reports Full Duplex at 10000 Mbps with very low txload/rxload (1/255), so heavy congestion (A) is not indicated. Input and output queue drops are zero, so queuing drops (B) are not the cause. Bandwidth matches 10 Gb/s, so there is no speed mismatch on this side (C). A huge collision counter on a link operating as full duplex is a classic sign of a duplex mismatch: the far end is likely half duplex while this side is full duplex, so frames collide and throughput collapses even though the line stays up.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 For a global unicast /64 on HO, the host portion is built with EUI-64 from the interface MAC C601.420F.0007: split the 48-bit address after the third byte and insert FFFE (C601.42 \u2192 C601.42FFFE \u2192 0F0007), forming the 64-bit interface identifier used with prefix 2001:db8:0:1::/64, which compresses to 2001:DB8:0:1:C601:42FF:FE0F:7/64. Option B corrupts the FFFE placement. Option C inserts an ad hoc FFFF pattern that does not follow the MAC. Option D embeds fe80-style text in what must be a global unicast address on that prefix.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -384,7 +386,7 @@ Received 14117163 broadcasts (0 IP multicasts)
         }
       }
 
-      document.querySelectorAll('input[name="tengig0slow1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="ipv6hoeui1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

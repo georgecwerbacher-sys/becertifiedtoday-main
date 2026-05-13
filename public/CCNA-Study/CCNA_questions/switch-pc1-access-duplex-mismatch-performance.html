@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — TenGigabitEthernet0/0/0 slow transfer (show interface)</title>
+  <title>CCNA — PC1 access port poor performance (duplex)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -314,46 +314,21 @@
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
     <div class="exhibit-stack">
-      <div class="exhibit-router-cli" role="region" aria-label="show interfaces TenGigabitEthernet0/0/0">
-        <pre>Router#show interfaces TenGigabitEthernet0/0/0
-TenGigabitEthernet0/0/0 is up, line protocol is up
-Hardware is BUILT-IN-2T+6X1GE, address is 74a0.2f7a.0123 (bia 74a0.2f7a.0123)
-Description: Uplink
-Internet address is 10.1.1.1/24
-MTU 1500 bytes, BW 10000000 Kbit/sec, DLY 10 usec,
-reliability 255/255, txload 1/255, rxload 1/255
-Encapsulation ARPA, loopback not set
-Keepalive not supported
-Full Duplex, 10000Mbps, link type is force-up, media type is unknown media type
-output flow control is on, input flow-control is on
-ARP type: ARPA, ARP Timeout 04:00:00
-Last input 00:00:00, output 00:05:40, output hang never
-Last clearing of "show interface" counters never
-Input queue: 0/375/0/0 (size/max/drops/flushes); Total output drops: 0
-Queueing strategy: fifo
-Output queue: 0/40 (size/max)
-5 minute input rate 6160000 bits/sec, 1113 packets/sec
-5 minute output rate 11213000 bits/sec, 1553 packets/sec
-12662416065 packets input, 12607032232894 bytes, 0 no buffer
-Received 14117163 broadcasts (0 IP multicasts)
-0 runts, 0 giants, 0 throttles
-0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
-0 watchdog, 26271385 multicast, 0 pause input
-7907770090 packets output, 5072790424092 bytes, 0 underruns
-0 output errors, 8662414049 collisions, 1 interface resets
-0 unknown protocol drops
-0 babbles, 0 late collision, 0 deferred
-0 lost carrier, 0 no carrier, 0 pause output
-0 output buffer failures, 0 output buffers swapped out
-1 carrier transitions</pre>
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/switch-pc1-access-duplex-mismatch-performance-topology.png" alt="Topology: PC1 FastEthernet0 with manual 100 Mbps full duplex connected to switch Fa0/1." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="Switch show interface status">
+        <pre>Switch#show interface status
+Port      Name  Status      Vlan  Duplex  Speed  Type
+Fa0/1           connected   1     auto    auto   10/100BaseTX</pre>
       </div>
     </div>
-    <h1>Refer to the exhibit. Traffic that is flowing over interface TenGigabitEthernet0/0/0 experiences slow transfer speeds. What is the reason for the issue?</h1>
+    <h1>Refer to the exhibit. Traffic is performing poorly even though the port shows connected. Which interface condition is causing the performance problem?</h1>
 
-    <label class="choice"><input type="radio" name="tengig0slow1" value="A" />A. heavy traffic congestion</label>
-    <label class="choice"><input type="radio" name="tengig0slow1" value="B" />B. queuing drops</label>
-    <label class="choice"><input type="radio" name="tengig0slow1" value="C" />C. a speed conflict</label>
-    <label class="choice"><input type="radio" name="tengig0slow1" value="D" />D. a duplex incompatibility</label>
+    <label class="choice"><input type="radio" name="swpc1dpx1" value="A" />A. There is a duplex mismatch on the interface</label>
+    <label class="choice"><input type="radio" name="swpc1dpx1" value="B" />B. There is an issue with the fiber on the switch interface</label>
+    <label class="choice"><input type="radio" name="swpc1dpx1" value="C" />C. There is a speed mismatch on the interface</label>
+    <label class="choice"><input type="radio" name="swpc1dpx1" value="D" />D. There is an interface type mismatch</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -362,15 +337,15 @@ Received 14117163 broadcasts (0 IP multicasts)
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ospf-r1-r2-p2p-link-network-command.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ospf-serial-neighbor-stuck-exchange-mtu.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/routing-cpe-longest-match-192-168-1-250.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ipv6-ho-fa01-eui64-from-mac-topology.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 The interface reports Full Duplex at 10000 Mbps with very low txload/rxload (1/255), so heavy congestion (A) is not indicated. Input and output queue drops are zero, so queuing drops (B) are not the cause. Bandwidth matches 10 Gb/s, so there is no speed mismatch on this side (C). A huge collision counter on a link operating as full duplex is a classic sign of a duplex mismatch: the far end is likely half duplex while this side is full duplex, so frames collide and throughput collapses even though the line stays up.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 The switch port uses autonegotiation for speed and duplex (auto/auto). When the far end disables autonegotiation and is fixed at 100 Mbps full duplex, the switch cannot complete normal autonegotiation and typically falls back to half duplex on a 100BASE-TX link while the PC stays full duplex\u2014classic duplex mismatch with collisions, retries, and low throughput even though the link stays up. The Type column is 10/100BaseTX (copper), not fiber (B). Speed is not mismatched in the usual \u201c10 vs 100\u201d sense here (C). There is no sign of the wrong transceiver or media family on the switch port (D).";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -384,7 +359,7 @@ Received 14117163 broadcasts (0 IP multicasts)
         }
       }
 
-      document.querySelectorAll('input[name="tengig0slow1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="swpc1dpx1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
