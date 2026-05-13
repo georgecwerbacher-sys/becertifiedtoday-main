@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Router1 primary default for floating backup</title>
+  <title>CCNA — Switch A Gi0/1: data VLAN 50, voice VLAN 51</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -315,45 +315,53 @@
   <main class="card">
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/floating-static-router1-primary-default-route-topology.png" alt="Topology: LAN to Router1 GigabitEthernet0/1; Primary ISP on Router1 GigabitEthernet1/0; Backup ISP on Router1 GigabitEthernet1/1." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/switch-a-gi01-ip-phone-vlan50-voice51-topology.png" alt="Topology: Switch A and Switch B on Gi0/0; each Gi0/1 to IP phone with PC daisy-chained; legend Data VLAN 50, Voice VLAN 51." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>
-    <h1>Refer to the exhibit. A company is configuring a failover plan and must implement the default routes in such a way that a floating static route will assume traffic forwarding when the primary link goes down. Which primary route configuration must be used?</h1>
+    <h1>Refer to the exhibit. Switch A is newly configured. All VLANs are present in the VLAN database. The IP phone and PC A on Gi0/1 must be configured for the appropriate VLANs to establish connectivity between the PCs. Which command set fulfills the requirement?</h1>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="A" aria-label="Select answer option A" />
+        <input type="radio" name="swagi0151" value="A" aria-label="Select answer option A" />
         <span class="cli-router-choice-badge" aria-hidden="true">A</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">A. ip route 0.0.0.0 0.0.0.0 192.168.0.2 GigabitEthernet1/0</pre>
+      <pre class="cli-router-console">A. SwitchA(config-if)#switchport mode access
+SwitchA(config-if)#switchport access vlan 50
+SwitchA(config-if)#switchport voice vlan 51</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="B" aria-label="Select answer option B" />
+        <input type="radio" name="swagi0151" value="B" aria-label="Select answer option B" />
         <span class="cli-router-choice-badge" aria-hidden="true">B</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">B. ip route 0.0.0.0 0.0.0.0 192.168.0.2 tracked</pre>
+      <pre class="cli-router-console">B. SwitchA(config-if)#switchport mode access
+SwitchA(config-if)#switchport access vlan 50
+SwitchA(config-if)#switchport voice vlan untagged</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="C" aria-label="Select answer option C" />
+        <input type="radio" name="swagi0151" value="C" aria-label="Select answer option C" />
         <span class="cli-router-choice-badge" aria-hidden="true">C</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">C. ip route 0.0.0.0 0.0.0.0 192.168.0.2 floating</pre>
+      <pre class="cli-router-console">C. SwitchA(config-if)#switchport mode trunk
+SwitchA(config-if)#switchport trunk allowed vlan add 50, 51
+SwitchA(config-if)#switchport voice vlan dot1p</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="D" aria-label="Select answer option D" />
+        <input type="radio" name="swagi0151" value="D" aria-label="Select answer option D" />
         <span class="cli-router-choice-badge" aria-hidden="true">D</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">D. ip route 0.0.0.0 0.0.0.0 192.168.0.2</pre>
+      <pre class="cli-router-console">D. SwitchA(config-if)#switchport mode trunk
+SwitchA(config-if)#switchport trunk allowed vlan 50, 51
+SwitchA(config-if)#switchport qos trust cos</pre>
     </label>
 
 
@@ -364,15 +372,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/static-route-r14-172-21-34-25-via-r86.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/switchport-trunk-allowed-vlan-add-104.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/nat-router1-vlan200-acl-inside-source-overload.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-floating-static-19216820-via-r3-ospf-area20.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 The primary IPv4 default static route should use the normal static form with the default administrative distance (1). The separate backup \u201cfloating\u201d static is the same prefix/mask with a higher AD so it only installs when the primary is unavailable; the primary line itself is not labeled floating. ip route does not take tracked or floating keywords in the way shown in B and C. Option A appends an interface name after the next hop in an order that is not the usual Cisco static syntax (when specifying both, the typical form is exit interface then next hop).";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 For a Cisco IP phone with a PC on the phone\u2019s access port, use an access port for untagged user data and a separate voice VLAN for tagged voice traffic from the phone. switchport mode access, switchport access vlan 50 (data for PC A), and switchport voice vlan 51 matches the diagram. B is invalid: voice VLAN cannot be set to untagged that way. C and D use trunk mode and do not apply the standard access + voice VLAN pattern for this endpoint design.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -386,7 +394,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="r1fltpri1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="swagi0151"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

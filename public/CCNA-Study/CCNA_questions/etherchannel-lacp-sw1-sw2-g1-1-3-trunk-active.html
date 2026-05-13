@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Router1 primary default for floating backup</title>
+  <title>CCNA — LACP EtherChannel: SW1–SW2 G1/1–G1/3</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -315,45 +315,57 @@
   <main class="card">
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/floating-static-router1-primary-default-route-topology.png" alt="Topology: LAN to Router1 GigabitEthernet0/1; Primary ISP on Router1 GigabitEthernet1/0; Backup ISP on Router1 GigabitEthernet1/1." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/etherchannel-lacp-sw1-sw2-g1-1-3-topology.png" alt="Topology: SW1 and SW2 with three parallel links G1/1, G1/2, and G1/3 bundled as one EtherChannel." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>
-    <h1>Refer to the exhibit. A company is configuring a failover plan and must implement the default routes in such a way that a floating static route will assume traffic forwarding when the primary link goes down. Which primary route configuration must be used?</h1>
+    <h1>Refer to the exhibit. Which configuration establishes a Layer 2 LACP EtherChannel when applied to both switches?</h1>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="A" aria-label="Select answer option A" />
+        <input type="radio" name="ecagg651" value="A" aria-label="Select answer option A" />
         <span class="cli-router-choice-badge" aria-hidden="true">A</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">A. ip route 0.0.0.0 0.0.0.0 192.168.0.2 GigabitEthernet1/0</pre>
+      <pre class="cli-router-console">A. interface range G1/1-3
+switchport mode access
+channel-group 1 mode passive
+no shutdown</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="B" aria-label="Select answer option B" />
+        <input type="radio" name="ecagg651" value="B" aria-label="Select answer option B" />
         <span class="cli-router-choice-badge" aria-hidden="true">B</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">B. ip route 0.0.0.0 0.0.0.0 192.168.0.2 tracked</pre>
+      <pre class="cli-router-console">B. interface range G1/1-3
+switchport mode trunk
+channel-group 1 mode desirable
+no shutdown</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="C" aria-label="Select answer option C" />
+        <input type="radio" name="ecagg651" value="C" aria-label="Select answer option C" />
         <span class="cli-router-choice-badge" aria-hidden="true">C</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">C. ip route 0.0.0.0 0.0.0.0 192.168.0.2 floating</pre>
+      <pre class="cli-router-console">C. interface range G1/1-3
+switchport mode trunk
+channel-group 1 mode active
+no shutdown</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="D" aria-label="Select answer option D" />
+        <input type="radio" name="ecagg651" value="D" aria-label="Select answer option D" />
         <span class="cli-router-choice-badge" aria-hidden="true">D</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">D. ip route 0.0.0.0 0.0.0.0 192.168.0.2</pre>
+      <pre class="cli-router-console">D. interface range G1/1-3
+switchport mode access
+channel-group 1 mode on
+no shutdown</pre>
     </label>
 
 
@@ -364,15 +376,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/static-route-r14-172-21-34-25-via-r86.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/switchport-trunk-allowed-vlan-add-104.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-enterprise-wlan-80211r-fast-transition.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-radius-authentication-server-network-user.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 The primary IPv4 default static route should use the normal static form with the default administrative distance (1). The separate backup \u201cfloating\u201d static is the same prefix/mask with a higher AD so it only installs when the primary is unavailable; the primary line itself is not labeled floating. ip route does not take tracked or floating keywords in the way shown in B and C. Option A appends an interface name after the next hop in an order that is not the usual Cisco static syntax (when specifying both, the typical form is exit interface then next hop).";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C \u2014 LACP (IEEE 802.3ad) uses channel-group mode **active** or **passive**. Applying **mode active** on both ends forms a negotiated LACP bundle. A switch-to-switch aggregate that carries multiple VLANs is normally a **trunk**. A is wrong because **passive** on both sides does not bring LACP up (each side waits for LACP messages from a partner). B uses **mode desirable**, which is **PAgP**, not LACP. D uses **mode on**, which is a **static** EtherChannel with no LACP negotiation.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -386,7 +398,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="r1fltpri1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="ecagg651"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

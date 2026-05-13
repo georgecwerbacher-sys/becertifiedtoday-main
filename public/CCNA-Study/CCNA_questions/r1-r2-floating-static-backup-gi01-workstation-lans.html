@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Router1 primary default for floating backup</title>
+  <title>CCNA — R1/R2: floating static backup over Gi0/1</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -315,45 +315,61 @@
   <main class="card">
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/floating-static-router1-primary-default-route-topology.png" alt="Topology: LAN to Router1 GigabitEthernet0/1; Primary ISP on Router1 GigabitEthernet1/0; Backup ISP on Router1 GigabitEthernet1/1." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/r1-r2-dual-links-ospf-floating-static-backup-topology.png" alt="Topology: R1 and R2 with parallel Gi0/0 and Gi0/1 links on 172.16.0.0/30 and 172.16.0.4/30; SW1 LAN 172.16.1.0/24; SW2 LAN 172.16.2.0/27; OSPF process 200 on both routers." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>
-    <h1>Refer to the exhibit. A company is configuring a failover plan and must implement the default routes in such a way that a floating static route will assume traffic forwarding when the primary link goes down. Which primary route configuration must be used?</h1>
+    <h1>Refer to the exhibit. The primary route across Gi0/0 is configured on both routers. A secondary route must be configured to establish connectivity between the workstation networks. Which command set must be configured to complete this task?</h1>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="A" aria-label="Select answer option A" />
+        <input type="radio" name="r1r2flt54" value="A" aria-label="Select answer option A" />
         <span class="cli-router-choice-badge" aria-hidden="true">A</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">A. ip route 0.0.0.0 0.0.0.0 192.168.0.2 GigabitEthernet1/0</pre>
+      <pre class="cli-router-console">A. R1
+ip route 172.16.2.0 255.255.255.240 172.16.0.2 113
+
+R2
+ip route 172.16.1.0 255.255.255.0 172.16.0.1 114</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="B" aria-label="Select answer option B" />
+        <input type="radio" name="r1r2flt54" value="B" aria-label="Select answer option B" />
         <span class="cli-router-choice-badge" aria-hidden="true">B</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">B. ip route 0.0.0.0 0.0.0.0 192.168.0.2 tracked</pre>
+      <pre class="cli-router-console">B. R1
+ip route 172.16.2.0 255.255.255.240 172.16.0.5 89
+
+R2
+ip route 172.16.1.0 255.255.255.0 172.16.0.6 89</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="C" aria-label="Select answer option C" />
+        <input type="radio" name="r1r2flt54" value="C" aria-label="Select answer option C" />
         <span class="cli-router-choice-badge" aria-hidden="true">C</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">C. ip route 0.0.0.0 0.0.0.0 192.168.0.2 floating</pre>
+      <pre class="cli-router-console">C. R1
+ip route 172.16.2.0 255.255.255.248 172.16.0.5 110
+
+R2
+ip route 172.16.1.0 255.255.255.0 172.16.0.6 110</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="D" aria-label="Select answer option D" />
+        <input type="radio" name="r1r2flt54" value="D" aria-label="Select answer option D" />
         <span class="cli-router-choice-badge" aria-hidden="true">D</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">D. ip route 0.0.0.0 0.0.0.0 192.168.0.2</pre>
+      <pre class="cli-router-console">D. R1
+ip route 172.16.2.0 255.255.255.224 172.16.0.6 111
+
+R2
+ip route 172.16.1.0 255.255.255.0 172.16.0.5 112</pre>
     </label>
 
 
@@ -364,15 +380,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/static-route-r14-172-21-34-25-via-r86.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/switchport-trunk-allowed-vlan-add-104.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-floating-static-19216820-via-r3-ospf-area20.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/cat9300-cdp-timer-rapid-neighbor-discovery.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 The primary IPv4 default static route should use the normal static form with the default administrative distance (1). The separate backup \u201cfloating\u201d static is the same prefix/mask with a higher AD so it only installs when the primary is unavailable; the primary line itself is not labeled floating. ip route does not take tracked or floating keywords in the way shown in B and C. Option A appends an interface name after the next hop in an order that is not the usual Cisco static syntax (when specifying both, the typical form is exit interface then next hop).";
+      var CORRECT_MSG = "Correct. D \u2014 The workstation subnets are 172.16.2.0/27 (mask 255.255.255.224) behind R2 and 172.16.1.0/24 (255.255.255.0) behind R1. Backup statics must point across the Gi0/1 transit (172.16.0.4/30): from R1 use next hop 172.16.0.6 (R2\u2019s Gi0/1); from R2 use 172.16.0.5 (R1\u2019s Gi0/1). Administrative distance must exceed OSPF\u2019s default 110 so these remain floating backups; 111 and 112 satisfy that. A uses the wrong mask for /27, next hops on the primary Gi0/0 link, and would not steer over Gi0/1. B uses wrong masks, AD 89 below OSPF, and next hop 172.16.0.5 from R1 is R1\u2019s own address on that subnet. C uses wrong masks and AD 110 ties OSPF instead of backing it up.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -386,7 +402,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="r1fltpri1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="r1r2flt54"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

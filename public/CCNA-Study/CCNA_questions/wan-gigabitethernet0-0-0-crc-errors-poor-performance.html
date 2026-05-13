@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Router1 primary default for floating backup</title>
+  <title>CCNA — WAN Gi0/0/0 CRC errors (show interface)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,49 +313,44 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <div class="exhibit-stack">
-      <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/floating-static-router1-primary-default-route-topology.png" alt="Topology: LAN to Router1 GigabitEthernet0/1; Primary ISP on Router1 GigabitEthernet1/0; Backup ISP on Router1 GigabitEthernet1/1." width="900" decoding="async" loading="lazy" />
-      </figure>
-    </div>
-    <h1>Refer to the exhibit. A company is configuring a failover plan and must implement the default routes in such a way that a floating static route will assume traffic forwarding when the primary link goes down. Which primary route configuration must be used?</h1>
+    <div class="exhibit-router-cli" role="region" aria-label="ISR4331 show interfaces GigabitEthernet0/0/0">
+        <pre>Router#show interfaces GigabitEthernet0/0/0
+GigabitEthernet0/0/0 is up, line protocol is up
+  Hardware is ISR4331-3x1GE, address is 5486.bc25.1f70 (bia 5486.bc25.1f70)
+  Description: &lt;&lt; WAN Link &gt;&gt;
+  Internet address is 192.0.2.2/30
+  MTU 1500 bytes, BW 1000000 Kbit/sec, DLY 10 usec,
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full Duplex, 1000Mbps, media type is RJ45
+  output flow-control is unsupported, input flow-control is off
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:00, output 00:00:00, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/375/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 7000 bits/sec, 4 packets/sec
+  5 minute output rate 4000 bits/sec, 4 packets/sec
+     22579370 packets input, 8825545968 bytes, 0 no buffer
+     Received 67 broadcasts (0 IP multicasts)
+     0 runts, 0 giants, 0 throttles
+     3612699 input errors, 3612699 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 10747057 multicast, 0 pause input
+     12072167 packets output, 1697953637 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     5 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out</pre>
+      </div>
+    <h1>Refer to the exhibit. What is a reason for poor performance on the network interface?</h1>
 
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="A" aria-label="Select answer option A" />
-        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">A. ip route 0.0.0.0 0.0.0.0 192.168.0.2 GigabitEthernet1/0</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="B" aria-label="Select answer option B" />
-        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">B. ip route 0.0.0.0 0.0.0.0 192.168.0.2 tracked</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="C" aria-label="Select answer option C" />
-        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">C. ip route 0.0.0.0 0.0.0.0 192.168.0.2 floating</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="D" aria-label="Select answer option D" />
-        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">D. ip route 0.0.0.0 0.0.0.0 192.168.0.2</pre>
-    </label>
-
+    <label class="choice"><input type="radio" name="wancrcgi1" value="A" />A. The interface is receiving excessive broadcast traffic.</label>
+    <label class="choice"><input type="radio" name="wancrcgi1" value="B" />B. The cable connection between the two devices is faulty.</label>
+    <label class="choice"><input type="radio" name="wancrcgi1" value="C" />C. The interface is operating at a different speed than the connected device.</label>
+    <label class="choice"><input type="radio" name="wancrcgi1" value="D" />D. The bandwidth setting of the interface is misconfigured</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -364,15 +359,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/static-route-r14-172-21-34-25-via-r86.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/switchport-trunk-allowed-vlan-add-104.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/switchport-trunk-allowed-vlan-add-104.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ospf-r3-dr-priority-gi01-104.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 The primary IPv4 default static route should use the normal static form with the default administrative distance (1). The separate backup \u201cfloating\u201d static is the same prefix/mask with a higher AD so it only installs when the primary is unavailable; the primary line itself is not labeled floating. ip route does not take tracked or floating keywords in the way shown in B and C. Option A appends an interface name after the next hop in an order that is not the usual Cisco static syntax (when specifying both, the typical form is exit interface then next hop).";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 The counters show a very large number of input errors that are almost entirely CRC errors while the link is up at 1 Gb/s full duplex with low utilization. CRC failures indicate received frames were corrupted on the wire; that pattern most often traces to physical-layer problems such as a faulty cable, loose connector, or failing port/transceiver. Broadcasts are negligible compared with total input packets (A). Collisions are zero, which is not the usual signature of a duplex/speed mismatch on full duplex (C). The bandwidth statement influences routing metrics and reporting; it does not generate CRC errors (D).";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -386,7 +381,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="r1fltpri1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="wancrcgi1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

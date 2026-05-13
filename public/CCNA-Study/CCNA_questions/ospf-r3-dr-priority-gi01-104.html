@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Router1 primary default for floating backup</title>
+  <title>CCNA — R3 as OSPF DR on 10.0.4.0/24</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -315,45 +315,49 @@
   <main class="card">
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/floating-static-router1-primary-default-route-topology.png" alt="Topology: LAN to Router1 GigabitEthernet0/1; Primary ISP on Router1 GigabitEthernet1/0; Backup ISP on Router1 GigabitEthernet1/1." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/ospf-r3-dr-gi01-priority-100-topology.png" alt="Topology: R1 Gi0/0 on 10.0.1.0/24, R2 Gi0/0 on 10.0.2.0/24, R3 Gi0/0 on 10.0.3.0/24; shared 10.0.4.0/24 on R1 Gi0/1 (.1), R2 Gi0/1 (.2), R3 Gi0/1 (.3)." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>
-    <h1>Refer to the exhibit. A company is configuring a failover plan and must implement the default routes in such a way that a floating static route will assume traffic forwarding when the primary link goes down. Which primary route configuration must be used?</h1>
+    <h1>Refer to the exhibit. Routers R1 and R3 have the default configuration. The router R2 priority is set to 99. Which commands on R3 configure it as the DR in the 10.0.4.0/24 network?</h1>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="A" aria-label="Select answer option A" />
+        <input type="radio" name="ospfdr3g104" value="A" aria-label="Select answer option A" />
         <span class="cli-router-choice-badge" aria-hidden="true">A</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">A. ip route 0.0.0.0 0.0.0.0 192.168.0.2 GigabitEthernet1/0</pre>
+      <pre class="cli-router-console">A. R3(config)#interface Gig0/1
+R3(config-if)#ip ospf priority 100</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="B" aria-label="Select answer option B" />
+        <input type="radio" name="ospfdr3g104" value="B" aria-label="Select answer option B" />
         <span class="cli-router-choice-badge" aria-hidden="true">B</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">B. ip route 0.0.0.0 0.0.0.0 192.168.0.2 tracked</pre>
+      <pre class="cli-router-console">B. R3(config)#interface Gig0/0
+R3(config-if)#ip ospf priority 100</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="C" aria-label="Select answer option C" />
+        <input type="radio" name="ospfdr3g104" value="C" aria-label="Select answer option C" />
         <span class="cli-router-choice-badge" aria-hidden="true">C</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">C. ip route 0.0.0.0 0.0.0.0 192.168.0.2 floating</pre>
+      <pre class="cli-router-console">C. R3(config)#interface Gig0/0
+R3(config-if)#ip ospf priority 1</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="D" aria-label="Select answer option D" />
+        <input type="radio" name="ospfdr3g104" value="D" aria-label="Select answer option D" />
         <span class="cli-router-choice-badge" aria-hidden="true">D</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">D. ip route 0.0.0.0 0.0.0.0 192.168.0.2</pre>
+      <pre class="cli-router-console">D. R3(config)#interface Gig0/1
+R3(config-if)#ip ospf priority 0</pre>
     </label>
 
 
@@ -364,15 +368,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/static-route-r14-172-21-34-25-via-r86.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/switchport-trunk-allowed-vlan-add-104.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wan-gigabitethernet0-0-0-crc-errors-poor-performance.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/router1-longest-match-10-10-13-158-show-ip-route.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 The primary IPv4 default static route should use the normal static form with the default administrative distance (1). The separate backup \u201cfloating\u201d static is the same prefix/mask with a higher AD so it only installs when the primary is unavailable; the primary line itself is not labeled floating. ip route does not take tracked or floating keywords in the way shown in B and C. Option A appends an interface name after the next hop in an order that is not the usual Cisco static syntax (when specifying both, the typical form is exit interface then next hop).";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 DR election on the 10.0.4.0/24 broadcast segment uses OSPF interface priority on each router\u2019s interface attached to that segment. R3 attaches via GigabitEthernet0/1 (Gig0/1). R2 already uses priority 99; R1 and R3 default to 1. Raising R3\u2019s priority on Gig0/1 to 100 makes R3 win the DR election over R2. GigabitEthernet0/0 (B and C) is on the 10.0.3.0/24 stub, not the shared 10.0.4.0/24 LAN. Priority 0 (D) removes R3 from DR/BDR eligibility.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -386,7 +390,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="r1fltpri1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="ospfdr3g104"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

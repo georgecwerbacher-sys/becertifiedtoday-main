@@ -4832,6 +4832,591 @@ interface GigabitEthernet0/1
                 "ip route 0.0.0.0 0.0.0.0 192.168.0.2",
             ],
         },
+        {
+            "slug": "switchport-trunk-allowed-vlan-add-104",
+            "title": "CCNA — Trunk: add VLAN 104 without replacing list",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/switchport-trunk-allowed-vlan-add-104-topology.png" alt="Topology: SW1 Ethernet0/0 to SW2 Ethernet0/0 802.1Q trunk; VLANs 1, 100, 101, 102, 103 allowed; new VLAN 104." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. An engineer is asked to insert the new VLAN into the existing trunk without modifying anything previously configured. Which command accomplishes this task?",
+            "name": "trnkadd104",
+            "correct": "C",
+            "explain": "Correct. C \u2014 On an 802.1Q trunk, switchport trunk allowed vlan add 104 appends VLAN 104 to the current allow list without replacing the VLANs already permitted (1, 100\u2013103 here). switchport trunk allowed vlan 100-104 (A) replaces the list with only that range, dropping VLAN 1 and any other VLANs outside 100\u2013104. allowed vlan all (B) changes behavior to permit every VLAN, not a minimal add. allowed vlan 104 (D) replaces the list with only VLAN 104, removing the others.",
+            "choices": [
+                "switchport trunk allowed vlan 100-104",
+                "switchport trunk allowed vlan all",
+                "switchport trunk allowed vlan add 104",
+                "switchport trunk allowed vlan 104",
+            ],
+        },
+        {
+            "slug": "wan-gigabitethernet0-0-0-crc-errors-poor-performance",
+            "title": "CCNA — WAN Gi0/0/0 CRC errors (show interface)",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="ISR4331 show interfaces GigabitEthernet0/0/0">
+        <pre>Router#show interfaces GigabitEthernet0/0/0
+GigabitEthernet0/0/0 is up, line protocol is up
+  Hardware is ISR4331-3x1GE, address is 5486.bc25.1f70 (bia 5486.bc25.1f70)
+  Description: &lt;&lt; WAN Link &gt;&gt;
+  Internet address is 192.0.2.2/30
+  MTU 1500 bytes, BW 1000000 Kbit/sec, DLY 10 usec,
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full Duplex, 1000Mbps, media type is RJ45
+  output flow-control is unsupported, input flow-control is off
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:00, output 00:00:00, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/375/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 7000 bits/sec, 4 packets/sec
+  5 minute output rate 4000 bits/sec, 4 packets/sec
+     22579370 packets input, 8825545968 bytes, 0 no buffer
+     Received 67 broadcasts (0 IP multicasts)
+     0 runts, 0 giants, 0 throttles
+     3612699 input errors, 3612699 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 10747057 multicast, 0 pause input
+     12072167 packets output, 1697953637 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     5 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out</pre>
+      </div>""",
+            "stem": "Refer to the exhibit. What is a reason for poor performance on the network interface?",
+            "name": "wancrcgi1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 The counters show a very large number of input errors that are almost entirely CRC errors while the link is up at 1 Gb/s full duplex with low utilization. CRC failures indicate received frames were corrupted on the wire; that pattern most often traces to physical-layer problems such as a faulty cable, loose connector, or failing port/transceiver. Broadcasts are negligible compared with total input packets (A). Collisions are zero, which is not the usual signature of a duplex/speed mismatch on full duplex (C). The bandwidth statement influences routing metrics and reporting; it does not generate CRC errors (D).",
+            "choices": [
+                "The interface is receiving excessive broadcast traffic.",
+                "The cable connection between the two devices is faulty.",
+                "The interface is operating at a different speed than the connected device.",
+                "The bandwidth setting of the interface is misconfigured",
+            ],
+        },
+        {
+            "slug": "ospf-r3-dr-priority-gi01-104",
+            "title": "CCNA — R3 as OSPF DR on 10.0.4.0/24",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/ospf-r3-dr-gi01-priority-100-topology.png" alt="Topology: R1 Gi0/0 on 10.0.1.0/24, R2 Gi0/0 on 10.0.2.0/24, R3 Gi0/0 on 10.0.3.0/24; shared 10.0.4.0/24 on R1 Gi0/1 (.1), R2 Gi0/1 (.2), R3 Gi0/1 (.3)." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. Routers R1 and R3 have the default configuration. The router R2 priority is set to 99. Which commands on R3 configure it as the DR in the 10.0.4.0/24 network?",
+            "name": "ospfdr3g104",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A \u2014 DR election on the 10.0.4.0/24 broadcast segment uses OSPF interface priority on each router\u2019s interface attached to that segment. R3 attaches via GigabitEthernet0/1 (Gig0/1). R2 already uses priority 99; R1 and R3 default to 1. Raising R3\u2019s priority on Gig0/1 to 100 makes R3 win the DR election over R2. GigabitEthernet0/0 (B and C) is on the 10.0.3.0/24 stub, not the shared 10.0.4.0/24 LAN. Priority 0 (D) removes R3 from DR/BDR eligibility.",
+            "choices": [
+                "R3(config)#interface Gig0/1\nR3(config-if)#ip ospf priority 100",
+                "R3(config)#interface Gig0/0\nR3(config-if)#ip ospf priority 100",
+                "R3(config)#interface Gig0/0\nR3(config-if)#ip ospf priority 1",
+                "R3(config)#interface Gig0/1\nR3(config-if)#ip ospf priority 0",
+            ],
+        },
+        {
+            "slug": "router1-longest-match-10-10-13-158-show-ip-route",
+            "title": "CCNA — Router1 next hop for 10.10.13.158 (topology and route table)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/router1-longest-match-10-10-13-158-show-ip-route-topology.png" alt="Topology: Router1 hub to MPLS cloud 10.10.12.0/30, Internet cloud 10.10.11.0/30, Router2 10.10.10.0/30, Router3 10.10.10.4/30, Router4 10.10.10.8/30, Router5 10.10.10.12/30." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="Router1 show ip route">
+        <pre>Router1#show ip route
+Gateway of last resort is 10.10.11.2 to network 0.0.0.0
+    209.165.200.0/27 is subnetted, 1 subnets
+B     209.165.200.224 [20/0] via 10.10.12.2, 03:32:14
+    209.165.201.0/27 is subnetted, 1 subnets
+B     209.165.201.0 [20/0] via 10.10.12.2, 02:26:53
+    209.165.202.0/27 is subnetted, 1 subnets
+B     209.165.202.128 [20/0] via 10.10.12.2, 02:46:03
+    10.0.0.0/8 is variably subnetted, 10 subnets, 4 masks
+O     10.10.13.0/25 [110/2] via 10.10.10.1, 00:00:04, GigabitEthernet0/0
+O     10.10.13.128/28 [110/2] via 10.10.10.5, 00:00:12, GigabitEthernet0/1
+O     10.10.13.144/28 [110/2] via 10.10.10.9, 00:01:57, GigabitEthernet0/2
+O     10.10.13.160/29 [110/2] via 10.10.10.5, 00:00:12, GigabitEthernet0/1
+O     10.10.13.208/29 [110/2] via 10.10.10.13, 00:01:57, GigabitEthernet0/3
+S*    0.0.0.0/0 [1/0] via 10.10.11.2</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. Which next-hop IP address does Router1 use for packets destined to host 10.10.13.158?",
+            "name": "r1nh158",
+            "correct": "D",
+            "explain": "Correct. D \u2014 Router1 picks the longest matching prefix. 10.10.13.158 falls in 10.10.13.144/28 (.144\u2013.159) but not in the shorter /25 (.0\u2013.127) or the other listed /28 and /29 blocks. The OSPF route for 10.10.13.144/28 forwards via 10.10.10.9. The default route via 10.10.11.2 (B) is only used when no more specific route matches. 10.10.10.5 (A) is the next hop for other prefixes in the table, not for 10.10.13.158. 10.10.12.2 (C) is the BGP next hop for the 209.165.x.x networks.",
+            "choices": [
+                "10.10.10.5",
+                "10.10.11.2",
+                "10.10.12.2",
+                "10.10.10.9",
+            ],
+        },
+        {
+            "slug": "r1-wan-lan-route-10-0-10-ad-precedence",
+            "title": "CCNA — R1: EIGRP vs OSPF for 10.0.10.0/24 (show ip route)",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route">
+        <pre>R1#show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+Gateway of last resort is not set
+
+      10.0.0.0/8 is variably subnetted, 4 subnets, 2 masks
+C        10.0.0.0/8 is directly connected, Loopback0
+O        10.0.1.3/32 [110/100] via 10.0.1.100, 00:39:08, Serial0
+C        10.0.1.0/24 is directly connected, Serial0
+O        10.0.1.5/32 [110/5] via 10.0.1.50, 00:39:08, Serial0
+O        10.0.10.0/24 [110/10] via 10.0.1.4, 00:39:08, GigabitEthernet0/0
+D        10.0.10.0/24 [90/10] via 10.0.1.5, 00:39:08, GigabitEthernet0/1</pre>
+      </div>""",
+            "stem": "Refer to the exhibit. Web traffic is coming in from the WAN interface. Which route takes precedence when the router is processing traffic destined for the LAN network at 10.0.10.0/24?",
+            "name": "r1wanlan1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 The routing table lists two equal-length routes to 10.0.10.0/24: OSPF with administrative distance 110 via 10.0.1.4, and EIGRP with administrative distance 90 via 10.0.1.5. When the prefix and mask match, the route with the lower AD is installed and used, so EIGRP via 10.0.1.5 wins. The /32 OSPF host routes (C and D) are irrelevant to forwarding toward the entire 10.0.10.0/24 LAN. The OSPF path via 10.0.1.4 (B) is valid but not preferred because its AD is higher than EIGRP\u2019s.",
+            "choices": [
+                "via next-hop 10.0.1.5",
+                "via next-hop 10.0.1.4",
+                "via next-hop 10.0.1.50",
+                "via next-hop 10.0.1.100",
+            ],
+        },
+        {
+            "slug": "r15-ssh-version2-minimum-config-show-run",
+            "title": "CCNA — R15: minimum config for SSHv2 (show run)",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="Router show running-config excerpt">
+        <pre>Router#show run
+Building configuration...
+
+Current configuration : 1530 bytes
+Last configuration change at 11:32:53 UTC Thu Feb 10 2020
+!
+upgrade fpd auto
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+hostname Router
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+no ip icmp rate-limit unreachable
+!</pre>
+      </div>""",
+            "stem": "Refer to the exhibit. Which minimum configuration items are needed to enable Secure Shell version 2 access to R15?",
+            "name": "r15sshmin1",
+            "correct": "C",
+            "mono": True,
+            "explain": "Correct. C \u2014 SSHv2 needs RSA server keys: set a meaningful hostname (R15), define ip domain-name so the key can be generated, run crypto key generate rsa, force ip ssh version 2, and allow SSH on the VTYs with transport input ssh. Option A omits ip domain-name and ip ssh version 2 and adds non-essential lines (source-interface, stricthostkeycheck text that is not part of the usual minimum). Option B leaves the hostname as Router, uses transport input all (not SSH-only), and adds optional logging. Option D skips hostname and ip domain-name and repeats optional or invalid-looking lines.",
+            "choices": [
+                "Router(config)#hostname R15\nR15(config)#crypto key generate rsa general-keys modulus 1024\nR15(config-line)#line vty 0 15\nR15(config-line)# transport input ssh\nR15(config)#ip ssh source-interface Fa0/0\nR15(config)#ip ssh stricthostkeycheck",
+                "Router(config)#ip domain-name cisco.com\nRouter(config)#crypto key generate rsa general-keys modulus 1024\nRouter(config)#ip ssh version 2\nRouter(config-line)#line vty 0 15\nRouter(config-line)# transport input all\nRouter(config)#ip ssh logging events",
+                "Router(config)#hostname R15\nR15(config)#ip domain-name cisco.com\nR15(config)#crypto key generate rsa general-keys modulus 1024\nR15(config)#ip ssh version 2\nR15(config-line)#line vty 0 15\nR15(config-line)# transport input ssh",
+                "Router(config)#crypto key generate rsa general-keys modulus 1024\nRouter(config)#ip ssh version 2\nRouter(config-line)#line vty 0 15\nRouter(config-line)# transport input ssh\nRouter(config)#ip ssh logging events\nR15(config)#ip ssh stricthostkeycheck",
+            ],
+        },
+        {
+            "slug": "wlc-80211r-fast-transition-ft-psk",
+            "title": "CCNA — 802.11r (FT) with WPA2-PSK on WLC",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/wlc-80211r-fast-transition-ft-psk-wlan-security-gui.png" alt="WLAN security GUI: Fast Transition disabled; PMF disabled; WPA2 Policy and AES enabled; AKM PSK enabled, 802.1X and FT options off." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. Users need to connect to the wireless network with IEEE 802.11r-compatible devices. The connection must be maintained as users travel between floors or to other areas in the building. What must be the configuration of the connection?",
+            "name": "wlc11rft1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 IEEE 802.11r (Fast Transition) speeds secure roaming by allowing key negotiation steps to be done ahead of time. On a WPA2-PSK WLAN (PSK enabled in AKM, as in the exhibit), you enable Fast Transition and select **FT PSK** so the FT mode matches the pre-shared key credential. **FT 802.1X** (C) pairs with 802.1X AKM, not PSK-only. WPA Policy with CCKM (A) is legacy centralized WLAN keying, not 802.11r. Disabling AES (B) would break normal WPA2-AES operation.",
+            "choices": [
+                "Select the WPA Policy option with the CCKM option",
+                "Disable AES encryption",
+                "Enable Fast Transition and select the FT 802.1x option",
+                "Enable Fast Transition and select the FT PSK option",
+            ],
+        },
+        {
+            "slug": "etherchannel-lacp-sw1-active-sw2-passive-initiation",
+            "title": "CCNA — LACP: only Switch1 initiates (topology and baseline config)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/etherchannel-lacp-sw1-active-sw2-passive-initiation-topology.png" alt="Topology: Switch 1 E1/1 and E1/2 dual links to Switch 2 E1/1 and E1/2 for EtherChannel." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="Switch1 and Switch2 baseline EtherChannel-related configuration">
+        <pre>! Switch 1
+interface Po1
+ switchport
+ switchport mode access
+ switchport access vlan 2
+interface Ethernet1/1 - 2
+ switchport
+ switchport mode access
+ switchport access vlan 2
+!
+! Switch 2
+interface Po1
+ switchport
+ switchport mode access
+ switchport access vlan 2
+interface Ethernet1/1 - 2
+ switchport
+ switchport mode access
+ switchport access vlan 2</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. An engineer is configuring an EtherChannel using LACP between Switches 1 and 2. Which configuration must be applied so that only Switch 1 sends LACP initiation packets?",
+            "name": "echlacpsw12a",
+            "correct": "C",
+            "mono": True,
+            "explain": "Correct. C \u2014 With IEEE 802.3ad LACP, a port in **active** mode transmits LACP PDUs to start or sustain negotiation; a **passive** port waits for a neighbor\u2019s LACPDUs and responds but does not initiate. To have **only Switch 1** initiate, place **mode active** on Switch 1 and **mode passive** on Switch 2. **mode on** (A and D) builds a static (non-LACP) bundle, which does not match \u201cusing LACP.\u201d Option B makes Switch 2 active and Switch 1 passive, so Switch 2 would be the side initiating.",
+            "choices": [
+                "Switch1(config-if)#channel-group 1 mode on\nSwitch2(config-if)#channel-group 1 mode passive",
+                "Switch1(config-if)#channel-group 1 mode passive\nSwitch2(config-if)#channel-group 1 mode active",
+                "Switch1(config-if)#channel-group 1 mode active\nSwitch2(config-if)#channel-group 1 mode passive",
+                "Switch1(config-if)#channel-group 1 mode on\nSwitch2(config-if)#channel-group 1 mode active",
+            ],
+        },
+        {
+            "slug": "stp-vlan20-four-switch-root-bridge",
+            "title": "CCNA — STP root for VLAN 20 (four switches)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/stp-vlan20-four-switch-root-bridge-topology.png" alt="Topology: SW1, SW2, SW3, and SW4 in a full mesh; center label VLAN 20." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. SW1 = 24596 0018.184e.3c00; SW2 = 28692 004a.14e5.4077; SW3 = 32788 0022.55cf.dd00; SW4 = 64000 0041.454d.407f. Which switch becomes the root of a spanning tree for VLAN 20 if all links are of equal speed?",
+            "name": "stpv20root1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 The root bridge is the switch with the lowest bridge ID (bridge priority concatenated with the base MAC). Compare priorities first: 24596 on SW1 is lower than 28692, 32788, and 64000 on SW2\u2013SW4, so SW1 wins root election for VLAN 20. Equal link speeds do not change bridge ID comparison. If priorities tied, the lower MAC would break the tie.",
+            "choices": [
+                "SW1",
+                "SW2",
+                "SW3",
+                "SW4",
+            ],
+        },
+        {
+            "slug": "nat-router1-vlan200-acl-inside-source-overload",
+            "title": "CCNA — NAT: allow VLAN 200 through PAT ACL",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/nat-router1-vlan100-vlan200-internet-topology.png" alt="Topology: Router1 with VLAN 100 and VLAN 200 internal clouds and Internet cloud on GigabitEthernet0/0." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="Router1 NAT-related configuration">
+        <pre>Router1(config)#interface GigabitEthernet0/0
+Router1(config-if)#ip address 209.165.200.225 255.255.255.224
+Router1(config-if)#ip nat outside
+Router1(config)#interface GigabitEthernet0/1
+Router1(config-if)#ip nat inside
+Router1(config)#interface GigabitEthernet0/1.100
+Router1(config-if)#encapsulation dot1Q 100
+Router1(config-if)#ip address 10.10.10.1 255.255.255.0
+Router1(config)#interface GigabitEthernet0/1.200
+Router1(config-if)#encapsulation dot1Q 200
+Router1(config-if)#ip address 10.10.20.1 255.255.255.0
+Router1(config)#ip access-list standard NAT_INSIDE_RANGES
+Router1(config-std-nacl)#permit 10.10.10.0 0.0.0.255
+Router1(config)#ip nat inside source list NAT_INSIDE_RANGES interface GigabitEthernet0/0 overload</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. Users on existing VLAN 100 can reach sites on the Internet. Which action must the administrator take to establish connectivity to the Internet for users in VLAN 200?",
+            "name": "natvl2001",
+            "correct": "B",
+            "explain": "Correct. B \u2014 PAT overload is already applied to traffic permitted by standard ACL NAT_INSIDE_RANGES. That ACL currently permits only 10.10.10.0/24 (VLAN 100), so 10.10.20.0/24 (VLAN 200) never matches and is not translated. Add a permit for 10.10.20.0 0.0.0.255 (or replace the ACL with a broader permit that includes both subnets) so VLAN 200 hosts are eligible for the same ip nat inside source ... overload mapping. A separate NAT pool (A) is not required when using interface overload. The outside interface is already correct for all inside subnets (C). Static NAT entries (D) are not the usual way to enable general outbound Internet access for a whole VLAN when dynamic overload already fits.",
+            "choices": [
+                "Define a NAT pool on the router.",
+                "Update the NAT_INSIDE_RANGES ACL",
+                "Configure the ip nat outside command on another interface for VLAN 200",
+                "Configure static NAT translations for VLAN 200",
+            ],
+        },
+        {
+            "slug": "switch-a-gi01-ip-phone-vlan50-voice51",
+            "title": "CCNA — Switch A Gi0/1: data VLAN 50, voice VLAN 51",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/switch-a-gi01-ip-phone-vlan50-voice51-topology.png" alt="Topology: Switch A and Switch B on Gi0/0; each Gi0/1 to IP phone with PC daisy-chained; legend Data VLAN 50, Voice VLAN 51." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. Switch A is newly configured. All VLANs are present in the VLAN database. The IP phone and PC A on Gi0/1 must be configured for the appropriate VLANs to establish connectivity between the PCs. Which command set fulfills the requirement?",
+            "name": "swagi0151",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A \u2014 For a Cisco IP phone with a PC on the phone\u2019s access port, use an access port for untagged user data and a separate voice VLAN for tagged voice traffic from the phone. switchport mode access, switchport access vlan 50 (data for PC A), and switchport voice vlan 51 matches the diagram. B is invalid: voice VLAN cannot be set to untagged that way. C and D use trunk mode and do not apply the standard access + voice VLAN pattern for this endpoint design.",
+            "choices": [
+                """SwitchA(config-if)#switchport mode access
+SwitchA(config-if)#switchport access vlan 50
+SwitchA(config-if)#switchport voice vlan 51""",
+                """SwitchA(config-if)#switchport mode access
+SwitchA(config-if)#switchport access vlan 50
+SwitchA(config-if)#switchport voice vlan untagged""",
+                """SwitchA(config-if)#switchport mode trunk
+SwitchA(config-if)#switchport trunk allowed vlan add 50, 51
+SwitchA(config-if)#switchport voice vlan dot1p""",
+                """SwitchA(config-if)#switchport mode trunk
+SwitchA(config-if)#switchport trunk allowed vlan 50, 51
+SwitchA(config-if)#switchport qos trust cos""",
+            ],
+        },
+        {
+            "slug": "r1-floating-static-19216820-via-r3-ospf-area20",
+            "title": "CCNA — R1 floating static to 192.168.20.0/24 via R3",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r1-ospf-area20-triangle-floating-static-19216820-topology.png" alt="Topology: R1, R2, R3 in a triangle labeled OSPF Area 20; subnets 192.168.10.0/24, 192.168.20.0/24, 192.168.30.0/24 with .1 and .2 host addresses on each link." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. R1 learns all routes via OSPF. Which command configures a backup static route on R1 to reach the 192.168.20.0/24 network via R3?",
+            "name": "r1flt201",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A \u2014 A floating static backup must use an administrative distance greater than OSPF\u2019s default (110) so the OSPF-learned path stays preferred while it is valid. Next hop to R3 on the R1\u2013R3 link is 192.168.30.2, with the correct /24 mask. B uses AD 90, which is lower than 110, so this static would beat OSPF and would not act only as a backup. C uses the wrong mask (255.255.0.0). D omits an AD; a standard static defaults to AD 1 and would also override OSPF.",
+            "choices": [
+                "R1(config)#ip route 192.168.20.0 255.255.255.0 192.168.30.2 111",
+                "R1(config)#ip route 192.168.20.0 255.255.255.0 192.168.30.2 90",
+                "R1(config)#ip route 192.168.20.0 255.255.0.0 192.168.30.2",
+                "R1(config)#ip route 192.168.20.0 255.255.255.0 192.168.30.2",
+            ],
+        },
+        {
+            "slug": "r1-r2-floating-static-backup-gi01-workstation-lans",
+            "title": "CCNA — R1/R2: floating static backup over Gi0/1",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r1-r2-dual-links-ospf-floating-static-backup-topology.png" alt="Topology: R1 and R2 with parallel Gi0/0 and Gi0/1 links on 172.16.0.0/30 and 172.16.0.4/30; SW1 LAN 172.16.1.0/24; SW2 LAN 172.16.2.0/27; OSPF process 200 on both routers." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. The primary route across Gi0/0 is configured on both routers. A secondary route must be configured to establish connectivity between the workstation networks. Which command set must be configured to complete this task?",
+            "name": "r1r2flt54",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 The workstation subnets are 172.16.2.0/27 (mask 255.255.255.224) behind R2 and 172.16.1.0/24 (255.255.255.0) behind R1. Backup statics must point across the Gi0/1 transit (172.16.0.4/30): from R1 use next hop 172.16.0.6 (R2\u2019s Gi0/1); from R2 use 172.16.0.5 (R1\u2019s Gi0/1). Administrative distance must exceed OSPF\u2019s default 110 so these remain floating backups; 111 and 112 satisfy that. A uses the wrong mask for /27, next hops on the primary Gi0/0 link, and would not steer over Gi0/1. B uses wrong masks, AD 89 below OSPF, and next hop 172.16.0.5 from R1 is R1\u2019s own address on that subnet. C uses wrong masks and AD 110 ties OSPF instead of backing it up.",
+            "choices": [
+                """R1
+ip route 172.16.2.0 255.255.255.240 172.16.0.2 113
+
+R2
+ip route 172.16.1.0 255.255.255.0 172.16.0.1 114""",
+                """R1
+ip route 172.16.2.0 255.255.255.240 172.16.0.5 89
+
+R2
+ip route 172.16.1.0 255.255.255.0 172.16.0.6 89""",
+                """R1
+ip route 172.16.2.0 255.255.255.248 172.16.0.5 110
+
+R2
+ip route 172.16.1.0 255.255.255.0 172.16.0.6 110""",
+                """R1
+ip route 172.16.2.0 255.255.255.224 172.16.0.6 111
+
+R2
+ip route 172.16.1.0 255.255.255.0 172.16.0.5 112""",
+            ],
+        },
+        {
+            "slug": "cat9300-cdp-timer-rapid-neighbor-discovery",
+            "title": "CCNA — Cat9300: CDP timer for faster neighbor discovery",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="Cat9300 show cdp output">
+        <pre>Cat9300#show cdp
+Global CDP information:
+  Sending CDP packets every 60 seconds
+  Sending a holdtime value of 180 seconds
+  Sending CDPv2 advertisements is enabled</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. Which action must be taken so that neighboring devices rapidly discover switch Cat9300?",
+            "name": "cdp93001",
+            "correct": "D",
+            "explain": "Correct. D \u2014 Neighbors build their view of Cat9300 from CDP advertisements that Cat9300 transmits. The global CDP timer sets how often those packets are sent (the exhibit shows every 60 seconds). Configuring a shorter value such as cdp timer 10 on Cat9300 increases advertisement frequency so neighbors see updates sooner. Holdtime (B) controls how long neighbors retain learned information without a refresh; it does not shorten Cat9300\u2019s transmit interval. Changing the timer on neighbors (C) affects how often those devices advertise themselves, not how often Cat9300 is announced to them. Portfast (A) is an STP access-port behavior and does not change CDP discovery timing.",
+            "choices": [
+                "Enable portfast on the ports that connect to neighboring devices",
+                "Configure the cdp holdtime 10 command on switch Cat9300",
+                "Configure the cdp timer 10 command on the neighbors of switch Cat9300",
+                "Configure the cdp timer 10 command on switch Cat9300",
+            ],
+        },
+        {
+            "slug": "sw2-fa01-dynamic-auto-trunk-allowed-vlan5-10",
+            "title": "CCNA — SW2 Fa0/1: force trunk after replace",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/sw2-fa01-dynamic-auto-trunk-allowed-vlan5-10-topology.png" alt="Topology: Sw1 and Sw2 connected fa0/1 to fa0/1; PC1 and PC2 in VLAN 5; PC3 and PC4 in VLAN 10; access ports fa0/2 and fa0/3 on each switch." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="Switch2 Fa0/1 configuration in progress">
+        <pre>Switch2(config)#interface fa0/1
+Switch2(config-if)#switchport mode dynamic auto
+Switch2(config-if)#switchport trunk allowed vlan 5,10</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. SW2 is replaced due to a hardware failure. A network engineer starts to configure SW2 by copying the Fa0/1 interface configuration from SW1. Which command must be configured on the Fa0/1 interface of SW2 to enable PC1 to connect to PC2?",
+            "name": "sw2fa011",
+            "correct": "A",
+            "explain": "Correct. A \u2014 With switchport mode dynamic auto, the port only becomes a trunk if the far end actively negotiates one (for example trunk or dynamic desirable). If both ends behave passively, the link stays an access port and switchport trunk allowed vlan has no trunk to apply. Configuring switchport mode trunk forces 802.1Q trunking so VLANs 5 and 10 can cross between switches for the PCs. B changes native VLAN tagging but does not fix auto/auto trunk formation. C removes VLAN 10 from the allowed list and would block that VLAN if a trunk existed. D would pin the link to access mode and not carry the needed VLANs as a trunk.",
+            "choices": [
+                "switchport mode trunk",
+                "switchport trunk native vlan 10",
+                "switchport trunk allowed remove 10",
+                "switchport mode access",
+            ],
+        },
+        {
+            "slug": "wlc-enterprise-wlan-80211r-fast-transition",
+            "title": "CCNA — WLC: 802.11r Fast Transition (Enterprise WLAN)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/wlc-enterprise-wlan-security-layer2-wpa2-fast-transition-disabled.png" alt="WLC WLAN Security Layer 2: WPA+WPA2 Enterprise, WPA2 Policy and AES enabled, 802.1X-SHA1 enabled, Fast Transition and PMF disabled, MAC filtering off." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. Users with IEEE 802.11r-capable client devices must maintain wireless connectivity while roaming between access points. Which WLAN Layer 2 security change is required?",
+            "name": "wlc11rent1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 IEEE 802.11r (Fast BSS Transition) reduces roaming time by letting compatible clients perform key operations more efficiently as they move between APs. The exhibit shows Fast Transition disabled; it must be enabled for 802.11r-oriented roaming behavior (with Enterprise/802.1X, the administrator then selects the FT 802.1X mode to match AKM). Requiring PMF (A) hardens management-frame handling but does not implement 802.11r fast roaming. MAC filtering (B) is an access-control list of MAC addresses, unrelated to 802.11r. Enabling WPA Policy (C) allows legacy WPA alongside WPA2 and does not address 802.11r.",
+            "choices": [
+                "Set PMF to Required",
+                "Enable MAC Filtering",
+                "Enable WPA Policy",
+                "Set Fast Transition to Enabled",
+            ],
+        },
+        {
+            "slug": "etherchannel-lacp-sw1-sw2-g1-1-3-trunk-active",
+            "title": "CCNA — LACP EtherChannel: SW1–SW2 G1/1–G1/3",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/etherchannel-lacp-sw1-sw2-g1-1-3-topology.png" alt="Topology: SW1 and SW2 with three parallel links G1/1, G1/2, and G1/3 bundled as one EtherChannel." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. Which configuration establishes a Layer 2 LACP EtherChannel when applied to both switches?",
+            "name": "ecagg651",
+            "correct": "C",
+            "mono": True,
+            "explain": "Correct. C \u2014 LACP (IEEE 802.3ad) uses channel-group mode **active** or **passive**. Applying **mode active** on both ends forms a negotiated LACP bundle. A switch-to-switch aggregate that carries multiple VLANs is normally a **trunk**. A is wrong because **passive** on both sides does not bring LACP up (each side waits for LACP messages from a partner). B uses **mode desirable**, which is **PAgP**, not LACP. D uses **mode on**, which is a **static** EtherChannel with no LACP negotiation.",
+            "choices": [
+                """interface range G1/1-3
+switchport mode access
+channel-group 1 mode passive
+no shutdown""",
+                """interface range G1/1-3
+switchport mode trunk
+channel-group 1 mode desirable
+no shutdown""",
+                """interface range G1/1-3
+switchport mode trunk
+channel-group 1 mode active
+no shutdown""",
+                """interface range G1/1-3
+switchport mode access
+channel-group 1 mode on
+no shutdown""",
+            ],
+        },
+        {
+            "slug": "wlc-radius-authentication-server-network-user",
+            "title": "CCNA — WLC: RADIUS server for wireless (Network User)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/wlc-radius-authentication-server-network-user-gui.png" alt="WLC Security AAA RADIUS Authentication Servers New: Server IP 192.168.25.2, port 1812, Server Status Enabled; Network User and Management checkboxes unchecked." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. A network engineer configures the Cisco WLC to authenticate local wireless clients against a RADIUS server. Which task must be performed to complete the process?",
+            "name": "wlcru661",
+            "correct": "C",
+            "explain": "Correct. C \u2014 On the WLC RADIUS authentication server entry, **Network User** must be enabled so this server is used for **802.1X / user authentication** for clients on the WLAN. **Management** (B) applies RADIUS to **management** access (for example administrative logins), not wireless client authentication. **Server Status** should remain enabled (A would disable the server). **Support for CoA** (D) enables RADIUS Change of Authorization features; it is not the basic step to tie the server to wireless user authentication.",
+            "choices": [
+                "Disable the Server Status option",
+                "Enable the Management option",
+                "Enable the Network User option",
+                "Enable the Support for CoA option",
+            ],
+        },
+        {
+            "slug": "ip-arp-inspection-vlan5-10-fa01-untrusted-effect",
+            "title": "CCNA — DAI on VLAN 5–10, access port VLAN 5",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="DAI and interface configuration">
+        <pre>ip arp inspection vlan 5-10
+interface fastethernet0/1
+ switchport mode access
+ switchport access vlan 5</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. What is the effect of this configuration?",
+            "name": "dai5101",
+            "correct": "D",
+            "explain": "Correct. D \u2014 Dynamic ARP Inspection (DAI) validates **ingress ARP** packets on **untrusted** ports in the VLANs where it is enabled (here 5\u201310). The switch compares sender IP and MAC against trusted data such as the **DHCP snooping binding table** (or static ARP ACLs); ARP that does not match valid bindings is **discarded**. Access ports are untrusted by default. DAI does not filter all non-ARP traffic (B is wrong), does not drop every ARP frame (C is wrong), and is unrelated to restricting egress to DHCP servers only (A is wrong).",
+            "choices": [
+                "Egress traffic is passed only if the destination is a DHCP server.",
+                "All ingress and egress traffic is dropped because the interface is untrusted.",
+                "All ARP packets are dropped by the switch.",
+                "The switch discards all ingress ARP traffic with invalid MAC-to-IP address bindings.",
+            ],
+        },
+        {
+            "slug": "router-gi00-lldp-third-party-isp-exhibit",
+            "title": "CCNA — LLDP to third-party ISP: global enable",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="PE router Gi0/0 toward ISP">
+        <pre>interface gigabitethernet0/0
+ description Circuit-ATT4202-89930
+ duplex full
+ speed 1000
+ media-type gbic
+ negotiation auto
+ lldp transmit
+ lldp receive</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. An engineer must configure neighbor discovery between the company router and an ISP. What is the next step to complete the configuration if the ISP uses a third-party router?",
+            "name": "lldpgi00",
+            "correct": "D",
+            "explain": "Correct. D \u2014 On Cisco IOS and IOS-XE, LLDP must be turned on with a **global** command (**lldp run**) before interface-level **lldp transmit** and **lldp receive** actually operate. Third-party peers use standard LLDP, not Cisco CDP. Disabling CDP on Gi0/0 (A) does not substitute for enabling LLDP globally. Disabling autonegotiation (B) is unrelated to LLDP neighbor discovery. You cannot complete your configuration by changing TLV settings only on the ISP router (C).",
+            "choices": [
+                "Disable CDP on gi0/0.",
+                "Disable auto-negotiation.",
+                "Enable LLDP TLVs on the ISP router.",
+                "Enable LLDP globally.",
+            ],
+        },
+        {
+            "slug": "r1-show-ip-route-10-56-192-1-default-next-hop",
+            "title": "CCNA — R1: longest match vs default for 10.56.192.1",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="R1 routing table excerpt">
+        <pre>R1#show ip route
+Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       + - replicated route, % - next hop override
+
+Gateway of last resort is 10.56.0.1 to network 0.0.0.0
+
+S*    0.0.0.0/0 [1/0] via 10.56.0.1
+      10.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       10.56.0.0/17 is directly connected, Vlan56
+L       10.56.0.19/32 is directly connected, Vlan56
+C       10.56.128.0/18 is directly connected, Vlan57
+L       10.56.128.19/32 is directly connected, Vlan57</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. When router R1 is sending traffic to IP address 10.56.192.1, which interface or next hop address does it use to route the packet?",
+            "name": "r110561",
+            "correct": "C",
+            "explain": "Correct. C \u2014 10.56.192.1 is not inside 10.56.0.0/17 (10.56.0.0\u201310.56.127.255) and not inside 10.56.128.0/18 (10.56.128.0\u201310.56.191.255). No longer-prefix match applies, so R1 uses the **gateway of last resort**: the static default **via 10.56.0.1**. A names the default **prefix**, not the forwarding next hop. B would require the destination to fall in Vlan57\u2019s connected range, which it does not. D is R1\u2019s own local /32 on Vlan57, not the next hop toward 10.56.192.1.",
+            "choices": [
+                "0.0.0.0/0",
+                "Vlan57",
+                "10.56.0.1",
+                "10.56.128.19",
+            ],
+        },
     ]
 
     prev = "vty-access-list-ssh-secure"

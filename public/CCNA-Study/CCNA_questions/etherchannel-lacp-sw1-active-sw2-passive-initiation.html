@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Router1 primary default for floating backup</title>
+  <title>CCNA — LACP: only Switch1 initiates (topology and baseline config)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -315,45 +315,70 @@
   <main class="card">
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/floating-static-router1-primary-default-route-topology.png" alt="Topology: LAN to Router1 GigabitEthernet0/1; Primary ISP on Router1 GigabitEthernet1/0; Backup ISP on Router1 GigabitEthernet1/1." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/etherchannel-lacp-sw1-active-sw2-passive-initiation-topology.png" alt="Topology: Switch 1 E1/1 and E1/2 dual links to Switch 2 E1/1 and E1/2 for EtherChannel." width="900" decoding="async" loading="lazy" />
       </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="Switch1 and Switch2 baseline EtherChannel-related configuration">
+        <pre>! Switch 1
+interface Po1
+ switchport
+ switchport mode access
+ switchport access vlan 2
+interface Ethernet1/1 - 2
+ switchport
+ switchport mode access
+ switchport access vlan 2
+!
+! Switch 2
+interface Po1
+ switchport
+ switchport mode access
+ switchport access vlan 2
+interface Ethernet1/1 - 2
+ switchport
+ switchport mode access
+ switchport access vlan 2</pre>
+      </div>
     </div>
-    <h1>Refer to the exhibit. A company is configuring a failover plan and must implement the default routes in such a way that a floating static route will assume traffic forwarding when the primary link goes down. Which primary route configuration must be used?</h1>
+    <h1>Refer to the exhibit. An engineer is configuring an EtherChannel using LACP between Switches 1 and 2. Which configuration must be applied so that only Switch 1 sends LACP initiation packets?</h1>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="A" aria-label="Select answer option A" />
+        <input type="radio" name="echlacpsw12a" value="A" aria-label="Select answer option A" />
         <span class="cli-router-choice-badge" aria-hidden="true">A</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">A. ip route 0.0.0.0 0.0.0.0 192.168.0.2 GigabitEthernet1/0</pre>
+      <pre class="cli-router-console">A. Switch1(config-if)#channel-group 1 mode on
+Switch2(config-if)#channel-group 1 mode passive</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="B" aria-label="Select answer option B" />
+        <input type="radio" name="echlacpsw12a" value="B" aria-label="Select answer option B" />
         <span class="cli-router-choice-badge" aria-hidden="true">B</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">B. ip route 0.0.0.0 0.0.0.0 192.168.0.2 tracked</pre>
+      <pre class="cli-router-console">B. Switch1(config-if)#channel-group 1 mode passive
+Switch2(config-if)#channel-group 1 mode active</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="C" aria-label="Select answer option C" />
+        <input type="radio" name="echlacpsw12a" value="C" aria-label="Select answer option C" />
         <span class="cli-router-choice-badge" aria-hidden="true">C</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">C. ip route 0.0.0.0 0.0.0.0 192.168.0.2 floating</pre>
+      <pre class="cli-router-console">C. Switch1(config-if)#channel-group 1 mode active
+Switch2(config-if)#channel-group 1 mode passive</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="r1fltpri1" value="D" aria-label="Select answer option D" />
+        <input type="radio" name="echlacpsw12a" value="D" aria-label="Select answer option D" />
         <span class="cli-router-choice-badge" aria-hidden="true">D</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">D. ip route 0.0.0.0 0.0.0.0 192.168.0.2</pre>
+      <pre class="cli-router-console">D. Switch1(config-if)#channel-group 1 mode on
+Switch2(config-if)#channel-group 1 mode active</pre>
     </label>
 
 
@@ -364,15 +389,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/static-route-r14-172-21-34-25-via-r86.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/switchport-trunk-allowed-vlan-add-104.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-80211r-fast-transition-ft-psk.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/stp-vlan20-four-switch-root-bridge.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 The primary IPv4 default static route should use the normal static form with the default administrative distance (1). The separate backup \u201cfloating\u201d static is the same prefix/mask with a higher AD so it only installs when the primary is unavailable; the primary line itself is not labeled floating. ip route does not take tracked or floating keywords in the way shown in B and C. Option A appends an interface name after the next hop in an order that is not the usual Cisco static syntax (when specifying both, the typical form is exit interface then next hop).";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C \u2014 With IEEE 802.3ad LACP, a port in **active** mode transmits LACP PDUs to start or sustain negotiation; a **passive** port waits for a neighbor\u2019s LACPDUs and responds but does not initiate. To have **only Switch 1** initiate, place **mode active** on Switch 1 and **mode passive** on Switch 2. **mode on** (A and D) builds a static (non-LACP) bundle, which does not match \u201cusing LACP.\u201d Option B makes Switch 2 active and Switch 1 passive, so Switch 2 would be the side initiating.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -386,7 +411,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="r1fltpri1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="echlacpsw12a"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
