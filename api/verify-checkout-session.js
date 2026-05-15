@@ -39,13 +39,32 @@ export default async function handler(req, res) {
 
   try {
     const session = await stripe.checkout.sessions.retrieve(sessionId, {
-      expand: ["payment_intent"],
+      expand: ["payment_intent", "line_items.data.price"],
     });
 
     const paid =
       session.payment_status === "paid" ||
       session.payment_status === "no_payment_required";
-    const productId = session.metadata?.productId || null;
+    let productId = session.metadata?.productId || null;
+
+    // Payment Links often omit metadata; infer product from price id (same env as api/create-checkout-session.js).
+    if (!productId && paid) {
+      const portalPrice = (process.env.STRIPE_PRICE_CCNA_PORTAL_30D || "").trim();
+      const testSimPrice = (process.env.STRIPE_PRICE_CCNA_TEST_SIM || "").trim();
+      const lines = session.line_items?.data || [];
+      for (let i = 0; i < lines.length; i++) {
+        const pid = lines[i]?.price?.id;
+        if (!pid) continue;
+        if (portalPrice && pid === portalPrice) {
+          productId = "ccna-portal-30d";
+          break;
+        }
+        if (testSimPrice && pid === testSimPrice) {
+          productId = "ccna-test-simulation";
+          break;
+        }
+      }
+    }
 
     return res.status(200).json({
       ok: paid,

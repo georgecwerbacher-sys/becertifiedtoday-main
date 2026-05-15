@@ -495,6 +495,20 @@
       width: 100%;
       box-sizing: border-box;
     }
+    .portal-checkout-activated-banner {
+      margin: 0 0 18px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(74, 224, 146, 0.45);
+      background: rgba(31, 168, 85, 0.12);
+      box-shadow: 0 0 0 1px rgba(74, 224, 146, 0.2) inset;
+      color: #c7f2da;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    .portal-checkout-activated-banner[hidden] {
+      display: none !important;
+    }
     .portal-sim-verified-wrap {
       margin: 0 0 18px;
       padding: 18px 20px;
@@ -779,6 +793,9 @@
 
       <section class="formats-section" aria-labelledby="formats-title">
         <div class="formats-inner">
+          <p id="portal-checkout-activated-banner" class="portal-checkout-activated-banner" hidden role="status">
+            <strong>30-day access activated</strong> on this browser. Your library pass is saved here for 30 days—use this device when you study.
+          </p>
           <p class="formats-head">CCNA practice formats</p>
           <h2 id="formats-title">Choose your practice mode</h2>
           <p class="formats-lead">
@@ -1131,16 +1148,73 @@
   <script src="js/ccna-dnd-25-hub.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      var verified = document.getElementById("portal-sim-verified-wrap");
-      var locked = document.getElementById("portal-sim-locked-wrap");
-      if (!verified || !locked || typeof bccPortalAccessActive !== "function") return;
-      if (bccPortalAccessActive()) {
-        verified.hidden = false;
-        locked.hidden = true;
-      } else {
-        verified.hidden = true;
-        locked.hidden = false;
+      function refreshPortalGate() {
+        var verified = document.getElementById("portal-sim-verified-wrap");
+        var locked = document.getElementById("portal-sim-locked-wrap");
+        if (!verified || !locked || typeof bccPortalAccessActive !== "function") return;
+        if (bccPortalAccessActive()) {
+          verified.hidden = false;
+          locked.hidden = true;
+        } else {
+          verified.hidden = true;
+          locked.hidden = false;
+        }
       }
+
+      function qs(name) {
+        try {
+          return new URLSearchParams(window.location.search).get(name);
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function applyCheckoutSessionReturn() {
+        return new Promise(function (resolve) {
+          var sessionId = qs("session_id");
+          if (!sessionId || sessionId.indexOf("cs_") !== 0) {
+            resolve();
+            return;
+          }
+          fetch("/api/verify-checkout-session?session_id=" + encodeURIComponent(sessionId))
+            .then(function (res) {
+              return res.json().then(function (data) {
+                return { res: res, data: data };
+              });
+            })
+            .then(function (pair) {
+              var res = pair.res;
+              var data = pair.data || {};
+              if (!res.ok || !data.ok || data.productId !== "ccna-portal-30d") {
+                resolve();
+                return;
+              }
+              if (typeof bccSetPortal30DayEntitlement !== "function") {
+                resolve();
+                return;
+              }
+              var expiresAt = Date.now() + 30 * 86400000;
+              if (!bccSetPortal30DayEntitlement(expiresAt)) {
+                resolve();
+                return;
+              }
+              try {
+                var u = new URL(window.location.href);
+                u.searchParams.delete("session_id");
+                var clean = u.pathname + (u.search || "") + (u.hash || "");
+                window.history.replaceState({}, "", clean || "/");
+              } catch (e) {}
+              var banner = document.getElementById("portal-checkout-activated-banner");
+              if (banner) banner.hidden = false;
+              resolve();
+            })
+            .catch(function () {
+              resolve();
+            });
+        });
+      }
+
+      applyCheckoutSessionReturn().finally(refreshPortalGate);
     });
   </script>
 </body>

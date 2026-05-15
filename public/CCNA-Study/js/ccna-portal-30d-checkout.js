@@ -1,7 +1,8 @@
 /**
  * Opens the Stripe Payment Link for CCNA 30-day training portal access.
- * Configure the payment link’s “After payment” URL in Stripe to return customers to
- * /CCNA-Study/ccna-portal-30d-checkout-success.html?session_id={CHECKOUT_SESSION_ID} if you need session_id verification.
+ * Configure the Payment Link “After payment” redirect to:
+ *   /CCNA-Study/CCNA_Training_Portal.html?session_id={CHECKOUT_SESSION_ID}
+ * The portal page verifies the session, saves 30-day access in this browser, then strips session_id from the URL.
  */
 (function () {
   var CCNA_PORTAL_30D_STRIPE_PAYMENT_LINK =

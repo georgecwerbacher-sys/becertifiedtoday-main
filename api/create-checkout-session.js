@@ -27,7 +27,7 @@ const PRODUCTS = {
   },
   "ccna-portal-30d": {
     priceEnv: "STRIPE_PRICE_CCNA_PORTAL_30D",
-    successPath: "/CCNA-Study/ccna-portal-30d-checkout-success.html?session_id={CHECKOUT_SESSION_ID}",
+    successPath: "/CCNA-Study/CCNA_Training_Portal.html?session_id={CHECKOUT_SESSION_ID}",
     cancelPath: "/ccna-home.html#purchase",
     blueprint: "ccna-portal-30d@v1",
   },
