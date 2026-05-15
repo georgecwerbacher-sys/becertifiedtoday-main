@@ -1,64 +1,20 @@
 /**
- * Starts Stripe Checkout for CCNA 30-day training portal access (requires /api/create-checkout-session + env on Vercel).
+ * Opens the Stripe Payment Link for CCNA 30-day training portal access.
+ * Configure the payment link’s “After payment” URL in Stripe to return customers to
+ * /CCNA-Study/ccna-portal-30d-checkout-success.html?session_id={CHECKOUT_SESSION_ID} if you need session_id verification.
  */
 (function () {
-  async function startCheckout(button) {
-    if (button.dataset.loading === "1") return;
-    button.dataset.loading = "1";
-    var label = button.textContent;
-    button.textContent = "Redirecting…";
-    button.disabled = true;
-
-    try {
-      var res = await fetch("/api/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId: "ccna-portal-30d" }),
-      });
-      var data = await res.json().catch(function () {
-        return {};
-      });
-
-      if (!res.ok) {
-        var msg =
-          data.error ||
-          data.hint ||
-          ("HTTP " + res.status + ": configure Stripe env vars on Vercel.");
-        if (data.hint && msg !== data.hint) {
-          msg += "\n\n" + data.hint;
-        }
-        if (data.detail) {
-          msg += "\n\n" + data.detail;
-          if (data.code) msg += " (" + data.code + ")";
-        }
-        window.alert(msg);
-        button.textContent = label;
-        button.disabled = false;
-        button.dataset.loading = "0";
-        return;
-      }
-
-      if (data.url) {
-        window.location.href = data.url;
-        return;
-      }
-
-      window.alert("Checkout did not return a redirect URL.");
-    } catch (e) {
-      window.alert(
-        "Could not start checkout. Deploy API routes (api/create-checkout-session.js) and set Stripe keys."
-      );
-    }
-
-    button.textContent = label;
-    button.disabled = false;
-    button.dataset.loading = "0";
-  }
+  var CCNA_PORTAL_30D_STRIPE_PAYMENT_LINK =
+    "https://buy.stripe.com/14A7sK58xccT4CI8ZCc3m03";
 
   document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll("[data-ccna-portal-30d-checkout]").forEach(function (btn) {
       btn.addEventListener("click", function () {
-        startCheckout(btn);
+        if (btn.dataset.loading === "1") return;
+        btn.dataset.loading = "1";
+        btn.textContent = "Redirecting…";
+        btn.disabled = true;
+        window.location.href = CCNA_PORTAL_30D_STRIPE_PAYMENT_LINK;
       });
     });
   });
