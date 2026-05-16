@@ -1490,42 +1490,11 @@
     .ccna-sim-promo-lead strong {
       color: #e8f4ee;
     }
-    .ccna-sim-promo-list {
-      margin: 0 0 18px;
-      padding-left: 1.15rem;
-      font-size: clamp(0.86rem, 2vw, 0.94rem);
-      line-height: 1.55;
-      color: #c5d0e3;
-    }
-    .ccna-sim-promo-list li {
-      margin-bottom: 8px;
-    }
-    .ccna-sim-promo-code-label {
-      margin: 0 0 8px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: #94a3b8;
-    }
-    .ccna-sim-promo-code-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-    .ccna-sim-promo-code-row code {
-      flex: 1 1 auto;
-      min-width: 0;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid rgba(100, 116, 139, 0.55);
-      background: rgba(11, 16, 32, 0.85);
-      font-size: clamp(0.95rem, 2.2vw, 1.05rem);
-      font-weight: 800;
-      font-variant-numeric: tabular-nums;
-      letter-spacing: 0.04em;
-      color: #e2e8f0;
+    .ccna-sim-promo-lead--compact {
+      margin: 0 0 12px;
+      font-size: clamp(0.88rem, 2vw, 0.94rem);
+      line-height: 1.45;
+      max-width: 46ch;
     }
     .ccna-sim-promo-copy {
       flex-shrink: 0;
@@ -1553,6 +1522,40 @@
       font-size: 0.82rem;
       line-height: 1.45;
       color: #8899b5;
+    }
+    .ccna-sim-promo-hint--compact {
+      margin: 0 0 14px;
+      font-size: 0.76rem;
+    }
+    .ccna-sim-promo-code-inline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 12px;
+      margin: 0 0 8px;
+    }
+    .ccna-sim-promo-code-inline-label {
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+    .ccna-sim-promo-code-inline code {
+      padding: 8px 11px;
+      border-radius: 8px;
+      border: 1px solid rgba(100, 116, 139, 0.55);
+      background: rgba(11, 16, 32, 0.85);
+      font-size: clamp(0.88rem, 2vw, 0.98rem);
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.03em;
+      color: #e2e8f0;
+    }
+    .ccna-sim-promo-copy--compact {
+      padding: 8px 14px;
+      min-height: 40px;
+      font-size: 0.78rem;
     }
     .ccna-sim-promo-actions {
       display: flex;
@@ -1631,13 +1634,6 @@
       background: rgba(31, 168, 85, 0.26);
       color: #fff;
     }
-    .ccna-sim-promo-adaptive-caption {
-      margin: 0 0 18px;
-      font-size: 0.78rem;
-      line-height: 1.45;
-      color: #8899b5;
-      max-width: 52ch;
-    }
     @media (max-width: 540px) {
       .ccna-sim-promo-actions {
         flex-direction: column;
@@ -1650,11 +1646,12 @@
         width: 100%;
         justify-content: center;
       }
-      .ccna-sim-promo-code-row {
+      .ccna-sim-promo-code-inline {
         flex-direction: column;
         align-items: stretch;
       }
-      .ccna-sim-promo-copy {
+      .ccna-sim-promo-copy,
+      .ccna-sim-promo-copy--compact {
         width: 100%;
       }
     }
@@ -2101,57 +2098,40 @@
       <button type="button" class="ccna-sim-promo-close" data-ccna-sim-promo-dismiss aria-label="Close offer dialog">
         ×
       </button>
-      <p class="ccna-sim-promo-eyebrow">Special offer</p>
-      <h2 id="ccnaSimPromoTitle">Try the CCNA timed simulation — 50% off</h2>
+      <p class="ccna-sim-promo-eyebrow">Limited-time</p>
+      <h2 id="ccnaSimPromoTitle">CCNA timed simulation — 50% off</h2>
       <p class="ccna-sim-promo-price">
         <del class="ccna-sim-promo-price-was">$9.99</del>
         <span class="ccna-sim-promo-price-now">$4.99</span>
-        <span class="ccna-sim-promo-limited-pill">Limited time</span>
+        <span class="ccna-sim-promo-limited-pill">Today</span>
       </p>
-      <p class="ccna-sim-promo-lead">
-        Walk into the real CCNA calmer: one <strong>2-hour</strong> countdown, one continuous run that mixes
-        <strong>multiple-choice</strong>, <strong>drag-and-drop</strong>, and <strong>CLI labs</strong> in random order—the same rhythm as a high-stakes sitting, in your browser with
-        <strong>no downloads</strong>. Finish or let the clock stop and you still get a <strong>scaled results summary</strong> plus a <strong>study scorecard</strong> that surfaces weak
-        blueprint domains, specific objectives worth another look, and a full per-objective rollup for your review notes.
+      <p class="ccna-sim-promo-lead ccna-sim-promo-lead--compact">
+        Real <strong>2-hour</strong> mix: MCQ, labs, drag‑and‑drop—then a <strong>scorecard</strong> that shows what to study next.
+        <strong>One Stripe payment.</strong> No site account; BeCertifiedToday.com never requires a membership.
       </p>
-      <ul class="ccna-sim-promo-list">
-        <li>
-          <strong>Optional adaptive multiple choice</strong> on the start screen—turn it on so domains where you slip can earn extra MCQ practice before time runs out (same clock).
-        </li>
-        <li>
-          <strong>Fully adaptive exam path</strong> — use the green button below (same Stripe checkout and promo code) and adaptive MCQs are pre-selected when your timed session gate opens.
-        </li>
-        <li>
-          <strong>Every item type in one sitting</strong>—questions, labs, and drag-and-drop—so you are not discovering gaps for the first time on exam day.
-        </li>
-        <li>
-          No Be Certified Today email membership or site account: pay once through Stripe to unlock a run; take the test and
-          review results in your session on this device. BeCertifiedToday.com never requires a membership.
-        </li>
-      </ul>
-      <p class="ccna-sim-promo-code-label">Promotion Code (50% off)</p>
-      <div class="ccna-sim-promo-code-row">
+      <div class="ccna-sim-promo-code-inline" role="group" aria-label="Promotion code 50 percent off">
+        <span class="ccna-sim-promo-code-inline-label">Code</span>
         <code id="ccnaSimPromoCode">CCNA_Sim_4_U</code>
-        <button type="button" class="ccna-sim-promo-copy" id="ccnaSimPromoCopyBtn">Copy code</button>
+        <button type="button" class="ccna-sim-promo-copy ccna-sim-promo-copy--compact" id="ccnaSimPromoCopyBtn">
+          Copy
+        </button>
       </div>
-      <p class="ccna-sim-promo-hint">On Checkout, click &ldquo;Add promotion code&rdquo; and paste <strong>CCNA_Sim_4_U</strong> before you pay.</p>
+      <p class="ccna-sim-promo-hint ccna-sim-promo-hint--compact">Apply at checkout → Add promotion code.</p>
       <div class="ccna-sim-promo-actions">
         <a
           class="ccna-sim-promo-primary"
           id="ccnaSimPromoCta"
           href="/CCNA_Sim_EXAM/begin-test-simulation.html?promo=CCNA_Sim_4_U"
-          >Continue to timed test</a
+          >Start timed test — $4.99</a
         >
         <a
           class="ccna-sim-promo-secondary ccna-sim-promo-adaptive-path"
           href="/CCNA_Sim_EXAM/begin-test-simulation.html?promo=CCNA_Sim_4_U&amp;sim_adaptive=1"
-          >Fully adaptive MCQs — same checkout</a
+          title="Turns on adaptive multiple choice at exam start—extra MCQs in weaker blueprint domains during the same session."
+          >Adaptive exam → same price</a
         >
         <button type="button" class="ccna-sim-promo-secondary" data-ccna-sim-promo-dismiss>Not now</button>
       </div>
-      <p class="ccna-sim-promo-adaptive-caption">
-        Fully adaptive keeps one 2-hour clock and mixed item types; extra multiple-choice items can appear in weaker blueprint domains. Drag-and-drop and lab counts stay as designed.
-      </p>
     </div>
   </div>
   <div
