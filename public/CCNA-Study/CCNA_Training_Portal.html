@@ -593,6 +593,14 @@
       border-color: rgba(201, 162, 39, 0.45);
       box-shadow: inset 0 0 0 1px rgba(201, 162, 39, 0.12);
     }
+    .ccna-practice-banks-lead,
+    .ccna-practice-banks-summary {
+      margin: 0 0 14px;
+      max-width: 62ch;
+    }
+    .ccna-practice-banks-summary {
+      color: var(--muted, #9eb4d4);
+    }
 
     .dnd-all-wrap {
       margin-top: 14px;
@@ -858,12 +866,18 @@
           </p>
           <h3 class="section-heading">Practice Questions</h3>
           <section class="start-box" aria-label="Question studies">
+            <p class="study-meta ccna-practice-banks-lead">
+              Questions are grouped in banks of up to <strong>100</strong> by position in the hub list (1–100, 101–200, and so on).
+              When a bank fills, the next bank appears automatically. Each bank has its own <strong>Random</strong> and
+              <strong>Review</strong> session.
+            </p>
+            <p id="ccna-practice-banks-summary" class="study-meta ccna-practice-banks-summary" hidden></p>
             <div class="ccna-practice-subject-filter" id="ccna-practice-subject-filter">
               <p class="ccna-practice-subject-title">Practice by subject</p>
               <p class="ccna-practice-subject-lead">
                 Matches the <a href="#ccna-domains">CCNA blueprint domain weights</a> (Cisco 200-301 domain numbers). Leave on
-                <strong>All subjects</strong> for the full bank slice, or pick one domain before you click <strong>Random</strong> or
-                <strong>Review</strong>.
+                <strong>All subjects</strong> for every question in the bank you start, or pick one domain before you click
+                <strong>Random</strong> or <strong>Review</strong>.
               </p>
               <label for="ccna-practice-domain-select">Limit session to</label>
               <select
@@ -871,7 +885,7 @@
                 class="ccna-practice-domain-select"
                 aria-describedby="ccna-practice-domain-hint"
               >
-                <option value="">All subjects (full bank slice)</option>
+                <option value="">All subjects (entire bank)</option>
                 <option value="1">1 — Network fundamentals</option>
                 <option value="2">2 — LAN switching (network access)</option>
                 <option value="3">3 — Routing (IP connectivity)</option>
@@ -902,7 +916,7 @@
                     <span>
                       Adaptive learning
                       <span class="ccna-practice-radio-desc"
-                        >Each miss is sent to the back of the queue and, when the topic map is available, the session may pull in extra questions from the full question set that match the same domain(s)—so practice can grow beyond the starting 100-item slice.</span
+                        >Each miss is sent to the back of the queue and, when the topic map is available, the session may pull in extra questions from the full hub list that match the same domain(s)—so practice can grow beyond the bank you started.</span
                       >
                     </span>
                   </label>
@@ -912,7 +926,7 @@
                 </p>
               </fieldset>
             </div>
-            <div class="sim-grid" id="ccna-practice-banks-grid" aria-label="Practice question banks (about 100 items each to start; adaptive sessions may grow)"></div>
+            <div class="sim-grid" id="ccna-practice-banks-grid" aria-label="Practice question banks"></div>
           </section>
 
           <h3 class="section-heading">Drag and Drop</h3>

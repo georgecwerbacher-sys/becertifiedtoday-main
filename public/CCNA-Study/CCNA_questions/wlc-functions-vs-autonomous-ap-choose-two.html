@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC: serial session no timeout</title>
+  <title>CCNA — WLC vs autonomous AP (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,49 +312,61 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-  <main class="card">
-    <h1>Which command configures the Cisco WLC to prevent a serial session with the WLC CLI from being automatically logged out?</h1>
+    <main class="card">
+    <h1 class="choose-two-stem">Which two functions does a WLC perform in the lightweight access-point architecture that an AP performs independently in an autonomous architecture? (Choose two)</h1>
 
-    <label class="choice"><input type="radio" name="wlcsert1" value="A" />A. config sessions maxsessions 0</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="B" />B. config serial timeout 9600</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="C" />C. config serial timeout 0</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="D" />D. config sessions timeout 0</label>
+    <label class="choice"><input type="checkbox" name="wlclap1" value="A" />A. handling the association, authentication, and roaming of wireless clients</label>
+    <label class="choice"><input type="checkbox" name="wlclap1" value="B" />B. encrypting and decrypting traffic that uses the WAP protocol family</label>
+    <label class="choice"><input type="checkbox" name="wlclap1" value="C" />C. preventing collisions between wireless clients on the same RF channel</label>
+    <label class="choice"><input type="checkbox" name="wlclap1" value="D" />D. managing RF channels, including transmission power</label>
+    <label class="choice"><input type="checkbox" name="wlclap1" value="E" />E. sending and processing beacon frames</label>
 
     <div class="actions">
+      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/flexconnect-local-switch-different-vlans-trunk-port.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/mac-address-learning-enabled-default-vlans.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/telnet-unsecured-remote-cli-access.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ospf-gi0-0-point-to-point-desired-full-dash.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 On AireOS-style WLC CLI, **`config serial timeout`** sets the **serial console** inactivity logout (minutes). Setting it to **0** means **serial sessions never time out** (per Cisco Wireless Controller configuration guides). **`config serial baudrate`** changes speed (for example 9600), not logout. **`config sessions`** controls **Telnet/SSH** session limits and timeouts, not the **serial** port.";
+      var CORRECT = ["A", "D"];
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="wlclap1"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = CORRECT_MSG;
+          answerBox.textContent = "Correct. A and D \u2014 In **lightweight (split-MAC)** mode, the **WLC** centralizes **control-plane** tasks: **client association, authentication, and roaming**, plus **RF management** (**channels** and **transmit power** via **RRM**). In **autonomous** mode, each **AP** performs those functions **locally**.\n\n**B** is misleading: **WPA/WPA2/WPA3** security is handled in the wireless data path (often at the AP); the WLC coordinates policy but does not replace the AP\u2019s role for on-air encryption in the way this option suggests. **C** (**collision avoidance**) is **802.11 MAC** behavior at the **AP/client**, not a WLC-only function. **E** (**beacons**) are still **sent and processed by APs** in lightweight mode; the WLC configures WLANs but does not originate beacons on behalf of APs.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="wlcsert1"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>

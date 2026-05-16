@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC: serial session no timeout</title>
+  <title>CCNA — Destination mask for 10.10.8.14</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,25 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which command configures the Cisco WLC to prevent a serial session with the WLC CLI from being automatically logged out?</h1>
+    <div class="exhibit-router-cli" role="region" aria-label="Router show ip route">
+        <pre>Gateway of last resort is 172.16.2.2 to network 0.0.0.0
 
-    <label class="choice"><input type="radio" name="wlcsert1" value="A" />A. config sessions maxsessions 0</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="B" />B. config serial timeout 9600</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="C" />C. config serial timeout 0</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="D" />D. config sessions timeout 0</label>
+   10.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       10.10.8.0/28 is directly connected, GigabitEthernet0/0/2
+C       10.10.10.0/24 is directly connected, GigabitEthernet0/0/0
+L       10.10.10.3/32 is directly connected, GigabitEthernet0/0/0
+   172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks
+S       172.16.1.33/32 is directly connected, GigabitEthernet0/0/1
+C       172.16.2.0/23 is directly connected, GigabitEthernet0/0/1
+L       172.16.2.1/32 is directly connected, GigabitEthernet0/0/1
+S*   0.0.0.0/0 [1/0] via 172.16.2.2</pre>
+    </div>
+    <h1>A packet sourced from 10.10.10.1 is destined for 10.10.8.14. What is the subnet mask of the destination route?</h1>
+
+    <label class="choice"><input type="radio" name="rtmask1" value="A" />A. 255.255.254.0</label>
+    <label class="choice"><input type="radio" name="rtmask1" value="B" />B. 255.255.255.240</label>
+    <label class="choice"><input type="radio" name="rtmask1" value="C" />C. 255.255.255.248</label>
+    <label class="choice"><input type="radio" name="rtmask1" value="D" />D. 255.255.255.252</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +340,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/flexconnect-local-switch-different-vlans-trunk-port.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/mac-address-learning-enabled-default-vlans.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/serial0-ip-access-list-in-syntax-fails-apply.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/private-ipv4-reasons-implement-choose-two.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 On AireOS-style WLC CLI, **`config serial timeout`** sets the **serial console** inactivity logout (minutes). Setting it to **0** means **serial sessions never time out** (per Cisco Wireless Controller configuration guides). **`config serial baudrate`** changes speed (for example 9600), not logout. **`config sessions`** controls **Telnet/SSH** session limits and timeouts, not the **serial** port.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 **10.10.8.14** matches the **connected** route **10.10.8.0/28** (hosts **.0\u2013.15**). A **/28** mask is **255.255.255.240**. It does **not** match **10.10.10.0/24** (**/24** = **255.255.255.0**). **A** (**255.255.254.0**) is **/23**. **C** (**255.255.255.248**) is **/29**. **D** (**255.255.255.252**) is **/30**.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +362,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="wlcsert1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="rtmask1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

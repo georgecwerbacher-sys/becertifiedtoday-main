@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC: serial session no timeout</title>
+  <title>CCNA — SW1 Fa0/1 notconnect cause</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,21 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which command configures the Cisco WLC to prevent a serial session with the WLC CLI from being automatically logged out?</h1>
+    <div class="exhibit-router-cli" role="region" aria-label="SW1 interface status">
+        <pre>SW1#show ip interface brief
+Interface        IP-Address   OK? Method Status Protocol
+FastEthernet0/1  unassigned   YES manual down   down
 
-    <label class="choice"><input type="radio" name="wlcsert1" value="A" />A. config sessions maxsessions 0</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="B" />B. config serial timeout 9600</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="C" />C. config serial timeout 0</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="D" />D. config sessions timeout 0</label>
+SW1#show interface fa0/1 status
+Port     Name  Status      Vlan   Duplex   Speed  Type
+Fa0/1          notconnect  1      a-full   a-100  10/100BaseTX</pre>
+    </div>
+    <h1>What is the cause of the issue?</h1>
+
+    <label class="choice"><input type="radio" name="swnotc1" value="A" />A. STP</label>
+    <label class="choice"><input type="radio" name="swnotc1" value="B" />B. shutdown command</label>
+    <label class="choice"><input type="radio" name="swnotc1" value="C" />C. port security</label>
+    <label class="choice"><input type="radio" name="swnotc1" value="D" />D. wrong cable type</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +336,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/flexconnect-local-switch-different-vlans-trunk-port.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/mac-address-learning-enabled-default-vlans.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ospf-gi0-0-point-to-point-desired-full-dash.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ssh-transport-rsa-modulus-2048-choose-two.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 On AireOS-style WLC CLI, **`config serial timeout`** sets the **serial console** inactivity logout (minutes). Setting it to **0** means **serial sessions never time out** (per Cisco Wireless Controller configuration guides). **`config serial baudrate`** changes speed (for example 9600), not logout. **`config sessions`** controls **Telnet/SSH** session limits and timeouts, not the **serial** port.";
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D \u2014 **`notconnect`** in **`show interfaces status`** means the switch does **not** detect a valid **Layer 1** link (no carrier), which matches **`down`/`down`** in **`show ip interface brief`**. A **wrong or bad cable** (or nothing connected on the far end) is a typical physical cause. **`shutdown`** shows **`disabled`**, not **`notconnect`**. **Port security** violations usually put the port in **`err-disabled`**. **STP** does not remove physical link; a blocked port is normally still **`connected`**.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +358,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="wlcsert1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="swnotc1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

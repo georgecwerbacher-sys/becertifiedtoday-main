@@ -6127,6 +6127,485 @@ S*       0.0.0.0/0 [1/0] via 10.10.11.2</pre>
                 "config sessions timeout 0",
             ],
         },
+        {
+            "slug": "mac-address-learning-enabled-default-vlans",
+            "title": "CCNA — MAC learning: default behavior",
+            "stem": "What is a function of MAC address learning?",
+            "name": "maclearn1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 On Cisco switches, **MAC address learning** is **enabled by default** on **VLANs** and **interfaces** so the switch can build the **MAC address table** (source MAC to ingress port). **A** is false: learning is **not** disabled by default on **trunks**. **B** is not the primary role of learning on a **management VLAN**. **D** is wrong: learning **reduces** unnecessary flooding for **known** unicast destinations; **unknown** unicast is what gets flooded.",
+            "choices": [
+                "It is disabled by default on all interfaces connected to trunks",
+                "It increases security on the management VLAN",
+                "It is enabled by default on all VLANs and interfaces",
+                "It increases the potential for MAC address flooding",
+            ],
+        },
+        {
+            "slug": "flexconnect-branch-local-switching-wan-survivability",
+            "title": "CCNA — FlexConnect branch WAN survivability",
+            "stem": "A Cisco engineer at a new branch office is configuring a wireless network with access points that connect to a controller that is based at corporate headquarters. Wireless client traffic must terminate at the branch office and access-point survivability is required in the event of a WAN outage. Which access point mode must be selected?",
+            "name": "flexbr1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **FlexConnect** with **local switching enabled** lets **branch** APs **switch client data locally** on the branch LAN while still managed from a **central WLC**. If the **WAN** to HQ fails, FlexConnect APs can continue **wireless service** using **cached** policies/credentials (**AP survivability**). **A** (lightweight, local switching **disabled**) centralizes data at the WLC\u2014traffic does not terminate at the branch. **B** is not the standard branch+central-WLC design for this requirement. **C** (**OfficeExtend**) targets **remote/home** extension, not a **branch office** with local terminate and WAN outage survival.",
+            "choices": [
+                "Lightweight with local switching disabled",
+                "Local with AP fallback enabled",
+                "OfficeExtend with high availability disabled",
+                "FlexConnect with local switching enabled",
+            ],
+        },
+        {
+            "slug": "poe-auto-mode-detects-powered-device",
+            "title": "CCNA — PoE auto vs static",
+            "stem": "What is an advantage of using auto mode versus static mode for power allocation when an access point is connected to a PoE switch port?",
+            "name": "poeauto1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 In **auto** mode, the switch runs **IEEE PoE detection/classification** to verify a **powered device (PD)** is present and allocate power based on what the PD requests. **Static** mode applies a **fixed** wattage you configure (useful to **reserve/guarantee** budget) but does not rely on automatic PD discovery the same way. **A** describes a fixed default level, not an **auto** advantage. **C** (all four pairs) relates to **PoE+** / 4-pair delivery, not **auto vs static**. **D** (**power policing**) is a separate configuration, not what **auto** uniquely provides.",
+            "choices": [
+                "The default level is used for the access point",
+                "It detects the device is a powered device",
+                "All four pairs of the cable are used",
+                "Power policing is enabled at the same time",
+            ],
+        },
+        {
+            "slug": "cpe-floating-static-default-when-ebgp-invalid",
+            "title": "CCNA — CPE floating static default vs eBGP",
+            "stem": "Refer to the exhibit. After configuring a new static route on the CPE, the engineer entered this series of commands to verify that the new configuration is operating normally. When is the static default route installed into the routing table?",
+            "name": "cpeflt1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 The routing table shows an active **eBGP default**: **`B* 0.0.0.0/0 [20/0] via 198.51.100.1`**. A **floating static default** uses a **higher administrative distance** than **20**, so it stays **out of the table** while the **BGP** default is valid and is **installed only when that BGP default is withdrawn** (invalid/unreachable). **B** applies only if you tied the static to **object tracking** of **203.0.113.1** reachability, not the basic **AD-based** floating backup shown here. **C** is wrong: a **next-hop change** on the BGP route does not by itself install the backup if BGP still advertises a valid default. **D** is wrong: learning **203.0.113.1** via BGP would not be the trigger to install a **static** default backup.",
+            "choices": [
+                "when the default route learned over external BGP becomes invalid",
+                "when 203.0.113.1 is no longer reachable as a next hop",
+                "when the default route learned over external BGP changes its next hop",
+                "when a route to 203.0.113.1 is learned via BGP",
+            ],
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="CPE verification output">
+        <pre>--Some output missing--
+Routing Descriptor Blocks:
+* directly connected, via Ethernet0/1
+    Route metric is 0, traffic share count is 1
+
+CPE# ping 203.0.113.1
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 203.0.113.1, timeout is 2 seconds:
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+
+CPE# show ip route
+Gateway of last resort is 198.51.100.1 to network 0.0.0.0
+B*  0.0.0.0/0 [20/0] via 198.51.100.1, 00:02:07
+    198.51.100.0/24 is variably subnetted, 2 subnets, 2 masks
+C       198.51.100.0/30 is directly connected, Ethernet0/0
+L       198.51.100.2/32 is directly connected, Ethernet0/0
+    203.0.113.0/24 is variably subnetted, 2 subnets, 2 masks
+C       203.0.113.0/30 is directly connected, Ethernet0/1
+L       203.0.113.2/32 is directly connected, Ethernet0/1</pre>
+    </div>""",
+        },
+        {
+            "slug": "telnet-unsecured-remote-cli-access",
+            "title": "CCNA — Unsecured remote CLI access",
+            "stem": "Which remote access protocol provides unsecured remote CLI access?",
+            "name": "telunsec1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **Telnet** provides **remote CLI** over TCP port **23** but sends usernames, passwords, and session data in **cleartext** (unsecured). **SSH** encrypts the session and is the secure alternative. **Console** is typically **local** physical access on the device, not a **remote** network protocol. **Bash** is a **shell**, not a Cisco IOS remote-access protocol.",
+            "choices": [
+                "Telnet",
+                "SSH",
+                "console",
+                "Bash",
+            ],
+        },
+        {
+            "slug": "wlc-functions-vs-autonomous-ap-choose-two",
+            "title": "CCNA — WLC vs autonomous AP (choose two)",
+            "stem": "Which two functions does a WLC perform in the lightweight access-point architecture that an AP performs independently in an autonomous architecture? (Choose two)",
+            "name": "wlclap1",
+            "choose_two": True,
+            "correct": ["A", "D"],
+            "explain": "Correct. A and D \u2014 In **lightweight (split-MAC)** mode, the **WLC** centralizes **control-plane** tasks: **client association, authentication, and roaming**, plus **RF management** (**channels** and **transmit power** via **RRM**). In **autonomous** mode, each **AP** performs those functions **locally**.\n\n**B** is misleading: **WPA/WPA2/WPA3** security is handled in the wireless data path (often at the AP); the WLC coordinates policy but does not replace the AP\u2019s role for on-air encryption in the way this option suggests. **C** (**collision avoidance**) is **802.11 MAC** behavior at the **AP/client**, not a WLC-only function. **E** (**beacons**) are still **sent and processed by APs** in lightweight mode; the WLC configures WLANs but does not originate beacons on behalf of APs.",
+            "choices": [
+                "handling the association, authentication, and roaming of wireless clients",
+                "encrypting and decrypting traffic that uses the WAP protocol family",
+                "preventing collisions between wireless clients on the same RF channel",
+                "managing RF channels, including transmission power",
+                "sending and processing beacon frames",
+            ],
+        },
+        {
+            "slug": "ospf-gi0-0-point-to-point-desired-full-dash",
+            "title": "CCNA — OSPF: FULL/DR to FULL/- on Gi0/0",
+            "stem": "How must OSPF be configured on the GigabitEthernet0/0 interface of the neighbor device to achieve the desired neighbor relationship?",
+            "name": "ospfp2p1",
+            "correct": "C",
+            "mono": True,
+            "explain": "Correct. C \u2014 **Current** output shows **FULL/DR** with **priority 1** on a **broadcast** Ethernet segment (default on GigabitEthernet). **Desired** output shows **FULL/-** (no **DR/BDR** role) with **priority 0** displayed. **`ip ospf network point-to-point`** changes the OSPF network type so **DR/BDR election does not occur** and the neighbor state becomes **FULL/-**. **A** (**cost**) does not remove DR behavior. **B** only assigns an **area** and does not change network type. **D** (**priority 1**) keeps the router eligible for **DR** election; it does not produce **FULL/-**.",
+            "choices": [
+                "Router(config)#interface GigabitEthernet 0/0\nRouter(config-if)#ip ospf cost 5",
+                "Router(config)#interface GigabitEthernet 0/0\nRouter(config-if)#ip ospf 1 area 2",
+                "Router(config)#interface GigabitEthernet 0/0\nRouter(config-if)#ip ospf network point-to-point",
+                "Router(config)#interface GigabitEthernet 0/0\nRouter(config-if)#ip ospf priority 1",
+            ],
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="OSPF neighbor current and desired">
+        <pre>Current Neighbor Relationship
+
+Neighbor ID   Pri   State       Dead Time    Address       Interface
+192.168.1.1   1     FULL/DR     00:00:33     192.168.1.1   GigabitEthernet0/0
+
+Desired Neighbor Relationship
+
+Neighbor ID   Pri   State       Dead Time    Address       Interface
+192.168.1.1   0     FULL/ -     00:00:31     192.168.1.1   GigabitEthernet0/0</pre>
+    </div>""",
+        },
+        {
+            "slug": "sw1-fa01-notconnect-wrong-cable-type",
+            "title": "CCNA — SW1 Fa0/1 notconnect cause",
+            "stem": "What is the cause of the issue?",
+            "name": "swnotc1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **`notconnect`** in **`show interfaces status`** means the switch does **not** detect a valid **Layer 1** link (no carrier), which matches **`down`/`down`** in **`show ip interface brief`**. A **wrong or bad cable** (or nothing connected on the far end) is a typical physical cause. **`shutdown`** shows **`disabled`**, not **`notconnect`**. **Port security** violations usually put the port in **`err-disabled`**. **STP** does not remove physical link; a blocked port is normally still **`connected`**.",
+            "choices": [
+                "STP",
+                "shutdown command",
+                "port security",
+                "wrong cable type",
+            ],
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="SW1 interface status">
+        <pre>SW1#show ip interface brief
+Interface        IP-Address   OK? Method Status Protocol
+FastEthernet0/1  unassigned   YES manual down   down
+
+SW1#show interface fa0/1 status
+Port     Name  Status      Vlan   Duplex   Speed  Type
+Fa0/1          notconnect  1      a-full   a-100  10/100BaseTX</pre>
+    </div>""",
+        },
+        {
+            "slug": "ssh-transport-rsa-modulus-2048-choose-two",
+            "title": "CCNA — SSH: transport and 2048-bit RSA (choose two)",
+            "stem": "A network engineer is replacing the switches that belong to a managed-services client with new Cisco Catalyst switches. The new switches will be configured for updated security standards, including replacing Telnet services with encrypted connections and doubling the modulus size from 1024. Which two commands must the engineer configure on the new switches? (Choose two)",
+            "name": "ssh20481",
+            "choose_two": True,
+            "correct": ["A", "E"],
+            "mono": True,
+            "explain": "Correct. A and E \u2014 **`transport input ssh`** on **VTY** lines limits remote management to **encrypted SSH** instead of **cleartext Telnet**. **`crypto key generate rsa modulus 2048`** creates **RSA** host keys at **2048** bits (**double** the old **1024** modulus). **`transport input all`** (B) still permits **Telnet**. **`modulus 1024`** (C) keeps the **old** key size. **`usage-keys`** (D) is a different key-generation style and is not the pair with **SSH-only VTY** transport in this item.",
+            "choices": [
+                "transport input ssh",
+                "transport input all",
+                "crypto key generate rsa general-keys modulus 1024",
+                "crypto key generate rsa usage-keys",
+                "crypto key generate rsa modulus 2048",
+            ],
+        },
+        {
+            "slug": "longest-match-192-168-2-2-static-routes",
+            "title": "CCNA — Longest match to 192.168.2.2",
+            "stem": "An engineer is checking the routing table in the main router to identify the path to a server on the network. Which route does the router use to reach the server at 192.168.2.2?",
+            "name": "lm19222",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 The router uses **longest-prefix match**. **192.168.2.2** matches **192.168.0.0/20**, **192.168.2.0/28**, and **192.168.2.0/29**; **/29** is the **most specific**, so **`S 192.168.2.0/29 via 10.1.1.1`** wins. **A** is the same next hop but a **shorter** prefix (/28). **B** (**192.168.1.0/30**) does not contain **192.168.2.2**. **C** (**/20**) is the **least specific** match.",
+            "choices": [
+                "S 192.168.2.0/28 [1/0] via 10.1.1.1",
+                "S 192.168.1.0/30 [1/0] via 10.1.1.1",
+                "S 192.168.0.0/20 [1/0] via 10.1.1.1",
+                "S 192.168.2.0/29 [1/0] via 10.1.1.1",
+            ],
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="Main router show ip route">
+        <pre>Gateway of last resort is not set
+    10.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       10.1.1.0/30 is directly connected, GigabitEthernet0/0
+L       10.1.1.2/32 is directly connected, GigabitEthernet0/0
+S       192.168.0.0/20 [1/0] via 10.1.1.1
+    192.168.1.0/30 is subnetted, 1 subnets
+S       192.168.1.0/30 [1/0] via 10.1.1.1
+    192.168.2.0/24 is variably subnetted, 2 subnets, 2 masks
+S       192.168.2.0/28 [1/0] via 10.1.1.1
+S       192.168.2.0/29 [1/0] via 10.1.1.1</pre>
+    </div>""",
+        },
+        {
+            "slug": "json-mycar-wheels-warning-in-array",
+            "title": "CCNA — JSON: warning in wheels array",
+            "stem": "In which structure does the word \u201cwarning\u201d directly reside?",
+            "name": "jsonwarn1",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A \u2014 Under **myCar**, the **wheels** property is a **JSON array**: `[\"good\", \"good\", \"pressureLow\", \"warning\"]`. The token **\"warning\"** is a **string value** that sits **directly** as an **array element**, not as an object key or a Boolean. The outer `{ ... }` is an **object**, but **\"warning\"** is one level inside the **array** container.",
+            "choices": [
+                "array",
+                "object",
+                "Boolean",
+                "string",
+            ],
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="JSON car inventory">
+        <pre>{
+   "myCar": {
+            "name": "thunder",
+            "wheels": ["good", "good", "pressureLow", "warning"],
+            "gasLight": false
+            },
+   "oldCar": {
+             "name": "sleepy",
+             "wheels": ["pressureLow", "pressureLow", "pressureLow", "pressureLow"],
+             "color": "rust",
+             "gasLight": true
+             },
+   "newCar": {
+             "name": "lightning",
+             "wheels": ["pressureLow", "good", "pressureLow", "good"],
+             "color": "blue",
+             "gasLight": true
+             }
+}</pre>
+    </div>""",
+        },
+        {
+            "slug": "wlan-office-ssid-same-security-policies-branches",
+            "title": "CCNA — Office SSID: same access at branches",
+            "stem": "A network administrator plans an update to the Wi-Fi networks in multiple branch offices. Each location is configured with an SSID called \u201cOffice\u201d. The administrator wants every user who connects to the SSID at any location to have the same access level. What must be set the same on each network to meet the requirement?",
+            "name": "wlanoff1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 Matching **SSID** names alone do not guarantee the same user experience. **Security policies** (authentication method, encryption, VLAN/ACL assignment, and related WLAN security settings) must be **consistent** on each site so every **Office** client receives the **same access level** regardless of branch. **Radio policy** governs band/RF behavior, not authorization. **NAS-ID** often helps RADIUS identify **where** a client attached and can drive **location-specific** rules, not uniform access. **Profile name** is an administrative label; access is defined by the **policy contents**, not the name.",
+            "choices": [
+                "radio policy",
+                "security policies",
+                "NAS-ID configuration",
+                "profile name",
+            ],
+        },
+        {
+            "slug": "dna-center-single-pane-faster-deployment",
+            "title": "CCNA — DNA Center: faster campus deployment",
+            "stem": "A network architect is considering whether to implement Cisco DNA Center to deploy devices on a new network. The organization is focused on reducing the time it currently takes to deploy devices in a traditional campus design. For which reason would Cisco DNA Center be more appropriate than traditional management options?",
+            "name": "dnadepl1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **Cisco DNA Center** centralizes **design, provisioning, and deployment** in one GUI (**single pane of glass**), which reduces the **per-device CLI** and scattered-tool work typical of **traditional** campus rollouts. **A** overstates **third-party** **zero-touch** support as the main benefit. **C** (**syslog** volume) is unrelated to **deployment time**. **D** (**third-party AP analytics**) is not why teams adopt DNA Center to **deploy** devices faster.",
+            "choices": [
+                "Cisco DNA Center provides zero-touch provisioning to third-party devices.",
+                "Cisco DNA Center supports deployment with a single pane of glass.",
+                "Cisco DNA Center minimizes the level of syslog output when reporting on Cisco devices.",
+                "Cisco DNA Center reduces the need for analytics on third-party access points and devices.",
+            ],
+        },
+        {
+            "slug": "tcp-udp-query-response-connection-model",
+            "title": "CCNA — TCP/UDP query-response model",
+            "stem": "How do TCP and UDP fit into a query-response model?",
+            "name": "tcpqr1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 **TCP** is **connection-oriented**: it runs a **three-way handshake** before application data, then uses **sequencing** and **acknowledgments** suited to reliable **query\u2013response** exchanges. **UDP** is **connectionless** and sends **immediately** without setup (best-effort delivery). **A** reverses roles (**TCP** uses sequencing/ACKs). **B** misstates error handling (**TCP** recovers; **UDP** does not at the transport layer). **D** is wrong: **TCP** preserves **order**; **UDP** does not guarantee ordered delivery.",
+            "choices": [
+                "TCP avoids using sequencing, and UDP avoids using acknowledgments.",
+                "TCP uses error detection for packets, and UDP uses error recovery.",
+                "TCP establishes a connection prior to sending data, and UDP sends immediately.",
+                "TCP encourages out-of-order packet delivery, and UDP prevents re-ordering.",
+            ],
+        },
+        {
+            "slug": "serial0-ip-access-list-in-syntax-fails-apply",
+            "title": "CCNA — ACL: ip access-list vs access-group",
+            "stem": "A network administrator must permit traffic from the 10.10.0.0/24 subnet to the WAN on interface Serial0. What is the effect of the configuration as the administrator applies the command?",
+            "name": "aclser1",
+            "correct": "C",
+            "mono": True,
+            "explain": "Correct. C \u2014 Under **interface Serial0**, the valid command to attach ACL **10** inbound is **`ip access-group 10 in`**. **`ip access-list 10 in`** is **invalid** interface syntax ( **`access-list`** is defined in **global** configuration), so IOS **rejects** the line and the ACL is **not applied** to **Serial0**. **A** describes what ACL **10** would permit **if** bound (**10.0.0.0\u201310.0.0.255**), not **10.10.0.0/24**, and it is not applied here. **B** is wrong because the **`access-list 10 permit`** line is valid. **D** misreads the **wildcard** mask.",
+            "choices": [
+                "The sourced traffic from IP range 10.0.0.0 \u2013 10.0.0.255 is allowed on Serial0.",
+                "The permit command fails and returns an error code.",
+                "The router fails to apply the access list to the interface.",
+                "The router accepts all incoming traffic to Serial0 with the last octet of the source IP set to 0.",
+            ],
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="ACL configuration snippet">
+        <pre>access-list 10 permit 10.0.0.0 0.0.0.255
+interface Serial0
+ ip access-list 10 in</pre>
+    </div>""",
+        },
+        {
+            "slug": "show-ip-route-10-10-8-14-slash-28-mask",
+            "title": "CCNA — Destination mask for 10.10.8.14",
+            "stem": "A packet sourced from 10.10.10.1 is destined for 10.10.8.14. What is the subnet mask of the destination route?",
+            "name": "rtmask1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **10.10.8.14** matches the **connected** route **10.10.8.0/28** (hosts **.0\u2013.15**). A **/28** mask is **255.255.255.240**. It does **not** match **10.10.10.0/24** (**/24** = **255.255.255.0**). **A** (**255.255.254.0**) is **/23**. **C** (**255.255.255.248**) is **/29**. **D** (**255.255.255.252**) is **/30**.",
+            "choices": [
+                "255.255.254.0",
+                "255.255.255.240",
+                "255.255.255.248",
+                "255.255.255.252",
+            ],
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="Router show ip route">
+        <pre>Gateway of last resort is 172.16.2.2 to network 0.0.0.0
+
+   10.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       10.10.8.0/28 is directly connected, GigabitEthernet0/0/2
+C       10.10.10.0/24 is directly connected, GigabitEthernet0/0/0
+L       10.10.10.3/32 is directly connected, GigabitEthernet0/0/0
+   172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks
+S       172.16.1.33/32 is directly connected, GigabitEthernet0/0/1
+C       172.16.2.0/23 is directly connected, GigabitEthernet0/0/1
+L       172.16.2.1/32 is directly connected, GigabitEthernet0/0/1
+S*   0.0.0.0/0 [1/0] via 172.16.2.2</pre>
+    </div>""",
+        },
+        {
+            "slug": "private-ipv4-reasons-implement-choose-two",
+            "title": "CCNA — Private IPv4: reasons (choose two)",
+            "stem": "What are two reasons to implement IPv4 private addressing on a network? (Choose two)",
+            "name": "priv41",
+            "choose_two": True,
+            "correct": ["B", "D"],
+            "explain": "Correct. B and D \u2014 **RFC 1918 private IPv4** space lets organizations **conserve scarce globally unique public IPv4** addresses (often with **NAT** at the edge) and gain **flexibility** when **merging** or **renumbering** internal networks without consuming public space for every host. **A** is wrong: private addressing does **not** expand the global routing table. **C** misstates the main driver\u2014uniqueness within an org is a side effect, not the primary reason to adopt private space. **E** is not a primary **DoS** defense; non-routability on the Internet is incidental, not the design goal.",
+            "choices": [
+                "to expand the routing table on the router",
+                "to facilitate renumbering when merging networks",
+                "to enable internal applications to treat the private IPv4 addresses as unique",
+                "to conserve global unique IPv4 addresses",
+                "to provide protection from external denial-of-service attacks",
+            ],
+        },
+        {
+            "slug": "puppet-manifests-modules-paradigm",
+            "title": "CCNA — Puppet: manifests and modules",
+            "stem": "Which script paradigm does Puppet use?",
+            "name": "puppet1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **Puppet** expresses desired state in **manifests** (`.pp` files) organized into reusable **modules**. **C** (**recipes** and **cookbooks**) describes **Chef**. **D** (**playbooks** and **roles**) describes **Ansible**. **B** is not a real automation paradigm.",
+            "choices": [
+                "manifests and modules",
+                "strings and marionettes",
+                "recipes and cookbooks",
+                "playbooks and roles",
+            ],
+        },
+        {
+            "slug": "ipsec-tunnel-mode-encrypts-header-and-payload",
+            "title": "CCNA — IPsec: tunnel encrypts header",
+            "stem": "Which IPsec mode encrypts the IP header and the payload?",
+            "name": "ipsecm1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **Tunnel mode** encrypts the **entire original IP packet** (original **IP header** plus **payload**, typically with **ESP**) and adds a **new outer IP header** for delivery across the VPN. **Transport mode** encrypts the **payload** but leaves the **original IP header** readable. **Pipe** and **control** are not standard IPsec mode names in this context.",
+            "choices": [
+                "pipe",
+                "tunnel",
+                "control",
+                "transport",
+            ],
+        },
+        {
+            "slug": "wpa3-safeguards-brute-force-sae",
+            "title": "CCNA — WPA3: SAE vs brute force",
+            "stem": "What does WPA3 provide in wireless networking?",
+            "name": "wpa3bf1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **WPA3-Personal** uses **SAE** (**Simultaneous Authentication of Equals**) instead of the older **WPA2-PSK** handshake, improving resistance to **offline dictionary/brute-force** attacks on passphrases. **A** overstates setup complexity\u2014WPA3 can be straightforward. **B** describes transitional/mixed deployments, not WPA3\u2019s defining security upgrade. **C** is wrong: **Protected Management Frames** are **required** for WPA3, not merely optional.",
+            "choices": [
+                "increased security and requirement of a complex configuration",
+                "backward compatibility with WPA and WPA2",
+                "optional Protected Management Frame negotiation",
+                "safeguards against brute force attacks with SAE",
+            ],
+        },
+        {
+            "slug": "show-ip-route-ospf-metric-172-16-0-128-25",
+            "title": "CCNA — OSPF metric in show ip route",
+            "stem": "Refer to the exhibit. What is the metric for the OSPF-learned route to 172.16.0.128/25?",
+            "name": "ospfmet2",
+            "correct": "C",
+            "explain": "Correct. C \u2014 In **`[AD/metric]`** notation, **`O 172.16.0.128/25 [110/32445]`** means **administrative distance 110** (default for **OSPF**) and **OSPF metric (cost) 32445**. **B (110)** is the **AD**, not the metric. **D (3184439)** is the **EIGRP** metric on **`D 172.16.0.192/29 [90/3184439]`**. **A (0)** is the **static default** metric on **`S* 0.0.0.0/0 [1/0]`**.",
+            "choices": ["0", "110", "32445", "3184439"],
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route">
+        <pre>R1#show ip route | begin gateway
+
+Gateway of last resort is 209.165.200.246 to network 0.0.0.0
+S*   0.0.0.0/0 [1/0] via 209.165.200.246, Serial0/1/0
+      is directly connected, Serial0/1/0
+    172.16.0.0/16 is variably subnetted, 3 subnets, 3 masks
+S     172.16.0.0/24 [1/0] via 207.165.200.250, Serial0/0/0
+O     172.16.0.128/25 [110/32445] via 207.165.200.254, 00:00:33, Serial0/0/1
+D     172.16.0.192/29 [90/3184439] via 207.165.200.254, 00:00:33, Serial0/0/1
+    207.165.200.0/24 is variably subnetted, 4 subnets, 2 masks
+C     207.165.200.248/30 is directly connected, Serial0/0/0
+L     207.165.200.249/32 is directly connected, Serial0/0/0
+C     207.165.200.252/30 is directly connected, Serial0/0/1
+L     207.165.200.253/32 is directly connected, Serial0/0/1</pre>
+    </div>""",
+        },
+        {
+            "slug": "traffic-policing-drop-remark-choose-two",
+            "title": "CCNA — Traffic policing actions (choose two)",
+            "stem": "Which two actions are taken as the result of traffic policing? (Choose two)",
+            "name": "qospol1",
+            "choose_two": True,
+            "correct": ["C", "D"],
+            "explain": "Correct. C and D \u2014 **Policing** enforces a **committed rate**; traffic above the policy is typically **dropped** or **remarked** (mark-down, for example lower **DSCP**/**CoS**). **Buffering** and delaying excess traffic describe **shaping**, not policing. **Burst** parameters (committed/excess burst) govern how much short overrun is allowed but are not the primary **actions** on out-of-profile traffic. **Fragmentation** is unrelated to policing.",
+            "choices": [
+                "bursting",
+                "fragmentation",
+                "dropping",
+                "remarking",
+                "buffering",
+            ],
+        },
+        {
+            "slug": "static-route-best-path-10-10-10-3-slash-28",
+            "title": "CCNA — Static route best path to 10.10.10.3",
+            "stem": "Which IP route command created the best path for a packet destined for 10.10.10.3?",
+            "name": "strt103",
+            "correct": "C",
+            "mono": True,
+            "explain": "Correct. C \u2014 **10.10.10.3** matches several static routes, but **longest-prefix match** selects **`S 10.10.10.0/28`**, created by **`ip route 10.10.10.0 255.255.255.240 ...`**. **D** (**10.10.0.0/22**) and **A** (**10.0.0.0/8**) are **less specific**. **B** is a **host /32** for **10.10.10.1** only and does **not** match **10.10.10.3**.",
+            "choices": [
+                "ip route 10.0.0.0 255.0.0.0 g0/0",
+                "ip route 10.10.10.1 255.255.255.255 g0/0",
+                "ip route 10.10.10.0 255.255.255.240 g0/0",
+                "ip route 10.10.0.0 255.255.252.0 g0/0",
+            ],
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="Router show ip route">
+        <pre>Gateway of last resort is 0.0.0.0 to network 0.0.0.0
+10.0.0.0/8 is variably subnetted, 6 subnets, 5 masks
+S       10.0.0.0/8 is directly connected, GigabitEthernet0/0
+C       10.1.1.0/24 is directly connected, GigabitEthernet0/0
+L       10.1.1.1/32 is directly connected, GigabitEthernet0/0
+S       10.10.0.0/22 is directly connected, GigabitEthernet0/0
+S       10.10.10.0/28 is directly connected, GigabitEthernet0/0
+S       10.10.10.1/32 is directly connected, GigabitEthernet0/0
+S*   0.0.0.0/0 is directly connected, GigabitEthernet0/0</pre>
+    </div>""",
+        },
+        {
+            "slug": "wlc-rogue-ap-class-type-friendly-autonomous",
+            "title": "CCNA — WLC: classify rogue as Friendly",
+            "stem": "A WLC sends alarms about a rogue AP, and the network administrator verifies that the alarms are caused by a legitimate autonomous AP. How must the alarms be stopped for the MAC address of the AP?",
+            "name": "wlrogue1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 Classify the AP as **Friendly** so the WLC treats it as a **known legitimate** device and **stops rogue alarms** for that **MAC**. **Manual containment** is for **mitigating** threats, not whitelisting. An **autonomous** AP is **not** \u201cremoved from WLC management\u201d in that sense. Clearing **Pending** alone does not classify the AP; **Friendly** is the correct **class type**.",
+            "choices": [
+                "Place the AP into manual containment.",
+                "Remove the AP from WLC management.",
+                "Manually remove the AP from Pending state.",
+                "Set the AP Class Type to Friendly.",
+            ],
+        },
+        {
+            "slug": "anti-replay-prevent-mitm-attack",
+            "title": "CCNA — Anti-replay vs MITM",
+            "stem": "Which security method is used to prevent man-in-the-middle attack?",
+            "name": "antirep1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 **Anti-replay** (for example in **IPsec**) uses **sequence numbers** so captured packets cannot be **replayed**, blocking a common **MITM** technique. **Authentication** proves identity and helps prevent impersonation but is not the specific **anti-replay** control named here. **Authorization** decides permitted actions after identity. **Accounting** logs activity and does not prevent MITM.",
+            "choices": [
+                "authorization",
+                "authentication",
+                "anti-replay",
+                "accounting",
+            ],
+        },
     ]
 
     prev = "vty-access-list-ssh-secure"

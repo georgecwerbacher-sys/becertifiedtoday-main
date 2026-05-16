@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC: serial session no timeout</title>
+  <title>CCNA — PoE auto vs static</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which command configures the Cisco WLC to prevent a serial session with the WLC CLI from being automatically logged out?</h1>
+    <h1>What is an advantage of using auto mode versus static mode for power allocation when an access point is connected to a PoE switch port?</h1>
 
-    <label class="choice"><input type="radio" name="wlcsert1" value="A" />A. config sessions maxsessions 0</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="B" />B. config serial timeout 9600</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="C" />C. config serial timeout 0</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="D" />D. config sessions timeout 0</label>
+    <label class="choice"><input type="radio" name="poeauto1" value="A" />A. The default level is used for the access point</label>
+    <label class="choice"><input type="radio" name="poeauto1" value="B" />B. It detects the device is a powered device</label>
+    <label class="choice"><input type="radio" name="poeauto1" value="C" />C. All four pairs of the cable are used</label>
+    <label class="choice"><input type="radio" name="poeauto1" value="D" />D. Power policing is enabled at the same time</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/flexconnect-local-switch-different-vlans-trunk-port.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/mac-address-learning-enabled-default-vlans.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/flexconnect-branch-local-switching-wan-survivability.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/cpe-floating-static-default-when-ebgp-invalid.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 On AireOS-style WLC CLI, **`config serial timeout`** sets the **serial console** inactivity logout (minutes). Setting it to **0** means **serial sessions never time out** (per Cisco Wireless Controller configuration guides). **`config serial baudrate`** changes speed (for example 9600), not logout. **`config sessions`** controls **Telnet/SSH** session limits and timeouts, not the **serial** port.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 In **auto** mode, the switch runs **IEEE PoE detection/classification** to verify a **powered device (PD)** is present and allocate power based on what the PD requests. **Static** mode applies a **fixed** wattage you configure (useful to **reserve/guarantee** budget) but does not rely on automatic PD discovery the same way. **A** describes a fixed default level, not an **auto** advantage. **C** (all four pairs) relates to **PoE+** / 4-pair delivery, not **auto vs static**. **D** (**power policing**) is a separate configuration, not what **auto** uniquely provides.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="wlcsert1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="poeauto1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

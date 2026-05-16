@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC: serial session no timeout</title>
+  <title>CCNA — OSPF metric in show ip route</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,28 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which command configures the Cisco WLC to prevent a serial session with the WLC CLI from being automatically logged out?</h1>
+    <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route">
+        <pre>R1#show ip route | begin gateway
 
-    <label class="choice"><input type="radio" name="wlcsert1" value="A" />A. config sessions maxsessions 0</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="B" />B. config serial timeout 9600</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="C" />C. config serial timeout 0</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="D" />D. config sessions timeout 0</label>
+Gateway of last resort is 209.165.200.246 to network 0.0.0.0
+S*   0.0.0.0/0 [1/0] via 209.165.200.246, Serial0/1/0
+      is directly connected, Serial0/1/0
+    172.16.0.0/16 is variably subnetted, 3 subnets, 3 masks
+S     172.16.0.0/24 [1/0] via 207.165.200.250, Serial0/0/0
+O     172.16.0.128/25 [110/32445] via 207.165.200.254, 00:00:33, Serial0/0/1
+D     172.16.0.192/29 [90/3184439] via 207.165.200.254, 00:00:33, Serial0/0/1
+    207.165.200.0/24 is variably subnetted, 4 subnets, 2 masks
+C     207.165.200.248/30 is directly connected, Serial0/0/0
+L     207.165.200.249/32 is directly connected, Serial0/0/0
+C     207.165.200.252/30 is directly connected, Serial0/0/1
+L     207.165.200.253/32 is directly connected, Serial0/0/1</pre>
+    </div>
+    <h1>Refer to the exhibit. What is the metric for the OSPF-learned route to 172.16.0.128/25?</h1>
+
+    <label class="choice"><input type="radio" name="ospfmet2" value="A" />A. 0</label>
+    <label class="choice"><input type="radio" name="ospfmet2" value="B" />B. 110</label>
+    <label class="choice"><input type="radio" name="ospfmet2" value="C" />C. 32445</label>
+    <label class="choice"><input type="radio" name="ospfmet2" value="D" />D. 3184439</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +343,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/flexconnect-local-switch-different-vlans-trunk-port.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/mac-address-learning-enabled-default-vlans.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wpa3-safeguards-brute-force-sae.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/traffic-policing-drop-remark-choose-two.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 On AireOS-style WLC CLI, **`config serial timeout`** sets the **serial console** inactivity logout (minutes). Setting it to **0** means **serial sessions never time out** (per Cisco Wireless Controller configuration guides). **`config serial baudrate`** changes speed (for example 9600), not logout. **`config sessions`** controls **Telnet/SSH** session limits and timeouts, not the **serial** port.";
+      var CORRECT_MSG = "Correct. C \u2014 In **`[AD/metric]`** notation, **`O 172.16.0.128/25 [110/32445]`** means **administrative distance 110** (default for **OSPF**) and **OSPF metric (cost) 32445**. **B (110)** is the **AD**, not the metric. **D (3184439)** is the **EIGRP** metric on **`D 172.16.0.192/29 [90/3184439]`**. **A (0)** is the **static default** metric on **`S* 0.0.0.0/0 [1/0]`**.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +365,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="wlcsert1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="ospfmet2"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC: serial session no timeout</title>
+  <title>CCNA — DNA Center: faster campus deployment</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which command configures the Cisco WLC to prevent a serial session with the WLC CLI from being automatically logged out?</h1>
+    <h1>A network architect is considering whether to implement Cisco DNA Center to deploy devices on a new network. The organization is focused on reducing the time it currently takes to deploy devices in a traditional campus design. For which reason would Cisco DNA Center be more appropriate than traditional management options?</h1>
 
-    <label class="choice"><input type="radio" name="wlcsert1" value="A" />A. config sessions maxsessions 0</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="B" />B. config serial timeout 9600</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="C" />C. config serial timeout 0</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="D" />D. config sessions timeout 0</label>
+    <label class="choice"><input type="radio" name="dnadepl1" value="A" />A. Cisco DNA Center provides zero-touch provisioning to third-party devices.</label>
+    <label class="choice"><input type="radio" name="dnadepl1" value="B" />B. Cisco DNA Center supports deployment with a single pane of glass.</label>
+    <label class="choice"><input type="radio" name="dnadepl1" value="C" />C. Cisco DNA Center minimizes the level of syslog output when reporting on Cisco devices.</label>
+    <label class="choice"><input type="radio" name="dnadepl1" value="D" />D. Cisco DNA Center reduces the need for analytics on third-party access points and devices.</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/flexconnect-local-switch-different-vlans-trunk-port.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/mac-address-learning-enabled-default-vlans.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlan-office-ssid-same-security-policies-branches.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/tcp-udp-query-response-connection-model.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 On AireOS-style WLC CLI, **`config serial timeout`** sets the **serial console** inactivity logout (minutes). Setting it to **0** means **serial sessions never time out** (per Cisco Wireless Controller configuration guides). **`config serial baudrate`** changes speed (for example 9600), not logout. **`config sessions`** controls **Telnet/SSH** session limits and timeouts, not the **serial** port.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 **Cisco DNA Center** centralizes **design, provisioning, and deployment** in one GUI (**single pane of glass**), which reduces the **per-device CLI** and scattered-tool work typical of **traditional** campus rollouts. **A** overstates **third-party** **zero-touch** support as the main benefit. **C** (**syslog** volume) is unrelated to **deployment time**. **D** (**third-party AP analytics**) is not why teams adopt DNA Center to **deploy** devices faster.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="wlcsert1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="dnadepl1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

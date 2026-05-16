@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC: serial session no timeout</title>
+  <title>CCNA — Static route best path to 10.10.10.3</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,55 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which command configures the Cisco WLC to prevent a serial session with the WLC CLI from being automatically logged out?</h1>
+    <div class="exhibit-router-cli" role="region" aria-label="Router show ip route">
+        <pre>Gateway of last resort is 0.0.0.0 to network 0.0.0.0
+10.0.0.0/8 is variably subnetted, 6 subnets, 5 masks
+S       10.0.0.0/8 is directly connected, GigabitEthernet0/0
+C       10.1.1.0/24 is directly connected, GigabitEthernet0/0
+L       10.1.1.1/32 is directly connected, GigabitEthernet0/0
+S       10.10.0.0/22 is directly connected, GigabitEthernet0/0
+S       10.10.10.0/28 is directly connected, GigabitEthernet0/0
+S       10.10.10.1/32 is directly connected, GigabitEthernet0/0
+S*   0.0.0.0/0 is directly connected, GigabitEthernet0/0</pre>
+    </div>
+    <h1>Which IP route command created the best path for a packet destined for 10.10.10.3?</h1>
 
-    <label class="choice"><input type="radio" name="wlcsert1" value="A" />A. config sessions maxsessions 0</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="B" />B. config serial timeout 9600</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="C" />C. config serial timeout 0</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="D" />D. config sessions timeout 0</label>
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="strt103" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. ip route 10.0.0.0 255.0.0.0 g0/0</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="strt103" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. ip route 10.10.10.1 255.255.255.255 g0/0</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="strt103" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. ip route 10.10.10.0 255.255.255.240 g0/0</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="strt103" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. ip route 10.10.0.0 255.255.252.0 g0/0</pre>
+    </label>
+
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +370,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/flexconnect-local-switch-different-vlans-trunk-port.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/mac-address-learning-enabled-default-vlans.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/traffic-policing-drop-remark-choose-two.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-rogue-ap-class-type-friendly-autonomous.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 On AireOS-style WLC CLI, **`config serial timeout`** sets the **serial console** inactivity logout (minutes). Setting it to **0** means **serial sessions never time out** (per Cisco Wireless Controller configuration guides). **`config serial baudrate`** changes speed (for example 9600), not logout. **`config sessions`** controls **Telnet/SSH** session limits and timeouts, not the **serial** port.";
+      var CORRECT_MSG = "Correct. C \u2014 **10.10.10.3** matches several static routes, but **longest-prefix match** selects **`S 10.10.10.0/28`**, created by **`ip route 10.10.10.0 255.255.255.240 ...`**. **D** (**10.10.0.0/22**) and **A** (**10.0.0.0/8**) are **less specific**. **B** is a **host /32** for **10.10.10.1** only and does **not** match **10.10.10.3**.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +392,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="wlcsert1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="strt103"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

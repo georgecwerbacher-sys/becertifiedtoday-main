@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC: serial session no timeout</title>
+  <title>CCNA — CPE floating static default vs eBGP</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,34 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which command configures the Cisco WLC to prevent a serial session with the WLC CLI from being automatically logged out?</h1>
+    <div class="exhibit-router-cli" role="region" aria-label="CPE verification output">
+        <pre>--Some output missing--
+Routing Descriptor Blocks:
+* directly connected, via Ethernet0/1
+    Route metric is 0, traffic share count is 1
 
-    <label class="choice"><input type="radio" name="wlcsert1" value="A" />A. config sessions maxsessions 0</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="B" />B. config serial timeout 9600</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="C" />C. config serial timeout 0</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="D" />D. config sessions timeout 0</label>
+CPE# ping 203.0.113.1
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 203.0.113.1, timeout is 2 seconds:
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+
+CPE# show ip route
+Gateway of last resort is 198.51.100.1 to network 0.0.0.0
+B*  0.0.0.0/0 [20/0] via 198.51.100.1, 00:02:07
+    198.51.100.0/24 is variably subnetted, 2 subnets, 2 masks
+C       198.51.100.0/30 is directly connected, Ethernet0/0
+L       198.51.100.2/32 is directly connected, Ethernet0/0
+    203.0.113.0/24 is variably subnetted, 2 subnets, 2 masks
+C       203.0.113.0/30 is directly connected, Ethernet0/1
+L       203.0.113.2/32 is directly connected, Ethernet0/1</pre>
+    </div>
+    <h1>Refer to the exhibit. After configuring a new static route on the CPE, the engineer entered this series of commands to verify that the new configuration is operating normally. When is the static default route installed into the routing table?</h1>
+
+    <label class="choice"><input type="radio" name="cpeflt1" value="A" />A. when the default route learned over external BGP becomes invalid</label>
+    <label class="choice"><input type="radio" name="cpeflt1" value="B" />B. when 203.0.113.1 is no longer reachable as a next hop</label>
+    <label class="choice"><input type="radio" name="cpeflt1" value="C" />C. when the default route learned over external BGP changes its next hop</label>
+    <label class="choice"><input type="radio" name="cpeflt1" value="D" />D. when a route to 203.0.113.1 is learned via BGP</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +349,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/flexconnect-local-switch-different-vlans-trunk-port.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/mac-address-learning-enabled-default-vlans.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/poe-auto-mode-detects-powered-device.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/telnet-unsecured-remote-cli-access.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 On AireOS-style WLC CLI, **`config serial timeout`** sets the **serial console** inactivity logout (minutes). Setting it to **0** means **serial sessions never time out** (per Cisco Wireless Controller configuration guides). **`config serial baudrate`** changes speed (for example 9600), not logout. **`config sessions`** controls **Telnet/SSH** session limits and timeouts, not the **serial** port.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 The routing table shows an active **eBGP default**: **`B* 0.0.0.0/0 [20/0] via 198.51.100.1`**. A **floating static default** uses a **higher administrative distance** than **20**, so it stays **out of the table** while the **BGP** default is valid and is **installed only when that BGP default is withdrawn** (invalid/unreachable). **B** applies only if you tied the static to **object tracking** of **203.0.113.1** reachability, not the basic **AD-based** floating backup shown here. **C** is wrong: a **next-hop change** on the BGP route does not by itself install the backup if BGP still advertises a valid default. **D** is wrong: learning **203.0.113.1** via BGP would not be the trigger to install a **static** default backup.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +371,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="wlcsert1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="cpeflt1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

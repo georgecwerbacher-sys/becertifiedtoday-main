@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC: serial session no timeout</title>
+  <title>CCNA — WLC: classify rogue as Friendly</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which command configures the Cisco WLC to prevent a serial session with the WLC CLI from being automatically logged out?</h1>
+    <h1>A WLC sends alarms about a rogue AP, and the network administrator verifies that the alarms are caused by a legitimate autonomous AP. How must the alarms be stopped for the MAC address of the AP?</h1>
 
-    <label class="choice"><input type="radio" name="wlcsert1" value="A" />A. config sessions maxsessions 0</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="B" />B. config serial timeout 9600</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="C" />C. config serial timeout 0</label>
-    <label class="choice"><input type="radio" name="wlcsert1" value="D" />D. config sessions timeout 0</label>
+    <label class="choice"><input type="radio" name="wlrogue1" value="A" />A. Place the AP into manual containment.</label>
+    <label class="choice"><input type="radio" name="wlrogue1" value="B" />B. Remove the AP from WLC management.</label>
+    <label class="choice"><input type="radio" name="wlrogue1" value="C" />C. Manually remove the AP from Pending state.</label>
+    <label class="choice"><input type="radio" name="wlrogue1" value="D" />D. Set the AP Class Type to Friendly.</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/flexconnect-local-switch-different-vlans-trunk-port.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/mac-address-learning-enabled-default-vlans.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/static-route-best-path-10-10-10-3-slash-28.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/anti-replay-prevent-mitm-attack.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 On AireOS-style WLC CLI, **`config serial timeout`** sets the **serial console** inactivity logout (minutes). Setting it to **0** means **serial sessions never time out** (per Cisco Wireless Controller configuration guides). **`config serial baudrate`** changes speed (for example 9600), not logout. **`config sessions`** controls **Telnet/SSH** session limits and timeouts, not the **serial** port.";
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D \u2014 Classify the AP as **Friendly** so the WLC treats it as a **known legitimate** device and **stops rogue alarms** for that **MAC**. **Manual containment** is for **mitigating** threats, not whitelisting. An **autonomous** AP is **not** \u201cremoved from WLC management\u201d in that sense. Clearing **Pending** alone does not classify the AP; **Friendly** is the correct **class type**.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="wlcsert1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="wlrogue1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
