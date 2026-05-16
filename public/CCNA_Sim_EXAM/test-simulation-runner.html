@@ -351,6 +351,80 @@
       max-width: 62ch;
       line-height: 1.45;
     }
+    .results-scorecard-section {
+      margin: 22px 0 18px;
+    }
+    .results-scorecard-heading {
+      margin: 0 0 8px;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #8ba4c9;
+    }
+    .scorecard-lead {
+      margin-bottom: 12px !important;
+      max-width: 72ch;
+    }
+    .scorecard-table-wrap {
+      max-height: min(56vh, 520px);
+    }
+    .results-scorecard-subheading {
+      margin: 18px 0 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #93c5fd;
+    }
+    .scorecard-tier-priority {
+      color: #fca5a5;
+      font-weight: 700;
+    }
+    .scorecard-tier-review {
+      color: #fcd34d;
+      font-weight: 700;
+    }
+    .scorecard-tier-solid {
+      color: #86efac;
+      font-weight: 700;
+    }
+    .scorecard-tier-strong {
+      color: #4ade80;
+      font-weight: 700;
+    }
+    .scorecard-tier-muted {
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .scorecard-by-type {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .scorecard-hint {
+      display: block;
+      margin-top: 4px;
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: #7d8ea3;
+      line-height: 1.35;
+    }
+    .scorecard-weak-list {
+      margin: 0 0 0 1.15rem;
+      padding: 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.55;
+      max-width: 72ch;
+    }
+    .scorecard-weak-list li {
+      margin-bottom: 10px;
+    }
+    .scorecard-weak-pct {
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      color: #fcd34d;
+    }
   </style>
 </head>
 <body>
@@ -393,6 +467,28 @@
       <p class="results-reason" id="resultsReason"></p>
       <p class="results-score" id="resultsScore"></p>
       <p class="results-note" id="resultsNote"></p>
+
+      <div id="resultsScorecardSection" class="results-scorecard-section">
+        <h3 class="results-scorecard-heading">Study scorecard — where to focus</h3>
+        <p id="resultsScorecardLead" class="results-note scorecard-lead"></p>
+        <div class="obj-table-wrap scorecard-table-wrap">
+          <table aria-describedby="resultsScorecardLead">
+            <thead>
+              <tr>
+                <th scope="col">CCNA domain</th>
+                <th scope="col">Overall</th>
+                <th scope="col">By item type</th>
+                <th scope="col">Review priority</th>
+              </tr>
+            </thead>
+            <tbody id="resultsDomainScorecardBody"></tbody>
+          </table>
+        </div>
+        <h4 class="results-scorecard-subheading">Objectives that need the most work</h4>
+        <p id="resultsWeakObjectiveLead" class="results-note scorecard-lead"></p>
+        <ul id="resultsWeakObjectiveList" class="scorecard-weak-list"></ul>
+      </div>
+
       <h3 style="margin: 18px 0 10px; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: #8ba4c9">
         Performance by exam objective
       </h3>
@@ -442,6 +538,7 @@
     var sessionOk = false;
     var attemptResults = [];
     var objectiveLabels = {};
+    var domainMajorTitles = {};
 
     /** Timed test: optional adaptive MCQ injection by blueprint domain (1–6). */
     var adaptiveMcqEnabled = false;
@@ -595,6 +692,78 @@
       return Object.keys(out);
     }
 
+    /** One primary blueprint domain per scored item (first objective ID by numeric sort). Avoids double-counting across domains. */
+    function primaryDomainMajorFromObjectiveIds(ids) {
+      if (!ids || !ids.length) return "__none__";
+      var sorted = ids.slice().sort(compareObjIds);
+      var i;
+      for (i = 0; i < sorted.length; i++) {
+        var maj = String(sorted[i]).split(".")[0];
+        if (/^[1-6]$/.test(maj)) return maj;
+      }
+      return "__none__";
+    }
+
+    function emptyDomainAgg() {
+      return {
+        correct: 0,
+        total: 0,
+        types: { mcq: { c: 0, t: 0 }, dnd: { c: 0, t: 0 }, lab: { c: 0, t: 0 } },
+      };
+    }
+
+    function formatScorecardByType(types) {
+      var parts = [];
+      var order = [
+        { k: "mcq", lab: "MCQ" },
+        { k: "dnd", lab: "D&D" },
+        { k: "lab", lab: "Lab" },
+      ];
+      order.forEach(function (o) {
+        var x = types[o.k];
+        if (!x || !x.t) return;
+        parts.push(o.lab + " " + x.c + "/" + x.t);
+      });
+      return parts.length ? parts.join(" · ") : "—";
+    }
+
+    /** Labels scorecard rows from accuracy + sample size. */
+    function domainReviewTier(pct, total) {
+      if (total < 2) {
+        return {
+          label: "Limited sample",
+          cls: "scorecard-tier-muted",
+          hint: "Not enough items mapped here—treat this row as directional only.",
+        };
+      }
+      if (pct < 60) {
+        return {
+          label: "Priority review",
+          cls: "scorecard-tier-priority",
+          hint: "Strong candidate for focused study and labs next.",
+        };
+      }
+      if (pct < 75) {
+        return {
+          label: "Needs work",
+          cls: "scorecard-tier-review",
+          hint: "Revisit objectives below and drill similar questions.",
+        };
+      }
+      if (pct < 85) {
+        return {
+          label: "Almost there",
+          cls: "scorecard-tier-solid",
+          hint: "Light review recommended before exam day.",
+        };
+      }
+      return {
+        label: "Strong",
+        cls: "scorecard-tier-strong",
+        hint: "Keep sharp with occasional mixed practice.",
+      };
+    }
+
     function buildAdaptiveMcqPools(assignments) {
       var pools = { "1": [], "2": [], "3": [], "4": [], "5": [], "6": [] };
       var qa = assignments || {};
@@ -717,6 +886,18 @@
       return map;
     }
 
+    /** Official blueprint domain titles (200-301 exam objectives JSON): keys "1" … "6". */
+    function buildDomainMajorTitles(examJson) {
+      var map = {};
+      var domains = examJson.domains || [];
+      domains.forEach(function (d) {
+        var id = String(d.id || "").trim();
+        var m = id.match(/^(\d+)\.0$/);
+        if (m) map[m[1]] = d.name || "Domain " + m[1];
+      });
+      return map;
+    }
+
     function buildRichDeck(qMap, dMap, lMap, opts) {
       opts = opts || {};
       var fixedLabs = Array.isArray(opts.fixedLabs) && opts.fixedLabs.length ? opts.fixedLabs : null;
@@ -793,6 +974,7 @@
     async function prepareExamData() {
       attemptResults = [];
       objectiveLabels = {};
+      domainMajorTitles = {};
       domainMcqStats = {};
       adaptiveMcqInjected = 0;
       adaptiveMcqGraded = 0;
@@ -800,6 +982,14 @@
       adaptiveMcqPoolByDomain = null;
       usedMcqSlugs = {};
       mcqAssignmentsCache = {};
+
+      try {
+        var roInit = await fetch("/CCNA-Study/data/ccna-exam-objectives-200-301-v1.1.json").then(function (r) {
+          return r.json();
+        });
+        objectiveLabels = buildObjectiveLabels(roInit);
+        domainMajorTitles = buildDomainMajorTitles(roInit);
+      } catch (eObj) {}
 
       var bp = {};
       try {
@@ -833,10 +1023,6 @@
         var rl = await fetch("/CCNA-Study/data/ccna-lab-topic-map.json").then(function (r) {
           return r.json();
         });
-        var ro = await fetch("/CCNA-Study/data/ccna-exam-objectives-200-301-v1.1.json").then(function (r) {
-          return r.json();
-        });
-        objectiveLabels = buildObjectiveLabels(ro);
         var rich = buildRichDeck(rq, rd, rl, {
           fixedLabs: fixedLabs,
           labCount: labCount,
@@ -1182,11 +1368,6 @@
             adaptiveMcqInjected +
             " extra multiple-choice item(s) from domains that needed more practice (same overall MCQ score weight spread across all MCQs you saw)."
           : "";
-      document.getElementById("resultsNote").textContent =
-        breakdown +
-        tail +
-        adaptiveTail +
-        " Rows below roll up items by official objective IDs from the CCNA topic maps.";
 
       var rollup = {};
       attemptResults.forEach(function (r) {
@@ -1197,6 +1378,125 @@
           if (r.correct) rollup[oid].correct += 1;
         });
       });
+
+      document.getElementById("resultsNote").textContent =
+        breakdown +
+        tail +
+        adaptiveTail +
+        " Use the study scorecard for blueprint gaps; the objective table lists every tagged objective from your attempt.";
+
+      var domainAgg = {};
+      attemptResults.forEach(function (r) {
+        var maj = primaryDomainMajorFromObjectiveIds(r.objectiveIds);
+        if (!domainAgg[maj]) domainAgg[maj] = emptyDomainAgg();
+        var b = domainAgg[maj];
+        b.total += 1;
+        if (r.correct) b.correct += 1;
+        var ty = r.type;
+        if (ty === "mcq" || ty === "dnd" || ty === "lab") {
+          b.types[ty].t += 1;
+          if (r.correct) b.types[ty].c += 1;
+        }
+      });
+
+      var scorecardLead = document.getElementById("resultsScorecardLead");
+      scorecardLead.textContent =
+        "Each scored item is counted once under its primary blueprint domain (first mapped objective ID by exam order). Rows are sorted with the weakest domains first.";
+
+      var scorecardBody = document.getElementById("resultsDomainScorecardBody");
+      scorecardBody.innerHTML = "";
+      var domainKeys = Object.keys(domainAgg).filter(function (k) {
+        return domainAgg[k].total > 0;
+      });
+      domainKeys.sort(function (a, b) {
+        function pctFor(k) {
+          var z = domainAgg[k];
+          return z.total ? z.correct / z.total : 1;
+        }
+        if (a === "__none__") return 1;
+        if (b === "__none__") return -1;
+        var pa = pctFor(a);
+        var pb = pctFor(b);
+        if (pa !== pb) return pa - pb;
+        return compareObjIds(a + ".0", b + ".0");
+      });
+
+      if (!domainKeys.length) {
+        scorecardLead.textContent =
+          "No domain rollup available—your attempt may lack topic-map objective IDs.";
+      }
+
+      domainKeys.forEach(function (maj) {
+        var d = domainAgg[maj];
+        var pct = d.total ? Math.round((d.correct / d.total) * 1000) / 10 : 0;
+        var tier = domainReviewTier(pct, d.total);
+        var domainTitle =
+          maj === "__none__"
+            ? "Not mapped / miscellaneous"
+            : "Domain " + maj + " — " + (domainMajorTitles[maj] || "CCNA blueprint");
+        var tr = document.createElement("tr");
+        tr.innerHTML =
+          "<td>" +
+          escapeHtml(domainTitle) +
+          "</td><td>" +
+          d.correct +
+          " / " +
+          d.total +
+          ' (<span class="obj-pct">' +
+          pct +
+          "%</span>)</td><td><span class=\"scorecard-by-type\">" +
+          escapeHtml(formatScorecardByType(d.types)) +
+          "</span></td><td><span class=\"" +
+          tier.cls +
+          "\">" +
+          escapeHtml(tier.label) +
+          '</span><span class="scorecard-hint">' +
+          escapeHtml(tier.hint) +
+          "</span></td>";
+        scorecardBody.appendChild(tr);
+      });
+
+      var weakLead = document.getElementById("resultsWeakObjectiveLead");
+      var weakList = document.getElementById("resultsWeakObjectiveList");
+      weakList.innerHTML = "";
+      var weaknessCandidates = [];
+      Object.keys(rollup).forEach(function (oid) {
+        if (oid === "__none__") return;
+        var rw = rollup[oid];
+        var pctW = rw.total ? Math.round((rw.correct / rw.total) * 1000) / 10 : 0;
+        if (rw.total >= 2 && pctW < 70) weaknessCandidates.push({ oid: oid, row: rw, pct: pctW });
+      });
+      weaknessCandidates.sort(function (a, b) {
+        if (a.pct !== b.pct) return a.pct - b.pct;
+        return compareObjIds(a.oid, b.oid);
+      });
+
+      if (!weaknessCandidates.length) {
+        weakLead.textContent =
+          "No individual objectives scored below 70% with at least two tagged attempts—or every miss was spread thin. Keep drilling weak domains above.";
+      } else {
+        weakLead.textContent =
+          "Lowest performers among mapped objectives (under 70%, two or more attempts). Use these IDs with the blueprint and CCNA Training Portal banks.";
+        var limit = Math.min(weaknessCandidates.length, 18);
+        var wi;
+        for (wi = 0; wi < limit; wi++) {
+          var wc = weaknessCandidates[wi];
+          var topicW = objectiveLabels[wc.oid] || "(see CCNA objectives)";
+          var li = document.createElement("li");
+          li.innerHTML =
+            "<strong>" +
+            escapeHtml(wc.oid) +
+            '</strong> — <span class="scorecard-weak-pct">' +
+            wc.pct +
+            "%</span> (" +
+            wc.row.correct +
+            "/" +
+            wc.row.total +
+            ") · " +
+            escapeHtml(topicW);
+          weakList.appendChild(li);
+        }
+      }
 
       var tbody = document.getElementById("resultsObjectiveBody");
       tbody.innerHTML = "";
