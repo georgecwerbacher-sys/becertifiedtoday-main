@@ -67,6 +67,17 @@
     return v;
   }
 
+  /** Practice-by-subject: optional adaptive queue (misses appended until session completes). */
+  function getAdaptiveLearningEnabled() {
+    try {
+      var r = document.querySelector('input[name="ccna-practice-adaptive"]:checked');
+      if (!r) return false;
+      return String(r.value || "").trim() === "1";
+    } catch (e) {
+      return false;
+    }
+  }
+
   function startWithOptionalDomain(mode, bankId, domainMajor) {
     if (!domainMajor) {
       start(mode, bankId, null);
@@ -137,6 +148,7 @@
     }
     var session = { v: 1, mode: mode, bank: bankId, order: order };
     if (domainMajor) session.domain = domainMajor;
+    if (getAdaptiveLearningEnabled()) session.adaptive = true;
     try {
       sessionStorage.setItem(KEY, JSON.stringify(session));
     } catch (e) {}
@@ -233,7 +245,7 @@
         p.innerHTML =
           "Up to <strong>100</strong> items in this slice of the hub list (this bank has <strong>" +
           String(countInBank) +
-          "</strong>). Use <strong>Practice by subject</strong> above to limit <strong>Random</strong> and <strong>Review</strong> to one CCNA domain. <strong>Random</strong> shuffles once. <strong>Review</strong> re-queues misses until the session completes.";
+          "</strong>). Use <strong>Practice by subject</strong> above to limit <strong>Random</strong> and <strong>Review</strong> to one CCNA domain. <strong>Random</strong> shuffles once at the start. Turn on <strong>Adaptive learning</strong> above (or use <strong>Review</strong>) to cycle missed questions back into the queue until you finish.";
       } else {
         p.innerHTML =
           "Reserved for questions <strong>" +

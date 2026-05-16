@@ -72,6 +72,14 @@
       padding: clamp(18px, 3vw, 26px);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
+    .exam-gate {
+      position: relative;
+      z-index: 1;
+    }
+    .exam-gate-bottom-nav {
+      position: relative;
+      z-index: 2;
+    }
     .exam-gate h1 {
       margin: 0 0 12px;
       font-size: 1.25rem;
@@ -88,6 +96,65 @@
     }
     .exam-gate .status-ok {
       color: var(--ok);
+    }
+    .exam-gate-options {
+      margin: 18px 0 16px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 41, 0.65);
+    }
+    .exam-gate-options legend {
+      padding: 0 8px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #8ba4c9;
+    }
+    .exam-gate-adaptive-label {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      cursor: pointer;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      color: var(--text);
+      margin: 0;
+    }
+    .exam-gate-adaptive-label input {
+      margin: 4px 0 0;
+      flex-shrink: 0;
+      accent-color: var(--accent);
+    }
+    .exam-gate-adaptive-desc {
+      display: block;
+      margin-top: 6px;
+      font-size: 0.82rem;
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    #btnGateStartExam {
+      width: 100%;
+      max-width: 320px;
+      padding: 14px 22px;
+      border-radius: 10px;
+      font: inherit;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: 1px solid #60a5fa;
+      background: linear-gradient(165deg, #3b82f6 0%, #1d4ed8 100%);
+      color: #fff;
+      margin-top: 6px;
+    }
+    #btnGateStartExam:hover:not(:disabled) {
+      filter: brightness(1.06);
+    }
+    #btnGateStartExam:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
     }
     .exam-panel[hidden],
     .exam-gate[hidden] {
@@ -151,12 +218,15 @@
       background: #0f1729;
       box-sizing: border-box;
     }
+    /* Hidden by default: do not rely on [hidden] alone — author `display: flex` can defeat it in some UAs,
+       leaving an invisible bar that blocks clicks on the gate (footer links, etc.). */
     .exam-footer {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      display: flex;
+      display: none;
+      pointer-events: none;
       flex-wrap: wrap;
       justify-content: center;
       gap: 12px;
@@ -165,6 +235,9 @@
       background: rgba(11, 16, 32, 0.92);
       backdrop-filter: blur(8px);
       z-index: 100;
+    }
+    .exam-footer.is-active {
+      display: flex;
       pointer-events: auto;
     }
     .exam-footer button {
@@ -290,12 +363,24 @@
       <h1>CCNA Timed Test Simulation</h1>
       <p id="gateStatus">Checking access…</p>
       <p id="gateBlueprint" class="status-ok" hidden></p>
-      <p style="margin-top: 14px; font-size: 0.88rem">
-        <a href="/CCNA_Sim_EXAM/begin-test-simulation.html">Landing page</a>
-        ·
-        <a href="/CCNA_Sim_EXAM/test-simulation.html">Exam hub</a>
-        ·
-        <a href="/index.html">Site home</a>
+      <div id="gateStartWrap" hidden>
+        <fieldset class="exam-gate-options">
+          <legend>Practice test options</legend>
+          <label class="exam-gate-adaptive-label">
+            <input type="checkbox" id="gateAdaptiveMcq" />
+            <span>
+              <strong>Adaptive multiple choice</strong>
+              <span class="exam-gate-adaptive-desc">
+                While you answer, we watch CCNA blueprint domains 1–6 (from topic maps). Domains where you miss several questions may receive
+                <strong>extra multiple-choice items</strong> from that domain later in the same session (same countdown clock). Drag-and-drop and lab counts stay fixed.
+              </span>
+            </span>
+          </label>
+        </fieldset>
+        <button type="button" id="btnGateStartExam">Start timed test</button>
+      </div>
+      <p class="exam-gate-bottom-nav" style="margin-top: 14px; font-size: 0.88rem">
+        <a id="gateBackLink" href="/ccna-home.html">← Back to CCNA home</a>
       </p>
     </div>
 
@@ -337,7 +422,7 @@
     </div>
   </main>
 
-  <footer class="exam-footer" role="toolbar" aria-label="Exam controls" id="examFooter" hidden>
+  <footer class="exam-footer" role="toolbar" aria-label="Exam controls" id="examFooter">
     <button type="button" id="btnReset">Reset</button>
     <button type="button" id="btnNext">Next</button>
     <button type="button" id="btnQuit">Quit</button>
@@ -357,6 +442,19 @@
     var sessionOk = false;
     var attemptResults = [];
     var objectiveLabels = {};
+
+    /** Timed test: optional adaptive MCQ injection by blueprint domain (1–6). */
+    var adaptiveMcqEnabled = false;
+    var domainMcqStats = {};
+    var adaptiveMcqInjected = 0;
+    var adaptiveMcqGraded = 0;
+    var adaptiveMcqSinceInject = 999;
+    var ADAPTIVE_MCQ_CAP = 15;
+    var ADAPTIVE_MCQ_GAP = 5;
+    var ADAPTIVE_MIN_DOMAIN_MCQ = 3;
+    var adaptiveMcqPoolByDomain = null;
+    var usedMcqSlugs = {};
+    var mcqAssignmentsCache = {};
 
     var gatePanel = document.getElementById("gatePanel");
     var gateStatus = document.getElementById("gateStatus");
@@ -379,6 +477,19 @@
         }
       } catch (e) {}
       return false;
+    }
+
+    /** Gate footer: portal subscribers → Training Portal; everyone else → CCNA marketing/home. */
+    function updateGateBackLink() {
+      var a = document.getElementById("gateBackLink");
+      if (!a) return;
+      if (portalPassActive()) {
+        a.setAttribute("href", "/CCNA-Study/CCNA_Training_Portal.html");
+        a.textContent = "← Back to CCNA Training Portal";
+      } else {
+        a.setAttribute("href", "/ccna-home.html");
+        a.textContent = "← Back to CCNA home";
+      }
     }
 
     function grantTempTestAccess(stripeSessionId) {
@@ -472,6 +583,116 @@
       }
       examTimer.textContent = formatTime(remainingSec);
       if (remainingSec <= 300) examTimer.classList.add("is-low");
+    }
+
+    function majorsFromObjectiveIds(ids) {
+      var out = {};
+      if (!ids || !ids.length) return [];
+      for (var i = 0; i < ids.length; i++) {
+        var maj = String(ids[i]).split(".")[0];
+        if (/^[1-6]$/.test(maj)) out[maj] = true;
+      }
+      return Object.keys(out);
+    }
+
+    function buildAdaptiveMcqPools(assignments) {
+      var pools = { "1": [], "2": [], "3": [], "4": [], "5": [], "6": [] };
+      var qa = assignments || {};
+      Object.keys(qa).forEach(function (fn) {
+        if (!/\.html$/i.test(fn)) return;
+        majorsFromObjectiveIds(qa[fn]).forEach(function (m) {
+          pools[m].push(fn);
+        });
+      });
+      return pools;
+    }
+
+    function findWeakMcqDomain(stats) {
+      var weak = null;
+      var worstAcc = 2;
+      for (var d = 1; d <= 6; d++) {
+        var k = String(d);
+        var s = stats[k];
+        if (!s) continue;
+        var t = s.c + s.w;
+        if (t < ADAPTIVE_MIN_DOMAIN_MCQ) continue;
+        var acc = s.c / t;
+        if (acc < worstAcc) {
+          worstAcc = acc;
+          weak = k;
+        }
+      }
+      if (!weak) return null;
+      var sx = stats[weak];
+      var accx = sx.c / (sx.c + sx.w);
+      if (accx > 0.5 && sx.w < 3) return null;
+      return weak;
+    }
+
+    function maybeInjectAdaptiveMcqs() {
+      if (!adaptiveMcqEnabled || !adaptiveMcqPoolByDomain) return;
+      if (adaptiveMcqInjected >= ADAPTIVE_MCQ_CAP) return;
+      if (adaptiveMcqSinceInject < ADAPTIVE_MCQ_GAP) return;
+      var weak = findWeakMcqDomain(domainMcqStats);
+      if (!weak) return;
+      var pool = adaptiveMcqPoolByDomain[weak] || [];
+      var candidates = [];
+      for (var i = 0; i < pool.length; i++) {
+        var fn = pool[i];
+        var slug = fn.replace(/\.html$/i, "");
+        if (usedMcqSlugs[slug]) continue;
+        candidates.push(fn);
+      }
+      if (!candidates.length) return;
+      var pickN = Math.min(2, ADAPTIVE_MCQ_CAP - adaptiveMcqInjected);
+      var picks = shuffle(candidates).slice(0, pickN);
+      var insertAt = itemIndex + 1;
+      for (var j = 0; j < picks.length; j++) {
+        var fn = picks[j];
+        var slug = fn.replace(/\.html$/i, "");
+        items.splice(insertAt, 0, {
+          type: "mcq",
+          fileName: fn,
+          slug: slug,
+          objectiveIds: mcqAssignmentsCache[fn] || [],
+          adaptiveInjected: true,
+        });
+        usedMcqSlugs[slug] = true;
+        adaptiveMcqInjected++;
+        insertAt++;
+      }
+      adaptiveMcqSinceInject = 0;
+    }
+
+    function showExamGateStartOptions() {
+      gateBlueprint.hidden = false;
+      document.getElementById("gateStartWrap").hidden = false;
+      gateStatus.textContent = "Choose practice-test options below, then start. The timer begins only after you click Start.";
+      updateGateBackLink();
+      try {
+        var p = new URLSearchParams(window.location.search);
+        if (p.get("adaptive") === "1") document.getElementById("gateAdaptiveMcq").checked = true;
+      } catch (e) {}
+    }
+
+    async function startExamFromGate() {
+      var btn = document.getElementById("btnGateStartExam");
+      adaptiveMcqEnabled = !!document.getElementById("gateAdaptiveMcq").checked;
+      btn.disabled = true;
+      gateStatus.textContent = "Loading exam bank…";
+      gateStatus.className = "status-ok";
+      try {
+        await prepareExamData();
+        document.getElementById("gateStartWrap").hidden = true;
+        await startExamUI();
+      } catch (e) {
+        console.error("ccna-sim start", e);
+        gateStatus.textContent = "Could not start the exam. Try again.";
+        gateStatus.className = "status-bad";
+        document.getElementById("gateStartWrap").hidden = false;
+        gatePanel.hidden = false;
+        btn.disabled = false;
+      }
     }
 
     function shuffle(arr) {
@@ -572,6 +793,14 @@
     async function prepareExamData() {
       attemptResults = [];
       objectiveLabels = {};
+      domainMcqStats = {};
+      adaptiveMcqInjected = 0;
+      adaptiveMcqGraded = 0;
+      adaptiveMcqSinceInject = 999;
+      adaptiveMcqPoolByDomain = null;
+      usedMcqSlugs = {};
+      mcqAssignmentsCache = {};
+
       var bp = {};
       try {
         bp = await fetch("/CCNA-Study/data/ccna-test-simulation-blueprint.json").then(function (r) {
@@ -616,10 +845,18 @@
         });
         if (rich && rich.length === expectedTotal) {
           items = rich;
+          mcqAssignmentsCache = rq.assignments || {};
+          adaptiveMcqPoolByDomain = buildAdaptiveMcqPools(mcqAssignmentsCache);
+          usedMcqSlugs = {};
+          items.forEach(function (it) {
+            if (it.type === "mcq" && it.slug) usedMcqSlugs[it.slug] = true;
+          });
           return;
         }
       } catch (e) {}
       items = buildFallbackDeck(mcqN, dndN, labCount);
+      mcqAssignmentsCache = {};
+      adaptiveMcqPoolByDomain = buildAdaptiveMcqPools({});
     }
 
     function extractH1(html) {
@@ -939,8 +1176,17 @@
       var tail = unscored
         ? " Some items could not be scored automatically; unscored items earn 0 in their section."
         : "";
+      var adaptiveTail =
+        adaptiveMcqInjected > 0
+          ? " Adaptive mode added " +
+            adaptiveMcqInjected +
+            " extra multiple-choice item(s) from domains that needed more practice (same overall MCQ score weight spread across all MCQs you saw)."
+          : "";
       document.getElementById("resultsNote").textContent =
-        breakdown + tail + " Rows below roll up items by official objective IDs from the CCNA topic maps.";
+        breakdown +
+        tail +
+        adaptiveTail +
+        " Rows below roll up items by official objective IDs from the CCNA topic maps.";
 
       var rollup = {};
       attemptResults.forEach(function (r) {
@@ -982,7 +1228,7 @@
 
     async function finalizeAttempt(reason) {
       stopExamTimer();
-      examFooter.hidden = true;
+      examFooter.classList.remove("is-active");
       examPanel.hidden = true;
       gatePanel.hidden = true;
       resultsPanel.hidden = false;
@@ -1002,7 +1248,7 @@
       itemIndex = 0;
       gatePanel.hidden = true;
       examPanel.hidden = false;
-      examFooter.hidden = false;
+      examFooter.classList.add("is-active");
       resultsPanel.hidden = true;
       remainingSec = TOTAL_SECONDS;
       examTimer.textContent = formatTime(remainingSec);
@@ -1019,6 +1265,16 @@
       if (itemIndex >= items.length) return;
       var rec = await scoreCurrentItem();
       attemptResults.push(rec);
+      if (rec.type === "mcq") {
+        adaptiveMcqGraded++;
+        adaptiveMcqSinceInject++;
+        majorsFromObjectiveIds(rec.objectiveIds).forEach(function (m) {
+          if (!domainMcqStats[m]) domainMcqStats[m] = { c: 0, w: 0 };
+          if (rec.correct) domainMcqStats[m].c++;
+          else domainMcqStats[m].w++;
+        });
+        maybeInjectAdaptiveMcqs();
+      }
       itemIndex += 1;
       if (itemIndex >= items.length) {
         await finalizeAttempt("complete");
@@ -1045,7 +1301,7 @@
         console.error("ccna-sim quit score", e);
       }
       stopExamTimer();
-      examFooter.hidden = true;
+      examFooter.classList.remove("is-active");
       examPanel.hidden = true;
       gatePanel.hidden = true;
       if (!portalPassActive()) clearTempTestAccess();
@@ -1085,21 +1341,21 @@
       params.get("bypass") === "1" ||
       params.get("demo") === "1";
 
-    loadBlueprintLine();
+    document.getElementById("btnGateStartExam").addEventListener("click", async function () {
+      if (!sessionOk) return;
+      await startExamFromGate();
+    });
+
+    await loadBlueprintLine();
 
     if (bypass) {
       sessionOk = true;
-      gateStatus.textContent = "Bypass mode (testing): loading exam without checkout…";
       gateStatus.className = "status-ok";
-      await prepareExamData();
-      await startExamUI();
+      showExamGateStartOptions();
     } else if (portalPassActive()) {
       sessionOk = true;
-      gateStatus.textContent = "CCNA portal access active. Loading exam bank…";
       gateStatus.className = "status-ok";
-      await prepareExamData();
-      gateStatus.textContent = "Access confirmed. The timed exam starts below.";
-      await startExamUI();
+      showExamGateStartOptions();
     } else if (!sessionId) {
       gateStatus.textContent =
         "No paid checkout session found. Use Purchase timed test access on the one-time landing page, or open the Stripe return link from your receipt (it includes session_id). If you already paid on this browser, reopen the runner here — saved checkout data on this device may restore access without session_id in the URL. If you have an active 30-day CCNA portal pass, start the timed test from the CCNA Training Portal on this browser.";
@@ -1115,11 +1371,8 @@
         if (data.ok) {
           sessionOk = true;
           grantTempTestAccess(sessionId);
-          gateStatus.textContent = "Access confirmed. Loading exam bank…";
           gateStatus.className = "status-ok";
-          await prepareExamData();
-          gateStatus.textContent = "Access confirmed. The timed exam starts below.";
-          await startExamUI();
+          showExamGateStartOptions();
         } else {
           gateStatus.textContent = data.error || "Could not verify checkout session.";
           gateStatus.className = "status-bad";
@@ -1129,6 +1382,8 @@
         gateStatus.className = "status-bad";
       }
     }
+
+    updateGateBackLink();
   </script>
 </body>
 </html>

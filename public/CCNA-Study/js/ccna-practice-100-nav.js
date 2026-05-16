@@ -125,7 +125,9 @@
     var nav = applyPracticeNav(slug);
     if (!nav) return;
 
-    if (nav.mode !== "review") return;
+    var s0 = readSession();
+    var adaptive = !!(s0 && s0.adaptive);
+    if (nav.mode !== "review" && !adaptive) return;
 
     var box = document.getElementById("answerBox");
     if (!box) return;
@@ -141,7 +143,8 @@
       box.dataset.ccnaReviewQueued = "1";
       try {
         var s2 = readSession();
-        if (!s2 || s2.mode !== "review") return;
+        if (!s2) return;
+        if (s2.mode !== "review" && !s2.adaptive) return;
         var nowI = pickIndexForSlug(s2.order, slugRef, hashIndex());
         if (nowI < 0 || s2.order[nowI] !== slugRef) return;
         s2.order.push(slugRef);
