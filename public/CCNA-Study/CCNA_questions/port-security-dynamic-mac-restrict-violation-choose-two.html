@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Anti-replay vs MITM</title>
+  <title>CCNA — Port security: dynamic MAC and restrict (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,49 +312,112 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-  <main class="card">
-    <h1>Which security method is used to prevent man-in-the-middle attack?</h1>
+    <main class="card">
+    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/sw-g01-port-security-pc-topology.png" alt="Topology: switch SW GigabitEthernet0/1 connected to a host." width="480" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="Switch partial port-security configuration">
+        <pre>SW# conf t
+SW(config)#interface gigabitEthernet0/1
+SW(config-if)#switchport mode access
+SW(config-if)#switchport port-security
+SW(config-if)#</pre>
+      </div>
+    </div>
+    <h1 class="choose-two-stem">A network engineer started to configure port security on a new switch. These requirements must be met:<br /><br />• MAC addresses must be learned dynamically.<br />• Log messages must be generated without disabling the interface when unwanted traffic is seen.<br /><br />Which two commands must be configured to complete this task? (Choose two)</h1>
 
-    <label class="choice"><input type="radio" name="antirep1" value="A" />A. authorization</label>
-    <label class="choice"><input type="radio" name="antirep1" value="B" />B. authentication</label>
-    <label class="choice"><input type="radio" name="antirep1" value="C" />C. anti-replay</label>
-    <label class="choice"><input type="radio" name="antirep1" value="D" />D. accounting</label>
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="pswrestrict" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. SW(config-if)#switchport port-security mac-address 0010.7B84.45E6</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="pswrestrict" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. SW(config-if)#switchport port-security maximum 2</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="pswrestrict" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. SW(config-if)#switchport port-security mac-address sticky</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="pswrestrict" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. SW(config-if)#switchport port-security violation shutdown</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="pswrestrict" value="E" aria-label="Select answer option E" />
+        <span class="cli-router-choice-badge" aria-hidden="true">E</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">E. SW(config-if)#switchport port-security violation restrict</pre>
+    </label>
+
 
     <div class="actions">
+      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-rogue-ap-class-type-friendly-autonomous.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ospf-r2-must-be-dr-gi0-0-priority.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/r2-no-cdp-enable-g02-hide-neighbor-from-r3.html">Previous question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 **Anti-replay** (for example in **IPsec**) uses **sequence numbers** so captured packets cannot be **replayed**, blocking a common **MITM** technique. **Authentication** proves identity and helps prevent impersonation but is not the specific **anti-replay** control named here. **Authorization** decides permitted actions after identity. **Accounting** logs activity and does not prevent MITM.";
+      var CORRECT = ["B", "E"];
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="pswrestrict"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = CORRECT_MSG;
+          answerBox.textContent = "Correct. B and E \u2014 **`switchport port-security maximum 2`** allows up to two **dynamically learned** secure MAC addresses on the port (default **maximum** is **1**). **`switchport port-security violation restrict`** drops violating traffic, increments the violation counter, and sends **syslog** (and SNMP) **without** **err-disabling** the interface. Default violation mode is **`shutdown`**, which would violate the logging-without-disable requirement (D). **`mac-address`** with a fixed address (A) is **static**, not dynamic learning. **`mac-address sticky`** (C) converts learned addresses to **sticky** secure MACs, which is not the dynamic-only behavior asked for here.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="antirep1"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>

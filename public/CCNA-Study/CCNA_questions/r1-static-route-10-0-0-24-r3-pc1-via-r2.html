@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Anti-replay vs MITM</title>
+  <title>CCNA — R1 static routes to 10.0.0.0/24 and PC1</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,53 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which security method is used to prevent man-in-the-middle attack?</h1>
+    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r1-static-route-10-0-0-24-r3-pc1-r2-topology.png" alt="Topology: R1 connects to R2 on 172.16.0.0/24 and to R3 on 192.168.0.0/24. R2 and R3 connect to switch SW for 10.0.0.0/24 (PC1 10.0.0.5, PC2 10.0.0.8, PC3 10.0.0.12)." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>
+    <h1>Refer to the exhibit. A network engineer must configure R1 so that it sends all packets destined to the 10.0.0.0/24 network to R3, and all packets destined to PC1 to R2. Which configuration must the engineer implement?</h1>
 
-    <label class="choice"><input type="radio" name="antirep1" value="A" />A. authorization</label>
-    <label class="choice"><input type="radio" name="antirep1" value="B" />B. authentication</label>
-    <label class="choice"><input type="radio" name="antirep1" value="C" />C. anti-replay</label>
-    <label class="choice"><input type="radio" name="antirep1" value="D" />D. accounting</label>
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r1st100" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. R1(config)#ip route 10.0.0.0 255.255.0.0 172.16.0.2
+R1(config)#ip route 10.0.0.5 255.255.255.255 192.168.0.2</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r1st100" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. R1(config)#ip route 10.0.0.0 255.255.255.0 172.16.0.2
+R1(config)#ip route 10.0.0.5 255.255.255.255 192.168.0.2</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r1st100" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. R1(config)#ip route 10.0.0.0 255.255.0.0 192.168.0.2
+R1(config)#ip route 10.0.0.0 255.255.255.0 172.16.0.2</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r1st100" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. R1(config)#ip route 10.0.0.0 255.255.255.0 192.168.0.2
+R1(config)#ip route 10.0.0.5 255.255.255.255 172.16.0.2</pre>
+    </label>
+
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +368,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-rogue-ap-class-type-friendly-autonomous.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ospf-r2-must-be-dr-gi0-0-priority.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-show-ip-route-10-1-2-126-next-hop.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ospf-r2-wan-dr-gi0-0-address-priority.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 **Anti-replay** (for example in **IPsec**) uses **sequence numbers** so captured packets cannot be **replayed**, blocking a common **MITM** technique. **Authentication** proves identity and helps prevent impersonation but is not the specific **anti-replay** control named here. **Authorization** decides permitted actions after identity. **Accounting** logs activity and does not prevent MITM.";
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D \u2014 Send the full **10.0.0.0/24** prefix toward **R3** on the **192.168.0.0/24** link (**192.168.0.2**), and add a host route for **PC1 (10.0.0.5/32)** toward **R2** on the **172.16.0.0/24** link (**172.16.0.2**). Longest-prefix match then sends PC1 traffic to R2 while other hosts in 10.0.0.0/24 use the /24 route via R3. Option A uses a /16 mask for 10.0.0.0 and sends PC1 to R3. Option B sends the entire /24 to R2 instead of R3. Option C swaps next hops and uses an incorrect /16 summary toward R3.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +390,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="antirep1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="r1st100"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

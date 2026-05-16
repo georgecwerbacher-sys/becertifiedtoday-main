@@ -6606,6 +6606,342 @@ S*   0.0.0.0/0 is directly connected, GigabitEthernet0/0</pre>
                 "accounting",
             ],
         },
+        {
+            "slug": "ospf-r2-must-be-dr-gi0-0-priority",
+            "title": "CCNA — Elect R2 as OSPF DR on G0/0",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/ospf-r2-dr-gi0-0-priority-topology.png" alt="Topology: R1 and R2 connected on 10.0.0.0/30 via GigabitEthernet0/0 (.1 on R1, .2 on R2). R1 LAN 10.0.1.0/24 via SW1; R2 LAN 10.0.2.0/24 via SW2." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="Router R1 configuration">
+        <pre>Router R1 Configuration
+
+Interface GigabitEthernet0/0
+ ip ospf priority 99
+!
+router ospf 100
+ network 10.0.0.0 0.0.0.31 area 0
+ network 10.0.1.0 0.0.0.255 area 0</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. All routers in the network are configured. R2 must be the DR. After the engineer connected the devices, R1 was elected as the DR. Which command sequence must be configured on R2 to be elected as the DR in the network?",
+            "name": "ospfr2dr",
+            "correct": "B",
+            "mono": True,
+            "explain": "Correct. B \u2014 The exhibit shows **R1** with **ip ospf priority 99** on **GigabitEthernet0/0**, so R1 wins DR election over R2\u2019s default priority **1**. On the shared WAN segment, OSPF elects the DR using the **highest interface priority** (then **router ID** if priorities tie). Raising **R2\u2019s** priority on **GigabitEthernet0/0** to **100** beats R1\u2019s **99**. Priority **1** (A) stays below R1. **router-id** (C and D) only breaks ties when priorities match.",
+            "choices": [
+                "R2(config)#interface gi0/0\nR2(config-if)#ip ospf priority 1",
+                "R2(config)#interface gi0/0\nR2(config-if)#ip ospf priority 100",
+                "R2(config)#router ospf 1\nR2(config-router)#router-id 10.100.100.100",
+                "R2(config)#router ospf 1\nR2(config-router)#router-id 192.168.2.7",
+            ],
+        },
+        {
+            "slug": "r1-show-ip-route-10-1-2-126-next-hop",
+            "title": "CCNA — R1 next hop for 10.1.2.126",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route">
+        <pre>R1#show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+Gateway of last resort is not set
+
+     10.0.0.0/24 is subnetted, 5 subnets
+D        10.1.2.0/24 [90/2170112] via 10.165.20.226, 00:01:33, Serial0/0
+D        10.1.3.0/24 [90/2170112] via 10.165.20.226, 00:01:33, Serial0/0
+D        10.1.2.0/25 [90/2170112] via 10.165.20.126, 00:01:33, Serial0/0
+D        10.1.3.0/25 [90/2170112] via 10.165.20.146, 00:01:33, Serial0/0
+D        10.1.4.0/25 [90/2170112] via 10.165.20.156, 00:01:33, Serial0/0
+     192.168.1.0/24 is variably subnetted, 2 subnets, 2 masks
+C        192.168.10.0/24 is directly connected, GigabitEthernet0/0
+     192.168.21.0/24 is variably subnetted, 2 subnets, 2 masks
+C        192.168.11.0/24 is directly connected, GigabitEthernet0/1
+     10.165.20.0/24 is variably subnetted, 2 subnets, 2 masks
+C        10.165.20.224/29 is directly connected, Serial0/0
+S        10.1.2.112/28 [1/0] via 10.165.20.166</pre>
+      </div>""",
+            "stem": "Refer to the exhibit. What is the next hop for traffic entering R1 with a destination of 10.1.2.126?",
+            "name": "r1nh126",
+            "correct": "C",
+            "explain": "Correct. C \u2014 R1 uses longest-prefix match. 10.1.2.126 matches 10.1.2.0/24, 10.1.2.0/25, and 10.1.2.112/28; the /28 static route is most specific (covers .112\u2013.127), so the next hop is 10.165.20.166. 10.165.20.126 (A) is the next hop for the shorter 10.1.2.0/25 EIGRP entry. 10.165.20.146 (B) is for 10.1.3.0/25. 10.165.20.226 (D) is for the less-specific 10.1.2.0/24 EIGRP route.",
+            "choices": [
+                "10.165.20.126",
+                "10.165.20.146",
+                "10.165.20.166",
+                "10.165.20.226",
+            ],
+        },
+        {
+            "slug": "r1-static-route-10-0-0-24-r3-pc1-via-r2",
+            "title": "CCNA — R1 static routes to 10.0.0.0/24 and PC1",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r1-static-route-10-0-0-24-r3-pc1-r2-topology.png" alt="Topology: R1 connects to R2 on 172.16.0.0/24 and to R3 on 192.168.0.0/24. R2 and R3 connect to switch SW for 10.0.0.0/24 (PC1 10.0.0.5, PC2 10.0.0.8, PC3 10.0.0.12)." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. A network engineer must configure R1 so that it sends all packets destined to the 10.0.0.0/24 network to R3, and all packets destined to PC1 to R2. Which configuration must the engineer implement?",
+            "name": "r1st100",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 Send the full **10.0.0.0/24** prefix toward **R3** on the **192.168.0.0/24** link (**192.168.0.2**), and add a host route for **PC1 (10.0.0.5/32)** toward **R2** on the **172.16.0.0/24** link (**172.16.0.2**). Longest-prefix match then sends PC1 traffic to R2 while other hosts in 10.0.0.0/24 use the /24 route via R3. Option A uses a /16 mask for 10.0.0.0 and sends PC1 to R3. Option B sends the entire /24 to R2 instead of R3. Option C swaps next hops and uses an incorrect /16 summary toward R3.",
+            "choices": [
+                "R1(config)#ip route 10.0.0.0 255.255.0.0 172.16.0.2\nR1(config)#ip route 10.0.0.5 255.255.255.255 192.168.0.2",
+                "R1(config)#ip route 10.0.0.0 255.255.255.0 172.16.0.2\nR1(config)#ip route 10.0.0.5 255.255.255.255 192.168.0.2",
+                "R1(config)#ip route 10.0.0.0 255.255.0.0 192.168.0.2\nR1(config)#ip route 10.0.0.0 255.255.255.0 172.16.0.2",
+                "R1(config)#ip route 10.0.0.0 255.255.255.0 192.168.0.2\nR1(config)#ip route 10.0.0.5 255.255.255.255 172.16.0.2",
+            ],
+        },
+        {
+            "slug": "ospf-r2-wan-dr-gi0-0-address-priority",
+            "title": "CCNA — R2 DR on WAN (G0/0 address and priority)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/ospf-r2-dr-gi0-0-priority-topology.png" alt="Topology: R1 and R2 on 10.0.0.0/30 via GigabitEthernet0/0; R1 LAN 10.0.1.0/24; R2 LAN 10.0.2.0/24." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="Router R1 configuration">
+        <pre>Router R1 Configuration
+
+Interface GigabitEthernet0/0
+ ip ospf priority 99
+!
+router ospf 100
+ network 10.0.0.0 0.0.0.31 area 0
+ network 10.0.1.0 0.0.0.255 area 0</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. An engineer must configure router R2 so it is elected as the DR on the WAN subnet. Which command sequence must be configured?",
+            "name": "ospfr2wand",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 The exhibit shows **R1** with **ip ospf priority 99** on **GigabitEthernet0/0**. On the WAN segment, R2 needs an address in the **10.0.0.0** space and an OSPF priority **higher than 99**; **ip ospf priority 100** makes R2 win DR election. **Priority 0** (C) removes R2 from DR/BDR eligibility. Options A and B place **10.0.1.1** on G0/0, which does not match the WAN link (**10.0.0.0/30**, .1 toward R1 and .2 toward R2 in the exhibit). Option B\u2019s /24 mask on 10.0.1.1 is also inconsistent with the point-to-point WAN.",
+            "choices": [
+                "interface gigabitethernet0/0\nip address 10.0.1.1 255.255.255.224\nip ospf priority 98",
+                "interface gigabitethernet0/0\nip address 10.0.1.1 255.255.255.0\nip ospf priority 255",
+                "interface gigabitethernet0/0\nip address 10.0.0.34 255.255.255.248\nip ospf priority 0",
+                "interface gigabitethernet0/0\nip address 10.0.0.34 255.255.255.224\nip ospf priority 100",
+            ],
+        },
+        {
+            "slug": "r1-route-host-b-10-10-13-25-lowest-ad",
+            "title": "CCNA — R1 route to host B (10.10.13.0/25 AD)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r1-route-host-b-10-10-13-25-topology.png" alt="Topology: Host A 10.10.14.10/25 on R1; Host B 10.10.13.10/25 on R4. R1–R2 10.10.10.0/30 (.1/.2), R1–R4 10.10.10.4/30 (.5/.6), R1–R3 10.10.10.8/30 (.9/.10); R2–R4 and R3–R4 links; R3 4.4.4.4." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="R1 routing configuration">
+        <pre>R1(config)#ip route 0.0.0.0 0.0.0.0 10.10.10.2
+R1(config)#ip route 10.10.13.0 255.255.255.128 10.10.10.2 111
+R1(config)#ip route 10.10.13.0 255.255.255.128 10.10.10.6 112
+R1(config)#ip route 10.10.13.0 255.255.255.128 10.10.10.10 108
+R1(config)#router ospf 1
+R1(config-router)#router-id 1.1.1.1
+R1(config-router)#network 10.10.10.5 0.0.0.0 area 0
+R1(config-router)#network 10.10.10.1 0.0.0.0 area 0
+R1(config-router)#network 10.10.14.1 0.0.0.0 area 0</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. R1 has just received a packet from host A that is destined to host B. Which route in the routing table is used by R1 to reach host B?",
+            "name": "r1rthb",
+            "correct": "D",
+            "explain": "Correct. D \u2014 For the same prefix **10.10.13.0/25**, R1 compares **administrative distance**. The static route via **10.10.10.10** uses AD **108**, which beats the other statics (**111** and **112**) and OSPF\u2019s default AD **110**, so the installed route is **10.10.13.0/25 [108/0] via 10.10.10.10**. Option A is a static with AD **1** (default) in the display but the exhibit\u2019s floating static toward **10.10.10.2** is AD **111**, not preferred. Options B and C show OSPF **[110/2]** paths; OSPF loses to the lower-AD static.",
+            "choices": [
+                "10.10.13.0/25[1/0] via 10.10.10.2",
+                "10.10.13.0/25[110/2] via 10.10.10.6",
+                "10.10.13.0/25[110/2] via 10.10.10.2",
+                "10.10.13.0/25[108/0] via 10.10.10.10",
+            ],
+        },
+        {
+            "slug": "windows-ipconfig-dns-query-www-cisco-com",
+            "title": "CCNA — DNS query destination (ipconfig /all)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-terminal-white" role="region" aria-label="Windows ipconfig /all output">
+        <pre>C:\\Users\\ciscoadmin&gt;ipconfig /all
+
+Windows IP Configuration
+
+   Host Name . . . . . . . . . . . . : DESKTOP-480JBBT
+   Primary Dns Suffix  . . . . . . . :
+   Node Type . . . . . . . . . . . . : Hybrid
+   IP Routing Enabled. . . . . . . . : No
+   WINS Proxy Enabled. . . . . . . . : No
+   DNS Suffix Search List. . . . . . : arcap.se
+
+Ethernet adapter Ethernet:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . :
+   Description . . . . . . . . . . . : Realtek PCIe GBE Family Controller
+   Physical Address. . . . . . . . . : 3C-52-82-33-F3-8F
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+
+Wireless LAN adapter Wi-Fi:
+
+   Connection-specific DNS Suffix  . : arcap.se
+   Description . . . . . . . . . . . : Intel(R) Dual Band Wireless-AC 7265
+   Physical Address. . . . . . . . . : C8-21-5B-84-F3-EF
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+   Link-local IPv6 Address . . . . . : fe80::45a1:b3fa:2f37:bf37%2(Preferred)
+   IPv4 Address. . . . . . . . . . . : 192.168.1.226(Preferred)
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Lease Obtained. . . . . . . . . . : October 3, 2019 12:28:08 PM
+   Lease Expires . . . . . . . . . . : October 3, 2019 7:18:38 PM
+   Default Gateway . . . . . . . . . : 192.168.1.100
+   DHCP Server . . . . . . . . . . . : 192.168.1.254
+   DHCPv6 IAID . . . . . . . . . . . : 4667016B
+   DHCPv6 Client DUID. . . . . . . . : 00-01-00-01-20-FF-05-55-3C-F3-34-29-20-DF
+   DNS Servers . . . . . . . . . . . : 192.168.1.253
+   NetBIOS over Tcpip. . . . . . . . : Enabled
+   Connection-specific DNS Suffix Search List :
+                                       arcap.se</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. The given Windows PC is requesting the IP address of the host at www.cisco.com. To which IP address is the request sent?",
+            "name": "windns1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 Resolving **www.cisco.com** is a **DNS** lookup. The PC sends the query to the **DNS server** listed on the active **Wi-Fi** adapter: **192.168.1.253**. **192.168.1.226** (A) is this PC\u2019s own IPv4 address. **192.168.1.100** (C) is the **default gateway**, used when the destination is not on the local subnet after DNS resolution. **192.168.1.254** (D) is the **DHCP server**, which assigned addresses but does not handle name resolution unless it is also configured as DNS (not shown here).",
+            "choices": [
+                "192.168.1.226",
+                "192.168.1.253",
+                "192.168.1.100",
+                "192.168.1.254",
+            ],
+        },
+        {
+            "slug": "r1-static-route-r3-lan-10-0-15-via-20-3",
+            "title": "CCNA — R1 static route to R3 LAN (10.0.15.0/24)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r1-static-route-r3-lan-10-0-15-topology.png" alt="Topology: R1, R2, and R3 on 10.0.20.0/24 (.1, .2, .3). R1 LAN 10.0.0.64/26, R2 LAN 10.0.0.128/26, R3 LAN 10.0.15.0/24." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. Router R1 is added to the network and configured with the 10.0.0.64/26 and 10.0.20.0/24 subnets. However, traffic destined for the LAN on R3 is not accessible. Which command when executed on R1 defines a static route to reach the R3 LAN?",
+            "name": "r1r3lan",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 The **R3 LAN** is **10.0.15.0/24**, so the static route must use network **10.0.15.0** mask **255.255.255.0**. The next hop on the shared **10.0.20.0/24** segment toward R3 is **10.0.20.3** (R3\u2019s interface on that link). Option A points to **10.0.20.1** (R1\u2019s own side). Option B uses mask **255.255.255.192** (/26), which does not match the /24 LAN. Option C targets **10.0.0.64/26** (R1\u2019s LAN), not the R3 prefix.",
+            "choices": [
+                "ip route 10.0.15.0 255.255.255.0 10.0.20.1",
+                "ip route 10.0.15.0 255.255.255.192 10.0.20.1",
+                "ip route 10.0.0.64 255.255.255.192 10.0.20.3",
+                "ip route 10.0.15.0 255.255.255.0 10.0.20.3",
+            ],
+        },
+        {
+            "slug": "wlc-wlan-80211r-enable-ft-8021x",
+            "title": "CCNA — WLC 802.11r with FT 802.1X",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/wlc-wlan-layer2-80211r-ft-8021x-exhibit.png" alt="WLC WLAN Security Layer 2: WPA+WPA2, WPA2 Policy and AES, 802.1X enabled, Fast Transition Adaptive, FT 802.1X off, PMF disabled." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. Clients on the WLAN are required to use 802.11r. What action must be taken to meet the requirement?",
+            "name": "wlc11rft",
+            "correct": "C",
+            "explain": "Correct. C \u2014 **IEEE 802.11r** (Fast BSS Transition) is enabled on the WLAN by setting **Fast Transition** to **Enabled** (not Adaptive or Disabled) and selecting the matching fast-roaming AKM. With **802.1X** already enabled in the exhibit, you also enable **FT 802.1X** under Authentication Key Management so 802.11r works with enterprise authentication. **CCKM** (A) is a different fast-roaming method, not 802.11r. **PMF Required** (B) protects management frames but does not implement 802.11r. Disabling **Fast Transition** and **gtk-randomize** (D) does not meet an 802.11r requirement.",
+            "choices": [
+                "Enable CCKM under Authentication Key Management",
+                "Under Protected Management Frames, set the PMF option to Required",
+                "Set the Fast Transition option to Enable and enable FT 802.1X under Authentication Key Management",
+                "Set the Fast Transition option and the WPA gtk-randomize State to disable",
+            ],
+        },
+        {
+            "slug": "json-aaa-user-nested-roles-object-count",
+            "title": "CCNA — Count JSON objects (aaaUser roles)",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="JSON aaaUser snippet">
+        <pre>{
+  "aaaUser": {
+    "attributes": {
+      "pwd": "password1",
+      "firstName": "Abraham",
+      "lastName": "Lincoln",
+      "phone": "5555551212",
+      "email": "test@cisco.com"
+    },
+    "children": [
+      {
+        "aaaUserRole": {
+          "attributes": {
+            "name": "ExampleCisco"
+          },
+          "children": [
+            {
+              "aaaUserRole": {
+                "attributes": {
+                  "name": "admin"
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}</pre>
+      </div>""",
+            "stem": "Refer to the exhibit. How many objects are present in the given JSON-encoded data?",
+            "name": "jsonobj9",
+            "correct": "D",
+            "explain": "Correct. D \u2014 In JSON, each `{ ... }` pair of braces defines one **object**. Counting every object in the exhibit: (1) the root document, (2) **aaaUser**, (3) the **attributes** block under **aaaUser**, (4) the wrapper in the first **children** entry, (5) the outer **aaaUserRole**, (6) its **attributes**, (7) the inner **children** entry wrapper, (8) the nested **aaaUserRole**, and (9) its **attributes** \u2014 **nine** objects total. Arrays (`[ ... ]`) are not objects. One (A) and four (C) undercount; seven (B) misses nested **aaaUserRole** / **attributes** objects.",
+            "choices": [
+                "one",
+                "four",
+                "seven",
+                "nine",
+            ],
+        },
+        {
+            "slug": "r2-no-cdp-enable-g02-hide-neighbor-from-r3",
+            "title": "CCNA — R2 CDP: hide neighbor info from R3",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r1-r2-r3-cdp-r2-g02-no-cdp-enable-topology.png" alt="Topology: R1 connected to R2 GigabitEthernet0/1; R2 GigabitEthernet0/2 connected to R3." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. A network engineer must configure R2 to avoid sharing any neighbor information with R3, and maintain its relationship with R1. What action meets this requirement?",
+            "name": "r2cdpr3",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **CDP** advertises neighbor IP addresses, platform, and IOS version. To stop R2 from exchanging CDP with **R3** only, disable CDP on the interface toward R3: **no cdp enable** under **GigabitEthernet0/2** while **cdp run** stays enabled globally so **GigabitEthernet0/1** toward **R1** still works. **no cdp run** globally (C) disables CDP toward R1 as well. **no lldp run** globally (A) affects LLDP, not CDP, and disables LLDP on every interface. **no lldp receive** on **g0/1** (B) is the link toward **R1**, not R3.",
+            "choices": [
+                "Configure the no lldp run command globally",
+                "Configure the no lldp receive command on g0/1",
+                "Configure the no cdp run command globally",
+                "Configure the no cdp enable command on g0/2",
+            ],
+        },
+        {
+            "slug": "port-security-dynamic-mac-restrict-violation-choose-two",
+            "title": "CCNA — Port security: dynamic MAC and restrict (choose two)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/sw-g01-port-security-pc-topology.png" alt="Topology: switch SW GigabitEthernet0/1 connected to a host." width="480" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="Switch partial port-security configuration">
+        <pre>SW# conf t
+SW(config)#interface gigabitEthernet0/1
+SW(config-if)#switchport mode access
+SW(config-if)#switchport port-security
+SW(config-if)#</pre>
+      </div>
+    </div>""",
+            "stem": "A network engineer started to configure port security on a new switch. These requirements must be met:\n\n\u2022 MAC addresses must be learned dynamically.\n\u2022 Log messages must be generated without disabling the interface when unwanted traffic is seen.\n\nWhich two commands must be configured to complete this task? (Choose two)",
+            "name": "pswrestrict",
+            "choose_two": True,
+            "mono": True,
+            "correct": ["B", "E"],
+            "explain": "Correct. B and E \u2014 **`switchport port-security maximum 2`** allows up to two **dynamically learned** secure MAC addresses on the port (default **maximum** is **1**). **`switchport port-security violation restrict`** drops violating traffic, increments the violation counter, and sends **syslog** (and SNMP) **without** **err-disabling** the interface. Default violation mode is **`shutdown`**, which would violate the logging-without-disable requirement (D). **`mac-address`** with a fixed address (A) is **static**, not dynamic learning. **`mac-address sticky`** (C) converts learned addresses to **sticky** secure MACs, which is not the dynamic-only behavior asked for here.",
+            "choices": [
+                "SW(config-if)#switchport port-security mac-address 0010.7B84.45E6",
+                "SW(config-if)#switchport port-security maximum 2",
+                "SW(config-if)#switchport port-security mac-address sticky",
+                "SW(config-if)#switchport port-security violation shutdown",
+                "SW(config-if)#switchport port-security violation restrict",
+            ],
+        },
     ]
 
     prev = "vty-access-list-ssh-secure"

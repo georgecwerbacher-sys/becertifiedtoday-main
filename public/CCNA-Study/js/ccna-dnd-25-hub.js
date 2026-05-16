@@ -39,6 +39,7 @@
     "dragdrop-rest-http-methods-descriptions",
     "dragdrop-rf-terms-to-statements",
     "dragdrop-route-ad-winner-multiprotocol-conditions",
+    "dragdrop-router1-masks-to-prefixes-unused-one",
     "dragdrop-security-program-elements-descriptions",
     "dragdrop-snmp-fault-management-functions",
     "dragdrop-snmp-verify-commands",
