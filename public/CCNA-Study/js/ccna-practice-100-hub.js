@@ -242,20 +242,6 @@
       }
       h4.textContent = "Practice questions (" + titleInner + ")";
 
-      var p = document.createElement("p");
-      p.className = "study-meta";
-      if (countInBank > 0) {
-        p.innerHTML =
-          "Up to <strong>100</strong> items start in this slice of the hub list (this bank has <strong>" +
-          String(countInBank) +
-          "</strong>). Use <strong>Practice by subject</strong> above to limit <strong>Random</strong> and <strong>Review</strong> to one CCNA domain. <strong>Random</strong> shuffles once at the start. With <strong>Adaptive learning</strong> on, each miss re-queues that item and may add related questions from elsewhere in the full bank (so sessions can grow past 100). <strong>Review</strong> re-queues misses without adding cross-bank items.";
-      } else {
-        p.innerHTML =
-          "Reserved for questions <strong>" +
-          formatRange(firstNum, slotEnd) +
-          "</strong> when the hub list grows. <strong>Random</strong> and <strong>Review</strong> stay disabled until this range has items.";
-      }
-
       var actions = document.createElement("div");
       actions.className = "study-actions";
       actions.setAttribute("role", "group");
@@ -285,7 +271,15 @@
       actions.appendChild(br);
       actions.appendChild(rev);
       article.appendChild(h4);
-      article.appendChild(p);
+      if (countInBank === 0) {
+        var p = document.createElement("p");
+        p.className = "study-meta";
+        p.innerHTML =
+          "Reserved for questions <strong>" +
+          formatRange(firstNum, slotEnd) +
+          "</strong> when the hub list grows. <strong>Random</strong> and <strong>Review</strong> stay disabled until this range has items.";
+        article.appendChild(p);
+      }
       article.appendChild(actions);
 
       grid.appendChild(article);
