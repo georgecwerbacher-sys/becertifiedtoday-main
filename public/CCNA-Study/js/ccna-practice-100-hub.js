@@ -148,7 +148,10 @@
     }
     var session = { v: 1, mode: mode, bank: bankId, order: order };
     if (domainMajor) session.domain = domainMajor;
-    if (getAdaptiveLearningEnabled()) session.adaptive = true;
+    if (getAdaptiveLearningEnabled()) {
+      session.adaptive = true;
+      session.adaptiveExtrasInjected = 0;
+    }
     try {
       sessionStorage.setItem(KEY, JSON.stringify(session));
     } catch (e) {}
@@ -243,9 +246,9 @@
       p.className = "study-meta";
       if (countInBank > 0) {
         p.innerHTML =
-          "Up to <strong>100</strong> items in this slice of the hub list (this bank has <strong>" +
+          "Up to <strong>100</strong> items start in this slice of the hub list (this bank has <strong>" +
           String(countInBank) +
-          "</strong>). Use <strong>Practice by subject</strong> above to limit <strong>Random</strong> and <strong>Review</strong> to one CCNA domain. <strong>Random</strong> shuffles once at the start. Turn on <strong>Adaptive learning</strong> above (or use <strong>Review</strong>) to cycle missed questions back into the queue until you finish.";
+          "</strong>). Use <strong>Practice by subject</strong> above to limit <strong>Random</strong> and <strong>Review</strong> to one CCNA domain. <strong>Random</strong> shuffles once at the start. With <strong>Adaptive learning</strong> on, each miss re-queues that item and may add related questions from elsewhere in the full bank (so sessions can grow past 100). <strong>Review</strong> re-queues misses without adding cross-bank items.";
       } else {
         p.innerHTML =
           "Reserved for questions <strong>" +

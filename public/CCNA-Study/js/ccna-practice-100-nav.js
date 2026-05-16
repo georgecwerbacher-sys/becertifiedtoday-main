@@ -4,6 +4,12 @@
   var KEY = "ccnaPractice100";
   var BASE = "/CCNA-Study/CCNA_questions/";
   var finishHref = "/CCNA-Study/CCNA_Training_Portal.html";
+  var TOPIC_MAP_URL = "/CCNA-Study/data/ccna-question-topic-map.json";
+  var MANIFEST_URL = "/CCNA-Study/data/ccna-practice-questions-manifest.json";
+  /** Upper bound on how many extra cross-bank items adaptive mode may inject (excludes retries of the missed slug). */
+  var ADAPTIVE_CROSS_BANK_CAP = 120;
+
+  window.CCNA_PRACTICE_100 = window.CCNA_PRACTICE_100 || {};
 
   function slugFromPath() {
     var m = location.pathname.match(/\/([^/]+)\.html$/);
@@ -119,6 +125,133 @@
     return { mode: mode, i: i, slug: slug };
   }
 
+  function getTopicAssignments() {
+    var inst = window.CCNA_PRACTICE_100;
+    if (inst._topicAssignments && typeof inst._topicAssignments === "object") {
+      return Promise.resolve(inst._topicAssignments);
+    }
+    if (inst._topicAssignments === false) return Promise.resolve(null);
+    if (inst._topicAssignmentsPromise && typeof inst._topicAssignmentsPromise.then === "function") {
+      return inst._topicAssignmentsPromise.then(function (a) {
+        return a && typeof a === "object" ? a : null;
+      });
+    }
+    if (!inst._topicAssignmentsPromiseNav) {
+      inst._topicAssignmentsPromiseNav = fetch(TOPIC_MAP_URL, { credentials: "same-origin" })
+        .then(function (res) {
+          if (!res.ok) throw new Error("topic map http " + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          var a = data && data.assignments;
+          var obj = a && typeof a === "object" ? a : {};
+          inst._topicAssignments = obj;
+          return obj;
+        })
+        .catch(function () {
+          inst._topicAssignments = false;
+          return null;
+        });
+    }
+    return inst._topicAssignmentsPromiseNav;
+  }
+
+  function getAllSlugs() {
+    var inst = window.CCNA_PRACTICE_100;
+    if (Array.isArray(inst.ALL_SLUGS) && inst.ALL_SLUGS.length) {
+      return Promise.resolve(inst.ALL_SLUGS);
+    }
+    if (!inst._allSlugsPromiseNav) {
+      inst._allSlugsPromiseNav = fetch(MANIFEST_URL, { credentials: "same-origin" })
+        .then(function (res) {
+          if (!res.ok) throw new Error("manifest http " + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          var items = data && data.items;
+          if (!Array.isArray(items)) return [];
+          var slugs = [];
+          for (var i = 0; i < items.length; i++) {
+            if (items[i] && items[i].slug) slugs.push(items[i].slug);
+          }
+          inst.ALL_SLUGS = slugs;
+          return slugs;
+        })
+        .catch(function () {
+          return [];
+        });
+    }
+    return inst._allSlugsPromiseNav;
+  }
+
+  function slugMatchesMajor(assignments, slug, major) {
+    if (!assignments || !slug) return false;
+    var objs = assignments[slug + ".html"];
+    if (!objs || !objs.length) return false;
+    var want = String(major);
+    for (var i = 0; i < objs.length; i++) {
+      if (String(objs[i]).split(".")[0] === want) return true;
+    }
+    return false;
+  }
+
+  function majorsFromMissedObjectives(assignments, missedSlug) {
+    if (!assignments || !missedSlug) return [];
+    var objs = assignments[missedSlug + ".html"];
+    if (!objs || !objs.length) return [];
+    var set = {};
+    for (var i = 0; i < objs.length; i++) {
+      var maj = String(objs[i]).split(".")[0];
+      if (/^[1-6]$/.test(maj)) set[maj] = true;
+    }
+    return Object.keys(set);
+  }
+
+  function slugMatchesWeakMajors(assignments, slug, majors) {
+    if (!assignments || !majors.length) return false;
+    var objs = assignments[slug + ".html"];
+    if (!objs || !objs.length) return false;
+    for (var i = 0; i < objs.length; i++) {
+      var maj = String(objs[i]).split(".")[0];
+      if (majors.indexOf(maj) >= 0) return true;
+    }
+    return false;
+  }
+
+  function pickCrossBankAdaptiveSlug(session, missedSlug, assignments, allSlugs) {
+    if ((session.adaptiveExtrasInjected || 0) >= ADAPTIVE_CROSS_BANK_CAP) return null;
+    var majors = majorsFromMissedObjectives(assignments, missedSlug);
+    if (!majors.length) return null;
+    if (!Array.isArray(allSlugs) || !allSlugs.length) return null;
+
+    var inOrder = {};
+    for (var u = 0; u < session.order.length; u++) inOrder[session.order[u]] = true;
+
+    var bankId = session.bank || "1";
+    var n = parseInt(String(bankId), 10);
+    if (!n || n < 1) n = 1;
+    var start = (n - 1) * 100;
+    var bankSlice = allSlugs.slice(start, Math.min(start + 100, allSlugs.length));
+    var inBank = {};
+    for (var bi = 0; bi < bankSlice.length; bi++) inBank[bankSlice[bi]] = true;
+
+    var domainFilter = session.domain ? String(session.domain) : "";
+
+    var outsiders = [];
+    var insiders = [];
+    for (var j = 0; j < allSlugs.length; j++) {
+      var cand = allSlugs[j];
+      if (inOrder[cand]) continue;
+      if (!slugMatchesWeakMajors(assignments, cand, majors)) continue;
+      if (domainFilter && !slugMatchesMajor(assignments, cand, domainFilter)) continue;
+      if (!inBank[cand]) outsiders.push(cand);
+      else insiders.push(cand);
+    }
+    var pool = outsiders.length ? outsiders : insiders;
+    if (!pool.length) return null;
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+
   function run() {
     var slug = slugFromPath();
     if (!slug) return;
@@ -141,16 +274,43 @@
       if (!box.classList.contains("incorrect")) return;
       if (box.dataset.ccnaReviewQueued) return;
       box.dataset.ccnaReviewQueued = "1";
-      try {
-        var s2 = readSession();
-        if (!s2) return;
-        if (s2.mode !== "review" && !s2.adaptive) return;
-        var nowI = pickIndexForSlug(s2.order, slugRef, hashIndex());
-        if (nowI < 0 || s2.order[nowI] !== slugRef) return;
-        s2.order.push(slugRef);
-        writeSession(s2);
-        applyPracticeNav(slugRef);
-      } catch (e2) {}
+
+      function finishEnqueue(assignments, allSlugs) {
+        try {
+          var s2 = readSession();
+          if (!s2) return;
+          if (s2.mode !== "review" && !s2.adaptive) return;
+          var nowI = pickIndexForSlug(s2.order, slugRef, hashIndex());
+          if (nowI < 0 || s2.order[nowI] !== slugRef) return;
+
+          var assignObj = assignments && typeof assignments === "object" ? assignments : null;
+
+          if (s2.adaptive && assignObj) {
+            var extra = pickCrossBankAdaptiveSlug(s2, slugRef, assignObj, allSlugs || []);
+            if (extra) {
+              s2.order.push(extra);
+              s2.adaptiveExtrasInjected = (s2.adaptiveExtrasInjected || 0) + 1;
+            }
+          }
+
+          if (s2.mode === "review" || s2.adaptive) {
+            s2.order.push(slugRef);
+          }
+          writeSession(s2);
+          applyPracticeNav(slugRef);
+        } catch (e2) {}
+      }
+
+      var s2head = readSession();
+      var useAdaptiveResources = !!(s2head && s2head.adaptive);
+      if (useAdaptiveResources) {
+        Promise.all([getTopicAssignments(), getAllSlugs()]).then(function (pair) {
+          if (!box.classList.contains("incorrect")) return;
+          finishEnqueue(pair[0], pair[1]);
+        });
+      } else {
+        finishEnqueue(null, null);
+      }
     });
     obs.observe(box, { attributes: true, attributeFilter: ["class"] });
   }
@@ -160,5 +320,4 @@
   } else {
     run();
   }
-
 })();
