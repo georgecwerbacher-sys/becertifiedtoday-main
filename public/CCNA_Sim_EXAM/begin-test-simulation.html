@@ -363,8 +363,18 @@
   <script>
     (function () {
       var RUNNER = "/CCNA_Sim_EXAM/test-simulation-runner.html";
+      var LS_ADAPTIVE_PREF = "bcc_ccna_sim_pref_adaptive_v1";
 
       var PROMO_CODE = "CCNA_Sim_4_U";
+
+      function persistAdaptivePrefFromQuery() {
+        try {
+          var params = new URLSearchParams(window.location.search);
+          if (params.get("sim_adaptive") === "1" || params.get("adaptive_exam") === "1") {
+            sessionStorage.setItem(LS_ADAPTIVE_PREF, "1");
+          }
+        } catch (_) {}
+      }
 
       function stripeReturnBannerIfSession() {
         var params = new URLSearchParams(window.location.search);
@@ -376,6 +386,11 @@
         try {
           var u = new URL(RUNNER, window.location.origin);
           u.searchParams.set("session_id", sid);
+          try {
+            if (sessionStorage.getItem(LS_ADAPTIVE_PREF) === "1") {
+              u.searchParams.set("adaptive", "1");
+            }
+          } catch (_) {}
           link.setAttribute("href", u.pathname + u.search);
         } catch (_) {}
       }
@@ -406,6 +421,7 @@
       }
 
       function initTopBanners() {
+        persistAdaptivePrefFromQuery();
         stripeReturnBannerIfSession();
         promoBannerFromQuery();
       }

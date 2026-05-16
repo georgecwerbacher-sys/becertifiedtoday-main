@@ -1622,6 +1622,22 @@
       outline: 2px solid #9ec0ff;
       outline-offset: 2px;
     }
+    a.ccna-sim-promo-secondary.ccna-sim-promo-adaptive-path {
+      border-color: rgba(61, 157, 114, 0.55);
+      color: #d1fae5;
+      background: rgba(31, 168, 85, 0.14);
+    }
+    a.ccna-sim-promo-secondary.ccna-sim-promo-adaptive-path:hover {
+      background: rgba(31, 168, 85, 0.26);
+      color: #fff;
+    }
+    .ccna-sim-promo-adaptive-caption {
+      margin: 0 0 18px;
+      font-size: 0.78rem;
+      line-height: 1.45;
+      color: #8899b5;
+      max-width: 52ch;
+    }
     @media (max-width: 540px) {
       .ccna-sim-promo-actions {
         flex-direction: column;
@@ -2103,10 +2119,14 @@
           <strong>Optional adaptive multiple choice</strong> on the start screen—turn it on so domains where you slip can earn extra MCQ practice before time runs out (same clock).
         </li>
         <li>
+          <strong>Fully adaptive exam path</strong> — use the green button below (same Stripe checkout and promo code) and adaptive MCQs are pre-selected when your timed session gate opens.
+        </li>
+        <li>
           <strong>Every item type in one sitting</strong>—questions, labs, and drag-and-drop—so you are not discovering gaps for the first time on exam day.
         </li>
         <li>
-          <strong>One Stripe payment, no site account</strong>—unlock your run on this device, take the simulation, and read the scorecard while the session is still fresh.
+          No Be Certified Today email membership or site account: pay once through Stripe to unlock a run; take the test and
+          review results in your session on this device. BeCertifiedToday.com never requires a membership.
         </li>
       </ul>
       <p class="ccna-sim-promo-code-label">Promotion Code (50% off)</p>
@@ -2122,8 +2142,16 @@
           href="/CCNA_Sim_EXAM/begin-test-simulation.html?promo=CCNA_Sim_4_U"
           >Continue to timed test</a
         >
+        <a
+          class="ccna-sim-promo-secondary ccna-sim-promo-adaptive-path"
+          href="/CCNA_Sim_EXAM/begin-test-simulation.html?promo=CCNA_Sim_4_U&amp;sim_adaptive=1"
+          >Fully adaptive MCQs — same checkout</a
+        >
         <button type="button" class="ccna-sim-promo-secondary" data-ccna-sim-promo-dismiss>Not now</button>
       </div>
+      <p class="ccna-sim-promo-adaptive-caption">
+        Fully adaptive keeps one 2-hour clock and mixed item types; extra multiple-choice items can appear in weaker blueprint domains. Drag-and-drop and lab counts stay as designed.
+      </p>
     </div>
   </div>
   <div

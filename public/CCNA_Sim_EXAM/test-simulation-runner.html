@@ -840,7 +840,16 @@
       updateGateBackLink();
       try {
         var p = new URLSearchParams(window.location.search);
-        if (p.get("adaptive") === "1") document.getElementById("gateAdaptiveMcq").checked = true;
+        var urlAdapt = p.get("adaptive") === "1";
+        var storedAdapt =
+          typeof sessionStorage !== "undefined" &&
+          sessionStorage.getItem("bcc_ccna_sim_pref_adaptive_v1") === "1";
+        if (urlAdapt || storedAdapt) {
+          document.getElementById("gateAdaptiveMcq").checked = true;
+        }
+        if (storedAdapt && typeof sessionStorage !== "undefined") {
+          sessionStorage.removeItem("bcc_ccna_sim_pref_adaptive_v1");
+        }
       } catch (e) {}
     }
 
