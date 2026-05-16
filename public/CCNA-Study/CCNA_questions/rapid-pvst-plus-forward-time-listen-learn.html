@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC WLAN: WPA+WPA2 and 802.1X for LDAP-backed auth</title>
+  <title>CCNA — Rapid-PVST+: listen/learn timer command</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,66 +312,81 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-    <main class="card">
-    <div class="exhibit-stack">
-      <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/wlc-wlan-security-wpa-wpa2-8021x-enterprise.png" alt="WLC WLAN Security Layer 2 tab: Layer 2 Security dropdown; WPA and WPA2 policy checkboxes; WPA2 Encryption AES and TKIP; Authentication Key Management 802.1X, CCKM, and PSK enable options." width="900" decoding="async" loading="lazy" />
-      </figure>
-    </div>
-    <h1 class="choose-two-stem">Refer to the exhibit. What are the two steps an engineer must take to provide the highest encryption and authentication using domain credentials from LDAP? (Choose two)</h1>
+  <main class="card">
+    <h1>Which command entered on a switch configured with Rapid-PVST+ listens and learns for a specific time period?</h1>
 
-    <label class="choice"><input type="checkbox" name="wlldap802" value="A" />A. Select WPA policy with TKIP Encryption</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="B" />B. Select WPA + WPA2 on layer 2 security</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="C" />C. Select PSK under authentication key management</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="D" />D. Select Static-WEP + 802.1x on Layer 2 security</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="E" />E. Select 802.1x from under authentication key management</label>
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="rpvstfw1" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. switch(config)#spanning-tree vlan 1 max-age 6</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="rpvstfw1" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. switch(config)#spanning-tree vlan 1 hello-time 10</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="rpvstfw1" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. switch(config)#spanning-tree vlan 1 priority 4096</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="rpvstfw1" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. switch(config)#spanning-tree vlan 1 forward-time 20</pre>
+    </label>
+
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-show-ip-route-10-56-192-1-default-next-hop.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/cat9k-lldp-suppress-management-address.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlan-24ghz-us-nonoverlapping-channels-set.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/lacp-layer3-port-channel-neighbor-passive-after-static.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = ["B", "E"];
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D \u2014 **Forward delay** is configured with **`spanning-tree vlan** *id* **forward-time** *seconds*`. It defines how long a port waits in the **listening** and **learning** states before moving to **forwarding** in classic STP timing (each state uses the configured forward-delay interval).\n\n**A** sets **max-age** (how long the switch retains spanning-tree information before discarding it). **B** sets the **hello** interval between BPDUs. **C** changes the bridge **priority** for root election, not listen/learn duration.";
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValues() {
-        return []
-          .slice.call(document.querySelectorAll('input[name="wlldap802"]:checked'))
-          .map(function (el) { return el.value; })
-          .sort();
-      }
-
-      function arraysEqual(a, b) {
-        if (a.length !== b.length) return false;
-        return a.every(function (v, i) { return v === b[i]; });
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedValues();
+      function applyFeedback(value) {
         answerBox.style.display = "block";
-        if (sel.length !== 2) {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Choose exactly two answers.";
-          return;
-        }
-        if (arraysEqual(sel, CORRECT)) {
+        if (value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. B and E \u2014 Domain credentials through LDAP are normally validated when the WLAN uses **802.1X** (enterprise) authentication toward RADIUS or similar; that maps to enabling **802.1X** under Authentication Key Management on the WLC. Set **Layer 2 Security** to **WPA + WPA2** so clients can use **WPA2** with stronger ciphers such as **AES/CCMP** instead of legacy WPA-only modes. Then enable **WPA2 Policy** and **AES** under WPA+WPA2 parameters as needed so TKIP-only operation is avoided. **PSK** (C) uses a shared passphrase, not per-user domain sign-in. **Static WEP** (D) is weak. Choosing **WPA** with **TKIP** only (A) favors an older cipher and is not the strongest combination among these options.";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
+      }
+
+      document.querySelectorAll('input[name="rpvstfw1"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
       });
     })();
   </script>

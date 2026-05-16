@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC WLAN: WPA+WPA2 and 802.1X for LDAP-backed auth</title>
+  <title>CCNA — DC-1 & HQ-1: first/last usable IPv4 per mask</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,66 +312,120 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-    <main class="card">
+  <main class="card">
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/wlc-wlan-security-wpa-wpa2-8021x-enterprise.png" alt="WLC WLAN Security Layer 2 tab: Layer 2 Security dropdown; WPA and WPA2 policy checkboxes; WPA2 Encryption AES and TKIP; Authentication Key Management 802.1X, CCKM, and PSK enable options." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/dc1-hq1-isp-topology-ip-assignment.png" alt="Topology: Internet cloud to ISP; ISP Gi1/0 to DC-1 Gi1/0; DC-1 Gi1/1 to HQ-1 Gi1/1; DC-1 Gi1/2 to a switch and firewall; HQ-1 Gi1/3 to HQ-SW1 and a workstation." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>
-    <h1 class="choose-two-stem">Refer to the exhibit. What are the two steps an engineer must take to provide the highest encryption and authentication using domain credentials from LDAP? (Choose two)</h1>
+    <h1>Refer to the exhibit. The IPv4 address configuration must be completed on routers DC-1 and HQ-1 using only these subnets (no VLSM overlap):
+• DC-1 GigabitEthernet1/0 → 10.0.0.0/30 toward ISP
+• DC-1 GigabitEthernet1/1 and HQ-1 GigabitEthernet1/1 → 10.0.0.8/29
+• DC-1 GigabitEthernet1/2 → 10.0.0.16/28 toward the switch/firewall block
+• HQ-1 GigabitEthernet1/3 toward HQ-SW1 → 10.0.0.32/29
 
-    <label class="choice"><input type="checkbox" name="wlldap802" value="A" />A. Select WPA policy with TKIP Encryption</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="B" />B. Select WPA + WPA2 on layer 2 security</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="C" />C. Select PSK under authentication key management</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="D" />D. Select Static-WEP + 802.1x on Layer 2 security</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="E" />E. Select 802.1x from under authentication key management</label>
+Requirements: DC-1 Gi1/0 must be the last usable address on the /30; DC-1 Gi1/1 must be the first usable address on the /29; DC-1 Gi1/2 must be the last usable address on the /28; HQ-1 Gi1/3 must be the last usable address on the /29. Which configuration meets the requirements?</h1>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="dc1hq1ip" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. DC-1(config)#interface GigabitEthernet1/0
+DC-1(config-if)#ip address 10.0.0.1 255.255.255.252
+DC-1(config)#interface GigabitEthernet1/1
+DC-1(config-if)#ip address 10.0.0.9 255.255.255.248
+DC-1(config)#interface GigabitEthernet1/2
+DC-1(config-if)#ip address 10.0.0.30 255.255.255.240
+HQ-1(config)#interface GigabitEthernet1/3
+HQ-1(config-if)#ip address 10.0.0.38 255.255.255.248</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="dc1hq1ip" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. DC-1(config)#interface GigabitEthernet1/0
+DC-1(config-if)#ip address 10.0.0.2 255.255.255.252
+DC-1(config)#interface GigabitEthernet1/1
+DC-1(config-if)#ip address 10.0.0.9 255.255.255.248
+DC-1(config)#interface GigabitEthernet1/2
+DC-1(config-if)#ip address 10.0.0.30 255.255.255.240
+HQ-1(config)#interface GigabitEthernet1/3
+HQ-1(config-if)#ip address 10.0.0.38 255.255.255.248</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="dc1hq1ip" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. DC-1(config)#interface GigabitEthernet1/0
+DC-1(config-if)#ip address 10.0.0.2 255.255.255.252
+DC-1(config)#interface GigabitEthernet1/1
+DC-1(config-if)#ip address 10.0.0.14 255.255.255.248
+DC-1(config)#interface GigabitEthernet1/2
+DC-1(config-if)#ip address 10.0.0.30 255.255.255.240
+HQ-1(config)#interface GigabitEthernet1/3
+HQ-1(config-if)#ip address 10.0.0.38 255.255.255.248</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="dc1hq1ip" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. DC-1(config)#interface GigabitEthernet1/0
+DC-1(config-if)#ip address 10.0.0.2 255.255.255.252
+DC-1(config)#interface GigabitEthernet1/1
+DC-1(config-if)#ip address 10.0.0.9 255.255.255.248
+DC-1(config)#interface GigabitEthernet1/2
+DC-1(config-if)#ip address 10.0.0.30 255.255.255.240
+HQ-1(config)#interface GigabitEthernet1/3
+HQ-1(config-if)#ip address 10.0.0.33 255.255.255.248</pre>
+    </label>
+
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-show-ip-route-10-56-192-1-default-next-hop.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/cat9k-lldp-suppress-management-address.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ospf-r1-drother-elect-dr-priority-clear.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-routers-switches-array-elements-are-values.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = ["B", "E"];
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 On **10.0.0.0/30** (mask 255.255.255.252) the host addresses are **.1** and **.2**; the **last usable** is **.2** for DC-1 Gi1/0. On **10.0.0.8/29** (255.255.255.248) usable hosts are **.9\u2013.14**; the **first usable** is **.9** for DC-1 Gi1/1. On **10.0.0.16/28** (255.255.255.240) usable hosts are **.17\u2013.30**; the **last usable** is **.30** for DC-1 Gi1/2. On **10.0.0.32/29** usable hosts are **.33\u2013.38**; the **last usable** is **.38** for HQ-1 Gi1/3. A uses the **first** /30 host (.1) on DC-1 Gi1/0. C sets DC-1 Gi1/1 to **.14**, the **last** /29 host instead of the **first**. D sets HQ-1 Gi1/3 to **.33**, the **first** /29 host instead of the **last**.";
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValues() {
-        return []
-          .slice.call(document.querySelectorAll('input[name="wlldap802"]:checked'))
-          .map(function (el) { return el.value; })
-          .sort();
-      }
-
-      function arraysEqual(a, b) {
-        if (a.length !== b.length) return false;
-        return a.every(function (v, i) { return v === b[i]; });
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedValues();
+      function applyFeedback(value) {
         answerBox.style.display = "block";
-        if (sel.length !== 2) {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Choose exactly two answers.";
-          return;
-        }
-        if (arraysEqual(sel, CORRECT)) {
+        if (value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. B and E \u2014 Domain credentials through LDAP are normally validated when the WLAN uses **802.1X** (enterprise) authentication toward RADIUS or similar; that maps to enabling **802.1X** under Authentication Key Management on the WLC. Set **Layer 2 Security** to **WPA + WPA2** so clients can use **WPA2** with stronger ciphers such as **AES/CCMP** instead of legacy WPA-only modes. Then enable **WPA2 Policy** and **AES** under WPA+WPA2 parameters as needed so TKIP-only operation is avoided. **PSK** (C) uses a shared passphrase, not per-user domain sign-in. **Static WEP** (D) is weak. Choosing **WPA** with **TKIP** only (A) favors an older cipher and is not the strongest combination among these options.";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
+      }
+
+      document.querySelectorAll('input[name="dc1hq1ip"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
       });
     })();
   </script>

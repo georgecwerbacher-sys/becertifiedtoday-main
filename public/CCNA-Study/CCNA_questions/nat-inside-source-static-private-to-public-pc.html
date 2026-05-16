@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC WLAN: WPA+WPA2 and 802.1X for LDAP-backed auth</title>
+  <title>CCNA — Static NAT: inside local to inside global</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,66 +312,81 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-    <main class="card">
-    <div class="exhibit-stack">
-      <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/wlc-wlan-security-wpa-wpa2-8021x-enterprise.png" alt="WLC WLAN Security Layer 2 tab: Layer 2 Security dropdown; WPA and WPA2 policy checkboxes; WPA2 Encryption AES and TKIP; Authentication Key Management 802.1X, CCKM, and PSK enable options." width="900" decoding="async" loading="lazy" />
-      </figure>
-    </div>
-    <h1 class="choose-two-stem">Refer to the exhibit. What are the two steps an engineer must take to provide the highest encryption and authentication using domain credentials from LDAP? (Choose two)</h1>
+  <main class="card">
+    <h1>Which command creates a static NAT binding for a PC address of 10.1.1.1 to the public routable address 209.165.200.225 assigned to the PC?</h1>
 
-    <label class="choice"><input type="checkbox" name="wlldap802" value="A" />A. Select WPA policy with TKIP Encryption</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="B" />B. Select WPA + WPA2 on layer 2 security</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="C" />C. Select PSK under authentication key management</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="D" />D. Select Static-WEP + 802.1x on Layer 2 security</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="E" />E. Select 802.1x from under authentication key management</label>
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="natstpc1" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. R1(config)#ip nat outside source static 209.165.200.225 10.1.1.1</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="natstpc1" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. R1(config)#ip nat inside source static 209.165.200.225 10.1.1.1</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="natstpc1" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. R1(config)#ip nat outside source static 10.1.1.1 209.165.200.225</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="natstpc1" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. R1(config)#ip nat inside source static 10.1.1.1 209.165.200.225</pre>
+    </label>
+
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-show-ip-route-10-56-192-1-default-next-hop.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/cat9k-lldp-suppress-management-address.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/lightweight-ap-mode-centralized-wlc-ssid-roaming.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/longest-match-10-1-1-19-rip-28-ospf-eigrp.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = ["B", "E"];
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D \u2014 **`ip nat inside source static`** defines a one-to-one mapping for an **inside** host. The first address is the **inside local** (private) and the second is the **inside global** (public routable) seen on the **outside**.\n\n**A** and **C** use **`outside source static`**, which targets **outside** address translation semantics, not the usual \u201cinside PC gets a public mapping\u201d case. **B** reverses the **local**/**global** order for **`inside source static`**.";
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValues() {
-        return []
-          .slice.call(document.querySelectorAll('input[name="wlldap802"]:checked'))
-          .map(function (el) { return el.value; })
-          .sort();
-      }
-
-      function arraysEqual(a, b) {
-        if (a.length !== b.length) return false;
-        return a.every(function (v, i) { return v === b[i]; });
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedValues();
+      function applyFeedback(value) {
         answerBox.style.display = "block";
-        if (sel.length !== 2) {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Choose exactly two answers.";
-          return;
-        }
-        if (arraysEqual(sel, CORRECT)) {
+        if (value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. B and E \u2014 Domain credentials through LDAP are normally validated when the WLAN uses **802.1X** (enterprise) authentication toward RADIUS or similar; that maps to enabling **802.1X** under Authentication Key Management on the WLC. Set **Layer 2 Security** to **WPA + WPA2** so clients can use **WPA2** with stronger ciphers such as **AES/CCMP** instead of legacy WPA-only modes. Then enable **WPA2 Policy** and **AES** under WPA+WPA2 parameters as needed so TKIP-only operation is avoided. **PSK** (C) uses a shared passphrase, not per-user domain sign-in. **Static WEP** (D) is weak. Choosing **WPA** with **TKIP** only (A) favors an older cipher and is not the strongest combination among these options.";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
+      }
+
+      document.querySelectorAll('input[name="natstpc1"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
       });
     })();
   </script>

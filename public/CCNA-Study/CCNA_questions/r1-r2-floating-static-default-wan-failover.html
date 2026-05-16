@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC WLAN: WPA+WPA2 and 802.1X for LDAP-backed auth</title>
+  <title>CCNA — R1/R2: floating static default for WAN failover</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,66 +312,116 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-    <main class="card">
+  <main class="card">
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/wlc-wlan-security-wpa-wpa2-8021x-enterprise.png" alt="WLC WLAN Security Layer 2 tab: Layer 2 Security dropdown; WPA and WPA2 policy checkboxes; WPA2 Encryption AES and TKIP; Authentication Key Management 802.1X, CCKM, and PSK enable options." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/r1-r2-dual-wan-client-image-server-topology.png" alt="Topology: R1 with Client A 192.168.0.0/24; R2 with Image Server 10.10.13.10/25; two parallel links between R1 and R2: primary 10.10.10.0/30 (.1 on R1, .2 on R2) and backup 10.10.10.4/30 (.5 on R1, .6 on R2)." width="900" decoding="async" loading="lazy" />
       </figure>
-    </div>
-    <h1 class="choose-two-stem">Refer to the exhibit. What are the two steps an engineer must take to provide the highest encryption and authentication using domain credentials from LDAP? (Choose two)</h1>
+      <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route excerpt">
+        <pre>R1#show ip route
+Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
 
-    <label class="choice"><input type="checkbox" name="wlldap802" value="A" />A. Select WPA policy with TKIP Encryption</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="B" />B. Select WPA + WPA2 on layer 2 security</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="C" />C. Select PSK under authentication key management</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="D" />D. Select Static-WEP + 802.1x on Layer 2 security</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="E" />E. Select 802.1x from under authentication key management</label>
+Gateway of last resort is 10.10.10.2 to network 0.0.0.0
+
+S*    0.0.0.0/0 [1/0] via 10.10.10.2</pre>
+      </div>
+      <div class="exhibit-router-cli" role="region" aria-label="R2 show ip route excerpt">
+        <pre>R2#show ip route
+Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+
+Gateway of last resort is 10.10.10.1 to network 0.0.0.0
+
+S*    0.0.0.0/0 [1/0] via 10.10.10.1</pre>
+      </div>
+    </div>
+    <h1>Refer to the exhibit. Routers R1 and R2 have been configured with their respective LAN interfaces. The two circuits are operational and reachable across the WAN. Which command set establishes failover redundancy if the primary circuit goes down?</h1>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r1r2fltad" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. R1(config)#ip route 0.0.0.0 0.0.0.0 10.10.10.6 2
+R2(config)#ip route 0.0.0.0 0.0.0.0 10.10.10.5 2</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r1r2fltad" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. R1(config)#ip route 10.10.13.10 255.255.255.255 10.10.10.6
+R2(config)#ip route 192.168.0.100 255.255.255.255 10.10.10.5</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r1r2fltad" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. R1(config)#ip route 10.10.13.10 255.255.255.255 10.10.10.2
+R2(config)#ip route 192.168.0.100 255.255.255.255 10.10.10.1</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r1r2fltad" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. R1(config)#ip route 0.0.0.0 0.0.0.0 10.10.10.6
+R2(config)#ip route 0.0.0.0 0.0.0.0 10.10.10.5</pre>
+    </label>
+
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-show-ip-route-10-56-192-1-default-next-hop.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/cat9k-lldp-suppress-management-address.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-static-route-10-0-3-via-transit-r3.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/pc-a-pc-b-vlan200-switch-unicast-mac.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = ["B", "E"];
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 **Floating static** backup routes use the same prefix as the primary but a **higher administrative distance** so they stay **inactive** while the primary (here **AD 1** from `S* 0.0.0.0/0 [1/0]`) is valid, then **take over** if the primary disappears. **Default routes** via **10.10.10.6** (R1) and **10.10.10.5** (R2) with **AD 2** match that design.\n\n**D** installs second defaults also at **AD 1**, so they **tie** the primary instead of floating behind it. **B** and **C** add **/32 host** routes, not **default** Internet/WAN failover for all unknown destinations.";
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValues() {
-        return []
-          .slice.call(document.querySelectorAll('input[name="wlldap802"]:checked'))
-          .map(function (el) { return el.value; })
-          .sort();
-      }
-
-      function arraysEqual(a, b) {
-        if (a.length !== b.length) return false;
-        return a.every(function (v, i) { return v === b[i]; });
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedValues();
+      function applyFeedback(value) {
         answerBox.style.display = "block";
-        if (sel.length !== 2) {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Choose exactly two answers.";
-          return;
-        }
-        if (arraysEqual(sel, CORRECT)) {
+        if (value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. B and E \u2014 Domain credentials through LDAP are normally validated when the WLAN uses **802.1X** (enterprise) authentication toward RADIUS or similar; that maps to enabling **802.1X** under Authentication Key Management on the WLC. Set **Layer 2 Security** to **WPA + WPA2** so clients can use **WPA2** with stronger ciphers such as **AES/CCMP** instead of legacy WPA-only modes. Then enable **WPA2 Policy** and **AES** under WPA+WPA2 parameters as needed so TKIP-only operation is avoided. **PSK** (C) uses a shared passphrase, not per-user domain sign-in. **Static WEP** (D) is weak. Choosing **WPA** with **TKIP** only (A) favors an older cipher and is not the strongest combination among these options.";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
+      }
+
+      document.querySelectorAll('input[name="r1r2fltad"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
       });
     })();
   </script>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC WLAN: WPA+WPA2 and 802.1X for LDAP-backed auth</title>
+  <title>CCNA — OSPF: elect R1 as DR (priority and clear)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,66 +312,101 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-    <main class="card">
+  <main class="card">
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/wlc-wlan-security-wpa-wpa2-8021x-enterprise.png" alt="WLC WLAN Security Layer 2 tab: Layer 2 Security dropdown; WPA and WPA2 policy checkboxes; WPA2 Encryption AES and TKIP; Authentication Key Management 802.1X, CCKM, and PSK enable options." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/ospf-area0-r1-r2-r3-sw-star-topology.png" alt="Topology: switch SW; OSPF Area 0. R1 10.10.10.1 on FastEthernet0/0; R2 10.10.10.2 on FastEthernet0/2; R3 10.10.10.3 on FastEthernet0/1." width="900" decoding="async" loading="lazy" />
       </figure>
-    </div>
-    <h1 class="choose-two-stem">Refer to the exhibit. What are the two steps an engineer must take to provide the highest encryption and authentication using domain credentials from LDAP? (Choose two)</h1>
+      <div class="exhibit-router-cli" role="region" aria-label="R1 show ip ospf neighbor">
+        <pre>R1#show ip ospf neighbor
 
-    <label class="choice"><input type="checkbox" name="wlldap802" value="A" />A. Select WPA policy with TKIP Encryption</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="B" />B. Select WPA + WPA2 on layer 2 security</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="C" />C. Select PSK under authentication key management</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="D" />D. Select Static-WEP + 802.1x on Layer 2 security</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="E" />E. Select 802.1x from under authentication key management</label>
+Neighbor ID     Pri   State      Dead Time   Address         Interface
+10.10.10.2        1   FULL/BDR   00:00:35    10.10.10.2      FastEthernet0/0
+10.10.10.3        1   FULL/DR    00:00:34    10.10.10.3      FastEthernet0/0</pre>
+      </div>
+    </div>
+    <h1>Refer to the exhibit. R1 has the DROTHER role in the OSPF DR/BDR election on this segment. Which configuration must an engineer implement so that R1 is elected as the DR?</h1>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ospfdr1clr" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. R1(config)#interface FastEthernet0/0
+R1(config-if)#ip ospf priority 1
+R1#clear ip ospf process</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ospfdr1clr" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. R1(config)#interface FastEthernet0/0
+R1(config-if)#ip ospf priority 200
+R1#clear ip ospf process</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ospfdr1clr" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. R3(config)#interface FastEthernet0/1
+R3(config-if)#ip ospf priority 200
+R3#clear ip ospf process</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ospfdr1clr" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. R2(config)#interface FastEthernet0/2
+R2(config-if)#ip ospf priority 1
+R2#clear ip ospf process</pre>
+    </label>
+
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-show-ip-route-10-56-192-1-default-next-hop.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/cat9k-lldp-suppress-management-address.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/cat9k-lldp-suppress-management-address.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/dc1-hq1-interface-usable-host-addresses.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = ["B", "E"];
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 The DR is chosen by **highest OSPF interface priority** on the multi-access segment (tie-break: higher router ID). R1 must use **FastEthernet0/0** toward the segment with a priority **above** the current DR/BDR (still at 1). **DR election is not preemptive**, so after changing priority you typically run **clear ip ospf process** (or restart OSPF on the interface) so routers **reelect**. A keeps priority at the default 1. C raises **R3\u2019s** priority on **FastEthernet0/1**, favoring R3, not R1. D sets **R2\u2019s** **FastEthernet0/2** to 1 (default) and does not give R1 a winning priority.";
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValues() {
-        return []
-          .slice.call(document.querySelectorAll('input[name="wlldap802"]:checked'))
-          .map(function (el) { return el.value; })
-          .sort();
-      }
-
-      function arraysEqual(a, b) {
-        if (a.length !== b.length) return false;
-        return a.every(function (v, i) { return v === b[i]; });
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedValues();
+      function applyFeedback(value) {
         answerBox.style.display = "block";
-        if (sel.length !== 2) {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Choose exactly two answers.";
-          return;
-        }
-        if (arraysEqual(sel, CORRECT)) {
+        if (value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. B and E \u2014 Domain credentials through LDAP are normally validated when the WLAN uses **802.1X** (enterprise) authentication toward RADIUS or similar; that maps to enabling **802.1X** under Authentication Key Management on the WLC. Set **Layer 2 Security** to **WPA + WPA2** so clients can use **WPA2** with stronger ciphers such as **AES/CCMP** instead of legacy WPA-only modes. Then enable **WPA2 Policy** and **AES** under WPA+WPA2 parameters as needed so TKIP-only operation is avoided. **PSK** (C) uses a shared passphrase, not per-user domain sign-in. **Static WEP** (D) is weak. Choosing **WPA** with **TKIP** only (A) favors an older cipher and is not the strongest combination among these options.";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
+      }
+
+      document.querySelectorAll('input[name="ospfdr1clr"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
       });
     })();
   </script>

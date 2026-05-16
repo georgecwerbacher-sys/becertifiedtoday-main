@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC WLAN: WPA+WPA2 and 802.1X for LDAP-backed auth</title>
+  <title>CCNA — Multifactor authentication examples (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,18 +313,13 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
     <main class="card">
-    <div class="exhibit-stack">
-      <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/wlc-wlan-security-wpa-wpa2-8021x-enterprise.png" alt="WLC WLAN Security Layer 2 tab: Layer 2 Security dropdown; WPA and WPA2 policy checkboxes; WPA2 Encryption AES and TKIP; Authentication Key Management 802.1X, CCKM, and PSK enable options." width="900" decoding="async" loading="lazy" />
-      </figure>
-    </div>
-    <h1 class="choose-two-stem">Refer to the exhibit. What are the two steps an engineer must take to provide the highest encryption and authentication using domain credentials from LDAP? (Choose two)</h1>
+    <h1 class="choose-two-stem">What are two examples of multifactor authentication? (Choose two)</h1>
 
-    <label class="choice"><input type="checkbox" name="wlldap802" value="A" />A. Select WPA policy with TKIP Encryption</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="B" />B. Select WPA + WPA2 on layer 2 security</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="C" />C. Select PSK under authentication key management</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="D" />D. Select Static-WEP + 802.1x on Layer 2 security</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="E" />E. Select 802.1x from under authentication key management</label>
+    <label class="choice"><input type="checkbox" name="mfaex1" value="A" />A. single sign-on</label>
+    <label class="choice"><input type="checkbox" name="mfaex1" value="B" />B. unique user knowledge</label>
+    <label class="choice"><input type="checkbox" name="mfaex1" value="C" />C. passwords that expire</label>
+    <label class="choice"><input type="checkbox" name="mfaex1" value="D" />D. soft tokens</label>
+    <label class="choice"><input type="checkbox" name="mfaex1" value="E" />E. shared password responsibility</label>
 
     <div class="actions">
       <button id="checkBtn" type="button">Check answer</button>
@@ -334,20 +329,20 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-show-ip-route-10-56-192-1-default-next-hop.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/cat9k-lldp-suppress-management-address.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/port-security-trunk-default-violation-errdisable.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/show-ip-route-10-10-13-160-slash-29-subnet-mask.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = ["B", "E"];
+      var CORRECT = ["B", "D"];
       var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
       function selectedValues() {
         return []
-          .slice.call(document.querySelectorAll('input[name="wlldap802"]:checked'))
+          .slice.call(document.querySelectorAll('input[name="mfaex1"]:checked'))
           .map(function (el) { return el.value; })
           .sort();
       }
@@ -367,7 +362,7 @@
         }
         if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. B and E \u2014 Domain credentials through LDAP are normally validated when the WLAN uses **802.1X** (enterprise) authentication toward RADIUS or similar; that maps to enabling **802.1X** under Authentication Key Management on the WLC. Set **Layer 2 Security** to **WPA + WPA2** so clients can use **WPA2** with stronger ciphers such as **AES/CCMP** instead of legacy WPA-only modes. Then enable **WPA2 Policy** and **AES** under WPA+WPA2 parameters as needed so TKIP-only operation is avoided. **PSK** (C) uses a shared passphrase, not per-user domain sign-in. **Static WEP** (D) is weak. Choosing **WPA** with **TKIP** only (A) favors an older cipher and is not the strongest combination among these options.";
+          answerBox.textContent = "Correct. B and D \u2014 **MFA** combines **different factor classes**. **Unique user knowledge** (password/PIN) is **something you know**; **soft tokens** (software OTP generators) are **something you have**. Pairing those exemplifies multifactor design.\n\n**SSO** streamlines **access to many apps** but is **not** itself an authentication **factor**. **Password expiration** tightens **password policy** yet stays within the **knowledge** factor. **Shared password responsibility** is **not** an MFA pattern and weakens accountability.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";

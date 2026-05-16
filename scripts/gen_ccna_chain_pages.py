@@ -331,6 +331,7 @@ def page(
     stem_after_exhibit_bullets: list[str] | None = None,
     stem_after_exhibit_tail: str | None = None,
     prepend_html: str | None = None,
+    stem_br: bool = False,
 ) -> str:
     mono = " mono" if mono_choices else ""
     prev_h = (
@@ -353,6 +354,8 @@ def page(
     msg_json = json.dumps(explain)
     exhibit_block = post_stem_html if post_stem_html else ""
     stem_h = html.escape(stem)
+    if stem_br:
+        stem_h = stem_h.replace("\n", "<br />")
     if post_stem_html and stem_after_exhibit:
         if stem_after_exhibit_bullets:
             bullet_lines = "".join(
@@ -4529,14 +4532,14 @@ Group   Port-channel  Protocol   Ports
             "title": "CCNA — Make R1 the OSPF DR (choose two)",
             "prepend_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/ospf-dr-r1-r2-r3-area0-lan-topology.png" alt="Topology: R1, R2, and R3 on F0/0 to a central switch; OSPF Area 0 LAN 192.168.100.0/24 with routers at .1, .2, and .3." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/ospf-area0-r1-r2-r3-sw-star-topology.png" alt="Topology: switch SW in the center; OSPF Area 0. R1 10.10.10.1 on FastEthernet0/0 to SW Fa0/0; R2 10.10.10.2 on FastEthernet0/2 to SW Fa0/2; R3 10.10.10.3 on FastEthernet0/1 to SW Fa0/1." width="900" decoding="async" loading="lazy" />
       </figure>
       <div class="exhibit-router-cli" role="region" aria-label="R1 show ip ospf neighbor">
         <pre>R1#show ip ospf neighbor
 
 Neighbor ID     Pri   State      Dead Time   Address         Interface
-192.168.100.2     1   FULL/BDR   00:00:35    192.168.100.2   FastEthernet0/0
-192.168.100.3     1   FULL/DR    00:00:34    192.168.100.3   FastEthernet0/0</pre>
+10.10.10.2        1   FULL/BDR   00:00:35    10.10.10.2      FastEthernet0/0
+10.10.10.3        1   FULL/DR    00:00:34    10.10.10.3      FastEthernet0/0</pre>
       </div>
     </div>""",
             "stem": "Refer to the exhibit. Which two configurations must the engineer apply on this network so that R1 becomes the DR? (Choose two)",
@@ -4544,13 +4547,13 @@ Neighbor ID     Pri   State      Dead Time   Address         Interface
             "choose_two": True,
             "mono": True,
             "correct": ["A", "C"],
-            "explain": "Correct. A and C — The topology and neighbor output show R3 as DR and R2 as BDR on FastEthernet0/0 with priority 1. Raising R1\u2019s OSPF priority on that segment (200) makes R1 win the election, and setting R3\u2019s interface priority to 0 removes R3 from DR/BDR contention. Router ID (B) only breaks ties when priorities match. R1 priority 0 (D) disqualifies R1. Raising R3 to 200 (E) strengthens the current DR.",
+            "explain": "Correct. A and C — The exhibit shows R3 as DR and R2 as BDR on the shared multi-access segment; R1 sees both neighbors on **FastEthernet0/0** with OSPF priority 1. Raising R1\u2019s priority on **FastEthernet0/0** (200) makes R1 win the election, and setting **R3\u2019s** segment-facing interface (**FastEthernet0/1** toward SW) to priority **0** removes R3 from DR/BDR contention. Router ID (B) only breaks ties when priorities match. R1 priority 0 (D) disqualifies R1. Raising R3\u2019s priority to 200 on its segment interface (E) keeps the current DR stronger.",
             "choices": [
                 "R1(config)#interface FastEthernet0/0\nR1(config-if)#ip ospf priority 200",
-                "R1(config)#router ospf 1\nR1(config-router)#router-id 192.168.100.1",
-                "R3(config)#interface FastEthernet0/0\nR3(config-if)#ip ospf priority 0",
+                "R1(config)#router ospf 1\nR1(config-router)#router-id 10.10.10.1",
+                "R3(config)#interface FastEthernet0/1\nR3(config-if)#ip ospf priority 0",
                 "R1(config)#interface FastEthernet0/0\nR1(config-if)#ip ospf priority 0",
-                "R3(config)#interface FastEthernet0/0\nR3(config-if)#ip ospf priority 200",
+                "R3(config)#interface FastEthernet0/1\nR3(config-if)#ip ospf priority 200",
             ],
         },
         {
@@ -5438,6 +5441,692 @@ L       10.56.128.19/32 is directly connected, Vlan57</pre>
                 "Select 802.1x from under authentication key management",
             ],
         },
+        {
+            "slug": "cat9k-lldp-suppress-management-address",
+            "title": "CCNA — Cat9K: hide management IP in LLDP advertisements",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="Cat9K-1 show lldp entry Cat9K-2">
+        <pre>Cat9K-1#show lldp entry Cat9K-2
+
+Local Intf: Gi1/0/21
+Chassis ID: 308b.b2b3.2880
+Port id: Gi1/0/21
+Port Description: GigabitEthernet1/0/21
+System Name: Cat9K-2
+
+Management Addresses:
+  IP: 10.6.110.2</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. The network administrator must prevent switch Cat9K-2\u2019s IP address from appearing under Management Addresses in LLDP on other devices, without disabling LLDP. Which action accomplishes this?",
+            "name": "cat9klldpma",
+            "correct": "A",
+            "explain": "Correct. A \u2014 The management IP is carried in the **management address** LLDP TLV inside advertisements **sent by Cat9K-2**. In global configuration on that switch, **no lldp tlv-select management-address** stops transmitting that TLV while **lldp run** and per-interface LLDP can remain enabled, so the protocol stays active without exposing the management address. B only stops Cat9K-1 from **transmitting** LLDP; Cat9K-1 still **receives** advertisements from Cat9K-2, so the neighbor\u2019s management address can still show up. C disables LLDP **receive** on Cat9K-1\u2019s interface, which hides neighbors locally but does not change what Cat9K-2 puts in its LLDP frames. D removes the **MAC/PHY configuration** TLV, not the management address.",
+            "choices": [
+                "Configure the no lldp tlv-select management-address command globally on Cat9K-2.",
+                "Configure the no lldp transmit command on interface Gi1/0/21 on Cat9K-1.",
+                "Configure the no lldp receive command on interface Gi1/0/21 on Cat9K-1.",
+                "Configure the no lldp tlv-select mac-phy-cfg command globally on Cat9K-2.",
+            ],
+        },
+        {
+            "slug": "ospf-r1-drother-elect-dr-priority-clear",
+            "title": "CCNA — OSPF: elect R1 as DR (priority and clear)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/ospf-area0-r1-r2-r3-sw-star-topology.png" alt="Topology: switch SW; OSPF Area 0. R1 10.10.10.1 on FastEthernet0/0; R2 10.10.10.2 on FastEthernet0/2; R3 10.10.10.3 on FastEthernet0/1." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="R1 show ip ospf neighbor">
+        <pre>R1#show ip ospf neighbor
+
+Neighbor ID     Pri   State      Dead Time   Address         Interface
+10.10.10.2        1   FULL/BDR   00:00:35    10.10.10.2      FastEthernet0/0
+10.10.10.3        1   FULL/DR    00:00:34    10.10.10.3      FastEthernet0/0</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. R1 has the DROTHER role in the OSPF DR/BDR election on this segment. Which configuration must an engineer implement so that R1 is elected as the DR?",
+            "name": "ospfdr1clr",
+            "correct": "B",
+            "mono": True,
+            "explain": "Correct. B \u2014 The DR is chosen by **highest OSPF interface priority** on the multi-access segment (tie-break: higher router ID). R1 must use **FastEthernet0/0** toward the segment with a priority **above** the current DR/BDR (still at 1). **DR election is not preemptive**, so after changing priority you typically run **clear ip ospf process** (or restart OSPF on the interface) so routers **reelect**. A keeps priority at the default 1. C raises **R3\u2019s** priority on **FastEthernet0/1**, favoring R3, not R1. D sets **R2\u2019s** **FastEthernet0/2** to 1 (default) and does not give R1 a winning priority.",
+            "choices": [
+                "R1(config)#interface FastEthernet0/0\nR1(config-if)#ip ospf priority 1\nR1#clear ip ospf process",
+                "R1(config)#interface FastEthernet0/0\nR1(config-if)#ip ospf priority 200\nR1#clear ip ospf process",
+                "R3(config)#interface FastEthernet0/1\nR3(config-if)#ip ospf priority 200\nR3#clear ip ospf process",
+                "R2(config)#interface FastEthernet0/2\nR2(config-if)#ip ospf priority 1\nR2#clear ip ospf process",
+            ],
+        },
+        {
+            "slug": "dc1-hq1-interface-usable-host-addresses",
+            "title": "CCNA — DC-1 & HQ-1: first/last usable IPv4 per mask",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/dc1-hq1-isp-topology-ip-assignment.png" alt="Topology: Internet cloud to ISP; ISP Gi1/0 to DC-1 Gi1/0; DC-1 Gi1/1 to HQ-1 Gi1/1; DC-1 Gi1/2 to a switch and firewall; HQ-1 Gi1/3 to HQ-SW1 and a workstation." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. The IPv4 address configuration must be completed on routers DC-1 and HQ-1 using only these subnets (no VLSM overlap):\n\u2022 DC-1 GigabitEthernet1/0 \u2192 10.0.0.0/30 toward ISP\n\u2022 DC-1 GigabitEthernet1/1 and HQ-1 GigabitEthernet1/1 \u2192 10.0.0.8/29\n\u2022 DC-1 GigabitEthernet1/2 \u2192 10.0.0.16/28 toward the switch/firewall block\n\u2022 HQ-1 GigabitEthernet1/3 toward HQ-SW1 \u2192 10.0.0.32/29\n\nRequirements: DC-1 Gi1/0 must be the last usable address on the /30; DC-1 Gi1/1 must be the first usable address on the /29; DC-1 Gi1/2 must be the last usable address on the /28; HQ-1 Gi1/3 must be the last usable address on the /29. Which configuration meets the requirements?",
+            "name": "dc1hq1ip",
+            "correct": "B",
+            "mono": True,
+            "explain": "Correct. B \u2014 On **10.0.0.0/30** (mask 255.255.255.252) the host addresses are **.1** and **.2**; the **last usable** is **.2** for DC-1 Gi1/0. On **10.0.0.8/29** (255.255.255.248) usable hosts are **.9\u2013.14**; the **first usable** is **.9** for DC-1 Gi1/1. On **10.0.0.16/28** (255.255.255.240) usable hosts are **.17\u2013.30**; the **last usable** is **.30** for DC-1 Gi1/2. On **10.0.0.32/29** usable hosts are **.33\u2013.38**; the **last usable** is **.38** for HQ-1 Gi1/3. A uses the **first** /30 host (.1) on DC-1 Gi1/0. C sets DC-1 Gi1/1 to **.14**, the **last** /29 host instead of the **first**. D sets HQ-1 Gi1/3 to **.33**, the **first** /29 host instead of the **last**.",
+            "choices": [
+                "DC-1(config)#interface GigabitEthernet1/0\nDC-1(config-if)#ip address 10.0.0.1 255.255.255.252\nDC-1(config)#interface GigabitEthernet1/1\nDC-1(config-if)#ip address 10.0.0.9 255.255.255.248\nDC-1(config)#interface GigabitEthernet1/2\nDC-1(config-if)#ip address 10.0.0.30 255.255.255.240\nHQ-1(config)#interface GigabitEthernet1/3\nHQ-1(config-if)#ip address 10.0.0.38 255.255.255.248",
+                "DC-1(config)#interface GigabitEthernet1/0\nDC-1(config-if)#ip address 10.0.0.2 255.255.255.252\nDC-1(config)#interface GigabitEthernet1/1\nDC-1(config-if)#ip address 10.0.0.9 255.255.255.248\nDC-1(config)#interface GigabitEthernet1/2\nDC-1(config-if)#ip address 10.0.0.30 255.255.255.240\nHQ-1(config)#interface GigabitEthernet1/3\nHQ-1(config-if)#ip address 10.0.0.38 255.255.255.248",
+                "DC-1(config)#interface GigabitEthernet1/0\nDC-1(config-if)#ip address 10.0.0.2 255.255.255.252\nDC-1(config)#interface GigabitEthernet1/1\nDC-1(config-if)#ip address 10.0.0.14 255.255.255.248\nDC-1(config)#interface GigabitEthernet1/2\nDC-1(config-if)#ip address 10.0.0.30 255.255.255.240\nHQ-1(config)#interface GigabitEthernet1/3\nHQ-1(config-if)#ip address 10.0.0.38 255.255.255.248",
+                "DC-1(config)#interface GigabitEthernet1/0\nDC-1(config-if)#ip address 10.0.0.2 255.255.255.252\nDC-1(config)#interface GigabitEthernet1/1\nDC-1(config-if)#ip address 10.0.0.9 255.255.255.248\nDC-1(config)#interface GigabitEthernet1/2\nDC-1(config-if)#ip address 10.0.0.30 255.255.255.240\nHQ-1(config)#interface GigabitEthernet1/3\nHQ-1(config-if)#ip address 10.0.0.33 255.255.255.248",
+            ],
+        },
+        {
+            "slug": "json-routers-switches-array-elements-are-values",
+            "title": "CCNA — JSON: strings inside arrays",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="JSON device inventory snippet">
+        <pre>{
+  "Routers": ["R1","R2","R3"],
+  "Switches": ["SW1","SW2","SW3"]
+}</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. What is represented by \u201cR1\u201d and \u201cSW1\u201d within the JSON output?",
+            "name": "jsonr1sw1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 In JSON, \u201cR1\u201d and \u201cSW1\u201d are **string values**. Each sits inside an **array**, and those arrays are the **values** of the \u201cRouters\u201d and \u201cSwitches\u201d name\u2013value pairs. The **keys** are the property names (\u201cRouters\u201d and \u201cSwitches\u201d). The **object** is the outer `{ ... }` structure. Calling the token itself an \u201carray\u201d or \u201ckey\u201d mixes up elements with the container or the property name.",
+            "choices": [
+                "array",
+                "object",
+                "value",
+                "key",
+            ],
+        },
+        {
+            "slug": "vlan14-trunk-ring-sw4-sw11-sw9-pc2-pc7",
+            "title": "CCNA — Trunks: PC2\u2013PC7 VLAN 14 and PC3\u2013PC9 VLAN 108",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/sw1-sw4-sw9-sw11-pc2-pc7-vlan14-trunk-topology.png" alt="Topology: SW1, SW4, SW9, SW11 with inter-switch links; PC2 VLAN 14 and PC3 VLAN 108 on SW4; PC7 VLAN 14 on SW9; PC9 VLAN 108 on SW11." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. These facts apply:\n\n\u2022 SW1 is fully configured for all traffic.\n\u2022 The SW4 and SW9 links to SW1 are already configured.\n\u2022 SW4 interface GigabitEthernet0/1 (PC2) and SW9 GigabitEthernet0/0 (PC7) are already configured.\n\u2022 The remaining switches have had all VLANs added to their VLAN database.\n\nWhich configuration establishes a successful ping from PC2 to PC7 without interrupting traffic between the other PCs (for example PC3 and PC9 in VLAN 108)?",
+            "name": "swtrunks14",
+            "correct": "A",
+            "mono": True,
+            "stem_br": True,
+            "explain": "Correct. A \u2014 PC2 and PC7 are both in **VLAN 14**; Layer 2 connectivity can use the path **SW4\u2192SW11\u2192SW9** (and/or the SW1 uplinks you are not asked to change). Those inter-switch links must be **802.1Q trunks** that **allow VLAN 14** on **SW4 Gi0/2**, **SW11 Gi0/2**, **SW11 Gi0/1**, and **SW9 Gi0/2**. **PC3** and **PC9** stay in **VLAN 108** on the **SW4\u2013SW11** trunk, so that trunk must also **allow 108**; SW9\u2019s trunk toward SW11 only needs **14** for this PC2\u2013PC7 shortcut, while 108 traffic between PC3 and PC9 can stay on **SW4\u2013SW11**.\n\nB rewrites **SW4 Gi0/7** (the uplink toward **SW1**) to **allowed vlan 108** only, which **drops VLAN 14** on an already working path and breaks design assumptions. It also mis-uses **access** mode on inter-switch ports.\n\nC allows **only VLAN 14** on **SW4 Gi0/2**, so **VLAN 108** cannot cross **SW4\u2192SW11**, cutting **PC3\u2013PC9**. It also has **108** on **SW9 Gi0/2** while omitting **14** on several segments.\n\nD configures **access** ports between switches, which cannot carry multiple VLANs and breaks **VLAN 108** between SW4 and SW11 (and misconfigures SW11 with a non-topology port).",
+            "choices": [
+                "Option A\n\nSW4#\ninterface Gi0/2\nswitchport mode trunk\nswitchport trunk allowed vlan 14,108\n\nSW11#\ninterface Gi0/2\nswitchport mode trunk\nswitchport trunk allowed vlan 14,108\n!\ninterface Gi0/1\nswitchport mode trunk\nswitchport trunk allowed vlan 14,108\n\nSW9#\ninterface Gi0/2\nswitchport mode trunk\nswitchport trunk allowed vlan 14",
+                "Option B\n\nSW4\ninterface Gi0/7\nswitchport mode trunk\nswitchport trunk allowed vlan 108\n!\ninterface Gi0/2\nswitchport mode access\nswitchport access vlan 14\n\nSW11#\ninterface Gi0/2\nswitchport mode trunk\nswitchport trunk allowed vlan 14,108\n!\ninterface Gi0/1\nswitchport mode trunk\nswitchport trunk allowed vlan 14,108\n\nSW9#\ninterface Gi0/2\nswitchport mode access\nswitchport access vlan 14",
+                "Option C\n\nSW4\ninterface Gi0/2\nswitchport mode trunk\nswitchport trunk allowed vlan 14\n\nSW11#\ninterface Gi0/1\nswitchport mode trunk\nswitchport trunk allowed vlan 14\n\nSW9#\ninterface Gi0/2\nswitchport mode trunk\nswitchport trunk allowed vlan 108",
+                "Option D\n\nSW4\ninterface Gi0/2\nswitchport mode access\nswitchport access vlan 14\n\nSW11#\ninterface Gi0/2\nswitchport mode access\nswitchport access vlan 14\n!\ninterface Gi0/0\nswitchport mode access\nswitchport access vlan 14\n!\ninterface Gi0/1\nswitchport mode trunk\n\nSW9#\ninterface Gi0/2\nswitchport mode access\nswitchport access vlan 14",
+            ],
+        },
+        {
+            "slug": "ospf-r1-passive-priority-router-id-neighbor-r2-only",
+            "title": "CCNA — OSPF: R1 neighbors only R2, no DR, fixed router-id",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/ospf-r1-r2-fa00-10-100-1-0-topology.png" alt="Topology: R1 FastEthernet0/0 connected to R2 FastEthernet0/0; segment labeled 10.100.1.0; host .1 on R1 and .2 on R2 (10.100.1.1 and 10.100.1.2)." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. An OSPF neighbor relationship must be configured on R1 using these guidelines:\n\n\u2022 R1 is only permitted to establish a neighbor with R2 (out FastEthernet0/0).\n\u2022 R1 will never participate in DR elections.\n\u2022 R1 will use a router ID of 10.1.1.1.\n\nWhich configuration meets all requirements?",
+            "name": "ospfr1r2p",
+            "correct": "A",
+            "mono": True,
+            "stem_br": True,
+            "explain": "Correct. A \u2014 **router-id 10.1.1.1** sets the required RID. **passive-interface default** stops OSPF hellos on every interface unless you undo it; **no passive-interface FastEthernet0/0** is the only interface that can form an adjacency with **R2**. **ip ospf priority 0** on that Ethernet keeps R1 **ineligible for DR/BDR** on the broadcast link. A **network** statement for **10.100.1.0/24** in area 0 enables OSPF on Fa0/0 while passive default still limits where neighbors can form.\n\nB omits **priority 0**, so R1 could still win **DR/BDR** on the segment to R2. C uses **router-id 1.1.1.1** instead of **10.1.1.1**. D marks **FastEthernet0/0 as passive**, so R1 does not send OSPF hellos on the only link that should peer with R2.",
+            "choices": [
+                "Option A\n\nR1(config)#router ospf 1\nR1(config-router)#router-id 10.1.1.1\nR1(config-router)#passive-interface default\nR1(config-router)#no passive-interface FastEthernet0/0\nR1(config-router)#network 10.100.1.0 0.0.0.255 area 0\nR1(config-router)#exit\nR1(config)#interface FastEthernet0/0\nR1(config-if)#ip ospf priority 0",
+                "Option B\n\nR1(config)#router ospf 1\nR1(config-router)#router-id 10.1.1.1\nR1(config-router)#passive-interface default\nR1(config-router)#no passive-interface FastEthernet0/0\nR1(config-router)#network 10.100.1.0 0.0.0.255 area 0\nR1(config-router)#exit",
+                "Option C\n\nR1(config)#router ospf 1\nR1(config-router)#router-id 1.1.1.1\nR1(config-router)#passive-interface default\nR1(config-router)#no passive-interface FastEthernet0/0\nR1(config-router)#network 10.100.1.0 0.0.0.255 area 0\nR1(config-router)#exit\nR1(config)#interface FastEthernet0/0\nR1(config-if)#ip ospf priority 0",
+                "Option D\n\nR1(config)#router ospf 1\nR1(config-router)#router-id 10.1.1.1\nR1(config-router)#network 10.100.1.0 0.0.0.255 area 0\nR1(config-router)#passive-interface FastEthernet0/0\nR1(config-router)#exit\nR1(config)#interface FastEthernet0/0\nR1(config-if)#ip ospf priority 0",
+            ],
+        },
+        {
+            "slug": "r1-static-route-10-0-3-via-transit-r3",
+            "title": "CCNA — R1 static route to 10.0.3.0/24 via R3",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r1-static-route-10-0-3-via-r3-10-0-4-3-topology.png" alt="Topology: R1 on 10.0.1.0/24 (Gig0/0) and 10.0.4.1/24 (Gig0/1); R2 on 10.0.2.0/24 and 10.0.4.2/24; R3 on 10.0.3.0/24 (Gig0/0) and 10.0.4.3/24 (Gig0/1); shared transit 10.0.4.0/24." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. Router R1 must be configured so that traffic from the 10.0.1.0/24 segment can reach networks on 10.0.3.0/24. Which command must be used to configure the route on R1?",
+            "name": "r1st1003",
+            "correct": "D",
+            "explain": "Correct. D \u2014 On Cisco IOS the static route command is **ip route** *destination-prefix* *subnet-mask* *next-hop*. For **10.0.3.0/24** the mask is **255.255.255.0**. Traffic toward that prefix should be forwarded to **R3**\u2019s address on the shared transit **10.0.4.0/24**, **10.0.4.3**. **route add** (A and B) is a host OS convention, not Cisco IOS configuration. **C** uses **0.255.255.255**, which is **not** the /24 subnet mask (and points the route at **10.0.4.2**, which is **R2**, not the router attached to **10.0.3.0/24**).",
+            "choices": [
+                "route add 10.0.3.0 0.255.255.255 10.0.4.2",
+                "route add 10.0.3.0 mask 255.255.255.0 10.0.4.3",
+                "ip route 10.0.3.0 0.255.255.255 10.0.4.2",
+                "ip route 10.0.3.0 255.255.255.0 10.0.4.3",
+            ],
+        },
+        {
+            "slug": "r1-r2-floating-static-default-wan-failover",
+            "title": "CCNA — R1/R2: floating static default for WAN failover",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r1-r2-dual-wan-client-image-server-topology.png" alt="Topology: R1 with Client A 192.168.0.0/24; R2 with Image Server 10.10.13.10/25; two parallel links between R1 and R2: primary 10.10.10.0/30 (.1 on R1, .2 on R2) and backup 10.10.10.4/30 (.5 on R1, .6 on R2)." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route excerpt">
+        <pre>R1#show ip route
+Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+
+Gateway of last resort is 10.10.10.2 to network 0.0.0.0
+
+S*    0.0.0.0/0 [1/0] via 10.10.10.2</pre>
+      </div>
+      <div class="exhibit-router-cli" role="region" aria-label="R2 show ip route excerpt">
+        <pre>R2#show ip route
+Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+
+Gateway of last resort is 10.10.10.1 to network 0.0.0.0
+
+S*    0.0.0.0/0 [1/0] via 10.10.10.1</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. Routers R1 and R2 have been configured with their respective LAN interfaces. The two circuits are operational and reachable across the WAN. Which command set establishes failover redundancy if the primary circuit goes down?",
+            "name": "r1r2fltad",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A \u2014 **Floating static** backup routes use the same prefix as the primary but a **higher administrative distance** so they stay **inactive** while the primary (here **AD 1** from `S* 0.0.0.0/0 [1/0]`) is valid, then **take over** if the primary disappears. **Default routes** via **10.10.10.6** (R1) and **10.10.10.5** (R2) with **AD 2** match that design.\n\n**D** installs second defaults also at **AD 1**, so they **tie** the primary instead of floating behind it. **B** and **C** add **/32 host** routes, not **default** Internet/WAN failover for all unknown destinations.",
+            "choices": [
+                "R1(config)#ip route 0.0.0.0 0.0.0.0 10.10.10.6 2\nR2(config)#ip route 0.0.0.0 0.0.0.0 10.10.10.5 2",
+                "R1(config)#ip route 10.10.13.10 255.255.255.255 10.10.10.6\nR2(config)#ip route 192.168.0.100 255.255.255.255 10.10.10.5",
+                "R1(config)#ip route 10.10.13.10 255.255.255.255 10.10.10.2\nR2(config)#ip route 192.168.0.100 255.255.255.255 10.10.10.1",
+                "R1(config)#ip route 0.0.0.0 0.0.0.0 10.10.10.6\nR2(config)#ip route 0.0.0.0 0.0.0.0 10.10.10.5",
+            ],
+        },
+        {
+            "slug": "pc-a-pc-b-vlan200-switch-unicast-mac",
+            "title": "CCNA — PC_A to PC_B on VLAN 200: MAC addresses after learning",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/pc-a-pc-b-vlan200-same-switch-topology.png" alt="Topology: one switch with PC_A and PC_B on access ports both in VLAN 200." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. What is expected when PC_A sends data to PC_B after their initial communication?",
+            "name": "pcapcv2u",
+            "correct": "A",
+            "explain": "Correct. A \u2014 A Layer 2 **switch** forwards frames based on the **destination MAC** and learns **source MAC-to-port** mappings in the **CAM table**. It does **not** rewrite the **source** or **destination** Ethernet MAC addresses for normal **unicast** between two hosts on the same VLAN.\n\n**B** and **C** describe behavior that is **not** standard Ethernet switching. **D** is the **broadcast** MAC (**ffff.ffff.ffff**), which applies to broadcast or flood behavior, not to typical **known-unicast** forwarding after the switch has learned both stations.",
+            "choices": [
+                "The source and destination MAC addresses remain the same",
+                "The switch rewrites the source and destination MAC addresses with its own",
+                "The source MAC address is changed",
+                "The destination MAC address is replaced with ffff.ffff.ffff",
+            ],
+        },
+        {
+            "slug": "collapsed-core-distribution-core-merged",
+            "title": "CCNA — Collapsed core: which layers combine?",
+            "stem": "What is the collapsed layer in collapsed core architectures?",
+            "name": "colcoremg",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **Collapsed core** (sometimes called **two-tier** campus design) **combines** the traditional **distribution** and **core** layers into **one** layer. The **access** layer stays separate, and **WAN/edge** connectivity is not what the name \"collapsed core\" refers to.\n\n**A** and **B** incorrectly mix in **WAN**. **C** would collapse **access** with **distribution**, which is not the usual definition of collapsed core.",
+            "choices": [
+                "core and WAN",
+                "access and WAN",
+                "distribution and access",
+                "core and distribution",
+            ],
+        },
+        {
+            "slug": "vrrp-virtual-mac-iana-format",
+            "title": "CCNA — VRRP virtual MAC address",
+            "stem": "What is the MAC address used with VRRP as a virtual address?",
+            "name": "vrrpvmac1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **VRRP (IPv4)** reserves virtual router MAC addresses in the form **00-00-5E-00-01-{VRID}** (IANA assignment per RFC 3768). Here **00-01** identifies the IPv4 VRRP block and **0a** is **VRID 10** in hexadecimal.\n\n**A** is **not** VRRP format\u2014**00-00-0C-07-** is the OUI space used for **Cisco HSRP** virtual MACs (**00-00-0C-07-AC-{group}**). **C** and **D** do not use the **00-00-5E-00-01-** VRRP prefix.",
+            "choices": [
+                "00-00-0C-07-AD-89",
+                "00-00-5E-00-01-0a",
+                "00-07-C0-70-AB-01",
+                "00-C6-41-93-90-91",
+            ],
+        },
+        {
+            "slug": "wlan-24ghz-us-nonoverlapping-channels-set",
+            "title": "CCNA — 2.4 GHz US non-overlapping channels",
+            "stem": "Which set of 2.4 GHz nonoverlapping wireless channels is standard in the United States?",
+            "name": "wlan24us1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 In the US **2.4 GHz ISM** band, **1, 6, and 11** are the conventional **three** **20 MHz** **non-overlapping** channel centers for **802.11b/g/n** style designs (each channel number is **5 MHz** apart but the radiated bandwidth needs that spacing).\n\n**A** and **C** use **non-standard** groupings for US planning. **B** wrongly adds **channel 14**, which is **not** available for typical Wi\u2011Fi in the **United States**.",
+            "choices": [
+                "channels 2, 7, 9, and 11",
+                "channels 1, 6, 11, and 14",
+                "channels 2, 7, and 11",
+                "channels 1, 6, and 11",
+            ],
+        },
+        {
+            "slug": "rapid-pvst-plus-forward-time-listen-learn",
+            "title": "CCNA — Rapid-PVST+: listen/learn timer command",
+            "stem": "Which command entered on a switch configured with Rapid-PVST+ listens and learns for a specific time period?",
+            "name": "rpvstfw1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 **Forward delay** is configured with **`spanning-tree vlan** *id* **forward-time** *seconds*`. It defines how long a port waits in the **listening** and **learning** states before moving to **forwarding** in classic STP timing (each state uses the configured forward-delay interval).\n\n**A** sets **max-age** (how long the switch retains spanning-tree information before discarding it). **B** sets the **hello** interval between BPDUs. **C** changes the bridge **priority** for root election, not listen/learn duration.",
+            "choices": [
+                "switch(config)#spanning-tree vlan 1 max-age 6",
+                "switch(config)#spanning-tree vlan 1 hello-time 10",
+                "switch(config)#spanning-tree vlan 1 priority 4096",
+                "switch(config)#spanning-tree vlan 1 forward-time 20",
+            ],
+        },
+        {
+            "slug": "lacp-layer3-port-channel-neighbor-passive-after-static",
+            "title": "CCNA — L3 port-channel down: fix LACP on neighbor",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="Local switch LACP and port-channel configuration">
+        <pre>interface g2/0/0
+ channel-group 1 mode active
+interface g4/0/0
+ channel-group 1 mode active
+interface Port-channel1
+ ip address 203.0.113.65 255.255.255.252
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Port-channel1, changed state to down</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. An engineer is configuring a Layer 3 port-channel interface with LACP. The configuration on the first device is complete, and it is verified that both interfaces have registered the neighbor device in the CDP table. Which task on the neighbor device enables the new port channel to come up without negotiating the channel?",
+            "name": "lacpl3po1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 The first switch uses **LACP** (**mode active** on the member interfaces). A neighbor configured for a **static** EtherChannel (**mode on**) cannot form a bundle with an **LACP active** peer. Changing the neighbor to **LACP passive** (**mode passive**) lets it participate in **LACP** so **Port-channel1** can form.\n\n**B** is wrong because **mode auto** is a **PAgP** setting, not **LACP**, so it does not interoperate with **mode active**. **A** is unlikely when **CDP** already lists the neighbor on both member links (those links are typically already up). **D** may be needed for Layer 3 reachability after the bundle is up, but it does not fix an **LACP/static** EtherChannel mismatch.",
+            "choices": [
+                "Bring up the neighboring interfaces using the no shutdown command.",
+                "Change the EtherChannel mode on the neighboring interfaces to auto",
+                "Modify the static EtherChannel configuration of the device to passive mode",
+                "Configure the IP address of the neighboring device",
+            ],
+        },
+        {
+            "slug": "dna-center-controller-purpose-manage-deploy",
+            "title": "CCNA — Cisco DNA Center controller purpose",
+            "stem": "What is the purpose of the Cisco DNA Center controller?",
+            "name": "dnactrlp1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **Cisco DNA Center** is the **controller** for Cisco\u2019s intent-based campus automation: it **discovers**, **manages**, **designs/provisions**, and **deploys** configuration and policy to supported network devices through centralized workflows (with appropriate credentials and controls).\n\n**B** may show topology/insights, but **generating a Layer 2 diagram** is not the defining purpose. **C** misstates the controller\u2019s role toward **autonomous APs** and **Layer 3 services**. **D** is **physical security**, unrelated to DNA Center.",
+            "choices": [
+                "to securely manage and deploy network devices",
+                "to scan a network and generate a layer 2 network diagram",
+                "to provide Layer 3 services to autonomous access points",
+                "to secure physical access to a data center",
+            ],
+        },
+        {
+            "slug": "tftp-feature-anonymous-style-no-login",
+            "title": "CCNA — TFTP: characteristic vs FTP",
+            "stem": "What is a feature of TFTP?",
+            "name": "tftpfeat1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **TFTP** is minimal: it has **no username/password authentication** step like **FTP**, so a client can transfer files when the server permits access without presenting credentials\u2014exam items often describe that as **anonymous-style** behavior (not the same as typing **anonymous** on FTP, but the idea is **no real login**).\n\n**A** is wrong: TFTP is **cleartext** and **not** a **secure** transfer protocol by itself. **B** is wrong: TFTP uses **UDP** port **69**, not **TCP** port **20** (**20** is associated with **FTP** **data** in active mode). **C** describes **FTP**\u2019s separate **control** and **data** connections, not TFTP.",
+            "choices": [
+                "provides secure data transfer",
+                "relies on the well-known TCP port 20 to transmit data",
+                "uses two separate connections for control and data traffic",
+                "offers anonymous user login ability",
+            ],
+        },
+        {
+            "slug": "lightweight-ap-mode-centralized-wlc-ssid-roaming",
+            "title": "CCNA — AP mode: WLC central management",
+            "stem": "Which access point mode relies on a centralized controller for management, roaming, and SSID configuration?",
+            "name": "lapmodw1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 **Lightweight (split-MAC) APs** join a **WLC**; the controller centralizes **SSID/WLAN configuration**, **security policies**, **RF/profiles**, and **mobility/roaming** orchestration while the AP handles the radio and forwarding path per the architecture (CAPWAP tunnel to the WLC in typical centralized designs).\n\n**Autonomous** APs run the WLAN control stack **locally** without that controller dependency. **Repeater** and **bridge** modes describe **coverage extension** or **wireless bridging** roles, not centralized controller-based enterprise WLAN operation.",
+            "choices": [
+                "repeater mode",
+                "bridge mode",
+                "lightweight mode",
+                "autonomous mode",
+            ],
+        },
+        {
+            "slug": "nat-inside-source-static-private-to-public-pc",
+            "title": "CCNA — Static NAT: inside local to inside global",
+            "stem": "Which command creates a static NAT binding for a PC address of 10.1.1.1 to the public routable address 209.165.200.225 assigned to the PC?",
+            "name": "natstpc1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 **`ip nat inside source static`** defines a one-to-one mapping for an **inside** host. The first address is the **inside local** (private) and the second is the **inside global** (public routable) seen on the **outside**.\n\n**A** and **C** use **`outside source static`**, which targets **outside** address translation semantics, not the usual \u201cinside PC gets a public mapping\u201d case. **B** reverses the **local**/**global** order for **`inside source static`**.",
+            "choices": [
+                "R1(config)#ip nat outside source static 209.165.200.225 10.1.1.1",
+                "R1(config)#ip nat inside source static 209.165.200.225 10.1.1.1",
+                "R1(config)#ip nat outside source static 10.1.1.1 209.165.200.225",
+                "R1(config)#ip nat inside source static 10.1.1.1 209.165.200.225",
+            ],
+        },
+        {
+            "slug": "longest-match-10-1-1-19-rip-28-ospf-eigrp",
+            "title": "CCNA — Longest match: 10.1.1.19",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="Routing table excerpt">
+        <pre>RIP   10.1.1.16/28 [120/5] via F0/0
+OSPF  10.1.1.0/24 [110/30] via F0/1
+OSPF  10.1.1.0/24 [110/40] via F0/2
+EIGRP 10.1.0.0/26 [90/20] via F0/3
+EIGRP 10.0.0.0/8 [90/133] via F0/4</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. Packets received by the router from BGP enter via a serial interface at 209.165.201.1. Each route is present within the routing table. Which interface is used to forward traffic with a destination IP of 10.1.1.19?",
+            "name": "rtelm1119",
+            "correct": "A",
+            "explain": "Correct. A \u2014 The router picks the **longest prefix length** that contains the destination. **10.1.1.19** falls in **10.1.1.16/28** (**10.1.1.16\u201310.1.1.31**), which is **more specific** than **10.1.1.0/24** or **10.0.0.0/8**. **10.1.0.0/26** only covers **10.1.0.0\u201310.1.0.63**, so it does **not** match **10.1.1.19**. Among duplicate **/24** OSPF paths, cost would matter, but neither wins here because **/28** outranks **/24**. **BGP** ingress interface is a distractor.",
+            "choices": [
+                "F0/0",
+                "F0/1",
+                "F0/3",
+                "F0/4",
+            ],
+        },
+        {
+            "slug": "rest-http-status-classes-errors-4xx-5xx",
+            "title": "CCNA — HTTP status classes: errors (choose two)",
+            "stem": "Which two REST API status-code classes represent errors? (Choose two)",
+            "name": "reststat1",
+            "choose_two": True,
+            "correct": ["D", "E"],
+            "explain": "Correct. D and E \u2014 **4xx** responses indicate **client errors** (bad request, unauthorized, not found, and so on). **5xx** responses indicate **server errors** (the server failed to fulfill a valid request). **1xx** is **informational**, **2xx** **successful**, **3xx** **redirection**\u2014none of those are the error families called out in this question.",
+            "choices": [
+                "1XX",
+                "2XX",
+                "3XX",
+                "4XX",
+                "5XX",
+            ],
+        },
+        {
+            "slug": "ssh-next-step-crypto-key-generate-after-domain-user",
+            "title": "CCNA — SSH RSA key: command after domain and user",
+            "stem": "An engineer has configured the domain name, user name, and password on the local router. What is the next step to complete the configuration for a Secure Shell access RSA key?",
+            "name": "sshrasnx1",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A \u2014 The device needs an **RSA host key pair** for the **SSH server**. After **hostname**/**ip domain-name** and local **username** credentials, run **`crypto key generate rsa`** (optionally with a **modulus** size). **pubkey-chain** builds trusted user public keys; **import** pulls in an external PEM key instead of locally generating the usual host keys; **zeroize** deletes keys rather than completing setup.",
+            "choices": [
+                "crypto key generate rsa",
+                "crypto key pubkey-chain rsa",
+                "crypto key import rsa pem",
+                "crypto key zeroize rsa",
+            ],
+        },
+        {
+            "slug": "wpa3-encryption-method-sae",
+            "title": "CCNA — WPA3: SAE",
+            "stem": "Which encryption method is used by WPA3?",
+            "name": "wpa3enc1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **WPA3-Personal** uses **SAE** (**Simultaneous Authentication of Equals**, Dragonfly-based) for passphrase-based authentication, addressing offline dictionary weaknesses associated with classic **WPA2-PSK**. **TKIP** is legacy **WPA**. **PSK** describes the older pre-shared-key model, not the WPA3 mechanism named in answers. **AES** is the block cipher used inside ciphersuites such as **CCMP**/**GCMP** for frame confidentiality; this question\u2019s intended WPA3 identifier versus **TKIP/PSK** is **SAE**.",
+            "choices": [
+                "TKIP",
+                "SAE",
+                "PSK",
+                "AES",
+            ],
+        },
+        {
+            "slug": "ssh-interface-acl-inbound-10-139-58-28",
+            "title": "CCNA — SSH from /28: inbound interface extended ACL",
+            "stem": "An engineer is configuring remote access to a router from IP subnet 10.139.58.0/28. The domain name, crypto keys, and SSH have been configured. Which configuration enables the traffic on the destination router?",
+            "name": "sshifa1139",
+            "correct": "C",
+            "mono": True,
+            "explain": "Correct. C \u2014 **SSH** uses **TCP** port **22**. A **/28** needs a wildcard of **0.0.0.15** (16 addresses in the fourth octet). **Extended** ACL **110** can match **tcp** with source **10.139.58.0 0.0.0.15** and destination **host 10.122.49.1 eq 22**, and **`ip access-group 110 in`** applies it to **inbound** traffic on the **interface** facing the clients.\n\n**A** uses **UDP** and **0.0.0.7** (only eight values), not a full **/28**. **B** uses **`ip access-list standard`** with **105**, but **105** sits in the **extended** ACL number range and **standard** ACLs cannot express **TCP**/**eq**/**destination** anyway. **D** omits **`ip`** before **`access-group`** and supplies **255.255.255.248** where an ACL needs a **wildcard** (for **/28** use **0.0.0.15**, not a subnet mask).",
+            "choices": [
+                "interface FastEthernet0/0\nip address 10.122.49.1 255.255.255.248\nip access-group 10 in\n\nip access-list standard 10\npermit udp 10.139.58.0 0.0.0.7 host 10.122.49.1 eq 22",
+                "interface FastEthernet0/0\nip address 10.122.49.1 255.255.255.252\nip access-group 105 in\n\nip access-list standard 105\npermit tcp 10.139.58.0 0.0.0.7 eq 22 host 10.122.49.1",
+                "interface FastEthernet0/0\nip address 10.122.49.1 255.255.255.252\nip access-group 110 in\n\nip access-list extended 110\npermit tcp 10.139.58.0 0.0.0.15 host 10.122.49.1 eq 22",
+                "interface FastEthernet0/0\nip address 10.122.49.1 255.255.255.240\naccess-group 120 in\n\nip access-list extended 120\npermit tcp 10.139.58.0 255.255.255.248 any eq 22",
+            ],
+        },
+        {
+            "slug": "spine-leaf-predictable-latency-uniform-path",
+            "title": "CCNA — Spine-leaf: path and latency",
+            "stem": "What is a function of spine-and-leaf architecture?",
+            "name": "spineft1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 **Spine\u2013leaf** gives **any-to-any** connectivity through a **fixed** pattern (**leaf \u2194 spine \u2194 leaf** for east\u2013west traffic), so **hop count** stays **consistent** and **latency** stays **predictable** compared with ad-hoc aggregation designs.\n\n**A** misstates oversubscription control\u2014adding **leaves** mainly scales **downlink** access; **uplink/spine** bandwidth and link counts address fan\u2011out limits. **B** is unrelated to spine\u2013leaf\u2019s role. **D** is wrong\u2014**end systems attach to leaf** switches, the fabric is not **multicast-only**, and **spine** links **leaves**, not general \u201cdirect server\u201d attachment in the usual model.",
+            "choices": [
+                "mitigates oversubscription by adding a layer of leaf switches",
+                "limits payload size of traffic within the leaf layer",
+                "offers predictable latency of the traffic path between end devices",
+                "exclusively sends multicast traffic between servers that are directly connected to the spine",
+            ],
+        },
+        {
+            "slug": "dna-center-traditional-campus-centralized-management",
+            "title": "CCNA — DNA Center vs traditional campus management",
+            "stem": "What differentiates device management enabled by Cisco DNA Center from traditional campus device management?",
+            "name": "dnatrad1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **Cisco DNA Center** delivers **centralized**, controller-based lifecycle operations (inventory, design/provisioning workflows, policy, assurance) from one platform rather than treating each box as a standalone management island.\n\n**A**, **C**, and **D** better describe **traditional** day\u2011to\u2011day work\u2014heavy **CLI**, **per\u2011device** changes, and **manual**, **device\u2011by\u2011device** touch\u2014that DNA Center is meant to streamline.",
+            "choices": [
+                "CLI-oriented device",
+                "centralized",
+                "per-device",
+                "device-by-device hands-on",
+            ],
+        },
+        {
+            "slug": "zero-day-exploit-vulnerability-no-patch",
+            "title": "CCNA — Zero-day exploit definition",
+            "stem": "What is a zero-day exploit?",
+            "name": "zeroday1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 A **zero-day** (or **0-day**) vulnerability is one that is **actively unknown** to the vendor or **has no generally available fix/patch** at the time attackers weaponize it\u2014so defenders have \u201czero days\u201d of prepared remediation.\n\n**A** describes **SQL injection** against a database application, not the zero-day concept. **C** describes a **man-in-the-middle** attack. **D** describes **DoS/DDoS** saturation of bandwidth or resources.",
+            "choices": [
+                "It is when an attacker inserts malicious code into a SQL server.",
+                "It is when a new network vulnerability is discovered before a fix is available.",
+                "It is when the perpetrator inserts itself in a conversation between two parties and captures or alters data.",
+                "It is when the network is saturated with malicious traffic that overloads resources and bandwidth.",
+            ],
+        },
+        {
+            "slug": "aaa-console-local-username-line-con-zero",
+            "title": "CCNA — Console: local username after RADIUS issue",
+            "stem": "After a recent security breach and a RADIUS failure, an engineer must secure the console port of each enterprise router with a local username and password. Which configuration must the engineer apply to accomplish this task?",
+            "name": "aaconl1",
+            "correct": "B",
+            "mono": True,
+            "explain": "Correct. B \u2014 The engineer must define a **local user** (**`username ... secret`**) and apply **AAA-style login** on **`line con 0`** so the **console** checks those credentials. **`privilege level 15`** sets the default **exec** privilege on that line.\n\n**A** turns on **AAA** but points **`aaa authentication login default`** at **RADIUS** only (no **local** fallback shown) and never configures **`line con 0`**, so it does not deliver **console** protection with **local** credentials as requested. **C** uses **`no login local`**, which works against local console login. **D** sets only a **console line password** and never creates the required **`username`** entry.",
+            "choices": [
+                """Option A
+
+aaa new-model
+aaa authorization exec default local
+aaa authentication login default radius
+username localuser privilege 15 secret plaintextpassword""",
+                """Option B
+
+username localuser secret plaintextpassword
+line con 0
+login authentication default
+privilege level 15""",
+                """Option C
+
+username localuser secret plaintextpassword
+line con 0
+no login local
+privilege level 15""",
+                """Option D
+
+aaa new-model
+line con 0
+password plaintextpassword
+privilege level 15""",
+            ],
+        },
+        {
+            "slug": "snmp-v3-implied-by-snmp-server-user",
+            "title": "CCNA — SNMPv3: snmp-server user",
+            "stem": "Which command implies the use of SNMPv3?",
+            "name": "snmpv3u1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 **SNMPv3** introduces **USM** users with **authentication** and optional **privacy**; on Cisco IOS you define them with **`snmp-server user`**. **Community-based** access is **SNMPv1/v2c** (**snmp-server community**). **`snmp-server host`** and **`snmp-server enable traps`** can be used with multiple SNMP versions depending on the rest of the configuration, so they do not inherently imply **v3** the way **`snmp-server user`** does.",
+            "choices": [
+                "snmp-server community",
+                "snmp-server host",
+                "snmp-server enable traps",
+                "snmp-server user",
+            ],
+        },
+        {
+            "slug": "switch-unknown-destination-mac-flood-except-ingress",
+            "title": "CCNA — Unknown destination MAC: flooding",
+            "stem": "When a switch receives a frame for an unknown destination MAC address, how is the frame handled?",
+            "name": "swunkdm1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 If the **destination MAC** is **not** in the **CAM/MAC table** (**unknown unicast**), the switch **floods** a copy out **every port in that VLAN** except the **ingress** (reception) port so the unknown host can receive it and the switch can **learn** its MAC from any reply.\n\n**A** is imprecise: the frame is usually still an **unknown unicast** Ethernet frame, not converted to a **Layer 2 broadcast** (**ffff.ffff.ffff**). **C** and **D** are not standard switching behavior for unknown destinations.",
+            "choices": [
+                "broadcast to all ports on the switch",
+                "flooded to all ports except the origination port",
+                "forwarded to the first available port",
+                "inspected and dropped by the switch",
+            ],
+        },
+        {
+            "slug": "port-security-trunk-default-violation-errdisable",
+            "title": "CCNA — Port security on trunk: default violation",
+            "stem": "What is the default port-security behavior on a trunk link?",
+            "name": "portsect1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 Default port security allows **one** secure **MAC** (**`switchport port-security maximum`** defaults to **1**). The default violation mode is **`shutdown`**, so if the port **learns a second** address (a violation), the port is turned off and goes **err-disabled** until cleared.\n\n**A** is not how violations work. **B** is unrelated to native VLAN handling. **D** invents a **10**-MAC **static** rule\u2014defaults are **not** **10** addresses.",
+            "choices": [
+                "It causes a network loop when a violation occurs.",
+                "It disables the native VLAN configuration as soon as port security is enabled.",
+                "It places the port in the err-disabled state if it learns more than one MAC address.",
+                "It places the port in the err-disabled state after 10 MAC addresses are statically configured.",
+            ],
+        },
+        {
+            "slug": "multifactor-authentication-examples-choose-two",
+            "title": "CCNA — Multifactor authentication examples (choose two)",
+            "stem": "What are two examples of multifactor authentication? (Choose two)",
+            "name": "mfaex1",
+            "choose_two": True,
+            "correct": ["B", "D"],
+            "explain": "Correct. B and D \u2014 **MFA** combines **different factor classes**. **Unique user knowledge** (password/PIN) is **something you know**; **soft tokens** (software OTP generators) are **something you have**. Pairing those exemplifies multifactor design.\n\n**SSO** streamlines **access to many apps** but is **not** itself an authentication **factor**. **Password expiration** tightens **password policy** yet stays within the **knowledge** factor. **Shared password responsibility** is **not** an MFA pattern and weakens accountability.",
+            "choices": [
+                "single sign-on",
+                "unique user knowledge",
+                "passwords that expire",
+                "soft tokens",
+                "shared password responsibility",
+            ],
+        },
+        {
+            "slug": "show-ip-route-10-10-13-160-slash-29-subnet-mask",
+            "title": "CCNA — Mask for 10.10.13.160/29 from routing table",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="Router1 show ip route excerpt">
+        <pre>Router1#show ip route
+
+Gateway of last resort is 10.10.11.2 to network 0.0.0.0
+
+      10.0.0.0/8 is variably subnetted, 8 subnets, 4 masks
+C        10.10.10.0/28 is directly connected, GigabitEthernet0/0
+C        10.10.11.0/30 is directly connected, FastEthernet2/0
+C        10.10.12.0/30 is directly connected, GigabitEthernet0/1
+O        10.10.13.0/25 [110/2] via 10.10.10.1, 00:00:04, GigabitEthernet0/0
+O        10.10.13.128/28 [110/2] via 10.10.10.1, 00:00:04, GigabitEthernet0/0
+O        10.10.13.144/28 [110/2] via 10.10.10.1, 00:00:04, GigabitEthernet0/0
+O        10.10.13.160/29 [110/2] via 10.10.10.1, 00:00:04, GigabitEthernet0/0
+O        10.10.13.208/29 [110/2] via 10.10.10.1, 00:00:04, GigabitEthernet0/0
+S*       0.0.0.0/0 [1/0] via 10.10.11.2</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. What is the subnet mask of the route to the 10.10.13.160 prefix?",
+            "name": "rt13160m",
+            "correct": "D",
+            "explain": "Correct. D \u2014 The route is printed as **10.10.13.160/29**. A **/29** prefix uses **29** network bits, which maps to dotted-decimal mask **255.255.255.248** (last octet **11111000**).\n\n**A** is **/28** (**240**). **B** is **/25** (**128**). **C** is not a mask that matches **/29**.",
+            "choices": [
+                "255.255.255.240",
+                "255.255.255.128",
+                "255.255.248.0",
+                "255.255.255.248",
+            ],
+        },
+        {
+            "slug": "endpoint-function-user-access-network-services",
+            "title": "CCNA — Endpoint: user access to services",
+            "stem": "What is a function of an endpoint?",
+            "name": "endptusr1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **Endpoints** are **end systems**\u2014workstations, phones, tablets, servers, and similar devices that **users or applications use directly** to **reach** **network services**. Infrastructure devices **relay** traffic (**A**, **D**) or **enforce trust boundaries** (**C**), which is not the defining role of an **endpoint** in this question.",
+            "choices": [
+                "It passes unicast communication between hosts in a network",
+                "It is used directly by an individual user to access network services",
+                "It provides security between trusted and untrusted sections of the network",
+                "It transmits broadcast traffic between devices in the same VLAN",
+            ],
+        },
+        {
+            "slug": "dhcp-relay-agent-features-choose-two",
+            "title": "CCNA — DHCP relay agent features (choose two)",
+            "stem": "What are two features of the DHCP relay agent? (Choose two)",
+            "name": "dhcprel1",
+            "choose_two": True,
+            "correct": ["A", "C"],
+            "explain": "Correct. A and C \u2014 **DHCP relay** (**`ip helper-address`**) lets clients on remote subnets reach **centralized DHCP servers**, so you need **fewer** servers scattered on every LAN. You configure **`ip helper-address`** on the **router (or L3 switch) routed interface/SVI** that is the **default gateway for the client subnet**\u2014where **DHCPDISCOVER** broadcasts are received.\n\n**B** is wrong: the relay **forwards DHCP messages**; it does not \u201cassign DNS locally\u201d before talking to the server (**DNS** is normally **Option 6** in the server\u2019s reply). **D** misstates how **giaddr** / **subnet** selection works. **E** is false: you can configure **multiple** **`ip helper-address`** lines on the **same** L3 interface for **redundancy** or several targets.",
+            "choices": [
+                "minimizes the necessary number of DHCP servers",
+                "assigns DNS locally and then forwards request to DHCP server",
+                "is configured under the Layer 3 interface of a router on the client subnet",
+                "allows only MAC-to-IP reservations to determine the local subnet of a client",
+                "permits one IP helper command under an individual Layer 3 interface",
+            ],
+        },
+        {
+            "slug": "cloud-rapid-elasticity-capacity-demand",
+            "title": "CCNA — Cloud: rapid elasticity",
+            "stem": "In a cloud-computing environment, what is rapid elasticity?",
+            "name": "cloudel1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **Rapid elasticity** is the ability to **provision and release capacity quickly**\u2014often **automatically**\u2014so resources **expand and contract** with **workload** demand. Tenants typically experience this as **seemingly unlimited** capacity on short notice.\n\n**B** aligns more with **metering/chargeback** visibility. **C** describes **resource pooling** across tenants. **D** matches **on-demand self-service** provisioning, not elasticity itself.",
+            "choices": [
+                "automatic adjustment of capacity based on need",
+                "control and monitoring of resource consumption by the tenant",
+                "pooling resources in a multitenant model based on need",
+                "self-service of computing resources by the tenant",
+            ],
+        },
+        {
+            "slug": "flexconnect-local-switch-different-vlans-trunk-port",
+            "title": "CCNA — FlexConnect: AP vs client VLANs",
+            "stem": "What must be considered for a locally switched FlexConnect AP if the VLANs that are used by the AP and client access are different?",
+            "name": "flexlcs1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 With **local switching**, client traffic exits the AP on **wired VLANs** that can differ from **AP/management** addressing. The **switch port** toward the AP must carry **multiple 802.1Q VLANs**, typically **`switchport mode trunk`**. **A** (\u201cLAG\u201d) adds bandwidth or redundancy but is not required for VLAN separation. **B** (native VLAN = management) is a common design detail on a trunk but is not the primary \u201cmust\u201d this item targets. **D** is wrong: **802.1Q** must be **enabled**, not disabled.",
+            "choices": [
+                "The APs must be connected to the switch with multiple links in LAG mode.",
+                "The native VLAN must match the management VLAN of the AP.",
+                "The switch port mode must be set to trunk.",
+                "IEEE 802.1Q trunking must be disabled on the switch port.",
+            ],
+        },
+        {
+            "slug": "wlc-config-serial-timeout-no-auto-logout",
+            "title": "CCNA — WLC: serial session no timeout",
+            "stem": "Which command configures the Cisco WLC to prevent a serial session with the WLC CLI from being automatically logged out?",
+            "name": "wlcsert1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 On AireOS-style WLC CLI, **`config serial timeout`** sets the **serial console** inactivity logout (minutes). Setting it to **0** means **serial sessions never time out** (per Cisco Wireless Controller configuration guides). **`config serial baudrate`** changes speed (for example 9600), not logout. **`config sessions`** controls **Telnet/SSH** session limits and timeouts, not the **serial** port.",
+            "choices": [
+                "config sessions maxsessions 0",
+                "config serial timeout 9600",
+                "config serial timeout 0",
+                "config sessions timeout 0",
+            ],
+        },
     ]
 
     prev = "vty-access-list-ssh-secure"
@@ -5486,6 +6175,7 @@ L       10.56.128.19/32 is directly connected, Vlan57</pre>
                 stem_after_exhibit_bullets=q.get("stem_after_exhibit_bullets"),
                 stem_after_exhibit_tail=q.get("stem_after_exhibit_tail"),
                 prepend_html=q.get("prepend_html"),
+                stem_br=q.get("stem_br", False),
             )
         (OUT / f"{slug}.html").write_text(html, encoding="utf-8")
         prev = slug

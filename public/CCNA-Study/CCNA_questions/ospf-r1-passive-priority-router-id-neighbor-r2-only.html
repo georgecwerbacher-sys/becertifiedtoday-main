@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC WLAN: WPA+WPA2 and 802.1X for LDAP-backed auth</title>
+  <title>CCNA — OSPF: R1 neighbors only R2, no DR, fixed router-id</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,66 +312,119 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-    <main class="card">
+  <main class="card">
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/wlc-wlan-security-wpa-wpa2-8021x-enterprise.png" alt="WLC WLAN Security Layer 2 tab: Layer 2 Security dropdown; WPA and WPA2 policy checkboxes; WPA2 Encryption AES and TKIP; Authentication Key Management 802.1X, CCKM, and PSK enable options." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/ospf-r1-r2-fa00-10-100-1-0-topology.png" alt="Topology: R1 FastEthernet0/0 connected to R2 FastEthernet0/0; segment labeled 10.100.1.0; host .1 on R1 and .2 on R2 (10.100.1.1 and 10.100.1.2)." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>
-    <h1 class="choose-two-stem">Refer to the exhibit. What are the two steps an engineer must take to provide the highest encryption and authentication using domain credentials from LDAP? (Choose two)</h1>
+    <h1>Refer to the exhibit. An OSPF neighbor relationship must be configured on R1 using these guidelines:<br /><br />• R1 is only permitted to establish a neighbor with R2 (out FastEthernet0/0).<br />• R1 will never participate in DR elections.<br />• R1 will use a router ID of 10.1.1.1.<br /><br />Which configuration meets all requirements?</h1>
 
-    <label class="choice"><input type="checkbox" name="wlldap802" value="A" />A. Select WPA policy with TKIP Encryption</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="B" />B. Select WPA + WPA2 on layer 2 security</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="C" />C. Select PSK under authentication key management</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="D" />D. Select Static-WEP + 802.1x on Layer 2 security</label>
-    <label class="choice"><input type="checkbox" name="wlldap802" value="E" />E. Select 802.1x from under authentication key management</label>
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ospfr1r2p" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. Option A
+
+R1(config)#router ospf 1
+R1(config-router)#router-id 10.1.1.1
+R1(config-router)#passive-interface default
+R1(config-router)#no passive-interface FastEthernet0/0
+R1(config-router)#network 10.100.1.0 0.0.0.255 area 0
+R1(config-router)#exit
+R1(config)#interface FastEthernet0/0
+R1(config-if)#ip ospf priority 0</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ospfr1r2p" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. Option B
+
+R1(config)#router ospf 1
+R1(config-router)#router-id 10.1.1.1
+R1(config-router)#passive-interface default
+R1(config-router)#no passive-interface FastEthernet0/0
+R1(config-router)#network 10.100.1.0 0.0.0.255 area 0
+R1(config-router)#exit</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ospfr1r2p" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. Option C
+
+R1(config)#router ospf 1
+R1(config-router)#router-id 1.1.1.1
+R1(config-router)#passive-interface default
+R1(config-router)#no passive-interface FastEthernet0/0
+R1(config-router)#network 10.100.1.0 0.0.0.255 area 0
+R1(config-router)#exit
+R1(config)#interface FastEthernet0/0
+R1(config-if)#ip ospf priority 0</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ospfr1r2p" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. Option D
+
+R1(config)#router ospf 1
+R1(config-router)#router-id 10.1.1.1
+R1(config-router)#network 10.100.1.0 0.0.0.255 area 0
+R1(config-router)#passive-interface FastEthernet0/0
+R1(config-router)#exit
+R1(config)#interface FastEthernet0/0
+R1(config-if)#ip ospf priority 0</pre>
+    </label>
+
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-show-ip-route-10-56-192-1-default-next-hop.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/cat9k-lldp-suppress-management-address.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/vlan14-trunk-ring-sw4-sw11-sw9-pc2-pc7.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-static-route-10-0-3-via-transit-r3.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = ["B", "E"];
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 **router-id 10.1.1.1** sets the required RID. **passive-interface default** stops OSPF hellos on every interface unless you undo it; **no passive-interface FastEthernet0/0** is the only interface that can form an adjacency with **R2**. **ip ospf priority 0** on that Ethernet keeps R1 **ineligible for DR/BDR** on the broadcast link. A **network** statement for **10.100.1.0/24** in area 0 enables OSPF on Fa0/0 while passive default still limits where neighbors can form.\n\nB omits **priority 0**, so R1 could still win **DR/BDR** on the segment to R2. C uses **router-id 1.1.1.1** instead of **10.1.1.1**. D marks **FastEthernet0/0 as passive**, so R1 does not send OSPF hellos on the only link that should peer with R2.";
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValues() {
-        return []
-          .slice.call(document.querySelectorAll('input[name="wlldap802"]:checked'))
-          .map(function (el) { return el.value; })
-          .sort();
-      }
-
-      function arraysEqual(a, b) {
-        if (a.length !== b.length) return false;
-        return a.every(function (v, i) { return v === b[i]; });
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedValues();
+      function applyFeedback(value) {
         answerBox.style.display = "block";
-        if (sel.length !== 2) {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Choose exactly two answers.";
-          return;
-        }
-        if (arraysEqual(sel, CORRECT)) {
+        if (value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. B and E \u2014 Domain credentials through LDAP are normally validated when the WLAN uses **802.1X** (enterprise) authentication toward RADIUS or similar; that maps to enabling **802.1X** under Authentication Key Management on the WLC. Set **Layer 2 Security** to **WPA + WPA2** so clients can use **WPA2** with stronger ciphers such as **AES/CCMP** instead of legacy WPA-only modes. Then enable **WPA2 Policy** and **AES** under WPA+WPA2 parameters as needed so TKIP-only operation is avoided. **PSK** (C) uses a shared passphrase, not per-user domain sign-in. **Static WEP** (D) is weak. Choosing **WPA** with **TKIP** only (A) favors an older cipher and is not the strongest combination among these options.";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
+      }
+
+      document.querySelectorAll('input[name="ospfr1r2p"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
       });
     })();
   </script>
