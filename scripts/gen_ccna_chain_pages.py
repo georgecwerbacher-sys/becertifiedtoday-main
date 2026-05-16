@@ -6942,6 +6942,26 @@ SW(config-if)#</pre>
                 "SW(config-if)#switchport port-security violation restrict",
             ],
         },
+        {
+            "slug": "r1-host-route-server-10-10-10-10-via-r2",
+            "title": "CCNA — R1 host route to server via R2",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r1-r2-sw1-server-host-route-topology.png" alt="Topology: R1 S0/0 192.168.0.1/30 to R2 S0/0 192.168.0.2/30; R2 Gi0/0 10.10.10.1/24 to Switch 1 10.10.10.2/24 and Server 10.10.10.10/24." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. A network engineer must configure router R1 with a host route to the server. Which command must the engineer configure?",
+            "name": "r1hostrt",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A \u2014 A **host route** targets one address: **10.10.10.10/32** (**255.255.255.255** mask). From **R1**, the next hop toward **R2** on the serial link is **192.168.0.2**, so **`ip route 10.10.10.10 255.255.255.255 192.168.0.2`**. **B** is a **/24** network route for the whole **10.10.10.0** LAN, not a host route to the server alone. **C** is a **default** route (**0.0.0.0/0**). **D** reverses destination and next-hop fields.",
+            "choices": [
+                "R1(config)#ip route 10.10.10.10 255.255.255.255 192.168.0.2",
+                "R1(config)#ip route 10.10.10.0 255.255.255.0 192.168.0.2",
+                "R1(config)#ip route 0.0.0.0 0.0.0.0 192.168.0.2",
+                "R1(config)#ip route 192.168.0.2 255.255.255.255 10.10.10.10",
+            ],
+        },
     ]
 
     prev = "vty-access-list-ssh-secure"
