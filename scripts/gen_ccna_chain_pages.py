@@ -5417,6 +5417,27 @@ L       10.56.128.19/32 is directly connected, Vlan57</pre>
                 "10.56.128.19",
             ],
         },
+        {
+            "slug": "wlc-wlan-security-wpa-wpa2-8021x-enterprise",
+            "title": "CCNA — WLC WLAN: WPA+WPA2 and 802.1X for LDAP-backed auth",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/wlc-wlan-security-wpa-wpa2-8021x-enterprise.png" alt="WLC WLAN Security Layer 2 tab: Layer 2 Security dropdown; WPA and WPA2 policy checkboxes; WPA2 Encryption AES and TKIP; Authentication Key Management 802.1X, CCKM, and PSK enable options." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. What are the two steps an engineer must take to provide the highest encryption and authentication using domain credentials from LDAP? (Choose two)",
+            "name": "wlldap802",
+            "choose_two": True,
+            "correct": ["B", "E"],
+            "explain": "Correct. B and E \u2014 Domain credentials through LDAP are normally validated when the WLAN uses **802.1X** (enterprise) authentication toward RADIUS or similar; that maps to enabling **802.1X** under Authentication Key Management on the WLC. Set **Layer 2 Security** to **WPA + WPA2** so clients can use **WPA2** with stronger ciphers such as **AES/CCMP** instead of legacy WPA-only modes. Then enable **WPA2 Policy** and **AES** under WPA+WPA2 parameters as needed so TKIP-only operation is avoided. **PSK** (C) uses a shared passphrase, not per-user domain sign-in. **Static WEP** (D) is weak. Choosing **WPA** with **TKIP** only (A) favors an older cipher and is not the strongest combination among these options.",
+            "choices": [
+                "Select WPA policy with TKIP Encryption",
+                "Select WPA + WPA2 on layer 2 security",
+                "Select PSK under authentication key management",
+                "Select Static-WEP + 802.1x on Layer 2 security",
+                "Select 802.1x from under authentication key management",
+            ],
+        },
     ]
 
     prev = "vty-access-list-ssh-secure"

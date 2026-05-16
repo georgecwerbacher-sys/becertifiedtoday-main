@@ -794,7 +794,11 @@
       <section class="formats-section" aria-labelledby="formats-title">
         <div class="formats-inner">
           <p id="portal-checkout-activated-banner" class="portal-checkout-activated-banner" hidden role="status">
-            <strong>30-day access activated</strong> on this browser. Your library pass is saved here for 30 days—use this device when you study.
+            <strong>30-day access activated.</strong>
+            Your pass is stored in <strong>this browser</strong> until the end date Stripe tied to your payment (about 30 days). Clearing site data for this domain removes it—you can recover with a checkout session ID, your Stripe success URL, or an email magic link:
+            <a href="/CCNA-Study/ccna-portal-request-link.html">Email me a portal link</a>
+            ·
+            <a href="/CCNA-Study/ccna-portal-restore-access.html">Restore access</a>
           </p>
           <p class="formats-head">CCNA practice formats</p>
           <h2 id="formats-title">Choose your practice mode</h2>
@@ -1105,6 +1109,13 @@
               >
             </div>
             <div id="portal-sim-locked-wrap" class="portal-sim-locked-wrap">
+              <p style="margin: 0 0 14px; font-size: 0.94rem; line-height: 1.5; color: #b8c3d6;">
+                Need <strong>30-day</strong> library access here? Purchase unlocks timed simulation plus question banks on this browser after Stripe redirect.
+                Paid already but this page shows locked—your browser may have cleared saved access.
+                Try <a href="/CCNA-Study/ccna-portal-request-link.html">Email me a portal link</a>,
+                <a href="/CCNA-Study/ccna-portal-restore-access.html">Restore access</a>,
+                or open your Stripe confirmation URL again (same browser).
+              </p>
               <a
                 class="cta-main cta-main--block"
                 href="/CCNA_Sim_EXAM/test-simulation-runner.html?bypass=1"
@@ -1169,6 +1180,47 @@
         }
       }
 
+      function fetchVerifyPortalPurchase(sessionId) {
+        return fetch("/api/verify-checkout-session?session_id=" + encodeURIComponent(sessionId)).then(function (res) {
+          return res.json().then(function (data) {
+            return { res: res, data: data };
+          });
+        });
+      }
+
+      function grantPortalFromVerifyPair(pair, checkoutSessionId, stripSessionQuery) {
+        var res = pair.res;
+        var data = pair.data || {};
+        if (!res.ok || !data.ok || data.productId !== "ccna-portal-30d") {
+          return false;
+        }
+        var exp =
+          typeof data.accessExpiresAt === "number" && Number.isFinite(data.accessExpiresAt)
+            ? data.accessExpiresAt
+            : Date.now() + 30 * 86400000;
+        if (exp <= Date.now()) {
+          return false;
+        }
+        if (typeof bccSetPortal30DayEntitlement !== "function") {
+          return false;
+        }
+        var cs = checkoutSessionId || null;
+        if (!bccSetPortal30DayEntitlement(exp, cs)) {
+          return false;
+        }
+        if (stripSessionQuery) {
+          try {
+            var u = new URL(window.location.href);
+            u.searchParams.delete("session_id");
+            var clean = u.pathname + (u.search || "") + (u.hash || "");
+            window.history.replaceState({}, "", clean || "/");
+          } catch (e) {}
+        }
+        var banner = document.getElementById("portal-checkout-activated-banner");
+        if (banner) banner.hidden = false;
+        return true;
+      }
+
       function applyCheckoutSessionReturn() {
         return new Promise(function (resolve) {
           var sessionId = qs("session_id");
@@ -1176,36 +1228,9 @@
             resolve();
             return;
           }
-          fetch("/api/verify-checkout-session?session_id=" + encodeURIComponent(sessionId))
-            .then(function (res) {
-              return res.json().then(function (data) {
-                return { res: res, data: data };
-              });
-            })
+          fetchVerifyPortalPurchase(sessionId)
             .then(function (pair) {
-              var res = pair.res;
-              var data = pair.data || {};
-              if (!res.ok || !data.ok || data.productId !== "ccna-portal-30d") {
-                resolve();
-                return;
-              }
-              if (typeof bccSetPortal30DayEntitlement !== "function") {
-                resolve();
-                return;
-              }
-              var expiresAt = Date.now() + 30 * 86400000;
-              if (!bccSetPortal30DayEntitlement(expiresAt)) {
-                resolve();
-                return;
-              }
-              try {
-                var u = new URL(window.location.href);
-                u.searchParams.delete("session_id");
-                var clean = u.pathname + (u.search || "") + (u.hash || "");
-                window.history.replaceState({}, "", clean || "/");
-              } catch (e) {}
-              var banner = document.getElementById("portal-checkout-activated-banner");
-              if (banner) banner.hidden = false;
+              grantPortalFromVerifyPair(pair, sessionId, true);
               resolve();
             })
             .catch(function () {
@@ -1214,7 +1239,32 @@
         });
       }
 
-      applyCheckoutSessionReturn().finally(refreshPortalGate);
+      function tryRestorePortalFromStoredCheckoutSession() {
+        return new Promise(function (resolve) {
+          if (typeof bccPortalAccessActive === "function" && bccPortalAccessActive()) {
+            resolve();
+            return;
+          }
+          var cs =
+            typeof bccReadPortalCheckoutSessionId === "function" ? bccReadPortalCheckoutSessionId() : null;
+          if (!cs) {
+            resolve();
+            return;
+          }
+          fetchVerifyPortalPurchase(cs)
+            .then(function (pair) {
+              grantPortalFromVerifyPair(pair, cs, false);
+              resolve();
+            })
+            .catch(function () {
+              resolve();
+            });
+        });
+      }
+
+      applyCheckoutSessionReturn()
+        .then(tryRestorePortalFromStoredCheckoutSession)
+        .finally(refreshPortalGate);
     });
   </script>
 </body>

@@ -11,12 +11,21 @@
  *
  * Env: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET (whsec_… — copy from the endpoint that matches THIS deployment)
  *
- * This handler does not send email. For receipts, use Stripe Dashboard → Settings → Emails.
- * To send custom mail here, add a provider (e.g. Resend) and call it from checkout.session.completed.
+ * CCNA portal (30-day): on completed checkout we attach metadata to a Stripe Customer (see server-lib)
+ * and optionally email a magic link via Resend (RESEND_API_KEY, PORTAL_MAGIC_LINK_SECRET, PUBLIC_SITE_URL).
  */
 import Stripe from "stripe";
 import getRawBody from "raw-body";
 import { getStripeSecretKey } from "./stripe-secret-key.js";
+import { normalizePublicSiteUrl } from "./normalize-public-site-url.js";
+import {
+  checkoutSessionIsPaid,
+  inferProductIdFromCheckoutSession,
+  portalAccessExpiresAtMs,
+  upsertCustomerPortalMetadata,
+} from "../server-lib/ccna-portal-stripe.js";
+import { signPortalMagicJwt } from "../server-lib/ccna-portal-magic-jwt.js";
+import { sendCcnaPortalMagicEmail } from "../server-lib/ccna-portal-resend.js";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -56,17 +65,54 @@ export default async function handler(req, res) {
 
   switch (event.type) {
     case "checkout.session.completed": {
-      const session = event.data.object;
-      const productId = session.metadata?.productId;
-      console.info(
-        "[stripe] checkout.session.completed",
-        session.id,
-        "productId=",
-        productId,
-        "payment_status=",
-        session.payment_status
-      );
-      // TODO: grant entitlement (DB, signed JWT cookie, or email link) before launching the 120-minute test.
+      try {
+        let session = event.data.object;
+
+        if (!checkoutSessionIsPaid(session)) {
+          console.info("[stripe] checkout.session.completed unpaid skip", session.id, session.payment_status);
+          break;
+        }
+
+        if (!session.line_items?.data?.length) {
+          session = await stripe.checkout.sessions.retrieve(session.id, {
+            expand: ["payment_intent", "line_items.data.price"],
+          });
+        }
+
+        const productId = inferProductIdFromCheckoutSession(session);
+        console.info("[stripe] checkout.session.completed", session.id, "productId=", productId);
+
+        if (productId !== "ccna-portal-30d") {
+          break;
+        }
+
+        const accessExpiresAtMs = portalAccessExpiresAtMs(session);
+        await upsertCustomerPortalMetadata(stripe, session, accessExpiresAtMs);
+
+        const jwtSecret = (process.env.PORTAL_MAGIC_LINK_SECRET || "").trim();
+        const site = normalizePublicSiteUrl(process.env.PUBLIC_SITE_URL);
+        const email = (session.customer_details?.email || "").trim().toLowerCase();
+
+        if (jwtSecret && site && email) {
+          const token = signPortalMagicJwt(
+            {
+              aud: "ccna-portal-30d",
+              cs: session.id,
+              exp: Math.floor(accessExpiresAtMs / 1000),
+            },
+            jwtSecret
+          );
+          const magicUrl = `${site}/CCNA-Study/ccna-portal-magic.html#t=${encodeURIComponent(token)}`;
+          await sendCcnaPortalMagicEmail({ to: email, magicUrl });
+        } else {
+          console.warn(
+            "[ccna-portal] Magic email skipped (set PORTAL_MAGIC_LINK_SECRET + PUBLIC_SITE_URL + collect email at checkout)",
+            { hasJwt: !!jwtSecret, hasSite: !!site, hasEmail: !!email }
+          );
+        }
+      } catch (err) {
+        console.error("[stripe] checkout.session.completed portal handling:", err.message);
+      }
       break;
     }
     default:
