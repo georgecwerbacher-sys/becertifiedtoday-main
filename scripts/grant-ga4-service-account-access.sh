@@ -31,34 +31,50 @@ fi
 
 TOKEN="$(gcloud auth application-default print-access-token 2>/dev/null || true)"
 if [[ -z "$TOKEN" ]]; then
-  echo "Run first: gcloud auth application-default login" >&2
+  TOKEN="$(gcloud auth print-access-token 2>/dev/null || true)"
+fi
+if [[ -z "$TOKEN" ]]; then
+  echo "Run first (in Terminal — do not copy OAuth URLs from chat):" >&2
+  echo "  gcloud auth login YOUR_GA4_ADMIN@gmail.com" >&2
+  echo "  gcloud auth application-default login --scopes=https://www.googleapis.com/auth/analytics.manage.users,https://www.googleapis.com/auth/cloud-platform,openid,https://www.googleapis.com/auth/userinfo.email" >&2
+  exit 1
+fi
+
+SCOPE_INFO="$(curl -sS "https://oauth2.googleapis.com/tokeninfo?access_token=${TOKEN}" 2>/dev/null || true)"
+if ! echo "$SCOPE_INFO" | grep -q analytics.manage.users; then
+  echo "Your token is missing analytics.manage.users." >&2
+  echo "Run: ./scripts/ga4-admin-oauth-login.sh" >&2
   exit 1
 fi
 
 AUTH="Authorization: Bearer $TOKEN"
-BASE="https://analyticsadmin.googleapis.com/v1beta"
-USER="serviceAccount:${SA_EMAIL}"
+BASE="https://analyticsadmin.googleapis.com/v1alpha"
+QUOTA_HDR="x-goog-user-project: youtube-404901"
 
 echo "Property ID: $PROPERTY_ID"
 echo "Service account: $SA_EMAIL"
 echo ""
 
 echo "Checking property..."
-curl -sS -H "$AUTH" "$BASE/properties/$PROPERTY_ID" | jq '{name, displayName, parent}' || true
+curl -sS -H "$AUTH" -H "$QUOTA_HDR" \
+  "https://analyticsadmin.googleapis.com/v1beta/properties/$PROPERTY_ID" | jq '{name, displayName, parent}' || true
 echo ""
 
 echo "Existing access bindings on property..."
-curl -sS -H "$AUTH" "$BASE/properties/$PROPERTY_ID/accessBindings" | jq '.accessBindings[]? | {name, user, roles}' || true
+curl -sS -H "$AUTH" -H "$QUOTA_HDR" \
+  "$BASE/properties/$PROPERTY_ID/accessBindings" | jq '.accessBindings[]? | {name, user, roles}' || true
 echo ""
 
-PARENT="$(curl -sS -H "$AUTH" "$BASE/properties/$PROPERTY_ID" | jq -r '.parent // empty')"
+PARENT="$(curl -sS -H "$AUTH" -H "$QUOTA_HDR" \
+  "https://analyticsadmin.googleapis.com/v1beta/properties/$PROPERTY_ID" | jq -r '.parent // empty')"
 
 echo "Creating property access binding (Viewer)..."
 RESP="$(curl -sS -X POST \
   -H "$AUTH" \
+  -H "$QUOTA_HDR" \
   -H "Content-Type: application/json" \
   "$BASE/properties/$PROPERTY_ID/accessBindings" \
-  -d "{\"user\":\"$USER\",\"roles\":[\"predefinedRoles/viewer\"]}")"
+  -d "{\"user\":\"${SA_EMAIL}\",\"roles\":[\"predefinedRoles/viewer\"]}")"
 
 echo "$RESP" | jq .
 
@@ -69,9 +85,10 @@ if echo "$RESP" | jq -e '.error' >/dev/null 2>&1; then
     echo "Account: $PARENT"
     RESP2="$(curl -sS -X POST \
       -H "$AUTH" \
+      -H "$QUOTA_HDR" \
       -H "Content-Type: application/json" \
       "$BASE/${PARENT}/accessBindings" \
-      -d "{\"user\":\"$USER\",\"roles\":[\"predefinedRoles/viewer\"]}")"
+      -d "{\"user\":\"${SA_EMAIL}\",\"roles\":[\"predefinedRoles/viewer\"]}")"
     echo "$RESP2" | jq .
   else
     echo "Could not resolve account parent for property $PROPERTY_ID" >&2
