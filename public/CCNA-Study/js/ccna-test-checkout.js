@@ -12,6 +12,10 @@
     if (!btn) return;
     btn.addEventListener("click", function () {
       if (btn.dataset.loading === "1") return;
+      if (typeof window.bccTrackBeginCheckout === "function") {
+        btn.setAttribute("data-bcc-item-id", "ccna_timed_simulation");
+        window.bccTrackBeginCheckout(btn);
+      }
       btn.dataset.loading = "1";
       btn.textContent = "Redirecting…";
       btn.disabled = true;
