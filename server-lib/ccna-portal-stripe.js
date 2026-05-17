@@ -77,6 +77,7 @@ export async function upsertCustomerPortalMetadata(stripe, session, accessExpire
 
   await stripe.customers.update(customerId, {
     metadata: {
+      ccna_portal_customer: "1",
       ccna_portal_last_cs: session.id,
       ccna_portal_access_expires_ms: String(accessExpiresAtMs),
     },

@@ -220,8 +220,12 @@
 /** Google tag (gtag.js) on CCNA pages without static head snippet */
 (function () {
   "use strict";
-  var s = document.createElement("script");
-  s.src = "/js/install-google-tag.js";
-  (document.head || document.documentElement).appendChild(s);
+  var head = document.head || document.documentElement;
+  var ga = document.createElement("script");
+  ga.src = "/js/install-google-tag.js";
+  head.appendChild(ga);
+  var va = document.createElement("script");
+  va.src = "/js/install-vercel-analytics.js";
+  head.appendChild(va);
 })();
 

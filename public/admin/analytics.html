@@ -88,6 +88,16 @@
     }
     th { color: var(--muted); font-weight: 600; }
     td.path { font-family: ui-monospace, Menlo, Consolas, monospace; word-break: break-all; }
+    td.email { word-break: break-all; }
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .badge.active { background: rgba(61, 214, 140, 0.2); color: var(--good); }
+    .badge.expired { background: rgba(240, 113, 120, 0.15); color: var(--bad); }
     .status { margin-top: 10px; font-size: 0.9rem; }
     .status.err { color: var(--bad); }
     .status.ok { color: var(--good); }
@@ -98,7 +108,7 @@
 <body>
   <div class="wrap">
     <h1>Site analytics</h1>
-    <p class="lead">Google Analytics 4 data for becertifiedtoday.com. Sign in with the admin password configured in Vercel.</p>
+    <p class="lead">Google Analytics 4 site traffic plus CCNA portal subscribers (email from Stripe). Sign in with the admin password configured in Vercel.</p>
 
     <section id="loginPanel" class="panel">
       <form id="loginForm">
@@ -142,6 +152,28 @@
         </div>
       </div>
 
+      <div class="panel" id="portalPanel">
+        <h2 style="margin:0 0 6px;font-size:1.05rem">CCNA portal subscribers</h2>
+        <p style="margin:0 0 12px;font-size:0.85rem;color:var(--muted)">
+          Named users with 30-day portal access from Stripe (checkout email). Not live “who is online” — use GA4 Realtime for anonymous activity.
+        </p>
+        <div class="cards" id="portalSummaryCards"></div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Email</th>
+                <th>Access until (UTC)</th>
+                <th>Checkout session</th>
+              </tr>
+            </thead>
+            <tbody id="portalUsersBody"></tbody>
+          </table>
+        </div>
+        <p id="portalStatus" class="status" aria-live="polite"></p>
+      </div>
+
       <div class="panel">
         <h2 style="margin:0 0 10px;font-size:1.05rem">Daily trend</h2>
         <div style="overflow-x:auto">
@@ -159,7 +191,8 @@
 
     <p style="margin-top:20px;font-size:0.85rem;color:var(--muted)">
       <a href="/">← Home</a>
-      · Vercel: <code>GA_PROPERTY_ID</code> + <code>GA_SERVICE_ACCOUNT_JSON_B64</code> (run <code>scripts/format-ga-service-account-for-vercel.sh</code> locally).
+      · GA4: <code>GA_PROPERTY_ID</code> + <code>GA_SERVICE_ACCOUNT_JSON_B64</code> · Portal names: <code>STRIPE_SECRET_KEY</code>
+      (run <code>scripts/format-ga-service-account-for-vercel.sh</code> locally).
     </p>
   </div>
 
@@ -178,6 +211,9 @@
       var trendBody = document.getElementById("trendBody");
       var metaLine = document.getElementById("metaLine");
       var rangeEl = document.getElementById("range");
+      var portalSummaryCards = document.getElementById("portalSummaryCards");
+      var portalUsersBody = document.getElementById("portalUsersBody");
+      var portalStatus = document.getElementById("portalStatus");
 
       function token() {
         try {
@@ -276,50 +312,123 @@
           .join("");
       }
 
-      function loadReport() {
-        dashStatus.textContent = "Loading…";
-        dashStatus.className = "status";
-        fetch("/api/analytics-report", {
+      function fmtIsoUtc(iso) {
+        if (!iso) return "—";
+        try {
+          return new Date(iso).toISOString().replace("T", " ").replace(/\.\d{3}Z$/, " UTC");
+        } catch (_) {
+          return iso;
+        }
+      }
+
+      function renderPortalUsers(data) {
+        var active = data.active || [];
+        var expired = data.expired || [];
+        var counts = data.counts || {};
+        portalSummaryCards.innerHTML = [
+          ["Active access", fmt(counts.active)],
+          ["Expired", fmt(counts.expired)],
+          ["Total on file", fmt(counts.total)],
+        ]
+          .map(function (c) {
+            return (
+              '<div class="card"><div class="val">' +
+              c[1] +
+              '</div><div class="lbl">' +
+              c[0] +
+              "</div></div>"
+            );
+          })
+          .join("");
+
+        var rows = active.concat(expired);
+        portalUsersBody.innerHTML = rows
+          .map(function (r) {
+            var badge = r.active
+              ? '<span class="badge active">Active</span>'
+              : '<span class="badge expired">Expired</span>';
+            return (
+              "<tr><td>" +
+              badge +
+              '</td><td class="email">' +
+              r.email +
+              "</td><td>" +
+              fmtIsoUtc(r.accessExpiresAt) +
+              '</td><td class="path">' +
+              (r.checkoutSessionId || "—") +
+              "</td></tr>"
+            );
+          })
+          .join("");
+
+        var note = data.note || "";
+        if (data.scanTruncated) {
+          note += " Stripe customer scan hit the limit; some older subscribers may be missing.";
+        }
+        portalStatus.textContent = note;
+        portalStatus.className = "status ok";
+      }
+
+      function postJson(url, payload) {
+        return fetch(url, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token(),
           },
-          body: JSON.stringify({ range: rangeEl.value }),
-        })
-          .then(function (r) {
-            return r.json().then(function (j) {
-              return { ok: r.ok, body: j };
-            });
-          })
-          .then(function (res) {
-            if (!res.ok) {
-              if (res.body && res.body.error === "Unauthorized") {
+          body: JSON.stringify(payload || {}),
+        }).then(function (r) {
+          return r.json().then(function (j) {
+            return { ok: r.ok, body: j };
+          });
+        });
+      }
+
+      function loadReport() {
+        dashStatus.textContent = "Loading…";
+        dashStatus.className = "status";
+        portalStatus.textContent = "Loading portal subscribers…";
+        portalStatus.className = "status";
+
+        Promise.all([
+          postJson("/api/analytics-report", { range: rangeEl.value }),
+          postJson("/api/portal-users-report", {}),
+        ])
+          .then(function (results) {
+            var ga = results[0];
+            var portal = results[1];
+
+            if (!ga.ok) {
+              if (ga.body && ga.body.error === "Unauthorized") {
                 setToken("");
                 showDash(false);
               }
-              var msg = (res.body && res.body.error) || "Request failed";
-              if (res.body && res.body.hint) msg += " — " + res.body.hint;
-              if (res.body && res.body.diagnostics) {
-                var d = res.body.diagnostics;
-                msg +=
-                  " [propertyId=" +
-                  (d.hasPropertyId ? "ok" : "missing") +
-                  ", json=" +
-                  (d.jsonParseOk ? "ok" : d.hasJsonEnv ? "invalid" : "missing") +
-                  "]";
-              }
+              var msg = (ga.body && ga.body.error) || "GA report failed";
+              if (ga.body && ga.body.hint) msg += " — " + ga.body.hint;
               throw new Error(msg);
             }
-            renderSummary(res.body);
-            renderTopPages(res.body.topPages);
-            renderTrend(res.body.dailyTrend);
+
+            renderSummary(ga.body);
+            renderTopPages(ga.body.topPages);
+            renderTrend(ga.body.dailyTrend);
             dashStatus.textContent = "";
             dashStatus.className = "status ok";
+
+            if (!portal.ok) {
+              portalUsersBody.innerHTML = "";
+              portalSummaryCards.innerHTML = "";
+              var pmsg = (portal.body && portal.body.error) || "Portal list failed";
+              if (portal.body && portal.body.hint) pmsg += " — " + portal.body.hint;
+              portalStatus.textContent = pmsg;
+              portalStatus.className = "status err";
+              return;
+            }
+            renderPortalUsers(portal.body);
           })
           .catch(function (err) {
             dashStatus.textContent = err.message || "Failed to load report";
             dashStatus.className = "status err";
+            portalStatus.textContent = "";
           });
       }
 
