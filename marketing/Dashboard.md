@@ -4,12 +4,15 @@
 
 **Primary channel:** Google Ads (Search first).
 
+**New here?** Follow **[[How-to-Use-This-Vault]]** (step-by-step setup → launch → weekly rhythm).
+
 ---
 
 ## Quick links
 
 | Area | Note |
 |------|------|
+| **Step-by-step guide** | [[How-to-Use-This-Vault]] |
 | Master plan | [[01-Strategy/Marketing-Plan]] |
 | Who we sell to | [[01-Strategy/Positioning-and-ICP]] |
 | Campaign workspace | [[02-Campaigns/README]] |

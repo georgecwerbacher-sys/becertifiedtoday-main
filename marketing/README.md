@@ -13,7 +13,7 @@ Open this folder as an **Obsidian vault** (`File → Open folder as vault` → s
 | `05-Analytics` | GA4 ↔ Google Ads, UTM rules, KPIs |
 | `06-Content-Calendar` | Weekly reviews, creative tests |
 
-Start at **[[Dashboard]]**.
+Start at **[[Dashboard]]**, or follow **[[How-to-Use-This-Vault]]** for a full step-by-step workflow (setup → first campaigns → weekly reviews).
 
 ## Site integration
 

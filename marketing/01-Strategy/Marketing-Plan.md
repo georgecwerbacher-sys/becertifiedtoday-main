@@ -176,6 +176,7 @@ UTM rules: [[../05-Analytics/UTM-Conventions]]
 
 ## Related
 
+- [[../How-to-Use-This-Vault]] — step-by-step workflow for this vault
 - [[Positioning-and-ICP]]
 - [[../02-Campaigns/README]]
 - [[../04-Landing-Pages/Landing-Page-Map]]
