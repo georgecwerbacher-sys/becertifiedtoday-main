@@ -262,6 +262,96 @@
       outline: 2px solid var(--accent-border);
       outline-offset: 2px;
     }
+    .dnd-section {
+      margin-top: clamp(28px, 5vw, 40px);
+      padding: clamp(20px, 4vw, 28px);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    }
+    .dnd-section h2 {
+      margin: 0 0 8px;
+      font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .dnd-section-lead {
+      margin: 0 0 14px;
+      font-size: 0.92rem;
+      color: var(--muted);
+      max-width: 52rem;
+    }
+    .dnd-section-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .dnd-section-actions button,
+    .dnd-section-actions .dnd-portal-link {
+      font: inherit;
+      font-weight: 700;
+      font-size: 0.86rem;
+      border-radius: 10px;
+      padding: 10px 16px;
+      touch-action: manipulation;
+      cursor: pointer;
+    }
+    .dnd-section-actions button {
+      border: 1px solid var(--accent-border);
+      color: #f0f4fc;
+      background: linear-gradient(165deg, var(--accent-hover) 0%, var(--accent) 100%);
+    }
+    .dnd-section-actions button:hover {
+      filter: brightness(1.06);
+    }
+    .dnd-section-actions button:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 2px;
+    }
+    .dnd-portal-link {
+      text-decoration: none;
+      color: #b8d4ff;
+      border: 1px solid rgba(79, 132, 216, 0.45);
+      background: rgba(79, 132, 216, 0.12);
+    }
+    .dnd-portal-link:hover {
+      color: #e6edf3;
+      background: rgba(79, 132, 216, 0.22);
+    }
+    .dnd-all-wrap {
+      margin-top: 4px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(45, 59, 90, 0.85);
+    }
+    .dnd-all-summary {
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #a5c8ff;
+    }
+    .dnd-all-grid {
+      margin: 12px 0 0;
+      padding: 0 0 0 1.15rem;
+      list-style: disc;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 6px 14px;
+      max-height: min(50vh, 380px);
+      overflow-y: auto;
+    }
+    .dnd-all-grid a {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      line-height: 1.35;
+    }
+    .dnd-all-grid a:hover {
+      color: #c8daf8;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -330,8 +420,27 @@
           </article>
         </li>
       </ul>
+
+      <section class="dnd-section" id="ccna-drag-drop" aria-labelledby="ccna-dnd-title">
+        <h2 id="ccna-dnd-title">CCNA drag-and-drop</h2>
+        <p class="dnd-section-lead">
+          <strong id="ccna-dnd-count">97</strong> interactive matching exercises (AAA, IPv6, DNA Center, fiber, TCP/UDP, wireless, and more).
+          Start a shuffled <strong>Random</strong> or ordered <strong>Review</strong> session, or open any exercise below.
+        </p>
+        <div class="dnd-section-actions">
+          <button type="button" data-ccnadd25="random">Random</button>
+          <button type="button" data-ccnadd25="review">Review</button>
+          <a class="dnd-portal-link" href="/CCNA-Study/CCNA_Training_Portal.html#ccna-drag-drop">CCNA training portal</a>
+        </div>
+        <details class="dnd-all-wrap">
+          <summary class="dnd-all-summary">All drag-and-drop exercises</summary>
+          <ul class="dnd-all-grid" id="ccna-dnd-index-list" role="list"></ul>
+        </details>
+      </section>
     </main>
   </div>
+  <script src="/CCNA-Study/js/ccna-dnd-25-hub.js" defer></script>
+  <script src="/js/ccna-dnd-index-list.js" defer></script>
   <script>
     (function () {
       var KEY = "bct_training_path_portal_seen";

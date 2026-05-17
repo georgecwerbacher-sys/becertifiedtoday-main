@@ -4,30 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Drag and drop - AAA service statements</title>
+  <title>Drag and drop - copper vs single-mode fiber (set two)</title>
   <style>
     :root { color-scheme: light dark; font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
     body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b1020; color: #e6edf3; padding: 16px 16px calc(80px + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; }
-    .card { width: min(1140px, 100%); background: #121a2b; border: 1px solid #2d3b5a; border-radius: 14px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
-    h1 { margin: 0 0 8px; font-size: clamp(1rem, 2vw, 1.3rem); line-height: 1.35; }
-    .sub { margin: 0 0 14px; font-size: 0.9rem; color: #9fb0d0; line-height: 1.4; }
-    .layout { display: grid; grid-template-columns: minmax(300px, 1fr) minmax(360px, 1.15fr); gap: 14px; align-items: start; }
+    .card { width: min(1120px, 100%); background: #121a2b; border: 1px solid #2d3b5a; border-radius: 14px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+    h1 { margin: 0 0 14px; font-size: clamp(1rem, 2vw, 1.3rem); line-height: 1.35; }
+    .layout { display: grid; grid-template-columns: minmax(280px, 1fr) minmax(340px, 1.2fr); gap: 14px; align-items: start; }
     .panel { border: 1px solid #2c3f62; border-radius: 10px; padding: 12px; background: #1a253b; }
     .panel h2 { margin: 0 0 10px; font-size: 1rem; color: #f0c040; }
     .bank { display: flex; flex-direction: column; gap: 10px; min-height: 46px; }
-    .token { padding: 10px 12px; border-radius: 8px; border: 1px solid #6384ba; background: #cfe9ff; color: #10243f; font-weight: 700; font-size: 0.82rem; line-height: 1.38; cursor: grab; user-select: none; text-align: left; }
+    .token { padding: 10px 12px; border-radius: 8px; border: 1px solid #6384ba; background: #cfe9ff; color: #10243f; font-weight: 700; font-size: 0.86rem; line-height: 1.38; cursor: grab; user-select: none; text-align: left; }
     .token:active { cursor: grabbing; }
     .category-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
     .category-box { border: 2px solid rgba(232,140,160,.55); background: rgba(232,140,160,.1); border-radius: 12px; padding: 10px; }
     .category-title { margin: 0 0 8px; color: #1d293d; background: #ecebc1; border: 1px solid #b8b68c; border-radius: 8px; padding: 8px 10px; font-size: 1rem; font-weight: 700; text-align: center; }
-    .drop-slot { display: flex; min-height: 56px; padding: 6px 8px; border-radius: 8px; border: 1px dashed #d98a8a; background: #f7e8c8; color: #1d293d; align-items: center; justify-content: center; box-sizing: border-box; margin-top: 8px; }
+    .drop-slot { display: flex; min-height: 60px; padding: 6px 8px; border-radius: 8px; border: 1px dashed #d98a8a; background: #f7e8c8; color: #1d293d; align-items: center; justify-content: center; box-sizing: border-box; margin-top: 8px; }
     .drop-slot.over { border-style: solid; border-color: #4d89ff; }
     .drop-slot.correct { border-color: #1f7a58; background: #113e2d; color: #e6edf3; }
     .drop-slot.incorrect { border-color: #8c3434; background: #442020; color: #e6edf3; }
-    .drop-slot .token { width: 100%; font-size: 0.76rem; line-height: 1.25; }
+    .drop-slot .token { width: 100%; font-size: 0.78rem; line-height: 1.3; }
     .actions { margin-top: 14px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
     button { background: #254b8a; color: #e6edf3; border: 1px solid #3d6dbb; border-radius: 10px; padding: 10px 14px; font-weight: 700; cursor: pointer; font-family: inherit; font-size: .95rem; }
-    #result { font-weight: 700; color: #e6edf3; flex: 1 1 220px; min-width: 0; font-size: 0.86rem; line-height: 1.4; }
+    #result { font-weight: 700; color: #e6edf3; flex: 1 1 220px; min-width: 0; font-size: 0.88rem; line-height: 1.4; }
     @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
     .sim-nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10000; display: flex; justify-content: center; gap: 10px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); background: rgba(11,16,32,.94); border-top: 1px solid #2d3b5a; backdrop-filter: blur(10px); }
     .sim-nav-btn { text-decoration: none; background: #1a3d6e; border: 1px solid #3d6dbb; color: #e6edf3; border-radius: 10px; padding: 10px 18px; font-weight: 700; min-width: 5.5rem; text-align: center; box-sizing: border-box; }
@@ -38,36 +37,29 @@
 <body class="dragdrop-exercise">
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>Drag and drop the statement about AAA services from the left to the corresponding AAA services on the right.</h1>
+    <h1>Drag and drop the characteristic from the left onto the cable type on the right.</h1>
     <div class="layout">
       <div class="panel">
-        <h2>Statements</h2>
+        <h2>Characteristics</h2>
         <div id="bank" class="bank">
-          <div class="token" draggable="true" data-value="grant-ftp">It grants access to network assets, such as FTP servers</div>
-          <div class="token" draggable="true" data-value="restrict-cli">It restricts the CLI commands that a user is able to perform</div>
-          <div class="token" draggable="true" data-value="tacacs-validation">It performs user validation via TACACS+</div>
-          <div class="token" draggable="true" data-value="records-duration">It records the duration of each connection</div>
-          <div class="token" draggable="true" data-value="user-access-reporting">It supports User Access Reporting</div>
-          <div class="token" draggable="true" data-value="verifies-who">It verifies &ldquo;who you are&rdquo;</div>
+          <div class="token" draggable="true" data-value="poe-conduit">supplies conduit for PoE implementations</div>
+          <div class="token" draggable="true" data-value="dwdm-long">used for DWDM optical systems spanning long distances</div>
+          <div class="token" draggable="true" data-value="easy-tap">easy to tap into and obtain secure information</div>
+          <div class="token" draggable="true" data-value="core-9um">has a core diameter of 9 microns</div>
         </div>
       </div>
       <div class="panel">
-        <h2>AAA services</h2>
+        <h2>Cable types</h2>
         <div class="category-grid">
           <section class="category-box">
-            <h3 class="category-title">Authentication</h3>
-            <div class="drop-slot" data-target="authentication"></div>
-            <div class="drop-slot" data-target="authentication"></div>
+            <h3 class="category-title">copper</h3>
+            <div class="drop-slot" data-target="copper"></div>
+            <div class="drop-slot" data-target="copper"></div>
           </section>
           <section class="category-box">
-            <h3 class="category-title">Authorization</h3>
-            <div class="drop-slot" data-target="authorization"></div>
-            <div class="drop-slot" data-target="authorization"></div>
-          </section>
-          <section class="category-box">
-            <h3 class="category-title">Accounting</h3>
-            <div class="drop-slot" data-target="accounting"></div>
-            <div class="drop-slot" data-target="accounting"></div>
+            <h3 class="category-title">single mode fiber</h3>
+            <div class="drop-slot" data-target="singlemode"></div>
+            <div class="drop-slot" data-target="singlemode"></div>
           </section>
         </div>
       </div>
@@ -91,14 +83,12 @@
       var result = document.getElementById("result");
       var dragged = null, picked = null;
       var CORRECT_GROUP = {
-        "tacacs-validation": "authentication",
-        "verifies-who": "authentication",
-        "grant-ftp": "authorization",
-        "restrict-cli": "authorization",
-        "records-duration": "accounting",
-        "user-access-reporting": "accounting"
+        "poe-conduit": "copper",
+        "easy-tap": "copper",
+        "dwdm-long": "singlemode",
+        "core-9um": "singlemode"
       };
-      var FILL_ORDER = ["tacacs-validation", "verifies-who", "grant-ftp", "restrict-cli", "records-duration", "user-access-reporting"];
+      var FILL_ORDER = ["poe-conduit", "easy-tap", "dwdm-long", "core-9um"];
 
       function allSlots() { return document.querySelectorAll(".drop-slot[data-target]"); }
       function clearPick() { document.querySelectorAll(".token.is-picked").forEach(function(n){n.classList.remove("is-picked");}); picked = null; }
@@ -113,6 +103,7 @@
         var nodes = [].slice.call(bank.querySelectorAll(".token"));
         while (nodes.length) bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
       })();
+
       var mainEl = document.querySelector("main.card");
       mainEl.addEventListener("click", function (e) {
         var tok = e.target.closest(".token");
@@ -126,19 +117,28 @@
         if (slot && picked) { moveTokenToSlot(slot, picked); clearPick(); return; }
         if (bank.contains(e.target) && picked) { if (!bank.contains(picked)) bank.appendChild(picked); clearPick(); }
       });
+
       document.querySelectorAll(".token").forEach(function (token) {
         token.addEventListener("dragstart", function () { clearPick(); dragged = token; });
       });
       allSlots().forEach(function (slot) {
         slot.addEventListener("dragover", function (e) { e.preventDefault(); slot.classList.add("over"); });
         slot.addEventListener("dragleave", function () { slot.classList.remove("over"); });
-        slot.addEventListener("drop", function (e) { e.preventDefault(); slot.classList.remove("over"); if (!dragged) return; moveTokenToSlot(slot, dragged); dragged = null; });
+        slot.addEventListener("drop", function (e) {
+          e.preventDefault();
+          slot.classList.remove("over");
+          if (!dragged) return;
+          moveTokenToSlot(slot, dragged);
+          dragged = null;
+        });
       });
       bank.addEventListener("dragover", function (e) { e.preventDefault(); });
       bank.addEventListener("drop", function (e) { e.preventDefault(); if (dragged) bank.appendChild(dragged); dragged = null; });
+
       function takeFromBank(value) {
         return [].slice.call(bank.querySelectorAll(".token")).find(function (t) { return t.getAttribute("data-value") === value; });
       }
+
       checkBtn.addEventListener("click", function () {
         var allOk = true;
         allSlots().forEach(function (slot) {
@@ -152,9 +152,10 @@
         });
         if (bank.querySelectorAll(".token").length) allOk = false;
         result.textContent = allOk
-          ? "Correct. Authentication proves identity (including via TACACS+); authorization controls access to resources and command sets; accounting captures session facts and supports access reporting."
-          : "Incorrect. Sort statements by whether they prove identity, enforce permissions, or record/report activity, and use every slot.";
+          ? "Correct. Copper carries PoE power and data on twisted pairs and is vulnerable to tapping. Single-mode fiber has a ~9 µm core and supports long-haul DWDM optical systems."
+          : "Incorrect. Place all four characteristics: two under copper and two under single mode fiber, with an empty bank.";
       });
+
       showBtn.addEventListener("click", function () {
         clearPick();
         allSlots().forEach(function (slot) {
@@ -168,6 +169,7 @@
         });
         result.textContent = "Answer shown.";
       });
+
       resetBtn.addEventListener("click", function () {
         clearPick();
         allSlots().forEach(function (slot) {
