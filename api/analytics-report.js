@@ -11,6 +11,7 @@ import {
   fetchRealtimeActiveUsers,
   fetchTopPages,
   getAnalyticsDataClient,
+  getAnalyticsDiagnostics,
   getGoogleAnalyticsEnv,
   rangeFromPreset,
 } from "../server-lib/google-analytics.js";
@@ -52,11 +53,30 @@ export default async function handler(req, res) {
   }
 
   const env = getGoogleAnalyticsEnv();
+  const diagnostics = getAnalyticsDiagnostics();
   if (!analyticsApiReady(env)) {
+    const parts = [];
+    if (!diagnostics.hasPropertyId) parts.push("GA_PROPERTY_ID is missing or not numeric (use 538156526).");
+    if (!diagnostics.hasJsonEnv && !diagnostics.hasJsonB64Env && !diagnostics.hasSplitEnv) {
+      parts.push("No service account env vars set (GA_SERVICE_ACCOUNT_JSON, GA_SERVICE_ACCOUNT_JSON_B64, or split CLIENT_EMAIL + PRIVATE_KEY).");
+    } else if (!diagnostics.jsonParseOk) {
+      if (diagnostics.jsonLooksTruncated) {
+        parts.push(
+          "Service account value looks truncated (multiline paste). Run: ./scripts/format-ga-service-account-for-vercel.sh key.json — use GA_SERVICE_ACCOUNT_JSON_B64 on Vercel."
+        );
+      } else {
+        parts.push(
+          "Invalid service account JSON. Run ./scripts/format-ga-service-account-for-vercel.sh key.json locally, set GA_SERVICE_ACCOUNT_JSON_B64 (recommended) or a single-line GA_SERVICE_ACCOUNT_JSON, then vercel --prod."
+        );
+      }
+    } else if (!diagnostics.hasClientEmail || !diagnostics.hasPrivateKey) {
+      parts.push("Credentials are missing client_email or private_key.");
+    }
     return res.status(503).json({
       ok: false,
       error: "Google Analytics Data API is not configured",
-      hint: "Set GA_PROPERTY_ID and GA_SERVICE_ACCOUNT_JSON on Vercel. Grant the service account Viewer on the GA4 property.",
+      hint: parts.join(" ") || "Set GA_PROPERTY_ID and GA_SERVICE_ACCOUNT_JSON on Vercel, then redeploy.",
+      diagnostics,
     });
   }
 

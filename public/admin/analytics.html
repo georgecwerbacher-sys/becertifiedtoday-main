@@ -159,7 +159,7 @@
 
     <p style="margin-top:20px;font-size:0.85rem;color:var(--muted)">
       <a href="/">← Home</a>
-      · Configure <code>GA_MEASUREMENT_ID</code>, <code>GA_PROPERTY_ID</code>, and <code>GA_SERVICE_ACCOUNT_JSON</code> in Vercel.
+      · Vercel: <code>GA_PROPERTY_ID</code> + <code>GA_SERVICE_ACCOUNT_JSON_B64</code> (run <code>scripts/format-ga-service-account-for-vercel.sh</code> locally).
     </p>
   </div>
 
@@ -298,7 +298,18 @@
                 setToken("");
                 showDash(false);
               }
-              throw new Error((res.body && res.body.error) || "Request failed");
+              var msg = (res.body && res.body.error) || "Request failed";
+              if (res.body && res.body.hint) msg += " — " + res.body.hint;
+              if (res.body && res.body.diagnostics) {
+                var d = res.body.diagnostics;
+                msg +=
+                  " [propertyId=" +
+                  (d.hasPropertyId ? "ok" : "missing") +
+                  ", json=" +
+                  (d.jsonParseOk ? "ok" : d.hasJsonEnv ? "invalid" : "missing") +
+                  "]";
+              }
+              throw new Error(msg);
             }
             renderSummary(res.body);
             renderTopPages(res.body.topPages);
