@@ -217,3 +217,11 @@
   }
 })();
 
+/** Google tag (gtag.js) on CCNA pages without static head snippet */
+(function () {
+  "use strict";
+  var s = document.createElement("script");
+  s.src = "/js/install-google-tag.js";
+  (document.head || document.documentElement).appendChild(s);
+})();
+

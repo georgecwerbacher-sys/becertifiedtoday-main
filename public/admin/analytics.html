@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Analytics admin | Be Certified Today</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bg: #0b1020;
+      --surface: #121a2b;
+      --border: #2d3b5a;
+      --text: #e6edf3;
+      --muted: #9fb0cc;
+      --accent: #2f66bf;
+      --good: #3dd68c;
+      --bad: #f07178;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px clamp(16px, 4vw, 32px) 48px;
+    }
+    h1 { margin: 0 0 6px; font-size: 1.45rem; }
+    .lead { margin: 0 0 20px; color: var(--muted); font-size: 0.92rem; }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+    }
+    label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 6px; }
+    input, select, button {
+      font: inherit;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      background: #0f1729;
+      color: var(--text);
+    }
+    input { width: 100%; max-width: 320px; }
+    button {
+      background: var(--accent);
+      border-color: #4f84d8;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button:hover { filter: brightness(1.08); }
+    button.secondary {
+      background: transparent;
+      border-color: var(--border);
+    }
+    .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .card {
+      background: #0f1729;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .card .val { font-size: 1.5rem; font-weight: 800; }
+    .card .lbl { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    th { color: var(--muted); font-weight: 600; }
+    td.path { font-family: ui-monospace, Menlo, Consolas, monospace; word-break: break-all; }
+    .status { margin-top: 10px; font-size: 0.9rem; }
+    .status.err { color: var(--bad); }
+    .status.ok { color: var(--good); }
+    .hidden { display: none !important; }
+    a { color: #7eb6ff; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Site analytics</h1>
+    <p class="lead">Google Analytics 4 data for becertifiedtoday.com. Sign in with the admin password configured in Vercel.</p>
+
+    <section id="loginPanel" class="panel">
+      <form id="loginForm">
+        <label for="password">Admin password</label>
+        <div class="row">
+          <input id="password" name="password" type="password" autocomplete="current-password" required />
+          <button type="submit">Sign in</button>
+        </div>
+      </form>
+      <p id="loginStatus" class="status" aria-live="polite"></p>
+    </section>
+
+    <section id="dashPanel" class="hidden">
+      <div class="panel">
+        <div class="row">
+          <div>
+            <label for="range">Date range</label>
+            <select id="range">
+              <option value="today">Today</option>
+              <option value="7d" selected>Last 7 days</option>
+              <option value="28d">Last 28 days</option>
+              <option value="90d">Last 90 days</option>
+            </select>
+          </div>
+          <button type="button" id="refreshBtn">Refresh</button>
+          <button type="button" id="logoutBtn" class="secondary">Sign out</button>
+        </div>
+        <p id="metaLine" class="status ok" style="margin-top:12px"></p>
+        <div class="cards" id="summaryCards"></div>
+      </div>
+
+      <div class="panel">
+        <h2 style="margin:0 0 10px;font-size:1.05rem">Top pages</h2>
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr><th>Page path</th><th>Views</th><th>Users</th></tr>
+            </thead>
+            <tbody id="topPagesBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 style="margin:0 0 10px;font-size:1.05rem">Daily trend</h2>
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Users</th><th>Sessions</th><th>Page views</th></tr>
+            </thead>
+            <tbody id="trendBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <p id="dashStatus" class="status" aria-live="polite"></p>
+    </section>
+
+    <p style="margin-top:20px;font-size:0.85rem;color:var(--muted)">
+      <a href="/">← Home</a>
+      · Configure <code>GA_MEASUREMENT_ID</code>, <code>GA_PROPERTY_ID</code>, and <code>GA_SERVICE_ACCOUNT_JSON</code> in Vercel.
+    </p>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      var TOKEN_KEY = "bcc_admin_analytics_token";
+
+      var loginPanel = document.getElementById("loginPanel");
+      var dashPanel = document.getElementById("dashPanel");
+      var loginForm = document.getElementById("loginForm");
+      var loginStatus = document.getElementById("loginStatus");
+      var dashStatus = document.getElementById("dashStatus");
+      var summaryCards = document.getElementById("summaryCards");
+      var topPagesBody = document.getElementById("topPagesBody");
+      var trendBody = document.getElementById("trendBody");
+      var metaLine = document.getElementById("metaLine");
+      var rangeEl = document.getElementById("range");
+
+      function token() {
+        try {
+          return sessionStorage.getItem(TOKEN_KEY) || "";
+        } catch (_) {
+          return "";
+        }
+      }
+
+      function setToken(t) {
+        try {
+          if (t) sessionStorage.setItem(TOKEN_KEY, t);
+          else sessionStorage.removeItem(TOKEN_KEY);
+        } catch (_) {}
+      }
+
+      function showDash(on) {
+        loginPanel.classList.toggle("hidden", on);
+        dashPanel.classList.toggle("hidden", !on);
+      }
+
+      function fmt(n) {
+        return Number(n || 0).toLocaleString();
+      }
+
+      function fmtDuration(sec) {
+        var s = Math.round(Number(sec) || 0);
+        if (s < 60) return s + "s";
+        return Math.floor(s / 60) + "m " + (s % 60) + "s";
+      }
+
+      function renderSummary(data) {
+        var s = data.summary || {};
+        var cards = [
+          ["Active users", fmt(s.activeUsers)],
+          ["New users", fmt(s.newUsers)],
+          ["Sessions", fmt(s.sessions)],
+          ["Page views", fmt(s.screenPageViews)],
+          ["Realtime users", fmt(data.realtimeActiveUsers)],
+          ["Avg session", fmtDuration(s.averageSessionDurationSeconds)],
+          ["Engagement", ((Number(s.engagementRate) || 0) * 100).toFixed(1) + "%"],
+        ];
+        summaryCards.innerHTML = cards
+          .map(function (c) {
+            return (
+              '<div class="card"><div class="val">' +
+              c[1] +
+              '</div><div class="lbl">' +
+              c[0] +
+              "</div></div>"
+            );
+          })
+          .join("");
+        metaLine.textContent =
+          "Property " +
+          (data.propertyId || "—") +
+          " · Measurement " +
+          (data.measurementId || "—") +
+          " · Updated " +
+          (data.fetchedAt || "");
+      }
+
+      function renderTopPages(rows) {
+        topPagesBody.innerHTML = (rows || [])
+          .map(function (r) {
+            return (
+              "<tr><td class=\"path\">" +
+              r.pagePath +
+              "</td><td>" +
+              fmt(r.screenPageViews) +
+              "</td><td>" +
+              fmt(r.activeUsers) +
+              "</td></tr>"
+            );
+          })
+          .join("");
+      }
+
+      function renderTrend(rows) {
+        trendBody.innerHTML = (rows || [])
+          .map(function (r) {
+            var d = r.date || "";
+            if (d.length === 8) d = d.slice(0, 4) + "-" + d.slice(4, 6) + "-" + d.slice(6, 8);
+            return (
+              "<tr><td>" +
+              d +
+              "</td><td>" +
+              fmt(r.activeUsers) +
+              "</td><td>" +
+              fmt(r.sessions) +
+              "</td><td>" +
+              fmt(r.screenPageViews) +
+              "</td></tr>"
+            );
+          })
+          .join("");
+      }
+
+      function loadReport() {
+        dashStatus.textContent = "Loading…";
+        dashStatus.className = "status";
+        fetch("/api/analytics-report", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token(),
+          },
+          body: JSON.stringify({ range: rangeEl.value }),
+        })
+          .then(function (r) {
+            return r.json().then(function (j) {
+              return { ok: r.ok, body: j };
+            });
+          })
+          .then(function (res) {
+            if (!res.ok) {
+              if (res.body && res.body.error === "Unauthorized") {
+                setToken("");
+                showDash(false);
+              }
+              throw new Error((res.body && res.body.error) || "Request failed");
+            }
+            renderSummary(res.body);
+            renderTopPages(res.body.topPages);
+            renderTrend(res.body.dailyTrend);
+            dashStatus.textContent = "";
+            dashStatus.className = "status ok";
+          })
+          .catch(function (err) {
+            dashStatus.textContent = err.message || "Failed to load report";
+            dashStatus.className = "status err";
+          });
+      }
+
+      loginForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        loginStatus.textContent = "Signing in…";
+        loginStatus.className = "status";
+        fetch("/api/analytics-admin-login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password: document.getElementById("password").value }),
+        })
+          .then(function (r) {
+            return r.json().then(function (j) {
+              return { ok: r.ok, body: j };
+            });
+          })
+          .then(function (res) {
+            if (!res.ok) throw new Error((res.body && res.body.error) || "Login failed");
+            setToken(res.body.token);
+            document.getElementById("password").value = "";
+            showDash(true);
+            loginStatus.textContent = "";
+            loadReport();
+          })
+          .catch(function (err) {
+            loginStatus.textContent = err.message || "Login failed";
+            loginStatus.className = "status err";
+          });
+      });
+
+      document.getElementById("refreshBtn").addEventListener("click", loadReport);
+      document.getElementById("logoutBtn").addEventListener("click", function () {
+        setToken("");
+        showDash(false);
+      });
+      rangeEl.addEventListener("change", loadReport);
+
+      if (token()) {
+        showDash(true);
+        loadReport();
+      } else {
+        showDash(false);
+      }
+    })();
+  </script>
+</body>
+</html>
