@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC console connection functionality</title>
+  <title>CCNA — FlexConnect local switching (WLAN Advanced)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,17 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which functionality is provided by the console connection on a Cisco WLC?</h1>
+    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/wlc-flexconnect-local-switching-wlan-advanced-gui.png" alt="WLC WLAN Advanced tab: FlexConnect section with FlexConnect Local Switching checkbox among local auth, central DHCP, and profiling options." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>
+    <h1>Refer to the exhibit. An architect is managing a wireless network with APs from several branch offices connecting to the WLC in the data center. There is a new requirement for a single WLAN to process the client data traffic without sending it to the WLC. Which action must be taken to complete the request?</h1>
 
-    <label class="choice"><input type="radio" name="wlcconfn1" value="A" />A. secure In-band connectivity for device administration</label>
-    <label class="choice"><input type="radio" name="wlcconfn1" value="B" />B. out-of-band management</label>
-    <label class="choice"><input type="radio" name="wlcconfn1" value="C" />C. HTTP-based GUI connectivity</label>
-    <label class="choice"><input type="radio" name="wlcconfn1" value="D" />D. unencrypted in-band connectivity for file transfers</label>
+    <label class="choice"><input type="radio" name="wlcfcsw1" value="A" />A. Enable local HTTP profiling</label>
+    <label class="choice"><input type="radio" name="wlcfcsw1" value="B" />B. Enable FlexConnect Local Switching</label>
+    <label class="choice"><input type="radio" name="wlcfcsw1" value="C" />C. Enable local DHCP Profiling</label>
+    <label class="choice"><input type="radio" name="wlcfcsw1" value="D" />D. Enable Disassociation Imminent</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +332,14 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/backdoor-malware-unauthorized-access-definition.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-flexconnect-local-switching-wlan-advanced-gui.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-console-connection-out-of-band-management.html">Previous question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 The **console** port is **out-of-band** **serial** management for initial setup, recovery, and troubleshooting when **in-band** IP paths are unavailable. **In-band** administration uses the **management interface** (GUI/SSH/HTTPS) on the production network (**A** is wrong). **HTTP GUI** (**C**) is not provided over the **serial console**. **Unencrypted in-band file transfers** (**D**) does not describe the console role.";
+      var CORRECT_MSG = "Correct. B \u2014 **FlexConnect Local Switching** lets **branch** APs **switch client data locally** on the site LAN instead of tunneling all user traffic to the **central WLC**. **Local HTTP profiling** (**A**) and **local DHCP profiling** (**C**) identify clients; they do not change where data is switched. **Disassociation Imminent** (**D**) is an **802.11v** roaming aid, not local data switching.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +353,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="wlcconfn1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="wlcfcsw1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

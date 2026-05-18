@@ -39,7 +39,12 @@ def write_json(path: Path, payload: dict) -> None:
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
-def sorted_html_files(directory: Path) -> list[str]:
+def sorted_html_files(directory: Path, *, recursive: bool = False) -> list[str]:
+    if recursive:
+        return sorted(
+            p.relative_to(directory).as_posix()
+            for p in directory.rglob("*.html")
+        )
     return sorted(p.name for p in directory.glob("*.html"))
 
 
@@ -183,7 +188,7 @@ def build_tracker(objectives: dict, mapping: dict, files: list[str], map_path: P
 def main() -> None:
     objectives = load_json(OBJECTIVES_PATH)
     for content_type, cfg in CONTENT_TYPES.items():
-        files = sorted_html_files(cfg["dir"])
+        files = sorted_html_files(cfg["dir"], recursive=(content_type == "dnd"))
         mapping = ensure_map(cfg["map"], files)
         tracker = build_tracker(objectives, mapping, files, cfg["map"])
         write_json(cfg["tracker"], tracker)

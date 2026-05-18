@@ -27,7 +27,7 @@
   }
 
   function slugFromPath() {
-    var m = location.pathname.match(/\/CCNA_D_D\/([^/]+)\.html$/i);
+    var m = location.pathname.match(/\/CCNA_D_D\/(.+)\.html$/i);
     return m ? decodeURIComponent(m[1]) : "";
   }
 

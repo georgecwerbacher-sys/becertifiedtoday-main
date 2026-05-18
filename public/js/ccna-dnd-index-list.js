@@ -8,6 +8,7 @@
 
   function titleFromSlug(slug) {
     return slug
+      .replace(/^subnetting\//, "")
       .replace(/^dragdrop-/, "")
       .split("-")
       .map(function (w) {

@@ -9497,6 +9497,25 @@ R1(config-line)#login local""",
                 "unencrypted in-band connectivity for file transfers",
             ],
         },
+        {
+            "slug": "wlc-flexconnect-local-switching-wlan-advanced-gui",
+            "title": "CCNA — FlexConnect local switching (WLAN Advanced)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/wlc-flexconnect-local-switching-wlan-advanced-gui.png" alt="WLC WLAN Advanced tab: FlexConnect section with FlexConnect Local Switching checkbox among local auth, central DHCP, and profiling options." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. An architect is managing a wireless network with APs from several branch offices connecting to the WLC in the data center. There is a new requirement for a single WLAN to process the client data traffic without sending it to the WLC. Which action must be taken to complete the request?",
+            "name": "wlcfcsw1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **FlexConnect Local Switching** lets **branch** APs **switch client data locally** on the site LAN instead of tunneling all user traffic to the **central WLC**. **Local HTTP profiling** (**A**) and **local DHCP profiling** (**C**) identify clients; they do not change where data is switched. **Disassociation Imminent** (**D**) is an **802.11v** roaming aid, not local data switching.",
+            "choices": [
+                "Enable local HTTP profiling",
+                "Enable FlexConnect Local Switching",
+                "Enable local DHCP Profiling",
+                "Enable Disassociation Imminent",
+            ],
+        },
     ]
 
     prev = "vty-access-list-ssh-secure"

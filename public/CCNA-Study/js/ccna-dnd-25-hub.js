@@ -67,7 +67,6 @@
     "dragdrop-northbound-api-characteristics-unused-three",
     "dragdrop-networking-statements-by-type-v2",
     "dragdrop-networking-types-statements-unused",
-    "dragdrop-ospf-learned-prefixes-subnet-masks",
     "dragdrop-qos-terms-descriptions",
     "dragdrop-qos-traffic-types-delivery-mechanisms",
     "dragdrop-radius-tacacs-aaa-functions",
@@ -77,14 +76,11 @@
     "dragdrop-rest-http-verbs-api-operations",
     "dragdrop-rf-terms-to-statements",
     "dragdrop-route-ad-winner-multiprotocol-conditions",
-    "dragdrop-router1-masks-to-prefixes-unused-one",
     "dragdrop-security-program-elements-descriptions",
     "dragdrop-snmp-fault-management-functions",
     "dragdrop-snmp-components-to-descriptions",
     "dragdrop-snmp-verify-commands",
     "dragdrop-split-mac-autonomous-benefits",
-    "dragdrop-subnet-masks-to-prefixes-unused-one",
-    "dragdrop-subnet-masks-to-101013-prefixes-unused-two",
     "dragdrop-tcp-udp-best-effort-reliable",
     "dragdrop-tcp-udp-characteristics-set-two",
     "dragdrop-tcp-udp-characteristics-unused-one",
@@ -103,6 +99,19 @@
   ];
   var SLUGS = window.CCNA_DND_SLUGS;
 
+  /** Subnetting / VLSM mask–prefix matching (portal “Subnetting” box). */
+  window.CCNA_DND_SUBNETTING_SLUGS = [
+    "subnetting/dragdrop-subnet-masks-to-prefixes-unused-one",
+    "subnetting/dragdrop-subnet-masks-to-101013-prefixes-unused-two",
+    "subnetting/dragdrop-ospf-learned-prefixes-subnet-masks",
+    "subnetting/dragdrop-router1-masks-to-prefixes-unused-one",
+  ];
+
+  function slugPool(setId) {
+    if (setId === "subnetting") return window.CCNA_DND_SUBNETTING_SLUGS.slice();
+    return SLUGS.slice();
+  }
+
   function shuffle(arr) {
     var out = arr.slice();
     for (var i = out.length - 1; i > 0; i--) {
@@ -114,11 +123,14 @@
     return out;
   }
 
-  function start(mode) {
-    var order = shuffle(SLUGS);
+  function start(mode, setId) {
+    var pool = slugPool(setId);
+    if (!pool.length) return;
+    var order = mode === "review" ? pool.slice() : shuffle(pool);
     var first = order[0];
     var qs = mode === "review" ? "?mode=review" : "?mode=random";
     var session = { v: 1, mode: mode, order: order };
+    if (setId) session.set = setId;
     try {
       sessionStorage.setItem("ccnaDnd25", JSON.stringify(session));
     } catch (e) {}
@@ -129,7 +141,8 @@
     document.querySelectorAll("[data-ccnadd25]").forEach(function (el) {
       el.addEventListener("click", function () {
         var mode = el.getAttribute("data-ccnadd25");
-        if (mode === "random" || mode === "review") start(mode);
+        var setId = el.getAttribute("data-ccnadd25-set") || "";
+        if (mode === "random" || mode === "review") start(mode, setId || null);
       });
     });
   }

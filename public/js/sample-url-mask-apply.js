@@ -95,9 +95,18 @@
       } catch (e) {}
     }
     var path = pathRaw.toLowerCase();
-    var match = /\/([^/]+)\.html$/.exec(path);
-    if (!match) return null;
-    var fileName = decodeURIComponent(match[1]) + ".html";
+    var fileName = "";
+    var dndRel = /\/ccna_d_d\/(.+\.html)$/.exec(path);
+    var embedDndRel = /\/embed\/dnd\/(.+\.html)$/.exec(path);
+    if (dndRel) {
+      fileName = decodeURIComponent(dndRel[1]);
+    } else if (embedDndRel) {
+      fileName = decodeURIComponent(embedDndRel[1]);
+    } else {
+      var match = /\/([^/]+)\.html$/.exec(path);
+      if (!match) return null;
+      fileName = decodeURIComponent(match[1]) + ".html";
+    }
     for (var i = 0; i < MAP_BY_PATH.length; i++) {
       if (path.indexOf(MAP_BY_PATH[i].pathPart) !== -1) {
         return { fileName: fileName, mapUrl: MAP_BY_PATH[i].mapUrl };
