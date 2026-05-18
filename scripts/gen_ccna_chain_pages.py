@@ -9815,6 +9815,155 @@ copy run start</pre>
                 "SW1(config)#no cdp run\nSW1(config)#interface gigabitethernet1/0/1\nSW1(config-if)#lldp transmit\nSW1(config-if)#lldp receive",
             ],
         },
+        {
+            "slug": "wlc-guest-wlan-layer2-prep-web-auth-choose-two",
+            "title": "CCNA — Guest WLAN Layer 2 prep for web auth",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/wlc-guest-wlan-layer2-security-tab-exhibit.png" alt="WLC WLAN Security tab, Layer 2 sub-tab: Layer 2 Security WPA+WPA2, Security Type Enterprise, MAC Filtering enabled, WPA Policy and 802.1X-SHA1 enabled." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. A guest WLAN must be created that prompts the client for a username and password on the local web page of the WLC. Which two actions must be performed on the **Layer 2** tab before enabling the **Authentication** option on the **Layer 3** tab? (Choose two.)",
+            "name": "wlcguestl2",
+            "choose_two": True,
+            "correct": ["A", "D"],
+            "explain": "Correct. A and D \u2014 **Guest web authentication** (Layer 3) needs clients to associate with **open Layer 2** first, then redirect to the WLC splash page for credentials. Set **Layer 2 Security** to **None** and **uncheck MAC Filtering** before you enable **Authentication** on the **Layer 3** tab. **B** (**Personal**/PSK) is for WPA passphrase WLANs, not this web-login guest flow. **C** changes WPA ciphers but does not replace the Layer 2 open + no MAC filter requirement. **E** adjusts WPA/WPA2 policies while Layer 2 remains secured, which blocks the usual guest web-auth association model.",
+            "choices": [
+                "Uncheck the MAC Filtering option check box.",
+                "Set the Security Type option to Personal.",
+                "Change the WPA Encryption option from TKIP to CCMP128(AES).",
+                "Set the Layer 2 Security option to None.",
+                "Uncheck the WPA Policy option check box, and check the WPA2 Policy option check box.",
+            ],
+        },
+        {
+            "slug": "r1-static-host-10-10-2-1-via-r3-ospf-override",
+            "title": "CCNA — Static /32 to 10.10.2.1 via R3",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r1-static-host-10-10-2-1-via-r3-ospf-override-topology.png" alt="Topology: R1 to R2 (192.168.1.2) and R3 (192.168.1.4) on 192.168.1.0/24; both routers reach 10.10.2.0/24 with hosts 10.10.2.2 and 10.10.2.1." width="980" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route 10.10.2.1 output">
+        <pre>R1#show ip route 10.10.2.1
+Routing entry for 10.10.2.0/24
+  Known via "ospf 1", distance 110, metric 2, type intra area
+  Last update from 192.168.1.2 on GigabitEthernet0/0, 01:33:22 ago
+  Routing Descriptor Blocks:
+  * 192.168.1.2, from 10.10.2.1, 01:33:22 ago, via GigabitEthernet0/0
+      Route metric is 2, traffic share count is 1</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. Traffic from **R1** to the **10.10.2.0/24** subnet uses **192.168.1.2** as its next hop. A network engineer wants to update the **R1** configuration so that traffic with destination **10.10.2.1** passes through router **R3**, and all other traffic to the **10.10.2.0/24** subnet passes through **R2**. Which command must be used?",
+            "name": "r1st21021",
+            "correct": "D",
+            "explain": "Correct. D \u2014 The exhibit shows **10.10.2.0/24** learned by **OSPF** with administrative distance **110** via **192.168.1.2** (**R2**). To steer only **10.10.2.1** through **R3** (**192.168.1.4**), add a **more specific /32 static** with **AD 100** (lower than **110**): **`ip route 10.10.2.1 255.255.255.255 192.168.1.4 100`**. Other hosts in **10.10.2.0/24** still match the OSPF /24 via **R2**. **A** and **C** use **AD 115**, so OSPF remains preferred. **B** installs a /24 static that would redirect the entire subnet to **R3**, not only **10.10.2.1**.",
+            "choices": [
+                "ip route 10.10.2.1 255.255.255.255 192.168.1.4 115",
+                "ip route 10.10.2.0 255.255.255.0 192.168.1.4 100",
+                "ip route 10.10.2.0 255.255.255.0 192.168.1.4 115",
+                "ip route 10.10.2.1 255.255.255.255 192.168.1.4 100",
+            ],
+            "mono": True,
+        },
+        {
+            "slug": "pc-internet-tcp80-www-cisco-subnet-mask-exhibit",
+            "title": "CCNA — PC internet access (subnet mask)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/pc-internet-tcp80-www-cisco-topology.png" alt="Topology: Internet to router 10.2.2.1/27, switch, and PC 10.2.2.2." width="980" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-terminal-white" role="region" aria-label="Windows ipconfig /all output">
+        <pre>C:\\&gt;ipconfig /all
+
+Ethernet adapter Ethernet:
+
+   Connection-specific DNS Suffix  . :
+   Physical Address. . . . . . . . . : F8-75-A4-3B-AB-4F
+   Link-local IPv6 Address . . . . . : fe80::644a:b01:3e5f:ae6%14(Preferred)
+   IPv4 Address. . . . . . . . . . . : 10.2.2.2(Preferred)
+   Subnet Mask . . . . . . . . . . . : 255.255.255.192
+   Default Gateway . . . . . . . . . : 10.2.2.1
+   DHCP Server . . . . . . . . . . . : 192.168.1.15
+   DNS Servers . . . . . . . . . . . : 8.8.8.8
+   NetBIOS over Tcpip. . . . . . . . : Enabled</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. A newly configured PC fails to connect to the internet using TCP port 80 to **www.cisco.com**. Which setting must be modified for the connection to work?",
+            "name": "pcinf801",
+            "correct": "A",
+            "explain": "Correct. A \u2014 The topology labels the router LAN as **10.2.2.1/27** (mask **255.255.255.224**). The PC\u2019s **ipconfig** shows **255.255.255.192** (/26), so the host is not using the same prefix length as the segment. Change the **subnet mask** to **255.255.255.224** so **10.2.2.2** and default gateway **10.2.2.1** share the correct **10.2.2.0/27** subnet; then off-net traffic (DNS to **8.8.8.8**, then HTTP to **www.cisco.com**) can flow. **B** **8.8.8.8** is a valid public DNS server once Layer 3 to the gateway works. **C** default gateway **10.2.2.1** already matches the router in the diagram. **D** the listed **DHCP server** address does not fix the mask mismatch on this **10.2.2.0/27** LAN.",
+            "choices": [
+                "Subnet Mask",
+                "DNS Servers",
+                "Default Gateway",
+                "DHCP Server",
+            ],
+        },
+        {
+            "slug": "etherchannel-sw2-port-channel1-min-links-exhibit",
+            "title": "CCNA — Port-channel min-links on SW2",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/sw2-port-channel1-min-links-lacp-topology.png" alt="Topology: PC1 on SW1, server on SW2, SW1-SW2-SW3 triangle with LACP Port Channel 1 (Ge0/0-2) between SW1 and SW2." width="980" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. **PC1** regularly sends **1800 Mbps** of traffic to the server. A network engineer needs to configure the EtherChannel to disable **Port Channel 1** between **SW1** and **SW2** when the **Ge0/0** and **Ge0/1** ports on **SW2** go down. Which configuration must the engineer apply to the switch?",
+            "name": "sw2pomin1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 **`port-channel min-links 2`** on **interface port-channel 1** keeps the bundle up only while at least **two** member links are active. If **Ge0/0** and **Ge0/1** fail, only **Ge0/2** remains (about **1 Gbps**), which is below the **1800 Mbps** need and below the minimum; **Port Channel 1** is disabled so traffic can use alternate paths (for example via **SW3**). **A** **`lacp port-priority`** affects which ports are preferred in negotiation, not minimum active links. **B** **`lacp max-bundle`** caps how many ports may join the bundle, not when the channel shuts down. **C** **`lacp system-priority`** is a global LACP system ID preference, unrelated to minimum link count on **Po1**.",
+            "choices": [
+                """SW2#configure terminal
+SW2(config)# interface port-channel 1
+SW2(config-if)#lacp port-priority 32000""",
+                """SW2#configure terminal
+SW2(config)#interface port-channel 1
+SW2(config-if)#lacp max-bundle 2""",
+                """SW2#configure terminal
+SW2(config)#lacp system-priority 32000""",
+                """SW2#configure terminal
+SW2(config)#interface port-channel 1
+SW2(config-if)#port-channel min-links 2""",
+            ],
+        },
+        {
+            "slug": "newsw-trunk-native-vlan2-sw1-fa0-exhibit",
+            "title": "CCNA — NewSW trunk to SW2",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/newsw-trunk-native-vlan2-topology.png" alt="Topology: SW1 and SW2 with PCs in VLAN 2; NewSW below SW2 with VLAN 10 hosts; NewSW f0/0 uplink to SW2." width="980" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="SW1 show interface output">
+        <pre>SW1#show interface
+interface FastEthernet0/0
+ switchport access vlan 2
+ switchport mode access</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. A network administrator must connect **NewSW** to **SW2** on interface **FastEthernet0/0**. Hosts in **VLAN 2** must stay reachable, and **VLAN 10** must also cross the link. Which configuration must be applied on **NewSW**?",
+            "name": "newswtrk1",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A \u2014 The topology shows existing hosts in **VLAN 2** and new hosts in **VLAN 10** on **NewSW**. Configure **trunk** mode on **NewSW** **f0/0** with **`switchport trunk allowed vlan 2,10`** and **`switchport trunk native vlan 2`** so **VLAN 2** stays reachable across the network while **VLAN 10** is added. **B** allows only **VLAN 10** and sets **native VLAN 10**, breaking **VLAN 2** reachability. **C** and **D** use **`switchport mode access`** with trunk **allowed/native** commands, which is an invalid combination; trunk settings apply only in trunk mode.",
+            "choices": [
+                """NewSW(config)#interface f0/0
+NewSW(config-if)#switchport mode trunk
+NewSW(config-if)#switchport trunk allowed vlan 2,10
+NewSW(config-if)#switchport trunk native vlan 2""",
+                """NewSW(config)#interface f0/0
+NewSW(config-if)#switchport mode trunk
+NewSW(config-if)#switchport trunk allowed vlan 10
+NewSW(config-if)#switchport trunk native vlan 10""",
+                """NewSW(config)#interface f0/0
+NewSW(config-if)#switchport mode access
+NewSW(config-if)#switchport trunk allowed vlan 2,10
+NewSW(config-if)#switchport trunk native vlan 10""",
+                """NewSW(config)#interface f0/0
+NewSW(config-if)#switchport mode access
+NewSW(config-if)#switchport trunk allowed vlan 2,10
+NewSW(config-if)#switchport trunk native vlan 2""",
+            ],
+        },
     ]
 
     prev = "vty-access-list-ssh-secure"

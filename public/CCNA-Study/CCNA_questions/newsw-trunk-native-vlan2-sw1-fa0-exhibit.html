@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — SW1 VoIP LLDP on Gi1/0/1 only</title>
+  <title>CCNA — NewSW trunk to SW2</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -315,70 +315,63 @@
   <main class="card">
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/sw1-gi101-non-cisco-ip-phone-lldp-topology.png" alt="Topology: Cisco SW1 GigabitEthernet1/0/1 to non-Cisco IP phone with laptop connected behind the phone." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/newsw-trunk-native-vlan2-topology.png" alt="Topology: SW1 and SW2 with PCs in VLAN 2; NewSW below SW2 with VLAN 10 hosts; NewSW f0/0 uplink to SW2." width="980" decoding="async" loading="lazy" />
       </figure>
-      <div class="exhibit-router-cli" role="region" aria-label="SW1 partial configuration">
-        <pre>SW1#
-vlan 10
- name Voice
-vlan 11
- name Data
-cdp run
-interface GigabitEthernet1/0/1
- switchport access vlan 11
- switchport mode access
- switchport voice vlan 10
- spanning-tree portfast
- no shut
-end
-copy run start</pre>
+      <div class="exhibit-router-cli" role="region" aria-label="SW1 show interface output">
+        <pre>SW1#show interface
+interface FastEthernet0/0
+ switchport access vlan 2
+ switchport mode access</pre>
       </div>
     </div>
-    <h1>Refer to the exhibit. A multivendor network exists and the company is implementing VoIP over the network for the first time. Which configuration is needed to implement the neighbor discovery protocol on the interface and allow it to remain off for the remaining interfaces?</h1>
+    <h1>Refer to the exhibit. A network administrator must connect **NewSW** to **SW2** on interface **FastEthernet0/0**. Hosts in **VLAN 2** must stay reachable, and **VLAN 10** must also cross the link. Which configuration must be applied on **NewSW**?</h1>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="sw1lldp1" value="A" aria-label="Select answer option A" />
+        <input type="radio" name="newswtrk1" value="A" aria-label="Select answer option A" />
         <span class="cli-router-choice-badge" aria-hidden="true">A</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">A. SW1(config)#no cdp enable
-SW1(config)#interface gigabitethernet1/0/1
-SW1(config-if)#cdp run</pre>
+      <pre class="cli-router-console">A. NewSW(config)#interface f0/0
+NewSW(config-if)#switchport mode trunk
+NewSW(config-if)#switchport trunk allowed vlan 2,10
+NewSW(config-if)#switchport trunk native vlan 2</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="sw1lldp1" value="B" aria-label="Select answer option B" />
+        <input type="radio" name="newswtrk1" value="B" aria-label="Select answer option B" />
         <span class="cli-router-choice-badge" aria-hidden="true">B</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">B. SW1(config)#lldp enable
-SW1(config)#interface gigabitethernet1/0/1
-SW1(config-if)#lldp run</pre>
+      <pre class="cli-router-console">B. NewSW(config)#interface f0/0
+NewSW(config-if)#switchport mode trunk
+NewSW(config-if)#switchport trunk allowed vlan 10
+NewSW(config-if)#switchport trunk native vlan 10</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="sw1lldp1" value="C" aria-label="Select answer option C" />
+        <input type="radio" name="newswtrk1" value="C" aria-label="Select answer option C" />
         <span class="cli-router-choice-badge" aria-hidden="true">C</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">C. SW1(config)#lldp run
-SW1(config)#interface gigabitethernet1/0/1
-SW1(config-if)#lldp enable</pre>
+      <pre class="cli-router-console">C. NewSW(config)#interface f0/0
+NewSW(config-if)#switchport mode access
+NewSW(config-if)#switchport trunk allowed vlan 2,10
+NewSW(config-if)#switchport trunk native vlan 10</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="sw1lldp1" value="D" aria-label="Select answer option D" />
+        <input type="radio" name="newswtrk1" value="D" aria-label="Select answer option D" />
         <span class="cli-router-choice-badge" aria-hidden="true">D</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">D. SW1(config)#no cdp run
-SW1(config)#interface gigabitethernet1/0/1
-SW1(config-if)#lldp transmit
-SW1(config-if)#lldp receive</pre>
+      <pre class="cli-router-console">D. NewSW(config)#interface f0/0
+NewSW(config-if)#switchport mode access
+NewSW(config-if)#switchport trunk allowed vlan 2,10
+NewSW(config-if)#switchport trunk native vlan 2</pre>
     </label>
 
 
@@ -389,15 +382,14 @@ SW1(config-if)#lldp receive</pre>
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/router1-pat-1921681-pool-209165202129.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-guest-wlan-layer2-prep-web-auth-choose-two.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/etherchannel-sw2-port-channel1-min-links-exhibit.html">Previous question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **LLDP** is the **IEEE** neighbor discovery protocol used in **multivendor** networks. **`no cdp run`** disables Cisco-proprietary **CDP** globally (replacing the exhibit\u2019s **`cdp run`**). On **GigabitEthernet1/0/1** only, **`lldp transmit`** and **`lldp receive`** enable LLDP without turning it on for every other interface the way global **`lldp run`** would. **A** keeps **CDP** and misapplies **`cdp run`** under the interface. **B** and **C** use invalid or global LLDP commands (**`lldp enable`**, **`lldp run`**) that do not match the per-interface requirement.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 The topology shows existing hosts in **VLAN 2** and new hosts in **VLAN 10** on **NewSW**. Configure **trunk** mode on **NewSW** **f0/0** with **`switchport trunk allowed vlan 2,10`** and **`switchport trunk native vlan 2`** so **VLAN 2** stays reachable across the network while **VLAN 10** is added. **B** allows only **VLAN 10** and sets **native VLAN 10**, breaking **VLAN 2** reachability. **C** and **D** use **`switchport mode access`** with trunk **allowed/native** commands, which is an invalid combination; trunk settings apply only in trunk mode.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -411,7 +403,7 @@ SW1(config-if)#lldp receive</pre>
         }
       }
 
-      document.querySelectorAll('input[name="sw1lldp1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="newswtrk1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
