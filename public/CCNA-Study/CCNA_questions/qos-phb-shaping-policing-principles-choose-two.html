@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — QoS PHB shaping and policing (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,49 +312,61 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-  <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <main class="card">
+    <h1 class="choose-two-stem">Which two principles must be considered when using **per-hop behavior** in **QoS**? (Choose two.)</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="checkbox" name="qosphb1" value="A" />A. Policing is not supported on subinterfaces.</label>
+    <label class="choice"><input type="checkbox" name="qosphb1" value="B" />B. Shaping and rate limiting have the same effect.</label>
+    <label class="choice"><input type="checkbox" name="qosphb1" value="C" />C. Shaping drops excessive traffic without adding traffic delay.</label>
+    <label class="choice"><input type="checkbox" name="qosphb1" value="D" />D. Shaping levels out traffic bursts by delaying excess traffic.</label>
+    <label class="choice"><input type="checkbox" name="qosphb1" value="E" />E. Policing is performed in the inbound and outbound directions.</label>
 
     <div class="actions">
+      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/lightweight-ap-web-management-wlc-ip.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/tcp-udp-connection-establishment-differentiator.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = ["D", "E"];
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="qosphb1"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = CORRECT_MSG;
+          answerBox.textContent = "Correct. D and E \u2014 **Shaping** smooths traffic by **buffering** bursts and **delaying** excess traffic so the average rate stays within policy. **Policing** can be applied in the **inbound** and **outbound** directions to enforce rates (drop, remark, or transmit conforming traffic). **A** is incorrect: **policing** is supported on **subinterfaces** on many Cisco platforms. **B** is incorrect: **shaping** defers excess traffic; **policing** (rate limiting) typically **drops** or **remarks** over-limit traffic\u2014they are not the same effect. **C** is incorrect: **shaping** adds **delay** by queuing excess traffic; immediate discard without deferral describes **policing**, not shaping.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>

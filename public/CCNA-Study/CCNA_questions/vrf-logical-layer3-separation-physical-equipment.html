@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — VRF Layer 3 separation</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <h1>Which technology allows for **logical Layer 3 separation** on **physical network equipment**?</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="radio" name="vrfsep1" value="A" />A. Virtual Switch System</label>
+    <label class="choice"><input type="radio" name="vrfsep1" value="B" />B. Virtual Route Forwarding</label>
+    <label class="choice"><input type="radio" name="vrfsep1" value="C" />C. IPsec Transport Mode</label>
+    <label class="choice"><input type="radio" name="vrfsep1" value="D" />D. Time Division Multiplexer</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ap-bridge-mode-connect-campus-building-segments.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/syslog-trap-informational-exclude-debug-flood.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 **Virtual Route Forwarding (VRF)** creates multiple **independent Layer 3 routing tables** (routing instances) on the **same physical router or switch**, so traffic and prefixes in one VRF stay separated from another (for example tenant, department, or management vs production). **A** (**Virtual Switch System**) pairs switches for **Layer 2** redundancy/control-plane simplification, not VRF-style L3 separation. **C** (**IPsec transport mode**) encrypts **IP payloads** between peers; it does not provide multiple **logical L3 domains** on one box. **D** (**TDM**) multiplexes channels in time on **physical circuits** (legacy WAN), not logical L3 separation on modern routers.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="vrfsep1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

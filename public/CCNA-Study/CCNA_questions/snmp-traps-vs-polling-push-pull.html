@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — SNMP traps vs polling</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <h1>What is the difference between **SNMP traps** and **SNMP polling**?</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="radio" name="snmptrap1" value="A" />A. SNMP traps are initiated using a push model at the network device, and SNMP polling is initiated at the server.</label>
+    <label class="choice"><input type="radio" name="snmptrap1" value="B" />B. SNMP traps are used for proactive monitoring, and SNMP polling is used for reactive monitoring.</label>
+    <label class="choice"><input type="radio" name="snmptrap1" value="C" />C. SNMP traps are initiated by the network management system, and network devices initiate SNMP polling.</label>
+    <label class="choice"><input type="radio" name="snmptrap1" value="D" />D. SNMP traps send periodic updates via the MIB, and SNMP polling sends data on demand.</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/network-automation-reduce-downtime-templates-testing.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/syslog-level-7-debug-monitoring.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 **SNMP traps** use a **push** model: the **agent** (network device) sends an **asynchronous** notification to the **NMS** when an event occurs. **SNMP polling** uses a **pull** model: the **NMS** (server) **initiates** **GET** requests on a schedule to query MIB objects. **B** reverses proactive/reactive: **polling** is often used for **ongoing** monitoring, while **traps** are **event-driven** alerts. **C** reverses who initiates each method. **D** misstates behavior: **polling** is typically **periodic** from the server; **traps** are **event-based**, not \u201cperiodic MIB updates\u201d from the device in the way described.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="snmptrap1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

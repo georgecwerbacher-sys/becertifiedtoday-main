@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — WLC basic config next step</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <h1>A network engineer starts to implement a new **wireless LAN** by configuring the **authentication server** and creating the **dynamic interface**. What must be performed **next** to complete the **basic configuration**?</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="radio" name="wlcbasic1" value="A" />A. Install the management interface and add the management IP.</label>
+    <label class="choice"><input type="radio" name="wlcbasic1" value="B" />B. Configure high availability and redundancy for the access points.</label>
+    <label class="choice"><input type="radio" name="wlcbasic1" value="C" />C. Enable Telnet and RADIUS access on the management interface.</label>
+    <label class="choice"><input type="radio" name="wlcbasic1" value="D" />D. Create the new WLAN and bind the dynamic interface to it.</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/mitigate-sniffed-admin-password-mfa.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ml-network-security-real-time-threat-detection.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT_MSG = "Correct. D \u2014 After **AAA/RADIUS** and a **dynamic interface** (client VLAN/subnet mapping) exist, the next **basic** step is to **create the WLAN** (SSID/profile) and **bind** that WLAN to the **dynamic interface** so clients use the correct subnet and policies. **A** (**management interface** and IP) is normally configured **earlier** for WLC/AP reachability, not after dynamic interface as the immediate next step here. **B** (**AP high availability**) is an **advanced** design task, not the next basic WLAN build step. **C** (**Telnet** on management) is poor practice; secure management uses **SSH/HTTPS**, and it is not the step that completes WLAN service delivery.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="wlcbasic1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — MFA with OTP and smartphone</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <h1>Which security element uses a combination of **one-time passwords**, a **login name**, and a **personal smartphone**?</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="radio" name="mfaotp1" value="A" />A. software-defined segmentation</label>
+    <label class="choice"><input type="radio" name="mfaotp1" value="B" />B. multifactor authentication</label>
+    <label class="choice"><input type="radio" name="mfaotp1" value="C" />C. attribute-based access control</label>
+    <label class="choice"><input type="radio" name="mfaotp1" value="D" />D. rule-based access control</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/virtualization-multiple-os-single-physical-server.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/predictive-ai-load-balancing-traffic-spikes.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 **Multifactor authentication (MFA)** combines **different factor types**. A **login name** with a password/PIN is typically **something you know**; **one-time passwords** delivered to or generated on a **personal smartphone** (authenticator app or SMS OTP) are **something you have**. **A** (**software-defined segmentation**) enforces **network/policy isolation**, not user login factors. **C** (**attribute-based access control**) grants access from **attributes/policies**, not this OTP-plus-phone pattern. **D** (**rule-based access control**) uses **static rules** (for example ACLs), not MFA.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="mfaotp1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — Default AD by protocol (exhibit, choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,49 +312,83 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-  <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <main class="card">
+    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="show ip route CLI output">
+        <pre>#show ip route
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+   10.0.0.0/8 is variably subnetted, 15 subnets, 2 masks
+O    10.0.12.0/24 [110/2] via 10.0.14.1, 00:17:46, GigabitEthernet0/2
+C    10.0.14.0/24 is directly connected, GigabitEthernet0/2
+L    10.0.14.4/32 is directly connected, GigabitEthernet0/2
+O    10.0.23.0/24 [110/2] via 10.0.34.3, 00:17:46, GigabitEthernet0/0
+C    10.0.34.0/24 is directly connected, GigabitEthernet0/0
+L    10.0.34.4/32 is directly connected, GigabitEthernet0/0
+C    10.0.45.0/24 is directly connected, GigabitEthernet0/1
+L    10.0.45.4/32 is directly connected, GigabitEthernet0/1
+O    10.0.254.1/32 [110/2] via 10.0.14.1, 00:17:46, GigabitEthernet0/2
+D    10.255.2.4/24 [90/1] via 10.0.45.5, 00:00:13, GigabitEthernet0/1
+O    10.255.1.1/32 [110/2] via 10.0.14.1, 00:17:46, GigabitEthernet0/0
+O    10.255.2.2/32 [110/3] via 10.0.34.3, 00:17:46, GigabitEthernet0/0
+                 [110/3] via 10.0.14.1, 00:17:46, GigabitEthernet0/2
+O    10.255.3.3/32 [110/2] via 10.0.34.3, 00:17:46, GigabitEthernet0/0
+C    10.255.3.4/32 is directly connected, Loopback0
+D    10.255.5.5/32 [90/1] via 10.0.45.5, 00:00:13, GigabitEthernet0/1</pre>
+      </div>
+    </div>
+    <h1 class="choose-two-stem">Refer to the exhibit. Which routes are configured with their **default administrative distances**? (Choose two)</h1>
+
+    <label class="choice"><input type="checkbox" name="defad1" value="A" />A. EIGRP</label>
+    <label class="choice"><input type="checkbox" name="defad1" value="B" />B. OSPF</label>
+    <label class="choice"><input type="checkbox" name="defad1" value="C" />C. RIP</label>
+    <label class="choice"><input type="checkbox" name="defad1" value="D" />D. Local</label>
 
     <div class="actions">
+      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/aa-show-ip-route-192-168-20-1-static-ad.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wpa3-implementation-security-protocol-gcmp.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = ["A", "B"];
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="defad1"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = CORRECT_MSG;
+          answerBox.textContent = "Correct. A and B \u2014 In **`[AD/metric]`**, compare the first value to each protocol\u2019s default: **EIGRP (internal) 90**, **OSPF 110**, **RIP 120**. **O** routes (for example **10.0.12.0/24**, **10.255.2.2/32**) show **110**, so **OSPF** is at its default AD. Routes to **10.255.2.4/24** and **10.255.5.5/32** show **90** (code **D** in a full table), the default for **internal EIGRP**. **C (RIP)** is wrong: no entries use **120**, and **RIP\u2019s** default AD is **120**, not **90**. **D (Local)** is wrong: **L**/**C** routes are **directly connected** (AD **0**); they are not dynamic protocol routes displayed with an IGP default AD in this sense.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>

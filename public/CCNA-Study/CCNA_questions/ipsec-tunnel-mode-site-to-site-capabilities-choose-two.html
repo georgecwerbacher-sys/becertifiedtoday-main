@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — IPsec tunnel mode capabilities (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,49 +312,61 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-  <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <main class="card">
+    <h1 class="choose-two-stem">What are the two main capabilities of **tunnel mode** in **IPsec site-to-site VPNs**? (Choose two.)</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="checkbox" name="ipsectun1" value="A" />A. It authenticates the data field in original packet.</label>
+    <label class="choice"><input type="checkbox" name="ipsectun1" value="B" />B. It encrypts the complete IP packet with the data field.</label>
+    <label class="choice"><input type="checkbox" name="ipsectun1" value="C" />C. It secures only the data field in the packet.</label>
+    <label class="choice"><input type="checkbox" name="ipsectun1" value="D" />D. It transmits with the original packet header visible.</label>
+    <label class="choice"><input type="checkbox" name="ipsectun1" value="E" />E. It inserts a new IPsec header with new IP address.</label>
 
     <div class="actions">
+      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/dna-center-lifecycle-management-patches-updates.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ai-network-traffic-analysis-anomaly-detection.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = ["B", "E"];
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="ipsectun1"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = CORRECT_MSG;
+          answerBox.textContent = "Correct. B and E \u2014 **Tunnel mode** encrypts the **complete original IP packet** (original **IP header** and **payload/data**) and encapsulates it inside a **new outer IP packet** with a **new IP header** (VPN **gateway** addresses visible on the wire). **C** and **D** describe **transport mode** (only the **payload** is protected; the **original IP header** stays visible). **A** is incomplete: **ESP** can provide **integrity/authentication**, but the defining **tunnel-mode** pair here is **full-packet encryption** plus **new outer encapsulation**, not \u201cauthenticate only the data field\u201d as the main capability statement.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>

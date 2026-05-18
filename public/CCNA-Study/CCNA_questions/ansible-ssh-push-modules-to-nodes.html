@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — Ansible module transport</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <h1>Which protocol does **Ansible** use to **push modules** to nodes in a network?</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="radio" name="ansssh1" value="A" />A. SSH</label>
+    <label class="choice"><input type="radio" name="ansssh1" value="B" />B. Kerberos</label>
+    <label class="choice"><input type="radio" name="ansssh1" value="C" />C. SNMP</label>
+    <label class="choice"><input type="radio" name="ansssh1" value="D" />D. Telnet</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/authentication-biometric-physical-attribute.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/dns-iterative-query-contact-servers.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 **Ansible** connects to managed nodes over **SSH** (default for Linux and many network devices) and runs **modules** remotely; modules are copied and executed on the target, with results returned to the control node. **Kerberos** (**B**) can integrate with authentication systems but is not the transport Ansible uses to deliver modules. **SNMP** (**C**) is for **monitoring/management** queries, not Ansible automation execution. **Telnet** (**D**) is **cleartext** and is not Ansible\u2019s default module-delivery protocol.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="ansssh1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

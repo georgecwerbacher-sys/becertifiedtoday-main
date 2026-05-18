@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — Internal EIGRP prefix (exhibit)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,30 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route">
+      <pre>R1# show ip route | begin gateway
+Gateway of last resort is not set
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+     172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks
+C       172.16.1.0/24 is directly connected, FastEthernet0/0
+L       172.16.1.3/32 is directly connected, FastEthernet0/0
+EX      172.16.2.0/24 [170/2] via 207.165.200.250, 00:00:25, Serial0/0/0
+O       192.168.1.0/24 [110/84437] via 207.165.200.254, 00:00:17, Serial0/0/1
+D       192.168.2.0/24 [90/184437] via 207.165.200.254, 00:00:15, Serial0/0/1
+E1      192.168.3.0/24 [110/1851437] via 207.165.200.254, 00:00:19, Serial0/0/1
+
+     207.165.200.0/24 is variably subnetted, 4 subnets, 2 masks
+C       207.165.200.248/30 is directly connected, Serial0/0/0
+L       207.165.200.249/32 is directly connected, Serial0/0/0
+C       207.165.200.252/30 is directly connected, Serial0/0/1
+L       207.165.200.253/32 is directly connected, Serial0/0/1</pre>
+    </div>
+    <h1>Which prefix did router **R1** learn from **internal EIGRP**?</h1>
+
+    <label class="choice"><input type="radio" name="r1eigrpd1" value="A" />A. 192.168.1.0/24</label>
+    <label class="choice"><input type="radio" name="r1eigrpd1" value="B" />B. 192.168.3.0/24</label>
+    <label class="choice"><input type="radio" name="r1eigrpd1" value="C" />C. 192.168.2.0/24</label>
+    <label class="choice"><input type="radio" name="r1eigrpd1" value="D" />D. 172.16.1.0/24</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +345,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-192-168-12-24-isis-ospf-rip-eigrp-installed.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/nat-pool-10-10-0-0-source-three-global-addresses.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C \u2014 **Internal EIGRP** routes are marked **D** in **`show ip route`**. **D 192.168.2.0/24 [90/184437]** is the internal EIGRP entry (**AD 90**). **A** (**O**) is **OSPF**. **B** (**E1**) is **OSPF external type 1**, not EIGRP. **D** (**172.16.1.0/24**) is **connected** (**C**), not learned by a routing protocol. **EX** on **172.16.2.0/24** is **external EIGRP** (**AD 170**), distinct from internal **D**.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +367,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="r1eigrpd1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — R4 least preferred dynamic metric (exhibit)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,35 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="R4 show ip route CLI output">
+        <pre>R4#show ip route
+Gateway of last resort is not set
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+   10.0.0.0/8 is variably subnetted, 14 subnets, 2 masks
+O    10.0.12.0/24 [100/2] via 10.0.24.2, 00:02:27, GigabitEthernet0/1
+D    10.0.13.0/24 [90/3072] via 10.0.34.3, 00:00:19, GigabitEthernet0/0
+C    10.0.24.0/24 is directly connected, GigabitEthernet0/1
+L    10.0.24.4/32 is directly connected, GigabitEthernet0/1
+C    10.0.34.0/24 is directly connected, GigabitEthernet0/0
+L    10.0.34.4/32 is directly connected, GigabitEthernet0/0
+C    10.0.45.0/24 is directly connected, GigabitEthernet0/2
+L    10.0.45.4/32 is directly connected, GigabitEthernet0/2
+R    10.2.0.0/24 [120/1] via 10.0.45.5, 00:00:08, GigabitEthernet0/2
+O    10.255.1.1/32 [100/3] via 10.0.34.3, 00:02:27, GigabitEthernet0/0
+                   [100/3] via 10.0.24.2, 00:02:27, GigabitEthernet0/1
+D    10.255.2.2/32 [90/130816] via 10.0.24.2, 00:01:46, GigabitEthernet0/1
+O    10.255.3.3/32 [100/2] via 10.0.34.3, 00:02:27, GigabitEthernet0/0
+C    10.255.4.4/32 is directly connected, Loopback0
+R    10.255.5.5/32 [120/1] via 10.0.45.5, 00:00:08, GigabitEthernet0/2</pre>
+      </div>
+    </div>
+    <h1>Refer to the exhibit. Of the routes learned with **dynamic routing protocols**, which has the **least preferred** metric?</h1>
+
+    <label class="choice"><input type="radio" name="r4met1" value="A" />A. Local</label>
+    <label class="choice"><input type="radio" name="r4met1" value="B" />B. EIGRP</label>
+    <label class="choice"><input type="radio" name="r4met1" value="C" />C. OSPF</label>
+    <label class="choice"><input type="radio" name="r4met1" value="D" />D. RIP</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +350,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/mfa-complex-password-totp-minimum-security.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-forward-192-168-18-16-longest-prefix-gi10.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT_MSG = "Correct. D \u2014 Among common **IGPs**, **RIP** uses the **highest default administrative distance (120)**, so it is the **least preferred** when another protocol also offers a path. **EIGRP** (**B**, **D** routes, default **AD 90**) and **OSPF** (**C**, **O** routes, default **AD 110**) are preferred ahead of RIP. **A** (**Local**) is not learned by a **dynamic** routing protocol (**L**/**C** are connected/local). Within one protocol, a **higher** route **metric** is less preferred, but this item compares **protocols**; **RIP\u2019s AD 120** makes it least preferred overall.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +372,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="r4met1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

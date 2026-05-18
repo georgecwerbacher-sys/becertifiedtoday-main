@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — API keys and rate limiting</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <h1>Why are **API keys** used to enforce **rate limiting**?</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="radio" name="apikey1" value="A" />A. to uniquely identify clients to monitor their usage patterns</label>
+    <label class="choice"><input type="radio" name="apikey1" value="B" />B. to encrypt data to prevent excessive usage</label>
+    <label class="choice"><input type="radio" name="apikey1" value="C" />C. to contain embedded permissions that automatically expire</label>
+    <label class="choice"><input type="radio" name="apikey1" value="D" />D. to track the geographical location of each request</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-encrypted-mobility-tunnel-default-condition.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wan-point-to-point-topology-behaviors-choose-two.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 An **API key** identifies each **client/application** so the platform can **meter requests**, apply **per-client quotas**, and enforce **rate limits** based on observed **usage patterns**. **B** is wrong: **encryption** for data in transit is provided by mechanisms such as **HTTPS/TLS**, not the rate-limiting role of API keys. **C** describes **token expiration** or **scoped credentials**, not why keys enable throttling. **D** is wrong: **geolocation** may be logged separately but is not the primary reason API keys support rate limiting.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="apikey1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — Lightweight AP web management IP</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <h1>Which IP address is used when an administrator must open a **web-based management session** with a **lightweight AP**?</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="radio" name="lapweb1" value="A" />A. WLC IP</label>
+    <label class="choice"><input type="radio" name="lapweb1" value="B" />B. gateway IP</label>
+    <label class="choice"><input type="radio" name="lapweb1" value="C" />C. autonomous AP IP</label>
+    <label class="choice"><input type="radio" name="lapweb1" value="D" />D. ACS IP</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ipsec-remote-access-vpn-encrypted-tunnel-purpose.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/qos-phb-shaping-policing-principles-choose-two.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 A **lightweight AP** is **WLC-managed**; administrators do not use a standalone **autonomous AP** web GUI on the AP itself. **Web-based management** of lightweight APs and their WLANs is done through the **WLC** (typically its **management interface** IP) via HTTP/HTTPS. **B** (gateway) is a client default route, not the WLC management endpoint. **C** applies to **autonomous** APs with local management, not **split-MAC** lightweight APs. **D** (**ACS**/AAA server) handles **authentication/accounting**, not routine WLC/AP configuration GUI access.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="lapweb1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

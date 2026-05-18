@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — R3 forward 10.10.10.14 (exhibit)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,37 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="R3 show ip route CLI output">
+        <pre>R3#show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP, D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area,
+      N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2,
+      E1 - OSPF external type 1, E2 - OSPF external type 2, i - IS-IS,
+      su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS
+      inter area, * - candidate default, I - per-user static route, o - ODR,
+      P - periodic downloaded static route, H - NHRP, I - LISP,
+      a - application route, + - replicated route, % - next hop override,
+      p - overrides from PfR
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+Gateway of last resort is not set
+
+     10.0.0.0/8 is variably subnetted, 8 subnets, 4 masks
+C    10.10.10.16/28 is directly connected, FastEthernet 0/0
+L    10.10.10.17/32 is directly connected, FastEthernet 0/0
+C    10.10.10.8/29 is directly connected, FastEthernet 0/1
+L    10.10.10.9/32 is directly connected, FastEthernet 0/1
+C    10.10.10.4/30 is directly connected, FastEthernet 0/2
+L    10.10.10.5/32 is directly connected, FastEthernet 0/2
+C    10.10.10.0/30 is directly connected, Serial 0/0
+L    10.10.10.1/32 is directly connected, Serial 0/0</pre>
+      </div>
+    </div>
+    <h1>Refer to the exhibit. Which interface does a packet take to reach the destination address of **10.10.10.14**?</h1>
+
+    <label class="choice"><input type="radio" name="r3rt14" value="A" />A. Serial 0/0</label>
+    <label class="choice"><input type="radio" name="r3rt14" value="B" />B. FastEthernet 0/1</label>
+    <label class="choice"><input type="radio" name="r3rt14" value="C" />C. FastEthernet 0/0</label>
+    <label class="choice"><input type="radio" name="r3rt14" value="D" />D. FastEthernet 0/2</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +352,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/macos-ifconfig-en0-default-gateway-first-usable.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/layer2-switch-link-bundling-characteristic.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 **Longest-prefix match** selects **10.10.10.8/29** (connected on **FastEthernet 0/1**). That subnet covers hosts **10.10.10.9\u201310.10.10.14** (broadcast **10.10.10.15**). **10.10.10.16/28** on **Fa0/0** starts at **.16** and does not include **.14**. **10.10.10.4/30** (**Fa0/2**) covers **.4\u2013.7** only. **10.10.10.0/30** (**Serial 0/0**) covers **.0\u2013.3** only.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +374,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="r3rt14"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

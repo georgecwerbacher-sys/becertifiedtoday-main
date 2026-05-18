@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — SDN security vs traditional</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <h1>What is an advantage of using SDN versus traditional networking when it comes to security?</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="radio" name="sdnsec1" value="A" />A. It creates a unified control point making security policies consistent across all devices</label>
+    <label class="choice"><input type="radio" name="sdnsec1" value="B" />B. It exposes an API to configure locally per device for security policies</label>
+    <label class="choice"><input type="radio" name="sdnsec1" value="C" />C. Security is managed near the perimeter of the network with firewalls, VPNs, and IPS</label>
+    <label class="choice"><input type="radio" name="sdnsec1" value="D" />D. Devices communicate with each other to establish a security policy</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/etherchannel-connect-switches-increase-bandwidth.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/radius-tacacs-separate-auth-authorization.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 **SDN** centralizes the **control plane** in a **controller**, so security policies (ACLs, segmentation, flow rules) can be defined once and applied **consistently** across infrastructure devices via **southbound** APIs instead of box-by-box CLI drift. **B** misstates the model: APIs exist, but the benefit is **centralized** policy orchestration, not configuring each device **locally** in isolation. **C** describes traditional **perimeter-centric** security, not an inherent SDN advantage. **D** describes **distributed** device negotiation, which is closer to traditional autonomous devices than SDN\u2019s centralized policy model.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="sdnsec1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — WPA3-Personal mandatory PMF</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <h1>Which feature is **mandatory** when configuring a new **SSID** for a wireless network running **WPA3-Personal** mode?</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="radio" name="wpa3pmf1" value="A" />A. Opportunistic Wireless Encryption</label>
+    <label class="choice"><input type="radio" name="wpa3pmf1" value="B" />B. Protected Management Frame</label>
+    <label class="choice"><input type="radio" name="wpa3pmf1" value="C" />C. Enhanced Open</label>
+    <label class="choice"><input type="radio" name="wpa3pmf1" value="D" />D. Fast Transition</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/flexconnect-flex-local-switching-trunk-pruned-vlans.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/digest-authentication-challenge-response-plaintext.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 **WPA3** (including **WPA3-Personal** with **SAE**) requires **Protected Management Frames (802.11w / PMF)** to protect management traffic; controllers typically set **PMF** to **required/mandatory** on WPA3 WLANs. **A** (**OWE**) is **Enhanced Open**, not WPA3-Personal. **C** (**Enhanced Open**) is the service name for **OWE**, not a WPA3-Personal requirement. **D** (**Fast Transition**, **802.11r**) is **optional** for faster roaming and is often **disabled** on WPA3-Personal designs; it is not mandatory.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="wpa3pmf1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

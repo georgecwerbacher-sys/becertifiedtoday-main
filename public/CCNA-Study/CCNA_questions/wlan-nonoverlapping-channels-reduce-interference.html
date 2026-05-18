@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — Role of nonoverlapping channels</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <h1>What is the role of **nonoverlapping channels** in a **wireless environment**?</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="radio" name="wlanov1" value="A" />A. to reduce interference</label>
+    <label class="choice"><input type="radio" name="wlanov1" value="B" />B. to allow for channel bonding</label>
+    <label class="choice"><input type="radio" name="wlanov1" value="C" />C. to enable faster roaming</label>
+    <label class="choice"><input type="radio" name="wlanov1" value="D" />D. to increase bandwidth</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/remote-access-vpn-employee-public-wifi.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-line3-load-balancer-entry-is-object.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 Assigning **nonoverlapping** channels (for example **1, 6, and 11** in **2.4 GHz**) keeps adjacent **AP** radios from stepping on each other\u2019s spectrum, **reducing co-channel and adjacent-channel interference** in dense WLANs. **B** (**channel bonding**) combines **adjacent** channels for wider bandwidth (for example **40 MHz**), which is a different technique than spacing APs on nonoverlapping centers. **C** (**faster roaming**) depends on mechanisms such as **802.11r/k/v**, not channel numbering alone. **D** is misleading: nonoverlapping planning improves **airtime quality**; raw **throughput** gains come mainly from **wider channels**, **MIMO**, and **higher PHY rates**, not merely picking 1/6/11.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="wlanov1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

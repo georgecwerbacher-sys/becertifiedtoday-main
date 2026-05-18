@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — TCP vs UDP connection model</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <h1>What differentiates the **TCP** and **UDP** protocols?</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="radio" name="tcpudpdiff1" value="A" />A. TCP tracks segments being transmitted or received by assigning segment numbers, and UDP adjusts data flow according to network conditions.</label>
+    <label class="choice"><input type="radio" name="tcpudpdiff1" value="B" />B. TCP establishes a connection with the device on the other end before transferring, and UDP transfers without establishing a connection.</label>
+    <label class="choice"><input type="radio" name="tcpudpdiff1" value="C" />C. TCP sends data at a constant rate with error checking on upper protocol layers, and UDP provides error-checking and sequencing.</label>
+    <label class="choice"><input type="radio" name="tcpudpdiff1" value="D" />D. TCP immediately transmits data without waiting for a handshake, and UDP awaits a response from the receiver before sending additional data.</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/qos-phb-shaping-policing-principles-choose-two.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/hsrp-functionality-virtual-mac-lan-redundancy.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 **TCP** is **connection-oriented**: it runs a **three-way handshake** and establishes a session with the peer before transferring application data, then uses **sequencing** and **acknowledgments** for reliability. **UDP** is **connectionless**: it sends **datagrams** without setup (best-effort delivery). **A** reverses roles (**TCP** uses sequence numbers; **UDP** does not adjust flow like TCP congestion control). **C** misstates both: **TCP** does not send at a fixed constant rate, and **UDP** has **no** transport-layer sequencing or reliability. **D** reverses behavior: **TCP** waits for the handshake; **UDP** does not wait for receiver responses before sending more datagrams.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="tcpudpdiff1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

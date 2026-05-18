@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — Digest Authentication challenge-response</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <h1>Which feature of **Digest Authentication** prevents credentials from being sent in **plaintext**?</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="radio" name="digest1" value="A" />A. SSL/TLS encryption</label>
+    <label class="choice"><input type="radio" name="digest1" value="B" />B. Challenge-response mechanism</label>
+    <label class="choice"><input type="radio" name="digest1" value="C" />C. Token-based authorization</label>
+    <label class="choice"><input type="radio" name="digest1" value="D" />D. Public key infrastructure</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wpa3-personal-ssid-mandatory-pmf.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/trunk-port-carries-multiple-vlans.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 **HTTP Digest Authentication** uses a **challenge-response** exchange: the server sends a **nonce** (challenge) and the client replies with a **hash** derived from the username, realm, password, nonce, and related parameters. The **password itself is not sent** in cleartext. **A** (**SSL/TLS**) encrypts the transport but is a separate layer, not the defining Digest Authentication mechanism. **C** (**token-based authorization**) describes access tokens after authentication, not Digest\u2019s credential protection. **D** (**PKI**) uses **certificates/keys** for trust and encryption/signing, not Digest\u2019s hash-based challenge model.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="digest1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

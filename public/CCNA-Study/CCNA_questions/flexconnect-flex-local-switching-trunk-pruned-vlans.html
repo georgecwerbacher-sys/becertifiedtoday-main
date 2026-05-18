@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — FlexConnect local switching switch port</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <h1>Which **switch port** configuration must be configured when connected to an AP running in **FlexConnect** mode, and the WLANs use **flex local switching**?</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="radio" name="flexsw1" value="A" />A. access port with one VLAN</label>
+    <label class="choice"><input type="radio" name="flexsw1" value="B" />B. trunk port with pruned VLANs</label>
+    <label class="choice"><input type="radio" name="flexsw1" value="C" />C. Layer 3 port with an IP address</label>
+    <label class="choice"><input type="radio" name="flexsw1" value="D" />D. tagged port with MAC Filtering enabled</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/mfa-main-capability-identity-two-factors.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wpa3-personal-ssid-mandatory-pmf.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 **FlexConnect local switching** bridges client traffic onto **multiple wired VLANs** at the AP. The switch port must be an **802.1Q trunk** carrying those VLANs (often **pruned** to only the VLANs in use). **A** (**access**, one VLAN) fits **centralized/CAPWAP** tunneling or a single-VLAN design, not multiple locally switched WLAN VLANs. **C** (**Layer 3** switch port) is not the standard AP uplink model. **D** (**tagged port with MAC filtering**) is not the required FlexConnect local-switching port configuration.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="flexsw1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

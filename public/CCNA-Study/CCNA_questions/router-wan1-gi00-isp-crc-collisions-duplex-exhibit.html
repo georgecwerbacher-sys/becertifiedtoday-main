@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — WAN Gi0/0 CRC and collisions</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,45 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="Router-WAN1 show interface g0/0 CLI output">
+        <pre>Router-WAN1#show interface g0/0
+GigabitEthernet0/0 is up, line protocol is up
+  Hardware is CSR NIC, address is 5000.0001.0000 (bia 5000.0001.0000)
+  Internet address is 192.168.0.0/31
+  MTU 1500 bytes, BW 1000000 Kbit/sec, DLY 10 usec,
+    reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full Duplex, 1000Mbps, link type is auto, media type is NIC
+  output flow-control is unsupported, input flow-control is unsupported
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input never, output 00:00:03, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/375/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size /max)
+  5 minute input rate 1000 bits/sec, 0 packets/sec
+  5 minute output rate 2000 bits/sec, 1 packets/sec
+    0 packets input, 0 bytes, 0 no buffer
+    Received 110 broadcasts (0 IP multicasts)
+    0 runts, 0 giants, 0 throttles
+    100 input errors, 100 CRC, 100 frame, 0 overrun, 0 ignored
+    0 watchdog, 0 multicast, 0 pause input
+    260 packets output, 89070 bytes, 0 underruns
+    Output 0 broadcasts (0 IP multicasts)
+    0 output errors, 100 collisions, 0 interface resets
+    0 unknown protocol drops
+    0 babbles, 0 late collision, 0 deferred
+    1 lost carrier, 0 no carrier, 0 pause output</pre>
+      </div>
+    </div>
+    <h1>Refer to the exhibit. **Router-WAN1** has a new connection via **Gi0/0** to the **ISP**. Users running web applications indicate that connectivity to the internet is **unstable**. What is causing the interface issue?</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="radio" name="wan1gi1" value="A" />A. Broadcast packets are rejected because ARP timeout is enabled</label>
+    <label class="choice"><input type="radio" name="wan1gi1" value="B" />B. The receive buffer is full due to a broadcast storm</label>
+    <label class="choice"><input type="radio" name="wan1gi1" value="C" />C. Frames are discarded due to a half-duplex negotiation</label>
+    <label class="choice"><input type="radio" name="wan1gi1" value="D" />D. Small frames less than 64 bytes are rejected due to size</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +360,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/branch-router-ntp-server-sync-head-office.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/forward-100-100-100-100-longest-match-exhibit.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C \u2014 The port reports **Full Duplex** locally, but **100 CRC/frame input errors** and **100 collisions** on a full-duplex Ethernet link are a classic **duplex mismatch** signature (the **ISP** side or autonegotiation may be **half duplex** while this router believes it is full duplex). That corrupts frames and causes unstable application connectivity. **A** is wrong: **ARP timeout** does not explain **CRC** errors and **collisions**. **B** is wrong: there is no broadcast storm pattern (low broadcast count, no input queue drops). **D** is wrong: **runts** (undersized frames) are **0**.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +382,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="wan1gi1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

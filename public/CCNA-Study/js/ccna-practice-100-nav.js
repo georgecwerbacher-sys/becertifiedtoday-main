@@ -230,8 +230,12 @@
     var bankId = session.bank || "1";
     var n = parseInt(String(bankId), 10);
     if (!n || n < 1) n = 1;
-    var start = (n - 1) * 100;
-    var bankSlice = allSlugs.slice(start, Math.min(start + 100, allSlugs.length));
+    var bankSize =
+      window.CCNA_PRACTICE_100 && window.CCNA_PRACTICE_100.BANK_SIZE
+        ? window.CCNA_PRACTICE_100.BANK_SIZE
+        : 100;
+    var start = (n - 1) * bankSize;
+    var bankSlice = allSlugs.slice(start, Math.min(start + bankSize, allSlugs.length));
     var inBank = {};
     for (var bi = 0; bi < bankSlice.length; bi++) inBank[bankSlice[bi]] = true;
 

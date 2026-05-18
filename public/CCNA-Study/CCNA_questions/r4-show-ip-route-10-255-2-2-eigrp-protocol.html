@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — R4 route 10.255.2.2 protocol (exhibit)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,35 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="R4 show ip route CLI output">
+        <pre>R4#show ip route
+Gateway of last resort is not set
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+   10.0.0.0/8 is variably subnetted, 14 subnets, 2 masks
+   10.0.12.0/24 [100/2] via 10.0.24.2, 00:02:27, GigabitEthernet0/1
+   10.0.13.0/24 [90/3072] via 10.0.34.3, 00:00:19, GigabitEthernet0/0
+   10.0.24.0/24 is directly connected, GigabitEthernet0/1
+   10.0.24.4/32 is directly connected, GigabitEthernet0/1
+   10.0.34.0/24 is directly connected, GigabitEthernet0/0
+   10.0.34.4/32 is directly connected, GigabitEthernet0/0
+   10.0.45.0/24 is directly connected, GigabitEthernet0/2
+   10.0.45.4/32 is directly connected, GigabitEthernet0/2
+   10.2.0.0/24 [90/1] via 10.0.45.5, 00:00:08, GigabitEthernet0/2
+   10.255.1.1/32 [100/3] via 10.0.34.3, 00:02:27, GigabitEthernet0/0
+                 [100/3] via 10.0.24.2, 00:02:27, GigabitEthernet0/1
+   10.255.2.2/32 [90/130816] via 10.0.24.2, 00:14:46, GigabitEthernet0/1
+   10.255.3.3/32 [100/2] via 10.0.34.3, 00:02:27, GigabitEthernet0/0
+   10.255.4.4/32 is directly connected, Loopback0
+   10.255.5.5/32 [90/1] via 10.0.45.5, 00:00:08, GigabitEthernet0/2</pre>
+      </div>
+    </div>
+    <h1>Refer to the exhibit. Considering **default routing protocol configurations** were used, which routing protocol is used to learn the **10.255.2.2/32** route?</h1>
+
+    <label class="choice"><input type="radio" name="r4rt222" value="A" />A. EIGRP</label>
+    <label class="choice"><input type="radio" name="r4rt222" value="B" />B. BGP</label>
+    <label class="choice"><input type="radio" name="r4rt222" value="C" />C. RIP</label>
+    <label class="choice"><input type="radio" name="r4rt222" value="D" />D. OSPF</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +350,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/rest-http-verbs-create-resource-choose-two.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/production-network-600-servers-subnet-slash22.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 The entry **10.255.2.2/32 [90/130816]** uses **administrative distance 90**, the default for **internal EIGRP** (code **D** in a full table). The second number is the **EIGRP composite metric**. **OSPF** defaults to **110**; **RIP** to **120**; **BGP** uses **20** (eBGP) or **200** (iBGP), not **90**. Other routes in the exhibit show **90** (EIGRP) or **100** (for example static/floating paths), but **10.255.2.2/32** is learned via **EIGRP**.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +372,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="r4rt222"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — WLAN architecture facts (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,49 +312,61 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-  <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <main class="card">
+    <h1 class="choose-two-stem">A network architect planning a new **Wi-Fi** network must decide between **autonomous**, **cloud-based**, and **split MAC** architectures. Which **two** facts should the architect consider? (Choose two.)</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="checkbox" name="wlanarch1" value="A" />A. Lightweight access points are solely used by split MAC architectures.</label>
+    <label class="choice"><input type="checkbox" name="wlanarch1" value="B" />B. Cloud-based architectures uniquely use the CAPWAP protocol to communicate between access points and clients.</label>
+    <label class="choice"><input type="checkbox" name="wlanarch1" value="C" />C. Each of the three architectures must use WLCs to manage their access points.</label>
+    <label class="choice"><input type="checkbox" name="wlanarch1" value="D" />D. All three architectures use access points to manage the wireless devices connected to the wired infrastructure.</label>
+    <label class="choice"><input type="checkbox" name="wlanarch1" value="E" />E. Autonomous architectures exclusively use tunneling protocols to manage access points remotely.</label>
 
     <div class="actions">
+      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/split-mac-definition-data-link-layer.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ap-bridge-mode-point-to-multipoint-hub.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = ["A", "D"];
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="wlanarch1"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = CORRECT_MSG;
+          answerBox.textContent = "Correct. A and D \u2014 **Lightweight** (thin) APs are used in **split-MAC** (controller-based) designs; **autonomous** APs run the full WLAN stack locally, and many **cloud-based** offerings (for example **Meraki-style** management) use **autonomous** APs with **cloud** control rather than lightweight split-MAC APs. **All three** architectures still use **APs** as the wireless edge that connects **clients** to the **wired** network. **B** is wrong: **CAPWAP** is between **AP and controller**, not **AP and clients**, and it is not unique to cloud. **C** is wrong: **autonomous** does **not** require a **WLC**. **E** is wrong: **autonomous** APs are managed **locally** (CLI/GUI), not exclusively through **tunneling** protocols to a controller.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>

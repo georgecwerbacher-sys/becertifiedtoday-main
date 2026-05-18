@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — Default gateway AD (exhibit)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,27 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <div class="exhibit-router-cli" role="region" aria-label="Router show ip route">
+      <pre>Router#show ip route
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+Gateway of last resort is 172.17.0.2 to network 0.0.0.0
+
+S*    0.0.0.0/0 [1/0] via 172.17.0.2
+10.0.0.0/8 is variably subnetted, 412 subnets, 10 masks
+O E2  10.0.0.0/16 [110/10] via 10.2.24.1, 7w0d, Vlan82
+O     10.2.17.0/24 [110/6] via 10.2.24.1, 6w4d, vlan82
+O     10.2.17.0/24 [110/6] via 10.2.24.1, 6w4d, vlan82
+O     10.2.23.0/24 [110/6] via 10.2.24.1, 7w0d, vlan82
+--output suppressed--
+C     10.173.5.0/24 is directly connected, vlan283
+L     10.173.5.2/32 is directly connected, vlan283</pre>
+    </div>
+    <h1>What is the value of the **administrative distance** for the **default gateway**?</h1>
+
+    <label class="choice"><input type="radio" name="defgwad1" value="A" />A. 110</label>
+    <label class="choice"><input type="radio" name="defgwad1" value="B" />B. 0</label>
+    <label class="choice"><input type="radio" name="defgwad1" value="C" />C. 1</label>
+    <label class="choice"><input type="radio" name="defgwad1" value="D" />D. 10</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +342,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/tftp-function-ios-image-firmware-upgrade.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-encrypted-mobility-tunnel-default-condition.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C \u2014 The **gateway of last resort** is **172.17.0.2** via **`S* 0.0.0.0/0 [1/0]`**. In **`[AD/metric]`** format, the **administrative distance is 1** (default for a **static** default route). **0** (**B**) is the **metric** on that line, not the AD. **110** (**A**) is **OSPF\u2019s** AD on routes such as **`O E2 10.0.0.0/16 [110/10]`**. **10** (**D**) is the **OSPF metric** (second value in **[110/10]**), not the default route\u2019s AD.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +364,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="defgwad1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

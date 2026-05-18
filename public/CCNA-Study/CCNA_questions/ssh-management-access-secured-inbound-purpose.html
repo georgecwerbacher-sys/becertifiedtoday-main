@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — SSH management access purpose</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <h1>What is the **main purpose** of **SSH management access**?</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="radio" name="sshmgmt1" value="A" />A. To validate management access with username and domain name only</label>
+    <label class="choice"><input type="radio" name="sshmgmt1" value="B" />B. To allow passwords protected with HTTPS encryption to be sent</label>
+    <label class="choice"><input type="radio" name="sshmgmt1" value="C" />C. To support DES 56-bit and 3DES (168-bit) ciphers</label>
+    <label class="choice"><input type="radio" name="sshmgmt1" value="D" />D. To enable secured access to the inbound management interface</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-aireos-gui-simultaneous-management-users-five.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/automation-data-models-vendor-agnostic-complexity.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT_MSG = "Correct. D \u2014 **SSH** provides **encrypted**, authenticated **remote management** to the device\u2019s **inbound management** path (typically **VTY** lines), replacing **cleartext Telnet**. **A** is incomplete: SSH uses **usernames**, **passwords** or keys, and often **ip domain-name** for key generation\u2014not **username and domain name only**. **B** confuses **HTTPS** (web) with **SSH** (CLI shell). **C** lists legacy **cipher** options; supporting **DES/3DES** is not SSH\u2019s **main purpose**.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="sshmgmt1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

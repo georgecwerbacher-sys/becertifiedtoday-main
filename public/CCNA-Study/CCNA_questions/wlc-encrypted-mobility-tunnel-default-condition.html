@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — Encrypted mobility tunnel condition</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <h1>Which **default condition** must be considered when an **encrypted mobility tunnel** is used between two Cisco **WLCs**?</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="radio" name="encmob1" value="A" />A. The tunnel uses the EoIP protocol to transmit data traffic.</label>
+    <label class="choice"><input type="radio" name="encmob1" value="B" />B. TCP port 443 and UDP 21 are used.</label>
+    <label class="choice"><input type="radio" name="encmob1" value="C" />C. The tunnel uses the IPsec protocol for encapsulation.</label>
+    <label class="choice"><input type="radio" name="encmob1" value="D" />D. Control and data traffic encryption are enabled.</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/default-gateway-ad-static-route-exhibit.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/api-keys-rate-limiting-identify-clients.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT_MSG = "Correct. D \u2014 **Encrypted mobility** between WLCs requires **mobility encryption** to be enabled so **control** and **data** traffic on the inter-controller tunnel are protected (CAPWAP **DTLS** on mobility ports such as **UDP 16666/16667** in current releases). The feature must be enabled on **all mobility peers**, and controllers may **reboot** when it is turned on. **A** is wrong: **EoIP** carries **unencrypted** mobility data by default; when encryption is enabled, the controller uses **UDP 16667** instead of **EoIP**. **B** (**TCP 443**, **UDP 21**) does not describe WLC mobility encryption. **C** (**IPsec**) is not the encapsulation Cisco documents for encrypted mobility tunnels (**DTLS over CAPWAP** is).";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="encmob1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

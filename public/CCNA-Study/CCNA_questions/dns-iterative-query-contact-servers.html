@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — Iterative DNS query</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <h1>Which function does an **iterative DNS query** serve in the **domain name resolution** process?</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="radio" name="dnsiter1" value="A" />A. Encrypt communication automatically between DNS clients and servers.</label>
+    <label class="choice"><input type="radio" name="dnsiter1" value="B" />B. Allow a DNS client to contact several DNS servers until the correct information is found.</label>
+    <label class="choice"><input type="radio" name="dnsiter1" value="C" />C. Obtain information directly from all root DNS servers configured within the scope.</label>
+    <label class="choice"><input type="radio" name="dnsiter1" value="D" />D. Update records dynamically across multiple DNS servers at the same time.</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ansible-ssh-push-modules-to-nodes.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/controller-based-vs-traditional-control-plane.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 In an **iterative** query, the **DNS client/resolver** queries a server; if that server does not have the answer, it returns a **referral** (for example to a parent zone), and the resolver **contacts the next DNS server** until the **authoritative** answer is found. **A** describes **DNSSEC/TLS** goals, not iterative resolution. **C** is wrong: resolvers do not query **all root servers** directly in normal iterative resolution. **D** describes **dynamic DNS updates**, not iterative lookups.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="dnsiter1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

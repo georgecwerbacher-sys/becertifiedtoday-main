@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — Switch unknown destination MAC (exhibit)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,35 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="Ethernet frame and MAC address table exhibit">
+        <pre>Switch# show ethernet-frame-and-mac-address-table
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+Ethernet Frame:
++----------------------------------------------------+
+| Destination MAC Address: 3C:5D:7E:9F:1A:2B         |
+| Source MAC Address: D3:F4:47:57:67:46              |
+| EtherType/Length: 0x0800 (IPv4)                    |
+| Payload: [Data]                                    |
+| Frame Check Sequence: [CRC]                        |
++----------------------------------------------------+
+
+MAC Address Table:
+VLAN   MAC Address         Type      Ports
+----   -----------------   --------  ----------
+12     D3:F4:47:57:67:46   Dynamic   Gi1/0/1
+16     20:31:42:53:64:DE   Static    Gi1/0/2
+24     A0:B3:C4:D3:B4:48   Secure    Gi1/0/3
+31     B5:16:32:12:6B:68   Dynamic   Gi1/0/4
+44     8F:A0:B3:C4:34:50   Static    Gi1/0/5</pre>
+      </div>
+    </div>
+    <h1>Refer to the exhibit. How does the switch handle the frame?</h1>
+
+    <label class="choice"><input type="radio" name="swflood1" value="A" />A. It floods the frame to all ports except the incoming port.</label>
+    <label class="choice"><input type="radio" name="swflood1" value="B" />B. It switches the frame to a predetermined port based on settings.</label>
+    <label class="choice"><input type="radio" name="swflood1" value="C" />C. It ages out the frame until the MAC address becomes known.</label>
+    <label class="choice"><input type="radio" name="swflood1" value="D" />D. It drops the frame to avoid unnecessary network congestion.</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +350,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/production-network-600-servers-subnet-slash22.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/virtual-machines-guest-os-service-statement.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 Destination **3C:5D:7E:9F:1A:2B** is **not** in the **MAC address table**, so the switch treats it as **unknown unicast** and **floods** the frame out **all ports in the VLAN** except the **ingress port** (**Gi1/0/1**, where source **D3:F4:47:57:67:46** was learned). **B** applies to **static** or **policy-based** forwarding, not an unknown destination. **C** is wrong: switches do not **hold** unknown-destination frames until aging adds the MAC; flooding happens immediately. **D** is wrong: unknown unicast is **flooded**, not **dropped**, to reach the host and allow learning from replies.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +372,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="swflood1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

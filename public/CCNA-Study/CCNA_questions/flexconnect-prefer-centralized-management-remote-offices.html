@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST API HTTP methods</title>
+  <title>CCNA — When to prefer FlexConnect</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,12 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which set of methods is supported with the **REST API**?</h1>
+    <h1>Under what condition would a **FlexConnect** wireless architecture be preferable over other architectural choices?</h1>
 
-    <label class="choice"><input type="radio" name="restmethset1" value="A" />A. GET, PUT, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="B" />B. GET, POST, ERASE, CHANGE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="C" />C. GET, POST, MOD, ERASE</label>
-    <label class="choice"><input type="radio" name="restmethset1" value="D" />D. GET, PUT, POST, DELETE</label>
+    <label class="choice"><input type="radio" name="flexpref1" value="A" />A. when the connection latency to several remote offices is anticipated to surpass 300 milliseconds</label>
+    <label class="choice"><input type="radio" name="flexpref1" value="B" />B. when there is a need for high-precision location-based services at various remote offices</label>
+    <label class="choice"><input type="radio" name="flexpref1" value="C" />C. when centralized management is needed for several remote offices that lack individual WLCs</label>
+    <label class="choice"><input type="radio" name="flexpref1" value="D" />D. when each remote office necessitates its own local WLC for network management</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -327,15 +327,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/aaa-authentication-vs-accounting-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-rfc4627-default-encoding-utf8.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/rest-uri-identifies-target-resource.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/acl-services-add-tcp-dns-sequence-35-exhibit.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **REST** APIs use standard **HTTP verbs**: **GET** (read), **POST** (create/submit), **PUT** (update/replace), and **DELETE** (remove). **ERASE**, **CHANGE**, and **MOD** are **not** standard HTTP/REST methods on Cisco controllers and DevNet-style APIs.";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C \u2014 **FlexConnect** lets **branch/remote APs** stay under **centralized WLC management** (CAPWAP to a **central controller**) while supporting **local switching** and **WAN survivability**, so sites do **not** need a **dedicated WLC** at each office. **D** describes the opposite design (**local WLC per site**). **B** (**high-precision location**) typically favors **centralized** location services, not FlexConnect as the primary driver. **A** misstates WAN design: Cisco branch guidance treats **~300 ms** as a **maximum recommended latency** to the controller for many FlexConnect designs, not a reason to choose FlexConnect **because** latency will **exceed** 300 ms.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -349,7 +349,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="restmethset1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="flexpref1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
