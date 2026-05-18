@@ -7915,6 +7915,1588 @@ S*   0.0.0.0/0 [1/0] via 172.16.2.2</pre>
                 "Enable traffic shaping for the LAN interface of the WLC",
             ],
         },
+        {
+            "slug": "wpa3-personal-psk-ccmp128-cipher",
+            "title": "CCNA — WPA3-Personal PSK cipher",
+            "stem": "A network engineer is implementing a corporate SSID for WPA3-Personal security with a PSK. Which encryption cipher must be configured?",
+            "name": "wpa3psk1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 On Cisco WLC WLAN security, **WPA3-Personal** with **PSK** uses **AES (CCMP128)** for frame encryption with **SAE** authentication (not legacy WPA2-PSK alone). **GCMP256** (**B**) targets **WPA3-Enterprise 192-bit** / Wi\u2011Fi\u202f7 SAE-EXT-KEY deployments, not standard Personal PSK. **GCMP128** (**A**) is used with **Suite\u202fB** enterprise AKMs. **CCMP256** (**C**) is an enterprise Suite\u202fB option, not the Personal PSK cipher.",
+            "choices": [
+                "GCMP128",
+                "GCMP256",
+                "CCMP256",
+                "CCMP128",
+            ],
+        },
+        {
+            "slug": "dna-center-sdn-automation-controller-function",
+            "title": "CCNA — Cisco DNA Center functionality",
+            "stem": "What is the functionality of the Cisco DNA Center?",
+            "name": "dnafunc1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **Cisco DNA Center** is a **software-defined network controller** for **automation** of Cisco devices and services: design, provisioning, policy, assurance, and APIs from a central platform. **A** mislabels it as a **data center** policy controller only. **C** describes a **console server**, not DNA Center. **D** describes **IPAM/scheduling**, not its role.",
+            "choices": [
+                "data center network policy controller",
+                "software-defined controller for automation of devices and services",
+                "console server that permits secure access to all network devices",
+                "IP address pool distribution scheduler",
+            ],
+        },
+        {
+            "slug": "qos-marking-changes-dscp-ipv4-header",
+            "title": "CCNA — QoS marking changes DSCP",
+            "stem": "Which IP header field is changed by a Cisco device when QoS marking is enabled?",
+            "name": "qosdscp1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 **QoS marking** on Cisco devices sets or rewrites the **DSCP** value in the IPv4 **Differentiated Services** byte (for example **set dscp**). **Type of Service** (**B**) is the legacy name for the whole byte, not the specific field Cisco configures today. **ECN** (**D**) signals congestion; it is not the primary QoS class mark. **Header Checksum** (**A**) may be recalculated when the header changes but is not the QoS field being marked.",
+            "choices": [
+                "Header Checksum",
+                "Type of Service",
+                "DSCP",
+                "ECN",
+            ],
+        },
+        {
+            "slug": "router-y-route-10-227-225-255-via-router-d",
+            "title": "CCNA — Router-Y LPM to 10.227.225.255",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="Router-Y show ip route">
+        <pre>Router-Y#show ip route
+...
+Gateway of last resort is not set
+
+10.0.0.0/8 is variably subnetted
+B       10.0.0.0/8 [1/0] via 10.224.1.2
+B       10.27.150.224/27 [20/0] via 10.224.1.3, 1w6d
+S       10.128.0.0/9 [1/0] via 10.224.1.3
+B       10.224.0.0/11 [20/0] via 10.224.1.5, 5d18h
+B       10.224.0.0/15 [20/0] via 10.224.1.4, 5d18h
+C       10.223.0.0/24 is directly connected, GigabitEthernet0/1
+C       10.224.0.0/24 is directly connected, GigabitEthernet0/0
+B       10.226.34.0/24 [20/0] via 10.224.1.5, 5d18h</pre>
+    </div>
+    <p class="study-meta">On Router-Y, <strong>GigabitEthernet0/0</strong> (10.224.0.0/24) reaches neighbors: <strong>10.224.1.2</strong> = router A, <strong>.1.3</strong> = router B, <strong>.1.4</strong> = router C, <strong>.1.5</strong> = router D.</p>""",
+            "stem": "PC A is communicating with another device at IP address 10.227.225.255. Through which router does router Y route the traffic?",
+            "name": "ryroute1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **10.227.225.255** matches several routes, but **longest-prefix match** selects **10.224.0.0/11** (range **10.224.0.0\u201310.231.255.255**), next hop **10.224.1.5** = **router D**. **10.128.0.0/9** via router B (**10.224.1.3**) is shorter than **/11**. **10.224.0.0/15** via router C does not contain **10.227.x**. **10.0.0.0/8** via router A is least specific.",
+            "choices": [
+                "router A",
+                "router B",
+                "router C",
+                "router D",
+            ],
+        },
+        {
+            "slug": "ipsec-suite-protocols-ah-esp-choose-two",
+            "title": "CCNA — IPsec suite protocols (choose two)",
+            "stem": "What are two protocols within the IPsec suite? (Choose two.)",
+            "name": "ipsecpro1",
+            "choose_two": True,
+            "correct": ["B", "C"],
+            "explain": "Correct. B and C \u2014 **IPsec** defines two core security **protocols**: **AH** (Authentication Header) and **ESP** (Encapsulating Security Payload). **IKE** negotiates keys but is separate from this list. **3DES** and **AES** (**A**, **E**) are **encryption algorithms** used inside ESP, not IPsec protocols themselves. **TLS** (**D**) secures many applications (for example HTTPS) and is **not** part of the IPsec protocol suite.",
+            "choices": [
+                "3DES",
+                "AH",
+                "ESP",
+                "TLS",
+                "AES",
+            ],
+        },
+        {
+            "slug": "private-ipv4-benefits-reuse-conserve-choose-two",
+            "title": "CCNA — Private IPv4 benefits (choose two)",
+            "stem": "What are two benefits of private IPv4 addressing? (Choose two.)",
+            "name": "privben1",
+            "choose_two": True,
+            "correct": ["A", "C"],
+            "explain": "Correct. A and C \u2014 **RFC 1918 private** space lets the same **10/8**, **172.16/12**, and **192.168/16** ranges be **reused at many sites** without consuming more **globally unique** public IPv4. **B** is wrong: Internet reachability uses **public** addresses and usually **NAT**, not private space alone. **D** is wrong: private prefixes are **not** advertised to the public Internet. **E** is false: private ranges are **limited**, not unlimited.",
+            "choices": [
+                "reuses addresses at multiple sites",
+                "provides external internet network connectivity",
+                "conserves globally unique address space",
+                "propagates routing information to WAN links",
+                "provides unlimited address ranges",
+            ],
+        },
+        {
+            "slug": "sw1-vty-ssh-crypto-rsa-key-choose-two",
+            "title": "CCNA — SW1 enable SSH (choose two)",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="SW1 show run and crypto key">
+        <pre>SW1#show run
+...
+ip domain-name test
+username CCNA privilege 1 password 0 ciscol23
+...
+line vty 0 4
+ login local
+ transport input telnet
+line vty 5 15
+ login local
+ transport input telnet
+
+SW1#show crypto key mypubkey rsa
+Key name: SW1.test</pre>
+    </div>""",
+            "stem": "An engineer is updating the management access configuration of switch SW1 to allow secured, encrypted remote configuration. Which two commands or command sequences must the engineer apply to the switch? (Choose two.)",
+            "name": "sw1ssh1",
+            "choose_two": True,
+            "mono": True,
+            "correct": ["A", "B"],
+            "explain": "Correct. A and B \u2014 **SSH** requires an **RSA** key pair (**crypto key generate rsa**, with **ip domain-name** already set) and **transport input ssh** on **VTY** lines instead of **telnet**. **C** configures a **trunk**, unrelated to management encryption. **D** sets the **enable** secret, not VTY SSH. **E** adds another **username** but does not enable **SSH** transport or keys by itself.",
+            "choices": [
+                "SW1(config)#line vty 0 15\nSW1(config-line)#transport input ssh",
+                "SW1(config)# crypto key generate rsa",
+                "SW1(config)# interface f0/1\nSW1(config-if)# switch port mode trunk",
+                "SW1(config)#enable secret ccnaTest123",
+                "SW1(config)# username NEW secret R3mote123",
+            ],
+        },
+        {
+            "slug": "json-switch-property-name-is-key",
+            "title": "CCNA — JSON key vs value (switch)",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="JSON exhibit">
+        <pre>[
+  {"switch": "3750", "port": "e2"},
+  {"router": "2951", "port": "e20"},
+  {"switch": "3750", "port": "e23"}
+]</pre>
+    </div>""",
+            "stem": "Refer to the exhibit. What is represented by the word \u201cswitch\u201d in line 2 of the JSON schema?",
+            "name": "jsonkey1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 On line 2, **\"switch\"** is the **property name** (JSON **key**) in an **object**; **\"3750\"** is its **value**. The outer `[ ]` is an **array** of objects. **\"switch\"** is not itself an **object**, **value**, or **array**.",
+            "choices": [
+                "object",
+                "key",
+                "value",
+                "array",
+            ],
+        },
+        {
+            "slug": "1000base-sx-gbic-sfp-lc-sc-patch-cable",
+            "title": "CCNA — 1000BASE-SX GBIC to SFP cable",
+            "stem": "Which cable type must be used to interconnect one switch using 1000 BASE-SX GBIC modules and another switch using 1000 BASE-SX SFP modules?",
+            "name": "sxlcsc1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **1000BASE-SX** uses **multimode fiber**. Legacy **GBIC** SX optics typically terminate with **SC**; **SFP** SX modules use **LC**. A switch-to-switch link needs an **LC-to-SC** patch (or equivalent adapter pair), not LC-LC or SC-SC on both ends. **SC-to-ST** (**D**) is the wrong connector pairing for this GBIC/SFP mix.",
+            "choices": [
+                "LC to LC",
+                "LC to SC",
+                "SC to SC",
+                "SC to ST",
+            ],
+        },
+        {
+            "slug": "wlc-distribution-lag-channel-group-active",
+            "title": "CCNA — WLC LAG channel-group mode",
+            "stem": "Which channel-group mode must be configured when multiple distribution switch interfaces connected to a WLC are bundled?",
+            "name": "wlclagmode1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **WLC LAG** uses **IEEE 802.3ad LACP**. On the **distribution switch**, member ports use **channel-group mode active** so the bundle negotiates with the controller. **mode on** (**B**) is static EtherChannel without LACP. **desirable** (**C**) is **PAgP**. **passive** (**D**) is LACP passive and is not the required mode on the switch side for this WLC LAG design.",
+            "choices": [
+                "channel-group mode active",
+                "channel-group mode on",
+                "channel-group mode desirable",
+                "channel-group mode passive",
+            ],
+        },
+        {
+            "slug": "subnet-mask-binary-11111000-slash-29",
+            "title": "CCNA — Binary mask to /29",
+            "stem": "A network engineer must configure an interface with IP address 10.10.10.145 and a subnet mask equivalent to 11111111.11111111.11111111.11111000. Which subnet mask must the engineer use?",
+            "name": "binmask1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 **11111111.11111111.11111111.11111000** has **29** network bits (**/29**), dotted decimal **255.255.255.248**. **/27** (**A**) is **255.255.255.224**. **/28** (**B**) is **255.255.255.240**. **/30** (**D**) is **255.255.255.252** (**11111100**).",
+            "choices": [
+                "/27",
+                "/28",
+                "/29",
+                "/30",
+            ],
+        },
+        {
+            "slug": "dns-resolver-authoritative-name-resolution-choose-two",
+            "title": "CCNA — DNS server types (choose two)",
+            "stem": "Which two server types support domain name to IP address resolution? (Choose two.)",
+            "name": "dnstype1",
+            "choose_two": True,
+            "correct": ["C", "D"],
+            "explain": "Correct. C and D \u2014 **DNS** maps names to addresses using **resolvers** (recursive queries for clients) and **authoritative** servers (official zone records). An **ESX host** (**A**) is virtualization, not a DNS role. A **web** server (**B**) serves HTTP/HTTPS. **File transfer** (**E**) describes FTP/SFTP-style services, not DNS resolution.",
+            "choices": [
+                "ESX host",
+                "web",
+                "resolver",
+                "authoritative",
+                "file transfer",
+            ],
+        },
+        {
+            "slug": "switch-mac-address-aging-removes-stale",
+            "title": "CCNA — MAC address aging",
+            "stem": "Which switching feature removes unused MAC addresses from the MAC address table, which allows new MAC addresses to be added?",
+            "name": "macage1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **MAC address aging** deletes CAM entries that are inactive for the **aging time**, freeing space so **dynamic learning** can add new MACs. **Dynamic learning** (**C**) **adds** entries when frames arrive; it does not remove stale ones. **MAC move** (**A**) updates a MAC seen on a different port. **Auto purge** (**D**) is not standard Cisco terminology for this mechanism.",
+            "choices": [
+                "MAC move",
+                "MAC address aging",
+                "dynamic MAC address learning",
+                "MAC address auto purge",
+            ],
+        },
+        {
+            "slug": "sdn-northbound-apis-soap-rest-choose-two",
+            "title": "CCNA — SDN northbound APIs (choose two)",
+            "stem": "Which two northbound APIs are found in a software-defined network? (Choose two.)",
+            "name": "nbapi2",
+            "choose_two": True,
+            "correct": ["A", "C"],
+            "explain": "Correct. A and C \u2014 **Northbound** APIs connect **applications/orchestration** to the **SDN controller**; **REST** and **SOAP** are common styles. **OpenFlow** (**E**) and **OpFlex** (**B**) are **southbound** (controller to devices). **NETCONF** (**D**) is typically **southbound** for device programmability (with RESTCONF variants).",
+            "choices": [
+                "SOAP",
+                "OpFlex",
+                "REST",
+                "NETCONF",
+                "OpenFlow",
+            ],
+        },
+        {
+            "slug": "rest-http-messages-transfer-applications",
+            "title": "CCNA — REST uses HTTP messages",
+            "stem": "What uses HTTP messages to transfer data to applications residing on different hosts?",
+            "name": "resthttp1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **REST** APIs use **HTTP** (or HTTPS) **request/response messages** (GET, POST, PUT, DELETE, and so on) so applications on different hosts exchange data. **OpenStack** (**B**) is a cloud platform that may *use* REST but is not defined by HTTP messaging itself. **OpFlex** (**C**) and **OpenFlow** (**D**) are **southbound** device/control protocols, not HTTP application APIs.",
+            "choices": [
+                "REST",
+                "OpenStack",
+                "OpFlex",
+                "OpenFlow",
+            ],
+        },
+        {
+            "slug": "switch-unknown-unicast-flooding-except-ingress",
+            "title": "CCNA — Switch frame flooding",
+            "stem": "A switch is forwarding a frame out of all interfaces except the interface that received the frame. What is the technical term for this process?",
+            "name": "swflood1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 **Flooding** sends a frame out **every port in the VLAN except the ingress port**, typically when the destination MAC is **unknown** or for **broadcast/multicast** flooding rules. **CDP** (**A**) is neighbor discovery. **Multicast** (**B**) is a destination class, not this forwarding behavior name. **ARP** (**D**) resolves IP to MAC, not switch egress to all ports.",
+            "choices": [
+                "CDP",
+                "multicast",
+                "flooding",
+                "ARP",
+            ],
+        },
+        {
+            "slug": "rsa-asymmetric-encryption-characteristic",
+            "title": "CCNA — RSA characteristic",
+            "stem": "What is a characteristic of RSA?",
+            "name": "rsa1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **RSA** is an **asymmetric** (public/private key) algorithm used for key exchange, digital signatures, and encrypting small data blocks. **Preshared** or **identical keys on both sides** (**A**, **C**) describe **symmetric** or PSK models. **Symmetric decryption** (**D**) is not RSA\u2019s role.",
+            "choices": [
+                "It uses preshared keys for encryption",
+                "It is an asymmetric encryption algorithm",
+                "It requires both sides to have identical keys for encryption",
+                "It is a symmetric decryption algorithm.",
+            ],
+        },
+        {
+            "slug": "dna-center-assurance-correlates-protocol-insights",
+            "title": "CCNA — DNA Center network assurance advantage",
+            "stem": "Which advantage does the network assurance capability of Cisco DNA Center provide over traditional campus management?",
+            "name": "dnaassur1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **Network assurance** in **DNA Center** **correlates** telemetry and data from multiple sources (SNMP, NetFlow, APIs, and similar) to produce **health insights** and baselines, while **traditional** campus work often needs **manual CLI** collection and analysis. **A** overstates **YANG/NETCONF** as the defining assurance difference and **CLI-only** traditional tools. **C** narrows assurance to **security posture** comparison. **D** misstates assurance as offloading tasks via a **data backbone**.",
+            "choices": [
+                "Cisco DNA Center leverages YANG and NETCONF to assess the status of fabric and nonfabric devices, and traditional campus management uses CLI exclusively",
+                "Cisco DNA Center correlates information from different management protocols to obtain insights, and traditional campus management requires manual analysis",
+                "Cisco DNA Center automatically compares security postures among network devices, and traditional campus management needs manual comparisons",
+                "Cisco DNA Center handles management tasks at the controller to reduce the load on infrastructure devices, and traditional campus management uses the data backbone.",
+            ],
+        },
+        {
+            "slug": "signal-frequency-1hz-sixty-per-minute",
+            "title": "CCNA — 1 Hz equals 60 per minute",
+            "stem": "Which signal frequency appears 60 times per minute?",
+            "name": "sigfreq1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **Hertz (Hz)** is **cycles per second**. **1 Hz** = **1 cycle/s** \u00d7 **60 s/min** = **60 cycles/min**. **60 Hz** (**C**) is **60 cycles per second** (3,600/min), like AC power in many regions. **1 GHz** and **60 GHz** (**B**, **D**) are radio bands far above 1 Hz.",
+            "choices": [
+                "1 Hz signal",
+                "1 GHz signal",
+                "60 Hz signal",
+                "60 GHz signal",
+            ],
+        },
+        {
+            "slug": "lap-local-mode-wired-access-port",
+            "title": "CCNA — LAP local mode switchport",
+            "stem": "Which port type does a lightweight AP use to connect to the wired network when it is configured in local mode?",
+            "name": "laplocal1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 In **local mode**, client traffic is **tunneled in CAPWAP** to the WLC, so the AP uplink usually needs only **one VLAN** (management/CAPWAP) on the switch\u2014an **access** port. A **trunk** (**B**) is typical when the AP must carry **multiple VLANs** locally (for example **FlexConnect** with local switching and 802.1Q tagging). **EtherChannel** and **LAG** (**C**, **D**) aggregate links; they do not replace access vs trunk for VLAN behavior.",
+            "choices": [
+                "access",
+                "trunk",
+                "EtherChannel",
+                "LAG",
+            ],
+        },
+        {
+            "slug": "cat9300-gi1-0-1-trunk-match-native-321",
+            "title": "CCNA — Match Cat9300 Gi1/0/1 trunk",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "A network administrator configures an interface on a new switch so that it connects to interface Gi1/0/1 on switch Cat9300-1. Which configuration must be applied to the new interface?",
+            "name": "cat9300tr1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 Cat9300-1 **Gi1/0/1** is an operational **802.1Q trunk** with **native VLAN 321** and **allowed VLANs 100, 200, and 300** only. The new port needs **switchport mode trunk**, **switchport trunk native vlan 321**, and **switchport trunk allowed vlan 100,200,300**. **A** uses **100-300**, a **range** that permits every VLAN from 100 through 300, not just those three IDs. **B** uses **dynamic desirable** instead of an explicit trunk and is a weaker match when the peer is administratively **trunk**. **C** configures **access** VLAN 321, **nonegotiate**, and invalid **except** syntax\u2014not a trunk toward this link.",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="Cat9300-1 show interface g1/0/1 switchport">
+        <pre>Cat9300-1# show interface g1/0/1 switchport
+Name: Gi1/0/1
+Switchport: Enabled
+Administrative Mode: trunk
+Operational Mode: trunk
+Administrative Trunking Encapsulation: dot1q
+Operational Trunking Encapsulation: dot1q
+Negotiation of Trunking: On
+Access Mode VLAN: 1 (default)
+Trunking Native Mode VLAN: 321 (VLAN0321)
+Administrative Native VLAN tagging: enabled
+Trunking VLANs Enabled: 100,200,300
+Pruning VLANs Enabled: 2-1001</pre>
+      </div>""",
+            "choices": [
+                """switchport trunk encapsulation dot1q
+switchport trunk native vlan 321
+switchport trunk allowed vlan 100-300""",
+                """switchport mode dynamic desirable
+switchport trunk native vlan 321
+switchport trunk allowed vlan 100,200,300""",
+                """switchport nonegotiate
+switchport access vlan 321
+switchport trunk allowed vlan except 2-1001""",
+                """switchport mode trunk
+switchport trunk native vlan 321
+switchport trunk allowed vlan 100,200,300""",
+            ],
+        },
+        {
+            "slug": "sdn-controller-packet-handling-policies",
+            "title": "CCNA — SDN controller sets policies",
+            "stem": "What is the function of a controller in a software-defined network?",
+            "name": "sdnctrlpol1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 The **SDN controller** is the **control plane**: it defines **packet-handling policies** (flows, routes, ACLs) and programs switches/routers via southbound APIs. **Forwarding packets** (**C**) is the **data plane**. **Multicast replication at the hardware level** (**A**) and **fragmenting/reassembling packets** (**D**) are forwarding-stack or end-system tasks, not the controller\u2019s primary role.",
+            "choices": [
+                "multicast replication at the hardware level",
+                "setting packet-handling policies",
+                "forwarding packets",
+                "fragmenting and reassembling packets",
+            ],
+        },
+        {
+            "slug": "server-fcs-err-physical-cable-fault",
+            "title": "CCNA — FCS-Err and unreliable throughput",
+            "stem": "A client experiences slow throughput from a server that is directly connected to the core switch in a data center. A network engineer finds minimal latency on connections to the server, but data transfers are unreliable, and the output of the show interfaces counters errors command shows a high FCS-Err count on the interface that is connected to the server. What is the cause of the throughput issue?",
+            "name": "fcserr1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **FCS-Err** (frame check sequence errors) means frames arrived **corrupted** at Layer 1/2, so they are discarded and transfers look **unreliable** despite low latency. That pattern points to a **physical cable fault** (bad cable, connector, or transceiver). **High bandwidth usage** (**A**) causes congestion, not typically a rising FCS count. A **speed mismatch** (**C**) more often shows collisions, runts, or link flaps. A **cable that is too long** (**D**) can degrade signal, but the exam pairing of **high FCS-Err** with unreliable throughput on a direct attach is **physical fault**.",
+            "choices": [
+                "high bandwidth usage",
+                "a physical cable fault",
+                "a speed mismatch",
+                "a cable that is too long",
+            ],
+        },
+        {
+            "slug": "hypervisor-distributes-physical-resources-vm",
+            "title": "CCNA — Hypervisor allocates VM resources",
+            "stem": "Which component controls and distributes physical resources for each virtual machine?",
+            "name": "hypres1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 The **hypervisor** abstracts the host\u2019s CPU, memory, storage, and NICs and **allocates** those **physical resources** to each **VM**. The **OS** (**B**) runs inside a guest VM and does not schedule hardware for other VMs. The **physical enclosure** (**A**) is the chassis. The **CPU** (**D**) is hardware the hypervisor virtualizes\u2014it is not the control component that distributes resources across VMs.",
+            "choices": [
+                "physical enclosure",
+                "OS",
+                "hypervisor",
+                "CPU",
+            ],
+        },
+        {
+            "slug": "wlc-config-network-webmode-http-access",
+            "title": "CCNA — WLC HTTP web access",
+            "stem": "Which command enables HTTP access to the Cisco WLC?",
+            "name": "wlcweb1",
+            "correct": "C",
+            "mono": True,
+            "explain": "Correct. C \u2014 **config network webmode enable** turns on **web-based management** (HTTP GUI access) on the WLC. **config network secureweb enable** (**A**) enables **HTTPS** (secure web), not plain HTTP. **config certificate generate webadmin** (**B**) creates a certificate for secure web administration. **config network telnet enable** (**D**) enables **Telnet**, not HTTP.",
+            "choices": [
+                "config network secureweb enable",
+                "config certificate generate webadmin",
+                "config network webmode enable",
+                "config network telnet enable",
+            ],
+        },
+        {
+            "slug": "loopback-ipv4-mapped-ipv6-prefix-128",
+            "title": "CCNA — Loopback IPv6 /128 from /32 IPv4",
+            "stem": "A network engineer must migrate a router loopback interface to the IPv6 address space. If the current IPv4 address of the interface is 10.54.73.1/32, and the engineer configures IPv6 address 0:0:0:0:0:ffff:a36:4901, which prefix length must be used?",
+            "name": "lbv6128",
+            "correct": "D",
+            "explain": "Correct. D \u2014 An IPv4 **loopback** host address uses **/32** (one address). The IPv6 equivalent for a single interface address is **/128**. The configured address is **IPv4-mapped IPv6** (::ffff:10.54.73.1 \u2192 **0:0:0:0:0:ffff:a36:4901**). **/64** (**A**) is the usual prefix for LANs/SLAAC, not a loopback host. **/96** (**B**) relates to the mapped IPv4 layout, not the loopback prefix you apply on the interface. **/124** (**C**) is a small subnet prefix, not a single-host loopback.",
+            "choices": [
+                "/64",
+                "/96",
+                "/124",
+                "/128",
+            ],
+        },
+        {
+            "slug": "wlc-console-port-oob-async-management",
+            "title": "CCNA — WLC console port purpose",
+            "stem": "What is the primary purpose of a console port on a Cisco WLC?",
+            "name": "wlccon1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 The **console port** provides **out-of-band** access over an **asynchronous** serial link (RJ-45/USB console) for initial setup, troubleshooting, and recovery when in-band IP paths fail. **In-band management via IP transport** (**D**) describes the **management interface** (GUI/SSH/HTTPS and CAPWAP on the production network). **Out-of-band via IP transport** (**A**) fits the dedicated **service port** (Ethernet OOB), not the serial console. **In-band via asynchronous transport** (**C**) is not a valid WLC management model.",
+            "choices": [
+                "out-of-band management via an IP transport",
+                "out-of-band management via an asynchronous transport",
+                "in-band management via an asynchronous transport",
+                "in-band management via an IP transport",
+            ],
+        },
+        {
+            "slug": "fhrp-protects-default-gateway-failure",
+            "title": "CCNA — FHRP protects default gateway",
+            "stem": "What does the implementation of a first-hop redundancy protocol protect against on a network?",
+            "name": "fhrpprot1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **FHRPs** (HSRP, VRRP, GLBP) provide a **redundant default gateway** (virtual IP/MAC) so hosts keep reachability if the active router fails. **BGP neighbor flapping** (**A**) is a routing-protocol stability issue. **Root-bridge loss** (**C**) is an STP role change. **Spanning-tree loops** (**D**) are prevented by **STP/RSTP**, not FHRP.",
+            "choices": [
+                "BGP neighbor flapping",
+                "default gateway failure",
+                "root-bridge loss",
+                "spanning-tree loops",
+            ],
+        },
+        {
+            "slug": "forward-192-168-0-55-static-24-gi0-1",
+            "title": "CCNA — Forward 192.168.0.55 longest /24",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "Which interface is chosen to forward traffic to the host at 192.168.0.55?",
+            "name": "fwd0551",
+            "correct": "A",
+            "explain": "Correct. A \u2014 The router uses **longest-prefix match**. **192.168.0.55** matches **192.168.0.0/16** (EIGRP), **192.168.0.0/23** (OSPF), and **192.168.0.0/24** (static); **/24** is most specific, so traffic uses **via 10.0.12.2** on connected **10.0.12.0/24** \u2192 **GigabitEthernet0/1**. **GigabitEthernet0/2** (**D**) is the **/16** EIGRP path. **GigabitEthernet0/3** (**C**) is the **/23** OSPF path. **Null0** (**B**) applies only to the **default** route **0.0.0.0/0**, not **192.168.0.55**.",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="show ip route output">
+        <pre>Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       + - replicated route, % - next hop override, p - overrides from PfR
+Gateway of last resort is 0.0.0.0 to network 0.0.0.0
+S*   0.0.0.0/0 is directly connected, Null0
+      10.0.0.0/8 is variably subnetted, 6 subnets, 2 masks
+C     10.0.12.0/24 is directly connected, GigabitEthernet0/1
+L     10.0.12.1/32 is directly connected, GigabitEthernet0/1
+C     10.0.13.0/24 is directly connected, GigabitEthernet0/2
+L     10.0.13.1/32 is directly connected, GigabitEthernet0/2
+C     10.0.14.0/24 is directly connected, GigabitEthernet0/3
+L     10.0.14.1/32 is directly connected, GigabitEthernet0/3
+D     192.168.0.0/16 [90/130816] via 10.0.13.3, 00:10:09, GigabitEthernet0/2
+O     192.168.0.0/23 [110/2] via 10.0.14.4, 00:00:46, GigabitEthernet0/3
+S     192.168.0.0/24 [100/0] via 10.0.12.2</pre>
+      </div>""",
+            "choices": [
+                "GigabitEthernet0/1",
+                "Null0",
+                "GigabitEthernet0/3",
+                "GigabitEthernet0/2",
+            ],
+        },
+        {
+            "slug": "ospf-crossover-p2p-faster-full-adjacency",
+            "title": "CCNA — OSPF P2P for faster FULL on crossover",
+            "stem": "A Cisco engineer notices that two OSPF neighbors are connected using a crossover Ethernet cable. The neighbors are taking too long to become fully adjacent. Which command must be issued under the interface configuration on each router to reduce the time required for the adjacency to reach the FULL state?",
+            "name": "ospfxp2p1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 On **Ethernet**, OSPF defaults to **broadcast** network type, which runs **DR/BDR election** and a **Wait timer** (often ~40 s) before adjacency completes. A direct router-to-router **crossover** link should use **ip ospf network point-to-point** so OSPF skips DR/BDR election and reaches **FULL** faster. **ip ospf network broadcast** (**B**) keeps the default slow behavior. **ip ospf priority 0** (**A**) makes the router ineligible for DR/BDR but does not change the network type. **ip ospf dead-interval 40** (**C**) is the default dead interval on many OSPF networks and does not remove the broadcast Wait/DR delay.",
+            "choices": [
+                "ip ospf priority 0",
+                "ip ospf network broadcast",
+                "ip ospf dead-interval 40",
+                "ip ospf network point-to-point",
+            ],
+        },
+        {
+            "slug": "json-test-schema-objects-keys-lists",
+            "title": "CCNA — JSON objects, keys, and lists",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="JSON exhibit">
+        <pre>{
+    "Test_Questions" : [
+                "Automation",
+                "Configuration",
+    ],
+    "Test__Exam_Level" : [
+                "CCNA",
+                "CCNP",
+    ],
+    "Test_Response" : [
+                "Correct",
+                "Incorrect",
+    ],
+}</pre>
+    </div>""",
+            "stem": "Refer to the exhibit. How many objects, keys, and JSON list values are present?",
+            "name": "jsoncnt1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 The exhibit is **one JSON object** (`{ ... }`) with **three keys**: **Test_Questions**, **Test__Exam_Level**, and **Test_Response**. Each key\u2019s value is a **JSON array** (list), so there are **three JSON list values**. The strings inside each array are list **elements**, not separate top-level objects or keys.",
+            "choices": [
+                "three objects, three keys, and two JSON list values",
+                "one object, three keys, and two JSON list values",
+                "three objects, two keys, and three JSON list values",
+                "one object, three keys, and three JSON list values",
+            ],
+        },
+        {
+            "slug": "p2p-leased-line-simple-configuration-benefit",
+            "title": "CCNA — Point-to-point leased line benefit",
+            "stem": "What is a benefit of a point-to-point leased line?",
+            "name": "p2pleased1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 A **point-to-point leased line** is a dedicated circuit between **two sites**, so WAN design and configuration stay **simple** (one link, fixed bandwidth, no shared-cloud routing complexity). **Full-mesh** (**A**) needs many circuits between every pair of sites and is costly. **Flexibility of design** (**B**) fits technologies such as **MPLS** or **Internet VPN**, not a fixed P2P lease. **Low cost** (**C**) is wrong\u2014leased lines are typically **more expensive** than broadband or VPN options.",
+            "choices": [
+                "full-mesh capability",
+                "flexibility of design",
+                "low cost",
+                "simplicity of configuration",
+            ],
+        },
+        {
+            "slug": "wpa2-wpa3-differences-sae-128-192-choose-two",
+            "title": "CCNA — WPA2 vs WPA3 (choose two)",
+            "stem": "What are two differences between WPA2 and WPA3 wireless security? (Choose two)",
+            "name": "wpa23diff1",
+            "choose_two": True,
+            "correct": ["A", "B"],
+            "explain": "Correct. A and B \u2014 **WPA3-Personal** uses **SAE** for key establishment, which is stronger against offline guessing than **WPA2-PSK**; **WPA2** still relies on **AES-CCMP** for over-the-air encryption. **WPA3** adds stronger options, including **192-bit** security mode (Suite B) in addition to common **128-bit** operation, while typical **WPA2** deployments use **128-bit** keys. **C** reverses SAE and AES roles. **D** is wrong: **WPA2** uses **AES**, not **TKIP**, as the standard cipher. **E** misstates key sizes (**192-bit** is not the WPA2 norm, and WPA3 does not require **256-bit** for all deployments).",
+            "choices": [
+                "WPA3 uses SAE for stronger protection than WPA2, which uses AES",
+                "WPA2 uses 128-bit key encryption, and WPA3 supports 128-bit and 192-bit key encryption",
+                "WPA3 uses AES for stronger protection than WPA2, which uses SAE",
+                "WPA3 uses AES for stronger protection than WPA2, which uses TKIP",
+                "WPA2 uses 192-bit key encryption, and WPA3 requires 256-bit key encryption",
+            ],
+        },
+        {
+            "slug": "syslog-transport-tcp-udp-choose-two",
+            "title": "CCNA — Syslog transport protocols (choose two)",
+            "stem": "Which two transport layer protocols carry syslog messages? (Choose two)",
+            "name": "syslogtr1",
+            "choose_two": True,
+            "correct": ["A", "B"],
+            "explain": "Correct. A and B \u2014 **Syslog** commonly uses **UDP** port **514**; **TCP** is also used (for example **TCP 601** or reliable syslog transports). **ARP** (**C**) resolves Layer 2 addresses and is not a transport protocol. **RTP** (**D**) carries real-time media, not syslog. **IP** (**E**) is **Layer 3** (network layer), not transport layer.",
+            "choices": [
+                "TCP",
+                "UDP",
+                "ARP",
+                "RTP",
+                "IP",
+            ],
+        },
+        {
+            "slug": "internet-default-route-ad-1-from-10-10-10-32",
+            "title": "CCNA — Default route AD for Internet",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "A packet sourced from 10.10.10.32 is destined for the Internet. What is the administrative distance for the destination route?",
+            "name": "defrtad1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 Traffic to the **Internet** uses the **default route** **0.0.0.0/0** (\u201cgateway of last resort\u201d). The table shows **`S* 0.0.0.0/0 [1/0] via 172.16.2.2`**; in **`[AD/metric]`** format, the **administrative distance is 1** (default for a **static** route). **0** (**A**) is the metric on that line, not the AD. **2** (**C**) and **32** (**D**) are not the AD for this installed default.",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="Router show ip route">
+        <pre>Gateway of last resort is 172.16.2.2 to network 0.0.0.0
+
+    10.0.0.0/8 is variably subnetted, 3 subnets, 3 masks
+       10.10.100.0/26 is directly connected, GigabitEthernet0/0/6
+C      10.10.10.0/24 is directly connected, GigabitEthernet0/0/0
+L      10.10.10.3/32 is directly connected, GigabitEthernet0/0/0
+    172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks
+S      172.16.1.33/32 is directly connected, GigabitEthernet0/0/1
+C      172.16.2.0/23 is directly connected, GigabitEthernet0/0/1
+L      172.16.2.1/32 is directly connected, GigabitEthernet0/0/1
+S*  0.0.0.0/0 [1/0] via 172.16.2.2</pre>
+    </div>""",
+            "choices": [
+                "0",
+                "1",
+                "2",
+                "32",
+            ],
+        },
+        {
+            "slug": "http-put-method-update-resource",
+            "title": "CCNA — HTTP PUT method",
+            "stem": "When is the PUT method used within HTTP?",
+            "name": "httpput1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **PUT** **updates or replaces** a resource at a known URI in **REST/HTTP** APIs (for example Cisco DNA Center Intent API). Cisco exam wording may say **update a DNS server** to mean **update an existing server resource** via HTTP; DNS itself normally uses the **DNS protocol**, not HTTP PUT. **B** describes **GET** (read-only). **C** describes **GET** (retrieve/display content). **D** is wrong for PUT: **POST** is commonly used when a **nonidempotent** operation is needed; **PUT** is **idempotent** (repeating the same PUT has the same effect).",
+            "choices": [
+                "to update a DNS server",
+                "when a read-only operation is required",
+                "to display a web site",
+                "when a nonidempotent operation is needed",
+            ],
+        },
+        {
+            "slug": "northbound-rest-api-application-facing-http",
+            "title": "CCNA — Northbound REST API for SDN",
+            "stem": "What describes a northbound REST API for SDN?",
+            "name": "nbrest1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **Northbound** APIs face **applications and orchestration** above the controller. **REST** northbound APIs commonly use **HTTP methods** such as **GET, POST, PUT, and DELETE**. **A** and **C** describe **southbound** (network-element-facing) interfaces toward the **control/data** infrastructure, not the application plane. **D** is wrong: northbound is not limited to **SNMP GET**; REST uses the full set of HTTP verbs.",
+            "choices": [
+                "network-element-facing interface for the control and data planes",
+                "application-facing interface for GET, POST, PUT, and DELETE methods",
+                "network-element-facing interface for GET, POST, PUT, and DELETE methods",
+                "application-facing interface for SNMP GET requests",
+            ],
+        },
+        {
+            "slug": "forward-172-16-1-190-ospf-slash-29-via-35",
+            "title": "CCNA — Next hop to 172.16.1.190",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "Load-balanced traffic is coming in from the WAN destined to a host at 172.16.1.190. Which next-hop is used by the router to forward the request?",
+            "name": "fwd11901",
+            "correct": "C",
+            "explain": "Correct. C \u2014 The router uses **longest-prefix match**. **172.16.1.190** matches several routes, but **172.16.1.184/29** (range **172.16.1.184\u2013172.16.1.191**) is the **most specific**, so traffic uses **`O ... via 192.168.7.35`**. **172.16.1.0/28** via **192.168.7.7** (**B**) covers only **172.16.1.0\u2013172.16.1.15**. **172.16.3.0/24** via **192.168.7.4** (**A**) does not contain **172.16.1.190**. **172.16.1.3/32** via **192.168.7.40** (**D**) is a host route for **.3**, not **.190**.",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route">
+        <pre>R1# show ip route
+Codes: C \u2014 connected, S \u2014 static, I \u2014 IGRP, R - RIP, M - mobile, B \u2014 BGP
+       D \u2014 EIGRP, EX - EIGRP external, O \u2014 OSPF, IA \u2014 OSPF inter area
+       N1 \u2014 OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 \u2014 OSPF external type 2, E \u2014 EGP
+       i \u2014 IS-IS, L1 - IS-IS level-1, L2 \u2014 IS-IS level-2, * \u2014 candidate default
+       U - per-user static route, o \u2014 ODR
+Gateway of last resort is not set
+C   172.16.0.0/16 is directly connected, Loopback0
+    172.16.0/16 is variably subnetted, 4 subnets, 2 masks
+O   172.16.1.3/32 [110/100] via 192.168.7.40, 00:39:08, Serial0
+C   172.16.1.0/24 is directly connected, Serial0
+O   172.16.1.184/29 [110/5] via 192.168.7.35, 00:39:08, Serial0
+O   172.16.3.0/24 [110/10] via 192.168.7.4, 00:39:08, GigabitEthernet0/0
+D   172.16.1.0/28 [90/10] via 192.168.7.7, 00:39:08, GigabitEthernet0/0</pre>
+      </div>""",
+            "choices": [
+                "192.168.7.4",
+                "192.168.7.7",
+                "192.168.7.35",
+                "192.168.7.40",
+            ],
+        },
+        {
+            "slug": "ospf-r2-dead-interval-40-match-r1-neighbor",
+            "title": "CCNA — OSPF R2 dead-interval to match R1",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "The network engineer is configuring router R2 as a replacement router on the network. After the initial configuration is applied it is determined that R2 failed to show R1 as a neighbor. Which configuration must be applied to R2 to complete the OSPF configuration and enable it to establish the neighbor relationship with R1?",
+            "name": "ospfr2nb1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 **R1** uses **Hello 15** and **Dead 40**; **R2** shows **Hello 15** but **Dead 45**. OSPF neighbors require matching **hello** and **dead** timers on the link. **`ip ospf dead-interval 40`** on **R2 GigabitEthernet0/0/0** aligns the dead timer with **R1**. **Option A** changes hello to **10**, which still mismatches **R1\u2019s Hello 15**. **Option B** sets **router-id 192.168.1.2**, duplicating **R1\u2019s Router ID** (**192.168.1.2**). **Option C** places **192.168.1.0/24** in **area 2** while **R1** is in **area 0**.",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="R1 show ip ospf interface g0/0/0">
+        <pre>R1#show ip ospf interface g0/0/0
+GigabitEthernet0/0/0 is up, line protocol is up
+  Internet address is 192.168.1.2/24, Area 0
+  Process ID 1, Router ID 192.168.1.2, Network Type POINT-TO-POINT, Cost: 1
+  Transmit Delay is 1 sec, State POINT-TO-POINT,
+  Timer intervals configured, Hello 15, Dead 40, Wait 40, Retransmit 5
+    Hello due in 00:00:08
+  Index 1/1, flood queue length 0
+  Next 0x0(0) /0x0(0)
+  Last flood scan length is 1, maximum is 1
+  Last flood scan time is 0 msec, maximum is 0 msec
+  Suppress hello for 0 neighbor(s)</pre>
+      </div>
+      <div class="exhibit-router-cli" role="region" aria-label="R2 show ip ospf interface g0/0/0">
+        <pre>R2#show ip ospf interface g0/0/0
+GigabitEthernet0/0/0 is up, line protocol is up
+  Internet address is 192.168.1.1/24, Area 0
+  Process ID 1, Router ID 10.1.1.1, Network Type POINT-TO-POINT, Cost: 1
+  Transmit Delay is 1 sec, State POINT-TO-POINT,
+  Timer intervals configured, Hello 15, Dead 45, Wait 15, Retransmit 5
+    Hello due in 00:00:11
+  Index 1/1, flood queue length 0
+  Next 0x0(0)/0x0(0)
+  Last flood scan length is 1, maximum is 1
+  Last flood scan time is 0 msec, maximum is 0 msec
+  Suppress hello for 0 neighbor(s)</pre>
+      </div>
+    </div>""",
+            "choices": [
+                """R2(config)#interface g0/0/0
+R2(config-if)#ip ospf hello-interval 10""",
+                """R2(config)#router ospf 1
+R2(config-router)#router-id 192.168.1.2""",
+                """R2(config)#router ospf 1
+R2(config-router)#network 192.168.1.0 255.255.255.0 area 2""",
+                """R2(config)#interface g0/0/0
+R2(config-if)#ip ospf dead-interval 40""",
+            ],
+        },
+        {
+            "slug": "ospf-neighbor-must-match-area-hello-choose-two",
+            "title": "CCNA — OSPF neighbor matching values (choose two)",
+            "stem": "Which two values must be matched on both routers in order to become OSPF neighbors? (Choose two)",
+            "name": "ospfnbrmt1",
+            "choose_two": True,
+            "correct": ["A", "C"],
+            "explain": "Correct. A and C \u2014 **Area ID** and **hello/dead intervals** must match on the link. **Authentication** (type and credentials), **stub/NSSA area flags**, and **interface MTU** must also match for a normal adjacency to complete (MTU mismatches often stall at **EXSTART**). **Router ID** must be **unique**, not identical. **Process ID** must be the **same** OSPF process on both sides of the adjacency, but the exam pair here is **area** and **timers**.",
+            "choices": [
+                "Area ID",
+                "Router ID",
+                "Hello and dead intervals",
+                "OSPF reference bandwidth",
+                "EIGRP autonomous system number",
+                "SNMP community string",
+            ],
+        },
+        {
+            "slug": "ssh-remove-unnecessary-name-server-password-encryption",
+            "title": "CCNA — Remove non-SSH commands (choose two)",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="CPE partial configuration">
+        <pre>hostname CPE
+service password-encryption
+ip domain name ccna.cisco.com
+ip name-server 198.51.100.210
+
+crypto key generate rsa modulus 1024
+
+username admin privilege 15 secret S0m3s3cr3t
+
+line vty 0 4
+ transport input ssh
+ login local</pre>
+    </div>""",
+            "stem": "Refer to the exhibit. An engineer executed the script and added commands that were not necessary for SSH and now must remove the commands. Which two commands must be executed to correct the configuration? (Choose two)",
+            "name": "sshrm1",
+            "choose_two": True,
+            "correct": ["C", "D"],
+            "explain": "Correct. C and D \u2014 **SSH** needs **`ip domain-name`**, **`crypto key generate rsa`**, a **local user** (**`username` \u2026 `secret`**), **`transport input ssh`**, and **`login local`** (or AAA). **`ip name-server`** (**C**) is for **DNS**, not SSH. **`service password-encryption`** (**D**) only obfuscates passwords in the **show run** display; it is **not required** to enable SSH. Do **not** remove **`ip domain-name`** (**A**) or **`login local`** (**B**)\u2014they are required. **`hostname`** (**E**) is recommended but not the pair of unnecessary lines to undo here.",
+            "choices": [
+                "no ip domain name ccna.cisco.com",
+                "no login local",
+                "no ip name-server 198.51.100.210",
+                "no service password-encryption",
+                "no hostname CPE",
+            ],
+        },
+        {
+            "slug": "wlc-lag-increase-throughput-reason",
+            "title": "CCNA — WLC LAG throughput benefit",
+            "stem": "What is a reason to implement LAG on a Cisco WLC?",
+            "name": "wlclagtp1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **LAG** bundles multiple **distribution** links into one logical path so the WLC gains **higher aggregate throughput** and **link redundancy**. **A** is wrong: LAG members need **matching** Layer 2 settings on the switch. **C** describes **WLC high availability** (for example **SSO**), not LAG on distribution ports. **D** is wrong: LAG does not **encrypt management frames**.",
+            "choices": [
+                "Enable the connected switch ports to use different Layer 2 configurations.",
+                "Increase the available throughput on the link.",
+                "Allow for stateful failover between WLCs.",
+                "Increase security by encrypting management frames.",
+            ],
+        },
+        {
+            "slug": "wlc-oob-management-service-console-choose-two",
+            "title": "CCNA — WLC OOB port types (choose two)",
+            "stem": "What are two port types used by a Cisco WLC for out-of-band management? (Choose two)",
+            "name": "wlcoob1",
+            "choose_two": True,
+            "correct": ["C", "E"],
+            "explain": "Correct. C and E \u2014 **Service port** provides **out-of-band** IP management on a dedicated Ethernet interface. **Console** provides **out-of-band** serial CLI access for setup and recovery. **Management** (**D**) is the **in-band** management interface (GUI/SSH/CAPWAP on the production network). **Distribution system** (**B**) carries AP/client traffic. **Redundant** (**A**) is for **WLC high-availability** peer links, not general OOB administration.",
+            "choices": [
+                "redundant",
+                "distribution system",
+                "service",
+                "management",
+                "console",
+            ],
+        },
+        {
+            "slug": "fiber-vs-copper-distance-throughput-choose-two",
+            "title": "CCNA — Fiber vs copper (choose two)",
+            "stem": "What are two facts that differentiate optical-fiber cabling from copper cabling? (Choose two)",
+            "name": "fibcop1",
+            "choose_two": True,
+            "correct": ["A", "B"],
+            "explain": "Correct. A and B \u2014 **Fiber** supports **longer reach** and **higher bandwidth** options (multigigabit and beyond on appropriate optics) with low attenuation and immunity to **EMI**. **Copper** carries **PoE** electrical power (**C**); fiber does not. **Fiber patch cables** are typically **more expensive** than copper (**D**), not less. **Fiber** is less affected by **EMI**; greater sensitivity to **temperature/moisture** (**E**) is not a defining advantage of fiber over copper.",
+            "choices": [
+                "It carries signals for longer distances.",
+                "It provides greater throughput options.",
+                "It carries electrical current further distances for PoE devices.",
+                "It is less expensive when purchasing patch cables.",
+                "It has a greater sensitivity to changes in temperature and moisture",
+            ],
+        },
+        {
+            "slug": "vrrp-multivendor-subnet-interoperate-vendors",
+            "title": "CCNA — Why VRRP in multivendor subnet",
+            "stem": "Why would VRRP be implemented when configuring a new subnet in a multivendor environment?",
+            "name": "vrrpmvsub1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 **VRRP** is an **open IETF standard**, so **Cisco and third-party** routers can share the same **virtual default gateway** design. **HSRP** and **GLBP** are **Cisco-centric** and are poor fits for mixed-vendor FHRP. **A** describes **STP**, not FHRP. **B** misstates the need (\u201cmore than two Cisco devices\u201d); multivendor is about **interoperability**, not Cisco-only scale. **D** is a general **FHRP** benefit (virtual IP/MAC and gratuitous ARP), but the **multivendor** reason is **open-standard VRRP** (**C**).",
+            "choices": [
+                "to ensure that the spanning-tree forwarding path to the gateway is loop-free",
+                "when a gateway protocol is required that supports more than two Cisco devices for redundancy",
+                "to interoperate normally with all vendors and provide additional security features for Cisco devices",
+                "to enable normal operations to continue after a member failure without requiring a change in a host ARP cache",
+            ],
+        },
+        {
+            "slug": "autonomous-vs-cloud-ap-deployment-comparison",
+            "title": "CCNA — Autonomous vs cloud-based APs",
+            "stem": "Which statement accurately compares autonomous mode APs to APs running in cloud-based mode?",
+            "name": "apcloud1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **Autonomous** APs are managed **locally** (per device or on-prem controller) and are **less dependent** on continuous **cloud/WAN reachability** for day-to-day control. At scale they are **harder to maintain** (firmware, RF, and policy per AP or site). **Cloud-based** APs (for example **Meraki**) use a **cloud dashboard** for **easy deployment**, **ZTP**, and **central automation**. **B** and **C** reverse that (**cloud** is easier to deploy/automate). **D** is wrong: **cloud** APs **depend** on the **underlay/internet** to the cloud and are typically **simpler** to operate centrally than scattered autonomous APs.",
+            "choices": [
+                "Autonomous mode APs are less dependent on an underlay but more complex to maintain than APs in cloud-based mode",
+                "Autonomous mode APs are easy to deploy and automate than APs in cloud-based mode",
+                "Cloud-based mode APs are easy to deploy but harder to automate than APs in autonomous mode",
+                "Cloud-based mode APs rely on underlays and are more complex to maintain than APs in autonomous mode",
+            ],
+        },
+        {
+            "slug": "crud-update-http-put-patch-choose-two",
+            "title": "CCNA — CRUD UPDATE: PUT and PATCH (choose two)",
+            "stem": "Under the CRUD model, which two HTTP methods support the UPDATE operation? (Choose two)",
+            "name": "crudupd1",
+            "choose_two": True,
+            "correct": ["A", "B"],
+            "explain": "Correct. A and B \u2014 **UPDATE** maps to **PUT** (replace/update a resource at a URI) and **PATCH** (partial update). **GET** (**E**) is **Read**. **DELETE** (**C**) is **Delete**. **POST** (**D**) commonly maps to **Create** (or non-idempotent actions), not the standard UPDATE verbs.",
+            "choices": [
+                "PUT",
+                "PATCH",
+                "DELETE",
+                "POST",
+                "GET",
+            ],
+        },
+        {
+            "slug": "controller-based-architecture-advantages-choose-two",
+            "title": "CCNA — Controller-based vs traditional (choose two)",
+            "stem": "What are two advantages of implementing a controller-based architecture instead of a traditional network architecture? (Choose two)",
+            "name": "ctrlarch1",
+            "choose_two": True,
+            "correct": ["B", "D"],
+            "explain": "Correct. B and D \u2014 A **controller-based** (SDN) design centralizes control and policy, improving **scalability** and **management** from one platform, and supports **configuration automation** through **APIs** and orchestration. **A** (complex IP addressing) is not a defining advantage over traditional routed networks. **C** (VM connectivity) is a use case overlays/virtualization can address but is not the core differentiator here. **E** (DoS protection) is not the primary benefit of moving to controller-based architecture.",
+            "choices": [
+                "It supports complex and high-scale IP addressing schemes.",
+                "It provides increased scalability and management options.",
+                "It allows for seamless connectivity to virtual machines.",
+                "It enables configuration task automation.",
+                "It increases security against denial-of-service attacks.",
+            ],
+        },
+        {
+            "slug": "fa0-13-high-crc-input-errors-physical",
+            "title": "CCNA — Fa0/13 CRC errors root cause",
+            "stem": "Refer to the exhibit. A technician receives a report of network slowness and the issue has been isolated to the interface FastEthernet0/13. What is the root cause of the issue?",
+            "name": "fa13crc1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **261,028 input errors** with **259,429 CRC** (and **1,599 frame** errors) mean frames arrived **corrupted** on the wire. That pattern points to **physical-layer** problems (bad cable, connector, or NIC/port). **Input/output queues** show **no drops** and **no buffer failures**, so **B** (buffer overload) does not fit. **Duplicate IP** (**C**) would not produce massive **CRC** counters. The link is **up/up** with **0 collisions** on **full duplex**, not a classic **err-disabled** far-end signature (**D**).",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="show interfaces FastEthernet0/13">
+        <pre>FastEthernet0/13 is up, line protocol is up
+Hardware is Fast Ethernet, address is 0001.4d27.66cd (bia 0001.4d27.66cd)
+MTU 1500 bytes, BW 100000 Kbit, DLY 100 usec,
+ reliability 255/255, txload 1/255, rxload 1/255
+Encapsulation ARPA, loopback not set
+Keepalive not set
+Auto-duplex (Full), Auto Speed (100), 100BaseTX/FX
+ARP type: ARPA, ARP Timeout 04:00:00
+Last input 18:52:43, output 00:00:01, output hang never
+Last clearing of "show interface" counters never
+Queueing strategy: fifo
+Output queue 0/40, 0 drops; input queue 0/75, 0 drops
+5 minute input rate 12000 bits/sec, 6 packets/sec
+5 minute output rate 24000 bits/sec, 6 packets/sec
+14488019 packets input, 2441805322 bytes
+Received 345346 broadcasts, 0 runts, 0 giants, 0 throttles
+261028 input errors, 259429 CRC, 1599 frame, 0 overrun, 0 ignored
+0 watchdog, 84207 multicast, 0 input packets with dribble condition detected
+19658279 packets output, 3529106068 bytes, 0 underruns
+0 output errors, 0 collisions, 1 interface resets
+0 babbles, 0 late collision, 0 deferred
+0 lost carrier, 0 no carrier
+0 output buffer failures, 0 output buffers swapped out</pre>
+      </div>""",
+            "choices": [
+                "physical errors",
+                "local buffer overload",
+                "duplicate IP addressing",
+                "err-disabled port on the far end",
+            ],
+        },
+        {
+            "slug": "ospf-overlapping-10-routes-all-three-in-table",
+            "title": "CCNA — show ip route overlapping OSPF prefixes",
+            "stem": "A router received three destination prefixes: 10.0.0.0/8, 10.0.0.0/16, and 10.0.0.0/24. When the show ip route command is executed, which output does it return?",
+            "name": "ospf103rt1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 When the router learns **non-conflicting** overlapping prefixes (different mask lengths for the same major network), **each route is installed** in the IP routing table. **show ip route** lists **all three** **O E2** entries; forwarding then uses **longest-prefix match** per destination. **A** shows only **/24**. **B** omits **/8**. **C** shows only **/8** and hides the more-specific routes.",
+            "choices": [
+                """Gateway of last resort is 172.16.1.1 to network 0.0.0.0
+O E2 10.0.0.0/24[110/5] via 192.168.3.1, 0:01:00, Ethernet2""",
+                """Gateway of last resort is 172.16.1.1 to network 0.0.0.0
+O E2 10.0.0.0/16[110/5] via 192.168.2.1, 0:01:00, Ethernet1
+O E2 10.0.0.0/24[110/5] via 192.168.3.1, 0:01:00, Ethernet2""",
+                """Gateway of last resort is 172.16.1.1 to network 0.0.0.0
+O E2 10.0.0.0/8 [110/5] via 192.168.1.1, 0:01:00, Ethernet0""",
+                """Gateway of last resort is 172.16.1.1 to network 0.0.0.0
+O E2 10.0.0.0/8 [110/5] via 192.168.1.1, 0:01:00, Ethernet0
+O E2 10.0.0.0/16[110/5] via 192.168.2.1, 0:01:00, Ethernet1
+O E2 10.0.0.0/24[110/5] via 192.168.3.1, 0:01:00, Ethernet2""",
+            ],
+        },
+        {
+            "slug": "rapid-pvst-portfast-bypass-learning-state",
+            "title": "CCNA — PortFast bypasses learning in RPVST+",
+            "stem": "Which state is bypassed in Rapid PVST+ when PortFast is enabled on a port?",
+            "name": "pflearn1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **PortFast** on an edge access port moves the port straight to **forwarding**, skipping the usual **learning** delay where the bridge would otherwise learn MAC addresses before forwarding. In **Rapid PVST+** (RSTP), ports normally progress through **discarding**, **learning**, and **forwarding**; PortFast short-circuits that wait. **Discarding** (**A**) and legacy **blocking** (**C**) are not the state the exam highlights as bypassed. **Forwarding** (**D**) is the destination state, not a bypassed one.",
+            "choices": [
+                "discarding",
+                "learning",
+                "blocking",
+                "forwarding",
+            ],
+        },
+        {
+            "slug": "switch-learn-unknown-source-mac-ingress-port",
+            "title": "CCNA — Learn unknown source MAC on ingress",
+            "stem": "When a switch receives a frame from an unknown source MAC address, which action does the switch take with the frame?",
+            "name": "unkmac1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 The switch **learns** the **source MAC** from the frame and **records** it in the **MAC/CAM table** mapped to the **ingress port**, then forwards based on the **destination** MAC. **A** describes **unknown destination** behavior (flood), and flooding does **not** include the **ingress** port for unknown unicast. **B** does not occur. **C** misstates the table: the CAM stores **learned** addresses, not unknown sources.",
+            "choices": [
+                "It floods the frame out all interfaces, including the interface it was received on.",
+                "It attempts to send the frame back to the source to ensure that the source MAC address is still available for transmissions.",
+                "It sends the frame to ports within the CAM table identified with an unknown source MAC address.",
+                "It associate the source MAC address with the LAN port on which it was received and saves it to the MAC address table.",
+            ],
+        },
+        {
+            "slug": "sdn-southbound-api-flow-control-switching-fabric",
+            "title": "CCNA — Southbound API flow control",
+            "stem": "What is a function of a southbound API?",
+            "name": "sdnsbfn1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 A **southbound API** connects the **SDN controller** to the **switching fabric** (infrastructure devices) so the controller can program **forwarding/flow** behavior (for example via **OpenFlow**, **NETCONF**, or **OpFlex**). **D** describes a **northbound** API (controller to **applications**). **C** is **orchestration** above the controller, not southbound device control. **A** is vague; southbound is specifically **controller-to-device**, not generic server-to-fabric automation wording alone.",
+            "choices": [
+                "Automate configuration changes between a server and a switching fabric.",
+                "Manage flow control between an SDN controller and a switching fabric.",
+                "Use orchestration to provision a virtual server configuration from a web server.",
+                "Facilitate the information exchange between an SDN controller and application.",
+            ],
+        },
+        {
+            "slug": "r25-fa0-0-runts-duplex-mismatch",
+            "title": "CCNA — Fa0/0 runts interface condition",
+            "stem": "Refer to the exhibit. Which interface condition is occurring in this output?",
+            "name": "r25runts1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 A high **runts** count means frames **smaller than 64 bytes** arrived; on Ethernet that commonly indicates **collision fragments** from a **duplex mismatch** (one end **full duplex**, the other **half duplex**) even when this side reports **Full-duplex**. **Bad NIC** (**A**) more often raises **CRC** errors, not runts alone. **Collisions** (**C**) can accompany duplex mismatch but the keyed condition here is the **runts** pattern. **High throughput** (**D**) is not indicated (**0** bit/sec rates, low packet counts).",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="R25 show interface FastEthernet0/0">
+        <pre>R25# show interface fa0/0
+FastEthernet0/0 is up, line protocol is up
+Hardware is DEC21140, address is ca02.7788.0000 (bia ca02.7788.0000)
+Description: atlanta_subnet
+Internet address is 10.32.102.2/30
+MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec,
+ reliability 255/255, txload 1/255, rxload 1/255
+Encapsulation ARPA, loopback not set
+Keepalive set (60 sec)
+Full-duplex, 100 Mb/s, 100BaseTX/FX
+ARP type: ARPA, ARP Timeout 04:00:00
+Last input 00:00:01, output 00:00:00, output hang never
+Last clearing of "show interface" counters never
+Input queue: 0/300/0/0 (size/max/drops/flushes); Total output drops: 0
+Queueing strategy: fifo
+Output queue: 0/300 (size/max)
+30 second input rate 0 bits/sec, 0 packets/sec
+30 second output rate 0 bits/sec, 0 packets/sec
+7331 packets input, 7101162 bytes
+Received 267 broadcasts (0 IP multicasts)
+1876 runts, 0 giants, 0 throttles
+0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+0 watchdog
+0 input packets with dribble condition detected
+3927 packets output, 1440403 bytes, 0 underruns
+0 output errors, 0 collisions, 0 interface resets
+0 unknown protocol drops
+0 babbles, 0 late collision, 0 deferred
+0 lost carrier, 0 no carrier
+0 output buffer failures, 0 output buffers swapped out</pre>
+      </div>""",
+            "choices": [
+                "bad NIC",
+                "duplex mismatch",
+                "collisions",
+                "high throughput",
+            ],
+        },
+        {
+            "slug": "r25-fa0-0-txload-255-high-throughput",
+            "title": "CCNA — Fa0/0 txload 255 high throughput",
+            "stem": "Refer to the exhibit. Which interface condition is occurring in this output?",
+            "name": "r25load1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **txload 255/255** and **rxload 255/255** mean the interface is **saturated** (maximum load). The **30-second rates** (~226\u2013232 Mbps) far exceed the **100 Mb/s** line rate, indicating **very high throughput** utilization. **Runts**, **CRC**, and **collisions** are **zero**, so **duplex mismatch** (**B**), **bad NIC** (**A**), and **collisions** (**C**) do not fit.",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="R25 show interface FastEthernet0/0 singapore">
+        <pre>R25# show interface fa0/0
+FastEthernet0/0 is up, line protocol is up
+Hardware is DEC21140, address is ca02.7788.0000 (bia ca02.7788.0000)
+Description: singapore_subnet
+Internet address is 10.32.102.2/30
+MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec,
+ reliability 255/255, txload 255/255, rxload 255/255
+Encapsulation ARPA, loopback not set
+Keepalive set (60 sec)
+Full-duplex, 100 Mb/s, 100BaseTX/FX
+ARP type: ARPA, ARP Timeout 04:00:00
+Last input 00:00:01, output 00:00:00, output hang never
+Last clearing of "show interface" counters never
+Input queue: 0/300/0/0 (size/max/drops/flushes); Total output drops: 0
+Queueing strategy: fifo
+Output queue: 0/300 (size/max)
+30 second input rate 225953751 bits/sec, 0 packets/sec
+30 second output rate 232423817 bits/sec, 0 packets/sec
+7331 packets input, 7101162 bytes
+Received 267 broadcasts (0 IP multicasts)
+0 runts, 0 giants, 0 throttles
+0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+0 watchdog
+0 input packets with dribble condition detected
+3927 packets output, 1440403 bytes, 0 underruns
+0 output errors, 0 collisions, 0 interface resets
+0 unknown protocol drops
+0 babbles, 0 late collision, 0 deferred
+0 lost carrier, 0 no carrier
+0 output buffer failures, 0 output buffers swapped out</pre>
+      </div>""",
+            "choices": [
+                "bad NIC",
+                "duplex mismatch",
+                "collisions",
+                "high throughput",
+            ],
+        },
+        {
+            "slug": "dhcp-relay-helper-192-168-10-1-cross-subnet",
+            "title": "CCNA — ip helper-address for DHCP relay",
+            "stem": "The clients and DHCP server reside on different subnets. Which command must be used to forward requests and replies between clients on the 10.10.0.1/24 subnet and the DHCP server at 192.168.10.1?",
+            "name": "dhcphlp1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 On the router **interface facing the client subnet**, **`ip helper-address 192.168.10.1`** enables a **DHCP relay** so **DHCPDISCOVER**/**DHCPREQUEST** broadcasts are forwarded to the server and replies return to clients. **`ip route`** (**A**) adds routing, not DHCP relay. **`ip dhcp address`** (**C**) is not the relay command. **`ip default-gateway`** (**D**) is configured on **hosts**, not for router DHCP relay.",
+            "choices": [
+                "ip route 192.168.10.1",
+                "ip helper-address 192.168.10.1",
+                "ip dhcp address 192.168.10.1",
+                "ip default-gateway 192.168.10.1",
+            ],
+        },
+        {
+            "slug": "ospf-r2-gi01-area-1-match-r1-neighbor",
+            "title": "CCNA — R2 OSPF area 1 on Gi0/1",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "A network engineer started to configure two directly-connected routers as shown. Which command sequence must the engineer configure on R2 so that the two routers become OSPF neighbors?",
+            "name": "ospfr2nb1",
+            "correct": "B",
+            "mono": True,
+            "explain": "Correct. B \u2014 **R1** enables **OSPF process 1** on **GigabitEthernet0/1** in **area 1** (**network 192.168.12.1 0.0.0.0 area 1**). **R2** must run the same **process** and **area** on the link: **`interface GigabitEthernet0/1`** then **`ip ospf 1 area 1`**. **A** uses **area 0**, so neighbors will not form. **C** advertises the subnet in **area 0**. **D** uses a **/32** wildcard for **192.168.12.1** only, which does not match **R2\u2019s 192.168.12.2** address.",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="R1 and R2 partial configuration">
+        <pre>R1
+interface GigabitEthernet0/1
+ ip address 192.168.12.1 255.255.255.128
+ no shutdown
+router ospf 1
+ network 192.168.12.1 0.0.0.0 area 1
+
+R2
+interface GigabitEthernet0/1
+ ip address 192.168.12.2 255.255.255.128
+ no shutdown</pre>
+      </div>""",
+            "choices": [
+                """interface GigabitEthernet0/1
+ip ospf 1 area 0""",
+                """interface GigabitEthernet0/1
+ip ospf 1 area 1""",
+                """router ospf 1
+network 192.168.12.0 0.0.0.127 area 0""",
+                """router ospf 1
+network 192.168.12.1 0.0.0.0 area 1""",
+            ],
+        },
+        {
+            "slug": "route-10-0-1-3-slash-32-host-route-meaning",
+            "title": "CCNA — Meaning of 10.0.1.3/32 route",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "What does route 10.0.1.3/32 represent in the routing table?",
+            "name": "rt10332m1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 A **/32** mask is a **host route**: it matches **one destination IP** (**10.0.1.3**), reached via **10.0.1.100** on **Serial0**. **A** would be a **/24** (or shorter) network route for **10.0.1.0/24**. **B** confuses the **next-hop** (**10.0.1.100**) with the **route prefix**. **D** is the broader **10.0.0.0/8** summary, not this **/32** entry.",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route">
+        <pre>R1# show ip route
+Codes: C - connected, S - static, I - IGRP, R - rip, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, * - candidate default
+       U - per-user static route, o - ODR
+Gateway of last resort is not set
+C    10.0.0.0/8 is directly connected, Loopback0
+     10.0.0.0/8 is variably subnetted, 4 subnets, 2 masks
+O    10.0.1.3/32 [110/100] via 10.0.1.100, 00:39:08, Serial0
+C    10.0.1.0/24 is directly connected, Serial0
+O    10.0.1.5/32 [110/5] via 10.0.1.50, 00:39:08, GigabitEthernet0/0
+D    10.0.1.4/32 [110/10] via 10.0.1.4, 00:39:08, GigabitEthernet0/0</pre>
+      </div>""",
+            "choices": [
+                "all hosts in the 10.0.1.0 subnet",
+                "the source 10.0.1.100",
+                "a single destination address",
+                "the 10.0.0.0 network",
+            ],
+        },
+        {
+            "slug": "r1-ssh-version2-minimum-config-options",
+            "title": "CCNA — R1: minimum SSHv2 configuration (options)",
+            "stem": "An engineer is configuring SSH version 2 exclusively on the R1 router. What is the minimum configuration required to permit remote management using the cryptographic protocol?",
+            "name": "r1sshv2min1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 **SSHv2** needs **`ip domain-name`** (RSA key generation), **`crypto key generate rsa`**, **`ip ssh version 2`**, a **local user** (**`username` \u2026 `password`**), **`transport input ssh`** on **VTY** lines (not **`all`**, which still permits **Telnet**), and **`login local`**. **A** uses **`transport input all`**. **B** omits **`ip domain-name`**. **C** adds **`service password-encryption`**, which only obfuscates passwords in **show run** and is **not required** for SSH, and also omits **`ip domain-name`**.",
+            "choices": [
+                """Option A
+
+hostname R1
+ip domain name cisco
+crypto key generate rsa general-keys modulus 1024
+username cisco privilege 15 password 0 cisco123
+ip ssh version 2
+line vty 0 15
+ transport input all
+ login local""",
+                """Option B
+
+hostname R1
+crypto key generate rsa general-keys modulus 1024
+username cisco privilege 15 password 0 cisco123
+ip ssh version 2
+line vty 0 15
+ transport input all
+ login local""",
+                """Option C
+
+hostname R1
+service password-encryption
+crypto key generate rsa general-keys modulus 1024
+username cisco privilege 15 password 0 cisco123
+ip ssh version 2
+line vty 0 15
+ transport input ssh
+ login local""",
+                """Option D
+
+hostname R1
+ip domain name cisco
+crypto key generate rsa general-keys modulus 1024
+username cisco privilege 15 password 0 cisco123
+ip ssh version 2
+line vty 0 15
+ transport input ssh
+ login local""",
+            ],
+        },
+        {
+            "slug": "r19-fa0-0-collisions-portland-subnet",
+            "title": "CCNA — R19 Fa0/0 collisions (show interface)",
+            "stem": "Refer to the exhibit. Which interface condition is occurring in this output?",
+            "name": "r19coll1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 The output reports **139 collisions** on the interface. **Queueing** problems (**A**) would show **input/output queue drops** or **buffer failures**, not a high **collisions** counter. **Duplex mismatch** (**B**) more often shows **runts**, **late collisions**, or **deferred** frames; here **runts** are **0** and **late collision** is **0**. **High throughput** (**D**) is not indicated: **txload/rxload** are **1/255** and **30-second rates** are **0**.",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="R19 show interface FastEthernet0/0">
+        <pre>R19# show interface fa0/0
+FastEthernet0/0 is up, line protocol is up
+Hardware is DEC21140, address is ca02.7788.0000 (bia ca02.7788.0000)
+Description: portland_subnet
+Internet address is 10.32.102.2/30
+MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec,
+ reliability 255/255, txload 1/255, rxload 1/255
+Encapsulation ARPA, loopback not set
+Keepalive set (60 sec)
+Full-duplex, 100 Mb/s, 100BaseTX/FX
+ARP type: ARPA, ARP Timeout 04:00:00
+Last input 00:00:01, output 00:00:00, output hang never
+Last clearing of "show interface" counters never
+Input queue: 0/300/0/0 (size/max/drops/flushes); Total output drops: 0
+Queueing strategy: fifo
+Output queue: 0/300 (size/max)
+30 second input rate 0 bits/sec, 0 packets/sec
+30 second output rate 0 bits/sec, 0 packets/sec
+7331 packets input, 7101162 bytes
+Received 267 broadcasts (0 IP multicasts)
+0 runts, 0 giants, 0 throttles
+0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+0 watchdog
+0 input packets with dribble condition detected
+3927 packets output, 1440403 bytes, 0 underruns
+0 output errors, 139 collisions, 0 interface resets
+0 unknown protocol drops
+0 babbles, 0 late collision, 0 deferred
+0 lost carrier, 0 no carrier
+0 output buffer failures, 0 output buffers swapped out</pre>
+      </div>""",
+            "choices": [
+                "queueing",
+                "duplex mismatch",
+                "collisions",
+                "high throughput",
+            ],
+        },
+        {
+            "slug": "static-routes-same-destination-different-next-hop",
+            "title": "CCNA — Two static routes, different next hops",
+            "stem": "A router has two static routes to the same destination network under the same OSPF process. How does the router forward packets to the destination if the next-hop devices are different?",
+            "name": "st2nh1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 When multiple **equal-cost** routes exist to the same destination (same **prefix/mask**, same **administrative distance**, and for OSPF the same **metric**), Cisco routers **load-balance** across those paths (per-destination or per-packet depending on platform/CEF settings). The router does **not** pick the next hop by **lowest IP** (**A**) or **MAC** (**C**). **Route age** (**D**) is not the tie-break for forwarding among active equal-cost entries.",
+            "choices": [
+                "The router chooses the next hop with the lowest IP address.",
+                "The router load-balances traffic over all routes to the destination.",
+                "The router chooses the next hop with the lowest MAC address.",
+                "The router chooses the route with the oldest age.",
+            ],
+        },
+        {
+            "slug": "r17-fa0-0-txload-255-high-throughput-chicago",
+            "title": "CCNA — R17 Fa0/0 high throughput (show interface)",
+            "stem": "Which interface condition is occurring in this output?",
+            "name": "r17load1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **txload 255/255** and **rxload 255/255** show the interface at **maximum utilization**. **30-second input/output rates** (~201\u2013229 Mbps) far exceed the **100 Mb/s** configured speed, indicating **very high throughput**. **Queueing** (**B**) would show **queue drops** or **buffer failures**, not saturation load counters alone. **Bad NIC** (**C**) usually raises **CRC**/**frame** errors (here **0**). **Broadcast storm** (**D**) would show a very high **broadcast** count relative to total traffic; only **267** broadcasts are listed.",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="R17 show interface FastEthernet0/0">
+        <pre>R17# show interface fa0/0
+FastEthernet0/0 is up, line protocol is up
+Hardware is DEC21140, address is ca02.7788.0000 (bia ca02.7788.0000)
+Description: chicago_subnet
+Internet address is 10.32.102.2/30
+MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec,
+ reliability 255/255, txload 255/255, rxload 255/255
+Encapsulation ARPA, loopback not set
+Keepalive set (60 sec)
+Full-duplex, 100 Mb/s, 100BaseTX/FX
+ARP type: ARPA, ARP Timeout 04:00:00
+Last input 00:00:01, output 00:00:00, output hang never
+Last clearing of "show interface" counters never
+Input queue: 0/300/0/0 (size/max/drops/flushes); Total output drops: 0
+Queueing strategy: fifo
+Output queue: 0/300 (size/max)
+30 second input rate 201240151 bits/sec, 0 packets/sec
+30 second output rate 228594263 bits/sec, 0 packets/sec
+7331 packets input, 7101162 bytes
+Received 267 broadcasts (0 IP multicasts)
+1876 runts, 0 giants, 0 throttles
+0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+0 watchdog
+0 input packets with dribble condition detected
+3927 packets output, 1440403 bytes, 0 underruns
+0 output errors, 0 collisions, 0 interface resets
+0 unknown protocol drops
+0 babbles, 0 late collision, 0 deferred
+0 lost carrier, 0 no carrier
+0 output buffer failures, 0 output buffers swapped out</pre>
+      </div>""",
+            "choices": [
+                "high throughput",
+                "queueing",
+                "bad NIC",
+                "broadcast storm",
+            ],
+        },
+        {
+            "slug": "10gbase-sr-lr-shared-fiber-media-property",
+            "title": "CCNA — 10GBase-SR and 10GBase-LR shared property",
+            "stem": "Which property is shared by 10GBase-SR and 10GBase-LR interfaces?",
+            "name": "10gsrlr1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **10GBase-SR** (short reach) and **10GBase-LR** (long reach) are **10 Gigabit Ethernet** standards that both use **fiber** cabling. **SR** is designed for **multimode** fiber over shorter distances; **LR** uses **single-mode** fiber for longer spans\u2014so **A** and **C** are not shared. Neither standard uses **UTP** copper (**B**).",
+            "choices": [
+                "Both use the multimode fiber type.",
+                "Both require UTP cable media for transmission.",
+                "Both use the single-mode fiber type.",
+                "Both require fiber cable media for transmission.",
+            ],
+        },
+        {
+            "slug": "datacenter-backup-more-specific-route-secondary-circuit",
+            "title": "CCNA — Backup traffic off primary MPLS circuit",
+            "stem": "A network engineer is upgrading a small data center to host several new applications, including server backups that are expected to account for up to 90% of the bandwidth during peak times. The data center connects to the MPLS network provider via a primary circuit and a secondary circuit. How does the engineer inexpensively update the data center to avoid saturation of the primary circuit by traffic associated with the backups?",
+            "name": "dcbkrt1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **Advertise a more specific route** for backup prefixes **out the secondary circuit** so **longest-prefix match** steers backup flows away from the **primary** link without buying new hardware. A **dedicated VLAN** (**A**) or **switch** (**C**) alone does not change which **WAN/MPLS** path carries the traffic. A **dedicated backup circuit** (**B**) is effective but **not inexpensive** compared with **policy routing/BGP** using the **existing secondary** link.",
+            "choices": [
+                "Place the backup servers in a dedicated VLAN.",
+                "Configure a dedicated circuit for the backup traffic.",
+                "Assign traffic from the backup servers to a dedicated switch.",
+                "Advertise a more specific route for the backup traffic via the secondary circuit.",
+            ],
+        },
+        {
+            "slug": "ospf-r2-hello-interval-10-match-r1-neighbor",
+            "title": "CCNA — OSPF R2 hello-interval to match R1",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "The network engineer is configuring router R2 as a replacement router on the network. After the initial configuration is applied it is determined that R2 failed to show R1 as a neighbor. Which configuration must be applied to R2 to complete the OSPF configuration and enable it to establish the neighbor relationship with R1?",
+            "name": "ospfr2hi1",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A \u2014 **R1** uses **Hello 10** and **Dead 40**; **R2** shows **Hello 15** with **Dead 40**. OSPF requires matching **hello** and **dead** timers on the link. **`ip ospf hello-interval 10`** on **R2 GigabitEthernet0/0/0** aligns hello with **R1** (dead stays **40**). **Option B** changes **router-id** but does not fix the timer mismatch. **Option C** places the subnet in **area 2** while **R1** is in **area 0**. **Option D** sets **dead-interval 45**, which mismatches **R1\u2019s Dead 40**.",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="R1 show ip ospf interface g0/0/0">
+        <pre>R1#show ip ospf interface g0/0/0
+GigabitEthernet0/0/0 is up, line protocol is up
+  Internet address is 192.168.1.2/24, Area 0
+  Process ID 1, Router ID 192.168.1.2, Network Type POINT-TO-POINT, Cost: 1
+  Transmit Delay is 1 sec, State POINT-TO-POINT,
+  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+    Hello due in 00:00:08
+  Index 1/1, flood queue length 0
+  Next 0x0(0) /0x0(0)
+  Last flood scan length is 1, maximum is 1
+  Last flood scan time is 0 msec, maximum is 0 msec
+  Suppress hello for 0 neighbor(s)</pre>
+      </div>
+      <div class="exhibit-router-cli" role="region" aria-label="R2 show ip ospf interface g0/0/0">
+        <pre>R2#show ip ospf interface g0/0/0
+GigabitEthernet0/0/0 is up, line protocol is up
+  Internet address is 192.168.1.1/24, Area 0
+  Process ID 1, Router ID 10.1.1.1, Network Type POINT-TO-POINT, Cost: 1
+  Transmit Delay is 1 sec, State POINT-TO-POINT,
+  Timer intervals configured, Hello 15, Dead 40, Wait 40, Retransmit 5
+    Hello due in 00:00:11
+  Index 1/1, flood queue length 0
+  Next 0x0(0)/0x0(0)
+  Last flood scan length is 1, maximum is 1
+  Last flood scan time is 0 msec, maximum is 0 msec
+  Suppress hello for 0 neighbor(s)</pre>
+      </div>
+    </div>""",
+            "choices": [
+                """Option A
+
+R2(config)#interface g0/0/0
+R2(config-if)#ip ospf hello-interval 10""",
+                """Option B
+
+R2(config)#router ospf 1
+R2(config-router)#router-id 192.168.1.1""",
+                """Option C
+
+R2(config)#router ospf 1
+R2(config-router)#network 192.168.1.0 255.255.255.0 area 2""",
+                """Option D
+
+R2(config)#interface g0/0/0
+R2(config-if)#ip ospf dead-interval 45""",
+            ],
+        },
+        {
+            "slug": "soho-environment-characteristics-choose-two",
+            "title": "CCNA — SOHO connection environment (choose two)",
+            "stem": "What are two characteristics of a small office / home office connection environment? (Choose two.)",
+            "name": "sohoenv1",
+            "choose_two": True,
+            "correct": ["A", "D"],
+            "explain": "Correct. A and D \u2014 **SOHO** sites are **small** (typically on the order of **1\u201350 users**) and usually connect to the Internet through a **router WAN port** to a **broadband** service (cable, DSL, or fiber). **B** describes an **enterprise** **core/distribution/access** design, not SOHO. **C** (**50\u2013100 users**) fits a larger **branch/SMB** more than SOHO. **E** (**10Gb on all uplinks**) is **datacenter/enterprise** scale, not typical SOHO.",
+            "choices": [
+                "It supports between 1 and 50 users.",
+                "It requires a core, distribution, and access layer architecture.",
+                "It supports between 50 and 100 users.",
+                "A router port connects to a broadband connection.",
+                "It requires 10Gb ports on all uplinks.",
+            ],
+        },
+        {
+            "slug": "syslog-severity-emergency-system-unusable",
+            "title": "CCNA — Syslog emergency severity (system unusable)",
+            "stem": "Which syslog severity level is considered the most severe and results in the system being considered unusable?",
+            "name": "syslogsev1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **Emergency (level 0)** is the highest syslog severity: the system is **unusable**. **Alert (1)** needs immediate action but is below emergency. **Critical (2)** and **Error (3)** are serious but not the top level. Cisco IOS uses the scale **0 emergency** through **7 debug**.",
+            "choices": [
+                "Critical",
+                "Emergency",
+                "Alert",
+                "Error",
+            ],
+        },
+        {
+            "slug": "dna-center-apis-vs-traditional-manual-gathering",
+            "title": "CCNA — DNA Center APIs vs traditional campus management",
+            "stem": "Which benefit does Cisco DNA Center provide over traditional campus management?",
+            "name": "dnaapi1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **Cisco DNA Center** exposes **northbound APIs** so tools and automation can **programmatically** collect state, configure intent, and integrate workflows instead of relying on **manual CLI/SNMP polling** per device. **A** misstates the gap (**SNMPv3** is available in both models). **C** is wrong because **SSH** is common in **traditional** management too. **D** overstates **HTTPS** as unique\u2014secure web access is not the defining differentiator.",
+            "choices": [
+                "Cisco DNA Center leverages SNMPv3 for encrypted management, and traditional campus management uses SNMPv2.",
+                "Cisco DNA Center leverages APIs, and traditional campus management requires manual data gathering.",
+                "Cisco DNA Center automates SSH access for encrypted entry, and SSH is absent from traditional campus management.",
+                "Cisco DNA Center automates HTTPS for secure web access, and traditional campus management uses HTTP.",
+            ],
+        },
+        {
+            "slug": "r25-fa0-0-queueing-tokyo-subnet",
+            "title": "CCNA — R25 Fa0/0 queueing (show interface)",
+            "stem": "Which interface condition is occurring in this output?",
+            "name": "r25que1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 **Output queue: 185/300** shows the **transmit queue** is **nearly full**, indicating **queueing**/**congestion** on the outbound path. **txload/rxload 1/255** and **zero 30-second rates** argue against **high throughput** saturation. **CRC**/**frame** errors are **0**, so **bad NIC** (**A**) is unlikely. Only **267** broadcasts were received, not a **broadcast storm** (**B**). **Runts** can suggest **duplex mismatch** (**D**), but the **filled output queue** is the condition this item keys on.",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="R25 show interface FastEthernet0/0">
+        <pre>R25# show interface fa0/0
+FastEthernet0/0 is up, line protocol is up
+Hardware is DEC21140, address is ca02.7788.0000 (bia ca02.7788.0000)
+Description: tokyo_subnet
+Internet address is 10.32.102.2/30
+MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec,
+ reliability 255/255, txload 1/255, rxload 1/255
+Encapsulation ARPA, loopback not set
+Keepalive set (60 sec)
+Full-duplex, 100 Mb/s, 100BaseTX/FX
+ARP type: ARPA, ARP Timeout 04:00:00
+Last input 00:00:01, output 00:00:00, output hang never
+Last clearing of "show interface" counters never
+Input queue: 0/300/0/0 (size/max/drops/flushes); Total output drops: 0
+Queueing strategy: fifo
+Output queue: 185/300 (size/max)
+30 second input rate 0 bits/sec, 0 packets/sec
+30 second output rate 0 bits/sec, 0 packets/sec
+7331 packets input, 7101162 bytes
+Received 267 broadcasts (0 IP multicasts)
+1876 runts, 0 giants, 0 throttles
+0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+0 watchdog
+0 input packets with dribble condition detected
+3927 packets output, 1440403 bytes, 0 underruns
+0 output errors, 0 collisions, 0 interface resets
+0 unknown protocol drops
+0 babbles, 0 late collision, 0 deferred
+0 lost carrier, 0 no carrier
+0 output buffer failures, 0 output buffers swapped out</pre>
+      </div>""",
+            "choices": [
+                "bad NIC",
+                "broadcast storm",
+                "queueing",
+                "duplex mismatch",
+            ],
+        },
+        {
+            "slug": "snmp-community-string-mib-access-password",
+            "title": "CCNA — SNMP community string role",
+            "stem": "What is the role of community strings in SNMP operations?",
+            "name": "snmpcomm1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 In **SNMPv1/v2c**, the **community string** acts like a **shared password** that controls **read-only** or **read-write** access to **MIB** objects on the agent. It is **not** a **sequence tag** (**A**). It is **not** **Active Directory** credentials (**C**). The NMS uses **MIB** definitions to **interpret** OIDs; community strings do **not** translate alphanumeric output to numbers (**D**). **SNMPv3** replaces communities with **user-based security**.",
+            "choices": [
+                "It serves as a sequence tag on SNMP traffic messages.",
+                "It serves as a password to protect access to MIB objects.",
+                "It passes the Active Directory username and password that are required for device access.",
+                "It translates alphanumeric MIB output values to numeric values.",
+            ],
+        },
+        {
+            "slug": "wlc-lag-one-port-passes-client-traffic",
+            "title": "CCNA — WLC LAG implementation (client traffic)",
+            "stem": "How will Link Aggregation be implemented on a Cisco Wireless LAN Controller?",
+            "name": "wlclagimpl1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 With **LAG** enabled, the WLC **bundles** distribution ports, but **only one working physical port** is required for **client traffic** to continue if other members fail. **A** is wrong: **two or more ports** are not mandatory for basic client forwarding (LAG is optional; a single link can carry traffic). **B** misstates WLC LAG: the **switch** side uses **LACP** (**channel-group mode active**); that is not the defining **WLC** implementation fact here. **C** is false\u2014LAG does not cap bandwidth at **500 Mbps**.",
+            "choices": [
+                "To pass client traffic, two or more ports must be configured",
+                "The EtherChannel must be configured in \u201cmode active\u201d",
+                "When enabled, the WLC bandwidth drops to 500 Mbps",
+                "One functional physical port is needed to pass client traffic",
+            ],
+        },
+        {
+            "slug": "r1-telnet-login-local-privilege-15-username",
+            "title": "CCNA — Telnet local user to privileged mode",
+            "stem": "Refer to the exhibit.",
+            "stem_after_exhibit": "An engineer booted a new switch and applied this configuration via the console port. Which additional configuration must be applied to allow administrators to authenticate directly to global configuration mode via Telnet using a local username and password?",
+            "name": "r1tel1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 **`username admin privilege 15 secret`** creates a **local** account that lands in **privileged EXEC** (global config access) when **`login local`** is on **VTY** lines. **`login local`** checks the **local database** instead of a **line password** alone. **A** and **B** use **`line vty` password`** without a proper **`username ... secret`** and show **`(config-if)`** context errors. **C** adds **`enable secret`** but omits **`privilege 15`** on the user, so Telnet may stop at **user EXEC** unless **`enable`** is entered.",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="R1 initial configuration">
+        <pre>Switch(config)#hostname R1
+R1(config)#interface FastEthernet0/1
+R1(config-if)#no switchport
+R1(config-if)#ip address 10.100.20.42 255.255.255.0
+R1(config-if)#line vty 0 4
+R1(config-line)#login</pre>
+      </div>""",
+            "choices": [
+                """R1(config)#username admin
+R1(config-if)#line vty 0 4
+R1(config-line)#password p@ss1234""",
+                """R1(config)#username admin
+R1(config-if)#line vty 0 4
+R1(config-line)#password p@ss1234
+R1(config-line)#transport input telnet""",
+                """R1(config)#username admin secret p@ss1234
+R1(config-if)#line vty 0 4
+R1(config-line)#login local
+R1(config)#enable secret p@ss1234""",
+                """R1(config)#username admin privilege 15 secret p@ss1234
+R1(config-if)#line vty 0 4
+R1(config-line)#login local""",
+            ],
+        },
+        {
+            "slug": "backdoor-malware-unauthorized-access-definition",
+            "title": "CCNA — Backdoor malware definition",
+            "stem": "What is the definition of backdoor malware?",
+            "name": "backdoor1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 A **backdoor** is malware (or a hidden access method) installed so an **unauthorized user** can access the system later, often bypassing normal authentication. **A** describes a **dropper/launcher** for other malware. **B** describes **spam bot**/**zombie** behavior. **C** describes **downloader** malware whose main job is to fetch more malicious code.",
+            "choices": [
+                "malicious program that is used to launch other malicious programs",
+                "malicious code that infects a user machine and then uses that machine to send spam",
+                "malicious code with the main purpose of downloading other malicious code",
+                "malicious code that is installed onto a computer to allow access by an unauthorized user",
+            ],
+        },
+        {
+            "slug": "wlc-console-connection-out-of-band-management",
+            "title": "CCNA — WLC console connection functionality",
+            "stem": "Which functionality is provided by the console connection on a Cisco WLC?",
+            "name": "wlcconfn1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 The **console** port is **out-of-band** **serial** management for initial setup, recovery, and troubleshooting when **in-band** IP paths are unavailable. **In-band** administration uses the **management interface** (GUI/SSH/HTTPS) on the production network (**A** is wrong). **HTTP GUI** (**C**) is not provided over the **serial console**. **Unencrypted in-band file transfers** (**D**) does not describe the console role.",
+            "choices": [
+                "secure In-band connectivity for device administration",
+                "out-of-band management",
+                "HTTP-based GUI connectivity",
+                "unencrypted in-band connectivity for file transfers",
+            ],
+        },
     ]
 
     prev = "vty-access-list-ssh-secure"

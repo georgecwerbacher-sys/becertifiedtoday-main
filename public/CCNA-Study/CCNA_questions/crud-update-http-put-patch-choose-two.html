@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC SIP CAC next steps (choose two)</title>
+  <title>CCNA — CRUD UPDATE: PUT and PATCH (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,13 +313,13 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
     <main class="card">
-    <h1 class="choose-two-stem">SIP-based Call Admission Control must be configured in the Cisco WLC GUI. SIP call-snooping ports are configured. Which two actions must be completed next? (Choose two.)</h1>
+    <h1 class="choose-two-stem">Under the CRUD model, which two HTTP methods support the UPDATE operation? (Choose two)</h1>
 
-    <label class="choice"><input type="checkbox" name="sipcac1" value="A" />A. Set the QoS level to silver or greater for voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="B" />B. Enable Media Session Snooping on the WLAN</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="C" />C. Configure two different QoS roles for data and voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="D" />D. Set the QoS level to platinum for voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="E" />E. Enable traffic shaping for the LAN interface of the WLC</label>
+    <label class="choice"><input type="checkbox" name="crudupd1" value="A" />A. PUT</label>
+    <label class="choice"><input type="checkbox" name="crudupd1" value="B" />B. PATCH</label>
+    <label class="choice"><input type="checkbox" name="crudupd1" value="C" />C. DELETE</label>
+    <label class="choice"><input type="checkbox" name="crudupd1" value="D" />D. POST</label>
+    <label class="choice"><input type="checkbox" name="crudupd1" value="E" />E. GET</label>
 
     <div class="actions">
       <button id="checkBtn" type="button">Check answer</button>
@@ -329,20 +329,20 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/rapid-pvst-backup-port-blocking-designated.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wpa3-personal-psk-ccmp128-cipher.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/autonomous-vs-cloud-ap-deployment-comparison.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/controller-based-architecture-advantages-choose-two.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = ["B", "D"];
+      var CORRECT = ["A", "B"];
       var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
       function selectedValues() {
         return []
-          .slice.call(document.querySelectorAll('input[name="sipcac1"]:checked'))
+          .slice.call(document.querySelectorAll('input[name="crudupd1"]:checked'))
           .map(function (el) { return el.value; })
           .sort();
       }
@@ -362,7 +362,7 @@
         }
         if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. B and D \u2014 After **SIP call-snooping ports**, enable **Media Session Snooping** on the **WLAN** and set WLAN **QoS to Platinum** for **voice** traffic so SIP CAC can admit and prioritize calls. **A** (**silver or greater**) is not the required voice policy. **C** (separate data/voice QoS roles) is not the standard pair of next GUI steps here. **E** (LAN traffic shaping) is unrelated to completing SIP CAC on the WLAN.";
+          answerBox.textContent = "Correct. A and B \u2014 **UPDATE** maps to **PUT** (replace/update a resource at a URI) and **PATCH** (partial update). **GET** (**E**) is **Read**. **DELETE** (**C**) is **Delete**. **POST** (**D**) commonly maps to **Create** (or non-idempotent actions), not the standard UPDATE verbs.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";

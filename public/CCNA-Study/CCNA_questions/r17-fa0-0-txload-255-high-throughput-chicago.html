@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC SIP CAC next steps (choose two)</title>
+  <title>CCNA — R17 Fa0/0 high throughput (show interface)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,61 +312,81 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-    <main class="card">
-    <h1 class="choose-two-stem">SIP-based Call Admission Control must be configured in the Cisco WLC GUI. SIP call-snooping ports are configured. Which two actions must be completed next? (Choose two.)</h1>
+  <main class="card">
+    <div class="exhibit-router-cli" role="region" aria-label="R17 show interface FastEthernet0/0">
+        <pre>R17# show interface fa0/0
+FastEthernet0/0 is up, line protocol is up
+Hardware is DEC21140, address is ca02.7788.0000 (bia ca02.7788.0000)
+Description: chicago_subnet
+Internet address is 10.32.102.2/30
+MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec,
+ reliability 255/255, txload 255/255, rxload 255/255
+Encapsulation ARPA, loopback not set
+Keepalive set (60 sec)
+Full-duplex, 100 Mb/s, 100BaseTX/FX
+ARP type: ARPA, ARP Timeout 04:00:00
+Last input 00:00:01, output 00:00:00, output hang never
+Last clearing of "show interface" counters never
+Input queue: 0/300/0/0 (size/max/drops/flushes); Total output drops: 0
+Queueing strategy: fifo
+Output queue: 0/300 (size/max)
+30 second input rate 201240151 bits/sec, 0 packets/sec
+30 second output rate 228594263 bits/sec, 0 packets/sec
+7331 packets input, 7101162 bytes
+Received 267 broadcasts (0 IP multicasts)
+1876 runts, 0 giants, 0 throttles
+0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+0 watchdog
+0 input packets with dribble condition detected
+3927 packets output, 1440403 bytes, 0 underruns
+0 output errors, 0 collisions, 0 interface resets
+0 unknown protocol drops
+0 babbles, 0 late collision, 0 deferred
+0 lost carrier, 0 no carrier
+0 output buffer failures, 0 output buffers swapped out</pre>
+      </div>
+    <h1>Which interface condition is occurring in this output?</h1>
 
-    <label class="choice"><input type="checkbox" name="sipcac1" value="A" />A. Set the QoS level to silver or greater for voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="B" />B. Enable Media Session Snooping on the WLAN</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="C" />C. Configure two different QoS roles for data and voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="D" />D. Set the QoS level to platinum for voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="E" />E. Enable traffic shaping for the LAN interface of the WLC</label>
+    <label class="choice"><input type="radio" name="r17load1" value="A" />A. high throughput</label>
+    <label class="choice"><input type="radio" name="r17load1" value="B" />B. queueing</label>
+    <label class="choice"><input type="radio" name="r17load1" value="C" />C. bad NIC</label>
+    <label class="choice"><input type="radio" name="r17load1" value="D" />D. broadcast storm</label>
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/rapid-pvst-backup-port-blocking-designated.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wpa3-personal-psk-ccmp128-cipher.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/static-routes-same-destination-different-next-hop.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/10gbase-sr-lr-shared-fiber-media-property.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = ["B", "D"];
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 **txload 255/255** and **rxload 255/255** show the interface at **maximum utilization**. **30-second input/output rates** (~201\u2013229 Mbps) far exceed the **100 Mb/s** configured speed, indicating **very high throughput**. **Queueing** (**B**) would show **queue drops** or **buffer failures**, not saturation load counters alone. **Bad NIC** (**C**) usually raises **CRC**/**frame** errors (here **0**). **Broadcast storm** (**D**) would show a very high **broadcast** count relative to total traffic; only **267** broadcasts are listed.";
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValues() {
-        return []
-          .slice.call(document.querySelectorAll('input[name="sipcac1"]:checked'))
-          .map(function (el) { return el.value; })
-          .sort();
-      }
-
-      function arraysEqual(a, b) {
-        if (a.length !== b.length) return false;
-        return a.every(function (v, i) { return v === b[i]; });
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedValues();
+      function applyFeedback(value) {
         answerBox.style.display = "block";
-        if (sel.length !== 2) {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Choose exactly two answers.";
-          return;
-        }
-        if (arraysEqual(sel, CORRECT)) {
+        if (value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. B and D \u2014 After **SIP call-snooping ports**, enable **Media Session Snooping** on the **WLAN** and set WLAN **QoS to Platinum** for **voice** traffic so SIP CAC can admit and prioritize calls. **A** (**silver or greater**) is not the required voice policy. **C** (separate data/voice QoS roles) is not the standard pair of next GUI steps here. **E** (LAN traffic shaping) is unrelated to completing SIP CAC on the WLAN.";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
+      }
+
+      document.querySelectorAll('input[name="r17load1"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
       });
     })();
   </script>

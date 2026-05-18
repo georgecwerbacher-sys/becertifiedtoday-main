@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC SIP CAC next steps (choose two)</title>
+  <title>CCNA — Syslog transport protocols (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,13 +313,13 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
     <main class="card">
-    <h1 class="choose-two-stem">SIP-based Call Admission Control must be configured in the Cisco WLC GUI. SIP call-snooping ports are configured. Which two actions must be completed next? (Choose two.)</h1>
+    <h1 class="choose-two-stem">Which two transport layer protocols carry syslog messages? (Choose two)</h1>
 
-    <label class="choice"><input type="checkbox" name="sipcac1" value="A" />A. Set the QoS level to silver or greater for voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="B" />B. Enable Media Session Snooping on the WLAN</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="C" />C. Configure two different QoS roles for data and voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="D" />D. Set the QoS level to platinum for voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="E" />E. Enable traffic shaping for the LAN interface of the WLC</label>
+    <label class="choice"><input type="checkbox" name="syslogtr1" value="A" />A. TCP</label>
+    <label class="choice"><input type="checkbox" name="syslogtr1" value="B" />B. UDP</label>
+    <label class="choice"><input type="checkbox" name="syslogtr1" value="C" />C. ARP</label>
+    <label class="choice"><input type="checkbox" name="syslogtr1" value="D" />D. RTP</label>
+    <label class="choice"><input type="checkbox" name="syslogtr1" value="E" />E. IP</label>
 
     <div class="actions">
       <button id="checkBtn" type="button">Check answer</button>
@@ -329,20 +329,20 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/rapid-pvst-backup-port-blocking-designated.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wpa3-personal-psk-ccmp128-cipher.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wpa2-wpa3-differences-sae-128-192-choose-two.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/internet-default-route-ad-1-from-10-10-10-32.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = ["B", "D"];
+      var CORRECT = ["A", "B"];
       var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
       function selectedValues() {
         return []
-          .slice.call(document.querySelectorAll('input[name="sipcac1"]:checked'))
+          .slice.call(document.querySelectorAll('input[name="syslogtr1"]:checked'))
           .map(function (el) { return el.value; })
           .sort();
       }
@@ -362,7 +362,7 @@
         }
         if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. B and D \u2014 After **SIP call-snooping ports**, enable **Media Session Snooping** on the **WLAN** and set WLAN **QoS to Platinum** for **voice** traffic so SIP CAC can admit and prioritize calls. **A** (**silver or greater**) is not the required voice policy. **C** (separate data/voice QoS roles) is not the standard pair of next GUI steps here. **E** (LAN traffic shaping) is unrelated to completing SIP CAC on the WLAN.";
+          answerBox.textContent = "Correct. A and B \u2014 **Syslog** commonly uses **UDP** port **514**; **TCP** is also used (for example **TCP 601** or reliable syslog transports). **ARP** (**C**) resolves Layer 2 addresses and is not a transport protocol. **RTP** (**D**) carries real-time media, not syslog. **IP** (**E**) is **Layer 3** (network layer), not transport layer.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";

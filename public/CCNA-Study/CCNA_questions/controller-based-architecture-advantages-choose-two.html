@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC SIP CAC next steps (choose two)</title>
+  <title>CCNA — Controller-based vs traditional (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,13 +313,13 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
     <main class="card">
-    <h1 class="choose-two-stem">SIP-based Call Admission Control must be configured in the Cisco WLC GUI. SIP call-snooping ports are configured. Which two actions must be completed next? (Choose two.)</h1>
+    <h1 class="choose-two-stem">What are two advantages of implementing a controller-based architecture instead of a traditional network architecture? (Choose two)</h1>
 
-    <label class="choice"><input type="checkbox" name="sipcac1" value="A" />A. Set the QoS level to silver or greater for voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="B" />B. Enable Media Session Snooping on the WLAN</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="C" />C. Configure two different QoS roles for data and voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="D" />D. Set the QoS level to platinum for voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="E" />E. Enable traffic shaping for the LAN interface of the WLC</label>
+    <label class="choice"><input type="checkbox" name="ctrlarch1" value="A" />A. It supports complex and high-scale IP addressing schemes.</label>
+    <label class="choice"><input type="checkbox" name="ctrlarch1" value="B" />B. It provides increased scalability and management options.</label>
+    <label class="choice"><input type="checkbox" name="ctrlarch1" value="C" />C. It allows for seamless connectivity to virtual machines.</label>
+    <label class="choice"><input type="checkbox" name="ctrlarch1" value="D" />D. It enables configuration task automation.</label>
+    <label class="choice"><input type="checkbox" name="ctrlarch1" value="E" />E. It increases security against denial-of-service attacks.</label>
 
     <div class="actions">
       <button id="checkBtn" type="button">Check answer</button>
@@ -329,8 +329,8 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/rapid-pvst-backup-port-blocking-designated.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wpa3-personal-psk-ccmp128-cipher.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/crud-update-http-put-patch-choose-two.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/fa0-13-high-crc-input-errors-physical.html">Next question</a>
     </div>
   </main>
 
@@ -342,7 +342,7 @@
 
       function selectedValues() {
         return []
-          .slice.call(document.querySelectorAll('input[name="sipcac1"]:checked'))
+          .slice.call(document.querySelectorAll('input[name="ctrlarch1"]:checked'))
           .map(function (el) { return el.value; })
           .sort();
       }
@@ -362,7 +362,7 @@
         }
         if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. B and D \u2014 After **SIP call-snooping ports**, enable **Media Session Snooping** on the **WLAN** and set WLAN **QoS to Platinum** for **voice** traffic so SIP CAC can admit and prioritize calls. **A** (**silver or greater**) is not the required voice policy. **C** (separate data/voice QoS roles) is not the standard pair of next GUI steps here. **E** (LAN traffic shaping) is unrelated to completing SIP CAC on the WLAN.";
+          answerBox.textContent = "Correct. B and D \u2014 A **controller-based** (SDN) design centralizes control and policy, improving **scalability** and **management** from one platform, and supports **configuration automation** through **APIs** and orchestration. **A** (complex IP addressing) is not a defining advantage over traditional routed networks. **C** (VM connectivity) is a use case overlays/virtualization can address but is not the core differentiator here. **E** (DoS protection) is not the primary benefit of moving to controller-based architecture.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";

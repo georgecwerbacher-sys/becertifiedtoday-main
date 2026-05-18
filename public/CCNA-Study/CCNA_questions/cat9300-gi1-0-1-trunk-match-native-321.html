@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC SIP CAC next steps (choose two)</title>
+  <title>CCNA — Match Cat9300 Gi1/0/1 trunk</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,61 +312,104 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-    <main class="card">
-    <h1 class="choose-two-stem">SIP-based Call Admission Control must be configured in the Cisco WLC GUI. SIP call-snooping ports are configured. Which two actions must be completed next? (Choose two.)</h1>
+  <main class="card">
+    <div class="exhibit-router-cli" role="region" aria-label="Cat9300-1 show interface g1/0/1 switchport">
+        <pre>Cat9300-1# show interface g1/0/1 switchport
+Name: Gi1/0/1
+Switchport: Enabled
+Administrative Mode: trunk
+Operational Mode: trunk
+Administrative Trunking Encapsulation: dot1q
+Operational Trunking Encapsulation: dot1q
+Negotiation of Trunking: On
+Access Mode VLAN: 1 (default)
+Trunking Native Mode VLAN: 321 (VLAN0321)
+Administrative Native VLAN tagging: enabled
+Trunking VLANs Enabled: 100,200,300
+Pruning VLANs Enabled: 2-1001</pre>
+      </div>
+    <h1>Refer to the exhibit.</h1>
 
-    <label class="choice"><input type="checkbox" name="sipcac1" value="A" />A. Set the QoS level to silver or greater for voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="B" />B. Enable Media Session Snooping on the WLAN</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="C" />C. Configure two different QoS roles for data and voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="D" />D. Set the QoS level to platinum for voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="E" />E. Enable traffic shaping for the LAN interface of the WLC</label>
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="cat9300tr1" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. switchport trunk encapsulation dot1q
+switchport trunk native vlan 321
+switchport trunk allowed vlan 100-300</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="cat9300tr1" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. switchport mode dynamic desirable
+switchport trunk native vlan 321
+switchport trunk allowed vlan 100,200,300</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="cat9300tr1" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. switchport nonegotiate
+switchport access vlan 321
+switchport trunk allowed vlan except 2-1001</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="cat9300tr1" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. switchport mode trunk
+switchport trunk native vlan 321
+switchport trunk allowed vlan 100,200,300</pre>
+    </label>
+
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/rapid-pvst-backup-port-blocking-designated.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wpa3-personal-psk-ccmp128-cipher.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/lap-local-mode-wired-access-port.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/sdn-controller-packet-handling-policies.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = ["B", "D"];
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D \u2014 Cat9300-1 **Gi1/0/1** is an operational **802.1Q trunk** with **native VLAN 321** and **allowed VLANs 100, 200, and 300** only. The new port needs **switchport mode trunk**, **switchport trunk native vlan 321**, and **switchport trunk allowed vlan 100,200,300**. **A** uses **100-300**, a **range** that permits every VLAN from 100 through 300, not just those three IDs. **B** uses **dynamic desirable** instead of an explicit trunk and is a weaker match when the peer is administratively **trunk**. **C** configures **access** VLAN 321, **nonegotiate**, and invalid **except** syntax\u2014not a trunk toward this link.";
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValues() {
-        return []
-          .slice.call(document.querySelectorAll('input[name="sipcac1"]:checked'))
-          .map(function (el) { return el.value; })
-          .sort();
-      }
-
-      function arraysEqual(a, b) {
-        if (a.length !== b.length) return false;
-        return a.every(function (v, i) { return v === b[i]; });
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedValues();
+      function applyFeedback(value) {
         answerBox.style.display = "block";
-        if (sel.length !== 2) {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Choose exactly two answers.";
-          return;
-        }
-        if (arraysEqual(sel, CORRECT)) {
+        if (value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. B and D \u2014 After **SIP call-snooping ports**, enable **Media Session Snooping** on the **WLAN** and set WLAN **QoS to Platinum** for **voice** traffic so SIP CAC can admit and prioritize calls. **A** (**silver or greater**) is not the required voice policy. **C** (separate data/voice QoS roles) is not the standard pair of next GUI steps here. **E** (LAN traffic shaping) is unrelated to completing SIP CAC on the WLAN.";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
+      }
+
+      document.querySelectorAll('input[name="cat9300tr1"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
       });
     })();
   </script>

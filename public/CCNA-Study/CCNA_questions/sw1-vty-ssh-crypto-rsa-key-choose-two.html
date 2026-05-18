@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC SIP CAC next steps (choose two)</title>
+  <title>CCNA — SW1 enable SSH (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,13 +313,71 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
     <main class="card">
-    <h1 class="choose-two-stem">SIP-based Call Admission Control must be configured in the Cisco WLC GUI. SIP call-snooping ports are configured. Which two actions must be completed next? (Choose two.)</h1>
+    <div class="exhibit-router-cli" role="region" aria-label="SW1 show run and crypto key">
+        <pre>SW1#show run
+...
+ip domain-name test
+username CCNA privilege 1 password 0 ciscol23
+...
+line vty 0 4
+ login local
+ transport input telnet
+line vty 5 15
+ login local
+ transport input telnet
 
-    <label class="choice"><input type="checkbox" name="sipcac1" value="A" />A. Set the QoS level to silver or greater for voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="B" />B. Enable Media Session Snooping on the WLAN</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="C" />C. Configure two different QoS roles for data and voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="D" />D. Set the QoS level to platinum for voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="E" />E. Enable traffic shaping for the LAN interface of the WLC</label>
+SW1#show crypto key mypubkey rsa
+Key name: SW1.test</pre>
+    </div>
+    <h1 class="choose-two-stem">An engineer is updating the management access configuration of switch SW1 to allow secured, encrypted remote configuration. Which two commands or command sequences must the engineer apply to the switch? (Choose two.)</h1>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="sw1ssh1" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. SW1(config)#line vty 0 15
+SW1(config-line)#transport input ssh</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="sw1ssh1" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. SW1(config)# crypto key generate rsa</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="sw1ssh1" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. SW1(config)# interface f0/1
+SW1(config-if)# switch port mode trunk</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="sw1ssh1" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. SW1(config)#enable secret ccnaTest123</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="sw1ssh1" value="E" aria-label="Select answer option E" />
+        <span class="cli-router-choice-badge" aria-hidden="true">E</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">E. SW1(config)# username NEW secret R3mote123</pre>
+    </label>
+
 
     <div class="actions">
       <button id="checkBtn" type="button">Check answer</button>
@@ -329,20 +387,20 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/rapid-pvst-backup-port-blocking-designated.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wpa3-personal-psk-ccmp128-cipher.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/private-ipv4-benefits-reuse-conserve-choose-two.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-switch-property-name-is-key.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = ["B", "D"];
+      var CORRECT = ["A", "B"];
       var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
       function selectedValues() {
         return []
-          .slice.call(document.querySelectorAll('input[name="sipcac1"]:checked'))
+          .slice.call(document.querySelectorAll('input[name="sw1ssh1"]:checked'))
           .map(function (el) { return el.value; })
           .sort();
       }
@@ -362,7 +420,7 @@
         }
         if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. B and D \u2014 After **SIP call-snooping ports**, enable **Media Session Snooping** on the **WLAN** and set WLAN **QoS to Platinum** for **voice** traffic so SIP CAC can admit and prioritize calls. **A** (**silver or greater**) is not the required voice policy. **C** (separate data/voice QoS roles) is not the standard pair of next GUI steps here. **E** (LAN traffic shaping) is unrelated to completing SIP CAC on the WLAN.";
+          answerBox.textContent = "Correct. A and B \u2014 **SSH** requires an **RSA** key pair (**crypto key generate rsa**, with **ip domain-name** already set) and **transport input ssh** on **VTY** lines instead of **telnet**. **C** configures a **trunk**, unrelated to management encryption. **D** sets the **enable** secret, not VTY SSH. **E** adds another **username** but does not enable **SSH** transport or keys by itself.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";

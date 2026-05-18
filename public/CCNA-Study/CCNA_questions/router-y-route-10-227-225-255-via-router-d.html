@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC SIP CAC next steps (choose two)</title>
+  <title>CCNA — Router-Y LPM to 10.227.225.255</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,61 +312,65 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-    <main class="card">
-    <h1 class="choose-two-stem">SIP-based Call Admission Control must be configured in the Cisco WLC GUI. SIP call-snooping ports are configured. Which two actions must be completed next? (Choose two.)</h1>
+  <main class="card">
+    <div class="exhibit-router-cli" role="region" aria-label="Router-Y show ip route">
+        <pre>Router-Y#show ip route
+...
+Gateway of last resort is not set
 
-    <label class="choice"><input type="checkbox" name="sipcac1" value="A" />A. Set the QoS level to silver or greater for voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="B" />B. Enable Media Session Snooping on the WLAN</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="C" />C. Configure two different QoS roles for data and voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="D" />D. Set the QoS level to platinum for voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="E" />E. Enable traffic shaping for the LAN interface of the WLC</label>
+10.0.0.0/8 is variably subnetted
+B       10.0.0.0/8 [1/0] via 10.224.1.2
+B       10.27.150.224/27 [20/0] via 10.224.1.3, 1w6d
+S       10.128.0.0/9 [1/0] via 10.224.1.3
+B       10.224.0.0/11 [20/0] via 10.224.1.5, 5d18h
+B       10.224.0.0/15 [20/0] via 10.224.1.4, 5d18h
+C       10.223.0.0/24 is directly connected, GigabitEthernet0/1
+C       10.224.0.0/24 is directly connected, GigabitEthernet0/0
+B       10.226.34.0/24 [20/0] via 10.224.1.5, 5d18h</pre>
+    </div>
+    <p class="study-meta">On Router-Y, <strong>GigabitEthernet0/0</strong> (10.224.0.0/24) reaches neighbors: <strong>10.224.1.2</strong> = router A, <strong>.1.3</strong> = router B, <strong>.1.4</strong> = router C, <strong>.1.5</strong> = router D.</p>
+    <h1>PC A is communicating with another device at IP address 10.227.225.255. Through which router does router Y route the traffic?</h1>
+
+    <label class="choice"><input type="radio" name="ryroute1" value="A" />A. router A</label>
+    <label class="choice"><input type="radio" name="ryroute1" value="B" />B. router B</label>
+    <label class="choice"><input type="radio" name="ryroute1" value="C" />C. router C</label>
+    <label class="choice"><input type="radio" name="ryroute1" value="D" />D. router D</label>
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/rapid-pvst-backup-port-blocking-designated.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wpa3-personal-psk-ccmp128-cipher.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/qos-marking-changes-dscp-ipv4-header.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ipsec-suite-protocols-ah-esp-choose-two.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = ["B", "D"];
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D \u2014 **10.227.225.255** matches several routes, but **longest-prefix match** selects **10.224.0.0/11** (range **10.224.0.0\u201310.231.255.255**), next hop **10.224.1.5** = **router D**. **10.128.0.0/9** via router B (**10.224.1.3**) is shorter than **/11**. **10.224.0.0/15** via router C does not contain **10.227.x**. **10.0.0.0/8** via router A is least specific.";
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValues() {
-        return []
-          .slice.call(document.querySelectorAll('input[name="sipcac1"]:checked'))
-          .map(function (el) { return el.value; })
-          .sort();
-      }
-
-      function arraysEqual(a, b) {
-        if (a.length !== b.length) return false;
-        return a.every(function (v, i) { return v === b[i]; });
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedValues();
+      function applyFeedback(value) {
         answerBox.style.display = "block";
-        if (sel.length !== 2) {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Choose exactly two answers.";
-          return;
-        }
-        if (arraysEqual(sel, CORRECT)) {
+        if (value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. B and D \u2014 After **SIP call-snooping ports**, enable **Media Session Snooping** on the **WLAN** and set WLAN **QoS to Platinum** for **voice** traffic so SIP CAC can admit and prioritize calls. **A** (**silver or greater**) is not the required voice policy. **C** (separate data/voice QoS roles) is not the standard pair of next GUI steps here. **E** (LAN traffic shaping) is unrelated to completing SIP CAC on the WLAN.";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
+      }
+
+      document.querySelectorAll('input[name="ryroute1"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
       });
     })();
   </script>

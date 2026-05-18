@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — WLC SIP CAC next steps (choose two)</title>
+  <title>CCNA — Forward 192.168.0.55 longest /24</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,61 +312,71 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-    <main class="card">
-    <h1 class="choose-two-stem">SIP-based Call Admission Control must be configured in the Cisco WLC GUI. SIP call-snooping ports are configured. Which two actions must be completed next? (Choose two.)</h1>
+  <main class="card">
+    <div class="exhibit-router-cli" role="region" aria-label="show ip route output">
+        <pre>Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       + - replicated route, % - next hop override, p - overrides from PfR
+Gateway of last resort is 0.0.0.0 to network 0.0.0.0
+S*   0.0.0.0/0 is directly connected, Null0
+      10.0.0.0/8 is variably subnetted, 6 subnets, 2 masks
+C     10.0.12.0/24 is directly connected, GigabitEthernet0/1
+L     10.0.12.1/32 is directly connected, GigabitEthernet0/1
+C     10.0.13.0/24 is directly connected, GigabitEthernet0/2
+L     10.0.13.1/32 is directly connected, GigabitEthernet0/2
+C     10.0.14.0/24 is directly connected, GigabitEthernet0/3
+L     10.0.14.1/32 is directly connected, GigabitEthernet0/3
+D     192.168.0.0/16 [90/130816] via 10.0.13.3, 00:10:09, GigabitEthernet0/2
+O     192.168.0.0/23 [110/2] via 10.0.14.4, 00:00:46, GigabitEthernet0/3
+S     192.168.0.0/24 [100/0] via 10.0.12.2</pre>
+      </div>
+    <h1>Refer to the exhibit.</h1>
 
-    <label class="choice"><input type="checkbox" name="sipcac1" value="A" />A. Set the QoS level to silver or greater for voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="B" />B. Enable Media Session Snooping on the WLAN</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="C" />C. Configure two different QoS roles for data and voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="D" />D. Set the QoS level to platinum for voice traffic</label>
-    <label class="choice"><input type="checkbox" name="sipcac1" value="E" />E. Enable traffic shaping for the LAN interface of the WLC</label>
+    <label class="choice"><input type="radio" name="fwd0551" value="A" />A. GigabitEthernet0/1</label>
+    <label class="choice"><input type="radio" name="fwd0551" value="B" />B. Null0</label>
+    <label class="choice"><input type="radio" name="fwd0551" value="C" />C. GigabitEthernet0/3</label>
+    <label class="choice"><input type="radio" name="fwd0551" value="D" />D. GigabitEthernet0/2</label>
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/rapid-pvst-backup-port-blocking-designated.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wpa3-personal-psk-ccmp128-cipher.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/fhrp-protects-default-gateway-failure.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ospf-crossover-p2p-faster-full-adjacency.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = ["B", "D"];
-      var checkBtn = document.getElementById("checkBtn");
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 The router uses **longest-prefix match**. **192.168.0.55** matches **192.168.0.0/16** (EIGRP), **192.168.0.0/23** (OSPF), and **192.168.0.0/24** (static); **/24** is most specific, so traffic uses **via 10.0.12.2** on connected **10.0.12.0/24** \u2192 **GigabitEthernet0/1**. **GigabitEthernet0/2** (**D**) is the **/16** EIGRP path. **GigabitEthernet0/3** (**C**) is the **/23** OSPF path. **Null0** (**B**) applies only to the **default** route **0.0.0.0/0**, not **192.168.0.55**.";
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValues() {
-        return []
-          .slice.call(document.querySelectorAll('input[name="sipcac1"]:checked'))
-          .map(function (el) { return el.value; })
-          .sort();
-      }
-
-      function arraysEqual(a, b) {
-        if (a.length !== b.length) return false;
-        return a.every(function (v, i) { return v === b[i]; });
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedValues();
+      function applyFeedback(value) {
         answerBox.style.display = "block";
-        if (sel.length !== 2) {
-          answerBox.className = "answer incorrect";
-          answerBox.textContent = "Choose exactly two answers.";
-          return;
-        }
-        if (arraysEqual(sel, CORRECT)) {
+        if (value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent = "Correct. B and D \u2014 After **SIP call-snooping ports**, enable **Media Session Snooping** on the **WLAN** and set WLAN **QoS to Platinum** for **voice** traffic so SIP CAC can admit and prioritize calls. **A** (**silver or greater**) is not the required voice policy. **C** (separate data/voice QoS roles) is not the standard pair of next GUI steps here. **E** (LAN traffic shaping) is unrelated to completing SIP CAC on the WLAN.";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
+      }
+
+      document.querySelectorAll('input[name="fwd0551"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
       });
     })();
   </script>
