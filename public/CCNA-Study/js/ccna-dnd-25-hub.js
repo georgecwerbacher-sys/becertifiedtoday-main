@@ -76,6 +76,8 @@
     "dragdrop-rest-http-verbs-api-operations",
     "dragdrop-rf-terms-to-statements",
     "dragdrop-route-ad-winner-multiprotocol-conditions",
+    "dragdrop-r1-learned-prefixes-to-route-methods-unused-one",
+    "dragdrop-r1-192-168-20-108-route-parameters-unused-four",
     "dragdrop-security-program-elements-descriptions",
     "dragdrop-snmp-fault-management-functions",
     "dragdrop-snmp-components-to-descriptions",
@@ -102,9 +104,9 @@
   /** Subnetting / VLSM mask–prefix matching (portal “Subnetting” box). */
   window.CCNA_DND_SUBNETTING_SLUGS = [
     "subnetting/dragdrop-subnet-masks-to-prefixes-unused-one",
-    "subnetting/dragdrop-subnet-masks-to-101013-prefixes-unused-two",
     "subnetting/dragdrop-ospf-learned-prefixes-subnet-masks",
     "subnetting/dragdrop-router1-masks-to-prefixes-unused-one",
+    "subnetting/dragdrop-subnet-masks-to-101013-prefixes-unused-two",
   ];
 
   function slugPool(setId) {

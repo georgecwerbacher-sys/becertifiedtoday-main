@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Drag and drop - Router1 show ip route subnet masks</title>
+  <title>Drag and drop - 192.168.20.108 destination route parameters</title>
   <style>
     :root { color-scheme: light dark; font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
     body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b1020; color: #e6edf3; padding: 16px 16px calc(80px + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; }
@@ -15,17 +15,17 @@
     .exhibit-photo { margin: 0; }
     .exhibit-photo img { display: block; width: 100%; max-width: 720px; height: auto; margin: 0 auto; border-radius: 8px; border: 1px solid #2c3f62; }
     .exhibit-router-cli { margin: 0; border-radius: 10px; border: 1px solid #2a2a2a; overflow: hidden; background: #0a0a0a; box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 4px 18px rgba(0,0,0,.45); }
-    .exhibit-router-cli pre { margin: 0; padding: 12px 14px; font-size: 0.66rem; line-height: 1.42; overflow-x: auto; white-space: pre; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; color: #f0f0f0; background: #0a0a0a; tab-size: 8; }
-    .layout { display: grid; grid-template-columns: minmax(200px, 0.4fr) minmax(260px, 1fr); gap: 14px; align-items: start; }
+    .exhibit-router-cli pre { margin: 0; padding: 12px 14px; font-size: 0.62rem; line-height: 1.42; overflow-x: auto; white-space: pre; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; color: #f0f0f0; background: #0a0a0a; tab-size: 8; }
+    .layout { display: grid; grid-template-columns: minmax(120px, 0.34fr) minmax(280px, 1fr); gap: 14px; align-items: start; }
     .panel { border: 1px solid #2c3f62; border-radius: 10px; padding: 12px; background: #1a253b; }
     .panel h2 { margin: 0 0 10px; font-size: 1rem; color: #f0c040; }
     .bank { display: flex; flex-direction: column; gap: 10px; min-height: 46px; }
-    .token { padding: 10px 12px; border-radius: 8px; border: 1px solid #6384ba; background: #cfe9ff; color: #10243f; font-weight: 700; font-size: 0.88rem; line-height: 1.35; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; cursor: grab; user-select: none; text-align: center; }
+    .token { padding: 10px 12px; border-radius: 8px; border: 1px solid #6384ba; background: #cfe9ff; color: #10243f; font-weight: 700; font-size: 0.95rem; line-height: 1.35; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; cursor: grab; user-select: none; text-align: center; }
     .token:active { cursor: grabbing; }
     .match-list { display: flex; flex-direction: column; gap: 12px; }
-    .match-row { display: grid; grid-template-columns: minmax(130px, 0.4fr) minmax(150px, 0.6fr); gap: 10px; align-items: stretch; padding: 10px 12px; border-radius: 12px; border: 2px solid rgba(232,140,160,.55); background: rgba(232,140,160,.1); }
-    .match-desc { margin: 0; color: #1d293d; background: #f7d7dd; border-radius: 8px; padding: 10px 12px; font-size: 0.92rem; font-weight: 700; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; display: flex; align-items: center; justify-content: center; }
-    .drop-slot { display: flex; min-height: 56px; padding: 6px 8px; border-radius: 8px; border: 1px dashed #d98a8a; background: #f7e8c8; color: #1d293d; align-items: center; justify-content: center; box-sizing: border-box; }
+    .match-row { display: grid; grid-template-columns: minmax(150px, 0.45fr) minmax(120px, 0.55fr); gap: 10px; align-items: stretch; padding: 10px 12px; border-radius: 12px; border: 2px solid rgba(232,140,160,.55); background: rgba(232,140,160,.1); }
+    .match-desc { margin: 0; color: #1d293d; background: #f7d7dd; border-radius: 8px; padding: 10px 12px; font-size: 0.92rem; font-weight: 700; display: flex; align-items: center; justify-content: center; text-align: center; }
+    .drop-slot { display: flex; min-height: 52px; padding: 6px 8px; border-radius: 8px; border: 1px dashed #d98a8a; background: #f7e8c8; color: #1d293d; align-items: center; justify-content: center; box-sizing: border-box; }
     .drop-slot.over { border-style: solid; border-color: #4d89ff; }
     .drop-slot.correct { border-color: #1f7a58; background: #113e2d; color: #e6edf3; }
     .drop-slot.incorrect { border-color: #8c3434; background: #442020; color: #e6edf3; }
@@ -43,64 +43,64 @@
 <body class="dragdrop-exercise">
   <script src="/js/sample-url-mask-apply.js"></script>
   <main class="card">
-    <h1>Refer to the exhibit. Drag and drop the subnet masks from the left onto the corresponding subnets on the right.</h1>
-    <p class="sub">Not all subnet masks are used. Match each subnet to the mask implied by its <code>/prefix-length</code> on the OSPF routes in the table.</p>
+    <h1>Refer to the exhibit. A packet is destined for 192.168.20.108. Drag and drop the parameters of the destination route from the left onto the routing table components they represent on the right.</h1>
+    <p class="sub">Not all parameters are used. Apply longest-prefix match, then compare administrative distance when multiple protocols advertise the same prefix.</p>
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_D_D/subnetting/images/router1-101013-subnet-masks-panels.png" alt="Drag-and-drop panels: six subnet masks on the left and four 10.10.13.x subnets on the right." width="720" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_D_D/images/r1-192-168-20-108-route-parameters-panels.png" alt="Drag-and-drop panels: seven route parameters on the left and three routing table components on the right." width="720" decoding="async" loading="lazy" />
       </figure>
       <div class="exhibit-router-cli" aria-label="Router CLI exhibit">
-<pre>Router1#show ip route
-Gateway of last resort is 10.10.11.2 to network 0.0.0.0
-    209.165.200.0/27 is subnetted, 1 subnets 
-B     209.165.200.224 [20/0] via 10.10.12.2,03:32:14
-    209.165.201.0/27 is subnetted, 1 subnets 
-B     209.165.201.0 [20/0] via 10.10.12.2,02:26:53
-    209.165.202.0/27 is subnetted, 1 subnets 
-B     209.165.202.128 [20/0] via 10.10.12.2,02:46:03
-    10.0.0.0/8 is variably subnetted, 10 subnets, 4 masks 
-C     10.10.10.0/28 is directly connected, GigabitEthernet0/0 
-C     10.10.11.0/30 is directly connected, FastEthernet2/0 
-C     10.10.12.0/30 is directly connected, GigabitEthernet0/1
-O     10.10.13.0/25 [110/2] via 10.10.10.1, 00:00:04, GigabitEthernet0/0
-O     10.10.13.128/28 [110/2] via 10.10.10.1, 00:00:12, GigabitEthernet0/0
-O     10.10.13.144/28 [110/2] via 10.10.10.1, 00:01:57, GigabitEthernet0/0
-O     10.10.13.160/29 [110/2] via 10.10.10.1, 00:00:12, GigabitEthernet0/0
-O     10.10.13.208/29 [110/2] via 10.10.10.1, 00:01:57, GigabitEthernet0/0
-O     10.10.13.252/30 [110/2] via 10.10.10.1, 00:01:57, GigabitEthernet0/0
-S*  0.0.0.0/0 [1/0] via 10.10.11.2</pre>
+<pre>R1# show ip route
+Codes: L - local, C - connected, S - static, R - RIP, O - OSPF, B - BGP
+       D - EIGRP, EX - EIGRP external, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+  192.168.20.64/27 is variably subnetted, 1 subnet, 1 mask
+O    192.168.20.64/27 [110/20] via 10.0.0.3, 00:00:01, Gig0/1
+D    192.168.20.64/27 [90/25] via 10.0.0.4, 00:00:01, Gig0/2
+
+  192.168.20.96/28 is variably subnetted, 1 subnet, 1 mask
+O    192.168.20.96/28 [110/30] via 10.0.0.3, 00:00:01, Gig0/1
+D    192.168.20.96/28 [90/30] via 10.0.0.4, 00:00:01, Gig0/2
+
+  192.168.20.104/29 is variably subnetted, 1 subnet, 1 mask
+O    192.168.20.104/29 [110/40] via 10.0.0.5, 00:00:01, Gig0/1
+D    192.168.20.104/29 [90/40] via 10.0.0.6, 00:00:01, Gig0/2</pre>
       </div>
     </div>
     <div class="layout">
       <div class="panel">
-        <h2>Subnet masks</h2>
+        <h2>Parameters</h2>
         <div id="bank" class="bank">
-          <div class="token" draggable="true" data-value="m21">255.255.248.0</div>
-          <div class="token" draggable="true" data-value="m128">255.255.255.128</div>
-          <div class="token" draggable="true" data-value="m224">255.255.255.224</div>
-          <div class="token" draggable="true" data-value="m240">255.255.255.240</div>
-          <div class="token" draggable="true" data-value="m248">255.255.255.248</div>
-          <div class="token" draggable="true" data-value="m252">255.255.255.252</div>
+          <div class="token" draggable="true" data-value="pfx28">/28</div>
+          <div class="token" draggable="true" data-value="pfx29">/29</div>
+          <div class="token" draggable="true" data-value="metric40">40</div>
+          <div class="token" draggable="true" data-value="ad90">90</div>
+          <div class="token" draggable="true" data-value="metric25">25</div>
+          <div class="token" draggable="true" data-value="pfx27">/27</div>
+          <div class="token" draggable="true" data-value="ad110">110</div>
         </div>
       </div>
       <div class="panel">
-        <h2>Subnets</h2>
+        <h2>Routing table components</h2>
         <div class="match-list">
           <div class="match-row">
-            <p class="match-desc">10.10.13.0</p>
-            <div class="drop-slot" data-target="m128"></div>
+            <p class="match-desc">Subnet Prefix</p>
+            <div class="drop-slot" data-target="pfx29"></div>
           </div>
           <div class="match-row">
-            <p class="match-desc">10.10.13.128</p>
-            <div class="drop-slot" data-target="m240"></div>
+            <p class="match-desc">Administrative Distance</p>
+            <div class="drop-slot" data-target="ad90"></div>
           </div>
           <div class="match-row">
-            <p class="match-desc">10.10.13.160</p>
-            <div class="drop-slot" data-target="m248"></div>
-          </div>
-          <div class="match-row">
-            <p class="match-desc">10.10.13.252</p>
-            <div class="drop-slot" data-target="m252"></div>
+            <p class="match-desc">Metric/Cost</p>
+            <div class="drop-slot" data-target="metric40"></div>
           </div>
         </div>
       </div>
@@ -123,7 +123,7 @@ S*  0.0.0.0/0 [1/0] via 10.10.11.2</pre>
       var resetBtn = document.getElementById("resetBtn");
       var result = document.getElementById("result");
       var dragged = null, picked = null;
-      var UNUSED = ["m21", "m224"];
+      var UNUSED = ["pfx28", "metric25", "pfx27", "ad110"];
 
       function allSlots() { return document.querySelectorAll(".drop-slot[data-target]"); }
       function clearPick() { document.querySelectorAll(".token.is-picked").forEach(function(n){n.classList.remove("is-picked");}); picked = null; }
@@ -184,8 +184,8 @@ S*  0.0.0.0/0 [1/0] via 10.10.11.2</pre>
           if (!tokenInBank(u)) allOk = false;
         });
         result.textContent = allOk
-          ? "Correct. 10.10.13.0/25, 10.10.13.128/28, 10.10.13.160/29, and 10.10.13.252/30 use masks /25, /28, /29, and /30. Leave 255.255.248.0 (/21) and 255.255.255.224 (/27) in the bank."
-          : "Incorrect. Read the /prefix-length on each OSPF route for the matching network ID. Unused masks stay in the bank.";
+          ? "Correct. 192.168.20.108 matches 192.168.20.104/29 (longest prefix). The installed route is D 192.168.20.104/29 [90/40] (EIGRP beats OSPF on AD)."
+          : "Incorrect. Find the longest matching prefix for .108, then use the [AD/metric] from the winning EIGRP entry.";
       });
       showBtn.addEventListener("click", function () {
         clearPick();
@@ -199,7 +199,7 @@ S*  0.0.0.0/0 [1/0] via 10.10.11.2</pre>
           var tok = takeFromBank(key);
           if (tok) { slot.appendChild(tok); slot.classList.add("correct"); }
         });
-        result.textContent = "Answer shown. /21 and /27 remain in the bank.";
+        result.textContent = "Answer shown. /28, /27, 25, and 110 remain in the bank.";
       });
       resetBtn.addEventListener("click", function () {
         clearPick();
