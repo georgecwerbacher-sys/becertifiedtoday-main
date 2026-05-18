@@ -6962,6 +6962,959 @@ SW(config-if)#</pre>
                 "R1(config)#ip route 192.168.0.2 255.255.255.255 10.10.10.10",
             ],
         },
+        {
+            "slug": "northbound-api-function-sdn-controller-applications",
+            "title": "CCNA — Northbound API function",
+            "stem": "What is the function of a northbound API in a network architecture that separates the control and application layers?",
+            "name": "nbapi1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 Northbound APIs sit between the SDN controller (control layer) and applications/orchestration above it, so business apps can request services, policy, and visibility without talking directly to each device. Southbound APIs face the infrastructure layer. Upgrading software and restoring files describes operational tasks, not the northbound role. Global provisioning alone does not define the controller-to-application path.",
+            "choices": [
+                "It upgrades software and restores files.",
+                "It relies on global provisioning and configuration.",
+                "It supports distributed processing for configuration.",
+                "It provides a path between an SDN controller and network applications.",
+            ],
+        },
+        {
+            "slug": "qos-traffic-shaping-purpose",
+            "title": "CCNA — Purpose of traffic shaping",
+            "stem": "What is a purpose of traffic shaping?",
+            "name": "qshpurpose1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 Traffic shaping enforces an average or peak transmission rate by buffering excess traffic and sending it when capacity is available, which limits bandwidth usage to the configured rate. Policy-based routing selects paths by policy, not by deferring traffic to a rate. Best-effort service is the default QoS behavior without shaping. Dynamic flow identification classifies traffic (for example with NBAR) but is not the primary purpose of shaping.",
+            "choices": [
+                "It enables dynamic flow identification.",
+                "It enables policy-based routing.",
+                "It provides best-effort service.",
+                "It limits bandwidth usage.",
+            ],
+        },
+        {
+            "slug": "autonomous-ap-wlan-vlan-wired-trunk-port",
+            "title": "CCNA — Autonomous AP uplink for multiple WLAN VLANs",
+            "stem": "Which type of port is used to connect to the wired network when an autonomous AP maps two VLANs to its WLANs?",
+            "name": "apwlantrunk1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 Multiple WLANs mapped to different VLANs require the wired uplink to carry 802.1Q-tagged traffic for each VLAN, so the AP-to-switch link is configured as a **trunk**. An **access** port carries a single VLAN. **LAG** and **EtherChannel** bundle links for bandwidth or redundancy but do not by themselves provide multi-VLAN tagging.",
+            "choices": [
+                "LAG",
+                "EtherChannel",
+                "trunk",
+                "access",
+            ],
+        },
+        {
+            "slug": "switch-destination-mac-missing-cam-flood-vlan",
+            "title": "CCNA — Unknown destination MAC on a switch",
+            "stem": "What does a switch do when it receives a frame whose destination MAC address is missing from the MAC address table?",
+            "name": "swcamunk1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 An unknown destination MAC is treated as unknown unicast: the switch floods the frame out all other ports in the same VLAN except the ingress port so the host can be reached and the switch can learn the MAC from a reply. It does not add a static entry and shut down the port, does not learn the unknown destination from the frame itself without flooding first, and does not alter the frame checksum to mark it invalid.",
+            "choices": [
+                "It floods the frame unchanged across all remaining ports in the incoming VLAN.",
+                "It appends the table with a static entry for the MAC and shuts down the port.",
+                "It updates the CAM table with the destination MAC address of the frame.",
+                "It changes the checksum of the frame to a value that indicates an invalid frame.",
+            ],
+        },
+        {
+            "slug": "collapsed-core-distribution-single-layer-characteristic",
+            "title": "CCNA — Collapsed-core topology characteristic",
+            "stem": "What is a characteristics of a collapsed-core network topology?",
+            "name": "colcorechar1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 Collapsed core (two-tier campus) merges the traditional distribution and core layers onto one combined layer, reducing device count for smaller sites. EtherChannel to a single logical distribution device is not the defining trait. A single SOHO switch with internet is access/edge simplicity, not collapsed core. Wireless does not attach directly to a separate core layer for faster transmission in this model.",
+            "choices": [
+                "It allows the core and distribution layers to run as a single combined layer.",
+                "It enables the core and access layers to connect to one logical distribution device over an EtherChannel.",
+                "It enables all workstations in a SOHO environment to connect on a single switch with internet access.",
+                "It allows wireless devices to connect directly to the core layer, which enables faster data transmission.",
+            ],
+        },
+        {
+            "slug": "southbound-interface-controller-device-programs",
+            "title": "CCNA — Southbound interface: controller to devices",
+            "stem": "Which interface enables communication between a program on the controller and a program on the networking devices?",
+            "name": "sbiface1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 The southbound interface (API) connects the SDN controller to infrastructure devices so controller software can program forwarding and configuration on switches and routers (for example via OpenFlow, NETCONF, or RESTCONF). Northbound interfaces connect applications to the controller, not devices. A software virtual interface and a tunnel interface are not the SDN architectural terms for this controller-to-device control path.",
+            "choices": [
+                "northbound interface",
+                "software virtual interface",
+                "southbound interface",
+                "tunnel interface",
+            ],
+        },
+        {
+            "slug": "private-address-space-primary-purpose-conserve",
+            "title": "CCNA — Primary purpose of private address space",
+            "stem": "What is the primary purpose of private address space?",
+            "name": "privaddr1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 RFC 1918 private IPv4 space lets organizations use non\u2011globally\u2011unique internal addresses so scarce public (globally unique) IPv4 is not consumed for every host; NAT at the edge is commonly used alongside private space but conserving public addresses is the primary design purpose. Simplifying addressing, limiting Internet reachability, and reducing complexity may be operational side effects but are not the primary reason private space was defined.",
+            "choices": [
+                "conserve globally unique address space",
+                "simplify the addressing in the network",
+                "limit the number of nodes reachable via the Internet",
+                "reduce network complexity",
+            ],
+        },
+        {
+            "slug": "wlc-distribution-port-trunk-multiple-vlans",
+            "title": "CCNA — Trunk to WLC distribution port",
+            "stem": "What is a reason to configure a trunk port that connects to a WLC distribution port?",
+            "name": "wlctrunk1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 The WLC distribution (DS) port carries CAPWAP and bridged client traffic onto the wired LAN; a trunk carries multiple VLANs in the data path so different WLANs or client VLANs can be tagged and forwarded. Trunks do not eliminate redundancy on link failure (LAG/EtherChannel or redundant paths address that). Out-of-band management uses the service port, not the distribution trunk for multiple management VLANs.",
+            "choices": [
+                "Eliminate redundancy with a link failure in the data path.",
+                "Allow multiple VLAN to be used in the data path.",
+                "Provide redundancy if there is a link failure for out-of-band management.",
+                "Permit multiple VLANs to provide out-of-band management.",
+            ],
+        },
+        {
+            "slug": "wpa2-wireless-encryption-cipher-aes",
+            "title": "CCNA — WPA2 wireless encryption cipher",
+            "stem": "Which cipher is supported for wireless encryption only with the WPA2 standard?",
+            "name": "wpa2cipher1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 WPA2 mandates CCMP, which uses AES for frame encryption. RC4 underpins legacy WEP and WPA TKIP, not WPA2. AES-256 (GCMP-256) is associated with WPA3-Enterprise 192-bit modes, not WPA2 alone. SHA provides hashing/integrity in authentication suites; it is not the wireless air-interface encryption cipher named in these options.",
+            "choices": [
+                "AES256",
+                "AES",
+                "RC4",
+                "SHA",
+            ],
+        },
+        {
+            "slug": "longest-prefix-match-192-168-10-5-entry-table",
+            "title": "CCNA — Longest prefix match 192.168.10.5",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="Routing table entries">
+        <pre>Entry #
+1     192.168.10.0 255.255.254.0
+2     192.168.10.0 255.255.255.192
+3     192.168.10.0 255.255.0.0
+4     192.168.10.0 255.255.224.0</pre>
+    </div>""",
+            "stem": "Which entry is the longest prefix match for host IP address 192.168.10.5?",
+            "name": "lpm1005",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **192.168.10.5** matches all four networks, but **entry 2** (**192.168.10.0/26**, mask **255.255.255.192**) is the **longest** (most specific) prefix. Entry 1 is **/23**, entry 4 is **/19**, and entry 3 is **/16**.",
+            "choices": [
+                "1",
+                "2",
+                "3",
+                "4",
+            ],
+        },
+        {
+            "slug": "snmpv2-getbulk-inform-large-data-choose-two",
+            "title": "CCNA — SNMPv2 GetBulk and Inform (choose two)",
+            "stem": "Which two features introduced in SNMPv2 provide the ability to retrieve large amounts of data in one request? (Choose two)",
+            "name": "snmpv2bulk1",
+            "choose_two": True,
+            "correct": ["D", "E"],
+            "explain": "Correct. D and E \u2014 **GetBulk** (SNMPv2) lets the NMS request many MIB variables in one PDU using non-repeaters and max-repetitions, which is far more efficient than repeated **GetNext** walks. **Inform** (SNMPv2) is a trap-style PDU that requires an acknowledgment from the manager, improving reliability for event delivery. **Get**, **GetNext**, and **Set** existed in SNMPv1; **GetNext** still walks one variable at a time per request compared with **GetBulk**.",
+            "choices": [
+                "Get",
+                "GetNext",
+                "Set",
+                "GetBulk",
+                "Inform",
+            ],
+        },
+        {
+            "slug": "forward-172-18-32-38-longest-match-g0-0",
+            "title": "CCNA — Forward 172.18.32.38 (show ip route)",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="Router show ip route">
+        <pre>router# show ip route
+...
+D  172.18.32.0/26 [90/25789217] via 10.1.1.1
+R  172.18.32.0/24 [120/4] via 10.1.1.2
+O  172.18.32.0/19 [110/229840] via 10.1.1.3
+C  172.18.32.32/32 is directly connected, Loopback0
+C  172.18.32.36/30 is directly connected, GigabitEthernet0/0
+L  172.18.32.37/32 is directly connected, GigabitEthernet0/0</pre>
+    </div>""",
+            "stem": "A packet sourced from 172.18.33.2 is destined for 172.18.32.38. Where does the router forward the packet?",
+            "name": "fwd32138",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **172.18.32.38** matches several routes, but **172.18.32.36/30** on **GigabitEthernet0/0** is the **longest** match (.36\u2013.39). The router forwards out the connected interface. **Loopback0** is only **172.18.32.32/32**. **10.1.1.1** is the next hop for the shorter **/26** EIGRP route; **10.1.1.3** is for **/19** OSPF\u2014both lose to the **/30** connected route.",
+            "choices": [
+                "GigabitEthernet0/0",
+                "Loopback0",
+                "10.1.1.1",
+                "10.1.1.3",
+            ],
+        },
+        {
+            "slug": "wpa3-enhancement-brute-force-protection",
+            "title": "CCNA — WPA3 enhancement",
+            "stem": "Which enhancement is implemented in WPA3?",
+            "name": "wpa3enh1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 WPA3-Personal replaces WPA2-PSK with SAE (Simultaneous Authentication of Equals), which resists offline dictionary and brute-force attacks on weak passphrases. 802.1X was already available in WPA2 Enterprise (A). TKIP is legacy WPA (B). PKI for AP identification is not the defining WPA3 enhancement listed here (C).",
+            "choices": [
+                "applies 802.1x authentication",
+                "uses TKIP",
+                "employs PKI to identify access points",
+                "protects against brute force attacks",
+            ],
+        },
+        {
+            "slug": "hsrp-virtual-ip-default-gateway",
+            "title": "CCNA — HSRP virtual IP address",
+            "stem": "Which type of address is shared by routers in a HSRP implementation and used by hosts on the subnet as their default gateway address?",
+            "name": "hsrpvip1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 HSRP presents a **virtual IP address** (and virtual MAC) on the LAN; the active router forwards traffic for that address while the standby takes over if the active fails. Hosts point their default gateway at the virtual IP. HSRP routers use **multicast** hellos between themselves, but hosts do not use a multicast address as the default gateway. A **loopback** is a router-local address. A **broadcast** is not the client default gateway.",
+            "choices": [
+                "multicast address",
+                "loopback IP address",
+                "virtual IP address",
+                "broadcast address",
+            ],
+        },
+        {
+            "slug": "switch-frame-flooding-reasons-choose-two",
+            "title": "CCNA — Reasons for switch frame flooding (choose two)",
+            "stem": "What are two reasons a switch experiences frame flooding? (Choose two)",
+            "name": "swflood1",
+            "choose_two": True,
+            "correct": ["B", "E"],
+            "explain": "Correct. B and E \u2014 **STP topology changes** trigger TCN processing that shortens CAM aging; many MACs are removed or not yet relearned, so unknown unicast destinations are **flooded** until the table repopulates. When the **forwarding (MAC) table overflows**, new addresses cannot be learned and traffic to those unknown destinations is flooded. A bad cable may cause link errors but is not the usual CCNA explanation for systematic flooding. Normal MAC aging is not described as \u201cexcessive updates,\u201d and **port-security** limits MACs on a port rather than causing VLAN-wide flooding.",
+            "choices": [
+                "A defective patch cable is connected to the switch port",
+                "Topology changes are occurring within spanning-tree",
+                "An aged MAC table entry is causing excessive updates",
+                "Port-security is configured globally",
+                "The forwarding table has overflowed",
+            ],
+        },
+        {
+            "slug": "tcp-over-udp-https-error-checking-ack",
+            "title": "CCNA — TCP vs UDP for HTTPS",
+            "stem": "Why is TCP desired over UDP for application that require extensive error checking, such as HTTPS?",
+            "name": "tcpudphttps1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **UDP** is connectionless and does **not** use transport-layer acknowledgments or retransmission; lost or corrupted segments are not recovered by UDP itself. **TCP** provides reliable delivery with **acknowledgments**, retransmissions, and sequencing\u2014needed for HTTPS (TLS runs over TCP). **B** reverses the protocols (UDP does not guarantee delivery; TCP does not simply drop traffic under load). **C** reverses flow control (TCP uses windowing/flow control and congestion control). **D** reverses sequencing (TCP delivers in order; UDP has no built-in ordering).",
+            "choices": [
+                "UDP operates without acknowledgments, and TCP sends an acknowledgment for every packet received.",
+                "UDP reliably guarantees delivery of all packets, and TCP drops packets under heavy load.",
+                "UDP uses flow control mechanisms for the delivery of packets, and TCP uses congestion control for efficient packet delivery.",
+                "UDP uses sequencing data for packets to arrive in order, and TCP offers the capability to receive packets in random order.",
+            ],
+        },
+        {
+            "slug": "security-badge-datacenter-physical-access",
+            "title": "CCNA — Badge authentication and physical access control",
+            "stem": "To improve corporate security, an organization is planning to implement badge authentication to limit access to the data center. Which element of a security program is being deployed?",
+            "name": "secbadge1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **Badge readers** at data-center doors are **physical access control**: they regulate who may enter a facility or secure area. **User training** and **user awareness** are education programs, not door-entry systems. **Vulnerability verification** is testing or scanning for weaknesses, not badge-based entry control.",
+            "choices": [
+                "user training",
+                "user awareness",
+                "vulnerability verification",
+                "physical access control",
+            ],
+        },
+        {
+            "slug": "vlan10-subnet-192-168-32-last-usable-no-switchport",
+            "title": "CCNA — VLAN 10 L3 interface after /27 subnetting",
+            "stem": "The address block 192.168.32.0/24 must be subnetted into smaller networks. The engineer must meet these requirements:\n* Create 8 new subnets\n* Each subnet must accommodate 30 hosts\n* Interface VLAN 10 must use the last usable IP in the first new subnet\n* A Layer 3 interface is used\n\nWhich configuration must be applied to the interface?",
+            "name": "vlan10sub1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 Eight subnets from a /24 need three more network bits: **/27** (mask **255.255.255.224**), which yields **30** usable hosts per subnet (32\u22122). The **first** /27 is **192.168.32.0/27** (usable **.1\u2013.30**, last usable **192.168.32.30**). A routed **Layer 3** port uses **`no switchport`** then **`ip address`**. **A** and **B** use **/28** (/240), which only provides **14** hosts. **C** places **192.168.32.97** in the **third** /27, not the last usable address of the first subnet.",
+            "choices": [
+                "no switchport mode access\nip address 192.168.32.62 255.255.255.240",
+                "switchport\nip address 192.168.32.65 255.255.255.240",
+                "no switchport mode trunk\nip address 192.168.32.97 255.255.255.224",
+                "no switchport\nip address 192.168.32.30 255.255.255.224",
+            ],
+        },
+        {
+            "slug": "ipv6-anycast-global-unicast-dhcp-dns",
+            "title": "CCNA — IPv6 anycast address range",
+            "stem": "Which IPv6 address range is suitable for anycast addresses for distributed services such DHCP or DNS?",
+            "name": "v6anycast1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 IPv6 **anycast** addresses are taken from the **global unicast** space (**2000::/3**); the same address is configured on multiple nodes and routing delivers to the nearest. A **/128** global unicast such as **2001:db8::/32** documentation examples illustrates that pattern. **FF00::/8** (**A**) is **multicast**, not anycast. **FE80::/10** (**D**) is **link-local** and does not route for site-wide DHCP/DNS. **2002::/16** (**C**) is legacy **6to4**, not the usual anycast service range.",
+            "choices": [
+                "FF00:1/12",
+                "2001:db8:0234:ca3e::1/128",
+                "2002:db84:3f37:ca98:be05:8/64",
+                "FE80::1/10",
+            ],
+        },
+        {
+            "slug": "r19-fa0-0-output-drops-oversubscription",
+            "title": "CCNA — R19 Fa0/0 poor performance (show interface)",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="R19 show interface FastEthernet0/0">
+        <pre>R19#show int fa0/0
+FastEthernet0/0 is up, line protocol is up
+Hardware is DEC21140, address is ca02.7788.0000 (bia ca02.7788.0000)
+Description: SALES_SUBNET
+Internet address is 10.32.102.2/30
+MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec,
+ reliability 255/255, txload 1/255, rxload 1/255
+Encapsulation ARPA, loopback not set
+Keepalive set (60 sec)
+Full-duplex, 100Mb/s, 100BaseTX/FX
+ARP type: ARPA, ARP Timeout 04:00:00
+Last input 00:00:01, output 00:00:00, output hang never
+Last clearing of "show interface" counters never
+Input queue: 0/300/0/0 (size/max/drops/flushes); Total output drops: 135298429
+Queueing strategy: fifo
+Output queue: 0/300 (size/max)
+30 second input rate 0 bits/sec, 0 packets/sec
+30 second output rate 0 bits/sec, 0 packets/sec
+73310 packets input, 7101162 bytes
+Received 73115 broadcasts (0 IP multicasts)
+0 runts, 0 giants, 0 throttles
+0 input errors, 4 CRC, 0 frame, 0 overrun, 0 ignored
+0 watchdog
+0 input packets with dribble condition detected
+3927513096455 packets output, 14404034810952 bytes, 0 underruns
+0 output errors, 11 collisions, 0 interface resets
+0 unknown protocol drops
+0 babbles, 0 late collision, 0 deferred
+0 lost carrier, 0 no carrier
+0 output buffer failures, 0 output buffers swapped out</pre>
+    </div>""",
+            "stem": "What is the cause of poor performance on router R19?",
+            "name": "r19perf1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 **Total output drops: 135298429** shows the transmit queue cannot keep up with traffic offered to the interface (**port oversubscription**/congestion). **Collisions** are only **11** on a **full-duplex** link, so **A** and **B** are unlikely. **CRC** errors are only **4** (**D**). Near-zero current rates with huge historical drops still point to sustained output-queue discards as the performance problem.",
+            "choices": [
+                "excessive collisions",
+                "speed and duplex mismatch",
+                "port oversubscription",
+                "excessive CRC errors",
+            ],
+        },
+        {
+            "slug": "port-security-voip-mac-address-vlan-voice",
+            "title": "CCNA — Port security MAC on voice VLAN",
+            "stem": "An engineer is configuring a switch port that is connected to a VoIP handset. Which command must the engineer configure to enable port security with a manually assigned MAC address of abcd.abcd.abcd on voice VLAN 4?",
+            "name": "psvoip1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 With **`switchport voice vlan 4`**, a **static** secure MAC for the phone on the voice VLAN uses **`switchport port-security mac-address abcd.abcd.abcd vlan voice`**. The **voice** keyword targets the configured voice VLAN. **A** omits **vlan** and binds the MAC to the access VLAN. **B** can work numerically but **vlan voice** is the IOS form for IP-phone voice VLANs. **C** uses **sticky**, which is not a purely manual static entry.",
+            "choices": [
+                "switchport port-security mac-address abcd.abcd.abcd",
+                "switchport port-security mac-address abcd.abcd.abcd vlan 4",
+                "switchport port-security mac-address sticky abcd.abcd.abcd vlan 4",
+                "switchport port-security mac-address abcd.abcd.abcd vlan voice",
+            ],
+        },
+        {
+            "slug": "wireless-encryption-protects-confidentiality-algorithm",
+            "title": "CCNA — How wireless encryption protects the network",
+            "stem": "How does encryption protect the wireless network?",
+            "name": "wlanenc1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 **Encryption** uses a cryptographic **algorithm** to scramble wireless frame data so only parties that share the keys (typically the **AP** and **client**) can decrypt and read it. **A** describes **integrity** checking (detecting forgery/tampering), which complements encryption but is not encryption itself. **B** misstates the role of ciphers\u2014they provide confidentiality, not zero-day detection. **D** describes **access control/policy** (who may associate), not encryption.",
+            "choices": [
+                "via integrity checks to identify wireless forgery attacks in the frame",
+                "via specific ciphers to detect and prevent zero-day network attacks",
+                "via an algorithm to change wireless data so that only the access point and client understand it",
+                "via a policy to prevent unauthorized users from communicating on the wireless network",
+            ],
+        },
+        {
+            "slug": "firewall-segregates-zones-security-policies",
+            "title": "CCNA — Firewall security zones",
+            "stem": "Which device segregates a network into separate zones that have their own security policies?",
+            "name": "fwzone1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 A **firewall** divides the network into **security zones** (for example inside, outside, DMZ) and applies **zone-based policies** controlling which traffic may pass between zones. An **IPS** analyzes traffic for threats but does not primarily define inter-zone policy boundaries. An **access point** provides wireless access. A **switch** segments VLANs at Layer 2; zone security policies with permit/deny between trust levels are a firewall function.",
+            "choices": [
+                "IPS",
+                "firewall",
+                "access point",
+                "switch",
+            ],
+        },
+        {
+            "slug": "ssid-specification-case-sensitive",
+            "title": "CCNA — SSID specification",
+            "stem": "What is a specification for SSIDS?",
+            "name": "ssidsp1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **SSIDs** (Service Set Identifiers) are **case sensitive**: **Office** and **office** are different wireless networks. They are an **IEEE 802.11** construct, not a Cisco-only feature (**A**). There is no requirement for one number and one letter (**B**). An SSID names a WLAN; **VLAN assignment** is configured separately on the WLC/switch (**C**), not defined by the SSID string alone.",
+            "choices": [
+                "They are a Cisco proprietary security feature.",
+                "They must include one number and one letter.",
+                "They define the VLAN on a switch.",
+                "They are case sensitive.",
+            ],
+        },
+        {
+            "slug": "private-ipv4-reason-security-breach-risk",
+            "title": "CCNA — Reason for IPv4 private addressing",
+            "stem": "What is a reason to implement IPv4 private addressing?",
+            "name": "priv4reason1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **RFC 1918 private** addresses are not routable on the public Internet; with **NAT** at the edge, internal hosts are not directly reachable from outside, which can **reduce exposure** and breach risk. **Conserving public IPv4** is another major reason (see related items on the site). Private addressing is **not** driven by **PCI** (**B**) or **local law** (**C**). It does **not** shrink router **forwarding tables**\u2014internal routers still hold routes for private prefixes (**D**).",
+            "choices": [
+                "Reduce the risk of a network security breach",
+                "Comply with PCI regulations",
+                "Comply with local law",
+                "Reduce the size of the forwarding table on network routers",
+            ],
+        },
+        {
+            "slug": "ftp-fact-two-connections-control-data",
+            "title": "CCNA — FTP fact: control and data connections",
+            "stem": "Which is a fact related to FTP?",
+            "name": "ftpfact1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **FTP** uses **two TCP connections**: a **control** channel (commands, well-known port **21**) and a separate **data** channel for file transfer (active or passive mode). **Block numbers** describe **TFTP** over UDP (**A**). FTP supports **USER/PASS** authentication; it does not always operate without auth (**B**). **UDP port 69** is **TFTP**, not FTP (**C**).",
+            "choices": [
+                "It uses block numbers to identify and mitigate data-transfer errors",
+                "It always operates without user authentication",
+                "It relies on the well-known UDP port 69.",
+                "It uses two separate connections for control and data traffic",
+            ],
+        },
+        {
+            "slug": "ap-admin-auth-tacacs-radius-choose-two",
+            "title": "CCNA — AP admin authentication protocols (choose two)",
+            "stem": "Which two protocols are used by an administrator for authentication and configuration on access points? (Choose two)",
+            "name": "apaaa1",
+            "choose_two": True,
+            "correct": ["D", "E"],
+            "explain": "Correct. D and E \u2014 **TACACS+** and **RADIUS** are **AAA** protocols used for **administrator** login, authorization, and accounting on WLCs and access points (and other network devices). **802.1X** (**C**) authenticates **clients** joining the LAN/WLAN, not AP management sessions. **802.1Q** (**B**) is **VLAN tagging**. **Kerberos** (**A**) is used in Windows domains, not the standard AP management AAA pair on CCNA.",
+            "choices": [
+                "Kerberos",
+                "802.1Q",
+                "802.1x",
+                "TACACS+",
+                "RADIUS",
+            ],
+        },
+        {
+            "slug": "nat-partial-config-outside-interface-cpe1",
+            "title": "CCNA — Complete partial NAT: outside interface",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="CPE1 NAT show commands">
+        <pre>CPE1# show protocols e0/1
+Ethernet0/1 is up, line protocol is up
+  Internet address is 10.0.12.2/24
+
+CPE1#show ip access-list LAN
+Standard IP access list LAN
+ 10 permit 10.0.12.0, wildcard bits 0.0.0.255
+
+CPE1# show ip nat translations
+
+CPE1# show ip nat statistics
+
+Total active translations: 0 (0 static, 0 dynamic, 0 extended)
+Peak translations: 0
+Outside interfaces:
+Inside interfaces:
+ Ethernet0/1
+Hits: 0  Misses: 0
+...
+Dynamic mappings:
+-- Inside Source
+[Id: 1] access-list LAN pool NATPOOL refcount 0
+ pool NATPOOL: netmask 255.255.255.0
+  start 198.51.100.11 end 198.51.100.20</pre>
+    </div>""",
+            "stem": "What is the next step to complete the implementation for the partial NAT configuration shown?",
+            "name": "natpart1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **Inside** NAT is bound to **Ethernet0/1**, the **ACL LAN** and **pool NATPOOL** are defined, but **Outside interfaces:** is **empty**. Apply **`ip nat outside`** on the Internet-facing interface so translations can occur. There is no static NAT overlap to fix (**A**). The ACL already matches **10.0.12.0/24** on **e0/1** (**C**). The ACL is already tied to the dynamic mapping (**access-list LAN pool NATPOOL**); it is not applied to the pool definition itself (**D**).",
+            "choices": [
+                "Reconfigure the static NAT entries that overlap the NAT pool",
+                "Configure the NAT outside interface",
+                "Modify the access list for the internal network on e0/1",
+                "Apply the ACL to the pool configuration",
+            ],
+        },
+        {
+            "slug": "ipv4-private-address-conserve-global-unique",
+            "title": "CCNA — IPv4 address type conserves global addresses",
+            "stem": "Which type of IPv4 address type helps to conserve the globally unique address classes?",
+            "name": "privtype1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **Private** IPv4 addresses (**RFC 1918**: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) are reused inside organizations so every host does not need a **public**, globally unique address; **NAT** at the edge is commonly used with private space. **Multicast** is for group delivery. **Loopback** is for local logical host identification on a router. **Public** addresses are the scarce globally unique pool that private addressing helps preserve.",
+            "choices": [
+                "multicast",
+                "private",
+                "loopback",
+                "public",
+            ],
+        },
+        {
+            "slug": "route-192-168-12-16-longest-prefix-ospf",
+            "title": "CCNA — Route to 192.168.12.16 (LPM)",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="Routing table entries">
+        <pre>EIGRP: 192.168.12.0/24
+RIP: 192.168.12.0/27
+OSPF: 192.168.12.0/28</pre>
+    </div>""",
+            "stem": "How does the router manage traffic to 192.168.12.16?",
+            "name": "rt12161",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **192.168.12.16** is in **192.168.12.0/27** (RIP) but **not** in **192.168.12.0/28** (that block is **.0\u2013.15** only). Among routes that match, **/27** is longer than EIGRP **/24**, so **RIP** wins. The router does **not** load-balance across different prefix lengths (**B**). **OSPF /28** does not include **.16** (**C**). **Administrative distance** (**D**) applies only when prefix lengths tie.",
+            "choices": [
+                "It selects the RIP route because it has the longest prefix inclusive of the destination address.",
+                "It load-balances traffic between all three routes.",
+                "It chooses the OSPF route because it has the longest prefix inclusive of the destination address.",
+                "It chooses the EIGRP route because it has the lowest administrative distance.",
+            ],
+        },
+        {
+            "slug": "ipv6-floating-default-route-cpe-nd",
+            "title": "CCNA — IPv6 floating static default route",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="CPE show ipv6 route">
+        <pre>CPE# show ipv6 route
+...
+ND ::/0 [2/0]
+     via FE80::A8BB:CCFF:FE00:200, Ethernet0/0
+NDp 2001:DB8:1234:1::/64 [2/0]
+     via Ethernet0/0, directly connected
+C 2001:DB8:1234:2::/64 [0/0]
+     via Ethernet0/1, directly connected</pre>
+    </div>""",
+            "stem": "The administrator must configure a floating static default route that points to 2001:db8:1234:2::1 and replaces the current default route only if it fails. Which command must the engineer configure on the CPE?",
+            "name": "v6float1",
+            "correct": "B",
+            "mono": True,
+            "explain": "Correct. B \u2014 The current default is **ND ::/0** with administrative distance **2**. A **floating** backup static must use a **higher** AD so it is used only if the primary fails: **`ipv6 route ::/0 2001:db8:1234:2::1 3`**. AD **2** (**A**) does not float above the existing default. **::/128** (**C**) is not the IPv6 default prefix. AD **1** (**D**) would be preferred over the ND default, not act as backup.",
+            "choices": [
+                "ipv6 route ::/0 2001:db8:1234:2::1 2",
+                "ipv6 route ::/0 2001:db8:1234:2::1 3",
+                "ipv6 route ::/128 2001:db8:1234:2::1 3",
+                "ipv6 route ::/0 2001:db8:1234:2::1 1",
+            ],
+        },
+        {
+            "slug": "private-ipv4-benefit-shield-internal-devices",
+            "title": "CCNA — Benefit of private IPv4 addressing",
+            "stem": "What is the benefit of using private IPv4 addressing?",
+            "name": "privben1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 **Private** addresses are not routable on the public Internet; with **NAT** at the edge, internal hosts are not directly reachable from outside, which **shields** internal devices from unsolicited external access. **A** describes general connectivity, not a private-address benefit. **B** is wrong\u2014secure Internet connectivity uses mechanisms such as **VPN/TLS**, not private RFC 1918 space alone. **D** is incorrect\u2014private addresses are **not** intended to be routable on external networks.",
+            "choices": [
+                "to provide reliable connectivity between like devices",
+                "to enable secure connectivity over the Internet",
+                "to shield internal network devices from external access",
+                "to be routable over an external network",
+            ],
+        },
+        {
+            "slug": "qos-policing-drops-exceed-committed-rate",
+            "title": "CCNA — QoS policing vs shaping",
+            "stem": "Which QoS feature drops traffic that exceeds the committed access rate?",
+            "name": "qospol1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **Policing** enforces a rate (such as **committed access rate**) and typically **drops** or **remarks** traffic that exceeds the limit. **Shaping** (**C**) **buffers** excess traffic to smooth output rather than immediately drop it. **WFQ** (**A**) is a **queuing** algorithm for fair scheduling. **FIFO** (**B**) forwards in arrival order without rate enforcement.",
+            "choices": [
+                "weighted fair queuing",
+                "FIFO",
+                "shaping",
+                "policing",
+            ],
+        },
+        {
+            "slug": "trunk-dot1q-allowed-vlans-1-10",
+            "title": "CCNA — Trunk 802.1Q VLANs 1-10",
+            "stem": "Two switches have been implemented and all interfaces are at the default configuration level. A trunk link must be implemented between two switches with these requirements:\n+ using an industry-standard trunking protocol\n+ permitting VLANs 1-10 and denying other VLANs\n\nHow must the interconnecting ports be configured?",
+            "name": "trunk110",
+            "correct": "B",
+            "mono": True,
+            "explain": "Correct. B \u2014 **802.1Q (dot1q)** is the industry-standard trunk encapsulation. **`switchport mode trunk`**, **`switchport trunk encapsulation dot1q`**, and **`switchport trunk allowed vlan 1-10`** meet the requirements. **A** sets **native vlan 11**, which is unnecessary and can cause mismatch/issues when only **1\u201310** are allowed. **C** uses **ISL** (Cisco-proprietary), **DTP desirable**, and **EtherChannel**, not asked. **D** omits explicit **trunk**/**dot1q** and adds **LACP** channeling not required.",
+            "choices": [
+                "switchport mode trunk\nswitchport trunk allowed vlans 1-10\nswitchport trunk native vlan 11",
+                "switchport mode trunk\nswitchport trunk encapsulation dot1q\nswitchport trunk allowed vlans 1-10",
+                "switchport mode dynamic desirable\nchannel-group 1 mode desirable\nswitchport trunk encapsulation isl\nswitchport trunk allowed vlan except 11-4094",
+                "switchport mode dynamic\nchannel-protocol lacp\nswitchport trunk allowed vlans 1-10",
+            ],
+        },
+        {
+            "slug": "network-automation-consistent-configuration-state",
+            "title": "CCNA — Why implement network automation",
+            "stem": "Why would a network administrator choose to implement automation in a network environment?",
+            "name": "netauto1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **Automation** (templates, APIs, tools such as Ansible or Python scripts) helps keep **consistent configuration** across many devices, reduces manual errors, and speeds repeatable changes. **A** describes inventory/documentation storage, not the main automation driver. **C** is **management-plane** architecture, not automation itself. **D** is **AAA** (RADIUS/TACACS+), not network configuration automation.",
+            "choices": [
+                "to centralize device information storage",
+                "to simplify the process of maintaining a consistent configuration state across all devices",
+                "to deploy the management plane separately from the rest of the network",
+                "to implement centralized user account management",
+            ],
+        },
+        {
+            "slug": "vrrp-multivendor-default-gateway-redundancy",
+            "title": "CCNA — VRRP for multivendor FHRP",
+            "stem": "When deploying a new network that includes both Cisco and third-party network devices, which redundancy protocol avoids the interruption of network traffic if the default gateway router fails?",
+            "name": "vrrpmv1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **VRRP** is an **open standard** (RFC-based) first-hop redundancy protocol supported on **Cisco and third-party** gear, so a shared virtual default gateway can fail over without long interruption. **HSRP** and **GLBP** are **Cisco-proprietary** (GLBP also Cisco-focused). **FHRP** (**A**) is the **category** name (HSRP/VRRP/GLBP), not a single protocol you configure on devices.",
+            "choices": [
+                "FHRP",
+                "VRRP",
+                "HSRP",
+                "GLBP",
+            ],
+        },
+        {
+            "slug": "ssh-username-ccuser-secret-encrypted",
+            "title": "CCNA — SSH local user with secret password",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="Partial R1 SSH configuration">
+        <pre>Router#conf t
+R1(config)#ip domain-name CC-Net.com
+R1(config)#enable secret Passfornewuser
+R1(config)#line vty 0 15
+R1(config-line)#transport input ssh
+R1(config-line)#login local</pre>
+    </div>""",
+            "stem": "A network administrator is configuring a router for user access via SSH. The service-password encryption command has been issued. The configuration must meet these requirements:\n\n\u2013 Create the username as CCUser.\n\u2013 Create the password as NA!2$cc.\n\u2013 Encrypt the user password.\n\nWhat must be configured to meet the requirements?",
+            "name": "sshccu1",
+            "correct": "C",
+            "mono": True,
+            "explain": "Correct. C \u2014 **`username CCUser secret NA!2$cc`** stores the password as a **hashed secret** (not cleartext in the running config), which satisfies **encrypt the user password** with **`login local`** on VTY lines. **`password`** alone relies on weak Type 7 scrambling when **service password-encryption** is on. **`enable secret`** is separate from the SSH user account. **A**, **B**, and **D** mix incorrect **enable** password forms or omit **`secret**`.",
+            "choices": [
+                "username CCUser password NA!2$cc\nenable password level 5 NA!2$cc",
+                "username CCUser privilege 15 password NA!2$cc\nenable secret 0 NA!2$cc",
+                "username CCUser secret NA!2$cc",
+                "username CCUser privilege 10 password NA!2$cc",
+            ],
+        },
+        {
+            "slug": "route-172-16-4-0-subnet-mask-slash-21",
+            "title": "CCNA — Subnet mask for 172.16.4.0/21",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route">
+        <pre>R1# show ip route | begin Gateway
+Gateway of last resort is 0.0.0.0 to network 0.0.0.0
+S*   0.0.0.0/0 is directly connected, Serial0/0/1
+     172.16.0.0/16 is variably subnetted, 4 subnets, 2 masks
+C       172.16.2.0/24 is directly connected, GigabitEthernet0/0
+C       172.16.4.0/21 is directly connected, Serial0/0/1</pre>
+    </div>""",
+            "stem": "What is the subnet mask for route 172.16.4.0?",
+            "name": "mask1724",
+            "correct": "B",
+            "explain": "Correct. B \u2014 The routing table shows **172.16.4.0/21**, which is mask **255.255.248.0** (/21 = 255.255.248.0). **255.255.254.0** is **/23**. **255.255.240.0** is **/20**. **255.255.255.192** is **/26**.",
+            "choices": [
+                "255.255.255.192",
+                "255.255.248.0",
+                "255.255.254.0",
+                "255.255.240.0",
+            ],
+        },
+        {
+            "slug": "wlc-management-interface-inband-ap-admin",
+            "title": "CCNA — WLC management interface",
+            "stem": "Which interface or port on the WLC is the default for in-band device administration and communications between the controller and access points?",
+            "name": "wlcmgmt1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 The **management interface** is the default **in-band** path for WLC administration (GUI/CLI over the network) and **CAPWAP** communication with lightweight APs. The **service port** is for **out-of-band** management. The **console port** is local serial access only. The **virtual interface** supports functions such as DHCP relay and guest services, not default controller\u2013AP control traffic.",
+            "choices": [
+                "virtual interface",
+                "management interface",
+                "console port",
+                "service port",
+            ],
+        },
+        {
+            "slug": "wlc-fast-ssid-change-multiple-wlans",
+            "title": "CCNA — Fast SSID Change on WLC",
+            "stem": "A company has each office using wireless access with multiple SSIDs while limiting roaming capabilities, covering different locations on the internal office LAN, guest networks, and BYOD access for employees. Which change must be enabled to improve the customer experience during SSID changes?",
+            "name": "wlcfastssid1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **Fast SSID Change** on the WLC removes the default delay when a client moves between **SSIDs/WLANs**, improving the experience when users switch networks (for example corporate, guest, or BYOD). **Fast Transition** (**B**, 802.11r) speeds **roaming between APs** on the **same** WLAN, not SSID changes. **Assisted Roaming Prediction Optimization** (**A**) and **Neighbor List Dual Band** (**C**) target AP handoff and band steering, not inter-SSID transitions.",
+            "choices": [
+                "Assisted Roaming Prediction Optimization",
+                "Fast Transition",
+                "Neighbor List Dual Band",
+                "Fast SSID Change",
+            ],
+        },
+        {
+            "slug": "vpn-dmvpn-getvpn-branch-scale-choose-two",
+            "title": "CCNA — VPN for branch scale (choose two)",
+            "stem": "Which two VPN technologies are recommended by Cisco for multiple branch offices and large-scale deployments? (Choose two)",
+            "name": "vpnbranch1",
+            "choose_two": True,
+            "correct": ["D", "E"],
+            "explain": "Correct. D and E \u2014 **DMVPN** scales hub-and-spoke and dynamic spoke-to-spoke tunnels for many branch sites without configuring every pairwise link. **GETVPN** uses group keying for large site-to-site deployments (often over private/MPLS cores). **Site-to-site VPN** alone does not scale as well at very large branch counts. **IPsec remote access** and **clientless VPN** target remote users, not large branch-to-branch designs.",
+            "choices": [
+                "IPsec remote access",
+                "site-to-site VPN",
+                "clientless VPN",
+                "GETVPN",
+                "DMVPN",
+            ],
+        },
+        {
+            "slug": "json-test-questions-three-arrays-count",
+            "title": "CCNA — JSON: count arrays",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="JSON exhibit">
+        <pre>{
+    "Test_Questions" : [
+             "Automation",
+             "Configuration"
+    ],
+    "Test_Exam_Level" : [
+             "CCNA",
+             "CCNP"
+    ],
+    "Test_Response" : [
+             "Correct",
+             "Incorrect"
+    ]
+}</pre>
+    </div>""",
+            "stem": "How many arrays are present in the JSON data?",
+            "name": "jsonarr1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 The root is one **JSON object** (`{ }`) with three properties. Each property\u2019s value is an **array** (`[ ]`): **Test_Questions**, **Test_Exam_Level**, and **Test_Response** \u2014 **three arrays** total. The strings inside are **values**, not arrays. **One** (A) counts only the root or misreads structure; **six** (C) and **nine** (D) confuse elements with arrays or objects.",
+            "choices": [
+                "one",
+                "three",
+                "six",
+                "nine",
+            ],
+        },
+        {
+            "slug": "router1-eth1-collisions-duplex-mismatch",
+            "title": "CCNA — Ethernet1 collisions (duplex mismatch)",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="Router1 show interface Ethernet1">
+        <pre>Router1#show interface ethernet 1
+Ethernet1 is up, line protocol is up
+...
+5 minute input rate 1000 bits/sec, 2 packets/sec
+5 minute output rate 0 bits/sec, 0 packets/sec
+...
+15 input errors, 14278 CRC, 0 frame, 0 overrun, 3 ignored
+...
+0 output errors, 15000 collisions, 0 interface resets
+0 babbles, 0 late collision, 179 deferred</pre>
+    </div>""",
+            "stem": "An administrator received a call from a branch office regarding poor application performance hosted at the headquarters. Ethernet 1 is connected between Router1 and the LAN switch. What identifies the issue?",
+            "name": "eth1dup1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **15,000 collisions** and **179 deferred** frames on an otherwise up 10 Mb/s Ethernet link are classic signs of a **duplex mismatch** (or speed/duplex autonegotiation failure), which hurts LAN performance. **MTU 1500** is normal (**B**). **5-minute rates** and **zero output drops** do not show sustained over-utilization or RED drops (**C**, **D**). CRC errors can accompany bad cabling but the collision/deferred pattern points to duplex.",
+            "choices": [
+                "There is a duplex mismatch.",
+                "The MTU is not set to the default value.",
+                "The link is over utilized.",
+                "The QoS policy is dropping traffic.",
+            ],
+        },
+        {
+            "slug": "sw1-pagp-group2-lacp-active-multivendor",
+            "title": "CCNA — EtherChannel LACP with another vendor",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="SW1 show etherchannel">
+        <pre>SW1#show etherchannel
+             Channel-group listing:
+             ----------------------
+Group: 2
+--------
+Group state = L2
+Ports: 1 Maxports = 8
+Port-channels: 1 Max Portchannels = 1
+Protocol: PAGP</pre>
+    </div>""",
+            "stem": "A network engineer updates the existing configuration on interface FastEthernet1/1 on switch SW1. It must establish an EtherChannel by using the same group designation with another vendor switch. Which configuration must be performed to complete the process?",
+            "name": "sw1ec2mv1",
+            "mono": True,
+            "correct": "D",
+            "explain": "Correct. D \u2014 **Group 2** currently uses **PAgP** (Cisco-only). A **non-Cisco** switch needs **LACP** (IEEE 802.3ad). Apply **channel-group 2 mode active** on **FastEthernet1/1** so SW1 negotiates with LACP. **A** and **C** use **desirable**/**auto** (PAgP) on **port-channel** (wrong interface and protocol). **B** uses **mode on** (static, no LACP PDUs), which is a poor match for standard multi-vendor LACP.",
+            "choices": [
+                "interface port-channel 2\nchannel-group 2 mode desirable",
+                "interface fastethernet 1/1\nchannel-group 2 mode on",
+                "interface port-channel 2\nchannel-group 2 mode auto",
+                "interface fastethernet 1/1\nchannel-group 2 mode active",
+            ],
+        },
+        {
+            "slug": "forward-172-31-0-1-longest-prefix-25",
+            "title": "CCNA — Longest match 172.31.0.1 (/25)",
+            "stem": "A packet from a company\u2019s branch office is destined to host 172.31.0.1 at headquarters. The sending router has three possible matches in its routing table for the packet: prefixes 172.31.0.0/16, 172.31.0.0/24, and 172.31.0.0/25. How does the router handle the packet?",
+            "name": "lpm3101",
+            "correct": "C",
+            "explain": "Correct. C \u2014 The router uses **longest-prefix match** among routes that contain the destination. **172.31.0.1** matches **/16**, **/24**, and **/25**; **172.31.0.0/25** is the **most specific** (covers **172.31.0.0\u2013172.31.0.127**). **/24** (B) and **/16** (A) are shorter matches. The **default route** (A) is used only when **no** more-specific route matches.",
+            "choices": [
+                "It sends the traffic via the default gateway 0.0.0.0/0.",
+                "It sends the traffic via prefix 172.31.0.0/16.",
+                "It sends the traffic via prefix 172.31.0.0/25.",
+                "It sends the traffic via prefix 172.31.0.0/24.",
+            ],
+        },
+        {
+            "slug": "password-protection-special-chars-max-length",
+            "title": "CCNA — Password protection best practice",
+            "stem": "Which action must be taken when password protection is implemented?",
+            "name": "pwprot1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 Strong password policy uses **length** (as long as the system allows) plus **complexity** (mixed case, digits, **special characters**). **A** stores secrets insecurely with weak authentication. **B** violates **confidentiality** and least privilege (passwords must not be shared). **D** recommends **short** passwords, which weakens security even if complexity rules exist.",
+            "choices": [
+                "Store passwords as contacts on a mobile device with single-factor authentication.",
+                "Share passwords with senior IT management to ensure proper oversight.",
+                "Include special characters and make passwords as long as allowed.",
+                "Use less than eight characters in length when passwords are complex.",
+            ],
+        },
+        {
+            "slug": "ap-join-wlc-discovery-request-ap-manager",
+            "title": "CCNA — AP discovery request to AP-Manager",
+            "stem": "When an access point is seeking to join a wireless LAN controller, which message is sent to the AP-Manager interface?",
+            "name": "apdisc1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 A lightweight AP locates a WLC using **CAPWAP discovery**: the AP sends a **discovery request** to candidate controllers (including the **AP-Manager** interface). The WLC replies with a **discovery response** (**C** is from WLC to AP, not to AP-Manager from the AP). **DHCP discover/request** (**A**, **B**) may obtain an IP address but are not the CAPWAP join discovery message to the AP-Manager interface.",
+            "choices": [
+                "DHCP request",
+                "DHCP discover",
+                "discovery response",
+                "discovery request",
+            ],
+        },
+        {
+            "slug": "network-automation-reduce-config-inconsistencies",
+            "title": "CCNA — Automated network management benefit",
+            "stem": "What is a reason why an administrator would choose to implement an automated network management approach?",
+            "name": "netauto2",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **Automation** (templates, APIs, orchestration tools) applies the same configuration model across devices, which **reduces inconsistencies** and manual errors. **B** is the opposite goal (automation lowers recurring operational cost). **C** describes manual **box-by-box** CLI work, not automation. **D** is unrelated to network configuration automation.",
+            "choices": [
+                "Reduce inconsistencies in the network configuration.",
+                "Increase recurrent management costs.",
+                "Enable \u201cbox by box\u201d configuration and deployment.",
+                "Decipher simple password policies.",
+            ],
+        },
+        {
+            "slug": "device-separates-security-domains-firewall",
+            "title": "CCNA — Device separates security domains",
+            "stem": "Which device separates networks by security domains?",
+            "name": "secdom1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 A **firewall** enforces **security domains** (zones) such as inside, outside, and DMZ, with policies controlling traffic between them. An **IPS** (**C**) inspects for attacks but does not primarily define inter-domain boundaries. An **access point** (**A**) provides wireless access. A **wireless controller** (**D**) manages APs and WLANs, not zone-based security policy between network domains.",
+            "choices": [
+                "access point",
+                "firewall",
+                "intrusion protection system",
+                "wireless controller",
+            ],
+        },
+        {
+            "slug": "vm-characteristics-independent-same-hardware",
+            "title": "CCNA — VM characteristics (choose two)",
+            "stem": "Which two characteristics are representative of virtual machines (VMs)? (Choose two.)",
+            "name": "vmchar1",
+            "choose_two": True,
+            "correct": ["D", "E"],
+            "explain": "Correct. D and E \u2014 VMs are **isolated guests**: each **runs independently** on the hypervisor, and **many VMs share the same physical host** (CPU, memory, storage, NICs). **A** is wrong: VMs need **virtual switching/network config** to reach each other; they are not automatically interconnected. **B** is wrong: the hypervisor **allocates** resources by policy, not necessarily **equally**. **C** is wrong: the guest **OS does not depend on a specific hypervisor brand**; it runs on virtual hardware the hypervisor presents.",
+            "choices": [
+                "A VM on a hypervisor is automatically interconnected to other VMs.",
+                "A VM on an individual hypervisor shares resources equally.",
+                "Each VM\u2019s operating system depends on its hypervisor.",
+                "Each VM runs independently of any other VM in the same hypervisor.",
+                "Multiple VMs operate on the same underlying hardware.",
+            ],
+        },
+        {
+            "slug": "r7-show-ip-route-default-eigrp-ex-null0",
+            "title": "CCNA — R7 routing table validation",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="R7 show ip route">
+        <pre>R7#show ip route
+172.22.0.0/24 is subnetted, 1 subnets
+D 172.22.49.0 [90/284160] via 10.81.22.2, 04:55:53, FastEthernet0/0
+10.0.0.0/8 is variably subnetted, 26 subnets, 5 masks
+D EX 10.10.10.10/32 [170/35840] via 10.3.5.1, 04:55:55, FastEthernet0/1
+D 10.9.1.0/30 [90/33280] via 10.3.5.1, 04:55:56, FastEthernet0/1
+B 10.111.99.0/24 [20/0] via 10.6.25.2, 03:58:52
+D 10.14.3.0/30 [90/30720] via 10.3.5.1, 04:55:58, FastEthernet0/1
+C 10.9.4.0/30 is directly connected, FastEthernet1/0
+B 10.100.100.0/24 [20/0] via 10.6.25.2, 03:58:53
+D 10.0.1.0/30 [90/30720] via 10.3.5.1, 04:55:58, FastEthernet0/1
+D EX 10.10.10.70/32 [170/161280] via 10.3.5.1, 04:55:57, FastEthernet0/1
+B 10.90.0.0/16 [200/0] via 0.0.0.0, 03:57:59, Null0
+D EX 10.90.1.0/24 [170/158720] via 10.3.5.1, 04:55:57, FastEthernet0/1
+D EX 10.90.2.0/24 [170/158720] via 10.3.5.1, 04:55:57, FastEthernet0/1
+D 10.90.3.0/29 [90/161280] via 10.3.5.1, 02:46:03, FastEthernet0/1
+D EX 10.90.3.0/24 [170/158720] via 10.3.5.1, 02:46:04, FastEthernet0/1
+D EX 10.90.4.0/24 [170/158720] via 10.3.5.1, 04:55:59, FastEthernet0/1
+D EX 10.90.5.0/24 [170/158720] via 10.3.5.1, 04:55:59, FastEthernet0/1
+B* 0.0.0.0/0 [20/0] via 10.6.25.2, 02:22:38</pre>
+    </div>""",
+            "stem": "According to the output, which parameter set is validated using the routing table of R7?",
+            "name": "r7rtval1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **B* 0.0.0.0/0** shows R7 has a **gateway of last resort** (not missing). **D EX** routes are **EIGRP external** (redistributed **into** EIGRP). For **10.90.8.0/24**, there is no more-specific route; longest match is **B 10.90.0.0/16 \u2026 Null0**, so R7 **drops** that traffic. **A/B** wrongly claim no default. **C** misstates EIGRP redistribution and claims the packet would be forwarded.",
+            "choices": [
+                "R7 is missing a gateway of last resort. R7 is receiving routes that were redistributed from BGP. R7 will forward traffic destined to 10.90.8.0/24.",
+                "R7 is missing a gateway of last resort. R7 is receiving routes that were redistributed in EIGRP. R7 will forward traffic destined to 10.90.8.0/24.",
+                "R7 has a gateway of last resort available. R7 is receiving routes that were redistributed from BGP. R7 will drop traffic destined to 10.90.8.0/24.",
+                "R7 has a gateway of last resort available. R7 is receiving routes that were redistributed in EIGRP. R7 will drop traffic destined to 10.90.8.0/24.",
+            ],
+        },
+        {
+            "slug": "show-ip-route-172-16-3-254-slash-23-mask",
+            "title": "CCNA — Destination mask for 172.16.3.254",
+            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="Router show ip route">
+        <pre>Gateway of last resort is 172.16.2.2 to network 0.0.0.0
+
+   10.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       10.10.10.0/24 is directly connected, GigabitEthernet0/0/0
+L       10.10.10.3/32 is directly connected, GigabitEthernet0/0/0
+   172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks
+S       172.16.1.33/32 is directly connected, GigabitEthernet0/0/1
+C       172.16.2.0/23 is directly connected, GigabitEthernet0/0/1
+L       172.16.2.1/32 is directly connected, GigabitEthernet0/0/1
+S*   0.0.0.0/0 [1/0] via 172.16.2.2</pre>
+    </div>""",
+            "stem": "A packet sourced from 10.10.10.1 is destined for 172.16.3.254. What is the subnet mask of the destination route?",
+            "name": "rtmask2",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **172.16.3.254** matches the connected route **172.16.2.0/23** (range **172.16.2.0\u2013172.16.3.255**). A **/23** mask is **255.255.254.0**. **172.16.1.33/32** does not match. The **default** (**A**, **0.0.0.0**) is not used because a longer match exists. **C** is **/24**; **D** is a **host /32**.",
+            "choices": [
+                "0.0.0.0",
+                "255.255.254.0",
+                "255.255.255.0",
+                "255.255.255.255",
+            ],
+        },
+        {
+            "slug": "rapid-pvst-backup-port-blocking-designated",
+            "title": "CCNA — Rapid PVST+ backup port role",
+            "stem": "What is the operating mode and role of a backup port on a shared LAN segment in Rapid PVST+?",
+            "name": "rpvstbp1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 On a **shared LAN**, if a switch has two ports into the same segment, one becomes **designated** and the other becomes a **backup port** in **blocking/discarding** mode, providing a redundant path toward the **designated bridge** on that segment. An **alternate port** (**B**) is the blocked alternate toward the **root**, not a backup on shared media. **Root/designated** ports (**C**, **D**) **forward**; **listening/learning** (**B**, **D**) are transitional states, not the backup role.",
+            "choices": [
+                "blocking mode and provides an alternate path toward the designated bridge",
+                "listening mode and provides an alternate path toward the root bridge",
+                "forwarding mode and provides the lowest-cost path to the root bridge for each VLAN",
+                "learning mode and provides the shortest path toward the root bridge handling traffic away from the LAN",
+            ],
+        },
+        {
+            "slug": "wlc-sip-cac-media-snooping-platinum-qos",
+            "title": "CCNA — WLC SIP CAC next steps (choose two)",
+            "stem": "SIP-based Call Admission Control must be configured in the Cisco WLC GUI. SIP call-snooping ports are configured. Which two actions must be completed next? (Choose two.)",
+            "name": "sipcac1",
+            "choose_two": True,
+            "correct": ["B", "D"],
+            "explain": "Correct. B and D \u2014 After **SIP call-snooping ports**, enable **Media Session Snooping** on the **WLAN** and set WLAN **QoS to Platinum** for **voice** traffic so SIP CAC can admit and prioritize calls. **A** (**silver or greater**) is not the required voice policy. **C** (separate data/voice QoS roles) is not the standard pair of next GUI steps here. **E** (LAN traffic shaping) is unrelated to completing SIP CAC on the WLAN.",
+            "choices": [
+                "Set the QoS level to silver or greater for voice traffic",
+                "Enable Media Session Snooping on the WLAN",
+                "Configure two different QoS roles for data and voice traffic",
+                "Set the QoS level to platinum for voice traffic",
+                "Enable traffic shaping for the LAN interface of the WLC",
+            ],
+        },
     ]
 
     prev = "vty-access-list-ssh-secure"

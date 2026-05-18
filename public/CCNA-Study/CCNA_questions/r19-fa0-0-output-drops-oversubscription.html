@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — R1 host route to server via R2</title>
+  <title>CCNA — R19 Fa0/0 poor performance (show interface)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,49 +313,44 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <div class="exhibit-stack">
-      <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/r1-r2-sw1-server-host-route-topology.png" alt="Topology: R1 S0/0 192.168.0.1/30 to R2 S0/0 192.168.0.2/30; R2 Gi0/0 10.10.10.1/24 to Switch 1 10.10.10.2/24 and Server 10.10.10.10/24." width="900" decoding="async" loading="lazy" />
-      </figure>
+    <div class="exhibit-router-cli" role="region" aria-label="R19 show interface FastEthernet0/0">
+        <pre>R19#show int fa0/0
+FastEthernet0/0 is up, line protocol is up
+Hardware is DEC21140, address is ca02.7788.0000 (bia ca02.7788.0000)
+Description: SALES_SUBNET
+Internet address is 10.32.102.2/30
+MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec,
+ reliability 255/255, txload 1/255, rxload 1/255
+Encapsulation ARPA, loopback not set
+Keepalive set (60 sec)
+Full-duplex, 100Mb/s, 100BaseTX/FX
+ARP type: ARPA, ARP Timeout 04:00:00
+Last input 00:00:01, output 00:00:00, output hang never
+Last clearing of "show interface" counters never
+Input queue: 0/300/0/0 (size/max/drops/flushes); Total output drops: 135298429
+Queueing strategy: fifo
+Output queue: 0/300 (size/max)
+30 second input rate 0 bits/sec, 0 packets/sec
+30 second output rate 0 bits/sec, 0 packets/sec
+73310 packets input, 7101162 bytes
+Received 73115 broadcasts (0 IP multicasts)
+0 runts, 0 giants, 0 throttles
+0 input errors, 4 CRC, 0 frame, 0 overrun, 0 ignored
+0 watchdog
+0 input packets with dribble condition detected
+3927513096455 packets output, 14404034810952 bytes, 0 underruns
+0 output errors, 11 collisions, 0 interface resets
+0 unknown protocol drops
+0 babbles, 0 late collision, 0 deferred
+0 lost carrier, 0 no carrier
+0 output buffer failures, 0 output buffers swapped out</pre>
     </div>
-    <h1>Refer to the exhibit. A network engineer must configure router R1 with a host route to the server. Which command must the engineer configure?</h1>
+    <h1>What is the cause of poor performance on router R19?</h1>
 
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="r1hostrt" value="A" aria-label="Select answer option A" />
-        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">A. R1(config)#ip route 10.10.10.10 255.255.255.255 192.168.0.2</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="r1hostrt" value="B" aria-label="Select answer option B" />
-        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">B. R1(config)#ip route 10.10.10.0 255.255.255.0 192.168.0.2</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="r1hostrt" value="C" aria-label="Select answer option C" />
-        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">C. R1(config)#ip route 0.0.0.0 0.0.0.0 192.168.0.2</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="r1hostrt" value="D" aria-label="Select answer option D" />
-        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">D. R1(config)#ip route 192.168.0.2 255.255.255.255 10.10.10.10</pre>
-    </label>
-
+    <label class="choice"><input type="radio" name="r19perf1" value="A" />A. excessive collisions</label>
+    <label class="choice"><input type="radio" name="r19perf1" value="B" />B. speed and duplex mismatch</label>
+    <label class="choice"><input type="radio" name="r19perf1" value="C" />C. port oversubscription</label>
+    <label class="choice"><input type="radio" name="r19perf1" value="D" />D. excessive CRC errors</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -364,15 +359,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/port-security-dynamic-mac-restrict-violation-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/northbound-api-function-sdn-controller-applications.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ipv6-anycast-global-unicast-dhcp-dns.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/port-security-voip-mac-address-vlan-voice.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 A **host route** targets one address: **10.10.10.10/32** (**255.255.255.255** mask). From **R1**, the next hop toward **R2** on the serial link is **192.168.0.2**, so **`ip route 10.10.10.10 255.255.255.255 192.168.0.2`**. **B** is a **/24** network route for the whole **10.10.10.0** LAN, not a host route to the server alone. **C** is a **default** route (**0.0.0.0/0**). **D** reverses destination and next-hop fields.";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C \u2014 **Total output drops: 135298429** shows the transmit queue cannot keep up with traffic offered to the interface (**port oversubscription**/congestion). **Collisions** are only **11** on a **full-duplex** link, so **A** and **B** are unlikely. **CRC** errors are only **4** (**D**). Near-zero current rates with huge historical drops still point to sustained output-queue discards as the performance problem.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -386,7 +381,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="r1hostrt"]').forEach(function (el) {
+      document.querySelectorAll('input[name="r19perf1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

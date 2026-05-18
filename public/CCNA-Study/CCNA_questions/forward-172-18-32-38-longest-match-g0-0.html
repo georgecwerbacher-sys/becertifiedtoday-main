@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — R1 host route to server via R2</title>
+  <title>CCNA — Forward 172.18.32.38 (show ip route)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,49 +313,22 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <div class="exhibit-stack">
-      <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/r1-r2-sw1-server-host-route-topology.png" alt="Topology: R1 S0/0 192.168.0.1/30 to R2 S0/0 192.168.0.2/30; R2 Gi0/0 10.10.10.1/24 to Switch 1 10.10.10.2/24 and Server 10.10.10.10/24." width="900" decoding="async" loading="lazy" />
-      </figure>
+    <div class="exhibit-router-cli" role="region" aria-label="Router show ip route">
+        <pre>router# show ip route
+...
+D  172.18.32.0/26 [90/25789217] via 10.1.1.1
+R  172.18.32.0/24 [120/4] via 10.1.1.2
+O  172.18.32.0/19 [110/229840] via 10.1.1.3
+C  172.18.32.32/32 is directly connected, Loopback0
+C  172.18.32.36/30 is directly connected, GigabitEthernet0/0
+L  172.18.32.37/32 is directly connected, GigabitEthernet0/0</pre>
     </div>
-    <h1>Refer to the exhibit. A network engineer must configure router R1 with a host route to the server. Which command must the engineer configure?</h1>
+    <h1>A packet sourced from 172.18.33.2 is destined for 172.18.32.38. Where does the router forward the packet?</h1>
 
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="r1hostrt" value="A" aria-label="Select answer option A" />
-        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">A. R1(config)#ip route 10.10.10.10 255.255.255.255 192.168.0.2</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="r1hostrt" value="B" aria-label="Select answer option B" />
-        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">B. R1(config)#ip route 10.10.10.0 255.255.255.0 192.168.0.2</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="r1hostrt" value="C" aria-label="Select answer option C" />
-        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">C. R1(config)#ip route 0.0.0.0 0.0.0.0 192.168.0.2</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="r1hostrt" value="D" aria-label="Select answer option D" />
-        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">D. R1(config)#ip route 192.168.0.2 255.255.255.255 10.10.10.10</pre>
-    </label>
-
+    <label class="choice"><input type="radio" name="fwd32138" value="A" />A. GigabitEthernet0/0</label>
+    <label class="choice"><input type="radio" name="fwd32138" value="B" />B. Loopback0</label>
+    <label class="choice"><input type="radio" name="fwd32138" value="C" />C. 10.1.1.1</label>
+    <label class="choice"><input type="radio" name="fwd32138" value="D" />D. 10.1.1.3</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -364,15 +337,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/port-security-dynamic-mac-restrict-violation-choose-two.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/northbound-api-function-sdn-controller-applications.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/snmpv2-getbulk-inform-large-data-choose-two.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wpa3-enhancement-brute-force-protection.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 A **host route** targets one address: **10.10.10.10/32** (**255.255.255.255** mask). From **R1**, the next hop toward **R2** on the serial link is **192.168.0.2**, so **`ip route 10.10.10.10 255.255.255.255 192.168.0.2`**. **B** is a **/24** network route for the whole **10.10.10.0** LAN, not a host route to the server alone. **C** is a **default** route (**0.0.0.0/0**). **D** reverses destination and next-hop fields.";
+      var CORRECT_MSG = "Correct. A \u2014 **172.18.32.38** matches several routes, but **172.18.32.36/30** on **GigabitEthernet0/0** is the **longest** match (.36\u2013.39). The router forwards out the connected interface. **Loopback0** is only **172.18.32.32/32**. **10.1.1.1** is the next hop for the shorter **/26** EIGRP route; **10.1.1.3** is for **/19** OSPF\u2014both lose to the **/30** connected route.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -386,7 +359,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="r1hostrt"]').forEach(function (el) {
+      document.querySelectorAll('input[name="fwd32138"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
