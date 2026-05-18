@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — OSPF metric in bracket notation</title>
+  <title>CCNA — Firewall functions in enterprise (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,73 +312,61 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-  <main class="card">
-    <div class="exhibit-stack">
-      <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route CLI output">
-        <pre>R1#show ip route
-Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
-       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
-       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
-       E1 - OSPF external type 1, E2 - OSPF external type 2
-       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
-       ia - IS-IS inter area, * - candidate default, U - per-user static route
-       o - ODR, P - periodic downloaded static route
-Gateway of last resort is 192.168.30.10 to network 0.0.0.0
-        192.168.30.0/29 is subnetted, 2 subnets
-C         192.168.30.0 is directly connected, FastEthernet0/0
-C         192.168.30.8 is directly connected, Serial0/0.1
-        192.168.10.0/24 is variably subnetted, 2 subnets, 2 masks
-O IA      192.168.10.32/28 [110/193] via 192.168.30.10, 00:18:49, Serial0/0.1
-O IA      192.168.10.0/27 [110/192] via 192.168.30.10, 00:18:49, Serial0/0.1
-        192.168.20.0/30 is subnetted, 1 subnets
-O IA      192.168.20.0 [110/128] via 192.168.30.10, 00:18:49, Serial0/0.1
-        192.168.50.0/32 is subnetted, 1 subnets
-C         192.168.50.1 is directly connected, Loopback0
-O*IA 0.0.0.0/0 [110/84] via 192.168.30.10, 00:10:36, Serial0/0.1</pre>
-      </div>
-    </div>
-    <h1>Refer to the exhibit. What is the **metric** for the route to the **192.168.10.33** host?</h1>
+    <main class="card">
+    <h1 class="choose-two-stem">What are two functions of a **firewall** within an enterprise? (Choose two.)</h1>
 
-    <label class="choice"><input type="radio" name="ospfmet" value="A" />A. 84</label>
-    <label class="choice"><input type="radio" name="ospfmet" value="B" />B. 110</label>
-    <label class="choice"><input type="radio" name="ospfmet" value="C" />C. 192</label>
-    <label class="choice"><input type="radio" name="ospfmet" value="D" />D. 193</label>
+    <label class="choice"><input type="checkbox" name="fwent1" value="A" />A. It serves as an endpoint for a site-to-site VPN in standalone mode.</label>
+    <label class="choice"><input type="checkbox" name="fwent1" value="B" />B. It enables traffic filtering based on URLs.</label>
+    <label class="choice"><input type="checkbox" name="fwent1" value="C" />C. It provides support as an endpoint for a remote access VPN in multiple context mode.</label>
+    <label class="choice"><input type="checkbox" name="fwent1" value="D" />D. It offers Layer 2 services between hosts.</label>
+    <label class="choice"><input type="checkbox" name="fwent1" value="E" />E. It enables wireless devices to connect to the network.</label>
 
     <div class="actions">
+      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ospf-dr-election-router-a-area-zero.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/access-layer-8021x-identity-security.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-maximum-concurrent-telnet-sessions-five.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/chef-agent-pulls-cookbook-configuration-from-server.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **192.168.10.33** matches **192.168.10.32/28** (longest-prefix match beats **192.168.10.0/27**). In **[110/193]**, **110** is **administrative distance** and **193** is the **OSPF metric**. **84** is the default-route metric; **110** is AD, not metric; **192** is the **/27** route metric, not used for **.33**.";
+      var CORRECT = ["A", "B"];
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="fwent1"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = CORRECT_MSG;
+          answerBox.textContent = "Correct. A and B \u2014 Enterprise **firewalls** (for example **Cisco ASA** or **FTD**) commonly terminate **site-to-site IPsec VPNs** and apply **URL/application filtering** policies on traffic. **C** describes a valid **remote-access VPN** role but **multiple context mode** is a specific **ASA** deployment detail, not a general second function paired with URL filtering on CCNA items. **D** is wrong: **Layer 2** forwarding between hosts is a **switch** function. **E** is wrong: **wireless association** is handled by **APs/WLCs**, not the firewall.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="ospfmet"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>

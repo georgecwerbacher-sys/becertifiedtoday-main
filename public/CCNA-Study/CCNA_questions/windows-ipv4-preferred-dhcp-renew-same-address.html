@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — OSPF metric in bracket notation</title>
+  <title>CCNA — IPv4 Preferred (ipconfig) and DHCP renew</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,36 +313,30 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <div class="exhibit-stack">
-      <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route CLI output">
-        <pre>R1#show ip route
-Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
-       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
-       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
-       E1 - OSPF external type 1, E2 - OSPF external type 2
-       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
-       ia - IS-IS inter area, * - candidate default, U - per-user static route
-       o - ODR, P - periodic downloaded static route
-Gateway of last resort is 192.168.30.10 to network 0.0.0.0
-        192.168.30.0/29 is subnetted, 2 subnets
-C         192.168.30.0 is directly connected, FastEthernet0/0
-C         192.168.30.8 is directly connected, Serial0/0.1
-        192.168.10.0/24 is variably subnetted, 2 subnets, 2 masks
-O IA      192.168.10.32/28 [110/193] via 192.168.30.10, 00:18:49, Serial0/0.1
-O IA      192.168.10.0/27 [110/192] via 192.168.30.10, 00:18:49, Serial0/0.1
-        192.168.20.0/30 is subnetted, 1 subnets
-O IA      192.168.20.0 [110/128] via 192.168.30.10, 00:18:49, Serial0/0.1
-        192.168.50.0/32 is subnetted, 1 subnets
-C         192.168.50.1 is directly connected, Loopback0
-O*IA 0.0.0.0/0 [110/84] via 192.168.30.10, 00:10:36, Serial0/0.1</pre>
-      </div>
+    <div class="exhibit-terminal-white" role="region" aria-label="Windows ipconfig output">
+        <pre>Connection-specific DNS Suffix  . :
+  Description . . . . . . . . . . . : Intel(R) Ethernet Connection (2) I218-V
+  Physical Address. . . . . . . . . : D0-50-99-47-A9-7F
+  DHCP Enabled. . . . . . . . . . . : Yes
+  Autoconfiguration Enabled . . . . : Yes
+  Link-local IPv6 Address . . . . . : fe80::8809:9772:c583:6bl8%15(Preferred)
+  IPv4 Address. . . . . . . . . . . : 192.168.69.132(Preferred)
+  Subnet Mask . . . . . . . . . . . : 255.255.255.0
+  Lease Obtained. . . . . . . . . . : Thursday, January 21, 2021 11:10:46 PM
+  Lease Expires . . . . . . . . . . : Wednesday, February 3, 2021 11:27:29 AM
+  Default Gateway . . . . . . . . . : 192.168.69.1
+  DHCP Server . . . . . . . . . . : 192.168.69.1
+  DHCPv6 IAID . . . . . . . . . . . : 231755929
+  DHCPv6 Client DUID. . . . . . . . : 00-01-00-01-26-D7-BB-3F-D0-50-99-47-A9-7F
+  DNS Servers . . . . . . . . . . . : 192.168.69.1
+  NetBIOS over Tcpip. . . . . . . . : Enabled</pre>
     </div>
-    <h1>Refer to the exhibit. What is the **metric** for the route to the **192.168.10.33** host?</h1>
+    <h1>Refer to the exhibit. What does the host do when using the IPv4 **Preferred** function?</h1>
 
-    <label class="choice"><input type="radio" name="ospfmet" value="A" />A. 84</label>
-    <label class="choice"><input type="radio" name="ospfmet" value="B" />B. 110</label>
-    <label class="choice"><input type="radio" name="ospfmet" value="C" />C. 192</label>
-    <label class="choice"><input type="radio" name="ospfmet" value="D" />D. 193</label>
+    <label class="choice"><input type="radio" name="winpref1" value="A" />A. It continues to use a statically assigned IPv4 address</label>
+    <label class="choice"><input type="radio" name="winpref1" value="B" />B. It forces the DNS server to provide the same IPv4 address at each renewal</label>
+    <label class="choice"><input type="radio" name="winpref1" value="C" />C. It requests the same IPv4 address when it renews its lease with the DHCP server</label>
+    <label class="choice"><input type="radio" name="winpref1" value="D" />D. It prefers a pool of addresses when renewing the IPv4 host IP address</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -351,15 +345,15 @@ O*IA 0.0.0.0/0 [110/84] via 192.168.30.10, 00:10:36, Serial0/0.1</pre>
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ospf-dr-election-router-a-area-zero.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/access-layer-8021x-identity-security.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/hypervisor-type1-bare-metal-no-host-os.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/vrrp-lan-capabilities-redundancy-load-sharing-choose-two.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **192.168.10.33** matches **192.168.10.32/28** (longest-prefix match beats **192.168.10.0/27**). In **[110/193]**, **110** is **administrative distance** and **193** is the **OSPF metric**. **84** is the default-route metric; **110** is AD, not metric; **192** is the **/27** route metric, not used for **.33**.";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C \u2014 With **DHCP enabled**, **(Preferred)** on the **IPv4 Address** line means the address is the **active** lease in use. On **renewal**, the client typically sends a **DHCPREQUEST** asking to keep the **same IPv4 address** (if the server still has it available). **A** is wrong: the host is **not** using a static address (**DHCP Enabled: Yes**). **B** misstates the role of **DNS** (name resolution, not DHCP lease renewal). **D** is wrong: renewal does not mean the client \u201cprefers a pool\u201d arbitrarily\u2014it requests continuity of its current lease.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -373,7 +367,7 @@ O*IA 0.0.0.0/0 [110/84] via 192.168.30.10, 00:10:36, Serial0/0.1</pre>
         }
       }
 
-      document.querySelectorAll('input[name="ospfmet"]').forEach(function (el) {
+      document.querySelectorAll('input[name="winpref1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
