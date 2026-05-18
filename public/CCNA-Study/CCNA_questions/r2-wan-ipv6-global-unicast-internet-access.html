@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — FlexConnect local switching (WLAN Advanced)</title>
+  <title>CCNA — R2 WAN IPv6 global unicast (Internet)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -315,15 +315,47 @@
   <main class="card">
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/wlc-flexconnect-local-switching-wlan-advanced-gui.png" alt="WLC WLAN Advanced tab: FlexConnect section with FlexConnect Local Switching checkbox among local auth, central DHCP, and profiling options." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/r2-wan-ipv6-global-unicast-internet-topology.png" alt="Topology: R1 and R2 on G0/0; R1 to SW1 with file and network management servers on 2001:DB8:D8D2:1008::/64; R2 G0/1 to ISP Internet; R2 to SW2 with IP phones and workstations on 2001:DB8:D8D2:1009::/64." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>
-    <h1>Refer to the exhibit. An architect is managing a wireless network with APs from several branch offices connecting to the WLC in the data center. There is a new requirement for a single WLAN to process the client data traffic without sending it to the WLC. Which action must be taken to complete the request?</h1>
+    <h1>Refer to the exhibit. A public IPv6 address must be configured for internet access. Which command must be configured on the R2 WAN interface to the service provider?</h1>
 
-    <label class="choice"><input type="radio" name="wlcfcsw1" value="A" />A. Enable local HTTP profiling</label>
-    <label class="choice"><input type="radio" name="wlcfcsw1" value="B" />B. Enable FlexConnect Local Switching</label>
-    <label class="choice"><input type="radio" name="wlcfcsw1" value="C" />C. Enable local DHCP Profiling</label>
-    <label class="choice"><input type="radio" name="wlcfcsw1" value="D" />D. Enable Disassociation Imminent</label>
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r2wanipv61" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. ipv6 address fe80::260:3EFF:FE11:6770 link-local</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r2wanipv61" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. ipv6 address fe80: :/10</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r2wanipv61" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. ipv6 address 2001:db8:433:47:4620:ffff:ffff:ffff/64 anycast</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r2wanipv61" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. ipv6 address 2001:db8:123:45::4/64</pre>
+    </label>
+
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -332,15 +364,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-console-connection-out-of-band-management.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/sw1-pc1-port-security-access-mac-exhibit.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/sw1-pc1-port-security-access-mac-exhibit.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/sw1-sw2-trunk-native-vlan5-layer3-all-pcs.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 **FlexConnect Local Switching** lets **branch** APs **switch client data locally** on the site LAN instead of tunneling all user traffic to the **central WLC**. **Local HTTP profiling** (**A**) and **local DHCP profiling** (**C**) identify clients; they do not change where data is switched. **Disassociation Imminent** (**D**) is an **802.11v** roaming aid, not local data switching.";
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D \u2014 Internet access on the **WAN** requires a **global unicast** IPv6 address (2000::/3, including documentation prefix **2001:db8::/32**) assigned with **`ipv6 address \u2026/prefix-length`**. **A** configures only a **link-local** address (**fe80::/10**), which is not used as the routable provider-facing global address. **B** is invalid IOS syntax. **C** misapplies **anycast** on a standard WAN interface assignment; anycast is a special unicast address shared by multiple nodes, not the normal ISP handoff address.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -354,7 +386,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="wlcfcsw1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="r2wanipv61"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — FlexConnect local switching (WLAN Advanced)</title>
+  <title>CCNA — R1 Gi0/0 IPv6 EUI-64 (dynamic assignment)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -315,15 +315,47 @@
   <main class="card">
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/wlc-flexconnect-local-switching-wlan-advanced-gui.png" alt="WLC WLAN Advanced tab: FlexConnect section with FlexConnect Local Switching checkbox among local auth, central DHCP, and profiling options." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/r1-r2-ipv6-block-gi0-0-lan-topology.png" alt="Topology: IPv6 block 2001:db8:ffff:fcf3::/64; R1 and R2 on GigabitEthernet0/1; R1 GigabitEthernet0/0 and R2 GigabitEthernet0/0 each to a switch with host PCs." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>
-    <h1>Refer to the exhibit. An architect is managing a wireless network with APs from several branch offices connecting to the WLC in the data center. There is a new requirement for a single WLAN to process the client data traffic without sending it to the WLC. Which action must be taken to complete the request?</h1>
+    <h1>Refer to the exhibit. IPv6 is being implemented within the enterprise. The command **ipv6 unicast-routing** is configured. Interface **Gig0/0** on **R1** must be configured to provide a dynamic assignment using the assigned IPv6 block. Which command accomplishes this task?</h1>
 
-    <label class="choice"><input type="radio" name="wlcfcsw1" value="A" />A. Enable local HTTP profiling</label>
-    <label class="choice"><input type="radio" name="wlcfcsw1" value="B" />B. Enable FlexConnect Local Switching</label>
-    <label class="choice"><input type="radio" name="wlcfcsw1" value="C" />C. Enable local DHCP Profiling</label>
-    <label class="choice"><input type="radio" name="wlcfcsw1" value="D" />D. Enable Disassociation Imminent</label>
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r1gi0v61" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. ipv6 address 2001:DB8:FFFF:FCF3::/64 eui-64</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r1gi0v61" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. ipv6 address 2001:DB8:FFFF:FCF3::/64 link-local</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r1gi0v61" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. ipv6 address 2001:0B8:FFFF:FCF3::1/64</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r1gi0v61" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. ipv6 address autoconfig 2001:DB8:FFFF:FCF2::/64</pre>
+    </label>
+
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -332,15 +364,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-console-connection-out-of-band-management.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/sw1-pc1-port-security-access-mac-exhibit.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-r2-p2p-subnet-minimum-two-growth-hosts.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/ntp-clients-r1-r2-r3-show-run-exhibit.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 **FlexConnect Local Switching** lets **branch** APs **switch client data locally** on the site LAN instead of tunneling all user traffic to the **central WLC**. **Local HTTP profiling** (**A**) and **local DHCP profiling** (**C**) identify clients; they do not change where data is switched. **Disassociation Imminent** (**D**) is an **802.11v** roaming aid, not local data switching.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 **`ipv6 address 2001:DB8:FFFF:FCF3::/64 eui-64`** applies the assigned **/64** prefix on **R1 Gi0/0**, builds the router\u2019s interface ID with **EUI-64**, and advertises the prefix so hosts on the LAN can **dynamically autoconfigure** global addresses via **SLAAC** (with **ipv6 unicast-routing** enabled). **B** configures only a **link-local** address, not the assigned global block for client assignment. **C** is a **static** global address (**::1**), not dynamic host assignment on the segment. **D** uses invalid syntax, the wrong prefix (**FCF2**), and **autoconfig** is for a host to learn its own address\u2014not for the router to assign addresses from the enterprise block.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -354,7 +386,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="wlcfcsw1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="r1gi0v61"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

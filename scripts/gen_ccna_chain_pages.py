@@ -9516,6 +9516,305 @@ R1(config-line)#login local""",
                 "Enable Disassociation Imminent",
             ],
         },
+        {
+            "slug": "sw1-pc1-port-security-access-mac-exhibit",
+            "title": "CCNA — PC1 port security (access + static MAC)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/sw1-pc1-r1-r2-dual-lan-port-security-topology.png" alt="Topology: R1 and R2 on 10.0.0.0/30 (.1 and .2); R1 G0/1 to SW1 G0/1 on 10.0.1.0/24 with PC1 on SW1 G0/2 and PC2 on G0/3; R2 G0/1 to SW2 on 10.0.2.0/24 with PC3 and PC4 on G0/2 and G0/3." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <figure class="exhibit-photo">
+        <table class="exhibit-mac-table" style="width:100%;border-collapse:collapse;font-size:0.92rem">
+          <thead>
+            <tr style="background:#1a253b;color:#e6edf3">
+              <th style="padding:10px 14px;text-align:left;border-bottom:1px solid #2d3b5a">Workstation</th>
+              <th style="padding:10px 14px;text-align:left;border-bottom:1px solid #2d3b5a">Mac address</th>
+            </tr>
+          </thead>
+          <tbody style="color:#e6edf3;background:#0d1320">
+            <tr><td style="padding:8px 14px;border-bottom:1px solid #2a3f5c">PC 1</td><td style="padding:8px 14px;border-bottom:1px solid #2a3f5c;font-family:ui-monospace,monospace">00:50:79:66:68:00</td></tr>
+            <tr><td style="padding:8px 14px;border-bottom:1px solid #2a3f5c">PC 2</td><td style="padding:8px 14px;border-bottom:1px solid #2a3f5c;font-family:ui-monospace,monospace">28:39:26:34:82:51</td></tr>
+            <tr><td style="padding:8px 14px;border-bottom:1px solid #2a3f5c">PC 3</td><td style="padding:8px 14px;border-bottom:1px solid #2a3f5c;font-family:ui-monospace,monospace">00:50:79:66:68:78</td></tr>
+            <tr><td style="padding:8px 14px">PC 4</td><td style="padding:8px 14px;font-family:ui-monospace,monospace">00:50:79:66:68:44</td></tr>
+          </tbody>
+        </table>
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. An engineer must configure the interface that connects to PC1 and secure it in a way that only PC1 is allowed to use the port. No VLAN tagging can be used except for a voice VLAN. Which command sequence must be entered to configure the switch?",
+            "name": "sw1pc1ps1",
+            "correct": "B",
+            "mono": True,
+            "explain": "Correct. B \u2014 **Access mode** is required for an end host (no trunk/DTP). **Port security** is enabled, then **PC 1\u2019s MAC** is bound with **`switchport port-security mac-address 0050.7966.6800`** (Cisco format for **00:50:79:66:68:00**). A **voice VLAN** can still be applied on an access port with **`switchport voice vlan`** without using trunk tagging. **A** uses **nonegotiate** (trunk) and only **`maximum 1`**, which does not statically pin PC1\u2019s address. **C** negotiates a trunk (**dynamic desirable**) and misuses **sticky**. **D** uses **dynamic auto** and **restrict** without binding PC1\u2019s MAC.",
+            "choices": [
+                "SW1(config-if)#switchport mode nonegotiate\nSW1(config-if)#switchport port-security\nSW1(config-if)#switchport port-security maximum 1",
+                "SW1(config-if)#switchport mode access\nSW1(config-if)#switchport port-security\nSW1(config-if)#switchport port-security mac-address 0050.7966.6800",
+                "SW1(config-if)#switchport mode dynamic desirable\nSW1(config-if)#switchport port-security mac-address 0050.7966.6800\nSW1(config-if)#switchport port-security mac-address sticky",
+                "SW1(config-if)#switchport mode dynamic auto\nSW1(config-if)#switchport port-security\nSW1(config-if)#switchport port-security violation restrict",
+            ],
+        },
+        {
+            "slug": "r2-wan-ipv6-global-unicast-internet-access",
+            "title": "CCNA — R2 WAN IPv6 global unicast (Internet)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r2-wan-ipv6-global-unicast-internet-topology.png" alt="Topology: R1 and R2 on G0/0; R1 to SW1 with file and network management servers on 2001:DB8:D8D2:1008::/64; R2 G0/1 to ISP Internet; R2 to SW2 with IP phones and workstations on 2001:DB8:D8D2:1009::/64." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. A public IPv6 address must be configured for internet access. Which command must be configured on the R2 WAN interface to the service provider?",
+            "name": "r2wanipv61",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 Internet access on the **WAN** requires a **global unicast** IPv6 address (2000::/3, including documentation prefix **2001:db8::/32**) assigned with **`ipv6 address \u2026/prefix-length`**. **A** configures only a **link-local** address (**fe80::/10**), which is not used as the routable provider-facing global address. **B** is invalid IOS syntax. **C** misapplies **anycast** on a standard WAN interface assignment; anycast is a special unicast address shared by multiple nodes, not the normal ISP handoff address.",
+            "choices": [
+                "ipv6 address fe80::260:3EFF:FE11:6770 link-local",
+                "ipv6 address fe80: :/10",
+                "ipv6 address 2001:db8:433:47:4620:ffff:ffff:ffff/64 anycast",
+                "ipv6 address 2001:db8:123:45::4/64",
+            ],
+        },
+        {
+            "slug": "sw1-sw2-trunk-native-vlan5-layer3-all-pcs",
+            "title": "CCNA — SW1/SW2 trunks, native VLAN 5, all PCs",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/sw1-sw2-vlan7-9-108-trunk-native5-topology.png" alt="Topology: SW1 Gi0/0 PC4 VLAN 108, Gi0/1 trunk to SW2 Gi0/7, Gi0/2 to R1; SW2 Gi0/0 PC1 VLAN 9, Gi0/1 PC2 VLAN 7." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. The SW1 and SW2 Gi0/0 ports have been preconfigured. An engineer is given these requirements:\n\n\u2022 Allow all PCs to communicate with each other at Layer 3.\n\u2022 Configure untagged traffic to use VLAN 5.\n\u2022 Disable VLAN 1 from being used.\n\nWhich configuration set meets these requirements?",
+            "name": "sw12trnk1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 **Gi0/1** and **Gi0/7** trunks carry VLANs **5, 7, 9, and 108** with **native VLAN 5** so untagged traffic is not on VLAN 1. **Gi0/2** toward **R1** is a **trunk** with the same VLAN set so the router can route between **VLAN 7, 9, and 108** for inter-PC Layer 3. **SW2 Gi0/1** is **access VLAN 7** for **PC2** (Gi0/0 is already VLAN 9). **A** omits **native VLAN 5**, misconfigures **SW2 Gi0/1** as a trunk, and limits **Gi0/2** allowed VLANs. **B** sets **Gi0/2** to **access** while applying trunk commands and omits **VLAN 108** on **SW2 Gi0/7**. **C** leaves **SW2 Gi0/7** without **VLAN 108** and without **native VLAN 5**.",
+            "choices": [
+                """SW1#
+interface Gi0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 5,7,9,108
+!
+interface Gi0/2
+ switchport mode trunk
+ switchport trunk allowed vlan 7,9,108
+!
+SW2#
+interface Gi0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 7
+!
+interface Gi0/7
+ switchport mode trunk
+ switchport trunk allowed vlan 5,7,9,108""",
+                """SW1#
+interface Gi0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 5,7,9,108
+ switchport trunk native vlan 5
+!
+interface Gi0/2
+ switchport mode access
+ switchport trunk allowed vlan 7,9,108
+!
+SW2#
+interface Gi0/1
+ switchport mode access
+ no switchport access vlan 1
+ switchport access vlan 7
+!
+interface Gi0/7
+ switchport mode trunk
+ switchport trunk allowed vlan 7,9,108
+ switchport trunk native vlan 5""",
+                """SW1#
+interface Gi0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 5,7,9,108
+ switchport trunk native vlan 5
+!
+interface Gi0/2
+ switchport mode trunk
+ switchport trunk allowed vlan 5,7,9,108
+!
+SW2#
+interface Gi0/1
+ switchport mode access
+ switchport access vlan 7
+!
+interface Gi0/7
+ switchport mode trunk
+ switchport trunk allowed vlan 7,9,108""",
+                """SW1#
+interface Gi0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 5,7,9,108
+ switchport trunk native vlan 5
+!
+interface Gi0/2
+ switchport mode trunk
+ switchport trunk allowed vlan 5,7,9,108
+!
+SW2#
+interface Gi0/1
+ switchport mode access
+ switchport access vlan 7
+!
+interface Gi0/7
+ switchport mode trunk
+ switchport trunk allowed vlan 5,7,9,108
+ switchport trunk native vlan 5""",
+            ],
+        },
+        {
+            "slug": "r1-r2-p2p-subnet-minimum-two-growth-hosts",
+            "title": "CCNA — R1–R2 P2P link subnet (minimum + growth)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r1-r2-gi0-0-p2p-link-subnet-topology.png" alt="Topology: Router R1 GigabitEthernet0/0 connected to Router R2 GigabitEthernet0/0 on a point-to-point link." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. A network engineer must configure the link with these requirements:\n\n\u2022 Consume as few IP addresses as possible.\n\u2022 Leave at least two additional useable IP addresses for future growth.\n\nWhich set of configurations must be applied?",
+            "name": "r1r2p2p1",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A \u2014 The link needs **two** router addresses plus **at least two spare usable hosts**, so **four usable addresses** minimum. A **/29** mask (**255.255.255.248**) provides **six** usable hosts in the block (for example **10.10.10.1** and **10.10.10.4** on **10.10.10.0/29**) and is the **smallest** mask that satisfies both requirements. **C** (**/30**) offers only **two** usable addresses\u2014no room for growth. **B** (**/28**) and **D** (**/24**) work but waste more addresses than necessary.",
+            "choices": [
+                "R1(config-if)#ip address 10.10.10.1 255.255.255.248\nR2(config-if)#ip address 10.10.10.4 255.255.255.248",
+                "R1(config-if)#ip address 10.10.10.1 255.255.255.240\nR2(config-if)#ip address 10.10.10.12 255.255.255.240",
+                "R1(config-if)#ip address 10.10.10.1 255.255.255.252\nR2(config-if)#ip address 10.10.10.2 255.255.255.252",
+                "R1(config-if)#ip address 10.10.10.1 255.255.255.0\nR2(config-if)#ip address 10.10.10.5 255.255.255.0",
+            ],
+        },
+        {
+            "slug": "r1-gi0-0-ipv6-eui64-dynamic-assignment-block",
+            "title": "CCNA — R1 Gi0/0 IPv6 EUI-64 (dynamic assignment)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r1-r2-ipv6-block-gi0-0-lan-topology.png" alt="Topology: IPv6 block 2001:db8:ffff:fcf3::/64; R1 and R2 on GigabitEthernet0/1; R1 GigabitEthernet0/0 and R2 GigabitEthernet0/0 each to a switch with host PCs." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. IPv6 is being implemented within the enterprise. The command **ipv6 unicast-routing** is configured. Interface **Gig0/0** on **R1** must be configured to provide a dynamic assignment using the assigned IPv6 block. Which command accomplishes this task?",
+            "name": "r1gi0v61",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A \u2014 **`ipv6 address 2001:DB8:FFFF:FCF3::/64 eui-64`** applies the assigned **/64** prefix on **R1 Gi0/0**, builds the router\u2019s interface ID with **EUI-64**, and advertises the prefix so hosts on the LAN can **dynamically autoconfigure** global addresses via **SLAAC** (with **ipv6 unicast-routing** enabled). **B** configures only a **link-local** address, not the assigned global block for client assignment. **C** is a **static** global address (**::1**), not dynamic host assignment on the segment. **D** uses invalid syntax, the wrong prefix (**FCF2**), and **autoconfig** is for a host to learn its own address\u2014not for the router to assign addresses from the enterprise block.",
+            "choices": [
+                "ipv6 address 2001:DB8:FFFF:FCF3::/64 eui-64",
+                "ipv6 address 2001:DB8:FFFF:FCF3::/64 link-local",
+                "ipv6 address 2001:0B8:FFFF:FCF3::1/64",
+                "ipv6 address autoconfig 2001:DB8:FFFF:FCF2::/64",
+            ],
+        },
+        {
+            "slug": "ntp-clients-r1-r2-r3-show-run-exhibit",
+            "title": "CCNA — Which routers are NTP clients?",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/ntp-r1-r4-diamond-topology.png" alt="Topology: R1 to Internet and Loopback0 172.16.0.1; R1–R2 10.10.10.0/30, R1–R3 10.10.10.8/30, R2–R4 10.10.10.4/30, R3–R4 10.10.10.12/30." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="NTP configuration excerpts from R1 through R4">
+        <pre>R1#show run | include ntp
+ntp master 7
+ntp server 209.165.200.225
+
+R2#show run | include ntp
+ntp server 172.16.0.1
+
+R3#show run | include ntp
+ntp master 6
+ntp server 172.16.0.1
+
+R4#show run | include ntp
+ntp master 7</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. Which router or router group are NTP clients?",
+            "name": "ntpclnt1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **`ntp server`** configures a device as an **NTP client** (it synchronizes to the listed server). **R1** uses **`ntp server 209.165.200.225`**, **R2** uses **`ntp server 172.16.0.1`**, and **R3** also uses **`ntp server 172.16.0.1`**. **R4** has only **`ntp master 7`** and no **`ntp server`** line, so it is not acting as a client in this output. A router can be both **master** and **client** (**R1** and **R3**); the question asks which devices are clients.",
+            "choices": [
+                "R1, R2, and R3",
+                "R1",
+                "R2 and R3",
+                "R1, R3, and R4",
+            ],
+        },
+        {
+            "slug": "r1-floating-default-route-pc1-pc3-routing",
+            "title": "CCNA — R1 floating default route (PC1 to PC3)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r1-r2-r3-floating-default-pc1-pc3-topology.png" alt="Topology: R1 PC1 172.16.30.0/24; R1 S0/0/0 to R3 172.16.20.0/24 (.1/.2), R1 S0/0/1 to R2 10.0.0.0/24 (.1/.2); R3 PC3 172.16.10.0/24; R2 PC2 192.168.200.0/24; R2–R3 209.165.201.0/27." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="R1 default static route configuration">
+        <pre>R1(config)#ip route 0.0.0.0 0.0.0.0 172.16.20.2
+R1(config)#ip route 0.0.0.0 0.0.0.0 10.0.0.2 20</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. After applying this configuration to router **R1**, a network engineer is verifying the implementation. If all links are operating normally, and the engineer sends a series of packets from **PC1** to **PC3**, how are the packets routed?",
+            "name": "r1fltdef1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 Two default static routes are configured; the first (**`ip route 0.0.0.0 0.0.0.0 172.16.20.2`**) uses the default administrative distance **1**, and the second points to **10.0.0.2** with **AD 20**. While all links are up, the **lower-AD** default is installed and used, so traffic from **PC1** toward **PC3** follows the primary next hop **172.16.20.2**. **D** is the **floating backup** used only when the preferred path is unavailable. **B** describes load sharing across serial interfaces, which these static defaults do not configure. **C** is not a next hop in this configuration.",
+            "choices": [
+                "They are routed to 172.16.20.2.",
+                "They are distributed sent round robin to interfaces S0/0/0 and S0/0/1.",
+                "They are routed to 192.168.100.2.",
+                "They are routed to 10.0.0.2.",
+            ],
+        },
+        {
+            "slug": "router1-pat-1921681-pool-209165202129",
+            "title": "CCNA — ROUTER-1 PAT for 192.168.1.0/24",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/router1-pat-1921681-internet-topology.png" alt="Topology: ROUTER-1 to Internet; SWITCH-1 and SWITCH-2 with users on subnet 192.168.1.0/24." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. Which command set configures **ROUTER-1** to allow Internet access for users on the **192.168.1.0/24** subnet while using **209.165.202.129** for Port Address Translation?",
+            "name": "r1pat1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 **PAT** uses a **NAT pool** of the public address **209.165.202.129**, **`access-list 10 permit 192.168.1.0 0.0.0.255`** (standard ACL **wildcard** for the inside /24), and **`ip nat inside source list 10 pool CCNA overload`**. **A** and **C** put **private** addresses in the **NAT pool**, which cannot provide Internet PAT with the given public IP. **B** uses the correct public pool but **`255.255.255.0`** in the ACE is a **subnet mask**, not the required **wildcard** for a standard numbered ACL.",
+            "choices": [
+                "ip nat pool CCNA 192.168.0.0 192.168.1.255 netmask 255.255.255.0\n\naccess-list 10 permit 192.168.0.0 0.0.0.255\nip nat inside source list 10 pool CCNA overload",
+                "ip nat pool CCNA 209.165.202.129 209.165.202.129 netmask 255.255.255.255\n\naccess-list 10 permit 192.168.1.0 255.255.255.0\nip nat inside source list 10 pool CCNA overload",
+                "ip nat pool CCNA 192.168.0.0 192.168.1.255 netmask 255.255.255.0\n\naccess-list 10 permit 192.168.0.0 255.255.255.0\nip nat inside source list 10 pool CCNA overload",
+                "ip nat pool CCNA 209.165.202.129 209.165.202.129 netmask 255.255.255.255\n\naccess-list 10 permit 192.168.1.0 0.0.0.255\nip nat inside source list 10 pool CCNA overload",
+            ],
+        },
+        {
+            "slug": "sw1-voip-lldp-gi101-multivendor-discovery",
+            "title": "CCNA — SW1 VoIP LLDP on Gi1/0/1 only",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/sw1-gi101-non-cisco-ip-phone-lldp-topology.png" alt="Topology: Cisco SW1 GigabitEthernet1/0/1 to non-Cisco IP phone with laptop connected behind the phone." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="SW1 partial configuration">
+        <pre>SW1#
+vlan 10
+ name Voice
+vlan 11
+ name Data
+cdp run
+interface GigabitEthernet1/0/1
+ switchport access vlan 11
+ switchport mode access
+ switchport voice vlan 10
+ spanning-tree portfast
+ no shut
+end
+copy run start</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. A multivendor network exists and the company is implementing VoIP over the network for the first time. Which configuration is needed to implement the neighbor discovery protocol on the interface and allow it to remain off for the remaining interfaces?",
+            "name": "sw1lldp1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 **LLDP** is the **IEEE** neighbor discovery protocol used in **multivendor** networks. **`no cdp run`** disables Cisco-proprietary **CDP** globally (replacing the exhibit\u2019s **`cdp run`**). On **GigabitEthernet1/0/1** only, **`lldp transmit`** and **`lldp receive`** enable LLDP without turning it on for every other interface the way global **`lldp run`** would. **A** keeps **CDP** and misapplies **`cdp run`** under the interface. **B** and **C** use invalid or global LLDP commands (**`lldp enable`**, **`lldp run`**) that do not match the per-interface requirement.",
+            "choices": [
+                "SW1(config)#no cdp enable\nSW1(config)#interface gigabitethernet1/0/1\nSW1(config-if)#cdp run",
+                "SW1(config)#lldp enable\nSW1(config)#interface gigabitethernet1/0/1\nSW1(config-if)#lldp run",
+                "SW1(config)#lldp run\nSW1(config)#interface gigabitethernet1/0/1\nSW1(config-if)#lldp enable",
+                "SW1(config)#no cdp run\nSW1(config)#interface gigabitethernet1/0/1\nSW1(config-if)#lldp transmit\nSW1(config-if)#lldp receive",
+            ],
+        },
     ]
 
     prev = "vty-access-list-ssh-secure"

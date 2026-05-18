@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — FlexConnect local switching (WLAN Advanced)</title>
+  <title>CCNA — R1–R2 P2P link subnet (minimum + growth)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -315,15 +315,56 @@
   <main class="card">
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/wlc-flexconnect-local-switching-wlan-advanced-gui.png" alt="WLC WLAN Advanced tab: FlexConnect section with FlexConnect Local Switching checkbox among local auth, central DHCP, and profiling options." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/r1-r2-gi0-0-p2p-link-subnet-topology.png" alt="Topology: Router R1 GigabitEthernet0/0 connected to Router R2 GigabitEthernet0/0 on a point-to-point link." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>
-    <h1>Refer to the exhibit. An architect is managing a wireless network with APs from several branch offices connecting to the WLC in the data center. There is a new requirement for a single WLAN to process the client data traffic without sending it to the WLC. Which action must be taken to complete the request?</h1>
+    <h1>Refer to the exhibit. A network engineer must configure the link with these requirements:
 
-    <label class="choice"><input type="radio" name="wlcfcsw1" value="A" />A. Enable local HTTP profiling</label>
-    <label class="choice"><input type="radio" name="wlcfcsw1" value="B" />B. Enable FlexConnect Local Switching</label>
-    <label class="choice"><input type="radio" name="wlcfcsw1" value="C" />C. Enable local DHCP Profiling</label>
-    <label class="choice"><input type="radio" name="wlcfcsw1" value="D" />D. Enable Disassociation Imminent</label>
+• Consume as few IP addresses as possible.
+• Leave at least two additional useable IP addresses for future growth.
+
+Which set of configurations must be applied?</h1>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r1r2p2p1" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. R1(config-if)#ip address 10.10.10.1 255.255.255.248
+R2(config-if)#ip address 10.10.10.4 255.255.255.248</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r1r2p2p1" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. R1(config-if)#ip address 10.10.10.1 255.255.255.240
+R2(config-if)#ip address 10.10.10.12 255.255.255.240</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r1r2p2p1" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. R1(config-if)#ip address 10.10.10.1 255.255.255.252
+R2(config-if)#ip address 10.10.10.2 255.255.255.252</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="r1r2p2p1" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. R1(config-if)#ip address 10.10.10.1 255.255.255.0
+R2(config-if)#ip address 10.10.10.5 255.255.255.0</pre>
+    </label>
+
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -332,15 +373,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-console-connection-out-of-band-management.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/sw1-pc1-port-security-access-mac-exhibit.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/sw1-sw2-trunk-native-vlan5-layer3-all-pcs.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-gi0-0-ipv6-eui64-dynamic-assignment-block.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 **FlexConnect Local Switching** lets **branch** APs **switch client data locally** on the site LAN instead of tunneling all user traffic to the **central WLC**. **Local HTTP profiling** (**A**) and **local DHCP profiling** (**C**) identify clients; they do not change where data is switched. **Disassociation Imminent** (**D**) is an **802.11v** roaming aid, not local data switching.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 The link needs **two** router addresses plus **at least two spare usable hosts**, so **four usable addresses** minimum. A **/29** mask (**255.255.255.248**) provides **six** usable hosts in the block (for example **10.10.10.1** and **10.10.10.4** on **10.10.10.0/29**) and is the **smallest** mask that satisfies both requirements. **C** (**/30**) offers only **two** usable addresses\u2014no room for growth. **B** (**/28**) and **D** (**/24**) work but waste more addresses than necessary.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -354,7 +395,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="wlcfcsw1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="r1r2p2p1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

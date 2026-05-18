@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — FlexConnect local switching (WLAN Advanced)</title>
+  <title>CCNA — Which routers are NTP clients?</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -315,15 +315,30 @@
   <main class="card">
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/wlc-flexconnect-local-switching-wlan-advanced-gui.png" alt="WLC WLAN Advanced tab: FlexConnect section with FlexConnect Local Switching checkbox among local auth, central DHCP, and profiling options." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/ntp-r1-r4-diamond-topology.png" alt="Topology: R1 to Internet and Loopback0 172.16.0.1; R1–R2 10.10.10.0/30, R1–R3 10.10.10.8/30, R2–R4 10.10.10.4/30, R3–R4 10.10.10.12/30." width="900" decoding="async" loading="lazy" />
       </figure>
-    </div>
-    <h1>Refer to the exhibit. An architect is managing a wireless network with APs from several branch offices connecting to the WLC in the data center. There is a new requirement for a single WLAN to process the client data traffic without sending it to the WLC. Which action must be taken to complete the request?</h1>
+      <div class="exhibit-router-cli" role="region" aria-label="NTP configuration excerpts from R1 through R4">
+        <pre>R1#show run | include ntp
+ntp master 7
+ntp server 209.165.200.225
 
-    <label class="choice"><input type="radio" name="wlcfcsw1" value="A" />A. Enable local HTTP profiling</label>
-    <label class="choice"><input type="radio" name="wlcfcsw1" value="B" />B. Enable FlexConnect Local Switching</label>
-    <label class="choice"><input type="radio" name="wlcfcsw1" value="C" />C. Enable local DHCP Profiling</label>
-    <label class="choice"><input type="radio" name="wlcfcsw1" value="D" />D. Enable Disassociation Imminent</label>
+R2#show run | include ntp
+ntp server 172.16.0.1
+
+R3#show run | include ntp
+ntp master 6
+ntp server 172.16.0.1
+
+R4#show run | include ntp
+ntp master 7</pre>
+      </div>
+    </div>
+    <h1>Refer to the exhibit. Which router or router group are NTP clients?</h1>
+
+    <label class="choice"><input type="radio" name="ntpclnt1" value="A" />A. R1, R2, and R3</label>
+    <label class="choice"><input type="radio" name="ntpclnt1" value="B" />B. R1</label>
+    <label class="choice"><input type="radio" name="ntpclnt1" value="C" />C. R2 and R3</label>
+    <label class="choice"><input type="radio" name="ntpclnt1" value="D" />D. R1, R3, and R4</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -332,15 +347,15 @@
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-console-connection-out-of-band-management.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/sw1-pc1-port-security-access-mac-exhibit.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-gi0-0-ipv6-eui64-dynamic-assignment-block.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-floating-default-route-pc1-pc3-routing.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 **FlexConnect Local Switching** lets **branch** APs **switch client data locally** on the site LAN instead of tunneling all user traffic to the **central WLC**. **Local HTTP profiling** (**A**) and **local DHCP profiling** (**C**) identify clients; they do not change where data is switched. **Disassociation Imminent** (**D**) is an **802.11v** roaming aid, not local data switching.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 **`ntp server`** configures a device as an **NTP client** (it synchronizes to the listed server). **R1** uses **`ntp server 209.165.200.225`**, **R2** uses **`ntp server 172.16.0.1`**, and **R3** also uses **`ntp server 172.16.0.1`**. **R4** has only **`ntp master 7`** and no **`ntp server`** line, so it is not acting as a client in this output. A router can be both **master** and **client** (**R1** and **R3**); the question asks which devices are clients.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -354,7 +369,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="wlcfcsw1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="ntpclnt1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
