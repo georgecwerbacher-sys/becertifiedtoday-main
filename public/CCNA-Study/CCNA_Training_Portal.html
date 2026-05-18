@@ -334,6 +334,9 @@
       margin: 0 0 8px;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     }
+    #ccna-practice-banks-grid {
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
     .sim-box {
       padding: 16px;
       border-radius: 12px;
@@ -1296,9 +1299,19 @@
         });
       }
 
+      function refreshPracticeQuestionBanks() {
+        var hub = window.CCNA_PRACTICE_100;
+        if (hub && typeof hub.injectPortalPracticeBanks === "function") {
+          hub.injectPortalPracticeBanks();
+        }
+      }
+
       applyCheckoutSessionReturn()
         .then(tryRestorePortalFromStoredCheckoutSession)
-        .finally(refreshPortalGate);
+        .finally(function () {
+          refreshPortalGate();
+          refreshPracticeQuestionBanks();
+        });
     });
   </script>
 </body>

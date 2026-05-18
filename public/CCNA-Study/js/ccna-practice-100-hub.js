@@ -337,9 +337,13 @@
 
   window.CCNA_PRACTICE_100.injectPortalPracticeBanks = injectPortalPracticeBanks;
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", injectPortalPracticeBanks);
-  } else {
-    injectPortalPracticeBanks();
+  function schedulePortalPracticeBanks() {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", injectPortalPracticeBanks, { once: true });
+    } else {
+      injectPortalPracticeBanks();
+    }
   }
+
+  schedulePortalPracticeBanks();
 })();
