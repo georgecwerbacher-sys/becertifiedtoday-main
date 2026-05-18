@@ -205,7 +205,11 @@
 
     var all = window.CCNA_PRACTICE_100.ALL_SLUGS;
     if (!Array.isArray(all)) return;
-    if (grid.querySelector("[data-ccna-practice-bank-index]")) return;
+
+    var prior = grid.querySelectorAll("[data-ccna-practice-bank-index]");
+    for (var pi = 0; pi < prior.length; pi++) prior[pi].remove();
+    var loadingEl = document.getElementById("ccna-practice-banks-loading");
+    if (loadingEl) loadingEl.remove();
 
     var nBanks = practiceBankCount();
     var total = all.length;
@@ -314,12 +318,24 @@
           formatRange(firstNum, slotEnd) +
           "</strong> when the hub list grows. <strong>Random</strong> and <strong>Review</strong> stay disabled until this range has items.";
         article.appendChild(p);
+      } else {
+        var meta = document.createElement("p");
+        meta.className = "study-meta";
+        meta.textContent =
+          countInBank +
+          (countInBank === 1 ? " question" : " questions") +
+          " · hub positions " +
+          formatRange(firstNum, endIdx) +
+          ".";
+        article.appendChild(meta);
       }
       article.appendChild(actions);
 
       grid.appendChild(article);
     }
   }
+
+  window.CCNA_PRACTICE_100.injectPortalPracticeBanks = injectPortalPracticeBanks;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", injectPortalPracticeBanks);
