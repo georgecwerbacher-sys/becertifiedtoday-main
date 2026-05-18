@@ -9964,6 +9964,391 @@ NewSW(config-if)#switchport trunk allowed vlan 2,10
 NewSW(config-if)#switchport trunk native vlan 2""",
             ],
         },
+        {
+            "slug": "wlc-userwl-vlan20-max-allowed-clients-exhibit",
+            "title": "CCNA — WLC WLAN max clients (USERWL)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/wlc-userwl-vlan20-max-clients-topology.png" alt="Topology: AP with SSID USERWL on 172.16.10.0/24 connected through network cloud to WLC on VLAN 20 (172.16.10.0/24)." width="980" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. A network engineer is configuring a WLAN to connect with the **172.16.10.0/24** network on **VLAN 20**. The engineer wants to limit the number of devices that connect to the WLAN on the **USERWL** SSID to **125**. Which configuration must the engineer perform on the WLC?",
+            "name": "wlcusr125",
+            "correct": "A",
+            "explain": "Correct. A \u2014 On a Cisco WLC, cap the number of clients associated to a WLAN by setting **Maximum Allowed Clients** in that **WLAN\u2019s** configuration (for **USERWL** on **VLAN 20** / **172.16.10.0/24**). **B** **DTIM** (Delivery Traffic Indication Map) controls how often the AP buffers multicast/broadcast for sleeping clients\u2014it is not a client limit. **C** **Controller IPv6 Throttle** limits IPv6 traffic rate, not WLAN association count. **D** **Management Software activation Clients** is unrelated to per-WLAN association limits.",
+            "choices": [
+                "In the WLAN configuration, set the Maximum Allowed Clients value to 125.",
+                "In the Advanced configuration, set the DTIM value to 125.",
+                "In the Controller IPv6 configuration, set the Throttle value to 125.",
+                "In the Management Software activation configuration, set the Clients value to 125.",
+            ],
+        },
+        {
+            "slug": "cpe-dual-isp-static-route-load-balance-exhibit",
+            "title": "CCNA — CPE dual-ISP static load balance",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/cpe-dual-isp-static-load-balance-topology.png" alt="Topology: CPE at Headquarters with links to ISP 1 (198.51.100.1) and ISP 2 (203.0.113.1)." width="980" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. A network administrator configures the **CPE** to provide internet access to the company headquarters. Traffic must be load-balanced via **ISP1** and **ISP2** to ensure redundancy. Which two command sets must be configured on the **CPE** router? (Choose two.)",
+            "name": "cpedualisp1",
+            "choose_two": True,
+            "mono": True,
+            "correct": ["C", "E"],
+            "explain": "Correct. C and E \u2014 **C** uses two static routes that split the destination space: **0.0.0.0/1** via **198.51.100.1** (**ISP1**) and **128.0.0.0/1** via **203.0.113.1** (**ISP2**), load-sharing across both links. **E** uses two equal **0.0.0.0/0** static routes (same administrative distance) to each ISP, which the router can load-balance (**ECMP**). **A** sets **ISP2** as a floating backup (**AD 2**), not load sharing. **B** adds extra full defaults beyond the /1 split. **D** uses **AD 255**, so those routes are not installed.",
+            "choices": [
+                """ip route 0.0.0.0 0.0.0.0 198.51.100.1
+ip route 0.0.0.0 0.0.0.0 203.0.113.1 2""",
+                """ip route 0.0.0.0 128.0.0.0 198.51.100.1
+ip route 128.0.0.0 128.0.0.0 203.0.113.1
+ip route 0.0.0.0 0.0.0.0 198.51.100.1
+ip route 0.0.0.0 0.0.0.0 203.0.113.1""",
+                """ip route 0.0.0.0 128.0.0.0 198.51.100.1
+ip route 128.0.0.0 128.0.0.0 203.0.113.1""",
+                """ip route 0.0.0.0 0.0.0.0 198.51.100.1 255
+ip route 0.0.0.0 0.0.0.0 203.0.113.1 255
+ip route 128.0.0.0 128.0.0.0 203.0.113.1""",
+                """ip route 0.0.0.0 0.0.0.0 198.51.100.1
+ip route 0.0.0.0 0.0.0.0 203.0.113.1""",
+            ],
+        },
+        {
+            "slug": "r2-lan-ipv6-eui64-address-exhibit",
+            "title": "CCNA — R2 LAN IPv6 EUI-64 address",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r2-lan-ipv6-eui64-topology.png" alt="Topology: R1 and R2 on 2001:DB8:44:90::/64; R1 LAN 2001:DB8:D8D2:1008::/64; R2 LAN 2001:DB8:D8D2:1009::/64 with MAC 12-a0-ab-cc-00-01 on R2." width="980" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. The IPv6 address for the LAN segment on router **R2** must be configured using the **EUI-64** format. Which address must be used?",
+            "name": "r2eui641",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A \u2014 **R2** MAC **12-A0-AB-CC-00-01** on prefix **2001:DB8:D8D2:1009::/64**: insert **FF:FE** after the OUI (**12A0.AB** \u2192 **12A0.ABFF.FE**), append **CC:00:01**, then invert the **7th bit** of the first octet (**0x12** \u2192 **0x10**), yielding interface ID **10A0:ABFF:FECC:1** and **`ipv6 address 2001:DB8:D8D2:1009:10A0:ABFF:FECC:1 eui-64`**. **B** misplaces **FF:FE** (**AB34:FFCC**). **C** uses **1230** instead of **10A0** after the U/L-bit flip. **D** does not follow **R2\u2019s** MAC-derived **EUI-64** pattern.",
+            "choices": [
+                "ipv6 address 2001:DB8:D8D2:1009:10A0:ABFF:FECC:1 eui-64",
+                "ipv6 address 2001:DB8:D8D2:1009:12A0:AB34:FFCC:1 eui-64",
+                "ipv6 address 2001:DB8:D8D2:1009:1230:ABFF:FECC:1 eui-64",
+                "ipv6 address 2001:DB8:D8D2:1009:4345:80FF:FF16:7 eui-64",
+            ],
+        },
+        {
+            "slug": "switch-a-etherchannel-lacp-passive-exhibit",
+            "title": "CCNA — Switch A LACP passive (Po1)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/switch-a-etherchannel-lacp-passive-topology.png" alt="Topology: Switch A and Switch B with EtherChannel group 1 on GigabitEthernet0/0/0 through 0/0/15; hosts below each switch." width="980" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. The EtherChannel is configured with a speed of **1000** and duplex **full** on both ends of **channel group 1**. What is the next step to configure the channel on **switch A** to respond to but not initiate **LACP** communication?",
+            "name": "swalacpp1",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A \u2014 **LACP passive** waits for LACPDUs from the neighbor and responds but does not initiate negotiation. Apply **`channel-group 1 mode passive`** under the member interfaces **`GigabitEthernet0/0/0\u201315`** (interface range). **B** **`mode on`** is a static EtherChannel without LACP negotiation. **C** **`mode auto`** is **PAgP**, not LACP, and belongs on physical members, not under **`interface port-channel`**. **D** uses the correct keyword **passive** but on **`port-channel 1`**; IOS sets **channel-group** mode on the physical ports in the bundle, not on the logical port-channel interface.",
+            "choices": [
+                """interface range gigabitethernet0/0/0 -15
+channel-group 1 mode passive""",
+                """interface range gigabitethernet0/0/0 -15
+channel-group 1 mode on""",
+                """interface port-channel 1
+channel-group 1 mode auto""",
+                """interface port-channel 1
+channel-group 1 mode passive""",
+            ],
+        },
+        {
+            "slug": "r4-local-telnet-enable-secret-vty-exhibit",
+            "title": "CCNA — R4 Telnet and enable secret",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r4-local-telnet-enable-secret-wan-topology.png" alt="Topology: WAN cloud with R4 on 10.111.87.0/30, R6 on 10.110.198.0/30, and R5 on 10.128.1.0/30." width="980" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. Local access for **R4** must be established and these requirements must be met:\n\n\u2022 Only **Telnet** access is allowed.\n\u2022 The **enable** password must be stored securely.\n\u2022 The **enable** password must be applied in plain text.\n\u2022 **Full access** to **R4** must be permitted upon successful login.\n\nWhich configuration script meets the requirements?",
+            "name": "r4tel1",
+            "correct": "B",
+            "mono": True,
+            "explain": "Correct. B \u2014 **`transport input telnet`** limits **VTY** access to **Telnet** only. **`login local`** uses the **`username test1 password`** database for line login. **`enable secret level 15 0 Test123`** stores the enable password **securely** (hashed **secret**) while **`0`** lets you enter **Test123** in **plain text** on the CLI; **level 15** grants **full** privileged access after login. **A** uses **`enable password`** (not stored securely), **level 1** (not full access), and **`transport input all`**. **C** sets **`enable secret level 1`** (not full access) and invalid **`login authentication`** / line **`password`** patterns for this task. **D** uses **`enable password`** (not secure) and **`transport input all`**.",
+            "choices": [
+                """Option A
+
+!
+conf t
+!
+username test1 password testpass1
+enable password level 1 7 Test123
+!
+line vty 0 15
+accounting exec default
+transport input all""",
+                """Option B
+
+conf t
+!
+username test1 password testpass1
+enable secret level 15 0 Test123
+!
+line vty 0 15
+login local
+transport input telnet""",
+                """Option C
+
+!
+config t
+!
+username test1 password testpass1
+enable secret level 1 0 Test123
+!
+line vty 0 15
+login authentication
+password Test123
+transport input telnet""",
+                """Option D
+
+!
+config t
+!
+username test1 password testpass1
+enable password level 15 0 Test123
+!
+line vty 0 15
+password Test123
+transport input all""",
+            ],
+        },
+        {
+            "slug": "dscp-phb-assured-forwarding-drop-probability",
+            "title": "CCNA — DSCP AF drop probability subclasses",
+            "stem": "Which **DSCP** per-hop forwarding behavior is divided into subclasses based on **drop probability**?",
+            "name": "dscpaf1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **Assured Forwarding (AF)** is the **DSCP PHB** with multiple traffic classes and **three drop precedences** (low, medium, high drop probability), shown as **AFxy** (for example **AF21**, **AF22**, **AF23**). **Class-selector (CS)** maps to legacy IP precedence and is not organized by drop probability subclasses. **Expedited Forwarding (EF)** is a single low-delay PHB for priority traffic (for example voice), not AF-style drop tiers. **Default (BE)** is best-effort forwarding without assured drop-probability subclasses.",
+            "choices": [
+                "class-selector",
+                "assured",
+                "expedited",
+                "default",
+            ],
+        },
+        {
+            "slug": "switch-frame-switching-known-destination-forward",
+            "title": "CCNA — Frame switching on a switch",
+            "stem": "How does **frame switching** function on a switch?",
+            "name": "swfrsw1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 A switch **learns source MAC addresses** on each port and forwards frames based on the **destination MAC**. If the destination is **known** in the **CAM/MAC table**, the frame is sent **only to that egress port**. **A** is wrong: **CDP** is a **neighbor discovery** protocol, not the forwarding mechanism for user data frames. **B** is wrong: switches do not normally **modify** frame contents for **known source VLAN** tagging on standard L2 forwarding. **C** is wrong: **unknown** destinations are typically **flooded** within the VLAN (except the ingress port), not **dropped**.",
+            "choices": [
+                "forwards frames to a neighbor port using CDP",
+                "modifies frames that contain a known source VLAN",
+                "inspects and drops frames from unknown destinations",
+                "forwards known destinations to the destination port",
+            ],
+        },
+        {
+            "slug": "endpoint-protection-antivirus-software",
+            "title": "CCNA — Endpoint protection from attack",
+            "stem": "What is used as a solution for protecting an **individual network endpoint** from attack?",
+            "name": "endptav1",
+            "correct": "C",
+            "explain": "Correct. C \u2014 **Antivirus/anti-malware software** runs on the **host (endpoint)** to detect and block malware, exploits, and other threats aimed at that **individual device**. A **router** (**A**) forwards traffic and applies routing policy; it does not replace **per-host** endpoint protection. A **wireless controller** (**B**) manages **WLAN** operation and policies for APs/clients, not standalone endpoint antimalware. **Cisco DNA Center** (**D**) is a **network management/automation** platform for the campus fabric, not host-based endpoint security software.",
+            "choices": [
+                "Router",
+                "Wireless controller",
+                "Antivirus software",
+                "Cisco DNA Center",
+            ],
+        },
+        {
+            "slug": "rest-http-methods-get-post-choose-two",
+            "title": "CCNA — REST HTTP methods (choose two)",
+            "stem": "Which two **HTTP** methods are suitable for actions performed by **REST-based APIs**? (Choose two.)",
+            "name": "restmeth1",
+            "choose_two": True,
+            "correct": ["C", "D"],
+            "explain": "Correct. C and D \u2014 **REST** APIs use standard **HTTP verbs**. **GET** retrieves resource data; **POST** commonly **creates** resources or submits data for processing. **REMOVE** (**A**) is not a standard HTTP method (**DELETE** is used for delete). **REDIRECT** (**B**) describes a response behavior, not a REST API action verb. **POP** (**E**) is unrelated to HTTP/REST.",
+            "choices": [
+                "REMOVE",
+                "REDIRECT",
+                "POST",
+                "GET",
+                "POP",
+            ],
+        },
+        {
+            "slug": "wlc-lag-redundancy-bandwidth-layer2-switch",
+            "title": "CCNA — WLC LAG to Layer 2 switch",
+            "stem": "What provides **connection redundancy**, **increased bandwidth**, and **load sharing** between a **wireless LAN controller** and a **Layer 2 switch**?",
+            "name": "wlclagl21",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **Link aggregation (LAG/EtherChannel)** on **WLC distribution ports** to the **Layer 2 switch** bundles multiple physical links into one logical path, adding **aggregate bandwidth**, **load sharing** across members, and **redundancy** if a link fails. **A** **VLAN trunking** carries multiple VLANs on one link but does not by itself combine links for bandwidth/redundancy. **B** **Tunneling** encapsulates traffic (for example CAPWAP) but is not the L2 link-bundling mechanism described. **C** **First hop redundancy** (for example HSRP/VRRP) provides a **default gateway** backup, not WLC-to-switch port bundling.",
+            "choices": [
+                "VLAN trunking",
+                "tunneling",
+                "first hop redundancy",
+                "link aggregation",
+            ],
+        },
+        {
+            "slug": "hsrp-cisco-proprietary-edge-failover-recovery",
+            "title": "CCNA — HSRP Cisco proprietary failover",
+            "stem": "Which **Cisco proprietary** protocol ensures traffic recovers **immediately**, **transparently**, and **automatically** when **edge devices** or **access circuits** fail?",
+            "name": "hsrpcp1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **HSRP (Hot Standby Router Protocol)** is **Cisco\u2019s proprietary** first-hop redundancy protocol. Routers share a **virtual IP/MAC** default gateway; the **standby** takes over if the **active** router or path fails, keeping host traffic flowing with minimal disruption. **A** **SLB** load-balances servers, not edge **default-gateway** failover. **B** **FHRP** is the **family** name (HSRP/VRRP/GLBP), not one Cisco-only protocol. **C** **VRRP** is an **open standard**, not Cisco proprietary.",
+            "choices": [
+                "SLB",
+                "FHRP",
+                "VRRP",
+                "HSRP",
+            ],
+        },
+        {
+            "slug": "wpa3-enhancement-pmf-deauth-disassociation",
+            "title": "CCNA — WPA3 PMF deauth defense",
+            "stem": "What is an enhancement implemented in **WPA3**?",
+            "name": "wpa3pmf1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **WPA3** requires **Protected Management Frames (802.11w)**, which helps **defend against spoofed deauthentication and disassociation** attacks that could otherwise drop clients from the WLAN. **A** describes **enterprise** identification patterns (**PKI/RADIUS**), not a WPA3-specific enhancement in these choices. **B** matches **WPA2**-era **802.1X** with **AES-128**, not what distinguishes WPA3 here. **C** **TKIP** and **per-packet keying** are **legacy WPA** features, replaced by stronger ciphers in modern WPA2/WPA3.",
+            "choices": [
+                "employs PKI and RADIUS to identify access points",
+                "applies 802.1x authentication and AES-128 encryption",
+                "uses TKIP and per-packet keying",
+                "defends against deauthentication and disassociation attacks",
+            ],
+        },
+        {
+            "slug": "ipv6-link-local-all-nodes-multicast-ff02-1",
+            "title": "CCNA — IPv6 all-nodes multicast",
+            "stem": "What is a **link-local all-nodes** IPv6 **multicast** address?",
+            "name": "ipv6an1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **ff02::1** (shown expanded as **ff02:0:0:0:0:0:0:1**) is the **link-local scope all-nodes** multicast address on every IPv6 link. The **ff02::/16** prefix marks **link-local multicast**; the final **::1** group ID is **all nodes**. **B** is a **global unicast** address (**2000::/3** range). **C** is not a valid reserved multicast pattern in these choices. **D** (**fe80::/10**) is a **link-local unicast** address, not multicast.",
+            "choices": [
+                "ff02:0:0:0:0:0:0:1",
+                "2004:31c:73d9:683e:255::",
+                "fffe:034:0dd:45d6:789e::",
+                "fe80:4433:034:0dd::2",
+            ],
+            "mono": True,
+        },
+        {
+            "slug": "gi1-ipv6-modified-eui64-from-mac-exhibit",
+            "title": "CCNA — Modified EUI-64 from Gi1 MAC",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="show interfaces GigabitEthernet1">
+        <pre>GigabitEthernet1 is up, line protocol is up
+  Hardware is CSR vNIC, address is 5000.0004.0000 (bia 5000.0004.0000)
+  Internet address is 192.168.1.1/24
+  MTU 1500 bytes, BW 1000000 Kbit/sec, DLY 10 usec,
+    reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full Duplex, 1000Mbps, link type is auto, media type is RJ45</pre>
+      </div>
+    </div>""",
+            "stem": "Which format matches the **Modified EUI-64** IPv6 interface address for the network **2001:db8::/64**?",
+            "name": "gieui641",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D \u2014 MAC **5000.0004.0000** (**50:00:00:04:00:00**): insert **FF:FE** after the first three octets \u2192 **50:00:00:FF:FE:04:00:00**, then invert the **7th bit** (universal/local) of the first octet (**0x50** \u2192 **0x52**), yielding interface ID **5200:00ff:fe04:0000** and **`2001:db8::5200:00ff:fe04:0000/64`**. **C** omits the U/L-bit flip (**5000** instead of **5200**). **A** embeds the raw MAC without **FF:FE** or bit inversion. **B** is not derived from this MAC on prefix **2001:db8::/64**.",
+            "choices": [
+                "2001:db8::5000:0004:5678:0090/64",
+                "2001:db8:4425:5400:77ff:fe07:/64",
+                "2001:db8::5000:00ff:fe04:0000/64",
+                "2001:db8::5200:00ff:fe04:0000/64",
+            ],
+        },
+        {
+            "slug": "wan-full-mesh-topology-disadvantages-choose-two",
+            "title": "CCNA — Full-mesh disadvantages (choose two)",
+            "stem": "What are two **disadvantages** of a **full-mesh** topology? (Choose two)",
+            "name": "wanfmsh1",
+            "choose_two": True,
+            "correct": ["B", "D"],
+            "explain": "Correct. B and D \u2014 A **full mesh** connects every site to every other site, so link count grows quickly (**n(n\u22121)/2**). That drives **high implementation cost** (circuits, ports, and hardware) and **complex configuration** (many tunnels/routes/peering relationships to build and maintain). **A** is wrong: **MTU** is not a defining full-mesh disadvantage. **C** describes how many WAN meshes are built (dedicated **point-to-point** links), not a typical exam-listed drawback versus **hub-and-spoke**. **E** is false: full mesh is a physical/logical topology pattern; sites can run **OSPF**, **EIGRP**, **MPLS**, or other designs\u2014not **BGP only**.",
+            "choices": [
+                "It needs a high MTU between sites.",
+                "It has a high implementation cost.",
+                "It must have point-to-point communication.",
+                "It requires complex configuration.",
+                "It works only with BGP between sites.",
+            ],
+        },
+        {
+            "slug": "qos-classification-traffic-treatment-purpose",
+            "title": "CCNA — QoS classification purpose",
+            "stem": "What is the purpose of **classifying** network traffic in **QoS**?",
+            "name": "qoscls1",
+            "correct": "B",
+            "explain": "Correct. B \u2014 **Classification** **identifies** traffic (by ACL, NBAR, or other matchers) so the network knows **which treatment** (marking, queuing, policing, shaping) that traffic should receive. **A** describes **servicing** traffic after it is already classified and scheduled. **C** is **marking** (writing DSCP/CoS/IP precedence into a header field), a separate PHB step. **D** is how you **implement** matchers (for example **class-map** rules), not the purpose of classification itself.",
+            "choices": [
+                "services traffic according to its class",
+                "identifies the type of traffic that will receive a particular treatment",
+                "writes the class identifier of a packet to a dedicated field in the packet header",
+                "configures traffic-matching rules on network devices",
+            ],
+        },
+        {
+            "slug": "private-ipv4-benefit-reuse-same-addresses",
+            "title": "CCNA — Private IPv4 reuse benefit",
+            "stem": "What is a benefit of using **private IPv4** addressing?",
+            "name": "privben2",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **RFC 1918** private ranges (**10/8**, **172.16/12**, **192.168/16**) can be **reused** at many sites and by many organizations because they are **not globally routable** on the public Internet, avoiding the need for a unique public address per internal host. **B** is wrong: private addressing **blocks** direct inbound reachability from the Internet unless **NAT** or explicit forwarding is used. **C** is false: hosts using only private addresses generally need **NAT/PAT** to reach the Internet. **D** is wrong: private space does not by itself provide secure Internet communication for all external hosts.",
+            "choices": [
+                "Multiple companies can use the same addresses without conflicts.",
+                "Direct connectivity is provided to internal hosts from outside an enterprise network.",
+                "Communication to the internet is reachable without the use of NAT.",
+                "All external hosts are provided with secure communication to the Internet.",
+            ],
+        },
+        {
+            "slug": "sdn-separate-control-data-plane-advantage",
+            "title": "CCNA — SDN control/data plane advantage",
+            "stem": "What is the **advantage** of **separating the control plane** from the **data plane** within an **SDN** network?",
+            "name": "sdnsep1",
+            "correct": "A",
+            "explain": "Correct. A \u2014 **SDN** centralizes **control-plane** decisions in a **controller** while **data-plane** devices focus on **forwarding**, which **simplifies operations** and **reduces overall network complexity** from an administrator\u2019s view. **B** misstates the model: applications and orchestration use **northbound** APIs; forwarding devices are programmed via **southbound** APIs, not by \u201climiting data queries\u201d to the control plane. **C** may occur in some designs but is not the defining advantage named here. **D** is wrong: **virtual machine** creation is a **compute/virtualization** task, not a data-plane forwarding function.",
+            "choices": [
+                "decreases overall network complexity",
+                "limits data queries to the control plane",
+                "reduces cost",
+                "offloads the creation of virtual machines to the data plane",
+            ],
+        },
+        {
+            "slug": "r1-eigrp-ecmp-172-16-1-4-30-show-ip-route-exhibit",
+            "title": "CCNA — R1 EIGRP ECMP to 172.16.1.4/30",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route excerpt">
+        <pre>R1# show ip route
+Codes: C - connected, S - static, I - IGRP, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, * - candidate default
+       U - per-user static route, o - ODR
+Gateway of last resort is not set
+C   172.16.0.0/16 is directly connected, Loopback0
+    172.16.0.0/16 is variably subnetted, 4 subnets, 2 masks
+O      172.16.1.3/32 [110/100] via 10.0.1.100, 00:39:08, Serial0
+O      172.16.1.9/32 [110/5] via 172.16.1.50, 00:43:01, GigabitEthernet0/0
+D      172.16.1.4/30 [90/7445] via 172.16.9.5, 00:39:08, GigabitEthernet0/0
+                     [90/7445] via 172.16.4.4, 00:39:08, GigabitEthernet0/4</pre>
+      </div>
+    </div>""",
+            "stem": "How does router **R1** handle traffic to the **172.16.1.4/30** subnet?",
+            "name": "r1ecmp1",
+            "correct": "D",
+            "explain": "Correct. D \u2014 **172.16.1.4/30** matches the **EIGRP** route with **two equal-cost paths** (same **AD 90** and **metric 7445**) via **172.16.9.5** and **172.16.4.4**, so **R1 load-balances** across both next hops. **A** and **C** wrongly prefer only **172.16.4.4** or treat **172.16.4.4** as backup despite equal metrics. **B** uses **10.0.1.100**, which is the next hop only for **172.16.1.3/32**, not **172.16.1.4/30**.",
+            "choices": [
+                "It sends all traffic over the path via 172.16.4.4",
+                "It sends all traffic over the path via 10.0.1.100",
+                "It sends all traffic over the path via 172.16.9.5 using 172.16.4.4 as a backup",
+                "It load-balances traffic over 172.16.9.5 and 172.16.4.4",
+            ],
+        },
     ]
 
     prev = "vty-access-list-ssh-secure"

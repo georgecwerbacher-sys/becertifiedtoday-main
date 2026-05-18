@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — NewSW trunk to SW2</title>
+  <title>CCNA — CPE dual-ISP static load balance</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,104 +312,114 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-  <main class="card">
+    <main class="card">
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/newsw-trunk-native-vlan2-topology.png" alt="Topology: SW1 and SW2 with PCs in VLAN 2; NewSW below SW2 with VLAN 10 hosts; NewSW f0/0 uplink to SW2." width="980" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/cpe-dual-isp-static-load-balance-topology.png" alt="Topology: CPE at Headquarters with links to ISP 1 (198.51.100.1) and ISP 2 (203.0.113.1)." width="980" decoding="async" loading="lazy" />
       </figure>
-      <div class="exhibit-router-cli" role="region" aria-label="SW1 show interface output">
-        <pre>SW1#show interface
-interface FastEthernet0/0
- switchport access vlan 2
- switchport mode access</pre>
-      </div>
     </div>
-    <h1>Refer to the exhibit. A network administrator must connect **NewSW** to **SW2** on interface **FastEthernet0/0**. Hosts in **VLAN 2** must stay reachable, and **VLAN 10** must also cross the link. Which configuration must be applied on **NewSW**?</h1>
+    <h1 class="choose-two-stem">Refer to the exhibit. A network administrator configures the **CPE** to provide internet access to the company headquarters. Traffic must be load-balanced via **ISP1** and **ISP2** to ensure redundancy. Which two command sets must be configured on the **CPE** router? (Choose two.)</h1>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="newswtrk1" value="A" aria-label="Select answer option A" />
+        <input type="checkbox" name="cpedualisp1" value="A" aria-label="Select answer option A" />
         <span class="cli-router-choice-badge" aria-hidden="true">A</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">A. NewSW(config)#interface f0/0
-NewSW(config-if)#switchport mode trunk
-NewSW(config-if)#switchport trunk allowed vlan 2,10
-NewSW(config-if)#switchport trunk native vlan 2</pre>
+      <pre class="cli-router-console">A. ip route 0.0.0.0 0.0.0.0 198.51.100.1
+ip route 0.0.0.0 0.0.0.0 203.0.113.1 2</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="newswtrk1" value="B" aria-label="Select answer option B" />
+        <input type="checkbox" name="cpedualisp1" value="B" aria-label="Select answer option B" />
         <span class="cli-router-choice-badge" aria-hidden="true">B</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">B. NewSW(config)#interface f0/0
-NewSW(config-if)#switchport mode trunk
-NewSW(config-if)#switchport trunk allowed vlan 10
-NewSW(config-if)#switchport trunk native vlan 10</pre>
+      <pre class="cli-router-console">B. ip route 0.0.0.0 128.0.0.0 198.51.100.1
+ip route 128.0.0.0 128.0.0.0 203.0.113.1
+ip route 0.0.0.0 0.0.0.0 198.51.100.1
+ip route 0.0.0.0 0.0.0.0 203.0.113.1</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="newswtrk1" value="C" aria-label="Select answer option C" />
+        <input type="checkbox" name="cpedualisp1" value="C" aria-label="Select answer option C" />
         <span class="cli-router-choice-badge" aria-hidden="true">C</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">C. NewSW(config)#interface f0/0
-NewSW(config-if)#switchport mode access
-NewSW(config-if)#switchport trunk allowed vlan 2,10
-NewSW(config-if)#switchport trunk native vlan 10</pre>
+      <pre class="cli-router-console">C. ip route 0.0.0.0 128.0.0.0 198.51.100.1
+ip route 128.0.0.0 128.0.0.0 203.0.113.1</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="newswtrk1" value="D" aria-label="Select answer option D" />
+        <input type="checkbox" name="cpedualisp1" value="D" aria-label="Select answer option D" />
         <span class="cli-router-choice-badge" aria-hidden="true">D</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">D. NewSW(config)#interface f0/0
-NewSW(config-if)#switchport mode access
-NewSW(config-if)#switchport trunk allowed vlan 2,10
-NewSW(config-if)#switchport trunk native vlan 2</pre>
+      <pre class="cli-router-console">D. ip route 0.0.0.0 0.0.0.0 198.51.100.1 255
+ip route 0.0.0.0 0.0.0.0 203.0.113.1 255
+ip route 128.0.0.0 128.0.0.0 203.0.113.1</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="cpedualisp1" value="E" aria-label="Select answer option E" />
+        <span class="cli-router-choice-badge" aria-hidden="true">E</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">E. ip route 0.0.0.0 0.0.0.0 198.51.100.1
+ip route 0.0.0.0 0.0.0.0 203.0.113.1</pre>
     </label>
 
 
     <div class="actions">
+      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/etherchannel-sw2-port-channel1-min-links-exhibit.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-userwl-vlan20-max-allowed-clients-exhibit.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-userwl-vlan20-max-allowed-clients-exhibit.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/r2-lan-ipv6-eui64-address-exhibit.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 The topology shows existing hosts in **VLAN 2** and new hosts in **VLAN 10** on **NewSW**. Configure **trunk** mode on **NewSW** **f0/0** with **`switchport trunk allowed vlan 2,10`** and **`switchport trunk native vlan 2`** so **VLAN 2** stays reachable across the network while **VLAN 10** is added. **B** allows only **VLAN 10** and sets **native VLAN 10**, breaking **VLAN 2** reachability. **C** and **D** use **`switchport mode access`** with trunk **allowed/native** commands, which is an invalid combination; trunk settings apply only in trunk mode.";
+      var CORRECT = ["C", "E"];
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="cpedualisp1"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = CORRECT_MSG;
+          answerBox.textContent = "Correct. C and E \u2014 **C** uses two static routes that split the destination space: **0.0.0.0/1** via **198.51.100.1** (**ISP1**) and **128.0.0.0/1** via **203.0.113.1** (**ISP2**), load-sharing across both links. **E** uses two equal **0.0.0.0/0** static routes (same administrative distance) to each ISP, which the router can load-balance (**ECMP**). **A** sets **ISP2** as a floating backup (**AD 2**), not load sharing. **B** adds extra full defaults beyond the /1 split. **D** uses **AD 255**, so those routes are not installed.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="newswtrk1"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>

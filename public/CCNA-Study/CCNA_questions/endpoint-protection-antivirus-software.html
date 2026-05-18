@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — NewSW trunk to SW2</title>
+  <title>CCNA — Endpoint protection from attack</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -313,67 +313,12 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <div class="exhibit-stack">
-      <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/newsw-trunk-native-vlan2-topology.png" alt="Topology: SW1 and SW2 with PCs in VLAN 2; NewSW below SW2 with VLAN 10 hosts; NewSW f0/0 uplink to SW2." width="980" decoding="async" loading="lazy" />
-      </figure>
-      <div class="exhibit-router-cli" role="region" aria-label="SW1 show interface output">
-        <pre>SW1#show interface
-interface FastEthernet0/0
- switchport access vlan 2
- switchport mode access</pre>
-      </div>
-    </div>
-    <h1>Refer to the exhibit. A network administrator must connect **NewSW** to **SW2** on interface **FastEthernet0/0**. Hosts in **VLAN 2** must stay reachable, and **VLAN 10** must also cross the link. Which configuration must be applied on **NewSW**?</h1>
+    <h1>What is used as a solution for protecting an **individual network endpoint** from attack?</h1>
 
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="newswtrk1" value="A" aria-label="Select answer option A" />
-        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">A. NewSW(config)#interface f0/0
-NewSW(config-if)#switchport mode trunk
-NewSW(config-if)#switchport trunk allowed vlan 2,10
-NewSW(config-if)#switchport trunk native vlan 2</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="newswtrk1" value="B" aria-label="Select answer option B" />
-        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">B. NewSW(config)#interface f0/0
-NewSW(config-if)#switchport mode trunk
-NewSW(config-if)#switchport trunk allowed vlan 10
-NewSW(config-if)#switchport trunk native vlan 10</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="newswtrk1" value="C" aria-label="Select answer option C" />
-        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">C. NewSW(config)#interface f0/0
-NewSW(config-if)#switchport mode access
-NewSW(config-if)#switchport trunk allowed vlan 2,10
-NewSW(config-if)#switchport trunk native vlan 10</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="newswtrk1" value="D" aria-label="Select answer option D" />
-        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">D. NewSW(config)#interface f0/0
-NewSW(config-if)#switchport mode access
-NewSW(config-if)#switchport trunk allowed vlan 2,10
-NewSW(config-if)#switchport trunk native vlan 2</pre>
-    </label>
-
+    <label class="choice"><input type="radio" name="endptav1" value="A" />A. Router</label>
+    <label class="choice"><input type="radio" name="endptav1" value="B" />B. Wireless controller</label>
+    <label class="choice"><input type="radio" name="endptav1" value="C" />C. Antivirus software</label>
+    <label class="choice"><input type="radio" name="endptav1" value="D" />D. Cisco DNA Center</label>
 
     <div class="actions">
       <a class="home-link" href="/index.html">Home</a>
@@ -382,15 +327,15 @@ NewSW(config-if)#switchport trunk native vlan 2</pre>
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/etherchannel-sw2-port-channel1-min-links-exhibit.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-userwl-vlan20-max-allowed-clients-exhibit.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/switch-frame-switching-known-destination-forward.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/rest-http-methods-get-post-choose-two.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 The topology shows existing hosts in **VLAN 2** and new hosts in **VLAN 10** on **NewSW**. Configure **trunk** mode on **NewSW** **f0/0** with **`switchport trunk allowed vlan 2,10`** and **`switchport trunk native vlan 2`** so **VLAN 2** stays reachable across the network while **VLAN 10** is added. **B** allows only **VLAN 10** and sets **native VLAN 10**, breaking **VLAN 2** reachability. **C** and **D** use **`switchport mode access`** with trunk **allowed/native** commands, which is an invalid combination; trunk settings apply only in trunk mode.";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C \u2014 **Antivirus/anti-malware software** runs on the **host (endpoint)** to detect and block malware, exploits, and other threats aimed at that **individual device**. A **router** (**A**) forwards traffic and applies routing policy; it does not replace **per-host** endpoint protection. A **wireless controller** (**B**) manages **WLAN** operation and policies for APs/clients, not standalone endpoint antimalware. **Cisco DNA Center** (**D**) is a **network management/automation** platform for the campus fabric, not host-based endpoint security software.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -404,7 +349,7 @@ NewSW(config-if)#switchport trunk native vlan 2</pre>
         }
       }
 
-      document.querySelectorAll('input[name="newswtrk1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="endptav1"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

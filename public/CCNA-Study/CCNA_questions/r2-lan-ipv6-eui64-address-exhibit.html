@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — NewSW trunk to SW2</title>
+  <title>CCNA — R2 LAN IPv6 EUI-64 address</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -315,63 +315,45 @@
   <main class="card">
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/newsw-trunk-native-vlan2-topology.png" alt="Topology: SW1 and SW2 with PCs in VLAN 2; NewSW below SW2 with VLAN 10 hosts; NewSW f0/0 uplink to SW2." width="980" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/r2-lan-ipv6-eui64-topology.png" alt="Topology: R1 and R2 on 2001:DB8:44:90::/64; R1 LAN 2001:DB8:D8D2:1008::/64; R2 LAN 2001:DB8:D8D2:1009::/64 with MAC 12-a0-ab-cc-00-01 on R2." width="980" decoding="async" loading="lazy" />
       </figure>
-      <div class="exhibit-router-cli" role="region" aria-label="SW1 show interface output">
-        <pre>SW1#show interface
-interface FastEthernet0/0
- switchport access vlan 2
- switchport mode access</pre>
-      </div>
     </div>
-    <h1>Refer to the exhibit. A network administrator must connect **NewSW** to **SW2** on interface **FastEthernet0/0**. Hosts in **VLAN 2** must stay reachable, and **VLAN 10** must also cross the link. Which configuration must be applied on **NewSW**?</h1>
+    <h1>Refer to the exhibit. The IPv6 address for the LAN segment on router **R2** must be configured using the **EUI-64** format. Which address must be used?</h1>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="newswtrk1" value="A" aria-label="Select answer option A" />
+        <input type="radio" name="r2eui641" value="A" aria-label="Select answer option A" />
         <span class="cli-router-choice-badge" aria-hidden="true">A</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">A. NewSW(config)#interface f0/0
-NewSW(config-if)#switchport mode trunk
-NewSW(config-if)#switchport trunk allowed vlan 2,10
-NewSW(config-if)#switchport trunk native vlan 2</pre>
+      <pre class="cli-router-console">A. ipv6 address 2001:DB8:D8D2:1009:10A0:ABFF:FECC:1 eui-64</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="newswtrk1" value="B" aria-label="Select answer option B" />
+        <input type="radio" name="r2eui641" value="B" aria-label="Select answer option B" />
         <span class="cli-router-choice-badge" aria-hidden="true">B</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">B. NewSW(config)#interface f0/0
-NewSW(config-if)#switchport mode trunk
-NewSW(config-if)#switchport trunk allowed vlan 10
-NewSW(config-if)#switchport trunk native vlan 10</pre>
+      <pre class="cli-router-console">B. ipv6 address 2001:DB8:D8D2:1009:12A0:AB34:FFCC:1 eui-64</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="newswtrk1" value="C" aria-label="Select answer option C" />
+        <input type="radio" name="r2eui641" value="C" aria-label="Select answer option C" />
         <span class="cli-router-choice-badge" aria-hidden="true">C</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">C. NewSW(config)#interface f0/0
-NewSW(config-if)#switchport mode access
-NewSW(config-if)#switchport trunk allowed vlan 2,10
-NewSW(config-if)#switchport trunk native vlan 10</pre>
+      <pre class="cli-router-console">C. ipv6 address 2001:DB8:D8D2:1009:1230:ABFF:FECC:1 eui-64</pre>
     </label>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
-        <input type="radio" name="newswtrk1" value="D" aria-label="Select answer option D" />
+        <input type="radio" name="r2eui641" value="D" aria-label="Select answer option D" />
         <span class="cli-router-choice-badge" aria-hidden="true">D</span>
         <span class="cli-router-choice-title">Router CLI — candidate config</span>
       </span>
-      <pre class="cli-router-console">D. NewSW(config)#interface f0/0
-NewSW(config-if)#switchport mode access
-NewSW(config-if)#switchport trunk allowed vlan 2,10
-NewSW(config-if)#switchport trunk native vlan 2</pre>
+      <pre class="cli-router-console">D. ipv6 address 2001:DB8:D8D2:1009:4345:80FF:FF16:7 eui-64</pre>
     </label>
 
 
@@ -382,15 +364,15 @@ NewSW(config-if)#switchport trunk native vlan 2</pre>
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/etherchannel-sw2-port-channel1-min-links-exhibit.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-userwl-vlan20-max-allowed-clients-exhibit.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/cpe-dual-isp-static-route-load-balance-exhibit.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/switch-a-etherchannel-lacp-passive-exhibit.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 The topology shows existing hosts in **VLAN 2** and new hosts in **VLAN 10** on **NewSW**. Configure **trunk** mode on **NewSW** **f0/0** with **`switchport trunk allowed vlan 2,10`** and **`switchport trunk native vlan 2`** so **VLAN 2** stays reachable across the network while **VLAN 10** is added. **B** allows only **VLAN 10** and sets **native VLAN 10**, breaking **VLAN 2** reachability. **C** and **D** use **`switchport mode access`** with trunk **allowed/native** commands, which is an invalid combination; trunk settings apply only in trunk mode.";
+      var CORRECT_MSG = "Correct. A \u2014 **R2** MAC **12-A0-AB-CC-00-01** on prefix **2001:DB8:D8D2:1009::/64**: insert **FF:FE** after the OUI (**12A0.AB** \u2192 **12A0.ABFF.FE**), append **CC:00:01**, then invert the **7th bit** of the first octet (**0x12** \u2192 **0x10**), yielding interface ID **10A0:ABFF:FECC:1** and **`ipv6 address 2001:DB8:D8D2:1009:10A0:ABFF:FECC:1 eui-64`**. **B** misplaces **FF:FE** (**AB34:FFCC**). **C** uses **1230** instead of **10A0** after the U/L-bit flip. **D** does not follow **R2\u2019s** MAC-derived **EUI-64** pattern.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -404,7 +386,7 @@ NewSW(config-if)#switchport trunk native vlan 2</pre>
         }
       }
 
-      document.querySelectorAll('input[name="newswtrk1"]').forEach(function (el) {
+      document.querySelectorAll('input[name="r2eui641"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

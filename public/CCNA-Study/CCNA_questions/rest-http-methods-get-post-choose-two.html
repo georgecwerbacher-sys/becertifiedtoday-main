@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — NewSW trunk to SW2</title>
+  <title>CCNA — REST HTTP methods (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -312,104 +312,61 @@
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-  <main class="card">
-    <div class="exhibit-stack">
-      <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/newsw-trunk-native-vlan2-topology.png" alt="Topology: SW1 and SW2 with PCs in VLAN 2; NewSW below SW2 with VLAN 10 hosts; NewSW f0/0 uplink to SW2." width="980" decoding="async" loading="lazy" />
-      </figure>
-      <div class="exhibit-router-cli" role="region" aria-label="SW1 show interface output">
-        <pre>SW1#show interface
-interface FastEthernet0/0
- switchport access vlan 2
- switchport mode access</pre>
-      </div>
-    </div>
-    <h1>Refer to the exhibit. A network administrator must connect **NewSW** to **SW2** on interface **FastEthernet0/0**. Hosts in **VLAN 2** must stay reachable, and **VLAN 10** must also cross the link. Which configuration must be applied on **NewSW**?</h1>
+    <main class="card">
+    <h1 class="choose-two-stem">Which two **HTTP** methods are suitable for actions performed by **REST-based APIs**? (Choose two.)</h1>
 
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="newswtrk1" value="A" aria-label="Select answer option A" />
-        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">A. NewSW(config)#interface f0/0
-NewSW(config-if)#switchport mode trunk
-NewSW(config-if)#switchport trunk allowed vlan 2,10
-NewSW(config-if)#switchport trunk native vlan 2</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="newswtrk1" value="B" aria-label="Select answer option B" />
-        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">B. NewSW(config)#interface f0/0
-NewSW(config-if)#switchport mode trunk
-NewSW(config-if)#switchport trunk allowed vlan 10
-NewSW(config-if)#switchport trunk native vlan 10</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="newswtrk1" value="C" aria-label="Select answer option C" />
-        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">C. NewSW(config)#interface f0/0
-NewSW(config-if)#switchport mode access
-NewSW(config-if)#switchport trunk allowed vlan 2,10
-NewSW(config-if)#switchport trunk native vlan 10</pre>
-    </label>
-
-    <label class="choice mono cli-router-choice">
-      <span class="cli-router-choice-controls">
-        <input type="radio" name="newswtrk1" value="D" aria-label="Select answer option D" />
-        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
-        <span class="cli-router-choice-title">Router CLI — candidate config</span>
-      </span>
-      <pre class="cli-router-console">D. NewSW(config)#interface f0/0
-NewSW(config-if)#switchport mode access
-NewSW(config-if)#switchport trunk allowed vlan 2,10
-NewSW(config-if)#switchport trunk native vlan 2</pre>
-    </label>
-
+    <label class="choice"><input type="checkbox" name="restmeth1" value="A" />A. REMOVE</label>
+    <label class="choice"><input type="checkbox" name="restmeth1" value="B" />B. REDIRECT</label>
+    <label class="choice"><input type="checkbox" name="restmeth1" value="C" />C. POST</label>
+    <label class="choice"><input type="checkbox" name="restmeth1" value="D" />D. GET</label>
+    <label class="choice"><input type="checkbox" name="restmeth1" value="E" />E. POP</label>
 
     <div class="actions">
+      <button id="checkBtn" type="button">Check answer</button>
       <a class="home-link" href="/index.html">Home</a>
     </div>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
 
     <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/etherchannel-sw2-port-channel1-min-links-exhibit.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-userwl-vlan20-max-allowed-clients-exhibit.html">Next question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/endpoint-protection-antivirus-software.html">Previous question</a>
+      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-lag-redundancy-bandwidth-layer2-switch.html">Next question</a>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 The topology shows existing hosts in **VLAN 2** and new hosts in **VLAN 10** on **NewSW**. Configure **trunk** mode on **NewSW** **f0/0** with **`switchport trunk allowed vlan 2,10`** and **`switchport trunk native vlan 2`** so **VLAN 2** stays reachable across the network while **VLAN 10** is added. **B** allows only **VLAN 10** and sets **native VLAN 10**, breaking **VLAN 2** reachability. **C** and **D** use **`switchport mode access`** with trunk **allowed/native** commands, which is an invalid combination; trunk settings apply only in trunk mode.";
+      var CORRECT = ["C", "D"];
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="restmeth1"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
-          answerBox.textContent = CORRECT_MSG;
+          answerBox.textContent = "Correct. C and D \u2014 **REST** APIs use standard **HTTP verbs**. **GET** retrieves resource data; **POST** commonly **creates** resources or submits data for processing. **REMOVE** (**A**) is not a standard HTTP method (**DELETE** is used for delete). **REDIRECT** (**B**) describes a response behavior, not a REST API action verb. **POP** (**E**) is unrelated to HTTP/REST.";
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="newswtrk1"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>
