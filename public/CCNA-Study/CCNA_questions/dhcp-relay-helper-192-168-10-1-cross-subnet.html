@@ -70,6 +70,8 @@
     .choice.mono.cli-router-choice {
       display: flex;
       flex-direction: column;
+      align-items: stretch;
+      width: 100%;
       padding: 0;
       border-radius: 10px;
       overflow: hidden;
@@ -82,6 +84,8 @@
       flex-wrap: wrap;
       align-items: center;
       gap: 10px;
+      width: 100%;
+      box-sizing: border-box;
       padding: 8px 12px;
       background: rgba(15, 22, 40, 0.95);
       border-bottom: 1px solid #2a3f5c;
@@ -113,6 +117,9 @@
       color: #8b9cc4;
     }
     pre.cli-router-console {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
       margin: 0;
       padding: 12px 14px;
       background: #060a11;
@@ -125,42 +132,53 @@
       overflow-x: auto;
       border-left: 3px solid #c9a227;
       min-height: 2rem;
+      align-self: stretch;
     }
     .choice input {
       margin-right: 10px;
       transform: translateY(1px);
     }
-    .actions {
-      margin-top: 18px;
+    .question-nav {
+      margin: 0 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .question-nav-links {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       align-items: center;
     }
-    .actions button {
-      background: #254b8a;
+    .question-nav .nav-link,
+    .question-nav .nav-check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
       color: #e6edf3;
+      background: #254b8a;
       border: 1px solid #3d6dbb;
       border-radius: 10px;
       padding: 10px 16px;
       font-weight: 700;
-      cursor: pointer;
+      font-size: 0.95rem;
       font-family: inherit;
-      font-size: 0.95rem;
+      cursor: pointer;
     }
-    .actions button:hover {
-      filter: brightness(1.08);
+    .question-nav .nav-link--disabled {
+      opacity: 0.35;
+      pointer-events: none;
+      cursor: default;
     }
-    .home-link {
+    .question-nav .nav-check {
       margin-left: auto;
-      background: #254b8a;
-      color: #e6edf3;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      text-decoration: none;
-      font-size: 0.95rem;
+    }
+    .question-nav .nav-link:hover,
+    .question-nav .nav-check:hover {
+      filter: brightness(1.08);
     }
     .answer {
       margin-top: 18px;
@@ -177,26 +195,6 @@
     .answer.incorrect {
       background: #442020;
       border: 1px solid #8c3434;
-    }
-    .next-wrap {
-      margin-top: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .next-link {
-      display: inline-block;
-      text-decoration: none;
-      color: #e6edf3;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
-    }
-    .next-link:hover {
-      filter: brightness(1.08);
     }
     .exhibit-stack {
       margin: 14px 0 18px;
@@ -313,6 +311,13 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
+    <nav class="question-nav" aria-label="Question navigation">
+      <div class="question-nav-links">
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/r25-fa0-0-txload-255-high-throughput.html">Back</a>
+      <a class="nav-link nav-home" href="/index.html">Home</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/ospf-r2-gi01-area-1-match-r1-neighbor.html">Next</a>
+      </div>
+    </nav>
     <h1>The clients and DHCP server reside on different subnets. Which command must be used to forward requests and replies between clients on the 10.10.0.1/24 subnet and the DHCP server at 192.168.10.1?</h1>
 
     <label class="choice"><input type="radio" name="dhcphlp1" value="A" />A. ip route 192.168.10.1</label>
@@ -320,22 +325,13 @@
     <label class="choice"><input type="radio" name="dhcphlp1" value="C" />C. ip dhcp address 192.168.10.1</label>
     <label class="choice"><input type="radio" name="dhcphlp1" value="D" />D. ip default-gateway 192.168.10.1</label>
 
-    <div class="actions">
-      <a class="home-link" href="/index.html">Home</a>
-    </div>
-
     <div id="answerBox" class="answer" aria-live="polite"></div>
-
-    <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/r25-fa0-0-txload-255-high-throughput.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ospf-r2-gi01-area-1-match-r1-neighbor.html">Next question</a>
-    </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 On the router **interface facing the client subnet**, **`ip helper-address 192.168.10.1`** enables a **DHCP relay** so **DHCPDISCOVER**/**DHCPREQUEST** broadcasts are forwarded to the server and replies return to clients. **`ip route`** (**A**) adds routing, not DHCP relay. **`ip dhcp address`** (**C**) is not the relay command. **`ip default-gateway`** (**D**) is configured on **hosts**, not for router DHCP relay.";
+      var CORRECT_MSG = "Correct. B \u2014 On the router interface facing the client subnet, `ip helper-address 192.168.10.1` enables a DHCP relay so DHCPDISCOVER/DHCPREQUEST broadcasts are forwarded to the server and replies return to clients. `ip route` (A) adds routing, not DHCP relay. `ip dhcp address` (C) is not the relay command. `ip default-gateway` (D) is configured on hosts, not for router DHCP relay.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {

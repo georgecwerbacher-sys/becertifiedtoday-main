@@ -70,6 +70,8 @@
     .choice.mono.cli-router-choice {
       display: flex;
       flex-direction: column;
+      align-items: stretch;
+      width: 100%;
       padding: 0;
       border-radius: 10px;
       overflow: hidden;
@@ -82,6 +84,8 @@
       flex-wrap: wrap;
       align-items: center;
       gap: 10px;
+      width: 100%;
+      box-sizing: border-box;
       padding: 8px 12px;
       background: rgba(15, 22, 40, 0.95);
       border-bottom: 1px solid #2a3f5c;
@@ -113,6 +117,9 @@
       color: #8b9cc4;
     }
     pre.cli-router-console {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
       margin: 0;
       padding: 12px 14px;
       background: #060a11;
@@ -125,42 +132,53 @@
       overflow-x: auto;
       border-left: 3px solid #c9a227;
       min-height: 2rem;
+      align-self: stretch;
     }
     .choice input {
       margin-right: 10px;
       transform: translateY(1px);
     }
-    .actions {
-      margin-top: 18px;
+    .question-nav {
+      margin: 0 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .question-nav-links {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       align-items: center;
     }
-    .actions button {
-      background: #254b8a;
+    .question-nav .nav-link,
+    .question-nav .nav-check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
       color: #e6edf3;
+      background: #254b8a;
       border: 1px solid #3d6dbb;
       border-radius: 10px;
       padding: 10px 16px;
       font-weight: 700;
-      cursor: pointer;
+      font-size: 0.95rem;
       font-family: inherit;
-      font-size: 0.95rem;
+      cursor: pointer;
     }
-    .actions button:hover {
-      filter: brightness(1.08);
+    .question-nav .nav-link--disabled {
+      opacity: 0.35;
+      pointer-events: none;
+      cursor: default;
     }
-    .home-link {
+    .question-nav .nav-check {
       margin-left: auto;
-      background: #254b8a;
-      color: #e6edf3;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      text-decoration: none;
-      font-size: 0.95rem;
+    }
+    .question-nav .nav-link:hover,
+    .question-nav .nav-check:hover {
+      filter: brightness(1.08);
     }
     .answer {
       margin-top: 18px;
@@ -177,26 +195,6 @@
     .answer.incorrect {
       background: #442020;
       border: 1px solid #8c3434;
-    }
-    .next-wrap {
-      margin-top: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .next-link {
-      display: inline-block;
-      text-decoration: none;
-      color: #e6edf3;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
-    }
-    .next-link:hover {
-      filter: brightness(1.08);
     }
     .exhibit-stack {
       margin: 14px 0 18px;
@@ -313,6 +311,13 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
+    <nav class="question-nav" aria-label="Question navigation">
+      <div class="question-nav-links">
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/r2-wan-ipv6-global-unicast-internet-access.html">Back</a>
+      <a class="nav-link nav-home" href="/index.html">Home</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/r1-r2-p2p-subnet-minimum-two-growth-hosts.html">Next</a>
+      </div>
+    </nav>
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
         <img src="/CCNA-Study/CCNA_questions/images/sw1-sw2-vlan7-9-108-trunk-native5-topology.png" alt="Topology: SW1 Gi0/0 PC4 VLAN 108, Gi0/1 trunk to SW2 Gi0/7, Gi0/2 to R1; SW2 Gi0/0 PC1 VLAN 9, Gi0/1 PC2 VLAN 7." width="900" decoding="async" loading="lazy" />
@@ -433,22 +438,13 @@ interface Gi0/7
     </label>
 
 
-    <div class="actions">
-      <a class="home-link" href="/index.html">Home</a>
-    </div>
-
     <div id="answerBox" class="answer" aria-live="polite"></div>
-
-    <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/r2-wan-ipv6-global-unicast-internet-access.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-r2-p2p-subnet-minimum-two-growth-hosts.html">Next question</a>
-    </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **Gi0/1** and **Gi0/7** trunks carry VLANs **5, 7, 9, and 108** with **native VLAN 5** so untagged traffic is not on VLAN 1. **Gi0/2** toward **R1** is a **trunk** with the same VLAN set so the router can route between **VLAN 7, 9, and 108** for inter-PC Layer 3. **SW2 Gi0/1** is **access VLAN 7** for **PC2** (Gi0/0 is already VLAN 9). **A** omits **native VLAN 5**, misconfigures **SW2 Gi0/1** as a trunk, and limits **Gi0/2** allowed VLANs. **B** sets **Gi0/2** to **access** while applying trunk commands and omits **VLAN 108** on **SW2 Gi0/7**. **C** leaves **SW2 Gi0/7** without **VLAN 108** and without **native VLAN 5**.";
+      var CORRECT_MSG = "Correct. D \u2014 Gi0/1 and Gi0/7 trunks carry VLANs 5, 7, 9, and 108 with native VLAN 5 so untagged traffic is not on VLAN 1. Gi0/2 toward R1 is a trunk with the same VLAN set so the router can route between VLAN 7, 9, and 108 for inter-PC Layer 3. SW2 Gi0/1 is access VLAN 7 for PC2 (Gi0/0 is already VLAN 9). A omits native VLAN 5, misconfigures SW2 Gi0/1 as a trunk, and limits Gi0/2 allowed VLANs. B sets Gi0/2 to access while applying trunk commands and omits VLAN 108 on SW2 Gi0/7. C leaves SW2 Gi0/7 without VLAN 108 and without native VLAN 5.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {

@@ -150,37 +150,47 @@ STYLE = r"""  <style>
       margin-right: 10px;
       transform: translateY(1px);
     }
-    .actions {
-      margin-top: 18px;
+    .question-nav {
+      margin: 0 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .question-nav-links {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       align-items: center;
     }
-    .actions button {
-      background: #254b8a;
+    .question-nav .nav-link,
+    .question-nav .nav-check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
       color: #e6edf3;
+      background: #254b8a;
       border: 1px solid #3d6dbb;
       border-radius: 10px;
       padding: 10px 16px;
       font-weight: 700;
-      cursor: pointer;
+      font-size: 0.95rem;
       font-family: inherit;
-      font-size: 0.95rem;
+      cursor: pointer;
     }
-    .actions button:hover {
-      filter: brightness(1.08);
+    .question-nav .nav-link--disabled {
+      opacity: 0.35;
+      pointer-events: none;
+      cursor: default;
     }
-    .home-link {
+    .question-nav .nav-check {
       margin-left: auto;
-      background: #254b8a;
-      color: #e6edf3;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      text-decoration: none;
-      font-size: 0.95rem;
+    }
+    .question-nav .nav-link:hover,
+    .question-nav .nav-check:hover {
+      filter: brightness(1.08);
     }
     .answer {
       margin-top: 18px;
@@ -197,26 +207,6 @@ STYLE = r"""  <style>
     .answer.incorrect {
       background: #442020;
       border: 1px solid #8c3434;
-    }
-    .next-wrap {
-      margin-top: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .next-link {
-      display: inline-block;
-      text-decoration: none;
-      color: #e6edf3;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
-    }
-    .next-link:hover {
-      filter: brightness(1.08);
     }
     .exhibit-stack {
       margin: 14px 0 18px;
@@ -329,6 +319,52 @@ STYLE = r"""  <style>
   </style>"""
 
 
+def strip_md_bold(text: str) -> str:
+    return text.replace("**", "")
+
+
+def clean_text(text: str) -> str:
+    return strip_md_bold(text)
+
+
+def build_question_nav(
+    prev_slug: str | None,
+    next_slug: str | None,
+    *,
+    show_check: bool = False,
+) -> str:
+    parts: list[str] = []
+    if prev_slug:
+        parts.append(
+            f'      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/{html.escape(prev_slug)}.html">Back</a>'
+        )
+    else:
+        parts.append(
+            '      <span class="nav-link nav-prev nav-link--disabled" aria-hidden="true">Back</span>'
+        )
+    parts.append('      <a class="nav-link nav-home" href="/index.html">Home</a>')
+    if next_slug:
+        parts.append(
+            f'      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/{html.escape(next_slug)}.html">Next</a>'
+        )
+    else:
+        parts.append(
+            '      <span class="nav-link nav-next nav-link--disabled" aria-hidden="true">Next</span>'
+        )
+    links_block = "\n".join(parts)
+    check_btn = ""
+    if show_check:
+        check_btn = '\n      <button id="checkBtn" type="button" class="nav-check">Check answer</button>'
+    return (
+        '    <nav class="question-nav" aria-label="Question navigation">\n'
+        "      <div class=\"question-nav-links\">\n"
+        f"{links_block}\n"
+        "      </div>"
+        f"{check_btn}\n"
+        "    </nav>"
+    )
+
+
 def page(
     *,
     title: str,
@@ -349,43 +385,27 @@ def page(
     stem_br: bool = False,
 ) -> str:
     mono = " mono" if mono_choices else ""
-    prev_h = (
-        f'<a class="next-link" href="/CCNA-Study/CCNA_questions/{prev_slug}.html">Previous question</a>'
-        if prev_slug
-        else ""
-    )
-    next_h = (
-        f'<a class="next-link" href="/CCNA-Study/CCNA_questions/{next_slug}.html">Next question</a>'
-        if next_slug
-        else ""
-    )
-    nav_lines = ["    <div class=\"next-wrap\">"]
-    if prev_h:
-        nav_lines.append(f"      {prev_h}")
-    if next_h:
-        nav_lines.append(f"      {next_h}")
-    nav_lines.append("    </div>")
-    nav = "\n".join(nav_lines)
-    msg_json = json.dumps(explain)
+    nav = build_question_nav(prev_slug, next_slug)
+    msg_json = json.dumps(clean_text(explain))
     exhibit_block = post_stem_html if post_stem_html else ""
-    stem_h = html.escape(stem)
+    stem_h = html.escape(clean_text(stem))
     if stem_br:
         stem_h = stem_h.replace("\n", "<br />")
     if post_stem_html and stem_after_exhibit:
         if stem_after_exhibit_bullets:
             bullet_lines = "".join(
-                f"      <li>{html.escape(b)}</li>\n" for b in stem_after_exhibit_bullets
+                f"      <li>{html.escape(clean_text(b))}</li>\n" for b in stem_after_exhibit_bullets
             )
             tail_p = ""
             if stem_after_exhibit_tail:
                 tail_p = (
                     f'    <p class="stem-after-exhibit stem-after-exhibit-tail">'
-                    f"{html.escape(stem_after_exhibit_tail)}</p>\n"
+                    f"{html.escape(clean_text(stem_after_exhibit_tail))}</p>\n"
                 )
             main_open = (
                 f"    <h1>{stem_h}</h1>\n"
                 f"{exhibit_block}\n"
-                f'    <p class="stem-after-exhibit">{html.escape(stem_after_exhibit)}</p>\n'
+                f'    <p class="stem-after-exhibit">{html.escape(clean_text(stem_after_exhibit))}</p>\n'
                 f'    <ul class="stem-after-exhibit-list">\n'
                 f"{bullet_lines}"
                 f"    </ul>\n"
@@ -395,7 +415,7 @@ def page(
             main_open = (
                 f"    <h1>{stem_h}</h1>\n"
                 f"{exhibit_block}\n"
-                f'    <p class="stem-after-exhibit">{html.escape(stem_after_exhibit)}</p>\n'
+                f'    <p class="stem-after-exhibit">{html.escape(clean_text(stem_after_exhibit))}</p>\n'
             )
     else:
         main_open = f"    <h1>{stem_h}</h1>\n{exhibit_block}\n"
@@ -415,15 +435,10 @@ def page(
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
+{nav}
 {main_open}{choices_html}
 
-    <div class="actions">
-      <a class="home-link" href="/index.html">Home</a>
-    </div>
-
     <div id="answerBox" class="answer" aria-live="polite"></div>
-
-{nav}
   </main>
 
   <script>
@@ -458,11 +473,12 @@ def page(
 
 
 def checkbox_choice_line(name: str, letter: str, text: str) -> str:
-    return f'    <label class="choice"><input type="checkbox" name="{name}" value="{letter}" />{letter}. {text}</label>'
+    t = html.escape(clean_text(text), quote=False)
+    return f'    <label class="choice"><input type="checkbox" name="{name}" value="{letter}" />{letter}. {t}</label>'
 
 
 def checkbox_choice_line_mono(name: str, letter: str, text: str) -> str:
-    body = html.escape(f"{letter}. {text}", quote=False)
+    body = html.escape(f"{letter}. {clean_text(text)}", quote=False)
     return (
         "\n".join(
             [
@@ -482,7 +498,7 @@ def checkbox_choice_line_mono(name: str, letter: str, text: str) -> str:
 
 def format_checkbox_stem(stem: str) -> str:
     """HTML-escape stem and preserve intentional line breaks for choose-two pages."""
-    return html.escape(stem, quote=False).replace("\n", "<br />")
+    return html.escape(clean_text(stem), quote=False).replace("\n", "<br />")
 
 
 def page_checkbox(
@@ -500,32 +516,16 @@ def page_checkbox(
     stem_after_exhibit: str | None = None,
     prepend_html: str | None = None,
 ) -> str:
-    prev_h = (
-        f'<a class="next-link" href="/CCNA-Study/CCNA_questions/{prev_slug}.html">Previous question</a>'
-        if prev_slug
-        else ""
-    )
-    next_h = (
-        f'<a class="next-link" href="/CCNA-Study/CCNA_questions/{next_slug}.html">Next question</a>'
-        if next_slug
-        else ""
-    )
-    nav_lines = ['    <div class="next-wrap">']
-    if prev_h:
-        nav_lines.append(f"      {prev_h}")
-    if next_h:
-        nav_lines.append(f"      {next_h}")
-    nav_lines.append("    </div>")
-    nav = "\n".join(nav_lines)
+    nav = build_question_nav(prev_slug, next_slug, show_check=True)
     cor_json = json.dumps(sorted(correct_letters))
-    msg_json = json.dumps(explain)
+    msg_json = json.dumps(clean_text(explain))
     exhibit_block = post_stem_html if post_stem_html else ""
     stem_inner = format_checkbox_stem(stem)
     if post_stem_html and stem_after_exhibit:
         main_open = (
             f'    <h1 class="choose-two-stem">{stem_inner}</h1>\n'
             f"{exhibit_block}\n"
-            f'    <p class="stem-after-exhibit">{html.escape(stem_after_exhibit)}</p>\n'
+            f'    <p class="stem-after-exhibit">{html.escape(clean_text(stem_after_exhibit))}</p>\n'
         )
     elif post_stem_html:
         main_open = (
@@ -549,18 +549,12 @@ def page_checkbox(
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-    <main class="card">
+  <main class="card">
+{nav}
 {main_open}
 {choices_html}
 
-    <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
-      <a class="home-link" href="/index.html">Home</a>
-    </div>
-
     <div id="answerBox" class="answer" aria-live="polite"></div>
-
-{nav}
   </main>
 
   <script>
@@ -606,7 +600,7 @@ def page_checkbox(
 
 def choice_line(mono: bool, name: str, letter: str, text: str) -> str:
     if mono:
-        body = html.escape(f"{letter}. {text}", quote=False)
+        body = html.escape(f"{letter}. {clean_text(text)}", quote=False)
         return (
             "\n".join(
                 [
@@ -622,7 +616,8 @@ def choice_line(mono: bool, name: str, letter: str, text: str) -> str:
             )
             + "\n"
         )
-    return f'    <label class="choice"><input type="radio" name="{name}" value="{letter}" />{letter}. {html.escape(text, quote=False)}</label>'
+    t = html.escape(clean_text(text), quote=False)
+    return f'    <label class="choice"><input type="radio" name="{name}" value="{letter}" />{letter}. {t}</label>'
 
 
 def main() -> None:

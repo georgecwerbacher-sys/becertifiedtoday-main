@@ -115,6 +115,49 @@
     .next-link:hover {
       filter: brightness(1.08);
     }
+
+    .question-nav {
+      margin: 0 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .question-nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .question-nav .nav-link,
+    .question-nav .nav-check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: #e6edf3;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .question-nav .nav-link--disabled {
+      opacity: 0.35;
+      pointer-events: none;
+      cursor: default;
+    }
+    .question-nav .nav-check {
+      margin-left: auto;
+    }
+    .question-nav .nav-link:hover,
+    .question-nav .nav-check:hover {
+      filter: brightness(1.08);
+    }
   </style>
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
 </head>
@@ -122,24 +165,22 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
+    <nav class="question-nav" aria-label="Question navigation">
+      <div class="question-nav-links">
+      <span class="nav-link nav-prev nav-link--disabled" aria-hidden="true">Back</span>
+      <a class="nav-link nav-home" href="/index.html">Home</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/security-physical-access-tailgating.html">Next</a>
+      </div>
+      <button id="checkBtn" type="button" class="nav-check">Check answer</button>
+    </nav>
     <h1>Which two QoS tools are used to guarantee minimum bandwidth to certain traffic? (Choose two.)</h1>
 <label class="choice"><input type="checkbox" name="qos" value="A" />A. FIFO</label>
     <label class="choice"><input type="checkbox" name="qos" value="B" />B. CBWFQ</label>
     <label class="choice"><input type="checkbox" name="qos" value="C" />C. LLC</label>
     <label class="choice"><input type="checkbox" name="qos" value="D" />D. WFQ</label>
     <label class="choice"><input type="checkbox" name="qos" value="E" />E. RSVP</label>
-
-    <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
-<a class="home-link" href="/index.html">Home</a>
-    </div>
-
-    <div id="answerBox" class="answer" aria-live="polite"></div>
-
-    <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/security-physical-access-tailgating.html">Next question</a>
-    </div>
-  </main>
+<div id="answerBox" class="answer" aria-live="polite"></div>
+</main>
 
   <script>
     (function () {

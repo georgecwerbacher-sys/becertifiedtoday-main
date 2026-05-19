@@ -115,6 +115,49 @@
     .next-link:hover {
       filter: brightness(1.08);
     }
+
+    .question-nav {
+      margin: 0 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .question-nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .question-nav .nav-link,
+    .question-nav .nav-check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: #e6edf3;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .question-nav .nav-link--disabled {
+      opacity: 0.35;
+      pointer-events: none;
+      cursor: default;
+    }
+    .question-nav .nav-check {
+      margin-left: auto;
+    }
+    .question-nav .nav-link:hover,
+    .question-nav .nav-check:hover {
+      filter: brightness(1.08);
+    }
   </style>
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
 </head>
@@ -122,6 +165,13 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
+    <nav class="question-nav" aria-label="Question navigation">
+      <div class="question-nav-links">
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/security-physical-access-tailgating.html">Back</a>
+      <a class="nav-link nav-home" href="/index.html">Home</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/private-ipv4-subnet-appropriate.html">Next</a>
+      </div>
+    </nav>
     <h1>
       A network administrator needs to aggregate 4 ports into a single logical link which must negotiate Layer 2 connectivity to
       ports on another switch. What must be configured when using active mode on both sides of the connection?
@@ -130,18 +180,8 @@
     <label class="choice"><input type="radio" name="lag" value="B" />B. Cisco vPC</label>
     <label class="choice"><input type="radio" name="lag" value="C" />C. LLDP</label>
     <label class="choice"><input type="radio" name="lag" value="D" />D. LACP</label>
-
-    <div class="actions">
-<a class="home-link" href="/index.html">Home</a>
-    </div>
-
-    <div id="answerBox" class="answer" aria-live="polite"></div>
-
-    <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/security-physical-access-tailgating.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/private-ipv4-subnet-appropriate.html">Next question</a>
-    </div>
-  </main>
+<div id="answerBox" class="answer" aria-live="polite"></div>
+</main>
 
   <script>
     (function () {

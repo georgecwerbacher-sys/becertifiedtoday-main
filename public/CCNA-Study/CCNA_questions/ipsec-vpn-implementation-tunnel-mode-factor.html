@@ -70,6 +70,8 @@
     .choice.mono.cli-router-choice {
       display: flex;
       flex-direction: column;
+      align-items: stretch;
+      width: 100%;
       padding: 0;
       border-radius: 10px;
       overflow: hidden;
@@ -82,6 +84,8 @@
       flex-wrap: wrap;
       align-items: center;
       gap: 10px;
+      width: 100%;
+      box-sizing: border-box;
       padding: 8px 12px;
       background: rgba(15, 22, 40, 0.95);
       border-bottom: 1px solid #2a3f5c;
@@ -113,6 +117,9 @@
       color: #8b9cc4;
     }
     pre.cli-router-console {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
       margin: 0;
       padding: 12px 14px;
       background: #060a11;
@@ -125,42 +132,53 @@
       overflow-x: auto;
       border-left: 3px solid #c9a227;
       min-height: 2rem;
+      align-self: stretch;
     }
     .choice input {
       margin-right: 10px;
       transform: translateY(1px);
     }
-    .actions {
-      margin-top: 18px;
+    .question-nav {
+      margin: 0 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .question-nav-links {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       align-items: center;
     }
-    .actions button {
-      background: #254b8a;
+    .question-nav .nav-link,
+    .question-nav .nav-check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
       color: #e6edf3;
+      background: #254b8a;
       border: 1px solid #3d6dbb;
       border-radius: 10px;
       padding: 10px 16px;
       font-weight: 700;
-      cursor: pointer;
+      font-size: 0.95rem;
       font-family: inherit;
-      font-size: 0.95rem;
+      cursor: pointer;
     }
-    .actions button:hover {
-      filter: brightness(1.08);
+    .question-nav .nav-link--disabled {
+      opacity: 0.35;
+      pointer-events: none;
+      cursor: default;
     }
-    .home-link {
+    .question-nav .nav-check {
       margin-left: auto;
-      background: #254b8a;
-      color: #e6edf3;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      text-decoration: none;
-      font-size: 0.95rem;
+    }
+    .question-nav .nav-link:hover,
+    .question-nav .nav-check:hover {
+      filter: brightness(1.08);
     }
     .answer {
       margin-top: 18px;
@@ -177,26 +195,6 @@
     .answer.incorrect {
       background: #442020;
       border: 1px solid #8c3434;
-    }
-    .next-wrap {
-      margin-top: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .next-link {
-      display: inline-block;
-      text-decoration: none;
-      color: #e6edf3;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
-    }
-    .next-link:hover {
-      filter: brightness(1.08);
     }
     .exhibit-stack {
       margin: 14px 0 18px;
@@ -313,29 +311,27 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>Which factor must be considered during the **implementation** of an **IPsec VPN**?</h1>
+    <nav class="question-nav" aria-label="Question navigation">
+      <div class="question-nav-links">
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/controller-based-vs-traditional-control-plane.html">Back</a>
+      <a class="nav-link nav-home" href="/index.html">Home</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/wlc-inband-wireless-management-default-interface.html">Next</a>
+      </div>
+    </nav>
+    <h1>Which factor must be considered during the implementation of an IPsec VPN?</h1>
 
     <label class="choice"><input type="radio" name="ipsecfac1" value="A" />A. IPsec transport mode leaves the Layer 4 header unencrypted for inspection.</label>
     <label class="choice"><input type="radio" name="ipsecfac1" value="B" />B. IPsec transport mode increases GRE tunnel security over tunnel mode.</label>
     <label class="choice"><input type="radio" name="ipsecfac1" value="C" />C. In IPsec tunnel mode, only the IP payload is encrypted.</label>
     <label class="choice"><input type="radio" name="ipsecfac1" value="D" />D. In IPsec tunnel mode, the entire original IP datagram is encrypted.</label>
 
-    <div class="actions">
-      <a class="home-link" href="/index.html">Home</a>
-    </div>
-
     <div id="answerBox" class="answer" aria-live="polite"></div>
-
-    <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/controller-based-vs-traditional-control-plane.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-inband-wireless-management-default-interface.html">Next question</a>
-    </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 In **IPsec tunnel mode**, the **entire original IP datagram** (original **IP header** and **payload**) is encrypted and becomes the inner payload of a **new outer IP packet** with a new header. That is the usual **site-to-site VPN** model and affects addressing, routing, and what intermediates can see. **A** is wrong: in **transport mode**, the **original IP header** stays readable; the **Layer 4 header** is part of the **encrypted IP payload** (with **ESP**), not left open for inspection. **B** is false: **transport mode** does not make **GRE** more secure than **tunnel mode**; many designs use **IPsec tunnel mode** over **GRE**. **C** reverses the modes: **only the IP payload** is protected in **transport mode**, not **tunnel mode**.";
+      var CORRECT_MSG = "Correct. D \u2014 In IPsec tunnel mode, the entire original IP datagram (original IP header and payload) is encrypted and becomes the inner payload of a new outer IP packet with a new header. That is the usual site-to-site VPN model and affects addressing, routing, and what intermediates can see. A is wrong: in transport mode, the original IP header stays readable; the Layer 4 header is part of the encrypted IP payload (with ESP), not left open for inspection. B is false: transport mode does not make GRE more secure than tunnel mode; many designs use IPsec tunnel mode over GRE. C reverses the modes: only the IP payload is protected in transport mode, not tunnel mode.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {

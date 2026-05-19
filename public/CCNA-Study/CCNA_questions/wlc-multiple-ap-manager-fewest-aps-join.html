@@ -70,6 +70,8 @@
     .choice.mono.cli-router-choice {
       display: flex;
       flex-direction: column;
+      align-items: stretch;
+      width: 100%;
       padding: 0;
       border-radius: 10px;
       overflow: hidden;
@@ -82,6 +84,8 @@
       flex-wrap: wrap;
       align-items: center;
       gap: 10px;
+      width: 100%;
+      box-sizing: border-box;
       padding: 8px 12px;
       background: rgba(15, 22, 40, 0.95);
       border-bottom: 1px solid #2a3f5c;
@@ -113,6 +117,9 @@
       color: #8b9cc4;
     }
     pre.cli-router-console {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
       margin: 0;
       padding: 12px 14px;
       background: #060a11;
@@ -125,42 +132,53 @@
       overflow-x: auto;
       border-left: 3px solid #c9a227;
       min-height: 2rem;
+      align-self: stretch;
     }
     .choice input {
       margin-right: 10px;
       transform: translateY(1px);
     }
-    .actions {
-      margin-top: 18px;
+    .question-nav {
+      margin: 0 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .question-nav-links {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       align-items: center;
     }
-    .actions button {
-      background: #254b8a;
+    .question-nav .nav-link,
+    .question-nav .nav-check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
       color: #e6edf3;
+      background: #254b8a;
       border: 1px solid #3d6dbb;
       border-radius: 10px;
       padding: 10px 16px;
       font-weight: 700;
-      cursor: pointer;
+      font-size: 0.95rem;
       font-family: inherit;
-      font-size: 0.95rem;
+      cursor: pointer;
     }
-    .actions button:hover {
-      filter: brightness(1.08);
+    .question-nav .nav-link--disabled {
+      opacity: 0.35;
+      pointer-events: none;
+      cursor: default;
     }
-    .home-link {
+    .question-nav .nav-check {
       margin-left: auto;
-      background: #254b8a;
-      color: #e6edf3;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      text-decoration: none;
-      font-size: 0.95rem;
+    }
+    .question-nav .nav-link:hover,
+    .question-nav .nav-check:hover {
+      filter: brightness(1.08);
     }
     .answer {
       margin-top: 18px;
@@ -177,26 +195,6 @@
     .answer.incorrect {
       background: #442020;
       border: 1px solid #8c3434;
-    }
-    .next-wrap {
-      margin-top: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .next-link {
-      display: inline-block;
-      text-decoration: none;
-      color: #e6edf3;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
-    }
-    .next-link:hover {
-      filter: brightness(1.08);
     }
     .exhibit-stack {
       margin: 14px 0 18px;
@@ -313,29 +311,27 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>When more than one **AP-Manager** interface is provisioned on a wireless LAN controller, how is the request handled by the **AP**?</h1>
+    <nav class="question-nav" aria-label="Question navigation">
+      <div class="question-nav-links">
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/snmp-inform-reliable-manager-acknowledgment.html">Back</a>
+      <a class="nav-link nav-home" href="/index.html">Home</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/wlc-service-manages-interference-dense-network.html">Next</a>
+      </div>
+    </nav>
+    <h1>When more than one AP-Manager interface is provisioned on a wireless LAN controller, how is the request handled by the AP?</h1>
 
     <label class="choice"><input type="radio" name="apmgr1" value="A" />A. The discovery response from the AP to the AP-Manager interface disables the WLAN port</label>
     <label class="choice"><input type="radio" name="apmgr1" value="B" />B. The AP join request fails and must be configured statically on the AP-Manager interface</label>
     <label class="choice"><input type="radio" name="apmgr1" value="C" />C. The first AP-Manager interface to respond is chosen by the AP</label>
     <label class="choice"><input type="radio" name="apmgr1" value="D" />D. The AP-Manager with the fewest number of APs is used by the AP to join</label>
 
-    <div class="actions">
-      <a class="home-link" href="/index.html">Home</a>
-    </div>
-
     <div id="answerBox" class="answer" aria-live="polite"></div>
-
-    <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/snmp-inform-reliable-manager-acknowledgment.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/wlc-service-manages-interference-dense-network.html">Next question</a>
-    </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 During **CAPWAP discovery**, the WLC\u2019s **discovery response** lists **AP-Manager** interfaces and how many **APs** are on each. The **AP generally joins the AP-Manager with the fewest APs**, spreading load across interfaces. **A** is wrong: discovery does not **disable the WLAN port**. **B** is wrong: join does not **fail** solely because multiple AP-Managers exist. **C** is wrong: selection is **not** simply the **first to respond**\u2014**load** (AP count per interface) drives the choice.";
+      var CORRECT_MSG = "Correct. D \u2014 During CAPWAP discovery, the WLC\u2019s discovery response lists AP-Manager interfaces and how many APs are on each. The AP generally joins the AP-Manager with the fewest APs, spreading load across interfaces. A is wrong: discovery does not disable the WLAN port. B is wrong: join does not fail solely because multiple AP-Managers exist. C is wrong: selection is not simply the first to respond\u2014load (AP count per interface) drives the choice.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {

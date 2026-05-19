@@ -53,13 +53,16 @@
   }
 
   function findNextPrevElements() {
+    var prevEl = document.querySelector("a.nav-prev");
+    var nextEl = document.querySelector("a.nav-next");
+    if (prevEl || nextEl) {
+      return { nextEl: nextEl, prevEl: prevEl };
+    }
     var nextLinks = document.querySelectorAll("a.next-link");
-    var nextEl = null;
-    var prevEl = null;
     for (var n = 0; n < nextLinks.length; n++) {
       var t = (nextLinks[n].textContent || "").trim();
-      if (/next/i.test(t)) nextEl = nextLinks[n];
-      if (/previous/i.test(t)) prevEl = nextLinks[n];
+      if (/^next/i.test(t)) nextEl = nextLinks[n];
+      if (/previous|^back/i.test(t)) prevEl = nextLinks[n];
     }
     return { nextEl: nextEl, prevEl: prevEl };
   }
@@ -93,7 +96,7 @@
       if (i + 1 < order.length) {
         var ns = order[i + 1];
         nextEl.href = BASE + ns + ".html#ccnaP=" + (i + 1);
-        nextEl.textContent = "Next question";
+        nextEl.textContent = "Next";
       } else {
         nextEl.href = "#";
         nextEl.textContent = "Finish session";
@@ -116,7 +119,7 @@
       if (i > 0) {
         var ps = order[i - 1];
         prevEl.href = BASE + ps + ".html#ccnaP=" + (i - 1);
-        prevEl.textContent = "Previous question";
+        prevEl.textContent = "Back";
       } else {
         prevEl.style.display = "none";
       }

@@ -70,6 +70,8 @@
     .choice.mono.cli-router-choice {
       display: flex;
       flex-direction: column;
+      align-items: stretch;
+      width: 100%;
       padding: 0;
       border-radius: 10px;
       overflow: hidden;
@@ -82,6 +84,8 @@
       flex-wrap: wrap;
       align-items: center;
       gap: 10px;
+      width: 100%;
+      box-sizing: border-box;
       padding: 8px 12px;
       background: rgba(15, 22, 40, 0.95);
       border-bottom: 1px solid #2a3f5c;
@@ -113,6 +117,9 @@
       color: #8b9cc4;
     }
     pre.cli-router-console {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
       margin: 0;
       padding: 12px 14px;
       background: #060a11;
@@ -125,42 +132,53 @@
       overflow-x: auto;
       border-left: 3px solid #c9a227;
       min-height: 2rem;
+      align-self: stretch;
     }
     .choice input {
       margin-right: 10px;
       transform: translateY(1px);
     }
-    .actions {
-      margin-top: 18px;
+    .question-nav {
+      margin: 0 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .question-nav-links {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       align-items: center;
     }
-    .actions button {
-      background: #254b8a;
+    .question-nav .nav-link,
+    .question-nav .nav-check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
       color: #e6edf3;
+      background: #254b8a;
       border: 1px solid #3d6dbb;
       border-radius: 10px;
       padding: 10px 16px;
       font-weight: 700;
-      cursor: pointer;
+      font-size: 0.95rem;
       font-family: inherit;
-      font-size: 0.95rem;
+      cursor: pointer;
     }
-    .actions button:hover {
-      filter: brightness(1.08);
+    .question-nav .nav-link--disabled {
+      opacity: 0.35;
+      pointer-events: none;
+      cursor: default;
     }
-    .home-link {
+    .question-nav .nav-check {
       margin-left: auto;
-      background: #254b8a;
-      color: #e6edf3;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      text-decoration: none;
-      font-size: 0.95rem;
+    }
+    .question-nav .nav-link:hover,
+    .question-nav .nav-check:hover {
+      filter: brightness(1.08);
     }
     .answer {
       margin-top: 18px;
@@ -177,26 +195,6 @@
     .answer.incorrect {
       background: #442020;
       border: 1px solid #8c3434;
-    }
-    .next-wrap {
-      margin-top: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .next-link {
-      display: inline-block;
-      text-decoration: none;
-      color: #e6edf3;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
-    }
-    .next-link:hover {
-      filter: brightness(1.08);
     }
     .exhibit-stack {
       margin: 14px 0 18px;
@@ -313,7 +311,14 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
-    <h1>An application in the network is being scaled up from **300** servers to **600**. Each server requires **3** network connections to support **production**, **backup**, and **management** traffic. Each connection resides on a **different subnet**. The router configuration for the **production** network must be configured first using a subnet in the **10.0.0.0/8** network. Which command must be configured on the interface of the router to accommodate the requirements and **limit wasted IP address space**?</h1>
+    <nav class="question-nav" aria-label="Question navigation">
+      <div class="question-nav-links">
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/r4-show-ip-route-10-255-2-2-eigrp-protocol.html">Back</a>
+      <a class="nav-link nav-home" href="/index.html">Home</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/switch-unknown-dest-mac-flood-frame-exhibit.html">Next</a>
+      </div>
+    </nav>
+    <h1>An application in the network is being scaled up from 300 servers to 600. Each server requires 3 network connections to support production, backup, and management traffic. Each connection resides on a different subnet. The router configuration for the production network must be configured first using a subnet in the 10.0.0.0/8 network. Which command must be configured on the interface of the router to accommodate the requirements and limit wasted IP address space?</h1>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
@@ -352,22 +357,13 @@
     </label>
 
 
-    <div class="actions">
-      <a class="home-link" href="/index.html">Home</a>
-    </div>
-
     <div id="answerBox" class="answer" aria-live="polite"></div>
-
-    <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/r4-show-ip-route-10-255-2-2-eigrp-protocol.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/switch-unknown-dest-mac-flood-frame-exhibit.html">Next question</a>
-    </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **600** production hosts need a subnet with at least **600 usable** addresses (plus network/broadcast in classic subnetting \u2192 **2^10 = 1024** addresses, **/22**). **255.255.252.0** is **/22** (**1022** usable hosts), the **tightest** mask among the choices that fits **600**. **A** (**/28**, **14** hosts) is far too small. **C** (**/23**, **510** hosts) is still too small for **600**. **B** (**/20**, **4094** hosts) works but **wastes** far more space than **/22**.";
+      var CORRECT_MSG = "Correct. D \u2014 600 production hosts need a subnet with at least 600 usable addresses (plus network/broadcast in classic subnetting \u2192 2^10 = 1024 addresses, /22). 255.255.252.0 is /22 (1022 usable hosts), the tightest mask among the choices that fits 600. A (/28, 14 hosts) is far too small. C (/23, 510 hosts) is still too small for 600. B (/20, 4094 hosts) works but wastes far more space than /22.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {

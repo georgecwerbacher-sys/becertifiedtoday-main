@@ -70,6 +70,8 @@
     .choice.mono.cli-router-choice {
       display: flex;
       flex-direction: column;
+      align-items: stretch;
+      width: 100%;
       padding: 0;
       border-radius: 10px;
       overflow: hidden;
@@ -82,6 +84,8 @@
       flex-wrap: wrap;
       align-items: center;
       gap: 10px;
+      width: 100%;
+      box-sizing: border-box;
       padding: 8px 12px;
       background: rgba(15, 22, 40, 0.95);
       border-bottom: 1px solid #2a3f5c;
@@ -113,6 +117,9 @@
       color: #8b9cc4;
     }
     pre.cli-router-console {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
       margin: 0;
       padding: 12px 14px;
       background: #060a11;
@@ -125,42 +132,53 @@
       overflow-x: auto;
       border-left: 3px solid #c9a227;
       min-height: 2rem;
+      align-self: stretch;
     }
     .choice input {
       margin-right: 10px;
       transform: translateY(1px);
     }
-    .actions {
-      margin-top: 18px;
+    .question-nav {
+      margin: 0 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .question-nav-links {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       align-items: center;
     }
-    .actions button {
-      background: #254b8a;
+    .question-nav .nav-link,
+    .question-nav .nav-check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
       color: #e6edf3;
+      background: #254b8a;
       border: 1px solid #3d6dbb;
       border-radius: 10px;
       padding: 10px 16px;
       font-weight: 700;
-      cursor: pointer;
+      font-size: 0.95rem;
       font-family: inherit;
-      font-size: 0.95rem;
+      cursor: pointer;
     }
-    .actions button:hover {
-      filter: brightness(1.08);
+    .question-nav .nav-link--disabled {
+      opacity: 0.35;
+      pointer-events: none;
+      cursor: default;
     }
-    .home-link {
+    .question-nav .nav-check {
       margin-left: auto;
-      background: #254b8a;
-      color: #e6edf3;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      text-decoration: none;
-      font-size: 0.95rem;
+    }
+    .question-nav .nav-link:hover,
+    .question-nav .nav-check:hover {
+      filter: brightness(1.08);
     }
     .answer {
       margin-top: 18px;
@@ -177,26 +195,6 @@
     .answer.incorrect {
       background: #442020;
       border: 1px solid #8c3434;
-    }
-    .next-wrap {
-      margin-top: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .next-link {
-      display: inline-block;
-      text-decoration: none;
-      color: #e6edf3;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
-    }
-    .next-link:hover {
-      filter: brightness(1.08);
     }
     .exhibit-stack {
       margin: 14px 0 18px;
@@ -313,6 +311,13 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
+    <nav class="question-nav" aria-label="Question navigation">
+      <div class="question-nav-links">
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/json-routers-switches-array-elements-are-values.html">Back</a>
+      <a class="nav-link nav-home" href="/index.html">Home</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/ospf-r1-passive-priority-router-id-neighbor-r2-only.html">Next</a>
+      </div>
+    </nav>
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
         <img src="/CCNA-Study/CCNA_questions/images/sw1-sw4-sw9-sw11-pc2-pc7-vlan14-trunk-topology.png" alt="Topology: SW1, SW4, SW9, SW11 with inter-switch links; PC2 VLAN 14 and PC3 VLAN 108 on SW4; PC7 VLAN 14 on SW9; PC9 VLAN 108 on SW11." width="900" decoding="async" loading="lazy" />
@@ -436,22 +441,13 @@ switchport access vlan 14</pre>
     </label>
 
 
-    <div class="actions">
-      <a class="home-link" href="/index.html">Home</a>
-    </div>
-
     <div id="answerBox" class="answer" aria-live="polite"></div>
-
-    <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/json-routers-switches-array-elements-are-values.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/ospf-r1-passive-priority-router-id-neighbor-r2-only.html">Next question</a>
-    </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 PC2 and PC7 are both in **VLAN 14**; Layer 2 connectivity can use the path **SW4\u2192SW11\u2192SW9** (and/or the SW1 uplinks you are not asked to change). Those inter-switch links must be **802.1Q trunks** that **allow VLAN 14** on **SW4 Gi0/2**, **SW11 Gi0/2**, **SW11 Gi0/1**, and **SW9 Gi0/2**. **PC3** and **PC9** stay in **VLAN 108** on the **SW4\u2013SW11** trunk, so that trunk must also **allow 108**; SW9\u2019s trunk toward SW11 only needs **14** for this PC2\u2013PC7 shortcut, while 108 traffic between PC3 and PC9 can stay on **SW4\u2013SW11**.\n\nB rewrites **SW4 Gi0/7** (the uplink toward **SW1**) to **allowed vlan 108** only, which **drops VLAN 14** on an already working path and breaks design assumptions. It also mis-uses **access** mode on inter-switch ports.\n\nC allows **only VLAN 14** on **SW4 Gi0/2**, so **VLAN 108** cannot cross **SW4\u2192SW11**, cutting **PC3\u2013PC9**. It also has **108** on **SW9 Gi0/2** while omitting **14** on several segments.\n\nD configures **access** ports between switches, which cannot carry multiple VLANs and breaks **VLAN 108** between SW4 and SW11 (and misconfigures SW11 with a non-topology port).";
+      var CORRECT_MSG = "Correct. A \u2014 PC2 and PC7 are both in VLAN 14; Layer 2 connectivity can use the path SW4\u2192SW11\u2192SW9 (and/or the SW1 uplinks you are not asked to change). Those inter-switch links must be 802.1Q trunks that allow VLAN 14 on SW4 Gi0/2, SW11 Gi0/2, SW11 Gi0/1, and SW9 Gi0/2. PC3 and PC9 stay in VLAN 108 on the SW4\u2013SW11 trunk, so that trunk must also allow 108; SW9\u2019s trunk toward SW11 only needs 14 for this PC2\u2013PC7 shortcut, while 108 traffic between PC3 and PC9 can stay on SW4\u2013SW11.\n\nB rewrites SW4 Gi0/7 (the uplink toward SW1) to allowed vlan 108 only, which drops VLAN 14 on an already working path and breaks design assumptions. It also mis-uses access mode on inter-switch ports.\n\nC allows only VLAN 14 on SW4 Gi0/2, so VLAN 108 cannot cross SW4\u2192SW11, cutting PC3\u2013PC9. It also has 108 on SW9 Gi0/2 while omitting 14 on several segments.\n\nD configures access ports between switches, which cannot carry multiple VLANs and breaks VLAN 108 between SW4 and SW11 (and misconfigures SW11 with a non-topology port).";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {

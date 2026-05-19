@@ -70,6 +70,8 @@
     .choice.mono.cli-router-choice {
       display: flex;
       flex-direction: column;
+      align-items: stretch;
+      width: 100%;
       padding: 0;
       border-radius: 10px;
       overflow: hidden;
@@ -82,6 +84,8 @@
       flex-wrap: wrap;
       align-items: center;
       gap: 10px;
+      width: 100%;
+      box-sizing: border-box;
       padding: 8px 12px;
       background: rgba(15, 22, 40, 0.95);
       border-bottom: 1px solid #2a3f5c;
@@ -113,6 +117,9 @@
       color: #8b9cc4;
     }
     pre.cli-router-console {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
       margin: 0;
       padding: 12px 14px;
       background: #060a11;
@@ -125,42 +132,53 @@
       overflow-x: auto;
       border-left: 3px solid #c9a227;
       min-height: 2rem;
+      align-self: stretch;
     }
     .choice input {
       margin-right: 10px;
       transform: translateY(1px);
     }
-    .actions {
-      margin-top: 18px;
+    .question-nav {
+      margin: 0 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .question-nav-links {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       align-items: center;
     }
-    .actions button {
-      background: #254b8a;
+    .question-nav .nav-link,
+    .question-nav .nav-check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
       color: #e6edf3;
+      background: #254b8a;
       border: 1px solid #3d6dbb;
       border-radius: 10px;
       padding: 10px 16px;
       font-weight: 700;
-      cursor: pointer;
+      font-size: 0.95rem;
       font-family: inherit;
-      font-size: 0.95rem;
+      cursor: pointer;
     }
-    .actions button:hover {
-      filter: brightness(1.08);
+    .question-nav .nav-link--disabled {
+      opacity: 0.35;
+      pointer-events: none;
+      cursor: default;
     }
-    .home-link {
+    .question-nav .nav-check {
       margin-left: auto;
-      background: #254b8a;
-      color: #e6edf3;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      text-decoration: none;
-      font-size: 0.95rem;
+    }
+    .question-nav .nav-link:hover,
+    .question-nav .nav-check:hover {
+      filter: brightness(1.08);
     }
     .answer {
       margin-top: 18px;
@@ -177,26 +195,6 @@
     .answer.incorrect {
       background: #442020;
       border: 1px solid #8c3434;
-    }
-    .next-wrap {
-      margin-top: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .next-link {
-      display: inline-block;
-      text-decoration: none;
-      color: #e6edf3;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
-    }
-    .next-link:hover {
-      filter: brightness(1.08);
     }
     .exhibit-stack {
       margin: 14px 0 18px;
@@ -313,6 +311,13 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
+    <nav class="question-nav" aria-label="Question navigation">
+      <div class="question-nav-links">
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/dhcp-pool-control-helper-address-relay-server.html">Back</a>
+      <a class="nav-link nav-home" href="/index.html">Home</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/r1-gi001-line-protocol-down-duplex-mismatch-exhibit.html">Next</a>
+      </div>
+    </nav>
     <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route excerpt">
         <pre>R1#
 Gateway of last resort is 10.56.0.1 to network 0.0.0.0
@@ -324,29 +329,20 @@ C      10.56.0.0/26 is directly connected, Vlan58
 C      10.56.0.0/17 is directly connected, Vlan59
 C      10.56.0.0/24 is directly connected, Vlan60</pre>
     </div>
-    <h1>When router **R1** receives a packet with destination IP address **10.56.0.62**, through which interface does it route the packet?</h1>
+    <h1>When router R1 receives a packet with destination IP address 10.56.0.62, through which interface does it route the packet?</h1>
 
     <label class="choice"><input type="radio" name="r1fwd562" value="A" />A. Vlan59</label>
     <label class="choice"><input type="radio" name="r1fwd562" value="B" />B. Vlan60</label>
     <label class="choice"><input type="radio" name="r1fwd562" value="C" />C. Null0</label>
     <label class="choice"><input type="radio" name="r1fwd562" value="D" />D. Vlan58</label>
 
-    <div class="actions">
-      <a class="home-link" href="/index.html">Home</a>
-    </div>
-
     <div id="answerBox" class="answer" aria-live="polite"></div>
-
-    <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/dhcp-pool-control-helper-address-relay-server.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/r1-gi001-line-protocol-down-duplex-mismatch-exhibit.html">Next question</a>
-    </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 **Longest-prefix match** selects **10.56.0.0/26** (**Vlan58**): **10.56.0.62** lies in **10.56.0.0\u201310.56.0.63**. That **/26** is more specific than **/17** (**Vlan59**), **/24** (**Vlan60**), and **/16** (**Null0**). **Vlan59** and **Vlan60** also contain **.62** but lose to the longer prefix. **Null0** is the less-specific **/16** discard/summary-style connected route, not the best path for this host.";
+      var CORRECT_MSG = "Correct. D \u2014 Longest-prefix match selects 10.56.0.0/26 (Vlan58): 10.56.0.62 lies in 10.56.0.0\u201310.56.0.63. That /26 is more specific than /17 (Vlan59), /24 (Vlan60), and /16 (Null0). Vlan59 and Vlan60 also contain .62 but lose to the longer prefix. Null0 is the less-specific /16 discard/summary-style connected route, not the best path for this host.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {

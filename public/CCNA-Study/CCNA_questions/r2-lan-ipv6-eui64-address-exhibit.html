@@ -70,6 +70,8 @@
     .choice.mono.cli-router-choice {
       display: flex;
       flex-direction: column;
+      align-items: stretch;
+      width: 100%;
       padding: 0;
       border-radius: 10px;
       overflow: hidden;
@@ -82,6 +84,8 @@
       flex-wrap: wrap;
       align-items: center;
       gap: 10px;
+      width: 100%;
+      box-sizing: border-box;
       padding: 8px 12px;
       background: rgba(15, 22, 40, 0.95);
       border-bottom: 1px solid #2a3f5c;
@@ -113,6 +117,9 @@
       color: #8b9cc4;
     }
     pre.cli-router-console {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
       margin: 0;
       padding: 12px 14px;
       background: #060a11;
@@ -125,42 +132,53 @@
       overflow-x: auto;
       border-left: 3px solid #c9a227;
       min-height: 2rem;
+      align-self: stretch;
     }
     .choice input {
       margin-right: 10px;
       transform: translateY(1px);
     }
-    .actions {
-      margin-top: 18px;
+    .question-nav {
+      margin: 0 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .question-nav-links {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       align-items: center;
     }
-    .actions button {
-      background: #254b8a;
+    .question-nav .nav-link,
+    .question-nav .nav-check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
       color: #e6edf3;
+      background: #254b8a;
       border: 1px solid #3d6dbb;
       border-radius: 10px;
       padding: 10px 16px;
       font-weight: 700;
-      cursor: pointer;
+      font-size: 0.95rem;
       font-family: inherit;
-      font-size: 0.95rem;
+      cursor: pointer;
     }
-    .actions button:hover {
-      filter: brightness(1.08);
+    .question-nav .nav-link--disabled {
+      opacity: 0.35;
+      pointer-events: none;
+      cursor: default;
     }
-    .home-link {
+    .question-nav .nav-check {
       margin-left: auto;
-      background: #254b8a;
-      color: #e6edf3;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      text-decoration: none;
-      font-size: 0.95rem;
+    }
+    .question-nav .nav-link:hover,
+    .question-nav .nav-check:hover {
+      filter: brightness(1.08);
     }
     .answer {
       margin-top: 18px;
@@ -177,26 +195,6 @@
     .answer.incorrect {
       background: #442020;
       border: 1px solid #8c3434;
-    }
-    .next-wrap {
-      margin-top: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .next-link {
-      display: inline-block;
-      text-decoration: none;
-      color: #e6edf3;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
-    }
-    .next-link:hover {
-      filter: brightness(1.08);
     }
     .exhibit-stack {
       margin: 14px 0 18px;
@@ -313,12 +311,19 @@
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
   <main class="card">
+    <nav class="question-nav" aria-label="Question navigation">
+      <div class="question-nav-links">
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/cpe-dual-isp-static-route-load-balance-exhibit.html">Back</a>
+      <a class="nav-link nav-home" href="/index.html">Home</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/switch-a-etherchannel-lacp-passive-exhibit.html">Next</a>
+      </div>
+    </nav>
     <div class="exhibit-stack">
       <figure class="exhibit-photo">
         <img src="/CCNA-Study/CCNA_questions/images/r2-lan-ipv6-eui64-topology.png" alt="Topology: R1 and R2 on 2001:DB8:44:90::/64; R1 LAN 2001:DB8:D8D2:1008::/64; R2 LAN 2001:DB8:D8D2:1009::/64 with MAC 12-a0-ab-cc-00-01 on R2." width="980" decoding="async" loading="lazy" />
       </figure>
     </div>
-    <h1>Refer to the exhibit. The IPv6 address for the LAN segment on router **R2** must be configured using the **EUI-64** format. Which address must be used?</h1>
+    <h1>Refer to the exhibit. The IPv6 address for the LAN segment on router R2 must be configured using the EUI-64 format. Which address must be used?</h1>
 
     <label class="choice mono cli-router-choice">
       <span class="cli-router-choice-controls">
@@ -357,22 +362,13 @@
     </label>
 
 
-    <div class="actions">
-      <a class="home-link" href="/index.html">Home</a>
-    </div>
-
     <div id="answerBox" class="answer" aria-live="polite"></div>
-
-    <div class="next-wrap">
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/cpe-dual-isp-static-route-load-balance-exhibit.html">Previous question</a>
-      <a class="next-link" href="/CCNA-Study/CCNA_questions/switch-a-etherchannel-lacp-passive-exhibit.html">Next question</a>
-    </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 **R2** MAC **12-A0-AB-CC-00-01** on prefix **2001:DB8:D8D2:1009::/64**: insert **FF:FE** after the OUI (**12A0.AB** \u2192 **12A0.ABFF.FE**), append **CC:00:01**, then invert the **7th bit** of the first octet (**0x12** \u2192 **0x10**), yielding interface ID **10A0:ABFF:FECC:1** and **`ipv6 address 2001:DB8:D8D2:1009:10A0:ABFF:FECC:1 eui-64`**. **B** misplaces **FF:FE** (**AB34:FFCC**). **C** uses **1230** instead of **10A0** after the U/L-bit flip. **D** does not follow **R2\u2019s** MAC-derived **EUI-64** pattern.";
+      var CORRECT_MSG = "Correct. A \u2014 R2 MAC 12-A0-AB-CC-00-01 on prefix 2001:DB8:D8D2:1009::/64: insert FF:FE after the OUI (12A0.AB \u2192 12A0.ABFF.FE), append CC:00:01, then invert the 7th bit of the first octet (0x12 \u2192 0x10), yielding interface ID 10A0:ABFF:FECC:1 and `ipv6 address 2001:DB8:D8D2:1009:10A0:ABFF:FECC:1 eui-64`. B misplaces FF:FE (AB34:FFCC). C uses 1230 instead of 10A0 after the U/L-bit flip. D does not follow R2\u2019s MAC-derived EUI-64 pattern.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
