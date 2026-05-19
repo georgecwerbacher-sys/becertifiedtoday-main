@@ -316,36 +316,6 @@
       actions.appendChild(br);
       actions.appendChild(rev);
       article.appendChild(h4);
-      if (countInBank === 0) {
-        var p = document.createElement("p");
-        p.className = "study-meta";
-        p.innerHTML =
-          "Reserved for questions <strong>" +
-          formatRange(firstNum, slotEnd) +
-          "</strong> when the hub list grows. <strong>Random</strong> and <strong>Review</strong> stay disabled until this range has items.";
-        article.appendChild(p);
-      } else {
-        var meta = document.createElement("p");
-        meta.className = "study-meta";
-        var metaText =
-          countInBank +
-          (countInBank === 1 ? " question" : " questions") +
-          " · hub positions " +
-          formatRange(firstNum, endIdx) +
-          ".";
-        if (isLastBank && isPartial) {
-          metaText +=
-            " Bank " +
-            String(b + 1) +
-            " opens at question " +
-            String(b * BANK_SIZE + 1) +
-            " when the list grows past " +
-            String(b * BANK_SIZE) +
-            ".";
-        }
-        meta.textContent = metaText;
-        article.appendChild(meta);
-      }
       article.appendChild(actions);
 
       grid.appendChild(article);

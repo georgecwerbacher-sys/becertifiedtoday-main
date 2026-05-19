@@ -391,10 +391,20 @@
       color: #9fb0cc;
       line-height: 1.5;
     }
-    .ccna-practice-subject-filter .ccna-practice-subject-lead a {
-      color: #a5c8ff;
+    a[href="#ccna-practice-subject-filter"],
+    .ccna-practice-subject-filter a {
+      color: #ffffff;
       font-weight: 700;
       text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    a[href="#ccna-practice-subject-filter"]:visited,
+    .ccna-practice-subject-filter a:visited,
+    a[href="#ccna-practice-subject-filter"]:hover,
+    .ccna-practice-subject-filter a:hover,
+    a[href="#ccna-practice-subject-filter"]:focus-visible,
+    .ccna-practice-subject-filter a:focus-visible {
+      color: #ffffff;
     }
     .ccna-practice-subject-filter label[for="ccna-practice-domain-select"] {
       display: block;
@@ -601,7 +611,6 @@
       border-color: rgba(201, 162, 39, 0.45);
       box-shadow: inset 0 0 0 1px rgba(201, 162, 39, 0.12);
     }
-    .ccna-practice-banks-lead,
     .ccna-practice-banks-summary {
       margin: 0 0 14px;
       max-width: 62ch;
@@ -798,29 +807,6 @@
             </div>
           </div>
 
-          <div class="card purchase-card" id="ccna-curriculum-outline">
-            <div class="purchase-card-inner">
-              <div class="purchase-card-main">
-                <p class="purchase-label">Outline</p>
-                <h2 class="purchase-heading">CCNA subject areas covered</h2>
-                <p class="purchase-lead">
-                  This training path is organized to follow the CCNA testing curriculum in the same sequence learners are expected
-                  to perform on exam day: core theory first, then command workflow, validation steps, and mixed-format practice
-                  across each domain listed below. For question banks, use
-                  <a href="#ccna-practice-subject-filter">Practice by subject</a> under <strong>CCNA practice formats</strong> to
-                  limit <strong>Random</strong> and <strong>Review</strong> to one domain at a time.
-                </p>
-                <ul class="purchase-includes">
-                  <li><strong>Network fundamentals:</strong> models, cabling, IPv4/IPv6 addressing.</li>
-                  <li><strong>LAN switching:</strong> VLANs, STP, EtherChannel.</li>
-                  <li><strong>Routing:</strong> static routes, OSPFv2, single-area concepts.</li>
-                  <li><strong>IP services:</strong> NAT/NTP/DHCP/DNS overview.</li>
-                  <li><strong>Security fundamentals:</strong> ACLs, wireless basics, device hardening.</li>
-                  <li><strong>Automation:</strong> REST, JSON, scripting introduction.</li>
-                </ul>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -842,11 +828,6 @@
           </p>
           <h3 class="section-heading">Practice Questions</h3>
           <section class="start-box" aria-label="Question studies">
-            <p class="study-meta ccna-practice-banks-lead">
-              Questions are grouped in banks of up to <strong>100</strong> by position in the hub list (1–100, 101–200, and so on).
-              When a bank fills, the next bank appears automatically. Each bank has its own <strong>Random</strong> and
-              <strong>Review</strong> session.
-            </p>
             <p
               id="ccna-practice-banks-summary"
               class="study-meta ccna-practice-banks-summary"
