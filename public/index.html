@@ -16,7 +16,7 @@
   />
   <link rel="canonical" href="https://becertifiedtoday.com/" />
   <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
-  <title>Choose your training path | Be Certified Today</title>
+  <title>Choose Your Training Path | Be Certified Today</title>
   <style>
     html {
       -webkit-text-size-adjust: 100%;
@@ -238,6 +238,272 @@
       color: #e9d5ff;
       pointer-events: none;
     }
+    .why-choose-section {
+      margin-top: clamp(32px, 5vw, 48px);
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+      padding: clamp(32px, 5vw, 48px) clamp(18px, 4vw, 40px);
+      background: #ffffff;
+      border-top: 1px solid rgba(45, 59, 90, 0.18);
+      border-bottom: 1px solid rgba(45, 59, 90, 0.18);
+    }
+    .why-choose-section h2 {
+      margin: 0 0 8px;
+      font-size: clamp(1.1rem, 2.8vw, 1.35rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-align: center;
+      color: var(--bg);
+    }
+    .why-choose-section .why-choose-lead {
+      margin: 0 auto clamp(22px, 3vw, 28px);
+      max-width: 40rem;
+      text-align: center;
+      font-size: 0.92rem;
+      color: var(--bg);
+      line-height: 1.55;
+    }
+    .why-choose-grid {
+      list-style: none;
+      margin: 0 auto;
+      padding: 0;
+      max-width: 980px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 560px) {
+      .why-choose-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    @media (min-width: 900px) {
+      .why-choose-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .why-choose-item {
+      height: 100%;
+      margin: 0;
+      padding: 16px 16px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+    }
+    .why-choose-item h3 {
+      margin: 0 0 8px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: #e8f0ff;
+    }
+    .why-choose-item p {
+      margin: 0;
+      font-size: 0.86rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .samples-preview-section {
+      margin-top: clamp(32px, 5vw, 48px);
+      padding-top: clamp(28px, 4vw, 36px);
+      border-top: 1px solid var(--border);
+    }
+    .samples-preview-section h2 {
+      margin: 0 0 8px;
+      font-size: clamp(1.1rem, 2.8vw, 1.35rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-align: center;
+    }
+    .samples-preview-section .samples-preview-lead {
+      margin: 0 auto clamp(22px, 3vw, 28px);
+      max-width: 40rem;
+      text-align: center;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+    .samples-preview-grid {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(18px, 3vw, 22px);
+    }
+    @media (min-width: 720px) {
+      .samples-preview-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .sample-preview-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      margin: 0;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
+      overflow: hidden;
+    }
+    .sample-preview-card--encor {
+      border-color: rgba(61, 157, 114, 0.45);
+    }
+    .sample-preview-thumb {
+      margin: 0;
+      aspect-ratio: 16 / 10;
+      background: #0d1528;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .sample-preview-thumb img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .sample-preview-body {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding: 16px 18px 18px;
+    }
+    .sample-preview-card h3 {
+      margin: 0 0 8px;
+      font-size: 0.98rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+    .sample-preview-card p {
+      margin: 0 0 14px;
+      flex: 1;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .sample-preview-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      text-align: center;
+      touch-action: manipulation;
+      border: 1px solid var(--accent-border);
+      color: #f0f4fc;
+      background: linear-gradient(165deg, var(--accent-hover) 0%, var(--accent) 100%);
+    }
+    .sample-preview-cta:hover {
+      filter: brightness(1.06);
+    }
+    .sample-preview-cta:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+    }
+    .sample-preview-card--encor .sample-preview-cta {
+      border-color: rgba(61, 157, 114, 0.75);
+      background: linear-gradient(165deg, rgba(52, 168, 118, 0.95) 0%, rgba(24, 94, 66, 0.98) 100%);
+      color: #f0fdf4;
+    }
+    .sample-preview-card--encor .sample-preview-cta:focus-visible {
+      outline-color: #86efac;
+    }
+    .reviews-section {
+      margin-top: clamp(32px, 5vw, 48px);
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+      padding: clamp(32px, 5vw, 48px) clamp(18px, 4vw, 40px);
+      background: #ffffff;
+      border-top: 1px solid rgba(45, 59, 90, 0.18);
+      border-bottom: 1px solid rgba(45, 59, 90, 0.18);
+    }
+    .reviews-section h2 {
+      margin: 0 0 8px;
+      font-size: clamp(1.1rem, 2.8vw, 1.35rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-align: center;
+      color: var(--bg);
+    }
+    .reviews-section .reviews-lead {
+      margin: 0 auto clamp(22px, 3vw, 28px);
+      max-width: 40rem;
+      text-align: center;
+      font-size: 0.92rem;
+      color: var(--bg);
+      line-height: 1.55;
+    }
+    .reviews-grid {
+      list-style: none;
+      margin: 0 auto;
+      padding: 0;
+      max-width: 980px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 600px) {
+      .reviews-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    @media (min-width: 900px) {
+      .reviews-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .review-card {
+      height: 100%;
+      margin: 0;
+      padding: 18px 18px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+    }
+    .review-stars {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 10px;
+    }
+    .review-stars [role="img"] {
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      color: #f0c040;
+    }
+    .review-stars .review-rating-num {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .review-card blockquote {
+      margin: 0 0 12px;
+      padding: 0;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: var(--text);
+    }
+    .review-card blockquote p {
+      margin: 0;
+    }
+    .review-card figcaption {
+      margin: 0;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #8b9cc4;
+    }
+    .review-card figcaption span {
+      font-weight: 500;
+      color: var(--muted);
+    }
     .site-disclaimer {
       max-width: 720px;
       margin: 0 auto;
@@ -283,12 +549,8 @@
       color: var(--bg);
       outline: none;
     }
-    footer a.footer-portal-link:hover,
-    footer a.footer-portal-link:focus-visible {
-      color: #8ab4ff;
-      text-decoration: underline;
-    }
   </style>
+  <link rel="stylesheet" href="/css/ccna-sim-promo.css" />
 </head>
 <body>
   <div class="page">
@@ -310,7 +572,7 @@
     </figure>
     <main id="main">
       <div class="intro">
-        <h1>Choose your training path</h1>
+        <h1>Choose Your Training Path</h1>
         <p>
           First-time here? Pick the certification track you want to work in. You can switch tracks anytime from the full site; we only use this screen to send you to the right
           place first.
@@ -324,7 +586,7 @@
             <p>
               Cisco Certified Network Associate (200-301) study hub on this site: domain weights, practice questions, labs, drag-and-drop, and CCNA timed test simulation options.
             </p>
-            <a class="cta" id="path-ccna" href="/ccna-home.html">Open CCNA study hub</a>
+            <a class="cta" id="path-ccna" href="/ccna-home.html">Open CCNA Study Hub</a>
           </article>
         </li>
         <li>
@@ -338,7 +600,7 @@
               class="cta"
               id="path-encor"
               href="/ccnp-home.html"
-              >Open CCNP study hub</a
+              >Open CCNP Study Hub</a
             >
           </article>
         </li>
@@ -349,10 +611,238 @@
             <p>
               SY0-701 study track for core security concepts, threats, architecture, operations, and governance. Practice hub and exam-style prep launching on this site.
             </p>
-            <span class="cta cta--disabled" aria-disabled="true">Coming soon in June</span>
+            <span class="cta cta--disabled" aria-disabled="true">Coming Soon in June</span>
           </article>
         </li>
       </ul>
+
+      <section class="why-choose-section" aria-labelledby="why-choose-title">
+        <h2 id="why-choose-title">Why Choose BeCertifiedToday.com</h2>
+        <p class="why-choose-lead">
+          Certification prep that runs in your browser—built for exam-style practice, not static reading.
+        </p>
+        <ul class="why-choose-grid">
+          <li>
+            <article class="why-choose-item">
+              <h3>No Recurring Membership</h3>
+              <p>
+                Pay for access when you need it—such as a fixed 30-day window—not an open-ended monthly subscription that auto-renews.
+              </p>
+            </article>
+          </li>
+          <li>
+            <article class="why-choose-item">
+              <h3>120-Minute Simulated Exam</h3>
+              <p>
+                A full-length timed run with a detailed review when you finish. Every attempt is new—questions are pulled from a large bank so you practice the material, not one memorized test.
+              </p>
+            </article>
+          </li>
+          <li>
+            <article class="why-choose-item">
+              <h3>Realistic Training</h3>
+              <p>
+                CLI labs and drag-and-drop items mirror how you work on exam day—not just multiple-choice lists on a page.
+              </p>
+            </article>
+          </li>
+          <li>
+            <article class="why-choose-item">
+              <h3>No PDFs</h3>
+              <p>
+                Everything is interactive in the browser. No downloads, printouts, or flipping through dump files on a second screen.
+              </p>
+            </article>
+          </li>
+          <li>
+            <article class="why-choose-item">
+              <h3>No Extra Software</h3>
+              <p>
+                No Packet Tracer install, VM, or third-party app required—open a modern browser and start practicing.
+              </p>
+            </article>
+          </li>
+          <li>
+            <article class="why-choose-item">
+              <h3>Updated Questions</h3>
+              <p>
+                The question bank and labs are maintained and expanded so topics and wording stay aligned with current CCNA and CCNP ENCOR study—not stale PDF-era content.
+              </p>
+            </article>
+          </li>
+        </ul>
+      </section>
+
+      <section class="samples-preview-section" aria-labelledby="samples-preview-title">
+        <h2 id="samples-preview-title">Try a Free Sample</h2>
+        <p class="samples-preview-lead">
+          Open a short activity in your browser—no account required for these demos.
+        </p>
+        <ul class="samples-preview-grid">
+          <li>
+            <article class="sample-preview-card" aria-labelledby="sample-ccna-q-title">
+              <figure class="sample-preview-thumb">
+                <img
+                  src="/images/ccna-sample-questions-thumbnail.png"
+                  width="1024"
+                  height="586"
+                  alt="CCNA multiple-choice sample with Check answer and Next question controls."
+                  decoding="async"
+                  loading="lazy"
+                />
+              </figure>
+              <div class="sample-preview-body">
+                <h3 id="sample-ccna-q-title">CCNA · Sample Questions</h3>
+                <p>
+                  Five linked multiple-choice items with instant feedback—use <strong>Check answer</strong>, then
+                  <strong>Next question</strong> to move through the set.
+                </p>
+                <a class="sample-preview-cta" href="/sample?track=ccna-questions">Open Sample Questions</a>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="sample-preview-card sample-preview-card--encor" aria-labelledby="sample-ccnp-dd-title">
+              <figure class="sample-preview-thumb">
+                <img
+                  src="/images/drag-drop-sample-thumbnail.jpg"
+                  width="1024"
+                  height="535"
+                  alt="CCNP ENCOR drag-and-drop sample with CLI-style drop targets."
+                  decoding="async"
+                  loading="lazy"
+                />
+              </figure>
+              <div class="sample-preview-body">
+                <h3 id="sample-ccnp-dd-title">CCNP ENCOR · Sample Drag-and-Drop</h3>
+                <p>
+                  One performance-style drag-and-drop item from the ENCOR training app—drag snippets into the blanks or
+                  tap to place on a phone.
+                </p>
+                <a
+                  class="sample-preview-cta"
+                  href="https://becertifiedtoday-encor.vercel.app/sample?track=drag"
+                  rel="noopener noreferrer"
+                  >Open Sample Drag-and-Drop</a
+                >
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="sample-preview-card" aria-labelledby="sample-ccna-lab-title">
+              <figure class="sample-preview-thumb">
+                <img
+                  src="/CCNA-Study/CCNA_labs/images/ccna-lab-vlan-sim-topology.png"
+                  width="1024"
+                  height="610"
+                  alt="CCNA VLAN simulation lab topology with two switches."
+                  decoding="async"
+                  loading="lazy"
+                />
+              </figure>
+              <div class="sample-preview-body">
+                <h3 id="sample-ccna-lab-title">CCNA · Sample Lab</h3>
+                <p>
+                  Dual-switch VLAN lab in the browser—configure access and voice VLANs on simulated CLI without extra
+                  software.
+                </p>
+                <a class="sample-preview-cta" href="/sample?track=ccna-vlan">Open Sample Lab</a>
+              </div>
+            </article>
+          </li>
+        </ul>
+      </section>
+
+      <section class="reviews-section" aria-labelledby="reviews-title">
+        <h2 id="reviews-title">What Learners Are Saying</h2>
+        <p class="reviews-lead">
+          Feedback from people using the practice bank, labs, and timed simulations on Be Certified Today.
+        </p>
+        <ul class="reviews-grid">
+          <li>
+            <figure class="review-card">
+              <div class="review-stars">
+                <span role="img" aria-label="4 out of 5 stars">★★★★</span><span aria-hidden="true">☆</span>
+                <span class="review-rating-num">4/5</span>
+              </div>
+              <blockquote>
+                <p>
+                  The simulated exam really helped—I walked in knowing my weak spots instead of guessing. The timer and mixed question types felt like the real sitting.
+                </p>
+              </blockquote>
+              <figcaption>Marcus T. <span>· CCNA Track</span></figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="review-card">
+              <div class="review-stars">
+                <span role="img" aria-label="4 out of 5 stars">★★★★</span><span aria-hidden="true">☆</span>
+                <span class="review-rating-num">4/5</span>
+              </div>
+              <blockquote>
+                <p>
+                  I enjoyed the adaptive learning mode. It was a real challenge—it kept coming back to topics I missed until I actually understood them, not just memorized one answer.
+                </p>
+              </blockquote>
+              <figcaption>Priya K. <span>· CCNA Timed Sim</span></figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="review-card">
+              <div class="review-stars">
+                <span role="img" aria-label="3 out of 5 stars">★★★</span><span aria-hidden="true">☆☆</span>
+                <span class="review-rating-num">3/5</span>
+              </div>
+              <blockquote>
+                <p>
+                  The questions feel up to date—closer to what I see in current study guides than the old PDF dumps I tried first. Still hard, but at least the wording makes sense.
+                </p>
+              </blockquote>
+              <figcaption>Jordan L. <span>· Practice Bank</span></figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="review-card">
+              <div class="review-stars">
+                <span role="img" aria-label="4 out of 5 stars">★★★★</span><span aria-hidden="true">☆</span>
+                <span class="review-rating-num">4/5</span>
+              </div>
+              <blockquote>
+                <p>
+                  The feel of the site is so much easier than a PDF. I can click through labs, drag-and-drop, and review mode on my laptop without printing or pinching a document.
+                </p>
+              </blockquote>
+              <figcaption>Elena R. <span>· Labs &amp; DnD</span></figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="review-card">
+              <div class="review-stars">
+                <span role="img" aria-label="4 out of 5 stars">★★★★</span><span aria-hidden="true">☆</span>
+                <span class="review-rating-num">4/5</span>
+              </div>
+              <blockquote>
+                <p>
+                  ENCOR prep on here tied everything together—CLI labs plus a full timed run. Way better than reading the same chapter PDF three times and hoping it stuck.
+                </p>
+              </blockquote>
+              <figcaption>Devon M. <span>· CCNP ENCOR</span></figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="review-card">
+              <div class="review-stars">
+                <span role="img" aria-label="5 out of 5 stars">★★★★★</span>
+                <span class="review-rating-num">5/5</span>
+              </div>
+              <blockquote>
+                <p>Thanks.</p>
+              </blockquote>
+              <figcaption>Alex W. <span>· Timed Simulation</span></figcaption>
+            </figure>
+          </li>
+        </ul>
+      </section>
     </main>
 
     <aside class="site-disclaimer" aria-label="Legal disclaimer">
@@ -372,8 +862,62 @@
         class="footer-admin-hash"
         href="/admin/analytics"
         aria-label="Site analytics admin"
-        >#</a>.com · <a class="footer-portal-link" href="/CCNA-Study/CCNA_Training_Portal.html">CCNA training portal</a>
+        >#</a>
     </footer>
+  </div>
+  <div
+    id="ccnaSimPromoRoot"
+    class="ccna-sim-promo-root"
+    hidden
+    role="presentation"
+    aria-hidden="true"
+  >
+    <div class="ccna-sim-promo-backdrop" data-ccna-sim-promo-dismiss tabindex="-1"></div>
+    <div
+      class="ccna-sim-promo-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="ccnaSimPromoTitle"
+      tabindex="-1"
+    >
+      <button type="button" class="ccna-sim-promo-close" data-ccna-sim-promo-dismiss aria-label="Close offer dialog">
+        ×
+      </button>
+      <p class="ccna-sim-promo-eyebrow">Limited-time</p>
+      <h2 id="ccnaSimPromoTitle">CCNA timed simulation — 50% off</h2>
+      <p class="ccna-sim-promo-price">
+        <del class="ccna-sim-promo-price-was">$9.99</del>
+        <span class="ccna-sim-promo-price-now">$4.99</span>
+        <span class="ccna-sim-promo-limited-pill">Today</span>
+      </p>
+      <p class="ccna-sim-promo-lead ccna-sim-promo-lead--compact">
+        Real <strong>2-hour</strong> mix: MCQ, labs, drag‑and‑drop—then a <strong>scorecard</strong> that shows what to study next.
+        <strong>One Stripe payment.</strong> No site account; BeCertifiedToday.com never requires a membership.
+      </p>
+      <div class="ccna-sim-promo-code-inline" role="group" aria-label="Promotion code 50 percent off">
+        <span class="ccna-sim-promo-code-inline-label">Code</span>
+        <code id="ccnaSimPromoCode">CCNA_Sim_4_U</code>
+        <button type="button" class="ccna-sim-promo-copy ccna-sim-promo-copy--compact" id="ccnaSimPromoCopyBtn">
+          Copy
+        </button>
+      </div>
+      <p class="ccna-sim-promo-hint ccna-sim-promo-hint--compact">Apply at checkout → Add promotion code.</p>
+      <div class="ccna-sim-promo-actions">
+        <a
+          class="ccna-sim-promo-primary"
+          id="ccnaSimPromoCta"
+          href="/CCNA_Sim_EXAM/begin-test-simulation.html?promo=CCNA_Sim_4_U"
+          >Start timed test — $4.99</a
+        >
+        <a
+          class="ccna-sim-promo-secondary ccna-sim-promo-adaptive-path"
+          href="/CCNA_Sim_EXAM/begin-test-simulation.html?promo=CCNA_Sim_4_U&amp;sim_adaptive=1"
+          title="Turns on adaptive multiple choice at exam start—extra MCQs in weaker blueprint domains during the same session."
+          >Adaptive exam → same price</a
+        >
+        <button type="button" class="ccna-sim-promo-secondary" data-ccna-sim-promo-dismiss>Not now</button>
+      </div>
+    </div>
   </div>
   <script>
     (function () {
@@ -391,6 +935,91 @@
       bind("path-ccna");
       bind("path-encor");
       bind("path-brand-preview");
+    })();
+  </script>
+  <script>
+    (function () {
+      var PROMO = "CCNA_Sim_4_U";
+      var root = document.getElementById("ccnaSimPromoRoot");
+      var panel = root && root.querySelector(".ccna-sim-promo-panel");
+      var copyBtn = document.getElementById("ccnaSimPromoCopyBtn");
+      if (!root || !panel) return;
+
+      var path = location.pathname || "";
+      var onIndex = path === "/" || path === "/index.html";
+      if (!onIndex) return;
+
+      var prevOverflow = "";
+      var open = false;
+
+      function closePromo() {
+        if (!open) return;
+        open = false;
+        root.classList.remove("ccna-sim-promo-root--open");
+        root.setAttribute("hidden", "");
+        root.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = prevOverflow;
+        document.removeEventListener("keydown", onKey);
+      }
+
+      function openPromo() {
+        if (open) return;
+        open = true;
+        prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        root.removeAttribute("hidden");
+        root.classList.add("ccna-sim-promo-root--open");
+        root.setAttribute("aria-hidden", "false");
+        panel.focus();
+        document.addEventListener("keydown", onKey);
+      }
+
+      function onKey(ev) {
+        if (ev.key === "Escape") {
+          ev.preventDefault();
+          closePromo();
+        }
+      }
+
+      root.querySelectorAll("[data-ccna-sim-promo-dismiss]").forEach(function (el) {
+        el.addEventListener("click", function () {
+          closePromo();
+        });
+      });
+
+      if (copyBtn) {
+        copyBtn.addEventListener("click", function () {
+          function ok() {
+            var t = "Copied";
+            var prev = copyBtn.textContent;
+            copyBtn.textContent = t;
+            copyBtn.disabled = true;
+            setTimeout(function () {
+              copyBtn.textContent = prev;
+              copyBtn.disabled = false;
+            }, 1600);
+          }
+          function fail() {
+            window.prompt("Copy this code:", PROMO);
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(PROMO).then(ok).catch(fail);
+          } else {
+            fail();
+          }
+        });
+      }
+
+      var promoShowConsumed = false;
+      var promoDelayMs = 15000;
+
+      function triggerPromoOnce() {
+        if (promoShowConsumed) return;
+        promoShowConsumed = true;
+        openPromo();
+      }
+
+      window.setTimeout(triggerPromoOnce, promoDelayMs);
     })();
   </script>
 </body>

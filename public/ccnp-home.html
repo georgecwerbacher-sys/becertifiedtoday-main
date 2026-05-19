@@ -1567,13 +1567,13 @@
         />
       </a>
       <div class="header-actions">
-        <!-- Registered: training portal; else header opens 30-day purchase dialog -->
+        <!-- Registered: CCNP_Encor.html on encor app; else header opens join dialog → ccnp-home#purchase -->
         <a
           id="ccnpPortalHeaderBtn"
           class="ccna-portal-header-btn ccna-portal-header-btn--purchase"
           href="#"
-          aria-label="Purchase 30-day access — opens purchase dialog"
-          >Get 30-day access</a
+          aria-label="Join CCNP ENCOR training — opens join dialog"
+          >Join CCNP training</a
         >
       </div>
     </header>
@@ -2222,42 +2222,28 @@
         ×
       </button>
       <p class="ccna-sim-promo-eyebrow">CCNP ENCOR Training Portal</p>
-      <h2 id="ccnpPortalGateTitle">Get 30-day membership</h2>
+      <h2 id="ccnpPortalGateTitle">Join CCNP ENCOR training</h2>
       <p class="ccna-sim-promo-lead">
-        <strong>$19.99</strong> unlocks the CCNP ENCOR training portal and full library on
-        <strong>this browser</strong> for 30 days—practice questions, labs, drag-and-drop, and timed
-        simulations. <strong>No recurring subscription.</strong>
-      </p>
-      <p style="margin: 0 0 14px; font-size: 0.94rem; line-height: 1.45; color: rgba(230, 237, 243, 0.85);">
-        Already paid but blocked?
-        <a href="/CCNA-Study/ccna-portal-request-link.html">Email me a portal link</a>
-        ·
-        <a href="/CCNA-Study/ccna-portal-restore-access.html">Restore access</a>
+        Full ENCOR practice—questions, CLI labs, drag-and-drop, and timed simulation—is on the
+        training portal after you purchase access. Start on the <strong>CCNP home page</strong> to see
+        plans and checkout options.
       </p>
       <div class="ccna-sim-promo-actions">
-        <button
-          type="button"
-          class="ccna-sim-promo-primary"
-          data-ccna-portal-30d-checkout
-          aria-label="Purchase 30-day library access and go to Stripe checkout"
-        >
-          Purchase 30-day membership
-        </button>
         <a
-          class="ccna-sim-promo-secondary"
+          class="ccna-sim-promo-primary"
           href="/ccnp-home.html#purchase"
           data-ccnp-portal-gate-dismiss
-          >View purchase options</a
+          aria-label="Go to CCNP home purchase section to join"
+          >Join on CCNP home</a
         >
         <button type="button" class="ccna-sim-promo-secondary" data-ccnp-portal-gate-dismiss>Close</button>
       </div>
     </div>
   </div>
   <script src="/CCNA-Study/js/ccna-portal-30d-storage.js" defer></script>
-  <script src="/CCNA-Study/js/ccna-portal-30d-checkout.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      var PORTAL_HREF = "/CCNA-Study/CCNA_Training_Portal.html";
+      var PORTAL_HREF = "https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html";
       var portalBtn = document.getElementById("ccnpPortalHeaderBtn");
       if (!portalBtn) return;
 
@@ -2268,19 +2254,23 @@
       function syncPortalHeader() {
         if (hasPortalAccess()) {
           portalBtn.href = PORTAL_HREF;
+          portalBtn.setAttribute("rel", "noopener noreferrer");
+          portalBtn.removeAttribute("target");
           portalBtn.textContent = "CCNP ENCOR Training Portal";
           portalBtn.classList.add("ccna-portal-header-btn--active");
           portalBtn.classList.remove("ccna-portal-header-btn--purchase");
           portalBtn.setAttribute(
             "aria-label",
-            "CCNP ENCOR training portal — open when you have active 30-day access"
+            "CCNP ENCOR training portal (CCNP_Encor.html on becertifiedtoday-encor.vercel.app)"
           );
         } else {
           portalBtn.href = "#";
-          portalBtn.textContent = "Get 30-day access";
+          portalBtn.removeAttribute("rel");
+          portalBtn.removeAttribute("target");
+          portalBtn.textContent = "Join CCNP training";
           portalBtn.classList.remove("ccna-portal-header-btn--active");
           portalBtn.classList.add("ccna-portal-header-btn--purchase");
-          portalBtn.setAttribute("aria-label", "Purchase 30-day access — opens purchase dialog");
+          portalBtn.setAttribute("aria-label", "Join CCNP ENCOR training — opens join dialog");
         }
       }
 

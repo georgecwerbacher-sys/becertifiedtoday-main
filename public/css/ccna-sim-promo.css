@@ -1,0 +1,308 @@
+.ccna-sim-promo-root {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  display: none;
+  place-items: center;
+  padding-top: max(clamp(16px, 4vw, 28px), env(safe-area-inset-top, 0px));
+  padding-right: max(clamp(16px, 4vw, 28px), env(safe-area-inset-right, 0px));
+  padding-bottom: max(clamp(16px, 4vw, 28px), env(safe-area-inset-bottom, 0px));
+  padding-left: max(clamp(16px, 4vw, 28px), env(safe-area-inset-left, 0px));
+  box-sizing: border-box;
+}
+.ccna-sim-promo-root.ccna-sim-promo-root--open {
+  display: grid;
+}
+.ccna-sim-promo-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 8, 18, 0.72);
+  backdrop-filter: blur(6px);
+}
+.ccna-sim-promo-panel {
+  position: relative;
+  z-index: 1;
+  width: min(520px, 100%);
+  max-height: min(90vh, 640px);
+  overflow: auto;
+  margin: 0;
+  padding: clamp(20px, 4vw, 28px) clamp(18px, 3.5vw, 26px) 22px;
+  border-radius: 16px;
+  border: 1px solid rgba(79, 132, 216, 0.45);
+  background: linear-gradient(165deg, rgba(22, 32, 52, 0.98) 0%, rgba(14, 20, 36, 0.99) 100%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+    0 24px 64px rgba(0, 0, 0, 0.55);
+  color: var(--text);
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  overflow-wrap: break-word;
+}
+@supports (max-height: 85dvh) {
+  .ccna-sim-promo-panel {
+    max-height: min(85dvh, 640px);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ccna-sim-promo-root.ccna-sim-promo-root--open .ccna-sim-promo-panel {
+    animation: ccnaSimPromoIn 0.28s ease-out;
+  }
+}
+@keyframes ccnaSimPromoIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.ccna-sim-promo-close {
+  position: absolute;
+  top: max(10px, env(safe-area-inset-top, 0px));
+  right: max(10px, env(safe-area-inset-right, 0px));
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #cbd5e1;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.ccna-sim-promo-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+.ccna-sim-promo-close:focus-visible {
+  outline: 2px solid #9ec0ff;
+  outline-offset: 2px;
+}
+.ccna-sim-promo-eyebrow {
+  margin: 0 0 6px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7dcea0;
+}
+.ccna-sim-promo-panel h2 {
+  margin: 0 36px 8px 0;
+  font-size: clamp(1.15rem, 3vw, 1.35rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+.ccna-sim-promo-price {
+  margin: 0 0 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px 14px;
+}
+.ccna-sim-promo-price-was {
+  margin: 0;
+  font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #94a3b8;
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgba(248, 113, 113, 0.85);
+}
+.ccna-sim-promo-price-now {
+  font-size: clamp(1.4rem, 3.5vw, 1.75rem);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: #86efac;
+}
+.ccna-sim-promo-limited-pill {
+  align-self: center;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 5px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(250, 204, 21, 0.45);
+  background: rgba(250, 204, 21, 0.1);
+  color: #fde68a;
+}
+.ccna-sim-promo-lead {
+  margin: 0 0 16px;
+  font-size: clamp(0.9rem, 2.1vw, 0.98rem);
+  line-height: 1.55;
+  color: #b8c3d6;
+}
+.ccna-sim-promo-lead strong {
+  color: #e8f4ee;
+}
+.ccna-sim-promo-lead--compact {
+  margin: 0 0 12px;
+  font-size: clamp(0.88rem, 2vw, 0.94rem);
+  line-height: 1.45;
+  max-width: 46ch;
+}
+.ccna-sim-promo-copy {
+  flex-shrink: 0;
+  padding: 12px 16px;
+  min-height: 44px;
+  border-radius: 10px;
+  border: 1px solid rgba(120, 170, 255, 0.45);
+  background: rgba(47, 102, 191, 0.35);
+  color: #f0f4fc;
+  font-weight: 800;
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.ccna-sim-promo-copy:hover {
+  filter: brightness(1.08);
+}
+.ccna-sim-promo-copy:focus-visible {
+  outline: 2px solid #9ec0ff;
+  outline-offset: 2px;
+}
+.ccna-sim-promo-hint {
+  margin: 0 0 18px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #8899b5;
+}
+.ccna-sim-promo-hint--compact {
+  margin: 0 0 14px;
+  font-size: 0.76rem;
+}
+.ccna-sim-promo-code-inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin: 0 0 8px;
+}
+.ccna-sim-promo-code-inline-label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+.ccna-sim-promo-code-inline code {
+  padding: 8px 11px;
+  border-radius: 8px;
+  border: 1px solid rgba(100, 116, 139, 0.55);
+  background: rgba(11, 16, 32, 0.85);
+  font-size: clamp(0.88rem, 2vw, 0.98rem);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.03em;
+  color: #e2e8f0;
+}
+.ccna-sim-promo-copy--compact {
+  padding: 8px 14px;
+  min-height: 40px;
+  font-size: 0.78rem;
+}
+.ccna-sim-promo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.ccna-sim-promo-actions a.ccna-sim-promo-primary,
+.ccna-sim-promo-actions button.ccna-sim-promo-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 20px;
+  min-height: 48px;
+  border-radius: 12px;
+  border: 1px solid rgba(61, 157, 114, 0.65);
+  font: inherit;
+  font-weight: 800;
+  font-size: 0.86rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  color: #f0fdf4;
+  background: linear-gradient(165deg, rgba(52, 168, 118, 0.95) 0%, rgba(24, 94, 66, 0.98) 100%);
+  box-shadow: 0 6px 22px rgba(24, 94, 66, 0.35);
+  touch-action: manipulation;
+  cursor: pointer;
+}
+.ccna-sim-promo-actions button.ccna-sim-promo-primary {
+  appearance: none;
+  -webkit-appearance: none;
+}
+.ccna-sim-promo-actions a.ccna-sim-promo-primary:hover,
+.ccna-sim-promo-actions button.ccna-sim-promo-primary:hover {
+  filter: brightness(1.06);
+}
+.ccna-sim-promo-actions a.ccna-sim-promo-primary:focus-visible,
+.ccna-sim-promo-actions button.ccna-sim-promo-primary:focus-visible {
+  outline: 2px solid #86efac;
+  outline-offset: 3px;
+}
+.ccna-sim-promo-actions a.ccna-sim-promo-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-sizing: border-box;
+  text-align: center;
+}
+.ccna-sim-promo-secondary {
+  padding: 12px 16px;
+  min-height: 48px;
+  border-radius: 10px;
+  border: 1px solid rgba(100, 116, 139, 0.55);
+  background: transparent;
+  color: #cbd5e1;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.86rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.ccna-sim-promo-secondary:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+.ccna-sim-promo-secondary:focus-visible {
+  outline: 2px solid #9ec0ff;
+  outline-offset: 2px;
+}
+a.ccna-sim-promo-secondary.ccna-sim-promo-adaptive-path {
+  border-color: rgba(61, 157, 114, 0.55);
+  color: #d1fae5;
+  background: rgba(31, 168, 85, 0.14);
+}
+a.ccna-sim-promo-secondary.ccna-sim-promo-adaptive-path:hover {
+  background: rgba(31, 168, 85, 0.26);
+  color: #fff;
+}
+@media (max-width: 540px) {
+  .ccna-sim-promo-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .ccna-sim-promo-actions a.ccna-sim-promo-primary,
+  .ccna-sim-promo-actions button.ccna-sim-promo-primary,
+  .ccna-sim-promo-actions .ccna-sim-promo-secondary,
+  .ccna-sim-promo-actions a.ccna-sim-promo-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+  .ccna-sim-promo-code-inline {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .ccna-sim-promo-copy,
+  .ccna-sim-promo-copy--compact {
+    width: 100%;
+  }
+}
