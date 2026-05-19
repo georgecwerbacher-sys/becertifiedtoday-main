@@ -126,6 +126,24 @@
       outline: 2px solid #5ccb98;
       outline-offset: 3px;
     }
+    a.ccna-portal-header-btn.ccna-portal-header-btn--active {
+      border-color: #5ccb98;
+      background: rgba(46, 168, 122, 0.42);
+      box-shadow: 0 0 0 1px rgba(92, 203, 152, 0.35);
+    }
+    a.ccna-portal-header-btn.ccna-portal-header-btn--active:hover {
+      background: rgba(46, 168, 122, 0.52);
+      color: #fff;
+    }
+    a.ccna-portal-header-btn.ccna-portal-header-btn--purchase {
+      border-color: #c9a227;
+      background: rgba(201, 162, 39, 0.2);
+      color: #fde68a;
+    }
+    a.ccna-portal-header-btn.ccna-portal-header-btn--purchase:hover {
+      background: rgba(201, 162, 39, 0.32);
+      color: #fff;
+    }
     a.cta-main.cta-main--locked {
       cursor: not-allowed;
       pointer-events: none;
@@ -1549,12 +1567,13 @@
         />
       </a>
       <div class="header-actions">
+        <!-- Registered: training portal; else header opens 30-day purchase dialog -->
         <a
-          class="ccna-portal-header-btn"
-          href="https://becertifiedtoday-encor.vercel.app/"
-          rel="noopener noreferrer"
-          aria-label="CCNP ENCOR training portal (opens becertifiedtoday-encor.vercel.app)"
-          >CCNP ENCOR Training Portal</a
+          id="ccnpPortalHeaderBtn"
+          class="ccna-portal-header-btn ccna-portal-header-btn--purchase"
+          href="#"
+          aria-label="Purchase 30-day access — opens purchase dialog"
+          >Get 30-day access</a
         >
       </div>
     </header>
@@ -2183,6 +2202,142 @@
       window.addEventListener("scroll", onScrollPastFold, { passive: true });
       onScrollPastFold();
     })();
+  </script>
+  <div
+    id="ccnpPortalGateRoot"
+    class="ccna-sim-promo-root"
+    hidden
+    role="presentation"
+    aria-hidden="true"
+  >
+    <div class="ccna-sim-promo-backdrop" data-ccnp-portal-gate-dismiss tabindex="-1"></div>
+    <div
+      class="ccna-sim-promo-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="ccnpPortalGateTitle"
+      tabindex="-1"
+    >
+      <button type="button" class="ccna-sim-promo-close" data-ccnp-portal-gate-dismiss aria-label="Close dialog">
+        ×
+      </button>
+      <p class="ccna-sim-promo-eyebrow">CCNP ENCOR Training Portal</p>
+      <h2 id="ccnpPortalGateTitle">Get 30-day membership</h2>
+      <p class="ccna-sim-promo-lead">
+        <strong>$19.99</strong> unlocks the CCNP ENCOR training portal and full library on
+        <strong>this browser</strong> for 30 days—practice questions, labs, drag-and-drop, and timed
+        simulations. <strong>No recurring subscription.</strong>
+      </p>
+      <p style="margin: 0 0 14px; font-size: 0.94rem; line-height: 1.45; color: rgba(230, 237, 243, 0.85);">
+        Already paid but blocked?
+        <a href="/CCNA-Study/ccna-portal-request-link.html">Email me a portal link</a>
+        ·
+        <a href="/CCNA-Study/ccna-portal-restore-access.html">Restore access</a>
+      </p>
+      <div class="ccna-sim-promo-actions">
+        <button
+          type="button"
+          class="ccna-sim-promo-primary"
+          data-ccna-portal-30d-checkout
+          aria-label="Purchase 30-day library access and go to Stripe checkout"
+        >
+          Purchase 30-day membership
+        </button>
+        <a
+          class="ccna-sim-promo-secondary"
+          href="/ccnp-home.html#purchase"
+          data-ccnp-portal-gate-dismiss
+          >View purchase options</a
+        >
+        <button type="button" class="ccna-sim-promo-secondary" data-ccnp-portal-gate-dismiss>Close</button>
+      </div>
+    </div>
+  </div>
+  <script src="/CCNA-Study/js/ccna-portal-30d-storage.js" defer></script>
+  <script src="/CCNA-Study/js/ccna-portal-30d-checkout.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var PORTAL_HREF = "/CCNA-Study/CCNA_Training_Portal.html";
+      var portalBtn = document.getElementById("ccnpPortalHeaderBtn");
+      if (!portalBtn) return;
+
+      function hasPortalAccess() {
+        return typeof window.bccPortalAccessActive === "function" && window.bccPortalAccessActive();
+      }
+
+      function syncPortalHeader() {
+        if (hasPortalAccess()) {
+          portalBtn.href = PORTAL_HREF;
+          portalBtn.textContent = "CCNP ENCOR Training Portal";
+          portalBtn.classList.add("ccna-portal-header-btn--active");
+          portalBtn.classList.remove("ccna-portal-header-btn--purchase");
+          portalBtn.setAttribute(
+            "aria-label",
+            "CCNP ENCOR training portal — open when you have active 30-day access"
+          );
+        } else {
+          portalBtn.href = "#";
+          portalBtn.textContent = "Get 30-day access";
+          portalBtn.classList.remove("ccna-portal-header-btn--active");
+          portalBtn.classList.add("ccna-portal-header-btn--purchase");
+          portalBtn.setAttribute("aria-label", "Purchase 30-day access — opens purchase dialog");
+        }
+      }
+
+      syncPortalHeader();
+
+      var gateRoot = document.getElementById("ccnpPortalGateRoot");
+      var gatePanel = gateRoot && gateRoot.querySelector(".ccna-sim-promo-panel");
+      var prevOverflow = "";
+      var gateOpen = false;
+
+      function closeGate() {
+        if (!gateRoot || !gateOpen) return;
+        gateOpen = false;
+        gateRoot.classList.remove("ccna-sim-promo-root--open");
+        gateRoot.setAttribute("hidden", "");
+        gateRoot.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = prevOverflow;
+        document.removeEventListener("keydown", onKeyGate);
+      }
+
+      function openGate() {
+        if (!gateRoot || !gatePanel || gateOpen) return;
+        gateOpen = true;
+        prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        gateRoot.removeAttribute("hidden");
+        gateRoot.classList.add("ccna-sim-promo-root--open");
+        gateRoot.setAttribute("aria-hidden", "false");
+        gatePanel.focus();
+        document.addEventListener("keydown", onKeyGate);
+      }
+
+      function onKeyGate(ev) {
+        if (ev.key === "Escape") {
+          ev.preventDefault();
+          closeGate();
+        }
+      }
+
+      if (gateRoot) {
+        gateRoot.querySelectorAll("[data-ccnp-portal-gate-dismiss]").forEach(function (el) {
+          el.addEventListener("click", function () {
+            closeGate();
+          });
+        });
+      }
+
+      portalBtn.addEventListener("click", function (ev) {
+        if (hasPortalAccess()) return;
+        ev.preventDefault();
+        openGate();
+      });
+
+      window.addEventListener("storage", function (ev) {
+        if (ev.key === "bcc_ccna_portal_30d_v1") syncPortalHeader();
+      });
+    });
   </script>
 </body>
 </html>
