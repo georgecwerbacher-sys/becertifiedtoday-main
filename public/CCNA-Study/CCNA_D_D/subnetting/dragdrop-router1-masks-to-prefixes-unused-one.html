@@ -12,8 +12,6 @@
     h1 { margin: 0 0 8px; font-size: clamp(1.02rem, 2vw, 1.34rem); line-height: 1.35; }
     .sub { margin: 0 0 12px; font-size: 0.9rem; color: #9fb0d0; line-height: 1.4; }
     .exhibit-stack { margin: 0 0 14px; display: flex; flex-direction: column; gap: 12px; }
-    .exhibit-photo { margin: 0; }
-    .exhibit-photo img { display: block; width: 100%; max-width: 900px; height: auto; margin: 0 auto; border-radius: 8px; border: 1px solid #2c3f62; }
     .exhibit-router-cli { margin: 0; border-radius: 10px; border: 1px solid #2a2a2a; overflow: hidden; background: #0a0a0a; box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 4px 18px rgba(0,0,0,.45); }
     .exhibit-router-cli pre { margin: 0; padding: 12px 14px; font-size: 0.66rem; line-height: 1.42; overflow-x: auto; white-space: pre; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; color: #f0f0f0; background: #0a0a0a; tab-size: 8; }
     .layout { display: grid; grid-template-columns: minmax(200px, 0.4fr) minmax(260px, 1fr); gap: 14px; align-items: start; }
@@ -47,9 +45,6 @@
     <h1>Refer to the exhibit. Drag and drop the subnet masks from the left onto the corresponding prefixes on the right.</h1>
     <p class="sub">Not all subnet masks are used. Match each network ID to the mask shown by its <code>/prefix-length</code> in the routing table. Leave the unused mask in the bank.</p>
     <div class="exhibit-stack">
-      <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/router1-host-a-internet-mpls-topology.png" alt="Topology: Host A 10.10.13.214 on Switch1; Router1 on 10.10.10.0/28 (.2) to Switch1 (.1); Internet 10.10.11.0/30 (.1/.2); MPLS 10.10.12.0/30 (.1/.2)." width="900" decoding="async" loading="lazy" />
-      </figure>
       <div class="exhibit-router-cli" aria-label="Router1 show ip route">
 <pre>Router1#show ip route
 Gateway of last resort is 10.10.11.2 to network 0.0.0.0
