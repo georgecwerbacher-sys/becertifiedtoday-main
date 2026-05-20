@@ -5,6 +5,7 @@
 (function () {
   "use strict";
   var id = window.__BCC_GA_MEASUREMENT_ID__ || "G-YTT6KBHX7V";
+  var adsId = window.__BCC_GOOGLE_ADS_ID__ || "AW-18158574148";
   if (!id || window.__bccGaConfigured) return;
   window.__bccGaConfigured = true;
   window.dataLayer = window.dataLayer || [];
@@ -14,4 +15,7 @@
   window.gtag = gtag;
   gtag("js", new Date());
   gtag("config", id, { anonymize_ip: true });
+  if (adsId) {
+    gtag("config", adsId);
+  }
 })();
