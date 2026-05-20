@@ -153,7 +153,7 @@
       align-items: center;
     }
     .question-nav .nav-link,
-    .question-nav .nav-check {
+    .answer-actions .nav-check {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -168,16 +168,18 @@
       font-family: inherit;
       cursor: pointer;
     }
+    .answer-actions {
+      margin: 16px 0 0;
+      display: flex;
+      justify-content: flex-start;
+    }
     .question-nav .nav-link--disabled {
       opacity: 0.35;
       pointer-events: none;
       cursor: default;
     }
-    .question-nav .nav-check {
-      margin-left: auto;
-    }
     .question-nav .nav-link:hover,
-    .question-nav .nav-check:hover {
+    .answer-actions .nav-check:hover {
       filter: brightness(1.08);
     }
     .answer {
@@ -212,7 +214,6 @@
     figure.exhibit-photo img {
       width: 100%;
       height: auto;
-      vertical-align: middle;
       display: block;
     }
     figure.exhibit-photo figcaption {
@@ -317,7 +318,6 @@
       <a class="nav-link nav-home" href="/index.html">Home</a>
       <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/wpa3-implementation-security-protocol-gcmp.html">Next</a>
       </div>
-      <button id="checkBtn" type="button" class="nav-check">Check answer</button>
     </nav>
     <div class="exhibit-stack">
       <div class="exhibit-router-cli" role="region" aria-label="show ip route CLI output">
@@ -349,6 +349,9 @@ D    10.255.5.5/32 [90/1] via 10.0.45.5, 00:00:13, GigabitEthernet0/1</pre>
     <label class="choice"><input type="checkbox" name="defad1" value="C" />C. RIP</label>
     <label class="choice"><input type="checkbox" name="defad1" value="D" />D. Local</label>
 
+    <div class="answer-actions">
+      <button id="checkBtn" type="button" class="nav-check">Check answer</button>
+    </div>
     <div id="answerBox" class="answer" aria-live="polite"></div>
   </main>
 

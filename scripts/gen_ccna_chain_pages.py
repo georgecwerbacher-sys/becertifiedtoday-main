@@ -165,7 +165,7 @@ STYLE = r"""  <style>
       align-items: center;
     }
     .question-nav .nav-link,
-    .question-nav .nav-check {
+    .answer-actions .nav-check {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -180,16 +180,18 @@ STYLE = r"""  <style>
       font-family: inherit;
       cursor: pointer;
     }
+    .answer-actions {
+      margin: 16px 0 0;
+      display: flex;
+      justify-content: flex-start;
+    }
     .question-nav .nav-link--disabled {
       opacity: 0.35;
       pointer-events: none;
       cursor: default;
     }
-    .question-nav .nav-check {
-      margin-left: auto;
-    }
     .question-nav .nav-link:hover,
-    .question-nav .nav-check:hover {
+    .answer-actions .nav-check:hover {
       filter: brightness(1.08);
     }
     .answer {
@@ -224,7 +226,6 @@ STYLE = r"""  <style>
     figure.exhibit-photo img {
       width: 100%;
       height: auto;
-      vertical-align: middle;
       display: block;
     }
     figure.exhibit-photo figcaption {
@@ -352,15 +353,11 @@ def build_question_nav(
             '      <span class="nav-link nav-next nav-link--disabled" aria-hidden="true">Next</span>'
         )
     links_block = "\n".join(parts)
-    check_btn = ""
-    if show_check:
-        check_btn = '\n      <button id="checkBtn" type="button" class="nav-check">Check answer</button>'
     return (
         '    <nav class="question-nav" aria-label="Question navigation">\n'
         "      <div class=\"question-nav-links\">\n"
         f"{links_block}\n"
-        "      </div>"
-        f"{check_btn}\n"
+        "      </div>\n"
         "    </nav>"
     )
 
@@ -554,6 +551,9 @@ def page_checkbox(
 {main_open}
 {choices_html}
 
+    <div class="answer-actions">
+      <button id="checkBtn" type="button" class="nav-check">Check answer</button>
+    </div>
     <div id="answerBox" class="answer" aria-live="polite"></div>
   </main>
 
@@ -7994,20 +7994,34 @@ S*   0.0.0.0/0 [1/0] via 172.16.2.2</pre>
         {
             "slug": "router-y-route-10-227-225-255-via-router-d",
             "title": "CCNA — Router-Y LPM to 10.227.225.255",
-            "prepend_html": """    <div class="exhibit-router-cli" role="region" aria-label="Router-Y show ip route">
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/router-y-lpm-10-227-225-255-topology.png" alt="Topology: PC A 10.223.2.2 connects to Router-Y GigabitEthernet0/1 10.223.2.1; Router-Y GigabitEthernet0/0 10.224.1.1 connects to routers A, B, C, and D at 10.224.1.2, 10.224.1.3, 10.224.1.4, and 10.224.1.5." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="Router-Y show ip route">
         <pre>Router-Y#show ip route
-...
+
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       + - replicated route, % - next hop override, p - overrides from PfR
+
 Gateway of last resort is not set
 
-10.0.0.0/8 is variably subnetted
+10.0.0.0/8 is variably subnetted 
 B       10.0.0.0/8 [1/0] via 10.224.1.2
 B       10.27.150.224/27 [20/0] via 10.224.1.3, 1w6d
 S       10.128.0.0/9 [1/0] via 10.224.1.3
 B       10.224.0.0/11 [20/0] via 10.224.1.5, 5d18h
 B       10.224.0.0/15 [20/0] via 10.224.1.4, 5d18h
 C       10.223.0.0/24 is directly connected, GigabitEthernet0/1
-C       10.224.0.0/24 is directly connected, GigabitEthernet0/0
+C       10.224.0.0/24 is directly connected, GigabitEthernet0/0 
 B       10.226.34.0/24 [20/0] via 10.224.1.5, 5d18h</pre>
+      </div>
     </div>
     <p class="study-meta">On Router-Y, <strong>GigabitEthernet0/0</strong> (10.224.0.0/24) reaches neighbors: <strong>10.224.1.2</strong> = router A, <strong>.1.3</strong> = router B, <strong>.1.4</strong> = router C, <strong>.1.5</strong> = router D.</p>""",
             "stem": "PC A is communicating with another device at IP address 10.227.225.255. Through which router does router Y route the traffic?",
@@ -13722,6 +13736,585 @@ ip route 0.0.0.0 0.0.0.0 10.17.44.36</pre>
                 "rollover",
                 "straight-through",
                 "crossover",
+            ],
+        },
+        {
+            "slug": "r14-floating-static-r86-lan-external-eigrp",
+            "title": "CCNA — R14 floating static route to R86 LAN",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r14-r86-floating-static-r86-lan-topology.png" alt="Topology: R14 Fa0/0 10.73.65.65 connected to R86 Fa0/0 10.73.65.66 over 10.73.65.64/30; R86 Fa0/1 connects to LAN 10.80.65.0/29; R14 loopback 10.10.1.14/32; R86 loopback 10.10.1.86/32." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. An engineer must configure a floating static route on an external EIGRP network. The destination subnet is the /29 on the LAN interface of R86. Which command must be executed on R14?",
+            "name": "r14flt861",
+            "correct": "C",
+            "mono": True,
+            "explain": "Correct. C — The R86 LAN is 10.80.65.0/29, so the route must use mask 255.255.255.248 and point to R86's next-hop address on the shared link, 10.73.65.66. Because this is a floating static backup for an external EIGRP route, its administrative distance must be higher than external EIGRP's AD of 170; AD 171 makes the static route less preferred until the EIGRP route is unavailable. A uses the wrong /21 mask and AD 1. B uses a /28 mask and the wrong R14 interface. D reverses the destination and next-hop fields and uses AD 255, which is unusable.",
+            "choices": [
+                "ip route 10.80.65.0 255.255.248.0 10.73.65.66 1",
+                "ip route 10.80.65.0 255.255.255.240 fa0/1 89",
+                "ip route 10.80.65.0 255.255.255.248 10.73.65.66 171",
+                "ip route 10.73.65.66 0.0.0.224 10.80.65.0 255",
+            ],
+        },
+        {
+            "slug": "r1-lan-interface-ipv6-address-dhcp",
+            "title": "CCNA — R1 LAN interface IPv6 DHCP address",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r1-r2-dhcpv6-lan-topology.png" alt="Topology: R1 connects to SW1, file server, and DHCPv6 server on 2001:DB8:D8D2:1008::/64; R2 connects to SW2, IP phones, and workstations on 2001:DB8:D8D2:1009::/64; R1 and R2 are linked over GigabitEthernet0/0." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. An IPv6 address must be obtained automatically on the LAN interface on R1. Which command must be implemented to accomplish the task?",
+            "name": "r1v6dhcp1",
+            "correct": "C",
+            "mono": True,
+            "explain": "Correct. C — The interface command ipv6 address dhcp starts the DHCPv6 client process so the interface can obtain an IPv6 address dynamically. A attempts to configure a specific global address and is not a valid automatic method. B is only the link-local prefix, not a complete interface address. D uses SLAAC autoconfiguration from router advertisements, which is different from obtaining the address through DHCPv6.",
+            "choices": [
+                "ipv6 address 2001:db8:d8d2:1008:4358:23:1390::/64",
+                "ipv6 address fe80::/10",
+                "ipv6 address dhcp",
+                "ipv6 address autoconfig",
+            ],
+        },
+        {
+            "slug": "r14-host-route-pc10-via-r86",
+            "title": "CCNA — R14 host route to PC 10",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r14-r86-pc10-host-route-topology.png" alt="Topology: R14 Fa0/0 10.73.65.65 connects to R86 Fa0/0 10.73.65.66 over 10.73.65.64/30; R86 Fa0/1 connects to 10.80.65.0/28 with PC 10 at 10.80.65.10." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. Router R14 is in the process of being configured. Which configuration must be used to establish a host route to PC 10?",
+            "name": "r14hostpc10",
+            "correct": "C",
+            "mono": True,
+            "explain": "Correct. C — A host route to a single IPv4 address uses mask 255.255.255.255. From R14, PC 10 is behind R86, so the next hop is R86's address on the shared transit link, 10.73.65.66. A uses a /31 mask and points to R86's LAN interface instead of the next hop on R14's connected segment. B and D route to the wrong destination network/address.",
+            "choices": [
+                "ip route 10.80.65.10 255.255.255.254 10.80.65.1",
+                "ip route 10.73.65.66 0.0.0.255 10.80.65.10",
+                "ip route 10.80.65.10 255.255.255.255 10.73.65.66",
+                "ip route 10.73.65.65 255.0.0.0 10.80.65.10",
+            ],
+        },
+        {
+            "slug": "r86-static-route-172-16-34-0-29-via-r14",
+            "title": "CCNA — R86 static route to 172.16.34.0/29 via R14",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/r14-r86-static-route-172-16-34-topology.png" alt="Topology: R14 Fa0/0 10.73.65.65 connects to R86 Fa0/0 10.73.65.66 over 10.73.65.64/30; R14 Loopback0 10.10.1.14/32; R86 Loopback0 10.10.1.86/32." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. A static route must be configured on R86 to forward traffic for the 172.16.34.0/29 network, which resides on R14. Which command must be used to fulfill the request?",
+            "name": "r86st17216",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A — The static route must match destination network 172.16.34.0/29, whose mask is 255.255.255.248, and point to R14's next-hop address on the directly connected 10.73.65.64/30 link: 10.73.65.65. B uses a /27 mask and points to R86's own link address. C reverses the destination and next-hop fields. D uses a wildcard mask, not the subnet mask required by the ip route command, and points to the transit subnet address instead of R14.",
+            "choices": [
+                "ip route 172.16.34.0 255.255.255.248 10.73.65.65",
+                "ip route 172.16.34.0 255.255.255.224 10.73.65.66",
+                "ip route 10.73.65.65 255.255.255.248 172.16.34.0",
+                "ip route 172.16.34.0 0.0.0.7 10.73.65.64",
+            ],
+        },
+        {
+            "slug": "r1-r3-loopback-valid-routes-ad-metric-choose-two",
+            "title": "CCNA — R1 valid routes to R3 loopback (choose two)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/16.png" alt="Topology: OSPF Area 0 contains R3, R4, and R2; OSPF Area 1 contains R1, R4, and R2. R3 loopback is 1.1.1.3/32, R4 loopback is 1.1.1.4/32, R2 loopback is 1.1.1.2/32, and R1 loopback is 1.1.1.1/32." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="Transcribed topology labels">
+        <pre>OSPF Area 0
+  R3 Loopback0: 1.1.1.3/32
+  R4 Loopback0: 1.1.1.4/32
+  R2 Loopback0: 1.1.1.2/32
+  R4 F0/0 to R3 F0/0: 34.1.1.0/30
+  R2 F0/0 to R3 F0/1: 32.1.1.0/30
+
+OSPF Area 1
+  R1 Loopback0: 1.1.1.1/32
+  R4 F0/1 to R1 F0/0: 14.1.1.0/30
+  R2 F0/1 to R1 F0/1: 12.1.1.0/30</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. Which two values does router R1 use to identify valid routes for the R3 loopback address 1.1.1.3/32? (Choose two)",
+            "name": "r1r3ospfvals1",
+            "choose_two": True,
+            "correct": ["B", "C"],
+            "explain": "Correct. B and C — For the same destination prefix, a router first considers the route source with the lowest administrative distance. When candidate routes are from the same routing protocol or otherwise have the same AD, the protocol metric is used to choose the best valid path. OSPF's metric is cost, but route selection uses the total route metric to the destination, not a separate lowest cost only to the next hop. Highest metric and highest administrative distance are less preferred, not selected.",
+            "choices": [
+                "lowest cost to reach the next hop",
+                "lowest administrative distance",
+                "lowest metric",
+                "highest metric",
+                "highest administrative distance",
+            ],
+        },
+        {
+            "slug": "site-b-router2-no-default-route-192-168-0-10",
+            "title": "CCNA — Site B no route to Site A application",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/18.png" alt="Topology: Site A connects to Router1, Router1 connects across a WAN link to Router2, and Router2 connects to Site B." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="Router2 show ip route">
+        <pre>Router2#show ip route
+Gateway of last resort is not set
+
+     10.0.0.0/8 is variably subnetted, 4 subnets, 2 masks
+C       10.10.10.0/30 is directly connected, FastEthernet0/3
+C       10.10.10.8/30 is directly connected, FastEthernet0/2
+C       10.10.10.12/30 is directly connected, FastEthernet0/1
+S       172.16.0.0/12 [1/0] via 10.10.10.1
+O       10.10.13.0/25 [110/11] via 10.10.10.9, 00:00:03, FastEthernet0/2
+                     [110/11] via 10.10.10.13, 00:00:03, FastEthernet0/1</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. User traffic originating within site B is failing to reach an application hosted on IP address 192.168.0.10, which is located within site A. What is determined by the routing table?",
+            "name": "sitebnodef1",
+            "correct": "B",
+            "explain": "Correct. B — Router2 has no gateway of last resort and no specific route that matches 192.168.0.10. Its connected 10.10.10.x routes, static 172.16.0.0/12 route, and OSPF 10.10.13.0/25 route do not include 192.168.0.10, so traffic to that destination cannot be delivered without a matching route or default route. The table does not prove Router1 needs a static route, that Site B's default gateway is wrong, or that an ACL is blocking the traffic.",
+            "choices": [
+                "The traffic to 192.168.0.10 requires a static route to be configured in router1",
+                "The lack of a default route prevents delivery of the traffic",
+                "The default gateway for site B is configured incorrectly.",
+                "The traffic is blocked by an implicit deny in an ACL on router2.",
+            ],
+        },
+        {
+            "slug": "r1-static-nat-pc1-to-r2-loopback",
+            "title": "CCNA — Static NAT for PC1 to reach R2 loopback",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/22.png" alt="Topology: PC1 172.16.29.78 connects to R1 FastEthernet1/0; R1 FastEthernet0/0 connects to R2 across 10.139.91.0/30." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="R1 partial configuration">
+        <pre>R1#
+!
+interface Loopback0
+ ip address 10.1.1.1 255.255.255.255
+!
+interface FastEthernet0/0
+ ip address 10.139.91.1 255.255.255.252
+ ip virtual-reassembly in
+!
+interface FastEthernet1/0
+ ip address 172.16.29.1 255.255.255.0
+ ip virtual-reassembly in
+!
+router eigrp 100
+ network 10.1.1.1 0.0.0.0
+ network 10.139.91.0 0.0.0.3
+!
+--output suppressed--</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. An engineer must translate the PC1 IP address to 10.199.77.100 and permit PC1 to ping the Loopback0 interface on router R2. Which configuration must be used?",
+            "name": "r1natpc1r2",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A — PC1 is on R1's FastEthernet1/0 LAN, so that interface is NAT inside. The R2-facing FastEthernet0/0 interface is NAT outside. Static NAT uses ip nat inside source static inside-local inside-global, so 172.16.29.78 must translate to 10.199.77.100. R2 also needs a route back to the translated inside-global host address through R1 at 10.139.91.1. Option B reverses both NAT roles and the static NAT address order. Options C and D route R2 back to the untranslated inside-local address instead of the translated address.",
+            "choices": [
+                "Option A\n\nR1#\n!\ninterface FastEthernet0/0\n ip nat outside\n!\ninterface FastEthernet1/0\n ip nat inside\n!\nip nat inside source static 172.16.29.78 10.199.77.100\n\nR2\nip route 10.199.77.100 255.255.255.255 10.139.91.1",
+                "Option B\n\nR1#\n!\ninterface FastEthernet0/0\n ip nat inside\n!\ninterface FastEthernet1/0\n ip nat outside\n!\nip nat inside source static 10.199.77.100 172.16.29.78\n\nR2\nip route 10.199.77.100 255.255.255.255 10.139.91.1",
+                "Option C\n\nR1#\n!\ninterface FastEthernet0/0\n ip nat outside\n!\ninterface FastEthernet1/0\n ip nat inside\n!\nip nat inside source static 172.16.29.78 10.199.77.100\n\nR2\nip route 172.16.29.78 255.255.255.255 10.139.91.1",
+                "Option D\n\nR1#\n!\ninterface FastEthernet0/0\n ip nat outside\n!\ninterface FastEthernet1/0\n ip nat inside\n!\nip nat inside source static 172.16.29.78 10.199.77.100\n\nR2\nip route 172.16.29.78 255.255.255.255 10.139.91.1",
+            ],
+        },
+        {
+            "slug": "r1-static-routes-pc1-to-all-10-10-10-pcs-choose-two",
+            "title": "CCNA — R1 static routes to all 10.10.10.0/24 PCs (choose two)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/26.png" alt="Topology: PC1 172.16.5.1 connects to R1 G0/0 172.16.5.2. R1 G0/1 192.168.2.1 connects to a transit segment with R2 G0/1 192.168.2.3 and R3 G0/1 192.168.2.2. R2 G0/0 10.10.10.1 connects to PC2 .2, PC3 .3, and PC4 .4. R3 G0/0 10.10.10.5 connects to PC5 .10." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. The router R1 is in the process of being configured. Routers R2 and R3 are configured correctly for the new environment. Which two commands must be configured on R1 for PC1 to communicate to all PCs on the 10.10.10.0/24 network? (Choose two)",
+            "name": "r1pc1010routes1",
+            "choose_two": True,
+            "correct": ["D", "E"],
+            "mono": True,
+            "explain": "Correct. D and E — R1 can use a general route for 10.10.10.0/24 through R2 at 192.168.2.3 to reach PC2, PC3, and PC4. PC5 at 10.10.10.10 is behind R3, so the more specific host route to 10.10.10.10/32 through 192.168.2.2 overrides the /24 route by longest-prefix match. A and B use only the outbound interface on a multiaccess segment and do not provide the complete set of routes. C sends 10.10.10.0/29 toward R3, which is the wrong next hop for the lower addresses behind R2.",
+            "choices": [
+                "ip route 10.10.10.8 255.255.255.248 g0/1",
+                "ip route 10.10.10.10 255.255.255.255 g0/1",
+                "ip route 10.10.10.0 255.255.255.248 192.168.2.2",
+                "ip route 10.10.10.0 255.255.255.0 192.168.2.3",
+                "ip route 10.10.10.10 255.255.255.255 192.168.2.2",
+            ],
+        },
+        {
+            "slug": "r2-eigrp-next-hop-pc2-to-application-server",
+            "title": "CCNA — R2 EIGRP next hop to application server",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/39.png" alt="Topology: R1, R2, and R3 are connected in a line. R1 to R2 uses 10.10.10.0/30, R2 to R3 uses 10.10.10.4/30. PC2 is on R2's 192.168.20.0/24 LAN, and the application server is on R3's 192.168.30.0/24 LAN." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="R2 show ip route">
+        <pre>R2# show ip route
+10.0.0.0/30 is subnetted, 2 subnets
+C    10.10.10.0 is directly connected, Serial0/0/0
+C    10.10.10.4 is directly connected, FastEthernet0/1
+D    192.168.10.0/24 [90/2172416] via 10.10.10.1, 01:05:11, Serial0/0/0
+C    192.168.20.0/24 is directly connected, FastEthernet0/0
+D    192.168.30.0/24 [90/30720] via 10.10.10.6, 01:12:53, FastEthernet0/1</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. What is the next-hop IP address for R2 so that PC2 reaches the application server via EIGRP?",
+            "name": "r2eigrpnh1",
+            "correct": "C",
+            "explain": "Correct. C — The application server is in the 192.168.30.0/24 network. R2's routing table shows the EIGRP route for 192.168.30.0/24 as [90/30720] via 10.10.10.6 out FastEthernet0/1. Therefore, R2 uses 10.10.10.6 as the next-hop IP address. 10.10.10.5 is R2's own address on that link, 192.168.20.1 is on R2's local LAN, and 192.168.30.1 is R3's LAN interface, not R2's next hop.",
+            "choices": [
+                "10.10.10.5",
+                "192.168.20.1",
+                "10.10.10.6",
+                "192.168.30.1",
+            ],
+        },
+        {
+            "slug": "mdf-dc-default-stp-root-lowest-mac",
+            "title": "CCNA — Default STP root bridge by lowest MAC",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/mdf-dc-default-stp-root-topology.png" alt="Topology: four switches in a square. MDF-DC-1 is top left, MDF-DC-2 top right, MDF-DC-3 bottom left, and MDF-DC-4 bottom right." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. All interfaces are in the same VLAN. All switches are configured with the default STP priorities. During the STP elections, which switch becomes the root bridge?",
+            "name": "mdfdcstp1",
+            "correct": "A",
+            "explain": "Correct. A — STP elects the root bridge using the lowest bridge ID. Because all switches have the default priority, the tie is broken by the lowest MAC address. The two lowest candidates begin with 08:0E, and MDF-DC-3 wins because 08:0E:18:1A:3C:9D is lower than MDF-DC-2's 08:0E:18:22:05:97. The 08:E0 addresses are higher.",
+            "choices": [
+                "MDF-DC-3: 08:0E:18:1A:3C:9D",
+                "MDF-DC-4: 08:E0:19:A1:B3:19",
+                "MDF-DC-2: 08:0E:18:22:05:97",
+                "MDF-DC-1: 08:E0:43:78:24:50",
+            ],
+        },
+        {
+            "slug": "sw1-sw12-multivendor-dot1q-trunk",
+            "title": "CCNA — SW_1 and SW_12 multivendor trunk",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/48.png" alt="Topology: SW_1 on floor 5 connects by Ethernet0/0 to SW_12 on floor 4. Both sides carry VLAN 5 and VLAN 6." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="Switch Ethernet0/0 switchport output">
+        <pre>Name: Et0/0
+Switchport: Enabled
+Administrative Mode: static access
+Operational Mode: static access
+Administrative Trunking Encapsulation: isl
+Operational Trunking Encapsulation: native
+Negotiation of Trunking: Off
+Access Mode VLAN: 7 (VLAN0007)
+Trunking Native Mode VLAN: 1 (default)
+Administrative Native VLAN tagging: enabled
+Voice VLAN: none
+...
+Trunking VLANs Enabled: 5,6
+Pruning VLANs Enabled: 2-1001
+Capture Mode: Disabled
+Capture VLANs Allowed: ALL</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. SW_1 and SW_12 represent two companies that are merging. They use separate network vendors. The VLANs on both sides have been migrated to share IP subnets. Which command sequence must be issued on both sides to join the two companies and pass all VLANs between the companies?",
+            "name": "sw1sw12trunk1",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A — The ports must be forced into trunk mode and use IEEE 802.1Q encapsulation for multivendor compatibility. The exhibit shows the current interface is operating as a static access port, and its administrative trunk encapsulation is ISL, which is Cisco-specific. Option B includes an invalid dot1q ethertype value for VLAN trunking. Option C relies on DTP dynamic negotiation, which is not appropriate with separate vendors. Option D does not correctly force trunking and also disables negotiation.",
+            "choices": [
+                "switchport mode trunk\nswitchport trunk encapsulation dot1q",
+                "switchport mode trunk\nswitchport trunk allowed vlan all\nswitchport dot1q ethertype 0800",
+                "switchport mode dynamic desirable\nswitchport trunk allowed vlan all\nswitchport trunk native vlan 7",
+                "switchport dynamic auto\nswitchport nonegotiate",
+            ],
+        },
+        {
+            "slug": "r7-r8-r9-last-usable-interface-addresses",
+            "title": "CCNA — Last usable interface addresses",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/53.png" alt="Topology: R7 connects to SW7 on network 10.88.31.64/26, R8 connects to SW8 on network 10.19.63.80/28, and R9 connects to SW9 on network 10.23.98.128/27." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. Each router must be configured with the last usable IP address in the subnet. Which configuration fulfills this requirement?",
+            "name": "r789lastusable1",
+            "correct": "A",
+            "mono": True,
+            "explain": "Correct. A — For 10.88.31.64/26, the broadcast address is 10.88.31.127, so the last usable address is 10.88.31.126 with mask 255.255.255.192. For 10.19.63.80/28, the broadcast address is 10.19.63.95, so the last usable address is 10.19.63.94 with mask 255.255.255.240. For 10.23.98.128/27, the broadcast address is 10.23.98.159, so the last usable address is 10.23.98.158 with mask 255.255.255.224.",
+            "choices": [
+                "Option A\n\nR7#\ninterface FastEthernet1/0\n ip address 10.88.31.126 255.255.255.192\n\nR8#\ninterface FastEthernet0/0\n ip address 10.19.63.94 255.255.255.240\n\nR9#\ninterface FastEthernet1/1\n ip address 10.23.98.158 255.255.255.224",
+                "Option B\n\nR7#\ninterface FastEthernet1/0\n ip address 10.88.31.126 255.255.255.240\n\nR8#\ninterface FastEthernet0/0\n ip address 10.19.63.94 255.255.255.192\n\nR9#\ninterface FastEthernet1/1\n ip address 10.23.98.158 255.255.255.248",
+                "Option C\n\nR7#\ninterface FastEthernet1/0\n ip address 10.88.31.127 255.255.255.240\n\nR8#\ninterface FastEthernet0/0\n ip address 10.19.63.95 255.255.255.192\n\nR9#\ninterface FastEthernet1/1\n ip address 10.23.98.159 255.255.255.248",
+                "Option D\n\nR7#\ninterface FastEthernet1/0\n ip address 10.88.31.127 255.255.255.192\n\nR8#\ninterface FastEthernet0/0\n ip address 10.19.63.95 255.255.255.240\n\nR9#\ninterface FastEthernet1/1\n ip address 10.23.98.159 255.255.255.224",
+            ],
+        },
+        {
+            "slug": "r1-static-route-new-office-172-25-25-via-r2",
+            "title": "CCNA — R1 static route to new office via R2",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/54.png" alt="Topology: Main office 192.168.25.0/24 connects to R1. R1 GigabitEthernet0/1 is 192.168.2.1 on the 192.168.2.0/30 link to R2 GigabitEthernet0/2 at 192.168.2.2. R2 connects to the new office network 172.25.25.0/24." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. A network engineer is updating the configuration on router R1 to connect a new branch office to the company network. R2 has been configured correctly. Which command must the engineer configure so that devices at the new site communicate with the main office?",
+            "name": "r1newoffice1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D — R1 needs a route to the remote new-office network 172.25.25.0/24, not just a host route to 172.25.25.1. The next hop from R1 is R2's address on the directly connected 192.168.2.0/30 transit link, 192.168.2.2. Option B points the route to R1's own transit address, and A and C are host routes that use local interface names instead of the correct next-hop route to the subnet.",
+            "choices": [
+                "ip route 172.25.25.1 255.255.255.255 g0/2",
+                "ip route 172.25.25.0 255.255.255.0 192.168.2.1",
+                "ip route 172.25.25.1 255.255.255.255 g0/1",
+                "ip route 172.25.25.0 255.255.255.0 192.168.2.2",
+            ],
+        },
+        {
+            "slug": "sw1-conference-room-port-security-maximum-two",
+            "title": "CCNA — SW1 conference room port security",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/59.png" alt="Topology: SW1 connects to SW2 over an 802.1Q trunk carrying VLANs 1, 100, 101, 102, and 103. PC1 connects to SW1 Gi1/0/15 in VLAN 100 with MAC address 0000.abcd.0004." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. SW1 supports connectivity for a lobby conference room and must be secured. The engineer must limit the connectivity from PC1 to the SW1 and SW2 network. The MAC addresses allowed must be limited to two. Which configuration secures the conference room connectivity?",
+            "name": "sw1confps1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D — Port security must be enabled on the access port, and switchport port-security maximum 2 sets the allowed secure MAC address limit to two. A statically permits PC1's MAC address, but without the maximum command the default secure MAC limit remains 1, not 2. B configures a secure MAC address without enabling port security. C uses invalid syntax; the correct maximum command is switchport port-security maximum 2.",
+            "choices": [
+                "interface gi1/0/15\n switchport port-security\n switchport port-security mac-address 0000.abcd.0004 vlan 100",
+                "interface gi1/0/15\n switchport port-security mac-address 0000.abcd.0004 vlan 100",
+                "interface gi1/0/15\n switchport port-security mac-address 0000.abcd.0004 vlan 100\n interface switchport secure-mac limit 2",
+                "interface gi1/0/15\n switchport port-security\n switchport port-security maximum 2",
+            ],
+        },
+        {
+            "slug": "sw1-vlan10-dhcp-helper-to-server-vlan20",
+            "title": "CCNA — SW1 DHCP relay for VLAN 10",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/62.png" alt="Topology: R1 DHCP server at 192.168.20.2 connects to SW1 Fa0/2 in VLAN 20. A PC DHCP client connects to SW1 Fa0/1 in VLAN 10, 192.168.10.0/24." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="DHCP server and SW1 configuration">
+        <pre>DHCPServer(dhcp-config)#ip dhcp pool Net10
+DHCPServer(dhcp-config)#default-router 192.168.10.2
+DHCPServer(dhcp-config)#domain-name cisco.local
+DHCPServer(dhcp-config)#dns-server 192.168.10.5
+DHCPServer(dhcp-config)#exit
+DHCPServer(dhcp-config)#ip dhcp pool Net20
+DHCPServer(dhcp-config)#default-router 192.168.20.2
+DHCPServer(dhcp-config)#domain-name cisco.local
+DHCPServer(dhcp-config)#dns-server 192.168.20.5
+DHCPServer(dhcp-config)#exit
+DHCPServer(config)#ip dhcp excluded-address 192.168.10.1 192.168.10.10
+DHCPServer(config)#ip dhcp excluded-address 192.168.20.1 192.168.20.10
+DHCPServer(config)#int g0/0
+DHCPServer(config-if)#no shut
+DHCPServer(config-if)#ip address 192.168.20.2 255.255.255.0
+DHCPServer(config-if)#exit
+
+SW1(config)#vlan 10
+SW1(config-vlan)#name vlan10
+SW1(config-vlan)#exit
+SW1(config)#vlan 20
+SW1(config-vlan)#name vlan20
+SW1(config-vlan)#exit
+SW1(config)#interface vlan 10
+SW1(config-if)#ip address 192.168.10.1 255.255.255.0
+SW1(config-if)#exit
+SW1(config)#interface vlan 20
+SW1(config-if)#ip address 192.168.20.1 255.255.255.0
+SW1(config-if)#exit
+SW1(config)#interface fa0/1
+SW1(config-if)#switchport mode access
+SW1(config-if)#switchport access vlan 10
+SW1(config-if)#exit
+SW1(config)#interface fa0/2
+SW1(config-if)#switchport mode access
+SW1(config-if)#switchport access vlan 20
+SW1(config-if)#exit</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. The DHCP server is configured with a DHCP pool for each of the subnets represented. Which command must be configured on switch SW1 to allow DHCP clients on VLAN 10 to receive dynamic IP addresses from the DHCP server?",
+            "name": "sw1dhcphelp1",
+            "correct": "C",
+            "mono": True,
+            "explain": "Correct. C — DHCP clients in VLAN 10 send broadcasts that do not cross into VLAN 20. The ip helper-address command must be configured on the client-facing SVI, interface VLAN 10, and it must point to the DHCP server address, 192.168.20.2. 192.168.10.2 is not the DHCP server; 192.168.20.1 is SW1's VLAN 20 SVI; and 192.168.10.1 is SW1's VLAN 10 SVI.",
+            "choices": [
+                "SW1(config-if)#ip helper-address 192.168.10.2",
+                "SW1(config-if)#ip helper-address 192.168.20.1",
+                "SW1(config-if)#ip helper-address 192.168.20.2",
+                "SW1(config-if)#ip helper-address 192.168.10.1",
+            ],
+        },
+        {
+            "slug": "r1-floating-static-rip-backup-192-168-23",
+            "title": "CCNA — R1 floating static backup for RIP route",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/70.png" alt="Topology: R1, R2, and R3 form a triangle. R1 to R2 is 192.168.12.0/24 with R1 .1 and R2 .2. R1 to R3 is 192.168.13.0/24 with R1 .1 and R3 .3. R2 to R3 is 192.168.23.0/24 with R2 .2 and R3 .3. RIP runs between R1 and R2." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. Routers R1 and R2 are configured with RIP as the dynamic routing protocol. A network engineer must configure R1 with a floating static route to serve as a backup route to network 192.168.23.0. Which command must the engineer configure on R1?",
+            "name": "r1ripfloat1",
+            "correct": "D",
+            "mono": True,
+            "explain": "Correct. D — The backup route must match the destination network 192.168.23.0/24 and point to R3's next-hop address on R1's directly connected 192.168.13.0/24 link, 192.168.13.3. RIP has an administrative distance of 120, so the static route must use a higher AD, such as 121, to float behind the RIP route. A is a host route, B uses AD 100 so it would be preferred over RIP, and C uses the default static AD of 1.",
+            "choices": [
+                "ip route 192.168.23.0 255.255.255.255 192.168.13.3 121",
+                "ip route 192.168.23.0 255.255.255.0 192.168.13.3 100",
+                "ip route 192.168.23.0 255.255.255.0 192.168.13.3",
+                "ip route 192.168.23.0 255.255.255.0 192.168.13.3 121",
+            ],
+        },
+        {
+            "slug": "switch-a-b-cat5-speed-mismatch-down",
+            "title": "CCNA — Switch access link down due to speed mismatch",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/76.png" alt="Topology: Switch A port 1 connects to Switch B port 2 over a 99-meter Cat5 cable. Switch A is configured speed 100 half duplex; Switch B is configured speed 10 full duplex." width="900" decoding="async" loading="lazy" />
+      </figure>
+    </div>""",
+            "stem": "Refer to the exhibit. The switches are connected via a Cat5 Ethernet cable that was successfully tested. The interfaces are configured as access ports and are both in a down status. What is the cause of this issue?",
+            "name": "swcat5spd1",
+            "correct": "B",
+            "explain": "Correct. B — The exhibit shows one side forced to speed 100 and the other side forced to speed 10. A speed mismatch prevents the Ethernet link from coming up, so both ports can remain down. The 99-meter cable is within the usual 100-meter limit for Cat5 Ethernet. A duplex mismatch can cause poor performance and errors when the link is up, but a speed mismatch is the link-down cause shown here. PortFast is not required to bring an access link up.",
+            "choices": [
+                "The switches are configured with incompatible duplex settings.",
+                "The speed settings on the switches are mismatched.",
+                "The distance between the two switches is not supported by Cat5.",
+                "The portfast command is missing from the configuration.",
+            ],
+        },
+        {
+            "slug": "r1-best-path-1-0-0-8-lpm-metric-choose-two",
+            "title": "CCNA — R1 best path values for 1.0.0.0/8 (choose two)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/90.png" alt="Topology: R1, R2, R3, and R4 with OSPF Area 0 in the upper portion and OSPF Area 1 in the lower portion. R1 has loopback 1.1.1.1, R2 has 1.1.1.2, R3 has 1.1.1.3, and R4 has 1.1.1.4." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route">
+        <pre>R1#show ip route
+     1.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+O IA  1.1.1.0/24 [110/3] via 12.1.1.2, 00:00:25, FastEthernet0/0
+C     24.1.1.0/30 is directly connected, FastEthernet2/0
+C     34.1.1.0/30 is directly connected, FastEthernet3/0
+S     1.1.1.3/32 [1/0] via 14.1.1.2</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. Which two values does router R1 use to determine the best path to reach destinations in network 1.0.0.0/8? (Choose two)",
+            "name": "r1best1net1",
+            "choose_two": True,
+            "correct": ["A", "E"],
+            "explain": "Correct. A and E — R1 first uses longest-prefix match to choose the most specific installed route that contains the destination, such as preferring the /32 host route to 1.1.1.3 over the broader /24 route when the destination is 1.1.1.3. When candidate routes are otherwise comparable for the same destination prefix, the lower metric is preferred. Highest administrative distance and highest metric are not preferred, and OSPF cost is part of the route metric to the destination rather than a separate lowest-cost-to-next-hop value.",
+            "choices": [
+                "longest prefix match",
+                "lowest cost to reach the next hop",
+                "highest administrative distance",
+                "highest metric",
+                "lowest metric",
+            ],
+        },
+        {
+            "slug": "new-york-ipv6-primary-and-floating-static-atlanta",
+            "title": "CCNA — New York IPv6 primary and floating static routes",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/92.png" alt="Topology: Atlanta, New York, and Washington form a triangle. Atlanta to New York uses 2012::/126, Atlanta to Washington uses 2013::/126, and New York to Washington uses 2023::/126. Atlanta has Loopback1 2000::1/128." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="Configured IPv6 addresses">
+        <pre>Configured routers IPv6 addresses:
+
+Atlanta:
+S0/0/0: 2012::1/126
+S0/0/1: 2013::1/126
+Loopback1: 2000::1/128
+
+New York:
+S0/0/0: 2012::2/126
+S0/0/1: 2023::2/126
+Loopback2: 2000::2/128
+
+Washington:
+S0/0/0: 2023::3/126
+S0/0/1: 2013::3/126
+Loopback3: 2000::3/128</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. The New York router must be configured so that traffic to 2000::1 is sent primarily via the Atlanta site, with a secondary path via Washington that has an administrative distance of 2. Which two commands must be configured on the New York router? (Choose two)",
+            "name": "nyipv6float1",
+            "choose_two": True,
+            "correct": ["C", "D"],
+            "mono": True,
+            "explain": "Correct. C and D — From New York, the primary next hop directly to Atlanta is 2012::1. Without an explicit distance, that static route uses the default AD of 1 and is preferred. The backup path through Washington must use Washington's next-hop address on the New York-Washington link, 2023::3, with AD 2. A would make the Atlanta route less preferred with AD 5, B points to New York's own address, and E also points to New York's own 2012::2 address.",
+            "choices": [
+                "ipv6 route 2000::1/128 2012::1 5",
+                "ipv6 route 2000::1/128 2023::2 5",
+                "ipv6 route 2000::1/128 2012::1",
+                "ipv6 route 2000::1/128 2023::3 2",
+                "ipv6 route 2000::1/128 2012::2",
+            ],
+        },
+        {
+            "slug": "sw1-host-d-to-host-a-unknown-unicast-vlan2",
+            "title": "CCNA — SW1 unknown unicast to Host A in VLAN 2",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/112.png" alt="Topology: SW1 connects to hosts A, B, C, and D. Host A is on SW1 Ethernet0/0, host B on Ethernet0/1, host C on Ethernet0/2, and host D on Ethernet0/3." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="SW1 MAC address table">
+        <pre>Sw1#show mac-address table
+    Mac Address Table
+-----------------------------
+Vlan   Mac Address     Type    Ports
+----   -----------     ------- ----
+2      000c.859c.bb7b  DYNAMIC e0/1
+3      000c.85dc.bb7b  DYNAMIC e0/1
+2      0010.11dc.3e91  DYNAMIC e0/2
+3      0010.11dC.3e91  DYNAMIC e0/2
+2      0044.42d9.c693  DYNAMIC e0/3
+Sw1#</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. Host A switch interface is configured in VLAN 2. Host D sends a unicast packet destined for the IP address of host A. What does the switch do when it receives the frame from host D?",
+            "name": "sw1unkvlan2a",
+            "correct": "A",
+            "explain": "Correct. A — Host D is learned in VLAN 2 on e0/3, but Host A's destination MAC is not present in the VLAN 2 MAC address table. SW1 treats the frame as an unknown unicast and floods it out the other ports in VLAN 2, excluding the source port. There is no port-security condition shown, no reason to remove entries from the MAC table, and a single unknown-unicast flood is not a broadcast storm.",
+            "choices": [
+                "It floods the frame out of every port except the source port.",
+                "It shuts down the source port and places It in err-disable mode.",
+                "It drops the frame from the MAC table of the switch.",
+                "It creates a broadcast storm.",
+            ],
+        },
+        {
+            "slug": "r1-least-desirable-route-metric-next-hop",
+            "title": "CCNA — R1 least desirable route metric next hop",
+            "prepend_html": """    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/114.png" alt="Topology: R1, R2, R3, and R4 share network 10.10.10.0/24. R1 is 10.10.10.1, R2 is 10.10.10.2, R3 is 10.10.10.3, and R4 is 10.10.10.4." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route">
+        <pre>R1# show ip route
+C   1.0.0.0/8 is directly connected, Loopback0
+    10.0.0.0/8 is variably subnetted, 4 subnets, 2 masks
+O   10.10.10.3/32 [110/100] via 10.10.10.3, 00:39:08, GigabitEthernet0/3
+C   10.10.10.0/24 is directly connected, GigabitEthernet0/0
+O   10.10.10.2/32 [110/5] via 10.10.10.2, 00:39:08, GigabitEthernet0/2
+R   10.10.10.4/32 [120/10] via 10.10.10.4, 00:39:08, GigabitEthernet0/4</pre>
+      </div>
+    </div>""",
+            "stem": "Refer to the exhibit. Which next-hop IP address has the least desirable metric when sourced from R1?",
+            "name": "r1leastmetric1",
+            "correct": "D",
+            "explain": "Correct. D — In the displayed routes, the metric is the second value in brackets. The route via 10.10.10.3 has metric 100, which is higher than the route via 10.10.10.2 with metric 5 and the route via 10.10.10.4 with metric 10. A higher metric is less desirable within a route-selection comparison. 10.10.10.5 is not shown as a next hop.",
+            "choices": [
+                "10.10.10.4",
+                "10.10.10.2",
+                "10.10.10.5",
+                "10.10.10.3",
             ],
         },
     ]

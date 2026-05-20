@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CCNA — SW_1 and SW_12 multivendor trunk</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+    .card {
+      width: min(900px, 100%);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+    }
+    h1.choose-two-stem {
+      line-height: 1.5;
+    }
+    .stem-after-exhibit {
+      margin: 12px 0 6px;
+      font-size: clamp(1.02rem, 1.9vw, 1.32rem);
+      line-height: 1.42;
+      font-weight: 600;
+      color: #e6edf3;
+    }
+    .stem-after-exhibit-list {
+      margin: 8px 0 12px;
+      padding-left: 1.35rem;
+      font-size: clamp(1.02rem, 1.9vw, 1.32rem);
+      line-height: 1.45;
+      font-weight: 600;
+      color: #e6edf3;
+    }
+    .stem-after-exhibit-list li {
+      margin: 6px 0;
+    }
+    .stem-after-exhibit-tail {
+      margin-top: 10px;
+    }
+    .choice {
+      display: block;
+      margin: 10px 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #1a253b;
+      border: 1px solid #2c3f62;
+      font-size: 1.02rem;
+      cursor: pointer;
+    }
+    .choice.mono.cli-router-choice {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+      padding: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #2a3f5c;
+      background: linear-gradient(180deg, rgba(26, 37, 59, 0.95), rgba(10, 16, 28, 0.98));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    .cli-router-choice-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px 12px;
+      background: rgba(15, 22, 40, 0.95);
+      border-bottom: 1px solid #2a3f5c;
+    }
+    .cli-router-choice-controls input {
+      margin-right: 0;
+      transform: none;
+      flex-shrink: 0;
+    }
+    .cli-router-choice-badge {
+      flex: 0 0 auto;
+      min-width: 1.5rem;
+      text-align: center;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 0.78rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: rgba(37, 75, 138, 0.55);
+      border: 1px solid rgba(93, 140, 220, 0.45);
+      color: #e6edf3;
+    }
+    .cli-router-choice-title {
+      flex: 1 1 auto;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #8b9cc4;
+    }
+    pre.cli-router-console {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 12px 14px;
+      background: #060a11;
+      color: #c8dcf0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.78rem;
+      line-height: 1.42;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      border-left: 3px solid #c9a227;
+      min-height: 2rem;
+      align-self: stretch;
+    }
+    .choice input {
+      margin-right: 10px;
+      transform: translateY(1px);
+    }
+    .question-nav {
+      margin: 0 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .question-nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .question-nav .nav-link,
+    .answer-actions .nav-check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: #e6edf3;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .answer-actions {
+      margin: 16px 0 0;
+      display: flex;
+      justify-content: flex-start;
+    }
+    .question-nav .nav-link--disabled {
+      opacity: 0.35;
+      pointer-events: none;
+      cursor: default;
+    }
+    .question-nav .nav-link:hover,
+    .answer-actions .nav-check:hover {
+      filter: brightness(1.08);
+    }
+    .answer {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+      line-height: 1.45;
+    }
+    .answer.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+    }
+    .answer.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+    }
+    .exhibit-stack {
+      margin: 14px 0 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    figure.exhibit-photo {
+      margin: 0;
+      border-radius: 10px;
+      border: 1px solid #2d3b5a;
+      overflow: hidden;
+      background: #0d1320;
+    }
+    figure.exhibit-photo img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    figure.exhibit-photo figcaption {
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      color: #8b9cc4;
+      border-top: 1px solid #2d3b5a;
+      background: #0f1628;
+    }
+    .cli-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 720px) {
+      .cli-grid.two-cols {
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+      }
+    }
+    .cli-device {
+      border-radius: 10px;
+      border: 1px solid #2d3b5a;
+      background: #0d1320;
+      overflow: hidden;
+      min-height: 0;
+    }
+    .cli-device h2 {
+      margin: 0;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      background: #1a253b;
+      border-bottom: 1px solid #2d3b5a;
+      color: #b6c8e8;
+    }
+    .cli-device pre {
+      margin: 0;
+      padding: 12px 14px;
+      font-size: 0.72rem;
+      line-height: 1.4;
+      overflow-x: auto;
+      white-space: pre;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: #e6edf3;
+    }
+    .cli-device pre + pre {
+      border-top: 1px solid #2d3b5a;
+    }
+    .exhibit-terminal-white {
+      margin: 0;
+      border-radius: 10px;
+      border: 1px solid #b8b8b8;
+      overflow: hidden;
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+    .exhibit-terminal-white pre {
+      margin: 0;
+      padding: 14px 16px;
+      font-size: 0.78rem;
+      line-height: 1.45;
+      overflow-x: auto;
+      white-space: pre;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: #0a0a0a;
+      background: #ffffff;
+      tab-size: 8;
+    }
+    .exhibit-router-cli {
+      margin: 0;
+      border-radius: 10px;
+      border: 1px solid #2a2a2a;
+      overflow: hidden;
+      background: #0a0a0a;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 4px 18px rgba(0, 0, 0, 0.45);
+    }
+    .exhibit-router-cli pre {
+      margin: 0;
+      padding: 14px 16px;
+      font-size: 0.72rem;
+      line-height: 1.42;
+      overflow-x: auto;
+      white-space: pre;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: #f0f0f0;
+      background: #0a0a0a;
+      tab-size: 8;
+    }
+  </style>
+  <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
+</head>
+<body>
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
+  <main class="card">
+    <nav class="question-nav" aria-label="Question navigation">
+      <div class="question-nav-links">
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/mdf-dc-default-stp-root-lowest-mac.html">Back</a>
+      <a class="nav-link nav-home" href="/index.html">Home</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/r7-r8-r9-last-usable-interface-addresses.html">Next</a>
+      </div>
+    </nav>
+    <div class="exhibit-stack">
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/48.png" alt="Topology: SW_1 on floor 5 connects by Ethernet0/0 to SW_12 on floor 4. Both sides carry VLAN 5 and VLAN 6." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="Switch Ethernet0/0 switchport output">
+        <pre>Name: Et0/0
+Switchport: Enabled
+Administrative Mode: static access
+Operational Mode: static access
+Administrative Trunking Encapsulation: isl
+Operational Trunking Encapsulation: native
+Negotiation of Trunking: Off
+Access Mode VLAN: 7 (VLAN0007)
+Trunking Native Mode VLAN: 1 (default)
+Administrative Native VLAN tagging: enabled
+Voice VLAN: none
+...
+Trunking VLANs Enabled: 5,6
+Pruning VLANs Enabled: 2-1001
+Capture Mode: Disabled
+Capture VLANs Allowed: ALL</pre>
+      </div>
+    </div>
+    <h1>Refer to the exhibit. SW_1 and SW_12 represent two companies that are merging. They use separate network vendors. The VLANs on both sides have been migrated to share IP subnets. Which command sequence must be issued on both sides to join the two companies and pass all VLANs between the companies?</h1>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="sw1sw12trunk1" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. switchport mode trunk
+switchport trunk encapsulation dot1q</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="sw1sw12trunk1" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. switchport mode trunk
+switchport trunk allowed vlan all
+switchport dot1q ethertype 0800</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="sw1sw12trunk1" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. switchport mode dynamic desirable
+switchport trunk allowed vlan all
+switchport trunk native vlan 7</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="sw1sw12trunk1" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. switchport dynamic auto
+switchport nonegotiate</pre>
+    </label>
+
+
+    <div id="answerBox" class="answer" aria-live="polite"></div>
+  </main>
+
+  <script>
+    (function () {
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 The ports must be forced into trunk mode and use IEEE 802.1Q encapsulation for multivendor compatibility. The exhibit shows the current interface is operating as a static access port, and its administrative trunk encapsulation is ISL, which is Cisco-specific. Option B includes an invalid dot1q ethertype value for VLAN trunking. Option C relies on DTP dynamic negotiation, which is not appropriate with separate vendors. Option D does not correctly force trunking and also disables negotiation.";
+      var answerBox = document.getElementById("answerBox");
+
+      function applyFeedback(value) {
+        answerBox.style.display = "block";
+        if (value === CORRECT) {
+          answerBox.className = "answer correct";
+          answerBox.textContent = CORRECT_MSG;
+        } else {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Incorrect.";
+        }
+      }
+
+      document.querySelectorAll('input[name="sw1sw12trunk1"]').forEach(function (el) {
+        el.addEventListener("change", function () {
+          if (el.checked) {
+            applyFeedback(el.value);
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -153,7 +153,7 @@
       align-items: center;
     }
     .question-nav .nav-link,
-    .question-nav .nav-check {
+    .answer-actions .nav-check {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -168,16 +168,18 @@
       font-family: inherit;
       cursor: pointer;
     }
+    .answer-actions {
+      margin: 16px 0 0;
+      display: flex;
+      justify-content: flex-start;
+    }
     .question-nav .nav-link--disabled {
       opacity: 0.35;
       pointer-events: none;
       cursor: default;
     }
-    .question-nav .nav-check {
-      margin-left: auto;
-    }
     .question-nav .nav-link:hover,
-    .question-nav .nav-check:hover {
+    .answer-actions .nav-check:hover {
       filter: brightness(1.08);
     }
     .answer {
@@ -212,7 +214,6 @@
     figure.exhibit-photo img {
       width: 100%;
       height: auto;
-      vertical-align: middle;
       display: block;
     }
     figure.exhibit-photo figcaption {
@@ -317,7 +318,6 @@
       <a class="nav-link nav-home" href="/index.html">Home</a>
       <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/stp-portfast-bypass-states-choose-two.html">Next</a>
       </div>
-      <button id="checkBtn" type="button" class="nav-check">Check answer</button>
     </nav>
     <h1 class="choose-two-stem">What are two benefits of using the PortFast feature? (Choose two)</h1>
 
@@ -327,6 +327,9 @@
     <label class="choice"><input type="checkbox" name="pfb2" value="D" />D. Enabled interfaces that move to the learning state generate switch topology change notifications</label>
     <label class="choice"><input type="checkbox" name="pfb2" value="E" />E. Enabled interfaces come up and move to the forwarding state immediately</label>
 
+    <div class="answer-actions">
+      <button id="checkBtn" type="button" class="nav-check">Check answer</button>
+    </div>
     <div id="answerBox" class="answer" aria-live="polite"></div>
   </main>
 
