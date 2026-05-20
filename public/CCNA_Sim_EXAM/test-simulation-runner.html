@@ -1,6 +1,11 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script src="/js/ga-site-config.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTT6KBHX7V"></script>
+  <script src="/js/google-tag-gtag.js"></script>
+  <script src="/js/campaign-attribution.js"></script>
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -603,6 +608,48 @@
       try {
         localStorage.removeItem(LS_TEMP_TEST);
       } catch (e) {}
+    }
+
+    function trackSimPurchase(stripeSessionId, productId) {
+      if (productId !== "ccna-test-simulation" || typeof window.gtag !== "function") return;
+      var trackKey = "bcc_ccna_test_sim_purchase_tracked_" + stripeSessionId;
+      try {
+        if (localStorage.getItem(trackKey) === "1") return;
+        localStorage.setItem(trackKey, "1");
+      } catch (e) {}
+
+      var attrs =
+        typeof window.bccGetCampaignAttribution === "function" ? window.bccGetCampaignAttribution() : {};
+      var item = {
+        item_id: "ccna_timed_simulation",
+        item_name: "CCNA Timed Test Simulation",
+        price: 4.99,
+        quantity: 1,
+      };
+      var params = {
+        transaction_id: stripeSessionId,
+        currency: "USD",
+        value: 4.99,
+        campaign_source: attrs.utm_source || undefined,
+        campaign_medium: attrs.utm_medium || undefined,
+        campaign_name: attrs.utm_campaign || undefined,
+        campaign_content: attrs.utm_content || undefined,
+        campaign_term: attrs.utm_term || undefined,
+        gclid: attrs.gclid || undefined,
+        items: [item],
+      };
+      window.gtag("event", "purchase", params);
+
+      var adsId = window.__BCC_GOOGLE_ADS_ID__;
+      var conversionLabel = window.__BCC_GOOGLE_ADS_CCNA_SIM_CONVERSION_LABEL__;
+      if (adsId && conversionLabel) {
+        window.gtag("event", "conversion", {
+          send_to: adsId + "/" + conversionLabel,
+          transaction_id: stripeSessionId,
+          currency: "USD",
+          value: 4.99,
+        });
+      }
     }
 
     /** After a successful verify we store cs_… here so reopening the runner works without session_id in the URL (query is masked once the exam starts). */
@@ -1680,6 +1727,7 @@
         if (data.ok) {
           sessionOk = true;
           grantTempTestAccess(sessionId);
+          trackSimPurchase(sessionId, data.productId);
           gateStatus.className = "status-ok";
           showExamGateStartOptions();
         } else {

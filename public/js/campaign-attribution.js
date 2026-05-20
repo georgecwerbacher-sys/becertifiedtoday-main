@@ -63,15 +63,23 @@
     window.gtag("event", name, params);
   }
 
+  function parseMoney(raw, fallback) {
+    var n = Number(raw);
+    return Number.isFinite(n) ? n : fallback;
+  }
+
   function trackCheckout(el) {
     var attrs = mergeAttribution();
     var fields = campaignFields(attrs);
     var itemId = el.getAttribute("data-bcc-item-id") || "ccna_portal";
+    var itemName = el.getAttribute("data-bcc-item-name") || itemId;
+    var value = parseMoney(el.getAttribute("data-bcc-value"), 0);
+    var currency = el.getAttribute("data-bcc-currency") || "USD";
     gtagEvent("begin_checkout", Object.assign(
       {
-        currency: "USD",
-        value: 0,
-        items: [{ item_id: itemId, item_name: itemId }],
+        currency: currency,
+        value: value,
+        items: [{ item_id: itemId, item_name: itemName, price: value, quantity: 1 }],
       },
       fields
     ));

@@ -1929,12 +1929,16 @@
                         <a
                           class="cta-main cta-main--block"
                           href="/CCNA_Sim_EXAM/begin-test-simulation.html"
-                          aria-label="Purchase one-time CCNA timed simulation for nine ninety-nine"
-                          >Get timed simulation — $9.99</a
+                          aria-label="Purchase one-time CCNA timed simulation for four ninety-nine limited time with coupon code CCNA_Sim_4_U"
+                          >Get timed simulation —
+                          <del>$9.99</del>
+                          <strong>$4.99 limited time</strong></a
                         >
                       </p>
                       <p class="purchase-access-disclaimer">
                         <strong>$9.99 one-time.</strong> No subscription. Best when you want one serious dry run before you schedule the real exam.
+                        <strong>First-time visitors:</strong> take the simulated exam for <strong>$4.99</strong> with coupon code
+                        <code>CCNA_Sim_4_U</code>.
                       </p>
                     </div>
                   </div>
@@ -2128,6 +2132,10 @@
           class="ccna-sim-promo-primary"
           id="ccnaSimPromoCta"
           href="/CCNA_Sim_EXAM/begin-test-simulation.html?promo=CCNA_Sim_4_U"
+          data-bcc-item-id="ccna_timed_simulation"
+          data-bcc-item-name="CCNA Timed Test Simulation"
+          data-bcc-value="4.99"
+          data-bcc-currency="USD"
           >Start timed test — $4.99</a
         >
         <a
@@ -2208,6 +2216,7 @@
       var root = document.getElementById("ccnaSimPromoRoot");
       var panel = root && root.querySelector(".ccna-sim-promo-panel");
       var copyBtn = document.getElementById("ccnaSimPromoCopyBtn");
+      var promoCta = document.getElementById("ccnaSimPromoCta");
       if (!root || !panel) return;
 
       var path = location.pathname || "";
@@ -2272,6 +2281,35 @@
           } else {
             fail();
           }
+        });
+      }
+
+      if (promoCta) {
+        promoCta.addEventListener("click", function () {
+          if (typeof window.gtag !== "function") return;
+          var attrs =
+            typeof window.bccGetCampaignAttribution === "function" ? window.bccGetCampaignAttribution() : {};
+          window.gtag("event", "select_promotion", {
+            promotion_id: PROMO,
+            promotion_name: "CCNA timed simulation 50% off",
+            creative_name: "ccna_home_popup",
+            currency: "USD",
+            value: 4.99,
+            campaign_source: attrs.utm_source || undefined,
+            campaign_medium: attrs.utm_medium || undefined,
+            campaign_name: attrs.utm_campaign || undefined,
+            campaign_content: attrs.utm_content || undefined,
+            campaign_term: attrs.utm_term || undefined,
+            gclid: attrs.gclid || undefined,
+            items: [
+              {
+                item_id: "ccna_timed_simulation",
+                item_name: "CCNA Timed Test Simulation",
+                price: 4.99,
+                quantity: 1,
+              },
+            ],
+          });
         });
       }
 
