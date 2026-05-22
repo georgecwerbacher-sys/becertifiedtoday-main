@@ -1,0 +1,1646 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script src="/js/ga-site-config.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTT6KBHX7V"></script>
+  <script src="/js/google-tag-gtag.js"></script>
+  <script src="/js/campaign-attribution.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free CCNA Assessment Test | Be Certified Today</title>
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <link rel="canonical" href="https://becertifiedtoday.com/CCNA_Sim_EXAM/free-assessment.html" />
+    <style>
+    :root {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bg: #0b1020;
+      --surface: #121a2b;
+      --border: #2d3b5a;
+      --text: #e6edf3;
+      --muted: #9fb0cc;
+      --accent: #3b82f6;
+      --danger: #f87171;
+      --ok: #4ade80;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #ffffff;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+    }
+    .exam-topbar {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 12px clamp(16px, 4vw, 28px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(18, 26, 43, 0.95);
+      position: sticky;
+      top: 0;
+      z-index: 101;
+    }
+    .exam-timer {
+      font-variant-numeric: tabular-nums;
+      font-size: clamp(1.35rem, 4vw, 1.85rem);
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: #ffffff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+    }
+    .exam-timer.is-low {
+      color: var(--danger);
+    }
+    .exam-main {
+      flex: 1;
+      width: min(920px, 100%);
+      margin: 0 auto;
+      padding: clamp(20px, 4vw, 32px) clamp(16px, 4vw, 24px) 120px;
+      /* Keep exam cards/iframes under fixed controls so Quit/Next stay clickable. */
+      position: relative;
+      z-index: 0;
+    }
+    .exam-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: clamp(18px, 3vw, 26px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    .exam-gate {
+      position: relative;
+      z-index: 1;
+    }
+    .exam-gate-bottom-nav {
+      position: relative;
+      z-index: 2;
+    }
+    .exam-gate h1 {
+      margin: 0 0 12px;
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+    .exam-gate p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 0.95rem;
+    }
+    .exam-gate .status-bad {
+      color: var(--danger);
+    }
+    .exam-gate .status-ok {
+      color: var(--ok);
+    }
+    .exam-gate-options {
+      margin: 18px 0 16px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 41, 0.65);
+    }
+    .exam-gate-options legend {
+      padding: 0 8px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #8ba4c9;
+    }
+    .exam-gate-adaptive-label {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      cursor: pointer;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      color: var(--text);
+      margin: 0;
+    }
+    .exam-gate-adaptive-label input {
+      margin: 4px 0 0;
+      flex-shrink: 0;
+      accent-color: var(--accent);
+    }
+    .exam-gate-adaptive-desc {
+      display: block;
+      margin-top: 6px;
+      font-size: 0.82rem;
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    #btnGateStartExam {
+      width: 100%;
+      max-width: 320px;
+      padding: 14px 22px;
+      border-radius: 10px;
+      font: inherit;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: 1px solid #60a5fa;
+      background: linear-gradient(165deg, #3b82f6 0%, #1d4ed8 100%);
+      color: #fff;
+      margin-top: 6px;
+    }
+    #btnGateStartExam:hover:not(:disabled) {
+      filter: brightness(1.06);
+    }
+    #btnGateStartExam:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+    .exam-panel[hidden],
+    .exam-gate[hidden] {
+      display: none !important;
+    }
+    .exam-item-body {
+      min-height: 180px;
+      margin-bottom: 18px;
+    }
+    .exam-mcq .q {
+      margin: 0 0 14px;
+      font-size: 1.02rem;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+    .exam-mcq label.opt {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 0 0 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+    .exam-mcq label.opt:hover {
+      border-color: #4f84d8;
+      background: rgba(47, 102, 191, 0.12);
+    }
+    .exam-dnd-embed {
+      width: 100%;
+      min-height: min(72vh, 880px);
+    }
+    .exam-dnd-iframe {
+      display: block;
+      width: 100%;
+      height: min(72vh, 880px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #0f1729;
+      box-sizing: border-box;
+    }
+    .exam-lab-hint {
+      margin: 0 0 12px;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .exam-lab-embed {
+      width: 100%;
+      min-height: min(72vh, 920px);
+    }
+    .exam-lab-iframe {
+      display: block;
+      width: 100%;
+      height: min(72vh, 920px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #0f1729;
+      box-sizing: border-box;
+    }
+    /* Hidden by default: do not rely on [hidden] alone — author `display: flex` can defeat it in some UAs,
+       leaving an invisible bar that blocks clicks on the gate (footer links, etc.). */
+    .exam-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: none;
+      pointer-events: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      padding: 14px clamp(16px, 4vw, 24px);
+      border-top: 1px solid var(--border);
+      background: rgba(11, 16, 32, 0.92);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+    }
+    .exam-footer.is-active {
+      display: flex;
+      pointer-events: auto;
+    }
+    .exam-footer button {
+      padding: 12px 22px;
+      border-radius: 10px;
+      font: inherit;
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    #btnNext {
+      background: linear-gradient(165deg, #3b82f6 0%, #1d4ed8 100%);
+      color: #fff;
+      border-color: #60a5fa;
+      min-width: 8rem;
+    }
+    #btnReset {
+      background: transparent;
+      color: var(--muted);
+      border-color: var(--border);
+    }
+    #btnQuit {
+      background: transparent;
+      color: var(--danger);
+      border-color: rgba(248, 113, 113, 0.45);
+    }
+    .exam-done {
+      text-align: center;
+      padding: 24px 12px;
+    }
+    .exam-done h2 {
+      margin: 0 0 12px;
+      font-size: 1.35rem;
+    }
+    a {
+      color: var(--accent);
+    }
+    .exam-results[hidden] {
+      display: none !important;
+    }
+    .exam-results h2 {
+      margin: 0 0 8px;
+      font-size: 1.35rem;
+    }
+    .exam-results .results-reason {
+      margin: 0 0 16px;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+    .exam-results .results-score {
+      margin: 0 0 18px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fde047;
+    }
+    .exam-results .obj-table-wrap {
+      overflow: auto;
+      max-height: min(52vh, 480px);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .exam-results table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .exam-results th,
+    .exam-results td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .exam-results th {
+      background: #0f1729;
+      color: #8ba4c9;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .exam-results tr:last-child td {
+      border-bottom: none;
+    }
+    .exam-results .obj-pct {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .exam-results .results-actions {
+      margin-top: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    #resultsContinue {
+      padding: 12px 22px;
+      border-radius: 10px;
+      font: inherit;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: 1px solid #60a5fa;
+      background: linear-gradient(165deg, #3b82f6 0%, #1d4ed8 100%);
+      color: #fff;
+    }
+    .results-note {
+      margin: 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+      max-width: 62ch;
+      line-height: 1.45;
+    }
+    .results-scorecard-section {
+      margin: 22px 0 18px;
+    }
+    .results-scorecard-heading {
+      margin: 0 0 8px;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #8ba4c9;
+    }
+    .scorecard-lead {
+      margin-bottom: 12px !important;
+      max-width: 72ch;
+    }
+    .scorecard-table-wrap {
+      max-height: min(56vh, 520px);
+    }
+    .results-scorecard-subheading {
+      margin: 18px 0 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #93c5fd;
+    }
+    .scorecard-tier-priority {
+      color: #fca5a5;
+      font-weight: 700;
+    }
+    .scorecard-tier-review {
+      color: #fcd34d;
+      font-weight: 700;
+    }
+    .scorecard-tier-solid {
+      color: #86efac;
+      font-weight: 700;
+    }
+    .scorecard-tier-strong {
+      color: #4ade80;
+      font-weight: 700;
+    }
+    .scorecard-tier-muted {
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .scorecard-by-type {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .scorecard-hint {
+      display: block;
+      margin-top: 4px;
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: #7d8ea3;
+      line-height: 1.35;
+    }
+    .scorecard-weak-list {
+      margin: 0 0 0 1.15rem;
+      padding: 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.55;
+      max-width: 72ch;
+    }
+    .scorecard-weak-list li {
+      margin-bottom: 10px;
+    }
+    .scorecard-weak-pct {
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      color: #fcd34d;
+    }
+  </style>
+</head>
+<body>
+  <header class="exam-topbar" aria-label="Exam timer">
+    <div class="exam-timer" id="examTimer" aria-live="polite">00:35:00</div>
+  </header>
+
+  <main class="exam-main">
+    <div class="exam-card exam-gate" id="gatePanel">
+      <h1>Free CCNA Assessment Test</h1>
+      <p id="gateStatus">Checking access…</p>
+      <p id="gateBlueprint" class="status-ok" hidden></p>
+      <div id="gateStartWrap" hidden>
+        <button type="button" id="btnGateStartExam">Start free assessment</button>
+      </div>
+      <p class="exam-gate-bottom-nav" style="margin-top: 14px; font-size: 0.88rem">
+        <a id="gateBackLink" href="/ccna-home.html">← Back to CCNA home</a>
+      </p>
+    </div>
+
+    <div class="exam-card exam-panel" id="examPanel" hidden>
+      <div class="exam-item-body" id="itemBody"></div>
+    </div>
+
+    <div class="exam-card exam-results" id="resultsPanel" hidden aria-live="polite">
+      <h2 id="resultsHeadline">Attempt summary</h2>
+      <p class="results-reason" id="resultsReason"></p>
+      <p class="results-score" id="resultsScore"></p>
+      <p class="results-note" id="resultsNote"></p>
+
+      <div id="resultsScorecardSection" class="results-scorecard-section">
+        <h3 class="results-scorecard-heading">Study scorecard — where to focus</h3>
+        <p id="resultsScorecardLead" class="results-note scorecard-lead"></p>
+        <div class="obj-table-wrap scorecard-table-wrap">
+          <table aria-describedby="resultsScorecardLead">
+            <thead>
+              <tr>
+                <th scope="col">CCNA domain</th>
+                <th scope="col">Overall</th>
+                <th scope="col">By item type</th>
+                <th scope="col">Review priority</th>
+              </tr>
+            </thead>
+            <tbody id="resultsDomainScorecardBody"></tbody>
+          </table>
+        </div>
+        <h4 class="results-scorecard-subheading">Objectives that need the most work</h4>
+        <p id="resultsWeakObjectiveLead" class="results-note scorecard-lead"></p>
+        <ul id="resultsWeakObjectiveList" class="scorecard-weak-list"></ul>
+      </div>
+
+      <h3 style="margin: 18px 0 10px; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: #8ba4c9">
+        Performance by exam objective
+      </h3>
+      <div class="obj-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Objective</th>
+              <th scope="col">Topic</th>
+              <th scope="col">Correct</th>
+              <th scope="col">Items</th>
+              <th scope="col">%</th>
+            </tr>
+          </thead>
+          <tbody id="resultsObjectiveBody"></tbody>
+        </table>
+      </div>
+      <div class="results-actions">
+        <button type="button" id="resultsContinue">Continue</button>
+        <p class="results-note">
+          This free assessment can be completed once per browser. Continue returns you to the CCNA home page after the scorecard.
+          Scaled results use a <strong>1000</strong>-point score with a <strong>700</strong> diagnostic target (70% MCQ, 10% drag-and-drop, 20% labs).
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="exam-footer" role="toolbar" aria-label="Exam controls" id="examFooter">
+    <button type="button" id="btnReset">Reset</button>
+    <button type="button" id="btnNext">Next</button>
+    <button type="button" id="btnQuit">Quit</button>
+  </footer>
+
+  <script type="module">
+    /** localStorage: one completed free assessment per browser. */
+    var LS_FREE_ASSESSMENT = "bcc_ccna_free_assessment_v1";
+    var TOTAL_SECONDS = 35 * 60;
+    var timerId = null;
+    var remainingSec = TOTAL_SECONDS;
+    var examStarted = false;
+    var items = [];
+    var itemIndex = 0;
+    var sessionOk = false;
+    var attemptResults = [];
+    var objectiveLabels = {};
+    var domainMajorTitles = {};
+
+    /** Timed test: optional adaptive MCQ injection by blueprint domain (1–6). */
+    var adaptiveMcqEnabled = false;
+    var domainMcqStats = {};
+    var adaptiveMcqInjected = 0;
+    var adaptiveMcqGraded = 0;
+    var adaptiveMcqSinceInject = 999;
+    var ADAPTIVE_MCQ_CAP = 15;
+    var ADAPTIVE_MCQ_GAP = 5;
+    var ADAPTIVE_MIN_DOMAIN_MCQ = 3;
+    var adaptiveMcqPoolByDomain = null;
+    var usedMcqSlugs = {};
+    var mcqAssignmentsCache = {};
+
+    var gatePanel = document.getElementById("gatePanel");
+    var gateStatus = document.getElementById("gateStatus");
+    var gateBlueprint = document.getElementById("gateBlueprint");
+    var examPanel = document.getElementById("examPanel");
+    var examTimer = document.getElementById("examTimer");
+    var itemBody = document.getElementById("itemBody");
+    var resultsPanel = document.getElementById("resultsPanel");
+    var examFooter = document.getElementById("examFooter");
+
+    function assessmentCompleted() {
+      try {
+        var raw = localStorage.getItem(LS_FREE_ASSESSMENT);
+        if (!raw) return false;
+        var o = JSON.parse(raw);
+        return !!(o && o.completedAt);
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function markAssessmentCompleted(reason) {
+      try {
+        localStorage.setItem(
+          LS_FREE_ASSESSMENT,
+          JSON.stringify({ completedAt: Date.now(), reason: reason || "completed" })
+        );
+      } catch (e) {}
+    }
+
+    function updateGateBackLink() {
+      var a = document.getElementById("gateBackLink");
+      if (!a) return;
+      a.setAttribute("href", "/ccna-home.html");
+      a.textContent = "← Back to CCNA home";
+    }
+
+    function redirectAfterResults() {
+      window.location.href = "/ccna-home.html";
+    }
+
+    function escapeHtml(s) {
+      return String(s || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function pad(n) {
+      return n < 10 ? "0" + n : String(n);
+    }
+    function formatTime(sec) {
+      var h = Math.floor(sec / 3600);
+      var m = Math.floor((sec % 3600) / 60);
+      var s = sec % 60;
+      return pad(h) + ":" + pad(m) + ":" + pad(s);
+    }
+
+    function stopExamTimer() {
+      examStarted = false;
+      if (timerId) {
+        clearInterval(timerId);
+        timerId = null;
+      }
+    }
+
+    /** Drop checkout/session query params from the address bar once the exam UI is running (session stays in localStorage). */
+    function maskRunnerUrlInAddressBar() {
+      try {
+        if (!window.history || typeof window.history.replaceState !== "function") return;
+        var path = window.location.pathname || "";
+        var hash = window.location.hash || "";
+        if (!path) return;
+        if (window.location.search) {
+          history.replaceState({}, "", path + hash);
+        }
+      } catch (_) {}
+    }
+
+    function tickTimer() {
+      if (!examStarted) return;
+      remainingSec -= 1;
+      if (remainingSec <= 0) {
+        remainingSec = 0;
+        examTimer.textContent = formatTime(0);
+        examTimer.classList.add("is-low");
+        clearInterval(timerId);
+        timerId = null;
+        void handleTimeExpired();
+        return;
+      }
+      examTimer.textContent = formatTime(remainingSec);
+      if (remainingSec <= 300) examTimer.classList.add("is-low");
+    }
+
+    function majorsFromObjectiveIds(ids) {
+      var out = {};
+      if (!ids || !ids.length) return [];
+      for (var i = 0; i < ids.length; i++) {
+        var maj = String(ids[i]).split(".")[0];
+        if (/^[1-6]$/.test(maj)) out[maj] = true;
+      }
+      return Object.keys(out);
+    }
+
+    /** One primary blueprint domain per scored item (first objective ID by numeric sort). Avoids double-counting across domains. */
+    function primaryDomainMajorFromObjectiveIds(ids) {
+      if (!ids || !ids.length) return "__none__";
+      var sorted = ids.slice().sort(compareObjIds);
+      var i;
+      for (i = 0; i < sorted.length; i++) {
+        var maj = String(sorted[i]).split(".")[0];
+        if (/^[1-6]$/.test(maj)) return maj;
+      }
+      return "__none__";
+    }
+
+    function emptyDomainAgg() {
+      return {
+        correct: 0,
+        total: 0,
+        types: { mcq: { c: 0, t: 0 }, dnd: { c: 0, t: 0 }, lab: { c: 0, t: 0 } },
+      };
+    }
+
+    function formatScorecardByType(types) {
+      var parts = [];
+      var order = [
+        { k: "mcq", lab: "MCQ" },
+        { k: "dnd", lab: "D&D" },
+        { k: "lab", lab: "Lab" },
+      ];
+      order.forEach(function (o) {
+        var x = types[o.k];
+        if (!x || !x.t) return;
+        parts.push(o.lab + " " + x.c + "/" + x.t);
+      });
+      return parts.length ? parts.join(" · ") : "—";
+    }
+
+    /** Labels scorecard rows from accuracy + sample size. */
+    function domainReviewTier(pct, total) {
+      if (total < 2) {
+        return {
+          label: "Limited sample",
+          cls: "scorecard-tier-muted",
+          hint: "Not enough items mapped here—treat this row as directional only.",
+        };
+      }
+      if (pct < 60) {
+        return {
+          label: "Priority review",
+          cls: "scorecard-tier-priority",
+          hint: "Strong candidate for focused study and labs next.",
+        };
+      }
+      if (pct < 75) {
+        return {
+          label: "Needs work",
+          cls: "scorecard-tier-review",
+          hint: "Revisit objectives below and drill similar questions.",
+        };
+      }
+      if (pct < 85) {
+        return {
+          label: "Almost there",
+          cls: "scorecard-tier-solid",
+          hint: "Light review recommended before exam day.",
+        };
+      }
+      return {
+        label: "Strong",
+        cls: "scorecard-tier-strong",
+        hint: "Keep sharp with occasional mixed practice.",
+      };
+    }
+
+    function buildAdaptiveMcqPools(assignments) {
+      var pools = { "1": [], "2": [], "3": [], "4": [], "5": [], "6": [] };
+      var qa = assignments || {};
+      Object.keys(qa).forEach(function (fn) {
+        if (!/\.html$/i.test(fn)) return;
+        majorsFromObjectiveIds(qa[fn]).forEach(function (m) {
+          pools[m].push(fn);
+        });
+      });
+      return pools;
+    }
+
+    function findWeakMcqDomain(stats) {
+      var weak = null;
+      var worstAcc = 2;
+      for (var d = 1; d <= 6; d++) {
+        var k = String(d);
+        var s = stats[k];
+        if (!s) continue;
+        var t = s.c + s.w;
+        if (t < ADAPTIVE_MIN_DOMAIN_MCQ) continue;
+        var acc = s.c / t;
+        if (acc < worstAcc) {
+          worstAcc = acc;
+          weak = k;
+        }
+      }
+      if (!weak) return null;
+      var sx = stats[weak];
+      var accx = sx.c / (sx.c + sx.w);
+      if (accx > 0.5 && sx.w < 3) return null;
+      return weak;
+    }
+
+    function maybeInjectAdaptiveMcqs() {
+      if (!adaptiveMcqEnabled || !adaptiveMcqPoolByDomain) return;
+      if (adaptiveMcqInjected >= ADAPTIVE_MCQ_CAP) return;
+      if (adaptiveMcqSinceInject < ADAPTIVE_MCQ_GAP) return;
+      var weak = findWeakMcqDomain(domainMcqStats);
+      if (!weak) return;
+      var pool = adaptiveMcqPoolByDomain[weak] || [];
+      var candidates = [];
+      for (var i = 0; i < pool.length; i++) {
+        var fn = pool[i];
+        var slug = fn.replace(/\.html$/i, "");
+        if (usedMcqSlugs[slug]) continue;
+        candidates.push(fn);
+      }
+      if (!candidates.length) return;
+      var pickN = Math.min(2, ADAPTIVE_MCQ_CAP - adaptiveMcqInjected);
+      var picks = shuffle(candidates).slice(0, pickN);
+      var insertAt = itemIndex + 1;
+      for (var j = 0; j < picks.length; j++) {
+        var fn = picks[j];
+        var slug = fn.replace(/\.html$/i, "");
+        items.splice(insertAt, 0, {
+          type: "mcq",
+          fileName: fn,
+          slug: slug,
+          objectiveIds: mcqAssignmentsCache[fn] || [],
+          adaptiveInjected: true,
+        });
+        usedMcqSlugs[slug] = true;
+        adaptiveMcqInjected++;
+        insertAt++;
+      }
+      adaptiveMcqSinceInject = 0;
+    }
+
+    function showExamGateStartOptions() {
+      gateBlueprint.hidden = false;
+      document.getElementById("gateStartWrap").hidden = false;
+      gateStatus.textContent = "Start when you are ready. The timer begins only after you click Start.";
+      updateGateBackLink();
+    }
+
+    async function startExamFromGate() {
+      var btn = document.getElementById("btnGateStartExam");
+      adaptiveMcqEnabled = false;
+      btn.disabled = true;
+      gateStatus.textContent = "Loading exam bank…";
+      gateStatus.className = "status-ok";
+      try {
+        await prepareExamData();
+        document.getElementById("gateStartWrap").hidden = true;
+        await startExamUI();
+      } catch (e) {
+        console.error("ccna-sim start", e);
+        gateStatus.textContent = "Could not start the exam. Try again.";
+        gateStatus.className = "status-bad";
+        document.getElementById("gateStartWrap").hidden = false;
+        gatePanel.hidden = false;
+        btn.disabled = false;
+      }
+    }
+
+    function shuffle(arr) {
+      var a = arr.slice();
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = a[i];
+        a[i] = a[j];
+        a[j] = t;
+      }
+      return a;
+    }
+
+    function buildObjectiveLabels(examJson) {
+      var map = {};
+      var domains = examJson.domains || [];
+      domains.forEach(function (d) {
+        (d.objectives || []).forEach(function (o) {
+          if (o.id) map[o.id] = o.text || o.id;
+        });
+      });
+      return map;
+    }
+
+    /** Official blueprint domain titles (200-301 exam objectives JSON): keys "1" … "6". */
+    function buildDomainMajorTitles(examJson) {
+      var map = {};
+      var domains = examJson.domains || [];
+      domains.forEach(function (d) {
+        var id = String(d.id || "").trim();
+        var m = id.match(/^(\d+)\.0$/);
+        if (m) map[m[1]] = d.name || "Domain " + m[1];
+      });
+      return map;
+    }
+
+    function fixedMcqFilesFromBlueprint(bp) {
+      var out = [];
+      var byDomain = bp.multipleChoiceByDomain || {};
+      for (var d = 1; d <= 6; d++) {
+        var files = byDomain[String(d)] || [];
+        files.forEach(function (fn) {
+          if (fn && out.indexOf(fn) === -1) out.push(fn);
+        });
+      }
+      return out;
+    }
+
+    function buildFixedAssessmentDeck(qMap, dMap, lMap, bp) {
+      var qa = qMap.assignments || {};
+      var da = dMap.assignments || {};
+      var la = lMap.assignments || {};
+      var deck = [];
+      fixedMcqFilesFromBlueprint(bp).forEach(function (fn) {
+        deck.push({
+          type: "mcq",
+          fileName: fn,
+          slug: fn.replace(/\.html$/i, ""),
+          objectiveIds: qa[fn] || [],
+        });
+      });
+      (bp.dragDropFiles || []).forEach(function (fn) {
+        deck.push({
+          type: "dnd",
+          fileName: fn,
+          slug: fn.replace(/\.html$/i, ""),
+          objectiveIds: da[fn] || [],
+        });
+      });
+      (bp.labFiles || []).forEach(function (fn) {
+        deck.push({
+          type: "lab",
+          fileName: fn,
+          slug: fn.replace(/\.html$/i, ""),
+          objectiveIds: la[fn] || [],
+        });
+      });
+      return deck;
+    }
+
+    function buildRichDeck(qMap, dMap, lMap, opts) {
+      opts = opts || {};
+      var fixedLabs = Array.isArray(opts.fixedLabs) && opts.fixedLabs.length ? opts.fixedLabs : null;
+      var labCount =
+        fixedLabs != null ? fixedLabs.length : opts.labCount != null ? opts.labCount : 3;
+      var mcqN = opts.mcqCount != null ? opts.mcqCount : 50;
+      var dndN = opts.dndCount != null ? opts.dndCount : 5;
+
+      var qa = qMap.assignments || {};
+      var da = dMap.assignments || {};
+      var la = lMap.assignments || {};
+      var mcqKeys = Object.keys(qa);
+      var dndKeys = Object.keys(da);
+      var labKeys = Object.keys(la);
+      if (mcqKeys.length < mcqN || dndKeys.length < dndN) return null;
+      if (!fixedLabs && labKeys.length < labCount) return null;
+      var mcqPick = shuffle(mcqKeys).slice(0, mcqN);
+      var dndPick = shuffle(dndKeys).slice(0, dndN);
+      var labPick = fixedLabs ? shuffle(fixedLabs.slice()) : shuffle(labKeys).slice(0, labCount);
+      var deck = [];
+      mcqPick.forEach(function (fn) {
+        deck.push({
+          type: "mcq",
+          fileName: fn,
+          slug: fn.replace(/\.html$/i, ""),
+          objectiveIds: qa[fn] || [],
+        });
+      });
+      dndPick.forEach(function (fn) {
+        deck.push({
+          type: "dnd",
+          fileName: fn,
+          slug: fn.replace(/\.html$/i, ""),
+          objectiveIds: da[fn] || [],
+        });
+      });
+      labPick.forEach(function (fn) {
+        deck.push({
+          type: "lab",
+          fileName: fn,
+          slug: fn.replace(/\.html$/i, ""),
+          objectiveIds: la[fn] || [],
+        });
+      });
+      return shuffle(deck);
+    }
+
+    function buildFallbackDeck(mcqCount, dndCount, labCount) {
+      var m = typeof mcqCount === "number" && mcqCount > 0 ? mcqCount : 50;
+      var d = typeof dndCount === "number" && dndCount > 0 ? dndCount : 5;
+      var n = typeof labCount === "number" && labCount > 0 ? labCount : 3;
+      var deck = [];
+      var i;
+      for (i = 0; i < m; i++) {
+        deck.push({ type: "mcq", fileName: null, slug: null, objectiveIds: [] });
+      }
+      for (i = 0; i < d; i++) {
+        deck.push({ type: "dnd", fileName: null, slug: null, objectiveIds: [] });
+      }
+      for (i = 0; i < n; i++) {
+        deck.push({ type: "lab", fileName: null, slug: null, objectiveIds: [] });
+      }
+      return shuffle(deck);
+    }
+
+    var scoreScaledConfig = {
+      maxMcq: 700,
+      maxDnd: 100,
+      maxLab: 200,
+      passing: 800,
+      maxTotal: 1000,
+    };
+
+    async function prepareExamData() {
+      attemptResults = [];
+      objectiveLabels = {};
+      domainMajorTitles = {};
+      domainMcqStats = {};
+      adaptiveMcqInjected = 0;
+      adaptiveMcqGraded = 0;
+      adaptiveMcqSinceInject = 999;
+      adaptiveMcqPoolByDomain = null;
+      usedMcqSlugs = {};
+      mcqAssignmentsCache = {};
+
+      try {
+        var roInit = await fetch("/CCNA-Study/data/ccna-exam-objectives-200-301-v1.1.json").then(function (r) {
+          return r.json();
+        });
+        objectiveLabels = buildObjectiveLabels(roInit);
+        domainMajorTitles = buildDomainMajorTitles(roInit);
+      } catch (eObj) {}
+
+      var bp = {};
+      try {
+        bp = await fetch("/CCNA-Study/data/ccna-free-assessment-blueprint.json").then(function (r) {
+          return r.json();
+        });
+      } catch (e) {}
+
+      var w = bp.weights || {};
+      var scaleMax = bp.scaledScoreMax != null ? bp.scaledScoreMax : 1000;
+      scoreScaledConfig.maxTotal = scaleMax;
+      scoreScaledConfig.passing = bp.passingScaledScore != null ? bp.passingScaledScore : 800;
+      scoreScaledConfig.maxMcq = scaleMax * (typeof w.multipleChoiceFraction === "number" ? w.multipleChoiceFraction : 0.7);
+      scoreScaledConfig.maxDnd = scaleMax * (typeof w.dragDropFraction === "number" ? w.dragDropFraction : 0.1);
+      scoreScaledConfig.maxLab = scaleMax * (typeof w.labFraction === "number" ? w.labFraction : 0.2);
+
+      var fixedLabs = Array.isArray(bp.labFiles) && bp.labFiles.length ? bp.labFiles : null;
+      var labCount =
+        fixedLabs != null ? fixedLabs.length : bp.labCount != null ? bp.labCount : 3;
+      var mcqN = bp.multipleChoiceCount != null ? bp.multipleChoiceCount : 50;
+      var dndN = bp.dragDropCount != null ? bp.dragDropCount : 5;
+      var expectedTotal = mcqN + dndN + labCount;
+
+      try {
+        var rq = await fetch("/CCNA-Study/data/ccna-question-topic-map.json").then(function (r) {
+          return r.json();
+        });
+        var rd = await fetch("/CCNA-Study/data/ccna-dnd-topic-map.json").then(function (r) {
+          return r.json();
+        });
+        var rl = await fetch("/CCNA-Study/data/ccna-lab-topic-map.json").then(function (r) {
+          return r.json();
+        });
+        var rich = buildFixedAssessmentDeck(rq, rd, rl, bp);
+        if (rich && rich.length === expectedTotal) {
+          items = rich;
+          mcqAssignmentsCache = rq.assignments || {};
+          adaptiveMcqPoolByDomain = buildAdaptiveMcqPools(mcqAssignmentsCache);
+          usedMcqSlugs = {};
+          items.forEach(function (it) {
+            if (it.type === "mcq" && it.slug) usedMcqSlugs[it.slug] = true;
+          });
+          return;
+        }
+      } catch (e) {}
+      items = buildFallbackDeck(mcqN, dndN, labCount);
+      mcqAssignmentsCache = {};
+      adaptiveMcqPoolByDomain = buildAdaptiveMcqPools({});
+    }
+
+    function extractH1(html) {
+      var m = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+      if (!m) return null;
+      return m[1].replace(/<[^>]+>/g, "").trim();
+    }
+
+    function parseCorrectLetter(html) {
+      var m = html.match(/var\s+CORRECT\s*=\s*"([A-D])"/i);
+      if (m) return m[1].toUpperCase();
+      m = html.match(/CORRECT\s*=\s*"([A-D])"/i);
+      if (m) return m[1].toUpperCase();
+      return null;
+    }
+
+    function extractMcqOptions(html) {
+      var out = [];
+      var re =
+        /<label[^>]*class="choice"[^>]*>[\s\S]*?<input[^>]*value="([A-D])"[^>]*\/>\s*([\s\S]*?)<\/label>/gi;
+      var m;
+      while ((m = re.exec(html)) !== null) {
+        out.push({
+          letter: m[1].toUpperCase(),
+          text: m[2].replace(/<[^>]+>/g, "").trim(),
+        });
+      }
+      return out;
+    }
+
+    async function renderMcq(idx) {
+      var item = items[idx];
+      itemBody.innerHTML = '<div class="exam-mcq"><p class="q">Loading question…</p></div>';
+      var stem = item.slug ? item.slug.replace(/-/g, " ") : "Multiple choice";
+      var opts = [];
+      var html = "";
+      if (item.slug) {
+        try {
+          var res = await fetch("/CCNA-Study/CCNA_questions/" + item.slug + ".html");
+          html = await res.text();
+          var h1 = extractH1(html);
+          if (h1) stem = h1;
+          item._cachedCorrect = parseCorrectLetter(html);
+          opts = extractMcqOptions(html);
+        } catch (e) {}
+      }
+      if (opts.length < 2) {
+        opts = [
+          { letter: "A", text: "Option A" },
+          { letter: "B", text: "Option B" },
+          { letter: "C", text: "Option C" },
+          { letter: "D", text: "Option D" },
+        ];
+      }
+      var inner =
+        '<div class="exam-mcq">' +
+        '<p class="q">' +
+        escapeHtml(stem) +
+        "</p>";
+      opts.forEach(function (o) {
+        inner +=
+          '<label class="opt"><input type="radio" name="mcq" value="' +
+          o.letter +
+          '" /> ' +
+          escapeHtml(o.letter) +
+          ") " +
+          escapeHtml(o.text) +
+          "</label>";
+      });
+      inner += "</div>";
+      itemBody.innerHTML = inner;
+    }
+
+    /** Same-origin embed paths (vercel.json rewrites → study assets); iframe URL stays under exam folder. */
+    var DND_PAGE_BASE = "/CCNA_Sim_EXAM/embed/dnd/";
+    var LAB_PAGE_BASE = "/CCNA_Sim_EXAM/embed/lab/";
+
+    function renderDnd(idx) {
+      var item = items[idx];
+      var fn = item.fileName;
+      if (!fn) {
+        itemBody.innerHTML =
+          '<p style="color:#9fb0cc">Drag and drop exercise unavailable for this placeholder item.</p>';
+        return;
+      }
+      var url = new URL(DND_PAGE_BASE + fn, window.location.origin);
+      url.searchParams.set("examSim", "1");
+      var src = url.pathname + url.search;
+      itemBody.innerHTML =
+        '<div class="exam-dnd-embed">' +
+        '<iframe class="exam-dnd-iframe" id="examDndFrame" title="Drag and drop exercise" src="' +
+        escapeHtml(src) +
+        '"></iframe>' +
+        "</div>";
+    }
+
+    function renderLab(idx) {
+      var item = items[idx];
+      var fn = item.fileName;
+      if (!fn) {
+        itemBody.innerHTML =
+          '<p style="color:#9fb0cc">CLI lab unavailable for this placeholder item.</p>';
+        return;
+      }
+      var url = new URL(LAB_PAGE_BASE + fn, window.location.origin);
+      url.searchParams.set("examSim", "1");
+      var src = url.pathname + url.search;
+      itemBody.innerHTML =
+        '<div class="exam-lab-embed">' +
+        '<p class="exam-lab-hint">Complete the lab below, then press <strong>Next</strong> when finished (advance counts as completed for scoring).</p>' +
+        '<iframe class="exam-lab-iframe" id="examLabFrame" title="CLI lab simulation" src="' +
+        escapeHtml(src) +
+        '"></iframe>' +
+        "</div>";
+    }
+
+    async function renderCurrentItem() {
+      if (itemIndex >= items.length) return;
+      var t = items[itemIndex];
+      if (t.type === "mcq") await renderMcq(itemIndex);
+      else if (t.type === "dnd") renderDnd(itemIndex);
+      else renderLab(itemIndex);
+    }
+
+    async function scoreMcqItem(item) {
+      var sel = itemBody.querySelector('input[name="mcq"]:checked');
+      if (!sel) return false;
+      var letter = sel.value.toUpperCase();
+      if (!item.slug) return false;
+      var truth = item._cachedCorrect;
+      if (truth == null) {
+        try {
+          var res = await fetch("/CCNA-Study/CCNA_questions/" + item.slug + ".html");
+          var html = await res.text();
+          truth = parseCorrectLetter(html);
+          item._cachedCorrect = truth;
+        } catch (e) {
+          truth = null;
+        }
+      }
+      if (truth == null) return false;
+      return letter === truth;
+    }
+
+    function scoreDndSlotsDirectMatch(doc) {
+      var slots = doc.querySelectorAll(".drop-slot[data-target]");
+      if (!slots.length) return false;
+      for (var i = 0; i < slots.length; i++) {
+        var slot = slots[i];
+        var target = (slot.getAttribute("data-target") || "").trim();
+        var tok = slot.querySelector(".token");
+        if (!tok) return false;
+        var val = (tok.getAttribute("data-value") || "").trim();
+        if (!val || val.toLowerCase() !== target.toLowerCase()) return false;
+      }
+      return true;
+    }
+
+    function scoreDndItem() {
+      var iframe = document.getElementById("examDndFrame");
+      if (!iframe) return false;
+      try {
+        var doc = iframe.contentDocument;
+        if (!doc || doc.readyState !== "complete") return false;
+        var checkBtn = doc.getElementById("checkBtn");
+        if (checkBtn) {
+          checkBtn.click();
+          var slots = doc.querySelectorAll(".drop-slot[data-target]");
+          if (!slots.length) return false;
+          for (var i = 0; i < slots.length; i++) {
+            if (!slots[i].classList.contains("correct")) return false;
+          }
+          return true;
+        }
+        return scoreDndSlotsDirectMatch(doc);
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function scoreLabItem() {
+      return true;
+    }
+
+    async function scoreCurrentItem() {
+      if (itemIndex < 0 || itemIndex >= items.length || !items[itemIndex]) {
+        return {
+          itemIndex: itemIndex,
+          type: "unknown",
+          slug: null,
+          objectiveIds: [],
+          correct: false,
+        };
+      }
+      var item = items[itemIndex];
+      var base = {
+        itemIndex: itemIndex,
+        type: item.type,
+        slug: item.slug,
+        objectiveIds: item.objectiveIds || [],
+        correct: false,
+      };
+      if (item.type === "mcq") {
+        base.correct = await scoreMcqItem(item);
+        return base;
+      }
+      if (item.type === "dnd") {
+        base.correct = scoreDndItem();
+        return base;
+      }
+      base.correct = scoreLabItem();
+      return base;
+    }
+
+    function compareObjIds(a, b) {
+      var pa = String(a).split(".").map(Number);
+      var pb = String(b).split(".").map(Number);
+      var len = Math.max(pa.length, pb.length);
+      for (var i = 0; i < len; i++) {
+        var da = pa[i] || 0;
+        var db = pb[i] || 0;
+        if (da !== db) return da - db;
+      }
+      return 0;
+    }
+
+    function computeScaledScore(attemptResults, deck, cfg) {
+      cfg = cfg || scoreScaledConfig;
+      var den = { mcq: 0, dnd: 0, lab: 0 };
+      deck.forEach(function (it) {
+        if (it.type === "mcq") den.mcq++;
+        else if (it.type === "dnd") den.dnd++;
+        else if (it.type === "lab") den.lab++;
+      });
+      var mcqCorrect = 0;
+      var dndCorrect = 0;
+      var labCorrect = 0;
+      attemptResults.forEach(function (r) {
+        if (!r.correct) return;
+        if (r.type === "mcq") mcqCorrect++;
+        else if (r.type === "dnd") dndCorrect++;
+        else if (r.type === "lab") labCorrect++;
+      });
+      var mcqPts = den.mcq ? (cfg.maxMcq * mcqCorrect) / den.mcq : 0;
+      var dndPts = den.dnd ? (cfg.maxDnd * dndCorrect) / den.dnd : 0;
+      var labPts = den.lab ? (cfg.maxLab * labCorrect) / den.lab : 0;
+      var total = Math.round(mcqPts + dndPts + labPts);
+      return {
+        total: total,
+        pass: total >= cfg.passing,
+        mcqCorrect: mcqCorrect,
+        dndCorrect: dndCorrect,
+        labCorrect: labCorrect,
+        den: den,
+        mcqPts: mcqPts,
+        dndPts: dndPts,
+        labPts: labPts,
+        cfg: cfg,
+      };
+    }
+
+    async function populateResults(reason) {
+      var headline = "Attempt summary";
+      var reasonText = "";
+      if (reason === "complete") {
+        headline = "Test complete";
+        reasonText = "You reached the end of this timed session.";
+      } else if (reason === "timeout") {
+        headline = "Time expired";
+        reasonText = "The timer hit zero. Results include every item scored before the clock stopped.";
+      }
+      document.getElementById("resultsHeadline").textContent = headline;
+      document.getElementById("resultsReason").textContent = reasonText;
+
+      var scaled = computeScaledScore(attemptResults, items, scoreScaledConfig);
+      var passLabel = scaled.pass ? "Pass" : "Did not pass";
+      document.getElementById("resultsScore").textContent =
+        "Scaled score: " +
+        scaled.total +
+        " / " +
+        scaled.cfg.maxTotal +
+        " — " +
+        passLabel +
+        " (passing score " +
+        scaled.cfg.passing +
+        ").";
+
+      var unscored = attemptResults.filter(function (r) {
+        return r.correct === null || r.correct === undefined;
+      }).length;
+      var breakdown =
+        "Weighted scoring: multiple-choice " +
+        scaled.mcqCorrect +
+        "/" +
+        scaled.den.mcq +
+        " → up to " +
+        Math.round(scaled.cfg.maxMcq) +
+        " pts (" +
+        Math.round(scaled.mcqPts) +
+        " earned); drag-and-drop " +
+        scaled.dndCorrect +
+        "/" +
+        scaled.den.dnd +
+        " → up to " +
+        Math.round(scaled.cfg.maxDnd) +
+        " pts (" +
+        Math.round(scaled.dndPts) +
+        " earned); labs " +
+        scaled.labCorrect +
+        "/" +
+        scaled.den.lab +
+        " → up to " +
+        Math.round(scaled.cfg.maxLab) +
+        " pts (" +
+        Math.round(scaled.labPts) +
+        " earned).";
+      var tail = unscored
+        ? " Some items could not be scored automatically; unscored items earn 0 in their section."
+        : "";
+      var adaptiveTail =
+        adaptiveMcqInjected > 0
+          ? " Adaptive mode added " +
+            adaptiveMcqInjected +
+            " extra multiple-choice item(s) from domains that needed more practice (same overall MCQ score weight spread across all MCQs you saw)."
+          : "";
+
+      var rollup = {};
+      attemptResults.forEach(function (r) {
+        var ids = r.objectiveIds && r.objectiveIds.length ? r.objectiveIds : ["__none__"];
+        ids.forEach(function (oid) {
+          if (!rollup[oid]) rollup[oid] = { correct: 0, total: 0 };
+          rollup[oid].total += 1;
+          if (r.correct) rollup[oid].correct += 1;
+        });
+      });
+
+      document.getElementById("resultsNote").textContent =
+        breakdown +
+        tail +
+        adaptiveTail +
+        " Use the study scorecard for blueprint gaps; the objective table lists every tagged objective from your attempt.";
+
+      var domainAgg = {};
+      attemptResults.forEach(function (r) {
+        var maj = primaryDomainMajorFromObjectiveIds(r.objectiveIds);
+        if (!domainAgg[maj]) domainAgg[maj] = emptyDomainAgg();
+        var b = domainAgg[maj];
+        b.total += 1;
+        if (r.correct) b.correct += 1;
+        var ty = r.type;
+        if (ty === "mcq" || ty === "dnd" || ty === "lab") {
+          b.types[ty].t += 1;
+          if (r.correct) b.types[ty].c += 1;
+        }
+      });
+
+      var scorecardLead = document.getElementById("resultsScorecardLead");
+      scorecardLead.textContent =
+        "Each scored item is counted once under its primary blueprint domain (first mapped objective ID by exam order). Rows are sorted with the weakest domains first.";
+
+      var scorecardBody = document.getElementById("resultsDomainScorecardBody");
+      scorecardBody.innerHTML = "";
+      var domainKeys = Object.keys(domainAgg).filter(function (k) {
+        return domainAgg[k].total > 0;
+      });
+      domainKeys.sort(function (a, b) {
+        function pctFor(k) {
+          var z = domainAgg[k];
+          return z.total ? z.correct / z.total : 1;
+        }
+        if (a === "__none__") return 1;
+        if (b === "__none__") return -1;
+        var pa = pctFor(a);
+        var pb = pctFor(b);
+        if (pa !== pb) return pa - pb;
+        return compareObjIds(a + ".0", b + ".0");
+      });
+
+      if (!domainKeys.length) {
+        scorecardLead.textContent =
+          "No domain rollup available—your attempt may lack topic-map objective IDs.";
+      }
+
+      domainKeys.forEach(function (maj) {
+        var d = domainAgg[maj];
+        var pct = d.total ? Math.round((d.correct / d.total) * 1000) / 10 : 0;
+        var tier = domainReviewTier(pct, d.total);
+        var domainTitle =
+          maj === "__none__"
+            ? "Not mapped / miscellaneous"
+            : "Domain " + maj + " — " + (domainMajorTitles[maj] || "CCNA blueprint");
+        var tr = document.createElement("tr");
+        tr.innerHTML =
+          "<td>" +
+          escapeHtml(domainTitle) +
+          "</td><td>" +
+          d.correct +
+          " / " +
+          d.total +
+          ' (<span class="obj-pct">' +
+          pct +
+          "%</span>)</td><td><span class=\"scorecard-by-type\">" +
+          escapeHtml(formatScorecardByType(d.types)) +
+          "</span></td><td><span class=\"" +
+          tier.cls +
+          "\">" +
+          escapeHtml(tier.label) +
+          '</span><span class="scorecard-hint">' +
+          escapeHtml(tier.hint) +
+          "</span></td>";
+        scorecardBody.appendChild(tr);
+      });
+
+      var weakLead = document.getElementById("resultsWeakObjectiveLead");
+      var weakList = document.getElementById("resultsWeakObjectiveList");
+      weakList.innerHTML = "";
+      var weaknessCandidates = [];
+      Object.keys(rollup).forEach(function (oid) {
+        if (oid === "__none__") return;
+        var rw = rollup[oid];
+        var pctW = rw.total ? Math.round((rw.correct / rw.total) * 1000) / 10 : 0;
+        if (rw.total >= 2 && pctW < 70) weaknessCandidates.push({ oid: oid, row: rw, pct: pctW });
+      });
+      weaknessCandidates.sort(function (a, b) {
+        if (a.pct !== b.pct) return a.pct - b.pct;
+        return compareObjIds(a.oid, b.oid);
+      });
+
+      if (!weaknessCandidates.length) {
+        weakLead.textContent =
+          "No individual objectives scored below 70% with at least two tagged attempts—or every miss was spread thin. Keep drilling weak domains above.";
+      } else {
+        weakLead.textContent =
+          "Lowest performers among mapped objectives (under 70%, two or more attempts). Use these IDs with the blueprint and CCNA Training Portal banks.";
+        var limit = Math.min(weaknessCandidates.length, 18);
+        var wi;
+        for (wi = 0; wi < limit; wi++) {
+          var wc = weaknessCandidates[wi];
+          var topicW = objectiveLabels[wc.oid] || "(see CCNA objectives)";
+          var li = document.createElement("li");
+          li.innerHTML =
+            "<strong>" +
+            escapeHtml(wc.oid) +
+            '</strong> — <span class="scorecard-weak-pct">' +
+            wc.pct +
+            "%</span> (" +
+            wc.row.correct +
+            "/" +
+            wc.row.total +
+            ") · " +
+            escapeHtml(topicW);
+          weakList.appendChild(li);
+        }
+      }
+
+      var tbody = document.getElementById("resultsObjectiveBody");
+      tbody.innerHTML = "";
+      var keys = Object.keys(rollup).sort(compareObjIds);
+      keys.forEach(function (oid) {
+        var row = rollup[oid];
+        var pctO = row.total ? Math.round((row.correct / row.total) * 1000) / 10 : 0;
+        var tr = document.createElement("tr");
+        var label = oid === "__none__" ? "—" : oid;
+        var topic =
+          oid === "__none__"
+            ? "Not mapped in topic tracker"
+            : objectiveLabels[oid] || "(see CCNA objectives)";
+        tr.innerHTML =
+          "<td>" +
+          escapeHtml(label) +
+          "</td><td>" +
+          escapeHtml(topic) +
+          "</td><td>" +
+          row.correct +
+          "</td><td>" +
+          row.total +
+          '</td><td class="obj-pct">' +
+          pctO +
+          "%</td>";
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function finalizeAttempt(reason) {
+      stopExamTimer();
+      examFooter.classList.remove("is-active");
+      examPanel.hidden = true;
+      gatePanel.hidden = true;
+      resultsPanel.hidden = false;
+      await populateResults(reason);
+    }
+
+    async function handleTimeExpired() {
+      if (!sessionOk) return;
+      if (itemIndex < items.length && examStarted) {
+        var rec = await scoreCurrentItem();
+        attemptResults.push(rec);
+      }
+      await finalizeAttempt("timeout");
+    }
+
+    async function startExamUI() {
+      itemIndex = 0;
+      gatePanel.hidden = true;
+      examPanel.hidden = false;
+      examFooter.classList.add("is-active");
+      resultsPanel.hidden = true;
+      remainingSec = TOTAL_SECONDS;
+      examTimer.textContent = formatTime(remainingSec);
+      examTimer.classList.remove("is-low");
+      examStarted = true;
+      if (timerId) clearInterval(timerId);
+      timerId = setInterval(tickTimer, 1000);
+      await renderCurrentItem();
+      maskRunnerUrlInAddressBar();
+    }
+
+    document.getElementById("btnNext").addEventListener("click", async function () {
+      if (!sessionOk || !examStarted) return;
+      if (itemIndex >= items.length) return;
+      var rec = await scoreCurrentItem();
+      attemptResults.push(rec);
+      if (rec.type === "mcq") {
+        adaptiveMcqGraded++;
+        adaptiveMcqSinceInject++;
+        majorsFromObjectiveIds(rec.objectiveIds).forEach(function (m) {
+          if (!domainMcqStats[m]) domainMcqStats[m] = { c: 0, w: 0 };
+          if (rec.correct) domainMcqStats[m].c++;
+          else domainMcqStats[m].w++;
+        });
+        maybeInjectAdaptiveMcqs();
+      }
+      itemIndex += 1;
+      if (itemIndex >= items.length) {
+        await finalizeAttempt("complete");
+        return;
+      }
+      await renderCurrentItem();
+    });
+
+    document.getElementById("btnReset").addEventListener("click", async function () {
+      if (!sessionOk || !examStarted) return;
+      if (!confirm("Reset clears your selections on this item only. Continue?")) return;
+      await renderCurrentItem();
+    });
+
+    document.getElementById("btnQuit").addEventListener("click", async function () {
+      if (!sessionOk || !examStarted) return;
+      if (!confirm("Quit ends this assessment and returns you to the CCNA home page. Proceed?")) return;
+      try {
+        if (itemIndex < items.length) {
+          var rec = await scoreCurrentItem();
+          attemptResults.push(rec);
+        }
+      } catch (e) {
+        console.error("ccna-sim quit score", e);
+      }
+      stopExamTimer();
+      examFooter.classList.remove("is-active");
+      examPanel.hidden = true;
+      gatePanel.hidden = true;
+      window.location.href = "/ccna-home.html";
+    });
+
+    document.getElementById("resultsContinue").addEventListener("click", function () {
+      redirectAfterResults();
+    });
+
+    async function loadBlueprintLine() {
+      try {
+        var r = await fetch("/CCNA-Study/data/ccna-free-assessment-blueprint.json");
+        var b = await r.json();
+        gateBlueprint.textContent =
+          "Blueprint v" +
+          b.schemaVersion +
+          ": " +
+          b.durationMinutes +
+          " min · " +
+          b.multipleChoiceCount +
+          " MCQ · " +
+          b.dragDropCount +
+          " D&D · " +
+          b.labCount +
+          " labs (" +
+          b.totalItems +
+          " items).";
+        gateBlueprint.hidden = false;
+      } catch (_) {}
+    }
+
+    var params = new URLSearchParams(window.location.search);
+    var bypass = params.get("bypass") === "1" || params.get("demo") === "1" || params.get("reset") === "1";
+
+    document.getElementById("btnGateStartExam").addEventListener("click", async function () {
+      if (!sessionOk) return;
+      await startExamFromGate();
+    });
+
+    await loadBlueprintLine();
+
+    if (!bypass && assessmentCompleted()) {
+      gateStatus.textContent = "This browser has already completed the free CCNA assessment. Use the CCNA home page for samples, the full timed simulation, or 30-day portal access.";
+      gateStatus.className = "status-bad";
+    } else {
+      sessionOk = true;
+      gateStatus.className = "status-ok";
+      showExamGateStartOptions();
+    }
+
+    updateGateBackLink();
+  </script>
+</body>
+</html>

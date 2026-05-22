@@ -1403,10 +1403,10 @@
     }
     @media (prefers-reduced-motion: no-preference) {
       .ccna-sim-promo-root.ccna-sim-promo-root--open .ccna-sim-promo-panel {
-        animation: ccnaSimPromoIn 0.28s ease-out;
+        animation: ccnaDialogIn 0.28s ease-out;
       }
     }
-    @keyframes ccnaSimPromoIn {
+    @keyframes ccnaDialogIn {
       from {
         opacity: 0;
         transform: translateY(12px) scale(0.98);
@@ -1719,90 +1719,37 @@
             <li>Progress tracking helps you focus study time where it is needed most.</li>
             <li>New questions are added continuously to keep preparation current.</li>
           </ul>
-          <section class="formats-section" aria-labelledby="formats-title">
-            <div class="formats-inner">
-              <p class="formats-head">Training paths</p>
-              <h2 id="formats-title">Certification training portals — coming soon</h2>
-              <p class="formats-lead">
-                More vendor paths will appear here as each portal launches. For CCNA now, use the header link or the samples below.
-              </p>
-              <ul class="formats-grid formats-grid--tri" aria-label="Certification training containers">
-                <li>
-                  <article
-                    class="format-card format-card--soon-disabled"
-                    aria-labelledby="comptia-training-title"
-                    aria-describedby="comptia-soon-banner"
-                  >
-                    <p class="format-card-soon-banner" id="comptia-soon-banner" role="status">Security+ coming soon</p>
-                    <h3 id="comptia-training-title">CompTIA Training</h3>
-                    <figure class="format-card-thumb">
-                      <img
-                        src="/images/comptia-training-card-thumbnail.png"
-                        width="1024"
-                        height="682"
-                        alt="IT professional with a laptop and a security lock hologram, suggesting cybersecurity training."
-                        decoding="async"
-                        loading="lazy"
-                      />
-                    </figure>
-                    <p>
-                      Security+ training path with targeted practice sets and exam-style preparation.
-                    </p>
-                  </article>
-                </li>
-              </ul>
-            </div>
-          </section>
           <div class="samples-stack">
-            <section class="samples-block" aria-labelledby="home-ccna-samples-title">
-              <h2 class="samples-block-title" id="home-ccna-samples-title">CCNA samples</h2>
+            <section class="samples-block" aria-labelledby="home-ccna-assessment-title">
+              <h2 class="samples-block-title" id="home-ccna-assessment-title">Free CCNA assessment</h2>
               <p class="samples-block-lead">
-                Free CCNA-format activities on this site—sample multiple-choice, drag-and-drop, and a dual-switch CLI lab you can run in the browser.
+                Take a first-time diagnostic that feels like a short simulated exam: multiple-choice questions from every CCNA domain, drag-and-drop items, one VLAN lab, and a scorecard at the end.
               </p>
-              <ul class="formats-grid formats-grid--tri" aria-label="CCNA sample activities">
+              <ul class="formats-grid formats-grid--tri" aria-label="Free CCNA assessment details">
                 <li>
-                  <article class="format-card" aria-labelledby="home-ccna-q-title">
-                    <h3 id="home-ccna-q-title">CCNA · Sample questions</h3>
+                  <article class="format-card" aria-labelledby="home-ccna-assessment-card-title">
+                    <h3 id="home-ccna-assessment-card-title">Find your weak domains</h3>
                     <figure class="format-card-thumb">
                       <img
                         src="/images/ccna-sample-questions-thumbnail.png"
                         width="1024"
                         height="586"
-                        alt="Five CCNA multiple-choice sample questions linked with Next question controls."
+                        alt="CCNA assessment preview with multiple-choice questions and exam-style controls."
                         decoding="async"
                         loading="lazy"
                       />
                     </figure>
                     <p>
-                      Open the first item, use <strong>Check answer</strong> for feedback, then <strong>Next question</strong> to move through the chain. Question 5 ends the set.
+                      The assessment includes <strong>12</strong> multiple-choice questions, <strong>4</strong> drag-and-drop exercises, and the same VLAN CLI lab used in the browser sample.
                     </p>
                     <p class="format-sample">
-                      <a href="/sample?track=ccna-questions">Open sample questions</a>
+                      <a href="/CCNA_Sim_EXAM/free-assessment.html">Start free assessment</a>
                     </p>
                   </article>
                 </li>
                 <li>
-                  <article class="format-card" aria-labelledby="home-ccna-dd-title">
-                    <h3 id="home-ccna-dd-title">CCNA · Sample drag-and-drop</h3>
-                    <figure class="format-card-thumb">
-                      <img
-                        src="/images/ccna-dragdrop-ftp-tftp-thumbnail.png"
-                        width="1024"
-                        height="590"
-                        alt="CCNA drag-and-drop: match descriptions to FTP and TFTP buckets."
-                        decoding="async"
-                        loading="lazy"
-                      />
-                    </figure>
-                    <p>Match file-transfer descriptions to FTP and TFTP. Drag on desktop or tap-to-place on touch devices.</p>
-                    <p class="format-sample">
-                      <a href="/sample?track=ftp">Open sample drag-and-drop</a>
-                    </p>
-                  </article>
-                </li>
-                <li>
-                  <article class="format-card" aria-labelledby="home-ccna-lab-title">
-                    <h3 id="home-ccna-lab-title">CCNA · Sample lab</h3>
+                  <article class="format-card" aria-labelledby="home-ccna-assessment-score-title">
+                    <h3 id="home-ccna-assessment-score-title">Get a scorecard</h3>
                     <figure class="format-card-thumb">
                       <img
                         src="/CCNA-Study/CCNA_labs/images/ccna-lab-vlan-sim-topology.png"
@@ -1814,10 +1761,10 @@
                       />
                     </figure>
                     <p>
-                      <strong>VLAN simulation</strong> — dual-switch CLI lab for VLANs, access and voice ports, and save validation in the browser.
+                      When you finish, the scorecard breaks down your performance by CCNA domain so you know where to study next.
                     </p>
                     <p class="format-sample">
-                      <a href="/sample?track=ccna-vlan">Open sample lab</a>
+                      <a href="/CCNA_Sim_EXAM/free-assessment.html">Take the assessment</a>
                     </p>
                   </article>
                 </li>
@@ -2094,64 +2041,6 @@
     </footer>
   </div>
   <div
-    id="ccnaSimPromoRoot"
-    class="ccna-sim-promo-root"
-    hidden
-    role="presentation"
-    aria-hidden="true"
-  >
-    <div class="ccna-sim-promo-backdrop" data-ccna-sim-promo-dismiss tabindex="-1"></div>
-    <div
-      class="ccna-sim-promo-panel"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="ccnaSimPromoTitle"
-      tabindex="-1"
-    >
-      <button type="button" class="ccna-sim-promo-close" data-ccna-sim-promo-dismiss aria-label="Close offer dialog">
-        ×
-      </button>
-      <p class="ccna-sim-promo-eyebrow">Limited-time</p>
-      <h2 id="ccnaSimPromoTitle">CCNA timed simulation — 50% off</h2>
-      <p class="ccna-sim-promo-price">
-        <del class="ccna-sim-promo-price-was">$9.99</del>
-        <span class="ccna-sim-promo-price-now">$4.99</span>
-        <span class="ccna-sim-promo-limited-pill">Today</span>
-      </p>
-      <p class="ccna-sim-promo-lead ccna-sim-promo-lead--compact">
-        Real <strong>2-hour</strong> mix: MCQ, labs, drag‑and‑drop—then a <strong>scorecard</strong> that shows what to study next.
-        <strong>One Stripe payment.</strong> No site account; BeCertifiedToday.com never requires a membership.
-      </p>
-      <div class="ccna-sim-promo-code-inline" role="group" aria-label="Promotion code 50 percent off">
-        <span class="ccna-sim-promo-code-inline-label">Code</span>
-        <code id="ccnaSimPromoCode">CCNA_Sim_4_U</code>
-        <button type="button" class="ccna-sim-promo-copy ccna-sim-promo-copy--compact" id="ccnaSimPromoCopyBtn">
-          Copy
-        </button>
-      </div>
-      <p class="ccna-sim-promo-hint ccna-sim-promo-hint--compact">Apply at checkout → Add promotion code.</p>
-      <div class="ccna-sim-promo-actions">
-        <a
-          class="ccna-sim-promo-primary"
-          id="ccnaSimPromoCta"
-          href="/CCNA_Sim_EXAM/begin-test-simulation.html?promo=CCNA_Sim_4_U"
-          data-bcc-item-id="ccna_timed_simulation"
-          data-bcc-item-name="CCNA Timed Test Simulation"
-          data-bcc-value="4.99"
-          data-bcc-currency="USD"
-          >Start timed test — $4.99</a
-        >
-        <a
-          class="ccna-sim-promo-secondary ccna-sim-promo-adaptive-path"
-          href="/CCNA_Sim_EXAM/begin-test-simulation.html?promo=CCNA_Sim_4_U&amp;sim_adaptive=1"
-          title="Turns on adaptive multiple choice at exam start—extra MCQs in weaker blueprint domains during the same session."
-          >Adaptive exam → same price</a
-        >
-        <button type="button" class="ccna-sim-promo-secondary" data-ccna-sim-promo-dismiss>Not now</button>
-      </div>
-    </div>
-  </div>
-  <div
     id="ccnaPortalGateRoot"
     class="ccna-sim-promo-root"
     hidden
@@ -2213,128 +2102,6 @@
           sessionStorage.removeItem("ccnpSampleKind");
         } catch (e) {}
       }
-    })();
-    (function () {
-      var PROMO = "CCNA_Sim_4_U";
-      var root = document.getElementById("ccnaSimPromoRoot");
-      var panel = root && root.querySelector(".ccna-sim-promo-panel");
-      var copyBtn = document.getElementById("ccnaSimPromoCopyBtn");
-      var promoCta = document.getElementById("ccnaSimPromoCta");
-      if (!root || !panel) return;
-
-      var path = location.pathname || "";
-      var onHome = path === "/" || path === "/index.html" || path === "/ccna-home.html";
-      if (!onHome) return;
-
-      var prevOverflow = "";
-      var open = false;
-
-      function closePromo() {
-        if (!open) return;
-        open = false;
-        root.classList.remove("ccna-sim-promo-root--open");
-        root.setAttribute("hidden", "");
-        root.setAttribute("aria-hidden", "true");
-        document.body.style.overflow = prevOverflow;
-        document.removeEventListener("keydown", onKey);
-      }
-
-      function openPromo() {
-        if (open) return;
-        open = true;
-        prevOverflow = document.body.style.overflow;
-        document.body.style.overflow = "hidden";
-        root.removeAttribute("hidden");
-        root.classList.add("ccna-sim-promo-root--open");
-        root.setAttribute("aria-hidden", "false");
-        panel.focus();
-        document.addEventListener("keydown", onKey);
-      }
-
-      function onKey(ev) {
-        if (ev.key === "Escape") {
-          ev.preventDefault();
-          closePromo();
-        }
-      }
-
-      root.querySelectorAll("[data-ccna-sim-promo-dismiss]").forEach(function (el) {
-        el.addEventListener("click", function () {
-          closePromo();
-        });
-      });
-
-      if (copyBtn) {
-        copyBtn.addEventListener("click", function () {
-          function ok() {
-            var t = "Copied";
-            var prev = copyBtn.textContent;
-            copyBtn.textContent = t;
-            copyBtn.disabled = true;
-            setTimeout(function () {
-              copyBtn.textContent = prev;
-              copyBtn.disabled = false;
-            }, 1600);
-          }
-          function fail() {
-            window.prompt("Copy this code:", PROMO);
-          }
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(PROMO).then(ok).catch(fail);
-          } else {
-            fail();
-          }
-        });
-      }
-
-      if (promoCta) {
-        promoCta.addEventListener("click", function () {
-          if (typeof window.gtag !== "function") return;
-          var attrs =
-            typeof window.bccGetCampaignAttribution === "function" ? window.bccGetCampaignAttribution() : {};
-          window.gtag("event", "select_promotion", {
-            promotion_id: PROMO,
-            promotion_name: "CCNA timed simulation 50% off",
-            creative_name: "ccna_home_popup",
-            currency: "USD",
-            value: 4.99,
-            campaign_source: attrs.utm_source || undefined,
-            campaign_medium: attrs.utm_medium || undefined,
-            campaign_name: attrs.utm_campaign || undefined,
-            campaign_content: attrs.utm_content || undefined,
-            campaign_term: attrs.utm_term || undefined,
-            gclid: attrs.gclid || undefined,
-            items: [
-              {
-                item_id: "ccna_timed_simulation",
-                item_name: "CCNA Timed Test Simulation",
-                price: 4.99,
-                quantity: 1,
-              },
-            ],
-          });
-        });
-      }
-
-      var promoShowConsumed = false;
-      var promoDelayMs = 20000;
-      var promoTimer = null;
-
-      function disconnectPromoTriggers() {
-        if (promoTimer != null) {
-          clearTimeout(promoTimer);
-          promoTimer = null;
-        }
-      }
-
-      function triggerPromoOnce() {
-        if (promoShowConsumed) return;
-        promoShowConsumed = true;
-        disconnectPromoTriggers();
-        openPromo();
-      }
-
-      promoTimer = window.setTimeout(triggerPromoOnce, promoDelayMs);
     })();
     document.addEventListener("DOMContentLoaded", function () {
       var gateRoot = document.getElementById("ccnaPortalGateRoot");
