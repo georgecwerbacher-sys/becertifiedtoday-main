@@ -816,8 +816,8 @@
       <section class="formats-section" aria-labelledby="formats-title">
         <div class="formats-inner">
           <p id="portal-checkout-activated-banner" class="portal-checkout-activated-banner" hidden role="status">
-            <strong>30-day access activated.</strong>
-            Your pass is stored in <strong>this browser</strong> until the end date Stripe tied to your payment (about 30 days). Clearing site data for this domain removes it—you can recover with a checkout session ID, your Stripe success URL, or an email magic link:
+            <strong>Access activated.</strong>
+            Your pass is stored in <strong>this browser</strong> until the end date Stripe tied to your payment. Clearing site data for this domain removes it—you can recover with a checkout session ID, your Stripe success URL, or an email magic link:
             <a href="/CCNA-Study/ccna-portal-request-link.html">Email me a portal link</a>
             ·
             <a href="/CCNA-Study/ccna-portal-restore-access.html">Restore access</a>
@@ -1129,7 +1129,7 @@
             </ul>
             <div id="portal-sim-verified-wrap" class="portal-sim-verified-wrap" hidden>
               <p>
-                <strong>Verified access</strong> — your active <strong>30-day</strong> CCNA library pass is on this device. Use the link below to begin the full timed simulated
+                <strong>Verified access</strong> — your active CCNA library pass is on this device. Use the link below to begin the full timed simulated
                 exam (Stripe checkout is not used for this path).
               </p>
               <a
@@ -1141,7 +1141,7 @@
             </div>
             <div id="portal-sim-locked-wrap" class="portal-sim-locked-wrap">
               <p style="margin: 0 0 14px; font-size: 0.94rem; line-height: 1.5; color: #b8c3d6;">
-                Need <strong>30-day</strong> library access here? Purchase unlocks timed simulation plus question banks on this browser after Stripe redirect.
+                Need library access here? Purchase unlocks timed simulation plus question banks on this browser after Stripe redirect.
                 Paid already but this page shows locked—your browser may have cleared saved access.
                 Try <a href="/CCNA-Study/ccna-portal-request-link.html">Email me a portal link</a>,
                 <a href="/CCNA-Study/ccna-portal-restore-access.html">Restore access</a>,
@@ -1222,7 +1222,11 @@
       function grantPortalFromVerifyPair(pair, checkoutSessionId, stripSessionQuery) {
         var res = pair.res;
         var data = pair.data || {};
-        if (!res.ok || !data.ok || data.productId !== "ccna-portal-30d") {
+        if (
+          !res.ok ||
+          !data.ok ||
+          (data.productId !== "ccna-portal-30d" && data.productId !== "ccna-portal-10d")
+        ) {
           return false;
         }
         var exp =

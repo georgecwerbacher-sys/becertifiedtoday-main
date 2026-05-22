@@ -158,16 +158,17 @@
             return;
           }
 
+          var productLabel = data.productId === "ccna-portal-10d" ? "10-day" : "30-day";
           if (data.accessExpired) {
             showError(
-              "This purchase’s 30-day window has ended. If you need access again, purchase a new pass from CCNA home."
+              "This purchase's " + productLabel + " window has ended. If you need access again, purchase a new pass from CCNA home."
             );
             return;
           }
 
-          if (data.productId !== "ccna-portal-30d") {
+          if (data.productId !== "ccna-portal-30d" && data.productId !== "ccna-portal-10d") {
             showError(
-              "This checkout session is not for 30-day library access. Use the correct return link from your purchase email, or open the timed test runner if you bought the one-time simulation."
+              "This checkout session is not for library access. Use the correct return link from your purchase email, or open the timed test runner if you bought the one-time simulation."
             );
             return;
           }
@@ -178,7 +179,7 @@
               : Date.now() + 30 * 86400000;
           if (expiresAt <= Date.now()) {
             showError(
-              "This purchase’s 30-day window has ended. If you need access again, purchase a new pass from CCNA home."
+              "This purchase's " + productLabel + " window has ended. If you need access again, purchase a new pass from CCNA home."
             );
             return;
           }

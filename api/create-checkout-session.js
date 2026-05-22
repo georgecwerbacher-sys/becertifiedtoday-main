@@ -1,10 +1,11 @@
 /**
  * POST /api/create-checkout-session
- * Body (JSON, optional): { "productId": "ccna-test-simulation" | "ccna-portal-30d" }
+ * Body (JSON, optional): { "productId": "ccna-test-simulation" | "ccna-portal-10d" | "ccna-portal-30d" }
  *
  * Env:
  *   STRIPE_SECRET_KEY              — sk_live_… / sk_test_… (or rk_* restricted key with Checkout)
  *   STRIPE_PRICE_CCNA_TEST_SIM     — price_… for one-time timed test simulation
+ *   STRIPE_PRICE_CCNA_PORTAL_10D   — price_… for 10-day training portal / library access
  *   STRIPE_PRICE_CCNA_PORTAL_30D   — price_… for 30-day training portal / library access
  *   PUBLIC_SITE_URL                — site origin (e.g. https://becertifiedtoday.com). Missing https:// is added;
  *                                    trailing slashes, paths, and stray quotes are stripped to avoid broken redirects.
@@ -30,6 +31,12 @@ const PRODUCTS = {
     successPath: "/CCNA-Study/CCNA_Training_Portal.html?session_id={CHECKOUT_SESSION_ID}",
     cancelPath: "/ccna-home.html#purchase",
     blueprint: "ccna-portal-30d@v1",
+  },
+  "ccna-portal-10d": {
+    priceEnv: "STRIPE_PRICE_CCNA_PORTAL_10D",
+    successPath: "/CCNA-Study/CCNA_Training_Portal.html?session_id={CHECKOUT_SESSION_ID}",
+    cancelPath: "/ccna-home.html#purchase",
+    blueprint: "ccna-portal-10d@v1",
   },
 };
 

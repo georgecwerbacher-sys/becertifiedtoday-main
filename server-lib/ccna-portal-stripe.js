@@ -10,6 +10,7 @@ export function inferProductIdFromCheckoutSession(session, env = process.env) {
 
   if (!productId && paid) {
     const portalPrice = (env.STRIPE_PRICE_CCNA_PORTAL_30D || "").trim();
+    const portal10dPrice = (env.STRIPE_PRICE_CCNA_PORTAL_10D || "").trim();
     const testSimPrice = (env.STRIPE_PRICE_CCNA_TEST_SIM || "").trim();
     const lines = session.line_items?.data || [];
     for (let i = 0; i < lines.length; i++) {
@@ -19,18 +20,36 @@ export function inferProductIdFromCheckoutSession(session, env = process.env) {
         productId = "ccna-portal-30d";
         break;
       }
+      if (portal10dPrice && pid === portal10dPrice) {
+        productId = "ccna-portal-10d";
+        break;
+      }
       if (testSimPrice && pid === testSimPrice) {
         productId = "ccna-test-simulation";
         break;
       }
     }
   }
+  if (!productId && paid && session.currency === "usd") {
+    const amount = typeof session.amount_subtotal === "number" ? session.amount_subtotal : session.amount_total;
+    if (amount === 999) {
+      productId = "ccna-portal-10d";
+    } else if (amount === 1999) {
+      productId = "ccna-portal-30d";
+    } else if (amount === 499) {
+      productId = "ccna-test-simulation";
+    }
+  }
   return productId;
+}
+
+export function isCcnaPortalProduct(productId) {
+  return productId === "ccna-portal-30d" || productId === "ccna-portal-10d";
 }
 
 /** Fixed window from Stripe timestamps (not "now + 30d"). */
 /** @param {import('stripe').Stripe.Checkout.Session} sess */
-export function portalAccessExpiresAtMs(sess) {
+export function portalAccessExpiresAtMs(sess, productId = null) {
   let anchorSec =
     typeof sess.created === "number" && sess.created > 0 ? sess.created : Math.floor(Date.now() / 1000);
   try {
@@ -45,7 +64,8 @@ export function portalAccessExpiresAtMs(sess) {
       anchorSec = Math.max(anchorSec, pi.created);
     }
   } catch (_) {}
-  return anchorSec * 1000 + 30 * 86400000;
+  const days = productId === "ccna-portal-10d" ? 10 : 30;
+  return anchorSec * 1000 + days * 86400000;
 }
 
 export function checkoutSessionIsPaid(session) {

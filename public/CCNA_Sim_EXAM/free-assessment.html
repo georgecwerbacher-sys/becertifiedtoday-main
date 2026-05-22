@@ -482,6 +482,104 @@
       font-weight: 700;
       color: #fcd34d;
     }
+    .assessment-offer-modal[hidden] {
+      display: none !important;
+    }
+    .assessment-offer-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(5, 10, 20, 0.76);
+    }
+    .assessment-offer-card {
+      width: min(520px, 100%);
+      border-radius: 18px;
+      border: 1px solid rgba(96, 165, 250, 0.55);
+      background: linear-gradient(160deg, #0f172a 0%, #111827 58%, #172554 100%);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+      padding: clamp(22px, 4vw, 30px);
+      color: var(--text);
+    }
+    .assessment-offer-kicker {
+      margin: 0 0 8px;
+      color: #93c5fd;
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .assessment-offer-card h2 {
+      margin: 0 0 10px;
+      font-size: clamp(1.45rem, 5vw, 2rem);
+      line-height: 1.1;
+    }
+    .assessment-offer-card p {
+      margin: 0 0 14px;
+      color: #cbd5e1;
+      line-height: 1.55;
+    }
+    .assessment-offer-code {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 18px 0;
+      padding: 14px 16px;
+      border: 1px dashed rgba(147, 197, 253, 0.75);
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.76);
+    }
+    .assessment-offer-code strong {
+      font-size: clamp(1.15rem, 5vw, 1.45rem);
+      letter-spacing: 0.12em;
+      color: #ffffff;
+    }
+    .assessment-offer-copy {
+      border: 1px solid rgba(147, 197, 253, 0.8);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(59, 130, 246, 0.16);
+      color: #dbeafe;
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .assessment-offer-warning {
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(251, 191, 36, 0.42);
+      background: rgba(251, 191, 36, 0.12);
+      color: #fde68a !important;
+      font-weight: 800;
+    }
+    .assessment-offer-actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .assessment-offer-actions button {
+      width: 100%;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font: inherit;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .assessment-offer-checkout {
+      border: 1px solid #60a5fa;
+      background: linear-gradient(165deg, #3b82f6 0%, #1d4ed8 100%);
+      color: #ffffff;
+    }
+    .assessment-offer-close {
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      background: rgba(15, 23, 42, 0.68);
+      color: #cbd5e1;
+    }
   </style>
 </head>
 <body>
@@ -566,9 +664,35 @@
     <button type="button" id="btnQuit">Quit</button>
   </footer>
 
+  <div class="assessment-offer-modal" id="assessmentOfferModal" role="dialog" aria-modal="true" aria-labelledby="assessmentOfferTitle" hidden>
+    <div class="assessment-offer-card">
+      <p class="assessment-offer-kicker">Assessment-only offer</p>
+      <h2 id="assessmentOfferTitle">$5.00 off 30-day CCNA access</h2>
+      <p>
+        Use coupon code <strong>WELCOME2BCT</strong> at Stripe checkout to save $5.00 on the 30-day access pass.
+      </p>
+      <div class="assessment-offer-code" aria-label="Coupon code WELCOME2BCT">
+        <strong id="assessmentOfferCode">WELCOME2BCT</strong>
+        <button type="button" class="assessment-offer-copy" id="assessmentOfferCopy">Copy code</button>
+      </div>
+      <p class="assessment-offer-warning">
+        This is a one-time pop-up. When you close this box, the offer ends and it will not be shown again.
+      </p>
+      <div class="assessment-offer-actions">
+        <button type="button" class="assessment-offer-checkout" id="assessmentOfferCheckout">
+          Use coupon for 30-day access
+        </button>
+        <button type="button" class="assessment-offer-close" id="assessmentOfferClose">
+          Close and end offer
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script type="module">
     /** localStorage: one completed free assessment per browser. */
     var LS_FREE_ASSESSMENT = "bcc_ccna_free_assessment_v1";
+    var LS_ASSESSMENT_OFFER = "bcc_ccna_assessment_welcome_offer_v1";
     var TOTAL_SECONDS = 35 * 60;
     var timerId = null;
     var remainingSec = TOTAL_SECONDS;
@@ -601,6 +725,11 @@
     var itemBody = document.getElementById("itemBody");
     var resultsPanel = document.getElementById("resultsPanel");
     var examFooter = document.getElementById("examFooter");
+    var offerModal = document.getElementById("assessmentOfferModal");
+    var offerCloseBtn = document.getElementById("assessmentOfferClose");
+    var offerCheckoutBtn = document.getElementById("assessmentOfferCheckout");
+    var offerCopyBtn = document.getElementById("assessmentOfferCopy");
+    var offerCloseRedirect = false;
 
     function assessmentCompleted() {
       try {
@@ -631,6 +760,68 @@
 
     function redirectAfterResults() {
       window.location.href = "/ccna-home.html";
+    }
+
+    function assessmentOfferDismissed() {
+      try {
+        var raw = localStorage.getItem(LS_ASSESSMENT_OFFER);
+        if (!raw) return false;
+        var o = JSON.parse(raw);
+        return !!(o && o.closedAt);
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function markAssessmentOfferDismissed(action) {
+      try {
+        localStorage.setItem(
+          LS_ASSESSMENT_OFFER,
+          JSON.stringify({ closedAt: Date.now(), action: action || "closed" })
+        );
+      } catch (e) {}
+    }
+
+    function showAssessmentOffer(options) {
+      options = options || {};
+      if (!offerModal || assessmentOfferDismissed()) return false;
+      offerCloseRedirect = !!options.redirectOnClose;
+      offerModal.hidden = false;
+      setTimeout(function () {
+        try {
+          if (offerCheckoutBtn) offerCheckoutBtn.focus();
+        } catch (e) {}
+      }, 0);
+      return true;
+    }
+
+    function closeAssessmentOffer(action) {
+      markAssessmentOfferDismissed(action);
+      if (offerModal) offerModal.hidden = true;
+      if (offerCloseRedirect) {
+        redirectAfterResults();
+      }
+    }
+
+    function goToThirtyDayCheckoutFromOffer() {
+      markAssessmentOfferDismissed("checkout");
+      if (offerCheckoutBtn) {
+        offerCheckoutBtn.disabled = true;
+        offerCheckoutBtn.textContent = "Opening checkout...";
+      }
+      fetch("/api/ccna-portal-30d-payment-link")
+        .then(function (res) {
+          return res.json().then(function (body) {
+            if (!res.ok || !body || typeof body.url !== "string") {
+              throw new Error("Checkout link unavailable");
+            }
+            window.location.href = body.url;
+          });
+        })
+        .catch(function () {
+          alert("Checkout is temporarily unavailable. Use code WELCOME2BCT from the 30-day access checkout on CCNA home.");
+          redirectAfterResults();
+        });
     }
 
     function escapeHtml(s) {
@@ -1600,11 +1791,15 @@
 
     async function finalizeAttempt(reason) {
       stopExamTimer();
+      markAssessmentCompleted(reason);
       examFooter.classList.remove("is-active");
       examPanel.hidden = true;
       gatePanel.hidden = true;
       resultsPanel.hidden = false;
       await populateResults(reason);
+      if (reason === "complete" || reason === "timeout") {
+        showAssessmentOffer({ redirectOnClose: false });
+      }
     }
 
     async function handleTimeExpired() {
@@ -1673,15 +1868,47 @@
         console.error("ccna-sim quit score", e);
       }
       stopExamTimer();
+      markAssessmentCompleted("quit");
       examFooter.classList.remove("is-active");
       examPanel.hidden = true;
       gatePanel.hidden = true;
-      window.location.href = "/ccna-home.html";
+      if (!showAssessmentOffer({ redirectOnClose: true })) {
+        window.location.href = "/ccna-home.html";
+      }
     });
 
     document.getElementById("resultsContinue").addEventListener("click", function () {
       redirectAfterResults();
     });
+
+    if (offerCloseBtn) {
+      offerCloseBtn.addEventListener("click", function () {
+        closeAssessmentOffer("closed");
+      });
+    }
+
+    if (offerCheckoutBtn) {
+      offerCheckoutBtn.addEventListener("click", goToThirtyDayCheckoutFromOffer);
+    }
+
+    if (offerCopyBtn) {
+      offerCopyBtn.addEventListener("click", function () {
+        var code = "WELCOME2BCT";
+        function copied() {
+          offerCopyBtn.textContent = "Copied";
+          setTimeout(function () {
+            offerCopyBtn.textContent = "Copy code";
+          }, 1600);
+        }
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+          navigator.clipboard.writeText(code).then(copied).catch(function () {
+            window.prompt("Copy this coupon code:", code);
+          });
+        } else {
+          window.prompt("Copy this coupon code:", code);
+        }
+      });
+    }
 
     async function loadBlueprintLine() {
       try {

@@ -11,6 +11,7 @@ import { getStripeSecretKey } from "./stripe-secret-key.js";
 import {
   checkoutSessionIsPaid,
   inferProductIdFromCheckoutSession,
+  isCcnaPortalProduct,
   portalAccessExpiresAtMs,
 } from "../server-lib/ccna-portal-stripe.js";
 import { verifyPortalMagicJwt } from "../server-lib/ccna-portal-magic-jwt.js";
@@ -61,7 +62,7 @@ export default async function handler(req, res) {
 
   if (
     !payload ||
-    payload.aud !== "ccna-portal-30d" ||
+    (payload.aud !== "ccna-portal-30d" && payload.aud !== "ccna-portal-access") ||
     typeof payload.cs !== "string" ||
     payload.cs.indexOf("cs_") !== 0 ||
     typeof payload.exp !== "number" ||
@@ -82,11 +83,11 @@ export default async function handler(req, res) {
     }
 
     const productId = inferProductIdFromCheckoutSession(session);
-    if (productId !== "ccna-portal-30d") {
+    if (!isCcnaPortalProduct(productId)) {
       return res.status(403).json({ ok: false, error: "This link is not valid for portal access" });
     }
 
-    const accessExpiresAt = portalAccessExpiresAtMs(session);
+    const accessExpiresAt = portalAccessExpiresAtMs(session, productId);
     if (accessExpiresAt <= Date.now()) {
       return res.status(403).json({ ok: false, error: "Access window has ended" });
     }

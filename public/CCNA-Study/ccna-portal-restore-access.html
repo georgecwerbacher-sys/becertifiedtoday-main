@@ -161,7 +161,7 @@
       </li>
     </ul>
     <div id="status" class="status" role="status" aria-live="polite">
-      Enter your checkout session ID and verify. Access only restores if payment completed and your 30-day window from Stripe has not ended.
+      Enter your checkout session ID and verify. Access only restores if payment completed and your Stripe access window has not ended.
     </div>
     <label for="csInput">Checkout session ID</label>
     <textarea id="csInput" autocomplete="off" spellcheck="false" placeholder="cs_live_… or cs_test_…"></textarea>
@@ -227,15 +227,16 @@
               );
               return;
             }
+            var productLabel = data.productId === "ccna-portal-10d" ? "10-day" : "30-day";
             if (data.accessExpired) {
               showErr(
-                "This purchase’s 30-day access window has already ended. Purchase again from CCNA home if you want another pass."
+                "This purchase's " + productLabel + " access window has already ended. Purchase again from CCNA home if you want another pass."
               );
               return;
             }
-            if (data.productId !== "ccna-portal-30d") {
+            if (data.productId !== "ccna-portal-30d" && data.productId !== "ccna-portal-10d") {
               showErr(
-                "That checkout is not for 30-day library access (wrong product). Use the timed simulation flow if you bought the one-time test instead."
+                "That checkout is not for library access (wrong product). Use the timed simulation flow if you bought the one-time test instead."
               );
               return;
             }

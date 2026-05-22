@@ -5,6 +5,7 @@
 import {
   checkoutSessionIsPaid,
   inferProductIdFromCheckoutSession,
+  isCcnaPortalProduct,
   portalAccessExpiresAtMs,
 } from "./ccna-portal-stripe.js";
 
@@ -85,10 +86,11 @@ export async function enrichPortalRowsWithCheckout(stripe, rows) {
       });
       if (!checkoutSessionIsPaid(session)) {
         row.stripeNote = "checkout not paid";
-      } else if (inferProductIdFromCheckoutSession(session) !== "ccna-portal-30d") {
-        row.stripeNote = "not ccna-portal-30d";
+      } else if (!isCcnaPortalProduct(inferProductIdFromCheckoutSession(session))) {
+        row.stripeNote = "not ccna portal access";
       } else {
-        const exp = portalAccessExpiresAtMs(session);
+        const productId = inferProductIdFromCheckoutSession(session);
+        const exp = portalAccessExpiresAtMs(session, productId);
         row.accessExpiresAtMs = exp;
         row.accessExpiresAt = new Date(exp).toISOString();
         row.active = exp > Date.now();

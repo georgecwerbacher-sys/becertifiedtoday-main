@@ -49,7 +49,7 @@ export default async function handler(req, res) {
 
     const paid = checkoutSessionIsPaid(session);
     const productId = inferProductIdFromCheckoutSession(session);
-    const accessExpiresAt = paid ? portalAccessExpiresAtMs(session) : null;
+    const accessExpiresAt = paid ? portalAccessExpiresAtMs(session, productId) : null;
 
     return res.status(200).json({
       ok: paid,

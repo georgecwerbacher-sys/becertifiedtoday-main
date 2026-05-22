@@ -14,6 +14,7 @@ import { normalizePublicSiteUrl } from "./normalize-public-site-url.js";
 import {
   checkoutSessionIsPaid,
   inferProductIdFromCheckoutSession,
+  isCcnaPortalProduct,
   portalAccessExpiresAtMs,
 } from "../server-lib/ccna-portal-stripe.js";
 import { signPortalMagicJwt } from "../server-lib/ccna-portal-magic-jwt.js";
@@ -110,18 +111,18 @@ export default async function handler(req, res) {
     }
 
     const productId = inferProductIdFromCheckoutSession(session);
-    if (productId !== "ccna-portal-30d") {
+    if (!isCcnaPortalProduct(productId)) {
       return res.status(200).json({ ok: true, message: generic });
     }
 
-    const accessExpiresAtMs = portalAccessExpiresAtMs(session);
+    const accessExpiresAtMs = portalAccessExpiresAtMs(session, productId);
     if (accessExpiresAtMs <= Date.now()) {
       return res.status(200).json({ ok: true, message: generic });
     }
 
     const token = signPortalMagicJwt(
       {
-        aud: "ccna-portal-30d",
+        aud: "ccna-portal-access",
         cs: session.id,
         exp: Math.floor(accessExpiresAtMs / 1000),
       },

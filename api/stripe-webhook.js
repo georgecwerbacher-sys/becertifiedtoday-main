@@ -11,7 +11,7 @@
  *
  * Env: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET (whsec_… — copy from the endpoint that matches THIS deployment)
  *
- * CCNA portal (30-day): on completed checkout we attach metadata to a Stripe Customer (see server-lib)
+ * CCNA portal access: on completed checkout we attach metadata to a Stripe Customer (see server-lib)
  * and optionally email a magic link via Resend (RESEND_API_KEY, PORTAL_MAGIC_LINK_SECRET, PUBLIC_SITE_URL).
  */
 import Stripe from "stripe";
@@ -21,6 +21,7 @@ import { normalizePublicSiteUrl } from "./normalize-public-site-url.js";
 import {
   checkoutSessionIsPaid,
   inferProductIdFromCheckoutSession,
+  isCcnaPortalProduct,
   portalAccessExpiresAtMs,
   upsertCustomerPortalMetadata,
 } from "../server-lib/ccna-portal-stripe.js";
@@ -82,11 +83,11 @@ export default async function handler(req, res) {
         const productId = inferProductIdFromCheckoutSession(session);
         console.info("[stripe] checkout.session.completed", session.id, "productId=", productId);
 
-        if (productId !== "ccna-portal-30d") {
+        if (!isCcnaPortalProduct(productId)) {
           break;
         }
 
-        const accessExpiresAtMs = portalAccessExpiresAtMs(session);
+        const accessExpiresAtMs = portalAccessExpiresAtMs(session, productId);
         await upsertCustomerPortalMetadata(stripe, session, accessExpiresAtMs);
 
         const jwtSecret = (process.env.PORTAL_MAGIC_LINK_SECRET || "").trim();
@@ -96,7 +97,7 @@ export default async function handler(req, res) {
         if (jwtSecret && site && email) {
           const token = signPortalMagicJwt(
             {
-              aud: "ccna-portal-30d",
+              aud: "ccna-portal-access",
               cs: session.id,
               exp: Math.floor(accessExpiresAtMs / 1000),
             },

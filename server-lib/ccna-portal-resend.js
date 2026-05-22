@@ -35,7 +35,7 @@ export async function sendCcnaPortalMagicEmail({ to, magicUrl }) {
       from,
       to: [to],
       subject,
-      html: `<p>Open your CCNA training portal on any device (same 30-day window as your purchase):</p>
+      html: `<p>Open your CCNA training portal on any device during your paid access window:</p>
 <p><a href="${escapeAttr(magicUrl)}"><strong>Open CCNA training portal</strong></a></p>
 <p>If the button does not work, paste this URL into your browser:</p>
 <p style="word-break:break-all;font-size:13px;color:#444">${plainUrl}</p>
