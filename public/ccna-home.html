@@ -1021,6 +1021,20 @@
     .samples-stack .format-card > .format-sample:last-child {
       margin-top: auto;
     }
+    .assessment-card {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .assessment-details {
+      margin: 14px 0 0;
+      padding-left: 1.2rem;
+      color: #b8c3d6;
+      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
+      line-height: 1.55;
+    }
+    .assessment-details li {
+      margin: 6px 0;
+    }
     .format-card h3 {
       margin: 0 0 10px;
       font-size: clamp(1.02rem, 2.4vw, 1.12rem);
@@ -1725,50 +1739,31 @@
               <p class="samples-block-lead">
                 Take a first-time diagnostic that feels like a short simulated exam: multiple-choice questions from every CCNA domain, drag-and-drop items, one VLAN lab, and a scorecard at the end.
               </p>
-              <ul class="formats-grid formats-grid--tri" aria-label="Free CCNA assessment details">
-                <li>
-                  <article class="format-card" aria-labelledby="home-ccna-assessment-card-title">
-                    <h3 id="home-ccna-assessment-card-title">Find your weak domains</h3>
-                    <figure class="format-card-thumb">
-                      <img
-                        src="/images/ccna-sample-questions-thumbnail.png"
-                        width="1024"
-                        height="586"
-                        alt="CCNA assessment preview with multiple-choice questions and exam-style controls."
-                        decoding="async"
-                        loading="lazy"
-                      />
-                    </figure>
-                    <p>
-                      The assessment includes <strong>12</strong> multiple-choice questions, <strong>4</strong> drag-and-drop exercises, and the same VLAN CLI lab used in the browser sample.
-                    </p>
-                    <p class="format-sample">
-                      <a href="/CCNA_Sim_EXAM/free-assessment.html">Start free assessment</a>
-                    </p>
-                  </article>
-                </li>
-                <li>
-                  <article class="format-card" aria-labelledby="home-ccna-assessment-score-title">
-                    <h3 id="home-ccna-assessment-score-title">Get a scorecard</h3>
-                    <figure class="format-card-thumb">
-                      <img
-                        src="/CCNA-Study/CCNA_labs/images/ccna-lab-vlan-sim-topology.png"
-                        width="1024"
-                        height="610"
-                        alt="VLAN simulation lab: dual-switch topology with data and voice VLAN assignments."
-                        decoding="async"
-                        loading="lazy"
-                      />
-                    </figure>
-                    <p>
-                      When you finish, the scorecard breaks down your performance by CCNA domain so you know where to study next.
-                    </p>
-                    <p class="format-sample">
-                      <a href="/CCNA_Sim_EXAM/free-assessment.html">Take the assessment</a>
-                    </p>
-                  </article>
-                </li>
-              </ul>
+              <article class="format-card assessment-card" aria-labelledby="home-ccna-assessment-card-title">
+                <h3 id="home-ccna-assessment-card-title">Take the free CCNA assessment test</h3>
+                <figure class="format-card-thumb">
+                  <img
+                    src="/images/ccna-sample-questions-thumbnail.png"
+                    width="1024"
+                    height="586"
+                    alt="CCNA assessment preview with multiple-choice questions and exam-style controls."
+                    decoding="async"
+                    loading="lazy"
+                  />
+                </figure>
+                <p>
+                  This short assessment gives first-time visitors an exam-style preview before the full simulation.
+                </p>
+                <ul class="assessment-details">
+                  <li><strong>Time limit:</strong> 35 minutes.</li>
+                  <li><strong>Includes:</strong> multiple-choice questions from every CCNA domain.</li>
+                  <li><strong>Includes:</strong> drag-and-drop items and one VLAN CLI lab.</li>
+                  <li><strong>At the end:</strong> a detailed scorecard showing where to focus your study.</li>
+                </ul>
+                <p class="format-sample">
+                  <a href="/CCNA_Sim_EXAM/free-assessment.html">Start free assessment</a>
+                </p>
+              </article>
             </section>
           </div>
           <div class="card purchase-card" id="purchase">

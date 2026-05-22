@@ -190,6 +190,59 @@
       border-color: #4f84d8;
       background: rgba(47, 102, 191, 0.12);
     }
+    .exam-mcq .exhibit-stack {
+      display: grid;
+      gap: 14px;
+      margin: 0 0 16px;
+    }
+    .exam-mcq .exhibit-photo {
+      margin: 0;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(15, 23, 41, 0.65);
+    }
+    .exam-mcq .exhibit-photo img,
+    .exam-mcq img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+      border-radius: 8px;
+    }
+    .exam-mcq .stem-after-exhibit {
+      margin: 0 0 16px;
+      color: var(--text);
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .exam-mcq .cli-device,
+    .exam-mcq .exhibit-router-cli,
+    .exam-mcq .exhibit-terminal-white {
+      margin: 0;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #0a0f1c;
+    }
+    .exam-mcq .cli-device h2 {
+      margin: 0;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      background: rgba(15, 23, 41, 0.9);
+    }
+    .exam-mcq pre {
+      margin: 0;
+      padding: 12px;
+      overflow-x: auto;
+      color: #e5e7eb;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      white-space: pre;
+    }
     .exam-dnd-embed {
       width: 100%;
       min-height: min(72vh, 880px);
@@ -864,6 +917,21 @@
       var da = dMap.assignments || {};
       var la = lMap.assignments || {};
       var deck = [];
+      if (Array.isArray(bp.itemOrder) && bp.itemOrder.length) {
+        bp.itemOrder.forEach(function (entry) {
+          if (!entry || !entry.type || !entry.fileName) return;
+          var type = entry.type;
+          var fn = entry.fileName;
+          var assignments = type === "mcq" ? qa : type === "dnd" ? da : la;
+          deck.push({
+            type: type,
+            fileName: fn,
+            slug: fn.replace(/\.html$/i, ""),
+            objectiveIds: assignments[fn] || [],
+          });
+        });
+        return deck;
+      }
       fixedMcqFilesFromBlueprint(bp).forEach(function (fn) {
         deck.push({
           type: "mcq",
@@ -1039,6 +1107,19 @@
       return m[1].replace(/<[^>]+>/g, "").trim();
     }
 
+    function extractQuestionExhibitHtml(html) {
+      var h1 = html.match(/<h1[^>]*>[\s\S]*?<\/h1>/i);
+      if (!h1) return "";
+      var rest = html.slice(h1.index + h1[0].length);
+      var firstChoice = rest.search(/<label[^>]*class="choice"[^>]*>/i);
+      if (firstChoice < 0) return "";
+      var chunk = rest.slice(0, firstChoice).trim();
+      if (!chunk) return "";
+      return chunk
+        .replace(/<script[\s\S]*?<\/script>/gi, "")
+        .replace(/\s(?:id|name)="answerBox"/gi, "");
+    }
+
     function parseCorrectLetter(html) {
       var m = html.match(/var\s+CORRECT\s*=\s*"([A-D])"/i);
       if (m) return m[1].toUpperCase();
@@ -1067,12 +1148,14 @@
       var stem = item.slug ? item.slug.replace(/-/g, " ") : "Multiple choice";
       var opts = [];
       var html = "";
+      var exhibitHtml = "";
       if (item.slug) {
         try {
           var res = await fetch("/CCNA-Study/CCNA_questions/" + item.slug + ".html");
           html = await res.text();
           var h1 = extractH1(html);
           if (h1) stem = h1;
+          exhibitHtml = extractQuestionExhibitHtml(html);
           item._cachedCorrect = parseCorrectLetter(html);
           opts = extractMcqOptions(html);
         } catch (e) {}
@@ -1089,7 +1172,8 @@
         '<div class="exam-mcq">' +
         '<p class="q">' +
         escapeHtml(stem) +
-        "</p>";
+        "</p>" +
+        exhibitHtml;
       opts.forEach(function (o) {
         inner +=
           '<label class="opt"><input type="radio" name="mcq" value="' +
