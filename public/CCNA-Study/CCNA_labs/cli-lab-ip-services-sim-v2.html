@@ -1329,8 +1329,6 @@ R3(config-line)# end</pre>
         "% Error: Finish the Task 1 NAT STEPS on R2 until you return to privileged EXEC (R2#), then save to startup-config.";
       var COPY_RUN_START_AFTER_R2_TASK1_MSG =
         "% Error: Complete Task 1 NAT STEPS on R2 (until R2#) before saving startup-config on this device.";
-      var IP_NAT_STEPS_DONE_MSG =
-        "[OK] Task 1 NAT sequence complete on R2. From privileged exec on R2, R1, and R3, run copy running-configuration startup-configuration (copy run start) on each device to complete the lab.";
       var IP_LAB_ALL_DONE_MSG =
         "[OK] Lab complete: Task 1 done and running-config saved to startup-config on R2, R1, and R3.";
       var PASS_BANNER_IP_PENDING =
@@ -1633,7 +1631,6 @@ R3(config-line)# end</pre>
           if (stepIndex >= STEPS.length) {
             task1R2NatComplete = true;
             swPrompt.textContent = SWITCH_HOST + "#";
-            appendSw("line-sys", IP_NAT_STEPS_DONE_MSG);
             tryCompleteIpServicesLab(function (cls, text) {
               appendSw(cls, text);
             });
