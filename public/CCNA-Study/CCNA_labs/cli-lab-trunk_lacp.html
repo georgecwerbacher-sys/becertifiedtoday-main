@@ -5,7 +5,7 @@
   PC prompt, wireFloatingModal must not bump z-index on button/input pointerdown (tap/Enter reliability), optional Run command.
 
   Patterns: LAB_STEPS + normalize, trySwNavSoftLine, pushLocalHistory inside submit, reset clears history/flags, spoiler,
-  draggable modals + Escape, VLAN submode (vlan <id>, name, exit), VLAN create feedback strings.
+  draggable modals + Escape, VLAN submode (vlan <id>, name, exit).
 -->
 <html lang="en">
 <head>
@@ -1397,6 +1397,17 @@ Sw2(config-if)# end</pre>
         return false;
       }
 
+      /** Recognize vlan 15/45 from (config)# or (config-vlan)#; track first create per switch. */
+      function markGlobalVlan(raw, sw) {
+        var pair = sw === 2 ? globalVlanPairSw2 : globalVlanPairSw1;
+        var u = normalize(raw);
+        if (u !== "vlan 15" && u !== "vlan 45") return { recognized: false, newlySet: false };
+        var key = u === "vlan 15" ? "v15" : "v45";
+        if (pair[key]) return { recognized: true, newlySet: false };
+        pair[key] = true;
+        return { recognized: true, newlySet: true };
+      }
+
       /** Per-switch Gi0/1, Gi0/2, Po15: native and allowed VLAN lines may be entered in either order. */
       var trunkVlanPairSw1 = {
         gi1: { n: false, a: false },
@@ -1886,15 +1897,6 @@ Sw2(config-if)# end</pre>
         setSw2Prompt();
       }
 
-      /** IOS-style feedback after a successful global VLAN create from (config)# (Sw1/Sw2). */
-      function appendVlanCreateSys(appendFn, line) {
-        var u = normalize(line);
-        var m = u.match(/^vlan (\d+)$/);
-        if (m) {
-          appendFn("line-sys", "VLAN " + m[1] + " not in configuration.\nCreating VLAN " + m[1] + ".");
-        }
-      }
-
       function submitSw() {
         var promptText = swPrompt.textContent;
         var line = swCmdline.value;
@@ -1989,13 +1991,24 @@ Sw2(config-if)# end</pre>
 
         if (sw1PromptOverride === "config-vlan" && /^name\s+\S+/.test(normalize(line))) return;
 
+        var sw1Mode =
+          sw1PromptOverride || (stepIndexSw1 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw1].mode : "exec");
+        var sw1VlanMark = markGlobalVlan(line, 1);
+        if (sw1VlanMark.recognized && (sw1Mode === "config" || sw1Mode === "config-vlan")) {
+          if (sw1VlanMark.newlySet && (stepIndexSw1 === 1 || stepIndexSw1 === 2)) {
+            stepIndexSw1 += 1;
+          }
+          sw1PromptOverride = stepIndexSw1 >= 3 ? null : "config-vlan";
+          setSw1Prompt();
+          return;
+        }
+
         if (stepIndexSw1 >= LAB_STEPS.length) {
-          appendSw("line-bad", "% Invalid input");
+          appendSw("line-bad", "Not supported in this simulation");
           return;
         }
 
         if (LAB_STEPS[stepIndexSw1].test(line, 1)) {
-          appendVlanCreateSys(appendSw, line);
           var isVlanCreateSw1 = /^vlan \d+$/.test(normalize(line));
           stepIndexSw1 += 1;
           if (stepIndexSw1 === 4) {
@@ -2015,14 +2028,7 @@ Sw2(config-if)# end</pre>
             setSw1Prompt();
           }
         } else {
-          var sw1Mode = sw1PromptOverride || (stepIndexSw1 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw1].mode : "exec");
-          if (sw1Mode === "config" && /^vlan \d+$/.test(normalize(line))) {
-            appendVlanCreateSys(appendSw, line);
-            sw1PromptOverride = "config-vlan";
-            setSw1Prompt();
-            return;
-          }
-          appendSw("line-bad", "% Invalid input");
+          appendSw("line-bad", "Not supported in this simulation");
         }
       }
 
@@ -2120,13 +2126,24 @@ Sw2(config-if)# end</pre>
 
         if (sw2PromptOverride === "config-vlan" && /^name\s+\S+/.test(normalize(line))) return;
 
+        var sw2ModeNow =
+          sw2PromptOverride || (stepIndexSw2 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw2].mode : "exec");
+        var sw2VlanMark = markGlobalVlan(line, 2);
+        if (sw2VlanMark.recognized && (sw2ModeNow === "config" || sw2ModeNow === "config-vlan")) {
+          if (sw2VlanMark.newlySet && (stepIndexSw2 === 1 || stepIndexSw2 === 2)) {
+            stepIndexSw2 += 1;
+          }
+          sw2PromptOverride = stepIndexSw2 >= 3 ? null : "config-vlan";
+          setSw2Prompt();
+          return;
+        }
+
         if (stepIndexSw2 >= LAB_STEPS.length) {
-          appendSw2("line-bad", "% Invalid input");
+          appendSw2("line-bad", "Not supported in this simulation");
           return;
         }
 
         if (LAB_STEPS[stepIndexSw2].test(line, 2)) {
-          appendVlanCreateSys(appendSw2, line);
           var isVlanCreateSw2 = /^vlan \d+$/.test(normalize(line));
           stepIndexSw2 += 1;
           if (stepIndexSw2 === 4) {
@@ -2146,14 +2163,7 @@ Sw2(config-if)# end</pre>
             setSw2Prompt();
           }
         } else {
-          var sw2ModeNow = sw2PromptOverride || (stepIndexSw2 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw2].mode : "exec");
-          if (sw2ModeNow === "config" && /^vlan \d+$/.test(normalize(line))) {
-            appendVlanCreateSys(appendSw2, line);
-            sw2PromptOverride = "config-vlan";
-            setSw2Prompt();
-            return;
-          }
-          appendSw2("line-bad", "% Invalid input");
+          appendSw2("line-bad", "Not supported in this simulation");
         }
       }
 

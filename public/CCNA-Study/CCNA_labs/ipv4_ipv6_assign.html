@@ -1408,12 +1408,6 @@ R2# copy running-config startup-config</pre>
         }
       }
 
-      /** Dynamic IOS-style VLAN create feedback for `vlan <id>` from (config)#/(config-vlan)#. */
-      function appendVlanCreateSys(appendFn, line) {
-        var m = normalize(line).match(/^vlan (\d+)$/);
-        if (m) appendFn("line-sys", "VLAN " + m[1] + " not in configuration.\nCreating VLAN " + m[1] + ".");
-      }
-
       /**
        * Soft mode-navigation helper for R1: handles configure terminal / interface /
        * interface range / vlan / exit / end transitions outside the strict LAB_STEPS engine.
@@ -1441,7 +1435,6 @@ R2# copy running-config startup-config</pre>
         }
         if (/^vlan \d+$/.test(u) &&
             (mode === "config" || mode === "config-vlan")) {
-          appendVlanCreateSys(appendSw, line);
           swPromptOverride = "config-vlan";
           setSwPrompt();
           return true;
@@ -1796,7 +1789,7 @@ R2# copy running-config startup-config</pre>
           return;
         }
 
-        appendSw("line-bad", "% Invalid input");
+        appendSw("line-bad", "Not supported in this simulation");
       }
 
       /** R2: full LAB_STEPS engine mirroring R1 with its own step index + prompt override. */
@@ -1857,7 +1850,6 @@ R2# copy running-config startup-config</pre>
         }
         if (/^vlan \d+$/.test(u) &&
             (mode === "config" || mode === "config-vlan")) {
-          appendVlanCreateSys(appendSw2, line);
           sw2PromptOverride = "config-vlan";
           setSw2Prompt();
           return true;
@@ -2003,7 +1995,7 @@ R2# copy running-config startup-config</pre>
           return;
         }
 
-        appendSw2("line-bad", "% Invalid input");
+        appendSw2("line-bad", "Not supported in this simulation");
       }
 
       function wireFloatingModal(dialogEl, overlayEl) {

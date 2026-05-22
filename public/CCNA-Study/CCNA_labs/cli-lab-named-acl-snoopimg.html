@@ -1370,10 +1370,10 @@ Sw3# copy running-config startup-config</pre>
         "[OK] Lab complete: copy running-config startup-config saved on R1, Sw101, and Sw103.";
       var PASS_BANNER_BASELINE_PENDING =
         "Finish the Tasks, then complete the lab from R1#, Sw101#, and Sw103# with copy running-config startup-config on each device.";
-      var INVALID_INPUT_MSG = "% Invalid input";
+      var INVALID_INPUT_MSG = "Not supported in this simulation";
       /** Wrong VLAN/interface numbers etc.: steer learners to the authoritative lab text */
       var INVALID_INPUT_NUMERIC_HINT_MSG =
-        "% Invalid input — check the lab Tasks and Verification sections for the exact values.";
+        "Not supported in this simulation";
       function invalidInputMsgForNormalizedCmd(u) {
         return /\d/.test(String(u || "")) ? INVALID_INPUT_NUMERIC_HINT_MSG : INVALID_INPUT_MSG;
       }

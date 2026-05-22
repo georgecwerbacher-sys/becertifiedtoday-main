@@ -1025,7 +1025,7 @@ R1(config-if)# ip ospf priority 255</pre>
         OSPF_LAB_PROCESS_ID +
         " area 0 on Ethernet0/0 and Ethernet0/1 instead.";
       var OSPF_LAB_VERIFY_INSTRUCTIONS_MSG =
-        "% Invalid input. Verify the lab instructions (Tasks and Helper) for the required values.";
+        "Not supported in this simulation";
 
       /** True if line looks like router OSPF: network <prefix> <wildcard> area <area-id> … */
       function isOspfRouterNetworkStatement(normalizedLine) {
@@ -1280,7 +1280,7 @@ R1(config-if)# ip ospf priority 255</pre>
         }
 
         if (stepIndex >= LAB_STEPS.length) {
-          appendSw2("line-bad", "% Invalid input");
+          appendSw2("line-bad", "Not supported in this simulation");
           return;
         }
 
@@ -1335,7 +1335,7 @@ R1(config-if)# ip ospf priority 255</pre>
             setR1Prompt();
           }
         } else {
-          appendSw2("line-bad", "% Invalid input");
+          appendSw2("line-bad", "Not supported in this simulation");
         }
       }
       // END sync block: templates/containers/cli-container-template.html → submitSw()

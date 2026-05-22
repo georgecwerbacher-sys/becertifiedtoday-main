@@ -4,7 +4,7 @@
   Copy to public/ and extend STEPS, modals, and topology like the full Rapid PVST lab.
 
   Includes:
-  - R2 CLI: IOS-like prompts (exec / config / config-if / config-std-nacl), STEPS[] progression, normalize(), % Invalid input
+  - R2 CLI: IOS-like prompts (exec / config / config-if / config-std-nacl), STEPS[] progression, normalize(), not supported in this simulation
   - R1 / R3 CLI: read-only exhibits with show running-config snapshot (mirrors SW10-style router rules)
   - Device picker (R1 / R2 / R3), draggable modals, local command history (ArrowUp/Down), pass banner, sim-nav, logo corner
 
@@ -1337,9 +1337,9 @@ R3(config-line)# end</pre>
         "Task 1: complete the NAT sequence on R2. Then from privileged exec on R2, R1, and R3 run copy running-configuration startup-configuration (copy run start) on each device to complete the lab.";
       var PASS_BANNER_IP_DONE =
         "Lab complete: NAT on R2 done and startup-config saved on R2, R1, and R3.";
-      var INVALID_INPUT_MSG = "% Invalid input";
+      var INVALID_INPUT_MSG = "Not supported in this simulation";
       var INVALID_INPUT_NUMERIC_HINT_MSG =
-        "% Invalid input — check the lab Tasks and Verification sections for the exact values.";
+        "Not supported in this simulation";
       function invalidInputMsgForNormalizedCmd(u) {
         return /\d/.test(String(u || "")) ? INVALID_INPUT_NUMERIC_HINT_MSG : INVALID_INPUT_MSG;
       }

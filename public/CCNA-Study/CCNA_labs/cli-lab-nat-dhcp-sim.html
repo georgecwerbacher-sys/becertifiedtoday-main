@@ -1437,6 +1437,16 @@ Sw1#</pre>
         return t;
       }
 
+      /** Echo shorthand interfaces as full Ethernet names in the scrollback. */
+      function expandInterfaceEcho(raw) {
+        var s = String(raw || "").trim();
+        var m = /^(interface|int)\s+e(\d+)\/(\d+)$/i.exec(s);
+        if (m) {
+          return "interface Ethernet" + m[2] + "/" + m[3];
+        }
+        return s;
+      }
+
       function matchPcShowIpIntBrief(raw) {
         return normalize(raw) === "show ip interface brief";
       }
@@ -1765,12 +1775,8 @@ Sw1#</pre>
         var promptText = swPrompt.textContent;
         var line = swCmdline.value;
         var trimmed = String(line || "").trim();
-        var normalized = normalize(line);
-        var hideInputLine = isModeNavigationCommand(normalized);
         var echoLine = expandInterfaceEcho(trimmed);
-        if (!hideInputLine || normalized.indexOf("interface ") === 0) {
-          appendSw("line-user", promptText + " " + echoLine);
-        }
+        appendSw("line-user", promptText + " " + echoLine);
         swCmdline.value = "";
         if (!trimmed) return;
 
@@ -1791,18 +1797,18 @@ Sw1#</pre>
 
         if (matchR1ShowIpNatTranslations(line)) {
           if (stepIndex < LAB_STEPS.length) {
-            appendSw("line-bad", "% Invalid input");
+            appendSw("line-bad", "Not supported in this simulation");
             return;
           }
           var natU = normalize(line);
           if (natU === "show ip nat translations") {
             if (!swInEnableMode()) {
-              appendSw("line-bad", "% Invalid input");
+              appendSw("line-bad", "Not supported in this simulation");
               return;
             }
           } else {
             if (swPromptOverride !== "config") {
-              appendSw("line-bad", "% Invalid input");
+              appendSw("line-bad", "Not supported in this simulation");
               return;
             }
           }
@@ -1860,7 +1866,7 @@ Sw1#</pre>
             appendSw("line-sys", SHOW_DISABLED_MSG);
             return;
           }
-          appendSw("line-bad", "% Invalid input");
+          appendSw("line-bad", "Not supported in this simulation");
           return;
         }
 
@@ -1888,7 +1894,7 @@ Sw1#</pre>
             setSwPrompt();
           }
         } else {
-          appendSw("line-bad", "% Invalid input");
+          appendSw("line-bad", "Not supported in this simulation");
         }
       }
 
@@ -1903,12 +1909,8 @@ Sw1#</pre>
         var promptText = sw2Prompt.textContent;
         var line = sw2Cmdline.value;
         var trimmed = String(line || "").trim();
-        var normalized = normalize(line);
-        var hideInputLine = isModeNavigationCommand(normalized);
         var echoLine = expandInterfaceEcho(trimmed);
-        if (!hideInputLine || normalized.indexOf("interface ") === 0) {
-          appendSw2("line-user", promptText + " " + echoLine);
-        }
+        appendSw2("line-user", promptText + " " + echoLine);
         sw2Cmdline.value = "";
         if (!trimmed) return;
 
@@ -1927,15 +1929,15 @@ Sw1#</pre>
         if (matchShowNtpStatus(line)) {
           var ntpU = normalize(line);
           if (sw2Mode === "exec" && ntpU === "do show ntp status") {
-            appendSw2("line-bad", "% Invalid input");
+            appendSw2("line-bad", "Not supported in this simulation");
             return;
           }
           if (sw2Mode === "config" && ntpU !== "do show ntp status") {
-            appendSw2("line-bad", "% Invalid input");
+            appendSw2("line-bad", "Not supported in this simulation");
             return;
           }
           if (sw2Mode !== "exec" && sw2Mode !== "config") {
-            appendSw2("line-bad", "% Invalid input");
+            appendSw2("line-bad", "Not supported in this simulation");
             return;
           }
           if (sw1ConfiguredNtpServer === null) {
@@ -2006,7 +2008,7 @@ Sw1#</pre>
           }
           var st = SW1_LAB_STEPS[sw2StepIndex];
           if (sw2Mode !== st.mode || !st.test(line)) {
-            appendSw2("line-bad", "% Invalid input");
+            appendSw2("line-bad", "Not supported in this simulation");
             return;
           }
           var prev = sw2StepIndex;
@@ -2055,13 +2057,16 @@ Sw1#</pre>
           return;
         }
 
-        appendSw2("line-bad", "% Invalid input");
+        appendSw2("line-bad", "Not supported in this simulation");
       }
 
       function wireFloatingModal(dialogEl, overlayEl) {
         var header = dialogEl.querySelector(".cli-modal-header");
         if (!dialogEl || !overlayEl || !header) return;
-        dialogEl.addEventListener("pointerdown", function () {
+        dialogEl.addEventListener("pointerdown", function (e) {
+          if (e.target && e.target.closest && e.target.closest("button, input, textarea, select, label, a[href]")) {
+            return;
+          }
           bumpOverlayZ(overlayEl);
         });
         var drag = null;

@@ -1636,7 +1636,7 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
         }
 
         if (stepIndex >= LAB_STEPS.length) {
-          appendSw("line-bad", "% Invalid input");
+          appendSw("line-bad", "Not supported in this simulation");
           return;
         }
 
@@ -1653,7 +1653,7 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
             setSwPrompt();
           }
         } else {
-          appendSw("line-bad", "% Invalid input");
+          appendSw("line-bad", "Not supported in this simulation");
         }
       }
 
@@ -1785,7 +1785,7 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
           return;
         }
 
-        appendSw2("line-bad", "% Invalid input");
+        appendSw2("line-bad", "Not supported in this simulation");
       }
 
       function wireFloatingModal(dialogEl, overlayEl) {
