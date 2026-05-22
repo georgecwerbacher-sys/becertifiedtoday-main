@@ -5,6 +5,7 @@
   <script src="/js/ga-site-config.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTT6KBHX7V"></script>
   <script src="/js/google-tag-gtag.js"></script>
+  <script src="/js/google-ads-purchase-conversion.js"></script>
   <script src="/js/campaign-attribution.js"></script>
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
@@ -640,12 +641,8 @@
       };
       window.gtag("event", "purchase", params);
 
-      var adsId = window.__BCC_GOOGLE_ADS_ID__;
-      var conversionLabel = window.__BCC_GOOGLE_ADS_CCNA_SIM_CONVERSION_LABEL__;
-      if (adsId && conversionLabel) {
-        window.gtag("event", "conversion", {
-          send_to: adsId + "/" + conversionLabel,
-          transaction_id: stripeSessionId,
+      if (typeof window.bccTrackGoogleAdsPurchaseConversion === "function") {
+        window.bccTrackGoogleAdsPurchaseConversion(stripeSessionId, {
           currency: "USD",
           value: 4.99,
         });

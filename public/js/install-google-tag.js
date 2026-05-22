@@ -16,6 +16,11 @@
 
   window.__BCC_GA_MEASUREMENT_ID__ = window.__BCC_GA_MEASUREMENT_ID__ || MEASUREMENT_ID;
 
+  var cfg = document.createElement("script");
+  cfg.src = "/js/ga-site-config.js";
+  cfg.setAttribute("data-bcc-gtag", "1");
+  head.appendChild(cfg);
+
   var loader = document.createElement("script");
   loader.async = true;
   loader.src =

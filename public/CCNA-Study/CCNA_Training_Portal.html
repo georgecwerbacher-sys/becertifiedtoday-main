@@ -5,6 +5,7 @@
   <script src="/js/ga-site-config.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTT6KBHX7V"></script>
   <script src="/js/google-tag-gtag.js"></script>
+  <script src="/js/google-ads-purchase-conversion.js"></script>
   <script src="/js/install-vercel-analytics.js"></script>
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
@@ -1220,6 +1221,16 @@
         });
       }
 
+      function trackPortalAdsPurchase(sessionId, productId) {
+        if (typeof window.bccTrackGoogleAdsPurchaseConversion !== "function" || !sessionId) return;
+        var value;
+        if (productId === "ccna-portal-10d") value = 9.99;
+        else if (productId === "ccna-portal-30d") value = 19.99;
+        var opts = { currency: "USD" };
+        if (typeof value === "number") opts.value = value;
+        window.bccTrackGoogleAdsPurchaseConversion(sessionId, opts);
+      }
+
       function grantPortalFromVerifyPair(pair, checkoutSessionId, stripSessionQuery) {
         var res = pair.res;
         var data = pair.data || {};
@@ -1254,6 +1265,7 @@
         }
         var banner = document.getElementById("portal-checkout-activated-banner");
         if (banner) banner.hidden = false;
+        trackPortalAdsPurchase(cs, data.productId);
         return true;
       }
 

@@ -5,6 +5,10 @@
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>30-day access activated | Be Certified Today</title>
+  <script src="/js/ga-site-config.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTT6KBHX7V"></script>
+  <script src="/js/google-tag-gtag.js"></script>
+  <script src="/js/google-ads-purchase-conversion.js"></script>
   <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
   <style>
     :root {
@@ -137,6 +141,21 @@
         if (actionsEl) actionsEl.hidden = false;
       }
 
+      function purchaseValueForProduct(productId) {
+        if (productId === "ccna-test-simulation") return 4.99;
+        if (productId === "ccna-portal-10d") return 9.99;
+        if (productId === "ccna-portal-30d") return 19.99;
+        return undefined;
+      }
+
+      function trackAdsPurchase(sessionId, productId) {
+        if (typeof window.bccTrackGoogleAdsPurchaseConversion !== "function") return;
+        var value = purchaseValueForProduct(productId);
+        var opts = { currency: "USD" };
+        if (typeof value === "number") opts.value = value;
+        window.bccTrackGoogleAdsPurchaseConversion(sessionId, opts);
+      }
+
       async function run() {
         var sessionId = qs("session_id");
         if (!sessionId || sessionId.indexOf("cs_") !== 0) {
@@ -191,6 +210,7 @@
           }
 
           showOk();
+          trackAdsPurchase(sessionId, data.productId);
         } catch (e) {
           showError("Could not reach the server to verify payment. Check your connection and reload this page.");
         }
