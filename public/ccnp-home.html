@@ -57,6 +57,9 @@
       --border: #2d3b5a;
       --text: #e6edf3;
       --muted: #9fb0cc;
+      --page-bg: #ffffff;
+      --page-text: #0b1020;
+      --page-muted: #475569;
       --accent: #2f66bf;
       --accent-border: #4f84d8;
       --accent-hover: #3a74d4;
@@ -68,8 +71,8 @@
       margin: 0;
       min-height: 100vh;
       min-height: 100dvh;
-      background: var(--bg);
-      color: var(--text);
+      background: var(--page-bg);
+      color: var(--page-text);
       line-height: 1.5;
       overflow-x: clip;
     }
@@ -90,7 +93,7 @@
       padding-bottom: 16px;
       padding-left: max(clamp(20px, 4vw, 40px), env(safe-area-inset-left, 0px));
       border-bottom: 1px solid var(--border);
-      background: rgba(18, 26, 43, 0.6);
+      background: rgba(255, 255, 255, 0.86);
       backdrop-filter: blur(8px);
     }
     .header-actions {
@@ -277,7 +280,7 @@
     }
     .lead {
       margin: 0 0 28px;
-      color: var(--muted);
+      color: var(--page-muted);
       font-size: 1.08rem;
       line-height: 1.6;
     }
@@ -292,7 +295,7 @@
       display: flex;
       gap: 12px;
       align-items: flex-start;
-      color: #b8c3d6;
+      color: var(--page-muted);
       font-size: 0.98rem;
     }
     .benefits li::before {
@@ -616,13 +619,13 @@
       margin: 0 0 10px;
       font-size: clamp(0.78rem, 1.8vw, 0.84rem);
       line-height: 1.55;
-      color: #6b7f9e;
+      color: var(--page-muted);
     }
     .site-disclaimer p:last-child {
       margin-bottom: 0;
     }
     .site-disclaimer strong {
-      color: #a4b4d0;
+      color: var(--page-text);
       font-weight: 700;
     }
     footer {
@@ -636,7 +639,7 @@
       border-top: 1px solid rgba(45, 59, 90, 0.5);
     }
     footer a.footer-portal-at {
-      color: var(--bg);
+      color: var(--page-bg);
       text-decoration: none;
       -webkit-tap-highlight-color: transparent;
     }
@@ -645,7 +648,7 @@
     footer a.footer-portal-at:focus,
     footer a.footer-portal-at:focus-visible,
     footer a.footer-portal-at:active {
-      color: var(--bg);
+      color: var(--page-bg);
       text-decoration: none;
       outline: none;
     }

@@ -29,6 +29,9 @@
       --border: #2d3b5a;
       --text: #e6edf3;
       --muted: #9fb0cc;
+      --page-bg: #ffffff;
+      --page-text: #0b1020;
+      --page-muted: #475569;
       --accent: #2f66bf;
       --accent-border: #4f84d8;
       --accent-hover: #3a74d4;
@@ -40,8 +43,8 @@
       margin: 0;
       min-height: 100vh;
       min-height: 100dvh;
-      background: var(--bg);
-      color: var(--text);
+      background: var(--page-bg);
+      color: var(--page-text);
       line-height: 1.55;
       overflow-x: clip;
     }
@@ -62,7 +65,7 @@
       padding-bottom: 16px;
       padding-left: max(clamp(18px, 4vw, 40px), env(safe-area-inset-left, 0px));
       border-bottom: 1px solid var(--border);
-      background: rgba(18, 26, 43, 0.65);
+      background: rgba(255, 255, 255, 0.86);
       backdrop-filter: blur(8px);
     }
     .brand {
@@ -70,7 +73,7 @@
       align-items: center;
       gap: 12px;
       text-decoration: none;
-      color: var(--text);
+      color: var(--page-text);
       font-weight: 800;
       font-size: 0.95rem;
       letter-spacing: 0.02em;
@@ -122,7 +125,7 @@
       margin: 0 auto;
       max-width: 42rem;
       font-size: clamp(0.95rem, 2.2vw, 1.05rem);
-      color: var(--muted);
+      color: var(--page-muted);
     }
     .paths {
       list-style: none;
@@ -150,6 +153,7 @@
       border-radius: 14px;
       border: 1px solid var(--border);
       background: var(--surface);
+      color: var(--text);
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
     }
     .path-card h2 {
@@ -344,6 +348,7 @@
       border-radius: 14px;
       border: 1px solid var(--border);
       background: var(--surface);
+      color: var(--text);
       box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
       overflow: hidden;
     }
@@ -466,6 +471,7 @@
       border-radius: 12px;
       border: 1px solid var(--border);
       background: var(--surface);
+      color: var(--text);
       box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
     }
     .review-stars {
@@ -515,7 +521,7 @@
       margin: 0 0 10px;
       font-size: clamp(0.78rem, 1.8vw, 0.84rem);
       line-height: 1.55;
-      color: var(--muted);
+      color: var(--page-muted);
     }
     .site-disclaimer p:last-child {
       margin-bottom: 0;
@@ -537,7 +543,7 @@
       text-decoration: none;
     }
     footer a.footer-admin-hash {
-      color: var(--bg);
+      color: var(--page-bg);
       text-decoration: none;
       -webkit-tap-highlight-color: transparent;
     }
@@ -546,11 +552,10 @@
     footer a.footer-admin-hash:focus,
     footer a.footer-admin-hash:focus-visible,
     footer a.footer-admin-hash:active {
-      color: var(--bg);
+      color: var(--page-bg);
       outline: none;
     }
   </style>
-  <link rel="stylesheet" href="/css/ccna-sim-promo.css" />
 </head>
 <body>
   <div class="page">
@@ -865,60 +870,6 @@
         >#</a>
     </footer>
   </div>
-  <div
-    id="ccnaSimPromoRoot"
-    class="ccna-sim-promo-root"
-    hidden
-    role="presentation"
-    aria-hidden="true"
-  >
-    <div class="ccna-sim-promo-backdrop" data-ccna-sim-promo-dismiss tabindex="-1"></div>
-    <div
-      class="ccna-sim-promo-panel"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="ccnaSimPromoTitle"
-      tabindex="-1"
-    >
-      <button type="button" class="ccna-sim-promo-close" data-ccna-sim-promo-dismiss aria-label="Close offer dialog">
-        ×
-      </button>
-      <p class="ccna-sim-promo-eyebrow">Limited-time</p>
-      <h2 id="ccnaSimPromoTitle">CCNA timed simulation — 50% off</h2>
-      <p class="ccna-sim-promo-price">
-        <del class="ccna-sim-promo-price-was">$9.99</del>
-        <span class="ccna-sim-promo-price-now">$4.99</span>
-        <span class="ccna-sim-promo-limited-pill">Today</span>
-      </p>
-      <p class="ccna-sim-promo-lead ccna-sim-promo-lead--compact">
-        Real <strong>2-hour</strong> mix: MCQ, labs, drag‑and‑drop—then a <strong>scorecard</strong> that shows what to study next.
-        <strong>One Stripe payment.</strong> No site account; BeCertifiedToday.com never requires a membership.
-      </p>
-      <div class="ccna-sim-promo-code-inline" role="group" aria-label="Promotion code 50 percent off">
-        <span class="ccna-sim-promo-code-inline-label">Code</span>
-        <code id="ccnaSimPromoCode">CCNA_Sim_4_U</code>
-        <button type="button" class="ccna-sim-promo-copy ccna-sim-promo-copy--compact" id="ccnaSimPromoCopyBtn">
-          Copy
-        </button>
-      </div>
-      <p class="ccna-sim-promo-hint ccna-sim-promo-hint--compact">Apply at checkout → Add promotion code.</p>
-      <div class="ccna-sim-promo-actions">
-        <a
-          class="ccna-sim-promo-primary"
-          id="ccnaSimPromoCta"
-          href="/CCNA_Sim_EXAM/begin-test-simulation.html?promo=CCNA_Sim_4_U"
-          >Start timed test — $4.99</a
-        >
-        <a
-          class="ccna-sim-promo-secondary ccna-sim-promo-adaptive-path"
-          href="/CCNA_Sim_EXAM/begin-test-simulation.html?promo=CCNA_Sim_4_U&amp;sim_adaptive=1"
-          title="Turns on adaptive multiple choice at exam start—extra MCQs in weaker blueprint domains during the same session."
-          >Adaptive exam → same price</a
-        >
-        <button type="button" class="ccna-sim-promo-secondary" data-ccna-sim-promo-dismiss>Not now</button>
-      </div>
-    </div>
-  </div>
   <script>
     (function () {
       var KEY = "bct_training_path_portal_seen";
@@ -935,91 +886,6 @@
       bind("path-ccna");
       bind("path-encor");
       bind("path-brand-preview");
-    })();
-  </script>
-  <script>
-    (function () {
-      var PROMO = "CCNA_Sim_4_U";
-      var root = document.getElementById("ccnaSimPromoRoot");
-      var panel = root && root.querySelector(".ccna-sim-promo-panel");
-      var copyBtn = document.getElementById("ccnaSimPromoCopyBtn");
-      if (!root || !panel) return;
-
-      var path = location.pathname || "";
-      var onIndex = path === "/" || path === "/index.html";
-      if (!onIndex) return;
-
-      var prevOverflow = "";
-      var open = false;
-
-      function closePromo() {
-        if (!open) return;
-        open = false;
-        root.classList.remove("ccna-sim-promo-root--open");
-        root.setAttribute("hidden", "");
-        root.setAttribute("aria-hidden", "true");
-        document.body.style.overflow = prevOverflow;
-        document.removeEventListener("keydown", onKey);
-      }
-
-      function openPromo() {
-        if (open) return;
-        open = true;
-        prevOverflow = document.body.style.overflow;
-        document.body.style.overflow = "hidden";
-        root.removeAttribute("hidden");
-        root.classList.add("ccna-sim-promo-root--open");
-        root.setAttribute("aria-hidden", "false");
-        panel.focus();
-        document.addEventListener("keydown", onKey);
-      }
-
-      function onKey(ev) {
-        if (ev.key === "Escape") {
-          ev.preventDefault();
-          closePromo();
-        }
-      }
-
-      root.querySelectorAll("[data-ccna-sim-promo-dismiss]").forEach(function (el) {
-        el.addEventListener("click", function () {
-          closePromo();
-        });
-      });
-
-      if (copyBtn) {
-        copyBtn.addEventListener("click", function () {
-          function ok() {
-            var t = "Copied";
-            var prev = copyBtn.textContent;
-            copyBtn.textContent = t;
-            copyBtn.disabled = true;
-            setTimeout(function () {
-              copyBtn.textContent = prev;
-              copyBtn.disabled = false;
-            }, 1600);
-          }
-          function fail() {
-            window.prompt("Copy this code:", PROMO);
-          }
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(PROMO).then(ok).catch(fail);
-          } else {
-            fail();
-          }
-        });
-      }
-
-      var promoShowConsumed = false;
-      var promoDelayMs = 15000;
-
-      function triggerPromoOnce() {
-        if (promoShowConsumed) return;
-        promoShowConsumed = true;
-        openPromo();
-      }
-
-      window.setTimeout(triggerPromoOnce, promoDelayMs);
     })();
   </script>
 </body>

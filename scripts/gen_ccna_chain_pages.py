@@ -27,7 +27,7 @@ STYLE = r"""  <style>
       min-height: 100vh;
       display: grid;
       place-items: center;
-      background: #0b1020;
+      background: #ffffff;
       color: #e6edf3;
       padding: 16px;
       box-sizing: border-box;
