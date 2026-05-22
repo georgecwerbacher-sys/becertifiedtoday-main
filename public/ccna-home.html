@@ -1080,6 +1080,52 @@
     .assessment-details li {
       margin: 6px 0;
     }
+    .assessment-cta-wrap {
+      margin: 22px 0 0;
+      text-align: center;
+    }
+    .assessment-cta-panel {
+      margin: 0;
+      padding: clamp(20px, 4vw, 28px);
+      border-radius: 14px;
+      border: 2px solid rgba(99, 179, 120, 0.55);
+      background: linear-gradient(180deg, rgba(35, 72, 52, 0.38) 0%, rgba(13, 21, 40, 0.72) 100%);
+      box-shadow:
+        0 0 0 1px rgba(99, 179, 120, 0.14),
+        0 14px 36px rgba(0, 0, 0, 0.32);
+    }
+    .assessment-cta-kicker {
+      margin: 0 0 14px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #8fd4a8;
+    }
+    .assessment-cta-panel .cta-main {
+      font-size: clamp(1.05rem, 2.8vw, 1.22rem);
+      padding: 18px 28px;
+      min-height: 58px;
+      letter-spacing: 0.03em;
+      border-color: rgba(140, 210, 170, 0.55);
+      background: linear-gradient(165deg, #45a872 0%, #2f8f58 42%, #247048 100%);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.18) inset,
+        0 10px 32px rgba(36, 112, 72, 0.48);
+    }
+    .assessment-cta-panel .cta-main:hover {
+      color: #fff;
+      filter: brightness(1.08);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.22) inset,
+        0 12px 38px rgba(36, 112, 72, 0.58);
+    }
+    .assessment-cta-note {
+      margin: 12px 0 0;
+      font-size: 0.88rem;
+      color: #b8dcc4;
+      line-height: 1.45;
+    }
     .format-card h3 {
       margin: 0 0 10px;
       font-size: clamp(1.02rem, 2.4vw, 1.12rem);
@@ -1781,37 +1827,45 @@
           </ul>
           <div class="samples-stack">
             <section class="samples-block" aria-labelledby="home-ccna-assessment-title">
-              <h2 class="samples-block-title" id="home-ccna-assessment-title"><strong>Free CCNA assessment</strong></h2>
+              <h2 class="samples-block-title" id="home-ccna-assessment-title"><strong>Free 30-minute CCNA exam</strong></h2>
               <p class="samples-block-lead">
-                <strong>Take a first-time diagnostic that feels like a short simulated exam: multiple-choice questions from every CCNA domain, drag-and-drop items, one VLAN lab, and a scorecard at the end.</strong>
+                <strong>Take a simple exam-style run in your browser—mixed questions, one lab, and a detailed score report at the end so you know where to focus next.</strong>
               </p>
               <article class="format-card assessment-card" aria-labelledby="home-ccna-assessment-card-title">
-                <h3 id="home-ccna-assessment-card-title">Take the free CCNA assessment test</h3>
+                <h3 id="home-ccna-assessment-card-title">Take the free 30-minute exam</h3>
                 <figure class="format-card-thumb">
                   <img
                     src="/images/ccna-sample-questions-thumbnail.png"
                     width="1024"
                     height="586"
-                    alt="CCNA assessment preview with multiple-choice questions and exam-style controls."
+                    alt="Free 30-minute CCNA exam preview with multiple-choice questions, drag-and-drop items, and exam-style controls."
                     decoding="async"
                     loading="lazy"
                   />
                 </figure>
                 <p>
-                  This short assessment gives first-time visitors an exam-style preview before the full simulation.
+                  A short diagnostic for first-time visitors: no email, no download, and no paid access required. Finish
+                  the session to unlock a detailed report with your overall score, section breakdown, and study
+                  priorities.
                 </p>
                 <ul class="assessment-details">
-                  <li><strong>No email required:</strong> start directly in the browser.</li>
-                  <li><strong>No membership required:</strong> the assessment is free for first-time visitors.</li>
-                  <li><strong>Time limit:</strong> 35 minutes.</li>
-                  <li><strong>Includes:</strong> multiple-choice questions from every CCNA domain.</li>
-                  <li><strong>Includes:</strong> drag-and-drop items and one VLAN CLI lab.</li>
-                  <li><strong>Includes 1 lab:</strong> includes a spoiler and helper file to familiarize yourself with the exam lab simulation. No software or download required.</li>
-                  <li><strong>At the end:</strong> a detailed scorecard showing where to focus your study.</li>
+                  <li><strong>30 minutes</strong> on the clock—exam-style pacing with a visible timer.</li>
+                  <li><strong>Mixed formats:</strong> multiple-choice from every CCNA domain, drag-and-drop items, and one VLAN CLI lab.</li>
+                  <li><strong>Detailed report at the end:</strong> scaled score, MCQ / drag-and-drop / lab breakdown, and domain-level gaps to review.</li>
+                  <li><strong>Free for first-time visitors</strong> in this browser—start immediately, no membership required.</li>
+                  <li><strong>Lab includes helper and spoiler</strong> so you can learn the simulation format before exam day.</li>
                 </ul>
-                <p class="format-sample">
-                  <a href="/CCNA_Sim_EXAM/free-assessment.html">Start free assessment</a>
-                </p>
+                <div class="assessment-cta-wrap">
+                  <div class="assessment-cta-panel">
+                    <p class="assessment-cta-kicker">Start here — free</p>
+                    <a
+                      class="cta-main cta-main--block"
+                      href="/CCNA_Sim_EXAM/free-assessment.html"
+                      >Take the free 30-minute exam →</a
+                    >
+                    <p class="assessment-cta-note">Free · one attempt per browser · detailed score report when you finish</p>
+                  </div>
+                </div>
               </article>
             </section>
           </div>
