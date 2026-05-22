@@ -1206,14 +1206,8 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
        * - Add modes as needed: config-router, config-ext-nacl, config-pmap, control-plane, …
        * - Abbreviations: normalize() expands common forms (conf t, sh run, int …) so tests can match canonical strings.
        */
-      var LAB_STEPS = [
-        { mode: "exec", test: function (raw) {
-          return normalize(raw) === "configure terminal";
-        }},
-        { mode: "config", test: function (raw) {
-          return normalize(raw) === "hostname labsim";
-        }},
-      ];
+      /** Task commands are accepted in interface config mode; no rigid STEPS sequence on SW1/SW3. */
+      var LAB_STEPS = [];
 
       /**
        * Lowercase, trim, collapse spaces, strip trailing . or ; then expand helpful IOS abbreviations for matching.
@@ -1504,15 +1498,25 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
           setSwPrompt();
           return true;
         }
-        if (u === "interface range e0/0 - 1" && swPromptOverride === "config" && getLabDev() === "SW3") {
+        if (
+          u === "interface range e0/0 - 1" &&
+          swPromptOverride === "config" &&
+          (getLabDev() === "SW3" || getLabDev() === "SW4")
+        ) {
           swPromptOverride = "config-if-range";
           setSwPrompt();
           return true;
         }
-        if (u.indexOf("interface ") === 0 && swPromptOverride === "config") {
-          swPromptOverride = "config-if";
-          setSwPrompt();
-          return true;
+        if (u.indexOf("interface ") === 0 && !/^interface range /.test(u)) {
+          if (
+            swPromptOverride === "config" ||
+            swPromptOverride === "config-if" ||
+            swPromptOverride === "config-if-range"
+          ) {
+            swPromptOverride = "config-if";
+            setSwPrompt();
+            return true;
+          }
         }
         if (u === "exit" && swPromptOverride === "config-if") {
           swPromptOverride = "config";
