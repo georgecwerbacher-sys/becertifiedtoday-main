@@ -36,6 +36,22 @@ body {
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0.12);
 }
 
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+pre,
+code,
+.terminal,
+.scrollback-area,
+#scrollback {
+  max-width: 100%;
+}
+
 /* Multiple-choice / select rows: ~48px minimum tap height (WCAG 2.5.5) */
 .choice {
   min-height: 48px;
@@ -97,6 +113,8 @@ body.dragdrop-exercise .token {
   display: flex;
   align-items: center;
   padding: 14px 14px;
+  box-sizing: border-box;
+  width: 100%;
   touch-action: manipulation;
   cursor: pointer;
 }
@@ -109,6 +127,8 @@ body.dragdrop-exercise .token.is-picked {
 
 body.dragdrop-exercise .drop-slot {
   min-height: 88px;
+  padding: 10px;
+  box-sizing: border-box;
   touch-action: manipulation;
   cursor: pointer;
 }
@@ -123,4 +143,175 @@ body.dragdrop-exercise .home-link {
 
 body.dragdrop-exercise .panel h2 {
   user-select: none;
+}
+
+/* Shared small-screen layout fixes for customer-facing practice, DnD, and labs. */
+@media (max-width: 760px) {
+  body {
+    padding-left: max(10px, env(safe-area-inset-left, 0px)) !important;
+    padding-right: max(10px, env(safe-area-inset-right, 0px)) !important;
+  }
+
+  .card,
+  main.card {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 16px !important;
+    border-radius: 12px !important;
+    box-sizing: border-box !important;
+  }
+
+  .question-nav,
+  .question-nav-links,
+  .actions,
+  .controls,
+  .device-links,
+  .helper-file-wrap {
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  .question-nav .nav-link,
+  .question-nav .nav-check,
+  .actions button,
+  .controls button,
+  .device-link,
+  .home-link,
+  .next-link,
+  .sim-nav-btn {
+    min-height: 48px !important;
+    flex: 1 1 140px !important;
+    padding: 12px 14px !important;
+    box-sizing: border-box !important;
+    white-space: normal !important;
+  }
+
+  .site-logo-corner {
+    top: max(8px, env(safe-area-inset-top, 0px)) !important;
+    right: max(8px, env(safe-area-inset-right, 0px)) !important;
+  }
+
+  .site-logo-corner img {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  body.dragdrop-exercise .layout,
+  body.dragdrop-exercise .category-grid,
+  .cli-grid,
+  .reviews-grid,
+  .sample-preview-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  body.dragdrop-exercise .panel {
+    padding: 10px !important;
+    min-width: 0 !important;
+  }
+
+  body.dragdrop-exercise .bank {
+    gap: 8px !important;
+  }
+
+  body.dragdrop-exercise .drop-slot {
+    min-height: 76px !important;
+  }
+
+  .sim-nav {
+    overflow-x: auto !important;
+    justify-content: flex-start !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .diagram-wrap,
+  figure.exhibit-photo,
+  .topology-scrape {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .device-pick {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 8px 12px !important;
+  }
+
+  .device-pick label {
+    margin-left: 0 !important;
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+
+  .cli-modal-dialog {
+    width: calc(100vw - 16px) !important;
+    max-height: calc(100dvh - 16px) !important;
+    border-radius: 12px !important;
+  }
+
+  .cli-modal-header {
+    cursor: default !important;
+    touch-action: manipulation !important;
+  }
+
+  .cli-modal-body {
+    padding: 8px !important;
+  }
+
+  .terminal {
+    min-height: min(46dvh, 320px) !important;
+    font-size: 0.82rem !important;
+  }
+
+  .scrollback-area,
+  #scrollback,
+  #pc3Scrollback {
+    max-height: min(38dvh, 300px) !important;
+  }
+
+  .input-row {
+    gap: 6px !important;
+  }
+
+  .cmdline,
+  .cmdline-input,
+  #cmdline,
+  .terminal input[type="text"],
+  .cli-modal-dialog input[type="text"] {
+    min-height: 44px !important;
+    font-size: 16px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: clamp(1rem, 5vw, 1.25rem) !important;
+  }
+
+  .choice,
+  body.dragdrop-exercise .token {
+    font-size: 0.95rem !important;
+  }
+
+  body.dragdrop-exercise .drop-slot {
+    min-height: 68px !important;
+  }
+
+  .cli-modal-footer .controls,
+  .controls,
+  .actions,
+  .device-links,
+  .helper-file-wrap {
+    flex-direction: column !important;
+  }
+
+  .question-nav .nav-link,
+  .question-nav .nav-check,
+  .actions button,
+  .controls button,
+  .device-link,
+  .sim-nav-btn {
+    width: 100% !important;
+  }
 }
