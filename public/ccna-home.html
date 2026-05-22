@@ -432,6 +432,26 @@
       color: var(--muted);
       letter-spacing: 0;
     }
+    .purchase-card .purchase-price-old {
+      display: inline-block;
+      margin-right: 10px;
+      color: #94a3b8;
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+      text-decoration-color: rgba(248, 113, 113, 0.9);
+    }
+    .purchase-card .purchase-price-now {
+      display: inline-block;
+      color: #ffffff;
+    }
+    .purchase-card .purchase-price-note {
+      display: block;
+      margin-top: 6px;
+      font-size: 0.36em;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #bfdbfe;
+    }
     .purchase-card .purchase-lead {
       margin: 0 0 18px;
       color: var(--muted);
@@ -1756,7 +1776,8 @@
             <li>Question banks and study paths organized by exam topic—not random blog posts.</li>
             <li>Review quiz mode loops missed answers back to the end so weak topics get extra reps.</li>
             <li>Progress tracking helps you focus study time where it is needed most.</li>
-            <li>New questions are added continuously to keep preparation current; the current questions are v1.1 and pre-v1.2.</li>
+            <li>New questions are added continuously to keep preparation current; the current 700+ questions are v1.1 and pre-v1.2.</li>
+            <li>Lab simulations are designed to teach specific objectives.</li>
           </ul>
           <div class="samples-stack">
             <section class="samples-block" aria-labelledby="home-ccna-assessment-title">
@@ -1891,8 +1912,10 @@
                         <p class="purchase-track-title">120-minute simulation</p>
                         <span class="encor-live-badge">Live</span>
                       </div>
-                      <p class="purchase-price" aria-label="4 dollars and 99 cents">
-                        $4.99
+                      <p class="purchase-price" aria-label="Original price 9 dollars and 99 cents, first-time visitor price 4 dollars and 99 cents with coupon code CCNA Sim 4 U">
+                        <span class="purchase-price-old">$9.99</span>
+                        <span class="purchase-price-now">$4.99</span>
+                        <span class="purchase-price-note">First-time visitors with coupon code CCNA_Sim_4_U</span>
                       </p>
                       <p class="purchase-track-sub">
                         Same clock and mix as test day: <strong>120 minutes</strong>, <strong>50</strong> multiple-choice,
