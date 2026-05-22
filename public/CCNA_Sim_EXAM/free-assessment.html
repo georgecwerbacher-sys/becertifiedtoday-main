@@ -730,6 +730,7 @@
     var offerCheckoutBtn = document.getElementById("assessmentOfferCheckout");
     var offerCopyBtn = document.getElementById("assessmentOfferCopy");
     var offerCloseRedirect = false;
+    var offerDelayTimer = null;
 
     function assessmentCompleted() {
       try {
@@ -785,6 +786,7 @@
     function showAssessmentOffer(options) {
       options = options || {};
       if (!offerModal || assessmentOfferDismissed()) return false;
+      clearAssessmentOfferDelay();
       offerCloseRedirect = !!options.redirectOnClose;
       offerModal.hidden = false;
       setTimeout(function () {
@@ -795,8 +797,34 @@
       return true;
     }
 
+    function clearAssessmentOfferDelay() {
+      if (offerDelayTimer) {
+        clearTimeout(offerDelayTimer);
+        offerDelayTimer = null;
+      }
+    }
+
+    function scheduleAssessmentOffer() {
+      clearAssessmentOfferDelay();
+      if (!offerModal || assessmentOfferDismissed()) return;
+      offerDelayTimer = setTimeout(function () {
+        offerDelayTimer = null;
+        showAssessmentOffer({ redirectOnClose: false });
+      }, 20000);
+    }
+
+    function resultsAreVisible() {
+      return !!(resultsPanel && !resultsPanel.hidden);
+    }
+
+    function showAssessmentOfferBeforeLeaving(redirectOnClose) {
+      if (!resultsAreVisible() || assessmentOfferDismissed()) return false;
+      return showAssessmentOffer({ redirectOnClose: !!redirectOnClose });
+    }
+
     function closeAssessmentOffer(action) {
       markAssessmentOfferDismissed(action);
+      clearAssessmentOfferDelay();
       if (offerModal) offerModal.hidden = true;
       if (offerCloseRedirect) {
         redirectAfterResults();
@@ -805,6 +833,7 @@
 
     function goToThirtyDayCheckoutFromOffer() {
       markAssessmentOfferDismissed("checkout");
+      clearAssessmentOfferDelay();
       if (offerCheckoutBtn) {
         offerCheckoutBtn.disabled = true;
         offerCheckoutBtn.textContent = "Opening checkout...";
@@ -1798,7 +1827,7 @@
       resultsPanel.hidden = false;
       await populateResults(reason);
       if (reason === "complete" || reason === "timeout") {
-        showAssessmentOffer({ redirectOnClose: false });
+        scheduleAssessmentOffer();
       }
     }
 
@@ -1878,7 +1907,13 @@
     });
 
     document.getElementById("resultsContinue").addEventListener("click", function () {
+      if (showAssessmentOfferBeforeLeaving(true)) return;
       redirectAfterResults();
+    });
+
+    document.addEventListener("mouseout", function (event) {
+      if (event.relatedTarget || event.clientY > 8) return;
+      showAssessmentOfferBeforeLeaving(false);
     });
 
     if (offerCloseBtn) {
