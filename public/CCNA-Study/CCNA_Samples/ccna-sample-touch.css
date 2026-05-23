@@ -107,6 +107,23 @@ code,
   justify-content: center;
 }
 
+/* Drag-and-drop: short touch hint above the exercise (phones / tablets) */
+.dragdrop-touch-hint {
+  display: none;
+  margin: 0 0 8px;
+  padding: 0;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: #9fb0cc;
+  font-weight: 400;
+}
+
+@media (max-width: 900px), ((hover: none) and (pointer: coarse)) {
+  .dragdrop-touch-hint {
+    display: block;
+  }
+}
+
 /* Drag-and-drop exercise */
 body.dragdrop-exercise .token {
   min-height: 48px;

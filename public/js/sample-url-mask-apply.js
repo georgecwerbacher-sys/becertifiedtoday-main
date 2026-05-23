@@ -238,3 +238,14 @@
   head.appendChild(va);
 })();
 
+/** Drag-and-drop touch hint above .layout on phones and tablets */
+(function () {
+  "use strict";
+  var head = document.head || document.documentElement;
+  if (head.querySelector('script[src*="dragdrop-touch-hint.js"]')) return;
+  var hint = document.createElement("script");
+  hint.src = "/js/dragdrop-touch-hint.js";
+  hint.defer = true;
+  head.appendChild(hint);
+})();
+
