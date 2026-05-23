@@ -79,6 +79,7 @@
   "use strict";
 
   var OBJECTIVES_URL = "/CCNA-Study/data/ccna-exam-objectives-200-301-v1.1.json";
+  var MANIFEST_URL = "/CCNA-Study/data/ccna-practice-questions-manifest.json";
   var MAP_BY_PATH = [
     { pathPart: "/ccna-study/ccna_questions/", mapUrl: "/CCNA-Study/data/ccna-question-topic-map.json" },
     { pathPart: "/ccna-study/ccna_d_d/", mapUrl: "/CCNA-Study/data/ccna-dnd-topic-map.json" },
@@ -120,18 +121,60 @@
     return null;
   }
 
+  function isCcnaQuestionPage(path) {
+    return (path || "").indexOf("/ccna-study/ccna_questions/") !== -1;
+  }
+
+  function hubIndexForSlug(slug, manifest) {
+    if (!slug || !manifest || !manifest.items) return null;
+    for (var i = 0; i < manifest.items.length; i++) {
+      if (manifest.items[i].slug === slug) return i + 1;
+    }
+    return null;
+  }
+
+  function versionLabelForHubIndex(index) {
+    if (!index || index < 1) return null;
+    if (index <= 300) return "Version: 1.1 2026";
+    return "Version 1.0";
+  }
+
   function renderObjectiveTag() {
     var target = getSlugAndMap();
     if (!target) return;
     var host = document.querySelector("main.card") || document.querySelector("main");
     if (!host || host.querySelector(".ccna-objective-tag")) return;
 
-    Promise.all([
+    var pathLower = (location.pathname || "").toLowerCase();
+    try {
+      if (
+        pathLower === "/sample" ||
+        pathLower === "/sample/" ||
+        pathLower.indexOf("/sample?") === 0
+      ) {
+        var remembered = sessionStorage.getItem("ccnaLastRealPath");
+        if (remembered) pathLower = remembered.toLowerCase();
+      }
+    } catch (e) {}
+    var questionPage = isCcnaQuestionPage(pathLower);
+    var slug = target.fileName.replace(/\.html$/i, "");
+
+    var fetches = [
       fetch(OBJECTIVES_URL).then(function (r) { return r.json(); }),
       fetch(target.mapUrl).then(function (r) { return r.json(); })
-    ]).then(function (res) {
+    ];
+    if (questionPage) {
+      fetches.push(
+        fetch(MANIFEST_URL)
+          .then(function (r) { return r.json(); })
+          .catch(function () { return null; })
+      );
+    }
+
+    Promise.all(fetches).then(function (res) {
       var objectives = res[0];
       var map = res[1];
+      var manifest = questionPage ? res[2] : null;
       if (!map || !map.assignments) return;
 
       var linkedIds = map.assignments[target.fileName] || [];
@@ -169,6 +212,18 @@
       title.style.marginBottom = "4px";
       title.textContent = "CCNA objective section";
       box.appendChild(title);
+
+      if (questionPage) {
+        var versionText = versionLabelForHubIndex(hubIndexForSlug(slug, manifest));
+        if (versionText) {
+          var versionRow = document.createElement("div");
+          versionRow.style.marginBottom = "6px";
+          versionRow.style.color = "#9fb0cc";
+          versionRow.style.fontSize = "0.82rem";
+          versionRow.textContent = versionText;
+          box.appendChild(versionRow);
+        }
+      }
 
       labels.forEach(function (line) {
         var row = document.createElement("div");
