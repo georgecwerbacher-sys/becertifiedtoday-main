@@ -327,7 +327,7 @@
       article.appendChild(h4);
       var verTag = document.createElement("p");
       verTag.className = "ccna-bank-version-tag";
-      verTag.textContent = b * BANK_SIZE <= VERSION_11_2026_MAX ? "Ver1.1 2026" : "Ver1.0";
+      verTag.textContent = b * BANK_SIZE <= VERSION_11_2026_MAX ? "Ver1.1 2026" : "pre v1.0";
       article.appendChild(verTag);
 
       var actions = document.createElement("div");

@@ -136,7 +136,7 @@
   function versionLabelForHubIndex(index) {
     if (!index || index < 1) return null;
     if (index <= 300) return "Version: 1.1 2026";
-    return "Version 1.0";
+    return "pre v1.0";
   }
 
   function renderObjectiveTag() {
