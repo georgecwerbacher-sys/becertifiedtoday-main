@@ -198,6 +198,14 @@
     return false;
   }
 
+  function hubIndexForSlug(slug, allSlugs) {
+    if (!slug || !Array.isArray(allSlugs)) return null;
+    for (var i = 0; i < allSlugs.length; i++) {
+      if (allSlugs[i] === slug) return i + 1;
+    }
+    return null;
+  }
+
   function majorsFromMissedObjectives(assignments, missedSlug) {
     if (!assignments || !missedSlug) return [];
     var objs = assignments[missedSlug + ".html"];
@@ -243,12 +251,14 @@
     for (var bi = 0; bi < bankSlice.length; bi++) inBank[bankSlice[bi]] = true;
 
     var domainFilter = session.domain ? String(session.domain) : "";
+    var versionMax = session.versionMax ? parseInt(String(session.versionMax), 10) : 0;
 
     var outsiders = [];
     var insiders = [];
     for (var j = 0; j < allSlugs.length; j++) {
       var cand = allSlugs[j];
       if (inOrder[cand]) continue;
+      if (versionMax && hubIndexForSlug(cand, allSlugs) > versionMax) continue;
       if (!slugMatchesWeakMajors(assignments, cand, majors)) continue;
       if (domainFilter && !slugMatchesMajor(assignments, cand, domainFilter)) continue;
       if (!inBank[cand]) outsiders.push(cand);

@@ -12,6 +12,7 @@
   <title>Free CCNA Assessment Test | Be Certified Today</title>
   <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
   <link rel="canonical" href="https://becertifiedtoday.com/CCNA_Sim_EXAM/free-assessment.html" />
+  <script src="/CCNA-Study/js/ccna-sim-v11-pool.js"></script>
     <style>
     :root {
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
@@ -1146,6 +1147,14 @@
           if (!entry || !entry.type || !entry.fileName) return;
           var type = entry.type;
           var fn = entry.fileName;
+          if (
+            type === "mcq" &&
+            window.CCNA_SIM_V11_POOL &&
+            typeof window.CCNA_SIM_V11_POOL.isV11McqFileName === "function" &&
+            !window.CCNA_SIM_V11_POOL.isV11McqFileName(fn)
+          ) {
+            return;
+          }
           var assignments = type === "mcq" ? qa : type === "dnd" ? da : la;
           deck.push({
             type: type,
@@ -1157,6 +1166,13 @@
         return deck;
       }
       fixedMcqFilesFromBlueprint(bp).forEach(function (fn) {
+        if (
+          window.CCNA_SIM_V11_POOL &&
+          typeof window.CCNA_SIM_V11_POOL.isV11McqFileName === "function" &&
+          !window.CCNA_SIM_V11_POOL.isV11McqFileName(fn)
+        ) {
+          return;
+        }
         deck.push({
           type: "mcq",
           fileName: fn,
@@ -1194,7 +1210,10 @@
       var qa = qMap.assignments || {};
       var da = dMap.assignments || {};
       var la = lMap.assignments || {};
-      var mcqKeys = Object.keys(qa);
+      var mcqKeys =
+        window.CCNA_SIM_V11_POOL && typeof window.CCNA_SIM_V11_POOL.filterMcqAssignmentKeys === "function"
+          ? window.CCNA_SIM_V11_POOL.filterMcqAssignmentKeys(qa)
+          : Object.keys(qa);
       var dndKeys = Object.keys(da);
       var labKeys = Object.keys(la);
       if (mcqKeys.length < mcqN || dndKeys.length < dndN) return null;
@@ -1298,6 +1317,10 @@
       var dndN = bp.dragDropCount != null ? bp.dragDropCount : 5;
       var expectedTotal = mcqN + dndN + labCount;
 
+      if (window.CCNA_SIM_V11_POOL && typeof window.CCNA_SIM_V11_POOL.load === "function") {
+        await window.CCNA_SIM_V11_POOL.load();
+      }
+
       try {
         var rq = await fetch("/CCNA-Study/data/ccna-question-topic-map.json").then(function (r) {
           return r.json();
@@ -1308,10 +1331,15 @@
         var rl = await fetch("/CCNA-Study/data/ccna-lab-topic-map.json").then(function (r) {
           return r.json();
         });
+        var rawMcq = rq.assignments || {};
+        mcqAssignmentsCache =
+          window.CCNA_SIM_V11_POOL && typeof window.CCNA_SIM_V11_POOL.filterMcqAssignments === "function"
+            ? window.CCNA_SIM_V11_POOL.filterMcqAssignments(rawMcq)
+            : rawMcq;
+        rq = Object.assign({}, rq, { assignments: mcqAssignmentsCache });
         var rich = buildFixedAssessmentDeck(rq, rd, rl, bp);
         if (rich && rich.length === expectedTotal) {
           items = rich;
-          mcqAssignmentsCache = rq.assignments || {};
           adaptiveMcqPoolByDomain = buildAdaptiveMcqPools(mcqAssignmentsCache);
           usedMcqSlugs = {};
           items.forEach(function (it) {

@@ -14,6 +14,7 @@
   <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
   <link rel="canonical" href="https://becertifiedtoday.com/CCNA_Sim_EXAM/test-simulation-runner.html" />
   <script src="/CCNA-Study/js/ccna-portal-30d-storage.js"></script>
+  <script src="/CCNA-Study/js/ccna-sim-v11-pool.js"></script>
   <style>
     :root {
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
@@ -962,7 +963,10 @@
       var qa = qMap.assignments || {};
       var da = dMap.assignments || {};
       var la = lMap.assignments || {};
-      var mcqKeys = Object.keys(qa);
+      var mcqKeys =
+        window.CCNA_SIM_V11_POOL && typeof window.CCNA_SIM_V11_POOL.filterMcqAssignmentKeys === "function"
+          ? window.CCNA_SIM_V11_POOL.filterMcqAssignmentKeys(qa)
+          : Object.keys(qa);
       var dndKeys = Object.keys(da);
       var labKeys = Object.keys(la);
       if (mcqKeys.length < mcqN || dndKeys.length < dndN) return null;
@@ -1066,6 +1070,10 @@
       var dndN = bp.dragDropCount != null ? bp.dragDropCount : 5;
       var expectedTotal = mcqN + dndN + labCount;
 
+      if (window.CCNA_SIM_V11_POOL && typeof window.CCNA_SIM_V11_POOL.load === "function") {
+        await window.CCNA_SIM_V11_POOL.load();
+      }
+
       try {
         var rq = await fetch("/CCNA-Study/data/ccna-question-topic-map.json").then(function (r) {
           return r.json();
@@ -1076,6 +1084,12 @@
         var rl = await fetch("/CCNA-Study/data/ccna-lab-topic-map.json").then(function (r) {
           return r.json();
         });
+        var rawMcq = rq.assignments || {};
+        mcqAssignmentsCache =
+          window.CCNA_SIM_V11_POOL && typeof window.CCNA_SIM_V11_POOL.filterMcqAssignments === "function"
+            ? window.CCNA_SIM_V11_POOL.filterMcqAssignments(rawMcq)
+            : rawMcq;
+        rq = Object.assign({}, rq, { assignments: mcqAssignmentsCache });
         var rich = buildRichDeck(rq, rd, rl, {
           fixedLabs: fixedLabs,
           labCount: labCount,
@@ -1084,7 +1098,6 @@
         });
         if (rich && rich.length === expectedTotal) {
           items = rich;
-          mcqAssignmentsCache = rq.assignments || {};
           adaptiveMcqPoolByDomain = buildAdaptiveMcqPools(mcqAssignmentsCache);
           usedMcqSlugs = {};
           items.forEach(function (it) {

@@ -358,6 +358,14 @@
       line-height: 1.25;
       color: #ffffff;
     }
+    .ccna-bank-version-tag {
+      margin: -2px 0 0;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+      color: #9fb0cc;
+    }
     .sim-box-thumb {
       margin: -16px -16px 10px -16px;
       border-radius: 11px 11px 0 0;
@@ -847,9 +855,9 @@
             <div class="ccna-practice-subject-filter" id="ccna-practice-subject-filter">
               <p class="ccna-practice-subject-title">Practice by subject</p>
               <p class="ccna-practice-subject-lead">
-                Matches the <a href="#ccna-domains">CCNA blueprint domain weights</a> (Cisco 200-301 domain numbers). Leave on
-                <strong>All subjects</strong> for every question in the bank you start, or pick one domain before you click
-                <strong>Random</strong> or <strong>Review</strong>.
+                Matches the <a href="#ccna-domains">CCNA blueprint domain weights</a> (Cisco 200-301 domain numbers), or limit to
+                <strong>Version 1.1 2026</strong> (hub positions 1&ndash;300). Leave on <strong>All subjects</strong> for every
+                question in the bank you start, or pick a filter before you click <strong>Random</strong> or <strong>Review</strong>.
               </p>
               <label for="ccna-practice-domain-select">Limit session to</label>
               <select
@@ -858,6 +866,7 @@
                 aria-describedby="ccna-practice-domain-hint"
               >
                 <option value="">All subjects (entire bank)</option>
+                <option value="v11-2026">Version 1.1 2026 (questions 1&ndash;300)</option>
                 <option value="1">1 — Network fundamentals</option>
                 <option value="2">2 — LAN switching (network access)</option>
                 <option value="3">3 — Routing (IP connectivity)</option>
@@ -866,8 +875,8 @@
                 <option value="6">6 — Automation &amp; programmability</option>
               </select>
               <p id="ccna-practice-domain-hint" class="ccna-practice-subject-hint">
-                Questions are included if any mapped objective matches the domain. Items with no topic map entry stay in
-                &ldquo;All subjects&rdquo; only.
+                Domain filters use the topic map. <strong>Version 1.1 2026</strong> includes only hub positions 1&ndash;300 (same order
+                as the objective version label on each question). Items with no topic map entry stay in &ldquo;All subjects&rdquo; only.
               </p>
               <fieldset class="ccna-practice-session-style" aria-labelledby="ccna-practice-session-style-label">
                 <legend id="ccna-practice-session-style-label">Session behavior</legend>

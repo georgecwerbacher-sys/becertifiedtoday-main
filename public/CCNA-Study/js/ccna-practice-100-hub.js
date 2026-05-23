@@ -3,6 +3,7 @@
 
   var KEY = "ccnaPractice100";
   var BANK_SIZE = 100;
+  var VERSION_11_2026_MAX = 300;
   var TOPIC_MAP_URL = "/CCNA-Study/data/ccna-question-topic-map.json";
 
   function shuffle(arr) {
@@ -60,12 +61,37 @@
     return out;
   }
 
-  function getSelectedPracticeDomain() {
+  function hubIndexForSlug(slug) {
+    var all = window.CCNA_PRACTICE_100.ALL_SLUGS;
+    if (!slug || !Array.isArray(all)) return null;
+    for (var i = 0; i < all.length; i++) {
+      if (all[i] === slug) return i + 1;
+    }
+    return null;
+  }
+
+  function filterSlugsByHubMax(slugs, maxHubIndex) {
+    if (!maxHubIndex || maxHubIndex < 1) return slugs.slice();
+    var out = [];
+    for (var i = 0; i < slugs.length; i++) {
+      var idx = hubIndexForSlug(slugs[i]);
+      if (idx && idx <= maxHubIndex) out.push(slugs[i]);
+    }
+    return out;
+  }
+
+  function getSelectedPracticeFilter() {
     var sel = document.getElementById("ccna-practice-domain-select");
-    if (!sel) return "";
+    if (!sel) return { domain: null, versionMax: null };
     var v = String(sel.value || "").trim();
-    if (!v || !/^[1-6]$/.test(v)) return "";
-    return v;
+    if (v === "v11-2026") return { domain: null, versionMax: VERSION_11_2026_MAX };
+    if (/^[1-6]$/.test(v)) return { domain: v, versionMax: null };
+    return { domain: null, versionMax: null };
+  }
+
+  /** @deprecated use getSelectedPracticeFilter */
+  function getSelectedPracticeDomain() {
+    return getSelectedPracticeFilter().domain || "";
   }
 
   /** Practice-by-subject: optional adaptive queue (misses appended until session completes). */
@@ -79,9 +105,12 @@
     }
   }
 
-  function startWithOptionalDomain(mode, bankId, domainMajor) {
+  function startWithOptionalDomain(mode, bankId, filter) {
+    filter = filter || { domain: null, versionMax: null };
+    var domainMajor = filter.domain || null;
+    var versionMax = filter.versionMax || null;
     if (!domainMajor) {
-      start(mode, bankId, null);
+      start(mode, bankId, null, versionMax);
       return;
     }
     var inst = window.CCNA_PRACTICE_100;
@@ -93,7 +122,7 @@
       return;
     }
     if (assign && typeof assign === "object") {
-      start(mode, bankId, domainMajor);
+      start(mode, bankId, domainMajor, versionMax);
       return;
     }
     inst._topicAssignmentsPromise.then(function () {
@@ -103,7 +132,7 @@
         );
         return;
       }
-      start(mode, bankId, domainMajor);
+      start(mode, bankId, domainMajor, versionMax);
     });
   }
 
@@ -124,7 +153,7 @@
     return Math.ceil(all.length / BANK_SIZE);
   }
 
-  function start(mode, bankId, domainMajor) {
+  function start(mode, bankId, domainMajor, versionMax) {
     bankId = bankId || "1";
     var fixed = bankSlugs(bankId);
     var map = window.CCNA_PRACTICE_100._topicAssignments;
@@ -135,9 +164,12 @@
       }
       fixed = filterSlugsByMajor(fixed, map, domainMajor);
     }
+    if (versionMax) {
+      fixed = filterSlugsByHubMax(fixed, versionMax);
+    }
     if (!fixed.length) {
       window.alert(
-        "No questions in this bank match the selected subject. Pick another subject, choose “All subjects”, or try a different bank."
+        "No questions in this bank match the selected filter. Pick another subject or version, choose “All subjects”, or try a different bank."
       );
       return;
     }
@@ -149,6 +181,7 @@
     }
     var session = { v: 1, mode: mode, bank: bankId, order: order };
     if (domainMajor) session.domain = domainMajor;
+    if (versionMax) session.versionMax = versionMax;
     if (getAdaptiveLearningEnabled()) {
       session.adaptive = true;
       session.adaptiveExtrasInjected = 0;
@@ -177,6 +210,10 @@
   window.CCNA_PRACTICE_100.bankSlugs = bankSlugs;
   window.CCNA_PRACTICE_100.practiceBankCount = practiceBankCount;
   window.CCNA_PRACTICE_100.filterSlugsByMajor = filterSlugsByMajor;
+  window.CCNA_PRACTICE_100.VERSION_11_2026_MAX = VERSION_11_2026_MAX;
+  window.CCNA_PRACTICE_100.filterSlugsByHubMax = filterSlugsByHubMax;
+  window.CCNA_PRACTICE_100.hubIndexForSlug = hubIndexForSlug;
+  window.CCNA_PRACTICE_100.getSelectedPracticeFilter = getSelectedPracticeFilter;
 
   document.addEventListener(
     "click",
@@ -189,11 +226,11 @@
       var bank = el.getAttribute("data-ccna100-bank") || "1";
       if (m === "random" || m === "review" || m === "linear") {
         e.preventDefault();
-        var domain = getSelectedPracticeDomain();
+        var filter = getSelectedPracticeFilter();
         if (m === "random" || m === "review") {
-          startWithOptionalDomain(m, bank, domain || null);
+          startWithOptionalDomain(m, bank, filter);
         } else {
-          start(m, bank, null);
+          start(m, bank, filter.domain, filter.versionMax);
         }
       }
     },
@@ -243,7 +280,7 @@
           "; then the next bank appears automatically. ";
       }
       summaryText +=
-        "Each bank has its own Random and Review session. Domain filter and adaptive learning apply to the bank you start.";
+        "Each bank has its own Random and Review session. Domain, Version 1.1 2026, and adaptive learning apply to the bank you start.";
       summary.textContent = summaryText;
       summary.hidden = false;
     }
@@ -287,6 +324,12 @@
       }
       h4.textContent = "Bank " + String(b) + " · questions " + titleInner;
 
+      article.appendChild(h4);
+      var verTag = document.createElement("p");
+      verTag.className = "ccna-bank-version-tag";
+      verTag.textContent = b * BANK_SIZE <= VERSION_11_2026_MAX ? "Ver1.1 2026" : "Ver1.0";
+      article.appendChild(verTag);
+
       var actions = document.createElement("div");
       actions.className = "study-actions";
       actions.setAttribute("role", "group");
@@ -315,7 +358,6 @@
 
       actions.appendChild(br);
       actions.appendChild(rev);
-      article.appendChild(h4);
       article.appendChild(actions);
 
       grid.appendChild(article);
