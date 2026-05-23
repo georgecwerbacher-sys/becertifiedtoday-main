@@ -1604,6 +1604,28 @@
     .ccna-sim-promo-lead strong {
       color: #e8f4ee;
     }
+    .ccna-portal-gate-help {
+      margin: 0 0 14px;
+      font-size: 0.94rem;
+      line-height: 1.45;
+      color: rgba(230, 237, 243, 0.85);
+    }
+    .ccna-portal-gate-help a.ccna-portal-gate-email-link {
+      color: #ffffff;
+      font-weight: 800;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+    .ccna-portal-gate-help a.ccna-portal-gate-email-link:hover {
+      color: #f0f4fc;
+    }
+    .ccna-portal-gate-help--secondary {
+      margin-top: -6px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: rgba(230, 237, 243, 0.72);
+    }
     .ccna-sim-promo-lead--compact {
       margin: 0 0 12px;
       font-size: clamp(0.88rem, 2vw, 0.94rem);
@@ -2181,12 +2203,14 @@
         <strong>this browser</strong> (after Stripe checkout on this site). If you have not purchased yet, get
         <strong>30-day membership</strong> below—no recurring subscription.
       </p>
-      <p style="margin: 0 0 14px; font-size: 0.94rem; line-height: 1.45; color: rgba(230, 237, 243, 0.85);">
+      <p class="ccna-portal-gate-help">
         Already paid but blocked?
-        <a href="/CCNA-Study/ccna-portal-request-link.html">Email me a portal link</a>
+        <a class="ccna-portal-gate-email-link" href="/CCNA-Study/ccna-portal-request-link.html">Email me a portal link</a>
         ·
         <a href="/CCNA-Study/ccna-portal-restore-access.html">Restore access</a>
-        —logging out of Stripe alone does not remove site access; clearing browser storage does.
+      </p>
+      <p class="ccna-portal-gate-help ccna-portal-gate-help--secondary">
+        On a new device or browser? That’s normal. Submit your checkout email from this device and we’ll restore portal access here.
       </p>
       <div class="ccna-sim-promo-actions">
         <button
