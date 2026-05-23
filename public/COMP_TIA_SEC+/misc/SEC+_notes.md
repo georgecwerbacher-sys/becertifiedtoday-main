@@ -20,10 +20,12 @@ public/COMP_TIA_SEC+/
 | URL | File |
 |-----|------|
 | `/secplus-home.html` | Study hub (marketing + sample links) |
-| `/secplus-sample` | Rewrite → `SEC+_Samples/sample.html` |
+| `/secplus-sample` | *(rewrite removed — not public yet)* |
 | `/COMP_TIA_SEC+/SEC+_Training_Portal.html` | Portal shell |
 
-Home page path card: `/` → **Open Security+ Study Hub** → `/secplus-home.html`
+Home page path card: `/` → **Coming Soon in June** (disabled; no public hub link yet).
+
+**Production:** Security+ and migrated ENCOR files live under `public/` for staging only. Hub links and `/sample` ENCOR tracks stay on the external ENCOR app until cutover.
 
 ## Live today (early access)
 
