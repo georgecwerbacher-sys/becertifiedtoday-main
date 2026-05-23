@@ -14,7 +14,7 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background: #ffffff;
+      background: #0b1020;
       color: #e6edf3;
       display: flex;
       justify-content: center;
@@ -190,6 +190,18 @@
     .topology-scrape .helper-part-two li {
       font-size: 1rem;
       line-height: 1.45;
+    }
+    .topology-scrape .helper-cli {
+      margin: 6px 0 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: #0a0a0a;
+      border: 1px solid #2b2b2b;
+      color: #f3f3f3;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      white-space: pre-wrap;
     }
     .topology-scrape .helper-device {
       margin: 12px 0 4px;
@@ -601,7 +613,6 @@
       height: 52px;
     }
 </style>
-  <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
 </head>
 <body>
   <script src="/js/sample-url-mask-apply.js"></script>
@@ -688,51 +699,65 @@
         <section class="topology-scrape" aria-label="Topology summary from exhibit">
           <h2>Helper File</h2>
           <p class="helper-part-two-title"><strong>Task 1. Configure Rapid PVST+ on SW20.</strong></p>
-          <ul class="helper-part-two">
-            <li>On SW20, enter global configuration and set <code>spanning-tree mode rapid-pvst</code>.</li>
-          </ul>
+          <p class="helper-device">On SW20</p>
+          <pre class="helper-cli">SW20#conf t
+SW20(config)#spanning-tree mode rapid-pvst</pre>
 
           <p class="helper-part-two-title"><strong>Task 2. Restore the SW20-SW30 trunk and verify PC3 to PC1 reachability.</strong></p>
           <ul class="helper-part-two">
-            <li>Run <code>show running-config</code> on SW20 and check interface <code>Ethernet0/0</code>.</li>
-            <li>
-              Change <code>Ethernet0/0</code> to an 802.1Q trunk allowing only VLAN <code>500</code>: under that interface use
-              <code>switchport trunk encapsulation dot1q</code>, <code>switchport mode trunk</code>, and
-              <code>switchport trunk allowed vlan 500</code>.
-            </li>
+            <li>Run <code>show run</code> on SW20 and check interface <code>E0/0</code>.</li>
+            <li>Change <code>E0/0</code> to a dot1q trunk and allow only VLAN 500.</li>
           </ul>
-          <p class="helper-part-two-title"><strong>Verification (Task 2)</strong></p>
-          <ul class="helper-part-two">
-            <li>From PC3, ping <code>10.10.100.10</code> (PC1) until you get replies.</li>
-          </ul>
+          <p class="helper-device">SW20</p>
+          <pre class="helper-cli">SW20(config)#interface e0/0
+SW20(config-if)#switchport trunk encapsulation dot1q
+SW20(config-if)#switchport mode trunk
+SW20(config-if)#switchport trunk allowed vlan 500</pre>
+          <p class="helper-part-two-title"><strong>Verification</strong></p>
+          <pre class="helper-cli">PC3#ping 10.10.100.10
+!!!!!</pre>
 
           <p class="helper-part-two-title"><strong>Task 3. Restore the LACP port-channel between SW10 and SW20 and verify PC3 to PC2 reachability.</strong></p>
           <ul class="helper-part-two">
-            <li>Run <code>show running-config</code> on SW20 and confirm Port-channel 10 uses members <code>Ethernet0/2</code> and <code>Ethernet0/3</code>.</li>
-            <li>Apply trunk settings on <code>Port-channel10</code> (or your lab’s bundle interface): same encapsulation, mode, and <code>switchport trunk allowed vlan 500</code> as on the access/trunk links you fixed earlier.</li>
-            <li>After the port-channel allows VLAN 500, member links should show consistent trunk behavior.</li>
+            <li>Run <code>show run</code> on SW20 and verify Port-channel 10 matches members <code>E0/2</code> and <code>E0/3</code>.</li>
+            <li>Apply trunk settings to <code>Po10</code>. If your topology uses a different bundle number, use that interface.</li>
+            <li>After <code>switchport trunk allowed vlan 500</code> on the port-channel, member links should inherit matching trunk behavior.</li>
           </ul>
-          <p class="helper-part-two-title"><strong>Verification (Task 3 — EtherChannel)</strong></p>
-          <ul class="helper-part-two">
-            <li>
-              On SW20 from privileged exec, run <code>show etherchannel summary</code>. Expect group <code>10</code>,
-              <code>Po10(SU)</code>, protocol LACP, with <code>Et0/2(P)</code> and <code>Et0/3(P)</code> in the port list.
-            </li>
-            <li>
-              If Po10 is still down, compare running-config on <code>Port-channel10</code>, <code>Ethernet0/2</code>, and
-              <code>Ethernet0/3</code>: matching trunk VLAN, encapsulation, and mode; each member should include
-              <code>channel-group 10 mode active</code>.
-            </li>
-          </ul>
-          <p class="helper-part-two-title"><strong>Verification (Task 3 — data path)</strong></p>
-          <ul class="helper-part-two">
-            <li>From PC3, ping <code>10.10.100.20</code> (PC2).</li>
-          </ul>
+          <p class="helper-device">SW20</p>
+          <pre class="helper-cli">SW20(config)#int Po10
+SW20(config-if)#switchport trunk encapsulation dot1q
+SW20(config-if)#switchport mode trunk
+SW20(config-if)#switchport trunk allowed vlan 500</pre>
+          <p class="helper-part-two-title"><strong>Verification</strong></p>
+          <pre class="helper-cli">SW20#show etherchannel summary
+--output omitted--
+Number of channel-groups in use: 1
+Number of aggregators:           1
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+10     Po10(SU)        LACP      Et0/2(P)    Et0/3(P)</pre>
+          <p class="helper-device">If Po10 is still down, compare these interfaces for matching trunk config</p>
+          <pre class="helper-cli">interface Port-channel10
+ switchport trunk allowed vlan 500
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+interface Ethernet0/2
+ switchport trunk allowed vlan 500
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 10 mode active
+interface Ethernet0/3
+ switchport trunk allowed vlan 500
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 10 mode active</pre>
+          <p class="helper-part-two-title"><strong>Verification</strong></p>
+          <pre class="helper-cli">PC3#ping 10.10.100.20
+!!!!!</pre>
 
           <p class="helper-part-two-title"><strong>Save the configuration</strong></p>
-          <ul class="helper-part-two">
-            <li>On SW20 from privileged exec, run <code>copy running-config startup-config</code>.</li>
-          </ul>
+          <pre class="helper-cli">SW20#copy running-config startup-config</pre>
         </section>
       </div>
     </div>
@@ -933,37 +958,11 @@ SW20# copy running-config startup-config</pre>
 
   <script>
     function normalize(s) {
-      let t = String(s || "")
+      return s
         .trim()
         .toLowerCase()
         .replace(/\s+/g, " ")
         .replace(/[.;]+$/, "");
-      if (t === "conf t" || t === "config t") t = "configure terminal";
-      if (t === "sh ver" || t === "show ver" || t === "sh version") t = "show version";
-      if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
-      if (/^interface e\d+\/\d+$/.test(t)) {
-        t = t.replace(/^interface e/, "interface ethernet");
-      }
-      return t;
-    }
-
-    function expandInterfaceEcho(raw) {
-      const s = String(raw || "").trim();
-      const m = /^(interface|int)\s+e(\d+)\/(\d+)$/i.exec(s);
-      if (m) {
-        return "interface Ethernet" + m[2] + "/" + m[3];
-      }
-      return s;
-    }
-
-    function isModeNavigationCommand(normalizedCmd) {
-      const u = normalizedCmd;
-      return (
-        u === "configure terminal" ||
-        u === "end" ||
-        u === "exit" ||
-        u.indexOf("interface ") === 0
-      );
     }
 
     function matchCopy(n) {
@@ -992,10 +991,6 @@ SW20# copy running-config startup-config</pre>
     function matchShowEtherchannelSummary(raw) {
       const u = normalize(raw);
       return u === "show etherchannel summary" || u === "sh etherchannel summary";
-    }
-
-    function matchShowVersion(raw) {
-      return normalize(raw) === "show version";
     }
 
     /** Ethernet0/0 as shown in exhibits — accept common IOS abbreviations. */
@@ -1088,9 +1083,6 @@ SW20# copy running-config startup-config</pre>
       "switchport access vlan 100",
       "no shut",
     ].join("\r\n");
-
-    const SHOW_DISABLED_MSG = "this command is disabled for this lab";
-    const SHOW_VERSION_MSG = "BeCertifiedToday.com version 2026";
 
     /** Simulated `show etherchannel summary` after Po10 trunk is configured. */
     const SHOW_ETHERCHANNEL_SUMMARY = [
@@ -1322,28 +1314,13 @@ SW20# copy running-config startup-config</pre>
       if (!sw10Cmdline) return;
       const prompt = sw10PromptEl ? sw10PromptEl.textContent : "Sw10#";
       const line = sw10Cmdline.value;
-      const trimmed = String(line || "").trim();
-      const normalized = normalize(line);
-      const hideInputLine = isModeNavigationCommand(normalized);
-      const echoLine = expandInterfaceEcho(trimmed);
-      if (!hideInputLine || normalized.indexOf("interface ") === 0) {
-        appendLineSw10("line-user", `${prompt} ${echoLine}`);
-      }
+      appendLineSw10("line-user", `${prompt} ${line}`);
       sw10Cmdline.value = "";
-      if (!trimmed) return;
+      if (!line.trim()) return;
       const u = normalize(line);
 
       if (matchShowRun(line) || (u === "do show run" || u === "do show running-config")) {
         appendLineSw10("line-showrun", SW10_SHOW_RUN);
-        return;
-      }
-
-      if (sw10Mode === "exec" && matchShowVersion(line)) {
-        appendLineSw10("line-sys", SHOW_VERSION_MSG);
-        return;
-      }
-      if (sw10Mode === "exec" && (u.indexOf("show ") === 0 || u.indexOf("sh ") === 0)) {
-        appendLineSw10("line-sys", SHOW_DISABLED_MSG);
         return;
       }
 
@@ -1580,18 +1557,11 @@ SW20# copy running-config startup-config</pre>
     function submit() {
       const prompt = promptEl ? promptEl.textContent : promptForStep(stepIndex);
       const line = cmdline.value;
-      const trimmed = String(line || "").trim();
-      const normalized = normalize(line);
-      const hideInputLine = isModeNavigationCommand(normalized);
-      const echoLine = expandInterfaceEcho(trimmed);
-      if (!hideInputLine || normalized.indexOf("interface ") === 0) {
-        appendLine("line-user", `${prompt} ${echoLine}`);
-      }
-      cmdline.value = "";
-      if (!trimmed) return;
-
-      const u = normalized;
+      const u = normalize(line);
       const mode = currentSw20Mode();
+      appendLine("line-user", `${prompt} ${line}`);
+      cmdline.value = "";
+      if (!line.trim()) return;
 
       if (matchShowRun(line)) {
         appendLine("line-showrun", SHOW_RUNNING_SNAPSHOT);
@@ -1604,23 +1574,6 @@ SW20# copy running-config startup-config</pre>
         focusActiveCli();
         return;
       }
-
-      if (mode === "exec" && matchShowVersion(line)) {
-        appendLine("line-sys", SHOW_VERSION_MSG);
-        focusActiveCli();
-        return;
-      }
-      if (mode === "exec" && (u.indexOf("show ") === 0 || u.indexOf("sh ") === 0)) {
-        if (matchShowEtherchannelSummary(line)) {
-          appendLine("line-bad", "% Invalid input");
-          focusActiveCli();
-          return;
-        }
-        appendLine("line-sys", SHOW_DISABLED_MSG);
-        focusActiveCli();
-        return;
-      }
-
       if (mode === "exec" && matchCopy(line) && stepIndex >= 10) {
         stepIndex = STEPS.length;
         sw20PromptOverride = null;

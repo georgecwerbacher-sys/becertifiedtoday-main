@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question 431 - Puppet vs Ansible drag and drop</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+    }
+    .card {
+      width: min(1100px, 96vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+    }
+    .instructions {
+      margin: 0 0 14px;
+      color: #b8c3d6;
+      line-height: 1.45;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 800px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    .bank {
+      background: #1a253b;
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 220px;
+    }
+    .token {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #6384ba;
+      background: #cfe9ff;
+      color: #10243f;
+      font-weight: 700;
+      cursor: grab;
+      user-select: none;
+      font-size: 0.95rem;
+      line-height: 1.35;
+    }
+    .token:active {
+      cursor: grabbing;
+    }
+    .targets-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 520px) {
+      .targets-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .target-group {
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
+      background: #1a253b;
+      padding: 10px;
+    }
+    .target-title {
+      margin: 0 0 10px;
+      font-weight: 700;
+      background: #f7ecd7;
+      color: #2a2112;
+      border: 1px solid #d9c28a;
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+    .drop-slot {
+      min-height: 48px;
+      border-radius: 8px;
+      border: 1px dashed #d98a8a;
+      background: #f7d7d7;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .drop-slot:last-child {
+      margin-bottom: 0;
+    }
+    .drop-slot.over {
+      border-style: solid;
+      border-color: #4d89ff;
+    }
+    .drop-slot.correct {
+      border-color: #1f7a58;
+      background: #113e2d;
+    }
+    .drop-slot.incorrect {
+      border-color: #8c3434;
+      background: #442020;
+    }
+    .actions {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    button,
+    .next-link {
+      background: #254b8a;
+      color: #e6edf3;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-block;
+    }
+    #result {
+      display: none;
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+    #result.is-visible {
+      display: block;
+    }
+    #result.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      color: #e6edf3;
+    }
+    #result.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+      color: #e6edf3;
+    }
+    #nextWrap {
+      display: none;
+    }
+  </style>
+</head>
+<body class="ccnp-practice-ui">
+  <main class="card">
+    <h1>Drag and drop the characteristics from the left onto the corresponding orchestration tool on the right.</h1>
+    <p class="instructions">
+      Place two statements under Puppet and two under Ansible. Order within each column does not matter. Click Check when done.
+    </p>
+
+    <div class="layout">
+      <section>
+        <div id="bank" class="bank">
+          <div class="token" draggable="true" data-value="managed hosts pull configuration from the main node">
+            managed hosts pull configuration from the main node
+          </div>
+          <div class="token" draggable="true" data-value="configuration files are procedural">configuration files are procedural</div>
+          <div class="token" draggable="true" data-value="uses SSH">uses SSH</div>
+          <div class="token" draggable="true" data-value="requires an agent to be installed on hosts">
+            requires an agent to be installed on hosts
+          </div>
+        </div>
+      </section>
+
+      <section class="targets-grid">
+        <div
+          class="target-group"
+          data-expected="managed hosts pull configuration from the main node|requires an agent to be installed on hosts"
+        >
+          <div class="target-title">Puppet</div>
+          <div class="drop-slot"></div>
+          <div class="drop-slot"></div>
+        </div>
+        <div class="target-group" data-expected="configuration files are procedural|uses SSH">
+          <div class="target-title">Ansible</div>
+          <div class="drop-slot"></div>
+          <div class="drop-slot"></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="actions">
+      <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
+      <button id="resetBtn" type="button">Reset</button>
+    </div>
+    <div id="result" aria-live="polite"></div>
+    <div id="nextWrap">
+      <a class="next-link" href="/question-432.html">Next</a>
+    </div>
+  </main>
+
+  <script>
+    const bank = document.getElementById("bank");
+    const slots = document.querySelectorAll(".drop-slot");
+    const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const result = document.getElementById("result");
+    const nextWrap = document.getElementById("nextWrap");
+    /** Row order per column for Show Answer to match the reference image (Check is still multiset / order-agnostic). */
+    const exhibitOrderByGroup = [
+      [
+        "managed hosts pull configuration from the main node",
+        "requires an agent to be installed on hosts",
+      ],
+      ["uses SSH", "configuration files are procedural"],
+    ];
+    let dragged = null;
+
+    function findTokenByValue(value) {
+      return [...bank.querySelectorAll(".token")].find((t) => t.dataset.value === value);
+    }
+
+    function placeToken(container, token) {
+      if (!container || !token) return;
+      const existing = container.querySelector(".token");
+      if (existing) bank.appendChild(existing);
+      container.appendChild(token);
+    }
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    document.querySelectorAll(".token").forEach((token) => {
+      token.addEventListener("dragstart", () => {
+        dragged = token;
+      });
+    });
+
+    slots.forEach((slot) => {
+      slot.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        slot.classList.add("over");
+      });
+      slot.addEventListener("dragleave", () => slot.classList.remove("over"));
+      slot.addEventListener("drop", (e) => {
+        e.preventDefault();
+        slot.classList.remove("over");
+        if (!dragged) return;
+        placeToken(slot, dragged);
+      });
+    });
+
+    bank.addEventListener("dragover", (e) => e.preventDefault());
+    bank.addEventListener("drop", (e) => {
+      e.preventDefault();
+      if (dragged) bank.appendChild(dragged);
+    });
+
+    function multisetEqual(a, b) {
+      if (a.length !== b.length) return false;
+      const sa = a.slice().sort();
+      const sb = b.slice().sort();
+      return sa.every((v, i) => v === sb[i]);
+    }
+
+    function expectedCounts(expected) {
+      const m = {};
+      for (const v of expected) m[v] = (m[v] || 0) + 1;
+      return m;
+    }
+
+    /**
+     * Green per slot if the token belongs in this column (multiset match); red if not.
+     * Order within the column does not matter for a fully correct column.
+     */
+    function markGroupSlots(group) {
+      const expected = group.dataset.expected.split("|");
+      const slotEls = [...group.querySelectorAll(".drop-slot")];
+      const need = expectedCounts(expected);
+      const actual = slotEls.map((s) => {
+        const t = s.querySelector(".token");
+        return t ? t.dataset.value : null;
+      });
+
+      const complete =
+        actual.every((v) => v != null) &&
+        actual.length === expected.length &&
+        multisetEqual(expected, actual);
+
+      if (complete) {
+        slotEls.forEach((slot) => {
+          slot.classList.remove("incorrect", "over");
+          slot.classList.add("correct");
+        });
+        return true;
+      }
+
+      const remaining = { ...need };
+      slotEls.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+      });
+
+      slotEls.forEach((slot, i) => {
+        const v = actual[i];
+        if (v == null) {
+          slot.classList.add("incorrect");
+          return;
+        }
+        if (!need[v]) {
+          slot.classList.add("incorrect");
+          return;
+        }
+        if (remaining[v] > 0) {
+          slot.classList.add("correct");
+          remaining[v] -= 1;
+        } else {
+          slot.classList.add("incorrect");
+        }
+      });
+      return false;
+    }
+
+    checkBtn.addEventListener("click", () => {
+      const groups = document.querySelectorAll(".target-group");
+      let correctGroups = 0;
+      groups.forEach((group) => {
+        if (markGroupSlots(group)) correctGroups += 1;
+      });
+      result.textContent = `Score: ${correctGroups}/${groups.length}`;
+      result.classList.remove("correct", "incorrect", "is-visible");
+      result.classList.add("is-visible");
+      if (correctGroups === groups.length) {
+        result.classList.add("correct");
+      } else {
+        result.classList.add("incorrect");
+      }
+      nextWrap.style.display = "inline-block";
+    });
+
+    showBtn.addEventListener("click", () => {
+      document.querySelectorAll(".target-group").forEach((group, gi) => {
+        const slotEls = [...group.querySelectorAll(".drop-slot")];
+        slotEls.forEach((slot) => {
+          slot.classList.remove("correct", "incorrect", "over");
+          const t = slot.querySelector(".token");
+          if (t) bank.appendChild(t);
+        });
+        const order = exhibitOrderByGroup[gi] || [];
+        order.forEach((val, i) => {
+          const tok = findTokenByValue(val);
+          if (tok && slotEls[i]) {
+            placeToken(slotEls[i], tok);
+            slotEls[i].classList.add("correct");
+          }
+        });
+      });
+      result.textContent = "Answer shown.";
+      result.classList.remove("incorrect");
+      result.classList.add("is-visible", "correct");
+      nextWrap.style.display = "inline-block";
+    });
+
+    resetBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+      result.textContent = "";
+      result.classList.remove("correct", "incorrect", "is-visible");
+      nextWrap.style.display = "none";
+    });
+  </script>
+  <style>
+    .home-key {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+    .home-key:hover {
+      filter: brightness(1.08);
+    }
+  </style>
+  <a class="home-key" href="https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html">Home</a>
+  <script src="/js/practice-questions.js"></script>
+</body>
+</html>

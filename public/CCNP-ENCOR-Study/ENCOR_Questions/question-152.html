@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question 152 - SNMPv3 NMS security</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+    }
+    .card {
+      width: min(960px, 96vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+    }
+    .exhibit-region {
+      margin: 0 0 18px;
+    }
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-section-caption {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #b8c3d6;
+    }
+    .exhibit-section-caption.spaced {
+      margin-top: 18px;
+    }
+    .exhibit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+      margin-bottom: 4px;
+    }
+    @media (max-width: 820px) {
+      .exhibit-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+      min-width: 0;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.58rem, 1.05vw, 0.7rem);
+      line-height: 1.42;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .choice {
+      display: block;
+      margin: 10px 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #1a253b;
+      border: 1px solid #2c3f62;
+      font-size: 0.95rem;
+      cursor: pointer;
+      line-height: 1.45;
+    }
+    .choice input {
+      margin-right: 10px;
+      vertical-align: top;
+      margin-top: 3px;
+    }
+    .answer {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    .answer.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+    }
+    .answer.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+    }
+    .next-wrap {
+      margin-top: 18px;
+      display: none;
+    }
+    .next-link {
+      display: inline-block;
+      text-decoration: none;
+      color: #e6edf3;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <p class="exhibit-section-caption">Options A and B</p>
+      <div class="exhibit-grid" role="region" aria-label="SNMP options A and B">
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option A</div>
+          <pre class="exhibit-cli">ip access-list extended nms
+ permit 1 host 10.15.2.19 any
+snmp-server view ro internet included
+snmp-server view ro ifEntry included
+snmp-server group nms v3 priv notify ro access nms
+snmp-server user user1 nms v3 encrypted auth md5 Password1 pri 3des Password123</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option B</div>
+          <pre class="exhibit-cli">ip access-list standard nms
+ permit 10.15.2.19 0.0.0.0
+snmp-server view ro iso included
+snmp-server view ro ifEntry included
+snmp-server group nms v3 priv read ro access nms
+snmp-server user user1 nms v3 auth sha Password1 pri aes 256 Password123</pre>
+        </div>
+      </div>
+      <p class="exhibit-section-caption spaced">Options C and D</p>
+      <div class="exhibit-grid" role="region" aria-label="SNMP options C and D">
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option C</div>
+          <pre class="exhibit-cli">ip access-list standard nms
+ permit 10.15.2.19 0.0.0.0
+snmp-server view rw iso included
+snmp server view rw ifEntry included
+snmp-server group nms v3 auth write rw access nms
+snmp server user user1 nms v3 auth des Password1 pri des Password123</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option D</div>
+          <pre class="exhibit-cli">ip access list standard nms
+ permit 10.15.2.19 255.255.255.255
+snmp server view ro cisco included
+snmp server view ro ifEntry included
+snmp-server group nms v3 priv read ro access nms
+snmp server user user1 nms v3 auth 3des Password1 pri aes 192 Password123</pre>
+        </div>
+      </div>
+    </div>
+    <h1>
+      A BeCertifiedToday.com engineer must configure interface and sensor monitoring on a router. The NMS server is located in a trusted zone with IP address 10.15.2.19.
+      Communication between the router and the NMS server must be encrypted and password-protected using the most secure algorithms. Access must be
+      allowed only for the NMS server and with the minimum permission levels needed. Which configuration must the BeCertifiedToday.com engineer apply?
+    </h1>
+
+    <label class="choice"><input type="radio" name="q152" value="A" />A. Option A</label>
+    <label class="choice"><input type="radio" name="q152" value="B" />B. Option B</label>
+    <label class="choice"><input type="radio" name="q152" value="C" />C. Option C</label>
+    <label class="choice"><input type="radio" name="q152" value="D" />D. Option D</label>
+
+    <div id="answerBox" class="answer" aria-live="polite"></div>
+    <div id="nextWrap" class="next-wrap">
+      <a class="next-link" href="/question-153.html">Next</a>
+    </div>
+  </main>
+
+  <script>
+    const answerBox = document.getElementById("answerBox");
+    const nextWrap = document.getElementById("nextWrap");
+    const options = document.querySelectorAll('input[name="q152"]');
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    options.forEach((option) => {
+      option.addEventListener("change", () => {
+        answerBox.style.display = "block";
+        nextWrap.style.display = "block";
+        if (option.value === "B") {
+          answerBox.className = "answer correct";
+          answerBox.textContent =
+            "Correct. B. A standard ACL pins access to 10.15.2.19. The group uses SNMPv3 `priv` with `read` so traffic is authenticated and encrypted while keeping the least privilege for monitoring. The user uses SHA and AES-256—strong choices. A permits ICMP (protocol 1), not SNMP; C uses `auth` without privacy and DES with write access; D misuses the ACL mask and offers weaker crypto than AES-256.";
+        } else {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent =
+            "Incorrect. The correct answer: B. Need UDP/SNMP-capable ACL (or standard host permit), v3 `priv` for encryption, read-only view for monitoring only, and strong algorithms (e.g. SHA + AES-256).";
+        }
+      });
+    });
+  </script>
+  <style>
+    .home-key {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+    .home-key:hover {
+      filter: brightness(1.08);
+    }
+  </style>
+  <a class="home-key" href="https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html">Home</a>
+  <script src="/js/practice-questions.js"></script>
+</body>
+</html>

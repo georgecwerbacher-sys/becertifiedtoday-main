@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script src="/js/ga-site-config.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTT6KBHX7V"></script>
+  <script src="/js/google-tag-gtag.js"></script>
+  <script src="/js/install-vercel-analytics.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="CompTIA Security+ SY0-701 practice portal — sample questions and exam-style prep launching on Be Certified Today."
+  />
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <title>CompTIA Security+ Training Portal | Be Certified Today</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --border: #2d3b5a;
+      --page-bg: #ffffff;
+      --page-text: #0b1020;
+      --page-muted: #475569;
+      --secplus: #6d28d9;
+      --secplus-border: #8b5cf6;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--page-bg);
+      color: var(--page-text);
+      line-height: 1.5;
+    }
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px 20px;
+      padding: 16px clamp(20px, 4vw, 40px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--page-text);
+      font-weight: 800;
+    }
+    .brand img {
+      height: clamp(48px, 10vw, 72px);
+      width: auto;
+    }
+    .header-link {
+      color: var(--secplus);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .header-link:hover {
+      text-decoration: underline;
+    }
+    main {
+      flex: 1;
+      padding: clamp(28px, 5vw, 48px) clamp(20px, 4vw, 40px);
+      max-width: 960px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .eyebrow {
+      margin: 0 0 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #7c3aed;
+    }
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(1.55rem, 4vw, 2.1rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+    .lead {
+      margin: 0 0 28px;
+      color: var(--page-muted);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      max-width: 42rem;
+    }
+    .notice {
+      margin: 0 0 28px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(139, 92, 246, 0.45);
+      background: rgba(109, 40, 217, 0.08);
+      color: #4c1d95;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .modes {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 16px;
+    }
+    @media (min-width: 720px) {
+      .modes {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .mode-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 20px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #121a2b;
+      color: #e6edf3;
+    }
+    .mode-card h2 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      font-weight: 800;
+    }
+    .mode-card p {
+      margin: 0 0 16px;
+      flex: 1;
+      color: #9fb0cc;
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+    .mode-card .badge {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: rgba(74, 224, 146, 0.18);
+      color: #bbf7d0;
+      border: 1px solid rgba(74, 224, 146, 0.45);
+    }
+    .mode-card .badge--soon {
+      background: rgba(167, 139, 250, 0.15);
+      color: #ddd6fe;
+      border-color: rgba(167, 139, 250, 0.45);
+    }
+    .mode-card a,
+    .mode-card span.disabled {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 0.88rem;
+      text-decoration: none;
+      text-align: center;
+    }
+    .mode-card a {
+      color: #f3e8ff;
+      background: linear-gradient(165deg, #7c3aed 0%, #5b21b6 100%);
+      border: 1px solid var(--secplus-border);
+    }
+    .mode-card a:hover {
+      filter: brightness(1.06);
+    }
+    .mode-card span.disabled {
+      color: #c4b5fd;
+      background: rgba(91, 33, 182, 0.35);
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      cursor: not-allowed;
+    }
+    footer {
+      padding: 16px clamp(20px, 4vw, 40px);
+      text-align: center;
+      font-size: 0.82rem;
+      color: #5c6d8a;
+      border-top: 1px solid rgba(45, 59, 90, 0.35);
+    }
+    footer a {
+      color: #6d28d9;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <a class="brand" href="/secplus-home.html">
+        <img src="/images/logo/becertifiedtoday_logo_trans.png" width="1024" height="1024" alt="" decoding="async" />
+        <span>Security+ Study</span>
+      </a>
+      <a class="header-link" href="/">All training paths</a>
+    </header>
+    <main>
+      <p class="eyebrow">CompTIA Security+ · SY0-701</p>
+      <h1>Security+ training portal</h1>
+      <p class="lead">
+        Browser-based Security+ prep: practice questions, performance-based items, and timed exam simulation—built the same way as our CCNA and ENCOR tracks.
+      </p>
+      <p class="notice">
+        <strong>Early access.</strong> Sample questions are live now. Full question bank, drag-and-drop sets, and timed simulation are coming soon.
+      </p>
+      <ul class="modes" aria-label="Practice modes">
+        <li>
+          <article class="mode-card">
+            <span class="badge">Live</span>
+            <h2>Sample questions</h2>
+            <p>Try a short three-question interactive sample covering identity, cryptography, and social engineering.</p>
+            <a href="/secplus-sample?track=questions">Open sample questions</a>
+          </article>
+        </li>
+        <li>
+          <article class="mode-card">
+            <span class="badge badge--soon">Soon</span>
+            <h2>Drag-and-drop</h2>
+            <p>Performance-style matching and ordering items aligned to Security+ exam objectives.</p>
+            <span class="disabled" aria-disabled="true">Coming soon</span>
+          </article>
+        </li>
+        <li>
+          <article class="mode-card">
+            <span class="badge badge--soon">Soon</span>
+            <h2>Timed simulation</h2>
+            <p>Full-length exam-style run with mixed item types and a scored summary when you finish.</p>
+            <span class="disabled" aria-disabled="true">Coming soon</span>
+          </article>
+        </li>
+      </ul>
+    </main>
+    <footer>
+      <a href="/secplus-home.html">Security+ study hub</a>
+      ·
+      <a href="/ccna-home.html">CCNA</a>
+      ·
+      <a href="/ccnp-home.html">CCNP ENCOR</a>
+    </footer>
+  </div>
+</body>
+</html>

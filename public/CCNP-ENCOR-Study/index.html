@@ -1,0 +1,1638 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta
+    name="description"
+    content="CCNP ENCOR (350-401) practice: 500+ questions, browser CLI labs, drag-and-drop, and timed exams—30-day full access. Interactive study for Cisco Enterprise core certification."
+  />
+  <meta name="keywords" content="CCNP ENCOR, 350-401, Cisco certification practice, ENCOR questions, CCNP Enterprise core" />
+  <link rel="canonical" href="https://encor.becertifiedtoday.com/" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Be Certified Today" />
+  <meta property="og:title" content="CCNP ENCOR Practice | Questions, Labs &amp; Timed Tests" />
+  <meta
+    property="og:description"
+    content="500+ practice questions, hands-on CLI labs, drag-and-drop, and full timed simulations for CCNP ENCOR—full library access in your browser."
+  />
+  <meta property="og:url" content="https://encor.becertifiedtoday.com/" />
+  <meta property="og:image" content="https://encor.becertifiedtoday.com/images/hero-server-room-encor.png" />
+  <meta property="og:image:width" content="2400" />
+  <meta property="og:image:height" content="900" />
+  <meta property="og:image:alt" content="Data center server room — ENCOR practice training" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CCNP ENCOR Practice | Be Certified Today" />
+  <meta
+    name="twitter:description"
+    content="Interactive CCNP ENCOR prep: 500+ questions, CLI labs, drag-and-drop, timed tests—30-day access."
+  />
+  <meta name="twitter:image" content="https://encor.becertifiedtoday.com/images/hero-server-room-encor.png" />
+  <title>CCNP ENCOR Practice | 500+ Questions, Labs &amp; Timed Tests | Be Certified Today</title>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "name": "Be Certified Today — ENCOR",
+          "url": "https://encor.becertifiedtoday.com/",
+          "description": "Interactive CCNP ENCOR (350-401) practice: questions, CLI labs, drag-and-drop, and timed exam simulations.",
+          "publisher": { "@id": "https://encor.becertifiedtoday.com/#org" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://encor.becertifiedtoday.com/#org",
+          "name": "Be Certified Today",
+          "url": "https://encor.becertifiedtoday.com/",
+          "logo": "https://encor.becertifiedtoday.com/images/logo/becertifiedtoday_logo_trans.png"
+        },
+        {
+          "@type": "Course",
+          "name": "CCNP ENCOR (350-401) practice library",
+          "description": "Practice questions, hands-on CLI labs, drag-and-drop items, and timed test simulations for Cisco CCNP Enterprise core exam preparation.",
+          "provider": { "@id": "https://encor.becertifiedtoday.com/#org" },
+          "educationalLevel": "Professional certification",
+          "availableLanguage": "en"
+        }
+      ]
+    }
+  </script>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bg: #0b1020;
+      --surface: #121a2b;
+      --border: #2d3b5a;
+      --text: #e6edf3;
+      --muted: #9fb0cc;
+      --accent-border: #4f84d8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px 20px;
+      padding: 16px clamp(20px, 4vw, 40px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(18, 26, 43, 0.6);
+      backdrop-filter: blur(8px);
+    }
+    .hero-banner {
+      margin: 0;
+      width: 100%;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      background: #0d1528;
+      /* Match index.html: sized band + scaled image for a slightly zoomed-out hero */
+      height: clamp(260px, 42vw, 520px);
+    }
+    .hero-banner img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* Panoramic server aisle — keep vanishing point near center */
+      object-position: center 42%;
+      transform: scale(1);
+      transform-origin: center center;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
+      line-height: 0;
+    }
+    .brand img {
+      display: block;
+      height: clamp(56px, 12vw, 88px);
+      width: auto;
+      max-width: min(100px, 22vw);
+      object-fit: contain;
+      object-position: left center;
+    }
+    .header-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      min-height: 44px;
+      box-sizing: border-box;
+      border-radius: 10px;
+      border: 1px solid var(--accent-border);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: inherit;
+      font-family: inherit;
+      line-height: 1.2;
+      white-space: nowrap;
+      background: rgba(47, 102, 191, 0.2);
+    }
+    a.header-link:hover,
+    button.header-link:hover {
+      background: rgba(79, 132, 216, 0.22);
+    }
+    button.header-link {
+      cursor: pointer;
+    }
+    button.header-link:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+    .header-actions .header-link {
+      flex: 0 1 auto;
+    }
+    #accessRestoreOpen.header-link {
+      white-space: nowrap;
+      max-width: none;
+      text-align: center;
+    }
+    .purchase-cta {
+      margin: 0 0 clamp(24px, 4vw, 32px);
+      padding: 18px 20px;
+      border-radius: 12px;
+      border: 1px solid var(--accent-border);
+      background: rgba(47, 102, 191, 0.1);
+      max-width: min(68ch, 100%);
+    }
+    /** Primary CTA: placed directly under H1 (hook → offer → supporting copy). */
+    .purchase-cta--primary {
+      position: relative;
+      margin-top: clamp(10px, 2vw, 16px);
+      padding-right: clamp(88px, 18vw, 112px);
+    }
+    .purchase-cta-logo {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: clamp(52px, 12vw, 72px);
+      height: auto;
+      max-height: 56px;
+      object-fit: contain;
+      object-position: center right;
+      opacity: 0.92;
+      pointer-events: none;
+      user-select: none;
+    }
+    /** Secondary CTA after format cards (repeat offer before timed-test section). */
+    .purchase-cta--secondary {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: clamp(36px, 7vw, 56px) auto 0;
+      padding: 16px 18px;
+      text-align: center;
+      max-width: min(54ch, 100%);
+    }
+    .purchase-cta--secondary .purchase-cta-title {
+      margin-bottom: 8px;
+      font-size: clamp(1rem, 2.2vw, 1.12rem);
+    }
+    .purchase-cta-secondary-lead {
+      margin: 0 0 14px;
+      font-size: clamp(0.92rem, 2vw, 1rem);
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .purchase-cta-note {
+      margin: 12px 0 0;
+      font-size: 0.88rem;
+      color: #c9a227;
+      line-height: 1.45;
+    }
+    .cross-device-note {
+      margin: clamp(18px, 3vw, 26px) 0 clamp(24px, 4vw, 32px);
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(13, 21, 40, 0.72);
+      max-width: min(68ch, 100%);
+    }
+    .cross-device-note__title {
+      margin: 0 0 10px;
+      font-size: clamp(1rem, 2.2vw, 1.08rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .cross-device-note p {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(0.92rem, 2vw, 1rem);
+      line-height: 1.55;
+    }
+    .cross-device-note__footer {
+      margin: 14px 0 0;
+      padding-top: 12px;
+      border-top: 1px solid rgba(45, 59, 90, 0.65);
+    }
+    .cross-device-note__footer .header-link {
+      margin: 0;
+    }
+    .delayed-checkout-cta .delayed-checkout-cta__lead {
+      margin: 0 0 18px;
+      font-size: clamp(0.92rem, 2vw, 1rem);
+      line-height: 1.55;
+      color: var(--muted);
+    }
+    .delayed-checkout-cta__actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px 14px;
+    }
+    .delayed-checkout-cta__later {
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: none;
+      color: #8fa8d4;
+      font: inherit;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .delayed-checkout-cta__later:hover {
+      color: var(--text);
+    }
+    .purchase-cta-title {
+      margin: 0 0 6px;
+      font-size: clamp(1.05rem, 2.4vw, 1.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .purchase-cta-tagline {
+      margin: 0 0 4px;
+      font-size: clamp(0.95rem, 2vw, 1.02rem);
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .purchase-cta-price {
+      margin: 0 0 14px;
+      font-size: clamp(1.05rem, 2.2vw, 1.15rem);
+      font-weight: 800;
+      color: var(--text);
+    }
+    .purchase-cta-intro {
+      margin: 0 0 14px;
+      font-size: clamp(0.95rem, 2vw, 1.02rem);
+      line-height: 1.55;
+      color: var(--muted);
+    }
+    .purchase-cta-list {
+      margin: 0 0 14px;
+      padding-left: 1.25rem;
+      font-size: clamp(0.92rem, 1.9vw, 0.98rem);
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .purchase-cta-list li {
+      margin-bottom: 6px;
+    }
+    .purchase-cta-list li:last-child {
+      margin-bottom: 0;
+    }
+    .purchase-cta-legal {
+      margin: 0 0 18px;
+      font-size: clamp(0.85rem, 1.8vw, 0.92rem);
+      line-height: 1.55;
+      color: #7d8fab;
+    }
+    .header-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    main {
+      flex: 1;
+      padding: clamp(32px, 6vw, 56px) clamp(20px, 4vw, 40px);
+    }
+    .formats-section,
+    .mock-section {
+      margin: 0 auto;
+      max-width: 1080px;
+      width: 100%;
+    }
+    .mock-section {
+      margin-top: clamp(40px, 8vw, 72px);
+      padding-top: clamp(36px, 6vw, 56px);
+      border-top: 1px solid var(--border);
+    }
+    .formats-head {
+      margin: 0 0 clamp(10px, 2vw, 14px);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b8ab8;
+    }
+    h1, h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 3.2vw, 1.75rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .formats-lead, .mock-lead {
+      margin: 0 0 clamp(24px, 4vw, 32px);
+      color: var(--muted);
+      font-size: clamp(0.98rem, 2.2vw, 1.05rem);
+      line-height: 1.6;
+    }
+    .formats-intro,
+    .mock-intro {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: clamp(22px, 5vw, 40px);
+    }
+    .formats-intro-copy,
+    .mock-intro-copy {
+      flex: 1 1 min(54ch, 100%);
+      min-width: 0;
+    }
+    .mock-intro-figure {
+      flex: 0 1 clamp(240px, 36vw, 380px);
+      margin: 0;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+      background: rgba(13, 21, 40, 0.35);
+    }
+    .mock-intro-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+    .formats-devices {
+      margin: 0 0 clamp(24px, 4vw, 32px);
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(13, 21, 40, 0.65);
+      color: #b8c3d6;
+      font-size: clamp(0.88rem, 2vw, 0.95rem);
+      line-height: 1.5;
+    }
+    .formats-devices-list {
+      margin: 8px 0 10px;
+      padding-left: 20px;
+      color: #b8c3d6;
+    }
+    .formats-devices-list li {
+      margin-bottom: 4px;
+    }
+    .formats-grid {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: clamp(16px, 3vw, 22px);
+      grid-template-columns: 1fr;
+    }
+    .topic-section {
+      margin: clamp(32px, 6vw, 48px) 0 clamp(28px, 5vw, 36px);
+      padding: 16px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(13, 21, 40, 0.65);
+    }
+    .topic-section h2 {
+      margin: 0 0 10px;
+      font-size: clamp(1.08rem, 2.6vw, 1.28rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .topic-section p {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.55;
+    }
+    .topic-section p:last-of-type {
+      margin-bottom: 0;
+    }
+    .topic-list {
+      margin: 0;
+      padding-left: 20px;
+      color: #b8c3d6;
+      line-height: 1.6;
+    }
+    .topic-list li {
+      margin-bottom: 6px;
+    }
+    @media (min-width: 960px) {
+      .formats-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+    .format-card {
+      height: 100%;
+      margin: 0;
+      padding: clamp(18px, 3.5vw, 24px);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+    .format-card h3 {
+      margin: 0 0 10px;
+      font-size: clamp(1.02rem, 2.4vw, 1.12rem);
+      font-weight: 800;
+      line-height: 1.3;
+    }
+    .format-card p {
+      margin: 0;
+      color: #b8c3d6;
+      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
+      line-height: 1.55;
+    }
+    .format-card-thumb {
+      margin: 0 0 14px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(45, 59, 90, 0.85);
+      aspect-ratio: 16 / 9;
+      background: #0f1729;
+    }
+    .format-card-thumb img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .format-sample {
+      margin: 14px 0 0;
+      padding-top: 14px;
+      border-top: 1px solid rgba(45, 59, 90, 0.85);
+      color: #9fb0cc;
+      line-height: 1.5;
+    }
+    .format-sample a {
+      color: #a8c4f0;
+      font-weight: 700;
+      text-underline-offset: 3px;
+    }
+    .mock-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      max-width: 62ch;
+    }
+    .mock-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      color: #b8c3d6;
+      line-height: 1.55;
+    }
+    .mock-list li::before {
+      content: "";
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      margin-top: 0.45em;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4f84d8, #2f66bf);
+    }
+    .checkout-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(7, 12, 24, 0.75);
+      backdrop-filter: blur(3px);
+    }
+    .checkout-modal.is-open {
+      display: flex;
+    }
+    .checkout-dialog {
+      width: min(760px, 96vw);
+      max-height: min(88vh, 760px);
+      overflow: auto;
+      padding: 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #0f1729;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+    }
+    .checkout-dialog-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .checkout-close {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 700;
+      line-height: 1;
+      padding: 8px 10px;
+      cursor: pointer;
+    }
+    .checkout-close:hover {
+      background: rgba(79, 132, 216, 0.12);
+    }
+    .purchase-track-box {
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--accent-border);
+      background: rgba(47, 102, 191, 0.08);
+    }
+    .purchase-track-title {
+      margin: 0 0 6px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: #a8c4f0;
+    }
+    .purchase-track-sub {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+    .purchase-launch-countdown {
+      margin-bottom: 18px;
+      padding: 16px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--accent-border);
+      background: rgba(47, 102, 191, 0.12);
+      text-align: center;
+    }
+    html.purchase-checkout-live .purchase-launch-countdown {
+      display: none;
+    }
+    .access-restore-dialog__intro {
+      margin: 0 0 16px;
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+    .access-restore-result {
+      margin: 8px 0 0;
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+    .access-restore-result--ok {
+      color: #8fd99a;
+    }
+    .access-restore-result--err {
+      color: #f08888;
+    }
+    .admin-access-dialog {
+      padding: 0;
+      max-width: min(440px, calc(100vw - 32px));
+      width: 100%;
+      border-radius: 14px;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+    }
+    .admin-access-dialog::backdrop {
+      background: rgba(5, 10, 22, 0.72);
+      backdrop-filter: blur(4px);
+    }
+    .admin-access-dialog__inner {
+      padding: 22px 22px 18px;
+    }
+    .admin-access-dialog__head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .admin-access-dialog__head h2 {
+      margin: 0;
+      font-size: 1.12rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+    .admin-access-dialog__close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      margin: -6px -8px 0 0;
+      padding: 0;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 1.5rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .admin-access-dialog__close:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+    }
+    .admin-access-dialog__close:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 2px;
+    }
+    .admin-access-dialog__form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .admin-access-dialog__form label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .admin-access-dialog__form input {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0b1020;
+      color: var(--text);
+      font-size: 1rem;
+      font-family: inherit;
+    }
+    .admin-access-dialog__form input:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 2px;
+    }
+    .admin-access-dialog__submit {
+      align-self: flex-start;
+      margin-top: 4px;
+    }
+    .admin-access-dialog__result {
+      margin: 0;
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+    .admin-access-dialog__result--ok {
+      color: #8fd99a;
+    }
+    .admin-access-dialog__result--err {
+      color: #f08888;
+    }
+    .admin-access-dialog__footer {
+      margin: 16px 0 0;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      font-size: 0.82rem;
+    }
+    .admin-access-dialog__footer a {
+      color: #8fa8d4;
+      font-weight: 700;
+    }
+    .admin-access-dialog__nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px 12px;
+      text-align: center;
+    }
+    .admin-access-dialog__footer-close {
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: none;
+      color: #8fa8d4;
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .admin-access-dialog__footer-close:hover {
+      color: var(--text);
+    }
+    .admin-access-dialog__nav-sep {
+      color: var(--muted);
+      font-size: 0.82rem;
+      user-select: none;
+    }
+    .purchase-launch-countdown__title {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .purchase-launch-countdown__sub {
+      margin: 0 0 14px;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .purchase-launch-countdown__timer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px 18px;
+      font-variant-numeric: tabular-nums;
+    }
+    .purchase-launch-countdown__unit {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 3.5rem;
+    }
+    .purchase-launch-countdown__unit strong {
+      font-size: clamp(1.35rem, 3vw, 1.75rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      line-height: 1.2;
+    }
+    .purchase-launch-countdown__unit small {
+      margin-top: 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #6b8ab8;
+    }
+    .site-disclaimer {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: clamp(20px, 4vw, 28px) clamp(20px, 4vw, 40px);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .site-disclaimer p {
+      margin: 0 0 10px;
+      font-size: clamp(0.78rem, 1.8vw, 0.84rem);
+      line-height: 1.55;
+      color: #6b7f9e;
+    }
+    footer {
+      padding: 16px clamp(20px, 4vw, 24px);
+      text-align: center;
+      font-size: 0.82rem;
+      color: #5c6d8a;
+      border-top: 1px solid rgba(45, 59, 90, 0.5);
+    }
+    .footer__copy {
+      margin: 0;
+    }
+    .footer__questions {
+      margin: 12px 0 0;
+    }
+    .footer__questions a {
+      color: #4f84d8;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .footer__questions a:hover {
+      text-decoration: underline;
+    }
+    .footer-admin-hit {
+      margin: 2px 0 0;
+      text-align: center;
+    }
+    .footer-admin-hit__btn {
+      margin: 0;
+      padding: 2px 6px;
+      border: none;
+      background: transparent;
+      color: var(--bg);
+      cursor: pointer;
+      font: inherit;
+      line-height: 1;
+    }
+    .footer-admin-hit__btn:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    .index-reason-banner-wrap {
+      display: none;
+      margin: 0 auto;
+      padding: 10px clamp(20px, 4vw, 40px) 0;
+      max-width: 1080px;
+      width: 100%;
+    }
+    .index-reason-banner-wrap.is-visible {
+      display: block;
+    }
+    .index-reason-banner-inner {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(201, 162, 39, 0.5);
+      background: rgba(201, 162, 39, 0.1);
+    }
+    .index-reason-banner__text {
+      margin: 0;
+      font-size: clamp(0.88rem, 1.9vw, 0.95rem);
+      line-height: 1.5;
+      color: #e8dcc0;
+    }
+    .index-reason-banner__dismiss {
+      flex-shrink: 0;
+      margin: -4px -6px 0 0;
+      padding: 6px 10px;
+      border: 1px solid rgba(201, 162, 39, 0.45);
+      border-radius: 8px;
+      background: rgba(15, 22, 38, 0.55);
+      color: #f0e8d0;
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .index-reason-banner__dismiss:hover {
+      background: rgba(79, 132, 216, 0.15);
+      border-color: var(--accent-border);
+    }
+    .index-reason-banner__dismiss:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <a class="brand" href="https://becertifiedtoday.com/">
+        <img
+          src="/images/logo/becertifiedtoday_logo_trans.png"
+          width="1024"
+          height="1024"
+          alt="Be Certified Today — IT training and testing study site"
+        />
+      </a>
+      <div class="header-actions">
+        <a
+          class="header-link"
+          href="/CCNP_Encor.html"
+          title="Paid library — sign in or complete purchase (questions and labs launch here)"
+          >Member training library</a>
+        <button
+          type="button"
+          class="header-link"
+          id="accessRestoreOpen"
+          data-access-restore-open
+          title="Email a sign-in link for another device or browser"
+          aria-label="Email link — sign in on another device"
+        >
+          Email link
+        </button>
+        <button type="button" class="header-link js-stripe-checkout" id="stripeCheckoutHeader">
+          Get access — Stripe
+        </button>
+      </div>
+    </header>
+    <div
+      class="index-reason-banner-wrap"
+      id="indexReasonWrap"
+      hidden
+      role="region"
+      aria-live="polite"
+      aria-label="Notice"
+    >
+      <div class="index-reason-banner-inner">
+        <p class="index-reason-banner__text" id="indexReasonText"></p>
+        <button type="button" class="index-reason-banner__dismiss" id="indexReasonDismiss">
+          Dismiss
+        </button>
+      </div>
+    </div>
+    <figure class="hero-banner">
+      <img
+        src="/images/hero-server-room-encor.png"
+        width="2400"
+        height="900"
+        alt="Data center server room with rows of racks and cool blue and white lighting along a central aisle."
+        decoding="async"
+        fetchpriority="high"
+      />
+    </figure>
+    <main id="main">
+      <section class="formats-section" aria-labelledby="formats-title">
+        <div class="formats-intro">
+          <div class="formats-intro-copy">
+            <p class="formats-head">CCNP ENCOR practice formats</p>
+            <h1 id="formats-title">Practice questions, labs, drag-and-drop &amp; timed tests—interactive on every screen</h1>
+            <section class="purchase-cta purchase-cta--primary" aria-labelledby="purchase-cta-heading">
+              <img
+                class="purchase-cta-logo"
+                src="/images/logo/becertifiedtoday_logo_trans.png"
+                width="512"
+                height="512"
+                alt=""
+                decoding="async"
+              />
+              <h2 class="purchase-cta-title" id="purchase-cta-heading">Purchase</h2>
+              <p class="purchase-cta-tagline">30-day full access</p>
+              <p class="purchase-cta-price">$19.99 / 30 days</p>
+              <p class="purchase-cta-intro">
+                One payment unlocks full access to all training courses and certification tracks for one month: practice
+                questions, hands-on CLI labs, drag-and-drop items, and full timed exam simulations.
+              </p>
+              <ul class="purchase-cta-list">
+                <li>
+                  Database of <strong>500+</strong> practice questions—continuously updated, verified, and refined over
+                  time
+                </li>
+                <li>All courses, question banks, and study modes</li>
+                <li>Every CLI simulation lab across available tracks</li>
+                <li>Standard and JSON drag-and-drop sets across all courses</li>
+                <li>Timed test simulations (mixed question, lab, and drag-and-drop runs)</li>
+              </ul>
+              <p class="purchase-cta-legal">
+                No recurring membership. Thirty days of access for a single price—when it ends, renew only if you want
+                another month. No additional software is required; everything runs in your browser. We do not collect
+                customer information for promotion or sale. We do not use customer data from purchases for marketing or
+                profiling.
+              </p>
+              <button type="button" class="header-link js-stripe-checkout" id="stripeCheckoutMain">
+                Checkout with Stripe
+              </button>
+              <p class="purchase-cta-note js-stripe-checkout-note" id="stripeCheckoutMessage" hidden></p>
+            </section>
+            <section class="cross-device-note" aria-labelledby="cross-device-heading">
+              <h2 class="cross-device-note__title" id="cross-device-heading">
+                Trouble accessing the training site from a phone, tablet, or another browser?
+              </h2>
+              <p>
+                Use <strong>Email link</strong> in the header or the button below. Enter the <strong>same email you used
+                when you purchased</strong>, then submit. We email a <strong>one-time access link</strong>—open it on the
+                device where you want to study (phone, tablet, or PC).
+              </p>
+              <p class="cross-device-note__footer">
+                <button
+                  type="button"
+                  class="header-link"
+                  data-access-restore-open
+                  title="Open the email link form"
+                  aria-label="Open Email link form"
+                >
+                  Email link
+                </button>
+              </p>
+            </section>
+            <p class="formats-lead">
+              Each practice format targets skills the way exams actually ask: recall, configuration logic, and matching
+              concepts to the right bucket. Use <strong>practice labs</strong>, question banks, drag-and-drop sets, and
+              full timed runs in short sessions or long study blocks—<strong>no PDF workbooks</strong>, only live pages
+              you operate.
+            </p>
+            <div class="formats-devices">
+              <strong>CCNP ENCOR (350-401) is the required core exam.</strong> To complete your CCNP designation, pair
+              ENCOR with one concentration exam:
+              <ul class="formats-devices-list" aria-label="CCNP concentration exams">
+                <li>300-410 ENARSI</li>
+                <li>300-415 ENSDWI</li>
+                <li>300-420 ENSLD</li>
+                <li>300-435 ENAUTO</li>
+                <li>300-440 ENCC</li>
+                <li>300-445 ENNA</li>
+              </ul>
+              <strong>This page is focused on core foundation training.</strong> Additional concentration training will
+              be added soon.
+            </div>
+          </div>
+        </div>
+        <section class="topic-section" aria-labelledby="core-topics-title">
+          <h2 id="core-topics-title">Cisco core exam topics by track</h2>
+          <p>
+            Cisco core exam topics depend on the certification track. The most common request is the
+            <strong>CCNP Enterprise core exam</strong>, while the <strong>CCNA core exam</strong> has a different scope.
+          </p>
+          <p><strong>CCNP Enterprise core (ENCOR 350-401) major areas:</strong></p>
+          <ul class="topic-list" aria-label="CCNP Enterprise core major areas">
+            <li>Architecture</li>
+            <li>Virtualization</li>
+            <li>Infrastructure</li>
+            <li>Network assurance</li>
+            <li>Security</li>
+            <li>Automation</li>
+          </ul>
+          <p>
+            <strong>CCNA core exam focus:</strong> network fundamentals, network access, IP connectivity,
+            IP services, security fundamentals, and automation/programming.
+          </p>
+        </section>
+        <ul class="formats-grid">
+          <li>
+            <article class="format-card" aria-labelledby="format-q-title">
+              <h3 id="format-q-title">Practice questions</h3>
+              <figure class="format-card-thumb">
+                <img
+                  src="/images/encor-practice-formats-technician.png"
+                  width="1024"
+                  height="556"
+                  alt="Multiple-choice sample: OSPF designated router question with instant correct feedback."
+                  decoding="async"
+                  loading="lazy"
+                />
+              </figure>
+              <p>
+                Multiple-choice sets mirror exam-style stems and distractors. Check answers on the spot, see why the
+                right option wins, and run banks in random, linear, or review modes until your weak topics tighten up.
+              </p>
+              <p class="format-sample">
+                <a href="/sample?track=questions">Click here to try a sample</a>
+                — five interactive questions. Everyone gets the same five; order is shuffled each time. After the fifth
+                question, you return to the home page.
+              </p>
+            </article>
+          </li>
+          <li>
+            <article class="format-card" aria-labelledby="format-lab-title">
+              <h3 id="format-lab-title">Hands-on labs</h3>
+              <figure class="format-card-thumb">
+                <img
+                  src="/images/hero-classroom-v2.png"
+                  width="1024"
+                  height="705"
+                  alt="Rapid PVST and LACP sample lab: simulated SW20 CLI over the topology diagram."
+                  decoding="async"
+                  loading="lazy"
+                />
+              </figure>
+              <p>
+                CLI-style simulations present realistic device prompts and objectives in an exam-like workflow. No
+                software is required to download, and every command is entered directly on the simulated devices.
+              </p>
+              <p class="format-sample">
+                <a href="/sample?track=labs">Click here to try a sample</a>
+                — open the Rapid PVST + LACP lab (same scenario for every visitor, fully interactive in the browser).
+              </p>
+            </article>
+          </li>
+          <li>
+            <article class="format-card" aria-labelledby="format-dd-title">
+              <h3 id="format-dd-title">Drag-and-drop</h3>
+              <figure class="format-card-thumb">
+                <img
+                  src="/images/hero-server-room-encor.png"
+                  width="1024"
+                  height="535"
+                  alt="OSPF troubleshooting drag-and-drop sample: snippets moved into CLI-style blanks."
+                  decoding="async"
+                  loading="lazy"
+                />
+              </figure>
+              <p>
+                Move labels, code fragments, or concepts into the right slots—similar to Pearson performance items.
+                Standard and JSON-style layouts both work with touch drag on tablets and phones, plus pointer on desktop.
+              </p>
+              <p class="format-sample">
+                <a href="/sample?track=drag">Click here to try a sample</a>
+                — one drag-and-drop question (the same page for every visitor). When you are done, you return to the
+                home page.
+              </p>
+            </article>
+          </li>
+        </ul>
+        <section class="purchase-cta purchase-cta--secondary" aria-labelledby="purchase-cta-secondary-heading">
+          <h2 class="purchase-cta-title" id="purchase-cta-secondary-heading">Unlock full access</h2>
+          <p class="purchase-cta-secondary-lead">
+            <strong>$19.99</strong> / 30 days · 30-day full access to every course mode in the library.
+          </p>
+          <button type="button" class="header-link js-stripe-checkout" id="stripeCheckoutSecondary">
+            Checkout with Stripe
+          </button>
+          <p class="purchase-cta-note js-stripe-checkout-note" id="stripeCheckoutMessageSecondary" hidden></p>
+        </section>
+      </section>
+
+      <section class="mock-section" aria-labelledby="mock-title">
+        <div class="mock-intro">
+          <figure class="mock-intro-figure">
+            <img
+              src="/images/mock-test-container.png"
+              width="682"
+              height="1024"
+              alt="Student at a computer workstation in a classroom lab, with peers studying at nearby desks."
+              decoding="async"
+              loading="lazy"
+            />
+          </figure>
+          <div class="mock-intro-copy">
+            <p class="formats-head">CCNP ENCOR practice test simulation</p>
+            <h2 id="mock-title">Timed practice test — 50 questions, 4 drag-and-drops, 2 labs, one clock</h2>
+            <p class="mock-lead">
+              Sit for a single timed practice session that feels closer to test day: a long mixed run with a countdown,
+              no peeking at answers until you finish, and a clear outcome when time is up.
+            </p>
+            <ul class="mock-list" aria-label="Test simulation includes">
+              <li>
+                <strong>56 mixed items</strong> per run—50 questions, 4 drag-and-drops, 2 CLI labs—randomized in order.
+              </li>
+              <li><strong>Every item type in play:</strong> multiple-choice, labs, and drag-and-drop tasks.</li>
+              <li><strong>Timer-driven:</strong> the session runs against the clock from start to submit.</li>
+              <li><strong>Pass or fail at the end:</strong> final result includes score and breakdown.</li>
+            </ul>
+            <p class="format-sample">
+              <a href="/encor/test-simulation.html">Purchase one-time access to the simulated test</a>
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+    <aside class="site-disclaimer" aria-label="Legal disclaimer">
+      <p>
+        <strong>Disclaimer:</strong> This website is an independent training resource created for educational purposes only.
+        It is not affiliated with, endorsed by, sponsored by, or approved by Cisco Systems, Inc. Cisco and related
+        trademarks are the property of Cisco Systems, Inc. All practice questions, explanations, and study materials on
+        this site are original or based on general knowledge and are intended as a guide to help users prepare for
+        certification exams. Practice questions are not actual Cisco exam questions. Any similarity to official exam
+        content is coincidental.
+      </p>
+    </aside>
+    <footer>
+      <p class="footer__copy">© Be Certified Today</p>
+      <p class="footer__questions">
+        <a href="mailto:becertified2day@gmail.com?subject=Question%20about%20ENCOR%20practice">Any questions? Email us.</a>
+      </p>
+      <p class="footer-admin-hit">
+        <button type="button" class="footer-admin-hit__btn" id="adminAccessOpen" aria-label="Admin access">@</button>
+      </p>
+    </footer>
+    <dialog class="admin-access-dialog" id="accessRestoreDialog" aria-labelledby="access-restore-dialog-title">
+      <div class="admin-access-dialog__inner">
+        <div class="admin-access-dialog__head">
+          <h2 id="access-restore-dialog-title">Email link</h2>
+          <button type="button" class="admin-access-dialog__close" id="accessRestoreDialogClose" aria-label="Close dialog">
+            ×
+          </button>
+        </div>
+        <p class="access-restore-dialog__intro">
+          If you paid with Stripe and you are still <strong>within your access window</strong> (30 days from purchase
+          by default), enter the <strong>same email</strong> you used at checkout. We will
+          <strong>email a one-time link</strong> to that address (not shown in this window) so only you can open it.
+        </p>
+        <form id="accessRestoreForm" class="admin-access-dialog__form">
+          <label for="accessRestoreEmail">Email used at checkout</label>
+          <input
+            type="email"
+            id="accessRestoreEmail"
+            name="email"
+            required
+            autocomplete="email"
+            maxlength="320"
+            placeholder="you@example.com"
+          />
+          <button type="submit" class="header-link admin-access-dialog__submit">Send link</button>
+          <p class="access-restore-result" id="accessRestoreResult" hidden></p>
+        </form>
+        <p class="admin-access-dialog__footer admin-access-dialog__nav">
+          <button type="button" class="admin-access-dialog__footer-close" id="accessRestoreDialogFooterClose">
+            Close
+          </button>
+          <span class="admin-access-dialog__nav-sep" aria-hidden="true">·</span>
+          <a href="/index.html">Return to home page</a>
+        </p>
+      </div>
+    </dialog>
+    <dialog class="admin-access-dialog" id="adminAccessDialog" aria-labelledby="admin-access-title">
+      <div class="admin-access-dialog__inner">
+        <div class="admin-access-dialog__head">
+          <h2 id="admin-access-title">Admin — email portal link</h2>
+          <button type="button" class="admin-access-dialog__close" id="adminAccessDialogClose" aria-label="Close dialog">
+            ×
+          </button>
+        </div>
+        <form id="adminAccessForm" class="admin-access-dialog__form">
+          <label for="adminAccessEmail">Admin email</label>
+          <input
+            type="email"
+            id="adminAccessEmail"
+            name="email"
+            required
+            autocomplete="username"
+            maxlength="320"
+          />
+          <label for="adminAccessKey">Admin key</label>
+          <input
+            type="password"
+            id="adminAccessKey"
+            name="adminKey"
+            required
+            autocomplete="current-password"
+            maxlength="500"
+          />
+          <button type="submit" class="header-link admin-access-dialog__submit">Email access link</button>
+          <p class="admin-access-dialog__result" id="adminAccessResult" hidden></p>
+        </form>
+        <p class="admin-access-dialog__footer">
+          Need a full library renewal instead? <a href="/admin-renew.html">Admin renew (90 days)</a>
+        </p>
+        <p class="admin-access-dialog__footer admin-access-dialog__nav">
+          <button type="button" class="admin-access-dialog__footer-close" id="adminAccessDialogFooterClose">
+            Close
+          </button>
+          <span class="admin-access-dialog__nav-sep" aria-hidden="true">·</span>
+          <a href="/index.html">Return to home page</a>
+        </p>
+      </div>
+    </dialog>
+    <dialog
+      class="admin-access-dialog delayed-checkout-cta"
+      id="delayedCheckoutCta"
+      aria-labelledby="delayed-checkout-cta-title"
+    >
+      <div class="admin-access-dialog__inner">
+        <div class="admin-access-dialog__head">
+          <h2 id="delayed-checkout-cta-title">Unlock the full ENCOR library</h2>
+          <button type="button" class="admin-access-dialog__close" id="delayedCheckoutCtaClose" aria-label="Close dialog">
+            ×
+          </button>
+        </div>
+        <p class="delayed-checkout-cta__lead">
+          <strong>$19.99</strong> / 30 days — full access to every practice question, CLI lab, drag-and-drop set, and timed
+          exam simulation in your browser.
+        </p>
+        <div class="delayed-checkout-cta__actions">
+          <button type="button" class="header-link js-stripe-checkout" id="delayedCheckoutCtaStripe">
+            Checkout with Stripe
+          </button>
+          <button type="button" class="delayed-checkout-cta__later" id="delayedCheckoutCtaLater">Maybe later</button>
+        </div>
+      </div>
+    </dialog>
+  </div>
+  <script>
+    (function () {
+      var msgs = document.querySelectorAll(".js-stripe-checkout-note");
+      function showErr(text) {
+        msgs.forEach(function (el) {
+          el.hidden = false;
+          el.textContent = text;
+        });
+      }
+      function hideMsgs() {
+        msgs.forEach(function (el) {
+          el.hidden = true;
+          el.textContent = "";
+        });
+      }
+      function setLoading(isLoading) {
+        document.querySelectorAll(".js-stripe-checkout").forEach(function (btn) {
+          btn.disabled = !!isLoading;
+        });
+      }
+      /** Stripe Payment Link — full ENCOR library (30-day access). */
+      var ENCOR_LIBRARY_STRIPE_CHECKOUT_URL =
+        "https://buy.stripe.com/cNidR80Sh0ubc5aejWc3m00";
+      function startCheckout() {
+        hideMsgs();
+        setLoading(true);
+        window.location.href = ENCOR_LIBRARY_STRIPE_CHECKOUT_URL;
+      }
+      document.querySelectorAll(".js-stripe-checkout").forEach(function (btn) {
+        btn.addEventListener("click", startCheckout);
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      var STORAGE_KEY = "encor_index_delayed_checkout_cta";
+      var DELAY_MS = 20000;
+      var dlg = document.getElementById("delayedCheckoutCta");
+      var closeBtn = document.getElementById("delayedCheckoutCtaClose");
+      var laterBtn = document.getElementById("delayedCheckoutCtaLater");
+      if (!dlg || typeof dlg.showModal !== "function") return;
+
+      try {
+        var params = new URLSearchParams(location.search || "");
+        if (params.get("after_test") === "1") {
+          var u = new URL(location.href);
+          u.searchParams.delete("after_test");
+          var qs = u.searchParams.toString();
+          history.replaceState({}, "", u.pathname + (qs ? "?" + qs : "") + u.hash);
+          try {
+            sessionStorage.setItem(STORAGE_KEY, "1");
+          } catch (e0) {}
+          var leadFromTest = dlg.querySelector(".delayed-checkout-cta__lead");
+          if (leadFromTest && !leadFromTest.dataset.prefaceFromTest) {
+            leadFromTest.dataset.prefaceFromTest = "1";
+            leadFromTest.insertAdjacentHTML(
+              "afterbegin",
+              "Thanks for finishing the timed practice test. "
+            );
+          }
+          dlg.showModal();
+          return;
+        }
+      } catch (eAfter) {}
+
+      try {
+        if (sessionStorage.getItem(STORAGE_KEY)) return;
+      } catch (e) {
+        return;
+      }
+      var timer = setTimeout(function () {
+        try {
+          dlg.showModal();
+          try {
+            sessionStorage.setItem(STORAGE_KEY, "1");
+          } catch (e2) {}
+        } catch (e3) {}
+      }, DELAY_MS);
+      function closeCta() {
+        if (typeof dlg.close === "function") dlg.close();
+      }
+      if (closeBtn) closeBtn.addEventListener("click", closeCta);
+      if (laterBtn) laterBtn.addEventListener("click", closeCta);
+      dlg.addEventListener("click", function (e) {
+        if (e.target === dlg) closeCta();
+      });
+      dlg.addEventListener("cancel", function (e) {
+        e.preventDefault();
+        closeCta();
+      });
+      window.addEventListener(
+        "pagehide",
+        function () {
+          clearTimeout(timer);
+        },
+        { once: true }
+      );
+    })();
+  </script>
+  <script>
+    (function () {
+      var form = document.getElementById("accessRestoreForm");
+      var result = document.getElementById("accessRestoreResult");
+      if (!form) return;
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (result) result.hidden = true;
+        var emailEl = document.getElementById("accessRestoreEmail");
+        var email = emailEl ? (emailEl.value || "").trim() : "";
+        var payload = { email: email };
+        fetch("/api/request-access-restore", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          credentials: "same-origin",
+          body: JSON.stringify(payload),
+        })
+          .then(function (r) {
+            return r.text().then(function (t) {
+              var d = {};
+              try {
+                d = t ? JSON.parse(t) : {};
+              } catch (ex) {}
+              return { ok: r.ok, d: d };
+            });
+          })
+          .then(function (x) {
+            if (!result) return;
+            if (x.ok && x.d && x.d.emailed) {
+              result.hidden = false;
+              result.className = "access-restore-result access-restore-result--ok";
+              var mins = Math.max(1, Math.round((x.d.expiresInSec || 900) / 60));
+              result.textContent =
+                "Check your email for a one-time link (expires in about " +
+                mins +
+                " minutes). Use the same inbox as checkout; check spam if needed. The link is not shown in this window.";
+              return;
+            }
+            result.hidden = false;
+            result.className = "access-restore-result access-restore-result--err";
+            var msg = (x.d && x.d.error) || "Could not create link.";
+            if (x.d && x.d.hint) msg += " " + x.d.hint;
+            if (x.d && x.d.missing && x.d.missing.length) {
+              msg += " Missing: " + x.d.missing.join(", ") + ".";
+            }
+            result.textContent = msg;
+          })
+          .catch(function () {
+            if (!result) return;
+            result.hidden = false;
+            result.className = "access-restore-result access-restore-result--err";
+            result.textContent = "Network error.";
+          });
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      var dialog = document.getElementById("accessRestoreDialog");
+      var openBtns = document.querySelectorAll("[data-access-restore-open]");
+      var closeBtn = document.getElementById("accessRestoreDialogClose");
+      if (!dialog || !openBtns.length) return;
+
+      function openDialog() {
+        if (typeof dialog.showModal === "function") {
+          dialog.showModal();
+        }
+        var emailEl = document.getElementById("accessRestoreEmail");
+        if (emailEl) {
+          setTimeout(function () {
+            emailEl.focus();
+          }, 0);
+        }
+      }
+
+      function closeDialog() {
+        if (typeof dialog.close === "function") {
+          dialog.close();
+        }
+      }
+
+      openBtns.forEach(function (btn) {
+        btn.addEventListener("click", openDialog);
+      });
+      if (closeBtn) closeBtn.addEventListener("click", closeDialog);
+      var footerClose = document.getElementById("accessRestoreDialogFooterClose");
+      if (footerClose) footerClose.addEventListener("click", closeDialog);
+      dialog.addEventListener("close", function () {
+        var primary = document.getElementById("accessRestoreOpen");
+        if (primary && typeof primary.focus === "function") primary.focus();
+      });
+      dialog.addEventListener("click", function (e) {
+        if (e.target === dialog) closeDialog();
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      var dialog = document.getElementById("adminAccessDialog");
+      var openBtn = document.getElementById("adminAccessOpen");
+      var closeBtn = document.getElementById("adminAccessDialogClose");
+      var form = document.getElementById("adminAccessForm");
+      var result = document.getElementById("adminAccessResult");
+      if (!dialog || !openBtn || !form) return;
+
+      function openDialog() {
+        if (typeof dialog.showModal === "function") {
+          dialog.showModal();
+        }
+        var emailEl = document.getElementById("adminAccessEmail");
+        if (emailEl) {
+          setTimeout(function () {
+            emailEl.focus();
+          }, 0);
+        }
+      }
+
+      function closeDialog() {
+        if (typeof dialog.close === "function") {
+          dialog.close();
+        }
+      }
+
+      openBtn.addEventListener("click", openDialog);
+      if (closeBtn) closeBtn.addEventListener("click", closeDialog);
+      var footerClose = document.getElementById("adminAccessDialogFooterClose");
+      if (footerClose) footerClose.addEventListener("click", closeDialog);
+      dialog.addEventListener("close", function () {
+        openBtn.focus();
+      });
+      dialog.addEventListener("click", function (e) {
+        if (e.target === dialog) closeDialog();
+      });
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (result) {
+          result.hidden = true;
+          result.textContent = "";
+        }
+        var emailEl = document.getElementById("adminAccessEmail");
+        var keyEl = document.getElementById("adminAccessKey");
+        var email = emailEl ? (emailEl.value || "").trim() : "";
+        var adminKey = keyEl ? keyEl.value || "" : "";
+        fetch("/api/request-access-restore", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          credentials: "same-origin",
+          body: JSON.stringify({ email: email, adminKey: adminKey }),
+        })
+          .then(function (r) {
+            return r.text().then(function (t) {
+              var d = {};
+              try {
+                d = t ? JSON.parse(t) : {};
+              } catch (ex) {}
+              return { ok: r.ok, d: d };
+            });
+          })
+          .then(function (x) {
+            if (!result) return;
+            if (x.ok && x.d && x.d.emailed) {
+              result.hidden = false;
+              result.className = "admin-access-dialog__result admin-access-dialog__result--ok";
+              var mins = Math.max(1, Math.round((x.d.expiresInSec || 900) / 60));
+              result.textContent =
+                "Check your email for a one-time link (expires in about " +
+                mins +
+                " minutes). It is not shown here.";
+              if (keyEl) keyEl.value = "";
+              return;
+            }
+            result.hidden = false;
+            result.className = "admin-access-dialog__result admin-access-dialog__result--err";
+            var msg = (x.d && x.d.error) || "Could not send link.";
+            if (x.d && x.d.hint) msg += " " + x.d.hint;
+            if (x.d && x.d.missing && x.d.missing.length) {
+              msg += " Missing: " + x.d.missing.join(", ") + ".";
+            }
+            result.textContent = msg;
+          })
+          .catch(function () {
+            if (!result) return;
+            result.hidden = false;
+            result.className = "admin-access-dialog__result admin-access-dialog__result--err";
+            result.textContent = "Network error.";
+          });
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      var messages = {
+        restore_failed:
+          "We couldn’t restore your access from that link. Use Purchase / Help below to open access restore or buy again.",
+        restore_error:
+          "Something went wrong while restoring access. Try again or use Purchase / Help to request a new link.",
+        checkout_failed:
+          "We couldn’t confirm checkout. If you already paid, use Purchase / Help or contact support.",
+        checkout_error:
+          "We couldn’t verify checkout (network error). Check your connection and try again, or use Purchase / Help.",
+      };
+      var wrap = document.getElementById("indexReasonWrap");
+      var textEl = document.getElementById("indexReasonText");
+      var dismissBtn = document.getElementById("indexReasonDismiss");
+      if (!wrap || !textEl) return;
+
+      var params = new URLSearchParams(window.location.search);
+      var fromQuery = (params.get("reason") || "").trim().toLowerCase();
+      var stored = "";
+      try {
+        stored = (sessionStorage.getItem("encor_index_notice_reason") || "").trim().toLowerCase();
+        if (stored) sessionStorage.removeItem("encor_index_notice_reason");
+      } catch (e) {}
+      var raw = fromQuery || stored;
+      if (!/^[a-z_]+$/.test(raw)) return;
+      var reason = messages[raw] ? raw : "checkout_failed";
+      var msg = messages[reason];
+      textEl.textContent = msg;
+      wrap.hidden = false;
+      wrap.classList.add("is-visible");
+
+      try {
+        params.delete("reason");
+        var q = params.toString();
+        var path = window.location.pathname + (q ? "?" + q : "") + window.location.hash;
+        window.history.replaceState(null, "", path);
+      } catch (e) {}
+
+      if (dismissBtn) {
+        dismissBtn.addEventListener("click", function () {
+          wrap.hidden = true;
+          wrap.classList.remove("is-visible");
+          textEl.textContent = "";
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

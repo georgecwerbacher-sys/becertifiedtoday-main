@@ -1,0 +1,101 @@
+/* CompTIA Security+ sample pages — touch-friendly (phones / tablets) */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+.site-logo-corner {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 12000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(11, 16, 32, 0.55);
+  border: 1px solid #2d3b5a;
+  padding: 6px;
+  backdrop-filter: blur(4px);
+  text-decoration: none;
+  color: inherit;
+  box-sizing: border-box;
+}
+.site-logo-corner img {
+  display: block;
+  width: 52px;
+  height: 52px;
+}
+.site-logo-corner:focus-visible {
+  outline: 2px solid #a78bfa;
+  outline-offset: 3px;
+}
+
+body {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.12);
+}
+
+.choice {
+  min-height: 48px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+}
+
+.choice input {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+}
+
+.actions button,
+.next-link {
+  min-height: 48px;
+  padding: 12px 18px;
+  box-sizing: border-box;
+  touch-action: manipulation;
+}
+
+.next-link {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 760px) {
+  body {
+    padding-left: max(10px, env(safe-area-inset-left, 0px)) !important;
+    padding-right: max(10px, env(safe-area-inset-right, 0px)) !important;
+  }
+
+  .card,
+  main.card {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 16px !important;
+    border-radius: 12px !important;
+    box-sizing: border-box !important;
+  }
+
+  .actions button,
+  .next-link,
+  .sim-nav-btn {
+    min-height: 48px !important;
+    flex: 1 1 140px !important;
+    padding: 12px 14px !important;
+    box-sizing: border-box !important;
+    white-space: normal !important;
+  }
+
+  .site-logo-corner {
+    top: max(8px, env(safe-area-inset-top, 0px)) !important;
+    right: max(8px, env(safe-area-inset-right, 0px)) !important;
+  }
+
+  .sim-nav {
+    overflow-x: auto !important;
+    justify-content: flex-start !important;
+    -webkit-overflow-scrolling: touch;
+  }
+}

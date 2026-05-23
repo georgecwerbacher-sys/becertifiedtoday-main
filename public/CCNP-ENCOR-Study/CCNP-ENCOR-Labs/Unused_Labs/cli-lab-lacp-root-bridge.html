@@ -1,0 +1,920 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
+  <title>LACP &amp; Root Bridge Sim</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      padding-bottom: 88px;
+      box-sizing: border-box;
+    }
+    .wrap {
+      width: min(920px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card {
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 22px 26px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.15rem, 2vw, 1.65rem);
+      line-height: 1.3;
+    }
+    .objective,
+    .tasks {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .tasks ol {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+    }
+    .tasks li {
+      margin: 6px 0;
+    }
+    .diagram-wrap {
+      background: #ffffff;
+      border: 1px solid #2d3b5a;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 14px;
+      text-align: center;
+    }
+    .diagram-wrap img {
+      max-width: 100%;
+      height: auto;
+      vertical-align: middle;
+    }
+    .diagram-wrap .tasks-top {
+      text-align: left;
+      margin-top: 14px;
+      width: 100%;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      box-sizing: border-box;
+    }
+    .diagram-wrap .tasks-top > strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #e6edf3;
+    }
+    .diagram-wrap .tasks-top .tasks-intro {
+      margin: 0 0 10px;
+    }
+    .diagram-wrap .tasks-top ol.tasks-numbered {
+      margin: 8px 0 0;
+      padding-left: 1.35rem;
+    }
+    .diagram-wrap .tasks-top ol.tasks-numbered > li {
+      margin: 12px 0;
+    }
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .helper-file-wrap {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
+      outline: none;
+    }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+      pointer-events: none;
+    }
+    .cli-modal-overlay.is-open {
+      display: block;
+    }
+    .cli-modal-dialog {
+      width: min(520px, calc(100vw - 24px));
+      max-height: min(85vh, 720px);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
+    .terminal {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.88rem;
+      background: #0a0d12;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      padding: 12px 12px 10px;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      margin-top: 0;
+    }
+    #scrollback {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 360px;
+      margin-bottom: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #c8d2e0;
+      line-height: 1.45;
+    }
+    .line-user { color: #7ec8ff; }
+    .line-bad { color: #fca5a5; }
+    .line-sys { color: #94a3b8; }
+    .input-row {
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #243044;
+      padding-top: 8px;
+    }
+    #prompt {
+      flex-shrink: 0;
+      color: #fbbf24;
+      user-select: none;
+      max-width: 100%;
+      word-break: break-word;
+    }
+    #cmdline {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      color: #e6edf3;
+      font: inherit;
+      outline: none;
+      padding: 4px 0 4px 4px;
+    }
+    #cmdline:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-secondary {
+      background: #2a3040;
+      border-color: #4b556b;
+    }
+    .pass-banner {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .pass-banner.visible {
+      display: block;
+    }
+    .sim-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(11, 16, 32, 0.94);
+      border-top: 1px solid #2d3b5a;
+      backdrop-filter: blur(10px);
+    }
+    .sim-nav-btn {
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 700;
+      min-width: 5.5rem;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .sim-nav-btn:hover { filter: brightness(1.08); }
+    .sim-nav-home { background: #1a3d6e; }
+    .sim-nav-next { background: #1a3d6e; }
+    .sim-nav-back { background: #243352; border-color: #3d5280; }
+  
+    /* CLI: avoid white native input fill — transparent text fields on dark terminals */
+    .cli-modal-dialog,
+    .terminal {
+      color-scheme: dark;
+    }
+    .terminal input[type="text"],
+    input.cmdline,
+    #cmdline,
+    #cmdlineR2,
+    #cmdlineR3 {
+      color-scheme: dark;
+      -webkit-appearance: none;
+      appearance: none;
+      background-color: transparent !important;
+    }
+
+  
+    .site-logo-corner {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 12000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(11, 16, 32, 0.55);
+      border: 1px solid #2d3b5a;
+      padding: 6px;
+      backdrop-filter: blur(4px);
+    }
+    .site-logo-corner img {
+      display: block;
+      width: 52px;
+      height: 52px;
+    }
+</style>
+</head>
+<body>
+  <a class="site-logo-corner" href="https://becertifiedtoday.com/" aria-label="Go to training portal home">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+  </a>
+
+  <div class="wrap">
+    <main class="card">
+      <h1>LACP &amp; Root Bridge Sim</h1>
+
+      <div class="diagram-wrap" aria-label="SW10 SW20 SW30 topology and SW10 initial config">
+              <img src="/assets/lacp-root-bridge-lab-v2.png" alt="Triangle switches with Po11 between SW10 and SW20" width="680" height="731" />
+              
+              <div class="device-pick" role="note">
+                <strong>Device in prompt:</strong> SW10
+              </div>
+              <div class="device-links">
+                <button type="button" class="device-link" id="openDeviceCliLink">Open Switch CLI</button>
+              </div>
+<div class="tasks tasks-top">
+                <strong>Tasks</strong>
+                <p class="tasks-intro">
+                  Complete the tasks below by making changes to <strong>SW10</strong> only. No access is provided to <strong>SW20</strong> or <strong>SW30</strong>.
+                </p>
+                <ol class="tasks-numbered">
+                  <li>
+                    SW20 is actively attempting to negotiate an 802.1Q trunking EtherChannel with SW10 using LACP, but the channel is not functional. Resolve the
+                    issues on SW10.
+                  </li>
+                  <li>
+                    Modify the spanning tree configuration to ensure that SW10 is always the root for VLAN 10 and VLAN 30.
+                  </li>
+                </ol>
+              </div>
+              <div class="helper-file-wrap">
+                <button type="button" class="device-link" id="openHelperFileBtn">Helper File</button>
+                <button type="button" class="device-link" id="inlineResetLabBtn">Reset lab</button>
+                <button type="button" class="device-link" id="openSpoilerBtn">Spoiler</button>
+              </div>
+
+
+            </div>
+
+      <p class="objective">
+        Under the topology, confirm <strong>Device in prompt</strong>, then <strong>Open Switch CLI</strong>. Confirm the port-channel number on the diagram if it differs
+        in an exam.
+      </p>
+
+      <div class="controls">
+        <button type="button" class="btn btn-secondary" id="resetBtn">Reset lab</button>
+      </div>
+
+      <div id="passBanner" class="pass-banner" role="status">
+        Lab complete. Po11 LACP trunks on e0/0–e0/2; SW10 root for VLAN 10 and 30; configuration saved.
+      </div>
+
+      <details class="hint">
+        <summary>Spoiler</summary>
+        <p><strong>Task 1 — LACP trunk</strong></p>
+        <ol>
+          <li><code>conf t</code> → <code>no interface po11</code> (or <code>no interface port-channel11</code>)</li>
+          <li><code>interface range e0/0 - 2</code> → <code>switchport trunk encapsulation dot1q</code> → <code>switchport mode trunk</code></li>
+          <li><code>channel-group 11 mode active</code> → <code>end</code></li>
+        </ol>
+        <p><strong>Task 2 — Root</strong></p>
+        <ol>
+          <li><code>conf t</code> → <code>spanning-tree vlan 10 root primary</code> → <code>spanning-tree vlan 30 root primary</code> → <code>end</code></li>
+        </ol>
+        <p><strong>Save</strong>: <code>copy running-config startup-config</code></p>
+      </details>
+    </main>
+  </div>
+
+  <div id="modalSW10" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleSW10" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleSW10">SW10 — CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeSW10" aria-label="Close SW10 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" aria-label="SW10 CLI">
+          <div id="scrollback"></div>
+          <div class="input-row">
+            <span id="prompt">SW10#</span>
+            <input id="cmdline" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="SW10 command line" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html">Home</a>
+    <a class="sim-nav-btn sim-nav-next" href="/lab-sims-v2/cli-lab-netflow-span-2.html">Next</a>
+    <a class="sim-nav-btn sim-nav-back" href="/lab-sims-v2/cli-lab-ebgp-neighbor-2.html">Back</a>
+  </nav>
+
+  <script>
+    function normalize(s) {
+      return s.trim().toLowerCase().replace(/\s+/g, " ");
+    }
+
+    function matchCopy(raw) {
+      const u = normalize(raw);
+      return (
+        u === "copy running-config startup-config" ||
+        u === "copy run start" ||
+        u === "copy run startup-config"
+      );
+    }
+
+    function matchShowRun(raw) {
+      const u = normalize(raw);
+      return (
+        u === "show run" ||
+        u === "show running-config" ||
+        u === "sh run" ||
+        u === "sh running-config"
+      );
+    }
+
+    function promptForStep(steps, index) {
+      if (index >= steps.length) return "SW10#";
+      const m = steps[index].mode;
+      if (m === "exec") return "SW10#";
+      if (m === "config") return "SW10(config)#";
+      if (m === "config-range") return "SW10(config-if-range)#";
+      return "SW10#";
+    }
+
+    function testNoPo11(raw) {
+      const u = normalize(raw);
+      return (
+        u === "no interface po11" ||
+        u === "no int po11" ||
+        u === "no interface port-channel11" ||
+        u === "no interface port-channel 11" ||
+        u === "no int port-channel11" ||
+        u === "no int port-channel 11"
+      );
+    }
+
+    function testRangeE0002(raw) {
+      const u = normalize(raw).replace(/\s*-\s*/g, "-");
+      return (
+        u === "interface range e0/0-2" ||
+        u === "int range e0/0-2" ||
+        u === "interface range ethernet0/0-2" ||
+        u === "int range ethernet0/0-2"
+      );
+    }
+
+    const LACP = [
+      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
+      { mode: "config", test: testNoPo11 },
+      { mode: "config", test: testRangeE0002 },
+      { mode: "config-range", test: (raw) => normalize(raw) === "switchport trunk encapsulation dot1q" },
+      { mode: "config-range", test: (raw) => normalize(raw) === "switchport mode trunk" },
+      { mode: "config-range", test: (raw) => normalize(raw) === "channel-group 11 mode active" },
+      { mode: "config-range", test: (raw) => normalize(raw) === "end" },
+    ];
+
+    const ROOT = [
+      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
+      { mode: "config", test: (raw) => normalize(raw) === "spanning-tree vlan 10 root primary" },
+      { mode: "config", test: (raw) => normalize(raw) === "spanning-tree vlan 30 root primary" },
+      { mode: "config", test: (raw) => normalize(raw) === "end" },
+    ];
+
+    const SW10_INITIAL_CONFIG =
+      "Sw10 Initial Config (use \"show run\" to get config)\n\n" +
+      "spanning-tree mode pvst\n" +
+      "spanning-tree extend system-id\n" +
+      "!\n" +
+      "interface Port-channel11\n" +
+      "!\n" +
+      "interface Ethernet0/0\n" +
+      " switchport access vlan 20\n" +
+      " switchport mode access\n" +
+      "!\n" +
+      "interface Ethernet0/1\n" +
+      " switchport access vlan 20\n" +
+      " switchport mode access\n" +
+      "!\n" +
+      "interface Ethernet0/2\n" +
+      " switchport access vlan 20\n" +
+      " switchport mode access\n" +
+      "!\n" +
+      "interface Ethernet0/3\n" +
+      " switchport access vlan 10\n" +
+      " switchport mode access\n" +
+      "!\n" +
+      "interface Ethernet1/0\n" +
+      " switchport access vlan 20\n" +
+      " switchport mode access\n" +
+      "!\n" +
+      "interface Vlan10\n" +
+      " ip address 10.100.10.10 255.255.255.0\n" +
+      "!\n" +
+      "interface Vlan20\n" +
+      " ip address 10.100.20.10 255.255.255.0\n" +
+      "!\n" +
+      "ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr\n" +
+      "ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr";
+
+    const scrollback = document.getElementById("scrollback");
+    const promptEl = document.getElementById("prompt");
+    const cmdline = document.getElementById("cmdline");
+    const passBanner = document.getElementById("passBanner");
+    const resetBtn = document.getElementById("resetBtn");
+    const modalSW10 = document.getElementById("modalSW10");
+    const openDeviceCliLink = document.getElementById("openDeviceCliLink");
+
+    function closeModals() {
+      modalSW10.classList.remove("is-open");
+      modalSW10.setAttribute("aria-hidden", "true");
+    }
+
+    function openSelectedCliModal() {
+      modalSW10.classList.add("is-open");
+      modalSW10.setAttribute("aria-hidden", "false");
+      focusActiveCli();
+    }
+
+    function focusActiveCli() {
+      if (modalSW10.classList.contains("is-open") && !cmdline.disabled) {
+        cmdline.focus();
+      }
+    }
+
+    function applyPhaseUI() {
+      setPrompt();
+      focusActiveCli();
+    }
+
+    let phase = "LACP";
+    let stepIndex = 0;
+
+    function appendLine(className, text) {
+      const div = document.createElement("div");
+      div.className = className;
+      div.textContent = text;
+      scrollback.appendChild(div);
+      scrollback.scrollTop = scrollback.scrollHeight;
+    }
+
+    function appendBlock(className, text) {
+      const div = document.createElement("div");
+      div.className = className;
+      div.style.whiteSpace = "pre-wrap";
+      div.textContent = text;
+      scrollback.appendChild(div);
+      scrollback.scrollTop = scrollback.scrollHeight;
+    }
+
+    function currentSteps() {
+      if (phase === "LACP") return LACP;
+      if (phase === "ROOT") return ROOT;
+      if (phase === "SAVE") return [{ mode: "exec", test: matchCopy }];
+      return [];
+    }
+
+    function setPrompt() {
+      const steps = currentSteps();
+      if (phase === "SAVE") {
+        promptEl.textContent = "SW10#";
+        return;
+      }
+      promptEl.textContent = promptForStep(steps, stepIndex);
+    }
+
+    function reset() {
+      closeModals();
+      phase = "LACP";
+      stepIndex = 0;
+      scrollback.innerHTML = "";
+      passBanner.classList.remove("visible");
+      cmdline.disabled = false;
+      cmdline.value = "";
+      appendBlock(
+        "line-sys",
+        "! excerpt — e0/0–e0/2 are access VLAN 20; Po11 exists but has no members.\n" +
+          "interface Port-channel11\n" +
+          "!\n" +
+          "interface Ethernet0/0\n" +
+          " switchport access vlan 20\n" +
+          " switchport mode access"
+      );
+      appendLine("line-sys", "SW10 only: align with SW20 LACP trunk EtherChannel, then STP root for VLAN 10 and 30.");
+      applyPhaseUI();
+      openDeviceCliLink.focus();
+    }
+
+    function submit() {
+      if (phase === "DONE") return;
+      const steps = currentSteps();
+      if (phase !== "SAVE" && stepIndex >= steps.length) return;
+
+      const prompt = promptEl.textContent;
+      const line = cmdline.value;
+      appendLine("line-user", `${prompt} ${line}`);
+      cmdline.value = "";
+      if (!line.trim()) return;
+
+      if (matchShowRun(line)) {
+        appendBlock("line-sys", SW10_INITIAL_CONFIG);
+        return;
+      }
+
+      if (phase === "SAVE") {
+        if (matchCopy(line)) {
+          appendLine("line-sys", "[OK] Building configuration... (simulated).");
+          phase = "DONE";
+          passBanner.classList.add("visible");
+          cmdline.disabled = true;
+          applyPhaseUI();
+        } else {
+          appendLine("line-bad", "% Invalid input");
+        }
+        return;
+      }
+
+      if (!steps[stepIndex].test(line)) {
+        if (phase === "LACP") {
+          appendLine(
+            "line-bad",
+            "% Invalid input"
+          );
+        } else {
+          appendLine(
+            "line-bad",
+            "% Invalid input"
+          );
+        }
+        return;
+      }
+
+      stepIndex += 1;
+      if (stepIndex >= steps.length) {
+        if (phase === "LACP") {
+          appendLine(
+            "line-sys",
+            "*LINEPROTO-5-UPDOWN: Line protocol on Interface Port-channel11, changed state to up (simulated)."
+          );
+          appendLine("line-sys", "[OK] LACP trunk bundle up. Configure spanning-tree root next.");
+          phase = "ROOT";
+          stepIndex = 0;
+          applyPhaseUI();
+        } else if (phase === "ROOT") {
+          appendLine("line-sys", "[OK] Root primary for VLAN 10 and 30 (simulated). Save.");
+          phase = "SAVE";
+          stepIndex = 0;
+          applyPhaseUI();
+        }
+      } else {
+        applyPhaseUI();
+      }
+    }
+
+    cmdline.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submit();
+      }
+    });
+
+    resetBtn.addEventListener("click", reset);
+    openDeviceCliLink.addEventListener("click", openSelectedCliModal);
+    document.getElementById("closeSW10").addEventListener("click", () => {
+      closeModals();
+      openDeviceCliLink.focus();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      if (!modalSW10.classList.contains("is-open")) return;
+      e.preventDefault();
+      closeModals();
+      openDeviceCliLink.focus();
+    });
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    reset();
+  </script>
+
+<script>
+(function(){
+  if (window.__labHelperSpoilerInit) return;
+  window.__labHelperSpoilerInit = true;
+
+  const helperBtn = document.getElementById('openHelperFileBtn');
+  const resetInlineBtn = document.getElementById('inlineResetLabBtn');
+  const spoilerBtn = document.getElementById('openSpoilerBtn');
+  if (!helperBtn && !resetInlineBtn && !spoilerBtn) return;
+
+
+  function createModal(id, title, bodyNode){
+    const overlay = document.createElement('div');
+    overlay.id = id + 'Overlay';
+    overlay.className = 'cli-modal-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.innerHTML = '
+      <div id="'+id+'Dialog" class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="'+id+'Title" tabindex="-1">
+        <header class="cli-modal-header">
+          <h2 id="'+id+'Title">'+title+'</h2>
+          <button type="button" class="cli-modal-close" aria-label="Close">×</button>
+        </header>
+        <div class="cli-modal-body"></div>
+      </div>';
+    overlay.querySelector('.cli-modal-body').appendChild(bodyNode);
+    document.body.appendChild(overlay);
+    const closeBtn = overlay.querySelector('.cli-modal-close');
+    const close = () => { overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true'); };
+    const open = () => { overlay.classList.add('is-open'); overlay.setAttribute('aria-hidden', 'false'); };
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    return { open, close, overlay };
+  }
+
+  function normalizeLine(text){
+    return (text || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function buildSpoilerCliFromHint(hint){
+    const root = document.createElement('div');
+    root.className = 'topology-scrape';
+    const h2 = document.createElement('h2');
+    h2.textContent = 'Lab Solution (Spoiler)';
+    root.appendChild(h2);
+
+    const stack = document.createElement('div');
+    stack.className = 'spoiler-cli-stack';
+
+    const clone = hint.cloneNode(true);
+    const summary = clone.querySelector('summary');
+    if (summary) summary.remove();
+
+    let currentDevice = 'Device';
+    let buffer = [];
+    const sections = [];
+
+    function flush(){
+      if (!buffer.length) return;
+      sections.push({ device: currentDevice, lines: buffer.slice() });
+      buffer = [];
+    }
+
+    for (const node of Array.from(clone.children)) {
+      const tag = node.tagName ? node.tagName.toLowerCase() : '';
+
+      if (tag === 'p') {
+        const strong = node.querySelector('strong');
+        if (strong) {
+          flush();
+          const t = normalizeLine(strong.textContent).replace(/:$/, '');
+          currentDevice = t || currentDevice;
+          continue;
+        }
+        const txt = normalizeLine(node.textContent);
+        if (txt) buffer.push(txt);
+        continue;
+      }
+
+      if (tag === 'ol' || tag === 'ul') {
+        const lines = Array.from(node.querySelectorAll('li')).map(li => normalizeLine(li.textContent)).filter(Boolean);
+        if (lines.length) {
+          flush();
+          sections.push({ device: currentDevice, lines });
+        }
+        continue;
+      }
+
+      if (tag === 'pre') {
+        const txt = node.textContent || '';
+        const lines = txt.split(/\r?\n/).map(normalizeLine).filter(Boolean);
+        if (lines.length) {
+          flush();
+          sections.push({ device: currentDevice, lines });
+        }
+        continue;
+      }
+
+      const txt = normalizeLine(node.textContent || '');
+      if (txt) buffer.push(txt);
+    }
+    flush();
+
+    if (!sections.length) {
+      const p = document.createElement('p');
+      p.textContent = 'No spoiler solution content is available for this lab.';
+      root.appendChild(p);
+      return root;
+    }
+
+    sections.forEach(sec => {
+      const item = document.createElement('div');
+      item.className = 'spoiler-cli-item';
+      const label = document.createElement('div');
+      label.className = 'spoiler-cli-label';
+      label.textContent = sec.device || 'Device';
+      const pre = document.createElement('pre');
+      pre.className = 'spoiler-cli-pre';
+      pre.textContent = sec.lines.join('
+');
+      item.appendChild(label);
+      item.appendChild(pre);
+      stack.appendChild(item);
+    });
+
+    root.appendChild(stack);
+    return root;
+  }
+
+  const helperSource = document.querySelector('.topology-scrape');
+  let helperModal = null;
+  if (helperSource) {
+    const helperBody = helperSource.cloneNode(true);
+    helperSource.remove();
+    helperModal = createModal('helperFile', 'Helper File', helperBody);
+  } else {
+    const empty = document.createElement('div');
+    empty.className = 'topology-scrape';
+    empty.innerHTML = '<h2>Helper File</h2><p>No helper file is available for this lab.</p>';
+    helperModal = createModal('helperFile', 'Helper File', empty);
+  }
+
+  const hint = document.querySelector('details.hint');
+  let spoilerModal = null;
+  if (hint) {
+    spoilerModal = createModal('spoiler', 'Lab Solution (Spoiler)', buildSpoilerCliFromHint(hint));
+  }
+
+  helperBtn && helperBtn.addEventListener('click', () => helperModal && helperModal.open());
+  spoilerBtn && spoilerBtn.addEventListener('click', () => spoilerModal && spoilerModal.open());
+  resetInlineBtn && resetInlineBtn.addEventListener('click', () => {
+    const rb = document.getElementById('resetBtn');
+    if (rb) rb.click();
+    else if (typeof window.reset === 'function') window.reset();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (spoilerModal && spoilerModal.overlay.classList.contains('is-open')) spoilerModal.close();
+    else if (helperModal && helperModal.overlay.classList.contains('is-open')) helperModal.close();
+  });
+})();
+</script>
+
+  <script src="/js/lab-modal-drag.js"></script>
+</body>
+</html>

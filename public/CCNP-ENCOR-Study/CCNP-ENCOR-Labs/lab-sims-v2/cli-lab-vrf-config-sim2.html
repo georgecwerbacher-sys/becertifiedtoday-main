@@ -1,0 +1,1436 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
+  <title>VRF Configuration Sim 2</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      padding-bottom: 88px;
+      box-sizing: border-box;
+    }
+    .wrap {
+      width: min(900px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card {
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 22px 26px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.15rem, 2vw, 1.65rem);
+      line-height: 1.3;
+    }
+    .objective,
+    .tasks {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .tasks ol {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+    }
+    .tasks li {
+      margin: 6px 0;
+    }
+    .diagram-wrap {
+      background: #ffffff;
+      border: 1px solid #2d3b5a;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 10px;
+      text-align: center;
+    }
+    .diagram-wrap img {
+      max-width: 100%;
+      height: auto;
+      vertical-align: middle;
+    }
+    .diagram-wrap .tasks-top {
+      text-align: left;
+      margin-top: 14px;
+      width: 100%;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      box-sizing: border-box;
+    }
+    .diagram-wrap .tasks-top > strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #e6edf3;
+    }
+    .diagram-wrap .tasks-top .tasks-intro {
+      margin: 0 0 10px;
+    }
+    .diagram-wrap .tasks-top .task-block {
+      margin-top: 12px;
+    }
+    .diagram-wrap .tasks-top .task-block:first-of-type {
+      margin-top: 8px;
+    }
+    .diagram-wrap .tasks-top .task-title {
+      margin: 0 0 6px;
+      font-weight: 700;
+      color: #e6edf3;
+      font-size: 0.95rem;
+    }
+    .diagram-wrap .tasks-top .task-block p:last-child {
+      margin: 0;
+      line-height: 1.5;
+    }
+    .diagram-wrap .tasks-top .task-block ul {
+      margin: 0;
+      padding-left: 1.25rem;
+      text-align: left;
+      color: #e6edf3;
+      line-height: 1.5;
+    }
+    .diagram-wrap .tasks-top .task-block ul li {
+      margin: 6px 0;
+    }
+    .diagram-wrap .tasks-top .tasks-note {
+      margin: 12px 0 0;
+      padding-top: 10px;
+      border-top: 1px solid #2d3b5a;
+      font-size: 0.92rem;
+      color: #9fb0cc;
+    }
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .device-pick label {
+      margin-left: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .device-pick input {
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .helper-file-wrap {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .topology-scrape,
+    .topology-scrape * {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    .topology-scrape h2 {
+      margin: 0 0 12px;
+      font-size: 1.2rem;
+    }
+    .topology-task-heading {
+      margin: 16px 0 8px;
+      font-size: 1.05rem;
+    }
+    .topology-task-heading:first-of-type {
+      margin-top: 0;
+    }
+    .topology-helper-list {
+      margin: 0;
+      padding-left: 1.25rem;
+      line-height: 1.55;
+      text-align: left;
+    }
+    .topology-helper-intro {
+      margin: 0 0 10px;
+      line-height: 1.5;
+      text-align: left;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+    }
+    .topology-helper-pre {
+      margin: 10px 0;
+      padding: 10px 12px;
+      background: #0a0d14;
+      border: 1px solid #2d3b5a;
+      border-radius: 8px;
+      color: #e6edf3;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      text-align: left;
+    }
+    .topology-helper-yellow {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: rgba(250, 204, 21, 0.12);
+      border: 1px solid rgba(250, 204, 21, 0.45);
+      color: #e6edf3;
+      text-align: left;
+    }
+    .topology-helper-yellow strong {
+      color: #fde68a;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .topology-helper-yellow p {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: #b8c3d6;
+    }
+    .topology-helper-yellow .topology-helper-pre {
+      margin: 0;
+    }
+    .helper-router-cli {
+      margin: 10px 0 12px;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      background: #0a0d12;
+      overflow: hidden;
+    }
+    .helper-router-head {
+      padding: 8px 10px;
+      border-bottom: 1px solid #243044;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fbbf24;
+      background: #0f1420;
+      text-align: left;
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+    }
+    .helper-router-pre {
+      margin: 0;
+      padding: 10px 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #cbd5e1;
+      font-size: 0.84rem;
+      line-height: 1.45;
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      text-align: left;
+    }
+    .spoiler-cli-stack {
+      display: grid;
+      gap: 10px;
+    }
+    .spoiler-cli-item {
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      background: #0a0d12;
+      overflow: hidden;
+    }
+    .spoiler-cli-label {
+      padding: 8px 10px;
+      border-bottom: 1px solid #243044;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fbbf24;
+      background: #0f1420;
+      text-align: left;
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+    }
+    .spoiler-cli-pre {
+      margin: 0;
+      padding: 10px 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #cbd5e1;
+      font-size: 0.84rem;
+      line-height: 1.45;
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      text-align: left;
+    }
+    .lab-footer-note {
+      margin: 14px 0 0;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .lab-disclaimer {
+      margin: 10px 0 0;
+      padding-top: 10px;
+      border-top: 1px solid #2d3b5a;
+      color: #9fb0cc;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
+      outline: none;
+    }
+    .console-label {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #c8d7ec;
+    }
+    .console-hint {
+      margin: 0 0 8px;
+      font-size: 0.82rem;
+      color: #9fb0cc;
+      font-style: italic;
+      line-height: 1.35;
+    }
+    .terminal {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.88rem;
+      background: #0a0d12;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      padding: 12px 12px 10px;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      margin-top: 0;
+    }
+    .console-scroll {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 360px;
+      margin-bottom: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #c8d2e0;
+      line-height: 1.45;
+    }
+    .line-user { color: #7ec8ff; }
+    .line-bad { color: #fca5a5; }
+    .line-sys { color: #94a3b8; }
+    .input-row {
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #243044;
+      padding-top: 8px;
+    }
+    .prompt {
+      flex-shrink: 0;
+      color: #fbbf24;
+      user-select: none;
+      max-width: 100%;
+      word-break: break-word;
+      font-size: 0.78rem;
+    }
+    .cmdline {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      color: #e6edf3;
+      font: inherit;
+      outline: none;
+      padding: 4px 0 4px 4px;
+    }
+    .cmdline:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .btn {
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-secondary {
+      background: #2a3040;
+      border-color: #4b556b;
+    }
+    .pass-banner {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .pass-banner.visible {
+      display: block;
+    }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+      pointer-events: none;
+    }
+    .cli-modal-overlay.is-open {
+      display: block;
+    }
+    .cli-modal-dialog {
+      width: min(520px, calc(100vw - 24px));
+      max-height: min(85vh, 720px);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
+    .sim-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(11, 16, 32, 0.94);
+      border-top: 1px solid #2d3b5a;
+      backdrop-filter: blur(10px);
+    }
+    .sim-nav-btn {
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 700;
+      min-width: 5.5rem;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .sim-nav-btn:hover { filter: brightness(1.08); }
+    .sim-nav-home { background: #1a3d6e; }
+    .sim-nav-next { background: #1a3d6e; }
+    .sim-nav-back { background: #243352; border-color: #3d5280; }
+  
+    /* CLI: avoid white native input fill — transparent text fields on dark terminals */
+    .cli-modal-dialog,
+    .terminal {
+      color-scheme: dark;
+    }
+    .terminal input[type="text"],
+    input.cmdline,
+    #cmdline,
+    #cmdlineR2,
+    #cmdlineR3 {
+      color-scheme: dark;
+      -webkit-appearance: none;
+      appearance: none;
+      background-color: transparent !important;
+    }
+
+  
+    .site-logo-corner {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 12000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(11, 16, 32, 0.55);
+      border: 1px solid #2d3b5a;
+      padding: 6px;
+      backdrop-filter: blur(4px);
+    }
+    .site-logo-corner img {
+      display: block;
+      width: 52px;
+      height: 52px;
+    }
+</style>
+</head>
+<body>
+  <a class="site-logo-corner" href="https://becertifiedtoday.com/" aria-label="Go to training portal home">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+  </a>
+
+  <div class="wrap">
+    <main class="card">
+      <h1>VRF Configuration Sim 2</h1>
+
+      <div class="diagram-wrap" aria-label="Topology and initial configs">
+              <img src="/assets/vrf-tunnel-topology-v2.png" alt="WAN topology: ISP, R11 and Sw11 with VLAN 111, R22 and Sw22 with VLAN 222, Tunnel10 between R11 and R22" width="680" height="731" />
+              
+                <div class="task-block">
+                  <p class="task-title">Task 2</p>
+                  <p>
+                    Complete the <strong>Finance</strong> VRF configuration on <strong>R22</strong> and configure static routing so that traffic between
+                    <strong>VLAN 111</strong> and <strong>VLAN 222</strong> uses <strong>Tunnel 10</strong> exclusively.
+                  </p>
+                </div>
+                <p class="tasks-note"><strong>Note:</strong> <strong>Sw22</strong> can be used to validate traffic flow.</p>
+              </div>
+              <div class="device-pick" role="group" aria-label="Device in prompt">
+                <strong>Device in prompt:</strong>
+                <label><input type="radio" name="vrfDev" value="R22" checked /> R22</label>
+                <label><input type="radio" name="vrfDev" value="SW22" /> SW22</label>
+              </div>
+              <div class="device-links" aria-label="Open device CLI">
+                <button type="button" class="device-link" id="openDeviceCliLink">Open Router CLI</button>
+              </div>
+<div class="tasks tasks-top">
+                <strong>Tasks</strong>
+                <p class="tasks-intro">
+                  A colleague started configuring a new network. All configurations on <strong>R11</strong> are complete and communication between <strong>R11</strong> and
+                  <strong>R22</strong> is functional. Complete the configurations on <strong>R22</strong> for the tasks below.
+                </p>
+                <div class="task-block">
+                  <p class="task-title">Task 1</p>
+                  <p>
+                    Extend the <strong>Finance</strong> VRF between <strong>R11</strong> and <strong>R22</strong> using <strong>Tunnel 10</strong>.
+                  </p>
+                </div>
+                <div class="task-block">
+                  <p class="task-title">Task 2</p>
+                  <ul>
+                    <li>Permit Telnet traffic from <code>192.168.24.124</code>.</li>
+                    <li>Limit traffic to 10,000 bps.</li>
+                    <li>Discard additional packets.</li>
+                  </ul>
+                </div>
+              <div class="helper-file-wrap">
+                <button type="button" class="device-link" id="openHelperFileBtn">Helper File</button>
+                <button type="button" class="device-link" id="inlineResetLabBtn">Reset lab</button>
+                <button type="button" class="device-link" id="openSpoilerBtn">Spoiler</button>
+              </div>
+
+
+            </div>
+
+      <div id="passBanner" class="pass-banner" role="status">
+        Lab complete. VRF Finance, Tunnel10, LAN interface in the VRF, static routes for VLAN 111/222, and startup config saved (simulated).
+      </div>
+
+      <div class="topology-scrape" style="display:none;" aria-hidden="true">
+        <h2>Helper File</h2>
+
+        <p class="topology-task-heading"><strong>Task 1.</strong> Extend the Finance VRF between R11 and R22 using Tunnel 10.</p>
+        <p class="topology-helper-intro">
+          We need to create the VRF Finance and assign the interface tunnel 10 to it.
+        </p>
+        <p class="topology-helper-intro"><strong>On R22:</strong></p>
+        <div class="helper-router-cli">
+          <div class="helper-router-head">R22(config)#</div>
+          <pre class="helper-router-pre">vrf definition Finance //Old command: ip vrf Finance
+rd 100:1 //we can use any number or ignore this command
+address-family ipv4 //Enable the IPv4 address family within the VRF, required by new IOS versions
+exit
+interface Tunnel10
+vrf forwarding Finance //old IOS versions require the "ip vrf forwarding Finance" instead
+ip address 10.10.10.2 255.255.255.252
+tunnel source e0/0
+tunnel destination 209.165.200.230
+no shut
+exit
+exit</pre>
+        </div>
+        <div class="topology-helper-yellow" role="note">
+          <p>
+            Note: This router is using a modern IOS version so old command "ip vrf Finance" (to create this VRF) does not work, we have to use the "vrf definition Finance" command instead. We may need to use the "address-family ipv4" command under VRF to enable IPv4 address family.
+          </p>
+        </div>
+
+        <p class="topology-task-heading"><strong>Task 2.</strong> Complete the Finance VRF configuration on R22 and configure static routing so that traffic between VLAN 111 and VLAN 222 uses Tunnel 10 exclusively.</p>
+        <p class="topology-helper-intro">
+          To extend the VRF Finance to Sw22, we need to assign e0/1 interface of R22 to VRF Finance as well:
+        </p>
+        <p class="topology-helper-intro"><strong>On R22:</strong></p>
+        <div class="helper-router-cli">
+          <div class="helper-router-head">R22(config)#</div>
+          <pre class="helper-router-pre">interface e0/1
+vrf forwarding Finance
+//We will see this notification: "% Interface Ethernet0/1 IPv4
+//disabled and address(es) removed due to enabling VRF Finance"
+ip address 10.22.22.1 255.255.255.252 //reassign IP address</pre>
+        </div>
+        <p class="topology-helper-intro">Configure static routing on R22:</p>
+        <div class="helper-router-cli">
+          <div class="helper-router-head">R22(config)#</div>
+          <pre class="helper-router-pre">ip route vrf Finance 10.10.111.0 255.255.255.0 tunnel10
+ip route vrf Finance 10.10.222.0 255.255.255.0 10.22.22.2</pre>
+        </div>
+        <p class="topology-helper-intro"><strong>Next:</strong></p>
+        <div class="helper-router-cli">
+          <div class="helper-router-head">R22(config)#</div>
+          <pre class="helper-router-pre">interface e0/1
+vrf forwarding Finance
+ip address 10.22.22.1 255.255.255.252
+ip route vrf Finance 10.10.111.0 255.255.255.0 tunnel10
+ip route vrf Finance 10.10.222.0 255.255.255.0 10.22.22.2</pre>
+        </div>
+      </div>
+      <details class="hint" hidden aria-hidden="true">
+        <summary>Spoiler</summary>
+        <p><strong>R22</strong></p>
+        <pre>R22# conf t
+R22(config)# vrf definition Finance
+R22(config-vrf)# rd 100:1
+R22(config-vrf)# address-family ipv4
+R22(config-vrf-af)# exit
+R22(config-vrf)# exit
+R22(config)# interface tunnel10
+R22(config-if)# vrf forwarding Finance
+R22(config-if)# ip address 10.10.10.2 255.255.255.252
+R22(config-if)# tunnel source e0/0
+R22(config-if)# tunnel destination 209.165.200.230
+R22(config-if)# no shutdown
+R22(config-if)# exit
+R22(config)# interface e0/1
+R22(config-if)# vrf forwarding Finance
+R22(config-if)# ip address 10.22.22.1 255.255.255.252
+R22(config-if)# no shutdown
+R22(config-if)# exit
+R22(config)# ip route vrf Finance 10.10.111.0 255.255.255.0 10.10.10.1
+R22(config)# ip route vrf Finance 10.10.222.0 255.255.255.0 10.22.22.2
+R22(config)# end
+R22# copy running-config startup-config</pre>
+        <p><strong>SW22 (verification)</strong></p>
+        <pre>SW22# show running-config</pre>
+      </details>
+
+      <p class="lab-footer-note">
+        Pick a device under Device in prompt, then open that device console to run commands.
+      </p>
+      <p class="lab-disclaimer">
+        Disclaimer: This website is an independent training resource created for educational purposes only. It is not affiliated with, endorsed by, sponsored by, or approved by Cisco Systems, Inc. Cisco and related trademarks are the property of Cisco Systems, Inc. All practice questions, explanations, and study materials on this site are original or based on general knowledge and are intended as a guide to help users prepare for certification exams. Practice questions are not actual Cisco exam questions. Any similarity to official exam content is coincidental.
+      </p>
+    </main>
+  </div>
+
+  <div id="modalR22" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="modalR22Dialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitleR22"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR22">R22 - CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR22" aria-label="Close R22 CLI">x</button>
+      </header>
+      <div class="cli-modal-body">
+        <h2 class="console-label">R22</h2>
+        <p class="console-hint" id="hintR22">Enter commands in order (abbreviations allowed where noted).</p>
+        <div class="terminal" aria-label="R22 CLI">
+          <div class="console-scroll" id="scrollR22"></div>
+          <div class="input-row">
+            <span class="prompt" id="promptR22">R22#</span>
+            <input class="cmdline" id="cmdR22" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R22 command line" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalSw22" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="modalSw22Dialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitleSw22"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="modalTitleSw22">SW22 - CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeSw22" aria-label="Close SW22 CLI">x</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" aria-label="SW22 CLI">
+          <div class="console-scroll" id="scrollSw22"></div>
+          <div class="input-row">
+            <span class="prompt" id="promptSw22">SW22#</span>
+            <input class="cmdline" id="cmdSw22" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="SW22 command line" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html">Home</a>
+    <a class="sim-nav-btn sim-nav-next" href="/cli-lab-ospf-summ-r20.html">Next</a>
+    <a class="sim-nav-btn sim-nav-back" href="/cli-lab-vrf-config-sim.html">Back</a>
+  </nav>
+
+  <script>
+    function normalize(s) {
+      return s.trim().toLowerCase().replace(/\s+/g, " ");
+    }
+
+    function matchShowRun(raw) {
+      const u = normalize(raw);
+      return (
+        u === "show running-config" ||
+        u === "show run" ||
+        u === "sh run" ||
+        u === "sh running-config" ||
+        u === "do show run" ||
+        u === "do show running-config" ||
+        u === "do sh run"
+      );
+    }
+
+    /** SW22: only full forms, no abbreviations or do prefix. */
+    function matchShowRunStrictSw22(raw) {
+      const u = normalize(raw);
+      return u === "show run" || u === "show running-config";
+    }
+
+    function matchCopy(raw) {
+      const u = normalize(raw);
+      return (
+        u === "copy running-config startup-config" ||
+        u === "copy run start" ||
+        u === "copy run startup-config"
+      );
+    }
+
+    function matchIntTunnel10(raw) {
+      const u = normalize(raw);
+      return (
+        u === "interface tunnel10" ||
+        u === "interface tunnel 10" ||
+        u === "int tunnel10" ||
+        u === "int tunnel 10" ||
+        u === "int tu10"
+      );
+    }
+
+    function matchIntE01(raw) {
+      const u = normalize(raw);
+      return (
+        u === "interface ethernet0/1" ||
+        u === "interface ethernet 0/1" ||
+        u === "interface e0/1" ||
+        u === "int ethernet0/1" ||
+        u === "int e0/1"
+      );
+    }
+
+    function matchVrfForwardingFinance(raw) {
+      const u = normalize(raw);
+      return u === "vrf forwarding finance" || u === "ip vrf forwarding finance";
+    }
+
+    function matchTunnelSourceE0(raw) {
+      const u = normalize(raw);
+      return (
+        u === "tunnel source ethernet0/0" ||
+        u === "tunnel source e0/0" ||
+        u === "tunnel source ethernet 0/0"
+      );
+    }
+
+    function matchNoShut(raw) {
+      const u = normalize(raw);
+      return u === "no shutdown" || u === "no shut";
+    }
+
+    function matchIpAddressR22E01(raw) {
+      const u = normalize(raw);
+      return (
+        u === "ip address 10.22.22.1 255.255.255.252" ||
+        u === "ip addr 10.22.22.1 255.255.255.252" ||
+        u === "ip add 10.22.22.1 255.255.255.252"
+      );
+    }
+
+    /** VLAN 111 static: next-hop to R11 tunnel peer or outgoing tunnel interface. */
+    function matchIpRouteVrf111(raw) {
+      const u = normalize(raw);
+      return (
+        u ===
+          "ip route vrf finance 10.10.111.0 255.255.255.0 10.10.10.1" ||
+        u ===
+          "ip route vrf finance 10.10.111.0 255.255.255.0 tunnel10" ||
+        u ===
+          "ip route vrf finance 10.10.111.0 255.255.255.0 tunnel 10" ||
+        u ===
+          "ip ro vrf finance 10.10.111.0 255.255.255.0 10.10.10.1" ||
+        u ===
+          "ip ro vrf finance 10.10.111.0 255.255.255.0 tunnel10" ||
+        u === "ip ro vrf finance 10.10.111.0 255.255.255.0 tunnel 10"
+      );
+    }
+
+    function matchIpRouteVrf222(raw) {
+      const u = normalize(raw);
+      return (
+        u ===
+          "ip route vrf finance 10.10.222.0 255.255.255.0 10.22.22.2" ||
+        u === "ip ro vrf finance 10.10.222.0 255.255.255.0 10.22.22.2"
+      );
+    }
+
+    function matchExitAf(raw) {
+      const u = normalize(raw);
+      return u === "exit" || u === "exit-address-family";
+    }
+
+    const R22_STEPS = [
+      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
+      { mode: "config", test: (raw) => normalize(raw) === "vrf definition finance" },
+      { mode: "config-vrf", test: (raw) => normalize(raw) === "rd 100:1" },
+      { mode: "config-vrf", test: (raw) => normalize(raw) === "address-family ipv4" },
+      { mode: "config-vrf-af", test: matchExitAf },
+      { mode: "config-vrf", test: (raw) => normalize(raw) === "exit" },
+      { mode: "config", test: matchIntTunnel10 },
+      { mode: "config-if", test: matchVrfForwardingFinance },
+      {
+        mode: "config-if",
+        test: (raw) => normalize(raw) === "ip address 10.10.10.2 255.255.255.252",
+      },
+      { mode: "config-if", test: matchTunnelSourceE0 },
+      { mode: "config-if", test: (raw) => normalize(raw) === "tunnel destination 209.165.200.230" },
+      { mode: "config-if", test: matchNoShut },
+      { mode: "config-if", test: (raw) => normalize(raw) === "exit" },
+      { mode: "config", test: matchIntE01 },
+      { mode: "config-if", test: matchVrfForwardingFinance },
+      { mode: "config-if", test: matchIpAddressR22E01 },
+      { mode: "config-if", test: matchNoShut },
+      { mode: "config-if", test: (raw) => normalize(raw) === "exit" },
+      { mode: "config", test: matchIpRouteVrf111 },
+      { mode: "config", test: matchIpRouteVrf222 },
+      { mode: "config", test: (raw) => normalize(raw) === "end" },
+      { mode: "exec", test: matchCopy },
+    ];
+    const R22_SHOW_RUN = [
+      "interface Loopback0",
+      " ip address 10.2.2.2 255.255.255.255",
+      "interface Ethernet0/0",
+      " ip address 209.165.201.2 255.255.255.252",
+      " no shut",
+      "interface Ethernet0/1",
+      " ip address 10.22.22.1 255.255.255.252",
+      " no shut",
+      "!",
+      "router bgp 3",
+      " neighbor 209.165.201.1 remote-as 2",
+      " address-family ipv4",
+      " neighbor 209.165.201.1 activate",
+      " network 209.165.201.0 mask 255.255.255.252",
+    ].join("\r\n");
+    const SW22_SHOW_RUN = [
+      "vlan 222",
+      "!",
+      "interface Ethernet0/0",
+      " no switchport",
+      " ip address 10.22.22.2 255.255.255.252",
+      "interface Vlan222",
+      " ip address 10.10.222.1 255.255.255.0",
+      " no shut",
+      "!",
+      "interface Ethernet0/3",
+      " switchport mode access",
+      " switchport access vlan 222",
+      "!",
+      "ip route 0.0.0.0 0.0.0.0 10.22.22.1",
+    ].join("\r\n");
+
+    function promptFor(steps, index, host) {
+      if (index >= steps.length) return `${host}#`;
+      const m = steps[index].mode;
+      if (m === "exec") return `${host}#`;
+      if (m === "config") return `${host}(config)#`;
+      if (m === "config-vrf") return `${host}(config-vrf)#`;
+      if (m === "config-vrf-af") return `${host}(config-vrf-af)#`;
+      if (m === "config-if") return `${host}(config-if)#`;
+      return `${host}#`;
+    }
+
+    const scrollR22 = document.getElementById("scrollR22");
+    const promptR22 = document.getElementById("promptR22");
+    const cmdR22 = document.getElementById("cmdR22");
+    const hintR22 = document.getElementById("hintR22");
+    const passBanner = document.getElementById("passBanner");
+    const resetBtn = document.getElementById("resetBtn");
+    const modalR22 = document.getElementById("modalR22");
+    const modalSw22 = document.getElementById("modalSw22");
+    const openDeviceCliLink = document.getElementById("openDeviceCliLink");
+    const closeR22 = document.getElementById("closeR22");
+    const closeSw22 = document.getElementById("closeSw22");
+    const scrollSw22 = document.getElementById("scrollSw22");
+    const promptSw22 = document.getElementById("promptSw22");
+    const cmdSw22 = document.getElementById("cmdSw22");
+
+    let stepR22 = 0;
+    const historyR22 = [];
+    let historyR22Idx = -1;
+    const historySw22 = [];
+    let historySw22Idx = -1;
+
+    function getVrfLabDevice() {
+      const sel = document.querySelector('input[name="vrfDev"]:checked');
+      return sel ? sel.value : "R22";
+    }
+
+    function updateOpenCliButtonLabel() {
+      const dev = getVrfLabDevice();
+      openDeviceCliLink.textContent =
+        dev === "SW22" ? "Open Switch CLI" : "Open Router CLI";
+    }
+
+    const HINTS = [
+      "configure terminal",
+      "vrf definition Finance",
+      "rd 100:1",
+      "address-family ipv4",
+      "exit (leave address-family)",
+      "exit (leave vrf definition)",
+      "interface Tunnel10",
+      "vrf forwarding Finance",
+      "ip address 10.10.10.2 255.255.255.252",
+      "tunnel source Ethernet0/0 (or e0/0)",
+      "tunnel destination 209.165.200.230",
+      "no shutdown",
+      "exit (back to config)",
+      "interface Ethernet0/1 (or interface e0/1)",
+      "vrf forwarding Finance",
+      "ip address 10.22.22.1 255.255.255.252",
+      "no shutdown",
+      "exit",
+      "ip route vrf Finance 10.10.111.0 255.255.255.0 10.10.10.1 (or tunnel10)",
+      "ip route vrf Finance 10.10.222.0 255.255.255.0 10.22.22.2",
+      "end",
+      "copy running-config startup-config",
+    ];
+
+    function appendLine(scrollEl, className, text) {
+      const div = document.createElement("div");
+      div.className = className;
+      div.textContent = text;
+      scrollEl.appendChild(div);
+      scrollEl.scrollTop = scrollEl.scrollHeight;
+    }
+
+    function pushHistory(list, idxRefName, line) {
+      if (!line || !line.trim()) return;
+      if (!list.length || list[list.length - 1] !== line) list.push(line);
+      if (idxRefName === "r22") historyR22Idx = list.length;
+      if (idxRefName === "sw22") historySw22Idx = list.length;
+    }
+
+    function applyHistoryKey(e, inputEl, list, idxRefName) {
+      if (!list.length) return;
+      if (e.key === "Tab") {
+        e.preventDefault();
+        if (idxRefName === "r22") {
+          historyR22Idx = Math.max(0, historyR22Idx - 1);
+          inputEl.value = list[historyR22Idx] || "";
+        } else {
+          historySw22Idx = Math.max(0, historySw22Idx - 1);
+          inputEl.value = list[historySw22Idx] || "";
+        }
+        return;
+      }
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        if (idxRefName === "r22") {
+          historyR22Idx = Math.max(0, historyR22Idx - 1);
+          inputEl.value = list[historyR22Idx] || "";
+        } else {
+          historySw22Idx = Math.max(0, historySw22Idx - 1);
+          inputEl.value = list[historySw22Idx] || "";
+        }
+        return;
+      }
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        if (idxRefName === "r22") {
+          historyR22Idx = Math.min(list.length, historyR22Idx + 1);
+          inputEl.value = historyR22Idx >= list.length ? "" : (list[historyR22Idx] || "");
+        } else {
+          historySw22Idx = Math.min(list.length, historySw22Idx + 1);
+          inputEl.value = historySw22Idx >= list.length ? "" : (list[historySw22Idx] || "");
+        }
+      }
+    }
+
+    function setPromptAndHint() {
+      promptR22.textContent = promptFor(R22_STEPS, stepR22, "R22");
+      hintR22.textContent =
+        stepR22 < HINTS.length ? HINTS[stepR22] : "Done.";
+    }
+
+    function closeR22Modal() {
+      modalR22.classList.remove("is-open");
+      modalR22.setAttribute("aria-hidden", "true");
+    }
+
+    function closeSw22Modal() {
+      modalSw22.classList.remove("is-open");
+      modalSw22.setAttribute("aria-hidden", "true");
+    }
+
+    function reset() {
+      closeR22Modal();
+      closeSw22Modal();
+      stepR22 = 0;
+      scrollR22.innerHTML = "";
+      cmdR22.value = "";
+      cmdR22.disabled = false;
+      historyR22.length = 0;
+      historyR22Idx = -1;
+      passBanner.classList.remove("visible");
+      setPromptAndHint();
+      promptSw22.textContent = "SW22#";
+      scrollSw22.innerHTML = "";
+      cmdSw22.value = "";
+      cmdSw22.disabled = false;
+      historySw22.length = 0;
+      historySw22Idx = -1;
+      updateOpenCliButtonLabel();
+      appendLine(scrollSw22, "line-sys", "SW22: enter show run or show running-config (full command only).");
+      openDeviceCliLink.focus();
+    }
+
+    function submitR22() {
+      if (cmdR22.disabled) return;
+      const p = promptFor(R22_STEPS, stepR22, "R22");
+      const line = cmdR22.value;
+      appendLine(scrollR22, "line-user", `${p} ${line}`);
+      cmdR22.value = "";
+      if (!line.trim()) return;
+      pushHistory(historyR22, "r22", line);
+
+      if (matchShowRun(line)) {
+        appendLine(scrollR22, "line-sys", R22_SHOW_RUN);
+        return;
+      }
+
+      if (stepR22 >= R22_STEPS.length) {
+        appendLine(
+          scrollR22,
+          "line-bad",
+          "% Invalid input"
+        );
+        return;
+      }
+
+      if (R22_STEPS[stepR22].test(line)) {
+        stepR22 += 1;
+        if (stepR22 >= R22_STEPS.length) {
+          appendLine(scrollR22, "line-sys", "[OK] Configuration saved (simulated).");
+          cmdR22.disabled = true;
+          passBanner.classList.add("visible");
+        }
+        setPromptAndHint();
+      } else {
+        const u = normalize(line);
+        if (u === "exit") {
+          if (stepR22 < R22_STEPS.length) {
+            const mode = R22_STEPS[stepR22].mode;
+            let targetMode = null;
+            if (mode === "config-if") targetMode = "config";
+            else if (mode === "config-vrf-af") targetMode = "config-vrf";
+            else if (mode === "config-vrf") targetMode = "config";
+            else if (mode === "config") targetMode = "exec";
+            if (targetMode) {
+              let targetIdx = -1;
+              for (let i = stepR22; i >= 0; i -= 1) {
+                if (R22_STEPS[i].mode === targetMode) {
+                  targetIdx = i;
+                  break;
+                }
+              }
+              if (targetIdx >= 0) {
+                stepR22 = targetIdx;
+                setPromptAndHint();
+                return;
+              }
+            }
+          }
+        }
+        // Accept direct jump from VRF mode to Tunnel10:
+        // R22(config-vrf)# interface Tunnel10
+        // IOS may require exit first, but allow this flow in the simulator.
+        if (stepR22 === 5 && matchIntTunnel10(line)) {
+          stepR22 = 7;
+          setPromptAndHint();
+          return;
+        }
+        // Accept alternative jump to e0/1 directly from config after VRF definition.
+        if (stepR22 === 6 && matchIntE01(line)) {
+          stepR22 = 14;
+          setPromptAndHint();
+          return;
+        }
+        appendLine(
+          scrollR22,
+          "line-bad",
+          "% Invalid input"
+        );
+      }
+    }
+    function submitSw22() {
+      if (cmdSw22.disabled) return;
+      const line = cmdSw22.value;
+      appendLine(scrollSw22, "line-user", `${promptSw22.textContent} ${line}`);
+      cmdSw22.value = "";
+      if (!line.trim()) return;
+      pushHistory(historySw22, "sw22", line);
+      if (matchShowRunStrictSw22(line)) {
+        appendLine(scrollSw22, "line-sys", SW22_SHOW_RUN);
+        return;
+      }
+      if (matchCopy(line)) {
+        appendLine(scrollSw22, "line-sys", "[OK] Configuration saved (simulated).");
+        return;
+      }
+      appendLine(scrollSw22, "line-bad", "% Invalid input");
+    }
+
+    cmdR22.addEventListener("keydown", (e) => {
+      if (e.key === "Tab" || e.key === "ArrowUp" || e.key === "ArrowDown") {
+        applyHistoryKey(e, cmdR22, historyR22, "r22");
+        return;
+      }
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitR22();
+      }
+    });
+    cmdSw22.addEventListener("keydown", (e) => {
+      if (e.key === "Tab" || e.key === "ArrowUp" || e.key === "ArrowDown") {
+        applyHistoryKey(e, cmdSw22, historySw22, "sw22");
+        return;
+      }
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitSw22();
+      }
+    });
+    openDeviceCliLink.addEventListener("click", () => {
+      if (getVrfLabDevice() === "SW22") {
+        modalSw22.classList.add("is-open");
+        modalSw22.setAttribute("aria-hidden", "false");
+        cmdSw22.focus();
+      } else {
+        modalR22.classList.add("is-open");
+        modalR22.setAttribute("aria-hidden", "false");
+        cmdR22.focus();
+      }
+    });
+    closeR22.addEventListener("click", () => {
+      closeR22Modal();
+      openDeviceCliLink.focus();
+    });
+    closeSw22.addEventListener("click", () => {
+      closeSw22Modal();
+      openDeviceCliLink.focus();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      if (modalR22.classList.contains("is-open")) {
+        e.preventDefault();
+        closeR22Modal();
+        openDeviceCliLink.focus();
+        return;
+      }
+      if (modalSw22.classList.contains("is-open")) {
+        e.preventDefault();
+        closeSw22Modal();
+        openDeviceCliLink.focus();
+      }
+    });
+
+    document.querySelectorAll('input[name="vrfDev"]').forEach((r) => {
+      r.addEventListener("change", () => {
+        reset();
+      });
+    });
+
+    if (resetBtn) resetBtn.addEventListener("click", reset);
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    reset();
+  </script>
+
+<script>
+(function(){
+  if (window.__labHelperSpoilerInit) return;
+  window.__labHelperSpoilerInit = true;
+
+  const helperBtn = document.getElementById('openHelperFileBtn');
+  const resetInlineBtn = document.getElementById('inlineResetLabBtn');
+  const spoilerBtn = document.getElementById('openSpoilerBtn');
+  if (!helperBtn && !resetInlineBtn && !spoilerBtn) return;
+
+
+  function createModal(id, title, bodyNode){
+    const overlay = document.createElement('div');
+    overlay.id = id + 'Overlay';
+    overlay.className = 'cli-modal-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.innerHTML = `
+      <div id="${id}Dialog" class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="${id}Title" tabindex="-1">
+        <header class="cli-modal-header">
+          <h2 id="${id}Title">${title}</h2>
+          <button type="button" class="cli-modal-close" aria-label="Close">×</button>
+        </header>
+        <div class="cli-modal-body"></div>
+      </div>`;
+    overlay.querySelector('.cli-modal-body').appendChild(bodyNode);
+    document.body.appendChild(overlay);
+    const closeBtn = overlay.querySelector('.cli-modal-close');
+    const close = () => { overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true'); };
+    const open = () => { overlay.classList.add('is-open'); overlay.setAttribute('aria-hidden', 'false'); };
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    return { open, close, overlay };
+  }
+
+  function normalizeLine(text){
+    return (text || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function buildSpoilerCliFromHint(hint){
+    const root = document.createElement('div');
+    root.className = 'topology-scrape';
+    const h2 = document.createElement('h2');
+    h2.textContent = 'Lab Solution (Spoiler)';
+    root.appendChild(h2);
+
+    const stack = document.createElement('div');
+    stack.className = 'spoiler-cli-stack';
+
+    const clone = hint.cloneNode(true);
+    const summary = clone.querySelector('summary');
+    if (summary) summary.remove();
+
+    let currentDevice = 'Device';
+    let buffer = [];
+    const sections = [];
+
+    function flush(){
+      if (!buffer.length) return;
+      sections.push({ device: currentDevice, lines: buffer.slice() });
+      buffer = [];
+    }
+
+    for (const node of Array.from(clone.children)) {
+      const tag = node.tagName ? node.tagName.toLowerCase() : '';
+
+      if (tag === 'p') {
+        const strong = node.querySelector('strong');
+        if (strong) {
+          flush();
+          const t = normalizeLine(strong.textContent).replace(/:$/, '');
+          currentDevice = t || currentDevice;
+          continue;
+        }
+        const txt = normalizeLine(node.textContent);
+        if (txt) buffer.push(txt);
+        continue;
+      }
+
+      if (tag === 'ol' || tag === 'ul') {
+        const lines = Array.from(node.querySelectorAll('li')).map(li => normalizeLine(li.textContent)).filter(Boolean);
+        if (lines.length) {
+          flush();
+          sections.push({ device: currentDevice, lines });
+        }
+        continue;
+      }
+
+      if (tag === 'pre') {
+        const txt = node.textContent || '';
+        const lines = txt.split(/\r?\n/).map(normalizeLine).filter(Boolean);
+        if (lines.length) {
+          flush();
+          sections.push({ device: currentDevice, lines });
+        }
+        continue;
+      }
+
+      const txt = normalizeLine(node.textContent || '');
+      if (txt) buffer.push(txt);
+    }
+    flush();
+
+    if (!sections.length) {
+      const p = document.createElement('p');
+      p.textContent = 'No spoiler solution content is available for this lab.';
+      root.appendChild(p);
+      return root;
+    }
+
+    sections.forEach(sec => {
+      const item = document.createElement('div');
+      item.className = 'spoiler-cli-item';
+      const label = document.createElement('div');
+      label.className = 'spoiler-cli-label';
+      label.textContent = sec.device || 'Device';
+      const pre = document.createElement('pre');
+      pre.className = 'spoiler-cli-pre';
+      pre.textContent = sec.lines.join('\n');
+      item.appendChild(label);
+      item.appendChild(pre);
+      stack.appendChild(item);
+    });
+
+    root.appendChild(stack);
+    return root;
+  }
+
+  const helperSource = document.querySelector('.topology-scrape');
+  let helperModal = null;
+  if (helperSource) {
+    const helperBody = helperSource.cloneNode(true);
+    helperBody.style.display = '';
+    helperBody.removeAttribute('hidden');
+    helperBody.removeAttribute('aria-hidden');
+    helperSource.remove();
+    helperModal = createModal('helperFile', 'Helper File', helperBody);
+  } else {
+    const empty = document.createElement('div');
+    empty.className = 'topology-scrape';
+    empty.innerHTML = '<h2>Helper File</h2><p>No helper file is available for this lab.</p>';
+    helperModal = createModal('helperFile', 'Helper File', empty);
+  }
+
+  const hint = document.querySelector('details.hint');
+  let spoilerModal = null;
+  if (hint) {
+    spoilerModal = createModal('spoiler', 'Lab Solution (Spoiler)', buildSpoilerCliFromHint(hint));
+  }
+
+  helperBtn && helperBtn.addEventListener('click', () => helperModal && helperModal.open());
+  spoilerBtn && spoilerBtn.addEventListener('click', () => spoilerModal && spoilerModal.open());
+  resetInlineBtn && resetInlineBtn.addEventListener('click', () => {
+    const rb = document.getElementById('resetBtn');
+    if (rb) rb.click();
+    else if (typeof window.reset === 'function') window.reset();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (spoilerModal && spoilerModal.overlay.classList.contains('is-open')) spoilerModal.close();
+    else if (helperModal && helperModal.overlay.classList.contains('is-open')) helperModal.close();
+  });
+})();
+</script>
+
+  <script src="/js/lab-modal-drag.js"></script>
+</body>
+</html>

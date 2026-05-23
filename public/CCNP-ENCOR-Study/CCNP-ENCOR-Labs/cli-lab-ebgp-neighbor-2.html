@@ -1,0 +1,1755 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
+  <title>eBGP Neighbor Sim 2</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      padding-bottom: 88px;
+      box-sizing: border-box;
+    }
+    .wrap {
+      width: min(920px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card {
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 22px 26px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.15rem, 2vw, 1.65rem);
+      line-height: 1.3;
+    }
+    .objective,
+    .tasks {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .tasks ol {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+    }
+    .tasks li {
+      margin: 6px 0;
+    }
+    .diagram-wrap {
+      background: #ffffff;
+      border: 1px solid #2d3b5a;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 14px;
+      text-align: center;
+    }
+    .diagram-wrap img {
+      max-width: 100%;
+      height: auto;
+      vertical-align: middle;
+    }
+    .diagram-wrap .tasks-top {
+      text-align: left;
+      margin-top: 14px;
+      width: 100%;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      box-sizing: border-box;
+    }
+    .diagram-wrap .tasks-top > strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #e6edf3;
+    }
+    .diagram-wrap .tasks-top .tasks-intro {
+      margin: 0 0 10px;
+    }
+    .diagram-wrap .tasks-top ol.tasks-numbered {
+      margin: 8px 0 0;
+      padding-left: 1.35rem;
+    }
+    .diagram-wrap .tasks-top ol.tasks-numbered > li {
+      margin: 10px 0;
+    }
+    .diagram-wrap .tasks-top .tasks-sim-note {
+      margin: 12px 0 0;
+      padding-top: 10px;
+      border-top: 1px solid #2d3b5a;
+      font-size: 0.92rem;
+      color: #9fb0cc;
+    }
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .device-pick label {
+      margin-left: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .device-pick input {
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .helper-file-wrap {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
+      outline: none;
+    }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+      pointer-events: none;
+    }
+    .cli-modal-overlay.is-open {
+      display: block;
+    }
+    .cli-modal-dialog {
+      width: min(520px, calc(100vw - 24px));
+      max-height: min(85vh, 720px);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
+    .terminal {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.88rem;
+      background: #0a0d12;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      padding: 12px 12px 10px;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      margin-top: 0;
+    }
+    #scrollback {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 360px;
+      margin-bottom: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #c8d2e0;
+      line-height: 1.45;
+    }
+    .line-user { color: #7ec8ff; }
+    .line-bad { color: #fca5a5; }
+    .line-sys { color: #94a3b8; }
+    .line-out {
+      color: #cbd5e1;
+      font-size: 0.9em;
+      line-height: 1.45;
+    }
+    .input-row {
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #243044;
+      padding-top: 8px;
+    }
+    #prompt {
+      flex-shrink: 0;
+      color: #fbbf24;
+      user-select: none;
+      max-width: 100%;
+      word-break: break-word;
+    }
+    #cmdline {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      color: #e6edf3;
+      font: inherit;
+      outline: none;
+      padding: 4px 0 4px 4px;
+    }
+    #cmdline:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-secondary {
+      background: #2a3040;
+      border-color: #4b556b;
+    }
+    .pass-banner {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .pass-banner.visible {
+      display: block;
+    }
+    .sim-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(11, 16, 32, 0.94);
+      border-top: 1px solid #2d3b5a;
+      backdrop-filter: blur(10px);
+    }
+    .sim-nav-btn {
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 700;
+      min-width: 5.5rem;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .sim-nav-btn:hover { filter: brightness(1.08); }
+    .sim-nav-home { background: #1a3d6e; }
+    .sim-nav-next { background: #1a3d6e; }
+    .sim-nav-back { background: #243352; border-color: #3d5280; }
+  
+    /* CLI: avoid white native input fill — transparent text fields on dark terminals */
+    .cli-modal-dialog,
+    .terminal {
+      color-scheme: dark;
+    }
+    .terminal input[type="text"],
+    input.cmdline,
+    #cmdline,
+    #cmdlineR2,
+    #cmdlineR3 {
+      color-scheme: dark;
+      -webkit-appearance: none;
+      appearance: none;
+      background-color: transparent !important;
+    }
+
+  
+    .site-logo-corner {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 12000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(11, 16, 32, 0.55);
+      border: 1px solid #2d3b5a;
+      padding: 6px;
+      backdrop-filter: blur(4px);
+    }
+    .site-logo-corner img {
+      display: block;
+      width: 52px;
+      height: 52px;
+    }
+    .helper-router-cli {
+      margin: 8px 0 14px;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      background: #0a0d12;
+      overflow: hidden;
+    }
+    .helper-router-head {
+      padding: 8px 10px;
+      border-bottom: 1px solid #243044;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fbbf24;
+      background: #0f1420;
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+    }
+    .helper-router-pre {
+      margin: 0;
+      padding: 10px 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #cbd5e1;
+      font-size: 0.86rem;
+      line-height: 1.45;
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+    }
+    .spoiler-cli-stack {
+      display: grid;
+      gap: 10px;
+    }
+    .spoiler-cli-item {
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      background: #0a0d12;
+      overflow: hidden;
+    }
+    .spoiler-cli-label {
+      padding: 8px 10px;
+      border-bottom: 1px solid #243044;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fbbf24;
+      background: #0f1420;
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+    }
+    .spoiler-cli-pre {
+      margin: 0;
+      padding: 10px 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #cbd5e1;
+      font-size: 0.86rem;
+      line-height: 1.45;
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+    }
+    .lab-disclaimer {
+      margin: 14px 0 0;
+      padding-top: 10px;
+      border-top: 1px solid #2d3b5a;
+      color: #9fb0cc;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+</style>
+</head>
+<body>
+  <a class="site-logo-corner" href="https://becertifiedtoday.com/" aria-label="Go to training portal home">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+  </a>
+
+  <div class="wrap">
+    <main class="card">
+      <h1>eBGP Neighbor Sim 2</h1>
+
+      <div class="diagram-wrap" aria-label="eBGP triangle AS 100 200 300">
+              <img src="/assets/ebgp-neighbor-2-lab-v2.png" alt="R1 R2 R3 eBGP topology and R1 initial interface configuration" width="680" height="731" />
+              
+              <div class="device-pick" role="group" aria-label="Device in prompt">
+                <strong>Device in prompt:</strong>
+                <label><input type="radio" name="ebgpNeighbor2Dev" value="R1" checked /> R1</label>
+                <label><input type="radio" name="ebgpNeighbor2Dev" value="R2" /> R2</label>
+                <label><input type="radio" name="ebgpNeighbor2Dev" value="R3" /> R3</label>
+              </div>
+              <div class="device-links">
+                <button type="button" class="device-link" id="openDeviceCliLink">Open Router CLI</button>
+              </div>
+<div class="tasks tasks-top">
+                <strong>Tasks</strong>
+                <p class="tasks-intro">
+                  BeCertifiedToday.com opened a routing rollout project and assigned this eBGP fix ticket to an engineer. Complete the required tasks below to close the ticket:
+                </p>
+                <ol class="tasks-numbered">
+                  <li>
+                    Configure eBGP using Loopback 0 for the router-id. Do not use the address-family command to accomplish this.
+                  </li>
+                  <li>
+                    Advertise R3’s Loopback 100 and Loopback 200 networks to AS110 and AS120.
+                  </li>
+                </ol>
+                <p class="tasks-sim-note">
+                  <strong>In this browser lab,</strong> apply these steps on <strong>R1</strong> (the only editable router). Use <strong>R2</strong> and <strong>R3</strong> CLIs as
+                  read-only reference. Router IDs and neighbors follow the simulated topology (AS peers as shown on the diagram and in <code>show run</code>).
+                </p>
+              </div>
+              <div class="helper-file-wrap">
+                <button type="button" class="device-link" id="openHelperFileBtn">Helper File</button>
+                <button type="button" class="device-link" id="inlineResetLabBtn">Reset lab</button>
+                <button type="button" class="device-link" id="openSpoilerBtn">Spoiler</button>
+              </div>
+
+
+            </div>
+
+      <div id="passBanner" class="pass-banner" role="status">
+        Lab complete. R1 runs BGP AS 100 with router-id from Lo0, neighbors activated in IPv4 AF, loopbacks advertised, config saved.
+      </div>
+
+      <div class="topology-scrape" style="display:none;">
+        <h2>Helper File</h2>
+
+        <p><strong>Task 1.</strong> Using the address-family command, configure eBGP according to the topology. Use Loopback0 for the router-id.</p>
+        <p>Please check the IP address of Loopback0 interface with the command "show ip int brief" or "show run". Suppose it is 10.1.1.100 in this case.</p>
+
+        <p><strong>On R1:</strong></p>
+        <div class="helper-router-cli">
+          <div class="helper-router-head">R1(config-router)#</div>
+          <pre class="helper-router-pre">router bgp 100 //please check this BGP AS number carefully with the topology, it may not be 100!
+ bgp router-id 10.1.1.100
+ neighbor 209.165.200.226 remote-as 200
+ neighbor 209.165.202.130 remote-as 300
+ address-family ipv4
+  neighbor 209.165.200.226 activate
+  neighbor 209.165.202.130 activate</pre>
+        </div>
+
+        <p>Note: There were some reports about an error appeared when we enter "neighbor 209.165.200.226 remote-as 200" command. In that case, please try enter "address-family ipv4" and "neighbor 209.165.200.226 activate" first before typing that command.</p>
+
+        <p><strong>Task 2.</strong> Advertise R1's Loopback 0, 1, and 2 networks to AS 200 and AS 300.</p>
+        <p>Note: Suppose we are still under "address-family ipv4" mode from task 1. Use "show run" to check the IP addresses and subnet masks of these loopback interfaces carefully.</p>
+
+        <p><strong>On R1:</strong></p>
+        <div class="helper-router-cli">
+          <div class="helper-router-head">R1(config-router-af)#</div>
+          <pre class="helper-router-pre">R1(config-router-af)#do sh run
+--output omitted--
+interface loopback0
+ ip address 10.1.1.100 255.255.255.255
+!
+interface loopback1
+ ip address 209.165.201.1 255.255.255.248
+!
+interface loopback2
+ ip address 209.165.201.9 255.255.255.248
+!</pre>
+        </div>
+
+        <p>With BGP, we have to advertise the networks with the exact subnet masks which are configured on each interface. Therefore:</p>
+        <ul>
+          <li>with loopback 0 it should be "10.1.1.100 mask 255.255.255.255"</li>
+          <li>with loopback 1 it should be "209.165.201.0 mask 255.255.255.248"</li>
+          <li>with loopback 2 it should be "209.165.201.8 mask 255.255.255.248"</li>
+        </ul>
+
+        <p><strong>On R1, type these commands (under "address-family ipv4" mode from task 1):</strong></p>
+        <div class="helper-router-cli">
+          <div class="helper-router-head">R1(config-router-af)#</div>
+          <pre class="helper-router-pre">network 10.1.1.100 mask 255.255.255.255
+network 209.165.201.0 mask 255.255.255.248
+network 209.165.201.8 mask 255.255.255.248</pre>
+        </div>
+      </div>
+      <details class="hint" hidden aria-hidden="true">
+        <summary>Spoiler</summary>
+        <p><strong>R1</strong></p>
+        <pre>R1# conf t
+R1(config)# router bgp 100
+R1(config-router)# bgp router-id 10.1.1.100
+R1(config-router)# neighbor 209.165.200.226 remote-as 200
+R1(config-router)# neighbor 209.165.202.130 remote-as 300
+R1(config-router)# address-family ipv4
+R1(config-router-af)# neighbor 209.165.200.226 activate
+R1(config-router-af)# neighbor 209.165.202.130 activate
+R1(config-router-af)# network 10.1.1.100 mask 255.255.255.255
+R1(config-router-af)# network 209.165.201.0 mask 255.255.255.248
+R1(config-router-af)# network 209.165.201.8 mask 255.255.255.248
+R1(config-router-af)# end
+R1# copy running-config startup-config</pre>
+      </details>
+
+      <p class="lab-disclaimer">
+        Disclaimer: This website is an independent training resource created for educational purposes only. It is not affiliated with, endorsed by, sponsored by, or approved by Cisco Systems, Inc. Cisco and related trademarks are the property of Cisco Systems, Inc. All practice questions, explanations, and study materials on this site are original or based on general knowledge and are intended as a guide to help users prepare for certification exams. Practice questions are not actual Cisco exam questions. Any similarity to official exam content is coincidental.
+      </p>
+    </main>
+  </div>
+
+  <div id="modalR1" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR1" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR1">R1 — CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR1" aria-label="Close R1 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" aria-label="R1 CLI">
+          <div id="scrollback"></div>
+          <div class="input-row">
+            <span id="prompt">R1#</span>
+            <input id="cmdline" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R1 command line" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalR2" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR2" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR2">R2 — CLI (read-only)</h2>
+        <button type="button" class="cli-modal-close" id="closeR2" aria-label="Close R2 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <p class="hint-inline" style="margin: 0 0 8px; font-size: 0.82rem; color: #9fb0cc;">
+          Use <code>show run</code> or <code>do show run</code> from <code>R2#</code> to review R2’s baseline. Lab steps run on R1.
+        </p>
+        <div class="terminal" aria-label="R2 CLI">
+          <div id="scrollbackR2"></div>
+          <div class="input-row">
+            <span id="promptR2">R2#</span>
+            <input id="cmdlineR2" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R2 command line" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalR3" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR3" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR3">R3 — CLI (read-only)</h2>
+        <button type="button" class="cli-modal-close" id="closeR3" aria-label="Close R3 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <p class="hint-inline" style="margin: 0 0 8px; font-size: 0.82rem; color: #9fb0cc;">
+          Use <code>show run</code> or <code>do show run</code> from <code>R3#</code> to review R3’s baseline. Lab steps run on R1.
+        </p>
+        <div class="terminal" aria-label="R3 CLI">
+          <div id="scrollbackR3"></div>
+          <div class="input-row">
+            <span id="promptR3">R3#</span>
+            <input id="cmdlineR3" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R3 command line" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html">Home</a>
+    <a class="sim-nav-btn sim-nav-next" href="/lab-sims-v2/cli-lab-netflow-span-2.html">Next</a>
+    <a class="sim-nav-btn sim-nav-back" href="/cli-lab-trunk-udld-lacp.html">Back</a>
+  </nav>
+
+  <script>
+    function normalize(s) {
+      return s.trim().toLowerCase().replace(/\s+/g, " ");
+    }
+
+    function matchCopy(raw) {
+      const u = normalize(raw);
+      return (
+        u === "copy running-config startup-config" ||
+        u === "copy run start" ||
+        u === "copy run startup-config"
+      );
+    }
+
+    function matchShowRunExec(raw) {
+      const u = normalize(raw);
+      return (
+        u === "show running-config" ||
+        u === "show run" ||
+        u === "sh running-config" ||
+        u === "sh run"
+      );
+    }
+
+    function matchDoShowRun(raw) {
+      const u = normalize(raw);
+      return (
+        u === "do show running-config" ||
+        u === "do show run" ||
+        u === "do sh run" ||
+        u === "do sh running-config"
+      );
+    }
+
+    function matchShowBgpSummary(raw) {
+      const u = normalize(raw);
+      return u === "show ip bgp summary" || u === "sh ip bgp summary";
+    }
+
+    function matchShowIpBgp(raw) {
+      const u = normalize(raw);
+      return u === "show ip bgp" || u === "sh ip bgp";
+    }
+
+    /** Baseline running-config shown for show run / do show run (review). */
+    const R1_SHOW_RUN_TEXT =
+      "R1 Initial Configuration\n\n" +
+      "interface loopback0\n" +
+      " ip address 10.1.1.100 255.255.255.255\n" +
+      "!\n" +
+      "interface loopback1\n" +
+      " ip address 209.165.201.1 255.255.255.248\n" +
+      "!\n" +
+      "interface loopback2\n" +
+      " ip address 209.165.201.9 255.255.255.248\n" +
+      "!\n" +
+      "interface Ethernet0/0\n" +
+      " ip address 209.165.200.225 255.255.255.252\n" +
+      "!\n" +
+      "interface Ethernet0/1\n" +
+      " ip address 209.165.202.129 255.255.255.252\n" +
+      "!\n" +
+      "router bgp 100\n" +
+      " bgp router-id 10.1.1.100\n" +
+      " neighbor 209.165.200.226 remote-as 200\n" +
+      " neighbor 209.165.202.130 remote-as 300\n" +
+      " address-family ipv4\n" +
+      "  neighbor 209.165.200.226 activate\n" +
+      "  neighbor 209.165.202.130 activate";
+
+    const R2_SHOW_RUN_TEXT =
+      "Current configuration : 1081 bytes\n" +
+      "!\n" +
+      "version 15.4\n" +
+      "service timestamps debug datetime msec\n" +
+      "service timestamps log datetime msec\n" +
+      "no service password-encryption\n" +
+      "!\n" +
+      "hostname R2\n" +
+      "!\n" +
+      "boot-start-marker\n" +
+      "boot-end-marker\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "no aaa new-model\n" +
+      "clock timezone EET 2 0\n" +
+      "mmi polling-interval 60\n" +
+      "no mmi auto-configure\n" +
+      "no mmi pvc\n" +
+      "mmi snmp-timeout 180\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "ip cef\n" +
+      "no ipv6 cef\n" +
+      "!\n" +
+      "multilink bundle-name authenticated\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "redundancy\n" +
+      "!\n" +
+      "!\n" +
+      "! \n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "interface Loopback0\n" +
+      " ip address 10.2.2.2 255.255.255.255\n" +
+      "!\n" +
+      "interface Ethernet0/0\n" +
+      " ip address 209.165.200.226 255.255.255.252\n" +
+      "!\n" +
+      "interface Ethernet0/1\n" +
+      " ip address 209.165.200.230 255.255.255.252\n" +
+      "!\n" +
+      "interface Ethernet0/2\n" +
+      " no ip address\n" +
+      " shutdown\n" +
+      "!\n" +
+      "interface Ethernet0/3\n" +
+      " no ip address\n" +
+      " shutdown\n" +
+      "!\n" +
+      "router bgp 200\n" +
+      " bgp router-id 10.2.2.2\n" +
+      " bgp log-neighbor-changes\n" +
+      " neighbor 209.165.200.225 remote-as 100\n" +
+      " neighbor 209.165.200.229 remote-as 300\n" +
+      "!\n" +
+      "ip forward-protocol nd\n" +
+      "!\n" +
+      "!\n" +
+      "no ip http server\n" +
+      "no ip http secure-server\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "control-plane\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "line con 0\n" +
+      " logging synchronous\n" +
+      "line aux 0\n" +
+      "line vty 0 4\n" +
+      " login\n" +
+      " transport input none\n" +
+      "!\n" +
+      "!\n" +
+      "end";
+
+    const R3_SHOW_RUN_TEXT =
+      "Current configuration : 1083 bytes\n" +
+      "!\n" +
+      "version 15.4\n" +
+      "service timestamps debug datetime msec\n" +
+      "service timestamps log datetime msec\n" +
+      "no service password-encryption\n" +
+      "!\n" +
+      "hostname R3\n" +
+      "!\n" +
+      "boot-start-marker\n" +
+      "boot-end-marker\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "no aaa new-model\n" +
+      "clock timezone EET 2 0\n" +
+      "mmi polling-interval 60\n" +
+      "no mmi auto-configure\n" +
+      "no mmi pvc\n" +
+      "mmi snmp-timeout 180\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "ip cef\n" +
+      "no ipv6 cef\n" +
+      "!\n" +
+      "multilink bundle-name authenticated\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "redundancy\n" +
+      "!\n" +
+      "!\n" +
+      "! \n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "interface Loopback0\n" +
+      " ip address 10.3.3.3 255.255.255.255\n" +
+      "!\n" +
+      "interface Ethernet0/0\n" +
+      " ip address 209.165.202.130 255.255.255.252\n" +
+      "!\n" +
+      "interface Ethernet0/1\n" +
+      " ip address 209.165.200.229 255.255.255.252\n" +
+      "!\n" +
+      "interface Ethernet0/2\n" +
+      " no ip address\n" +
+      " shutdown\n" +
+      "!\n" +
+      "interface Ethernet0/3\n" +
+      " no ip address\n" +
+      " shutdown\n" +
+      "!\n" +
+      "router bgp 300\n" +
+      " bgp router-id 10.2.2.200\n" +
+      " bgp log-neighbor-changes\n" +
+      " neighbor 209.165.200.230 remote-as 200\n" +
+      " neighbor 209.165.202.129 remote-as 100\n" +
+      "!\n" +
+      "ip forward-protocol nd\n" +
+      "!\n" +
+      "!\n" +
+      "no ip http server\n" +
+      "no ip http secure-server\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "control-plane\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "!\n" +
+      "line con 0\n" +
+      " logging synchronous\n" +
+      "line aux 0\n" +
+      "line vty 0 4\n" +
+      " login\n" +
+      " transport input none\n" +
+      "!\n" +
+      "!\n" +
+      "end";
+
+    const R2_R3_BGP_END_TEXT =
+      "*   10.1.1.100/32    209.165.200.229                        0 300 100 i\n" +
+      "*>                   209.165.200.225          0             0 100 i\n" +
+      "*   209.165.201.0/29 209.165.200.229                        0 300 100 i\n" +
+      "*>                   209.165.200.225          0             0 100 i\n" +
+      "*   209.165.201.8/29 209.165.200.229                        0 300 100 i\n" +
+      "*>                   209.165.200.225          0             0 100 i";
+
+    function testShowBrief(raw) {
+      const u = normalize(raw);
+      return (
+        u === "show ip interface brief" ||
+        u === "sh ip int brief" ||
+        u === "show ip int brief"
+      );
+    }
+
+    function testAddressFamilyIpv4(raw) {
+      const u = normalize(raw);
+      return u === "address-family ipv4" || u === "address-family ipv4 unicast";
+    }
+
+    function testShowBgpSummary(raw) {
+      const u = normalize(raw);
+      return u === "show ip bgp summary" || u === "sh ip bgp summary";
+    }
+
+    function promptForStep(steps, index) {
+      if (index >= steps.length) return "R1#";
+      const m = steps[index].mode;
+      if (m === "exec") return "R1#";
+      if (m === "config") return "R1(config)#";
+      if (m === "config-router") return "R1(config-router)#";
+      if (m === "config-router-af") return "R1(config-router-af)#";
+      return "R1#";
+    }
+
+    const OUT_BRIEF =
+      "Interface              IP-Address      OK? Method Status                Protocol\n" +
+      "Ethernet0/0            209.165.200.225 YES manual up                    up\n" +
+      "Ethernet0/1            209.165.202.129 YES manual up                    up\n" +
+      "Loopback0              10.1.1.100      YES manual up                    up\n" +
+      "Loopback1              209.165.201.1   YES manual up                    up\n" +
+      "Loopback2              209.165.201.9   YES manual up                    up";
+
+    const OUT_BGP_SUMMARY =
+      "Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd\n" +
+      "209.165.200.226 4          200      13      13        4    0    0 00:08:26        0\n" +
+      "209.165.202.130 4          300      13      13        4    0    0 00:08:35        0";
+
+    const OUT_SHOW_IP_BGP =
+      "     Network          Next Hop            Metric LocPrf Weight Path\n" +
+      " *   10.1.1.100/32    209.165.200.229                        0 300 100 i\n" +
+      " *>                   209.165.200.225          0             0 100 i\n" +
+      " *   209.165.201.0/29 209.165.200.229                        0 300 100 i\n" +
+      " *>                   209.165.200.225          0             0 100 i\n" +
+      " *   209.165.201.8/29 209.165.200.229                        0 300 100 i\n" +
+      " *>                   209.165.200.225          0             0 100 i";
+
+    const BGP_ALL = [
+      { mode: "config", test: (raw) => normalize(raw) === "router bgp 100" },
+      { mode: "config-router", test: (raw) => normalize(raw) === "bgp router-id 10.1.1.100" },
+      {
+        mode: "config-router",
+        test: (raw) => normalize(raw) === "neighbor 209.165.200.226 remote-as 200",
+      },
+      {
+        mode: "config-router",
+        test: (raw) => normalize(raw) === "neighbor 209.165.202.130 remote-as 300",
+      },
+      { mode: "config-router", test: testAddressFamilyIpv4 },
+      {
+        mode: "config-router-af",
+        test: (raw) => normalize(raw) === "neighbor 209.165.200.226 activate",
+      },
+      {
+        mode: "config-router-af",
+        test: (raw) => normalize(raw) === "neighbor 209.165.202.130 activate",
+      },
+      {
+        mode: "config-router-af",
+        test: (raw) => normalize(raw) === "network 10.1.1.100 mask 255.255.255.255",
+      },
+      {
+        mode: "config-router-af",
+        test: (raw) => normalize(raw) === "network 209.165.201.0 mask 255.255.255.248",
+      },
+      {
+        mode: "config-router-af",
+        test: (raw) => normalize(raw) === "network 209.165.201.8 mask 255.255.255.248",
+      },
+      { mode: "config-router-af", test: (raw) => normalize(raw) === "end" },
+    ];
+
+    const scrollback = document.getElementById("scrollback");
+    const scrollbackR2 = document.getElementById("scrollbackR2");
+    const scrollbackR3 = document.getElementById("scrollbackR3");
+    const promptEl = document.getElementById("prompt");
+    const promptR2 = document.getElementById("promptR2");
+    const promptR3 = document.getElementById("promptR3");
+    const cmdline = document.getElementById("cmdline");
+    const cmdlineR2 = document.getElementById("cmdlineR2");
+    const cmdlineR3 = document.getElementById("cmdlineR3");
+    const passBanner = document.getElementById("passBanner");
+    const resetBtn = document.getElementById("resetBtn");
+    const modalR1 = document.getElementById("modalR1");
+    const modalR2 = document.getElementById("modalR2");
+    const modalR3 = document.getElementById("modalR3");
+    const openDeviceCliLink = document.getElementById("openDeviceCliLink");
+
+    let r1Mode = "exec";
+    let r2Mode = "exec";
+    let r3Mode = "exec";
+
+    const histories = { R1: [], R2: [], R3: [] };
+    const historyIndex = { R1: -1, R2: -1, R3: -1 };
+
+    function promptFromMode(hostname, mode) {
+      if (mode === "config") return `${hostname}(config)#`;
+      if (mode === "config-router") return `${hostname}(config-router)#`;
+      if (mode === "config-router-af") return `${hostname}(config-router-af)#`;
+      return `${hostname}#`;
+    }
+
+    function updateReadonlyPrompts() {
+      promptR2.textContent = promptFromMode("R2", r2Mode);
+      promptR3.textContent = promptFromMode("R3", r3Mode);
+    }
+
+    function applyR1ModeFromAcceptedStep(raw) {
+      const u = normalize(raw);
+      if (u === "configure terminal" || u === "conf t") {
+        r1Mode = "config";
+        return;
+      }
+      if (u.startsWith("router bgp ")) {
+        r1Mode = "config-router";
+        return;
+      }
+      if (u === "address-family ipv4" || u === "address-family ipv4 unicast") {
+        r1Mode = "config-router-af";
+        return;
+      }
+      if (u === "end") {
+        r1Mode = "exec";
+      }
+    }
+
+    function pushHistory(device, value) {
+      if (!value || !value.trim()) return;
+      const list = histories[device];
+      if (!list.length || list[list.length - 1] !== value) list.push(value);
+      historyIndex[device] = list.length;
+    }
+
+    function attachHistory(inputEl, device) {
+      inputEl.addEventListener("keydown", (e) => {
+        if (e.key !== "ArrowUp" && e.key !== "ArrowDown") return;
+        e.preventDefault();
+        const list = histories[device];
+        if (!list.length) return;
+        if (e.key === "ArrowUp") {
+          historyIndex[device] = Math.max(0, historyIndex[device] - 1);
+          inputEl.value = list[historyIndex[device]] || "";
+          return;
+        }
+        historyIndex[device] = Math.min(list.length, historyIndex[device] + 1);
+        inputEl.value = historyIndex[device] >= list.length ? "" : (list[historyIndex[device]] || "");
+      });
+    }
+
+    function tryHandleModeNavigation(raw, getMode, setMode, hostname, scrollEl) {
+      const u = normalize(raw);
+      const mode = getMode();
+      const isConfig = mode !== "exec";
+
+      if (u === "configure terminal" || u === "conf t") {
+        if (mode !== "exec") {
+          appendLine(scrollEl, "line-bad", "% Invalid input");
+          return true;
+        }
+        setMode("config");
+        return true;
+      }
+
+      if (u.startsWith("router bgp ")) {
+        if (mode !== "config") {
+          appendLine(scrollEl, "line-bad", "% Invalid input");
+          return true;
+        }
+        setMode("config-router");
+        return true;
+      }
+
+      if (u === "address-family ipv4" || u === "address-family ipv4 unicast") {
+        if (mode !== "config-router") {
+          appendLine(scrollEl, "line-bad", "% Invalid input");
+          return true;
+        }
+        setMode("config-router-af");
+        return true;
+      }
+
+      if (u === "end") {
+        if (!isConfig) {
+          appendLine(scrollEl, "line-bad", "% Invalid input");
+          return true;
+        }
+        setMode("exec");
+        return true;
+      }
+
+      if (u === "exit") {
+        if (mode === "config-router-af") {
+          setMode("config-router");
+          return true;
+        }
+        if (mode === "config-router") {
+          setMode("config");
+          return true;
+        }
+        if (mode === "config") {
+          setMode("exec");
+          return true;
+        }
+        appendLine(scrollEl, "line-sys", `${hostname}: use "end" to leave configuration modes when applicable.`);
+        return true;
+      }
+
+      return false;
+    }
+
+    function getEbgpNeighbor2Dev() {
+      const sel = document.querySelector('input[name="ebgpNeighbor2Dev"]:checked');
+      return sel ? sel.value : "R1";
+    }
+
+    function closeModals() {
+      modalR1.classList.remove("is-open");
+      modalR1.setAttribute("aria-hidden", "true");
+      modalR2.classList.remove("is-open");
+      modalR2.setAttribute("aria-hidden", "true");
+      modalR3.classList.remove("is-open");
+      modalR3.setAttribute("aria-hidden", "true");
+    }
+
+    function openSelectedCliModal() {
+      const d = getEbgpNeighbor2Dev();
+      if (d === "R2") {
+        modalR2.classList.add("is-open");
+        modalR2.setAttribute("aria-hidden", "false");
+      } else if (d === "R3") {
+        modalR3.classList.add("is-open");
+        modalR3.setAttribute("aria-hidden", "false");
+      } else {
+        modalR1.classList.add("is-open");
+        modalR1.setAttribute("aria-hidden", "false");
+      }
+      focusActiveCli();
+    }
+
+    function focusActiveCli() {
+      if (modalR3.classList.contains("is-open")) {
+        cmdlineR3.focus();
+        return;
+      }
+      if (modalR2.classList.contains("is-open")) {
+        cmdlineR2.focus();
+        return;
+      }
+      if (modalR1.classList.contains("is-open") && !cmdline.disabled) {
+        cmdline.focus();
+      }
+    }
+
+    function applyPhaseUI() {
+      setPrompt();
+      focusActiveCli();
+    }
+
+    let phase = "BRIEF";
+    let stepIndex = 0;
+
+    function appendLine(scrollEl, className, text) {
+      const div = document.createElement("div");
+      div.className = className;
+      div.textContent = text;
+      scrollEl.appendChild(div);
+      scrollEl.scrollTop = scrollEl.scrollHeight;
+    }
+
+    function appendBlock(scrollEl, className, text) {
+      const div = document.createElement("div");
+      div.className = className;
+      div.style.whiteSpace = "pre-wrap";
+      div.textContent = text;
+      scrollEl.appendChild(div);
+      scrollEl.scrollTop = scrollEl.scrollHeight;
+    }
+
+    function currentSteps() {
+      if (phase === "BRIEF") return [{ mode: "exec", test: testShowBrief }];
+      if (phase === "BGP") return BGP_ALL;
+      if (phase === "SAVE") return [{ mode: "exec", test: matchCopy }];
+      return [];
+    }
+
+    function setPrompt() {
+      promptEl.textContent = promptFromMode("R1", r1Mode);
+    }
+
+    function reset() {
+      closeModals();
+      phase = "BRIEF";
+      stepIndex = 0;
+      r1Mode = "exec";
+      r2Mode = "exec";
+      r3Mode = "exec";
+      scrollback.innerHTML = "";
+      scrollbackR2.innerHTML = "";
+      scrollbackR3.innerHTML = "";
+      passBanner.classList.remove("visible");
+      cmdline.disabled = false;
+      cmdline.value = "";
+      cmdlineR2.value = "";
+      cmdlineR3.value = "";
+      histories.R1 = [];
+      histories.R2 = [];
+      histories.R3 = [];
+      historyIndex.R1 = -1;
+      historyIndex.R2 = -1;
+      historyIndex.R3 = -1;
+      appendLine(
+        scrollback,
+        "line-sys",
+        "R1: interfaces and loopbacks are up. eBGP is on R2/R3 only — configure R1 (AS 100)."
+      );
+      applyPhaseUI();
+      updateReadonlyPrompts();
+      openDeviceCliLink.focus();
+    }
+
+    function submitR2() {
+      const prompt = promptR2.textContent;
+      const line = cmdlineR2.value;
+      appendLine(scrollbackR2, "line-user", `${prompt} ${line}`);
+      cmdlineR2.value = "";
+      if (!line.trim()) return;
+      pushHistory("R2", line);
+
+      const execShow = matchShowRunExec(line) && r2Mode === "exec";
+      const doShowFromExec =
+        matchDoShowRun(line) && r2Mode !== "exec";
+      if (execShow || doShowFromExec) {
+        appendLine(scrollbackR2, "line-sys", "Building configuration...");
+        appendBlock(scrollbackR2, "line-out", R2_SHOW_RUN_TEXT);
+        return;
+      }
+
+      if (matchShowBgpSummary(line)) {
+        if (phase === "DONE") {
+          appendBlock(scrollbackR2, "line-out", R2_R3_BGP_END_TEXT);
+        } else {
+          appendLine(scrollbackR2, "line-bad", "% Invalid input");
+        }
+        return;
+      }
+
+      if (
+        tryHandleModeNavigation(
+          line,
+          () => r2Mode,
+          (m) => {
+            r2Mode = m;
+            updateReadonlyPrompts();
+          },
+          "R2",
+          scrollbackR2
+        )
+      ) return;
+
+      appendLine(
+        scrollbackR2,
+        "line-bad",
+        "% Invalid input"
+      );
+    }
+
+    function submitR3() {
+      const prompt = promptR3.textContent;
+      const line = cmdlineR3.value;
+      appendLine(scrollbackR3, "line-user", `${prompt} ${line}`);
+      cmdlineR3.value = "";
+      if (!line.trim()) return;
+      pushHistory("R3", line);
+
+      const execShow = matchShowRunExec(line) && r3Mode === "exec";
+      const doShowFromExec = matchDoShowRun(line) && r3Mode !== "exec";
+      if (execShow || doShowFromExec) {
+        appendLine(scrollbackR3, "line-sys", "Building configuration...");
+        appendBlock(scrollbackR3, "line-out", R3_SHOW_RUN_TEXT);
+        return;
+      }
+
+      if (matchShowBgpSummary(line)) {
+        if (phase === "DONE") {
+          appendBlock(scrollbackR3, "line-out", R2_R3_BGP_END_TEXT);
+        } else {
+          appendLine(scrollbackR3, "line-bad", "% Invalid input");
+        }
+        return;
+      }
+
+      if (
+        tryHandleModeNavigation(
+          line,
+          () => r3Mode,
+          (m) => {
+            r3Mode = m;
+            updateReadonlyPrompts();
+          },
+          "R3",
+          scrollbackR3
+        )
+      ) return;
+
+      appendLine(
+        scrollbackR3,
+        "line-bad",
+        "% Invalid input"
+      );
+    }
+
+    function submit() {
+      if (phase === "DONE") return;
+      const steps = currentSteps();
+      if (phase !== "BRIEF" && phase !== "SAVE" && stepIndex >= steps.length) return;
+
+      const prompt = promptEl.textContent;
+      const line = cmdline.value;
+      appendLine(scrollback, "line-user", `${prompt} ${line}`);
+      cmdline.value = "";
+      if (!line.trim()) return;
+      pushHistory("R1", line);
+
+      if (phase !== "DONE") {
+        const execShow = matchShowRunExec(line) && prompt === "R1#";
+        const doShow =
+          matchDoShowRun(line) &&
+          (prompt === "R1(config)#" ||
+            prompt === "R1(config-router)#" ||
+            prompt === "R1(config-router-af)#");
+        if (execShow || doShow) {
+          appendLine(scrollback, "line-sys", "Building configuration...");
+          appendBlock(scrollback, "line-out", R1_SHOW_RUN_TEXT);
+          applyPhaseUI();
+          return;
+        }
+      }
+
+      if (phase === "BRIEF") {
+        if (testShowBrief(line)) {
+          appendBlock(scrollback, "line-sys", OUT_BRIEF);
+          appendLine(scrollback, "line-sys", "[OK] Router-id from Lo0 = 10.1.1.100. Enter configuration.");
+          phase = "BGP";
+          stepIndex = 0;
+          applyPhaseUI();
+        } else {
+          const normalized = normalize(line);
+          if (
+            tryHandleModeNavigation(
+              line,
+              () => r1Mode,
+              (m) => {
+                r1Mode = m;
+                applyPhaseUI();
+              },
+              "R1",
+              scrollback
+            )
+          ) {
+            // If tester starts configuring immediately, move into graded BGP phase.
+            if (normalized === "router bgp 100") {
+              phase = "BGP";
+              stepIndex = 1;
+              appendLine(scrollback, "line-sys", "[OK] BGP process started. Continue router configuration.");
+              applyPhaseUI();
+            }
+            return;
+          }
+          appendLine(scrollback, "line-bad", "% Invalid input");
+        }
+        return;
+      }
+
+      if (phase === "SAVE") {
+        if (testShowBgpSummary(line)) {
+          appendBlock(scrollback, "line-out", OUT_BGP_SUMMARY);
+          return;
+        }
+        if (matchShowIpBgp(line)) {
+          appendBlock(scrollback, "line-out", OUT_SHOW_IP_BGP);
+          return;
+        }
+        if (matchCopy(line)) {
+          appendLine(scrollback, "line-sys", "[OK] Building configuration... (simulated).");
+          phase = "DONE";
+          passBanner.classList.add("visible");
+          cmdline.disabled = true;
+          applyPhaseUI();
+        } else {
+          if (
+            tryHandleModeNavigation(
+              line,
+              () => r1Mode,
+              (m) => {
+                r1Mode = m;
+                applyPhaseUI();
+              },
+              "R1",
+              scrollback
+            )
+          ) return;
+          appendLine(scrollback, "line-bad", "% Invalid input");
+        }
+        return;
+      }
+
+      if (phase === "DONE") {
+        if (matchShowIpBgp(line)) {
+          appendBlock(scrollback, "line-out", OUT_SHOW_IP_BGP);
+          return;
+        }
+      }
+
+      if (!steps[stepIndex].test(line)) {
+        if (
+          tryHandleModeNavigation(
+            line,
+            () => r1Mode,
+            (m) => {
+              r1Mode = m;
+              applyPhaseUI();
+            },
+            "R1",
+            scrollback
+          )
+        ) return;
+        appendLine(
+          scrollback,
+          "line-bad",
+          "% Invalid input"
+        );
+        return;
+      }
+
+      stepIndex += 1;
+      applyR1ModeFromAcceptedStep(line);
+      if (stepIndex >= steps.length) {
+        appendLine(scrollback, "line-sys", "[OK] eBGP + advertisements (simulated). Save.");
+        phase = "SAVE";
+        stepIndex = 0;
+        r1Mode = "exec";
+        applyPhaseUI();
+      } else {
+        applyPhaseUI();
+      }
+    }
+
+    cmdline.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submit();
+      }
+    });
+
+    cmdlineR2.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitR2();
+      }
+    });
+
+    cmdlineR3.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitR3();
+      }
+    });
+
+    attachHistory(cmdline, "R1");
+    attachHistory(cmdlineR2, "R2");
+    attachHistory(cmdlineR3, "R3");
+
+    if (resetBtn) resetBtn.addEventListener("click", reset);
+    openDeviceCliLink.addEventListener("click", openSelectedCliModal);
+    document.getElementById("closeR1").addEventListener("click", () => {
+      closeModals();
+      openDeviceCliLink.focus();
+    });
+    document.getElementById("closeR2").addEventListener("click", () => {
+      closeModals();
+      openDeviceCliLink.focus();
+    });
+    document.getElementById("closeR3").addEventListener("click", () => {
+      closeModals();
+      openDeviceCliLink.focus();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      if (modalR3.classList.contains("is-open")) {
+        e.preventDefault();
+        closeModals();
+        openDeviceCliLink.focus();
+        return;
+      }
+      if (modalR2.classList.contains("is-open")) {
+        e.preventDefault();
+        closeModals();
+        openDeviceCliLink.focus();
+        return;
+      }
+      if (!modalR1.classList.contains("is-open")) return;
+      e.preventDefault();
+      closeModals();
+      openDeviceCliLink.focus();
+    });
+
+    document.querySelectorAll('input[name="ebgpNeighbor2Dev"]').forEach((r) => {
+      r.addEventListener("change", () => {
+        openDeviceCliLink.focus();
+      });
+    });
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    reset();
+  </script>
+
+<script>
+(function(){
+  if (window.__labHelperSpoilerInit) return;
+  window.__labHelperSpoilerInit = true;
+
+  const helperBtn = document.getElementById('openHelperFileBtn');
+  const resetInlineBtn = document.getElementById('inlineResetLabBtn');
+  const spoilerBtn = document.getElementById('openSpoilerBtn');
+  if (!helperBtn && !resetInlineBtn && !spoilerBtn) return;
+
+
+  function createModal(id, title, bodyNode){
+    const overlay = document.createElement('div');
+    overlay.id = id + 'Overlay';
+    overlay.className = 'cli-modal-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.innerHTML = `
+      <div id="${id}Dialog" class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="${id}Title" tabindex="-1">
+        <header class="cli-modal-header">
+          <h2 id="${id}Title">${title}</h2>
+          <button type="button" class="cli-modal-close" aria-label="Close">×</button>
+        </header>
+        <div class="cli-modal-body"></div>
+      </div>`;
+    overlay.querySelector('.cli-modal-body').appendChild(bodyNode);
+    document.body.appendChild(overlay);
+    const closeBtn = overlay.querySelector('.cli-modal-close');
+    const close = () => { overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true'); };
+    const open = () => { overlay.classList.add('is-open'); overlay.setAttribute('aria-hidden', 'false'); };
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    return { open, close, overlay };
+  }
+
+  function normalizeLine(text){
+    return (text || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function buildSpoilerCliFromHint(hint){
+    const root = document.createElement('div');
+    root.className = 'topology-scrape';
+    const h2 = document.createElement('h2');
+    h2.textContent = 'Lab Solution (Spoiler)';
+    root.appendChild(h2);
+
+    const stack = document.createElement('div');
+    stack.className = 'spoiler-cli-stack';
+
+    const clone = hint.cloneNode(true);
+    const summary = clone.querySelector('summary');
+    if (summary) summary.remove();
+
+    let currentDevice = 'Device';
+    let buffer = [];
+    const sections = [];
+
+    function flush(){
+      if (!buffer.length) return;
+      sections.push({ device: currentDevice, lines: buffer.slice() });
+      buffer = [];
+    }
+
+    for (const node of Array.from(clone.children)) {
+      const tag = node.tagName ? node.tagName.toLowerCase() : '';
+
+      if (tag === 'p') {
+        const strong = node.querySelector('strong');
+        if (strong) {
+          flush();
+          const t = normalizeLine(strong.textContent).replace(/:$/, '');
+          currentDevice = t || currentDevice;
+          continue;
+        }
+        const txt = normalizeLine(node.textContent);
+        if (txt) buffer.push(txt);
+        continue;
+      }
+
+      if (tag === 'ol' || tag === 'ul') {
+        const lines = Array.from(node.querySelectorAll('li')).map(li => normalizeLine(li.textContent)).filter(Boolean);
+        if (lines.length) {
+          flush();
+          sections.push({ device: currentDevice, lines });
+        }
+        continue;
+      }
+
+      if (tag === 'pre') {
+        const txt = node.textContent || '';
+        const lines = txt.split(/\r?\n/).map(normalizeLine).filter(Boolean);
+        if (lines.length) {
+          flush();
+          sections.push({ device: currentDevice, lines });
+        }
+        continue;
+      }
+
+      const txt = normalizeLine(node.textContent || '');
+      if (txt) buffer.push(txt);
+    }
+    flush();
+
+    if (!sections.length) {
+      const p = document.createElement('p');
+      p.textContent = 'No spoiler solution content is available for this lab.';
+      root.appendChild(p);
+      return root;
+    }
+
+    sections.forEach(sec => {
+      const item = document.createElement('div');
+      item.className = 'spoiler-cli-item';
+      const label = document.createElement('div');
+      label.className = 'spoiler-cli-label';
+      label.textContent = sec.device || 'Device';
+      const pre = document.createElement('pre');
+      pre.className = 'spoiler-cli-pre';
+      pre.textContent = sec.lines.join('\n');
+      item.appendChild(label);
+      item.appendChild(pre);
+      stack.appendChild(item);
+    });
+
+    root.appendChild(stack);
+    return root;
+  }
+
+  const helperSource = document.querySelector('.topology-scrape');
+  let helperModal = null;
+  if (helperSource) {
+    const helperBody = helperSource.cloneNode(true);
+    helperBody.style.display = '';
+    helperBody.removeAttribute('hidden');
+    helperSource.remove();
+    helperModal = createModal('helperFile', 'Helper File', helperBody);
+  } else {
+    const empty = document.createElement('div');
+    empty.className = 'topology-scrape';
+    empty.innerHTML = '<h2>Helper File</h2><p>No helper file is available for this lab.</p>';
+    helperModal = createModal('helperFile', 'Helper File', empty);
+  }
+
+  const hint = document.querySelector('details.hint');
+  let spoilerModal = null;
+  if (hint) {
+    const spoilerBody = buildSpoilerCliFromHint(hint);
+    spoilerBody.style.display = '';
+    spoilerBody.removeAttribute('hidden');
+    spoilerModal = createModal('spoiler', 'Lab Solution (Spoiler)', spoilerBody);
+  }
+
+  helperBtn && helperBtn.addEventListener('click', () => helperModal && helperModal.open());
+  spoilerBtn && spoilerBtn.addEventListener('click', () => spoilerModal && spoilerModal.open());
+  resetInlineBtn && resetInlineBtn.addEventListener('click', () => {
+    const rb = document.getElementById('resetBtn');
+    if (rb) rb.click();
+    else if (typeof window.reset === 'function') window.reset();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (spoilerModal && spoilerModal.overlay.classList.contains('is-open')) spoilerModal.close();
+    else if (helperModal && helperModal.overlay.classList.contains('is-open')) helperModal.close();
+  });
+})();
+</script>
+
+  <script src="/js/lab-modal-drag.js"></script>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question 2 - ACL JSON drag and drop</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+      padding-bottom: 88px;
+      box-sizing: border-box;
+    }
+    .card {
+      width: min(1100px, 95vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.02rem, 2vw, 1.4rem);
+      line-height: 1.35;
+    }
+    .instructions {
+      margin: 0 0 14px;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 16px;
+    }
+    .panel {
+      background: #0f1728;
+      border: 1px solid #2b3d5f;
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .code {
+      white-space: pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      line-height: 1.5;
+      font-size: 0.95rem;
+      margin: 0;
+    }
+    .drop-slot {
+      display: inline-flex;
+      min-width: 150px;
+      min-height: 30px;
+      margin: 0 4px;
+      padding: 2px 8px;
+      border-radius: 8px;
+      border: 1px dashed #5378b6;
+      background: #1a2a45;
+      vertical-align: middle;
+      align-items: center;
+      justify-content: center;
+    }
+    .drop-slot.over {
+      border-style: solid;
+      border-color: #4d89ff;
+      background: #213861;
+    }
+    .drop-slot.correct {
+      border-color: #1f7a58;
+      background: #113e2d;
+    }
+    .drop-slot.incorrect {
+      border-color: #8c3434;
+      background: #442020;
+    }
+    .bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      min-height: 56px;
+    }
+    .token {
+      padding: 8px 12px;
+      border-radius: 9px;
+      background: #dff34c;
+      color: #000;
+      border: 1px solid #a5b727;
+      font-weight: 700;
+      cursor: grab;
+      user-select: none;
+    }
+    .token:active {
+      cursor: grabbing;
+    }
+    .actions {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    button,
+    .next-link {
+      background: #254b8a;
+      color: #e6edf3;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      font-family: inherit;
+      font-size: inherit;
+    }
+    #result {
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    #result.answer {
+      flex: 1 1 100%;
+      margin: 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      line-height: 1.45;
+    }
+    #result.answer.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      color: #e6edf3;
+    }
+    #result.answer.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+      color: #e6edf3;
+    }
+    #answerDisplay {
+      margin-top: 8px;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+    #nextWrap {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>
+      Drag and drop the code snippets from the bottom onto the blanks in the JSON template to build the extended ACL request. All four snippets are used.
+    </h1>
+    <p class="instructions">
+      Fill all four blanks, then click Check Answer.
+    </p>
+    <div class="layout">
+      <section class="panel">
+        <h2 style="margin:0 0 10px;font-size:1rem;color:#f0c040;">JSON request template</h2>
+<pre class="code">"ip": {
+  "access-list": {
+    "ios-acl:extended": {
+      "ios-acl:name": "ato",
+      "ios-acl:<span class="drop-slot" data-slot="1"></span>": {
+        "ios-acl:sequence": "111111",
+        "ios-acl:ace-rule": {
+          "ios-acl:action": "<span class="drop-slot" data-slot="2"></span>",
+          "ios-acl:protocol": "<span class="drop-slot" data-slot="3"></span>",
+          "ios-acl:<span class="drop-slot" data-slot="4"></span>": ""
+        }
+      }
+    }
+  }
+}</pre>
+      </section>
+      <section class="panel">
+        <h2 style="margin:0 0 10px;font-size:1rem;color:#f0c040;">Code snippets</h2>
+        <p style="margin:0 0 10px;color:#b8c3d6;font-size:0.92rem;">Drag each token into the matching blank.</p>
+        <div id="bank" class="bank">
+          <div class="token" draggable="true" data-value="deny">deny</div>
+          <div class="token" draggable="true" data-value="access-list-seq-rule">access-list-seq-rule</div>
+          <div class="token" draggable="true" data-value="dst-any">dst-any</div>
+          <div class="token" draggable="true" data-value="ip">ip</div>
+        </div>
+        <div class="actions">
+          <button id="checkBtn" type="button">Check Answer</button>
+          <button id="showBtn" type="button">Show Answer</button>
+          <button id="resetBtn" type="button">Reset</button>
+          <span id="result"></span>
+          <span id="nextWrap"><a class="next-link" href="/question-3.html">Next</a></span>
+        </div>
+        <div id="answerDisplay"></div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const bank = document.getElementById("bank");
+    const slots = document.querySelectorAll(".drop-slot");
+    const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const result = document.getElementById("result");
+    const answerDisplay = document.getElementById("answerDisplay");
+    const nextWrap = document.getElementById("nextWrap");
+    let dragged = null;
+
+    const answers = {
+      "1": "access-list-seq-rule",
+      "2": "deny",
+      "3": "ip",
+      "4": "dst-any"
+    };
+
+    const expectedByBlank = [
+      "access-list-seq-rule",
+      "deny",
+      "ip",
+      "dst-any"
+    ];
+
+    function renderExpectedAnswers() {
+      answerDisplay.innerHTML = expectedByBlank
+        .map((value, index) => `Blank ${index + 1}: ${value}`)
+        .join("<br>");
+    }
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    document.querySelectorAll(".token").forEach((token) => {
+      token.addEventListener("dragstart", () => {
+        dragged = token;
+      });
+    });
+
+    slots.forEach((slot) => {
+      slot.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        slot.classList.add("over");
+      });
+      slot.addEventListener("dragleave", () => {
+        slot.classList.remove("over");
+      });
+      slot.addEventListener("drop", (e) => {
+        e.preventDefault();
+        slot.classList.remove("over");
+        if (!dragged) return;
+
+        const existing = slot.querySelector(".token");
+        if (existing) {
+          bank.appendChild(existing);
+        }
+        slot.appendChild(dragged);
+      });
+    });
+
+    bank.addEventListener("dragover", (e) => e.preventDefault());
+    bank.addEventListener("drop", (e) => {
+      e.preventDefault();
+      if (dragged) bank.appendChild(dragged);
+    });
+
+    checkBtn.addEventListener("click", () => {
+      let correct = 0;
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect");
+        const token = slot.querySelector(".token");
+        const expected = answers[slot.dataset.slot];
+        if (token && token.dataset.value === expected) {
+          slot.classList.add("correct");
+          correct += 1;
+        } else {
+          slot.classList.add("incorrect");
+        }
+      });
+      const full = correct === 4;
+      result.className = full ? "answer correct" : "answer incorrect";
+      result.textContent = full
+        ? "Correct. Slots 1–4: access-list-seq-rule → deny → ip → dst-any."
+        : `Incorrect. Score: ${correct}/4. Expected order: access-list-seq-rule, deny, ip, dst-any.`;
+      renderExpectedAnswers();
+      nextWrap.style.display = "inline-block";
+    });
+
+    showBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const existing = slot.querySelector(".token");
+        if (existing) bank.appendChild(existing);
+        const expected = answers[slot.dataset.slot];
+        const target = bank.querySelector(
+          `.token[data-value="${expected}"]`
+        );
+        if (target) {
+          slot.appendChild(target);
+          slot.classList.add("correct");
+        }
+      });
+      result.className = "";
+      result.textContent = "Answer shown.";
+      renderExpectedAnswers();
+      nextWrap.style.display = "inline-block";
+    });
+
+    resetBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+      result.textContent = "";
+      result.className = "";
+      answerDisplay.textContent = "";
+      nextWrap.style.display = "none";
+    });
+  </script>
+  <style>
+    .sim-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(11, 16, 32, 0.94);
+      border-top: 1px solid #2d3b5a;
+      backdrop-filter: blur(10px);
+    }
+    .sim-nav-btn {
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 700;
+      min-width: 5.5rem;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .sim-nav-btn:hover {
+      filter: brightness(1.08);
+    }
+    .sim-nav-home {
+      background: #1a3d6e;
+    }
+  </style>
+  <nav class="sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn" href="/drag-drop-sample.html">Back</a>
+    <a class="sim-nav-btn sim-nav-home" href="https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html">Home</a>
+    <a class="sim-nav-btn" href="/CCNP_Encor.html">Next</a>
+  </nav>
+  <script src="/js/practice-questions.js"></script>
+</body>
+</html>

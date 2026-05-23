@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question 234 - VACL deny HTTP permit match action</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+    }
+    .card {
+      width: min(1040px, 98vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+    }
+    .image-wrap {
+      margin-bottom: 12px;
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .image-wrap img {
+      display: block;
+      width: 100%;
+      max-width: 900px;
+      height: auto;
+      margin: 0 auto;
+    }
+    .instructions {
+      margin: 0 0 14px;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) minmax(120px, 160px);
+      gap: 12px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+    @media (max-width: 700px) {
+      .row {
+        grid-template-columns: 1fr;
+      }
+    }
+    .left-box {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #6384ba;
+      background: #cfe9ff;
+      color: #10243f;
+      font-weight: 700;
+      font-size: 0.76rem;
+      line-height: 1.35;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    .drop-slot {
+      min-height: 44px;
+      padding: 8px;
+      border-radius: 10px;
+      border: 1px dashed #d98a8a;
+      background: #f7d7d7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .drop-slot.over {
+      border-style: solid;
+      border-color: #4d89ff;
+    }
+    .drop-slot.correct {
+      border-color: #1f7a58;
+      background: #113e2d;
+    }
+    .drop-slot.incorrect {
+      border-color: #8c3434;
+      background: #442020;
+    }
+    .drop-slot .token {
+      width: 100%;
+      text-align: center;
+    }
+    .bank-wrap {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #2c3f62;
+      background: #1a253b;
+    }
+    .bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      min-height: 46px;
+    }
+    .token {
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid #6384ba;
+      background: #cfe9ff;
+      color: #10243f;
+      font-weight: 700;
+      font-size: 0.88rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      cursor: grab;
+      user-select: none;
+    }
+    .token:active {
+      cursor: grabbing;
+    }
+    .actions {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    button,
+    .next-link {
+      background: #254b8a;
+      color: #e6edf3;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-block;
+    }
+    #result {
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    #nextWrap {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <p style="margin: 0 0 8px; font-size: 0.95rem; color: #9fb0cc">Refer to the exhibit.</p>
+    <div class="image-wrap">
+      <img src="/assets/question234-vacl-topology.png" alt="SW1 SW2 VLAN 10; Host A 10.1.1.10 and Host B 10.1.1.20" />
+    </div>
+    <h1>
+      A BeCertifiedToday.com engineer must deny HTTP traffic from host A to host B while allowing all other communication between the hosts. Drag and drop the commands into the
+      configuration to achieve these results. Some commands may be used more than once. Not all commands are used.
+    </h1>
+    <p class="instructions">
+      Fill blanks (A)–(D) in order. Two tiles say “permit” so you can place one in each ACL.
+    </p>
+
+    <div class="row">
+      <div class="left-box">(A) ip access-list extended DENY-HTTP — … tcp host 10.1.1.10 host 10.1.1.20 eq www</div>
+      <div class="drop-slot" data-target="permit"></div>
+    </div>
+    <div class="row">
+      <div class="left-box">(B) ip access-list extended MATCH_ALL — … ip any any</div>
+      <div class="drop-slot" data-target="permit"></div>
+    </div>
+    <div class="row">
+      <div class="left-box">(C) vlan access-map HOST-A-B 10 — after match ip address DENY-HTTP</div>
+      <div class="drop-slot" data-target="action drop"></div>
+    </div>
+    <div class="row">
+      <div class="left-box">(D) vlan access-map HOST-A-B 20 — after match ip address MATCH_ALL</div>
+      <div class="drop-slot" data-target="action forward"></div>
+    </div>
+
+    <div class="bank-wrap">
+      <div id="bank" class="bank">
+        <div class="token" draggable="true" data-value="action drop">action drop</div>
+        <div class="token" draggable="true" data-value="action forward">action forward</div>
+        <div class="token" draggable="true" data-value="filter">filter</div>
+        <div class="token" draggable="true" data-value="match">match</div>
+        <div class="token" draggable="true" data-value="deny">deny</div>
+        <div class="token" draggable="true" data-value="permit">permit</div>
+        <div class="token" draggable="true" data-value="permit">permit</div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
+      <button id="resetBtn" type="button">Reset</button>
+      <span id="result"></span>
+      <span id="nextWrap"><a class="next-link" href="/question-235.html">Next</a></span>
+    </div>
+  </main>
+
+  <script>
+    const bank = document.getElementById("bank");
+    const slots = document.querySelectorAll(".drop-slot");
+    const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const result = document.getElementById("result");
+    const nextWrap = document.getElementById("nextWrap");
+    let dragged = null;
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    document.querySelectorAll(".token").forEach((token) => {
+      token.addEventListener("dragstart", () => {
+        dragged = token;
+      });
+    });
+
+    slots.forEach((slot) => {
+      slot.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        slot.classList.add("over");
+      });
+      slot.addEventListener("dragleave", () => slot.classList.remove("over"));
+      slot.addEventListener("drop", (e) => {
+        e.preventDefault();
+        slot.classList.remove("over");
+        if (!dragged) return;
+        const existing = slot.querySelector(".token");
+        if (existing) bank.appendChild(existing);
+        slot.appendChild(dragged);
+      });
+    });
+
+    bank.addEventListener("dragover", (e) => e.preventDefault());
+    bank.addEventListener("drop", (e) => {
+      e.preventDefault();
+      if (dragged) bank.appendChild(dragged);
+    });
+
+    checkBtn.addEventListener("click", () => {
+      let correct = 0;
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect");
+        const token = slot.querySelector(".token");
+        if (token && token.dataset.value === slot.dataset.target) {
+          slot.classList.add("correct");
+          correct += 1;
+        } else {
+          slot.classList.add("incorrect");
+        }
+      });
+      result.textContent = `Score: ${correct}/${slots.length}`;
+      nextWrap.style.display = "inline-block";
+    });
+
+    function takeTokenFromBank(value) {
+      return [...bank.querySelectorAll(".token")].find((t) => t.dataset.value === value);
+    }
+
+    showBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+
+      slots.forEach((slot) => {
+        const want = slot.dataset.target;
+        const tok = takeTokenFromBank(want);
+        if (tok) {
+          slot.appendChild(tok);
+          slot.classList.add("correct");
+        }
+      });
+
+      result.textContent = "Answer shown.";
+      nextWrap.style.display = "inline-block";
+    });
+
+    resetBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+      result.textContent = "";
+      nextWrap.style.display = "none";
+    });
+  </script>
+  <style>
+    .home-key {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+    .home-key:hover {
+      filter: brightness(1.08);
+    }
+  </style>
+  <a class="home-key" href="https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html">Home</a>
+  <script src="/js/practice-questions.js"></script>
+</body>
+</html>

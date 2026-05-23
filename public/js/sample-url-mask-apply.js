@@ -1,13 +1,18 @@
 (function () {
   try {
     var originalPath = location.pathname || "";
+    var pathLower = originalPath.toLowerCase();
     var isSamplePath =
-      originalPath.toLowerCase() === "/sample" ||
-      originalPath.toLowerCase() === "/sample/";
+      pathLower === "/sample" ||
+      pathLower === "/sample/" ||
+      pathLower === "/secplus-sample" ||
+      pathLower === "/secplus-sample/";
     if (!isSamplePath) {
       sessionStorage.setItem("ccnaLastRealPath", originalPath);
     }
-    var mask = sessionStorage.getItem("ccnpUrlMaskPath");
+    var mask =
+      sessionStorage.getItem("ccnpUrlMaskPath") ||
+      sessionStorage.getItem("secplusUrlMaskPath");
     if (!mask && /(?:\?|&)sample=1(?:&|$)/.test(location.search || "")) {
       mask = "/sample";
       sessionStorage.setItem("ccnpUrlMaskPath", mask);

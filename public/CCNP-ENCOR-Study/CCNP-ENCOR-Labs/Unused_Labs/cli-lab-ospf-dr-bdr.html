@@ -1,0 +1,1813 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
+  <title>OSPF DR/BDR Sim</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      padding-bottom: 88px;
+      box-sizing: border-box;
+    }
+    .wrap {
+      width: min(1200px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card {
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 22px 26px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.15rem, 2vw, 1.65rem);
+      line-height: 1.3;
+    }
+    .objective,
+    .tasks {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .tasks ol {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+    }
+    .tasks li {
+      margin: 6px 0;
+    }
+    .diagram-wrap {
+      background: #ffffff;
+      border: 1px solid #2d3b5a;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 14px;
+      text-align: center;
+    }
+    .diagram-wrap img {
+      max-width: 100%;
+      height: auto;
+      vertical-align: middle;
+    }
+    .diagram-wrap .tasks-top {
+      text-align: left;
+      margin-top: 14px;
+      width: 100%;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      box-sizing: border-box;
+    }
+    .diagram-wrap .tasks-top > strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #e6edf3;
+    }
+    .diagram-wrap .tasks-top .tasks-intro {
+      margin: 0 0 10px;
+    }
+    .diagram-wrap .tasks-top ol.tasks-numbered {
+      margin: 8px 0 0;
+      padding-left: 1.35rem;
+    }
+    .diagram-wrap .tasks-top ol.tasks-numbered > li {
+      margin: 12px 0;
+    }
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .device-pick label {
+      margin-left: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .device-pick input {
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .helper-file-wrap {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
+      outline: none;
+    }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+      pointer-events: none;
+    }
+    .cli-modal-overlay.is-open {
+      display: block;
+    }
+    .cli-modal-dialog {
+      width: min(520px, calc(100vw - 24px));
+      max-height: min(85vh, 720px);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
+    .terminal-panel {
+      min-width: 0;
+    }
+    .terminal-panel--waiting .terminal {
+      opacity: 0.72;
+    }
+    .terminal-panel--waiting .console-hint {
+      display: block;
+    }
+    .console-hint {
+      display: none;
+      margin: 0 0 8px;
+      font-size: 0.8rem;
+      color: #9fb0cc;
+      font-style: italic;
+      line-height: 1.35;
+    }
+    .terminal {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.88rem;
+      background: #0a0d12;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      padding: 12px 12px 10px;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      margin-top: 0;
+    }
+    .console-scroll {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 360px;
+      margin-bottom: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #c8d2e0;
+      line-height: 1.45;
+    }
+    .line-user { color: #7ec8ff; }
+    .line-bad { color: #fca5a5; }
+    .line-sys { color: #94a3b8; }
+    .line-out {
+      color: #cbd5e1;
+      font-size: 0.9em;
+      line-height: 1.45;
+    }
+    .initial-cfg {
+      margin-top: 14px;
+      text-align: left;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+      color: #b8c3d6;
+      font-size: 0.9rem;
+    }
+    .initial-cfg summary {
+      cursor: pointer;
+      color: #e6edf3;
+    }
+    .initial-cfg pre {
+      margin: 10px 0 0;
+      padding: 12px 14px;
+      background: #0b1020;
+      border: 1px solid #2d3b5a;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+    .input-row {
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #243044;
+      padding-top: 8px;
+    }
+    .prompt {
+      flex-shrink: 0;
+      color: #fbbf24;
+      user-select: none;
+      max-width: 100%;
+      word-break: break-word;
+    }
+    .cmdline {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      color: #e6edf3;
+      font: inherit;
+      outline: none;
+      padding: 4px 0 4px 4px;
+    }
+    .cmdline:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-secondary {
+      background: #2a3040;
+      border-color: #4b556b;
+    }
+    .pass-banner {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .pass-banner.visible {
+      display: block;
+    }
+    .site-disclaimer {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid #2d3b5a;
+      background: #0f1729;
+      color: #9fb0cc;
+      font-size: 0.82rem;
+      line-height: 1.55;
+    }
+    .topology-scrape,
+    .topology-scrape * {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    .topology-scrape li + li {
+      margin-top: 0.5em;
+    }
+    .topology-scrape .helper-part-two-title {
+      margin: 16px 0 8px;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+    .topology-scrape .helper-part-two,
+    .topology-scrape .helper-part-two li {
+      font-size: 1.06rem;
+      line-height: 1.55;
+    }
+    .topology-scrape .helper-cli {
+      margin: 6px 0 12px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #3a3a3a;
+      background: #000000;
+      color: #f5f5f5;
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .topology-scrape .helper-device {
+      margin: 10px 0 4px;
+      font-weight: 700;
+    }
+    .sim-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(11, 16, 32, 0.94);
+      border-top: 1px solid #2d3b5a;
+      backdrop-filter: blur(10px);
+    }
+    .sim-nav-btn {
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 700;
+      min-width: 5.5rem;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .sim-nav-btn:hover { filter: brightness(1.08); }
+    .sim-nav-home { background: #1a3d6e; }
+    .sim-nav-next { background: #1a3d6e; }
+    .sim-nav-back { background: #243352; border-color: #3d5280; }
+  
+    /* CLI: avoid white native input fill — transparent text fields on dark terminals */
+    .cli-modal-dialog,
+    .terminal {
+      color-scheme: dark;
+    }
+    .terminal input[type="text"],
+    input.cmdline,
+    #cmdline,
+    #cmdlineR2,
+    #cmdlineR3 {
+      color-scheme: dark;
+      -webkit-appearance: none;
+      appearance: none;
+      background-color: transparent !important;
+    }
+
+  
+    .site-logo-corner {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 12000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(11, 16, 32, 0.55);
+      border: 1px solid #2d3b5a;
+      padding: 6px;
+      backdrop-filter: blur(4px);
+    }
+    .site-logo-corner img {
+      display: block;
+      width: 52px;
+      height: 52px;
+    }
+</style>
+</head>
+<body>
+  <a class="site-logo-corner" href="https://becertifiedtoday.com/" aria-label="Go to training portal home">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+  </a>
+
+  <div class="wrap">
+    <main class="card">
+      <h1>OSPF DR/BDR Sim</h1>
+
+      <div class="diagram-wrap" aria-label="OSPF multi-area topology: areas 0, 10, 20 with R1 R2 R3 R10 R20">
+              <img
+                src="/assets/ospf-dr-bdr-lab-v2.png"
+               
+               
+                alt="OSPF areas 0, 10, and 20: R20–R3 in area 20; R3, R1, R2 in area 0; R2–R10 in area 10"
+               width="680" height="731" />
+              
+              <div class="device-pick" role="group" aria-label="Device in prompt">
+                <strong>Device in prompt:</strong>
+                <label><input type="radio" name="ospfDrBdrDev" value="R3" checked /> R3</label>
+                <label><input type="radio" name="ospfDrBdrDev" value="R20" /> R20</label>
+                <label><input type="radio" name="ospfDrBdrDev" value="R10" /> R10</label>
+                <label><input type="radio" name="ospfDrBdrDev" value="SW10" /> SW10</label>
+              </div>
+              <div class="device-links">
+                <button type="button" class="device-link" id="openDeviceCliLink">Open Router CLI</button>
+              </div>
+<div class="tasks tasks-top">
+                <strong>Tasks</strong>
+                <p class="tasks-intro">
+                  BeCertifiedToday.com site engineers inherited a partially configured OSPF deployment on these devices. Complete the remaining configuration to achieve these results:
+                </p>
+                <ol class="tasks-numbered">
+                  <li>Configure <strong>R3</strong> so that <strong>R20</strong> is always designated as the BDR.</li>
+                  <li>
+                    <strong>SW10 side (Task 2):</strong> on <strong>R10</strong>, toward the SW10 uplink, set OSPF priority 0 so R10 does not participate in the DR/BDR election. Do not use the
+                    <code>ip ospf network point-to-point</code> command under the interface configuration to accomplish this task.
+                  </li>
+                </ol>
+              </div>
+              <div class="helper-file-wrap">
+                <button type="button" class="device-link" id="openHelperFileBtn">Helper File</button>
+                <button type="button" class="device-link" id="inlineResetLabBtn">Reset lab</button>
+                <button type="button" class="device-link" id="openSpoilerBtn">Spoiler</button>
+              </div>
+
+
+            </div>
+
+      <div id="passBanner" class="pass-banner" role="status">
+        Lab complete. R3 should win DR over R20 (BDR) on 10.2.203.0/24; R10 is DROTHER with priority 0; configs saved on R3, R20, and R10.
+      </div>
+      <p class="site-disclaimer">
+        Disclaimer: This website is an independent training resource created for educational purposes only. It is not affiliated with, endorsed by, sponsored by, or approved by Cisco Systems, Inc. Cisco and related trademarks are the property of Cisco Systems, Inc. All practice questions, explanations, and study materials on this site are original or based on general knowledge and are intended as a guide to help users prepare for certification exams. Practice questions are not actual Cisco exam questions. Any similarity to official exam content is coincidental.
+      </p>
+
+      <div class="spoiler-source" style="display:none;">
+        <p><strong>R3</strong></p>
+        <ol>
+          <li><code>R3#conf t</code></li>
+          <li><code>R3(config)#int e0/1</code></li>
+          <li><code>R3(config-if)#ip ospf priority 255</code></li>
+          <li><code>R3(config-if)#end</code></li>
+        </ol>
+        <p><strong>R20</strong></p>
+        <ol>
+          <li><code>R20#clear ip ospf process</code></li>
+          <li><code>Reset all OSPF processes? [no]: y</code></li>
+          <li><code>R20#conf t</code></li>
+          <li><code>R20(config)#int e0/0</code></li>
+          <li><code>R20(config-if)#ip address 10.2.203.20 255.255.255.0</code></li>
+          <li><code>R20(config-if)#ip ospf priority 254</code></li>
+          <li><code>R20(config-if)#exit</code></li>
+          <li><code>R20(config)#router ospf 1</code></li>
+          <li><code>R20(config-router)#network 10.2.203.0 0.0.0.255 area 20</code></li>
+          <li><code>R20(config-router)#end</code></li>
+        </ol>
+        <p><strong>SW10 side (R10)</strong></p>
+        <ol>
+          <li><code>R10#conf t</code></li>
+          <li><code>R10(config)#int e0/0</code></li>
+          <li><code>R10(config-if)#ip ospf priority 0</code></li>
+          <li><code>R10(config-if)#exit</code></li>
+          <li><code>R10(config)#end</code></li>
+        </ol>
+        <p><strong>Save</strong></p>
+        <ol>
+          <li><code>R3# copy running-config startup-config</code></li>
+          <li><code>R20# copy running-config startup-config</code></li>
+          <li><code>R10# copy running-config startup-config</code></li>
+        </ol>
+      </div>
+      <div class="topology-scrape" style="display:none;">
+        <h2>Helper File</h2>
+        <ul>
+          <li>Configure R3 so that R20 is always designated as the BDR.</li>
+          <li>Set R3 as DR with the highest OSPF priority so R20 will be BDR.</li>
+          <li>Reset the election by clearing OSPF on R20 (not R3).</li>
+        </ul>
+        <p class="helper-device">R3</p>
+        <pre class="helper-cli">R3#conf t
+R3(config)#int e0/1
+R3(config-if)#ip ospf priority 255
+R3(config-if)#end</pre>
+        <p class="helper-device">R20</p>
+        <pre class="helper-cli">R20#clear ip ospf process
+Reset all OSPF processes? [no]: y
+R20#conf t
+R20(config)#int e0/0
+R20(config-if)#ip address 10.2.203.20 255.255.255.0
+R20(config-if)#ip ospf priority 254
+R20(config-if)#exit
+R20(config)#router ospf 1
+R20(config-router)#network 10.2.203.0 0.0.0.255 area 20
+R20(config-router)#end</pre>
+        <p class="helper-device">R20 Initial Config</p>
+        <pre class="helper-cli">interface Ethernet0/0
+ ip address 10.2.203.20 255.255.255.0
+ ip ospf priority 254
+!
+router ospf 1
+ network 10.2.203.0 0.0.0.255 area 20</pre>
+        <p class="helper-part-two-title"><strong>Task 1 Verification</strong></p>
+        <ul class="helper-part-two">
+          <li>On R3, run <code>show ip ospf neighbor</code> and confirm R20 is BDR.</li>
+        </ul>
+        <pre class="helper-cli">R3#show ip ospf neighbor
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.0.3.1          1   FULL/DR         00:00:37    10.0.3.1        Ethernet0/0
+10.2.203.20     254   FULL/BDR        00:00:38    10.2.203.20     Ethernet0/1</pre>
+        <p class="helper-part-two-title"><strong>Task 2 — SW10 side</strong></p>
+        <ul class="helper-part-two">
+          <li>Task 2 is entered on <strong>R10</strong> (interface toward <strong>SW10</strong>).</li>
+          <li>Configure R10 so it does not participate in DR/BDR election.</li>
+          <li>Do not use <code>ip ospf network point-to-point</code>.</li>
+          <li>Set OSPF priority to 0 on the uplink to SW10.</li>
+        </ul>
+        <p class="helper-device">SW10 side (on R10)</p>
+        <pre class="helper-cli">R10#conf t
+R10(config)#int e0/0
+R10(config-if)#ip ospf priority 0
+R10(config-if)#exit
+R10(config)#end</pre>
+        <p class="helper-device">R10 Initial Config</p>
+        <pre class="helper-cli">interface Ethernet0/0
+ ip address 10.1.102.10 255.255.255.0
+!
+router ospf 1
+ network 10.1.102.0 0.0.0.255 area 10</pre>
+        <p class="helper-part-two-title"><strong>Task 2 Verification</strong></p>
+        <ul class="helper-part-two">
+          <li>On R2, run <code>show ip ospf nei</code> and confirm R10 is DROTHER.</li>
+        </ul>
+        <pre class="helper-cli">R2#show ip ospf nei
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.0.3.1          1   FULL/BDR        00:00:37    10.0.2.1        Ethernet0/0
+10.1.102.10       0   FULL/DROTHER    00:00:36    10.1.102.10     Ethernet0/1</pre>
+        <p class="helper-part-two-title"><strong>Save the configuration</strong></p>
+        <pre class="helper-cli">R3# copy running-config startup-config
+R20# copy running-config startup-config
+R10# copy running-config startup-config</pre>
+      </div>
+      <button type="button" class="btn btn-secondary" id="resetBtn" style="display:none;">Reset lab</button>
+    </main>
+  </div>
+
+  <div id="modalR3" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR3" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR3">R3 — CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR3" aria-label="Close R3 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel" id="panelR3">
+          <p class="console-hint">Raise OSPF priority on <code>e0/1</code> toward R20 when the lab is on this step, then return to exec. From <code>R3#</code> use <code>show run</code> anytime to review the starting config; in config mode use <code>do show run</code>. Later you will save here.</p>
+          <div class="terminal" aria-label="R3 CLI">
+            <div class="console-scroll" id="scrollR3"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR3">R3#</span>
+              <input class="cmdline" id="cmdR3" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R3 command line" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="modalR20" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR20" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR20">R20 — CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR20" aria-label="Close R20 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel terminal-panel--waiting" id="panelR20">
+          <p class="console-hint">Use <code>show run</code> from <code>R20#</code> anytime to review the starting config. When the lab reaches this step, run <code>clear ip ospf process</code> and confirm with <code>y</code>. After R3 is saved, you will save here, then R10.</p>
+          <div class="terminal" aria-label="R20 CLI">
+            <div class="console-scroll" id="scrollR20"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR20">R20#</span>
+              <input class="cmdline" id="cmdR20" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R20 command line" disabled />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="modalR2" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR2" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR2">R2 — CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR2" aria-label="Close R2 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel" id="panelR2">
+          <p class="console-hint">Use <code>show ip ospf neighbors</code> to verify Task 2 state from R2.</p>
+          <div class="terminal" aria-label="R2 CLI">
+            <div class="console-scroll" id="scrollR2"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR2">R2#</span>
+              <input class="cmdline" id="cmdR2" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R2 command line" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="modalSw10" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="modalSw10Dialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitleSw10"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="modalTitleSw10">SW10 — reference (site LAN)</h2>
+        <button type="button" class="cli-modal-close" id="closeSw10Modal" aria-label="Close SW10 window">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <p class="console-hint" style="margin:0 0 10px;">
+          Task 2 OSPF commands are entered on <strong>R10</strong> toward this switch: <code>R10(config)#int e0/0</code> then <code>ip ospf priority 0</code>.
+        </p>
+        <div class="terminal" aria-label="SW10 reference config">
+          <div class="console-scroll">hostname Sw10
+vlan 100
+exit
+!
+interface e0/0
+switchport trunk encapsulation dot1q
+switchport mode trunk
+no shut
+!
+interface e0/1
+switchport mode access
+switchport access vlan 100
+no shut</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalR10" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR10" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR10">R10 — CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR10" aria-label="Close R10 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel terminal-panel--waiting" id="panelR10">
+          <p class="console-hint">From <code>R10#</code> use <code>show run</code> anytime for the starting config; in config mode use <code>do show run</code>. When the lab reaches this step, set OSPF priority 0 on <code>e0/0</code>. Save last on this console.</p>
+          <div class="terminal" aria-label="R10 CLI">
+            <div class="console-scroll" id="scrollR10"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR10">R10#</span>
+              <input class="cmdline" id="cmdR10" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R10 command line" disabled />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html">Home</a>
+    <a class="sim-nav-btn sim-nav-next" href="/lab-sims-v2/cli-lab-ospf-dr-bdr-2.html">Next</a>
+    <a class="sim-nav-btn sim-nav-back" href="/cli-lab-vrf-config-sim2.html">Back</a>
+  </nav>
+
+  <script>
+    function normalize(s) {
+      return s.trim().toLowerCase().replace(/\s+/g, " ");
+    }
+
+    function matchCopy(raw) {
+      const u = normalize(raw);
+      return (
+        u === "copy running-config startup-config" ||
+        u === "copy run start" ||
+        u === "copy run startup-config"
+      );
+    }
+
+    function matchShowRunExec(raw) {
+      const u = normalize(raw);
+      return (
+        u === "show running-config" ||
+        u === "show run" ||
+        u === "sh running-config" ||
+        u === "sh run"
+      );
+    }
+
+    function matchDoShowRun(raw) {
+      const u = normalize(raw);
+      return (
+        u === "do show running-config" ||
+        u === "do show run" ||
+        u === "do sh run" ||
+        u === "do sh running-config"
+      );
+    }
+
+    function matchShowOspfNeighbor(raw) {
+      const u = normalize(raw);
+      return (
+        u === "show ip ospf neighbor" ||
+        u === "show ip ospf neighbors" ||
+        u === "show ip ospf nei"
+      );
+    }
+
+    function promptForConfig(steps, index, host) {
+      if (index >= steps.length) return `${host}#`;
+      const m = steps[index].mode;
+      if (m === "exec") return `${host}#`;
+      if (m === "config") return `${host}(config)#`;
+      if (m === "config-if") return `${host}(config-if)#`;
+      return `${host}#`;
+    }
+
+    const R3_CFG = [
+      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
+      {
+        mode: "config",
+        test: (raw) => {
+          const u = normalize(raw);
+          return u === "interface e0/1" || u === "int e0/1";
+        },
+      },
+      { mode: "config-if", test: (raw) => normalize(raw) === "ip ospf priority 255" },
+      { mode: "config-if", test: (raw) => ["end", "exit"].includes(normalize(raw)) },
+    ];
+
+    const R10_CFG = [
+      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
+      {
+        mode: "config",
+        test: (raw) => {
+          const u = normalize(raw);
+          return u === "interface e0/0" || u === "int e0/0";
+        },
+      },
+      { mode: "config-if", test: (raw) => normalize(raw) === "ip ospf priority 0" },
+      { mode: "config-if", test: (raw) => normalize(raw) === "exit" },
+      { mode: "config", test: (raw) => ["end", "exit"].includes(normalize(raw)) },
+    ];
+
+    const OSPF_CLEAR_PROMPT = "Reset all OSPF processes? [no]:";
+
+    const scrollR3 = document.getElementById("scrollR3");
+    const scrollR2 = document.getElementById("scrollR2");
+    const scrollR20 = document.getElementById("scrollR20");
+    const scrollR10 = document.getElementById("scrollR10");
+    const promptR3 = document.getElementById("promptR3");
+    const promptR2 = document.getElementById("promptR2");
+    const promptR20 = document.getElementById("promptR20");
+    const promptR10 = document.getElementById("promptR10");
+    const cmdR3 = document.getElementById("cmdR3");
+    const cmdR2 = document.getElementById("cmdR2");
+    const cmdR20 = document.getElementById("cmdR20");
+    const cmdR10 = document.getElementById("cmdR10");
+    const panelR3 = document.getElementById("panelR3");
+    const panelR2 = document.getElementById("panelR2");
+    const panelR20 = document.getElementById("panelR20");
+    const panelR10 = document.getElementById("panelR10");
+    const passBanner = document.getElementById("passBanner");
+    const resetBtn = document.getElementById("resetBtn");
+    const modalR3 = document.getElementById("modalR3");
+    const modalR2 = document.getElementById("modalR2");
+    const modalR20 = document.getElementById("modalR20");
+    const modalR10 = document.getElementById("modalR10");
+    const modalSw10 = document.getElementById("modalSw10");
+    const openDeviceCliLink = document.getElementById("openDeviceCliLink");
+
+    function syncOpenDeviceCliLabel() {
+      const d = getOspfDrBdrDev();
+      let t = "Open Router CLI";
+      if (d === "SW10") t = "Open Switch CLI";
+      openDeviceCliLink.textContent = t;
+    }
+
+    function getOspfDrBdrDev() {
+      const sel = document.querySelector('input[name="ospfDrBdrDev"]:checked');
+      return sel ? sel.value : "R3";
+    }
+
+    function closeR3Modal() {
+      modalR3.classList.remove("is-open");
+      modalR3.setAttribute("aria-hidden", "true");
+    }
+    function closeR20Modal() {
+      modalR20.classList.remove("is-open");
+      modalR20.setAttribute("aria-hidden", "true");
+    }
+    function closeR2Modal() {
+      modalR2.classList.remove("is-open");
+      modalR2.setAttribute("aria-hidden", "true");
+    }
+    function closeR10Modal() {
+      modalR10.classList.remove("is-open");
+      modalR10.setAttribute("aria-hidden", "true");
+    }
+    function closeSw10Modal() {
+      if (!modalSw10) return;
+      modalSw10.classList.remove("is-open");
+      modalSw10.setAttribute("aria-hidden", "true");
+    }
+    function closeModals() {
+      closeR3Modal();
+      closeR2Modal();
+      closeR20Modal();
+      closeR10Modal();
+      closeSw10Modal();
+    }
+
+    function openSelectedCliModal() {
+      const d = getOspfDrBdrDev();
+      if (d === "R20") {
+        modalR20.classList.add("is-open");
+        modalR20.setAttribute("aria-hidden", "false");
+      } else if (d === "R2") {
+        modalR2.classList.add("is-open");
+        modalR2.setAttribute("aria-hidden", "false");
+      } else if (d === "SW10") {
+        if (modalSw10) {
+          modalSw10.classList.add("is-open");
+          modalSw10.setAttribute("aria-hidden", "false");
+        }
+      } else if (d === "R10") {
+        modalR10.classList.add("is-open");
+        modalR10.setAttribute("aria-hidden", "false");
+      } else {
+        modalR3.classList.add("is-open");
+        modalR3.setAttribute("aria-hidden", "false");
+      }
+      applyPhaseUI();
+    }
+
+    function focusActiveCli() {
+      /* Prefer R10 → R20 → R3 so an open modal with an enabled CLI is always chosen
+         (avoids R3 being checked first while another modal is open but idle). */
+      if (modalR10.classList.contains("is-open") && !cmdR10.disabled) {
+        cmdR10.focus();
+        return;
+      }
+      if (modalR20.classList.contains("is-open") && !cmdR20.disabled) {
+        cmdR20.focus();
+        return;
+      }
+      if (modalR2.classList.contains("is-open") && !cmdR2.disabled) {
+        cmdR2.focus();
+        return;
+      }
+      if (modalR3.classList.contains("is-open") && !cmdR3.disabled) {
+        cmdR3.focus();
+      }
+    }
+
+    let phase = "R3_CFG";
+    let stepR3 = 0;
+    let stepR20 = 0;
+    let stepR10 = 0;
+    let modeR20 = "exec";
+    let modeR10 = "exec";
+
+    function promptForR20Mode() {
+      if (modeR20 === "config") return "R20(config)#";
+      if (modeR20 === "config-if") return "R20(config-if)#";
+      if (modeR20 === "config-router") return "R20(config-router)#";
+      return "R20#";
+    }
+
+    function appendLine(scrollEl, className, text) {
+      const div = document.createElement("div");
+      div.className = className;
+      div.textContent = text;
+      scrollEl.appendChild(div);
+      scrollEl.scrollTop = scrollEl.scrollHeight;
+    }
+
+    function r3ShowRunHasOspfPriority() {
+      return stepR3 >= 3 || stepR3 >= R3_CFG.length;
+    }
+
+    function appendR3ShowRunOutput(scrollEl) {
+      appendLine(scrollEl, "line-sys", "Building configuration...");
+      const hasP = r3ShowRunHasOspfPriority();
+      const lines = [
+        "",
+        "interface Ethernet0/0",
+        " ip address 10.0.3.3 255.255.255.0",
+        "!",
+        "interface Ethernet0/1",
+        " ip address 10.2.203.3 255.255.255.0",
+      ];
+      if (hasP) lines.push(" ip ospf priority 255");
+      lines.push(
+        "!",
+        "interface Ethernet0/2",
+        " ip address 10.0.23.3 255.255.255.0",
+        "!",
+        "router ospf 1",
+        " network 10.0.3.0 0.0.0.255 area 0",
+        " network 10.0.23.0 0.0.0.255 area 0",
+        " network 10.2.203.0 0.0.0.255 area 20",
+      );
+      for (const ln of lines) appendLine(scrollEl, "line-out", ln);
+    }
+
+    function r10ShowRunHasOspfPriority0() {
+      return stepR10 >= 3 || stepR10 >= R10_CFG.length;
+    }
+
+    function appendR10ShowRunOutput(scrollEl) {
+      appendLine(scrollEl, "line-sys", "Building configuration...");
+      const hasP = r10ShowRunHasOspfPriority0();
+      const lines = ["", "interface Ethernet0/0", " ip address 10.1.102.10 255.255.255.0"];
+      if (hasP) lines.push(" ip ospf priority 0");
+      lines.push("!", "router ospf 1", " network 10.1.102.0 0.0.0.255 area 10");
+      for (const ln of lines) appendLine(scrollEl, "line-out", ln);
+    }
+
+    function appendR20ShowRunOutput(scrollEl) {
+      appendLine(scrollEl, "line-sys", "Building configuration...");
+      const lines = [
+        "",
+        "interface Ethernet0/0",
+        " ip address 10.2.203.20 255.255.255.0",
+        " ip ospf priority 254",
+        "!",
+        "router ospf 1",
+        " network 10.2.203.0 0.0.0.255 area 20",
+      ];
+      for (const ln of lines) appendLine(scrollEl, "line-out", ln);
+    }
+
+    function appendR3ShowOspfNeighbor(scrollEl) {
+      const task1Done = stepR3 >= R3_CFG.length && stepR20 >= 9;
+      const lines = task1Done
+        ? [
+            "Neighbor ID     Pri   State           Dead Time   Address         Interface",
+            "10.0.3.1          1   FULL/DR         00:00:37    10.0.3.1        Ethernet0/0",
+            "10.2.203.20     254   FULL/BDR        00:00:38    10.2.203.20     Ethernet0/1",
+          ]
+        : [
+            "Neighbor ID     Pri   State           Dead Time   Address         Interface",
+            "10.0.3.1          1   FULL/DR         00:00:37    10.0.3.1        Ethernet0/0",
+            "10.2.203.20     254   FULL/DR         00:00:38    10.2.203.20     Ethernet0/1",
+          ];
+      lines.forEach((ln) => appendLine(scrollEl, "line-out", ln));
+    }
+
+    function appendR2ShowOspfNeighbor(scrollEl) {
+      /* After full success (R10 saved), R10 appears DROTHER with priority 0; before that, still DR. */
+      const labCompleteSuccess = phase === "DONE";
+      const lines = labCompleteSuccess
+        ? [
+            "Neighbor ID     Pri   State           Dead Time   Address         Interface",
+            "10.0.3.1          1   FULL/BDR        00:00:37    10.0.2.1        Ethernet0/0",
+            "10.1.102.10       0   FULL/DROTHER    00:00:36    10.1.102.10     Ethernet0/1",
+          ]
+        : [
+            "Neighbor ID     Pri   State           Dead Time   Address         Interface",
+            "10.0.3.1          1   FULL/BDR        00:00:37    10.0.2.1        Ethernet0/0",
+            "10.1.102.10       1   FULL/DR         00:00:36    10.1.102.10     Ethernet0/1",
+          ];
+      lines.forEach((ln) => appendLine(scrollEl, "line-out", ln));
+    }
+
+    function setWaiting(panel, waiting) {
+      panel.classList.toggle("terminal-panel--waiting", waiting);
+    }
+
+    function disableAllInputs() {
+      cmdR3.disabled = true;
+      cmdR2.disabled = true;
+      cmdR20.disabled = true;
+      cmdR10.disabled = true;
+    }
+
+    function updatePrompts() {
+      if (phase === "R3_CFG") {
+        promptR3.textContent = promptForConfig(R3_CFG, stepR3, "R3");
+      } else if (phase === "R3_SAVE") {
+        promptR3.textContent = "R3#";
+      } else {
+        promptR3.textContent = "R3#";
+      }
+
+      if (phase === "R20_CLEAR") {
+        if (stepR20 === 1) {
+          promptR20.textContent = OSPF_CLEAR_PROMPT;
+        } else {
+          promptR20.textContent = promptForR20Mode();
+        }
+      } else if (phase === "R20_SAVE") {
+        promptR20.textContent = "R20#";
+      } else {
+        promptR20.textContent = promptForR20Mode();
+      }
+      promptR2.textContent = "R2#";
+
+      if (phase === "R10_CFG") {
+        promptR10.textContent = promptForConfig(R10_CFG, stepR10, "R10");
+      } else if (phase === "R10_SAVE") {
+        promptR10.textContent = "R10#";
+      } else {
+        promptR10.textContent = modeR10 === "config" ? "R10(config)#" : "R10#";
+      }
+    }
+
+    function applyPhaseUI() {
+      disableAllInputs();
+      setWaiting(panelR3, phase !== "R3_CFG" && phase !== "R3_SAVE");
+      setWaiting(panelR2, false);
+      setWaiting(panelR20, phase !== "R20_CLEAR" && phase !== "R20_SAVE");
+      setWaiting(panelR10, phase !== "R10_CFG" && phase !== "R10_SAVE");
+
+      if (phase === "R3_CFG") cmdR3.disabled = false;
+      cmdR2.disabled = false;
+      if (phase === "R20_CLEAR" || phase === "R20_SAVE") cmdR20.disabled = false;
+      if (phase === "R10_CFG") cmdR10.disabled = false;
+      if (phase === "R3_SAVE") cmdR3.disabled = false;
+      if (phase === "R10_SAVE") cmdR10.disabled = false;
+
+      /* Preview: whichever modal is open stays typable (show run / do show run anytime). */
+      if (modalR3.classList.contains("is-open")) cmdR3.disabled = false;
+      if (modalR2.classList.contains("is-open")) cmdR2.disabled = false;
+      if (modalR20.classList.contains("is-open")) cmdR20.disabled = false;
+      if (modalR10.classList.contains("is-open")) cmdR10.disabled = false;
+
+      updatePrompts();
+      focusActiveCli();
+    }
+
+    function reset() {
+      closeModals();
+      phase = "R3_CFG";
+      stepR3 = 0;
+      stepR20 = 0;
+      stepR10 = 0;
+      modeR20 = "exec";
+      modeR10 = "exec";
+      scrollR3.innerHTML = "";
+      scrollR2.innerHTML = "";
+      scrollR20.innerHTML = "";
+      scrollR10.innerHTML = "";
+      cmdR3.value = "";
+      cmdR2.value = "";
+      cmdR20.value = "";
+      cmdR10.value = "";
+      passBanner.classList.remove("visible");
+      syncOpenDeviceCliLabel();
+      applyPhaseUI();
+      openDeviceCliLink.focus();
+    }
+
+    function submitR3() {
+      const lineEarly = cmdR3.value;
+      if (lineEarly.trim()) {
+        const pNow = promptR3.textContent;
+        const execShow = matchShowRunExec(lineEarly) && pNow === "R3#";
+        const execOspf = matchShowOspfNeighbor(lineEarly) && pNow === "R3#";
+        const configDo =
+          matchDoShowRun(lineEarly) && (pNow === "R3(config)#" || pNow === "R3(config-if)#");
+        if (execShow || configDo) {
+          appendLine(scrollR3, "line-user", `${pNow} ${lineEarly}`);
+          cmdR3.value = "";
+          appendR3ShowRunOutput(scrollR3);
+          return;
+        }
+        if (execOspf) {
+          appendLine(scrollR3, "line-user", `${pNow} ${lineEarly}`);
+          cmdR3.value = "";
+          appendR3ShowOspfNeighbor(scrollR3);
+          return;
+        }
+      }
+
+      if (phase === "R3_CFG") {
+        if (stepR3 >= R3_CFG.length) return;
+        const p = promptForConfig(R3_CFG, stepR3, "R3");
+        const line = cmdR3.value;
+        appendLine(scrollR3, "line-user", `${p} ${line}`);
+        cmdR3.value = "";
+        if (!line.trim()) return;
+        if (R3_CFG[stepR3].test(line)) {
+          stepR3 += 1;
+          if (stepR3 >= R3_CFG.length) {
+            appendLine(scrollR3, "line-sys", "[OK] R3 DR preference configured. Use R20 console next.");
+            phase = "R20_CLEAR";
+            appendLine(scrollR20, "line-sys", "Run clear ip ospf process here (not on R3).");
+            const radR20 = document.querySelector('input[name="ospfDrBdrDev"][value="R20"]');
+            if (radR20) radR20.checked = true;
+          }
+          updatePrompts();
+          applyPhaseUI();
+          if (stepR3 >= R3_CFG.length) {
+            openSelectedCliModal();
+          }
+        } else {
+          appendLine(scrollR3, "line-bad", "% Invalid input");
+        }
+      } else if (phase === "R3_SAVE") {
+        const line = cmdR3.value;
+        appendLine(scrollR3, "line-user", `R3# ${line}`);
+        cmdR3.value = "";
+        if (!line.trim()) return;
+        if (matchCopy(line)) {
+          appendLine(scrollR3, "line-sys", "[OK] R3: configuration saved (simulated).");
+          phase = "R20_SAVE";
+          appendLine(scrollR20, "line-sys", "Save with copy running-config startup-config.");
+          const radR20Save = document.querySelector('input[name="ospfDrBdrDev"][value="R20"]');
+          if (radR20Save) radR20Save.checked = true;
+          applyPhaseUI();
+          openSelectedCliModal();
+        } else {
+          appendLine(scrollR3, "line-bad", "% Invalid input");
+        }
+      } else if (cmdR3.value.trim()) {
+        const pIdle = promptR3.textContent;
+        const lineIdle = cmdR3.value;
+        appendLine(scrollR3, "line-user", `${pIdle} ${lineIdle}`);
+        cmdR3.value = "";
+        appendLine(
+          scrollR3,
+          "line-bad",
+          "% Invalid input"
+        );
+      }
+    }
+
+    function submitR20() {
+      const linePeekR20 = cmdR20.value;
+      const normPeekR20 = normalize(linePeekR20 || "");
+      if (
+        linePeekR20.trim() &&
+        (promptR20.textContent === "R20#" || promptR20.textContent === "R20(config)#") &&
+        matchShowRunExec(linePeekR20)
+      ) {
+        appendLine(scrollR20, "line-user", `${promptR20.textContent} ${linePeekR20}`);
+        cmdR20.value = "";
+        appendR20ShowRunOutput(scrollR20);
+        return;
+      }
+      if (phase === "R20_SAVE") {
+        const lineSave = cmdR20.value;
+        appendLine(scrollR20, "line-user", `R20# ${lineSave}`);
+        cmdR20.value = "";
+        if (!lineSave.trim()) return;
+        if (matchCopy(lineSave)) {
+          appendLine(scrollR20, "line-sys", "[OK] R20: configuration saved (simulated).");
+          phase = "R10_SAVE";
+          appendLine(scrollR10, "line-sys", "Save R10 configuration.");
+          const radR10AfterR20 = document.querySelector('input[name="ospfDrBdrDev"][value="R10"]');
+          if (radR10AfterR20) radR10AfterR20.checked = true;
+          updatePrompts();
+          applyPhaseUI();
+          openSelectedCliModal();
+        } else {
+          appendLine(scrollR20, "line-bad", "% Invalid input");
+        }
+        return;
+      }
+      if (linePeekR20.trim() && phase !== "R20_CLEAR" && phase !== "R20_SAVE") {
+        if (promptR20.textContent === "R20#" && (normPeekR20 === "conf t" || normPeekR20 === "configure terminal")) {
+          appendLine(scrollR20, "line-user", `R20# ${linePeekR20}`);
+          cmdR20.value = "";
+          modeR20 = "config";
+          updatePrompts();
+          applyPhaseUI();
+          return;
+        }
+        if (promptR20.textContent === "R20(config)#" && (normPeekR20 === "end" || normPeekR20 === "exit")) {
+          appendLine(scrollR20, "line-user", `R20(config)# ${linePeekR20}`);
+          cmdR20.value = "";
+          modeR20 = "exec";
+          updatePrompts();
+          applyPhaseUI();
+          return;
+        }
+      }
+      if (linePeekR20.trim() && promptR20.textContent === "R20#" && normPeekR20 === "clear ip ospf process") {
+        appendLine(scrollR20, "line-user", `R20# ${linePeekR20}`);
+        cmdR20.value = "";
+        stepR20 = 1;
+        appendLine(scrollR20, "line-sys", "Reset all OSPF processes? [no]:");
+        phase = "R20_CLEAR";
+        modeR20 = "exec";
+        updatePrompts();
+        applyPhaseUI();
+        return;
+      }
+
+      if (phase !== "R20_CLEAR" && phase !== "R20_SAVE") {
+        if (linePeekR20.trim()) {
+          const pIdle = promptR20.textContent;
+          appendLine(scrollR20, "line-user", `${pIdle} ${linePeekR20}`);
+          cmdR20.value = "";
+          appendLine(
+            scrollR20,
+            "line-bad",
+            "% Invalid input"
+          );
+        }
+        return;
+      }
+
+      const p = stepR20 === 1 ? OSPF_CLEAR_PROMPT : promptForR20Mode();
+      const line = cmdR20.value;
+      appendLine(scrollR20, "line-user", `${p} ${line}`);
+      cmdR20.value = "";
+      if (!line.trim()) return;
+
+      const u = normalize(line);
+      if (stepR20 === 1) {
+        if (u === "y" || u === "yes") {
+          appendLine(scrollR20, "line-sys", "ospf process cleared");
+          stepR20 = 2;
+          modeR20 = "exec";
+          appendLine(scrollR20, "line-sys", "Continue R20 task: apply interface/router OSPF settings in config mode.");
+          updatePrompts();
+          applyPhaseUI();
+        } else {
+          appendLine(scrollR20, "line-bad", "% Invalid input");
+        }
+        return;
+      }
+
+      // R20 config sequence required for lab progression:
+      // conf t -> int e0/0 -> ip address ... -> ip ospf priority 254 -> exit -> router ospf 1 -> network ... -> end
+      if (stepR20 === 2 && modeR20 === "exec" && (u === "conf t" || u === "configure terminal")) {
+        modeR20 = "config";
+        stepR20 = 3;
+        updatePrompts();
+        applyPhaseUI();
+        return;
+      }
+      if (stepR20 === 3 && modeR20 === "config" && (u === "interface ethernet0/0" || u === "interface e0/0" || u === "int e0/0" || u === "int ethernet0/0")) {
+        modeR20 = "config-if";
+        stepR20 = 4;
+        updatePrompts();
+        applyPhaseUI();
+        return;
+      }
+      if (stepR20 === 4 && modeR20 === "config-if" && u === "ip address 10.2.203.20 255.255.255.0") {
+        stepR20 = 5;
+        updatePrompts();
+        applyPhaseUI();
+        return;
+      }
+      if (stepR20 === 5 && modeR20 === "config-if" && u === "ip ospf priority 254") {
+        stepR20 = 6;
+        updatePrompts();
+        applyPhaseUI();
+        return;
+      }
+      if (stepR20 === 6 && modeR20 === "config-if" && u === "exit") {
+        modeR20 = "config";
+        stepR20 = 7;
+        updatePrompts();
+        applyPhaseUI();
+        return;
+      }
+      if (stepR20 === 7 && modeR20 === "config" && u === "router ospf 1") {
+        modeR20 = "config-router";
+        stepR20 = 8;
+        updatePrompts();
+        applyPhaseUI();
+        return;
+      }
+      if (stepR20 === 8 && modeR20 === "config-router" && u === "network 10.2.203.0 0.0.0.255 area 20") {
+        stepR20 = 9;
+        updatePrompts();
+        applyPhaseUI();
+        return;
+      }
+      if (stepR20 === 9 && (modeR20 === "config-router" || modeR20 === "config") && (u === "end" || u === "exit")) {
+        modeR20 = "exec";
+        stepR20 = 10;
+        appendLine(scrollR20, "line-sys", "[OK] R20 task complete. Configure R10 next.");
+        if (stepR3 >= R3_CFG.length) {
+          phase = "R10_CFG";
+          appendLine(scrollR10, "line-sys", "Set ip ospf priority 0 on e0/0 so R10 does not compete in DR/BDR election.");
+          const radR10 = document.querySelector('input[name="ospfDrBdrDev"][value="R10"]');
+          if (radR10) radR10.checked = true;
+          updatePrompts();
+          applyPhaseUI();
+          openSelectedCliModal();
+        } else {
+          phase = "R3_CFG";
+          updatePrompts();
+          applyPhaseUI();
+        }
+        return;
+      }
+
+      appendLine(scrollR20, "line-bad", "% Invalid input");
+    }
+
+    function submitR10() {
+      const lineEarlyR10 = cmdR10.value;
+      if (lineEarlyR10.trim()) {
+        const pNow10 = promptR10.textContent;
+        const normEarly10 = normalize(lineEarlyR10);
+        const execShow10 = matchShowRunExec(lineEarlyR10) && pNow10 === "R10#";
+        const configDo10 =
+          matchDoShowRun(lineEarlyR10) &&
+          (pNow10 === "R10(config)#" || pNow10 === "R10(config-if)#");
+        if (execShow10 || configDo10) {
+          appendLine(scrollR10, "line-user", `${pNow10} ${lineEarlyR10}`);
+          cmdR10.value = "";
+          appendR10ShowRunOutput(scrollR10);
+          return;
+        }
+        // Template behavior: allow basic mode transitions whenever R10 CLI is open.
+        if (phase !== "R10_CFG" && phase !== "R10_SAVE") {
+          if (pNow10 === "R10#" && (normEarly10 === "conf t" || normEarly10 === "configure terminal")) {
+            appendLine(scrollR10, "line-user", `R10# ${lineEarlyR10}`);
+            cmdR10.value = "";
+            modeR10 = "config";
+            updatePrompts();
+            applyPhaseUI();
+            return;
+          }
+          if (pNow10 === "R10(config)#" && (normEarly10 === "exit" || normEarly10 === "end")) {
+            appendLine(scrollR10, "line-user", `R10(config)# ${lineEarlyR10}`);
+            cmdR10.value = "";
+            modeR10 = "exec";
+            updatePrompts();
+            applyPhaseUI();
+            return;
+          }
+        }
+      }
+
+      if (phase === "R10_CFG") {
+        if (stepR10 >= R10_CFG.length) return;
+        const p = promptForConfig(R10_CFG, stepR10, "R10");
+        const line = cmdR10.value;
+        appendLine(scrollR10, "line-user", `${p} ${line}`);
+        cmdR10.value = "";
+        if (!line.trim()) return;
+        if (R10_CFG[stepR10].test(line)) {
+          stepR10 += 1;
+          if (stepR10 >= R10_CFG.length) {
+            appendLine(scrollR10, "line-sys", "[OK] R10 DROTHER behavior configured. Save on R3, then R20, then R10.");
+            phase = "R3_SAVE";
+            appendLine(scrollR3, "line-sys", "Save with copy running-config startup-config.");
+            const radR3 = document.querySelector('input[name="ospfDrBdrDev"][value="R3"]');
+            if (radR3) radR3.checked = true;
+            applyPhaseUI();
+            openSelectedCliModal();
+          } else {
+            updatePrompts();
+            applyPhaseUI();
+          }
+        } else {
+          appendLine(scrollR10, "line-bad", "% Invalid input");
+        }
+      } else if (phase === "R10_SAVE") {
+        const line = cmdR10.value;
+        appendLine(scrollR10, "line-user", `R10# ${line}`);
+        cmdR10.value = "";
+        if (!line.trim()) return;
+        if (matchCopy(line)) {
+          appendLine(scrollR10, "line-sys", "[OK] R10: configuration saved (simulated).");
+          phase = "DONE";
+          passBanner.classList.add("visible");
+          updatePrompts();
+          applyPhaseUI();
+        } else {
+          appendLine(scrollR10, "line-bad", "% Invalid input");
+        }
+      } else if (cmdR10.value.trim()) {
+        const pIdle10 = promptR10.textContent;
+        const lineIdle10 = cmdR10.value;
+        appendLine(scrollR10, "line-user", `${pIdle10} ${lineIdle10}`);
+        cmdR10.value = "";
+        appendLine(
+          scrollR10,
+          "line-bad",
+          "% Invalid input"
+        );
+      }
+    }
+
+    function submitR2() {
+      const line = cmdR2.value;
+      const p = promptR2.textContent || "R2#";
+      cmdR2.value = "";
+      if (!line.trim()) return;
+      appendLine(scrollR2, "line-user", `${p} ${line}`);
+      if (matchShowOspfNeighbor(line)) {
+        appendR2ShowOspfNeighbor(scrollR2);
+        return;
+      }
+      appendLine(scrollR2, "line-bad", "% Invalid input");
+    }
+
+    // Local fallback history handler for this lab to guarantee
+    // ArrowUp/ArrowDown and Tab/Shift+Tab command recall.
+    const localHistory = new WeakMap();
+    function getLocalHistoryState(input) {
+      let state = localHistory.get(input);
+      if (state) return state;
+      state = { entries: [], idx: 0 };
+      localHistory.set(input, state);
+      return state;
+    }
+    function pushLocalHistory(input, raw) {
+      const cmd = String(raw || "").trim();
+      if (!cmd) return;
+      const state = getLocalHistoryState(input);
+      if (!state.entries.length || state.entries[state.entries.length - 1] !== cmd) {
+        state.entries.push(cmd);
+      }
+      state.idx = state.entries.length;
+    }
+    function bindLocalHistory(input) {
+      if (!input || input.dataset.localHistoryReady === "1") return;
+      input.dataset.localHistoryReady = "1";
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          pushLocalHistory(input, input.value);
+          return;
+        }
+        if (e.defaultPrevented) return;
+        const usePrev = e.key === "ArrowUp" || (e.key === "Tab" && !e.shiftKey);
+        const useNext = e.key === "ArrowDown" || (e.key === "Tab" && e.shiftKey);
+        if (!usePrev && !useNext) return;
+        const state = getLocalHistoryState(input);
+        if (!state.entries.length) return;
+        e.preventDefault();
+        if (usePrev) {
+          state.idx = Math.max(0, state.idx - 1);
+        } else {
+          state.idx = Math.min(state.entries.length, state.idx + 1);
+        }
+        input.value = state.idx >= state.entries.length ? "" : state.entries[state.idx];
+      });
+    }
+    [cmdR3, cmdR20, cmdR10, cmdR2].forEach(bindLocalHistory);
+
+    cmdR3.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitR3();
+      }
+    });
+    cmdR20.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitR20();
+      }
+    });
+    cmdR2.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitR2();
+      }
+    });
+    cmdR10.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitR10();
+      }
+    });
+
+    resetBtn.addEventListener("click", reset);
+    openDeviceCliLink.addEventListener("click", openSelectedCliModal);
+    document.getElementById("closeR3").addEventListener("click", () => {
+      closeR3Modal();
+      applyPhaseUI();
+      openDeviceCliLink.focus();
+    });
+    document.getElementById("closeR20").addEventListener("click", () => {
+      closeR20Modal();
+      applyPhaseUI();
+      openDeviceCliLink.focus();
+    });
+    document.getElementById("closeR2").addEventListener("click", () => {
+      closeR2Modal();
+      applyPhaseUI();
+      openDeviceCliLink.focus();
+    });
+    document.getElementById("closeR10").addEventListener("click", () => {
+      closeR10Modal();
+      applyPhaseUI();
+      openDeviceCliLink.focus();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      if (modalSw10 && modalSw10.classList.contains("is-open")) {
+        e.preventDefault();
+        closeSw10Modal();
+        applyPhaseUI();
+        openDeviceCliLink.focus();
+        return;
+      }
+      if (modalR10.classList.contains("is-open")) {
+        e.preventDefault();
+        closeR10Modal();
+        applyPhaseUI();
+        openDeviceCliLink.focus();
+        return;
+      }
+      if (modalR2.classList.contains("is-open")) {
+        e.preventDefault();
+        closeR2Modal();
+        applyPhaseUI();
+        openDeviceCliLink.focus();
+        return;
+      }
+      if (modalR20.classList.contains("is-open")) {
+        e.preventDefault();
+        closeR20Modal();
+        applyPhaseUI();
+        openDeviceCliLink.focus();
+        return;
+      }
+      if (modalR3.classList.contains("is-open")) {
+        e.preventDefault();
+        closeR3Modal();
+        applyPhaseUI();
+        openDeviceCliLink.focus();
+      }
+    });
+
+    document.querySelectorAll('input[name="ospfDrBdrDev"]').forEach((r) => {
+      r.addEventListener("change", () => {
+        syncOpenDeviceCliLabel();
+        applyPhaseUI();
+        openDeviceCliLink.focus();
+      });
+    });
+
+    const closeSw10Btn = document.getElementById("closeSw10Modal");
+    if (closeSw10Btn) {
+      closeSw10Btn.addEventListener("click", () => {
+        closeSw10Modal();
+        applyPhaseUI();
+        openDeviceCliLink.focus();
+      });
+    }
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    syncOpenDeviceCliLabel();
+    reset();
+  </script>
+
+<script>
+(function(){
+  if (window.__labHelperSpoilerInit) return;
+  window.__labHelperSpoilerInit = true;
+
+  const helperBtn = document.getElementById('openHelperFileBtn');
+  const resetInlineBtn = document.getElementById('inlineResetLabBtn');
+  const spoilerBtn = document.getElementById('openSpoilerBtn');
+  if (!helperBtn && !resetInlineBtn && !spoilerBtn) return;
+
+  function createModal(id, title, bodyNode){
+    const overlay = document.createElement('div');
+    overlay.id = id + 'Overlay';
+    overlay.className = 'cli-modal-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.innerHTML = `
+      <div id="${id}Dialog" class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="${id}Title" tabindex="-1">
+        <header class="cli-modal-header">
+          <h2 id="${id}Title">${title}</h2>
+          <button type="button" class="cli-modal-close" aria-label="Close">×</button>
+        </header>
+        <div class="cli-modal-body"></div>
+      </div>`;
+    overlay.querySelector('.cli-modal-body').appendChild(bodyNode);
+    document.body.appendChild(overlay);
+    const closeBtn = overlay.querySelector('.cli-modal-close');
+    const close = () => { overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true'); };
+    const open = () => { overlay.classList.add('is-open'); overlay.setAttribute('aria-hidden', 'false'); };
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    return { open, close, overlay };
+  }
+
+  function normalizeLine(text){
+    return (text || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function buildSpoilerCliFromHint(hint){
+    const root = document.createElement('div');
+    root.className = 'topology-scrape';
+    const h2 = document.createElement('h2');
+    h2.textContent = 'Lab Solution (Spoiler)';
+    root.appendChild(h2);
+
+    const stack = document.createElement('div');
+    stack.className = 'spoiler-cli-stack';
+
+    const clone = hint.cloneNode(true);
+    let currentDevice = 'Device';
+    let buffer = [];
+    const sections = [];
+
+    function flush(){
+      if (!buffer.length) return;
+      sections.push({ device: currentDevice, lines: buffer.slice() });
+      buffer = [];
+    }
+
+    for (const node of Array.from(clone.children)) {
+      const tag = node.tagName ? node.tagName.toLowerCase() : '';
+
+      if (tag === 'p') {
+        const strong = node.querySelector('strong');
+        if (strong) {
+          flush();
+          const t = normalizeLine(strong.textContent).replace(/:$/, '');
+          currentDevice = t || currentDevice;
+          continue;
+        }
+        const txt = normalizeLine(node.textContent);
+        if (txt) buffer.push(txt);
+        continue;
+      }
+
+      if (tag === 'ol' || tag === 'ul') {
+        const lines = Array.from(node.querySelectorAll('li')).map((li) => {
+          const codeBits = Array.from(li.querySelectorAll('code')).map((c) => normalizeLine(c.textContent)).filter(Boolean);
+          if (codeBits.length) return codeBits.join(' ');
+          return normalizeLine(li.textContent);
+        }).filter(Boolean);
+        if (lines.length) {
+          flush();
+          sections.push({ device: currentDevice, lines });
+        }
+        continue;
+      }
+
+      const txt = normalizeLine(node.textContent || '');
+      if (txt) buffer.push(txt);
+    }
+    flush();
+
+    if (!sections.length) {
+      const p = document.createElement('p');
+      p.textContent = 'No spoiler solution content is available for this lab.';
+      root.appendChild(p);
+      return root;
+    }
+
+    sections.forEach(sec => {
+      const item = document.createElement('div');
+      item.className = 'spoiler-cli-item';
+      const label = document.createElement('div');
+      label.className = 'spoiler-cli-label';
+      label.textContent = sec.device || 'Device';
+      const terminal = document.createElement('div');
+      terminal.className = 'spoiler-terminal';
+      const host = (sec.device || 'Device').replace(/\s+/g, '');
+      sec.lines.forEach((cmd) => {
+        const row = document.createElement('div');
+        row.className = 'spoiler-cli-line';
+        const prompt = document.createElement('span');
+        prompt.className = 'spoiler-cli-prompt';
+        prompt.textContent = host + '# ';
+        const cmdSpan = document.createElement('span');
+        cmdSpan.className = 'spoiler-cli-cmd';
+        cmdSpan.textContent = cmd;
+        row.appendChild(prompt);
+        row.appendChild(cmdSpan);
+        terminal.appendChild(row);
+      });
+      item.appendChild(label);
+      item.appendChild(terminal);
+      stack.appendChild(item);
+    });
+
+    root.appendChild(stack);
+    return root;
+  }
+
+  const helperSource = document.querySelector('.topology-scrape');
+  let helperModal = null;
+  if (helperSource) {
+    const helperBody = helperSource.cloneNode(true);
+    helperBody.style.display = '';
+    helperBody.removeAttribute('style');
+    helperSource.remove();
+    helperModal = createModal('helperFile', 'Helper File', helperBody);
+  } else {
+    const empty = document.createElement('div');
+    empty.className = 'topology-scrape';
+    empty.innerHTML = '<h2>Helper File</h2><p>No helper file is available for this lab.</p>';
+    helperModal = createModal('helperFile', 'Helper File', empty);
+  }
+
+  const hint = document.querySelector('.spoiler-source');
+  let spoilerModal = null;
+  if (hint) {
+    spoilerModal = createModal('spoiler', 'Lab Solution (Spoiler)', buildSpoilerCliFromHint(hint));
+  }
+
+  helperBtn && helperBtn.addEventListener('click', () => helperModal && helperModal.open());
+  spoilerBtn && spoilerBtn.addEventListener('click', () => spoilerModal && spoilerModal.open());
+  resetInlineBtn && resetInlineBtn.addEventListener('click', () => {
+    const rb = document.getElementById('resetBtn');
+    if (rb) rb.click();
+    else if (typeof window.reset === 'function') window.reset();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (spoilerModal && spoilerModal.overlay.classList.contains('is-open')) spoilerModal.close();
+    else if (helperModal && helperModal.overlay.classList.contains('is-open')) helperModal.close();
+  });
+})();
+</script>
+
+  <script src="/js/lab-modal-drag.js"></script>
+</body>
+</html>

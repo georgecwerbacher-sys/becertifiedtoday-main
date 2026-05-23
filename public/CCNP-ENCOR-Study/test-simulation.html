@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Timed test simulation — CCNP ENCOR</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1c2333;
+      --muted: #4a5568;
+      --line: #c9d4e3;
+      --header: #153e75;
+      --header-dark: #0f2d56;
+      --accent: #1e5a8e;
+      --accent-hover: #164a73;
+      --info-bg: #e8f2fb;
+      --info-border: #3b82c4;
+      --error-bg: #fef2f2;
+      --error-border: #b91c1c;
+      --error-text: #7f1d1d;
+      --page-bg: #e8eef5;
+      font-family: "Segoe UI", Inter, -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--page-bg);
+      color: var(--ink);
+      line-height: 1.55;
+      font-size: 1rem;
+    }
+    .top-bar {
+      background: linear-gradient(180deg, var(--header) 0%, var(--header-dark) 100%);
+      color: #f1f5fb;
+      padding: 12px clamp(16px, 4vw, 32px);
+      border-bottom: 3px solid #0d2140;
+    }
+    .top-bar-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px 20px;
+    }
+    .program-line {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      opacity: 0.92;
+    }
+    .top-bar a.brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .top-bar a.brand img {
+      height: 40px;
+      width: auto;
+      max-width: 88px;
+      object-fit: contain;
+    }
+    .page-body {
+      flex: 1;
+      width: 100%;
+    }
+    .wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: clamp(20px, 4vw, 36px) clamp(16px, 4vw, 28px) 48px;
+    }
+    .main-panel {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      box-shadow: 0 2px 12px rgba(15, 45, 86, 0.08);
+      overflow: hidden;
+    }
+    .main-panel-header {
+      padding: clamp(22px, 4vw, 32px) clamp(20px, 4vw, 36px) clamp(12px, 2vw, 18px);
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fafbfd 0%, #fff 100%);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.45rem, 3vw, 1.85rem);
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--header-dark);
+      letter-spacing: -0.02em;
+    }
+    .intro {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.02rem;
+      max-width: 52rem;
+    }
+    .intro strong {
+      color: var(--ink);
+    }
+    .main-panel-body {
+      padding: clamp(20px, 4vw, 28px) clamp(20px, 4vw, 36px);
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: clamp(16px, 3vw, 24px);
+      margin-bottom: clamp(20px, 3vw, 28px);
+    }
+    .info-card {
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 16px 18px;
+      background: #fafbfd;
+    }
+    .info-card h2 {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--header);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .info-card ul {
+      margin: 0;
+      padding-left: 1.15rem;
+      font-size: 0.95rem;
+    }
+    .info-card ul li {
+      margin: 6px 0;
+    }
+    .cta-card {
+      border: 2px solid var(--accent);
+      background: #f6f9fc;
+    }
+    .cta-card h2 {
+      color: var(--header-dark);
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 1rem;
+    }
+    .notice {
+      margin: 0 0 16px;
+      padding: 12px 16px;
+      border-radius: 4px;
+      border: 1px solid var(--info-border);
+      border-left-width: 4px;
+      background: var(--info-bg);
+      font-size: 0.95rem;
+    }
+    .notice[hidden] {
+      display: none;
+    }
+    .notice.is-error {
+      border-color: var(--error-border);
+      background: var(--error-bg);
+      color: var(--error-text);
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    .btn-primary {
+      appearance: none;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #fff;
+      border-radius: 4px;
+      padding: 14px 28px;
+      font: inherit;
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .btn-ghost {
+      appearance: none;
+      border: 2px solid var(--accent);
+      background: #fff;
+      color: var(--accent);
+      border-radius: 4px;
+      padding: 12px 24px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    .btn-ghost:hover:not(:disabled) {
+      background: var(--info-bg);
+    }
+    .fine-print {
+      margin: 16px 0 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+    .fine-print a {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    #pageErr {
+      margin-top: 10px;
+      color: var(--error-text);
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    #pageErr:empty {
+      display: none;
+    }
+    .site-footer {
+      max-width: 960px;
+      margin: 28px auto 0;
+      padding: 0 clamp(16px, 4vw, 28px) 40px;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .site-footer .disclaimer {
+      margin: 0;
+    }
+    .footer-contact {
+      margin: 18px 0 0;
+      padding-top: 16px;
+      border-top: 1px solid rgba(21, 62, 117, 0.15);
+      font-size: 0.88rem;
+      text-align: center;
+    }
+    .footer-contact a {
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .footer-contact a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <a class="brand" href="https://becertifiedtoday.com/">
+        <img
+          src="/images/logo/becertifiedtoday_logo_trans.png"
+          width="512"
+          height="512"
+          alt="Be Certified Today"
+        />
+        <span>ENCOR practice</span>
+      </a>
+      <span class="program-line">CCNP Enterprise core — timed test simulation</span>
+    </div>
+  </header>
+
+  <div class="page-body">
+    <div class="wrap">
+      <main class="main-panel">
+        <div class="main-panel-header">
+          <h1>Timed test simulation (one-time purchase)</h1>
+          <p class="intro">
+            Purchase <strong>one timed attempt</strong> for a mixed ENCOR-style session: multiple-choice, drag-and-drop,
+            and CLI labs under a single <strong>120-minute</strong> clock. After payment is confirmed, you’ll continue to
+            the welcome page to read the rules and <strong>Start timed test</strong> when you’re ready. Promotion codes
+            can be applied at checkout when available.
+          </p>
+        </div>
+        <div class="main-panel-body">
+          <div class="info-grid">
+            <section class="info-card" aria-labelledby="hdr-format">
+              <h2 id="hdr-format">What’s included</h2>
+              <ul>
+                <li>Random multiple-choice items (non–drag-drop pool)</li>
+                <li>Random drag-and-drop items</li>
+                <li>Random CLI lab simulations</li>
+                <li>One countdown for the full run</li>
+              </ul>
+            </section>
+            <section class="info-card cta-card" aria-labelledby="hdr-next">
+              <h2 id="hdr-next">Next steps</h2>
+              <p id="verifyBanner" class="notice" hidden role="status"></p>
+              <div class="actions">
+                <button type="button" class="btn-primary" id="purchaseBtn">Purchase timed test access</button>
+                <a class="btn-ghost" id="continueWelcome" href="/encor/test-simulation-purchase.html" hidden
+                  >Continue to welcome — start when ready</a
+                >
+              </div>
+              <p id="pageErr" aria-live="polite"></p>
+            </section>
+          </div>
+          <p class="fine-print">
+            <a href="/encor/index.html">← Back to ENCOR practice home</a>
+          </p>
+        </div>
+      </main>
+      <footer class="site-footer">
+        <p class="disclaimer">
+          <strong>Disclaimer:</strong> This website is an independent training resource created for educational purposes
+          only. It is not affiliated with, endorsed by, sponsored by, or approved by Cisco Systems, Inc. Cisco and
+          related trademarks are the property of Cisco Systems, Inc. All practice questions, explanations, and study
+          materials on this site are original or based on general knowledge and are intended as a guide to help users
+          prepare for certification exams. Practice questions are not actual Cisco exam questions. Any similarity to
+          official exam content is coincidental.
+        </p>
+        <p class="footer-contact">
+          <a
+            href="mailto:becertified2day@gmail.com?subject=Question%20about%20ENCOR%20practice"
+            >Any questions? Email us.</a
+          >
+        </p>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      /** Stripe Payment Link for timed ENCOR test simulation (one-time purchase). */
+      var TEST_SIM_STRIPE_CHECKOUT_URL =
+        "https://buy.stripe.com/3cIaEWbwVb8P8SYejWc3m01";
+      var WELCOME_URL = "/encor/test-simulation-purchase.html";
+      var params = new URLSearchParams(location.search || "");
+      var verifyBanner = document.getElementById("verifyBanner");
+      var errEl = document.getElementById("pageErr");
+      var purchaseBtn = document.getElementById("purchaseBtn");
+      var continueWelcome = document.getElementById("continueWelcome");
+
+      function startCheckout() {
+        purchaseBtn.disabled = true;
+        errEl.textContent = "";
+        window.location.href = TEST_SIM_STRIPE_CHECKOUT_URL;
+      }
+
+      purchaseBtn.addEventListener("click", startCheckout);
+
+      var sid = params.get("session_id");
+      if (sid && sid.indexOf("cs_") === 0) {
+        purchaseBtn.disabled = true;
+        continueWelcome.hidden = true;
+        verifyBanner.textContent = "Confirming your payment…";
+        verifyBanner.hidden = false;
+        verifyBanner.classList.remove("is-error");
+        fetch("/api/verify-checkout-session", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ sessionId: sid }),
+        })
+          .then(function (r) {
+            if (!r.ok) throw new Error("verify");
+            return r.json();
+          })
+          .then(function () {
+            verifyBanner.textContent = "Payment confirmed. Continuing to the welcome page…";
+            location.replace(WELCOME_URL);
+          })
+          .catch(function () {
+            verifyBanner.textContent =
+              "We couldn’t confirm payment from this link. Use the return link from Stripe or try purchasing again.";
+            verifyBanner.classList.add("is-error");
+            verifyBanner.hidden = false;
+            purchaseBtn.disabled = false;
+          });
+        return;
+      }
+
+      fetch("/api/encor-access-status", { credentials: "same-origin" })
+        .then(function (r) {
+          if (r.ok) return r.json();
+          throw new Error("no access");
+        })
+        .then(function (data) {
+          if (!data || !data.valid) throw new Error("no access");
+          if (data.tier === "test_sim" && data.testSimConsumed) {
+            verifyBanner.textContent =
+              "Your paid attempt was already used. Purchase again to take another timed test.";
+            verifyBanner.hidden = false;
+            verifyBanner.classList.remove("is-error");
+            continueWelcome.hidden = true;
+            return;
+          }
+          if (data.tier === "test_sim") {
+            verifyBanner.textContent =
+              "You have an active timed-test purchase. Continue to the welcome page to start when you’re ready.";
+            verifyBanner.hidden = false;
+            verifyBanner.classList.remove("is-error");
+            continueWelcome.hidden = false;
+            purchaseBtn.disabled = true;
+            purchaseBtn.style.opacity = "0.65";
+          } else {
+            throw new Error("no access");
+          }
+        })
+        .catch(function () {
+          continueWelcome.hidden = true;
+        });
+    })();
+  </script>
+</body>
+</html>

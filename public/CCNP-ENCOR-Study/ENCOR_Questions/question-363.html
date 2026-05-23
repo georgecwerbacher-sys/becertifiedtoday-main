@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question 363 - JSON PBR route-map drag and drop</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+    }
+    .card {
+      width: min(1100px, 98vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.02rem, 2vw, 1.4rem);
+      line-height: 1.35;
+    }
+    .instructions {
+      margin: 0 0 14px;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(460px, 1.3fr) minmax(220px, 0.7fr);
+      gap: 14px;
+      align-items: start;
+    }
+    .panel {
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
+      padding: 12px;
+      background: #1a253b;
+    }
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      color: #f0c040;
+    }
+    pre {
+      margin: 0;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #2c3f62;
+      background: #0f1628;
+      color: #dfe7f3;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.89rem;
+      line-height: 1.5;
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .drop-slot {
+      display: inline-flex;
+      min-width: 86px;
+      min-height: 30px;
+      padding: 3px 8px;
+      margin: 0 2px;
+      border-radius: 7px;
+      border: 1px dashed #d98a8a;
+      background: #f7d7d7;
+      color: #1d293d;
+      vertical-align: baseline;
+      align-items: center;
+      justify-content: center;
+    }
+    .drop-slot.over {
+      border-style: solid;
+      border-color: #4d89ff;
+    }
+    .drop-slot.correct {
+      border-color: #1f7a58;
+      background: #113e2d;
+      color: #e6edf3;
+    }
+    .drop-slot.incorrect {
+      border-color: #8c3434;
+      background: #442020;
+      color: #e6edf3;
+    }
+    .drop-slot .token {
+      width: 100%;
+      text-align: center;
+    }
+    .bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 46px;
+    }
+    .token {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #6384ba;
+      background: #cfe9ff;
+      color: #10243f;
+      font-weight: 700;
+      font-size: 0.9rem;
+      line-height: 1.2;
+      cursor: grab;
+      user-select: none;
+      text-align: center;
+      min-width: 48px;
+    }
+    .token:active {
+      cursor: grabbing;
+    }
+    .actions {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    button,
+    .next-link {
+      background: #254b8a;
+      color: #e6edf3;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-block;
+    }
+    #result {
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    #result.answer {
+      flex: 1 1 100%;
+      margin: 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      line-height: 1.45;
+    }
+    #result.answer.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      color: #e6edf3;
+    }
+    #result.answer.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+      color: #e6edf3;
+    }
+    #answerDisplay {
+      margin-top: 8px;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+    #nextWrap {
+      display: none;
+    }
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>
+      Drag and drop the code snippets from the bottom onto the blanks in the JSON request template to construct a RESTCONF-style body that configures policy-based routing (PBR). All four snippets are used.
+    </h1>
+    <p class="instructions">
+      Fill all four blanks, then click Check Answer.
+    </p>
+
+    <div class="layout">
+      <div class="panel">
+        <h2>JSON request template</h2>
+        <pre>{
+  "ios-route-map:route-map": [
+    {
+      "ios-route-map:name": "PBR",
+      "ios-route-map:route-map-without-order-seq": [
+        {
+          "ios-route-map:operation": "<span class="drop-slot" data-accept="permit"></span>",
+          "ios-route-map:set": {
+            "ios-route-map:<span class="drop-slot" data-accept="set"></span>": {
+              "ios-route-map:<span class="drop-slot" data-accept="next-hop"></span>": {
+                "ios-route-map:<span class="drop-slot" data-accept="address"></span>": "10.10.10.10"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}</pre>
+      </div>
+      <div class="panel">
+        <h2>Code snippets</h2>
+        <div id="bank" class="bank">
+          <div class="token" draggable="true" data-value="address">address</div>
+          <div class="token" draggable="true" data-value="permit">permit</div>
+          <div class="token" draggable="true" data-value="next-hop">next-hop</div>
+          <div class="token" draggable="true" data-value="set">set</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
+      <button id="resetBtn" type="button">Reset</button>
+      <span id="result"></span>
+      <span id="nextWrap"><a class="next-link" href="/question-364.html">Next</a></span>
+    </div>
+    <div id="answerDisplay"></div>
+  </main>
+
+  <script>
+    const bank = document.getElementById("bank");
+    const slots = document.querySelectorAll(".drop-slot");
+    const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const result = document.getElementById("result");
+    const answerDisplay = document.getElementById("answerDisplay");
+    const nextWrap = document.getElementById("nextWrap");
+    let dragged = null;
+    const expectedByBlank = ["permit", "set", "next-hop", "address"];
+
+    function renderExpectedAnswers() {
+      answerDisplay.innerHTML = expectedByBlank
+        .map((value, index) => `Blank ${index + 1}: ${value}`)
+        .join("<br>");
+    }
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    document.querySelectorAll(".token").forEach((token) => {
+      token.addEventListener("dragstart", () => {
+        dragged = token;
+      });
+    });
+
+    slots.forEach((slot) => {
+      slot.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        slot.classList.add("over");
+      });
+      slot.addEventListener("dragleave", () => slot.classList.remove("over"));
+      slot.addEventListener("drop", (e) => {
+        e.preventDefault();
+        slot.classList.remove("over");
+        if (!dragged) return;
+        const existing = slot.querySelector(".token");
+        if (existing) bank.appendChild(existing);
+        slot.appendChild(dragged);
+      });
+    });
+
+    bank.addEventListener("dragover", (e) => e.preventDefault());
+    bank.addEventListener("drop", (e) => {
+      e.preventDefault();
+      if (dragged) bank.appendChild(dragged);
+    });
+
+    checkBtn.addEventListener("click", () => {
+      const full = [...slots].every((slot) => {
+        const token = slot.querySelector(".token");
+        return token && token.dataset.value === slot.dataset.accept;
+      });
+
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (!token) {
+          slot.classList.add("incorrect");
+          return;
+        }
+        slot.classList.add(
+          token.dataset.value === slot.dataset.accept ? "correct" : "incorrect"
+        );
+      });
+
+      result.className = full ? "answer correct" : "answer incorrect";
+      result.textContent = full
+        ? "Correct. operation permit; set block uses set → next-hop → address for 10.10.10.10."
+        : "Incorrect. Expected: permit (operation), set, next-hop, and address in the nested set object.";
+      renderExpectedAnswers();
+      nextWrap.style.display = "inline-block";
+    });
+
+    showBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const existing = slot.querySelector(".token");
+        if (existing) bank.appendChild(existing);
+        const target = bank.querySelector(
+          `.token[data-value="${slot.dataset.accept}"]`
+        );
+        if (target) {
+          slot.appendChild(target);
+          slot.classList.add("correct");
+        }
+      });
+      result.className = "";
+      result.textContent = "Answer shown.";
+      renderExpectedAnswers();
+      nextWrap.style.display = "inline-block";
+    });
+
+    resetBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+      result.textContent = "";
+      result.className = "";
+      answerDisplay.textContent = "";
+      nextWrap.style.display = "none";
+    });
+  </script>
+  <style>
+    .home-key {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+    .home-key:hover {
+      filter: brightness(1.08);
+    }
+  </style>
+  <a class="home-key" href="https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html">Home</a>
+  <script src="/js/practice-questions.js"></script>
+</body>
+</html>

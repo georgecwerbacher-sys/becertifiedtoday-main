@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question 405 - Catalyst Center southbound API drag and drop</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+    }
+    .card {
+      width: min(1100px, 95vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+    }
+    .instructions {
+      margin: 0 0 14px;
+      color: #b9c7dd;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .panel {
+      border: 1px solid #32456b;
+      border-radius: 12px;
+      padding: 12px;
+      background: #0f1728;
+    }
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      color: #cfe3ff;
+    }
+    .drop-slot {
+      min-height: 46px;
+      border: 1px dashed #4f6b99;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      margin: 8px 0;
+      background: rgba(79, 107, 153, 0.12);
+    }
+    .drop-slot.over {
+      border-color: #7fb3ff;
+      background: rgba(127, 179, 255, 0.18);
+    }
+    .drop-slot.correct {
+      border-color: #1f7a58;
+      background: rgba(17, 62, 45, 0.55);
+    }
+    .drop-slot.incorrect {
+      border-color: #8c3434;
+      background: rgba(68, 32, 32, 0.6);
+    }
+    .drop-slot .token {
+      width: 100%;
+      text-align: left;
+    }
+    .bank {
+      display: grid;
+      gap: 8px;
+    }
+    .token {
+      border: 1px solid #3d6dbb;
+      background: #254b8a;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 9px 11px;
+      cursor: grab;
+      user-select: none;
+      font-weight: 600;
+      width: fit-content;
+      max-width: 100%;
+      line-height: 1.35;
+      font-size: 0.88rem;
+    }
+    .actions {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    button,
+    .next-link {
+      background: #254b8a;
+      color: #e6edf3;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-block;
+    }
+    .answer {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+      line-height: 1.45;
+    }
+    .answer.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+    }
+    .answer.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+    }
+    .next-wrap {
+      margin-top: 16px;
+      display: none;
+    }
+    @media (max-width: 900px) {
+      .board {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Drag and drop the Cisco Catalyst Center (formerly DNA Center) southbound API characteristics from the left to the right. Not all options are used.</h1>
+    <p class="instructions">Place any three correct characteristics into the three slots in any order. Three options are distractors.</p>
+
+    <div class="board">
+      <div class="panel">
+        <h2>Characteristics</h2>
+        <div id="bank" class="bank">
+          <div class="token" draggable="true" data-value="xml-exclusive">uses XML exclusively</div>
+          <div class="token" draggable="true" data-value="multivendor">multivendor focus</div>
+          <div class="token" draggable="true" data-value="json-exclusive">uses JSON exclusively</div>
+          <div class="token" draggable="true" data-value="intent-api">referred to as Intent API</div>
+          <div class="token" draggable="true" data-value="netconf-ssh-snmp">supports NETCONF, SSH, SNMP, and others</div>
+          <div class="token" draggable="true" data-value="device-packages">extendable by device packages</div>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Cisco Catalyst Center southbound API</h2>
+        <div class="drop-slot" data-role="target"></div>
+        <div class="drop-slot" data-role="target"></div>
+        <div class="drop-slot" data-role="target"></div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
+      <button id="resetBtn" type="button">Reset</button>
+    </div>
+    <div id="result" class="answer" aria-live="polite"></div>
+    <div id="nextWrap" class="next-wrap">
+      <a class="next-link" href="/question-406.html">Next</a>
+    </div>
+  </main>
+
+  <script>
+    const bank = document.getElementById("bank");
+    const slots = document.querySelectorAll(".drop-slot");
+    const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const result = document.getElementById("result");
+    const nextWrap = document.getElementById("nextWrap");
+    const CORRECT = new Set(["multivendor", "netconf-ssh-snmp", "device-packages"]);
+
+    /** Row order for Show Answer to match the reference image (slots are still order-agnostic for Check). */
+    const exhibitSlotOrder = ["device-packages", "netconf-ssh-snmp", "multivendor"];
+
+    function findTokenByValue(value) {
+      return [...bank.querySelectorAll(".token")].find((t) => t.dataset.value === value);
+    }
+    let dragged = null;
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    function wire(token) {
+      token.addEventListener("dragstart", () => {
+        dragged = token;
+      });
+      token.addEventListener("dragend", () => {
+        dragged = null;
+      });
+    }
+
+    document.querySelectorAll(".token").forEach(wire);
+
+    function placeToken(container, token) {
+      if (!container || !token) return;
+      const existing = container.querySelector(".token");
+      if (existing) bank.appendChild(existing);
+      container.appendChild(token);
+    }
+
+    slots.forEach((slot) => {
+      slot.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        slot.classList.add("over");
+      });
+      slot.addEventListener("dragleave", () => {
+        slot.classList.remove("over");
+      });
+      slot.addEventListener("drop", (e) => {
+        e.preventDefault();
+        slot.classList.remove("over");
+        placeToken(slot, dragged);
+      });
+    });
+
+    bank.addEventListener("dragover", (e) => e.preventDefault());
+    bank.addEventListener("drop", (e) => {
+      e.preventDefault();
+      if (dragged) bank.appendChild(dragged);
+    });
+
+    function valuesInSlots() {
+      return [...slots].map((slot) => {
+        const t = slot.querySelector(".token");
+        return t ? t.dataset.value : null;
+      });
+    }
+
+    function placementOk(vals) {
+      if (!vals.every(Boolean) || vals.length !== 3) return false;
+      const s = new Set(vals);
+      if (s.size !== 3) return false;
+      return [...CORRECT].every((v) => s.has(v));
+    }
+
+    function slotOutcomeClass(slot, vals) {
+      const token = slot.querySelector(".token");
+      if (!token) return "incorrect";
+      const v = token.dataset.value;
+      if (!CORRECT.has(v)) return "incorrect";
+      const n = vals.filter((x) => x === v).length;
+      return n === 1 ? "correct" : "incorrect";
+    }
+
+    checkBtn.addEventListener("click", () => {
+      const vals = valuesInSlots();
+      const ok = placementOk(vals);
+
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        slot.classList.add(ok ? "correct" : slotOutcomeClass(slot, vals));
+      });
+
+      result.style.display = "block";
+      nextWrap.style.display = "inline-block";
+      if (ok) {
+        result.className = "answer correct";
+        result.textContent =
+          "Correct. Southbound communication is multivendor-capable, uses protocols such as NETCONF, SSH, and SNMP toward devices, and can be extended with device packages. Intent API is northbound; southbound is not limited to a single document encoding.";
+      } else {
+        result.className = "answer incorrect";
+        result.textContent =
+          "Incorrect. Use the three items that describe device-facing southbound integration: multivendor focus, support for NETCONF/SSH/SNMP (and similar), and extendability via device packages.";
+      }
+    });
+
+    showBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+
+      const slotEls = [...slots];
+      exhibitSlotOrder.forEach((val, i) => {
+        const tok = findTokenByValue(val);
+        if (tok && slotEls[i]) {
+          slotEls[i].appendChild(tok);
+          slotEls[i].classList.add("correct");
+        }
+      });
+
+      result.style.display = "block";
+      result.className = "answer correct";
+      result.textContent = "Answer shown.";
+      nextWrap.style.display = "inline-block";
+    });
+
+    resetBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+        slot.classList.remove("correct", "incorrect", "over");
+      });
+      result.style.display = "none";
+      result.textContent = "";
+      nextWrap.style.display = "none";
+    });
+  </script>
+  <style>
+    .home-key {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+    .home-key:hover {
+      filter: brightness(1.08);
+    }
+  </style>
+  <a class="home-key" href="https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html">Home</a>
+  <script src="/js/practice-questions.js"></script>
+</body>
+</html>

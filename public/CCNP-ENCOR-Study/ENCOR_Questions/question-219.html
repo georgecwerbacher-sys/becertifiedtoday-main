@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question 219 - RIB vs FIB drag and drop</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+    }
+    .card {
+      width: min(1100px, 98vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+    }
+    .instructions {
+      margin: 0 0 14px;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    .arch-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+    @media (max-width: 720px) {
+      .arch-columns {
+        grid-template-columns: 1fr;
+      }
+    }
+    .arch-header {
+      background: linear-gradient(180deg, #f0d060 0%, #d4a017 100%);
+      color: #1a1300;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+    .drop-slot {
+      min-height: 56px;
+      padding: 8px;
+      border-radius: 10px;
+      border: 1px dashed #d98a8a;
+      background: #f7d7d7;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 10px;
+    }
+    .drop-slot.over {
+      border-style: solid;
+      border-color: #4d89ff;
+    }
+    .drop-slot.correct {
+      border-color: #1f7a58;
+      background: #113e2d;
+    }
+    .drop-slot.incorrect {
+      border-color: #8c3434;
+      background: #442020;
+    }
+    .drop-slot.correct .token {
+      border-color: #43b689;
+      background: #174a38;
+      color: #dff5eb;
+    }
+    .drop-slot.incorrect .token {
+      border-color: #c55c5c;
+      background: #5c2626;
+      color: #fcdede;
+    }
+    .drop-slot .token {
+      width: 100%;
+    }
+    .bank-wrap {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #2c3f62;
+      background: #1a253b;
+    }
+    .bank {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 46px;
+    }
+    .token {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #6384ba;
+      background: #cfe9ff;
+      color: #10243f;
+      font-weight: 700;
+      font-size: 0.8rem;
+      line-height: 1.4;
+      cursor: grab;
+      user-select: none;
+    }
+    .token:active {
+      cursor: grabbing;
+    }
+    .actions {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    button,
+    .next-link {
+      background: #254b8a;
+      color: #e6edf3;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-block;
+    }
+    #result {
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    #nextWrap {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Drag and drop the characteristics from the left onto the corresponding switching architectures on the right.</h1>
+    <p class="instructions">
+      Drag each characteristic into one of the slots under RIB or FIB (two slots per architecture). Order within RIB or within FIB does not matter.
+    </p>
+
+    <div class="arch-columns">
+      <div class="arch-col">
+        <div class="arch-header">RIB</div>
+        <div class="drop-slot" data-cat="rib"></div>
+        <div class="drop-slot" data-cat="rib"></div>
+      </div>
+      <div class="arch-col">
+        <div class="arch-header">FIB</div>
+        <div class="drop-slot" data-cat="fib"></div>
+        <div class="drop-slot" data-cat="fib"></div>
+      </div>
+    </div>
+
+    <div class="bank-wrap">
+      <div id="bank" class="bank">
+        <div class="token" draggable="true" data-cat="fib" data-value="It is known as CEF">It is known as CEF</div>
+        <div
+          class="token"
+          draggable="true"
+          data-cat="fib"
+          data-value="It is used to make destination prefix-based switching decision"
+        >
+          It is used to make destination prefix-based switching decision
+        </div>
+        <div
+          class="token"
+          draggable="true"
+          data-cat="rib"
+          data-value="Each routing protocol has its own information base"
+        >
+          Each routing protocol has its own information base
+        </div>
+        <div
+          class="token"
+          draggable="true"
+          data-cat="rib"
+          data-value="It is built from information obtained from dynamic routing protocols and connected and static routes"
+        >
+          It is built from information obtained from dynamic routing protocols and connected and static routes
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
+      <button id="resetBtn" type="button">Reset</button>
+      <span id="result"></span>
+      <span id="nextWrap"><a class="next-link" href="/question-220.html">Next</a></span>
+    </div>
+  </main>
+
+  <script>
+    const bank = document.getElementById("bank");
+    const slots = document.querySelectorAll(".drop-slot");
+    const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const result = document.getElementById("result");
+    const nextWrap = document.getElementById("nextWrap");
+    let dragged = null;
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    document.querySelectorAll(".token").forEach((token) => {
+      token.addEventListener("dragstart", () => {
+        dragged = token;
+      });
+    });
+
+    slots.forEach((slot) => {
+      slot.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        slot.classList.add("over");
+      });
+      slot.addEventListener("dragleave", () => slot.classList.remove("over"));
+      slot.addEventListener("drop", (e) => {
+        e.preventDefault();
+        slot.classList.remove("over");
+        if (!dragged) return;
+        const existing = slot.querySelector(".token");
+        if (existing) bank.appendChild(existing);
+        slot.appendChild(dragged);
+      });
+    });
+
+    bank.addEventListener("dragover", (e) => e.preventDefault());
+    bank.addEventListener("drop", (e) => {
+      e.preventDefault();
+      if (dragged) bank.appendChild(dragged);
+    });
+
+    function multisetEqual(a, b) {
+      if (a.length !== b.length) return false;
+      const sa = a.slice().sort();
+      const sb = b.slice().sort();
+      return sa.every((v, i) => v === sb[i]);
+    }
+
+    const ribExpected = [
+      "Each routing protocol has its own information base",
+      "It is built from information obtained from dynamic routing protocols and connected and static routes",
+    ];
+    const fibExpected = [
+      "It is known as CEF",
+      "It is used to make destination prefix-based switching decision",
+    ];
+
+    function findTokenByValue(value) {
+      return [...bank.querySelectorAll(".token")].find((t) => t.dataset.value === value);
+    }
+
+    checkBtn.addEventListener("click", () => {
+      const ribSlots = document.querySelectorAll('.drop-slot[data-cat="rib"]');
+      const fibSlots = document.querySelectorAll('.drop-slot[data-cat="fib"]');
+      const ribActual = [...ribSlots]
+        .map((s) => s.querySelector(".token")?.dataset.value)
+        .filter(Boolean);
+      const fibActual = [...fibSlots]
+        .map((s) => s.querySelector(".token")?.dataset.value)
+        .filter(Boolean);
+      const ribOk = multisetEqual(ribActual, ribExpected);
+      const fibOk = multisetEqual(fibActual, fibExpected);
+      const allFilled = ribActual.length === 2 && fibActual.length === 2;
+
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect");
+        const token = slot.querySelector(".token");
+        const col = slot.dataset.cat;
+        if (!token) {
+          slot.classList.add("incorrect");
+          return;
+        }
+        const rightCol = token.dataset.cat === col;
+        slot.classList.add(rightCol ? "correct" : "incorrect");
+      });
+
+      if (!allFilled) {
+        result.textContent = `Place all four characteristics (${ribActual.length + fibActual.length}/4 in slots).`;
+        nextWrap.style.display = "none";
+        return;
+      }
+
+      const allOk = ribOk && fibOk;
+      const slotScore = [...slots].filter((slot) => {
+        const t = slot.querySelector(".token");
+        return t && t.dataset.cat === slot.dataset.cat;
+      }).length;
+
+      result.textContent = allOk
+        ? "Correct. RIB holds per-protocol routing knowledge; the FIB (CEF) is built from the best routes for forwarding lookups."
+        : `Score: ${slotScore}/4 — Both RIB statements must be under RIB and both FIB statements under FIB (order within each column does not matter).`;
+      nextWrap.style.display = "inline-block";
+    });
+
+    showBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+
+      const ribSlots = [...document.querySelectorAll('.drop-slot[data-cat="rib"]')];
+      const fibSlots = [...document.querySelectorAll('.drop-slot[data-cat="fib"]')];
+
+      ribExpected.forEach((val, i) => {
+        const tok = findTokenByValue(val);
+        if (tok && ribSlots[i]) {
+          ribSlots[i].appendChild(tok);
+          ribSlots[i].classList.add("correct");
+        }
+      });
+      fibExpected.forEach((val, i) => {
+        const tok = findTokenByValue(val);
+        if (tok && fibSlots[i]) {
+          fibSlots[i].appendChild(tok);
+          fibSlots[i].classList.add("correct");
+        }
+      });
+
+      result.textContent = "Answer shown.";
+      nextWrap.style.display = "inline-block";
+    });
+
+    resetBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+      result.textContent = "";
+      nextWrap.style.display = "none";
+    });
+  </script>
+  <style>
+    .home-key {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+    .home-key:hover {
+      filter: brightness(1.08);
+    }
+  </style>
+  <a class="home-key" href="https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html">Home</a>
+  <script src="/js/practice-questions.js"></script>
+</body>
+</html>

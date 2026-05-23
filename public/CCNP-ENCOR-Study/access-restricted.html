@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b1020" />
+  <title>Access restricted | Be Certified Today</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bg: #0b1020;
+      --surface: #121a2b;
+      --border: #2d3b5a;
+      --text: #e6edf3;
+      --muted: #9fb0cc;
+      --accent-border: #4f84d8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px 20px;
+      padding: 16px clamp(20px, 4vw, 40px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(18, 26, 43, 0.6);
+      backdrop-filter: blur(8px);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 800;
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
+      letter-spacing: -0.02em;
+    }
+    .brand img {
+      height: clamp(48px, 10vw, 64px);
+      width: auto;
+      max-width: min(100px, 22vw);
+      object-fit: contain;
+    }
+    .header-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      min-height: 44px;
+      border-radius: 10px;
+      border: 1px solid var(--accent-border);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: inherit;
+      font-family: inherit;
+      background: rgba(47, 102, 191, 0.2);
+    }
+    a.header-link:hover {
+      background: rgba(79, 132, 216, 0.22);
+    }
+    .gate-main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px 40px;
+    }
+    .gate-card {
+      padding: 0;
+      max-width: min(440px, calc(100vw - 32px));
+      width: 100%;
+      border-radius: 14px;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+    }
+    .gate-card__inner {
+      padding: 22px 22px 18px;
+    }
+    .gate-card__head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .gate-card__head h1 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+    .access-restore-dialog__intro {
+      margin: 0 0 14px;
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+    .access-restricted__attempt {
+      margin: 0 0 14px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(79, 132, 216, 0.35);
+      background: rgba(47, 102, 191, 0.08);
+      font-size: 0.82rem;
+      color: var(--muted);
+      word-break: break-all;
+    }
+    .access-restricted__attempt strong {
+      color: #a8c4f0;
+      font-weight: 700;
+    }
+    .gate-card__form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .gate-card__form label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .gate-card__form input {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0b1020;
+      color: var(--text);
+      font-size: 1rem;
+      font-family: inherit;
+    }
+    .gate-card__form input:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 2px;
+    }
+    .gate-card__submit {
+      align-self: flex-start;
+      margin-top: 4px;
+      cursor: pointer;
+    }
+    .access-restore-result {
+      margin: 8px 0 0;
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+    .access-restore-result--ok {
+      color: #8fd99a;
+    }
+    .access-restore-result--err {
+      color: #f08888;
+    }
+    .gate-actions {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .gate-actions .header-link {
+      text-align: center;
+      justify-content: center;
+      width: 100%;
+    }
+    .gate-secondary {
+      margin: 0;
+      padding: 8px 0 0;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+    .gate-secondary a {
+      color: #8fa8d4;
+      font-weight: 700;
+    }
+    .access-restricted-reason {
+      margin: 0 0 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(201, 162, 39, 0.5);
+      background: rgba(201, 162, 39, 0.1);
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: #e8dcc0;
+    }
+    .access-restricted-reason[hidden] {
+      display: none !important;
+    }
+    .common-reasons {
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(15, 22, 38, 0.55);
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .common-reasons summary {
+      cursor: pointer;
+      font-weight: 800;
+      color: #a8c4f0;
+      letter-spacing: -0.02em;
+    }
+    .common-reasons summary::marker,
+    .common-reasons summary::-webkit-details-marker {
+      color: #8fa8d4;
+    }
+    .common-reasons ul {
+      margin: 12px 0 0;
+      padding-left: 1.15em;
+    }
+    .common-reasons li {
+      margin-bottom: 10px;
+    }
+    .common-reasons li:last-child {
+      margin-bottom: 0;
+    }
+    .common-reasons strong {
+      color: #c9d4e8;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <a class="brand" href="https://becertifiedtoday.com/">
+        <img src="/images/logo/becertifiedtoday_logo_trans.png" width="120" height="72" alt="" decoding="async" />
+        <span>Be Certified Today</span>
+      </a>
+      <a class="header-link" href="/">Return to home</a>
+    </header>
+    <main class="gate-main">
+      <section class="gate-card" role="region" aria-labelledby="access-gate-title">
+        <div class="gate-card__inner">
+          <div class="gate-card__head">
+            <h1 id="access-gate-title">Access restricted</h1>
+          </div>
+          <p class="access-restricted-reason" id="accessRestrictedReason" hidden role="status" aria-live="polite"></p>
+          <p class="access-restore-dialog__intro">
+            Training pages require an active browser session. If you already purchased access, use the same email you used at
+            checkout and we will send a <strong>one-time link</strong> to restore access on this device or browser.
+          </p>
+          <details class="common-reasons" open>
+            <summary>Why you might see this message</summary>
+            <ul>
+              <li>
+                <strong>No active session</strong> — This browser doesn’t have a signed-in training session yet. Use the form
+                below or purchase from the home page.
+              </li>
+              <li>
+                <strong>Restore link didn’t work (restore_failed)</strong> — We couldn’t restore your access from that link.
+                Request a new email link below (same address as checkout).
+              </li>
+              <li>
+                <strong>Error while restoring (restore_error)</strong> — Something went wrong while restoring access. Try again,
+                or request a new link below.
+              </li>
+              <li>
+                <strong>Checkout couldn’t be confirmed (checkout_failed)</strong> — We couldn’t confirm checkout. If you
+                already paid, use the form below or contact support.
+              </li>
+              <li>
+                <strong>Couldn’t verify checkout — network (checkout_error)</strong> — We couldn’t verify checkout because of a
+                network error. Check your connection and try again, or use the form below.
+              </li>
+            </ul>
+          </details>
+          <p class="access-restricted__attempt" id="accessRestrictedAttempt" hidden>
+            <strong>You opened:</strong> <span id="accessRestrictedPath"></span>
+          </p>
+          <form id="accessGateForm" class="gate-card__form">
+            <label for="accessGateEmail">Email used at checkout</label>
+            <input
+              type="email"
+              id="accessGateEmail"
+              name="email"
+              required
+              autocomplete="email"
+              maxlength="320"
+              placeholder="you@example.com"
+            />
+            <button type="submit" class="header-link gate-card__submit">Email me a sign-in link</button>
+            <p class="access-restore-result" id="accessGateResult" hidden></p>
+          </form>
+          <div class="gate-actions">
+            <a class="header-link" href="/">Back to home</a>
+            <p class="gate-secondary">
+              Need to purchase? <a href="/">Open the home page</a> and use Get access.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script>
+    (function () {
+      function safeReturnPath(raw) {
+        if (!raw || typeof raw !== "string") return "";
+        try {
+          var s = decodeURIComponent(raw.trim());
+          if (/^https?:\/\//i.test(s) || s.indexOf("//") === 0) return "";
+          if (s[0] !== "/") return "";
+          if (s.length > 1800) return s.slice(0, 1800) + "…";
+          return s;
+        } catch (e) {
+          return "";
+        }
+      }
+      /* Same four scenarios as index.html ?reason=; wording adapted for this screen */
+      var messages = {
+        restore_failed:
+          "We couldn’t restore your access from that link. Request a new link with the form below (same email as checkout), or go home to purchase.",
+        restore_error:
+          "Something went wrong while restoring access. Try again or use the form below to request a new link.",
+        checkout_failed:
+          "We couldn’t confirm checkout. If you already paid, use the form below or contact support.",
+        checkout_error:
+          "We couldn’t verify checkout (network error). Check your connection and try again, or use the form below.",
+      };
+
+      var params = new URLSearchParams(window.location.search || "");
+      var fromQuery = (params.get("reason") || "").trim().toLowerCase();
+      var storedReason = "";
+      try {
+        storedReason = (sessionStorage.getItem("encor_index_notice_reason") || "").trim().toLowerCase();
+        if (storedReason) sessionStorage.removeItem("encor_index_notice_reason");
+      } catch (e) {}
+      var rawReason = fromQuery || storedReason;
+      var reasonEl = document.getElementById("accessRestrictedReason");
+      if (reasonEl && /^[a-z_]+$/.test(rawReason)) {
+        var key = messages[rawReason] ? rawReason : "checkout_failed";
+        reasonEl.textContent = messages[key];
+        reasonEl.hidden = false;
+        try {
+          params.delete("reason");
+          var qRest = params.toString();
+          var pathClean =
+            window.location.pathname + (qRest ? "?" + qRest : "") + window.location.hash;
+          window.history.replaceState(null, "", pathClean);
+        } catch (e2) {}
+      }
+
+      var ret = safeReturnPath(params.get("return") || "");
+      var attemptEl = document.getElementById("accessRestrictedAttempt");
+      var pathEl = document.getElementById("accessRestrictedPath");
+      if (ret && attemptEl && pathEl) {
+        pathEl.textContent = ret;
+        attemptEl.hidden = false;
+      }
+
+      var form = document.getElementById("accessGateForm");
+      var result = document.getElementById("accessGateResult");
+      if (form) {
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          if (result) result.hidden = true;
+          var emailEl = document.getElementById("accessGateEmail");
+          var email = emailEl ? (emailEl.value || "").trim() : "";
+          fetch("/api/request-access-restore", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            credentials: "same-origin",
+            body: JSON.stringify({ email: email }),
+          })
+            .then(function (r) {
+              return r.text().then(function (t) {
+                var d = {};
+                try {
+                  d = t ? JSON.parse(t) : {};
+                } catch (ex) {}
+                return { ok: r.ok, d: d };
+              });
+            })
+            .then(function (x) {
+              if (!result) return;
+              if (x.ok && x.d && x.d.emailed) {
+                result.hidden = false;
+                result.className = "access-restore-result access-restore-result--ok";
+                var mins = Math.max(1, Math.round((x.d.expiresInSec || 900) / 60));
+                result.textContent =
+                  "Check your email for a one-time link (expires in about " +
+                  mins +
+                  " minutes). Check spam if needed; the link is not shown here.";
+                return;
+              }
+              result.hidden = false;
+              result.className = "access-restore-result access-restore-result--err";
+              var msg = (x.d && x.d.error) || "Could not create link.";
+              if (x.d && x.d.hint) msg += " " + x.d.hint;
+              if (x.d && x.d.missing && x.d.missing.length) {
+                msg += " Missing: " + x.d.missing.join(", ") + ".";
+              }
+              result.textContent = msg;
+            })
+            .catch(function () {
+              if (!result) return;
+              result.hidden = false;
+              result.className = "access-restore-result access-restore-result--err";
+              result.textContent = "Network error.";
+            });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question 70 - HSRP Output Facts</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+    }
+    .card {
+      width: min(980px, 95vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+    }
+    .exhibit-region {
+      margin: 0 0 18px;
+    }
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 10px 12px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.72rem, 1.4vw, 0.82rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .choice {
+      display: block;
+      margin: 10px 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #1a253b;
+      border: 1px solid #2c3f62;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .choice input {
+      margin-right: 10px;
+      transform: translateY(1px);
+    }
+    .actions {
+      margin-top: 14px;
+    }
+    .check-btn {
+      background: #254b8a;
+      color: #e6edf3;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .answer {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+    }
+    .answer.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+    }
+    .answer.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+    }
+    .next-wrap {
+      margin-top: 18px;
+      display: none;
+    }
+    .next-link {
+      display: inline-block;
+      text-decoration: none;
+      color: #e6edf3;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-option">
+        <div class="exhibit-option-label">show standby</div>
+        <pre class="exhibit-cli" role="region" aria-label="HSRP show standby output">R1#show standby
+Vlan503 - Group 1
+  State is Active
+    1 state change, last state change 32w6d
+  Virtual IP address is 10.0.3.241
+  Active virtual MAC address is 0000.0c07.ac01
+  Local virtual MAC address is 0000.0c07.ac01 (v1 default)
+  Hello time 3 sec, hold time 10 sec
+  Next hello sent in 0.064 secs
+  Preemption enabled
+  Active router is local
+  Standby router is 10.0.3.242, priority 100 (expires in 10.624 sec)
+  Priority 110 (Configured 110)</pre>
+      </div>
+    </div>
+    <h1>Which two facts does the device output confirm? (Choose two)</h1>
+
+    <label class="choice"><input type="checkbox" name="q70" value="A" />A. The device is using the default HSRP hello timer</label>
+    <label class="choice"><input type="checkbox" name="q70" value="B" />B. The standby device is configured with the default HSRP priority</label>
+    <label class="choice"><input type="checkbox" name="q70" value="C" />C. The device’s HSRP group uses the virtual IP address 10.0.3.242</label>
+    <label class="choice"><input type="checkbox" name="q70" value="D" />D. The device is configured with the default HSRP priority</label>
+    <label class="choice"><input type="checkbox" name="q70" value="E" />E. The device sends unicast messages to its peers</label>
+
+    <div class="actions">
+      <button id="checkBtn" class="check-btn" type="button">Check Answer</button>
+    </div>
+
+    <div id="answerBox" class="answer" aria-live="polite"></div>
+    <div id="nextWrap" class="next-wrap">
+      <a class="next-link" href="/question-71.html">Next</a>
+    </div>
+  </main>
+
+  <script>
+    const answerBox = document.getElementById("answerBox");
+    const nextWrap = document.getElementById("nextWrap");
+    const checkBtn = document.getElementById("checkBtn");
+    const options = document.querySelectorAll('input[name="q70"]');
+    const correctSet = new Set(["A", "B"]);
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    checkBtn.addEventListener("click", () => {
+      const selected = [...options].filter((o) => o.checked).map((o) => o.value);
+      if (selected.length === 0) {
+        answerBox.style.display = "block";
+        answerBox.className = "answer incorrect";
+        answerBox.textContent = "Select at least one option.";
+        return;
+      }
+
+      answerBox.style.display = "block";
+      nextWrap.style.display = "block";
+
+      const selectedSet = new Set(selected);
+      const isCorrect =
+        selectedSet.size === correctSet.size &&
+        [...correctSet].every((value) => selectedSet.has(value));
+
+      if (isCorrect) {
+        answerBox.className = "answer correct";
+        answerBox.textContent = "Correct. A and B.";
+      } else {
+        answerBox.className = "answer incorrect";
+        answerBox.textContent = "Incorrect. The correct answer: A and B.";
+      }
+    });
+  </script>
+  <style>
+    .home-key {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+    .home-key:hover {
+      filter: brightness(1.08);
+    }
+  </style>
+  <a class="home-key" href="https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html">Home</a>
+  <script src="/js/practice-questions.js"></script>
+</body>
+</html>

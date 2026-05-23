@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question 222 - NETCONF over SSH login configuration</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+    }
+    .card {
+      width: min(960px, 96vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+    }
+    .image-wrap {
+      margin-bottom: 14px;
+      border: 1px solid #2c3f62;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .image-wrap img {
+      display: block;
+      width: 100%;
+      max-width: 900px;
+      height: auto;
+      margin: 0 auto;
+    }
+    .exhibit-option {
+      margin-bottom: 14px;
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+      min-width: 0;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-cli {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.68rem, 1.2vw, 0.8rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .choice {
+      display: block;
+      margin: 10px 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #1a253b;
+      border: 1px solid #2c3f62;
+      font-size: 0.9rem;
+      cursor: pointer;
+      line-height: 1.45;
+    }
+    .choice input {
+      margin-right: 10px;
+      vertical-align: top;
+      margin-top: 4px;
+    }
+    .choice .cmd {
+      display: inline-block;
+      margin-top: 6px;
+      margin-left: 22px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.78rem;
+      white-space: pre-wrap;
+      color: #c9d1d9;
+    }
+    .answer {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    .answer.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+    }
+    .answer.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+    }
+    .next-wrap {
+      margin-top: 18px;
+      display: none;
+    }
+    .next-link {
+      display: inline-block;
+      text-decoration: none;
+      color: #e6edf3;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <p style="margin: 0 0 8px; font-size: 0.95rem; color: #9fb0cc">Refer to the exhibit.</p>
+    <div class="image-wrap">
+      <img
+        src="/assets/question222-netconf-ssh-exhibit-v3.png"
+        alt="SSH netconf to 192.168.20.3 port 830 as admin; NETCONF hello with capabilities and session-id"
+      />
+    </div>
+    <div class="exhibit-option">
+      <div class="exhibit-option-label">NETCONF SSH session</div>
+      <pre class="exhibit-cli" role="region" aria-label="NETCONF SSH hello capabilities output">Router1# ssh -s admin@192.168.20.3 -p 830 netconf
+admin@192.168.20.3's password: cisco123
+
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0"&gt;
+&lt;capabilities&gt;
+&lt;capability&gt;urn:ietf:params:netconf:base:1.0&lt;capability&gt;
+&lt;capability&gt;urn:ietf:params:netconf:base:1.1&lt;capability&gt;
+&lt;capability&gt;urn:ietf:params:netconf:capability:writable-running:1.0&lt;/capability&gt;
+&lt;capability&gt;urn:ietf:params:netconf:capability:xpath:1.0&lt;/capability&gt;
+&lt;capability&gt;urn:ietf:params:netconf:capability:validate:1.0&lt;/capability&gt;
+&lt;capability&gt;urn:ietf:params:netconf:capability:validate:1.1&lt;/capability&gt;
+&lt;capability&gt;urn:ietf:params:netconf:capability:rollback-on-error:1.0&lt;/capability&gt;
+--snip--
+&lt;/capabilities&gt;
+&lt;session-id&gt;2870&lt;/session-id&gt;&lt;/hello&gt;]]&gt;]]&gt;
+
+Use &lt;^C&gt; to exit</pre>
+    </div>
+    <h1>A BeCertifiedToday.com engineer tries to log in to router R1. Which configuration enables a successful login?</h1>
+
+    <label class="choice"
+      ><input type="radio" name="q222" value="A" />A. <span class="cmd">username admin privilege 15
+aaa authorization exec default local
+netconf-yang</span></label
+    >
+    <label class="choice"
+      ><input type="radio" name="q222" value="B" />B. <span class="cmd">netconf-yang
+username admin privilege 15 secret cisco123
+aaa new-model
+aaa authorization exec default local</span></label
+    >
+    <label class="choice"
+      ><input type="radio" name="q222" value="C" />C. <span class="cmd">aaa new-model
+aaa authorization exec default local
+enable aaa admin privilege 15</span></label
+    >
+    <label class="choice"
+      ><input type="radio" name="q222" value="D" />D. <span class="cmd">username admin privilege 15
+aaa authorization exec default local</span></label
+    >
+
+    <div id="answerBox" class="answer" aria-live="polite"></div>
+    <div id="nextWrap" class="next-wrap">
+      <a class="next-link" href="/question-224.html">Next</a>
+    </div>
+  </main>
+
+  <script>
+    const answerBox = document.getElementById("answerBox");
+    const nextWrap = document.getElementById("nextWrap");
+    const options = document.querySelectorAll('input[name="q222"]');
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    options.forEach((option) => {
+      option.addEventListener("change", () => {
+        answerBox.style.display = "block";
+        nextWrap.style.display = "block";
+        if (option.value === "B") {
+          answerBox.className = "answer correct";
+          answerBox.textContent =
+            "Correct. B. NETCONF over SSH needs netconf-yang (subsystem on TCP 830), a local user with a password (secret cisco123 matches the exhibit), and AAA new-model plus exec authorization local so the session can be established. A and D omit the user password/secret and omit aaa new-model; A adds netconf-yang but login still fails without credentials. C uses invalid syntax and lacks netconf-yang and a proper user definition.";
+        } else {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent =
+            "Incorrect. The correct answer: B. Enable netconf-yang, define the user with secret, and enable AAA (new-model and exec authorization local).";
+        }
+      });
+    });
+  </script>
+  <style>
+    .home-key {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+    .home-key:hover {
+      filter: brightness(1.08);
+    }
+  </style>
+  <a class="home-key" href="https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html">Home</a>
+  <script src="/js/practice-questions.js"></script>
+</body>
+</html>

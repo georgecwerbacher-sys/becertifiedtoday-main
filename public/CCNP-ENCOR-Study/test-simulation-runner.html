@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Test simulation — in progress</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 14px;
+      border-bottom: 1px solid #2d3b5a;
+      background: #121a2b;
+    }
+    .topbar-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 800;
+    }
+    .topbar-brand {
+      color: #e6edf3;
+      text-decoration: none;
+    }
+    .topbar-brand:hover {
+      text-decoration: underline;
+    }
+    .timer {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #fbbf24;
+      padding: 6px 10px;
+      border-radius: 10px;
+      border: 1px solid #4b556b;
+      background: #1f2937;
+    }
+    .timer.is-expired {
+      color: #fecaca;
+      border-color: #991b1b;
+      background: #3b0f14;
+    }
+    .stage {
+      min-height: 0;
+    }
+    #runnerFrame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #0b1020;
+    }
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-top: 1px solid #2d3b5a;
+      background: #121a2b;
+    }
+    .next-btn {
+      appearance: none;
+      border: 1px solid #4f84d8;
+      background: #2f66bf;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      min-width: 8rem;
+    }
+    .quit-btn {
+      appearance: none;
+      border: 1px solid #4b556b;
+      background: #2a3040;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      min-width: 8rem;
+    }
+    .next-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .status {
+      margin-right: auto;
+      font-size: 0.92rem;
+      color: #9fb0cc;
+    }
+    .summary-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(5, 10, 20, 0.72);
+      z-index: 2000;
+    }
+    .summary-modal.is-open {
+      display: flex;
+    }
+    .summary-card {
+      width: min(640px, 96vw);
+      border: 1px solid #2d3b5a;
+      border-radius: 12px;
+      background: #121a2b;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      padding: 18px 18px 14px;
+    }
+    .summary-title {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+    .summary-text {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.45;
+    }
+    .summary-list {
+      margin: 0 0 14px 20px;
+      padding: 0;
+      color: #dbe7ff;
+      line-height: 1.55;
+    }
+    .summary-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .summary-close,
+    .summary-home {
+      appearance: none;
+      border-radius: 10px;
+      padding: 9px 13px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .summary-close {
+      border: 1px solid #4b556b;
+      background: #2a3040;
+      color: #e6edf3;
+    }
+    .summary-home {
+      border: 1px solid #4f84d8;
+      background: #2f66bf;
+      color: #e6edf3;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <h1 class="topbar-title">
+      <a class="topbar-brand" href="https://becertifiedtoday.com/">CCNP Test simulation</a>
+    </h1>
+    <div id="timer" class="timer" role="status" aria-live="polite">120:00</div>
+  </header>
+
+  <main class="stage">
+    <iframe id="runnerFrame" title="Test simulation content"></iframe>
+  </main>
+
+  <footer class="actions">
+    <div id="status" class="status"></div>
+    <button id="quitBtn" type="button" class="quit-btn">Quit</button>
+    <button id="nextBtn" type="button" class="next-btn">Next</button>
+  </footer>
+  <div id="summaryModal" class="summary-modal" role="dialog" aria-modal="true" aria-labelledby="summaryTitle">
+    <div class="summary-card">
+      <h2 id="summaryTitle" class="summary-title">Test simulation summary</h2>
+      <p id="summaryText" class="summary-text"></p>
+      <ul id="summaryList" class="summary-list"></ul>
+      <div class="summary-actions">
+        <button id="summaryClose" type="button" class="summary-close">Close</button>
+        <a class="summary-home" href="/encor/index.html?after_test=1">Continue to home</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var frame = document.getElementById("runnerFrame");
+      var nextBtn = document.getElementById("nextBtn");
+      var quitBtn = document.getElementById("quitBtn");
+      var timerEl = document.getElementById("timer");
+      var statusEl = document.getElementById("status");
+      var summaryModal = document.getElementById("summaryModal");
+      var summaryText = document.getElementById("summaryText");
+      var summaryList = document.getElementById("summaryList");
+      var summaryClose = document.getElementById("summaryClose");
+
+      var queue = [];
+      var index = 0;
+      var endsAt = 0;
+      var timerHandle = null;
+      var isOver = false;
+      var answeredByIndex = {};
+
+      function loadState() {
+        try {
+          queue = JSON.parse(sessionStorage.getItem("ccnpTestSimQueue") || "[]");
+          index = parseInt(sessionStorage.getItem("ccnpTestSimIndex") || "0", 10);
+          endsAt = parseInt(sessionStorage.getItem("ccnpTestSimEndsAt") || "0", 10);
+        } catch (e) {
+          queue = [];
+          index = 0;
+          endsAt = 0;
+        }
+      }
+
+      function saveIndex() {
+        try {
+          sessionStorage.setItem("ccnpTestSimIndex", String(index));
+        } catch (e) {}
+      }
+
+      function clearTestState() {
+        try {
+          sessionStorage.removeItem("ccnpTestSimQueue");
+          sessionStorage.removeItem("ccnpTestSimIndex");
+          sessionStorage.removeItem("ccnpTestSimEndsAt");
+        } catch (e) {}
+      }
+
+      function formatRemaining(ms) {
+        var totalSeconds = Math.max(0, Math.floor(ms / 1000));
+        var minutes = Math.floor(totalSeconds / 60);
+        var seconds = totalSeconds % 60;
+        return String(minutes) + ":" + String(seconds).padStart(2, "0");
+      }
+
+      function elementVisibleInDoc(doc, el) {
+        if (!doc || !el) return false;
+        var s = doc.defaultView && doc.defaultView.getComputedStyle
+          ? doc.defaultView.getComputedStyle(el)
+          : null;
+        if (!s) return true;
+        return s.display !== "none" && s.visibility !== "hidden" && s.opacity !== "0";
+      }
+
+      function evaluateQuestionLike(doc) {
+        if (!doc) return false;
+        var answerBox = doc.getElementById("answerBox");
+        if (answerBox && elementVisibleInDoc(doc, answerBox)) {
+          var cn = answerBox.className || "";
+          if (/\bcorrect\b/i.test(cn)) return true;
+          if (/\bincorrect\b/i.test(cn)) return false;
+          var t0 = (answerBox.textContent || "").toLowerCase();
+          if (/\bcorrect\b/.test(t0)) return true;
+          if (/\bincorrect\b|\bwrong\b/.test(t0)) return false;
+        }
+        var answer = doc.querySelector(".answer.correct, .answer.incorrect");
+        if (answer && elementVisibleInDoc(doc, answer)) {
+          return answer.classList.contains("correct");
+        }
+        var result = doc.getElementById("result") || doc.getElementById("status");
+        if (result && elementVisibleInDoc(doc, result)) {
+          var txt = (result.textContent || "").trim();
+          var m = txt.match(/Score:\s*(\d+)\s*\/\s*(\d+)/i);
+          if (m) {
+            var x = parseInt(m[1], 10);
+            var y = parseInt(m[2], 10);
+            if (Number.isFinite(x) && Number.isFinite(y) && y > 0) return x === y;
+          }
+          if (/\bcorrect\b/i.test(txt)) return true;
+          if (/\bincorrect\b|\bwrong\b|\btry again\b/i.test(txt)) return false;
+        }
+        return false;
+      }
+
+      function evaluateSim(doc) {
+        if (!doc) return false;
+        if (doc.querySelector(".pass-banner.visible, #passBanner.visible, .pass-banner.is-visible, #passBanner.is-visible")) {
+          return true;
+        }
+        var text = (doc.body && doc.body.textContent ? doc.body.textContent : "").toLowerCase();
+        var okCount = (text.match(/\[ok\]\s+[^\n]*configuration complete \(simulated\)\./g) || []).length;
+        if (okCount >= 2) return true;
+        return false;
+      }
+
+      function evaluateCurrentItem() {
+        var item = queue[index];
+        if (!item) return false;
+        var doc;
+        try {
+          doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+        } catch (e) {
+          doc = null;
+        }
+        var kind = String(item.kind || "");
+        if (kind === "sim") return evaluateSim(doc);
+        return evaluateQuestionLike(doc);
+      }
+
+      function captureCurrentOutcome() {
+        if (!queue.length || index < 0 || index >= queue.length) return;
+        answeredByIndex[index] = !!evaluateCurrentItem();
+      }
+
+      function kindLabel(kind) {
+        if (kind === "sim") return "Lab";
+        if (kind === "dragdrop" || kind === "dragdrop-json") return "Drag and Drop";
+        return "Question";
+      }
+
+      function renderSummary(reason) {
+        var totals = {
+          question: 0,
+          dragdrop: 0,
+          sim: 0
+        };
+        for (var i = 0; i < queue.length; i += 1) {
+          var item = queue[i] || {};
+          var passed = answeredByIndex[i] === true;
+          if (passed) continue;
+          var kind = String(item.kind || "");
+          if (kind === "sim") totals.sim += 1;
+          else if (kind === "dragdrop" || kind === "dragdrop-json") totals.dragdrop += 1;
+          else totals.question += 1;
+        }
+        var totalMissed = totals.question + totals.dragdrop + totals.sim;
+        summaryText.textContent = reason + " You missed " + totalMissed + " item(s).";
+        summaryList.innerHTML = "";
+        [
+          { label: "Questions", count: totals.question },
+          { label: "Drag and Drop", count: totals.dragdrop },
+          { label: "Labs", count: totals.sim }
+        ].forEach(function (row) {
+          var li = document.createElement("li");
+          li.textContent = row.label + ": " + row.count + " missed";
+          summaryList.appendChild(li);
+        });
+        summaryModal.classList.add("is-open");
+      }
+
+      function updateStatus() {
+        if (!queue.length) {
+          statusEl.textContent = "";
+          return;
+        }
+        statusEl.textContent = "Item " + (index + 1) + " of " + queue.length;
+      }
+
+      function endTest(reason) {
+        if (isOver) return;
+        captureCurrentOutcome();
+        isOver = true;
+        if (timerHandle) {
+          clearInterval(timerHandle);
+          timerHandle = null;
+        }
+        nextBtn.disabled = true;
+        quitBtn.disabled = true;
+        timerEl.classList.add("is-expired");
+        statusEl.textContent = reason;
+        frame.srcdoc =
+          "<!doctype html><html><body style=\"margin:0;min-height:100vh;display:grid;place-items:center;background:#0b1020;color:#e6edf3;font-family:Inter,Arial,sans-serif;\">" +
+          "<div style=\"text-align:center;padding:24px;max-width:760px;\">" +
+          "<h2 style=\"margin:0 0 10px;\">Test simulation finished</h2>" +
+          "<p style=\"margin:0 0 16px;color:#b8c3d6;line-height:1.45;\">" + reason + "</p>" +
+          "<a href=\"/encor/index.html?after_test=1\" style=\"display:inline-block;text-decoration:none;background:#2f66bf;border:1px solid #4f84d8;color:#e6edf3;padding:10px 14px;border-radius:10px;font-weight:800;\">Continue to home</a>" +
+          "</div></body></html>";
+        renderSummary(reason);
+        clearTestState();
+        fetch("/api/end-test-simulation-session", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { Accept: "application/json" },
+        }).catch(function () {});
+      }
+
+      function tick() {
+        if (isOver) return;
+        var remaining = endsAt - Date.now();
+        timerEl.textContent = formatRemaining(remaining);
+        if (remaining <= 0) {
+          timerEl.textContent = "0:00";
+          endTest("Time is up. The practice test is over.");
+        }
+      }
+
+      function hideEmbeddedNav() {
+        var doc;
+        try {
+          doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+        } catch (e) {
+          return;
+        }
+        if (!doc) return;
+        var selectors = [
+          ".sim-nav",
+          "#nextWrap",
+          "a[href='/CCNP_Encor.html']",
+          "a[href='https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html']",
+          "a[href='/encor/index.html']",
+          "a[href='/']"
+        ];
+        selectors.forEach(function (sel) {
+          var nodes = doc.querySelectorAll(sel);
+          for (var i = 0; i < nodes.length; i++) {
+            nodes[i].style.display = "none";
+          }
+        });
+
+        var item = queue[index];
+        if (!item || String(item.kind || "") !== "sim") {
+          return;
+        }
+
+        var toRemove = [
+          ".helper-file-wrap",
+          "#helperFileOverlay",
+          "#openHelperFileBtn"
+        ];
+        toRemove.forEach(function (sel) {
+          doc.querySelectorAll(sel).forEach(function (node) {
+            node.remove();
+          });
+        });
+      }
+
+      function loadCurrentItem() {
+        if (isOver) return;
+        if (!queue.length || index < 0 || index >= queue.length) {
+          endTest("Practice test complete.");
+          return;
+        }
+        updateStatus();
+        frame.src = queue[index].url;
+      }
+
+      function moveNext() {
+        if (isOver) return;
+        captureCurrentOutcome();
+        index += 1;
+        saveIndex();
+        if (index >= queue.length) {
+          endTest("Practice test complete.");
+          return;
+        }
+        loadCurrentItem();
+      }
+
+      frame.addEventListener("load", hideEmbeddedNav);
+      nextBtn.addEventListener("click", moveNext);
+      quitBtn.addEventListener("click", function () {
+        endTest("You quit the practice test.");
+      });
+      summaryClose.addEventListener("click", function () {
+        summaryModal.classList.remove("is-open");
+      });
+
+      loadState();
+      if (!queue.length || !endsAt || !Number.isFinite(endsAt)) {
+        location.replace("/encor/test-simulation.html");
+        return;
+      }
+      if (!Number.isFinite(index) || index < 0) index = 0;
+      if (index >= queue.length) index = queue.length - 1;
+      saveIndex();
+
+      tick();
+      timerHandle = setInterval(tick, 1000);
+      loadCurrentItem();
+    })();
+  </script>
+</body>
+</html>

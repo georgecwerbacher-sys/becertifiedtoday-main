@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Preparing test simulation…</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #b8c3d6;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <p>Preparing your timed test simulation…</p>
+  <script>
+    (function () {
+      var TEST_MINUTES = 120;
+      var QUESTION_COUNT = 50;
+      var DRAGDROP_TOTAL = 4;
+      var SIM_COUNT = 2;
+
+      function stripSessionIdFromUrl() {
+        try {
+          var u = new URL(location.href);
+          if (!u.searchParams.get("session_id")) return;
+          u.searchParams.delete("session_id");
+          var q = u.searchParams.toString();
+          history.replaceState({}, "", u.pathname + (q ? "?" + q : "") + u.hash);
+        } catch (e) {}
+      }
+
+      /** Stripe Checkout success URL lands here with ?session_id= — set cookie before loading questions. */
+      function verifyCheckoutThen(run) {
+        var params = new URLSearchParams(location.search || "");
+        var sid = params.get("session_id");
+        if (!sid || sid.indexOf("cs_") !== 0) {
+          run();
+          return;
+        }
+        fetch("/api/verify-checkout-session", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ sessionId: sid }),
+        })
+          .then(function (r) {
+            if (!r.ok) throw new Error("verify");
+            return r.json();
+          })
+          .then(function () {
+            stripSessionIdFromUrl();
+            run();
+          })
+          .catch(function () {
+            location.replace("/encor/test-simulation-purchase.html?reason=checkout_failed");
+          });
+      }
+
+      function pickRandom(list, n) {
+        var copy = list.slice();
+        for (var i = copy.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var t = copy[i];
+          copy[i] = copy[j];
+          copy[j] = t;
+        }
+        return copy.slice(0, Math.min(n, copy.length));
+      }
+
+      function shuffle(list) {
+        var out = list.slice();
+        for (var i = out.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var t = out[i];
+          out[i] = out[j];
+          out[j] = t;
+        }
+        return out;
+      }
+
+      function clearPendingTestSimStorage() {
+        try {
+          sessionStorage.removeItem("ccnpTestSimQueue");
+          sessionStorage.removeItem("ccnpTestSimIndex");
+          sessionStorage.removeItem("ccnpTestSimEndsAt");
+        } catch (e) {}
+      }
+
+      function startTimedTest(cfg) {
+        var dragDropStd = (cfg.dragDropIds || []).slice();
+        var dragDropJson = (cfg.dragDropJsonIds || []).slice();
+        var dragDropLookup = {};
+        dragDropStd.concat(dragDropJson).forEach(function (id) {
+          dragDropLookup[id] = true;
+        });
+
+        var nonDragIds = (cfg.allIds || []).filter(function (id) {
+          return !dragDropLookup[id];
+        });
+
+        var questionIds = pickRandom(nonDragIds, QUESTION_COUNT);
+        var dragPool = []
+          .concat(
+            dragDropStd.map(function (id) {
+              return { id: id, kind: "dragdrop" };
+            })
+          )
+          .concat(
+            dragDropJson.map(function (id) {
+              return { id: id, kind: "dragdrop-json" };
+            })
+          );
+        var dragPicked = pickRandom(dragPool, DRAGDROP_TOTAL);
+
+        /** Keep this list to active, existing lab URLs (avoid stale paths causing blank/404 items). */
+        var simPool = [
+          "/lab-sims-v2/cli-lab-vty-login-v2.html",
+          "/cli-lab-rapid-pvst-lacp.html",
+          "/cli-lab-vrf-config-sim.html",
+          "/lab-sims-v2/cli-lab-vrf-config-sim2.html",
+          "/lab-sims-v2/cli-lab-ospf-dr-bdr-2.html",
+          "/cli-lab-ospf-summ-r20.html",
+          "/cli-lab-trunk-udld-lacp.html",
+          "/cli-lab-ebgp-neighbor-2.html",
+          "/lab-sims-v2/cli-lab-netflow-span-2.html",
+          "/cli-lab-acl-copp/cli-lab-acl-copp_v3.html"
+        ];
+        var simUrls = pickRandom(simPool, SIM_COUNT);
+
+        var queue = []
+          .concat(
+            questionIds.map(function (id) { return { kind: "question", url: "/question-" + id + ".html" }; }),
+            dragPicked.map(function (d) {
+              return { kind: d.kind, url: "/question-" + d.id + ".html" };
+            }),
+            simUrls.map(function (url) { return { kind: "sim", url: url }; })
+          );
+
+        queue = shuffle(queue);
+
+        try {
+          sessionStorage.setItem("ccnpTestSimQueue", JSON.stringify(queue));
+          sessionStorage.setItem("ccnpTestSimIndex", "0");
+          sessionStorage.setItem(
+            "ccnpTestSimEndsAt",
+            String(Date.now() + TEST_MINUTES * 60 * 1000)
+          );
+        } catch (e) {
+          location.replace("/CCNP_Encor.html");
+          return;
+        }
+
+        fetch("/api/begin-test-simulation-session", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { Accept: "application/json" },
+        })
+          .then(function (r) {
+            if (r.status === 403) {
+              clearPendingTestSimStorage();
+              location.replace("/encor/test-simulation-purchase.html?reason=session_used");
+              return Promise.reject(new Error("redirect"));
+            }
+            if (r.status === 401) {
+              clearPendingTestSimStorage();
+              location.replace("/encor/test-simulation-purchase.html?reason=no_access");
+              return Promise.reject(new Error("redirect"));
+            }
+            if (!r.ok) throw new Error("session");
+            return r.json();
+          })
+          .then(function () {
+            location.replace("/test-simulation-runner.html");
+          })
+          .catch(function (err) {
+            if (err && err.message === "redirect") return;
+            clearPendingTestSimStorage();
+            location.replace("/CCNP_Encor.html");
+          });
+      }
+
+      verifyCheckoutThen(function () {
+        fetch("/js/study-config.json", { cache: "no-store" })
+          .then(function (r) {
+            if (!r.ok) throw new Error("cfg");
+            return r.json();
+          })
+          .then(startTimedTest)
+          .catch(function () {
+            location.replace("/CCNP_Encor.html");
+          });
+      });
+    })();
+  </script>
+</body>
+</html>

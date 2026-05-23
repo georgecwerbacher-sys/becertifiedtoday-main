@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
+  <title>VTY Login Sim</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      padding-bottom: 88px;
+      box-sizing: border-box;
+    }
+    .wrap {
+      width: min(960px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card {
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 22px 26px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.15rem, 2vw, 1.65rem);
+      line-height: 1.3;
+    }
+    h2 {
+      margin: 18px 0 8px;
+      font-size: 1.05rem;
+      color: #c8d7ec;
+    }
+    .objective,
+    .tasks {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .tasks ol {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+    }
+    .tasks li {
+      margin: 6px 0;
+    }
+    .diagram-wrap {
+      background: #ffffff;
+      border: 1px solid #2d3b5a;
+      border-radius: 12px;
+      padding: 14px;
+      overflow-x: auto;
+      text-align: center;
+    }
+    .diagram-wrap img {
+      max-width: 100%;
+      height: auto;
+      vertical-align: middle;
+    }
+    .diagram-wrap .tasks-top {
+      text-align: left;
+      margin-top: 14px;
+      width: 100%;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      box-sizing: border-box;
+    }
+    .diagram-wrap .tasks-top > strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #e6edf3;
+    }
+    .diagram-wrap .tasks-top .tasks-intro {
+      margin: 0 0 10px;
+    }
+    .diagram-wrap .tasks-top .tasks-sublead {
+      margin: 10px 0 6px;
+      font-size: 0.92rem;
+      color: #c8d7ec;
+    }
+    .diagram-wrap .tasks-top ol.tasks-numbered {
+      margin: 8px 0 0;
+      padding-left: 1.35rem;
+    }
+    .diagram-wrap .tasks-top ol.tasks-numbered > li {
+      margin: 10px 0;
+    }
+    .diagram-wrap .tasks-top .tasks-variant-label {
+      margin: 14px 0 8px;
+      padding-top: 12px;
+      border-top: 1px solid #2d3b5a;
+      font-weight: 700;
+      color: #e6edf3;
+      font-size: 0.95rem;
+    }
+    .diagram-wrap .tasks-top .task-block {
+      margin-top: 10px;
+    }
+    .diagram-wrap .tasks-top .task-title {
+      margin: 0 0 6px;
+      font-weight: 700;
+      color: #e6edf3;
+      font-size: 0.92rem;
+    }
+    .diagram-wrap .tasks-top .task-block p:last-child {
+      margin: 0;
+      line-height: 1.5;
+    }
+    .diagram-wrap .tasks-top .tasks-note {
+      margin: 12px 0 0;
+      padding-top: 10px;
+      border-top: 1px solid #2d3b5a;
+      font-size: 0.92rem;
+      color: #9fb0cc;
+    }
+    .diagram-top {
+      margin-bottom: 20px;
+    }
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .device-pick label {
+      margin-left: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .device-pick input {
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .helper-file-wrap {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
+      outline: none;
+    }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+      pointer-events: none;
+    }
+    .cli-modal-overlay.is-open {
+      display: block;
+    }
+    .cli-modal-dialog {
+      width: min(520px, calc(100vw - 24px));
+      max-height: min(85vh, 720px);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
+    .terminal {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.88rem;
+      background: #0a0d12;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      padding: 12px 12px 10px;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      margin-top: 0;
+    }
+    #scrollback {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 360px;
+      margin-bottom: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #c8d2e0;
+      line-height: 1.45;
+    }
+    .line-user {
+      color: #7ec8ff;
+    }
+    .line-ok {
+      color: #6ee7b7;
+    }
+    .line-bad {
+      color: #fca5a5;
+    }
+    .line-sys {
+      color: #94a3b8;
+    }
+    .input-row {
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #243044;
+      padding-top: 8px;
+    }
+    #prompt {
+      flex-shrink: 0;
+      color: #fbbf24;
+      user-select: none;
+    }
+    #cmdline {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      color: #e6edf3;
+      font: inherit;
+      outline: none;
+      padding: 4px 0 4px 4px;
+    }
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-secondary {
+      background: #2a3040;
+      border-color: #4b556b;
+    }
+    .pass-banner {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .pass-banner.visible {
+      display: block;
+    }
+    .verify {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      font-size: 0.92rem;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .verify code {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.85rem;
+      color: #e6edf3;
+    }
+    .sim-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(11, 16, 32, 0.94);
+      border-top: 1px solid #2d3b5a;
+      backdrop-filter: blur(10px);
+    }
+    .sim-nav-btn {
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 700;
+      min-width: 5.5rem;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .sim-nav-btn:hover {
+      filter: brightness(1.08);
+    }
+    .sim-nav-home {
+      background: #1a3d6e;
+    }
+    .sim-nav-next {
+      background: #1a3d6e;
+    }
+    .sim-nav-back {
+      background: #243352;
+      border-color: #3d5280;
+    }
+  
+    /* CLI: avoid white native input fill — transparent text fields on dark terminals */
+    .cli-modal-dialog,
+    .terminal {
+      color-scheme: dark;
+    }
+    .terminal input[type="text"],
+    input.cmdline,
+    #cmdline,
+    #cmdlineR2,
+    #cmdlineR3 {
+      color-scheme: dark;
+      -webkit-appearance: none;
+      appearance: none;
+      background-color: transparent !important;
+    }
+
+  
+    .site-logo-corner {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 12000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(11, 16, 32, 0.55);
+      border: 1px solid #2d3b5a;
+      padding: 6px;
+      backdrop-filter: blur(4px);
+    }
+    .site-logo-corner img {
+      display: block;
+      width: 52px;
+      height: 52px;
+    }
+</style>
+</head>
+<body>
+  <a class="site-logo-corner" href="https://becertifiedtoday.com/" aria-label="Go to training portal home">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+  </a>
+
+  <div class="wrap">
+    <main class="card">
+      <h1>VTY Login Sim</h1>
+
+      <div class="diagram-wrap diagram-top" aria-label="Topology">
+        <img src="/assets/vty-login-topology-v2.png" alt="R1, R2, and R3 connected to a central switch" width="680" height="731" />
+        
+          <div class="task-block">
+            <p class="task-title">Task 2</p>
+            <p>
+              The virtual terminal interfaces utilize the local user database for access and allow <strong>Telnet</strong> and <strong>Rlogin</strong>.
+            </p>
+          </div>
+          <div class="task-block">
+            <p class="task-title">Task 3</p>
+            <p>Exec sessions on the <strong>auxiliary</strong> port should timeout after <strong>20 minutes</strong> of inactivity.</p>
+          </div>
+          <p class="tasks-note">
+            <strong>Note:</strong> The question may ask you to configure <strong>R2</strong>, not <strong>R1</strong>. Use <strong>Device in prompt</strong> to match the router named in the item.
+            For Telnet/Rlogin + AUX timeout, use <a href="/lab-sims-v2/cli-lab-vty-login-v2.html">VTY Login Sim — Version 2</a>.
+          </p>
+        </div>
+        <div class="device-pick" role="group" aria-label="Device in prompt">
+          <strong>Device in prompt:</strong>
+          <label><input type="radio" name="dev" value="R1" checked /> R1</label>
+          <label><input type="radio" name="dev" value="R2" /> R2</label>
+        </div>
+        <div class="device-links" aria-label="Open device CLI">
+          <button type="button" class="device-link" id="openRouterCliLink">Open Router CLI</button>
+        </div>
+<div class="tasks tasks-top">
+          <strong>Tasks</strong>
+          <p class="tasks-intro">
+            Protect <strong>R1</strong> configuration to achieve the following <strong>three</strong> results (exam wording may reference <strong>R2</strong> instead — use
+            <strong>Device in prompt</strong>):
+          </p>
+          <p class="tasks-sublead">Standard wording</p>
+          <ol class="tasks-numbered">
+            <li>
+              Local database is configured for the user <code>SuperAdmin</code> with password <code>SuperUser</code> and the highest level of privileges.
+            </li>
+            <li>The VTY interfaces utilize the local user database for access and allow <strong>Telnet</strong> and <strong>SSH</strong>.</li>
+            <li>Virtual terminal Exec sessions should timeout after <strong>5 minutes</strong> of inactivity.</li>
+          </ol>
+          <p class="tasks-variant-label">Version 2 (alternate exam / separate lab page)</p>
+          <div class="task-block">
+            <p class="task-title">Task 1</p>
+            <p>Same as Task 1 above.</p>
+          </div>
+              <div class="helper-file-wrap">
+                <button type="button" class="device-link" id="openHelperFileBtn">Helper File</button>
+                <button type="button" class="device-link" id="inlineResetLabBtn">Reset lab</button>
+                <button type="button" class="device-link" id="openSpoilerBtn">Spoiler</button>
+              </div>
+
+
+      </div>
+      <p class="objective">
+        <strong>This page</strong> simulates the <strong>standard</strong> three results (Telnet + SSH on VTY, <code>exec-timeout 5 0</code> on VTY). Choose <strong>Device in prompt</strong>,
+        then <strong>Open Router CLI</strong>. Finish with <code>end</code> and <code>copy running-config startup-config</code>. (The simulator only grades commands on the device you
+        select; use the verification section below for real Telnet from R2/R3.)
+      </p>
+
+      <div class="controls">
+        <button type="button" class="btn btn-secondary" id="resetBtn">Reset lab</button>
+      </div>
+
+      <div id="passBanner" class="pass-banner" role="status">
+        Lab complete. Configuration is saved. On a live network you could verify with Telnet from R2 or R3 to
+        <code>192.168.100.1</code> (use <code>show ip interface brief</code> on R1 if that differs).
+      </div>
+
+      <div class="verify">
+        <strong>Verification (real gear / lab)</strong><br />
+        From <strong>R2</strong> or <strong>R3</strong>: <code>telnet 192.168.100.1</code> (or the IP on the configured router toward the switch).<br />
+        Username: <code>SuperAdmin</code> — Password: <code>SuperUser</code> — expect privileged EXEC (for example <code>R1#</code> or <code>R2#</code>) if login succeeds.
+      </div>
+
+      <details class="hint">
+        <summary>Show command sequence (spoiler)</summary>
+        <ol>
+          <li><code>username SuperAdmin privilege 15 secret SuperUser</code></li>
+          <li><code>line vty 0 4</code></li>
+          <li><code>login local</code></li>
+          <li><code>transport input telnet ssh</code></li>
+          <li><code>exec-timeout 5 0</code></li>
+          <li><code>end</code></li>
+          <li><code>copy running-config startup-config</code></li>
+        </ol>
+      </details>
+    </main>
+  </div>
+
+  <div id="modalRouter" class="cli-modal-overlay" aria-hidden="true">
+    <div
+      id="modalRouterDialog"
+      class="cli-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitleRouter"
+      tabindex="-1"
+    >
+      <header class="cli-modal-header">
+        <h2 id="modalTitleRouter">R1 — CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeRouterCli" aria-label="Close router CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal" aria-label="Simulated router CLI">
+          <div id="scrollback"></div>
+          <div class="input-row">
+            <span id="prompt">R1(config)#</span>
+            <input id="cmdline" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="Router command line" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html">Home</a>
+    <a class="sim-nav-btn sim-nav-next" href="/lab-sims-v2/cli-lab-vty-login-v2.html">Next</a>
+    <a class="sim-nav-btn sim-nav-back" href="/CCNP_Encor.html">Back</a>
+  </nav>
+
+  <script src="/js/cli-ios-mode.js"></script>
+  <script>
+    function normalize(s) {
+      return s.trim().toLowerCase().replace(/\s+/g, " ");
+    }
+
+    function matchUsername(n) {
+      const u = normalize(n);
+      return (
+        u === "username superadmin privilege 15 secret superuser" ||
+        u === "username superadmin privilege 15 secret 0 superuser" ||
+        u === "username superadmin privilege 15 password superuser" ||
+        u === "username superadmin privilege 15 password 0 superuser"
+      );
+    }
+
+    function matchTransport(n) {
+      const u = normalize(n);
+      return u === "transport input telnet ssh" || u === "transport input ssh telnet";
+    }
+
+    function matchCopy(n) {
+      const u = normalize(n);
+      return (
+        u === "copy running-config startup-config" ||
+        u === "copy run start" ||
+        u === "copy run startup-config"
+      );
+    }
+
+    const STEPS = [
+      { mode: "config", test: (raw) => matchUsername(raw) },
+      { mode: "config", test: (raw) => normalize(raw) === "line vty 0 4" },
+      { mode: "config-line", test: (raw) => normalize(raw) === "login local" },
+      { mode: "config-line", test: matchTransport },
+      { mode: "config-line", test: (raw) => normalize(raw) === "exec-timeout 5 0" },
+      { mode: "config-line", test: (raw) => normalize(raw) === "end" },
+      { mode: "privileged", test: matchCopy },
+    ];
+
+    function getHostname() {
+      const sel = document.querySelector('input[name="dev"]:checked');
+      return sel ? sel.value : "R1";
+    }
+
+    function promptForStep(i, hostname) {
+      if (i >= STEPS.length) return `${hostname}#`;
+      return cliIosMode.promptForStep(hostname, STEPS, i, stepExitLevel);
+    }
+
+    const scrollback = document.getElementById("scrollback");
+    const promptEl = document.getElementById("prompt");
+    const cmdline = document.getElementById("cmdline");
+    const passBanner = document.getElementById("passBanner");
+    const resetBtn = document.getElementById("resetBtn");
+    const modalRouter = document.getElementById("modalRouter");
+    const modalTitleRouter = document.getElementById("modalTitleRouter");
+    const openRouterCliLink = document.getElementById("openRouterCliLink");
+    const closeRouterCli = document.getElementById("closeRouterCli");
+
+    let stepIndex = 0;
+    let stepExitLevel = 0;
+
+    function appendLine(className, text) {
+      const div = document.createElement("div");
+      div.className = className;
+      div.textContent = text;
+      scrollback.appendChild(div);
+      scrollback.scrollTop = scrollback.scrollHeight;
+    }
+
+    function setPrompt() {
+      const h = getHostname();
+      promptEl.textContent = promptForStep(stepIndex, h);
+    }
+
+    function updateModalTitle() {
+      modalTitleRouter.textContent = `${getHostname()} — CLI`;
+    }
+
+    function openRouterCliModal() {
+      updateModalTitle();
+      modalRouter.classList.add("is-open");
+      modalRouter.setAttribute("aria-hidden", "false");
+      cmdline.focus();
+    }
+
+    function closeRouterCliModal() {
+      modalRouter.classList.remove("is-open");
+      modalRouter.setAttribute("aria-hidden", "true");
+      openRouterCliLink.focus();
+    }
+
+    function reset() {
+      stepIndex = 0;
+      stepExitLevel = 0;
+      scrollback.innerHTML = "";
+      passBanner.classList.remove("visible");
+      cmdline.disabled = false;
+      setPrompt();
+      cmdline.value = "";
+      updateModalTitle();
+      const h = getHostname();
+      appendLine(
+        "line-sys",
+        `You are already in global configuration mode (${h}(config)#). Enter each command and press Enter.`
+      );
+      if (modalRouter.classList.contains("is-open")) {
+        cmdline.focus();
+      } else {
+        openRouterCliLink.focus();
+      }
+    }
+
+    function submit() {
+      if (stepIndex >= STEPS.length) return;
+      const h = getHostname();
+      const p = promptForStep(stepIndex, h);
+      const line = cmdline.value;
+      const u = normalize(line);
+      appendLine("line-user", p + " " + line);
+      cmdline.value = "";
+
+      if (!line.trim()) return;
+
+      if (u !== "exit") stepExitLevel = 0;
+      if (u === "exit") {
+        if (stepExitLevel === 0 && STEPS[stepIndex].test(line)) {
+          /* scripted exit — advance below */
+        } else if (cliIosMode.canExit(STEPS[stepIndex].mode, stepExitLevel)) {
+          stepExitLevel += 1;
+          setPrompt();
+          return;
+        } else {
+          appendLine("line-bad", "% Invalid input");
+          return;
+        }
+      }
+
+      const step = STEPS[stepIndex];
+      if (step.test(line)) {
+        stepExitLevel = 0;
+        stepIndex += 1;
+        if (stepIndex >= STEPS.length) {
+          promptEl.textContent = `${h}#`;
+          passBanner.classList.add("visible");
+          cmdline.disabled = true;
+          appendLine("line-sys", '[OK] Building configuration...\r\n[OK] Complete (simulated).');
+        } else {
+          setPrompt();
+        }
+      } else {
+        appendLine("line-bad", "% Invalid input");
+      }
+    }
+
+    cmdline.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submit();
+      }
+    });
+
+    resetBtn.addEventListener("click", reset);
+    openRouterCliLink.addEventListener("click", openRouterCliModal);
+    closeRouterCli.addEventListener("click", closeRouterCliModal);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      if (!modalRouter.classList.contains("is-open")) return;
+      e.preventDefault();
+      closeRouterCliModal();
+    });
+
+    document.querySelectorAll('input[name="dev"]').forEach((r) => {
+      r.addEventListener("change", () => {
+        reset();
+      });
+    });
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    reset();
+  </script>
+
+<script>
+(function(){
+  if (window.__labHelperSpoilerInit) return;
+  window.__labHelperSpoilerInit = true;
+
+  const helperBtn = document.getElementById('openHelperFileBtn');
+  const resetInlineBtn = document.getElementById('inlineResetLabBtn');
+  const spoilerBtn = document.getElementById('openSpoilerBtn');
+  if (!helperBtn && !resetInlineBtn && !spoilerBtn) return;
+
+
+  function createModal(id, title, bodyNode){
+    const overlay = document.createElement('div');
+    overlay.id = id + 'Overlay';
+    overlay.className = 'cli-modal-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.innerHTML = '
+      <div id="'+id+'Dialog" class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="'+id+'Title" tabindex="-1">
+        <header class="cli-modal-header">
+          <h2 id="'+id+'Title">'+title+'</h2>
+          <button type="button" class="cli-modal-close" aria-label="Close">×</button>
+        </header>
+        <div class="cli-modal-body"></div>
+      </div>';
+    overlay.querySelector('.cli-modal-body').appendChild(bodyNode);
+    document.body.appendChild(overlay);
+    const closeBtn = overlay.querySelector('.cli-modal-close');
+    const close = () => { overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true'); };
+    const open = () => { overlay.classList.add('is-open'); overlay.setAttribute('aria-hidden', 'false'); };
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    return { open, close, overlay };
+  }
+
+  function normalizeLine(text){
+    return (text || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function buildSpoilerCliFromHint(hint){
+    const root = document.createElement('div');
+    root.className = 'topology-scrape';
+    const h2 = document.createElement('h2');
+    h2.textContent = 'Lab Solution (Spoiler)';
+    root.appendChild(h2);
+
+    const stack = document.createElement('div');
+    stack.className = 'spoiler-cli-stack';
+
+    const clone = hint.cloneNode(true);
+    const summary = clone.querySelector('summary');
+    if (summary) summary.remove();
+
+    let currentDevice = 'Device';
+    let buffer = [];
+    const sections = [];
+
+    function flush(){
+      if (!buffer.length) return;
+      sections.push({ device: currentDevice, lines: buffer.slice() });
+      buffer = [];
+    }
+
+    for (const node of Array.from(clone.children)) {
+      const tag = node.tagName ? node.tagName.toLowerCase() : '';
+
+      if (tag === 'p') {
+        const strong = node.querySelector('strong');
+        if (strong) {
+          flush();
+          const t = normalizeLine(strong.textContent).replace(/:$/, '');
+          currentDevice = t || currentDevice;
+          continue;
+        }
+        const txt = normalizeLine(node.textContent);
+        if (txt) buffer.push(txt);
+        continue;
+      }
+
+      if (tag === 'ol' || tag === 'ul') {
+        const lines = Array.from(node.querySelectorAll('li')).map(li => normalizeLine(li.textContent)).filter(Boolean);
+        if (lines.length) {
+          flush();
+          sections.push({ device: currentDevice, lines });
+        }
+        continue;
+      }
+
+      if (tag === 'pre') {
+        const txt = node.textContent || '';
+        const lines = txt.split(/\r?\n/).map(normalizeLine).filter(Boolean);
+        if (lines.length) {
+          flush();
+          sections.push({ device: currentDevice, lines });
+        }
+        continue;
+      }
+
+      const txt = normalizeLine(node.textContent || '');
+      if (txt) buffer.push(txt);
+    }
+    flush();
+
+    if (!sections.length) {
+      const p = document.createElement('p');
+      p.textContent = 'No spoiler solution content is available for this lab.';
+      root.appendChild(p);
+      return root;
+    }
+
+    sections.forEach(sec => {
+      const item = document.createElement('div');
+      item.className = 'spoiler-cli-item';
+      const label = document.createElement('div');
+      label.className = 'spoiler-cli-label';
+      label.textContent = sec.device || 'Device';
+      const pre = document.createElement('pre');
+      pre.className = 'spoiler-cli-pre';
+      pre.textContent = sec.lines.join('
+');
+      item.appendChild(label);
+      item.appendChild(pre);
+      stack.appendChild(item);
+    });
+
+    root.appendChild(stack);
+    return root;
+  }
+
+  const helperSource = document.querySelector('.topology-scrape');
+  let helperModal = null;
+  if (helperSource) {
+    const helperBody = helperSource.cloneNode(true);
+    helperSource.remove();
+    helperModal = createModal('helperFile', 'Helper File', helperBody);
+  } else {
+    const empty = document.createElement('div');
+    empty.className = 'topology-scrape';
+    empty.innerHTML = '<h2>Helper File</h2><p>No helper file is available for this lab.</p>';
+    helperModal = createModal('helperFile', 'Helper File', empty);
+  }
+
+  const hint = document.querySelector('details.hint');
+  let spoilerModal = null;
+  if (hint) {
+    spoilerModal = createModal('spoiler', 'Lab Solution (Spoiler)', buildSpoilerCliFromHint(hint));
+  }
+
+  helperBtn && helperBtn.addEventListener('click', () => helperModal && helperModal.open());
+  spoilerBtn && spoilerBtn.addEventListener('click', () => spoilerModal && spoilerModal.open());
+  resetInlineBtn && resetInlineBtn.addEventListener('click', () => {
+    const rb = document.getElementById('resetBtn');
+    if (rb) rb.click();
+    else if (typeof window.reset === 'function') window.reset();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (spoilerModal && spoilerModal.overlay.classList.contains('is-open')) spoilerModal.close();
+    else if (helperModal && helperModal.overlay.classList.contains('is-open')) helperModal.close();
+  });
+})();
+</script>
+
+  <script src="/js/lab-modal-drag.js"></script>
+</body>
+</html>

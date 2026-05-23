@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question 401 - Configuration management vs orchestration</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+    }
+    .card {
+      width: min(1100px, 95vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+    }
+    .instructions {
+      margin: 0 0 14px;
+      color: #b9c7dd;
+      font-size: 0.95rem;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .panel {
+      border: 1px solid #32456b;
+      border-radius: 12px;
+      padding: 12px;
+      background: #0f1728;
+    }
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      color: #cfe3ff;
+    }
+    .zone {
+      margin-bottom: 10px;
+    }
+    .zone-title {
+      font-weight: 700;
+      color: #cfe3ff;
+      margin-bottom: 8px;
+    }
+    .drop-slot {
+      min-height: 46px;
+      border: 1px dashed #4f6b99;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      margin: 8px 0;
+      background: rgba(79, 107, 153, 0.12);
+    }
+    .drop-slot.over {
+      border-color: #7fb3ff;
+      background: rgba(127, 179, 255, 0.18);
+    }
+    .drop-slot.correct {
+      border-color: #1f7a58;
+      background: rgba(17, 62, 45, 0.55);
+    }
+    .drop-slot.incorrect {
+      border-color: #8c3434;
+      background: rgba(68, 32, 32, 0.6);
+    }
+    .drop-slot.correct .token {
+      border-color: #43b689;
+      background: #174a38;
+      color: #dff5eb;
+    }
+    .drop-slot.incorrect .token {
+      border-color: #c55c5c;
+      background: #5c2626;
+      color: #fcdede;
+    }
+    .bank {
+      display: grid;
+      gap: 8px;
+    }
+    .token {
+      border: 1px solid #3d6dbb;
+      background: #254b8a;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 9px 11px;
+      cursor: grab;
+      user-select: none;
+      font-weight: 600;
+      width: fit-content;
+    }
+    .actions {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    button,
+    .next-link {
+      background: #254b8a;
+      color: #e6edf3;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-block;
+    }
+    .answer {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+      line-height: 1.45;
+    }
+    .answer.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+    }
+    .answer.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+    }
+    .next-wrap {
+      margin-top: 16px;
+      display: none;
+    }
+    @media (max-width: 900px) {
+      .board {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="ccnp-practice-ui">
+  <main class="card">
+    <h1>Drag and drop the characteristics from the left onto the tools on the right. Not all options are used.</h1>
+    <p class="instructions">
+      Match four characteristics correctly and leave one distractor in the bank. Order within Configuration Management or within Orchestration does not matter.
+    </p>
+
+    <div class="board">
+      <div class="panel">
+        <h2>Characteristics</h2>
+        <div id="bank" class="bank">
+          <div class="token" draggable="true" data-cat="cm" data-value="mutable">works with mutable elements</div>
+          <div class="token" draggable="true" data-cat="orch" data-value="immutable">works with immutable elements</div>
+          <div class="token" draggable="true" data-cat="cm" data-value="deploy-config-apps">
+            deploy and configure applications and software
+          </div>
+          <div class="token" draggable="true" data-cat="orch" data-value="deploy-server">deploy server instances</div>
+          <div class="token" draggable="true" data-cat="distractor" data-value="client-server-only">
+            only works in a client-server architecture
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Tools</h2>
+        <div class="zone">
+          <div class="zone-title">Configuration Management</div>
+          <div class="drop-slot" data-cat="cm"></div>
+          <div class="drop-slot" data-cat="cm"></div>
+        </div>
+        <div class="zone">
+          <div class="zone-title">Orchestration</div>
+          <div class="drop-slot" data-cat="orch"></div>
+          <div class="drop-slot" data-cat="orch"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="checkBtn" type="button">Check Answer</button>
+      <button id="showBtn" type="button">Show Answer</button>
+      <button id="resetBtn" type="button">Reset</button>
+    </div>
+    <div id="result" class="answer" aria-live="polite"></div>
+    <div id="nextWrap" class="next-wrap">
+      <a class="next-link" href="/question-402.html">Next</a>
+    </div>
+  </main>
+
+  <script>
+    const bank = document.getElementById("bank");
+    const slots = document.querySelectorAll(".drop-slot");
+    const checkBtn = document.getElementById("checkBtn");
+    const showBtn = document.getElementById("showBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const result = document.getElementById("result");
+    const nextWrap = document.getElementById("nextWrap");
+
+    const cmExpected = ["mutable", "deploy-config-apps"];
+    const orchExpected = ["immutable", "deploy-server"];
+
+    /** DOM slot order: two CM, then two Orchestration (matches reference image). */
+    const exhibitSlotOrder = ["mutable", "deploy-config-apps", "immutable", "deploy-server"];
+
+    function multisetEqual(a, b) {
+      if (a.length !== b.length) return false;
+      const sa = [...a].sort();
+      const sb = [...b].sort();
+      return sa.every((v, i) => v === sb[i]);
+    }
+
+    function findTokenByValue(value) {
+      return [...bank.querySelectorAll(".token")].find((t) => t.dataset.value === value);
+    }
+    let dragged = null;
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    function wire(token) {
+      token.addEventListener("dragstart", () => {
+        dragged = token;
+      });
+      token.addEventListener("dragend", () => {
+        dragged = null;
+      });
+    }
+
+    document.querySelectorAll(".token").forEach(wire);
+
+    function placeToken(container, token) {
+      if (!container || !token) return;
+      const existing = container.querySelector(".token");
+      if (existing) bank.appendChild(existing);
+      container.appendChild(token);
+    }
+
+    slots.forEach((slot) => {
+      slot.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        slot.classList.add("over");
+      });
+      slot.addEventListener("dragleave", () => {
+        slot.classList.remove("over");
+      });
+      slot.addEventListener("drop", (e) => {
+        e.preventDefault();
+        slot.classList.remove("over");
+        placeToken(slot, dragged);
+      });
+    });
+
+    bank.addEventListener("dragover", (e) => e.preventDefault());
+    bank.addEventListener("drop", (e) => {
+      e.preventDefault();
+      if (dragged) bank.appendChild(dragged);
+    });
+
+    checkBtn.addEventListener("click", () => {
+      const cmSlots = document.querySelectorAll('.drop-slot[data-cat="cm"]');
+      const orchSlots = document.querySelectorAll('.drop-slot[data-cat="orch"]');
+      const cmActual = [...cmSlots]
+        .map((s) => s.querySelector(".token")?.dataset.value)
+        .filter(Boolean);
+      const orchActual = [...orchSlots]
+        .map((s) => s.querySelector(".token")?.dataset.value)
+        .filter(Boolean);
+      const cmOk = multisetEqual(cmActual, cmExpected);
+      const orchOk = multisetEqual(orchActual, orchExpected);
+      const allFilled = cmActual.length === 2 && orchActual.length === 2;
+
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (!token) {
+          slot.classList.add("incorrect");
+          return;
+        }
+        const rightCol = token.dataset.cat === slot.dataset.cat;
+        slot.classList.add(rightCol ? "correct" : "incorrect");
+      });
+
+      result.style.display = "block";
+      nextWrap.style.display = "inline-block";
+
+      if (!allFilled) {
+        result.className = "answer incorrect";
+        result.textContent = `Place all four characteristics (${cmActual.length + orchActual.length}/4 in slots). Order within each tool column does not matter.`;
+        return;
+      }
+
+      const allOk = cmOk && orchOk;
+      const slotScore = [...slots].filter((slot) => {
+        const t = slot.querySelector(".token");
+        return t && t.dataset.cat === slot.dataset.cat;
+      }).length;
+
+      if (allOk) {
+        result.className = "answer correct";
+        result.textContent =
+          "Correct. Configuration management targets mutable infrastructure and application configuration; orchestration emphasizes immutable infrastructure and provisioning server instances.";
+      } else {
+        result.className = "answer incorrect";
+        result.textContent = `Score: ${slotScore}/4 — Put both configuration-management traits under Configuration Management and both orchestration traits under Orchestration (order within each column does not matter).`;
+      }
+    });
+
+    showBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        slot.classList.remove("correct", "incorrect", "over");
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+      });
+
+      const slotEls = [...slots];
+      exhibitSlotOrder.forEach((val, i) => {
+        const tok = findTokenByValue(val);
+        if (tok && slotEls[i]) {
+          slotEls[i].appendChild(tok);
+          slotEls[i].classList.add("correct");
+        }
+      });
+
+      result.style.display = "block";
+      result.className = "answer correct";
+      result.textContent = "Answer shown.";
+      nextWrap.style.display = "inline-block";
+    });
+
+    resetBtn.addEventListener("click", () => {
+      slots.forEach((slot) => {
+        const token = slot.querySelector(".token");
+        if (token) bank.appendChild(token);
+        slot.classList.remove("correct", "incorrect", "over");
+      });
+      result.style.display = "none";
+      result.textContent = "";
+      nextWrap.style.display = "none";
+    });
+  </script>
+  <style>
+    .home-key {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+    .home-key:hover {
+      filter: brightness(1.08);
+    }
+  </style>
+  <a class="home-key" href="https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html">Home</a>
+  <script src="/js/practice-questions.js"></script>
+</body>
+</html>

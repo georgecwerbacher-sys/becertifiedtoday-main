@@ -1,0 +1,1534 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="CCNP ENCOR practice tests, ENCOR-style CLI labs, practice questions, drag-and-drop, and timed exam simulations—in the browser. Be Certified Today: full library access $19.99 / 30 days. No PDFs or extra software."
+  />
+  <meta
+    name="keywords"
+    content="CCNP ENCOR practice test, CCNP ENCOR practice labs, ENCOR practice labs, Cisco CCNP practice questions, CCNP drag and drop practice, CCNP timed exam simulation, CCNP CLI lab simulation, CCNP ENCOR questions, certification practice browser"
+  />
+  <link rel="canonical" href="https://encor.becertifiedtoday.com/CCNP_Encor.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="CCNP ENCOR Practice Tests, Labs &amp; Questions | Be Certified Today" />
+  <meta
+    property="og:description"
+    content="CCNP ENCOR practice tests, ENCOR-style labs, questions, drag-and-drop, and timed simulations—all interactive in your browser. No PDFs or extra software."
+  />
+  <meta property="og:site_name" content="Be Certified Today" />
+  <meta property="og:url" content="https://encor.becertifiedtoday.com/" />
+  <meta property="og:image" content="https://encor.becertifiedtoday.com/images/logo/becertifiedtoday_logo_trans.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CCNP ENCOR Practice Tests, Labs &amp; Questions | Be Certified Today" />
+  <meta
+    name="twitter:description"
+    content="CCNP ENCOR practice tests, labs, questions, drag-and-drop, and timed exam simulations in the browser."
+  />
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <title>CCNP ENCOR Practice Tests, Labs &amp; Questions | Be Certified Today</title>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Be Certified Today",
+      "url": "https://encor.becertifiedtoday.com/",
+      "description": "CCNP ENCOR practice tests, ENCOR practice labs, CLI simulations, practice questions, drag-and-drop items, and timed exam preparation in the browser."
+    }
+  </script>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bg: #0b1020;
+      --surface: #121a2b;
+      --border: #2d3b5a;
+      --text: #e6edf3;
+      --muted: #9fb0cc;
+      --accent: #2f66bf;
+      --accent-border: #4f84d8;
+      --accent-hover: #3a74d4;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px 20px;
+      padding: 16px clamp(20px, 4vw, 40px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(18, 26, 43, 0.6);
+      backdrop-filter: blur(8px);
+    }
+    .header-actions {
+      flex-shrink: 0;
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .header-sign-up {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--accent-border);
+      background: transparent;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .header-sign-up:hover {
+      background: rgba(79, 132, 216, 0.12);
+      color: #f0f4fc;
+    }
+    .header-sign-up:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+    }
+    .header-sign-in {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--accent-border);
+      background: var(--accent);
+      color: #f0f4fc;
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .header-sign-in:hover {
+      background: var(--accent-hover);
+      color: #f0f4fc;
+    }
+    .header-sign-in:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
+      line-height: 0;
+    }
+    .brand img {
+      display: block;
+      height: clamp(56px, 12vw, 88px);
+      width: auto;
+      max-width: min(100px, 22vw);
+      object-fit: contain;
+      object-position: left center;
+    }
+    .brand:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 4px;
+      border-radius: 14px;
+    }
+    main {
+      flex: 1;
+      display: block;
+      padding: clamp(32px, 6vw, 56px) clamp(20px, 4vw, 40px);
+    }
+    .hero-banner {
+      margin: 0;
+      width: 100%;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      background: #0d1528;
+    }
+    .hero-banner img {
+      display: block;
+      width: 100%;
+      height: clamp(150px, 26vw, 320px);
+      object-fit: cover;
+      object-position: center 15%;
+    }
+    .hero-content {
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .hero-content .funnel {
+      margin-left: 0;
+      margin-right: 0;
+    }
+    .funnel {
+      width: 100%;
+      max-width: none;
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b8ab8;
+    }
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(1.65rem, 4.2vw, 2.25rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+    .lead {
+      margin: 0 0 28px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.6;
+    }
+    .benefits {
+      margin: 0 0 28px;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+    .benefits li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      color: #b8c3d6;
+      font-size: 0.98rem;
+    }
+    .benefits li::before {
+      content: "";
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      margin-top: 0.45em;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4f84d8, #2f66bf);
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: clamp(22px, 4vw, 28px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    .purchase-card {
+      text-align: left;
+    }
+    .purchase-card-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: clamp(22px, 4vw, 40px);
+    }
+    .purchase-card-main {
+      flex: 1 1 min(46ch, 100%);
+      min-width: 0;
+    }
+    /* Right column: large square trans logo */
+    .purchase-card-brand-col {
+      flex: 0 1 clamp(220px, 32vw, 340px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: clamp(12px, 2.5vw, 18px);
+      align-self: flex-start;
+    }
+    .purchase-card-brand-mark {
+      margin: 0;
+      line-height: 0;
+      padding: 12px 16px;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 2px 14px rgba(0, 0, 0, 0.22);
+    }
+    .purchase-card-brand-mark img {
+      display: block;
+      height: auto;
+      width: auto;
+      max-height: clamp(120px, 20vw, 220px);
+      max-width: min(220px, 48vw);
+      object-fit: contain;
+      filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.35));
+    }
+    @media (max-width: 639px) {
+      .purchase-card-inner {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .purchase-card-brand-col {
+        flex: 0 1 auto;
+        max-width: min(300px, 100%);
+        margin-left: auto;
+        margin-right: auto;
+        align-items: center;
+      }
+      .purchase-card-brand-mark img {
+        max-height: clamp(100px, 28vw, 180px);
+        max-width: min(200px, 55vw);
+      }
+    }
+    .purchase-card .purchase-label {
+      margin: 0 0 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #6b8ab8;
+    }
+    .purchase-card .purchase-heading {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 3.5vw, 1.65rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      line-height: 1.2;
+    }
+    .purchase-card .purchase-price {
+      margin: 0 0 18px;
+      font-size: clamp(2rem, 5vw, 2.45rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      line-height: 1.1;
+    }
+    .purchase-card .purchase-price span {
+      font-size: 0.55em;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0;
+    }
+    .purchase-card .purchase-lead {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.55;
+      text-align: left;
+    }
+    .purchase-card .purchase-includes {
+      margin: 0 0 18px;
+      padding: 0 0 0 22px;
+      text-align: left;
+      color: #b8c3d6;
+      font-size: 0.98rem;
+      line-height: 1.55;
+    }
+    .purchase-card .purchase-includes li {
+      margin-bottom: 8px;
+    }
+    .purchase-card .purchase-notes {
+      margin: 0 0 20px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(13, 21, 40, 0.65);
+      color: #b8c3d6;
+      font-size: clamp(0.88rem, 2vw, 0.95rem);
+      line-height: 1.5;
+      text-align: left;
+    }
+    .purchase-card .purchase-notes strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+    .purchase-card .purchase-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 22px;
+      border-radius: 10px;
+      border: 1px solid var(--accent-border);
+      background: var(--accent);
+      color: #f0f4fc;
+      font-size: 1rem;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .purchase-card button.purchase-cta {
+      font-family: inherit;
+      line-height: inherit;
+    }
+    .purchase-card .purchase-cta:hover:not(:disabled) {
+      background: var(--accent-hover);
+      color: #f0f4fc;
+    }
+    .purchase-card .purchase-cta:focus-visible:not(:disabled) {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+    }
+    .purchase-card .purchase-cta:disabled {
+      opacity: 0.58;
+      cursor: not-allowed;
+      background: rgba(47, 102, 191, 0.35);
+      border-color: rgba(79, 132, 216, 0.45);
+      color: rgba(240, 244, 252, 0.9);
+    }
+    .site-disclaimer {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: clamp(20px, 4vw, 28px) clamp(20px, 4vw, 40px);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .site-disclaimer p {
+      margin: 0 0 10px;
+      font-size: clamp(0.78rem, 1.8vw, 0.84rem);
+      line-height: 1.55;
+      color: #6b7f9e;
+    }
+    .site-disclaimer p:last-child {
+      margin-bottom: 0;
+    }
+    .site-disclaimer strong {
+      color: #a4b4d0;
+      font-weight: 700;
+    }
+    footer {
+      padding: 16px clamp(20px, 4vw, 24px);
+      text-align: center;
+      font-size: 0.82rem;
+      color: #5c6d8a;
+      border-top: 1px solid rgba(45, 59, 90, 0.5);
+    }
+    /* Tools link — same hue as page bg until focus (subtle access to deployment URL) */
+    .footer-secret-at {
+      margin-left: 0.35em;
+      color: var(--bg);
+      text-decoration: none;
+      cursor: pointer;
+      outline: none;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .footer-secret-at:hover {
+      color: var(--muted);
+    }
+    .footer-secret-at:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+      border-radius: 2px;
+      color: var(--muted);
+    }
+    .formats-section {
+      margin-top: clamp(40px, 8vw, 72px);
+      padding-top: clamp(36px, 6vw, 56px);
+      border-top: 1px solid var(--border);
+    }
+    .formats-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .formats-intro {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: clamp(22px, 5vw, 40px);
+      margin-bottom: clamp(28px, 5vw, 40px);
+    }
+    .formats-intro-copy {
+      flex: 1 1 min(54ch, 100%);
+      min-width: 0;
+    }
+    .formats-intro-copy .formats-head {
+      margin-bottom: clamp(10px, 2vw, 14px);
+    }
+    .formats-intro-copy > h2 {
+      margin-bottom: 12px;
+    }
+    .formats-intro-copy .formats-lead {
+      max-width: none;
+      margin-bottom: clamp(18px, 3vw, 26px);
+    }
+    .formats-intro-copy .formats-devices {
+      margin-bottom: 0;
+    }
+    .formats-intro-figure {
+      flex: 0 1 clamp(260px, 38vw, 380px);
+      margin: 0;
+      align-self: center;
+    }
+    .formats-intro-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: min(440px, 52vh);
+      object-fit: contain;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+      background: rgba(13, 21, 40, 0.35);
+    }
+    @media (max-width: 719px) {
+      .formats-intro {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .formats-intro-figure {
+        flex: 1 1 auto;
+        max-width: min(400px, 100%);
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .formats-intro-figure img {
+        max-height: none;
+      }
+    }
+    .formats-head {
+      margin: 0 0 clamp(10px, 2vw, 14px);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b8ab8;
+    }
+    .formats-section h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 3.2vw, 1.75rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .formats-lead {
+      margin: 0 0 clamp(24px, 4vw, 32px);
+      max-width: 52ch;
+      color: var(--muted);
+      font-size: clamp(0.98rem, 2.2vw, 1.05rem);
+      line-height: 1.6;
+    }
+    .formats-devices {
+      margin: 0 0 clamp(24px, 4vw, 32px);
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(13, 21, 40, 0.65);
+      color: #b8c3d6;
+      font-size: clamp(0.88rem, 2vw, 0.95rem);
+      line-height: 1.5;
+    }
+    .formats-devices strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+    .formats-grid {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: clamp(16px, 3vw, 22px);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 600px) and (max-width: 959px) {
+      .formats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .formats-grid > li:last-child {
+        grid-column: 1 / -1;
+      }
+    }
+    @media (min-width: 960px) {
+      .formats-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .formats-grid > li:last-child {
+        grid-column: auto;
+      }
+    }
+    .format-card {
+      height: 100%;
+      margin: 0;
+      padding: clamp(18px, 3.5vw, 24px);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+    .format-card h3 {
+      margin: 0 0 10px;
+      font-size: clamp(1.02rem, 2.4vw, 1.12rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+    .format-card p {
+      margin: 0;
+      color: #b8c3d6;
+      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
+      line-height: 1.55;
+    }
+    .format-sample {
+      margin: 14px 0 0;
+      padding-top: 14px;
+      border-top: 1px solid rgba(45, 59, 90, 0.85);
+      font-size: clamp(0.88rem, 2vw, 0.94rem);
+      line-height: 1.5;
+      color: #9fb0cc;
+    }
+    .format-sample a {
+      color: #a8c4f0;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .format-sample a:hover {
+      color: #c8daf8;
+    }
+    .format-sample a:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    .start-box {
+      margin: 0 0 18px;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid #3d6dbb;
+      background: #1a2742;
+    }
+    .sim-grid {
+      display: grid;
+      gap: 14px;
+      margin: 0 0 8px;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+    .sim-box {
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid #3d6dbb;
+      background: #1a2742;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 0;
+    }
+    .sim-box-title {
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+    .study-meta {
+      margin: 0 0 10px;
+      font-size: 0.88rem;
+      color: #9fb0cc;
+    }
+    .study-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .study-actions .start-btn {
+      flex: 1 1 auto;
+      text-align: center;
+      min-width: 7rem;
+    }
+    .start-btn {
+      display: inline-block;
+      text-decoration: none;
+      background: #2f66bf;
+      border: 1px solid #4f84d8;
+      color: #e6edf3;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 800;
+    }
+    #studyLoadError {
+      display: none;
+      margin-top: 10px;
+      color: #e6a07a;
+      font-size: 0.92rem;
+    }
+    .mock-section {
+      margin-top: clamp(40px, 8vw, 72px);
+      padding-top: clamp(36px, 6vw, 56px);
+      border-top: 1px solid var(--border);
+    }
+    .mock-section h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 3.2vw, 1.75rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .mock-lead {
+      margin: 0 0 clamp(18px, 3vw, 22px);
+      max-width: 58ch;
+      color: var(--muted);
+      font-size: clamp(0.98rem, 2.2vw, 1.05rem);
+      line-height: 1.6;
+    }
+    .mock-intro {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: clamp(22px, 5vw, 40px);
+    }
+    .mock-intro-figure {
+      flex: 0 1 clamp(220px, 34vw, 360px);
+      margin: 0;
+      align-self: center;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+      background: rgba(13, 21, 40, 0.35);
+    }
+    .mock-intro-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: min(480px, 56vh);
+      object-fit: contain;
+    }
+    .mock-intro-copy {
+      flex: 1 1 min(54ch, 100%);
+      min-width: 0;
+    }
+    .mock-intro-copy .formats-head {
+      margin-bottom: clamp(10px, 2vw, 14px);
+    }
+    .mock-intro-copy > h2 {
+      margin-bottom: 12px;
+    }
+    .mock-intro-copy .mock-lead {
+      max-width: none;
+      margin-bottom: clamp(14px, 2.5vw, 20px);
+    }
+    .mock-intro-copy .mock-lead.mock-lead-detail {
+      margin-top: -6px;
+      margin-bottom: clamp(18px, 3vw, 22px);
+    }
+    .mock-intro-copy .mock-list {
+      max-width: none;
+      margin-bottom: 0;
+    }
+    @media (max-width: 719px) {
+      .mock-intro {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .mock-intro-figure {
+        flex: 1 1 auto;
+        max-width: min(440px, 100%);
+        margin-right: auto;
+      }
+      .mock-intro-figure img {
+        max-height: none;
+      }
+    }
+    .mock-list {
+      margin: 0 0 clamp(20px, 3.5vw, 26px);
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      max-width: 62ch;
+    }
+    .mock-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      color: #b8c3d6;
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.55;
+    }
+    .mock-list li::before {
+      content: "";
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      margin-top: 0.45em;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4f84d8, #2f66bf);
+    }
+    .mock-list li strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+    .mock-soon {
+      margin: 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(13, 21, 40, 0.65);
+      color: #b8c3d6;
+      font-size: clamp(0.88rem, 2vw, 0.95rem);
+      line-height: 1.5;
+      max-width: 58ch;
+    }
+    .mock-soon strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+    button.header-cert-request {
+      font: inherit;
+      cursor: pointer;
+    }
+    #certRequestModal {
+      display: none;
+    }
+    body.cert-request-modal-open {
+      overflow: hidden;
+    }
+    body.cert-request-modal-open .page {
+      pointer-events: none;
+      user-select: none;
+      filter: blur(2px);
+    }
+    body.cert-request-modal-open #certRequestModal {
+      display: flex;
+    }
+    .cert-request-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99998;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(8, 11, 22, 0.82);
+      backdrop-filter: blur(6px);
+    }
+    .cert-request-dialog {
+      width: min(480px, 100%);
+      border-radius: 14px;
+      border: 1px solid #2d3b5a;
+      background: #121a2b;
+      padding: 22px;
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+    }
+    .cert-request-dialog h2 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .cert-request-dialog > p {
+      margin: 0 0 16px;
+      color: #b8c3d6;
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+    .cert-request-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .cert-request-field label {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cert-request-field input {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #2d3b5a;
+      background: #0b1020;
+      color: #e6edf3;
+      font-size: 1rem;
+    }
+    .cert-request-field input:focus-visible {
+      outline: 2px solid #4f84d8;
+      outline-offset: 2px;
+    }
+    .cert-request-err {
+      margin: 0 0 10px;
+      color: #f08888;
+      font-size: 0.9rem;
+    }
+    .cert-request-ok {
+      margin: 0 0 10px;
+      color: #8fd99a;
+      font-size: 0.9rem;
+    }
+    .cert-request-hint-warn {
+      margin: 0 0 10px;
+      color: #e8b060;
+      font-size: 0.88rem;
+      line-height: 1.35;
+    }
+    .cert-request-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .cert-request-actions button[type="submit"] {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1px solid #4f84d8;
+      background: #2f66bf;
+      color: #f0f4fc;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+    .cert-request-actions button[type="submit"]:hover {
+      background: #3a74d4;
+    }
+    .cert-request-actions button[type="button"].cert-request-cancel {
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1px solid #4f84d8;
+      background: transparent;
+      color: #e6edf3;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+    .cert-request-actions button[type="button"].cert-request-cancel:hover {
+      background: rgba(79, 132, 216, 0.12);
+    }
+    .cert-request-dialog-nav {
+      margin: 14px 0 0;
+      padding-top: 14px;
+      border-top: 1px solid #2d3b5a;
+      text-align: center;
+      font-size: 0.88rem;
+    }
+    .cert-request-dialog-nav a {
+      color: #8fa8d4;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .cert-request-dialog-nav a:hover {
+      color: #e6edf3;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <a class="brand" href="https://becertifiedtoday.com/">
+        <img
+          src="/images/logo/becertifiedtoday_logo_trans.png"
+          width="1024"
+          height="1024"
+          alt="Be Certified Today — IT training and testing study site"
+        />
+      </a>
+      <div class="header-actions">
+        <button
+          type="button"
+          class="header-sign-up header-cert-request"
+          id="certRequestOpen"
+          hidden
+        >
+          Request another cert
+        </button>
+        <a class="header-sign-up" href="/index.html">ENCOR overview</a>
+      </div>
+    </header>
+    <figure class="hero-banner">
+      <img
+        src="/images/hero-classroom-v2.png"
+        width="1024"
+        height="682"
+        alt="Focused learner at a computer in a bright training lab with peers working nearby."
+        decoding="async"
+        fetchpriority="high"
+      />
+    </figure>
+    <main id="main">
+      <div class="hero-content">
+        <div class="funnel">
+          <p class="eyebrow">Welcome</p>
+          <h1>Welcome to the CCNP ENCOR Training Portal</h1>
+          <p class="lead">
+            A next-generation, all-in-one training solution built to give you the confidence to move forward fully prepared.
+            Train with structured content, timed practice, and simulation workflows designed around real ENCOR exam objectives.
+          </p>
+          <ul class="benefits" aria-label="Portal highlights">
+            <li>Professional study flow with organized sections, clear navigation, and focused practice modes.</li>
+            <li>Hands-on preparation through question sets, drag-and-drop tasks, and CLI lab simulation access.</li>
+            <li>Exam-readiness support with timed simulation and repeatable sessions to reinforce performance.</li>
+          </ul>
+          <div class="card purchase-card" id="purchase">
+            <div class="purchase-card-inner">
+              <div class="purchase-card-main">
+                <p class="purchase-label">Lab Contents</p>
+                <h2 class="purchase-heading">ENCOR subject areas covered</h2>
+                <p class="purchase-lead">
+                  Cisco ENCOR content in this library follows the official 350-401 ENCOR v1.2 blueprint:
+                  Architecture, Virtualization, Infrastructure, Network Assurance, Security, and Automation
+                  and Artificial Intelligence.
+                </p>
+                <ul class="purchase-includes">
+                  <li><strong>Architecture (15%):</strong> enterprise design principles, high availability, Catalyst SD-WAN, SD-Access, and QoS configurations.</li>
+                  <li><strong>Virtualization (10%):</strong> hypervisors, virtual machines, virtual switching, VRF, GRE, IPsec tunneling, LISP, and VXLAN.</li>
+                  <li><strong>Infrastructure (30%):</strong> Layer 2 trunking, EtherChannel, RSTP/MST, STP enhancements, EIGRP and OSPF concepts, OSPFv2/v3 configuration, eBGP, policy-based routing, NTP/PTP, NAT/PAT, FHRP, and multicast.</li>
+                  <li><strong>Network Assurance (10%):</strong> troubleshooting with debugs, traceroute, ping, SNMP, and syslog; Flexible NetFlow; SPAN/RSPAN/ERSPAN; IP SLA; Cisco Catalyst Center; NETCONF; and RESTCONF.</li>
+                  <li><strong>Security (20%):</strong> device access control, AAA, ACLs, CoPP, REST API security, threat defense, endpoint security, next-generation firewalls, TrustSec, and MACsec.</li>
+                  <li><strong>Automation and Artificial Intelligence (15%):</strong> Python, JSON, YANG, Cisco Catalyst Center and SD-WAN Manager APIs, REST API responses, EEM applets, and agent versus agentless orchestration tools.</li>
+                </ul>
+                <p class="purchase-notes">
+                  Timed sessions are written to reinforce these weighted exam domains so your study time stays aligned with ENCOR objectives.
+                </p>
+              </div>
+              <div class="purchase-card-brand-col">
+                <figure class="purchase-card-brand-mark" aria-hidden="true">
+                  <img
+                    src="/images/logo/becertifiedtoday_logo_trans.png"
+                    width="1024"
+                    height="1024"
+                    alt=""
+                    decoding="async"
+                    loading="lazy"
+                  />
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section class="formats-section" aria-labelledby="formats-title">
+        <div class="formats-inner">
+          <p class="formats-head">CCNP ENCOR practice formats</p>
+          <h2 id="formats-title">Choose your practice mode</h2>
+          <p class="formats-lead">
+            Access each training mode directly from the dashboard and focus on the format you want to practice.
+          </p>
+          <h3 class="section-heading">Practice Questions</h3>
+          <section class="start-box" aria-label="Question studies">
+            <p id="studyLoadMsg" style="margin:0 0 8px;font-size:0.9rem;color:#9fb0cc;">Loading studies…</p>
+            <p id="studyLoadError" role="alert"></p>
+            <div id="studyGrid" class="sim-grid" style="display: none" aria-label="Study groups"></div>
+          </section>
+
+          <h3 class="section-heading">Drag and Drop</h3>
+          <section class="start-box" aria-label="Drag and drop practice">
+            <p id="dragDropLoadMsg" style="margin:0 0 8px;font-size:0.9rem;color:#9fb0cc;">Loading drag-and-drop sets…</p>
+            <div id="dragDropGrid" class="sim-grid" style="display: none" aria-label="Drag-and-drop groups"></div>
+          </section>
+
+          <h3 class="section-heading">Lab Simulations</h3>
+          <section class="start-box" aria-label="Lab simulations">
+            <div class="sim-grid" aria-label="CLI simulation labs">
+              <article class="sim-box">
+                <h4 class="sim-box-title">Rapid PVST+ and LACP</h4>
+                <p class="study-meta">SW20-only fixes: Rapid PVST+, trunk to SW30, Port-channel trunk alignment for LACP.</p>
+                <a class="start-btn" href="/cli-lab-rapid-pvst-lacp.html">Open simulation</a>
+              </article>
+              <article class="sim-box">
+                <h4 class="sim-box-title">VRF Configuration Sim</h4>
+                <p class="study-meta">Extend CORP VRF on R10/R20 over Tunnel0, IPsec profile, and VRF static routes for VLAN 100-101.</p>
+                <a class="start-btn" href="/cli-lab-vrf-config-sim.html">Open simulation</a>
+              </article>
+              <article class="sim-box">
+                <h4 class="sim-box-title">Trunk, UDLD and LACP</h4>
+                <p class="study-meta">SW10 only: fix SW30 trunk, UDLD aggressive, rebuild Po10 with LACP; PC2 pings; portfast plus long pathcost; save.</p>
+                <a class="start-btn" href="/cli-lab-trunk-udld-lacp.html">Open simulation</a>
+              </article>
+              <article class="sim-box">
+                <h4 class="sim-box-title">Access-list and CoPP</h4>
+                <p class="study-meta">R10: extended ACL 150 - permit EIGRP before deny; R20: CoPP policy and control-plane apply; save both.</p>
+                <a class="start-btn" href="/cli-lab-acl-copp/cli-lab-acl-copp_v3.html">Open simulation</a>
+              </article>
+              <article class="sim-box">
+                <h4 class="sim-box-title">VRF Configuration Sim 2</h4>
+                <p class="study-meta">R22 only: vrf definition Finance, Tunnel10 to R11, e0/1 in VRF, statics for VLAN 111/222; save.</p>
+                <a class="start-btn" href="/lab-sims-v2/cli-lab-vrf-config-sim2.html">Open simulation</a>
+              </article>
+              <article class="sim-box">
+                <h4 class="sim-box-title">OSPF summarization 2 (R20)</h4>
+                <p class="study-meta">R20 only: OSPF 20, Loopback0 router-id, interface-level OSPF; area 40 /18 range; save.</p>
+                <a class="start-btn" href="/cli-lab-ospf-summ-r20.html">Open simulation</a>
+              </article>
+              <article class="sim-box">
+                <h4 class="sim-box-title">eBGP Neighbor 2</h4>
+                <p class="study-meta">R1 only (AS 100): address-family IPv4, neighbors to AS 200/300, advertise three loopbacks with exact masks; save.</p>
+                <a class="start-btn" href="/cli-lab-ebgp-neighbor-2.html">Open simulation</a>
+              </article>
+              <article class="sim-box">
+                <h4 class="sim-box-title">NetFlow, SPAN and IP SLA 2</h4>
+                <p class="study-meta">R1 flow monitor on e0/0; Sw1 SPAN VLAN 12 to e1/3; IP SLA 1 (ICMP or HTTP); verify monitor; save.</p>
+                <a class="start-btn" href="/lab-sims-v2/cli-lab-netflow-span-2.html">Open simulation</a>
+              </article>
+            </div>
+          </section>
+
+          <h3 class="section-heading">Test Simulation</h3>
+          <section class="start-box" aria-label="Timed test simulation">
+            <p style="margin:0 0 10px;color:#b8c3d6;line-height:1.5;">
+              Builds one timed test with fifty random questions, four drag-and-drop items, two lab simulations, and one
+              countdown. Timer starts at 120:00 when the test begins.
+            </p>
+            <div class="study-actions">
+              <a class="start-btn" href="/begin-test-simulation.html">Start test simulation</a>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="mock-section" aria-labelledby="mock-title">
+        <div class="formats-inner">
+          <div class="mock-intro">
+            <figure class="mock-intro-figure">
+              <img
+                src="/images/encor-practice-test-simulation-classroom.png"
+                width="682"
+                height="1024"
+                alt="Student at a computer workstation in a classroom lab, with peers studying at nearby desks."
+                decoding="async"
+                loading="lazy"
+              />
+            </figure>
+            <div class="mock-intro-copy">
+              <p class="formats-head">CCNP ENCOR practice test simulation</p>
+              <h2 id="mock-title">Timed ENCOR-style practice test — 50 questions, 4 drag-and-drops, 2 labs, one clock</h2>
+              <p class="mock-lead">
+                Sit for a single timed CCNP ENCOR practice session that feels closer to test day: a long mixed run with a
+                countdown, no peeking at answers until you finish, and a clear outcome when time is up.
+              </p>
+              <p class="mock-lead mock-lead-detail">
+                Test simulation details: each attempt is randomized in order and selection, with timed runs built to reflect ENCOR-style exam flow.
+              </p>
+              <ul class="mock-list" aria-label="Test simulation includes">
+                <li>
+                  <strong>56 mixed items</strong> per attempt—50 multiple-choice questions, 4 drag-and-drop items, and
+                  2 CLI labs—randomized in order for pacing and stamina.
+                </li>
+                <li>
+                  <strong>Exam-style pacing practice:</strong> run long timed sessions that train focus,
+                  decision speed, and endurance as the clock counts down.
+                </li>
+                <li>
+                  <strong>Timer-driven:</strong> the session runs against the clock from start to submit; you
+                  see how long you have left and can move forward and back within the exam before you finish.
+                </li>
+                <li>
+                  <strong>Pass or fail at the end:</strong> when you submit (or time expires), you get a final
+                  result with your score against the cut line plus a breakdown so you know what to revisit.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <aside class="site-disclaimer" aria-label="Legal disclaimer">
+      <p>
+        Content on this site is for <strong>training and study practice only</strong>. There is
+        <strong>no guarantee</strong> that any question, lab, or scenario here will appear on a
+        live certification exam, or that using this site alone will prepare you to pass.
+      </p>
+      <p>
+        <strong>Be Certified Today is independent.</strong> It is not sponsored by, endorsed by,
+        accredited by, or affiliated with Cisco Systems, Inc. Cisco and Cisco certification names
+        are trademarks of Cisco and/or its affiliates; use here is for descriptive purposes only.
+      </p>
+    </aside>
+    <footer>
+      © Be Certified Today
+      <a
+        class="footer-secret-at"
+        href="https://becertifiedtoday-encor.vercel.app/"
+        rel="noopener noreferrer"
+        aria-label="ENCOR tools — open deployment site"
+      >Tools @</a>
+    </footer>
+  </div>
+  <div id="certRequestModal" class="cert-request-overlay" aria-hidden="true">
+    <div
+      class="cert-request-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="certRequestTitle"
+    >
+      <h2 id="certRequestTitle">Request another certification</h2>
+      <p>
+        If you already have active library access and want study material for a different
+        Cisco track, enter the <strong>same email you used when you purchased</strong> access.
+        We send confirmation and follow-up to that address only.
+      </p>
+      <p id="certRequestLegacyWarn" class="cert-request-hint-warn" hidden></p>
+      <form id="certRequestForm" novalidate>
+        <div class="cert-request-field">
+          <label for="certRequestEmail">Email</label>
+          <input
+            id="certRequestEmail"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+            maxlength="320"
+            placeholder="you@example.com"
+          />
+        </div>
+        <p id="certRequestErr" class="cert-request-err" hidden></p>
+        <p id="certRequestOk" class="cert-request-ok" hidden>
+          Thanks — we sent a confirmation to that email address. Check your inbox (and spam).
+        </p>
+        <div class="cert-request-actions">
+          <button type="submit">Submit request</button>
+          <button type="button" class="cert-request-cancel" id="certRequestCancel">
+            Cancel
+          </button>
+        </div>
+      </form>
+      <p class="cert-request-dialog-nav">
+        <a href="/index.html">Return to home page</a>
+      </p>
+    </div>
+  </div>
+  <script>
+    (function () {
+      function stripSessionQuery() {
+        var url = window.location.pathname + window.location.hash;
+        window.history.replaceState({}, "", url);
+      }
+      /** Failed Stripe verify or bad restore → site home with ?reason= (use / so Vercel / → index.html rewrite always applies) */
+      function redirectToIndex(reason) {
+        var key =
+          typeof reason === "string" && /^[a-z_]+$/.test(reason) ? reason : "checkout_failed";
+        try {
+          sessionStorage.setItem("encor_index_notice_reason", key);
+        } catch (e) {}
+        window.location.replace("/?reason=" + encodeURIComponent(key));
+      }
+      try {
+        var qs = new URLSearchParams(window.location.search || "");
+        var rt = qs.get("restore_token");
+        if (rt && rt.length > 40) {
+          fetch("/api/claim-restore-token", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            credentials: "same-origin",
+            body: JSON.stringify({ token: rt }),
+          })
+            .then(function (r) {
+              return r.text().then(function (t) {
+                var d = {};
+                try {
+                  d = t ? JSON.parse(t) : {};
+                } catch (e) {}
+                return { ok: r.ok, d: d };
+              });
+            })
+            .then(function (x) {
+              if (!x.ok) {
+                stripSessionQuery();
+                redirectToIndex("restore_failed");
+                return;
+              }
+              stripSessionQuery();
+            })
+            .catch(function () {
+              stripSessionQuery();
+              redirectToIndex("restore_error");
+            });
+          return;
+        }
+        var sid = qs.get("session_id");
+        if (!sid || sid.indexOf("cs_") !== 0) return;
+        fetch("/api/verify-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          credentials: "same-origin",
+          body: JSON.stringify({ sessionId: sid }),
+        })
+          .then(function (r) {
+            return r.text().then(function (t) {
+              var d = {};
+              try {
+                d = t ? JSON.parse(t) : {};
+              } catch (e) {}
+              return { ok: r.ok, d: d };
+            });
+          })
+          .then(function (x) {
+            if (!x.ok) {
+              if (x.d && x.d.error) console.warn("Checkout verify:", x.d.error);
+              stripSessionQuery();
+              redirectToIndex("checkout_failed");
+              return;
+            }
+            stripSessionQuery();
+          })
+          .catch(function () {
+            stripSessionQuery();
+            redirectToIndex("checkout_error");
+          });
+      } catch (e) {}
+    })();
+  </script>
+  <script>
+    (function () {
+      var openBtn = document.getElementById("certRequestOpen");
+      var modal = document.getElementById("certRequestModal");
+      var form = document.getElementById("certRequestForm");
+      var cancel = document.getElementById("certRequestCancel");
+      var errEl = document.getElementById("certRequestErr");
+      var okEl = document.getElementById("certRequestOk");
+      var emailInput = document.getElementById("certRequestEmail");
+      var legacyWarn = document.getElementById("certRequestLegacyWarn");
+      var certAccessEmail = "";
+
+      function closeModal() {
+        document.body.classList.remove("cert-request-modal-open");
+        if (modal) modal.setAttribute("aria-hidden", "true");
+        if (form) form.reset();
+        if (errEl) {
+          errEl.hidden = true;
+          errEl.textContent = "";
+        }
+        if (okEl) okEl.hidden = true;
+        if (legacyWarn) {
+          legacyWarn.hidden = true;
+          legacyWarn.textContent = "";
+        }
+      }
+
+      function openModal() {
+        if (okEl) okEl.hidden = true;
+        if (errEl) {
+          errEl.hidden = true;
+          errEl.textContent = "";
+        }
+        document.body.classList.add("cert-request-modal-open");
+        if (modal) modal.setAttribute("aria-hidden", "false");
+        if (emailInput && certAccessEmail) {
+          emailInput.value = certAccessEmail;
+        }
+        if (legacyWarn) {
+          if (certAccessEmail) {
+            legacyWarn.hidden = true;
+          } else {
+            legacyWarn.textContent =
+              "Your browser session does not yet include a verified purchase email. Open the link from your purchase confirmation once, then try again.";
+            legacyWarn.hidden = false;
+          }
+        }
+        if (emailInput) setTimeout(function () { emailInput.focus(); }, 50);
+      }
+
+      if (openBtn && modal && form) {
+        fetch("/api/encor-access-status", { credentials: "same-origin" })
+          .then(function (r) {
+            return r.json().catch(function () {
+              return {};
+            }).then(function (d) {
+              return { ok: r.ok, d: d };
+            });
+          })
+          .then(function (x) {
+            if (x.ok && x.d && x.d.valid) {
+              openBtn.hidden = false;
+              if (typeof x.d.accessEmail === "string" && x.d.accessEmail) {
+                certAccessEmail = x.d.accessEmail;
+              }
+            }
+          })
+          .catch(function () {});
+
+        openBtn.addEventListener("click", openModal);
+        if (cancel) cancel.addEventListener("click", closeModal);
+        modal.addEventListener("click", function (e) {
+          if (e.target === modal) closeModal();
+        });
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          if (!emailInput) return;
+          var email = (emailInput.value || "").trim();
+          if (okEl) okEl.hidden = true;
+          if (errEl) {
+            errEl.hidden = true;
+            errEl.textContent = "";
+          }
+          fetch("/api/request-new-cert", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            credentials: "same-origin",
+            body: JSON.stringify({ email: email }),
+          })
+            .then(function (r) {
+              return r.text().then(function (t) {
+                var d = {};
+                try {
+                  d = t ? JSON.parse(t) : {};
+                } catch (ex) {}
+                return { ok: r.ok, d: d };
+              });
+            })
+            .then(function (x) {
+              if (x.ok) {
+                if (okEl) okEl.hidden = false;
+                if (emailInput) emailInput.value = "";
+                return;
+              }
+              var msg =
+                (x.d && x.d.error) ||
+                "Could not send your request. Try again or email support.";
+              if (x.d && x.d.hint) msg += " — " + x.d.hint;
+              if (errEl) {
+                errEl.textContent = msg;
+                errEl.hidden = false;
+              }
+            })
+            .catch(function () {
+              if (errEl) {
+                errEl.textContent = "Network error. Check your connection and try again.";
+                errEl.hidden = false;
+              }
+            });
+        });
+      }
+    })();
+  </script>
+  <script>
+    (function () {
+      var p = location.pathname || "";
+      if (p === "/CCNP_Encor.html") {
+        try {
+          sessionStorage.removeItem("ccnpUrlMaskPath");
+          sessionStorage.removeItem("ccnpMaskedPageQid");
+        } catch (e) {}
+      }
+    })();
+  </script>
+  <script>
+    (function () {
+      var grid = document.getElementById("studyGrid");
+      var ddGrid = document.getElementById("dragDropGrid");
+      if (!grid || !ddGrid) return;
+      var msg = document.getElementById("studyLoadMsg");
+      var ddMsg = document.getElementById("dragDropLoadMsg");
+      var errEl = document.getElementById("studyLoadError");
+      function tryFetchConfig(urls, idx) {
+        if (idx >= urls.length) {
+          return Promise.reject(new Error("config not found"));
+        }
+        return fetch(urls[idx], { cache: "no-store" })
+          .then(function (r) {
+            if (!r.ok) throw new Error("bad");
+            return r.json();
+          })
+          .catch(function () {
+            return tryFetchConfig(urls, idx + 1);
+          });
+      }
+
+      var configPaths = [
+        new URL("/js/study-config.json", location.origin).href,
+        "/js/study-config.json",
+        "./js/study-config.json",
+        "js/study-config.json"
+      ];
+      if ((location.pathname || "").indexOf("/encor/") !== -1) {
+        configPaths.push(new URL("../js/study-config.json", location.href).href);
+      }
+
+      tryFetchConfig(configPaths, 0)
+        .then(function (cfg) {
+          if (msg) msg.style.display = "none";
+          var dragDropIds = cfg.dragDropIds || [];
+          var dragDropJsonIds = cfg.dragDropJsonIds || [];
+          var dragDropAll = {};
+          dragDropIds.concat(dragDropJsonIds).forEach(function (id) {
+            dragDropAll[id] = true;
+          });
+          var studies = (cfg.studies || []).map(function (s) {
+            var filteredIds = (s.ids || []).filter(function (id) {
+              return !dragDropAll[id];
+            });
+            return { index: s.index, ids: filteredIds };
+          });
+
+          function buildCombinedSections(studiesList, targetCount) {
+            var groups = [];
+            if (!studiesList.length) return groups;
+            var chunkSize = Math.max(1, Math.ceil(studiesList.length / targetCount));
+            for (var i = 0; i < studiesList.length; i += chunkSize) {
+              var chunk = studiesList.slice(i, i + chunkSize);
+              var ids = [];
+              chunk.forEach(function (study) {
+                ids = ids.concat(study.ids || []);
+              });
+              if (!ids.length) continue;
+              groups.push({ section: groups.length + 1, ids: ids });
+            }
+            return groups;
+          }
+
+          function appendDragDropCard(title, ids, mode) {
+            if (!ids.length) return;
+            var ddArt = document.createElement("article");
+            ddArt.className = "sim-box";
+            var ddRange = ids.length + " total drag and drops";
+            ddArt.innerHTML =
+              "<h4 class=\"sim-box-title\">" + title + "</h4>" +
+              "<p class=\"study-meta\">" + ddRange + "</p>" +
+              "<div class=\"study-actions\">" +
+              "<a class=\"start-btn\" href=\"/begin-questions-random.html?mode=" + mode + "\">Random</a>" +
+              "<a class=\"start-btn\" href=\"/begin-questions-review.html?mode=" + mode + "\" style=\"background:#1e5c40;border-color:#2a8f5e;\">Review quiz</a>" +
+              "</div>";
+            ddGrid.appendChild(ddArt);
+          }
+
+          appendDragDropCard("Standard D&D", dragDropIds, "dragdrop");
+          appendDragDropCard("JSON D&D", dragDropJsonIds, "dragdrop-json");
+          if (ddGrid.children.length) {
+            ddGrid.style.display = "grid";
+            if (ddMsg) ddMsg.style.display = "none";
+          } else if (ddMsg) {
+            ddMsg.textContent = "No drag-and-drop questions found.";
+          }
+
+          buildCombinedSections(studies, 5).forEach(function (s) {
+            if (!(s.ids || []).length) return;
+            var art = document.createElement("article");
+            art.className = "sim-box";
+            var count = (s.ids || []).length;
+            var range = "Questions " + s.ids[0] + "-" + s.ids[count - 1] + " (" + count + " total)";
+            art.innerHTML =
+              "<h4 class=\"sim-box-title\">Section " + s.section + "</h4>" +
+              "<p class=\"study-meta\">" + range + "</p>" +
+              "<div class=\"study-actions\">" +
+              "<a class=\"start-btn\" href=\"/begin-questions-random.html?section=" + s.section + "\">Random</a>" +
+              "<a class=\"start-btn\" href=\"/begin-questions-review.html?section=" + s.section + "\" style=\"background:#1e5c40;border-color:#2a8f5e;\">Review quiz</a>" +
+              "</div>";
+            grid.appendChild(art);
+          });
+          grid.style.display = "grid";
+        })
+        .catch(function () {
+          if (msg) msg.textContent = "Could not load study list.";
+          if (errEl) {
+            errEl.style.display = "block";
+            errEl.textContent = "Could not load js/study-config.json from this page.";
+          }
+        });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question 109 - Flexible NetFlow idle timeout</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+    }
+    .card {
+      width: min(980px, 95vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+    }
+    .exhibit-region {
+      margin: 0 0 18px;
+    }
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+    @media (max-width: 720px) {
+      .exhibit-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+      min-width: 0;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 8px 10px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.62rem, 1.15vw, 0.74rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .choice {
+      display: block;
+      margin: 10px 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #1a253b;
+      border: 1px solid #2c3f62;
+      font-size: 1rem;
+      cursor: pointer;
+      line-height: 1.4;
+    }
+    .choice input {
+      margin-right: 10px;
+      vertical-align: top;
+      margin-top: 3px;
+    }
+    .answer {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+    }
+    .answer.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+    }
+    .answer.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+    }
+    .next-wrap {
+      margin-top: 18px;
+      display: none;
+    }
+    .next-link {
+      display: inline-block;
+      text-decoration: none;
+      color: #e6edf3;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>A BeCertifiedToday.com engineer must use flexible NetFlow on a group of switches. To prevent overloading of the flow collector, if the flow is idle for 20 seconds, the flow sample should be exported. Which command set should be applied?</h1>
+
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the configuration options below.</p>
+      <div class="exhibit-grid" role="region" aria-label="Flexible NetFlow options A through D">
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option A</div>
+          <pre class="exhibit-cli">flow record recordflow
+ exporter flowexport
+ record recordflow
+ cache timeout active 120
+ cache timeout inactive 20
+ cache type immediate</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option B</div>
+          <pre class="exhibit-cli">flow monitor monitorflow
+ exporter flowexport
+ record recordflow
+ cache timeout active 120
+ cache timeout inactive 20
+ cache type immediate</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option C</div>
+          <pre class="exhibit-cli">flow monitor monitorflow
+ exporter recordflow
+ cache timeout active 20
+ cache timeout inactive 120
+ cache type permanent</pre>
+        </div>
+        <div class="exhibit-option">
+          <div class="exhibit-option-label">Option D</div>
+          <pre class="exhibit-cli">flow record recordflow
+ match ipv6 destination ip-address
+ match ipv6 source ip-address
+ match ipv6 protocol-type view
+ match interface input
+ match interface output
+ match transport destination-port
+ collect counter bytes long</pre>
+        </div>
+      </div>
+    </div>
+
+    <label class="choice"><input type="radio" name="q109" value="A" />A. Option A</label>
+    <label class="choice"><input type="radio" name="q109" value="B" />B. Option B</label>
+    <label class="choice"><input type="radio" name="q109" value="C" />C. Option C</label>
+    <label class="choice"><input type="radio" name="q109" value="D" />D. Option D</label>
+
+    <div id="answerBox" class="answer" aria-live="polite"></div>
+    <div id="nextWrap" class="next-wrap">
+      <a class="next-link" href="/question-110.html">Next</a>
+    </div>
+  </main>
+
+  <script>
+    const answerBox = document.getElementById("answerBox");
+    const nextWrap = document.getElementById("nextWrap");
+    const options = document.querySelectorAll('input[name="q109"]');
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    options.forEach((option) => {
+      option.addEventListener("change", () => {
+        answerBox.style.display = "block";
+        nextWrap.style.display = "block";
+        if (option.value === "B") {
+          answerBox.className = "answer correct";
+          answerBox.textContent =
+            "Correct. B. Under the flow monitor, cache timeout inactive 20 exports the flow after 20 seconds with no packets (idle). cache timeout active 120 periodically exports long-lived flows. Cache settings belong on the monitor; Option A misplaces them under flow record; C swaps active/inactive values; D is only a flow record with no cache timers.";
+        } else {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent =
+            "Incorrect. The correct answer: B. Use cache timeout inactive 20 on the flow monitor.";
+        }
+      });
+    });
+  </script>
+  <style>
+    .home-key {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+    .home-key:hover {
+      filter: brightness(1.08);
+    }
+  </style>
+  <a class="home-key" href="https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html">Home</a>
+  <script src="/js/practice-questions.js"></script>
+</body>
+</html>

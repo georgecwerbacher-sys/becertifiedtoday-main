@@ -1,0 +1,945 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
+  <title>OSPF Advertised &amp; Summarized Sim</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      padding-bottom: 88px;
+      box-sizing: border-box;
+    }
+    .wrap {
+      width: min(1280px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card {
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 22px 26px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.15rem, 2vw, 1.65rem);
+      line-height: 1.3;
+    }
+    .objective,
+    .tasks {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .tasks ol {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+    }
+    .tasks li {
+      margin: 6px 0;
+    }
+    .diagram-wrap {
+      background: #ffffff;
+      border: 1px solid #2d3b5a;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 14px;
+      text-align: center;
+    }
+    .diagram-wrap img {
+      max-width: 100%;
+      height: auto;
+      vertical-align: middle;
+    }
+    .diagram-wrap .tasks-top {
+      text-align: left;
+      margin-top: 14px;
+      width: 100%;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      box-sizing: border-box;
+    }
+    .diagram-wrap .tasks-top > strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #e6edf3;
+    }
+    .diagram-wrap .tasks-top .tasks-intro {
+      margin: 0 0 10px;
+    }
+    .diagram-wrap .tasks-top ol.tasks-numbered {
+      margin: 8px 0 0;
+      padding-left: 1.35rem;
+    }
+    .diagram-wrap .tasks-top ol.tasks-numbered > li {
+      margin: 12px 0;
+    }
+    .diagram-wrap .tasks-top .tasks-note {
+      margin: 12px 0 0;
+      padding-top: 10px;
+      border-top: 1px solid #2d3b5a;
+      font-size: 0.92rem;
+      color: #9fb0cc;
+    }
+    .diagram-wrap .tasks-top .tasks-note a {
+      color: #8eb4f8;
+    }
+    .device-pick {
+      margin: 12px auto 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0f1729;
+      border: 1px solid #2d3b5a;
+      color: #b8c3d6;
+      font-size: 0.95rem;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .device-pick label {
+      margin-left: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .device-pick input {
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .device-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .helper-file-wrap {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .device-link {
+      appearance: none;
+      border: 1px solid #3d6dbb;
+      background: #1f3a6f;
+      color: #e6edf3;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .device-link:hover,
+    .device-link:focus-visible {
+      background: #285196;
+      border-color: #5f8bd0;
+      outline: none;
+    }
+    .cli-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+      pointer-events: none;
+    }
+    .cli-modal-overlay.is-open {
+      display: block;
+    }
+    .cli-modal-dialog {
+      width: min(520px, calc(100vw - 24px));
+      max-height: min(85vh, 720px);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      background: #121a2b;
+      border: 1px solid #3d5280;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .cli-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3b5a;
+      background: rgba(18, 26, 43, 0.98);
+      flex-shrink: 0;
+    }
+    .cli-modal-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    .cli-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #4b556b;
+      border-radius: 8px;
+      background: #2a3040;
+      color: #e6edf3;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+    .cli-modal-body {
+      padding: 12px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
+    .terminal-panel {
+      min-width: 0;
+    }
+    .terminal-panel--waiting .terminal {
+      opacity: 0.72;
+    }
+    .terminal-panel--waiting .console-hint {
+      display: block;
+    }
+    .console-hint {
+      display: none;
+      margin: 0 0 8px;
+      font-size: 0.78rem;
+      color: #9fb0cc;
+      font-style: italic;
+      line-height: 1.35;
+    }
+    .terminal {
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.88rem;
+      background: #0a0d12;
+      border: 1px solid #2a3344;
+      border-radius: 10px;
+      padding: 12px 12px 10px;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      margin-top: 0;
+    }
+    .console-scroll {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 360px;
+      margin-bottom: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #c8d2e0;
+      line-height: 1.45;
+    }
+    .line-user { color: #7ec8ff; }
+    .line-bad { color: #fca5a5; }
+    .line-sys { color: #94a3b8; }
+    .input-row {
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #243044;
+      padding-top: 8px;
+    }
+    .prompt {
+      flex-shrink: 0;
+      color: #fbbf24;
+      user-select: none;
+      max-width: 100%;
+      word-break: break-word;
+      font-size: 0.72rem;
+    }
+    .cmdline {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      color: #e6edf3;
+      font: inherit;
+      outline: none;
+      padding: 4px 0 4px 4px;
+    }
+    .cmdline:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-secondary {
+      background: #2a3040;
+      border-color: #4b556b;
+    }
+    .pass-banner {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .pass-banner.visible {
+      display: block;
+    }
+    .sim-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(11, 16, 32, 0.94);
+      border-top: 1px solid #2d3b5a;
+      backdrop-filter: blur(10px);
+    }
+    .sim-nav-btn {
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 700;
+      min-width: 5.5rem;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .sim-nav-btn:hover { filter: brightness(1.08); }
+    .sim-nav-home { background: #1a3d6e; }
+    .sim-nav-next { background: #1a3d6e; }
+    .sim-nav-back { background: #243352; border-color: #3d5280; }
+  
+    /* CLI: avoid white native input fill — transparent text fields on dark terminals */
+    .cli-modal-dialog,
+    .terminal {
+      color-scheme: dark;
+    }
+    .terminal input[type="text"],
+    input.cmdline,
+    #cmdline,
+    #cmdlineR2,
+    #cmdlineR3 {
+      color-scheme: dark;
+      -webkit-appearance: none;
+      appearance: none;
+      background-color: transparent !important;
+    }
+
+  
+    .site-logo-corner {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 12000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(11, 16, 32, 0.55);
+      border: 1px solid #2d3b5a;
+      padding: 6px;
+      backdrop-filter: blur(4px);
+    }
+    .site-logo-corner img {
+      display: block;
+      width: 52px;
+      height: 52px;
+    }
+</style>
+</head>
+<body>
+  <a class="site-logo-corner" href="https://becertifiedtoday.com/" aria-label="Go to training portal home">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+  </a>
+
+  <div class="wrap">
+    <main class="card">
+      <h1>OSPF Advertised &amp; Summarized Sim</h1>
+
+      <div class="diagram-wrap" aria-label="OSPF areas and R1 initial config">
+              <img
+                src="/assets/ospf-adv-summ-lab-v2.png"
+               
+               
+                alt="Areas 10 20 0 with R1 R2 R3 and R1 interface summary"
+               width="680" height="731" />
+              
+              <div class="device-pick" role="group" aria-label="Device in prompt">
+                <strong>Device in prompt:</strong> R1
+              </div>
+              <div class="device-links">
+                <button type="button" class="device-link" id="openDeviceCliLink">Open Router CLI</button>
+              </div>
+<div class="tasks tasks-top">
+                <strong>Tasks</strong>
+                <p class="tasks-intro">
+                  OSPF is partially configured. Complete the OSPF configurations to achieve these goals:
+                </p>
+                <ol class="tasks-numbered">
+                  <li>
+                    Configure OSPF on router <strong>R1</strong> according to the topology so that all networks are advertised. Do not use the
+                    <code>network</code> statement under the <code>router ospf</code> configuration section to accomplish this task.
+                  </li>
+                  <li>
+                    Configure a single command on the <strong>ABR</strong> routers to ensure only one summary route is advertised to area <strong>0</strong>.
+                  </li>
+                </ol>
+                <p class="tasks-note">
+                  <strong>Lab scope:</strong> This page’s CLI checks <strong>Goal 1</strong> on <strong>R1</strong> (interface-level OSPF only). Practice
+                  <strong>Goal 2</strong> (ABR <code>area … range …</code> summarization into area 0) on the
+                  <a href="/cli-lab-ospf-dr-summarization.html">OSPF DR &amp; Summarization Sim</a> or
+                  <a href="/cli-lab-ospf-summ/cli-lab-ospf-summ-r30.html">OSPF summarization (R30)</a> lab.
+                </p>
+              </div>
+              <div class="helper-file-wrap">
+                <button type="button" class="device-link" id="openHelperFileBtn">Helper File</button>
+                <button type="button" class="device-link" id="inlineResetLabBtn">Reset lab</button>
+                <button type="button" class="device-link" id="openSpoilerBtn">Spoiler</button>
+              </div>
+
+
+            </div>
+
+      <p class="objective">
+        Open the <strong>R1</strong> CLI below. Enable OSPF process <strong>1</strong> and attach OSPF with <code>ip ospf 1 area 0</code> on each interface — <strong>no</strong>
+        <code>network</code> lines under <code>router ospf</code>. Then verify and save as in the spoiler.
+      </p>
+
+      <div class="controls">
+        <button type="button" class="btn btn-secondary" id="resetBtn">Reset lab</button>
+      </div>
+
+      <div id="passBanner" class="pass-banner" role="status">
+        Lab complete. R1 uses interface OSPF only and configuration is saved.
+      </div>
+
+      <details class="hint">
+        <summary>Spoiler</summary>
+        <p><strong>R1</strong></p>
+        <ol>
+          <li><code>router ospf 1</code> → <code>exit</code></li>
+          <li><code>interface loopback0</code> → <code>ip ospf 1 area 0</code></li>
+          <li><code>interface ethernet0/0</code> (or <code>int e0/0</code>) → <code>ip ospf 1 area 0</code></li>
+          <li><code>interface ethernet0/1</code> → <code>ip ospf 1 area 0</code> → <code>end</code></li>
+          <li><code>show ip ospf interface brief</code> → <code>show ip route ospf</code></li>
+        </ol>
+        <p><strong>Save</strong>: <code>copy run start</code> on R1.</p>
+      </details>
+    </main>
+  </div>
+
+  <div id="modalR1" class="cli-modal-overlay" aria-hidden="true">
+    <div class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitleR1" tabindex="-1">
+      <header class="cli-modal-header">
+        <h2 id="modalTitleR1">R1 — CLI</h2>
+        <button type="button" class="cli-modal-close" id="closeR1" aria-label="Close R1 CLI">×</button>
+      </header>
+      <div class="cli-modal-body">
+        <div class="terminal-panel" id="panelR1">
+          <p class="console-hint" id="hintR1">router ospf 1, exit, then ip ospf 1 area 0 on each interface; verify; save last on R1.</p>
+          <div class="terminal" aria-label="R1 CLI">
+            <div class="console-scroll" id="scrollR1"></div>
+            <div class="input-row">
+              <span class="prompt" id="promptR1">R1#</span>
+              <input class="cmdline" id="cmdR1" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R1 command line" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav class="sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html">Home</a>
+    <a class="sim-nav-btn sim-nav-next" href="/cli-lab-ospf-summ/cli-lab-ospf-summ-r30.html">Next</a>
+    <a class="sim-nav-btn sim-nav-back" href="/cli-lab-ospf-dr-summarization.html">Back</a>
+  </nav>
+
+  <script>
+    function normalize(s) {
+      return s.trim().toLowerCase().replace(/\s+/g, " ");
+    }
+
+    function matchCopy(raw) {
+      const u = normalize(raw);
+      return (
+        u === "copy running-config startup-config" ||
+        u === "copy run start" ||
+        u === "copy run startup-config"
+      );
+    }
+
+    function matchShowRun(raw) {
+      const u = normalize(raw);
+      return u === "show run" || u === "show running-config" || u === "sh run" || u === "sh running-config";
+    }
+
+    function promptForStep(steps, index, host) {
+      if (index >= steps.length) return `${host}#`;
+      const m = steps[index].mode;
+      if (m === "exec") return `${host}#`;
+      if (m === "config") return `${host}(config)#`;
+      if (m === "config-router") return `${host}(config-router)#`;
+      if (m === "config-if") return `${host}(config-if)#`;
+      return `${host}#`;
+    }
+
+    function testIntLo0(raw) {
+      const u = normalize(raw);
+      return u === "interface loopback0" || u === "int loopback0" || u === "int lo0";
+    }
+
+    function testIntE00(raw) {
+      const u = normalize(raw);
+      return u === "interface ethernet0/0" || u === "int ethernet0/0" || u === "interface e0/0" || u === "int e0/0";
+    }
+
+    function testIntE01(raw) {
+      const u = normalize(raw);
+      return u === "interface ethernet0/1" || u === "int ethernet0/1" || u === "interface e0/1" || u === "int e0/1";
+    }
+
+    function testShowOspfBrief(raw) {
+      const u = normalize(raw);
+      return u === "show ip ospf interface brief" || u === "sh ip ospf interface brief" || u === "show ip ospf int brief";
+    }
+
+    function testShowRouteOspf(raw) {
+      const u = normalize(raw);
+      return u === "show ip route ospf" || u === "sh ip route ospf";
+    }
+
+    const R1_CFG = [
+      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
+      { mode: "config", test: (raw) => normalize(raw) === "router ospf 1" },
+      { mode: "config-router", test: (raw) => normalize(raw) === "exit" },
+      { mode: "config", test: testIntLo0 },
+      { mode: "config-if", test: (raw) => normalize(raw) === "ip ospf 1 area 0" },
+      { mode: "config-if", test: testIntE00 },
+      { mode: "config-if", test: (raw) => normalize(raw) === "ip ospf 1 area 0" },
+      { mode: "config-if", test: testIntE01 },
+      { mode: "config-if", test: (raw) => normalize(raw) === "ip ospf 1 area 0" },
+      { mode: "config-if", test: (raw) => normalize(raw) === "end" },
+    ];
+
+    const OUT_OSPF_BRIEF =
+      "Interface    PID   Area            IP Address/Mask    Cost  State Nbrs F/C\n" +
+      "Lo0          1     0               10.0.1.1/24        1     LOOP  0/0\n" +
+      "Et0/1        1     0               10.0.3.1/24        10    BDR   1/1\n" +
+      "Et0/0        1     0               10.0.2.1/24        10    BDR   1/1";
+
+    const OUT_ROUTE_OSPF =
+      "Codes: O - OSPF, IA - OSPF inter area\n\n" +
+      "      10.0.0.0/8 is variably subnetted, 9 subnets, 2 masks\n" +
+      "O        10.0.23.0/24 [110/20] via 10.0.3.3, 00:00:09, Ethernet0/1\n" +
+      "                      [110/20] via 10.0.2.2, 00:00:09, Ethernet0/0\n" +
+      "O IA     10.1.102.0/24 [110/20] via 10.0.2.2, 00:00:09, Ethernet0/0\n" +
+      "O IA     10.2.203.0/24 [110/20] via 10.0.3.3, 00:00:09, Ethernet0/1";
+
+    const R1_INITIAL_CONFIG =
+      "interface loopback0\n" +
+      " ip address 10.0.1.1 255.255.255.0\n" +
+      "!\n" +
+      "interface Ethernet0/0\n" +
+      " ip address 10.0.2.1 255.255.255.0\n" +
+      "!\n" +
+      "interface Ethernet0/1\n" +
+      " ip address 10.0.3.1 255.255.255.0\n\n" +
+      "(no OSPF config found):";
+
+    const scrollR1 = document.getElementById("scrollR1");
+    const promptR1 = document.getElementById("promptR1");
+    const cmdR1 = document.getElementById("cmdR1");
+    const panelR1 = document.getElementById("panelR1");
+    const passBanner = document.getElementById("passBanner");
+    const resetBtn = document.getElementById("resetBtn");
+    const modalR1 = document.getElementById("modalR1");
+    const openDeviceCliLink = document.getElementById("openDeviceCliLink");
+
+    function closeR1Modal() {
+      modalR1.classList.remove("is-open");
+      modalR1.setAttribute("aria-hidden", "true");
+    }
+
+    function openSelectedCliModal() {
+      modalR1.classList.add("is-open");
+      modalR1.setAttribute("aria-hidden", "false");
+      focusActiveCli();
+    }
+
+    function focusActiveCli() {
+      if (modalR1.classList.contains("is-open") && !cmdR1.disabled) {
+        cmdR1.focus();
+      }
+    }
+
+    let phase = "R1_CFG";
+    let stepR1 = 0;
+    let verStep = 0;
+
+    function appendLine(scrollEl, className, text) {
+      const div = document.createElement("div");
+      div.className = className;
+      div.textContent = text;
+      scrollEl.appendChild(div);
+      scrollEl.scrollTop = scrollEl.scrollHeight;
+    }
+
+    function appendBlock(scrollEl, className, text) {
+      const div = document.createElement("div");
+      div.className = className;
+      div.style.whiteSpace = "pre-wrap";
+      div.textContent = text;
+      scrollEl.appendChild(div);
+      scrollEl.scrollTop = scrollEl.scrollHeight;
+    }
+
+    function setWaiting(panel, waiting) {
+      panel.classList.toggle("terminal-panel--waiting", waiting);
+    }
+
+    function updatePrompts() {
+      if (phase === "R1_CFG") {
+        promptR1.textContent = promptForStep(R1_CFG, stepR1, "R1");
+      } else {
+        promptR1.textContent = "R1#";
+      }
+    }
+
+    function applyPhaseUI() {
+      cmdR1.disabled = phase === "DONE";
+      setWaiting(panelR1, false);
+      updatePrompts();
+      focusActiveCli();
+    }
+
+    function reset() {
+      closeR1Modal();
+      phase = "R1_CFG";
+      stepR1 = 0;
+      verStep = 0;
+      scrollR1.innerHTML = "";
+      cmdR1.value = "";
+      passBanner.classList.remove("visible");
+      appendLine(scrollR1, "line-sys", "R1 initial state loaded. Use show run to view starting config.");
+      applyPhaseUI();
+      openDeviceCliLink.focus();
+    }
+
+    function submitR1() {
+      const prompt = phase === "R1_CFG" ? promptForStep(R1_CFG, stepR1, "R1") : "R1#";
+      const line = cmdR1.value;
+      appendLine(scrollR1, "line-user", `${prompt} ${line}`);
+      cmdR1.value = "";
+      if (!line.trim()) return;
+
+      if (matchShowRun(line)) {
+        appendBlock(scrollR1, "line-sys", R1_INITIAL_CONFIG);
+        return;
+      }
+
+      if (phase === "R1_SAVE") {
+        if (matchCopy(line)) {
+          appendLine(scrollR1, "line-sys", "[OK] R1 saved (simulated).");
+          phase = "DONE";
+          passBanner.classList.add("visible");
+          applyPhaseUI();
+        } else {
+          appendLine(scrollR1, "line-bad", "% Invalid input");
+        }
+        return;
+      }
+
+      if (phase === "R1_VER") {
+        if (verStep === 0) {
+          if (testShowOspfBrief(line)) {
+            appendBlock(scrollR1, "line-sys", OUT_OSPF_BRIEF);
+            appendLine(scrollR1, "line-sys", "[OK] show ip route ospf next.");
+            verStep = 1;
+          } else {
+            appendLine(scrollR1, "line-bad", "% Invalid input");
+          }
+          return;
+        }
+
+        if (testShowRouteOspf(line)) {
+          appendBlock(scrollR1, "line-sys", OUT_ROUTE_OSPF);
+          appendLine(scrollR1, "line-sys", "[OK] Save config on R1.");
+          phase = "R1_SAVE";
+          applyPhaseUI();
+        } else {
+          appendLine(scrollR1, "line-bad", "% Invalid input");
+        }
+        return;
+      }
+
+      if (phase !== "R1_CFG") return;
+      if (stepR1 >= R1_CFG.length) return;
+
+      if (!R1_CFG[stepR1].test(line)) {
+        appendLine(scrollR1, "line-bad", "% Invalid input");
+        return;
+      }
+
+      stepR1 += 1;
+      if (stepR1 >= R1_CFG.length) {
+        appendLine(scrollR1, "line-sys", "[OK] R1 interfaces in OSPF. Verify.");
+        phase = "R1_VER";
+        verStep = 0;
+        appendLine(scrollR1, "line-sys", "show ip ospf interface brief");
+        applyPhaseUI();
+      } else {
+        updatePrompts();
+      }
+    }
+
+    cmdR1.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitR1();
+      }
+    });
+
+    resetBtn.addEventListener("click", reset);
+    openDeviceCliLink.addEventListener("click", openSelectedCliModal);
+    document.getElementById("closeR1").addEventListener("click", () => {
+      closeR1Modal();
+      openDeviceCliLink.focus();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      if (modalR1.classList.contains("is-open")) {
+        e.preventDefault();
+        closeR1Modal();
+        openDeviceCliLink.focus();
+      }
+    });
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    reset();
+  </script>
+
+<script>
+(function(){
+  if (window.__labHelperSpoilerInit) return;
+  window.__labHelperSpoilerInit = true;
+
+  const helperBtn = document.getElementById('openHelperFileBtn');
+  const resetInlineBtn = document.getElementById('inlineResetLabBtn');
+  const spoilerBtn = document.getElementById('openSpoilerBtn');
+  if (!helperBtn && !resetInlineBtn && !spoilerBtn) return;
+
+
+  function createModal(id, title, bodyNode){
+    const overlay = document.createElement('div');
+    overlay.id = id + 'Overlay';
+    overlay.className = 'cli-modal-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.innerHTML = '
+      <div id="'+id+'Dialog" class="cli-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="'+id+'Title" tabindex="-1">
+        <header class="cli-modal-header">
+          <h2 id="'+id+'Title">'+title+'</h2>
+          <button type="button" class="cli-modal-close" aria-label="Close">×</button>
+        </header>
+        <div class="cli-modal-body"></div>
+      </div>';
+    overlay.querySelector('.cli-modal-body').appendChild(bodyNode);
+    document.body.appendChild(overlay);
+    const closeBtn = overlay.querySelector('.cli-modal-close');
+    const close = () => { overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true'); };
+    const open = () => { overlay.classList.add('is-open'); overlay.setAttribute('aria-hidden', 'false'); };
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    return { open, close, overlay };
+  }
+
+  function normalizeLine(text){
+    return (text || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function buildSpoilerCliFromHint(hint){
+    const root = document.createElement('div');
+    root.className = 'topology-scrape';
+    const h2 = document.createElement('h2');
+    h2.textContent = 'Lab Solution (Spoiler)';
+    root.appendChild(h2);
+
+    const stack = document.createElement('div');
+    stack.className = 'spoiler-cli-stack';
+
+    const clone = hint.cloneNode(true);
+    const summary = clone.querySelector('summary');
+    if (summary) summary.remove();
+
+    let currentDevice = 'Device';
+    let buffer = [];
+    const sections = [];
+
+    function flush(){
+      if (!buffer.length) return;
+      sections.push({ device: currentDevice, lines: buffer.slice() });
+      buffer = [];
+    }
+
+    for (const node of Array.from(clone.children)) {
+      const tag = node.tagName ? node.tagName.toLowerCase() : '';
+
+      if (tag === 'p') {
+        const strong = node.querySelector('strong');
+        if (strong) {
+          flush();
+          const t = normalizeLine(strong.textContent).replace(/:$/, '');
+          currentDevice = t || currentDevice;
+          continue;
+        }
+        const txt = normalizeLine(node.textContent);
+        if (txt) buffer.push(txt);
+        continue;
+      }
+
+      if (tag === 'ol' || tag === 'ul') {
+        const lines = Array.from(node.querySelectorAll('li')).map(li => normalizeLine(li.textContent)).filter(Boolean);
+        if (lines.length) {
+          flush();
+          sections.push({ device: currentDevice, lines });
+        }
+        continue;
+      }
+
+      if (tag === 'pre') {
+        const txt = node.textContent || '';
+        const lines = txt.split(/\r?\n/).map(normalizeLine).filter(Boolean);
+        if (lines.length) {
+          flush();
+          sections.push({ device: currentDevice, lines });
+        }
+        continue;
+      }
+
+      const txt = normalizeLine(node.textContent || '');
+      if (txt) buffer.push(txt);
+    }
+    flush();
+
+    if (!sections.length) {
+      const p = document.createElement('p');
+      p.textContent = 'No spoiler solution content is available for this lab.';
+      root.appendChild(p);
+      return root;
+    }
+
+    sections.forEach(sec => {
+      const item = document.createElement('div');
+      item.className = 'spoiler-cli-item';
+      const label = document.createElement('div');
+      label.className = 'spoiler-cli-label';
+      label.textContent = sec.device || 'Device';
+      const pre = document.createElement('pre');
+      pre.className = 'spoiler-cli-pre';
+      pre.textContent = sec.lines.join('
+');
+      item.appendChild(label);
+      item.appendChild(pre);
+      stack.appendChild(item);
+    });
+
+    root.appendChild(stack);
+    return root;
+  }
+
+  const helperSource = document.querySelector('.topology-scrape');
+  let helperModal = null;
+  if (helperSource) {
+    const helperBody = helperSource.cloneNode(true);
+    helperSource.remove();
+    helperModal = createModal('helperFile', 'Helper File', helperBody);
+  } else {
+    const empty = document.createElement('div');
+    empty.className = 'topology-scrape';
+    empty.innerHTML = '<h2>Helper File</h2><p>No helper file is available for this lab.</p>';
+    helperModal = createModal('helperFile', 'Helper File', empty);
+  }
+
+  const hint = document.querySelector('details.hint');
+  let spoilerModal = null;
+  if (hint) {
+    spoilerModal = createModal('spoiler', 'Lab Solution (Spoiler)', buildSpoilerCliFromHint(hint));
+  }
+
+  helperBtn && helperBtn.addEventListener('click', () => helperModal && helperModal.open());
+  spoilerBtn && spoilerBtn.addEventListener('click', () => spoilerModal && spoilerModal.open());
+  resetInlineBtn && resetInlineBtn.addEventListener('click', () => {
+    const rb = document.getElementById('resetBtn');
+    if (rb) rb.click();
+    else if (typeof window.reset === 'function') window.reset();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (spoilerModal && spoilerModal.overlay.classList.contains('is-open')) spoilerModal.close();
+    else if (helperModal && helperModal.overlay.classList.contains('is-open')) helperModal.close();
+  });
+})();
+</script>
+
+  <script src="/js/lab-modal-drag.js"></script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question 170 - VTY exec-timeout 600 seconds</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #0b1020;
+      color: #e6edf3;
+    }
+    .card {
+      width: min(960px, 96vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+    }
+    .exhibit-region {
+      margin: 0 0 18px;
+    }
+    .exhibit-ref {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: #b8c3d6;
+    }
+    .exhibit-option {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px 12px;
+    }
+    .exhibit-option-label {
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #333;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .exhibit-option .exhibit-cli {
+      margin: 0;
+      padding: 10px 12px;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #f0f0f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.74rem, 1.45vw, 0.86rem);
+      line-height: 1.5;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .choice {
+      display: block;
+      margin: 10px 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #1a253b;
+      border: 1px solid #2c3f62;
+      font-size: 0.95rem;
+      cursor: pointer;
+      line-height: 1.45;
+    }
+    .choice input {
+      margin-right: 10px;
+      vertical-align: top;
+      margin-top: 3px;
+    }
+    .choice .cfg {
+      display: block;
+      margin: 8px 0 0 26px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: #d1dae8;
+      white-space: pre-wrap;
+    }
+    .answer {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    .answer.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+    }
+    .answer.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+    }
+    .next-wrap {
+      margin-top: 18px;
+      display: none;
+    }
+    .next-link {
+      display: inline-block;
+      text-decoration: none;
+      color: #e6edf3;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="exhibit-region">
+      <p class="exhibit-ref">Refer to the exhibit.</p>
+      <div class="exhibit-option">
+        <div class="exhibit-option-label">show running-config — VTY lines</div>
+        <pre class="exhibit-cli" role="region" aria-label="VTY exec-timeout and related line settings">Router#sh run | b vty
+line vty 0 4
+ session-timeout 30
+ exec-timeout 120 0
+ session-limit 30
+ login local
+line vty 5 15
+ session-timeout 30
+ exec-timeout 30 0
+ session-limit 30
+ login local</pre>
+      </div>
+    </div>
+    <h1>Security policy requires all idle-exec sessions to be terminated in 600 seconds. Which configuration achieves this goal?</h1>
+
+    <label class="choice"
+      ><input type="radio" name="q170" value="A" />A.<span class="cfg"
+>line vty 0 15
+exec-timeout 10 0</span></label
+    >
+
+    <label class="choice"
+      ><input type="radio" name="q170" value="B" />B.<span class="cfg"
+>line vty 0 15
+exec-timeout</span></label
+    >
+
+    <label class="choice"
+      ><input type="radio" name="q170" value="C" />C.<span class="cfg"
+>line vty 0 15
+absolute-timeout 600</span></label
+    >
+
+    <label class="choice"
+      ><input type="radio" name="q170" value="D" />D.<span class="cfg"
+>line vty 0 4
+exec-timeout 600</span></label
+    >
+
+    <div id="answerBox" class="answer" aria-live="polite"></div>
+    <div id="nextWrap" class="next-wrap">
+      <a class="next-link" href="/question-171.html">Next</a>
+    </div>
+  </main>
+
+  <script>
+    const answerBox = document.getElementById("answerBox");
+    const nextWrap = document.getElementById("nextWrap");
+    const options = document.querySelectorAll('input[name="q170"]');
+
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      history.pushState(null, "", location.href);
+    });
+
+    options.forEach((option) => {
+      option.addEventListener("change", () => {
+        answerBox.style.display = "block";
+        nextWrap.style.display = "block";
+        if (option.value === "A") {
+          answerBox.className = "answer correct";
+          answerBox.textContent =
+            "Correct. A. `exec-timeout minutes seconds`: `10 0` is ten minutes with zero extra seconds = 600 seconds of idle EXEC time. `line vty 0 15` covers every VTY. `exec-timeout 600` uses 600 as minutes unless a seconds field is used differently—far too long. `absolute-timeout` caps total session length, not idle time. Bare `exec-timeout` does not set 600 seconds.";
+        } else {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent =
+            "Incorrect. The correct answer: A. Map 600 seconds to minutes/seconds on all VTY lines.";
+        }
+      });
+    });
+  </script>
+  <style>
+    .home-key {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+    .home-key:hover {
+      filter: brightness(1.08);
+    }
+  </style>
+  <a class="home-key" href="https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html">Home</a>
+  <script src="/js/practice-questions.js"></script>
+</body>
+</html>
