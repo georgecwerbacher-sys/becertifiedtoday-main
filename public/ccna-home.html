@@ -5,8 +5,39 @@
   <script src="/js/ga-site-config.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTT6KBHX7V"></script>
   <script src="/js/google-tag-gtag.js"></script>
+  <script src="/js/google-ads-purchase-conversion.js"></script>
   <script src="/js/campaign-attribution.js"></script>
   <script src="/js/install-vercel-analytics.js"></script>
+  <!-- Event snippet for Purchase conversion page -->
+  <script>
+    (function () {
+      var sessionId = "";
+      try {
+        sessionId = new URLSearchParams(window.location.search).get("session_id") || "";
+      } catch (e) {}
+      if (!sessionId || sessionId.indexOf("cs_") !== 0) return;
+      if (typeof window.bccTrackGoogleAdsPurchaseConversion !== "function") return;
+
+      fetch("/api/verify-checkout-session?session_id=" + encodeURIComponent(sessionId))
+        .then(function (res) {
+          return res.json().then(function (data) {
+            return { ok: res.ok, data: data };
+          });
+        })
+        .then(function (pair) {
+          if (!pair.ok || !pair.data || !pair.data.ok) return;
+          var productId = pair.data.productId;
+          var value;
+          if (productId === "ccna-test-simulation") value = 4.99;
+          else if (productId === "ccna-portal-10d") value = 9.99;
+          else if (productId === "ccna-portal-30d") value = 19.99;
+          var opts = { currency: "USD" };
+          if (typeof value === "number") opts.value = value;
+          window.bccTrackGoogleAdsPurchaseConversion(sessionId, opts);
+        })
+        .catch(function () {});
+    })();
+  </script>
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
