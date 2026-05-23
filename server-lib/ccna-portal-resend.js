@@ -46,7 +46,7 @@ export async function sendCcnaPortalMagicEmail({ to, magicUrl }) {
   if (!res.ok) {
     const text = await res.text().catch(() => "");
     console.error("[ccna-portal] Resend error:", res.status, text.slice(0, 500));
-    return false;
+    throw new Error("Resend rejected email: HTTP " + res.status);
   }
   return true;
 }

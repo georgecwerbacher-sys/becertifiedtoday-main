@@ -3,7 +3,8 @@
  * Body: { "email": "you@example.com" }
  *
  * If Stripe shows an active CCNA portal purchase for this email, sends a fresh magic link via Resend.
- * Uses Stripe Customer metadata written by checkout.session.completed webhook (no separate database).
+ * Uses Stripe Customer metadata written by checkout.session.completed webhook, with fallback lookup
+ * when metadata was never written (e.g. webhook missed or purchase predates portal email setup).
  *
  * Env: STRIPE_SECRET_KEY, PORTAL_MAGIC_LINK_SECRET, PUBLIC_SITE_URL,
  *      RESEND_API_KEY, RESEND_FROM (optional)
@@ -11,12 +12,8 @@
 import Stripe from "stripe";
 import { getStripeSecretKey } from "./stripe-secret-key.js";
 import { normalizePublicSiteUrl } from "./normalize-public-site-url.js";
-import {
-  checkoutSessionIsPaid,
-  inferProductIdFromCheckoutSession,
-  isCcnaPortalProduct,
-  portalAccessExpiresAtMs,
-} from "../server-lib/ccna-portal-stripe.js";
+import { upsertCustomerPortalMetadata } from "../server-lib/ccna-portal-stripe.js";
+import { findActivePortalSessionForEmail } from "../server-lib/ccna-portal-customers.js";
 import { signPortalMagicJwt } from "../server-lib/ccna-portal-magic-jwt.js";
 import { sendCcnaPortalMagicEmail } from "../server-lib/ccna-portal-resend.js";
 
@@ -49,6 +46,7 @@ export default async function handler(req, res) {
   const sk = getStripeSecretKey(process.env.STRIPE_SECRET_KEY);
   const jwtSecret = (process.env.PORTAL_MAGIC_LINK_SECRET || "").trim();
   const site = normalizePublicSiteUrl(process.env.PUBLIC_SITE_URL);
+  const resendKey = (process.env.RESEND_API_KEY || "").trim();
 
   if (!sk.secret) {
     return res.status(503).json({ ok: false, error: sk.error });
@@ -66,6 +64,13 @@ export default async function handler(req, res) {
       error: "PUBLIC_SITE_URL is not configured",
     });
   }
+  if (!resendKey) {
+    return res.status(503).json({
+      ok: false,
+      error: "Email delivery is not configured",
+      hint: "Set RESEND_API_KEY and RESEND_FROM on Vercel, then redeploy.",
+    });
+  }
 
   const body = readJsonBody(req);
   const email = normalizeEmail(body.email);
@@ -81,44 +86,15 @@ export default async function handler(req, res) {
   const stripe = new Stripe(sk.secret);
 
   try {
-    const customers = await stripe.customers.list({ email, limit: 5 });
-    if (!customers.data.length) {
+    const found = await findActivePortalSessionForEmail(stripe, email);
+    if (!found) {
+      console.info("[ccna-portal] magic link request: no active portal purchase for email");
       return res.status(200).json({ ok: true, message: generic });
     }
 
-    let cs = "";
-    let metaExpMs = 0;
-    for (let i = 0; i < customers.data.length; i++) {
-      const m = customers.data[i].metadata || {};
-      const id = (m.ccna_portal_last_cs || "").trim();
-      const rawMs = parseInt(String(m.ccna_portal_access_expires_ms || ""), 10);
-      if (id.indexOf("cs_") === 0 && Number.isFinite(rawMs) && rawMs > metaExpMs) {
-        cs = id;
-        metaExpMs = rawMs;
-      }
-    }
+    const { session, accessExpiresAtMs } = found;
 
-    if (!cs || metaExpMs <= Date.now()) {
-      return res.status(200).json({ ok: true, message: generic });
-    }
-
-    const session = await stripe.checkout.sessions.retrieve(cs, {
-      expand: ["payment_intent", "line_items.data.price"],
-    });
-
-    if (!checkoutSessionIsPaid(session)) {
-      return res.status(200).json({ ok: true, message: generic });
-    }
-
-    const productId = inferProductIdFromCheckoutSession(session);
-    if (!isCcnaPortalProduct(productId)) {
-      return res.status(200).json({ ok: true, message: generic });
-    }
-
-    const accessExpiresAtMs = portalAccessExpiresAtMs(session, productId);
-    if (accessExpiresAtMs <= Date.now()) {
-      return res.status(200).json({ ok: true, message: generic });
-    }
+    await upsertCustomerPortalMetadata(stripe, session, accessExpiresAtMs);
 
     const token = signPortalMagicJwt(
       {
@@ -130,7 +106,13 @@ export default async function handler(req, res) {
     );
 
     const magicUrl = `${site}/CCNA-Study/ccna-portal-magic.html#t=${encodeURIComponent(token)}`;
-    await sendCcnaPortalMagicEmail({ to: email, magicUrl });
+    const sent = await sendCcnaPortalMagicEmail({ to: email, magicUrl });
+
+    if (!sent) {
+      console.error("[ccna-portal] Resend did not accept magic-link email");
+    } else {
+      console.info("[ccna-portal] magic link email sent for active portal purchase");
+    }
 
     return res.status(200).json({ ok: true, message: generic });
   } catch (e) {

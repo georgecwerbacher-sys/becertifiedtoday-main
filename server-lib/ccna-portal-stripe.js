@@ -34,7 +34,7 @@ export function inferProductIdFromCheckoutSession(session, env = process.env) {
     const amount = typeof session.amount_subtotal === "number" ? session.amount_subtotal : session.amount_total;
     if (amount === 999) {
       productId = "ccna-portal-10d";
-    } else if (amount === 1999) {
+    } else if (amount === 1999 || amount === 1499) {
       productId = "ccna-portal-30d";
     } else if (amount === 499) {
       productId = "ccna-test-simulation";
