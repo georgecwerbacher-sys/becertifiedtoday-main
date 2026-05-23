@@ -11,14 +11,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta
     name="description"
-    content="CompTIA Security+ SY0-701 practice portal — multiple-choice, performance-based items, and timed simulation practice."
+    content="CCNP ENCOR 350-401 practice portal — multiple-choice, drag-and-drop, CLI labs, and timed simulation practice."
   />
-  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Training_Portal.html" />
+  <link rel="canonical" href="https://becertifiedtoday.com/CCNP-ENCOR-Study/ENCOR_Training_Portal.html" />
   <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
-  <title>CompTIA Security+ Training Portal | Be Certified Today</title>
+  <title>CCNP ENCOR Training Portal | Be Certified Today</title>
   <!--
-    Portal shell aligned with CCNA_Training_Portal.html layout.
-    Security+ sections use disabled placeholders until question banks and checkout go live.
+    Portal shell aligned with CCNA_Training_Portal.html and SEC+_Training_Portal.html.
+    Staging on main site — question launchers wire at cutover; samples and labs use CCNP-ENCOR-Study paths.
   -->
   <style>
     :root {
@@ -32,9 +32,9 @@
       --page-bg: #ffffff;
       --page-text: #0b1020;
       --page-muted: #475569;
-      --accent: #6d28d9;
-      --accent-border: #8b5cf6;
-      --accent-hover: #7c3aed;
+      --accent: #2f66bf;
+      --accent-border: #4f84d8;
+      --accent-hover: #3a74d4;
     }
     * {
       box-sizing: border-box;
@@ -125,7 +125,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: #9d7bea;
+      color: #6b8ab8;
     }
     h1 {
       margin: 0 0 16px;
@@ -161,7 +161,7 @@
       height: 8px;
       margin-top: 0.45em;
       border-radius: 50%;
-      background: linear-gradient(135deg, #a78bfa, #6d28d9);
+      background: linear-gradient(135deg, #4f84d8, #2f66bf);
     }
     .card {
       background: var(--surface);
@@ -176,7 +176,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: #9d7bea;
+      color: #6b8ab8;
     }
     .purchase-card .purchase-heading {
       margin: 0 0 12px;
@@ -288,7 +288,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: #9d7bea;
+      color: #6b8ab8;
     }
     .formats-section h2 {
       margin: 0 0 12px;
@@ -318,7 +318,7 @@
       margin: 0 0 12px;
       padding: 10px 12px;
       border-radius: 10px;
-      border: 1px dashed rgba(139, 92, 246, 0.45);
+      border: 1px dashed rgba(79, 132, 216, 0.45);
       background: rgba(13, 21, 40, 0.45);
       color: #9fb0cc;
       font-size: 0.88rem;
@@ -328,8 +328,8 @@
       margin: 0 0 18px;
       padding: 16px;
       border-radius: 12px;
-      border: 1px solid #6d28d9;
-      background: #1e1533;
+      border: 1px solid #2f66bf;
+      background: #1a2742;
     }
     .sim-grid {
       display: grid;
@@ -337,14 +337,14 @@
       margin: 0 0 8px;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     }
-    #secplus-practice-banks-grid {
+    #encor-practice-banks-grid {
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     }
     .sim-box {
       padding: 16px;
       border-radius: 12px;
-      border: 1px solid #6d28d9;
-      background: #1e1533;
+      border: 1px solid #2f66bf;
+      background: #1a2742;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -376,50 +376,50 @@
       font-size: 0.88rem;
       color: #9fb0cc;
     }
-    .secplus-practice-subject-filter {
+    .encor-practice-subject-filter {
       margin: 0 0 18px;
       padding: 14px 16px;
       border-radius: 12px;
-      border: 1px solid rgba(139, 92, 246, 0.45);
+      border: 1px solid rgba(79, 132, 216, 0.45);
       background: rgba(13, 21, 40, 0.55);
     }
-    .secplus-practice-subject-filter .secplus-practice-subject-title {
+    .encor-practice-subject-filter .encor-practice-subject-title {
       margin: 0 0 6px;
       font-size: 0.95rem;
       font-weight: 800;
       color: var(--text);
     }
-    .secplus-practice-subject-filter .secplus-practice-subject-lead {
+    .encor-practice-subject-filter .encor-practice-subject-lead {
       margin: 0 0 12px;
       font-size: 0.86rem;
       color: #9fb0cc;
       line-height: 1.5;
     }
-    a[href="#secplus-practice-subject-filter"],
-    .secplus-practice-subject-filter a {
+    a[href="#encor-practice-subject-filter"],
+    .encor-practice-subject-filter a {
       color: #ffffff;
       font-weight: 700;
       text-decoration: underline;
       text-underline-offset: 2px;
     }
-    a[href="#secplus-practice-subject-filter"]:visited,
-    .secplus-practice-subject-filter a:visited,
-    a[href="#secplus-practice-subject-filter"]:hover,
-    .secplus-practice-subject-filter a:hover,
-    a[href="#secplus-practice-subject-filter"]:focus-visible,
-    .secplus-practice-subject-filter a:focus-visible {
+    a[href="#encor-practice-subject-filter"]:visited,
+    .encor-practice-subject-filter a:visited,
+    a[href="#encor-practice-subject-filter"]:hover,
+    .encor-practice-subject-filter a:hover,
+    a[href="#encor-practice-subject-filter"]:focus-visible,
+    .encor-practice-subject-filter a:focus-visible {
       color: #ffffff;
     }
-    .secplus-practice-subject-filter label[for="secplus-practice-domain-select"] {
+    .encor-practice-subject-filter label[for="encor-practice-domain-select"] {
       display: block;
       margin: 0 0 6px;
       font-size: 0.82rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: #9d7bea;
+      color: #6b8ab8;
     }
-    .secplus-practice-domain-select {
+    .encor-practice-domain-select {
       display: block;
       width: 100%;
       max-width: min(100%, 440px);
@@ -432,46 +432,46 @@
       font-size: 0.95rem;
       font-weight: 600;
     }
-    .secplus-practice-domain-select:focus {
-      outline: 2px solid rgba(139, 92, 246, 0.65);
+    .encor-practice-domain-select:focus {
+      outline: 2px solid rgba(79, 132, 216, 0.65);
       outline-offset: 2px;
     }
-    .secplus-practice-subject-hint {
+    .encor-practice-subject-hint {
       margin: 10px 0 0;
       font-size: 0.8rem;
       color: #7d8ca8;
       line-height: 1.45;
     }
-    .secplus-practice-subject-hint.secplus-practice-random-review-hint strong {
+    .encor-practice-subject-hint.encor-practice-random-review-hint strong {
       color: var(--text);
       font-weight: 700;
     }
-    .secplus-practice-session-style {
+    .encor-practice-session-style {
       margin: 14px 0 0;
       padding: 0;
       border: none;
       min-width: 0;
     }
-    .secplus-practice-session-style legend {
+    .encor-practice-session-style legend {
       display: block;
       margin: 0 0 8px;
       font-size: 0.82rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: #9d7bea;
+      color: #6b8ab8;
       padding: 0;
     }
-    .secplus-practice-radio-row {
+    .encor-practice-radio-row {
       margin: 0 0 8px;
       font-size: 0.88rem;
       color: var(--text);
       line-height: 1.45;
     }
-    .secplus-practice-radio-row:last-of-type {
+    .encor-practice-radio-row:last-of-type {
       margin-bottom: 0;
     }
-    .secplus-practice-radio-row label {
+    .encor-practice-radio-row label {
       display: flex;
       align-items: flex-start;
       gap: 10px;
@@ -479,12 +479,12 @@
       font-weight: 500;
       opacity: 0.75;
     }
-    .secplus-practice-radio-row input[type="radio"] {
+    .encor-practice-radio-row input[type="radio"] {
       margin: 0.28rem 0 0;
       flex-shrink: 0;
-      accent-color: #8b5cf6;
+      accent-color: #4f84d8;
     }
-    .secplus-practice-radio-row .secplus-practice-radio-desc {
+    .encor-practice-radio-row .encor-practice-radio-desc {
       display: block;
       margin-top: 4px;
       font-size: 0.78rem;
@@ -512,8 +512,8 @@
     .start-btn {
       display: inline-block;
       text-decoration: none;
-      background: #6d28d9;
-      border: 1px solid #8b5cf6;
+      background: #2f66bf;
+      border: 1px solid #4f84d8;
       color: #e6edf3;
       padding: 10px 14px;
       border-radius: 10px;
@@ -523,13 +523,13 @@
     }
     button.start-btn:hover:not(:disabled),
     a.start-btn:hover {
-      background: #7c3aed;
+      background: #3a74d4;
     }
     button.start-btn:disabled,
     button.start-btn.is-placeholder {
       opacity: 0.55;
       cursor: not-allowed;
-      background: rgba(109, 40, 217, 0.35);
+      background: rgba(47, 102, 191, 0.35);
     }
 
     .cta-main {
@@ -546,10 +546,10 @@
       text-decoration: none;
       text-align: center;
       color: #f4f7ff;
-      background: linear-gradient(165deg, #4f8aea 0%, #6d28d9 48%, #244f9a 100%);
+      background: linear-gradient(165deg, #4f8aea 0%, #2f66bf 48%, #244f9a 100%);
       box-shadow:
         0 1px 0 rgba(255, 255, 255, 0.14) inset,
-        0 6px 22px rgba(109, 40, 217, 0.42);
+        0 6px 22px rgba(47, 102, 191, 0.42);
       transition: filter 0.15s ease, box-shadow 0.15s ease;
     }
     .cta-main:hover {
@@ -557,10 +557,10 @@
       filter: brightness(1.07);
       box-shadow:
         0 1px 0 rgba(255, 255, 255, 0.18) inset,
-        0 8px 28px rgba(109, 40, 217, 0.5);
+        0 8px 28px rgba(47, 102, 191, 0.5);
     }
     .cta-main:focus-visible {
-      outline: 2px solid #c4b5fd;
+      outline: 2px solid #9ec0ff;
       outline-offset: 3px;
     }
     .cta-main--block {
@@ -612,15 +612,15 @@
     .sim-box-practice-wide {
       grid-column: 1 / -1;
     }
-    .sim-box.secplus-practice-bank--remainder {
+    .sim-box.encor-practice-bank--remainder {
       border-color: rgba(201, 162, 39, 0.45);
       box-shadow: inset 0 0 0 1px rgba(201, 162, 39, 0.12);
     }
-    .secplus-practice-banks-summary {
+    .encor-practice-banks-summary {
       margin: 0 0 14px;
       max-width: 62ch;
     }
-    .secplus-practice-banks-summary {
+    .encor-practice-banks-summary {
       color: var(--muted, #9eb4d4);
     }
 
@@ -665,7 +665,7 @@
     .blueprint-domain-table th {
       background: rgba(18, 26, 43, 0.9);
       font-weight: 800;
-      color: #ddd6fe;
+      color: #c8daf8;
     }
     .blueprint-domain-table tbody tr:last-child th,
     .blueprint-domain-table tbody tr:last-child td {
@@ -675,7 +675,7 @@
       white-space: nowrap;
       font-variant-numeric: tabular-nums;
       font-weight: 700;
-      color: #c4b5fd;
+      color: #9ec0ff;
     }
     .study-order-list {
       margin: 0 0 18px;
@@ -686,7 +686,7 @@
     .study-order-list li {
       margin-bottom: 6px;
     }
-    .secplus-practice-domain-select:disabled {
+    .encor-practice-domain-select:disabled {
       opacity: 0.65;
       cursor: not-allowed;
     }
@@ -701,7 +701,7 @@
 <body>
   <div class="page">
     <header>
-      <a class="brand" href="/comptia-sec+-home.html" aria-label="Be Certified Today — CompTIA Security+ home">
+      <a class="brand" href="/ccnp-home.html" aria-label="Be Certified Today — CCNP ENCOR home">
         <img
           src="/images/logo/becertifiedtoday_logo_trans.png"
           width="1024"
@@ -712,10 +712,10 @@
     </header>
     <figure class="hero-banner">
       <img
-        src="/images/comptia-training-card-thumbnail.png"
+        src="/images/hero-server-room-encor.png"
         width="1024"
         height="682"
-        alt="IT professional with a laptop and security lock hologram — CompTIA Security+ study prep."
+        alt="Network engineer in a server room — CCNP ENCOR study prep."
         decoding="async"
         fetchpriority="high"
       />
@@ -724,40 +724,39 @@
       <div class="hero-content">
         <div class="funnel">
           <p class="eyebrow">Welcome</p>
-          <h1>Security+ Training Portal</h1>
+          <h1>CCNP ENCOR Training Portal</h1>
           <p class="lead">
-            Map your prep to the official SY0-701 blueprint, spend time where CompTIA weights the exam, then prove it with
-            interactive practice here—sample questions are available now; the full library launches soon on this portal.
+            Map your prep to the official 350-401 ENCOR blueprint, spend time where Cisco weights the exam, then prove it with
+            hands-on practice here—samples and CLI labs are available now; full question-bank launchers wire here at cutover.
           </p>
           <ul class="benefits" aria-label="Portal highlights">
             <li>Professional study flow with organized sections, clear navigation, and focused practice modes.</li>
-            <li>Hands-on preparation through question sets, performance-based drag-and-drop items, and scenario-style exercises.</li>
-            <li>Exam-readiness support with a 90-minute timed simulation and repeatable sessions across all five domains.</li>
+            <li>Hands-on preparation through question sets, drag-and-drop tasks, and CLI lab simulation access.</li>
+            <li>Exam-readiness support with timed simulation and repeatable sessions across all six ENCOR domains.</li>
           </ul>
 
-          <div class="card purchase-card" id="secplus-domains">
+          <div class="card purchase-card" id="encor-domains">
             <div class="purchase-card-inner">
               <div class="purchase-card-main">
                 <p class="purchase-label">Study path</p>
-                <h2 class="purchase-heading">Security+ SY0-701 blueprint and domain weights</h2>
+                <h2 class="purchase-heading">ENCOR 350-401 blueprint and domain weights</h2>
                 <p class="purchase-lead">
-                  Security+ study lines up with five main knowledge domains. CompTIA publishes the current SY0-701 exam areas
-                  (objectives version 5.0) as general security concepts, threats and vulnerabilities, security architecture,
-                  security operations, and security program management. Official guidance puts the strongest emphasis on
-                  security operations (28%), followed by threats, vulnerabilities, and mitigations (22%) and security
-                  program management and oversight (20%).
+                  CCNP ENCOR study lines up with six main knowledge domains. Cisco publishes the current 350-401 ENCOR v1.2 exam areas
+                  as architecture, virtualization, infrastructure, network assurance, security, and automation and artificial intelligence.
+                  Official guidance puts the strongest emphasis on <strong>Infrastructure</strong> (30%), followed by
+                  <strong>Security</strong> (20%) and <strong>Architecture</strong> (15%).
                 </p>
-                <h3 class="blueprint-h3">Security+ study sections</h3>
+                <h3 class="blueprint-h3">ENCOR study sections</h3>
                 <p class="blueprint-note">
-                  Domain weights below come from the CompTIA Security+ SY0-701 exam objectives document—use them to budget
-                  study hours, not as a guarantee of item counts on your specific attempt. The live exam allows up to
-                  <strong>90 questions</strong> in <strong>90 minutes</strong> (multiple-choice and performance-based).
+                  Domain weights below come from Cisco ENCOR 350-401 v1.2 exam guidance—use them to budget study hours, not as a
+                  guarantee of item counts on your specific attempt. The live exam is <strong>120 minutes</strong> with a mix of
+                  multiple-choice and simulation-style items.
                 </p>
-                <h3 class="blueprint-h3">Where to aim your reading and practice</h3>
+                <h3 class="blueprint-h3">Where to aim your reading and labs</h3>
                 <div class="blueprint-table-wrap">
                   <table class="blueprint-domain-table">
                     <caption class="visually-hidden">
-                      CompTIA Security+ SY0-701 domain weights and study focus areas
+                      Cisco ENCOR 350-401 domain weights and study focus areas
                     </caption>
                     <thead>
                       <tr>
@@ -768,51 +767,55 @@
                     </thead>
                     <tbody>
                       <tr>
-                        <th scope="row">1.0 General Security Concepts</th>
-                        <td>12%</td>
-                        <td>Security controls, CIA and AAA, zero trust, physical security, cryptography and PKI basics, change management</td>
+                        <th scope="row">1.0 Architecture</th>
+                        <td>15%</td>
+                        <td>Enterprise design, high availability, SD-WAN, SD-Access, QoS, and design principles</td>
                       </tr>
                       <tr>
-                        <th scope="row">2.0 Threats, Vulnerabilities, and Mitigations</th>
-                        <td>22%</td>
-                        <td>Threat actors, attack vectors, malware and network attacks, vulnerability types, mitigation and hardening</td>
+                        <th scope="row">2.0 Virtualization</th>
+                        <td>10%</td>
+                        <td>Hypervisors, VRF, GRE, IPsec, LISP, VXLAN, and virtual switching concepts</td>
                       </tr>
                       <tr>
-                        <th scope="row">3.0 Security Architecture</th>
-                        <td>18%</td>
-                        <td>Cloud and hybrid architecture, identity and access, secure network design, encryption, secure software and supply chain</td>
+                        <th scope="row">3.0 Infrastructure</th>
+                        <td>30%</td>
+                        <td>Layer 2/3, STP/MST, EtherChannel, EIGRP/OSPF, eBGP, FHRP, NAT, multicast, and routing troubleshooting</td>
                       </tr>
                       <tr>
-                        <th scope="row">4.0 Security Operations</th>
-                        <td>28%</td>
-                        <td>Asset and vulnerability management, monitoring and alerting, incident response, automation, SIEM, and log analysis</td>
+                        <th scope="row">4.0 Network Assurance</th>
+                        <td>10%</td>
+                        <td>SNMP, syslog, NetFlow, SPAN/RSPAN, IP SLA, Catalyst Center, NETCONF, and RESTCONF</td>
                       </tr>
                       <tr>
-                        <th scope="row">5.0 Security Program Management and Oversight</th>
+                        <th scope="row">5.0 Security</th>
                         <td>20%</td>
-                        <td>Governance, risk and compliance, policies and awareness, third-party risk, disaster recovery, privacy, and audit</td>
+                        <td>Device access, AAA, ACLs, CoPP, REST API security, TrustSec, MACsec, and threat defense</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">6.0 Automation and AI</th>
+                        <td>15%</td>
+                        <td>Python, JSON, YANG, Catalyst Center and SD-WAN APIs, EEM, and orchestration tools</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
                 <h3 class="blueprint-h3">What to focus on first</h3>
                 <p class="purchase-lead">
-                  Start with general security concepts and threats, vulnerabilities, and mitigations—they build the language for
-                  everything else. Then layer in security architecture, security operations (the largest domain), and program
-                  management for governance, risk, and compliance scenarios.
+                  Start with infrastructure and architecture—they underpin routing, switching, and a large share of configuration-style
+                  prompts. Layer in security and network assurance next, then virtualization and automation for the full ENCOR mix.
                 </p>
                 <h3 class="blueprint-h3">Study order suggestion</h3>
                 <ol class="study-order-list">
-                  <li>General security concepts (controls, CIA, AAA, cryptography basics)</li>
-                  <li>Threats, vulnerabilities, and mitigations</li>
-                  <li>Security architecture (identity, cloud, network design)</li>
-                  <li>Security operations (monitoring, IR, automation)</li>
-                  <li>Security program management and oversight</li>
+                  <li>Architecture and design principles</li>
+                  <li>Infrastructure — Layer 2, routing, and path selection</li>
+                  <li>Security — ACLs, CoPP, AAA, and device hardening</li>
+                  <li>Network assurance — monitoring, telemetry, and troubleshooting tools</li>
+                  <li>Virtualization — VRF, overlays, and tunneling</li>
+                  <li>Automation — APIs, Python, and programmability</li>
                 </ol>
                 <p class="purchase-lead">
-                  Under time pressure, leaning hardest into <strong>Security Operations</strong> and
-                  <strong>Threats, Vulnerabilities, and Mitigations</strong> before you polish lighter domains mirrors where
-                  CompTIA weights the blueprint.
+                  Under time pressure, leaning hardest into <strong>Infrastructure</strong> and <strong>Security</strong> before you
+                  polish lighter domains mirrors where Cisco weights the ENCOR blueprint.
                 </p>
               </div>
             </div>
@@ -823,101 +826,103 @@
 
       <section class="formats-section" aria-labelledby="formats-title">
         <div class="formats-inner">
-          <p class="formats-head">Security+ practice formats</p>
+          <p class="formats-head">CCNP ENCOR practice formats</p>
           <h2 id="formats-title">Choose your practice mode</h2>
           <p class="formats-lead">
-            Each practice format targets skills the way SY0-701 actually asks: recall, scenario analysis, and matching concepts to the right control or mitigation.
+            Each practice format targets skills the way 350-401 actually asks: recall, scenario analysis, and matching concepts to the right control or mitigation.
             Use question banks, performance-based drag-and-drop sets, scenario exercises, and full timed runs in short sessions or longer study blocks—no PDF workbooks,
             only live pages you operate.
           </p>
           <h3 class="section-heading">Practice Questions</h3>
           <section class="start-box" aria-label="Question studies">
             <p class="placeholder-strip">
-              <strong>Early access.</strong> A three-question sample is live below. Full question banks (grouped in sets of up to
-              <strong>100</strong> by hub position) and domain filters will appear here when the Security+ library launches.
+              <strong>Staging library.</strong> A five-question sample is live below. Full question banks (grouped in studies of
+              <strong>50</strong> from <code>js/study-config.json</code>) and domain filters will wire here when ENCOR cutover links
+              launchers under this folder.
             </p>
             <p class="study-meta">
-              New practice questions will be grouped in banks of up to <strong>100</strong> by position in the hub list
-              (<strong>1&ndash;100</strong>, <strong>101&ndash;200</strong>, and so on). Each bank will have its own
-              <strong>Random</strong> and <strong>Review</strong> session.
+              Practice questions are grouped in studies from the ENCOR hub config. Each combined section supports
+              <strong>Random</strong> and <strong>Review</strong> sessions once begin-pages point at
+              <code>/CCNP-ENCOR-Study/ENCOR_Questions/</code>.
             </p>
-            <div class="secplus-practice-subject-filter" id="secplus-practice-subject-filter">
-              <p class="secplus-practice-subject-title">Practice by subject</p>
-              <p class="secplus-practice-subject-lead">
-                Matches the <a href="#secplus-domains">Security+ SY0-701 domain weights</a>. Leave on
+            <div class="encor-practice-subject-filter" id="encor-practice-subject-filter">
+              <p class="encor-practice-subject-title">Practice by subject</p>
+              <p class="encor-practice-subject-lead">
+                Matches the <a href="#encor-domains">ENCOR 350-401 domain weights</a> (Cisco blueprint section numbers). Leave on
                 <strong>All subjects</strong> for every question in the bank you start, or pick one domain before you click
-                <strong>Random</strong> or <strong>Review</strong> (available when banks go live).
+                <strong>Random</strong> or <strong>Review</strong> (available when the topic map filter goes live).
               </p>
-              <label for="secplus-practice-domain-select">Limit session to</label>
+              <label for="encor-practice-domain-select">Limit session to</label>
               <select
-                id="secplus-practice-domain-select"
-                class="secplus-practice-domain-select"
-                aria-describedby="secplus-practice-domain-hint"
+                id="encor-practice-domain-select"
+                class="encor-practice-domain-select"
+                aria-describedby="encor-practice-domain-hint"
                 disabled
               >
                 <option value="">All subjects (entire bank)</option>
-                <option value="1">1 — General Security Concepts</option>
-                <option value="2">2 — Threats, Vulnerabilities, and Mitigations</option>
-                <option value="3">3 — Security Architecture</option>
-                <option value="4">4 — Security Operations</option>
-                <option value="5">5 — Security Program Management and Oversight</option>
+                <option value="1">1.0 — Architecture</option>
+                <option value="2">2.0 — Virtualization</option>
+                <option value="3">3.0 — Infrastructure</option>
+                <option value="4">4.0 — Network Assurance</option>
+                <option value="5">5.0 — Security</option>
+                <option value="6">6.0 — Automation and AI</option>
               </select>
-              <p id="secplus-practice-domain-hint" class="secplus-practice-subject-hint">
-                Domain filter activates when the full question bank and topic map are published.
+              <p id="encor-practice-domain-hint" class="encor-practice-subject-hint">
+                Domain filter uses <code>js/question-subjects.json</code> — enables when portal launchers are wired at cutover.
               </p>
-              <fieldset class="secplus-practice-session-style" aria-labelledby="secplus-practice-session-style-label">
-                <legend id="secplus-practice-session-style-label">Session behavior</legend>
-                <div class="secplus-practice-radio-row">
+              <fieldset class="encor-practice-session-style" aria-labelledby="encor-practice-session-style-label">
+                <legend id="encor-practice-session-style-label">Session behavior</legend>
+                <div class="encor-practice-radio-row">
                   <label>
-                    <input type="radio" name="secplus-practice-adaptive" value="" checked disabled />
+                    <input type="radio" name="encor-practice-adaptive" value="" checked disabled />
                     <span>
                       Standard
-                      <span class="secplus-practice-radio-desc"
+                      <span class="encor-practice-radio-desc"
                         >Each question appears once in the order you started with (Random shuffles once at the start).</span
                       >
                     </span>
                   </label>
                 </div>
-                <div class="secplus-practice-radio-row">
+                <div class="encor-practice-radio-row">
                   <label>
-                    <input type="radio" name="secplus-practice-adaptive" value="1" disabled />
+                    <input type="radio" name="encor-practice-adaptive" value="1" disabled />
                     <span>
                       Adaptive learning
-                      <span class="secplus-practice-radio-desc"
+                      <span class="encor-practice-radio-desc"
                         >Each miss is sent to the back of the queue and the session may pull in extra questions from the same domain(s).</span
                       >
                     </span>
                   </label>
                 </div>
-                <p class="secplus-practice-subject-hint secplus-practice-random-review-hint">
+                <p class="encor-practice-subject-hint encor-practice-random-review-hint">
                   <strong>Random</strong>: shuffled order. <strong>Review</strong>: misses go to the back of the queue for another try.
                 </p>
               </fieldset>
             </div>
-            <div class="sim-grid" id="secplus-practice-banks-grid" aria-label="Practice question banks">
+            <div class="sim-grid" id="encor-practice-banks-grid" aria-label="Practice question banks">
               <article class="sim-box">
                 <figure class="sim-box-thumb">
                   <img
-                    src="/images/comptia-training-card-thumbnail.png"
+                    src="/images/encor-practice-formats-technician.png"
                     width="1024"
-                    height="682"
-                    alt="CompTIA Security+ training preview — sample practice questions."
+                    height="556"
+                    alt="CCNP ENCOR multiple-choice sample — OSPF designated router question."
                     decoding="async"
                     loading="lazy"
                   />
                 </figure>
-                <h4 class="sim-box-title">Sample questions (3 items)</h4>
+                <h4 class="sim-box-title">Sample questions (5 items)</h4>
                 <p class="study-meta">
-                  Interactive walkthrough covering MFA and AAA, symmetric encryption (AES), and phishing / social engineering.
-                  <strong>Live now</strong>—no purchase required.
+                  Interactive walkthrough of exam-style ENCOR multiple-choice items with instant feedback.
+                  <strong>Live now</strong> on this staging tree.
                 </p>
-                <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Samples/sample.html?track=questions">Open sample</a>
+                <a class="start-btn" href="/CCNP-ENCOR-Study/ENCOR_Samples/sample-question-1.html">Open sample</a>
               </article>
               <article class="sim-box">
-                <h4 class="sim-box-title">Question bank 1&ndash;100</h4>
+                <h4 class="sim-box-title">Question sections 1–5</h4>
                 <p class="study-meta">
-                  Full multiple-choice bank for the first hundred Security+ items. <strong>Random</strong> and
-                  <strong>Review</strong> modes—launching with the full library.
+                  Combined study sections from the ENCOR question bank (~400+ items). <strong>Random</strong> and
+                  <strong>Review</strong> — wiring at cutover when begin-pages use local paths.
                 </p>
                 <div class="study-actions">
                   <button type="button" class="start-btn is-placeholder" disabled>Random</button>
@@ -925,25 +930,37 @@
                 </div>
               </article>
             </div>
+            <p id="encor-study-load-msg" class="study-meta" hidden aria-live="polite">Loading practice sections…</p>
+            <p id="encor-study-load-error" class="study-meta" role="alert" hidden></p>
             <noscript>
               <p class="study-meta">
                 Sample questions require JavaScript. Open
-                <a href="/COMP_TIA_SEC+/SEC+_Samples/sample-question-1.html">sample question 1</a> directly.
+                <a href="/CCNP-ENCOR-Study/ENCOR_Samples/sample-question-1.html">sample question 1</a> directly.
               </p>
             </noscript>
           </section>
 
-          <h3 class="section-heading" id="secplus-drag-drop">Drag and Drop</h3>
+          <h3 class="section-heading" id="encor-drag-drop">Drag and Drop</h3>
           <section class="start-box" aria-label="Drag and drop practice">
             <p class="placeholder-strip">
-              Performance-based matching, ordering, and classification items aligned to SY0-701 objectives—coming soon.
+              Standard and JSON drag-and-drop sets from <code>js/study-config.json</code> — launchers wire at cutover (same pattern as the live ENCOR app).
             </p>
-            <div class="sim-grid" aria-label="Drag-and-drop groups">
+            <div class="sim-grid" id="encor-drag-drop-grid" aria-label="Drag-and-drop groups">
               <article class="sim-box">
-                <h4 class="sim-box-title">Drag and drop (all exercises)</h4>
+                <figure class="sim-box-thumb">
+                  <img
+                    src="/images/hero-server-room-encor.png"
+                    width="1024"
+                    height="535"
+                    alt="ENCOR drag-and-drop sample — OSPF troubleshooting snippets."
+                    decoding="async"
+                    loading="lazy"
+                  />
+                </figure>
+                <h4 class="sim-box-title">Drag-and-drop sample</h4>
                 <p class="study-meta">
-                  Full performance-based bank. <strong>Random</strong> picks a shuffled order;
-                  <strong>Review</strong> loops missed items—launching with the full library.
+                  One performance-style item to preview matching and ordering format.
+                  <a href="/CCNP-ENCOR-Study/ENCOR_Samples/question-365.html">Open drag-and-drop sample</a> when linked locally.
                 </p>
                 <div class="study-actions">
                   <button type="button" class="start-btn is-placeholder" disabled>Random</button>
@@ -951,11 +968,17 @@
                 </div>
               </article>
               <article class="sim-box">
-                <h4 class="sim-box-title">Drag and drop · Cryptography &amp; PKI</h4>
-                <p class="study-meta">
-                  Matching exercises on encryption types, hashing, certificates, and PKI components—coming soon.
-                </p>
-                <div class="study-actions" role="group" aria-label="Cryptography drag-and-drop modes">
+                <h4 class="sim-box-title">Standard D&amp;D bank</h4>
+                <p class="study-meta">Full standard drag-and-drop bank from study config — coming soon on this portal shell.</p>
+                <div class="study-actions">
+                  <button type="button" class="start-btn is-placeholder" disabled>Random</button>
+                  <button type="button" class="start-btn is-placeholder" disabled>Review</button>
+                </div>
+              </article>
+              <article class="sim-box">
+                <h4 class="sim-box-title">JSON D&amp;D bank</h4>
+                <p class="study-meta">JSON-focused drag-and-drop exercises — coming soon on this portal shell.</p>
+                <div class="study-actions">
                   <button type="button" class="start-btn is-placeholder" disabled>Random</button>
                   <button type="button" class="start-btn is-placeholder" disabled>Review</button>
                 </div>
@@ -963,46 +986,69 @@
             </div>
           </section>
 
-          <h3 class="section-heading">Scenario Simulations</h3>
-          <section class="start-box" aria-label="Scenario simulations">
+          <h3 class="section-heading">Lab Simulations</h3>
+          <section class="start-box" aria-label="Lab simulations">
             <p class="study-meta">
-              Interactive scenario exercises for incident response, log analysis, and security operations workflows—no local VMs required.
-              Everything runs in the browser.
+              CLI-style ENCOR labs run in the browser—no GNS3 or IOU required. Follow the required command sequence; abbreviations may not be accepted.
             </p>
-            <p class="placeholder-strip">
-              Scenario simulations are in development. Security+ prep here focuses on exam-style interaction, not CLI device configuration.
-            </p>
-            <div class="sim-grid" aria-label="Scenario simulations">
+            <div class="sim-grid" aria-label="CLI simulation labs">
               <article class="sim-box">
                 <figure class="sim-box-thumb">
-                  <img
-                    src="/images/comptia-training-card-thumbnail.png"
-                    width="1024"
-                    height="682"
-                    alt="CompTIA Security+ scenario simulation preview."
-                    decoding="async"
-                    loading="lazy"
-                  />
+                  <img src="/CCNP-ENCOR-Study/assets/trunk-udld-lacp-lab.png" width="1024" height="610" alt="Rapid PVST+ and LACP lab topology." decoding="async" loading="lazy" />
                 </figure>
-                <h4 class="sim-box-title">Incident response workflow</h4>
-                <p class="study-meta">
-                  Scenario-style exercise for detection, containment, and recovery steps aligned to domain 4.0—coming soon.
-                </p>
-                <button type="button" class="start-btn is-placeholder" disabled>Open simulation</button>
+                <h4 class="sim-box-title">Rapid PVST+ and LACP</h4>
+                <p class="study-meta">SW20-only fixes: Rapid PVST+, trunk to SW30, Port-channel trunk alignment for LACP.</p>
+                <a class="start-btn" href="/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/cli-lab-rapid-pvst-lacp.html">Open simulation</a>
               </article>
               <article class="sim-box">
-                <h4 class="sim-box-title">Log analysis &amp; SIEM</h4>
-                <p class="study-meta">
-                  Interpret alerts and correlate events from sample log output—coming soon.
-                </p>
-                <button type="button" class="start-btn is-placeholder" disabled>Open simulation</button>
+                <figure class="sim-box-thumb">
+                  <img src="/CCNP-ENCOR-Study/assets/vrf-tunnel-topology-v3.png" width="1024" height="610" alt="VRF Configuration Sim lab topology." decoding="async" loading="lazy" />
+                </figure>
+                <h4 class="sim-box-title">VRF Configuration Sim</h4>
+                <p class="study-meta">Extend CORP VRF on R10/R20 over Tunnel0, IPsec profile, and VRF static routes for VLAN 100-101.</p>
+                <a class="start-btn" href="/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/cli-lab-vrf-config-sim.html">Open simulation</a>
               </article>
               <article class="sim-box">
-                <h4 class="sim-box-title">Access control &amp; identity</h4>
-                <p class="study-meta">
-                  Scenario items on MFA, federation, and privilege management aligned to domain 3.0—coming soon.
-                </p>
-                <button type="button" class="start-btn is-placeholder" disabled>Open simulation</button>
+                <figure class="sim-box-thumb">
+                  <img src="/CCNP-ENCOR-Study/assets/trunk-udld-lacp-lab.png" width="1024" height="610" alt="Trunk, UDLD and LACP lab topology." decoding="async" loading="lazy" />
+                </figure>
+                <h4 class="sim-box-title">Trunk, UDLD and LACP</h4>
+                <p class="study-meta">SW10 only: fix SW30 trunk, UDLD aggressive, rebuild Po10 with LACP; PC2 pings; portfast plus long pathcost; save.</p>
+                <a class="start-btn" href="/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/cli-lab-trunk-udld-lacp.html">Open simulation</a>
+              </article>
+              <article class="sim-box">
+                <h4 class="sim-box-title">Access-list and CoPP</h4>
+                <p class="study-meta">R10: extended ACL 150; R20: CoPP policy and control-plane apply; save both.</p>
+                <a class="start-btn" href="/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/cli-lab-acl-copp/cli-lab-acl-copp_v3.html">Open simulation</a>
+              </article>
+              <article class="sim-box">
+                <figure class="sim-box-thumb">
+                  <img src="/CCNP-ENCOR-Study/assets/vrf-tunnel-topology-v3.png" width="1024" height="610" alt="VRF Configuration Sim 2 lab topology." decoding="async" loading="lazy" />
+                </figure>
+                <h4 class="sim-box-title">VRF Configuration Sim 2</h4>
+                <p class="study-meta">R22 only: vrf definition Finance, Tunnel10 to R11, e0/1 in VRF, statics for VLAN 111/222; save.</p>
+                <a class="start-btn" href="/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/lab-sims-v2/cli-lab-vrf-config-sim2.html">Open simulation</a>
+              </article>
+              <article class="sim-box">
+                <figure class="sim-box-thumb">
+                  <img src="/CCNP-ENCOR-Study/assets/ospf-summ-house-lab-v2.png" width="1024" height="610" alt="OSPF summarization 2 (R20) lab topology." decoding="async" loading="lazy" />
+                </figure>
+                <h4 class="sim-box-title">OSPF summarization 2 (R20)</h4>
+                <p class="study-meta">R20 only: OSPF 20, Loopback0 router-id, interface-level OSPF; area 40 /18 range; save.</p>
+                <a class="start-btn" href="/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/cli-lab-ospf-summ-r20.html">Open simulation</a>
+              </article>
+              <article class="sim-box">
+                <h4 class="sim-box-title">eBGP Neighbor 2</h4>
+                <p class="study-meta">R1 only (AS 100): address-family IPv4, neighbors to AS 200/300, advertise three loopbacks with exact masks; save.</p>
+                <a class="start-btn" href="/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/cli-lab-ebgp-neighbor-2.html">Open simulation</a>
+              </article>
+              <article class="sim-box">
+                <figure class="sim-box-thumb">
+                  <img src="/CCNP-ENCOR-Study/assets/netflow-span-lab.png" width="1024" height="610" alt="NetFlow, SPAN and IP SLA 2 lab topology." decoding="async" loading="lazy" />
+                </figure>
+                <h4 class="sim-box-title">NetFlow, SPAN and IP SLA 2</h4>
+                <p class="study-meta">R1 flow monitor on e0/0; Sw1 SPAN VLAN 12 to e1/3; IP SLA 1; verify monitor; save.</p>
+                <a class="start-btn" href="/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/lab-sims-v2/cli-lab-netflow-span-2.html">Open simulation</a>
               </article>
             </div>
           </section>
@@ -1010,34 +1056,25 @@
           <h3 class="section-heading">Test Simulation</h3>
           <section class="start-box" aria-label="Timed test simulation">
             <p style="margin: 0 0 10px; color: #e6edf3; line-height: 1.4; font-size: 1.05rem; font-weight: 800;">
-              Timed practice test — 90 minutes · multiple-choice and performance-based · one clock
+              Timed practice test — 120 minutes · multiple-choice, drag-and-drop, and CLI labs · one clock
             </p>
             <p style="margin: 0 0 10px; color: #b8c3d6; line-height: 1.5;">
-              Single mixed session like test day: multiple-choice and performance-based items in random order. Up to
-              <strong>90 questions</strong> in <strong>90 minutes</strong> on the live SY0-701 exam.
+              Single mixed session like test day: <strong>50</strong> multiple-choice, <strong>4</strong> drag-and-drop, and
+              <strong>2</strong> CLI labs in randomized order under one timer.
             </p>
             <ul style="margin: 0 0 12px 1.2rem; color: #b8c3d6; line-height: 1.55; padding: 0;">
-              <li>
-                <strong>Mixed session each run</strong> — randomized multiple-choice from the bank plus performance-based drag-and-drop items, all shuffled into one
-                continuous order under the same timer.
-              </li>
-              <li>
-                <strong>Adaptive learning (optional)</strong> — on the timed-test start screen you can enable adaptive multiple choice so weaker blueprint domains may get extra MCQs
-                during the same run (same clock).
-              </li>
-              <li><strong>Every item type in play</strong> — multiple-choice and performance-based tasks.</li>
+              <li><strong>Mixed session each run</strong> — randomized MCQs, drag-and-drop items, and CLI labs shuffled into one continuous order.</li>
               <li><strong>Timer-driven</strong> — the session runs against the clock from start to submit.</li>
-              <li>
-                <strong>Results &amp; study scorecard</strong> — when you finish or time expires, your summary includes a <strong>scorecard</strong> that flags weaker SY0-701 domains
-                and lists objectives worth revisiting.
-              </li>
+              <li><strong>Results &amp; scorecard</strong> — summary flags weaker ENCOR blueprint domains when you finish or time expires.</li>
               <li><strong>Pass or fail at the end.</strong></li>
             </ul>
             <div id="portal-sim-locked-wrap" class="portal-sim-locked-wrap">
               <p style="margin: 0 0 14px; font-size: 0.94rem; line-height: 1.5; color: #b8c3d6;">
-                <strong>Coming soon.</strong> Full Security+ library access and timed simulation checkout will be announced when the track launches on Be Certified Today.
+                <strong>Staging.</strong> Timed simulation runner lives at
+                <code>/CCNP-ENCOR-Study/begin-test-simulation.html</code> — enable from this portal when cutover wires local question paths.
+                Production traffic still uses the external ENCOR app until then.
               </p>
-              <button type="button" class="cta-main cta-main--block is-placeholder" disabled aria-disabled="true">Begin test — coming soon</button>
+              <button type="button" class="cta-main cta-main--block is-placeholder" disabled aria-disabled="true">Begin test — cutover pending</button>
             </div>
           </section>
         </div>
@@ -1052,17 +1089,17 @@
       </p>
       <p>
         <strong>Be Certified Today is independent.</strong> It is not sponsored by, endorsed by,
-        accredited by, or affiliated with CompTIA, Inc. CompTIA, Security+, and related certification names
-        are trademarks of CompTIA and/or its affiliates; use here is for descriptive purposes only.
+        accredited by, or affiliated with Cisco Systems, Inc. Cisco and Cisco certification names
+        are trademarks of Cisco and/or its affiliates; use here is for descriptive purposes only.
       </p>
     </aside>
     <footer>
       © Be Certified Today<a
         class="footer-portal-at"
-        href="/COMP_TIA_SEC+/SEC+_Training_Portal.html"
-        aria-label="CompTIA Security+ Training Portal"
+        href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html"
+        aria-label="CCNP ENCOR Training Portal"
         >@</a>
-      · Security+ training portal ·
+      · ENCOR training portal ·
       <a
         class="footer-mailto"
         href="mailto:becertified2day@gmail.com?subject=Question%20for%20Be%20Certified%20Today"

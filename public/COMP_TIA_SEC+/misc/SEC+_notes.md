@@ -19,9 +19,10 @@ public/COMP_TIA_SEC+/
 
 | URL | File |
 |-----|------|
-| `/secplus-home.html` | Study hub (marketing + sample links) |
+| `/secplus-home.html` | Compact study hub (sample links) |
+| `/comptia-sec+-home.html` | Full CCNA-style landing page (staging, `noindex`) |
 | `/secplus-sample` | *(rewrite removed — not public yet)* |
-| `/COMP_TIA_SEC+/SEC+_Training_Portal.html` | Portal shell |
+| `/COMP_TIA_SEC+/SEC+_Training_Portal.html` | Full CCNA-style training portal (staging) |
 
 Home page path card: `/` → **Coming Soon in June** (disabled; no public hub link yet).
 
@@ -35,11 +36,17 @@ Home page path card: `/` → **Coming Soon in June** (disabled; no public hub li
 
 ## SY0-701 exam domains (reference)
 
-1. General Security Concepts
-2. Threats, Vulnerabilities, and Mitigations
-3. Security Architecture
-4. Security Operations
-5. Security Program Management and Oversight
+Weights from CompTIA Security+ SY0-701 Exam Objectives v5.0 (`misc/CompTIA-Security-Plus-SY0-701-Exam-Objectives.pdf`):
+
+| Domain | Weight |
+|--------|--------|
+| 1.0 General Security Concepts | 12% |
+| 2.0 Threats, Vulnerabilities, and Mitigations | 22% |
+| 3.0 Security Architecture | 18% |
+| 4.0 Security Operations | 28% |
+| 5.0 Security Program Management and Oversight | 20% |
+
+Exam format: up to **90 questions** in **90 minutes** (multiple-choice + performance-based).
 
 Use these when tagging questions in a future `data/secplus-question-topic-map.json` (mirror CCNA pattern under `CCNA-Study/data/`).
 
