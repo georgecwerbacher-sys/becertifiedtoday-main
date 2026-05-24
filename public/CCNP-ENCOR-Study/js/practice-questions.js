@@ -285,6 +285,9 @@
       "#ccnpObjectiveSection span{display:block;}" +
       "body.ccnp-practice-ui main.card label.choice{cursor:pointer;-webkit-tap-highlight-color:rgba(77,137,255,.22);touch-action:manipulation;user-select:none;-webkit-user-select:none;}" +
       "body.ccnp-practice-ui main.card label.choice input[type=checkbox],body.ccnp-practice-ui main.card label.choice input[type=radio]{width:1.2em;height:1.2em;min-width:1.2em;min-height:1.2em;margin-right:12px;vertical-align:middle;accent-color:#000;}" +
+      "body.ccnp-practice-ui main.card .next-wrap{margin-top:18px;}" +
+      "body.ccnp-practice-ui main.card .next-link{display:inline-block;text-decoration:none;color:#e6edf3;background:#254b8a;border:1px solid #3d6dbb;border-radius:10px;padding:10px 16px;font-weight:700;}" +
+      "body.ccnp-practice-ui main.card .next-link:hover{filter:brightness(1.08);}" +
       "body.ccnp-sample-dnd-ui{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))!important;}" +
       ".ccnp-sample-dnd-actions{position:fixed;left:0;right:0;bottom:0;z-index:10000;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:rgba(11,16,32,.94);border-top:1px solid #2d3b5a;backdrop-filter:blur(10px);}" +
       ".ccnp-sample-dnd-actions button{text-decoration:none;background:#254b8a;border:1px solid #3d6dbb;color:#e6edf3;border-radius:10px;padding:10px 18px;font-weight:700;font-size:.95rem;cursor:pointer;font-family:inherit;min-width:5.5rem;}" +
@@ -756,6 +759,30 @@
       tb.setAttribute("href", href);
       tb.textContent = label;
     }
+    syncSampleMcqBottomNext(href, label);
+  }
+
+  function syncSampleMcqBottomNext(href, label) {
+    if (!isSampleMode()) return;
+    var card = document.querySelector("main.card");
+    if (!card) return;
+
+    var wrap = card.querySelector("#nextWrap, .next-wrap");
+    if (!wrap) {
+      wrap = document.createElement("div");
+      wrap.id = "nextWrap";
+      wrap.className = "next-wrap";
+      wrap.style.display = "none";
+      var link = document.createElement("a");
+      link.className = "next-link";
+      wrap.appendChild(link);
+      card.appendChild(wrap);
+    }
+
+    var nextLink = wrap.querySelector("a.next-link, a");
+    if (!nextLink) return;
+    nextLink.setAttribute("href", href);
+    nextLink.textContent = label || "Next";
   }
 
   function loadAnswers(cb) {
@@ -868,7 +895,7 @@
 
     card
       .querySelectorAll(
-        ".actions button, .actions #nextWrap, .actions .next-wrap, .actions a.next-link"
+        ".actions button"
       )
       .forEach(function (el) {
         el.style.display = "none";
@@ -939,7 +966,9 @@
     bindPointerFriendlyChoices(card);
     enableTouchDragDrop(card);
     enableAutoCheckForSingleChoice(card);
-    stripBottomNextFromCard(card);
+    if (!isSampleMode()) {
+      stripBottomNextFromCard(card);
+    }
     stripDuplicateSimNavNext();
     if (isTestSimulationMode()) return;
     renderObjectiveSection(card, qid);
