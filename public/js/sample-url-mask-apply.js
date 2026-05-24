@@ -321,3 +321,25 @@
   head.appendChild(s);
 })();
 
+/** ENCOR guest samples: apply Home tab after URL mask (labs / ENCOR_Samples pages). */
+(function () {
+  "use strict";
+
+  function boot() {
+    if (typeof window.applyEncorSampleGuestChrome === "function") {
+      window.applyEncorSampleGuestChrome();
+    }
+  }
+
+  var head = document.head || document.documentElement;
+  if (head.querySelector('script[src*="encor-sample-guest.js"]')) {
+    boot();
+    return;
+  }
+
+  var s = document.createElement("script");
+  s.src = "/js/encor-sample-guest.js";
+  s.onload = boot;
+  head.appendChild(s);
+})();
+

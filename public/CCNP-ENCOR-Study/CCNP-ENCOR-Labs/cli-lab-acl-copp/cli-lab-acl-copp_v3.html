@@ -738,22 +738,6 @@ control-plane
   </nav>
 
   <script src="/js/sample-url-mask-apply.js"></script>
-  <script>
-    (function () {
-      var params = new URLSearchParams(location.search);
-      if (params.get("sample") !== "1") return;
-      var homeHref = "/ccnp-home.html";
-      var homeBtn = document.querySelector(".sim-nav-home");
-      if (homeBtn) {
-        homeBtn.setAttribute("href", homeHref);
-        homeBtn.textContent = "Home";
-      }
-      document.querySelectorAll(".sim-nav-next, .sim-nav-back").forEach(function (a) {
-        a.remove();
-      });
-    })();
-  </script>
-
   <script src="/js/cli-ios-mode.js"></script>
   <script>
     function normalize(s) {

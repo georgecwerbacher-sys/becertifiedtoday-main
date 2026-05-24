@@ -942,21 +942,6 @@ SW20# copy running-config startup-config</pre>
   </nav>
 
   <script>
-    (function () {
-      var params = new URLSearchParams(location.search);
-      if (params.get("sample") !== "1") return;
-      var homeHref = "/ccnp-home.html";
-      var homeBtn = document.querySelector(".sim-nav-home");
-      if (!homeBtn) return;
-      homeBtn.setAttribute("href", homeHref);
-      homeBtn.addEventListener("click", function (e) {
-        e.preventDefault();
-        location.href = homeHref;
-      });
-    })();
-  </script>
-
-  <script>
     function normalize(s) {
       return s
         .trim()
