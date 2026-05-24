@@ -14,11 +14,36 @@
   var QUEUE_EXIT_HREF_KEY = "ccnpQueueExitHref";
   /** Member hub on the live Encor deployment (toolbar Home / launcher). */
   var CCNP_PORTAL_HOME = "https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html";
+  var LOCAL_ENCOR_PORTAL = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html";
+
+  function localEncorQuestionsTree() {
+    return /\/ccnp-encor-study\/encor_questions\//i.test(location.pathname || "");
+  }
+
+  function questionHref(id) {
+    if (localEncorQuestionsTree()) {
+      return "/CCNP-ENCOR-Study/ENCOR_Questions/question-" + id + ".html";
+    }
+    return "/question-" + id + ".html";
+  }
+
+  function activePortalHome() {
+    var host = (location.hostname || "").toLowerCase();
+    if (
+      host === "becertifiedtoday.com" ||
+      host === "www.becertifiedtoday.com" ||
+      localEncorQuestionsTree() ||
+      /\/ccnp-encor-study\//i.test(location.pathname || "")
+    ) {
+      return LOCAL_ENCOR_PORTAL;
+    }
+    return CCNP_PORTAL_HOME;
+  }
 
   function isPortalLauncherHref(href) {
     if (!href || typeof href !== "string") return false;
     var t = href.trim();
-    if (t === "/CCNP_Encor.html" || t === CCNP_PORTAL_HOME) return true;
+    if (t === "/CCNP_Encor.html" || t === CCNP_PORTAL_HOME || t === LOCAL_ENCOR_PORTAL) return true;
     return t.indexOf(CCNP_PORTAL_HOME + "?") === 0;
   }
 
@@ -403,18 +428,18 @@
       cb(null, window.__ccnpStudyConfig);
       return;
     }
-    fetch(urlFromPage("js/study-config.json"), { cache: "no-store" })
-      .then(function (res) {
-        if (!res.ok) throw new Error("bad");
-        return res.json();
-      })
-      .then(function (data) {
-        window.__ccnpStudyConfig = data;
-        cb(null, data);
-      })
-      .catch(function () {
-        cb(new Error("fetch"), null);
-      });
+    fetchJsonFromCandidates(
+      [
+        "/CCNP-ENCOR-Study/js/study-config.json",
+        urlFromPage("js/study-config.json"),
+        "../js/study-config.json",
+        "/js/study-config.json",
+      ],
+      function (err, data) {
+        if (!err) window.__ccnpStudyConfig = data;
+        cb(err, data);
+      }
+    );
   }
 
   function stripBottomNextFromCard(card) {
@@ -473,13 +498,13 @@
       var rq = parseReviewQueue();
       if (rq && rq.length) {
         if (rq[0] !== qid) {
-          return { href: "/question-" + rq[0] + ".html", label: "Next" };
+          return { href: questionHref(rq[0]), label: "Next" };
         }
         if (rq.length >= 2) {
-          return { href: "/question-" + rq[1] + ".html", label: "Next" };
+          return { href: questionHref(rq[1]), label: "Next" };
         }
         return {
-          href: "/question-" + qid + ".html",
+          href: questionHref(qid),
           label: "Next",
         };
       }
@@ -491,14 +516,14 @@
       if (idx >= 0) {
         var nid = queue[idx + 1];
         if (nid != null) {
-          return { href: "/question-" + nid + ".html", label: "Next" };
+          return { href: questionHref(nid), label: "Next" };
         }
         var exitHref = readAndClearQueueExitHref();
         if (exitHref) {
           return { href: exitHref, label: "Back to home" };
         }
         return {
-          href: CCNP_PORTAL_HOME,
+          href: activePortalHome(),
           label: "Back to launcher",
         };
       }
@@ -510,10 +535,10 @@
       if (li >= 0) {
         var lid = linearIds[li + 1];
         if (lid != null) {
-          return { href: "/question-" + lid + ".html", label: "Next" };
+          return { href: questionHref(lid), label: "Next" };
         }
         return {
-          href: CCNP_PORTAL_HOME,
+          href: activePortalHome(),
           label: "Back to launcher",
         };
       }
@@ -523,12 +548,12 @@
     var gi = all.indexOf(qid);
     if (gi >= 0 && gi < all.length - 1) {
       return {
-        href: "/question-" + all[gi + 1] + ".html",
+        href: questionHref(all[gi + 1]),
         label: "Next",
       };
     }
     return {
-      href: CCNP_PORTAL_HOME,
+      href: activePortalHome(),
       label: "Back to launcher",
     };
   }
@@ -536,7 +561,7 @@
   function resolveBack(qid, cfg) {
     if (isReviewMode()) {
       return {
-        href: CCNP_PORTAL_HOME,
+        href: activePortalHome(),
         label: "Back",
       };
     }
@@ -545,10 +570,10 @@
     if (queue) {
       var idx = queue.indexOf(qid);
       if (idx > 0) {
-        return { href: "/question-" + queue[idx - 1] + ".html", label: "Back" };
+        return { href: questionHref(queue[idx - 1]), label: "Back" };
       }
       return {
-        href: CCNP_PORTAL_HOME,
+        href: activePortalHome(),
         label: "Back",
       };
     }
@@ -557,10 +582,10 @@
     if (linearIds) {
       var li = linearIds.indexOf(qid);
       if (li > 0) {
-        return { href: "/question-" + linearIds[li - 1] + ".html", label: "Back" };
+        return { href: questionHref(linearIds[li - 1]), label: "Back" };
       }
       return {
-        href: CCNP_PORTAL_HOME,
+        href: activePortalHome(),
         label: "Back",
       };
     }
@@ -569,12 +594,12 @@
     var gi = all.indexOf(qid);
     if (gi > 0) {
       return {
-        href: "/question-" + all[gi - 1] + ".html",
+        href: questionHref(all[gi - 1]),
         label: "Back",
       };
     }
     return {
-      href: CCNP_PORTAL_HOME,
+      href: activePortalHome(),
       label: "Back",
     };
   }
@@ -642,9 +667,10 @@
     }
     fetchJsonFromCandidates(
       [
+        "/CCNP-ENCOR-Study/js/question-subjects.json",
         urlFromPage("js/question-subjects.json"),
-        "/js/question-subjects.json",
         "../js/question-subjects.json",
+        "/js/question-subjects.json",
       ],
       function (err, data) {
         if (!err) window.__ccnpQuestionSubjects = data;
@@ -654,7 +680,7 @@
   }
 
   function renderObjectiveSection(card, qid) {
-    if (!card || document.getElementById("ccnpObjectiveSection")) return;
+    if (!card || card.querySelector(".ccna-objective-tag, #ccnpObjectiveSection")) return;
     loadQuestionSubjects(function (err, data) {
       if (err || !data || !data.questions) return;
       var subject = data.questions[String(qid)];
@@ -665,17 +691,30 @@
           : subject.label || (subject.section && subject.name ? subject.section + " (" + subject.name + ")" : "");
       if (!label) return;
 
-      var box = document.createElement("aside");
+      var box = document.createElement("div");
       box.id = "ccnpObjectiveSection";
+      box.className = "ccna-objective-tag";
       box.setAttribute("aria-label", "ENCOR objective section");
+      box.style.marginTop = "12px";
+      box.style.padding = "10px 12px";
+      box.style.borderRadius = "10px";
+      box.style.border = "1px solid #2d3b5a";
+      box.style.background = "#0f1729";
+      box.style.color = "#b8c3d6";
+      box.style.fontSize = "0.86rem";
+      box.style.lineHeight = "1.45";
 
-      var title = document.createElement("strong");
+      var title = document.createElement("div");
+      title.style.fontWeight = "700";
+      title.style.color = "#e6edf3";
+      title.style.marginBottom = "4px";
       title.textContent = "ENCOR objective section";
-      var value = document.createElement("span");
-      value.textContent = "\u2022 " + label;
+
+      var row = document.createElement("div");
+      row.textContent = "\u2022 " + label;
 
       box.appendChild(title);
-      box.appendChild(value);
+      box.appendChild(row);
       card.appendChild(box);
     });
   }
@@ -689,7 +728,7 @@
       if (!rq0 || !rq0.length) {
         clearReviewState();
       } else if (rq0[0] !== qid) {
-        location.replace("/question-" + rq0[0] + ".html");
+        location.replace(questionHref(rq0[0]));
         return;
       }
     }
@@ -724,11 +763,11 @@
 
     var back = document.createElement("a");
     back.id = "ccnpToolbarBack";
-    back.href = CCNP_PORTAL_HOME;
+    back.href = activePortalHome();
     back.textContent = "Back";
 
     var home = document.createElement("a");
-    home.href = CCNP_PORTAL_HOME;
+    home.href = activePortalHome();
     home.textContent = "Home";
 
     var btn = document.createElement("button");
@@ -739,7 +778,7 @@
 
     var nextA = document.createElement("a");
     nextA.id = "ccnpToolbarNext";
-    nextA.href = CCNP_PORTAL_HOME;
+    nextA.href = activePortalHome();
     nextA.textContent = "Next";
 
     var reveal = document.createElement("div");
@@ -802,7 +841,7 @@
     home.addEventListener("click", function (e) {
       if (isSampleMode()) {
         e.preventDefault();
-        location.href = CCNP_PORTAL_HOME;
+        location.href = activePortalHome();
         return;
       }
       if (isReviewMode()) clearReviewState();
@@ -815,7 +854,7 @@
       e.preventDefault();
       var cur = rq[0];
       if (cur !== qid) {
-        location.href = "/question-" + rq[0] + ".html";
+        location.href = questionHref(rq[0]);
         return;
       }
       var out = detectAnswerOutcome();
@@ -830,10 +869,10 @@
       } catch (errNav) {}
       if (!rq.length) {
         clearReviewState();
-        location.href = CCNP_PORTAL_HOME + "?review=complete";
+        location.href = activePortalHome() + "?review=complete";
         return;
       }
-      location.href = "/question-" + rq[0] + ".html";
+      location.href = questionHref(rq[0]);
     });
 
     loadStudyConfig(function (err, cfg) {

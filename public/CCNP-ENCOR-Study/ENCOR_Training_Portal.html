@@ -748,7 +748,8 @@
                 </p>
                 <h3 class="blueprint-h3">ENCOR study sections</h3>
                 <p class="blueprint-note">
-                  Domain weights below come from Cisco ENCOR 350-401 v1.2 exam guidance—use them to budget study hours, not as a
+                  Domain weights and section numbers below come from the Cisco 350-401 ENCOR v1.2 exam topics
+                  (<a href="/CCNP-ENCOR-Study/misc/350-401-ENCORE-v1.2.pdf">PDF</a>)—use them to budget study hours, not as a
                   guarantee of item counts on your specific attempt. The live exam is <strong>120 minutes</strong> with a mix of
                   multiple-choice and simulation-style items.
                 </p>
@@ -769,30 +770,30 @@
                       <tr>
                         <th scope="row">1.0 Architecture</th>
                         <td>15%</td>
-                        <td>Enterprise design, high availability, SD-WAN, SD-Access, QoS, and design principles</td>
+                        <td>Enterprise design, Catalyst SD-WAN, SD-Access, QoS, and high availability</td>
                       </tr>
                       <tr>
                         <th scope="row">2.0 Virtualization</th>
                         <td>10%</td>
-                        <td>Hypervisors, VRF, GRE, IPsec, LISP, VXLAN, and virtual switching concepts</td>
+                        <td>Hypervisors, VMs, VRF, GRE, IPsec, LISP, and VXLAN</td>
                       </tr>
                       <tr>
                         <th scope="row">3.0 Infrastructure</th>
                         <td>30%</td>
-                        <td>Layer 2/3, STP/MST, EtherChannel, EIGRP/OSPF, eBGP, FHRP, NAT, multicast, and routing troubleshooting</td>
+                        <td>Layer 2 trunking and STP, EtherChannel, EIGRP/OSPF, eBGP, NAT, FHRP, and multicast</td>
                       </tr>
                       <tr>
                         <th scope="row">4.0 Network Assurance</th>
                         <td>10%</td>
-                        <td>SNMP, syslog, NetFlow, SPAN/RSPAN, IP SLA, Catalyst Center, NETCONF, and RESTCONF</td>
+                        <td>SNMP, syslog, NetFlow, SPAN/RSPAN, IPSLA, Catalyst Center, NETCONF, and RESTCONF</td>
                       </tr>
                       <tr>
                         <th scope="row">5.0 Security</th>
                         <td>20%</td>
-                        <td>Device access, AAA, ACLs, CoPP, REST API security, TrustSec, MACsec, and threat defense</td>
+                        <td>Device access, AAA, ACLs, CoPP, REST API security, and security design</td>
                       </tr>
                       <tr>
-                        <th scope="row">6.0 Automation and AI</th>
+                        <th scope="row">6.0 Automation and Artificial Intelligence</th>
                         <td>15%</td>
                         <td>Python, JSON, YANG, Catalyst Center and SD-WAN APIs, EEM, and orchestration tools</td>
                       </tr>
@@ -811,11 +812,16 @@
                   <li>Security — ACLs, CoPP, AAA, and device hardening</li>
                   <li>Network assurance — monitoring, telemetry, and troubleshooting tools</li>
                   <li>Virtualization — VRF, overlays, and tunneling</li>
-                  <li>Automation — APIs, Python, and programmability</li>
+                  <li>Automation and artificial intelligence — APIs, Python, JSON, and programmability</li>
                 </ol>
                 <p class="purchase-lead">
                   Under time pressure, leaning hardest into <strong>Infrastructure</strong> and <strong>Security</strong> before you
                   polish lighter domains mirrors where Cisco weights the ENCOR blueprint.
+                </p>
+                <p class="blueprint-note">
+                  Full objective list: Implementing Cisco Enterprise Network Core Technologies v1.2 (350-401)
+                  (<a href="/CCNP-ENCOR-Study/misc/350-401-ENCORE-v1.2.pdf">exam topics PDF</a>).
+                  Structured copy for tooling: <code>data/encor-exam-objectives-350-401-v1.2.json</code>.
                 </p>
               </div>
             </div>
@@ -836,28 +842,26 @@
           <h3 class="section-heading">Practice Questions</h3>
           <section class="start-box" aria-label="Question studies">
             <p class="placeholder-strip">
-              <strong>Staging library.</strong> A five-question sample is live below. Full question banks (grouped in studies of
-              <strong>50</strong> from <code>js/study-config.json</code>) and domain filters will wire here when ENCOR cutover links
-              launchers under this folder.
+              <strong>Staging library.</strong> Every practice bank pulls multiple-choice questions from
+              <code>/CCNP-ENCOR-Study/ENCOR_Questions/</code>, grouped in sets of up to
+              <strong>100</strong> by hub position (<strong>1–100</strong>, <strong>101–200</strong>, and so on).
             </p>
             <p class="study-meta">
-              Practice questions are grouped in studies from the ENCOR hub config. Each combined section supports
-              <strong>Random</strong> and <strong>Review</strong> sessions once begin-pages point at
-              <code>/CCNP-ENCOR-Study/ENCOR_Questions/</code>.
+              Five banks with up to <strong>100</strong> questions each. Each bank has its own
+              <strong>Random</strong> and <strong>Review</strong> session.
             </p>
             <div class="encor-practice-subject-filter" id="encor-practice-subject-filter">
               <p class="encor-practice-subject-title">Practice by subject</p>
               <p class="encor-practice-subject-lead">
-                Matches the <a href="#encor-domains">ENCOR 350-401 domain weights</a> (Cisco blueprint section numbers). Leave on
+                Matches the <a href="#encor-domains">ENCOR 350-401 domain weights</a> and section numbers from the
+                <a href="/CCNP-ENCOR-Study/misc/350-401-ENCORE-v1.2.pdf">v1.2 exam topics PDF</a>. Leave on
                 <strong>All subjects</strong> for every question in the bank you start, or pick one domain before you click
-                <strong>Random</strong> or <strong>Review</strong> (available when the topic map filter goes live).
+                <strong>Random</strong> or <strong>Review</strong>.
               </p>
               <label for="encor-practice-domain-select">Limit session to</label>
               <select
                 id="encor-practice-domain-select"
                 class="encor-practice-domain-select"
-                aria-describedby="encor-practice-domain-hint"
-                disabled
               >
                 <option value="">All subjects (entire bank)</option>
                 <option value="1">1.0 — Architecture</option>
@@ -865,16 +869,13 @@
                 <option value="3">3.0 — Infrastructure</option>
                 <option value="4">4.0 — Network Assurance</option>
                 <option value="5">5.0 — Security</option>
-                <option value="6">6.0 — Automation and AI</option>
+                <option value="6">6.0 — Automation and Artificial Intelligence</option>
               </select>
-              <p id="encor-practice-domain-hint" class="encor-practice-subject-hint">
-                Domain filter uses <code>js/question-subjects.json</code> — enables when portal launchers are wired at cutover.
-              </p>
               <fieldset class="encor-practice-session-style" aria-labelledby="encor-practice-session-style-label">
                 <legend id="encor-practice-session-style-label">Session behavior</legend>
                 <div class="encor-practice-radio-row">
                   <label>
-                    <input type="radio" name="encor-practice-adaptive" value="" checked disabled />
+                    <input type="radio" name="encor-practice-adaptive" value="" checked />
                     <span>
                       Standard
                       <span class="encor-practice-radio-desc"
@@ -885,7 +886,7 @@
                 </div>
                 <div class="encor-practice-radio-row">
                   <label>
-                    <input type="radio" name="encor-practice-adaptive" value="1" disabled />
+                    <input type="radio" name="encor-practice-adaptive" value="1" />
                     <span>
                       Adaptive learning
                       <span class="encor-practice-radio-desc"
@@ -899,43 +900,53 @@
                 </p>
               </fieldset>
             </div>
-            <div class="sim-grid" id="encor-practice-banks-grid" aria-label="Practice question banks">
-              <article class="sim-box">
-                <figure class="sim-box-thumb">
-                  <img
-                    src="/images/encor-practice-formats-technician.png"
-                    width="1024"
-                    height="556"
-                    alt="CCNP ENCOR multiple-choice sample — OSPF designated router question."
-                    decoding="async"
-                    loading="lazy"
-                  />
-                </figure>
-                <h4 class="sim-box-title">Sample questions (5 items)</h4>
-                <p class="study-meta">
-                  Interactive walkthrough of exam-style ENCOR multiple-choice items with instant feedback.
-                  <strong>Live now</strong> on this staging tree.
-                </p>
-                <a class="start-btn" href="/CCNP-ENCOR-Study/ENCOR_Samples/sample-question-1.html">Open sample</a>
+            <p id="encor-practice-banks-summary" class="study-meta encor-practice-banks-summary" hidden></p>
+            <div class="sim-grid" id="encor-practice-banks-grid" aria-label="Practice question banks: 5 banks of up to 100 questions each">
+              <article class="sim-box" data-encor-bank-index="1" aria-labelledby="encor-bank-title-1">
+                <h4 class="sim-box-title" id="encor-bank-title-1">Bank 1 · questions 1–100</h4>
+                <p class="study-meta" data-encor-bank-meta="1">100 questions · use Random or Review for this bank only.</p>
+                <div class="study-actions" role="group" aria-label="Practice modes for bank 1">
+                  <button type="button" class="start-btn" data-encor-mode="random" data-encor-bank="1">Random</button>
+                  <button type="button" class="start-btn" data-encor-mode="review" data-encor-bank="1">Review</button>
+                </div>
               </article>
-              <article class="sim-box">
-                <h4 class="sim-box-title">Question sections 1–5</h4>
-                <p class="study-meta">
-                  Combined study sections from the ENCOR question bank (~400+ items). <strong>Random</strong> and
-                  <strong>Review</strong> — wiring at cutover when begin-pages use local paths.
-                </p>
-                <div class="study-actions">
-                  <button type="button" class="start-btn is-placeholder" disabled>Random</button>
-                  <button type="button" class="start-btn is-placeholder" disabled>Review</button>
+              <article class="sim-box" data-encor-bank-index="2" aria-labelledby="encor-bank-title-2">
+                <h4 class="sim-box-title" id="encor-bank-title-2">Bank 2 · questions 101–200</h4>
+                <p class="study-meta" data-encor-bank-meta="2">100 questions · use Random or Review for this bank only.</p>
+                <div class="study-actions" role="group" aria-label="Practice modes for bank 2">
+                  <button type="button" class="start-btn" data-encor-mode="random" data-encor-bank="2">Random</button>
+                  <button type="button" class="start-btn" data-encor-mode="review" data-encor-bank="2">Review</button>
+                </div>
+              </article>
+              <article class="sim-box" data-encor-bank-index="3" aria-labelledby="encor-bank-title-3">
+                <h4 class="sim-box-title" id="encor-bank-title-3">Bank 3 · questions 201–300</h4>
+                <p class="study-meta" data-encor-bank-meta="3">100 questions · use Random or Review for this bank only.</p>
+                <div class="study-actions" role="group" aria-label="Practice modes for bank 3">
+                  <button type="button" class="start-btn" data-encor-mode="random" data-encor-bank="3">Random</button>
+                  <button type="button" class="start-btn" data-encor-mode="review" data-encor-bank="3">Review</button>
+                </div>
+              </article>
+              <article class="sim-box encor-practice-bank--remainder" data-encor-bank-index="4" aria-labelledby="encor-bank-title-4">
+                <h4 class="sim-box-title" id="encor-bank-title-4">Bank 4 · questions 301–378</h4>
+                <p class="study-meta" data-encor-bank-meta="4">78 questions · use Random or Review for this bank only.</p>
+                <div class="study-actions" role="group" aria-label="Practice modes for bank 4">
+                  <button type="button" class="start-btn" data-encor-mode="random" data-encor-bank="4">Random</button>
+                  <button type="button" class="start-btn" data-encor-mode="review" data-encor-bank="4">Review</button>
+                </div>
+              </article>
+              <article class="sim-box" data-encor-bank-index="5" aria-labelledby="encor-bank-title-5">
+                <h4 class="sim-box-title" id="encor-bank-title-5">Bank 5 · questions 401–500</h4>
+                <p class="study-meta" data-encor-bank-meta="5">Reserved for questions 401–500 when the hub list grows.</p>
+                <div class="study-actions" role="group" aria-label="Practice modes for bank 5">
+                  <button type="button" class="start-btn is-placeholder" data-encor-mode="random" data-encor-bank="5" disabled>Random</button>
+                  <button type="button" class="start-btn is-placeholder" data-encor-mode="review" data-encor-bank="5" disabled>Review</button>
                 </div>
               </article>
             </div>
-            <p id="encor-study-load-msg" class="study-meta" hidden aria-live="polite">Loading practice sections…</p>
             <p id="encor-study-load-error" class="study-meta" role="alert" hidden></p>
             <noscript>
               <p class="study-meta">
-                Sample questions require JavaScript. Open
-                <a href="/CCNP-ENCOR-Study/ENCOR_Samples/sample-question-1.html">sample question 1</a> directly.
+                Practice banks require JavaScript. Enable scripts to start Random or Review sessions from the portal.
               </p>
             </noscript>
           </section>
@@ -946,27 +957,6 @@
               Standard and JSON drag-and-drop sets from <code>js/study-config.json</code> — launchers wire at cutover (same pattern as the live ENCOR app).
             </p>
             <div class="sim-grid" id="encor-drag-drop-grid" aria-label="Drag-and-drop groups">
-              <article class="sim-box">
-                <figure class="sim-box-thumb">
-                  <img
-                    src="/images/hero-server-room-encor.png"
-                    width="1024"
-                    height="535"
-                    alt="ENCOR drag-and-drop sample — OSPF troubleshooting snippets."
-                    decoding="async"
-                    loading="lazy"
-                  />
-                </figure>
-                <h4 class="sim-box-title">Drag-and-drop sample</h4>
-                <p class="study-meta">
-                  One performance-style item to preview matching and ordering format.
-                  <a href="/CCNP-ENCOR-Study/ENCOR_Samples/question-365.html">Open drag-and-drop sample</a> when linked locally.
-                </p>
-                <div class="study-actions">
-                  <button type="button" class="start-btn is-placeholder" disabled>Random</button>
-                  <button type="button" class="start-btn is-placeholder" disabled>Review</button>
-                </div>
-              </article>
               <article class="sim-box">
                 <h4 class="sim-box-title">Standard D&amp;D bank</h4>
                 <p class="study-meta">Full standard drag-and-drop bank from study config — coming soon on this portal shell.</p>
@@ -1107,5 +1097,6 @@
         >Any questions?</a>
     </footer>
   </div>
+  <script src="/CCNP-ENCOR-Study/js/encor-practice-hub.js" defer></script>
 </body>
 </html>
