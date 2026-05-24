@@ -41,6 +41,10 @@
   if (!window.applyEncorSampleGuestChrome) {
     window.applyEncorSampleGuestChrome = function () {
       if (!window.isCcnpGuestSample()) return;
+      document.querySelectorAll("nav[data-encor-sample-nav]").forEach(function (nav) {
+        nav.remove();
+      });
+      document.body.classList.remove("ccnp-sample-guest");
       document.querySelectorAll("a.home-key, a.sim-nav-home").forEach(function (a) {
         a.href = HOME;
         a.textContent = "Home";
@@ -49,27 +53,6 @@
         if (a.classList.contains("sim-nav-home")) return;
         a.remove();
       });
-      if (document.querySelector("nav[data-encor-sample-nav]")) return;
-      if (!document.getElementById("ccnp-sample-nav-style")) {
-        var st = document.createElement("style");
-        st.id = "ccnp-sample-nav-style";
-        st.textContent =
-          "body.ccnp-sample-guest a.home-key{display:none!important;}" +
-          "body.ccnp-sample-guest .sim-nav .sim-nav-home{display:none!important;}" +
-          "body.ccnp-sample-guest,body.ccnp-practice-ui{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))!important;}" +
-          "nav[data-encor-sample-nav]{position:fixed;left:0;right:0;bottom:0;z-index:10000;display:flex;justify-content:center;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:rgba(11,16,32,.94);border-top:1px solid #2d3b5a;backdrop-filter:blur(10px);}" +
-          "nav[data-encor-sample-nav] a{text-decoration:none;background:#1a3d6e;border:1px solid #3d6dbb;color:#e6edf3;border-radius:10px;padding:10px 18px;font-weight:700;min-width:5.5rem;text-align:center;}";
-        document.head.appendChild(st);
-      }
-      document.body.classList.add("ccnp-sample-guest");
-      var nav = document.createElement("nav");
-      nav.setAttribute("data-encor-sample-nav", "1");
-      nav.setAttribute("aria-label", "Sample navigation");
-      var homeTab = document.createElement("a");
-      homeTab.href = HOME;
-      homeTab.textContent = "Home";
-      nav.appendChild(homeTab);
-      document.body.appendChild(nav);
     };
   }
 })();
@@ -301,7 +284,11 @@
       "#ccnpObjectiveSection strong{display:block;margin:0 0 4px;color:#e6edf3;font-size:.86rem;font-weight:800;}" +
       "#ccnpObjectiveSection span{display:block;}" +
       "body.ccnp-practice-ui main.card label.choice{cursor:pointer;-webkit-tap-highlight-color:rgba(77,137,255,.22);touch-action:manipulation;user-select:none;-webkit-user-select:none;}" +
-      "body.ccnp-practice-ui main.card label.choice input[type=checkbox],body.ccnp-practice-ui main.card label.choice input[type=radio]{width:1.2em;height:1.2em;min-width:1.2em;min-height:1.2em;margin-right:12px;vertical-align:middle;accent-color:#000;}";
+      "body.ccnp-practice-ui main.card label.choice input[type=checkbox],body.ccnp-practice-ui main.card label.choice input[type=radio]{width:1.2em;height:1.2em;min-width:1.2em;min-height:1.2em;margin-right:12px;vertical-align:middle;accent-color:#000;}" +
+      "body.ccnp-sample-dnd-ui{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))!important;}" +
+      ".ccnp-sample-dnd-actions{position:fixed;left:0;right:0;bottom:0;z-index:10000;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:rgba(11,16,32,.94);border-top:1px solid #2d3b5a;backdrop-filter:blur(10px);}" +
+      ".ccnp-sample-dnd-actions button{text-decoration:none;background:#254b8a;border:1px solid #3d6dbb;color:#e6edf3;border-radius:10px;padding:10px 18px;font-weight:700;font-size:.95rem;cursor:pointer;font-family:inherit;min-width:5.5rem;}" +
+      ".ccnp-sample-dnd-actions button:hover{filter:brightness(1.08);}";
     document.head.appendChild(el);
   }
 
@@ -876,28 +863,59 @@
     }
   }
 
-  function syncSampleQueueNavigation(qid) {
-    if (!isSampleMode() || qid == null) return;
-    loadStudyConfig(function (err, cfg) {
-      var c = !err && cfg ? cfg : { allIds: [] };
-      var r = resolveNext(qid, c);
-      var nextA = document.querySelector("#nextWrap a.next-link, .next-wrap a.next-link");
-      if (!nextA) return;
-      nextA.href = r.href;
-      nextA.textContent = r.label;
+  function initSampleDndBottomBar(card, fallbackShowBtn) {
+    if (document.querySelector("[data-encor-sample-dnd-actions]")) return;
+
+    card
+      .querySelectorAll(
+        ".actions button, .actions #nextWrap, .actions .next-wrap, .actions a.next-link"
+      )
+      .forEach(function (el) {
+        el.style.display = "none";
+      });
+
+    var pageShow = document.getElementById("showBtn");
+    var pageReset = document.getElementById("resetBtn");
+
+    var bar = document.createElement("div");
+    bar.className = "ccnp-sample-dnd-actions";
+    bar.setAttribute("data-encor-sample-dnd-actions", "1");
+    bar.setAttribute("role", "toolbar");
+    bar.setAttribute("aria-label", "Drag-and-drop actions");
+
+    var showSolution = document.createElement("button");
+    showSolution.type = "button";
+    showSolution.textContent = "Show solution";
+    showSolution.addEventListener("click", function () {
+      if (pageShow) {
+        pageShow.click();
+        return;
+      }
+      if (fallbackShowBtn) fallbackShowBtn.click();
     });
+
+    var resetBtn = document.createElement("button");
+    resetBtn.type = "button";
+    resetBtn.textContent = "Reset";
+    resetBtn.addEventListener("click", function () {
+      if (pageReset) {
+        pageReset.click();
+        return;
+      }
+      var inlineReset = card.querySelector("#resetBtn, .reset-btn");
+      if (inlineReset) inlineReset.click();
+    });
+
+    bar.appendChild(showSolution);
+    bar.appendChild(resetBtn);
+    document.body.appendChild(bar);
+    document.body.classList.add("ccnp-sample-dnd-ui");
   }
 
   function init() {
     var qid = questionIdFromPath();
     if (isSampleMode()) {
       applySampleGuestChrome();
-      if (qid != null) {
-        syncSampleQueueNavigation(qid);
-      }
-      if (isEncorSampleStandaloneDndPage()) {
-        return;
-      }
     }
     if (qid == null) return;
 
@@ -913,9 +931,6 @@
 
     injectStyles();
     document.body.classList.add("ccnp-practice-ui");
-    if (!isSampleMode()) {
-      applySampleGuestChrome();
-    }
 
     var card = document.querySelector("main.card");
     if (!card || document.getElementById("ccnpQToolbar")) return;
@@ -956,6 +971,10 @@
     btn.id = "ccnpShowAnswerBtn";
     btn.textContent = "Show answer";
     btn.setAttribute("aria-pressed", "false");
+    if (isSampleMode() && dragDropPage) {
+      btn.style.cssText =
+        "position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;";
+    }
 
     var nextA = document.createElement("a");
     nextA.id = "ccnpToolbarNext";
@@ -969,13 +988,16 @@
 
     toolbar.appendChild(back);
     toolbar.appendChild(home);
-    if (dragDropPage) {
+    if (dragDropPage && !isSampleMode()) {
       toolbar.appendChild(btn);
     }
     toolbar.appendChild(nextA);
     card.insertBefore(toolbar, card.firstChild);
-    if (dragDropPage) {
+    if (dragDropPage && !isSampleMode()) {
       card.insertBefore(reveal, toolbar.nextSibling);
+    }
+    if (isSampleMode() && dragDropPage) {
+      initSampleDndBottomBar(card, btn);
     }
 
     btn.addEventListener("click", function () {
