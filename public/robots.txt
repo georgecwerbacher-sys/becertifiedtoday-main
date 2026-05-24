@@ -1,7 +1,17 @@
-# Allow homepage crawl/indexing; block all other paths.
+# Public study content is crawlable; block admin, API, and auth/checkout-only flows.
 User-agent: *
-Allow: /$
-Allow: /index.html
-Allow: /ccnp-home.html
-Allow: /CCNP-ENCOR-Study/ENCOR_Training_Portal.html
-Disallow: /
+Allow: /
+
+Disallow: /admin/
+Disallow: /api/
+Disallow: /choose-training-path.html
+Disallow: /CCNP-ENCOR-Study/access-restricted.html
+Disallow: /CCNP-ENCOR-Study/admin-renew.html
+Disallow: /*portal-magic.html
+Disallow: /*portal-restore-access.html
+Disallow: /*portal-request-link.html
+Disallow: /*portal-30d-checkout-success.html
+Disallow: /*test-simulation-runner.html
+Disallow: /*test-simulation-purchase.html
+
+Sitemap: https://becertifiedtoday.com/sitemap.xml
