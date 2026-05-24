@@ -858,10 +858,12 @@
         var reasonCode = endReasonCode(reasonText);
         showResultsPanel(reasonCode).then(function () {
           clearTestState();
-          if (!bypassMode && typeof encorPortalPassActive === "function" && !encorPortalPassActive()) {
-            if (typeof clearEncorTempTestAccess === "function") {
-              clearEncorTempTestAccess();
-            }
+          if (bypassMode) return;
+          if (typeof encorPortalPassActive === "function" && encorPortalPassActive()) return;
+          if (typeof markEncorTempTestConsumed === "function") {
+            markEncorTempTestConsumed();
+          } else if (typeof clearEncorTempTestAccess === "function") {
+            clearEncorTempTestAccess();
           }
         });
       }

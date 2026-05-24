@@ -67,7 +67,12 @@ export function inferProductIdFromCheckoutSession(session, env = process.env) {
   }
   if (!productId && paid && session.currency === "usd") {
     const amount = typeof session.amount_subtotal === "number" ? session.amount_subtotal : session.amount_total;
-    const track = inferProductTrackFromSuccessUrl(session);
+    let track = inferProductTrackFromSuccessUrl(session);
+    if (!track) {
+      const cancelUrl = String(session.cancel_url || "");
+      if (/CCNP-ENCOR-Study/i.test(cancelUrl)) track = "encor";
+      else if (/CCNA-Study|CCNA_Sim_EXAM/i.test(cancelUrl)) track = "ccna";
+    }
     productId = productIdFromAmountCents(amount, track);
   }
   return productId;
@@ -99,7 +104,11 @@ export function portalAccessExpiresAtMs(sess, productId = null) {
     }
   } catch (_) {}
   const days =
-    productId === "ccna-portal-10d" || productId === "encor-portal-10d" ? 10 : 30;
+    productId === "ccna-portal-10d" || productId === "encor-portal-10d"
+      ? 10
+      : productId === "ccna-portal-30d" || productId === "encor-portal-30d"
+        ? 30
+        : 30;
   return anchorSec * 1000 + days * 86400000;
 }
 

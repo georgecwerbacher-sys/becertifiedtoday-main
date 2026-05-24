@@ -29,8 +29,19 @@
     try {
       localStorage.setItem(
         LS_TEMP_TEST,
-        JSON.stringify({ stripeSessionId: cs, grantedAt: Date.now() })
+        JSON.stringify({ stripeSessionId: cs, grantedAt: Date.now(), consumed: false })
       );
+    } catch (e) {}
+  }
+
+  function markEncorTempTestConsumed() {
+    if (encorPortalPassActive()) return;
+    try {
+      var raw = localStorage.getItem(LS_TEMP_TEST);
+      if (!raw) return;
+      var o = JSON.parse(raw);
+      o.consumed = true;
+      localStorage.setItem(LS_TEMP_TEST, JSON.stringify(o));
     } catch (e) {}
   }
 
@@ -45,6 +56,7 @@
       var raw = localStorage.getItem(LS_TEMP_TEST);
       if (!raw) return null;
       var o = JSON.parse(raw);
+      if (o && o.consumed === true) return null;
       if (o && typeof o.stripeSessionId === "string" && o.stripeSessionId.indexOf("cs_") === 0) {
         return o.stripeSessionId;
       }
@@ -97,5 +109,6 @@
     window.clearEncorTempTestAccess = clearEncorTempTestAccess;
     window.readEncorStoredStripeSessionId = readEncorStoredStripeSessionId;
     window.trackEncorSimPurchase = trackEncorSimPurchase;
+    window.markEncorTempTestConsumed = markEncorTempTestConsumed;
   }
 })();

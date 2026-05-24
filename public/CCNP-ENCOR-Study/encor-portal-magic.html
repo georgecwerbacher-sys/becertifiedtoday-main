@@ -182,7 +182,10 @@
               ? data.checkoutSessionId
               : null;
 
-          if (typeof bccSetEncorPortalEntitlement !== "function" || !bccSetEncorPortalEntitlement(exp, cs)) {
+          if (
+            typeof bccSetEncorPortalEntitlement !== "function" ||
+            !bccSetEncorPortalEntitlement(exp, cs, data.productId)
+          ) {
             showErr(
               "Your purchase verified, but this browser blocked saving access. Allow site data for this domain and open the email link again."
             );
