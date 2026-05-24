@@ -21,6 +21,10 @@
     return readActive(KEY);
   }
 
+  function bccEncorPortalAccessActiveSync() {
+    return bccEncorPortalAccessActive();
+  }
+
   function setExpiry(key, expiresAtMs) {
     var t = Number(expiresAtMs);
     if (!Number.isFinite(t) || t <= Date.now()) return false;
@@ -60,6 +64,7 @@
 
   if (typeof window !== "undefined") {
     window.bccEncorPortalAccessActive = bccEncorPortalAccessActive;
+    window.bccEncorPortalAccessActiveSync = bccEncorPortalAccessActiveSync;
     window.bccSetEncorPortalEntitlement = bccSetEncorPortalEntitlement;
     window.bccReadEncorPortalCheckoutSessionId = bccReadEncorPortalCheckoutSessionId;
     window.bccSaveEncorPortalCheckoutSessionId = bccSaveEncorPortalCheckoutSessionId;

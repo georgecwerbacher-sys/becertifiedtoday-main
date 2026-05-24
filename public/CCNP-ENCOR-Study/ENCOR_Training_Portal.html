@@ -1157,7 +1157,19 @@
               </li>
               <li><strong>Pass or fail at the end.</strong></li>
             </ul>
-            <div class="portal-sim-locked-wrap">
+            <div id="portal-sim-verified-wrap" class="portal-sim-verified-wrap" hidden>
+              <p>
+                <strong>Verified access</strong> — your active ENCOR library pass is on this device. The timed test is
+                included with 10-day and 30-day portal access (no separate sim checkout).
+              </p>
+              <a
+                class="cta-main cta-main--block"
+                href="/CCNP-ENCOR-Study/test-simulation-runner.html?portal=1"
+                aria-label="Begin ENCOR timed test"
+                >Begin test</a
+              >
+            </div>
+            <div id="portal-sim-locked-wrap" class="portal-sim-locked-wrap">
               <a
                 class="cta-main cta-main--block"
                 href="/CCNP-ENCOR-Study/test-simulation.html"
@@ -1202,6 +1214,19 @@
   <script src="/CCNP-ENCOR-Study/js/encor-portal-30d-checkout.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
+      function refreshPortalSimGate() {
+        var verified = document.getElementById("portal-sim-verified-wrap");
+        var locked = document.getElementById("portal-sim-locked-wrap");
+        if (!verified || !locked) return;
+        if (typeof bccEncorPortalAccessActive === "function" && bccEncorPortalAccessActive()) {
+          verified.hidden = false;
+          locked.hidden = true;
+        } else {
+          verified.hidden = true;
+          locked.hidden = false;
+        }
+      }
+
       function qs(name) {
         try {
           return new URLSearchParams(window.location.search).get(name);
@@ -1252,6 +1277,7 @@
         }
         var banner = document.getElementById("portal-checkout-activated-banner");
         if (banner) banner.hidden = false;
+        refreshPortalSimGate();
         return true;
       }
 
@@ -1298,7 +1324,9 @@
         });
       }
 
-      applyCheckoutSessionReturn().then(tryRestorePortalFromStoredCheckoutSession);
+      applyCheckoutSessionReturn()
+        .then(tryRestorePortalFromStoredCheckoutSession)
+        .then(refreshPortalSimGate);
     });
   </script>
 </body>

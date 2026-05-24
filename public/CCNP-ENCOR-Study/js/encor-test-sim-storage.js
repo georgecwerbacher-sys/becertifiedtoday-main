@@ -6,10 +6,20 @@
   var LS_TEMP_TEST = "bcc_encor_test_sim_temp_v1";
 
   function encorPortalPassActive() {
+    if (typeof window.bccEncorPortalAccessActiveSync === "function") {
+      return window.bccEncorPortalAccessActiveSync();
+    }
     if (typeof window.bccEncorPortalAccessActive === "function") {
       return window.bccEncorPortalAccessActive();
     }
-    return false;
+    try {
+      var raw = localStorage.getItem("bcc_encor_portal_v1");
+      if (!raw) return false;
+      var o = JSON.parse(raw);
+      return typeof o.expiresAt === "number" && o.expiresAt > Date.now();
+    } catch (e) {
+      return false;
+    }
   }
 
   function grantEncorTempTestAccess(stripeSessionId) {

@@ -626,6 +626,7 @@
       function initGate() {
         var params = new URLSearchParams(location.search || "");
         var sessionIdFromUrl = params.get("session_id");
+        var fromPortal = params.get("portal") === "1";
         bypassMode = params.get("bypass") === "1" || params.get("demo") === "1";
 
         loadBlueprintLine();
@@ -649,6 +650,13 @@
         if (typeof encorPortalPassActive === "function" && encorPortalPassActive()) {
           sessionOk = true;
           showGateStartOptions();
+          return;
+        }
+
+        if (fromPortal) {
+          gateStatus.textContent =
+            "Active ENCOR portal access was not found on this browser. Open the training portal after checkout, or use Email me a portal link to restore access on this device.";
+          gateStatus.className = "status-bad";
           return;
         }
 
@@ -945,7 +953,9 @@
       });
       resultsContinue.addEventListener("click", redirectAfterResults);
 
-      initGate();
+      document.addEventListener("DOMContentLoaded", function () {
+        initGate();
+      });
     })();
   </script>
 </body>
