@@ -2,6 +2,31 @@
  * Shared Stripe helpers for CCNA and ENCOR portal checkout sessions (verify API, webhook, magic-link redeem).
  */
 
+/** buy.stripe.com URL slugs — used when price env vars or success_url metadata are missing. */
+const PAYMENT_LINK_SLUG_TO_PRODUCT = {
+  cNidR81Wlel13yEdfSc3m05: "encor-portal-10d",
+  cNidR80Sh0ubc5aejWc3m00: "encor-portal-30d",
+  "3cIaEWbwVb8P8SYejWc3m01": "encor-test-simulation",
+};
+
+function productIdFromPaymentLinkSession(session) {
+  const pl = session.payment_link;
+  const urls = [];
+  if (pl && typeof pl === "object" && pl.url) {
+    urls.push(String(pl.url));
+  }
+  if (session.url) urls.push(String(session.url));
+  for (let i = 0; i < urls.length; i++) {
+    const url = urls[i];
+    for (const slug of Object.keys(PAYMENT_LINK_SLUG_TO_PRODUCT)) {
+      if (url.includes(slug)) {
+        return PAYMENT_LINK_SLUG_TO_PRODUCT[slug];
+      }
+    }
+  }
+  return null;
+}
+
 function inferProductTrackFromSuccessUrl(session) {
   const url = String(session.success_url || "");
   if (/CCNP-ENCOR-Study/i.test(url)) return "encor";
@@ -65,6 +90,32 @@ export function inferProductIdFromCheckoutSession(session, env = process.env) {
       }
     }
   }
+  if (!productId && paid) {
+    productId = productIdFromPaymentLinkSession(session);
+  }
+  if (!productId && paid) {
+    const lines = session.line_items?.data || [];
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const name = String(line?.description || line?.price?.product?.name || "");
+      if (/encor/i.test(name) && /10.?day|10 day/i.test(name)) {
+        productId = "encor-portal-10d";
+        break;
+      }
+      if (/encor/i.test(name) && /30.?day|30 day|month/i.test(name)) {
+        productId = "encor-portal-30d";
+        break;
+      }
+      if (/ccna/i.test(name) && /10.?day|10 day/i.test(name)) {
+        productId = "ccna-portal-10d";
+        break;
+      }
+      if (/ccna/i.test(name) && /30.?day|30 day|month/i.test(name)) {
+        productId = "ccna-portal-30d";
+        break;
+      }
+    }
+  }
   if (!productId && paid && session.currency === "usd") {
     const amount = typeof session.amount_subtotal === "number" ? session.amount_subtotal : session.amount_total;
     let track = inferProductTrackFromSuccessUrl(session);
@@ -72,6 +123,11 @@ export function inferProductIdFromCheckoutSession(session, env = process.env) {
       const cancelUrl = String(session.cancel_url || "");
       if (/CCNP-ENCOR-Study/i.test(cancelUrl)) track = "encor";
       else if (/CCNA-Study|CCNA_Sim_EXAM/i.test(cancelUrl)) track = "ccna";
+    }
+    if (!track) {
+      const plProduct = productIdFromPaymentLinkSession(session);
+      if (plProduct && plProduct.startsWith("encor-")) track = "encor";
+      else if (plProduct && plProduct.startsWith("ccna-")) track = "ccna";
     }
     productId = productIdFromAmountCents(amount, track);
   }

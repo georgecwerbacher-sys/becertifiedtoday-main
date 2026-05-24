@@ -50,6 +50,9 @@
       btn.dataset.loading = "1";
       btn.textContent = "Redirecting…";
       btn.disabled = true;
+      if (typeof window.bccSetEncorPendingPortalTier === "function") {
+        window.bccSetEncorPendingPortalTier(tier);
+      }
       window.location.href = url;
     });
   }

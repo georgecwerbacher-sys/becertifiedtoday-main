@@ -8,6 +8,9 @@
 (function () {
   var KEY = "bcc_encor_portal_v1";
   var KEY_CS = "bcc_encor_portal_cs_v1";
+  var KEY_PENDING_TIER = "bcc_encor_pending_portal_tier";
+  var KEY_PENDING_AT = "bcc_encor_pending_portal_at";
+  var PENDING_MAX_MS = 86400000;
 
   function readEntitlement(key) {
     try {
@@ -34,6 +37,61 @@
 
   function isEncorPortalProductId(productId) {
     return productId === "encor-portal-30d" || productId === "encor-portal-10d";
+  }
+
+  function tierToProductId(tier) {
+    if (tier === "10d") return "encor-portal-10d";
+    if (tier === "30d") return "encor-portal-30d";
+    return null;
+  }
+
+  function productIdFromAmountCentsEncor(amount) {
+    if (amount === 999) return "encor-portal-10d";
+    if (amount === 1999 || amount === 1499) return "encor-portal-30d";
+    return null;
+  }
+
+  function bccSetEncorPendingPortalTier(tier) {
+    if (tier !== "10d" && tier !== "30d") return false;
+    try {
+      localStorage.setItem(KEY_PENDING_TIER, tier);
+      localStorage.setItem(KEY_PENDING_AT, String(Date.now()));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function readPendingPortalTier() {
+    try {
+      var tier = localStorage.getItem(KEY_PENDING_TIER);
+      var at = parseInt(localStorage.getItem(KEY_PENDING_AT) || "0", 10);
+      if (!tier || !Number.isFinite(at) || Date.now() - at > PENDING_MAX_MS) return null;
+      return tier === "10d" || tier === "30d" ? tier : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function clearPendingPortalTier() {
+    try {
+      localStorage.removeItem(KEY_PENDING_TIER);
+      localStorage.removeItem(KEY_PENDING_AT);
+    } catch (e) {}
+  }
+
+  function resolveEncorPortalProductId(data) {
+    var productId = data && data.productId;
+    if (isEncorPortalProductId(productId)) return productId;
+    productId = tierToProductId(readPendingPortalTier());
+    if (isEncorPortalProductId(productId)) return productId;
+    var amt =
+      data && typeof data.amount_subtotal === "number"
+        ? data.amount_subtotal
+        : data && typeof data.amount_total === "number"
+          ? data.amount_total
+          : null;
+    return productIdFromAmountCentsEncor(amt);
   }
 
   function setExpiry(key, expiresAtMs, productId) {
@@ -88,17 +146,26 @@
   function grantPortalFromVerifyPair(pair, checkoutSessionId) {
     var res = pair.res;
     var data = pair.data || {};
-    if (!res.ok || !data.ok || !isEncorPortalProductId(data.productId)) {
+    if (!res.ok || !data.ok) {
+      return false;
+    }
+    bccSaveEncorPortalCheckoutSessionId(checkoutSessionId);
+
+    var productId = resolveEncorPortalProductId(data);
+    if (!isEncorPortalProductId(productId)) {
       return false;
     }
     var exp =
       typeof data.accessExpiresAt === "number" && Number.isFinite(data.accessExpiresAt)
         ? data.accessExpiresAt
-        : Date.now() + 30 * 86400000;
+        : Date.now() +
+          (productId === "encor-portal-10d" ? 10 : 30) * 86400000;
     if (exp <= Date.now()) {
       return false;
     }
-    return bccSetEncorPortalEntitlement(exp, checkoutSessionId, data.productId);
+    var ok = bccSetEncorPortalEntitlement(exp, checkoutSessionId, productId);
+    if (ok) clearPendingPortalTier();
+    return ok;
   }
 
   /**
@@ -160,6 +227,7 @@
     window.bccSetEncorPortalEntitlement = bccSetEncorPortalEntitlement;
     window.bccReadEncorPortalCheckoutSessionId = bccReadEncorPortalCheckoutSessionId;
     window.bccSaveEncorPortalCheckoutSessionId = bccSaveEncorPortalCheckoutSessionId;
+    window.bccSetEncorPendingPortalTier = bccSetEncorPendingPortalTier;
     window.bccRestoreEncorPortalAccess = bccRestoreEncorPortalAccess;
     window.bccApplyEncorPortalCheckoutFromUrl = bccApplyEncorPortalCheckoutFromUrl;
   }

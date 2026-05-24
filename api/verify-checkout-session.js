@@ -44,7 +44,12 @@ export default async function handler(req, res) {
 
   try {
     const session = await stripe.checkout.sessions.retrieve(sessionId, {
-      expand: ["payment_intent", "line_items.data.price"],
+      expand: [
+        "payment_intent",
+        "payment_link",
+        "line_items.data.price",
+        "line_items.data.price.product",
+      ],
     });
 
     const paid = checkoutSessionIsPaid(session);
@@ -55,6 +60,8 @@ export default async function handler(req, res) {
       ok: paid,
       payment_status: session.payment_status,
       productId,
+      amount_subtotal: session.amount_subtotal,
+      amount_total: session.amount_total,
       customer_email: session.customer_details?.email || null,
       accessExpiresAt,
       accessExpired:
