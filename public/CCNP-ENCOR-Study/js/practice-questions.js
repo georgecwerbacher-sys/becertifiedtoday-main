@@ -291,7 +291,10 @@
       "body.ccnp-sample-dnd-ui{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))!important;}" +
       ".ccnp-sample-dnd-actions{position:fixed;left:0;right:0;bottom:0;z-index:10000;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:rgba(11,16,32,.94);border-top:1px solid #2d3b5a;backdrop-filter:blur(10px);}" +
       ".ccnp-sample-dnd-actions button{text-decoration:none;background:#254b8a;border:1px solid #3d6dbb;color:#e6edf3;border-radius:10px;padding:10px 18px;font-weight:700;font-size:.95rem;cursor:pointer;font-family:inherit;min-width:5.5rem;}" +
-      ".ccnp-sample-dnd-actions button:hover{filter:brightness(1.08);}";
+      ".ccnp-sample-dnd-actions button:hover{filter:brightness(1.08);}" +
+      ".ccnp-sample-dnd-actions a{text-decoration:none;background:#1a3d6e;border:1px solid #3d6dbb;color:#e6edf3;border-radius:10px;padding:10px 18px;font-weight:700;font-size:.95rem;min-width:5.5rem;text-align:center;display:none;}" +
+      ".ccnp-sample-dnd-actions a:hover{filter:brightness(1.08);}" +
+      "body.ccnp-sample-dnd-ui main.card #nextWrap,body.ccnp-sample-dnd-ui main.card .next-wrap{margin-top:18px;}";
     document.head.appendChild(el);
   }
 
@@ -760,6 +763,42 @@
       tb.textContent = label;
     }
     syncSampleMcqBottomNext(href, label);
+    syncSampleDndBottomNext(href, label);
+  }
+
+  function showSampleBottomNext(show) {
+    if (!isSampleMode()) return;
+    var wrap = document.querySelector("main.card #nextWrap, main.card .next-wrap");
+    if (wrap) wrap.style.display = show ? "block" : "none";
+    var dndNext = document.getElementById("ccnpSampleDndNext");
+    if (dndNext) dndNext.style.display = show ? "inline-block" : "none";
+  }
+
+  function syncSampleDndBottomNext(href, label) {
+    if (!isSampleMode()) return;
+    var nextLink = document.getElementById("ccnpSampleDndNext");
+    if (!nextLink) return;
+    nextLink.setAttribute("href", href);
+    nextLink.textContent = label || "Next";
+  }
+
+  function bindSampleMcqBottomNextReveal(card) {
+    if (!isSampleMode() || !card || isDragDropQuestion(card)) return;
+    if (card.dataset.ccnpSampleNextReveal === "1") return;
+    card.dataset.ccnpSampleNextReveal = "1";
+
+    card.addEventListener("change", function (e) {
+      var t = e.target;
+      if (!t || !t.matches('input[type="radio"], input[type="checkbox"]')) return;
+      showSampleBottomNext(true);
+    });
+
+    var checkBtn = card.querySelector("#checkBtn");
+    if (checkBtn) {
+      checkBtn.addEventListener("click", function () {
+        showSampleBottomNext(true);
+      });
+    }
   }
 
   function syncSampleMcqBottomNext(href, label) {
@@ -903,6 +942,12 @@
 
     var pageShow = document.getElementById("showBtn");
     var pageReset = document.getElementById("resetBtn");
+    var pageCheck = document.getElementById("checkBtn");
+    if (pageCheck) {
+      pageCheck.addEventListener("click", function () {
+        showSampleBottomNext(true);
+      });
+    }
 
     var bar = document.createElement("div");
     bar.className = "ccnp-sample-dnd-actions";
@@ -916,9 +961,10 @@
     showSolution.addEventListener("click", function () {
       if (pageShow) {
         pageShow.click();
-        return;
+      } else if (fallbackShowBtn) {
+        fallbackShowBtn.click();
       }
-      if (fallbackShowBtn) fallbackShowBtn.click();
+      showSampleBottomNext(true);
     });
 
     var resetBtn = document.createElement("button");
@@ -927,14 +973,21 @@
     resetBtn.addEventListener("click", function () {
       if (pageReset) {
         pageReset.click();
-        return;
+      } else {
+        var inlineReset = card.querySelector("#resetBtn, .reset-btn");
+        if (inlineReset) inlineReset.click();
       }
-      var inlineReset = card.querySelector("#resetBtn, .reset-btn");
-      if (inlineReset) inlineReset.click();
+      showSampleBottomNext(false);
     });
+
+    var nextLink = document.createElement("a");
+    nextLink.id = "ccnpSampleDndNext";
+    nextLink.href = activePortalHome();
+    nextLink.textContent = "Next";
 
     bar.appendChild(showSolution);
     bar.appendChild(resetBtn);
+    bar.appendChild(nextLink);
     document.body.appendChild(bar);
     document.body.classList.add("ccnp-sample-dnd-ui");
   }
@@ -1028,6 +1081,7 @@
     if (isSampleMode() && dragDropPage) {
       initSampleDndBottomBar(card, btn);
     }
+    bindSampleMcqBottomNextReveal(card);
 
     btn.addEventListener("click", function () {
       var visible = reveal.classList.toggle("is-visible");
