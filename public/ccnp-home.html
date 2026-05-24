@@ -1100,6 +1100,54 @@
       outline-offset: 3px;
       border-radius: 4px;
     }
+    .encor-sample-subjects {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+    .encor-sample-subject {
+      margin: 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(45, 59, 90, 0.75);
+      background: rgba(13, 21, 40, 0.55);
+    }
+    .encor-sample-subject-name {
+      margin: 0 0 8px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #c8daf8;
+    }
+    .encor-sample-subject-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .encor-sample-subject-links a {
+      color: #a8c4f0;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .encor-sample-subject-links a:hover {
+      color: #c8daf8;
+    }
+    .encor-sample-subject-links a:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    .format-card > .encor-sample-subject-links {
+      margin-top: 14px;
+    }
     /* CCNA Training: full sentence link — same color as body, no underline (override .format-sample a) */
     .format-sample a.format-sample-plain-link {
       color: inherit;
@@ -1771,6 +1819,78 @@
             <li>Progress tracking helps you focus study time where it is needed most.</li>
             <li>New questions are added continuously to keep preparation current.</li>
           </ul>
+
+          <div class="samples-stack">
+            <section class="samples-block" aria-labelledby="home-encor-samples-title">
+              <h2 class="samples-block-title" id="home-encor-samples-title"><strong>CCNP ENCOR samples</strong></h2>
+              <p class="samples-block-lead">
+                Free ENCOR-format activities on this site—shuffled sample questions and drag-and-drop, plus one CLI lab you can run in the browser.
+              </p>
+              <ul class="formats-grid formats-grid--tri" aria-label="CCNP ENCOR sample activities">
+                <li>
+                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-encor-q-title">
+                    <h3 id="home-encor-q-title">ENCOR · Sample questions</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/practice-questions-sample-thumbnail.jpg"
+                        width="1024"
+                        height="556"
+                        alt="ENCOR multiple-choice sample questions with instant feedback."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>
+                      Twelve multiple-choice items from across the ENCOR 350-401 blueprint—shuffled into a new order each time you start. Use <strong>Check answer</strong> for feedback, then <strong>Next</strong> to continue.
+                    </p>
+                    <p class="format-sample format-sample--main-cta">
+                      <a class="cta-main" href="/sample?track=encor-questions">Start sample questions →</a>
+                    </p>
+                  </article>
+                </li>
+                <li>
+                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-encor-dd-title">
+                    <h3 id="home-encor-dd-title">ENCOR · Sample drag-and-drop</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/drag-drop-sample-thumbnail.jpg"
+                        width="1024"
+                        height="535"
+                        alt="ENCOR drag-and-drop sample with CLI-style drop targets."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>Two performance-style drag-and-drop items—shuffled into a new order each time you start. Drag snippets into the blanks or tap to place on a phone.</p>
+                    <p class="format-sample format-sample--main-cta">
+                      <a class="cta-main" href="/sample?track=encor-dnd">Start sample drag-and-drop →</a>
+                    </p>
+                  </article>
+                </li>
+                <li>
+                  <article class="format-card" aria-labelledby="home-encor-lab-title">
+                    <h3 id="home-encor-lab-title">ENCOR · Sample lab</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/hands-on-lab-sample-thumbnail.jpg"
+                        width="1024"
+                        height="705"
+                        alt="ACL and CoPP sample lab with simulated router CLI."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>Practice one hands-on CLI simulation—extended ACL on R10, CoPP on R20, and save checks in the browser.</p>
+                    <ul class="encor-sample-subject-links" aria-label="ENCOR sample lab">
+                      <li>
+                        <a href="/sample?track=labs">ACL and CoPP</a>
+                      </li>
+                    </ul>
+                  </article>
+                </li>
+              </ul>
+            </section>
+          </div>
 
           <div class="card purchase-card" id="purchase">
             <div class="purchase-card-inner">

@@ -1,3 +1,29 @@
+/** Mask ENCOR sample URLs so guests only see /sample in the address bar. */
+(function () {
+  try {
+    var originalPath = location.pathname || "";
+    var pathLower = originalPath.toLowerCase();
+    if (pathLower.indexOf("/ccnp-encor-study/") === -1) return;
+    var isSamplePath =
+      pathLower === "/sample" ||
+      pathLower === "/sample/" ||
+      pathLower === "/secplus-sample" ||
+      pathLower === "/secplus-sample/";
+    if (!isSamplePath) {
+      sessionStorage.setItem("ccnaLastRealPath", originalPath);
+    }
+    var mask =
+      sessionStorage.getItem("ccnpUrlMaskPath") ||
+      sessionStorage.getItem("secplusUrlMaskPath");
+    if (!mask && /(?:\?|&)sample=1(?:&|$)/.test(location.search || "")) {
+      mask = "/sample";
+      sessionStorage.setItem("ccnpUrlMaskPath", mask);
+    }
+    if (!mask) return;
+    history.replaceState(null, "", mask);
+  } catch (e) {}
+})();
+
 /**
  * Practice UI: toolbar/navigation helpers.
  * - Random queue (ccnpQuestionQueue), or
@@ -17,14 +43,29 @@
   var LOCAL_ENCOR_PORTAL = CCNP_PORTAL_HOME;
   var ENCOR_MCQ_DIR = "/CCNP-ENCOR-Study/ENCOR_Questions";
   var ENCOR_DND_DIR = "/CCNP-ENCOR-Study/CCNP-ENCOR-Drag-Drop";
+  var ENCOR_SAMPLE_DND_PATHS = {
+    365: "/CCNP-ENCOR-Study/ENCOR_Samples/question-365.html",
+    261: "/CCNP-ENCOR-Study/CCNP-ENCOR-Drag-Drop/question-261.html"
+  };
 
   function encorDragDropTree() {
     return /\/ccnp-encor-study\/ccnp-encor-drag-drop\//i.test(location.pathname || "");
   }
 
+  function isEncorSampleStandaloneDndPage() {
+    if (!isSampleMode()) return false;
+    return /\/ccnp-encor-study\/encor_samples\/question-\d+\.html/i.test(
+      location.pathname || ""
+    );
+  }
+
   function localEncorQuestionsTree() {
     var p = location.pathname || "";
-    return /\/ccnp-encor-study\/encor_questions\//i.test(p) || encorDragDropTree();
+    return (
+      /\/ccnp-encor-study\/encor_questions\//i.test(p) ||
+      encorDragDropTree() ||
+      isEncorSampleStandaloneDndPage()
+    );
   }
 
   function isEncorDragDropId(id, cfg) {
@@ -36,6 +77,9 @@
   }
 
   function encorQuestionHref(id) {
+    if (isSampleMode() && ENCOR_SAMPLE_DND_PATHS[id]) {
+      return ENCOR_SAMPLE_DND_PATHS[id];
+    }
     var cfg = window.__ccnpStudyConfig;
     var dnd = isEncorDragDropId(id, cfg);
     var dir = dnd
@@ -49,13 +93,20 @@
   }
 
   function questionHref(id) {
+    var href;
     if (localEncorQuestionsTree()) {
-      return encorQuestionHref(id);
+      href = encorQuestionHref(id);
+    } else {
+      href = "/question-" + id + ".html";
     }
-    return "/question-" + id + ".html";
+    if (isSampleMode()) {
+      href += (href.indexOf("?") >= 0 ? "&" : "?") + "sample=1";
+    }
+    return href;
   }
 
   function activePortalHome() {
+    if (isSampleMode()) return "/ccnp-home.html";
     return LOCAL_ENCOR_PORTAL;
   }
 
@@ -513,6 +564,23 @@
   }
 
   function resolveNext(qid, cfg) {
+    if (isSampleMode()) {
+      var sampleQueue = parseQueue();
+      if (sampleQueue) {
+        var sIdx = sampleQueue.indexOf(qid);
+        if (sIdx >= 0) {
+          var sNext = sampleQueue[sIdx + 1];
+          if (sNext != null) {
+            return { href: questionHref(sNext), label: "Next" };
+          }
+          var sampleExit = readAndClearQueueExitHref();
+          if (sampleExit) {
+            return { href: sampleExit, label: "Back to home" };
+          }
+        }
+      }
+      return { href: activePortalHome(), label: "Back to home" };
+    }
     if (isReviewMode()) {
       var rq = parseReviewQueue();
       if (rq && rq.length) {
@@ -578,6 +646,16 @@
   }
 
   function resolveBack(qid, cfg) {
+    if (isSampleMode()) {
+      var sampleQueue = parseQueue();
+      if (sampleQueue) {
+        var sIdx = sampleQueue.indexOf(qid);
+        if (sIdx > 0) {
+          return { href: questionHref(sampleQueue[sIdx - 1]), label: "Back" };
+        }
+      }
+      return { href: activePortalHome(), label: "Back" };
+    }
     if (isReviewMode()) {
       return {
         href: activePortalHome(),
@@ -738,8 +816,58 @@
     });
   }
 
+  function applySampleGuestChrome() {
+    if (!isSampleMode()) return;
+    var homeHref = activePortalHome();
+    document.querySelectorAll("a.home-key").forEach(function (a) {
+      a.href = homeHref;
+      a.textContent = "Home";
+    });
+    if (document.querySelector("nav[data-encor-sample-nav]")) return;
+    if (!document.getElementById("ccnp-sample-nav-style")) {
+      var st = document.createElement("style");
+      st.id = "ccnp-sample-nav-style";
+      st.textContent =
+        "body.ccnp-sample-guest a.home-key{display:none!important;}" +
+        "body.ccnp-sample-guest,body.ccnp-practice-ui{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))!important;}" +
+        "nav[data-encor-sample-nav]{position:fixed;left:0;right:0;bottom:0;z-index:10000;display:flex;justify-content:center;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:rgba(11,16,32,.94);border-top:1px solid #2d3b5a;backdrop-filter:blur(10px);}" +
+        "nav[data-encor-sample-nav] a{text-decoration:none;background:#1a3d6e;border:1px solid #3d6dbb;color:#e6edf3;border-radius:10px;padding:10px 18px;font-weight:700;min-width:5.5rem;text-align:center;}";
+      document.head.appendChild(st);
+    }
+    document.body.classList.add("ccnp-sample-guest");
+    var nav = document.createElement("nav");
+    nav.setAttribute("data-encor-sample-nav", "1");
+    nav.setAttribute("aria-label", "Sample navigation");
+    var homeTab = document.createElement("a");
+    homeTab.href = homeHref;
+    homeTab.textContent = "Home";
+    nav.appendChild(homeTab);
+    document.body.appendChild(nav);
+  }
+
+  function syncSampleQueueNavigation(qid) {
+    if (!isSampleMode() || qid == null) return;
+    loadStudyConfig(function (err, cfg) {
+      var c = !err && cfg ? cfg : { allIds: [] };
+      var r = resolveNext(qid, c);
+      var nextA = document.querySelector("#nextWrap a.next-link, .next-wrap a.next-link");
+      if (!nextA) return;
+      nextA.href = r.href;
+      nextA.textContent = r.label;
+    });
+  }
+
   function init() {
     var qid = questionIdFromPath();
+    if (isSampleMode()) {
+      applySampleGuestChrome();
+      if (qid != null) {
+        syncSampleQueueNavigation(qid);
+      }
+      if (isEncorSampleStandaloneDndPage()) {
+        return;
+      }
+    }
     if (qid == null) return;
 
     if (isReviewMode()) {
@@ -754,6 +882,9 @@
 
     injectStyles();
     document.body.classList.add("ccnp-practice-ui");
+    if (!isSampleMode()) {
+      applySampleGuestChrome();
+    }
 
     var card = document.querySelector("main.card");
     if (!card || document.getElementById("ccnpQToolbar")) return;

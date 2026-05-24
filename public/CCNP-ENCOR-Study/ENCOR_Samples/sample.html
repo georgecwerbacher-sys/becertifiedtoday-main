@@ -27,9 +27,27 @@
       /* Legacy sample URL; same lab as ccna-trunk */
       if (track === "ccna-ip") track = "ccna-trunk";
 
+      var ENCOR_SAMPLE_Q = [1, 3, 6, 7, 10, 11, 12, 15, 20, 23, 37, 44];
+      var ENCOR_SAMPLE_DND_IDS = [365, 261];
+      var ENCOR_SAMPLE_DND_URL = {
+        "365": "/CCNP-ENCOR-Study/ENCOR_Samples/question-365.html?sample=1",
+        "261": "/CCNP-ENCOR-Study/CCNP-ENCOR-Drag-Drop/question-261.html?sample=1"
+      };
+
+      function shuffle(arr) {
+        var a = arr.slice();
+        for (var i = a.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var t = a[i];
+          a[i] = a[j];
+          a[j] = t;
+        }
+        return a;
+      }
+
       var map = {
         questions: "/CCNP-ENCOR-Study/ENCOR_Samples/sample-question-1.html?sample=1",
-        labs: "/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html?sample=1",
+        labs: "/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/cli-lab-acl-copp.html?sample=1",
         drag: "/CCNP-ENCOR-Study/ENCOR_Samples/question-365.html?sample=1",
         ftp: "/CCNA-Study/CCNA_Samples/dragdrop-ftp-vs-tftp.html?sample=1",
         "ccna-questions": "/CCNA-Study/CCNA_Samples/sample-question-1.html?sample=1",
@@ -37,14 +55,71 @@
         "ccna-vlan": "/CCNA-Study/CCNA_labs/cli-lab-vlan-sim.html?sample=1"
       };
 
-      if (!Object.prototype.hasOwnProperty.call(map, track)) {
+      var dest = null;
+
+      if (track === "encor-questions") {
+        var shuffled = shuffle(ENCOR_SAMPLE_Q);
+        try {
+          sessionStorage.removeItem("ccnpLinearScope");
+          sessionStorage.removeItem("ccnpReviewMode");
+          sessionStorage.removeItem("ccnpReviewQueue");
+          sessionStorage.setItem("ccnpQuestionQueue", JSON.stringify(shuffled));
+          sessionStorage.setItem("ccnpQuestionQueueIndex", "0");
+          sessionStorage.setItem("ccnpQueueExitHref", "/ccnp-home.html");
+        } catch (e) {}
+        sessionStorage.setItem("ccnpUrlMaskPath", "/sample");
+        sessionStorage.setItem("ccnpSampleKind", "encor-questions");
+        location.replace(
+          "/CCNP-ENCOR-Study/ENCOR_Questions/question-" + shuffled[0] + ".html?sample=1"
+        );
+        return;
+      }
+
+      if (track === "encor-dnd" || track === "drag") {
+        track = "encor-dnd";
+        var dndSingle = params.get("id");
+        if (dndSingle) {
+          var did = String(parseInt(dndSingle, 10));
+          if (Object.prototype.hasOwnProperty.call(ENCOR_SAMPLE_DND_URL, did)) {
+            dest = ENCOR_SAMPLE_DND_URL[did];
+            track = "encor-dnd-" + did;
+          }
+        } else {
+          var shuffledDnd = shuffle(ENCOR_SAMPLE_DND_IDS);
+          try {
+            sessionStorage.removeItem("ccnpLinearScope");
+            sessionStorage.removeItem("ccnpReviewMode");
+            sessionStorage.removeItem("ccnpReviewQueue");
+            sessionStorage.setItem("ccnpQuestionQueue", JSON.stringify(shuffledDnd));
+            sessionStorage.setItem("ccnpQuestionQueueIndex", "0");
+            sessionStorage.setItem("ccnpQueueExitHref", "/ccnp-home.html");
+          } catch (e) {}
+          sessionStorage.setItem("ccnpUrlMaskPath", "/sample");
+          sessionStorage.setItem("ccnpSampleKind", "encor-dnd");
+          location.replace(ENCOR_SAMPLE_DND_URL[String(shuffledDnd[0])]);
+          return;
+        }
+      }
+
+      if (track === "encor-q") {
+        var qid = parseInt(params.get("id"), 10);
+        if (ENCOR_SAMPLE_Q.indexOf(qid) >= 0) {
+          dest = "/CCNP-ENCOR-Study/ENCOR_Questions/question-" + qid + ".html?sample=1";
+          track = "encor-q-" + qid;
+        }
+      } else if (Object.prototype.hasOwnProperty.call(map, track)) {
+        dest = map[track];
+      }
+
+      if (!dest) {
         track = "questions";
+        dest = map.questions;
       }
 
       sessionStorage.setItem("ccnpUrlMaskPath", "/sample");
       sessionStorage.setItem("ccnpSampleKind", track);
 
-      location.replace(map[track]);
+      location.replace(dest);
     })();
   </script>
 </body>
