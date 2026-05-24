@@ -374,6 +374,8 @@
   </style>
   <script src="/CCNP-ENCOR-Study/js/encor-test-sim-build.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-test-sim-scorecard.js"></script>
+  <script src="/CCNP-ENCOR-Study/js/encor-portal-storage.js" defer></script>
+  <script src="/CCNP-ENCOR-Study/js/encor-test-sim-storage.js" defer></script>
 </head>
 <body>
   <div id="gatePanel" class="gate-wrap">
@@ -534,24 +536,31 @@
           });
       }
 
+      function updateGateBackLink() {
+        var a = document.getElementById("gateBackLink");
+        if (!a) return;
+        if (typeof encorPortalPassActive === "function" && encorPortalPassActive()) {
+          a.setAttribute("href", "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html");
+          a.textContent = "← Back to ENCOR Training Portal";
+        } else {
+          a.setAttribute("href", STARTER_URL);
+          a.textContent = "← Back to timed test landing";
+        }
+      }
+
       function beginPaidSessionIfNeeded() {
-        if (bypassMode) return Promise.resolve();
-        return fetch("/api/begin-test-simulation-session", {
-          method: "POST",
-          credentials: "same-origin",
-          headers: { Accept: "application/json" },
-        }).then(function (r) {
-          if (r.status === 403) {
-            location.replace(STARTER_URL + "?reason=session_used");
-            return Promise.reject(new Error("redirect"));
-          }
-          if (r.status === 401) {
-            location.replace(STARTER_URL + "?reason=no_access");
-            return Promise.reject(new Error("redirect"));
-          }
-          if (!r.ok) throw new Error("session");
-          return r.json();
-        });
+        return Promise.resolve();
+      }
+
+      function redirectAfterResults() {
+        if (typeof encorPortalPassActive === "function" && encorPortalPassActive()) {
+          location.href = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html";
+          return;
+        }
+        if (typeof clearEncorTempTestAccess === "function") {
+          clearEncorTempTestAccess();
+        }
+        location.href = STARTER_URL;
       }
 
       function startExamFromGate() {
@@ -616,7 +625,7 @@
 
       function initGate() {
         var params = new URLSearchParams(location.search || "");
-        var sessionId = params.get("session_id");
+        var sessionIdFromUrl = params.get("session_id");
         bypassMode = params.get("bypass") === "1" || params.get("demo") === "1";
 
         loadBlueprintLine();
@@ -629,6 +638,7 @@
         }
 
         showGateUi();
+        updateGateBackLink();
 
         if (bypassMode) {
           sessionOk = true;
@@ -636,47 +646,55 @@
           return;
         }
 
-        if (sessionId && sessionId.indexOf("cs_") === 0) {
-          gateStatus.textContent = "Confirming your payment…";
-          fetch("/api/verify-checkout-session", {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ sessionId: sessionId }),
-          })
-            .then(function (r) {
-              if (!r.ok) throw new Error("verify");
-              return r.json();
-            })
-            .then(function () {
-              sessionOk = true;
-              showGateStartOptions();
-            })
-            .catch(function () {
-              gateStatus.textContent =
-                "We could not confirm payment from this link. Return to the landing page and try again.";
-              gateStatus.className = "status-bad";
-            });
+        if (typeof encorPortalPassActive === "function" && encorPortalPassActive()) {
+          sessionOk = true;
+          showGateStartOptions();
           return;
         }
 
-        fetch("/api/encor-access-status", { credentials: "same-origin" })
+        var sessionId =
+          sessionIdFromUrl ||
+          (typeof readEncorStoredStripeSessionId === "function" ? readEncorStoredStripeSessionId() : null);
+
+        if (!sessionId || sessionId.indexOf("cs_") !== 0) {
+          gateStatus.textContent =
+            "No timed-test access found. Open the landing page to begin practice (free) or purchase a one-time paid attempt.";
+          gateStatus.className = "status-bad";
+          return;
+        }
+
+        gateStatus.textContent = sessionIdFromUrl
+          ? "Confirming your payment…"
+          : "Restoring access from this device…";
+        gateStatus.className = "status-ok";
+
+        fetch("/api/verify-checkout-session?session_id=" + encodeURIComponent(sessionId))
           .then(function (r) {
-            if (!r.ok) throw new Error("no access");
-            return r.json();
+            return r.json().then(function (data) {
+              return { res: r, data: data };
+            });
           })
-          .then(function (data) {
-            if (!data || !data.valid || data.tier !== "test_sim" || data.testSimConsumed) {
-              throw new Error("no access");
+          .then(function (pair) {
+            var data = pair.data || {};
+            if (
+              !pair.res.ok ||
+              !data.ok ||
+              data.productId !== "encor-test-simulation"
+            ) {
+              throw new Error(data.error || "verify");
             }
             sessionOk = true;
+            if (typeof grantEncorTempTestAccess === "function") {
+              grantEncorTempTestAccess(sessionId);
+            }
+            if (typeof trackEncorSimPurchase === "function") {
+              trackEncorSimPurchase(sessionId, data.productId);
+            }
             showGateStartOptions();
           })
           .catch(function () {
             gateStatus.textContent =
-              "No timed-test access found. Open the landing page to begin practice or purchase a one-time attempt.";
+              "We could not confirm payment from this link. Return to the landing page, purchase access, or use the Stripe return link from your receipt.";
             gateStatus.className = "status-bad";
           });
       }
@@ -832,12 +850,12 @@
         var reasonCode = endReasonCode(reasonText);
         showResultsPanel(reasonCode).then(function () {
           clearTestState();
+          if (!bypassMode && typeof encorPortalPassActive === "function" && !encorPortalPassActive()) {
+            if (typeof clearEncorTempTestAccess === "function") {
+              clearEncorTempTestAccess();
+            }
+          }
         });
-        fetch("/api/end-test-simulation-session", {
-          method: "POST",
-          credentials: "same-origin",
-          headers: { Accept: "application/json" },
-        }).catch(function () {});
       }
 
       function tick() {
@@ -925,9 +943,7 @@
       quitBtn.addEventListener("click", function () {
         endTest("You quit the practice test.");
       });
-      resultsContinue.addEventListener("click", function () {
-        location.href = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html";
-      });
+      resultsContinue.addEventListener("click", redirectAfterResults);
 
       initGate();
     })();
