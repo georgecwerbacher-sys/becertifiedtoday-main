@@ -542,6 +542,20 @@
       color: inherit;
       text-decoration: none;
     }
+    footer a.footer-portal-hash {
+      color: var(--page-bg);
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    footer a.footer-portal-hash:visited,
+    footer a.footer-portal-hash:hover,
+    footer a.footer-portal-hash:focus,
+    footer a.footer-portal-hash:focus-visible,
+    footer a.footer-portal-hash:active {
+      color: var(--page-bg);
+      text-decoration: none;
+      outline: none;
+    }
     footer a.footer-admin-hash {
       color: var(--page-bg);
       text-decoration: none;
@@ -884,7 +898,11 @@
       </p>
     </aside>
     <footer>
-      © BeCertifiedToday<a
+      <a
+        class="footer-portal-hash"
+        href="/ccnp-home.html"
+        aria-label="CCNP home"
+        >#</a>© BeCertifiedToday<a
         class="footer-admin-hash"
         href="/admin/analytics"
         aria-label="Site analytics admin"
