@@ -9,10 +9,25 @@
   var PORTAL_URL = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html";
   /** MCQ pages under public/CCNP-ENCOR-Study/ENCOR_Questions/ */
   var QUESTION_BASE = "/CCNP-ENCOR-Study/ENCOR_Questions/question-";
+  /** Drag-and-drop pages under public/CCNP-ENCOR-Study/CCNP-ENCOR-Drag-Drop/ */
+  var DRAG_DROP_BASE = "/CCNP-ENCOR-Study/CCNP-ENCOR-Drag-Drop/question-";
   var BANK_SIZE = 100;
 
-  function questionUrl(id) {
-    return QUESTION_BASE + id + ".html";
+  function isDragDropId(id, cfg) {
+    var n = Number(id);
+    if ((cfg.dragDropIds || []).indexOf(n) >= 0) return true;
+    if ((cfg.dragDropJsonIds || []).indexOf(n) >= 0) return true;
+    return false;
+  }
+
+  function questionUrl(id, cfg) {
+    var base = cfg && isDragDropId(id, cfg) ? DRAG_DROP_BASE : QUESTION_BASE;
+    if (cfg && isDragDropId(id, cfg) && cfg.dragDropDirectory) {
+      base = "/" + cfg.dragDropDirectory + "/question-";
+    } else if (cfg && !isDragDropId(id, cfg) && cfg.sourceDirectory) {
+      base = "/" + cfg.sourceDirectory + "/question-";
+    }
+    return base + id + ".html";
   }
 
   function filterByDomain(ids, domain, subjects) {
@@ -135,7 +150,7 @@
             sessionStorage.setItem("ccnpQuestionQueueIndex", "0");
           }
         } catch (e) {}
-        location.replace(questionUrl(ids[0]));
+        location.replace(questionUrl(ids[0], cfg));
       })
       .catch(fail);
   }

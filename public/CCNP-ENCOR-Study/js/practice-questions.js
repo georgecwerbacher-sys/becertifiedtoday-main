@@ -15,14 +15,42 @@
   /** Member hub on the live Encor deployment (toolbar Home / launcher). */
   var CCNP_PORTAL_HOME = "https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html";
   var LOCAL_ENCOR_PORTAL = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html";
+  var ENCOR_MCQ_DIR = "/CCNP-ENCOR-Study/ENCOR_Questions";
+  var ENCOR_DND_DIR = "/CCNP-ENCOR-Study/CCNP-ENCOR-Drag-Drop";
+
+  function encorDragDropTree() {
+    return /\/ccnp-encor-study\/ccnp-encor-drag-drop\//i.test(location.pathname || "");
+  }
 
   function localEncorQuestionsTree() {
-    return /\/ccnp-encor-study\/encor_questions\//i.test(location.pathname || "");
+    var p = location.pathname || "";
+    return /\/ccnp-encor-study\/encor_questions\//i.test(p) || encorDragDropTree();
+  }
+
+  function isEncorDragDropId(id, cfg) {
+    if (!cfg) return encorDragDropTree();
+    var n = Number(id);
+    if ((cfg.dragDropIds || []).indexOf(n) >= 0) return true;
+    if ((cfg.dragDropJsonIds || []).indexOf(n) >= 0) return true;
+    return false;
+  }
+
+  function encorQuestionHref(id) {
+    var cfg = window.__ccnpStudyConfig;
+    var dnd = isEncorDragDropId(id, cfg);
+    var dir = dnd
+      ? cfg && cfg.dragDropDirectory
+        ? "/" + cfg.dragDropDirectory
+        : ENCOR_DND_DIR
+      : cfg && cfg.sourceDirectory
+        ? "/" + cfg.sourceDirectory
+        : ENCOR_MCQ_DIR;
+    return dir + "/question-" + id + ".html";
   }
 
   function questionHref(id) {
     if (localEncorQuestionsTree()) {
-      return "/CCNP-ENCOR-Study/ENCOR_Questions/question-" + id + ".html";
+      return encorQuestionHref(id);
     }
     return "/question-" + id + ".html";
   }

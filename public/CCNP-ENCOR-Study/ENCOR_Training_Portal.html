@@ -847,7 +847,7 @@
               <strong>100</strong> by hub position (<strong>1–100</strong>, <strong>101–200</strong>, and so on).
             </p>
             <p class="study-meta">
-              Five banks with up to <strong>100</strong> questions each. Each bank has its own
+              Four banks with up to <strong>100</strong> questions each. Each bank has its own
               <strong>Random</strong> and <strong>Review</strong> session.
             </p>
             <div class="encor-practice-subject-filter" id="encor-practice-subject-filter">
@@ -901,7 +901,7 @@
               </fieldset>
             </div>
             <p id="encor-practice-banks-summary" class="study-meta encor-practice-banks-summary" hidden></p>
-            <div class="sim-grid" id="encor-practice-banks-grid" aria-label="Practice question banks: 5 banks of up to 100 questions each">
+            <div class="sim-grid" id="encor-practice-banks-grid" aria-label="Practice question banks: 4 banks of up to 100 questions each">
               <article class="sim-box" data-encor-bank-index="1" aria-labelledby="encor-bank-title-1">
                 <h4 class="sim-box-title" id="encor-bank-title-1">Bank 1 · questions 1–100</h4>
                 <p class="study-meta" data-encor-bank-meta="1">100 questions · use Random or Review for this bank only.</p>
@@ -934,14 +934,6 @@
                   <button type="button" class="start-btn" data-encor-mode="review" data-encor-bank="4">Review</button>
                 </div>
               </article>
-              <article class="sim-box" data-encor-bank-index="5" aria-labelledby="encor-bank-title-5">
-                <h4 class="sim-box-title" id="encor-bank-title-5">Bank 5 · questions 401–500</h4>
-                <p class="study-meta" data-encor-bank-meta="5">Reserved for questions 401–500 when the hub list grows.</p>
-                <div class="study-actions" role="group" aria-label="Practice modes for bank 5">
-                  <button type="button" class="start-btn is-placeholder" data-encor-mode="random" data-encor-bank="5" disabled>Random</button>
-                  <button type="button" class="start-btn is-placeholder" data-encor-mode="review" data-encor-bank="5" disabled>Review</button>
-                </div>
-              </article>
             </div>
             <p id="encor-study-load-error" class="study-meta" role="alert" hidden></p>
             <noscript>
@@ -954,26 +946,29 @@
           <h3 class="section-heading" id="encor-drag-drop">Drag and Drop</h3>
           <section class="start-box" aria-label="Drag and drop practice">
             <p class="placeholder-strip">
-              Standard and JSON drag-and-drop sets from <code>js/study-config.json</code> — launchers wire at cutover (same pattern as the live ENCOR app).
+              Drag-and-drop exercises from
+              <code>/CCNP-ENCOR-Study/CCNP-ENCOR-Drag-Drop/</code>, listed in
+              <code>js/study-config.json</code>.
             </p>
             <div class="sim-grid" id="encor-drag-drop-grid" aria-label="Drag-and-drop groups">
-              <article class="sim-box">
+              <article class="sim-box" data-encor-dnd-set="standard">
                 <h4 class="sim-box-title">Standard D&amp;D bank</h4>
-                <p class="study-meta">Full standard drag-and-drop bank from study config — coming soon on this portal shell.</p>
-                <div class="study-actions">
-                  <button type="button" class="start-btn is-placeholder" disabled>Random</button>
-                  <button type="button" class="start-btn is-placeholder" disabled>Review</button>
-                </div>
-              </article>
-              <article class="sim-box">
-                <h4 class="sim-box-title">JSON D&amp;D bank</h4>
-                <p class="study-meta">JSON-focused drag-and-drop exercises — coming soon on this portal shell.</p>
-                <div class="study-actions">
-                  <button type="button" class="start-btn is-placeholder" disabled>Random</button>
-                  <button type="button" class="start-btn is-placeholder" disabled>Review</button>
+                <p class="study-meta" data-encor-dnd-meta="standard">
+                  Loading standard drag-and-drop bank from study config…
+                </p>
+                <div class="study-actions" role="group" aria-label="Standard drag-and-drop modes">
+                  <button type="button" class="start-btn" data-encor-dnd-mode="random">Random</button>
+                  <button type="button" class="start-btn" data-encor-dnd-mode="review">Review</button>
                 </div>
               </article>
             </div>
+            <noscript>
+              <p class="study-meta">
+                Drag-and-drop banks require JavaScript. Enable scripts, or open
+                <a href="/CCNP-ENCOR-Study/begin-questions-random.html?mode=dragdrop">Random standard D&amp;D</a>
+                directly.
+              </p>
+            </noscript>
           </section>
 
           <h3 class="section-heading">Lab Simulations</h3>
@@ -1046,25 +1041,31 @@
           <h3 class="section-heading">Test Simulation</h3>
           <section class="start-box" aria-label="Timed test simulation">
             <p style="margin: 0 0 10px; color: #e6edf3; line-height: 1.4; font-size: 1.05rem; font-weight: 800;">
-              Timed practice test — 120 minutes · multiple-choice, drag-and-drop, and CLI labs · one clock
+              Timed practice test — 120 minutes · multiple-choice, drag-and-drop, and labs · one clock
             </p>
             <p style="margin: 0 0 10px; color: #b8c3d6; line-height: 1.5;">
-              Single mixed session like test day: <strong>50</strong> multiple-choice, <strong>4</strong> drag-and-drop, and
-              <strong>2</strong> CLI labs in randomized order under one timer.
+              Single mixed session like test day: <strong>50</strong> multiple-choice, <strong>5</strong> drag-and-drop, and
+              <strong>4</strong> CLI labs in randomized order under one timer. Open the landing page for rules, then start when you are ready.
             </p>
             <ul style="margin: 0 0 12px 1.2rem; color: #b8c3d6; line-height: 1.55; padding: 0;">
-              <li><strong>Mixed session each run</strong> — randomized MCQs, drag-and-drop items, and CLI labs shuffled into one continuous order.</li>
+              <li>
+                <strong>Mixed session each run</strong> — randomized MCQs from <code>ENCOR_Questions</code>, drag-and-drop from
+                <code>CCNP-ENCOR-Drag-Drop</code>, and CLI labs from <code>CCNP-ENCOR-Labs</code>, shuffled into one continuous order.
+              </li>
+              <li><strong>Every item type in play</strong> — multiple-choice, labs, and drag-and-drop tasks.</li>
               <li><strong>Timer-driven</strong> — the session runs against the clock from start to submit.</li>
-              <li><strong>Results &amp; scorecard</strong> — summary flags weaker ENCOR blueprint domains when you finish or time expires.</li>
+              <li>
+                <strong>Results &amp; study scorecard</strong> — when you finish or time expires, your summary includes a scorecard that flags weaker ENCOR blueprint domains and lists objectives worth revisiting.
+              </li>
               <li><strong>Pass or fail at the end.</strong></li>
             </ul>
-            <div id="portal-sim-locked-wrap" class="portal-sim-locked-wrap">
-              <p style="margin: 0 0 14px; font-size: 0.94rem; line-height: 1.5; color: #b8c3d6;">
-                <strong>Staging.</strong> Timed simulation runner lives at
-                <code>/CCNP-ENCOR-Study/begin-test-simulation.html</code> — enable from this portal when cutover wires local question paths.
-                Production traffic still uses the external ENCOR app until then.
-              </p>
-              <button type="button" class="cta-main cta-main--block is-placeholder" disabled aria-disabled="true">Begin test — cutover pending</button>
+            <div class="portal-sim-locked-wrap">
+              <a
+                class="cta-main cta-main--block"
+                href="/CCNP-ENCOR-Study/test-simulation.html"
+                aria-label="Open ENCOR timed test landing page"
+                >Begin test</a
+              >
             </div>
           </section>
         </div>
@@ -1098,5 +1099,6 @@
     </footer>
   </div>
   <script src="/CCNP-ENCOR-Study/js/encor-practice-hub.js" defer></script>
+  <script src="/CCNP-ENCOR-Study/js/encor-dragdrop-hub.js" defer></script>
 </body>
 </html>

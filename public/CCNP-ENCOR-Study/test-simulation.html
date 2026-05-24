@@ -1,27 +1,31 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script src="/js/ga-site-config.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTT6KBHX7V"></script>
+  <script src="/js/google-tag-gtag.js"></script>
+  <script src="/js/campaign-attribution.js"></script>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>Timed test simulation — CCNP ENCOR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="ENCOR Timed Test Simulation — preparation, purchase, and runner (becertifiedtoday.com)."
+  />
+  <title>ENCOR Timed Test Simulation — landing | Be Certified Today</title>
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <link rel="canonical" href="https://becertifiedtoday.com/CCNP-ENCOR-Study/test-simulation.html" />
   <style>
     :root {
-      color-scheme: light;
-      --ink: #1c2333;
-      --muted: #4a5568;
-      --line: #c9d4e3;
-      --header: #153e75;
-      --header-dark: #0f2d56;
-      --accent: #1e5a8e;
-      --accent-hover: #164a73;
-      --info-bg: #e8f2fb;
-      --info-border: #3b82c4;
-      --error-bg: #fef2f2;
-      --error-border: #b91c1c;
-      --error-text: #7f1d1d;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --navy: #1e3a8a;
+      --navy-deep: #172554;
       --page-bg: #e8eef5;
-      font-family: "Segoe UI", Inter, -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+      --card-border: #cbd5e1;
+      --muted: #475569;
+      --included-bg: #eff6ff;
+      --included-border: #bfdbfe;
     }
     * {
       box-sizing: border-box;
@@ -29,398 +33,394 @@
     body {
       margin: 0;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
       background: var(--page-bg);
-      color: var(--ink);
-      line-height: 1.55;
-      font-size: 1rem;
+      color: #0f172a;
     }
-    .top-bar {
-      background: linear-gradient(180deg, var(--header) 0%, var(--header-dark) 100%);
-      color: #f1f5fb;
-      padding: 12px clamp(16px, 4vw, 32px);
-      border-bottom: 3px solid #0d2140;
-    }
-    .top-bar-inner {
-      max-width: 960px;
-      margin: 0 auto;
+    .sim-topbar {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 10px 20px;
+      gap: 12px 20px;
+      padding: 14px clamp(16px, 4vw, 36px);
+      background: linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 100%);
+      color: #fff;
+      box-shadow: 0 2px 12px rgba(15, 23, 42, 0.15);
     }
-    .program-line {
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      opacity: 0.92;
-    }
-    .top-bar a.brand {
+    .sim-brand {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      font-weight: 800;
+      font-size: clamp(0.95rem, 2vw, 1.05rem);
+      letter-spacing: 0.02em;
       text-decoration: none;
-      color: #fff;
-      font-weight: 700;
-      font-size: 1.05rem;
+      color: inherit;
     }
-    .top-bar a.brand img {
-      height: 40px;
+    .sim-brand:hover {
+      color: #e2e8f0;
+    }
+    .sim-brand:focus-visible {
+      outline: 2px solid #93c5fd;
+      outline-offset: 3px;
+      border-radius: 8px;
+    }
+    .sim-brand img {
+      height: 36px;
       width: auto;
-      max-width: 88px;
-      object-fit: contain;
+      display: block;
     }
-    .page-body {
-      flex: 1;
-      width: 100%;
-    }
-    .wrap {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: clamp(20px, 4vw, 36px) clamp(16px, 4vw, 28px) 48px;
-    }
-    .main-panel {
-      background: rgba(255, 255, 255, 0.92);
-      border: 1px solid var(--line);
-      border-radius: 4px;
-      box-shadow: 0 2px 12px rgba(15, 45, 86, 0.08);
-      overflow: hidden;
-    }
-    .main-panel-header {
-      padding: clamp(22px, 4vw, 32px) clamp(20px, 4vw, 36px) clamp(12px, 2vw, 18px);
-      border-bottom: 1px solid var(--line);
-      background: linear-gradient(180deg, #fafbfd 0%, #fff 100%);
-    }
-    h1 {
-      margin: 0 0 12px;
-      font-size: clamp(1.45rem, 3vw, 1.85rem);
-      font-weight: 700;
-      line-height: 1.25;
-      color: var(--header-dark);
-      letter-spacing: -0.02em;
-    }
-    .intro {
-      margin: 0;
-      color: var(--muted);
-      font-size: 1.02rem;
-      max-width: 52rem;
-    }
-    .intro strong {
-      color: var(--ink);
-    }
-    .main-panel-body {
-      padding: clamp(20px, 4vw, 28px) clamp(20px, 4vw, 36px);
-    }
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: clamp(16px, 3vw, 24px);
-      margin-bottom: clamp(20px, 3vw, 28px);
-    }
-    .info-card {
-      border: 1px solid var(--line);
-      border-radius: 4px;
-      padding: 16px 18px;
-      background: #fafbfd;
-    }
-    .info-card h2 {
-      margin: 0 0 10px;
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--header);
+    .sim-topbar-title {
+      font-size: clamp(0.68rem, 1.5vw, 0.78rem);
+      font-weight: 800;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      text-align: right;
+      max-width: min(100%, 420px);
+      line-height: 1.35;
     }
-    .info-card ul {
-      margin: 0;
-      padding-left: 1.15rem;
-      font-size: 0.95rem;
+    .sim-shell {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: clamp(24px, 5vw, 40px) clamp(16px, 4vw, 28px) 48px;
     }
-    .info-card ul li {
-      margin: 6px 0;
+    .sim-card {
+      background: #fff;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: clamp(22px, 4vw, 32px);
+      box-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
     }
-    .cta-card {
-      border: 2px solid var(--accent);
-      background: #f6f9fc;
-    }
-    .cta-card h2 {
-      color: var(--header-dark);
-      text-transform: none;
-      letter-spacing: 0;
-      font-size: 1rem;
-    }
-    .notice {
+    .sim-card h1 {
       margin: 0 0 16px;
-      padding: 12px 16px;
-      border-radius: 4px;
-      border: 1px solid var(--info-border);
-      border-left-width: 4px;
-      background: var(--info-bg);
-      font-size: 0.95rem;
+      font-size: clamp(1.35rem, 3.2vw, 1.65rem);
+      font-weight: 800;
+      color: var(--navy-deep);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
     }
-    .notice[hidden] {
+    .sim-lead {
+      margin: 0 0 24px;
+      font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+      line-height: 1.6;
+      color: var(--muted);
+    }
+    .sim-lead strong {
+      color: #0f172a;
+    }
+    .sim-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .sim-col-included {
+      border-radius: 10px;
+      padding: 18px 18px 20px;
+      background: var(--included-bg);
+      border: 1px solid var(--included-border);
+    }
+    .sim-col-included h2 {
+      margin: 0 0 12px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--navy);
+    }
+    .sim-col-included .sim-subhead {
+      margin: 20px 0 12px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--navy);
+    }
+    .sim-col-included ul + .sim-subhead {
+      margin-top: 22px;
+    }
+    .sim-col-included ul {
+      margin: 0;
+      padding-left: 1.2rem;
+      color: #334155;
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+    .sim-col-included li {
+      margin-bottom: 8px;
+    }
+    .sim-purchase-card {
+      border-radius: 10px;
+      padding: 18px 18px 20px;
+      border: 2px solid var(--navy);
+      background: #f8fafc;
+    }
+    .sim-purchase-card h3 {
+      margin: 0 0 8px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--navy);
+    }
+    .sim-purchase-card > p {
+      margin: 0 0 14px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: #475569;
+    }
+    .sim-banner-paid {
+      margin: 0 0 18px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid #86efac;
+      background: #ecfdf5;
+      color: #14532d;
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+    .sim-banner-paid[hidden] {
       display: none;
     }
-    .notice.is-error {
-      border-color: var(--error-border);
-      background: var(--error-bg);
-      color: var(--error-text);
+    .sim-banner-paid a {
+      color: var(--navy-deep);
+      font-weight: 800;
     }
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-    }
-    .btn-primary {
-      appearance: none;
-      border: 1px solid var(--accent);
-      background: var(--accent);
-      color: #fff;
-      border-radius: 4px;
-      padding: 14px 28px;
-      font: inherit;
-      font-weight: 700;
-      font-size: 1.05rem;
-      cursor: pointer;
-      text-decoration: none;
+    .sim-btn-secondary {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin-top: 10px;
+      padding: 14px 18px;
+      border: 2px solid var(--navy);
+      border-radius: 10px;
+      font: inherit;
+      font-weight: 800;
+      font-size: 0.88rem;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      text-decoration: none;
+      background: #fff;
+      color: var(--navy-deep);
+      box-sizing: border-box;
     }
-    .btn-primary:hover:not(:disabled) {
-      background: var(--accent-hover);
-      border-color: var(--accent-hover);
+    .sim-btn-secondary:hover {
+      background: var(--included-bg);
     }
-    .btn-primary:disabled {
-      opacity: 0.5;
+    .sim-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 10px;
+      font: inherit;
+      font-weight: 800;
+      font-size: 0.88rem;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      color: #fff;
+      background: linear-gradient(165deg, #3b82f6 0%, var(--navy) 100%);
+      box-shadow: 0 4px 14px rgba(30, 58, 138, 0.35);
+      text-decoration: none;
+      box-sizing: border-box;
+    }
+    .sim-btn-primary:hover:not(:disabled) {
+      filter: brightness(1.06);
+    }
+    .sim-btn-primary:disabled {
+      opacity: 0.55;
       cursor: not-allowed;
     }
-    .btn-ghost {
-      appearance: none;
-      border: 2px solid var(--accent);
-      background: #fff;
-      color: var(--accent);
-      border-radius: 4px;
-      padding: 12px 24px;
-      font: inherit;
+    .sim-back {
+      margin: 24px 0 0;
+      font-size: 0.92rem;
+    }
+    .sim-back a {
+      color: var(--navy);
       font-weight: 700;
-      cursor: pointer;
       text-decoration: none;
-      display: inline-flex;
-      align-items: center;
     }
-    .btn-ghost:hover:not(:disabled) {
-      background: var(--info-bg);
+    .sim-back a:hover {
+      text-decoration: underline;
     }
-    .fine-print {
-      margin: 16px 0 0;
-      font-size: 0.88rem;
-      color: var(--muted);
-      padding-top: 16px;
-      border-top: 1px solid var(--line);
+    .sim-promo-callout {
+      margin: 0 0 20px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid #86efac;
+      background: linear-gradient(165deg, #ecfdf5 0%, #d1fae5 100%);
+      color: #14532d;
+      font-size: 0.9rem;
+      line-height: 1.5;
     }
-    .fine-print a {
-      color: var(--accent);
-      font-weight: 600;
-    }
-    #pageErr {
-      margin-top: 10px;
-      color: var(--error-text);
-      font-size: 0.95rem;
-      font-weight: 600;
-    }
-    #pageErr:empty {
+    .sim-promo-callout[hidden] {
       display: none;
     }
-    .site-footer {
-      max-width: 960px;
-      margin: 28px auto 0;
-      padding: 0 clamp(16px, 4vw, 28px) 40px;
-      font-size: 0.78rem;
-      line-height: 1.5;
-      color: var(--muted);
+    .sim-promo-callout strong {
+      color: #052e16;
     }
-    .site-footer .disclaimer {
+    .sim-promo-callout code {
+      font-size: 0.95em;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid #86efac;
+    }
+    .sim-promo-callout-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .sim-promo-callout-copy {
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid #16a34a;
+      background: #fff;
+      color: #14532d;
+      font: inherit;
+      font-weight: 800;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .sim-promo-callout-copy:hover {
+      background: #f0fdf4;
+    }
+    .sim-disclaimer {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 clamp(16px, 4vw, 28px) clamp(24px, 4vw, 36px);
+    }
+    .sim-disclaimer p {
       margin: 0;
+      padding: 16px 18px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      background: rgba(255, 255, 255, 0.72);
+      font-size: 0.78rem;
+      line-height: 1.55;
+      color: #475569;
     }
-    .footer-contact {
-      margin: 18px 0 0;
-      padding-top: 16px;
-      border-top: 1px solid rgba(21, 62, 117, 0.15);
-      font-size: 0.88rem;
-      text-align: center;
-    }
-    .footer-contact a {
-      color: var(--accent);
-      font-weight: 700;
-      text-decoration: none;
-    }
-    .footer-contact a:hover {
-      text-decoration: underline;
+    .sim-disclaimer strong {
+      color: #334155;
     }
   </style>
 </head>
 <body>
-  <header class="top-bar">
-    <div class="top-bar-inner">
-      <a class="brand" href="https://becertifiedtoday.com/">
-        <img
-          src="/images/logo/becertifiedtoday_logo_trans.png"
-          width="512"
-          height="512"
-          alt="Be Certified Today"
-        />
-        <span>ENCOR practice</span>
-      </a>
-      <span class="program-line">CCNP Enterprise core — timed test simulation</span>
-    </div>
+  <header class="sim-topbar">
+    <a class="sim-brand" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html" aria-label="Be Certified Today — ENCOR training portal">
+      <img src="/images/logo/becertifiedtoday_logo_trans.png" width="1024" height="1024" alt="" />
+      <span>ENCOR practice</span>
+    </a>
+    <div class="sim-topbar-title">ENCOR — Timed Test Simulation</div>
   </header>
 
-  <div class="page-body">
-    <div class="wrap">
-      <main class="main-panel">
-        <div class="main-panel-header">
-          <h1>Timed test simulation (one-time purchase)</h1>
-          <p class="intro">
-            Purchase <strong>one timed attempt</strong> for a mixed ENCOR-style session: multiple-choice, drag-and-drop,
-            and CLI labs under a single <strong>120-minute</strong> clock. After payment is confirmed, you’ll continue to
-            the welcome page to read the rules and <strong>Start timed test</strong> when you’re ready. Promotion codes
-            can be applied at checkout when available.
-          </p>
+  <div class="sim-shell">
+    <main class="sim-card">
+      <div id="stripeReturnBanner" class="sim-banner-paid" hidden>
+        Session id detected on this URL. <a id="stripeReturnContinueLink" href="/CCNP-ENCOR-Study/test-simulation-runner.html">Open timed test runner</a> to verify payment and
+        start when you are ready.
+      </div>
+
+      <h1>ENCOR Timed Test Simulation</h1>
+      <p class="sim-lead">
+        <strong>Welcome</strong> to the ENCOR simulated exam. The exam timer is set for <strong>120 minutes</strong>. No downloads and no third-party apps are required—everything runs in your browser from the ENCOR question bank, drag-and-drop set, and CLI labs.
+      </p>
+
+      <div class="sim-stack">
+        <div class="sim-col-included">
+          <h2>What&rsquo;s included</h2>
+          <ul>
+            <li><strong>50</strong> random multiple-choice items</li>
+            <li><strong>5</strong> random drag-and-drop exercises</li>
+            <li><strong>4</strong> random CLI lab simulations</li>
+            <li>Mixed order each run — all <strong>59</strong> items shuffled under one clock</li>
+            <li>One continuous <strong>120-minute</strong> countdown for the full session (single clock)</li>
+          </ul>
+          <h3 class="sim-subhead">Simulation Test Options</h3>
+          <ul>
+            <li>
+              <strong>Next only</strong> — you cannot return to an earlier item. A page refresh or trying to go back to a previous page in the browser will exit the simulated exam.
+            </li>
+            <li><strong>Next</strong> and <strong>Quit</strong> in the exam footer</li>
+            <li>
+              <strong>CLI labs only:</strong> helper shortcuts and unneeded commands are disabled where the lab supports it. Multiple-choice and drag-and-drop use the standard practice pages.
+            </li>
+            <li>When the last item is answered or time runs out: a <strong>results scorecard</strong> shows your scaled score, performance by ENCOR domain, and objectives that need the most work.</li>
+            <li>
+              After the run: return to the <a href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">ENCOR Training Portal</a> to review banks, drag-and-drop, or labs.
+            </li>
+          </ul>
         </div>
-        <div class="main-panel-body">
-          <div class="info-grid">
-            <section class="info-card" aria-labelledby="hdr-format">
-              <h2 id="hdr-format">What’s included</h2>
-              <ul>
-                <li>Random multiple-choice items (non–drag-drop pool)</li>
-                <li>Random drag-and-drop items</li>
-                <li>Random CLI lab simulations</li>
-                <li>One countdown for the full run</li>
-              </ul>
-            </section>
-            <section class="info-card cta-card" aria-labelledby="hdr-next">
-              <h2 id="hdr-next">Next steps</h2>
-              <p id="verifyBanner" class="notice" hidden role="status"></p>
-              <div class="actions">
-                <button type="button" class="btn-primary" id="purchaseBtn">Purchase timed test access</button>
-                <a class="btn-ghost" id="continueWelcome" href="/encor/test-simulation-purchase.html" hidden
-                  >Continue to welcome — start when ready</a
-                >
-              </div>
-              <p id="pageErr" aria-live="polite"></p>
-            </section>
-          </div>
-          <p class="fine-print">
-            <a href="/encor/index.html">← Back to ENCOR practice home</a>
+        <div class="sim-purchase-card">
+          <h3>Begin or purchase</h3>
+          <p>
+            From the training portal, use <strong>Begin timed test</strong> for practice access. One-time checkout unlocks a paid attempt when you are ready to simulate test day.
           </p>
-        </div>
-      </main>
-      <footer class="site-footer">
-        <p class="disclaimer">
-          <strong>Disclaimer:</strong> This website is an independent training resource created for educational purposes
-          only. It is not affiliated with, endorsed by, sponsored by, or approved by Cisco Systems, Inc. Cisco and
-          related trademarks are the property of Cisco Systems, Inc. All practice questions, explanations, and study
-          materials on this site are original or based on general knowledge and are intended as a guide to help users
-          prepare for certification exams. Practice questions are not actual Cisco exam questions. Any similarity to
-          official exam content is coincidental.
-        </p>
-        <p class="footer-contact">
           <a
-            href="mailto:becertified2day@gmail.com?subject=Question%20about%20ENCOR%20practice"
-            >Any questions? Email us.</a
+            class="sim-btn-primary"
+            id="encorTestSimBeginBtn"
+            href="/CCNP-ENCOR-Study/test-simulation-runner.html?bypass=1"
+            style="text-align:center"
+            >Begin timed test</a
           >
-        </p>
-      </footer>
-    </div>
+          <button
+            type="button"
+            class="sim-btn-secondary"
+            id="encorTestSimPurchaseBtn"
+            data-bcc-item-id="encor_timed_simulation"
+            data-bcc-item-name="ENCOR Timed Test Simulation"
+            data-bcc-value="4.99"
+            data-bcc-currency="USD"
+          >
+            Purchase timed test access
+          </button>
+        </div>
+      </div>
+
+      <p class="sim-back">
+        <a href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">&larr; Back to ENCOR training portal</a>
+      </p>
+    </main>
   </div>
 
+  <aside class="sim-disclaimer" aria-label="Legal disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> This website is an independent training resource created for educational purposes only. It is not affiliated with, endorsed by, sponsored
+      by, or approved by Cisco Systems, Inc. Cisco and related trademarks are the property of Cisco Systems, Inc. All practice questions, explanations, and study materials on
+      this site are original or based on general knowledge and are intended as a guide to help users prepare for certification exams. Practice questions are not actual Cisco
+      exam questions. Any similarity to official exam content is coincidental.
+    </p>
+  </aside>
+
+  <script src="/CCNP-ENCOR-Study/js/encor-test-checkout.js" defer></script>
   <script>
     (function () {
-      /** Stripe Payment Link for timed ENCOR test simulation (one-time purchase). */
-      var TEST_SIM_STRIPE_CHECKOUT_URL =
-        "https://buy.stripe.com/3cIaEWbwVb8P8SYejWc3m01";
-      var WELCOME_URL = "/encor/test-simulation-purchase.html";
-      var params = new URLSearchParams(location.search || "");
-      var verifyBanner = document.getElementById("verifyBanner");
-      var errEl = document.getElementById("pageErr");
-      var purchaseBtn = document.getElementById("purchaseBtn");
-      var continueWelcome = document.getElementById("continueWelcome");
+      var RUNNER = "/CCNP-ENCOR-Study/test-simulation-runner.html";
 
-      function startCheckout() {
-        purchaseBtn.disabled = true;
-        errEl.textContent = "";
-        window.location.href = TEST_SIM_STRIPE_CHECKOUT_URL;
+      function stripeReturnBannerIfSession() {
+        var params = new URLSearchParams(window.location.search);
+        var sid = params.get("session_id");
+        var banner = document.getElementById("stripeReturnBanner");
+        var link = document.getElementById("stripeReturnContinueLink");
+        if (!sid || !banner || !link) return;
+        banner.hidden = false;
+        try {
+          var u = new URL(RUNNER, window.location.origin);
+          u.searchParams.set("session_id", sid);
+          link.setAttribute("href", u.pathname + u.search);
+        } catch (_) {}
       }
 
-      purchaseBtn.addEventListener("click", startCheckout);
-
-      var sid = params.get("session_id");
-      if (sid && sid.indexOf("cs_") === 0) {
-        purchaseBtn.disabled = true;
-        continueWelcome.hidden = true;
-        verifyBanner.textContent = "Confirming your payment…";
-        verifyBanner.hidden = false;
-        verifyBanner.classList.remove("is-error");
-        fetch("/api/verify-checkout-session", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ sessionId: sid }),
-        })
-          .then(function (r) {
-            if (!r.ok) throw new Error("verify");
-            return r.json();
-          })
-          .then(function () {
-            verifyBanner.textContent = "Payment confirmed. Continuing to the welcome page…";
-            location.replace(WELCOME_URL);
-          })
-          .catch(function () {
-            verifyBanner.textContent =
-              "We couldn’t confirm payment from this link. Use the return link from Stripe or try purchasing again.";
-            verifyBanner.classList.add("is-error");
-            verifyBanner.hidden = false;
-            purchaseBtn.disabled = false;
-          });
-        return;
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", stripeReturnBannerIfSession);
+      } else {
+        stripeReturnBannerIfSession();
       }
-
-      fetch("/api/encor-access-status", { credentials: "same-origin" })
-        .then(function (r) {
-          if (r.ok) return r.json();
-          throw new Error("no access");
-        })
-        .then(function (data) {
-          if (!data || !data.valid) throw new Error("no access");
-          if (data.tier === "test_sim" && data.testSimConsumed) {
-            verifyBanner.textContent =
-              "Your paid attempt was already used. Purchase again to take another timed test.";
-            verifyBanner.hidden = false;
-            verifyBanner.classList.remove("is-error");
-            continueWelcome.hidden = true;
-            return;
-          }
-          if (data.tier === "test_sim") {
-            verifyBanner.textContent =
-              "You have an active timed-test purchase. Continue to the welcome page to start when you’re ready.";
-            verifyBanner.hidden = false;
-            verifyBanner.classList.remove("is-error");
-            continueWelcome.hidden = false;
-            purchaseBtn.disabled = true;
-            purchaseBtn.style.opacity = "0.65";
-          } else {
-            throw new Error("no access");
-          }
-        })
-        .catch(function () {
-          continueWelcome.hidden = true;
-        });
     })();
   </script>
 </body>

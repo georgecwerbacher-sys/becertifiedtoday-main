@@ -8,7 +8,7 @@
   var BEGIN_RANDOM = "/CCNP-ENCOR-Study/begin-questions-random.html";
   var BEGIN_REVIEW = "/CCNP-ENCOR-Study/begin-questions-review.html";
   var BANK_SIZE = 100;
-  var BANK_COUNT = 5;
+  var BANK_COUNT = 4;
 
   window.ENCOR_PRACTICE = window.ENCOR_PRACTICE || {};
 

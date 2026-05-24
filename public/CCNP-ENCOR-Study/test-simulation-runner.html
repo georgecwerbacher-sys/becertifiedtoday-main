@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>Test simulation — in progress</title>
+  <title>ENCOR Timed Test Simulation — runner | Be Certified Today</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -15,8 +15,6 @@
       min-height: 100vh;
       background: #0b1020;
       color: #e6edf3;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
     }
     .topbar {
       display: flex;
@@ -55,10 +53,12 @@
     }
     .stage {
       min-height: 0;
+      height: calc(100vh - 120px);
     }
     #runnerFrame {
       width: 100%;
       height: 100%;
+      min-height: 480px;
       border: none;
       background: #0b1020;
     }
@@ -167,12 +167,233 @@
       background: #2f66bf;
       color: #e6edf3;
     }
+    #examPanel {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
+    }
+    #examPanel[hidden] {
+      display: none !important;
+    }
+    .gate-wrap {
+      min-height: 100vh;
+      display: grid;
+      place-items: start center;
+      padding: 24px 16px 48px;
+    }
+    .gate-card {
+      width: min(720px, 96vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: clamp(18px, 3vw, 26px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    .gate-card h1 {
+      margin: 0 0 12px;
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+    .gate-card p {
+      margin: 0 0 12px;
+      color: #9fb0cc;
+      line-height: 1.55;
+      font-size: 0.95rem;
+    }
+    .gate-card .status-ok {
+      color: #4ade80;
+    }
+    .gate-card .status-bad {
+      color: #f87171;
+    }
+    #btnGateStartExam {
+      margin-top: 8px;
+      padding: 14px 22px;
+      border-radius: 10px;
+      font: inherit;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: 1px solid #60a5fa;
+      background: linear-gradient(165deg, #3b82f6 0%, #1d4ed8 100%);
+      color: #fff;
+    }
+    #btnGateStartExam:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+    #gateStartWrap[hidden] {
+      display: none !important;
+    }
+    .results-wrap {
+      min-height: 100vh;
+      padding: 24px 16px 48px;
+      box-sizing: border-box;
+    }
+    .results-wrap[hidden] {
+      display: none !important;
+    }
+    .exam-results {
+      width: min(920px, 96vw);
+      margin: 0 auto;
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: clamp(18px, 3vw, 26px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    .exam-results h2 {
+      margin: 0 0 8px;
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+    .exam-results .results-reason {
+      margin: 0 0 16px;
+      font-size: 0.92rem;
+      color: #9fb0cc;
+      line-height: 1.55;
+    }
+    .exam-results .results-score {
+      margin: 0 0 18px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fde047;
+    }
+    .exam-results .results-note {
+      margin: 0;
+      font-size: 0.82rem;
+      color: #9fb0cc;
+      max-width: 62ch;
+      line-height: 1.45;
+    }
+    .exam-results .obj-table-wrap {
+      overflow: auto;
+      max-height: min(52vh, 480px);
+      border: 1px solid #2d3b5a;
+      border-radius: 10px;
+    }
+    .exam-results table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .exam-results th,
+    .exam-results td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid #2d3b5a;
+      vertical-align: top;
+      color: #e6edf3;
+    }
+    .exam-results th {
+      background: #0f1729;
+      color: #8ba4c9;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .exam-results tr:last-child td {
+      border-bottom: none;
+    }
+    .exam-results .obj-pct {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .results-scorecard-section {
+      margin: 22px 0 18px;
+    }
+    .results-scorecard-heading {
+      margin: 0 0 8px;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #8ba4c9;
+    }
+    .scorecard-lead {
+      margin: 0 0 12px;
+    }
+    .results-scorecard-subheading {
+      margin: 18px 0 8px;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #8ba4c9;
+    }
+    .scorecard-tier-priority { color: #fca5a5; font-weight: 700; }
+    .scorecard-tier-review { color: #fcd34d; font-weight: 700; }
+    .scorecard-tier-solid { color: #86efac; font-weight: 700; }
+    .scorecard-tier-strong { color: #4ade80; font-weight: 700; }
+    .scorecard-tier-muted { color: #9fb0cc; font-weight: 600; }
+    .scorecard-by-type {
+      font-size: 0.78rem;
+      color: #9fb0cc;
+      line-height: 1.45;
+    }
+    .scorecard-hint {
+      display: block;
+      margin-top: 4px;
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: #7d8ea3;
+      line-height: 1.35;
+    }
+    .scorecard-weak-list {
+      margin: 0 0 0 1.15rem;
+      padding: 0;
+      color: #9fb0cc;
+      font-size: 0.88rem;
+      line-height: 1.55;
+      max-width: 72ch;
+    }
+    .scorecard-weak-list li {
+      margin-bottom: 10px;
+    }
+    .scorecard-weak-pct {
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      color: #fcd34d;
+    }
+    .results-actions {
+      margin-top: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    #resultsContinue {
+      padding: 12px 22px;
+      border-radius: 10px;
+      font: inherit;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: 1px solid #60a5fa;
+      background: linear-gradient(165deg, #3b82f6 0%, #1d4ed8 100%);
+      color: #fff;
+    }
   </style>
+  <script src="/CCNP-ENCOR-Study/js/encor-test-sim-build.js"></script>
+  <script src="/CCNP-ENCOR-Study/js/encor-test-sim-scorecard.js"></script>
 </head>
 <body>
+  <div id="gatePanel" class="gate-wrap">
+    <div class="gate-card">
+      <h1>ENCOR Timed Test Simulation</h1>
+      <p id="gateStatus">Checking access…</p>
+      <p id="gateBlueprint" class="status-ok" hidden></p>
+      <div id="gateStartWrap" hidden>
+        <button type="button" id="btnGateStartExam">Start timed test</button>
+      </div>
+      <p style="margin-top: 14px; font-size: 0.88rem">
+        <a id="gateBackLink" href="/CCNP-ENCOR-Study/test-simulation.html">← Back to timed test landing</a>
+      </p>
+    </div>
+  </div>
+
+  <div id="examPanel" hidden>
   <header class="topbar">
     <h1 class="topbar-title">
-      <a class="topbar-brand" href="https://becertifiedtoday.com/">CCNP Test simulation</a>
+      <a class="topbar-brand" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">ENCOR timed test</a>
     </h1>
     <div id="timer" class="timer" role="status" aria-live="polite">120:00</div>
   </header>
@@ -186,14 +407,60 @@
     <button id="quitBtn" type="button" class="quit-btn">Quit</button>
     <button id="nextBtn" type="button" class="next-btn">Next</button>
   </footer>
-  <div id="summaryModal" class="summary-modal" role="dialog" aria-modal="true" aria-labelledby="summaryTitle">
-    <div class="summary-card">
-      <h2 id="summaryTitle" class="summary-title">Test simulation summary</h2>
-      <p id="summaryText" class="summary-text"></p>
-      <ul id="summaryList" class="summary-list"></ul>
-      <div class="summary-actions">
-        <button id="summaryClose" type="button" class="summary-close">Close</button>
-        <a class="summary-home" href="/encor/index.html?after_test=1">Continue to home</a>
+  </div>
+
+  <div id="resultsPanel" class="results-wrap" hidden aria-live="polite">
+    <div class="exam-results">
+      <h2 id="resultsHeadline">Attempt summary</h2>
+      <p class="results-reason" id="resultsReason"></p>
+      <p class="results-score" id="resultsScore"></p>
+      <p class="results-note" id="resultsNote"></p>
+
+      <div id="resultsScorecardSection" class="results-scorecard-section">
+        <h3 class="results-scorecard-heading">Study scorecard — where to focus</h3>
+        <p id="resultsScorecardLead" class="results-note scorecard-lead"></p>
+        <div class="obj-table-wrap scorecard-table-wrap">
+          <table aria-describedby="resultsScorecardLead">
+            <thead>
+              <tr>
+                <th scope="col">ENCOR domain</th>
+                <th scope="col">Overall</th>
+                <th scope="col">By item type</th>
+                <th scope="col">Review priority</th>
+              </tr>
+            </thead>
+            <tbody id="resultsDomainScorecardBody"></tbody>
+          </table>
+        </div>
+        <h4 class="results-scorecard-subheading">Objectives that need the most work</h4>
+        <p id="resultsWeakObjectiveLead" class="results-note scorecard-lead"></p>
+        <ul id="resultsWeakObjectiveList" class="scorecard-weak-list"></ul>
+      </div>
+
+      <h3 style="margin: 18px 0 10px; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: #8ba4c9">
+        Performance by exam objective
+      </h3>
+      <div class="obj-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Objective</th>
+              <th scope="col">Topic</th>
+              <th scope="col">Correct</th>
+              <th scope="col">Items</th>
+              <th scope="col">%</th>
+            </tr>
+          </thead>
+          <tbody id="resultsObjectiveBody"></tbody>
+        </table>
+      </div>
+      <div class="results-actions">
+        <button type="button" id="resultsContinue">Continue</button>
+        <p class="results-note">
+          Continue returns you to the
+          <a href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">ENCOR Training Portal</a>. Scaled results use a
+          <strong>1000</strong>-point score with a <strong>800</strong> passing threshold (70% MCQ, 10% drag-and-drop, 20% labs).
+        </p>
       </div>
     </div>
   </div>
@@ -205,10 +472,216 @@
       var quitBtn = document.getElementById("quitBtn");
       var timerEl = document.getElementById("timer");
       var statusEl = document.getElementById("status");
-      var summaryModal = document.getElementById("summaryModal");
-      var summaryText = document.getElementById("summaryText");
-      var summaryList = document.getElementById("summaryList");
-      var summaryClose = document.getElementById("summaryClose");
+      var resultsPanel = document.getElementById("resultsPanel");
+      var resultsContinue = document.getElementById("resultsContinue");
+
+      var gatePanel = document.getElementById("gatePanel");
+      var examPanel = document.getElementById("examPanel");
+      var gateStatus = document.getElementById("gateStatus");
+      var gateBlueprint = document.getElementById("gateBlueprint");
+      var gateStartWrap = document.getElementById("gateStartWrap");
+      var btnGateStartExam = document.getElementById("btnGateStartExam");
+      var STARTER_URL = "/CCNP-ENCOR-Study/test-simulation.html";
+      var sessionOk = false;
+      var bypassMode = false;
+      var testMinutes = 120;
+
+      function showExamUi() {
+        gatePanel.hidden = true;
+        examPanel.hidden = false;
+        resultsPanel.hidden = true;
+      }
+
+      function showGateUi() {
+        gatePanel.hidden = false;
+        examPanel.hidden = true;
+        resultsPanel.hidden = true;
+      }
+
+      function showGateStartOptions() {
+        gateStartWrap.hidden = false;
+        gateStatus.textContent = "When you are ready, start the timed test. The clock runs until you finish or time expires.";
+        gateStatus.className = "status-ok";
+      }
+
+      function loadBlueprintLine() {
+        return fetch("/CCNP-ENCOR-Study/data/encor-test-simulation-blueprint.json", { cache: "no-store" })
+          .then(function (r) {
+            if (!r.ok) throw new Error("blueprint");
+            return r.json();
+          })
+          .then(function (b) {
+            testMinutes = b.durationMinutes != null ? b.durationMinutes : 120;
+            gateBlueprint.textContent =
+              "Blueprint v" +
+              b.schemaVersion +
+              ": " +
+              b.durationMinutes +
+              " min · " +
+              b.multipleChoiceCount +
+              " MCQ · " +
+              b.dragDropCount +
+              " D&D · " +
+              b.labCount +
+              " labs (" +
+              b.totalItems +
+              " items).";
+            gateBlueprint.hidden = false;
+            return b;
+          })
+          .catch(function () {
+            return null;
+          });
+      }
+
+      function beginPaidSessionIfNeeded() {
+        if (bypassMode) return Promise.resolve();
+        return fetch("/api/begin-test-simulation-session", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { Accept: "application/json" },
+        }).then(function (r) {
+          if (r.status === 403) {
+            location.replace(STARTER_URL + "?reason=session_used");
+            return Promise.reject(new Error("redirect"));
+          }
+          if (r.status === 401) {
+            location.replace(STARTER_URL + "?reason=no_access");
+            return Promise.reject(new Error("redirect"));
+          }
+          if (!r.ok) throw new Error("session");
+          return r.json();
+        });
+      }
+
+      function startExamFromGate() {
+        if (!sessionOk) return;
+        btnGateStartExam.disabled = true;
+        gateStatus.textContent = "Building your mixed exam…";
+        gateStatus.className = "status-ok";
+        if (!window.ENCOR_TEST_SIM_BUILD || typeof window.ENCOR_TEST_SIM_BUILD.loadConfigAndBlueprint !== "function") {
+          gateStatus.textContent = "Could not load exam builder.";
+          gateStatus.className = "status-bad";
+          btnGateStartExam.disabled = false;
+          return;
+        }
+        window.ENCOR_TEST_SIM_BUILD.loadConfigAndBlueprint()
+          .then(function (pack) {
+            if (!pack.queue || !pack.queue.length) throw new Error("empty");
+            testMinutes = pack.durationMinutes || testMinutes;
+            queue = pack.queue;
+            index = 0;
+            endsAt = Date.now() + testMinutes * 60 * 1000;
+            try {
+              sessionStorage.setItem("ccnpTestSimQueue", JSON.stringify(queue));
+              sessionStorage.setItem("ccnpTestSimIndex", "0");
+              sessionStorage.setItem("ccnpTestSimEndsAt", String(endsAt));
+            } catch (e) {
+              throw new Error("storage");
+            }
+            return beginPaidSessionIfNeeded();
+          })
+          .then(function () {
+            showExamUi();
+            startExamTimerAndFirstItem();
+          })
+          .catch(function (err) {
+            if (err && err.message === "redirect") return;
+            clearTestState();
+            gateStatus.textContent = "Could not start the exam. Try again or return to the landing page.";
+            gateStatus.className = "status-bad";
+            gateStartWrap.hidden = false;
+            btnGateStartExam.disabled = false;
+          });
+      }
+
+      function startExamTimerAndFirstItem() {
+        timerEl.textContent = formatRemaining(endsAt - Date.now());
+        tick();
+        timerHandle = setInterval(tick, 1000);
+        loadCurrentItem();
+      }
+
+      function canResumeExistingAttempt() {
+        loadState();
+        if (!queue.length || !endsAt || !Number.isFinite(endsAt)) return false;
+        if (endsAt <= Date.now()) {
+          clearTestState();
+          return false;
+        }
+        if (!Number.isFinite(index) || index < 0) index = 0;
+        if (index >= queue.length) index = queue.length - 1;
+        return true;
+      }
+
+      function initGate() {
+        var params = new URLSearchParams(location.search || "");
+        var sessionId = params.get("session_id");
+        bypassMode = params.get("bypass") === "1" || params.get("demo") === "1";
+
+        loadBlueprintLine();
+
+        if (canResumeExistingAttempt()) {
+          sessionOk = true;
+          showExamUi();
+          startExamTimerAndFirstItem();
+          return;
+        }
+
+        showGateUi();
+
+        if (bypassMode) {
+          sessionOk = true;
+          showGateStartOptions();
+          return;
+        }
+
+        if (sessionId && sessionId.indexOf("cs_") === 0) {
+          gateStatus.textContent = "Confirming your payment…";
+          fetch("/api/verify-checkout-session", {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ sessionId: sessionId }),
+          })
+            .then(function (r) {
+              if (!r.ok) throw new Error("verify");
+              return r.json();
+            })
+            .then(function () {
+              sessionOk = true;
+              showGateStartOptions();
+            })
+            .catch(function () {
+              gateStatus.textContent =
+                "We could not confirm payment from this link. Return to the landing page and try again.";
+              gateStatus.className = "status-bad";
+            });
+          return;
+        }
+
+        fetch("/api/encor-access-status", { credentials: "same-origin" })
+          .then(function (r) {
+            if (!r.ok) throw new Error("no access");
+            return r.json();
+          })
+          .then(function (data) {
+            if (!data || !data.valid || data.tier !== "test_sim" || data.testSimConsumed) {
+              throw new Error("no access");
+            }
+            sessionOk = true;
+            showGateStartOptions();
+          })
+          .catch(function () {
+            gateStatus.textContent =
+              "No timed-test access found. Open the landing page to begin practice or purchase a one-time attempt.";
+            gateStatus.className = "status-bad";
+          });
+      }
+
+      btnGateStartExam.addEventListener("click", startExamFromGate);
 
       var queue = [];
       var index = 0;
@@ -325,45 +798,26 @@
         return "Question";
       }
 
-      function renderSummary(reason) {
-        var totals = {
-          question: 0,
-          dragdrop: 0,
-          sim: 0
-        };
-        for (var i = 0; i < queue.length; i += 1) {
-          var item = queue[i] || {};
-          var passed = answeredByIndex[i] === true;
-          if (passed) continue;
-          var kind = String(item.kind || "");
-          if (kind === "sim") totals.sim += 1;
-          else if (kind === "dragdrop" || kind === "dragdrop-json") totals.dragdrop += 1;
-          else totals.question += 1;
-        }
-        var totalMissed = totals.question + totals.dragdrop + totals.sim;
-        summaryText.textContent = reason + " You missed " + totalMissed + " item(s).";
-        summaryList.innerHTML = "";
-        [
-          { label: "Questions", count: totals.question },
-          { label: "Drag and Drop", count: totals.dragdrop },
-          { label: "Labs", count: totals.sim }
-        ].forEach(function (row) {
-          var li = document.createElement("li");
-          li.textContent = row.label + ": " + row.count + " missed";
-          summaryList.appendChild(li);
-        });
-        summaryModal.classList.add("is-open");
+      function endReasonCode(reasonText) {
+        var t = String(reasonText || "").toLowerCase();
+        if (t.indexOf("time is up") >= 0 || t.indexOf("timer") >= 0) return "timeout";
+        if (t.indexOf("quit") >= 0) return "quit";
+        return "complete";
       }
 
-      function updateStatus() {
-        if (!queue.length) {
-          statusEl.textContent = "";
-          return;
+      function showResultsPanel(reasonCode) {
+        gatePanel.hidden = true;
+        examPanel.hidden = true;
+        resultsPanel.hidden = false;
+        if (window.ENCOR_TEST_SIM_SCORECARD && typeof window.ENCOR_TEST_SIM_SCORECARD.showResults === "function") {
+          return window.ENCOR_TEST_SIM_SCORECARD.showResults(reasonCode, queue, answeredByIndex);
         }
-        statusEl.textContent = "Item " + (index + 1) + " of " + queue.length;
+        document.getElementById("resultsHeadline").textContent = "Attempt summary";
+        document.getElementById("resultsReason").textContent = "Results could not be loaded.";
+        return Promise.resolve();
       }
 
-      function endTest(reason) {
+      function endTest(reasonText) {
         if (isOver) return;
         captureCurrentOutcome();
         isOver = true;
@@ -374,16 +828,11 @@
         nextBtn.disabled = true;
         quitBtn.disabled = true;
         timerEl.classList.add("is-expired");
-        statusEl.textContent = reason;
-        frame.srcdoc =
-          "<!doctype html><html><body style=\"margin:0;min-height:100vh;display:grid;place-items:center;background:#0b1020;color:#e6edf3;font-family:Inter,Arial,sans-serif;\">" +
-          "<div style=\"text-align:center;padding:24px;max-width:760px;\">" +
-          "<h2 style=\"margin:0 0 10px;\">Test simulation finished</h2>" +
-          "<p style=\"margin:0 0 16px;color:#b8c3d6;line-height:1.45;\">" + reason + "</p>" +
-          "<a href=\"/encor/index.html?after_test=1\" style=\"display:inline-block;text-decoration:none;background:#2f66bf;border:1px solid #4f84d8;color:#e6edf3;padding:10px 14px;border-radius:10px;font-weight:800;\">Continue to home</a>" +
-          "</div></body></html>";
-        renderSummary(reason);
-        clearTestState();
+        statusEl.textContent = reasonText;
+        var reasonCode = endReasonCode(reasonText);
+        showResultsPanel(reasonCode).then(function () {
+          clearTestState();
+        });
         fetch("/api/end-test-simulation-session", {
           method: "POST",
           credentials: "same-origin",
@@ -441,6 +890,14 @@
         });
       }
 
+      function updateStatus() {
+        if (!queue.length) {
+          statusEl.textContent = "";
+          return;
+        }
+        statusEl.textContent = "Item " + (index + 1) + " of " + queue.length;
+      }
+
       function loadCurrentItem() {
         if (isOver) return;
         if (!queue.length || index < 0 || index >= queue.length) {
@@ -468,22 +925,11 @@
       quitBtn.addEventListener("click", function () {
         endTest("You quit the practice test.");
       });
-      summaryClose.addEventListener("click", function () {
-        summaryModal.classList.remove("is-open");
+      resultsContinue.addEventListener("click", function () {
+        location.href = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html";
       });
 
-      loadState();
-      if (!queue.length || !endsAt || !Number.isFinite(endsAt)) {
-        location.replace("/encor/test-simulation.html");
-        return;
-      }
-      if (!Number.isFinite(index) || index < 0) index = 0;
-      if (index >= queue.length) index = queue.length - 1;
-      saveIndex();
-
-      tick();
-      timerHandle = setInterval(tick, 1000);
-      loadCurrentItem();
+      initGate();
     })();
   </script>
 </body>
