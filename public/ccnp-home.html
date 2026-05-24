@@ -210,6 +210,11 @@
     .cta-main--block {
       width: 100%;
     }
+    button.cta-main {
+      cursor: pointer;
+      appearance: none;
+      max-width: 100%;
+    }
     .brand {
       display: inline-flex;
       align-items: center;
@@ -366,51 +371,10 @@
       gap: clamp(22px, 4vw, 40px);
     }
     .purchase-card-main {
-      flex: 1 1 min(46ch, 100%);
+      flex: 1 1 100%;
+      width: 100%;
       min-width: 0;
-    }
-    /* Right column: large square trans logo */
-    .purchase-card-brand-col {
-      flex: 0 1 clamp(220px, 32vw, 340px);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: clamp(12px, 2.5vw, 18px);
-      align-self: flex-start;
-    }
-    .purchase-card-brand-mark {
-      margin: 0;
-      line-height: 0;
-      padding: 12px 16px;
-      border-radius: 14px;
-      background: #fff;
-      box-shadow: 0 2px 14px rgba(0, 0, 0, 0.22);
-    }
-    .purchase-card-brand-mark img {
-      display: block;
-      height: auto;
-      width: auto;
-      max-height: clamp(120px, 20vw, 220px);
-      max-width: min(220px, 48vw);
-      object-fit: contain;
-      filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.35));
-    }
-    @media (max-width: 639px) {
-      .purchase-card-inner {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .purchase-card-brand-col {
-        flex: 0 1 auto;
-        max-width: min(300px, 100%);
-        margin-left: auto;
-        margin-right: auto;
-        align-items: center;
-      }
-      .purchase-card-brand-mark img {
-        max-height: clamp(100px, 28vw, 180px);
-        max-width: min(200px, 55vw);
-      }
+      max-width: none;
     }
     .purchase-card .purchase-label {
       margin: 0 0 8px;
@@ -442,12 +406,35 @@
       color: var(--muted);
       letter-spacing: 0;
     }
+    .purchase-card .purchase-price-old {
+      display: inline-block;
+      margin-right: 10px;
+      color: #94a3b8;
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+      text-decoration-color: rgba(248, 113, 113, 0.9);
+    }
+    .purchase-card .purchase-price-now {
+      display: inline-block;
+      color: #ffffff;
+    }
+    .purchase-card .purchase-price-note {
+      display: block;
+      margin-top: 6px;
+      font-size: 0.36em;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #bfdbfe;
+    }
     .purchase-card .purchase-lead {
       margin: 0 0 18px;
       color: var(--muted);
       font-size: 1.02rem;
       line-height: 1.55;
       text-align: left;
+    }
+    .purchase-card .purchase-lead--tight {
+      margin-bottom: 10px;
     }
     .purchase-card .purchase-includes {
       margin: 0 0 18px;
@@ -475,21 +462,108 @@
       color: var(--text);
       font-weight: 700;
     }
-    .purchase-access-wrap {
-      margin-top: 20px;
-    }
-    .purchase-one-time-grid {
+    .purchase-cta-stack {
       display: grid;
-      gap: 18px;
       grid-template-columns: 1fr;
+      gap: clamp(16px, 3vw, 22px);
     }
-    @media (min-width: 768px) {
-      .purchase-one-time-grid {
-        grid-template-columns: 1fr 1fr;
+    @media (min-width: 860px) {
+      .purchase-cta-stack {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
     }
-    .purchase-one-time-grid .purchase-track-box {
+    .purchase-primary-cta .purchase-track-box {
       margin-top: 0;
+    }
+    .purchase-secondary-shell {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .purchase-blueprint-callout {
+      margin: 0 0 clamp(20px, 4vw, 28px);
+      padding: clamp(16px, 3vw, 22px) clamp(16px, 3vw, 22px);
+      border-radius: 12px;
+      border: 1px solid rgba(79, 132, 216, 0.38);
+      background: rgba(13, 21, 40, 0.55);
+    }
+    .purchase-blueprint-title {
+      margin: 0 0 12px;
+      font-size: clamp(1.02rem, 2.3vw, 1.18rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      color: var(--text);
+    }
+    .purchase-blueprint-lead {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: clamp(0.92rem, 2vw, 1rem);
+      line-height: 1.55;
+    }
+    .purchase-blueprint-note {
+      margin: 0 0 14px;
+      font-size: 0.86rem;
+      line-height: 1.5;
+      color: #8899b5;
+    }
+    .purchase-blueprint-table-wrap {
+      margin: 0 0 16px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(11, 16, 32, 0.45);
+    }
+    .purchase-domain-table {
+      width: 100%;
+      min-width: 480px;
+      border-collapse: collapse;
+      font-size: clamp(0.84rem, 1.9vw, 0.94rem);
+    }
+    .purchase-domain-table th,
+    .purchase-domain-table td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .purchase-domain-table thead th {
+      background: rgba(18, 26, 43, 0.92);
+      font-weight: 800;
+      color: #c8daf8;
+    }
+    .purchase-domain-table tbody th {
+      font-weight: 700;
+      color: var(--text);
+    }
+    .purchase-domain-table tbody tr:last-child th,
+    .purchase-domain-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    .purchase-domain-table td:nth-child(2) {
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      color: #a8c4f0;
+    }
+    .purchase-blueprint-order-title {
+      margin: 0 0 8px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #6b8ab8;
+    }
+    .purchase-blueprint-order {
+      margin: 0 0 14px;
+      padding-left: 1.2rem;
+      color: #b8c3d6;
+      font-size: clamp(0.9rem, 2vw, 0.98rem);
+      line-height: 1.55;
+    }
+    .purchase-blueprint-order li {
+      margin-bottom: 4px;
     }
     .purchase-track-box {
       margin-top: 18px;
@@ -497,6 +571,33 @@
       border-radius: 12px;
       border: 1px solid var(--accent-border);
       background: rgba(47, 102, 191, 0.08);
+    }
+    .purchase-pricing-option {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      margin-top: 0;
+      padding: clamp(18px, 3vw, 22px) clamp(16px, 3vw, 20px);
+    }
+    .purchase-pricing-option .purchase-track-cta-wrap {
+      margin-top: auto;
+    }
+    .purchase-pricing-option .purchase-access-disclaimer {
+      margin-top: 12px;
+    }
+    .purchase-track-box--ten-day {
+      border-color: rgba(250, 204, 21, 0.45);
+      background: rgba(250, 204, 21, 0.1);
+    }
+    .purchase-track-box--ten-day .purchase-track-title {
+      color: #fef3c7;
+    }
+    .purchase-track-box--thirty-day .purchase-access-disclaimer {
+      border-top-color: rgba(255, 255, 255, 0.22);
+      color: #fff;
+    }
+    .purchase-track-box--thirty-day .purchase-access-disclaimer strong {
+      color: #fff;
     }
     .purchase-track-box--encor-live {
       padding: clamp(18px, 3vw, 22px) clamp(16px, 3vw, 20px);
@@ -576,6 +677,14 @@
       color: var(--muted);
       font-size: 0.9rem;
       line-height: 1.45;
+    }
+    .purchase-version-plug {
+      margin: -4px 0 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      line-height: 1.4;
+      color: #9fb0cc;
+      letter-spacing: 0.01em;
     }
     .purchase-track-sub a {
       color: #a8c4f0;
@@ -1442,6 +1551,28 @@
     .ccna-sim-promo-lead strong {
       color: #e8f4ee;
     }
+    .ccna-portal-gate-help {
+      margin: 0 0 14px;
+      font-size: 0.94rem;
+      line-height: 1.45;
+      color: rgba(230, 237, 243, 0.85);
+    }
+    .ccna-portal-gate-help a.ccna-portal-gate-email-link {
+      color: #ffffff;
+      font-weight: 800;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+    .ccna-portal-gate-help a.ccna-portal-gate-email-link:hover {
+      color: #f0f4fc;
+    }
+    .ccna-portal-gate-help--secondary {
+      margin-top: -6px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: rgba(230, 237, 243, 0.72);
+    }
     .ccna-sim-promo-list {
       margin: 0 0 18px;
       padding-left: 1.15rem;
@@ -1512,7 +1643,8 @@
       gap: 10px;
       align-items: center;
     }
-    .ccna-sim-promo-actions a.ccna-sim-promo-primary {
+    .ccna-sim-promo-actions a.ccna-sim-promo-primary,
+    .ccna-sim-promo-actions button.ccna-sim-promo-primary {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -1520,6 +1652,7 @@
       min-height: 48px;
       border-radius: 12px;
       border: 1px solid rgba(61, 157, 114, 0.65);
+      font: inherit;
       font-weight: 800;
       font-size: 0.86rem;
       letter-spacing: 0.04em;
@@ -1528,11 +1661,18 @@
       background: linear-gradient(165deg, rgba(52, 168, 118, 0.95) 0%, rgba(24, 94, 66, 0.98) 100%);
       box-shadow: 0 6px 22px rgba(24, 94, 66, 0.35);
       touch-action: manipulation;
+      cursor: pointer;
     }
-    .ccna-sim-promo-actions a.ccna-sim-promo-primary:hover {
+    .ccna-sim-promo-actions button.ccna-sim-promo-primary {
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .ccna-sim-promo-actions a.ccna-sim-promo-primary:hover,
+    .ccna-sim-promo-actions button.ccna-sim-promo-primary:hover {
       filter: brightness(1.06);
     }
-    .ccna-sim-promo-actions a.ccna-sim-promo-primary:focus-visible {
+    .ccna-sim-promo-actions a.ccna-sim-promo-primary:focus-visible,
+    .ccna-sim-promo-actions button.ccna-sim-promo-primary:focus-visible {
       outline: 2px solid #86efac;
       outline-offset: 3px;
     }
@@ -1563,7 +1703,9 @@
         align-items: stretch;
       }
       .ccna-sim-promo-actions a.ccna-sim-promo-primary,
-      .ccna-sim-promo-actions .ccna-sim-promo-secondary {
+      .ccna-sim-promo-actions button.ccna-sim-promo-primary,
+      .ccna-sim-promo-actions .ccna-sim-promo-secondary,
+      .ccna-sim-promo-actions a.ccna-sim-promo-secondary {
         width: 100%;
         justify-content: center;
       }
@@ -1589,13 +1731,15 @@
         />
       </a>
       <div class="header-actions">
-        <!-- Registered: ENCOR_Training_Portal.html; else header opens join dialog → ccnp-home#purchase -->
+        <!-- Header: ENCOR training portal — paid access passes through; others see purchase dialog. -->
         <a
           id="ccnpPortalHeaderBtn"
-          class="ccna-portal-header-btn ccna-portal-header-btn--purchase"
-          href="#"
-          aria-label="Join CCNP ENCOR training — opens join dialog"
-          >Join CCNP training</a
+          class="ccna-portal-header-btn ccna-portal-header-btn--active"
+          href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html"
+          data-ccnp-portal-nav
+          title="CCNP ENCOR training portal — requires active access on this browser"
+          aria-label="CCNP ENCOR training portal — open when you have active access, or see how to purchase"
+          >CCNP ENCOR Training Portal</a
         >
       </div>
     </header>
@@ -1625,231 +1769,8 @@
             <li>Question banks and study paths organized by exam topic—not random blog posts.</li>
             <li>Review quiz mode loops missed answers back to the end so weak topics get extra reps.</li>
             <li>Progress tracking helps you focus study time where it is needed most.</li>
-            <li>
-              <strong>$19.99</strong> buys <strong>30 days</strong> of full access: every practice question, CLI lab,
-              drag-and-drop set, and timed exam simulation—no recurring membership.
-            </li>
             <li>New questions are added continuously to keep preparation current.</li>
           </ul>
-          <section class="formats-section" aria-labelledby="formats-title">
-            <div class="formats-inner">
-              <p class="formats-head">Training paths</p>
-              <h2 id="formats-title">CHOOSE YOUR CERTIFICATION TRAINING PORTAL</h2>
-              <p class="formats-lead">
-                Pick a training path to enter the right practice library and study flow.
-              </p>
-              <ul class="formats-grid formats-grid--tri" aria-label="Certification training containers">
-                <li>
-                  <article
-                    class="format-card format-card--soon-disabled"
-                    aria-labelledby="comptia-training-title"
-                    aria-describedby="comptia-soon-banner"
-                  >
-                    <p class="format-card-soon-banner" id="comptia-soon-banner" role="status">Security+ coming soon</p>
-                    <h3 id="comptia-training-title">CompTIA Training</h3>
-                    <figure class="format-card-thumb">
-                      <img
-                        src="/images/comptia-training-card-thumbnail.png"
-                        width="1024"
-                        height="682"
-                        alt="IT professional with a laptop and a security lock hologram, suggesting cybersecurity training."
-                        decoding="async"
-                        loading="lazy"
-                      />
-                    </figure>
-                    <p>
-                      Security+ training path with targeted practice sets and exam-style preparation.
-                    </p>
-                  </article>
-                </li>
-                <li>
-                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="ccnp-training-title">
-                    <h3 id="ccnp-training-title">CCNP Training</h3>
-                    <figure class="format-card-thumb">
-                      <img
-                        src="/images/ccnp-training-card-thumbnail.png"
-                        width="1024"
-                        height="682"
-                        alt="Network engineer working with fiber optic cables in a data center server room."
-                        decoding="async"
-                        loading="lazy"
-                      />
-                    </figure>
-                    <p class="format-card-encor-live">
-                      <span class="encor-live-badge">Live</span>
-                      <span class="format-card-encor-live-label">CCNP ENCOR training is up and running.</span>
-                    </p>
-                    <p>
-                      Professional-level training with interactive formats, labs, drag-and-drop, and timed simulation.
-                    </p>
-                    <p class="format-sample format-sample--main-cta">
-                      <a
-                        class="cta-main cta-main--block"
-                        href="https://becertifiedtoday-encor.vercel.app/"
-                        rel="noopener noreferrer"
-                        >ACCESS ENCOR TRAINING PORTAL TODAY</a
-                      >
-                    </p>
-                  </article>
-                </li>
-              </ul>
-            </div>
-          </section>
-          <div class="samples-stack">
-            <section class="samples-block" aria-labelledby="home-encor-samples-title">
-              <h2 class="samples-block-title" id="home-encor-samples-title">CCNP ENCOR samples</h2>
-              <p class="samples-block-lead">
-                Short ENCOR-format samples on the live ENCOR app—questions, drag-and-drop, and CLI lab.
-              </p>
-              <ul class="formats-grid formats-grid--tri" aria-label="CCNP ENCOR sample activities">
-                <li>
-                  <article class="format-card" aria-labelledby="home-format-q-title">
-                    <h3 id="home-format-q-title">CCNP-ENCOR · Sample questions</h3>
-                    <figure class="format-card-thumb">
-                      <img
-                        src="/images/practice-questions-sample-thumbnail.jpg"
-                        width="1024"
-                        height="556"
-                        alt="Multiple-choice sample: OSPF designated router question with instant correct feedback."
-                        decoding="async"
-                        loading="lazy"
-                      />
-                    </figure>
-                    <p>Try a short five-question interactive sample.</p>
-                    <p class="format-sample">
-                      <a href="https://becertifiedtoday-encor.vercel.app/sample?track=questions" rel="noopener noreferrer"
-                        >Open sample questions</a>
-                    </p>
-                  </article>
-                </li>
-                <li>
-                  <article class="format-card" aria-labelledby="home-format-dd-title">
-                    <h3 id="home-format-dd-title">CCNP-ENCOR · Sample drag-and-drop</h3>
-                    <figure class="format-card-thumb">
-                      <img
-                        src="/images/drag-drop-sample-thumbnail.jpg"
-                        width="1024"
-                        height="535"
-                        alt="OSPF troubleshooting drag-and-drop sample: snippets moved into CLI-style blanks."
-                        decoding="async"
-                        loading="lazy"
-                      />
-                    </figure>
-                    <p>Practice one performance-style drag-and-drop item.</p>
-                    <p class="format-sample">
-                      <a href="https://becertifiedtoday-encor.vercel.app/sample?track=drag" rel="noopener noreferrer"
-                        >Open sample drag-and-drop</a>
-                    </p>
-                  </article>
-                </li>
-                <li>
-                  <article class="format-card" aria-labelledby="home-format-lab-title">
-                    <h3 id="home-format-lab-title">CCNP-ENCOR · Sample lab</h3>
-                    <figure class="format-card-thumb">
-                      <img
-                        src="/images/hands-on-lab-sample-thumbnail.jpg"
-                        width="1024"
-                        height="705"
-                        alt="Rapid PVST and LACP sample lab: simulated SW20 CLI over the topology diagram."
-                        decoding="async"
-                        loading="lazy"
-                      />
-                    </figure>
-                    <p>Run a hands-on CLI simulation in the browser.</p>
-                    <p class="format-sample">
-                      <a href="https://becertifiedtoday-encor.vercel.app/sample?track=labs" rel="noopener noreferrer"
-                        >Open sample lab</a>
-                    </p>
-                  </article>
-                </li>
-              </ul>
-            </section>
-          </div>
-          <div class="card purchase-card" id="purchase">
-            <div class="purchase-card-inner">
-              <div class="purchase-card-main">
-                <p class="purchase-label">Purchase</p>
-                <h2 class="purchase-heading">30-day full access</h2>
-                <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
-                  $19.99 <span>/ 30 days</span>
-                </p>
-                <p class="purchase-lead">
-                  One payment unlocks full access to all training courses and certification tracks for one month:
-                  practice questions, hands-on CLI labs, drag-and-drop items, and full timed exam simulations.
-                </p>
-                <ul class="purchase-includes">
-                  <li>All courses, question banks, and study modes</li>
-                  <li>Every CLI simulation lab across available tracks</li>
-                  <li>Standard and JSON drag-and-drop sets across all courses</li>
-                  <li>Timed test simulations (mixed question, lab, and drag-and-drop runs)</li>
-                </ul>
-                <p class="purchase-notes">
-                  <strong>No recurring membership.</strong> Thirty days of access for a single price—when it ends,
-                  renew only if you want another month.
-                  <strong>No additional software</strong> is required; everything runs in your browser.
-                </p>
-                <div class="purchase-access-wrap">
-                  <div class="purchase-one-time-grid">
-                    <div class="purchase-track-box purchase-track-box--encor-live" aria-label="One-time ENCOR simulation exam purchase">
-                      <div class="purchase-track-head">
-                        <p class="purchase-track-title">One-time simulation exam (ENCOR for CCNP)</p>
-                        <span class="encor-live-badge">Live</span>
-                      </div>
-                      <p class="purchase-track-sub">
-                        ENCOR timed practice test: 120 minutes, mixed multiple-choice, drag-and-drop, and lab items. Stripe Checkout when configured on the ENCOR training site.
-                      </p>
-                      <p class="purchase-track-cta-wrap">
-                        <a
-                          class="cta-main cta-main--block"
-                          href="https://becertifiedtoday-encor.vercel.app/encor/test-simulation.html"
-                          rel="noopener noreferrer"
-                          aria-label="Purchase one-time simulation exam for ENCOR for CCNP"
-                          >PURCHASE ONE-TIME ENCOR (CCNP) SIMULATION EXAM</a
-                        >
-                      </p>
-                      <p class="purchase-access-disclaimer">
-                        <strong>$4.99 one-time.</strong> No recurring membership. Opens preparation and purchase on becertifiedtoday-encor.vercel.app.
-                      </p>
-                    </div>
-                  </div>
-                  <div class="purchase-track-box purchase-track-box--encor-live" aria-label="CCNP ENCOR training live">
-                    <div class="purchase-track-head">
-                      <p class="purchase-track-title">CCNP ENCOR training</p>
-                      <span class="encor-live-badge">Live</span>
-                    </div>
-                    <p class="purchase-track-sub">
-                      <strong class="encor-live-lead">CCNP ENCOR training is live—</strong>
-                      the full practice library is up and running in your browser: questions, labs, drag-and-drop, and timed
-                      simulation.
-                    </p>
-                    <p class="purchase-track-cta-wrap">
-                      <a
-                        class="cta-main cta-main--block"
-                        href="https://becertifiedtoday-encor.vercel.app/"
-                        rel="noopener noreferrer"
-                        >ACCESS ENCOR TRAINING PORTAL TODAY</a
-                      >
-                    </p>
-                    <p class="purchase-access-disclaimer">
-                      No membership required. 30-day full access. No PDFs or downloads, including labs.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="purchase-card-brand-col">
-                <figure class="purchase-card-brand-mark" aria-hidden="true">
-                  <img
-                    src="/images/logo/becertifiedtoday_logo_trans.png"
-                    width="1024"
-                    height="1024"
-                    alt=""
-                    decoding="async"
-                    loading="lazy"
-                  />
-                </figure>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -1897,7 +1818,7 @@
                   </p>
                   <p>
                     Full ENCOR training:
-                    <a href="https://becertifiedtoday-encor.vercel.app/" rel="noopener noreferrer">becertifiedtoday-encor.vercel.app</a>
+                    <a href="/CCNP-ENCOR-Study/encor-portal-request-link.html">Email me a portal link</a>
                   </p>
                 </div>
               </details>
@@ -2003,7 +1924,7 @@
       </p>
       <p class="ccna-sim-promo-purchase-origin">
         Preparation and purchase open on
-        <a href="https://becertifiedtoday-encor.vercel.app/" target="_blank" rel="noopener noreferrer">becertifiedtoday-encor.vercel.app</a>.
+        <a href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">the CCNP ENCOR training portal</a>.
       </p>
       <p class="ccna-sim-promo-lead">
         Full exam-style run in the browser: <strong>questions</strong>, <strong>drag-and-drop</strong>, and
@@ -2244,62 +2165,44 @@
         ×
       </button>
       <p class="ccna-sim-promo-eyebrow">CCNP ENCOR Training Portal</p>
-      <h2 id="ccnpPortalGateTitle">Join CCNP ENCOR training</h2>
+      <h2 id="ccnpPortalGateTitle">Portal access required</h2>
       <p class="ccna-sim-promo-lead">
-        Full ENCOR practice—questions, CLI labs, drag-and-drop, and timed simulation—is on the
-        training portal after you purchase access. Start on the <strong>CCNP home page</strong> to see
-        plans and checkout options.
+        The CCNP ENCOR Training Portal is for learners with <strong>active library access</strong> on
+        <strong>this browser</strong> (after Stripe checkout on this site). If you have not purchased yet, choose
+        <strong>10-day or 30-day access</strong> below—no recurring subscription.
+      </p>
+      <p class="ccna-portal-gate-help">
+        Already paid but blocked?
+        <a class="ccna-portal-gate-email-link" href="/CCNP-ENCOR-Study/encor-portal-request-link.html">Email me a portal link</a>
+      </p>
+      <p class="ccna-portal-gate-help ccna-portal-gate-help--secondary">
+        On a new device or browser? That’s normal. Submit your checkout email from this device and we’ll restore portal access here.
       </p>
       <div class="ccna-sim-promo-actions">
-        <a
+        <button
+          type="button"
           class="ccna-sim-promo-primary"
-          href="/ccnp-home.html#purchase"
-          data-ccnp-portal-gate-dismiss
-          aria-label="Go to CCNP home purchase section to join"
-          >Join on CCNP home</a
+          data-encor-portal-30d-checkout
+          aria-label="Purchase 30-day ENCOR library access and go to Stripe checkout"
         >
+          Purchase 30-day access
+        </button>
         <button type="button" class="ccna-sim-promo-secondary" data-ccnp-portal-gate-dismiss>Close</button>
       </div>
     </div>
   </div>
-  <script src="/CCNA-Study/js/ccna-portal-30d-storage.js" defer></script>
+  <script src="/CCNP-ENCOR-Study/js/encor-portal-storage.js" defer></script>
+  <script src="/CCNP-ENCOR-Study/js/encor-portal-30d-checkout.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       var PORTAL_HREF = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html";
-      var portalBtn = document.getElementById("ccnpPortalHeaderBtn");
-      if (!portalBtn) return;
-
-      function hasPortalAccess() {
-        return typeof window.bccPortalAccessActive === "function" && window.bccPortalAccessActive();
-      }
-
-      function syncPortalHeader() {
-        if (hasPortalAccess()) {
-          portalBtn.href = PORTAL_HREF;
-          portalBtn.removeAttribute("rel");
-          portalBtn.removeAttribute("target");
-          portalBtn.textContent = "CCNP ENCOR Training Portal";
-          portalBtn.classList.add("ccna-portal-header-btn--active");
-          portalBtn.classList.remove("ccna-portal-header-btn--purchase");
-          portalBtn.setAttribute(
-            "aria-label",
-            "Open CCNP ENCOR training portal"
-          );
-        } else {
-          portalBtn.href = "#";
-          portalBtn.removeAttribute("rel");
-          portalBtn.removeAttribute("target");
-          portalBtn.textContent = "Join CCNP training";
-          portalBtn.classList.remove("ccna-portal-header-btn--active");
-          portalBtn.classList.add("ccna-portal-header-btn--purchase");
-          portalBtn.setAttribute("aria-label", "Join CCNP ENCOR training — opens join dialog");
-        }
-      }
-
-      syncPortalHeader();
-
       var gateRoot = document.getElementById("ccnpPortalGateRoot");
       var gatePanel = gateRoot && gateRoot.querySelector(".ccna-sim-promo-panel");
+
+      function hasPortalAccess() {
+        return typeof window.bccEncorPortalAccessActive === "function" && window.bccEncorPortalAccessActive();
+      }
+
       var prevOverflow = "";
       var gateOpen = false;
 
@@ -2340,14 +2243,20 @@
         });
       }
 
-      portalBtn.addEventListener("click", function (ev) {
+      function onPortalNavClick(ev) {
         if (hasPortalAccess()) return;
         ev.preventDefault();
         openGate();
+      }
+
+      document.querySelectorAll("[data-ccnp-portal-nav]").forEach(function (el) {
+        el.addEventListener("click", onPortalNavClick);
       });
 
       window.addEventListener("storage", function (ev) {
-        if (ev.key === "bcc_ccna_portal_30d_v1") syncPortalHeader();
+        if (ev.key === "bcc_encor_portal_v1") {
+          /* access may have changed in another tab */
+        }
       });
     });
   </script>

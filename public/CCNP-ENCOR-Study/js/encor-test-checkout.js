@@ -8,21 +8,31 @@
     "https://buy.stripe.com/3cIaEWbwVb8P8SYejWc3m01";
 
   document.addEventListener("DOMContentLoaded", function () {
-    var btn = document.getElementById("encorTestSimPurchaseBtn");
-    if (!btn) return;
-    btn.addEventListener("click", function () {
-      if (btn.dataset.loading === "1") return;
-      if (typeof window.bccTrackBeginCheckout === "function") {
-        btn.setAttribute("data-bcc-item-id", "encor_timed_simulation");
-        btn.setAttribute("data-bcc-item-name", "ENCOR Timed Test Simulation");
-        btn.setAttribute("data-bcc-value", "4.99");
-        btn.setAttribute("data-bcc-currency", "USD");
-        window.bccTrackBeginCheckout(btn);
+    var buttons = [];
+    var byId = document.getElementById("encorTestSimPurchaseBtn");
+    if (byId) buttons.push(byId);
+    document.querySelectorAll("[data-encor-test-sim-checkout]").forEach(function (btn) {
+      if (buttons.indexOf(btn) === -1) buttons.push(btn);
+    });
+
+    buttons.forEach(function (btn) {
+      if (!btn.dataset.encorTestSimCheckoutLabel) {
+        btn.dataset.encorTestSimCheckoutLabel = btn.textContent.trim() || "Get simulated exam";
       }
-      btn.dataset.loading = "1";
-      btn.textContent = "Redirecting…";
-      btn.disabled = true;
-      window.location.href = ENCOR_TEST_SIM_STRIPE_PAYMENT_LINK;
+      btn.addEventListener("click", function () {
+        if (btn.dataset.loading === "1") return;
+        if (typeof window.bccTrackBeginCheckout === "function") {
+          btn.setAttribute("data-bcc-item-id", "encor_timed_simulation");
+          btn.setAttribute("data-bcc-item-name", "ENCOR Timed Test Simulation");
+          btn.setAttribute("data-bcc-value", "4.99");
+          btn.setAttribute("data-bcc-currency", "USD");
+          window.bccTrackBeginCheckout(btn);
+        }
+        btn.dataset.loading = "1";
+        btn.textContent = "Redirecting…";
+        btn.disabled = true;
+        window.location.href = ENCOR_TEST_SIM_STRIPE_PAYMENT_LINK;
+      });
     });
   });
 })();

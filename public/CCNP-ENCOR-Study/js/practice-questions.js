@@ -12,9 +12,9 @@
   var REVIEW_QUEUE_KEY = "ccnpReviewQueue";
   /** When set (e.g. by begin-landing-sample), queue "Next" after the last item goes here instead of the launcher. */
   var QUEUE_EXIT_HREF_KEY = "ccnpQueueExitHref";
-  /** Member hub on the live Encor deployment (toolbar Home / launcher). */
-  var CCNP_PORTAL_HOME = "https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html";
-  var LOCAL_ENCOR_PORTAL = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html";
+  /** ENCOR training portal (toolbar Home / launcher). */
+  var CCNP_PORTAL_HOME = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html";
+  var LOCAL_ENCOR_PORTAL = CCNP_PORTAL_HOME;
   var ENCOR_MCQ_DIR = "/CCNP-ENCOR-Study/ENCOR_Questions";
   var ENCOR_DND_DIR = "/CCNP-ENCOR-Study/CCNP-ENCOR-Drag-Drop";
 
@@ -56,22 +56,13 @@
   }
 
   function activePortalHome() {
-    var host = (location.hostname || "").toLowerCase();
-    if (
-      host === "becertifiedtoday.com" ||
-      host === "www.becertifiedtoday.com" ||
-      localEncorQuestionsTree() ||
-      /\/ccnp-encor-study\//i.test(location.pathname || "")
-    ) {
-      return LOCAL_ENCOR_PORTAL;
-    }
-    return CCNP_PORTAL_HOME;
+    return LOCAL_ENCOR_PORTAL;
   }
 
   function isPortalLauncherHref(href) {
     if (!href || typeof href !== "string") return false;
     var t = href.trim();
-    if (t === "/CCNP_Encor.html" || t === CCNP_PORTAL_HOME || t === LOCAL_ENCOR_PORTAL) return true;
+    if (t === "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html" || t === CCNP_PORTAL_HOME || t === LOCAL_ENCOR_PORTAL) return true;
     return t.indexOf(CCNP_PORTAL_HOME + "?") === 0;
   }
 

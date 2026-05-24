@@ -2,10 +2,9 @@
  * POST /api/stripe-webhook
  * Stripe Dashboard → Developers → Webhooks → Add endpoint.
  *
- * The endpoint URL must be the deployment that owns this codebase (same project as CCNA Checkout), e.g.
+ * The endpoint URL must be the deployment that owns this codebase (same project as CCNA/ENCOR Checkout), e.g.
  *   https://becertifiedtoday.com/api/stripe-webhook
- * A different Vercel app (e.g. becertifiedtoday-encor.vercel.app) has its own /api/stripe-webhook — use a
- * separate Stripe webhook entry + signing secret per deployment if you use one Stripe account for multiple sites.
+ * If you run multiple deployments against one Stripe account, use a separate webhook entry + signing secret per site.
  *
  * Events: checkout.session.completed (add others as needed).
  *
@@ -22,11 +21,13 @@ import {
   checkoutSessionIsPaid,
   inferProductIdFromCheckoutSession,
   isCcnaPortalProduct,
+  isEncorPortalProduct,
   portalAccessExpiresAtMs,
   upsertCustomerPortalMetadata,
+  upsertEncorCustomerPortalMetadata,
 } from "../server-lib/ccna-portal-stripe.js";
 import { signPortalMagicJwt } from "../server-lib/ccna-portal-magic-jwt.js";
-import { sendCcnaPortalMagicEmail } from "../server-lib/ccna-portal-resend.js";
+import { sendCcnaPortalMagicEmail, sendEncorPortalMagicEmail } from "../server-lib/ccna-portal-resend.js";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -83,31 +84,42 @@ export default async function handler(req, res) {
         const productId = inferProductIdFromCheckoutSession(session);
         console.info("[stripe] checkout.session.completed", session.id, "productId=", productId);
 
-        if (!isCcnaPortalProduct(productId)) {
+        if (!isCcnaPortalProduct(productId) && !isEncorPortalProduct(productId)) {
           break;
         }
 
         const accessExpiresAtMs = portalAccessExpiresAtMs(session, productId);
-        await upsertCustomerPortalMetadata(stripe, session, accessExpiresAtMs);
+        if (isEncorPortalProduct(productId)) {
+          await upsertEncorCustomerPortalMetadata(stripe, session, accessExpiresAtMs);
+        } else {
+          await upsertCustomerPortalMetadata(stripe, session, accessExpiresAtMs);
+        }
 
         const jwtSecret = (process.env.PORTAL_MAGIC_LINK_SECRET || "").trim();
         const site = normalizePublicSiteUrl(process.env.PUBLIC_SITE_URL);
         const email = (session.customer_details?.email || "").trim().toLowerCase();
 
         if (jwtSecret && site && email) {
+          const aud = isEncorPortalProduct(productId) ? "encor-portal-access" : "ccna-portal-access";
           const token = signPortalMagicJwt(
             {
-              aud: "ccna-portal-access",
+              aud,
               cs: session.id,
               exp: Math.floor(accessExpiresAtMs / 1000),
             },
             jwtSecret
           );
-          const magicUrl = `${site}/CCNA-Study/ccna-portal-magic.html#t=${encodeURIComponent(token)}`;
-          await sendCcnaPortalMagicEmail({ to: email, magicUrl });
+          const magicUrl = isEncorPortalProduct(productId)
+            ? `${site}/CCNP-ENCOR-Study/encor-portal-magic.html#t=${encodeURIComponent(token)}`
+            : `${site}/CCNA-Study/ccna-portal-magic.html#t=${encodeURIComponent(token)}`;
+          if (isEncorPortalProduct(productId)) {
+            await sendEncorPortalMagicEmail({ to: email, magicUrl });
+          } else {
+            await sendCcnaPortalMagicEmail({ to: email, magicUrl });
+          }
         } else {
           console.warn(
-            "[ccna-portal] Magic email skipped (set PORTAL_MAGIC_LINK_SECRET + PUBLIC_SITE_URL + collect email at checkout)",
+            "[portal] Magic email skipped (set PORTAL_MAGIC_LINK_SECRET + PUBLIC_SITE_URL + collect email at checkout)",
             { hasJwt: !!jwtSecret, hasSite: !!site, hasEmail: !!email }
           );
         }

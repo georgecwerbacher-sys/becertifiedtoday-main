@@ -1100,5 +1100,107 @@
   </div>
   <script src="/CCNP-ENCOR-Study/js/encor-practice-hub.js" defer></script>
   <script src="/CCNP-ENCOR-Study/js/encor-dragdrop-hub.js" defer></script>
+  <script src="/CCNP-ENCOR-Study/js/encor-portal-storage.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      function qs(name) {
+        try {
+          return new URLSearchParams(window.location.search).get(name);
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function fetchVerifyPortalPurchase(sessionId) {
+        return fetch("/api/verify-checkout-session?session_id=" + encodeURIComponent(sessionId)).then(function (res) {
+          return res.json().then(function (data) {
+            return { res: res, data: data };
+          });
+        });
+      }
+
+      function grantPortalFromVerifyPair(pair, checkoutSessionId, stripSessionQuery) {
+        var res = pair.res;
+        var data = pair.data || {};
+        if (
+          !res.ok ||
+          !data.ok ||
+          (data.productId !== "encor-portal-30d" && data.productId !== "encor-portal-10d")
+        ) {
+          return false;
+        }
+        var exp =
+          typeof data.accessExpiresAt === "number" && Number.isFinite(data.accessExpiresAt)
+            ? data.accessExpiresAt
+            : Date.now() + 30 * 86400000;
+        if (exp <= Date.now()) {
+          return false;
+        }
+        if (typeof bccSetEncorPortalEntitlement !== "function") {
+          return false;
+        }
+        var cs = checkoutSessionId || null;
+        if (!bccSetEncorPortalEntitlement(exp, cs)) {
+          return false;
+        }
+        if (stripSessionQuery) {
+          try {
+            var u = new URL(window.location.href);
+            u.searchParams.delete("session_id");
+            var clean = u.pathname + (u.search || "") + (u.hash || "");
+            window.history.replaceState({}, "", clean || "/");
+          } catch (e) {}
+        }
+        var banner = document.getElementById("portal-checkout-activated-banner");
+        if (banner) banner.hidden = false;
+        return true;
+      }
+
+      function applyCheckoutSessionReturn() {
+        return new Promise(function (resolve) {
+          var sessionId = qs("session_id");
+          if (!sessionId || sessionId.indexOf("cs_") !== 0) {
+            resolve();
+            return;
+          }
+          fetchVerifyPortalPurchase(sessionId)
+            .then(function (pair) {
+              grantPortalFromVerifyPair(pair, sessionId, true);
+              resolve();
+            })
+            .catch(function () {
+              resolve();
+            });
+        });
+      }
+
+      function tryRestorePortalFromStoredCheckoutSession() {
+        return new Promise(function (resolve) {
+          if (typeof bccEncorPortalAccessActive === "function" && bccEncorPortalAccessActive()) {
+            resolve();
+            return;
+          }
+          var cs =
+            typeof bccReadEncorPortalCheckoutSessionId === "function"
+              ? bccReadEncorPortalCheckoutSessionId()
+              : null;
+          if (!cs) {
+            resolve();
+            return;
+          }
+          fetchVerifyPortalPurchase(cs)
+            .then(function (pair) {
+              grantPortalFromVerifyPair(pair, cs, false);
+              resolve();
+            })
+            .catch(function () {
+              resolve();
+            });
+        });
+      }
+
+      applyCheckoutSessionReturn().then(tryRestorePortalFromStoredCheckoutSession);
+    });
+  </script>
 </body>
 </html>

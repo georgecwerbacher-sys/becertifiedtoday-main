@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Open ENCOR portal | Be Certified Today</title>
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bg: #0b1020;
+      --text: #e6edf3;
+      --muted: #9fb0cc;
+      --page-bg: #ffffff;
+      --page-text: #0b1020;
+      --page-muted: #475569;
+      --border: #2d3b5a;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: var(--page-bg);
+      color: var(--page-text);
+      line-height: 1.55;
+      padding: clamp(24px, 5vw, 48px) clamp(18px, 4vw, 32px);
+      padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+    }
+    .wrap {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.25rem, 3.5vw, 1.45rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    p {
+      margin: 0 0 14px;
+      color: var(--page-muted);
+      font-size: 1rem;
+    }
+    .status {
+      margin: 0 0 18px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(18, 26, 43, 0.65);
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+    .status--ok {
+      border-color: rgba(74, 224, 146, 0.45);
+      color: #c7f2da;
+    }
+    .status--err {
+      border-color: rgba(248, 113, 113, 0.45);
+      color: #fecaca;
+    }
+    a.cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 8px;
+      padding: 14px 22px;
+      min-height: 48px;
+      border-radius: 12px;
+      border: 1px solid rgba(120, 170, 255, 0.45);
+      font-weight: 800;
+      font-size: 0.95rem;
+      text-decoration: none;
+      color: #f4f7ff;
+      background: linear-gradient(165deg, #4f8aea 0%, #2f66bf 48%, #244f9a 100%);
+      touch-action: manipulation;
+    }
+    a.cta:hover {
+      filter: brightness(1.06);
+      color: #fff;
+    }
+    a.link-muted {
+      display: inline-block;
+      margin-top: 18px;
+      color: var(--accent, #2f66bf);
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+    a.link-muted:hover {
+      color: #c8daf8;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Opening CCNP ENCOR training portal…</h1>
+    <p id="lead">
+      This page completes sign-in from your email link. The token stays in the URL fragment so it is not sent to analytics as a normal page hit.
+    </p>
+    <div id="status" class="status" role="status" aria-live="polite">Checking your link…</div>
+    <p id="actions" hidden>
+      <a class="cta" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Continue to portal</a>
+    </p>
+    <p id="fallback" hidden>
+      <a class="link-muted" href="/CCNP-ENCOR-Study/encor-portal-request-link.html">Email me a new link</a>
+    </p>
+    <a class="link-muted" href="/ccnp-home.html">&larr; CCNP home</a>
+  </div>
+  <script src="/CCNP-ENCOR-Study/js/encor-portal-storage.js"></script>
+  <script>
+    (function () {
+      var statusEl = document.getElementById("status");
+      var actionsEl = document.getElementById("actions");
+      var fallbackEl = document.getElementById("fallback");
+      var leadEl = document.getElementById("lead");
+
+      function tokenFromHash() {
+        try {
+          var h = window.location.hash || "";
+          if (h.indexOf("#t=") !== 0) return "";
+          return decodeURIComponent(h.slice(3));
+        } catch (e) {
+          return "";
+        }
+      }
+
+      function showErr(msg) {
+        statusEl.textContent = msg;
+        statusEl.classList.remove("status--ok");
+        statusEl.classList.add("status--err");
+        if (fallbackEl) fallbackEl.hidden = false;
+        if (leadEl) leadEl.hidden = true;
+      }
+
+      function showOk() {
+        statusEl.textContent = "Access saved on this browser. Continue to the training portal.";
+        statusEl.classList.remove("status--err");
+        statusEl.classList.add("status--ok");
+        if (actionsEl) actionsEl.hidden = false;
+        try {
+          window.history.replaceState({}, "", window.location.pathname + window.location.search);
+        } catch (e) {}
+      }
+
+      async function run() {
+        var token = tokenFromHash();
+        if (!token || token.indexOf(".") === -1) {
+          showErr(
+            "Missing link token. Open the portal link from your email again, or request a fresh email from the restore page."
+          );
+          return;
+        }
+
+        try {
+          var res = await fetch("/api/encor-portal-redeem-magic", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token: token }),
+          });
+          var data = await res.json().catch(function () {
+            return {};
+          });
+
+          if (!res.ok || !data.ok) {
+            showErr(
+              (data && data.error) ||
+                "This link is invalid or expired. Request a new email while your purchase is still active."
+            );
+            return;
+          }
+
+          var exp =
+            typeof data.accessExpiresAt === "number" && Number.isFinite(data.accessExpiresAt)
+              ? data.accessExpiresAt
+              : Date.now() + 30 * 86400000;
+          var cs =
+            typeof data.checkoutSessionId === "string" && data.checkoutSessionId.indexOf("cs_") === 0
+              ? data.checkoutSessionId
+              : null;
+
+          if (typeof bccSetEncorPortalEntitlement !== "function" || !bccSetEncorPortalEntitlement(exp, cs)) {
+            showErr(
+              "Your purchase verified, but this browser blocked saving access. Allow site data for this domain and open the email link again."
+            );
+            return;
+          }
+
+          showOk();
+        } catch (e) {
+          showErr("Could not reach the server. Check your connection and try again.");
+        }
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", run);
+      } else {
+        run();
+      }
+    })();
+  </script>
+</body>
+</html>
