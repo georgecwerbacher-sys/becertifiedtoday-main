@@ -1,17 +1,18 @@
 /**
- * POST /api/ccna-portal-redeem-magic
+ * POST /api/portal-redeem-magic
  * Body: { "token": "<JWT>" }
  *
- * Verifies signed magic link and returns entitlement facts for client localStorage (same as verify-checkout-session).
- *
- * Env: STRIPE_SECRET_KEY, PORTAL_MAGIC_LINK_SECRET
+ * Legacy paths rewrite here via vercel.json:
+ *   /api/ccna-portal-redeem-magic
+ *   /api/encor-portal-redeem-magic
  */
 import Stripe from "stripe";
-import { getStripeSecretKey } from "./stripe-secret-key.js";
+import { getStripeSecretKey } from "../server-lib/stripe-secret-key.js";
 import {
   checkoutSessionIsPaid,
   inferProductIdFromCheckoutSession,
   isCcnaPortalProduct,
+  isEncorPortalProduct,
   portalAccessExpiresAtMs,
 } from "../server-lib/ccna-portal-stripe.js";
 import { verifyPortalMagicJwt } from "../server-lib/ccna-portal-magic-jwt.js";
@@ -28,6 +29,12 @@ function readJsonBody(req) {
     }
   } catch (_) {}
   return {};
+}
+
+function resolveTrackFromAud(aud) {
+  if (aud === "encor-portal-access") return "encor";
+  if (aud === "ccna-portal-30d" || aud === "ccna-portal-access") return "ccna";
+  return "";
 }
 
 export default async function handler(req, res) {
@@ -59,10 +66,11 @@ export default async function handler(req, res) {
 
   const payload = verifyPortalMagicJwt(token, secret);
   const nowSec = Math.floor(Date.now() / 1000);
+  const track = resolveTrackFromAud(payload?.aud);
 
   if (
     !payload ||
-    (payload.aud !== "ccna-portal-30d" && payload.aud !== "ccna-portal-access") ||
+    !track ||
     typeof payload.cs !== "string" ||
     payload.cs.indexOf("cs_") !== 0 ||
     typeof payload.exp !== "number" ||
@@ -72,6 +80,7 @@ export default async function handler(req, res) {
   }
 
   const stripe = new Stripe(sk.secret);
+  const isProduct = track === "encor" ? isEncorPortalProduct : isCcnaPortalProduct;
 
   try {
     const session = await stripe.checkout.sessions.retrieve(payload.cs, {
@@ -83,7 +92,7 @@ export default async function handler(req, res) {
     }
 
     const productId = inferProductIdFromCheckoutSession(session);
-    if (!isCcnaPortalProduct(productId)) {
+    if (!isProduct(productId)) {
       return res.status(403).json({ ok: false, error: "This link is not valid for portal access" });
     }
 
@@ -100,7 +109,7 @@ export default async function handler(req, res) {
       customer_email: session.customer_details?.email || null,
     });
   } catch (e) {
-    console.error("ccna-portal-redeem-magic:", e.message);
+    console.error(`portal-redeem-magic (${track}):`, e.message);
     return res.status(400).json({ ok: false, error: "Could not verify purchase" });
   }
 }

@@ -843,7 +843,7 @@
         offerCheckoutBtn.disabled = true;
         offerCheckoutBtn.textContent = "Opening checkout...";
       }
-      fetch("/api/ccna-portal-30d-payment-link")
+      fetch("/api/ccna-portal-payment-link?plan=30d")
         .then(function (res) {
           return res.json().then(function (body) {
             if (!res.ok || !body || typeof body.url !== "string") {

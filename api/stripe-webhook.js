@@ -15,8 +15,8 @@
  */
 import Stripe from "stripe";
 import getRawBody from "raw-body";
-import { getStripeSecretKey } from "./stripe-secret-key.js";
-import { normalizePublicSiteUrl } from "./normalize-public-site-url.js";
+import { getStripeSecretKey } from "../server-lib/stripe-secret-key.js";
+import { normalizePublicSiteUrl } from "../server-lib/normalize-public-site-url.js";
 import {
   checkoutSessionIsPaid,
   inferProductIdFromCheckoutSession,

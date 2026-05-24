@@ -5,7 +5,7 @@
  * Env: STRIPE_SECRET_KEY
  */
 import Stripe from "stripe";
-import { getStripeSecretKey } from "./stripe-secret-key.js";
+import { getStripeSecretKey } from "../server-lib/stripe-secret-key.js";
 import {
   checkoutSessionIsPaid,
   inferProductIdFromCheckoutSession,

@@ -1,0 +1,159 @@
+/**
+ * POST /api/portal-request-magic-link?track=ccna|encor
+ * Body: { "email": "you@example.com", "track": "ccna"|"encor" (optional if query set) }
+ *
+ * Legacy paths rewrite here via vercel.json:
+ *   /api/ccna-portal-request-magic-link
+ *   /api/encor-portal-request-magic-link
+ */
+import Stripe from "stripe";
+import { getStripeSecretKey } from "../server-lib/stripe-secret-key.js";
+import { normalizePublicSiteUrl } from "../server-lib/normalize-public-site-url.js";
+import {
+  upsertCustomerPortalMetadata,
+  upsertEncorCustomerPortalMetadata,
+} from "../server-lib/ccna-portal-stripe.js";
+import { findActivePortalSessionForEmail } from "../server-lib/ccna-portal-customers.js";
+import { findActiveEncorPortalSessionForEmail } from "../server-lib/encor-portal-customers.js";
+import { signPortalMagicJwt } from "../server-lib/ccna-portal-magic-jwt.js";
+import { sendCcnaPortalMagicEmail, sendEncorPortalMagicEmail } from "../server-lib/ccna-portal-resend.js";
+
+function readJsonBody(req) {
+  try {
+    if (req.body != null) {
+      if (typeof req.body === "object" && !Buffer.isBuffer(req.body)) {
+        return req.body;
+      }
+      if (typeof req.body === "string" && req.body.length) {
+        return JSON.parse(req.body);
+      }
+    }
+  } catch (_) {}
+  return {};
+}
+
+function normalizeEmail(raw) {
+  const s = typeof raw === "string" ? raw.trim().toLowerCase() : "";
+  if (!s || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)) return "";
+  return s;
+}
+
+function resolveTrack(req, body) {
+  const q = String(req.query?.track || "")
+    .trim()
+    .toLowerCase();
+  if (q === "ccna" || q === "encor") return q;
+  const b = String(body?.track || "")
+    .trim()
+    .toLowerCase();
+  if (b === "ccna" || b === "encor") return b;
+  return "";
+}
+
+const TRACK_CONFIG = {
+  ccna: {
+    logTag: "ccna-portal",
+    generic:
+      "If this email has active CCNA portal access on file, we sent a login link. Check spam and wait a minute before trying again.",
+    aud: "ccna-portal-access",
+    magicPath: "/CCNA-Study/ccna-portal-magic.html",
+    findSession: findActivePortalSessionForEmail,
+    upsertMetadata: upsertCustomerPortalMetadata,
+    sendEmail: sendCcnaPortalMagicEmail,
+  },
+  encor: {
+    logTag: "encor-portal",
+    generic:
+      "If this email has active ENCOR portal access on file, we sent a login link. Check spam and wait a minute before trying again.",
+    aud: "encor-portal-access",
+    magicPath: "/CCNP-ENCOR-Study/encor-portal-magic.html",
+    findSession: findActiveEncorPortalSessionForEmail,
+    upsertMetadata: upsertEncorCustomerPortalMetadata,
+    sendEmail: sendEncorPortalMagicEmail,
+  },
+};
+
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    res.setHeader("Allow", "POST");
+    return res.status(405).json({ ok: false, error: "Method not allowed" });
+  }
+
+  const body = readJsonBody(req);
+  const track = resolveTrack(req, body);
+  if (!track) {
+    return res.status(400).json({ ok: false, error: "Missing track (ccna or encor)" });
+  }
+
+  const cfg = TRACK_CONFIG[track];
+  const sk = getStripeSecretKey(process.env.STRIPE_SECRET_KEY);
+  const jwtSecret = (process.env.PORTAL_MAGIC_LINK_SECRET || "").trim();
+  const site = normalizePublicSiteUrl(process.env.PUBLIC_SITE_URL);
+  const resendKey = (process.env.RESEND_API_KEY || "").trim();
+
+  if (!sk.secret) {
+    return res.status(503).json({ ok: false, error: sk.error });
+  }
+  if (!jwtSecret) {
+    return res.status(503).json({
+      ok: false,
+      error: "Magic links are not configured",
+      hint: "Set PORTAL_MAGIC_LINK_SECRET on Vercel.",
+    });
+  }
+  if (!site) {
+    return res.status(503).json({
+      ok: false,
+      error: "PUBLIC_SITE_URL is not configured",
+    });
+  }
+  if (!resendKey) {
+    return res.status(503).json({
+      ok: false,
+      error: "Email delivery is not configured",
+      hint: "Set RESEND_API_KEY and RESEND_FROM on Vercel, then redeploy.",
+    });
+  }
+
+  const email = normalizeEmail(body.email);
+  if (!email) {
+    return res.status(400).json({ ok: false, error: "Enter a valid email address." });
+  }
+
+  const stripe = new Stripe(sk.secret);
+
+  try {
+    const found = await cfg.findSession(stripe, email);
+    if (!found) {
+      console.info(`[${cfg.logTag}] magic link request: no active portal purchase for email`);
+      return res.status(200).json({ ok: true, message: cfg.generic });
+    }
+
+    const { session, accessExpiresAtMs } = found;
+
+    await cfg.upsertMetadata(stripe, session, accessExpiresAtMs);
+
+    const token = signPortalMagicJwt(
+      {
+        aud: cfg.aud,
+        cs: session.id,
+        exp: Math.floor(accessExpiresAtMs / 1000),
+      },
+      jwtSecret
+    );
+
+    const magicUrl = `${site}${cfg.magicPath}#t=${encodeURIComponent(token)}`;
+    const sent = await cfg.sendEmail({ to: email, magicUrl });
+
+    if (!sent) {
+      console.error(`[${cfg.logTag}] Resend did not accept magic-link email`);
+    } else {
+      console.info(`[${cfg.logTag}] magic link email sent for active portal purchase`);
+    }
+
+    return res.status(200).json({ ok: true, message: cfg.generic });
+  } catch (e) {
+    console.error(`portal-request-magic-link (${track}):`, e.message);
+    return res.status(200).json({ ok: true, message: cfg.generic });
+  }
+}

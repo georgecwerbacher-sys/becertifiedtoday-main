@@ -1,8 +1,8 @@
 /**
  * Opens Stripe Payment Links for CCNA 10-day and 30-day training portal access.
  * URLs come from:
- *   GET /api/ccna-portal-10d-payment-link (Vercel env STRIPE_PAYMENT_LINK_CCNA_PORTAL_10D)
- *   GET /api/ccna-portal-30d-payment-link (Vercel env STRIPE_PAYMENT_LINK_CCNA_PORTAL_30D)
+ *   GET /api/ccna-portal-payment-link?plan=10d (Vercel env STRIPE_PAYMENT_LINK_CCNA_PORTAL_10D)
+ *   GET /api/ccna-portal-payment-link?plan=30d (Vercel env STRIPE_PAYMENT_LINK_CCNA_PORTAL_30D)
  * Configure each Payment Link "After payment" redirect to:
  *   /CCNA-Study/CCNA_Training_Portal.html?session_id={CHECKOUT_SESSION_ID}
  * The portal page verifies the session, saves access in this browser (and the checkout session id for restore), then strips session_id from the URL.
@@ -33,8 +33,8 @@
         btn.textContent = "Redirecting…";
         btn.disabled = true;
         var endpoint = btn.hasAttribute("data-ccna-portal-10d-checkout")
-          ? "/api/ccna-portal-10d-payment-link"
-          : "/api/ccna-portal-30d-payment-link";
+          ? "/api/ccna-portal-payment-link?plan=10d"
+          : "/api/ccna-portal-payment-link?plan=30d";
         fetchPaymentLink(endpoint)
           .then(function (url) {
             window.location.href = url;

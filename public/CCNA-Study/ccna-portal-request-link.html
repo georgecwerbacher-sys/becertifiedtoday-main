@@ -151,10 +151,10 @@
         statusEl.classList.remove("status--ok", "status--err");
         statusEl.textContent = "Sending…";
 
-        fetch("/api/ccna-portal-request-magic-link", {
+        fetch("/api/portal-request-magic-link", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: email }),
+          body: JSON.stringify({ email: email, track: "ccna" }),
         })
           .then(function (res) {
             return res.json().catch(function () {

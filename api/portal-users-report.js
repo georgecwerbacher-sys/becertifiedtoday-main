@@ -11,7 +11,7 @@ import {
   enrichPortalRowsWithCheckout,
   listPortalCustomersFromStripe,
 } from "../server-lib/ccna-portal-customers.js";
-import { getStripeSecretKey } from "./stripe-secret-key.js";
+import { getStripeSecretKey } from "../server-lib/stripe-secret-key.js";
 
 function readJsonBody(req) {
   try {
