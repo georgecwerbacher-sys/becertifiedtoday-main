@@ -221,6 +221,49 @@
         align-items: stretch;
       }
     }
+    .portal-purchase-actions {
+      flex: 0 1 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-self: stretch;
+    }
+    .portal-purchase-actions .cta-main {
+      margin: 0;
+      border: none;
+      cursor: pointer;
+      font: inherit;
+    }
+    .portal-purchase-actions .cta-main--secondary {
+      background: linear-gradient(180deg, #243047 0%, #1a2438 100%);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.08) inset,
+        0 4px 16px rgba(0, 0, 0, 0.35);
+    }
+    .portal-purchase-actions .cta-main--secondary:hover {
+      filter: brightness(1.08);
+    }
+    .portal-purchase-price {
+      margin: 0 0 4px;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .portal-purchase-note {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .portal-purchase-recover {
+      margin: 14px 0 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .portal-purchase-recover a {
+      color: #8ab4ff;
+    }
     .site-disclaimer {
       max-width: 720px;
       margin: 0 auto;
@@ -827,11 +870,66 @@
             </div>
           </div>
 
+          <div class="card purchase-card" id="encor-purchase">
+            <div class="purchase-card-inner">
+              <div class="purchase-card-main">
+                <p class="purchase-label">Library access</p>
+                <h2 class="purchase-heading">Get full ENCOR practice access</h2>
+                <p class="purchase-lead">
+                  One-time purchase unlocks every question bank, drag-and-drop set, and CLI lab on this portal for
+                  <strong>10 or 30 days</strong> on <strong>this browser</strong>. No recurring subscription.
+                </p>
+                <ul class="purchase-includes">
+                  <li>378+ multiple-choice questions across four banks with Random and Review modes</li>
+                  <li>50 standard drag-and-drop exercises with domain filters</li>
+                  <li>CLI lab simulations and timed mixed-format test prep</li>
+                </ul>
+                <p class="portal-purchase-recover">
+                  Already paid?
+                  <a href="/CCNP-ENCOR-Study/encor-portal-request-link.html">Email me a portal link</a>
+                  to restore access on this device.
+                </p>
+              </div>
+              <div class="portal-purchase-actions" aria-label="Purchase options">
+                <div>
+                  <p class="portal-purchase-price">$9.99</p>
+                  <p class="portal-purchase-note">10-day access · one-time</p>
+                  <button
+                    type="button"
+                    class="cta-main cta-main--block cta-main--secondary"
+                    data-encor-portal-10d-checkout
+                    aria-label="Purchase 10-day ENCOR library access and go to Stripe checkout"
+                  >
+                    Get 10-day access
+                  </button>
+                </div>
+                <div>
+                  <p class="portal-purchase-price">$19.99</p>
+                  <p class="portal-purchase-note">30-day access · one-time</p>
+                  <button
+                    type="button"
+                    class="cta-main cta-main--block"
+                    data-encor-portal-30d-checkout
+                    aria-label="Purchase 30-day ENCOR library access and go to Stripe checkout"
+                  >
+                    Get 30-day access
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
       <section class="formats-section" aria-labelledby="formats-title">
         <div class="formats-inner">
+          <p id="portal-checkout-activated-banner" class="portal-checkout-activated-banner" hidden role="status">
+            <strong>Access activated.</strong>
+            Your pass is stored in <strong>this browser</strong> until the end date Stripe tied to your payment. Clearing site
+            data for this domain removes it—you can recover with your Stripe success URL or an email magic link:
+            <a href="/CCNP-ENCOR-Study/encor-portal-request-link.html">Email me a portal link</a>
+          </p>
           <p class="formats-head">CCNP ENCOR practice formats</p>
           <h2 id="formats-title">Choose your practice mode</h2>
           <p class="formats-lead">
@@ -1101,6 +1199,7 @@
   <script src="/CCNP-ENCOR-Study/js/encor-practice-hub.js" defer></script>
   <script src="/CCNP-ENCOR-Study/js/encor-dragdrop-hub.js" defer></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-storage.js" defer></script>
+  <script src="/CCNP-ENCOR-Study/js/encor-portal-30d-checkout.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       function qs(name) {

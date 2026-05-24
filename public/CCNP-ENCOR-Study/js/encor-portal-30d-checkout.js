@@ -1,7 +1,10 @@
 /**
  * Stripe Payment Links for CCNP ENCOR 10-day and 30-day full library access.
- * Configure each payment link success URL to:
- *   /CCNP-ENCOR-Study/ENCOR_Training_Portal.html?session_id={CHECKOUT_SESSION_ID}
+ *
+ * Stripe Dashboard → each Payment Link → After payment → custom redirect URL:
+ *   https://becertifiedtoday.com/CCNP-ENCOR-Study/ENCOR_Training_Portal.html?session_id={CHECKOUT_SESSION_ID}
+ *
+ * Optional metadata on the link: productId = encor-portal-10d or encor-portal-30d
  */
 (function () {
   var LINKS = {
