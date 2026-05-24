@@ -81,19 +81,32 @@
     261: "/CCNP-ENCOR-Study/CCNP-ENCOR-Drag-Drop/question-261.html"
   };
 
+  /** After URL mask to /sample, location.pathname no longer reflects the real page. */
+  function effectivePagePath() {
+    var p = location.pathname || "";
+    var pl = p.toLowerCase();
+    if (pl === "/sample" || pl === "/sample/") {
+      try {
+        var remembered = sessionStorage.getItem("ccnaLastRealPath");
+        if (remembered) return remembered;
+      } catch (e) {}
+    }
+    return p;
+  }
+
   function encorDragDropTree() {
-    return /\/ccnp-encor-study\/ccnp-encor-drag-drop\//i.test(location.pathname || "");
+    return /\/ccnp-encor-study\/ccnp-encor-drag-drop\//i.test(effectivePagePath());
   }
 
   function isEncorSampleStandaloneDndPage() {
     if (!isSampleMode()) return false;
     return /\/ccnp-encor-study\/encor_samples\/question-\d+\.html/i.test(
-      location.pathname || ""
+      effectivePagePath()
     );
   }
 
   function localEncorQuestionsTree() {
-    var p = location.pathname || "";
+    var p = effectivePagePath();
     return (
       /\/ccnp-encor-study\/encor_questions\//i.test(p) ||
       encorDragDropTree() ||
@@ -127,7 +140,7 @@
 
   function questionHref(id) {
     var href;
-    if (localEncorQuestionsTree()) {
+    if (localEncorQuestionsTree() || (isSampleMode() && parseQueue())) {
       href = encorQuestionHref(id);
     } else {
       href = "/question-" + id + ".html";
@@ -220,8 +233,7 @@
   }
 
   function questionIdFromPath() {
-    var p = location.pathname || "";
-    var m = p.match(/question-(\d+)\.html/i);
+    var m = effectivePagePath().match(/question-(\d+)\.html/i);
     return m ? parseInt(m[1], 10) : null;
   }
 
