@@ -1589,7 +1589,7 @@
         />
       </a>
       <div class="header-actions">
-        <!-- Registered: CCNP_Encor.html on encor app; else header opens join dialog → ccnp-home#purchase -->
+        <!-- Registered: ENCOR_Training_Portal.html; else header opens join dialog → ccnp-home#purchase -->
         <a
           id="ccnpPortalHeaderBtn"
           class="ccna-portal-header-btn ccna-portal-header-btn--purchase"
@@ -2265,7 +2265,7 @@
   <script src="/CCNA-Study/js/ccna-portal-30d-storage.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      var PORTAL_HREF = "https://becertifiedtoday-encor.vercel.app/CCNP_Encor.html";
+      var PORTAL_HREF = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html";
       var portalBtn = document.getElementById("ccnpPortalHeaderBtn");
       if (!portalBtn) return;
 
@@ -2276,14 +2276,14 @@
       function syncPortalHeader() {
         if (hasPortalAccess()) {
           portalBtn.href = PORTAL_HREF;
-          portalBtn.setAttribute("rel", "noopener noreferrer");
+          portalBtn.removeAttribute("rel");
           portalBtn.removeAttribute("target");
           portalBtn.textContent = "CCNP ENCOR Training Portal";
           portalBtn.classList.add("ccna-portal-header-btn--active");
           portalBtn.classList.remove("ccna-portal-header-btn--purchase");
           portalBtn.setAttribute(
             "aria-label",
-            "CCNP ENCOR training portal (CCNP_Encor.html on becertifiedtoday-encor.vercel.app)"
+            "Open CCNP ENCOR training portal"
           );
         } else {
           portalBtn.href = "#";
