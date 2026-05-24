@@ -55,6 +55,27 @@ NOCRAWL_EXACT = {
 
 NOCRAWL_PREFIXES = ("admin/",)
 
+# Guest-facing pages promoted in sitemap (unregistered users, no portal purchase).
+SITEMAP_EXACT = {
+    "index.html",
+    "ccna-home.html",
+    "ccnp-home.html",
+    "secplus-home.html",
+    "comptia-sec+-home.html",
+    "CCNA_Sim_EXAM/free-assessment.html",
+    "CCNA_Sim_EXAM/test-simulation.html",
+    "CCNA_Sim_EXAM/begin-test-simulation.html",
+    "CCNP-ENCOR-Study/test-simulation.html",
+    "CCNA-Study/CCNA_labs/cli-lab-trunk_lacp.html",
+    "CCNA-Study/CCNA_labs/cli-lab-vlan-sim.html",
+}
+
+SITEMAP_PREFIXES = (
+    "CCNA-Study/CCNA_Samples/",
+    "CCNP-ENCOR-Study/ENCOR_Samples/",
+    "COMP_TIA_SEC+/SEC+_Samples/",
+)
+
 ROBOTS_META_RE = re.compile(
     r'<meta\s+name="robots"\s+content="[^"]*"\s*/?\s*>',
     re.IGNORECASE,
@@ -80,6 +101,14 @@ def is_indexable(rel: str) -> bool:
     return not should_noindex(rel)
 
 
+def is_guest_sitemap_page(rel: str) -> bool:
+    if not is_indexable(rel):
+        return False
+    if rel in SITEMAP_EXACT:
+        return True
+    return any(rel.startswith(prefix) for prefix in SITEMAP_PREFIXES)
+
+
 def public_url(rel: str) -> str:
     if rel == "index.html":
         return f"{SITE_ORIGIN}/"
@@ -95,7 +124,7 @@ def build_sitemap() -> int:
     entries: list[tuple[str, str]] = []
     for path in sorted(PUBLIC.rglob("*.html")):
         rel = rel_public(path)
-        if not is_indexable(rel):
+        if not is_guest_sitemap_page(rel):
             continue
         entries.append((public_url(rel), lastmod_for(path)))
 
