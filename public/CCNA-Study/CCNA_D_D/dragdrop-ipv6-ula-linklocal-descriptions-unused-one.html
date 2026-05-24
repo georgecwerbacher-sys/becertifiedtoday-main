@@ -96,7 +96,6 @@
         "no-destination": "linklocal"
       };
       var MUST_BANK = ["ff02-ospf"];
-      var FILL_ORDER = ["fd-prefix", "multi-org", "private-ipv6", "next-hop", "no-destination"];
 
       function allSlots() { return document.querySelectorAll(".drop-slot[data-target]"); }
       function clearPick() { document.querySelectorAll(".token.is-picked").forEach(function(n){n.classList.remove("is-picked");}); picked = null; }
@@ -141,36 +140,34 @@
         return [].slice.call(bank.querySelectorAll(".token")).some(function (t) { return t.getAttribute("data-value") === value; });
       }
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) { slot.classList.add("incorrect"); allOk = false; return; }
-          var v = t.getAttribute("data-value");
-          if (MUST_BANK.indexOf(v) >= 0) { slot.classList.add("incorrect"); allOk = false; return; }
-          var ok = CORRECT_GROUP[v] === slot.getAttribute("data-target");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
-        MUST_BANK.forEach(function (id) {
-          if (!tokenInBank(id)) allOk = false;
-        });
-        result.textContent = allOk
-          ? "Correct. Unique local addresses use the FD prefix, are private, and may be reused across organizations with unique /48 allocations. Link-local addresses (fe80::/10) identify next hops on a segment and are not valid off-link destinations. FF02::/16 is a multicast group, not ULA or link-local."
-          : "Incorrect. Fill three slots under Unique Local and two under Link-Local, and leave the FF02::5 multicast example in the bank.";
+
+        CcnaDndCategoryCheck.check({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            result: result,
+            requireEmptyBank: false,
+            mustBank: MUST_BANK,
+            tokenInBank: tokenInBank,
+            messages: {
+              ok: "Correct. Unique local addresses use the FD prefix, are private, and may be reused across organizations with unique /48 allocations. Link-local addresses (fe80::/10) identify next hops on a segment and are not valid off-link destinations. FF02::/16 is a multicast group, not ULA or link-local.",
+              fail: "Incorrect. Fill three slots under Unique Local and two under Link-Local, and leave the FF02::5 multicast example in the bank."
+            }
+          });
+
       });
       showBtn.addEventListener("click", function () {
+
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        allSlots().forEach(function (slot, i) {
-          var tok = takeFromBank(FILL_ORDER[i]);
-          if (tok) { slot.appendChild(tok); slot.classList.add("correct"); }
-        });
-        result.textContent = "Answer shown. The multicast example remains in the bank.";
+        CcnaDndCategoryCheck.show({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            takeFromBank: takeFromBank,
+            result: result,
+            showMessage: "Answer shown. The multicast example remains in the bank."
+          });
+
       });
       resetBtn.addEventListener("click", function () {
         clearPick();

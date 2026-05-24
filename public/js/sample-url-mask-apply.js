@@ -309,3 +309,15 @@
   head.appendChild(hint);
 })();
 
+/** Shared order-independent category validation for CCNA D&D pages */
+(function () {
+  "use strict";
+  var p = (location.pathname || "").toLowerCase();
+  if (p.indexOf("/ccna-study/ccna_d_d/") === -1) return;
+  var head = document.head || document.documentElement;
+  if (head.querySelector('script[src*="ccna-dnd-category-check.js"]')) return;
+  var s = document.createElement("script");
+  s.src = "/CCNA-Study/js/ccna-dnd-category-check.js";
+  head.appendChild(s);
+})();
+

@@ -96,7 +96,6 @@
         "flex-custom": "traditional",
         "individual-sw": "traditional"
       };
-      var FILL_ORDER = ["orchestrates-bg", "central-sw", "open-apis", "per-device-mgmt", "flex-custom", "individual-sw"];
 
       function allSlots() { return document.querySelectorAll(".drop-slot[data-target]"); }
       function clearPick() { document.querySelectorAll(".token.is-picked").forEach(function(n){n.classList.remove("is-picked");}); picked = null; }
@@ -138,33 +137,31 @@
         return [].slice.call(bank.querySelectorAll(".token")).find(function (t) { return t.getAttribute("data-value") === value; });
       }
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) { slot.classList.add("incorrect"); allOk = false; return; }
-          var v = t.getAttribute("data-value");
-          var ok = CORRECT_GROUP[v] === slot.getAttribute("data-target");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
-        if (bank.querySelectorAll(".token").length) allOk = false;
-        result.textContent = allOk
-          ? "Correct. DNA Center centralizes intent, software, and APIs with orchestrated change; traditional operations lean on per-device work, individual image handling, and ad hoc customization."
-          : "Incorrect. DNA Center gets orchestration, centralized software control, and API access; traditional gets per-device reliance, individual software management, and flexibility for custom configs.";
+
+        CcnaDndCategoryCheck.check({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            result: result,
+            messages: {
+              ok: "Correct. DNA Center centralizes intent, software, and APIs with orchestrated change; traditional operations lean on per-device work, individual image handling, and ad hoc customization.",
+              fail: "Incorrect. DNA Center gets orchestration, centralized software control, and API access; traditional gets per-device reliance, individual software management, and flexibility for custom configs."
+            }
+          });
+
       });
       showBtn.addEventListener("click", function () {
+
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        allSlots().forEach(function (slot, i) {
-          var tok = takeFromBank(FILL_ORDER[i]);
-          if (tok) { slot.appendChild(tok); slot.classList.add("correct"); }
-        });
-        result.textContent = "Answer shown.";
+        CcnaDndCategoryCheck.show({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            takeFromBank: takeFromBank,
+            result: result,
+            showMessage: "Answer shown."
+          });
+
       });
       resetBtn.addEventListener("click", function () {
         clearPick();

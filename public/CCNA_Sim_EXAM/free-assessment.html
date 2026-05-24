@@ -1512,6 +1512,11 @@
     }
 
     function scoreDndSlotsDirectMatch(doc) {
+      var win = doc.defaultView;
+      if (win && win.CcnaDndCategoryCheck && typeof win.CcnaDndCategoryCheck.scoreDocument === "function") {
+        var categoryScore = win.CcnaDndCategoryCheck.scoreDocument(doc);
+        if (categoryScore != null) return categoryScore;
+      }
       var slots = doc.querySelectorAll(".drop-slot[data-target]");
       if (!slots.length) return false;
       for (var i = 0; i < slots.length; i++) {

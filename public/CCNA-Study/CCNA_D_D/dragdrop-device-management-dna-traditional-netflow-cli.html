@@ -373,51 +373,34 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) {
-            slot.classList.add("incorrect");
-            allOk = false;
-            return;
-          }
-          var v = t.getAttribute("data-value");
-          var ok = CORRECT_GROUP[v] === slot.getAttribute("data-target");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
-        if ([].slice.call(bank.querySelectorAll(".token")).length > 0) {
-          allOk = false;
-        }
-        result.textContent = allOk
-          ? "Correct. DNA Center centralizes analytics, templates, and NetFlow-driven security workflows; traditional management uses many tools, box-by-box CLI, and perimeter-centric security."
-          : "Incorrect. Fill all six slots: three under each type, with an empty bank.";
+
+        CcnaDndCategoryCheck.check({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            result: result,
+            messages: {
+              ok: "Correct. DNA Center centralizes analytics, templates, and NetFlow-driven security workflows; traditional management uses many tools, box-by-box CLI, and perimeter-centric security.",
+              fail: "Incorrect. Fill all six slots: three under each type, with an empty bank."
+            }
+          });
+
+
       });
 
       showBtn.addEventListener("click", function () {
+
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        var fillOrder = [
-          "single-interface",
-          "cli-templates",
-          "netflow-threats",
-          "multi-tools",
-          "per-device",
-          "perimeter-security",
-        ];
-        allSlots().forEach(function (slot, i) {
-          var tok = takeFromBank(fillOrder[i]);
-          if (tok) {
-            slot.appendChild(tok);
-            slot.classList.add("correct");
-          }
-        });
-        result.textContent = "Answer shown.";
+        CcnaDndCategoryCheck.show({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            takeFromBank: takeFromBank,
+            result: result,
+            showMessage: "Answer shown."
+          });
+
+
       });
 
       resetBtn.addEventListener("click", function () {

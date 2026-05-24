@@ -93,7 +93,6 @@
         "restrict-cli": "authorization"
       };
       var MUST_BANK = ["records-session-time", "tacacs-log-commands"];
-      var FILL_ORDER = ["verify-user", "radius-reverse-telnet", "group-based-access", "restrict-cli"];
 
       function allSlots() { return document.querySelectorAll(".drop-slot[data-target]"); }
       function clearPick() { document.querySelectorAll(".token.is-picked").forEach(function(n){n.classList.remove("is-picked");}); picked = null; }
@@ -148,39 +147,37 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) { slot.classList.add("incorrect"); allOk = false; return; }
-          var v = t.getAttribute("data-value");
-          if (MUST_BANK.indexOf(v) >= 0) { slot.classList.add("incorrect"); allOk = false; return; }
-          var ok = CORRECT_GROUP[v] === slot.getAttribute("data-target");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
-        MUST_BANK.forEach(function (id) {
-          if (!tokenInBank(id)) allOk = false;
-        });
-        if (!allOk) {
-          result.textContent = "Incorrect. Fill all four slots with authentication and authorization features only. Leave the session-time and TACACS+ command-logging features in the bank.";
-          return;
-        }
-        result.textContent = "Correct. Authentication verifies identity (including RADIUS for reverse Telnet access); authorization controls group-based access and permitted CLI commands. Session-time logging and command auditing belong to accounting.";
+
+        CcnaDndCategoryCheck.check({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            result: result,
+            requireEmptyBank: false,
+            mustBank: MUST_BANK,
+            tokenInBank: tokenInBank,
+            messages: {
+              ok: "Correct. Authentication verifies identity (including RADIUS for reverse Telnet access); authorization controls group-based access and permitted CLI commands. Session-time logging and command auditing belong to accounting.",
+              fail: "Incorrect. Fill all four slots with authentication and authorization features only. Leave the session-time and TACACS+ command-logging features in the bank."
+            }
+          });
+
+
       });
 
       showBtn.addEventListener("click", function () {
+
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        allSlots().forEach(function (slot, i) {
-          var tok = takeFromBank(FILL_ORDER[i]);
-          if (tok) { slot.appendChild(tok); slot.classList.add("correct"); }
-        });
-        result.textContent = "Answer shown. The two accounting features remain in the bank.";
+        CcnaDndCategoryCheck.show({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            takeFromBank: takeFromBank,
+            result: result,
+            showMessage: "Answer shown. The two accounting features remain in the bank."
+          });
+
+
       });
 
       resetBtn.addEventListener("click", function () {

@@ -358,50 +358,34 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        var bankHasWlc = !!takeFromBank("wlc-managed");
 
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) {
-            slot.classList.add("incorrect");
-            allOk = false;
-            return;
-          }
-          var v = t.getAttribute("data-value");
-          var ok = CORRECT_GROUP[v] === slot.getAttribute("data-target");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
+        CcnaDndCategoryCheck.check({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            result: result,
+            messages: {
+              ok: "Correct. Autonomous APs are managed locally (IP + Telnet/SSH/GUI); cloud APs use a dashboard and ZTP-style deployment. The WLC fact applies to lightweight APs and should stay unused.",
+              fail: "Incorrect. Place two facts under each AP type; leave configured and managed by a WLC in the bank."
+            }
+          });
 
-        if (!bankHasWlc) {
-          allOk = false;
-        }
 
-        result.textContent = allOk
-          ? "Correct. Autonomous APs are managed locally (IP + Telnet/SSH/GUI); cloud APs use a dashboard and ZTP-style deployment. The WLC fact applies to lightweight APs and should stay unused."
-          : "Incorrect. Place two facts under each AP type; leave configured and managed by a WLC in the bank.";
       });
 
       showBtn.addEventListener("click", function () {
+
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
+        CcnaDndCategoryCheck.show({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            takeFromBank: takeFromBank,
+            result: result,
+            showMessage: "Answer shown. WLC fact remains in the bank."
+          });
 
-        var fillOrder = ["mgmt-ip", "local-mgmt", "web-dashboard", "auto-deploy"];
-        allSlots().forEach(function (slot, i) {
-          var tok = takeFromBank(fillOrder[i]);
-          if (tok) {
-            slot.appendChild(tok);
-            slot.classList.add("correct");
-          }
-        });
 
-        result.textContent = "Answer shown. WLC fact remains in the bank.";
       });
 
       resetBtn.addEventListener("click", function () {

@@ -98,7 +98,6 @@
         "connectionless": "udp"
       };
       var UNUSED = "osi-layer-3";
-      var FILL_ORDER = ["three-way-handshake", "web-browsing", "reliable-connection", "faster-transmission", "streaming-voip", "connectionless"];
 
       function allSlots() { return document.querySelectorAll(".drop-slot[data-target]"); }
       function clearPick() { document.querySelectorAll(".token.is-picked").forEach(function(n){n.classList.remove("is-picked");}); picked = null; }
@@ -153,35 +152,36 @@
         return [].slice.call(bank.querySelectorAll(".token")).some(function (t) { return t.getAttribute("data-value") === val; });
       }
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) { slot.classList.add("incorrect"); allOk = false; return; }
-          var v = t.getAttribute("data-value");
-          if (v === UNUSED) { slot.classList.add("incorrect"); allOk = false; return; }
-          var ok = CORRECT_GROUP[v] === slot.getAttribute("data-target");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
-        if (!tokenInBank(UNUSED)) allOk = false;
-        result.textContent = allOk
-          ? "Correct. TCP uses a three-way handshake, reliable connections, and suits HTTP/web traffic. UDP is connectionless with lower overhead—common for streaming and VoIP. TCP and UDP are OSI Layer 4 protocols, so the Layer 3 line stays unused."
-          : "Incorrect. Place three characteristics under TCP and three under UDP. Leave \"belongs to OSI Layer 3\" in the bank.";
+
+        CcnaDndCategoryCheck.check({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            result: result,
+            requireEmptyBank: false,
+            mustBank: [UNUSED],
+            tokenInBank: tokenInBank,
+            messages: {
+              ok: "Correct. TCP uses a three-way handshake, reliable connections, and suits HTTP/web traffic. UDP is connectionless with lower overhead—common for streaming and VoIP. TCP and UDP are OSI Layer 4 protocols, so the Layer 3 line stays unused.",
+              fail: "Incorrect. Place three characteristics under TCP and three under UDP. Leave \"belongs to OSI Layer 3\" in the bank."
+            }
+          });
+
       });
 
       showBtn.addEventListener("click", function () {
+
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        allSlots().forEach(function (slot, i) {
-          var tok = takeFromBank(FILL_ORDER[i]);
-          if (tok) { slot.appendChild(tok); slot.classList.add("correct"); }
-        });
-        result.textContent = "Answer shown. belongs to OSI Layer 3 remains in the bank.";
+        CcnaDndCategoryCheck.show({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            takeFromBank: takeFromBank,
+            result: result,
+            showMessage: "Answer shown. belongs to OSI Layer 3 remains in the bank."
+          });
+
+
       });
 
       resetBtn.addEventListener("click", function () {

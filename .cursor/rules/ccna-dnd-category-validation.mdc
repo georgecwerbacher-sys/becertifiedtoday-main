@@ -1,0 +1,52 @@
+---
+description: CCNA drag-and-drop category grouping — order within a category must not matter.
+globs: public/CCNA-Study/CCNA_D_D/**/*.html
+alwaysApply: false
+---
+
+# CCNA D&D category validation (order-independent)
+
+When a drag-and-drop page under `public/CCNA-Study/CCNA_D_D/` groups **multiple tokens under one category** (`.category-box` with several slots sharing the same `data-target`), **order within that category must not matter**.
+
+## Required layout
+
+- Use `.category-box` + `.category-title` for each category.
+- Every slot in a category shares the same category id: `data-target="tcp"`, not a token id.
+- Map tokens to categories with `CORRECT_GROUP`:
+
+```javascript
+var CORRECT_GROUP = {
+  "tcp-reliable-files": "tcp",
+  "tcp-connection": "tcp",
+  "udp-no-channel": "udp",
+  "udp-streaming": "udp"
+};
+```
+
+## Required check logic
+
+Validate by **category membership**, never by slot index or fixed fill order:
+
+```javascript
+var ok = CORRECT_GROUP[v] === slot.getAttribute("data-target");
+```
+
+Do **not** compare `token.data-value === slot.data-target` when slots use category ids.
+
+Do **not** use `FILL_ORDER[i]`, `CORRECT_ORDER[idx]`, or slot index inside `checkBtn`.
+
+`FILL_ORDER` / `fillOrder` is only for **Show Answer** display convenience.
+
+Prefer `window.CcnaDndCategoryCheck.check()` / `.show()` from `/CCNA-Study/js/ccna-dnd-category-check.js` for new or edited category pages.
+
+## Exceptions (order **does** matter)
+
+Keep strict slot/order validation only when the stem requires it, for example:
+
+- Command sequences (`dragdrop-enable-secret-command-sequence.html`)
+- Ordered process steps (`dragdrop-dns-lookup-operation-steps-order.html`)
+- One-to-one statement matching (unique `data-target` per slot, no shared category)
+
+## Unused-token variants
+
+For “leave distractors in the bank” items, still use category membership in `checkBtn`; enforce unused tokens with `MUST_BANK` / `tokenInBank()` like existing pages.

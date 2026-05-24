@@ -363,49 +363,34 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) {
-            slot.classList.add("incorrect");
-            allOk = false;
-            return;
-          }
-          var v = t.getAttribute("data-value");
-          var ok = CORRECT_GROUP[v] === slot.getAttribute("data-target");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
-        if ([].slice.call(bank.querySelectorAll(".token")).length > 0) {
-          allOk = false;
-        }
-        result.textContent = allOk
-          ? "Correct. Traditional networks are managed device-by-device and often cost more to run at scale; controller-based designs centralize visibility and use controllers to push policy and orchestration."
-          : "Incorrect. Fill all four slots—two under each networking type—with an empty bank.";
+
+        CcnaDndCategoryCheck.check({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            result: result,
+            messages: {
+              ok: "Correct. Traditional networks are managed device-by-device and often cost more to run at scale; controller-based designs centralize visibility and use controllers to push policy and orchestration.",
+              fail: "Incorrect. Fill all four slots—two under each networking type—with an empty bank."
+            }
+          });
+
+
       });
 
       showBtn.addEventListener("click", function () {
+
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        var fillOrder = [
-          "per-device-changes",
-          "higher-maintenance",
-          "centralized-view",
-          "controllers-manage",
-        ];
-        allSlots().forEach(function (slot, i) {
-          var tok = takeFromBank(fillOrder[i]);
-          if (tok) {
-            slot.appendChild(tok);
-            slot.classList.add("correct");
-          }
-        });
-        result.textContent = "Answer shown.";
+        CcnaDndCategoryCheck.show({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            takeFromBank: takeFromBank,
+            result: result,
+            showMessage: "Answer shown."
+          });
+
+
       });
 
       resetBtn.addEventListener("click", function () {

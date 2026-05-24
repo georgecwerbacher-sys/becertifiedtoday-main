@@ -137,38 +137,34 @@
         return [].slice.call(bank.querySelectorAll(".token")).some(function (t) { return t.getAttribute("data-value") === value; });
       }
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) { slot.classList.add("incorrect"); allOk = false; return; }
-          var v = t.getAttribute("data-value");
-          if (MUST_BANK.indexOf(v) >= 0) { slot.classList.add("incorrect"); allOk = false; return; }
-          var want = CORRECT_GROUP[v];
-          var ok = want === slot.getAttribute("data-target");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
-        MUST_BANK.forEach(function (id) {
-          if (!tokenInBank(id)) allOk = false;
-        });
-        result.textContent = allOk
-          ? "Correct. Authentication governs login success or failure and the methods used to verify users; authorization applies policies such as command sets and downloadable or per-user attributes. Recording resource use and tracking services belong to accounting and stay unused here."
-          : "Incorrect. Fill Authentication and Authorization only, and leave the resource-consumption and service-tracking lines in the bank.";
+
+        CcnaDndCategoryCheck.check({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            result: result,
+            requireEmptyBank: false,
+            mustBank: MUST_BANK,
+            tokenInBank: tokenInBank,
+            messages: {
+              ok: "Correct. Authentication governs login success or failure and the methods used to verify users; authorization applies policies such as command sets and downloadable or per-user attributes. Recording resource use and tracking services belong to accounting and stay unused here.",
+              fail: "Incorrect. Fill Authentication and Authorization only, and leave the resource-consumption and service-tracking lines in the bank."
+            }
+          });
+
       });
       showBtn.addEventListener("click", function () {
+
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        var fillOrder = ["login-permit-deny", "auth-methods", "per-user-attrs", "restrict-cli"];
-        allSlots().forEach(function (slot, i) {
-          var tok = takeFromBank(fillOrder[i]);
-          if (tok) { slot.appendChild(tok); slot.classList.add("correct"); }
-        });
-        result.textContent = "Answer shown. The two accounting-style statements remain in the bank.";
+        CcnaDndCategoryCheck.show({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            takeFromBank: takeFromBank,
+            result: result,
+            showMessage: "Answer shown. The two accounting-style statements remain in the bank."
+          });
+
       });
       resetBtn.addEventListener("click", function () {
         clearPick();

@@ -136,38 +136,34 @@
         return [].slice.call(bank.querySelectorAll(".token")).some(function (t) { return t.getAttribute("data-value") === val; });
       }
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) { slot.classList.add("incorrect"); allOk = false; return; }
-          var v = t.getAttribute("data-value");
-          if (v === UNUSED) { slot.classList.add("incorrect"); allOk = false; return; }
-          var want = CORRECT_GROUP[v];
-          var ok = want === slot.getAttribute("data-target");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
-        if (!tokenInBank(UNUSED)) { allOk = false; }
-        if (!allOk) {
-          result.textContent = "Incorrect. Place two facts under Cloud-Based and two under Lightweight. Leave \"accessible for management via Telnet, SSH, or a Web GUI\" in the bank—that pattern fits autonomous-style local management more than this cloud versus lightweight split.";
-          return;
-        }
-        result.textContent = "Correct. The WLC centralizes management, security, and forwarding decisions for lightweight APs in LWAPP mode. The AP bridges 802.11 wireless to Ethernet and handles frame formatting toward the wired network. Deployment model (on-prem or cloud) is not the distinguishing fact for this split, so that line stays unused.";
+
+        CcnaDndCategoryCheck.check({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            result: result,
+            requireEmptyBank: false,
+            mustBank: [UNUSED],
+            tokenInBank: tokenInBank,
+            messages: {
+              ok: "Correct. The WLC centralizes management, security, and forwarding decisions for lightweight APs in LWAPP mode. The AP bridges 802.11 wireless to Ethernet and handles frame formatting toward the wired network. Deployment model (on-prem or cloud) is not the distinguishing fact for this split, so that line stays unused.",
+              fail: "Incorrect. Place two facts under Cloud-Based and two under Lightweight. Leave \"accessible for management via Telnet, SSH, or a Web GUI\" in the bank—that pattern fits autonomous-style local management more than this cloud versus lightweight split."
+            }
+          });
+
       });
       showBtn.addEventListener("click", function () {
+
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        var fillOrder = ["ethernet-frame", "ieee80211-ethernet", "centralized-mgmt", "lwapp-forwarding"];
-        allSlots().forEach(function (slot, i) {
-          var tok = takeFromBank(fillOrder[i]);
-          if (tok) { slot.appendChild(tok); slot.classList.add("correct"); }
-        });
-        result.textContent = "Answer shown. On-premise/cloud deployment line remains in the bank.";
+        CcnaDndCategoryCheck.show({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            takeFromBank: takeFromBank,
+            result: result,
+            showMessage: "Answer shown. On-premise/cloud deployment line remains in the bank."
+          });
+
       });
       resetBtn.addEventListener("click", function () {
         clearPick();

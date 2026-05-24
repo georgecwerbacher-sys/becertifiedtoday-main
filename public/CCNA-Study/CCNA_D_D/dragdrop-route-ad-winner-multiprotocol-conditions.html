@@ -108,7 +108,6 @@ O    10.10.10.0/24 [110/2] via 192.168.2.2, GigabitEthernet0/2</pre>
         "static-eigrp-down": "ebgp",
         "static-ospf-down": "ebgp"
       };
-      var FILL_ORDER = ["static-eigrp-down", "static-ospf-down", "static-ebgp-down", "all-up", "ospf-ebgp-down"];
 
       function allSlots() { return document.querySelectorAll(".drop-slot[data-target]"); }
       function clearPick() { document.querySelectorAll(".token.is-picked").forEach(function(n){n.classList.remove("is-picked");}); picked = null; }
@@ -150,33 +149,31 @@ O    10.10.10.0/24 [110/2] via 192.168.2.2, GigabitEthernet0/2</pre>
         return [].slice.call(bank.querySelectorAll(".token")).find(function (t) { return t.getAttribute("data-value") === value; });
       }
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) { slot.classList.add("incorrect"); allOk = false; return; }
-          var v = t.getAttribute("data-value");
-          var ok = CORRECT_GROUP[v] === slot.getAttribute("data-target");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
-        if (bank.querySelectorAll(".token").length) allOk = false;
-        result.textContent = allOk
-          ? "Correct. With every route present, static AD 1 wins. Losing OSPF and eBGP still leaves static ahead of EIGRP. If static and eBGP fail, EIGRP beats OSPF. If static and EIGRP (or static and OSPF) fail, eBGP is best of what remains."
-          : "Incorrect. For each failure case, pick the lowest AD among the protocols that are still up, and fill every slot so the bank is empty.";
+
+        CcnaDndCategoryCheck.check({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            result: result,
+            messages: {
+              ok: "Correct. With every route present, static AD 1 wins. Losing OSPF and eBGP still leaves static ahead of EIGRP. If static and eBGP fail, EIGRP beats OSPF. If static and EIGRP (or static and OSPF) fail, eBGP is best of what remains.",
+              fail: "Incorrect. For each failure case, pick the lowest AD among the protocols that are still up, and fill every slot so the bank is empty."
+            }
+          });
+
       });
       showBtn.addEventListener("click", function () {
+
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        allSlots().forEach(function (slot, i) {
-          var tok = takeFromBank(FILL_ORDER[i]);
-          if (tok) { slot.appendChild(tok); slot.classList.add("correct"); }
-        });
-        result.textContent = "Answer shown.";
+        CcnaDndCategoryCheck.show({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            takeFromBank: takeFromBank,
+            result: result,
+            showMessage: "Answer shown."
+          });
+
       });
       resetBtn.addEventListener("click", function () {
         clearPick();

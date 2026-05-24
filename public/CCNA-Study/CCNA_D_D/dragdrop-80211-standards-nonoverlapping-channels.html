@@ -93,7 +93,6 @@
         "std-11a": "chan23",
         "std-11n5": "chan23"
       };
-      var FILL_ORDER = ["std-11b", "std-11g", "std-11n24", "std-11a", "std-11n5"];
 
       function allSlots() { return document.querySelectorAll(".drop-slot[data-target]"); }
       function clearPick() { document.querySelectorAll(".token.is-picked").forEach(function(n){n.classList.remove("is-picked");}); picked = null; }
@@ -135,33 +134,31 @@
         return [].slice.call(bank.querySelectorAll(".token")).find(function (t) { return t.getAttribute("data-value") === value; });
       }
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) { slot.classList.add("incorrect"); allOk = false; return; }
-          var v = t.getAttribute("data-value");
-          var ok = CORRECT_GROUP[v] === slot.getAttribute("data-target");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
-        if (bank.querySelectorAll(".token").length) allOk = false;
-        result.textContent = allOk
-          ? "Correct. 802.11b, 802.11g, and 802.11n on 2.4 GHz use the crowded 2.4 GHz band (three common non-overlapping 20 MHz channels). 802.11a and 802.11n on 5 GHz use the wider 5 GHz spectrum with many more non-overlapping channels."
-          : "Incorrect. Sort by band: 2.4-only or 2.4 mode goes with three-channel planning; pure 5 GHz standards go with many-channel planning.";
+
+        CcnaDndCategoryCheck.check({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            result: result,
+            messages: {
+              ok: "Correct. 802.11b, 802.11g, and 802.11n on 2.4 GHz use the crowded 2.4 GHz band (three common non-overlapping 20 MHz channels). 802.11a and 802.11n on 5 GHz use the wider 5 GHz spectrum with many more non-overlapping channels.",
+              fail: "Incorrect. Sort by band: 2.4-only or 2.4 mode goes with three-channel planning; pure 5 GHz standards go with many-channel planning."
+            }
+          });
+
       });
       showBtn.addEventListener("click", function () {
+
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        allSlots().forEach(function (slot, i) {
-          var tok = takeFromBank(FILL_ORDER[i]);
-          if (tok) { slot.appendChild(tok); slot.classList.add("correct"); }
-        });
-        result.textContent = "Answer shown.";
+        CcnaDndCategoryCheck.show({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            takeFromBank: takeFromBank,
+            result: result,
+            showMessage: "Answer shown."
+          });
+
       });
       resetBtn.addEventListener("click", function () {
         clearPick();

@@ -206,7 +206,6 @@
         "non-host-only": "anycast",
         "nearest-interface": "anycast"
       };
-      var FILL_ORDER = ["group-address", "unicast-to-group", "non-host-only", "nearest-interface"];
 
       function allSlots() { return document.querySelectorAll(".drop-slot[data-target]"); }
       function clearPick() { document.querySelectorAll(".token.is-picked").forEach(function(n){n.classList.remove("is-picked");}); picked = null; }
@@ -253,34 +252,34 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) { slot.classList.add("incorrect"); allOk = false; return; }
-          var v = t.getAttribute("data-value");
-          var ok = CORRECT_GROUP[v] === slot.getAttribute("data-target");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
-        if (bank.querySelectorAll(".token").length) allOk = false;
-        result.textContent = allOk
-          ? "Correct. Multicast delivers one packet to many group members (unicast source to a multicast group). Anycast shares one address on multiple devices; routing delivers to the nearest interface with that address, often on infrastructure rather than end hosts."
-          : "Incorrect. Place all four characteristics: two under Multicast and two under Anycast, with an empty bank.";
+
+        CcnaDndCategoryCheck.check({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            result: result,
+            messages: {
+              ok: "Correct. Multicast delivers one packet to many group members (unicast source to a multicast group). Anycast shares one address on multiple devices; routing delivers to the nearest interface with that address, often on infrastructure rather than end hosts.",
+              fail: "Incorrect. Place all four characteristics: two under Multicast and two under Anycast, with an empty bank."
+            }
+          });
+
+
       });
 
       showBtn.addEventListener("click", function () {
+
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        allSlots().forEach(function (slot, i) {
-          var tok = takeFromBank(FILL_ORDER[i]);
-          if (tok) { slot.appendChild(tok); slot.classList.add("correct"); }
-        });
-        result.textContent = "Answer shown.";
+        CcnaDndCategoryCheck.show({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            takeFromBank: takeFromBank,
+            result: result,
+            showMessage: "Answer shown."
+          });
+
+
       });
 
       resetBtn.addEventListener("click", function () {

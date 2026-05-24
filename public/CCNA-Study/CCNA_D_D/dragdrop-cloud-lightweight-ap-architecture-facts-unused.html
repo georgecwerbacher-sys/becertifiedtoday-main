@@ -136,38 +136,34 @@
         return [].slice.call(bank.querySelectorAll(".token")).some(function (t) { return t.getAttribute("data-value") === val; });
       }
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) { slot.classList.add("incorrect"); allOk = false; return; }
-          var v = t.getAttribute("data-value");
-          if (v === UNUSED) { slot.classList.add("incorrect"); allOk = false; return; }
-          var want = CORRECT_GROUP[v];
-          var ok = want === slot.getAttribute("data-target");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
-        if (!tokenInBank(UNUSED)) { allOk = false; }
-        if (!allOk) {
-          result.textContent = "Incorrect. Place two facts under Cloud-Based and two under Lightweight. Leave \"accessible for management via Telnet, SSH, or a Web GUI\" in the bank—that pattern fits autonomous-style local management more than this cloud versus lightweight split.";
-          return;
-        }
-        result.textContent = "Correct. Cloud-managed APs are operated from a central web dashboard and support zero-touch style deployment. Lightweight APs join a WLC and expose multiple operational modes (for example local, FlexConnect, or monitor). Per-device Telnet, SSH, and Web GUI as the primary model is characteristic of autonomous APs, so that line stays unused here.";
+
+        CcnaDndCategoryCheck.check({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            result: result,
+            requireEmptyBank: false,
+            mustBank: [UNUSED],
+            tokenInBank: tokenInBank,
+            messages: {
+              ok: "Correct. Cloud-managed APs are operated from a central web dashboard and support zero-touch style deployment. Lightweight APs join a WLC and expose multiple operational modes (for example local, FlexConnect, or monitor). Per-device Telnet, SSH, and Web GUI as the primary model is characteristic of autonomous APs, so that line stays unused here.",
+              fail: "Incorrect. Place two facts under Cloud-Based and two under Lightweight. Leave \"accessible for management via Telnet, SSH, or a Web GUI\" in the bank—that pattern fits autonomous-style local management more than this cloud versus lightweight split."
+            }
+          });
+
       });
       showBtn.addEventListener("click", function () {
+
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        var fillOrder = ["web-dashboard", "auto-deploy", "wlc-managed", "oper-modes"];
-        allSlots().forEach(function (slot, i) {
-          var tok = takeFromBank(fillOrder[i]);
-          if (tok) { slot.appendChild(tok); slot.classList.add("correct"); }
-        });
-        result.textContent = "Answer shown. Telnet/SSH/Web GUI fact remains in the bank.";
+        CcnaDndCategoryCheck.show({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            takeFromBank: takeFromBank,
+            result: result,
+            showMessage: "Answer shown. Telnet/SSH/Web GUI fact remains in the bank."
+          });
+
       });
       resetBtn.addEventListener("click", function () {
         clearPick();

@@ -88,7 +88,6 @@
         "attenuation-long": "multimode",
         "vulnerable-damage": "multimode"
       };
-      var FILL_ORDER = ["easy-tap", "twisted-pairs", "attenuation-long", "vulnerable-damage"];
 
       function allSlots() { return document.querySelectorAll(".drop-slot[data-target]"); }
       function clearPick() { document.querySelectorAll(".token.is-picked").forEach(function(n){n.classList.remove("is-picked");}); picked = null; }
@@ -140,34 +139,34 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) { slot.classList.add("incorrect"); allOk = false; return; }
-          var v = t.getAttribute("data-value");
-          var ok = CORRECT_GROUP[v] === slot.getAttribute("data-target");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
-        if (bank.querySelectorAll(".token").length) allOk = false;
-        result.textContent = allOk
-          ? "Correct. Copper uses twisted-pair cabling that is easy to tap. Multimode fiber suffers greater attenuation over distance and its glass core is fragile during installation."
-          : "Incorrect. Place all four characteristics: two under copper and two under multi-mode fiber, with an empty bank.";
+
+        CcnaDndCategoryCheck.check({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            result: result,
+            messages: {
+              ok: "Correct. Copper uses twisted-pair cabling that is easy to tap. Multimode fiber suffers greater attenuation over distance and its glass core is fragile during installation.",
+              fail: "Incorrect. Place all four characteristics: two under copper and two under multi-mode fiber, with an empty bank."
+            }
+          });
+
+
       });
 
       showBtn.addEventListener("click", function () {
+
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        allSlots().forEach(function (slot, i) {
-          var tok = takeFromBank(FILL_ORDER[i]);
-          if (tok) { slot.appendChild(tok); slot.classList.add("correct"); }
-        });
-        result.textContent = "Answer shown.";
+        CcnaDndCategoryCheck.show({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            takeFromBank: takeFromBank,
+            result: result,
+            showMessage: "Answer shown."
+          });
+
+
       });
 
       resetBtn.addEventListener("click", function () {

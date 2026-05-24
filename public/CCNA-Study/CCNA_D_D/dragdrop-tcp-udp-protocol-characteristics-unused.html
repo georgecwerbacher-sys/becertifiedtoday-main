@@ -95,7 +95,6 @@
         "connectionless": "udp"
       };
       var UNUSED = "connection-oriented";
-      var FILL_ORDER = ["ack-mechanism", "guaranteed", "low-overhead", "no-error-checking", "connectionless"];
 
       function allSlots() { return document.querySelectorAll(".drop-slot[data-target]"); }
       function clearPick() { document.querySelectorAll(".token.is-picked").forEach(function(n){n.classList.remove("is-picked");}); picked = null; }
@@ -150,35 +149,36 @@
         return [].slice.call(bank.querySelectorAll(".token")).some(function (t) { return t.getAttribute("data-value") === val; });
       }
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) { slot.classList.add("incorrect"); allOk = false; return; }
-          var v = t.getAttribute("data-value");
-          if (v === UNUSED) { slot.classList.add("incorrect"); allOk = false; return; }
-          var ok = CORRECT_GROUP[v] === slot.getAttribute("data-target");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
-        if (!tokenInBank(UNUSED)) allOk = false;
-        result.textContent = allOk
-          ? "Correct. TCP provides acknowledgements and guaranteed delivery; UDP is connectionless with low overhead and minimal recovery. Connection-oriented describes TCP but is not one of the five characteristics placed here—leave it in the bank."
-          : "Incorrect. Place two characteristics under TCP and three under UDP. Leave \"connection-oriented\" in the bank.";
+
+        CcnaDndCategoryCheck.check({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            result: result,
+            requireEmptyBank: false,
+            mustBank: [UNUSED],
+            tokenInBank: tokenInBank,
+            messages: {
+              ok: "Correct. TCP provides acknowledgements and guaranteed delivery; UDP is connectionless with low overhead and minimal recovery. Connection-oriented describes TCP but is not one of the five characteristics placed here—leave it in the bank.",
+              fail: "Incorrect. Place two characteristics under TCP and three under UDP. Leave \"connection-oriented\" in the bank."
+            }
+          });
+
       });
 
       showBtn.addEventListener("click", function () {
+
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        allSlots().forEach(function (slot, i) {
-          var tok = takeFromBank(FILL_ORDER[i]);
-          if (tok) { slot.appendChild(tok); slot.classList.add("correct"); }
-        });
-        result.textContent = "Answer shown. connection-oriented remains in the bank.";
+        CcnaDndCategoryCheck.show({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            takeFromBank: takeFromBank,
+            result: result,
+            showMessage: "Answer shown. connection-oriented remains in the bank."
+          });
+
+
       });
 
       resetBtn.addEventListener("click", function () {

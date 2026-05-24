@@ -92,7 +92,6 @@
         "tracks-services": "accounting"
       };
       var MUST_BANK = ["per-user-attrs"];
-      var FILL_ORDER = ["records-resources", "tracks-services", "login-permit-deny", "auth-methods"];
 
       function allSlots() { return document.querySelectorAll(".drop-slot[data-target]"); }
       function clearPick() { document.querySelectorAll(".token.is-picked").forEach(function(n){n.classList.remove("is-picked");}); picked = null; }
@@ -137,36 +136,34 @@
         return [].slice.call(bank.querySelectorAll(".token")).some(function (t) { return t.getAttribute("data-value") === value; });
       }
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) { slot.classList.add("incorrect"); allOk = false; return; }
-          var v = t.getAttribute("data-value");
-          if (MUST_BANK.indexOf(v) >= 0) { slot.classList.add("incorrect"); allOk = false; return; }
-          var ok = CORRECT_GROUP[v] === slot.getAttribute("data-target");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
-        MUST_BANK.forEach(function (id) {
-          if (!tokenInBank(id)) allOk = false;
-        });
-        result.textContent = allOk
-          ? "Correct. Authentication governs login attempts and the methods used to verify users; accounting records resource consumption and tracks services in use. Per-user attributes are applied during authorization and stay unused here."
-          : "Incorrect. Fill Accounting and Authentication only, and leave the per-user attributes statement in the bank.";
+
+        CcnaDndCategoryCheck.check({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            result: result,
+            requireEmptyBank: false,
+            mustBank: MUST_BANK,
+            tokenInBank: tokenInBank,
+            messages: {
+              ok: "Correct. Authentication governs login attempts and the methods used to verify users; accounting records resource consumption and tracks services in use. Per-user attributes are applied during authorization and stay unused here.",
+              fail: "Incorrect. Fill Accounting and Authentication only, and leave the per-user attributes statement in the bank."
+            }
+          });
+
       });
       showBtn.addEventListener("click", function () {
+
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        allSlots().forEach(function (slot, i) {
-          var tok = takeFromBank(FILL_ORDER[i]);
-          if (tok) { slot.appendChild(tok); slot.classList.add("correct"); }
-        });
-        result.textContent = "Answer shown. The authorization statement remains in the bank.";
+        CcnaDndCategoryCheck.show({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            takeFromBank: takeFromBank,
+            result: result,
+            showMessage: "Answer shown. The authorization statement remains in the bank."
+          });
+
       });
       resetBtn.addEventListener("click", function () {
         clearPick();

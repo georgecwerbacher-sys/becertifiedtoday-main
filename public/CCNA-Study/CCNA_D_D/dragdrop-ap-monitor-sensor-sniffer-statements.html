@@ -102,14 +102,6 @@
         "capture-channel": "sniffer",
         "remote-frames": "sniffer"
       };
-      var FILL_ORDER = [
-        "air-quality",
-        "offsite-troubleshoot",
-        "rfid-tracking",
-        "perf-analytics",
-        "capture-channel",
-        "remote-frames"
-      ];
 
       function allSlots() { return document.querySelectorAll(".drop-slot[data-target]"); }
       function clearPick() { document.querySelectorAll(".token.is-picked").forEach(function(n){n.classList.remove("is-picked");}); picked = null; }
@@ -161,34 +153,34 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) { slot.classList.add("incorrect"); allOk = false; return; }
-          var v = t.getAttribute("data-value");
-          var ok = CORRECT_GROUP[v] === slot.getAttribute("data-target");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
-        if (bank.querySelectorAll(".token").length) allOk = false;
-        result.textContent = allOk
-          ? "Correct. Monitor mode scans channels for air quality, interference, and remote troubleshooting; sensor mode supports RFID location and performance analytics; sniffer mode captures traffic on one channel for remote frame analysis."
-          : "Incorrect. Place all six statements: two under Monitor, two under Sensor, and two under Sniffer, with an empty bank.";
+
+        CcnaDndCategoryCheck.check({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            result: result,
+            messages: {
+              ok: "Correct. Monitor mode scans channels for air quality, interference, and remote troubleshooting; sensor mode supports RFID location and performance analytics; sniffer mode captures traffic on one channel for remote frame analysis.",
+              fail: "Incorrect. Place all six statements: two under Monitor, two under Sensor, and two under Sniffer, with an empty bank."
+            }
+          });
+
+
       });
 
       showBtn.addEventListener("click", function () {
+
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        allSlots().forEach(function (slot, i) {
-          var tok = takeFromBank(FILL_ORDER[i]);
-          if (tok) { slot.appendChild(tok); slot.classList.add("correct"); }
-        });
-        result.textContent = "Answer shown.";
+        CcnaDndCategoryCheck.show({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            takeFromBank: takeFromBank,
+            result: result,
+            showMessage: "Answer shown."
+          });
+
+
       });
 
       resetBtn.addEventListener("click", function () {

@@ -376,51 +376,34 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) {
-            slot.classList.add("incorrect");
-            allOk = false;
-            return;
-          }
-          var v = t.getAttribute("data-value");
-          var ok = CORRECT_GROUP[v] === slot.getAttribute("data-target");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
-        if ([].slice.call(bank.querySelectorAll(".token")).length > 0) {
-          allOk = false;
-        }
-        result.textContent = allOk
-          ? "Correct. Unicast identifies a single interface and includes types such as link-local and loopback; multicast uses FF00::/8 and reaches many subscribers; anycast is the same address on multiple interfaces so routing delivers to the nearest instance."
-          : "Incorrect. Place two details under each type (Anycast, Multicast, Unicast) until the bank is empty.";
+
+        CcnaDndCategoryCheck.check({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            result: result,
+            messages: {
+              ok: "Correct. Unicast identifies a single interface and includes types such as link-local and loopback; multicast uses FF00::/8 and reaches many subscribers; anycast is the same address on multiple interfaces so routing delivers to the nearest instance.",
+              fail: "Incorrect. Place two details under each type (Anycast, Multicast, Unicast) until the bank is empty."
+            }
+          });
+
+
       });
 
       showBtn.addEventListener("click", function () {
+
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        var fillOrder = [
-          "non-host-only",
-          "multi-interface",
-          "ff00-range",
-          "one-to-many",
-          "link-local-loopback",
-          "identifies-interface",
-        ];
-        allSlots().forEach(function (slot, i) {
-          var tok = takeFromBank(fillOrder[i]);
-          if (tok) {
-            slot.appendChild(tok);
-            slot.classList.add("correct");
-          }
-        });
-        result.textContent = "Answer shown.";
+        CcnaDndCategoryCheck.show({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            takeFromBank: takeFromBank,
+            result: result,
+            showMessage: "Answer shown."
+          });
+
+
       });
 
       resetBtn.addEventListener("click", function () {

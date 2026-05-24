@@ -369,51 +369,34 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) {
-            slot.classList.add("incorrect");
-            allOk = false;
-            return;
-          }
-          var v = t.getAttribute("data-value");
-          var ok = CORRECT_GROUP[v] === slot.getAttribute("data-target");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
-        if ([].slice.call(bank.querySelectorAll(".token")).length > 0) {
-          allOk = false;
-        }
-        result.textContent = allOk
-          ? "Correct. RADIUS runs over UDP, merges authentication with authorization, and hides only the password in Access-Request. TACACS+ uses TCP, encrypts the full packet payload, and treats authentication, authorization, and accounting as separate functions."
-          : "Incorrect. Fill all six slots—three under RADIUS and three under TACACS+—with an empty bank.";
+
+        CcnaDndCategoryCheck.check({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            result: result,
+            messages: {
+              ok: "Correct. RADIUS runs over UDP, merges authentication with authorization, and hides only the password in Access-Request. TACACS+ uses TCP, encrypts the full packet payload, and treats authentication, authorization, and accounting as separate functions.",
+              fail: "Incorrect. Fill all six slots—three under RADIUS and three under TACACS+—with an empty bank."
+            }
+          });
+
+
       });
 
       showBtn.addEventListener("click", function () {
+
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        var fillOrder = [
-          "encrypts-password-only",
-          "combines-auth-authz",
-          "uses-udp",
-          "separates-three-aaa",
-          "encrypts-full-body",
-          "uses-tcp",
-        ];
-        allSlots().forEach(function (slot, i) {
-          var tok = takeFromBank(fillOrder[i]);
-          if (tok) {
-            slot.appendChild(tok);
-            slot.classList.add("correct");
-          }
-        });
-        result.textContent = "Answer shown.";
+        CcnaDndCategoryCheck.show({
+            bank: bank,
+            allSlots: allSlots,
+            correctGroup: CORRECT_GROUP,
+            takeFromBank: takeFromBank,
+            result: result,
+            showMessage: "Answer shown."
+          });
+
+
       });
 
       resetBtn.addEventListener("click", function () {
