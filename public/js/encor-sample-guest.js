@@ -2,7 +2,15 @@
 (function () {
   "use strict";
 
-  var HOME = "/ccnp-home.html";
+  function sampleHomeHref() {
+    try {
+      var remembered = sessionStorage.getItem("ccnaLastRealPath") || "";
+      if (/\/ccna-study\/|\/ccna_sim_exam\//i.test(remembered)) {
+        return "/ccna-home.html";
+      }
+    } catch (e) {}
+    return "/ccnp-home.html";
+  }
 
   if (!window.isCcnpGuestSample) {
     window.isCcnpGuestSample = function () {
@@ -24,9 +32,12 @@
       });
       document.body.classList.remove("ccnp-sample-guest");
 
-      document.querySelectorAll("a.home-key, a.sim-nav-home").forEach(function (a) {
-        a.href = HOME;
-        a.textContent = "Home";
+      var home = sampleHomeHref();
+      document.querySelectorAll("a.home-key, a.sim-nav-home, a.nav-home").forEach(function (a) {
+        a.href = home;
+        if (a.classList.contains("nav-home") || a.classList.contains("sim-nav-home") || a.classList.contains("home-key")) {
+          a.textContent = "Home";
+        }
       });
 
       document.querySelectorAll("nav.sim-nav a.sim-nav-btn").forEach(function (a) {

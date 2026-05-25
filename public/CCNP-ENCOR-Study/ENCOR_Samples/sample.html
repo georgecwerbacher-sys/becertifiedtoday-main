@@ -33,6 +33,37 @@
         "365": "/CCNP-ENCOR-Study/ENCOR_Samples/question-365.html?sample=1",
         "261": "/CCNP-ENCOR-Study/CCNP-ENCOR-Drag-Drop/question-261.html?sample=1"
       };
+      /** One CCNA 200-301 sample MCQ per exam domain — each page includes a topology or exhibit figure. */
+      var CCNA_SAMPLE_SLUGS = [
+        "site-ab-tenge-sfp-sr-vs-lr-smf-intermittent-exhibit",
+        "switchport-trunk-allowed-vlan-add-104",
+        "router1-longest-match-10-10-13-158-show-ip-route",
+        "nat-pat-standard-acl1-gi01-exhibit",
+        "sw1-pc1-port-security-access-mac-exhibit",
+        "json-mycar-wheels-warning-in-array"
+      ];
+      var CCNA_SAMPLE_SLUG_SET = {};
+      CCNA_SAMPLE_SLUGS.forEach(function (slug) {
+        CCNA_SAMPLE_SLUG_SET[slug] = true;
+      });
+
+      function startCcnaSampleQueue(slugs, kind) {
+        var shuffled = shuffle(slugs);
+        try {
+          sessionStorage.removeItem("ccnpLinearScope");
+          sessionStorage.removeItem("ccnpReviewMode");
+          sessionStorage.removeItem("ccnpReviewQueue");
+          sessionStorage.setItem(
+            "ccnaPractice100",
+            JSON.stringify({ v: 1, order: shuffled, mode: "linear" })
+          );
+        } catch (e) {}
+        sessionStorage.setItem("ccnpUrlMaskPath", "/sample");
+        sessionStorage.setItem("ccnpSampleKind", kind);
+        location.replace(
+          "/CCNA-Study/CCNA_questions/" + shuffled[0] + ".html?sample=1"
+        );
+      }
 
       function shuffle(arr) {
         var a = arr.slice();
@@ -51,11 +82,25 @@
         drag: "/CCNP-ENCOR-Study/ENCOR_Samples/question-365.html?sample=1",
         ftp: "/CCNA-Study/CCNA_Samples/dragdrop-ftp-vs-tftp.html?sample=1",
         "ccna-questions": "/CCNA-Study/CCNA_Samples/sample-question-1.html?sample=1",
+        "ccna-dnd": "/CCNA-Study/CCNA_Samples/dragdrop-ftp-vs-tftp.html?sample=1",
         "ccna-trunk": "/CCNA-Study/CCNA_labs/cli-lab-trunk_lacp.html?sample=1",
         "ccna-vlan": "/CCNA-Study/CCNA_labs/cli-lab-vlan-sim.html?sample=1"
       };
 
       var dest = null;
+
+      if (track === "ccna-questions") {
+        startCcnaSampleQueue(CCNA_SAMPLE_SLUGS, "ccna-questions");
+        return;
+      }
+
+      if (track === "ccna-q") {
+        var slug = (params.get("slug") || "").replace(/\.html$/, "");
+        if (CCNA_SAMPLE_SLUG_SET[slug]) {
+          startCcnaSampleQueue([slug], "ccna-q-" + slug);
+          return;
+        }
+      }
 
       if (track === "encor-questions") {
         var shuffled = shuffle(ENCOR_SAMPLE_Q);

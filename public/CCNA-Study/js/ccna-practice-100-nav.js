@@ -3,7 +3,18 @@
 
   var KEY = "ccnaPractice100";
   var BASE = "/CCNA-Study/CCNA_questions/";
-  var finishHref = "/CCNA-Study/CCNA_Training_Portal.html";
+  function guestSampleActive() {
+    try {
+      if (new URLSearchParams(location.search).get("sample") === "1") return true;
+      return sessionStorage.getItem("ccnpUrlMaskPath") === "/sample";
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function finishHrefForSession() {
+    return guestSampleActive() ? "/ccna-home.html" : "/CCNA-Study/CCNA_Training_Portal.html";
+  }
   var TOPIC_MAP_URL = "/CCNA-Study/data/ccna-question-topic-map.json";
   var MANIFEST_URL = "/CCNA-Study/data/ccna-practice-questions-manifest.json";
   /** Upper bound on how many extra cross-bank items adaptive mode may inject (excludes retries of the missed slug). */
@@ -52,6 +63,54 @@
     return hits[0];
   }
 
+  function sampleQuerySuffix() {
+    return guestSampleActive() ? "?sample=1" : "";
+  }
+
+  function ensureSampleBottomNav() {
+    if (document.getElementById("ccnaSampleSimNav")) return;
+    var nav = document.createElement("nav");
+    nav.id = "ccnaSampleSimNav";
+    nav.className = "sim-nav ccna-sample-sim-nav";
+    nav.setAttribute("aria-label", "Sample navigation");
+
+    var home = document.createElement("a");
+    home.className = "sim-nav-btn sim-nav-home";
+    home.href = finishHrefForSession();
+    home.textContent = "Home";
+
+    var next = document.createElement("a");
+    next.className = "sim-nav-btn ccna-sample-next";
+    next.href = "#";
+    next.textContent = "Next";
+
+    nav.appendChild(home);
+    nav.appendChild(next);
+    document.body.appendChild(nav);
+    document.body.classList.add("ccna-sample-guest-ui");
+
+    var topNav = document.querySelector("nav.question-nav");
+    if (topNav) topNav.style.display = "none";
+  }
+
+  function syncSampleBottomNav() {
+    if (!guestSampleActive()) return;
+    var bar = document.getElementById("ccnaSampleSimNav");
+    if (!bar) return;
+
+    var home = bar.querySelector(".sim-nav-home");
+    if (home) home.href = finishHrefForSession();
+
+    var bottomNext = bar.querySelector(".ccna-sample-next");
+    var topNext = document.querySelector("a.nav-next");
+    if (!bottomNext || !topNext) return;
+
+    var synced = topNext.cloneNode(true);
+    synced.className = "sim-nav-btn ccna-sample-next";
+    synced.classList.remove("nav-link", "nav-next", "next-link");
+    bottomNext.parentNode.replaceChild(synced, bottomNext);
+  }
+
   function findNextPrevElements() {
     var prevEl = document.querySelector("a.nav-prev");
     var nextEl = document.querySelector("a.nav-next");
@@ -95,7 +154,7 @@
     if (nextEl) {
       if (i + 1 < order.length) {
         var ns = order[i + 1];
-        nextEl.href = BASE + ns + ".html#ccnaP=" + (i + 1);
+        nextEl.href = BASE + ns + ".html" + sampleQuerySuffix() + "#ccnaP=" + (i + 1);
         nextEl.textContent = "Next";
       } else {
         nextEl.href = "#";
@@ -107,7 +166,7 @@
             try {
               sessionStorage.removeItem(KEY);
             } catch (x) {}
-            window.location.href = finishHref;
+            window.location.href = finishHrefForSession();
           },
           { once: true }
         );
@@ -118,14 +177,33 @@
       prevEl.style.display = "";
       if (i > 0) {
         var ps = order[i - 1];
-        prevEl.href = BASE + ps + ".html#ccnaP=" + (i - 1);
+        prevEl.href = BASE + ps + ".html" + sampleQuerySuffix() + "#ccnaP=" + (i - 1);
         prevEl.textContent = "Back";
       } else {
         prevEl.style.display = "none";
       }
     }
 
+    if (guestSampleActive()) {
+      syncSampleBottomNav();
+    }
+
     return { mode: mode, i: i, slug: slug };
+  }
+
+  function applySampleFallbackNav(slug) {
+    ensureSampleBottomNav();
+    var els = findNextPrevElements();
+    var topNext = els.nextEl;
+    var topHome = document.querySelector("a.nav-home");
+    if (topHome) topHome.href = finishHrefForSession();
+    if (topNext && !readSession()) {
+      var href = topNext.getAttribute("href") || "#";
+      if (href.indexOf("sample=1") === -1 && href.indexOf(".html") !== -1) {
+        topNext.href = href.replace(/\.html(?=[#?]|$)/, ".html?sample=1");
+      }
+    }
+    syncSampleBottomNav();
   }
 
   function getTopicAssignments() {
@@ -272,7 +350,16 @@
   function run() {
     var slug = slugFromPath();
     if (!slug) return;
+
+    if (guestSampleActive()) {
+      ensureSampleBottomNav();
+    }
+
     var nav = applyPracticeNav(slug);
+    if (!nav && guestSampleActive()) {
+      applySampleFallbackNav(slug);
+      return;
+    }
     if (!nav) return;
 
     var s0 = readSession();
@@ -315,6 +402,9 @@
           }
           writeSession(s2);
           applyPracticeNav(slugRef);
+          if (guestSampleActive()) {
+            syncSampleBottomNav();
+          }
         } catch (e2) {}
       }
 

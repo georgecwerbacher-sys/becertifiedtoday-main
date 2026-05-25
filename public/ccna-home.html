@@ -43,7 +43,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta
     name="description"
-    content="CCNA 200-301 exam prep: practice questions, CLI labs, drag-and-drop, timed simulation, and a free 30-minute assessment. Browser-based Cisco certification training—no PDFs."
+    content="CCNA assessment with scorecard. No PDFs. No membership or email required. Practice CCNA online with labs, drag-and-drop, and questions. No additional apps needed."
   />
   <meta
     name="keywords"
@@ -51,10 +51,10 @@
   />
   <link rel="canonical" href="https://becertifiedtoday.com/ccna-home.html" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Cisco CCNA exam prep — practice questions, labs &amp; simulation | Be Certified Today" />
+  <meta property="og:title" content="Free CCNA Practice | CCNA 200-301 Prep | Be Certified Today" />
   <meta
     property="og:description"
-    content="CCNA 200-301 exam prep: practice questions, CLI labs, drag-and-drop, timed simulation, and a free 30-minute assessment. Browser-based Cisco certification training—no PDFs."
+    content="CCNA assessment with scorecard. No PDFs. No membership or email required. Practice CCNA online with labs, drag-and-drop, and questions."
   />
   <meta property="og:site_name" content="Be Certified Today" />
   <meta property="og:url" content="https://becertifiedtoday.com/ccna-home.html" />
@@ -77,22 +77,22 @@
     name="twitter:image:alt"
     content="Free 30-minute CCNA exam preview with timed exam controls, drag-and-drop items, and a VLAN CLI lab simulation."
   />
-  <meta name="twitter:title" content="Cisco CCNA exam prep — practice questions, labs &amp; simulation | Be Certified Today" />
+  <meta name="twitter:title" content="Free CCNA Practice | CCNA 200-301 Prep | Be Certified Today" />
   <meta
     name="twitter:description"
-    content="CCNA 200-301 exam prep: practice questions, CLI labs, drag-and-drop, timed simulation, and a free 30-minute assessment in your browser."
+    content="CCNA assessment with scorecard. No PDFs. No membership or email required. Practice CCNA online with labs, drag-and-drop, and questions."
   />
   <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
-  <title>Cisco CCNA exam prep — practice questions, labs &amp; simulation | Be Certified Today</title>
+  <title>Free CCNA Practice | CCNA 200-301 Prep | Be Certified Today</title>
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@graph": [
         {
           "@type": "WebPage",
-          "name": "Cisco CCNA exam prep — practice questions, labs & simulation",
-          "url": "https://becertifiedtoday.com/ccna-home.html",
-          "description": "CCNA 200-301 exam prep with practice questions, CLI labs, drag-and-drop, timed simulation, and a free 30-minute assessment in the browser.",
+          "name": "CCNA Practice Test — CCNA 200-301 Prep",
+          "url": "https://becertifiedtoday.com/ccna/practice-test",
+          "description": "CCNA assessment with scorecard. No PDFs. No membership or email required. Practice CCNA online with labs, drag-and-drop, and questions. No additional apps needed.",
           "primaryImageOfPage": {
             "@type": "ImageObject",
             "url": "https://becertifiedtoday.com/images/ccna-free-assessment-exam-thumbnail.png",
@@ -359,7 +359,7 @@
     main {
       flex: 1;
       display: block;
-      padding-top: clamp(32px, 6vw, 56px);
+      padding-top: clamp(20px, 3.5vw, 36px);
       padding-right: calc(clamp(20px, 4vw, 40px) + env(safe-area-inset-right, 0px));
       padding-bottom: calc(clamp(32px, 6vw, 56px) + env(safe-area-inset-bottom, 0px));
       padding-left: calc(clamp(20px, 4vw, 40px) + env(safe-area-inset-left, 0px));
@@ -370,8 +370,16 @@
       overflow: hidden;
       border-bottom: 1px solid var(--border);
       background: #0d1528;
-      /* Taller band + scaled image = read as “zoomed out” vs tight cover crop */
       height: clamp(260px, 42vw, 520px);
+    }
+    .hero-banner--deferred {
+      margin-top: clamp(28px, 5vw, 44px);
+      border-top: 1px solid var(--border);
+      border-bottom: 0;
+      height: clamp(140px, 24vw, 280px);
+    }
+    .hero-banner--deferred img {
+      transform: scale(0.92);
     }
     .hero-banner img {
       display: block;
@@ -398,11 +406,197 @@
       display: flex;
       flex-direction: column;
     }
+    .hero-conversion {
+      order: 0;
+      margin: 0 0 clamp(20px, 3.5vw, 28px);
+    }
+    .hero-conversion .lead {
+      margin-bottom: clamp(18px, 3vw, 22px);
+      max-width: 58ch;
+    }
+    .hero-atf-ctas {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 0 0 10px;
+      max-width: 440px;
+    }
+    .hero-atf-ctas--conversion .cta-main--hero-primary {
+      width: 100%;
+      min-height: 52px;
+      padding: 16px 20px;
+      font-size: clamp(1.02rem, 2.6vw, 1.14rem);
+      letter-spacing: 0.01em;
+    }
+    .hero-atf-upgrade {
+      margin: 0 0 clamp(14px, 2.5vw, 18px);
+      font-size: clamp(0.88rem, 2vw, 0.94rem);
+      color: var(--page-muted);
+      line-height: 1.45;
+    }
+    .hero-atf-upgrade a {
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .hero-atf-upgrade a:hover {
+      filter: brightness(1.08);
+    }
+    .hero-atf-samples {
+      margin: clamp(12px, 2vw, 16px) 0 0;
+      font-size: clamp(0.84rem, 1.9vw, 0.9rem);
+      color: var(--page-muted);
+      line-height: 1.45;
+    }
+    .hero-atf-samples a {
+      color: var(--page-muted);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .cta-main--free {
+      border-color: rgba(140, 210, 170, 0.55);
+      background: linear-gradient(165deg, #45a872 0%, #2f8f58 42%, #247048 100%);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.18) inset,
+        0 8px 26px rgba(36, 112, 72, 0.42);
+    }
+    .cta-main--free:hover {
+      filter: brightness(1.08);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.22) inset,
+        0 10px 30px rgba(36, 112, 72, 0.5);
+    }
+    .hero-atf-secondary {
+      margin: 0 0 clamp(16px, 2.5vw, 20px);
+      font-size: clamp(0.92rem, 2vw, 0.98rem);
+      color: var(--page-muted);
+      line-height: 1.5;
+    }
+    .hero-atf-secondary a {
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .hero-atf-secondary a:hover {
+      filter: brightness(1.08);
+    }
+    .hero-atf-trust {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 10px;
+    }
+    .hero-atf-trust li {
+      margin: 0;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(45, 59, 90, 0.45);
+      background: rgba(13, 21, 40, 0.06);
+      color: var(--page-muted);
+      font-size: clamp(0.78rem, 1.85vw, 0.88rem);
+      font-weight: 600;
+      line-height: 1.35;
+      white-space: nowrap;
+    }
+    .hero-conversion[data-ccna-hl-pending="1"] h1,
+    .hero-conversion[data-ccna-hl-pending="1"] .lead,
+    .hero-conversion[data-ccna-hl-pending="1"] .eyebrow {
+      visibility: hidden;
+    }
+    @media (max-width: 767px) {
+      .ccna-mobile-sticky-cta {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 900;
+        display: flex;
+        gap: 8px;
+        padding: 10px max(12px, env(safe-area-inset-left, 0px))
+          calc(10px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-right, 0px));
+        background: rgba(255, 255, 255, 0.97);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid var(--border);
+        box-shadow: 0 -6px 28px rgba(13, 21, 40, 0.14);
+        transform: translateY(110%);
+        transition: transform 0.22s ease;
+        pointer-events: none;
+      }
+      .ccna-mobile-sticky-cta.is-visible {
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+      .ccna-mobile-sticky-cta .cta-main {
+        flex: 1 1 auto;
+        width: 100%;
+        min-width: 0;
+        min-height: 48px;
+        padding: 12px 14px;
+        font-size: clamp(0.88rem, 3.4vw, 0.98rem);
+        line-height: 1.25;
+        text-align: center;
+      }
+      body.ccna-sticky-cta-visible {
+        padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+      }
+    }
     #purchase {
       order: 1;
     }
-    .formats-section {
+    .samples-stack {
       order: 2;
+    }
+    .benefits--deferred {
+      order: 3;
+    }
+    .hero-banner--deferred {
+      order: 4;
+    }
+    .formats-section {
+      order: 5;
+    }
+    .purchase-blueprint-details {
+      margin: 0 0 clamp(20px, 4vw, 28px);
+      border-radius: 12px;
+      border: 1px solid rgba(79, 132, 216, 0.38);
+      background: rgba(13, 21, 40, 0.55);
+    }
+    .purchase-blueprint-details > summary {
+      padding: clamp(14px, 2.5vw, 18px) clamp(16px, 3vw, 20px);
+      cursor: pointer;
+      font-size: clamp(0.92rem, 2vw, 1rem);
+      font-weight: 700;
+      color: #c8daf8;
+      list-style: none;
+    }
+    .purchase-blueprint-details > summary::-webkit-details-marker {
+      display: none;
+    }
+    .purchase-blueprint-details > summary::after {
+      content: "Show";
+      float: right;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #6b8ab8;
+    }
+    .purchase-blueprint-details[open] > summary::after {
+      content: "Hide";
+    }
+    .purchase-blueprint-details .purchase-blueprint-callout {
+      margin: 0;
+      border: 0;
+      border-radius: 0;
+      border-top: 1px solid rgba(79, 132, 216, 0.28);
+    }
+    .purchase-card .purchase-lead--tight {
+      margin-bottom: clamp(14px, 2.5vw, 18px);
     }
     .eyebrow {
       margin: 0 0 10px;
@@ -1333,6 +1527,54 @@
       outline-offset: 2px;
       border-radius: 2px;
     }
+    .encor-sample-subjects {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+    .encor-sample-subject {
+      margin: 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(45, 59, 90, 0.75);
+      background: rgba(13, 21, 40, 0.55);
+    }
+    .encor-sample-subject-name {
+      margin: 0 0 8px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #c8daf8;
+    }
+    .encor-sample-subject-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .encor-sample-subject-links a {
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .encor-sample-subject-links a:hover {
+      color: #e6edf3;
+    }
+    .encor-sample-subject-links a:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    .format-card > .encor-sample-subject-links {
+      margin-top: 14px;
+    }
     .formats-section .formats-grid > li {
       display: flex;
       min-width: 0;
@@ -1947,95 +2189,56 @@
         />
       </a>
       <div class="header-actions">
-        <!-- Header: CCNA training portal — paid 30-day access passes through; others see purchase dialog. -->
+        <!-- Primary ad conversion: free assessment (header). #purchase for paid access. -->
         <a
           id="ccnaPortalHeaderBtn"
           class="ccna-portal-header-btn ccna-portal-header-btn--active"
-          href="/CCNA-Study/CCNA_Training_Portal.html"
-          title="CCNA training portal — requires active 30-day access on this browser"
-          aria-label="CCNA training portal — open when you have active 30-day access, or see how to purchase"
-          >CCNA Training Portal</a
+          href="/CCNA_Sim_EXAM/free-assessment.html"
+          data-bcc-free-assessment
+          title="Free CCNA practice assessment with scorecard"
+          aria-label="Take free CCNA practice assessment"
+          >Free CCNA practice</a
         >
       </div>
     </header>
-    <figure class="hero-banner">
-      <img
-        src="/images/index-header-engineer.png"
-        width="1024"
-        height="606"
-        alt="CCNA certification exam prep — students practicing networking skills in a modern computer lab."
-        decoding="async"
-        fetchpriority="high"
-      />
-    </figure>
     <main id="main">
       <div class="hero-content">
         <div class="funnel">
-          <p class="eyebrow">CCNA 200-301 · practice tests, labs &amp; questions</p>
-          <h1>CCNA 200-301 exam prep — structured practice for exam day confidence</h1>
-          <p class="lead">
-            Prepare with <strong>certification practice tests</strong>, hands-on <strong>CLI labs</strong>,
-            extensive <strong>practice questions</strong>, drag-and-drop items, and timed exam simulations—modes built
-            for real exam formats you can repeat until the material sticks.
-            <strong>No PDFs or third-party applications:</strong> everything runs in the browser and responds to what you do.
-            For CCNA, <strong>start with the one-time timed simulation</strong> to match exam length and pacing; add
-            <strong>30-day access</strong> when you want the full question bank, labs, and portal practice modes.
-          </p>
-          <ul class="benefits" aria-label="What you get">
-            <li>100% interactive—click, type, and drag in the app; not static dumps or slide decks.</li>
-            <li>Question banks and study paths organized by exam topic—not random blog posts.</li>
-            <li>Review quiz mode loops missed answers back to the end so weak topics get extra reps.</li>
-            <li>Progress tracking helps you focus study time where it is needed most.</li>
-            <li>The current 700+ questions are v1.1 and pre v1.0, with new questions added continuously to keep preparation current.</li>
-            <li>Lab simulations are designed to teach specific objectives.</li>
-          </ul>
-          <div class="samples-stack">
-            <section class="samples-block" aria-labelledby="home-ccna-assessment-title">
-              <h2 class="samples-block-title" id="home-ccna-assessment-title"><strong>Free 30-minute CCNA exam</strong></h2>
-              <p class="samples-block-lead">
-                <strong>Take a simple exam-style run in your browser—mixed questions, one lab, and a detailed score report at the end so you know where to focus next.</strong>
-              </p>
-              <article class="format-card assessment-card" aria-labelledby="home-ccna-assessment-card-title">
-                <h3 id="home-ccna-assessment-card-title">Take the free 30-minute exam</h3>
-                <figure class="format-card-thumb">
-                  <img
-                    src="/images/ccna-free-assessment-exam-thumbnail.png"
-                    width="1024"
-                    height="591"
-                    alt="Free 30-minute CCNA exam preview with timed exam controls, drag-and-drop items, and a VLAN CLI lab simulation."
-                    decoding="async"
-                    loading="lazy"
-                  />
-                </figure>
-                <p>
-                  A short diagnostic for first-time visitors: no email, no download, and no paid access required. Finish
-                  the session to unlock a detailed report with your overall score, section breakdown, and study
-                  priorities.
-                </p>
-                <ul class="assessment-details">
-                  <li><strong>30 minutes</strong> on the clock—exam-style pacing with a visible timer.</li>
-                  <li><strong>Mixed formats:</strong> multiple-choice from every CCNA domain, drag-and-drop items, and one VLAN CLI lab.</li>
-                  <li><strong>Detailed report at the end:</strong> scaled score, MCQ / drag-and-drop / lab breakdown, and domain-level gaps to review.</li>
-                  <li><strong>Free for first-time visitors</strong> in this browser—start immediately, no membership required.</li>
-                  <li><strong>Lab includes helper and spoiler</strong> so you can learn the simulation format before exam day.</li>
-                  <li>
-                    <strong>Question versions:</strong> all tests use Version 1.1 2026 questions; study sessions include pre v1.0 questions, with new questions added continuously.
-                  </li>
-                </ul>
-                <div class="assessment-cta-wrap">
-                  <div class="assessment-cta-panel">
-                    <p class="assessment-cta-kicker">Start here — free</p>
-                    <a
-                      class="cta-main cta-main--block"
-                      href="/CCNA_Sim_EXAM/free-assessment.html"
-                      >Take the free 30-minute exam →</a
-                    >
-                    <p class="assessment-cta-note">Free · one attempt per browser · detailed score report when you finish</p>
-                  </div>
-                </div>
-              </article>
-            </section>
-          </div>
+          <!-- Default: free-practice. Pinned ads: utm_content=hl-* (scripts/ccna-google-ads-headline-suffixes.txt) -->
+          <section class="hero-conversion" aria-labelledby="hero-conversion-title" data-ccna-hl-variant="free-practice">
+            <p class="eyebrow" id="hero-conversion-eyebrow">Free CCNA practice · scorecard included</p>
+            <h1 id="hero-conversion-title">Free CCNA Practice — assessment with scorecard, no email required</h1>
+            <p class="lead" id="hero-conversion-lead">
+              Take a free CCNA assessment in your browser and get a scorecard when you finish.
+              <strong>No PDFs</strong>, no membership, and no additional apps—just labs, drag-and-drop, and questions.
+            </p>
+            <div class="hero-atf-ctas hero-atf-ctas--conversion">
+              <a
+                class="cta-main cta-main--block cta-main--free cta-main--hero-primary"
+                id="hero-conversion-cta-primary"
+                href="/CCNA_Sim_EXAM/free-assessment.html"
+                data-bcc-free-assessment
+                >Take free CCNA practice — start now</a
+              >
+            </div>
+            <p class="hero-atf-upgrade">
+              Ready for full access?
+              <a href="#purchase">Simulated exams and library from $4.99</a>
+            </p>
+            <ul class="hero-atf-trust" aria-label="Why learners choose this prep">
+              <li>No PDFs</li>
+              <li>No membership</li>
+              <li>No email required</li>
+              <li>No additional apps</li>
+            </ul>
+            <p class="hero-atf-samples">
+              Prefer a quick preview first?
+              <a href="/sample?track=ccna-questions">Sample questions</a>,
+              <a href="#ccna-samples">drag-and-drop</a>,
+              or a <a href="/sample?track=ccna-vlan">CLI lab</a>.
+            </p>
+          </section>
+
           <div class="card purchase-card" id="purchase">
             <div class="purchase-card-inner">
               <div class="purchase-card-main">
@@ -2044,86 +2247,6 @@
                 <p class="purchase-lead purchase-lead--tight">
                   Pick a one-session simulated exam, a short access window, or thirty days for the full practice library and training portal.
                 </p>
-                <div class="purchase-blueprint-callout" aria-labelledby="purchase-blueprint-title">
-                  <h3 class="purchase-blueprint-title" id="purchase-blueprint-title">
-                    Match your prep to how Cisco weights CCNA 200-301
-                  </h3>
-                  <p class="purchase-blueprint-lead">
-                    The live exam follows Cisco&rsquo;s published domains. CCNA 200-301 v1.1 groups content into six areas: network
-                    fundamentals, network access, IP connectivity, IP services, security fundamentals, and automation and
-                    programmability. Official guidance puts the heaviest emphasis on <strong>IP connectivity</strong>, with
-                    <strong>network fundamentals</strong> and <strong>network access</strong> close behind—those three carry most of
-                    what you see on routing, switching, and troubleshooting-style items (exact percentages can shift slightly between
-                    blueprint updates).
-                  </p>
-                  <p class="purchase-blueprint-note">
-                    Approximate weights below come from Cisco exam guidance—use them to budget study hours, not as a guarantee of how
-                    many questions you will see on a specific attempt.
-                  </p>
-                  <div class="purchase-blueprint-table-wrap">
-                    <table class="purchase-domain-table" aria-label="Approximate CCNA domain weights and study focus">
-                      <thead>
-                        <tr>
-                          <th scope="col">Domain</th>
-                          <th scope="col">Weight</th>
-                          <th scope="col">What to study</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <th scope="row">Network fundamentals</th>
-                          <td>20%</td>
-                          <td>OSI and TCP/IP models, IPv4/IPv6, cabling, devices, topologies, subnetting basics</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Network access</th>
-                          <td>20%</td>
-                          <td>VLANs, trunking, basic STP, EtherChannel, wireless concepts, switch port configuration</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">IP connectivity</th>
-                          <td>25%</td>
-                          <td>Routing tables, static routing, OSPF fundamentals, path selection, troubleshooting routing</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">IP services</th>
-                          <td>10%</td>
-                          <td>NAT, DHCP, DNS, NTP, SNMP, syslog, QoS basics</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Security fundamentals</th>
-                          <td>15%</td>
-                          <td>Device hardening, ACLs, authentication, AAA basics, secure management access</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Automation and programmability</th>
-                          <td>10%</td>
-                          <td>APIs, controllers, automation concepts, JSON, Python basics, intent-based networking</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <p class="purchase-blueprint-lead">
-                    <strong>What to focus on first:</strong> network fundamentals and IP connectivity underpin subnetting, routing, and
-                    a large share of drag-and-drop or simulation-style prompts. Add network access and security fundamentals next—they
-                    show up on both theory and configuration-style questions.
-                  </p>
-                  <p class="purchase-blueprint-order-title">Suggested study order</p>
-                  <ol class="purchase-blueprint-order">
-                    <li>Network fundamentals</li>
-                    <li>Subnetting and VLSM</li>
-                    <li>Switching and VLANs</li>
-                    <li>Routing and OSPF</li>
-                    <li>Services (NAT, DHCP, NTP)</li>
-                    <li>Security and automation basics</li>
-                  </ol>
-                  <p class="purchase-blueprint-lead">
-                    Under time pressure, leaning hardest into <strong>IP connectivity</strong> and <strong>network fundamentals</strong>
-                    before you polish lighter domains mirrors where most candidates lose or gain points. The timed simulation rehearses
-                    that mixed pressure; 30-day access lets you drill every domain in the portal with the same topic filters you will use
-                    after purchase.
-                  </p>
-                </div>
                 <div class="purchase-cta-stack">
                   <div class="purchase-primary-cta">
                     <div
@@ -2224,6 +2347,89 @@
                     </div>
                   </div>
                 </div>
+                <details class="purchase-blueprint-details">
+                  <summary>How CCNA 200-301 domains are weighted on the live exam</summary>
+                  <div class="purchase-blueprint-callout" aria-labelledby="purchase-blueprint-title">
+                  <h3 class="purchase-blueprint-title" id="purchase-blueprint-title">
+                    Match your prep to how Cisco weights CCNA 200-301
+                  </h3>
+                  <p class="purchase-blueprint-lead">
+                    The live exam follows Cisco&rsquo;s published domains. CCNA 200-301 v1.1 groups content into six areas: network
+                    fundamentals, network access, IP connectivity, IP services, security fundamentals, and automation and
+                    programmability. Official guidance puts the heaviest emphasis on <strong>IP connectivity</strong>, with
+                    <strong>network fundamentals</strong> and <strong>network access</strong> close behind—those three carry most of
+                    what you see on routing, switching, and troubleshooting-style items (exact percentages can shift slightly between
+                    blueprint updates).
+                  </p>
+                  <p class="purchase-blueprint-note">
+                    Approximate weights below come from Cisco exam guidance—use them to budget study hours, not as a guarantee of how
+                    many questions you will see on a specific attempt.
+                  </p>
+                  <div class="purchase-blueprint-table-wrap">
+                    <table class="purchase-domain-table" aria-label="Approximate CCNA domain weights and study focus">
+                      <thead>
+                        <tr>
+                          <th scope="col">Domain</th>
+                          <th scope="col">Weight</th>
+                          <th scope="col">What to study</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row">Network fundamentals</th>
+                          <td>20%</td>
+                          <td>OSI and TCP/IP models, IPv4/IPv6, cabling, devices, topologies, subnetting basics</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Network access</th>
+                          <td>20%</td>
+                          <td>VLANs, trunking, basic STP, EtherChannel, wireless concepts, switch port configuration</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">IP connectivity</th>
+                          <td>25%</td>
+                          <td>Routing tables, static routing, OSPF fundamentals, path selection, troubleshooting routing</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">IP services</th>
+                          <td>10%</td>
+                          <td>NAT, DHCP, DNS, NTP, SNMP, syslog, QoS basics</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Security fundamentals</th>
+                          <td>15%</td>
+                          <td>Device hardening, ACLs, authentication, AAA basics, secure management access</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Automation and programmability</th>
+                          <td>10%</td>
+                          <td>APIs, controllers, automation concepts, JSON, Python basics, intent-based networking</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p class="purchase-blueprint-lead">
+                    <strong>What to focus on first:</strong> network fundamentals and IP connectivity underpin subnetting, routing, and
+                    a large share of drag-and-drop or simulation-style prompts. Add network access and security fundamentals next—they
+                    show up on both theory and configuration-style questions.
+                  </p>
+                  <p class="purchase-blueprint-order-title">Suggested study order</p>
+                  <ol class="purchase-blueprint-order">
+                    <li>Network fundamentals</li>
+                    <li>Subnetting and VLSM</li>
+                    <li>Switching and VLANs</li>
+                    <li>Routing and OSPF</li>
+                    <li>Services (NAT, DHCP, NTP)</li>
+                    <li>Security and automation basics</li>
+                  </ol>
+                  <p class="purchase-blueprint-lead">
+                    Under time pressure, leaning hardest into <strong>IP connectivity</strong> and <strong>network fundamentals</strong>
+                    before you polish lighter domains mirrors where most candidates lose or gain points. The timed simulation rehearses
+                    that mixed pressure; 30-day access lets you drill every domain in the portal with the same topic filters you will use
+                    after purchase.
+                  </p>
+                </div>
+                </details>
                 <div class="purchase-notes">
                   <strong>No recurring membership.</strong> Choose the access window you need and renew only if you want more time.
                   <strong>No additional software</strong> is required; everything runs in your browser.
@@ -2231,6 +2437,98 @@
               </div>
             </div>
           </div>
+
+          <div class="samples-stack" id="ccna-samples">
+            <section class="samples-block" aria-labelledby="home-ccna-samples-title">
+              <h2 class="samples-block-title" id="home-ccna-samples-title"><strong>Try free CCNA samples</strong></h2>
+              <p class="samples-block-lead">
+                Questions, drag-and-drop, and a VLAN CLI lab—no purchase required.
+              </p>
+              <ul class="formats-grid formats-grid--tri" aria-label="CCNA sample activities">
+                <li>
+                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-ccna-q-title">
+                    <h3 id="home-ccna-q-title">Sample questions</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/ccna-sample-questions-thumbnail.png"
+                        width="1024"
+                        height="586"
+                        alt="CCNA multiple-choice sample questions with topology exhibits and instant feedback."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>
+                      Six items—one per CCNA domain, each with a topology or exhibit—shuffled each time you begin.
+                    </p>
+                    <p class="format-sample format-sample--main-cta">
+                      <a class="cta-main" href="/sample?track=ccna-questions">Begin sample questions →</a>
+                    </p>
+                  </article>
+                </li>
+                <li>
+                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-ccna-dd-title">
+                    <h3 id="home-ccna-dd-title">Sample drag-and-drop</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/drag-drop-sample-thumbnail.jpg"
+                        width="1024"
+                        height="535"
+                        alt="CCNA drag-and-drop sample with draggable protocol descriptions."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>Match file-transfer protocol descriptions to FTP and TFTP.</p>
+                    <p class="format-sample format-sample--main-cta">
+                      <a class="cta-main" href="/sample?track=ccna-dnd">Start sample drag-and-drop →</a>
+                    </p>
+                  </article>
+                </li>
+                <li>
+                  <article class="format-card" aria-labelledby="home-ccna-lab-title">
+                    <h3 id="home-ccna-lab-title">Sample lab</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/CCNA-Study/CCNA_labs/images/ccna-lab-vlan-sim-topology.png"
+                        width="1024"
+                        height="610"
+                        alt="VLAN simulation lab with dual-switch topology and data and voice VLAN assignments."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>Dual-switch VLAN CLI simulation—create VLANs, assign ports, and save in the browser.</p>
+                    <ul class="encor-sample-subject-links" aria-label="CCNA sample lab">
+                      <li>
+                        <a href="/sample?track=ccna-vlan">VLAN simulation</a>
+                      </li>
+                    </ul>
+                  </article>
+                </li>
+              </ul>
+            </section>
+          </div>
+
+          <ul class="benefits benefits--deferred" aria-label="What you get with full access">
+            <li>100% interactive—click, type, and drag in the app; not static dumps or slide decks.</li>
+            <li>Question banks and study paths organized by exam topic—not random blog posts.</li>
+            <li>Review quiz mode loops missed answers back to the end so weak topics get extra reps.</li>
+            <li>Progress tracking helps you focus study time where it is needed most.</li>
+            <li>700+ questions in Version 1.1 2026, with new items added continuously.</li>
+            <li>Lab simulations are designed to teach specific objectives.</li>
+          </ul>
+
+          <figure class="hero-banner hero-banner--deferred">
+            <img
+              src="/images/index-header-engineer.png"
+              width="1024"
+              height="606"
+              alt="Students practicing networking skills in a modern computer lab."
+              decoding="async"
+              loading="lazy"
+            />
+          </figure>
         </div>
       </div>
 
@@ -2380,6 +2678,7 @@
       </div>
     </div>
   </div>
+  <script src="/js/ccna-home-conversion.js" defer></script>
   <script src="/CCNA-Study/js/ccna-portal-30d-storage.js" defer></script>
   <script src="/CCNA-Study/js/ccna-portal-30d-checkout.js" defer></script>
   <script>
@@ -2432,6 +2731,9 @@
       }
 
       portalBtn.addEventListener("click", function (ev) {
+        if (portalBtn.hasAttribute("data-bcc-free-assessment")) return;
+        var href = portalBtn.getAttribute("href") || "";
+        if (href.charAt(0) === "#") return;
         if (portalBtn.classList.contains("ccna-portal-header-btn--unavailable")) {
           ev.preventDefault();
           return;
