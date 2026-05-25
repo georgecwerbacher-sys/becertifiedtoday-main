@@ -45,7 +45,7 @@
       id: "free-practice",
       adHeadline: "Free CCNA Practice",
       eyebrow: "Free CCNA practice · scorecard included",
-      headline: "Free CCNA Practice — assessment with scorecard, no email required",
+      headline: "Free CCNA Practice Assessment With Scorecard, No Email Required",
       lead:
         "Take a free CCNA assessment in your browser and get a scorecard when you finish. " +
         "<strong>No PDFs</strong>, no membership, and no additional apps—just labs, drag-and-drop, and questions.",
