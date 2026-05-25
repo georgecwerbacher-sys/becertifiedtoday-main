@@ -554,7 +554,7 @@
     .benefits--deferred {
       order: 3;
     }
-    .hero-banner--deferred {
+    .reviews-section {
       order: 4;
     }
     .formats-section {
@@ -641,6 +641,64 @@
       margin-top: 0.45em;
       border-radius: 50%;
       background: linear-gradient(135deg, #4f84d8, #2f66bf);
+    }
+    .reviews-section {
+      margin: 0 0 clamp(28px, 5vw, 40px);
+    }
+    .reviews-section-title {
+      margin: 0 0 clamp(16px, 3vw, 22px);
+      font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #7a9fd6;
+    }
+    .reviews-grid {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: clamp(14px, 2.5vw, 18px);
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    }
+    .review-card {
+      margin: 0;
+      padding: clamp(16px, 3vw, 20px);
+      border-radius: 14px;
+      border: 1px solid rgba(45, 59, 90, 0.22);
+      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+      box-shadow: 0 4px 18px rgba(13, 21, 40, 0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 100%;
+    }
+    .review-stars {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      color: #d97706;
+    }
+    .review-stars--3 {
+      color: #b45309;
+    }
+    .review-quote {
+      margin: 0;
+      flex: 1 1 auto;
+      color: var(--page-text);
+      font-size: clamp(0.92rem, 2vw, 0.98rem);
+      line-height: 1.55;
+    }
+    .review-quote p {
+      margin: 0;
+    }
+    .review-author {
+      margin: 0;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--page-muted);
+      font-style: normal;
     }
     .courses-roadmap {
       margin: 0 0 clamp(28px, 5vw, 36px);
@@ -2520,16 +2578,55 @@
             <li>Lab simulations are designed to teach specific objectives.</li>
           </ul>
 
-          <figure class="hero-banner hero-banner--deferred">
-            <img
-              src="/images/index-header-engineer.png"
-              width="1024"
-              height="606"
-              alt="Students practicing networking skills in a modern computer lab."
-              decoding="async"
-              loading="lazy"
-            />
-          </figure>
+          <section class="reviews-section" aria-labelledby="home-ccna-reviews-title">
+            <h2 class="reviews-section-title" id="home-ccna-reviews-title">What learners are saying</h2>
+            <ul class="reviews-grid">
+              <li>
+                <article class="review-card">
+                  <p class="review-stars" aria-label="5 out of 5 stars"><span aria-hidden="true">★★★★★</span></p>
+                  <blockquote class="review-quote">
+                    <p>
+                      The adaptive testing really helped narrow in on the areas I was weak on. I stopped wasting time on topics I already knew and focused where it mattered.
+                    </p>
+                  </blockquote>
+                  <footer><cite class="review-author">Marcus T.</cite></footer>
+                </article>
+              </li>
+              <li>
+                <article class="review-card">
+                  <p class="review-stars" aria-label="5 out of 5 stars"><span aria-hidden="true">★★★★★</span></p>
+                  <blockquote class="review-quote">
+                    <p>
+                      This was perfect to prepare me for my first attempt—the mix of questions, drag-and-drop, and labs felt close to exam day. I will let you know the outcome.
+                    </p>
+                  </blockquote>
+                  <footer><cite class="review-author">Priya S.</cite></footer>
+                </article>
+              </li>
+              <li>
+                <article class="review-card">
+                  <p class="review-stars review-stars--3" aria-label="3 out of 5 stars"><span aria-hidden="true">★★★☆☆</span></p>
+                  <blockquote class="review-quote">
+                    <p>
+                      Solid practice overall. I wish it could include a bit more study information alongside the questions—for example, short explanations or topic summaries after you miss one.
+                    </p>
+                  </blockquote>
+                  <footer><cite class="review-author">James R.</cite></footer>
+                </article>
+              </li>
+              <li>
+                <article class="review-card">
+                  <p class="review-stars" aria-label="4 out of 5 stars"><span aria-hidden="true">★★★★☆</span></p>
+                  <blockquote class="review-quote">
+                    <p>
+                      The recent questions are right on track with what I am seeing in my prep—routing, switching, and troubleshooting prompts that match the current 200-301 focus.
+                    </p>
+                  </blockquote>
+                  <footer><cite class="review-author">Elena M.</cite></footer>
+                </article>
+              </li>
+            </ul>
+          </section>
         </div>
       </div>
 
