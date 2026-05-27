@@ -16,6 +16,7 @@
   />
   <link rel="canonical" href="https://becertifiedtoday.com/" />
   <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <link rel="stylesheet" href="/css/ccna-sim-promo.css" />
   <title>Choose Your Training Path | Be Certified Today</title>
   <style>
     html {
@@ -569,6 +570,28 @@
       color: var(--page-bg);
       outline: none;
     }
+    .ccna-portal-gate-help {
+      margin: 0 0 14px;
+      font-size: 0.94rem;
+      line-height: 1.45;
+      color: rgba(230, 237, 243, 0.85);
+    }
+    .ccna-portal-gate-help a.ccna-portal-gate-email-link {
+      color: #ffffff;
+      font-weight: 800;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+    .ccna-portal-gate-help a.ccna-portal-gate-email-link:hover {
+      color: #f0f4fc;
+    }
+    .ccna-portal-gate-help--secondary {
+      margin-top: -6px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: rgba(230, 237, 243, 0.72);
+    }
   </style>
 </head>
 <body>
@@ -605,7 +628,13 @@
             <p>
               Cisco Certified Network Associate (200-301) study hub on this site: domain weights, practice questions, labs, drag-and-drop, and CCNA timed test simulation options.
             </p>
-            <a class="cta" id="path-ccna" href="/ccna-home.html">Open CCNA Study Hub</a>
+            <a
+              class="cta"
+              id="path-ccna"
+              href="/CCNA-Study/CCNA_Training_Portal.html"
+              data-index-ccna-hub-nav
+              >Open CCNA Study Hub</a
+            >
           </article>
         </li>
         <li>
@@ -618,7 +647,8 @@
             <a
               class="cta"
               id="path-encor"
-              href="/ccnp-home.html"
+              href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html"
+              data-index-encor-hub-nav
               >Open CCNP Study Hub</a
             >
           </article>
@@ -904,6 +934,119 @@
         >#</a>
     </footer>
   </div>
+  <div
+    id="indexCcnaPortalGateRoot"
+    class="ccna-sim-promo-root"
+    hidden
+    role="presentation"
+    aria-hidden="true"
+  >
+    <div class="ccna-sim-promo-backdrop" data-index-gate-dismiss tabindex="-1"></div>
+    <div
+      class="ccna-sim-promo-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="indexCcnaPortalGateTitle"
+      tabindex="-1"
+    >
+      <button type="button" class="ccna-sim-promo-close" data-index-gate-dismiss aria-label="Close dialog">
+        ×
+      </button>
+      <p class="ccna-sim-promo-eyebrow">CCNA Training Portal</p>
+      <h2 id="indexCcnaPortalGateTitle">Portal access required</h2>
+      <p class="ccna-sim-promo-lead">
+        The CCNA Training Portal is for learners with <strong>active library access</strong> on
+        <strong>this browser</strong> (after Stripe checkout on this site). If you have not purchased yet, get access
+        below—no recurring subscription.
+      </p>
+      <p class="ccna-portal-gate-help">
+        Already paid but blocked?
+        <a class="ccna-portal-gate-email-link" href="/CCNA-Study/ccna-portal-request-link.html">Email me a portal link</a>
+      </p>
+      <p class="ccna-portal-gate-help ccna-portal-gate-help--secondary">
+        On a new device or browser? That’s normal. Submit your checkout email from this device and we’ll restore portal access here.
+      </p>
+      <div class="ccna-sim-promo-actions">
+        <button
+          type="button"
+          class="ccna-sim-promo-primary"
+          data-ccna-portal-30d-checkout
+          aria-label="Purchase 30-day CCNA library access and go to Stripe checkout"
+        >
+          Purchase 30-day access
+        </button>
+        <button
+          type="button"
+          class="ccna-sim-promo-secondary"
+          data-ccna-portal-10d-checkout
+          aria-label="Purchase 10-day CCNA library access and go to Stripe checkout"
+        >
+          Purchase 10-day access
+        </button>
+        <a class="ccna-sim-promo-secondary" href="/ccna-home.html">Go to CCNA home</a>
+        <button type="button" class="ccna-sim-promo-secondary" data-index-gate-dismiss>Close</button>
+      </div>
+    </div>
+  </div>
+  <div
+    id="indexEncorPortalGateRoot"
+    class="ccna-sim-promo-root"
+    hidden
+    role="presentation"
+    aria-hidden="true"
+  >
+    <div class="ccna-sim-promo-backdrop" data-index-gate-dismiss tabindex="-1"></div>
+    <div
+      class="ccna-sim-promo-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="indexEncorPortalGateTitle"
+      tabindex="-1"
+    >
+      <button type="button" class="ccna-sim-promo-close" data-index-gate-dismiss aria-label="Close dialog">
+        ×
+      </button>
+      <p class="ccna-sim-promo-eyebrow">CCNP ENCOR Training Portal</p>
+      <h2 id="indexEncorPortalGateTitle">Portal access required</h2>
+      <p class="ccna-sim-promo-lead">
+        The CCNP ENCOR Training Portal is for learners with <strong>active library access</strong> on
+        <strong>this browser</strong> (after Stripe checkout on this site). If you have not purchased yet, choose access
+        below—no recurring subscription.
+      </p>
+      <p class="ccna-portal-gate-help">
+        Already paid but blocked?
+        <a class="ccna-portal-gate-email-link" href="/CCNP-ENCOR-Study/encor-portal-request-link.html">Email me a portal link</a>
+      </p>
+      <p class="ccna-portal-gate-help ccna-portal-gate-help--secondary">
+        On a new device or browser? That’s normal. Submit your checkout email from this device and we’ll restore portal access here.
+      </p>
+      <div class="ccna-sim-promo-actions">
+        <button
+          type="button"
+          class="ccna-sim-promo-primary"
+          data-encor-portal-30d-checkout
+          aria-label="Purchase 30-day ENCOR library access and go to Stripe checkout"
+        >
+          Purchase 30-day access
+        </button>
+        <button
+          type="button"
+          class="ccna-sim-promo-secondary"
+          data-encor-portal-10d-checkout
+          aria-label="Purchase 10-day ENCOR library access and go to Stripe checkout"
+        >
+          Purchase 10-day access
+        </button>
+        <a class="ccna-sim-promo-secondary" href="/ccnp-home.html">Go to CCNP home</a>
+        <button type="button" class="ccna-sim-promo-secondary" data-index-gate-dismiss>Close</button>
+      </div>
+    </div>
+  </div>
+  <script src="/CCNA-Study/js/ccna-portal-30d-storage.js" defer></script>
+  <script src="/CCNA-Study/js/ccna-portal-30d-checkout.js" defer></script>
+  <script src="/CCNP-ENCOR-Study/js/encor-portal-storage.js" defer></script>
+  <script src="/CCNP-ENCOR-Study/js/encor-portal-30d-checkout.js" defer></script>
+  <script src="/js/index-study-hub-nav.js" defer></script>
   <script>
     (function () {
       var KEY = "bct_training_path_portal_seen";
