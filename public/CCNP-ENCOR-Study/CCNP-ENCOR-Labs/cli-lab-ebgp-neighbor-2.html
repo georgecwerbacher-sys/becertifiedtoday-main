@@ -1028,6 +1028,64 @@ R1# copy running-config startup-config</pre>
       { mode: "config-router-af", test: (raw) => normalize(raw) === "end" },
     ];
 
+    const R1_BGP_NETWORK_STEP_INDICES = [6, 7, 8];
+    let r1BgpStepDone = BGP_ALL.map(function () {
+      return false;
+    });
+
+    function resetR1BgpProgress() {
+      r1BgpStepDone = BGP_ALL.map(function () {
+        return false;
+      });
+    }
+
+    function r1BgpSyncStepIndex() {
+      while (stepIndex < BGP_ALL.length && r1BgpStepDone[stepIndex]) {
+        stepIndex += 1;
+      }
+    }
+
+    function r1BgpReadyForEnd() {
+      for (let i = 0; i < BGP_ALL.length - 1; i++) {
+        if (!r1BgpStepDone[i]) return false;
+      }
+      return true;
+    }
+
+    function finishR1BgpConfigure() {
+      r1BgpStepDone[BGP_ALL.length - 1] = true;
+      appendLine(scrollback, "line-sys", "[OK] eBGP + advertisements (simulated). Save.");
+      phase = "SAVE";
+      stepIndex = 0;
+      r1Mode = "exec";
+      r1ExploreNav.reset();
+      applyPhaseUI();
+    }
+
+    function tryAcceptR1BgpNetwork(line) {
+      if (phase !== "BGP" || r1Mode !== "config-router-af") return false;
+      for (let n = 0; n < R1_BGP_NETWORK_STEP_INDICES.length; n++) {
+        const idx = R1_BGP_NETWORK_STEP_INDICES[n];
+        if (!BGP_ALL[idx].test(line)) continue;
+        if (r1BgpStepDone[idx]) return true;
+        r1BgpStepDone[idx] = true;
+        r1BgpSyncStepIndex();
+        return true;
+      }
+      return false;
+    }
+
+    function tryR1SaveCopy(line) {
+      if (!matchCopy(line) || r1Mode !== "exec") return false;
+      if (phase !== "SAVE" && !(phase === "BGP" && r1BgpReadyForEnd())) return false;
+      appendLine(scrollback, "line-sys", "[OK] Building configuration... (simulated).");
+      phase = "DONE";
+      passBanner.classList.add("visible");
+      cmdline.disabled = true;
+      applyPhaseUI();
+      return true;
+    }
+
     const scrollback = document.getElementById("scrollback");
     const scrollbackR2 = document.getElementById("scrollbackR2");
     const scrollbackR3 = document.getElementById("scrollbackR3");
@@ -1068,8 +1126,10 @@ R1# copy running-config startup-config</pre>
 
     function matchesR1EbgpLabStep(line) {
       if (phase !== "BGP") return false;
-      const steps = BGP_ALL;
-      return stepIndex < steps.length && steps[stepIndex].test(line);
+      for (let i = 0; i < BGP_ALL.length; i++) {
+        if (!r1BgpStepDone[i] && BGP_ALL[i].test(line)) return true;
+      }
+      return false;
     }
 
     function tryExploreR1(line) {
@@ -1215,6 +1275,11 @@ R1# copy running-config startup-config</pre>
     }
 
     function tryHandleR1ModeNavigation(raw) {
+      const u = normalize(raw);
+      if (u === "end" && phase === "BGP" && r1BgpReadyForEnd()) {
+        finishR1BgpConfigure();
+        return true;
+      }
       return tryHandleModeNavigation(
         raw,
         () => r1Mode,
@@ -1317,6 +1382,7 @@ R1# copy running-config startup-config</pre>
       r1ExploreNav.reset();
       r2ExploreNav.reset();
       r3ExploreNav.reset();
+      resetR1BgpProgress();
       scrollback.innerHTML = "";
       scrollbackR2.innerHTML = "";
       scrollbackR3.innerHTML = "";
@@ -1331,11 +1397,6 @@ R1# copy running-config startup-config</pre>
       historyIndex.R1 = -1;
       historyIndex.R2 = -1;
       historyIndex.R3 = -1;
-      appendLine(
-        scrollback,
-        "line-sys",
-        "R1: interfaces and loopbacks are up. eBGP is on R2/R3 only — configure R1 (AS 100)."
-      );
       applyPhaseUI();
       updateReadonlyPrompts();
       openDeviceCliLink.focus();
@@ -1517,6 +1578,7 @@ R1# copy running-config startup-config</pre>
             // If tester starts configuring immediately, move into graded BGP phase.
             if (normalized === "router bgp 100" && r1Mode === "config-router") {
               phase = "BGP";
+              r1BgpStepDone[0] = true;
               stepIndex = 1;
               appendLine(scrollback, "line-sys", "[OK] BGP process started. Continue router configuration.");
               applyPhaseUI();
@@ -1528,6 +1590,8 @@ R1# copy running-config startup-config</pre>
         return;
       }
 
+      if (tryR1SaveCopy(line)) return;
+
       if (phase === "SAVE") {
         if (testShowBgpSummary(line)) {
           appendBlock(scrollback, "line-out", OUT_BGP_SUMMARY);
@@ -1537,16 +1601,8 @@ R1# copy running-config startup-config</pre>
           appendBlock(scrollback, "line-out", OUT_SHOW_IP_BGP);
           return;
         }
-        if (matchCopy(line)) {
-          appendLine(scrollback, "line-sys", "[OK] Building configuration... (simulated).");
-          phase = "DONE";
-          passBanner.classList.add("visible");
-          cmdline.disabled = true;
-          applyPhaseUI();
-        } else {
-          if (tryHandleR1ModeNavigation(line)) return;
-          appendLine(scrollback, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
-        }
+        if (tryHandleR1ModeNavigation(line)) return;
+        appendLine(scrollback, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         return;
       }
 
@@ -1555,6 +1611,11 @@ R1# copy running-config startup-config</pre>
           appendBlock(scrollback, "line-out", OUT_SHOW_IP_BGP);
           return;
         }
+      }
+
+      if (phase === "BGP" && tryAcceptR1BgpNetwork(line)) {
+        applyPhaseUI();
+        return;
       }
 
       if (!steps[stepIndex].test(line)) {
@@ -1567,14 +1628,18 @@ R1# copy running-config startup-config</pre>
         return;
       }
 
+      r1BgpStepDone[stepIndex] = true;
       stepIndex += 1;
       applyR1ModeFromAcceptedStep(line);
+      if (phase === "BGP" && normalize(line) === "end") {
+        finishR1BgpConfigure();
+        return;
+      }
+      if (phase === "BGP") {
+        r1BgpSyncStepIndex();
+      }
       if (stepIndex >= steps.length) {
-        appendLine(scrollback, "line-sys", "[OK] eBGP + advertisements (simulated). Save.");
-        phase = "SAVE";
-        stepIndex = 0;
-        r1Mode = "exec";
-        applyPhaseUI();
+        finishR1BgpConfigure();
       } else {
         applyPhaseUI();
       }
