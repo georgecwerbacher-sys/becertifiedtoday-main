@@ -299,6 +299,9 @@
     .terminal-panel--waiting .console-hint {
       display: block;
     }
+    #panelSw1 .console-hint:not(:empty) {
+      display: block;
+    }
     .console-hint {
       display: none;
       margin: 0 0 8px;
@@ -615,10 +618,10 @@ Sw1# copy running-config startup-config</pre>
         <div class="terminal-panel" id="panelR1">
           <p class="console-hint" id="hintR1">Flow monitor on e0/0 first, then IP SLA, then save.</p>
           <div class="terminal" aria-label="R1 CLI">
-            <div class="console-scroll" id="scrollR1"></div>
+            <div class="console-scroll scrollback-area" id="scrollR1"></div>
             <div class="input-row">
-              <span class="prompt" id="promptR1">R1#</span>
-              <input class="cmdline" id="cmdR1" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R1 command line" />
+              <span class="prompt prompt-el" id="promptR1">R1#</span>
+              <input class="cmdline cmdline-input" id="cmdR1" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R1 command line" />
             </div>
           </div>
         </div>
@@ -640,13 +643,13 @@ Sw1# copy running-config startup-config</pre>
         <button type="button" class="cli-modal-close" id="closeSw1" aria-label="Close Sw1 CLI">×</button>
       </header>
       <div class="cli-modal-body">
-        <div class="terminal-panel terminal-panel--waiting" id="panelSw1">
+        <div class="terminal-panel" id="panelSw1">
           <p class="console-hint" id="hintSw1">SPAN and verify after R1 NetFlow.</p>
           <div class="terminal" aria-label="Sw1 CLI">
-            <div class="console-scroll" id="scrollSw1"></div>
+            <div class="console-scroll scrollback-area" id="scrollSw1"></div>
             <div class="input-row">
-              <span class="prompt" id="promptSw1">Sw1#</span>
-              <input class="cmdline" id="cmdSw1" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="Sw1 command line" disabled />
+              <span class="prompt prompt-el" id="promptSw1">Sw1#</span>
+              <input class="cmdline cmdline-input" id="cmdSw1" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="Sw1 command line" />
             </div>
           </div>
         </div>
@@ -720,24 +723,24 @@ Sw1# copy running-config startup-config</pre>
       );
     }
 
-    const R1_NF = [
-      { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
-      {
-        mode: "config",
-        test: (raw) => ["interface e0/0", "int e0/0"].includes(normalize(raw)),
-      },
-      {
-        mode: "config-if",
-        test: (raw) =>
-          normalize(raw) === "ip flow monitor monitor-r1flow input",
-      },
-      {
-        mode: "config-if",
-        test: (raw) =>
-          normalize(raw) === "ip flow monitor monitor-r1flow output",
-      },
-      { mode: "config-if", test: (raw) => normalize(raw) === "end" },
-    ];
+    function testR1NfFlowInput(raw) {
+      return normalize(raw) === "ip flow monitor monitor-r1flow input";
+    }
+
+    function testR1NfFlowOutput(raw) {
+      return normalize(raw) === "ip flow monitor monitor-r1flow output";
+    }
+
+    function testR1NfIntE00(raw) {
+      const u = normalize(raw);
+      if (["interface e0/0", "int e0/0"].includes(u)) return true;
+      return /^(interface|int)\s+ethernet0\/0$/.test(u);
+    }
+
+    function echoR1Line(line, prompt) {
+      appendLine(scrollR1, "line-user", `${prompt} ${cliLabContainer.expandInterfaceEcho(line)}`);
+      cmdR1.value = "";
+    }
 
     const SW1_SPAN = [
       { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
@@ -901,7 +904,7 @@ Sw1# copy running-config startup-config</pre>
       "end";
 
     const SW1_INITIAL_CONFIG =
-      "Sw1 Initial Config (use \"show run\" to get)\n\n" +
+      "Building configuration...\n\n" +
       "interface Ethernet0/0\n" +
       " switchport access vlan 10\n" +
       " switchport mode access\n" +
@@ -913,6 +916,9 @@ Sw1# copy running-config startup-config</pre>
       "interface Ethernet0/2\n" +
       " switchport access vlan 14\n" +
       " switchport mode access\n" +
+      "!\n" +
+      "interface Ethernet0/3\n" +
+      " shutdown\n" +
       "!\n" +
       "interface Vlan10\n" +
       " ip address 10.10.1.1 255.255.255.0\n" +
@@ -999,16 +1005,296 @@ Sw1# copy running-config startup-config</pre>
     const r1ExploreNav = cliLabContainer.createExploreNav("R1");
     const sw1ExploreNav = cliLabContainer.createExploreNav("Sw1");
 
-    function r1LabPrompt() {
-      if (phase === "R1_SAVE") return "R1#";
-      if (phase === "R1_NF") return promptForStep(R1_NF, stepR1, "R1");
-      if (phase === "R1_SLA") return promptForStep(slaSteps, stepR1, "R1");
+    function nfFlowComplete() {
+      return nfInputDone && nfOutputDone;
+    }
+
+    function nfStepsPending() {
+      return phase !== "DONE" && !nfFlowComplete();
+    }
+
+    function isConfT(line) {
+      const u = normalize(line);
+      return u === "conf t" || u === "configure terminal";
+    }
+
+    function r1ExecPrompt() {
       return "R1#";
     }
 
+    function r1ConfigPrompt() {
+      const exploreMode = r1ExploreNav.getMode();
+      if (exploreMode === "config-if") return "R1(config-if)#";
+      if (exploreMode === "config-ip-sla-echo") return "R1(config-ip-sla-echo)#";
+      if (exploreMode === "config-ip-sla-http") return "R1(config-ip-sla-http)#";
+      if (exploreMode === "config-ip-sla") return "R1(config-ip-sla)#";
+      if (r1InConfig || exploreMode === "config") return "R1(config)#";
+      return r1ExecPrompt();
+    }
+
+    function r1SlaEchoPrompt(gradeAt) {
+      if (gradeAt === 0) return r1ExecPrompt();
+      const m = slaSteps[gradeAt].mode;
+      if (r1InConfig && (m === "config" || gradeAt === 1)) return r1ConfigPrompt();
+      return promptForStep(slaSteps, gradeAt, "R1");
+    }
+
+    function syncR1InConfigFromExplore() {
+      const m = r1ExploreNav.getMode();
+      if (!r1InConfig && (m === "config" || m === "config-if")) {
+        r1InConfig = true;
+        setVariantLocked(true);
+      }
+    }
+
+    function matchesR1NfLabStep(line) {
+      if (!nfStepsPending()) return false;
+      syncR1InConfigFromExplore();
+      if (!r1InConfig && isConfT(line)) return true;
+      if (r1InConfig && !nfInputDone && (testR1NfFlowInput(line) || testR1NfIntE00(line))) {
+        return true;
+      }
+      if (r1InConfig && nfInputDone && !nfOutputDone && testR1NfFlowOutput(line)) {
+        return true;
+      }
+      return false;
+    }
+
+    function matchesR1SlaLabStep(line) {
+      if (!slaStepsPending()) return false;
+      if (stepR1Sla === 0 && r1InConfig && !isConfT(line) && slaSteps[1].test(line)) {
+        return true;
+      }
+      return slaSteps[stepR1Sla].test(line);
+    }
+
+    function r1LabPrompt() {
+      if (phase === "R1_SAVE") return r1ExecPrompt();
+      if (nfStepsPending() && !r1InConfig) return r1ExecPrompt();
+      if (nfStepsPending() && r1InConfig) return r1ConfigPrompt();
+      if (slaStepsPending()) {
+        if (r1InConfig && stepR1Sla <= 1) return r1ConfigPrompt();
+        return promptForStep(slaSteps, stepR1Sla, "R1");
+      }
+      if (r1InConfig) return r1ConfigPrompt();
+      return r1ExecPrompt();
+    }
+
+    function slaStepsPending() {
+      return phase !== "DONE" && stepR1Sla < slaSteps.length;
+    }
+
+    function onNfStepsComplete() {
+      appendLine(
+        scrollR1,
+        "line-sys",
+        "[OK] Flow monitor on e0/0 (simulated). Continue with ip sla at config, end and copy run, or configure Sw1 SPAN."
+      );
+      if (r1InConfig && stepR1Sla === 0) {
+        stepR1Sla = 1;
+      }
+      if (phase === "R1_NF") {
+        if (stepSw1 >= SW1_SPAN.length) {
+          phase = "SW1_VER";
+          appendLine(scrollSw1, "line-sys", "show monitor session 12");
+        } else if (stepSw1 === 0) {
+          phase = "SW1_SPAN";
+          appendLine(scrollSw1, "line-sys", "monitor session 12 …");
+        }
+        applyPhaseUI();
+      }
+    }
+
+    function onSlaStepsComplete() {
+      appendLine(scrollR1, "line-sys", "[OK] IP SLA 1 scheduled (simulated). Save R1.");
+      phase = "R1_SAVE";
+      appendLine(scrollR1, "line-sys", "copy running-config startup-config");
+      applyPhaseUI();
+    }
+
+    function submitR1SlaSteps(line) {
+      if (!slaStepsPending()) return false;
+
+      let gradeAt = stepR1Sla;
+      if (stepR1Sla === 0 && r1InConfig) {
+        if (isConfT(line)) {
+          echoR1Line(line, r1ConfigPrompt());
+          pushHistory("R1", line);
+          stepR1Sla = 1;
+          updatePrompts();
+          return true;
+        }
+        if (slaSteps[1].test(line)) {
+          gradeAt = 1;
+        } else {
+          gradeAt = -1;
+        }
+      }
+
+      if (gradeAt >= 0 && slaSteps[gradeAt].test(line)) {
+        echoR1Line(line, r1SlaEchoPrompt(gradeAt));
+        pushHistory("R1", line);
+        r1ExploreNav.reset();
+        if (stepR1Sla === 0 && gradeAt === 1) {
+          stepR1Sla = 2;
+        } else {
+          stepR1Sla = gradeAt + 1;
+        }
+        if (stepR1Sla >= slaSteps.length) {
+          onSlaStepsComplete();
+        } else {
+          updatePrompts();
+        }
+        return true;
+      }
+      if (tryExploreR1(line)) return true;
+      if (normalize(line) === "exit") {
+        const prev = stepBackOneMode(slaSteps, stepR1Sla);
+        if (prev !== stepR1Sla) {
+          echoR1Line(line, promptForStep(slaSteps, stepR1Sla, "R1"));
+          stepR1Sla = prev;
+          updatePrompts();
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function tryExploreR1Optional(line) {
+      return r1ExploreNav.trySubmit(line, {
+        getLabPrompt: r1LabPrompt,
+        scrollEl: scrollR1,
+        appendLine,
+        cmdInput: cmdR1,
+        normalize,
+        expandEcho: cliLabContainer.expandInterfaceEcho,
+        onExploreChange: updatePrompts,
+        matchesLabStep: () => false,
+      });
+    }
+
+    function submitR1NfSteps(line) {
+      if (!nfStepsPending()) return false;
+      syncR1InConfigFromExplore();
+
+      if (!r1InConfig && isConfT(line)) {
+        echoR1Line(line, r1ExecPrompt());
+        pushHistory("R1", line);
+        r1InConfig = true;
+        setVariantLocked(true);
+        r1ExploreNav.reset();
+        updatePrompts();
+        return true;
+      }
+
+      if (r1InConfig && !nfInputDone && testR1NfIntE00(line)) {
+        return tryExploreR1Optional(line);
+      }
+
+      if (r1InConfig && !nfInputDone && testR1NfFlowInput(line)) {
+        echoR1Line(line, r1ConfigPrompt());
+        pushHistory("R1", line);
+        nfInputDone = true;
+        r1ExploreNav.reset();
+        updatePrompts();
+        return true;
+      }
+
+      if (r1InConfig && nfInputDone && !nfOutputDone && testR1NfFlowOutput(line)) {
+        echoR1Line(line, r1ConfigPrompt());
+        pushHistory("R1", line);
+        nfOutputDone = true;
+        r1ExploreNav.reset();
+        onNfStepsComplete();
+        updatePrompts();
+        return true;
+      }
+
+      if (tryExploreR1(line)) return true;
+      return false;
+    }
+
+    function submitR1NfEnd(line) {
+      if (!nfFlowComplete() || !r1InConfig || normalize(line) !== "end") return false;
+      echoR1Line(line, r1ConfigPrompt());
+      pushHistory("R1", line);
+      r1InConfig = false;
+      r1ExploreNav.reset();
+      if (stepR1Sla < 2) {
+        stepR1Sla = 0;
+      }
+      if (slaStepsPending()) {
+        appendLine(scrollR1, "line-sys", "At exec — conf t for ip sla, or copy running-config startup-config to save.");
+      } else {
+        phase = "R1_SAVE";
+        appendLine(scrollR1, "line-sys", "copy running-config startup-config");
+        applyPhaseUI();
+      }
+      updatePrompts();
+      return true;
+    }
+
+    function submitR1Copy(line) {
+      if (!matchCopy(line)) return false;
+      if (tryExploreR1(line)) return true;
+      appendLine(scrollR1, "line-user", `${r1ExecPrompt()} ${line}`);
+      cmdR1.value = "";
+      appendLine(scrollR1, "line-sys", "[OK] R1 saved (simulated). Save Sw1.");
+      if (sw1Saved) {
+        finishLab();
+      } else {
+        phase = "SW1_SAVE";
+        appendLine(scrollSw1, "line-sys", "copy running-config startup-config");
+      }
+      applyPhaseUI();
+      return true;
+    }
+
     function sw1LabPrompt() {
-      if (phase === "SW1_SPAN") return promptForStep(SW1_SPAN, stepSw1, "Sw1");
+      if (spanStepsPending()) return promptForStep(SW1_SPAN, stepSw1, "Sw1");
       return "Sw1#";
+    }
+
+    function spanStepsPending() {
+      return phase !== "DONE" && stepSw1 < SW1_SPAN.length;
+    }
+
+    function onSpanStepsComplete() {
+      appendLine(scrollSw1, "line-sys", "[OK] SPAN 12 configured (simulated). Verify.");
+      if (phase === "SW1_SPAN") {
+        phase = "SW1_VER";
+        appendLine(scrollSw1, "line-sys", "show monitor session 12");
+        applyPhaseUI();
+      }
+    }
+
+    function submitSw1SpanSteps(line) {
+      if (!spanStepsPending()) return false;
+      if (tryExploreSw1(line)) return true;
+      const p = promptForStep(SW1_SPAN, stepSw1, "Sw1");
+      appendLine(scrollSw1, "line-user", `${p} ${line}`);
+      cmdSw1.value = "";
+      pushHistory("Sw1", line);
+      if (!SW1_SPAN[stepSw1].test(line)) {
+        if (normalize(line) === "exit") {
+          const prev = stepBackOneMode(SW1_SPAN, stepSw1);
+          if (prev !== stepSw1) {
+            stepSw1 = prev;
+            updatePrompts();
+            return true;
+          }
+        }
+        appendLine(scrollSw1, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
+        return true;
+      }
+      sw1ExploreNav.reset();
+      stepSw1 += 1;
+      if (stepSw1 >= SW1_SPAN.length) {
+        onSpanStepsComplete();
+      } else {
+        updatePrompts();
+      }
+      return true;
     }
 
     function tryExploreR1(line) {
@@ -1018,11 +1304,13 @@ Sw1# copy running-config startup-config</pre>
         appendLine,
         cmdInput: cmdR1,
         normalize,
+        expandEcho: cliLabContainer.expandInterfaceEcho,
         onExploreChange: updatePrompts,
         matchesLabStep: (l) => {
-          if (phase !== "R1_NF" && phase !== "R1_SLA") return false;
-          const steps = phase === "R1_NF" ? R1_NF : slaSteps;
-          return stepR1 < steps.length && steps[stepR1].test(l);
+          if (phase === "DONE") return false;
+          if (matchesR1NfLabStep(l)) return true;
+          if (matchesR1SlaLabStep(l)) return true;
+          return false;
         },
       });
     }
@@ -1034,15 +1322,56 @@ Sw1# copy running-config startup-config</pre>
         appendLine,
         cmdInput: cmdSw1,
         normalize,
+        expandEcho: cliLabContainer.expandInterfaceEcho,
         onExploreChange: updatePrompts,
         matchesLabStep: (l) => {
-          if (phase !== "SW1_SPAN") return false;
-          return stepSw1 < SW1_SPAN.length && SW1_SPAN[stepSw1].test(l);
+          if (!spanStepsPending()) return false;
+          return SW1_SPAN[stepSw1].test(l);
         },
       });
     }
-    let stepR1 = 0;
+
+    function sw1PromptForDisplay() {
+      return sw1ExploreNav.promptWith(sw1LabPrompt());
+    }
+
+    function submitSw1Browse(line) {
+      if (tryExploreSw1(line)) return;
+      const p = sw1PromptForDisplay();
+      appendLine(scrollSw1, "line-user", `${p} ${line}`);
+      cmdSw1.value = "";
+      appendLine(scrollSw1, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
+    }
+
+    function finishLab() {
+      phase = "DONE";
+      passBanner.classList.add("visible");
+      disableAllInputs();
+      setWaiting(panelR1, false);
+      setWaiting(panelSw1, false);
+      updateHints();
+      updatePrompts();
+    }
+
+    function submitSw1Copy(line) {
+      if (phase === "DONE" || !matchCopy(line)) return false;
+      if (tryExploreSw1(line)) return true;
+      appendLine(scrollSw1, "line-user", `${sw1PromptForDisplay()} ${line}`);
+      cmdSw1.value = "";
+      sw1Saved = true;
+      appendLine(scrollSw1, "line-sys", "[OK] Sw1 saved (simulated).");
+      if (phase === "SW1_SAVE") {
+        finishLab();
+      }
+      return true;
+    }
+
+    let r1InConfig = false;
+    let nfInputDone = false;
+    let nfOutputDone = false;
+    let stepR1Sla = 0;
     let stepSw1 = 0;
+    let sw1Saved = false;
     let slaSteps = buildSlaIcmp();
     const historyR1 = [];
     const historySw1 = [];
@@ -1144,32 +1473,31 @@ Sw1# copy running-config startup-config</pre>
     }
 
     function updateHints() {
-      if (phase === "R1_NF") {
-        hintR1.textContent = "ip flow monitor Monitor-R1Flow input/output on e0/0, end.";
-        hintSw1.textContent = "Waiting.";
-      } else if (phase === "SW1_SPAN") {
-        hintR1.textContent = "Waiting.";
-        hintSw1.textContent = "monitor session 12 source vlan 12 both, destination e1/3, end.";
-      } else if (phase === "SW1_VER") {
-        hintR1.textContent = "Waiting.";
-        hintSw1.textContent = "show monitor session 12";
-      } else if (phase === "R1_SLA") {
+      if (!nfFlowComplete()) {
+        hintR1.textContent =
+          "conf t → ip flow monitor Monitor-R1Flow input/output (interface e0/0 optional).";
+      } else if (slaStepsPending()) {
         hintR1.textContent =
           slaKind() === "http"
-            ? "ip sla 1 → http-get 10.10.1.100 → frequency 600 → exit → schedule → end."
-            : "ip sla 1 → icmp-echo … source-interface Ethernet0/0 → frequency 300 → exit → schedule → end.";
-        hintSw1.textContent = "Waiting.";
+            ? "NetFlow done — ip sla 1 at config (or end first), then http-get … schedule, end."
+            : "NetFlow done — ip sla 1 at config (or end first), then icmp-echo … schedule, end.";
       } else if (phase === "R1_SAVE") {
         hintR1.textContent = "copy running-config startup-config";
-        hintSw1.textContent = "Waiting.";
-      } else if (phase === "SW1_SAVE") {
-        hintR1.textContent = "Done.";
-        hintSw1.textContent = "copy running-config startup-config";
       } else if (phase === "DONE") {
         hintR1.textContent = "Lab complete.";
-        hintSw1.textContent = "Lab complete.";
       } else {
         hintR1.textContent = "";
+      }
+
+      if (phase === "SW1_SPAN" || (nfFlowComplete() && stepSw1 < SW1_SPAN.length)) {
+        hintSw1.textContent = "monitor session 12 source vlan 12 both, destination e1/3, end.";
+      } else if (phase === "SW1_VER") {
+        hintSw1.textContent = "show monitor session 12";
+      } else if (phase === "SW1_SAVE") {
+        hintSw1.textContent = "copy running-config startup-config";
+      } else if (phase === "DONE") {
+        hintSw1.textContent = "Lab complete.";
+      } else {
         hintSw1.textContent = "";
       }
     }
@@ -1180,21 +1508,16 @@ Sw1# copy running-config startup-config</pre>
     }
 
     function applyPhaseUI() {
-      disableAllInputs();
-      setWaiting(
-        panelR1,
-        phase !== "R1_NF" && phase !== "R1_SLA" && phase !== "R1_SAVE"
-      );
-      setWaiting(
-        panelSw1,
-        phase !== "SW1_SPAN" && phase !== "SW1_VER" && phase !== "SW1_SAVE"
-      );
-
-      if (phase === "R1_NF" || phase === "R1_SLA" || phase === "R1_SAVE") {
+      if (phase === "DONE") {
+        cmdR1.disabled = true;
+        cmdSw1.disabled = true;
+        setWaiting(panelR1, true);
+        setWaiting(panelSw1, true);
+      } else {
         cmdR1.disabled = false;
-      }
-      if (phase === "SW1_SPAN" || phase === "SW1_VER" || phase === "SW1_SAVE") {
         cmdSw1.disabled = false;
+        setWaiting(panelR1, false);
+        setWaiting(panelSw1, false);
       }
 
       updateHints();
@@ -1205,8 +1528,12 @@ Sw1# copy running-config startup-config</pre>
     function reset() {
       closeModals();
       phase = "R1_NF";
-      stepR1 = 0;
+      r1InConfig = false;
+      nfInputDone = false;
+      nfOutputDone = false;
+      stepR1Sla = 0;
       stepSw1 = 0;
+      sw1Saved = false;
       r1ExploreNav.reset();
       sw1ExploreNav.reset();
       historyR1.length = 0;
@@ -1226,14 +1553,22 @@ Sw1# copy running-config startup-config</pre>
     }
 
     function submitR1() {
-      if (phase === "R1_NF" || phase === "R1_SLA" || phase === "R1_SAVE") {
-        const p =
-          phase === "R1_SAVE"
-            ? "R1#"
-            : promptForStep(phase === "R1_NF" ? R1_NF : slaSteps, stepR1, "R1");
-        const peek = cmdR1.value;
-        if (matchShowRun(peek)) {
-          appendLine(scrollR1, "line-user", `${p} ${peek}`);
+      const line = cmdR1.value;
+      if (!line.trim()) {
+        cmdR1.value = "";
+        return;
+      }
+
+      if (
+        phase === "R1_NF" ||
+        phase === "R1_SLA" ||
+        phase === "R1_SAVE" ||
+        nfStepsPending() ||
+        slaStepsPending()
+      ) {
+        const p = r1ExploreNav.promptWith(r1LabPrompt());
+        if (matchShowRun(line)) {
+          appendLine(scrollR1, "line-user", `${p} ${line}`);
           cmdR1.value = "";
           appendBlock(scrollR1, "line-showrun", R1_INITIAL_CONFIG);
           return;
@@ -1241,48 +1576,22 @@ Sw1# copy running-config startup-config</pre>
       }
 
       if (phase === "R1_SAVE") {
-        const line = cmdR1.value;
-        if (!line.trim()) {
-          cmdR1.value = "";
-          return;
-        }
         if (tryExploreR1(line)) return;
-        appendLine(scrollR1, "line-user", `R1# ${line}`);
+        if (submitR1Copy(line)) return;
+        appendLine(scrollR1, "line-user", `${r1ExecPrompt()} ${line}`);
         cmdR1.value = "";
-        if (matchCopy(line)) {
-          appendLine(scrollR1, "line-sys", "[OK] R1 saved (simulated). Save Sw1.");
-          phase = "SW1_SAVE";
-          appendLine(scrollSw1, "line-sys", "copy running-config startup-config");
-          applyPhaseUI();
-        } else {
-          appendLine(scrollR1, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
-        }
+        appendLine(scrollR1, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         return;
       }
 
-      const steps = phase === "R1_NF" ? R1_NF : slaSteps;
-      if (stepR1 >= steps.length) return;
-      const line = cmdR1.value;
-      if (!line.trim()) {
-        cmdR1.value = "";
-        return;
-      }
-      if (tryExploreR1(line)) return;
-      const p = promptForStep(steps, stepR1, "R1");
-      appendLine(scrollR1, "line-user", `${p} ${line}`);
-      cmdR1.value = "";
-      pushHistory("R1", line);
+      if (submitR1NfSteps(line)) return;
+      if (submitR1NfEnd(line)) return;
+      if (submitR1SlaSteps(line)) return;
 
-      if (normalize(line) === "exit") {
-        const prev = stepBackOneMode(steps, stepR1);
-        if (prev !== stepR1) {
-          stepR1 = prev;
-          updatePrompts();
-          return;
-        }
-      }
+      if (nfFlowComplete() && !r1InConfig && submitR1Copy(line)) return;
 
-      if (!steps[stepR1].test(line)) {
+      if (nfStepsPending() || slaStepsPending() || nfFlowComplete()) {
+        if (tryExploreR1(line)) return;
         if (isSpanCommand(line)) {
           appendLine(
             scrollR1,
@@ -1291,54 +1600,33 @@ Sw1# copy running-config startup-config</pre>
           );
           return;
         }
+        const p = r1ExploreNav.promptWith(r1LabPrompt());
+        appendLine(scrollR1, "line-user", `${p} ${line}`);
+        cmdR1.value = "";
         appendLine(scrollR1, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
-        return;
-      }
-
-      if (phase === "R1_NF" && stepR1 === 0) {
-        setVariantLocked(true);
-      }
-
-      stepR1 += 1;
-      if (stepR1 >= steps.length) {
-        if (phase === "R1_NF") {
-          appendLine(scrollR1, "line-sys", "[OK] Flow monitor on e0/0 (simulated). Configure Sw1 SPAN.");
-          phase = "SW1_SPAN";
-          stepSw1 = 0;
-          appendLine(scrollSw1, "line-sys", "monitor session 12 …");
-        } else if (phase === "R1_SLA") {
-          appendLine(scrollR1, "line-sys", "[OK] IP SLA 1 scheduled (simulated). Save R1.");
-          phase = "R1_SAVE";
-          appendLine(scrollR1, "line-sys", "copy running-config startup-config");
-        }
-        stepR1 = 0;
-        applyPhaseUI();
-      } else {
-        updatePrompts();
       }
     }
 
     function submitSw1() {
-      if (phase === "SW1_SPAN" || phase === "SW1_VER" || phase === "SW1_SAVE") {
-        const p =
-          phase === "SW1_SPAN"
-            ? promptForStep(SW1_SPAN, stepSw1, "Sw1")
-            : "Sw1#";
-        const peek = cmdSw1.value;
-        if (matchShowRun(peek)) {
-          appendLine(scrollSw1, "line-user", `${p} ${peek}`);
-          cmdSw1.value = "";
-          appendBlock(scrollSw1, "line-showrun", SW1_INITIAL_CONFIG);
-          return;
-        }
+      const line = cmdSw1.value;
+      if (!line.trim()) {
+        cmdSw1.value = "";
+        return;
       }
 
+      if (matchShowRun(line)) {
+        const p = sw1PromptForDisplay();
+        appendLine(scrollSw1, "line-user", `${p} ${line}`);
+        cmdSw1.value = "";
+        appendBlock(scrollSw1, "line-showrun", SW1_INITIAL_CONFIG);
+        return;
+      }
+
+      if (submitSw1SpanSteps(line)) return;
+
+      if (submitSw1Copy(line)) return;
+
       if (phase === "SW1_VER") {
-        const line = cmdSw1.value;
-        if (!line.trim()) {
-          cmdSw1.value = "";
-          return;
-        }
         if (tryExploreSw1(line)) return;
         appendLine(scrollSw1, "line-user", `Sw1# ${line}`);
         cmdSw1.value = "";
@@ -1350,75 +1638,30 @@ Sw1# copy running-config startup-config</pre>
         ) {
           appendBlock(scrollSw1, "line-sys", OUT_MONITOR12);
           appendLine(scrollSw1, "line-sys", "[OK] Session 12 looks correct. Configure IP SLA on R1.");
-          phase = "R1_SLA";
           refreshSlaSteps();
-          stepR1 = 0;
-          appendLine(scrollR1, "line-sys", "ip sla 1 … (per Task 3 variant)");
-          applyPhaseUI();
-        } else {
-          appendLine(scrollSw1, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
-        }
-        return;
-      }
-
-      if (phase === "SW1_SPAN") {
-        if (stepSw1 >= SW1_SPAN.length) return;
-        const line = cmdSw1.value;
-        if (!line.trim()) {
-          cmdSw1.value = "";
-          return;
-        }
-        if (tryExploreSw1(line)) return;
-        const p = promptForStep(SW1_SPAN, stepSw1, "Sw1");
-        appendLine(scrollSw1, "line-user", `${p} ${line}`);
-        cmdSw1.value = "";
-        pushHistory("Sw1", line);
-        if (!SW1_SPAN[stepSw1].test(line)) {
-          if (normalize(line) === "exit") {
-            const prev = stepBackOneMode(SW1_SPAN, stepSw1);
-            if (prev !== stepSw1) {
-              stepSw1 = prev;
-              updatePrompts();
-              return;
-            }
+          if (stepR1Sla >= slaSteps.length) {
+            phase = "R1_SAVE";
+            appendLine(scrollR1, "line-sys", "copy running-config startup-config");
+          } else {
+            phase = "R1_SLA";
+            appendLine(scrollR1, "line-sys", "ip sla 1 … (per Task 3 variant)");
           }
-          appendLine(scrollSw1, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
-          return;
-        }
-        stepSw1 += 1;
-        if (stepSw1 >= SW1_SPAN.length) {
-          appendLine(scrollSw1, "line-sys", "[OK] SPAN 12 configured (simulated). Verify.");
-          phase = "SW1_VER";
-          appendLine(scrollSw1, "line-sys", "show monitor session 12");
           applyPhaseUI();
         } else {
-          updatePrompts();
+          appendLine(scrollSw1, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
         return;
       }
 
       if (phase === "SW1_SAVE") {
-        const line = cmdSw1.value;
-        if (!line.trim()) {
-          cmdSw1.value = "";
-          return;
-        }
         if (tryExploreSw1(line)) return;
         appendLine(scrollSw1, "line-user", `Sw1# ${line}`);
         cmdSw1.value = "";
-        if (matchCopy(line)) {
-          appendLine(scrollSw1, "line-sys", "[OK] Sw1 saved (simulated).");
-          phase = "DONE";
-          passBanner.classList.add("visible");
-          disableAllInputs();
-          setWaiting(panelR1, false);
-          setWaiting(panelSw1, false);
-          updateHints();
-          updatePrompts();
-        } else {
-          appendLine(scrollSw1, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
-        }
+        appendLine(scrollSw1, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
+        return;
       }
+
+      submitSw1Browse(line);
     }
 
     cmdR1.addEventListener("keydown", (e) => {

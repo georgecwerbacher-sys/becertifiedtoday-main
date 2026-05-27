@@ -146,11 +146,7 @@
     const currentExplore = getExplore();
     const nav = applyExploreNav(currentExplore, u);
     if (!nav.handled) return false;
-    if (
-      currentExplore == null &&
-      typeof opts.matchesLabStep === "function" &&
-      opts.matchesLabStep(line)
-    ) {
+    if (typeof opts.matchesLabStep === "function" && opts.matchesLabStep(line)) {
       return false;
     }
 
@@ -203,6 +199,8 @@
           expandEcho: ctx.expandEcho,
           onExploreChange: ctx.onExploreChange,
           onAccepted: ctx.onAccepted,
+          matchesLabStep: ctx.matchesLabStep,
+          alreadyEchoed: ctx.alreadyEchoed,
         });
       },
     };
