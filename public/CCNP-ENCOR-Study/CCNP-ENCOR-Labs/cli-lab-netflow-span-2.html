@@ -704,6 +704,19 @@ Sw1# copy running-config startup-config</pre>
       return `${host}#`;
     }
 
+    function testSlaScheduleLine(raw) {
+      return normalize(raw) === "ip sla schedule 1 life forever start-time now";
+    }
+
+    function slaScheduleStepIndex() {
+      return slaSteps.length - 2;
+    }
+
+    function canSlaScheduleShortcut() {
+      const schedIdx = slaScheduleStepIndex();
+      return stepR1Sla >= 3 && stepR1Sla < schedIdx;
+    }
+
     function testIcmpEchoLine(raw) {
       const u = normalize(raw);
       return (
@@ -1065,6 +1078,7 @@ Sw1# copy running-config startup-config</pre>
       if (stepR1Sla === 0 && r1InConfig && !isConfT(line) && slaSteps[1].test(line)) {
         return true;
       }
+      if (canSlaScheduleShortcut() && testSlaScheduleLine(line)) return true;
       return slaSteps[stepR1Sla].test(line);
     }
 
@@ -1114,6 +1128,19 @@ Sw1# copy running-config startup-config</pre>
 
     function submitR1SlaSteps(line) {
       if (!slaStepsPending()) return false;
+
+      if (canSlaScheduleShortcut() && testSlaScheduleLine(line)) {
+        echoR1Line(line, "R1(config)#");
+        pushHistory("R1", line);
+        r1ExploreNav.reset();
+        stepR1Sla = slaScheduleStepIndex() + 1;
+        if (stepR1Sla >= slaSteps.length) {
+          onSlaStepsComplete();
+        } else {
+          updatePrompts();
+        }
+        return true;
+      }
 
       let gradeAt = stepR1Sla;
       if (stepR1Sla === 0 && r1InConfig) {
@@ -1436,6 +1463,7 @@ Sw1# copy running-config startup-config</pre>
       const parent =
         mode === "config-if" ? "config"
         : mode === "config-ip-sla-echo" ? "config-ip-sla"
+        : mode === "config-ip-sla-http" ? "config-ip-sla"
         : mode === "config-ip-sla" ? "config"
         : mode === "config" ? "exec"
         : null;
@@ -1479,8 +1507,8 @@ Sw1# copy running-config startup-config</pre>
       } else if (slaStepsPending()) {
         hintR1.textContent =
           slaKind() === "http"
-            ? "NetFlow done — ip sla 1 at config (or end first), then http-get … schedule, end."
-            : "NetFlow done — ip sla 1 at config (or end first), then icmp-echo … schedule, end.";
+            ? "NetFlow done — ip sla 1 at config, http-get …, then schedule (frequency/exit optional), end."
+            : "NetFlow done — ip sla 1 at config, icmp-echo …, then schedule (frequency/exit optional), end.";
       } else if (phase === "R1_SAVE") {
         hintR1.textContent = "copy running-config startup-config";
       } else if (phase === "DONE") {
