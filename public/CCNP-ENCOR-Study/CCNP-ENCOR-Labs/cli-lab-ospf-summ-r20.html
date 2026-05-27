@@ -773,7 +773,7 @@ end`;
       focusActiveCli();
     }
 
-    let phase = "BRIEF";
+    let phase = "LAB";
     let stepIndex = 0;
     const r20ExploreNav = cliLabContainer.createExploreNav("R20");
 
@@ -787,6 +787,29 @@ end`;
       appendLine(className, text);
     }
 
+    function r20ExploreInConfig() {
+      const em = r20ExploreNav.getMode();
+      return em === "config" || em === "config-if";
+    }
+
+    /** Explore conf t at step 0 — treat as configure terminal before next graded command. */
+    function syncR20ExploreConfTToLab() {
+      if (phase !== "LAB" || stepIndex !== 0 || !r20ExploreInConfig()) return;
+      stepIndex = 1;
+    }
+
+    function syncR20LabFromExplore(line) {
+      if (phase !== "LAB" || stepIndex !== 0) return;
+      if (!r20ExploreInConfig()) return;
+      if (LAB_STEPS[0].test(line)) return;
+      stepIndex = 1;
+    }
+
+    function matchesR20LabStep(line) {
+      if (phase !== "LAB") return false;
+      return stepIndex < LAB_STEPS.length && LAB_STEPS[stepIndex].test(line);
+    }
+
     function tryExploreR20(line) {
       return r20ExploreNav.trySubmit(line, {
         getLabPrompt: labPromptR20,
@@ -795,11 +818,7 @@ end`;
         cmdInput: cmdline,
         normalize,
         onExploreChange: setPrompt,
-        matchesLabStep: (l) => {
-          if (phase !== "LAB") return false;
-          const steps = currentSteps();
-          return stepIndex < steps.length && steps[stepIndex].test(l);
-        },
+        matchesLabStep: matchesR20LabStep,
       });
     }
 
@@ -821,7 +840,6 @@ end`;
     }
 
     function currentSteps() {
-      if (phase === "BRIEF") return [{ mode: "exec", test: testShowBrief }];
       if (phase === "LAB") return LAB_STEPS;
       if (phase === "SAVE") return [{ mode: "exec", test: matchCopy }];
       return [];
@@ -833,7 +851,7 @@ end`;
 
     function reset() {
       closeModals();
-      phase = "BRIEF";
+      phase = "LAB";
       stepIndex = 0;
       r20ExploreNav.reset();
       scrollback.innerHTML = "";
@@ -847,7 +865,7 @@ end`;
     function submit() {
       if (phase === "DONE") return;
       const steps = currentSteps();
-      if (phase !== "BRIEF" && phase !== "SAVE" && stepIndex >= steps.length) return;
+      if (phase !== "SAVE" && stepIndex >= steps.length) return;
 
       const line = cmdline.value;
       if (!line.trim()) {
@@ -863,25 +881,18 @@ end`;
         return;
       }
 
-      if (tryExploreR20(line)) return;
+      if (tryExploreR20(line)) {
+        syncR20ExploreConfTToLab();
+        applyPhaseUI();
+        return;
+      }
 
       const prompt = promptEl.textContent;
       appendLine("line-user", `${prompt} ${line}`);
       cmdline.value = "";
 
-      if (testShowBrief(line)) {
+      if (testShowBrief(line) && !r20ExploreInConfig()) {
         appendBlock("line-sys", OUT_BRIEF);
-        if (phase === "BRIEF") {
-          appendLine("line-sys", "[OK] Router-id will be 20.20.20.20. Begin configuration.");
-          phase = "LAB";
-          stepIndex = 0;
-          applyPhaseUI();
-        }
-        return;
-      }
-
-      if (phase === "BRIEF") {
-        appendLine("line-bad", cliLabContainer.INVALID_INPUT_MSG);
         return;
       }
 
@@ -898,6 +909,10 @@ end`;
         return;
       }
 
+      if (phase === "LAB") {
+        syncR20LabFromExplore(line);
+      }
+
       if (!steps[stepIndex].test(line)) {
         appendLine(
           "line-bad",
@@ -907,6 +922,9 @@ end`;
       }
 
       stepIndex += 1;
+      if (normalize(line) === "router ospf 20" || normalize(line) === "router-id 20.20.20.20") {
+        r20ExploreNav.reset();
+      }
       if (stepIndex >= steps.length) {
         appendLine("line-sys", "[OK] OSPF and summarization applied (simulated). Save.");
         phase = "SAVE";
