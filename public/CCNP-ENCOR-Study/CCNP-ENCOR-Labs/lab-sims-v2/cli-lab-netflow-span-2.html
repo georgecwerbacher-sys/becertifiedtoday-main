@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
   <link rel="stylesheet" href="/css/cli-lab-container.css" />
+  <script src="/js/cli-lab-container.js"></script>
+  <script src="/js/cli-ios-mode.js"></script>
   <title>NetFlow, SPAN &amp; IP SLA Sim 2</title>
   <style>
     :root {
@@ -972,6 +974,51 @@ Sw1# copy running-config startup-config</pre>
     }
 
     let phase = "R1_NF";
+    const r1ExploreNav = cliLabContainer.createExploreNav("R1");
+    const sw1ExploreNav = cliLabContainer.createExploreNav("Sw1");
+
+    function r1LabPrompt() {
+      if (phase === "R1_SAVE") return "R1#";
+      if (phase === "R1_NF") return promptForStep(R1_NF, stepR1, "R1");
+      if (phase === "R1_SLA") return promptForStep(slaSteps, stepR1, "R1");
+      return "R1#";
+    }
+
+    function sw1LabPrompt() {
+      if (phase === "SW1_SPAN") return promptForStep(SW1_SPAN, stepSw1, "Sw1");
+      return "Sw1#";
+    }
+
+    function tryExploreR1(line) {
+      return r1ExploreNav.trySubmit(line, {
+        getLabPrompt: r1LabPrompt,
+        scrollEl: scrollR1,
+        appendLine,
+        cmdInput: cmdR1,
+        normalize,
+        onExploreChange: updatePrompts,
+        matchesLabStep: (l) => {
+          if (phase !== "R1_NF" && phase !== "R1_SLA") return false;
+          const steps = phase === "R1_NF" ? R1_NF : slaSteps;
+          return stepR1 < steps.length && steps[stepR1].test(l);
+        },
+      });
+    }
+
+    function tryExploreSw1(line) {
+      return sw1ExploreNav.trySubmit(line, {
+        getLabPrompt: sw1LabPrompt,
+        scrollEl: scrollSw1,
+        appendLine,
+        cmdInput: cmdSw1,
+        normalize,
+        onExploreChange: updatePrompts,
+        matchesLabStep: (l) => {
+          if (phase !== "SW1_SPAN") return false;
+          return stepSw1 < SW1_SPAN.length && SW1_SPAN[stepSw1].test(l);
+        },
+      });
+    }
     let stepR1 = 0;
     let stepSw1 = 0;
     let slaSteps = buildSlaIcmp();
@@ -1106,23 +1153,8 @@ Sw1# copy running-config startup-config</pre>
     }
 
     function updatePrompts() {
-      if (phase === "R1_NF") {
-        promptR1.textContent = promptForStep(R1_NF, stepR1, "R1");
-      } else if (phase === "R1_SLA") {
-        promptR1.textContent = promptForStep(slaSteps, stepR1, "R1");
-      } else if (phase === "R1_SAVE") {
-        promptR1.textContent = "R1#";
-      } else {
-        promptR1.textContent = "R1#";
-      }
-
-      if (phase === "SW1_SPAN") {
-        promptSw1.textContent = promptForStep(SW1_SPAN, stepSw1, "Sw1");
-      } else if (phase === "SW1_VER" || phase === "SW1_SAVE") {
-        promptSw1.textContent = "Sw1#";
-      } else {
-        promptSw1.textContent = "Sw1#";
-      }
+      promptR1.textContent = r1ExploreNav.promptWith(r1LabPrompt());
+      promptSw1.textContent = sw1ExploreNav.promptWith(sw1LabPrompt());
     }
 
     function applyPhaseUI() {
@@ -1153,6 +1185,8 @@ Sw1# copy running-config startup-config</pre>
       phase = "R1_NF";
       stepR1 = 0;
       stepSw1 = 0;
+      r1ExploreNav.reset();
+      sw1ExploreNav.reset();
       historyR1.length = 0;
       historySw1.length = 0;
       historyR1Idx = -1;
@@ -1186,27 +1220,35 @@ Sw1# copy running-config startup-config</pre>
 
       if (phase === "R1_SAVE") {
         const line = cmdR1.value;
+        if (!line.trim()) {
+          cmdR1.value = "";
+          return;
+        }
+        if (tryExploreR1(line)) return;
         appendLine(scrollR1, "line-user", `R1# ${line}`);
         cmdR1.value = "";
-        if (!line.trim()) return;
         if (matchCopy(line)) {
           appendLine(scrollR1, "line-sys", "[OK] R1 saved (simulated). Save Sw1.");
           phase = "SW1_SAVE";
           appendLine(scrollSw1, "line-sys", "copy running-config startup-config");
           applyPhaseUI();
         } else {
-          appendLine(scrollR1, "line-bad", "% Invalid input");
+          appendLine(scrollR1, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
         return;
       }
 
       const steps = phase === "R1_NF" ? R1_NF : slaSteps;
       if (stepR1 >= steps.length) return;
-      const p = promptForStep(steps, stepR1, "R1");
       const line = cmdR1.value;
+      if (!line.trim()) {
+        cmdR1.value = "";
+        return;
+      }
+      if (tryExploreR1(line)) return;
+      const p = promptForStep(steps, stepR1, "R1");
       appendLine(scrollR1, "line-user", `${p} ${line}`);
       cmdR1.value = "";
-      if (!line.trim()) return;
       pushHistory("R1", line);
 
       if (normalize(line) === "exit") {
@@ -1227,7 +1269,7 @@ Sw1# copy running-config startup-config</pre>
           );
           return;
         }
-        appendLine(scrollR1, "line-bad", "% Invalid input");
+        appendLine(scrollR1, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         return;
       }
 
@@ -1271,9 +1313,13 @@ Sw1# copy running-config startup-config</pre>
 
       if (phase === "SW1_VER") {
         const line = cmdSw1.value;
+        if (!line.trim()) {
+          cmdSw1.value = "";
+          return;
+        }
+        if (tryExploreSw1(line)) return;
         appendLine(scrollSw1, "line-user", `Sw1# ${line}`);
         cmdSw1.value = "";
-        if (!line.trim()) return;
         const u = normalize(line);
         if (
           u === "show monitor session 12" ||
@@ -1288,18 +1334,22 @@ Sw1# copy running-config startup-config</pre>
           appendLine(scrollR1, "line-sys", "ip sla 1 … (per Task 3 variant)");
           applyPhaseUI();
         } else {
-          appendLine(scrollSw1, "line-bad", "% Invalid input");
+          appendLine(scrollSw1, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
         return;
       }
 
       if (phase === "SW1_SPAN") {
         if (stepSw1 >= SW1_SPAN.length) return;
-        const p = promptForStep(SW1_SPAN, stepSw1, "Sw1");
         const line = cmdSw1.value;
+        if (!line.trim()) {
+          cmdSw1.value = "";
+          return;
+        }
+        if (tryExploreSw1(line)) return;
+        const p = promptForStep(SW1_SPAN, stepSw1, "Sw1");
         appendLine(scrollSw1, "line-user", `${p} ${line}`);
         cmdSw1.value = "";
-        if (!line.trim()) return;
         pushHistory("Sw1", line);
         if (!SW1_SPAN[stepSw1].test(line)) {
           if (normalize(line) === "exit") {
@@ -1310,7 +1360,7 @@ Sw1# copy running-config startup-config</pre>
               return;
             }
           }
-          appendLine(scrollSw1, "line-bad", "% Invalid input");
+          appendLine(scrollSw1, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           return;
         }
         stepSw1 += 1;
@@ -1327,9 +1377,13 @@ Sw1# copy running-config startup-config</pre>
 
       if (phase === "SW1_SAVE") {
         const line = cmdSw1.value;
+        if (!line.trim()) {
+          cmdSw1.value = "";
+          return;
+        }
+        if (tryExploreSw1(line)) return;
         appendLine(scrollSw1, "line-user", `Sw1# ${line}`);
         cmdSw1.value = "";
-        if (!line.trim()) return;
         if (matchCopy(line)) {
           appendLine(scrollSw1, "line-sys", "[OK] Sw1 saved (simulated).");
           phase = "DONE";
@@ -1340,7 +1394,7 @@ Sw1# copy running-config startup-config</pre>
           updateHints();
           updatePrompts();
         } else {
-          appendLine(scrollSw1, "line-bad", "% Invalid input");
+          appendLine(scrollSw1, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       }
     }
@@ -1433,6 +1487,7 @@ Sw1# copy running-config startup-config</pre>
       </div>`;
     overlay.querySelector('.cli-modal-body').appendChild(bodyNode);
     document.body.appendChild(overlay);
+    if (window.bccInitLabModalDrag) window.bccInitLabModalDrag();
     const closeBtn = overlay.querySelector('.cli-modal-close');
     const close = () => { overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true'); };
     const open = () => { overlay.classList.add('is-open'); overlay.setAttribute('aria-hidden', 'false'); };
@@ -1599,9 +1654,7 @@ Sw1# copy running-config startup-config</pre>
   });
 })();
 </script>
-
-  <script src="/js/cli-lab-container.js"></script>
-  <script src="/js/lab-modal-drag.js"></script>
+<script src="/js/lab-modal-drag.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-home-nav.js"></script>
 </body>
 </html>

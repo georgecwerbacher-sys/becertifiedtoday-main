@@ -7,7 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
   <link rel="stylesheet" href="/css/cli-lab-container.css" />
-  <title>OSPF DR &amp; Summarization Sim</title>
+  <script src="/js/cli-lab-container.js"></script>
+<title>OSPF DR &amp; Summarization Sim</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -862,7 +863,7 @@
           updatePrompts();
           applyPhaseUI();
         } else {
-          appendLine(scrollR2, "line-bad", "% Invalid input");
+          appendLine(scrollR2, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       } else if (phase === "R2_CLEAR") {
         const p = stepR2Clear === 0 ? "R2#" : OSPF_CLEAR_PROMPT;
@@ -881,7 +882,7 @@
             updatePrompts();
             applyPhaseUI();
           } else {
-            appendLine(scrollR2, "line-bad", "% Invalid input");
+            appendLine(scrollR2, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           }
         } else {
           const u = normalize(line);
@@ -892,7 +893,7 @@
             updatePrompts();
             applyPhaseUI();
           } else {
-            appendLine(scrollR2, "line-bad", "% Invalid input");
+            appendLine(scrollR2, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           }
         }
       } else if (phase === "R2_RANGE") {
@@ -921,7 +922,7 @@
           appendLine(
             scrollR2,
             "line-bad",
-            "% Invalid input"
+            cliLabContainer.INVALID_INPUT_MSG
           );
         }
       } else if (phase === "R2_SAVE") {
@@ -944,7 +945,7 @@
           updateHints();
           updatePrompts();
         } else {
-          appendLine(scrollR2, "line-bad", "% Invalid input");
+          appendLine(scrollR2, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       }
     }
@@ -963,7 +964,7 @@
             updatePrompts();
             applyPhaseUI();
           } else {
-            appendLine(scrollR10, "line-bad", "% Invalid input");
+            appendLine(scrollR10, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           }
         } else {
           const u = normalize(line);
@@ -973,7 +974,7 @@
             updatePrompts();
             applyPhaseUI();
           } else {
-            appendLine(scrollR10, "line-bad", "% Invalid input");
+            appendLine(scrollR10, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           }
         }
       } else if (phase === "R10_NEI") {
@@ -990,7 +991,7 @@
           updatePrompts();
           applyPhaseUI();
         } else {
-          appendLine(scrollR10, "line-bad", "% Invalid input");
+          appendLine(scrollR10, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       }
     }
@@ -1010,7 +1011,7 @@
         updatePrompts();
         applyPhaseUI();
       } else {
-        appendLine(scrollR3, "line-bad", "% Invalid input");
+        appendLine(scrollR3, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
       }
     }
 
@@ -1109,6 +1110,7 @@
       </div>';
     overlay.querySelector('.cli-modal-body').appendChild(bodyNode);
     document.body.appendChild(overlay);
+    if (window.bccInitLabModalDrag) window.bccInitLabModalDrag();
     const closeBtn = overlay.querySelector('.cli-modal-close');
     const close = () => { overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true'); };
     const open = () => { overlay.classList.add('is-open'); overlay.setAttribute('aria-hidden', 'false'); };

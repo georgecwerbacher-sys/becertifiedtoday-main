@@ -1,4 +1,6 @@
 (function () {
+  var modalStackZ = 25000;
+
   function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
   }
@@ -13,52 +15,93 @@
     };
   }
 
+  function bumpOverlayZ(overlay) {
+    if (!overlay) return;
+    modalStackZ += 1;
+    overlay.style.zIndex = String(modalStackZ);
+  }
+
+  function isInteractiveControl(target) {
+    return !!(target && target.closest && target.closest(
+      "button, input, textarea, select, label, a[href], .cli-modal-close"
+    ));
+  }
+
   function makeDialogDraggable(dialog) {
     if (!dialog || dialog.dataset.dragReady === "1") return;
     var header = dialog.querySelector(".cli-modal-header");
     if (!header) return;
+    var overlay = dialog.closest(".cli-modal-overlay");
+
     dialog.dataset.dragReady = "1";
     header.style.cursor = "move";
     header.style.touchAction = "none";
 
     var dragging = false;
     var pointerId = null;
-    var offsetX = 0;
-    var offsetY = 0;
+    var startX = 0;
+    var startY = 0;
+    var originLeft = 0;
+    var originTop = 0;
 
-    header.addEventListener("pointerdown", function (e) {
-      if (e.button !== 0 && e.pointerType !== "touch") return;
-      if (e.target && e.target.closest(".cli-modal-close")) return;
-      var rect = dialog.getBoundingClientRect();
-      dragging = true;
-      pointerId = e.pointerId;
-      offsetX = e.clientX - rect.left;
-      offsetY = e.clientY - rect.top;
-      dialog.style.transform = "none";
-      dialog.style.margin = "0";
-      dialog.dataset.dragged = "1";
-      header.setPointerCapture(pointerId);
-      e.preventDefault();
+    dialog.addEventListener("pointerdown", function (e) {
+      if (isInteractiveControl(e.target)) return;
+      bumpOverlayZ(overlay);
     });
 
-    header.addEventListener("pointermove", function (e) {
+    function onDocumentMove(e) {
       if (!dragging || e.pointerId !== pointerId) return;
-      var pos = positionWithinViewport(dialog, e.clientX - offsetX, e.clientY - offsetY);
+      var pos = positionWithinViewport(
+        dialog,
+        originLeft + (e.clientX - startX),
+        originTop + (e.clientY - startY)
+      );
       dialog.style.left = pos.left + "px";
       dialog.style.top = pos.top + "px";
-    });
+    }
 
     function endDrag(e) {
       if (!dragging || e.pointerId !== pointerId) return;
       dragging = false;
+      dialog.classList.remove("is-dragging");
+      document.removeEventListener("pointermove", onDocumentMove);
+      document.removeEventListener("pointerup", endDrag);
+      document.removeEventListener("pointercancel", endDrag);
       try {
         header.releasePointerCapture(pointerId);
       } catch (err) {}
       pointerId = null;
     }
 
-    header.addEventListener("pointerup", endDrag);
-    header.addEventListener("pointercancel", endDrag);
+    header.addEventListener("pointerdown", function (e) {
+      if (e.button !== 0 && e.pointerType !== "touch") return;
+      if (e.target && e.target.closest(".cli-modal-close")) return;
+
+      var rect = dialog.getBoundingClientRect();
+      dragging = true;
+      pointerId = e.pointerId;
+      startX = e.clientX;
+      startY = e.clientY;
+      originLeft = rect.left;
+      originTop = rect.top;
+
+      dialog.style.transform = "none";
+      dialog.style.margin = "0";
+      dialog.style.left = originLeft + "px";
+      dialog.style.top = originTop + "px";
+      dialog.classList.add("is-dragging");
+      dialog.dataset.dragged = "1";
+      bumpOverlayZ(overlay);
+
+      document.addEventListener("pointermove", onDocumentMove);
+      document.addEventListener("pointerup", endDrag);
+      document.addEventListener("pointercancel", endDrag);
+
+      try {
+        header.setPointerCapture(e.pointerId);
+      } catch (err) {}
+      e.preventDefault();
+    });
   }
 
   var historyByInput = new WeakMap();
@@ -96,8 +139,6 @@
           rowNow.querySelector(".prompt-el, .prompt, #prompt, [id^='prompt']");
         var promptSnapshot = promptElNow ? (promptElNow.textContent || "").trim() : "";
         pushHistory(input, raw);
-        // Some lab pages refocus to a default terminal on Enter.
-        // Re-assert focus on the active input after those handlers run.
         setTimeout(function () {
           var row = input.closest(".input-row");
           var promptEl =
@@ -107,7 +148,6 @@
             var execMatch = txt.match(/^([A-Za-z0-9._-]+)#$/);
             var cfgMatch = txt.match(/^([A-Za-z0-9._-]+)\(([^)]+)\)#$/);
 
-            // Global router-like mode transitions for simulators.
             if ((cmd === "conf t" || cmd === "configure terminal") && execMatch) {
               promptEl.textContent = execMatch[1] + "(config)#";
             } else if (cmd === "end" && cfgMatch) {
@@ -115,7 +155,6 @@
             } else if (cmd === "exit" && cfgMatch) {
               var host = cfgMatch[1];
               var mode = cfgMatch[2];
-              // Step back one level from any config submode.
               if (mode === "config") {
                 promptEl.textContent = host + "#";
               } else {
@@ -123,8 +162,6 @@
               }
             }
           }
-          // Global UX: treat plain "exit" as mode navigation only,
-          // so remove the echoed command line if a page printed it.
           if (isSilentExit) {
             var terminal = input.closest(".terminal");
             var scroll =
@@ -161,8 +198,7 @@
     }, true);
   }
 
-  function init() {
-    document.querySelectorAll(".cli-modal-dialog").forEach(makeDialogDraggable);
+  function bindAllInputs() {
     document
       .querySelectorAll(
         'input.cmdline-input, .terminal input[type="text"], input.cmdline, #cmdline, #cmdlineR2, #cmdlineR3, [id^="cmd"], [id$="Cmdline"]'
@@ -170,7 +206,16 @@
       .forEach(bindInputHistory);
   }
 
+  function init() {
+    document.querySelectorAll(".cli-modal-dialog").forEach(makeDialogDraggable);
+    bindAllInputs();
+  }
+
   window.bccInitLabModalDrag = init;
+  window.bccWireFloatingModal = function (dialogEl, overlayEl) {
+    if (dialogEl) makeDialogDraggable(dialogEl);
+    if (overlayEl) bumpOverlayZ(overlayEl);
+  };
 
   if (!window.__bccLabModalDragObserver) {
     window.__bccLabModalDragObserver = true;
@@ -183,6 +228,9 @@
           }
           if (node.querySelectorAll) {
             node.querySelectorAll(".cli-modal-dialog").forEach(makeDialogDraggable);
+            node.querySelectorAll(
+              'input.cmdline-input, .terminal input[type="text"], input.cmdline, #cmdline, [id^="cmd"], [id$="Cmdline"]'
+            ).forEach(bindInputHistory);
           }
         });
       });

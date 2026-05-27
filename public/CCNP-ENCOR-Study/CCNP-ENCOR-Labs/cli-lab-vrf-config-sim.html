@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
   <link rel="stylesheet" href="/css/cli-lab-container.css" />
+  <script src="/js/cli-lab-container.js"></script>
+  <script src="/js/cli-ios-mode.js"></script>
   <title>VRF Configuration Sim</title>
   <style>
     :root {
@@ -1191,6 +1193,8 @@ router ospf 100
     let stepR20 = 0;
     let modeR10 = "exec";
     let modeR20 = "exec";
+    const r10ExploreNav = cliLabContainer.createExploreNav("R10");
+    const r20ExploreNav = cliLabContainer.createExploreNav("R20");
 
     /** Part 3 verify pings succeed once both routers have left config after static routes (step 12), whether or not save has run yet. */
     function bothRoutersReadyForVrfPart3Verify() {
@@ -1212,8 +1216,52 @@ router ospf 100
     }
 
     function setPrompts() {
-      promptR10.textContent = promptForMode("R10", modeR10);
-      promptR20.textContent = promptForMode("R20", modeR20);
+      promptR10.textContent = r10ExploreNav.promptWith(promptForMode("R10", modeR10));
+      promptR20.textContent = r20ExploreNav.promptWith(promptForMode("R20", modeR20));
+    }
+
+    function vrfLineNorm(raw) {
+      return normalize(stripLeadingDevicePrompts(raw));
+    }
+
+    function tryExploreR10(raw) {
+      if (!String(raw || "").trim()) return false;
+      return r10ExploreNav.trySubmit(raw, {
+        getLabPrompt: () => r10ExploreNav.promptWith(promptForMode("R10", modeR10)),
+        scrollEl: scrollR10,
+        appendLine,
+        cmdInput: cmdR10,
+        normalize: vrfLineNorm,
+        onExploreChange: setPrompts,
+        matchesLabStep: (r) => {
+          const ln = stripLeadingDevicePrompts(r);
+          return (
+            stepR10 < R10_STEPS.length &&
+            modeR10 === R10_STEPS[stepR10].mode &&
+            R10_STEPS[stepR10].test(ln)
+          );
+        },
+      });
+    }
+
+    function tryExploreR20(raw) {
+      if (!String(raw || "").trim()) return false;
+      return r20ExploreNav.trySubmit(raw, {
+        getLabPrompt: () => r20ExploreNav.promptWith(promptForMode("R20", modeR20)),
+        scrollEl: scrollR20,
+        appendLine,
+        cmdInput: cmdR20,
+        normalize: vrfLineNorm,
+        onExploreChange: setPrompts,
+        matchesLabStep: (r) => {
+          const ln = stripLeadingDevicePrompts(r);
+          return (
+            stepR20 < R20_STEPS.length &&
+            modeR20 === R20_STEPS[stepR20].mode &&
+            R20_STEPS[stepR20].test(ln)
+          );
+        },
+      });
     }
 
     function getVrfTunnelDev() {
@@ -1277,49 +1325,6 @@ router ospf 100
       if (returnEl) returnEl.focus();
     }
 
-    /** Drag palette by title bar; clicking the dialog raises it above other palettes. */
-    function wireFloatingModal(dialogEl, overlayEl) {
-      const header = dialogEl.querySelector(".cli-modal-header");
-      if (!dialogEl || !overlayEl || !header) return;
-
-      dialogEl.addEventListener("pointerdown", () => bumpOverlayZ(overlayEl));
-
-      let drag = null;
-
-      header.addEventListener("pointerdown", (e) => {
-        if (e.button !== 0) return;
-        if (e.target.closest(".cli-modal-close")) return;
-        const r = dialogEl.getBoundingClientRect();
-        dialogEl.style.left = `${r.left}px`;
-        dialogEl.style.top = `${r.top}px`;
-        dialogEl.style.transform = "none";
-        dialogEl.classList.add("is-dragging");
-        drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: r.left, oy: r.top };
-        try {
-          header.setPointerCapture(e.pointerId);
-        } catch (_) {}
-        e.preventDefault();
-      });
-
-      header.addEventListener("pointermove", (e) => {
-        if (!drag || e.pointerId !== drag.id) return;
-        dialogEl.style.left = `${drag.ox + (e.clientX - drag.sx)}px`;
-        dialogEl.style.top = `${drag.oy + (e.clientY - drag.sy)}px`;
-      });
-
-      function endDrag(e) {
-        if (!drag || e.pointerId !== drag.id) return;
-        drag = null;
-        dialogEl.classList.remove("is-dragging");
-        try {
-          header.releasePointerCapture(e.pointerId);
-        } catch (_) {}
-      }
-
-      header.addEventListener("pointerup", endDrag);
-      header.addEventListener("pointercancel", endDrag);
-    }
-
     function lockR20() {
       panelR20.classList.remove("terminal-panel--waiting");
       cmdR20.disabled = false;
@@ -1332,6 +1337,8 @@ router ospf 100
       stepR20 = 0;
       modeR10 = "exec";
       modeR20 = "exec";
+      r10ExploreNav.reset();
+      r20ExploreNav.reset();
       scrollR10.innerHTML = "";
       scrollR20.innerHTML = "";
       passBanner.classList.remove("visible");
@@ -1346,17 +1353,25 @@ router ospf 100
 
     function submitR10() {
       const raw = cmdR10.value;
-      cmdR10.value = "";
-      if (!String(raw).trim()) return;
+      if (!String(raw).trim()) {
+        cmdR10.value = "";
+        return;
+      }
       const line = stripLeadingDevicePrompts(raw);
-      const normLine = normalize(line);
-      const p = promptForMode("R10", modeR10);
 
       if (matchShowRun(line)) {
+        cmdR10.value = "";
+        const p = r10ExploreNav.promptWith(promptForMode("R10", modeR10));
         appendLine(scrollR10, "line-user", `${p} ${line}`);
         appendLine(scrollR10, "line-showrun", R10_SHOW_RUN);
         return;
       }
+
+      if (tryExploreR10(raw)) return;
+
+      cmdR10.value = "";
+      const normLine = normalize(line);
+      const p = promptForMode("R10", modeR10);
       if (
         modeR10 === "exec" &&
         (normLine === "conf t" || normLine === "configure terminal")
@@ -1436,10 +1451,22 @@ router ospf 100
       }
 
       if (stepR10 >= R10_STEPS.length) {
+        if (
+          r10ExploreNav.trySubmit(line, {
+            getLabPrompt: () => r10ExploreNav.promptWith(promptForMode("R10", modeR10)),
+            scrollEl: scrollR10,
+            appendLine,
+            normalize: vrfLineNorm,
+            onExploreChange: setPrompts,
+            matchesLabStep: () => false,
+          })
+        ) {
+          return;
+        }
         appendLine(
           scrollR10,
           "line-bad",
-          "% Invalid input"
+          cliLabContainer.INVALID_INPUT_MSG
         );
         return;
       }
@@ -1463,7 +1490,7 @@ router ospf 100
         appendLine(
           scrollR10,
           "line-bad",
-          "% Invalid input"
+          cliLabContainer.INVALID_INPUT_MSG
         );
       }
       if (modalR10.classList.contains("is-open") && !cmdR10.disabled) {
@@ -1473,17 +1500,25 @@ router ospf 100
 
     function submitR20() {
       const raw = cmdR20.value;
-      cmdR20.value = "";
-      if (!String(raw).trim()) return;
+      if (!String(raw).trim()) {
+        cmdR20.value = "";
+        return;
+      }
       const line = stripLeadingDevicePrompts(raw);
-      const normLine = normalize(line);
-      const p = promptForMode("R20", modeR20);
 
       if (matchShowRun(line)) {
+        cmdR20.value = "";
+        const p = r20ExploreNav.promptWith(promptForMode("R20", modeR20));
         appendLine(scrollR20, "line-user", `${p} ${line}`);
         appendLine(scrollR20, "line-showrun", R20_SHOW_RUN);
         return;
       }
+
+      if (tryExploreR20(raw)) return;
+
+      cmdR20.value = "";
+      const normLine = normalize(line);
+      const p = promptForMode("R20", modeR20);
       if (
         modeR20 === "exec" &&
         (normLine === "conf t" || normLine === "configure terminal")
@@ -1542,10 +1577,22 @@ router ospf 100
       }
 
       if (stepR20 >= R20_STEPS.length) {
+        if (
+          r20ExploreNav.trySubmit(line, {
+            getLabPrompt: () => r20ExploreNav.promptWith(promptForMode("R20", modeR20)),
+            scrollEl: scrollR20,
+            appendLine,
+            normalize: vrfLineNorm,
+            onExploreChange: setPrompts,
+            matchesLabStep: () => false,
+          })
+        ) {
+          return;
+        }
         appendLine(
           scrollR20,
           "line-bad",
-          "% Invalid input"
+          cliLabContainer.INVALID_INPUT_MSG
         );
         return;
       }
@@ -1570,7 +1617,7 @@ router ospf 100
         appendLine(
           scrollR20,
           "line-bad",
-          "% Invalid input"
+          cliLabContainer.INVALID_INPUT_MSG
         );
       }
       focusActiveCli();
@@ -1604,12 +1651,6 @@ router ospf 100
         openSelectedCliBtn.focus();
       });
     });
-
-    wireFloatingModal(modalR10Dialog, modalR10);
-    wireFloatingModal(modalR20Dialog, modalR20);
-    wireFloatingModal(modalSw20Dialog, modalSw20);
-    wireFloatingModal(modalSw10Dialog, modalSw10);
-    wireFloatingModal(modalIspDialog, modalIsp);
 
     document.addEventListener("keydown", (event) => {
       if (event.key !== "Escape") return;
@@ -1669,6 +1710,7 @@ router ospf 100
       </div>`;
     overlay.querySelector('.cli-modal-body').appendChild(bodyNode);
     document.body.appendChild(overlay);
+    if (window.bccInitLabModalDrag) window.bccInitLabModalDrag();
     const closeBtn = overlay.querySelector('.cli-modal-close');
     const close = () => { overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true'); };
     const open = () => { overlay.classList.add('is-open'); overlay.setAttribute('aria-hidden', 'false'); };
@@ -1823,9 +1865,7 @@ router ospf 100
   });
 })();
 </script>
-
-  <script src="/js/cli-lab-container.js"></script>
-  <script src="/js/lab-modal-drag.js"></script>
+<script src="/js/lab-modal-drag.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-home-nav.js"></script>
 </body>
 </html>

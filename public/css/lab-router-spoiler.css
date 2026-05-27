@@ -1,1 +1,178 @@
-../CCNP-ENCOR-Study/css/lab-router-spoiler.css
+/**
+ * Router / CLI window chrome for inline <details class="hint"> spoilers
+ * and modal spoiler stacks (.spoiler-cli-*). Matches lab cli-modal-dialog tone.
+ */
+
+/* --- Inline collapsible spoiler (page “tab”) -------------------------------- */
+details.hint {
+  margin-top: 12px;
+  border: 1px solid #3d5280;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #080c14;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+}
+
+details.hint > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  margin: 0;
+  background: linear-gradient(180deg, #1e2a44 0%, #121a2b 100%);
+  border-bottom: 1px solid #2d3b5a;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #e6edf3;
+  letter-spacing: 0.03em;
+  user-select: none;
+}
+
+details.hint > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.hint > summary::before {
+  content: "";
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: linear-gradient(135deg, #22c55e 0%, #15803d 100%);
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.35);
+}
+
+details.hint > summary::after {
+  content: "▼";
+  margin-left: auto;
+  font-size: 0.65rem;
+  color: #7a8da3;
+  transition: transform 0.15s ease;
+}
+
+details.hint[open] > summary::after {
+  transform: rotate(-180deg);
+}
+
+/* Terminal body below the chrome strip */
+details.hint > *:not(summary) {
+  margin: 0;
+  padding: 6px 14px 10px;
+  background: #0a0e18;
+  color: #c8d4e4;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+details.hint > *:not(summary):first-of-type {
+  padding-top: 12px;
+}
+
+details.hint > *:not(summary):last-child {
+  padding-bottom: 14px;
+}
+
+details.hint p {
+  margin: 0 0 10px;
+}
+
+details.hint p:last-child {
+  margin-bottom: 0;
+}
+
+details.hint ol,
+details.hint ul {
+  margin: 8px 0 0;
+  padding-left: 1.25rem;
+  color: #b8c9dc;
+}
+
+details.hint li {
+  margin: 6px 0;
+}
+
+details.hint code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.84em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #111827;
+  border: 1px solid #334155;
+  color: #fbbf24;
+}
+
+/* --- Modal spoiler body (Spoiler button → stacked sections) ---------------- */
+.spoiler-cli-stack {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.spoiler-cli-item {
+  background: #080c14;
+  border: 1px solid #3d5280;
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 0;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.spoiler-cli-label {
+  display: block;
+  margin: 0;
+  padding: 10px 12px;
+  background: linear-gradient(180deg, #1e2a44 0%, #121a2b 100%);
+  border-bottom: 1px solid #2d3b5a;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #e6edf3;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.spoiler-cli-pre {
+  margin: 0;
+  padding: 10px 12px;
+  background: #0a0e18;
+  border: none;
+  border-radius: 0;
+  color: #d4d4d4;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* --- DR/BDR & VRF sims: custom spoiler terminal blocks ---------------------- */
+.spoiler-terminal {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.84rem;
+  background: #0a0e18;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 10px;
+  line-height: 1.45;
+  color: #c8d2e0;
+}
+
+.spoiler-cli-line {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.spoiler-cli-line + .spoiler-cli-line {
+  margin-top: 2px;
+}
+
+.spoiler-cli-prompt {
+  color: #fbbf24;
+}
+
+.spoiler-cli-cmd {
+  color: #7ec8ff;
+}

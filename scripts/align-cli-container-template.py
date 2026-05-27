@@ -125,14 +125,13 @@ def patch_file(path: Path) -> bool:
         elif "</head>" in text:
             text = text.replace("</head>", f"  {CONTAINER_CSS}\n</head>", 1)
 
-    if CONTAINER_JS not in text and "lab-modal-drag.js" in text:
-        text = text.replace(
-            '<script src="/js/lab-modal-drag.js"></script>',
-            CONTAINER_JS + "\n  " + '<script src="/js/lab-modal-drag.js"></script>',
-            1,
-        )
-    elif CONTAINER_JS not in text and "</body>" in text:
-        text = text.replace("</body>", f"  {CONTAINER_JS}\n</body>", 1)
+    if CONTAINER_JS not in text:
+        if CONTAINER_CSS in text:
+            text = text.replace(CONTAINER_CSS, CONTAINER_CSS + "\n  " + CONTAINER_JS, 1)
+        elif 'name="viewport"' in text and "</head>" in text:
+            text = text.replace("</head>", f"  {CONTAINER_JS}\n</head>", 1)
+        elif "</body>" in text:
+            text = text.replace("</body>", f"  {CONTAINER_JS}\n</body>", 1)
 
     if text != original:
         path.write_text(text, encoding="utf-8")

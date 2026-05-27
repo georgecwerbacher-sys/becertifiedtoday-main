@@ -17,7 +17,8 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NAT DHCP SSH Solution | Be Certified Today</title>
+  <script src="/js/cli-lab-container.js"></script>
+<title>NAT DHCP SSH Solution | Be Certified Today</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -1797,18 +1798,18 @@ Sw1#</pre>
 
         if (matchR1ShowIpNatTranslations(line)) {
           if (stepIndex < LAB_STEPS.length) {
-            appendSw("line-bad", "Not supported in this simulation");
+            appendSw("line-bad", cliLabContainer.INVALID_INPUT_MSG);
             return;
           }
           var natU = normalize(line);
           if (natU === "show ip nat translations") {
             if (!swInEnableMode()) {
-              appendSw("line-bad", "Not supported in this simulation");
+              appendSw("line-bad", cliLabContainer.INVALID_INPUT_MSG);
               return;
             }
           } else {
             if (swPromptOverride !== "config") {
-              appendSw("line-bad", "Not supported in this simulation");
+              appendSw("line-bad", cliLabContainer.INVALID_INPUT_MSG);
               return;
             }
           }
@@ -1866,7 +1867,7 @@ Sw1#</pre>
             appendSw("line-sys", SHOW_DISABLED_MSG);
             return;
           }
-          appendSw("line-bad", "Not supported in this simulation");
+          appendSw("line-bad", cliLabContainer.INVALID_INPUT_MSG);
           return;
         }
 
@@ -1894,7 +1895,7 @@ Sw1#</pre>
             setSwPrompt();
           }
         } else {
-          appendSw("line-bad", "Not supported in this simulation");
+          appendSw("line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       }
 
@@ -1929,15 +1930,15 @@ Sw1#</pre>
         if (matchShowNtpStatus(line)) {
           var ntpU = normalize(line);
           if (sw2Mode === "exec" && ntpU === "do show ntp status") {
-            appendSw2("line-bad", "Not supported in this simulation");
+            appendSw2("line-bad", cliLabContainer.INVALID_INPUT_MSG);
             return;
           }
           if (sw2Mode === "config" && ntpU !== "do show ntp status") {
-            appendSw2("line-bad", "Not supported in this simulation");
+            appendSw2("line-bad", cliLabContainer.INVALID_INPUT_MSG);
             return;
           }
           if (sw2Mode !== "exec" && sw2Mode !== "config") {
-            appendSw2("line-bad", "Not supported in this simulation");
+            appendSw2("line-bad", cliLabContainer.INVALID_INPUT_MSG);
             return;
           }
           if (sw1ConfiguredNtpServer === null) {
@@ -2008,7 +2009,7 @@ Sw1#</pre>
           }
           var st = SW1_LAB_STEPS[sw2StepIndex];
           if (sw2Mode !== st.mode || !st.test(line)) {
-            appendSw2("line-bad", "Not supported in this simulation");
+            appendSw2("line-bad", cliLabContainer.INVALID_INPUT_MSG);
             return;
           }
           var prev = sw2StepIndex;
@@ -2057,7 +2058,7 @@ Sw1#</pre>
           return;
         }
 
-        appendSw2("line-bad", "Not supported in this simulation");
+        appendSw2("line-bad", cliLabContainer.INVALID_INPUT_MSG);
       }
 
       function wireFloatingModal(dialogEl, overlayEl) {

@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
   <link rel="stylesheet" href="/css/cli-lab-container.css" />
+  <script src="/js/cli-lab-container.js"></script>
   <title>VTY Login Sim — Version 2</title>
   <style>
     :root {
@@ -609,6 +610,22 @@
 
     let stepIndex = 0;
     let stepExitLevel = 0;
+    const exploreByHost = {};
+
+    function exploreNavFor(hostname) {
+      if (!exploreByHost[hostname]) {
+        exploreByHost[hostname] = cliLabContainer.createExploreNav(hostname);
+      }
+      return exploreByHost[hostname];
+    }
+
+    function resetExploreAll() {
+      Object.keys(exploreByHost).forEach((h) => exploreByHost[h].reset());
+    }
+
+    function appendLineExplore(_scrollEl, className, text) {
+      appendLine(className, text);
+    }
 
     function appendLine(className, text) {
       const div = document.createElement("div");
@@ -620,7 +637,8 @@
 
     function setPrompt() {
       const h = getHostname();
-      promptEl.textContent = promptForStep(stepIndex, h);
+      const lab = promptForStep(stepIndex, h);
+      promptEl.textContent = exploreNavFor(h).promptWith(lab);
     }
 
     function updateModalTitle() {
@@ -643,6 +661,7 @@
     function reset() {
       stepIndex = 0;
       stepExitLevel = 0;
+      resetExploreAll();
       scrollback.innerHTML = "";
       passBanner.classList.remove("visible");
       cmdline.disabled = false;
@@ -664,13 +683,35 @@
     function submit() {
       if (stepIndex >= STEPS.length) return;
       const h = getHostname();
-      const p = promptForStep(stepIndex, h);
       const line = cmdline.value;
+      if (!line.trim()) {
+        cmdline.value = "";
+        return;
+      }
+
+      const nav = exploreNavFor(h);
+      if (
+        nav.trySubmit(line, {
+          getLabPrompt: () => nav.promptWith(promptForStep(stepIndex, h)),
+          scrollEl: scrollback,
+          appendLine: appendLineExplore,
+          cmdInput: cmdline,
+          normalize,
+          onExploreChange: () => {
+            stepExitLevel = 0;
+            setPrompt();
+          },
+          matchesLabStep: (l) =>
+            stepIndex < STEPS.length && STEPS[stepIndex].test(l),
+        })
+      ) {
+        return;
+      }
+
+      const p = promptForStep(stepIndex, h);
       const u = normalize(line);
       appendLine("line-user", p + " " + line);
       cmdline.value = "";
-
-      if (!line.trim()) return;
 
       if (u !== "exit") stepExitLevel = 0;
       if (u === "exit") {
@@ -683,7 +724,7 @@
         } else {
           appendLine(
             "line-bad",
-            "% Invalid input"
+            cliLabContainer.INVALID_INPUT_MSG
           );
           return;
         }
@@ -703,7 +744,7 @@
       } else {
         appendLine(
           "line-bad",
-          "% Invalid input"
+          cliLabContainer.INVALID_INPUT_MSG
         );
       }
     }
@@ -766,6 +807,7 @@
       </div>';
     overlay.querySelector('.cli-modal-body').appendChild(bodyNode);
     document.body.appendChild(overlay);
+    if (window.bccInitLabModalDrag) window.bccInitLabModalDrag();
     const closeBtn = overlay.querySelector('.cli-modal-close');
     const close = () => { overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true'); };
     const open = () => { overlay.classList.add('is-open'); overlay.setAttribute('aria-hidden', 'false'); };
@@ -902,9 +944,7 @@
   });
 })();
 </script>
-
-  <script src="/js/cli-lab-container.js"></script>
-  <script src="/js/lab-modal-drag.js"></script>
+<script src="/js/lab-modal-drag.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-home-nav.js"></script>
 </body>
 </html>

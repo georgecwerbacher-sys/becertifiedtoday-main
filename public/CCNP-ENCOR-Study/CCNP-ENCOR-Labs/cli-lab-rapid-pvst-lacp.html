@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
   <link rel="stylesheet" href="/css/cli-lab-container.css" />
+  <script src="/js/cli-lab-container.js"></script>
   <title>Rapid PVST+ and LACP Sim</title>
   <style>
     :root {
@@ -1409,7 +1410,7 @@ SW20# copy running-config startup-config</pre>
         return;
       }
 
-      appendLineSw10("line-bad", "% Invalid input");
+      appendLineSw10("line-bad", cliLabContainer.INVALID_INPUT_MSG);
     }
 
     function closeSw10Modal() {
@@ -1488,7 +1489,7 @@ SW20# copy running-config startup-config</pre>
         return;
       }
 
-      appendLinePc3("line-bad", "% Invalid input");
+      appendLinePc3("line-bad", cliLabContainer.INVALID_INPUT_MSG);
     }
 
     function openCliModal() {
@@ -1515,54 +1516,7 @@ SW20# copy running-config startup-config</pre>
       if (openSelectedCliBtn) openSelectedCliBtn.focus();
     }
 
-    /** Drag dialog by header; clicks on the palette raise it above the other. */
-    function wireFloatingModal(dialogEl, overlayEl) {
-      const header = dialogEl.querySelector(".cli-modal-header");
-      if (!dialogEl || !overlayEl || !header) return;
-
-      dialogEl.addEventListener("pointerdown", () => bumpOverlayZ(overlayEl));
-
-      let drag = null;
-
-      header.addEventListener("pointerdown", (e) => {
-        if (e.button !== 0) return;
-        if (e.target.closest(".cli-modal-close")) return;
-        const r = dialogEl.getBoundingClientRect();
-        dialogEl.style.left = `${r.left}px`;
-        dialogEl.style.top = `${r.top}px`;
-        dialogEl.style.transform = "none";
-        dialogEl.classList.add("is-dragging");
-        drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: r.left, oy: r.top };
-        try {
-          header.setPointerCapture(e.pointerId);
-        } catch (_) {}
-        e.preventDefault();
-      });
-
-      header.addEventListener("pointermove", (e) => {
-        if (!drag || e.pointerId !== drag.id) return;
-        dialogEl.style.left = `${drag.ox + (e.clientX - drag.sx)}px`;
-        dialogEl.style.top = `${drag.oy + (e.clientY - drag.sy)}px`;
-      });
-
-      function endDrag(e) {
-        if (!drag || e.pointerId !== drag.id) return;
-        drag = null;
-        dialogEl.classList.remove("is-dragging");
-        try {
-          header.releasePointerCapture(e.pointerId);
-        } catch (_) {}
-      }
-
-      header.addEventListener("pointerup", endDrag);
-      header.addEventListener("pointercancel", endDrag);
-    }
-
-    wireFloatingModal(cliModalDialog, cliModalOverlay);
-    wireFloatingModal(pc3ModalDialog, pc3ModalOverlay);
-    wireFloatingModal(sw10ModalDialog, sw10ModalOverlay);
-    wireFloatingModal(helperFileDialog, helperFileOverlay);
-    wireFloatingModal(spoilerDialog, spoilerOverlay);
+    /** Drag handled by /js/lab-modal-drag.js */
 
     function appendLine(className, text) {
       const div = document.createElement("div");
@@ -1671,7 +1625,7 @@ SW20# copy running-config startup-config</pre>
         }
         appendLine(
           "line-bad",
-          "% Invalid input"
+          cliLabContainer.INVALID_INPUT_MSG
         );
         focusActiveCli();
         return;
@@ -1789,7 +1743,7 @@ SW20# copy running-config startup-config</pre>
           setPrompt();
         }
       } else {
-        appendLine("line-bad", "% Invalid input");
+        appendLine("line-bad", cliLabContainer.INVALID_INPUT_MSG);
       }
       focusActiveCli();
     }
@@ -1955,8 +1909,7 @@ SW20# copy running-config startup-config</pre>
 
     reset();
   </script>
-  <script src="/js/cli-lab-container.js"></script>
-  <script src="/js/lab-modal-drag.js"></script>
+<script src="/js/lab-modal-drag.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-home-nav.js"></script>
 </body>
 </html>

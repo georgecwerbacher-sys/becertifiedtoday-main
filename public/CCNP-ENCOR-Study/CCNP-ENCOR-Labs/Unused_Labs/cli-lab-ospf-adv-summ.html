@@ -7,7 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
   <link rel="stylesheet" href="/css/cli-lab-container.css" />
-  <title>OSPF Advertised &amp; Summarized Sim</title>
+  <script src="/js/cli-lab-container.js"></script>
+<title>OSPF Advertised &amp; Summarized Sim</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -699,7 +700,7 @@
           passBanner.classList.add("visible");
           applyPhaseUI();
         } else {
-          appendLine(scrollR1, "line-bad", "% Invalid input");
+          appendLine(scrollR1, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
         return;
       }
@@ -711,7 +712,7 @@
             appendLine(scrollR1, "line-sys", "[OK] show ip route ospf next.");
             verStep = 1;
           } else {
-            appendLine(scrollR1, "line-bad", "% Invalid input");
+            appendLine(scrollR1, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           }
           return;
         }
@@ -722,7 +723,7 @@
           phase = "R1_SAVE";
           applyPhaseUI();
         } else {
-          appendLine(scrollR1, "line-bad", "% Invalid input");
+          appendLine(scrollR1, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
         return;
       }
@@ -731,7 +732,7 @@
       if (stepR1 >= R1_CFG.length) return;
 
       if (!R1_CFG[stepR1].test(line)) {
-        appendLine(scrollR1, "line-bad", "% Invalid input");
+        appendLine(scrollR1, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         return;
       }
 
@@ -804,6 +805,7 @@
       </div>';
     overlay.querySelector('.cli-modal-body').appendChild(bodyNode);
     document.body.appendChild(overlay);
+    if (window.bccInitLabModalDrag) window.bccInitLabModalDrag();
     const closeBtn = overlay.querySelector('.cli-modal-close');
     const close = () => { overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true'); };
     const open = () => { overlay.classList.add('is-open'); overlay.setAttribute('aria-hidden', 'false'); };

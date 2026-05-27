@@ -1,1 +1,56 @@
-../CCNP-ENCOR-Study/css/cli-lab-container.css
+/**
+ * CLI container template classes (templates/containers/cli-container-template.html).
+ * Complements per-lab #scrollback / .console-scroll rules; safe when both apply.
+ */
+.terminal .scrollback-area {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 360px;
+  margin-bottom: 8px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #c8d2e0;
+  line-height: 1.45;
+}
+
+.terminal .input-row {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #243044;
+  padding-top: 8px;
+}
+
+.terminal .prompt-el {
+  flex-shrink: 0;
+  color: #fbbf24;
+  user-select: none;
+}
+
+.terminal .prompt-el.pc-prompt {
+  color: #c8f0c4;
+  font-weight: 600;
+}
+
+.terminal .cmdline-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  color: #e6edf3;
+  font: inherit;
+  outline: none;
+  padding: 4px 0 4px 4px;
+}
+
+.terminal .cmdline-input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Running / initial config (show run) — same blue as typed commands (.line-user). */
+.terminal .line-showrun {
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #7ec8ff;
+  line-height: 1.45;
+}

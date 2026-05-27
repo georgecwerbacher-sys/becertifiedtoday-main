@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
   <link rel="stylesheet" href="/css/cli-lab-container.css" />
+  <script src="/js/cli-lab-container.js"></script>
+  <script src="/js/cli-ios-mode.js"></script>
   <title>OSPF DR/BDR Sim 2</title>
   <style>
     :root {
@@ -728,6 +730,93 @@
     let stepR20Clear = 0;
     let stepR2Clear = 0;
     let stepR10Clear = 0;
+    const r10ExploreNav = cliLabContainer.createExploreNav("R10");
+    const r20ExploreNav = cliLabContainer.createExploreNav("R20");
+    const r2ExploreNav = cliLabContainer.createExploreNav("R2");
+    const r3ExploreNav = cliLabContainer.createExploreNav("R3");
+
+    function r10LabPrompt() {
+      if (phase === "R10_PRI") return promptForConfig(R10_PRI, stepR10, "R10");
+      if (phase === "R10_CLEAR") return stepR10Clear === 0 ? "R10#" : OSPF_CLEAR_PROMPT;
+      return "R10#";
+    }
+
+    function r20LabPrompt() {
+      if (phase === "R20_PTP") return promptForConfig(R20_PTP, stepR20, "R20");
+      if (phase === "R20_CLEAR") return stepR20Clear === 0 ? "R20#" : OSPF_CLEAR_PROMPT;
+      return "R20#";
+    }
+
+    function r2LabPrompt() {
+      if (phase === "R2_CLEAR") return stepR2Clear === 0 ? "R2#" : OSPF_CLEAR_PROMPT;
+      return "R2#";
+    }
+
+    function r3LabPrompt() {
+      if (phase === "R3_PTP") return promptForConfig(R3_PTP, stepR3, "R3");
+      if (phase === "R3_CLEAR") return stepR3Clear === 0 ? "R3#" : OSPF_CLEAR_PROMPT;
+      return "R3#";
+    }
+
+    function tryExploreR10(line, extra) {
+      return r10ExploreNav.trySubmit(line, {
+        getLabPrompt: r10LabPrompt,
+        scrollEl: scrollR10,
+        appendLine,
+        cmdInput: cmdR10,
+        normalize,
+        onExploreChange: updatePrompts,
+        matchesLabStep: (l) =>
+          phase === "R10_PRI" &&
+          stepR10 < R10_PRI.length &&
+          R10_PRI[stepR10].test(l),
+        ...(extra || {}),
+      });
+    }
+
+    function tryExploreR20(line, extra) {
+      return r20ExploreNav.trySubmit(line, {
+        getLabPrompt: r20LabPrompt,
+        scrollEl: scrollR20,
+        appendLine,
+        cmdInput: cmdR20,
+        normalize,
+        onExploreChange: updatePrompts,
+        matchesLabStep: (l) =>
+          phase === "R20_PTP" &&
+          stepR20 < R20_PTP.length &&
+          R20_PTP[stepR20].test(l),
+        ...(extra || {}),
+      });
+    }
+
+    function tryExploreR2(line, extra) {
+      return r2ExploreNav.trySubmit(line, {
+        getLabPrompt: r2LabPrompt,
+        scrollEl: scrollR2,
+        appendLine,
+        cmdInput: cmdR2,
+        normalize,
+        onExploreChange: updatePrompts,
+        ...(extra || {}),
+      });
+    }
+
+    function tryExploreR3(line, extra) {
+      return r3ExploreNav.trySubmit(line, {
+        getLabPrompt: r3LabPrompt,
+        scrollEl: scrollR3,
+        appendLine,
+        cmdInput: cmdR3,
+        normalize,
+        onExploreChange: updatePrompts,
+        matchesLabStep: (l) =>
+          phase === "R3_PTP" &&
+          stepR3 < R3_PTP.length &&
+          R3_PTP[stepR3].test(l),
+        ...(extra || {}),
+      });
+    }
 
     function appendLine(scrollEl, className, text) {
       const div = document.createElement("div");
@@ -758,41 +847,10 @@
     }
 
     function updatePrompts() {
-      if (phase === "R3_PTP") {
-        promptR3.textContent = promptForConfig(R3_PTP, stepR3, "R3");
-      } else if (phase === "R3_CLEAR") {
-        promptR3.textContent = stepR3Clear === 0 ? "R3#" : OSPF_CLEAR_PROMPT;
-      } else if (phase === "R3_NEI" || phase === "SAVE_R3") {
-        promptR3.textContent = "R3#";
-      } else {
-        promptR3.textContent = "R3#";
-      }
-
-      if (phase === "R20_PTP") {
-        promptR20.textContent = promptForConfig(R20_PTP, stepR20, "R20");
-      } else if (phase === "R20_CLEAR") {
-        promptR20.textContent = stepR20Clear === 0 ? "R20#" : OSPF_CLEAR_PROMPT;
-      } else if (phase === "R20_NEI" || phase === "SAVE_R20") {
-        promptR20.textContent = "R20#";
-      } else {
-        promptR20.textContent = "R20#";
-      }
-
-      if (phase === "R10_PRI") {
-        promptR10.textContent = promptForConfig(R10_PRI, stepR10, "R10");
-      } else if (phase === "R10_CLEAR") {
-        promptR10.textContent = stepR10Clear === 0 ? "R10#" : OSPF_CLEAR_PROMPT;
-      } else if (phase === "SAVE_R10") {
-        promptR10.textContent = "R10#";
-      } else {
-        promptR10.textContent = "R10#";
-      }
-
-      if (phase === "R2_CLEAR") {
-        promptR2.textContent = stepR2Clear === 0 ? "R2#" : OSPF_CLEAR_PROMPT;
-      } else {
-        promptR2.textContent = "R2#";
-      }
+      promptR3.textContent = r3ExploreNav.promptWith(r3LabPrompt());
+      promptR20.textContent = r20ExploreNav.promptWith(r20LabPrompt());
+      promptR10.textContent = r10ExploreNav.promptWith(r10LabPrompt());
+      promptR2.textContent = r2ExploreNav.promptWith(r2LabPrompt());
     }
 
     function applyPhaseUI() {
@@ -836,6 +894,10 @@
       stepR20Clear = 0;
       stepR2Clear = 0;
       stepR10Clear = 0;
+      r10ExploreNav.reset();
+      r20ExploreNav.reset();
+      r2ExploreNav.reset();
+      r3ExploreNav.reset();
       scrollR3.innerHTML = "";
       scrollR20.innerHTML = "";
       scrollR10.innerHTML = "";
@@ -871,7 +933,8 @@
           }
           applyPhaseUI();
         } else {
-          appendLine(scrollR3, "line-bad", "% Invalid input");
+          if (tryExploreR3(line, { alreadyEchoed: true })) return;
+          appendLine(scrollR3, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       } else if (phase === "R3_CLEAR") {
         const p = stepR3Clear === 0 ? "R3#" : OSPF_CLEAR_PROMPT;
@@ -885,7 +948,8 @@
             appendLine(scrollR3, "line-sys", OSPF_CLEAR_PROMPT);
             applyPhaseUI();
           } else {
-            appendLine(scrollR3, "line-bad", "% Invalid input");
+            if (tryExploreR3(line, { alreadyEchoed: true })) return;
+            appendLine(scrollR3, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           }
         } else if (["y", "yes"].includes(normalize(line))) {
           appendLine(scrollR3, "line-sys", "[OK] R3 OSPF reset (simulated). Clear OSPF on R20.");
@@ -894,7 +958,8 @@
           appendLine(scrollR20, "line-sys", "Run clear ip ospf process on R20.");
           applyPhaseUI();
         } else {
-          appendLine(scrollR3, "line-bad", "% Invalid input");
+          if (tryExploreR3(line, { alreadyEchoed: true })) return;
+          appendLine(scrollR3, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       } else if (phase === "R3_NEI") {
         const line = cmdR3.value;
@@ -908,7 +973,8 @@
           appendLine(scrollR20, "line-sys", "show ip ospf neighbor");
           applyPhaseUI();
         } else {
-          appendLine(scrollR3, "line-bad", "% Invalid input");
+          if (tryExploreR3(line, { alreadyEchoed: true })) return;
+          appendLine(scrollR3, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       } else if (phase === "SAVE_R3") {
         const line = cmdR3.value;
@@ -921,7 +987,8 @@
           appendLine(scrollR10, "line-sys", "copy running-config startup-config");
           applyPhaseUI();
         } else {
-          appendLine(scrollR3, "line-bad", "% Invalid input");
+          if (tryExploreR3(line, { alreadyEchoed: true })) return;
+          appendLine(scrollR3, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       }
     }
@@ -946,7 +1013,8 @@
             applyPhaseUI();
           }
         } else {
-          appendLine(scrollR20, "line-bad", "% Invalid input");
+          if (tryExploreR20(line, { alreadyEchoed: true })) return;
+          appendLine(scrollR20, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       } else if (phase === "R20_CLEAR") {
         const p = stepR20Clear === 0 ? "R20#" : OSPF_CLEAR_PROMPT;
@@ -960,7 +1028,8 @@
             appendLine(scrollR20, "line-sys", OSPF_CLEAR_PROMPT);
             applyPhaseUI();
           } else {
-            appendLine(scrollR20, "line-bad", "% Invalid input");
+            if (tryExploreR20(line, { alreadyEchoed: true })) return;
+            appendLine(scrollR20, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           }
         } else if (["y", "yes"].includes(normalize(line))) {
           appendLine(scrollR20, "line-sys", "[OK] R20 OSPF reset (simulated). Verify on R3 and R20.");
@@ -968,7 +1037,8 @@
           appendLine(scrollR3, "line-sys", "show ip ospf neighbor");
           applyPhaseUI();
         } else {
-          appendLine(scrollR20, "line-bad", "% Invalid input");
+          if (tryExploreR20(line, { alreadyEchoed: true })) return;
+          appendLine(scrollR20, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       } else if (phase === "R20_NEI") {
         const line = cmdR20.value;
@@ -983,7 +1053,8 @@
           appendLine(scrollR10, "line-sys", "ip ospf priority 255 on e0/0 toward R2.");
           applyPhaseUI();
         } else {
-          appendLine(scrollR20, "line-bad", "% Invalid input");
+          if (tryExploreR20(line, { alreadyEchoed: true })) return;
+          appendLine(scrollR20, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       } else if (phase === "SAVE_R20") {
         const line = cmdR20.value;
@@ -1000,7 +1071,8 @@
           setWaiting(panelR10, true);
           setWaiting(panelR2, true);
         } else {
-          appendLine(scrollR20, "line-bad", "% Invalid input");
+          if (tryExploreR20(line, { alreadyEchoed: true })) return;
+          appendLine(scrollR20, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       }
     }
@@ -1025,7 +1097,8 @@
             applyPhaseUI();
           }
         } else {
-          appendLine(scrollR10, "line-bad", "% Invalid input");
+          if (tryExploreR10(line, { alreadyEchoed: true })) return;
+          appendLine(scrollR10, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       } else if (phase === "R10_CLEAR") {
         const p = stepR10Clear === 0 ? "R10#" : OSPF_CLEAR_PROMPT;
@@ -1039,7 +1112,8 @@
             appendLine(scrollR10, "line-sys", OSPF_CLEAR_PROMPT);
             applyPhaseUI();
           } else {
-            appendLine(scrollR10, "line-bad", "% Invalid input");
+            if (tryExploreR10(line, { alreadyEchoed: true })) return;
+            appendLine(scrollR10, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           }
         } else if (["y", "yes"].includes(normalize(line))) {
           appendLine(scrollR10, "line-sys", "[OK] R10 OSPF reset (simulated). Verify on R2.");
@@ -1047,7 +1121,8 @@
           appendLine(scrollR2, "line-sys", "show ip ospf neighbor — R10 should be DR.");
           applyPhaseUI();
         } else {
-          appendLine(scrollR10, "line-bad", "% Invalid input");
+          if (tryExploreR10(line, { alreadyEchoed: true })) return;
+          appendLine(scrollR10, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       } else if (phase === "SAVE_R10") {
         const line = cmdR10.value;
@@ -1060,7 +1135,8 @@
           appendLine(scrollR20, "line-sys", "copy running-config startup-config");
           applyPhaseUI();
         } else {
-          appendLine(scrollR10, "line-bad", "% Invalid input");
+          if (tryExploreR10(line, { alreadyEchoed: true })) return;
+          appendLine(scrollR10, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       }
     }
@@ -1078,7 +1154,8 @@
             appendLine(scrollR2, "line-sys", OSPF_CLEAR_PROMPT);
             applyPhaseUI();
           } else {
-            appendLine(scrollR2, "line-bad", "% Invalid input");
+            if (tryExploreR2(line, { alreadyEchoed: true })) return;
+            appendLine(scrollR2, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           }
         } else if (["y", "yes"].includes(normalize(line))) {
           appendLine(scrollR2, "line-sys", "[OK] R2 OSPF reset (simulated). Clear OSPF on R10.");
@@ -1087,7 +1164,8 @@
           appendLine(scrollR10, "line-sys", "clear ip ospf process");
           applyPhaseUI();
         } else {
-          appendLine(scrollR2, "line-bad", "% Invalid input");
+          if (tryExploreR2(line, { alreadyEchoed: true })) return;
+          appendLine(scrollR2, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       } else if (phase === "R2_NEI") {
         const line = cmdR2.value;
@@ -1101,7 +1179,8 @@
           appendLine(scrollR3, "line-sys", "copy running-config startup-config");
           applyPhaseUI();
         } else {
-          appendLine(scrollR2, "line-bad", "% Invalid input");
+          if (tryExploreR2(line, { alreadyEchoed: true })) return;
+          appendLine(scrollR2, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       }
     }
@@ -1217,6 +1296,7 @@
       </div>';
     overlay.querySelector('.cli-modal-body').appendChild(bodyNode);
     document.body.appendChild(overlay);
+    if (window.bccInitLabModalDrag) window.bccInitLabModalDrag();
     const closeBtn = overlay.querySelector('.cli-modal-close');
     const close = () => { overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true'); };
     const open = () => { overlay.classList.add('is-open'); overlay.setAttribute('aria-hidden', 'false'); };
@@ -1353,9 +1433,7 @@
   });
 })();
 </script>
-
-  <script src="/js/cli-lab-container.js"></script>
-  <script src="/js/lab-modal-drag.js"></script>
+<script src="/js/lab-modal-drag.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-home-nav.js"></script>
 </body>
 </html>

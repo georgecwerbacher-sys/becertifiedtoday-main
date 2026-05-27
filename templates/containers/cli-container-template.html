@@ -13,6 +13,26 @@
   - end -> exec
   - configure terminal from exec override -> config
 
+  Shared IOS explore navigation (all ENCOR/CCNA CLI modals):
+  - Load in <head> before the inline lab script:
+      <script src="/js/cli-lab-container.js"></script>
+      <script src="/js/cli-ios-mode.js"></script>
+  - Per device: const r10ExploreNav = cliLabContainer.createExploreNav("R10");
+  - Prompt display: promptEl.textContent = r10ExploreNav.promptWith(labPromptFn());
+  - Before rejecting an unsupported command in every submit handler, call explore first:
+      if (r10ExploreNav.trySubmit(cmdR10.value, {
+        getLabPrompt: () => r10ExploreNav.promptWith(promptForMode("R10", modeR10)),
+        scrollEl: scrollR10,
+        appendLine: appendLine,
+        cmdInput: cmdR10,
+        normalize: normalize,
+        onExploreChange: setPrompts,
+      })) return;
+  - reset(): r10ExploreNav.reset() for each device explore helper.
+  - Handles conf t, interface e0/x, interface loopback N, exit, end without lab grading.
+  - Optional matchesLabStep: defer explore when the current lab step accepts the command.
+  - Optional alreadyEchoed: true when submit() echoed the line before calling trySubmit.
+
   Labs with a completion gate (e.g. PC addressing) also call tryCompleteBaselineLab() when steps finish — see
   templates/labs/cli-lab-baseline.html (sync block). The fragment below omits that if you paste into a minimal page.
 
@@ -24,16 +44,19 @@
   is inside interactive controls (button, input, textarea, select, label, a[href]); otherwise z-index can reorder mid-tap
   and drop clicks (Run, Enter). Example: public/CCNA-Study/CCNA_labs/cli-lab-trunk_lacp.html wireFloatingModal.
 
+  Unsupported IOS commands (defined in /js/cli-lab-container.js — do not hardcode strings):
+  - Generic: appendSw("line-bad", cliLabContainer.INVALID_INPUT_MSG);
+  - With digit hint: appendSw("line-bad", invalidInputMsgForNormalizedCmd(u));
+  - Wrong value, right shape: appendSw("line-sys", cliLabContainer.CLI_VERIFY_INSTRUCTIONS_MSG);
   Generic invalid IOS commands that include digits (wrong VLAN, interface, etc.): use invalidInputMsgForNormalizedCmd(u)
-  instead of a bare "% Invalid input" so learners see the Tasks/Verification hint (aligned with cli-lab-baseline / named-acl lab).
+  instead of a bare cliLabContainer.INVALID_INPUT_MSG so learners see the Tasks/Verification hint (aligned with cli-lab-baseline / named-acl lab).
 
   Wrong number / wrong token (tester uses plausible syntax but not the lab answer):
   - LAB_STEPS still uses exact tests (only the correct value advances).
   - Before if (LAB_STEPS[stepIndex].test(line)), add branches: for the current stepIndex, if normalize(line)
     matches the *shape* of the command (e.g. /^router ospf \d+$/, /^router-id \S+$/, /^ip ospf (\d+) area 0$/)
     but !== the required canonical string, append appendSw("line-sys", LAB_VERIFY_INSTRUCTIONS_MSG); return;
-  - Use one shared message, e.g.:
-    "% Invalid input. Verify the lab instructions (Tasks and Helper) for the required values."
+  - Use one shared message: cliLabContainer.CLI_VERIFY_INSTRUCTIONS_MSG
   - Full worked example: public/CCNA-Study/CCNA_labs/cli-lab-ospf_config_sim_v3.html (submitSw2, OSPF_LAB_VERIFY_INSTRUCTIONS_MSG).
 -->
 <div id="swCliOverlay" class="cli-modal-overlay" aria-hidden="true">
@@ -103,7 +126,12 @@
   </div>
 </div>
 
+<!-- Load before inline lab script: unsupported-command text + expandInterfaceEcho + bindLocalHistory -->
+<script src="/js/cli-lab-container.js"></script>
+
 <script>
+  // expandInterfaceEcho, invalidInputMsgForNormalizedCmd, cliLabContainer.* — from cli-lab-container.js above.
+
   function isModeNavigationCommand(normalizedCmd) {
     return (
       normalizedCmd === "configure terminal" ||
@@ -120,13 +148,6 @@
       return "interface Ethernet" + m[2] + "/" + m[3];
     }
     return s;
-  }
-
-  var INVALID_INPUT_MSG = "% Invalid input";
-  var INVALID_INPUT_NUMERIC_HINT_MSG =
-    "% Invalid input — check the lab Tasks and Verification sections for the exact values.";
-  function invalidInputMsgForNormalizedCmd(u) {
-    return /\d/.test(String(u || "")) ? INVALID_INPUT_NUMERIC_HINT_MSG : INVALID_INPUT_MSG;
   }
 
   // Drop-in block for submitSw() in lab pages.
@@ -210,11 +231,8 @@
     }
 
     // Optional — wrong plausible value: prompt tester to re-read Tasks/Helper (see file header + OSPF lab).
-    // var LAB_VERIFY_INSTRUCTIONS_MSG =
-    //   "% Invalid input. Verify the lab instructions (Tasks and Helper) for the required values.";
-    // var u = normalized;
     // if (stepIndex === 1 && /^router ospf \d+$/.test(u) && u !== "router ospf " + REQUIRED_PROCESS_ID) {
-    //   appendSw("line-sys", LAB_VERIFY_INSTRUCTIONS_MSG);
+    //   appendSw("line-sys", cliLabContainer.CLI_VERIFY_INSTRUCTIONS_MSG);
     //   return;
     // }
     // Add similar blocks per step (router-id token, ip ospf pid, priority, VLAN id, etc.).
@@ -232,6 +250,19 @@
       appendSw("line-bad", invalidInputMsgForNormalizedCmd(u));
     }
   }
+
+  /*
+   * IOS explore navigation — drop into every device submit() before lab grading:
+   *
+   *   const r10ExploreNav = cliLabContainer.createExploreNav("R10");
+   *   // reset(): r10ExploreNav.reset();
+   *   // setPrompts: promptR10.textContent = r10ExploreNav.promptWith(labPrompt);
+   *   if (r10ExploreNav.trySubmit(cmdR10.value, {
+   *     getLabPrompt: () => r10ExploreNav.promptWith(promptForMode("R10", modeR10)),
+   *     scrollEl: scrollR10, appendLine: appendLine, cmdInput: cmdR10,
+   *     normalize: normalize, onExploreChange: setPrompts,
+   *   })) return;
+   */
 
   /*
    * submitSw2 — mirror submitSw() for the second device:

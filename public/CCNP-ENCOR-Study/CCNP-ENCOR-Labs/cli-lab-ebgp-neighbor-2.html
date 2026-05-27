@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
   <link rel="stylesheet" href="/css/cli-lab-container.css" />
+  <script src="/js/cli-lab-container.js"></script>
+  <script src="/js/cli-ios-mode.js"></script>
   <title>eBGP Neighbor Sim 2</title>
   <style>
     :root {
@@ -1054,6 +1056,9 @@ R1# copy running-config startup-config</pre>
     let r1Mode = "exec";
     let r2Mode = "exec";
     let r3Mode = "exec";
+    const r1ExploreNav = cliLabContainer.createExploreNav("R1");
+    const r2ExploreNav = cliLabContainer.createExploreNav("R2");
+    const r3ExploreNav = cliLabContainer.createExploreNav("R3");
 
     const histories = { R1: [], R2: [], R3: [] };
     const historyIndex = { R1: -1, R2: -1, R3: -1 };
@@ -1066,8 +1071,41 @@ R1# copy running-config startup-config</pre>
     }
 
     function updateReadonlyPrompts() {
-      promptR2.textContent = promptFromMode("R2", r2Mode);
-      promptR3.textContent = promptFromMode("R3", r3Mode);
+      promptR2.textContent = r2ExploreNav.promptWith(promptFromMode("R2", r2Mode));
+      promptR3.textContent = r3ExploreNav.promptWith(promptFromMode("R3", r3Mode));
+    }
+
+    function tryExploreR1(line) {
+      return r1ExploreNav.trySubmit(line, {
+        getLabPrompt: () => r1ExploreNav.promptWith(promptFromMode("R1", r1Mode)),
+        scrollEl: scrollback,
+        appendLine,
+        cmdInput: cmdline,
+        normalize,
+        onExploreChange: applyPhaseUI,
+      });
+    }
+
+    function tryExploreR2(line) {
+      return r2ExploreNav.trySubmit(line, {
+        getLabPrompt: () => r2ExploreNav.promptWith(promptFromMode("R2", r2Mode)),
+        scrollEl: scrollbackR2,
+        appendLine,
+        cmdInput: cmdlineR2,
+        normalize,
+        onExploreChange: updateReadonlyPrompts,
+      });
+    }
+
+    function tryExploreR3(line) {
+      return r3ExploreNav.trySubmit(line, {
+        getLabPrompt: () => r3ExploreNav.promptWith(promptFromMode("R3", r3Mode)),
+        scrollEl: scrollbackR3,
+        appendLine,
+        cmdInput: cmdlineR3,
+        normalize,
+        onExploreChange: updateReadonlyPrompts,
+      });
     }
 
     function applyR1ModeFromAcceptedStep(raw) {
@@ -1119,7 +1157,7 @@ R1# copy running-config startup-config</pre>
 
       if (u === "configure terminal" || u === "conf t") {
         if (mode !== "exec") {
-          appendLine(scrollEl, "line-bad", "% Invalid input");
+          appendLine(scrollEl, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           return true;
         }
         setMode("config");
@@ -1128,7 +1166,7 @@ R1# copy running-config startup-config</pre>
 
       if (u.startsWith("router bgp ")) {
         if (mode !== "config") {
-          appendLine(scrollEl, "line-bad", "% Invalid input");
+          appendLine(scrollEl, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           return true;
         }
         setMode("config-router");
@@ -1137,7 +1175,7 @@ R1# copy running-config startup-config</pre>
 
       if (u === "address-family ipv4" || u === "address-family ipv4 unicast") {
         if (mode !== "config-router") {
-          appendLine(scrollEl, "line-bad", "% Invalid input");
+          appendLine(scrollEl, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           return true;
         }
         setMode("config-router-af");
@@ -1146,7 +1184,7 @@ R1# copy running-config startup-config</pre>
 
       if (u === "end") {
         if (!isConfig) {
-          appendLine(scrollEl, "line-bad", "% Invalid input");
+          appendLine(scrollEl, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           return true;
         }
         setMode("exec");
@@ -1249,7 +1287,7 @@ R1# copy running-config startup-config</pre>
     }
 
     function setPrompt() {
-      promptEl.textContent = promptFromMode("R1", r1Mode);
+      promptEl.textContent = r1ExploreNav.promptWith(promptFromMode("R1", r1Mode));
     }
 
     function reset() {
@@ -1259,6 +1297,9 @@ R1# copy running-config startup-config</pre>
       r1Mode = "exec";
       r2Mode = "exec";
       r3Mode = "exec";
+      r1ExploreNav.reset();
+      r2ExploreNav.reset();
+      r3ExploreNav.reset();
       scrollback.innerHTML = "";
       scrollbackR2.innerHTML = "";
       scrollbackR3.innerHTML = "";
@@ -1284,30 +1325,45 @@ R1# copy running-config startup-config</pre>
     }
 
     function submitR2() {
-      const prompt = promptR2.textContent;
       const line = cmdlineR2.value;
-      appendLine(scrollbackR2, "line-user", `${prompt} ${line}`);
-      cmdlineR2.value = "";
-      if (!line.trim()) return;
-      pushHistory("R2", line);
+      if (!line.trim()) {
+        cmdlineR2.value = "";
+        return;
+      }
 
-      const execShow = matchShowRunExec(line) && r2Mode === "exec";
+      const execShow = matchShowRunExec(line) && r2Mode === "exec" && !r2ExploreNav.getMode();
       const doShowFromExec =
         matchDoShowRun(line) && r2Mode !== "exec";
       if (execShow || doShowFromExec) {
+        const prompt = promptR2.textContent;
+        appendLine(scrollbackR2, "line-user", `${prompt} ${line}`);
+        cmdlineR2.value = "";
         appendLine(scrollbackR2, "line-sys", "Building configuration...");
         appendBlock(scrollbackR2, "line-showrun", R2_SHOW_RUN_TEXT);
         return;
       }
 
       if (matchShowBgpSummary(line)) {
+        const prompt = promptR2.textContent;
+        appendLine(scrollbackR2, "line-user", `${prompt} ${line}`);
+        cmdlineR2.value = "";
         if (phase === "DONE") {
           appendBlock(scrollbackR2, "line-out", R2_R3_BGP_END_TEXT);
         } else {
-          appendLine(scrollbackR2, "line-bad", "% Invalid input");
+          appendLine(scrollbackR2, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
         return;
       }
+
+      if (tryExploreR2(line)) {
+        pushHistory("R2", line);
+        return;
+      }
+
+      const prompt = promptR2.textContent;
+      appendLine(scrollbackR2, "line-user", `${prompt} ${line}`);
+      cmdlineR2.value = "";
+      pushHistory("R2", line);
 
       if (
         tryHandleModeNavigation(
@@ -1325,34 +1381,49 @@ R1# copy running-config startup-config</pre>
       appendLine(
         scrollbackR2,
         "line-bad",
-        "% Invalid input"
+        cliLabContainer.INVALID_INPUT_MSG
       );
     }
 
     function submitR3() {
-      const prompt = promptR3.textContent;
       const line = cmdlineR3.value;
-      appendLine(scrollbackR3, "line-user", `${prompt} ${line}`);
-      cmdlineR3.value = "";
-      if (!line.trim()) return;
-      pushHistory("R3", line);
+      if (!line.trim()) {
+        cmdlineR3.value = "";
+        return;
+      }
 
-      const execShow = matchShowRunExec(line) && r3Mode === "exec";
+      const execShow = matchShowRunExec(line) && r3Mode === "exec" && !r3ExploreNav.getMode();
       const doShowFromExec = matchDoShowRun(line) && r3Mode !== "exec";
       if (execShow || doShowFromExec) {
+        const prompt = promptR3.textContent;
+        appendLine(scrollbackR3, "line-user", `${prompt} ${line}`);
+        cmdlineR3.value = "";
         appendLine(scrollbackR3, "line-sys", "Building configuration...");
         appendBlock(scrollbackR3, "line-showrun", R3_SHOW_RUN_TEXT);
         return;
       }
 
       if (matchShowBgpSummary(line)) {
+        const prompt = promptR3.textContent;
+        appendLine(scrollbackR3, "line-user", `${prompt} ${line}`);
+        cmdlineR3.value = "";
         if (phase === "DONE") {
           appendBlock(scrollbackR3, "line-out", R2_R3_BGP_END_TEXT);
         } else {
-          appendLine(scrollbackR3, "line-bad", "% Invalid input");
+          appendLine(scrollbackR3, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
         return;
       }
+
+      if (tryExploreR3(line)) {
+        pushHistory("R3", line);
+        return;
+      }
+
+      const prompt = promptR3.textContent;
+      appendLine(scrollbackR3, "line-user", `${prompt} ${line}`);
+      cmdlineR3.value = "";
+      pushHistory("R3", line);
 
       if (
         tryHandleModeNavigation(
@@ -1370,7 +1441,7 @@ R1# copy running-config startup-config</pre>
       appendLine(
         scrollbackR3,
         "line-bad",
-        "% Invalid input"
+        cliLabContainer.INVALID_INPUT_MSG
       );
     }
 
@@ -1379,27 +1450,40 @@ R1# copy running-config startup-config</pre>
       const steps = currentSteps();
       if (phase !== "BRIEF" && phase !== "SAVE" && stepIndex >= steps.length) return;
 
-      const prompt = promptEl.textContent;
       const line = cmdline.value;
-      appendLine(scrollback, "line-user", `${prompt} ${line}`);
-      cmdline.value = "";
-      if (!line.trim()) return;
-      pushHistory("R1", line);
+      if (!line.trim()) {
+        cmdline.value = "";
+        return;
+      }
 
+      const promptBefore = promptEl.textContent;
       if (phase !== "DONE") {
-        const execShow = matchShowRunExec(line) && prompt === "R1#";
+        const execShow = matchShowRunExec(line) && promptBefore === "R1#";
         const doShow =
           matchDoShowRun(line) &&
-          (prompt === "R1(config)#" ||
-            prompt === "R1(config-router)#" ||
-            prompt === "R1(config-router-af)#");
+          (promptBefore === "R1(config)#" ||
+            promptBefore === "R1(config-router)#" ||
+            promptBefore === "R1(config-router-af)#");
         if (execShow || doShow) {
+          appendLine(scrollback, "line-user", `${promptBefore} ${line}`);
+          cmdline.value = "";
+          pushHistory("R1", line);
           appendLine(scrollback, "line-sys", "Building configuration...");
           appendBlock(scrollback, "line-showrun", R1_SHOW_RUN_TEXT);
           applyPhaseUI();
           return;
         }
       }
+
+      if (tryExploreR1(line)) {
+        pushHistory("R1", line);
+        return;
+      }
+
+      const prompt = promptEl.textContent;
+      appendLine(scrollback, "line-user", `${prompt} ${line}`);
+      cmdline.value = "";
+      pushHistory("R1", line);
 
       if (phase === "BRIEF") {
         if (testShowBrief(line)) {
@@ -1431,7 +1515,7 @@ R1# copy running-config startup-config</pre>
             }
             return;
           }
-          appendLine(scrollback, "line-bad", "% Invalid input");
+          appendLine(scrollback, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
         return;
       }
@@ -1464,7 +1548,7 @@ R1# copy running-config startup-config</pre>
               scrollback
             )
           ) return;
-          appendLine(scrollback, "line-bad", "% Invalid input");
+          appendLine(scrollback, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
         return;
       }
@@ -1492,7 +1576,7 @@ R1# copy running-config startup-config</pre>
         appendLine(
           scrollback,
           "line-bad",
-          "% Invalid input"
+          cliLabContainer.INVALID_INPUT_MSG
         );
         return;
       }
@@ -1610,6 +1694,7 @@ R1# copy running-config startup-config</pre>
       </div>`;
     overlay.querySelector('.cli-modal-body').appendChild(bodyNode);
     document.body.appendChild(overlay);
+    if (window.bccInitLabModalDrag) window.bccInitLabModalDrag();
     const closeBtn = overlay.querySelector('.cli-modal-close');
     const close = () => { overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true'); };
     const open = () => { overlay.classList.add('is-open'); overlay.setAttribute('aria-hidden', 'false'); };
@@ -1750,9 +1835,7 @@ R1# copy running-config startup-config</pre>
   });
 })();
 </script>
-
-  <script src="/js/cli-lab-container.js"></script>
-  <script src="/js/lab-modal-drag.js"></script>
+<script src="/js/lab-modal-drag.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-home-nav.js"></script>
 </body>
 </html>

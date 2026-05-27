@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
   <link rel="stylesheet" href="/css/cli-lab-container.css" />
+  <script src="/js/cli-lab-container.js"></script>
   <title>Access-list &amp; CoPP Sim (v1)</title>
   <style>
     :root {
@@ -1035,32 +1036,61 @@ control-plane
     let stepR10Cfg = 0;
     let stepR20 = 0;
     let coppSteps = refreshCoppSteps();
-    /** Exec-phase UX: toggle R10#/R10(config)# without advancing the lab (router-like). */
-    let r10ScratchConfig = false;
-    /** R20 save phase only: toggle R20#/R20(config)# for exploration. */
-    let r20ScratchConfig = false;
+    const r10ExploreNav = cliLabContainer.createExploreNav("R10");
+    const r20ExploreNav = cliLabContainer.createExploreNav("R20");
     let r10CfgExitLevel = 0;
     let r20CoppExitLevel = 0;
 
-    function getR10PromptForDisplay() {
-      if (phase === "R10_CFG")
-        return cliIosMode.promptForStep("R10", R10_CFG, stepR10Cfg, r10CfgExitLevel);
-      if (
-        phase === "R10_NEI1" ||
-        phase === "R10_ACL" ||
-        phase === "R10_NEI2" ||
-        phase === "R10_SAVE"
-      ) {
-        return r10ScratchConfig ? "R10(config)#" : "R10#";
+    function r10PromptText() {
+      let lab = "R10#";
+      if (phase === "R10_CFG") {
+        lab = cliIosMode.promptForStep("R10", R10_CFG, stepR10Cfg, r10CfgExitLevel);
       }
-      return "R10#";
+      return r10ExploreNav.promptWith(lab);
+    }
+
+    function r20PromptText() {
+      let lab = "R20#";
+      if (phase === "R20_COPP") {
+        lab = cliIosMode.promptForStep("R20", coppSteps, stepR20, r20CoppExitLevel);
+      }
+      return r20ExploreNav.promptWith(lab);
+    }
+
+    function tryExploreR10(line) {
+      return r10ExploreNav.trySubmit(line, {
+        getLabPrompt: r10PromptText,
+        scrollEl: scrollR10,
+        appendLine,
+        cmdInput: cmdR10,
+        normalize,
+        onExploreChange: () => {
+          r10CfgExitLevel = 0;
+          updatePrompts();
+        },
+      });
+    }
+
+    function tryExploreR20(line) {
+      return r20ExploreNav.trySubmit(line, {
+        getLabPrompt: r20PromptText,
+        scrollEl: scrollR20,
+        appendLine,
+        cmdInput: cmdR20,
+        normalize,
+        onExploreChange: () => {
+          r20CoppExitLevel = 0;
+          updatePrompts();
+        },
+      });
+    }
+
+    function getR10PromptForDisplay() {
+      return r10PromptText();
     }
 
     function getR20PromptForDisplay() {
-      if (phase === "R20_COPP")
-        return cliIosMode.promptForStep("R20", coppSteps, stepR20, r20CoppExitLevel);
-      if (phase === "R20_SAVE") return r20ScratchConfig ? "R20(config)#" : "R20#";
-      return "R20#";
+      return r20PromptText();
     }
 
     function appendLine(scrollEl, className, text) {
@@ -1169,8 +1199,8 @@ control-plane
       stepR20 = 0;
       selectedCoppVariant = "icmp";
       coppSteps = refreshCoppSteps();
-      r10ScratchConfig = false;
-      r20ScratchConfig = false;
+      r10ExploreNav.reset();
+      r20ExploreNav.reset();
       r10CfgExitLevel = 0;
       r20CoppExitLevel = 0;
       scrollR10.innerHTML = "";
@@ -1184,35 +1214,6 @@ control-plane
     }
 
     function submitR10() {
-      const dispScratch = getR10PromptForDisplay();
-      if (
-        phase === "R10_NEI1" ||
-        phase === "R10_ACL" ||
-        phase === "R10_NEI2" ||
-        phase === "R10_SAVE"
-      ) {
-        const linePeek = cmdR10.value;
-        if (matchConfT(linePeek)) {
-          appendLine(scrollR10, "line-user", `${dispScratch} ${linePeek}`);
-          cmdR10.value = "";
-          r10ScratchConfig = true;
-          updatePrompts();
-          focusActiveCli();
-          return;
-        }
-        if (
-          r10ScratchConfig &&
-          (normalize(linePeek) === "exit" || normalize(linePeek) === "end")
-        ) {
-          appendLine(scrollR10, "line-user", `${dispScratch} ${linePeek}`);
-          cmdR10.value = "";
-          r10ScratchConfig = false;
-          updatePrompts();
-          focusActiveCli();
-          return;
-        }
-      }
-
       if (
         phase === "R10_NEI1" ||
         phase === "R10_ACL" ||
@@ -1222,7 +1223,7 @@ control-plane
       ) {
         const p = getR10PromptForDisplay();
         const peek = cmdR10.value;
-        const peekForShow = r10ScratchConfig ? stripLeadingDo(peek) : peek;
+        const peekForShow = r10ExploreNav.getMode() ? stripLeadingDo(peek) : peek;
         if (matchShowRun(peekForShow)) {
           appendLine(scrollR10, "line-user", `${p} ${peek}`);
           cmdR10.value = "";
@@ -1232,87 +1233,91 @@ control-plane
       }
 
       if (phase === "R10_SAVE") {
-        const disp = getR10PromptForDisplay();
         const line = cmdR10.value;
+        if (tryExploreR10(line)) return;
+        const disp = getR10PromptForDisplay();
         appendLine(scrollR10, "line-user", `${disp} ${line}`);
         cmdR10.value = "";
         if (!line.trim()) return;
         if (matchCopy(line)) {
           appendLine(scrollR10, "line-sys", "[OK] R10 saved (simulated). Save R20.");
-          r10ScratchConfig = false;
+          r10ExploreNav.reset();
           phase = "R20_SAVE";
           appendLine(scrollR20, "line-sys", "copy running-config startup-config");
           applyPhaseUI();
         } else {
-          appendLine(scrollR10, "line-bad", "% Invalid input");
+          appendLine(scrollR10, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
         return;
       }
 
       if (phase === "R10_NEI1") {
         const lineRaw = cmdR10.value;
+        if (tryExploreR10(lineRaw)) return;
         const disp = getR10PromptForDisplay();
         appendLine(scrollR10, "line-user", `${disp} ${lineRaw}`);
         cmdR10.value = "";
         if (!lineRaw.trim()) return;
-        const line = r10ScratchConfig ? stripLeadingDo(lineRaw) : lineRaw;
+        const line = r10ExploreNav.getMode() ? stripLeadingDo(lineRaw) : lineRaw;
         if (!String(line || "").trim()) {
-          appendLine(scrollR10, "line-bad", "% Invalid input");
+          appendLine(scrollR10, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           return;
         }
         if (testShowEigrpNei(line)) {
           setVariantLocked(true);
           appendBlock(scrollR10, "line-sys", OUT_NEI_EMPTY);
           appendLine(scrollR10, "line-sys", "[OK] Inspect ACL 150.");
-          r10ScratchConfig = false;
+          r10ExploreNav.reset();
           phase = "R10_ACL";
           applyPhaseUI();
         } else {
-          appendLine(scrollR10, "line-bad", "% Invalid input");
+          appendLine(scrollR10, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
         return;
       }
 
       if (phase === "R10_ACL") {
         const lineRaw = cmdR10.value;
+        if (tryExploreR10(lineRaw)) return;
         const disp = getR10PromptForDisplay();
         appendLine(scrollR10, "line-user", `${disp} ${lineRaw}`);
         cmdR10.value = "";
         if (!lineRaw.trim()) return;
-        const line = r10ScratchConfig ? stripLeadingDo(lineRaw) : lineRaw;
+        const line = r10ExploreNav.getMode() ? stripLeadingDo(lineRaw) : lineRaw;
         if (!String(line || "").trim()) {
-          appendLine(scrollR10, "line-bad", "% Invalid input");
+          appendLine(scrollR10, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           return;
         }
         if (testShowAcl150(line)) {
           appendBlock(scrollR10, "line-sys", OUT_ACL150);
           appendLine(scrollR10, "line-sys", "[OK] Add sequenced EIGRP permit.");
-          r10ScratchConfig = false;
+          r10ExploreNav.reset();
           phase = "R10_CFG";
           stepR10Cfg = 0;
           r10CfgExitLevel = 0;
           applyPhaseUI();
         } else {
-          appendLine(scrollR10, "line-bad", "% Invalid input");
+          appendLine(scrollR10, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
         return;
       }
 
       if (phase === "R10_NEI2") {
         const lineRaw = cmdR10.value;
+        if (tryExploreR10(lineRaw)) return;
         const disp = getR10PromptForDisplay();
         appendLine(scrollR10, "line-user", `${disp} ${lineRaw}`);
         cmdR10.value = "";
         if (!lineRaw.trim()) return;
-        const line = r10ScratchConfig ? stripLeadingDo(lineRaw) : lineRaw;
+        const line = r10ExploreNav.getMode() ? stripLeadingDo(lineRaw) : lineRaw;
         if (!String(line || "").trim()) {
-          appendLine(scrollR10, "line-bad", "% Invalid input");
+          appendLine(scrollR10, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           return;
         }
         if (testShowEigrpNei(line)) {
           appendBlock(scrollR10, "line-sys", OUT_NEI_OK);
           appendLine(scrollR10, "line-sys", "[OK] Configure CoPP on R20.");
-          r10ScratchConfig = false;
+          r10ExploreNav.reset();
           phase = "R20_COPP";
           selectedCoppVariant = "icmp";
           coppSteps = refreshCoppSteps();
@@ -1321,7 +1326,7 @@ control-plane
           appendLine(scrollR20, "line-sys", "Build ACL 100, QoS class/policy, control-plane.");
           applyPhaseUI();
         } else {
-          appendLine(scrollR10, "line-bad", "% Invalid input");
+          appendLine(scrollR10, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
         return;
       }
@@ -1329,6 +1334,7 @@ control-plane
       if (phase !== "R10_CFG") return;
       if (stepR10Cfg >= R10_CFG.length) return;
       const line = cmdR10.value;
+      if (tryExploreR10(line)) return;
       const u = normalize(line);
       const p = cliIosMode.promptForStep("R10", R10_CFG, stepR10Cfg, r10CfgExitLevel);
       appendLine(scrollR10, "line-user", `${p} ${line}`);
@@ -1343,19 +1349,19 @@ control-plane
           updatePrompts();
           return;
         } else {
-          appendLine(scrollR10, "line-bad", "% Invalid input");
+          appendLine(scrollR10, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           return;
         }
       }
       if (!R10_CFG[stepR10Cfg].test(line)) {
-        appendLine(scrollR10, "line-bad", "% Invalid input");
+        appendLine(scrollR10, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         return;
       }
       r10CfgExitLevel = 0;
       stepR10Cfg += 1;
       if (stepR10Cfg >= R10_CFG.length) {
         appendLine(scrollR10, "line-sys", "[OK] ACL updated (simulated). Verify neighbors.");
-        r10ScratchConfig = false;
+        r10ExploreNav.reset();
         phase = "R10_NEI2";
         applyPhaseUI();
       } else {
@@ -1365,27 +1371,8 @@ control-plane
 
     function submitR20() {
       if (phase === "R20_SAVE") {
-        const dispScratch = getR20PromptForDisplay();
         const linePeek = cmdR20.value;
-        if (matchConfT(linePeek)) {
-          appendLine(scrollR20, "line-user", `${dispScratch} ${linePeek}`);
-          cmdR20.value = "";
-          r20ScratchConfig = true;
-          updatePrompts();
-          focusActiveCli();
-          return;
-        }
-        if (
-          r20ScratchConfig &&
-          (normalize(linePeek) === "exit" || normalize(linePeek) === "end")
-        ) {
-          appendLine(scrollR20, "line-user", `${dispScratch} ${linePeek}`);
-          cmdR20.value = "";
-          r20ScratchConfig = false;
-          updatePrompts();
-          focusActiveCli();
-          return;
-        }
+        if (tryExploreR20(linePeek)) return;
 
         const disp = getR20PromptForDisplay();
         const line = cmdR20.value;
@@ -1394,7 +1381,7 @@ control-plane
         if (!line.trim()) return;
         if (matchCopy(line)) {
           appendLine(scrollR20, "line-sys", "[OK] R20 saved (simulated).");
-          r20ScratchConfig = false;
+          r20ExploreNav.reset();
           phase = "DONE";
           passBanner.classList.add("visible");
           disableAllInputs();
@@ -1402,7 +1389,7 @@ control-plane
           setWaiting(panelR20, false);
           updateHints();
         } else {
-          appendLine(scrollR20, "line-bad", "% Invalid input");
+          appendLine(scrollR20, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
         return;
       }
@@ -1410,6 +1397,7 @@ control-plane
       if (phase !== "R20_COPP") return;
       if (stepR20 >= coppSteps.length) return;
       const line = cmdR20.value;
+      if (tryExploreR20(line)) return;
       const u = normalize(line);
       const p = cliIosMode.promptForStep("R20", coppSteps, stepR20, r20CoppExitLevel);
       appendLine(scrollR20, "line-user", `${p} ${line}`);
@@ -1432,19 +1420,19 @@ control-plane
           updatePrompts();
           return;
         } else {
-          appendLine(scrollR20, "line-bad", "% Invalid input");
+          appendLine(scrollR20, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           return;
         }
       }
       if (!coppSteps[stepR20].test(line)) {
-        appendLine(scrollR20, "line-bad", "% Invalid input");
+        appendLine(scrollR20, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         return;
       }
       r20CoppExitLevel = 0;
       stepR20 += 1;
       if (stepR20 >= coppSteps.length) {
         appendLine(scrollR20, "line-sys", "[OK] CoPP applied (simulated). Save R10.");
-        r20ScratchConfig = false;
+        r20ExploreNav.reset();
         phase = "R10_SAVE";
         appendLine(scrollR10, "line-sys", "copy running-config startup-config");
         applyPhaseUI();
@@ -1568,6 +1556,7 @@ control-plane
       </div>`;
     overlay.querySelector('.cli-modal-body').appendChild(bodyNode);
     document.body.appendChild(overlay);
+    if (window.bccInitLabModalDrag) window.bccInitLabModalDrag();
     const closeBtn = overlay.querySelector('.cli-modal-close');
     const close = () => { overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true'); };
     const open = () => { overlay.classList.add('is-open'); overlay.setAttribute('aria-hidden', 'false'); };
@@ -1760,9 +1749,7 @@ control-plane
   });
 })();
 </script>
-
-  <script src="/js/cli-lab-container.js"></script>
-  <script src="/js/lab-modal-drag.js"></script>
+<script src="/js/lab-modal-drag.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-home-nav.js"></script>
 </body>
 </html>

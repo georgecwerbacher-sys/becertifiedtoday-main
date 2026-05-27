@@ -5,7 +5,8 @@
   <meta name="robots" content="index, follow" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rapid PVST+ and LACP Sim</title>
+  <script src="/js/cli-lab-container.js"></script>
+<title>Rapid PVST+ and LACP Sim</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -894,7 +895,7 @@ SW20# copy running-config startup-config</pre>
         <p class="pc3-modal-hint">
           Simulated ICMP toward PC1: <code>!!!!</code> after Rapid PVST+ and the <strong>E0/0</strong> trunk to SW30 are
           entered in order through <code>switchport trunk allowed vlan 500</code> (Po10 / <code>copy run</code> are for
-          the full lab, not required for this ping). Earlier <code>% Invalid input</code> lines are ignored.
+          the full lab, not required for this ping). Earlier <code>% command not supported in this lab simulation</code> lines are ignored.
         </p>
       </footer>
     </div>
@@ -1338,7 +1339,7 @@ SW20# copy running-config startup-config</pre>
         return;
       }
 
-      appendLineSw10("line-bad", "% Invalid input");
+      appendLineSw10("line-bad", cliLabContainer.INVALID_INPUT_MSG);
     }
 
     function closeSw10Modal() {
@@ -1417,7 +1418,7 @@ SW20# copy running-config startup-config</pre>
         return;
       }
 
-      appendLinePc3("line-bad", "% Invalid input");
+      appendLinePc3("line-bad", cliLabContainer.INVALID_INPUT_MSG);
     }
 
     function openCliModal() {
@@ -1600,7 +1601,7 @@ SW20# copy running-config startup-config</pre>
         }
         appendLine(
           "line-bad",
-          "% Invalid input"
+          cliLabContainer.INVALID_INPUT_MSG
         );
         focusActiveCli();
         return;
@@ -1718,7 +1719,7 @@ SW20# copy running-config startup-config</pre>
           setPrompt();
         }
       } else {
-        appendLine("line-bad", "% Invalid input");
+        appendLine("line-bad", cliLabContainer.INVALID_INPUT_MSG);
       }
       focusActiveCli();
     }

@@ -7,7 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
   <link rel="stylesheet" href="/css/cli-lab-container.css" />
-  <title>OSPF Summarization Sim (R30)</title>
+  <script src="/js/cli-lab-container.js"></script>
+<title>OSPF Summarization Sim (R30)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -726,7 +727,7 @@
           stepIndex = 0;
           applyPhaseUI();
         } else {
-          appendLine("line-bad", "% Invalid input");
+          appendLine("line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
         return;
       }
@@ -739,14 +740,14 @@
           cmdline.disabled = true;
           applyPhaseUI();
         } else {
-          appendLine("line-bad", "% Invalid input");
+          appendLine("line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
         return;
       }
 
       if (!steps[stepIndex].test(line)) {
         if (phase === "OSPF") {
-          appendLine("line-bad", "% Invalid input");
+          appendLine("line-bad", cliLabContainer.INVALID_INPUT_MSG);
         } else if (phase === "RANGE") {
           const v = document.querySelector('input[name="sumv"]:checked');
           const b = v && v.value === "17" ? "17" : "18";
@@ -834,6 +835,7 @@
       </div>';
     overlay.querySelector('.cli-modal-body').appendChild(bodyNode);
     document.body.appendChild(overlay);
+    if (window.bccInitLabModalDrag) window.bccInitLabModalDrag();
     const closeBtn = overlay.querySelector('.cli-modal-close');
     const close = () => { overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true'); };
     const open = () => { overlay.classList.add('is-open'); overlay.setAttribute('aria-hidden', 'false'); };

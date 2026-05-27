@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
   <link rel="stylesheet" href="/css/cli-lab-container.css" />
+  <script src="/js/cli-lab-container.js"></script>
+  <script src="/js/cli-ios-mode.js"></script>
   <title>VRF Configuration Sim 2</title>
   <style>
     :root {
@@ -970,6 +972,40 @@ R22# copy running-config startup-config</pre>
     const cmdSw22 = document.getElementById("cmdSw22");
 
     let stepR22 = 0;
+    const r22ExploreNav = cliLabContainer.createExploreNav("R22");
+    const sw22ExploreNav = cliLabContainer.createExploreNav("SW22");
+
+    function r22LabPrompt() {
+      return promptFor(R22_STEPS, stepR22, "R22");
+    }
+
+    function tryExploreR22(line, extra) {
+      return r22ExploreNav.trySubmit(line, {
+        getLabPrompt: r22LabPrompt,
+        scrollEl: scrollR22,
+        appendLine,
+        cmdInput: cmdR22,
+        normalize,
+        onExploreChange: setPromptAndHint,
+        matchesLabStep: (l) =>
+          stepR22 < R22_STEPS.length && R22_STEPS[stepR22].test(l),
+        ...(extra || {}),
+      });
+    }
+
+    function tryExploreSw22(line, extra) {
+      return sw22ExploreNav.trySubmit(line, {
+        getLabPrompt: () => sw22ExploreNav.promptWith("SW22#"),
+        scrollEl: scrollSw22,
+        appendLine,
+        cmdInput: cmdSw22,
+        normalize,
+        onExploreChange: () => {
+          promptSw22.textContent = sw22ExploreNav.promptWith("SW22#");
+        },
+        ...(extra || {}),
+      });
+    }
     const historyR22 = [];
     let historyR22Idx = -1;
     const historySw22 = [];
@@ -1063,7 +1099,7 @@ R22# copy running-config startup-config</pre>
     }
 
     function setPromptAndHint() {
-      promptR22.textContent = promptFor(R22_STEPS, stepR22, "R22");
+      promptR22.textContent = r22ExploreNav.promptWith(r22LabPrompt());
       hintR22.textContent =
         stepR22 < HINTS.length ? HINTS[stepR22] : "Done.";
     }
@@ -1082,6 +1118,8 @@ R22# copy running-config startup-config</pre>
       closeR22Modal();
       closeSw22Modal();
       stepR22 = 0;
+      r22ExploreNav.reset();
+      sw22ExploreNav.reset();
       scrollR22.innerHTML = "";
       cmdR22.value = "";
       cmdR22.disabled = false;
@@ -1115,10 +1153,11 @@ R22# copy running-config startup-config</pre>
       }
 
       if (stepR22 >= R22_STEPS.length) {
+        if (tryExploreR22(line, { alreadyEchoed: true })) return;
         appendLine(
           scrollR22,
           "line-bad",
-          "% Invalid input"
+          cliLabContainer.INVALID_INPUT_MSG
         );
         return;
       }
@@ -1171,10 +1210,11 @@ R22# copy running-config startup-config</pre>
           setPromptAndHint();
           return;
         }
+        if (tryExploreR22(line, { alreadyEchoed: true })) return;
         appendLine(
           scrollR22,
           "line-bad",
-          "% Invalid input"
+          cliLabContainer.INVALID_INPUT_MSG
         );
       }
     }
@@ -1193,7 +1233,8 @@ R22# copy running-config startup-config</pre>
         appendLine(scrollSw22, "line-sys", "[OK] Configuration saved (simulated).");
         return;
       }
-      appendLine(scrollSw22, "line-bad", "% Invalid input");
+      if (tryExploreSw22(line, { alreadyEchoed: true })) return;
+      appendLine(scrollSw22, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
     }
 
     cmdR22.addEventListener("keydown", (e) => {
@@ -1293,6 +1334,7 @@ R22# copy running-config startup-config</pre>
       </div>`;
     overlay.querySelector('.cli-modal-body').appendChild(bodyNode);
     document.body.appendChild(overlay);
+    if (window.bccInitLabModalDrag) window.bccInitLabModalDrag();
     const closeBtn = overlay.querySelector('.cli-modal-close');
     const close = () => { overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true'); };
     const open = () => { overlay.classList.add('is-open'); overlay.setAttribute('aria-hidden', 'false'); };
@@ -1431,9 +1473,7 @@ R22# copy running-config startup-config</pre>
   });
 })();
 </script>
-
-  <script src="/js/cli-lab-container.js"></script>
-  <script src="/js/lab-modal-drag.js"></script>
+<script src="/js/lab-modal-drag.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-home-nav.js"></script>
 </body>
 </html>

@@ -17,7 +17,8 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>REPLACE: Lab title | Be Certified Today</title>
+  <script src="/js/cli-lab-container.js"></script>
+<title>REPLACE: Lab title | Be Certified Today</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -1073,12 +1074,7 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         "[OK] Lab complete: objectives met, PC1 IP settings match the solution, and running-config is saved to startup-config on Sw1 and R1.";
       var PASS_BANNER_BASELINE_PENDING =
         "Complete all Sw1 steps, set correct PC1 IP/mask/gateway, then from enable mode on Sw1 and R1 run copy running-configuration startup-configuration on each device.";
-      var INVALID_INPUT_MSG = "% Invalid input";
-      var INVALID_INPUT_NUMERIC_HINT_MSG =
-        "% Invalid input — check the lab Tasks and Verification sections for the exact values.";
-      function invalidInputMsgForNormalizedCmd(u) {
-        return /\d/.test(String(u || "")) ? INVALID_INPUT_NUMERIC_HINT_MSG : INVALID_INPUT_MSG;
-      }
+      // invalidInputMsgForNormalizedCmd + cliLabContainer.* — from /js/cli-lab-container.js (head).
       // REPLACE per lab: only this exact tuple unlocks successful completion.
       var PC1_SOLUTION_IP = "192.168.10.10";
       var PC1_SOLUTION_MASK = "255.255.255.0";

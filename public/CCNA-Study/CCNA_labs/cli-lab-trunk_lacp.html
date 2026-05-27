@@ -12,7 +12,8 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA Trunking &amp; LACP Practice Simulation | Be Certified Today</title>
+  <script src="/js/cli-lab-container.js"></script>
+<title>CCNA Trunking &amp; LACP Practice Simulation | Be Certified Today</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -2004,7 +2005,7 @@ Sw2(config-if)# end</pre>
         }
 
         if (stepIndexSw1 >= LAB_STEPS.length) {
-          appendSw("line-bad", "Not supported in this simulation");
+          appendSw("line-bad", cliLabContainer.INVALID_INPUT_MSG);
           return;
         }
 
@@ -2028,7 +2029,7 @@ Sw2(config-if)# end</pre>
             setSw1Prompt();
           }
         } else {
-          appendSw("line-bad", "Not supported in this simulation");
+          appendSw("line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       }
 
@@ -2139,7 +2140,7 @@ Sw2(config-if)# end</pre>
         }
 
         if (stepIndexSw2 >= LAB_STEPS.length) {
-          appendSw2("line-bad", "Not supported in this simulation");
+          appendSw2("line-bad", cliLabContainer.INVALID_INPUT_MSG);
           return;
         }
 
@@ -2163,7 +2164,7 @@ Sw2(config-if)# end</pre>
             setSw2Prompt();
           }
         } else {
-          appendSw2("line-bad", "Not supported in this simulation");
+          appendSw2("line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
       }
 

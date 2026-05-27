@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "npx --yes vercel dev",
-    "serve": "npx --yes serve public -l 3000 --no-port-switching",
+    "serve": "python3 scripts/sync-public-encor-assets.py && npx --yes serve public -l 3000 --no-port-switching",
+    "sync:encor-assets": "python3 scripts/sync-public-encor-assets.py",
     "lint:question-urls": "python3 scripts/lint-practice-question-urls.py",
     "lint:ccna-urls": "python3 scripts/lint-practice-question-urls.py"
   },

@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
   <link rel="stylesheet" href="/css/cli-lab-container.css" />
+  <script src="/js/cli-lab-container.js"></script>
+  <script src="/js/cli-ios-mode.js"></script>
   <title>OSPF Summarization Sim 2 (R20)</title>
   <style>
     :root {
@@ -773,6 +775,33 @@ end`;
 
     let phase = "BRIEF";
     let stepIndex = 0;
+    const r20ExploreNav = cliLabContainer.createExploreNav("R20");
+
+    function labPromptR20() {
+      if (phase === "SAVE") return "R20#";
+      const steps = currentSteps();
+      return promptForStep(steps, stepIndex);
+    }
+
+    function appendLineExplore(_scrollEl, className, text) {
+      appendLine(className, text);
+    }
+
+    function tryExploreR20(line) {
+      return r20ExploreNav.trySubmit(line, {
+        getLabPrompt: labPromptR20,
+        scrollEl: scrollback,
+        appendLine: appendLineExplore,
+        cmdInput: cmdline,
+        normalize,
+        onExploreChange: setPrompt,
+        matchesLabStep: (l) => {
+          if (phase !== "LAB") return false;
+          const steps = currentSteps();
+          return stepIndex < steps.length && steps[stepIndex].test(l);
+        },
+      });
+    }
 
     function appendLine(className, text) {
       const div = document.createElement("div");
@@ -799,18 +828,14 @@ end`;
     }
 
     function setPrompt() {
-      const steps = currentSteps();
-      if (phase === "SAVE") {
-        promptEl.textContent = "R20#";
-        return;
-      }
-      promptEl.textContent = promptForStep(steps, stepIndex);
+      promptEl.textContent = r20ExploreNav.promptWith(labPromptR20());
     }
 
     function reset() {
       closeModals();
       phase = "BRIEF";
       stepIndex = 0;
+      r20ExploreNav.reset();
       scrollback.innerHTML = "";
       passBanner.classList.remove("visible");
       cmdline.disabled = false;
@@ -824,11 +849,25 @@ end`;
       const steps = currentSteps();
       if (phase !== "BRIEF" && phase !== "SAVE" && stepIndex >= steps.length) return;
 
-      const prompt = promptEl.textContent;
       const line = cmdline.value;
+      if (!line.trim()) {
+        cmdline.value = "";
+        return;
+      }
+
+      if (matchShowRun(line)) {
+        const prompt = promptEl.textContent;
+        appendLine("line-user", `${prompt} ${line}`);
+        cmdline.value = "";
+        appendBlock("line-showrun", R20_INITIAL_CONFIG);
+        return;
+      }
+
+      if (tryExploreR20(line)) return;
+
+      const prompt = promptEl.textContent;
       appendLine("line-user", `${prompt} ${line}`);
       cmdline.value = "";
-      if (!line.trim()) return;
 
       if (testShowBrief(line)) {
         appendBlock("line-sys", OUT_BRIEF);
@@ -841,13 +880,8 @@ end`;
         return;
       }
 
-      if (matchShowRun(line)) {
-        appendBlock("line-showrun", R20_INITIAL_CONFIG);
-        return;
-      }
-
       if (phase === "BRIEF") {
-        appendLine("line-bad", "% Invalid input");
+        appendLine("line-bad", cliLabContainer.INVALID_INPUT_MSG);
         return;
       }
 
@@ -859,7 +893,7 @@ end`;
           cmdline.disabled = true;
           applyPhaseUI();
         } else {
-          appendLine("line-bad", "% Invalid input");
+          appendLine("line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
         return;
       }
@@ -867,7 +901,7 @@ end`;
       if (!steps[stepIndex].test(line)) {
         appendLine(
           "line-bad",
-          "% Invalid input"
+          cliLabContainer.INVALID_INPUT_MSG
         );
         return;
       }
@@ -937,6 +971,7 @@ end`;
         </div>`;
       overlay.querySelector('.cli-modal-body').appendChild(bodyNode);
       document.body.appendChild(overlay);
+    if (window.bccInitLabModalDrag) window.bccInitLabModalDrag();
       const closeBtn = overlay.querySelector('.cli-modal-close');
       const close = () => { overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true'); };
       const open = () => { overlay.classList.add('is-open'); overlay.setAttribute('aria-hidden', 'false'); };
@@ -1070,8 +1105,7 @@ end`;
     });
   })();
   </script>
-  <script src="/js/cli-lab-container.js"></script>
-  <script src="/js/lab-modal-drag.js"></script>
+<script src="/js/lab-modal-drag.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-home-nav.js"></script>
 </body>
 </html>

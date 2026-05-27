@@ -9,7 +9,8 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Named ACL and DHCP Snooping Simulation V2 | Be Certified Today</title>
+  <script src="/js/cli-lab-container.js"></script>
+<title>Named ACL and DHCP Snooping Simulation V2 | Be Certified Today</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -1370,13 +1371,7 @@ Sw3# copy running-config startup-config</pre>
         "[OK] Lab complete: copy running-config startup-config saved on R1, Sw101, and Sw103.";
       var PASS_BANNER_BASELINE_PENDING =
         "Finish the Tasks, then complete the lab from R1#, Sw101#, and Sw103# with copy running-config startup-config on each device.";
-      var INVALID_INPUT_MSG = "Not supported in this simulation";
-      /** Wrong VLAN/interface numbers etc.: steer learners to the authoritative lab text */
-      var INVALID_INPUT_NUMERIC_HINT_MSG =
-        "Not supported in this simulation";
-      function invalidInputMsgForNormalizedCmd(u) {
-        return /\d/.test(String(u || "")) ? INVALID_INPUT_NUMERIC_HINT_MSG : INVALID_INPUT_MSG;
-      }
+      // invalidInputMsgForNormalizedCmd + cliLabContainer.* — from /js/cli-lab-container.js.
 
       function matchShowRun(raw) {
         var u = normalize(raw);

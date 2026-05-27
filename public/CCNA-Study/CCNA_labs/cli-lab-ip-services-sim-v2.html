@@ -15,7 +15,8 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IP Services Sim Version 2 | CCNA lab | Be Certified Today</title>
+  <script src="/js/cli-lab-container.js"></script>
+<title>IP Services Sim Version 2 | CCNA lab | Be Certified Today</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -1335,12 +1336,7 @@ R3(config-line)# end</pre>
         "Task 1: complete the NAT sequence on R2. Then from privileged exec on R2, R1, and R3 run copy running-configuration startup-configuration (copy run start) on each device to complete the lab.";
       var PASS_BANNER_IP_DONE =
         "Lab complete: NAT on R2 done and startup-config saved on R2, R1, and R3.";
-      var INVALID_INPUT_MSG = "Not supported in this simulation";
-      var INVALID_INPUT_NUMERIC_HINT_MSG =
-        "Not supported in this simulation";
-      function invalidInputMsgForNormalizedCmd(u) {
-        return /\d/.test(String(u || "")) ? INVALID_INPUT_NUMERIC_HINT_MSG : INVALID_INPUT_MSG;
-      }
+      // invalidInputMsgForNormalizedCmd + cliLabContainer.* — from /js/cli-lab-container.js.
 
       function matchShowRun(raw) {
         var u = normalize(raw);
