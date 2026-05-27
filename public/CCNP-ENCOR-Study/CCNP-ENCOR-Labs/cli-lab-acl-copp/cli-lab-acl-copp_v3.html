@@ -6,6 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
+  <link rel="stylesheet" href="/css/cli-lab-container.css" />
   <title>Access-list &amp; CoPP Sim (v3)</title>
   <style>
     :root {
@@ -692,10 +693,10 @@ control-plane
         <div class="terminal-panel" id="panelR10">
           <p class="console-hint" id="hintR10">Inspect neighbors and ACL 150, insert sequence 5 for EIGRP, verify, save.</p>
           <div class="terminal" aria-label="R10 CLI">
-            <div class="console-scroll" id="scrollR10"></div>
+            <div class="console-scroll scrollback-area" id="scrollR10"></div>
             <div class="input-row">
-              <span class="prompt" id="promptR10">R10#</span>
-              <input class="cmdline" id="cmdR10" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R10 command line" />
+              <span class="prompt prompt-el" id="promptR10">R10#</span>
+              <input class="cmdline cmdline-input" id="cmdR10" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R10 command line" />
             </div>
           </div>
         </div>
@@ -720,10 +721,10 @@ control-plane
         <div class="terminal-panel terminal-panel--waiting" id="panelR20">
           <p class="console-hint" id="hintR20">Unlocks after R10 sees neighbors. ACL → class-map → policy-map → control-plane.</p>
           <div class="terminal" aria-label="R20 CLI">
-            <div class="console-scroll" id="scrollR20"></div>
+            <div class="console-scroll scrollback-area" id="scrollR20"></div>
             <div class="input-row">
-              <span class="prompt" id="promptR20">R20#</span>
-              <input class="cmdline" id="cmdR20" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R20 command line" disabled />
+              <span class="prompt prompt-el" id="promptR20">R20#</span>
+              <input class="cmdline cmdline-input" id="cmdR20" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R20 command line" disabled />
             </div>
           </div>
         </div>
@@ -1473,7 +1474,7 @@ control-plane
     term.setAttribute('aria-label', 'Spoiler CLI reference');
 
     const scroll = document.createElement('div');
-    scroll.className = 'console-scroll';
+    scroll.className = 'console-scroll scrollback-area';
 
     const stack = document.createElement('div');
     stack.className = 'spoiler-cli-stack';
@@ -1639,6 +1640,7 @@ control-plane
 })();
 </script>
 
+  <script src="/js/cli-lab-container.js"></script>
   <script src="/js/lab-modal-drag.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-home-nav.js"></script>
 </body>

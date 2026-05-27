@@ -6,6 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
+  <link rel="stylesheet" href="/css/cli-lab-container.css" />
   <title>eBGP Neighbor Sim 2</title>
   <style>
     :root {
@@ -586,10 +587,10 @@ R1# copy running-config startup-config</pre>
       </header>
       <div class="cli-modal-body">
         <div class="terminal" aria-label="R1 CLI">
-          <div id="scrollback"></div>
+          <div id="scrollback" class="scrollback-area"></div>
           <div class="input-row">
-            <span id="prompt">R1#</span>
-            <input id="cmdline" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R1 command line" />
+            <span class="prompt-el" id="prompt">R1#</span>
+            <input class="cmdline-input" id="cmdline" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R1 command line" />
           </div>
         </div>
       </div>
@@ -607,10 +608,10 @@ R1# copy running-config startup-config</pre>
           Use <code>show run</code> or <code>do show run</code> from <code>R2#</code> to review R2’s baseline. Lab steps run on R1.
         </p>
         <div class="terminal" aria-label="R2 CLI">
-          <div id="scrollbackR2"></div>
+          <div id="scrollbackR2" class="scrollback-area"></div>
           <div class="input-row">
-            <span id="promptR2">R2#</span>
-            <input id="cmdlineR2" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R2 command line" />
+            <span class="prompt-el" id="promptR2">R2#</span>
+            <input class="cmdline-input" id="cmdlineR2" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R2 command line" />
           </div>
         </div>
       </div>
@@ -628,10 +629,10 @@ R1# copy running-config startup-config</pre>
           Use <code>show run</code> or <code>do show run</code> from <code>R3#</code> to review R3’s baseline. Lab steps run on R1.
         </p>
         <div class="terminal" aria-label="R3 CLI">
-          <div id="scrollbackR3"></div>
+          <div id="scrollbackR3" class="scrollback-area"></div>
           <div class="input-row">
-            <span id="promptR3">R3#</span>
-            <input id="cmdlineR3" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R3 command line" />
+            <span class="prompt-el" id="promptR3">R3#</span>
+            <input class="cmdline-input" id="cmdlineR3" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R3 command line" />
           </div>
         </div>
       </div>
@@ -1750,6 +1751,7 @@ R1# copy running-config startup-config</pre>
 })();
 </script>
 
+  <script src="/js/cli-lab-container.js"></script>
   <script src="/js/lab-modal-drag.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-home-nav.js"></script>
 </body>

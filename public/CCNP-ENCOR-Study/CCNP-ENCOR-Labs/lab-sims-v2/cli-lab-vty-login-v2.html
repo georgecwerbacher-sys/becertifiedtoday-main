@@ -6,6 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
+  <link rel="stylesheet" href="/css/cli-lab-container.css" />
   <title>VTY Login Sim — Version 2</title>
   <style>
     :root {
@@ -528,10 +529,10 @@
       </header>
       <div class="cli-modal-body">
         <div class="terminal" aria-label="Simulated router CLI">
-          <div id="scrollback"></div>
+          <div id="scrollback" class="scrollback-area"></div>
           <div class="input-row">
-            <span id="prompt">R1(config)#</span>
-            <input id="cmdline" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="Router command line" />
+            <span class="prompt-el" id="prompt">R1(config)#</span>
+            <input class="cmdline-input" id="cmdline" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="Router command line" />
           </div>
         </div>
       </div>
@@ -902,6 +903,7 @@
 })();
 </script>
 
+  <script src="/js/cli-lab-container.js"></script>
   <script src="/js/lab-modal-drag.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-home-nav.js"></script>
 </body>

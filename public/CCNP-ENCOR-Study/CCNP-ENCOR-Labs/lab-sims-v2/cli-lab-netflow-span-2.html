@@ -6,6 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
+  <link rel="stylesheet" href="/css/cli-lab-container.css" />
   <title>NetFlow, SPAN &amp; IP SLA Sim 2</title>
   <style>
     :root {
@@ -590,10 +591,10 @@ Sw1# copy running-config startup-config</pre>
         <div class="terminal-panel" id="panelR1">
           <p class="console-hint" id="hintR1">Flow monitor on e0/0 first, then IP SLA, then save.</p>
           <div class="terminal" aria-label="R1 CLI">
-            <div class="console-scroll" id="scrollR1"></div>
+            <div class="console-scroll scrollback-area" id="scrollR1"></div>
             <div class="input-row">
-              <span class="prompt" id="promptR1">R1#</span>
-              <input class="cmdline" id="cmdR1" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R1 command line" />
+              <span class="prompt prompt-el" id="promptR1">R1#</span>
+              <input class="cmdline cmdline-input" id="cmdR1" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R1 command line" />
             </div>
           </div>
         </div>
@@ -618,10 +619,10 @@ Sw1# copy running-config startup-config</pre>
         <div class="terminal-panel terminal-panel--waiting" id="panelSw1">
           <p class="console-hint" id="hintSw1">SPAN and verify after R1 NetFlow.</p>
           <div class="terminal" aria-label="Sw1 CLI">
-            <div class="console-scroll" id="scrollSw1"></div>
+            <div class="console-scroll scrollback-area" id="scrollSw1"></div>
             <div class="input-row">
-              <span class="prompt" id="promptSw1">Sw1#</span>
-              <input class="cmdline" id="cmdSw1" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="Sw1 command line" disabled />
+              <span class="prompt prompt-el" id="promptSw1">Sw1#</span>
+              <input class="cmdline cmdline-input" id="cmdSw1" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="Sw1 command line" disabled />
             </div>
           </div>
         </div>
@@ -1519,6 +1520,7 @@ Sw1# copy running-config startup-config</pre>
 })();
 </script>
 
+  <script src="/js/cli-lab-container.js"></script>
   <script src="/js/lab-modal-drag.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-home-nav.js"></script>
 </body>

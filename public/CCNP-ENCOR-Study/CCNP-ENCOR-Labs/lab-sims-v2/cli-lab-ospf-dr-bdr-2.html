@@ -6,6 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
+  <link rel="stylesheet" href="/css/cli-lab-container.css" />
   <title>OSPF DR/BDR Sim 2</title>
   <style>
     :root {
@@ -487,10 +488,10 @@
         <div class="terminal-panel" id="panelR3">
           <p class="console-hint" id="hintR3">Start: point-to-point on e0/1 toward R20; later clear, verify, save.</p>
           <div class="terminal" aria-label="R3 CLI">
-            <div class="console-scroll" id="scrollR3"></div>
+            <div class="console-scroll scrollback-area" id="scrollR3"></div>
             <div class="input-row">
-              <span class="prompt" id="promptR3">R3#</span>
-              <input class="cmdline" id="cmdR3" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R3 command line" />
+              <span class="prompt prompt-el" id="promptR3">R3#</span>
+              <input class="cmdline cmdline-input" id="cmdR3" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R3 command line" />
             </div>
           </div>
         </div>
@@ -507,10 +508,10 @@
         <div class="terminal-panel terminal-panel--waiting" id="panelR20">
           <p class="console-hint" id="hintR20">Point-to-point on e0/0; clear; verify; save last on R20.</p>
           <div class="terminal" aria-label="R20 CLI">
-            <div class="console-scroll" id="scrollR20"></div>
+            <div class="console-scroll scrollback-area" id="scrollR20"></div>
             <div class="input-row">
-              <span class="prompt" id="promptR20">R20#</span>
-              <input class="cmdline" id="cmdR20" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R20 command line" disabled />
+              <span class="prompt prompt-el" id="promptR20">R20#</span>
+              <input class="cmdline cmdline-input" id="cmdR20" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R20 command line" disabled />
             </div>
           </div>
         </div>
@@ -527,10 +528,10 @@
         <div class="terminal-panel terminal-panel--waiting" id="panelR10">
           <p class="console-hint" id="hintR10">Unlocks after area 20 steps. Priority 255 on e0/0; clear; verify R2; save.</p>
           <div class="terminal" aria-label="R10 CLI">
-            <div class="console-scroll" id="scrollR10"></div>
+            <div class="console-scroll scrollback-area" id="scrollR10"></div>
             <div class="input-row">
-              <span class="prompt" id="promptR10">R10#</span>
-              <input class="cmdline" id="cmdR10" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R10 command line" disabled />
+              <span class="prompt prompt-el" id="promptR10">R10#</span>
+              <input class="cmdline cmdline-input" id="cmdR10" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R10 command line" disabled />
             </div>
           </div>
         </div>
@@ -547,10 +548,10 @@
         <div class="terminal-panel terminal-panel--waiting" id="panelR2">
           <p class="console-hint" id="hintR2">Unlocks for clear OSPF, then show ip ospf neighbor (read-only).</p>
           <div class="terminal" aria-label="R2 CLI">
-            <div class="console-scroll" id="scrollR2"></div>
+            <div class="console-scroll scrollback-area" id="scrollR2"></div>
             <div class="input-row">
-              <span class="prompt" id="promptR2">R2#</span>
-              <input class="cmdline" id="cmdR2" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R2 command line" disabled />
+              <span class="prompt prompt-el" id="promptR2">R2#</span>
+              <input class="cmdline cmdline-input" id="cmdR2" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R2 command line" disabled />
             </div>
           </div>
         </div>
@@ -1353,6 +1354,7 @@
 })();
 </script>
 
+  <script src="/js/cli-lab-container.js"></script>
   <script src="/js/lab-modal-drag.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-home-nav.js"></script>
 </body>

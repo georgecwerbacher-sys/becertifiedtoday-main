@@ -6,6 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
+  <link rel="stylesheet" href="/css/cli-lab-container.css" />
   <title>VRF Configuration Sim</title>
   <style>
     :root {
@@ -766,11 +767,11 @@ Sending 5, 100-byte ICMP Echos to 10.100.1.1, timeout is 2 seconds:
       <div class="cli-modal-body">
         <div class="terminal-panel">
           <div class="terminal" aria-label="R10 CLI">
-            <div class="console-scroll" id="scrollR10"></div>
+            <div class="console-scroll scrollback-area" id="scrollR10"></div>
             <div class="input-row">
-              <span class="prompt" id="promptR10">R10#</span>
+              <span class="prompt prompt-el" id="promptR10">R10#</span>
               <input
-                class="cmdline"
+                class="cmdline cmdline-input"
                 id="cmdR10"
                 type="text"
                 spellcheck="false"
@@ -802,11 +803,11 @@ Sending 5, 100-byte ICMP Echos to 10.100.1.1, timeout is 2 seconds:
         <div class="terminal-panel terminal-panel--waiting" id="panelR20">
           <p class="console-hint">Complete R10 steps first to use this console.</p>
           <div class="terminal" aria-label="R20 CLI">
-            <div class="console-scroll" id="scrollR20"></div>
+            <div class="console-scroll scrollback-area" id="scrollR20"></div>
             <div class="input-row">
-              <span class="prompt" id="promptR20">R20#</span>
+              <span class="prompt prompt-el" id="promptR20">R20#</span>
               <input
-                class="cmdline"
+                class="cmdline cmdline-input"
                 id="cmdR20"
                 type="text"
                 spellcheck="false"
@@ -1823,6 +1824,7 @@ router ospf 100
 })();
 </script>
 
+  <script src="/js/cli-lab-container.js"></script>
   <script src="/js/lab-modal-drag.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-home-nav.js"></script>
 </body>

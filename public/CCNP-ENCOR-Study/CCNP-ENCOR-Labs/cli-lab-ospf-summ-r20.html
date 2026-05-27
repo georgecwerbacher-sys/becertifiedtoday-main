@@ -6,6 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
+  <link rel="stylesheet" href="/css/cli-lab-container.css" />
   <title>OSPF Summarization Sim 2 (R20)</title>
   <style>
     :root {
@@ -500,10 +501,10 @@ R20# copy running-config startup-config</pre>
       </header>
       <div class="cli-modal-body">
         <div id="r20CliTerminal" class="terminal" aria-label="Simulated R20 CLI">
-          <div id="scrollback"></div>
+          <div id="scrollback" class="scrollback-area"></div>
           <div class="input-row">
-            <span id="prompt">R20#</span>
-            <input id="cmdline" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R20 command line" />
+            <span class="prompt-el" id="prompt">R20#</span>
+            <input class="cmdline-input" id="cmdline" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="R20 command line" />
           </div>
         </div>
       </div>
@@ -1069,6 +1070,7 @@ end`;
     });
   })();
   </script>
+  <script src="/js/cli-lab-container.js"></script>
   <script src="/js/lab-modal-drag.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-home-nav.js"></script>
 </body>

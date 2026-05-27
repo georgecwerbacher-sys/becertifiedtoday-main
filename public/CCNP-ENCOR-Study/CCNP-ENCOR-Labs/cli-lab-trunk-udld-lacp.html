@@ -6,6 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
+  <link rel="stylesheet" href="/css/cli-lab-container.css" />
   <title>Trunk, UDLD &amp; LACP Sim</title>
   <style>
     :root {
@@ -620,10 +621,10 @@ SW10# copy running-config startup-config</pre>
         <div class="terminal-panel" id="panelSW10">
           <p class="console-hint" id="hintSW10">Start with the E0/0 trunk toward SW30 (VLAN 300 only on that trunk).</p>
           <div class="terminal" aria-label="SW10 CLI">
-            <div class="console-scroll" id="scrollSW10"></div>
+            <div class="console-scroll scrollback-area" id="scrollSW10"></div>
             <div class="input-row">
-              <span class="prompt" id="promptSW10">SW10#</span>
-              <input class="cmdline" id="cmdSW10" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="SW10 command line" />
+              <span class="prompt prompt-el" id="promptSW10">SW10#</span>
+              <input class="cmdline cmdline-input" id="cmdSW10" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="SW10 command line" />
             </div>
           </div>
         </div>
@@ -640,10 +641,10 @@ SW10# copy running-config startup-config</pre>
         <div class="terminal-panel terminal-panel--waiting" id="panelPC2">
           <p class="console-hint" id="hintPC2">Use ping tests from PC2 at any time.</p>
           <div class="terminal" aria-label="PC2 CLI">
-            <div class="console-scroll" id="scrollPC2"></div>
+            <div class="console-scroll scrollback-area" id="scrollPC2"></div>
             <div class="input-row">
-              <span class="prompt" id="promptPC2">PC2&gt;</span>
-              <input class="cmdline" id="cmdPC2" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="PC2 command line" disabled />
+              <span class="prompt prompt-el" id="promptPC2">PC2&gt;</span>
+              <input class="cmdline cmdline-input" id="cmdPC2" type="text" spellcheck="false" autocomplete="off" autocapitalize="none" aria-label="PC2 command line" disabled />
             </div>
           </div>
         </div>
@@ -1368,6 +1369,7 @@ end`;
 })();
 </script>
 
+  <script src="/js/cli-lab-container.js"></script>
   <script src="/js/lab-modal-drag.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-home-nav.js"></script>
 </body>

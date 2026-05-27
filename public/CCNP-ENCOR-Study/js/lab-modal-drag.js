@@ -91,14 +91,17 @@
         var cmd = raw.trim().toLowerCase().replace(/\s+/g, " ");
         var isSilentExit = cmd === "exit";
         var rowNow = input.closest(".input-row");
-        var promptElNow = rowNow && rowNow.querySelector(".prompt, #prompt, [id^='prompt']");
+        var promptElNow =
+          rowNow &&
+          rowNow.querySelector(".prompt-el, .prompt, #prompt, [id^='prompt']");
         var promptSnapshot = promptElNow ? (promptElNow.textContent || "").trim() : "";
         pushHistory(input, raw);
         // Some lab pages refocus to a default terminal on Enter.
         // Re-assert focus on the active input after those handlers run.
         setTimeout(function () {
           var row = input.closest(".input-row");
-          var promptEl = row && row.querySelector(".prompt, #prompt, [id^='prompt']");
+          var promptEl =
+            row && row.querySelector(".prompt-el, .prompt, #prompt, [id^='prompt']");
           if (promptEl) {
             var txt = promptSnapshot || (promptEl.textContent || "").trim();
             var execMatch = txt.match(/^([A-Za-z0-9._-]+)#$/);
@@ -124,7 +127,11 @@
           // so remove the echoed command line if a page printed it.
           if (isSilentExit) {
             var terminal = input.closest(".terminal");
-            var scroll = terminal && terminal.querySelector("#scrollback, .console-scroll, [id^='scroll']");
+            var scroll =
+              terminal &&
+              terminal.querySelector(
+                ".scrollback-area, #scrollback, .console-scroll, [id^='scroll']"
+              );
             if (scroll && scroll.lastElementChild) {
               var last = scroll.lastElementChild;
               var txt = (last.textContent || "").trim().toLowerCase();
@@ -157,8 +164,30 @@
   function init() {
     document.querySelectorAll(".cli-modal-dialog").forEach(makeDialogDraggable);
     document
-      .querySelectorAll('.terminal input[type="text"], input.cmdline, #cmdline, #cmdlineR2, #cmdlineR3')
+      .querySelectorAll(
+        'input.cmdline-input, .terminal input[type="text"], input.cmdline, #cmdline, #cmdlineR2, #cmdlineR3, [id^="cmd"], [id$="Cmdline"]'
+      )
       .forEach(bindInputHistory);
+  }
+
+  window.bccInitLabModalDrag = init;
+
+  if (!window.__bccLabModalDragObserver) {
+    window.__bccLabModalDragObserver = true;
+    var observer = new MutationObserver(function (mutations) {
+      mutations.forEach(function (mutation) {
+        mutation.addedNodes.forEach(function (node) {
+          if (!node || node.nodeType !== 1) return;
+          if (node.classList && node.classList.contains("cli-modal-dialog")) {
+            makeDialogDraggable(node);
+          }
+          if (node.querySelectorAll) {
+            node.querySelectorAll(".cli-modal-dialog").forEach(makeDialogDraggable);
+          }
+        });
+      });
+    });
+    observer.observe(document.documentElement, { childList: true, subtree: true });
   }
 
   if (document.readyState === "loading") {

@@ -6,6 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
+  <link rel="stylesheet" href="/css/cli-lab-container.css" />
   <title>Rapid PVST+ and LACP Sim</title>
   <style>
     :root {
@@ -830,9 +831,9 @@ SW20# copy running-config startup-config</pre>
       </header>
       <div class="cli-modal-body">
         <div class="terminal" id="sw20Cli" aria-label="Simulated SW20 CLI">
-          <div id="scrollback"></div>
+          <div id="scrollback" class="scrollback-area"></div>
           <div class="input-row">
-            <span id="prompt">SW20#</span>
+            <span class="prompt-el" id="prompt">SW20#</span>
             <input
               id="cmdline"
               type="text"
@@ -907,10 +908,11 @@ SW20# copy running-config startup-config</pre>
       </header>
       <div class="cli-modal-body">
         <div class="terminal" id="sw10Terminal" aria-label="Simulated SW10 CLI">
-          <div id="sw10Scrollback"></div>
+          <div id="sw10Scrollback" class="scrollback-area"></div>
           <div class="input-row">
-            <span id="sw10Prompt">Sw10#</span>
+            <span class="prompt-el" id="sw10Prompt">Sw10#</span>
             <input
+              class="cmdline-input"
               id="sw10Cmdline"
               type="text"
               spellcheck="false"
@@ -1964,6 +1966,7 @@ SW20# copy running-config startup-config</pre>
 
     reset();
   </script>
+  <script src="/js/cli-lab-container.js"></script>
   <script src="/js/lab-modal-drag.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-home-nav.js"></script>
 </body>
