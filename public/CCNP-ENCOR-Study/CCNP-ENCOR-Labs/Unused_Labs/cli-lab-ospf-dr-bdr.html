@@ -6,6 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
+  <link rel="stylesheet" href="/css/cli-lab-container.css" />
   <title>OSPF DR/BDR Sim</title>
   <style>
     :root {
@@ -991,7 +992,7 @@ no shut</div>
         " network 10.0.23.0 0.0.0.255 area 0",
         " network 10.2.203.0 0.0.0.255 area 20",
       );
-      for (const ln of lines) appendLine(scrollEl, "line-out", ln);
+      for (const ln of lines) appendLine(scrollEl, "line-showrun", ln);
     }
 
     function r10ShowRunHasOspfPriority0() {
@@ -1004,7 +1005,7 @@ no shut</div>
       const lines = ["", "interface Ethernet0/0", " ip address 10.1.102.10 255.255.255.0"];
       if (hasP) lines.push(" ip ospf priority 0");
       lines.push("!", "router ospf 1", " network 10.1.102.0 0.0.0.255 area 10");
-      for (const ln of lines) appendLine(scrollEl, "line-out", ln);
+      for (const ln of lines) appendLine(scrollEl, "line-showrun", ln);
     }
 
     function appendR20ShowRunOutput(scrollEl) {
@@ -1018,7 +1019,7 @@ no shut</div>
         "router ospf 1",
         " network 10.2.203.0 0.0.0.255 area 20",
       ];
-      for (const ln of lines) appendLine(scrollEl, "line-out", ln);
+      for (const ln of lines) appendLine(scrollEl, "line-showrun", ln);
     }
 
     function appendR3ShowOspfNeighbor(scrollEl) {

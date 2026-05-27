@@ -6,6 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
+  <link rel="stylesheet" href="/css/cli-lab-container.css" />
   <title>LACP &amp; Root Bridge Sim</title>
   <style>
     :root {
@@ -668,7 +669,7 @@
       if (!line.trim()) return;
 
       if (matchShowRun(line)) {
-        appendBlock("line-sys", SW10_INITIAL_CONFIG);
+        appendBlock("line-showrun", SW10_INITIAL_CONFIG);
         return;
       }
 

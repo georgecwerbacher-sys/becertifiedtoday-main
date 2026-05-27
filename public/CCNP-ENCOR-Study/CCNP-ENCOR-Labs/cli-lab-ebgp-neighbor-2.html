@@ -1296,7 +1296,7 @@ R1# copy running-config startup-config</pre>
         matchDoShowRun(line) && r2Mode !== "exec";
       if (execShow || doShowFromExec) {
         appendLine(scrollbackR2, "line-sys", "Building configuration...");
-        appendBlock(scrollbackR2, "line-out", R2_SHOW_RUN_TEXT);
+        appendBlock(scrollbackR2, "line-showrun", R2_SHOW_RUN_TEXT);
         return;
       }
 
@@ -1341,7 +1341,7 @@ R1# copy running-config startup-config</pre>
       const doShowFromExec = matchDoShowRun(line) && r3Mode !== "exec";
       if (execShow || doShowFromExec) {
         appendLine(scrollbackR3, "line-sys", "Building configuration...");
-        appendBlock(scrollbackR3, "line-out", R3_SHOW_RUN_TEXT);
+        appendBlock(scrollbackR3, "line-showrun", R3_SHOW_RUN_TEXT);
         return;
       }
 
@@ -1395,7 +1395,7 @@ R1# copy running-config startup-config</pre>
             prompt === "R1(config-router-af)#");
         if (execShow || doShow) {
           appendLine(scrollback, "line-sys", "Building configuration...");
-          appendBlock(scrollback, "line-out", R1_SHOW_RUN_TEXT);
+          appendBlock(scrollback, "line-showrun", R1_SHOW_RUN_TEXT);
           applyPhaseUI();
           return;
         }

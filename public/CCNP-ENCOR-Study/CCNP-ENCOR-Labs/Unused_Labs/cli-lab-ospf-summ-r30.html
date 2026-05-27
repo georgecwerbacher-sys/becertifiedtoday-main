@@ -6,6 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/lab-router-spoiler.css" />
+  <link rel="stylesheet" href="/css/cli-lab-container.css" />
   <title>OSPF Summarization Sim (R30)</title>
   <style>
     :root {
@@ -712,7 +713,7 @@
       if (!line.trim()) return;
 
       if (matchShowRun(line)) {
-        appendBlock("line-sys", R30_INITIAL_CONFIG);
+        appendBlock("line-showrun", R30_INITIAL_CONFIG);
         return;
       }
 

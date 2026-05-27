@@ -456,17 +456,6 @@
     .line-sim-hidden {
       display: none;
     }
-    .line-showrun {
-      white-space: pre-wrap;
-      color: #dbe5f0;
-      margin: 6px 0 12px;
-      padding: 10px 10px 12px;
-      border-radius: 6px;
-      background: #06080c;
-      border: 1px solid #263043;
-      font-family: inherit;
-      line-height: 1.45;
-    }
     .input-row {
       display: flex;
       align-items: center;
@@ -1637,7 +1626,7 @@ SW20# copy running-config startup-config</pre>
       }
 
       if (matchShowEtherchannelSummary(line) && stepIndex >= STEP_INDEX_AFTER_PC1_PATH) {
-        appendLine("line-showrun", SHOW_ETHERCHANNEL_SUMMARY);
+        appendLine("line-sys", SHOW_ETHERCHANNEL_SUMMARY);
         focusActiveCli();
         return;
       }
@@ -1786,7 +1775,7 @@ SW20# copy running-config startup-config</pre>
           );
         }
         if (prevIndex === 12) {
-          appendLine("line-showrun", SHOW_ETHERCHANNEL_SUMMARY);
+          appendLine("line-sys", SHOW_ETHERCHANNEL_SUMMARY);
         }
         if (stepIndex >= STEPS.length) {
           promptEl.textContent = "SW20#";

@@ -1354,7 +1354,7 @@ router ospf 100
 
       if (matchShowRun(line)) {
         appendLine(scrollR10, "line-user", `${p} ${line}`);
-        appendLine(scrollR10, "line-sys", R10_SHOW_RUN);
+        appendLine(scrollR10, "line-showrun", R10_SHOW_RUN);
         return;
       }
       if (
@@ -1481,7 +1481,7 @@ router ospf 100
 
       if (matchShowRun(line)) {
         appendLine(scrollR20, "line-user", `${p} ${line}`);
-        appendLine(scrollR20, "line-sys", R20_SHOW_RUN);
+        appendLine(scrollR20, "line-showrun", R20_SHOW_RUN);
         return;
       }
       if (

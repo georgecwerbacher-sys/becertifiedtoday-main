@@ -1110,7 +1110,7 @@ R22# copy running-config startup-config</pre>
       pushHistory(historyR22, "r22", line);
 
       if (matchShowRun(line)) {
-        appendLine(scrollR22, "line-sys", R22_SHOW_RUN);
+        appendLine(scrollR22, "line-showrun", R22_SHOW_RUN);
         return;
       }
 
@@ -1186,7 +1186,7 @@ R22# copy running-config startup-config</pre>
       if (!line.trim()) return;
       pushHistory(historySw22, "sw22", line);
       if (matchShowRunStrictSw22(line)) {
-        appendLine(scrollSw22, "line-sys", SW22_SHOW_RUN);
+        appendLine(scrollSw22, "line-showrun", SW22_SHOW_RUN);
         return;
       }
       if (matchCopy(line)) {
