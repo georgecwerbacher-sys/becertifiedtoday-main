@@ -494,14 +494,17 @@
 <div class="tasks tasks-top">
                 <strong>Tasks</strong>
                 <p class="tasks-intro">
-                  The Operations team started configuring several monitoring activities. Complete the configurations for the tasks below.
+                  BeCertifiedToday.com network engineers started configuring NetFlow, SPAN, and IP SLA monitoring for this site. Complete the remaining configurations for the tasks below.
                 </p>
                 <ol class="tasks-numbered">
                   <li>
                     Enable Flexible NetFlow on <strong>R1</strong> <strong>E0/0</strong> in both directions using the pre-configured flow monitor.
+                    <ul>
+                      <li>Flow monitor name: <strong>Monitor-R1Flow</strong></li>
+                    </ul>
                   </li>
                   <li>
-                    Configure the switch port analyzer on <strong>Sw1</strong> and mirror all VLAN <strong>12</strong> traffic to interface <strong>E1/3</strong> using session
+                    Configure the switch port analyzer on <strong>Sw1</strong> and mirror all VLAN <strong>12</strong> traffic to interface <strong>E0/1</strong> using session
                     number <strong>12</strong>.
                   </li>
                   <li>
@@ -529,15 +532,18 @@
         <h2>Helper File</h2>
 
         <p><strong>Task 1.</strong> Enable Flexible NetFlow on R1 E0/0 in both directions using the pre-configured flow monitor.</p>
+        <ul>
+          <li>Flow monitor name: <strong>Monitor-R1Flow</strong></li>
+        </ul>
         <p><strong>On R1:</strong></p>
         <pre class="topology-helper-pre">R1(config)#interface e0/0
 R1(config-if)# ip flow monitor Monitor-R1Flow input
 R1(config-if)# ip flow monitor Monitor-R1Flow output</pre>
 
-        <p><strong>Task 2.</strong> Configure the switch port analyzer on Sw1 and mirror all VLAN 12 traffic to interface E1/3 using session number 12.</p>
+        <p><strong>Task 2.</strong> Configure the switch port analyzer on Sw1 and mirror all VLAN 12 traffic to interface E0/1 using session number 12.</p>
         <p><strong>On Sw1:</strong></p>
         <pre class="topology-helper-pre">Sw1(config)#monitor session 12 source vlan 12 both
-Sw1(config)#monitor session 12 destination interface e1/3</pre>
+Sw1(config)#monitor session 12 destination interface e0/1</pre>
 
         <p><strong>Task 3.</strong> Configure a basic IP SLA ICMP echo operation on R1 to ping PC1 every 300 seconds.</p>
         <p>The IP address of PC1 is 10.12.1.2</p>
@@ -586,7 +592,7 @@ R1# copy running-config startup-config</pre>
         <p><strong>Sw1</strong></p>
         <pre>Sw1# configure terminal
 Sw1(config)# monitor session 12 source vlan 12 both
-Sw1(config)# monitor session 12 destination interface e1/3
+Sw1(config)# monitor session 12 destination interface e0/1
 Sw1(config)# end
 Sw1#
 Sw1# copy running-config startup-config</pre>
@@ -659,8 +665,8 @@ Sw1# copy running-config startup-config</pre>
 
   <nav class="sim-nav" aria-label="Simulation navigation">
     <a class="sim-nav-btn sim-nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-    <a class="sim-nav-btn sim-nav-next" href="/cli-lab-acl-copp/cli-lab-acl-copp_v3.html">Next</a>
-    <a class="sim-nav-btn sim-nav-back" href="/cli-lab-ebgp-neighbor-2.html">Back</a>
+    <a class="sim-nav-btn sim-nav-next" href="/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/cli-lab-acl-copp/cli-lab-acl-copp_v3.html">Next</a>
+    <a class="sim-nav-btn sim-nav-back" href="/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/cli-lab-ebgp-neighbor-2.html">Back</a>
   </nav>
 
   <script>
@@ -712,6 +718,10 @@ Sw1# copy running-config startup-config</pre>
       return slaSteps.length - 2;
     }
 
+    function slaScheduleGraded() {
+      return stepR1Sla > slaScheduleStepIndex();
+    }
+
     function canSlaScheduleShortcut() {
       const schedIdx = slaScheduleStepIndex();
       return stepR1Sla >= 3 && stepR1Sla < schedIdx;
@@ -755,6 +765,12 @@ Sw1# copy running-config startup-config</pre>
       cmdR1.value = "";
     }
 
+    function testSw1SpanDestE01(raw) {
+      const u = normalize(raw);
+      if (u === "monitor session 12 destination interface e0/1") return true;
+      return u === "monitor session 12 destination interface ethernet0/1";
+    }
+
     const SW1_SPAN = [
       { mode: "exec", test: (raw) => ["conf t", "configure terminal"].includes(normalize(raw)) },
       {
@@ -764,8 +780,7 @@ Sw1# copy running-config startup-config</pre>
       },
       {
         mode: "config",
-        test: (raw) =>
-          normalize(raw) === "monitor session 12 destination interface e1/3",
+        test: testSw1SpanDestE01,
       },
       { mode: "config", test: (raw) => normalize(raw) === "end" },
     ];
@@ -776,7 +791,7 @@ Sw1# copy running-config startup-config</pre>
       "Type                : Local Session\n" +
       "Source VLANs        :\n" +
       "  Both              : 12\n" +
-      "Destination Ports   : Et1/3\n" +
+      "Destination Ports   : Et0/1\n" +
       "  Encapsulation    : Native";
 
     function buildSlaIcmp() {
@@ -1120,10 +1135,16 @@ Sw1# copy running-config startup-config</pre>
     }
 
     function onSlaStepsComplete() {
+      stepR1Sla = slaSteps.length;
       appendLine(scrollR1, "line-sys", "[OK] IP SLA 1 scheduled (simulated). Save R1.");
       phase = "R1_SAVE";
       appendLine(scrollR1, "line-sys", "copy running-config startup-config");
       applyPhaseUI();
+    }
+
+    function finishSlaAfterSchedule() {
+      stepR1Sla = slaSteps.length;
+      onSlaStepsComplete();
     }
 
     function submitR1SlaSteps(line) {
@@ -1133,12 +1154,7 @@ Sw1# copy running-config startup-config</pre>
         echoR1Line(line, "R1(config)#");
         pushHistory("R1", line);
         r1ExploreNav.reset();
-        stepR1Sla = slaScheduleStepIndex() + 1;
-        if (stepR1Sla >= slaSteps.length) {
-          onSlaStepsComplete();
-        } else {
-          updatePrompts();
-        }
+        finishSlaAfterSchedule();
         return true;
       }
 
@@ -1167,7 +1183,9 @@ Sw1# copy running-config startup-config</pre>
         } else {
           stepR1Sla = gradeAt + 1;
         }
-        if (stepR1Sla >= slaSteps.length) {
+        if (gradeAt === slaScheduleStepIndex()) {
+          finishSlaAfterSchedule();
+        } else if (stepR1Sla >= slaSteps.length) {
           onSlaStepsComplete();
         } else {
           updatePrompts();
@@ -1241,8 +1259,9 @@ Sw1# copy running-config startup-config</pre>
       return false;
     }
 
-    function submitR1NfEnd(line) {
-      if (!nfFlowComplete() || !r1InConfig || normalize(line) !== "end") return false;
+    function submitR1End(line) {
+      if (normalize(line) !== "end" || !r1InConfig) return false;
+      if (slaStepsPending() && slaSteps[stepR1Sla].test(line)) return false;
       echoR1Line(line, r1ConfigPrompt());
       pushHistory("R1", line);
       r1InConfig = false;
@@ -1251,8 +1270,12 @@ Sw1# copy running-config startup-config</pre>
         stepR1Sla = 0;
       }
       if (slaStepsPending()) {
-        appendLine(scrollR1, "line-sys", "At exec — conf t for ip sla, or copy running-config startup-config to save.");
-      } else {
+        appendLine(
+          scrollR1,
+          "line-sys",
+          "At exec — conf t for ip sla, or copy running-config startup-config to save."
+        );
+      } else if (phase !== "R1_SAVE" && nfFlowComplete()) {
         phase = "R1_SAVE";
         appendLine(scrollR1, "line-sys", "copy running-config startup-config");
         applyPhaseUI();
@@ -1264,8 +1287,11 @@ Sw1# copy running-config startup-config</pre>
     function submitR1Copy(line) {
       if (!matchCopy(line)) return false;
       if (tryExploreR1(line)) return true;
-      appendLine(scrollR1, "line-user", `${r1ExecPrompt()} ${line}`);
+      const savePrompt = r1InConfig ? r1ConfigPrompt() : r1ExecPrompt();
+      appendLine(scrollR1, "line-user", `${savePrompt} ${line}`);
       cmdR1.value = "";
+      r1InConfig = false;
+      r1ExploreNav.reset();
       appendLine(scrollR1, "line-sys", "[OK] R1 saved (simulated). Save Sw1.");
       if (sw1Saved) {
         finishLab();
@@ -1275,6 +1301,10 @@ Sw1# copy running-config startup-config</pre>
       }
       applyPhaseUI();
       return true;
+    }
+
+    function canR1SaveCopyNow() {
+      return nfFlowComplete() && (phase === "R1_SAVE" || slaScheduleGraded());
     }
 
     function sw1LabPrompt() {
@@ -1507,8 +1537,8 @@ Sw1# copy running-config startup-config</pre>
       } else if (slaStepsPending()) {
         hintR1.textContent =
           slaKind() === "http"
-            ? "NetFlow done — ip sla 1 at config, http-get …, then schedule (frequency/exit optional), end."
-            : "NetFlow done — ip sla 1 at config, icmp-echo …, then schedule (frequency/exit optional), end.";
+            ? "NetFlow done — ip sla 1 at config, http-get …, then schedule (end optional), copy run."
+            : "NetFlow done — ip sla 1 at config, icmp-echo …, then schedule (end optional), copy run.";
       } else if (phase === "R1_SAVE") {
         hintR1.textContent = "copy running-config startup-config";
       } else if (phase === "DONE") {
@@ -1518,7 +1548,7 @@ Sw1# copy running-config startup-config</pre>
       }
 
       if (phase === "SW1_SPAN" || (nfFlowComplete() && stepSw1 < SW1_SPAN.length)) {
-        hintSw1.textContent = "monitor session 12 source vlan 12 both, destination e1/3, end.";
+        hintSw1.textContent = "monitor session 12 source vlan 12 both, destination e0/1, end.";
       } else if (phase === "SW1_VER") {
         hintSw1.textContent = "show monitor session 12";
       } else if (phase === "SW1_SAVE") {
@@ -1604,6 +1634,7 @@ Sw1# copy running-config startup-config</pre>
       }
 
       if (phase === "R1_SAVE") {
+        if (submitR1End(line)) return;
         if (tryExploreR1(line)) return;
         if (submitR1Copy(line)) return;
         appendLine(scrollR1, "line-user", `${r1ExecPrompt()} ${line}`);
@@ -1613,10 +1644,10 @@ Sw1# copy running-config startup-config</pre>
       }
 
       if (submitR1NfSteps(line)) return;
-      if (submitR1NfEnd(line)) return;
       if (submitR1SlaSteps(line)) return;
+      if (submitR1End(line)) return;
 
-      if (nfFlowComplete() && !r1InConfig && submitR1Copy(line)) return;
+      if (canR1SaveCopyNow() && submitR1Copy(line)) return;
 
       if (nfStepsPending() || slaStepsPending() || nfFlowComplete()) {
         if (tryExploreR1(line)) return;
