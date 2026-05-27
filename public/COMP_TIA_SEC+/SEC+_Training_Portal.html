@@ -833,43 +833,43 @@
           <h3 class="section-heading">Practice Questions</h3>
           <section class="start-box" aria-label="Question studies">
             <p class="placeholder-strip">
-              <strong>Early access.</strong> A three-question sample is live below. Full question banks (grouped in sets of up to
-              <strong>100</strong> by hub position) and domain filters will appear here when the Security+ library launches.
+              <strong>Early access.</strong> The three-question sample deck is still separate; the hub bank below grows as new
+              items are added to <code>SEC+_Questions/</code>.
             </p>
-            <p class="study-meta">
-              New practice questions will be grouped in banks of up to <strong>100</strong> by position in the hub list
-              (<strong>1&ndash;100</strong>, <strong>101&ndash;200</strong>, and so on). Each bank will have its own
-              <strong>Random</strong> and <strong>Review</strong> session.
-            </p>
+            <p
+              id="secplus-practice-banks-summary"
+              class="study-meta secplus-practice-banks-summary"
+              hidden
+              aria-live="polite"
+            ></p>
             <div class="secplus-practice-subject-filter" id="secplus-practice-subject-filter">
               <p class="secplus-practice-subject-title">Practice by subject</p>
               <p class="secplus-practice-subject-lead">
                 Matches the <a href="#secplus-domains">Security+ SY0-701 domain weights</a>. Leave on
                 <strong>All subjects</strong> for every question in the bank you start, or pick one domain before you click
-                <strong>Random</strong> or <strong>Review</strong> (available when banks go live).
+                <strong>Random</strong> or <strong>Review</strong> on a bank below.
               </p>
               <label for="secplus-practice-domain-select">Limit session to</label>
               <select
                 id="secplus-practice-domain-select"
                 class="secplus-practice-domain-select"
                 aria-describedby="secplus-practice-domain-hint"
-                disabled
               >
                 <option value="">All subjects (entire bank)</option>
-                <option value="1">1 — General Security Concepts</option>
-                <option value="2">2 — Threats, Vulnerabilities, and Mitigations</option>
-                <option value="3">3 — Security Architecture</option>
-                <option value="4">4 — Security Operations</option>
-                <option value="5">5 — Security Program Management and Oversight</option>
+                <option value="1">1.0 — General Security Concepts (12%)</option>
+                <option value="2">2.0 — Threats, Vulnerabilities, and Mitigations (22%)</option>
+                <option value="3">3.0 — Security Architecture (18%)</option>
+                <option value="4">4.0 — Security Operations (28%)</option>
+                <option value="5">5.0 — Security Program Management and Oversight (20%)</option>
               </select>
               <p id="secplus-practice-domain-hint" class="secplus-practice-subject-hint">
-                Domain filter activates when the full question bank and topic map are published.
+                Matches SY0-701 exam objectives (v5.0). Each question shows its mapped domain at the bottom of the page.
               </p>
               <fieldset class="secplus-practice-session-style" aria-labelledby="secplus-practice-session-style-label">
                 <legend id="secplus-practice-session-style-label">Session behavior</legend>
                 <div class="secplus-practice-radio-row">
                   <label>
-                    <input type="radio" name="secplus-practice-adaptive" value="" checked disabled />
+                    <input type="radio" name="secplus-practice-adaptive" value="" checked />
                     <span>
                       Standard
                       <span class="secplus-practice-radio-desc"
@@ -880,7 +880,7 @@
                 </div>
                 <div class="secplus-practice-radio-row">
                   <label>
-                    <input type="radio" name="secplus-practice-adaptive" value="1" disabled />
+                    <input type="radio" name="secplus-practice-adaptive" value="1" disabled title="Adaptive learning launches with a larger bank" />
                     <span>
                       Adaptive learning
                       <span class="secplus-practice-radio-desc"
@@ -912,17 +912,6 @@
                   <strong>Live now</strong>—no purchase required.
                 </p>
                 <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Samples/sample.html?track=questions">Open sample</a>
-              </article>
-              <article class="sim-box">
-                <h4 class="sim-box-title">Question bank 1&ndash;100</h4>
-                <p class="study-meta">
-                  Full multiple-choice bank for the first hundred Security+ items. <strong>Random</strong> and
-                  <strong>Review</strong> modes—launching with the full library.
-                </p>
-                <div class="study-actions">
-                  <button type="button" class="start-btn is-placeholder" disabled>Random</button>
-                  <button type="button" class="start-btn is-placeholder" disabled>Review</button>
-                </div>
               </article>
             </div>
             <noscript>
@@ -1070,5 +1059,6 @@
         >Any questions?</a>
     </footer>
   </div>
+  <script src="/COMP_TIA_SEC+/js/secplus-practice-hub.js" defer></script>
 </body>
 </html>

@@ -52,10 +52,10 @@ Use these when tagging questions in a future `data/secplus-question-topic-map.js
 
 ## TODO — content
 
-- [ ] Question bank in `SEC+_Questions/`
+- [x] Question bank in `SEC+_Questions/` (chain via `scripts/gen_secplus_chain_pages.py`; 1 item)
 - [ ] Drag-and-drop set in `SEC+_D_D/`
 - [ ] Timed simulation blueprint + runner pages
-- [ ] Topic map JSON + objective tracker (optional)
+- [x] Topic map JSON + SY0-701 objective tags on question pages (bottom of card)
 - [ ] Purchase / access window (Stripe) when ready to sell
 
 ## TODO — engineering

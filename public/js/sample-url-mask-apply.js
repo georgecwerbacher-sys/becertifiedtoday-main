@@ -78,14 +78,20 @@
 (function () {
   "use strict";
 
-  var OBJECTIVES_URL = "/CCNA-Study/data/ccna-exam-objectives-200-301-v1.1.json";
+  var CCNA_OBJECTIVES_URL = "/CCNA-Study/data/ccna-exam-objectives-200-301-v1.1.json";
+  var SECPLUS_OBJECTIVES_URL = "/COMP_TIA_SEC+/data/secplus-exam-objectives-sy0-701.json";
   var MANIFEST_URL = "/CCNA-Study/data/ccna-practice-questions-manifest.json";
   var MAP_BY_PATH = [
-    { pathPart: "/ccna-study/ccna_questions/", mapUrl: "/CCNA-Study/data/ccna-question-topic-map.json" },
-    { pathPart: "/ccna-study/ccna_d_d/", mapUrl: "/CCNA-Study/data/ccna-dnd-topic-map.json" },
-    { pathPart: "/ccna-study/ccna_labs/", mapUrl: "/CCNA-Study/data/ccna-lab-topic-map.json" },
-    { pathPart: "/ccna_sim_exam/embed/dnd/", mapUrl: "/CCNA-Study/data/ccna-dnd-topic-map.json" },
-    { pathPart: "/ccna_sim_exam/embed/lab/", mapUrl: "/CCNA-Study/data/ccna-lab-topic-map.json" }
+    { pathPart: "/ccna-study/ccna_questions/", mapUrl: "/CCNA-Study/data/ccna-question-topic-map.json", track: "ccna" },
+    { pathPart: "/ccna-study/ccna_d_d/", mapUrl: "/CCNA-Study/data/ccna-dnd-topic-map.json", track: "ccna" },
+    { pathPart: "/ccna-study/ccna_labs/", mapUrl: "/CCNA-Study/data/ccna-lab-topic-map.json", track: "ccna" },
+    { pathPart: "/ccna_sim_exam/embed/dnd/", mapUrl: "/CCNA-Study/data/ccna-dnd-topic-map.json", track: "ccna" },
+    { pathPart: "/ccna_sim_exam/embed/lab/", mapUrl: "/CCNA-Study/data/ccna-lab-topic-map.json", track: "ccna" },
+    {
+      pathPart: "/comp_tia_sec+/sec+_questions/",
+      mapUrl: "/COMP_TIA_SEC+/data/secplus-question-topic-map.json",
+      track: "secplus"
+    }
   ];
 
   function getSlugAndMap() {
@@ -101,6 +107,9 @@
       } catch (e) {}
     }
     var path = pathRaw.toLowerCase();
+    try {
+      path = decodeURIComponent(path);
+    } catch (e) {}
     var fileName = "";
     var dndRel = /\/ccna_d_d\/(.+\.html)$/.exec(path);
     var embedDndRel = /\/embed\/dnd\/(.+\.html)$/.exec(path);
@@ -115,7 +124,11 @@
     }
     for (var i = 0; i < MAP_BY_PATH.length; i++) {
       if (path.indexOf(MAP_BY_PATH[i].pathPart) !== -1) {
-        return { fileName: fileName, mapUrl: MAP_BY_PATH[i].mapUrl };
+        return {
+          fileName: fileName,
+          mapUrl: MAP_BY_PATH[i].mapUrl,
+          track: MAP_BY_PATH[i].track || "ccna"
+        };
       }
     }
     return null;
@@ -143,7 +156,7 @@
     var target = getSlugAndMap();
     if (!target) return;
     var host = document.querySelector("main.card") || document.querySelector("main");
-    if (!host || host.querySelector(".ccna-objective-tag")) return;
+    if (!host || host.querySelector(".ccna-objective-tag, .secplus-objective-tag")) return;
 
     var pathLower = (location.pathname || "").toLowerCase();
     try {
@@ -159,8 +172,13 @@
     var questionPage = isCcnaQuestionPage(pathLower);
     var slug = target.fileName.replace(/\.html$/i, "");
 
+    var objectivesUrl =
+      target.track === "secplus" ? SECPLUS_OBJECTIVES_URL : CCNA_OBJECTIVES_URL;
+    var sectionTitle =
+      target.track === "secplus" ? "Security+ objective section" : "CCNA objective section";
+
     var fetches = [
-      fetch(OBJECTIVES_URL).then(function (r) { return r.json(); }),
+      fetch(objectivesUrl).then(function (r) { return r.json(); }),
       fetch(target.mapUrl).then(function (r) { return r.json(); })
     ];
     if (questionPage) {
@@ -196,21 +214,33 @@
       if (!labels.length) labels = ["Unassigned objective (needs mapping)"];
 
       var box = document.createElement("div");
-      box.className = "ccna-objective-tag";
+      box.className =
+        target.track === "secplus" ? "secplus-objective-tag ccna-objective-tag" : "ccna-objective-tag";
       box.style.marginTop = "12px";
       box.style.padding = "10px 12px";
       box.style.borderRadius = "10px";
       box.style.border = "1px solid #2d3b5a";
       box.style.background = "#0f1729";
       box.style.color = "#b8c3d6";
-      box.style.fontSize = "0.86rem";
+      box.style.fontSize = "0.65rem";
       box.style.lineHeight = "1.45";
 
+      if (target.track === "secplus") {
+        var secplusVersion = document.createElement("div");
+        secplusVersion.className = "secplus-objective-tag__version";
+        secplusVersion.style.marginBottom = "6px";
+        secplusVersion.style.color = "#9fb0cc";
+        secplusVersion.style.fontSize = "0.62rem";
+        secplusVersion.textContent = "Version: 1.1 2026";
+        box.appendChild(secplusVersion);
+      }
+
       var title = document.createElement("div");
+      if (target.track === "secplus") title.className = "secplus-objective-tag__title";
       title.style.fontWeight = "700";
       title.style.color = "#e6edf3";
       title.style.marginBottom = "4px";
-      title.textContent = "CCNA objective section";
+      title.textContent = sectionTitle;
       box.appendChild(title);
 
       if (questionPage) {
@@ -219,7 +249,7 @@
           var versionRow = document.createElement("div");
           versionRow.style.marginBottom = "6px";
           versionRow.style.color = "#9fb0cc";
-          versionRow.style.fontSize = "0.82rem";
+          versionRow.style.fontSize = "0.62rem";
           versionRow.textContent = versionText;
           box.appendChild(versionRow);
         }
