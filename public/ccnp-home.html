@@ -247,25 +247,6 @@
       padding-bottom: calc(clamp(32px, 6vw, 56px) + env(safe-area-inset-bottom, 0px));
       padding-left: calc(clamp(20px, 4vw, 40px) + env(safe-area-inset-left, 0px));
     }
-    .hero-banner {
-      margin: 0;
-      width: 100%;
-      overflow: hidden;
-      border-bottom: 1px solid var(--border);
-      background: #0d1528;
-      /* Taller band + scaled image = read as “zoomed out” vs tight cover crop */
-      height: clamp(260px, 42vw, 520px);
-    }
-    .hero-banner img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      /* Wide classroom shot; keep framing centered */
-      object-position: 50% 48%;
-      transform: scale(0.88);
-      transform-origin: center center;
-    }
     .hero-content {
       max-width: 1080px;
       margin: 0 auto;
@@ -1794,16 +1775,6 @@
         >
       </div>
     </header>
-    <figure class="hero-banner">
-      <img
-        src="/images/index-header-engineer.png"
-        width="1024"
-        height="606"
-        alt="Students working at desktop computers in a bright, modern computer lab."
-        decoding="async"
-        fetchpriority="high"
-      />
-    </figure>
     <main id="main">
       <div class="hero-content">
         <div class="funnel">

@@ -940,26 +940,6 @@ SW20# copy running-config startup-config</pre>
   </nav>
 
   <script>
-    (function () {
-      var params = new URLSearchParams(location.search);
-      if (params.get("sample") !== "1") return;
-      var homeHref = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html";
-      var homeBtn = document.querySelector(".sim-nav-home");
-      var logoLink = document.querySelector(".site-logo-corner");
-      function forceHome(el) {
-        if (!el) return;
-        el.setAttribute("href", homeHref);
-        el.addEventListener("click", function (e) {
-          e.preventDefault();
-          location.href = homeHref;
-        });
-      }
-      forceHome(homeBtn);
-      forceHome(logoLink);
-    })();
-  </script>
-
-  <script>
     function normalize(s) {
       return s
         .trim()
@@ -1985,5 +1965,6 @@ SW20# copy running-config startup-config</pre>
     reset();
   </script>
   <script src="/js/lab-modal-drag.js"></script>
+  <script src="/CCNP-ENCOR-Study/js/encor-portal-home-nav.js"></script>
 </body>
 </html>

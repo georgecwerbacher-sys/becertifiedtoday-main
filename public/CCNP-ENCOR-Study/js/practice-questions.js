@@ -57,6 +57,45 @@
   }
 })();
 
+/** Registered ENCOR content: Home anchors → ENCOR_Training_Portal (samples → ccnp-home). */
+(function () {
+  "use strict";
+  var PORTAL = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html";
+  var GUEST_HOME = "/ccnp-home.html";
+
+  function isRegisteredEncorPath() {
+    var p = (location.pathname || "").toLowerCase();
+    if (p.indexOf("/ccnp-encor-study/encor_samples/") >= 0) return false;
+    return (
+      p.indexOf("/ccnp-encor-study/encor_questions/") >= 0 ||
+      p.indexOf("/ccnp-encor-study/ccnp-encor-drag-drop/") >= 0 ||
+      p.indexOf("/ccnp-encor-study/ccnp-encor-labs/") >= 0
+    );
+  }
+
+  function wireEncorPortalHomeLinks() {
+    if (!isRegisteredEncorPath()) return;
+    var guest = typeof window.isCcnpGuestSample === "function" && window.isCcnpGuestSample();
+    var target = guest ? GUEST_HOME : PORTAL;
+    document.querySelectorAll("a.home-key, a.sim-nav-home").forEach(function (a) {
+      a.setAttribute("href", target);
+    });
+    if (!guest) {
+      document.querySelectorAll("a.site-logo-corner").forEach(function (a) {
+        a.setAttribute("href", PORTAL);
+        a.setAttribute("aria-label", "Go to ENCOR training portal");
+      });
+      document.querySelectorAll("#ccnpQToolbar a").forEach(function (a) {
+        if ((a.textContent || "").trim() === "Home") {
+          a.setAttribute("href", PORTAL);
+        }
+      });
+    }
+  }
+
+  window.bccWireEncorPortalHomeLinks = wireEncorPortalHomeLinks;
+})();
+
 /**
  * Practice UI: toolbar/navigation helpers.
  * - Random queue (ccnpQuestionQueue), or
@@ -1005,6 +1044,7 @@
   }
 
   function init() {
+    window.bccWireEncorPortalHomeLinks();
     var qid = questionIdFromPath();
     if (isSampleMode()) {
       applySampleGuestChrome();
