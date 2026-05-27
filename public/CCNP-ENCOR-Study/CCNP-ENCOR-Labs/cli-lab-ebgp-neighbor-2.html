@@ -693,29 +693,20 @@ R1# copy running-config startup-config</pre>
 
     /** Baseline running-config shown for show run / do show run (review). */
     const R1_SHOW_RUN_TEXT =
-      "R1 Initial Configuration\n\n" +
-      "interface loopback0\n" +
+      "interface Loopback0\n" +
       " ip address 10.1.1.100 255.255.255.255\n" +
       "!\n" +
-      "interface loopback1\n" +
+      "interface Loopback1\n" +
       " ip address 209.165.201.1 255.255.255.248\n" +
       "!\n" +
-      "interface loopback2\n" +
+      "interface Loopback2\n" +
       " ip address 209.165.201.9 255.255.255.248\n" +
       "!\n" +
       "interface Ethernet0/0\n" +
       " ip address 209.165.200.225 255.255.255.252\n" +
       "!\n" +
       "interface Ethernet0/1\n" +
-      " ip address 209.165.202.129 255.255.255.252\n" +
-      "!\n" +
-      "router bgp 100\n" +
-      " bgp router-id 10.1.1.100\n" +
-      " neighbor 209.165.200.226 remote-as 200\n" +
-      " neighbor 209.165.202.130 remote-as 300\n" +
-      " address-family ipv4\n" +
-      "  neighbor 209.165.200.226 activate\n" +
-      "  neighbor 209.165.202.130 activate";
+      " ip address 209.165.202.129 255.255.255.252";
 
     const R2_SHOW_RUN_TEXT =
       "Current configuration : 1081 bytes\n" +
@@ -1075,6 +1066,12 @@ R1# copy running-config startup-config</pre>
       promptR3.textContent = r3ExploreNav.promptWith(promptFromMode("R3", r3Mode));
     }
 
+    function matchesR1EbgpLabStep(line) {
+      if (phase !== "BGP") return false;
+      const steps = BGP_ALL;
+      return stepIndex < steps.length && steps[stepIndex].test(line);
+    }
+
     function tryExploreR1(line) {
       return r1ExploreNav.trySubmit(line, {
         getLabPrompt: () => r1ExploreNav.promptWith(promptFromMode("R1", r1Mode)),
@@ -1083,6 +1080,7 @@ R1# copy running-config startup-config</pre>
         cmdInput: cmdline,
         normalize,
         onExploreChange: applyPhaseUI,
+        matchesLabStep: matchesR1EbgpLabStep,
       });
     }
 
@@ -1150,10 +1148,13 @@ R1# copy running-config startup-config</pre>
       });
     }
 
-    function tryHandleModeNavigation(raw, getMode, setMode, hostname, scrollEl) {
+    function tryHandleModeNavigation(raw, getMode, setMode, hostname, scrollEl, exploreNav) {
       const u = normalize(raw);
       const mode = getMode();
-      const isConfig = mode !== "exec";
+      const exploreInConfig =
+        exploreNav &&
+        (exploreNav.getMode() === "config" || exploreNav.getMode() === "config-if");
+      const isConfig = mode !== "exec" || exploreInConfig;
 
       if (u === "configure terminal" || u === "conf t") {
         if (mode !== "exec") {
@@ -1161,15 +1162,17 @@ R1# copy running-config startup-config</pre>
           return true;
         }
         setMode("config");
+        if (exploreNav && exploreNav.reset) exploreNav.reset();
         return true;
       }
 
       if (u.startsWith("router bgp ")) {
-        if (mode !== "config") {
+        if (mode !== "config" && !exploreInConfig) {
           appendLine(scrollEl, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
           return true;
         }
         setMode("config-router");
+        if (exploreNav && exploreNav.reset) exploreNav.reset();
         return true;
       }
 
@@ -1209,6 +1212,20 @@ R1# copy running-config startup-config</pre>
       }
 
       return false;
+    }
+
+    function tryHandleR1ModeNavigation(raw) {
+      return tryHandleModeNavigation(
+        raw,
+        () => r1Mode,
+        (m) => {
+          r1Mode = m;
+          applyPhaseUI();
+        },
+        "R1",
+        scrollback,
+        r1ExploreNav
+      );
     }
 
     function getEbgpNeighbor2Dev() {
@@ -1374,7 +1391,8 @@ R1# copy running-config startup-config</pre>
             updateReadonlyPrompts();
           },
           "R2",
-          scrollbackR2
+          scrollbackR2,
+          r2ExploreNav
         )
       ) return;
 
@@ -1434,7 +1452,8 @@ R1# copy running-config startup-config</pre>
             updateReadonlyPrompts();
           },
           "R3",
-          scrollbackR3
+          scrollbackR3,
+          r3ExploreNav
         )
       ) return;
 
@@ -1494,20 +1513,9 @@ R1# copy running-config startup-config</pre>
           applyPhaseUI();
         } else {
           const normalized = normalize(line);
-          if (
-            tryHandleModeNavigation(
-              line,
-              () => r1Mode,
-              (m) => {
-                r1Mode = m;
-                applyPhaseUI();
-              },
-              "R1",
-              scrollback
-            )
-          ) {
+          if (tryHandleR1ModeNavigation(line)) {
             // If tester starts configuring immediately, move into graded BGP phase.
-            if (normalized === "router bgp 100") {
+            if (normalized === "router bgp 100" && r1Mode === "config-router") {
               phase = "BGP";
               stepIndex = 1;
               appendLine(scrollback, "line-sys", "[OK] BGP process started. Continue router configuration.");
@@ -1536,18 +1544,7 @@ R1# copy running-config startup-config</pre>
           cmdline.disabled = true;
           applyPhaseUI();
         } else {
-          if (
-            tryHandleModeNavigation(
-              line,
-              () => r1Mode,
-              (m) => {
-                r1Mode = m;
-                applyPhaseUI();
-              },
-              "R1",
-              scrollback
-            )
-          ) return;
+          if (tryHandleR1ModeNavigation(line)) return;
           appendLine(scrollback, "line-bad", cliLabContainer.INVALID_INPUT_MSG);
         }
         return;
@@ -1561,18 +1558,7 @@ R1# copy running-config startup-config</pre>
       }
 
       if (!steps[stepIndex].test(line)) {
-        if (
-          tryHandleModeNavigation(
-            line,
-            () => r1Mode,
-            (m) => {
-              r1Mode = m;
-              applyPhaseUI();
-            },
-            "R1",
-            scrollback
-          )
-        ) return;
+        if (tryHandleR1ModeNavigation(line)) return;
         appendLine(
           scrollback,
           "line-bad",
