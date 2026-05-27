@@ -260,6 +260,12 @@
     .line-user { color: #7ec8ff; }
     .line-bad { color: #fca5a5; }
     .line-sys { color: #94a3b8; }
+    .line-out {
+      color: #7ec8ff;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.45;
+    }
     .input-row {
       display: flex;
       align-items: center;
@@ -566,8 +572,15 @@ R20# copy running-config startup-config</pre>
       return normalize(raw) === "exit";
     }
 
+    function normalizeInterfaceCmd(raw) {
+      const expanded = cliLabContainer.expandInterfaceEcho
+        ? cliLabContainer.expandInterfaceEcho(raw)
+        : raw;
+      return normalize(expanded);
+    }
+
     function testIntLo0(raw) {
-      const u = normalize(raw);
+      const u = normalizeInterfaceCmd(raw);
       return (
         u === "interface loopback0" ||
         u === "int loopback0" ||
@@ -577,18 +590,23 @@ R20# copy running-config startup-config</pre>
     }
 
     function testIntE00(raw) {
-      const u = normalize(raw);
+      const u = normalizeInterfaceCmd(raw);
       return u === "interface e0/0" || u === "int e0/0" || u === "interface ethernet0/0";
     }
 
     function testIntE01(raw) {
-      const u = normalize(raw);
+      const u = normalizeInterfaceCmd(raw);
       return u === "interface e0/1" || u === "int e0/1" || u === "interface ethernet0/1";
     }
 
     function testIntE02(raw) {
-      const u = normalize(raw);
+      const u = normalizeInterfaceCmd(raw);
       return u === "interface e0/2" || u === "int e0/2" || u === "interface ethernet0/2";
+    }
+
+    function testE02Ospf(raw) {
+      const u = normalize(raw);
+      return u === "ip ospf 20 area 0" || u === "ip ospf 20 area 40";
     }
 
     function promptForStep(steps, index) {
@@ -733,7 +751,7 @@ end`;
       { mode: "config-if", test: (raw) => normalize(raw) === "ip ospf 20 area 0" },
       { mode: "config-if", test: testExit },
       { mode: "config", test: testIntE02 },
-      { mode: "config-if", test: (raw) => normalize(raw) === "ip ospf 20 area 40" },
+      { mode: "config-if", test: testE02Ospf },
       { mode: "config-if", test: testExit },
       { mode: "config", test: (raw) => normalize(raw) === "router ospf 20" },
       {
@@ -742,6 +760,179 @@ end`;
       },
       { mode: "config-router", test: (raw) => normalize(raw) === "end" },
     ];
+
+    const R20_OPTIONAL_EXIT_IDX = [6, 9, 12, 15];
+    const R20_E02_OSPF_STEP_IDX = 14;
+    const R20_END_STEP_IDX = 18;
+    let r20StepDone = LAB_STEPS.map(function () {
+      return false;
+    });
+    let r20E02OspfArea = null;
+
+    function resetR20LabProgress() {
+      r20StepDone = LAB_STEPS.map(function () {
+        return false;
+      });
+      r20E02OspfArea = null;
+      stepIndex = 0;
+    }
+
+    function r20RecordE02Ospf(line) {
+      const u = normalize(line);
+      if (u === "ip ospf 20 area 40") {
+        r20E02OspfArea = 40;
+        return;
+      }
+      if (u === "ip ospf 20 area 0") {
+        r20E02OspfArea = 0;
+      }
+    }
+
+    function r20E02OspfCorrect() {
+      return r20E02OspfArea === 40;
+    }
+
+    function r20SyncStepIndex() {
+      while (stepIndex < LAB_STEPS.length && r20StepDone[stepIndex]) {
+        stepIndex += 1;
+      }
+    }
+
+    function r20AutoCompleteSkippedExits(acceptedIdx) {
+      for (let e = 0; e < R20_OPTIONAL_EXIT_IDX.length; e++) {
+        const ex = R20_OPTIONAL_EXIT_IDX[e];
+        if (ex < acceptedIdx && !r20StepDone[ex]) {
+          r20StepDone[ex] = true;
+        }
+      }
+    }
+
+    function r20LabConfigComplete() {
+      for (let i = 0; i < LAB_STEPS.length; i++) {
+        if (!r20StepDone[i]) return false;
+      }
+      return true;
+    }
+
+    function r20FinishLabConfigure() {
+      for (let i = 0; i < LAB_STEPS.length; i++) {
+        r20StepDone[i] = true;
+      }
+      stepIndex = LAB_STEPS.length;
+      appendLine("line-sys", "[OK] OSPF and summarization applied (simulated). Save.");
+      phase = "SAVE";
+      stepIndex = 0;
+      r20ExploreNav.reset();
+      applyPhaseUI();
+    }
+
+    function r20MaybeResetExploreAfter(line) {
+      const u = normalize(line);
+      if (
+        u === "router ospf 20" ||
+        u === "router-id 20.20.20.20" ||
+        testExit(line) ||
+        u === "end"
+      ) {
+        r20ExploreNav.reset();
+      }
+    }
+
+    function r20FindMatchingStep(line) {
+      for (let i = stepIndex; i < LAB_STEPS.length; i++) {
+        if (!r20StepDone[i] && LAB_STEPS[i].test(line)) return i;
+      }
+      return -1;
+    }
+
+    function r20MarkStepAccepted(idx, line) {
+      r20AutoCompleteSkippedExits(idx);
+      r20StepDone[idx] = true;
+      if (idx === R20_E02_OSPF_STEP_IDX) {
+        r20RecordE02Ospf(line);
+      }
+      r20SyncStepIndex();
+      r20MaybeResetExploreAfter(line);
+    }
+
+    function r20TryCompleteLab() {
+      if (!r20LabConfigComplete()) return false;
+      if (!r20E02OspfCorrect()) {
+        appendLine(
+          "line-bad",
+          "% Ethernet0/2 is in the wrong OSPF area: use \"ip ospf 20 area 40\" (not area 0), then run end again."
+        );
+        if (r20StepDone[R20_END_STEP_IDX]) {
+          r20StepDone[R20_END_STEP_IDX] = false;
+          r20SyncStepIndex();
+        }
+        return false;
+      }
+      r20FinishLabConfigure();
+      return true;
+    }
+
+    function r20TryAcceptLabCommand(line) {
+      if (phase !== "LAB") return false;
+      const idx = r20FindMatchingStep(line);
+      if (idx < 0) return false;
+      r20MarkStepAccepted(idx, line);
+      if (r20LabConfigComplete()) {
+        return r20TryCompleteLab();
+      }
+      return true;
+    }
+
+    function r20TryCorrectE02Ospf(line) {
+      if (phase !== "LAB" || normalize(line) !== "ip ospf 20 area 40") return false;
+      if (!r20StepDone[R20_E02_OSPF_STEP_IDX] || r20E02OspfArea === 40) return false;
+      r20E02OspfArea = 40;
+      appendLine(
+        "line-sys",
+        "[OK] Ethernet0/2 OSPF area updated to 40. Continue with end and copy run start."
+      );
+      return true;
+    }
+
+    function r20AtExecPrompt() {
+      return promptEl.textContent === "R20#" || phase === "SAVE";
+    }
+
+    function tryR20SaveCopy(line) {
+      if (!matchCopy(line) || phase === "DONE") return false;
+      if (!r20AtExecPrompt() && r20ExploreInConfig()) return false;
+
+      if (phase === "LAB") {
+        if (!r20LabConfigComplete()) return false;
+        if (!r20E02OspfCorrect()) {
+          appendLine(
+            "line-bad",
+            "% Ethernet0/2 is in the wrong OSPF area: use \"ip ospf 20 area 40\" (not area 0) before saving."
+          );
+          return true;
+        }
+        if (!r20StepDone[R20_END_STEP_IDX]) return false;
+        r20FinishLabConfigure();
+      }
+
+      if (phase !== "SAVE") return false;
+
+      if (!r20E02OspfCorrect()) {
+        appendLine(
+          "line-bad",
+          "% Ethernet0/2 is in the wrong OSPF area: use \"ip ospf 20 area 40\" (not area 0) before saving."
+        );
+        return true;
+      }
+
+      r20ExploreNav.reset();
+      appendLine("line-sys", "[OK] Building configuration... (simulated).");
+      phase = "DONE";
+      passBanner.classList.add("visible");
+      cmdline.disabled = true;
+      applyPhaseUI();
+      return true;
+    }
 
     const scrollback = document.getElementById("scrollback");
     const promptEl = document.getElementById("prompt");
@@ -794,20 +985,24 @@ end`;
 
     /** Explore conf t at step 0 — treat as configure terminal before next graded command. */
     function syncR20ExploreConfTToLab() {
-      if (phase !== "LAB" || stepIndex !== 0 || !r20ExploreInConfig()) return;
-      stepIndex = 1;
+      if (phase !== "LAB" || r20StepDone[0] || !r20ExploreInConfig()) return;
+      if (!r20StepDone[0]) {
+        r20StepDone[0] = true;
+        r20SyncStepIndex();
+      }
     }
 
-    function syncR20LabFromExplore(line) {
-      if (phase !== "LAB" || stepIndex !== 0) return;
-      if (!r20ExploreInConfig()) return;
-      if (LAB_STEPS[0].test(line)) return;
-      stepIndex = 1;
+    function syncR20ExploreInterfaceToLab(line) {
+      if (phase !== "LAB" || r20ExploreNav.getMode() !== "config-if") return;
+      const idx = r20FindMatchingStep(line);
+      if (idx < 0) return;
+      if (LAB_STEPS[idx].mode !== "config") return;
+      r20MarkStepAccepted(idx, line);
     }
 
     function matchesR20LabStep(line) {
       if (phase !== "LAB") return false;
-      return stepIndex < LAB_STEPS.length && LAB_STEPS[stepIndex].test(line);
+      return r20FindMatchingStep(line) >= 0;
     }
 
     function tryExploreR20(line) {
@@ -817,6 +1012,7 @@ end`;
         appendLine: appendLineExplore,
         cmdInput: cmdline,
         normalize,
+        expandEcho: cliLabContainer.expandInterfaceEcho,
         onExploreChange: setPrompt,
         matchesLabStep: matchesR20LabStep,
       });
@@ -852,8 +1048,8 @@ end`;
     function reset() {
       closeModals();
       phase = "LAB";
-      stepIndex = 0;
       r20ExploreNav.reset();
+      resetR20LabProgress();
       scrollback.innerHTML = "";
       passBanner.classList.remove("visible");
       cmdline.disabled = false;
@@ -865,7 +1061,7 @@ end`;
     function submit() {
       if (phase === "DONE") return;
       const steps = currentSteps();
-      if (phase !== "SAVE" && stepIndex >= steps.length) return;
+      if (phase !== "SAVE" && stepIndex >= steps.length && !matchCopy(line)) return;
 
       const line = cmdline.value;
       if (!line.trim()) {
@@ -883,6 +1079,7 @@ end`;
 
       if (tryExploreR20(line)) {
         syncR20ExploreConfTToLab();
+        syncR20ExploreInterfaceToLab(line);
         applyPhaseUI();
         return;
       }
@@ -892,47 +1089,28 @@ end`;
       cmdline.value = "";
 
       if (testShowBrief(line) && !r20ExploreInConfig()) {
-        appendBlock("line-sys", OUT_BRIEF);
+        appendBlock("line-out", OUT_BRIEF);
         return;
       }
+
+      if (tryR20SaveCopy(line)) return;
 
       if (phase === "SAVE") {
-        if (matchCopy(line)) {
-          appendLine("line-sys", "[OK] Building configuration... (simulated).");
-          phase = "DONE";
-          passBanner.classList.add("visible");
-          cmdline.disabled = true;
-          applyPhaseUI();
-        } else {
-          appendLine("line-bad", cliLabContainer.INVALID_INPUT_MSG);
-        }
+        appendLine("line-bad", cliLabContainer.INVALID_INPUT_MSG);
         return;
       }
 
-      if (phase === "LAB") {
-        syncR20LabFromExplore(line);
-      }
-
-      if (!steps[stepIndex].test(line)) {
-        appendLine(
-          "line-bad",
-          cliLabContainer.INVALID_INPUT_MSG
-        );
+      if (phase === "LAB" && r20TryCorrectE02Ospf(line)) {
+        applyPhaseUI();
         return;
       }
 
-      stepIndex += 1;
-      if (normalize(line) === "router ospf 20" || normalize(line) === "router-id 20.20.20.20") {
-        r20ExploreNav.reset();
-      }
-      if (stepIndex >= steps.length) {
-        appendLine("line-sys", "[OK] OSPF and summarization applied (simulated). Save.");
-        phase = "SAVE";
-        stepIndex = 0;
+      if (phase === "LAB" && r20TryAcceptLabCommand(line)) {
         applyPhaseUI();
-      } else {
-        applyPhaseUI();
+        return;
       }
+
+      appendLine("line-bad", cliLabContainer.INVALID_INPUT_MSG);
     }
 
     cmdline.addEventListener("keydown", (e) => {
