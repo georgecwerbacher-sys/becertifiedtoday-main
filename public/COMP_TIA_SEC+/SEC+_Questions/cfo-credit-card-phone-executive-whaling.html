@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — BEC (gift card request)</title>
+  <title>Security+ — Executive whaling (vishing)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -219,17 +219,17 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/inbound-malicious-traffic-ips-automated-block.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/sensitive-data-at-rest-encryption-unreadable.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/nation-state-financial-resources-critical-systems-abroad.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/provider-97-percent-uptime-sla.html">Next</a>
       </div>
     </nav>
-    <h1>Which of the following scenarios describes a possible business email compromise attack?</h1>
+    <h1>After a security awareness training session, a user called the IT help desk and reported a suspicious call. The suspicious caller stated that the Chief Financial Officer wanted credit card information in order to close an invoice. Which of the following topics did the user recognize from the training?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q497" value="A" />A. An employee receives a gift card request in an email that has an executive's name in the display field of the email.</label>
-    <label class="choice"><input type="radio" name="secplus_q497" value="B" />B. Employees who open an email attachment receive messages demanding payment in order to access files.</label>
-    <label class="choice"><input type="radio" name="secplus_q497" value="C" />C. A service desk employee receives an email from the HR director asking for log-in credentials to a cloud administrator account.</label>
-    <label class="choice"><input type="radio" name="secplus_q497" value="D" />D. An employee receives an email with a link to a phishing site that is designed to look like the company's email portal.</label>
+    <label class="choice"><input type="radio" name="secplus_q527" value="A" />A. Insider threat</label>
+    <label class="choice"><input type="radio" name="secplus_q527" value="B" />B. Email phishing</label>
+    <label class="choice"><input type="radio" name="secplus_q527" value="C" />C. Social engineering</label>
+    <label class="choice"><input type="radio" name="secplus_q527" value="D" />D. Executive whaling</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div class="secplus-objective-tag ccna-objective-tag" aria-label="Security+ objective section">
@@ -242,8 +242,8 @@
 
   <script>
     (function () {
-      var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 Business email compromise often impersonates an executive (display name spoofing) to pressure employees into urgent wire transfers, invoice changes, or gift card purchases. Ransomware after opening an attachment encrypts files and demands payment to restore access, which is a different attack type. An HR impersonation asking for cloud administrator credentials is targeted phishing or pretexting, not the typical BEC payment-fraud pattern. A link to a fake company email portal is credential phishing rather than executive-driven financial fraud.";
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D \u2014 Executive whaling is a targeted social engineering attack that impersonates or focuses on senior leaders such as a CFO to pressure employees into fraudulent payments or data disclosure; this scenario used a voice call (vishing) with executive impersonation. An insider threat involves a trusted insider abusing legitimate access, not an external caller posing as the CFO. Email phishing uses deceptive messages, not a phone call to the help desk. Social engineering is the broader category; executive whaling is the specific training topic the user applied when recognizing CFO invoice fraud.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -257,7 +257,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="secplus_q497"]').forEach(function (el) {
+      document.querySelectorAll('input[name="secplus_q527"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

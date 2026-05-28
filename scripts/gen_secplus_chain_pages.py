@@ -13047,6 +13047,2320 @@ CHAIN: list[dict] = [
         ],
         "objectives": ["2.2", "2.4"],
     },
+    {
+        "slug": "nation-state-financial-resources-critical-systems-abroad",
+        "title": "Security+ — Nation-state (resources abroad)",
+        "stem": (
+            "Which of the following threat actors is the most likely to use large financial resources to attack "
+            "critical systems located in other countries?"
+        ),
+        "name": "secplus_q498",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Nation-state actors are backed by government budgets and can fund long-running campaigns "
+            "against foreign critical infrastructure, defense, and industrial targets. Insiders misuse legitimate "
+            "access from inside one organization and are not defined by state-level funding. Unskilled attackers "
+            "lack sophisticated tools and sustained funding for cross-border operations. Hacktivists are "
+            "ideologically motivated and typically do not deploy nation-scale financial resources against foreign "
+            "critical systems."
+        ),
+        "choices": [
+            "Insider",
+            "Unskilled attacker",
+            "Nation-state",
+            "Hacktivist",
+        ],
+        "objectives": ["2.1"],
+    },
+    {
+        "slug": "two-person-integrity-process-security-control",
+        "title": "Security+ — Two-person integrity",
+        "stem": (
+            "Which of the following best describe why a process would require a two-person integrity "
+            "security control?"
+        ),
+        "name": "secplus_q499",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Two-person integrity (dual control) requires two authorized individuals to "
+            "complete or approve a sensitive action so no single person can perform it alone incorrectly "
+            "or without authorization. It is not meant to cut task time in half. Observers from another "
+            "department describe oversight or monitoring, not dual control. CCTV records one person "
+            "performing work; it does not replace requiring two people for the procedure itself."
+        ),
+        "choices": [
+            (
+                "To increase the chance that the activity will be completed in half of the time the process "
+                "would take only one user to complete"
+            ),
+            (
+                "To permit two users from another department to observe the activity that is being performed "
+                "by an authorized user"
+            ),
+            (
+                "To reduce the risk that the procedures are performed incorrectly or by an unauthorized user"
+            ),
+            (
+                "To allow one person to perform the activity while being recorded on the CCTV camera"
+            ),
+        ],
+        "objectives": ["1.1", "5.1"],
+    },
+    {
+        "slug": "dns-server-reflected-dos-inbound-flood",
+        "title": "Security+ — Reflected DoS (DNS flood)",
+        "stem": (
+            "A company's end users are reporting that they are unable to reach external websites. After reviewing "
+            "the performance data for the DNS servers, the analyst discovers that the CPU, disk, and memory usage "
+            "are minimal, but the network interface is flooded with inbound traffic. Network logs show only a small "
+            "number of DNS queries sent to this server. Which of the following best describes what the security "
+            "analyst is seeing?"
+        ),
+        "name": "secplus_q500",
+        "correct": "D",
+        "explain": (
+            "Correct. D — In a reflected (often amplified) denial-of-service attack, attackers send requests to "
+            "open reflectors with a spoofed source address so large volumes of response traffic flood the victim. "
+            "The DNS server may show heavy inbound traffic while CPU and memory stay low because the flood is not "
+            "legitimate query processing, and query logs can show relatively few real client requests. Concurrent "
+            "session usage concerns connection limits on hosts or services, not this reflector pattern. A secure "
+            "DNS cryptographic downgrade targets DNSSEC negotiation, not interface saturation with minimal "
+            "utilization. On-path resource consumption describes an attacker exhausting resources on a path between "
+            "parties, not spoofed reflection from third-party resolvers."
+        ),
+        "choices": [
+            "Concurrent session usage",
+            "Secure DNS cryptographic downgrade",
+            "On-path resource consumption",
+            "Reflected denial of service",
+        ],
+        "objectives": ["2.4", "4.4"],
+    },
+    {
+        "slug": "wlan-lobby-channel-overlap-high-power",
+        "title": "Security+ — WLAN channel overlap (lobby)",
+        "stem": (
+            "Since a recent upgrade to a WLAN infrastructure, several mobile users have been unable to access "
+            "the internet from the lobby. The networking team performs a heat map survey of the building and "
+            "finds several WAPs in the area. The WAPs are using similar frequencies with high power settings. "
+            "Which of the following installation considerations should the security team evaluate next?"
+        ),
+        "name": "secplus_q501",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Multiple access points on overlapping or adjacent channels with high transmit power "
+            "in the same area cause co-channel and adjacent-channel interference, degrading throughput and "
+            "breaking client connectivity even when coverage looks strong on a heat map. Encryption type affects "
+            "confidentiality and authentication but does not explain RF contention from similar frequencies. "
+            "Re-evaluating an entire new WLAN deployment is broader than the specific finding about channels "
+            "and power. WAP placement matters, but the survey already shows several WAPs in the lobby; the next "
+            "focus is how those radios share spectrum (channel plan and power), not placement alone."
+        ),
+        "choices": [
+            "Channel overlap",
+            "Encryption type",
+            "New WLAN deployment",
+            "WAP placement",
+        ],
+        "objectives": ["3.2", "4.1"],
+    },
+    {
+        "slug": "customer-data-network-segmentation-corporate",
+        "title": "Security+ — Segmentation (customer data)",
+        "stem": (
+            "An organization would like to store customer data on a separate part of the network that is not "
+            "accessible to users on the main corporate network. Which of the following should the administrator "
+            "use to accomplish this goal?"
+        ),
+        "name": "secplus_q502",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Network segmentation divides the environment into zones (for example corporate LAN "
+            "and a restricted customer-data segment) with VLANs, subnets, and firewall or ACL rules so main-network "
+            "users cannot reach sensitive storage. Isolation can mean stronger separation such as air-gapped "
+            "systems but the scenario describes a separate network portion, which segmentation implements. "
+            "Patching fixes vulnerabilities on systems but does not by itself create a non-accessible network "
+            "zone. Encryption protects data confidentiality; it does not replace logical separation from the "
+            "corporate network."
+        ),
+        "choices": [
+            "Segmentation",
+            "Isolation",
+            "Patching",
+            "Encryption",
+        ],
+        "objectives": ["3.2", "2.5"],
+    },
+    {
+        "slug": "secure-coding-training-customer-attestation",
+        "title": "Security+ — Attestation (secure coding)",
+        "stem": (
+            "Which of the following is the act of proving to a customer that software developers are trained on "
+            "secure coding?"
+        ),
+        "name": "secplus_q503",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Attestation is a formal declaration or evidence that a control exists, such as "
+            "certifying that developers completed secure coding training or providing an auditor's report to "
+            "the customer. Assurance is the broader confidence that security requirements are met, not the "
+            "specific act of proving training. A contract sets legal obligations but is not itself proof that "
+            "training occurred. Due diligence is the customer's investigation of a vendor before engagement, "
+            "not the vendor's proof to the customer after the fact."
+        ),
+        "choices": [
+            "Assurance",
+            "Contract",
+            "Due diligence",
+            "Attestation",
+        ],
+        "objectives": ["5.3", "5.1"],
+    },
+    {
+        "slug": "external-network-testing-third-party-attestation",
+        "title": "Security+ — Third-party attestation (external testing)",
+        "stem": (
+            "Which of the following should a company use to provide proof of external network security testing?"
+        ),
+        "name": "secplus_q504",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Third-party attestation is formal evidence from an independent assessor (for example an "
+            "external penetration test report, SOC 2 Type II, or similar certification) that network security testing "
+            "was performed by an outside party. A business impact analysis evaluates operational and financial "
+            "effects of outages; it does not document security test results. Supply chain analysis reviews vendor "
+            "and dependency risk, not proof of your external network test. A vulnerability assessment identifies "
+            "weaknesses but may be internal and is not by itself the formal third-party proof customers or "
+            "regulators often require."
+        ),
+        "choices": [
+            "Business impact analysis",
+            "Supply chain analysis",
+            "Vulnerability assessment",
+            "Third-party attestation",
+        ],
+        "objectives": ["5.5", "5.3"],
+    },
+    {
+        "slug": "stolen-website-private-key-update-crl",
+        "title": "Security+ — CRL (stolen private key)",
+        "stem": (
+            "The private key for a website was stolen, and a new certificate has been issued. Which of the "
+            "following needs to be updated next?"
+        ),
+        "name": "secplus_q505",
+        "correct": "B",
+        "explain": (
+            "Correct. B — After key compromise the old certificate must be revoked and the certificate revocation "
+            "list (CRL) updated so clients no longer trust it. SCEP automates certificate enrollment to devices "
+            "and is not the revocation publish step after a compromise. OCSP provides online per-certificate "
+            "status checks; the CA also updates OCSP, but CompTIA expects CRL as the published revocation list "
+            "to update when a stolen key forces reissue. A CSR is created before the CA issues a new "
+            "certificate and is already complete once the replacement cert exists."
+        ),
+        "choices": [
+            "SCEP",
+            "CRL",
+            "OCSP",
+            "CSR",
+        ],
+        "objectives": ["1.4", "4.6"],
+    },
+    {
+        "slug": "tokenization-credit-card-customer-storage",
+        "title": "Security+ — Tokenization (stored cards)",
+        "stem": (
+            "In which of the following scenarios is tokenization the best privacy technique to use?"
+        ),
+        "name": "secplus_q506",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Tokenization replaces primary account numbers with non-sensitive tokens in storage "
+            "and processing so merchants can support saved payment methods without keeping full card data, "
+            "which aligns with PCI goals. Pseudo-anonymization for social accounts may use pseudonyms or "
+            "identifiers but is not the classic payment tokenization model. A second authentication factor "
+            "uses MFA methods such as OTP apps or hardware keys, not data tokenization. Masking or segmenting "
+            "PII in databases limits exposure or scope but does not provide reversible payment tokens tied to "
+            "a secure vault the way card tokenization does."
+        ),
+        "choices": [
+            "Providing pseudo-anonymization for social media user accounts",
+            "Serving as a second factor for authentication requests",
+            "Enabling established customers to safely store credit card information",
+            "Masking personal information inside databases by segmenting data",
+        ],
+        "objectives": ["3.3", "1.4"],
+    },
+    {
+        "slug": "effective-change-management-backout-plan",
+        "title": "Security+ — Change management (backout plan)",
+        "stem": (
+            "Which of the following describes effective change management procedures?"
+        ),
+        "name": "secplus_q507",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Effective change management includes planning how to roll back if a patch or change "
+            "fails, including a tested backout plan before production deployment. Approving a change only after "
+            "successful deployment reverses the order; approval and testing should occur before implementation. "
+            "A spreadsheet may track tickets but does not by itself define sound change control. Automatically "
+            "bypassing change control for security updates removes review and testing and can cause outages or "
+            "compliance gaps."
+        ),
+        "choices": [
+            "Approving the change after a successful deployment",
+            "Having a backout plan when a patch fails",
+            "Using a spreadsheet for tracking changes",
+            "Using an automatic change control bypass for security updates",
+        ],
+        "objectives": ["1.3"],
+    },
+    {
+        "slug": "saas-legal-docs-geolocation-policy-high-risk",
+        "title": "Security+ — Geolocation policy (SaaS)",
+        "stem": (
+            "A company's legal department drafted sensitive documents in a SaaS application and wants to ensure "
+            "the documents cannot be accessed by individuals in high-risk countries. Which of the following is "
+            "the most effective way to limit this access?"
+        ),
+        "name": "secplus_q508",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A geolocation policy (often enforced with IP geolocation, conditional access, or SaaS "
+            "location controls) blocks or challenges sign-ins and sessions from specified high-risk countries. "
+            "Data masking obscures field values for display or testing and does not stop access by region. "
+            "Encryption protects confidentiality but does not prevent authorized users in blocked countries "
+            "from decrypting if they can authenticate. Data sovereignty regulation defines legal jurisdiction "
+            "over where data resides; it is not the operational control that most directly blocks user access "
+            "from specific countries in a SaaS tenant."
+        ),
+        "choices": [
+            "Data masking",
+            "Encryption",
+            "Geolocation policy",
+            "Data sovereignty regulation",
+        ],
+        "objectives": ["4.5", "3.2"],
+    },
+    {
+        "slug": "regulatory-audit-failure-fines-non-compliance",
+        "title": "Security+ — Non-compliance (regulatory fines)",
+        "stem": (
+            "After failing an audit twice, an organization has been ordered by a government regulatory agency to "
+            "pay fines. Which of the following caused this action?"
+        ),
+        "name": "secplus_q509",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Repeated audit failures show the organization did not meet regulatory requirements, "
+            "which is non-compliance; regulators then impose fines or other penalties. Contract violations "
+            "concern breaches of agreements between parties, not the typical outcome of a government compliance "
+            "audit. Government sanctions can include fines but describe the penalty imposed, not the underlying "
+            "failure that triggered enforcement. Rules of engagement define authorized scope for security tests "
+            "or military operations, not regulatory audit outcomes."
+        ),
+        "choices": [
+            "Non-compliance",
+            "Contract violations",
+            "Government sanctions",
+            "Rules of engagement",
+        ],
+        "objectives": ["5.4", "5.2"],
+    },
+    {
+        "slug": "newly-deployed-server-first-step-update-software",
+        "title": "Security+ — New server (update software first)",
+        "stem": (
+            "Which of the following is the first step to secure a newly deployed server?"
+        ),
+        "name": "secplus_q510",
+        "correct": "B",
+        "explain": (
+            "Correct. B — On a new deployment, applying updates to the current OS and installed software closes "
+            "known vulnerabilities before the system is exposed or further hardened. Closing unnecessary service "
+            "ports is essential but typically follows patching and baseline configuration. Adding the device to "
+            "an ACL restricts network access and is part of defense in depth after the host itself is updated "
+            "and hardened. Upgrading to a newer major OS version is a larger change project and is not the "
+            "standard first step when the server was just deployed on its present version."
+        ),
+        "choices": [
+            "Close unnecessary service ports",
+            "Update the current version of the software",
+            "Add the device to the ACL",
+            "Upgrade the OS version",
+        ],
+        "objectives": ["4.1", "4.2"],
+    },
+    {
+        "slug": "controlled-software-version-release-change-management",
+        "title": "Security+ — Change management (version release)",
+        "stem": (
+            "Which of the following would best ensure a controlled version release of a new software application?"
+        ),
+        "name": "secplus_q511",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Change management procedures require documented requests, review, approval, testing, "
+            "scheduled deployment, and rollback planning so new application versions reach production in a "
+            "controlled way. Business continuity planning keeps operations running after disruption but does not "
+            "govern routine software release discipline. Quantified risk analysis assigns numeric risk values to "
+            "inform decisions but does not by itself enforce release gates. Static code analysis finds defects and "
+            "vulnerabilities in source before release and complements change control but does not replace the "
+            "process that authorizes and tracks the version rollout."
+        ),
+        "choices": [
+            "Business continuity planning",
+            "Quantified risk analysis",
+            "Static code analysis",
+            "Change management procedures",
+        ],
+        "objectives": ["1.3", "4.7"],
+    },
+    {
+        "slug": "high-school-unvetted-simulation-shadow-it",
+        "title": "Security+ — Shadow IT (unvetted simulation)",
+        "stem": (
+            "During a routine audit, an analyst discovers that a department at a high school uses a simulation "
+            "program that was not properly vetted before deployment. Which of the following threats is this an "
+            "example of?"
+        ),
+        "name": "secplus_q512",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Shadow IT is hardware, software, or cloud services deployed without IT or security "
+            "review and approval, such as an unvetted simulation program adopted by a school department. "
+            "Espionage is intelligence gathering by threat actors, often nation-states. Data exfiltration is "
+            "unauthorized removal of sensitive information from the environment. A zero-day is exploitation of a "
+            "previously unknown vulnerability, not the use of unsanctioned applications discovered during audit."
+        ),
+        "choices": [
+            "Espionage",
+            "Data exfiltration",
+            "Shadow IT",
+            "Zero-day",
+        ],
+        "objectives": ["2.1", "5.1"],
+    },
+    {
+        "slug": "board-quarterly-incident-report-dashboard",
+        "title": "Security+ — Dashboard (board incident report)",
+        "stem": (
+            "A newly appointed board member with cybersecurity knowledge wants the board of directors to receive "
+            "a quarterly report detailing the number of incidents that impacted the organization. The systems "
+            "administrator is creating a way to present the data to the board of directors. Which of the following "
+            "should the systems administrator use?"
+        ),
+        "name": "secplus_q513",
+        "correct": "D",
+        "explain": (
+            "Correct. D — A security dashboard aggregates incident metrics, trends, and key indicators into "
+            "executive-friendly visuals suitable for quarterly board reporting. Packet captures are raw network "
+            "traffic recordings used for deep technical analysis, not high-level governance briefings. Vulnerability "
+            "scans identify weaknesses and misconfigurations; they do not by themselves summarize incident counts "
+            "for leadership. Metadata describes properties of data or files and is not the presentation layer for "
+            "board-level incident reporting."
+        ),
+        "choices": [
+            "Packet captures",
+            "Vulnerability scans",
+            "Metadata",
+            "Dashboard",
+        ],
+        "objectives": ["4.4", "5.1"],
+    },
+    {
+        "slug": "jump-server-layer-internal-resource-access",
+        "title": "Security+ — Jump server (internal access layer)",
+        "stem": (
+            "An engineer needs to find a solution that creates an added layer of security by preventing unauthorized "
+            "access to internal company resources. Which of the following would be the best solution?"
+        ),
+        "name": "secplus_q514",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A jump server (bastion host) is a hardened intermediary; users connect to it first under "
+            "strict controls, then reach internal systems, which reduces direct exposure of internal resources. "
+            "An RDP server provides remote desktop access and, if exposed broadly, can increase attack surface "
+            "rather than add a controlled access layer. A proxy server forwards client requests, often for web "
+            "traffic, and is not the primary bastion pattern for protecting general internal resources. A "
+            "hypervisor hosts virtual machines and does not by itself prevent unauthorized access to company "
+            "resources."
+        ),
+        "choices": [
+            "RDP server",
+            "Jump server",
+            "Proxy server",
+            "Hypervisor",
+        ],
+        "objectives": ["3.2", "4.5"],
+    },
+    {
+        "slug": "vulnerability-list-first-automated-scanning",
+        "title": "Security+ — Automated scanning (vuln list first)",
+        "stem": (
+            "Which of the following activities should be performed first to compile a list of vulnerabilities in an "
+            "environment?"
+        ),
+        "name": "secplus_q515",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Automated vulnerability scanning discovers missing patches, misconfigurations, and "
+            "known CVEs across assets to build the initial vulnerability list before prioritization and remediation. "
+            "Penetration testing actively exploits weaknesses after scope and findings are understood. Threat hunting "
+            "searches for malicious activity and indicators, not a comprehensive vulnerability inventory. Log "
+            "aggregation centralizes events for analysis but does not by itself enumerate system and application "
+            "flaws. Adversarial emulation simulates attacker TTPs to test defenses and typically follows baseline "
+            "visibility such as scanning."
+        ),
+        "choices": [
+            "Automated scanning",
+            "Penetration testing",
+            "Threat hunting",
+            "Log aggregation",
+            "Adversarial emulation",
+        ],
+        "objectives": ["4.3", "4.9"],
+    },
+    {
+        "slug": "verify-data-not-modified-hash-algorithm",
+        "title": "Security+ — Hash (integrity verification)",
+        "stem": (
+            "Which of the following is an algorithm performed to verify that data has not been modified?"
+        ),
+        "name": "secplus_q516",
+        "correct": "A",
+        "explain": (
+            "Correct. A — A cryptographic hash algorithm produces a fixed digest of data; comparing hashes before "
+            "and after transfer or storage verifies integrity because any change alters the digest. A code check "
+            "is not a standard integrity algorithm category on the exam. Encryption primarily protects "
+            "confidentiality and is reversible with keys; it is not the usual one-way integrity proof. A checksum "
+            "can detect simple errors but exam questions that ask for cryptographic verification of modification "
+            "expect hashing (for example SHA-256) rather than basic checksums such as CRC."
+        ),
+        "choices": [
+            "Hash",
+            "Code check",
+            "Encryption",
+            "Checksum",
+        ],
+        "objectives": ["1.4", "1.2"],
+    },
+    {
+        "slug": "cloud-easy-deployment-infrastructure-as-code",
+        "title": "Security+ — IaC (cloud deployment)",
+        "stem": (
+            "Which of the following should a systems administrator use to ensure an easy deployment of resources "
+            "within the cloud provider?"
+        ),
+        "name": "secplus_q517",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Infrastructure as code (IaC) defines cloud resources in version-controlled templates "
+            "(for example Terraform or CloudFormation) so deployments are repeatable, fast, and consistent. "
+            "Software as a service delivers applications to users over the internet and does not provision "
+            "underlying cloud infrastructure. Internet of Things refers to connected devices and sensors, not "
+            "cloud resource rollout. Software-defined networking abstracts network control planes but is not "
+            "the primary method for easily deploying full cloud resource stacks."
+        ),
+        "choices": [
+            "Software as a service",
+            "Infrastructure as code",
+            "Internet of Things",
+            "Software-defined networking",
+        ],
+        "objectives": ["3.1", "4.7"],
+    },
+    {
+        "slug": "weather-server-room-geographic-dispersion",
+        "title": "Security+ — Geographic dispersion (weather)",
+        "stem": (
+            "A company is concerned about weather events causing damage to the server room and downtime. "
+            "Which of the following should the company consider?"
+        ),
+        "name": "secplus_q518",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Geographic dispersion places systems or failover sites in separate regions so a local "
+            "weather event cannot destroy the only server room and halt operations. Clustering servers improves "
+            "availability among nodes in the same site but does not survive physical loss of the facility. Load "
+            "balancers distribute traffic across healthy nodes and do not protect against a single-site disaster. "
+            "Off-site backups protect data for recovery but do not by themselves keep services online when the "
+            "primary server room is damaged."
+        ),
+        "choices": [
+            "Clustering servers",
+            "Geographic dispersion",
+            "Load balancers",
+            "Off-site backups",
+        ],
+        "objectives": ["3.4"],
+    },
+    {
+        "slug": "failed-drive-downtime-estimate-mttr",
+        "title": "Security+ — MTTR (failed drive repair)",
+        "stem": (
+            "An administrator investigating an incident is concerned about the downtime of a critical server due to "
+            "a failed drive. Which of the following would the administrator use to estimate the time needed to fix "
+            "the issue?"
+        ),
+        "name": "secplus_q519",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Mean time to repair (MTTR) is the average time to diagnose, replace, and restore a failed "
+            "component such as a drive. Mean time between failures (MTBF) measures average uptime between failures "
+            "and predicts reliability, not repair duration. Recovery time objective (RTO) is the maximum acceptable "
+            "business downtime after a disruption, a planning target rather than the average hardware fix time. "
+            "Recovery point objective (RPO) is the maximum acceptable data loss window and drives backup frequency, "
+            "not physical repair estimates."
+        ),
+        "choices": [
+            "MTTR",
+            "MTBF",
+            "RTO",
+            "RPO",
+        ],
+        "objectives": ["3.4", "5.2"],
+    },
+    {
+        "slug": "limited-resources-communications-ecc",
+        "title": "Security+ — ECC (limited resources)",
+        "stem": (
+            "Which of the following cryptographic methods is preferred for securing communications with limited "
+            "computing resources?"
+        ),
+        "name": "secplus_q520",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Elliptic curve cryptography (ECC) provides strong security with smaller keys and lower "
+            "CPU use than traditional RSA, which suits mobile, IoT, and other resource-constrained endpoints. "
+            "Hashing verifies integrity and is one-way; it does not encrypt communications. Public key "
+            "infrastructure is a certificate and trust framework that may use heavy algorithms, not the lightweight "
+            "method itself. Symmetric encryption such as AES is efficient for bulk data but key distribution "
+            "often still relies on asymmetric methods; ECC is the exam's preferred asymmetric choice for limited "
+            "computing power."
+        ),
+        "choices": [
+            "Hashing algorithm",
+            "Public key infrastructure",
+            "Symmetric encryption",
+            "Elliptic curve cryptography",
+        ],
+        "objectives": ["1.4"],
+    },
+    {
+        "slug": "incident-response-evidence-chain-of-custody",
+        "title": "Security+ — Chain of custody (evidence handling)",
+        "stem": (
+            "Which of the following incident response activities ensures evidence is properly handled?"
+        ),
+        "name": "secplus_q521",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Chain of custody documents who collected evidence, every transfer, storage location, and "
+            "analysis step so it stays admissible and untampered. E-discovery is the legal process of identifying "
+            "and producing electronically stored information for litigation, broader than per-item handling logs. "
+            "A legal hold instructs custodians to preserve relevant data when litigation is anticipated but does "
+            "not by itself record each physical or logical transfer. Preservation keeps evidence from alteration "
+            "and is supported by chain of custody, but preservation alone is not the documented handling trail."
+        ),
+        "choices": [
+            "E-discovery",
+            "Chain of custody",
+            "Legal hold",
+            "Preservation",
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "vm-escape-access-adjacent-hosts",
+        "title": "Security+ — VM escape (adjacent hosts)",
+        "stem": (
+            "Which of the following types of vulnerabilities involves attacking a system to access adjacent hosts?"
+        ),
+        "name": "secplus_q522",
+        "correct": "A",
+        "explain": (
+            "Correct. A — VM escape breaks out of guest isolation so an attacker can reach the hypervisor, host, "
+            "or other virtual machines on the same platform (adjacent hosts on shared hardware). Side loading "
+            "installs unapproved applications on a device and does not cross VM or host boundaries. Remote code "
+            "execution runs arbitrary code on the targeted system but does not by itself describe reaching "
+            "neighboring hosts on shared infrastructure. Resource exhaustion degrades availability by consuming "
+            "CPU, memory, or bandwidth rather than pivoting to adjacent systems."
+        ),
+        "choices": [
+            "VM escape",
+            "Side loading",
+            "Remote code execution",
+            "Resource exhaustion",
+        ],
+        "objectives": ["2.3", "3.1"],
+    },
+    {
+        "slug": "vendor-compliance-objectives-attestation-letter",
+        "title": "Security+ — Attestation of compliance (vendor)",
+        "stem": (
+            "The Chief Information Officer (CIO) asked a vendor to provide documentation detailing the specific "
+            "objectives within the compliance framework that the vendor's services meet. The vendor provided a "
+            "report and a signed letter stating that the services meet 17 of the 21 objectives. Which of the "
+            "following did the vendor provide to the CIO?"
+        ),
+        "name": "secplus_q523",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Attestation of compliance is a formal statement, often signed by management, that "
+            "specific framework objectives or controls are met, supported by a report mapping coverage such as "
+            "17 of 21 objectives. Penetration test results document technical exploitation attempts and findings, "
+            "not a control-framework coverage letter. Self-assessment findings may describe internal gap analysis "
+            "but the signed attestation letter is the formal compliance declaration the CIO received. A "
+            "third-party audit report is issued by an independent auditor, not the vendor's own signed assertion."
+        ),
+        "choices": [
+            "Penetration test results",
+            "Self-assessment findings",
+            "Attestation of compliance",
+            "Third-party audit report",
+        ],
+        "objectives": ["5.3", "5.4"],
+    },
+    {
+        "slug": "phishing-click-impact-edr-block-execution",
+        "title": "Security+ — EDR (phishing click impact)",
+        "stem": (
+            "A security analyst and the management team are reviewing the organizational performance of a recent "
+            "phishing campaign. The user click-through rate exceeded the acceptable risk threshold, and the "
+            "management team wants to reduce the impact when a user clicks on a link in a phishing message. "
+            "Which of the following should the analyst do?"
+        ),
+        "name": "secplus_q524",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Updating EDR policies to block automatic execution of downloaded programs limits damage "
+            "after a user clicks a malicious link, even when awareness training has not prevented the click. "
+            "Posters and additional phishing training reduce the likelihood of clicks but do not contain malware "
+            "execution after a mistake. Email security filters reduce delivery of phishing messages but do not "
+            "address impact once a user reaches a link through another channel or a filter miss."
+        ),
+        "choices": [
+            "Place posters around the office to raise awareness of common phishing activities.",
+            "Implement email security filters to prevent phishing emails from being delivered",
+            "Update the EDR policies to block automatic execution of downloaded programs.",
+            "Create additional training for users to recognize the signs of phishing attempts.",
+        ],
+        "objectives": ["2.5", "4.1"],
+    },
+    {
+        "slug": "right-to-be-forgotten-noncompliance-fines",
+        "title": "Security+ — Right to be forgotten (fines)",
+        "stem": (
+            "An organization failed to account for the right-to-be-forgotten regulations. Which of the following "
+            "impacts might this action have on the company?"
+        ),
+        "name": "secplus_q525",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Failure to honor privacy regulations such as the right to be forgotten (data erasure "
+            "under laws like GDPR) commonly results in regulatory fines and penalties. Data breaches are "
+            "security incidents involving unauthorized access or disclosure, not the direct consequence of "
+            "missing an erasure obligation. Revenue loss may occur indirectly but fines are the primary "
+            "compliance impact cited on the exam. Blackmail is a criminal threat using coercion and is unrelated "
+            "to regulatory non-compliance with data-subject rights."
+        ),
+        "choices": [
+            "Fines",
+            "Data breaches",
+            "Revenue loss",
+            "Blackmail",
+        ],
+        "objectives": ["5.4", "5.2"],
+    },
+    {
+        "slug": "sensitive-data-at-rest-encryption-unreadable",
+        "title": "Security+ — Encryption (data at rest)",
+        "stem": (
+            "A company must ensure sensitive data at rest is rendered unreadable. Which of the following will the "
+            "company most likely use?"
+        ),
+        "name": "secplus_q526",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Encryption transforms stored data into ciphertext that is unreadable without the proper "
+            "keys, which is the standard control for confidentiality of data at rest. Hashing is one-way and is "
+            "used for integrity verification and password storage, not to protect readable files or databases at "
+            "rest for later use. Tokenization replaces sensitive values with tokens while the original may remain "
+            "in a vault; it is common for payment data but encryption is the direct method to render stored data "
+            "unreadable. Segmentation isolates networks or systems and does not encrypt stored content."
+        ),
+        "choices": [
+            "Hashing",
+            "Tokenization",
+            "Encryption",
+            "Segmentation",
+        ],
+        "objectives": ["1.4", "3.3"],
+    },
+    {
+        "slug": "cfo-credit-card-phone-executive-whaling",
+        "title": "Security+ — Executive whaling (vishing)",
+        "stem": (
+            "After a security awareness training session, a user called the IT help desk and reported a suspicious "
+            "call. The suspicious caller stated that the Chief Financial Officer wanted credit card information in "
+            "order to close an invoice. Which of the following topics did the user recognize from the training?"
+        ),
+        "name": "secplus_q527",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Executive whaling is a targeted social engineering attack that impersonates or focuses on "
+            "senior leaders such as a CFO to pressure employees into fraudulent payments or data disclosure; this "
+            "scenario used a voice call (vishing) with executive impersonation. An insider threat involves a trusted "
+            "insider abusing legitimate access, not an external caller posing as the CFO. Email phishing uses "
+            "deceptive messages, not a phone call to the help desk. Social engineering is the broader category; "
+            "executive whaling is the specific training topic the user applied when recognizing CFO invoice fraud."
+        ),
+        "choices": [
+            "Insider threat",
+            "Email phishing",
+            "Social engineering",
+            "Executive whaling",
+        ],
+        "objectives": ["2.2", "2.4"],
+    },
+    {
+        "slug": "provider-97-percent-uptime-sla",
+        "title": "Security+ — SLA (97% uptime)",
+        "stem": (
+            "A company expects its provider to ensure servers and networks maintain 97% uptime. Which of the "
+            "following would most likely list this expectation?"
+        ),
+        "name": "secplus_q528",
+        "correct": "D",
+        "explain": (
+            "Correct. D — A service level agreement (SLA) defines measurable service commitments such as uptime "
+            "percentages, response times, and remedies when targets are missed. A BPA may be a business partnership "
+            "or business associate agreement depending on context but does not typically specify operational uptime "
+            "metrics. An MOU documents mutual intent to cooperate and is less binding and detailed than uptime "
+            "commitments. An NDA restricts disclosure of confidential information and does not define availability "
+            "requirements."
+        ),
+        "choices": [
+            "BPA",
+            "MOU",
+            "NDA",
+            "SLA",
+        ],
+        "objectives": ["5.3", "5.1"],
+    },
+    {
+        "slug": "wireless-ap-count-site-survey",
+        "title": "Security+ — Site survey (AP count)",
+        "stem": (
+            "A store is setting up wireless access for employees. Management wants to limit the number of access "
+            "points while ensuring full coverage. Which tool will help determine how many access points are needed?"
+        ),
+        "name": "secplus_q529",
+        "correct": "D",
+        "explain": (
+            "Correct. D — A wireless site survey measures signal strength, interference, and building layout to plan "
+            "how many access points are required and where to place them for full coverage with minimal hardware. "
+            "A signal locator may help find sources but does not replace structured survey planning for AP density. "
+            "WPA3 is an encryption standard for securing Wi-Fi, not a coverage planning tool. A heat map visualizes "
+            "coverage results and is often produced during a site survey rather than being the primary method to "
+            "decide AP count."
+        ),
+        "choices": [
+            "Signal locator",
+            "WPA3",
+            "Heat map",
+            "Site survey",
+        ],
+        "objectives": ["3.2", "4.1"],
+    },
+    {
+        "slug": "employee-laptops-encrypt-all-data-fde",
+        "title": "Security+ — Full disk (employee laptops)",
+        "stem": (
+            "A systems administrator needs to encrypt all data on employee laptops. Which of the following "
+            "encryption levels should be implemented?"
+        ),
+        "name": "secplus_q530",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Full disk encryption (FDE) encrypts the entire drive, including the operating system, "
+            "applications, and user data, so everything on a lost or stolen laptop stays unreadable without "
+            "credentials. Volume encryption protects a logical volume but may leave other volumes or boot areas "
+            "unprotected if not planned carefully. Partition encryption covers a partition, not necessarily the "
+            "whole device. File-level encryption protects selected files only and does not ensure all data on "
+            "the laptop is encrypted by default."
+        ),
+        "choices": [
+            "Volume",
+            "Partition",
+            "Full disk",
+            "File",
+        ],
+        "objectives": ["1.4", "3.3"],
+    },
+    {
+        "slug": "rd-department-bypass-vpn-shadow-it",
+        "title": "Security+ — Shadow IT (VPN bypass)",
+        "stem": (
+            "A systems administrator notices that the research and development department is not using the company "
+            "VPN when accessing various company-related services and systems. Which of the following scenarios "
+            "describes this activity?"
+        ),
+        "name": "secplus_q531",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Shadow IT is the use of systems, services, or access methods without IT approval, such as "
+            "reaching company resources without the required corporate VPN. Espionage is intelligence gathering by "
+            "adversaries, not a department skipping an approved remote access control. Data exfiltration is "
+            "unauthorized removal of data; the stem describes how R&D connects, not confirmed theft. A nation-state "
+            "attack is advanced threat activity attributed to government actors, not internal policy bypass."
+        ),
+        "choices": [
+            "Espionage",
+            "Data exfiltration",
+            "Nation-state attack",
+            "Shadow IT",
+        ],
+        "objectives": ["2.1", "5.1"],
+    },
+    {
+        "slug": "pentest-passive-recon-osint",
+        "title": "Security+ — OSINT (passive recon)",
+        "stem": (
+            "Which of the following is a common, passive reconnaissance technique employed by penetration testers "
+            "in the early phases of an engagement?"
+        ),
+        "name": "secplus_q532",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Open-source intelligence (OSINT) collects publicly available information such as DNS "
+            "records, job postings, and social media without directly probing the target's systems, which makes "
+            "it passive reconnaissance in early pentest phases. Port scanning sends packets to target hosts and "
+            "is active reconnaissance. Pivoting moves through compromised systems after initial access and is not "
+            "an early passive technique. Exploit validation tests whether vulnerabilities can be exploited and "
+            "occurs in later active testing phases."
+        ),
+        "choices": [
+            "Open-source intelligence",
+            "Port scanning",
+            "Pivoting",
+            "Exploit validation",
+        ],
+        "objectives": ["4.9", "2.4"],
+    },
+    {
+        "slug": "verify-software-from-vendor-code-signature",
+        "title": "Security+ — Code signature (vendor verify)",
+        "stem": (
+            "A company wants to verify that the software the company is deploying came from the vendor the company "
+            "purchased the software from. Which of the following is the best way for the company to confirm this "
+            "information?"
+        ),
+        "name": "secplus_q533",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Validating the code signature checks the publisher digital certificate chain so the "
+            "installer or binary is authentic and was not altered after the vendor signed it. Executing code in a "
+            "sandbox observes runtime behavior but does not prove publisher identity. Searching an executable for "
+            "ASCII strings is trivial analysis and is not a trust mechanism. Generating a file hash supports "
+            "integrity comparison only when matched to a trusted vendor-published hash; it does not by itself "
+            "prove origin like a signature from the vendor."
+        ),
+        "choices": [
+            "Validate the code signature.",
+            "Execute the code in a sandbox.",
+            "Search the executable for ASCII strings.",
+            "Generate a hash of the files.",
+        ],
+        "objectives": ["1.4", "4.2"],
+    },
+    {
+        "slug": "datacenter-insider-intrusion-access-badge",
+        "title": "Security+ — Access badge (data center)",
+        "stem": (
+            "Which of the following is the best way to secure an on-site data center against intrusion from an "
+            "insider?"
+        ),
+        "name": "secplus_q534",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Access badges enforce physical entry controls by tying facility access to authorized "
+            "identities, which limits insider intrusion and supports audit logs when combined with door readers "
+            "and revocation processes. Bollards block vehicle ramming at perimeters and do not control personnel "
+            "entry. Motion sensors detect movement but do not authenticate individuals or stop a permitted insider "
+            "from entering. Video surveillance records activity for investigation but is primarily detective "
+            "rather than the preventive access control that stops unauthorized insider entry."
+        ),
+        "choices": [
+            "Bollards",
+            "Access badge",
+            "Motion sensor",
+            "Video surveillance",
+        ],
+        "objectives": ["3.2", "1.1"],
+    },
+    {
+        "slug": "malware-download-alert-sandbox-analysis",
+        "title": "Security+ — Sandbox (malware analysis)",
+        "stem": (
+            "A security analyst receives an alert that there was an attempt to download known malware. Which of "
+            "the following actions would allow the best chance to analyze the malware?"
+        ),
+        "name": "secplus_q535",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Running the malware in an isolated sandbox with packet captures lets analysts observe "
+            "execution behavior, persistence attempts, and command-and-control traffic without risking production "
+            "systems. Reviewing IPS logs for blocked C2 addresses shows what was stopped but provides limited insight "
+            "into the sample itself. Application logs help after infection on a host and may be empty if the download "
+            "was blocked. Vulnerability scans identify susceptible assets but do not dissect the malware's actions."
+        ),
+        "choices": [
+            "Review the IPS logs and determine which command-and-control IPs were blocked.",
+            "Analyze application logs to see how the malware attempted to maintain persistence.",
+            "Run vulnerability scans to check for systems and applications that are vulnerable to the malware.",
+            (
+                "Obtain and execute the malware in a sandbox environment and perform packet "
+                "captures."
+            ),
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "remote-workforce-vpn-firewall-sase",
+        "title": "Security+ — SASE (remote VPN + firewall)",
+        "stem": (
+            "An enterprise security team is researching a new security architecture to better protect the company's "
+            "networks and applications against the latest cyberthreats. The company has a fully remote workforce. "
+            "The solution should be highly redundant and enable users to connect to a VPN with an integrated, "
+            "software-based firewall. Which of the following solutions meets these requirements?"
+        ),
+        "name": "secplus_q536",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Secure access service edge (SASE) converges cloud-delivered networking and security "
+            "(including VPN or ZTNA client access and integrated secure web gateway or firewall capabilities) "
+            "for distributed and remote users with provider redundancy. An IPS detects or blocks threats inline "
+            "but is not the overarching remote-access architecture described. A SIEM aggregates and analyzes "
+            "logs for detection and response but does not provide VPN connectivity or an integrated edge "
+            "firewall for users. A CASB enforces policies on cloud application usage and does not replace "
+            "enterprise VPN plus integrated firewall services for general network access."
+        ),
+        "choices": [
+            "IPS",
+            "SIEM",
+            "SASE",
+            "CASB",
+        ],
+        "objectives": ["3.1", "3.2"],
+    },
+    {
+        "slug": "found-usb-parking-lot-security-team",
+        "title": "Security+ — Found USB (security team)",
+        "stem": (
+            "A staff member finds a USB drive in the office's parking lot. Which of the following should the staff "
+            "member do?"
+        ),
+        "name": "secplus_q537",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Unknown removable media may be a drop attack; the safe procedure is to hand the device "
+            "to the security team without connecting it to any system so it can be handled in a controlled "
+            "environment. Reviewing contents before notifying anyone risks malware infection and destroys "
+            "chain of custody. Using even an air-gapped system to open files is unnecessary risk for end users "
+            "and is not the standard first step. Wiping the drive immediately destroys potential evidence and "
+            "prevents proper forensic analysis."
+        ),
+        "choices": [
+            "Notify the file owner after reviewing the contents of the drive.",
+            "Use an air-gapped system to open the files without exposing the network.",
+            "Wipe the drive immediately using a secure method.",
+            "Submit the device to the security team without connecting it.",
+        ],
+        "objectives": ["2.2", "4.8"],
+    },
+    {
+        "slug": "vuln-remediation-prioritize-risk-tolerance",
+        "title": "Security+ — Risk tolerance (vuln priority)",
+        "stem": (
+            "Which of the following should a security analyst consider when prioritizing remediation efforts against "
+            "known vulnerabilities?"
+        ),
+        "name": "secplus_q538",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Remediation priority should align with the organization's overall risk tolerance and "
+            "appetite, combining factors such as asset criticality, exposure, and business impact rather than "
+            "severity scores alone. The impact of reporting to executive management concerns communication, not "
+            "the technical order of fixes. Open-source intelligence may support threat context but does not "
+            "replace internal risk tolerance for prioritization. The source of a reported risk (scanner versus "
+            "researcher) is less important than how much risk the organization accepts on affected systems."
+        ),
+        "choices": [
+            "The impact of reporting to executive management",
+            "The overall organizational risk tolerance",
+            "Information gathered from open sources",
+            "The source of the reported risk",
+        ],
+        "objectives": ["4.3", "5.2"],
+    },
+    {
+        "slug": "technical-security-task-procedure-document",
+        "title": "Security+ — Procedure (technical task)",
+        "stem": (
+            "Which of the following documents details how to accomplish a technical security task?"
+        ),
+        "name": "secplus_q539",
+        "correct": "D",
+        "explain": (
+            "Correct. D — A procedure provides step-by-step instructions for performing a specific technical "
+            "security task. A standard defines mandatory, measurable requirements the organization must meet. "
+            "A policy states high-level management rules and objectives. A guideline offers recommended best "
+            "practices that are advisory rather than step-by-step task instructions."
+        ),
+        "choices": [
+            "Standard",
+            "Policy",
+            "Guideline",
+            "Procedure",
+        ],
+        "objectives": ["5.1"],
+    },
+    {
+        "slug": "privacy-delete-user-data-right-to-be-forgotten",
+        "title": "Security+ — Right to be forgotten (definition)",
+        "stem": (
+            "According to various privacy rules and regulations, users have the power to request that all data "
+            "pertaining to them is deleted. This is known as:"
+        ),
+        "name": "secplus_q540",
+        "correct": "A",
+        "explain": (
+            "Correct. A — The right to be forgotten (also called the right to erasure under GDPR) allows individuals "
+            "to request deletion of their personal data when legal conditions are met. Attestation and "
+            "acknowledgement are formal confirmations that controls or scope are accepted, not a data-subject "
+            "deletion right. Data retention defines how long information is kept, which conflicts with deletion "
+            "unless retention exceptions apply. Information deletion is generic wording but is not the standard "
+            "regulatory term used on the exam."
+        ),
+        "choices": [
+            "Right to be forgotten",
+            "Attestation and acknowledgement",
+            "Data retention",
+            "Information deletion",
+        ],
+        "objectives": ["5.4", "5.1"],
+    },
+    {
+        "slug": "malware-data-movement-monitor-outbound-traffic",
+        "title": "Security+ — Outbound traffic (exfil detection)",
+        "stem": (
+            "A new vulnerability enables a type of malware that allows the unauthorized movement of data from a "
+            "system. Which of the following would detect this behavior?"
+        ),
+        "name": "secplus_q541",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Monitoring outbound (egress) traffic with tools such as IDS, NetFlow, or DLP can reveal "
+            "unusual volumes, destinations, or protocols consistent with data exfiltration. Implementing encryption "
+            "protects confidentiality but does not by itself alert on unauthorized transfers. Using default settings "
+            "often weakens visibility and controls. Closing all open ports may block some channels but is impractical "
+            "and does not provide detection of exfiltration that still occurs over allowed paths."
+        ),
+        "choices": [
+            "Implementing encryption",
+            "Monitoring outbound traffic",
+            "Using default settings",
+            "Closing all open ports",
+        ],
+        "objectives": ["4.4", "2.5"],
+    },
+    {
+        "slug": "stolen-laptop-mdm-force-security-config",
+        "title": "Security+ — MDM (stolen laptop prevention)",
+        "stem": (
+            "A company experiences a data loss event due to a stolen laptop. In order to prevent future similar "
+            "events, a security analyst must implement a scalable solution to ensure all data on company laptops "
+            "remains secure in the event of theft or loss. Which of the following should the analyst do next?"
+        ),
+        "name": "secplus_q542",
+        "correct": "C",
+        "explain": (
+            "Correct. C — An MDM platform centrally manages laptops and can enforce security configurations such as "
+            "full-disk encryption, strong authentication, and remote wipe at scale after a theft-related data loss. "
+            "Configuring an HSM per device is not practical for every laptop and HSMs are typically enterprise key "
+            "appliances, not fleet endpoint management. LAPS rotates local administrator passwords on domain systems "
+            "but does not by itself protect all stored data if a laptop is stolen. Initializing a secure enclave in "
+            "BIOS supports hardware-backed keys yet still requires centralized policy to deploy and enforce encryption "
+            "across the fleet."
+        ),
+        "choices": [
+            "Configure the HSM for each device and store recovery keys centrally.",
+            "Implement LAPS to ensure secure password rotation for administrative accounts.",
+            "Use an MDM platform to manage the devices and force security configurations.",
+            "Ensure that each laptop has the secure enclave properly initialized in the BIOS.",
+        ],
+        "objectives": ["4.2", "3.3"],
+    },
+    {
+        "slug": "music-group-website-defacement-unskilled-attacker",
+        "title": "Security+ — Website defacement (unskilled)",
+        "stem": (
+            "Which of the following threat actors would most likely deface the website of a high-profile music group?"
+        ),
+        "name": "secplus_q543",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Unskilled attackers (often called script kiddies) frequently deface public websites for "
+            "notoriety using automated tools and known exploits rather than sophisticated campaigns. Organized "
+            "crime usually pursues financial gain such as fraud or ransomware, not publicity defacements. Nation-state "
+            "actors target intelligence, critical infrastructure, or strategic advantage, not celebrity site graffiti. "
+            "An insider could vandalize a site but public defacement of a famous music group is most commonly "
+            "attributed to low-skill external actors seeking attention."
+        ),
+        "choices": [
+            "Unskilled attacker",
+            "Organized crime",
+            "Nation-state",
+            "Insider threat",
+        ],
+        "objectives": ["2.1"],
+    },
+    {
+        "slug": "data-privacy-program-controller-processor-role",
+        "title": "Security+ — Controller vs processor (privacy)",
+        "stem": (
+            "Which of the following considerations is the most important for an organization to evaluate as it "
+            "establishes and maintains a data privacy program?"
+        ),
+        "name": "secplus_q544",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Whether the organization acts as a data controller or processor under regulations such "
+            "as GDPR defines legal duties, contracts, breach notification, and data-subject rights, so it must be "
+            "determined early when building a privacy program. Reporting structure for a data privacy officer "
+            "matters for governance but follows knowing regulatory role and scope. A data subject access request "
+            "process implements rights after the program framework exists. Physical company location affects "
+            "jurisdiction but is secondary to controller versus processor responsibilities and where personal data "
+            "is processed."
+        ),
+        "choices": [
+            "Reporting structure for the data privacy officer",
+            "Request process for data subject access",
+            "Role as controller or processor",
+            "Physical location of the company",
+        ],
+        "objectives": ["5.4", "5.1"],
+    },
+    {
+        "slug": "database-active-processing-data-in-use",
+        "title": "Security+ — Data in use (database)",
+        "stem": (
+            "Which of the following data states applies to data that is being actively processed by a database server?"
+        ),
+        "name": "secplus_q545",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Data in use is information actively processed in memory or CPU, such as query results "
+            "and buffers while a database server handles transactions. Data at rest is stored on disk or other "
+            "non-volatile media when not being processed. Data in transit moves across a network between systems. "
+            "Being hashed is a specific operation for integrity or storage, not one of the three primary data "
+            "states (at rest, in transit, in use)."
+        ),
+        "choices": [
+            "In use",
+            "At rest",
+            "In transit",
+            "Being hashed",
+        ],
+        "objectives": ["3.3", "1.2"],
+    },
+    {
+        "slug": "pentest-download-website-passive-recon",
+        "title": "Security+ — Passive recon (site download)",
+        "stem": (
+            "A penetration tester visits a client's website and downloads the site's content. Which of the following "
+            "actions is the penetration tester performing?"
+        ),
+        "name": "secplus_q546",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Downloading publicly available website content gathers information without sending "
+            "intrusive probes to the client's infrastructure, which is passive reconnaissance. Unknown environment "
+            "testing describes a black-box engagement where the tester lacks prior knowledge, not a single "
+            "collection action. A vulnerability scan actively probes systems for weaknesses. Due diligence is a "
+            "business risk review process, not pentest information gathering."
+        ),
+        "choices": [
+            "Unknown environment testing",
+            "Vulnerability scan",
+            "Due diligence",
+            "Passive reconnaissance",
+        ],
+        "objectives": ["4.9", "2.4"],
+    },
+    {
+        "slug": "cyber-insurance-ransomware-coverage-aro",
+        "title": "Security+ — ARO (insurance ransomware)",
+        "stem": (
+            "A company decided to reduce the cost of its annual cyber insurance policy by removing the coverage for "
+            "ransomware attacks. Which of the following analysis elements did the company most likely use in making "
+            "this decision?"
+        ),
+        "name": "secplus_q547",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Annualized rate of occurrence (ARO) estimates how often a risk event such as ransomware "
+            "is expected per year; comparing low ARO to premium cost supports dropping coverage. IMTTR is not a "
+            "standard CompTIA risk metric (mean time to repair is MTTR). Recovery time objective (RTO) is maximum "
+            "acceptable downtime after disruption, not insurance frequency analysis. Mean time between failures "
+            "(MTBF) measures reliability between hardware failures, not cyber event likelihood for policy decisions."
+        ),
+        "choices": [
+            "IMTTR",
+            "RTO",
+            "ARO",
+            "MTBF",
+        ],
+        "objectives": ["5.2", "5.1"],
+    },
+    {
+        "slug": "soc-improve-incident-response-playbooks",
+        "title": "Security+ — Playbooks (SOC IR)",
+        "stem": (
+            "Which of the following should a security operations center use to improve its incident response procedure?"
+        ),
+        "name": "secplus_q548",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Playbooks document step-by-step actions for specific incident types so SOC analysts "
+            "respond consistently and can improve procedures over time. Frameworks such as NIST provide high-level "
+            "structure but are not operational runbooks for live incidents. Baselines define secure configuration "
+            "standards for systems and do not guide IR workflows. Benchmarks compare performance metrics against "
+            "peers or targets rather than detailing how to handle incidents."
+        ),
+        "choices": [
+            "Playbooks",
+            "Frameworks",
+            "Baselines",
+            "Benchmarks",
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "ir-team-compromised-systems-edr-tool",
+        "title": "Security+ — EDR (IR host analysis)",
+        "stem": (
+            "A company's Chief Information Security Officer (CISO) wants to enhance the capabilities of the incident "
+            "response team. The CISO directs the incident response team to deploy a tool that rapidly analyzes host "
+            "and network data from potentially compromised systems and forwards the data for further review. Which of "
+            "the following tools should the incident response team deploy?"
+        ),
+        "name": "secplus_q549",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Endpoint detection and response (EDR) collects telemetry from hosts (processes, files, "
+            "registry, and related network connections), analyzes behavior for compromise, and sends findings to "
+            "analysts or a SIEM for deeper review. Network access control (NAC) enforces admission to the network "
+            "based on device posture. An intrusion prevention system (IPS) inspects and blocks traffic inline but "
+            "does not provide deep host-centric IR collection on endpoints. A SIEM aggregates and correlates logs "
+            "enterprise-wide; EDR is the endpoint-focused tool deployed to examine potentially compromised systems."
+        ),
+        "choices": [
+            "NAC",
+            "IPS",
+            "SIEM",
+            "EDR",
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "fido2-passkeys-biometrics-single-auth",
+        "title": "Security+ — FIDO2 passkeys (MFA migration)",
+        "stem": (
+            "A software company currently secures access using a combination of traditional username/password "
+            "configurations and one-time passwords for MFA. However, employees still struggle to maintain both a "
+            "password manager and the authenticator application. The company wants to migrate to a single, integrated "
+            "authentication solution that is more secure and provides a smoother login experience for its employees. "
+            "Which of the following solutions will best satisfy the company's needs?"
+        ),
+        "name": "secplus_q550",
+        "correct": "A",
+        "explain": (
+            "Correct. A — FIDO2 passkeys use phishing-resistant cryptographic credentials, often unlocked with built-in "
+            "device biometrics, replacing separate passwords and authenticator apps with one integrated sign-in flow. "
+            "SMS-based one-time passwords are weaker, susceptible to interception, and still add a second step rather "
+            "than consolidating the experience. SAML federation and SSO simplify access to many applications but do not "
+            "by themselves remove password and OTP management at the identity provider. A PKI smart-card deployment "
+            "can be strong yet is costly to operate and is less convenient than modern passkeys for everyday employee "
+            "logins."
+        ),
+        "choices": [
+            "Migrating to FIDO2 passkeys, utilizing built-in device biometrics for user authentication",
+            "Implementing SMS-based one-time passwords as the primary second factor for all logins",
+            (
+                "Implementing SAML federation across authentication servers so employees can use SSO to access "
+                "applications"
+            ),
+            "Deploying a PKI system that requires all employees to use smart cards for login access",
+        ],
+        "objectives": ["4.5", "1.4"],
+    },
+    {
+        "slug": "offsite-employees-remote-access-vpn",
+        "title": "Security+ — VPN (off-site access)",
+        "stem": (
+            "Employees located off-site must have access to company resources in order to complete their assigned "
+            "tasks. These employees utilize a solution that allows remote access without interception concerns. "
+            "Which of the following best describes this solution?"
+        ),
+        "name": "secplus_q551",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A virtual private network (VPN) creates an encrypted tunnel over untrusted networks so "
+            "off-site employees reach company resources with confidentiality and integrity against interception. "
+            "A proxy server forwards application traffic and may not encrypt all paths end to end for general "
+            "resource access. A next-generation firewall (NGFW) inspects and filters traffic at the perimeter "
+            "but is not the remote-access tunnel employees use from off-site locations. A security zone segments "
+            "networks by trust level and does not by itself provide encrypted remote connectivity."
+        ),
+        "choices": [
+            "Proxy server",
+            "NGFW",
+            "VPN",
+            "Security zone",
+        ],
+        "objectives": ["3.2", "1.4"],
+    },
+    {
+        "slug": "legacy-critical-system-single-point-of-failure",
+        "title": "Security+ — Legacy system (single point of failure)",
+        "stem": (
+            "Which of the following is the main consideration when a legacy system that is a critical part of a "
+            "company's infrastructure cannot be replaced?"
+        ),
+        "name": "secplus_q552",
+        "correct": "C",
+        "explain": (
+            "Correct. C — If a legacy system is business-critical and cannot be replaced, the biggest concern is "
+            "it becoming a single point of failure that can halt operations if it fails or is compromised. "
+            "Resource provisioning and complexity matter for maintenance planning but are secondary to continuity "
+            "risk from one irreplaceable dependency. Cost is important for long-term strategy, yet immediate "
+            "security and availability planning focuses on reducing SPOF risk with compensating controls, "
+            "segmentation, monitoring, and redundancy where possible."
+        ),
+        "choices": [
+            "Resource provisioning",
+            "Cost",
+            "Single point of failure",
+            "Complexity",
+        ],
+        "objectives": ["3.4", "5.2"],
+    },
+    {
+        "slug": "scap-benefit-security-tool-interoperability",
+        "title": "Security+ — SCAP (tool interoperability)",
+        "stem": (
+            "Which of the following explains how organizations benefit from SCAP?"
+        ),
+        "name": "secplus_q553",
+        "correct": "C",
+        "explain": (
+            "Correct. C — SCAP provides standardized formats for vulnerability and configuration content, "
+            "which improves interoperability between security tools from different vendors for scanning, "
+            "assessment, and reporting. Established baselines can help rapid deployment, but that is not the "
+            "primary SCAP benefit. Consolidated executive reporting is more aligned with SIEM/dashboard tooling "
+            "than SCAP itself. Broad claims about strict international compliance reducing breach cost are "
+            "indirect and not the core purpose of SCAP."
+        ),
+        "choices": [
+            (
+                "The configurations defined as part of established baselines allow organizations to deploy well-tested "
+                "security solutions quickly and easily."
+            ),
+            (
+                "The consolidated reporting layout makes it easier for technicians to communicate incident response to "
+                "senior decision-makers."
+            ),
+            (
+                "The common format for vulnerability scanning and reporting enables greater interoperability between "
+                "security tools from different vendors."
+            ),
+            (
+                "The strict compliance to international standards reduces overall cost and risk to organizations when a "
+                "security breach occurs."
+            ),
+        ],
+        "objectives": ["4.3", "4.7"],
+    },
+    {
+        "slug": "forensic-preserve-data-order-of-volatility",
+        "title": "Security+ — Order of volatility (forensics)",
+        "stem": (
+            "Which of the following is a reason why a forensic specialist would create a plan to preserve data after "
+            "an incident and prioritize the sequence for performing forensic analysis?"
+        ),
+        "name": "secplus_q554",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Order of volatility requires collecting the most ephemeral evidence first (such as RAM "
+            "and active network state) before less volatile sources (disk, logs, backups) because volatile data "
+            "is lost when systems are powered off or continue running. Preservation of event logs is one task "
+            "within a plan but does not explain why the overall collection sequence is prioritized. Chain of "
+            "custody documents who handled evidence to maintain admissibility. Legal hold requires retaining "
+            "relevant data for litigation but does not define technical collection order."
+        ),
+        "choices": [
+            "Order of volatility",
+            "Preservation of event logs",
+            "Chain of custody",
+            "Compliance with legal hold",
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "evil-twin-insecure-network-attack",
+        "title": "Security+ — Evil twin (insecure network)",
+        "stem": (
+            "Which of the following attacks primarily targets insecure networks?"
+        ),
+        "name": "secplus_q555",
+        "correct": "A",
+        "explain": (
+            "Correct. A — An evil twin attack sets up a rogue wireless access point that mimics a legitimate "
+            "network, tricking users to connect so traffic can be intercepted on an insecure or spoofed Wi-Fi "
+            "network. Impersonation is social engineering where an attacker pretends to be someone trusted. "
+            "A watering hole compromises sites victims frequent to deliver malware, not wireless network "
+            "misconfiguration directly. Pretexting fabricates a scenario to manipulate people into revealing "
+            "information or taking action."
+        ),
+        "choices": [
+            "Evil twin",
+            "Impersonation",
+            "Watering hole",
+            "Pretexting",
+        ],
+        "objectives": ["2.2", "2.4"],
+    },
+    {
+        "slug": "risk-management-scope-risk-identification",
+        "title": "Security+ — Risk identification (scope)",
+        "stem": (
+            "Which of the following steps in the risk management process involves establishing the scope and "
+            "potential risks involved with a project?"
+        ),
+        "name": "secplus_q556",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Risk identification defines the context and scope of the effort and documents "
+            "potential threats, vulnerabilities, and risks that could affect the project. Risk mitigation "
+            "implements controls to reduce risk after risks are known. Risk treatment selects responses "
+            "such as mitigate, transfer, accept, or avoid. Risk monitoring and review tracks risks over time "
+            "after treatment plans are in place."
+        ),
+        "choices": [
+            "Risk mitigation",
+            "Risk identification",
+            "Risk treatment",
+            "Risk monitoring and review",
+        ],
+        "objectives": ["5.2"],
+    },
+    {
+        "slug": "password-audit-policy-length-complexity",
+        "title": "Security+ — Password policy (choose two)",
+        "stem": (
+            "A security analyst needs to improve the company's authentication policy following a password audit. "
+            "Which of the following should be included in the policy? (Select two.)"
+        ),
+        "name": "secplus_q557",
+        "choose_two": True,
+        "correct": ["A", "B"],
+        "explain": (
+            "Correct. A and B — After a password audit, strengthening password rules with minimum length and "
+            "complexity requirements directly addresses weak credentials found in the review. Least privilege "
+            "limits access rights but is an authorization principle, not a password composition rule. Something "
+            "you have, security keys, and biometrics describe authentication factors for MFA or passwordless "
+            "design and are separate from baseline password policy updates driven by a password audit."
+        ),
+        "choices": [
+            "Length",
+            "Complexity",
+            "Least privilege",
+            "Something you have",
+            "Security keys",
+            "Biometrics",
+        ],
+        "objectives": ["4.5", "1.2"],
+    },
+    {
+        "slug": "ceo-gift-card-phone-impersonation",
+        "title": "Security+ — Impersonation (CEO gift cards)",
+        "stem": (
+            "An attacker posing as the Chief Executive Officer calls an employee and instructs the employee to buy "
+            "gift cards. Which of the following techniques is the attacker using?"
+        ),
+        "name": "secplus_q558",
+        "correct": "C",
+        "explain": (
+            "Correct. C — The attacker is impersonating a trusted executive over a voice call to manipulate the "
+            "employee into fraudulent purchases. Smishing uses fraudulent SMS text messages, not phone calls. "
+            "Disinformation spreads false or misleading information broadly, not a one-to-one executive scam. "
+            "Whaling typically targets high-ranking executives as victims; here the employee is targeted while "
+            "the attacker poses as the CEO, so impersonation is the technique named in the stem."
+        ),
+        "choices": [
+            "Smishing",
+            "Disinformation",
+            "Impersonating",
+            "Whaling",
+        ],
+        "objectives": ["2.2", "2.4"],
+    },
+    {
+        "slug": "onboarding-intranet-federation-password-complexity",
+        "title": "Security+ — Federation + password complexity (onboarding)",
+        "stem": (
+            "During the onboarding process, an employee needs to create a password for an intranet account. The "
+            "password must include ten characters, numbers, and letters, and two special characters. Once the "
+            "password is created, the company will grant the employee access to other company-owned websites based "
+            "on the intranet profile. Which of the following access management concepts is the company most likely "
+            "using to safeguard intranet accounts and grant access to multiple sites based on a user's intranet "
+            "account? (Select two.)"
+        ),
+        "name": "secplus_q559",
+        "choose_two": True,
+        "correct": ["A", "C"],
+        "explain": (
+            "Correct. A and C — Password complexity rules (length, character types, and special characters) "
+            "strengthen intranet credentials during onboarding. Federation links the intranet identity to other "
+            "company-owned sites so access follows the user's intranet profile without separate logons everywhere. "
+            "Identity proofing verifies who someone is before account creation; it is not described by the "
+            "multi-site access model. Default password changes apply when users must replace vendor-supplied "
+            "passwords, not when they set a new password during onboarding. A password manager stores credentials "
+            "for users; it is not the company's access model here. Open authentication (OAuth) authorizes "
+            "third-party applications and is not the concept for internal site access tied to an intranet profile."
+        ),
+        "choices": [
+            "Federation",
+            "Identity proofing",
+            "Password complexity",
+            "Default password changes",
+            "Password manager",
+            "Open authentication",
+        ],
+        "objectives": ["3.3", "5.4"],
+    },
+    {
+        "slug": "email-link-csrf-password-changed",
+        "title": "Security+ — CSRF (password changed via email link)",
+        "stem": (
+            "A website user is locked out of an account after clicking an email link and visiting a different website. "
+            "Web server logs show the user's password was changed, even though the user did not change the password. "
+            "Which of the following is the most likely cause?"
+        ),
+        "name": "secplus_q560",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Cross-site request forgery (CSRF) tricks the victim's browser into submitting an "
+            "authenticated request (such as a password change) to the real site while the user is logged in, often "
+            "after visiting a malicious page from a phishing link. Directory traversal reads files outside the "
+            "intended web path and does not explain an unauthorized password change in logs. ARP poisoning is a "
+            "Layer 2 man-in-the-middle attack on a LAN, not this web-session abuse pattern. SQL injection manipulates "
+            "database queries through crafted input; the stem points to a logged-in user session and a third-party "
+            "site visit, which fits CSRF."
+        ),
+        "choices": [
+            "Cross-site request forgery",
+            "Directory traversal",
+            "ARP poisoning",
+            "SQL injection",
+        ],
+        "objectives": ["2.3", "2.5"],
+    },
+    {
+        "slug": "anomaly-detection-first-step-baseline",
+        "title": "Security+ — Anomaly detection (baseline first)",
+        "stem": (
+            "Which of the following is the first step to take when creating an anomaly detection process?"
+        ),
+        "name": "secplus_q561",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Anomaly detection compares current activity to what is normal; you must build a "
+            "baseline of expected behavior before deviations can be identified. Selecting events and logging "
+            "options support data collection but do not by themselves define normal behavior. Creating an event "
+            "log records activity; baselining that activity is the reference step that makes anomaly detection "
+            "meaningful."
+        ),
+        "choices": [
+            "Selecting events",
+            "Building a baseline",
+            "Selecting logging options",
+            "Creating an event log",
+        ],
+        "objectives": ["4.6", "4.8"],
+    },
+    {
+        "slug": "auditor-risk-management-policies-first",
+        "title": "Security+ — Auditor checks policies first (risk program)",
+        "stem": (
+            "Which of the following should an internal auditor check for first when conducting an audit of the "
+            "organization's risk management program?"
+        ),
+        "name": "secplus_q562",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Policies and procedures define how the organization identifies, assesses, and treats "
+            "risk; auditors review them first to confirm the program exists, is current, and aligns with "
+            "requirements before testing specific activities. Asset management inventories what to protect but "
+            "follows the documented risk framework. Vulnerability assessment is a technical finding activity, not "
+            "the first audit of the overall risk management program. Business impact analysis supports continuity "
+            "and recovery planning; it is one output of risk work, not the starting point for program audit."
+        ),
+        "choices": [
+            "Policies and procedures",
+            "Asset management",
+            "Vulnerability assessment",
+            "Business impact analysis",
+        ],
+        "objectives": ["5.1", "5.5"],
+    },
+    {
+        "slug": "vulnerability-criticality-cvss-score",
+        "title": "Security+ — CVSS measures vulnerability criticality",
+        "stem": (
+            "Which of the following is used to quantitatively measure the criticality of a vulnerability?"
+        ),
+        "name": "secplus_q563",
+        "correct": "B",
+        "explain": (
+            "Correct. B — CVSS (Common Vulnerability Scoring System) assigns a standardized numeric severity "
+            "score so organizations can quantitatively compare and prioritize vulnerabilities. CVE is an identifier "
+            "for cataloging vulnerabilities, not a severity-scoring method. CIA is a security model "
+            "(confidentiality, integrity, availability), not a vulnerability metric. CERT is an incident response "
+            "coordination organization/team concept, not a quantitative scoring system."
+        ),
+        "choices": [
+            "CVE",
+            "CVSS",
+            "CIA",
+            "CERT",
+        ],
+        "objectives": ["2.3", "5.3"],
+    },
+    {
+        "slug": "soar-playbooks-reduce-false-positive-review",
+        "title": "Security+ — SOAR playbooks reduce false-positive review load",
+        "stem": (
+            "Which of the following actions would reduce the number of false positives for an analyst to manually "
+            "review?"
+        ),
+        "name": "secplus_q564",
+        "correct": "A",
+        "explain": (
+            "Correct. A — SOAR playbooks automate triage, enrichment, and response workflows so known benign or "
+            "low-confidence alerts can be processed consistently before reaching manual review queues, reducing "
+            "analyst false-positive workload. Redefining patch management does not directly tune detection quality. "
+            "Replacing EDR with XDR may improve visibility but does not inherently reduce false positives without "
+            "proper tuning. Disabling AV heuristic scanning can reduce alerts but weakens detection and increases "
+            "risk of missed threats."
+        ),
+        "choices": [
+            "Create playbooks as part of a SOAR platform",
+            "Redefine the patch management process",
+            "Replace an EDR tool with an XDR solution",
+            "Disable AV heuristics scanning",
+        ],
+        "objectives": ["4.7", "4.8"],
+    },
+    {
+        "slug": "identify-legacy-systems-vulnerability-scan",
+        "title": "Security+ — Identify legacy systems with vuln scanning",
+        "stem": (
+            "Which of the following methods will most likely be used to identify legacy systems?"
+        ),
+        "name": "secplus_q565",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Vulnerability scans enumerate hosts, operating systems, software versions, and known "
+            "weaknesses, which helps identify outdated or unsupported legacy systems. Bug bounty programs rely on "
+            "external researchers finding flaws, not asset age discovery. Package monitoring tracks package changes "
+            "or dependencies but is not the primary enterprise-wide method for legacy system identification. "
+            "Dynamic analysis tests running application behavior, mainly for software security flaws, not broad "
+            "infrastructure legacy inventory."
+        ),
+        "choices": [
+            "Bug bounty program",
+            "Vulnerability scan",
+            "Package monitoring",
+            "Dynamic analysis",
+        ],
+        "objectives": ["2.3", "4.1"],
+    },
+    {
+        "slug": "phone-port-laptop-scan-prevent-segmentation",
+        "title": "Security+ — Prevent rogue laptop scans via segmentation",
+        "stem": (
+            "Which of the following is the best way to prevent an unauthorized user from plugging a laptop into an "
+            "employee's phone network port and then using tools to scan for database servers?"
+        ),
+        "name": "secplus_q566",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Network segmentation (for example, separating voice, user, and database networks with "
+            "strict ACLs/firewall rules) prevents a device on a phone/user-facing port from reaching and scanning "
+            "database server segments. MAC filtering can be bypassed through spoofing and does not provide strong "
+            "security boundaries. Certification is not a technical network control for this attack path. Isolation "
+            "can quarantine a specific host but is less suitable than segmentation as the default preventive "
+            "network architecture."
+        ),
+        "choices": [
+            "MAC filtering",
+            "Segmentation",
+            "Certification",
+            "Isolation",
+        ],
+        "objectives": ["1.1", "4.1"],
+    },
+    {
+        "slug": "updated-systems-prevent-known-exploits",
+        "title": "Security+ — Updates prevent known exploits",
+        "stem": (
+            "An engineer has ensured that the switches are using the latest OS, the servers have the latest patches, "
+            "and the endpoints' definitions are up to date. Which of the following will these actions most "
+            "effectively prevent?"
+        ),
+        "name": "secplus_q567",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Keeping operating systems, patches, and endpoint definitions current primarily blocks "
+            "known exploits by removing known vulnerabilities and improving detection coverage for known threats. "
+            "Zero-day attacks target previously unknown vulnerabilities, so updates and signatures are less likely "
+            "to stop them initially. Insider threats involve trusted users misusing access and are not mainly "
+            "prevented by patch/signature currency. End-of-life support is a lifecycle status, not an attack type "
+            "prevented by these maintenance actions."
+        ),
+        "choices": [
+            "Zero-day attacks",
+            "Insider threats",
+            "End-of-life support",
+            "Known exploits",
+        ],
+        "objectives": ["2.2", "4.4"],
+    },
+    {
+        "slug": "unapproved-software-vulnerabilities-shadow-it",
+        "title": "Security+ — Unapproved software risk is Shadow IT",
+        "stem": (
+            "Which of the following is most likely associated with introducing vulnerabilities on a corporate network "
+            "by the deployment of unapproved software?"
+        ),
+        "name": "secplus_q568",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Shadow IT is the use or deployment of software and services without IT/security approval, "
+            "which commonly introduces unmanaged vulnerabilities and policy gaps. Hacktivists are ideologically "
+            "motivated external actors, script kiddies are unskilled attackers using existing tools, and competitors "
+            "are business rivals; none of those terms describes internal unapproved software deployment."
+        ),
+        "choices": [
+            "Hacktivists",
+            "Script kiddies",
+            "Competitors",
+            "Shadow IT",
+        ],
+        "objectives": ["1.1", "5.4"],
+    },
+    {
+        "slug": "prevent-reverse-engineering-obfuscation-toolkit",
+        "title": "Security+ — Obfuscation to hinder reverse engineering",
+        "stem": (
+            "A software developer would like to ensure the source code cannot be reverse engineered or debugged. "
+            "Which of the following should the developer consider?"
+        ),
+        "name": "secplus_q569",
+        "correct": "B",
+        "explain": (
+            "Correct. B — An obfuscation toolkit transforms code to make reverse engineering and debugging much more "
+            "difficult by obscuring logic, symbols, and control flow. Version control manages code history and "
+            "collaboration, not code-hardening against reverse engineering. Code reuse is a development practice for "
+            "efficiency and consistency. Continuous integration automates build/test pipelines. Stored procedures "
+            "move database logic to the DBMS but do not protect application binaries from reverse engineering."
+        ),
+        "choices": [
+            "Version control",
+            "Obfuscation toolkit",
+            "Code reuse",
+            "Continuous integration",
+            "Stored procedures",
+        ],
+        "objectives": ["1.4", "4.3"],
+    },
+    {
+        "slug": "c2-destination-identify-firewall-logs",
+        "title": "Security+ — C2 destination analysis with firewall logs",
+        "stem": (
+            "A security analyst is reviewing logs to identify the destination of command-and-control traffic "
+            "originating from a compromised device within the on-premises network. Which of the following is the "
+            "best log to review?"
+        ),
+        "name": "secplus_q570",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Firewall logs are the best source to identify outbound destination IPs, ports, and "
+            "connection attempts for command-and-control traffic leaving internal hosts. IDS logs can indicate "
+            "suspicious patterns or signatures but are not always the most complete record of egress destinations. "
+            "Antivirus logs focus on host malware detections/remediation, and application logs focus on app events "
+            "rather than network-level C2 destination tracking."
+        ),
+        "choices": [
+            "IDS",
+            "Antivirus",
+            "Firewall",
+            "Application",
+        ],
+        "objectives": ["4.7", "4.8"],
+    },
+    {
+        "slug": "register-overwrite-malicious-address-buffer-overflow",
+        "title": "Security+ — Buffer overflow (register overwrite)",
+        "stem": (
+            "Which of the following vulnerabilities is exploited when an attacker overwrites a register with a "
+            "malicious address?"
+        ),
+        "name": "secplus_q571",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A buffer overflow can overwrite memory and control data (such as return addresses/register "
+            "state), allowing redirection of execution to a malicious address. VM escape is breaking out of a guest "
+            "VM to the host/hypervisor boundary. SQL injection manipulates backend database queries. A race condition "
+            "abuses timing between operations, not direct register overwrite with a crafted address."
+        ),
+        "choices": [
+            "VM escape",
+            "SQL injection",
+            "Buffer overflow",
+            "Race condition",
+        ],
+        "objectives": ["1.2", "2.3"],
+    },
+    {
+        "slug": "legacy-plaintext-third-party-compensating-controls",
+        "title": "Security+ — Legacy plaintext transfer compensating controls",
+        "stem": (
+            "A security administrator is addressing an issue with a legacy system that communicates data using an "
+            "unencrypted protocol to transfer sensitive data to a third party. No software updates that use an "
+            "encrypted protocol are available, so a compensating control is needed. Which of the following are the "
+            "most appropriate for the administrator to suggest? (Select two.)"
+        ),
+        "name": "secplus_q572",
+        "choose_two": True,
+        "correct": ["C", "D"],
+        "explain": (
+            "Correct. C and D — SSH tunneling wraps legacy plaintext traffic inside an encrypted channel to protect "
+            "data in transit when the application protocol itself cannot be upgraded. Segmentation limits where the "
+            "legacy system can communicate, reducing exposure and blast radius as a compensating control. "
+            "Tokenization and data masking can reduce data sensitivity in some workflows but are not the primary "
+            "network compensating controls for securing an unencrypted legacy transport path. Cryptographic downgrade "
+            "reduces security, and patch installation is ruled out by the scenario."
+        ),
+        "choices": [
+            "Tokenization",
+            "Cryptographic downgrade",
+            "SSH tunneling",
+            "Segmentation",
+            "Patch installation",
+            "Data masking",
+        ],
+        "objectives": ["1.4", "4.1"],
+    },
+    {
+        "slug": "data-at-rest-most-secure-aes-256",
+        "title": "Security+ — Data at rest protection (AES-256)",
+        "stem": "Which of the following most securely protects data at rest?",
+        "name": "secplus_q573",
+        "correct": "B",
+        "explain": (
+            "Correct. B — AES-256 is a strong symmetric encryption algorithm commonly used to protect data at rest "
+            "on disks, databases, and backup media. TLS 1.2 protects data in transit across networks, not stored "
+            "data. Masking obscures values for display/testing use cases but is not the primary cryptographic control "
+            "for securing data at rest."
+        ),
+        "choices": [
+            "TLS 1.2",
+            "AES-256",
+            "Masking",
+        ],
+        "objectives": ["1.4", "4.3"],
+    },
+    {
+        "slug": "classified-storage-disposal-vendor-certification",
+        "title": "Security+ — Disposal vendor proof via certification",
+        "stem": (
+            "A company is discarding a classified storage array and hires an outside vendor to complete the "
+            "disposal. Which of the following should the company request from the vendor?"
+        ),
+        "name": "secplus_q574",
+        "correct": "A",
+        "explain": (
+            "Correct. A — The company should request certification (for example, a certificate of destruction or "
+            "sanitization) as formal proof that classified storage media was disposed of according to required "
+            "standards. An inventory list tracks assets but does not prove secure destruction occurred. "
+            "Classification labels the data type but is not disposal evidence. Proof of ownership does not verify "
+            "that sensitive data was properly destroyed."
+        ),
+        "choices": [
+            "Certification",
+            "Inventory list",
+            "Classification",
+            "Proof of ownership",
+        ],
+        "objectives": ["1.5", "5.5"],
+    },
+    {
+        "slug": "duplicate-email-site-phishing",
+        "title": "Security+ — Duplicate email site indicates phishing",
+        "stem": (
+            "A systems administrator is concerned users are accessing emails through a duplicate site that is not "
+            "run by the company. Which of the following is used in this scenario?"
+        ),
+        "name": "secplus_q575",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A fraudulent duplicate login site used to capture user credentials is a phishing tactic. "
+            "Smishing is phishing specifically through SMS text messages, which is not indicated here. "
+            "Impersonation can be part of phishing but is broader and less precise than the direct attack type in "
+            "this scenario. Replication is not the social-engineering attack category being described."
+        ),
+        "choices": [
+            "Impersonation",
+            "Replication",
+            "Phishing",
+            "Smishing",
+        ],
+        "objectives": ["2.2", "2.3"],
+    },
+    {
+        "slug": "pentest-port-scans-active-reconnaissance",
+        "title": "Security+ — Port scanning is active reconnaissance",
+        "stem": (
+            "A penetration tester begins an engagement by performing port and service scans against the client "
+            "environment according to the rules of engagement. Which of the following reconnaissance types is the "
+            "tester performing?"
+        ),
+        "name": "secplus_q576",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Port and service scanning sends probes directly to target systems, which is active "
+            "reconnaissance. Passive reconnaissance gathers information without directly interacting with target "
+            "infrastructure. Defensive and offensive describe broad security postures/operations, not the specific "
+            "reconnaissance type asked in the question."
+        ),
+        "choices": [
+            "Active",
+            "Passive",
+            "Defensive",
+            "Offensive",
+        ],
+        "objectives": ["4.2", "4.5"],
+    },
+    {
+        "slug": "secure-zone-access-policy-reduce-threat-scope-zero-trust",
+        "title": "Security+ — Zero Trust for secure zones and scoped access",
+        "stem": (
+            "A systems administrator is working on a solution with the following requirements: Provide a secure "
+            "zone. Enforce a company-wide access control policy. Reduce the scope of threats. Which of the "
+            "following is the systems administrator setting up?"
+        ),
+        "name": "secplus_q577",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Zero Trust enforces strict, policy-based access across the enterprise (verify explicitly, "
+            "least privilege, and segmentation/microsegmentation) to create secure zones and limit threat movement. "
+            "AAA is a framework for authentication, authorization, and accounting, but by itself it does not define "
+            "the broader architecture and threat-scope reduction model described. Non-repudiation ensures actions "
+            "can be proven and not denied. CIA is a foundational security model, not a specific implementation "
+            "solution."
+        ),
+        "choices": [
+            "Zero Trust",
+            "AAA",
+            "Non-repudiation",
+            "CIA",
+        ],
+        "objectives": ["1.1", "3.1"],
+    },
+    {
+        "slug": "improve-incident-response-tabletop-exercise",
+        "title": "Security+ — Improve IR with tabletop exercises",
+        "stem": (
+            "Which of the following exercises should an organization use to improve its incident response process?"
+        ),
+        "name": "secplus_q578",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Tabletop exercises are discussion-based incident simulations that let response teams and "
+            "stakeholders practice roles, communications, escalation, and decision-making, which directly improves "
+            "incident response processes. Replication is not an incident response exercise type. Failover and "
+            "recovery testing validate availability and restoration capabilities, but they do not provide the same "
+            "cross-functional process rehearsal focus as tabletop exercises."
+        ),
+        "choices": [
+            "Tabletop",
+            "Replication",
+            "Failover",
+            "Recovery",
+        ],
+        "objectives": ["4.8", "5.5"],
+    },
+    {
+        "slug": "corrective-controls-interconnected-financial-systems-errors",
+        "title": "Security+ — Corrective controls prevent error propagation",
+        "stem": (
+            "An organization is evaluating new regulatory requirements associated with the implementation of "
+            "corrective controls on a group of interconnected financial systems. Which of the following is the most "
+            "likely reason for the new requirement?"
+        ),
+        "name": "secplus_q579",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Corrective controls are designed to detect and fix issues so faults do not continue "
+            "through business processes. In interconnected financial systems, a key regulatory concern is preventing "
+            "errors from propagating downstream to other systems. Defending against insider threats and preventing "
+            "unauthorized changes are primarily preventive/detective control goals. Allowing purchase of business "
+            "insurance is not the primary technical reason for implementing corrective controls."
+        ),
+        "choices": [
+            "To defend against insider threats altering banking details",
+            "To ensure that errors are not passed to other systems",
+            "To allow for business insurance to be purchased",
+            "To prevent unauthorized changes to financial data",
+        ],
+        "objectives": ["5.5", "3.4"],
+    },
+    {
+        "slug": "legacy-ftp-financial-data-compensating-control-ssh-tunnel",
+        "title": "Security+ — Legacy FTP compensating control (SSH tunnel)",
+        "stem": (
+            "A company is using a legacy FTP server to transfer financial data to a third party. The legacy system "
+            "does not support SFTP, so a compensating control is needed to protect the sensitive financial data in "
+            "transit. Which of the following would be the most appropriate for the company to use?"
+        ),
+        "name": "secplus_q580",
+        "correct": "B",
+        "explain": (
+            "Correct. B — SSH tunneling encapsulates legacy FTP traffic inside an encrypted channel, providing "
+            "confidentiality for data in transit when native secure protocol support is unavailable. Telnet is "
+            "plaintext and insecure. Patch installation is not possible/effective in this scenario because the legacy "
+            "platform cannot support SFTP updates. Full disk encryption protects data at rest, not network transit."
+        ),
+        "choices": [
+            "Telnet connection",
+            "SSH tunneling",
+            "Patch installation",
+            "Full disk encryption",
+        ],
+        "objectives": ["1.4", "4.1"],
+    },
+    {
+        "slug": "fde-laptop-planning-key-escrow-tpm",
+        "title": "Security+ — FDE planning: key escrow and TPM",
+        "stem": (
+            "A security engineer is implementing FDE for all laptops in an organization. Which of the following are "
+            "the most important for the engineer to consider as part of the planning process? (Select two)."
+        ),
+        "name": "secplus_q581",
+        "choose_two": True,
+        "correct": ["A", "B"],
+        "explain": (
+            "Correct. A and B — Key escrow is essential for recovery if users forget credentials or devices fail, "
+            "and TPM presence provides secure key storage and device integrity support for FDE deployments. Digital "
+            "signatures and PKI/CA concepts are important for code/signing and certificate trust use cases but are "
+            "not the primary planning requirements for endpoint full-disk encryption rollout. Data tokenization is "
+            "for sensitive data substitution in applications/datastores, not disk-level encryption implementation."
+        ),
+        "choices": [
+            "Key escrow",
+            "TPM presence",
+            "Digital signatures",
+            "Data tokenization",
+            "Public key management",
+            "Certificate authority linking",
+        ],
+        "objectives": ["1.4", "4.3"],
+    },
+    {
+        "slug": "logic-bomb-internal-app-trusted-insider",
+        "title": "Security+ — Logic bomb in internal app (trusted insider)",
+        "stem": (
+            "Which of the following threat actors would most likely target an organization by using a logic bomb "
+            "within an internally-developed application?"
+        ),
+        "name": "secplus_q582",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A logic bomb planted inside an internally developed application most strongly indicates a "
+            "trusted insider (such as a developer/admin with legitimate access to source code and deployment paths). "
+            "Nation-state and organized crime actors can compromise systems, but inserting hidden trigger-based code "
+            "into internal development workflows is most commonly associated with insider access. Hacktivists more "
+            "often focus on public disruption/defacement rather than covert internal code sabotage."
+        ),
+        "choices": [
+            "Nation-state",
+            "Trusted insider",
+            "Organized crime group",
+            "Hacktivist",
+        ],
+        "objectives": ["2.1", "2.2"],
+    },
+    {
+        "slug": "cloud-migration-limited-it-resources-sase",
+        "title": "Security+ — Cloud migration with limited IT: SASE",
+        "stem": (
+            "A company is in the process of migrating to cloud-based services. The company's IT department has "
+            "limited resources for migration and ongoing support. Which of the following best meets the company's "
+            "needs?"
+        ),
+        "name": "secplus_q583",
+        "correct": "C",
+        "explain": (
+            "Correct. C — SASE combines networking and security capabilities in a cloud-delivered model, which "
+            "reduces on-prem infrastructure burden and simplifies ongoing operations for teams with limited resources. "
+            "IPS and WAF are point solutions that do not provide a comprehensive cloud access/security architecture. "
+            "IAM is essential for identity control but by itself does not cover the broader secure connectivity and "
+            "network security needs of cloud migration."
+        ),
+        "choices": [
+            "IPS",
+            "WAF",
+            "SASE",
+            "IAM",
+        ],
+        "objectives": ["1.1", "3.1"],
+    },
+    {
+        "slug": "hypervisor-unauthorized-access-vm-escape",
+        "title": "Security+ — Hypervisor compromise via VM escape",
+        "stem": (
+            "A penetration tester was able to gain unauthorized access to a hypervisor platform. Which of the "
+            "following vulnerabilities was most likely exploited?"
+        ),
+        "name": "secplus_q584",
+        "correct": "D",
+        "explain": (
+            "Correct. D — VM escape is the vulnerability class where code running in a guest VM breaks isolation "
+            "and reaches the hypervisor/host layer. Cross-site scripting targets client-side web application trust. "
+            "SQL injection targets database query logic. Race conditions exploit timing/order flaws, not necessarily "
+            "virtualization boundary escape to the hypervisor."
+        ),
+        "choices": [
+            "Cross-site scripting",
+            "SQL injection",
+            "Race condition",
+            "VM escape",
+        ],
+        "objectives": ["2.3", "4.2"],
+    },
+    {
+        "slug": "rnd-data-type-intellectual-property",
+        "title": "Security+ — R&D data type is intellectual property",
+        "stem": (
+            "Employees in the research and development business unit receive extensive training to ensure they "
+            "understand how to best protect company data. Which of the following is the type of data these employees "
+            "are most likely to use in day-to-day work activities?"
+        ),
+        "name": "secplus_q585",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Research and development teams primarily work with proprietary designs, formulas, source "
+            "code, and trade secrets, which are intellectual property. Encrypted and data in transit describe data "
+            "states/protections rather than business data type classifications. Critical data is a broad priority "
+            "descriptor, but the specific R&D-focused classification is intellectual property."
+        ),
+        "choices": [
+            "Encrypted",
+            "Intellectual property",
+            "Critical",
+            "Data in transit",
+        ],
+        "objectives": ["3.3", "5.4"],
+    },
+    {
+        "slug": "ciso-noncompliance-board-budget-fines",
+        "title": "Security+ — Non-compliance consequence to board: fines",
+        "stem": (
+            "The Chief Information Security Officer (CISO) has determined the company is non-compliant with local "
+            "data privacy regulations. The CISO needs to justify the budget request for more resources. Which of "
+            "the following should the CISO present to the board as the direct consequence of non-compliance?"
+        ),
+        "name": "secplus_q586",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Fines are the most direct and immediate consequence of regulatory non-compliance, and they "
+            "provide concrete financial impact to justify budget requests. Reputational damage and contractual "
+            "implications are possible secondary effects. Sanctions can occur in some contexts, but for local data "
+            "privacy non-compliance the primary board-level direct impact is regulatory fines/penalties."
+        ),
+        "choices": [
+            "Fines",
+            "Reputational damage",
+            "Sanctions",
+            "Contractual implications",
+        ],
+        "objectives": ["5.5", "5.1"],
+    },
+    {
+        "slug": "global-incident-plan-business-continuity",
+        "title": "Security+ — Keep operations running: business continuity",
+        "stem": (
+            "An IT manager is putting together a documented plan describing how the organization will keep operating "
+            "in the event of a global incident. Which of the following plans is the IT manager creating?"
+        ),
+        "name": "secplus_q587",
+        "correct": "A",
+        "explain": (
+            "Correct. A — A business continuity plan (BCP) focuses on maintaining essential business operations "
+            "during and after major disruptions, including widespread/global incidents. A disaster recovery plan is "
+            "a related but narrower plan centered on restoring IT systems and infrastructure. Physical security and "
+            "change management are important programs, but they do not define the organization-wide continuity plan "
+            "for sustained operations during major incidents."
+        ),
+        "choices": [
+            "Business continuity",
+            "Physical security",
+            "Change management",
+            "Disaster recovery",
+        ],
+        "objectives": ["5.3", "5.5"],
+    },
+    {
+        "slug": "cloud-instance-vulnerability-priority-vm-escape",
+        "title": "Security+ — Cloud instance architecture concern: VM escape",
+        "stem": (
+            "A systems administrator is concerned about vulnerabilities within cloud computing instances. Which of "
+            "the following is most important for the administrator to consider when architecting a cloud computing "
+            "environment?"
+        ),
+        "name": "secplus_q588",
+        "correct": "C",
+        "explain": (
+            "Correct. C — VM escape is a key cloud/virtualization concern because it can break isolation boundaries "
+            "between guest instances and the hypervisor/host environment. SQL injection and password spraying are "
+            "important attack types but are not specific to cloud instance architecture design. TOC/TOU is a race "
+            "condition class in software logic, and tokenization is a data protection method rather than the primary "
+            "virtualization isolation risk in cloud instance architecture."
+        ),
+        "choices": [
+            "SQL injection",
+            "TOC/TOU",
+            "VM escape",
+            "Tokenization",
+            "Password spraying",
+        ],
+        "objectives": ["2.3", "3.1"],
+    },
 ]
 
 
@@ -13158,27 +15472,27 @@ def sync_portal_practice_banks(chain: list[dict]) -> None:
     summary_html = portal_practice_banks_summary_html(slug_count)
     text = PORTAL_HTML.read_text(encoding="utf-8")
     grid_pat = (
-        r'<div class="sim-grid" id="secplus-practice-banks-grid"[^>]*>\s*</div>'
+        r'<div class="sim-grid" id="secplus-practice-banks-grid"[^>]*>.*?</div>\s*<noscript>'
     )
     grid_repl = (
         '<div class="sim-grid" id="secplus-practice-banks-grid" '
         f'aria-label="Practice question banks: {n_banks} banks of up to {PRACTICE_BANK_SIZE} '
         f'questions each ({slug_count} total)">\n'
         + banks_html
-        + "            </div>"
+        + "            </div>\n"
+        + "            <noscript>"
     )
-    text, n_grid = re.subn(grid_pat, grid_repl, text, count=1)
+    text, n_grid = re.subn(grid_pat, grid_repl, text, count=1, flags=re.DOTALL)
     if not n_grid:
         raise RuntimeError("Could not update secplus-practice-banks-grid in portal HTML")
-    summary_pat = r'<p\s+id="secplus-practice-banks-summary"[^>]*>\s*</p>'
-    summary_repl = (
-        '<p\n'
-        '              id="secplus-practice-banks-summary"\n'
-        '              class="study-meta secplus-practice-banks-summary"\n'
-        '              aria-live="polite"\n'
-        f"            >{summary_html}</p>"
+    summary_pat = (
+        r'(<p\s+id="secplus-practice-banks-summary"[^>]*>).*?(</p>)'
     )
-    text, n_sum = re.subn(summary_pat, summary_repl, text, count=1)
+
+    def _summary_repl(match: re.Match[str]) -> str:
+        return match.group(1) + summary_html + match.group(2)
+
+    text, n_sum = re.subn(summary_pat, _summary_repl, text, count=1, flags=re.DOTALL)
     if not n_sum:
         raise RuntimeError("Could not update secplus-practice-banks-summary in portal HTML")
     PORTAL_HTML.write_text(text, encoding="utf-8")

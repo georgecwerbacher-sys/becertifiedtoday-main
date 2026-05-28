@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — BEC (gift card request)</title>
+  <title>Security+ — Legacy plaintext transfer compensating controls</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -219,50 +219,66 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/inbound-malicious-traffic-ips-automated-block.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/register-overwrite-malicious-address-buffer-overflow.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/nation-state-financial-resources-critical-systems-abroad.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/data-at-rest-most-secure-aes-256.html">Next</a>
       </div>
     </nav>
-    <h1>Which of the following scenarios describes a possible business email compromise attack?</h1>
+    <h1 class="choose-two-stem">A security administrator is addressing an issue with a legacy system that communicates data using an unencrypted protocol to transfer sensitive data to a third party. No software updates that use an encrypted protocol are available, so a compensating control is needed. Which of the following are the most appropriate for the administrator to suggest? (Select two.)</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q497" value="A" />A. An employee receives a gift card request in an email that has an executive's name in the display field of the email.</label>
-    <label class="choice"><input type="radio" name="secplus_q497" value="B" />B. Employees who open an email attachment receive messages demanding payment in order to access files.</label>
-    <label class="choice"><input type="radio" name="secplus_q497" value="C" />C. A service desk employee receives an email from the HR director asking for log-in credentials to a cloud administrator account.</label>
-    <label class="choice"><input type="radio" name="secplus_q497" value="D" />D. An employee receives an email with a link to a phishing site that is designed to look like the company's email portal.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q572" value="A" />A. Tokenization</label>
+    <label class="choice"><input type="checkbox" name="secplus_q572" value="B" />B. Cryptographic downgrade</label>
+    <label class="choice"><input type="checkbox" name="secplus_q572" value="C" />C. SSH tunneling</label>
+    <label class="choice"><input type="checkbox" name="secplus_q572" value="D" />D. Segmentation</label>
+    <label class="choice"><input type="checkbox" name="secplus_q572" value="E" />E. Patch installation</label>
+    <label class="choice"><input type="checkbox" name="secplus_q572" value="F" />F. Data masking</label>
 
+    <div class="answer-actions">
+      <button id="checkBtn" type="button" class="nav-check">Check answer</button>
+    </div>
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div class="secplus-objective-tag ccna-objective-tag" aria-label="Security+ objective section">
       <div class="secplus-objective-tag__version">Version: 1.1 2026</div>
       <div class="secplus-objective-tag__title">Security+ objective section</div>
-      <div class="secplus-objective-tag__row">• 2.2 (Threats, Vulnerabilities, and Mitigations): Explain common threat vectors and attack surfaces.</div>
-      <div class="secplus-objective-tag__row">• 2.4 (Threats, Vulnerabilities, and Mitigations): Given a scenario, analyze indicators of malicious activity.</div>
+      <div class="secplus-objective-tag__row">• 1.4 (General Security Concepts): Explain the importance of using appropriate cryptographic solutions.</div>
+      <div class="secplus-objective-tag__row">• 4.1 (Security Operations): Given a scenario, apply common security techniques to computing resources.</div>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 Business email compromise often impersonates an executive (display name spoofing) to pressure employees into urgent wire transfers, invoice changes, or gift card purchases. Ransomware after opening an attachment encrypts files and demands payment to restore access, which is a different attack type. An HR impersonation asking for cloud administrator credentials is targeted phishing or pretexting, not the typical BEC payment-fraud pattern. A link to a fake company email portal is credential phishing rather than executive-driven financial fraud.";
+      var CORRECT = ["C", "D"];
+      var CORRECT_MSG = "Correct. C and D \u2014 SSH tunneling wraps legacy plaintext traffic inside an encrypted channel to protect data in transit when the application protocol itself cannot be upgraded. Segmentation limits where the legacy system can communicate, reducing exposure and blast radius as a compensating control. Tokenization and data masking can reduce data sensitivity in some workflows but are not the primary network compensating controls for securing an unencrypted legacy transport path. Cryptographic downgrade reduces security, and patch installation is ruled out by the scenario.";
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="secplus_q572"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="secplus_q497"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>

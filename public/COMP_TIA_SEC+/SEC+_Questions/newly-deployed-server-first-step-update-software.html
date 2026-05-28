@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — BEC (gift card request)</title>
+  <title>Security+ — New server (update software first)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -219,31 +219,31 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/inbound-malicious-traffic-ips-automated-block.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/regulatory-audit-failure-fines-non-compliance.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/nation-state-financial-resources-critical-systems-abroad.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/controlled-software-version-release-change-management.html">Next</a>
       </div>
     </nav>
-    <h1>Which of the following scenarios describes a possible business email compromise attack?</h1>
+    <h1>Which of the following is the first step to secure a newly deployed server?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q497" value="A" />A. An employee receives a gift card request in an email that has an executive's name in the display field of the email.</label>
-    <label class="choice"><input type="radio" name="secplus_q497" value="B" />B. Employees who open an email attachment receive messages demanding payment in order to access files.</label>
-    <label class="choice"><input type="radio" name="secplus_q497" value="C" />C. A service desk employee receives an email from the HR director asking for log-in credentials to a cloud administrator account.</label>
-    <label class="choice"><input type="radio" name="secplus_q497" value="D" />D. An employee receives an email with a link to a phishing site that is designed to look like the company's email portal.</label>
+    <label class="choice"><input type="radio" name="secplus_q510" value="A" />A. Close unnecessary service ports</label>
+    <label class="choice"><input type="radio" name="secplus_q510" value="B" />B. Update the current version of the software</label>
+    <label class="choice"><input type="radio" name="secplus_q510" value="C" />C. Add the device to the ACL</label>
+    <label class="choice"><input type="radio" name="secplus_q510" value="D" />D. Upgrade the OS version</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div class="secplus-objective-tag ccna-objective-tag" aria-label="Security+ objective section">
       <div class="secplus-objective-tag__version">Version: 1.1 2026</div>
       <div class="secplus-objective-tag__title">Security+ objective section</div>
-      <div class="secplus-objective-tag__row">• 2.2 (Threats, Vulnerabilities, and Mitigations): Explain common threat vectors and attack surfaces.</div>
-      <div class="secplus-objective-tag__row">• 2.4 (Threats, Vulnerabilities, and Mitigations): Given a scenario, analyze indicators of malicious activity.</div>
+      <div class="secplus-objective-tag__row">• 4.1 (Security Operations): Given a scenario, apply common security techniques to computing resources.</div>
+      <div class="secplus-objective-tag__row">• 4.2 (Security Operations): Explain the security implications of proper hardware, software, and data asset management.</div>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 Business email compromise often impersonates an executive (display name spoofing) to pressure employees into urgent wire transfers, invoice changes, or gift card purchases. Ransomware after opening an attachment encrypts files and demands payment to restore access, which is a different attack type. An HR impersonation asking for cloud administrator credentials is targeted phishing or pretexting, not the typical BEC payment-fraud pattern. A link to a fake company email portal is credential phishing rather than executive-driven financial fraud.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 On a new deployment, applying updates to the current OS and installed software closes known vulnerabilities before the system is exposed or further hardened. Closing unnecessary service ports is essential but typically follows patching and baseline configuration. Adding the device to an ACL restricts network access and is part of defense in depth after the host itself is updated and hardened. Upgrading to a newer major OS version is a larger change project and is not the standard first step when the server was just deployed on its present version.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -257,7 +257,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="secplus_q497"]').forEach(function (el) {
+      document.querySelectorAll('input[name="secplus_q510"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

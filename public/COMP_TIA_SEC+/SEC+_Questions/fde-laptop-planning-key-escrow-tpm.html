@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — BEC (gift card request)</title>
+  <title>Security+ — FDE planning: key escrow and TPM</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -219,50 +219,66 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/inbound-malicious-traffic-ips-automated-block.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/legacy-ftp-financial-data-compensating-control-ssh-tunnel.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/nation-state-financial-resources-critical-systems-abroad.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/logic-bomb-internal-app-trusted-insider.html">Next</a>
       </div>
     </nav>
-    <h1>Which of the following scenarios describes a possible business email compromise attack?</h1>
+    <h1 class="choose-two-stem">A security engineer is implementing FDE for all laptops in an organization. Which of the following are the most important for the engineer to consider as part of the planning process? (Select two).</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q497" value="A" />A. An employee receives a gift card request in an email that has an executive's name in the display field of the email.</label>
-    <label class="choice"><input type="radio" name="secplus_q497" value="B" />B. Employees who open an email attachment receive messages demanding payment in order to access files.</label>
-    <label class="choice"><input type="radio" name="secplus_q497" value="C" />C. A service desk employee receives an email from the HR director asking for log-in credentials to a cloud administrator account.</label>
-    <label class="choice"><input type="radio" name="secplus_q497" value="D" />D. An employee receives an email with a link to a phishing site that is designed to look like the company's email portal.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q581" value="A" />A. Key escrow</label>
+    <label class="choice"><input type="checkbox" name="secplus_q581" value="B" />B. TPM presence</label>
+    <label class="choice"><input type="checkbox" name="secplus_q581" value="C" />C. Digital signatures</label>
+    <label class="choice"><input type="checkbox" name="secplus_q581" value="D" />D. Data tokenization</label>
+    <label class="choice"><input type="checkbox" name="secplus_q581" value="E" />E. Public key management</label>
+    <label class="choice"><input type="checkbox" name="secplus_q581" value="F" />F. Certificate authority linking</label>
 
+    <div class="answer-actions">
+      <button id="checkBtn" type="button" class="nav-check">Check answer</button>
+    </div>
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div class="secplus-objective-tag ccna-objective-tag" aria-label="Security+ objective section">
       <div class="secplus-objective-tag__version">Version: 1.1 2026</div>
       <div class="secplus-objective-tag__title">Security+ objective section</div>
-      <div class="secplus-objective-tag__row">• 2.2 (Threats, Vulnerabilities, and Mitigations): Explain common threat vectors and attack surfaces.</div>
-      <div class="secplus-objective-tag__row">• 2.4 (Threats, Vulnerabilities, and Mitigations): Given a scenario, analyze indicators of malicious activity.</div>
+      <div class="secplus-objective-tag__row">• 1.4 (General Security Concepts): Explain the importance of using appropriate cryptographic solutions.</div>
+      <div class="secplus-objective-tag__row">• 4.3 (Security Operations): Explain various activities associated with vulnerability management.</div>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 Business email compromise often impersonates an executive (display name spoofing) to pressure employees into urgent wire transfers, invoice changes, or gift card purchases. Ransomware after opening an attachment encrypts files and demands payment to restore access, which is a different attack type. An HR impersonation asking for cloud administrator credentials is targeted phishing or pretexting, not the typical BEC payment-fraud pattern. A link to a fake company email portal is credential phishing rather than executive-driven financial fraud.";
+      var CORRECT = ["A", "B"];
+      var CORRECT_MSG = "Correct. A and B \u2014 Key escrow is essential for recovery if users forget credentials or devices fail, and TPM presence provides secure key storage and device integrity support for FDE deployments. Digital signatures and PKI/CA concepts are important for code/signing and certificate trust use cases but are not the primary planning requirements for endpoint full-disk encryption rollout. Data tokenization is for sensitive data substitution in applications/datastores, not disk-level encryption implementation.";
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="secplus_q581"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="secplus_q497"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>

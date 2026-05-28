@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — BEC (gift card request)</title>
+  <title>Security+ — Hash (integrity verification)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -219,31 +219,31 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/inbound-malicious-traffic-ips-automated-block.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/vulnerability-list-first-automated-scanning.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/nation-state-financial-resources-critical-systems-abroad.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/cloud-easy-deployment-infrastructure-as-code.html">Next</a>
       </div>
     </nav>
-    <h1>Which of the following scenarios describes a possible business email compromise attack?</h1>
+    <h1>Which of the following is an algorithm performed to verify that data has not been modified?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q497" value="A" />A. An employee receives a gift card request in an email that has an executive's name in the display field of the email.</label>
-    <label class="choice"><input type="radio" name="secplus_q497" value="B" />B. Employees who open an email attachment receive messages demanding payment in order to access files.</label>
-    <label class="choice"><input type="radio" name="secplus_q497" value="C" />C. A service desk employee receives an email from the HR director asking for log-in credentials to a cloud administrator account.</label>
-    <label class="choice"><input type="radio" name="secplus_q497" value="D" />D. An employee receives an email with a link to a phishing site that is designed to look like the company's email portal.</label>
+    <label class="choice"><input type="radio" name="secplus_q516" value="A" />A. Hash</label>
+    <label class="choice"><input type="radio" name="secplus_q516" value="B" />B. Code check</label>
+    <label class="choice"><input type="radio" name="secplus_q516" value="C" />C. Encryption</label>
+    <label class="choice"><input type="radio" name="secplus_q516" value="D" />D. Checksum</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div class="secplus-objective-tag ccna-objective-tag" aria-label="Security+ objective section">
       <div class="secplus-objective-tag__version">Version: 1.1 2026</div>
       <div class="secplus-objective-tag__title">Security+ objective section</div>
-      <div class="secplus-objective-tag__row">• 2.2 (Threats, Vulnerabilities, and Mitigations): Explain common threat vectors and attack surfaces.</div>
-      <div class="secplus-objective-tag__row">• 2.4 (Threats, Vulnerabilities, and Mitigations): Given a scenario, analyze indicators of malicious activity.</div>
+      <div class="secplus-objective-tag__row">• 1.4 (General Security Concepts): Explain the importance of using appropriate cryptographic solutions.</div>
+      <div class="secplus-objective-tag__row">• 1.2 (General Security Concepts): Summarize fundamental security concepts.</div>
     </div>
   </main>
 
   <script>
     (function () {
       var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 Business email compromise often impersonates an executive (display name spoofing) to pressure employees into urgent wire transfers, invoice changes, or gift card purchases. Ransomware after opening an attachment encrypts files and demands payment to restore access, which is a different attack type. An HR impersonation asking for cloud administrator credentials is targeted phishing or pretexting, not the typical BEC payment-fraud pattern. A link to a fake company email portal is credential phishing rather than executive-driven financial fraud.";
+      var CORRECT_MSG = "Correct. A \u2014 A cryptographic hash algorithm produces a fixed digest of data; comparing hashes before and after transfer or storage verifies integrity because any change alters the digest. A code check is not a standard integrity algorithm category on the exam. Encryption primarily protects confidentiality and is reversible with keys; it is not the usual one-way integrity proof. A checksum can detect simple errors but exam questions that ask for cryptographic verification of modification expect hashing (for example SHA-256) rather than basic checksums such as CRC.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -257,7 +257,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="secplus_q497"]').forEach(function (el) {
+      document.querySelectorAll('input[name="secplus_q516"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

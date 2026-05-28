@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — BEC (gift card request)</title>
+  <title>Security+ — Reflected DoS (DNS flood)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -219,31 +219,31 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/inbound-malicious-traffic-ips-automated-block.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/two-person-integrity-process-security-control.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/nation-state-financial-resources-critical-systems-abroad.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/wlan-lobby-channel-overlap-high-power.html">Next</a>
       </div>
     </nav>
-    <h1>Which of the following scenarios describes a possible business email compromise attack?</h1>
+    <h1>A company&#x27;s end users are reporting that they are unable to reach external websites. After reviewing the performance data for the DNS servers, the analyst discovers that the CPU, disk, and memory usage are minimal, but the network interface is flooded with inbound traffic. Network logs show only a small number of DNS queries sent to this server. Which of the following best describes what the security analyst is seeing?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q497" value="A" />A. An employee receives a gift card request in an email that has an executive's name in the display field of the email.</label>
-    <label class="choice"><input type="radio" name="secplus_q497" value="B" />B. Employees who open an email attachment receive messages demanding payment in order to access files.</label>
-    <label class="choice"><input type="radio" name="secplus_q497" value="C" />C. A service desk employee receives an email from the HR director asking for log-in credentials to a cloud administrator account.</label>
-    <label class="choice"><input type="radio" name="secplus_q497" value="D" />D. An employee receives an email with a link to a phishing site that is designed to look like the company's email portal.</label>
+    <label class="choice"><input type="radio" name="secplus_q500" value="A" />A. Concurrent session usage</label>
+    <label class="choice"><input type="radio" name="secplus_q500" value="B" />B. Secure DNS cryptographic downgrade</label>
+    <label class="choice"><input type="radio" name="secplus_q500" value="C" />C. On-path resource consumption</label>
+    <label class="choice"><input type="radio" name="secplus_q500" value="D" />D. Reflected denial of service</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div class="secplus-objective-tag ccna-objective-tag" aria-label="Security+ objective section">
       <div class="secplus-objective-tag__version">Version: 1.1 2026</div>
       <div class="secplus-objective-tag__title">Security+ objective section</div>
-      <div class="secplus-objective-tag__row">• 2.2 (Threats, Vulnerabilities, and Mitigations): Explain common threat vectors and attack surfaces.</div>
       <div class="secplus-objective-tag__row">• 2.4 (Threats, Vulnerabilities, and Mitigations): Given a scenario, analyze indicators of malicious activity.</div>
+      <div class="secplus-objective-tag__row">• 4.4 (Security Operations): Explain security alerting and monitoring concepts and tools.</div>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A \u2014 Business email compromise often impersonates an executive (display name spoofing) to pressure employees into urgent wire transfers, invoice changes, or gift card purchases. Ransomware after opening an attachment encrypts files and demands payment to restore access, which is a different attack type. An HR impersonation asking for cloud administrator credentials is targeted phishing or pretexting, not the typical BEC payment-fraud pattern. A link to a fake company email portal is credential phishing rather than executive-driven financial fraud.";
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D \u2014 In a reflected (often amplified) denial-of-service attack, attackers send requests to open reflectors with a spoofed source address so large volumes of response traffic flood the victim. The DNS server may show heavy inbound traffic while CPU and memory stay low because the flood is not legitimate query processing, and query logs can show relatively few real client requests. Concurrent session usage concerns connection limits on hosts or services, not this reflector pattern. A secure DNS cryptographic downgrade targets DNSSEC negotiation, not interface saturation with minimal utilization. On-path resource consumption describes an attacker exhausting resources on a path between parties, not spoofed reflection from third-party resolvers.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -257,7 +257,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="secplus_q497"]').forEach(function (el) {
+      document.querySelectorAll('input[name="secplus_q500"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
