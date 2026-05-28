@@ -159,79 +159,6 @@
       display: flex;
       flex-direction: column;
     }
-    header {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px 20px;
-      padding-top: max(16px, env(safe-area-inset-top, 0px));
-      padding-right: max(clamp(20px, 4vw, 40px), env(safe-area-inset-right, 0px));
-      padding-bottom: 16px;
-      padding-left: max(clamp(20px, 4vw, 40px), env(safe-area-inset-left, 0px));
-      border-bottom: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.86);
-      backdrop-filter: blur(8px);
-    }
-    .header-actions {
-      flex-shrink: 0;
-      display: inline-flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 10px;
-    }
-    a.ccna-portal-header-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 18px;
-      min-height: 44px;
-      border-radius: 10px;
-      border: 1px solid #8b5cf6;
-      background: rgba(109, 40, 217, 0.18);
-      color: #f3e8ff;
-      font-size: 0.95rem;
-      font-weight: 800;
-      text-decoration: none;
-      white-space: nowrap;
-      letter-spacing: 0.03em;
-      touch-action: manipulation;
-    }
-    a.ccna-portal-header-btn:hover {
-      background: rgba(109, 40, 217, 0.32);
-      color: #fff;
-    }
-    a.ccna-portal-header-btn:focus-visible {
-      outline: 2px solid #c4b5fd;
-      outline-offset: 3px;
-    }
-    a.ccna-portal-header-btn.ccna-portal-header-btn--active {
-      border-color: #a78bfa;
-      background: rgba(124, 58, 237, 0.38);
-      box-shadow: 0 0 0 1px rgba(92, 203, 152, 0.35);
-    }
-    a.ccna-portal-header-btn.ccna-portal-header-btn--active:hover {
-      background: rgba(124, 58, 237, 0.48);
-      color: #fff;
-    }
-    a.ccna-portal-header-btn.ccna-portal-header-btn--unavailable {
-      pointer-events: none;
-      cursor: not-allowed;
-      opacity: 0.52;
-      filter: grayscale(0.9);
-      border-color: rgba(100, 116, 139, 0.55);
-      background: rgba(51, 65, 85, 0.38);
-      color: #94a3b8;
-    }
-    a.ccna-portal-header-btn.ccna-portal-header-btn--unavailable:hover {
-      background: rgba(51, 65, 85, 0.38);
-      color: #94a3b8;
-      filter: grayscale(0.9);
-    }
-    a.ccna-portal-header-btn.ccna-portal-header-btn--unavailable:focus-visible {
-      outline-color: rgba(148, 163, 184, 0.6);
-    }
     a.cta-main.cta-main--locked {
       cursor: not-allowed;
       pointer-events: none;
@@ -282,30 +209,6 @@
       appearance: none;
       max-width: 100%;
     }
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      text-decoration: none;
-      padding: 6px 14px;
-      border-radius: 12px;
-      background: #fff;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
-      line-height: 0;
-      touch-action: manipulation;
-    }
-    .brand img {
-      display: block;
-      height: clamp(56px, 12vw, 88px);
-      width: auto;
-      max-width: min(100px, 22vw);
-      object-fit: contain;
-      object-position: left center;
-    }
-    .brand:focus-visible {
-      outline: 2px solid var(--accent-border);
-      outline-offset: 4px;
-      border-radius: 14px;
-    }
     main {
       flex: 1;
       display: block;
@@ -318,6 +221,7 @@
       margin: 0;
       width: 100%;
       overflow: hidden;
+      padding-top: env(safe-area-inset-top, 0px);
       border-bottom: 1px solid var(--border);
       background: #0d1528;
       /* Taller band + scaled image = read as “zoomed out” vs tight cover crop */
@@ -1879,26 +1783,6 @@
 </head>
 <body>
   <div class="page">
-    <header>
-      <a class="brand" href="/" aria-label="Be Certified Today — home">
-        <img
-          src="/images/logo/becertifiedtoday_logo_trans.png"
-          width="1024"
-          height="1024"
-          alt="Be Certified Today logo — CompTIA Security+ exam prep"
-        />
-      </a>
-      <div class="header-actions">
-        <a
-          id="secplusPortalHeaderBtn"
-          class="ccna-portal-header-btn"
-          href="#purchase"
-          title="CompTIA Security+ training portal — launching soon"
-          aria-label="CompTIA Security+ training portal — coming soon"
-          >Security+ Training Portal</a
-        >
-      </div>
-    </header>
     <figure class="hero-banner">
       <img
         src="/images/comptia-training-card-thumbnail.png"
