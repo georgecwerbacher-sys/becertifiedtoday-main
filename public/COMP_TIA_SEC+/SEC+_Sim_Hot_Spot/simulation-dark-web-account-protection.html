@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security+ Simulation — Dark Web Account Protection</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      padding: 20px 16px 90px;
+    }
+    .wrap {
+      width: min(1080px, 100%);
+      margin: 0 auto;
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.1rem, 2.3vw, 1.5rem);
+      line-height: 1.35;
+    }
+    .lead {
+      margin: 0 0 16px;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .instructions {
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      border: 1px solid #2d3b5a;
+      border-radius: 10px;
+      background: #0f1729;
+      color: #c9d6eb;
+      line-height: 1.5;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(280px, 1fr) minmax(360px, 1.3fr);
+      gap: 16px;
+    }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+    .panel {
+      border: 1px solid #2d3b5a;
+      border-radius: 10px;
+      background: #0f1729;
+      padding: 14px;
+    }
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 1.02rem;
+      color: #dbe7fb;
+    }
+    .artifact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(120px, 1fr));
+      gap: 10px;
+    }
+    .artifact {
+      border: 1px solid #34476d;
+      border-radius: 10px;
+      padding: 10px;
+      background: #101b31;
+      min-height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-weight: 700;
+      color: #d9e6fb;
+    }
+    .artifact.single {
+      grid-column: 1 / -1;
+      max-width: 250px;
+    }
+    fieldset {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+    legend {
+      margin: 0 0 10px;
+      font-weight: 800;
+      color: #e6edf3;
+    }
+    .choices {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    label.choice {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid #33486f;
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: #101b31;
+      cursor: pointer;
+      font-size: 0.96rem;
+    }
+    .actions {
+      margin-top: 12px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    button {
+      border: 1px solid #7c3aed;
+      background: #5b21b6;
+      color: #f3e8ff;
+      font-weight: 700;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font: inherit;
+    }
+    button.secondary {
+      border-color: #2d3b5a;
+      background: #1a253b;
+      color: #d4dce8;
+    }
+    .result {
+      margin-top: 14px;
+      border-radius: 10px;
+      padding: 12px 14px;
+      border: 1px solid #2d3b5a;
+      background: #0f1729;
+      display: none;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+    .result.pass {
+      display: block;
+      border-color: #1f7a58;
+      background: #113e2d;
+      color: #d8ffea;
+    }
+    .result.fail {
+      display: block;
+      border-color: #8c3434;
+      background: #442020;
+      color: #ffd9d9;
+    }
+    .feedback {
+      margin-top: 8px;
+      color: #9fb0cc;
+      min-height: 1.3em;
+      font-size: 0.9rem;
+    }
+    .home-link {
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      z-index: 20;
+      text-decoration: none;
+      color: #f3e8ff;
+      background: #5b21b6;
+      border: 1px solid #7c3aed;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Simulation: Dark Web Exposure and Account Protection</h1>
+    <p class="lead">
+      An organization has learned that its data is being exchanged on the dark web. The CIO has requested that you
+      investigate and implement the most secure solution to protect employee accounts.
+    </p>
+    <p class="instructions">
+      <strong>Instructions:</strong> Review the data to identify weak security practices and provide the most
+      appropriate security solution to meet the CIO's requirements.
+    </p>
+
+    <section class="layout">
+      <article class="panel" aria-label="Observed data">
+        <h2>Observed data exposed</h2>
+        <div class="artifact-grid">
+          <div class="artifact">Directory contents</div>
+          <div class="artifact">Compensation report</div>
+          <div class="artifact single">User data</div>
+        </div>
+      </article>
+
+      <article class="panel" aria-label="Response tasks">
+        <fieldset>
+          <legend>Step 1: Identify weak password practices (select all that apply)</legend>
+          <div class="choices" id="weak-practices">
+            <label class="choice"><input type="checkbox" value="Age" /> Age</label>
+            <label class="choice"><input type="checkbox" value="Reuse" /> Reuse</label>
+            <label class="choice"><input type="checkbox" value="Length" /> Length</label>
+            <label class="choice"><input type="checkbox" value="Expiration" /> Expiration</label>
+            <label class="choice"><input type="checkbox" value="Complexity" /> Complexity</label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Step 2: Select the containment step that leaves host evidence uncompromised</legend>
+          <div class="choices" id="containment-step">
+            <label class="choice"><input type="radio" name="containment" value="PIN code" /> PIN code</label>
+            <label class="choice"><input type="radio" name="containment" value="FIDO security key" /> FIDO security key</label>
+            <label class="choice"><input type="radio" name="containment" value="SMS authentication" /> SMS authentication</label>
+            <label class="choice"><input type="radio" name="containment" value="OTP token" /> OTP token</label>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button id="checkBtn" type="button">Check Answers</button>
+          <button id="resetBtn" class="secondary" type="button">Reset</button>
+          <button id="showAnswerBtn" class="secondary" type="button">Show Answer</button>
+        </div>
+        <div id="resultBox" class="result" aria-live="polite"></div>
+        <div id="feedback" class="feedback" aria-live="polite"></div>
+      </article>
+    </section>
+  </main>
+
+  <a class="home-link" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">SEC+ Home</a>
+
+  <script>
+    const weakCorrect = ["Age", "Reuse", "Length", "Complexity"];
+    const containmentCorrect = "FIDO security key";
+
+    const checkBtn = document.getElementById("checkBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const showAnswerBtn = document.getElementById("showAnswerBtn");
+    const resultBox = document.getElementById("resultBox");
+    const feedback = document.getElementById("feedback");
+
+    function selectedWeak() {
+      return Array.from(document.querySelectorAll("#weak-practices input[type='checkbox']:checked"))
+        .map((el) => el.value)
+        .sort();
+    }
+
+    function selectedContainment() {
+      const chosen = document.querySelector("input[name='containment']:checked");
+      return chosen ? chosen.value : "";
+    }
+
+    function arraysEqual(a, b) {
+      if (a.length !== b.length) return false;
+      return a.every((v, i) => v === b[i]);
+    }
+
+    function checkAnswers() {
+      const weak = selectedWeak();
+      const weakExpected = [...weakCorrect].sort();
+      const containment = selectedContainment();
+
+      const weakOk = arraysEqual(weak, weakExpected);
+      const containmentOk = containment === containmentCorrect;
+      const passed = weakOk && containmentOk;
+
+      resultBox.className = "result " + (passed ? "pass" : "fail");
+      resultBox.textContent = passed
+        ? "Correct. You selected all weak password practices and the best containment step."
+        : "Not quite. Review weak password selections and containment choice, then try again.";
+
+      const weakMsg = weakOk
+        ? "Weak password practices: correct."
+        : "Weak password practices: expected Age, Reuse, Length, and Complexity.";
+      const containMsg = containmentOk
+        ? "Containment step: correct."
+        : "Containment step: expected FIDO security key.";
+      feedback.textContent = weakMsg + " " + containMsg;
+    }
+
+    function resetAnswers() {
+      document.querySelectorAll("#weak-practices input[type='checkbox']").forEach((el) => { el.checked = false; });
+      document.querySelectorAll("input[name='containment']").forEach((el) => { el.checked = false; });
+      resultBox.className = "result";
+      resultBox.textContent = "";
+      feedback.textContent = "";
+    }
+
+    function showAnswers() {
+      document.querySelectorAll("#weak-practices input[type='checkbox']").forEach((el) => {
+        el.checked = weakCorrect.includes(el.value);
+      });
+      document.querySelectorAll("input[name='containment']").forEach((el) => {
+        el.checked = el.value === containmentCorrect;
+      });
+      resultBox.className = "result pass";
+      resultBox.textContent = "Answers shown. Review the selections, then Reset to practice again.";
+      feedback.textContent = "Weak practices: Age, Reuse, Length, Complexity. Containment: FIDO security key.";
+    }
+
+    checkBtn.addEventListener("click", checkAnswers);
+    resetBtn.addEventListener("click", resetAnswers);
+    showAnswerBtn.addEventListener("click", showAnswers);
+  </script>
+</body>
+</html>
