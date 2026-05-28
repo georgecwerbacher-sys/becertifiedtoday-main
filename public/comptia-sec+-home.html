@@ -231,6 +231,16 @@
       background: rgba(255, 255, 255, 0.86);
       backdrop-filter: blur(8px);
     }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .brand img {
+      display: block;
+      width: clamp(44px, 5vw, 56px);
+      height: auto;
+    }
     .header-actions {
       flex-shrink: 0;
       display: inline-flex;
@@ -1861,6 +1871,14 @@
 <body>
   <div class="page">
     <header>
+      <a class="brand" href="/" aria-label="Be Certified Today — home">
+        <img
+          src="/images/logo/becertifiedtoday_logo_trans.png"
+          width="1024"
+          height="1024"
+          alt="Be Certified Today logo — IT certification exam prep"
+        />
+      </a>
       <div class="header-actions">
         <a
           class="secplus-portal-header-btn secplus-portal-header-btn--active"
