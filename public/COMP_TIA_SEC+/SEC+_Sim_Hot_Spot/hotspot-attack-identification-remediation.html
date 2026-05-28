@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security+ Hot Spot — Attack Identification and Remediation</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      padding: 20px 16px 90px;
+    }
+    .wrap {
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.1rem, 2.3vw, 1.5rem);
+      line-height: 1.35;
+    }
+    .lead {
+      margin: 0 0 16px;
+      color: #b8c3d6;
+      line-height: 1.45;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid #2d3b5a;
+      border-radius: 10px;
+    }
+    table {
+      width: 100%;
+      min-width: 980px;
+      border-collapse: collapse;
+      background: #0f1729;
+    }
+    th, td {
+      border: 1px solid #2d3b5a;
+      padding: 10px 12px;
+      vertical-align: top;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    th {
+      background: #1a253b;
+      color: #e6edf3;
+      font-weight: 700;
+    }
+    td:nth-child(1) { width: 37%; }
+    td:nth-child(2) { width: 13%; }
+    td:nth-child(3) { width: 22%; }
+    td:nth-child(4) { width: 28%; }
+    .target {
+      font-weight: 700;
+      color: #dbe7fb;
+    }
+    select {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #3b4f77;
+      background: #0b1222;
+      color: #e6edf3;
+      padding: 8px 10px;
+      font: inherit;
+    }
+    .status {
+      margin-top: 6px;
+      font-size: 0.82rem;
+      min-height: 1.2em;
+      color: #93a8c8;
+    }
+    .status.ok { color: #4ade80; }
+    .status.bad { color: #fca5a5; }
+    .actions {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    button {
+      border: 1px solid #7c3aed;
+      background: #5b21b6;
+      color: #f3e8ff;
+      font-weight: 700;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font: inherit;
+    }
+    button.secondary {
+      border-color: #2d3b5a;
+      background: #1a253b;
+      color: #d4dce8;
+    }
+    .result {
+      margin-top: 14px;
+      border-radius: 10px;
+      padding: 12px 14px;
+      border: 1px solid #2d3b5a;
+      background: #0f1729;
+      display: none;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+    .result.pass {
+      display: block;
+      border-color: #1f7a58;
+      background: #113e2d;
+      color: #d8ffea;
+    }
+    .result.fail {
+      display: block;
+      border-color: #8c3434;
+      background: #442020;
+      color: #ffd9d9;
+    }
+    .home-link {
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      z-index: 20;
+      text-decoration: none;
+      color: #f3e8ff;
+      background: #5b21b6;
+      border: 1px solid #7c3aed;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Hot Spot: Identify the attack and best prevention/remediation action</h1>
+    <p class="lead">
+      For each row, choose the correct <strong>Attack Identified</strong> and the best <strong>Preventive or Remediation Action</strong>.
+      All rows must be correct to pass.
+    </p>
+
+    <div class="table-wrap">
+      <table aria-label="Attack identification and remediation hot spot">
+        <thead>
+          <tr>
+            <th>Attack Description</th>
+            <th>Target</th>
+            <th>Attack Identified</th>
+            <th>Best Preventive or Remediation Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-row="1">
+            <td>An attacker sends multiple SYN packets from multiple sources.</td>
+            <td class="target">Web server</td>
+            <td>
+              <select class="attack-select" aria-label="Row 1 attack identified">
+                <option value="">Select...</option>
+                <option>Botnet</option>
+                <option>RAT</option>
+                <option>Logic Bomb</option>
+                <option>Backdoor</option>
+                <option>Virus</option>
+                <option>Spyware</option>
+                <option>Worm</option>
+                <option>Adware</option>
+                <option>Ransomware</option>
+                <option>Keylogger</option>
+                <option>Phishing</option>
+              </select>
+            </td>
+            <td>
+              <select class="action-select" aria-label="Row 1 preventive or remediation action">
+                <option value="">Select...</option>
+                <option>Enable DDoS protection</option>
+                <option>Patch vulnerable systems</option>
+                <option>Disable vulnerable services</option>
+                <option>Change the default system password</option>
+                <option>Update the cryptographic algorithms</option>
+                <option>Change the default application password</option>
+                <option>Implement 2FA using push notification</option>
+                <option>Conduct a code review</option>
+                <option>Implement application fuzzing</option>
+                <option>Implement a host-based IPS</option>
+                <option>Disable remote access services</option>
+              </select>
+            </td>
+          </tr>
+          <tr data-row="2">
+            <td>The attack establishes a connection, which allows remote commands to be executed.</td>
+            <td class="target">User</td>
+            <td>
+              <select class="attack-select" aria-label="Row 2 attack identified">
+                <option value="">Select...</option>
+                <option>Botnet</option>
+                <option>RAT</option>
+                <option>Logic Bomb</option>
+                <option>Backdoor</option>
+                <option>Virus</option>
+                <option>Spyware</option>
+                <option>Worm</option>
+                <option>Adware</option>
+                <option>Ransomware</option>
+                <option>Keylogger</option>
+                <option>Phishing</option>
+              </select>
+            </td>
+            <td>
+              <select class="action-select" aria-label="Row 2 preventive or remediation action">
+                <option value="">Select...</option>
+                <option>Enable DDoS protection</option>
+                <option>Patch vulnerable systems</option>
+                <option>Disable vulnerable services</option>
+                <option>Change the default system password</option>
+                <option>Update the cryptographic algorithms</option>
+                <option>Change the default application password</option>
+                <option>Implement 2FA using push notification</option>
+                <option>Conduct a code review</option>
+                <option>Implement application fuzzing</option>
+                <option>Implement a host-based IPS</option>
+                <option>Disable remote access services</option>
+              </select>
+            </td>
+          </tr>
+          <tr data-row="3">
+            <td>
+              The attack is self propagating and compromises a SQL database using well-known credentials as it moves
+              through the network.
+            </td>
+            <td class="target">Database server</td>
+            <td>
+              <select class="attack-select" aria-label="Row 3 attack identified">
+                <option value="">Select...</option>
+                <option>Botnet</option>
+                <option>RAT</option>
+                <option>Logic Bomb</option>
+                <option>Backdoor</option>
+                <option>Virus</option>
+                <option>Spyware</option>
+                <option>Worm</option>
+                <option>Adware</option>
+                <option>Ransomware</option>
+                <option>Keylogger</option>
+                <option>Phishing</option>
+              </select>
+            </td>
+            <td>
+              <select class="action-select" aria-label="Row 3 preventive or remediation action">
+                <option value="">Select...</option>
+                <option>Enable DDoS protection</option>
+                <option>Patch vulnerable systems</option>
+                <option>Disable vulnerable services</option>
+                <option>Change the default system password</option>
+                <option>Update the cryptographic algorithms</option>
+                <option>Change the default application password</option>
+                <option>Implement 2FA using push notification</option>
+                <option>Conduct a code review</option>
+                <option>Implement application fuzzing</option>
+                <option>Implement a host-based IPS</option>
+                <option>Disable remote access services</option>
+              </select>
+            </td>
+          </tr>
+          <tr data-row="4">
+            <td>The attacker uses hardware to remotely monitor a user's input activity to harvest credentials.</td>
+            <td class="target">Executive</td>
+            <td>
+              <select class="attack-select" aria-label="Row 4 attack identified">
+                <option value="">Select...</option>
+                <option>Botnet</option>
+                <option>RAT</option>
+                <option>Logic Bomb</option>
+                <option>Backdoor</option>
+                <option>Virus</option>
+                <option>Spyware</option>
+                <option>Worm</option>
+                <option>Adware</option>
+                <option>Ransomware</option>
+                <option>Keylogger</option>
+                <option>Phishing</option>
+              </select>
+            </td>
+            <td>
+              <select class="action-select" aria-label="Row 4 preventive or remediation action">
+                <option value="">Select...</option>
+                <option>Enable DDoS protection</option>
+                <option>Patch vulnerable systems</option>
+                <option>Disable vulnerable services</option>
+                <option>Change the default system password</option>
+                <option>Update the cryptographic algorithms</option>
+                <option>Change the default application password</option>
+                <option>Implement 2FA using push notification</option>
+                <option>Conduct a code review</option>
+                <option>Implement application fuzzing</option>
+                <option>Implement a host-based IPS</option>
+                <option>Disable remote access services</option>
+              </select>
+            </td>
+          </tr>
+          <tr data-row="5">
+            <td>The attacker embeds hidden access in an internally developed application that bypasses account login.</td>
+            <td class="target">Application</td>
+            <td>
+              <select class="attack-select" aria-label="Row 5 attack identified">
+                <option value="">Select...</option>
+                <option>Botnet</option>
+                <option>RAT</option>
+                <option>Logic Bomb</option>
+                <option>Backdoor</option>
+                <option>Virus</option>
+                <option>Spyware</option>
+                <option>Worm</option>
+                <option>Adware</option>
+                <option>Ransomware</option>
+                <option>Keylogger</option>
+                <option>Phishing</option>
+              </select>
+            </td>
+            <td>
+              <select class="action-select" aria-label="Row 5 preventive or remediation action">
+                <option value="">Select...</option>
+                <option>Enable DDoS protection</option>
+                <option>Patch vulnerable systems</option>
+                <option>Disable vulnerable services</option>
+                <option>Change the default system password</option>
+                <option>Update the cryptographic algorithms</option>
+                <option>Change the default application password</option>
+                <option>Implement 2FA using push notification</option>
+                <option>Conduct a code review</option>
+                <option>Implement application fuzzing</option>
+                <option>Implement a host-based IPS</option>
+                <option>Disable remote access services</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="actions">
+      <button id="checkBtn" type="button">Check Answers</button>
+      <button id="resetBtn" class="secondary" type="button">Reset</button>
+      <button id="showAnswerBtn" class="secondary" type="button">Show Answer</button>
+    </div>
+    <div id="resultBox" class="result" aria-live="polite"></div>
+    <div id="rowFeedback" class="status" aria-live="polite"></div>
+  </main>
+
+  <a class="home-link" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">SEC+ Home</a>
+
+  <script>
+    const answerKey = [
+      { attack: "Botnet", action: "Enable DDoS protection" },
+      { attack: "RAT", action: "Disable remote access services" },
+      { attack: "Worm", action: "Change the default system password" },
+      { attack: "Keylogger", action: "Implement 2FA using push notification" },
+      { attack: "Backdoor", action: "Conduct a code review" },
+    ];
+
+    const rows = Array.from(document.querySelectorAll("tbody tr"));
+    const resultBox = document.getElementById("resultBox");
+    const rowFeedback = document.getElementById("rowFeedback");
+    const checkBtn = document.getElementById("checkBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const showAnswerBtn = document.getElementById("showAnswerBtn");
+
+    function evaluate() {
+      let correctCount = 0;
+      const perRow = [];
+
+      rows.forEach((row, idx) => {
+        const attack = row.querySelector(".attack-select").value;
+        const action = row.querySelector(".action-select").value;
+        const key = answerKey[idx];
+        const ok = attack === key.attack && action === key.action;
+        if (ok) correctCount += 1;
+        perRow.push(ok ? "Row " + (idx + 1) + ": Correct" : "Row " + (idx + 1) + ": Incorrect");
+      });
+
+      const total = rows.length;
+      const passed = correctCount === total;
+      resultBox.className = "result " + (passed ? "pass" : "fail");
+      resultBox.textContent = passed
+        ? "Correct. You identified all attacks and best remediation actions."
+        : "You got " + correctCount + " of " + total + " rows correct. Review selections and try again.";
+      rowFeedback.textContent = perRow.join(" | ");
+      rowFeedback.className = "status " + (passed ? "ok" : "bad");
+    }
+
+    function resetAll() {
+      rows.forEach((row) => {
+        row.querySelector(".attack-select").value = "";
+        row.querySelector(".action-select").value = "";
+      });
+      resultBox.className = "result";
+      resultBox.textContent = "";
+      rowFeedback.className = "status";
+      rowFeedback.textContent = "";
+    }
+
+    function showAnswers() {
+      rows.forEach((row, idx) => {
+        row.querySelector(".attack-select").value = answerKey[idx].attack;
+        row.querySelector(".action-select").value = answerKey[idx].action;
+      });
+      resultBox.className = "result pass";
+      resultBox.textContent = "Answers shown. Review each row, then use Reset to try again.";
+      rowFeedback.className = "status ok";
+      rowFeedback.textContent = "All correct answers are selected.";
+    }
+
+    checkBtn.addEventListener("click", evaluate);
+    resetBtn.addEventListener("click", resetAll);
+    showAnswerBtn.addEventListener("click", showAnswers);
+  </script>
+</body>
+</html>
