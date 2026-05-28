@@ -10,6 +10,9 @@ import re
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 OUT = ROOT / "public/COMP_TIA_SEC+/SEC+_Questions"
 HUB_JS = ROOT / "public/COMP_TIA_SEC+/js/secplus-practice-hub.js"
+SLUGS_JS = ROOT / "public/COMP_TIA_SEC+/js/secplus-practice-slugs.js"
+PORTAL_HTML = ROOT / "public/COMP_TIA_SEC+/SEC+_Training_Portal.html"
+PRACTICE_BANK_SIZE = 100
 TOPIC_MAP = ROOT / "public/COMP_TIA_SEC+/data/secplus-question-topic-map.json"
 OBJECTIVES_JSON = ROOT / "public/COMP_TIA_SEC+/data/secplus-exam-objectives-sy0-701.json"
 PORTAL_HOME = "/COMP_TIA_SEC+/SEC+_Training_Portal.html"
@@ -13047,30 +13050,138 @@ CHAIN: list[dict] = [
 ]
 
 
+def _format_hub_range(first: int, last: int) -> str:
+    if first >= last:
+        return str(first)
+    return f"{first}&ndash;{last}"
+
+
+def render_portal_practice_bank_cards(slug_count: int) -> str:
+    if slug_count < 1:
+        return ""
+    n_banks = (slug_count + PRACTICE_BANK_SIZE - 1) // PRACTICE_BANK_SIZE
+    lines: list[str] = []
+    for b in range(1, n_banks + 1):
+        start_idx = (b - 1) * PRACTICE_BANK_SIZE
+        end_idx = min(b * PRACTICE_BANK_SIZE, slug_count)
+        first_num = start_idx + 1
+        slot_end = b * PRACTICE_BANK_SIZE
+        count_in_bank = max(0, end_idx - start_idx)
+        is_last = b == n_banks
+        is_partial = 0 < count_in_bank < PRACTICE_BANK_SIZE
+        extra_class = " secplus-practice-bank--remainder" if is_last and is_partial else ""
+        if count_in_bank == 0:
+            title_inner = _format_hub_range(first_num, slot_end)
+        else:
+            title_inner = _format_hub_range(first_num, end_idx)
+        item_word = "item" if count_in_bank == 1 else "items"
+        lines.append(
+            f"""              <article
+                class="sim-box{extra_class}"
+                data-secplus-practice-bank-index="{b}"
+                aria-labelledby="secplus-bank-title-{b}"
+              >
+                <h4 class="sim-box-title" id="secplus-bank-title-{b}">
+                  Bank {b} · questions {title_inner}
+                </h4>
+                <p class="study-meta">
+                  {count_in_bank} {item_word} · Random shuffles once; Review sends misses to the back of the queue.
+                </p>
+                <div class="study-actions" role="group" aria-label="Practice modes for bank {b}">
+                  <button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="{b}">
+                    Random
+                  </button>
+                  <button type="button" class="start-btn" data-secplus-practice="review" data-secplus-practice-bank="{b}">
+                    Review
+                  </button>
+                </div>
+              </article>"""
+        )
+    return "\n".join(lines) + "\n"
+
+
+def portal_practice_banks_summary_html(slug_count: int) -> str:
+    n_banks = max(1, (slug_count + PRACTICE_BANK_SIZE - 1) // PRACTICE_BANK_SIZE)
+    last_bank_count = slug_count - (n_banks - 1) * PRACTICE_BANK_SIZE
+    bank_word = "bank" if n_banks == 1 else "banks"
+    text = (
+        f"{slug_count} practice question{'s' if slug_count != 1 else ''} in {n_banks} {bank_word} "
+        f"(positions 1&ndash;100, 101&ndash;200, and so on in hub order). "
+    )
+    if 0 < last_bank_count < PRACTICE_BANK_SIZE:
+        text += (
+            f"The newest bank (positions {_format_hub_range((n_banks - 1) * PRACTICE_BANK_SIZE + 1, n_banks * PRACTICE_BANK_SIZE)}) "
+            f"has {last_bank_count} question{'s' if last_bank_count != 1 else ''} until the list reaches {PRACTICE_BANK_SIZE}; "
+            "then the next bank appears automatically. "
+        )
+    text += (
+        "Each bank has its own Random and Review session. Use Practice by subject to limit a session "
+        "to one SY0-701 domain before you start."
+    )
+    return text
+
+
 def sync_hub_slugs(chain: list[dict]) -> None:
     slugs = [q["slug"] for q in chain]
     inner = ",\n    ".join(json.dumps(s) for s in slugs)
-    HUB_JS.parent.mkdir(parents=True, exist_ok=True)
+    slugs_body = f"window.SECPLUS_PRACTICE.SLUGS = [\n    {inner}\n  ];"
+    SLUGS_JS.parent.mkdir(parents=True, exist_ok=True)
+    SLUGS_JS.write_text(
+        f"""(function () {{
+  "use strict";
+  window.SECPLUS_PRACTICE = window.SECPLUS_PRACTICE || {{}};
+  {slugs_body}
+}})();
+""",
+        encoding="utf-8",
+    )
     if HUB_JS.is_file():
         text = HUB_JS.read_text(encoding="utf-8")
         patched, n = re.subn(
             r"window\.SECPLUS_PRACTICE\.SLUGS\s*=\s*\[[\s\S]*?\];",
-            f"window.SECPLUS_PRACTICE.SLUGS = [\n    {inner}\n  ];",
+            slugs_body,
             text,
             count=1,
         )
         if n:
             HUB_JS.write_text(patched, encoding="utf-8")
             return
-    body = f"""(function () {{
-  "use strict";
-  window.SECPLUS_PRACTICE = window.SECPLUS_PRACTICE || {{}};
-  window.SECPLUS_PRACTICE.SLUGS = [
-    {inner}
-  ];
-}})();
-"""
-    HUB_JS.write_text(body, encoding="utf-8")
+    raise RuntimeError(f"Could not patch SLUGS in {HUB_JS}")
+
+
+def sync_portal_practice_banks(chain: list[dict]) -> None:
+    slug_count = len(chain)
+    if not PORTAL_HTML.is_file():
+        return
+    n_banks = max(1, (slug_count + PRACTICE_BANK_SIZE - 1) // PRACTICE_BANK_SIZE)
+    banks_html = render_portal_practice_bank_cards(slug_count)
+    summary_html = portal_practice_banks_summary_html(slug_count)
+    text = PORTAL_HTML.read_text(encoding="utf-8")
+    grid_pat = (
+        r'<div class="sim-grid" id="secplus-practice-banks-grid"[^>]*>\s*</div>'
+    )
+    grid_repl = (
+        '<div class="sim-grid" id="secplus-practice-banks-grid" '
+        f'aria-label="Practice question banks: {n_banks} banks of up to {PRACTICE_BANK_SIZE} '
+        f'questions each ({slug_count} total)">\n'
+        + banks_html
+        + "            </div>"
+    )
+    text, n_grid = re.subn(grid_pat, grid_repl, text, count=1)
+    if not n_grid:
+        raise RuntimeError("Could not update secplus-practice-banks-grid in portal HTML")
+    summary_pat = r'<p\s+id="secplus-practice-banks-summary"[^>]*>\s*</p>'
+    summary_repl = (
+        '<p\n'
+        '              id="secplus-practice-banks-summary"\n'
+        '              class="study-meta secplus-practice-banks-summary"\n'
+        '              aria-live="polite"\n'
+        f"            >{summary_html}</p>"
+    )
+    text, n_sum = re.subn(summary_pat, summary_repl, text, count=1)
+    if not n_sum:
+        raise RuntimeError("Could not update secplus-practice-banks-summary in portal HTML")
+    PORTAL_HTML.write_text(text, encoding="utf-8")
 
 
 def sync_topic_map(chain: list[dict]) -> None:
@@ -13135,7 +13246,10 @@ def main() -> None:
         print(f"Wrote {path.relative_to(ROOT)}")
     sync_hub_slugs(CHAIN)
     sync_topic_map(CHAIN)
+    sync_portal_practice_banks(CHAIN)
     print(f"Updated {HUB_JS.relative_to(ROOT)} ({n} slugs)")
+    print(f"Updated {SLUGS_JS.relative_to(ROOT)}")
+    print(f"Updated {PORTAL_HTML.relative_to(ROOT)} practice banks")
     print(f"Updated {TOPIC_MAP.relative_to(ROOT)}")
 
 

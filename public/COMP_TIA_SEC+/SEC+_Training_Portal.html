@@ -18,7 +18,7 @@
   <title>CompTIA Security+ Training Portal | Be Certified Today</title>
   <!--
     Portal shell aligned with CCNA_Training_Portal.html layout.
-    Security+ sections use disabled placeholders until question banks and checkout go live.
+    Practice questions are grouped in banks of up to 100 (hub order); drag-and-drop and timed simulation sections remain placeholders until those tracks launch.
   -->
   <style>
     :root {
@@ -95,20 +95,6 @@
       flex: 1;
       display: block;
       padding: clamp(32px, 6vw, 56px) clamp(20px, 4vw, 40px);
-    }
-    .hero-banner {
-      margin: 0;
-      width: 100%;
-      overflow: hidden;
-      border-bottom: 1px solid var(--border);
-      background: #0d1528;
-    }
-    .hero-banner img {
-      display: block;
-      width: 100%;
-      height: clamp(150px, 26vw, 320px);
-      object-fit: cover;
-      object-position: center 15%;
     }
     .hero-content {
       max-width: 1080px;
@@ -710,16 +696,6 @@
         />
       </a>
     </header>
-    <figure class="hero-banner">
-      <img
-        src="/images/comptia-training-card-thumbnail.png"
-        width="1024"
-        height="682"
-        alt="IT professional with a laptop and security lock hologram — CompTIA Security+ study prep."
-        decoding="async"
-        fetchpriority="high"
-      />
-    </figure>
     <main id="main">
       <div class="hero-content">
         <div class="funnel">
@@ -727,7 +703,7 @@
           <h1>Security+ Training Portal</h1>
           <p class="lead">
             Map your prep to the official SY0-701 blueprint, spend time where CompTIA weights the exam, then prove it with
-            interactive practice here—sample questions are available now; the full library launches soon on this portal.
+            interactive practice here—question banks below are grouped in sets of up to 100 with Random and Review per bank.
           </p>
           <ul class="benefits" aria-label="Portal highlights">
             <li>Professional study flow with organized sections, clear navigation, and focused practice modes.</li>
@@ -832,16 +808,16 @@
           </p>
           <h3 class="section-heading">Practice Questions</h3>
           <section class="start-box" aria-label="Question studies">
-            <p class="placeholder-strip">
-              <strong>Early access.</strong> The three-question sample deck is still separate; the hub bank below grows as new
-              items are added to <code>SEC+_Questions/</code>.
+            <p class="study-meta">
+              New practice questions are grouped in banks of up to <strong>100</strong> by position in the hub list
+              (<strong>1&ndash;100</strong>, <strong>101&ndash;200</strong>, and so on). When a bank fills, another bank is
+              added for the next hundred. Each bank has its own <strong>Random</strong> and <strong>Review</strong> session.
             </p>
             <p
               id="secplus-practice-banks-summary"
               class="study-meta secplus-practice-banks-summary"
-              hidden
               aria-live="polite"
-            ></p>
+            >497 practice questions in 5 banks (positions 1&ndash;100, 101&ndash;200, and so on in hub order). The newest bank (positions 401&ndash;500) has 97 questions until the list reaches 100; then the next bank appears automatically. Each bank has its own Random and Review session. Use Practice by subject to limit a session to one SY0-701 domain before you start.</p>
             <div class="secplus-practice-subject-filter" id="secplus-practice-subject-filter">
               <p class="secplus-practice-subject-title">Practice by subject</p>
               <p class="secplus-practice-subject-lead">
@@ -894,30 +870,111 @@
                 </p>
               </fieldset>
             </div>
-            <div class="sim-grid" id="secplus-practice-banks-grid" aria-label="Practice question banks">
-              <article class="sim-box">
-                <figure class="sim-box-thumb">
-                  <img
-                    src="/images/comptia-training-card-thumbnail.png"
-                    width="1024"
-                    height="682"
-                    alt="CompTIA Security+ training preview — sample practice questions."
-                    decoding="async"
-                    loading="lazy"
-                  />
-                </figure>
-                <h4 class="sim-box-title">Sample questions (3 items)</h4>
+            <div class="sim-grid" id="secplus-practice-banks-grid" aria-label="Practice question banks: 5 banks of up to 100 questions each (497 total)">
+              <article
+                class="sim-box"
+                data-secplus-practice-bank-index="1"
+                aria-labelledby="secplus-bank-title-1"
+              >
+                <h4 class="sim-box-title" id="secplus-bank-title-1">
+                  Bank 1 · questions 1&ndash;100
+                </h4>
                 <p class="study-meta">
-                  Interactive walkthrough covering MFA and AAA, symmetric encryption (AES), and phishing / social engineering.
-                  <strong>Live now</strong>—no purchase required.
+                  100 items · Random shuffles once; Review sends misses to the back of the queue.
                 </p>
-                <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Samples/sample.html?track=questions">Open sample</a>
+                <div class="study-actions" role="group" aria-label="Practice modes for bank 1">
+                  <button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="1">
+                    Random
+                  </button>
+                  <button type="button" class="start-btn" data-secplus-practice="review" data-secplus-practice-bank="1">
+                    Review
+                  </button>
+                </div>
+              </article>
+              <article
+                class="sim-box"
+                data-secplus-practice-bank-index="2"
+                aria-labelledby="secplus-bank-title-2"
+              >
+                <h4 class="sim-box-title" id="secplus-bank-title-2">
+                  Bank 2 · questions 101&ndash;200
+                </h4>
+                <p class="study-meta">
+                  100 items · Random shuffles once; Review sends misses to the back of the queue.
+                </p>
+                <div class="study-actions" role="group" aria-label="Practice modes for bank 2">
+                  <button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="2">
+                    Random
+                  </button>
+                  <button type="button" class="start-btn" data-secplus-practice="review" data-secplus-practice-bank="2">
+                    Review
+                  </button>
+                </div>
+              </article>
+              <article
+                class="sim-box"
+                data-secplus-practice-bank-index="3"
+                aria-labelledby="secplus-bank-title-3"
+              >
+                <h4 class="sim-box-title" id="secplus-bank-title-3">
+                  Bank 3 · questions 201&ndash;300
+                </h4>
+                <p class="study-meta">
+                  100 items · Random shuffles once; Review sends misses to the back of the queue.
+                </p>
+                <div class="study-actions" role="group" aria-label="Practice modes for bank 3">
+                  <button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="3">
+                    Random
+                  </button>
+                  <button type="button" class="start-btn" data-secplus-practice="review" data-secplus-practice-bank="3">
+                    Review
+                  </button>
+                </div>
+              </article>
+              <article
+                class="sim-box"
+                data-secplus-practice-bank-index="4"
+                aria-labelledby="secplus-bank-title-4"
+              >
+                <h4 class="sim-box-title" id="secplus-bank-title-4">
+                  Bank 4 · questions 301&ndash;400
+                </h4>
+                <p class="study-meta">
+                  100 items · Random shuffles once; Review sends misses to the back of the queue.
+                </p>
+                <div class="study-actions" role="group" aria-label="Practice modes for bank 4">
+                  <button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="4">
+                    Random
+                  </button>
+                  <button type="button" class="start-btn" data-secplus-practice="review" data-secplus-practice-bank="4">
+                    Review
+                  </button>
+                </div>
+              </article>
+              <article
+                class="sim-box secplus-practice-bank--remainder"
+                data-secplus-practice-bank-index="5"
+                aria-labelledby="secplus-bank-title-5"
+              >
+                <h4 class="sim-box-title" id="secplus-bank-title-5">
+                  Bank 5 · questions 401&ndash;497
+                </h4>
+                <p class="study-meta">
+                  97 items · Random shuffles once; Review sends misses to the back of the queue.
+                </p>
+                <div class="study-actions" role="group" aria-label="Practice modes for bank 5">
+                  <button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="5">
+                    Random
+                  </button>
+                  <button type="button" class="start-btn" data-secplus-practice="review" data-secplus-practice-bank="5">
+                    Review
+                  </button>
+                </div>
               </article>
             </div>
             <noscript>
               <p class="study-meta">
-                Sample questions require JavaScript. Open
-                <a href="/COMP_TIA_SEC+/SEC+_Samples/sample-question-1.html">sample question 1</a> directly.
+                Practice question banks (up to 100 per bank, with Random and Review per bank) require JavaScript.
               </p>
             </noscript>
           </section>
