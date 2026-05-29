@@ -4,32 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Security+ Simulation — Dark Web Account Protection</title>
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
   <style>
     :root {
       color-scheme: dark;
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --page-blue: #0b1020;
+      --page-blue-border: #2d3b5a;
+      --page-blue-hover: #121a2b;
     }
     * { box-sizing: border-box; }
+    html,
     body {
       margin: 0;
       min-height: 100vh;
-      background: #0b1020;
+      background: var(--page-blue) !important;
       color: #e6edf3;
+    }
+    body {
       padding: 20px 16px 90px;
     }
     .wrap {
       width: min(1080px, 100%);
       margin: 0 auto;
-      background: #121a2b;
-      border: 1px solid #2d3b5a;
-      border-radius: 14px;
-      padding: 22px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+      box-shadow: none;
     }
     h1 {
       margin: 0 0 10px;
       font-size: clamp(1.1rem, 2.3vw, 1.5rem);
       line-height: 1.35;
+      color: #e6edf3;
     }
     .lead {
       margin: 0 0 16px;
@@ -39,11 +48,12 @@
     .instructions {
       margin: 0 0 16px;
       padding: 12px 14px;
-      border: 1px solid #2d3b5a;
+      border: 1px solid #e5e7eb;
       border-radius: 10px;
-      background: #0f1729;
-      color: #c9d6eb;
+      background: #ffffff;
+      color: #334155;
       line-height: 1.5;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
     }
     .layout {
       display: grid;
@@ -54,37 +64,83 @@
       .layout { grid-template-columns: 1fr; }
     }
     .panel {
-      border: 1px solid #2d3b5a;
+      border: 1px solid #e5e7eb;
       border-radius: 10px;
-      background: #0f1729;
+      background: #ffffff;
       padding: 14px;
+      color: #1e293b;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
     }
     .panel h2 {
       margin: 0 0 10px;
       font-size: 1.02rem;
-      color: #dbe7fb;
+      color: #0f172a;
     }
     .artifact-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(120px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
     }
+    @media (max-width: 560px) {
+      .artifact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
     .artifact {
-      border: 1px solid #34476d;
+      border: 1px solid #e5e7eb;
       border-radius: 10px;
-      padding: 10px;
-      background: #101b31;
-      min-height: 90px;
+      padding: 14px 10px;
+      background: #ffffff;
+      min-height: 118px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+      cursor: pointer;
+      font: inherit;
+      color: inherit;
+      width: 100%;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .artifact:hover,
+    .artifact:focus-visible {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+      outline: none;
+    }
+    .artifact.reviewed {
+      border-color: #86efac;
+    }
+    .artifact-hint {
+      margin: 0 0 10px;
+      font-size: 0.84rem;
+      color: #64748b;
+    }
+    .artifact-icon {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      color: #2563eb;
+    }
+    .artifact-icon--report {
+      color: #7c3aed;
+    }
+    .artifact-icon--users {
+      color: #0891b2;
+    }
+    .artifact-label {
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: #334155;
+      line-height: 1.3;
+      min-height: 2.6em;
       display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      font-weight: 700;
-      color: #d9e6fb;
-    }
-    .artifact.single {
-      grid-column: 1 / -1;
-      max-width: 250px;
     }
     fieldset {
       margin: 0;
@@ -94,7 +150,7 @@
     legend {
       margin: 0 0 10px;
       font-weight: 800;
-      color: #e6edf3;
+      color: #0f172a;
     }
     .choices {
       display: grid;
@@ -105,18 +161,75 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      border: 1px solid #33486f;
+      border: 1px solid #cbd5e1;
       border-radius: 10px;
       padding: 10px 12px;
-      background: #101b31;
+      background: #ffffff;
       cursor: pointer;
       font-size: 0.96rem;
+      color: #1e293b;
+    }
+    label.choice:hover {
+      border-color: #d1d5db;
+      background: #fafafa;
+    }
+    .panel-solution {
+      background: var(--page-blue);
+      border-color: var(--page-blue-border);
+      color: #e6edf3;
+      box-shadow: none;
+    }
+    .panel-solution legend {
+      color: #e6edf3;
+    }
+    .panel-solution label.choice {
+      background: var(--page-blue);
+      border-color: var(--page-blue-border);
+      color: #e6edf3;
+    }
+    .panel-solution label.choice:hover {
+      border-color: #7c3aed;
+      background: var(--page-blue-hover);
+    }
+    .panel-solution .result {
+      background: var(--page-blue);
+      border-color: var(--page-blue-border);
+      color: #e6edf3;
+    }
+    .panel-solution .result.pass {
+      border-color: #1f7a58;
+      background: #113e2d;
+      color: #d8ffea;
+    }
+    .panel-solution .result.fail {
+      border-color: #8c3434;
+      background: #442020;
+      color: #ffd9d9;
+    }
+    .panel-solution .feedback {
+      color: #b8c3d6;
+    }
+    .panel-solution .feedback strong {
+      color: #e6edf3;
+    }
+    .panel-solution .solution-recap {
+      background: var(--page-blue);
+      border-color: var(--page-blue-border);
+      color: #b8c3d6;
+    }
+    .panel-solution .solution-recap h3 {
+      color: #e6edf3;
+    }
+    .panel-solution button.secondary {
+      background: var(--page-blue-hover);
+      border-color: var(--page-blue-border);
+      color: #d4dce8;
+    }
+    .panel-solution button.secondary:hover {
+      background: #1a253b;
     }
     .actions {
       margin-top: 12px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
     }
     button {
       border: 1px solid #7c3aed;
@@ -129,43 +242,71 @@
       font: inherit;
     }
     button.secondary {
-      border-color: #2d3b5a;
-      background: #1a253b;
-      color: #d4dce8;
+      border-color: #cbd5e1;
+      background: #ffffff;
+      color: #334155;
+    }
+    button.secondary:hover {
+      background: #fafafa;
     }
     .result {
       margin-top: 14px;
       border-radius: 10px;
       padding: 12px 14px;
-      border: 1px solid #2d3b5a;
-      background: #0f1729;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
       display: none;
       line-height: 1.45;
       font-weight: 700;
     }
     .result.pass {
       display: block;
-      border-color: #1f7a58;
-      background: #113e2d;
-      color: #d8ffea;
+      border-color: #86efac;
+      background: #ecfdf5;
+      color: #166534;
     }
     .result.fail {
       display: block;
-      border-color: #8c3434;
-      background: #442020;
-      color: #ffd9d9;
+      border-color: #fca5a5;
+      background: #fef2f2;
+      color: #991b1b;
     }
     .feedback {
       margin-top: 8px;
-      color: #9fb0cc;
+      color: #64748b;
       min-height: 1.3em;
       font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .feedback strong {
+      color: #334155;
+    }
+    .solution-recap {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border: 1px solid #c4b5fd;
+      border-radius: 10px;
+      background: #f5f3ff;
+      color: #3730a3;
+      font-size: 0.88rem;
+      line-height: 1.55;
+      display: none;
+    }
+    .solution-recap.visible {
+      display: block;
+    }
+    .solution-recap h3 {
+      margin: 0 0 8px;
+      font-size: 0.92rem;
+      color: #4c1d95;
+    }
+    .solution-recap ul {
+      margin: 0;
+      padding-left: 1.2rem;
     }
     .home-link {
-      position: fixed;
-      right: 14px;
-      bottom: 14px;
-      z-index: 20;
+      position: static;
+      display: inline-block;
       text-decoration: none;
       color: #f3e8ff;
       background: #5b21b6;
@@ -174,6 +315,165 @@
       padding: 10px 14px;
       font-weight: 700;
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+      white-space: nowrap;
+    }
+    body.secplus-home-sample-sim .home-link[hidden] {
+      display: none !important;
+    }
+    .corner-actions {
+      position: fixed;
+      right: 14px;
+      bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+      z-index: 10002;
+    }
+    body:has(.secplus-sample-sim-nav) .corner-actions {
+      bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+    }
+    .doc-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 10050;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(11, 16, 32, 0.82);
+      backdrop-filter: blur(4px);
+    }
+    .doc-modal.open {
+      display: flex;
+    }
+    .doc-modal__panel {
+      width: min(720px, 100%);
+      max-height: min(88vh, 900px);
+      overflow: auto;
+      background: #ffffff;
+      color: #1e293b;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+    }
+    .doc-modal__head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid #e5e7eb;
+      background: #f8fafc;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    .doc-modal__title {
+      margin: 0;
+      font-size: 1rem;
+      color: #0f172a;
+      line-height: 1.35;
+    }
+    .doc-modal__close {
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #334155;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .doc-modal__body {
+      padding: 16px;
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+    .doc-modal__body h3 {
+      margin: 0 0 8px;
+      font-size: 0.95rem;
+      color: #0f172a;
+    }
+    .doc-modal__body p {
+      margin: 0 0 12px;
+    }
+    .doc-modal__body ul {
+      margin: 0 0 12px;
+      padding-left: 1.25rem;
+    }
+    .doc-tree {
+      list-style: none;
+      margin: 0 0 12px;
+      padding: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.84rem;
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .doc-tree li {
+      margin: 4px 0;
+    }
+    .doc-tree .folder {
+      color: #2563eb;
+      font-weight: 700;
+    }
+    .doc-tree .file {
+      color: #334155;
+      padding-left: 1rem;
+    }
+    .doc-pre {
+      margin: 0 0 12px;
+      padding: 12px;
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.8rem;
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+    .doc-table-wrap {
+      overflow-x: auto;
+      margin: 0 0 12px;
+    }
+    .doc-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+    .doc-table th,
+    .doc-table td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 10px;
+      text-align: left;
+    }
+    .doc-table th {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+    .doc-note {
+      margin: 0;
+      padding: 10px 12px;
+      border-left: 3px solid #7c3aed;
+      background: #faf5ff;
+      color: #4c1d95;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.88rem;
+    }
+    .doc-tag {
+      display: inline-block;
+      margin-right: 6px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #fee2e2;
+      color: #991b1b;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .doc-tag.ok {
+      background: #dcfce7;
+      color: #166534;
     }
   </style>
 </head>
@@ -181,27 +481,53 @@
   <main class="wrap">
     <h1>Simulation: Dark Web Exposure and Account Protection</h1>
     <p class="lead">
-      An organization has learned that its data is being exchanged on the dark web. The CIO has requested that you
-      investigate and implement the most secure solution to protect employee accounts.
+      Company data — directory contents, a compensation report, and user data — was found on the dark web.
+      The CIO has asked you to investigate and implement the most secure protection for employee accounts.
     </p>
     <p class="instructions">
-      <strong>Instructions:</strong> Review the data to identify weak security practices and provide the most
-      appropriate security solution to meet the CIO's requirements.
+      <strong>Your tasks:</strong> (1) Open each exposed item and review the leaked documents.
+      (2) Select all weak password practices shown in the evidence.
+      (3) Choose the containment step that protects accounts while leaving potential evidence on the host uncompromised.
     </p>
 
     <section class="layout">
       <article class="panel" aria-label="Observed data">
         <h2>Observed data exposed</h2>
+        <p class="artifact-hint">Select each item to review the leaked documents before answering.</p>
         <div class="artifact-grid">
-          <div class="artifact">Directory contents</div>
-          <div class="artifact">Compensation report</div>
-          <div class="artifact single">User data</div>
+          <button type="button" class="artifact" data-doc="directory" aria-haspopup="dialog">
+            <svg class="artifact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
+              <path d="M3 10h18" />
+            </svg>
+            <span class="artifact-label">Directory contents</span>
+          </button>
+          <button type="button" class="artifact" data-doc="compensation" aria-haspopup="dialog">
+            <svg class="artifact-icon artifact-icon--report" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+              <path d="M14 2v6h6" />
+              <path d="M8 13h8" />
+              <path d="M8 17h5" />
+              <path d="M16 17v-4" />
+              <path d="M14 15h4" />
+            </svg>
+            <span class="artifact-label">Compensation report</span>
+          </button>
+          <button type="button" class="artifact" data-doc="userdata" aria-haspopup="dialog">
+            <svg class="artifact-icon artifact-icon--users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            <span class="artifact-label">User data</span>
+          </button>
         </div>
       </article>
 
-      <article class="panel" aria-label="Response tasks">
+      <article class="panel panel-solution" aria-label="Response tasks">
         <fieldset>
-          <legend>Step 1: Identify weak password practices (select all that apply)</legend>
+          <legend>Step 2: Identify weak password practices (select all that apply)</legend>
           <div class="choices" id="weak-practices">
             <label class="choice"><input type="checkbox" value="Age" /> Age</label>
             <label class="choice"><input type="checkbox" value="Reuse" /> Reuse</label>
@@ -212,7 +538,7 @@
         </fieldset>
 
         <fieldset>
-          <legend>Step 2: Select the containment step that leaves host evidence uncompromised</legend>
+          <legend>Step 3: Select the containment step that leaves host evidence uncompromised</legend>
           <div class="choices" id="containment-step">
             <label class="choice"><input type="radio" name="containment" value="PIN code" /> PIN code</label>
             <label class="choice"><input type="radio" name="containment" value="FIDO security key" /> FIDO security key</label>
@@ -228,21 +554,213 @@
         </div>
         <div id="resultBox" class="result" aria-live="polite"></div>
         <div id="feedback" class="feedback" aria-live="polite"></div>
+        <div id="solutionRecap" class="solution-recap" aria-live="polite"></div>
       </article>
     </section>
   </main>
 
-  <a class="home-link" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">SEC+ Home</a>
+  <div id="docModal" class="doc-modal" role="dialog" aria-modal="true" aria-labelledby="docModalTitle" hidden>
+    <div class="doc-modal__panel">
+      <div class="doc-modal__head">
+        <h2 class="doc-modal__title" id="docModalTitle">Document</h2>
+        <button type="button" class="doc-modal__close" id="docModalClose">Close</button>
+      </div>
+      <div class="doc-modal__body" id="docModalBody"></div>
+    </div>
+  </div>
+
+  <div class="corner-actions">
+    <a class="home-link" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">SEC+ Home</a>
+  </div>
 
   <script>
     const weakCorrect = ["Age", "Reuse", "Length", "Complexity"];
     const containmentCorrect = "FIDO security key";
+
+    const WEAK_EXPLAIN = {
+      Age: "Passwords left unchanged for a long time become easier to compromise over time.",
+      Reuse: "The same password across multiple accounts means one leak puts every account at risk.",
+      Length: "Short passwords are weak; the evidence shows many accounts at the minimum length only.",
+      Complexity: "Passwords lack required numbers, symbols, or mixed character types.",
+      Expiration: "Not selected here. Forced expiration can encourage weak patterns, but the leaked audit shows 90-day rotation is active — the main weaknesses are age, reuse, length, and complexity.",
+    };
+
+    const CONTAINMENT_EXPLAIN = {
+      "FIDO security key":
+        "Hardware-based and phishing-resistant. Authentication happens on the key, not by typing codes on a potentially compromised host, so disk evidence can be preserved for forensics.",
+      "PIN code":
+        "Too weak on its own and may be stored or entered on the same compromised workstation.",
+      "SMS authentication":
+        "Codes can be intercepted (SIM swap) and SMS messages may remain as traces on the host.",
+      "OTP token":
+        "Better than SMS in some cases, but one-time codes are still entered on the host and some implementations log secrets locally.",
+    };
+
+    const SOLUTION_RECAP_HTML = `
+      <h3>Solution recap</h3>
+      <ul>
+        <li><strong>Weak password practices:</strong> Age, Reuse, Length, and Complexity — passwords were reused, too short, insufficiently complex, and kept too long.</li>
+        <li><strong>Best containment:</strong> Deploy FIDO security keys — the most secure listed option, resistant to phishing and interception, and it does not require wiping or altering host evidence on potentially compromised kiosks.</li>
+      </ul>
+    `;
+
+    const DOC_CONTENT = {
+      directory: {
+        title: "Directory contents — leaked file index",
+        html: `
+          <p>Dark-web listing bundle recovered by the IR team. Three data sets match what the CIO reported.</p>
+          <ul class="doc-tree">
+            <li class="folder">/leak/acme-corp/</li>
+            <li class="file">├── directory/</li>
+            <li class="file">│   ├── ad_password_policy.txt</li>
+            <li class="file">│   └── shared_drive_index.csv</li>
+            <li class="file">├── compensation/</li>
+            <li class="file">│   └── compensation_report_Q3.pdf</li>
+            <li class="file">└── user_data/</li>
+            <li class="file">    └── employee_credential_audit.csv</li>
+          </ul>
+          <h3>ad_password_policy.txt</h3>
+          <div class="doc-pre">Minimum password length .......... 8 characters
+Complexity requirement ............. Letters OR numbers (symbols not required)
+Password history ................... Last 3 passwords remembered
+Maximum password age ............... 90 days (expiration enforced)
+
+IR note: Password expiration is functioning for standard accounts.
+Investigate age, reuse, length, and complexity gaps instead.</div>
+          <h3>shared_drive_index.csv (excerpt)</h3>
+          <div class="doc-pre">HR/Policies/password-guidelines.docx
+Finance/compensation_report_Q3.pdf
+IT/Forensics/kiosk_disk_image_hold-list.txt  ← do not reimage until containment chosen</div>
+          <p class="doc-note">Open the compensation report and user data exports next. They show how accounts were abused and which containment option preserves kiosk evidence.</p>
+        `,
+      },
+      compensation: {
+        title: "Compensation report — Q3 (IR addendum)",
+        html: `
+          <p>Payroll and bonus tables were exposed with this file. The CISO appended an incident-response page before the leak was taken offline.</p>
+          <h3>Credential exposure summary</h3>
+          <ul>
+            <li><span class="doc-tag">Confirmed</span> Employee credentials from the breach were reused on multiple services.</li>
+            <li><span class="doc-tag">Confirmed</span> Recovered passwords were short and lacked complexity (dictionary words, no symbols).</li>
+            <li><span class="doc-tag">Confirmed</span> Many passwords had not been changed in over a year despite policy exemptions.</li>
+            <li><span class="doc-tag ok">Not the focus</span> Missing expiration — 90-day rotation is active on standard accounts.</li>
+          </ul>
+          <h3>Containment options under review</h3>
+          <div class="doc-pre">CIO requirement: Protect employee accounts going forward WITHOUT wiping kiosk
+images that may hold forensic evidence.
+
+PIN code .............. Weak factor; may be cached or typed on a compromised host.
+SMS authentication .... Interceptable; SMS logs may remain on the device.
+OTP token ............. Codes still entered on the host; some apps log OTP material.
+FIDO security key ..... Hardware-bound, phishing-resistant; proves possession
+                        without sending secrets through the compromised workstation.</div>
+          <p class="doc-note">Choose the option that is most secure for account protection and keeps host evidence intact for investigators.</p>
+        `,
+      },
+      userdata: {
+        title: "User data — employee_credential_audit.csv",
+        html: `
+          <p>Exported after matching dark-web creds to internal accounts (sample rows shown).</p>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>Employee</th>
+                  <th>Pwd age</th>
+                  <th>Length</th>
+                  <th>Complexity</th>
+                  <th>Reuse across apps</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>jdoe</td>
+                  <td>14 months</td>
+                  <td>8 chars</td>
+                  <td>Letters only</td>
+                  <td>VPN, email, timeclock</td>
+                </tr>
+                <tr>
+                  <td>msmith</td>
+                  <td>13 months</td>
+                  <td>8 chars</td>
+                  <td>Letters + numbers</td>
+                  <td>VPN, email, timeclock</td>
+                </tr>
+                <tr>
+                  <td>lgarcia</td>
+                  <td>15 months</td>
+                  <td>8 chars</td>
+                  <td>Dictionary word</td>
+                  <td>Email, timeclock</td>
+                </tr>
+                <tr>
+                  <td>ppatel</td>
+                  <td>76 days</td>
+                  <td>8 chars</td>
+                  <td>Letters only</td>
+                  <td>Timeclock only</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>What the audit shows</h3>
+          <ul>
+            <li><strong>Age:</strong> Passwords used for a long time without change — easier to compromise over time.</li>
+            <li><strong>Reuse:</strong> One leaked password unlocks multiple accounts.</li>
+            <li><strong>Length:</strong> Nearly all affected accounts use the 8-character minimum.</li>
+            <li><strong>Complexity:</strong> No symbols required; many passwords are simple words or patterns.</li>
+            <li><strong>Expiration:</strong> Policy rotation is enabled — expiration itself is not the primary weakness in this breach.</li>
+          </ul>
+          <p class="doc-note">Combine this table with the compensation addendum to pick weak practices (Step 2) and the best containment control (Step 3).</p>
+        `,
+      },
+    };
 
     const checkBtn = document.getElementById("checkBtn");
     const resetBtn = document.getElementById("resetBtn");
     const showAnswerBtn = document.getElementById("showAnswerBtn");
     const resultBox = document.getElementById("resultBox");
     const feedback = document.getElementById("feedback");
+    const solutionRecap = document.getElementById("solutionRecap");
+    const docModal = document.getElementById("docModal");
+    const docModalTitle = document.getElementById("docModalTitle");
+    const docModalBody = document.getElementById("docModalBody");
+    const docModalClose = document.getElementById("docModalClose");
+    let docModalTrigger = null;
+
+    function openDoc(key, trigger) {
+      const doc = DOC_CONTENT[key];
+      if (!doc) return;
+      docModalTrigger = trigger || null;
+      docModalTitle.textContent = doc.title;
+      docModalBody.innerHTML = doc.html;
+      docModal.hidden = false;
+      docModal.classList.add("open");
+      docModalClose.focus();
+      if (trigger) trigger.classList.add("reviewed");
+    }
+
+    function closeDoc() {
+      docModal.hidden = true;
+      docModal.classList.remove("open");
+      docModalBody.innerHTML = "";
+      if (docModalTrigger) {
+        docModalTrigger.focus();
+        docModalTrigger = null;
+      }
+    }
+
+    document.querySelectorAll(".artifact[data-doc]").forEach((btn) => {
+      btn.addEventListener("click", () => openDoc(btn.getAttribute("data-doc"), btn));
+    });
+    docModalClose.addEventListener("click", closeDoc);
+    docModal.addEventListener("click", (ev) => {
+      if (ev.target === docModal) closeDoc();
+    });
+    document.addEventListener("keydown", (ev) => {
+      if (ev.key === "Escape" && docModal.classList.contains("open")) closeDoc();
+    });
 
     function selectedWeak() {
       return Array.from(document.querySelectorAll("#weak-practices input[type='checkbox']:checked"))
@@ -260,6 +778,43 @@
       return a.every((v, i) => v === b[i]);
     }
 
+    function weakFeedback(weak, weakOk) {
+      if (weakOk) {
+        return "<strong>Step 2 — Weak password practices:</strong> Correct. Select Age, Reuse, Length, and Complexity.";
+      }
+      var lines = ["<strong>Step 2 — Weak password practices:</strong> Expected Age, Reuse, Length, and Complexity."];
+      ["Age", "Reuse", "Length", "Complexity", "Expiration"].forEach(function (key) {
+        var selected = weak.indexOf(key) !== -1;
+        var should = weakCorrect.indexOf(key) !== -1;
+        if (selected !== should) {
+          lines.push("• <strong>" + key + ":</strong> " + WEAK_EXPLAIN[key]);
+        }
+      });
+      return lines.join("<br>");
+    }
+
+    function containmentFeedback(containment, containmentOk) {
+      if (containmentOk) {
+        return "<strong>Step 3 — Containment:</strong> Correct. " + CONTAINMENT_EXPLAIN[containmentCorrect];
+      }
+      if (!containment) {
+        return "<strong>Step 3 — Containment:</strong> Choose one option. " + CONTAINMENT_EXPLAIN[containmentCorrect];
+      }
+      return (
+        "<strong>Step 3 — Containment:</strong> Expected FIDO security key. " +
+        CONTAINMENT_EXPLAIN[containmentCorrect] +
+        " Your choice (" +
+        containment +
+        "): " +
+        CONTAINMENT_EXPLAIN[containment]
+      );
+    }
+
+    function showRecap(visible) {
+      solutionRecap.innerHTML = SOLUTION_RECAP_HTML;
+      solutionRecap.classList.toggle("visible", visible);
+    }
+
     function checkAnswers() {
       const weak = selectedWeak();
       const weakExpected = [...weakCorrect].sort();
@@ -271,24 +826,21 @@
 
       resultBox.className = "result " + (passed ? "pass" : "fail");
       resultBox.textContent = passed
-        ? "Correct. You selected all weak password practices and the best containment step."
-        : "Not quite. Review weak password selections and containment choice, then try again.";
+        ? "Correct. You identified the weak password practices and selected the best containment step."
+        : "Not quite. Re-read the leaked documents, then adjust your selections.";
 
-      const weakMsg = weakOk
-        ? "Weak password practices: correct."
-        : "Weak password practices: expected Age, Reuse, Length, and Complexity.";
-      const containMsg = containmentOk
-        ? "Containment step: correct."
-        : "Containment step: expected FIDO security key.";
-      feedback.textContent = weakMsg + " " + containMsg;
+      feedback.innerHTML = weakFeedback(weak, weakOk) + "<br><br>" + containmentFeedback(containment, containmentOk);
+      showRecap(passed);
     }
 
     function resetAnswers() {
       document.querySelectorAll("#weak-practices input[type='checkbox']").forEach((el) => { el.checked = false; });
       document.querySelectorAll("input[name='containment']").forEach((el) => { el.checked = false; });
+      document.querySelectorAll(".artifact.reviewed").forEach((el) => el.classList.remove("reviewed"));
       resultBox.className = "result";
       resultBox.textContent = "";
       feedback.textContent = "";
+      showRecap(false);
     }
 
     function showAnswers() {
@@ -299,14 +851,27 @@
         el.checked = el.value === containmentCorrect;
       });
       resultBox.className = "result pass";
-      resultBox.textContent = "Answers shown. Review the selections, then Reset to practice again.";
-      feedback.textContent = "Weak practices: Age, Reuse, Length, Complexity. Containment: FIDO security key.";
+      resultBox.textContent = "Answers shown. Review the recap below, then Reset to practice again.";
+      feedback.innerHTML =
+        "<strong>Step 2:</strong> Age — passwords kept too long. Reuse — same password on multiple accounts. " +
+        "Length — too short. Complexity — missing numbers/symbols.<br><br>" +
+        "<strong>Step 3:</strong> " +
+        CONTAINMENT_EXPLAIN[containmentCorrect];
+      showRecap(true);
     }
 
     checkBtn.addEventListener("click", checkAnswers);
     resetBtn.addEventListener("click", resetAnswers);
     showAnswerBtn.addEventListener("click", showAnswers);
+
+    (function markSampleSimPage() {
+      try {
+        if (!sessionStorage.getItem("secplusHomeSample")) return;
+        document.body.classList.add("secplus-home-sample-sim");
+      } catch (e) {}
+    })();
   </script>
+  <script src="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.js" defer></script>
   <script src="/js/sample-url-mask-apply.js"></script>
 </body>
 </html>

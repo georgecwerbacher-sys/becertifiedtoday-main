@@ -162,6 +162,8 @@
         homeExit.setAttribute("hidden", "");
         homeExit.style.display = "none";
       } else {
+        homeExit.removeAttribute("hidden");
+        homeExit.style.display = "";
         homeExit.textContent = "Exit sample";
         homeExit.href = finishHome;
         homeExit.classList.add("secplus-sample-exit");
@@ -169,6 +171,15 @@
           clearSampleSession();
         };
       }
+    }
+
+    var deepDiveBtn = document.getElementById("deepDiveBtn");
+    if (deepDiveBtn) {
+      deepDiveBtn.hidden = false;
+      deepDiveBtn.style.display = "";
+    }
+    if (usesMaskedNav(session)) {
+      document.body.classList.add("secplus-home-sample-sim");
     }
 
     var homeBar = nav.querySelector(".secplus-sample-sim-nav__home");
