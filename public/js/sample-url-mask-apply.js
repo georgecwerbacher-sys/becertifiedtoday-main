@@ -18,7 +18,8 @@
       sessionStorage.setItem("ccnpUrlMaskPath", mask);
     }
     if (!mask) return;
-    history.replaceState(null, "", mask);
+    var hash = location.hash || "";
+    history.replaceState(null, "", mask + hash);
   } catch (e) {}
 })();
 
@@ -27,12 +28,16 @@
   try {
     if (!sessionStorage.getItem("secplusHomeSample")) return;
     var path = (location.pathname || "").toLowerCase();
-    if (
-      path.indexOf("/comp_tia_sec+/sec+_questions/") === -1 &&
-      path.indexOf("/comp_tia_sec+/sec+_sim_hot_spot/") === -1
-    ) {
-      return;
-    }
+    var remembered = "";
+    try {
+      remembered = (sessionStorage.getItem("ccnaLastRealPath") || "").toLowerCase();
+    } catch (e) {}
+    var onSecplusPage =
+      path.indexOf("/comp_tia_sec+/sec+_questions/") !== -1 ||
+      path.indexOf("/comp_tia_sec+/sec+_sim_hot_spot/") !== -1 ||
+      remembered.indexOf("/comp_tia_sec+/sec+_questions/") !== -1 ||
+      remembered.indexOf("/comp_tia_sec+/sec+_sim_hot_spot/") !== -1;
+    if (!onSecplusPage) return;
     if (document.head.querySelector('script[src*="secplus-sample-nav.js"]')) return;
     var s = document.createElement("script");
     s.src = "/COMP_TIA_SEC+/js/secplus-sample-nav.js";
@@ -115,10 +120,13 @@
 
   function getSlugAndMap() {
     var pathRaw = location.pathname || "";
+    var pathLowerRaw = pathRaw.toLowerCase();
     if (
-      pathRaw.toLowerCase() === "/sample" ||
-      pathRaw.toLowerCase() === "/sample/" ||
-      pathRaw.toLowerCase().indexOf("/sample?") === 0
+      pathLowerRaw === "/sample" ||
+      pathLowerRaw === "/sample/" ||
+      pathLowerRaw.indexOf("/sample?") === 0 ||
+      pathLowerRaw === "/secplus-sample" ||
+      pathLowerRaw === "/secplus-sample/"
     ) {
       try {
         var remembered = sessionStorage.getItem("ccnaLastRealPath");
@@ -182,7 +190,9 @@
       if (
         pathLower === "/sample" ||
         pathLower === "/sample/" ||
-        pathLower.indexOf("/sample?") === 0
+        pathLower.indexOf("/sample?") === 0 ||
+        pathLower === "/secplus-sample" ||
+        pathLower === "/secplus-sample/"
       ) {
         var remembered = sessionStorage.getItem("ccnaLastRealPath");
         if (remembered) pathLower = remembered.toLowerCase();

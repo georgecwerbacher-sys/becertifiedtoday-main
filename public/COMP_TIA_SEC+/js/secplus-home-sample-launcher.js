@@ -89,6 +89,17 @@
       sessionStorage.removeItem("secplusPractice");
       sessionStorage.removeItem("ccnpHomeSecplusSimSample");
     } catch (e) {}
+    var singleTrackSample =
+      order.every(function (item) {
+        return item && item.type === "mcq";
+      }) ||
+      order.every(function (item) {
+        return item && item.type === "sim";
+      });
+    if (singleTrackSample) {
+      location.replace("/secplus-sample#secplusHS=0");
+      return;
+    }
     location.replace(itemHref(order[0], 0));
   }
 
@@ -119,10 +130,35 @@
     });
   }
 
+  function resumeFromHash() {
+    var params = new URLSearchParams(location.search || "");
+    if (params.get("track")) return false;
+    var m = /^#secplusHS=(\d+)$/.exec(location.hash || "");
+    if (!m) return false;
+    var idx = parseInt(m[1], 10);
+    var raw;
+    try {
+      raw = sessionStorage.getItem(KEY);
+    } catch (e) {
+      return false;
+    }
+    if (!raw) return false;
+    var session;
+    try {
+      session = JSON.parse(raw);
+    } catch (e2) {
+      return false;
+    }
+    if (!session || !Array.isArray(session.order) || !session.order[idx]) return false;
+    location.replace(itemHref(session.order[idx], idx));
+    return true;
+  }
+
   window.SECPLUS_HOME_SAMPLE = {
     start: startSample,
     startQuestions: startQuestionsSample,
     startSim: startSimSample,
+    resumeFromHash: resumeFromHash,
     KEY: KEY,
   };
 })();

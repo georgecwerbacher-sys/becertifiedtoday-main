@@ -29,12 +29,16 @@
           ? "/secplus-home.html"
           : "/comptia-sec+-home.html";
 
-      sessionStorage.setItem("secplusSampleKind", track);
-
       if (!window.SECPLUS_HOME_SAMPLE) {
         document.body.textContent = "Could not load the sample. Try again later.";
         return;
       }
+
+      if (window.SECPLUS_HOME_SAMPLE.resumeFromHash && window.SECPLUS_HOME_SAMPLE.resumeFromHash()) {
+        return;
+      }
+
+      sessionStorage.setItem("secplusSampleKind", track);
 
       var chain;
       if (track === "questions") {
