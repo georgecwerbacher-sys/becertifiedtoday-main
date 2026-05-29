@@ -70,6 +70,20 @@
     return realItemHref(item, index);
   }
 
+  function wireNavLink(el, session, item, index) {
+    if (!el || !item) return;
+    if (usesMaskedNav(session)) {
+      el.href = navItemHref(session, item, index);
+      el.onclick = function (ev) {
+        ev.preventDefault();
+        location.assign(realItemHref(item, index));
+      };
+    } else {
+      el.href = realItemHref(item, index);
+      el.onclick = null;
+    }
+  }
+
   function hashIndex() {
     var m = HASH_RE.exec(location.hash || "");
     return m ? parseInt(m[1], 10) : 0;
@@ -239,11 +253,10 @@
 
     if (els.prevEl) {
       if (index > 0) {
-        els.prevEl.href = navItemHref(session, order[index - 1], index - 1);
+        wireNavLink(els.prevEl, session, order[index - 1], index - 1);
         els.prevEl.textContent = "Back";
         els.prevEl.classList.remove("nav-link--disabled");
         els.prevEl.removeAttribute("aria-hidden");
-        els.prevEl.onclick = null;
       } else if (maskedNav) {
         els.prevEl.href = "#";
         els.prevEl.textContent = "Back";
@@ -263,11 +276,10 @@
 
     if (els.nextEl) {
       if (index + 1 < order.length) {
-        els.nextEl.href = navItemHref(session, order[index + 1], index + 1);
+        wireNavLink(els.nextEl, session, order[index + 1], index + 1);
         els.nextEl.textContent = "Next";
         els.nextEl.classList.remove("nav-link--disabled");
         els.nextEl.removeAttribute("aria-hidden");
-        els.nextEl.onclick = null;
       } else {
         els.nextEl.href = finishHome;
         els.nextEl.textContent = "Finish sample";
@@ -318,10 +330,22 @@
     applyNav(session, index);
   }
 
+  function onHashChange() {
+    var session = readSession();
+    if (!session || !usesMaskedNav(session)) return;
+    var hint = hashIndex();
+    if (hint < 0 || hint >= session.order.length) return;
+    var item = session.order[hint];
+    if (!itemMatchesPath(item, pathnameForMatch())) {
+      location.replace(realItemHref(item, hint));
+    }
+  }
+
   function scheduleRuns() {
     run();
     setTimeout(run, 0);
     window.addEventListener("load", run);
+    window.addEventListener("hashchange", onHashChange);
   }
 
   if (document.readyState === "loading") {
