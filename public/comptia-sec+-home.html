@@ -2006,30 +2006,52 @@
           </ul>
           <div class="samples-stack">
             <section class="samples-block" aria-labelledby="home-secplus-samples-title">
-              <h2 class="samples-block-title" id="home-secplus-samples-title"><strong>Security+ sample questions</strong></h2>
+              <h2 class="samples-block-title" id="home-secplus-samples-title"><strong>Try free Security+ samples</strong></h2>
               <p class="samples-block-lead">
-                <strong>Free interactive sample: five questions from each SY0-701 domain (shuffled), plus a malware-outbreak performance-based simulation—no account required.</strong>
+                Interactive previews from the SY0-701 question bank and simulation hot spots—no checkout required. Each activity uses a <strong>Home</strong> tab back to this page and <strong>Next</strong> (or <strong>Finish sample</strong>) to move on.
               </p>
-              <article class="format-card assessment-card" aria-labelledby="home-secplus-sample-card-title">
-                <h3 id="home-secplus-sample-card-title">25 questions + 1 simulation</h3>
-                <p>
-                  Exactly twenty-five multiple-choice items (five per SY0-701 domain), then one performance-based malware
-                  outbreak simulation—twenty-six stops total, not the full question bank.
-                </p>
-                <ul class="assessment-details">
-                  <li><strong>5 per domain:</strong> General Security Concepts through Program Management.</li>
-                  <li><strong>Random order:</strong> the 26 items shuffle each time you start; progress shows “Question X of 25” until the sim.</li>
-                  <li><strong>Performance-based:</strong> malware outbreak host classification from logs (final item).</li>
-                  <li><strong>Instant feedback</strong> on multiple-choice items; Check / Reset on the simulation.</li>
-                </ul>
-                <div class="assessment-cta-wrap">
-                  <div class="assessment-cta-panel">
-                    <p class="assessment-cta-kicker">Free — no checkout</p>
-                    <a class="cta-main cta-main--block" href="/secplus-sample?home=comptia">Start Security+ sample</a>
-                    <p class="assessment-cta-note">Runs in your browser; progress uses this tab only until you finish or close it.</p>
-                  </div>
-                </div>
-              </article>
+              <ul class="formats-grid formats-grid--tri" aria-label="Security+ sample activities">
+                <li>
+                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-secplus-q-title">
+                    <h3 id="home-secplus-q-title">Security+ · Sample questions</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/practice-questions-sample-thumbnail.jpg"
+                        width="1024"
+                        height="556"
+                        alt="Security+ multiple-choice sample questions with instant feedback."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>
+                      Twenty multiple-choice items from the SEC+_Questions bank—four per SY0-701 domain, shuffled each run. Select an answer for instant feedback, then <strong>Next</strong> through all twenty; <strong>Home</strong> returns here anytime.
+                    </p>
+                    <p class="format-sample format-sample--main-cta">
+                      <a class="cta-main cta-main--block" href="/secplus-sample?track=questions">Start sample questions →</a>
+                    </p>
+                  </article>
+                </li>
+                <li>
+                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-secplus-malware-title">
+                    <h3 id="home-secplus-malware-title">Security+ · Malware outbreak simulation</h3>
+                    <p class="format-sample format-sample--main-cta">
+                      <a class="cta-main cta-main--block" href="/secplus-sample?track=sim-malware">Start malware simulation →</a>
+                    </p>
+                  </article>
+                </li>
+                <li>
+                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-secplus-darkweb-title">
+                    <h3 id="home-secplus-darkweb-title">Security+ · Dark web account protection</h3>
+                    <p>
+                      Review leaked-credential artifacts, identify weak password practices, and choose the best containment step—performance-based SY0-701 threat and mitigation practice.
+                    </p>
+                    <p class="format-sample format-sample--main-cta">
+                      <a class="cta-main cta-main--block" href="/secplus-sample?track=sim-dark-web">Start dark web simulation →</a>
+                    </p>
+                  </article>
+                </li>
+              </ul>
             </section>
           </div>
           <div class="card purchase-card" id="purchase-details">
@@ -2293,6 +2315,7 @@
           sessionStorage.removeItem("ccnpUrlMaskPath");
           sessionStorage.removeItem("ccnpMaskedPageQid");
           sessionStorage.removeItem("ccnpSampleKind");
+          sessionStorage.removeItem("secplusUrlMaskPath");
         } catch (e) {}
       }
     })();

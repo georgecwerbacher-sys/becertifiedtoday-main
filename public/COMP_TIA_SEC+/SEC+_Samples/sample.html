@@ -23,16 +23,31 @@
   <script>
     (function () {
       var params = new URLSearchParams(location.search || "");
+      var track = (params.get("track") || "home").toLowerCase();
       var finish =
         params.get("home") === "secplus"
           ? "/secplus-home.html"
           : "/comptia-sec+-home.html";
-      sessionStorage.setItem("secplusSampleKind", "home");
+
+      sessionStorage.setItem("secplusSampleKind", track);
+
       if (!window.SECPLUS_HOME_SAMPLE) {
         document.body.textContent = "Could not load the sample. Try again later.";
         return;
       }
-      window.SECPLUS_HOME_SAMPLE.start(finish).catch(function () {
+
+      var chain;
+      if (track === "questions") {
+        chain = window.SECPLUS_HOME_SAMPLE.startQuestions(finish);
+      } else if (track === "sim-malware") {
+        chain = window.SECPLUS_HOME_SAMPLE.startSim("malware", finish);
+      } else if (track === "sim-dark-web") {
+        chain = window.SECPLUS_HOME_SAMPLE.startSim("dark-web", finish);
+      } else {
+        chain = window.SECPLUS_HOME_SAMPLE.start(finish);
+      }
+
+      chain.catch(function () {
         document.body.textContent = "Could not start the sample. Try again later.";
       });
     })();
