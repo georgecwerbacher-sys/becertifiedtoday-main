@@ -19,23 +19,22 @@
 </head>
 <body>
   <p>Loading sample…</p>
+  <script src="/COMP_TIA_SEC+/js/secplus-home-sample-launcher.js"></script>
   <script>
     (function () {
       var params = new URLSearchParams(location.search || "");
-      var stored = sessionStorage.getItem("secplusSampleKind");
-      var track = (params.get("track") || stored || "questions").toLowerCase();
-      var map = {
-        questions: "/COMP_TIA_SEC+/SEC+_Samples/sample-question-1.html"
-      };
-
-      if (!Object.prototype.hasOwnProperty.call(map, track)) {
-        track = "questions";
+      var finish =
+        params.get("home") === "secplus"
+          ? "/secplus-home.html"
+          : "/comptia-sec+-home.html";
+      sessionStorage.setItem("secplusSampleKind", "home");
+      if (!window.SECPLUS_HOME_SAMPLE) {
+        document.body.textContent = "Could not load the sample. Try again later.";
+        return;
       }
-
-      sessionStorage.setItem("secplusUrlMaskPath", "/secplus-sample");
-      sessionStorage.setItem("secplusSampleKind", track);
-
-      location.replace(map[track]);
+      window.SECPLUS_HOME_SAMPLE.start(finish).catch(function () {
+        document.body.textContent = "Could not start the sample. Try again later.";
+      });
     })();
   </script>
 </body>

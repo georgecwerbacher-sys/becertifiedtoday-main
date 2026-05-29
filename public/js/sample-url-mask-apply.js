@@ -24,6 +24,25 @@
 
 (function () {
   "use strict";
+  try {
+    if (!sessionStorage.getItem("secplusHomeSample")) return;
+    var path = (location.pathname || "").toLowerCase();
+    if (
+      path.indexOf("/comp_tia_sec+/sec+_questions/") === -1 &&
+      path.indexOf("/comp_tia_sec+/sec+_sim_hot_spot/") === -1
+    ) {
+      return;
+    }
+    if (document.head.querySelector('script[src*="secplus-sample-nav.js"]')) return;
+    var s = document.createElement("script");
+    s.src = "/COMP_TIA_SEC+/js/secplus-sample-nav.js";
+    s.defer = true;
+    document.head.appendChild(s);
+  } catch (e) {}
+})();
+
+(function () {
+  "use strict";
 
   function inTargetPage() {
     var path = (location.pathname || "").toLowerCase();
