@@ -34,6 +34,16 @@
     return session.order.length > 0;
   }
 
+  function isDarkWebSampleSim(session) {
+    if (!isSimOnlySample(session) || !session.order.length) return false;
+    var item = session.order[0];
+    return !!(
+      item &&
+      item.type === "sim" &&
+      normalizePath(item.path).indexOf("simulation-dark-web-account-protection") !== -1
+    );
+  }
+
   function usesMaskedNav(session) {
     return isQuestionsOnlySample(session) || isSimOnlySample(session);
   }
@@ -147,12 +157,18 @@
       nav = document.createElement("nav");
       nav.className = "secplus-sample-sim-nav";
       nav.setAttribute("aria-label", "Sample navigation");
+      var backLink = isDarkWebSampleSim(session)
+        ? ""
+        : '<a class="secplus-sample-sim-nav__prev" href="#">Back</a>';
       nav.innerHTML =
         '<a class="secplus-sample-sim-nav__home" href="#">Home</a>' +
-        '<a class="secplus-sample-sim-nav__prev" href="#">Back</a>' +
+        backLink +
         '<span class="secplus-sample-sim-nav__progress" aria-live="polite"></span>' +
         '<a class="secplus-sample-sim-nav__next" href="#">Next</a>';
       document.body.appendChild(nav);
+    } else if (isDarkWebSampleSim(session)) {
+      var staleBack = nav.querySelector(".secplus-sample-sim-nav__prev");
+      if (staleBack) staleBack.remove();
     }
 
     var finishHome = session.finishHome || FINISH_HOME;
@@ -262,7 +278,7 @@
     var finishHome = session.finishHome || FINISH_HOME;
     var maskedNav = usesMaskedNav(session);
 
-    if (els.prevEl) {
+    if (els.prevEl && !isDarkWebSampleSim(session)) {
       if (index > 0) {
         wireNavLink(els.prevEl, session, order[index - 1], index - 1);
         els.prevEl.textContent = "Back";
