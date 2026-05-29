@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security+ Simulation — VPC Payment Application Architecture</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      padding: 20px 16px 90px;
+    }
+    .wrap {
+      width: min(1140px, 100%);
+      margin: 0 auto;
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.1rem, 2.3vw, 1.5rem);
+      line-height: 1.35;
+    }
+    .lead, .instructions {
+      margin: 0 0 14px;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .instructions {
+      padding: 12px 14px;
+      border: 1px solid #2d3b5a;
+      border-radius: 10px;
+      background: #0f1729;
+      color: #c9d6eb;
+    }
+    .sim-frame {
+      border: 3px solid #1d4ed8;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #dbeafe;
+    }
+    .vpc-canvas {
+      position: relative;
+      min-height: 520px;
+      margin: 0;
+      padding: 16px 20px 20px 72px;
+      background: #eff6ff;
+    }
+    .vpc-border {
+      position: relative;
+      min-height: 480px;
+      border: 3px solid #1d4ed8;
+      border-radius: 4px;
+      background: #fff;
+      padding: 12px 100px 16px 12px;
+    }
+    .vpc-label {
+      position: absolute;
+      left: -58px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: #1e40af;
+    }
+    .vpc-label::before {
+      content: "☁";
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+    .igw {
+      position: absolute;
+      right: 12px;
+      top: 72px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-weight: 700;
+      font-size: 0.72rem;
+      color: #1e40af;
+      z-index: 3;
+    }
+    .igw::before {
+      content: "☁";
+      font-size: 1.5rem;
+    }
+    .subnet-zone {
+      position: relative;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      min-height: 100px;
+    }
+    .subnet-zone.public {
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px dashed #3b82f6;
+      min-height: 130px;
+      padding-top: 22px;
+    }
+    .subnet-zone.middle {
+      background: rgba(59, 130, 246, 0.08);
+      border: 1px dashed #60a5fa;
+      min-height: 150px;
+      padding-top: 8px;
+    }
+    .subnet-zone.private {
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px dashed #2563eb;
+      min-height: 110px;
+      padding-top: 22px;
+    }
+    .subnet-tag {
+      position: absolute;
+      top: 6px;
+      left: 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #1e40af;
+    }
+    .subnet-picker {
+      position: absolute;
+      left: 10px;
+      top: 36px;
+      z-index: 3;
+    }
+    .subnet-picker label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 4px;
+    }
+    .subnet-picker select {
+      min-width: 140px;
+      padding: 5px 8px;
+      border: 1px solid #1e3a8a;
+      border-radius: 2px;
+      background: #3b82f6;
+      color: #fff;
+      font: inherit;
+      font-size: 0.85rem;
+    }
+    .subnet-picker select option {
+      background: #fff;
+      color: #0f172a;
+    }
+    .flow-lines {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .flow-lines line,
+    .flow-lines path {
+      stroke: #f97316;
+      stroke-width: 2.5;
+      fill: none;
+    }
+    .vpc-node {
+      position: absolute;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .vpc-select {
+      min-width: 148px;
+      max-width: 160px;
+      padding: 5px 6px;
+      border: 1px solid #1e3a8a;
+      border-radius: 2px;
+      background: #3b82f6;
+      color: #fff;
+      font: inherit;
+      font-size: 0.8rem;
+    }
+    .vpc-select option {
+      background: #fff;
+      color: #0f172a;
+    }
+    .vpc-node.n1 { top: 8px; left: 28%; }
+    .vpc-node.n2 { top: -8px; left: 48%; transform: translateX(-50%); }
+    .vpc-node.n3 { top: 24px; right: 22%; }
+    .vpc-node.n4 { top: 28px; left: 48%; transform: translateX(-50%); }
+    .vpc-node.n5 { top: 88px; left: 22%; }
+    .vpc-node.n6 { top: 88px; right: 28%; }
+    .vpc-node.n7 { bottom: 12px; left: 48%; transform: translateX(-50%); }
+    @media (max-width: 900px) {
+      .vpc-canvas { padding-left: 16px; min-height: 560px; }
+      .vpc-label { position: static; transform: none; flex-direction: row; margin-bottom: 8px; }
+      .vpc-border { padding-right: 16px; min-height: 520px; }
+      .igw { position: static; margin: 0 0 8px auto; width: fit-content; }
+      .vpc-node { position: static; transform: none; margin: 8px auto; }
+      .subnet-zone { display: flex; flex-direction: column; align-items: center; gap: 8px; min-height: auto; padding: 12px; }
+      .subnet-picker { position: static; margin-bottom: 8px; }
+      .flow-lines { display: none; }
+    }
+    .actions {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    button {
+      border: 1px solid #7c3aed;
+      background: #5b21b6;
+      color: #f3e8ff;
+      font-weight: 700;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font: inherit;
+    }
+    button.secondary {
+      border-color: #2d3b5a;
+      background: #1a253b;
+      color: #d4dce8;
+    }
+    .result {
+      margin-top: 14px;
+      border-radius: 10px;
+      padding: 12px 14px;
+      border: 1px solid #2d3b5a;
+      background: #0f1729;
+      display: none;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+    .result.pass {
+      display: block;
+      border-color: #1f7a58;
+      background: #113e2d;
+      color: #d8ffea;
+    }
+    .result.fail {
+      display: block;
+      border-color: #8c3434;
+      background: #442020;
+      color: #ffd9d9;
+    }
+    .feedback {
+      margin-top: 8px;
+      color: #9fb0cc;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      min-height: 1.3em;
+    }
+    .home-link {
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      z-index: 20;
+      text-decoration: none;
+      color: #f3e8ff;
+      background: #5b21b6;
+      border: 1px solid #7c3aed;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Simulation: VPC Payment Application Network Diagram</h1>
+    <p class="lead">
+      A security analyst is creating the first draft of a network diagram for the company's new
+      customer-facing payment application that will be hosted by a third-party cloud service provider.
+    </p>
+    <p class="instructions">
+      <strong>Instructions:</strong> Place each component in the correct location on the diagram. Select the
+      appropriate subnet type for the middle tier. Not every option is used at every node.
+    </p>
+
+    <div class="sim-frame">
+      <div class="vpc-canvas">
+        <div class="vpc-label" aria-hidden="true">VPC</div>
+        <div class="vpc-border">
+          <svg class="flow-lines" viewBox="0 0 720 480" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M 520 55 L 640 55" />
+            <path d="M 200 30 L 200 70 L 320 70" />
+            <line x1="360" y1="30" x2="360" y2="70" />
+            <path d="M 400 70 L 480 70 L 520 55" />
+            <path d="M 360 95 L 360 130 L 280 130 L 200 175" />
+            <path d="M 360 95 L 360 130 L 440 130 L 520 175" />
+            <path d="M 360 175 L 360 220 L 280 260" />
+            <path d="M 360 175 L 360 220 L 440 260" />
+            <path d="M 280 260 L 360 300 L 440 260" />
+            <path d="M 360 300 L 360 380" />
+          </svg>
+
+          <div class="igw">Internet<br />Gateway</div>
+
+          <div class="subnet-zone public" aria-label="Public subnet">
+            <span class="subnet-tag">Public subnet</span>
+            <div class="vpc-node n1">
+              <select class="vpc-select" id="vpc-1" aria-label="Diagram node 1">
+                <option value="">Select</option>
+                <option>Autoscaling Instance</option>
+                <option>Database</option>
+                <option>Instance</option>
+                <option>Load Balancer</option>
+                <option>WAF</option>
+              </select>
+            </div>
+            <div class="vpc-node n2">
+              <select class="vpc-select" id="vpc-2" aria-label="Diagram node 2">
+                <option value="">Select</option>
+                <option>Autoscaling Instance</option>
+                <option>Database</option>
+                <option>Instance</option>
+                <option>Load Balancer</option>
+                <option>WAF</option>
+              </select>
+            </div>
+            <div class="vpc-node n3">
+              <select class="vpc-select" id="vpc-3" aria-label="Diagram node 3">
+                <option value="">Select</option>
+                <option>Autoscaling Instance</option>
+                <option>Database</option>
+                <option>Instance</option>
+                <option>Load Balancer</option>
+                <option>WAF</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="subnet-zone middle" aria-label="Application tier">
+            <div class="subnet-picker">
+              <label for="vpc-subnet">Select subnet</label>
+              <select id="vpc-subnet" aria-label="Middle tier subnet type">
+                <option value="">Select subnet</option>
+                <option>Public subnet</option>
+                <option>Private subnet</option>
+              </select>
+            </div>
+            <div class="vpc-node n4">
+              <select class="vpc-select" id="vpc-4" aria-label="Diagram node 4">
+                <option value="">Select</option>
+                <option>Autoscaling Instance</option>
+                <option>Database</option>
+                <option>Instance</option>
+                <option>Load Balancer</option>
+                <option>WAF</option>
+              </select>
+            </div>
+            <div class="vpc-node n5">
+              <select class="vpc-select" id="vpc-5" aria-label="Diagram node 5">
+                <option value="">Select</option>
+                <option>Autoscaling Instance</option>
+                <option>Database</option>
+                <option>Instance</option>
+                <option>Load Balancer</option>
+                <option>WAF</option>
+              </select>
+            </div>
+            <div class="vpc-node n6">
+              <select class="vpc-select" id="vpc-6" aria-label="Diagram node 6">
+                <option value="">Select</option>
+                <option>Autoscaling Instance</option>
+                <option>Database</option>
+                <option>Instance</option>
+                <option>Load Balancer</option>
+                <option>WAF</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="subnet-zone private" aria-label="Private subnet">
+            <span class="subnet-tag">Private subnet</span>
+            <div class="vpc-node n7">
+              <select class="vpc-select" id="vpc-7" aria-label="Diagram node 7">
+                <option value="">Select</option>
+                <option>Autoscaling Instance</option>
+                <option>Database</option>
+                <option>Instance</option>
+                <option>Load Balancer</option>
+                <option>WAF</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="checkBtn" type="button">Check Answers</button>
+      <button id="resetBtn" class="secondary" type="button">Reset</button>
+      <button id="showAnswerBtn" class="secondary" type="button">Show Answer</button>
+    </div>
+    <div id="resultBox" class="result" aria-live="polite"></div>
+    <div id="feedback" class="feedback" aria-live="polite"></div>
+  </main>
+
+  <a class="home-link" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">SEC+ Home</a>
+
+  <script>
+    const NODE_ANSWERS = {
+      "vpc-1": "Load Balancer",
+      "vpc-2": "WAF",
+      "vpc-3": "Load Balancer",
+      "vpc-4": "Autoscaling Instance",
+      "vpc-5": "Instance",
+      "vpc-6": "Instance",
+      "vpc-7": "Database"
+    };
+
+    const SUBNET_ANSWER = "Private subnet";
+
+    function checkDiagram() {
+      const missing = [];
+      const wrong = [];
+      Object.keys(NODE_ANSWERS).forEach((id) => {
+        const el = document.getElementById(id);
+        const val = el.value;
+        const label = id.replace("vpc-", "node ");
+        if (!val) missing.push(label);
+        else if (val !== NODE_ANSWERS[id]) wrong.push(label + " (expected " + NODE_ANSWERS[id] + ")");
+      });
+      const subnet = document.getElementById("vpc-subnet");
+      if (!subnet.value) missing.push("middle subnet");
+      else if (subnet.value !== SUBNET_ANSWER) wrong.push("middle subnet (expected " + SUBNET_ANSWER + ")");
+      return { missing, wrong };
+    }
+
+    function checkAnswers() {
+      const { missing, wrong } = checkDiagram();
+      const resultBox = document.getElementById("resultBox");
+      const feedback = document.getElementById("feedback");
+
+      if (missing.length) {
+        resultBox.className = "result fail";
+        resultBox.textContent = "Complete every component placement and the middle subnet selection.";
+        feedback.textContent = "Missing: " + missing.join(", ") + ".";
+        return;
+      }
+
+      const passed = wrong.length === 0;
+      resultBox.className = "result " + (passed ? "pass" : "fail");
+      resultBox.textContent = passed
+        ? "Correct. The diagram places edge protection, redundant load balancing, scalable app tiers, and an isolated database."
+        : "Not quite. Review WAF placement, public vs private tiers, and where payment data should live.";
+
+      if (!passed) {
+        feedback.textContent = "Review: " + wrong.join("; ") + ".";
+      } else {
+        feedback.textContent =
+          "WAF at the top filters Internet Gateway traffic. Redundant load balancers sit in the public subnet. " +
+          "Autoscaling Instance supports the app tier in a private middle subnet with Instance nodes. Database stays in the private subnet with no direct internet access.";
+      }
+    }
+
+    function resetAnswers() {
+      document.querySelectorAll(".vpc-select, #vpc-subnet").forEach((el) => { el.selectedIndex = 0; });
+      document.getElementById("resultBox").className = "result";
+      document.getElementById("resultBox").textContent = "";
+      document.getElementById("feedback").textContent = "";
+    }
+
+    function showAnswers() {
+      Object.keys(NODE_ANSWERS).forEach((id) => {
+        document.getElementById(id).value = NODE_ANSWERS[id];
+      });
+      document.getElementById("vpc-subnet").value = SUBNET_ANSWER;
+      document.getElementById("resultBox").className = "result pass";
+      document.getElementById("resultBox").textContent = "Answers shown. Review the architecture, then Reset to practice again.";
+      document.getElementById("feedback").textContent =
+        "Node 2: WAF | Nodes 1 & 3: Load Balancer | Node 4: Autoscaling Instance | Nodes 5 & 6: Instance | Node 7: Database | Middle tier: Private subnet.";
+    }
+
+    document.getElementById("checkBtn").addEventListener("click", checkAnswers);
+    document.getElementById("resetBtn").addEventListener("click", resetAnswers);
+    document.getElementById("showAnswerBtn").addEventListener("click", showAnswers);
+  </script>
+</body>
+</html>

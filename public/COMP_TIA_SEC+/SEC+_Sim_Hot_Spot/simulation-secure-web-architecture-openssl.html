@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security+ Simulation — Secure Web Architecture and OpenSSL</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+      padding: 20px 16px 90px;
+    }
+    .wrap {
+      width: min(1100px, 100%);
+      margin: 0 auto;
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.1rem, 2.3vw, 1.5rem);
+      line-height: 1.35;
+    }
+    .lead, .instructions {
+      margin: 0 0 14px;
+      color: #b8c3d6;
+      line-height: 1.5;
+    }
+    .instructions {
+      padding: 12px 14px;
+      border: 1px solid #2d3b5a;
+      border-radius: 10px;
+      background: #0f1729;
+      color: #c9d6eb;
+    }
+    .sim-frame {
+      border: 3px solid #1d4ed8;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #2563eb;
+    }
+    .tabs {
+      display: flex;
+      gap: 0;
+      background: #1e40af;
+    }
+    .tab {
+      border: 0;
+      padding: 10px 22px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      background: #1e3a8a;
+      color: #fff;
+    }
+    .tab.active {
+      background: #3b82f6;
+      color: #eff6ff;
+    }
+    .tab-panel {
+      display: none;
+      min-height: 420px;
+    }
+    .tab-panel.active {
+      display: block;
+    }
+    .part1-canvas {
+      position: relative;
+      min-height: 440px;
+      background: linear-gradient(180deg, #3b82f6 0%, #60a5fa 55%, #93c5fd 100%);
+      padding: 20px;
+      overflow: hidden;
+    }
+    .internet-cloud {
+      position: absolute;
+      left: 24px;
+      bottom: 28px;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #1e40af;
+      z-index: 2;
+    }
+    .internet-cloud::before {
+      content: "☁ ☁ ☁";
+      display: block;
+      font-size: 1.6rem;
+      letter-spacing: 4px;
+      color: #fff;
+      margin-bottom: 4px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    }
+    .flow-arrows {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .flow-arrows line,
+    .flow-arrows path {
+      stroke: #f97316;
+      stroke-width: 3;
+      fill: none;
+    }
+    .arch-node {
+      position: absolute;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .arch-icon {
+      display: block;
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+    }
+    .arch-icon-css {
+      width: 56px;
+      height: 48px;
+      border-radius: 4px;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .icon-router {
+      background: linear-gradient(180deg, #fb923c 0%, #ea580c 100%);
+      border: 2px solid #c2410c;
+    }
+    .icon-router::after {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 12px;
+      background: #c2410c;
+      box-shadow: -8px 0 0 #fdba74, 8px 0 0 #fdba74;
+    }
+    .icon-waf {
+      background: repeating-linear-gradient(90deg, #fb923c 0 8px, #ea580c 8px 16px);
+      border: 2px solid #c2410c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .waf-badge {
+      background: #fff;
+      border: 2px solid #1e40af;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.62rem;
+      color: #1e40af;
+    }
+    .icon-server {
+      background: linear-gradient(180deg, #fdba74 0%, #ea580c 100%);
+      border: 2px solid #c2410c;
+      box-shadow: inset 8px 0 0 rgba(255, 255, 255, 0.25), inset -8px 0 0 rgba(0, 0, 0, 0.08);
+    }
+    .icon-server::before,
+    .icon-server::after {
+      content: "";
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.5);
+    }
+    .icon-server::before { top: 14px; box-shadow: 0 10px 0 rgba(255, 255, 255, 0.5); }
+    .icon-server::after { bottom: 10px; }
+    .arch-node.pos-1 { left: 150px; top: 175px; }
+    .arch-node.pos-2 { left: 310px; top: 88px; }
+    .arch-node.pos-3 { left: 470px; top: 48px; }
+    .arch-node.pos-4 { left: 470px; top: 210px; }
+    .arch-node.pos-5 { left: 660px; top: 120px; }
+    .arch-select {
+      min-width: 130px;
+      max-width: 150px;
+      padding: 6px 8px;
+      border: 1px solid #1e3a8a;
+      border-radius: 2px;
+      background: #3b82f6;
+      color: #fff;
+      font: inherit;
+      font-size: 0.88rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+    .arch-select option {
+      background: #fff;
+      color: #0f172a;
+    }
+    @media (max-width: 900px) {
+      .part1-canvas { min-height: 520px; }
+      .arch-select { min-width: 100px; font-size: 0.78rem; }
+      .arch-node.pos-1 { left: 12%; top: 42%; }
+      .arch-node.pos-2 { left: 30%; top: 18%; }
+      .arch-node.pos-3 { left: 48%; top: 8%; }
+      .arch-node.pos-4 { left: 48%; top: 48%; }
+      .arch-node.pos-5 { left: 68%; top: 28%; }
+    }
+    .part2-wrap {
+      background: #000;
+      min-height: 440px;
+      padding: 20px;
+    }
+    .part2-terminal {
+      font-family: "Consolas", "Liberation Mono", "Courier New", monospace;
+      font-size: 0.92rem;
+      line-height: 1.55;
+      color: #f5f5f5;
+      margin-bottom: 20px;
+    }
+    .part2-terminal .cmd-line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px 6px;
+      margin-bottom: 4px;
+    }
+    .cmd-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      color: #0f172a;
+      font-size: 0.95rem;
+    }
+    .cmd-table th,
+    .cmd-table td {
+      border-bottom: 1px solid #e2e8f0;
+      padding: 12px 14px;
+      text-align: left;
+      vertical-align: middle;
+    }
+    .cmd-table th {
+      font-weight: 700;
+      background: #f8fafc;
+    }
+    .cmd-pos {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      font-family: "Consolas", "Liberation Mono", "Courier New", monospace;
+      font-size: 0.88rem;
+      color: #334155;
+    }
+    .cmd-select {
+      width: 100%;
+      min-width: 220px;
+      max-width: 320px;
+      padding: 6px 8px;
+      border: 1px solid #64748b;
+      border-radius: 2px;
+      background: #fff;
+      color: #0f172a;
+      font: inherit;
+      font-size: 0.9rem;
+    }
+    .terminal-output {
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+    .actions {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    button {
+      border: 1px solid #7c3aed;
+      background: #5b21b6;
+      color: #f3e8ff;
+      font-weight: 700;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font: inherit;
+    }
+    button.secondary {
+      border-color: #2d3b5a;
+      background: #1a253b;
+      color: #d4dce8;
+    }
+    .result {
+      margin-top: 14px;
+      border-radius: 10px;
+      padding: 12px 14px;
+      border: 1px solid #2d3b5a;
+      background: #0f1729;
+      display: none;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+    .result.pass {
+      display: block;
+      border-color: #1f7a58;
+      background: #113e2d;
+      color: #d8ffea;
+    }
+    .result.fail {
+      display: block;
+      border-color: #8c3434;
+      background: #442020;
+      color: #ffd9d9;
+    }
+    .feedback {
+      margin-top: 8px;
+      color: #9fb0cc;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      min-height: 1.3em;
+    }
+    .home-link {
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      z-index: 20;
+      text-decoration: none;
+      color: #f3e8ff;
+      background: #5b21b6;
+      border: 1px solid #7c3aed;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Simulation: Secure Web Architecture and OpenSSL CSR</h1>
+    <p class="lead">
+      A recent black-box penetration test of <strong>http://example.com</strong> discovered external website
+      vulnerabilities such as directory traversal, cross-site scripting, cross-site request forgery, and
+      insecure protocols. You are tasked with reducing the attack space and enabling secure protocols.
+    </p>
+    <p class="instructions">
+      <strong>Part 1:</strong> Use the drop-down menus to select the appropriate technologies for each location
+      to implement a secure and resilient web architecture. Not all technologies will be used, and technologies
+      may be used multiple times.<br />
+      <strong>Part 2:</strong> Use the drop-down menus to select the appropriate command snippets. Each command
+      section must be filled.
+    </p>
+
+    <div class="sim-frame">
+      <div class="tabs" role="tablist">
+        <button type="button" class="tab active" role="tab" aria-selected="true" data-tab="part1" id="tab-part1">Part 1</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" data-tab="part2" id="tab-part2">Part 2</button>
+      </div>
+
+      <div id="panel-part1" class="tab-panel active" role="tabpanel" aria-labelledby="tab-part1">
+        <div class="part1-canvas">
+          <svg class="flow-arrows" viewBox="0 0 900 440" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M 90 380 L 90 220 L 175 220 L 175 120 L 300 120" />
+            <line x1="370" y1="120" x2="455" y2="120" />
+            <path d="M 455 120 L 490 120 L 490 85 L 525 85" />
+            <path d="M 455 120 L 490 120 L 490 245 L 525 245" />
+            <path d="M 525 85 L 640 85 L 640 165 L 675 165" />
+            <path d="M 525 245 L 640 245 L 640 165" />
+            <line x1="755" y1="165" x2="820" y2="165" />
+          </svg>
+          <div class="internet-cloud">Internet</div>
+          <div class="arch-node pos-1">
+            <img class="arch-icon" src="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/images/firewall-brick.png" width="56" height="56" alt="" aria-hidden="true" />
+            <select class="arch-select" id="arch-1" aria-label="Inbound traffic — first node after Internet">
+              <option value="">Select</option>
+              <option>Switch</option>
+              <option>Router</option>
+              <option>Web server</option>
+              <option>PKI certificate</option>
+              <option>WAF</option>
+              <option>Firewall</option>
+            </select>
+          </div>
+          <div class="arch-node pos-2">
+            <div class="arch-icon-css icon-router" aria-hidden="true"></div>
+            <select class="arch-select" id="arch-2" aria-label="Internal traffic control">
+              <option value="">Select</option>
+              <option>Switch</option>
+              <option>Router</option>
+              <option>Web server</option>
+              <option>PKI certificate</option>
+              <option>WAF</option>
+              <option>Firewall</option>
+            </select>
+          </div>
+          <div class="arch-node pos-3">
+            <div class="arch-icon-css icon-waf" aria-hidden="true"><span class="waf-badge">WAF</span></div>
+            <select class="arch-select" id="arch-3" aria-label="Web application protection layer">
+              <option value="">Select</option>
+              <option>Switch</option>
+              <option>Router</option>
+              <option>Web server</option>
+              <option>PKI certificate</option>
+              <option>WAF</option>
+              <option>Firewall</option>
+            </select>
+          </div>
+          <div class="arch-node pos-4">
+            <div class="arch-icon-css icon-server" aria-hidden="true"></div>
+            <select class="arch-select" id="arch-4" aria-label="Application host">
+              <option value="">Select</option>
+              <option>Switch</option>
+              <option>Router</option>
+              <option>Web server</option>
+              <option>PKI certificate</option>
+              <option>WAF</option>
+              <option>Firewall</option>
+            </select>
+          </div>
+          <div class="arch-node pos-5">
+            <select class="arch-select" id="arch-5" aria-label="Secure protocols — PKI">
+              <option value="">Select</option>
+              <option>Switch</option>
+              <option>Router</option>
+              <option>Web server</option>
+              <option>PKI certificate</option>
+              <option>WAF</option>
+              <option>Firewall</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div id="panel-part2" class="tab-panel" role="tabpanel" aria-labelledby="tab-part2" hidden>
+        <div class="part2-wrap">
+          <div class="part2-terminal" aria-hidden="true">
+            <div class="cmd-line">
+              <span>openssl req -new -newkey</span> <span class="cmd-preview" data-for="cmd-1">…</span> <span>\</span>
+            </div>
+            <div class="cmd-line">
+              <span>-key</span> <span class="cmd-preview" data-for="cmd-2">…</span>
+              <span>-out</span> <span class="cmd-preview" data-for="cmd-3">…</span>
+            </div>
+            <p class="terminal-output">Generating RSA private key, 2048 bit long modulus</p>
+            <p class="terminal-output">............++</p>
+            <p class="terminal-output">-------------++++</p>
+            <p class="terminal-output">e is 65537 (0x10001)</p>
+          </div>
+          <table class="cmd-table" aria-label="OpenSSL command snippets">
+            <thead>
+              <tr>
+                <th scope="col">Command position</th>
+                <th scope="col">Selected Option</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="cmd-pos">-new -newkey</span></td>
+                <td>
+                  <select class="cmd-select" id="cmd-1" aria-label="OpenSSL -new -newkey">
+                    <option value="">Select command</option>
+                    <option>1024 bit long modulus</option>
+                    <option>/certificate/example.com.crt</option>
+                    <option>/certificate/example.com.p7b</option>
+                    <option>rsa:2048</option>
+                    <option>rsa:1024</option>
+                    <option>/certificate/example.com.pem</option>
+                    <option>/certificate/csr.key</option>
+                    <option>2048 bit long modulus</option>
+                    <option>/certificate/example.com.csr</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="cmd-pos">-key</span></td>
+                <td>
+                  <select class="cmd-select" id="cmd-2" aria-label="OpenSSL -key">
+                    <option value="">Select command</option>
+                    <option>1024 bit long modulus</option>
+                    <option>/certificate/example.com.crt</option>
+                    <option>/certificate/example.com.p7b</option>
+                    <option>rsa:2048</option>
+                    <option>rsa:1024</option>
+                    <option>/certificate/example.com.pem</option>
+                    <option>/certificate/csr.key</option>
+                    <option>2048 bit long modulus</option>
+                    <option>/certificate/example.com.csr</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="cmd-pos">-out</span></td>
+                <td>
+                  <select class="cmd-select" id="cmd-3" aria-label="OpenSSL -out">
+                    <option value="">Select command</option>
+                    <option>1024 bit long modulus</option>
+                    <option>/certificate/example.com.crt</option>
+                    <option>/certificate/example.com.p7b</option>
+                    <option>rsa:2048</option>
+                    <option>rsa:1024</option>
+                    <option>/certificate/example.com.pem</option>
+                    <option>/certificate/csr.key</option>
+                    <option>2048 bit long modulus</option>
+                    <option>/certificate/example.com.csr</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="checkBtn" type="button">Check Answers</button>
+      <button id="resetBtn" class="secondary" type="button">Reset</button>
+      <button id="showAnswerBtn" class="secondary" type="button">Show Answer</button>
+    </div>
+    <div id="resultBox" class="result" aria-live="polite"></div>
+    <div id="feedback" class="feedback" aria-live="polite"></div>
+  </main>
+
+  <a class="home-link" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">SEC+ Home</a>
+
+  <script>
+    const ARCH_ANSWERS = {
+      "arch-1": "Firewall",
+      "arch-2": "Router",
+      "arch-3": "WAF",
+      "arch-4": "Web server",
+      "arch-5": "PKI certificate"
+    };
+
+    const CMD_ANSWERS = {
+      "cmd-1": "rsa:2048",
+      "cmd-2": "/certificate/csr.key",
+      "cmd-3": "/certificate/example.com.csr"
+    };
+
+    function updateCmdPreview() {
+      document.querySelectorAll(".cmd-preview").forEach((el) => {
+        const sel = document.getElementById(el.dataset.for);
+        el.textContent = sel && sel.value ? sel.value : "…";
+      });
+    }
+
+    document.querySelectorAll(".cmd-select").forEach((el) => {
+      el.addEventListener("change", updateCmdPreview);
+    });
+
+    const tabs = document.querySelectorAll(".tab");
+    const panelPart1 = document.getElementById("panel-part1");
+    const panelPart2 = document.getElementById("panel-part2");
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const part = tab.dataset.tab;
+        tabs.forEach((t) => {
+          const on = t === tab;
+          t.classList.toggle("active", on);
+          t.setAttribute("aria-selected", on ? "true" : "false");
+        });
+        const p1 = part === "part1";
+        panelPart1.classList.toggle("active", p1);
+        panelPart2.classList.toggle("active", !p1);
+        panelPart1.hidden = !p1;
+        panelPart2.hidden = p1;
+      });
+    });
+
+    function checkPart1() {
+      const missing = [];
+      const wrong = [];
+      Object.keys(ARCH_ANSWERS).forEach((id) => {
+        const el = document.getElementById(id);
+        const val = el.value;
+        if (!val) missing.push(id.replace("arch-", "position "));
+        else if (val !== ARCH_ANSWERS[id]) wrong.push(id.replace("arch-", "position ") + " (expected " + ARCH_ANSWERS[id] + ")");
+      });
+      return { missing, wrong };
+    }
+
+    function checkPart2() {
+      const missing = [];
+      const wrong = [];
+      Object.keys(CMD_ANSWERS).forEach((id) => {
+        const el = document.getElementById(id);
+        const val = el.value;
+        if (!val) missing.push(id.replace("cmd-", "snippet "));
+        else if (val !== CMD_ANSWERS[id]) wrong.push(id.replace("cmd-", "snippet ") + " (expected " + CMD_ANSWERS[id] + ")");
+      });
+      return { missing, wrong };
+    }
+
+    function checkAnswers() {
+      const p1 = checkPart1();
+      const p2 = checkPart2();
+      const resultBox = document.getElementById("resultBox");
+      const feedback = document.getElementById("feedback");
+
+      if (p1.missing.length || p2.missing.length) {
+        resultBox.className = "result fail";
+        resultBox.textContent = "Complete all drop-down selections in Part 1 and Part 2.";
+        const parts = [];
+        if (p1.missing.length) parts.push("Part 1: positions " + p1.missing.join(", "));
+        if (p2.missing.length) parts.push("Part 2: snippets " + p2.missing.join(", "));
+        feedback.textContent = parts.join(". ") + ".";
+        return;
+      }
+
+      const passed = p1.wrong.length === 0 && p2.wrong.length === 0;
+      resultBox.className = "result " + (passed ? "pass" : "fail");
+      resultBox.textContent = passed
+        ? "Correct. Architecture and OpenSSL CSR selections reduce web attack surface and enable secure protocols."
+        : "Not quite. Review perimeter controls, application-layer filtering, and CSR generation syntax.";
+
+      if (!passed) {
+        const hints = [];
+        if (p1.wrong.length) hints.push("Part 1: " + p1.wrong.join("; "));
+        if (p2.wrong.length) hints.push("Part 2: " + p2.wrong.join("; "));
+        feedback.textContent = hints.join(" ");
+      } else {
+        feedback.textContent =
+          "Part 1: Firewall filters inbound traffic; Router routes internally; WAF blocks XSS/CSRF/traversal; Web server hosts the app; PKI certificate enables TLS. " +
+          "Part 2: rsa:2048 for -newkey, /certificate/csr.key for -key, and /certificate/example.com.csr for -out.";
+      }
+    }
+
+    function resetAnswers() {
+      document.querySelectorAll(".arch-select, .cmd-select").forEach((el) => { el.selectedIndex = 0; });
+      updateCmdPreview();
+      document.getElementById("resultBox").className = "result";
+      document.getElementById("resultBox").textContent = "";
+      document.getElementById("feedback").textContent = "";
+    }
+
+    function showAnswers() {
+      Object.keys(ARCH_ANSWERS).forEach((id) => {
+        const el = document.getElementById(id);
+        el.value = ARCH_ANSWERS[id];
+      });
+      Object.keys(CMD_ANSWERS).forEach((id) => {
+        const el = document.getElementById(id);
+        el.value = CMD_ANSWERS[id];
+      });
+      updateCmdPreview();
+      document.getElementById("resultBox").className = "result pass";
+      document.getElementById("resultBox").textContent = "Answers shown. Review selections, then Reset to practice again.";
+      document.getElementById("feedback").textContent = "Switch to Part 1 or Part 2 tabs to review each section.";
+    }
+
+    document.getElementById("checkBtn").addEventListener("click", checkAnswers);
+    document.getElementById("resetBtn").addEventListener("click", resetAnswers);
+    document.getElementById("showAnswerBtn").addEventListener("click", showAnswers);
+  </script>
+</body>
+</html>
