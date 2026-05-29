@@ -999,6 +999,11 @@
         grid-column: auto;
       }
     }
+    @media (min-width: 600px) {
+      .formats-grid.formats-grid--pair {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
     .samples-stack {
       display: flex;
       flex-direction: column;
@@ -2010,33 +2015,15 @@
               <p class="samples-block-lead">
                 Interactive previews from the SY0-701 question bank and simulation hot spots—no checkout required. Each activity uses a <strong>Home</strong> tab back to this page and <strong>Next</strong> (or <strong>Finish sample</strong>) to move on.
               </p>
-              <ul class="formats-grid formats-grid--tri" aria-label="Security+ sample activities">
+              <ul class="formats-grid formats-grid--pair" aria-label="Security+ sample activities">
                 <li>
                   <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-secplus-q-title">
                     <h3 id="home-secplus-q-title">Security+ · Sample questions</h3>
-                    <figure class="format-card-thumb">
-                      <img
-                        src="/images/practice-questions-sample-thumbnail.jpg"
-                        width="1024"
-                        height="556"
-                        alt="Security+ multiple-choice sample questions with instant feedback."
-                        decoding="async"
-                        loading="lazy"
-                      />
-                    </figure>
                     <p>
                       Twenty multiple-choice items from the SEC+_Questions bank—four per SY0-701 domain, shuffled each run. Select an answer for instant feedback, then <strong>Next</strong> through all twenty; <strong>Home</strong> returns here anytime.
                     </p>
                     <p class="format-sample format-sample--main-cta">
                       <a class="cta-main cta-main--block" href="/secplus-sample?track=questions">Start sample questions →</a>
-                    </p>
-                  </article>
-                </li>
-                <li>
-                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-secplus-malware-title">
-                    <h3 id="home-secplus-malware-title">Security+ · Malware outbreak simulation</h3>
-                    <p class="format-sample format-sample--main-cta">
-                      <a class="cta-main cta-main--block" href="/secplus-sample?track=sim-malware">Start malware simulation →</a>
                     </p>
                   </article>
                 </li>
