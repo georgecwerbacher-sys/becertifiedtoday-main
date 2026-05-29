@@ -820,7 +820,20 @@
     return Math.ceil(all.length / BANK_SIZE);
   }
 
+  function portalAccessActive() {
+    return (
+      typeof window.bccSecplusPortalAccessActive === "function" && window.bccSecplusPortalAccessActive()
+    );
+  }
+
+  function requirePortalAccess() {
+    if (portalAccessActive()) return true;
+    window.location.href = "/comptia-sec+-home.html#purchase";
+    return false;
+  }
+
   function start(mode, bankId, domainMajor) {
+    if (!requirePortalAccess()) return;
     bankId = bankId || "1";
     var fixed = bankSlugs(bankId);
     var map = window.SECPLUS_PRACTICE._topicAssignments;

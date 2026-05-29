@@ -37,7 +37,7 @@
     var s = document.createElement("script");
     s.src = "/COMP_TIA_SEC+/js/secplus-sample-nav.js";
     s.defer = true;
-    document.head.appendChild(s);
+    (document.body || document.head).appendChild(s);
   } catch (e) {}
 })();
 
@@ -368,6 +368,83 @@
   var s = document.createElement("script");
   s.src = "/CCNA-Study/js/ccna-dnd-category-check.js";
   head.appendChild(s);
+})();
+
+/** Security+ paid content: load portal storage + gate on question/sim pages. */
+(function () {
+  "use strict";
+  var p = (location.pathname || "").toLowerCase();
+  if (p.indexOf("/comp_tia_sec+/") === -1) return;
+  if (p.indexOf("/sec+_samples/") !== -1) return;
+  if (/sec\+_training_portal\.html$/i.test(p)) return;
+  if (/secplus-portal-(magic|request-link|restore-access)\.html$/i.test(p)) return;
+  if (
+    p.indexOf("/sec+_questions/") === -1 &&
+    p.indexOf("/sec+_sim_hot_spot/") === -1 &&
+    p.indexOf("/sec+_d_d/") === -1 &&
+    p.indexOf("/sec+_labs/") === -1
+  ) {
+    return;
+  }
+
+  function appendScript(src, next) {
+    if (document.querySelector('script[src="' + src + '"]')) {
+      if (next) next();
+      return;
+    }
+    var s = document.createElement("script");
+    s.src = src;
+    s.onload = function () {
+      if (next) next();
+    };
+    s.onerror = function () {
+      if (next) next();
+    };
+    (document.head || document.documentElement).appendChild(s);
+  }
+
+  appendScript("/COMP_TIA_SEC+/js/secplus-portal-storage.js", function () {
+    appendScript("/COMP_TIA_SEC+/js/secplus-portal-gate.js");
+  });
+})();
+
+/** Security+ timed exam embed (?examSim=1): hide question chrome in iframe runner */
+(function () {
+  "use strict";
+
+  function examSimActive() {
+    try {
+      return new URLSearchParams(location.search).get("examSim") === "1";
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function isSecplusPaidPath() {
+    var p = (location.pathname || "").toLowerCase();
+    return (
+      p.indexOf("/comp_tia_sec+/sec+_questions/") !== -1 ||
+      p.indexOf("/comp_tia_sec+/sec+_sim_hot_spot/") !== -1
+    );
+  }
+
+  function applySecplusExamSimEmbedStyles() {
+    if (!examSimActive() || !isSecplusPaidPath()) return;
+    if (document.head.querySelector("style[data-bcc-secplus-exam-sim-embed]")) return;
+    var s = document.createElement("style");
+    s.setAttribute("data-bcc-secplus-exam-sim-embed", "1");
+    s.textContent =
+      ".question-nav{display:none!important}" +
+      ".secplus-objective-tag{display:none!important}" +
+      "a.nav-home{display:none!important}";
+    document.head.appendChild(s);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", applySecplusExamSimEmbedStyles);
+  } else {
+    applySecplusExamSimEmbedStyles();
+  }
 })();
 
 /** ENCOR guest samples: apply Home tab after URL mask (labs / ENCOR_Samples pages). */

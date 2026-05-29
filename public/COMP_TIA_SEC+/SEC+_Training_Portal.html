@@ -799,6 +799,16 @@
 
       <section class="formats-section" aria-labelledby="formats-title">
         <div class="formats-inner">
+          <div id="secplus-portal-locked-banner" class="portal-sim-locked-wrap" hidden>
+            <p style="margin: 0 0 14px; font-size: 0.94rem; line-height: 1.5; color: #b8c3d6;">
+              <strong>Portal access required.</strong> Purchase 10-day or 30-day library access on
+              <a href="/comptia-sec+-home.html#purchase" style="color:#fff;font-weight:700;">Security+ home</a>
+              to unlock question banks and timed simulation on this browser. Already paid?
+              <a href="/COMP_TIA_SEC+/secplus-portal-request-link.html" style="color:#fff;font-weight:700;">Email me a portal link</a>.
+            </p>
+            <a class="cta-main cta-main--block" href="/comptia-sec+-home.html#purchase">View access options</a>
+          </div>
+          <div id="secplus-portal-paid-content">
           <p class="formats-head">Security+ practice formats</p>
           <h2 id="formats-title">Choose your practice mode</h2>
           <p class="formats-lead">
@@ -1081,14 +1091,9 @@
             </p>
             <ul style="margin: 0 0 12px 1.2rem; color: #b8c3d6; line-height: 1.55; padding: 0;">
               <li>
-                <strong>Mixed session each run</strong> — randomized multiple-choice from the bank plus performance-based drag-and-drop items, all shuffled into one
-                continuous order under the same timer.
+                <strong>Mixed session each run</strong> — 90 random multiple-choice items from the full bank plus all five simulation and hot-spot pages, shuffled into one continuous order under the same timer.
               </li>
-              <li>
-                <strong>Adaptive learning (optional)</strong> — on the timed-test start screen you can enable adaptive multiple choice so weaker blueprint domains may get extra MCQs
-                during the same run (same clock).
-              </li>
-              <li><strong>Every item type in play</strong> — multiple-choice and performance-based tasks.</li>
+              <li><strong>Every item type in play</strong> — multiple-choice, simulations, and hot spots.</li>
               <li><strong>Timer-driven</strong> — the session runs against the clock from start to submit.</li>
               <li>
                 <strong>Results &amp; study scorecard</strong> — when you finish or time expires, your summary includes a <strong>scorecard</strong> that flags weaker SY0-701 domains
@@ -1096,13 +1101,22 @@
               </li>
               <li><strong>Pass or fail at the end.</strong></li>
             </ul>
+            <div id="portal-sim-verified-wrap" class="portal-sim-verified-wrap" hidden>
+              <p style="margin: 0 0 14px; font-size: 0.94rem; line-height: 1.5; color: #b8c3d6;">
+                <strong>Verified access</strong> — your active Security+ library pass is on this device. Timed simulation is
+                included with 10-day and 30-day portal access, or use a one-time simulation voucher.
+              </p>
+              <a class="cta-main cta-main--block" href="/COMP_TIA_SEC+/test-simulation-runner.html?portal=1">Begin timed test</a>
+            </div>
             <div id="portal-sim-locked-wrap" class="portal-sim-locked-wrap">
               <p style="margin: 0 0 14px; font-size: 0.94rem; line-height: 1.5; color: #b8c3d6;">
-                <strong>Coming soon.</strong> Full Security+ library access and timed simulation checkout will be announced when the track launches on Be Certified Today.
+                Purchase portal access or a one-time simulation voucher on
+                <a href="/comptia-sec+-home.html#purchase" style="color:#fff;font-weight:700;">Security+ home</a>.
               </p>
-              <button type="button" class="cta-main cta-main--block is-placeholder" disabled aria-disabled="true">Begin test — coming soon</button>
+              <a class="cta-main cta-main--block" href="/comptia-sec+-home.html#purchase">Get access</a>
             </div>
           </section>
+          </div>
         </div>
       </section>
     </main>
@@ -1133,6 +1147,109 @@
         >Any questions?</a>
     </footer>
   </div>
+  <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js" defer></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-test-sim-storage.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-practice-hub.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      function hasPortalAccess() {
+        return (
+          typeof bccSecplusPortalAccessActive === "function" && bccSecplusPortalAccessActive()
+        );
+      }
+
+      function hasTimedSimAccess() {
+        if (hasPortalAccess()) return true;
+        return (
+          typeof secplusTimedSimAccessActive === "function" && secplusTimedSimAccessActive()
+        );
+      }
+
+      function refreshPortalContentGate() {
+        var paid = document.getElementById("secplus-portal-paid-content");
+        var locked = document.getElementById("secplus-portal-locked-banner");
+        if (!paid || !locked) return;
+        if (hasPortalAccess()) {
+          paid.hidden = false;
+          locked.hidden = true;
+        } else {
+          paid.hidden = true;
+          locked.hidden = false;
+        }
+      }
+
+      function refreshPortalSimGate() {
+        var verified = document.getElementById("portal-sim-verified-wrap");
+        var locked = document.getElementById("portal-sim-locked-wrap");
+        if (!verified || !locked) return;
+        if (hasTimedSimAccess()) {
+          verified.hidden = false;
+          locked.hidden = true;
+        } else {
+          verified.hidden = true;
+          locked.hidden = false;
+        }
+      }
+
+      function fetchVerifyCheckout(sessionId) {
+        return fetch("/api/verify-checkout-session?session_id=" + encodeURIComponent(sessionId)).then(
+          function (res) {
+            return res.json().then(function (data) {
+              return { res: res, data: data };
+            });
+          }
+        );
+      }
+
+      function applyCheckoutReturn() {
+        var sessionId = null;
+        try {
+          sessionId = new URLSearchParams(window.location.search).get("session_id");
+        } catch (e) {}
+        if (!sessionId || sessionId.indexOf("cs_") !== 0) {
+          return Promise.resolve();
+        }
+        return fetchVerifyCheckout(sessionId).then(function (pair) {
+          var data = pair.data || {};
+          if (!pair.res.ok || !data.ok) return;
+          if (data.productId === "secplus-test-simulation") {
+            if (typeof grantSecplusTempTestAccess === "function") {
+              grantSecplusTempTestAccess(sessionId);
+            }
+            try {
+              window.location.replace(
+                "/COMP_TIA_SEC+/test-simulation-runner.html?session_id=" + encodeURIComponent(sessionId)
+              );
+            } catch (e) {}
+            return;
+          } else if (
+            typeof bccApplySecplusPortalCheckoutFromUrl === "function"
+          ) {
+            return bccApplySecplusPortalCheckoutFromUrl(null, true);
+          }
+          try {
+            var u = new URL(window.location.href);
+            u.searchParams.delete("session_id");
+            window.history.replaceState({}, "", u.pathname + (u.search || "") + (u.hash || ""));
+          } catch (e) {}
+        });
+      }
+
+      var chain = Promise.resolve();
+      chain = chain.then(applyCheckoutReturn);
+      if (typeof bccRestoreSecplusPortalAccess === "function") {
+        chain = chain.then(function () {
+          return bccRestoreSecplusPortalAccess();
+        });
+      }
+      chain.finally(function () {
+        refreshPortalContentGate();
+        refreshPortalSimGate();
+        if (window.SECPLUS_PRACTICE && typeof window.SECPLUS_PRACTICE.injectPortalPracticeBanks === "function") {
+          window.SECPLUS_PRACTICE.injectPortalPracticeBanks();
+        }
+      });
+    });
+  </script>
 </body>
 </html>

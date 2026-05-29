@@ -13,6 +13,7 @@ import {
   inferProductIdFromCheckoutSession,
   isCcnaPortalProduct,
   isEncorPortalProduct,
+  isSecplusPortalProduct,
   portalAccessExpiresAtMs,
 } from "../server-lib/ccna-portal-stripe.js";
 import { verifyPortalMagicJwt } from "../server-lib/ccna-portal-magic-jwt.js";
@@ -33,6 +34,7 @@ function readJsonBody(req) {
 
 function resolveTrackFromAud(aud) {
   if (aud === "encor-portal-access") return "encor";
+  if (aud === "secplus-portal-access") return "secplus";
   if (aud === "ccna-portal-30d" || aud === "ccna-portal-access") return "ccna";
   return "";
 }
@@ -80,7 +82,12 @@ export default async function handler(req, res) {
   }
 
   const stripe = new Stripe(sk.secret);
-  const isProduct = track === "encor" ? isEncorPortalProduct : isCcnaPortalProduct;
+  const isProduct =
+    track === "encor"
+      ? isEncorPortalProduct
+      : track === "secplus"
+        ? isSecplusPortalProduct
+        : isCcnaPortalProduct;
 
   try {
     const session = await stripe.checkout.sessions.retrieve(payload.cs, {

@@ -7,6 +7,9 @@ const PAYMENT_LINK_SLUG_TO_PRODUCT = {
   cNidR81Wlel13yEdfSc3m05: "encor-portal-10d",
   cNidR80Sh0ubc5aejWc3m00: "encor-portal-30d",
   "3cIaEWbwVb8P8SYejWc3m01": "encor-test-simulation",
+  "5kQ14mbwVgt93yEfo0c3m07": "secplus-portal-10d",
+  "8x28wObwVfp54CIgs4c3m06": "secplus-portal-30d",
+  "9B63cudF33Gnc5a1xac3m08": "secplus-test-simulation",
 };
 
 function productIdFromPaymentLinkSession(session) {
@@ -29,6 +32,7 @@ function productIdFromPaymentLinkSession(session) {
 
 function inferProductTrackFromSuccessUrl(session) {
   const url = String(session.success_url || "");
+  if (/COMP_TIA_SEC\+/i.test(url)) return "secplus";
   if (/CCNP-ENCOR-Study/i.test(url)) return "encor";
   if (/CCNA-Study|CCNA_Sim_EXAM/i.test(url)) return "ccna";
   return null;
@@ -36,13 +40,19 @@ function inferProductTrackFromSuccessUrl(session) {
 
 function productIdFromAmountCents(amount, track) {
   if (amount === 999) {
-    return track === "encor" ? "encor-portal-10d" : "ccna-portal-10d";
+    if (track === "encor") return "encor-portal-10d";
+    if (track === "secplus") return "secplus-portal-10d";
+    return "ccna-portal-10d";
   }
   if (amount === 1999 || amount === 1499) {
-    return track === "encor" ? "encor-portal-30d" : "ccna-portal-30d";
+    if (track === "encor") return "encor-portal-30d";
+    if (track === "secplus") return "secplus-portal-30d";
+    return "ccna-portal-30d";
   }
   if (amount === 499) {
-    return track === "encor" ? "encor-test-simulation" : "ccna-test-simulation";
+    if (track === "encor") return "encor-test-simulation";
+    if (track === "secplus") return "secplus-test-simulation";
+    return "ccna-test-simulation";
   }
   return null;
 }
@@ -60,6 +70,9 @@ export function inferProductIdFromCheckoutSession(session, env = process.env) {
     const encorPortal30 = (env.STRIPE_PRICE_ENCOR_PORTAL_30D || "").trim();
     const encorPortal10 = (env.STRIPE_PRICE_ENCOR_PORTAL_10D || "").trim();
     const encorTestSim = (env.STRIPE_PRICE_ENCOR_TEST_SIM || "").trim();
+    const secplusPortal30 = (env.STRIPE_PRICE_SECPLUS_PORTAL_30D || "").trim();
+    const secplusPortal10 = (env.STRIPE_PRICE_SECPLUS_PORTAL_10D || "").trim();
+    const secplusTestSim = (env.STRIPE_PRICE_SECPLUS_TEST_SIM || "").trim();
     const lines = session.line_items?.data || [];
     for (let i = 0; i < lines.length; i++) {
       const pid = lines[i]?.price?.id;
@@ -88,6 +101,18 @@ export function inferProductIdFromCheckoutSession(session, env = process.env) {
         productId = "encor-test-simulation";
         break;
       }
+      if (secplusPortal30 && pid === secplusPortal30) {
+        productId = "secplus-portal-30d";
+        break;
+      }
+      if (secplusPortal10 && pid === secplusPortal10) {
+        productId = "secplus-portal-10d";
+        break;
+      }
+      if (secplusTestSim && pid === secplusTestSim) {
+        productId = "secplus-test-simulation";
+        break;
+      }
     }
   }
   if (!productId && paid) {
@@ -102,8 +127,20 @@ export function inferProductIdFromCheckoutSession(session, env = process.env) {
         productId = "encor-portal-10d";
         break;
       }
+      if (/security\+|secplus|sy0-701/i.test(name) && /10.?day|10 day/i.test(name)) {
+        productId = "secplus-portal-10d";
+        break;
+      }
       if (/encor/i.test(name) && /30.?day|30 day|month/i.test(name)) {
         productId = "encor-portal-30d";
+        break;
+      }
+      if (/security\+|secplus|sy0-701/i.test(name) && /30.?day|30 day|month/i.test(name)) {
+        productId = "secplus-portal-30d";
+        break;
+      }
+      if (/security\+|secplus|sy0-701/i.test(name) && /simulation|timed|exam/i.test(name)) {
+        productId = "secplus-test-simulation";
         break;
       }
       if (/ccna/i.test(name) && /10.?day|10 day/i.test(name)) {
@@ -122,11 +159,13 @@ export function inferProductIdFromCheckoutSession(session, env = process.env) {
     if (!track) {
       const cancelUrl = String(session.cancel_url || "");
       if (/CCNP-ENCOR-Study/i.test(cancelUrl)) track = "encor";
+      else if (/COMP_TIA_SEC\+/i.test(cancelUrl)) track = "secplus";
       else if (/CCNA-Study|CCNA_Sim_EXAM/i.test(cancelUrl)) track = "ccna";
     }
     if (!track) {
       const plProduct = productIdFromPaymentLinkSession(session);
       if (plProduct && plProduct.startsWith("encor-")) track = "encor";
+      else if (plProduct && plProduct.startsWith("secplus-")) track = "secplus";
       else if (plProduct && plProduct.startsWith("ccna-")) track = "ccna";
     }
     productId = productIdFromAmountCents(amount, track);
@@ -140,6 +179,14 @@ export function isCcnaPortalProduct(productId) {
 
 export function isEncorPortalProduct(productId) {
   return productId === "encor-portal-30d" || productId === "encor-portal-10d";
+}
+
+export function isSecplusPortalProduct(productId) {
+  return productId === "secplus-portal-30d" || productId === "secplus-portal-10d";
+}
+
+export function isSecplusTestSimulationProduct(productId) {
+  return productId === "secplus-test-simulation";
 }
 
 /** Fixed window from Stripe timestamps (not "now + 30d"). */
@@ -160,9 +207,11 @@ export function portalAccessExpiresAtMs(sess, productId = null) {
     }
   } catch (_) {}
   const days =
-    productId === "ccna-portal-10d" || productId === "encor-portal-10d"
+    productId === "ccna-portal-10d" || productId === "encor-portal-10d" || productId === "secplus-portal-10d"
       ? 10
-      : productId === "ccna-portal-30d" || productId === "encor-portal-30d"
+      : productId === "ccna-portal-30d" ||
+          productId === "encor-portal-30d" ||
+          productId === "secplus-portal-30d"
         ? 30
         : 30;
   return anchorSec * 1000 + days * 86400000;
@@ -234,6 +283,40 @@ export async function upsertEncorCustomerPortalMetadata(stripe, session, accessE
       encor_portal_customer: "1",
       encor_portal_last_cs: session.id,
       encor_portal_access_expires_ms: String(accessExpiresAtMs),
+    },
+  });
+
+  return customerId;
+}
+
+/**
+ * Remember Security+ portal purchase on a Stripe Customer for magic-link restore.
+ * @param {import('stripe').Stripe} stripe
+ * @param {import('stripe').Stripe.Checkout.Session} session
+ */
+export async function upsertSecplusCustomerPortalMetadata(stripe, session, accessExpiresAtMs) {
+  const email = (session.customer_details?.email || "").trim().toLowerCase();
+  if (!email) return null;
+
+  let customerId = session.customer || null;
+  if (!customerId) {
+    const existing = await stripe.customers.list({ email, limit: 5 });
+    if (existing.data.length > 0) {
+      customerId = existing.data[0].id;
+    } else {
+      const c = await stripe.customers.create({
+        email,
+        metadata: { secplus_portal_customer: "1" },
+      });
+      customerId = c.id;
+    }
+  }
+
+  await stripe.customers.update(customerId, {
+    metadata: {
+      secplus_portal_customer: "1",
+      secplus_portal_last_cs: session.id,
+      secplus_portal_access_expires_ms: String(accessExpiresAtMs),
     },
   });
 

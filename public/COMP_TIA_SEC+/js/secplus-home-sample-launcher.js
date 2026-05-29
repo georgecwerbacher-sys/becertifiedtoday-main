@@ -25,10 +25,13 @@
 
   function buildOrder(blueprint) {
     var order = [];
+    var seen = Object.create(null);
     var byDomain = blueprint.multipleChoiceByDomain || {};
     ["1.0", "2.0", "3.0", "4.0", "5.0"].forEach(function (domainId) {
       var slugs = byDomain[domainId] || [];
       slugs.forEach(function (slug) {
+        if (!slug || seen[slug]) return;
+        seen[slug] = true;
         order.push({ type: "mcq", slug: slug, domain: domainId });
       });
     });
@@ -51,8 +54,13 @@
       .then(function (blueprint) {
         var order = buildOrder(blueprint);
         if (!order.length) throw new Error("empty");
+        var mcqCount = order.filter(function (item) {
+          return item.type === "mcq";
+        }).length;
         var session = {
           order: order,
+          mcqCount: mcqCount,
+          totalCount: order.length,
           finishHome: finishHome || blueprint.finishHome || "/comptia-sec+-home.html",
           title: blueprint.title || "Security+ sample",
         };

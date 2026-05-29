@@ -30,18 +30,40 @@
     }
   }
 
+  function itemMatchesPath(item, path) {
+    if (item.type === "sim") return path === normalizePath(item.path);
+    return !!(item.slug && path.endsWith("/" + item.slug.toLowerCase() + ".html"));
+  }
+
   function currentItemIndex(session) {
     var path = normalizePath(location.pathname);
-    var iHint = hashIndex();
     for (var i = 0; i < session.order.length; i++) {
-      var item = session.order[i];
-      if (item.type === "sim") {
-        if (path === normalizePath(item.path)) return i;
-      } else if (item.slug && path.endsWith("/" + item.slug.toLowerCase() + ".html")) {
-        return i;
-      }
+      if (itemMatchesPath(session.order[i], path)) return i;
     }
-    return iHint >= 0 && iHint < session.order.length ? iHint : -1;
+    var iHint = hashIndex();
+    if (iHint >= 0 && iHint < session.order.length && itemMatchesPath(session.order[iHint], path)) {
+      return iHint;
+    }
+    return -1;
+  }
+
+  function clearSampleSession() {
+    try {
+      sessionStorage.removeItem(KEY);
+      sessionStorage.removeItem("secplusUrlMaskPath");
+    } catch (e) {}
+  }
+
+  function reconcileLocation(session) {
+    var index = currentItemIndex(session);
+    if (index >= 0) return index;
+    var hint = hashIndex();
+    if (hint >= 0 && hint < session.order.length) {
+      location.replace(itemHref(session.order[hint], hint));
+      return -2;
+    }
+    location.replace(itemHref(session.order[0], 0));
+    return -2;
   }
 
   function itemHref(item, index) {
@@ -112,7 +134,23 @@
     }
 
     if (els.progressEl) {
-      els.progressEl.textContent = "Sample " + (index + 1) + " of " + order.length;
+      var item = order[index];
+      if (item && item.type === "sim") {
+        els.progressEl.textContent = "Simulation — item " + (index + 1) + " of " + order.length;
+      } else {
+        var mcqNum = 0;
+        for (var p = 0; p <= index; p++) {
+          if (order[p] && order[p].type === "mcq") mcqNum++;
+        }
+        var mcqTotal = session.mcqCount;
+        if (typeof mcqTotal !== "number") {
+          mcqTotal = 0;
+          for (var t = 0; t < order.length; t++) {
+            if (order[t] && order[t].type === "mcq") mcqTotal++;
+          }
+        }
+        els.progressEl.textContent = "Question " + mcqNum + " of " + mcqTotal;
+      }
     }
 
     if (index !== hashIndex()) {
@@ -139,9 +177,14 @@
         els.nextEl.textContent = "Next";
         els.nextEl.classList.remove("nav-link--disabled");
         els.nextEl.removeAttribute("aria-hidden");
+        els.onclick = null;
       } else {
-        els.nextEl.href = session.finishHome || "/comptia-sec+-home.html";
+        var finish = session.finishHome || "/comptia-sec+-home.html";
+        els.nextEl.href = finish;
         els.nextEl.textContent = "Finish sample";
+        els.nextEl.onclick = function (ev) {
+          clearSampleSession();
+        };
       }
     }
 
@@ -168,14 +211,20 @@
     var session = readSession();
     if (!session) return;
     injectStyles();
-    var index = currentItemIndex(session);
+    var index = reconcileLocation(session);
     if (index < 0) return;
     applyNav(session, index);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", run);
-  } else {
+  function scheduleRuns() {
     run();
+    setTimeout(run, 0);
+    window.addEventListener("load", run);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", scheduleRuns);
+  } else {
+    scheduleRuns();
   }
 })();

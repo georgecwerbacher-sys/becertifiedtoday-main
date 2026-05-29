@@ -1,5 +1,5 @@
 /**
- * POST /api/portal-request-magic-link?track=ccna|encor
+ * POST /api/portal-request-magic-link?track=ccna|encor|secplus
  * Body: { "email": "you@example.com", "track": "ccna"|"encor" (optional if query set) }
  *
  * Legacy paths rewrite here via vercel.json:
@@ -12,11 +12,17 @@ import { normalizePublicSiteUrl } from "../server-lib/normalize-public-site-url.
 import {
   upsertCustomerPortalMetadata,
   upsertEncorCustomerPortalMetadata,
+  upsertSecplusCustomerPortalMetadata,
 } from "../server-lib/ccna-portal-stripe.js";
 import { findActivePortalSessionForEmail } from "../server-lib/ccna-portal-customers.js";
 import { findActiveEncorPortalSessionForEmail } from "../server-lib/encor-portal-customers.js";
+import { findActiveSecplusPortalSessionForEmail } from "../server-lib/secplus-portal-customers.js";
 import { signPortalMagicJwt } from "../server-lib/ccna-portal-magic-jwt.js";
-import { sendCcnaPortalMagicEmail, sendEncorPortalMagicEmail } from "../server-lib/ccna-portal-resend.js";
+import {
+  sendCcnaPortalMagicEmail,
+  sendEncorPortalMagicEmail,
+  sendSecplusPortalMagicEmail,
+} from "../server-lib/ccna-portal-resend.js";
 
 function readJsonBody(req) {
   try {
@@ -42,11 +48,11 @@ function resolveTrack(req, body) {
   const q = String(req.query?.track || "")
     .trim()
     .toLowerCase();
-  if (q === "ccna" || q === "encor") return q;
+  if (q === "ccna" || q === "encor" || q === "secplus") return q;
   const b = String(body?.track || "")
     .trim()
     .toLowerCase();
-  if (b === "ccna" || b === "encor") return b;
+  if (b === "ccna" || b === "encor" || b === "secplus") return b;
   return "";
 }
 
@@ -71,6 +77,16 @@ const TRACK_CONFIG = {
     upsertMetadata: upsertEncorCustomerPortalMetadata,
     sendEmail: sendEncorPortalMagicEmail,
   },
+  secplus: {
+    logTag: "secplus-portal",
+    generic:
+      "If this email has active Security+ portal access on file, we sent a login link. Check spam and wait a minute before trying again.",
+    aud: "secplus-portal-access",
+    magicPath: "/COMP_TIA_SEC+/secplus-portal-magic.html",
+    findSession: findActiveSecplusPortalSessionForEmail,
+    upsertMetadata: upsertSecplusCustomerPortalMetadata,
+    sendEmail: sendSecplusPortalMagicEmail,
+  },
 };
 
 export default async function handler(req, res) {
@@ -82,7 +98,7 @@ export default async function handler(req, res) {
   const body = readJsonBody(req);
   const track = resolveTrack(req, body);
   if (!track) {
-    return res.status(400).json({ ok: false, error: "Missing track (ccna or encor)" });
+    return res.status(400).json({ ok: false, error: "Missing track (ccna, encor, or secplus)" });
   }
 
   const cfg = TRACK_CONFIG[track];

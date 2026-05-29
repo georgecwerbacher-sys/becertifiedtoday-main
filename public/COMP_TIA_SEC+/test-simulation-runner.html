@@ -1,0 +1,987 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Security+ Timed Test Simulation — runner | Be Certified Today</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b1020;
+      color: #e6edf3;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 14px;
+      border-bottom: 1px solid #2d3b5a;
+      background: #121a2b;
+    }
+    .topbar-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 800;
+    }
+    .topbar-brand {
+      color: #e6edf3;
+      text-decoration: none;
+    }
+    .topbar-brand:hover {
+      text-decoration: underline;
+    }
+    .timer {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #fbbf24;
+      padding: 6px 10px;
+      border-radius: 10px;
+      border: 1px solid #4b556b;
+      background: #1f2937;
+    }
+    .timer.is-expired {
+      color: #fecaca;
+      border-color: #991b1b;
+      background: #3b0f14;
+    }
+    .stage {
+      min-height: 0;
+      height: calc(100vh - 120px);
+    }
+    #runnerFrame {
+      width: 100%;
+      height: 100%;
+      min-height: 480px;
+      border: none;
+      background: #0b1020;
+    }
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-top: 1px solid #2d3b5a;
+      background: #121a2b;
+    }
+    .next-btn {
+      appearance: none;
+      border: 1px solid #4f84d8;
+      background: #2f66bf;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      min-width: 8rem;
+    }
+    .quit-btn {
+      appearance: none;
+      border: 1px solid #4b556b;
+      background: #2a3040;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      min-width: 8rem;
+    }
+    .next-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .status {
+      margin-right: auto;
+      font-size: 0.92rem;
+      color: #9fb0cc;
+    }
+    .summary-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(5, 10, 20, 0.72);
+      z-index: 2000;
+    }
+    .summary-modal.is-open {
+      display: flex;
+    }
+    .summary-card {
+      width: min(640px, 96vw);
+      border: 1px solid #2d3b5a;
+      border-radius: 12px;
+      background: #121a2b;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      padding: 18px 18px 14px;
+    }
+    .summary-title {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+    .summary-text {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      line-height: 1.45;
+    }
+    .summary-list {
+      margin: 0 0 14px 20px;
+      padding: 0;
+      color: #dbe7ff;
+      line-height: 1.55;
+    }
+    .summary-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .summary-close,
+    .summary-home {
+      appearance: none;
+      border-radius: 10px;
+      padding: 9px 13px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .summary-close {
+      border: 1px solid #4b556b;
+      background: #2a3040;
+      color: #e6edf3;
+    }
+    .summary-home {
+      border: 1px solid #4f84d8;
+      background: #2f66bf;
+      color: #e6edf3;
+    }
+    #examPanel {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
+    }
+    #examPanel[hidden] {
+      display: none !important;
+    }
+    .gate-wrap {
+      min-height: 100vh;
+      display: grid;
+      place-items: start center;
+      padding: 24px 16px 48px;
+    }
+    .gate-card {
+      width: min(720px, 96vw);
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: clamp(18px, 3vw, 26px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    .gate-card h1 {
+      margin: 0 0 12px;
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+    .gate-card p {
+      margin: 0 0 12px;
+      color: #9fb0cc;
+      line-height: 1.55;
+      font-size: 0.95rem;
+    }
+    .gate-card .status-ok {
+      color: #4ade80;
+    }
+    .gate-card .status-bad {
+      color: #f87171;
+    }
+    #btnGateStartExam {
+      margin-top: 8px;
+      padding: 14px 22px;
+      border-radius: 10px;
+      font: inherit;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: 1px solid #60a5fa;
+      background: linear-gradient(165deg, #3b82f6 0%, #1d4ed8 100%);
+      color: #fff;
+    }
+    #btnGateStartExam:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+    #gateStartWrap[hidden] {
+      display: none !important;
+    }
+    .results-wrap {
+      min-height: 100vh;
+      padding: 24px 16px 48px;
+      box-sizing: border-box;
+    }
+    .results-wrap[hidden] {
+      display: none !important;
+    }
+    .exam-results {
+      width: min(920px, 96vw);
+      margin: 0 auto;
+      background: #121a2b;
+      border: 1px solid #2d3b5a;
+      border-radius: 14px;
+      padding: clamp(18px, 3vw, 26px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    .exam-results h2 {
+      margin: 0 0 8px;
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+    .exam-results .results-reason {
+      margin: 0 0 16px;
+      font-size: 0.92rem;
+      color: #9fb0cc;
+      line-height: 1.55;
+    }
+    .exam-results .results-score {
+      margin: 0 0 18px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fde047;
+    }
+    .exam-results .results-note {
+      margin: 0;
+      font-size: 0.82rem;
+      color: #9fb0cc;
+      max-width: 62ch;
+      line-height: 1.45;
+    }
+    .exam-results .obj-table-wrap {
+      overflow: auto;
+      max-height: min(52vh, 480px);
+      border: 1px solid #2d3b5a;
+      border-radius: 10px;
+    }
+    .exam-results table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .exam-results th,
+    .exam-results td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid #2d3b5a;
+      vertical-align: top;
+      color: #e6edf3;
+    }
+    .exam-results th {
+      background: #0f1729;
+      color: #8ba4c9;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .exam-results tr:last-child td {
+      border-bottom: none;
+    }
+    .exam-results .obj-pct {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .results-scorecard-section {
+      margin: 22px 0 18px;
+    }
+    .results-scorecard-heading {
+      margin: 0 0 8px;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #8ba4c9;
+    }
+    .scorecard-lead {
+      margin: 0 0 12px;
+    }
+    .results-scorecard-subheading {
+      margin: 18px 0 8px;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #8ba4c9;
+    }
+    .scorecard-tier-priority { color: #fca5a5; font-weight: 700; }
+    .scorecard-tier-review { color: #fcd34d; font-weight: 700; }
+    .scorecard-tier-solid { color: #86efac; font-weight: 700; }
+    .scorecard-tier-strong { color: #4ade80; font-weight: 700; }
+    .scorecard-tier-muted { color: #9fb0cc; font-weight: 600; }
+    .scorecard-by-type {
+      font-size: 0.78rem;
+      color: #9fb0cc;
+      line-height: 1.45;
+    }
+    .scorecard-hint {
+      display: block;
+      margin-top: 4px;
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: #7d8ea3;
+      line-height: 1.35;
+    }
+    .scorecard-weak-list {
+      margin: 0 0 0 1.15rem;
+      padding: 0;
+      color: #9fb0cc;
+      font-size: 0.88rem;
+      line-height: 1.55;
+      max-width: 72ch;
+    }
+    .scorecard-weak-list li {
+      margin-bottom: 10px;
+    }
+    .scorecard-weak-pct {
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      color: #fcd34d;
+    }
+    .results-actions {
+      margin-top: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    #resultsContinue {
+      padding: 12px 22px;
+      border-radius: 10px;
+      font: inherit;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: 1px solid #60a5fa;
+      background: linear-gradient(165deg, #3b82f6 0%, #1d4ed8 100%);
+      color: #fff;
+    }
+  </style>
+  <script src="/COMP_TIA_SEC+/js/secplus-test-sim-build.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-test-sim-scorecard.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js" defer></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-test-sim-storage.js" defer></script>
+</head>
+<body>
+  <div id="gatePanel" class="gate-wrap">
+    <div class="gate-card">
+      <h1>Security+ Timed Test Simulation</h1>
+      <p id="gateStatus">Checking access…</p>
+      <p id="gateBlueprint" class="status-ok" hidden></p>
+      <div id="gateStartWrap" hidden>
+        <button type="button" id="btnGateStartExam">Start timed test</button>
+      </div>
+      <p style="margin-top: 14px; font-size: 0.88rem">
+        <a id="gateBackLink" href="/comptia-sec+-home.html#purchase">← Back to Security+ home</a>
+      </p>
+    </div>
+  </div>
+
+  <div id="examPanel" hidden>
+  <header class="topbar">
+    <h1 class="topbar-title">
+      <a class="topbar-brand" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Security+ timed test</a>
+    </h1>
+    <div id="timer" class="timer" role="status" aria-live="polite">90:00</div>
+  </header>
+
+  <main class="stage">
+    <iframe id="runnerFrame" title="Test simulation content"></iframe>
+  </main>
+
+  <footer class="actions">
+    <div id="status" class="status"></div>
+    <button id="quitBtn" type="button" class="quit-btn">Quit</button>
+    <button id="nextBtn" type="button" class="next-btn">Next</button>
+  </footer>
+  </div>
+
+  <div id="resultsPanel" class="results-wrap" hidden aria-live="polite">
+    <div class="exam-results">
+      <h2 id="resultsHeadline">Attempt summary</h2>
+      <p class="results-reason" id="resultsReason"></p>
+      <p class="results-score" id="resultsScore"></p>
+      <p class="results-note" id="resultsNote"></p>
+
+      <div id="resultsScorecardSection" class="results-scorecard-section">
+        <h3 class="results-scorecard-heading">Study scorecard — where to focus</h3>
+        <p id="resultsScorecardLead" class="results-note scorecard-lead"></p>
+        <div class="obj-table-wrap scorecard-table-wrap">
+          <table aria-describedby="resultsScorecardLead">
+            <thead>
+              <tr>
+                <th scope="col">Security+ domain</th>
+                <th scope="col">Overall</th>
+                <th scope="col">By item type</th>
+                <th scope="col">Review priority</th>
+              </tr>
+            </thead>
+            <tbody id="resultsDomainScorecardBody"></tbody>
+          </table>
+        </div>
+        <h4 class="results-scorecard-subheading">Objectives that need the most work</h4>
+        <p id="resultsWeakObjectiveLead" class="results-note scorecard-lead"></p>
+        <ul id="resultsWeakObjectiveList" class="scorecard-weak-list"></ul>
+      </div>
+
+      <h3 style="margin: 18px 0 10px; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: #8ba4c9">
+        Performance by exam objective
+      </h3>
+      <div class="obj-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Objective</th>
+              <th scope="col">Topic</th>
+              <th scope="col">Correct</th>
+              <th scope="col">Items</th>
+              <th scope="col">%</th>
+            </tr>
+          </thead>
+          <tbody id="resultsObjectiveBody"></tbody>
+        </table>
+      </div>
+      <div class="results-actions">
+        <button type="button" id="resultsContinue">Continue</button>
+        <p class="results-note">
+          Continue returns you to the
+          <a href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Security+ Training Portal</a>. Scaled results use a
+          <strong>900</strong>-point score with a <strong>750</strong> passing threshold (85% MCQ, 15% simulations &amp; hot spots).
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var frame = document.getElementById("runnerFrame");
+      var nextBtn = document.getElementById("nextBtn");
+      var quitBtn = document.getElementById("quitBtn");
+      var timerEl = document.getElementById("timer");
+      var statusEl = document.getElementById("status");
+      var resultsPanel = document.getElementById("resultsPanel");
+      var resultsContinue = document.getElementById("resultsContinue");
+
+      var gatePanel = document.getElementById("gatePanel");
+      var examPanel = document.getElementById("examPanel");
+      var gateStatus = document.getElementById("gateStatus");
+      var gateBlueprint = document.getElementById("gateBlueprint");
+      var gateStartWrap = document.getElementById("gateStartWrap");
+      var btnGateStartExam = document.getElementById("btnGateStartExam");
+      var STARTER_URL = "/comptia-sec+-home.html#purchase";
+      var sessionOk = false;
+      var bypassMode = false;
+      var testMinutes = 90;
+
+      function showExamUi() {
+        gatePanel.hidden = true;
+        examPanel.hidden = false;
+        resultsPanel.hidden = true;
+      }
+
+      function showGateUi() {
+        gatePanel.hidden = false;
+        examPanel.hidden = true;
+        resultsPanel.hidden = true;
+      }
+
+      function showGateStartOptions() {
+        gateStartWrap.hidden = false;
+        gateStatus.textContent = "When you are ready, start the timed test. The clock runs until you finish or time expires.";
+        gateStatus.className = "status-ok";
+      }
+
+      function loadBlueprintLine() {
+        return fetch("/COMP_TIA_SEC+/data/secplus-test-simulation-blueprint.json", { cache: "no-store" })
+          .then(function (r) {
+            if (!r.ok) throw new Error("blueprint");
+            return r.json();
+          })
+          .then(function (b) {
+            testMinutes = b.durationMinutes != null ? b.durationMinutes : 90;
+            gateBlueprint.textContent =
+              "Blueprint v" +
+              b.schemaVersion +
+              ": " +
+              b.durationMinutes +
+              " min · " +
+              b.multipleChoiceCount +
+              " MCQ · " +
+              b.simCount +
+              " sims & hot spots (" +
+              b.totalItems +
+              " items).";
+            gateBlueprint.hidden = false;
+            return b;
+          })
+          .catch(function () {
+            return null;
+          });
+      }
+
+      function updateGateBackLink() {
+        var a = document.getElementById("gateBackLink");
+        if (!a) return;
+        if (typeof bccSecplusPortalAccessActive === "function" && bccSecplusPortalAccessActive()) {
+          a.setAttribute("href", "/COMP_TIA_SEC+/SEC+_Training_Portal.html");
+          a.textContent = "← Back to Security+ Training Portal";
+        } else {
+          a.setAttribute("href", STARTER_URL);
+          a.textContent = "← Back to Security+ home";
+        }
+      }
+
+      function beginPaidSessionIfNeeded() {
+        return Promise.resolve();
+      }
+
+      function redirectAfterResults() {
+        if (typeof bccSecplusPortalAccessActive === "function" && bccSecplusPortalAccessActive()) {
+          location.href = "/COMP_TIA_SEC+/SEC+_Training_Portal.html";
+          return;
+        }
+        if (typeof clearSecplusTempTestAccess === "function") {
+          clearSecplusTempTestAccess();
+        }
+        location.href = STARTER_URL;
+      }
+
+      function startExamFromGate() {
+        if (!sessionOk) return;
+        btnGateStartExam.disabled = true;
+        gateStatus.textContent = "Building your mixed exam…";
+        gateStatus.className = "status-ok";
+        if (!window.SECPLUS_TEST_SIM_BUILD || typeof window.SECPLUS_TEST_SIM_BUILD.loadConfigAndBlueprint !== "function") {
+          gateStatus.textContent = "Could not load exam builder.";
+          gateStatus.className = "status-bad";
+          btnGateStartExam.disabled = false;
+          return;
+        }
+        window.SECPLUS_TEST_SIM_BUILD.loadConfigAndBlueprint()
+          .then(function (pack) {
+            if (!pack.queue || !pack.queue.length) throw new Error("empty");
+            testMinutes = pack.durationMinutes || testMinutes;
+            queue = pack.queue;
+            index = 0;
+            endsAt = Date.now() + testMinutes * 60 * 1000;
+            try {
+              sessionStorage.setItem("secplusTestSimQueue", JSON.stringify(queue));
+              sessionStorage.setItem("secplusTestSimIndex", "0");
+              sessionStorage.setItem("secplusTestSimEndsAt", String(endsAt));
+              sessionStorage.setItem("secplusExamSim", "1");
+            } catch (e) {
+              throw new Error("storage");
+            }
+            return beginPaidSessionIfNeeded();
+          })
+          .then(function () {
+            showExamUi();
+            startExamTimerAndFirstItem();
+          })
+          .catch(function (err) {
+            if (err && err.message === "redirect") return;
+            clearTestState();
+            gateStatus.textContent = "Could not start the exam. Try again or return to the landing page.";
+            gateStatus.className = "status-bad";
+            gateStartWrap.hidden = false;
+            btnGateStartExam.disabled = false;
+          });
+      }
+
+      function startExamTimerAndFirstItem() {
+        timerEl.textContent = formatRemaining(endsAt - Date.now());
+        tick();
+        timerHandle = setInterval(tick, 1000);
+        loadCurrentItem();
+      }
+
+      function canResumeExistingAttempt() {
+        loadState();
+        if (!queue.length || !endsAt || !Number.isFinite(endsAt)) return false;
+        if (endsAt <= Date.now()) {
+          clearTestState();
+          return false;
+        }
+        if (!Number.isFinite(index) || index < 0) index = 0;
+        if (index >= queue.length) index = queue.length - 1;
+        return true;
+      }
+
+      function initGate() {
+        var params = new URLSearchParams(location.search || "");
+        var sessionIdFromUrl = params.get("session_id");
+        var fromPortal = params.get("portal") === "1";
+        bypassMode = params.get("bypass") === "1" || params.get("demo") === "1";
+
+        loadBlueprintLine();
+
+        if (canResumeExistingAttempt()) {
+          sessionOk = true;
+          try {
+            sessionStorage.setItem("secplusExamSim", "1");
+          } catch (e) {}
+          showExamUi();
+          startExamTimerAndFirstItem();
+          return;
+        }
+
+        showGateUi();
+        updateGateBackLink();
+
+        if (bypassMode) {
+          sessionOk = true;
+          showGateStartOptions();
+          return;
+        }
+
+        if (typeof bccSecplusPortalAccessActive === "function" && bccSecplusPortalAccessActive()) {
+          sessionOk = true;
+          showGateStartOptions();
+          return;
+        }
+
+        if (typeof secplusTimedSimAccessActive === "function" && secplusTimedSimAccessActive()) {
+          sessionOk = true;
+          showGateStartOptions();
+          return;
+        }
+
+        if (fromPortal) {
+          gateStatus.textContent =
+            "Active Security+ access was not found on this browser. Open the training portal after checkout, or use Email me a portal link to restore access on this device.";
+          gateStatus.className = "status-bad";
+          return;
+        }
+
+        var sessionId =
+          sessionIdFromUrl ||
+          (typeof readSecplusStoredStripeSessionId === "function" ? readSecplusStoredStripeSessionId() : null);
+
+        if (!sessionId || sessionId.indexOf("cs_") !== 0) {
+          gateStatus.textContent =
+            "No timed-test access found. Purchase portal access or a one-time simulation voucher from Security+ home.";
+          gateStatus.className = "status-bad";
+          return;
+        }
+
+        gateStatus.textContent = sessionIdFromUrl
+          ? "Confirming your payment…"
+          : "Restoring access from this device…";
+        gateStatus.className = "status-ok";
+
+        fetch("/api/verify-checkout-session?session_id=" + encodeURIComponent(sessionId))
+          .then(function (r) {
+            return r.json().then(function (data) {
+              return { res: r, data: data };
+            });
+          })
+          .then(function (pair) {
+            var data = pair.data || {};
+            if (
+              !pair.res.ok ||
+              !data.ok ||
+              data.productId !== "secplus-test-simulation"
+            ) {
+              throw new Error(data.error || "verify");
+            }
+            sessionOk = true;
+            if (typeof grantSecplusTempTestAccess === "function") {
+              grantSecplusTempTestAccess(sessionId);
+            }
+            showGateStartOptions();
+          })
+          .catch(function () {
+            gateStatus.textContent =
+              "We could not confirm payment from this link. Return to the landing page, purchase access, or use the Stripe return link from your receipt.";
+            gateStatus.className = "status-bad";
+          });
+      }
+
+      btnGateStartExam.addEventListener("click", startExamFromGate);
+
+      var queue = [];
+      var index = 0;
+      var endsAt = 0;
+      var timerHandle = null;
+      var isOver = false;
+      var answeredByIndex = {};
+
+      function loadState() {
+        try {
+          queue = JSON.parse(sessionStorage.getItem("secplusTestSimQueue") || "[]");
+          index = parseInt(sessionStorage.getItem("secplusTestSimIndex") || "0", 10);
+          endsAt = parseInt(sessionStorage.getItem("secplusTestSimEndsAt") || "0", 10);
+        } catch (e) {
+          queue = [];
+          index = 0;
+          endsAt = 0;
+        }
+      }
+
+      function saveIndex() {
+        try {
+          sessionStorage.setItem("secplusTestSimIndex", String(index));
+        } catch (e) {}
+      }
+
+      function clearTestState() {
+        try {
+          sessionStorage.removeItem("secplusTestSimQueue");
+          sessionStorage.removeItem("secplusTestSimIndex");
+          sessionStorage.removeItem("secplusTestSimEndsAt");
+          sessionStorage.removeItem("secplusExamSim");
+        } catch (e) {}
+      }
+
+      function formatRemaining(ms) {
+        var totalSeconds = Math.max(0, Math.floor(ms / 1000));
+        var minutes = Math.floor(totalSeconds / 60);
+        var seconds = totalSeconds % 60;
+        return String(minutes) + ":" + String(seconds).padStart(2, "0");
+      }
+
+      function elementVisibleInDoc(doc, el) {
+        if (!doc || !el) return false;
+        var s = doc.defaultView && doc.defaultView.getComputedStyle
+          ? doc.defaultView.getComputedStyle(el)
+          : null;
+        if (!s) return true;
+        return s.display !== "none" && s.visibility !== "hidden" && s.opacity !== "0";
+      }
+
+      function evaluateQuestionLike(doc) {
+        if (!doc) return false;
+        var answerBox = doc.getElementById("answerBox");
+        if (answerBox && elementVisibleInDoc(doc, answerBox)) {
+          var cn = answerBox.className || "";
+          if (/\bcorrect\b/i.test(cn)) return true;
+          if (/\bincorrect\b/i.test(cn)) return false;
+          var t0 = (answerBox.textContent || "").toLowerCase();
+          if (/\bcorrect\b/.test(t0)) return true;
+          if (/\bincorrect\b|\bwrong\b/.test(t0)) return false;
+        }
+        var answer = doc.querySelector(".answer.correct, .answer.incorrect");
+        if (answer && elementVisibleInDoc(doc, answer)) {
+          return answer.classList.contains("correct");
+        }
+        var result = doc.getElementById("result") || doc.getElementById("status");
+        if (result && elementVisibleInDoc(doc, result)) {
+          var txt = (result.textContent || "").trim();
+          var m = txt.match(/Score:\s*(\d+)\s*\/\s*(\d+)/i);
+          if (m) {
+            var x = parseInt(m[1], 10);
+            var y = parseInt(m[2], 10);
+            if (Number.isFinite(x) && Number.isFinite(y) && y > 0) return x === y;
+          }
+          if (/\bcorrect\b/i.test(txt)) return true;
+          if (/\bincorrect\b|\bwrong\b|\btry again\b/i.test(txt)) return false;
+        }
+        return false;
+      }
+
+      function evaluateSim(doc) {
+        if (!doc) return false;
+        var resultBox = doc.getElementById("resultBox");
+        if (resultBox && elementVisibleInDoc(doc, resultBox)) {
+          if (/\bpass\b/i.test(resultBox.className || "")) return true;
+          if (/\bfail\b/i.test(resultBox.className || "")) return false;
+        }
+        if (doc.querySelector(".pass-banner.visible, #passBanner.visible, .pass-banner.is-visible, #passBanner.is-visible")) {
+          return true;
+        }
+        var result = doc.getElementById("result") || doc.getElementById("status");
+        if (result && elementVisibleInDoc(doc, result)) {
+          var txt = (result.textContent || "").trim();
+          var m = txt.match(/Score:\s*(\d+)\s*\/\s*(\d+)/i);
+          if (m) {
+            var x = parseInt(m[1], 10);
+            var y = parseInt(m[2], 10);
+            if (Number.isFinite(x) && Number.isFinite(y) && y > 0) return x === y;
+          }
+          if (/\bcorrect\b/i.test(txt)) return true;
+          if (/\bincorrect\b|\bwrong\b|\btry again\b/i.test(txt)) return false;
+        }
+        return false;
+      }
+
+      function evaluateCurrentItem() {
+        var item = queue[index];
+        if (!item) return false;
+        var doc;
+        try {
+          doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+        } catch (e) {
+          doc = null;
+        }
+        var kind = String(item.kind || "");
+        if (kind === "sim") return evaluateSim(doc);
+        return evaluateQuestionLike(doc);
+      }
+
+      function captureCurrentOutcome() {
+        if (!queue.length || index < 0 || index >= queue.length) return;
+        answeredByIndex[index] = !!evaluateCurrentItem();
+      }
+
+      function kindLabel(kind) {
+        if (kind === "sim") return "Simulation";
+        return "Question";
+      }
+
+      function endReasonCode(reasonText) {
+        var t = String(reasonText || "").toLowerCase();
+        if (t.indexOf("time is up") >= 0 || t.indexOf("timer") >= 0) return "timeout";
+        if (t.indexOf("quit") >= 0) return "quit";
+        return "complete";
+      }
+
+      function showResultsPanel(reasonCode) {
+        gatePanel.hidden = true;
+        examPanel.hidden = true;
+        resultsPanel.hidden = false;
+        if (window.SECPLUS_TEST_SIM_SCORECARD && typeof window.SECPLUS_TEST_SIM_SCORECARD.showResults === "function") {
+          return window.SECPLUS_TEST_SIM_SCORECARD.showResults(reasonCode, queue, answeredByIndex);
+        }
+        document.getElementById("resultsHeadline").textContent = "Attempt summary";
+        document.getElementById("resultsReason").textContent = "Results could not be loaded.";
+        return Promise.resolve();
+      }
+
+      function endTest(reasonText) {
+        if (isOver) return;
+        captureCurrentOutcome();
+        isOver = true;
+        if (timerHandle) {
+          clearInterval(timerHandle);
+          timerHandle = null;
+        }
+        nextBtn.disabled = true;
+        quitBtn.disabled = true;
+        timerEl.classList.add("is-expired");
+        statusEl.textContent = reasonText;
+        var reasonCode = endReasonCode(reasonText);
+        showResultsPanel(reasonCode).then(function () {
+          clearTestState();
+          if (bypassMode) return;
+          if (typeof bccSecplusPortalAccessActive === "function" && bccSecplusPortalAccessActive()) return;
+          if (typeof markSecplusTempTestConsumed === "function") {
+            markSecplusTempTestConsumed();
+          } else if (typeof clearSecplusTempTestAccess === "function") {
+            clearSecplusTempTestAccess();
+          }
+        });
+      }
+
+      function tick() {
+        if (isOver) return;
+        var remaining = endsAt - Date.now();
+        timerEl.textContent = formatRemaining(remaining);
+        if (remaining <= 0) {
+          timerEl.textContent = "0:00";
+          endTest("Time is up. The practice test is over.");
+        }
+      }
+
+      function hideEmbeddedNav() {
+        var doc;
+        try {
+          doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+        } catch (e) {
+          return;
+        }
+        if (!doc) return;
+        var selectors = [
+          ".question-nav",
+          ".secplus-objective-tag",
+          ".sim-nav",
+          "#nextWrap",
+          "a[href='/COMP_TIA_SEC+/SEC+_Training_Portal.html']",
+          "a[href='/comptia-sec+-home.html']"
+        ];
+        selectors.forEach(function (sel) {
+          var nodes = doc.querySelectorAll(sel);
+          for (var i = 0; i < nodes.length; i++) {
+            nodes[i].style.display = "none";
+          }
+        });
+
+        var item = queue[index];
+        if (!item || String(item.kind || "") !== "sim") {
+          return;
+        }
+
+        var toRemove = [
+          ".helper-file-wrap",
+          "#helperFileOverlay",
+          "#openHelperFileBtn"
+        ];
+        toRemove.forEach(function (sel) {
+          doc.querySelectorAll(sel).forEach(function (node) {
+            node.remove();
+          });
+        });
+      }
+
+      function updateStatus() {
+        if (!queue.length) {
+          statusEl.textContent = "";
+          return;
+        }
+        statusEl.textContent = "Item " + (index + 1) + " of " + queue.length;
+      }
+
+      function loadCurrentItem() {
+        if (isOver) return;
+        if (!queue.length || index < 0 || index >= queue.length) {
+          endTest("Practice test complete.");
+          return;
+        }
+        updateStatus();
+        var item = queue[index];
+        if (!item) return;
+        var url = item.url;
+        url += url.indexOf("?") >= 0 ? "&examSim=1" : "?examSim=1";
+        frame.src = url;
+      }
+
+      function moveNext() {
+        if (isOver) return;
+        captureCurrentOutcome();
+        index += 1;
+        saveIndex();
+        if (index >= queue.length) {
+          endTest("Practice test complete.");
+          return;
+        }
+        loadCurrentItem();
+      }
+
+      frame.addEventListener("load", hideEmbeddedNav);
+      nextBtn.addEventListener("click", moveNext);
+      quitBtn.addEventListener("click", function () {
+        endTest("You quit the practice test.");
+      });
+      resultsContinue.addEventListener("click", redirectAfterResults);
+
+      document.addEventListener("DOMContentLoaded", function () {
+        initGate();
+      });
+    })();
+  </script>
+</body>
+</html>

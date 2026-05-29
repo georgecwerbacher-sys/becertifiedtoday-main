@@ -113,6 +113,9 @@
   }
 
   function run() {
+    try {
+      if (sessionStorage.getItem("secplusHomeSample")) return;
+    } catch (e) {}
     var slug = slugFromPath();
     if (!slug) return;
     var nav = applyPracticeNav(slug);

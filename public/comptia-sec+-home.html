@@ -12,7 +12,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta
     name="description"
-    content="CompTIA Security+ SY0-701 exam prep: practice questions, performance-based items, and timed simulation. Browser-based cybersecurity certification training—launching soon on Be Certified Today."
+    content="CompTIA Security+ SY0-701 exam prep: practice questions, performance-based items, and timed simulation. Browser-based cybersecurity certification training on Be Certified Today."
   />
   <meta
     name="keywords"
@@ -23,7 +23,7 @@
   <meta property="og:title" content="CompTIA Security+ SY0-701 exam prep — questions &amp; simulation | Be Certified Today" />
   <meta
     property="og:description"
-    content="CompTIA Security+ SY0-701 exam prep: practice questions, performance-based items, and timed simulation. Browser-based cybersecurity certification training—launching soon on Be Certified Today."
+    content="CompTIA Security+ SY0-701 exam prep: practice questions, performance-based items, and timed simulation. Browser-based cybersecurity certification training on Be Certified Today."
   />
   <meta property="og:site_name" content="Be Certified Today" />
   <meta property="og:url" content="https://becertifiedtoday.com/comptia-sec+-home.html" />
@@ -1854,6 +1854,7 @@
         <a
           class="secplus-portal-header-btn secplus-portal-header-btn--active"
           href="/COMP_TIA_SEC+/SEC+_Training_Portal.html"
+          data-secplus-portal-nav
           title="Security+ training portal"
           aria-label="Open Security+ training portal"
           >COMPTIA SEC+ Training Portal</a
@@ -1863,25 +1864,127 @@
     <main id="main">
       <div class="hero-content">
         <div class="funnel">
+          <!--
+            Stripe product (10-day all-access pass) — paste into Dashboard → Products (description ≤500 chars):
+            Name: CompTIA Security+ SY0-701 — 10-day all-access pass
+            Description: 10 days of full SY0-701 library on Be Certified Today: question banks, hot-spot and drag-and-drop practice, portal study modes, and timed exam simulation—all in your browser. One-time purchase; no subscription. Access starts at checkout on your device and browser.
+            Payment Link metadata (optional): productId = secplus-portal-10d
+            Payment Link URL: https://buy.stripe.com/5kQ14mbwVgt93yEfo0c3m07
+
+            Stripe product (30-day all-access pass):
+            Name: CompTIA Security+ SY0-701 — 30-day all-access pass
+            Description: 30 days of full SY0-701 library on Be Certified Today: question banks, hot-spot and drag-and-drop practice, portal study modes, and timed exam simulation—all in your browser. One-time purchase; no subscription. Access starts at checkout on your device and browser.
+            Payment Link metadata (optional): productId = secplus-portal-30d
+            Payment Link URL: https://buy.stripe.com/8x28wObwVfp54CIgs4c3m06
+            After payment redirect: /COMP_TIA_SEC+/SEC+_Training_Portal.html?session_id={CHECKOUT_SESSION_ID}
+
+            Stripe product (one-time timed exam simulation voucher):
+            Name: CompTIA Security+ SY0-701 — timed exam simulation (one attempt)
+            Description: One SY0-701 timed practice exam on Be Certified Today. One 90-minute session: 90 random multiple-choice items plus all five simulation and hot-spot pages (95 items total), shuffled. Scorecard at the end shows SY0-701 domain results and objectives to improve. Browser-based one-time purchase; no subscription.
+            Payment Link metadata (optional): productId = secplus-test-simulation
+            Payment Link URL: https://buy.stripe.com/9B63cudF33Gnc5a1xac3m08
+            After payment redirect: /COMP_TIA_SEC+/test-simulation-runner.html?session_id={CHECKOUT_SESSION_ID}
+          -->
           <section class="card purchase-card purchase-fold" id="purchase" aria-labelledby="purchase-fold-title">
-            <div
-              class="purchase-track-box purchase-track-box--thirty-day purchase-pricing-option"
-              aria-label="CompTIA Security+ access — coming soon"
-            >
-              <div class="purchase-track-head">
-                <p class="purchase-track-title" id="purchase-fold-title">Security+ training portal</p>
-                <span class="encor-live-badge" style="background:linear-gradient(155deg,#a78bfa 0%,#6d28d9 100%);color:#fff;">Soon</span>
+            <div class="purchase-cta-stack">
+              <div class="purchase-primary-cta">
+                <div
+                  class="purchase-track-box purchase-track-box--one-time-live purchase-pricing-option"
+                  aria-label="One-time Security+ timed exam simulation"
+                >
+                  <div class="purchase-track-head">
+                    <p class="purchase-track-title" id="purchase-fold-title">90-minute simulation</p>
+                    <span class="encor-live-badge">Live</span>
+                  </div>
+                  <p class="purchase-price" aria-label="4 dollars and 99 cents for one timed test">
+                    $4.99 <span>/ one attempt</span>
+                  </p>
+                  <p class="purchase-track-sub">
+                    Same clock and mix as test day: up to <strong>90 questions</strong> in <strong>90 minutes</strong>—multiple-choice,
+                    hot-spot, and simulation items in one shuffled session. Finish with a <strong>study scorecard</strong> that breaks down
+                    SY0-701 domains and highlights subjects to improve before you sit the real exam.
+                  </p>
+                  <p class="purchase-track-cta-wrap">
+                    <button
+                      type="button"
+                      class="cta-main cta-main--block"
+                      data-secplus-test-sim-checkout
+                      data-bcc-item-id="secplus_timed_simulation"
+                      data-bcc-item-name="Security+ Timed Test Simulation"
+                      data-bcc-value="4.99"
+                      data-bcc-currency="USD"
+                      aria-label="Purchase one-time Security+ timed simulation for four ninety-nine"
+                    >
+                      Get simulated exam
+                    </button>
+                  </p>
+                  <p class="purchase-access-disclaimer">
+                    <strong>One-time access.</strong> No subscription. Best when you want one serious dry run before you schedule SY0-701.
+                  </p>
+                </div>
               </div>
-              <p class="purchase-track-sub">
-                Full SY0-701 library: question banks, performance-based drag-and-drop sets, training portal modes, and timed
-                exam simulation—all in your browser. Checkout and access windows will be announced when the track launches.
-              </p>
-              <p class="purchase-track-cta-wrap">
-                <span class="cta-main cta-main--block cta-main--locked" aria-disabled="true">Coming soon</span>
-              </p>
-              <p class="purchase-access-disclaimer">
-                <strong>Launching soon.</strong> No recurring membership planned. Access will be tied to this browser when live.
-              </p>
+              <div class="purchase-secondary-shell">
+                <div
+                  class="purchase-track-box purchase-track-box--ten-day purchase-pricing-option"
+                  aria-label="CompTIA Security+ 10-day all-access pass"
+                >
+                  <div class="purchase-track-head">
+                    <p class="purchase-track-title">10-day all-access pass</p>
+                    <span class="encor-live-badge">Live</span>
+                  </div>
+                  <p class="purchase-price" aria-label="9 dollars and 99 cents for 10 days">
+                    $9.99 <span>/ 10 days</span>
+                  </p>
+                  <p class="purchase-track-sub">
+                    Full SY0-701 library access for 10 days: question banks, performance-based drag-and-drop sets, training portal
+                    modes, and timed exam simulation—all in your browser.
+                  </p>
+                  <p class="purchase-track-cta-wrap">
+                    <button
+                      type="button"
+                      class="cta-main cta-main--block"
+                      data-secplus-portal-10d-checkout
+                      aria-label="Purchase 10-day Security+ library access for nine ninety-nine"
+                    >
+                      Get 10-day access
+                    </button>
+                  </p>
+                  <p class="purchase-access-disclaimer">
+                    <strong>$9.99 / 10 days.</strong> No subscription. Access is tied to this browser—use the same device when you study.
+                  </p>
+                </div>
+              </div>
+              <div class="purchase-secondary-shell">
+                <div
+                  class="purchase-track-box purchase-track-box--thirty-day purchase-pricing-option"
+                  aria-label="CompTIA Security+ 30-day all-access pass"
+                >
+                  <div class="purchase-track-head">
+                    <p class="purchase-track-title">30-day all-access pass</p>
+                    <span class="encor-live-badge">Live</span>
+                  </div>
+                  <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
+                    $19.99 <span>/ 30 days</span>
+                  </p>
+                  <p class="purchase-track-sub">
+                    Full SY0-701 library access for 30 days: question banks, performance-based drag-and-drop sets, training portal
+                    modes, and timed exam simulation—all in your browser.
+                  </p>
+                  <p class="purchase-track-cta-wrap">
+                    <button
+                      type="button"
+                      class="cta-main cta-main--block"
+                      data-secplus-portal-30d-checkout
+                      aria-label="Purchase 30-day Security+ library access for nineteen ninety-nine"
+                    >
+                      Get 30-day access
+                    </button>
+                  </p>
+                  <p class="purchase-access-disclaimer">
+                    <strong>$19.99 / 30 days.</strong> No subscription. Access is tied to this browser—use the same device when you study.
+                  </p>
+                </div>
+              </div>
             </div>
           </section>
           <p class="eyebrow">CompTIA Security+ SY0-701 · practice tests &amp; questions</p>
@@ -1891,7 +1994,7 @@
             performance-based drag-and-drop items, and timed exam simulations—modes built for the SY0-701 mix of
             multiple-choice and performance-based questions.
             <strong>No PDFs or third-party applications:</strong> everything runs in the browser and responds to what you do.
-            Full library access and the training portal are <strong>launching soon</strong> on Be Certified Today.
+            Full library access unlocks after checkout—choose a 10-day or 30-day pass below, or try the free sample first.
           </p>
           <ul class="benefits" aria-label="What you get">
             <li>100% interactive—click, type, and drag in the app; not static dumps or slide decks.</li>
@@ -1908,15 +2011,15 @@
                 <strong>Free interactive sample: five questions from each SY0-701 domain (shuffled), plus a malware-outbreak performance-based simulation—no account required.</strong>
               </p>
               <article class="format-card assessment-card" aria-labelledby="home-secplus-sample-card-title">
-                <h3 id="home-secplus-sample-card-title">26-item Security+ sample set</h3>
+                <h3 id="home-secplus-sample-card-title">25 questions + 1 simulation</h3>
                 <p>
-                  Twenty-five multiple-choice questions drawn from General Security Concepts, Threats, Architecture,
-                  Security Operations, and Program Management—then a hot-spot item where you classify outbreak hosts from logs.
+                  Exactly twenty-five multiple-choice items (five per SY0-701 domain), then one performance-based malware
+                  outbreak simulation—twenty-six stops total, not the full question bank.
                 </p>
                 <ul class="assessment-details">
-                  <li><strong>5 per domain:</strong> every CompTIA SY0-701 objective area represented in the mix.</li>
-                  <li><strong>Random order:</strong> question sequence shuffles each time you start the sample.</li>
-                  <li><strong>Performance-based:</strong> includes the malware outbreak classification simulation.</li>
+                  <li><strong>5 per domain:</strong> General Security Concepts through Program Management.</li>
+                  <li><strong>Random order:</strong> the 26 items shuffle each time you start; progress shows “Question X of 25” until the sim.</li>
+                  <li><strong>Performance-based:</strong> malware outbreak host classification from logs (final item).</li>
                   <li><strong>Instant feedback</strong> on multiple-choice items; Check / Reset on the simulation.</li>
                 </ul>
                 <div class="assessment-cta-wrap">
@@ -1935,7 +2038,7 @@
                 <p class="purchase-label">Study plan</p>
                 <h2 class="purchase-heading">Match your prep to SY0-701</h2>
                 <p class="purchase-lead purchase-lead--tight">
-                  Domain weights and a suggested study order while the full library and timed simulation finish launching on the portal.
+                  Domain weights and a suggested study order—unlock the full library from the purchase cards above.
                 </p>
                 <div class="purchase-blueprint-callout" aria-labelledby="purchase-blueprint-title">
                   <h3 class="purchase-blueprint-title" id="purchase-blueprint-title">
@@ -2007,8 +2110,8 @@
                   <p class="purchase-blueprint-lead">
                     Under time pressure, leaning hardest into <strong>Security Operations</strong> and
                     <strong>Threats, Vulnerabilities, and Mitigations</strong> before you polish lighter domains mirrors where CompTIA
-                    weights the blueprint. When the timed simulation launches here, it will rehearse that mixed multiple-choice and
-                    performance-based pressure across all five domains.
+                    weights the blueprint. The timed simulation on this site rehearses that mixed multiple-choice and
+                    performance-based pressure across all five domains in one 90-minute session.
                   </p>
                   <p class="purchase-blueprint-note">
                     Source: CompTIA Security+ SY0-701 Certification Exam Objectives, version 5.0
@@ -2122,6 +2225,60 @@
         >Any questions?</a>
     </footer>
   </div>
+  <div
+    id="secplusPortalGateRoot"
+    class="ccna-sim-promo-root"
+    hidden
+    role="presentation"
+    aria-hidden="true"
+  >
+    <div class="ccna-sim-promo-backdrop" data-secplus-portal-gate-dismiss tabindex="-1"></div>
+    <div
+      class="ccna-sim-promo-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="secplusPortalGateTitle"
+      tabindex="-1"
+    >
+      <button type="button" class="ccna-sim-promo-close" data-secplus-portal-gate-dismiss aria-label="Close dialog">
+        ×
+      </button>
+      <p class="ccna-sim-promo-eyebrow">CompTIA Security+ Training Portal</p>
+      <h2 id="secplusPortalGateTitle">Portal access required</h2>
+      <p class="ccna-sim-promo-lead">
+        The Security+ Training Portal is for learners with <strong>active library access</strong> on
+        <strong>this browser</strong> (after Stripe checkout on this site). Choose
+        <strong>10-day or 30-day access</strong> below—no recurring subscription.
+      </p>
+      <p class="ccna-portal-gate-help">
+        Already paid but blocked?
+        <a class="ccna-portal-gate-email-link" href="/COMP_TIA_SEC+/secplus-portal-request-link.html">Email me a portal link</a>
+      </p>
+      <p class="ccna-portal-gate-help ccna-portal-gate-help--secondary">
+        On a new device or browser? Submit your checkout email from this device and we’ll restore portal access here.
+      </p>
+      <div class="ccna-sim-promo-actions">
+        <button
+          type="button"
+          class="ccna-sim-promo-primary"
+          data-secplus-portal-30d-checkout
+          aria-label="Purchase 30-day Security+ library access"
+        >
+          Purchase 30-day access
+        </button>
+        <button
+          type="button"
+          class="ccna-sim-promo-secondary"
+          data-secplus-portal-10d-checkout
+          aria-label="Purchase 10-day Security+ library access"
+        >
+          Purchase 10-day access
+        </button>
+        <a class="ccna-sim-promo-secondary" href="#purchase" data-secplus-portal-gate-dismiss>View all options</a>
+        <button type="button" class="ccna-sim-promo-secondary" data-secplus-portal-gate-dismiss>Close</button>
+      </div>
+    </div>
+  </div>
   <script>
     (function () {
       var p = location.pathname || "";
@@ -2139,6 +2296,91 @@
         } catch (e) {}
       }
     })();
+  </script>
+  <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js" defer></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-portal-checkout.js" defer></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-test-checkout.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var gateRoot = document.getElementById("secplusPortalGateRoot");
+      var gatePanel = gateRoot && gateRoot.querySelector(".ccna-sim-promo-panel");
+
+      function hasPortalAccess() {
+        return (
+          typeof window.bccSecplusPortalAccessActive === "function" &&
+          window.bccSecplusPortalAccessActive()
+        );
+      }
+
+      var prevOverflow = "";
+      var gateOpen = false;
+
+      function closeGate() {
+        if (!gateRoot || !gateOpen) return;
+        gateOpen = false;
+        gateRoot.classList.remove("ccna-sim-promo-root--open");
+        gateRoot.setAttribute("hidden", "");
+        gateRoot.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = prevOverflow;
+        document.removeEventListener("keydown", onKeyGate);
+      }
+
+      function openGate() {
+        if (!gateRoot || !gatePanel || gateOpen) return;
+        gateOpen = true;
+        prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        gateRoot.removeAttribute("hidden");
+        gateRoot.classList.add("ccna-sim-promo-root--open");
+        gateRoot.setAttribute("aria-hidden", "false");
+        gatePanel.focus();
+        document.addEventListener("keydown", onKeyGate);
+      }
+
+      function onKeyGate(ev) {
+        if (ev.key === "Escape") {
+          ev.preventDefault();
+          closeGate();
+        }
+      }
+
+      if (gateRoot) {
+        gateRoot.querySelectorAll("[data-secplus-portal-gate-dismiss]").forEach(function (el) {
+          el.addEventListener("click", function () {
+            closeGate();
+          });
+        });
+      }
+
+      function onPortalNavClick(ev) {
+        if (hasPortalAccess()) return;
+        ev.preventDefault();
+        openGate();
+      }
+
+      function wirePortalNav() {
+        document.querySelectorAll("[data-secplus-portal-nav]").forEach(function (el) {
+          el.addEventListener("click", onPortalNavClick);
+        });
+      }
+
+      function restorePortalAccessOnLoad() {
+        var chain = Promise.resolve();
+        if (typeof window.bccApplySecplusPortalCheckoutFromUrl === "function") {
+          chain = chain.then(function () {
+            return window.bccApplySecplusPortalCheckoutFromUrl(null, true);
+          });
+        }
+        if (typeof window.bccRestoreSecplusPortalAccess === "function") {
+          chain = chain.then(function () {
+            return window.bccRestoreSecplusPortalAccess();
+          });
+        }
+        return chain;
+      }
+
+      restorePortalAccessOnLoad().finally(wirePortalNav);
+    });
   </script>
 </body>
 </html>
