@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Cloud instance architecture concern: VM escape</title>
+  <title>Security+ — Phishing (network logs)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -219,32 +219,31 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/global-incident-plan-business-continuity.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/security-project-cost-timeline-sow.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/message-attribution-non-repudiation.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/enterprise-password-policy-gpo-push.html">Next</a>
       </div>
     </nav>
-    <h1>A systems administrator is concerned about vulnerabilities within cloud computing instances. Which of the following is most important for the administrator to consider when architecting a cloud computing environment?</h1>
+    <h1>An analyst is reviewing an incident in which a user clicked on a link in a phishing email. Which of the following log sources would the analyst utilize to determine whether the connection was successful?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q588" value="A" />A. SQL injection</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="B" />B. TOC/TOU</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="C" />C. VM escape</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="D" />D. Tokenization</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="E" />E. Password spraying</label>
+    <label class="choice"><input type="radio" name="secplus_q679" value="A" />A. Network</label>
+    <label class="choice"><input type="radio" name="secplus_q679" value="B" />B. System</label>
+    <label class="choice"><input type="radio" name="secplus_q679" value="C" />C. Application</label>
+    <label class="choice"><input type="radio" name="secplus_q679" value="D" />D. Authentication</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div class="secplus-objective-tag ccna-objective-tag" aria-label="Security+ objective section">
       <div class="secplus-objective-tag__version">Version: 1.1 2026</div>
       <div class="secplus-objective-tag__title">Security+ objective section</div>
-      <div class="secplus-objective-tag__row">• 2.3 (Threats, Vulnerabilities, and Mitigations): Explain various types of vulnerabilities.</div>
-      <div class="secplus-objective-tag__row">• 3.1 (Security Architecture): Compare and contrast security implications of different architecture models.</div>
+      <div class="secplus-objective-tag__row">• 4.9 (Security Operations): Given a scenario, use data sources to support an investigation.</div>
+      <div class="secplus-objective-tag__row">• 2.4 (Threats, Vulnerabilities, and Mitigations): Given a scenario, analyze indicators of malicious activity.</div>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 VM escape is a key cloud/virtualization concern because it can break isolation boundaries between guest instances and the hypervisor/host environment. SQL injection and password spraying are important attack types but are not specific to cloud instance architecture design. TOC/TOU is a race condition class in software logic, and tokenization is a data protection method rather than the primary virtualization isolation risk in cloud instance architecture.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 Network logs from firewalls, proxies, DNS, or web gateways record outbound connection attempts, allowed or blocked sessions, and destination addresses when a user follows a malicious link. System logs focus on host operating system events and do not reliably show whether an external HTTP or HTTPS session completed. Application logs may record app-specific activity but are not the primary source for verifying network connectivity to the phishing site. Authentication logs track logon events and credentials, not web link connections.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -258,7 +257,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="secplus_q588"]').forEach(function (el) {
+      document.querySelectorAll('input[name="secplus_q679"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

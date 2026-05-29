@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Cloud instance architecture concern: VM escape</title>
+  <title>Security+ — JS injection mitigation (choose two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -219,51 +219,66 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/global-incident-plan-business-continuity.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/mfa-setup-authentication-tokens-biometrics.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/message-attribution-non-repudiation.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/unused-social-media-terminate-account.html">Next</a>
       </div>
     </nav>
-    <h1>A systems administrator is concerned about vulnerabilities within cloud computing instances. Which of the following is most important for the administrator to consider when architecting a cloud computing environment?</h1>
+    <h1 class="choose-two-stem">An organization&#x27;s web servers host an online ordering system. The organization discovers that the servers are vulnerable to a malicious JavaScript injection, which could allow attackers to access customer payment information. Which of the following mitigation strategies would be most effective for preventing an attack on the organization&#x27;s web servers? (Select two.)</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q588" value="A" />A. SQL injection</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="B" />B. TOC/TOU</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="C" />C. VM escape</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="D" />D. Tokenization</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="E" />E. Password spraying</label>
+    <label class="choice"><input type="checkbox" name="secplus_q659" value="A" />A. Regularly updating server software and patches</label>
+    <label class="choice"><input type="checkbox" name="secplus_q659" value="B" />B. Implementing strong password policies</label>
+    <label class="choice"><input type="checkbox" name="secplus_q659" value="C" />C. Encrypting sensitive data at rest and in transit</label>
+    <label class="choice"><input type="checkbox" name="secplus_q659" value="D" />D. Utilizing a web-application firewall</label>
+    <label class="choice"><input type="checkbox" name="secplus_q659" value="E" />E. Performing regular vulnerability scans</label>
+    <label class="choice"><input type="checkbox" name="secplus_q659" value="F" />F. Removing payment information from the servers</label>
 
+    <div class="answer-actions">
+      <button id="checkBtn" type="button" class="nav-check">Check answer</button>
+    </div>
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div class="secplus-objective-tag ccna-objective-tag" aria-label="Security+ objective section">
       <div class="secplus-objective-tag__version">Version: 1.1 2026</div>
       <div class="secplus-objective-tag__title">Security+ objective section</div>
-      <div class="secplus-objective-tag__row">• 2.3 (Threats, Vulnerabilities, and Mitigations): Explain various types of vulnerabilities.</div>
-      <div class="secplus-objective-tag__row">• 3.1 (Security Architecture): Compare and contrast security implications of different architecture models.</div>
+      <div class="secplus-objective-tag__row">• 3.3 (Security Architecture): Compare and contrast concepts and strategies to protect data.</div>
+      <div class="secplus-objective-tag__row">• 4.1 (Security Operations): Given a scenario, apply common security techniques to computing resources.</div>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 VM escape is a key cloud/virtualization concern because it can break isolation boundaries between guest instances and the hypervisor/host environment. SQL injection and password spraying are important attack types but are not specific to cloud instance architecture design. TOC/TOU is a race condition class in software logic, and tokenization is a data protection method rather than the primary virtualization isolation risk in cloud instance architecture.";
+      var CORRECT = ["D", "F"];
+      var CORRECT_MSG = "Correct. D and F \u2014 A web application firewall (WAF) inspects HTTP/HTTPS traffic and can block JavaScript injection and cross-site scripting payloads before they reach the application. Removing payment information from the servers (for example through tokenization or a third-party payment processor) limits what attackers can steal even if injection succeeds, following PCI best practice to avoid storing cardholder data on web servers. Patching reduces known flaws but does not by itself stop all application-layer injection. Strong passwords, encryption, and vulnerability scans do not directly prevent malicious script injection against the ordering application.";
+      var checkBtn = document.getElementById("checkBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="secplus_q659"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (sel.length !== 2) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly two answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="secplus_q588"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
     })();
   </script>

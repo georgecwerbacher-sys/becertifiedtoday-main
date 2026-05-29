@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Cloud instance architecture concern: VM escape</title>
+  <title>Security+ — SAML (corporate directory)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -219,32 +219,31 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/global-incident-plan-business-continuity.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/sqli-monitoring-ssl-decrypt-full-packet-capture.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/message-attribution-non-repudiation.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/hr-contract-revisions-version-control.html">Next</a>
       </div>
     </nav>
-    <h1>A systems administrator is concerned about vulnerabilities within cloud computing instances. Which of the following is most important for the administrator to consider when architecting a cloud computing environment?</h1>
+    <h1>A company is implementing a vendor&#x27;s security tool in the cloud. The security director does not want to manage users and passwords specific to this tool but would rather utilize the company&#x27;s standard user directory. Which of the following should the company implement?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q588" value="A" />A. SQL injection</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="B" />B. TOC/TOU</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="C" />C. VM escape</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="D" />D. Tokenization</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="E" />E. Password spraying</label>
+    <label class="choice"><input type="radio" name="secplus_q710" value="A" />A. 802.1X</label>
+    <label class="choice"><input type="radio" name="secplus_q710" value="B" />B. SAML</label>
+    <label class="choice"><input type="radio" name="secplus_q710" value="C" />C. RADIUS</label>
+    <label class="choice"><input type="radio" name="secplus_q710" value="D" />D. CHAP</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div class="secplus-objective-tag ccna-objective-tag" aria-label="Security+ objective section">
       <div class="secplus-objective-tag__version">Version: 1.1 2026</div>
       <div class="secplus-objective-tag__title">Security+ objective section</div>
-      <div class="secplus-objective-tag__row">• 2.3 (Threats, Vulnerabilities, and Mitigations): Explain various types of vulnerabilities.</div>
-      <div class="secplus-objective-tag__row">• 3.1 (Security Architecture): Compare and contrast security implications of different architecture models.</div>
+      <div class="secplus-objective-tag__row">• 3.8</div>
+      <div class="secplus-objective-tag__row">• 5.5 (Security Program Management and Oversight): Explain types and purposes of audits and assessments.</div>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 VM escape is a key cloud/virtualization concern because it can break isolation boundaries between guest instances and the hypervisor/host environment. SQL injection and password spraying are important attack types but are not specific to cloud instance architecture design. TOC/TOU is a race condition class in software logic, and tokenization is a data protection method rather than the primary virtualization isolation risk in cloud instance architecture.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 SAML federation lets a cloud application trust the organization's identity provider so employees sign in with existing corporate directory credentials instead of separate tool accounts. 802.1X authenticates devices to wired or wireless networks at the port level, not SaaS application access with a central user directory. RADIUS centralizes network authentication such as VPN or Wi-Fi but is not the standard federation protocol for cloud security tools and corporate directories. CHAP is a legacy point-to-point authentication protocol and is not used for cloud SSO with enterprise directories.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -258,7 +257,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="secplus_q588"]').forEach(function (el) {
+      document.querySelectorAll('input[name="secplus_q710"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

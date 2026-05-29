@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Cloud instance architecture concern: VM escape</title>
+  <title>Security+ — AUP (integrity and ethics)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -219,32 +219,31 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/global-incident-plan-business-continuity.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/legal-requests-investigation-e-discovery.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/message-attribution-non-repudiation.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/reduce-investigation-storage-packet-capture-retention.html">Next</a>
       </div>
     </nav>
-    <h1>A systems administrator is concerned about vulnerabilities within cloud computing instances. Which of the following is most important for the administrator to consider when architecting a cloud computing environment?</h1>
+    <h1>Which of the following organizational documents is most often used to establish and communicate expectations associated with integrity and ethical behavior within an organization?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q588" value="A" />A. SQL injection</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="B" />B. TOC/TOU</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="C" />C. VM escape</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="D" />D. Tokenization</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="E" />E. Password spraying</label>
+    <label class="choice"><input type="radio" name="secplus_q671" value="A" />A. AUP</label>
+    <label class="choice"><input type="radio" name="secplus_q671" value="B" />B. SLA</label>
+    <label class="choice"><input type="radio" name="secplus_q671" value="C" />C. EULA</label>
+    <label class="choice"><input type="radio" name="secplus_q671" value="D" />D. MOA</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div class="secplus-objective-tag ccna-objective-tag" aria-label="Security+ objective section">
       <div class="secplus-objective-tag__version">Version: 1.1 2026</div>
       <div class="secplus-objective-tag__title">Security+ objective section</div>
-      <div class="secplus-objective-tag__row">• 2.3 (Threats, Vulnerabilities, and Mitigations): Explain various types of vulnerabilities.</div>
-      <div class="secplus-objective-tag__row">• 3.1 (Security Architecture): Compare and contrast security implications of different architecture models.</div>
+      <div class="secplus-objective-tag__row">• 5.1 (Security Program Management and Oversight): Summarize elements of effective security governance.</div>
+      <div class="secplus-objective-tag__row">• 5.3 (Security Program Management and Oversight): Explain the processes associated with third-party risk assessment and management.</div>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 VM escape is a key cloud/virtualization concern because it can break isolation boundaries between guest instances and the hypervisor/host environment. SQL injection and password spraying are important attack types but are not specific to cloud instance architecture design. TOC/TOU is a race condition class in software logic, and tokenization is a data protection method rather than the primary virtualization isolation risk in cloud instance architecture.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 An acceptable use policy (AUP) defines permitted and prohibited use of organizational resources such as systems, networks, email, and data, including expectations for ethical and appropriate behavior. A service level agreement (SLA) defines service performance and availability between a provider and customer. An end-user license agreement (EULA) governs software use between a vendor and user, not internal organizational ethics. A memorandum of agreement (MOA) outlines cooperation between parties and is not the primary document for employee integrity expectations.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -258,7 +257,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="secplus_q588"]').forEach(function (el) {
+      document.querySelectorAll('input[name="secplus_q671"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);

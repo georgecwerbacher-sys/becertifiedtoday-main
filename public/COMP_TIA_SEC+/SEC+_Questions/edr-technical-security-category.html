@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Cloud instance architecture concern: VM escape</title>
+  <title>Security+ — EDR (technical control category)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -219,32 +219,31 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/global-incident-plan-business-continuity.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/pentest-procedures-rules-of-engagement.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/message-attribution-non-repudiation.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/mfa-setup-authentication-tokens-biometrics.html">Next</a>
       </div>
     </nav>
-    <h1>A systems administrator is concerned about vulnerabilities within cloud computing instances. Which of the following is most important for the administrator to consider when architecting a cloud computing environment?</h1>
+    <h1>To which of the following security categories does an EDR solution belong?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q588" value="A" />A. SQL injection</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="B" />B. TOC/TOU</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="C" />C. VM escape</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="D" />D. Tokenization</label>
-    <label class="choice"><input type="radio" name="secplus_q588" value="E" />E. Password spraying</label>
+    <label class="choice"><input type="radio" name="secplus_q657" value="A" />A. Physical</label>
+    <label class="choice"><input type="radio" name="secplus_q657" value="B" />B. Operational</label>
+    <label class="choice"><input type="radio" name="secplus_q657" value="C" />C. Managerial</label>
+    <label class="choice"><input type="radio" name="secplus_q657" value="D" />D. Technical</label>
 
     <div id="answerBox" class="answer" aria-live="polite"></div>
     <div class="secplus-objective-tag ccna-objective-tag" aria-label="Security+ objective section">
       <div class="secplus-objective-tag__version">Version: 1.1 2026</div>
       <div class="secplus-objective-tag__title">Security+ objective section</div>
-      <div class="secplus-objective-tag__row">• 2.3 (Threats, Vulnerabilities, and Mitigations): Explain various types of vulnerabilities.</div>
-      <div class="secplus-objective-tag__row">• 3.1 (Security Architecture): Compare and contrast security implications of different architecture models.</div>
+      <div class="secplus-objective-tag__row">• 1.1 (General Security Concepts): Compare and contrast various types of security controls.</div>
+      <div class="secplus-objective-tag__row">• 2.5 (Threats, Vulnerabilities, and Mitigations): Explain the purpose of mitigation techniques used to secure the enterprise.</div>
     </div>
   </main>
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 VM escape is a key cloud/virtualization concern because it can break isolation boundaries between guest instances and the hypervisor/host environment. SQL injection and password spraying are important attack types but are not specific to cloud instance architecture design. TOC/TOU is a race condition class in software logic, and tokenization is a data protection method rather than the primary virtualization isolation risk in cloud instance architecture.";
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D \u2014 Endpoint detection and response (EDR) is implemented through software and technology on endpoints, so it is a technical control. Physical controls protect facilities and hardware access. Operational controls are day-to-day processes and practices that support security operations. Managerial controls are policies, governance, and administrative direction rather than deployed security technology.";
       var answerBox = document.getElementById("answerBox");
 
       function applyFeedback(value) {
@@ -258,7 +257,7 @@
         }
       }
 
-      document.querySelectorAll('input[name="secplus_q588"]').forEach(function (el) {
+      document.querySelectorAll('input[name="secplus_q657"]').forEach(function (el) {
         el.addEventListener("change", function () {
           if (el.checked) {
             applyFeedback(el.value);
