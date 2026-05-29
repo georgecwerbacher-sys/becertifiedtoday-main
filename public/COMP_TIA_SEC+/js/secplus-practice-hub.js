@@ -909,35 +909,10 @@
     false
   );
 
-  function injectPortalPracticeBanks() {
-    var grid = document.getElementById("secplus-practice-banks-grid");
-    if (!grid) return;
-
+  function refreshPortalPracticeBanksSummary(nBanks) {
     var all = window.SECPLUS_PRACTICE.SLUGS;
-    if (!Array.isArray(all) || !all.length) {
-      if (!grid.querySelector("[data-secplus-practice-bank-index]")) {
-        var err = document.createElement("p");
-        err.className = "study-meta";
-        err.setAttribute("data-secplus-practice-banks-error", "1");
-        err.setAttribute("role", "status");
-        err.textContent =
-          "Practice banks could not load. Refresh the page; if the problem continues, check that secplus-practice-hub.js loaded correctly.";
-        grid.appendChild(err);
-      }
-      return;
-    }
-
-    if (grid.querySelector("[data-secplus-practice-bank-index]")) {
-      var summaryOnly = document.getElementById("secplus-practice-banks-summary");
-      if (summaryOnly) summaryOnly.hidden = false;
-      return;
-    }
-
-    var prior = grid.querySelectorAll("[data-secplus-practice-bank-index], [data-secplus-practice-banks-error]");
-    for (var pi = 0; pi < prior.length; pi++) prior[pi].remove();
-
-    var nBanks = practiceBankCount();
-    var total = all.length;
+    var total = Array.isArray(all) ? all.length : 0;
+    if (!nBanks || nBanks < 1) nBanks = practiceBankCount();
 
     function formatRange(first, last) {
       if (first >= last) return String(first);
@@ -975,16 +950,60 @@
       summary.hidden = false;
     }
 
-    grid.setAttribute(
-      "aria-label",
-      "Practice question banks: " +
-        nBanks +
-        " banks of up to " +
-        BANK_SIZE +
-        " questions each (" +
-        total +
-        " total)"
-    );
+    var grid = document.getElementById("secplus-practice-banks-grid");
+    if (grid) {
+      grid.setAttribute(
+        "aria-label",
+        "Practice question banks: " +
+          nBanks +
+          " banks of up to " +
+          BANK_SIZE +
+          " questions each (" +
+          total +
+          " total)"
+      );
+    }
+  }
+
+  function injectPortalPracticeBanks() {
+    var grid = document.getElementById("secplus-practice-banks-grid");
+    if (!grid) return;
+
+    var all = window.SECPLUS_PRACTICE.SLUGS;
+    var existing = grid.querySelectorAll("[data-secplus-practice-bank-index]");
+    if (existing.length) {
+      refreshPortalPracticeBanksSummary(existing.length);
+      return;
+    }
+
+    var loadingEl = document.getElementById("secplus-practice-banks-loading");
+    if (loadingEl) loadingEl.remove();
+
+    if (!Array.isArray(all) || !all.length) {
+      if (!grid.querySelector("[data-secplus-practice-banks-error]")) {
+        var err = document.createElement("p");
+        err.className = "study-meta";
+        err.setAttribute("data-secplus-practice-banks-error", "1");
+        err.setAttribute("role", "status");
+        err.textContent =
+          "Practice banks could not load. Refresh the page; if the problem continues, check that secplus-practice-hub.js loaded correctly.";
+        grid.appendChild(err);
+      }
+      return;
+    }
+
+    var prior = grid.querySelectorAll("[data-secplus-practice-banks-error]");
+    for (var pe = 0; pe < prior.length; pe++) prior[pe].remove();
+
+    var nBanks = practiceBankCount();
+    var total = all.length;
+
+    function formatRange(first, last) {
+      if (first >= last) return String(first);
+      return String(first) + "–" + String(last);
+    }
+
+    refreshPortalPracticeBanksSummary(nBanks);
 
     for (var b = 1; b <= nBanks; b++) {
       var startIdx = (b - 1) * BANK_SIZE;

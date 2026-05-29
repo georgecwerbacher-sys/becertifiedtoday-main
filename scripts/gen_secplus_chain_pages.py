@@ -19086,7 +19086,7 @@ def sync_portal_practice_banks(chain: list[dict]) -> None:
         r'<div class="sim-grid" id="secplus-practice-banks-grid"[^>]*>.*?</div>\s*<noscript>'
     )
     grid_repl = (
-        '<div class="sim-grid" id="secplus-practice-banks-grid" '
+        f'            <div class="sim-grid" id="secplus-practice-banks-grid" '
         f'aria-label="Practice question banks: {n_banks} banks of up to {PRACTICE_BANK_SIZE} '
         f'questions each ({slug_count} total)">\n'
         + banks_html
@@ -19101,7 +19101,8 @@ def sync_portal_practice_banks(chain: list[dict]) -> None:
     )
 
     def _summary_repl(match: re.Match[str]) -> str:
-        return match.group(1) + summary_html + match.group(2)
+        open_tag = re.sub(r"\s+hidden(?:=\"\")?", "", match.group(1))
+        return open_tag + summary_html + match.group(2)
 
     text, n_sum = re.subn(summary_pat, _summary_repl, text, count=1, flags=re.DOTALL)
     if not n_sum:
