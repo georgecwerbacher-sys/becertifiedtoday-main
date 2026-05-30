@@ -6,25 +6,20 @@
   <title>Security+ Hot Spot — Attack Identification and Remediation</title>
   <style>
     :root {
-      color-scheme: dark;
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       min-height: 100vh;
-      background: #0b1020;
-      color: #e6edf3;
       padding: 20px 16px 90px;
     }
     .wrap {
       width: min(1200px, 100%);
       margin: 0 auto;
-      background: #121a2b;
-      border: 1px solid #2d3b5a;
+      border: 1px solid #e5e7eb;
       border-radius: 14px;
       padding: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
     h1 {
       margin: 0 0 10px;
@@ -33,30 +28,29 @@
     }
     .lead {
       margin: 0 0 16px;
-      color: #b8c3d6;
       line-height: 1.45;
     }
     .table-wrap {
       overflow-x: auto;
-      border: 1px solid #2d3b5a;
+      border: 1px solid #e5e7eb;
       border-radius: 10px;
     }
     table {
       width: 100%;
       min-width: 980px;
       border-collapse: collapse;
-      background: #0f1729;
+      background: #ffffff;
     }
     th, td {
-      border: 1px solid #2d3b5a;
+      border: 1px solid #e5e7eb;
       padding: 10px 12px;
       vertical-align: top;
       text-align: left;
       font-size: 0.95rem;
     }
     th {
-      background: #1a253b;
-      color: #e6edf3;
+      background: #f8fafc;
+      color: #0f172a;
       font-weight: 700;
     }
     td:nth-child(1) { width: 37%; }
@@ -65,14 +59,14 @@
     td:nth-child(4) { width: 28%; }
     .target {
       font-weight: 700;
-      color: #dbe7fb;
+      color: #0f172a;
     }
     select {
       width: 100%;
       border-radius: 8px;
-      border: 1px solid #3b4f77;
-      background: #0b1222;
-      color: #e6edf3;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #0f172a;
       padding: 8px 10px;
       font: inherit;
     }
@@ -80,7 +74,7 @@
       margin-top: 6px;
       font-size: 0.82rem;
       min-height: 1.2em;
-      color: #93a8c8;
+      color: #64748b;
     }
     .status.ok { color: #4ade80; }
     .status.bad { color: #fca5a5; }
@@ -101,31 +95,30 @@
       font: inherit;
     }
     button.secondary {
-      border-color: #2d3b5a;
-      background: #1a253b;
-      color: #d4dce8;
+      border-color: #cbd5e1;
+      background: #ffffff;
+      color: #334155;
     }
     .result {
       margin-top: 14px;
       border-radius: 10px;
       padding: 12px 14px;
-      border: 1px solid #2d3b5a;
-      background: #0f1729;
+      border: 1px solid #e5e7eb;
       display: none;
       line-height: 1.45;
       font-weight: 700;
     }
     .result.pass {
       display: block;
-      border-color: #1f7a58;
-      background: #113e2d;
-      color: #d8ffea;
+      border-color: #86efac;
+      background: #ecfdf5;
+      color: #166534;
     }
     .result.fail {
       display: block;
-      border-color: #8c3434;
-      background: #442020;
-      color: #ffd9d9;
+      border-color: #fca5a5;
+      background: #fef2f2;
+      color: #991b1b;
     }
     .home-link {
       position: fixed;
@@ -142,9 +135,10 @@
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
     }
   </style>
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
 </head>
-<body>
+<body class="secplus-sim-page">
   <main class="wrap">
     <h1>Hot Spot: Identify the attack and best prevention/remediation action</h1>
     <p class="lead">
