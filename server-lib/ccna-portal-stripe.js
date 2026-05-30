@@ -7,8 +7,8 @@ const PAYMENT_LINK_SLUG_TO_PRODUCT = {
   cNidR81Wlel13yEdfSc3m05: "encor-portal-10d",
   cNidR80Sh0ubc5aejWc3m00: "encor-portal-30d",
   "3cIaEWbwVb8P8SYejWc3m01": "encor-test-simulation",
-  "5kQ14mbwVgt93yEfo0c3m07": "secplus-portal-10d",
-  "8x28wObwVfp54CIgs4c3m06": "secplus-portal-30d",
+  "5kQ14mbwVgt93yEfo0c3m07": "secplus-portal-30d",
+  "8x28wObwVfp54CIgs4c3m06": "secplus-portal-10d",
   "9B63cudF33Gnc5a1xac3m08": "secplus-test-simulation",
 };
 

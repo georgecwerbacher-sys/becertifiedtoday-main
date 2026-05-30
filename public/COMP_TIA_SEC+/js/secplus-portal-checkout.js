@@ -8,8 +8,8 @@
  */
 (function () {
   var LINKS = {
-    "10d": "https://buy.stripe.com/5kQ14mbwVgt93yEfo0c3m07",
-    "30d": "https://buy.stripe.com/8x28wObwVfp54CIgs4c3m06",
+    "10d": "https://buy.stripe.com/8x28wObwVfp54CIgs4c3m06",
+    "30d": "https://buy.stripe.com/5kQ14mbwVgt93yEfo0c3m07",
   };
 
   var PRODUCTS = {
