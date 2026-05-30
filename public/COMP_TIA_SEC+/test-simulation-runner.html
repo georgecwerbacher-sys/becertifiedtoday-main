@@ -591,6 +591,7 @@
       var freeMode = false;
       var testMinutes = 90;
       var lastResultPack = null;
+      var cachedFreeExamPack = null;
 
       function detectFreeMode(params) {
         if (params.get("free") === "1") return true;
@@ -634,6 +635,22 @@
         gateStartWrap.hidden = false;
         gateStatus.textContent = "When you are ready, start the timed test. The clock runs until you finish or time expires.";
         gateStatus.className = "status-ok";
+        if (freeMode) prefetchFreeExamPack();
+      }
+
+      function prefetchFreeExamPack() {
+        if (!freeMode || cachedFreeExamPack) return;
+        if (
+          !window.SECPLUS_TEST_SIM_BUILD ||
+          typeof window.SECPLUS_TEST_SIM_BUILD.loadFreeSimulationQueue !== "function"
+        ) {
+          return;
+        }
+        window.SECPLUS_TEST_SIM_BUILD.loadFreeSimulationQueue()
+          .then(function (pack) {
+            cachedFreeExamPack = pack;
+          })
+          .catch(function () {});
       }
 
       function loadBlueprintLine() {
@@ -709,17 +726,34 @@
       function startExamFromGate() {
         if (!sessionOk) return;
         btnGateStartExam.disabled = true;
-        gateStatus.textContent = "Building your mixed exam…";
+        gateStatus.textContent = freeMode
+          ? "Loading your free sample exam…"
+          : "Building your mixed exam…";
         gateStatus.className = "status-ok";
-        if (!window.SECPLUS_TEST_SIM_BUILD || typeof window.SECPLUS_TEST_SIM_BUILD.loadConfigAndBlueprint !== "function") {
+        if (!window.SECPLUS_TEST_SIM_BUILD) {
           gateStatus.textContent = "Could not load exam builder.";
           gateStatus.className = "status-bad";
           btnGateStartExam.disabled = false;
           return;
         }
-        window.SECPLUS_TEST_SIM_BUILD.loadConfigAndBlueprint(
-          freeMode ? { blueprintUrl: freeBlueprintUrl() } : undefined
-        )
+
+        var loadPromise;
+        if (freeMode && typeof window.SECPLUS_TEST_SIM_BUILD.loadFreeSimulationQueue === "function") {
+          loadPromise = cachedFreeExamPack
+            ? Promise.resolve(cachedFreeExamPack)
+            : window.SECPLUS_TEST_SIM_BUILD.loadFreeSimulationQueue();
+        } else if (typeof window.SECPLUS_TEST_SIM_BUILD.loadConfigAndBlueprint === "function") {
+          loadPromise = window.SECPLUS_TEST_SIM_BUILD.loadConfigAndBlueprint(
+            freeMode ? { blueprintUrl: freeBlueprintUrl() } : undefined
+          );
+        } else {
+          gateStatus.textContent = "Could not load exam builder.";
+          gateStatus.className = "status-bad";
+          btnGateStartExam.disabled = false;
+          return;
+        }
+
+        loadPromise
           .then(function (pack) {
             if (!pack.queue || !pack.queue.length) throw new Error("empty");
             testMinutes = pack.durationMinutes || testMinutes;

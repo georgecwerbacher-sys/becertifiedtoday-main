@@ -7,6 +7,7 @@
   var TOPIC_MAP_URL = "/COMP_TIA_SEC+/data/secplus-question-topic-map.json";
   var BLUEPRINT_URL = "/COMP_TIA_SEC+/data/secplus-test-simulation-blueprint.json";
   var FREE_BLUEPRINT_URL = "/COMP_TIA_SEC+/data/secplus-free-simulation-blueprint.json";
+  var FREE_QUEUE_URL = "/COMP_TIA_SEC+/data/free-simulation/queue.json";
   var SIM_BASE = "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/";
   var MCQ_BASE = "/COMP_TIA_SEC+/SEC+_Questions/";
 
@@ -124,6 +125,44 @@
     return shuffle(queue);
   }
 
+  function loadFreeSimulationQueue() {
+    return Promise.all([
+      fetch(FREE_QUEUE_URL, { cache: "no-store" }).then(function (r) {
+        if (!r.ok) throw new Error("free queue");
+        return r.json();
+      }),
+      fetch(FREE_BLUEPRINT_URL, { cache: "no-store" }).then(function (r) {
+        if (!r.ok) throw new Error("blueprint");
+        return r.json();
+      }),
+    ]).then(function (res) {
+      var pack = res[0];
+      var bp = res[1];
+      var raw = Array.isArray(pack.queue) ? pack.queue : [];
+      var queue = raw
+        .map(function (item) {
+          if (!item || !item.url) return null;
+          return {
+            kind: item.kind === "sim" ? "sim" : "question",
+            url: String(item.url),
+          };
+        })
+        .filter(Boolean);
+      if (!queue.length) throw new Error("empty");
+      return {
+        topicMap: null,
+        bp: bp,
+        queue: queue,
+        durationMinutes:
+          pack.durationMinutes != null
+            ? pack.durationMinutes
+            : bp.durationMinutes != null
+              ? bp.durationMinutes
+              : 35,
+      };
+    });
+  }
+
   function loadConfigAndBlueprint(options) {
     options = options || {};
     var blueprintUrl = options.blueprintUrl || BLUEPRINT_URL;
@@ -152,6 +191,8 @@
     buildQueue: buildQueue,
     buildQueueBalancedByDomain: buildQueueBalancedByDomain,
     loadConfigAndBlueprint: loadConfigAndBlueprint,
+    loadFreeSimulationQueue: loadFreeSimulationQueue,
     FREE_BLUEPRINT_URL: FREE_BLUEPRINT_URL,
+    FREE_QUEUE_URL: FREE_QUEUE_URL,
   };
 })();
