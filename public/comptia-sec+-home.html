@@ -6,6 +6,28 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTT6KBHX7V"></script>
   <script src="/js/google-tag-gtag.js"></script>
   <script src="/js/campaign-attribution.js"></script>
+  <script>
+    (function () {
+      function isSecplusLeadLanding() {
+        if (location.hash === "#secplus-lead-capture") return true;
+        try {
+          var qs = new URLSearchParams(location.search);
+          var fromQuery = qs.get("utm_content") || "";
+          if (/lead-free-sim|free-sim|free\.simulation/i.test(fromQuery)) return true;
+          var raw = sessionStorage.getItem("bcc_campaign_attribution_v1");
+          if (raw) {
+            var stored = JSON.parse(raw);
+            if (/lead-free-sim|free-sim|free\.simulation/i.test(stored.utm_content || "")) return true;
+          }
+        } catch (e) {}
+        return false;
+      }
+      if (isSecplusLeadLanding()) {
+        document.documentElement.classList.add("secplus-landing-lead-first");
+      }
+      window.bccIsSecplusLeadLanding = isSecplusLeadLanding;
+    })();
+  </script>
   <script src="/js/install-vercel-analytics.js"></script>
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
@@ -114,7 +136,7 @@
               "name": "Can I try Security+ practice before I buy?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Yes. Free sample questions and a performance-based simulation preview are available on this page without checkout."
+                "text": "Yes. Start the free 35-minute timed simulation on this page (email unlock), try sample questions and a performance-based preview with no checkout, or purchase portal access when you are ready."
               }
             },
             {
@@ -375,6 +397,49 @@
       display: flex;
       flex-direction: column;
     }
+    .funnel-intro {
+      margin: 0 0 clamp(20px, 3.5vw, 28px);
+    }
+    .lead--lead-first {
+      display: none;
+      margin: 0 0 clamp(18px, 3vw, 24px);
+    }
+    html.secplus-landing-lead-first .lead--full {
+      display: none;
+    }
+    html.secplus-landing-lead-first .lead--lead-first {
+      display: block;
+    }
+    html.secplus-landing-lead-first .funnel-intro .benefits {
+      display: none;
+    }
+    html.secplus-landing-lead-first .funnel > #purchase {
+      order: 30;
+    }
+    html.secplus-landing-lead-first .funnel > .funnel-intro {
+      order: 10;
+    }
+    html.secplus-landing-lead-first .funnel > #secplus-lead-capture {
+      order: 20;
+    }
+    html.secplus-landing-lead-first .funnel > .samples-stack {
+      order: 40;
+    }
+    html.secplus-landing-lead-first .funnel > #purchase-details {
+      order: 50;
+    }
+    .purchase-fold-lead-note {
+      display: none;
+      margin: 0 0 14px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #6b8ab8;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    html.secplus-landing-lead-first .purchase-fold-lead-note {
+      display: block;
+    }
     .purchase-fold {
       margin: 0 0 clamp(24px, 4vw, 32px);
     }
@@ -437,6 +502,19 @@
       border-radius: 14px;
       border: 1px solid rgba(47, 102, 191, 0.38);
       background: linear-gradient(165deg, #eff6ff 0%, #f8fafc 55%, #ffffff 100%);
+    }
+    .lead-capture-badge {
+      display: inline-block;
+      margin: 0 0 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #1e3a5f;
+      background: rgba(47, 102, 191, 0.14);
+      border: 1px solid rgba(47, 102, 191, 0.28);
     }
     .lead-capture-section h2 {
       margin: 0 0 8px;
@@ -514,6 +592,12 @@
     .lead-capture-open-link a {
       font-weight: 800;
       color: var(--accent);
+    }
+    .lead-capture-list a {
+      font-weight: 700;
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 2px;
     }
     .lead-capture-fine {
       margin: 10px 0 0;
@@ -2071,6 +2155,7 @@
             After payment redirect: /COMP_TIA_SEC+/test-simulation-runner.html?session_id={CHECKOUT_SESSION_ID}
           -->
           <section class="card purchase-card purchase-fold" id="purchase" aria-labelledby="purchase-fold-title">
+            <p class="purchase-fold-lead-note">When you are ready for the full exam</p>
             <div class="purchase-cta-stack">
               <div class="purchase-primary-cta">
                 <div
@@ -2172,9 +2257,10 @@
               </div>
             </div>
           </section>
+          <div class="funnel-intro">
           <p class="eyebrow">CompTIA Security+ SY0-701 · exam prep · practice tests</p>
           <h1>Security+ SY0-701 Exam Prep — Practice Tests &amp; Simulation</h1>
-          <p class="lead">
+          <p class="lead lead--full">
             <strong>Exam preparation</strong> for SY0-701—not a training course. Built for test-takers in
             <strong>federal agencies, DoD, and defense-contractor</strong> roles where Security+ often supports workforce baseline qualification,
             as well as anyone preparing for test day.
@@ -2182,6 +2268,11 @@
             and a <strong>90-minute timed simulation</strong> built for the mix of multiple-choice and performance-based questions on test day.
             <strong>No PDFs or third-party software:</strong> browser-only prep you can use on your schedule—from duty station, CONUS, or TDY.
             Build confidence before you sit the exam and avoid paying for a retake—try the free sample first, then choose a 10-day pass, 30-day pass, or one-time simulation below.
+          </p>
+          <p class="lead lead--lead-first">
+            <strong>Exam preparation</strong> for SY0-701—not a training course. Start with the
+            <strong>free 35-minute timed simulation</strong> below: 20 multiple-choice questions (four per domain) plus a performance-based
+            dark web scenario, then review your domain scorecard. Browser-only—no PDFs or third-party software.
           </p>
           <ul class="benefits" aria-label="What you get">
             <li>Exam-realistic formats—timed sim, PBQ-style drag-and-drop, and domain-organized question banks.</li>
@@ -2191,18 +2282,21 @@
             <li>Progress tracking helps you focus study time where it is needed most.</li>
             <li>One-time access windows—no recurring subscription.</li>
           </ul>
+          </div>
 
           <section class="lead-capture-section" id="secplus-lead-capture" aria-labelledby="secplus-lead-capture-title">
-            <h2 id="secplus-lead-capture-title">Free Security+ timed simulation + scorecard</h2>
+            <p class="lead-capture-badge">Free · 35 minutes · no checkout</p>
+            <h2 id="secplus-lead-capture-title">Start your free SY0-701 timed simulation</h2>
             <p class="lead-capture-lead">
-              Take a <strong>35-minute SY0-701 sample exam</strong> in your browser—<strong>20 multiple-choice questions</strong>
-              (four from each domain) plus the <strong>dark web account protection</strong> performance-based simulation.
-              When you finish, review your scorecard and email it to yourself.
+              Enter your email to unlock a <strong>35-minute sample exam</strong> in your browser:
+              <strong>20 multiple-choice questions</strong> (four from each SY0-701 domain) plus the
+              <strong>dark web account protection</strong> performance-based simulation—the same mix of item types you will see on test day.
             </p>
             <ul class="lead-capture-list">
-              <li>Timed practice with only <strong>Quit</strong> and <strong>Next</strong> during the run</li>
-              <li>Scaled score and domain breakdown on the results screen</li>
-              <li>One free attempt per browser — full 90-minute sim available below</li>
+              <li><strong>Back</strong>, <strong>Mark for review</strong>, and <strong>Next</strong>—same navigation as the full 90-minute sim</li>
+              <li>Scaled score and domain breakdown on the results screen; email your scorecard when you finish</li>
+              <li>One free attempt per browser</li>
+              <li>Ready for a full dry run? <a href="#purchase">90-minute simulation — $9.99</a> or portal access below</li>
             </ul>
             <p class="lead-capture-open-link" data-lead-open-sim hidden>
               Already unlocked on this browser? <a href="/COMP_TIA_SEC+/test-simulation-runner.html?free=1">Continue your free simulation →</a>
@@ -2466,7 +2560,8 @@
                 <summary class="faq-summary">Can I try before I buy?</summary>
                 <div class="faq-answer">
                   <p>
-                    <strong>Yes.</strong> Free sample questions and a performance-based simulation preview are available on this page—no checkout required.
+                    <strong>Yes.</strong> Start the <strong>free 35-minute timed simulation</strong> on this page (email unlock),
+                    try sample questions and a performance-based preview with no checkout, or purchase portal access when you are ready.
                   </p>
                 </div>
               </details>

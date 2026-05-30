@@ -19,6 +19,8 @@ Implement changes in Cursor under `public/`. Link to page notes in `06-website-o
 | 2026-05-30 | `/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html` | CTA landing: SY0-701 PBQ exam prep copy, SEO meta/JSON-LD, on-page CTAs (sample + purchase), Obsidian keyword/negative lists | PBQ/openssl ad group message match + mid-funnel conversion | secplus_openssl_pbq | no | |
 | 2026-05-30 | `/comptia-sec+-home.html` | Federal/DoD/defense-contractor section (people, when, where) + FAQs + meta/JSON-LD | High-intent compliance segment; geo ad foundation | secplus_portal | no |
 | 2026-05-30 | `/comptia-sec+-home.html` | Exam prep positioning: H1/lead/benefits, 5 new FAQs + JSON-LD, meta/OG copy, “practice portal” labels, removed “goes live” / training language | Google Ads QS + AI search + message match (secplus_portal) | secplus_portal | yes — 2026-05-30 prod (`becertifiedtoday.com`) | |
+| 2026-05-30 | `/comptia-sec+-home.html`, `test-simulation-runner.html` | Free 35-min sim lead magnet; $9.99 timed sim; Back + mark for review; landing images (relative paths); federal section removed; lead CSV | Campaign launch readiness — secplus_lead_free_sim funnel | secplus_portal | yes — 2026-05-30 prod | |
+| 2026-05-30 | `/comptia-sec+-home.html`, `secplus-lead-capture.js` | Lead-magnet copy refresh; lead-first layout when `utm_content=lead-free-sim` or `#secplus-lead-capture` | Google Ads lead ad group message match + CVR | secplus_portal | pending deploy | |
 | | | | | | | |
 
 ---

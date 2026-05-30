@@ -30,5 +30,5 @@ Personal notes while reading. Use AI for speed and synthesis; keep human judgmen
 ## Open questions
 
 - Security+ launch: sample-first funnel vs direct-to-purchase ads?
-- Target CPA / ROAS for $19.99 portal vs $9.99 10-day vs $4.99 timed sim?
+- Target CPA / ROAS for $19.99 portal vs $9.99 10-day vs $9.99 Security+ timed sim?
 - When to spin up CCNA / ENCOR campaigns after Security+ baseline?

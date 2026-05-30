@@ -6,7 +6,7 @@ campaign: secplus_portal
 status: active
 repo_file: public/comptia-sec+-home.html
 last_audit: 2026-05-30
-quality_score_notes: Positioning + FAQ live on prod 2026-05-30 — re-check Ads LP exp. ~2026-06-06
+quality_score_notes: Free sim + $9.99 pricing + runner nav live prod 2026-05-30 — re-check Ads LP exp. ~2026-06-06
 ---
 
 # comptia-sec+-home.html — ad landing page
@@ -18,8 +18,17 @@ Primary **Google Ads final URL** for [[../02-campaigns/security-plus-google-ads|
 - Full page: `https://becertifiedtoday.com/comptia-sec+-home.html`
 - Purchase block: `…/comptia-sec+-home.html#purchase`
 - Lead magnet form: `…/comptia-sec+-home.html#secplus-lead-capture`
-- Study plan (post opt-in): `/COMP_TIA_SEC+/test-simulation-runner.html?free=1`
+- Free sim (post opt-in): `/COMP_TIA_SEC+/test-simulation-runner.html?free=1`
 - With UTMs: `…?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal`
+
+### Ad group → URL map
+
+| Ad group | Recommended final URL |
+|----------|----------------------|
+| `secplus_lead_free_sim` | `…#secplus-lead-capture?utm_content=lead-free-sim` |
+| `secplus_sim_purchase` | `…#purchase?utm_content=sim-purchase` |
+| `secplus_portal_access` | `…#purchase&utm_content=portal-30d` (or `portal-10d`) |
+| Generic / brand | `…/comptia-sec+-home.html` |
 
 ## Repo & tracking
 
@@ -29,34 +38,43 @@ Primary **Google Ads final URL** for [[../02-campaigns/security-plus-google-ads|
 | Checkout JS | `public/COMP_TIA_SEC+/js/secplus-portal-checkout.js` |
 | Test sim checkout | `public/COMP_TIA_SEC+/js/secplus-test-checkout.js` |
 | Lead capture | `public/js/secplus-lead-capture.js` · `POST /api/lead-capture` |
+| Free sim runner | `public/COMP_TIA_SEC+/test-simulation-runner.html` |
+| Free sim blueprint | `public/COMP_TIA_SEC+/data/secplus-free-simulation-blueprint.json` |
 | GA4 + UTM | `public/js/campaign-attribution.js` ✓ |
 
-## Current hero / message (update after site edits)
+## Current hero / message (prod 2026-05-30)
 
+- **Page order:** Default — `#purchase` first, then intro, `#secplus-lead-capture`, samples. **Lead ad traffic** (`#secplus-lead-capture`, `utm_content=lead-free-sim`) — intro (compact) → lead capture → purchase (`html.secplus-landing-lead-first`)
 - **H1:** Security+ SY0-701 Exam Prep — Practice Tests & Simulation
-- **Lead:** Exam prep (not a course); verified explanations; 90-min timed sim; federal/DoD/contractor compliance context; no PDFs/third-party software
-- **Federal section:** People (who), When (deadlines), Where (browser study / geo)
-- **Lead magnet:** `#secplus-lead-capture` — free 20-min timed simulation; scorecard emailable from results
-- **Primary CTAs:** study plan, free sample, 10-day ($9.99), 30-day ($19.99), timed sim ($9.99)
+- **Lead:** Exam prep (not a course); verified explanations; 90-min timed sim; federal/DoD/contractor context in copy; no PDFs/third-party software
+- **Federal section:** Removed as dedicated block (2026-05-30); DoD/8140 still in hero, meta, keywords, FAQ
+- **Lead magnet:** `#secplus-lead-capture` — badge “Free · 35 minutes”; H2 “Start your free SY0-701 timed simulation”; **20 MCQ + 1 PBQ**; scorecard + optional email
+- **Sim runner nav (free + paid):** **Back**, **Mark for review**, **Next** / **Finish**; embedded question Back/Home hidden in exam mode
+- **Primary CTAs:** free sim (email), free samples (no email), 10-day ($9.99), 30-day ($19.99), timed sim ($9.99)
 
 ## Audit history
 
 | Date | Avg checklist score | Top issue fixed | [[../landing-page-audit-checklist\|Checklist]] |
 |------|--------------------:|-----------------|--------|
 | 2026-05-30 | — | Positioning + FAQ for Ads/AI search | partial (copy deploy) |
+| 2026-05-30 | — | Free sim live; $9.99 sim; relative image paths; vault sync | post-deploy |
 
 ## Open optimization items
 
 - [x] **Messaging:** H1/hero say “exam prep” / “practice test” — done 2026-05-30
 - [x] **AI search:** FAQ block — done 2026-05-30
+- [x] **Free sim lead magnet** — live prod 2026-05-30
+- [x] **Lead block copy:** Back + mark for review — done 2026-05-30
 - [ ] PageSpeed mobile score baseline recorded
 - [ ] Re-check Ads LP experience ~7 days after deploy (target ~2026-06-06)
+- [x] **Lead-first layout** for `#secplus-lead-capture` / `utm_content=lead-free-sim` — done 2026-05-30
 
 ## Planned content changes (Cursor)
 
 | Priority | Change | File / section | Status |
 |----------|--------|----------------|--------|
-| | | | backlog |
+| P1 | Fix lead capture bullet (Back + mark for review) | `#secplus-lead-capture` list | done 2026-05-30 |
+| P2 | Results “Back to Security+ home” link on free sim | `test-simulation-runner.html` | backlog |
 
 ## Google Ads feedback
 

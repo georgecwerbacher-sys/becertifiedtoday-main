@@ -57,9 +57,10 @@ Keep this aligned between [[../02-campaigns/security-plus-google-ads|Security+ c
 
 | Ad group theme | Example keywords | Ad headline idea | Landing must say |
 |----------------|------------------|------------------|------------------|
+| Lead / free sim | security+ practice test, sy0-701 mock exam | Free Security+ Timed Simulation | 35-min sample, scorecard, email unlock |
 | Practice test | security+ practice test, sy0-701 practice | SY0-701 Practice Tests | “practice tests”, exam-style questions |
 | Exam prep | security+ exam prep, sy0-701 study | Security+ Exam Prep | structured prep, domains, simulation |
-| Simulation | security+ simulation exam | Timed SY0-701 Simulation | timed exam, performance-based items |
+| Simulation purchase | security+ simulation exam, sy0-701 timed test | Timed SY0-701 Simulation — $9.99 | 90-min exam, Back + mark for review, scorecard |
 
 When you change H1 or hero copy on the site, update this table and verify ad headlines still match.
 

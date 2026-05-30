@@ -175,6 +175,13 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
+    var funnel = document.querySelector(".hero-content .funnel");
+    var isLeadLanding =
+      typeof window.bccIsSecplusLeadLanding === "function" && window.bccIsSecplusLeadLanding();
+    if (isLeadLanding && funnel) {
+      funnel.classList.add("funnel--lead-first");
+    }
+
     var section = document.getElementById("secplus-lead-capture");
     if (section) {
       var form = section.querySelector("form[data-secplus-lead-form]");
@@ -182,11 +189,13 @@
       enhanceUnlockedState(section);
     }
 
-    var utmContent = campaignParams().utm_content || "";
-    if (
+    if (section && isLeadLanding && location.hash === "#secplus-lead-capture") {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else if (
       section &&
+      !isLeadLanding &&
       (location.hash === "#secplus-lead-capture" ||
-        /lead-free-sim|free-sim|free.simulation/i.test(utmContent))
+        /lead-free-sim|free-sim|free\.simulation/i.test(campaignParams().utm_content || ""))
     ) {
       section.scrollIntoView({ behavior: "smooth", block: "start" });
     }
