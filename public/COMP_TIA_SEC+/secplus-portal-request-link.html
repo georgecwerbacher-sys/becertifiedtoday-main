@@ -126,6 +126,11 @@
     <p>
       Use the <strong>same email you entered at Stripe checkout</strong> for Security+ access. If our systems find an active purchase, we send a fresh magic link. You can do this from a different laptop or phone.
     </p>
+    <p>
+      <strong>No email after a few minutes?</strong> Stripe’s thank-you page does not activate access by itself. Use
+      <a href="/COMP_TIA_SEC+/secplus-portal-restore-access.html">Restore access</a>
+      with your checkout session ID (<code>cs_live_…</code>) from the Stripe receipt email.
+    </p>
     <form id="form" autocomplete="on">
       <label for="email">Email</label>
       <input id="email" name="email" type="email" required placeholder="you@example.com" autocomplete="email" />
@@ -164,13 +169,17 @@
           .then(function (data) {
             if (!data.ok && data.error) {
               statusEl.classList.add("status--err");
-              statusEl.textContent = data.error;
+              statusEl.textContent = data.error + (data.hint ? " " + data.hint : "");
               return;
             }
-            statusEl.classList.add("status--ok");
+            statusEl.classList.add(data.sent === false && data.found === true ? "status--err" : "status--ok");
             statusEl.textContent =
               data.message ||
-              "If this email has active ENCOR portal access on file, we sent a login link. Check spam and wait a minute before trying again.";
+              "If this email has active Security+ portal access on file, we sent a login link. Check spam and wait a minute before trying again.";
+            if (data.sent === false && data.found === false) {
+              statusEl.textContent +=
+                " If you already paid, open Restore access with your Stripe session ID (cs_…) from your receipt.";
+            }
           })
           .catch(function () {
             statusEl.classList.add("status--err");

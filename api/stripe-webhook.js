@@ -83,7 +83,12 @@ export default async function handler(req, res) {
 
         if (!session.line_items?.data?.length) {
           session = await stripe.checkout.sessions.retrieve(session.id, {
-            expand: ["payment_intent", "line_items.data.price"],
+            expand: [
+              "payment_intent",
+              "payment_link",
+              "line_items.data.price",
+              "line_items.data.price.product",
+            ],
           });
         }
 

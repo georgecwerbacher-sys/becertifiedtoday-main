@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Security+ access activated | Be Certified Today</title>
+  <script src="/js/ga-site-config.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTT6KBHX7V"></script>
+  <script src="/js/google-tag-gtag.js"></script>
+  <script src="/js/google-ads-purchase-conversion.js"></script>
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --page-bg: #ffffff;
+      --page-text: #0b1020;
+      --page-muted: #475569;
+      --border: #2d3b5a;
+      --accent: #6d28d9;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: var(--page-bg);
+      color: var(--page-text);
+      line-height: 1.55;
+      padding: clamp(24px, 5vw, 48px) clamp(18px, 4vw, 32px);
+      padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+    }
+    .wrap { max-width: 560px; margin: 0 auto; }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.25rem, 3.5vw, 1.5rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    p { margin: 0 0 14px; color: var(--page-muted); font-size: 1rem; }
+    .status {
+      margin: 0 0 20px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(18, 26, 43, 0.65);
+      font-size: 0.95rem;
+      color: #e6edf3;
+    }
+    .status--ok {
+      border-color: rgba(74, 224, 146, 0.45);
+      color: #c7f2da;
+    }
+    .status--err {
+      border-color: rgba(248, 113, 113, 0.45);
+      color: #fecaca;
+    }
+    a.cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 8px;
+      padding: 14px 22px;
+      min-height: 48px;
+      border-radius: 12px;
+      border: 1px solid rgba(139, 92, 246, 0.55);
+      font-weight: 800;
+      font-size: 0.95rem;
+      text-decoration: none;
+      color: #f3e8ff;
+      background: linear-gradient(165deg, #8b5cf6 0%, #6d28d9 48%, #5b21b6 100%);
+      touch-action: manipulation;
+    }
+    a.cta:hover { filter: brightness(1.06); color: #fff; }
+    a.link-muted {
+      display: inline-block;
+      margin-top: 16px;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+    .help-links { margin-top: 12px; font-size: 0.92rem; }
+    .help-links a { color: var(--accent); font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>CompTIA Security+ library access</h1>
+    <p id="lead">
+      After Stripe confirms payment, we store your access window in <strong>this browser</strong>. You should also receive a
+      <strong>portal magic-link email</strong> when Resend and webhooks are configured. Use the same email at checkout so you can request another link from
+      <a href="/COMP_TIA_SEC+/secplus-portal-request-link.html">Email me a portal link</a> while access is active. You can restore with your Stripe checkout session ID (<code>cs_…</code>) on the
+      <a href="/COMP_TIA_SEC+/secplus-portal-restore-access.html">restore access</a> page. Stripe’s receipt email alone does not log you into this site.
+    </p>
+    <div id="status" class="status" role="status" aria-live="polite">Verifying payment…</div>
+    <p id="actions" hidden>
+      <a class="cta" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Open Security+ training portal</a>
+    </p>
+    <p class="help-links" id="helpLinks" hidden>
+      Didn’t get email?
+      <a href="/COMP_TIA_SEC+/secplus-portal-request-link.html">Request a portal link</a>
+      ·
+      <a href="/COMP_TIA_SEC+/secplus-portal-restore-access.html">Restore with session ID</a>
+    </p>
+    <a class="link-muted" href="/comptia-sec+-home.html#purchase">&larr; Back to Security+ home</a>
+  </div>
+  <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js"></script>
+  <script>
+    (function () {
+      var statusEl = document.getElementById("status");
+      var actionsEl = document.getElementById("actions");
+      var helpLinksEl = document.getElementById("helpLinks");
+      var leadEl = document.getElementById("lead");
+
+      function qs(name) {
+        try {
+          return new URLSearchParams(window.location.search).get(name);
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function showError(msg) {
+        statusEl.textContent = msg;
+        statusEl.classList.add("status--err");
+        if (leadEl) leadEl.hidden = false;
+        if (helpLinksEl) helpLinksEl.hidden = false;
+      }
+
+      function showOk(label) {
+        statusEl.textContent =
+          "Access is active for " +
+          label +
+          " on this browser. Open the training portal to use question banks, simulations, and timed exam practice.";
+        statusEl.classList.add("status--ok");
+        if (actionsEl) actionsEl.hidden = false;
+        if (helpLinksEl) helpLinksEl.hidden = false;
+      }
+
+      function purchaseValueForProduct(productId) {
+        if (productId === "secplus-test-simulation") return 4.99;
+        if (productId === "secplus-portal-10d") return 9.99;
+        if (productId === "secplus-portal-30d") return 19.99;
+        return undefined;
+      }
+
+      function trackAdsPurchase(sessionId, productId) {
+        if (typeof window.bccTrackGoogleAdsPurchaseConversion !== "function") return;
+        var value = purchaseValueForProduct(productId);
+        var opts = { currency: "USD" };
+        if (typeof value === "number") opts.value = value;
+        window.bccTrackGoogleAdsPurchaseConversion(sessionId, opts);
+      }
+
+      function isPortalProduct(productId) {
+        return productId === "secplus-portal-30d" || productId === "secplus-portal-10d";
+      }
+
+      async function run() {
+        var sessionId = qs("session_id");
+        if (!sessionId || sessionId.indexOf("cs_") !== 0) {
+          showError(
+            "Missing or invalid checkout session. In Stripe Dashboard, set the Payment Link “After payment” redirect to this page with {CHECKOUT_SESSION_ID}, or open the restore access page with your cs_… ID from Stripe."
+          );
+          return;
+        }
+
+        try {
+          if (typeof window.bccApplySecplusPortalCheckoutFromUrl === "function") {
+            var granted = await window.bccApplySecplusPortalCheckoutFromUrl(null, true);
+            if (granted && typeof window.bccSecplusPortalAccessActive === "function" && window.bccSecplusPortalAccessActive()) {
+              showOk("your paid window");
+              trackAdsPurchase(sessionId, "secplus-portal-30d");
+              return;
+            }
+          }
+
+          var res = await fetch("/api/verify-checkout-session?session_id=" + encodeURIComponent(sessionId));
+          var data = await res.json().catch(function () {
+            return {};
+          });
+
+          if (!res.ok || !data.ok) {
+            showError(
+              (data && data.error) ||
+                "Payment could not be confirmed. If you already paid, use restore access with your checkout session ID, or request a portal link with your Stripe email."
+            );
+            return;
+          }
+
+          if (data.productId === "secplus-test-simulation") {
+            window.location.replace(
+              "/COMP_TIA_SEC+/test-simulation-runner.html?session_id=" + encodeURIComponent(sessionId)
+            );
+            return;
+          }
+
+          if (!isPortalProduct(data.productId)) {
+            showError(
+              "This checkout session is not for Security+ library access. Use the return link from your purchase flow, or contact support with your receipt."
+            );
+            return;
+          }
+
+          if (data.accessExpired) {
+            showError("This purchase’s access window has ended. Purchase a new pass from Security+ home if you need more time.");
+            return;
+          }
+
+          var label = data.productId === "secplus-portal-10d" ? "10 days" : "30 days";
+          if (
+            typeof window.bccSetSecplusPortalEntitlement === "function" &&
+            window.bccSetSecplusPortalEntitlement(
+              typeof data.accessExpiresAt === "number" ? data.accessExpiresAt : Date.now() + (data.productId === "secplus-portal-10d" ? 10 : 30) * 86400000,
+              sessionId,
+              data.productId
+            )
+          ) {
+            showOk(label);
+            trackAdsPurchase(sessionId, data.productId);
+            return;
+          }
+
+          showError(
+            "Payment verified, but this browser blocked saving access (private mode or full storage). Allow site data for becertifiedtoday.com and open this link again, or use Email me a portal link."
+          );
+        } catch (e) {
+          showError("Could not reach the server to verify payment. Check your connection and reload this page.");
+        }
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", run);
+      } else {
+        run();
+      }
+    })();
+  </script>
+</body>
+</html>

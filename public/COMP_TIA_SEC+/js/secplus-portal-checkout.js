@@ -2,7 +2,7 @@
  * Stripe Payment Links for CompTIA Security+ portal access.
  *
  * Stripe Dashboard → Payment Link → After payment → custom redirect URL:
- *   https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Training_Portal.html?session_id={CHECKOUT_SESSION_ID}
+ *   https://becertifiedtoday.com/COMP_TIA_SEC+/secplus-portal-checkout-success.html?session_id={CHECKOUT_SESSION_ID}
  *
  * Optional metadata on the link: productId = secplus-portal-10d or secplus-portal-30d
  */

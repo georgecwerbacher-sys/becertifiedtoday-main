@@ -142,7 +142,7 @@ export default async function handler(req, res) {
     const found = await cfg.findSession(stripe, email);
     if (!found) {
       console.info(`[${cfg.logTag}] magic link request: no active portal purchase for email`);
-      return res.status(200).json({ ok: true, message: cfg.generic });
+      return res.status(200).json({ ok: true, message: cfg.generic, sent: false, found: false });
     }
 
     const { session, accessExpiresAtMs } = found;
@@ -163,11 +163,17 @@ export default async function handler(req, res) {
 
     if (!sent) {
       console.error(`[${cfg.logTag}] Resend did not accept magic-link email`);
-    } else {
-      console.info(`[${cfg.logTag}] magic link email sent for active portal purchase`);
+      return res.status(200).json({
+        ok: true,
+        found: true,
+        sent: false,
+        message:
+          "We found active access for that email but could not deliver the message. Use Restore access with your Stripe checkout session ID (cs_…) from your receipt, or try again in a few minutes.",
+      });
     }
 
-    return res.status(200).json({ ok: true, message: cfg.generic });
+    console.info(`[${cfg.logTag}] magic link email sent for active portal purchase`);
+    return res.status(200).json({ ok: true, message: cfg.generic, sent: true, found: true });
   } catch (e) {
     console.error(`portal-request-magic-link (${track}):`, e.message);
     return res.status(200).json({ ok: true, message: cfg.generic });

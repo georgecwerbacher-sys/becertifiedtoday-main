@@ -162,13 +162,17 @@ export function inferProductIdFromCheckoutSession(session, env = process.env) {
       else if (/COMP_TIA_SEC\+/i.test(cancelUrl)) track = "secplus";
       else if (/CCNA-Study|CCNA_Sim_EXAM/i.test(cancelUrl)) track = "ccna";
     }
-    if (!track) {
-      const plProduct = productIdFromPaymentLinkSession(session);
-      if (plProduct && plProduct.startsWith("encor-")) track = "encor";
-      else if (plProduct && plProduct.startsWith("secplus-")) track = "secplus";
-      else if (plProduct && plProduct.startsWith("ccna-")) track = "ccna";
+    const plProduct = productIdFromPaymentLinkSession(session);
+    if (!track && plProduct) {
+      if (plProduct.startsWith("encor-")) track = "encor";
+      else if (plProduct.startsWith("secplus-")) track = "secplus";
+      else if (plProduct.startsWith("ccna-")) track = "ccna";
     }
-    productId = productIdFromAmountCents(amount, track);
+    if (plProduct) {
+      productId = plProduct;
+    } else if (typeof amount === "number") {
+      productId = productIdFromAmountCents(amount, track);
+    }
   }
   return productId;
 }
