@@ -6,6 +6,22 @@
 
   var MAGNET_ID = "secplus-free-simulation";
   var RUNNER_PATH = "/COMP_TIA_SEC+/test-simulation-runner.html?free=1";
+  var LS_FREE_SIM = "bcc_secplus_free_sim_v1";
+
+  /** Must match secplus-test-sim-storage.js — landing page loads before runner scripts. */
+  function grantFreeSimAccessLocal(email) {
+    var em = typeof email === "string" ? email.trim().toLowerCase() : "";
+    if (!em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return false;
+    try {
+      localStorage.setItem(
+        LS_FREE_SIM,
+        JSON.stringify({ email: em, grantedAt: Date.now(), consumed: false })
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 
   function campaignParams() {
     if (typeof window.bccGetCampaignAttribution !== "function") return {};
@@ -48,7 +64,17 @@
   }
 
   function hasFreeSimAccess() {
-    return typeof window.secplusFreeSimAccessActive === "function" && window.secplusFreeSimAccessActive();
+    if (typeof window.secplusFreeSimAccessActive === "function" && window.secplusFreeSimAccessActive()) {
+      return true;
+    }
+    try {
+      var raw = localStorage.getItem(LS_FREE_SIM);
+      if (!raw) return false;
+      var o = JSON.parse(raw);
+      return !!(o && o.consumed !== true && o.email);
+    } catch (e) {
+      return false;
+    }
   }
 
   function wireForm(form) {
@@ -95,9 +121,12 @@
           }
           if (typeof window.grantSecplusFreeSimAccess === "function") {
             window.grantSecplusFreeSimAccess(email);
+          } else {
+            grantFreeSimAccessLocal(email);
           }
           try {
             sessionStorage.setItem("secplusTestSimFree", "1");
+            sessionStorage.setItem("secplusTestSimFreeEmail", email);
           } catch (_) {}
           trackLeadEvent("secplus_free_sim_unlock", { email_domain: email.split("@")[1] || "" });
           window.location.href = result.data.redirectUrl;

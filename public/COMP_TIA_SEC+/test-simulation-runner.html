@@ -804,6 +804,22 @@
             showGateStartOptions();
             return;
           }
+          try {
+            if (
+              sessionStorage.getItem("secplusTestSimFree") === "1" &&
+              typeof grantSecplusFreeSimAccess === "function"
+            ) {
+              var pendingEmail = sessionStorage.getItem("secplusTestSimFreeEmail") || "";
+              if (pendingEmail) {
+                grantSecplusFreeSimAccess(pendingEmail);
+                if (secplusFreeSimAccessActive()) {
+                  sessionOk = true;
+                  showGateStartOptions();
+                  return;
+                }
+              }
+            }
+          } catch (e) {}
           gateStatus.innerHTML =
             'Unlock the free simulation with your email on the <a href="' +
             FREE_STARTER_URL +
