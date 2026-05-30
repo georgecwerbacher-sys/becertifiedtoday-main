@@ -10,7 +10,7 @@ Implement changes in Cursor under `public/`. Link to page notes in `06-website-o
 
 | Date | Page (path) | Change summary | Reason (QS / CVR / UX) | Campaign | Deployed | Ads LP exp. (before→after) |
 |------|-------------|----------------|------------------------|----------|----------|----------------------------|
-| 2026-05-30 | `/comptia-sec+-home.html` | Exam prep positioning: H1/lead/benefits, 5 new FAQs + JSON-LD, meta/OG copy, “practice portal” labels, removed “goes live” / training language | Google Ads QS + AI search + message match (secplus_portal) | secplus_portal | pending deploy | |
+| 2026-05-30 | `/comptia-sec+-home.html` | Exam prep positioning: H1/lead/benefits, 5 new FAQs + JSON-LD, meta/OG copy, “practice portal” labels, removed “goes live” / training language | Google Ads QS + AI search + message match (secplus_portal) | secplus_portal | yes — 2026-05-30 prod (`becertifiedtoday.com`) | |
 | | | | | | | |
 
 ---

@@ -6,7 +6,7 @@ campaign: secplus_portal
 status: active
 repo_file: public/comptia-sec+-home.html
 last_audit: 2026-05-30
-quality_score_notes: Initial positioning + FAQ deploy pending Vercel
+quality_score_notes: Positioning + FAQ live on prod 2026-05-30 — re-check Ads LP exp. ~2026-06-06
 ---
 
 # comptia-sec+-home.html — ad landing page
@@ -45,7 +45,7 @@ Primary **Google Ads final URL** for [[../02-campaigns/security-plus-google-ads|
 - [x] **Messaging:** H1/hero say “exam prep” / “practice test” — done 2026-05-30
 - [x] **AI search:** FAQ block — done 2026-05-30
 - [ ] PageSpeed mobile score baseline recorded
-- [ ] Re-check Ads LP experience ~7 days after deploy
+- [ ] Re-check Ads LP experience ~7 days after deploy (target ~2026-06-06)
 
 ## Planned content changes (Cursor)
 
