@@ -49,8 +49,9 @@
       font-size: 0.95rem;
     }
     th {
-      background: #f8fafc;
-      color: #0f172a;
+      background: rgba(0, 100, 230, 0.92);
+      border-color: #005ecb;
+      color: #fff;
       font-weight: 700;
     }
     td:nth-child(1) { width: 37%; }
@@ -63,12 +64,30 @@
     }
     select {
       width: 100%;
-      border-radius: 8px;
-      border: 1px solid #cbd5e1;
-      background: #ffffff;
-      color: #0f172a;
+      border-radius: 2px;
+      border: 1px solid #005ecb;
+      background: rgba(0, 100, 230, 0.92);
+      color: #fff;
       padding: 8px 10px;
       font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    select:hover,
+    select:focus {
+      background: rgba(0, 82, 200, 0.98);
+      border-color: #004799;
+    }
+    select:focus {
+      outline: 2px solid #1d4ed8;
+      outline-offset: 1px;
+    }
+    select option {
+      background: #fff;
+      color: #0f172a;
+      font-weight: 400;
     }
     .status {
       margin-top: 6px;

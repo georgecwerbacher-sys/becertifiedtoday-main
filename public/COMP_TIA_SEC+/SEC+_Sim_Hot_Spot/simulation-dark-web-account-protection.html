@@ -87,10 +87,10 @@
       }
     }
     .artifact {
-      border: 1px solid #e5e7eb;
+      border: 1px solid #005ecb;
       border-radius: 10px;
       padding: 14px 10px;
-      background: #ffffff;
+      background: rgba(0, 100, 230, 0.92);
       min-height: 118px;
       height: 100%;
       display: flex;
@@ -99,21 +99,23 @@
       justify-content: center;
       gap: 10px;
       text-align: center;
-      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
       cursor: pointer;
       font: inherit;
-      color: inherit;
+      color: #ffffff;
       width: 100%;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
     }
     .artifact:hover,
     .artifact:focus-visible {
-      border-color: #7c3aed;
-      box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+      background: rgba(0, 82, 200, 0.98);
+      border-color: #004799;
+      box-shadow: 0 0 0 2px rgba(0, 100, 230, 0.35);
       outline: none;
     }
     .artifact.reviewed {
       border-color: #86efac;
+      box-shadow: 0 0 0 2px rgba(134, 239, 172, 0.35);
     }
     .artifact-hint {
       margin: 0 0 10px;
@@ -124,18 +126,16 @@
       width: 44px;
       height: 44px;
       flex-shrink: 0;
-      color: #2563eb;
+      color: #ffffff;
     }
-    .artifact-icon--report {
-      color: #7c3aed;
-    }
+    .artifact-icon--report,
     .artifact-icon--users {
-      color: #0891b2;
+      color: #ffffff;
     }
     .artifact-label {
       font-weight: 700;
       font-size: 0.88rem;
-      color: #334155;
+      color: #ffffff;
       line-height: 1.3;
       min-height: 2.6em;
       display: flex;
@@ -221,33 +221,43 @@
       color: #0f172a;
     }
     .panel-solution button.secondary {
-      background: #ffffff;
-      border-color: #cbd5e1;
-      color: #334155;
+      background: rgba(0, 100, 230, 0.92);
+      border-color: #005ecb;
+      color: #ffffff;
     }
     .panel-solution button.secondary:hover {
-      background: #f8fafc;
+      background: rgba(0, 82, 200, 0.98);
+      border-color: #004799;
     }
     .actions {
       margin-top: 12px;
     }
     button {
-      border: 1px solid #7c3aed;
-      background: #5b21b6;
-      color: #f3e8ff;
+      border: 1px solid #005ecb;
+      background: rgba(0, 100, 230, 0.92);
+      color: #ffffff;
       font-weight: 700;
       border-radius: 10px;
       padding: 10px 14px;
       cursor: pointer;
       font: inherit;
+      transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    button:hover,
+    button:focus-visible {
+      background: rgba(0, 82, 200, 0.98);
+      border-color: #004799;
+      box-shadow: 0 0 0 2px rgba(0, 100, 230, 0.35);
+      outline: none;
     }
     button.secondary {
-      border-color: #cbd5e1;
-      background: #ffffff;
-      color: #334155;
+      border-color: #005ecb;
+      background: rgba(0, 100, 230, 0.92);
+      color: #ffffff;
     }
     button.secondary:hover {
-      background: #fafafa;
+      background: rgba(0, 82, 200, 0.98);
+      border-color: #004799;
     }
     .result {
       margin-top: 14px;
@@ -308,14 +318,21 @@
       position: static;
       display: inline-block;
       text-decoration: none;
-      color: #f3e8ff;
-      background: #5b21b6;
-      border: 1px solid #7c3aed;
+      color: #ffffff;
+      background: rgba(0, 100, 230, 0.92);
+      border: 1px solid #005ecb;
       border-radius: 999px;
       padding: 10px 14px;
       font-weight: 700;
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
       white-space: nowrap;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .home-link:hover,
+    .home-link:focus-visible {
+      background: rgba(0, 82, 200, 0.98);
+      border-color: #004799;
+      outline: none;
     }
     body.secplus-home-sample-sim .home-link[hidden] {
       display: none !important;
@@ -372,15 +389,22 @@
       line-height: 1.35;
     }
     .doc-modal__close {
-      border: 1px solid #cbd5e1;
-      background: #ffffff;
-      color: #334155;
+      border: 1px solid #005ecb;
+      background: rgba(0, 100, 230, 0.92);
+      color: #ffffff;
       border-radius: 8px;
       padding: 6px 10px;
       font: inherit;
       font-weight: 700;
       cursor: pointer;
       flex-shrink: 0;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .doc-modal__close:hover,
+    .doc-modal__close:focus-visible {
+      background: rgba(0, 82, 200, 0.98);
+      border-color: #004799;
+      outline: none;
     }
     .doc-modal__body {
       padding: 16px;
