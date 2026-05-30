@@ -1,0 +1,64 @@
+---
+description: Marketing Obsidian vault in-repo — structure, frontmatter, reports, and site tracking links.
+globs: marketing-vault/**/*
+alwaysApply: false
+---
+
+# Marketing vault (Obsidian + Cursor)
+
+The vault root is `marketing-vault/`. Open it in Obsidian as a folder vault. Cursor edits the same files for scripts, site changes, and report generation.
+
+## Folder map
+
+| Path | Purpose |
+|------|---------|
+| `setup/` | API and tool onboarding checklists |
+| `00-inbox/` | Quick captures |
+| `01-strategy/` | Positioning, AI search strategy, book notes |
+| `02-campaigns/` | One note per campaign (UTM, landing pages, decisions) |
+| `03-reports/weekly/` | Auto-generated GA4 weekly snapshots |
+| `04-experiments/` | Hypothesis → outcome log |
+| `05-playbooks/` | Repeatable processes |
+| `06-website-optimization/` | Landing page audits, Quality Score, site content change log |
+| `templates/` | Templater / manual templates |
+
+## Frontmatter schemas
+
+**Weekly report** (`type: weekly-report`): `date`, `range`, `site`, `sessions`, `users`, `page_views`, `begin_checkout`, `purchases`, `revenue_usd`, `source`.
+
+**Campaign** (`type: campaign`): `channel`, `product`, `status`, `target_cpa`, `utm_campaign`, `utm_source`, `utm_medium`, `landing_pages`.
+
+## Report generation
+
+Run from repo root:
+
+```bash
+node scripts/marketing-weekly-report.mjs
+node scripts/marketing-weekly-report.mjs --range 28d --force
+```
+
+Writes `marketing-vault/03-reports/weekly/YYYY-MM-DD.md`. Uses the same GA4 env vars as `/admin/analytics.html`.
+
+## Preserve human sections
+
+Weekly reports contain `<!-- auto:body -->` … `<!-- /auto:body -->`. **Only replace content inside those markers** on regenerate. Never delete or overwrite **## Decisions**, **## Notes**, or **## Follow-up** outside the markers.
+
+When adding a new campaign landing page in `public/`, update or create the matching note in `02-campaigns/` with UTM fields and link to [[05-playbooks/weekly-review-process]].
+
+## Site tracking (Be Certified Today)
+
+- Attribution: `public/js/campaign-attribution.js` (UTM + gclid → GA4).
+- Checkout events: `data-bcc-track="begin_checkout"` on checkout controls.
+- Admin dashboard: `public/admin/analytics.html` + `api/analytics-report.js`.
+
+Link new paid traffic to campaign notes via `utm_campaign` matching `02-campaigns/*.md` frontmatter.
+
+## Website optimization (Google Ads quality)
+
+Landing page edits for ad quality live in `06-website-optimization/`. When the user changes ad landing content in `public/`:
+
+1. Follow `marketing-vault/01-strategy/positioning-and-messaging.md`: **exam prep**, not training/courses; emphasize realistic practice, verified solutions, no PDF/third-party software.
+2. Update the matching page note under `06-website-optimization/pages/` (hero copy, audit scores).
+3. Append a row to `06-website-optimization/content-change-log.md` with date, path, summary, and campaign.
+4. Preserve message match: ad keywords → H1/hero; align FAQ facts with `01-strategy/google-ai-search-strategy.md`.
+5. Do not use misleading certification claims (“guaranteed pass”, implied CompTIA endorsement, dump/cheat language).
