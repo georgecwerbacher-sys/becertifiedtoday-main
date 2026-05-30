@@ -41,4 +41,4 @@ After upload, note the filename in [[marketing-incorporation-plan|marketing inco
 
 ## Status
 
-**Awaiting source PDF** — incorporation plan is a stub until the document is added and reviewed.
+**Three source PDFs on file** — reviewed 2026-05-30. See [[source-documents/README|document catalog]] and [[marketing-incorporation-plan|incorporation plan]]. Cert-to-role mapping still requires the public [qualification matrices](https://public.cyber.mil/wid/dod8140/dod-cyber-workforce-qualifications-matrices-management/).

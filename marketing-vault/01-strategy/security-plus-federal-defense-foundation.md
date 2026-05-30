@@ -29,7 +29,9 @@ Related: [[positioning-and-messaging]] · [[../02-campaigns/security-plus-google
 | **Retake cost + schedule pressure** | Missing an internal deadline can block system access, billable role, or promotion—prep quality matters.                                                  |
 | **Browser-only prep**               | TDY, shift work, secure facilities, and PCS moves favor study that does not require lab VMs or installs.                                                 |
 
-**Compliance disclaimer (use on site and in ads):** Certification requirements depend on your **work role, component, and contract**. Confirm the exact cert and deadline with your security manager, ISSM, or contracting officer. Be Certified Today does not grant clearance or DoD qualification—only helps you prepare for the CompTIA SY0-701 exam.
+**Compliance disclaimer (use on site and in ads):** Certification requirements depend on your **work role, component, and contract**. Under DoDM 8140.03, DoD personnel generally must achieve **foundational** qualification within **9 months** and **residential** qualification within **12 months** of assignment to a cyberspace work role—**your component may set shorter deadlines or additional requirements**. Confirm the exact cert and deadline with your **DoD Cyber Workforce Program representative**, security manager, or contracting officer. Be Certified Today does not grant clearance or DoD qualification—only helps you prepare for vendor exams (e.g., CompTIA SY0-701).
+
+Official reference: [[../08-8140-compliance/marketing-incorporation-plan|8140 incorporation plan]] · [DoD qualification matrices](https://public.cyber.mil/wid/dod8140/dod-cyber-workforce-qualifications-matrices-management/)
 
 ---
 
@@ -66,7 +68,8 @@ Use for **ad scheduling**, **email capture timing**, and **landing copy urgency*
 
 | Timing trigger | Typical window | Marketing angle |
 |----------------|----------------|-----------------|
-| **New hire qualification** | First 90–180 days (varies by org) | “Started a cyber role with a cert deadline?” |
+| **DoD 8140 foundational deadline** | **9 months** from assignment (DoD baseline; components may be stricter) | “New cyberspace work role—prep before your qualification window.” |
+| **New hire qualification** | Often aligned to 9-month foundational window; verify internally | “Started a cyber role with a cert deadline?” |
 | **Role / billet change** | 30–90 days before access revocation | “New work role—qualify before losing system access.” |
 | **Contract start / option year** | Contract kickoff + first 60 days | “New contract team—batch prep for SY0-701.” |
 | **PCS / TDY** | 30–60 days before move | “Study in the browser from lodging or new duty station.” |

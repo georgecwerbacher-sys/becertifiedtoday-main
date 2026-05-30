@@ -20,7 +20,7 @@ Shared playbook for **active Google Ads** on **CCNA 200-301** and **CCNP ENCOR 3
 | CCNA 200-301 | `/ccna-home.html` (alias `/ccna/practice-test`) | [[../02-campaigns/ccna-portal-google-ads\|ccna_portal]] | `utm_campaign=ccna_portal` |
 | CCNP ENCOR 350-401 | `/ccnp-home.html` | [[../02-campaigns/ccnp-encor-google-ads\|encor_portal]] | `utm_campaign=encor_portal` |
 
-Cross-link: [[security-plus-federal-defense-foundation|Security+ federal foundation]] — many of the same **locations** and **contractor timing** patterns apply.
+Cross-link: [[security-plus-federal-defense-foundation|Security+ federal foundation]] · [[../08-8140-compliance/marketing-incorporation-plan|8140 incorporation plan]] — shared locations, contractor timing, and official 9/12-month baselines.
 
 ---
 
@@ -31,7 +31,7 @@ Cross-link: [[security-plus-federal-defense-foundation|Security+ federal foundat
 3. **Free sample or free assessment** → portal/sim purchase (CCNA leads with free assessment + scorecard).
 4. **Headline pinning** — CCNA uses `?hl=` / `utm_content=hl-*` variants (`scripts/ccna-google-ads-headline-suffixes.txt`, `ccna-home-conversion.js`).
 5. **Keyword collection** — weekly search-term import per campaign in `07-keywords/search-terms/`.
-6. **Compliance language** — Cisco certs may appear in federal/contractor job reqs; never claim we satisfy a specific contract or DoD baseline unless user’s org confirms.
+6. **Compliance language** — Cisco certs may appear in federal/contractor **IT** work roles under DoD 8140; confirm via your org and the [qualification matrix](https://public.cyber.mil/wid/dod8140/dod-cyber-workforce-qualifications-matrices-management/). Never claim we satisfy a specific contract or DoD baseline.
 
 ---
 
@@ -52,7 +52,8 @@ Cross-link: [[security-plus-federal-defense-foundation|Security+ federal foundat
 | Trigger | Window | CTA angle |
 |---------|--------|-----------|
 | Scheduled 200-301 | 2–8 weeks out | 30-day pass + timed sim |
-| New hire / contract | 90–180 days (varies) | Start free assessment |
+| DoD 8140 foundational window | **9 months** from assignment (DoD baseline—verify with org) | Start free assessment early |
+| New hire / contract | Component may set shorter than 9 months | Start free assessment |
 | Failed attempt | Retake scheduling | Domain scorecard → focus weak areas |
 | Night / weekend study | Ongoing | No installs—open browser |
 | Before buying full library | First visit | Free 30-min assessment |
