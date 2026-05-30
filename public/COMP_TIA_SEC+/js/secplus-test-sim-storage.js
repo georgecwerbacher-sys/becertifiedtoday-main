@@ -18,13 +18,19 @@
     }
   }
 
-  function grantSecplusFreeSimAccess(email) {
+  function grantSecplusFreeSimAccess(email, opts) {
+    opts = opts || {};
     var em = typeof email === "string" ? email.trim().toLowerCase() : "";
     if (!em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return;
     try {
       localStorage.setItem(
         LS_FREE_SIM,
-        JSON.stringify({ email: em, grantedAt: Date.now(), consumed: false })
+        JSON.stringify({
+          email: em,
+          grantedAt: Date.now(),
+          consumed: false,
+          viaLeadApi: opts.viaLeadApi === true,
+        })
       );
     } catch (e) {}
   }
@@ -52,7 +58,7 @@
 
   function secplusFreeSimAccessActive() {
     var o = readFreeSimRecord();
-    return !!(o && o.consumed !== true);
+    return !!(o && o.consumed !== true && o.viaLeadApi === true);
   }
 
   function secplusPortalPassActive() {
