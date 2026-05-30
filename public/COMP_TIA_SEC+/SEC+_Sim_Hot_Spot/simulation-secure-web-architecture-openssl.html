@@ -3,7 +3,51 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ Simulation — Secure Web Architecture and OpenSSL</title>
+  <meta name="robots" content="index, follow" />
+  <meta
+    name="description"
+    content="CompTIA Security+ SY0-701 exam prep PBQ: practice secure web architecture (firewall, WAF, PKI/TLS) and OpenSSL CSR command snippets in a browser simulation with verified answers."
+  />
+  <meta
+    name="keywords"
+    content="sy0-701 practice test, security+ exam prep, security+ pbq practice, sy0-701 pbq, security+ performance based questions, security+ exam simulation, comptia security+ practice test, security+ practice questions, sy0-701 exam prep, openssl csr comptia security+"
+  />
+  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Security+ SY0-701 PBQ Practice — Secure Web Architecture &amp; OpenSSL CSR | Be Certified Today" />
+  <meta
+    property="og:description"
+    content="SY0-701 performance-based practice: map web security controls and complete OpenSSL CSR syntax. Browser-only exam simulation with verified explanations."
+  />
+  <meta property="og:site_name" content="Be Certified Today" />
+  <meta property="og:url" content="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Security+ SY0-701 PBQ Practice — Secure Web Architecture &amp; OpenSSL CSR" />
+  <meta
+    name="twitter:description"
+    content="Practice CompTIA Security+ SY0-701 PBQs: secure web architecture and OpenSSL CSR in your browser."
+  />
+  <title>Security+ SY0-701 PBQ Practice — Secure Web Architecture &amp; OpenSSL CSR | Be Certified Today</title>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Security+ SY0-701 PBQ Practice — Secure Web Architecture and OpenSSL CSR",
+      "url": "https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html",
+      "description": "CompTIA Security+ SY0-701 exam preparation: performance-based practice for secure web architecture and OpenSSL certificate signing request (CSR) command syntax.",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Be Certified Today",
+        "url": "https://becertifiedtoday.com/"
+      },
+      "about": {
+        "@type": "Thing",
+        "name": "CompTIA Security+ SY0-701 certification exam preparation"
+      },
+      "learningResourceType": "Practice problem",
+      "inLanguage": "en"
+    }
+  </script>
   <style>
     :root {
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
@@ -34,6 +78,13 @@
       padding: 12px 14px;
       border: 1px solid #e5e7eb;
       border-radius: 10px;
+    }
+    .instructions code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.9em;
+      background: #f1f5f9;
+      padding: 1px 5px;
+      border-radius: 4px;
     }
     .sim-frame {
       border: 3px solid #1d4ed8;
@@ -336,24 +387,80 @@
       font-weight: 700;
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
     }
+    .exam-prep-cta {
+      margin-top: 22px;
+      padding: 18px 20px;
+      border: 1px solid #c4b5fd;
+      border-radius: 12px;
+      background: linear-gradient(180deg, #faf5ff 0%, #f5f3ff 100%);
+    }
+    .exam-prep-cta h2 {
+      margin: 0 0 8px;
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      color: #4c1d95;
+    }
+    .exam-prep-cta p {
+      margin: 0 0 14px;
+      line-height: 1.55;
+      color: #475569;
+      font-size: 0.95rem;
+    }
+    .exam-prep-cta__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .exam-prep-cta a {
+      display: inline-block;
+      text-decoration: none;
+      font-weight: 700;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 0.92rem;
+    }
+    .exam-prep-cta a.cta-primary {
+      background: #5b21b6;
+      border: 1px solid #7c3aed;
+      color: #f3e8ff;
+    }
+    .exam-prep-cta a.cta-primary:hover {
+      background: #6d28d9;
+    }
+    .exam-prep-cta a.cta-secondary {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+    }
+    .exam-prep-cta a.cta-secondary:hover {
+      border-color: #7c3aed;
+      background: #faf5ff;
+    }
+    .exam-prep-cta__note {
+      margin: 12px 0 0;
+      font-size: 0.84rem;
+      color: #64748b;
+    }
   </style>
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
 </head>
 <body class="secplus-sim-page">
   <main class="wrap">
-    <h1>Simulation: Secure Web Architecture and OpenSSL CSR</h1>
+    <h1>SY0-701 PBQ Practice: Secure Web Architecture and OpenSSL CSR</h1>
     <p class="lead">
-      A recent black-box penetration test of <strong>http://example.com</strong> discovered external website
-      vulnerabilities such as directory traversal, cross-site scripting, cross-site request forgery, and
-      insecure protocols. You are tasked with reducing the attack space and enabling secure protocols.
+      <strong>CompTIA Security+ exam prep</strong> — performance-based practice in your browser, not a training course.
+      This simulation matches SY0-701 PBQ-style drop-down items: a black-box penetration test of
+      <strong>http://example.com</strong> found directory traversal, cross-site scripting (XSS), cross-site request
+      forgery (CSRF), and insecure protocols. Practice selecting perimeter controls, WAF placement, PKI/TLS, and
+      OpenSSL CSR command fragments before test day.
     </p>
     <p class="instructions">
-      <strong>Part 1:</strong> Use the drop-down menus to select the appropriate technologies for each location
-      to implement a secure and resilient web architecture. Not all technologies will be used, and technologies
-      may be used multiple times.<br />
-      <strong>Part 2:</strong> Use the drop-down menus to select the appropriate command snippets. Each command
-      section must be filled.
+      <strong>Part 1 — secure web architecture:</strong> Use each drop-down to place the correct control
+      (firewall, router, WAF, web server, PKI certificate) in the diagram. Not every option is used; some may
+      appear more than once — same rules as Security+ performance-based questions.<br />
+      <strong>Part 2 — OpenSSL CSR syntax:</strong> Complete the <code>openssl req</code> command by choosing the
+      correct snippet for <code>-newkey</code>, <code>-key</code>, and <code>-out</code>. Fill every row, then
+      check answers for verified explanations.
     </p>
 
     <div class="sim-frame">
@@ -523,9 +630,25 @@
     </div>
     <div id="resultBox" class="result" aria-live="polite"></div>
     <div id="feedback" class="feedback" aria-live="polite"></div>
+
+    <section class="exam-prep-cta" aria-labelledby="exam-prep-cta-heading">
+      <h2 id="exam-prep-cta-heading">Continue SY0-701 exam prep — full question bank &amp; timed simulation</h2>
+      <p>
+        This PBQ practice item is one part of Security+ exam prep on Be Certified Today: verified explanations,
+        browser-only practice tests, and a 90-minute timed simulation. No training course, PDF dumps, or third-party
+        apps — practice until you are confident before test day and avoid retake fees.
+      </p>
+      <div class="exam-prep-cta__actions">
+        <a class="cta-primary" href="/secplus-sample?track=questions">Try free sample questions</a>
+        <a class="cta-secondary" href="/comptia-sec+-home.html#purchase">Get portal access — from $9.99</a>
+      </div>
+      <p class="exam-prep-cta__note">
+        Includes MCQ banks, drag-and-drop PBQs, and performance-based simulations aligned to SY0-701 objectives.
+      </p>
+    </section>
   </main>
 
-  <a class="home-link" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">SEC+ Home</a>
+  <a class="home-link" href="/comptia-sec+-home.html#purchase">Security+ Exam Prep</a>
 
   <script>
     const ARCH_ANSWERS = {
@@ -616,8 +739,8 @@
       const passed = p1.wrong.length === 0 && p2.wrong.length === 0;
       resultBox.className = "result " + (passed ? "pass" : "fail");
       resultBox.textContent = passed
-        ? "Correct. Architecture and OpenSSL CSR selections reduce web attack surface and enable secure protocols."
-        : "Not quite. Review perimeter controls, application-layer filtering, and CSR generation syntax.";
+        ? "Correct — SY0-701 PBQ practice complete. Your architecture and OpenSSL CSR selections match verified Security+ exam objectives."
+        : "Not quite. Review perimeter controls, WAF placement, PKI/TLS, and OpenSSL CSR syntax, then try again.";
 
       if (!passed) {
         const hints = [];
@@ -650,8 +773,8 @@
       });
       updateCmdPreview();
       document.getElementById("resultBox").className = "result pass";
-      document.getElementById("resultBox").textContent = "Answers shown. Review selections, then Reset to practice again.";
-      document.getElementById("feedback").textContent = "Switch to Part 1 or Part 2 tabs to review each section.";
+      document.getElementById("resultBox").textContent = "Answers shown. Review verified explanations, then Reset for another practice attempt.";
+      document.getElementById("feedback").textContent = "Switch between Part 1 and Part 2 to study architecture placement and OpenSSL CSR syntax for SY0-701.";
     }
 
     document.getElementById("checkBtn").addEventListener("click", checkAnswers);

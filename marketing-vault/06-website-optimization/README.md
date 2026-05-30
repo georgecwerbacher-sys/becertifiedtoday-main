@@ -13,6 +13,9 @@ Track landing page and on-site content changes that improve **Google Ads Quality
 | Page | Note |
 |------|------|
 | Security+ primary ad landing | [[pages/comptia-sec-plus-home\|comptia-sec+-home.html]] |
+| Security+ PBQ / OpenSSL CTA landing | [[pages/simulation-secure-web-architecture-openssl\|simulation-secure-web-architecture-openssl.html]] |
+| CCNP ENCOR primary ad landing | [[pages/ccnp-home\|ccnp-home.html]] |
+| Security+ legacy hub (no ads) | [[pages/secplus-home-legacy\|secplus-home.html]] |
 
 Add a note under `pages/` for each URL you send paid traffic to.
 

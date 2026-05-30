@@ -24,10 +24,7 @@
     (function () {
       var params = new URLSearchParams(location.search || "");
       var track = (params.get("track") || "home").toLowerCase();
-      var finish =
-        params.get("home") === "secplus"
-          ? "/secplus-home.html"
-          : "/comptia-sec+-home.html";
+      var finish = "/comptia-sec+-home.html";
 
       if (!window.SECPLUS_HOME_SAMPLE) {
         document.body.textContent = "Could not load the sample. Try again later.";

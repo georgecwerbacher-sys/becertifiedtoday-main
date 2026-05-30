@@ -26,6 +26,8 @@ Ask:
 - Checkout starts vs purchases — where is the funnel leaking?
 - Any campaign worth pausing, scaling, or A/B testing?
 
+**Keywords (weekly):** Export Google Ads search terms → import using [[../07-keywords/templates/search-terms-weekly-import|search-terms template]] → tag and update [[../07-keywords/negatives/master-negative-list|negatives]] / landing maps. Full workflow: [[keyword-collection-plan|keyword collection plan]].
+
 ## 3. Decide (human section)
 
 In the report note, fill **## Decisions** — concrete actions only (change ad copy, adjust budget, fix landing CTA, new experiment).

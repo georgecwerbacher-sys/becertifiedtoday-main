@@ -11,6 +11,7 @@ utm_medium: cpc
 landing_pages:
   - /comptia-sec+-home.html
   - /comptia-sec+-home.html#purchase
+  - /COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html
 sample_entry:
   - /secplus-sample?track=questions
   - /secplus-sample?home=secplus
@@ -41,6 +42,16 @@ Send purchase-intent traffic to the purchase block:
 https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal
 ```
 
+### CTA landing — PBQ / OpenSSL simulation
+
+Interactive **mid-funnel** landing for PBQ/openssl intent (not primary brand landing):
+
+```
+https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_openssl_pbq&utm_content={creative}
+```
+
+Page note: [[../06-website-optimization/pages/simulation-secure-web-architecture-openssl|simulation-secure-web-architecture-openssl.md]] — high-value keywords, negatives, CTA map.
+
 `campaign-attribution.js` is loaded on this is page — UTM + `gclid` persist for the session in GA4.
 
 ## Funnel map
@@ -66,9 +77,10 @@ Post-purchase: `secplus-portal-checkout-success.html` → training portal at `/C
 
 ## Secondary pages (organic / retargeting — not primary ad landings)
 
-- `/secplus-home.html` — lighter hub; samples live; “full library coming soon” copy (older messaging).
+- `/comptia-sec+-home.html` — **only** Security+ Google Ads final URL (exam prep + purchase).
+- `/secplus-home.html` — **legacy** sample hub; “launching soon” copy — **do not use for ads**. See [[../06-website-optimization/pages/secplus-home-legacy|secplus-home legacy note]].
 - `/COMP_TIA_SEC+/SEC+_Training_Portal.html` — gated practice hub (checkout required).
-- Home page Security+ card → `/comptia-sec+-home.html`.
+- CCNP ENCOR ads → `/ccnp-home.html` — see [[ccnp-encor-google-ads|ENCOR campaign]] (not this Security+ campaign).
 
 ## Keywords & angles (draft)
 
@@ -80,8 +92,11 @@ Intent themes to test in ad groups — **prep / practice / simulation**, not cou
 | Questions + answers | security+ practice questions, sy0-701 questions explained | Verified explanations — not PDF dumps |
 | Simulation | security+ exam simulation, sy0-701 timed test | Timed sim — build confidence before test day |
 | Retake / readiness | pass security+ first try, security+ exam prep | Exam prep that matches exam format — save retake fees |
+| PBQ / OpenSSL CTA | security+ pbq practice, sy0-701 pbq, openssl csr comptia | Free PBQ slice → portal/sim on [[../06-website-optimization/pages/simulation-secure-web-architecture-openssl\|openssl sim landing]] |
 
-**Negative keyword ideas:** free course, bootcamp, training program, dump, guaranteed pass, pdf download
+**Negative keyword ideas:** free course, bootcamp, training program, dump, guaranteed pass, pdf download — full lists on [[../06-website-optimization/pages/simulation-secure-web-architecture-openssl#Negative keywords|openssl CTA page note]] and campaign-level list below.
+
+**Campaign-level negatives (phrase match unless noted):** free course, training course, bootcamp, instructor led, brain dump, exam dump, guaranteed pass, pdf download, udemy, coursera, professor messer, jobs, salary, cissp, ccna, sy0-601
 
 Message angles (aligned with [[../01-strategy/positioning-and-messaging|positioning]]):
 
@@ -130,6 +145,7 @@ Before major ad spend increases, run the optimization workflow in [[../06-websit
 
 | Date | Change | Rationale |
 |------|--------|-----------|
+| 2026-05-30 | OpenSSL PBQ CTA landing + keyword/negative doc in Obsidian | Mid-funnel ad group `secplus_openssl_pbq` |
 | 2026-05-30 | Landing page positioning + FAQ deploy (`comptia-sec+-home.html`) | Ads/AI search message match — exam prep not course |
 | 2026-05-30 | Campaign note created; primary landing = `comptia-sec+-home.html` | First marketing campaign focus |
 

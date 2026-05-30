@@ -17,8 +17,8 @@
   var FREE_ASSESSMENT_PATH = "/CCNA_Sim_EXAM/free-assessment.html";
 
   var BASE_LEAD =
-    "CCNA assessment with scorecard. <strong>No PDFs.</strong> No membership or email required. " +
-    "Practice CCNA online with labs, drag-and-drop, and questions—<strong>no additional apps needed.</strong>";
+    "CCNA assessment with scorecard. <strong>No PDFs.</strong> " +
+    "Practice CCNA online with labs, drag-and-drop, and questions—<strong>runs entirely in your browser.</strong>";
 
   var VARIANTS = {
     "practice-test": {
@@ -37,7 +37,7 @@
       headline: "CCNA 200-301 Prep — labs, drag-and-drop & practice questions",
       lead:
         "Full CCNA 200-301 prep online: interactive questions, CLI labs, and drag-and-drop in one browser session. " +
-        "<strong>No PDFs.</strong> No membership or email required to start.",
+        "<strong>No PDFs.</strong> Start the free assessment in your browser—no additional apps.",
       ctaPrimary: "Begin free CCNA 200-301 prep",
       stickyPrimary: "Free 200-301 prep",
     },
@@ -45,7 +45,7 @@
       id: "free-practice",
       adHeadline: "Free CCNA Practice",
       eyebrow: "Free CCNA practice · scorecard included",
-      headline: "Free CCNA Practice Assessment With Scorecard, No Email Required",
+      headline: "Free CCNA Practice Assessment With Scorecard",
       lead:
         "Take a free CCNA assessment in your browser and get a scorecard when you finish. " +
         "<strong>No PDFs</strong>, no membership, and no additional apps—just labs, drag-and-drop, and questions.",
@@ -70,7 +70,7 @@
       headline: "CCNA Exam Questions and Answers — interactive, not PDFs",
       lead:
         "Work through CCNA exam questions with instant feedback—not static PDF answer keys. " +
-        "Labs and drag-and-drop included. <strong>No membership or email</strong> required to start the free assessment.",
+        "Labs and drag-and-drop included. <strong>Start the free assessment in your browser.</strong>",
       ctaPrimary: "Try free CCNA questions",
       stickyPrimary: "Free CCNA Q&A",
     },
@@ -101,7 +101,7 @@
       headline: "Pass the CCNA Exam — practice with scorecard feedback",
       lead:
         "Build exam-day confidence with timed CCNA practice and a scorecard that shows where to improve. " +
-        "<strong>No PDFs.</strong> No membership or email required. Runs entirely in your browser.",
+        "<strong>No PDFs.</strong> Runs entirely in your browser—labs, drag-and-drop, and timed practice.",
       ctaPrimary: "Take free practice exam",
       stickyPrimary: "Free practice exam",
     },
@@ -112,7 +112,7 @@
       headline: "CCNA Questions Online — 700+ items in your browser",
       lead:
         "Access CCNA questions online with topology exhibits, CLI labs, and drag-and-drop—no downloads. " +
-        "Start with a free assessment and scorecard. <strong>No membership or email required.</strong>",
+        "Start with a free assessment and scorecard. <strong>Browser-only CCNA prep—no PDFs.</strong>",
       ctaPrimary: "Browse CCNA questions free",
       stickyPrimary: "Free questions",
     },
@@ -132,7 +132,7 @@
       headline: "CCNA Certification Prep — no membership required",
       lead:
         "CCNA certification prep with questions, labs, and drag-and-drop aligned to 200-301 v1.1. " +
-        "<strong>No recurring membership.</strong> Free assessment with scorecard—no email required.",
+        "<strong>No recurring membership.</strong> Free assessment with scorecard; pay once when you want full access.",
       ctaPrimary: "Start certification prep free",
       stickyPrimary: "Free cert prep",
     },
