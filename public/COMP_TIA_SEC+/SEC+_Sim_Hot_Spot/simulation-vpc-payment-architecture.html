@@ -36,234 +36,102 @@
       border-radius: 10px;
     }
     .sim-frame {
-      border: 3px solid #1d4ed8;
-      border-radius: 4px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
       overflow: hidden;
-      background: #dbeafe;
-    }
-    .vpc-canvas {
-      position: relative;
-      min-height: 560px;
-      margin: 0;
-      padding: 16px 20px 20px 72px;
-      background: #eff6ff;
-    }
-    .vpc-border {
-      position: relative;
-      min-height: 520px;
-      border: 3px solid #1d4ed8;
-      border-radius: 4px;
       background: #fff;
-      padding: 12px 88px 16px 12px;
+      padding: 8px;
     }
-    .vpc-label {
-      position: absolute;
-      left: -58px;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      font-weight: 800;
-      font-size: 0.85rem;
-      color: #1e40af;
-    }
-    .vpc-label::before {
-      content: "☁";
-      font-size: 1.8rem;
-      line-height: 1;
-    }
-    .igw {
-      position: absolute;
-      right: 12px;
-      top: 72px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      font-weight: 700;
-      font-size: 0.72rem;
-      color: #1e40af;
-      z-index: 3;
-    }
-    .igw::before {
-      content: "☁";
-      font-size: 1.5rem;
-    }
-    .subnet-zone {
+    .vpc-diagram {
       position: relative;
-      border-radius: 4px;
-      margin-bottom: 10px;
-      min-height: 100px;
-    }
-    .subnet-zone.public {
-      position: absolute;
-      top: 36px;
-      left: 12px;
-      right: 12px;
-      height: 118px;
-      margin: 0;
-      min-height: 0;
-      padding: 0;
-      background: rgba(59, 130, 246, 0.12);
-      border: 1px dashed #3b82f6;
-    }
-    .subnet-zone.middle {
-      position: absolute;
-      top: 154px;
-      left: 12px;
-      right: 12px;
-      bottom: 132px;
-      margin: 0;
-      min-height: 0;
-      padding: 0;
-      background: transparent;
-      border: 0;
-      z-index: 2;
-    }
-    .subnet-zone.private {
-      position: absolute;
-      left: 12px;
-      right: 12px;
-      bottom: 12px;
-      height: 108px;
-      margin: 0;
-      min-height: 0;
-      padding: 0;
-      background: rgba(59, 130, 246, 0.15);
-      border: 1px dashed #2563eb;
-    }
-    .subnet-tag {
-      position: absolute;
-      top: 6px;
-      left: 10px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #1e40af;
-    }
-    .subnet-picker {
-      position: absolute;
-      left: 8px;
-      top: 28px;
-      z-index: 4;
-    }
-    .subnet-picker label {
-      display: block;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #334155;
-      margin-bottom: 4px;
-    }
-    .subnet-picker select {
-      min-width: 132px;
-      padding: 5px 8px;
-      border: 1px solid #1e3a8a;
-      border-radius: 2px;
-      background: #3b82f6;
-      color: #fff;
-      font: inherit;
-      font-size: 0.82rem;
-    }
-    .subnet-picker select option {
-      background: #fff;
-      color: #0f172a;
-    }
-    .flow-lines {
-      position: absolute;
-      inset: 0;
       width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
+      max-width: 980px;
+      margin: 0 auto;
+      line-height: 0;
     }
-    .flow-lines line,
-    .flow-lines path {
-      stroke: #f97316;
-      stroke-width: 2.5;
-      fill: none;
+    .vpc-diagram-img {
+      display: block;
+      width: 100%;
+      height: auto;
+      user-select: none;
+      pointer-events: none;
     }
     .vpc-node {
       position: absolute;
-      z-index: 3;
+      z-index: 2;
       transform: translate(-50%, -50%);
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
     }
     .vpc-slot {
       position: relative;
+      width: 100%;
+      height: 100%;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 10px;
-    }
-    .vpc-slot-ring {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: #f97316;
-      border: 2px solid #ea580c;
-      box-shadow: 0 0 0 2px #fff;
-      z-index: 0;
-    }
-    .vpc-slot.has-value .vpc-slot-ring {
-      opacity: 0.4;
+      align-items: stretch;
     }
     .vpc-slot-btn {
       position: relative;
       z-index: 1;
       display: flex;
       align-items: center;
-      gap: 6px;
-      min-width: 152px;
-      max-width: 168px;
-      padding: 5px 8px 5px 6px;
-      border: 1px solid #1e3a8a;
-      border-radius: 2px;
-      background: #3b82f6;
+      justify-content: center;
+      gap: 3px;
+      width: 100%;
+      height: 100%;
+      min-height: 22px;
+      padding: 1px 4px;
+      border: 1px solid #005ecb;
+      border-radius: 1px;
+      background: rgba(0, 100, 230, 0.92);
       color: #fff;
       font: inherit;
-      font-size: 0.78rem;
+      font-size: clamp(0.55rem, 1.05vw, 0.68rem);
       font-weight: 600;
       cursor: pointer;
-      text-align: left;
+      text-align: center;
+      line-height: 1.1;
     }
     .vpc-slot-btn:hover,
     .vpc-slot-btn[aria-expanded="true"] {
-      background: #2563eb;
+      background: rgba(0, 82, 200, 0.98);
+      border-color: #004799;
     }
     .vpc-slot-btn:focus-visible {
       outline: 2px solid #1d4ed8;
-      outline-offset: 2px;
+      outline-offset: 1px;
     }
     .vpc-slot-icon {
-      width: 22px;
-      height: 22px;
+      width: 14px;
+      height: 14px;
       flex-shrink: 0;
+      display: none;
+    }
+    .vpc-slot.has-value .vpc-slot-icon {
       display: flex;
       align-items: center;
       justify-content: center;
     }
     .vpc-slot-icon img,
     .vpc-slot-icon svg {
-      width: 20px;
-      height: 20px;
+      width: 12px;
+      height: 12px;
       display: block;
     }
     .vpc-slot-label {
       flex: 1;
-      line-height: 1.2;
+      line-height: 1.1;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .vpc-slot-menu {
       position: absolute;
-      top: calc(100% + 4px);
-      left: 0;
-      right: 0;
+      top: calc(100% + 2px);
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 148px;
       margin: 0;
       padding: 0;
       list-style: none;
@@ -304,36 +172,62 @@
       opacity: 0;
       pointer-events: none;
     }
-    .vpc-node.n1 { top: 92px; left: 22%; }
-    .vpc-node.n2 { top: 28px; left: 50%; }
-    .vpc-node.n3 { top: 92px; left: 78%; }
-    .subnet-zone.middle .vpc-node {
-      z-index: 5;
+    .subnet-picker {
+      position: absolute;
+      z-index: 2;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: center;
+      padding: 0;
     }
-    .subnet-zone.middle .vpc-node.n4 { top: 82px; left: 50%; }
-    .subnet-zone.middle .vpc-node.n5 { top: 156px; left: 26%; }
-    .subnet-zone.middle .vpc-node.n6 { top: 156px; left: 74%; }
-    .vpc-node.n7 { top: 430px; left: 50%; }
-    @media (max-width: 900px) {
-      .vpc-canvas { padding-left: 16px; min-height: 620px; }
-      .vpc-label { position: static; transform: none; flex-direction: row; margin-bottom: 8px; }
-      .vpc-border { padding-right: 16px; min-height: 580px; }
-      .igw { position: static; margin: 0 0 8px auto; width: fit-content; }
-      .subnet-zone.public,
-      .subnet-zone.middle,
-      .subnet-zone.private {
-        position: static;
-        height: auto;
-        min-height: 80px;
-        margin-bottom: 10px;
+    .subnet-picker label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+    }
+    .subnet-picker select {
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      padding: 1px 3px;
+      border: 1px solid #005ecb;
+      border-radius: 1px;
+      background: rgba(0, 100, 230, 0.92);
+      color: #fff;
+      font: inherit;
+      font-size: clamp(0.5rem, 0.9vw, 0.62rem);
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      line-height: 1.1;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .subnet-picker select option {
+      background: #fff;
+      color: #0f172a;
+    }
+    /* Drop slots aligned to dark blue boxes on diagram image (314×170) */
+    .vpc-node.n2 { top: 8.2%; left: 58.6%; width: 8.6%; height: 4.1%; }
+    .vpc-node.n1 { top: 27.6%; left: 42.2%; width: 8.9%; height: 4.1%; }
+    .vpc-node.n3 { top: 27.6%; left: 73.7%; width: 8.9%; height: 4.1%; }
+    .vpc-node.n4 { top: 47.1%; left: 58.4%; width: 8.9%; height: 4.1%; }
+    /* Subnet select — blue box below tall left tier, slightly right (314×170 image) */
+    .subnet-picker { top: 62.4%; left: 17.0%; width: 8.9%; height: 4.1%; }
+    .vpc-node.n5 { top: 65.9%; left: 42.2%; width: 8.9%; height: 4.1%; }
+    .vpc-node.n8 { top: 65.9%; left: 58.4%; width: 8.9%; height: 4.1%; }
+    .vpc-node.n6 { top: 65.9%; left: 73.7%; width: 8.9%; height: 4.1%; }
+    .vpc-node.n7 { top: 85.9%; left: 58.4%; width: 8.9%; height: 4.1%; }
+    @media (max-width: 640px) {
+      .vpc-slot-btn,
+      .subnet-picker select {
+        font-size: 0.52rem;
+        min-height: 18px;
       }
-      .vpc-node {
-        position: static;
-        transform: none;
-        margin: 10px auto;
-      }
-      .subnet-picker { position: static; transform: none; margin-bottom: 8px; }
-      .flow-lines { display: none; }
     }
     .actions {
       margin-top: 16px;
@@ -414,132 +308,114 @@
     </p>
 
     <div class="sim-frame">
-      <div class="vpc-canvas">
-        <div class="vpc-label" aria-hidden="true">VPC</div>
-        <div class="vpc-border">
-          <svg class="flow-lines" viewBox="0 0 720 480" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M 540 28 L 640 28" />
-            <path d="M 360 28 L 360 55" />
-            <path d="M 158 92 L 240 92 L 360 55" />
-            <path d="M 562 92 L 480 92 L 360 55" />
-            <path d="M 360 120 L 360 198" />
-            <path d="M 190 286 L 268 286 L 360 218" />
-            <path d="M 530 286 L 452 286 L 360 218" />
-            <path d="M 360 248 L 360 430" />
-          </svg>
-
-          <div class="igw">Internet<br />Gateway</div>
-
-          <div class="subnet-zone public" aria-label="Public subnet">
-            <span class="subnet-tag">Public subnet</span>
-          </div>
-
-          <div class="subnet-zone middle" aria-label="Application tier">
-            <div class="subnet-picker">
-              <label for="vpc-subnet">Select subnet</label>
-              <select id="vpc-subnet" aria-label="Middle tier subnet type">
-                <option value="">Select subnet</option>
-                <option>Public subnet</option>
-                <option>Private subnet</option>
-              </select>
-            </div>
-            <div class="vpc-node n4">
-              <div class="vpc-slot" data-for="vpc-4">
-                <div class="vpc-slot-ring" aria-hidden="true"></div>
-              </div>
-              <select class="vpc-select-native" id="vpc-4" aria-label="Diagram node 4" tabindex="-1">
-                <option value="">Select</option>
-                <option>Autoscaling Instance</option>
-                <option>Database</option>
-                <option>Instance</option>
-                <option>Load Balancer</option>
-                <option>WAF</option>
-              </select>
-            </div>
-            <div class="vpc-node n5">
-              <div class="vpc-slot" data-for="vpc-5">
-                <div class="vpc-slot-ring" aria-hidden="true"></div>
-              </div>
-              <select class="vpc-select-native" id="vpc-5" aria-label="Diagram node 5" tabindex="-1">
-                <option value="">Select</option>
-                <option>Autoscaling Instance</option>
-                <option>Database</option>
-                <option>Instance</option>
-                <option>Load Balancer</option>
-                <option>WAF</option>
-              </select>
-            </div>
-            <div class="vpc-node n6">
-              <div class="vpc-slot" data-for="vpc-6">
-                <div class="vpc-slot-ring" aria-hidden="true"></div>
-              </div>
-              <select class="vpc-select-native" id="vpc-6" aria-label="Diagram node 6" tabindex="-1">
-                <option value="">Select</option>
-                <option>Autoscaling Instance</option>
-                <option>Database</option>
-                <option>Instance</option>
-                <option>Load Balancer</option>
-                <option>WAF</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="subnet-zone private" aria-label="Private subnet">
-            <span class="subnet-tag">Private subnet</span>
-          </div>
-
-          <div class="vpc-node n2">
-            <div class="vpc-slot" data-for="vpc-2">
-              <div class="vpc-slot-ring" aria-hidden="true"></div>
-            </div>
-            <select class="vpc-select-native" id="vpc-2" aria-label="Diagram node 2" tabindex="-1">
-              <option value="">Select</option>
-              <option>Autoscaling Instance</option>
-              <option>Database</option>
-              <option>Instance</option>
-              <option>Load Balancer</option>
-              <option>WAF</option>
-            </select>
-          </div>
-          <div class="vpc-node n1">
-            <div class="vpc-slot" data-for="vpc-1">
-              <div class="vpc-slot-ring" aria-hidden="true"></div>
-            </div>
-            <select class="vpc-select-native" id="vpc-1" aria-label="Diagram node 1" tabindex="-1">
-              <option value="">Select</option>
-              <option>Autoscaling Instance</option>
-              <option>Database</option>
-              <option>Instance</option>
-              <option>Load Balancer</option>
-              <option>WAF</option>
-            </select>
-          </div>
-          <div class="vpc-node n3">
-            <div class="vpc-slot" data-for="vpc-3">
-              <div class="vpc-slot-ring" aria-hidden="true"></div>
-            </div>
-            <select class="vpc-select-native" id="vpc-3" aria-label="Diagram node 3" tabindex="-1">
-              <option value="">Select</option>
-              <option>Autoscaling Instance</option>
-              <option>Database</option>
-              <option>Instance</option>
-              <option>Load Balancer</option>
-              <option>WAF</option>
-            </select>
-          </div>
-          <div class="vpc-node n7">
-            <div class="vpc-slot" data-for="vpc-7">
-              <div class="vpc-slot-ring" aria-hidden="true"></div>
-            </div>
-            <select class="vpc-select-native" id="vpc-7" aria-label="Diagram node 7" tabindex="-1">
-              <option value="">Select</option>
-              <option>Autoscaling Instance</option>
-              <option>Database</option>
-              <option>Instance</option>
-              <option>Load Balancer</option>
-              <option>WAF</option>
-            </select>
-          </div>
+      <div
+        class="vpc-diagram"
+        role="group"
+        aria-label="VPC payment application network diagram with component placement menus"
+      >
+        <img
+          class="vpc-diagram-img"
+          src="images/vpc-payment-architecture.png"
+          width="314"
+          height="170"
+          alt="VPC diagram with public subnet, private subnet, Internet Gateway, and placement boxes for payment application components"
+          decoding="async"
+        />
+        <div class="vpc-node n2">
+          <div class="vpc-slot" data-for="vpc-2"></div>
+          <select class="vpc-select-native" id="vpc-2" aria-label="Diagram node 2 — top tier" tabindex="-1">
+            <option value="">Select</option>
+            <option>Autoscaling Instance</option>
+            <option>Database</option>
+            <option>Instance</option>
+            <option>Load Balancer</option>
+            <option>WAF</option>
+          </select>
+        </div>
+        <div class="vpc-node n1">
+          <div class="vpc-slot" data-for="vpc-1"></div>
+          <select class="vpc-select-native" id="vpc-1" aria-label="Diagram node 1 — public subnet left" tabindex="-1">
+            <option value="">Select</option>
+            <option>Autoscaling Instance</option>
+            <option>Database</option>
+            <option>Instance</option>
+            <option>Load Balancer</option>
+            <option>WAF</option>
+          </select>
+        </div>
+        <div class="vpc-node n3">
+          <div class="vpc-slot" data-for="vpc-3"></div>
+          <select class="vpc-select-native" id="vpc-3" aria-label="Diagram node 3 — public subnet right" tabindex="-1">
+            <option value="">Select</option>
+            <option>Autoscaling Instance</option>
+            <option>Database</option>
+            <option>Instance</option>
+            <option>Load Balancer</option>
+            <option>WAF</option>
+          </select>
+        </div>
+        <div class="vpc-node n4">
+          <div class="vpc-slot" data-for="vpc-4"></div>
+          <select class="vpc-select-native" id="vpc-4" aria-label="Diagram node 4 — middle tier" tabindex="-1">
+            <option value="">Select</option>
+            <option>Autoscaling Instance</option>
+            <option>Database</option>
+            <option>Instance</option>
+            <option>Load Balancer</option>
+            <option>WAF</option>
+          </select>
+        </div>
+        <div class="subnet-picker">
+          <label for="vpc-subnet">Middle tier subnet type</label>
+          <select id="vpc-subnet" aria-label="Middle tier subnet type">
+            <option value="">Select</option>
+            <option>Public subnet</option>
+            <option>Private subnet</option>
+          </select>
+        </div>
+        <div class="vpc-node n5">
+          <div class="vpc-slot" data-for="vpc-5"></div>
+          <select class="vpc-select-native" id="vpc-5" aria-label="Diagram node 5 — private tier left" tabindex="-1">
+            <option value="">Select</option>
+            <option>Autoscaling Instance</option>
+            <option>Database</option>
+            <option>Instance</option>
+            <option>Load Balancer</option>
+            <option>WAF</option>
+          </select>
+        </div>
+        <div class="vpc-node n8">
+          <div class="vpc-slot" data-for="vpc-8"></div>
+          <select class="vpc-select-native" id="vpc-8" aria-label="Diagram node 8 — private tier center" tabindex="-1">
+            <option value="">Select</option>
+            <option>Autoscaling Instance</option>
+            <option>Database</option>
+            <option>Instance</option>
+            <option>Load Balancer</option>
+            <option>WAF</option>
+          </select>
+        </div>
+        <div class="vpc-node n6">
+          <div class="vpc-slot" data-for="vpc-6"></div>
+          <select class="vpc-select-native" id="vpc-6" aria-label="Diagram node 6 — private tier right" tabindex="-1">
+            <option value="">Select</option>
+            <option>Autoscaling Instance</option>
+            <option>Database</option>
+            <option>Instance</option>
+            <option>Load Balancer</option>
+            <option>WAF</option>
+          </select>
+        </div>
+        <div class="vpc-node n7">
+          <div class="vpc-slot" data-for="vpc-7"></div>
+          <select class="vpc-select-native" id="vpc-7" aria-label="Diagram node 7 — database tier" tabindex="-1">
+            <option value="">Select</option>
+            <option>Autoscaling Instance</option>
+            <option>Database</option>
+            <option>Instance</option>
+            <option>Load Balancer</option>
+            <option>WAF</option>
+          </select>
         </div>
       </div>
     </div>
@@ -644,7 +520,7 @@
       "Load Balancer":
         '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="#f97316" stroke-width="2"/><path d="M12 8v8M8 12h8" stroke="#f97316" stroke-width="2"/></svg>',
       WAF:
-        '<img src="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/images/firewall-brick.png" alt="" width="20" height="20" />',
+        '<img src="images/firewall-brick.png" alt="" width="20" height="20" />',
     };
 
     function iconHtml(value) {
