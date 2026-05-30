@@ -4,6 +4,56 @@
  */
 (function () {
   var LS_TEMP_TEST = "bcc_secplus_test_sim_temp_v1";
+  var LS_FREE_SIM = "bcc_secplus_free_sim_v1";
+
+  function readFreeSimRecord() {
+    try {
+      var raw = localStorage.getItem(LS_FREE_SIM);
+      if (!raw) return null;
+      var o = JSON.parse(raw);
+      if (!o || typeof o.email !== "string" || !o.email) return null;
+      return o;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function grantSecplusFreeSimAccess(email) {
+    var em = typeof email === "string" ? email.trim().toLowerCase() : "";
+    if (!em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return;
+    try {
+      localStorage.setItem(
+        LS_FREE_SIM,
+        JSON.stringify({ email: em, grantedAt: Date.now(), consumed: false })
+      );
+    } catch (e) {}
+  }
+
+  function markSecplusFreeSimConsumed() {
+    try {
+      var o = readFreeSimRecord();
+      if (!o) return;
+      o.consumed = true;
+      o.consumedAt = Date.now();
+      localStorage.setItem(LS_FREE_SIM, JSON.stringify(o));
+    } catch (e) {}
+  }
+
+  function clearSecplusFreeSimAccess() {
+    try {
+      localStorage.removeItem(LS_FREE_SIM);
+    } catch (e) {}
+  }
+
+  function readSecplusFreeSimEmail() {
+    var o = readFreeSimRecord();
+    return o && !o.consumed ? o.email : "";
+  }
+
+  function secplusFreeSimAccessActive() {
+    var o = readFreeSimRecord();
+    return !!(o && o.consumed !== true);
+  }
 
   function secplusPortalPassActive() {
     if (typeof window.bccSecplusPortalAccessActiveSync === "function") {
@@ -71,6 +121,11 @@
   if (typeof window !== "undefined") {
     window.secplusPortalPassActive = secplusPortalPassActive;
     window.secplusTimedSimAccessActive = secplusTimedSimAccessActive;
+    window.secplusFreeSimAccessActive = secplusFreeSimAccessActive;
+    window.grantSecplusFreeSimAccess = grantSecplusFreeSimAccess;
+    window.clearSecplusFreeSimAccess = clearSecplusFreeSimAccess;
+    window.readSecplusFreeSimEmail = readSecplusFreeSimEmail;
+    window.markSecplusFreeSimConsumed = markSecplusFreeSimConsumed;
     window.grantSecplusTempTestAccess = grantSecplusTempTestAccess;
     window.clearSecplusTempTestAccess = clearSecplusTempTestAccess;
     window.readSecplusStoredStripeSessionId = readSecplusStoredStripeSessionId;

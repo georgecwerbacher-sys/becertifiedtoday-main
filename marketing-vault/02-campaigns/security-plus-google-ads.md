@@ -59,6 +59,7 @@ Page note: [[../06-website-optimization/pages/simulation-secure-web-architecture
 | Stage | Page / action | GA4 signal |
 |-------|----------------|------------|
 | Click | Google Ads → landing | Session with `utm_campaign=secplus_portal` |
+| Lead magnet (optional) | `#secplus-lead-capture` → study plan | `generate_lead` → see [[security-plus-lead-magnet-ads|lead magnet ads]] |
 | Try free sample | `/secplus-sample?…` or in-page sample CTAs | Page views, engagement |
 | Begin checkout | Portal 10d / 30d or timed sim buttons | `begin_checkout` |
 | Purchase | Stripe Payment Link | Stripe + portal metadata; Google Ads conversion if configured |

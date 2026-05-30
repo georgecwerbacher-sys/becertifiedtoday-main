@@ -18,6 +18,7 @@ Obsidian vault for data-driven marketing (Cursor + GA4 + Stripe + Google Ads). O
 - [[01-strategy/google-ai-search-strategy|Google AI search strategy]]
 - [[01-strategy/ai-amplified-marketer|AI Amplified Marketer — book notes]]
 - [[02-campaigns/security-plus-google-ads|Security+ — Google Ads]] ← active
+- [[02-campaigns/security-plus-lead-magnet-ads|Security+ lead magnet ads]] ← email capture CTA
 - [[02-campaigns/ccna-portal-google-ads|CCNA 200-301 — Google Ads]] ← active
 - [[02-campaigns/ccnp-encor-google-ads|CCNP ENCOR — Google Ads]] ← active
 - [[05-playbooks/weekly-review-process|Weekly review process]]

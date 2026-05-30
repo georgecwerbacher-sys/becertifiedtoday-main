@@ -114,7 +114,8 @@
       background: rgba(5, 10, 20, 0.72);
       z-index: 2000;
     }
-    .summary-modal.is-open {
+    .summary-modal.is-open,
+    .summary-modal:not([hidden]) {
       display: flex;
     }
     .summary-card {
@@ -371,9 +372,74 @@
       background: linear-gradient(165deg, #3b82f6 0%, #1d4ed8 100%);
       color: #fff;
     }
+    .scorecard-email-section {
+      margin: 22px 0 0;
+      padding: 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(96, 165, 250, 0.45);
+      background: rgba(15, 23, 42, 0.55);
+    }
+    .scorecard-email-section h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+    .scorecard-email-section p {
+      margin: 0 0 12px;
+      color: #b8c3d6;
+      font-size: 0.92rem;
+    }
+    .scorecard-email-form {
+      display: grid;
+      gap: 10px;
+      max-width: 420px;
+    }
+    .scorecard-email-form label {
+      display: grid;
+      gap: 6px;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+    .scorecard-email-form input[type="email"] {
+      min-height: 44px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #4b556b;
+      background: #0b1020;
+      color: #e6edf3;
+      font: inherit;
+    }
+    .scorecard-email-consent {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 0.84rem;
+      font-weight: 400;
+      color: #9fb0cc;
+      line-height: 1.45;
+    }
+    .scorecard-email-consent input { margin-top: 0.2em; }
+    .scorecard-email-message {
+      margin: 0;
+      font-size: 0.88rem;
+      color: #86efac;
+    }
+    .scorecard-email-message--error { color: #fca5a5; }
+    .scorecard-email-btn {
+      appearance: none;
+      border: 1px solid #4f84d8;
+      background: #2f66bf;
+      color: #fff;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      min-height: 44px;
+    }
   </style>
   <script src="/COMP_TIA_SEC+/js/secplus-test-sim-build.js"></script>
   <script src="/COMP_TIA_SEC+/js/secplus-test-sim-scorecard.js"></script>
+  <script src="/js/secplus-scorecard-email.js"></script>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-test-sim-storage.js" defer></script>
 </head>
@@ -457,12 +523,47 @@
         </table>
       </div>
       <div class="results-actions">
+        <div id="scorecardEmailSection" class="scorecard-email-section" hidden>
+          <h3>Email your scorecard</h3>
+          <p>Send this domain breakdown and scaled score to your inbox — useful before you schedule SY0-701.</p>
+          <form id="scorecardEmailForm" class="scorecard-email-form">
+            <label>
+              Email
+              <input type="email" name="email" autocomplete="email" required />
+            </label>
+            <label class="scorecard-email-consent">
+              <input type="checkbox" name="scorecard_consent" value="1" required checked />
+              <span>Email my scorecard to this address. Exam prep only — unsubscribe from marketing anytime.</span>
+            </label>
+            <button type="submit" class="scorecard-email-btn">Email my scorecard</button>
+            <p class="scorecard-email-message" data-scorecard-email-message hidden></p>
+          </form>
+        </div>
         <button type="button" id="resultsContinue">Continue</button>
-        <p class="results-note">
+        <p class="results-note" id="resultsContinueNote">
           Continue returns you to the
           <a href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Security+ Training Portal</a>. Scaled results use a
           <strong>900</strong>-point score with a <strong>750</strong> passing threshold (85% MCQ, 15% simulations &amp; hot spots).
         </p>
+      </div>
+    </div>
+  </div>
+
+  <div id="freeSimUpsellModal" class="summary-modal" role="dialog" aria-modal="true" aria-labelledby="freeSimUpsellTitle" hidden>
+    <div class="summary-card">
+      <h2 id="freeSimUpsellTitle" class="summary-title">Ready for the full 90-minute exam?</h2>
+      <p class="summary-text">
+        This free sample covers 20 questions across all five SY0-701 domains plus one performance-based simulation.
+        The full timed test matches test day: up to <strong>90 questions in 90 minutes</strong> with a complete domain scorecard.
+      </p>
+      <ul class="summary-list">
+        <li>90-minute clock and mixed MCQ + hot-spot items</li>
+        <li>Full study scorecard by Security+ domain</li>
+        <li>One-time purchase — no subscription</li>
+      </ul>
+      <div class="summary-actions">
+        <button type="button" class="summary-close" id="freeSimUpsellDismiss">View my scorecard</button>
+        <a class="summary-home" id="freeSimUpsellPurchase" href="/comptia-sec+-home.html#purchase">Get full 90-minute simulation — $4.99</a>
       </div>
     </div>
   </div>
@@ -484,9 +585,38 @@
       var gateStartWrap = document.getElementById("gateStartWrap");
       var btnGateStartExam = document.getElementById("btnGateStartExam");
       var STARTER_URL = "/comptia-sec+-home.html#purchase";
+      var FREE_STARTER_URL = "/comptia-sec+-home.html#secplus-lead-capture";
       var sessionOk = false;
       var bypassMode = false;
+      var freeMode = false;
       var testMinutes = 90;
+      var lastResultPack = null;
+
+      function detectFreeMode(params) {
+        if (params.get("free") === "1") return true;
+        try {
+          return sessionStorage.getItem("secplusTestSimFree") === "1";
+        } catch (e) {
+          return false;
+        }
+      }
+
+      function persistFreeModeFlag() {
+        if (!freeMode) return;
+        try {
+          sessionStorage.setItem("secplusTestSimFree", "1");
+        } catch (e) {}
+      }
+
+      function freeBlueprintUrl() {
+        if (
+          window.SECPLUS_TEST_SIM_BUILD &&
+          window.SECPLUS_TEST_SIM_BUILD.FREE_BLUEPRINT_URL
+        ) {
+          return window.SECPLUS_TEST_SIM_BUILD.FREE_BLUEPRINT_URL;
+        }
+        return "/COMP_TIA_SEC+/data/secplus-free-simulation-blueprint.json";
+      }
 
       function showExamUi() {
         gatePanel.hidden = true;
@@ -507,14 +637,19 @@
       }
 
       function loadBlueprintLine() {
-        return fetch("/COMP_TIA_SEC+/data/secplus-test-simulation-blueprint.json", { cache: "no-store" })
+        var blueprintUrl = freeMode
+          ? freeBlueprintUrl()
+          : "/COMP_TIA_SEC+/data/secplus-test-simulation-blueprint.json";
+        return fetch(blueprintUrl, { cache: "no-store" })
           .then(function (r) {
             if (!r.ok) throw new Error("blueprint");
             return r.json();
           })
           .then(function (b) {
             testMinutes = b.durationMinutes != null ? b.durationMinutes : 90;
+            var title = freeMode ? "Free sample · " : "";
             gateBlueprint.textContent =
+              title +
               "Blueprint v" +
               b.schemaVersion +
               ": " +
@@ -523,10 +658,16 @@
               b.multipleChoiceCount +
               " MCQ · " +
               b.simCount +
-              " sims & hot spots (" +
+              " sim" +
+              (b.simCount === 1 ? "" : "s") +
+              " & hot spots (" +
               b.totalItems +
               " items).";
             gateBlueprint.hidden = false;
+            if (freeMode) {
+              var gateTitle = gatePanel.querySelector("h1");
+              if (gateTitle) gateTitle.textContent = "Free Security+ Timed Simulation";
+            }
             return b;
           })
           .catch(function () {
@@ -555,6 +696,10 @@
           location.href = "/COMP_TIA_SEC+/SEC+_Training_Portal.html";
           return;
         }
+        if (freeMode) {
+          location.href = "/comptia-sec+-home.html#purchase";
+          return;
+        }
         if (typeof clearSecplusTempTestAccess === "function") {
           clearSecplusTempTestAccess();
         }
@@ -572,7 +717,9 @@
           btnGateStartExam.disabled = false;
           return;
         }
-        window.SECPLUS_TEST_SIM_BUILD.loadConfigAndBlueprint()
+        window.SECPLUS_TEST_SIM_BUILD.loadConfigAndBlueprint(
+          freeMode ? { blueprintUrl: freeBlueprintUrl() } : undefined
+        )
           .then(function (pack) {
             if (!pack.queue || !pack.queue.length) throw new Error("empty");
             testMinutes = pack.durationMinutes || testMinutes;
@@ -627,6 +774,8 @@
         var sessionIdFromUrl = params.get("session_id");
         var fromPortal = params.get("portal") === "1";
         bypassMode = params.get("bypass") === "1" || params.get("demo") === "1";
+        freeMode = detectFreeMode(params);
+        if (freeMode) persistFreeModeFlag();
 
         loadBlueprintLine();
 
@@ -646,6 +795,20 @@
         if (bypassMode) {
           sessionOk = true;
           showGateStartOptions();
+          return;
+        }
+
+        if (freeMode) {
+          if (typeof secplusFreeSimAccessActive === "function" && secplusFreeSimAccessActive()) {
+            sessionOk = true;
+            showGateStartOptions();
+            return;
+          }
+          gateStatus.innerHTML =
+            'Unlock the free simulation with your email on the <a href="' +
+            FREE_STARTER_URL +
+            '">Security+ landing page</a>.';
+          gateStatus.className = "status-bad";
           return;
         }
 
@@ -850,16 +1013,54 @@
         return "complete";
       }
 
+      function showFreeSimUpsellModal() {
+        var modal = document.getElementById("freeSimUpsellModal");
+        if (!modal) return;
+        modal.hidden = false;
+        modal.classList.add("is-open");
+        var dismiss = document.getElementById("freeSimUpsellDismiss");
+        if (dismiss && !dismiss.getAttribute("data-wired")) {
+          dismiss.setAttribute("data-wired", "1");
+          dismiss.addEventListener("click", function () {
+            modal.hidden = true;
+            modal.classList.remove("is-open");
+          });
+        }
+      }
+
+      function applyFreeModeResultsUi() {
+        if (!freeMode) return;
+        if (resultsContinue) resultsContinue.hidden = true;
+        var note = document.getElementById("resultsContinueNote");
+        if (note) note.hidden = true;
+      }
+
       function showResultsPanel(reasonCode) {
+        applyFreeModeResultsUi();
         gatePanel.hidden = true;
         examPanel.hidden = true;
         resultsPanel.hidden = false;
         if (window.SECPLUS_TEST_SIM_SCORECARD && typeof window.SECPLUS_TEST_SIM_SCORECARD.showResults === "function") {
-          return window.SECPLUS_TEST_SIM_SCORECARD.showResults(reasonCode, queue, answeredByIndex);
+          return window.SECPLUS_TEST_SIM_SCORECARD.showResults(reasonCode, queue, answeredByIndex).then(
+            function (pack) {
+              lastResultPack = pack;
+              var emailSection = document.getElementById("scorecardEmailSection");
+              if (emailSection) emailSection.hidden = false;
+              var defaultEmail =
+                typeof readSecplusFreeSimEmail === "function" ? readSecplusFreeSimEmail() : "";
+              if (window.SECPLUS_SCORECARD_EMAIL && typeof window.SECPLUS_SCORECARD_EMAIL.init === "function") {
+                window.SECPLUS_SCORECARD_EMAIL.init(pack, defaultEmail);
+              }
+              if (freeMode && reasonCode === "complete") {
+                showFreeSimUpsellModal();
+              }
+              return pack;
+            }
+          );
         }
         document.getElementById("resultsHeadline").textContent = "Attempt summary";
         document.getElementById("resultsReason").textContent = "Results could not be loaded.";
-        return Promise.resolve();
+        return Promise.resolve(null);
       }
 
       function endTest(reasonText) {
@@ -878,6 +1079,15 @@
         showResultsPanel(reasonCode).then(function () {
           clearTestState();
           if (bypassMode) return;
+          if (freeMode) {
+            if (typeof markSecplusFreeSimConsumed === "function") {
+              markSecplusFreeSimConsumed();
+            }
+            try {
+              sessionStorage.removeItem("secplusTestSimFree");
+            } catch (e) {}
+            return;
+          }
           if (typeof bccSecplusPortalAccessActive === "function" && bccSecplusPortalAccessActive()) return;
           if (typeof markSecplusTempTestConsumed === "function") {
             markSecplusTempTestConsumed();
@@ -910,6 +1120,12 @@
           ".secplus-objective-tag",
           ".sim-nav",
           "#nextWrap",
+          ".nav-check",
+          "#checkBtn",
+          "#resetBtn",
+          "#showAnswerBtn",
+          ".corner-actions",
+          ".secplus-sample-sim-nav",
           "a[href='/COMP_TIA_SEC+/SEC+_Training_Portal.html']",
           "a[href='/comptia-sec+-home.html']"
         ];
@@ -974,6 +1190,11 @@
       frame.addEventListener("load", hideEmbeddedNav);
       nextBtn.addEventListener("click", moveNext);
       quitBtn.addEventListener("click", function () {
+        if (freeMode && !isOver) {
+          clearTestState();
+          location.href = "/comptia-sec+-home.html";
+          return;
+        }
         endTest("You quit the practice test.");
       });
       resultsContinue.addEventListener("click", redirectAfterResults);

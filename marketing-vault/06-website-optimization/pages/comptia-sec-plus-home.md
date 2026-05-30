@@ -17,6 +17,8 @@ Primary **Google Ads final URL** for [[../02-campaigns/security-plus-google-ads|
 
 - Full page: `https://becertifiedtoday.com/comptia-sec+-home.html`
 - Purchase block: `…/comptia-sec+-home.html#purchase`
+- Lead magnet form: `…/comptia-sec+-home.html#secplus-lead-capture`
+- Study plan (post opt-in): `/COMP_TIA_SEC+/test-simulation-runner.html?free=1`
 - With UTMs: `…?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal`
 
 ## Repo & tracking
@@ -26,6 +28,7 @@ Primary **Google Ads final URL** for [[../02-campaigns/security-plus-google-ads|
 | HTML | `public/comptia-sec+-home.html` |
 | Checkout JS | `public/COMP_TIA_SEC+/js/secplus-portal-checkout.js` |
 | Test sim checkout | `public/COMP_TIA_SEC+/js/secplus-test-checkout.js` |
+| Lead capture | `public/js/secplus-lead-capture.js` · `POST /api/lead-capture` |
 | GA4 + UTM | `public/js/campaign-attribution.js` ✓ |
 
 ## Current hero / message (update after site edits)
@@ -33,7 +36,8 @@ Primary **Google Ads final URL** for [[../02-campaigns/security-plus-google-ads|
 - **H1:** Security+ SY0-701 Exam Prep — Practice Tests & Simulation
 - **Lead:** Exam prep (not a course); verified explanations; 90-min timed sim; federal/DoD/contractor compliance context; no PDFs/third-party software
 - **Federal section:** People (who), When (deadlines), Where (browser study / geo)
-- **Primary CTAs:** free sample, 10-day ($9.99), 30-day ($19.99), timed sim ($4.99)
+- **Lead magnet:** `#secplus-lead-capture` — free 20-min timed simulation; scorecard emailable from results
+- **Primary CTAs:** study plan, free sample, 10-day ($9.99), 30-day ($19.99), timed sim ($4.99)
 
 ## Audit history
 

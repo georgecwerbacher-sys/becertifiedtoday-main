@@ -122,13 +122,15 @@ Requirements before building:
 
 ## Email capture alignment
 
-Removing “no email required” from site copy prepares for:
+**Shipped (Security+):** Free timed simulation + scorecard email — [[../02-campaigns/security-plus-lead-magnet-ads|lead magnet ads note]] · `#secplus-lead-capture` · `POST /api/lead-capture` · `POST /api/secplus-scorecard-email`
 
-1. **Optional email gate** on free CCNA assessment / Security+ sample (soft capture before scorecard).
+Still planned:
+
+1. **Optional email gate** on free CCNA assessment (soft capture before scorecard).
 2. **Follow-up** via portal-request-link flow (already used post-purchase).
 3. **Keyword angle shift:** less “free no signup”, more “free practice test / exam prep” — see [[../01-strategy/positioning-and-messaging|positioning]].
 
-When email capture ships, tag search terms containing `free` + high bounce separately; expect CPA to change.
+When measuring lead ads, tag search terms containing `free` + high bounce separately; expect CPA to change vs purchase-only campaigns.
 
 ---
 

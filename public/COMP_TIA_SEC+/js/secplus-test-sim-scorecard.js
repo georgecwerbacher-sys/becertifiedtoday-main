@@ -411,6 +411,91 @@
       });
   }
 
+  function buildScorecardEmailPayload(reason, attemptResults, queue, ctx) {
+    ctx = ctx || {};
+    var domainMajorTitles = ctx.domainMajorTitles || {};
+    var objectiveLabels = ctx.objectiveLabels || {};
+    var scoreScaledConfig = ctx.scoreScaledConfig || scoreConfigFromBlueprint({});
+    var scaled = computeScaledScore(attemptResults, queue, scoreScaledConfig);
+
+    var domainAgg = {};
+    attemptResults.forEach(function (r) {
+      var maj = primaryDomainMajorFromObjectiveIds(r.objectiveIds);
+      if (!domainAgg[maj]) domainAgg[maj] = emptyDomainAgg();
+      var b = domainAgg[maj];
+      b.total += 1;
+      if (r.correct) b.correct += 1;
+    });
+
+    var domains = Object.keys(domainAgg)
+      .filter(function (k) {
+        return domainAgg[k].total > 0;
+      })
+      .map(function (maj) {
+        var d = domainAgg[maj];
+        var pct = d.total ? Math.round((d.correct / d.total) * 1000) / 10 : 0;
+        var tier = domainReviewTier(pct, d.total);
+        return {
+          id: maj,
+          title:
+            maj === "__none__"
+              ? "Not mapped / miscellaneous"
+              : "Domain " + maj + " — " + (domainMajorTitles[maj] || "SY0-701 blueprint"),
+          correct: d.correct,
+          total: d.total,
+          pct: pct,
+          priority: tier.label,
+        };
+      })
+      .sort(function (a, b) {
+        return a.pct - b.pct;
+      });
+
+    var rollup = {};
+    attemptResults.forEach(function (r) {
+      var ids = r.objectiveIds && r.objectiveIds.length ? r.objectiveIds : ["__none__"];
+      ids.forEach(function (oid) {
+        if (!rollup[oid]) rollup[oid] = { correct: 0, total: 0 };
+        rollup[oid].total += 1;
+        if (r.correct) rollup[oid].correct += 1;
+      });
+    });
+
+    var weakObjectives = [];
+    Object.keys(rollup).forEach(function (oid) {
+      if (oid === "__none__") return;
+      var rw = rollup[oid];
+      var pctW = rw.total ? Math.round((rw.correct / rw.total) * 1000) / 10 : 0;
+      if (rw.total >= 1 && pctW < 70) {
+        weakObjectives.push({
+          id: oid,
+          topic: objectiveTopicLabel(oid, objectiveLabels),
+          correct: rw.correct,
+          total: rw.total,
+          pct: pctW,
+        });
+      }
+    });
+    weakObjectives.sort(function (a, b) {
+      return a.pct - b.pct;
+    });
+
+    return {
+      reason: reason,
+      scaledScore: scaled.total,
+      scaledMax: scaled.cfg.maxTotal,
+      passingScore: scaled.cfg.passing,
+      passed: scaled.pass,
+      mcqCorrect: scaled.mcqCorrect,
+      mcqTotal: scaled.den.mcq,
+      simCorrect: scaled.simCorrect,
+      simTotal: scaled.den.sim,
+      domains: domains.slice(0, 8),
+      weakObjectives: weakObjectives.slice(0, 12),
+      isFreeSample: queue.length <= 20,
+    };
+  }
+
   function loadContext() {
     if (cachedTopicMap && cachedObjectiveLabels && cachedDomainTitles && cachedScoreConfig) {
       return Promise.resolve({
@@ -457,7 +542,10 @@
         ctx.simSections
       );
       populateResults(reason, attemptResults, queue, ctx);
-      return attemptResults;
+      return {
+        attemptResults: attemptResults,
+        emailPayload: buildScorecardEmailPayload(reason, attemptResults, queue, ctx),
+      };
     });
   }
 
@@ -465,5 +553,6 @@
     showResults: showResults,
     buildAttemptResults: buildAttemptResults,
     populateResults: populateResults,
+    buildScorecardEmailPayload: buildScorecardEmailPayload,
   };
 })();
