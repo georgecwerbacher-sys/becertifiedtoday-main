@@ -15,7 +15,8 @@ Search terms, negatives, and landing-page keyword maps for Google Ads and organi
 ## Active landing maps
 
 - [[landing-maps/security-plus-portal|Security+ primary (`comptia-sec+-home`)]]
-- [[landing-maps/ccnp-encor-portal|CCNP ENCOR primary (`ccnp-home`)]]
+- [[landing-maps/ccna-portal|CCNA 200-301 (`ccna-home`)]]
+- [[landing-maps/ccnp-encor-portal|CCNP ENCOR (`ccnp-home`)]]
 - [[landing-maps/security-plus-openssl-pbq|Security+ OpenSSL PBQ CTA]]
 
 ## Workflow (short)

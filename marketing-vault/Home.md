@@ -13,14 +13,17 @@ Obsidian vault for data-driven marketing (Cursor + GA4 + Stripe + Google Ads). O
 - [[06-website-optimization/README|Website optimization]] — Quality Score, landing pages, content change log
 - [[setup/marketing-stack-setup-checklist|Setup checklist]] — Google, Stripe, GA4, Ads step-by-step
 - [[01-strategy/positioning-and-messaging|Positioning & messaging]] ← exam prep, not courses
+- [[01-strategy/cisco-certifications-exam-prep-foundation|Cisco CCNA & ENCOR foundation]] ← active ads playbook
+- [[01-strategy/security-plus-federal-defense-foundation|Security+ federal & defense foundation]]
 - [[01-strategy/google-ai-search-strategy|Google AI search strategy]]
 - [[01-strategy/ai-amplified-marketer|AI Amplified Marketer — book notes]]
-- [[02-campaigns/security-plus-google-ads|Security+ — Google Ads]] ← **active campaign**
-- [[02-campaigns/ccnp-encor-google-ads|CCNP ENCOR — Google Ads]] ← **CTA landing: ccnp-home.html**
-- [[02-campaigns/ccna-portal-google-ads|CCNA portal — Google Ads]] (planned)
+- [[02-campaigns/security-plus-google-ads|Security+ — Google Ads]] ← active
+- [[02-campaigns/ccna-portal-google-ads|CCNA 200-301 — Google Ads]] ← active
+- [[02-campaigns/ccnp-encor-google-ads|CCNP ENCOR — Google Ads]] ← active
 - [[05-playbooks/weekly-review-process|Weekly review process]]
 - [[05-playbooks/keyword-collection-plan|Keyword collection plan]]
 - [[07-keywords/README|Keyword intelligence (07-keywords/)]]
+- [[08-8140-compliance/README|DoD 8140 compliance]] ← drop official PDFs; marketing mapping for current/future courses
 
 ## Reports
 

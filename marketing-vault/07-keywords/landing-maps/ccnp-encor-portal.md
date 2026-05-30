@@ -31,6 +31,15 @@ page_note: "[[../../06-website-optimization/pages/ccnp-home]]"
 - encor automation practice questions
 - cisco encor exam prep browser
 
+## Tier 2b — enterprise / federal contractor
+
+- ccnp encor federal
+- ccnp encor defense contractor
+- encor 350-401 government
+- cisco encor exam prep contractor
+
+See [[../../01-strategy/cisco-certifications-exam-prep-foundation|Cisco exam prep foundation]].
+
 ## Negatives
 
 [[../negatives/master-negative-list|Master list]] plus:
@@ -40,6 +49,12 @@ ccna only
 ccna practice
 devnet
 ccie lab
+ccie enterprise
+encor course
+cisco live training
+ine encor
+cbnuggets encor
+ccnp design
 gns3 course
 cisco training course
 ```

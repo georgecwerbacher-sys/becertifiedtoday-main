@@ -10,10 +10,14 @@ Implement changes in Cursor under `public/`. Link to page notes in `06-website-o
 
 | Date | Page (path) | Change summary | Reason (QS / CVR / UX) | Campaign | Deployed | Ads LP exp. (before→after) |
 |------|-------------|----------------|------------------------|----------|----------|----------------------------|
+| 2026-05-30 | `/ccna-home.html` | Exam prep meta/title; `#exam-audience` (people, when, where); federal/contractor keywords | Active ccna_portal Ads — message match + contractor segment | ccna_portal | no |
+| 2026-05-30 | `/ccnp-home.html` | `#exam-audience` section; federal/contractor lead + keywords; vault campaign docs active | Active encor_portal Ads — same guidelines as Security+ | encor_portal | no |
+| 2026-05-30 | `marketing-vault/` | Cisco exam prep foundation; CCNA/ENCOR campaign + keyword maps marked **active** | User runs CCNA + ENCOR Ads alongside Security+ | ccna_portal, encor_portal | no |
 | 2026-05-30 | `/ccnp-home.html` | ENCOR CTA landing: exam prep meta/hero; documented as primary Ads URL (not secplus-home) | Google Ads message match — encor_portal | encor_portal | no |
 | 2026-05-30 | `/secplus-home.html`, Security+ samples | Legacy hub: noindex; samples finish at `comptia-sec+-home.html` | Security+ Ads must use comptia-sec+-home, not secplus-home | secplus_portal | no |
 | 2026-05-30 | Site-wide CCNA (`ccna-home.html`, `ccna-home-conversion.js`) | Removed “no email required” / “membership or email required” from hero, meta, and ad headline variants | Prepare for email capture on free assessment; align copy with exam prep | ccna_portal | no | |
 | 2026-05-30 | `/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html` | CTA landing: SY0-701 PBQ exam prep copy, SEO meta/JSON-LD, on-page CTAs (sample + purchase), Obsidian keyword/negative lists | PBQ/openssl ad group message match + mid-funnel conversion | secplus_openssl_pbq | no | |
+| 2026-05-30 | `/comptia-sec+-home.html` | Federal/DoD/defense-contractor section (people, when, where) + FAQs + meta/JSON-LD | High-intent compliance segment; geo ad foundation | secplus_portal | no |
 | 2026-05-30 | `/comptia-sec+-home.html` | Exam prep positioning: H1/lead/benefits, 5 new FAQs + JSON-LD, meta/OG copy, “practice portal” labels, removed “goes live” / training language | Google Ads QS + AI search + message match (secplus_portal) | secplus_portal | yes — 2026-05-30 prod (`becertifiedtoday.com`) | |
 | | | | | | | |
 

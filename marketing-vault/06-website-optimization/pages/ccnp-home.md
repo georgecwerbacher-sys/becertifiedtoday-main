@@ -31,17 +31,19 @@ Primary **Google Ads final URL** for [[../../02-campaigns/ccnp-encor-google-ads|
 
 ## Current hero / message
 
-- **H1:** Structured certification practice / exam-day confidence (update toward “ENCOR 350-401 exam prep” as ads launch)
-- **Lead:** Practice tests, CLI labs, drag-and-drop, timed sim; browser-only; no PDFs
+- **H1:** CCNP ENCOR exam prep — practice tests, labs, and timed simulation
+- **Lead:** 350-401 exam prep; browser-only; not a video training course
+- **Audience section:** `#exam-audience` — people, when, where (enterprise/contractor)
 - **Primary CTAs:** free ENCOR samples, timed sim ($4.99), 10-day ($9.99), 30-day ($19.99)
 
 ## Keywords
 
-[[../../07-keywords/landing-maps/ccnp-encor-portal|ENCOR landing keyword map]]
+[[../../07-keywords/landing-maps/ccnp-encor-portal|ENCOR landing map]] · [[../../01-strategy/cisco-certifications-exam-prep-foundation|Cisco foundation]]
 
 ## Open optimization items
 
-- [ ] H1/meta explicit “exam prep” + `350-401` for Ads message match
+- [x] H1/meta explicit “exam prep” + `350-401`
+- [x] `#exam-audience` section
 - [ ] FAQ JSON-LD (mirror Security+ landing pattern)
 - [ ] PageSpeed mobile baseline
 - [ ] First search-terms import: `07-keywords/search-terms/YYYY-MM-DD-encor_portal.md`

@@ -31,7 +31,8 @@ Primary **Google Ads final URL** for [[../02-campaigns/security-plus-google-ads|
 ## Current hero / message (update after site edits)
 
 - **H1:** Security+ SY0-701 Exam Prep — Practice Tests & Simulation
-- **Lead:** Exam prep (not a course); verified explanations; 90-min timed sim; no PDFs/third-party software; retake savings angle
+- **Lead:** Exam prep (not a course); verified explanations; 90-min timed sim; federal/DoD/contractor compliance context; no PDFs/third-party software
+- **Federal section:** People (who), When (deadlines), Where (browser study / geo)
 - **Primary CTAs:** free sample, 10-day ($9.99), 30-day ($19.99), timed sim ($4.99)
 
 ## Audit history

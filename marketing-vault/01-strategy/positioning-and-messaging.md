@@ -46,6 +46,17 @@ Someone who:
 **Emotional job:** “I need to know I’m ready.”  
 **Functional job:** “Give me realistic practice with trustworthy answers in one place.”
 
+### Federal & defense segment (Security+ SY0-701)
+
+Many DoD, federal civilian, and defense-contractor cyber roles use **CompTIA Security+** toward baseline qualification under the **DoD Cyberspace Workforce Framework (DoD 8140)**—requirements vary by work role and contract. This is a high-intent segment with **deadline pressure** (new hire windows, role changes, re-certification).
+
+→ Full playbook: [[security-plus-federal-defense-foundation|Security+ federal & defense foundation]] (people, times, locations, keywords, geo ads).
+
+**Cisco (CCNA / ENCOR):** Same exam-prep rules; active Google Ads on `ccna-home.html` and `ccnp-home.html`. See [[cisco-certifications-exam-prep-foundation|Cisco certifications foundation]].
+
+**Say:** exam prep for SY0-701; browser practice for shift workers and TDY; timed simulation before test day.  
+**Do not say:** we satisfy your DoD requirement; guaranteed qualification; clearance support.
+
 ## Core value pillars (use everywhere)
 
 1. **Exam-realistic** — timed sims, PBQ-style items, domain-organized banks  

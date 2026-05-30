@@ -22,6 +22,18 @@ page_note: "[[../../06-website-optimization/pages/comptia-sec-plus-home]]"
 - sy0-701 timed test
 - pass security+ first try
 
+## Tier 2b — federal / DoD / defense contractor
+
+- security+ dod
+- security+ 8140
+- security+ defense contractor
+- security+ federal government
+- sy0-701 dod requirement
+- security+ for military
+- comptia security+ government job
+
+See [[../../01-strategy/security-plus-federal-defense-foundation|federal & defense foundation]] for people, times, and geo targeting.
+
 ## Negatives
 
 [[../negatives/master-negative-list|Master negative list]]

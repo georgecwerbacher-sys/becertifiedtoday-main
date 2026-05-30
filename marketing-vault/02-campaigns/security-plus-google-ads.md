@@ -93,6 +93,20 @@ Intent themes to test in ad groups — **prep / practice / simulation**, not cou
 | Simulation | security+ exam simulation, sy0-701 timed test | Timed sim — build confidence before test day |
 | Retake / readiness | pass security+ first try, security+ exam prep | Exam prep that matches exam format — save retake fees |
 | PBQ / OpenSSL CTA | security+ pbq practice, sy0-701 pbq, openssl csr comptia | Free PBQ slice → portal/sim on [[../06-website-optimization/pages/simulation-secure-web-architecture-openssl\|openssl sim landing]] |
+| Federal / DoD | security+ dod, security+ 8140, security+ defense contractor, security+ federal government | Browser SY0-701 prep for workforce baseline deadlines — see [[../01-strategy/security-plus-federal-defense-foundation\|federal foundation]] |
+
+### Geo targeting (federal/defense ad groups)
+
+Use with `utm_content=federal-{market}` for reporting. Details: [[../01-strategy/security-plus-federal-defense-foundation#Locations — where to find them|locations table]].
+
+| Ad group (draft) | Priority geos | UTM content example |
+|------------------|---------------|---------------------|
+| `secplus_federal_dc` | DC + NoVA + MD inner beltway | `federal-dc` |
+| `secplus_federal_cos` | Colorado Springs | `federal-cos` |
+| `secplus_federal_satx` | San Antonio | `federal-satx` |
+| `secplus_federal_norfolk` | Norfolk / Hampton Roads | `federal-norfolk` |
+
+National non-geo campaigns still run for generic `security+ practice test` keywords.
 
 **Negative keyword ideas:** free course, bootcamp, training program, dump, guaranteed pass, pdf download — full lists on [[../06-website-optimization/pages/simulation-secure-web-architecture-openssl#Negative keywords|openssl CTA page note]] and campaign-level list below.
 
@@ -145,6 +159,7 @@ Before major ad spend increases, run the optimization workflow in [[../06-websit
 
 | Date | Change | Rationale |
 |------|--------|-----------|
+| 2026-05-30 | Federal/defense foundation + landing people/times/locations section | High-intent DoD/contractor segment; geo ad groups |
 | 2026-05-30 | OpenSSL PBQ CTA landing + keyword/negative doc in Obsidian | Mid-funnel ad group `secplus_openssl_pbq` |
 | 2026-05-30 | Landing page positioning + FAQ deploy (`comptia-sec+-home.html`) | Ads/AI search message match — exam prep not course |
 | 2026-05-30 | Campaign note created; primary landing = `comptia-sec+-home.html` | First marketing campaign focus |
