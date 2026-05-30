@@ -18,7 +18,7 @@
         if (typeof window.bccTrackBeginCheckout === "function") {
           btn.setAttribute("data-bcc-item-id", "secplus_timed_simulation");
           btn.setAttribute("data-bcc-item-name", "Security+ Timed Test Simulation");
-          btn.setAttribute("data-bcc-value", "4.99");
+          btn.setAttribute("data-bcc-value", "9.99");
           btn.setAttribute("data-bcc-currency", "USD");
           window.bccTrackBeginCheckout(btn);
         }

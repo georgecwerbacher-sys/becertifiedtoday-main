@@ -35,7 +35,7 @@ Below focuses on **landing page experience** — the part you improve in `public
 
 ### Transparency & trust
 
-- [ ] **Pricing shown** before Stripe redirect ($9.99 / $19.99 / $4.99 for Security+)
+- [ ] **Pricing shown** before Stripe redirect ($9.99 / $19.99 / $9.99 for Security+)
 - [ ] **What’s included** spelled out (question banks, sim, access duration)
 - [ ] **Business identity** — site name/logo, contact or support path if available
 - [ ] **Privacy / terms** linked where appropriate (especially if collecting email at checkout)

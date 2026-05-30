@@ -5,6 +5,7 @@
 import { normalizePublicSiteUrl } from "../server-lib/normalize-public-site-url.js";
 import { sendSecplusScorecardEmail } from "../server-lib/secplus-scorecard-email.js";
 import { addMarketingContact, resolveLeadMagnet } from "../server-lib/marketing-lead-resend.js";
+import { appendMarketingLeadCsv, buildLeadCsvRow } from "../server-lib/append-marketing-lead-csv.js";
 
 function readJsonBody(req) {
   try {
@@ -99,6 +100,20 @@ export default async function handler(req, res) {
     } catch (err) {
       console.warn("[secplus-scorecard] audience contact failed:", err?.message || err);
     }
+  }
+
+  try {
+    await appendMarketingLeadCsv(
+      buildLeadCsvRow(body, {
+        event: "scorecard_email",
+        email,
+        magnet: "secplus-free-simulation",
+        product: "secplus",
+        source: String(body.source || "scorecard_email_api"),
+      })
+    );
+  } catch (err) {
+    console.warn("[secplus-scorecard] csv append failed:", err?.message || err);
   }
 
   try {

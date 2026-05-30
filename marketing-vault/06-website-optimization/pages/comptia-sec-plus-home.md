@@ -37,7 +37,7 @@ Primary **Google Ads final URL** for [[../02-campaigns/security-plus-google-ads|
 - **Lead:** Exam prep (not a course); verified explanations; 90-min timed sim; federal/DoD/contractor compliance context; no PDFs/third-party software
 - **Federal section:** People (who), When (deadlines), Where (browser study / geo)
 - **Lead magnet:** `#secplus-lead-capture` — free 20-min timed simulation; scorecard emailable from results
-- **Primary CTAs:** study plan, free sample, 10-day ($9.99), 30-day ($19.99), timed sim ($4.99)
+- **Primary CTAs:** study plan, free sample, 10-day ($9.99), 30-day ($19.99), timed sim ($9.99)
 
 ## Audit history
 

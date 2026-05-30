@@ -14,6 +14,7 @@ import {
   sendLeadMagnetEmail,
   addMarketingContact,
 } from "../server-lib/marketing-lead-resend.js";
+import { appendMarketingLeadCsv, buildLeadCsvRow } from "../server-lib/append-marketing-lead-csv.js";
 
 function readJsonBody(req) {
   try {
@@ -63,6 +64,20 @@ export default async function handler(req, res) {
 
   const site = normalizePublicSiteUrl(process.env.PUBLIC_SITE_URL || "https://becertifiedtoday.com");
   const resourceUrl = site + magnet.path;
+
+  try {
+    await appendMarketingLeadCsv(
+      buildLeadCsvRow(body, {
+        event: "lead_signup",
+        email,
+        magnet: String(body.magnet || ""),
+        product: String(body.product || "secplus"),
+        source: String(body.source || "lead_capture_api"),
+      })
+    );
+  } catch (err) {
+    console.warn("[lead-capture] csv append failed:", err?.message || err);
+  }
 
   try {
     await addMarketingContact({ email, magnet });

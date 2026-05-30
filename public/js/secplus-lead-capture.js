@@ -129,6 +129,7 @@
       setBusy(form, true);
       trackLeadEvent("generate_lead", { method: options.method || "secplus_free_sim_form" });
 
+      var attrs = campaignParams();
       fetch("/api/lead-capture", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -137,6 +138,8 @@
           magnet: MAGNET_ID,
           product: "secplus",
           consent: true,
+          source: options.method || "secplus_free_sim_form",
+          utm: attrs,
           company_website: (form.querySelector('input[name="company_website"]') || {}).value || "",
         }),
       })

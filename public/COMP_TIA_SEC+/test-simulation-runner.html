@@ -64,6 +64,7 @@
     }
     .actions {
       display: flex;
+      flex-wrap: wrap;
       justify-content: flex-end;
       align-items: center;
       gap: 10px;
@@ -95,8 +96,45 @@
       cursor: pointer;
       min-width: 8rem;
     }
-    .next-btn:disabled {
+    .next-btn:disabled,
+    .back-btn:disabled {
       opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .back-btn {
+      appearance: none;
+      border: 1px solid #4b556b;
+      background: #2a3040;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      min-width: 6rem;
+    }
+    .review-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.92rem;
+      color: #b8c3d6;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .review-toggle input {
+      width: 1rem;
+      height: 1rem;
+      margin: 0;
+      accent-color: #fbbf24;
+      cursor: pointer;
+    }
+    .review-toggle.is-flagged {
+      color: #fcd34d;
+      font-weight: 700;
+    }
+    .review-toggle input:disabled {
       cursor: not-allowed;
     }
     .status {
@@ -555,6 +593,11 @@
 
   <footer class="actions">
     <div id="status" class="status"></div>
+    <label id="reviewToggleWrap" class="review-toggle">
+      <input type="checkbox" id="reviewToggle" aria-describedby="status" />
+      <span>Mark for review</span>
+    </label>
+    <button id="backBtn" type="button" class="back-btn">Back</button>
     <button id="quitBtn" type="button" class="quit-btn">Quit</button>
     <button id="nextBtn" type="button" class="next-btn">Next</button>
   </footer>
@@ -646,7 +689,7 @@
       </ul>
       <div class="summary-actions">
         <button type="button" class="summary-close" id="freeSimUpsellDismiss">View my scorecard</button>
-        <a class="summary-home" id="freeSimUpsellPurchase" href="/comptia-sec+-home.html#purchase">Get full 90-minute simulation — $4.99</a>
+        <a class="summary-home" id="freeSimUpsellPurchase" href="/comptia-sec+-home.html#purchase">Get full 90-minute simulation — $9.99</a>
       </div>
     </div>
   </div>
@@ -655,6 +698,8 @@
     (function () {
       var frame = document.getElementById("runnerFrame");
       var nextBtn = document.getElementById("nextBtn");
+      var backBtn = document.getElementById("backBtn");
+      var reviewToggle = document.getElementById("reviewToggle");
       var quitBtn = document.getElementById("quitBtn");
       var timerEl = document.getElementById("timer");
       var statusEl = document.getElementById("status");
@@ -789,8 +834,12 @@
         testMinutes = pack.durationMinutes || testMinutes;
         queue = pack.queue;
         index = 0;
+        reviewByIndex = {};
+        examPhase = "linear";
+        answeredByIndex = {};
         endsAt = Date.now() + testMinutes * 60 * 1000;
         persistExamSessionState();
+        saveReviewState();
         return beginPaidSessionIfNeeded().then(function () {
           showExamUi();
           startExamTimerAndFirstItem();
@@ -1056,6 +1105,77 @@
       var timerHandle = null;
       var isOver = false;
       var answeredByIndex = {};
+      var reviewByIndex = {};
+      var examPhase = "linear";
+
+      function loadReviewState() {
+        try {
+          reviewByIndex = JSON.parse(sessionStorage.getItem("secplusTestSimReview") || "{}");
+          examPhase = sessionStorage.getItem("secplusTestSimPhase") || "linear";
+          if (examPhase !== "review") examPhase = "linear";
+        } catch (e) {
+          reviewByIndex = {};
+          examPhase = "linear";
+        }
+      }
+
+      function saveReviewState() {
+        try {
+          sessionStorage.setItem("secplusTestSimReview", JSON.stringify(reviewByIndex));
+          sessionStorage.setItem("secplusTestSimPhase", examPhase);
+        } catch (e) {}
+      }
+
+      function countMarkedForReview() {
+        var n = 0;
+        Object.keys(reviewByIndex).forEach(function (k) {
+          if (reviewByIndex[k]) n += 1;
+        });
+        return n;
+      }
+
+      function markedIndices() {
+        var out = [];
+        for (var i = 0; i < queue.length; i += 1) {
+          if (reviewByIndex[i]) out.push(i);
+        }
+        return out;
+      }
+
+      function firstMarkedIndex() {
+        var marked = markedIndices();
+        return marked.length ? marked[0] : null;
+      }
+
+      function nextMarkedAfter(current) {
+        var marked = markedIndices();
+        for (var i = 0; i < marked.length; i += 1) {
+          if (marked[i] > current) return marked[i];
+        }
+        return null;
+      }
+
+      function syncReviewControl() {
+        if (!reviewToggle) return;
+        reviewToggle.checked = !!reviewByIndex[index];
+        var wrap = document.getElementById("reviewToggleWrap");
+        if (wrap) wrap.classList.toggle("is-flagged", !!reviewByIndex[index]);
+      }
+
+      function updateNavButtons() {
+        if (backBtn) backBtn.disabled = isOver || index <= 0;
+        if (!nextBtn || !queue.length) return;
+        if (examPhase === "review") {
+          nextBtn.textContent = nextMarkedAfter(index) !== null ? "Next flagged" : "Finish";
+          return;
+        }
+        if (index >= queue.length - 1) {
+          var flagged = countMarkedForReview();
+          nextBtn.textContent = flagged > 0 ? "Review flagged (" + flagged + ")" : "Finish";
+          return;
+        }
+        nextBtn.textContent = "Next";
+      }
 
       function loadState() {
         try {
@@ -1067,6 +1187,7 @@
           index = 0;
           endsAt = 0;
         }
+        loadReviewState();
       }
 
       function saveIndex() {
@@ -1080,6 +1201,8 @@
           sessionStorage.removeItem("secplusTestSimQueue");
           sessionStorage.removeItem("secplusTestSimIndex");
           sessionStorage.removeItem("secplusTestSimEndsAt");
+          sessionStorage.removeItem("secplusTestSimReview");
+          sessionStorage.removeItem("secplusTestSimPhase");
           sessionStorage.removeItem("secplusExamSim");
         } catch (e) {}
       }
@@ -1246,6 +1369,8 @@
         }
         nextBtn.disabled = true;
         quitBtn.disabled = true;
+        if (backBtn) backBtn.disabled = true;
+        if (reviewToggle) reviewToggle.disabled = true;
         timerEl.classList.add("is-expired");
         statusEl.textContent = reasonText;
         var reasonCode = endReasonCode(reasonText);
@@ -1331,7 +1456,16 @@
           statusEl.textContent = "";
           return;
         }
-        statusEl.textContent = "Item " + (index + 1) + " of " + queue.length;
+        var parts = ["Item " + (index + 1) + " of " + queue.length];
+        if (reviewByIndex[index]) parts.push("Marked for review");
+        var flagged = countMarkedForReview();
+        if (flagged > 0 && examPhase === "linear") {
+          parts.push(flagged + " flagged");
+        }
+        if (examPhase === "review") parts.push("Review pass");
+        statusEl.textContent = parts.join(" · ");
+        updateNavButtons();
+        syncReviewControl();
       }
 
       function loadCurrentItem() {
@@ -1348,20 +1482,63 @@
         frame.src = url;
       }
 
+      function moveBack() {
+        if (isOver || index <= 0) return;
+        captureCurrentOutcome();
+        index -= 1;
+        saveIndex();
+        loadCurrentItem();
+      }
+
       function moveNext() {
         if (isOver) return;
         captureCurrentOutcome();
-        index += 1;
-        saveIndex();
-        if (index >= queue.length) {
+
+        if (examPhase === "linear") {
+          if (index < queue.length - 1) {
+            index += 1;
+            saveIndex();
+            loadCurrentItem();
+            return;
+          }
+          var firstFlagged = firstMarkedIndex();
+          if (firstFlagged !== null) {
+            examPhase = "review";
+            saveReviewState();
+            index = firstFlagged;
+            saveIndex();
+            loadCurrentItem();
+            return;
+          }
           endTest("Practice test complete.");
           return;
         }
-        loadCurrentItem();
+
+        var nextFlagged = nextMarkedAfter(index);
+        if (nextFlagged !== null) {
+          index = nextFlagged;
+          saveIndex();
+          loadCurrentItem();
+          return;
+        }
+        endTest("Practice test complete.");
+      }
+
+      function onReviewToggleChange() {
+        if (!reviewToggle || isOver) return;
+        if (reviewToggle.checked) {
+          reviewByIndex[index] = true;
+        } else {
+          delete reviewByIndex[index];
+        }
+        saveReviewState();
+        updateStatus();
       }
 
       frame.addEventListener("load", hideEmbeddedNav);
       nextBtn.addEventListener("click", moveNext);
+      if (backBtn) backBtn.addEventListener("click", moveBack);
+      if (reviewToggle) reviewToggle.addEventListener("change", onReviewToggleChange);
       quitBtn.addEventListener("click", function () {
         if (freeMode && !isOver) {
           clearTestState();

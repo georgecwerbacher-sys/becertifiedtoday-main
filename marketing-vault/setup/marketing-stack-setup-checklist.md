@@ -190,7 +190,7 @@ Configured in `public/COMP_TIA_SEC+/js/secplus-portal-checkout.js`. Verify in St
 |---------|------:|------------------------|
 | 10-day portal | $9.99 | `/COMP_TIA_SEC+/secplus-portal-checkout-success.html?session_id={CHECKOUT_SESSION_ID}` |
 | 30-day portal | $19.99 | same pattern |
-| Timed simulation | $4.99 | `/COMP_TIA_SEC+/test-simulation-runner.html?session_id={CHECKOUT_SESSION_ID}` |
+| Timed simulation | $9.99 | `/COMP_TIA_SEC+/test-simulation-runner.html?session_id={CHECKOUT_SESSION_ID}` |
 
 - [ ] **Collect customer email** enabled on each Payment Link
 - [ ] **Metadata** `productId`: `secplus-portal-10d`, `secplus-portal-30d`, `secplus-test-simulation`

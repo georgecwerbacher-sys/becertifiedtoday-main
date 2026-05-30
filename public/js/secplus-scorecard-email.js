@@ -62,6 +62,7 @@
           body: JSON.stringify({
             email: email,
             consent: true,
+            source: "secplus_scorecard_results_form",
             scorecard: resultPack.emailPayload,
           }),
         })

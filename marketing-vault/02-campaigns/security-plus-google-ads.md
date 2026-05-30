@@ -70,7 +70,7 @@ Page note: [[../06-website-optimization/pages/simulation-secure-web-architecture
 |-------|------:|---------------|-------------------|
 | 10-day portal | $9.99 | `secplus_portal_10d` | `data-secplus-portal-10d-checkout` |
 | 30-day portal | $19.99 | `secplus_portal_30d` | `data-secplus-portal-30d-checkout` |
-| Timed simulation | $4.99 | `secplus_timed_simulation` | `data-secplus-test-sim-checkout` |
+| Timed simulation | $9.99 | `secplus_timed_simulation` | `data-secplus-test-sim-checkout` |
 
 Checkout wiring: `public/COMP_TIA_SEC+/js/secplus-portal-checkout.js`, `secplus-test-checkout.js`.
 

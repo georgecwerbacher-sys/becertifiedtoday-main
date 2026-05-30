@@ -14,8 +14,12 @@ Project → **Settings** → **Environment Variables** → add for **Production*
 | `RESEND_SECPLUS_MARKETING_AUDIENCE_ID` | Resend Audience UUID | Optional — list building |
 | `RESEND_SECPLUS_FREE_SIM_SUBJECT` | `Your free Security+ simulation is ready` | Optional |
 | `RESEND_SECPLUS_SCORECARD_SUBJECT` | `Your Security+ SY0-701 simulation scorecard` | Optional |
+| `GITHUB_LEADS_TOKEN` | Fine-grained GitHub PAT (Contents read/write) | Optional — append leads to Obsidian CSV |
+| `GITHUB_LEADS_REPO` | `your-user/CCNP_Study_main` | Optional — if not set, uses Vercel `VERCEL_GIT_REPO_*` |
 
 Existing Stripe / webhook vars are unchanged for paid sim checkout.
+
+**Lead CSV (Obsidian):** With `GITHUB_LEADS_TOKEN` set, each signup appends a row to `marketing-vault/leads/secplus-free-simulation-leads.csv` via a git commit. Open `marketing-vault/` in Obsidian and `git pull` to see new rows. Local `vercel dev` appends to the file on disk without GitHub.
 
 ## 2. Resend domain
 

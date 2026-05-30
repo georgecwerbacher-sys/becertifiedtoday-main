@@ -51,7 +51,7 @@
     name="twitter:description"
     content="SY0-701 exam prep for federal, DoD, and defense contractors—practice tests, verified explanations, and timed simulation in your browser."
   />
-  <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <link rel="icon" href="images/logo/becertifiedtoday_logo_image_trans.png" type="image/png" />
   <title>CompTIA Security+ SY0-701 Exam Prep — Practice Tests &amp; Simulation | Be Certified Today</title>
   <script type="application/ld+json">
     {
@@ -106,7 +106,7 @@
               "name": "How much does Security+ exam prep access cost?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Choose a 10-day pass ($9.99), a 30-day pass ($19.99), or a one-time timed simulation ($4.99). Prices are shown on the purchase section before Stripe checkout. No recurring subscription."
+                "text": "Choose a 10-day pass ($9.99), a 30-day pass ($19.99), or a one-time timed simulation ($9.99). Prices are shown on the purchase section before Stripe checkout. No recurring subscription."
               }
             },
             {
@@ -294,7 +294,7 @@
     }
     .brand img {
       display: block;
-      width: clamp(44px, 5vw, 56px);
+      width: clamp(48px, 6vw, 56px);
       height: auto;
     }
     .header-actions {
@@ -430,71 +430,6 @@
       margin-top: 0.45em;
       border-radius: 50%;
       background: linear-gradient(135deg, #4f84d8, #2f66bf);
-    }
-    .federal-workforce-section {
-      margin: 0 0 clamp(28px, 5vw, 40px);
-      padding: clamp(18px, 3vw, 24px);
-      border: 1px solid #e2e8f0;
-      border-radius: 14px;
-      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
-    }
-    .federal-workforce-section h2 {
-      margin: 0 0 10px;
-      font-size: clamp(1.15rem, 2.6vw, 1.35rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.3;
-      color: var(--page-text);
-    }
-    .federal-workforce-lead {
-      margin: 0 0 clamp(16px, 3vw, 20px);
-      color: var(--page-muted);
-      font-size: clamp(0.94rem, 2vw, 1.02rem);
-      line-height: 1.55;
-    }
-    .federal-workforce-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: clamp(12px, 2.5vw, 16px);
-    }
-    @media (max-width: 820px) {
-      .federal-workforce-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-    .federal-workforce-card {
-      margin: 0;
-      padding: clamp(14px, 2.5vw, 18px);
-      border-radius: 12px;
-      border: 1px solid #e2e8f0;
-      background: #ffffff;
-    }
-    .federal-workforce-card h3 {
-      margin: 0 0 10px;
-      font-size: 0.78rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: #6d28d9;
-    }
-    .federal-workforce-card p,
-    .federal-workforce-card ul {
-      margin: 0;
-      color: var(--page-muted);
-      font-size: 0.92rem;
-      line-height: 1.55;
-    }
-    .federal-workforce-card ul {
-      padding-left: 1.15rem;
-    }
-    .federal-workforce-card li + li {
-      margin-top: 6px;
-    }
-    .federal-workforce-disclaimer {
-      margin: clamp(14px, 2.5vw, 18px) 0 0;
-      font-size: 0.84rem;
-      line-height: 1.5;
-      color: #64748b;
     }
     .lead-capture-section {
       margin: 0 0 clamp(24px, 4vw, 32px);
@@ -1226,13 +1161,26 @@
       padding: 0;
       border: 0;
     }
+    .samples-block-intro {
+      margin: 0 0 clamp(16px, 3vw, 22px);
+      padding: clamp(16px, 3vw, 22px);
+      border-radius: 12px;
+      border: 1px solid rgba(96, 165, 250, 0.35);
+      background: linear-gradient(165deg, #1e3a8a 0%, #1d4ed8 52%, #2563eb 100%);
+      box-shadow: 0 8px 24px rgba(29, 78, 216, 0.22);
+    }
     .samples-block-title {
       margin: 0 0 8px;
       font-size: clamp(1.05rem, 2.2vw, 1.2rem);
       font-weight: 800;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      color: #7a9fd6;
+      color: #ffffff;
+    }
+    .samples-block-intro .samples-block-lead {
+      margin: 0;
+      max-width: none;
+      color: #dbeafe;
     }
     .samples-block-lead {
       margin: 0 0 clamp(16px, 3vw, 22px);
@@ -1340,6 +1288,9 @@
       flex-direction: column;
       min-height: 0;
     }
+    .samples-stack .format-card h3 {
+      color: #e6edf3;
+    }
     .samples-stack .format-card > .format-sample:last-child {
       margin-top: auto;
     }
@@ -1417,17 +1368,19 @@
       line-height: 1.55;
     }
     .format-card-thumb {
+      flex-shrink: 0;
       margin: 0 0 14px;
       border-radius: 10px;
       overflow: hidden;
       border: 1px solid rgba(45, 59, 90, 0.85);
-      aspect-ratio: 16 / 9;
       background: #0f1729;
+      line-height: 0;
     }
     .format-card-thumb img {
       display: block;
       width: 100%;
-      height: 100%;
+      height: auto;
+      max-width: 100%;
       object-fit: cover;
       object-position: center top;
     }
@@ -2075,9 +2028,9 @@
     <header>
       <a class="brand" href="/" aria-label="Be Certified Today — home">
         <img
-          src="/images/logo/becertifiedtoday_logo_trans.png"
-          width="1024"
-          height="1024"
+          src="images/logo/becertifiedtoday_logo_image_trans.png"
+          width="56"
+          height="56"
           alt="Be Certified Today logo — IT certification exam prep"
         />
       </a>
@@ -2128,8 +2081,8 @@
                     <p class="purchase-track-title" id="purchase-fold-title">90-minute simulation</p>
                     <span class="encor-live-badge">Live</span>
                   </div>
-                  <p class="purchase-price" aria-label="4 dollars and 99 cents for one timed test">
-                    $4.99 <span>/ one attempt</span>
+                  <p class="purchase-price" aria-label="9 dollars and 99 cents for one timed test">
+                    $9.99 <span>/ one attempt</span>
                   </p>
                   <p class="purchase-track-sub">
                     Same clock and mix as test day: up to <strong>90 questions</strong> in <strong>90 minutes</strong>—multiple-choice,
@@ -2143,9 +2096,9 @@
                       data-secplus-test-sim-checkout
                       data-bcc-item-id="secplus_timed_simulation"
                       data-bcc-item-name="Security+ Timed Test Simulation"
-                      data-bcc-value="4.99"
+                      data-bcc-value="9.99"
                       data-bcc-currency="USD"
-                      aria-label="Purchase one-time Security+ timed simulation for four ninety-nine"
+                      aria-label="Purchase one-time Security+ timed simulation for nine ninety-nine"
                     >
                       Get simulated exam
                     </button>
@@ -2275,62 +2228,27 @@
             </div>
           </section>
 
-          <section class="federal-workforce-section" id="federal-defense-prep" aria-labelledby="federal-workforce-title">
-            <h2 id="federal-workforce-title">Federal, DoD &amp; defense-contractor exam prep</h2>
-            <p class="federal-workforce-lead">
-              Security+ SY0-701 is widely used toward cyberspace workforce baseline qualification under the
-              <strong>DoD Cyberspace Workforce Framework (DoD 8140)</strong>. Requirements vary by work role, component, and contract—confirm yours with your security manager or contracting officer. Be Certified Today helps you <strong>prepare for the CompTIA exam</strong>, not process clearance or official DoD qualification.
-            </p>
-            <div class="federal-workforce-grid">
-              <article class="federal-workforce-card">
-                <h3>People</h3>
-                <ul>
-                  <li>DoD military and civilian cyber / IT personnel with a baseline cert deadline</li>
-                  <li>Defense contractors (prime and sub) named in an offer letter or contract</li>
-                  <li>Federal agency staff in DHS, VA, Treasury, GSA, and similar programs</li>
-                  <li>Career changers targeting cleared or contract cyber roles</li>
-                  <li>Re-certification before CompTIA Security+ expires on the three-year cycle</li>
-                </ul>
-              </article>
-              <article class="federal-workforce-card">
-                <h3>When timing matters</h3>
-                <ul>
-                  <li>DoD baseline: foundational qualification within <strong>9 months</strong> of assignment (DoDM 8140.03)—your org may set shorter deadlines</li>
-                  <li>Role or billet change before system access is restricted</li>
-                  <li>Contract start, option year, or new team onboarding</li>
-                  <li>PCS, TDY, or shift/night study before a scheduled SY0-701 date</li>
-                  <li>Two- to six-week final prep before test-center day</li>
-                </ul>
-              </article>
-              <article class="federal-workforce-card">
-                <h3>Where you study</h3>
-                <p>
-                  Browser-only practice—no VM or lab installs—fits CONUS duty stations, contractor sites, lodging on TDY, and home study between shifts. Follow your organization's IA policy for external sites on government devices. Purchased portal access can be restored on a new device with the same checkout email.
-                </p>
-              </article>
-            </div>
-            <p class="federal-workforce-disclaimer">
-              <strong>Disclaimer:</strong> Certification requirements are assigned by your organization. Be Certified Today is independent exam prep—not affiliated with CompTIA, the U.S. Department of Defense, or any federal agency.
-            </p>
-          </section>
           <div class="samples-stack">
             <section class="samples-block" aria-labelledby="home-secplus-samples-title">
-              <h2 class="samples-block-title" id="home-secplus-samples-title"><strong>Try free Security+ samples</strong></h2>
-              <p class="samples-block-lead">
-                Interactive previews from the SY0-701 question bank and simulation hot spots—no checkout required. Each activity uses a <strong>Home</strong> tab back to this page and <strong>Next</strong> (or <strong>Finish sample</strong>) to move on.
-              </p>
+              <div class="samples-block-intro">
+                <h2 class="samples-block-title" id="home-secplus-samples-title"><strong>Try free Security+ samples</strong></h2>
+                <p class="samples-block-lead">
+                  Interactive previews from the SY0-701 question bank and simulation hot spots—no checkout required. Each activity uses a <strong>Home</strong> tab back to this page and <strong>Next</strong> (or <strong>Finish sample</strong>) to move on.
+                </p>
+              </div>
               <ul class="formats-grid formats-grid--pair" aria-label="Security+ sample activities">
                 <li>
                   <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-secplus-q-title">
                     <h3 id="home-secplus-q-title">Security+ · Sample questions</h3>
                     <figure class="format-card-thumb">
                       <img
-                        src="/images/secplus-sample-questions-thumbnail.jpg"
+                        src="images/secplus-sample-questions-thumbnail.jpg"
                         width="1024"
                         height="824"
                         alt="Security+ sample multiple-choice question with Back, Home, and Next navigation and instant feedback."
                         decoding="async"
-                        loading="lazy"
+                        loading="eager"
+                        fetchpriority="high"
                       />
                     </figure>
                     <p>
@@ -2346,12 +2264,12 @@
                     <h3 id="home-secplus-darkweb-title">Security+ · Dark web account protection</h3>
                     <figure class="format-card-thumb">
                       <img
-                        src="/images/secplus-dark-web-sim-thumbnail.jpg"
+                        src="images/secplus-dark-web-sim-thumbnail.jpg"
                         width="1024"
                         height="455"
                         alt="Security+ dark web simulation with leaked document tiles and weak password practice checkboxes."
                         decoding="async"
-                        loading="lazy"
+                        loading="eager"
                       />
                     </figure>
                     <p>
@@ -2537,7 +2455,7 @@
                 <summary class="faq-summary">How much does access cost?</summary>
                 <div class="faq-answer">
                   <p>
-                    <strong>10-day pass:</strong> $9.99 · <strong>30-day pass:</strong> $19.99 · <strong>One-time timed simulation:</strong> $4.99.
+                    <strong>10-day pass:</strong> $9.99 · <strong>30-day pass:</strong> $19.99 · <strong>One-time timed simulation:</strong> $9.99.
                     Prices are shown in the purchase section above before Stripe checkout. No recurring subscription.
                   </p>
                 </div>
