@@ -25,7 +25,7 @@ Implement changes in Cursor under `public/`. Link to page notes in `06-website-o
 | 2026-05-31 | `/*Training_Portal.html`, `/secplus-home.html` | noindex/nofollow on gated portals; legacy secplus-home canonical → comptia-sec+-home | Keep crawl budget on exam prep landings | all | no | |
 | 2026-05-31 | `robots.txt`, `sitemap.xml` | Disallow portals + legacy hub; sitemap prioritizes home pages + free assessment + OpenSSL PBQ; removed secplus-home | Crawl/index hygiene | all | no | |
 | 2026-05-31 | `/comptia-sec+-home.html`, sample JS | Homepage sample questions reduced to 2 MCQ; finish upsell modal → in-page free timed sim lead capture | Sample → lead magnet funnel | secplus_portal | no | |
-| 2026-05-31 | Guest sitemap pages (`CCNA_Samples/`, `ENCOR_Samples/`, `SEC+_Samples/`, free assessment, sim landings, sample labs) | Exam prep meta descriptions, canonicals, home links → public landings; disclaimer “exam prep resource”; campaign attribution on injected gtag | AI search + Ads sample funnel — positioning from 01-strategy | all | no | |
+| 2026-05-31 | Guest sitemap pages + Obsidian ad exports | Guest page marketing sync on prod; ad-site verification; CCNA/ENCOR exports updated ($9.99 sim, lead URLs, 2-MCQ samples) | Ads paste-ready copy matches live site | all | yes — prod | |
 
 ---
 

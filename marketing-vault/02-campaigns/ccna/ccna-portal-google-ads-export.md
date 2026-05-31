@@ -56,32 +56,38 @@ Copy blocks below into Google Ads (Search campaign) or Google Ads Editor. Parent
 
 ---
 
-## Ad group 1 — `ccna_free_assessment` (launch first)
+## Ad group 1 — `ccna_lead_free_sim` (launch first)
 
-**Intent:** Practice test / mock exam → free 35-min assessment + domain scorecard.
+**Intent:** Practice test / mock exam → free 45-min timed sim + scorecard (email unlock).
 
-**Final URL (recommended — home + pinned headline):**
+**Final URL (recommended — lead-first):**
+
+```
+https://becertifiedtoday.com/ccna-home.html#ccna-lead-capture?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=lead-free-sim
+```
+
+**Alternate (pinned headline variants on home):**
 
 ```
 https://becertifiedtoday.com/ccna-home.html?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=hl-free-practice
 ```
 
-**Alternate (direct assessment — A/B test):**
+**Alternate (direct runner — only if email already unlocked on device):**
 
 ```
-https://becertifiedtoday.com/CCNA_Sim_EXAM/free-assessment.html?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=free-assessment
+https://becertifiedtoday.com/CCNA_Sim_EXAM/free-assessment.html?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=free-simulation
 ```
 
-**Display path (optional):** `CCNA` / `Free-Assessment`
+**Display path (optional):** `CCNA` / `Free-Sim`
 
 **RSA — Headlines** (≤30 chars; pin H1–H3 in UI)
 
 ```
-Free CCNA Practice Test
-Start Free CCNA Assessment
-35-Min Practice + Scorecard
+Free CCNA Timed Sim
+Start Free CCNA Sample
+45-Min Practice + Scorecard
 CCNA 200-301 Sample Exam
-12 MCQ + D&D + CLI Lab
+20 MCQ + D&D + CLI Lab
 Exam Prep — Not a Course
 No GNS3 — Browser Prep
 Domain Scorecard Included
@@ -89,6 +95,7 @@ No PDFs — Browser Prep
 Free CCNA Mock Exam
 Cisco CCNA 200-301 Prep
 Realistic Timed Sample
+Email Unlock · One Free Run
 Try Before You Buy
 Be Certified Today
 ```
@@ -96,15 +103,15 @@ Be Certified Today
 **RSA — Descriptions** (≤90 chars)
 
 ```
-Free 35-min CCNA 200-301 assessment: 12 MCQ, 4 drag-and-drop, 1 VLAN CLI lab. Domain scorecard when you finish.
+Free 45-min CCNA 200-301 sample: 20 MCQ, 2 drag-and-drop, 1 VLAN CLI lab. Domain scorecard when you finish.
 Realistic browser practice before test day. Full 120-min sim when you are ready. No GNS3 or PDFs required.
 Exam preparation—not a training course. Verified explanations. No dumps or third-party lab software.
-One free attempt per browser. Start the assessment from CCNA home—no email or membership required.
+Enter email to start your free simulation. One attempt per browser. Unsubscribe anytime from tips.
 ```
 
-**Pin suggestion:** Headline 1 → `Free CCNA Practice Test` · Headline 2 → `Start Free CCNA Assessment` · Headline 3 → `35-Min Practice + Scorecard`
+**Pin suggestion:** Headline 1 → `Free CCNA Timed Sim` · Headline 2 → `Start Free CCNA Sample` · Headline 3 → `45-Min Practice + Scorecard`
 
-### Keywords — `ccna_free_assessment`
+### Keywords — `ccna_lead_free_sim`
 
 Paste into ad group keyword box. **Phrase** = `"quotes"` · **Exact** = `[square brackets]`.
 
@@ -142,13 +149,13 @@ Paste into ad group keyword box. **Phrase** = `"quotes"` · **Exact** = `[square
 "salary"
 ```
 
-**Primary conversion:** `ccna_free_assessment_click` · **Secondary:** `begin_checkout` (upsell)
+**Primary conversion:** `generate_lead` · **Secondary:** `begin_checkout` (upsell)
 
 ---
 
 ## Ad group 2 — `ccna_sim_purchase`
 
-**Intent:** Timed simulation / exam sim → $4.99 one-time 120-minute test.
+**Intent:** Timed simulation / exam sim → $9.99 one-time 120-minute test.
 
 **Final URL:**
 
@@ -163,7 +170,7 @@ https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_mediu
 ```
 120-Min CCNA Exam Sim
 CCNA 200-301 Timed Test
-Timed Sim — $4.99
+Timed Sim — $9.99
 Study Scorecard by Domain
 50 MCQ + D&D + CLI Lab
 120 Minutes Like Test Day
@@ -180,13 +187,13 @@ Try Free Assessment on Site
 **RSA — Descriptions**
 
 ```
-One 120-minute CCNA 200-301 session: 50 multiple-choice, drag-and-drop, and CLI lab items. $4.99 one attempt.
+One 120-minute CCNA 200-301 session: 50 multiple-choice, drag-and-drop, and CLI lab items. $9.99 one attempt.
 Finish with a study scorecard by CCNA domain. Same clock and mix as test day—not a video course.
 Exam-realistic browser prep. Verified explanations. No PDF dumps or GNS3 installs required.
-Free 35-min assessment on the same page if you want to try before you buy the full sim.
+Free 45-min timed simulation on the same page if you want to try before you buy the full sim.
 ```
 
-**Pin suggestion:** H1 → `120-Min CCNA Exam Sim` · H2 → `Timed Sim — $4.99` · H3 → `Study Scorecard by Domain`
+**Pin suggestion:** H1 → `120-Min CCNA Exam Sim` · H2 → `Timed Sim — $9.99` · H3 → `Study Scorecard by Domain`
 
 ### Keywords — `ccna_sim_purchase`
 
@@ -468,7 +475,7 @@ Paste each row into **Add products or services**. Names ≤120 chars; descriptio
 
 | # | Product / service name | Landing URL |
 |---|------------------------|-------------|
-| 1 | Free CCNA 200-301 Practice Assessment | `https://becertifiedtoday.com/CCNA_Sim_EXAM/free-assessment.html` |
+| 1 | Free CCNA 200-301 Timed Simulation Sample | `https://becertifiedtoday.com/ccna-home.html#ccna-lead-capture` |
 | 2 | CCNA 200-301 120-Minute Timed Exam Simulation | `https://becertifiedtoday.com/ccna-home.html#purchase` |
 | 3 | CCNA 200-301 10-Day All-Access Practice Portal | `https://becertifiedtoday.com/ccna-home.html#purchase` |
 | 4 | CCNA 200-301 30-Day All-Access Practice Portal | `https://becertifiedtoday.com/ccna-home.html#purchase` |
@@ -476,16 +483,16 @@ Paste each row into **Add products or services**. Names ≤120 chars; descriptio
 
 ### Descriptions (copy under each name)
 
-**1 — Free practice assessment**
+**1 — Free timed simulation sample**
 
 ```
-Free 35-minute CCNA 200-301 exam prep assessment in your browser: 12 multiple-choice questions (two per domain), four drag-and-drop items, and one VLAN CLI lab simulation. Includes a domain and objective scorecard when you finish. One free attempt per browser. Not a training course.
+Free 45-minute CCNA 200-301 exam prep sample in your browser: 20 multiple-choice questions (drawn across domains), 2 drag-and-drop items, and one VLAN CLI lab simulation. Includes a domain and objective scorecard when you finish. Email unlock; one free attempt per browser. Not a training course.
 ```
 
-**2 — 120-minute timed exam simulation ($4.99)**
+**2 — 120-minute timed exam simulation ($9.99)**
 
 ```
-One full CCNA 200-301 timed practice exam: 120 minutes with 50 multiple-choice, drag-and-drop, and CLI lab items in one shuffled session. Ends with a study scorecard by CCNA domain. $4.99 one attempt; no subscription. Browser-only exam prep—no GNS3 required.
+One full CCNA 200-301 timed practice exam: 120 minutes with 50 multiple-choice, drag-and-drop, and CLI lab items in one shuffled session. Ends with a study scorecard by CCNA domain. $9.99 one attempt; no subscription. Browser-only exam prep—no GNS3 required.
 ```
 
 **3 — 10-day all-access portal ($9.99)**
@@ -503,7 +510,7 @@ One full CCNA 200-301 timed practice exam: 120 minutes with 50 multiple-choice, 
 **5 — Free sample practice questions**
 
 ```
-Try shuffled CCNA 200-301 multiple-choice practice questions with instant feedback and verified explanations. No checkout required. Interactive browser exam prep, not PDF dumps. Home link returns to the CCNA landing page.
+Try two shuffled CCNA 200-301 multiple-choice practice questions per run—with instant feedback and verified explanations. No checkout required. Optional drag-and-drop and VLAN lab sample tracks on the same page. Interactive browser exam prep, not PDF dumps.
 ```
 
 ### If Google asks for a single category
@@ -512,7 +519,7 @@ Use: **Education & training → Test preparation** or **Educational software / O
 
 ### Priority order when the UI limits how many you can add
 
-1. Free practice assessment  
+1. Free timed simulation sample (lead magnet)  
 2. 120-minute timed exam simulation  
 3. 30-day all-access portal  
 4. 10-day all-access portal  
@@ -524,7 +531,7 @@ Use: **Education & training → Test preparation** or **Educational software / O
 
 | Action | Source | Priority |
 |--------|--------|----------|
-| `ccna_free_assessment_click` | GA4 import | Primary for free assessment ad group |
+| `generate_lead` | GA4 import | Primary for lead ad group |
 | `begin_checkout` | GA4 import | Primary for sim / portal groups |
 | Purchase (Stripe) | Optional offline / enhanced | Secondary |
 
@@ -532,12 +539,12 @@ Use: **Education & training → Test preparation** or **Educational software / O
 
 ## Launch checklist
 
-- [ ] Campaign + 2 ad groups live: `ccna_free_assessment`, `ccna_sim_purchase`
-- [ ] Final URLs match table above (UTMs + anchors)
+- [ ] Campaign + 2 ad groups live: `ccna_lead_free_sim`, `ccna_sim_purchase`
+- [ ] Final URLs match table above (hash + UTMs)
 - [ ] Campaign negatives pasted
-- [ ] GA4 key events: `ccna_free_assessment_click`, `begin_checkout`
-- [ ] Stripe Payment Link price = **$4.99** for timed sim
-- [ ] Test free URL: hero shows “Free CCNA Practice Assessment” (`utm_content=hl-free-practice`)
+- [ ] GA4 key events: `generate_lead`, `begin_checkout`
+- [ ] Stripe Payment Link price = **$9.99** for timed sim
+- [ ] Test lead URL: layout shows intro → lead form → purchase (`utm_content=lead-free-sim`)
 - [ ] Search terms report reviewed at day 7 and day 14
 
 ---
@@ -548,3 +555,4 @@ Use: **Education & training → Test preparation** or **Educational software / O
 - Landing audit: [[../../06-website-optimization/pages/ccna-home|ccna-home.md]]
 - Keywords: [[../../07-keywords/landing-maps/ccna-portal|CCNA landing map]]
 - Cisco foundation: [[../../01-strategy/cisco-certifications-exam-prep-foundation|cisco-certifications-exam-prep-foundation.md]]
+- Ad vs site verification: [[../../06-website-optimization/ad-site-verification-2026-05-31|2026-05-31 verification]]

@@ -30,10 +30,11 @@ Primary paid campaign for **Cisco CCNA 200-301** exam prep on Be Certified Today
 
 Send high-intent 200-301 **exam prep** traffic to the landing page. Convert via:
 
-1. **Free assessment** — 35-min browser diagnostic + domain scorecard (no email gate; one attempt per browser)
-2. **Direct purchase** — $4.99 timed sim, 10-day, or 30-day portal access
+1. **Free timed simulation** — 45-min browser sample + domain scorecard (email unlock at `#ccna-lead-capture`)
+2. **Free samples** — 2 shuffled MCQ per track, drag-and-drop, VLAN lab (no checkout)
+3. **Direct purchase** — $9.99 timed sim, 10-day, or 30-day portal access
 
-Optimize toward `ccna_free_assessment_click`, `begin_checkout`, and purchases while building Quality Score.
+Optimize toward `generate_lead`, `begin_checkout`, and purchases while building Quality Score.
 
 ## Primary landing URLs (use in Google Ads)
 
@@ -49,7 +50,13 @@ Alias (same page — Vercel rewrite):
 https://becertifiedtoday.com/ccna/practice-test?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content={creative}
 ```
 
-**Free assessment (top-of-funnel ad group):**
+**Free timed simulation (top-of-funnel ad group):**
+
+```
+https://becertifiedtoday.com/ccna-home.html#ccna-lead-capture?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=lead-free-sim
+```
+
+**Pinned headline variants (home hero):**
 
 ```
 https://becertifiedtoday.com/ccna-home.html?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=hl-free-practice
@@ -57,10 +64,10 @@ https://becertifiedtoday.com/ccna-home.html?utm_source=google&utm_medium=cpc&utm
 
 Pinned headline variants map to `utm_content=hl-*` → `ccna-home-conversion.js`. See `scripts/ccna-google-ads-headline-suffixes.txt`.
 
-**Tighter message-match option (A/B):** send free-practice keywords directly to the assessment runner:
+**Direct runner (return visits / email already unlocked):**
 
 ```
-https://becertifiedtoday.com/CCNA_Sim_EXAM/free-assessment.html?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=free-assessment
+https://becertifiedtoday.com/CCNA_Sim_EXAM/free-assessment.html?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=free-simulation
 ```
 
 **Purchase intent (sim / portal ad groups):**
@@ -83,7 +90,7 @@ https://becertifiedtoday.com/ccna-home.html#exam-audience?utm_source=google&utm_
 
 | Ad group | Final URL / anchor | Intent | Start spend? |
 |----------|-------------------|--------|:------------:|
-| `ccna_free_assessment` | Home + `utm_content=hl-free-practice` | Practice test, mock exam, free CCNA | **Yes** — primary launch |
+| `ccna_lead_free_sim` | `#ccna-lead-capture` + `lead-free-sim` | Practice test, mock exam, free CCNA | **Yes** — primary launch |
 | `ccna_sim_purchase` | `#purchase` | Timed simulation, exam sim | Yes — tight keywords |
 | `ccna_portal_access` | `#purchase` | Multi-day study access | After baseline data |
 | `ccna_labs_pbq` | Home (samples section) | Drag-and-drop, CLI lab practice | Optional mid-funnel |
@@ -96,16 +103,17 @@ https://becertifiedtoday.com/ccna-home.html#exam-audience?utm_source=google&utm_
 | Stage | Page / action | GA4 signal |
 |-------|----------------|------------|
 | Click | Google Ads → `ccna-home.html` | Session with `utm_campaign=ccna_portal` |
-| Free assessment start | Hero CTA → `/CCNA_Sim_EXAM/free-assessment.html` | `ccna_free_assessment_click` |
-| Free assessment | 35 min · 17 items (12 MCQ + 4 D&D + 1 VLAN lab) | Engagement, completion |
+| Lead capture | `#ccna-lead-capture` email form | `generate_lead` |
+| Free timed sim | 45 min · 23 items (20 MCQ + 2 D&D + 1 VLAN lab) | Engagement, completion |
+| Free samples | 2 MCQ / D&D / lab tracks (no email) | Sample completion |
 | Scorecard | Domain + objective breakdown on results | Scorecard render |
 | Upsell | Results modal or `#purchase` | `begin_checkout` |
 | Try free sample (no checkout) | `/sample?track=ccna-*` or in-page sample CTAs | Page views, engagement |
 | Begin checkout | Portal 10d / 30d or timed sim buttons | `begin_checkout` |
 | Purchase | Stripe Payment Link | Stripe + portal metadata; Google Ads conversion if configured |
 
-Blueprint: `public/CCNA-Study/data/ccna-free-assessment-blueprint.json`  
-Runner: `public/CCNA_Sim_EXAM/free-assessment.html`
+Blueprint: `public/CCNA-Study/data/ccna-free-assessment-blueprint.json` (free sim pool)  
+Runner: `public/CCNA_Sim_EXAM/free-assessment.html` · Lead: `#ccna-lead-capture` on `ccna-home.html`
 
 ## Products & checkout tracking
 
@@ -113,8 +121,8 @@ Runner: `public/CCNA_Sim_EXAM/free-assessment.html`
 |-------|------:|---------------|-------------------|
 | 10-day portal | $9.99 | `ccna_portal_10d` | `data-ccna-portal-10d-checkout` |
 | 30-day portal | $19.99 | `ccna_portal_30d` | `data-ccna-portal-30d-checkout` |
-| Timed simulation | $4.99 | `ccna_timed_simulation` | `data-bcc-item-id` on sim checkout |
-| Free assessment | $0 | — | One attempt per browser (localStorage) |
+| Timed simulation | $9.99 | `ccna_timed_simulation` | `data-bcc-item-id` on sim checkout |
+| Free timed sim | $0 | — | Email unlock at `#ccna-lead-capture`; one attempt per browser |
 
 Checkout wiring: `public/CCNA-Study/js/ccna-portal-30d-checkout.js`, `ccna-test-checkout.js`.
 

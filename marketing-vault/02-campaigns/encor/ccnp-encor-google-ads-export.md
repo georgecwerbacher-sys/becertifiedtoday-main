@@ -61,11 +61,17 @@ Copy blocks below into Google Ads (Search campaign) or Google Ads Editor. Parent
 
 ---
 
-## Ad group 1 — `encor_free_samples` (launch first)
+## Ad group 1 — `encor_lead_free_sim` (launch first)
 
-**Intent:** Practice test / mock exam → free shuffled sample questions, drag-and-drop, and CLI lab.
+**Intent:** Practice test / mock exam → free 45-min timed sim + scorecard (email unlock).
 
-**Final URL (recommended — home):**
+**Final URL (recommended — lead-first):**
+
+```
+https://becertifiedtoday.com/ccnp-home.html#encor-lead-capture?utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=lead-free-sim
+```
+
+**Alternate (home samples — no email):**
 
 ```
 https://becertifiedtoday.com/ccnp-home.html?utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=free-samples
@@ -77,15 +83,16 @@ https://becertifiedtoday.com/ccnp-home.html?utm_source=google&utm_medium=cpc&utm
 https://becertifiedtoday.com/sample?track=encor-questions&utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sample-questions
 ```
 
-**Display path (optional):** `ENCOR` / `Free-Samples`
+**Display path (optional):** `ENCOR` / `Free-Sim`
 
 **RSA — Headlines** (≤30 chars; pin H1–H3 in UI)
 
 ```
-Free ENCOR Practice Test
-CCNP ENCOR Sample Questions
-12 MCQ + D&D + CLI Lab
+Free ENCOR Timed Sim
+Start Free ENCOR Sample
+45-Min Practice + Scorecard
 ENCOR 350-401 Sample Exam
+20 MCQ + D&D + CLI Lab
 Exam Prep — Not a Course
 No GNS3 — Browser Prep
 Shuffled Sample Questions
@@ -93,6 +100,7 @@ Interactive CLI Labs
 No PDFs — Browser Prep
 CCNP ENCOR 350-401 Prep
 Realistic ENCOR Practice
+Email Unlock · One Free Run
 Try Before You Buy
 Be Certified Today
 ```
@@ -100,15 +108,15 @@ Be Certified Today
 **RSA — Descriptions** (≤90 chars)
 
 ```
-Free ENCOR 350-401 samples: 12 shuffled MCQ, drag-and-drop, and ACL/CoPP CLI lab in your browser.
+Free 45-min ENCOR 350-401 sample: 20 MCQ, 2 drag-and-drop, ACL/CoPP CLI lab in your browser.
 Realistic CCNP ENCOR practice before test day. Full 120-min sim when you are ready. No GNS3 or PDFs.
 Exam preparation—not a training course. Verified explanations. No dumps or third-party lab software.
-Start free sample questions from ENCOR home—no email, checkout, or membership required.
+Enter email to start your free simulation. Prefer no email? Try two free sample questions on site.
 ```
 
-**Pin suggestion:** Headline 1 → `Free ENCOR Practice Test` · Headline 2 → `CCNP ENCOR Sample Questions` · Headline 3 → `12 MCQ + D&D + CLI Lab`
+**Pin suggestion:** Headline 1 → `Free ENCOR Timed Sim` · Headline 2 → `Start Free ENCOR Sample` · Headline 3 → `45-Min Practice + Scorecard`
 
-### Keywords — `encor_free_samples`
+### Keywords — `encor_lead_free_sim`
 
 Paste into ad group keyword box. **Phrase** = `"quotes"` · **Exact** = `[square brackets]`.
 
@@ -146,13 +154,13 @@ Paste into ad group keyword box. **Phrase** = `"quotes"` · **Exact** = `[square
 "ccna only"
 ```
 
-**Primary conversion:** Sample engagement / page views · **Secondary:** `begin_checkout` (upsell)
+**Primary conversion:** `generate_lead` · **Secondary:** `begin_checkout` (upsell)
 
 ---
 
 ## Ad group 2 — `encor_sim_purchase`
 
-**Intent:** Timed simulation / exam sim → $4.99 one-time 120-minute test.
+**Intent:** Timed simulation / exam sim → $9.99 one-time 120-minute test.
 
 **Final URL:**
 
@@ -167,7 +175,7 @@ https://becertifiedtoday.com/ccnp-home.html#purchase?utm_source=google&utm_mediu
 ```
 120-Min ENCOR Exam Sim
 ENCOR 350-401 Timed Test
-Timed Sim — $4.99
+Timed Sim — $9.99
 Domain-Weighted Scorecard
 50 MCQ + 5 D&D + 4 Labs
 120 Minutes Like Test Day
@@ -184,13 +192,13 @@ Try Free Samples on Site
 **RSA — Descriptions**
 
 ```
-One 120-minute ENCOR 350-401 session: 50 MCQ, 5 drag-and-drop, 4 CLI labs. $4.99 one attempt.
+One 120-minute ENCOR 350-401 session: 50 MCQ, 5 drag-and-drop, 4 CLI labs. $9.99 one attempt.
 Same clock and mix as test day—not a video course. Verified explanations in your browser.
 Exam-realistic CCNP ENCOR prep. No PDF dumps or GNS3 installs required.
 Free sample questions and labs on the same page if you want to try before you buy the full sim.
 ```
 
-**Pin suggestion:** H1 → `120-Min ENCOR Exam Sim` · H2 → `Timed Sim — $4.99` · H3 → `50 MCQ + 5 D&D + 4 Labs`
+**Pin suggestion:** H1 → `120-Min ENCOR Exam Sim` · H2 → `Timed Sim — $9.99` · H3 → `50 MCQ + 5 D&D + 4 Labs`
 
 ### Keywords — `encor_sim_purchase`
 
@@ -456,31 +464,32 @@ Paste each row into **Add products or services**. Names ≤120 chars; descriptio
 
 | # | Product / service name | Landing URL |
 |---|------------------------|-------------|
-| 1 | Free CCNP ENCOR 350-401 Sample Practice Questions | `https://becertifiedtoday.com/sample?track=encor-questions` |
+| 1 | Free CCNP ENCOR 350-401 Timed Simulation Sample | `https://becertifiedtoday.com/ccnp-home.html#encor-lead-capture` |
 | 2 | CCNP ENCOR 350-401 120-Minute Timed Exam Simulation | `https://becertifiedtoday.com/ccnp-home.html#purchase` |
 | 3 | CCNP ENCOR 350-401 10-Day All-Access Practice Portal | `https://becertifiedtoday.com/ccnp-home.html#purchase` |
 | 4 | CCNP ENCOR 350-401 30-Day All-Access Practice Portal | `https://becertifiedtoday.com/ccnp-home.html#purchase` |
-| 5 | Free CCNP ENCOR Sample Drag-and-Drop Practice | `https://becertifiedtoday.com/sample?track=encor-dnd` |
-| 6 | Free CCNP ENCOR ACL & CoPP CLI Lab Sample | `https://becertifiedtoday.com/sample?track=labs` |
+| 5 | Free CCNP ENCOR Sample Practice Questions | `https://becertifiedtoday.com/sample?track=encor-questions` |
+| 6 | Free CCNP ENCOR Sample Drag-and-Drop Practice | `https://becertifiedtoday.com/sample?track=encor-dnd` |
+| 7 | Free CCNP ENCOR ACL & CoPP CLI Lab Sample | `https://becertifiedtoday.com/sample?track=labs` |
 
 ### Descriptions (copy under each name)
 
-**1 — Free sample practice questions**
+**1 — Free timed simulation sample**
 
 ```
-Free shuffled CCNP ENCOR 350-401 multiple-choice sample questions in your browser: twelve items drawn from across the blueprint with instant feedback on each answer. Use Check answer and Next to work through the set. No checkout or email required. Interactive exam prep, not PDF dumps.
+Free 45-minute CCNP ENCOR 350-401 exam prep sample in your browser: 20 multiple-choice questions, 2 drag-and-drop items, and the ACL/CoPP CLI lab. Email unlock; one free attempt per browser. Domain-weighted scorecard when you finish. Not a training course.
 ```
 
-**2 — 120-minute timed exam simulation ($4.99)**
+**2 — 120-minute timed exam simulation ($9.99)**
 
 ```
-One full ENCOR 350-401 timed practice exam: 120 minutes with 50 multiple-choice, 5 drag-and-drop, and 4 CLI lab items in one randomized session. Pass/fail-style summary when you finish. $4.99 one attempt; no subscription. Browser-only exam prep—no GNS3 required.
+One full ENCOR 350-401 timed practice exam: 120 minutes with 50 multiple-choice, 5 drag-and-drop, and 4 CLI lab items in one randomized session. Pass/fail-style summary when you finish. $9.99 one attempt; no subscription. Browser-only exam prep—no GNS3 required.
 ```
 
 **3 — 10-day all-access portal ($9.99)**
 
 ```
-10 days of full CCNP ENCOR 350-401 exam prep in your browser: domain question banks, CLI labs, drag-and-drop sets, training portal modes, and the 120-minute timed exam simulation. Verified explanations aligned to Cisco objectives. $9.99 one-time; no recurring membership.
+10 days of full CCNP ENCOR 350-401 exam prep in your browser: domain question banks, CLI labs, drag-and-drop sets, practice portal modes, and the 120-minute timed exam simulation. Verified explanations aligned to Cisco objectives. $9.99 one-time; no recurring membership.
 ```
 
 **4 — 30-day all-access portal ($19.99)**
@@ -489,7 +498,13 @@ One full ENCOR 350-401 timed practice exam: 120 minutes with 50 multiple-choice,
 30 days of full ENCOR 350-401 exam preparation: question banks, drag-and-drop and CLI lab items, review modes, progress tracking, and the 120-minute timed simulation. Browser-only—no PDFs or GNS3. $19.99 one-time access; no subscription.
 ```
 
-**5 — Free sample drag-and-drop**
+**5 — Free sample practice questions**
+
+```
+Two shuffled CCNP ENCOR 350-401 multiple-choice sample questions per run in your browser—with instant feedback on each answer. No checkout or email required. Finish opens upsell to the free 45-minute timed simulation.
+```
+
+**6 — Free sample drag-and-drop**
 
 ```
 Try ENCOR 350-401 drag-and-drop practice items with CLI-style drop targets in your browser. Instant feedback and verified explanations. No checkout required. Returns to CCNP ENCOR home when finished.
@@ -507,12 +522,13 @@ Use: **Education & training → Test preparation** or **Educational software / O
 
 ### Priority order when the UI limits how many you can add
 
-1. Free sample practice questions  
+1. Free timed simulation sample (lead magnet)  
 2. 120-minute timed exam simulation  
 3. 30-day all-access portal  
 4. 10-day all-access portal  
-5. Free sample drag-and-drop  
-6. Free CLI lab sample  
+5. Free sample practice questions  
+6. Free sample drag-and-drop  
+7. Free CLI lab sample  
 
 ---
 
@@ -520,7 +536,7 @@ Use: **Education & training → Test preparation** or **Educational software / O
 
 | Action | Source | Priority |
 |--------|--------|----------|
-| Sample engagement / page views | GA4 import | Primary for free samples ad group |
+| `generate_lead` | GA4 import | Primary for lead ad group |
 | `begin_checkout` | GA4 import | Primary for sim / portal groups |
 | Purchase (Stripe) | Optional offline / enhanced | Secondary |
 
@@ -528,12 +544,12 @@ Use: **Education & training → Test preparation** or **Educational software / O
 
 ## Launch checklist
 
-- [ ] Campaign + 2 ad groups live: `encor_free_samples`, `encor_sim_purchase`
+- [ ] Campaign + 2 ad groups live: `encor_lead_free_sim`, `encor_sim_purchase`
 - [ ] Final URLs match table above (UTMs + anchors)
 - [ ] Campaign negatives pasted
-- [ ] GA4 key event: `begin_checkout`
-- [ ] Stripe Payment Link price = **$4.99** for timed sim
-- [ ] Test free URL: hero shows ENCOR samples section (`utm_content=free-samples`)
+- [ ] GA4 key events: `generate_lead`, `begin_checkout`
+- [ ] Stripe Payment Link price = **$9.99** for timed sim
+- [ ] Test lead URL: intro → lead form → purchase (`utm_content=lead-free-sim`)
 - [ ] Confirm ads do **not** point to `secplus-home.html` or `ENCOR_Training_Portal.html`
 - [ ] Search terms report reviewed at day 7 and day 14
 
@@ -546,3 +562,10 @@ Use: **Education & training → Test preparation** or **Educational software / O
 - Keywords: [[../../07-keywords/landing-maps/ccnp-encor-portal|ENCOR landing map]]
 - Cisco foundation: [[../../01-strategy/cisco-certifications-exam-prep-foundation|cisco-certifications-exam-prep-foundation.md]]
 - CCNA parallel: [[../ccna/ccna-portal-google-ads-export|CCNA Google Ads export]]
+
+## Decisions log
+
+| Date | Note |
+|------|------|
+| 2026-05-31 | Verified vs prod: lead sim 45 min; sim **$9.99**; homepage samples **2 MCQ** — [[../../06-website-optimization/ad-site-verification-2026-05-31|verification]] |
+| 2026-05-31 | Initial paste-ready export |

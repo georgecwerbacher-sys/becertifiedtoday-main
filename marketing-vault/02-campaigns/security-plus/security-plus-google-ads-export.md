@@ -482,7 +482,7 @@ One full SY0-701 timed practice exam: up to 90 minutes with multiple-choice, sim
 **5 — Free sample practice questions**
 
 ```
-Try twenty shuffled Security+ multiple-choice practice questions—four per SY0-701 domain—with instant feedback and verified explanations. No checkout or email required. Interactive browser exam prep, not PDF dumps. Home link returns to the Security+ landing page.
+Try two shuffled SY0-701 multiple-choice practice questions per run—with instant feedback and verified explanations. No checkout or email required. Interactive browser exam prep, not PDF dumps. Home link returns to the Security+ landing page; finish opens upsell to the free 35-minute timed simulation.
 ```
 
 **6 — PBQ: secure web architecture & OpenSSL**
@@ -532,4 +532,5 @@ Use: **Education & training → Test preparation** or **Educational software / O
 
 | Date | Note |
 |------|------|
+| 2026-05-31 | Verified vs prod: homepage sample = 2 MCQ; lead sim 35 min / 20 MCQ + PBQ unchanged — see [[../../06-website-optimization/ad-site-verification-2026-05-31|ad-site verification]] |
 | 2026-05-30 | Initial paste-ready export; pricing $9.99 sim; free sim 35 min / 21 items |

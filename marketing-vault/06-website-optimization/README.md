@@ -7,6 +7,7 @@ Track landing page and on-site content changes that improve **Google Ads Quality
 - [[google-ads-quality-score-guide|Google Ads quality & landing page guide]]
 - [[landing-page-audit-checklist|Landing page audit checklist]] — run before/after each content change
 - [[content-change-log|Site content change log]] — master record of what you changed and why
+- [[ad-site-verification-2026-05-31|Ad copy vs live site verification (2026-05-31)]]
 
 ## Active landing pages
 

@@ -31,10 +31,11 @@ Primary paid campaign for **CCNP ENCOR 350-401** exam prep on Be Certified Today
 
 Send high-intent 350-401 **exam prep** traffic to the landing page. Convert via:
 
-1. **Free samples** — shuffled ENCOR questions, drag-and-drop, and CLI lab (no checkout or email gate)
-2. **Direct purchase** — $4.99 timed sim, 10-day, or 30-day portal access
+1. **Free timed simulation** — 45-min browser sample + scorecard (email unlock at `#encor-lead-capture`)
+2. **Free samples** — 2 shuffled MCQ per track, drag-and-drop, ACL/CoPP lab (no checkout)
+3. **Direct purchase** — $9.99 timed sim, 10-day, or 30-day portal access
 
-Optimize toward sample engagement, `begin_checkout`, and purchases while building Quality Score.
+Optimize toward `generate_lead`, sample engagement, `begin_checkout`, and purchases while building Quality Score.
 
 ## Primary landing URLs (use in Google Ads)
 
@@ -44,7 +45,13 @@ Optimize toward sample engagement, `begin_checkout`, and purchases while buildin
 https://becertifiedtoday.com/ccnp-home.html?utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content={creative}
 ```
 
-**Free samples (top-of-funnel ad group):**
+**Free timed simulation (top-of-funnel ad group):**
+
+```
+https://becertifiedtoday.com/ccnp-home.html#encor-lead-capture?utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=lead-free-sim
+```
+
+**Free samples (no email):**
 
 ```
 https://becertifiedtoday.com/ccnp-home.html?utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=free-samples
@@ -76,7 +83,8 @@ https://becertifiedtoday.com/ccnp-home.html#exam-audience?utm_source=google&utm_
 
 | Ad group | Final URL / anchor | Intent | Start spend? |
 |----------|-------------------|--------|:------------:|
-| `encor_free_samples` | Home + `utm_content=free-samples` | Practice test, mock exam, free ENCOR | **Yes** — primary launch |
+| `encor_lead_free_sim` | `#encor-lead-capture` + `lead-free-sim` | Practice test, mock exam, free ENCOR | **Yes** — primary launch |
+| `encor_free_samples` | Home + `utm_content=free-samples` | Sample questions / D&D / lab (no email) | Yes — mid-funnel |
 | `encor_sim_purchase` | `#purchase` | Timed simulation, exam sim | Yes — tight keywords |
 | `encor_portal_access` | `#purchase` | Multi-day study access | After baseline data |
 | `encor_labs_pbq` | Home (samples section) | CLI lab, drag-and-drop practice | Optional mid-funnel |
@@ -89,8 +97,10 @@ https://becertifiedtoday.com/ccnp-home.html#exam-audience?utm_source=google&utm_
 | Stage | Page / action | GA4 signal |
 |-------|----------------|------------|
 | Click | Google Ads → `ccnp-home.html` | Session with `utm_campaign=encor_portal` |
+| Lead capture | `#encor-lead-capture` email form | `generate_lead` |
+| Free timed sim | 45 min · 20 MCQ + 2 D&D + ACL/CoPP lab | Engagement, completion |
 | Free sample | `/sample?track=encor-questions` · `encor-dnd` · `labs` | Engagement, page views |
-| Sample activity | 12 MCQ shuffled · D&D · ACL/CoPP CLI lab | Sample completion |
+| Sample activity | 2 MCQ shuffled per homepage track · D&D · ACL/CoPP CLI lab | Sample completion |
 | Upsell | `#purchase` or sticky promo | `begin_checkout` |
 | Begin checkout | Portal 10d / 30d or timed sim buttons | `begin_checkout` |
 | Purchase | Stripe Payment Link | Stripe + portal metadata; Google Ads conversion if configured |
@@ -103,8 +113,8 @@ Sample tracks: `/sample?track=encor-questions`, `/sample?track=encor-dnd`, `/sam
 |-------|------:|---------------|-------------------|
 | 10-day portal | $9.99 | `encor_portal_10d` | `data-encor-portal-10d-checkout` |
 | 30-day portal | $19.99 | `encor_portal_30d` | `data-encor-portal-30d-checkout` |
-| Timed simulation | $4.99 | `encor_timed_simulation` | `data-encor-test-sim-checkout` |
-| Free samples | $0 | — | No checkout; shuffled guest samples |
+| Timed simulation | $9.99 | `encor_timed_simulation` | `data-encor-test-sim-checkout` |
+| Free timed sim / samples | $0 | — | Email unlock at `#encor-lead-capture`; 2-MCQ samples without email |
 
 Checkout wiring: `public/CCNP-ENCOR-Study/js/encor-portal-30d-checkout.js`, `encor-test-checkout.js` (calls `bccTrackBeginCheckout`).
 
@@ -210,22 +220,22 @@ Before major ad spend increases, run the optimization workflow in [[../../06-web
 ## Creative / ad copy notes
 
 - Full RSA sets, keywords, negatives, extensions: [[ccnp-encor-google-ads-export|paste-ready export]]
-- Launch with **`encor_free_samples`** + **`encor_sim_purchase`** in parallel
-- A/B: home landing (`free-samples`) vs direct `/sample?track=encor-questions` final URL
+- Launch with **`encor_lead_free_sim`** + **`encor_sim_purchase`** in parallel
+- A/B: `#encor-lead-capture` vs home samples (`free-samples`) vs direct `/sample?track=encor-questions`
 - Pin purchase URL to `#purchase` for sim ad group only
 
 ## Decisions log
 
 | Date | Change | Rationale |
 |------|--------|-----------|
+| 2026-05-31 | Ad-site verification vs prod: `#encor-lead-capture` 45-min sim; sim **$9.99**; 2-MCQ homepage samples | [[../../06-website-optimization/ad-site-verification-2026-05-31|verification]] |
 | 2026-05-31 | Vault sync: Security+ playbook structure — ad groups, funnel, export, tracking checklist | Align active ENCOR ads with CCNA/Security+ campaign workflow |
 | 2026-05-30 | Active campaign + Cisco foundation alignment | User running ENCOR ads alongside CCNA |
 | 2026-05-30 | CTA landing = `ccnp-home.html`; not `secplus-home.html` | Product-specific final URLs |
 
 ## Open questions
 
-- **Launch strategy:** Lead with `encor_free_samples` for 1–2 weeks, then scale `encor_sim_purchase` on simulation keywords — **recommended default**
-- **Target CPA:** TBD — compare sample → upsell vs direct `$4.99` sim vs `$19.99` portal
+- **Launch strategy:** Lead with `encor_lead_free_sim` for 1–2 weeks, then scale `encor_sim_purchase` on simulation keywords — **recommended default**
+- **Target CPA:** TBD — compare lead → upsell vs direct `$9.99` sim vs `$19.99` portal
 - **Brand vs non-brand:** Start non-brand only; add brand campaign when search volume warrants
-- **Free assessment:** CCNA has a 35-min timed assessment; ENCOR top-of-funnel is guest samples only — evaluate timed free ENCOR slice later
-- **Headline pinning:** CCNA uses `utm_content=hl-*` → `ccna-home-conversion.js`; add ENCOR equivalent if ad groups need on-page message match
+- **Headline pinning:** CCNA uses `utm_content=hl-*` → `ccna-home-conversion.js`; align ENCOR/CCNA conversion JS with 45-min lead sim copy (site backlog)
