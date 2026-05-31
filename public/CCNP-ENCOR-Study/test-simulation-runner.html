@@ -489,6 +489,7 @@
       var sessionOk = false;
       var bypassMode = false;
       var freeMode = false;
+      var cachedFreeExamPack = null;
       var testMinutes = 120;
 
       function detectFreeMode(params) {
@@ -531,6 +532,45 @@
         gateStartWrap.hidden = false;
         gateStatus.textContent = "When you are ready, start the timed test. The clock runs until you finish or time expires.";
         gateStatus.className = "status-ok";
+        if (freeMode) prefetchFreeExamPack();
+      }
+
+      function prefetchFreeExamPack() {
+        if (!freeMode || cachedFreeExamPack) return;
+        if (
+          window.ENCOR_TEST_SIM_BUILD &&
+          typeof window.ENCOR_TEST_SIM_BUILD.getFreeSimulationPackSync === "function"
+        ) {
+          cachedFreeExamPack = window.ENCOR_TEST_SIM_BUILD.getFreeSimulationPackSync();
+          return;
+        }
+        if (
+          !window.ENCOR_TEST_SIM_BUILD ||
+          typeof window.ENCOR_TEST_SIM_BUILD.loadFreeSimulationQueue !== "function"
+        ) {
+          return;
+        }
+        window.ENCOR_TEST_SIM_BUILD.loadFreeSimulationQueue()
+          .then(function (pack) {
+            cachedFreeExamPack = pack;
+          })
+          .catch(function () {});
+      }
+
+      function failExamStart(message) {
+        clearTestState();
+        gateStatus.textContent = message || "Could not start the exam. Try again or return to the landing page.";
+        gateStatus.className = "status-bad";
+        gateStartWrap.hidden = false;
+        btnGateStartExam.disabled = false;
+      }
+
+      function persistExamSessionState() {
+        try {
+          sessionStorage.setItem("ccnpTestSimQueue", JSON.stringify(queue));
+          sessionStorage.setItem("ccnpTestSimIndex", "0");
+          sessionStorage.setItem("ccnpTestSimEndsAt", String(endsAt));
+        } catch (e) {}
       }
 
       function loadBlueprintLine() {
@@ -605,31 +645,47 @@
       }
 
       function beginExamFromPack(pack) {
-        if (!pack.queue || !pack.queue.length) throw new Error("empty");
+        if (!pack || !pack.queue || !pack.queue.length) {
+          throw new Error("empty");
+        }
         testMinutes = pack.durationMinutes || testMinutes;
         queue = pack.queue;
         index = 0;
+        answeredByIndex = {};
         endsAt = Date.now() + testMinutes * 60 * 1000;
-        try {
-          sessionStorage.setItem("ccnpTestSimQueue", JSON.stringify(queue));
-          sessionStorage.setItem("ccnpTestSimIndex", "0");
-          sessionStorage.setItem("ccnpTestSimEndsAt", String(endsAt));
-        } catch (e) {
-          throw new Error("storage");
-        }
-        return beginPaidSessionIfNeeded();
+        persistExamSessionState();
+        return beginPaidSessionIfNeeded().then(function () {
+          showExamUi();
+          startExamTimerAndFirstItem();
+        });
       }
 
       function startExamFromGate() {
         if (!sessionOk) return;
         btnGateStartExam.disabled = true;
-        gateStatus.textContent = "Building your mixed exam…";
+        gateStartWrap.hidden = true;
+        gateStatus.textContent = freeMode
+          ? "Starting your free sample exam…"
+          : "Building your mixed exam…";
         gateStatus.className = "status-ok";
         if (!window.ENCOR_TEST_SIM_BUILD) {
-          gateStatus.textContent = "Could not load exam builder.";
-          gateStatus.className = "status-bad";
-          btnGateStartExam.disabled = false;
+          failExamStart("Could not load exam builder.");
           return;
+        }
+
+        if (freeMode) {
+          var freePack =
+            cachedFreeExamPack ||
+            (typeof window.ENCOR_TEST_SIM_BUILD.getFreeSimulationPackSync === "function"
+              ? window.ENCOR_TEST_SIM_BUILD.getFreeSimulationPackSync()
+              : null);
+          if (freePack && freePack.queue && freePack.queue.length) {
+            beginExamFromPack(freePack).catch(function (err) {
+              if (err && err.message === "redirect") return;
+              failExamStart();
+            });
+            return;
+          }
         }
 
         var loadPromise;
@@ -638,9 +694,7 @@
         } else if (typeof window.ENCOR_TEST_SIM_BUILD.loadConfigAndBlueprint === "function") {
           loadPromise = window.ENCOR_TEST_SIM_BUILD.loadConfigAndBlueprint();
         } else {
-          gateStatus.textContent = "Could not load exam builder.";
-          gateStatus.className = "status-bad";
-          btnGateStartExam.disabled = false;
+          failExamStart("Could not load exam builder.");
           return;
         }
 
@@ -648,17 +702,9 @@
           .then(function (pack) {
             return beginExamFromPack(pack);
           })
-          .then(function () {
-            showExamUi();
-            startExamTimerAndFirstItem();
-          })
           .catch(function (err) {
             if (err && err.message === "redirect") return;
-            clearTestState();
-            gateStatus.textContent = "Could not start the exam. Try again or return to the landing page.";
-            gateStatus.className = "status-bad";
-            gateStartWrap.hidden = false;
-            btnGateStartExam.disabled = false;
+            failExamStart();
           });
       }
 
