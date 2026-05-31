@@ -280,6 +280,35 @@
     #purchase {
       order: 0;
     }
+    .funnel-intro {
+      order: 2;
+      margin: 0 0 clamp(20px, 3.5vw, 28px);
+    }
+    .lead--lead-first {
+      display: none;
+      margin: 0 0 clamp(18px, 3vw, 24px);
+    }
+    html.encor-landing-lead-first .lead--full {
+      display: none;
+    }
+    html.encor-landing-lead-first .lead--lead-first {
+      display: block;
+    }
+    html.encor-landing-lead-first .funnel-intro .benefits {
+      display: none;
+    }
+    html.encor-landing-lead-first .funnel > .funnel-intro {
+      order: 1;
+    }
+    .lead-capture-section {
+      order: 3;
+    }
+    .samples-stack {
+      order: 4;
+    }
+    #purchase-details {
+      order: 5;
+    }
     .purchase-fold {
       margin: 0 0 clamp(24px, 4vw, 32px);
     }
@@ -1038,13 +1067,26 @@
       padding: 0;
       border: 0;
     }
+    .samples-block-intro {
+      margin: 0 0 clamp(16px, 3vw, 22px);
+      padding: clamp(16px, 3vw, 22px);
+      border-radius: 12px;
+      border: 1px solid rgba(96, 165, 250, 0.35);
+      background: linear-gradient(165deg, #1e3a8a 0%, #1d4ed8 52%, #2563eb 100%);
+      box-shadow: 0 8px 24px rgba(29, 78, 216, 0.22);
+    }
     .samples-block-title {
       margin: 0 0 8px;
       font-size: clamp(1.05rem, 2.2vw, 1.2rem);
       font-weight: 800;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      color: #7a9fd6;
+      color: #ffffff;
+    }
+    .samples-block-intro .samples-block-lead {
+      margin: 0;
+      max-width: none;
+      color: #dbeafe;
     }
     .samples-block-lead {
       margin: 0 0 clamp(16px, 3vw, 22px);
@@ -1082,6 +1124,9 @@
     }
     html.encor-landing-lead-first .funnel > .samples-stack {
       order: 4;
+    }
+    html.encor-landing-lead-first .funnel > #purchase-details {
+      order: 5;
     }
     .lead-capture-section {
       margin: 0 0 clamp(24px, 4vw, 32px);
@@ -1259,6 +1304,9 @@
       flex-direction: column;
       min-height: 0;
     }
+    .samples-stack .format-card h3 {
+      color: #e6edf3;
+    }
     .samples-stack .format-card > .format-sample:last-child {
       margin-top: auto;
     }
@@ -1279,19 +1327,21 @@
       line-height: 1.55;
     }
     .format-card-thumb {
+      flex-shrink: 0;
       margin: 0 0 14px;
       border-radius: 10px;
       overflow: hidden;
       border: 1px solid rgba(45, 59, 90, 0.85);
-      aspect-ratio: 16 / 9;
       background: #0f1729;
+      line-height: 0;
     }
     .format-card-thumb img {
       display: block;
       width: 100%;
-      height: 100%;
+      height: auto;
+      max-width: 100%;
       object-fit: cover;
-      object-position: center;
+      object-position: center top;
     }
     .format-sample {
       margin: 14px 0 0;
@@ -2111,101 +2161,36 @@
                     </div>
                   </div>
                 </div>
-                <details class="purchase-blueprint-details">
-                  <summary>How ENCOR 350-401 domains are weighted on the live exam</summary>
-                  <div class="purchase-blueprint-callout" aria-labelledby="purchase-blueprint-title">
-                                    <h3 class="purchase-blueprint-title" id="purchase-blueprint-title">
-                                      Match your prep to how Cisco weights ENCOR 350-401
-                                    </h3>
-                                    <p class="purchase-blueprint-lead">
-                                      The live exam follows Cisco&rsquo;s published domains. ENCOR 350-401 v1.2 groups content into six areas:
-                                      architecture, virtualization, infrastructure, network assurance, security, and automation and artificial intelligence.
-                                      Official guidance puts the strongest emphasis on <strong>Infrastructure</strong> (30%), followed by
-                                      <strong>Security</strong> (20%) and <strong>Architecture</strong> (15%).
-                                    </p>
-                                    <p class="purchase-blueprint-note">
-                                      Approximate weights below come from Cisco exam guidance—use them to budget study hours, not as a guarantee of how
-                                      many questions you will see on a specific attempt.
-                                    </p>
-                                    <div class="purchase-blueprint-table-wrap">
-                                      <table class="purchase-domain-table" aria-label="Approximate ENCOR domain weights and study focus">
-                                        <thead>
-                                          <tr>
-                                            <th scope="col">Section</th>
-                                            <th scope="col">Weight</th>
-                                            <th scope="col">What to study</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                          <tr>
-                                            <th scope="row">1.0 Architecture</th>
-                                            <td>15%</td>
-                                            <td>Enterprise design, Catalyst SD-WAN, SD-Access, QoS, and high availability</td>
-                                          </tr>
-                                          <tr>
-                                            <th scope="row">2.0 Virtualization</th>
-                                            <td>10%</td>
-                                            <td>Hypervisors, VMs, VRF, GRE, IPsec, LISP, and VXLAN</td>
-                                          </tr>
-                                          <tr>
-                                            <th scope="row">3.0 Infrastructure</th>
-                                            <td>30%</td>
-                                            <td>Layer 2 trunking and STP, EtherChannel, EIGRP/OSPF, eBGP, NAT, FHRP, and multicast</td>
-                                          </tr>
-                                          <tr>
-                                            <th scope="row">4.0 Network Assurance</th>
-                                            <td>10%</td>
-                                            <td>SNMP, syslog, NetFlow, SPAN/RSPAN, IPSLA, Catalyst Center, NETCONF, and RESTCONF</td>
-                                          </tr>
-                                          <tr>
-                                            <th scope="row">5.0 Security</th>
-                                            <td>20%</td>
-                                            <td>Device access, AAA, ACLs, CoPP, REST API security, and security design</td>
-                                          </tr>
-                                          <tr>
-                                            <th scope="row">6.0 Automation and AI</th>
-                                            <td>15%</td>
-                                            <td>Python, JSON, YANG, Catalyst Center and SD-WAN APIs, EEM, and orchestration tools</td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
-                                    </div>
-                                    <p class="purchase-blueprint-lead">
-                                      <strong>What to focus on first:</strong> infrastructure and architecture underpin routing, switching, and a large share
-                                      of configuration-style prompts. Add security and network assurance next, then virtualization and automation for the full ENCOR mix.
-                                    </p>
-                                    <p class="purchase-blueprint-order-title">Suggested study order</p>
-                                    <ol class="purchase-blueprint-order">
-                                      <li>Architecture and design principles</li>
-                                      <li>Infrastructure — Layer 2, routing, and path selection</li>
-                                      <li>Security — ACLs, CoPP, AAA, and device hardening</li>
-                                      <li>Network assurance — monitoring, telemetry, and troubleshooting tools</li>
-                                      <li>Virtualization — VRF, overlays, and tunneling</li>
-                                      <li>Automation and AI — APIs, Python, JSON, and programmability</li>
-                                    </ol>
-                </details>
-                <div class="purchase-notes">
-                  <strong>No recurring membership.</strong> Choose the access window you need and renew only if you want more time.
-                  <strong>No additional software</strong> is required; everything runs in your browser.
-                </div>
               </div>
             </div>
           </div>
-          <p class="eyebrow">CCNP ENCOR 350-401 · exam prep</p>
-          <h1>CCNP ENCOR exam prep — practice tests, labs, and timed simulation</h1>
-          <p class="lead">
-            Prepare for <strong>ENCOR 350-401</strong> with certification <strong>practice tests</strong>, hands-on <strong>CLI labs</strong>,
-            extensive <strong>practice questions</strong>, drag-and-drop items, and timed exam simulations—exam prep in your browser,
-            not a video training course. Used by enterprise network engineers and many <strong>federal and defense-contractor</strong> teams preparing for Cisco professional-level exams.
-            <strong>No PDFs or third-party applications:</strong> everything runs in the browser and responds to what you do.
-          </p>
-          <ul class="benefits" aria-label="What you get">
-            <li>100% interactive—click, type, and drag in the app; not static dumps or slide decks.</li>
-            <li>Question banks and study paths organized by exam topic—not random blog posts.</li>
-            <li>Review quiz mode loops missed answers back to the end so weak topics get extra reps.</li>
-            <li>Progress tracking helps you focus study time where it is needed most.</li>
-            <li>New questions are added continuously to keep preparation current.</li>
-          </ul>
+
+          <div class="funnel-intro" id="exam-audience">
+            <p class="eyebrow">Cisco CCNP ENCOR 350-401 · exam prep · practice tests</p>
+            <h1>CCNP ENCOR 350-401 Exam Prep — Practice Tests &amp; Simulation</h1>
+            <p class="lead lead--full">
+              <strong>Exam preparation</strong> for 350-401—not a training course. Built for test-takers in
+              <strong>federal agencies, DoD, and defense-contractor</strong> roles where CCNP Enterprise (ENCOR) often supports professional-level networking qualification,
+              as well as anyone preparing for test day.
+              Practice with <strong>realistic practice tests</strong>, <strong>verified explanations</strong>, drag-and-drop items, CLI labs,
+              and a <strong>120-minute timed simulation</strong> built for the mix of multiple-choice, drag-and-drop, and simulation-style questions on test day.
+              <strong>No PDFs or third-party software:</strong> browser-only prep you can use on your schedule—from duty station, CONUS, or TDY.
+              Build confidence before you sit the exam and avoid paying for a retake—try the free sample first, then choose a 10-day pass, 30-day pass, or one-time simulation above.
+            </p>
+            <p class="lead lead--lead-first">
+              <strong>Exam preparation</strong> for 350-401—not a training course. Start with the
+              <strong>free 45-minute timed simulation</strong> below: 20 multiple-choice questions, 2 drag-and-drop items, and an ACL/CoPP CLI lab,
+              then review your results when you finish. Browser-only—no PDFs or third-party software.
+            </p>
+            <ul class="benefits" aria-label="What you get">
+              <li>Exam-realistic formats—120-minute timed sim, drag-and-drop, CLI labs, and domain-organized question banks.</li>
+              <li>Verified explanations aligned to Cisco ENCOR 350-401 exam objectives (v1.2)—not unvetted dumps.</li>
+              <li>100% interactive in the browser; not static PDFs, slide decks, or third-party apps.</li>
+              <li>Review modes loop missed answers back so weak topics get extra reps before test day.</li>
+              <li>Progress tracking helps you focus study time where it is needed most.</li>
+              <li>One-time access windows—no recurring subscription.</li>
+            </ul>
+          </div>
 
           <section class="lead-capture-section" id="encor-lead-capture" aria-labelledby="encor-lead-capture-title">
             <p class="lead-capture-badge">Free · 45 minutes · no checkout</p>
@@ -2247,10 +2232,12 @@
 
           <div class="samples-stack" id="encor-samples">
             <section class="samples-block" aria-labelledby="home-encor-samples-title">
-              <h2 class="samples-block-title" id="home-encor-samples-title"><strong>CCNP ENCOR samples</strong></h2>
-              <p class="samples-block-lead">
-                Interactive previews from the ENCOR question bank, drag-and-drop, and ACL/CoPP lab—no checkout required. Each activity uses a <strong>Home</strong> tab back to this page and <strong>Next</strong> (or <strong>Finish sample</strong>) to move on. When you finish, try the free 45-minute timed simulation next.
-              </p>
+              <div class="samples-block-intro">
+                <h2 class="samples-block-title" id="home-encor-samples-title"><strong>Try free ENCOR samples</strong></h2>
+                <p class="samples-block-lead">
+                  Interactive previews from the ENCOR question bank, drag-and-drop, and ACL/CoPP lab—no checkout required. Each activity uses a <strong>Home</strong> tab back to this page and <strong>Next</strong> (or <strong>Finish sample</strong>) to move on. When you finish, try the free 45-minute timed simulation next.
+                </p>
+              </div>
               <ul class="formats-grid formats-grid--tri" aria-label="CCNP ENCOR sample activities">
                 <li>
                   <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-encor-q-title">
@@ -2262,7 +2249,8 @@
                         height="556"
                         alt="ENCOR multiple-choice sample questions with instant feedback."
                         decoding="async"
-                        loading="lazy"
+                        loading="eager"
+                        fetchpriority="high"
                       />
                     </figure>
                     <p>
@@ -2283,7 +2271,7 @@
                         height="535"
                         alt="ENCOR drag-and-drop sample with CLI-style drop targets."
                         decoding="async"
-                        loading="lazy"
+                        loading="eager"
                       />
                     </figure>
                     <p>Two performance-style drag-and-drop items—shuffled each run. Drag snippets into the blanks or tap to place on a phone. When you tap <strong>Finish sample</strong>, try the free timed simulation next.</p>
@@ -2294,7 +2282,7 @@
                 </li>
                 <li>
                   <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-encor-lab-title">
-                    <h3 id="home-encor-lab-title">ENCOR · Sample lab</h3>
+                    <h3 id="home-encor-lab-title">ENCOR · ACL/CoPP lab simulation</h3>
                     <figure class="format-card-thumb">
                       <img
                         src="/CCNP-ENCOR-Study/assets/acl-copp-lab-thumb.png"
@@ -2302,7 +2290,7 @@
                         height="801"
                         alt="ACL and CoPP sample lab topology with multi-area OSPF routers."
                         decoding="async"
-                        loading="lazy"
+                        loading="eager"
                       />
                     </figure>
                     <p>Practice one hands-on CLI simulation—extended ACL on R10, CoPP on R20, and save checks in the browser. When you tap <strong>Finish sample</strong>, try the free timed simulation next.</p>
@@ -2315,41 +2303,101 @@
             </section>
           </div>
 
-          <section class="exam-audience-section" id="exam-audience" aria-labelledby="encor-exam-audience-title">
-            <h2 id="encor-exam-audience-title">Who ENCOR exam prep is for — and when it matters</h2>
-            <p class="exam-audience-lead">
-              <strong>CCNP ENCOR 350-401 exam prep</strong> for network engineers moving to professional-level Cisco certification—plus contractors and federal integrators where ENCOR or CCNP Enterprise is part of role qualification. Confirm your employer's requirement; we provide <strong>practice and simulation</strong>, not HR compliance tracking.
-            </p>
-            <div class="exam-audience-grid">
-              <article class="exam-audience-card">
-                <h3>People</h3>
-                <ul>
-                  <li>Network engineers pursuing CCNP Enterprise (ENCOR first)</li>
-                  <li>Contractor and federal network staff on CCNP timelines</li>
-                  <li>CCNA holders scheduling 350-401 within 60–90 days</li>
-                  <li>Re-test candidates after a failed ENCOR attempt</li>
-                </ul>
-              </article>
-              <article class="exam-audience-card">
-                <h3>When timing matters</h3>
-                <ul>
-                  <li>Four to twelve weeks before your Pearson VUE exam date</li>
-                  <li>Contract or promotion windows tied to CCNP completion</li>
-                  <li>After free samples show weak blueprint domains</li>
-                  <li>Evening or weekend cram before a scheduled retake</li>
-                </ul>
-              </article>
-              <article class="exam-audience-card">
-                <h3>Where you study</h3>
-                <p>
-                  Browser-only CLI labs, drag-and-drop, and timed sim—<strong>no GNS3 or EVE-NG install</strong> required for core prep. Study from home, on travel, or between shifts; follow your organization's policy for external sites on government systems.
+          <div class="card purchase-card" id="purchase-details">
+            <div class="purchase-card-inner">
+              <div class="purchase-card-main">
+                <p class="purchase-label">Study plan</p>
+                <h2 class="purchase-heading">Match your prep to ENCOR 350-401</h2>
+                <p class="purchase-lead purchase-lead--tight">
+                  Domain weights and a suggested study order—unlock the full library from the purchase cards above.
                 </p>
-              </article>
+                <div class="purchase-blueprint-callout" aria-labelledby="purchase-blueprint-title">
+                  <h3 class="purchase-blueprint-title" id="purchase-blueprint-title">
+                    Match your prep to how Cisco weights ENCOR 350-401
+                  </h3>
+                  <p class="purchase-blueprint-lead">
+                    The live ENCOR 350-401 exam (v1.2) certifies professional-level enterprise networking skills across architecture,
+                    infrastructure, security, assurance, virtualization, and automation. Cisco publishes six domains; official guidance puts
+                    the strongest emphasis on <strong>Infrastructure</strong> (30%), followed by <strong>Security</strong> (20%) and
+                    <strong>Architecture</strong> (15%).
+                  </p>
+                  <p class="purchase-blueprint-note">
+                    Domain weights below come from Cisco exam guidance—use them to budget study hours, not as a guarantee of how
+                    many questions you will see on a specific attempt. The exam allows up to <strong>120 minutes</strong> with
+                    multiple-choice, drag-and-drop, and simulation-style items.
+                  </p>
+                  <div class="purchase-blueprint-table-wrap">
+                    <table class="purchase-domain-table" aria-label="Approximate ENCOR 350-401 domain weights and study focus">
+                      <thead>
+                        <tr>
+                          <th scope="col">Section</th>
+                          <th scope="col">Weight</th>
+                          <th scope="col">What to study</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row">1.0 Architecture</th>
+                          <td>15%</td>
+                          <td>Enterprise design, Catalyst SD-WAN, SD-Access, QoS, and high availability</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">2.0 Virtualization</th>
+                          <td>10%</td>
+                          <td>Hypervisors, VMs, VRF, GRE, IPsec, LISP, and VXLAN</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">3.0 Infrastructure</th>
+                          <td>30%</td>
+                          <td>Layer 2 trunking and STP, EtherChannel, EIGRP/OSPF, eBGP, NAT, FHRP, and multicast</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">4.0 Network Assurance</th>
+                          <td>10%</td>
+                          <td>SNMP, syslog, NetFlow, SPAN/RSPAN, IPSLA, Catalyst Center, NETCONF, and RESTCONF</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">5.0 Security</th>
+                          <td>20%</td>
+                          <td>Device access, AAA, ACLs, CoPP, REST API security, and security design</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">6.0 Automation and AI</th>
+                          <td>15%</td>
+                          <td>Python, JSON, YANG, Catalyst Center and SD-WAN APIs, EEM, and orchestration tools</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p class="purchase-blueprint-lead">
+                    <strong>What to focus on first:</strong> infrastructure and architecture underpin routing, switching, and a large share
+                    of configuration-style prompts. Add security and network assurance next, then virtualization and automation for the full ENCOR mix.
+                  </p>
+                  <p class="purchase-blueprint-order-title">Suggested study order</p>
+                  <ol class="purchase-blueprint-order">
+                    <li>Architecture and design principles</li>
+                    <li>Infrastructure — Layer 2, routing, and path selection</li>
+                    <li>Security — ACLs, CoPP, AAA, and device hardening</li>
+                    <li>Network assurance — monitoring, telemetry, and troubleshooting tools</li>
+                    <li>Virtualization — VRF, overlays, and tunneling</li>
+                    <li>Automation and AI — APIs, Python, JSON, and programmability</li>
+                  </ol>
+                  <p class="purchase-blueprint-lead">
+                    Under time pressure, leaning hardest into <strong>Infrastructure</strong> and <strong>Security</strong>
+                    before you polish lighter domains mirrors where Cisco weights the blueprint. The timed simulation on this site rehearses
+                    that mixed multiple-choice, drag-and-drop, and CLI lab pressure across all six domains in one 120-minute session.
+                  </p>
+                  <p class="purchase-blueprint-note">
+                    Source: Cisco ENCOR 350-401 exam blueprint, v1.2.
+                  </p>
+                </div>
+                <div class="purchase-notes">
+                  <strong>No recurring membership.</strong> Choose a 10-day or 30-day access window—or a one-time timed simulation—and renew only if you want more time.
+                  <strong>No additional software</strong> is required; everything runs in your browser.
+                </div>
+              </div>
             </div>
-            <p class="exam-audience-disclaimer">
-              <strong>Disclaimer:</strong> Be Certified Today provides Cisco exam preparation only—not affiliated with Cisco. Certification requirements are set by your employer or contract.
-            </p>
-          </section>
+          </div>
 
           
         </div>
