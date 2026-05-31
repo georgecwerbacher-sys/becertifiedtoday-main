@@ -104,6 +104,9 @@
       font-size: 0.92rem;
       color: #9fb0cc;
     }
+    .summary-modal[hidden] {
+      display: none !important;
+    }
     .summary-modal {
       position: fixed;
       inset: 0;
@@ -112,7 +115,7 @@
       justify-content: center;
       padding: 20px;
       background: rgba(5, 10, 20, 0.72);
-      z-index: 2000;
+      z-index: 3000;
     }
     .summary-modal.is-open {
       display: flex;
@@ -143,6 +146,7 @@
     }
     .summary-actions {
       display: flex;
+      flex-wrap: wrap;
       justify-content: flex-end;
       gap: 10px;
     }
@@ -379,6 +383,7 @@
   <script src="/CCNP-ENCOR-Study/js/encor-test-sim-scorecard.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-storage.js" defer></script>
   <script src="/CCNP-ENCOR-Study/js/encor-test-sim-storage.js" defer></script>
+  <script src="/CCNP-ENCOR-Study/js/encor-portal-30d-checkout.js" defer></script>
   <script src="/js/encor-lead-capture.js" defer></script>
 </head>
 <body>
@@ -467,6 +472,26 @@
           <a href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">ENCOR Training Portal</a>. Scaled results use a
           <strong>1000</strong>-point score with a <strong>800</strong> passing threshold (70% MCQ, 10% drag-and-drop, 20% labs).
         </p>
+      </div>
+    </div>
+  </div>
+
+  <div id="freeSimPortalOfferModal" class="summary-modal" role="dialog" aria-modal="true" aria-labelledby="freeSimPortalOfferTitle" hidden>
+    <div class="summary-card">
+      <p class="summary-text" style="margin:0 0 8px;font-size:0.78rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#93c5fd">Free simulation complete</p>
+      <h2 id="freeSimPortalOfferTitle" class="summary-title">Continue with 30-day ENCOR access</h2>
+      <p class="summary-text">
+        Get <strong>30 days</strong> of full CCNP ENCOR 350-401 library access for <strong>$19.99</strong>: question banks, drag-and-drop practice, CLI labs, portal study modes, and the 120-minute timed exam simulation—all in your browser. One-time purchase; no subscription.
+      </p>
+      <ul class="summary-list">
+        <li>Full ENCOR question bank and lab library</li>
+        <li>Training portal with linear and random study modes</li>
+        <li>Timed test simulation with domain scorecard</li>
+      </ul>
+      <div class="summary-actions">
+        <button type="button" class="summary-close" id="freeSimPortalOfferDismiss">View my scorecard</button>
+        <a class="summary-home" href="/ccnp-home.html">Back to CCNP home</a>
+        <button type="button" class="summary-home" data-encor-portal-30d-checkout>Get 30-day access — $19.99</button>
       </div>
     </div>
   </div>
@@ -987,16 +1012,65 @@
         return "complete";
       }
 
+      function applyFreeModeResultsUi() {
+        if (!freeMode) return;
+        if (resultsContinue) resultsContinue.textContent = "Back to CCNP home";
+        var note = document.querySelector("#resultsPanel .results-actions .results-note");
+        if (note) {
+          note.innerHTML =
+            'Your free sample scorecard stays on this page. Continue returns you to <a href="/ccnp-home.html">CCNP ENCOR home</a>. Scaled results use a <strong>1000</strong>-point score with a <strong>700</strong> passing threshold for this free sample (70% MCQ, 10% drag-and-drop, 20% labs).';
+        }
+      }
+
+      function wireFreeSimPortalOfferModal() {
+        var modal = document.getElementById("freeSimPortalOfferModal");
+        var dismiss = document.getElementById("freeSimPortalOfferDismiss");
+        if (!modal || modal.getAttribute("data-offer-wired") === "1") return;
+        modal.setAttribute("data-offer-wired", "1");
+        if (dismiss) {
+          dismiss.addEventListener("click", function () {
+            modal.hidden = true;
+            modal.classList.remove("is-open");
+          });
+        }
+        modal.addEventListener("click", function (ev) {
+          if (ev.target === modal) {
+            modal.hidden = true;
+            modal.classList.remove("is-open");
+          }
+        });
+      }
+
+      function showFreeSimPortalOfferModal() {
+        if (!freeMode) return;
+        var modal = document.getElementById("freeSimPortalOfferModal");
+        if (!modal) return;
+        wireFreeSimPortalOfferModal();
+        modal.hidden = false;
+        modal.classList.add("is-open");
+        setTimeout(function () {
+          var checkout = modal.querySelector("[data-encor-portal-30d-checkout]");
+          if (checkout) checkout.focus();
+        }, 0);
+      }
+
       function showResultsPanel(reasonCode) {
+        applyFreeModeResultsUi();
         gatePanel.hidden = true;
         examPanel.hidden = true;
         resultsPanel.hidden = false;
         var scoreOpts = freeMode ? { blueprintUrl: freeBlueprintUrl() } : {};
         if (window.ENCOR_TEST_SIM_SCORECARD && typeof window.ENCOR_TEST_SIM_SCORECARD.showResults === "function") {
-          return window.ENCOR_TEST_SIM_SCORECARD.showResults(reasonCode, queue, answeredByIndex, scoreOpts);
+          return window.ENCOR_TEST_SIM_SCORECARD.showResults(reasonCode, queue, answeredByIndex, scoreOpts).then(
+            function (pack) {
+              if (freeMode) showFreeSimPortalOfferModal();
+              return pack;
+            }
+          );
         }
         document.getElementById("resultsHeadline").textContent = "Attempt summary";
         document.getElementById("resultsReason").textContent = "Results could not be loaded.";
+        if (freeMode) showFreeSimPortalOfferModal();
         return Promise.resolve();
       }
 
