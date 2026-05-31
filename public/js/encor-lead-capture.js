@@ -82,8 +82,8 @@
   }
 
   function hasFreeSimAccess() {
-    if (typeof window.encorFreeSimAccessActive === "function" && window.encorFreeSimAccessActive()) {
-      return true;
+    if (typeof window.encorFreeSimAccessActive === "function") {
+      return window.encorFreeSimAccessActive();
     }
     var o = readFreeSimRecordLocal();
     return !!(o && o.consumed !== true && o.email && o.viaLeadApi === true);
@@ -91,16 +91,6 @@
 
   function grantFreeSimAccess(email) {
     grantFreeSimAccessLocal(email, { viaLeadApi: true });
-  }
-
-  function markEncorFreeSimConsumed() {
-    try {
-      var raw = localStorage.getItem(LS_FREE_SIM);
-      if (!raw) return;
-      var o = JSON.parse(raw);
-      o.consumed = true;
-      localStorage.setItem(LS_FREE_SIM, JSON.stringify(o));
-    } catch (e) {}
   }
 
   function wireEncorLeadForm(form, options) {
@@ -334,9 +324,7 @@
   });
 
   window.wireEncorLeadForm = wireEncorLeadForm;
-  window.encorFreeSimAccessActive = hasFreeSimAccess;
   window.encorHasFreeSimAccess = hasFreeSimAccess;
   window.showEncorFreeSimLeadModal = showEncorFreeSimLeadModal;
-  window.markEncorFreeSimConsumed = markEncorFreeSimConsumed;
   window.bccIsEncorLeadLanding = isEncorLeadLanding;
 })();

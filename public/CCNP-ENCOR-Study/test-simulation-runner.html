@@ -681,6 +681,13 @@
         return true;
       }
 
+      function failGate(message) {
+        showGateUi();
+        updateGateBackLink();
+        gateStatus.textContent = message;
+        gateStatus.className = "status-bad";
+      }
+
       function initGate() {
         var params = new URLSearchParams(location.search || "");
         var sessionIdFromUrl = params.get("session_id");
@@ -1061,9 +1068,22 @@
       });
       resultsContinue.addEventListener("click", redirectAfterResults);
 
-      document.addEventListener("DOMContentLoaded", function () {
-        initGate();
-      });
+      function bootGate() {
+        try {
+          initGate();
+        } catch (err) {
+          console.error("encor test sim gate", err);
+          failGate(
+            "Could not verify access on this page. Refresh, or return to CCNP home to unlock the free timed simulation."
+          );
+        }
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", bootGate);
+      } else {
+        bootGate();
+      }
     })();
   </script>
 </body>

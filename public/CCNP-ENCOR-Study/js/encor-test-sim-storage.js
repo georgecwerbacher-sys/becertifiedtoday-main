@@ -4,6 +4,32 @@
  */
 (function () {
   var LS_TEMP_TEST = "bcc_encor_test_sim_temp_v1";
+  var LS_FREE_SIM = "bcc_encor_free_sim_v1";
+
+  function readEncorFreeSimRecord() {
+    try {
+      var raw = localStorage.getItem(LS_FREE_SIM);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function encorFreeSimAccessActive() {
+    var o = readEncorFreeSimRecord();
+    return !!(o && o.consumed !== true && o.email && o.viaLeadApi === true);
+  }
+
+  function markEncorFreeSimConsumed() {
+    try {
+      var raw = localStorage.getItem(LS_FREE_SIM);
+      if (!raw) return;
+      var o = JSON.parse(raw);
+      o.consumed = true;
+      localStorage.setItem(LS_FREE_SIM, JSON.stringify(o));
+    } catch (e) {}
+  }
 
   function encorPortalPassActive() {
     if (typeof window.bccEncorPortalAccessActiveSync === "function") {
@@ -105,10 +131,12 @@
 
   if (typeof window !== "undefined") {
     window.encorPortalPassActive = encorPortalPassActive;
+    window.encorFreeSimAccessActive = encorFreeSimAccessActive;
     window.grantEncorTempTestAccess = grantEncorTempTestAccess;
     window.clearEncorTempTestAccess = clearEncorTempTestAccess;
     window.readEncorStoredStripeSessionId = readEncorStoredStripeSessionId;
     window.trackEncorSimPurchase = trackEncorSimPurchase;
     window.markEncorTempTestConsumed = markEncorTempTestConsumed;
+    window.markEncorFreeSimConsumed = markEncorFreeSimConsumed;
   }
 })();
