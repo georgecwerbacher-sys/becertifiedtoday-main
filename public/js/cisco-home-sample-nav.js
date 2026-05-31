@@ -41,10 +41,63 @@
     }
   }
 
+  function sampleKindHint() {
+    try {
+      return sessionStorage.getItem("ccnpSampleKind") || "";
+    } catch (e) {
+      return "";
+    }
+  }
+
+  function isCcnaSamplePath(path) {
+    return (
+      path.indexOf("/ccna-study/") !== -1 || path.indexOf("/ccna_sim_exam/") !== -1
+    );
+  }
+
+  function isEncorSamplePath(path) {
+    return path.indexOf("/ccnp-encor-study/") !== -1;
+  }
+
+  function isEncorSampleKind(kind) {
+    return kind.indexOf("encor") === 0 || kind === "labs" || kind === "drag";
+  }
+
+  function resolveLeadConfig(session) {
+    if (!session) return SESSIONS.ccna;
+    if (session.product === "encor") return SESSIONS.encor;
+    if (session.product === "ccna") return SESSIONS.ccna;
+
+    var path = pathnameForMatch();
+    if (isCcnaSamplePath(path)) return SESSIONS.ccna;
+    if (isEncorSamplePath(path)) return SESSIONS.encor;
+
+    var kind = sampleKindHint();
+    if (kind.indexOf("ccna") === 0) return SESSIONS.ccna;
+    if (isEncorSampleKind(kind)) return SESSIONS.encor;
+
+    if (session._cfg) return session._cfg;
+    if (isEncorSamplePath(path)) return SESSIONS.encor;
+    return SESSIONS.ccna;
+  }
+
   function activeSessionConfig() {
     var ccna = readSession(SESSIONS.ccna);
+    var encor = readSession(SESSIONS.encor);
+    var path = pathnameForMatch();
+    var kind = sampleKindHint();
+
+    if (isCcnaSamplePath(path) && ccna) return ccna;
+    if (isEncorSamplePath(path) && encor) return encor;
+
+    if (kind.indexOf("ccna") === 0 && ccna) return ccna;
+    if (isEncorSampleKind(kind) && encor) return encor;
+
+    if (isEncorSamplePath(path)) return encor || ccna;
+    if (isCcnaSamplePath(path)) return ccna || encor;
+
     if (ccna) return ccna;
-    return readSession(SESSIONS.encor);
+    return encor;
   }
 
   function isSingleTrackSample(session) {
@@ -137,20 +190,41 @@
   }
 
   function loadLeadCapture(session, callback) {
-    var cfg = session._cfg;
+    var cfg = resolveLeadConfig(session);
+
+    function invoke() {
+      callback(cfg);
+    }
+
     var show = cfg.showLeadModal();
     if (typeof show === "function") {
-      callback();
+      invoke();
       return;
     }
+
     var existing = document.querySelector('script[src="' + cfg.leadScript + '"]');
     if (existing) {
-      existing.addEventListener("load", callback);
+      if (typeof cfg.showLeadModal() === "function") {
+        invoke();
+        return;
+      }
+      existing.addEventListener("load", invoke, { once: true });
+      existing.addEventListener(
+        "error",
+        function () {
+          navigateAfterSample(
+            (session.finishHome || "/") + (session.leadCaptureHash || ""),
+            session
+          );
+        },
+        { once: true }
+      );
       return;
     }
+
     var s = document.createElement("script");
     s.src = cfg.leadScript;
-    s.onload = callback;
+    s.onload = invoke;
     s.onerror = function () {
       navigateAfterSample(
         (session.finishHome || "/") + (session.leadCaptureHash || ""),
@@ -161,8 +235,8 @@
   }
 
   function openFreeSimLeadModal(session, finishHome) {
-    loadLeadCapture(session, function () {
-      var show = session._cfg.showLeadModal();
+    loadLeadCapture(session, function (cfg) {
+      var show = cfg.showLeadModal();
       if (typeof show !== "function") {
         navigateAfterSample(
           finishHome + (session.leadCaptureHash || ""),
@@ -172,7 +246,7 @@
       }
       show({
         finishHome: finishHome,
-        method: session._cfg.key + "_sample_popup",
+        method: cfg.key + "_sample_popup",
         onBeforeNavigate: function () {
           clearSampleSession(session);
         },
@@ -183,7 +257,7 @@
   function showFreeSimUpsellModal(session, finishHome) {
     if (document.getElementById("ciscoSampleFreeSimUpsell")) return;
 
-    var cfg = session._cfg;
+    var cfg = resolveLeadConfig(session);
     var kind =
       session.order[0] && session.order[0].type === "lab"
         ? "lab"

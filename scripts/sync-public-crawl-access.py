@@ -23,7 +23,10 @@ ROBOTS_TXT = """\
 User-agent: *
 Allow: /
 
+Disallow: /admin
 Disallow: /admin/
+Disallow: /admin/analytics
+Disallow: /admin/analytics.html
 Disallow: /api/
 Disallow: /choose-training-path.html
 Disallow: /CCNP-ENCOR-Study/access-restricted.html

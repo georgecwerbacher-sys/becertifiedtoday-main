@@ -1218,6 +1218,16 @@
       return deck;
     }
 
+    function deckHasRealContent(deck) {
+      return (
+        Array.isArray(deck) &&
+        deck.length > 0 &&
+        deck.every(function (it) {
+          return !!(it && it.fileName);
+        })
+      );
+    }
+
     function buildRichDeck(qMap, dMap, lMap, opts) {
       opts = opts || {};
       var fixedLabs = Array.isArray(opts.fixedLabs) && opts.fixedLabs.length ? opts.fixedLabs : null;
@@ -1334,7 +1344,6 @@
         fixedLabs != null ? fixedLabs.length : bp.labCount != null ? bp.labCount : 3;
       var mcqN = bp.multipleChoiceCount != null ? bp.multipleChoiceCount : 50;
       var dndN = bp.dragDropCount != null ? bp.dragDropCount : 5;
-      var expectedTotal = mcqN + dndN + labCount;
 
       if (window.CCNA_SIM_V11_POOL && typeof window.CCNA_SIM_V11_POOL.load === "function") {
         await window.CCNA_SIM_V11_POOL.load();
@@ -1357,7 +1366,7 @@
             : rawMcq;
         rq = Object.assign({}, rq, { assignments: mcqAssignmentsCache });
         var rich = buildFixedAssessmentDeck(rq, rd, rl, bp);
-        if (rich && rich.length === expectedTotal) {
+        if (deckHasRealContent(rich)) {
           items = rich;
           adaptiveMcqPoolByDomain = buildAdaptiveMcqPools(mcqAssignmentsCache);
           usedMcqSlugs = {};

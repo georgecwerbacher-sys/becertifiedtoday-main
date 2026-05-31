@@ -43,6 +43,45 @@
       remembered.indexOf("/ccna-study/") !== -1 ||
       remembered.indexOf("/ccnp-encor-study/") !== -1;
     if (!onSamplePage) return;
+
+    var kind = "";
+    try {
+      kind = sessionStorage.getItem("ccnpSampleKind") || "";
+    } catch (e) {}
+
+    var samplePath = path;
+    if (
+      (samplePath === "/sample" || samplePath === "/sample/") &&
+      remembered.indexOf("/ccna-study/") === -1 &&
+      remembered.indexOf("/ccnp-encor-study/") === -1
+    ) {
+      samplePath = remembered || samplePath;
+    } else if (remembered.indexOf("/ccna-study/") !== -1 || remembered.indexOf("/ccnp-encor-study/") !== -1) {
+      samplePath = remembered;
+    }
+
+    var onCcnaSample =
+      samplePath.indexOf("/ccna-study/") !== -1 || samplePath.indexOf("/ccna_sim_exam/") !== -1;
+    var onEncorSample = samplePath.indexOf("/ccnp-encor-study/") !== -1;
+    var encorKind = kind.indexOf("encor") === 0 || kind === "labs" || kind === "drag";
+
+    var leadScript = null;
+    if (onCcnaSample && (sessionStorage.getItem("ccnaHomeSample") || kind.indexOf("ccna") === 0)) {
+      leadScript = "/js/ccna-lead-capture.js";
+    } else if (onEncorSample && (sessionStorage.getItem("encorHomeSample") || encorKind)) {
+      leadScript = "/js/encor-lead-capture.js";
+    } else if (sessionStorage.getItem("ccnaHomeSample") || kind.indexOf("ccna") === 0) {
+      leadScript = "/js/ccna-lead-capture.js";
+    } else if (sessionStorage.getItem("encorHomeSample") || encorKind) {
+      leadScript = "/js/encor-lead-capture.js";
+    }
+    if (leadScript && !document.head.querySelector('script[src="' + leadScript + '"]')) {
+      var lead = document.createElement("script");
+      lead.src = leadScript;
+      lead.defer = true;
+      (document.head || document.body).appendChild(lead);
+    }
+
     if (document.head.querySelector('script[src*="cisco-home-sample-nav.js"]')) return;
     var s = document.createElement("script");
     s.src = "/js/cisco-home-sample-nav.js";

@@ -73,6 +73,7 @@
       sessionStorage.setItem(KEY, JSON.stringify(session));
       sessionStorage.setItem("ccnpUrlMaskPath", "/sample");
       sessionStorage.setItem("ccnpSampleKind", kind || "ccna-home");
+      sessionStorage.removeItem("encorHomeSample");
       sessionStorage.removeItem("ccnaPractice100");
       sessionStorage.removeItem("ccnpQuestionQueue");
     } catch (e) {}
