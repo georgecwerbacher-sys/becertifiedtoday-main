@@ -9,3 +9,13 @@ One subfolder per product. Each folder holds the strategy note, paste-ready expo
 | [[encor/ccnp-encor-google-ads\|encor/]] | CCNP ENCOR 350-401 | `encor_portal` | [[encor/ccnp-encor-google-ads\|Google Ads]] · [[encor/ccnp-encor-google-ads-export\|export]] |
 
 Shared playbook: [[../01-strategy/cisco-certifications-exam-prep-foundation|Cisco foundation]] (CCNA + ENCOR) · [[../01-strategy/security-plus-federal-defense-foundation|Security+ federal foundation]]
+
+## Copy limits (all campaigns)
+
+| Asset | Limit | Where |
+|-------|-------|--------|
+| RSA description | **≤90 characters** each | `*-google-ads-export.md` → each ad group |
+| Sitelink | **Minimum 6** per campaign | Same file → **Sitelink extensions** table |
+| Sitelink description line | **≤35 characters** each (2 lines per sitelink) | Sitelink table **Desc 1** / **Desc 2** columns |
+
+Paste-ready exports: [[security-plus/security-plus-google-ads-export|Security+]] · [[ccna/ccna-portal-google-ads-export|CCNA]] · [[encor/ccnp-encor-google-ads-export|ENCOR]]

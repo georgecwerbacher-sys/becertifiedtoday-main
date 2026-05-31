@@ -74,8 +74,8 @@ Lead rows append to `marketing-vault/leads/secplus-free-simulation-leads.csv` wh
 | **Headline 3** | 35-Min Practice + Domain Scorecard |
 | **Headline 4** | 20 Questions + PBQ Simulation |
 | **Headline 5** | Exam Prep — Not a Course |
-| **Description 1** | Free 35-minute SY0-701 sample: 20 MCQ + performance-based simulation. Domain scorecard when you finish. Browser-only exam prep. |
-| **Description 2** | Realistic timed practice before test day. Back and mark for review like test day. Full 90-minute sim when you are ready. |
+| **Description 1** | Free 35-min SY0-701 sample: 20 MCQ + PBQ sim. Domain scorecard when you finish. |
+| **Description 2** | Timed practice before test day. Back & mark for review. Full 90-min sim when ready. |
 
 **Keywords:** security+ practice test, sy0-701 practice exam, security+ mock exam, security+ timed practice test, sy0-701 simulation
 

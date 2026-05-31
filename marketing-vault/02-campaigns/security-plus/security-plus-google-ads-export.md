@@ -14,6 +14,8 @@ Copy blocks below into Google Ads (Search campaign) or Google Ads Editor. Parent
 
 **Policy:** Exam prep / practice only — not CompTIA endorsement, not “guaranteed pass,” not clearance or DoD qualification.
 
+**Copy limits:** Every **RSA description** ≤90 characters · **Campaign sitelinks:** minimum **6**, each with full URL + 2 description lines ≤35 characters (see sitelink table below).
+
 ---
 
 ## Campaign shell (create once)
@@ -89,10 +91,10 @@ Be Certified Today
 **RSA — Descriptions** (≤90 chars)
 
 ```
-Free 35-min SY0-701 sample: 20 MCQ + PBQ sim. Domain scorecard when you finish. Browser exam prep.
-Realistic timed practice before test day. Back & mark for review. Full 90-min sim when you are ready.
-Exam preparation—not a training course. Verified explanations. No PDF dumps or third-party apps.
-Enter email to start your free simulation. One attempt per browser. Unsubscribe anytime from tips.
+Free 35-min SY0-701 sample: 20 MCQ + PBQ sim. Domain scorecard when you finish.
+Timed practice before test day. Back & mark for review. Full 90-min sim when ready.
+Exam prep—not a course. Verified explanations. No PDF dumps or third-party apps.
+Enter email to start free sim. One attempt per browser. Unsubscribe anytime.
 ```
 
 **Pin suggestion:** Headline 1 → `Free Security+ Timed Sim` · Headline 2 → `Start Free SY0-701 Sample` · Headline 3 → `35-Min Practice + Scorecard`
@@ -169,13 +171,13 @@ Be Certified Today
 Try Free Sample on Site
 ```
 
-**RSA — Descriptions**
+**RSA — Descriptions** (≤90 chars)
 
 ```
-One 90-minute SY0-701 session: MCQ + simulations + hot spots, shuffled. $9.99 one attempt.
-Finish with a study scorecard by Security+ domain. Back & mark for review like test day.
-Exam-realistic mix—not a course. Verified explanations. Browser-only; no downloads.
-Free 35-min sample on the same page if you want to try before you buy the full sim.
+One 90-min SY0-701 session: MCQ + sims + hot spots, shuffled. $9.99 one attempt.
+Finish with domain scorecard. Back & mark for review like test day—not a course.
+Exam-realistic mix in browser. Verified explanations. No downloads required.
+Free 35-min sample on same page. Try before you buy the full 90-minute sim.
 ```
 
 **Pin suggestion:** H1 → `90-Min Security+ Exam Sim` · H2 → `Timed Sim — $9.99` · H3 → `Study Scorecard by Domain`
@@ -245,13 +247,13 @@ Be Certified Today
 Free Sample on Same Page
 ```
 
-**RSA — Descriptions**
+**RSA — Descriptions** (≤90 chars)
 
 ```
-Full SY0-701 library: question banks, PBQ sims, portal modes, and timed exam simulation in your browser.
-Choose 10-day ($9.99) or 30-day ($19.99) access. One-time purchase—no recurring membership.
+Full SY0-701 library: banks, PBQ sims, portal modes, timed exam sim in browser.
+10-day ($9.99) or 30-day ($19.99). One-time purchase—no recurring membership.
 Exam prep aligned to CompTIA objectives—not PDF dumps or instructor-led courses.
-Timed 90-minute simulation included with portal passes. Try free samples before you checkout.
+90-min timed sim included with portal. Try free 35-min sample before checkout.
 ```
 
 **Pin suggestion:** H1 → `SY0-701 Full Question Bank` · H2 → `Portal + Timed Sim Included`
@@ -307,13 +309,13 @@ Be Certified Today
 Free PBQ-Style Scenario
 ```
 
-**RSA — Descriptions**
+**RSA — Descriptions** (≤90 chars)
 
 ```
-Interactive SY0-701 PBQ: secure web architecture, WAF, PKI/TLS, and OpenSSL CSR steps in your browser.
-Exam prep only—not a course. Deep-dive explanations. Upsell to full portal or timed sim on site.
-Free sample questions available. Timed 90-minute simulation and domain banks on Security+ home.
-Practice performance-based items before test day. No PDFs or third-party lab software required.
+SY0-701 PBQ: secure web, WAF, PKI/TLS, OpenSSL CSR steps in your browser.
+Exam prep—not a course. Deep-dive explanations. Portal & timed sim on Security+ home.
+Free sample questions on site. Timed 90-min simulation and domain banks on home.
+Performance-based practice before test day. No PDFs or third-party lab software.
 ```
 
 ### Keywords — `secplus_openssl_pbq`
@@ -374,13 +376,13 @@ Verified SY0-701 Explanations
 Study From Duty Station
 ```
 
-**RSA — Descriptions**
+**RSA — Descriptions** (≤90 chars)
 
 ```
-SY0-701 exam prep for federal, DoD, and contractor cyber roles. Browser-only—study on your schedule.
-Free 35-min timed sample + domain scorecard. Full 90-min simulation and portal access when ready.
-Exam preparation only—we do not process clearance or official DoD qualification. Confirm reqs with your org.
-Not a bootcamp or PDF dump. Realistic practice tests and performance-based items in your browser.
+SY0-701 exam prep for federal, DoD, contractor cyber. Browser-only—your schedule.
+Free 35-min timed sample + domain scorecard. Full 90-min sim and portal when ready.
+Exam prep only. No clearance or DoD qualification processing. Confirm with org.
+Not a bootcamp or PDF dump. Realistic practice tests and PBQ items in your browser.
 ```
 
 **Compliance:** Do not claim DoD endorsement. See [[../../01-strategy/security-plus-federal-defense-foundation|federal foundation]] disclaimer.
@@ -404,14 +406,16 @@ Not a bootcamp or PDF dump. Realistic practice tests and performance-based items
 
 ## Sitelink extensions (campaign-level)
 
-| Link text | URL |
-|-----------|-----|
-| Free timed simulation | `…/comptia-sec+-home.html#secplus-lead-capture?utm_content=sitelink-free-sim` |
-| 90-minute timed sim | `…/comptia-sec+-home.html#purchase&utm_content=sitelink-sim` |
-| Sample questions | `https://becertifiedtoday.com/secplus-sample?track=questions&utm_content=sitelink-sample` |
-| Pricing & access | `…/comptia-sec+-home.html#purchase&utm_content=sitelink-pricing` |
+Minimum **6** sitelinks per campaign. Description lines ≤35 characters each.
 
-Use full URLs with `utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal` on each.
+| # | Link text | Desc 1 | Desc 2 | Full URL |
+|---|-----------|--------|--------|----------|
+| 1 | Free timed simulation | 35-min SY0-701 sample exam | Email unlock, one free try | `https://becertifiedtoday.com/comptia-sec+-home.html#secplus-lead-capture?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-free-sim` |
+| 2 | 90-minute timed sim | Full SY0-701 practice exam | $9.99 one attempt, no sub | `https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-sim` |
+| 3 | Sample questions | Two MCQ per run, free | Instant feedback, no checkout | `https://becertifiedtoday.com/secplus-sample?track=questions&utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-sample` |
+| 4 | OpenSSL PBQ simulation | Secure web & OpenSSL PBQ | Free browser exam prep | `https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-openssl` |
+| 5 | 30-day all-access | Full SY0-701 question bank | $19.99 one-time, no sub | `https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-portal-30d` |
+| 6 | Pricing & access | 10-day or 30-day access | From $9.99, no subscription | `https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pricing` |
 
 ---
 
@@ -519,6 +523,7 @@ Use: **Education & training → Test preparation** or **Educational software / O
 ## Launch checklist
 
 - [ ] Campaign + 2 ad groups live: `secplus_lead_free_sim`, `secplus_sim_purchase`
+- [ ] All RSA descriptions ≤90 characters; 6 sitelinks with URLs + 2 short descriptions each
 - [ ] Final URLs match table above (hash + UTMs)
 - [ ] Campaign negatives pasted
 - [ ] GA4 key events: `generate_lead`, `begin_checkout`
@@ -532,5 +537,6 @@ Use: **Education & training → Test preparation** or **Educational software / O
 
 | Date | Note |
 |------|------|
+| 2026-05-31 | RSA descriptions trimmed to ≤90 chars; sitelinks expanded to 6 with Desc 1/2 + full URLs |
 | 2026-05-31 | Verified vs prod: homepage sample = 2 MCQ; lead sim 35 min / 20 MCQ + PBQ unchanged — see [[../../06-website-optimization/ad-site-verification-2026-05-31|ad-site verification]] |
 | 2026-05-30 | Initial paste-ready export; pricing $9.99 sim; free sim 35 min / 21 items |

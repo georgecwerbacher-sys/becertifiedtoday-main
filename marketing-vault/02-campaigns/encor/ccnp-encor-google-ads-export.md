@@ -14,6 +14,8 @@ Copy blocks below into Google Ads (Search campaign) or Google Ads Editor. Parent
 
 **Policy:** Exam prep / practice only — not Cisco endorsement, not “guaranteed pass,” not clearance or DoD qualification.
 
+**Copy limits:** Every **RSA description** ≤90 characters · **Campaign sitelinks:** minimum **6**, each with full URL + 2 description lines ≤35 characters (see sitelink table below).
+
 ---
 
 ## Campaign shell (create once)
@@ -108,10 +110,10 @@ Be Certified Today
 **RSA — Descriptions** (≤90 chars)
 
 ```
-Free 45-min ENCOR 350-401 sample: 20 MCQ, 2 drag-and-drop, ACL/CoPP CLI lab in your browser.
-Realistic CCNP ENCOR practice before test day. Full 120-min sim when you are ready. No GNS3 or PDFs.
-Exam preparation—not a training course. Verified explanations. No dumps or third-party lab software.
-Enter email to start your free simulation. Prefer no email? Try two free sample questions on site.
+Free 45-min ENCOR sample: 20 MCQ, 2 D&D, ACL/CoPP CLI lab in browser.
+Realistic ENCOR practice before test day. Full 120-min sim when ready. No GNS3.
+Exam prep—not a course. Verified explanations. No dumps or third-party lab apps.
+Enter email to start free sim. Or try two free sample questions—no email needed.
 ```
 
 **Pin suggestion:** Headline 1 → `Free ENCOR Timed Sim` · Headline 2 → `Start Free ENCOR Sample` · Headline 3 → `45-Min Practice + Scorecard`
@@ -189,13 +191,13 @@ Be Certified Today
 Try Free Samples on Site
 ```
 
-**RSA — Descriptions**
+**RSA — Descriptions** (≤90 chars)
 
 ```
-One 120-minute ENCOR 350-401 session: 50 MCQ, 5 drag-and-drop, 4 CLI labs. $9.99 one attempt.
-Same clock and mix as test day—not a video course. Verified explanations in your browser.
+One 120-min ENCOR session: 50 MCQ, 5 D&D, 4 CLI labs. $9.99 one attempt.
+Same clock and mix as test day—not a video course. Verified explanations.
 Exam-realistic CCNP ENCOR prep. No PDF dumps or GNS3 installs required.
-Free sample questions and labs on the same page if you want to try before you buy the full sim.
+Free sample questions and labs on same page. Try before you buy the full sim.
 ```
 
 **Pin suggestion:** H1 → `120-Min ENCOR Exam Sim` · H2 → `Timed Sim — $9.99` · H3 → `50 MCQ + 5 D&D + 4 Labs`
@@ -266,13 +268,13 @@ Be Certified Today
 Free Samples on Same Page
 ```
 
-**RSA — Descriptions**
+**RSA — Descriptions** (≤90 chars)
 
 ```
-Full ENCOR 350-401 library: question banks, CLI labs, drag-and-drop, portal modes, and timed exam simulation in your browser.
-Choose 10-day ($9.99) or 30-day ($19.99) access. One-time purchase—no recurring membership.
-Exam prep aligned to Cisco ENCOR objectives—not PDF dumps or instructor-led courses.
-120-minute timed simulation included with portal passes. Try free samples before you checkout.
+Full ENCOR library: banks, CLI labs, D&D, portal modes, timed sim in browser.
+10-day ($9.99) or 30-day ($19.99). One-time purchase—no recurring membership.
+Exam prep aligned to Cisco ENCOR objectives—not PDF dumps or instructor courses.
+120-min timed sim included with portal. Try free samples before you checkout.
 ```
 
 **Pin suggestion:** H1 → `ENCOR Full Question Bank` · H2 → `Portal + Timed Sim Included`
@@ -327,13 +329,13 @@ Be Certified Today
 Python & API Sample Items
 ```
 
-**RSA — Descriptions**
+**RSA — Descriptions** (≤90 chars)
 
 ```
-Interactive ENCOR 350-401 practice: drag-and-drop, ACL/CoPP CLI lab, and automation items in your browser.
-Exam prep only—not a course. No GNS3, IOU, or PDF dumps. Upsell to portal or timed sim on site.
-Free sample questions and labs available. Full 120-minute simulation on CCNP ENCOR home.
-Practice performance-based items before test day. Verified explanations aligned to Cisco objectives.
+ENCOR browser practice: drag-and-drop, ACL/CoPP CLI lab, automation in browser.
+Exam prep—not a course. No GNS3, IOU, or PDF dumps. Portal & timed sim on site.
+Free sample questions and labs available. Full 120-minute simulation on ENCOR home.
+Performance-based ENCOR practice before test day. Verified explanations, objectives.
 ```
 
 ### Keywords — `encor_labs_pbq`
@@ -392,13 +394,13 @@ Verified 350-401 Explanations
 Study From Duty Station
 ```
 
-**RSA — Descriptions**
+**RSA — Descriptions** (≤90 chars)
 
 ```
-ENCOR 350-401 exam prep for federal, DoD, and contractor IT roles. Browser-only—study on your schedule.
-Free sample questions, drag-and-drop, and CLI lab. Full 120-min simulation and portal access when ready.
-Exam preparation only—we do not process clearance or official DoD qualification. Confirm reqs with your org.
-Not a bootcamp or PDF dump. Realistic CCNP ENCOR practice tests and CLI labs in your browser.
+ENCOR exam prep for federal, DoD, contractor IT. Browser-only—study on schedule.
+Free samples: MCQ, drag-and-drop, CLI lab. Full 120-min sim and portal when ready.
+Exam prep only. No clearance or DoD qualification processing. Confirm with org.
+Not a bootcamp or PDF dump. Realistic ENCOR practice tests and CLI labs in browser.
 ```
 
 **Compliance:** Do not claim DoD or Cisco endorsement. See [[../../01-strategy/cisco-certifications-exam-prep-foundation|Cisco foundation]] disclaimer.
@@ -422,14 +424,16 @@ Not a bootcamp or PDF dump. Realistic CCNP ENCOR practice tests and CLI labs in 
 
 ## Sitelink extensions (campaign-level)
 
-| Link text | URL |
-|-----------|-----|
-| Free ENCOR sample questions | `https://becertifiedtoday.com/sample?track=encor-questions&utm_content=sitelink-sample-q` |
-| 120-minute timed sim | `…/ccnp-home.html#purchase&utm_content=sitelink-sim` |
-| Sample drag-and-drop | `https://becertifiedtoday.com/sample?track=encor-dnd&utm_content=sitelink-sample-dnd` |
-| Pricing & access | `…/ccnp-home.html#purchase&utm_content=sitelink-pricing` |
+Minimum **6** sitelinks per campaign. Description lines ≤35 characters each.
 
-Use full URLs with `utm_source=google&utm_medium=cpc&utm_campaign=encor_portal` on each.
+| # | Link text | Desc 1 | Desc 2 | Full URL |
+|---|-----------|--------|--------|----------|
+| 1 | Free timed simulation | 45-min ENCOR sample exam | Email unlock, one free try | `https://becertifiedtoday.com/ccnp-home.html#encor-lead-capture?utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-free-sim` |
+| 2 | 120-minute timed sim | Full 350-401 practice exam | $9.99 one attempt, no sub | `https://becertifiedtoday.com/ccnp-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-sim` |
+| 3 | Sample questions | Two MCQ per run, free | Instant feedback, no checkout | `https://becertifiedtoday.com/sample?track=encor-questions&utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-sample-q` |
+| 4 | Sample drag-and-drop | ENCOR D&D in your browser | Free practice, no email | `https://becertifiedtoday.com/sample?track=encor-dnd&utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-sample-dnd` |
+| 5 | ACL & CoPP lab sample | Interactive CLI lab sample | Browser-only, no GNS3 | `https://becertifiedtoday.com/sample?track=labs&utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-lab` |
+| 6 | Pricing & access | 10-day or 30-day access | From $9.99, no subscription | `https://becertifiedtoday.com/ccnp-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-pricing` |
 
 ---
 
@@ -545,6 +549,7 @@ Use: **Education & training → Test preparation** or **Educational software / O
 ## Launch checklist
 
 - [ ] Campaign + 2 ad groups live: `encor_lead_free_sim`, `encor_sim_purchase`
+- [ ] All RSA descriptions ≤90 characters; 6 sitelinks with URLs + 2 short descriptions each
 - [ ] Final URLs match table above (UTMs + anchors)
 - [ ] Campaign negatives pasted
 - [ ] GA4 key events: `generate_lead`, `begin_checkout`
@@ -567,5 +572,6 @@ Use: **Education & training → Test preparation** or **Educational software / O
 
 | Date | Note |
 |------|------|
+| 2026-05-31 | RSA descriptions trimmed to ≤90 chars; sitelinks expanded to 6 with Desc 1/2 + full URLs |
 | 2026-05-31 | Verified vs prod: lead sim 45 min; sim **$9.99**; homepage samples **2 MCQ** — [[../../06-website-optimization/ad-site-verification-2026-05-31|verification]] |
 | 2026-05-31 | Initial paste-ready export |

@@ -14,20 +14,22 @@ Copy blocks below into Google Ads (Search campaign) or Google Ads Editor. Parent
 
 **Policy:** Exam prep / practice only — not Cisco endorsement, not “guaranteed pass,” not clearance or DoD qualification.
 
+**Copy limits:** Every **RSA description** ≤90 characters · **Campaign sitelinks:** minimum **6**, each with full URL + 2 description lines ≤35 characters (see sitelink table below).
+
 ---
 
 ## Campaign shell (create once)
 
-| Setting              | Value                                                                                                                     |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Campaign name        | `CCNA 200-301 · Exam prep · becertifiedtoday`                                                                             |
-| Campaign type        | Search                                                                                                                    |
-| Networks             | Search only (uncheck Search partners until baseline CPA)                                                                  |
-| Locations            | United States (add geo ad groups below for defense metros)                                                                |
-| Language             | English                                                                                                                   |
+| Setting              | Value                                                                                                                                  |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Campaign name        | `CCNA 200-301 · Exam prep · becertifiedtoday`                                                                                          |
+| Campaign type        | Search                                                                                                                                 |
+| Networks             | Search only (uncheck Search partners until baseline CPA)                                                                               |
+| Locations            | United States (add geo ad groups below for defense metros)                                                                             |
+| Language             | English                                                                                                                                |
 | Bidding              | Maximize conversions (after `ccna_free_assessment_click` + `begin_checkout` imported) — or **Maximize clicks** with CPC cap for week 1 |
-| Daily budget (start) | $15–25/day total campaign; 60% free assessment group / 40% sim purchase                                                   |
-| UTM campaign         | `ccna_portal`                                                                                                             |
+| Daily budget (start) | $15–25/day total campaign; 60% free assessment group / 40% sim purchase                                                                |
+| UTM campaign         | `ccna_portal`                                                                                                                          |
 
 ### Campaign-level negative keywords (Phrase match)
 
@@ -103,10 +105,10 @@ Be Certified Today
 **RSA — Descriptions** (≤90 chars)
 
 ```
-Free 45-min CCNA 200-301 sample: 20 MCQ, 2 drag-and-drop, 1 VLAN CLI lab. Domain scorecard when you finish.
-Realistic browser practice before test day. Full 120-min sim when you are ready. No GNS3 or PDFs required.
-Exam preparation—not a training course. Verified explanations. No dumps or third-party lab software.
-Enter email to start your free simulation. One attempt per browser. Unsubscribe anytime from tips.
+Free 45-min CCNA sample: 20 MCQ, 2 D&D, 1 VLAN lab. Domain scorecard at end.
+Realistic browser practice before test day. Full 120-min sim when ready. No GNS3.
+Exam prep—not a course. Verified explanations. No dumps or third-party lab apps.
+Enter email to start free sim. One attempt per browser. Unsubscribe anytime.
 ```
 
 **Pin suggestion:** Headline 1 → `Free CCNA Timed Sim` · Headline 2 → `Start Free CCNA Sample` · Headline 3 → `45-Min Practice + Scorecard`
@@ -184,13 +186,13 @@ Be Certified Today
 Try Free Assessment on Site
 ```
 
-**RSA — Descriptions**
+**RSA — Descriptions** (≤90 chars)
 
 ```
-One 120-minute CCNA 200-301 session: 50 multiple-choice, drag-and-drop, and CLI lab items. $9.99 one attempt.
-Finish with a study scorecard by CCNA domain. Same clock and mix as test day—not a video course.
-Exam-realistic browser prep. Verified explanations. No PDF dumps or GNS3 installs required.
-Free 45-min timed simulation on the same page if you want to try before you buy the full sim.
+One 120-min CCNA session: 50 MCQ, D&D, and CLI lab items. $9.99 one attempt.
+Finish with domain scorecard. Same clock and item mix as test day—not a course.
+Browser exam prep. Verified explanations. No PDF dumps or GNS3 installs.
+Free 45-min timed sample on same page. Try before you buy the full sim.
 ```
 
 **Pin suggestion:** H1 → `120-Min CCNA Exam Sim` · H2 → `Timed Sim — $9.99` · H3 → `Study Scorecard by Domain`
@@ -260,13 +262,13 @@ Be Certified Today
 Free Assessment on Same Page
 ```
 
-**RSA — Descriptions**
+**RSA — Descriptions** (≤90 chars)
 
 ```
-Full CCNA 200-301 library: question banks, drag-and-drop, CLI labs, portal modes, and timed exam simulation in your browser.
-Choose 10-day ($9.99) or 30-day ($19.99) access. One-time purchase—no recurring membership.
+Full CCNA library: banks, D&D, CLI labs, portal modes, timed sim in browser.
+10-day ($9.99) or 30-day ($19.99). One-time purchase—no recurring membership.
 Exam prep aligned to Cisco objectives—not PDF dumps or instructor-led courses.
-120-minute timed simulation included with portal passes. Try free assessment before you checkout.
+120-min timed sim included with portal. Try free 45-min sample before checkout.
 ```
 
 **Pin suggestion:** H1 → `CCNA Full Question Bank` · H2 → `Portal + Timed Sim Included`
@@ -321,13 +323,13 @@ Be Certified Today
 Free Sample Questions
 ```
 
-**RSA — Descriptions**
+**RSA — Descriptions** (≤90 chars)
 
 ```
-Interactive CCNA 200-301 practice: drag-and-drop, CLI VLAN lab, and exhibit-based items in your browser.
-Exam prep only—not a course. No GNS3, Packet Tracer installs, or PDF dumps. Upsell to portal or timed sim on site.
-Free 35-min assessment and sample questions available. Full 120-minute simulation on CCNA home.
-Practice performance-based items before test day. Verified explanations aligned to Cisco objectives.
+CCNA 200-301 browser practice: drag-and-drop, VLAN CLI lab, exhibit items. No GNS3.
+Exam prep—not a course. No GNS3, Packet Tracer, or PDF dumps. Portal & timed sim.
+Free 45-min sample & questions. Full 120-minute timed simulation on CCNA home.
+Performance-based CCNA practice before test day. Verified explanations, Cisco objectives.
 ```
 
 ### Keywords — `ccna_labs_pbq`
@@ -372,7 +374,7 @@ Use `#purchase` variant for purchase-intent federal keywords.
 CCNA 200-301 Exam Prep
 DoD IT Role Exam Prep
 Browser CCNA Practice
-Free CCNA Assessment
+Free CCNA Timed Sample
 8140 Baseline Exam Prep
 Defense Contractor Cert Prep
 No GNS3 — Browser Labs
@@ -381,18 +383,18 @@ Timed Sim + Scorecard
 Exam Prep — Not a Course
 Practice Before Test Day
 Be Certified Today
-35-Min Free Assessment
+45-Min Free Timed Sample
 Verified 200-301 Explanations
 Study From Duty Station
 ```
 
-**RSA — Descriptions**
+**RSA — Descriptions** (≤90 chars)
 
 ```
-CCNA 200-301 exam prep for federal, DoD, and contractor IT roles. Browser-only—study on your schedule.
-Free 35-min assessment + domain scorecard. Full 120-min simulation and portal access when ready.
-Exam preparation only—we do not process clearance or official DoD qualification. Confirm reqs with your org.
-Not a bootcamp or PDF dump. Realistic practice tests, drag-and-drop, and CLI labs in your browser.
+CCNA exam prep for federal, DoD, contractor IT. Browser-only—study on schedule.
+Free 45-min sample + domain scorecard. Full 120-min sim and portal when ready.
+Exam prep only. No clearance or DoD qualification processing. Confirm with org.
+Not a bootcamp or PDF dump. Practice tests, D&D, and CLI labs in your browser.
 ```
 
 **Compliance:** Do not claim DoD or Cisco endorsement. See [[../../01-strategy/cisco-certifications-exam-prep-foundation|Cisco foundation]] disclaimer.
@@ -433,21 +435,23 @@ Full list in suffixes file. **Use `utm_campaign=ccna_portal`** (not legacy `ccna
 
 ## Sitelink extensions (campaign-level)
 
-| Link text | URL |
-|-----------|-----|
-| Free CCNA assessment | `…/ccna-home.html?utm_content=sitelink-free-assessment` |
-| 120-minute timed sim | `…/ccna-home.html#purchase&utm_content=sitelink-sim` |
-| Sample questions | `https://becertifiedtoday.com/sample?track=ccna-questions&utm_content=sitelink-sample` |
-| Pricing & access | `…/ccna-home.html#purchase&utm_content=sitelink-pricing` |
+Minimum **6** sitelinks per campaign. Description lines ≤35 characters each.
 
-Use full URLs with `utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal` on each.
+| # | Link text | Desc 1 | Desc 2 | Full URL |
+|---|-----------|--------|--------|----------|
+| 1 | Free timed simulation | 45-min CCNA sample exam | Email unlock, one free try | `https://becertifiedtoday.com/ccna-home.html#ccna-lead-capture?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-free-sim` |
+| 2 | 120-minute timed sim | Full 200-301 practice exam | $9.99 one attempt, no sub | `https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-sim` |
+| 3 | Sample questions | Two MCQ per run, free | Instant feedback, no checkout | `https://becertifiedtoday.com/sample?track=ccna-questions&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-sample` |
+| 4 | Sample drag-and-drop | CCNA D&D in your browser | Free practice, no email | `https://becertifiedtoday.com/sample?track=ccna-dnd&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-dnd` |
+| 5 | VLAN CLI lab sample | Interactive VLAN lab sample | Browser-only, no GNS3 | `https://becertifiedtoday.com/sample?track=ccna-vlan&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-lab` |
+| 6 | Pricing & access | 10-day or 30-day access | From $9.99, no subscription | `https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-pricing` |
 
 ---
 
 ## Callout extensions (campaign-level)
 
 ```
-Free 35-Min Assessment
+Free 45-Min Timed Sample
 Domain Study Scorecard
 Browser-Only — No PDFs
 No GNS3 Required
@@ -540,6 +544,7 @@ Use: **Education & training → Test preparation** or **Educational software / O
 ## Launch checklist
 
 - [ ] Campaign + 2 ad groups live: `ccna_lead_free_sim`, `ccna_sim_purchase`
+- [ ] All RSA descriptions ≤90 characters; 6 sitelinks with URLs + 2 short descriptions each
 - [ ] Final URLs match table above (hash + UTMs)
 - [ ] Campaign negatives pasted
 - [ ] GA4 key events: `generate_lead`, `begin_checkout`
