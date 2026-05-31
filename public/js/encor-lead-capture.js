@@ -5,7 +5,7 @@
   "use strict";
 
   var MAGNET_ID = "encor-free-simulation";
-  var RUNNER_PATH = "/sample?track=encor-free-sim&welcome=1";
+  var RUNNER_PATH = "/CCNP-ENCOR-Study/test-simulation-runner.html?free=1";
   var LS_FREE_SIM = "bcc_encor_free_sim_v1";
   var HOME = "/ccnp-home.html";
   var LEAD_HASH = "#encor-lead-capture";
@@ -91,6 +91,16 @@
 
   function grantFreeSimAccess(email) {
     grantFreeSimAccessLocal(email, { viaLeadApi: true });
+  }
+
+  function markEncorFreeSimConsumed() {
+    try {
+      var raw = localStorage.getItem(LS_FREE_SIM);
+      if (!raw) return;
+      var o = JSON.parse(raw);
+      o.consumed = true;
+      localStorage.setItem(LS_FREE_SIM, JSON.stringify(o));
+    } catch (e) {}
   }
 
   function wireEncorLeadForm(form, options) {
@@ -327,5 +337,6 @@
   window.encorFreeSimAccessActive = hasFreeSimAccess;
   window.encorHasFreeSimAccess = hasFreeSimAccess;
   window.showEncorFreeSimLeadModal = showEncorFreeSimLeadModal;
+  window.markEncorFreeSimConsumed = markEncorFreeSimConsumed;
   window.bccIsEncorLeadLanding = isEncorLeadLanding;
 })();

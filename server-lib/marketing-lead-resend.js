@@ -23,7 +23,7 @@ const LEAD_MAGNETS = {
     logTag: "encor-lead",
     subjectEnv: "RESEND_ENCOR_FREE_SIM_SUBJECT",
     defaultSubject: "Your free ENCOR timed simulation is ready",
-    path: "/sample?track=encor-free-sim&welcome=1",
+    path: "/CCNP-ENCOR-Study/test-simulation-runner.html?free=1",
     title: "free ENCOR timed simulation",
     audienceEnv: "RESEND_ENCOR_MARKETING_AUDIENCE_ID",
   },

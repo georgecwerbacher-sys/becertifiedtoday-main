@@ -86,8 +86,8 @@
           location.replace(finishEncor + "#encor-lead-capture");
           return;
         }
-        sessionStorage.setItem("ccnpSampleKind", track);
-        window.ENCOR_HOME_SAMPLE.startFreeSim(finishEncor).catch(fail);
+        var welcome = params.get("welcome") === "1" ? "&welcome=1" : "";
+        location.replace("/CCNP-ENCOR-Study/test-simulation-runner.html?free=1" + welcome);
         return;
       }
 

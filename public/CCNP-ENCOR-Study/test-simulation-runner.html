@@ -376,6 +376,7 @@
   <script src="/CCNP-ENCOR-Study/js/encor-test-sim-scorecard.js"></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-storage.js" defer></script>
   <script src="/CCNP-ENCOR-Study/js/encor-test-sim-storage.js" defer></script>
+  <script src="/js/encor-lead-capture.js" defer></script>
 </head>
 <body>
   <div id="gatePanel" class="gate-wrap">
@@ -484,9 +485,35 @@
       var gateStartWrap = document.getElementById("gateStartWrap");
       var btnGateStartExam = document.getElementById("btnGateStartExam");
       var STARTER_URL = "/CCNP-ENCOR-Study/test-simulation.html";
+      var FREE_HOME_URL = "/ccnp-home.html";
       var sessionOk = false;
       var bypassMode = false;
+      var freeMode = false;
       var testMinutes = 120;
+
+      function detectFreeMode(params) {
+        if (params.get("free") === "1") return true;
+        try {
+          return sessionStorage.getItem("encorTestSimFree") === "1";
+        } catch (e) {
+          return false;
+        }
+      }
+
+      function persistFreeModeFlag() {
+        if (!freeMode) return;
+        if (typeof encorFreeSimAccessActive === "function" && !encorFreeSimAccessActive()) return;
+        try {
+          sessionStorage.setItem("encorTestSimFree", "1");
+        } catch (e) {}
+      }
+
+      function freeBlueprintUrl() {
+        if (window.ENCOR_TEST_SIM_BUILD && window.ENCOR_TEST_SIM_BUILD.FREE_BLUEPRINT_URL) {
+          return window.ENCOR_TEST_SIM_BUILD.FREE_BLUEPRINT_URL;
+        }
+        return "/CCNP-ENCOR-Study/data/encor-free-simulation-blueprint.json";
+      }
 
       function showExamUi() {
         gatePanel.hidden = true;
@@ -507,20 +534,25 @@
       }
 
       function loadBlueprintLine() {
-        return fetch("/CCNP-ENCOR-Study/data/encor-test-simulation-blueprint.json", { cache: "no-store" })
+        var url = freeMode ? freeBlueprintUrl() : "/CCNP-ENCOR-Study/data/encor-test-simulation-blueprint.json";
+        return fetch(url, { cache: "no-store" })
           .then(function (r) {
             if (!r.ok) throw new Error("blueprint");
             return r.json();
           })
           .then(function (b) {
-            testMinutes = b.durationMinutes != null ? b.durationMinutes : 120;
+            testMinutes = b.durationMinutes != null ? b.durationMinutes : freeMode ? 45 : 120;
+            var mcqCount =
+              b.multipleChoiceCount != null
+                ? b.multipleChoiceCount
+                : Array.isArray(b.multipleChoiceIds)
+                  ? b.multipleChoiceIds.length
+                  : 0;
             gateBlueprint.textContent =
-              "Blueprint v" +
-              b.schemaVersion +
-              ": " +
-              b.durationMinutes +
+              (freeMode ? "Free sample · " : "Blueprint v" + b.schemaVersion + ": ") +
+              testMinutes +
               " min · " +
-              b.multipleChoiceCount +
+              mcqCount +
               " MCQ · " +
               b.dragDropCount +
               " D&D · " +
@@ -539,6 +571,11 @@
       function updateGateBackLink() {
         var a = document.getElementById("gateBackLink");
         if (!a) return;
+        if (freeMode) {
+          a.setAttribute("href", FREE_HOME_URL + "#encor-lead-capture");
+          a.textContent = "← Back to CCNP ENCOR home";
+          return;
+        }
         if (typeof encorPortalPassActive === "function" && encorPortalPassActive()) {
           a.setAttribute("href", "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html");
           a.textContent = "← Back to ENCOR Training Portal";
@@ -553,6 +590,10 @@
       }
 
       function redirectAfterResults() {
+        if (freeMode) {
+          location.href = FREE_HOME_URL;
+          return;
+        }
         if (typeof encorPortalPassActive === "function" && encorPortalPassActive()) {
           location.href = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html";
           return;
@@ -563,32 +604,49 @@
         location.href = STARTER_URL;
       }
 
+      function beginExamFromPack(pack) {
+        if (!pack.queue || !pack.queue.length) throw new Error("empty");
+        testMinutes = pack.durationMinutes || testMinutes;
+        queue = pack.queue;
+        index = 0;
+        endsAt = Date.now() + testMinutes * 60 * 1000;
+        try {
+          sessionStorage.setItem("ccnpTestSimQueue", JSON.stringify(queue));
+          sessionStorage.setItem("ccnpTestSimIndex", "0");
+          sessionStorage.setItem("ccnpTestSimEndsAt", String(endsAt));
+        } catch (e) {
+          throw new Error("storage");
+        }
+        return beginPaidSessionIfNeeded();
+      }
+
       function startExamFromGate() {
         if (!sessionOk) return;
         btnGateStartExam.disabled = true;
         gateStatus.textContent = "Building your mixed exam…";
         gateStatus.className = "status-ok";
-        if (!window.ENCOR_TEST_SIM_BUILD || typeof window.ENCOR_TEST_SIM_BUILD.loadConfigAndBlueprint !== "function") {
+        if (!window.ENCOR_TEST_SIM_BUILD) {
           gateStatus.textContent = "Could not load exam builder.";
           gateStatus.className = "status-bad";
           btnGateStartExam.disabled = false;
           return;
         }
-        window.ENCOR_TEST_SIM_BUILD.loadConfigAndBlueprint()
+
+        var loadPromise;
+        if (freeMode && typeof window.ENCOR_TEST_SIM_BUILD.loadFreeSimulationQueue === "function") {
+          loadPromise = window.ENCOR_TEST_SIM_BUILD.loadFreeSimulationQueue();
+        } else if (typeof window.ENCOR_TEST_SIM_BUILD.loadConfigAndBlueprint === "function") {
+          loadPromise = window.ENCOR_TEST_SIM_BUILD.loadConfigAndBlueprint();
+        } else {
+          gateStatus.textContent = "Could not load exam builder.";
+          gateStatus.className = "status-bad";
+          btnGateStartExam.disabled = false;
+          return;
+        }
+
+        loadPromise
           .then(function (pack) {
-            if (!pack.queue || !pack.queue.length) throw new Error("empty");
-            testMinutes = pack.durationMinutes || testMinutes;
-            queue = pack.queue;
-            index = 0;
-            endsAt = Date.now() + testMinutes * 60 * 1000;
-            try {
-              sessionStorage.setItem("ccnpTestSimQueue", JSON.stringify(queue));
-              sessionStorage.setItem("ccnpTestSimIndex", "0");
-              sessionStorage.setItem("ccnpTestSimEndsAt", String(endsAt));
-            } catch (e) {
-              throw new Error("storage");
-            }
-            return beginPaidSessionIfNeeded();
+            return beginExamFromPack(pack);
           })
           .then(function () {
             showExamUi();
@@ -628,6 +686,14 @@
         var sessionIdFromUrl = params.get("session_id");
         var fromPortal = params.get("portal") === "1";
         bypassMode = params.get("bypass") === "1" || params.get("demo") === "1";
+        freeMode = detectFreeMode(params);
+        if (freeMode) persistFreeModeFlag();
+
+        if (freeMode) {
+          var gateTitle = document.querySelector("#gatePanel h1");
+          if (gateTitle) gateTitle.textContent = "Free ENCOR Timed Simulation";
+          btnGateStartExam.textContent = "Start free simulation";
+        }
 
         loadBlueprintLine();
 
@@ -644,6 +710,23 @@
         if (bypassMode) {
           sessionOk = true;
           showGateStartOptions();
+          return;
+        }
+
+        if (freeMode) {
+          if (typeof encorFreeSimAccessActive === "function" && encorFreeSimAccessActive()) {
+            sessionOk = true;
+            persistFreeModeFlag();
+            if (params.get("welcome") === "1") {
+              gateStatus.textContent =
+                "Your free 45-minute ENCOR sample is unlocked. Start when you are ready — use Next and Quit in the footer like the full timed exam.";
+            }
+            showGateStartOptions();
+            return;
+          }
+          gateStatus.textContent =
+            "Unlock the free timed simulation from CCNP home first (email opt-in on the landing page).";
+          gateStatus.className = "status-bad";
           return;
         }
 
@@ -835,8 +918,9 @@
         gatePanel.hidden = true;
         examPanel.hidden = true;
         resultsPanel.hidden = false;
+        var scoreOpts = freeMode ? { blueprintUrl: freeBlueprintUrl() } : {};
         if (window.ENCOR_TEST_SIM_SCORECARD && typeof window.ENCOR_TEST_SIM_SCORECARD.showResults === "function") {
-          return window.ENCOR_TEST_SIM_SCORECARD.showResults(reasonCode, queue, answeredByIndex);
+          return window.ENCOR_TEST_SIM_SCORECARD.showResults(reasonCode, queue, answeredByIndex, scoreOpts);
         }
         document.getElementById("resultsHeadline").textContent = "Attempt summary";
         document.getElementById("resultsReason").textContent = "Results could not be loaded.";
@@ -859,6 +943,15 @@
         showResultsPanel(reasonCode).then(function () {
           clearTestState();
           if (bypassMode) return;
+          if (freeMode) {
+            if (typeof markEncorFreeSimConsumed === "function") {
+              markEncorFreeSimConsumed();
+            }
+            try {
+              sessionStorage.removeItem("encorTestSimFree");
+            } catch (e) {}
+            return;
+          }
           if (typeof encorPortalPassActive === "function" && encorPortalPassActive()) return;
           if (typeof markEncorTempTestConsumed === "function") {
             markEncorTempTestConsumed();
@@ -888,8 +981,12 @@
         if (!doc) return;
         var selectors = [
           ".sim-nav",
+          ".cisco-home-sample-nav",
+          "nav.question-nav",
+          "a.nav-home",
+          "a.nav-next",
+          "a.nav-prev",
           "#nextWrap",
-          "a[href='/CCNP-ENCOR-Study/ENCOR_Training_Portal.html']",
           "a[href='/CCNP-ENCOR-Study/ENCOR_Training_Portal.html']",
           "a[href='/encor/index.html']",
           "a[href='/']"
@@ -951,6 +1048,15 @@
       frame.addEventListener("load", hideEmbeddedNav);
       nextBtn.addEventListener("click", moveNext);
       quitBtn.addEventListener("click", function () {
+        if (
+          !confirm(
+            freeMode
+              ? "Quit ends this free simulation and shows your scorecard. Proceed?"
+              : "Quit ends this attempt and shows your results. Proceed?"
+          )
+        ) {
+          return;
+        }
         endTest("You quit the practice test.");
       });
       resultsContinue.addEventListener("click", redirectAfterResults);

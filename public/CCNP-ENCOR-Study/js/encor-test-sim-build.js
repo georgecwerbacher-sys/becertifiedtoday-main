@@ -6,6 +6,7 @@
 
   var STUDY_CFG_URL = "/CCNP-ENCOR-Study/js/study-config.json";
   var BLUEPRINT_URL = "/CCNP-ENCOR-Study/data/encor-test-simulation-blueprint.json";
+  var FREE_BLUEPRINT_URL = "/CCNP-ENCOR-Study/data/encor-free-simulation-blueprint.json";
   var LAB_BASE = "/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/";
 
   function shuffle(arr) {
@@ -79,13 +80,63 @@
     return shuffle(queue);
   }
 
-  function loadConfigAndBlueprint() {
+  function dndPathForBlueprint(bp, id) {
+    var map = bp.dragDropPaths || {};
+    if (map[String(id)]) return map[String(id)];
+    if (id === 365) return "/CCNP-ENCOR-Study/ENCOR_Samples/question-365.html";
+    return "/CCNP-ENCOR-Study/CCNP-ENCOR-Drag-Drop/question-" + id + ".html";
+  }
+
+  function buildFreeQueue(bp) {
+    bp = bp || {};
+    var queue = [];
+    (bp.multipleChoiceIds || []).forEach(function (id) {
+      queue.push({
+        kind: "question",
+        url: "/CCNP-ENCOR-Study/ENCOR_Questions/question-" + id + ".html",
+      });
+    });
+    (bp.dragDropIds || []).forEach(function (id) {
+      queue.push({
+        kind: "dragdrop",
+        url: dndPathForBlueprint(bp, id),
+      });
+    });
+    (bp.labFiles || []).forEach(function (fn) {
+      queue.push({
+        kind: "sim",
+        url: LAB_BASE + String(fn).replace(/^\//, ""),
+      });
+    });
+    return shuffle(queue);
+  }
+
+  function loadFreeSimulationQueue() {
+    return fetch(FREE_BLUEPRINT_URL, { cache: "no-store" })
+      .then(function (r) {
+        if (!r.ok) throw new Error("blueprint");
+        return r.json();
+      })
+      .then(function (bp) {
+        var queue = buildFreeQueue(bp);
+        if (!queue.length) throw new Error("empty");
+        return {
+          bp: bp,
+          queue: queue,
+          durationMinutes: bp.durationMinutes != null ? bp.durationMinutes : 45,
+        };
+      });
+  }
+
+  function loadConfigAndBlueprint(options) {
+    options = options || {};
+    var blueprintUrl = options.blueprintUrl || BLUEPRINT_URL;
     return Promise.all([
       fetch(STUDY_CFG_URL, { cache: "no-store" }).then(function (r) {
         if (!r.ok) throw new Error("study config");
         return r.json();
       }),
-      fetch(BLUEPRINT_URL, { cache: "no-store" }).then(function (r) {
+      fetch(blueprintUrl, { cache: "no-store" }).then(function (r) {
         if (!r.ok) throw new Error("blueprint");
         return r.json();
       }),
@@ -103,6 +154,9 @@
 
   window.ENCOR_TEST_SIM_BUILD = {
     buildQueue: buildQueue,
+    buildFreeQueue: buildFreeQueue,
     loadConfigAndBlueprint: loadConfigAndBlueprint,
+    loadFreeSimulationQueue: loadFreeSimulationQueue,
+    FREE_BLUEPRINT_URL: FREE_BLUEPRINT_URL,
   };
 })();

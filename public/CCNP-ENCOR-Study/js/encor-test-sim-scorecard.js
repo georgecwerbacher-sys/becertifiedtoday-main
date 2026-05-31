@@ -448,8 +448,15 @@
       });
   }
 
-  function loadContext() {
-    if (cachedSubjects && cachedObjectiveLabels && cachedDomainTitles && cachedScoreConfig) {
+  function loadContext(blueprintUrl) {
+    var bpUrl = blueprintUrl || BLUEPRINT_URL;
+    if (
+      cachedSubjects &&
+      cachedObjectiveLabels &&
+      cachedDomainTitles &&
+      cachedScoreConfig &&
+      (!blueprintUrl || blueprintUrl === BLUEPRINT_URL)
+    ) {
       return Promise.resolve({
         subjects: cachedSubjects,
         objectiveLabels: cachedObjectiveLabels,
@@ -465,7 +472,7 @@
       fetch(OBJECTIVES_URL, { cache: "no-store" }).then(function (r) {
         return r.ok ? r.json() : { domains: [] };
       }),
-      fetch(BLUEPRINT_URL, { cache: "no-store" }).then(function (r) {
+      fetch(bpUrl, { cache: "no-store" }).then(function (r) {
         return r.ok ? r.json() : {};
       }),
     ]).then(function (res) {
@@ -485,8 +492,9 @@
     });
   }
 
-  function showResults(reason, queue, answeredByIndex) {
-    return loadContext().then(function (ctx) {
+  function showResults(reason, queue, answeredByIndex, options) {
+    options = options || {};
+    return loadContext(options.blueprintUrl).then(function (ctx) {
       var attemptResults = buildAttemptResults(queue, answeredByIndex, ctx.subjects, ctx.labSections);
       populateResults(reason, attemptResults, queue, ctx);
       return attemptResults;
