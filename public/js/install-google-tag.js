@@ -32,4 +32,9 @@
   init.src = "/js/google-tag-gtag.js";
   init.setAttribute("data-bcc-gtag", "1");
   head.appendChild(init);
+
+  var attr = document.createElement("script");
+  attr.src = "/js/campaign-attribution.js";
+  attr.setAttribute("data-bcc-gtag", "1");
+  head.appendChild(attr);
 })();

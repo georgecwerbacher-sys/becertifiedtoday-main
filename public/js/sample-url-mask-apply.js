@@ -524,6 +524,51 @@
   }
 })();
 
+/** Guest sample pages: exam prep home links (not gated Training Portal). */
+(function () {
+  "use strict";
+
+  function isGuestSamplePath() {
+    var path = (location.pathname || "").toLowerCase();
+    return (
+      path.indexOf("/ccna-study/ccna_samples/") !== -1 ||
+      path.indexOf("/ccnp-encor-study/encor_samples/") !== -1 ||
+      path.indexOf("/comp_tia_sec+/sec+_samples/") !== -1 ||
+      path === "/ccna-study/ccna_labs/cli-lab-trunk_lacp.html" ||
+      path === "/ccna-study/ccna_labs/cli-lab-vlan-sim.html"
+    );
+  }
+
+  function rewriteGuestHomeLinks() {
+    if (!isGuestSamplePath()) return;
+
+    var map = [
+      { re: /\/ccna-study\/ccna_training_portal\.html/i, href: "/ccna-home.html", label: "CCNA exam prep" },
+      { re: /\/ccnp-encor-study\/encor_training_portal\.html/i, href: "/ccnp-home.html", label: "ENCOR exam prep" },
+      { re: /\/comp_tia_sec+\/sec\+_training_portal\.html/i, href: "/comptia-sec+-home.html", label: "Security+ exam prep" },
+    ];
+
+    document.querySelectorAll("a[href]").forEach(function (a) {
+      var href = a.getAttribute("href") || "";
+      for (var i = 0; i < map.length; i++) {
+        if (map[i].re.test(href)) {
+          a.setAttribute("href", map[i].href);
+          if (a.classList.contains("sim-nav-home") || a.classList.contains("nav-home")) {
+            a.textContent = map[i].label;
+          }
+          break;
+        }
+      }
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", rewriteGuestHomeLinks);
+  } else {
+    rewriteGuestHomeLinks();
+  }
+})();
+
 /** ENCOR guest samples: apply Home tab after URL mask (labs / ENCOR_Samples pages). */
 (function () {
   "use strict";

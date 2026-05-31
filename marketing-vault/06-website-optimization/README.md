@@ -26,8 +26,9 @@ Add a note under `pages/` for each URL you send paid traffic to.
 2. **Plan** — note gaps in the page’s Obsidian file (message match, CTA, speed, trust)
 3. **Implement** — edit `public/` in Cursor (HTML, copy, meta, images)
 4. **Log** — append row to [[content-change-log|content change log]]
-5. **Measure** — after 7–14 days, check Ads (Quality Score, LP experience) + GA4 bounce/engagement in weekly report
-6. **Link campaign** — update [[../02-campaigns/security-plus/security-plus-google-ads|Security+ campaign]] decisions log if ad copy or URL changed
+5. **Guest samples** — after sample or free-assessment edits, run `python3 scripts/sync-guest-page-marketing.py` (aligns with [[../01-strategy/positioning-and-messaging|positioning]])
+6. **Measure** — after 7–14 days, check Ads (Quality Score, LP experience) + GA4 bounce/engagement in weekly report
+7. **Link campaign** — update [[../02-campaigns/security-plus/security-plus-google-ads|Security+ campaign]] decisions log if ad copy or URL changed
 
 ## Templates
 
