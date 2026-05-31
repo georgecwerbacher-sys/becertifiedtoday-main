@@ -28,9 +28,9 @@ After upload, note the filename in [[marketing-incorporation-plan|marketing inco
 
 - [[../01-strategy/security-plus-federal-defense-foundation|Security+ federal & defense foundation]]
 - [[../01-strategy/cisco-certifications-exam-prep-foundation|Cisco CCNA & ENCOR foundation]]
-- [[../02-campaigns/security-plus-google-ads|Security+ Google Ads]]
-- [[../02-campaigns/ccna-portal-google-ads|CCNA Google Ads]]
-- [[../02-campaigns/ccnp-encor-google-ads|ENCOR Google Ads]]
+- [[../02-campaigns/security-plus/security-plus-google-ads|Security+ Google Ads]]
+- [[../02-campaigns/ccna/ccna-portal-google-ads|CCNA Google Ads]]
+- [[../02-campaigns/encor/ccnp-encor-google-ads|ENCOR Google Ads]]
 
 ## Workflow
 

@@ -9,7 +9,7 @@ status: in-progress
 
 Step-by-step setup for **Be Certified Today** data-driven marketing: Google Analytics 4, Google Ads, Stripe, Cursor scripts, and this Obsidian vault.
 
-Check boxes as you go (`- [ ]` → `- [x]`). Details for the active campaign live in [[../02-campaigns/security-plus-google-ads|Security+ — Google Ads]].
+Check boxes as you go (`- [ ]` → `- [x]`). Details for the active campaign live in [[../02-campaigns/security-plus/security-plus-google-ads|Security+ — Google Ads]].
 
 ---
 
@@ -143,7 +143,7 @@ No Google Ads **API** required to launch. Conversion tracking uses gtag (already
 
 ### 3d — First Security+ campaign
 
-See [[../02-campaigns/security-plus-google-ads|Security+ campaign note]]. Minimum:
+See [[../02-campaigns/security-plus/security-plus-google-ads|Security+ campaign note]]. Minimum:
 
 - [ ] **Final URL**:
   ```
@@ -277,4 +277,4 @@ When Phases 0–5 are checked off, you have:
 - Stripe checkout + webhook pipeline
 - A repeatable review loop in this vault
 
-Track campaign decisions in [[../02-campaigns/security-plus-google-ads|Security+ — Google Ads]].
+Track campaign decisions in [[../02-campaigns/security-plus/security-plus-google-ads|Security+ — Google Ads]].

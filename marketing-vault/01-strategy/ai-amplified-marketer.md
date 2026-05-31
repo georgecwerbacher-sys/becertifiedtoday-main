@@ -22,7 +22,7 @@ Personal notes while reading. Use AI for speed and synthesis; keep human judgmen
 
 - **Positioning:** [[positioning-and-messaging|exam prep, not training]] — all Ads and landing copy must reflect this.
 - **AI search:** [[google-ai-search-strategy|structured pages + FAQ]] so Google AI Mode / Overviews can cite us for prep queries.
-- First paid campaign: [[../02-campaigns/security-plus-google-ads|Security+ Google Ads]] → `/comptia-sec+-home.html`.
+- First paid campaign: [[../02-campaigns/security-plus/security-plus-google-ads|Security+ Google Ads]] → `/comptia-sec+-home.html`.
 - Tie every paid campaign to `utm_*` / `gclid` (see `public/js/campaign-attribution.js`).
 - Review [[05-playbooks/weekly-review-process|weekly process]] against GA4 + Stripe, not gut feel alone.
 - Log experiments in `04-experiments/` with hypothesis before you change landing pages or bids.

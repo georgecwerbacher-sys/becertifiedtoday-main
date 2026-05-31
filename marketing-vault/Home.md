@@ -10,6 +10,7 @@ Obsidian vault for data-driven marketing (Cursor + GA4 + Stripe + Google Ads). O
 
 ## Quick links
 
+- [[02-campaigns/README|Google Ads campaigns]] — Security+ · CCNA · ENCOR
 - [[06-website-optimization/README|Website optimization]] — Quality Score, landing pages, content change log
 - [[setup/marketing-stack-setup-checklist|Setup checklist]] — Google, Stripe, GA4, Ads step-by-step
 - [[01-strategy/positioning-and-messaging|Positioning & messaging]] ← exam prep, not courses
@@ -17,10 +18,10 @@ Obsidian vault for data-driven marketing (Cursor + GA4 + Stripe + Google Ads). O
 - [[01-strategy/security-plus-federal-defense-foundation|Security+ federal & defense foundation]]
 - [[01-strategy/google-ai-search-strategy|Google AI search strategy]]
 - [[01-strategy/ai-amplified-marketer|AI Amplified Marketer — book notes]]
-- [[02-campaigns/security-plus-google-ads|Security+ — Google Ads]] ← active
-- [[02-campaigns/security-plus-lead-magnet-ads|Security+ lead magnet ads]] ← email capture CTA
-- [[02-campaigns/ccna-portal-google-ads|CCNA 200-301 — Google Ads]] ← active
-- [[02-campaigns/ccnp-encor-google-ads|CCNP ENCOR — Google Ads]] ← active
+- [[02-campaigns/security-plus/security-plus-google-ads|Security+ — Google Ads]] ← active
+- [[02-campaigns/security-plus/security-plus-lead-magnet-ads|Security+ lead magnet ads]] ← email capture CTA
+- [[02-campaigns/ccna/ccna-portal-google-ads|CCNA 200-301 — Google Ads]] ← active
+- [[02-campaigns/encor/ccnp-encor-google-ads|CCNP ENCOR — Google Ads]] ← active
 - [[05-playbooks/weekly-review-process|Weekly review process]]
 - [[05-playbooks/keyword-collection-plan|Keyword collection plan]]
 - [[07-keywords/README|Keyword intelligence (07-keywords/)]]

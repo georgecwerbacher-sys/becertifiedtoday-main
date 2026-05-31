@@ -23,7 +23,7 @@ related_reports: []
 
 Primary paid campaign for **CompTIA Security+ SY0-701** on Be Certified Today.
 
-**Positioning reminder:** [[../01-strategy/positioning-and-messaging|Exam prep only]] — target people practicing for test day, not course shoppers. See [[../01-strategy/google-ai-search-strategy|AI search strategy]] for FAQ/structured content that supports the same keywords.
+**Positioning reminder:** [[../../01-strategy/positioning-and-messaging|Exam prep only]] — target people practicing for test day, not course shoppers. See [[../../01-strategy/google-ai-search-strategy|AI search strategy]] for FAQ/structured content that supports the same keywords.
 
 ## Objective
 
@@ -62,7 +62,7 @@ Interactive **mid-funnel** landing for PBQ/openssl intent (not primary brand lan
 https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_openssl_pbq&utm_content={creative}
 ```
 
-Page note: [[../06-website-optimization/pages/simulation-secure-web-architecture-openssl|simulation-secure-web-architecture-openssl.md]] — high-value keywords, negatives, CTA map.
+Page note: [[../../06-website-optimization/pages/simulation-secure-web-architecture-openssl|simulation-secure-web-architecture-openssl.md]] — high-value keywords, negatives, CTA map.
 
 `campaign-attribution.js` is loaded on this page — UTM + `gclid` persist for the session in GA4.
 
@@ -77,6 +77,8 @@ Page note: [[../06-website-optimization/pages/simulation-secure-web-architecture
 | `secplus_federal_*` | Home (generic) | DoD / 8140 / contractor | Optional geo campaigns |
 
 Copy details for lead group: [[security-plus-lead-magnet-ads|lead magnet ads]].
+
+**Paste-ready RSA + keywords:** [[security-plus-google-ads-export|Security+ Google Ads export]].
 
 ## Funnel map
 
@@ -107,9 +109,9 @@ Post-purchase: `secplus-portal-checkout-success.html` → training portal at `/C
 ## Secondary pages (organic / retargeting — not primary ad landings)
 
 - `/comptia-sec+-home.html` — **only** Security+ Google Ads final URL (exam prep + purchase + lead magnet).
-- `/secplus-home.html` — **legacy** sample hub; “launching soon” copy — **do not use for ads**. See [[../06-website-optimization/pages/secplus-home-legacy|secplus-home legacy note]].
+- `/secplus-home.html` — **legacy** sample hub; “launching soon” copy — **do not use for ads**. See [[../../06-website-optimization/pages/secplus-home-legacy|secplus-home legacy note]].
 - `/COMP_TIA_SEC+/SEC+_Training_Portal.html` — gated practice hub (checkout required).
-- CCNP ENCOR ads → `/ccnp-home.html` — see [[ccnp-encor-google-ads|ENCOR campaign]] (not this Security+ campaign).
+- CCNP ENCOR ads → `/ccnp-home.html` — see [[../encor/ccnp-encor-google-ads|ENCOR campaign]] (not this Security+ campaign).
 
 ## Keywords & angles (draft)
 
@@ -121,12 +123,12 @@ Intent themes to test in ad groups — **prep / practice / simulation**, not cou
 | Practice test | sy0-701 practice questions, security+ practice questions | Verified explanations — not PDF dumps |
 | Simulation purchase | security+ exam simulation, sy0-701 timed test | 90-min sim, Back + mark for review, $9.99 |
 | Retake / readiness | pass security+ first try, security+ exam prep | Exam-realistic format — save retake fees |
-| PBQ / OpenSSL CTA | security+ pbq practice, sy0-701 pbq, openssl csr comptia | Free PBQ slice → portal/sim on [[../06-website-optimization/pages/simulation-secure-web-architecture-openssl\|openssl sim landing]] |
-| Federal / DoD | security+ dod, security+ 8140, security+ defense contractor | Browser SY0-701 prep — hero/meta mention DoD; see [[../01-strategy/security-plus-federal-defense-foundation\|federal foundation]] |
+| PBQ / OpenSSL CTA | security+ pbq practice, sy0-701 pbq, openssl csr comptia | Free PBQ slice → portal/sim on [[../../06-website-optimization/pages/simulation-secure-web-architecture-openssl\|openssl sim landing]] |
+| Federal / DoD | security+ dod, security+ 8140, security+ defense contractor | Browser SY0-701 prep — hero/meta mention DoD; see [[../../01-strategy/security-plus-federal-defense-foundation\|federal foundation]] |
 
 ### Geo targeting (federal/defense ad groups)
 
-Use with `utm_content=federal-{market}` for reporting. Details: [[../01-strategy/security-plus-federal-defense-foundation#Locations — where to find them|locations table]].
+Use with `utm_content=federal-{market}` for reporting. Details: [[../../01-strategy/security-plus-federal-defense-foundation#Locations — where to find them|locations table]].
 
 | Ad group (draft) | Priority geos | UTM content example |
 |------------------|---------------|---------------------|
@@ -137,11 +139,11 @@ Use with `utm_content=federal-{market}` for reporting. Details: [[../01-strategy
 
 National non-geo campaigns still run for generic `security+ practice test` keywords.
 
-**Negative keyword ideas:** free course, bootcamp, training program, dump, guaranteed pass, pdf download — full lists on [[../06-website-optimization/pages/simulation-secure-web-architecture-openssl#Negative keywords|openssl CTA page note]] and campaign-level list below.
+**Negative keyword ideas:** free course, bootcamp, training program, dump, guaranteed pass, pdf download — full lists on [[../../06-website-optimization/pages/simulation-secure-web-architecture-openssl#Negative keywords|openssl CTA page note]] and campaign-level list below.
 
 **Campaign-level negatives (phrase match unless noted):** free course, training course, bootcamp, instructor led, brain dump, exam dump, guaranteed pass, pdf download, udemy, coursera, professor messer, jobs, salary, cissp, ccna, sy0-601
 
-Message angles (aligned with [[../01-strategy/positioning-and-messaging|positioning]]):
+Message angles (aligned with [[../../01-strategy/positioning-and-messaging|positioning]]):
 
 - **Exam-realistic** — timed simulation, PBQ-style items, Back + mark for review
 - **Verified solutions** — prep you can trust, not unvetted dumps
@@ -169,7 +171,7 @@ Message angles (aligned with [[../01-strategy/positioning-and-messaging|position
 
 ## AI search alignment
 
-Landing page must answer AI-style questions clearly (see [[../01-strategy/google-ai-search-strategy|FAQ bank]]):
+Landing page must answer AI-style questions clearly (see [[../../01-strategy/google-ai-search-strategy|FAQ bank]]):
 
 - [x] FAQ section on landing page implemented (2026-05-30)
 - [x] H1/lead use “exam prep” not “training course”
@@ -183,13 +185,13 @@ Landing page must answer AI-style questions clearly (see [[../01-strategy/google
 - [ ] Weekly report: filter GA4 by campaign name matching `secplus*`
 - [ ] Stripe Payment Link confirms **$9.99** for timed sim in Dashboard
 - [ ] Stripe portal subscribers visible in `/admin/analytics.html` (Security+ product metadata)
-- [ ] Landing page audits in [[../06-website-optimization/landing-page-audit-checklist|audit checklist]] — log changes in [[../06-website-optimization/content-change-log|content change log]]
+- [ ] Landing page audits in [[../../06-website-optimization/landing-page-audit-checklist|audit checklist]] — log changes in [[../../06-website-optimization/content-change-log|content change log]]
 
 ## Landing page optimization
 
-Primary page tracker: [[../06-website-optimization/pages/comptia-sec-plus-home|comptia-sec+-home.html]].
+Primary page tracker: [[../../06-website-optimization/pages/comptia-sec-plus-home|comptia-sec+-home.html]].
 
-Before major ad spend increases, run the optimization workflow in [[../06-website-optimization/README|06-website-optimization]].
+Before major ad spend increases, run the optimization workflow in [[../../06-website-optimization/README|06-website-optimization]].
 
 **Known LP items (2026-05-30):**
 
@@ -198,6 +200,7 @@ Before major ad spend increases, run the optimization workflow in [[../06-websit
 
 ## Creative / ad copy notes
 
+- Full RSA sets, keywords, negatives, extensions: [[security-plus-google-ads-export|paste-ready export]]
 - Launch with **`secplus_lead_free_sim`** + **`secplus_sim_purchase`** in parallel
 - A/B: lead headline “Free Timed Simulation” vs “35-Min Sample Exam”
 - Pin lead URL to `#secplus-lead-capture` for lead ad group only

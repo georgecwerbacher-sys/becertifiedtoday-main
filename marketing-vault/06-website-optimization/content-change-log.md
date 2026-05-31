@@ -20,8 +20,10 @@ Implement changes in Cursor under `public/`. Link to page notes in `06-website-o
 | 2026-05-30 | `/comptia-sec+-home.html` | Federal/DoD/defense-contractor section (people, when, where) + FAQs + meta/JSON-LD | High-intent compliance segment; geo ad foundation | secplus_portal | no |
 | 2026-05-30 | `/comptia-sec+-home.html` | Exam prep positioning: H1/lead/benefits, 5 new FAQs + JSON-LD, meta/OG copy, “practice portal” labels, removed “goes live” / training language | Google Ads QS + AI search + message match (secplus_portal) | secplus_portal | yes — 2026-05-30 prod (`becertifiedtoday.com`) | |
 | 2026-05-30 | `/comptia-sec+-home.html`, `test-simulation-runner.html` | Free 35-min sim lead magnet; $9.99 timed sim; Back + mark for review; landing images (relative paths); federal section removed; lead CSV | Campaign launch readiness — secplus_lead_free_sim funnel | secplus_portal | yes — 2026-05-30 prod | |
-| 2026-05-30 | `/comptia-sec+-home.html`, `secplus-lead-capture.js` | Lead-magnet copy refresh; lead-first layout when `utm_content=lead-free-sim` or `#secplus-lead-capture` | Google Ads lead ad group message match + CVR | secplus_portal | pending deploy | |
-| | | | | | | |
+| 2026-05-30 | `marketing-vault/02-campaigns/` | Paste-ready Google Ads export (RSA + keywords per ad group) | Campaign build in Ads UI | secplus_portal | n/a | |
+| 2026-05-31 | `/index.html` | Exam prep title/H1/meta; track cards → public landing pages (not gated portals); OG + JSON-LD; removed training-path language | SEO + positioning — exam prep not courses | all | no | |
+| 2026-05-31 | `/*Training_Portal.html`, `/secplus-home.html` | noindex/nofollow on gated portals; legacy secplus-home canonical → comptia-sec+-home | Keep crawl budget on exam prep landings | all | no | |
+| 2026-05-31 | `robots.txt`, `sitemap.xml` | Disallow portals + legacy hub; sitemap prioritizes home pages + free assessment + OpenSSL PBQ; removed secplus-home | Crawl/index hygiene | all | no | |
 
 ---
 
@@ -30,7 +32,7 @@ Implement changes in Cursor under `public/`. Link to page notes in `06-website-o
 1. Before editing: run [[landing-page-audit-checklist|landing page audit]] on the target URL
 2. After deploy: add a row above
 3. ~7–14 days later: update **Ads LP exp.** from Google Ads keyword report
-4. Tie major changes to [[../02-campaigns/security-plus-google-ads#Decisions log|Security+ campaign decisions log]]
+4. Tie major changes to [[../02-campaigns/security-plus/security-plus-google-ads#Decisions log|Security+ campaign decisions log]]
 
 ---
 

@@ -8,9 +8,9 @@ lead_magnet: secplus-free-simulation
 
 # Security+ lead magnet — free simulation + scorecard email
 
-Email capture on [[../06-website-optimization/pages/comptia-sec-plus-home|comptia-sec+-home.html]] unlocks a **free timed simulation sample**; the **study scorecard** can be emailed from the results screen.
+Email capture on [[../../06-website-optimization/pages/comptia-sec-plus-home|comptia-sec+-home.html]] unlocks a **free timed simulation sample**; the **study scorecard** can be emailed from the results screen.
 
-Parent campaign: [[security-plus-google-ads|Security+ Google Ads]]
+Parent campaign: [[security-plus-google-ads|Security+ Google Ads]] · Paste-ready copy: [[security-plus-google-ads-export|Google Ads export]]
 
 ---
 
@@ -61,7 +61,7 @@ Note: `#secplus-lead-capture` scrolls to the lead form. With `utm_content=lead-f
 | Email scorecard | POST `/api/secplus-scorecard-email` | `secplus_scorecard_email_sent` |
 | Upsell | Full sim / portal on results modal or `#purchase` | `begin_checkout` |
 
-Lead rows append to `marketing-vault/leads/secplus-free-simulation-leads.csv` when `GITHUB_LEADS_TOKEN` is set (see [[../setup/security-plus-lead-magnet-vercel|Vercel setup]]).
+Lead rows append to `marketing-vault/leads/secplus-free-simulation-leads.csv` when `GITHUB_LEADS_TOKEN` is set (see [[../../setup/security-plus-lead-magnet-vercel|Vercel setup]]).
 
 ---
 

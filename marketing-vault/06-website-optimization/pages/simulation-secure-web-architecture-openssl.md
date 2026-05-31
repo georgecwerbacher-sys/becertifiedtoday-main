@@ -14,7 +14,7 @@ quality_score_notes: CTA landing for PBQ/openssl ad group — message match on W
 
 **Role:** Mid-funnel **CTA landing page** — searcher gets a **free, interactive SY0-701 PBQ slice** (secure web architecture + OpenSSL CSR), then converts to portal or timed simulation. Not a course page; **exam prep only**.
 
-Campaign: [[../02-campaigns/security-plus-google-ads|Security+ Google Ads]] → ad group **PBQ / OpenSSL / web architecture**.
+Campaign: [[../../02-campaigns/security-plus/security-plus-google-ads|Security+ Google Ads]] → ad group **PBQ / OpenSSL / web architecture**.
 
 ## Live URLs
 
@@ -224,4 +224,4 @@ old security+ exam
 
 ---
 
-After deploy, log in [[../content-change-log|content change log]] and update [[../02-campaigns/security-plus-google-ads|Security+ campaign]] decisions log.
+After deploy, log in [[../content-change-log|content change log]] and update [[../../02-campaigns/security-plus/security-plus-google-ads|Security+ campaign]] decisions log.

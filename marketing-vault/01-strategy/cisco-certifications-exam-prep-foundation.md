@@ -17,8 +17,8 @@ Shared playbook for **active Google Ads** on **CCNA 200-301** and **CCNP ENCOR 3
 
 | Cert | CTA landing | Campaign | UTM |
 |------|-------------|----------|-----|
-| CCNA 200-301 | `/ccna-home.html` (alias `/ccna/practice-test`) | [[../02-campaigns/ccna-portal-google-ads\|ccna_portal]] | `utm_campaign=ccna_portal` |
-| CCNP ENCOR 350-401 | `/ccnp-home.html` | [[../02-campaigns/ccnp-encor-google-ads\|encor_portal]] | `utm_campaign=encor_portal` |
+| CCNA 200-301 | `/ccna-home.html` (alias `/ccna/practice-test`) | [[../02-campaigns/ccna/ccna-portal-google-ads\|ccna_portal]] | `utm_campaign=ccna_portal` |
+| CCNP ENCOR 350-401 | `/ccnp-home.html` | [[../02-campaigns/encor/ccnp-encor-google-ads\|encor_portal]] | `utm_campaign=encor_portal` |
 
 Cross-link: [[security-plus-federal-defense-foundation|Security+ federal foundation]] · [[../08-8140-compliance/marketing-incorporation-plan|8140 incorporation plan]] — shared locations, contractor timing, and official 9/12-month baselines.
 

@@ -9,5 +9,5 @@ Onboarding and API configuration for the marketing stack.
 ## Related
 
 - [[../Home|Vault home]]
-- [[../02-campaigns/security-plus-google-ads|Security+ campaign]]
+- [[../02-campaigns/security-plus/security-plus-google-ads|Security+ campaign]]
 - [[../05-playbooks/weekly-review-process|Weekly review process]]

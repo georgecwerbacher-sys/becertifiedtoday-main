@@ -11,7 +11,7 @@ quality_score_notes: Primary Google Ads CTA landing for CCNP ENCOR — not secpl
 
 # ccnp-home.html — CCNP ENCOR ad landing (CTA)
 
-Primary **Google Ads final URL** for [[../../02-campaigns/ccnp-encor-google-ads|ENCOR campaign]].
+Primary **Google Ads final URL** for [[../../02-campaigns/encor/ccnp-encor-google-ads|ENCOR campaign]].
 
 **Not to confuse with Security+:** `/secplus-home.html` is a legacy sample hub only. Security+ paid traffic → `/comptia-sec+-home.html`.
 

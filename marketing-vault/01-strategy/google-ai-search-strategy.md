@@ -105,7 +105,7 @@ Track FAQ additions in [[../06-website-optimization/content-change-log|content c
 ## Workflow
 
 1. Update [[positioning-and-messaging|positioning]] when product scope changes  
-2. Align [[../02-campaigns/security-plus-google-ads|Ads copy]] and landing H1/FAQ to same facts  
+2. Align [[../02-campaigns/security-plus/security-plus-google-ads|Ads copy]] and landing H1/FAQ to same facts  
 3. Audit with [[../06-website-optimization/landing-page-audit-checklist|landing page checklist]]  
 4. Implement in `public/` via Cursor  
 5. Log in [[../06-website-optimization/content-change-log|change log]]  

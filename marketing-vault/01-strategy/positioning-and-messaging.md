@@ -92,5 +92,5 @@ Many DoD, federal civilian, and defense-contractor cyber roles use **CompTIA Sec
 
 - [[google-ai-search-strategy|Google AI search strategy]]
 - [[ai-amplified-marketer|AI Amplified Marketer notes]]
-- [[../02-campaigns/security-plus-google-ads|Security+ campaign]]
+- [[../02-campaigns/security-plus/security-plus-google-ads|Security+ campaign]]
 - [[../06-website-optimization/google-ads-quality-score-guide|Landing page quality]]

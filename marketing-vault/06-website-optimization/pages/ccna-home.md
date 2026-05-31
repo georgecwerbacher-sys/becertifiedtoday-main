@@ -11,7 +11,7 @@ quality_score_notes: Active Google Ads landing; headline variants via ccna-home-
 
 # ccna-home.html — CCNA ad landing (CTA)
 
-Primary **Google Ads final URL** for [[../../02-campaigns/ccna-portal-google-ads|CCNA campaign]].
+Primary **Google Ads final URL** for [[../../02-campaigns/ccna/ccna-portal-google-ads|CCNA campaign]].
 
 Alias: `/ccna/practice-test` → same HTML (Vercel rewrite).
 

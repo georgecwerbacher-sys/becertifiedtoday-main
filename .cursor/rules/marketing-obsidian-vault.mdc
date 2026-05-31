@@ -15,7 +15,7 @@ The vault root is `marketing-vault/`. Open it in Obsidian as a folder vault. Cur
 | `setup/` | API and tool onboarding checklists |
 | `00-inbox/` | Quick captures |
 | `01-strategy/` | Positioning, AI search strategy, book notes |
-| `02-campaigns/` | One note per campaign (UTM, landing pages, decisions) |
+| `02-campaigns/` | Google Ads campaigns — one subfolder per product (`security-plus/`, `ccna/`, `encor/`) |
 | `03-reports/weekly/` | Auto-generated GA4 weekly snapshots |
 | `04-experiments/` | Hypothesis → outcome log |
 | `05-playbooks/` | Repeatable processes |
@@ -44,7 +44,7 @@ Writes `marketing-vault/03-reports/weekly/YYYY-MM-DD.md`. Uses the same GA4 env 
 
 Weekly reports contain `<!-- auto:body -->` … `<!-- /auto:body -->`. **Only replace content inside those markers** on regenerate. Never delete or overwrite **## Decisions**, **## Notes**, or **## Follow-up** outside the markers.
 
-When adding a new campaign landing page in `public/`, update or create the matching note in `02-campaigns/` with UTM fields and link to [[05-playbooks/weekly-review-process]].
+When adding a new campaign landing page in `public/`, update or create the matching note in `02-campaigns/<product>/` with UTM fields and link to [[05-playbooks/weekly-review-process]].
 
 ## Site tracking (Be Certified Today)
 
@@ -52,7 +52,7 @@ When adding a new campaign landing page in `public/`, update or create the match
 - Checkout events: `data-bcc-track="begin_checkout"` on checkout controls.
 - Admin dashboard: `public/admin/analytics.html` + `api/analytics-report.js`.
 
-Link new paid traffic to campaign notes via `utm_campaign` matching `02-campaigns/*.md` frontmatter.
+Link new paid traffic to campaign notes via `utm_campaign` matching `02-campaigns/*/*.md` frontmatter.
 
 ## Website optimization (Google Ads quality)
 

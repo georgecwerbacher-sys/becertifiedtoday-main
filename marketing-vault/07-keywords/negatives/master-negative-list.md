@@ -9,7 +9,7 @@ last_updated: 2026-05-30
 
 Apply at **account or shared campaign level** unless a term is intentionally targeted elsewhere.
 
-Sync to Google Ads when updated. Source seeds: [[../../06-website-optimization/pages/simulation-secure-web-architecture-openssl|OpenSSL CTA page]], [[../../02-campaigns/security-plus-google-ads|Security+ campaign note]].
+Sync to Google Ads when updated. Source seeds: [[../../06-website-optimization/pages/simulation-secure-web-architecture-openssl|OpenSSL CTA page]], [[../../02-campaigns/security-plus/security-plus-google-ads|Security+ campaign note]].
 
 ## Course / training (wrong buyer)
 

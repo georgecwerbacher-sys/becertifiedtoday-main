@@ -58,4 +58,4 @@ https://becertifiedtoday.com/comptia-sec+-home.html#secplus-lead-capture?utm_sou
 
 GA4: mark `generate_lead` and `secplus_scorecard_email_sent` as key events.
 
-See [[../02-campaigns/security-plus-lead-magnet-ads|lead magnet ads]].
+See [[../02-campaigns/security-plus/security-plus-lead-magnet-ads|lead magnet ads]].

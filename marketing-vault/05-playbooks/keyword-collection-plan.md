@@ -12,7 +12,7 @@ created: 2026-05-30
 
 Build a repeatable pipeline from **paid search data** → **Obsidian vault** → **landing page / ad copy** updates. Goal: know which terms convert, which to negate, and which deserve new CTA landings—without relying on static keyword guesses.
 
-Related: [[../01-strategy/google-ai-search-strategy|AI search strategy]] · [[../02-campaigns/security-plus-google-ads|Security+ campaign]] · [[../07-keywords/README|07-keywords/]]
+Related: [[../01-strategy/google-ai-search-strategy|AI search strategy]] · [[../02-campaigns/security-plus/security-plus-google-ads|Security+ campaign]] · [[../07-keywords/README|07-keywords/]]
 
 ---
 
@@ -122,7 +122,7 @@ Requirements before building:
 
 ## Email capture alignment
 
-**Shipped (Security+):** Free timed simulation + scorecard email — [[../02-campaigns/security-plus-lead-magnet-ads|lead magnet ads note]] · `#secplus-lead-capture` · `POST /api/lead-capture` · `POST /api/secplus-scorecard-email`
+**Shipped (Security+):** Free timed simulation + scorecard email — [[../02-campaigns/security-plus/security-plus-lead-magnet-ads|lead magnet ads note]] · `#secplus-lead-capture` · `POST /api/lead-capture` · `POST /api/secplus-scorecard-email`
 
 Still planned:
 

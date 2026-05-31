@@ -15,7 +15,7 @@ created: 2026-05-30
 
 Security+ SY0-701 is a **compliance and workforce qualification exam** for many U.S. federal, DoD, and defense-contractor cyber roles—not only a generic IT cert. Be Certified Today sells **exam prep** (practice + simulation), not clearance processing, HR policy, or official DoD certification tracking.
 
-Related: [[positioning-and-messaging]] · [[../02-campaigns/security-plus-google-ads|Security+ campaign]] · [[../06-website-optimization/pages/comptia-sec-plus-home|landing page]] · [[cisco-certifications-exam-prep-foundation|Cisco CCNA & ENCOR foundation]] (shared contractor/geo patterns) · [[../08-8140-compliance/marketing-incorporation-plan|8140 incorporation plan]] (official PDF review)
+Related: [[positioning-and-messaging]] · [[../02-campaigns/security-plus/security-plus-google-ads|Security+ campaign]] · [[../06-website-optimization/pages/comptia-sec-plus-home|landing page]] · [[cisco-certifications-exam-prep-foundation|Cisco CCNA & ENCOR foundation]] (shared contractor/geo patterns) · [[../08-8140-compliance/marketing-incorporation-plan|8140 incorporation plan]] (official PDF review)
 
 ---
 

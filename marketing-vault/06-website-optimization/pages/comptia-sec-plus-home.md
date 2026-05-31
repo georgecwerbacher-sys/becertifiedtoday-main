@@ -11,7 +11,7 @@ quality_score_notes: Free sim + $9.99 pricing + runner nav live prod 2026-05-30 
 
 # comptia-sec+-home.html — ad landing page
 
-Primary **Google Ads final URL** for [[../02-campaigns/security-plus-google-ads|Security+ campaign]].
+Primary **Google Ads final URL** for [[../../02-campaigns/security-plus/security-plus-google-ads|Security+ campaign]].
 
 ## Live URLs
 

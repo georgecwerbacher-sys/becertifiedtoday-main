@@ -53,7 +53,7 @@ Run periodically on each ad landing URL:
 
 ## Ad relevance — message match table
 
-Keep this aligned between [[../02-campaigns/security-plus-google-ads|Security+ campaign]] ad groups and [[pages/comptia-sec-plus-home|landing page]]:
+Keep this aligned between [[../02-campaigns/security-plus/security-plus-google-ads|Security+ campaign]] ad groups and [[pages/comptia-sec-plus-home|landing page]]:
 
 | Ad group theme | Example keywords | Ad headline idea | Landing must say |
 |----------------|------------------|------------------|------------------|
