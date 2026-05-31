@@ -24,6 +24,8 @@ Implement changes in Cursor under `public/`. Link to page notes in `06-website-o
 | 2026-05-31 | `/index.html` | Exam prep title/H1/meta; track cards → public landing pages (not gated portals); OG + JSON-LD; removed training-path language | SEO + positioning — exam prep not courses | all | no | |
 | 2026-05-31 | `/*Training_Portal.html`, `/secplus-home.html` | noindex/nofollow on gated portals; legacy secplus-home canonical → comptia-sec+-home | Keep crawl budget on exam prep landings | all | no | |
 | 2026-05-31 | `robots.txt`, `sitemap.xml` | Disallow portals + legacy hub; sitemap prioritizes home pages + free assessment + OpenSSL PBQ; removed secplus-home | Crawl/index hygiene | all | no | |
+| 2026-05-31 | `/comptia-sec+-home.html`, sample JS | Homepage sample questions reduced to 2 MCQ; finish upsell modal → in-page free timed sim lead capture | Sample → lead magnet funnel | secplus_portal | no | |
+| 2026-05-31 | ENCOR checkout | New Stripe Payment Link for timed exam simulation; webhook slug map updated | Checkout | ccnp_encor | no | |
 
 ---
 

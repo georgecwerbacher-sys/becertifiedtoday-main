@@ -5,7 +5,7 @@
  */
 (function () {
   var ENCOR_TEST_SIM_STRIPE_PAYMENT_LINK =
-    "https://buy.stripe.com/3cIaEWbwVb8P8SYejWc3m01";
+    "https://buy.stripe.com/7sYcN4bwV1yf1qwb7Kc3m09";
 
   document.addEventListener("DOMContentLoaded", function () {
     var buttons = [];

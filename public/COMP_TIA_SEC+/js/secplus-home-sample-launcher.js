@@ -51,6 +51,20 @@
   }
 
   function buildQuestionsOrder(blueprint) {
+    var total = blueprint.homeSampleQuestionCountTotal;
+    if (typeof total === "number" && total > 0) {
+      var pool = [];
+      var seen = Object.create(null);
+      var byDomain = blueprint.multipleChoiceByDomain || {};
+      ["1.0", "2.0", "3.0", "4.0", "5.0"].forEach(function (domainId) {
+        (byDomain[domainId] || []).forEach(function (slug) {
+          if (!slug || seen[slug]) return;
+          seen[slug] = true;
+          pool.push({ type: "mcq", slug: slug, domain: domainId });
+        });
+      });
+      return shuffle(pool).slice(0, total);
+    }
     var perDomain =
       blueprint.homeSampleQuestionCountPerDomain != null
         ? blueprint.homeSampleQuestionCountPerDomain

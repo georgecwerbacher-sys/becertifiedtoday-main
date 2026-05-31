@@ -5,6 +5,7 @@
   var MCQ_BASE = "/COMP_TIA_SEC+/SEC+_Questions/";
   var HASH_RE = /^#secplusHS=(\d+)$/;
   var FINISH_HOME = "/comptia-sec+-home.html";
+  var LEAD_CAPTURE_FALLBACK = FINISH_HOME + "#secplus-lead-capture";
 
   function readSession() {
     try {
@@ -129,7 +130,134 @@
     try {
       sessionStorage.removeItem(KEY);
       sessionStorage.removeItem("secplusUrlMaskPath");
+      sessionStorage.removeItem("secplusSampleKind");
     } catch (e) {}
+  }
+
+  function sampleKindLabel() {
+    try {
+      var kind = sessionStorage.getItem("secplusSampleKind") || "";
+      if (kind === "sim-dark-web" || kind === "sim-malware") return "simulation";
+      if (kind === "questions") return "questions";
+    } catch (e) {}
+    return "sample";
+  }
+
+  function navigateAfterSample(url) {
+    clearSampleSession();
+    location.href = url;
+  }
+
+  function shouldOfferFreeSimUpsell(session) {
+    return usesMaskedNav(session) && (isQuestionsOnlySample(session) || isSimOnlySample(session));
+  }
+
+  function loadSecplusLeadCapture(callback) {
+    if (typeof window.showSecplusFreeSimLeadModal === "function") {
+      callback();
+      return;
+    }
+    var existing = document.querySelector('script[src="/js/secplus-lead-capture.js"]');
+    if (existing) {
+      existing.addEventListener("load", callback);
+      return;
+    }
+    var s = document.createElement("script");
+    s.src = "/js/secplus-lead-capture.js";
+    s.onload = callback;
+    s.onerror = function () {
+      navigateAfterSample(LEAD_CAPTURE_FALLBACK);
+    };
+    (document.body || document.head).appendChild(s);
+  }
+
+  function openFreeSimLeadModal(finishHome) {
+    loadSecplusLeadCapture(function () {
+      if (typeof window.showSecplusFreeSimLeadModal !== "function") {
+        navigateAfterSample(LEAD_CAPTURE_FALLBACK);
+        return;
+      }
+      window.showSecplusFreeSimLeadModal({
+        finishHome: finishHome || FINISH_HOME,
+        method: "secplus_free_sim_sample_popup",
+        onBeforeNavigate: clearSampleSession,
+      });
+    });
+  }
+
+  function showFreeSimUpsellModal(finishHome) {
+    if (document.getElementById("secplusSampleFreeSimUpsell")) return;
+
+    var kind = sampleKindLabel();
+    var lead =
+      kind === "simulation"
+        ? "You finished the performance-based preview. Unlock the full <strong>35-minute timed simulation</strong>—20 multiple-choice questions plus a PBQ-style item, with Back and mark-for-review and a domain scorecard when you finish."
+        : "You finished the sample questions. Try the free <strong>35-minute timed simulation</strong> next—20 multiple-choice questions plus a PBQ-style item, with Back and mark-for-review and a domain scorecard when you finish.";
+
+    var root = document.createElement("div");
+    root.id = "secplusSampleFreeSimUpsell";
+    root.className = "secplus-sample-upsell-root";
+    root.setAttribute("role", "presentation");
+    root.innerHTML =
+      '<div class="secplus-sample-upsell-backdrop" data-secplus-upsell-dismiss tabindex="-1"></div>' +
+      '<div class="secplus-sample-upsell-panel" role="dialog" aria-modal="true" aria-labelledby="secplusSampleFreeSimUpsellTitle" tabindex="-1">' +
+      '<button type="button" class="secplus-sample-upsell-close" data-secplus-upsell-dismiss aria-label="Close dialog">×</button>' +
+      '<p class="secplus-sample-upsell-eyebrow">Free SY0-701 timed simulation</p>' +
+      '<h2 id="secplusSampleFreeSimUpsellTitle">Ready for a full timed dry run?</h2>' +
+      '<p class="secplus-sample-upsell-lead">' +
+      lead +
+      "</p>" +
+      '<div class="secplus-sample-upsell-actions">' +
+      '<button type="button" class="secplus-sample-upsell-primary">Start free timed simulation</button>' +
+      '<button type="button" class="secplus-sample-upsell-secondary" data-secplus-upsell-home>Return to Security+ home</button>' +
+      "</div>" +
+      "</div>";
+
+    document.body.appendChild(root);
+    document.body.classList.add("secplus-sample-upsell-open");
+
+    var panel = root.querySelector(".secplus-sample-upsell-panel");
+    var prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    function closeModal() {
+      root.remove();
+      document.body.classList.remove("secplus-sample-upsell-open");
+      document.body.style.overflow = prevOverflow;
+      document.removeEventListener("keydown", onKey);
+    }
+
+    function onKey(ev) {
+      if (ev.key === "Escape") {
+        ev.preventDefault();
+        closeModal();
+      }
+    }
+
+    document.addEventListener("keydown", onKey);
+
+    root.querySelectorAll("[data-secplus-upsell-dismiss]").forEach(function (el) {
+      el.addEventListener("click", closeModal);
+    });
+
+    root.querySelector("[data-secplus-upsell-home]").addEventListener("click", function () {
+      navigateAfterSample(finishHome || FINISH_HOME);
+    });
+
+    root.querySelector(".secplus-sample-upsell-primary").addEventListener("click", function () {
+      closeModal();
+      openFreeSimLeadModal(finishHome);
+    });
+
+    if (panel) panel.focus();
+  }
+
+  function completeSample(session, finishHome) {
+    if (shouldOfferFreeSimUpsell(session)) {
+      showFreeSimUpsellModal(finishHome);
+      return;
+    }
+    navigateAfterSample(finishHome || FINISH_HOME);
   }
 
   function reconcileLocation(session) {
@@ -310,8 +438,9 @@
       } else {
         els.nextEl.href = finishHome;
         els.nextEl.textContent = "Finish sample";
-        els.nextEl.onclick = function () {
-          clearSampleSession();
+        els.nextEl.onclick = function (ev) {
+          ev.preventDefault();
+          completeSample(session, finishHome);
         };
       }
     }
@@ -344,7 +473,19 @@
       ".secplus-sample-sim-nav a:hover{filter:brightness(1.08)}" +
       ".secplus-sample-sim-nav__progress{font-size:.85rem;font-weight:700;color:#b8c3d6}" +
       "body:has(.secplus-sample-sim-nav){padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))!important}" +
-      "a.home-link.secplus-sample-exit{right:auto;left:14px}";
+      "a.home-link.secplus-sample-exit{right:auto;left:14px}" +
+      ".secplus-sample-upsell-root{position:fixed;inset:0;z-index:20002;display:flex;align-items:center;justify-content:center;padding:16px}" +
+      ".secplus-sample-upsell-backdrop{position:absolute;inset:0;background:rgba(8,12,24,.72);backdrop-filter:blur(4px)}" +
+      ".secplus-sample-upsell-panel{position:relative;z-index:1;width:min(520px,100%);max-height:min(90vh,640px);overflow:auto;margin:0;padding:clamp(20px,4vw,28px) clamp(18px,3.5vw,26px) 22px;border-radius:16px;border:1px solid #7c3aed;background:linear-gradient(165deg,rgba(22,32,52,.98) 0%,rgba(14,20,36,.99) 100%);color:#e6edf3;box-shadow:0 24px 64px rgba(0,0,0,.45)}" +
+      ".secplus-sample-upsell-close{position:absolute;top:10px;right:12px;border:0;background:transparent;color:#9fb0cc;font-size:1.6rem;line-height:1;cursor:pointer;padding:4px 8px}" +
+      ".secplus-sample-upsell-eyebrow{margin:0 0 8px;font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#c4b5fd}" +
+      ".secplus-sample-upsell-panel h2{margin:0 0 12px;font-size:clamp(1.15rem,3vw,1.45rem);line-height:1.25;color:#fff}" +
+      ".secplus-sample-upsell-lead{margin:0 0 18px;font-size:.95rem;line-height:1.55;color:#cbd5e1}" +
+      ".secplus-sample-upsell-actions{display:flex;flex-direction:column;gap:10px}" +
+      ".secplus-sample-upsell-primary{display:inline-flex;justify-content:center;align-items:center;text-decoration:none;background:#5b21b6;border:1px solid #7c3aed;color:#f3e8ff;border-radius:10px;padding:12px 18px;font:inherit;font-weight:800;text-align:center;cursor:pointer;width:100%;box-sizing:border-box}" +
+      ".secplus-sample-upsell-primary:hover{filter:brightness(1.08)}" +
+      ".secplus-sample-upsell-secondary{border:1px solid rgba(159,176,204,.45);background:transparent;color:#e6edf3;border-radius:10px;padding:11px 18px;font:inherit;font-weight:700;cursor:pointer}" +
+      ".secplus-sample-upsell-secondary:hover{background:rgba(255,255,255,.06)}";
     document.head.appendChild(s);
   }
 
