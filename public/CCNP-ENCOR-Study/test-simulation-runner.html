@@ -225,6 +225,9 @@
     #gateStartWrap[hidden] {
       display: none !important;
     }
+    #gatePanel[hidden] {
+      display: none !important;
+    }
     .results-wrap {
       min-height: 100vh;
       padding: 24px 16px 48px;
@@ -559,10 +562,25 @@
 
       function failExamStart(message) {
         clearTestState();
+        showGateUi();
         gateStatus.textContent = message || "Could not start the exam. Try again or return to the landing page.";
         gateStatus.className = "status-bad";
         gateStartWrap.hidden = false;
         btnGateStartExam.disabled = false;
+      }
+
+      function startFreeExamFromPack(pack) {
+        if (!pack || !pack.queue || !pack.queue.length) {
+          throw new Error("empty");
+        }
+        testMinutes = pack.durationMinutes || testMinutes;
+        queue = pack.queue;
+        index = 0;
+        answeredByIndex = {};
+        endsAt = Date.now() + testMinutes * 60 * 1000;
+        persistExamSessionState();
+        showExamUi();
+        startExamTimerAndFirstItem();
       }
 
       function persistExamSessionState() {
@@ -680,10 +698,12 @@
               ? window.ENCOR_TEST_SIM_BUILD.getFreeSimulationPackSync()
               : null);
           if (freePack && freePack.queue && freePack.queue.length) {
-            beginExamFromPack(freePack).catch(function (err) {
+            try {
+              startFreeExamFromPack(freePack);
+            } catch (err) {
               if (err && err.message === "redirect") return;
               failExamStart();
-            });
+            }
             return;
           }
         }
