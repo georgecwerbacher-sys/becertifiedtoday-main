@@ -9,7 +9,7 @@
   var FREE_BLUEPRINT_URL = "/CCNP-ENCOR-Study/data/encor-free-simulation-blueprint.json";
   var FREE_QUEUE_URL = "/CCNP-ENCOR-Study/data/free-simulation/queue.json";
   var FREE_SIM_DURATION_MINUTES = 45;
-  /** Mirror of data/free-simulation/queue.json — sync start, no fetch at exam launch. */
+  /** Mirror of data/free-simulation/queue.json — sync via scripts/sync-encor-guest-free-sim.py */
   var FREE_SIM_QUEUE_ITEMS = [
     { kind: "question", url: "/CCNP-ENCOR-Study/ENCOR_Questions/question-1.html" },
     { kind: "question", url: "/CCNP-ENCOR-Study/ENCOR_Questions/question-3.html" },

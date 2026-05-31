@@ -1,5 +1,5 @@
 /**
- * ENCOR lead magnet — unlock free timed simulation sample (20 MCQ + 2 D&D + 1 lab).
+ * ENCOR lead magnet — unlock free timed simulation (guest pool: 20 MCQ + 2 D&D + 1 lab).
  */
 (function () {
   "use strict";
