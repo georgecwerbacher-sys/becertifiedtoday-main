@@ -625,13 +625,13 @@
       var item = {
         item_id: "ccna_timed_simulation",
         item_name: "CCNA Timed Test Simulation",
-        price: 4.99,
+        price: 9.99,
         quantity: 1,
       };
       var params = {
         transaction_id: stripeSessionId,
         currency: "USD",
-        value: 4.99,
+        value: 9.99,
         campaign_source: attrs.utm_source || undefined,
         campaign_medium: attrs.utm_medium || undefined,
         campaign_name: attrs.utm_campaign || undefined,
@@ -645,7 +645,7 @@
       if (typeof window.bccTrackGoogleAdsPurchaseConversion === "function") {
         window.bccTrackGoogleAdsPurchaseConversion(stripeSessionId, {
           currency: "USD",
-          value: 4.99,
+          value: 9.99,
         });
       }
     }

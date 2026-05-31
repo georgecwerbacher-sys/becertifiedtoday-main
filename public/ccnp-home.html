@@ -6,6 +6,21 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTT6KBHX7V"></script>
   <script src="/js/google-tag-gtag.js"></script>
   <script src="/js/campaign-attribution.js"></script>
+  <script>
+    (function () {
+      function isEncorLeadLanding() {
+        if (location.hash === "#encor-lead-capture") return true;
+        try {
+          var qs = new URLSearchParams(location.search);
+          if (/lead-free-sim|free-sim|free\.simulation/i.test(qs.get("utm_content") || "")) return true;
+        } catch (e) {}
+        return false;
+      }
+      if (isEncorLeadLanding()) {
+        document.documentElement.classList.add("encor-landing-lead-first");
+      }
+    })();
+  </script>
   <script src="/js/install-vercel-analytics.js"></script>
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
@@ -263,7 +278,51 @@
       flex-direction: column;
     }
     #purchase {
-      order: 1;
+      order: 0;
+    }
+    .purchase-fold {
+      margin: 0 0 clamp(24px, 4vw, 32px);
+    }
+    .purchase-fold .purchase-track-box {
+      margin-top: 0;
+    }
+    .purchase-blueprint-details {
+      margin: 0 0 clamp(20px, 4vw, 28px);
+      border-radius: 12px;
+      border: 1px solid rgba(79, 132, 216, 0.38);
+      background: rgba(13, 21, 40, 0.55);
+    }
+    .purchase-blueprint-details > summary {
+      padding: clamp(14px, 2.5vw, 18px) clamp(16px, 3vw, 20px);
+      cursor: pointer;
+      font-size: clamp(0.92rem, 2vw, 1rem);
+      font-weight: 700;
+      color: #c8daf8;
+      list-style: none;
+    }
+    .purchase-blueprint-details > summary::-webkit-details-marker {
+      display: none;
+    }
+    .purchase-blueprint-details > summary::after {
+      content: "Show";
+      float: right;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #6b8ab8;
+    }
+    .purchase-blueprint-details[open] > summary::after {
+      content: "Hide";
+    }
+    .purchase-blueprint-details .purchase-blueprint-callout {
+      margin: 0;
+      border: 0;
+      border-radius: 0;
+      border-top: 1px solid rgba(79, 132, 216, 0.28);
+    }
+    .purchase-card .purchase-lead--tight {
+      margin-bottom: clamp(14px, 2.5vw, 18px);
     }
     .formats-section {
       order: 2;
@@ -1015,6 +1074,113 @@
       outline-offset: 3px;
       border-radius: 4px;
     }
+    html.encor-landing-lead-first .funnel > #purchase {
+      order: 0;
+    }
+    html.encor-landing-lead-first .funnel > #encor-lead-capture {
+      order: 2;
+    }
+    html.encor-landing-lead-first .funnel > .samples-stack {
+      order: 4;
+    }
+    .lead-capture-section {
+      margin: 0 0 clamp(24px, 4vw, 32px);
+      padding: clamp(18px, 3vw, 24px);
+      border-radius: 14px;
+      border: 1px solid rgba(47, 102, 191, 0.38);
+      background: linear-gradient(165deg, #eff6ff 0%, #f8fafc 55%, #ffffff 100%);
+      color: var(--page-text);
+    }
+    .lead-capture-badge {
+      display: inline-block;
+      margin: 0 0 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #1e3a5f;
+      background: rgba(47, 102, 191, 0.14);
+      border: 1px solid rgba(47, 102, 191, 0.28);
+    }
+    .lead-capture-section h2 {
+      margin: 0 0 8px;
+      font-size: clamp(1.12rem, 2.5vw, 1.32rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      color: var(--page-text);
+    }
+    .lead-capture-lead {
+      margin: 0 0 clamp(14px, 2.5vw, 18px);
+      color: var(--page-muted);
+      font-size: clamp(0.92rem, 2vw, 1rem);
+      line-height: 1.55;
+    }
+    .lead-capture-list {
+      margin: 0 0 clamp(14px, 2.5vw, 18px);
+      padding-left: 1.15rem;
+      color: var(--page-muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+    .lead-capture-list li + li { margin-top: 6px; }
+    .lead-capture-form {
+      display: grid;
+      gap: 12px;
+      max-width: 420px;
+    }
+    .lead-capture-form label {
+      display: grid;
+      gap: 6px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--page-text);
+    }
+    .lead-capture-form input[type="email"] {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      font: inherit;
+      color: var(--page-text);
+      background: #fff;
+    }
+    .lead-capture-consent {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 0.84rem;
+      font-weight: 400;
+      color: var(--page-muted);
+      line-height: 1.45;
+    }
+    .lead-capture-consent input { margin-top: 0.2em; flex-shrink: 0; }
+    .lead-capture-honeypot {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .lead-capture-message { margin: 0; font-size: 0.88rem; color: #166534; }
+    .lead-capture-message--error { color: #b91c1c; }
+    .lead-capture-open-link a { font-weight: 800; color: var(--accent); }
+    .lead-capture-list a {
+      font-weight: 700;
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .lead-capture-fine {
+      margin: 10px 0 0;
+      font-size: 0.78rem;
+      color: #64748b;
+      line-height: 1.45;
+    }
+    .lead-capture-fine a { font-weight: 700; color: var(--accent); }
     .formats-section .format-card .portal-launch-callout {
       margin: 0 0 clamp(12px, 2vw, 16px);
       padding: 14px 16px;
@@ -1819,12 +1985,13 @@
 <body>
   <div class="page">
     <header>
-      <a class="brand" href="/" aria-label="Be Certified Today — home">
+      <a class="brand" href="/index.html" aria-label="Be Certified Today — home">
         <img
-          src="/images/logo/becertifiedtoday_logo_trans.png"
+          src="/images/logo/becertifiedtoday_logo_image_trans.png"
           width="1024"
           height="1024"
           alt="Be Certified Today — IT training and testing study site"
+          decoding="async"
         />
       </a>
       <div class="header-actions">
@@ -1843,129 +2010,8 @@
     <main id="main">
       <div class="hero-content">
         <div class="funnel">
-          <p class="eyebrow">CCNP ENCOR 350-401 · exam prep</p>
-          <h1>CCNP ENCOR exam prep — practice tests, labs, and timed simulation</h1>
-          <p class="lead">
-            Prepare for <strong>ENCOR 350-401</strong> with certification <strong>practice tests</strong>, hands-on <strong>CLI labs</strong>,
-            extensive <strong>practice questions</strong>, drag-and-drop items, and timed exam simulations—exam prep in your browser,
-            not a video training course. Used by enterprise network engineers and many <strong>federal and defense-contractor</strong> teams preparing for Cisco professional-level exams.
-            <strong>No PDFs or third-party applications:</strong> everything runs in the browser and responds to what you do.
-          </p>
-          <ul class="benefits" aria-label="What you get">
-            <li>100% interactive—click, type, and drag in the app; not static dumps or slide decks.</li>
-            <li>Question banks and study paths organized by exam topic—not random blog posts.</li>
-            <li>Review quiz mode loops missed answers back to the end so weak topics get extra reps.</li>
-            <li>Progress tracking helps you focus study time where it is needed most.</li>
-            <li>New questions are added continuously to keep preparation current.</li>
-          </ul>
 
-          <div class="samples-stack">
-            <section class="samples-block" aria-labelledby="home-encor-samples-title">
-              <h2 class="samples-block-title" id="home-encor-samples-title"><strong>CCNP ENCOR samples</strong></h2>
-              <p class="samples-block-lead">
-                Free ENCOR-format activities on this site—shuffled sample questions and drag-and-drop, plus one CLI lab you can run in the browser.
-              </p>
-              <ul class="formats-grid formats-grid--tri" aria-label="CCNP ENCOR sample activities">
-                <li>
-                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-encor-q-title">
-                    <h3 id="home-encor-q-title">ENCOR · Sample questions</h3>
-                    <figure class="format-card-thumb">
-                      <img
-                        src="/images/practice-questions-sample-thumbnail.jpg"
-                        width="1024"
-                        height="556"
-                        alt="ENCOR multiple-choice sample questions with instant feedback."
-                        decoding="async"
-                        loading="lazy"
-                      />
-                    </figure>
-                    <p>
-                      Twelve multiple-choice items from across the ENCOR 350-401 blueprint—shuffled into a new order each time you start. Use <strong>Check answer</strong> for feedback, then <strong>Next</strong> to continue.
-                    </p>
-                    <p class="format-sample format-sample--main-cta">
-                      <a class="cta-main cta-main--block" href="/sample?track=encor-questions">Start sample questions →</a>
-                    </p>
-                  </article>
-                </li>
-                <li>
-                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-encor-dd-title">
-                    <h3 id="home-encor-dd-title">ENCOR · Sample drag-and-drop</h3>
-                    <figure class="format-card-thumb">
-                      <img
-                        src="/images/drag-drop-sample-thumbnail.jpg"
-                        width="1024"
-                        height="535"
-                        alt="ENCOR drag-and-drop sample with CLI-style drop targets."
-                        decoding="async"
-                        loading="lazy"
-                      />
-                    </figure>
-                    <p>Two performance-style drag-and-drop items—shuffled into a new order each time you start. Drag snippets into the blanks or tap to place on a phone.</p>
-                    <p class="format-sample format-sample--main-cta">
-                      <a class="cta-main cta-main--block" href="/sample?track=encor-dnd">Start sample drag-and-drop →</a>
-                    </p>
-                  </article>
-                </li>
-                <li>
-                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-encor-lab-title">
-                    <h3 id="home-encor-lab-title">ENCOR · Sample lab</h3>
-                    <figure class="format-card-thumb">
-                      <img
-                        src="/CCNP-ENCOR-Study/assets/acl-copp-lab-thumb.png"
-                        width="840"
-                        height="801"
-                        alt="ACL and CoPP sample lab topology with multi-area OSPF routers."
-                        decoding="async"
-                        loading="lazy"
-                      />
-                    </figure>
-                    <p>Practice one hands-on CLI simulation—extended ACL on R10, CoPP on R20, and save checks in the browser.</p>
-                    <p class="format-sample format-sample--main-cta">
-                      <a class="cta-main cta-main--block" href="/sample?track=labs">Start sample lab →</a>
-                    </p>
-                  </article>
-                </li>
-              </ul>
-            </section>
-          </div>
-
-          <section class="exam-audience-section" id="exam-audience" aria-labelledby="encor-exam-audience-title">
-            <h2 id="encor-exam-audience-title">Who ENCOR exam prep is for — and when it matters</h2>
-            <p class="exam-audience-lead">
-              <strong>CCNP ENCOR 350-401 exam prep</strong> for network engineers moving to professional-level Cisco certification—plus contractors and federal integrators where ENCOR or CCNP Enterprise is part of role qualification. Confirm your employer's requirement; we provide <strong>practice and simulation</strong>, not HR compliance tracking.
-            </p>
-            <div class="exam-audience-grid">
-              <article class="exam-audience-card">
-                <h3>People</h3>
-                <ul>
-                  <li>Network engineers pursuing CCNP Enterprise (ENCOR first)</li>
-                  <li>Contractor and federal network staff on CCNP timelines</li>
-                  <li>CCNA holders scheduling 350-401 within 60–90 days</li>
-                  <li>Re-test candidates after a failed ENCOR attempt</li>
-                </ul>
-              </article>
-              <article class="exam-audience-card">
-                <h3>When timing matters</h3>
-                <ul>
-                  <li>Four to twelve weeks before your Pearson VUE exam date</li>
-                  <li>Contract or promotion windows tied to CCNP completion</li>
-                  <li>After free samples show weak blueprint domains</li>
-                  <li>Evening or weekend cram before a scheduled retake</li>
-                </ul>
-              </article>
-              <article class="exam-audience-card">
-                <h3>Where you study</h3>
-                <p>
-                  Browser-only CLI labs, drag-and-drop, and timed sim—<strong>no GNS3 or EVE-NG install</strong> required for core prep. Study from home, on travel, or between shifts; follow your organization's policy for external sites on government systems.
-                </p>
-              </article>
-            </div>
-            <p class="exam-audience-disclaimer">
-              <strong>Disclaimer:</strong> Be Certified Today provides Cisco exam preparation only—not affiliated with Cisco. Certification requirements are set by your employer or contract.
-            </p>
-          </section>
-
-          <div class="card purchase-card" id="purchase">
+          <div class="card purchase-card purchase-fold" id="purchase">
             <div class="purchase-card-inner">
               <div class="purchase-card-main">
                 <p class="purchase-label">Get CCNP ENCOR access</p>
@@ -1973,77 +2019,6 @@
                 <p class="purchase-lead purchase-lead--tight">
                   Pick a one-session simulated exam, a short access window, or thirty days for the full practice library and training portal.
                 </p>
-                <div class="purchase-blueprint-callout" aria-labelledby="purchase-blueprint-title">
-                  <h3 class="purchase-blueprint-title" id="purchase-blueprint-title">
-                    Match your prep to how Cisco weights ENCOR 350-401
-                  </h3>
-                  <p class="purchase-blueprint-lead">
-                    The live exam follows Cisco&rsquo;s published domains. ENCOR 350-401 v1.2 groups content into six areas:
-                    architecture, virtualization, infrastructure, network assurance, security, and automation and artificial intelligence.
-                    Official guidance puts the strongest emphasis on <strong>Infrastructure</strong> (30%), followed by
-                    <strong>Security</strong> (20%) and <strong>Architecture</strong> (15%).
-                  </p>
-                  <p class="purchase-blueprint-note">
-                    Approximate weights below come from Cisco exam guidance—use them to budget study hours, not as a guarantee of how
-                    many questions you will see on a specific attempt.
-                  </p>
-                  <div class="purchase-blueprint-table-wrap">
-                    <table class="purchase-domain-table" aria-label="Approximate ENCOR domain weights and study focus">
-                      <thead>
-                        <tr>
-                          <th scope="col">Section</th>
-                          <th scope="col">Weight</th>
-                          <th scope="col">What to study</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <th scope="row">1.0 Architecture</th>
-                          <td>15%</td>
-                          <td>Enterprise design, Catalyst SD-WAN, SD-Access, QoS, and high availability</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">2.0 Virtualization</th>
-                          <td>10%</td>
-                          <td>Hypervisors, VMs, VRF, GRE, IPsec, LISP, and VXLAN</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">3.0 Infrastructure</th>
-                          <td>30%</td>
-                          <td>Layer 2 trunking and STP, EtherChannel, EIGRP/OSPF, eBGP, NAT, FHRP, and multicast</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">4.0 Network Assurance</th>
-                          <td>10%</td>
-                          <td>SNMP, syslog, NetFlow, SPAN/RSPAN, IPSLA, Catalyst Center, NETCONF, and RESTCONF</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">5.0 Security</th>
-                          <td>20%</td>
-                          <td>Device access, AAA, ACLs, CoPP, REST API security, and security design</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">6.0 Automation and AI</th>
-                          <td>15%</td>
-                          <td>Python, JSON, YANG, Catalyst Center and SD-WAN APIs, EEM, and orchestration tools</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <p class="purchase-blueprint-lead">
-                    <strong>What to focus on first:</strong> infrastructure and architecture underpin routing, switching, and a large share
-                    of configuration-style prompts. Add security and network assurance next, then virtualization and automation for the full ENCOR mix.
-                  </p>
-                  <p class="purchase-blueprint-order-title">Suggested study order</p>
-                  <ol class="purchase-blueprint-order">
-                    <li>Architecture and design principles</li>
-                    <li>Infrastructure — Layer 2, routing, and path selection</li>
-                    <li>Security — ACLs, CoPP, AAA, and device hardening</li>
-                    <li>Network assurance — monitoring, telemetry, and troubleshooting tools</li>
-                    <li>Virtualization — VRF, overlays, and tunneling</li>
-                    <li>Automation and AI — APIs, Python, JSON, and programmability</li>
-                  </ol>
-                </div>
                 <div class="purchase-cta-stack">
                   <div class="purchase-primary-cta">
                     <div
@@ -2054,8 +2029,8 @@
                         <p class="purchase-track-title">120-minute simulation</p>
                         <span class="encor-live-badge">Live</span>
                       </div>
-                      <p class="purchase-price" aria-label="4 dollars and 99 cents for one timed test">
-                        $4.99 <span>/ one attempt</span>
+                      <p class="purchase-price" aria-label="9 dollars and 99 cents for one timed test">
+                        $9.99 <span>/ one attempt</span>
                       </p>
                       <p class="purchase-track-sub">
                         Same clock and mix as test day: <strong>120 minutes</strong>, <strong>50</strong> multiple-choice,
@@ -2069,9 +2044,9 @@
                           data-encor-test-sim-checkout
                           data-bcc-item-id="encor_timed_simulation"
                           data-bcc-item-name="ENCOR Timed Test Simulation"
-                          data-bcc-value="4.99"
+                          data-bcc-value="9.99"
                           data-bcc-currency="USD"
-                          aria-label="Purchase one-time ENCOR timed simulation for four ninety-nine"
+                          aria-label="Purchase one-time ENCOR timed simulation for nine ninety-nine"
                         >
                           Get simulated exam
                         </button>
@@ -2136,6 +2111,79 @@
                     </div>
                   </div>
                 </div>
+                <details class="purchase-blueprint-details">
+                  <summary>How ENCOR 350-401 domains are weighted on the live exam</summary>
+                  <div class="purchase-blueprint-callout" aria-labelledby="purchase-blueprint-title">
+                                    <h3 class="purchase-blueprint-title" id="purchase-blueprint-title">
+                                      Match your prep to how Cisco weights ENCOR 350-401
+                                    </h3>
+                                    <p class="purchase-blueprint-lead">
+                                      The live exam follows Cisco&rsquo;s published domains. ENCOR 350-401 v1.2 groups content into six areas:
+                                      architecture, virtualization, infrastructure, network assurance, security, and automation and artificial intelligence.
+                                      Official guidance puts the strongest emphasis on <strong>Infrastructure</strong> (30%), followed by
+                                      <strong>Security</strong> (20%) and <strong>Architecture</strong> (15%).
+                                    </p>
+                                    <p class="purchase-blueprint-note">
+                                      Approximate weights below come from Cisco exam guidance—use them to budget study hours, not as a guarantee of how
+                                      many questions you will see on a specific attempt.
+                                    </p>
+                                    <div class="purchase-blueprint-table-wrap">
+                                      <table class="purchase-domain-table" aria-label="Approximate ENCOR domain weights and study focus">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">Section</th>
+                                            <th scope="col">Weight</th>
+                                            <th scope="col">What to study</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <th scope="row">1.0 Architecture</th>
+                                            <td>15%</td>
+                                            <td>Enterprise design, Catalyst SD-WAN, SD-Access, QoS, and high availability</td>
+                                          </tr>
+                                          <tr>
+                                            <th scope="row">2.0 Virtualization</th>
+                                            <td>10%</td>
+                                            <td>Hypervisors, VMs, VRF, GRE, IPsec, LISP, and VXLAN</td>
+                                          </tr>
+                                          <tr>
+                                            <th scope="row">3.0 Infrastructure</th>
+                                            <td>30%</td>
+                                            <td>Layer 2 trunking and STP, EtherChannel, EIGRP/OSPF, eBGP, NAT, FHRP, and multicast</td>
+                                          </tr>
+                                          <tr>
+                                            <th scope="row">4.0 Network Assurance</th>
+                                            <td>10%</td>
+                                            <td>SNMP, syslog, NetFlow, SPAN/RSPAN, IPSLA, Catalyst Center, NETCONF, and RESTCONF</td>
+                                          </tr>
+                                          <tr>
+                                            <th scope="row">5.0 Security</th>
+                                            <td>20%</td>
+                                            <td>Device access, AAA, ACLs, CoPP, REST API security, and security design</td>
+                                          </tr>
+                                          <tr>
+                                            <th scope="row">6.0 Automation and AI</th>
+                                            <td>15%</td>
+                                            <td>Python, JSON, YANG, Catalyst Center and SD-WAN APIs, EEM, and orchestration tools</td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                    <p class="purchase-blueprint-lead">
+                                      <strong>What to focus on first:</strong> infrastructure and architecture underpin routing, switching, and a large share
+                                      of configuration-style prompts. Add security and network assurance next, then virtualization and automation for the full ENCOR mix.
+                                    </p>
+                                    <p class="purchase-blueprint-order-title">Suggested study order</p>
+                                    <ol class="purchase-blueprint-order">
+                                      <li>Architecture and design principles</li>
+                                      <li>Infrastructure — Layer 2, routing, and path selection</li>
+                                      <li>Security — ACLs, CoPP, AAA, and device hardening</li>
+                                      <li>Network assurance — monitoring, telemetry, and troubleshooting tools</li>
+                                      <li>Virtualization — VRF, overlays, and tunneling</li>
+                                      <li>Automation and AI — APIs, Python, JSON, and programmability</li>
+                                    </ol>
+                </details>
                 <div class="purchase-notes">
                   <strong>No recurring membership.</strong> Choose the access window you need and renew only if you want more time.
                   <strong>No additional software</strong> is required; everything runs in your browser.
@@ -2143,6 +2191,167 @@
               </div>
             </div>
           </div>
+          <p class="eyebrow">CCNP ENCOR 350-401 · exam prep</p>
+          <h1>CCNP ENCOR exam prep — practice tests, labs, and timed simulation</h1>
+          <p class="lead">
+            Prepare for <strong>ENCOR 350-401</strong> with certification <strong>practice tests</strong>, hands-on <strong>CLI labs</strong>,
+            extensive <strong>practice questions</strong>, drag-and-drop items, and timed exam simulations—exam prep in your browser,
+            not a video training course. Used by enterprise network engineers and many <strong>federal and defense-contractor</strong> teams preparing for Cisco professional-level exams.
+            <strong>No PDFs or third-party applications:</strong> everything runs in the browser and responds to what you do.
+          </p>
+          <ul class="benefits" aria-label="What you get">
+            <li>100% interactive—click, type, and drag in the app; not static dumps or slide decks.</li>
+            <li>Question banks and study paths organized by exam topic—not random blog posts.</li>
+            <li>Review quiz mode loops missed answers back to the end so weak topics get extra reps.</li>
+            <li>Progress tracking helps you focus study time where it is needed most.</li>
+            <li>New questions are added continuously to keep preparation current.</li>
+          </ul>
+
+          <section class="lead-capture-section" id="encor-lead-capture" aria-labelledby="encor-lead-capture-title">
+            <p class="lead-capture-badge">Free · 45 minutes · no checkout</p>
+            <h2 id="encor-lead-capture-title">Start your free ENCOR 350-401 timed simulation</h2>
+            <p class="lead-capture-lead">
+              Enter your email to unlock a <strong>45-minute sample exam</strong> in your browser:
+              <strong>20 multiple-choice questions</strong>, <strong>2 drag-and-drop</strong> items, and the
+              <strong>ACL/CoPP CLI lab</strong>—the same mix of item types you will see on test day.
+            </p>
+            <ul class="lead-capture-list">
+              <li><strong>Back</strong>, <strong>Home</strong>, and <strong>Next</strong> through the mixed set</li>
+              <li>Uses the same guest ENCOR sample pool as the previews below</li>
+              <li>One free unlock per browser after email opt-in</li>
+              <li>Ready for a full dry run? <a href="#purchase">120-minute simulation — $9.99</a> or portal access above</li>
+            </ul>
+            <p class="lead-capture-open-link" data-lead-open-sim hidden>
+              Already unlocked on this browser? <a href="/sample?track=encor-free-sim&welcome=1">Continue your free simulation →</a>
+            </p>
+            <div data-lead-form-wrap>
+              <form class="lead-capture-form" data-encor-lead-form action="/api/lead-capture" method="post" novalidate>
+                <label>
+                  Email
+                  <input type="email" name="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required />
+                </label>
+                <label class="lead-capture-honeypot" aria-hidden="true">
+                  Company website
+                  <input type="text" name="company_website" tabindex="-1" autocomplete="off" />
+                </label>
+                <label class="lead-capture-consent">
+                  <input type="checkbox" name="lead_consent" value="1" required />
+                  <span>Start my free simulation and send occasional ENCOR exam prep tips — unsubscribe anytime.</span>
+                </label>
+                <button type="submit" class="cta-main">Start free simulation</button>
+                <p class="lead-capture-message" data-lead-message hidden></p>
+              </form>
+              <p class="lead-capture-fine">Exam prep only — not affiliated with Cisco. Prefer no email? <a href="/sample?track=encor-questions">Try free sample questions</a>.</p>
+            </div>
+          </section>
+
+          <div class="samples-stack" id="encor-samples">
+            <section class="samples-block" aria-labelledby="home-encor-samples-title">
+              <h2 class="samples-block-title" id="home-encor-samples-title"><strong>CCNP ENCOR samples</strong></h2>
+              <p class="samples-block-lead">
+                Interactive previews from the ENCOR question bank, drag-and-drop, and ACL/CoPP lab—no checkout required. Each activity uses a <strong>Home</strong> tab back to this page and <strong>Next</strong> (or <strong>Finish sample</strong>) to move on. When you finish, try the free 45-minute timed simulation next.
+              </p>
+              <ul class="formats-grid formats-grid--tri" aria-label="CCNP ENCOR sample activities">
+                <li>
+                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-encor-q-title">
+                    <h3 id="home-encor-q-title">ENCOR · Sample questions</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/practice-questions-sample-thumbnail.jpg"
+                        width="1024"
+                        height="556"
+                        alt="ENCOR multiple-choice sample questions with instant feedback."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>
+                      Two multiple-choice items from the ENCOR guest pool—shuffled each run. Use <strong>Check answer</strong> for feedback, then <strong>Next</strong>; when you finish, try the free 45-minute timed simulation.
+                    </p>
+                    <p class="format-sample format-sample--main-cta">
+                      <a class="cta-main cta-main--block" href="/sample?track=encor-questions">Start sample questions →</a>
+                    </p>
+                  </article>
+                </li>
+                <li>
+                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-encor-dd-title">
+                    <h3 id="home-encor-dd-title">ENCOR · Sample drag-and-drop</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/images/drag-drop-sample-thumbnail.jpg"
+                        width="1024"
+                        height="535"
+                        alt="ENCOR drag-and-drop sample with CLI-style drop targets."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>Two performance-style drag-and-drop items—shuffled each run. Drag snippets into the blanks or tap to place on a phone. When you tap <strong>Finish sample</strong>, try the free timed simulation next.</p>
+                    <p class="format-sample format-sample--main-cta">
+                      <a class="cta-main cta-main--block" href="/sample?track=encor-dnd">Start sample drag-and-drop →</a>
+                    </p>
+                  </article>
+                </li>
+                <li>
+                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-encor-lab-title">
+                    <h3 id="home-encor-lab-title">ENCOR · Sample lab</h3>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="/CCNP-ENCOR-Study/assets/acl-copp-lab-thumb.png"
+                        width="840"
+                        height="801"
+                        alt="ACL and CoPP sample lab topology with multi-area OSPF routers."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>Practice one hands-on CLI simulation—extended ACL on R10, CoPP on R20, and save checks in the browser. When you tap <strong>Finish sample</strong>, try the free timed simulation next.</p>
+                    <p class="format-sample format-sample--main-cta">
+                      <a class="cta-main cta-main--block" href="/sample?track=labs">Start sample lab →</a>
+                    </p>
+                  </article>
+                </li>
+              </ul>
+            </section>
+          </div>
+
+          <section class="exam-audience-section" id="exam-audience" aria-labelledby="encor-exam-audience-title">
+            <h2 id="encor-exam-audience-title">Who ENCOR exam prep is for — and when it matters</h2>
+            <p class="exam-audience-lead">
+              <strong>CCNP ENCOR 350-401 exam prep</strong> for network engineers moving to professional-level Cisco certification—plus contractors and federal integrators where ENCOR or CCNP Enterprise is part of role qualification. Confirm your employer's requirement; we provide <strong>practice and simulation</strong>, not HR compliance tracking.
+            </p>
+            <div class="exam-audience-grid">
+              <article class="exam-audience-card">
+                <h3>People</h3>
+                <ul>
+                  <li>Network engineers pursuing CCNP Enterprise (ENCOR first)</li>
+                  <li>Contractor and federal network staff on CCNP timelines</li>
+                  <li>CCNA holders scheduling 350-401 within 60–90 days</li>
+                  <li>Re-test candidates after a failed ENCOR attempt</li>
+                </ul>
+              </article>
+              <article class="exam-audience-card">
+                <h3>When timing matters</h3>
+                <ul>
+                  <li>Four to twelve weeks before your Pearson VUE exam date</li>
+                  <li>Contract or promotion windows tied to CCNP completion</li>
+                  <li>After free samples show weak blueprint domains</li>
+                  <li>Evening or weekend cram before a scheduled retake</li>
+                </ul>
+              </article>
+              <article class="exam-audience-card">
+                <h3>Where you study</h3>
+                <p>
+                  Browser-only CLI labs, drag-and-drop, and timed sim—<strong>no GNS3 or EVE-NG install</strong> required for core prep. Study from home, on travel, or between shifts; follow your organization's policy for external sites on government systems.
+                </p>
+              </article>
+            </div>
+            <p class="exam-audience-disclaimer">
+              <strong>Disclaimer:</strong> Be Certified Today provides Cisco exam preparation only—not affiliated with Cisco. Certification requirements are set by your employer or contract.
+            </p>
+          </section>
+
+          
         </div>
       </div>
 
@@ -2284,15 +2493,14 @@
       <button type="button" class="ccna-sim-promo-close" data-ccna-sim-promo-dismiss aria-label="Close offer dialog">
         ×
       </button>
-      <p class="ccna-sim-promo-eyebrow">Special offer</p>
-      <h2 id="ccnaSimPromoTitle">Try the CCNA timed simulation — 50% off</h2>
+      <p class="ccna-sim-promo-eyebrow">CCNA timed simulation</p>
+      <h2 id="ccnaSimPromoTitle">Try the CCNA timed simulation</h2>
       <p class="ccna-sim-promo-price">
-        <del class="ccna-sim-promo-price-was">$9.99</del>
-        <span class="ccna-sim-promo-price-now">$4.99</span>
-        <span class="ccna-sim-promo-limited-pill">Limited time</span>
+        <span class="ccna-sim-promo-price-now">$9.99</span>
+        <span>/ one attempt</span>
       </p>
       <p class="ccna-sim-promo-price-note">
-        <strong>$4.99 one-time.</strong> No recurring membership. <strong>$9.99</strong> crossed out above; pay <strong>$4.99</strong> for a limited time with the code below.
+        <strong>$9.99 one-time.</strong> No recurring membership.
       </p>
       <p class="ccna-sim-promo-purchase-origin">
         Preparation and purchase open on
@@ -2310,17 +2518,11 @@
           review results in your session on this device. BeCertifiedToday.com never requires a membership.
         </li>
       </ul>
-      <p class="ccna-sim-promo-code-label">Promotion Code (50% off)</p>
-      <div class="ccna-sim-promo-code-row">
-        <code id="ccnaSimPromoCode">CCNA_Sim_4_U</code>
-        <button type="button" class="ccna-sim-promo-copy" id="ccnaSimPromoCopyBtn">Copy code</button>
-      </div>
-      <p class="ccna-sim-promo-hint">On Checkout, click &ldquo;Add promotion code&rdquo; and paste <strong>CCNA_Sim_4_U</strong> before you pay.</p>
       <div class="ccna-sim-promo-actions">
         <a
           class="ccna-sim-promo-primary"
           id="ccnaSimPromoCta"
-          href="/CCNA_Sim_EXAM/begin-test-simulation.html?promo=CCNA_Sim_4_U"
+          href="/CCNA_Sim_EXAM/begin-test-simulation.html"
           >Continue to timed test</a
         >
         <button type="button" class="ccna-sim-promo-secondary" data-ccna-sim-promo-dismiss>Not now</button>
@@ -2335,6 +2537,8 @@
           sessionStorage.removeItem("ccnpUrlMaskPath");
           sessionStorage.removeItem("ccnpMaskedPageQid");
           sessionStorage.removeItem("ccnpSampleKind");
+          sessionStorage.removeItem("ccnaHomeSample");
+          sessionStorage.removeItem("encorHomeSample");
         } catch (e) {}
       }
     })();
@@ -2416,10 +2620,8 @@
       timerId = setInterval(tick, 1000);
     })();
     (function () {
-      var PROMO = "CCNA_Sim_4_U";
       var root = document.getElementById("ccnaSimPromoRoot");
       var panel = root && root.querySelector(".ccna-sim-promo-panel");
-      var copyBtn = document.getElementById("ccnaSimPromoCopyBtn");
       if (!root || !panel) return;
 
       var path = location.pathname || "";
@@ -2463,29 +2665,6 @@
           closePromo();
         });
       });
-
-      if (copyBtn) {
-        copyBtn.addEventListener("click", function () {
-          function ok() {
-            var t = "Copied";
-            var prev = copyBtn.textContent;
-            copyBtn.textContent = t;
-            copyBtn.disabled = true;
-            setTimeout(function () {
-              copyBtn.textContent = prev;
-              copyBtn.disabled = false;
-            }, 1600);
-          }
-          function fail() {
-            window.prompt("Copy this code:", PROMO);
-          }
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(PROMO).then(ok).catch(fail);
-          } else {
-            fail();
-          }
-        });
-      }
 
       var promoShowConsumed = false;
       var promoTimer = null;
@@ -2660,5 +2839,6 @@
       });
     });
   </script>
+  <script src="/js/encor-lead-capture.js" defer></script>
 </body>
 </html>

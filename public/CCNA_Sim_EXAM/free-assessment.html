@@ -671,21 +671,17 @@
 
   <div class="assessment-offer-modal" id="assessmentOfferModal" role="dialog" aria-modal="true" aria-labelledby="assessmentOfferTitle" hidden>
     <div class="assessment-offer-card">
-      <p class="assessment-offer-kicker">Assessment-only offer</p>
-      <h2 id="assessmentOfferTitle">$5.00 off 30-day CCNA access</h2>
+      <p class="assessment-offer-kicker">Assessment complete</p>
+      <h2 id="assessmentOfferTitle">Continue with 30-day CCNA access</h2>
       <p>
-        Use coupon code <strong>WELCOME2BCT</strong> at Stripe checkout to save $5.00 on the 30-day access pass.
+        Get 30 days of full CCNA 200-301 library access: question banks, CLI labs, drag-and-drop practice, portal study modes, and the timed exam simulation—all in your browser.
       </p>
-      <div class="assessment-offer-code" aria-label="Coupon code WELCOME2BCT">
-        <strong id="assessmentOfferCode">WELCOME2BCT</strong>
-        <button type="button" class="assessment-offer-copy" id="assessmentOfferCopy">Copy code</button>
-      </div>
       <p class="assessment-offer-warning">
-        This is a one-time pop-up. When you close this box, the offer ends and it will not be shown again.
+        This is a one-time pop-up. When you close this box, it will not be shown again.
       </p>
       <div class="assessment-offer-actions">
         <button type="button" class="assessment-offer-checkout" id="assessmentOfferCheckout">
-          Use coupon for 30-day access
+          Get 30-day access
         </button>
         <button type="button" class="assessment-offer-close" id="assessmentOfferClose">
           Close and end offer
@@ -697,8 +693,9 @@
   <script type="module">
     /** localStorage: one completed free assessment per browser. */
     var LS_FREE_ASSESSMENT = "bcc_ccna_free_assessment_v1";
+    var LS_FREE_SIM = "bcc_ccna_free_sim_v1";
     var LS_ASSESSMENT_OFFER = "bcc_ccna_assessment_welcome_offer_v1";
-    var TOTAL_SECONDS = 35 * 60;
+    var TOTAL_SECONDS = 45 * 60;
     var timerId = null;
     var remainingSec = TOTAL_SECONDS;
     var examStarted = false;
@@ -733,7 +730,6 @@
     var offerModal = document.getElementById("assessmentOfferModal");
     var offerCloseBtn = document.getElementById("assessmentOfferClose");
     var offerCheckoutBtn = document.getElementById("assessmentOfferCheckout");
-    var offerCopyBtn = document.getElementById("assessmentOfferCopy");
     var offerCloseRedirect = false;
     var offerDelayTimer = null;
 
@@ -748,12 +744,35 @@
       }
     }
 
+    function hasLeadUnlock() {
+      try {
+        var raw = localStorage.getItem(LS_FREE_SIM);
+        if (!raw) return false;
+        var o = JSON.parse(raw);
+        return !!(o && o.email && o.viaLeadApi === true && o.consumed !== true);
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function markLeadSimConsumed() {
+      try {
+        var raw = localStorage.getItem(LS_FREE_SIM);
+        if (!raw) return;
+        var o = JSON.parse(raw);
+        if (!o || typeof o !== "object") return;
+        o.consumed = true;
+        localStorage.setItem(LS_FREE_SIM, JSON.stringify(o));
+      } catch (e) {}
+    }
+
     function markAssessmentCompleted(reason) {
       try {
         localStorage.setItem(
           LS_FREE_ASSESSMENT,
           JSON.stringify({ completedAt: Date.now(), reason: reason || "completed" })
         );
+        markLeadSimConsumed();
       } catch (e) {}
     }
 
@@ -853,7 +872,7 @@
           });
         })
         .catch(function () {
-          alert("Checkout is temporarily unavailable. Use code WELCOME2BCT from the 30-day access checkout on CCNA home.");
+          alert("Checkout is temporarily unavailable. Try 30-day access from the CCNA home page.");
           redirectAfterResults();
         });
     }
@@ -1963,24 +1982,6 @@
       offerCheckoutBtn.addEventListener("click", goToThirtyDayCheckoutFromOffer);
     }
 
-    if (offerCopyBtn) {
-      offerCopyBtn.addEventListener("click", function () {
-        var code = "WELCOME2BCT";
-        function copied() {
-          offerCopyBtn.textContent = "Copied";
-          setTimeout(function () {
-            offerCopyBtn.textContent = "Copy code";
-          }, 1600);
-        }
-        if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
-          navigator.clipboard.writeText(code).then(copied).catch(function () {
-            window.prompt("Copy this coupon code:", code);
-          });
-        } else {
-          window.prompt("Copy this coupon code:", code);
-        }
-      });
-    }
 
     async function loadBlueprintLine() {
       try {
@@ -2014,7 +2015,14 @@
 
     await loadBlueprintLine();
 
-    if (!bypass && assessmentCompleted()) {
+    if (!bypass && !hasLeadUnlock()) {
+      gateStatus.textContent =
+        "Unlock the free timed simulation with your email on the CCNA home page first.";
+      gateStatus.className = "status-bad";
+      document.getElementById("gateStartWrap").hidden = true;
+      var gateBack = document.getElementById("gateBackLink");
+      if (gateBack) gateBack.href = "/ccna-home.html#ccna-lead-capture";
+    } else if (!bypass && assessmentCompleted()) {
       gateStatus.textContent = "This browser has already completed the free CCNA assessment. Use the CCNA home page for samples, the full timed simulation, or 30-day portal access.";
       gateStatus.className = "status-bad";
     } else {

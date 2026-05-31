@@ -77,7 +77,7 @@
     var params = {
       transaction_id: stripeSessionId,
       currency: "USD",
-      value: 4.99,
+      value: 9.99,
       campaign_source: attrs.utm_source || undefined,
       campaign_medium: attrs.utm_medium || undefined,
       campaign_name: attrs.utm_campaign || undefined,
@@ -88,7 +88,7 @@
         {
           item_id: "encor_timed_simulation",
           item_name: "ENCOR Timed Test Simulation",
-          price: 4.99,
+          price: 9.99,
           quantity: 1,
         },
       ],
@@ -98,7 +98,7 @@
     if (typeof window.bccTrackGoogleAdsPurchaseConversion === "function") {
       window.bccTrackGoogleAdsPurchaseConversion(stripeSessionId, {
         currency: "USD",
-        value: 4.99,
+        value: 9.99,
       });
     }
   }

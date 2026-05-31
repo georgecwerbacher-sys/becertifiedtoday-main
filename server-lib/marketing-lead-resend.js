@@ -11,6 +11,22 @@ const LEAD_MAGNETS = {
     title: "free Security+ timed simulation",
     audienceEnv: "RESEND_SECPLUS_MARKETING_AUDIENCE_ID",
   },
+  "ccna-free-simulation": {
+    logTag: "ccna-lead",
+    subjectEnv: "RESEND_CCNA_FREE_SIM_SUBJECT",
+    defaultSubject: "Your free CCNA timed simulation is ready",
+    path: "/CCNA_Sim_EXAM/free-assessment.html?welcome=1",
+    title: "free CCNA timed simulation",
+    audienceEnv: "RESEND_CCNA_MARKETING_AUDIENCE_ID",
+  },
+  "encor-free-simulation": {
+    logTag: "encor-lead",
+    subjectEnv: "RESEND_ENCOR_FREE_SIM_SUBJECT",
+    defaultSubject: "Your free ENCOR timed simulation is ready",
+    path: "/sample?track=encor-free-sim&welcome=1",
+    title: "free ENCOR timed simulation",
+    audienceEnv: "RESEND_ENCOR_MARKETING_AUDIENCE_ID",
+  },
 };
 
 function escapeHtml(s) {

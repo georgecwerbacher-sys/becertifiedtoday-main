@@ -26,6 +26,34 @@
 (function () {
   "use strict";
   try {
+    var hasHomeSample = false;
+    try {
+      hasHomeSample =
+        !!sessionStorage.getItem("ccnaHomeSample") || !!sessionStorage.getItem("encorHomeSample");
+    } catch (e) {}
+    if (!hasHomeSample) return;
+    var path = (location.pathname || "").toLowerCase();
+    var remembered = "";
+    try {
+      remembered = (sessionStorage.getItem("ccnaLastRealPath") || "").toLowerCase();
+    } catch (e) {}
+    var onSamplePage =
+      path.indexOf("/ccna-study/") !== -1 ||
+      path.indexOf("/ccnp-encor-study/") !== -1 ||
+      remembered.indexOf("/ccna-study/") !== -1 ||
+      remembered.indexOf("/ccnp-encor-study/") !== -1;
+    if (!onSamplePage) return;
+    if (document.head.querySelector('script[src*="cisco-home-sample-nav.js"]')) return;
+    var s = document.createElement("script");
+    s.src = "/js/cisco-home-sample-nav.js";
+    s.defer = true;
+    (document.body || document.head).appendChild(s);
+  } catch (e) {}
+})();
+
+(function () {
+  "use strict";
+  try {
     if (!sessionStorage.getItem("secplusHomeSample")) return;
     var path = (location.pathname || "").toLowerCase();
     var remembered = "";

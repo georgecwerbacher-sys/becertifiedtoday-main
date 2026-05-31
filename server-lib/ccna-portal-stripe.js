@@ -39,7 +39,17 @@ function inferProductTrackFromSuccessUrl(session) {
   return null;
 }
 
-function productIdFromAmountCents(amount, track) {
+function productIdFromAmountCents(amount, track, session = null) {
+  const urls = session
+    ? `${session.success_url || ""} ${session.cancel_url || ""}`
+    : "";
+  const isTestSimUrl = /test-simulation-runner|begin-test-simulation|test-simulation\.html/i.test(urls);
+
+  if (amount === 999 && isTestSimUrl) {
+    if (track === "encor") return "encor-test-simulation";
+    if (track === "secplus") return "secplus-test-simulation";
+    return "ccna-test-simulation";
+  }
   if (amount === 999) {
     if (track === "encor") return "encor-portal-10d";
     if (track === "secplus") return "secplus-portal-10d";
@@ -152,6 +162,14 @@ export function inferProductIdFromCheckoutSession(session, env = process.env) {
         productId = "ccna-portal-30d";
         break;
       }
+      if (/ccna/i.test(name) && /simulation|timed|exam sim/i.test(name)) {
+        productId = "ccna-test-simulation";
+        break;
+      }
+      if (/encor/i.test(name) && /simulation|timed|exam sim/i.test(name)) {
+        productId = "encor-test-simulation";
+        break;
+      }
     }
   }
   if (!productId && paid && session.currency === "usd") {
@@ -172,7 +190,7 @@ export function inferProductIdFromCheckoutSession(session, env = process.env) {
     if (plProduct) {
       productId = plProduct;
     } else if (typeof amount === "number") {
-      productId = productIdFromAmountCents(amount, track);
+      productId = productIdFromAmountCents(amount, track, session);
     }
   }
   return productId;
