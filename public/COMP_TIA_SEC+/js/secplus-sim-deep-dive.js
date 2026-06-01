@@ -29,13 +29,19 @@
         "<li><h3>Compensation report — Q3 (HR document)</h3>" +
         "<p>Open the <strong>Compensation report</strong> tile for payroll and bonus sample tables only (department accruals and individual base/bonus excerpt). " +
         "That file is the original HR submission — not where security findings appear in this simulation.</p></li>" +
-        "<li><h3>User data — credential audit</h3>" +
-        "<p>Open <strong>User data</strong> for the <code>employee_credential_audit.csv</code> excerpt: password age, length, complexity, and reuse across VPN, email, and timeclock. " +
-        "Use it together with the CISO addendum below for Step 2.</p></li>" +
-        "<li><h3>CISO IR addendum — appended before listing offline</h3>" +
-        "<p>The Office of the CISO appended the following to the leaked bundle during incident response. " +
-        "It is <strong>not</strong> part of the original HR compensation report; it documents credential exposure and containment options.</p>" +
-        "<h4 style=\"margin:14px 0 8px;font-size:0.9rem;color:#0f172a\">A. Credential exposure summary</h4>" +
+        "<li><h3>User data — payroll export from file share</h3>" +
+        "<p>Open <strong>User data</strong> for <code>employee_credential_audit.csv</code> pulled from <code>\\\\corp-fs01\\Finance\\Restricted\\user_data\\</code>. " +
+        "The sim shows the export table only (logo, sensitive tag, file-share path). Use the table plus the interpretation below for Step 2.</p>" +
+        "<h4 style=\"margin:14px 0 8px;font-size:0.9rem;color:#0f172a\">What the audit shows</h4>" +
+        "<ul>" +
+        "<li><strong>Age:</strong> Passwords used for a long time without change — easier to compromise over time.</li>" +
+        "<li><strong>Reuse:</strong> One leaked password unlocks multiple accounts.</li>" +
+        "<li><strong>Length:</strong> Nearly all affected accounts use the 8-character minimum.</li>" +
+        "<li><strong>Complexity:</strong> No symbols required; many passwords are simple words or patterns.</li>" +
+        "<li><strong>Expiration:</strong> Policy rotation is enabled — expiration itself is not the primary weakness in this breach.</li>" +
+        "</ul></li>" +
+        "<li><h3>CISO IR addendum — credential exposure summary</h3>" +
+        "<p>IR appended this write-up to the leaked bundle (not part of the HR compensation PDF). It states the same themes formally:</p>" +
         "<p><strong style=\"color:#991b1b\">Confirmed — Finding 1 — Credential reuse across services.</strong> " +
         "Employee credentials recovered from the breach were reused on multiple corporate and third-party services. " +
         "A single compromised password therefore placed VPN, email, and timekeeping accounts at concurrent risk.</p>" +
@@ -47,12 +53,10 @@
         "relative to accounts rotated on schedule.</p>" +
         "<p><strong style=\"color:#166534\">Not the primary focus — Finding 4 — Password expiration.</strong> " +
         "Ninety-day rotation remains enforced for standard accounts through Active Directory. Missing expiration is not the primary driver of this incident; " +
-        "investigators should prioritize age, reuse, length, and complexity.</p>" +
-        "<h4 style=\"margin:14px 0 8px;font-size:0.9rem;color:#0f172a\">B. Containment options under review</h4>" +
-        "<p>Per CIO direction, account protection must improve without wiping kiosk disk images that may hold forensic evidence. " +
-        "Identity engineering evaluated the following factors:</p>" +
-        '<pre style="margin:0 0 12px;padding:12px;background:#0f172a;color:#e2e8f0;border-radius:8px;font-size:0.8rem;line-height:1.45;white-space:pre-wrap">CIO requirement: Protect employee accounts going forward WITHOUT wiping kiosk\nimages that may hold forensic evidence.\n\nPIN code .............. Weak factor; may be cached or typed on a compromised host.\nSMS authentication .... Interceptable; SMS logs may remain on the device.\nOTP token ............. Codes still entered on the host; some apps log OTP material.\nFIDO security key ..... Hardware-bound, phishing-resistant; proves possession\n                        without sending secrets through the compromised workstation.</pre>' +
-        "<p>The same containment memo appears in the <strong>User data</strong> artifact during the simulation; the addendum text above is the authoritative walkthrough reference.</p></li>" +
+        "investigators should prioritize age, reuse, length, and complexity.</p></li>" +
+        "<li><h3>Containment options under review (IR note)</h3>" +
+        "<p>Use this IR note for Step 3 (it is not shown in the in-sim payroll export):</p>" +
+        '<pre style="margin:0 0 12px;padding:12px;background:#0f172a;color:#e2e8f0;border-radius:8px;font-size:0.8rem;line-height:1.45;white-space:pre-wrap">CIO requirement: Protect employee accounts going forward WITHOUT wiping kiosk\nimages that may hold forensic evidence.\n\nPIN code .............. Weak factor; may be cached or typed on a compromised host.\nSMS authentication .... Interceptable; SMS logs may remain on the device.\nOTP token ............. Codes still entered on the host; some apps log OTP material.\nFIDO security key ..... Hardware-bound, phishing-resistant; proves possession\n                        without sending secrets through the compromised workstation.</pre></li>' +
         "<li><h3>Step 2 — weak password practices</h3><ul>" +
         "<li><strong>Age</strong> — passwords unchanged 12–15 months.</li>" +
         "<li><strong>Reuse</strong> — same password on VPN, email, timeclock.</li>" +
