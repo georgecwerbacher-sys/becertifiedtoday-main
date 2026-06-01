@@ -120,10 +120,14 @@
       }
 
       setBusy(form, true);
+      var leadSource = options.method || "encor_free_sim_form";
+      if (typeof window.bccLogSampleLeadFormAttempt === "function") {
+        window.bccLogSampleLeadFormAttempt("encor", email, leadSource, options.sampleKind || "");
+      }
       if (window.bccIsInternalAnalyticsEmail && window.bccIsInternalAnalyticsEmail(email)) {
         if (typeof window.bccSetAnalyticsExclude === "function") window.bccSetAnalyticsExclude(true);
       } else {
-        trackLeadEvent("generate_lead", { method: options.method || "encor_free_sim_form" });
+        trackLeadEvent("generate_lead", { method: leadSource });
       }
 
       var attrs = campaignParams();
@@ -135,7 +139,8 @@
           magnet: MAGNET_ID,
           product: "encor",
           consent: true,
-          source: options.method || "encor_free_sim_form",
+          source: leadSource,
+          sample_kind: options.sampleKind || "",
           utm: attrs,
           company_website: (form.querySelector('input[name="company_website"]') || {}).value || "",
         }),
@@ -159,6 +164,9 @@
           window.location.href = result.data.redirectUrl;
         })
         .catch(function () {
+          if (typeof window.bccLogSampleLeadFormFail === "function") {
+            window.bccLogSampleLeadFormFail("encor", email, leadSource, options.sampleKind || "");
+          }
           showMessage(form, "Something went wrong. Try again or use the free samples below.", true);
           setBusy(form, false);
         });
@@ -293,6 +301,7 @@
     var form = root.querySelector("form[data-encor-lead-form]");
     wireEncorLeadForm(form, {
       method: options.method || "encor_free_sim_sample_popup",
+      sampleKind: options.sampleKind || "",
       onSuccess: function (_email, data) {
         if (typeof options.onBeforeNavigate === "function") options.onBeforeNavigate();
         window.location.href = data.redirectUrl || RUNNER_PATH;

@@ -235,6 +235,7 @@
   }
 
   function openFreeSimLeadModal(session, finishHome) {
+    logSampleEvent(session, "email_modal_open");
     loadLeadCapture(session, function (cfg) {
       var show = cfg.showLeadModal();
       if (typeof show !== "function") {
@@ -244,9 +245,16 @@
         );
         return;
       }
+      var kind =
+        session.order[0] && session.order[0].type === "lab"
+          ? "lab"
+          : session.order[0] && session.order[0].type === "dnd"
+            ? "dnd"
+            : "questions";
       show({
         finishHome: finishHome,
         method: cfg.key + "_sample_popup",
+        sampleKind: kind,
         onBeforeNavigate: function () {
           clearSampleSession(session);
         },
@@ -254,8 +262,43 @@
     });
   }
 
+  function logSampleEvent(session, event, extra) {
+    if (typeof window.bccLogSampleLeadEvent !== "function" || !session) return;
+    var product = session.product === "encor" ? "encor" : "ccna";
+    var kind =
+      session.order[0] && session.order[0].type === "lab"
+        ? "lab"
+        : session.order[0] && session.order[0].type === "dnd"
+          ? "dnd"
+          : "questions";
+    var payload = {
+      event: event,
+      product: product,
+      sampleKind: kind,
+      source: (session._cfg && session._cfg.key) || "",
+    };
+    if (extra) {
+      for (var k in extra) {
+        if (Object.prototype.hasOwnProperty.call(extra, k)) payload[k] = extra[k];
+      }
+    }
+    window.bccLogSampleLeadEvent(payload);
+  }
+
+  function ensureSampleLeadAnalytics() {
+    if (typeof window.bccLogSampleLeadEvent === "function") return;
+    if (document.querySelector('script[src="/js/sample-lead-analytics.js"]')) return;
+    var s = document.createElement("script");
+    s.src = "/js/sample-lead-analytics.js";
+    s.async = true;
+    (document.head || document.body).appendChild(s);
+  }
+
   function showFreeSimUpsellModal(session, finishHome) {
     if (document.getElementById("ciscoSampleFreeSimUpsell")) return;
+
+    ensureSampleLeadAnalytics();
+    logSampleEvent(session, "sample_finished");
 
     var cfg = resolveLeadConfig(session);
     var kind =

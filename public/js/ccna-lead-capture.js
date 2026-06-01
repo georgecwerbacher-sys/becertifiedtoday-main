@@ -120,10 +120,14 @@
       }
 
       setBusy(form, true);
+      var leadSource = options.method || "ccna_free_sim_form";
+      if (typeof window.bccLogSampleLeadFormAttempt === "function") {
+        window.bccLogSampleLeadFormAttempt("ccna", email, leadSource, options.sampleKind || "");
+      }
       if (window.bccIsInternalAnalyticsEmail && window.bccIsInternalAnalyticsEmail(email)) {
         if (typeof window.bccSetAnalyticsExclude === "function") window.bccSetAnalyticsExclude(true);
       } else {
-        trackLeadEvent("generate_lead", { method: options.method || "ccna_free_sim_form" });
+        trackLeadEvent("generate_lead", { method: leadSource });
       }
 
       var attrs = campaignParams();
@@ -135,7 +139,8 @@
           magnet: MAGNET_ID,
           product: "ccna",
           consent: true,
-          source: options.method || "ccna_free_sim_form",
+          source: leadSource,
+          sample_kind: options.sampleKind || "",
           utm: attrs,
           company_website: (form.querySelector('input[name="company_website"]') || {}).value || "",
         }),
@@ -159,6 +164,9 @@
           window.location.href = result.data.redirectUrl;
         })
         .catch(function () {
+          if (typeof window.bccLogSampleLeadFormFail === "function") {
+            window.bccLogSampleLeadFormFail("ccna", email, leadSource, options.sampleKind || "");
+          }
           showMessage(form, "Something went wrong. Try again or use the free samples below.", true);
           setBusy(form, false);
         });

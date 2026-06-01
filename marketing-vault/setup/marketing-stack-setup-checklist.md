@@ -213,6 +213,7 @@ Configured in `public/COMP_TIA_SEC+/js/secplus-portal-checkout.js`. Verify in St
 - [ ] Portal access unlocks on site
 - [ ] Magic-link email received (if Resend configured)
 - [ ] `/admin/analytics.html` portal subscriber section shows purchasers for **CCNA, ENCOR, and Security+** (Stripe metadata per product)
+- [ ] `/admin/analytics.html` **Homepage sample → email capture** section lists who submitted and attempt counts (`marketing-vault/leads/home-sample-email-capture.csv` via `GITHUB_LEADS_TOKEN`)
 
 ---
 

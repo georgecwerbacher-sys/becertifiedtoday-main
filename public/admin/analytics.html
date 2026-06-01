@@ -177,6 +177,53 @@
         </div>
       </div>
 
+      <div class="panel" id="sampleLeadPanel">
+        <h2 style="margin:0 0 6px;font-size:1.05rem">Homepage sample → email capture</h2>
+        <p style="margin:0 0 16px;font-size:0.85rem;color:var(--muted)">
+          After free sample questions (CCNA, ENCOR, Security+), who opened the email form and how many times they
+          submitted. Data from <code>home-sample-email-capture.csv</code> (requires <code>GITHUB_LEADS_TOKEN</code> on
+          Vercel).
+        </p>
+        <div class="cards" id="sampleLeadSummaryCards"></div>
+        <div class="portal-product-block">
+          <h3 class="portal-product-title">By product (funnel)</h3>
+          <div class="portal-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Finished sample</th>
+                  <th>Email modal</th>
+                  <th>Submit attempts</th>
+                  <th>Successes</th>
+                  <th>Unique emails</th>
+                </tr>
+              </thead>
+              <tbody id="sampleLeadFunnelBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="portal-product-block">
+          <h3 class="portal-product-title">By email (submit attempts)</h3>
+          <div class="portal-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Email</th>
+                  <th>Attempts</th>
+                  <th>Successes</th>
+                  <th>Sample track</th>
+                  <th>Last activity (UTC)</th>
+                </tr>
+              </thead>
+              <tbody id="sampleLeadPeopleBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <p id="sampleLeadStatus" class="status" aria-live="polite"></p>
+      </div>
+
       <div class="panel" id="portalPanel">
         <h2 style="margin:0 0 6px;font-size:1.05rem">Portal subscribers (CCNA · ENCOR · Security+)</h2>
         <p style="margin:0 0 16px;font-size:0.85rem;color:var(--muted)">
@@ -278,6 +325,11 @@
         { key: "encor", summaryId: "portalSummaryEncor", bodyId: "portalUsersEncor" },
         { key: "secplus", summaryId: "portalSummarySecplus", bodyId: "portalUsersSecplus" },
       ];
+      var SAMPLE_PRODUCT_LABELS = {
+        ccna: "CCNA",
+        encor: "ENCOR",
+        secplus: "Security+",
+      };
 
       function token() {
         try {
@@ -458,6 +510,98 @@
         });
       }
 
+      function fmtIsoUtcShort(iso) {
+        if (!iso) return "—";
+        try {
+          return new Date(iso).toISOString().replace("T", " ").replace(/\.\d{3}Z$/, " UTC");
+        } catch (_) {
+          return iso;
+        }
+      }
+
+      function renderSampleLeadReport(data) {
+        var summary = data.summary || {};
+        var people = data.people || [];
+        var totalAttempts = 0;
+        var totalSuccess = 0;
+        ["ccna", "encor", "secplus"].forEach(function (p) {
+          var s = summary[p] || {};
+          totalAttempts += Number(s.submitAttempts) || 0;
+          totalSuccess += Number(s.captureSuccesses) || 0;
+        });
+
+        document.getElementById("sampleLeadSummaryCards").innerHTML = [
+          ["Submit attempts (all)", fmt(totalAttempts)],
+          ["Successful unlocks", fmt(totalSuccess)],
+          ["Unique emails", fmt(people.length)],
+          ["Events logged", fmt(data.rowCount)],
+        ]
+          .map(function (c) {
+            return (
+              '<div class="card"><div class="val">' +
+              c[1] +
+              '</div><div class="lbl">' +
+              c[0] +
+              "</div></div>"
+            );
+          })
+          .join("");
+
+        document.getElementById("sampleLeadFunnelBody").innerHTML = ["ccna", "encor", "secplus"]
+          .map(function (p) {
+            var s = summary[p] || {};
+            return (
+              "<tr><td>" +
+              (SAMPLE_PRODUCT_LABELS[p] || p) +
+              "</td><td>" +
+              fmt(s.sampleCompletions) +
+              "</td><td>" +
+              fmt(s.emailModalOpens) +
+              "</td><td>" +
+              fmt(s.submitAttempts) +
+              "</td><td>" +
+              fmt(s.captureSuccesses) +
+              "</td><td>" +
+              fmt(s.uniqueEmails) +
+              "</td></tr>"
+            );
+          })
+          .join("");
+
+        var peopleBody = document.getElementById("sampleLeadPeopleBody");
+        if (!people.length) {
+          peopleBody.innerHTML =
+            '<tr><td colspan="6" style="color:var(--muted)">No sample email submissions yet.</td></tr>';
+        } else {
+          peopleBody.innerHTML = people
+            .map(function (r) {
+              return (
+                "<tr><td>" +
+                (SAMPLE_PRODUCT_LABELS[r.product] || r.product) +
+                '</td><td class="email">' +
+                r.email +
+                "</td><td>" +
+                fmt(r.submitAttempts) +
+                "</td><td>" +
+                fmt(r.successes) +
+                "</td><td>" +
+                (r.sampleKind || "—") +
+                "</td><td>" +
+                fmtIsoUtcShort(r.lastAt) +
+                "</td></tr>"
+              );
+            })
+            .join("");
+        }
+
+        var note = data.note || "";
+        if (!data.rowCount) {
+          note += " No events in CSV yet — finish a homepage sample and submit the email form to create rows.";
+        }
+        document.getElementById("sampleLeadStatus").textContent = note;
+        document.getElementById("sampleLeadStatus").className = "status ok";
+      }
+
       function postJson(url, payload) {
         return fetch(url, {
           method: "POST",
@@ -478,14 +622,18 @@
         dashStatus.className = "status";
         portalStatus.textContent = "Loading portal subscribers…";
         portalStatus.className = "status";
+        document.getElementById("sampleLeadStatus").textContent = "Loading sample email capture…";
+        document.getElementById("sampleLeadStatus").className = "status";
 
         Promise.all([
           postJson("/api/analytics-report", { range: rangeEl.value }),
           postJson("/api/portal-users-report", {}),
+          postJson("/api/sample-lead-report", {}),
         ])
           .then(function (results) {
             var ga = results[0];
             var portal = results[1];
+            var sampleLead = results[2];
 
             if (!ga.ok) {
               if (ga.body && ga.body.error === "Unauthorized") {
@@ -512,11 +660,23 @@
               return;
             }
             renderPortalUsers(portal.body);
+
+            if (!sampleLead.ok) {
+              document.getElementById("sampleLeadSummaryCards").innerHTML = "";
+              document.getElementById("sampleLeadFunnelBody").innerHTML = "";
+              document.getElementById("sampleLeadPeopleBody").innerHTML = "";
+              var sm = (sampleLead.body && sampleLead.body.error) || "Sample lead report failed";
+              document.getElementById("sampleLeadStatus").textContent = sm;
+              document.getElementById("sampleLeadStatus").className = "status err";
+            } else {
+              renderSampleLeadReport(sampleLead.body);
+            }
           })
           .catch(function (err) {
             dashStatus.textContent = err.message || "Failed to load report";
             dashStatus.className = "status err";
             portalStatus.textContent = "";
+            document.getElementById("sampleLeadStatus").textContent = "";
           });
       }
 

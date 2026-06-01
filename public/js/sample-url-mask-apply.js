@@ -82,6 +82,13 @@
       (document.head || document.body).appendChild(lead);
     }
 
+    if (!document.head.querySelector('script[src*="sample-lead-analytics.js"]')) {
+      var analytics = document.createElement("script");
+      analytics.src = "/js/sample-lead-analytics.js";
+      analytics.defer = true;
+      (document.head || document.body).appendChild(analytics);
+    }
+
     if (document.head.querySelector('script[src*="cisco-home-sample-nav.js"]')) return;
     var s = document.createElement("script");
     s.src = "/js/cisco-home-sample-nav.js";
@@ -105,6 +112,13 @@
       remembered.indexOf("/comp_tia_sec+/sec+_questions/") !== -1 ||
       remembered.indexOf("/comp_tia_sec+/sec+_sim_hot_spot/") !== -1;
     if (!onSecplusPage) return;
+    if (!document.head.querySelector('script[src*="sample-lead-analytics.js"]')) {
+      var analytics = document.createElement("script");
+      analytics.src = "/js/sample-lead-analytics.js";
+      analytics.defer = true;
+      (document.head || document.body).appendChild(analytics);
+    }
+
     if (document.head.querySelector('script[src*="secplus-sample-nav.js"]')) return;
     var s = document.createElement("script");
     s.src = "/COMP_TIA_SEC+/js/secplus-sample-nav.js";

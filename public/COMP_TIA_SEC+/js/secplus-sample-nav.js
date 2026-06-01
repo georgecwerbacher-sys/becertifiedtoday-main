@@ -172,6 +172,7 @@
   }
 
   function openFreeSimLeadModal(finishHome) {
+    logSecplusSampleEvent("email_modal_open");
     loadSecplusLeadCapture(function () {
       if (typeof window.showSecplusFreeSimLeadModal !== "function") {
         navigateAfterSample(LEAD_CAPTURE_FALLBACK);
@@ -180,13 +181,42 @@
       window.showSecplusFreeSimLeadModal({
         finishHome: finishHome || FINISH_HOME,
         method: "secplus_free_sim_sample_popup",
+        sampleKind: sampleKindLabel(),
         onBeforeNavigate: clearSampleSession,
       });
     });
   }
 
+  function logSecplusSampleEvent(event, extra) {
+    if (typeof window.bccLogSampleLeadEvent !== "function") return;
+    var payload = {
+      event: event,
+      product: "secplus",
+      sampleKind: sampleKindLabel(),
+      source: "secplusHomeSample",
+    };
+    if (extra) {
+      for (var k in extra) {
+        if (Object.prototype.hasOwnProperty.call(extra, k)) payload[k] = extra[k];
+      }
+    }
+    window.bccLogSampleLeadEvent(payload);
+  }
+
+  function ensureSampleLeadAnalytics() {
+    if (typeof window.bccLogSampleLeadEvent === "function") return;
+    if (document.querySelector('script[src="/js/sample-lead-analytics.js"]')) return;
+    var s = document.createElement("script");
+    s.src = "/js/sample-lead-analytics.js";
+    s.async = true;
+    (document.head || document.body).appendChild(s);
+  }
+
   function showFreeSimUpsellModal(finishHome) {
     if (document.getElementById("secplusSampleFreeSimUpsell")) return;
+
+    ensureSampleLeadAnalytics();
+    logSecplusSampleEvent("sample_finished");
 
     var kind = sampleKindLabel();
     var lead =

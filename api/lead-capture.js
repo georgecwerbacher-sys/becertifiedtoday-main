@@ -15,6 +15,11 @@ import {
   addMarketingContact,
 } from "../server-lib/marketing-lead-resend.js";
 import { appendMarketingLeadCsv, buildLeadCsvRow } from "../server-lib/append-marketing-lead-csv.js";
+import {
+  appendSampleLeadEvent,
+  isSampleLeadSource,
+  normalizeSampleProduct,
+} from "../server-lib/sample-lead-analytics.js";
 
 function readJsonBody(req) {
   try {
@@ -65,18 +70,37 @@ export default async function handler(req, res) {
   const site = normalizePublicSiteUrl(process.env.PUBLIC_SITE_URL || "https://becertifiedtoday.com");
   const resourceUrl = site + magnet.path;
 
+  const source = String(body.source || "lead_capture_api");
+  const product = String(body.product || "secplus");
+
   try {
     await appendMarketingLeadCsv(
       buildLeadCsvRow(body, {
         event: "lead_signup",
         email,
         magnet: String(body.magnet || ""),
-        product: String(body.product || "secplus"),
-        source: String(body.source || "lead_capture_api"),
+        product,
+        source,
       })
     );
   } catch (err) {
     console.warn("[lead-capture] csv append failed:", err?.message || err);
+  }
+
+  if (isSampleLeadSource(source)) {
+    try {
+      await appendSampleLeadEvent({
+        event: "email_capture_success",
+        email,
+        product: normalizeSampleProduct(product) || product,
+        sample_kind: body.sample_kind || body.sampleKind || "",
+        source,
+        success: true,
+        utm: body.utm,
+      });
+    } catch (err) {
+      console.warn("[lead-capture] sample analytics append failed:", err?.message || err);
+    }
   }
 
   try {
