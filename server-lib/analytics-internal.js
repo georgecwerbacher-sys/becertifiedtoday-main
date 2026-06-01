@@ -3,7 +3,10 @@
  * Set GA_INTERNAL_EMAILS (comma-separated) on Vercel; defaults include site owner test email.
  */
 
-const DEFAULT_INTERNAL_EMAILS = ["georeg.werbacher@gmail.com"];
+const DEFAULT_INTERNAL_EMAILS = [
+  "georgecwerbacher@gmail.com",
+  "georeg.werbacher@gmail.com",
+];
 
 export function parseInternalEmailsFromEnv(env = process.env) {
   const raw = (env.GA_INTERNAL_EMAILS || "").trim();

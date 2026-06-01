@@ -100,7 +100,7 @@ Add to `.env.local` and **Vercel → Project → Settings → Environment Variab
 
 - [ ] `GA_MEASUREMENT_ID=G-YTT6KBHX7V`
 - [ ] `GA_PROPERTY_ID=` *(numeric, e.g. 538156526)*
-- [ ] `GA_INTERNAL_EMAILS=georeg.werbacher@gmail.com` *(comma-separated; excluded from admin reports and portal subscriber list)*
+- [ ] `GA_INTERNAL_EMAILS=georgecwerbacher@gmail.com,georeg.werbacher@gmail.com` *(comma-separated; excluded from admin reports, GA tracking, and portal subscriber list)*
 - [ ] `GA_SERVICE_ACCOUNT_JSON_B64=` *(from format script)*
 - [ ] `ADMIN_ANALYTICS_PASSWORD=` *(choose a strong password)*
 - [ ] `ADMIN_ANALYTICS_JWT_SECRET=` *(generate: `openssl rand -hex 32`)*
@@ -245,7 +245,7 @@ Not required to launch Security+ ads.
 |----------|----------|
 | `GA_MEASUREMENT_ID` | Client-side gtag |
 | `GA_PROPERTY_ID` | Data API reports |
-| `GA_INTERNAL_EMAILS` | Exclude owner/test emails from GA reports and portal subscriber table |
+| `GA_INTERNAL_EMAILS` | Exclude owner/admin test emails (e.g. `georgecwerbacher@gmail.com`) from GA reports and portal subscriber table |
 | `GA_SERVICE_ACCOUNT_JSON_B64` | Server GA4 access |
 | `ADMIN_ANALYTICS_PASSWORD` | `/admin/analytics.html` login |
 | `ADMIN_ANALYTICS_JWT_SECRET` | Admin API auth |

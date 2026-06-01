@@ -11,7 +11,7 @@
     "bcc_encor_free_sim_v1",
     "bcc_secplus_free_sim_v1",
   ];
-  var DEFAULT_INTERNAL = ["georeg.werbacher@gmail.com"];
+  var DEFAULT_INTERNAL = ["georgecwerbacher@gmail.com", "georeg.werbacher@gmail.com"];
 
   function normalizeEmail(email) {
     return String(email || "").trim().toLowerCase();
