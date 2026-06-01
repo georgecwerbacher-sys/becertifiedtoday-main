@@ -2121,10 +2121,11 @@
       </a>
       <div class="header-actions">
         <a
+          id="secplusPortalHeaderBtn"
           class="secplus-portal-header-btn secplus-portal-header-btn--active"
-          href="/comptia-sec+-home.html"
+          href="#secplus-portal-gate"
           data-secplus-portal-nav
-          title="Security+ practice portal"
+          title="Security+ practice portal — library access required"
           aria-label="Open Security+ practice portal"
           >COMPTIA SEC+ Practice Portal</a
         >
@@ -2675,11 +2676,11 @@
         ×
       </button>
       <p class="ccna-sim-promo-eyebrow">CompTIA Security+ Practice Portal</p>
-      <h2 id="secplusPortalGateTitle">Portal access required</h2>
+      <h2 id="secplusPortalGateTitle">30-day access required</h2>
       <p class="ccna-sim-promo-lead">
-        The Security+ Practice Portal is for learners with <strong>active library access</strong> on
-        <strong>this browser</strong> (after Stripe checkout on this site). Choose
-        <strong>10-day or 30-day access</strong> below—no recurring subscription.
+        The Security+ practice portal is for learners with <strong>active library access</strong> on
+        <strong>this browser</strong> (after Stripe checkout on this site). If you have not registered yet, get
+        <strong>30-day access</strong> below—no recurring subscription.
       </p>
       <p class="ccna-portal-gate-help">
         Already paid but blocked?
@@ -2693,19 +2694,16 @@
           type="button"
           class="ccna-sim-promo-primary"
           data-secplus-portal-30d-checkout
-          aria-label="Purchase 30-day Security+ library access"
+          aria-label="Purchase 30-day Security+ library access and go to Stripe checkout"
         >
           Purchase 30-day access
         </button>
-        <button
-          type="button"
+        <a
           class="ccna-sim-promo-secondary"
-          data-secplus-portal-10d-checkout
-          aria-label="Purchase 10-day Security+ library access"
+          href="/comptia-sec+-home.html"
+          data-secplus-portal-gate-dismiss
+          >Return to Security+ home</a
         >
-          Purchase 10-day access
-        </button>
-        <a class="ccna-sim-promo-secondary" href="#purchase" data-secplus-portal-gate-dismiss>View all options</a>
         <button type="button" class="ccna-sim-promo-secondary" data-secplus-portal-gate-dismiss>Close</button>
       </div>
     </div>
@@ -2785,13 +2783,48 @@
         });
       }
 
+      var PORTAL_URL = "/COMP_TIA_SEC+/SEC+_Training_Portal.html";
+
+      function syncPortalNavHref() {
+        var href = hasPortalAccess() ? PORTAL_URL : "#secplus-portal-gate";
+        document.querySelectorAll("[data-secplus-portal-nav]").forEach(function (el) {
+          el.setAttribute("href", href);
+        });
+      }
+
+      function goToPortal() {
+        window.location.href = PORTAL_URL;
+      }
+
       function onPortalNavClick(ev) {
-        if (hasPortalAccess()) return;
         ev.preventDefault();
-        openGate();
+        if (hasPortalAccess()) {
+          goToPortal();
+          return;
+        }
+        var chain = Promise.resolve();
+        if (typeof window.bccApplySecplusPortalCheckoutFromUrl === "function") {
+          chain = chain.then(function () {
+            return window.bccApplySecplusPortalCheckoutFromUrl(null, true);
+          });
+        }
+        if (typeof window.bccRestoreSecplusPortalAccess === "function") {
+          chain = chain.then(function () {
+            return window.bccRestoreSecplusPortalAccess();
+          });
+        }
+        chain.then(function () {
+          syncPortalNavHref();
+          if (hasPortalAccess()) {
+            goToPortal();
+          } else {
+            openGate();
+          }
+        });
       }
 
       function wirePortalNav() {
+        syncPortalNavHref();
         document.querySelectorAll("[data-secplus-portal-nav]").forEach(function (el) {
           el.addEventListener("click", onPortalNavClick);
         });
