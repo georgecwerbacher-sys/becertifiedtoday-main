@@ -628,7 +628,7 @@
         Promise.all([
           postJson("/api/analytics-report", { range: rangeEl.value }),
           postJson("/api/portal-users-report", {}),
-          postJson("/api/sample-lead-report", {}),
+          postJson("/api/sample-lead", { action: "report" }),
         ])
           .then(function (results) {
             var ga = results[0];

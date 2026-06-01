@@ -32,7 +32,7 @@
       company_website: "",
     };
     try {
-      fetch("/api/sample-lead-event", {
+      fetch("/api/sample-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
