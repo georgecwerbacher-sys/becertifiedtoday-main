@@ -437,6 +437,30 @@
       font-size: 0.92rem;
       line-height: 1.55;
     }
+    .doc-modal__body--report {
+      padding: 12px 14px 16px;
+      max-height: min(72vh, 720px);
+      overflow: auto;
+    }
+    .doc-modal__body--report .report-sheet {
+      max-width: none;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      box-shadow: none;
+    }
+    .doc-modal__panel:has(.doc-modal__body--report) {
+      width: min(860px, 100%);
+    }
+    .doc-load-fallback {
+      margin: 0;
+      line-height: 1.5;
+      color: #334155;
+    }
+    .doc-load-fallback a {
+      color: #005ecb;
+      font-weight: 600;
+    }
     .doc-modal__body h3 {
       margin: 0 0 8px;
       font-size: 0.95rem;
@@ -656,11 +680,11 @@
 
     const DOC_CONTENT = {
       directory: {
-        title: "Directory contents — leaked file index",
+        title: "Directory contents",
         html: `
           <p>Dark-web listing bundle recovered by the IR team. Three data sets match what the CIO reported.</p>
           <ul class="doc-tree">
-            <li class="folder">/leak/acme-corp/</li>
+            <li class="folder">/leak/becertifiedtoday-com/</li>
             <li class="file">├── directory/</li>
             <li class="file">│   ├── ad_password_policy.txt</li>
             <li class="file">│   └── shared_drive_index.csv</li>
@@ -669,41 +693,12 @@
             <li class="file">└── user_data/</li>
             <li class="file">    └── employee_credential_audit.csv</li>
           </ul>
-          <h3>ad_password_policy.txt</h3>
-          <div class="doc-pre">Minimum password length .......... 8 characters
-Complexity requirement ............. Letters OR numbers (symbols not required)
-Password history ................... Last 3 passwords remembered
-Maximum password age ............... 90 days (expiration enforced)
-
-IR note: Password expiration is functioning for standard accounts.
-Investigate age, reuse, length, and complexity gaps instead.</div>
-          <h3>shared_drive_index.csv (excerpt)</h3>
-          <div class="doc-pre">HR/Policies/password-guidelines.docx
-Finance/compensation_report_Q3.pdf
-IT/Forensics/kiosk_disk_image_hold-list.txt  ← do not reimage until containment chosen</div>
+          <p>Open the <strong>compensation report</strong> for payroll and bonus tables. Use <strong>user data</strong> for credential and containment details. Use <strong>Deep dive explanation</strong> for policy excerpts and step-by-step answers.</p>
         `,
       },
       compensation: {
-        title: "Compensation report — Q3 (IR addendum)",
-        html: `
-          <p>Payroll and bonus tables were exposed with this file. The CISO appended an incident-response page before the leak was taken offline.</p>
-          <h3>Credential exposure summary</h3>
-          <ul>
-            <li><span class="doc-tag">Confirmed</span> Employee credentials from the breach were reused on multiple services.</li>
-            <li><span class="doc-tag">Confirmed</span> Recovered passwords were short and lacked complexity (dictionary words, no symbols).</li>
-            <li><span class="doc-tag">Confirmed</span> Many passwords had not been changed in over a year despite policy exemptions.</li>
-            <li><span class="doc-tag ok">Not the focus</span> Missing expiration — 90-day rotation is active on standard accounts.</li>
-          </ul>
-          <h3>Containment options under review</h3>
-          <div class="doc-pre">CIO requirement: Protect employee accounts going forward WITHOUT wiping kiosk
-images that may hold forensic evidence.
-
-PIN code .............. Weak factor; may be cached or typed on a compromised host.
-SMS authentication .... Interceptable; SMS logs may remain on the device.
-OTP token ............. Codes still entered on the host; some apps log OTP material.
-FIDO security key ..... Hardware-bound, phishing-resistant; proves possession
-                        without sending secrets through the compromised workstation.</div>
-        `,
+        title: "Compensation report — Q3 FY2024",
+        report: "reports/compensation-report-q3-ir-addendum.html",
       },
       userdata: {
         title: "User data — employee_credential_audit.csv",
@@ -760,6 +755,15 @@ FIDO security key ..... Hardware-bound, phishing-resistant; proves possession
             <li><strong>Complexity:</strong> No symbols required; many passwords are simple words or patterns.</li>
             <li><strong>Expiration:</strong> Policy rotation is enabled — expiration itself is not the primary weakness in this breach.</li>
           </ul>
+          <h3>Containment options under review (IR note)</h3>
+          <div class="doc-pre">CIO requirement: Protect employee accounts going forward WITHOUT wiping kiosk
+images that may hold forensic evidence.
+
+PIN code .............. Weak factor; may be cached or typed on a compromised host.
+SMS authentication .... Interceptable; SMS logs may remain on the device.
+OTP token ............. Codes still entered on the host; some apps log OTP material.
+FIDO security key ..... Hardware-bound, phishing-resistant; proves possession
+                        without sending secrets through the compromised workstation.</div>
         `,
       },
     };
@@ -776,22 +780,78 @@ FIDO security key ..... Hardware-bound, phishing-resistant; proves possession
     const docModalClose = document.getElementById("docModalClose");
     let docModalTrigger = null;
 
-    function openDoc(key, trigger) {
-      const doc = DOC_CONTENT[key];
-      if (!doc) return;
-      docModalTrigger = trigger || null;
-      docModalTitle.textContent = doc.title;
-      docModalBody.innerHTML = doc.html;
+    function resolveSimDocUrl(relativePath) {
+      try {
+        return new URL(relativePath, window.location.href).href;
+      } catch (e) {
+        return relativePath;
+      }
+    }
+
+    function showDocModal(doc, trigger) {
       docModal.hidden = false;
       docModal.classList.add("open");
       docModalClose.focus();
       if (trigger) trigger.classList.add("reviewed");
     }
 
+    function loadReportIntoModal(reportUrl, docTitle, trigger) {
+      docModalBody.innerHTML = "<p class=\"doc-load-fallback\">Loading report…</p>";
+      docModalBody.classList.add("doc-modal__body--report");
+      showDocModal({ title: docTitle }, trigger);
+      fetch(reportUrl)
+        .then(function (res) {
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          return res.text();
+        })
+        .then(function (html) {
+          const parsed = new DOMParser().parseFromString(html, "text/html");
+          const sheet = parsed.getElementById("compensationReportSample") || parsed.querySelector(".report-sheet");
+          docModalBody.innerHTML = "";
+          if (sheet) {
+            docModalBody.appendChild(sheet.cloneNode(true));
+          } else {
+            throw new Error("Report content not found");
+          }
+        })
+        .catch(function () {
+          docModalBody.innerHTML =
+            "<p class=\"doc-load-fallback\">Could not load the report in this view. " +
+            "<a href=\"" +
+            reportUrl +
+            "\" target=\"_blank\" rel=\"noopener noreferrer\">Open compensation report sample</a> " +
+            "in a new tab.</p>";
+        });
+    }
+
+    function openDoc(key, trigger) {
+      const doc = DOC_CONTENT[key];
+      if (!doc) return;
+      docModalTrigger = trigger || null;
+      docModalTitle.textContent = doc.title;
+      docModalBody.innerHTML = "";
+      docModalBody.classList.remove("doc-modal__body--report");
+      if (doc.report) {
+        const reportUrl = resolveSimDocUrl(doc.report);
+        if (window.location.protocol === "file:") {
+          window.open(reportUrl, "_blank", "noopener,noreferrer");
+          if (trigger) trigger.classList.add("reviewed");
+          return;
+        }
+        loadReportIntoModal(reportUrl, doc.title, trigger);
+        return;
+      }
+      if (doc.html) {
+        docModalBody.innerHTML = doc.html;
+      }
+      showDocModal(doc, trigger);
+    }
+
     function closeDoc() {
       docModal.hidden = true;
       docModal.classList.remove("open");
       docModalBody.innerHTML = "";
+      docModalBody.classList.remove("doc-modal__body--report");
       if (docModalTrigger) {
         docModalTrigger.focus();
         docModalTrigger = null;

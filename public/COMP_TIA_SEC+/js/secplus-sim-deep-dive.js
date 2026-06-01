@@ -9,11 +9,50 @@
         '<ol class="deep-dive-steps">' +
         "<li><h3>Understand the scenario</h3>" +
         "<p>Directory contents, a compensation report, and user data appeared on the dark web. The CIO wants the <strong>most secure account protection</strong> now, plus a <strong>containment</strong> control that does <strong>not</strong> wipe kiosk forensic images.</p></li>" +
-        "<li><h3>Review the leaked evidence</h3><ul>" +
-        "<li><strong>Directory</strong> — 8-character minimum, weak complexity, 90-day expiration is enforced.</li>" +
-        "<li><strong>Compensation report</strong> — reuse, short passwords, long password age; compares PIN, SMS, OTP, and FIDO.</li>" +
-        "<li><strong>User data</strong> — audit table shows age, length, complexity, and reuse across apps.</li>" +
-        "</ul></li>" +
+        "<li><h3>Directory contents — leaked file index</h3>" +
+        "<p>IR recovered this index from the dark-web bundle. It shows how the three exposed data sets relate and what to read in each artifact.</p>" +
+        '<ul class="doc-tree" style="list-style:none;margin:0 0 12px;padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:0.84rem;background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px">' +
+        '<li style="margin:4px 0;color:#2563eb;font-weight:700">/leak/becertifiedtoday-com/</li>' +
+        '<li style="margin:4px 0;color:#334155;padding-left:1rem">├── directory/</li>' +
+        '<li style="margin:4px 0;color:#334155;padding-left:1rem">│   ├── ad_password_policy.txt</li>' +
+        '<li style="margin:4px 0;color:#334155;padding-left:1rem">│   └── shared_drive_index.csv</li>' +
+        '<li style="margin:4px 0;color:#334155;padding-left:1rem">├── compensation/</li>' +
+        '<li style="margin:4px 0;color:#334155;padding-left:1rem">│   └── compensation_report_Q3.pdf</li>' +
+        '<li style="margin:4px 0;color:#334155;padding-left:1rem">└── user_data/</li>' +
+        '<li style="margin:4px 0;color:#334155;padding-left:1rem">    └── employee_credential_audit.csv</li>' +
+        "</ul>" +
+        "<p><strong>ad_password_policy.txt</strong></p>" +
+        '<pre style="margin:0 0 12px;padding:12px;background:#0f172a;color:#e2e8f0;border-radius:8px;font-size:0.8rem;line-height:1.45;white-space:pre-wrap">Minimum password length .......... 8 characters\nComplexity requirement ............. Letters OR numbers (symbols not required)\nPassword history ................... Last 3 passwords remembered\nMaximum password age ............... 90 days (expiration enforced)\n\nIR note: Password expiration is functioning for standard accounts.\nInvestigate age, reuse, length, and complexity gaps instead.</pre>' +
+        "<p><strong>shared_drive_index.csv (excerpt)</strong></p>" +
+        '<pre style="margin:0 0 12px;padding:12px;background:#0f172a;color:#e2e8f0;border-radius:8px;font-size:0.8rem;line-height:1.45;white-space:pre-wrap">HR/Policies/password-guidelines.docx\nFinance/compensation_report_Q3.pdf\nIT/Forensics/kiosk_disk_image_hold-list.txt  ← do not reimage until containment chosen</pre>' +
+        "<p>Takeaway: 8-character minimum, weak complexity, and active 90-day expiration — focus Step 2 on <strong>age, reuse, length, and complexity</strong>, not missing expiration.</p></li>" +
+        "<li><h3>Compensation report — Q3 (HR document)</h3>" +
+        "<p>Open the <strong>Compensation report</strong> tile for payroll and bonus sample tables only (department accruals and individual base/bonus excerpt). " +
+        "That file is the original HR submission — not where security findings appear in this simulation.</p></li>" +
+        "<li><h3>User data — credential audit</h3>" +
+        "<p>Open <strong>User data</strong> for the <code>employee_credential_audit.csv</code> excerpt: password age, length, complexity, and reuse across VPN, email, and timeclock. " +
+        "Use it together with the CISO addendum below for Step 2.</p></li>" +
+        "<li><h3>CISO IR addendum — appended before listing offline</h3>" +
+        "<p>The Office of the CISO appended the following to the leaked bundle during incident response. " +
+        "It is <strong>not</strong> part of the original HR compensation report; it documents credential exposure and containment options.</p>" +
+        "<h4 style=\"margin:14px 0 8px;font-size:0.9rem;color:#0f172a\">A. Credential exposure summary</h4>" +
+        "<p><strong style=\"color:#991b1b\">Confirmed — Finding 1 — Credential reuse across services.</strong> " +
+        "Employee credentials recovered from the breach were reused on multiple corporate and third-party services. " +
+        "A single compromised password therefore placed VPN, email, and timekeeping accounts at concurrent risk.</p>" +
+        "<p><strong style=\"color:#991b1b\">Confirmed — Finding 2 — Insufficient length and complexity.</strong> " +
+        "Recovered passwords were short and lacked required complexity. Many matched dictionary words or simple patterns and did not include symbols, " +
+        "consistent with the eight-character minimum described in directory policy artifacts.</p>" +
+        "<p><strong style=\"color:#991b1b\">Confirmed — Finding 3 — Excessive password age.</strong> " +
+        "Many affected accounts had not changed passwords in over twelve months despite policy intent. Exemptions and poor hygiene amplified exposure " +
+        "relative to accounts rotated on schedule.</p>" +
+        "<p><strong style=\"color:#166534\">Not the primary focus — Finding 4 — Password expiration.</strong> " +
+        "Ninety-day rotation remains enforced for standard accounts through Active Directory. Missing expiration is not the primary driver of this incident; " +
+        "investigators should prioritize age, reuse, length, and complexity.</p>" +
+        "<h4 style=\"margin:14px 0 8px;font-size:0.9rem;color:#0f172a\">B. Containment options under review</h4>" +
+        "<p>Per CIO direction, account protection must improve without wiping kiosk disk images that may hold forensic evidence. " +
+        "Identity engineering evaluated the following factors:</p>" +
+        '<pre style="margin:0 0 12px;padding:12px;background:#0f172a;color:#e2e8f0;border-radius:8px;font-size:0.8rem;line-height:1.45;white-space:pre-wrap">CIO requirement: Protect employee accounts going forward WITHOUT wiping kiosk\nimages that may hold forensic evidence.\n\nPIN code .............. Weak factor; may be cached or typed on a compromised host.\nSMS authentication .... Interceptable; SMS logs may remain on the device.\nOTP token ............. Codes still entered on the host; some apps log OTP material.\nFIDO security key ..... Hardware-bound, phishing-resistant; proves possession\n                        without sending secrets through the compromised workstation.</pre>' +
+        "<p>The same containment memo appears in the <strong>User data</strong> artifact during the simulation; the addendum text above is the authoritative walkthrough reference.</p></li>" +
         "<li><h3>Step 2 — weak password practices</h3><ul>" +
         "<li><strong>Age</strong> — passwords unchanged 12–15 months.</li>" +
         "<li><strong>Reuse</strong> — same password on VPN, email, timeclock.</li>" +
