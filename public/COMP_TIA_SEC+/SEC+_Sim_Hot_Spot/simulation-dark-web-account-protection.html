@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ Simulation — Dark Web Account Protection</title>
+  <title>Security+ Simulation — BeCertifiedToday.com Dark Web IR</title>
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
@@ -674,21 +674,23 @@
     />
   </div>
   <main class="wrap">
-    <h1>Simulation: Dark Web Exposure and Account Protection</h1>
+    <h1>Simulation: BeCertifiedToday.com — Dark Web Incident Response</h1>
     <p class="lead">
-      Company data — directory contents, a compensation report, and user data — was found on the dark web.
-      The CIO has asked you to investigate and implement the most secure protection for employee accounts.
+      <strong>Priority: ASAP.</strong> Security Operations assigned you case <strong>IR-2024-0847</strong> for
+      <strong>BeCertifiedToday.com</strong>: directory listings, a Q3 compensation report, and workforce credential exports
+      were posted on the dark web. Contain account risk and recommend the strongest employee protection without destroying
+      kiosk forensic images the IR team is preserving.
     </p>
     <p class="instructions">
-      <strong>Your tasks:</strong> (1) Open each exposed item and review the leaked documents.
-      (2) Select all weak password practices shown in the evidence.
-      (3) Choose the containment step that protects accounts while leaving potential evidence on the host uncompromised.
+      <strong>Your IR tasks:</strong> (1) Open each exposed artifact from the BeCertifiedToday.com leak bundle and review the documents.
+      (2) Select all weak password practices supported by the evidence.
+      (3) Choose the containment control that protects accounts while leaving potential evidence on affected hosts uncompromised.
     </p>
 
     <section class="layout">
       <article class="panel" aria-label="Observed data">
-        <h2>Observed data exposed</h2>
-        <p class="artifact-hint">Select each item to review the leaked documents before answering.</p>
+        <h2>BeCertifiedToday.com — leaked bundle (IR-2024-0847)</h2>
+        <p class="artifact-hint">Review each artifact from the dark-web listing before you submit containment recommendations.</p>
         <div class="artifact-grid">
           <button type="button" class="artifact" data-doc="directory" aria-haspopup="dialog">
             <svg class="artifact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -803,7 +805,7 @@
       directory: {
         title: "Directory contents",
         html: `
-          <p>Dark-web listing bundle recovered by the IR team. Three data sets match what the CIO reported.</p>
+          <p>Dark-web listing recovered by BeCertifiedToday.com IR. Three data sets match case IR-2024-0847.</p>
           <ul class="doc-tree">
             <li class="folder">/leak/becertifiedtoday-com/</li>
             <li class="file">├── directory/</li>
@@ -1105,6 +1107,7 @@ Maximum password age ............... 90 days (expiration enforced)</div>
     })();
   </script>
   <script src="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.js" defer></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-sample-nav.js" defer></script>
   <script src="/js/sample-url-mask-apply.js"></script>
 </body>
 </html>

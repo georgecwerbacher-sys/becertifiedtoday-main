@@ -218,11 +218,20 @@
     ensureSampleLeadAnalytics();
     logSecplusSampleEvent("sample_finished");
 
+    var session = readSession();
     var kind = sampleKindLabel();
-    var lead =
-      kind === "simulation"
-        ? "You finished the performance-based preview. Unlock the full <strong>35-minute timed simulation</strong>—20 multiple-choice questions plus a PBQ-style item, with Back and mark-for-review and a domain scorecard when you finish."
-        : "You finished the sample questions. Try the free <strong>35-minute timed simulation</strong> next—20 multiple-choice questions plus a PBQ-style item, with Back and mark-for-review and a domain scorecard when you finish.";
+    var lead;
+    if (kind === "simulation" && isDarkWebSampleSim(session)) {
+      lead =
+        "You finished the <strong>BeCertifiedToday.com</strong> dark web IR preview (case IR-2024-0847)—the same simulation in the paid library. " +
+        "Unlock the full <strong>35-minute timed exam</strong>: 20 multiple-choice questions plus this PBQ-style item, with Back, mark-for-review, and a domain scorecard.";
+    } else if (kind === "simulation") {
+      lead =
+        "You finished the performance-based preview. Unlock the full <strong>35-minute timed simulation</strong>—20 multiple-choice questions plus a PBQ-style item, with Back and mark-for-review and a domain scorecard when you finish.";
+    } else {
+      lead =
+        "You finished the sample questions. Try the free <strong>35-minute timed simulation</strong> next—20 multiple-choice questions plus a PBQ-style item, with Back and mark-for-review and a domain scorecard when you finish.";
+    }
 
     var root = document.createElement("div");
     root.id = "secplusSampleFreeSimUpsell";
@@ -406,7 +415,11 @@
     if (els.progressEl) {
       var item = order[index];
       if (item && item.type === "sim") {
-        els.progressEl.textContent = "Simulation — item " + (index + 1) + " of " + order.length;
+        if (isDarkWebSampleSim(session)) {
+          els.progressEl.textContent = "BeCertifiedToday.com IR · guest sample";
+        } else {
+          els.progressEl.textContent = "Simulation — item " + (index + 1) + " of " + order.length;
+        }
       } else {
         var mcqNum = 0;
         for (var p = 0; p <= index; p++) {

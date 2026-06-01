@@ -3,12 +3,13 @@
 
   var CONTENT = {
     "simulation-dark-web-account-protection.html": {
-      title: "Deep dive — dark web account protection",
+      title: "Deep dive — BeCertifiedToday.com dark web IR",
       html:
         '<p>Use this walkthrough after you have opened all three leaked documents. Each step builds on the evidence.</p>' +
         '<ol class="deep-dive-steps">' +
         "<li><h3>Understand the scenario</h3>" +
-        "<p>Directory contents, a compensation report, and user data appeared on the dark web. The CIO wants the <strong>most secure account protection</strong> now, plus a <strong>containment</strong> control that does <strong>not</strong> wipe kiosk forensic images.</p></li>" +
+        "<p><strong>BeCertifiedToday.com</strong> case <strong>IR-2024-0847</strong> (ASAP): directory contents, a compensation report, and user data appeared on the dark web. " +
+        "Contain account risk with the <strong>most secure protection</strong> available and choose a <strong>containment</strong> control that does <strong>not</strong> wipe kiosk forensic images.</p></li>" +
         "<li><h3>Directory contents — leaked file index</h3>" +
         "<p>IR recovered this index from the dark-web bundle. It shows how the three exposed data sets relate and what to read in each artifact.</p>" +
         '<ul class="doc-tree" style="list-style:none;margin:0 0 12px;padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:0.84rem;background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px">' +
