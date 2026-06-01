@@ -100,6 +100,7 @@ Add to `.env.local` and **Vercel → Project → Settings → Environment Variab
 
 - [ ] `GA_MEASUREMENT_ID=G-YTT6KBHX7V`
 - [ ] `GA_PROPERTY_ID=` *(numeric, e.g. 538156526)*
+- [ ] `GA_INTERNAL_EMAILS=georeg.werbacher@gmail.com` *(comma-separated; excluded from admin reports and portal subscriber list)*
 - [ ] `GA_SERVICE_ACCOUNT_JSON_B64=` *(from format script)*
 - [ ] `ADMIN_ANALYTICS_PASSWORD=` *(choose a strong password)*
 - [ ] `ADMIN_ANALYTICS_JWT_SECRET=` *(generate: `openssl rand -hex 32`)*
@@ -211,7 +212,7 @@ Configured in `public/COMP_TIA_SEC+/js/secplus-portal-checkout.js`. Verify in St
 - [ ] Webhook delivers without error (Stripe Dashboard → Webhooks → event log)
 - [ ] Portal access unlocks on site
 - [ ] Magic-link email received (if Resend configured)
-- [ ] `/admin/analytics.html` portal subscriber section shows purchaser *(CCNA list today; Security+ may appear via Stripe metadata as volume grows)*
+- [ ] `/admin/analytics.html` portal subscriber section shows purchasers for **CCNA, ENCOR, and Security+** (Stripe metadata per product)
 
 ---
 
@@ -244,6 +245,7 @@ Not required to launch Security+ ads.
 |----------|----------|
 | `GA_MEASUREMENT_ID` | Client-side gtag |
 | `GA_PROPERTY_ID` | Data API reports |
+| `GA_INTERNAL_EMAILS` | Exclude owner/test emails from GA reports and portal subscriber table |
 | `GA_SERVICE_ACCOUNT_JSON_B64` | Server GA4 access |
 | `ADMIN_ANALYTICS_PASSWORD` | `/admin/analytics.html` login |
 | `ADMIN_ANALYTICS_JWT_SECRET` | Admin API auth |

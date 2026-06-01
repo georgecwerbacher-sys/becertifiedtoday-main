@@ -7,6 +7,7 @@
   var id = window.__BCC_GA_MEASUREMENT_ID__ || "G-YTT6KBHX7V";
   var adsId = window.__BCC_GOOGLE_ADS_ID__ || "AW-18158574148";
   if (!id || window.__bccGaConfigured) return;
+  if (window.__bccAnalyticsExclude || window["ga-disable-" + id]) return;
   window.__bccGaConfigured = true;
   window.dataLayer = window.dataLayer || [];
   function gtag() {

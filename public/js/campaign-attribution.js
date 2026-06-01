@@ -59,6 +59,9 @@
   }
 
   function gtagEvent(name, params) {
+    if (typeof window.bccShouldTrackAnalytics === "function" && !window.bccShouldTrackAnalytics()) {
+      return;
+    }
     if (typeof window.gtag !== "function") return;
     window.gtag("event", name, params);
   }
@@ -98,7 +101,11 @@
   }
 
   var attribution = mergeAttribution();
-  if (typeof window.gtag === "function" && Object.keys(attribution).length) {
+  if (
+    typeof window.gtag === "function" &&
+    Object.keys(attribution).length &&
+    (typeof window.bccShouldTrackAnalytics !== "function" || window.bccShouldTrackAnalytics())
+  ) {
     var id = window.__BCC_GA_MEASUREMENT_ID__ || "G-YTT6KBHX7V";
     window.gtag("config", id, campaignFields(attribution));
   }

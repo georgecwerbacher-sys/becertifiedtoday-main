@@ -21,6 +21,9 @@
   }
 
   function trackEvent(name) {
+    if (typeof window.bccShouldTrackAnalytics === "function" && !window.bccShouldTrackAnalytics()) {
+      return;
+    }
     if (typeof window.gtag !== "function") return;
     window.gtag("event", name, { product: "secplus", lead_magnet: "secplus-free-simulation" });
   }

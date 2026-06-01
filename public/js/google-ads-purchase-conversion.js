@@ -13,6 +13,12 @@
 
   function trackPurchaseConversion(transactionId, opts) {
     opts = opts || {};
+    if (
+      typeof global.bccShouldTrackAnalytics === "function" &&
+      !global.bccShouldTrackAnalytics()
+    ) {
+      return false;
+    }
     if (!transactionId || typeof global.gtag !== "function" || !ADS_ID || !LABEL) {
       return false;
     }

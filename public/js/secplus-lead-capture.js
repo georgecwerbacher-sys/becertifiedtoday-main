@@ -35,6 +35,9 @@
   }
 
   function trackLeadEvent(name, extra) {
+    if (typeof window.bccShouldTrackAnalytics === "function" && !window.bccShouldTrackAnalytics()) {
+      return;
+    }
     if (typeof window.gtag !== "function") return;
     var attrs = campaignParams();
     window.gtag(
@@ -127,7 +130,11 @@
       }
 
       setBusy(form, true);
-      trackLeadEvent("generate_lead", { method: options.method || "secplus_free_sim_form" });
+      if (window.bccIsInternalAnalyticsEmail && window.bccIsInternalAnalyticsEmail(email)) {
+        if (typeof window.bccSetAnalyticsExclude === "function") window.bccSetAnalyticsExclude(true);
+      } else {
+        trackLeadEvent("generate_lead", { method: options.method || "secplus_free_sim_form" });
+      }
 
       var attrs = campaignParams();
       fetch("/api/lead-capture", {

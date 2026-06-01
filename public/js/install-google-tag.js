@@ -16,10 +16,17 @@
 
   window.__BCC_GA_MEASUREMENT_ID__ = window.__BCC_GA_MEASUREMENT_ID__ || MEASUREMENT_ID;
 
-  var cfg = document.createElement("script");
-  cfg.src = "/js/ga-site-config.js";
-  cfg.setAttribute("data-bcc-gtag", "1");
-  head.appendChild(cfg);
+  function appendSync(src) {
+    var s = document.createElement("script");
+    s.src = src;
+    s.async = false;
+    s.setAttribute("data-bcc-gtag", "1");
+    head.appendChild(s);
+  }
+
+  appendSync("/js/ga-site-config.js");
+  appendSync("/js/analytics-exclude.js");
+  if (window.__bccAnalyticsExclude) return;
 
   var loader = document.createElement("script");
   loader.async = true;

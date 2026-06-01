@@ -7,6 +7,7 @@
 
   var path = (location.pathname || "").toLowerCase();
   if (path.indexOf("/admin/") === 0) return;
+  if (window.__bccAnalyticsExclude) return;
   try {
     if (new URLSearchParams(location.search).get("examSim") === "1") return;
   } catch (_) {}

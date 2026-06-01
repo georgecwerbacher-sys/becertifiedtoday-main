@@ -2,6 +2,7 @@
  * Google Analytics 4 — service account client and report helpers.
  */
 import { BetaAnalyticsDataClient } from "@google-analytics/data";
+import { gaCustomerTrafficDimensionFilter } from "./analytics-internal.js";
 
 function normalizePrivateKey(credentials) {
   if (credentials?.private_key && typeof credentials.private_key === "string") {
@@ -184,6 +185,7 @@ export async function fetchAnalyticsSummary(client, propertyId, range) {
   const [response] = await client.runReport({
     property: propertyName(propertyId),
     dateRanges: [range],
+    dimensionFilter: gaCustomerTrafficDimensionFilter(),
     metrics: [
       { name: "activeUsers" },
       { name: "newUsers" },
@@ -216,6 +218,7 @@ export async function fetchTopPages(client, propertyId, range, limit = 15) {
   const [response] = await client.runReport({
     property: propertyName(propertyId),
     dateRanges: [range],
+    dimensionFilter: gaCustomerTrafficDimensionFilter(),
     dimensions: [{ name: "pagePath" }],
     metrics: [{ name: "screenPageViews" }, { name: "activeUsers" }],
     orderBys: [{ metric: { metricName: "screenPageViews" }, desc: true }],
@@ -233,6 +236,7 @@ export async function fetchDailyTrend(client, propertyId, range) {
   const [response] = await client.runReport({
     property: propertyName(propertyId),
     dateRanges: [range],
+    dimensionFilter: gaCustomerTrafficDimensionFilter(),
     dimensions: [{ name: "date" }],
     metrics: [{ name: "activeUsers" }, { name: "screenPageViews" }, { name: "sessions" }],
     orderBys: [{ dimension: { dimensionName: "date" } }],
@@ -249,6 +253,7 @@ export async function fetchDailyTrend(client, propertyId, range) {
 export async function fetchRealtimeActiveUsers(client, propertyId) {
   const [response] = await client.runRealtimeReport({
     property: propertyName(propertyId),
+    dimensionFilter: gaCustomerTrafficDimensionFilter(),
     metrics: [{ name: "activeUsers" }],
   });
   const row = response.rows && response.rows[0];

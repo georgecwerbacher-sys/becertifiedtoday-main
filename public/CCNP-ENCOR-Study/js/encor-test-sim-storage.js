@@ -91,6 +91,12 @@
   }
 
   function trackEncorSimPurchase(stripeSessionId, productId) {
+    if (
+      typeof window.bccShouldTrackAnalytics === "function" &&
+      !window.bccShouldTrackAnalytics()
+    ) {
+      return;
+    }
     if (productId !== "encor-test-simulation" || typeof window.gtag !== "function") return;
     var trackKey = "bcc_encor_test_sim_purchase_tracked_" + stripeSessionId;
     try {

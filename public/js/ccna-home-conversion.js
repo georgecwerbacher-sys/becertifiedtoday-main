@@ -323,6 +323,9 @@
   }
 
   function trackVariantImpression(variant, source) {
+    if (typeof window.bccShouldTrackAnalytics === "function" && !window.bccShouldTrackAnalytics()) {
+      return;
+    }
     if (typeof window.gtag !== "function") return;
     var attrs =
       typeof window.bccGetCampaignAttribution === "function" ? window.bccGetCampaignAttribution() : {};
@@ -343,6 +346,9 @@
   }
 
   function trackFreeAssessmentClick(label) {
+    if (typeof window.bccShouldTrackAnalytics === "function" && !window.bccShouldTrackAnalytics()) {
+      return;
+    }
     if (typeof window.gtag !== "function") return;
     var variant = window.bccCcnaHomeHeadlineVariant || DEFAULT_VARIANT;
     var attrs =

@@ -7,6 +7,7 @@
   <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Analytics admin | Be Certified Today</title>
+  <script src="/js/analytics-exclude.js"></script>
   <style>
     :root {
       color-scheme: light dark;
@@ -106,11 +107,33 @@
     .status.ok { color: var(--good); }
     .hidden { display: none !important; }
     a { color: #7eb6ff; }
+    .portal-product-block {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+    .portal-product-block:first-of-type {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+    .portal-product-title {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #c5d4f0;
+    }
+    .portal-table-wrap { overflow-x: auto; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <h1>Site analytics</h1>
+    <p class="lead">
+      Reports exclude localhost, <code>/admin/</code> paths, and internal test emails. Signing in here also
+      opts this browser out of GA4 on the public site. To re-enable tracking, run
+      <code>localStorage.removeItem('bcc_analytics_exclude_v1')</code> in the browser console.
+    </p>
 
     <section id="loginPanel" class="panel">
       <form id="loginForm">
@@ -155,23 +178,61 @@
       </div>
 
       <div class="panel" id="portalPanel">
-        <h2 style="margin:0 0 6px;font-size:1.05rem">CCNA portal subscribers</h2>
-        <p style="margin:0 0 12px;font-size:0.85rem;color:var(--muted)">
-          Named users with 30-day portal access from Stripe (checkout email). Not live “who is online” — use GA4 Realtime for anonymous activity.
+        <h2 style="margin:0 0 6px;font-size:1.05rem">Portal subscribers (CCNA · ENCOR · Security+)</h2>
+        <p style="margin:0 0 16px;font-size:0.85rem;color:var(--muted)">
+          Paid 10-day or 30-day library access from Stripe (checkout email). Not live “who is online” — use GA4
+          Realtime for anonymous visitors.
         </p>
-        <div class="cards" id="portalSummaryCards"></div>
-        <div style="overflow-x:auto">
-          <table>
-            <thead>
-              <tr>
-                <th>Status</th>
-                <th>Email</th>
-                <th>Access until (UTC)</th>
-                <th>Checkout session</th>
-              </tr>
-            </thead>
-            <tbody id="portalUsersBody"></tbody>
-          </table>
+        <div class="portal-product-block">
+          <h3 class="portal-product-title">CCNA (200-301)</h3>
+          <div class="cards" id="portalSummaryCcna"></div>
+          <div class="portal-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Email</th>
+                  <th>Access until (UTC)</th>
+                  <th>Checkout session</th>
+                </tr>
+              </thead>
+              <tbody id="portalUsersCcna"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="portal-product-block">
+          <h3 class="portal-product-title">CCNP ENCOR (350-401)</h3>
+          <div class="cards" id="portalSummaryEncor"></div>
+          <div class="portal-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Email</th>
+                  <th>Access until (UTC)</th>
+                  <th>Checkout session</th>
+                </tr>
+              </thead>
+              <tbody id="portalUsersEncor"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="portal-product-block">
+          <h3 class="portal-product-title">CompTIA Security+ (SY0-701)</h3>
+          <div class="cards" id="portalSummarySecplus"></div>
+          <div class="portal-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Email</th>
+                  <th>Access until (UTC)</th>
+                  <th>Checkout session</th>
+                </tr>
+              </thead>
+              <tbody id="portalUsersSecplus"></tbody>
+            </table>
+          </div>
         </div>
         <p id="portalStatus" class="status" aria-live="polite"></p>
       </div>
@@ -211,9 +272,12 @@
       var trendBody = document.getElementById("trendBody");
       var metaLine = document.getElementById("metaLine");
       var rangeEl = document.getElementById("range");
-      var portalSummaryCards = document.getElementById("portalSummaryCards");
-      var portalUsersBody = document.getElementById("portalUsersBody");
       var portalStatus = document.getElementById("portalStatus");
+      var PORTAL_PRODUCTS = [
+        { key: "ccna", summaryId: "portalSummaryCcna", bodyId: "portalUsersCcna" },
+        { key: "encor", summaryId: "portalSummaryEncor", bodyId: "portalUsersEncor" },
+        { key: "secplus", summaryId: "portalSummarySecplus", bodyId: "portalUsersSecplus" },
+      ];
 
       function token() {
         try {
@@ -321,11 +385,11 @@
         }
       }
 
-      function renderPortalUsers(data) {
-        var active = data.active || [];
-        var expired = data.expired || [];
-        var counts = data.counts || {};
-        portalSummaryCards.innerHTML = [
+      function renderPortalProductBlock(block, summaryEl, bodyEl) {
+        var active = (block && block.active) || [];
+        var expired = (block && block.expired) || [];
+        var counts = (block && block.counts) || {};
+        summaryEl.innerHTML = [
           ["Active access", fmt(counts.active)],
           ["Expired", fmt(counts.expired)],
           ["Total on file", fmt(counts.total)],
@@ -342,16 +406,23 @@
           .join("");
 
         var rows = active.concat(expired);
-        portalUsersBody.innerHTML = rows
+        if (!rows.length) {
+          bodyEl.innerHTML =
+            '<tr><td colspan="4" style="color:var(--muted)">No portal subscribers on file yet.</td></tr>';
+          return;
+        }
+        bodyEl.innerHTML = rows
           .map(function (r) {
             var badge = r.active
               ? '<span class="badge active">Active</span>'
               : '<span class="badge expired">Expired</span>';
+            var plan = r.productId ? ' <span style="color:var(--muted)">(' + r.productId + ")</span>" : "";
             return (
               "<tr><td>" +
               badge +
               '</td><td class="email">' +
               r.email +
+              plan +
               "</td><td>" +
               fmtIsoUtc(r.accessExpiresAt) +
               '</td><td class="path">' +
@@ -360,6 +431,15 @@
             );
           })
           .join("");
+      }
+
+      function renderPortalUsers(data) {
+        PORTAL_PRODUCTS.forEach(function (p) {
+          var summaryEl = document.getElementById(p.summaryId);
+          var bodyEl = document.getElementById(p.bodyId);
+          if (!summaryEl || !bodyEl) return;
+          renderPortalProductBlock(data[p.key], summaryEl, bodyEl);
+        });
 
         var note = data.note || "";
         if (data.scanTruncated) {
@@ -367,6 +447,15 @@
         }
         portalStatus.textContent = note;
         portalStatus.className = "status ok";
+      }
+
+      function clearPortalPanels() {
+        PORTAL_PRODUCTS.forEach(function (p) {
+          var summaryEl = document.getElementById(p.summaryId);
+          var bodyEl = document.getElementById(p.bodyId);
+          if (summaryEl) summaryEl.innerHTML = "";
+          if (bodyEl) bodyEl.innerHTML = "";
+        });
       }
 
       function postJson(url, payload) {
@@ -415,8 +504,7 @@
             dashStatus.className = "status ok";
 
             if (!portal.ok) {
-              portalUsersBody.innerHTML = "";
-              portalSummaryCards.innerHTML = "";
+              clearPortalPanels();
               var pmsg = (portal.body && portal.body.error) || "Portal list failed";
               if (portal.body && portal.body.hint) pmsg += " — " + portal.body.hint;
               portalStatus.textContent = pmsg;
@@ -449,6 +537,13 @@
           .then(function (res) {
             if (!res.ok) throw new Error((res.body && res.body.error) || "Login failed");
             setToken(res.body.token);
+            if (typeof window.bccSetAnalyticsExclude === "function") {
+              window.bccSetAnalyticsExclude(true);
+            } else {
+              try {
+                localStorage.setItem("bcc_analytics_exclude_v1", "1");
+              } catch (_) {}
+            }
             document.getElementById("password").value = "";
             showDash(true);
             loginStatus.textContent = "";
