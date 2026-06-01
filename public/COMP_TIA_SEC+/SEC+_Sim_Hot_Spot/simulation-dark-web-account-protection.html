@@ -24,8 +24,29 @@
     }
     body {
       padding: 20px 16px 90px;
+      position: relative;
+    }
+    .page-logo-watermark {
+      position: fixed;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .page-logo-watermark img {
+      width: min(85vw, 720px);
+      max-height: 85vh;
+      height: auto;
+      object-fit: contain;
+      opacity: 0.25;
+      mix-blend-mode: multiply;
     }
     .wrap {
+      position: relative;
+      z-index: 3;
       width: min(1080px, 100%);
       margin: 0 auto;
       background: transparent;
@@ -174,26 +195,35 @@
       background: #fafafa;
     }
     .panel-solution {
-      background: #ffffff;
-      border-color: #e5e7eb;
-      color: #1e293b;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      background: rgba(0, 100, 230, 0.92);
+      border: 1px solid #005ecb;
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(0, 71, 153, 0.35);
     }
     .panel-solution legend {
-      color: #0f172a;
+      color: #ffffff;
     }
     .panel-solution label.choice {
       background: #ffffff;
       border-color: #e5e7eb;
-      color: #1e293b;
+      color: #0f172a;
     }
     .panel-solution label.choice:hover {
-      border-color: #7c3aed;
-      background: var(--page-blue-hover);
+      border-color: #005ecb;
+      background: #f8fafc;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+    }
+    .panel-solution label.choice:has(input:checked) {
+      border-color: #005ecb;
+      background: #ffffff;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+    }
+    .panel-solution label.choice input {
+      accent-color: #005ecb;
     }
     .panel-solution .result {
-      background: #ffffff;
-      border-color: #e5e7eb;
+      background: rgba(255, 255, 255, 0.95);
+      border-color: rgba(255, 255, 255, 0.6);
       color: #0f172a;
     }
     .panel-solution .result.pass {
@@ -207,27 +237,44 @@
       color: #991b1b;
     }
     .panel-solution .feedback {
-      color: #64748b;
+      color: rgba(255, 255, 255, 0.92);
     }
     .panel-solution .feedback strong {
-      color: #334155;
-    }
-    .panel-solution .solution-recap {
-      background: #f5f3ff;
-      border-color: #c4b5fd;
-      color: #475569;
-    }
-    .panel-solution .solution-recap h3 {
-      color: #0f172a;
-    }
-    .panel-solution button.secondary {
-      background: rgba(0, 100, 230, 0.92);
-      border-color: #005ecb;
       color: #ffffff;
     }
-    .panel-solution button.secondary:hover {
-      background: rgba(0, 82, 200, 0.98);
-      border-color: #004799;
+    .panel-solution .solution-recap {
+      background: rgba(0, 82, 200, 0.55);
+      border-color: rgba(255, 255, 255, 0.45);
+      color: #ffffff;
+    }
+    .panel-solution .solution-recap h3 {
+      color: #ffffff;
+    }
+    .panel-solution .solution-recap li {
+      color: rgba(255, 255, 255, 0.95);
+    }
+    .panel-solution .actions button {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: #ffffff;
+      color: #ffffff;
+    }
+    .panel-solution .actions button:hover,
+    .panel-solution .actions button:focus-visible {
+      background: rgba(255, 255, 255, 0.28);
+      border-color: #ffffff;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+    }
+    .panel-solution .actions button#checkBtn {
+      background: #ffffff;
+      border-color: #ffffff;
+      color: #005ecb;
+    }
+    .panel-solution .actions button#checkBtn:hover,
+    .panel-solution .actions button#checkBtn:focus-visible {
+      background: #f0f9ff;
+      border-color: #ffffff;
+      color: #004799;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.45);
     }
     .actions {
       margin-top: 12px;
@@ -476,15 +523,6 @@
       background: #f1f5f9;
       color: #0f172a;
     }
-    .doc-note {
-      margin: 0;
-      padding: 10px 12px;
-      border-left: 3px solid #7c3aed;
-      background: #faf5ff;
-      color: #4c1d95;
-      border-radius: 0 8px 8px 0;
-      font-size: 0.88rem;
-    }
     .doc-tag {
       display: inline-block;
       margin-right: 6px;
@@ -502,6 +540,15 @@
   </style>
 </head>
 <body class="secplus-sim-page">
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img
+      src="../../../images/logo/becertifiedtoday_logo_trans.png"
+      alt=""
+      width="720"
+      height="720"
+      decoding="async"
+    />
+  </div>
   <main class="wrap">
     <h1>Simulation: Dark Web Exposure and Account Protection</h1>
     <p class="lead">
@@ -655,7 +702,6 @@ Investigate age, reuse, length, and complexity gaps instead.</div>
           <div class="doc-pre">HR/Policies/password-guidelines.docx
 Finance/compensation_report_Q3.pdf
 IT/Forensics/kiosk_disk_image_hold-list.txt  ← do not reimage until containment chosen</div>
-          <p class="doc-note">Open the compensation report and user data exports next. They show how accounts were abused and which containment option preserves kiosk evidence.</p>
         `,
       },
       compensation: {
@@ -678,7 +724,6 @@ SMS authentication .... Interceptable; SMS logs may remain on the device.
 OTP token ............. Codes still entered on the host; some apps log OTP material.
 FIDO security key ..... Hardware-bound, phishing-resistant; proves possession
                         without sending secrets through the compromised workstation.</div>
-          <p class="doc-note">Choose the option that is most secure for account protection and keeps host evidence intact for investigators.</p>
         `,
       },
       userdata: {
@@ -736,7 +781,6 @@ FIDO security key ..... Hardware-bound, phishing-resistant; proves possession
             <li><strong>Complexity:</strong> No symbols required; many passwords are simple words or patterns.</li>
             <li><strong>Expiration:</strong> Policy rotation is enabled — expiration itself is not the primary weakness in this breach.</li>
           </ul>
-          <p class="doc-note">Combine this table with the compensation addendum to pick weak practices (Step 2) and the best containment control (Step 3).</p>
         `,
       },
     };

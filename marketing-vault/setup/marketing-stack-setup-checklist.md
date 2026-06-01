@@ -157,6 +157,7 @@ See [[../02-campaigns/security-plus/security-plus-google-ads|Security+ campaign 
 
 ### 3e — Post-launch verification
 
+- [ ] Full bidding & budget audit: [[../05-playbooks/google-ads-bidding-verification|Google Ads bidding verification playbook]]
 - [ ] Click your own ad (or use Ads preview) → land on Security+ home with UTMs
 - [ ] GA4 Realtime shows session with campaign `secplus_portal`
 - [ ] Test checkout (test mode) → `begin_checkout` in GA4 DebugView or Events

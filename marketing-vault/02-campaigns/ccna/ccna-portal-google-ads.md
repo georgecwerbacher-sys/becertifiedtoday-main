@@ -3,8 +3,10 @@ type: campaign
 channel: google-ads
 product: ccna-200-301
 status: active
+launch_priority: 2
 priority: 1
 target_cpa: null
+daily_budget_usd: 10
 utm_campaign: ccna_portal
 utm_source: google
 utm_medium: cpc
@@ -240,7 +242,8 @@ Before major ad spend increases, run the optimization workflow in [[../../06-web
 ## Open questions
 
 - **Launch strategy:** Lead with `ccna_free_assessment` for 1–2 weeks, then scale `ccna_sim_purchase` on simulation keywords — **recommended default**
-- **Target CPA:** TBD — compare free assessment → upsell vs direct `$4.99` sim vs `$19.99` portal
+- **Target CPA:** See [[../../01-strategy/google-ads-bidding-strategy#Phase 2 — After 30+ conversions / product (efficiency)|bidding strategy]] — lead ~$4–7, sim ~$8–12, portal ~$15–22
+- **Daily budget:** **$10/day** — one campaign; defer Visibility/Convert split until **$20+/day** per [[../../01-strategy/google-ads-bidding-strategy|bidding strategy]]
 - **Brand vs non-brand:** Start non-brand only; add brand campaign when search volume warrants
 - **Email lead magnet:** Security+ uses `#secplus-lead-capture` + `generate_lead`; CCNA is no-email today — evaluate email scorecard capture later for parity
 - **UTM campaign name:** Standardize on `ccna_portal` everywhere (headline suffixes file still uses `ccna-practice-test`)

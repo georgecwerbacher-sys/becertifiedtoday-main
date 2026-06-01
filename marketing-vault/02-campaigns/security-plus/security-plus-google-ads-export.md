@@ -27,8 +27,8 @@ Copy blocks below into Google Ads (Search campaign) or Google Ads Editor. Parent
 | Networks             | Search only (uncheck Search partners until baseline CPA)                                                                  |
 | Locations            | United States (add geo ad groups below for defense metros)                                                                |
 | Language             | English                                                                                                                   |
-| Bidding              | Maximize conversions (after `generate_lead` + `begin_checkout` imported) — or **Maximize clicks** with CPC cap for week 1 |
-| Daily budget (start) | $15–25/day total campaign; 60% lead group / 40% sim purchase                                                              |
+| Bidding              | **Start:** Maximize clicks, **max CPC $3.25**. See [[../../01-strategy/google-ads-bidding-strategy\|bidding strategy]] — split + Target IS when budget **≥ $20/day** |
+| Daily budget (start) | **$10.00/day** — one campaign; **`secplus_lead_free_sim`** + **`secplus_sim_purchase`** only first; 3–5 Exact Tier 1 keywords |
 | UTM campaign         | `secplus_portal` (PBQ group uses `secplus_openssl_pbq`)                                                                   |
 
 ### Campaign-level negative keywords (Phrase match)
@@ -408,14 +408,15 @@ Not a bootcamp or PDF dump. Realistic practice tests and PBQ items in your brows
 
 Minimum **6** sitelinks per campaign. Description lines ≤35 characters each.
 
-| # | Link text | Desc 1 | Desc 2 | Full URL |
-|---|-----------|--------|--------|----------|
-| 1 | Free timed simulation | 35-min SY0-701 sample exam | Email unlock, one free try | `https://becertifiedtoday.com/comptia-sec+-home.html#secplus-lead-capture?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-free-sim` |
-| 2 | 90-minute timed sim | Full SY0-701 practice exam | $9.99 one attempt, no sub | `https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-sim` |
-| 3 | Sample questions | Two MCQ per run, free | Instant feedback, no checkout | `https://becertifiedtoday.com/secplus-sample?track=questions&utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-sample` |
-| 4 | OpenSSL PBQ simulation | Secure web & OpenSSL PBQ | Free browser exam prep | `https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-openssl` |
-| 5 | 30-day all-access | Full SY0-701 question bank | $19.99 one-time, no sub | `https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-portal-30d` |
-| 6 | Pricing & access | 10-day or 30-day access | From $9.99, no subscription | `https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pricing` |
+| #   | Link text              | Desc 1                     | Desc 2                        | Full URL                                                                                                                                                                                                 |
+| --- | ---------------------- | -------------------------- | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Free timed simulation  | 35-min SY0-701 sample exam | Email unlock, one free try    | `https://becertifiedtoday.com/comptia-sec+-home.html#secplus-lead-capture?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-free-sim`                                    |
+| 2   | 90-minute timed sim    | Full SY0-701 practice exam | $9.99 one attempt, no sub     | `https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-sim`                                                     |
+| 3   | Sample questions       | Two MCQ per run, free      | Instant feedback, no checkout | `https://becertifiedtoday.com/secplus-sample?track=questions&utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-sample`                                                   |
+| 4   | OpenSSL PBQ simulation | Secure web & OpenSSL PBQ   | Free browser exam prep        | `https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-openssl` |
+| 5   | 30-day all-access      | Full SY0-701 question bank | $19.99 one-time, no sub       | `https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-portal-30d`                                              |
+| 6   | Pricing & access       | 10-day or 30-day access    | From $9.99, no subscription   | `https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pricing`                                                 |
+|     |                        |                            |                               |                                                                                                                                                                                                          |
 
 ---
 
@@ -522,6 +523,8 @@ Use: **Education & training → Test preparation** or **Educational software / O
 
 ## Launch checklist
 
+- [ ] Bidding verified in UI: [[../../05-playbooks/google-ads-bidding-verification|google-ads-bidding-verification]]
+- [ ] No coupon in RSAs at launch — [[../../01-strategy/promotions-and-coupons|promotions & coupons]]
 - [ ] Campaign + 2 ad groups live: `secplus_lead_free_sim`, `secplus_sim_purchase`
 - [ ] All RSA descriptions ≤90 characters; 6 sitelinks with URLs + 2 short descriptions each
 - [ ] Final URLs match table above (hash + UTMs)

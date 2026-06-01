@@ -27,8 +27,8 @@ Copy blocks below into Google Ads (Search campaign) or Google Ads Editor. Parent
 | Networks             | Search only (uncheck Search partners until baseline CPA)                                                                               |
 | Locations            | United States (add geo ad groups below for defense metros)                                                                             |
 | Language             | English                                                                                                                                |
-| Bidding              | Maximize conversions (after `ccna_free_assessment_click` + `begin_checkout` imported) — or **Maximize clicks** with CPC cap for week 1 |
-| Daily budget (start) | $15–25/day total campaign; 60% free assessment group / 40% sim purchase                                                                |
+| Bidding              | **Start:** Maximize clicks, **max CPC $2.75**. See [[../../01-strategy/google-ads-bidding-strategy\|bidding strategy]] — split + Target IS when budget **≥ $20/day** |
+| Daily budget (start) | **$10.00/day** — one campaign; enable **`ccna_lead_free_sim`** + **`ccna_sim_purchase`** only first; 3–5 Exact Tier 1 keywords |
 | UTM campaign         | `ccna_portal`                                                                                                                          |
 
 ### Campaign-level negative keywords (Phrase match)
@@ -437,14 +437,14 @@ Full list in suffixes file. **Use `utm_campaign=ccna_portal`** (not legacy `ccna
 
 Minimum **6** sitelinks per campaign. Description lines ≤35 characters each.
 
-| # | Link text | Desc 1 | Desc 2 | Full URL |
-|---|-----------|--------|--------|----------|
-| 1 | Free timed simulation | 45-min CCNA sample exam | Email unlock, one free try | `https://becertifiedtoday.com/ccna-home.html#ccna-lead-capture?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-free-sim` |
-| 2 | 120-minute timed sim | Full 200-301 practice exam | $9.99 one attempt, no sub | `https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-sim` |
-| 3 | Sample questions | Two MCQ per run, free | Instant feedback, no checkout | `https://becertifiedtoday.com/sample?track=ccna-questions&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-sample` |
-| 4 | Sample drag-and-drop | CCNA D&D in your browser | Free practice, no email | `https://becertifiedtoday.com/sample?track=ccna-dnd&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-dnd` |
-| 5 | VLAN CLI lab sample | Interactive VLAN lab sample | Browser-only, no GNS3 | `https://becertifiedtoday.com/sample?track=ccna-vlan&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-lab` |
-| 6 | Pricing & access | 10-day or 30-day access | From $9.99, no subscription | `https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-pricing` |
+| #   | Link text             | Desc 1                      | Desc 2                        | Full URL                                                                                                                                                |
+| --- | --------------------- | --------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Free timed simulation | 45-min CCNA sample exam     | Email unlock, one free try    | `https://becertifiedtoday.com/ccna-home.html#ccna-lead-capture?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-free-sim` |
+| 2   | 120-minute timed sim  | Full 200-301 practice exam  | $9.99 one attempt, no sub     | `https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-sim`               |
+| 3   | Sample questions      | Two MCQ per run, free       | Instant feedback, no checkout | `https://becertifiedtoday.com/sample?track=ccna-questions&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-sample`        |
+| 4   | Sample drag-and-drop  | CCNA D&D in your browser    | Free practice, no email       | `https://becertifiedtoday.com/sample?track=ccna-dnd&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-dnd`                 |
+| 5   | VLAN CLI lab sample   | Interactive VLAN lab sample | Browser-only, no GNS3         | `https://becertifiedtoday.com/sample?track=ccna-vlan&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-lab`                |
+| 6   | Pricing & access      | 10-day or 30-day access     | From $9.99, no subscription   | `https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-pricing`           |
 
 ---
 
@@ -543,7 +543,7 @@ Use: **Education & training → Test preparation** or **Educational software / O
 
 ## Launch checklist
 
-- [ ] Campaign + 2 ad groups live: `ccna_lead_free_sim`, `ccna_sim_purchase`
+- [ ] **Enabled:** `ccna_lead_free_sim`, `ccna_sim_purchase` · **Paused:** `ccna_portal_access`, `ccna_labs_pbq`, `ccna_federal_dc` (and geo copies)
 - [ ] All RSA descriptions ≤90 characters; 6 sitelinks with URLs + 2 short descriptions each
 - [ ] Final URLs match table above (hash + UTMs)
 - [ ] Campaign negatives pasted

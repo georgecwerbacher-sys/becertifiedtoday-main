@@ -10,6 +10,12 @@ One subfolder per product. Each folder holds the strategy note, paste-ready expo
 
 Shared playbook: [[../01-strategy/cisco-certifications-exam-prep-foundation|Cisco foundation]] (CCNA + ENCOR) · [[../01-strategy/security-plus-federal-defense-foundation|Security+ federal foundation]]
 
+**Paid launch order (2026-06):** Start **Security+ only** at **$10/day** — [[../01-strategy/google-ads-bidding-strategy#Launch sequence — Security+ first|bidding strategy]]. Keep CCNA/ENCOR exports ready; pause those campaigns in Google Ads until Sec+ baseline data exists.
+
+**After launch in Ads UI:** [[../05-playbooks/google-ads-bidding-verification|Verify bidding step by step]].
+
+**YouTube video notes:** [[../09-youtube/secplus/videos/README|Sec+]] · [[../09-youtube/ccna/videos/README|CCNA]] · [[../09-youtube/encor/videos/README|ENCOR]]
+
 ## Copy limits (all campaigns)
 
 | Asset | Limit | Where |

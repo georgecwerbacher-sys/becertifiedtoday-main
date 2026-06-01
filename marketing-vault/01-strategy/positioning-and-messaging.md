@@ -65,6 +65,8 @@ Many DoD, federal civilian, and defense-contractor cyber roles use **CompTIA Sec
 4. **Pay for access, not a subscription** — 10-day / 30-day passes; one-time sim purchase  
 5. **Confidence economics** — cheaper than a retake; practice until ready  
 
+**Promotions:** Default is **list price + free sample**, not coupon-led offers during paid launch. See [[promotions-and-coupons|promotions & coupons]].
+
 ## Proof points to surface on landing pages
 
 - Free sample before purchase
@@ -78,6 +80,7 @@ Many DoD, federal civilian, and defense-contractor cyber roles use **CompTIA Sec
 | Channel | Role |
 |---------|------|
 | **Google Ads (Search)** | Capture high-intent “practice test”, “exam sim”, “SY0-701 prep” queries |
+| **YouTube** | Trust + product demos (timed sim, mobile, PBQ walkthroughs) — **exam prep, not a course channel** → [[../09-youtube/README|YouTube plan]] |
 | **AI search / AI Overviews / AI Mode** | Earn citations and clicks when users ask AI for exam prep options — requires clear, factual, structured pages (see [[google-ai-search-strategy]]) |
 | **GA4 + Stripe** | Measure which messages convert |
 | **Obsidian + Cursor** | Strategy, audits, content iteration |
@@ -93,4 +96,5 @@ Many DoD, federal civilian, and defense-contractor cyber roles use **CompTIA Sec
 - [[google-ai-search-strategy|Google AI search strategy]]
 - [[ai-amplified-marketer|AI Amplified Marketer notes]]
 - [[../02-campaigns/security-plus/security-plus-google-ads|Security+ campaign]]
+- [[../09-youtube/secplus/launch-plan|YouTube — Security+ launch plan]]
 - [[../06-website-optimization/google-ads-quality-score-guide|Landing page quality]]

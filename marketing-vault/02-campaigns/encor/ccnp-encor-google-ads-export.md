@@ -20,16 +20,16 @@ Copy blocks below into Google Ads (Search campaign) or Google Ads Editor. Parent
 
 ## Campaign shell (create once)
 
-| Setting              | Value                                                                                                                     |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Campaign name        | `CCNP ENCOR 350-401 · Exam prep · becertifiedtoday`                                                                       |
-| Campaign type        | Search                                                                                                                    |
-| Networks             | Search only (uncheck Search partners until baseline CPA)                                                                  |
-| Locations            | United States (add geo ad groups below for defense metros)                                                                |
-| Language             | English                                                                                                                   |
-| Bidding              | Maximize conversions (after `begin_checkout` imported) — or **Maximize clicks** with CPC cap for week 1                   |
-| Daily budget (start) | $10–20/day total campaign; 60% free samples group / 40% sim purchase (ENCOR volume is smaller than CCNA)                  |
-| UTM campaign         | `encor_portal`                                                                                                            |
+| Setting              | Value                                                                                                    |
+| -------------------- | -------------------------------------------------------------------------------------------------------- |
+| Campaign name        | `CCNP ENCOR 350-401 · Exam prep · becertifiedtoday`                                                      |
+| Campaign type        | Search                                                                                                   |
+| Networks             | Search only (uncheck Search partners until baseline CPA)                                                 |
+| Locations            | United States (add geo ad groups below for defense metros)                                               |
+| Language             | English                                                                                                  |
+| Bidding              | **Start:** Maximize clicks, **max CPC $2.25**. See [[../../01-strategy/google-ads-bidding-strategy\|bidding strategy]] — split + Target IS when budget **≥ $20/day** |
+| Daily budget (start) | **$10.00/day** — one campaign; **`encor_lead_free_sim`** + **`encor_sim_purchase`** only first; focus `ccnp encor practice test`, `encor exam simulation` |
+| UTM campaign         | `encor_portal`                                                                                           |
 
 ### Campaign-level negative keywords (Phrase match)
 
@@ -426,14 +426,14 @@ Not a bootcamp or PDF dump. Realistic ENCOR practice tests and CLI labs in brows
 
 Minimum **6** sitelinks per campaign. Description lines ≤35 characters each.
 
-| # | Link text | Desc 1 | Desc 2 | Full URL |
-|---|-----------|--------|--------|----------|
-| 1 | Free timed simulation | 45-min ENCOR sample exam | Email unlock, one free try | `https://becertifiedtoday.com/ccnp-home.html#encor-lead-capture?utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-free-sim` |
-| 2 | 120-minute timed sim | Full 350-401 practice exam | $9.99 one attempt, no sub | `https://becertifiedtoday.com/ccnp-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-sim` |
-| 3 | Sample questions | Two MCQ per run, free | Instant feedback, no checkout | `https://becertifiedtoday.com/sample?track=encor-questions&utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-sample-q` |
-| 4 | Sample drag-and-drop | ENCOR D&D in your browser | Free practice, no email | `https://becertifiedtoday.com/sample?track=encor-dnd&utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-sample-dnd` |
-| 5 | ACL & CoPP lab sample | Interactive CLI lab sample | Browser-only, no GNS3 | `https://becertifiedtoday.com/sample?track=labs&utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-lab` |
-| 6 | Pricing & access | 10-day or 30-day access | From $9.99, no subscription | `https://becertifiedtoday.com/ccnp-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-pricing` |
+| #   | Link text             | Desc 1                     | Desc 2                        | Full URL                                                                                                                                                  |
+| --- | --------------------- | -------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Free timed simulation | 45-min ENCOR sample exam   | Email unlock, one free try    | `https://becertifiedtoday.com/ccnp-home.html#encor-lead-capture?utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-free-sim` |
+| 2   | 120-minute timed sim  | Full 350-401 practice exam | $9.99 one attempt, no sub     | `https://becertifiedtoday.com/ccnp-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-sim`                |
+| 3   | Sample questions      | Two MCQ per run, free      | Instant feedback, no checkout | `https://becertifiedtoday.com/sample?track=encor-questions&utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-sample-q`      |
+| 4   | Sample drag-and-drop  | ENCOR D&D in your browser  | Free practice, no email       | `https://becertifiedtoday.com/sample?track=encor-dnd&utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-sample-dnd`          |
+| 5   | ACL & CoPP lab sample | Interactive CLI lab sample | Browser-only, no GNS3         | `https://becertifiedtoday.com/sample?track=labs&utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-lab`                      |
+| 6   | Pricing & access      | 10-day or 30-day access    | From $9.99, no subscription   | `https://becertifiedtoday.com/ccnp-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-pricing`            |
 
 ---
 
@@ -466,15 +466,15 @@ CLI Lab Simulations
 
 Paste each row into **Add products or services**. Names ≤120 chars; descriptions target **≤300 chars** (adjust if your UI allows more). All are **exam prep**, not courses.
 
-| # | Product / service name | Landing URL |
-|---|------------------------|-------------|
-| 1 | Free CCNP ENCOR 350-401 Timed Simulation Sample | `https://becertifiedtoday.com/ccnp-home.html#encor-lead-capture` |
-| 2 | CCNP ENCOR 350-401 120-Minute Timed Exam Simulation | `https://becertifiedtoday.com/ccnp-home.html#purchase` |
-| 3 | CCNP ENCOR 350-401 10-Day All-Access Practice Portal | `https://becertifiedtoday.com/ccnp-home.html#purchase` |
-| 4 | CCNP ENCOR 350-401 30-Day All-Access Practice Portal | `https://becertifiedtoday.com/ccnp-home.html#purchase` |
-| 5 | Free CCNP ENCOR Sample Practice Questions | `https://becertifiedtoday.com/sample?track=encor-questions` |
-| 6 | Free CCNP ENCOR Sample Drag-and-Drop Practice | `https://becertifiedtoday.com/sample?track=encor-dnd` |
-| 7 | Free CCNP ENCOR ACL & CoPP CLI Lab Sample | `https://becertifiedtoday.com/sample?track=labs` |
+| #   | Product / service name                               | Landing URL                                                      |
+| --- | ---------------------------------------------------- | ---------------------------------------------------------------- |
+| 1   | Free CCNP ENCOR 350-401 Timed Simulation Sample      | `https://becertifiedtoday.com/ccnp-home.html#encor-lead-capture` |
+| 2   | CCNP ENCOR 350-401 120-Minute Timed Exam Simulation  | `https://becertifiedtoday.com/ccnp-home.html#purchase`           |
+| 3   | CCNP ENCOR 350-401 10-Day All-Access Practice Portal | `https://becertifiedtoday.com/ccnp-home.html#purchase`           |
+| 4   | CCNP ENCOR 350-401 30-Day All-Access Practice Portal | `https://becertifiedtoday.com/ccnp-home.html#purchase`           |
+| 5   | Free CCNP ENCOR Sample Practice Questions            | `https://becertifiedtoday.com/sample?track=encor-questions`      |
+| 6   | Free CCNP ENCOR Sample Drag-and-Drop Practice        | `https://becertifiedtoday.com/sample?track=encor-dnd`            |
+| 7   | Free CCNP ENCOR ACL & CoPP CLI Lab Sample            | `https://becertifiedtoday.com/sample?track=labs`                 |
 
 ### Descriptions (copy under each name)
 
@@ -548,7 +548,7 @@ Use: **Education & training → Test preparation** or **Educational software / O
 
 ## Launch checklist
 
-- [ ] Campaign + 2 ad groups live: `encor_lead_free_sim`, `encor_sim_purchase`
+- [ ] **Enabled:** `encor_lead_free_sim`, `encor_sim_purchase` · **Paused:** `encor_portal_access`, `encor_labs_pbq`, `encor_federal_dc` (and geo copies)
 - [ ] All RSA descriptions ≤90 characters; 6 sitelinks with URLs + 2 short descriptions each
 - [ ] Final URLs match table above (UTMs + anchors)
 - [ ] Campaign negatives pasted

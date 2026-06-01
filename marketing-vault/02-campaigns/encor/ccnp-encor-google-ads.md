@@ -3,8 +3,10 @@ type: campaign
 channel: google-ads
 product: encor-350-401
 status: active
+launch_priority: 3
 priority: 1
 target_cpa: null
+daily_budget_usd: 10
 utm_campaign: encor_portal
 utm_source: google
 utm_medium: cpc
@@ -236,6 +238,7 @@ Before major ad spend increases, run the optimization workflow in [[../../06-web
 ## Open questions
 
 - **Launch strategy:** Lead with `encor_lead_free_sim` for 1–2 weeks, then scale `encor_sim_purchase` on simulation keywords — **recommended default**
-- **Target CPA:** TBD — compare lead → upsell vs direct `$9.99` sim vs `$19.99` portal
+- **Target CPA:** See [[../../01-strategy/google-ads-bidding-strategy#Phase 2 — After 30+ conversions / product (efficiency)|bidding strategy]] — lead ~$4–7, sim ~$8–12, portal ~$15–22
+- **Daily budget:** **$10/day** — one campaign; split campaigns at **$20+/day** per [[../../01-strategy/google-ads-bidding-strategy|bidding strategy]]
 - **Brand vs non-brand:** Start non-brand only; add brand campaign when search volume warrants
 - **Headline pinning:** CCNA uses `utm_content=hl-*` → `ccna-home-conversion.js`; align ENCOR/CCNA conversion JS with 45-min lead sim copy (site backlog)

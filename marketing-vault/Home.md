@@ -6,7 +6,7 @@ Obsidian vault for data-driven marketing (Cursor + GA4 + Stripe + Google Ads). O
 
 **Google Ads** for high-intent exam prep searches, plus **visibility in Google AI search** (AI Mode / AI Overviews). The product is **test preparation** — realistic practice, verified solutions, browser-only — **not** a training course. Primary buyer: someone who wants exam-day confidence, to avoid retakes, and to skip PDFs and third-party apps.
 
-→ [[01-strategy/positioning-and-messaging|Positioning & messaging]] · [[01-strategy/google-ai-search-strategy|Google AI search strategy]]
+→ [[01-strategy/positioning-and-messaging|Positioning & messaging]] · [[01-strategy/google-ai-search-strategy|Google AI search strategy]] · [[01-strategy/google-ads-bidding-strategy|Bidding strategy (top placement)]]
 
 ## Quick links
 
@@ -14,6 +14,8 @@ Obsidian vault for data-driven marketing (Cursor + GA4 + Stripe + Google Ads). O
 - [[06-website-optimization/README|Website optimization]] — Quality Score, landing pages, content change log
 - [[setup/marketing-stack-setup-checklist|Setup checklist]] — Google, Stripe, GA4, Ads step-by-step
 - [[01-strategy/positioning-and-messaging|Positioning & messaging]] ← exam prep, not courses
+- [[01-strategy/promotions-and-coupons|Promotions & coupons]] ← hold coupons at launch; email-first later
+- [[09-youtube/README|YouTube — @BeCertifiedToday]] ← [[09-youtube/secplus/videos/README|Sec+ videos]] · [[09-youtube/ccna/videos/README|CCNA videos]] · [[09-youtube/encor/videos/README|ENCOR videos]]
 - [[01-strategy/cisco-certifications-exam-prep-foundation|Cisco CCNA & ENCOR foundation]] ← active ads playbook
 - [[01-strategy/security-plus-federal-defense-foundation|Security+ federal & defense foundation]]
 - [[01-strategy/google-ai-search-strategy|Google AI search strategy]]
@@ -23,6 +25,7 @@ Obsidian vault for data-driven marketing (Cursor + GA4 + Stripe + Google Ads). O
 - [[02-campaigns/ccna/ccna-portal-google-ads|CCNA 200-301 — Google Ads]] ← active
 - [[02-campaigns/encor/ccnp-encor-google-ads|CCNP ENCOR — Google Ads]] ← active
 - [[05-playbooks/weekly-review-process|Weekly review process]]
+- [[05-playbooks/google-ads-bidding-verification|Verify bidding in Google Ads]] ← step-by-step
 - [[05-playbooks/keyword-collection-plan|Keyword collection plan]]
 - [[07-keywords/README|Keyword intelligence (07-keywords/)]]
 - [[08-8140-compliance/README|DoD 8140 compliance]] ← source PDFs reviewed; matrix snapshot pending

@@ -25,6 +25,9 @@ Ask:
 - Traffic up or down? Which pages moved?
 - Checkout starts vs purchases — where is the funnel leaking?
 - Any campaign worth pausing, scaling, or A/B testing?
+- **Bidding:** Run [[google-ads-bidding-verification#Part 9 — Weekly bidding verification (10 min)|bidding verification]] (10 min) — strategy, $10 cap, enabled ad groups, search terms.
+- **Coupons:** Still on hold? See [[../01-strategy/promotions-and-coupons#When to introduce a promotion|promotions gates]] before launching any code in ads or email.
+- **YouTube (if publishing):** Views + GA4 `youtube` traffic — update product [[../09-youtube/secplus/videos/README|video index]]; next upload from [[../09-youtube/secplus/launch-plan|Sec+ plan]].
 
 **Keywords (weekly):** Export Google Ads search terms → import using [[../07-keywords/templates/search-terms-weekly-import|search-terms template]] → tag and update [[../07-keywords/negatives/master-negative-list|negatives]] / landing maps. Full workflow: [[keyword-collection-plan|keyword collection plan]].
 

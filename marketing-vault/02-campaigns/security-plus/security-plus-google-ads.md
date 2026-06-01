@@ -3,8 +3,10 @@ type: campaign
 channel: google-ads
 product: secplus-sy0-701
 status: active
+launch_priority: 1
 priority: 1
 target_cpa: null
+daily_budget_usd: 10
 utm_campaign: secplus_portal
 utm_source: google
 utm_medium: cpc
@@ -217,9 +219,22 @@ Before major ad spend increases, run the optimization workflow in [[../../06-web
 | 2026-05-30 | Landing page positioning + FAQ deploy (`comptia-sec+-home.html`) | Ads/AI search message match — exam prep not course |
 | 2026-05-30 | Campaign note created; primary landing = `comptia-sec+-home.html` | First marketing campaign focus |
 
+## Bidding verification
+
+After any change in Google Ads UI, run [[../../05-playbooks/google-ads-bidding-verification|step-by-step bidding verification]] ($10/day · Maximize clicks · $3.25 max CPC · two ad groups enabled).
+
+## Promotions
+
+**No coupon in Search ads at launch.** Engagement = free 35-min sim + list-price sim/portal. When to test codes: [[../../01-strategy/promotions-and-coupons|promotions & coupons]].
+
+## YouTube (support channel)
+
+Organic video plan: [[../../09-youtube/secplus/README|Security+ YouTube]] · [[../../09-youtube/secplus/videos/README|video library]] · UTMs: `utm_campaign=secplus_yt`. Search Ads remain primary paid channel until Sec+ CPA is baseline.
+
 ## Open questions
 
 - **Launch strategy:** Lead with `secplus_lead_free_sim` for 1–2 weeks, then scale `secplus_sim_purchase` on simulation keywords — **recommended default**
-- **Target CPA:** TBD — compare lead → upsell vs direct `$9.99` sim vs `$19.99` portal
+- **Target CPA:** See [[../../01-strategy/google-ads-bidding-strategy#Phase 2 — After 30+ conversions / product (efficiency)|bidding strategy]] — lead ~$4–7, sim ~$8–12, portal ~$15–22
+- **Daily budget:** **$10/day** — one campaign; split campaigns at **$20+/day** per [[../../01-strategy/google-ads-bidding-strategy|bidding strategy]]
 - **Brand vs non-brand:** Start non-brand only; add brand campaign when search volume warrants
 - **Federal section:** Removed from page body; keep federal ad groups using hero/meta copy or restore section if LP exp. suffers
