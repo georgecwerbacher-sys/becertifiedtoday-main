@@ -139,6 +139,59 @@
         if (helpLinksEl) helpLinksEl.hidden = false;
       }
 
+      function appendEmailNote(note, asWarning) {
+        if (!note) return;
+        statusEl.textContent += " " + note;
+        if (asWarning) {
+          statusEl.classList.remove("status--ok");
+          statusEl.classList.add("status--err");
+        }
+      }
+
+      function sendCheckoutMagicEmail(sessionId) {
+        return fetch("/api/verify-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            session_id: sessionId,
+            send_magic_link: true,
+            track: "secplus",
+          }),
+        })
+          .then(function (res) {
+            return res.json().catch(function () {
+              return {};
+            });
+          })
+          .then(function (data) {
+            if (data.emailSent && data.message) {
+              appendEmailNote(data.message, false);
+              return;
+            }
+            if (data.message) {
+              appendEmailNote(data.message, true);
+              return;
+            }
+            if (!data.ok) {
+              appendEmailNote(
+                "We could not send a portal email right now. Use Email me a portal link below if you need access on another device.",
+                true
+              );
+            }
+          })
+          .catch(function () {
+            appendEmailNote(
+              "We could not send a portal email right now. Use Email me a portal link below if you need access on another device.",
+              true
+            );
+          });
+      }
+
+      function finishPortalAccess(label, sessionId) {
+        showOk(label);
+        void sendCheckoutMagicEmail(sessionId);
+      }
+
       function purchaseValueForProduct(productId) {
         if (productId === "secplus-test-simulation") return 9.99;
         if (productId === "secplus-portal-10d") return 9.99;
@@ -171,7 +224,7 @@
           if (typeof window.bccApplySecplusPortalCheckoutFromUrl === "function") {
             var granted = await window.bccApplySecplusPortalCheckoutFromUrl(null, true);
             if (granted && typeof window.bccSecplusPortalAccessActive === "function" && window.bccSecplusPortalAccessActive()) {
-              showOk("your paid window");
+              finishPortalAccess("your paid window", sessionId);
               trackAdsPurchase(sessionId, "secplus-portal-30d");
               return;
             }
@@ -218,7 +271,7 @@
               data.productId
             )
           ) {
-            showOk(label);
+            finishPortalAccess(label, sessionId);
             trackAdsPurchase(sessionId, data.productId);
             return;
           }

@@ -142,6 +142,42 @@
         if (actionsEl) actionsEl.hidden = false;
       }
 
+      function appendEmailNote(note, asWarning) {
+        if (!note) return;
+        statusEl.textContent += " " + note;
+        if (asWarning) {
+          statusEl.classList.remove("status--ok");
+          statusEl.classList.add("status--err");
+        }
+      }
+
+      function sendCheckoutMagicEmail(sessionId) {
+        return fetch("/api/verify-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            session_id: sessionId,
+            send_magic_link: true,
+            track: "ccna",
+          }),
+        })
+          .then(function (res) {
+            return res.json().catch(function () {
+              return {};
+            });
+          })
+          .then(function (data) {
+            if (data.emailSent && data.message) {
+              appendEmailNote(data.message, false);
+              return;
+            }
+            if (data.message) {
+              appendEmailNote(data.message, true);
+            }
+          })
+          .catch(function () {});
+      }
+
       function purchaseValueForProduct(productId) {
         if (productId === "ccna-test-simulation") return 9.99;
         if (productId === "ccna-portal-10d") return 9.99;
@@ -211,6 +247,7 @@
           }
 
           showOk();
+          void sendCheckoutMagicEmail(sessionId);
           trackAdsPurchase(sessionId, data.productId);
         } catch (e) {
           showError("Could not reach the server to verify payment. Check your connection and reload this page.");

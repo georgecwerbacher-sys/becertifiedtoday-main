@@ -16,7 +16,10 @@ import {
 } from "../server-lib/ccna-portal-stripe.js";
 import { findActivePortalSessionForEmail } from "../server-lib/ccna-portal-customers.js";
 import { findActiveEncorPortalSessionForEmail } from "../server-lib/encor-portal-customers.js";
-import { findActiveSecplusPortalSessionForEmail } from "../server-lib/secplus-portal-customers.js";
+import {
+  findActiveSecplusPortalSessionForEmail,
+  getSecplusPurchaseHintsForEmail,
+} from "../server-lib/secplus-portal-customers.js";
 import { signPortalMagicJwt } from "../server-lib/ccna-portal-magic-jwt.js";
 import {
   sendCcnaPortalMagicEmail,
@@ -142,6 +145,29 @@ export default async function handler(req, res) {
     const found = await cfg.findSession(stripe, email);
     if (!found) {
       console.info(`[${cfg.logTag}] magic link request: no active portal purchase for email`);
+      if (track === "secplus") {
+        const hints = await getSecplusPurchaseHintsForEmail(stripe, email);
+        if (hints.timedExamOnly) {
+          return res.status(200).json({
+            ok: true,
+            sent: false,
+            found: false,
+            reason: "test-simulation-only",
+            message:
+              "We found an active $9.99 timed exam purchase for this email, not 10- or 30-day library access. The training portal link email only applies to all-access passes. Use Restore access with your checkout session ID (cs_…) from your Stripe receipt to unlock the timed exam on this device, or purchase 10-day / 30-day access from Security+ home.",
+          });
+        }
+        if (hints.portalExpired) {
+          return res.status(200).json({
+            ok: true,
+            sent: false,
+            found: false,
+            reason: "portal-expired",
+            message:
+              "Security+ library access for this email has expired. Purchase a new 10-day or 30-day pass from Security+ home if you want the training portal again.",
+          });
+        }
+      }
       return res.status(200).json({ ok: true, message: cfg.generic, sent: false, found: false });
     }
 

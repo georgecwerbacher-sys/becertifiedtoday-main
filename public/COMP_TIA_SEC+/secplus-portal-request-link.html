@@ -172,13 +172,17 @@
               statusEl.textContent = data.error + (data.hint ? " " + data.hint : "");
               return;
             }
-            statusEl.classList.add(data.sent === false && data.found === true ? "status--err" : "status--ok");
+            var isDeliveryFailure = data.sent === false && data.found === true;
+            var isSpecificHint =
+              data.reason === "test-simulation-only" || data.reason === "portal-expired";
+            statusEl.classList.remove("status--ok", "status--err");
+            statusEl.classList.add(isDeliveryFailure || isSpecificHint ? "status--err" : "status--ok");
             statusEl.textContent =
               data.message ||
               "If this email has active Security+ portal access on file, we sent a login link. Check spam and wait a minute before trying again.";
-            if (data.sent === false && data.found === false) {
+            if (data.sent === false && data.found === false && !isSpecificHint) {
               statusEl.textContent +=
-                " If you already paid, open Restore access with your Stripe session ID (cs_…) from your receipt.";
+                " If you already paid for 10-day or 30-day library access, open Restore access with your Stripe session ID (cs_…) from your receipt.";
             }
           })
           .catch(function () {

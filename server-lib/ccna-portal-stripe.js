@@ -4,6 +4,8 @@
 
 /** buy.stripe.com URL slugs — used when price env vars or success_url metadata are missing. */
 const PAYMENT_LINK_SLUG_TO_PRODUCT = {
+  "00wcN458x6Szglq6Ruc3m04": "ccna-portal-10d",
+  "14A7sK58xccT4CI8ZCc3m03": "ccna-portal-30d",
   cNidR81Wlel13yEdfSc3m05: "encor-portal-10d",
   cNidR80Sh0ubc5aejWc3m00: "encor-portal-30d",
   "7sYcN4bwV1yf1qwb7Kc3m09": "encor-test-simulation",
@@ -12,6 +14,24 @@ const PAYMENT_LINK_SLUG_TO_PRODUCT = {
   "8x28wObwVfp54CIgs4c3m06": "secplus-portal-10d",
   "9B63cudF33Gnc5a1xac3m08": "secplus-test-simulation",
 };
+
+/** Stripe Payment Link metadata sometimes uses GA-style underscores. */
+const PRODUCT_ID_ALIASES = {
+  ccna_portal_10d: "ccna-portal-10d",
+  ccna_portal_30d: "ccna-portal-30d",
+  encor_portal_10d: "encor-portal-10d",
+  encor_portal_30d: "encor-portal-30d",
+  secplus_portal_10d: "secplus-portal-10d",
+  secplus_portal_30d: "secplus-portal-30d",
+  secplus_test_simulation: "secplus-test-simulation",
+};
+
+function normalizeProductId(raw) {
+  if (raw == null) return null;
+  const s = String(raw).trim();
+  if (!s) return null;
+  return PRODUCT_ID_ALIASES[s] || s;
+}
 
 function productIdFromPaymentLinkSession(session) {
   const pl = session.payment_link;
@@ -70,7 +90,7 @@ function productIdFromAmountCents(amount, track, session = null) {
 
 /** @param {import('stripe').Stripe.Checkout.Session} session */
 export function inferProductIdFromCheckoutSession(session, env = process.env) {
-  let productId = session.metadata?.productId || null;
+  let productId = normalizeProductId(session.metadata?.productId || null);
   const paid =
     session.payment_status === "paid" || session.payment_status === "no_payment_required";
 
@@ -193,7 +213,7 @@ export function inferProductIdFromCheckoutSession(session, env = process.env) {
       productId = productIdFromAmountCents(amount, track, session);
     }
   }
-  return productId;
+  return normalizeProductId(productId);
 }
 
 export function isCcnaPortalProduct(productId) {

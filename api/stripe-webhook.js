@@ -16,24 +16,12 @@
 import Stripe from "stripe";
 import getRawBody from "raw-body";
 import { getStripeSecretKey } from "../server-lib/stripe-secret-key.js";
-import { normalizePublicSiteUrl } from "../server-lib/normalize-public-site-url.js";
+import { checkoutSessionIsPaid, inferProductIdFromCheckoutSession } from "../server-lib/ccna-portal-stripe.js";
 import {
-  checkoutSessionIsPaid,
-  inferProductIdFromCheckoutSession,
-  isCcnaPortalProduct,
-  isEncorPortalProduct,
-  isSecplusPortalProduct,
-  portalAccessExpiresAtMs,
-  upsertCustomerPortalMetadata,
-  upsertEncorCustomerPortalMetadata,
-  upsertSecplusCustomerPortalMetadata,
-} from "../server-lib/ccna-portal-stripe.js";
-import { signPortalMagicJwt } from "../server-lib/ccna-portal-magic-jwt.js";
-import {
-  sendCcnaPortalMagicEmail,
-  sendEncorPortalMagicEmail,
-  sendSecplusPortalMagicEmail,
-} from "../server-lib/ccna-portal-resend.js";
+  CHECKOUT_SESSION_EXPAND,
+  fulfillPortalCheckoutSession,
+  trackForPortalProductId,
+} from "../server-lib/portal-checkout-fulfillment.js";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -83,66 +71,27 @@ export default async function handler(req, res) {
 
         if (!session.line_items?.data?.length) {
           session = await stripe.checkout.sessions.retrieve(session.id, {
-            expand: [
-              "payment_intent",
-              "payment_link",
-              "line_items.data.price",
-              "line_items.data.price.product",
-            ],
+            expand: CHECKOUT_SESSION_EXPAND,
           });
         }
 
         const productId = inferProductIdFromCheckoutSession(session);
-        console.info("[stripe] checkout.session.completed", session.id, "productId=", productId);
+        const track = trackForPortalProductId(productId);
+        console.info("[stripe] checkout.session.completed", session.id, "productId=", productId, "track=", track);
 
-        if (!isCcnaPortalProduct(productId) && !isEncorPortalProduct(productId) && !isSecplusPortalProduct(productId)) {
+        if (!track) {
           break;
         }
 
-        const accessExpiresAtMs = portalAccessExpiresAtMs(session, productId);
-        if (isEncorPortalProduct(productId)) {
-          await upsertEncorCustomerPortalMetadata(stripe, session, accessExpiresAtMs);
-        } else if (isSecplusPortalProduct(productId)) {
-          await upsertSecplusCustomerPortalMetadata(stripe, session, accessExpiresAtMs);
-        } else {
-          await upsertCustomerPortalMetadata(stripe, session, accessExpiresAtMs);
-        }
-
-        const jwtSecret = (process.env.PORTAL_MAGIC_LINK_SECRET || "").trim();
-        const site = normalizePublicSiteUrl(process.env.PUBLIC_SITE_URL);
-        const email = (session.customer_details?.email || "").trim().toLowerCase();
-
-        if (jwtSecret && site && email) {
-          const aud = isEncorPortalProduct(productId)
-            ? "encor-portal-access"
-            : isSecplusPortalProduct(productId)
-              ? "secplus-portal-access"
-              : "ccna-portal-access";
-          const token = signPortalMagicJwt(
-            {
-              aud,
-              cs: session.id,
-              exp: Math.floor(accessExpiresAtMs / 1000),
-            },
-            jwtSecret
-          );
-          const magicUrl = isEncorPortalProduct(productId)
-            ? `${site}/CCNP-ENCOR-Study/encor-portal-magic.html#t=${encodeURIComponent(token)}`
-            : isSecplusPortalProduct(productId)
-              ? `${site}/COMP_TIA_SEC+/secplus-portal-magic.html#t=${encodeURIComponent(token)}`
-              : `${site}/CCNA-Study/ccna-portal-magic.html#t=${encodeURIComponent(token)}`;
-          if (isEncorPortalProduct(productId)) {
-            await sendEncorPortalMagicEmail({ to: email, magicUrl });
-          } else if (isSecplusPortalProduct(productId)) {
-            await sendSecplusPortalMagicEmail({ to: email, magicUrl });
-          } else {
-            await sendCcnaPortalMagicEmail({ to: email, magicUrl });
-          }
-        } else {
+        const result = await fulfillPortalCheckoutSession(stripe, session, { sendEmail: true });
+        if (result.ok && !result.emailSent) {
           console.warn(
-            "[portal] Magic email skipped (set PORTAL_MAGIC_LINK_SECRET + PUBLIC_SITE_URL + collect email at checkout)",
-            { hasJwt: !!jwtSecret, hasSite: !!site, hasEmail: !!email }
+            `[${track}-portal] webhook magic email not sent:`,
+            result.emailSkippedReason || "unknown",
+            { sessionId: session.id, hasEmail: !!result.email }
           );
+        } else if (result.ok && result.emailSent) {
+          console.info(`[${track}-portal] webhook magic email sent`, session.id);
         }
       } catch (err) {
         console.error("[stripe] checkout.session.completed portal handling:", err.message);

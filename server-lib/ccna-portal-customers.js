@@ -58,9 +58,18 @@ export async function findActivePortalSessionForEmail(stripe, email) {
   async function evaluateSession(session) {
     if (!checkoutSessionIsPaid(session)) return;
     let full = session;
-    if (!full.line_items?.data?.length) {
+    if (
+      !full.line_items?.data?.length ||
+      !full.payment_link ||
+      typeof full.payment_link === "string"
+    ) {
       full = await stripe.checkout.sessions.retrieve(session.id, {
-        expand: ["payment_intent", "line_items.data.price"],
+        expand: [
+          "payment_intent",
+          "payment_link",
+          "line_items.data.price",
+          "line_items.data.price.product",
+        ],
       });
     }
     const productId = inferProductIdFromCheckoutSession(full);
@@ -77,7 +86,12 @@ export async function findActivePortalSessionForEmail(stripe, email) {
     if (csId.indexOf("cs_") === 0 && Number.isFinite(expMs) && expMs > Date.now()) {
       try {
         const session = await stripe.checkout.sessions.retrieve(csId, {
-          expand: ["payment_intent", "line_items.data.price"],
+          expand: [
+            "payment_intent",
+            "payment_link",
+            "line_items.data.price",
+            "line_items.data.price.product",
+          ],
         });
         await evaluateSession(session);
       } catch (_) {}
