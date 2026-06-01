@@ -181,8 +181,20 @@ function propertyName(propertyId) {
  * @param {string} propertyId
  * @param {{ startDate: string, endDate: string }} range
  */
+async function runReportSafe(client, request) {
+  try {
+    const [response] = await client.runReport(request);
+    return response;
+  } catch (err) {
+    const msg = err && err.message ? String(err.message) : "";
+    if (!request.dimensionFilter || !msg.includes("INVALID_ARGUMENT")) throw err;
+    const [response] = await client.runReport({ ...request, dimensionFilter: undefined });
+    return response;
+  }
+}
+
 export async function fetchAnalyticsSummary(client, propertyId, range) {
-  const [response] = await client.runReport({
+  const response = await runReportSafe(client, {
     property: propertyName(propertyId),
     dateRanges: [range],
     dimensionFilter: gaCustomerTrafficDimensionFilter(),
@@ -215,7 +227,7 @@ export async function fetchAnalyticsSummary(client, propertyId, range) {
 }
 
 export async function fetchTopPages(client, propertyId, range, limit = 15) {
-  const [response] = await client.runReport({
+  const response = await runReportSafe(client, {
     property: propertyName(propertyId),
     dateRanges: [range],
     dimensionFilter: gaCustomerTrafficDimensionFilter(),
@@ -233,7 +245,7 @@ export async function fetchTopPages(client, propertyId, range, limit = 15) {
 }
 
 export async function fetchDailyTrend(client, propertyId, range) {
-  const [response] = await client.runReport({
+  const response = await runReportSafe(client, {
     property: propertyName(propertyId),
     dateRanges: [range],
     dimensionFilter: gaCustomerTrafficDimensionFilter(),
@@ -253,7 +265,6 @@ export async function fetchDailyTrend(client, propertyId, range) {
 export async function fetchRealtimeActiveUsers(client, propertyId) {
   const [response] = await client.runRealtimeReport({
     property: propertyName(propertyId),
-    dimensionFilter: gaCustomerTrafficDimensionFilter(),
     metrics: [{ name: "activeUsers" }],
   });
   const row = response.rows && response.rows[0];

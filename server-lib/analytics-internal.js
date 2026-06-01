@@ -5,8 +5,6 @@
 
 const DEFAULT_INTERNAL_EMAILS = ["georeg.werbacher@gmail.com"];
 
-const LOCAL_HOSTS = ["localhost", "127.0.0.1", "(not set)"];
-
 export function parseInternalEmailsFromEnv(env = process.env) {
   const raw = (env.GA_INTERNAL_EMAILS || "").trim();
   const source = raw || DEFAULT_INTERNAL_EMAILS.join(",");
@@ -24,27 +22,41 @@ export function isInternalAnalyticsEmail(email, env = process.env) {
   return parseInternalEmailsFromEnv(env).includes(em);
 }
 
-/** GA4 Data API dimensionFilter — apply to runReport / runRealtimeReport. */
+/**
+ * GA4 Data API dimensionFilter for runReport (core), not runRealtimeReport.
+ * Realtime API does not support hostName and requires any filtered dimension in the request.
+ */
 export function gaCustomerTrafficDimensionFilter() {
-  const expressions = [
-    {
-      notExpression: {
-        filter: {
-          fieldName: "hostName",
-          inListFilter: { values: LOCAL_HOSTS },
+  return {
+    andGroup: {
+      expressions: [
+        {
+          notExpression: {
+            filter: {
+              fieldName: "hostName",
+              stringFilter: { matchType: "EXACT", value: "localhost" },
+            },
+          },
         },
-      },
-    },
-    {
-      notExpression: {
-        filter: {
-          fieldName: "pagePath",
-          stringFilter: { matchType: "BEGINS_WITH", value: "/admin" },
+        {
+          notExpression: {
+            filter: {
+              fieldName: "hostName",
+              stringFilter: { matchType: "EXACT", value: "127.0.0.1" },
+            },
+          },
         },
-      },
+        {
+          notExpression: {
+            filter: {
+              fieldName: "pagePath",
+              stringFilter: { matchType: "BEGINS_WITH", value: "/admin" },
+            },
+          },
+        },
+      ],
     },
-  ];
-  return { andGroup: { expressions } };
+  };
 }
 
 export function filterPortalSubscriberRows(rows, env = process.env) {
