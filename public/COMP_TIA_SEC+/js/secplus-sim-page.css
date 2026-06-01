@@ -4,11 +4,35 @@
 }
 
 body.secplus-sim-page {
+  position: relative;
   background: #ffffff;
   color: #0f172a;
 }
 
+/* Centered logo watermark (10% opacity) — all SY0-701 sim / hot spot pages */
+body.secplus-sim-page .page-logo-watermark {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+body.secplus-sim-page .page-logo-watermark img {
+  width: min(85vw, 720px);
+  max-height: 85vh;
+  height: auto;
+  object-fit: contain;
+  opacity: 0.1;
+  mix-blend-mode: multiply;
+}
+
 body.secplus-sim-page .wrap {
+  position: relative;
+  z-index: 3;
   background: #ffffff;
   border-color: #e5e7eb;
   box-shadow: none;

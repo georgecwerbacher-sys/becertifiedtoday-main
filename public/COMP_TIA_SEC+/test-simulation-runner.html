@@ -15,6 +15,29 @@
       min-height: 100vh;
       background: #0b1020;
       color: #e6edf3;
+      position: relative;
+    }
+    .page-logo-watermark {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .page-logo-watermark img {
+      width: min(85vw, 720px);
+      max-height: 85vh;
+      height: auto;
+      object-fit: contain;
+      opacity: 0.1;
+    }
+    #gatePanel,
+    #examPanel {
+      position: relative;
+      z-index: 1;
     }
     .topbar {
       display: flex;
@@ -547,6 +570,9 @@
   <script src="/COMP_TIA_SEC+/js/secplus-test-sim-storage.js" defer></script>
 </head>
 <body>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="../images/logo/becertifiedtoday_logo_trans.png" alt="" width="720" height="720" decoding="async" />
+  </div>
   <div id="gatePanel" class="gate-wrap">
     <div class="gate-card">
       <h1>Security+ Timed Test Simulation</h1>
