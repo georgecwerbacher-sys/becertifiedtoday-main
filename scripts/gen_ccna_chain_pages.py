@@ -150,50 +150,6 @@ STYLE = r"""  <style>
       margin-right: 10px;
       transform: translateY(1px);
     }
-    .question-nav {
-      margin: 0 0 20px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .question-nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .question-nav .nav-link,
-    .answer-actions .nav-check {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      color: #e6edf3;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      font-family: inherit;
-      cursor: pointer;
-    }
-    .answer-actions {
-      margin: 16px 0 0;
-      display: flex;
-      justify-content: flex-start;
-    }
-    .question-nav .nav-link--disabled {
-      opacity: 0.35;
-      pointer-events: none;
-      cursor: default;
-    }
-    .question-nav .nav-link:hover,
-    .answer-actions .nav-check:hover {
-      filter: brightness(1.08);
-    }
     .answer {
       margin-top: 18px;
       padding: 14px;
@@ -426,6 +382,7 @@ def page(
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
 {STYLE}
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
 </head>
 <body>
@@ -541,6 +498,7 @@ def page_checkbox(
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
 {STYLE}
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
 </head>
 <body>

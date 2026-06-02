@@ -67,48 +67,460 @@
     return guestSampleActive() ? "?sample=1" : "";
   }
 
-  function ensureSampleBottomNav() {
-    if (document.getElementById("ccnaSampleSimNav")) return;
-    var nav = document.createElement("nav");
-    nav.id = "ccnaSampleSimNav";
-    nav.className = "sim-nav ccna-sample-sim-nav";
-    nav.setAttribute("aria-label", "Sample navigation");
+  var CCNA_STATIC_SAMPLE_TOTAL = 5;
+  var CCNA_HOME_SAMPLE_KEY = "ccnaHomeSample";
+  var CCNA_DOMAIN_NAMES = {
+    "1.0": "Network Fundamentals",
+    "2.0": "Network Access",
+    "3.0": "IP Connectivity",
+    "4.0": "IP Services",
+    "5.0": "Security Fundamentals",
+    "6.0": "Automation and Programmability",
+  };
+  var CCNA_VERSION_LABEL = "Version 1.1 2026";
 
-    var home = document.createElement("a");
-    home.className = "sim-nav-btn sim-nav-home";
-    home.href = finishHrefForSession();
-    home.textContent = "Home";
-
-    var next = document.createElement("a");
-    next.className = "sim-nav-btn ccna-sample-next";
-    next.href = "#";
-    next.textContent = "Next";
-
-    nav.appendChild(home);
-    nav.appendChild(next);
-    document.body.appendChild(nav);
-    document.body.classList.add("ccna-sample-guest-ui");
-
-    var topNav = document.querySelector("nav.question-nav");
-    if (topNav) topNav.style.display = "none";
+  function reviewMarkKey(slug, practiceIndex) {
+    if (isStaticCcnaSamplePage()) return "static:" + slug;
+    var session = readSession();
+    if (session) {
+      var i =
+        practiceIndex != null && practiceIndex >= 0
+          ? practiceIndex
+          : pickIndexForSlug(session.order, slug, hashIndex());
+      if (i >= 0) return "p100:" + (session.bank || "1") + ":" + i + ":" + slug;
+    }
+    return "static:" + slug;
   }
 
-  function syncSampleBottomNav() {
-    if (!guestSampleActive()) return;
+  function readReviewMarks() {
+    try {
+      var raw = sessionStorage.getItem(REVIEW_MARKS_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function writeReviewMarks(marks) {
+    try {
+      sessionStorage.setItem(REVIEW_MARKS_KEY, JSON.stringify(marks));
+    } catch (e) {}
+  }
+
+  function isMarkedForReview(slug, practiceIndex) {
+    var marks = readReviewMarks();
+    return !!marks[reviewMarkKey(slug, practiceIndex)];
+  }
+
+  function setMarkedForReview(slug, practiceIndex, flagged) {
+    var marks = readReviewMarks();
+    var key = reviewMarkKey(slug, practiceIndex);
+    if (flagged) marks[key] = true;
+    else delete marks[key];
+    writeReviewMarks(marks);
+  }
+
+  function ensureAnswerSideActions() {
+    var side = document.querySelector(".answer-side-actions");
+    if (side) return side;
+
+    var footer = document.querySelector(".answer-footer");
+    if (!footer) return null;
+
+    side = document.createElement("div");
+    side.className = "answer-side-actions";
+    var review = footer.querySelector(".review-mark-box");
+    if (review) {
+      review.parentNode.removeChild(review);
+      side.appendChild(review);
+    }
+    footer.appendChild(side);
+    return side;
+  }
+
+  function ensureReviewMarkBox() {
+    var wrap = document.querySelector(".review-mark-box");
+    if (wrap) return wrap;
+
+    var footer = document.querySelector(".answer-footer");
+    var actions = document.querySelector(".answer-actions");
+    if (!actions) return null;
+
+    if (!footer) {
+      footer = document.createElement("div");
+      footer.className = "answer-footer";
+      actions.parentNode.insertBefore(footer, actions);
+      footer.appendChild(actions);
+    }
+
+    var side = ensureAnswerSideActions();
+    if (!side) return null;
+
+    wrap = document.createElement("label");
+    wrap.className = "review-mark-box";
+    wrap.id = "reviewMarkWrap";
+    wrap.innerHTML =
+      '<input type="checkbox" id="reviewMark" aria-label="Mark for review" />' +
+      '<span class="review-mark-box__label">Review</span>';
+    side.appendChild(wrap);
+    return wrap;
+  }
+
+  function practiceIndexForSlug(slug) {
+    var session = readSession();
+    if (!session) return null;
+    var i = pickIndexForSlug(session.order, slug, hashIndex());
+    return i >= 0 ? i : null;
+  }
+
+  function syncReviewMarkUI(slug, practiceIndex) {
+    var wrap = ensureReviewMarkBox();
+    if (!wrap) return;
+    var input = wrap.querySelector('input[type="checkbox"]');
+    if (!input) return;
+    var flagged = isMarkedForReview(slug, practiceIndex);
+    input.checked = flagged;
+    wrap.classList.toggle("is-flagged", flagged);
+  }
+
+  function initMarkForReview(slug) {
+    var practiceIndex = practiceIndexForSlug(slug);
+    ensureReviewMarkBox();
+    syncReviewMarkUI(slug, practiceIndex);
+
+    var wrap = document.querySelector(".review-mark-box");
+    if (!wrap || wrap.dataset.reviewWired) return;
+    wrap.dataset.reviewWired = "1";
+    var input = wrap.querySelector('input[type="checkbox"]');
+    if (!input) return;
+    input.addEventListener("change", function () {
+      var idx = practiceIndexForSlug(slug);
+      setMarkedForReview(slug, idx, input.checked);
+      wrap.classList.toggle("is-flagged", input.checked);
+    });
+  }
+
+  function readHomeSampleSession() {
+    try {
+      var raw = sessionStorage.getItem(CCNA_HOME_SAMPLE_KEY);
+      if (!raw) return null;
+      var s = JSON.parse(raw);
+      if (!s || !Array.isArray(s.order) || !s.order.length) return null;
+      return s;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function homeSampleHashIndex() {
+    var m = /^#ccnaHS=(\d+)$/.exec(location.hash || "");
+    return m ? parseInt(m[1], 10) : 0;
+  }
+
+  function staticSampleQuestionIndex() {
+    var m = /\/CCNA_Samples\/sample-question-(\d+)\.html$/i.exec(location.pathname);
+    return m ? parseInt(m[1], 10) : 0;
+  }
+
+  function isStaticCcnaSamplePage() {
+    return staticSampleQuestionIndex() > 0;
+  }
+
+  function shouldUseSampleBottomNav() {
+    return guestSampleActive() || isStaticCcnaSamplePage();
+  }
+
+  function resolveProgressText(slug, practiceIndex) {
+    var session = readSession();
+    if (session && practiceIndex != null && practiceIndex >= 0) {
+      return "Question " + (practiceIndex + 1) + " of " + session.order.length;
+    }
+
+    var homeSample = readHomeSampleSession();
+    if (homeSample) {
+      var idx = homeSampleHashIndex();
+      var item = homeSample.order[idx];
+      if (item && item.type === "mcq") {
+        var mcqNum = 0;
+        for (var p = 0; p <= idx; p++) {
+          if (homeSample.order[p] && homeSample.order[p].type === "mcq") mcqNum++;
+        }
+        var mcqTotal = homeSample.mcqCount;
+        if (typeof mcqTotal !== "number") {
+          mcqTotal = 0;
+          for (var t = 0; t < homeSample.order.length; t++) {
+            if (homeSample.order[t] && homeSample.order[t].type === "mcq") mcqTotal++;
+          }
+        }
+        return "Question " + mcqNum + " of " + mcqTotal;
+      }
+    }
+
+    if (slug && session) {
+      var i = pickIndexForSlug(session.order, slug, hashIndex());
+      if (i >= 0) {
+        return "Question " + (i + 1) + " of " + session.order.length;
+      }
+    }
+
+    var staticN = staticSampleQuestionIndex();
+    if (staticN > 0) {
+      return "Question " + staticN + " of " + CCNA_STATIC_SAMPLE_TOTAL;
+    }
+
+    return "";
+  }
+
+  function ensureQuestionTopicMeta() {
+    if (document.querySelector(".question-topic-meta")) return document.querySelector(".question-topic-meta");
+
+    var block = document.querySelector(".question-progress-block");
+    var actions = document.querySelector(".answer-actions");
+    if (!block && actions) {
+      block = document.createElement("div");
+      block.className = "question-progress-block";
+      var progress = actions.querySelector(".ccna-practice-progress");
+      if (progress) {
+        actions.removeChild(progress);
+        block.appendChild(progress);
+      } else {
+        progress = document.createElement("span");
+        progress.className = "ccna-practice-progress";
+        progress.setAttribute("aria-live", "polite");
+        block.appendChild(progress);
+      }
+      actions.appendChild(block);
+    }
+    if (!block) return null;
+
+    var meta = document.createElement("p");
+    meta.className = "question-topic-meta";
+    meta.innerHTML =
+      '<span class="question-topic-meta__version"></span>' +
+      '<span class="question-topic-meta__subject"></span>';
+    block.appendChild(meta);
+    return meta;
+  }
+
+  function syncQuestionTopicMeta(slug) {
+    if (isStaticCcnaSamplePage()) return;
+
+    var versionEl = document.querySelector(".question-topic-meta__version");
+    var subjectEl = document.querySelector(".question-topic-meta__subject");
+    if (!versionEl && !subjectEl) {
+      ensureQuestionTopicMeta();
+      versionEl = document.querySelector(".question-topic-meta__version");
+      subjectEl = document.querySelector(".question-topic-meta__subject");
+    }
+    if (!versionEl && !subjectEl) return;
+
+    if (versionEl) versionEl.textContent = CCNA_VERSION_LABEL;
+
+    getTopicAssignments().then(function (assignments) {
+      if (!subjectEl || !assignments) return;
+      var objs = assignments[slug + ".html"];
+      if (!objs || !objs.length) {
+        subjectEl.textContent = "";
+        return;
+      }
+      var maj = String(objs[0]).split(".")[0] + ".0";
+      var name = CCNA_DOMAIN_NAMES[maj] || "Domain " + maj;
+      subjectEl.textContent = maj + " " + name;
+    });
+  }
+
+  function ensurePracticeProgressHost() {
+    var el = document.querySelector(".ccna-practice-progress");
+    if (el) return el;
+
+    var actions = document.querySelector(".answer-actions");
+    if (actions) {
+      var block = document.querySelector(".question-progress-block");
+      if (!block) {
+        block = document.createElement("div");
+        block.className = "question-progress-block";
+        actions.appendChild(block);
+      }
+      el = document.createElement("span");
+      el.className = "ccna-practice-progress";
+      el.setAttribute("aria-live", "polite");
+      block.insertBefore(el, block.firstChild);
+      ensureQuestionTopicMeta();
+      return el;
+    }
+
+    var box = document.getElementById("answerBox");
+    if (box && box.parentNode) {
+      el = document.createElement("p");
+      el.className = "ccna-practice-progress ccna-practice-progress--standalone";
+      el.setAttribute("aria-live", "polite");
+      box.parentNode.insertBefore(el, box);
+      return el;
+    }
+
+    return null;
+  }
+
+  function syncProgressDisplay(slug, practiceIndex) {
+    var text = resolveProgressText(slug, practiceIndex);
+    if (!text) return;
+
+    var el = document.querySelector(".ccna-practice-progress");
+    if (!el) el = ensurePracticeProgressHost();
+    if (el) el.textContent = text;
+    syncQuestionTopicMeta(slug);
+  }
+
+  function ensureSampleBottomNav() {
+    var nav = document.getElementById("ccnaSampleSimNav");
+    if (!nav) {
+      nav = document.createElement("nav");
+      nav.id = "ccnaSampleSimNav";
+      nav.className = "sim-nav ccna-sample-sim-nav";
+      nav.setAttribute("aria-label", "Sample navigation");
+
+      var prev = document.createElement("span");
+      prev.className = "sim-nav-btn sim-nav-prev ccna-sample-prev sim-nav-btn--disabled";
+      prev.setAttribute("aria-hidden", "true");
+      prev.textContent = "Back";
+
+      var home = document.createElement("a");
+      home.className = "sim-nav-btn sim-nav-home";
+      home.href = finishHrefForSession();
+      home.textContent = "Home";
+
+      var next = document.createElement("a");
+      next.className = "sim-nav-btn ccna-sample-next";
+      next.href = "#";
+      next.textContent = "Next";
+
+      nav.appendChild(prev);
+      nav.appendChild(home);
+      nav.appendChild(next);
+      document.body.appendChild(nav);
+    } else if (!nav.querySelector(".ccna-sample-prev, .sim-nav-prev")) {
+      var prevEl = document.createElement("span");
+      prevEl.className = "sim-nav-btn sim-nav-prev ccna-sample-prev sim-nav-btn--disabled";
+      prevEl.setAttribute("aria-hidden", "true");
+      prevEl.textContent = "Back";
+      nav.insertBefore(prevEl, nav.firstChild);
+    }
+
+    document.body.classList.add("ccna-sample-guest-ui");
+    if (isStaticCcnaSamplePage()) {
+      document.body.classList.add("ccna-static-sample");
+    }
+
+    var topNav = document.querySelector("nav.question-nav");
+    if (topNav && (guestSampleActive() || isStaticCcnaSamplePage())) {
+      topNav.style.display = "none";
+    }
+  }
+
+  function syncSampleBottomNavLink(bar, bottomSelector, topSelector, role) {
+    var bottomEl = bar.querySelector(bottomSelector);
+    var topEl = document.querySelector(topSelector);
+    if (!bottomEl) return;
+
+    var baseClass = "sim-nav-btn";
+    if (role === "prev") baseClass += " sim-nav-prev ccna-sample-prev";
+    if (role === "next") baseClass += " ccna-sample-next";
+
+    if (topEl && topEl.tagName === "A") {
+      var synced = topEl.cloneNode(true);
+      synced.className = baseClass;
+      synced.classList.remove("nav-link", "nav-prev", "nav-next", "nav-home", "next-link", "nav-link--disabled");
+      bottomEl.parentNode.replaceChild(synced, bottomEl);
+      return;
+    }
+
+    if (topEl && topEl.classList.contains("nav-link--disabled")) {
+      var disabled = document.createElement("span");
+      disabled.className = baseClass + " sim-nav-btn--disabled";
+      disabled.textContent = (topEl.textContent || "Back").trim();
+      disabled.setAttribute("aria-hidden", "true");
+      bottomEl.parentNode.replaceChild(disabled, bottomEl);
+      return;
+    }
+
+    if (role === "prev") {
+      var back = document.createElement("span");
+      back.className = baseClass + " sim-nav-btn--disabled";
+      back.textContent = "Back";
+      back.setAttribute("aria-hidden", "true");
+      bottomEl.parentNode.replaceChild(back, bottomEl);
+    }
+  }
+
+  function staticSamplePageName(n) {
+    return "sample-question-" + n + ".html";
+  }
+
+  function syncStaticSampleBottomNav() {
+    var n = staticSampleQuestionIndex();
+    if (!n) return;
     var bar = document.getElementById("ccnaSampleSimNav");
     if (!bar) return;
 
     var home = bar.querySelector(".sim-nav-home");
+    if (home) home.href = "/ccna-home.html";
+
+    var prevHref = n > 1 ? staticSamplePageName(n - 1) : null;
+    var nextHref = n < CCNA_STATIC_SAMPLE_TOTAL ? staticSamplePageName(n + 1) : null;
+
+    var prevEl = bar.querySelector(".ccna-sample-prev, .sim-nav-prev");
+    if (prevEl) {
+      if (prevHref) {
+        var prevA = document.createElement("a");
+        prevA.className = "sim-nav-btn sim-nav-prev ccna-sample-prev";
+        prevA.href = prevHref;
+        prevA.textContent = "Back";
+        prevEl.parentNode.replaceChild(prevA, prevEl);
+      } else {
+        var prevSpan = document.createElement("span");
+        prevSpan.className = "sim-nav-btn sim-nav-prev ccna-sample-prev sim-nav-btn--disabled";
+        prevSpan.textContent = "Back";
+        prevSpan.setAttribute("aria-hidden", "true");
+        prevEl.parentNode.replaceChild(prevSpan, prevEl);
+      }
+    }
+
+    var nextEl = bar.querySelector(".ccna-sample-next");
+    if (nextEl) {
+      if (nextHref) {
+        var nextA = document.createElement("a");
+        nextA.className = "sim-nav-btn ccna-sample-next";
+        nextA.href = nextHref;
+        nextA.textContent = "Next";
+        nextEl.parentNode.replaceChild(nextA, nextEl);
+      } else {
+        var finishA = document.createElement("a");
+        finishA.className = "sim-nav-btn ccna-sample-next";
+        finishA.href = "/ccna-home.html";
+        finishA.textContent = "Finish";
+        nextEl.parentNode.replaceChild(finishA, nextEl);
+      }
+    }
+  }
+
+  function syncSampleBottomNav(slug, practiceIndex) {
+    if (!shouldUseSampleBottomNav()) return;
+    var bar = document.getElementById("ccnaSampleSimNav");
+    if (!bar) return;
+
+    if (isStaticCcnaSamplePage()) {
+      syncStaticSampleBottomNav();
+      syncProgressDisplay(slug, practiceIndex);
+      return;
+    }
+
+    var home = bar.querySelector(".sim-nav-home");
     if (home) home.href = finishHrefForSession();
 
-    var bottomNext = bar.querySelector(".ccna-sample-next");
-    var topNext = document.querySelector("a.nav-next");
-    if (!bottomNext || !topNext) return;
+    syncSampleBottomNavLink(bar, ".ccna-sample-prev, .sim-nav-prev", "a.nav-prev, span.nav-prev", "prev");
+    syncSampleBottomNavLink(bar, ".ccna-sample-next", "a.nav-next", "next");
 
-    var synced = topNext.cloneNode(true);
-    synced.className = "sim-nav-btn ccna-sample-next";
-    synced.classList.remove("nav-link", "nav-next", "next-link");
-    bottomNext.parentNode.replaceChild(synced, bottomNext);
+    syncProgressDisplay(slug, practiceIndex);
   }
 
   function findNextPrevElements() {
@@ -184,8 +596,10 @@
       }
     }
 
-    if (guestSampleActive()) {
-      syncSampleBottomNav();
+    if (shouldUseSampleBottomNav()) {
+      syncSampleBottomNav(slug, i);
+    } else if (readSession()) {
+      syncProgressDisplay(slug, i);
     }
 
     return { mode: mode, i: i, slug: slug };
@@ -203,7 +617,7 @@
         topNext.href = href.replace(/\.html(?=[#?]|$)/, ".html?sample=1");
       }
     }
-    syncSampleBottomNav();
+    syncSampleBottomNav(slug, null);
   }
 
   function getTopicAssignments() {
@@ -351,16 +765,25 @@
     var slug = slugFromPath();
     if (!slug) return;
 
-    if (guestSampleActive()) {
+    if (shouldUseSampleBottomNav()) {
       ensureSampleBottomNav();
     }
 
     var nav = applyPracticeNav(slug);
-    if (!nav && guestSampleActive()) {
+    if (!nav && shouldUseSampleBottomNav()) {
       applySampleFallbackNav(slug);
+      initMarkForReview(slug);
       return;
     }
-    if (!nav) return;
+    if (!nav) {
+      if (staticSampleQuestionIndex() > 0) {
+        syncProgressDisplay(slug, null);
+      }
+      initMarkForReview(slug);
+      return;
+    }
+
+    initMarkForReview(slug);
 
     var s0 = readSession();
     var adaptive = !!(s0 && s0.adaptive);
@@ -402,8 +825,10 @@
           }
           writeSession(s2);
           applyPracticeNav(slugRef);
-          if (guestSampleActive()) {
-            syncSampleBottomNav();
+          if (shouldUseSampleBottomNav()) {
+            var s3 = readSession();
+            var idx3 = s3 ? pickIndexForSlug(s3.order, slugRef, hashIndex()) : -1;
+            syncSampleBottomNav(slugRef, idx3 >= 0 ? idx3 : null);
           }
         } catch (e2) {}
       }

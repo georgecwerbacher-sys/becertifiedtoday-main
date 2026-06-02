@@ -1,0 +1,168 @@
+/**
+ * Back / Home / Next link boxes for practice question pages (MCQ, choose-two, etc.).
+ * Pair with ccna-sample-touch.css or secplus-sample-touch.css for tap targets.
+ */
+.question-nav {
+  margin: 0 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.question-nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.question-nav .nav-link,
+.answer-actions .nav-check,
+.answer-side-actions .nav-show-answer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #e6edf3;
+  background: #254b8a;
+  border: 1px solid #3d6dbb;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  font-family: inherit;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.answer-actions {
+  display: contents;
+}
+
+.answer-footer {
+  margin: 16px 0 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: 8px 16px;
+  width: 100%;
+}
+
+.answer-footer .nav-check {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+}
+
+.answer-footer .question-progress-block {
+  grid-column: 1;
+  grid-row: 2;
+  justify-self: start;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  min-height: 4.5rem;
+  min-width: 0;
+}
+
+.answer-footer .ccna-practice-progress {
+  min-height: 0;
+  display: block;
+  align-items: unset;
+}
+
+.question-topic-meta {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #7d8fa8;
+  line-height: 1.35;
+}
+
+.question-topic-meta__version,
+.question-topic-meta__subject {
+  display: block;
+}
+
+.answer-footer .nav-show-answer {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+}
+
+.answer-footer .review-mark-box {
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: end;
+  align-self: center;
+}
+
+.question-nav .nav-link--disabled,
+.question-nav span.nav-link.nav-link--disabled {
+  opacity: 0.35;
+  pointer-events: none;
+  cursor: default;
+}
+
+.question-nav .nav-link:hover,
+.answer-actions .nav-check:hover,
+.answer-side-actions .nav-show-answer:hover {
+  filter: brightness(1.08);
+}
+
+.question-nav .nav-home {
+  background: #1a3d6e;
+}
+
+.ccna-practice-progress {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #9fb0cc;
+  white-space: nowrap;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.review-mark-box {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 4.5rem;
+  min-height: 4.5rem;
+  padding: 10px 12px;
+  border: 1px solid #2c3f62;
+  border-radius: 10px;
+  background: #1a253b;
+  color: #9fb0cc;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.review-mark-box input {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0;
+  accent-color: #fbbf24;
+  cursor: pointer;
+}
+
+.review-mark-box.is-flagged {
+  border-color: #d4a017;
+  color: #fcd34d;
+  background: #2a2418;
+}

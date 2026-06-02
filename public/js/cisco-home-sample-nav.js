@@ -418,10 +418,12 @@
       nav.className = "cisco-home-sample-nav";
       nav.setAttribute("aria-label", "Sample navigation");
       nav.innerHTML =
+        '<span class="cisco-home-sample-nav__progress" aria-live="polite"></span>' +
+        '<div class="cisco-home-sample-nav__actions">' +
         '<a class="cisco-home-sample-nav__home" href="#">Home</a>' +
         '<a class="cisco-home-sample-nav__prev" href="#">Back</a>' +
-        '<span class="cisco-home-sample-nav__progress" aria-live="polite"></span>' +
-        '<a class="cisco-home-sample-nav__next" href="#">Next</a>';
+        '<a class="cisco-home-sample-nav__next" href="#">Next</a>' +
+        "</div>";
       document.body.appendChild(nav);
       document.body.classList.add("cisco-home-sample-active");
     }
@@ -459,8 +461,7 @@
     var el = document.createElement("span");
     el.className = "cisco-sample-progress";
     el.setAttribute("aria-live", "polite");
-    var links = host.querySelector(".question-nav-links");
-    if (links) links.insertBefore(el, links.querySelector("a.nav-next"));
+    host.insertBefore(el, host.firstChild);
     return el;
   }
 
@@ -570,12 +571,13 @@
     var s = document.createElement("style");
     s.setAttribute("data-cisco-home-sample-nav", "1");
     s.textContent =
-      ".cisco-sample-progress{font-size:.8rem;font-weight:700;color:#9fb0cc;margin:0 8px;white-space:nowrap}" +
-      ".cisco-home-sample-nav{position:fixed;left:0;right:0;bottom:0;z-index:10001;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:rgba(11,16,32,.94);border-top:1px solid #2d3b5a;backdrop-filter:blur(10px)}" +
+      ".cisco-sample-progress{font-size:.8rem;font-weight:700;color:#9fb0cc;margin:0 8px 0 0;white-space:nowrap}" +
+      ".cisco-home-sample-nav{position:fixed;left:0;right:0;bottom:0;z-index:10001;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:rgba(11,16,32,.94);border-top:1px solid #2d3b5a;backdrop-filter:blur(10px)}" +
+      ".cisco-home-sample-nav__progress{font-size:.85rem;font-weight:700;color:#b8c3d6;white-space:nowrap;flex:0 1 auto;margin-right:auto}" +
+      ".cisco-home-sample-nav__actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-left:auto}" +
       ".cisco-home-sample-nav a{text-decoration:none;background:#2f66bf;border:1px solid #4f84d8;color:#f4f7ff;border-radius:10px;padding:10px 18px;font-weight:700;min-width:5.5rem;text-align:center;box-sizing:border-box}" +
       ".cisco-home-sample-nav a:hover{filter:brightness(1.08)}" +
       ".cisco-home-sample-nav a.nav-link--disabled{opacity:.45;pointer-events:none}" +
-      ".cisco-home-sample-nav__progress{font-size:.85rem;font-weight:700;color:#b8c3d6}" +
       "body.cisco-home-sample-active{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))!important}" +
       ".cisco-sample-upsell-root{position:fixed;inset:0;z-index:20002;display:flex;align-items:center;justify-content:center;padding:16px}" +
       ".cisco-sample-upsell-backdrop{position:absolute;inset:0;background:rgba(8,12,24,.72);backdrop-filter:blur(4px)}" +

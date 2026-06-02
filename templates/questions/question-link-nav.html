@@ -1,0 +1,50 @@
+<!--
+  Question link nav — paste as the first block inside <main class="card">.
+
+  Required stylesheet (before page-specific CSS):
+    <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+
+  Optional navigation scripts (defer, after sample-url-mask-apply.js when used):
+    CCNA chain / samples: /CCNA-Study/js/ccna-practice-100-nav.js
+    Security+ questions:   /COMP_TIA_SEC+/js/secplus-practice-nav.js
+
+  Replace hrefs:
+    REPLACE_PREV   — previous question, or omit link and use disabled Back span on first item
+    REPLACE_HOME   — portal home (paid) or marketing home (guest sample)
+    REPLACE_NEXT   — next question, or disabled Next span on last item in chain
+    REPLACE_PROGRESS — e.g. Question 3 of 5
+    REPLACE_VERSION  — e.g. Version 1.1 2026
+    REPLACE_SUBJECT  — e.g. 2.0 Network Access
+    <div class="answer-footer">
+      <div class="answer-actions">
+        <button type="button" class="nav-check">Check answer</button>
+        <div class="question-progress-block">
+        <span class="ccna-practice-progress" aria-live="polite">REPLACE_PROGRESS</span>
+        <p class="question-topic-meta">
+          <span class="question-topic-meta__version">REPLACE_VERSION</span>
+          <span class="question-topic-meta__subject">REPLACE_SUBJECT</span>
+        </p>
+      </div>
+      <div class="answer-side-actions">
+        <button id="showBtn" type="button" class="nav-show-answer">Show Answer</button>
+        <label class="review-mark-box" id="reviewMarkWrap">
+          <input type="checkbox" id="reviewMark" aria-label="Mark for review" />
+          <span class="review-mark-box__label">Review</span>
+        </label>
+      </div>
+    </div>
+
+  Disabled placeholders (first / last in chain):
+    <span class="nav-link nav-prev nav-link--disabled" aria-hidden="true">Back</span>
+    <span class="nav-link nav-next nav-link--disabled" aria-hidden="true">Next</span>
+
+  CCNA static sample chain (CCNA_Samples/sample-question-N.html): add body class
+  ccna-static-sample and include the bottom Back / Home / Next bar after </main> — see sample-question-1.html.
+-->
+<nav class="question-nav" aria-label="Question navigation">
+  <div class="question-nav-links">
+    <a class="nav-link nav-prev" href="REPLACE_PREV">Back</a>
+    <a class="nav-link nav-home" href="REPLACE_HOME">Home</a>
+    <a class="nav-link nav-next next-link" href="REPLACE_NEXT">Next</a>
+  </div>
+</nav>

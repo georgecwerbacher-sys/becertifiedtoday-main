@@ -7,79 +7,274 @@
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CCNA 200-301 exam prep sample — interface counters / FCS (1 of 5)</title>
+  <link rel="stylesheet" href="../../css/bcc-question-link-nav.css" />
   <style>
     :root {
-      color-scheme: light dark;
+      color-scheme: light;
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bcc-outside-text: #1a3d6e;
+      --bcc-box-bg: #121a2b;
+      --bcc-box-surface: #1a253b;
+      --bcc-choice-bg: #254b8a;
+      --bcc-choice-border: #3d6dbb;
+      --bcc-box-text: #e6edf3;
     }
     body {
       margin: 0;
       min-height: 100vh;
       display: grid;
       place-items: center;
+      position: relative;
       background: #ffffff;
-      color: #e6edf3;
-      padding: 16px 16px calc(80px + env(safe-area-inset-bottom, 0px));
+      color: var(--bcc-outside-text);
+      padding: 16px;
+      padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
       box-sizing: border-box;
     }
-    .card {
-      width: min(900px, 100%);
-      background: #121a2b;
-      border: 1px solid #2d3b5a;
-      border-radius: 14px;
-      padding: 28px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    .page-logo-watermark {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
-    h1 {
-      margin: 0 0 8px;
-      font-size: clamp(1.05rem, 2vw, 1.45rem);
+    .page-logo-watermark img {
+      width: min(85vw, 720px);
+      max-height: 85vh;
+      height: auto;
+      object-fit: contain;
+      opacity: 0.16;
+    }
+    .question-shell {
+      width: min(900px, 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      position: relative;
+      z-index: 1;
+    }
+    .question-shell .site-logo-corner {
+      position: static;
+      top: auto;
+      right: auto;
+      align-self: flex-end;
+      margin: 0 0 2rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0;
+      background: transparent;
+      border: none;
+      padding: 0;
+      text-decoration: none;
+      box-sizing: border-box;
+    }
+    .question-shell .site-logo-corner img {
+      display: block;
+      width: 52px;
+      height: 52px;
+    }
+    .card {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      box-shadow: none;
+      color: var(--bcc-outside-text);
+    }
+    .answer-actions {
+      display: contents;
+    }
+    .answer-footer {
+      margin: 16px 0 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-rows: auto auto;
+      align-items: center;
+      gap: 8px 16px;
+      width: 100%;
+    }
+    .answer-footer .nav-check {
+      grid-column: 1;
+      grid-row: 1;
+      justify-self: start;
+    }
+    .answer-footer .question-progress-block {
+      grid-column: 1;
+      grid-row: 2;
+      justify-self: start;
+      align-self: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      min-height: 4.5rem;
+      min-width: 0;
+    }
+    .answer-actions .ccna-practice-progress {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--bcc-outside-text);
+      white-space: nowrap;
+      margin: 0;
+    }
+    .question-topic-meta {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--bcc-outside-text);
       line-height: 1.35;
     }
-.choice {
+    .answer-side-actions {
+      display: contents;
+    }
+    .answer-footer .nav-show-answer {
+      grid-column: 2;
+      grid-row: 1;
+      justify-self: end;
+    }
+    .answer-footer .review-mark-box {
+      grid-column: 2;
+      grid-row: 2;
+      justify-self: end;
+      align-self: center;
+    }
+    .answer-actions .nav-check {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bcc-box-text);
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      font-family: inherit;
+      cursor: pointer;
+      min-height: 48px;
+      box-sizing: border-box;
+    }
+    .answer-actions .nav-check:hover {
+      filter: brightness(1.08);
+    }
+    .review-mark-box {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-width: 4.5rem;
+      min-height: 4.5rem;
+      padding: 10px 12px;
+      border: 1px solid var(--bcc-choice-border);
+      border-radius: 10px;
+      background: transparent;
+      color: var(--bcc-outside-text);
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+    .answer-side-actions .nav-show-answer {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bcc-box-text);
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      font-family: inherit;
+      cursor: pointer;
+      min-height: 48px;
+      box-sizing: border-box;
+    }
+    .answer-side-actions .nav-show-answer:hover {
+      filter: brightness(1.08);
+    }
+    .review-mark-box input {
+      width: 1.15rem;
+      height: 1.15rem;
+      margin: 0;
+      accent-color: var(--bcc-outside-text);
+      cursor: pointer;
+    }
+    .review-mark-box.is-flagged {
+      border-color: var(--bcc-choice-border);
+      color: var(--bcc-outside-text);
+      background: transparent;
+    }
+    #ccnaSampleSimNav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(11, 16, 32, 0.94);
+      border-top: 1px solid #2d3b5a;
+    }
+    #ccnaSampleSimNav .sim-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      background: #254b8a;
+      border: 1px solid #3d6dbb;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 700;
+      min-width: 5.5rem;
+      min-height: 48px;
+      box-sizing: border-box;
+    }
+    #ccnaSampleSimNav .sim-nav-home {
+      background: #1a3d6e;
+    }
+    #ccnaSampleSimNav .sim-nav-btn--disabled {
+      opacity: 0.35;
+      pointer-events: none;
+      cursor: default;
+    }
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+      color: var(--bcc-outside-text);
+    }
+    h1.choose-two-stem {
+      line-height: 1.5;
+    }
+    .choice {
       display: block;
       margin: 10px 0;
       padding: 12px 14px;
       border-radius: 10px;
-      background: #1a253b;
-      border: 1px solid #2c3f62;
+      background: var(--bcc-choice-bg);
+      border: 1px solid var(--bcc-choice-border);
       font-size: 1.02rem;
+      color: var(--bcc-box-text);
       cursor: pointer;
     }
     .choice input {
       margin-right: 10px;
       transform: translateY(1px);
-    }
-    .actions {
-      margin-top: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .actions button {
-      background: #254b8a;
-      color: #e6edf3;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 0.95rem;
-    }
-    .actions button:hover {
-      filter: brightness(1.08);
-    }
-    .home-link {
-      margin-left: auto;
-      background: #254b8a;
-      color: #e6edf3;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      text-decoration: none;
-      font-size: 0.95rem;
     }
     .answer {
       margin-top: 18px;
@@ -88,6 +283,7 @@
       font-weight: 700;
       display: none;
       line-height: 1.45;
+      color: var(--bcc-box-text);
     }
     .answer.correct {
       background: #113e2d;
@@ -97,94 +293,63 @@
       background: #442020;
       border: 1px solid #8c3434;
     }
-    .next-wrap {
-      margin-top: 18px;
-    }
-    .next-link {
-      display: inline-block;
-      text-decoration: none;
-      color: #e6edf3;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
-    }
-    .next-link:hover {
-      filter: brightness(1.08);
-    }
-    .sim-nav {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 10000;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
-      background: rgba(11, 16, 32, 0.94);
-      border-top: 1px solid #2d3b5a;
-      backdrop-filter: blur(10px);
-    }
-    .sim-nav-btn {
-      text-decoration: none;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      color: #e6edf3;
-      border-radius: 10px;
-      padding: 10px 18px;
-      font-weight: 700;
-      min-width: 5.5rem;
-      text-align: center;
-      box-sizing: border-box;
-    }
-    .sim-nav-btn:hover {
-      filter: brightness(1.08);
-    }
-    .sim-nav-home {
-      background: #1a3d6e;
-    }
   </style>
-  <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
+  <link rel="stylesheet" href="ccna-sample-touch.css" />
 </head>
-<body>
-  <script src="/js/sample-url-mask-apply.js"></script>
-  <a class="site-logo-corner" href="/index.html" aria-label="Be Certified Today — site home">
-    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="" />
-  </a>
-  <main class="card">
-    <h1>
+<body class="ccna-static-sample">
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="../../../images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <script src="../../../js/sample-url-mask-apply.js"></script>
+  <script src="../js/ccna-practice-100-nav.js" defer></script>
+  <div class="question-shell">
+    <a class="site-logo-corner" href="../CCNA_Training_Portal.html" aria-label="CCNA training portal">
+      <img src="../../../images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="card">
+    <h1 class="choose-two-stem">
       A frame that enters a switch fails the Frame Check Sequence. Which two interface counters are incremented? (Choose two.)
     </h1>
-<label class="choice"><input type="checkbox" name="fcs" value="A" />A. input errors</label>
+    <label class="choice"><input type="checkbox" name="fcs" value="A" />A. input errors</label>
     <label class="choice"><input type="checkbox" name="fcs" value="B" />B. frame</label>
     <label class="choice"><input type="checkbox" name="fcs" value="C" />C. giants</label>
     <label class="choice"><input type="checkbox" name="fcs" value="D" />D. CRC</label>
     <label class="choice"><input type="checkbox" name="fcs" value="E" />E. runts</label>
-
-    <div class="actions">
-      <button id="checkBtn" type="button">Check answer</button>
+    <div class="answer-footer">
+      <div class="answer-actions">
+        <button id="checkBtn" type="button" class="nav-check">Check answer</button>
+        <div class="question-progress-block">
+          <span class="ccna-practice-progress" aria-live="polite">Question 1 of 5</span>
+          <p class="question-topic-meta">
+            <span class="question-topic-meta__version">Version 1.1 2026</span>
+            <span class="question-topic-meta__subject">2.0 Network Access</span>
+          </p>
+        </div>
+      </div>
+      <div class="answer-side-actions">
+        <button id="showBtn" type="button" class="nav-show-answer">Show Answer</button>
+        <label class="review-mark-box" id="reviewMarkWrap">
+          <input type="checkbox" id="reviewMark" aria-label="Mark for review" />
+          <span class="review-mark-box__label">Review</span>
+        </label>
+      </div>
     </div>
-
     <div id="answerBox" class="answer" aria-live="polite"></div>
-
-    <div class="next-wrap">
-      <a class="next-link" href="sample-question-2.html">Next question</a>
-    </div>
   </main>
-
-  <nav class="sim-nav" aria-label="Simulation navigation">
-    <a class="sim-nav-btn sim-nav-home" href="/ccna-home.html">CCNA exam prep</a>
+  </div>
+  <nav id="ccnaSampleSimNav" class="sim-nav ccna-sample-sim-nav" aria-label="Sample navigation">
+    <span class="sim-nav-btn sim-nav-prev ccna-sample-prev sim-nav-btn--disabled" aria-hidden="true">Back</span>
+    <a class="sim-nav-btn sim-nav-home" href="/ccna-home.html">Home</a>
+    <a class="sim-nav-btn ccna-sample-next nav-link nav-next next-link" href="sample-question-2.html">Next</a>
   </nav>
-
   <script>
     (function () {
       var CORRECT = ["A", "D"];
+      var CORRECT_MSG =
+        "Correct. A and D. A failed FCS check increments the CRC counter. The input errors counter includes CRC errors (and other receive errors such as runts and giants).";
       var checkBtn = document.getElementById("checkBtn");
-var answerBox = document.getElementById("answerBox");
+      var showBtn = document.getElementById("showBtn");
+      var answerBox = document.getElementById("answerBox");
 
       function selectedValues() {
         return []
@@ -210,17 +375,24 @@ var answerBox = document.getElementById("answerBox");
           answerBox.textContent = "Choose exactly two answers.";
           return;
         }
-        var ok = arraysEqual(sel, CORRECT.slice().sort());
-        if (ok) {
+        if (arraysEqual(sel, CORRECT.slice().sort())) {
           answerBox.className = "answer correct";
-          answerBox.textContent =
-            "Correct. A and D. A failed FCS check increments the CRC counter. The input errors counter includes CRC errors (and other receive errors such as runts and giants).";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
       });
 
+      showBtn.addEventListener("click", function () {
+        CORRECT.forEach(function (value) {
+          var input = document.querySelector('input[name="fcs"][value="' + value + '"]');
+          if (input) input.checked = true;
+        });
+        answerBox.style.display = "block";
+        answerBox.className = "answer correct";
+        answerBox.textContent = CORRECT_MSG;
+      });
     })();
   </script>
 </body>

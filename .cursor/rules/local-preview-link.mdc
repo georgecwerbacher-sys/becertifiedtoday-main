@@ -1,0 +1,41 @@
+---
+description: Always give a localhost preview URL after editing site files under public/
+alwaysApply: true
+---
+
+# Local preview link after web edits
+
+When you modify HTML, CSS, JS, or other assets under `public/` (or templates that generate them), **end the response with a local preview section** — even if the user did not ask for it.
+
+## Server
+
+From the repo root:
+
+```bash
+npm run serve
+```
+
+Serves `public/` at **http://localhost:3000** (port 3000, no port switching).
+
+## URL mapping
+
+Strip the `public/` prefix from the file path:
+
+| File | Preview URL |
+|------|-------------|
+| `public/CCNA-Study/CCNA_Samples/sample-question-1.html` | http://localhost:3000/CCNA-Study/CCNA_Samples/sample-question-1.html |
+| `public/ccna-home.html` | http://localhost:3000/ccna-home.html |
+
+If several pages changed, list each relevant URL. If the primary page is obvious, lead with that one.
+
+## Response format
+
+Close with a short block like:
+
+**Local preview** (run `npm run serve` if needed):
+
+http://localhost:3000/…
+
+Hard refresh: **Cmd+Shift+R** (Mac) or **Ctrl+Shift+R** (Windows).
+
+Do not use `file://` paths — absolute `/css/…` and `/images/…` links fail when opened directly from disk.
