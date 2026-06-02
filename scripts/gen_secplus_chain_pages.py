@@ -30,45 +30,14 @@ STYLE = r"""  <style>
       display: grid;
       place-items: center;
       background: #ffffff;
-      color: #e6edf3;
-      padding: 16px 16px calc(80px + env(safe-area-inset-bottom, 0px));
+      padding: 16px;
+      padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
       box-sizing: border-box;
     }
     .card {
       width: min(900px, 100%);
-      background: #121a2b;
-      border: 1px solid #2d3b5a;
-      border-radius: 14px;
-      padding: 28px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
       display: flex;
       flex-direction: column;
-    }
-    .secplus-objective-tag {
-      margin-top: 18px;
-      align-self: flex-start;
-      max-width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid #2d3b5a;
-      background: #0f1729;
-      color: #b8c3d6;
-      font-size: 0.65rem;
-      line-height: 1.45;
-      text-align: left;
-    }
-    .secplus-objective-tag__version {
-      margin-bottom: 6px;
-      color: #9fb0cc;
-      font-size: 0.62rem;
-    }
-    .secplus-objective-tag__title {
-      font-weight: 700;
-      color: #e6edf3;
-      margin-bottom: 4px;
-    }
-    .secplus-objective-tag__row {
-      margin: 2px 0;
     }
     .secplus-exhibit {
       margin: 0 0 18px;
@@ -76,7 +45,7 @@ STYLE = r"""  <style>
     }
     .secplus-exhibit-lead {
       margin: 0 0 12px;
-      color: #b8c3d6;
+      color: #1a3d6e;
       font-size: 1rem;
       line-height: 1.45;
     }
@@ -112,7 +81,7 @@ STYLE = r"""  <style>
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       font-weight: 700;
       line-height: 1.35;
-      color: #e6edf3;
+      color: #1a3d6e;
     }
     .secplus-exhibit-log pre {
       margin: 0;
@@ -128,7 +97,7 @@ STYLE = r"""  <style>
       overflow-x: auto;
     }
     h1 {
-      margin: 0 0 8px;
+      margin: 0 0 16px;
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
     }
@@ -137,51 +106,12 @@ STYLE = r"""  <style>
       margin: 10px 0;
       padding: 12px 14px;
       border-radius: 10px;
-      background: #1a253b;
-      border: 1px solid #2c3f62;
       font-size: 1.02rem;
       cursor: pointer;
     }
     .choice input {
       margin-right: 10px;
       transform: translateY(1px);
-    }
-    .question-nav {
-      margin: 0 0 20px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .question-nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .question-nav .nav-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      color: #f3e8ff;
-      background: #5b21b6;
-      border: 1px solid #7c3aed;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      font-family: inherit;
-      cursor: pointer;
-    }
-    .question-nav .nav-link--disabled {
-      opacity: 0.35;
-      pointer-events: none;
-      cursor: default;
-    }
-    .question-nav .nav-link:hover {
-      filter: brightness(1.08);
     }
     .answer {
       margin-top: 18px;
@@ -199,30 +129,8 @@ STYLE = r"""  <style>
       background: #442020;
       border: 1px solid #8c3434;
     }
-    .answer-actions {
-      margin-top: 14px;
-    }
-    .nav-check {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 16px;
-      border-radius: 10px;
-      border: 1px solid #7c3aed;
-      background: #5b21b6;
-      color: #f3e8ff;
-      font-weight: 700;
-      font-size: 0.95rem;
-      font-family: inherit;
-      cursor: pointer;
-    }
-    .nav-check:hover {
-      filter: brightness(1.08);
-    }
     h1.choose-two-stem {
-      margin: 0 0 8px;
-      font-size: clamp(1.05rem, 2vw, 1.45rem);
-      line-height: 1.35;
+      line-height: 1.5;
     }
   </style>"""
 
@@ -622,6 +530,52 @@ def build_question_nav(prev_slug: str | None, next_slug: str | None) -> str:
     )
 
 
+LOGO_IMG = "/images/logo/becertifiedtoday_logo_image_trans.png"
+SECPLUS_VERSION_META = "Version 1.1 2026"
+
+
+def build_page_shell_open() -> str:
+    return (
+        '  <div class="page-logo-watermark" aria-hidden="true">\n'
+        f'    <img src="{LOGO_IMG}" alt="" />\n'
+        "  </div>\n"
+        '  <div class="question-shell">\n'
+        f'    <a class="site-logo-corner" href="{PORTAL_HOME}" aria-label="Security+ training portal">\n'
+        f'      <img src="{LOGO_IMG}" width="52" height="52" alt="Be Certified Today" />\n'
+        "    </a>\n"
+        '    <main class="card">\n'
+    )
+
+
+def build_page_shell_close() -> str:
+    return "    </main>\n  </div>\n"
+
+
+def build_answer_footer_html() -> str:
+    version = html.escape(SECPLUS_VERSION_META)
+    return (
+        '    <div class="answer-footer">\n'
+        '      <div class="answer-actions">\n'
+        '        <button id="checkBtn" type="button" class="nav-check">Check answer</button>\n'
+        '        <div class="question-progress-block">\n'
+        '          <span class="ccna-practice-progress" aria-live="polite"></span>\n'
+        '          <p class="question-topic-meta">\n'
+        f'            <span class="question-topic-meta__version">{version}</span>\n'
+        '            <span class="question-topic-meta__subject"></span>\n'
+        "          </p>\n"
+        "        </div>\n"
+        "      </div>\n"
+        '      <div class="answer-side-actions">\n'
+        '        <button id="showBtn" type="button" class="nav-show-answer">Show Answer</button>\n'
+        '        <label class="review-mark-box" id="reviewMarkWrap">\n'
+        '          <input type="checkbox" id="reviewMark" aria-label="Mark for review" />\n'
+        '          <span class="review-mark-box__label">Review</span>\n'
+        "        </label>\n"
+        "      </div>\n"
+        "    </div>\n"
+    )
+
+
 def choice_line(name: str, letter: str, text: str) -> str:
     t = html.escape(text, quote=False)
     return f'    <label class="choice"><input type="radio" name="{name}" value="{letter}" />{letter}. {t}</label>'
@@ -702,11 +656,7 @@ def render_page(
     objective_lookup: dict[str, tuple[str, str]] | None = None,
 ) -> str:
     nav = build_question_nav(prev_slug, next_slug)
-    objective_footer = build_objective_footer(
-        objective_ids or [],
-        domain_lookup or {},
-        objective_lookup or {},
-    )
+    footer = build_answer_footer_html()
     choices_html = "\n".join(
         choice_line(name, chr(ord("A") + i), text) for i, text in enumerate(choices)
     )
@@ -714,6 +664,8 @@ def render_page(
     stem_h = html.escape(stem.strip()) if stem.strip() else ""
     stem_block = f"    <h1>{stem_h}</h1>\n\n" if stem_h else ""
     prepend = f"{prepend_html.rstrip()}\n" if prepend_html else ""
+    shell_open = build_page_shell_open()
+    shell_close = build_page_shell_close()
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -722,42 +674,49 @@ def render_page(
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{html.escape(title)}</title>
 {STYLE}
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
 </head>
-<body>
+<body class="secplus-question-ui">
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/COMP_TIA_SEC+/js/secplus-practice-nav.js" defer></script>
-  <main class="card">
-{nav}
+{shell_open}{nav}
 {prepend}{stem_block}{choices_html}
 
+{footer}
     <div id="answerBox" class="answer" aria-live="polite"></div>
-{objective_footer}
-  </main>
-
+{shell_close}
   <script>
     (function () {{
       var CORRECT = {json.dumps(correct)};
       var CORRECT_MSG = {msg_json};
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {{
+      checkBtn.addEventListener("click", function () {{
+        var sel = document.querySelector('input[name="{name}"]:checked');
         answerBox.style.display = "block";
-        if (value === CORRECT) {{
+        if (!sel) {{
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Select an answer.";
+          return;
+        }}
+        if (sel.value === CORRECT) {{
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         }} else {{
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }}
-      }}
+      }});
 
-      document.querySelectorAll('input[name="{name}"]').forEach(function (el) {{
-        el.addEventListener("change", function () {{
-          if (el.checked) {{
-            applyFeedback(el.value);
-          }}
-        }});
+      showBtn.addEventListener("click", function () {{
+        var input = document.querySelector('input[name="{name}"][value="' + CORRECT + '"]');
+        if (input) input.checked = true;
+        answerBox.style.display = "block";
+        answerBox.className = "answer correct";
+        answerBox.textContent = CORRECT_MSG;
       }});
     }})();
   </script>
@@ -782,11 +741,7 @@ def render_page_choose_two(
     objective_lookup: dict[str, tuple[str, str]] | None = None,
 ) -> str:
     nav = build_question_nav(prev_slug, next_slug)
-    objective_footer = build_objective_footer(
-        objective_ids or [],
-        domain_lookup or {},
-        objective_lookup or {},
-    )
+    footer = build_answer_footer_html()
     choices_html = "\n".join(
         checkbox_choice_line(name, chr(ord("A") + i), text) for i, text in enumerate(choices)
     )
@@ -794,6 +749,8 @@ def render_page_choose_two(
     msg_json = json.dumps(explain)
     stem_h = html.escape(stem.strip())
     prepend = f"{prepend_html.rstrip()}\n" if prepend_html else ""
+    shell_open = build_page_shell_open()
+    shell_close = build_page_shell_close()
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -802,29 +759,26 @@ def render_page_choose_two(
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{html.escape(title)}</title>
 {STYLE}
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
 </head>
-<body>
+<body class="secplus-question-ui">
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/COMP_TIA_SEC+/js/secplus-practice-nav.js" defer></script>
-  <main class="card">
-{nav}
+{shell_open}{nav}
 {prepend}    <h1 class="choose-two-stem">{stem_h}</h1>
 
 {choices_html}
 
-    <div class="answer-actions">
-      <button id="checkBtn" type="button" class="nav-check">Check answer</button>
-    </div>
+{footer}
     <div id="answerBox" class="answer" aria-live="polite"></div>
-{objective_footer}
-  </main>
-
+{shell_close}
   <script>
     (function () {{
       var CORRECT = {cor_json};
       var CORRECT_MSG = {msg_json};
       var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       function selectedValues() {{
@@ -854,6 +808,16 @@ def render_page_choose_two(
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }}
+      }});
+
+      showBtn.addEventListener("click", function () {{
+        CORRECT.forEach(function (value) {{
+          var input = document.querySelector('input[name="{name}"][value="' + value + '"]');
+          if (input) input.checked = true;
+        }});
+        answerBox.style.display = "block";
+        answerBox.className = "answer correct";
+        answerBox.textContent = CORRECT_MSG;
       }});
     }})();
   </script>

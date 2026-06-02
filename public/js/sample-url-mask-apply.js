@@ -264,7 +264,7 @@
     var target = getSlugAndMap();
     if (!target) return;
     var host = document.querySelector("main.card") || document.querySelector("main");
-    if (!host || host.querySelector(".ccna-objective-tag, .secplus-objective-tag")) return;
+    if (!host || host.querySelector(".ccna-objective-tag, .secplus-objective-tag, .question-topic-meta")) return;
 
     var pathLower = (location.pathname || "").toLowerCase();
     try {

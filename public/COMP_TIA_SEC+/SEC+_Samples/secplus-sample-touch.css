@@ -1,4 +1,4 @@
-/* CompTIA Security+ sample pages — touch-friendly (phones / tablets) */
+/* CompTIA Security+ sample / question pages — touch-friendly */
 html {
   -webkit-text-size-adjust: 100%;
 }
@@ -26,7 +26,7 @@ html {
   height: 52px;
 }
 .site-logo-corner:focus-visible {
-  outline: 2px solid #a78bfa;
+  outline: 2px solid #4f84d8;
   outline-offset: 3px;
 }
 
@@ -49,18 +49,190 @@ body {
   height: 22px;
 }
 
-.actions button,
-.next-link {
+.answer-actions {
+  width: 100%;
+}
+
+.answer-actions .nav-check,
+.answer-side-actions .nav-show-answer {
+  flex: 0 0 auto !important;
+  width: auto !important;
   min-height: 48px;
   padding: 12px 18px;
   box-sizing: border-box;
   touch-action: manipulation;
 }
 
+.review-mark-box {
+  min-height: 48px;
+  min-width: 48px;
+  touch-action: manipulation;
+}
+
+.review-mark-box input {
+  width: 22px !important;
+  height: 22px !important;
+}
+
+.question-nav .nav-link,
 .next-link {
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
+}
+
+/* Light question UI (bank + samples) */
+body.secplus-question-ui,
+body.secplus-static-sample,
+body.secplus-sample-guest-ui {
+  padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
+  background: #ffffff !important;
+  color: #1a3d6e;
+  position: relative;
+}
+
+body.secplus-question-ui .question-shell,
+body.secplus-static-sample .question-shell {
+  width: min(900px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+  z-index: 1;
+}
+
+body.secplus-question-ui .question-shell .site-logo-corner,
+body.secplus-static-sample .question-shell .site-logo-corner {
+  position: static !important;
+  top: auto !important;
+  right: auto !important;
+  align-self: flex-end;
+  margin: 0 0 2rem;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  backdrop-filter: none !important;
+}
+
+body.secplus-question-ui .page-logo-watermark,
+body.secplus-static-sample .page-logo-watermark {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+body.secplus-question-ui .page-logo-watermark img,
+body.secplus-static-sample .page-logo-watermark img {
+  width: min(85vw, 720px);
+  max-height: 85vh;
+  height: auto;
+  object-fit: contain;
+  opacity: 0.16;
+}
+
+body.secplus-question-ui .card,
+body.secplus-question-ui main.card,
+body.secplus-static-sample .card,
+body.secplus-static-sample main.card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #1a3d6e;
+}
+
+body.secplus-question-ui h1,
+body.secplus-static-sample h1 {
+  color: #1a3d6e;
+}
+
+body.secplus-question-ui .choice,
+body.secplus-static-sample .choice {
+  background: #254b8a;
+  border: 1px solid #3d6dbb;
+  color: #e6edf3;
+}
+
+body.secplus-question-ui .ccna-practice-progress,
+body.secplus-question-ui .question-topic-meta,
+body.secplus-static-sample .ccna-practice-progress,
+body.secplus-static-sample .question-topic-meta {
+  color: #1a3d6e;
+}
+
+body.secplus-question-ui .review-mark-box,
+body.secplus-static-sample .review-mark-box {
+  background: transparent !important;
+  border: 1px solid #3d6dbb;
+  color: #1a3d6e;
+}
+
+body.secplus-question-ui .review-mark-box input,
+body.secplus-static-sample .review-mark-box input {
+  accent-color: #1a3d6e;
+}
+
+body.secplus-question-ui .review-mark-box.is-flagged,
+body.secplus-static-sample .review-mark-box.is-flagged {
+  background: transparent !important;
+  border-color: #3d6dbb;
+  color: #1a3d6e;
+}
+
+nav.sim-nav.secplus-sample-sim-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+  background: rgba(11, 16, 32, 0.94);
+  border-top: 1px solid #2d3b5a;
+  backdrop-filter: blur(10px);
+}
+
+nav.sim-nav.secplus-sample-sim-nav .sim-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: #254b8a;
+  border: 1px solid #3d6dbb;
+  color: #e6edf3;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-weight: 700;
+  min-width: 5.5rem;
+  min-height: 48px;
+  text-align: center;
+  box-sizing: border-box;
+  touch-action: manipulation;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+nav.sim-nav.secplus-sample-sim-nav .sim-nav-btn:hover {
+  filter: brightness(1.08);
+}
+
+nav.sim-nav.secplus-sample-sim-nav .sim-nav-home {
+  background: #1a3d6e;
+}
+
+nav.sim-nav.secplus-sample-sim-nav .sim-nav-btn--disabled {
+  opacity: 0.35;
+  pointer-events: none;
+  cursor: default;
 }
 
 @media (max-width: 760px) {
@@ -73,19 +245,15 @@ body {
   main.card {
     width: 100% !important;
     max-width: 100% !important;
-    padding: 16px !important;
-    border-radius: 12px !important;
+    padding: 0 !important;
     box-sizing: border-box !important;
   }
 
-  .actions button,
-  .next-link,
-  .sim-nav-btn {
-    min-height: 48px !important;
-    flex: 1 1 140px !important;
-    padding: 12px 14px !important;
-    box-sizing: border-box !important;
-    white-space: normal !important;
+  .answer-actions .nav-check,
+  .answer-side-actions .nav-show-answer {
+    align-self: flex-start !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
   }
 
   .site-logo-corner {
@@ -93,7 +261,7 @@ body {
     right: max(8px, env(safe-area-inset-right, 0px)) !important;
   }
 
-  .sim-nav {
+  nav.sim-nav.secplus-sample-sim-nav {
     overflow-x: auto !important;
     justify-content: flex-start !important;
     -webkit-overflow-scrolling: touch;
