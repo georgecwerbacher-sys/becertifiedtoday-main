@@ -692,6 +692,7 @@
     </div>
   </div>
 
+  <script src="/js/ccna-free-assessment-storage.js"></script>
   <script type="module">
     /** localStorage: one completed free assessment per browser. */
     var LS_FREE_ASSESSMENT = "bcc_ccna_free_assessment_v1";
@@ -751,13 +752,35 @@
         var raw = localStorage.getItem(LS_FREE_SIM);
         if (!raw) return false;
         var o = JSON.parse(raw);
-        return !!(o && o.email && o.viaLeadApi === true && o.consumed !== true);
+        if (!o || o.consumed === true) return false;
+        if (o.viaGuest === true) return true;
+        return !!(o.email && o.viaLeadApi === true);
       } catch (e) {
         return false;
       }
     }
 
+    function hasFreeAccess() {
+      if (typeof window.ccnaFreeSimAccessActive === "function" && window.ccnaFreeSimAccessActive()) {
+        return true;
+      }
+      return hasLeadUnlock();
+    }
+
+    function ensureGuestFreeAccess() {
+      if (assessmentCompleted()) return false;
+      if (hasFreeAccess()) return true;
+      if (typeof window.grantCcnaGuestFreeSimAccess === "function") {
+        return window.grantCcnaGuestFreeSimAccess();
+      }
+      return true;
+    }
+
     function markLeadSimConsumed() {
+      if (typeof window.markCcnaFreeSimConsumed === "function") {
+        window.markCcnaFreeSimConsumed();
+        return;
+      }
       try {
         var raw = localStorage.getItem(LS_FREE_SIM);
         if (!raw) return;
@@ -2026,16 +2049,14 @@
 
     await loadBlueprintLine();
 
-    if (!bypass && !hasLeadUnlock()) {
-      gateStatus.textContent =
-        "Unlock the free timed simulation with your email on the CCNA home page first.";
-      gateStatus.className = "status-bad";
-      document.getElementById("gateStartWrap").hidden = true;
-      var gateBack = document.getElementById("gateBackLink");
-      if (gateBack) gateBack.href = "/ccna-home.html#ccna-lead-capture";
-    } else if (!bypass && assessmentCompleted()) {
+    if (!bypass && assessmentCompleted()) {
       gateStatus.textContent = "This browser has already completed the free CCNA assessment. Use the CCNA home page for samples, the full timed simulation, or 30-day portal access.";
       gateStatus.className = "status-bad";
+    } else if (!bypass) {
+      ensureGuestFreeAccess();
+      sessionOk = true;
+      gateStatus.className = "status-ok";
+      showExamGateStartOptions();
     } else {
       sessionOk = true;
       gateStatus.className = "status-ok";

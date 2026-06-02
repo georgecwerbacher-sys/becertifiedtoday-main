@@ -1286,6 +1286,71 @@
     .samples-stack .format-sample--main-cta .cta-main {
       width: 100%;
     }
+    .assessment-card {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .assessment-details {
+      margin: 14px 0 0;
+      padding-left: 1.2rem;
+      color: #b8c3d6;
+      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
+      line-height: 1.55;
+    }
+    .assessment-details li {
+      margin: 6px 0;
+    }
+    .assessment-cta-wrap {
+      margin: 22px 0 0;
+      text-align: center;
+    }
+    .assessment-cta-panel {
+      margin: 0;
+      padding: clamp(20px, 4vw, 28px);
+      border-radius: 14px;
+      border: 2px solid rgba(99, 179, 120, 0.55);
+      background: linear-gradient(180deg, rgba(35, 72, 52, 0.38) 0%, rgba(13, 21, 40, 0.72) 100%);
+      box-shadow:
+        0 0 0 1px rgba(99, 179, 120, 0.14),
+        0 14px 36px rgba(0, 0, 0, 0.32);
+    }
+    .assessment-cta-kicker {
+      margin: 0 0 14px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #8fd4a8;
+    }
+    .assessment-cta-panel .cta-main {
+      font-size: clamp(1.05rem, 2.8vw, 1.22rem);
+      padding: 18px 28px;
+      min-height: 58px;
+      letter-spacing: 0.03em;
+      border-color: rgba(140, 210, 170, 0.55);
+      background: linear-gradient(165deg, #45a872 0%, #2f8f58 42%, #247048 100%);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.18) inset,
+        0 10px 32px rgba(36, 112, 72, 0.48);
+    }
+    .assessment-cta-panel .cta-main:hover {
+      color: #fff;
+      filter: brightness(1.08);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.22) inset,
+        0 12px 38px rgba(36, 112, 72, 0.58);
+    }
+    .assessment-cta-note {
+      margin: 12px 0 0;
+      font-size: 0.88rem;
+      color: #b8dcc4;
+      line-height: 1.45;
+    }
+    .cta-main--muted {
+      opacity: 0.92;
+      background: linear-gradient(165deg, #5a6a7a 0%, #475569 100%);
+      box-shadow: none;
+    }
     .format-card h3 {
       margin: 0 0 10px;
       font-size: clamp(1.02rem, 2.4vw, 1.12rem);
@@ -2164,42 +2229,48 @@
             </ul>
           </div>
 
-          <section class="lead-capture-section" id="encor-lead-capture" aria-labelledby="encor-lead-capture-title">
+          <section
+            class="lead-capture-section assessment-card"
+            id="encor-lead-capture"
+            aria-labelledby="encor-lead-capture-title"
+          >
             <p class="lead-capture-badge">Free · 45 minutes · no checkout</p>
             <h2 id="encor-lead-capture-title">Start your free ENCOR 350-401 timed simulation</h2>
             <p class="lead-capture-lead">
-              Enter your email to unlock a <strong>45-minute sample exam</strong> in your browser:
+              Take a <strong>45-minute sample exam</strong> in your browser—no email required:
               <strong>20 multiple-choice questions</strong>, <strong>2 drag-and-drop</strong> items, and the
               <strong>ACL/CoPP CLI lab</strong>—the same mix of item types you will see on test day.
             </p>
-            <ul class="lead-capture-list">
+            <ul class="lead-capture-list assessment-details">
               <li><strong>Back</strong>, <strong>Home</strong>, and <strong>Next</strong> through the mixed set</li>
               <li>Uses the same guest ENCOR sample pool as the previews below</li>
-              <li>One free unlock per browser after email opt-in</li>
+              <li>One free attempt per browser</li>
               <li>Ready for a full dry run? <a href="#purchase">120-minute simulation — $9.99</a> or portal access above</li>
             </ul>
-            <p class="lead-capture-open-link" data-lead-open-sim hidden>
-              Already unlocked on this browser? <a href="/CCNP-ENCOR-Study/test-simulation-runner.html?free=1&amp;welcome=1">Continue your free simulation →</a>
+            <p class="lead-capture-open-link" data-encor-continue-free-sim hidden>
+              In progress on this browser?
+              <a href="/CCNP-ENCOR-Study/test-simulation-runner.html?free=1&amp;welcome=1">Continue your free simulation →</a>
             </p>
-            <div data-lead-form-wrap>
-              <form class="lead-capture-form" data-encor-lead-form action="/api/lead-capture" method="post" novalidate>
-                <label>
-                  Email
-                  <input type="email" name="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required />
-                </label>
-                <label class="lead-capture-honeypot" aria-hidden="true">
-                  Company website
-                  <input type="text" name="company_website" tabindex="-1" autocomplete="off" />
-                </label>
-                <label class="lead-capture-consent">
-                  <input type="checkbox" name="lead_consent" value="1" required />
-                  <span>Start my free simulation and send occasional ENCOR exam prep tips — unsubscribe anytime.</span>
-                </label>
-                <button type="submit" class="cta-main">Start free simulation</button>
-                <p class="lead-capture-message" data-lead-message hidden></p>
-              </form>
-              <p class="lead-capture-fine">Exam prep only — not affiliated with Cisco. Prefer no email? <a href="/sample?track=encor-questions">Try free sample questions</a>.</p>
+            <div class="assessment-cta-wrap">
+              <div class="assessment-cta-panel">
+                <p class="assessment-cta-kicker">Free sample exam</p>
+                <a
+                  class="cta-main"
+                  href="/CCNP-ENCOR-Study/test-simulation-runner.html?free=1&amp;welcome=1"
+                  data-encor-start-free-sim
+                  data-encor-start-method="encor_free_sim_landing"
+                  >Start free timed simulation</a
+                >
+                <p class="assessment-cta-note" data-encor-free-sim-consumed-note hidden>
+                  You have already completed the free sample on this browser.
+                  <a href="#purchase">Get the full 120-minute simulation or portal access</a>.
+                </p>
+              </div>
             </div>
+            <p class="lead-capture-fine">
+              Exam prep only — not affiliated with Cisco. Want a shorter preview first?
+              <a href="/sample?track=encor-questions">Try free sample questions</a>.
+            </p>
           </section>
 
           <div class="samples-stack" id="encor-samples">
@@ -2854,6 +2925,7 @@
       });
     });
   </script>
+  <script src="/CCNP-ENCOR-Study/js/encor-test-sim-storage.js" defer></script>
   <script src="/js/encor-lead-capture.js" defer></script>
 </body>
 </html>

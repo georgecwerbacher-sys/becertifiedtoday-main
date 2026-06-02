@@ -6,27 +6,61 @@
   var LS_TEMP_TEST = "bcc_encor_test_sim_temp_v1";
   var LS_FREE_SIM = "bcc_encor_free_sim_v1";
 
-  function readEncorFreeSimRecord() {
+  function readEncorFreeSimRecordRaw() {
     try {
       var raw = localStorage.getItem(LS_FREE_SIM);
       if (!raw) return null;
-      return JSON.parse(raw);
+      var o = JSON.parse(raw);
+      return o && typeof o === "object" ? o : null;
     } catch (e) {
       return null;
     }
   }
 
+  function readEncorFreeSimRecord() {
+    var o = readEncorFreeSimRecordRaw();
+    if (!o || typeof o.email !== "string" || !o.email) return null;
+    return o;
+  }
+
+  function encorFreeSimWasConsumed() {
+    var o = readEncorFreeSimRecordRaw();
+    return !!(o && o.consumed === true);
+  }
+
   function encorFreeSimAccessActive() {
-    var o = readEncorFreeSimRecord();
-    return !!(o && o.consumed !== true && o.email && o.viaLeadApi === true);
+    var o = readEncorFreeSimRecordRaw();
+    if (!o || o.consumed === true) return false;
+    if (o.viaGuest === true) return true;
+    return !!(o.email && o.viaLeadApi === true);
+  }
+
+  function grantEncorGuestFreeSimAccess() {
+    if (encorFreeSimWasConsumed()) return false;
+    try {
+      localStorage.setItem(
+        LS_FREE_SIM,
+        JSON.stringify({
+          email: "",
+          grantedAt: Date.now(),
+          consumed: false,
+          viaGuest: true,
+        })
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   function markEncorFreeSimConsumed() {
     try {
-      var raw = localStorage.getItem(LS_FREE_SIM);
-      if (!raw) return;
-      var o = JSON.parse(raw);
+      var o = readEncorFreeSimRecordRaw();
+      if (!o) {
+        o = { email: "", grantedAt: Date.now(), viaGuest: true };
+      }
       o.consumed = true;
+      o.consumedAt = Date.now();
       localStorage.setItem(LS_FREE_SIM, JSON.stringify(o));
     } catch (e) {}
   }
@@ -138,6 +172,8 @@
   if (typeof window !== "undefined") {
     window.encorPortalPassActive = encorPortalPassActive;
     window.encorFreeSimAccessActive = encorFreeSimAccessActive;
+    window.encorFreeSimWasConsumed = encorFreeSimWasConsumed;
+    window.grantEncorGuestFreeSimAccess = grantEncorGuestFreeSimAccess;
     window.grantEncorTempTestAccess = grantEncorTempTestAccess;
     window.clearEncorTempTestAccess = clearEncorTempTestAccess;
     window.readEncorStoredStripeSessionId = readEncorStoredStripeSessionId;

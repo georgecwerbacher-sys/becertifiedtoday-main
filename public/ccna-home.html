@@ -1682,6 +1682,11 @@
       color: #b8dcc4;
       line-height: 1.45;
     }
+    .cta-main--muted {
+      opacity: 0.92;
+      background: linear-gradient(165deg, #5a6a7a 0%, #475569 100%);
+      box-shadow: none;
+    }
     .format-card h3 {
       margin: 0 0 10px;
       font-size: clamp(1.02rem, 2.4vw, 1.12rem);
@@ -2561,42 +2566,48 @@
             </ul>
           </div>
 
-          <section class="lead-capture-section" id="ccna-lead-capture" aria-labelledby="ccna-lead-capture-title">
+          <section
+            class="lead-capture-section assessment-card"
+            id="ccna-lead-capture"
+            aria-labelledby="ccna-lead-capture-title"
+          >
             <p class="lead-capture-badge">Free · 45 minutes · no checkout</p>
             <h2 id="ccna-lead-capture-title">Start your free CCNA 200-301 timed simulation</h2>
             <p class="lead-capture-lead">
-              Enter your email to unlock a <strong>45-minute sample exam</strong> in your browser:
+              Take a <strong>45-minute sample exam</strong> in your browser—no email required:
               <strong>20 multiple-choice questions</strong>, <strong>2 drag-and-drop</strong> items, and the
               <strong>VLAN CLI lab</strong>—the same mix of item types you will see on test day.
             </p>
-            <ul class="lead-capture-list">
+            <ul class="lead-capture-list assessment-details">
               <li><strong>Back</strong>, <strong>Home</strong>, and <strong>Next</strong> through the mixed set</li>
               <li>Scaled score and domain breakdown on the results screen when you finish</li>
-              <li>One free attempt per browser after email unlock</li>
+              <li>One free attempt per browser</li>
               <li>Ready for a full dry run? <a href="#purchase">120-minute simulation — $9.99</a> or portal access above</li>
             </ul>
-            <p class="lead-capture-open-link" data-lead-open-sim hidden>
-              Already unlocked on this browser? <a href="/CCNA_Sim_EXAM/free-assessment.html?welcome=1">Continue your free simulation →</a>
+            <p class="lead-capture-open-link" data-ccna-continue-free-sim hidden>
+              In progress on this browser?
+              <a href="/CCNA_Sim_EXAM/free-assessment.html?welcome=1">Continue your free simulation →</a>
             </p>
-            <div data-lead-form-wrap>
-              <form class="lead-capture-form" data-ccna-lead-form action="/api/lead-capture" method="post" novalidate>
-                <label>
-                  Email
-                  <input type="email" name="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required />
-                </label>
-                <label class="lead-capture-honeypot" aria-hidden="true">
-                  Company website
-                  <input type="text" name="company_website" tabindex="-1" autocomplete="off" />
-                </label>
-                <label class="lead-capture-consent">
-                  <input type="checkbox" name="lead_consent" value="1" required />
-                  <span>Start my free simulation and send occasional CCNA exam prep tips — unsubscribe anytime.</span>
-                </label>
-                <button type="submit" class="cta-main">Start free simulation</button>
-                <p class="lead-capture-message" data-lead-message hidden></p>
-              </form>
-              <p class="lead-capture-fine">Exam prep only — not affiliated with Cisco. Prefer no email? <a href="/sample?track=ccna-questions">Try free sample questions</a>.</p>
+            <div class="assessment-cta-wrap">
+              <div class="assessment-cta-panel">
+                <p class="assessment-cta-kicker">Free sample exam</p>
+                <a
+                  class="cta-main"
+                  href="/CCNA_Sim_EXAM/free-assessment.html?welcome=1"
+                  data-ccna-start-free-sim
+                  data-ccna-start-method="ccna_free_sim_landing"
+                  >Start free timed simulation</a
+                >
+                <p class="assessment-cta-note" data-ccna-free-sim-consumed-note hidden>
+                  You have already completed the free sample on this browser.
+                  <a href="#purchase">Get the full 120-minute simulation or portal access</a>.
+                </p>
+              </div>
             </div>
+            <p class="lead-capture-fine">
+              Exam prep only — not affiliated with Cisco. Want a shorter preview first?
+              <a href="/sample?track=ccna-questions">Try free sample questions</a>.
+            </p>
           </section>
 
           <div class="samples-stack" id="ccna-samples">
@@ -3115,6 +3126,7 @@
       restorePortalAccessOnLoad().finally(wirePortalNav);
     });
   </script>
+  <script src="/js/ccna-free-assessment-storage.js" defer></script>
   <script src="/js/ccna-lead-capture.js" defer></script>
 </body>
 </html>

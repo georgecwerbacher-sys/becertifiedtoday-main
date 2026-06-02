@@ -7,6 +7,7 @@
       hashRe: /^#ccnaHS=(\d+)$/,
       hashPrefix: "ccnaHS=",
       maskPath: "/sample",
+      storageScript: "/js/ccna-free-assessment-storage.js",
       leadScript: "/js/ccna-lead-capture.js",
       showLeadModal: function () {
         return window.showCcnaFreeSimLeadModal;
@@ -19,6 +20,7 @@
       hashRe: /^#encorHS=(\d+)$/,
       hashPrefix: "encorHS=",
       maskPath: "/sample",
+      storageScript: "/CCNP-ENCOR-Study/js/encor-test-sim-storage.js",
       leadScript: "/js/encor-lead-capture.js",
       showLeadModal: function () {
         return window.showEncorFreeSimLeadModal;
@@ -189,6 +191,27 @@
     location.href = url;
   }
 
+  function loadScriptOnce(src, onLoad, onError) {
+    var existing = document.querySelector('script[src="' + src + '"]');
+    if (existing) {
+      if (existing.getAttribute("data-bcc-loaded") === "1") {
+        onLoad();
+        return;
+      }
+      existing.addEventListener("load", onLoad, { once: true });
+      existing.addEventListener("error", onError, { once: true });
+      return;
+    }
+    var s = document.createElement("script");
+    s.src = src;
+    s.onload = function () {
+      s.setAttribute("data-bcc-loaded", "1");
+      onLoad();
+    };
+    s.onerror = onError;
+    (document.body || document.head).appendChild(s);
+  }
+
   function loadLeadCapture(session, callback) {
     var cfg = resolveLeadConfig(session);
 
@@ -202,36 +225,25 @@
       return;
     }
 
-    var existing = document.querySelector('script[src="' + cfg.leadScript + '"]');
-    if (existing) {
-      if (typeof cfg.showLeadModal() === "function") {
-        invoke();
-        return;
-      }
-      existing.addEventListener("load", invoke, { once: true });
-      existing.addEventListener(
-        "error",
+    function loadLeadScript() {
+      loadScriptOnce(
+        cfg.leadScript,
+        invoke,
         function () {
           navigateAfterSample(
             (session.finishHome || "/") + (session.leadCaptureHash || ""),
             session
           );
-        },
-        { once: true }
+        }
       );
+    }
+
+    if (cfg.storageScript) {
+      loadScriptOnce(cfg.storageScript, loadLeadScript, loadLeadScript);
       return;
     }
 
-    var s = document.createElement("script");
-    s.src = cfg.leadScript;
-    s.onload = invoke;
-    s.onerror = function () {
-      navigateAfterSample(
-        (session.finishHome || "/") + (session.leadCaptureHash || ""),
-        session
-      );
-    };
-    (document.body || document.head).appendChild(s);
+    loadLeadScript();
   }
 
   function openFreeSimLeadModal(session, finishHome) {

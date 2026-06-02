@@ -39,11 +39,13 @@
       function encorFreeSimAllowed() {
         try {
           var raw = localStorage.getItem("bcc_encor_free_sim_v1");
-          if (!raw) return false;
+          if (!raw) return true;
           var o = JSON.parse(raw);
-          return !!(o && o.email && o.viaLeadApi === true && o.consumed !== true);
+          if (o && o.consumed === true) return false;
+          if (o && o.viaGuest === true) return true;
+          return !!(o && o.email && o.viaLeadApi === true);
         } catch (e) {
-          return false;
+          return true;
         }
       }
 
@@ -87,7 +89,7 @@
       }
       if (track === "encor-free-sim") {
         if (!encorFreeSimAllowed()) {
-          location.replace(finishEncor + "#encor-lead-capture");
+          location.replace(finishEncor + "#purchase");
           return;
         }
         var welcome = params.get("welcome") === "1" ? "&welcome=1" : "";

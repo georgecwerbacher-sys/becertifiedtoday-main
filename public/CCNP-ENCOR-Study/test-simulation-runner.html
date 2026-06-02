@@ -384,7 +384,6 @@
   <script src="/CCNP-ENCOR-Study/js/encor-portal-storage.js" defer></script>
   <script src="/CCNP-ENCOR-Study/js/encor-test-sim-storage.js" defer></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-30d-checkout.js" defer></script>
-  <script src="/js/encor-lead-capture.js" defer></script>
 </head>
 <body>
   <div id="gatePanel" class="gate-wrap">
@@ -531,10 +530,22 @@
 
       function persistFreeModeFlag() {
         if (!freeMode) return;
-        if (typeof encorFreeSimAccessActive === "function" && !encorFreeSimAccessActive()) return;
         try {
           sessionStorage.setItem("encorTestSimFree", "1");
         } catch (e) {}
+      }
+
+      function ensureGuestFreeSimAccess() {
+        if (typeof encorFreeSimAccessActive === "function" && encorFreeSimAccessActive()) {
+          return true;
+        }
+        if (typeof encorFreeSimWasConsumed === "function" && encorFreeSimWasConsumed()) {
+          return false;
+        }
+        if (typeof grantEncorGuestFreeSimAccess === "function") {
+          return grantEncorGuestFreeSimAccess();
+        }
+        return true;
       }
 
       function freeBlueprintUrl() {
@@ -812,18 +823,24 @@
         }
 
         if (freeMode) {
+          if (typeof encorFreeSimWasConsumed === "function" && encorFreeSimWasConsumed()) {
+            gateStatus.textContent =
+              "This browser has already completed the free ENCOR sample. Use CCNP home for samples, the full timed simulation, or portal access.";
+            gateStatus.className = "status-bad";
+            return;
+          }
+          ensureGuestFreeSimAccess();
           if (typeof encorFreeSimAccessActive === "function" && encorFreeSimAccessActive()) {
             sessionOk = true;
             persistFreeModeFlag();
             if (params.get("welcome") === "1") {
               gateStatus.textContent =
-                "Your free 45-minute ENCOR sample is unlocked. Start when you are ready — use Next and Quit in the footer like the full timed exam.";
+                "Your free 45-minute ENCOR sample is ready. Start when you are ready — use Next and Quit in the footer like the full timed exam.";
             }
             showGateStartOptions();
             return;
           }
-          gateStatus.textContent =
-            "Unlock the free timed simulation from CCNP home first (email opt-in on the landing page).";
+          gateStatus.textContent = "Could not start the free sample. Return to CCNP home and try again.";
           gateStatus.className = "status-bad";
           return;
         }
