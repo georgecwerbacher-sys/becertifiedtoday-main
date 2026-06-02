@@ -2086,10 +2086,10 @@
         <a
           id="ccnpPortalHeaderBtn"
           class="ccna-portal-header-btn ccna-portal-header-btn--active"
-          href="/ccnp-home.html"
+          href="#ccnp-portal-gate"
           data-ccnp-portal-nav
-          title="CCNP ENCOR exam prep — requires active access on this browser"
-          aria-label="CCNP ENCOR exam prep — open when you have active access, or see how to purchase"
+          title="CCNP ENCOR exam prep — practice portal (library access required)"
+          aria-label="CCNP ENCOR exam prep — open practice portal when you have active access, or see how to purchase"
           >CCNP ENCOR exam prep</a
         >
       </div>
@@ -2784,11 +2784,12 @@
     })();
   </script>
   <div
-    id="ccnpPortalGateRoot"
+    id="ccnp-portal-gate"
     class="ccna-sim-promo-root"
     hidden
     role="presentation"
     aria-hidden="true"
+    tabindex="-1"
   >
     <div class="ccna-sim-promo-backdrop" data-ccnp-portal-gate-dismiss tabindex="-1"></div>
     <div
@@ -2801,19 +2802,20 @@
       <button type="button" class="ccna-sim-promo-close" data-ccnp-portal-gate-dismiss aria-label="Close dialog">
         ×
       </button>
-      <p class="ccna-sim-promo-eyebrow">CCNP ENCOR exam prep</p>
-      <h2 id="ccnpPortalGateTitle">Portal access required</h2>
+      <p class="ccna-sim-promo-eyebrow">CCNP ENCOR practice portal</p>
+      <h2 id="ccnpPortalGateTitle">Library access required</h2>
       <p class="ccna-sim-promo-lead">
-        The CCNP ENCOR practice portal is for learners with <strong>active library access</strong> on
+        The ENCOR practice portal is for learners with <strong>active library access</strong> on
         <strong>this browser</strong> (after Stripe checkout on this site). If you have not purchased yet, choose
         <strong>10-day or 30-day access</strong> below—no recurring subscription.
       </p>
       <p class="ccna-portal-gate-help">
-        Already paid but blocked?
-        <a class="ccna-portal-gate-email-link" href="/CCNP-ENCOR-Study/encor-portal-request-link.html">Email me a portal link</a>
+        Already registered?
+        <a class="ccna-portal-gate-email-link" href="/CCNP-ENCOR-Study/encor-portal-request-link.html">Verify your email for a portal link</a>
+        — after you confirm, we send you to the ENCOR training portal.
       </p>
       <p class="ccna-portal-gate-help ccna-portal-gate-help--secondary">
-        On a new device or browser? That’s normal. Submit your checkout email from this device and we’ll restore portal access here.
+        Already paid but blocked on this device? Submit the same checkout email from this browser and we’ll restore access here.
       </p>
       <div class="ccna-sim-promo-actions">
         <button
@@ -2832,7 +2834,12 @@
         >
           Purchase 10-day access
         </button>
-        <a class="ccna-sim-promo-secondary" href="#purchase" data-ccnp-portal-gate-dismiss>View all options</a>
+        <a
+          class="ccna-sim-promo-secondary"
+          href="/ccnp-home.html"
+          data-ccnp-portal-gate-dismiss
+          >Return to CCNP ENCOR home</a
+        >
         <button type="button" class="ccna-sim-promo-secondary" data-ccnp-portal-gate-dismiss>Close</button>
       </div>
     </div>
@@ -2842,8 +2849,9 @@
   <script src="/CCNP-ENCOR-Study/js/encor-test-checkout.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      var gateRoot = document.getElementById("ccnpPortalGateRoot");
+      var gateRoot = document.getElementById("ccnp-portal-gate");
       var gatePanel = gateRoot && gateRoot.querySelector(".ccna-sim-promo-panel");
+      var PORTAL_URL = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html";
 
       function hasPortalAccess() {
         return typeof window.bccEncorPortalAccessActive === "function" && window.bccEncorPortalAccessActive();
@@ -2860,6 +2868,11 @@
         gateRoot.setAttribute("aria-hidden", "true");
         document.body.style.overflow = prevOverflow;
         document.removeEventListener("keydown", onKeyGate);
+        if (location.hash === "#ccnp-portal-gate") {
+          try {
+            history.replaceState(null, "", location.pathname + location.search);
+          } catch (e) {}
+        }
       }
 
       function openGate() {
@@ -2889,16 +2902,56 @@
         });
       }
 
+      function syncPortalNavHref() {
+        var href = hasPortalAccess() ? PORTAL_URL : "#ccnp-portal-gate";
+        document.querySelectorAll("[data-ccnp-portal-nav]").forEach(function (el) {
+          el.setAttribute("href", href);
+        });
+      }
+
+      function goToPortal() {
+        window.location.href = PORTAL_URL;
+      }
+
       function onPortalNavClick(ev) {
-        if (hasPortalAccess()) return;
         ev.preventDefault();
-        openGate();
+        if (hasPortalAccess()) {
+          goToPortal();
+          return;
+        }
+        var chain = Promise.resolve();
+        if (typeof window.bccApplyEncorPortalCheckoutFromUrl === "function") {
+          chain = chain.then(function () {
+            return window.bccApplyEncorPortalCheckoutFromUrl(null, true);
+          });
+        }
+        if (typeof window.bccRestoreEncorPortalAccess === "function") {
+          chain = chain.then(function () {
+            return window.bccRestoreEncorPortalAccess();
+          });
+        }
+        chain
+          .then(function () {
+            syncPortalNavHref();
+            if (hasPortalAccess()) {
+              goToPortal();
+            } else {
+              openGate();
+            }
+          })
+          .catch(function () {
+            openGate();
+          });
       }
 
       function wirePortalNav() {
+        syncPortalNavHref();
         document.querySelectorAll("[data-ccnp-portal-nav]").forEach(function (el) {
           el.addEventListener("click", onPortalNavClick);
         });
+        if (location.hash === "#ccnp-portal-gate" && !hasPortalAccess()) {
+          openGate();
+        }
       }
 
       function restorePortalAccessOnLoad() {
@@ -2918,9 +2971,15 @@
 
       restorePortalAccessOnLoad().finally(wirePortalNav);
 
+      window.addEventListener("hashchange", function () {
+        if (location.hash === "#ccnp-portal-gate" && !hasPortalAccess()) {
+          openGate();
+        }
+      });
+
       window.addEventListener("storage", function (ev) {
         if (ev.key === "bcc_encor_portal_v1") {
-          /* access may have changed in another tab */
+          syncPortalNavHref();
         }
       });
     });
