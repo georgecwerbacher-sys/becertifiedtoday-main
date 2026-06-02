@@ -6,12 +6,27 @@ import {
   checkoutSessionIsPaid,
   inferProductIdFromCheckoutSession,
   isCcnaPortalProduct,
+  isCcnaTestSimulationProduct,
   portalAccessExpiresAtMs,
 } from "./ccna-portal-stripe.js";
 import {
   enrichPortalRowsWithCheckout as enrichPortalRowsShared,
   listCcnaPortalSubscribersFromStripe,
 } from "./portal-subscribers-stripe.js";
+import {
+  discoverCheckoutSessionsForEmail,
+  SESSION_EXPAND,
+} from "./portal-checkout-email-lookup.js";
+
+const SESSION_EXPAND_LOCAL = SESSION_EXPAND;
+
+function needsSessionExpand(session) {
+  return (
+    !session.line_items?.data?.length ||
+    !session.payment_link ||
+    typeof session.payment_link === "string"
+  );
+}
 
 /**
  * Scan Stripe customers for CCNA portal metadata (no separate DB).
@@ -35,46 +50,53 @@ export async function enrichPortalRowsWithCheckout(stripe, rows) {
 }
 
 /**
- * Find the best active CCNA portal checkout for an email (metadata, customer sessions, or Stripe search).
+ * Scan Stripe for CCNA portal and timed-exam purchases for an email.
  * @param {import('stripe').Stripe} stripe
  * @param {string} email
  */
-export async function findActivePortalSessionForEmail(stripe, email) {
+export async function scanCcnaCheckoutSessionsForEmail(stripe, email) {
   const normalized = String(email || "")
     .trim()
     .toLowerCase();
-  if (!normalized) return null;
+  if (!normalized) {
+    return { bestPortal: null, hadExpiredPortal: false, bestTestSim: null };
+  }
 
   /** @type {{ session: import('stripe').Stripe.Checkout.Session, productId: string, accessExpiresAtMs: number } | null} */
-  let best = null;
+  let bestPortal = null;
+  let hadExpiredPortal = false;
+  /** @type {{ session: import('stripe').Stripe.Checkout.Session, productId: string, accessExpiresAtMs: number } | null} */
+  let bestTestSim = null;
 
-  function consider(session, productId, accessExpiresAtMs) {
+  function considerPortal(session, productId, accessExpiresAtMs) {
+    if (accessExpiresAtMs > Date.now()) {
+      if (!bestPortal || accessExpiresAtMs > bestPortal.accessExpiresAtMs) {
+        bestPortal = { session, productId, accessExpiresAtMs };
+      }
+    } else {
+      hadExpiredPortal = true;
+    }
+  }
+
+  function considerTestSim(session, productId, accessExpiresAtMs) {
     if (accessExpiresAtMs <= Date.now()) return;
-    if (!best || accessExpiresAtMs > best.accessExpiresAtMs) {
-      best = { session, productId, accessExpiresAtMs };
+    if (!bestTestSim || accessExpiresAtMs > bestTestSim.accessExpiresAtMs) {
+      bestTestSim = { session, productId, accessExpiresAtMs };
     }
   }
 
   async function evaluateSession(session) {
     if (!checkoutSessionIsPaid(session)) return;
     let full = session;
-    if (
-      !full.line_items?.data?.length ||
-      !full.payment_link ||
-      typeof full.payment_link === "string"
-    ) {
-      full = await stripe.checkout.sessions.retrieve(session.id, {
-        expand: [
-          "payment_intent",
-          "payment_link",
-          "line_items.data.price",
-          "line_items.data.price.product",
-        ],
-      });
+    if (needsSessionExpand(session)) {
+      full = await stripe.checkout.sessions.retrieve(session.id, { expand: SESSION_EXPAND_LOCAL });
     }
     const productId = inferProductIdFromCheckoutSession(full);
-    if (!isCcnaPortalProduct(productId)) return;
-    consider(full, productId, portalAccessExpiresAtMs(full, productId));
+    if (isCcnaPortalProduct(productId)) {
+      considerPortal(full, productId, portalAccessExpiresAtMs(full, productId));
+    } else if (isCcnaTestSimulationProduct(productId)) {
+      considerTestSim(full, productId, portalAccessExpiresAtMs(full, productId));
+    }
   }
 
   const customers = await stripe.customers.list({ email: normalized, limit: 10 });
@@ -83,17 +105,13 @@ export async function findActivePortalSessionForEmail(stripe, email) {
     const m = customer.metadata || {};
     const csId = (m.ccna_portal_last_cs || "").trim();
     const expMs = parseInt(String(m.ccna_portal_access_expires_ms || ""), 10);
-    if (csId.indexOf("cs_") === 0 && Number.isFinite(expMs) && expMs > Date.now()) {
+    if (csId.indexOf("cs_") === 0 && Number.isFinite(expMs)) {
       try {
-        const session = await stripe.checkout.sessions.retrieve(csId, {
-          expand: [
-            "payment_intent",
-            "payment_link",
-            "line_items.data.price",
-            "line_items.data.price.product",
-          ],
-        });
-        await evaluateSession(session);
+        const session = await stripe.checkout.sessions.retrieve(csId, { expand: SESSION_EXPAND_LOCAL });
+        const productId = inferProductIdFromCheckoutSession(session);
+        if (isCcnaPortalProduct(productId)) {
+          considerPortal(session, productId, expMs);
+        }
       } catch (_) {}
     }
 
@@ -110,17 +128,39 @@ export async function findActivePortalSessionForEmail(stripe, email) {
   }
 
   try {
-    const safeEmail = normalized.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-    const searched = await stripe.checkout.sessions.search({
-      query: "customer_details.email:'" + safeEmail + "' AND status:'complete'",
-      limit: 15,
-    });
-    for (let k = 0; k < searched.data.length; k++) {
-      await evaluateSession(searched.data[k]);
+    const discovered = await discoverCheckoutSessionsForEmail(stripe, normalized, { max: 40 });
+    for (let k = 0; k < discovered.length; k++) {
+      await evaluateSession(discovered[k]);
     }
   } catch (e) {
-    console.warn("[ccna-portal] checkout session search skipped:", e.message);
+    console.warn("[ccna-portal] email session discovery skipped:", e.message);
   }
 
-  return best;
+  return { bestPortal, hadExpiredPortal, bestTestSim };
+}
+
+/**
+ * Find the best active CCNA portal checkout for an email (metadata, customer sessions, or Stripe search).
+ * @param {import('stripe').Stripe} stripe
+ * @param {string} email
+ */
+export async function findActivePortalSessionForEmail(stripe, email) {
+  const { bestPortal } = await scanCcnaCheckoutSessionsForEmail(stripe, email);
+  return bestPortal;
+}
+
+/**
+ * @param {import('stripe').Stripe} stripe
+ * @param {string} email
+ */
+export async function getCcnaPurchaseHintsForEmail(stripe, email) {
+  const { bestPortal, hadExpiredPortal, bestTestSim } = await scanCcnaCheckoutSessionsForEmail(
+    stripe,
+    email
+  );
+  return {
+    activePortal: bestPortal,
+    portalExpired: !bestPortal && hadExpiredPortal,
+    timedExamOnly: !bestPortal && !!bestTestSim,
+  };
 }

@@ -18,6 +18,7 @@ import {
 import {
   fulfillPortalCheckoutSession,
   retrievePaidCheckoutSession,
+  trackForPortalProductId,
 } from "../server-lib/portal-checkout-fulfillment.js";
 
 function readJsonBody(req) {
@@ -65,6 +66,14 @@ async function handleGet(req, res, stripe, sessionId) {
   const paid = checkoutSessionIsPaid(session);
   const productId = inferProductIdFromCheckoutSession(session);
   const accessExpiresAt = paid ? portalAccessExpiresAtMs(session, productId) : null;
+
+  if (paid && trackForPortalProductId(productId)) {
+    try {
+      await fulfillPortalCheckoutSession(stripe, session, { sendEmail: false });
+    } catch (e) {
+      console.warn("[verify-checkout-session] portal metadata backfill:", e.message);
+    }
+  }
 
   return res.status(200).json({
     ok: paid,

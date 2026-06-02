@@ -14,7 +14,10 @@ import {
   upsertEncorCustomerPortalMetadata,
   upsertSecplusCustomerPortalMetadata,
 } from "../server-lib/ccna-portal-stripe.js";
-import { findActivePortalSessionForEmail } from "../server-lib/ccna-portal-customers.js";
+import {
+  findActivePortalSessionForEmail,
+  getCcnaPurchaseHintsForEmail,
+} from "../server-lib/ccna-portal-customers.js";
 import { findActiveEncorPortalSessionForEmail } from "../server-lib/encor-portal-customers.js";
 import {
   findActiveSecplusPortalSessionForEmail,
@@ -145,6 +148,29 @@ export default async function handler(req, res) {
     const found = await cfg.findSession(stripe, email);
     if (!found) {
       console.info(`[${cfg.logTag}] magic link request: no active portal purchase for email`);
+      if (track === "ccna") {
+        const hints = await getCcnaPurchaseHintsForEmail(stripe, email);
+        if (hints.timedExamOnly) {
+          return res.status(200).json({
+            ok: true,
+            sent: false,
+            found: false,
+            reason: "test-simulation-only",
+            message:
+              "We found an active $9.99 timed exam purchase for this email, not 10- or 30-day library access. Portal link emails only apply to library passes. Use Restore access with your checkout session ID (cs_…) from your Stripe receipt to unlock the timed exam on this device, or purchase 10-day / 30-day access from CCNA home.",
+          });
+        }
+        if (hints.portalExpired) {
+          return res.status(200).json({
+            ok: true,
+            sent: false,
+            found: false,
+            reason: "portal-expired",
+            message:
+              "CCNA library access for this email has expired. Purchase a new 10-day or 30-day pass from CCNA home if you want the training portal again.",
+          });
+        }
+      }
       if (track === "secplus") {
         const hints = await getSecplusPurchaseHintsForEmail(stripe, email);
         if (hints.timedExamOnly) {
@@ -168,7 +194,19 @@ export default async function handler(req, res) {
           });
         }
       }
-      return res.status(200).json({ ok: true, message: cfg.generic, sent: false, found: false });
+      const noPortalMessage =
+        track === "ccna"
+          ? "No active CCNA library pass was found for that email. Use the exact address from your Stripe receipt. If you only bought the one-time timed exam, use Restore access with your checkout session ID (cs_…) instead. After checkout, open the training portal once so we can link your purchase for email restore."
+          : track === "encor"
+            ? "No active ENCOR library pass was found for that email. Use the same address you entered at Stripe checkout for a 10-day or 30-day purchase. If you only bought the one-time timed exam, use Restore access with your checkout session ID (cs_…) instead."
+            : cfg.generic;
+      return res.status(200).json({
+        ok: true,
+        sent: false,
+        found: false,
+        reason: "no-active-portal",
+        message: noPortalMessage,
+      });
     }
 
     const { session, accessExpiresAtMs } = found;
@@ -199,9 +237,18 @@ export default async function handler(req, res) {
     }
 
     console.info(`[${cfg.logTag}] magic link email sent for active portal purchase`);
-    return res.status(200).json({ ok: true, message: cfg.generic, sent: true, found: true });
+    return res.status(200).json({
+      ok: true,
+      sent: true,
+      found: true,
+      message: "We sent a login link to that email. Check your inbox and spam folder, then open the link on the device where you want to study.",
+    });
   } catch (e) {
     console.error(`portal-request-magic-link (${track}):`, e.message);
-    return res.status(200).json({ ok: true, message: cfg.generic });
+    return res.status(500).json({
+      ok: false,
+      sent: false,
+      error: "Something went wrong while sending the link. Try again in a few minutes or use Restore access with your Stripe checkout session ID.",
+    });
   }
 }

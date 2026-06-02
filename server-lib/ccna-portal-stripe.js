@@ -220,6 +220,10 @@ export function isCcnaPortalProduct(productId) {
   return productId === "ccna-portal-30d" || productId === "ccna-portal-10d";
 }
 
+export function isCcnaTestSimulationProduct(productId) {
+  return productId === "ccna-test-simulation";
+}
+
 export function isEncorPortalProduct(productId) {
   return productId === "encor-portal-30d" || productId === "encor-portal-10d";
 }
