@@ -2415,10 +2415,11 @@
         <a
           id="ccnaPortalHeaderBtn"
           class="ccna-portal-header-btn ccna-portal-header-btn--active"
-          href="#ccna-lead-capture"
-          title="Free CCNA timed simulation — email unlock"
-          aria-label="Start free CCNA timed simulation"
-          >Free CCNA practice</a
+          href="#ccna-portal-gate"
+          data-ccna-portal-nav
+          title="CCNA exam prep — practice portal (library access required)"
+          aria-label="CCNA exam prep — open practice portal when you have active access, or see how to purchase"
+          >CCNA Exam Prep</a
         >
       </div>
     </header>
@@ -2926,11 +2927,12 @@
     </footer>
   </div>
   <div
-    id="ccnaPortalGateRoot"
+    id="ccna-portal-gate"
     class="ccna-sim-promo-root"
     hidden
     role="presentation"
     aria-hidden="true"
+    tabindex="-1"
   >
     <div class="ccna-sim-promo-backdrop" data-ccna-portal-gate-dismiss tabindex="-1"></div>
     <div
@@ -2951,11 +2953,12 @@
         <strong>30-day membership</strong> below—no recurring subscription.
       </p>
       <p class="ccna-portal-gate-help">
-        Already paid but blocked?
-        <a class="ccna-portal-gate-email-link" href="/CCNA-Study/ccna-portal-request-link.html">Email me a portal link</a>
+        Already registered?
+        <a class="ccna-portal-gate-email-link" href="/CCNA-Study/ccna-portal-request-link.html">Verify your email for a portal link</a>
+        — after you confirm, we send you to the CCNA training portal.
       </p>
       <p class="ccna-portal-gate-help ccna-portal-gate-help--secondary">
-        On a new device or browser? That’s normal. Submit your checkout email from this device and we’ll restore portal access here.
+        Already paid but blocked on this device? Submit the same checkout email from this browser and we’ll restore access here.
       </p>
       <div class="ccna-sim-promo-actions">
         <button
@@ -2992,26 +2995,33 @@
       }
     })();
     document.addEventListener("DOMContentLoaded", function () {
-      var gateRoot = document.getElementById("ccnaPortalGateRoot");
+      var gateRoot = document.getElementById("ccna-portal-gate");
       var gatePanel = gateRoot && gateRoot.querySelector(".ccna-sim-promo-panel");
-      var portalBtn = document.getElementById("ccnaPortalHeaderBtn");
-      if (!gateRoot || !gatePanel || !portalBtn) return;
+
+      function hasPortalAccess() {
+        return typeof window.bccPortalAccessActive === "function" && window.bccPortalAccessActive();
+      }
 
       var prevOverflow = "";
       var gateOpen = false;
 
       function closeGate() {
-        if (!gateOpen) return;
+        if (!gateRoot || !gateOpen) return;
         gateOpen = false;
         gateRoot.classList.remove("ccna-sim-promo-root--open");
         gateRoot.setAttribute("hidden", "");
         gateRoot.setAttribute("aria-hidden", "true");
         document.body.style.overflow = prevOverflow;
         document.removeEventListener("keydown", onKeyGate);
+        if (location.hash === "#ccna-portal-gate") {
+          try {
+            history.replaceState(null, "", location.pathname + location.search);
+          } catch (e) {}
+        }
       }
 
       function openGate() {
-        if (gateOpen) return;
+        if (!gateRoot || !gatePanel || gateOpen) return;
         gateOpen = true;
         prevOverflow = document.body.style.overflow;
         document.body.style.overflow = "hidden";
@@ -3029,24 +3039,80 @@
         }
       }
 
-      portalBtn.addEventListener("click", function (ev) {
-        var href = portalBtn.getAttribute("href") || "";
-        if (href.charAt(0) === "#") return;
-        if (portalBtn.classList.contains("ccna-portal-header-btn--unavailable")) {
-          ev.preventDefault();
+      if (gateRoot) {
+        gateRoot.querySelectorAll("[data-ccna-portal-gate-dismiss]").forEach(function (el) {
+          el.addEventListener("click", function () {
+            closeGate();
+          });
+        });
+      }
+
+      var PORTAL_URL = "/CCNA-Study/CCNA_Training_Portal.html";
+
+      function syncPortalNavHref() {
+        var href = hasPortalAccess() ? PORTAL_URL : "#ccna-portal-gate";
+        document.querySelectorAll("[data-ccna-portal-nav]").forEach(function (el) {
+          el.setAttribute("href", href);
+        });
+      }
+
+      function goToPortal() {
+        window.location.href = PORTAL_URL;
+      }
+
+      function onPortalNavClick(ev) {
+        ev.preventDefault();
+        if (hasPortalAccess()) {
+          goToPortal();
           return;
         }
-        var allowed = typeof window.bccPortalAccessActive === "function" && window.bccPortalAccessActive();
-        if (allowed) return;
-        ev.preventDefault();
-        openGate();
-      });
-
-      gateRoot.querySelectorAll("[data-ccna-portal-gate-dismiss]").forEach(function (el) {
-        el.addEventListener("click", function () {
-          closeGate();
+        var chain = Promise.resolve();
+        if (typeof window.bccApplyCcnaPortalCheckoutFromUrl === "function") {
+          chain = chain.then(function () {
+            return window.bccApplyCcnaPortalCheckoutFromUrl(null, true);
+          });
+        }
+        if (typeof window.bccRestoreCcnaPortalAccess === "function") {
+          chain = chain.then(function () {
+            return window.bccRestoreCcnaPortalAccess();
+          });
+        }
+        chain.then(function () {
+          syncPortalNavHref();
+          if (hasPortalAccess()) {
+            goToPortal();
+          } else {
+            openGate();
+          }
         });
-      });
+      }
+
+      function wirePortalNav() {
+        syncPortalNavHref();
+        document.querySelectorAll("[data-ccna-portal-nav]").forEach(function (el) {
+          el.addEventListener("click", onPortalNavClick);
+        });
+        if (location.hash === "#ccna-portal-gate" && !hasPortalAccess()) {
+          openGate();
+        }
+      }
+
+      function restorePortalAccessOnLoad() {
+        var chain = Promise.resolve();
+        if (typeof window.bccApplyCcnaPortalCheckoutFromUrl === "function") {
+          chain = chain.then(function () {
+            return window.bccApplyCcnaPortalCheckoutFromUrl(null, true);
+          });
+        }
+        if (typeof window.bccRestoreCcnaPortalAccess === "function") {
+          chain = chain.then(function () {
+            return window.bccRestoreCcnaPortalAccess();
+          });
+        }
+        return chain;
+      }
+
+      restorePortalAccessOnLoad().finally(wirePortalNav);
     });
   </script>
   <script src="/js/ccna-lead-capture.js" defer></script>

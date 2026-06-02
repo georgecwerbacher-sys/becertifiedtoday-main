@@ -64,10 +64,85 @@
     return ok;
   }
 
+  function fetchVerifyPortalPurchase(sessionId) {
+    return fetch("/api/verify-checkout-session?session_id=" + encodeURIComponent(sessionId)).then(function (res) {
+      return res.json().then(function (data) {
+        return { res: res, data: data };
+      });
+    });
+  }
+
+  function grantPortalFromVerifyPair(pair, checkoutSessionId) {
+    var res = pair.res;
+    var data = pair.data || {};
+    if (!res.ok || !data.ok) {
+      return false;
+    }
+    if (data.productId !== "ccna-portal-30d" && data.productId !== "ccna-portal-10d") {
+      return false;
+    }
+    var exp =
+      typeof data.accessExpiresAt === "number" && Number.isFinite(data.accessExpiresAt)
+        ? data.accessExpiresAt
+        : Date.now() + (data.productId === "ccna-portal-10d" ? 10 : 30) * 86400000;
+    if (exp <= Date.now()) {
+      return false;
+    }
+    return bccSetPortal30DayEntitlement(exp, checkoutSessionId);
+  }
+
+  function bccRestoreCcnaPortalAccess() {
+    return new Promise(function (resolve) {
+      if (bccPortalAccessActive()) {
+        resolve(true);
+        return;
+      }
+      var cs = bccReadPortalCheckoutSessionId();
+      if (!cs) {
+        resolve(false);
+        return;
+      }
+      fetchVerifyPortalPurchase(cs)
+        .then(function (pair) {
+          resolve(grantPortalFromVerifyPair(pair, cs));
+        })
+        .catch(function () {
+          resolve(false);
+        });
+    });
+  }
+
+  function bccApplyCcnaPortalCheckoutFromUrl(searchParams, stripSessionQuery) {
+    var sessionId = null;
+    try {
+      var params = searchParams || new URLSearchParams(window.location.search || "");
+      sessionId = params.get("session_id");
+    } catch (e) {
+      sessionId = null;
+    }
+    if (!sessionId || sessionId.indexOf("cs_") !== 0) {
+      return Promise.resolve(false);
+    }
+    return fetchVerifyPortalPurchase(sessionId).then(function (pair) {
+      var ok = grantPortalFromVerifyPair(pair, sessionId);
+      if (ok && stripSessionQuery) {
+        try {
+          var u = new URL(window.location.href);
+          u.searchParams.delete("session_id");
+          var clean = u.pathname + (u.search || "") + (u.hash || "");
+          window.history.replaceState({}, "", clean || "/");
+        } catch (e) {}
+      }
+      return ok;
+    });
+  }
+
   if (typeof window !== "undefined") {
     window.bccPortalAccessActive = bccPortalAccessActive;
     window.bccSetPortal30DayEntitlement = bccSetPortal30DayEntitlement;
     window.bccReadPortalCheckoutSessionId = bccReadPortalCheckoutSessionId;
     window.bccSavePortalCheckoutSessionId = bccSavePortalCheckoutSessionId;
+    window.bccRestoreCcnaPortalAccess = bccRestoreCcnaPortalAccess;
+    window.bccApplyCcnaPortalCheckoutFromUrl = bccApplyCcnaPortalCheckoutFromUrl;
   }
 })();
