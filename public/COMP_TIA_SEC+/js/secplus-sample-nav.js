@@ -5,7 +5,8 @@
   var MCQ_BASE = "/COMP_TIA_SEC+/SEC+_Questions/";
   var HASH_RE = /^#secplusHS=(\d+)$/;
   var FINISH_HOME = "/comptia-sec+-home.html";
-  var LEAD_CAPTURE_FALLBACK = FINISH_HOME + "#secplus-lead-capture";
+  var FREE_SIM_RUNNER = "/COMP_TIA_SEC+/test-simulation-runner.html?free=1";
+  var LEAD_CAPTURE_FALLBACK = FREE_SIM_RUNNER;
 
   function readSession() {
     try {
@@ -152,38 +153,66 @@
     return usesMaskedNav(session) && (isQuestionsOnlySample(session) || isSimOnlySample(session));
   }
 
-  function loadSecplusLeadCapture(callback) {
-    if (typeof window.showSecplusFreeSimLeadModal === "function") {
+  function loadSecplusFreeSimLauncher(callback) {
+    if (typeof window.startSecplusFreeSimulation === "function") {
       callback();
       return;
     }
-    var existing = document.querySelector('script[src="/js/secplus-lead-capture.js"]');
-    if (existing) {
-      existing.addEventListener("load", callback);
-      return;
+    var chain = [];
+    if (typeof window.grantSecplusGuestFreeSimAccess !== "function") {
+      chain.push(function (next) {
+        var existing = document.querySelector('script[src="/COMP_TIA_SEC+/js/secplus-test-sim-storage.js"]');
+        if (existing) {
+          existing.addEventListener("load", next);
+          existing.addEventListener("error", next);
+          return;
+        }
+        var s = document.createElement("script");
+        s.src = "/COMP_TIA_SEC+/js/secplus-test-sim-storage.js";
+        s.onload = next;
+        s.onerror = next;
+        (document.body || document.head).appendChild(s);
+      });
     }
-    var s = document.createElement("script");
-    s.src = "/js/secplus-lead-capture.js";
-    s.onload = callback;
-    s.onerror = function () {
-      navigateAfterSample(LEAD_CAPTURE_FALLBACK);
-    };
-    (document.body || document.head).appendChild(s);
+    chain.push(function (next) {
+      var existing = document.querySelector('script[src="/js/secplus-lead-capture.js"]');
+      if (existing) {
+        existing.addEventListener("load", next);
+        existing.addEventListener("error", next);
+        return;
+      }
+      var s = document.createElement("script");
+      s.src = "/js/secplus-lead-capture.js";
+      s.onload = next;
+      s.onerror = next;
+      (document.body || document.head).appendChild(s);
+    });
+    var i = 0;
+    function step() {
+      if (i >= chain.length) {
+        callback();
+        return;
+      }
+      chain[i++](step);
+    }
+    step();
   }
 
   function openFreeSimLeadModal(finishHome) {
-    logSecplusSampleEvent("email_modal_open");
-    loadSecplusLeadCapture(function () {
-      if (typeof window.showSecplusFreeSimLeadModal !== "function") {
-        navigateAfterSample(LEAD_CAPTURE_FALLBACK);
+    logSecplusSampleEvent("free_sim_start_click");
+    loadSecplusFreeSimLauncher(function () {
+      if (typeof window.startSecplusFreeSimulation === "function") {
+        window.startSecplusFreeSimulation({
+          finishHome: finishHome || FINISH_HOME,
+          method: "secplus_free_sim_sample_popup",
+          onBeforeNavigate: clearSampleSession,
+          onConsumed: function () {
+            navigateAfterSample((finishHome || FINISH_HOME) + "#purchase");
+          },
+        });
         return;
       }
-      window.showSecplusFreeSimLeadModal({
-        finishHome: finishHome || FINISH_HOME,
-        method: "secplus_free_sim_sample_popup",
-        sampleKind: sampleKindLabel(),
-        onBeforeNavigate: clearSampleSession,
-      });
+      navigateAfterSample(FREE_SIM_RUNNER);
     });
   }
 

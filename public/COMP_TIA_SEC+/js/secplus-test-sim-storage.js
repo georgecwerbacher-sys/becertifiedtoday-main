@@ -35,6 +35,24 @@
     } catch (e) {}
   }
 
+  function grantSecplusGuestFreeSimAccess() {
+    if (secplusFreeSimWasConsumed()) return false;
+    try {
+      localStorage.setItem(
+        LS_FREE_SIM,
+        JSON.stringify({
+          email: "",
+          grantedAt: Date.now(),
+          consumed: false,
+          viaGuest: true,
+        })
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   function markSecplusFreeSimConsumed() {
     try {
       var o = readFreeSimRecord();
@@ -56,9 +74,15 @@
     return o && !o.consumed ? o.email : "";
   }
 
+  function secplusFreeSimWasConsumed() {
+    var o = readFreeSimRecord();
+    return !!(o && o.consumed === true);
+  }
+
   function secplusFreeSimAccessActive() {
     var o = readFreeSimRecord();
-    return !!(o && o.consumed !== true && o.viaLeadApi === true);
+    if (!o || o.consumed === true) return false;
+    return o.viaLeadApi === true || o.viaGuest === true;
   }
 
   function secplusPortalPassActive() {
@@ -128,6 +152,8 @@
     window.secplusPortalPassActive = secplusPortalPassActive;
     window.secplusTimedSimAccessActive = secplusTimedSimAccessActive;
     window.secplusFreeSimAccessActive = secplusFreeSimAccessActive;
+    window.secplusFreeSimWasConsumed = secplusFreeSimWasConsumed;
+    window.grantSecplusGuestFreeSimAccess = grantSecplusGuestFreeSimAccess;
     window.grantSecplusFreeSimAccess = grantSecplusFreeSimAccess;
     window.clearSecplusFreeSimAccess = clearSecplusFreeSimAccess;
     window.readSecplusFreeSimEmail = readSecplusFreeSimEmail;

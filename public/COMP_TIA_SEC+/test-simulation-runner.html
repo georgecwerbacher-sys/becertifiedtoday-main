@@ -290,67 +290,6 @@
     #gatePanel[hidden] {
       display: none !important;
     }
-    #gateFreeLeadWrap[hidden] {
-      display: none !important;
-    }
-    .gate-lead-form {
-      display: grid;
-      gap: 12px;
-      max-width: 420px;
-      margin-top: 8px;
-    }
-    .gate-lead-form label {
-      display: grid;
-      gap: 6px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: #dbe7ff;
-    }
-    .gate-lead-form input[type="email"] {
-      width: 100%;
-      min-height: 44px;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid #4b556b;
-      background: #0b1020;
-      color: #e6edf3;
-      font: inherit;
-    }
-    .gate-lead-consent {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      font-size: 0.84rem;
-      font-weight: 400;
-      color: #9fb0cc;
-      line-height: 1.45;
-    }
-    .gate-lead-consent input { margin-top: 0.2em; flex-shrink: 0; }
-    .gate-lead-honeypot {
-      position: absolute;
-      left: -9999px;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-    }
-    #btnGateLeadSubmit {
-      margin-top: 4px;
-      padding: 12px 18px;
-      border-radius: 10px;
-      font: inherit;
-      font-weight: 800;
-      font-size: 0.92rem;
-      cursor: pointer;
-      border: 1px solid #60a5fa;
-      background: linear-gradient(165deg, #3b82f6 0%, #1d4ed8 100%);
-      color: #fff;
-    }
-    .gate-lead-message {
-      margin: 0;
-      font-size: 0.88rem;
-      color: #86efac;
-    }
-    .gate-lead-message.lead-capture-message--error { color: #fca5a5; }
     .results-wrap {
       min-height: 100vh;
       padding: 24px 16px 48px;
@@ -562,7 +501,6 @@
       min-height: 44px;
     }
   </style>
-  <script src="/js/secplus-lead-capture.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-test-sim-build.js"></script>
   <script src="/COMP_TIA_SEC+/js/secplus-test-sim-scorecard.js"></script>
   <script src="/js/secplus-scorecard-email.js"></script>
@@ -580,24 +518,6 @@
       <p id="gateBlueprint" class="status-ok" hidden></p>
       <div id="gateStartWrap" hidden>
         <button type="button" id="btnGateStartExam">Start timed test</button>
-      </div>
-      <div id="gateFreeLeadWrap" hidden>
-        <form id="gateFreeLeadForm" class="gate-lead-form" data-secplus-lead-form novalidate>
-          <label>
-            Email
-            <input type="email" name="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required />
-          </label>
-          <label class="gate-lead-honeypot" aria-hidden="true">
-            Company website
-            <input type="text" name="company_website" tabindex="-1" autocomplete="off" />
-          </label>
-          <label class="gate-lead-consent">
-            <input type="checkbox" name="lead_consent" value="1" required />
-            <span>Start my free simulation and send my scorecard to this email when I request it. Occasional Security+ exam prep tips — unsubscribe anytime.</span>
-          </label>
-          <button type="submit" id="btnGateLeadSubmit">Start free simulation</button>
-          <p class="gate-lead-message" data-lead-message hidden></p>
-        </form>
       </div>
       <p style="margin-top: 14px; font-size: 0.88rem">
         <a id="gateBackLink" href="/comptia-sec+-home.html#purchase">← Back to Security+ home</a>
@@ -737,7 +657,6 @@
       var gateStatus = document.getElementById("gateStatus");
       var gateBlueprint = document.getElementById("gateBlueprint");
       var gateStartWrap = document.getElementById("gateStartWrap");
-      var gateFreeLeadWrap = document.getElementById("gateFreeLeadWrap");
       var btnGateStartExam = document.getElementById("btnGateStartExam");
       var STARTER_URL = "/comptia-sec+-home.html#purchase";
       var FREE_STARTER_URL = "/comptia-sec+-home.html#secplus-lead-capture";
@@ -759,37 +678,22 @@
 
       function persistFreeModeFlag() {
         if (!freeMode) return;
-        if (typeof secplusFreeSimAccessActive === "function" && !secplusFreeSimAccessActive()) return;
         try {
           sessionStorage.setItem("secplusTestSimFree", "1");
         } catch (e) {}
       }
 
-      function showGateLeadCapture() {
-        gateStartWrap.hidden = true;
-        if (gateFreeLeadWrap) gateFreeLeadWrap.hidden = false;
-        gateStatus.textContent =
-          "Enter your email to unlock the free 35-minute sample exam (20 MCQ + dark web simulation).";
-        gateStatus.className = "status-ok";
-        wireGateLeadForm();
-      }
-
-      function hideGateLeadCapture() {
-        if (gateFreeLeadWrap) gateFreeLeadWrap.hidden = true;
-      }
-
-      function wireGateLeadForm() {
-        var form = document.getElementById("gateFreeLeadForm");
-        if (!form || typeof window.wireSecplusLeadForm !== "function") return;
-        window.wireSecplusLeadForm(form, {
-          method: "secplus_free_sim_runner_gate",
-          onSuccess: function () {
-            hideGateLeadCapture();
-            sessionOk = true;
-            persistFreeModeFlag();
-            showGateStartOptions();
-          },
-        });
+      function ensureGuestFreeSimAccess() {
+        if (typeof secplusFreeSimAccessActive === "function" && secplusFreeSimAccessActive()) {
+          return true;
+        }
+        if (typeof secplusFreeSimWasConsumed === "function" && secplusFreeSimWasConsumed()) {
+          return false;
+        }
+        if (typeof grantSecplusGuestFreeSimAccess === "function") {
+          return grantSecplusGuestFreeSimAccess();
+        }
+        return false;
       }
 
       function freeBlueprintUrl() {
@@ -815,7 +719,6 @@
       }
 
       function showGateStartOptions() {
-        hideGateLeadCapture();
         gateStartWrap.hidden = false;
         gateStatus.textContent = "When you are ready, start the timed test. The clock runs until you finish or time expires.";
         gateStatus.className = "status-ok";
@@ -1049,14 +952,25 @@
         }
 
         if (freeMode) {
-          hideGateLeadCapture();
-          if (typeof secplusFreeSimAccessActive === "function" && secplusFreeSimAccessActive()) {
-            sessionOk = true;
-            persistFreeModeFlag();
-            showGateStartOptions();
+          if (typeof secplusFreeSimWasConsumed === "function" && secplusFreeSimWasConsumed()) {
+            gateStatus.textContent =
+              "You have already completed the free sample on this browser. Return to Security+ home for the full 90-minute simulation or library access.";
+            gateStatus.className = "status-bad";
+            var gateBack = document.getElementById("gateBackLink");
+            if (gateBack) {
+              gateBack.setAttribute("href", FREE_STARTER_URL);
+              gateBack.textContent = "← Back to Security+ home";
+            }
             return;
           }
-          showGateLeadCapture();
+          if (!ensureGuestFreeSimAccess()) {
+            gateStatus.textContent = "Could not start the free sample. Return to Security+ home and try again.";
+            gateStatus.className = "status-bad";
+            return;
+          }
+          sessionOk = true;
+          persistFreeModeFlag();
+          showGateStartOptions();
           return;
         }
 

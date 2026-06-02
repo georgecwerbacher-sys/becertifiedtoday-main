@@ -137,7 +137,7 @@
               "name": "Can I try Security+ practice before I buy?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Yes. Start the free 35-minute timed simulation on this page (email unlock), try sample questions and a performance-based preview with no checkout, or purchase portal access when you are ready."
+                "text": "Yes. Start the free 35-minute timed simulation on this page with no checkout, try sample questions and a performance-based preview, or purchase portal access when you are ready."
               }
             },
             {
@@ -193,7 +193,7 @@
               "name": "Will anyone call or email me for payment information?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "No. Be Certified Today will not call or email you asking for payment card numbers. Checkout runs only through the official Stripe flow. If you opt in for the free simulation sample or exam prep emails, you can unsubscribe from those messages anytime."
+                "text": "No. Be Certified Today will not call or email you asking for payment card numbers. Checkout runs only through the official Stripe flow. You may optionally email your scorecard after the free sample; marketing messages are opt-in only."
               }
             }
           ]
@@ -1439,6 +1439,15 @@
       color: #b8dcc4;
       line-height: 1.45;
     }
+    .assessment-cta-note a {
+      color: #d4f0de;
+      font-weight: 700;
+    }
+    .cta-main--muted {
+      opacity: 0.92;
+      background: linear-gradient(165deg, #5a6a7a 0%, #475569 100%);
+      box-shadow: none;
+    }
     .format-card h3 {
       margin: 0 0 10px;
       font-size: clamp(1.02rem, 2.4vw, 1.12rem);
@@ -2286,42 +2295,48 @@
           </ul>
           </div>
 
-          <section class="lead-capture-section" id="secplus-lead-capture" aria-labelledby="secplus-lead-capture-title">
+          <section
+            class="lead-capture-section assessment-card"
+            id="secplus-lead-capture"
+            aria-labelledby="secplus-lead-capture-title"
+          >
             <p class="lead-capture-badge">Free · 35 minutes · no checkout</p>
             <h2 id="secplus-lead-capture-title">Start your free SY0-701 timed simulation</h2>
             <p class="lead-capture-lead">
-              Enter your email to unlock a <strong>35-minute sample exam</strong> in your browser:
+              Take a <strong>35-minute sample exam</strong> in your browser—no email required:
               <strong>20 multiple-choice questions</strong> (four from each SY0-701 domain) plus the
               <strong>dark web account protection</strong> performance-based simulation—the same mix of item types you will see on test day.
             </p>
-            <ul class="lead-capture-list">
+            <ul class="lead-capture-list assessment-details">
               <li><strong>Back</strong>, <strong>Mark for review</strong>, and <strong>Next</strong>—same navigation as the full 90-minute sim</li>
-              <li>Scaled score and domain breakdown on the results screen; email your scorecard when you finish</li>
+              <li>Scaled score and domain breakdown on the results screen when you finish</li>
               <li>One free attempt per browser</li>
               <li>Ready for a full dry run? <a href="#purchase">90-minute simulation — $9.99</a> or portal access below</li>
             </ul>
-            <p class="lead-capture-open-link" data-lead-open-sim hidden>
-              Already unlocked on this browser? <a href="/COMP_TIA_SEC+/test-simulation-runner.html?free=1">Continue your free simulation →</a>
+            <p class="lead-capture-open-link" data-secplus-continue-free-sim hidden>
+              In progress on this browser?
+              <a href="/COMP_TIA_SEC+/test-simulation-runner.html?free=1">Continue your free simulation →</a>
             </p>
-            <div data-lead-form-wrap>
-              <form class="lead-capture-form" data-secplus-lead-form action="/api/lead-capture" method="post" novalidate>
-                <label>
-                  Email
-                  <input type="email" name="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required />
-                </label>
-                <label class="lead-capture-honeypot" aria-hidden="true">
-                  Company website
-                  <input type="text" name="company_website" tabindex="-1" autocomplete="off" />
-                </label>
-                <label class="lead-capture-consent">
-                  <input type="checkbox" name="lead_consent" value="1" required />
-                  <span>Start my free simulation and send my scorecard to this email when I request it. Occasional Security+ exam prep tips — unsubscribe anytime.</span>
-                </label>
-                <button type="submit" class="cta-main">Start free simulation</button>
-                <p class="lead-capture-message" data-lead-message hidden></p>
-              </form>
-              <p class="lead-capture-fine">Exam prep only — not affiliated with CompTIA. Prefer no email? <a href="/secplus-sample?track=questions">Try free sample questions</a>.</p>
+            <div class="assessment-cta-wrap">
+              <div class="assessment-cta-panel">
+                <p class="assessment-cta-kicker">Free sample exam</p>
+                <a
+                  class="cta-main"
+                  href="/COMP_TIA_SEC+/test-simulation-runner.html?free=1"
+                  data-secplus-start-free-sim
+                  data-secplus-start-method="secplus_free_sim_landing"
+                  >Start free timed simulation</a
+                >
+                <p class="assessment-cta-note" data-secplus-free-sim-consumed-note hidden>
+                  You have already completed the free sample on this browser.
+                  <a href="#purchase">Get the full 90-minute simulation or library access</a>.
+                </p>
+              </div>
             </div>
+            <p class="lead-capture-fine">
+              Exam prep only — not affiliated with CompTIA. Want a shorter preview first?
+              <a href="/secplus-sample?track=questions">Try free sample questions</a>.
+            </p>
           </section>
 
           <div class="samples-stack">
@@ -2566,8 +2581,8 @@
                 <summary class="faq-summary">Can I try before I buy?</summary>
                 <div class="faq-answer">
                   <p>
-                    <strong>Yes.</strong> Start the <strong>free 35-minute timed simulation</strong> on this page (email unlock),
-                    try sample questions and a performance-based preview with no checkout, or purchase portal access when you are ready.
+                    <strong>Yes.</strong> Start the <strong>free 35-minute timed simulation</strong> on this page with no checkout,
+                    try sample questions and a performance-based preview, or purchase portal access when you are ready.
                   </p>
                 </div>
               </details>
@@ -2734,6 +2749,7 @@
   <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-checkout.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-test-checkout.js" defer></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-test-sim-storage.js" defer></script>
   <script src="/js/secplus-lead-capture.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
