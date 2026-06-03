@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Password complexity (technical policy)</title>
+  <title>Security+ — Compromised web cert (new key pair)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/threat-actor-unsophisticated-automated-bots.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/ecommerce-web-threats-waf-sql-injection.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/legacy-atm-security-risk-assessment.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/financial-data-classification-protection-levels.html">Next</a>
       </div>
     </nav>
-    <h1>What is the most effective way in which a company may ensure password complexity compliance after a recent security audit revealed that some employees use weak passwords?</h1>
+    <h1>A security administrator has noticed unusual traffic patterns and suspects that one of the certificates that their company&#x27;s web server uses to secure its website may have been compromised. What steps should the administrator take to address the issue?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q746" value="A" />A. Advise the users to write down their long passwords on a piece of paper</label>
-    <label class="choice"><input type="radio" name="secplus_q746" value="B" />B. Enforce a technical implementation of a password policy</label>
-    <label class="choice"><input type="radio" name="secplus_q746" value="C" />C. Perform security audits more frequently</label>
-    <label class="choice"><input type="radio" name="secplus_q746" value="D" />D. Provide training sessions to employees</label>
+    <label class="choice"><input type="radio" name="secplus_q774" value="A" />A. Generate a new key pair for the same certificate</label>
+    <label class="choice"><input type="radio" name="secplus_q774" value="B" />B. Verify the validity from the certificate revocation list</label>
+    <label class="choice"><input type="radio" name="secplus_q774" value="C" />C. Create a new certificate authority</label>
+    <label class="choice"><input type="radio" name="secplus_q774" value="D" />D. Generate a new certificate with the same key pair</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -175,14 +175,14 @@
 
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 Technically enforcing a password policy through directory services, group policy, or identity platforms requires minimum length, complexity, and history rules at the system level so weak passwords cannot be set. Advising users to write passwords on paper increases exposure and does not enforce complexity. More frequent audits detect noncompliance but do not prevent weak passwords from being created. Training improves awareness but alone cannot guarantee compliance without technical controls.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 Suspected key or certificate compromise requires new cryptographic material: generate a new key pair and obtain a replacement certificate from the CA, then revoke the old certificate so clients no longer trust it. Verifying status against a certificate revocation list (CRL) confirms revocation state but does not by itself remediate a suspected compromise on your server. Creating a new certificate authority is unnecessary when a single server certificate is at risk. Issuing a new certificate with the same key pair leaves the compromised private key usable by an attacker.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q746"]:checked');
+        var sel = document.querySelector('input[name="secplus_q774"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -199,7 +199,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q746"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="secplus_q774"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Password complexity (technical policy)</title>
+  <title>Security+ — Remove unnecessary software (audit)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/threat-actor-unsophisticated-automated-bots.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/spf-sender-domain-authentication-phishing.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/legacy-atm-security-risk-assessment.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/hsm-cryptocurrency-key-management-transactions.html">Next</a>
       </div>
     </nav>
-    <h1>What is the most effective way in which a company may ensure password complexity compliance after a recent security audit revealed that some employees use weak passwords?</h1>
+    <h1>As part of a security audit to improve the security posture of a company&#x27;s network, the system administrator has identified several unused and unnecessary software applications installed on the company workstations. What action should the administrator take?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q746" value="A" />A. Advise the users to write down their long passwords on a piece of paper</label>
-    <label class="choice"><input type="radio" name="secplus_q746" value="B" />B. Enforce a technical implementation of a password policy</label>
-    <label class="choice"><input type="radio" name="secplus_q746" value="C" />C. Perform security audits more frequently</label>
-    <label class="choice"><input type="radio" name="secplus_q746" value="D" />D. Provide training sessions to employees</label>
+    <label class="choice"><input type="radio" name="secplus_q755" value="A" />A. Document all the unnecessary software found</label>
+    <label class="choice"><input type="radio" name="secplus_q755" value="B" />B. Remove all workstations with unnecessary software from the network</label>
+    <label class="choice"><input type="radio" name="secplus_q755" value="C" />C. Leave the unnecessary software installed for they may be needed one day</label>
+    <label class="choice"><input type="radio" name="secplus_q755" value="D" />D. Remove the unnecessary software</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -175,14 +175,14 @@
 
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 Technically enforcing a password policy through directory services, group policy, or identity platforms requires minimum length, complexity, and history rules at the system level so weak passwords cannot be set. Advising users to write passwords on paper increases exposure and does not enforce complexity. More frequent audits detect noncompliance but do not prevent weak passwords from being created. Training improves awareness but alone cannot guarantee compliance without technical controls.";
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D \u2014 Unused applications increase attack surface and may contain unpatched vulnerabilities. Removing unnecessary software is a standard hardening step to improve workstation security posture. Documentation supports the process but does not by itself reduce risk. Disconnecting entire workstations from the network is disproportionate when the issue is removable software. Leaving unnecessary programs installed preserves avoidable exposure on the off chance they might be needed later.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q746"]:checked');
+        var sel = document.querySelector('input[name="secplus_q755"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -199,7 +199,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q746"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="secplus_q755"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

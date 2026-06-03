@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Password complexity (technical policy)</title>
+  <title>Security+ — Regulatory audit readiness (Select two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,18 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/threat-actor-unsophisticated-automated-bots.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/suspicious-bank-email-verify-official-phone.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/legacy-atm-security-risk-assessment.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/devsecops-sdlc-automated-pipeline-security.html">Next</a>
       </div>
     </nav>
-    <h1>What is the most effective way in which a company may ensure password complexity compliance after a recent security audit revealed that some employees use weak passwords?</h1>
+    <h1 class="choose-two-stem">A new CISO wants to be ready for an upcoming external regulatory audit. The goals are to verify that security controls actually operate as required by policy and to ensure any gaps are formally corrected and rechecked. Which of the following actions/controls will BEST meet these requirements? (Select two.)</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q746" value="A" />A. Advise the users to write down their long passwords on a piece of paper</label>
-    <label class="choice"><input type="radio" name="secplus_q746" value="B" />B. Enforce a technical implementation of a password policy</label>
-    <label class="choice"><input type="radio" name="secplus_q746" value="C" />C. Perform security audits more frequently</label>
-    <label class="choice"><input type="radio" name="secplus_q746" value="D" />D. Provide training sessions to employees</label>
+    <label class="choice"><input type="checkbox" name="secplus_q782" value="A" />A. Launch a recurring internal audit program where an independent team tests key security controls against policies and regulations and documents any nonconformities.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q782" value="B" />B. Rely solely on annual security awareness training completion rates as evidence that all security policies are being followed.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q782" value="C" />C. Run quarterly external penetration tests focused on exploiting technical vulnerabilities in internet-facing systems.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q782" value="D" />D. Implement a centralized audit-finding register that assigns each issue an owner, remediation target date, and status, with follow-up testing to confirm closure.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q782" value="E" />E. Reduce the scope of the upcoming audit by disabling verbose logging on lower-priority systems until the assessment is complete.</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -175,21 +176,33 @@
 
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 Technically enforcing a password policy through directory services, group policy, or identity platforms requires minimum length, complexity, and history rules at the system level so weak passwords cannot be set. Advising users to write passwords on paper increases exposure and does not enforce complexity. More frequent audits detect noncompliance but do not prevent weak passwords from being created. Training improves awareness but alone cannot guarantee compliance without technical controls.";
+      var CORRECT = ["A", "D"];
+      var CORRECT_MSG = "Correct. A and D \u2014 A recurring internal audit program provides independent testing that controls operate as policy and regulations require, with documented nonconformities for external review. A centralized audit-finding register assigns owners, target dates, and status, then uses follow-up testing to confirm remediation and closure. Training completion rates alone do not prove control effectiveness. Quarterly external penetration tests may find technical flaws but do not by themselves verify policy control operation or track formal gap closure. Disabling verbose logging reduces evidence and can hide issues auditors need to assess.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="secplus_q782"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q746"]:checked');
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (!sel) {
+        if (sel.length !== 2) {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select an answer.";
+          answerBox.textContent = "Choose exactly 2 answers.";
           return;
         }
-        if (sel.value === CORRECT) {
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
@@ -199,8 +212,10 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q746"][value="' + CORRECT + '"]');
-        if (input) input.checked = true;
+        CORRECT.forEach(function (value) {
+          var input = document.querySelector('input[name="secplus_q782"][value="' + value + '"]');
+          if (input) input.checked = true;
+        });
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
         answerBox.textContent = CORRECT_MSG;

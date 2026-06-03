@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Password complexity (technical policy)</title>
+  <title>Security+ — WAF (e-commerce web threats)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/threat-actor-unsophisticated-automated-bots.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/network-security-agentless-no-endpoint-software.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/legacy-atm-security-risk-assessment.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/suspected-compromised-web-cert-new-key-pair.html">Next</a>
       </div>
     </nav>
-    <h1>What is the most effective way in which a company may ensure password complexity compliance after a recent security audit revealed that some employees use weak passwords?</h1>
+    <h1>The security team of a popular online shopping website is concerned about potential attacks after detecting unusual activities such as multiple login and SQL injection attempts. What mitigation technique can they implement to protect their site&#x27;s sensitive data from these web threats?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q746" value="A" />A. Advise the users to write down their long passwords on a piece of paper</label>
-    <label class="choice"><input type="radio" name="secplus_q746" value="B" />B. Enforce a technical implementation of a password policy</label>
-    <label class="choice"><input type="radio" name="secplus_q746" value="C" />C. Perform security audits more frequently</label>
-    <label class="choice"><input type="radio" name="secplus_q746" value="D" />D. Provide training sessions to employees</label>
+    <label class="choice"><input type="radio" name="secplus_q773" value="A" />A. Denying all traffic containing an SQL query</label>
+    <label class="choice"><input type="radio" name="secplus_q773" value="B" />B. Blocking the IP addresses suspected to be malicious</label>
+    <label class="choice"><input type="radio" name="secplus_q773" value="C" />C. Installation of a web application firewall</label>
+    <label class="choice"><input type="radio" name="secplus_q773" value="D" />D. Rejection of multiple login attempts</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -175,14 +175,14 @@
 
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 Technically enforcing a password policy through directory services, group policy, or identity platforms requires minimum length, complexity, and history rules at the system level so weak passwords cannot be set. Advising users to write passwords on paper increases exposure and does not enforce complexity. More frequent audits detect noncompliance but do not prevent weak passwords from being created. Training improves awareness but alone cannot guarantee compliance without technical controls.";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C \u2014 A web application firewall (WAF) inspects HTTP and HTTPS traffic to the site and can block SQL injection, abusive login patterns, and other application-layer attacks before they reach backend databases. Denying all traffic containing SQL-like strings is overly broad and breaks legitimate application behavior. Blocking suspected malicious IPs alone is incomplete because attackers rotate addresses and IP blocks do not inspect payload content. Rejecting multiple login attempts mitigates brute force but does not address SQL injection or broader web application abuse.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q746"]:checked');
+        var sel = document.querySelector('input[name="secplus_q773"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -199,7 +199,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q746"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="secplus_q773"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

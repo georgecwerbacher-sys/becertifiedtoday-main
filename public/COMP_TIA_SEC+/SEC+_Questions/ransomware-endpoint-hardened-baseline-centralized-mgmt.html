@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Password complexity (technical policy)</title>
+  <title>Security+ — Hardened endpoint baseline (post-ransomware)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/threat-actor-unsophisticated-automated-bots.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/web-app-attacks-incorrect-statements-csrf-cmdi.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/legacy-atm-security-risk-assessment.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/cloud-iam-overly-broad-service-account-admin.html">Next</a>
       </div>
     </nav>
-    <h1>What is the most effective way in which a company may ensure password complexity compliance after a recent security audit revealed that some employees use weak passwords?</h1>
+    <h1>A security analyst at a 200-employee company is tasked with hardening all Windows and macOS laptops after a ransomware incident traced to unpatched software and users installing unapproved apps. Management wants a standard secure configuration on every endpoint, to minimize what users can install, and to ensure systems receive patches automatically even when staff work remotely, all without heavy manual effort from IT. Which of the following actions BEST meets these requirements?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q746" value="A" />A. Advise the users to write down their long passwords on a piece of paper</label>
-    <label class="choice"><input type="radio" name="secplus_q746" value="B" />B. Enforce a technical implementation of a password policy</label>
-    <label class="choice"><input type="radio" name="secplus_q746" value="C" />C. Perform security audits more frequently</label>
-    <label class="choice"><input type="radio" name="secplus_q746" value="D" />D. Provide training sessions to employees</label>
+    <label class="choice"><input type="radio" name="secplus_q785" value="A" />A. Deploy a host-based firewall on each laptop and block all outbound traffic except HTTP and HTTPS.</label>
+    <label class="choice"><input type="radio" name="secplus_q785" value="B" />B. Require users to bring their laptops to the office once a week so IT can manually apply patches and run on-demand antivirus scans.</label>
+    <label class="choice"><input type="radio" name="secplus_q785" value="C" />C. Schedule quarterly classroom training sessions to remind users not to install unauthorized software and to apply updates when prompted.</label>
+    <label class="choice"><input type="radio" name="secplus_q785" value="D" />D. Create and deploy a hardened endpoint baseline using a centralized configuration management tool that removes local administrator rights, uninstalls unnecessary software, disables unused services, and enforces automatic patching.</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -175,14 +175,14 @@
 
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 Technically enforcing a password policy through directory services, group policy, or identity platforms requires minimum length, complexity, and history rules at the system level so weak passwords cannot be set. Advising users to write passwords on paper increases exposure and does not enforce complexity. More frequent audits detect noncompliance but do not prevent weak passwords from being created. Training improves awareness but alone cannot guarantee compliance without technical controls.";
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D \u2014 A hardened endpoint baseline deployed through centralized configuration management standardizes secure settings, removes local administrator rights, uninstalls unnecessary software, disables unused services, and enforces automatic patching across remote and on-site laptops with minimal manual IT effort. A host-based firewall blocking all outbound traffic except HTTP and HTTPS is overly restrictive and does not address unapproved installs or automated patching at scale. Weekly in-office manual patching does not scale for remote staff and increases IT overhead. Quarterly training alone does not enforce baselines, block unauthorized software, or automate patch deployment.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q746"]:checked');
+        var sel = document.querySelector('input[name="secplus_q785"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -199,7 +199,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q746"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="secplus_q785"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

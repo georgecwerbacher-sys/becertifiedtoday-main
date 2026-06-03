@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Password complexity (technical policy)</title>
+  <title>Security+ — Web app attacks (incorrect statements)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,18 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/threat-actor-unsophisticated-automated-bots.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/devsecops-sdlc-automated-pipeline-security.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/legacy-atm-security-risk-assessment.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/ransomware-endpoint-hardened-baseline-centralized-mgmt.html">Next</a>
       </div>
     </nav>
-    <h1>What is the most effective way in which a company may ensure password complexity compliance after a recent security audit revealed that some employees use weak passwords?</h1>
+    <h1 class="choose-two-stem">Which of the following statements about common web application attacks is INCORRECT? (Select two.)</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q746" value="A" />A. Advise the users to write down their long passwords on a piece of paper</label>
-    <label class="choice"><input type="radio" name="secplus_q746" value="B" />B. Enforce a technical implementation of a password policy</label>
-    <label class="choice"><input type="radio" name="secplus_q746" value="C" />C. Perform security audits more frequently</label>
-    <label class="choice"><input type="radio" name="secplus_q746" value="D" />D. Provide training sessions to employees</label>
+    <label class="choice"><input type="checkbox" name="secplus_q784" value="A" />A. Directory traversal attacks may use input sequences like ../ (dot-dot-slash) to try to access files outside the intended web root directory.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q784" value="B" />B. Reflected cross-site scripting (XSS) can involve malicious JavaScript placed in a URL parameter that a vulnerable site reflects back in the HTTP response to the victim's browser.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q784" value="C" />C. Command injection attacks only affect SQL databases and cannot target operating system commands or other interpreters.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q784" value="D" />D. SQL injection often appears as crafted input containing characters such as ' OR 1=1-- intended to alter backend database queries.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q784" value="E" />E. Cross-site request forgery (CSRF) usually requires the attacker to install malware on the victim's browser before any forged requests can be sent.</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -175,21 +176,33 @@
 
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 Technically enforcing a password policy through directory services, group policy, or identity platforms requires minimum length, complexity, and history rules at the system level so weak passwords cannot be set. Advising users to write passwords on paper increases exposure and does not enforce complexity. More frequent audits detect noncompliance but do not prevent weak passwords from being created. Training improves awareness but alone cannot guarantee compliance without technical controls.";
+      var CORRECT = ["C", "E"];
+      var CORRECT_MSG = "Correct. C and E \u2014 Command injection executes operating system or interpreter commands through vulnerable application input; SQL injection targets databases, not command injection. CSRF forges authenticated requests using the victim's existing browser session and cookies; it does not require malware on the victim's browser. Directory traversal uses sequences such as ../ to reach files outside the web root. Reflected XSS can reflect malicious script from a URL parameter in the HTTP response. SQL injection often uses crafted input such as ' OR 1=1-- to alter backend queries.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="secplus_q784"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q746"]:checked');
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (!sel) {
+        if (sel.length !== 2) {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select an answer.";
+          answerBox.textContent = "Choose exactly 2 answers.";
           return;
         }
-        if (sel.value === CORRECT) {
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
@@ -199,8 +212,10 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q746"][value="' + CORRECT + '"]');
-        if (input) input.checked = true;
+        CORRECT.forEach(function (value) {
+          var input = document.querySelector('input[name="secplus_q784"][value="' + value + '"]');
+          if (input) input.checked = true;
+        });
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
         answerBox.textContent = CORRECT_MSG;
