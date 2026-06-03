@@ -410,7 +410,9 @@
     var s = document.createElement("style");
     s.setAttribute("data-bcc-exam-sim-embed", "1");
     var css =
-      "nav.sim-nav{display:none!important}" + ".ccna-objective-tag{display:none!important}";
+      "nav.sim-nav{display:none!important}" +
+      ".ccna-objective-tag{display:none!important}" +
+      "#showBtn,.nav-show-answer,.answer-side-actions .nav-show-answer{display:none!important}";
     if (isCcnaLabPath()) {
       css +=
         "body{padding-bottom:max(16px,env(safe-area-inset-bottom,0px))!important}";
@@ -527,7 +529,9 @@
     s.textContent =
       ".question-nav{display:none!important}" +
       ".secplus-objective-tag{display:none!important}" +
-      "a.nav-home{display:none!important}";
+      "a.nav-home{display:none!important}" +
+      "#showBtn,.nav-show-answer,.answer-side-actions .nav-show-answer{display:none!important}" +
+      ".review-mark-box{display:none!important}";
     document.head.appendChild(s);
   }
 

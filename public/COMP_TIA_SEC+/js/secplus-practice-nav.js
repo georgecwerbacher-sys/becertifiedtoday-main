@@ -17,6 +17,27 @@
     "5.0": "Security Program Management and Oversight",
   };
 
+  function isExamSimEmbed() {
+    try {
+      if (sessionStorage.getItem("secplusExamSim") === "1") return true;
+      return new URLSearchParams(location.search).get("examSim") === "1";
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function hideShowAnswerInExamSim() {
+    if (!isExamSimEmbed()) return;
+    var showBtn = document.getElementById("showBtn");
+    if (showBtn) showBtn.style.display = "none";
+    document.querySelectorAll(".nav-show-answer").forEach(function (el) {
+      el.style.display = "none";
+    });
+    document.querySelectorAll(".review-mark-box").forEach(function (el) {
+      el.style.display = "none";
+    });
+  }
+
   function slugFromPath() {
     var m = location.pathname.match(/\/([^/]+)\.html$/);
     return m ? decodeURIComponent(m[1]) : "";
@@ -274,12 +295,79 @@
     return "";
   }
 
+  function formatDomainLabel(domainId) {
+    var name = SECPLUS_DOMAIN_NAMES[domainId] || "";
+    return domainId + (name ? " " + name : "");
+  }
+
+  function domainsFromSampleOrder(order) {
+    var seen = Object.create(null);
+    var list = [];
+    (order || []).forEach(function (item) {
+      if (!item || item.type !== "mcq" || !item.domain) return;
+      if (seen[item.domain]) return;
+      seen[item.domain] = true;
+      list.push(item.domain);
+    });
+    list.sort(function (a, b) {
+      return parseFloat(a) - parseFloat(b);
+    });
+    return list;
+  }
+
+  function ensureSampleSubjectsFooter() {
+    var card = document.querySelector(".question-shell .card") || document.querySelector("main.card") || document.querySelector(".card");
+    if (!card) return null;
+    var footer = card.querySelector(".sample-subjects-footer");
+    if (!footer) {
+      footer = document.createElement("div");
+      footer.className = "sample-subjects-footer";
+      footer.setAttribute("aria-label", "SY0-701 domains in this sample");
+      var title = document.createElement("p");
+      title.className = "sample-subjects-footer__title";
+      title.textContent = "SY0-701 domains in this sample";
+      footer.appendChild(title);
+      var list = document.createElement("ul");
+      list.className = "sample-subjects-footer__list";
+      footer.appendChild(list);
+      card.appendChild(footer);
+    }
+    return footer.querySelector(".sample-subjects-footer__list");
+  }
+
+  function syncSampleSubjectsFooter() {
+    var session = readHomeSampleSession();
+    if (!session || !session.order || !session.order.length) {
+      var stale = document.querySelector(".sample-subjects-footer");
+      if (stale) stale.remove();
+      return;
+    }
+    var allMcq = session.order.every(function (item) {
+      return item && item.type === "mcq";
+    });
+    if (!allMcq) return;
+
+    var listEl = ensureSampleSubjectsFooter();
+    if (!listEl) return;
+
+    var domains = Array.isArray(session.sampleDomains) && session.sampleDomains.length
+      ? session.sampleDomains
+      : domainsFromSampleOrder(session.order);
+    listEl.textContent = "";
+    domains.forEach(function (domainId) {
+      var li = document.createElement("li");
+      li.textContent = formatDomainLabel(domainId);
+      listEl.appendChild(li);
+    });
+  }
+
   function syncProgressDisplay(slug, practiceIndex) {
     var text = resolveProgressText(slug, practiceIndex);
     if (!text) return;
     var el = document.querySelector(".ccna-practice-progress");
     if (el) el.textContent = text;
     syncQuestionTopicMeta(slug);
+    syncSampleSubjectsFooter();
   }
 
   function ensureSampleBottomNav() {
@@ -519,6 +607,8 @@
       ensureSampleBottomNav();
     }
 
+    hideShowAnswerInExamSim();
+
     var nav = applyPracticeNav(slug);
     if (!nav && shouldUseSampleBottomNav()) {
       applySampleFallbackNav(slug);
@@ -531,6 +621,7 @@
       }
       initMarkForReview(slug);
       syncQuestionTopicMeta(slug);
+      syncSampleSubjectsFooter();
       return;
     }
 

@@ -85,6 +85,21 @@
     ];
   }
 
+  function domainsFromOrder(order) {
+    var seen = Object.create(null);
+    var list = [];
+    (order || []).forEach(function (item) {
+      if (!item || item.type !== "mcq" || !item.domain) return;
+      if (seen[item.domain]) return;
+      seen[item.domain] = true;
+      list.push(item.domain);
+    });
+    list.sort(function (a, b) {
+      return parseFloat(a) - parseFloat(b);
+    });
+    return list;
+  }
+
   function persistSession(order, finishHome, blueprint) {
     if (!order.length) throw new Error("empty");
     var mcqCount = order.filter(function (item) {
@@ -94,6 +109,7 @@
       order: order,
       mcqCount: mcqCount,
       totalCount: order.length,
+      sampleDomains: domainsFromOrder(order),
       finishHome: finishHome || blueprint.finishHome || "/comptia-sec+-home.html",
       title: blueprint.title || "Security+ sample",
     };
