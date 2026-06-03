@@ -20,6 +20,7 @@ Obsidian vault for data-driven marketing (Cursor + GA4 + Stripe + Google Ads). O
 - [[01-strategy/security-plus-federal-defense-foundation|Security+ federal & defense foundation]]
 - [[01-strategy/google-ai-search-strategy|Google AI search strategy]]
 - [[01-strategy/ai-amplified-marketer|AI Amplified Marketer — book notes]]
+- [[prompts|AI prompts — Google Ads & conversions]] ← Cursor / ChatGPT system + task templates
 - [[02-campaigns/security-plus/security-plus-google-ads|Security+ — Google Ads]] ← active
 - [[02-campaigns/security-plus/secplus-lead-free-sim-ad-group|secplus_lead_free_sim — live config]] ← budget · CPC · keywords · checklists
 - [[02-campaigns/security-plus/security-plus-lead-magnet-ads|Security+ lead magnet ads]] ← free 35-min sim CTA
