@@ -425,6 +425,29 @@
       gap: 12px;
       align-items: center;
     }
+    .results-home-footer,
+    .summary-card-footer {
+      margin: 18px 0 0;
+      padding-top: 14px;
+      border-top: 1px solid #2d3b5a;
+      font-size: 0.88rem;
+      text-align: center;
+    }
+    .results-home-footer a,
+    .summary-card-footer a {
+      color: #93c5fd;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .results-home-footer a:hover,
+    .summary-card-footer a:hover,
+    .results-home-footer a:focus-visible,
+    .summary-card-footer a:focus-visible {
+      text-decoration: underline;
+    }
+    .summary-actions {
+      flex-wrap: wrap;
+    }
     #resultsContinue {
       padding: 12px 22px;
       border-radius: 10px;
@@ -581,6 +604,9 @@
         <h4 class="results-scorecard-subheading">Objectives that need the most work</h4>
         <p id="resultsWeakObjectiveLead" class="results-note scorecard-lead"></p>
         <ul id="resultsWeakObjectiveList" class="scorecard-weak-list"></ul>
+        <p class="results-home-footer results-home-footer--scorecard">
+          <a id="resultsScorecardBackHome" href="/comptia-sec+-home.html">← Back to Security+ home</a>
+        </p>
       </div>
 
       <h3 style="margin: 18px 0 10px; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: #8ba4c9">
@@ -624,6 +650,9 @@
           <strong>900</strong>-point score with a <strong>750</strong> passing threshold (85% MCQ, 15% simulations &amp; hot spots).
         </p>
       </div>
+      <p class="results-home-footer">
+        <a id="resultsBackHome" href="/comptia-sec+-home.html">← Back to Security+ home</a>
+      </p>
     </div>
   </div>
 
@@ -651,6 +680,9 @@
           Start 30-day full access — $19.99
         </button>
       </div>
+      <p class="summary-card-footer">
+        <a id="freeSimUpsellBackHome" href="/comptia-sec+-home.html">← Back to Security+ home</a>
+      </p>
     </div>
   </div>
 
@@ -836,16 +868,25 @@
           });
       }
 
-      function updateGateBackLink() {
-        var a = document.getElementById("gateBackLink");
-        if (!a) return;
+      function updateSecplusHomeLinks() {
+        var href = "/comptia-sec+-home.html";
+        var label = "← Back to Security+ home";
         if (typeof bccSecplusPortalAccessActive === "function" && bccSecplusPortalAccessActive()) {
-          a.setAttribute("href", "/COMP_TIA_SEC+/SEC+_Training_Portal.html");
-          a.textContent = "← Back to Security+ Training Portal";
+          href = "/COMP_TIA_SEC+/SEC+_Training_Portal.html";
+          label = "← Back to Security+ Training Portal";
+        } else if (freeMode) {
+          href = FREE_STARTER_URL;
         } else {
-          a.setAttribute("href", STARTER_URL);
-          a.textContent = "← Back to Security+ home";
+          href = STARTER_URL;
         }
+        ["gateBackLink", "resultsBackHome", "resultsScorecardBackHome", "freeSimUpsellBackHome"].forEach(function (
+          id
+        ) {
+          var el = document.getElementById(id);
+          if (!el) return;
+          el.setAttribute("href", href);
+          el.textContent = label;
+        });
       }
 
       function beginPaidSessionIfNeeded() {
@@ -957,7 +998,7 @@
         }
 
         showGateUi();
-        updateGateBackLink();
+        updateSecplusHomeLinks();
 
         if (bypassMode) {
           sessionOk = true;
@@ -1287,6 +1328,7 @@
 
       function showResultsPanel(reasonCode) {
         applyFreeModeResultsUi();
+        updateSecplusHomeLinks();
         gatePanel.hidden = true;
         examPanel.hidden = true;
         resultsPanel.hidden = false;
