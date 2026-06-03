@@ -881,13 +881,13 @@ Maximum password age ............... 90 days (expiration enforced)</div>
       },
       compensation: {
         title: "Compensation report — Q3 FY2024",
-        report: "reports/compensation-report-q3-ir-addendum.html",
+        report: "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/reports/compensation-report-q3-ir-addendum.html",
         reportRoot: "compensationReportSample",
         reportLinkLabel: "compensation report",
       },
       userdata: {
         title: "User data — employee_credential_audit.csv",
-        report: "reports/employee-credential-audit.html",
+        report: "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/reports/employee-credential-audit.html",
         reportRoot: "credentialAuditSample",
         reportLinkLabel: "credential audit export",
       },
@@ -905,16 +905,37 @@ Maximum password age ............... 90 days (expiration enforced)</div>
     const docModalClose = document.getElementById("docModalClose");
     let docModalTrigger = null;
 
-    function resolveSimDocUrl(relativePath) {
+    function simDocumentBaseHref() {
       try {
-        return new URL(relativePath, window.location.href).href;
+        var path = (location.pathname || "").toLowerCase();
+        if (path === "/secplus-sample" || path === "/secplus-sample/") {
+          var remembered = sessionStorage.getItem("ccnaLastRealPath");
+          if (remembered) {
+            return new URL(remembered, window.location.origin).href;
+          }
+        }
+      } catch (e) {}
+      return window.location.href;
+    }
+
+    function resolveSimDocUrl(relativePath) {
+      if (!relativePath) return relativePath;
+      if (relativePath.charAt(0) === "/") {
+        try {
+          return new URL(relativePath, window.location.origin).href;
+        } catch (e) {
+          return relativePath;
+        }
+      }
+      try {
+        return new URL(relativePath, simDocumentBaseHref()).href;
       } catch (e) {
         return relativePath;
       }
     }
 
     function showDocModal(doc, trigger) {
-      docModal.hidden = false;
+      docModal.removeAttribute("hidden");
       docModal.classList.add("open");
       docModalClose.focus();
       if (trigger) trigger.classList.add("reviewed");
@@ -976,7 +997,7 @@ Maximum password age ............... 90 days (expiration enforced)</div>
     }
 
     function closeDoc() {
-      docModal.hidden = true;
+      docModal.setAttribute("hidden", "");
       docModal.classList.remove("open");
       docModalBody.innerHTML = "";
       docModalBody.classList.remove("doc-modal__body--report");
