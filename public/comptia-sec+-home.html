@@ -1417,9 +1417,11 @@
       margin: 0 0 clamp(16px, 3vw, 22px);
       padding: clamp(16px, 3vw, 22px);
       border-radius: 12px;
-      border: 1px solid rgba(96, 165, 250, 0.35);
-      background: linear-gradient(165deg, #1e3a8a 0%, #1d4ed8 52%, #2563eb 100%);
-      box-shadow: 0 8px 24px rgba(29, 78, 216, 0.22);
+      border: 1px solid rgba(120, 170, 255, 0.45);
+      background: linear-gradient(165deg, #8b5cf6 0%, #6d28d9 48%, #5b21b6 100%);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.14) inset,
+        0 6px 22px rgba(109, 40, 217, 0.35);
     }
     .samples-block-title {
       margin: 0 0 8px;
@@ -1427,12 +1429,15 @@
       font-weight: 800;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      color: #ffffff;
+      color: #fff;
     }
     .samples-block-intro .samples-block-lead {
       margin: 0;
       max-width: none;
-      color: #dbeafe;
+      color: #f4f7ff;
+    }
+    .samples-block-intro .samples-block-lead strong {
+      color: #fff;
     }
     .samples-block-lead {
       margin: 0 0 clamp(16px, 3vw, 22px);
@@ -1539,9 +1544,46 @@
       display: flex;
       flex-direction: column;
       min-height: 0;
+      border: 1px solid rgba(120, 170, 255, 0.45);
+      background: linear-gradient(165deg, #8b5cf6 0%, #6d28d9 48%, #5b21b6 100%);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.14) inset,
+        0 6px 22px rgba(109, 40, 217, 0.35);
     }
     .samples-stack .format-card h3 {
-      color: #e6edf3;
+      color: #fff;
+    }
+    .samples-stack .format-card p {
+      color: #f4f7ff;
+    }
+    .samples-stack .format-card p strong {
+      color: #fff;
+    }
+    .samples-stack .format-card-device-note {
+      color: rgba(255, 255, 255, 0.88);
+    }
+    .samples-stack .format-card-thumb {
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+    .samples-stack .format-sample {
+      border-top-color: rgba(255, 255, 255, 0.28);
+      color: #f4f7ff;
+    }
+    .samples-stack .format-sample a {
+      color: #fff;
+    }
+    .samples-stack .format-sample a.cta-secondary,
+    .samples-stack .format-sample a.cta-main {
+      color: #5b21b6;
+      background: #fff;
+      border: 1px solid #fff;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+    }
+    .samples-stack .format-sample a.cta-secondary:hover,
+    .samples-stack .format-sample a.cta-main:hover {
+      color: #4c1d95;
+      background: #f4f7ff;
+      border-color: #f4f7ff;
     }
     .samples-stack .format-card > .format-sample:last-child {
       margin-top: auto;
