@@ -112,14 +112,14 @@ With **Maximize clicks**, Google must have a ceiling or spend can spike on one e
 
 | Check | Expected (Security+ launch) |
 |-------|----------------------------|
-| **Maximum CPC bid limit** | **Enabled** — **$3.25** |
+| **Maximum CPC bid limit** | **Enabled** — **$2.50** (live 2026-06-03) · vault default was $3.25 |
 | If field is missing | Switch strategy to Maximize clicks again; expand **Advanced options** |
 
 **Vault caps when you add other products later:**
 
 | Product | Max CPC cap |
 |---------|-------------|
-| Security+ | **$3.25** |
+| Security+ | **$2.50** (2026-06-03) · up to **$2.75–3.25** if clicks &lt; 3/day |
 | CCNA | **$2.75** |
 | ENCOR | **$2.25** |
 
@@ -139,12 +139,12 @@ With **Maximize clicks**, Google must have a ceiling or spend can spike on one e
 ### 4.1 Enabled ad groups only
 
 1. **Campaigns → Ad groups** (filter by Security+ campaign).
-2. At launch, exactly **two** ad groups should be **Enabled**:
+2. **Current launch (2026-06-03):** only **one** ad group **Enabled**:
 
 | Ad group | Status | Role |
 |----------|--------|------|
-| `secplus_lead_free_sim` | **Enabled** | Free 35-min sim + email → `generate_lead` |
-| `secplus_sim_purchase` | **Enabled** | $9.99 timed sim → `begin_checkout` |
+| `secplus_lead_free_sim` | **Enabled** | Free 35-min sim → `generate_lead` — [[../02-campaigns/security-plus/secplus-lead-free-sim-ad-group|config]] |
+| `secplus_sim_purchase` | **Paused** | Open after ≥5 leads |
 
 3. **Pause** until week 3+ (if they exist in the account):
 

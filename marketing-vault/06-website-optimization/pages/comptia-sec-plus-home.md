@@ -50,7 +50,7 @@ Primary **Google Ads final URL** for [[../../02-campaigns/security-plus/security
 - **Federal section:** Removed as dedicated block (2026-05-30); DoD/8140 still in hero, meta, keywords, FAQ
 - **Lead magnet:** `#secplus-lead-capture` — badge “Free · 35 minutes”; H2 “Start your free SY0-701 timed simulation”; **20 MCQ + 1 PBQ**; scorecard + optional email
 - **Sim runner nav (free + paid):** **Back**, **Mark for review**, **Next** / **Finish**; embedded question Back/Home hidden in exam mode
-- **Primary CTAs:** free sim (email), free samples (no email), 10-day ($9.99), 30-day ($19.99), timed sim ($9.99)
+- **Primary CTAs:** free sim (no checkout), free samples; **paid:** 30-day ($19.99) only on `#purchase` (2026-06-03)
 
 ## Audit history
 

@@ -7,6 +7,13 @@ launch_priority: 1
 priority: 1
 target_cpa: null
 daily_budget_usd: 10
+max_cpc_usd: 2.50
+bidding_strategy: maximize-clicks
+active_ad_groups:
+  - secplus_lead_free_sim
+baseline_cpa_lead_usd: 30.87
+baseline_ctr_pct: 8.56
+baseline_as_of: 2026-06-03
 utm_campaign: secplus_portal
 utm_source: google
 utm_medium: cpc
@@ -32,7 +39,7 @@ Primary paid campaign for **CompTIA Security+ SY0-701** on Be Certified Today.
 Send high-intent SY0-701 **exam prep** traffic to the landing page. Convert via:
 
 1. **Lead magnet** — free 35-min timed sim + scorecard ([[security-plus-lead-magnet-ads|lead magnet ads]])
-2. **Direct purchase** — $9.99 timed sim, 10-day, or 30-day portal access
+2. **Direct purchase** — **$19.99 / 30-day** portal access (single CTA on `#purchase` as of 2026-06-03; $9.99 tiers removed from landing UI)
 
 Optimize toward `generate_lead`, `begin_checkout`, and purchases while building Quality Score.
 
@@ -87,7 +94,7 @@ Copy details for lead group: [[security-plus-lead-magnet-ads|lead magnet ads]].
 | Stage | Page / action | GA4 signal |
 |-------|----------------|------------|
 | Click | Google Ads → landing | Session with `utm_campaign=secplus_portal` |
-| Lead magnet | `#secplus-lead-capture` → email → free sim | `generate_lead` |
+| Lead magnet | `#secplus-lead-capture` → guest free sim start | `generate_lead` (`free_sim_start`) |
 | Free sim | 35 min / 21 items, Back + mark for review | Engagement, completion |
 | Scorecard email | Results → email my scorecard | `secplus_scorecard_email_sent` |
 | Upsell | Results modal or `#purchase` | `begin_checkout` |
@@ -99,9 +106,9 @@ Copy details for lead group: [[security-plus-lead-magnet-ads|lead magnet ads]].
 
 | Offer | Price | GA4 `item_id` | Stripe / checkout |
 |-------|------:|---------------|-------------------|
-| 10-day portal | $9.99 | `secplus_portal_10d` | `data-secplus-portal-10d-checkout` |
-| 30-day portal | $19.99 | `secplus_portal_30d` | `data-secplus-portal-30d-checkout` |
-| Timed simulation | $9.99 | `secplus_timed_simulation` | `data-secplus-test-sim-checkout` |
+| **30-day portal (landing CTA)** | **$19.99** | `secplus_portal_30d` | `data-secplus-portal-30d-checkout` |
+| 10-day portal | $9.99 | `secplus_portal_10d` | Stripe link only (not on landing UI) |
+| Timed simulation | $9.99 | `secplus_timed_simulation` | Stripe link only (not on landing UI) |
 | Free timed sim (lead) | $0 | — | Email unlock → `?free=1` runner |
 
 Checkout wiring: `public/COMP_TIA_SEC+/js/secplus-portal-checkout.js`, `secplus-test-checkout.js`.
@@ -182,12 +189,14 @@ Landing page must answer AI-style questions clearly (see [[../../01-strategy/goo
 
 ## Tracking checklist
 
-- [ ] Final URLs include `utm_campaign=secplus_portal` (or ad-group-specific `utm_content`)
-- [ ] Google Ads conversion: `generate_lead` (lead group) + `begin_checkout` (purchase)
-- [ ] Weekly report: filter GA4 by campaign name matching `secplus*`
-- [ ] Stripe Payment Link confirms **$9.99** for timed sim in Dashboard
-- [ ] Stripe portal subscribers visible in `/admin/analytics.html` (Security+ product metadata)
-- [ ] Landing page audits in [[../../06-website-optimization/landing-page-audit-checklist|audit checklist]] — log changes in [[../../06-website-optimization/content-change-log|content change log]]
+- [x] Final URLs include `utm_campaign=secplus_portal` + `utm_content=lead-free-sim` on lead ad group — [[secplus-lead-free-sim-ad-group|ad group config]]
+- [x] Site fires `generate_lead` on free sim Start + scorecard email (2026-06-03 deploy)
+- [ ] Google Ads: **`generate_lead` imported Primary** for lead campaign
+- [ ] `begin_checkout` when purchase ad group launches (paused)
+- [ ] Weekly report: `npm run marketing:weekly-report` + GA4 vs Ads
+- [x] Stripe portal **30-day $19.99** primary on landing (`secplus_portal_30d`)
+- [ ] Stripe portal subscribers visible in `/admin/analytics.html`
+- [x] Landing audits logged — [[../../06-website-optimization/content-change-log|content change log]] 2026-06-03
 
 ## Landing page optimization
 
@@ -203,7 +212,7 @@ Before major ad spend increases, run the optimization workflow in [[../../06-web
 ## Creative / ad copy notes
 
 - Full RSA sets, keywords, negatives, extensions: [[security-plus-google-ads-export|paste-ready export]]
-- Launch with **`secplus_lead_free_sim`** + **`secplus_sim_purchase`** in parallel
+- Launch **`secplus_lead_free_sim` only** — [[secplus-lead-free-sim-ad-group|ad group config]] · pause `secplus_sim_purchase` until ≥5 leads
 - A/B: lead headline “Free Timed Simulation” vs “35-Min Sample Exam”
 - Pin lead URL to `#secplus-lead-capture` for lead ad group only
 
@@ -218,10 +227,12 @@ Before major ad spend increases, run the optimization workflow in [[../../06-web
 | 2026-05-30 | OpenSSL PBQ CTA landing + keyword/negative doc in Obsidian | Mid-funnel ad group `secplus_openssl_pbq` |
 | 2026-05-30 | Landing page positioning + FAQ deploy (`comptia-sec+-home.html`) | Ads/AI search message match — exam prep not course |
 | 2026-05-30 | Campaign note created; primary landing = `comptia-sec+-home.html` | First marketing campaign focus |
+| 2026-06-03 | **$19.99-only** purchase CTA; free sim funnel + `generate_lead` on Start | Single paid SKU for growth |
+| 2026-06-03 | Ads: **$10/day**, Maximize clicks, **$2.50** max CPC, campaign negatives 32 | [[secplus-lead-free-sim-ad-group|lead ad group]] only |
 
 ## Bidding verification
 
-After any change in Google Ads UI, run [[../../05-playbooks/google-ads-bidding-verification|step-by-step bidding verification]] ($10/day · Maximize clicks · $3.25 max CPC · two ad groups enabled).
+Configured 2026-06-03: **$10/day** · **Maximize clicks** · **$2.50** max CPC · **`secplus_lead_free_sim` only**. Re-verify after changes: [[../../05-playbooks/google-ads-bidding-verification|bidding verification]].
 
 ## Promotions
 

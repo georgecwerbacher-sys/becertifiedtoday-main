@@ -129,7 +129,7 @@
               "name": "How much does Security+ exam prep access cost?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Choose a 10-day pass ($9.99), a 30-day pass ($19.99), or a one-time timed simulation ($9.99). Prices are shown on the purchase section before Stripe checkout. No recurring subscription."
+                "text": "Full SY0-701 library access is $19.99 for 30 days—question banks, labs, adaptive review, progress tracking, and the 90-minute timed simulation in your browser. Price is shown before Stripe checkout. No recurring subscription."
               }
             },
             {
@@ -415,13 +415,13 @@
       display: none;
     }
     html.secplus-landing-lead-first .funnel > #purchase {
-      order: 30;
+      order: 25;
     }
     html.secplus-landing-lead-first .funnel > .funnel-intro {
       order: 10;
     }
     html.secplus-landing-lead-first .funnel > #secplus-lead-capture {
-      order: 20;
+      order: 5;
     }
     html.secplus-landing-lead-first .funnel > .samples-stack {
       order: 40;
@@ -440,6 +440,40 @@
     }
     html.secplus-landing-lead-first .purchase-fold-lead-note {
       display: block;
+    }
+    html.secplus-landing-lead-first #secplus-lead-capture {
+      border-color: rgba(79, 132, 216, 0.55);
+      box-shadow: 0 0 0 1px rgba(79, 132, 216, 0.2) inset, 0 12px 40px rgba(0, 0, 0, 0.35);
+    }
+    html.secplus-landing-lead-first #secplus-lead-capture .assessment-cta-panel .cta-main {
+      font-size: clamp(1.05rem, 2.8vw, 1.2rem);
+      padding: 1rem 1.35rem;
+      min-height: 52px;
+    }
+    .secplus-lead-sticky-cta {
+      display: none;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9000;
+      padding: 12px max(16px, env(safe-area-inset-right, 0px)) max(12px, env(safe-area-inset-bottom, 0px))
+        max(16px, env(safe-area-inset-left, 0px));
+      background: linear-gradient(180deg, transparent 0%, rgba(8, 12, 22, 0.92) 28%, rgba(8, 12, 22, 0.98) 100%);
+      pointer-events: none;
+    }
+    html.secplus-landing-lead-first .secplus-lead-sticky-cta.secplus-lead-sticky-cta--visible {
+      display: block;
+      pointer-events: auto;
+    }
+    .secplus-lead-sticky-cta .cta-main {
+      width: 100%;
+      max-width: 28rem;
+      margin: 0 auto;
+      display: block;
+      text-align: center;
+      min-height: 48px;
+      padding: 0.85rem 1.25rem;
     }
     .purchase-fold {
       margin: 0 0 clamp(24px, 4vw, 32px);
@@ -779,9 +813,16 @@
       gap: clamp(16px, 3vw, 22px);
     }
     @media (min-width: 860px) {
-      .purchase-cta-stack {
+      .purchase-cta-stack:not(.purchase-cta-stack--single) {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
+    }
+    .purchase-cta-stack--single {
+      max-width: 42rem;
+      margin: 0 auto;
+    }
+    .purchase-fold--single-offer .purchase-tier-eyebrow {
+      text-align: center;
     }
     .purchase-primary-cta .purchase-track-box {
       margin-top: 0;
@@ -2165,104 +2206,45 @@
             Payment Link URL: https://buy.stripe.com/9B63cudF33Gnc5a1xac3m08
             After payment redirect: /COMP_TIA_SEC+/test-simulation-runner.html?session_id={CHECKOUT_SESSION_ID}
           -->
-          <section class="card purchase-card purchase-fold" id="purchase" aria-labelledby="purchase-fold-title">
-            <p class="purchase-fold-lead-note">When you are ready for the full exam</p>
-            <div class="purchase-cta-stack">
+          <section class="card purchase-card purchase-fold purchase-fold--single-offer" id="purchase" aria-labelledby="purchase-fold-title">
+            <p class="purchase-fold-lead-note">When you are ready for the full library</p>
+            <div class="purchase-cta-stack purchase-cta-stack--single">
               <div class="purchase-primary-cta">
-                <div
-                  class="purchase-track-box purchase-track-box--one-time-live purchase-pricing-option"
-                  aria-label="One-time Security+ timed exam simulation"
-                >
-                  <div class="purchase-track-head">
-                    <p class="purchase-track-title" id="purchase-fold-title">90-minute simulation</p>
-                    <span class="encor-live-badge">Live</span>
-                  </div>
-                  <p class="purchase-price" aria-label="9 dollars and 99 cents for one timed test">
-                    $9.99 <span>/ one attempt</span>
-                  </p>
-                  <p class="purchase-track-sub">
-                    Same clock and mix as test day: up to <strong>90 questions</strong> in <strong>90 minutes</strong>—multiple-choice,
-                    hot-spot, and simulation items in one shuffled session. Finish with a <strong>study scorecard</strong> that breaks down
-                    SY0-701 domains and highlights subjects to improve before you sit the real exam.
-                  </p>
-                  <p class="purchase-track-cta-wrap">
-                    <button
-                      type="button"
-                      class="cta-main cta-main--block"
-                      data-secplus-test-sim-checkout
-                      data-bcc-item-id="secplus_timed_simulation"
-                      data-bcc-item-name="Security+ Timed Test Simulation"
-                      data-bcc-value="9.99"
-                      data-bcc-currency="USD"
-                      aria-label="Purchase one-time Security+ timed simulation for nine ninety-nine"
-                    >
-                      Get simulated exam
-                    </button>
-                  </p>
-                  <p class="purchase-access-disclaimer">
-                    <strong>One-time access.</strong> No subscription. Best when you want one serious dry run before you schedule SY0-701.
-                  </p>
-                </div>
-              </div>
-              <div class="purchase-secondary-shell">
-                <div
-                  class="purchase-track-box purchase-track-box--ten-day purchase-pricing-option"
-                  aria-label="CompTIA Security+ 10-day all-access pass"
-                >
-                  <div class="purchase-track-head">
-                    <p class="purchase-track-title">10-day all-access pass</p>
-                    <span class="encor-live-badge">Live</span>
-                  </div>
-                  <p class="purchase-price" aria-label="9 dollars and 99 cents for 10 days">
-                    $9.99 <span>/ 10 days</span>
-                  </p>
-                  <p class="purchase-track-sub">
-                    Full SY0-701 library access for 10 days: question banks, performance-based drag-and-drop sets, practice portal
-                    modes, and timed exam simulation—all in your browser.
-                  </p>
-                  <p class="purchase-track-cta-wrap">
-                    <button
-                      type="button"
-                      class="cta-main cta-main--block"
-                      data-secplus-portal-10d-checkout
-                      aria-label="Purchase 10-day Security+ library access for nine ninety-nine"
-                    >
-                      Get 10-day access
-                    </button>
-                  </p>
-                  <p class="purchase-access-disclaimer">
-                    <strong>$9.99 / 10 days.</strong> No subscription. Access is tied to this browser—use the same device when you study.
-                  </p>
-                </div>
-              </div>
-              <div class="purchase-secondary-shell">
+                <p class="purchase-tier-eyebrow">SY0-701 exam prep · one-time purchase</p>
                 <div
                   class="purchase-track-box purchase-track-box--thirty-day purchase-pricing-option"
                   aria-label="CompTIA Security+ 30-day all-access pass"
                 >
                   <div class="purchase-track-head">
-                    <p class="purchase-track-title">30-day all-access pass</p>
+                    <p class="purchase-track-title" id="purchase-fold-title">30-day all-access pass</p>
                     <span class="encor-live-badge">Live</span>
                   </div>
                   <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
                     $19.99 <span>/ 30 days</span>
                   </p>
                   <p class="purchase-track-sub">
-                    Full SY0-701 library access for 30 days: question banks, performance-based drag-and-drop sets, practice portal
-                    modes, and timed exam simulation—all in your browser.
+                    Full SY0-701 library for 30 days: latest-style question banks, performance-based and drag-and-drop labs,
+                    <strong>adaptive review</strong> that loops weak topics, <strong>progress tracking</strong> by domain, and the
+                    <strong>90-minute timed simulation</strong> (up to 90 questions)—all in your browser. Built to help you pass on the
+                    first attempt, not flip through a PDF.
                   </p>
                   <p class="purchase-track-cta-wrap">
                     <button
                       type="button"
                       class="cta-main cta-main--block"
                       data-secplus-portal-30d-checkout
+                      data-bcc-item-id="secplus_portal_30d"
+                      data-bcc-item-name="CompTIA Security+ 30-day access"
+                      data-bcc-value="19.99"
+                      data-bcc-currency="USD"
                       aria-label="Purchase 30-day Security+ library access for nineteen ninety-nine"
                     >
-                      Get 30-day access
+                      Start 30-day exam prep
                     </button>
                   </p>
                   <p class="purchase-access-disclaimer">
-                    <strong>$19.99 / 30 days.</strong> No subscription. Access is tied to this browser—use the same device when you study.
+                    <strong>$19.99 · 30 days · no subscription.</strong> Includes timed simulation and portal modes. Access is tied to
+                    this browser—use the same device when you study.
                   </p>
                 </div>
               </div>
@@ -2278,12 +2260,12 @@
             Practice with <strong>realistic practice tests</strong>, <strong>verified explanations</strong>, performance-based drag-and-drop items,
             and a <strong>90-minute timed simulation</strong> built for the mix of multiple-choice and performance-based questions on test day.
             <strong>No PDFs or third-party software:</strong> browser-only prep you can use on your schedule—from duty station, CONUS, or TDY.
-            Build confidence before you sit the exam and avoid paying for a retake—try the free sample first, then choose a 10-day pass, 30-day pass, or one-time simulation below.
+            Build confidence before you sit the exam and avoid paying for a retake—try the free timed sample first, then unlock the full library with <strong>30-day access for $19.99</strong> when you are ready.
           </p>
           <p class="lead lead--lead-first">
-            <strong>Exam preparation</strong> for SY0-701—not a training course. Start with the
-            <strong>free 35-minute timed simulation</strong> below: 20 multiple-choice questions (four per domain) plus a performance-based
-            dark web scenario, then review your domain scorecard. Browser-only—no PDFs or third-party software.
+            <strong>Exam preparation</strong> for SY0-701—not a training course.
+            <strong>No email required:</strong> tap <strong>Start free timed simulation</strong> for a
+            <strong>35-minute sample exam</strong> (20 MCQ + 1 PBQ) and a domain scorecard. Browser-only—no PDFs or third-party software.
           </p>
           <ul class="benefits" aria-label="What you get">
             <li>Exam-realistic formats—timed sim, PBQ-style drag-and-drop, and domain-organized question banks.</li>
@@ -2311,7 +2293,7 @@
               <li><strong>Back</strong>, <strong>Mark for review</strong>, and <strong>Next</strong>—same navigation as the full 90-minute sim</li>
               <li>Scaled score and domain breakdown on the results screen when you finish</li>
               <li>One free attempt per browser</li>
-              <li>Ready for a full dry run? <a href="#purchase">90-minute simulation — $9.99</a> or portal access below</li>
+              <li>Ready for the full library? <a href="#purchase">30-day SY0-701 access — $19.99</a> (timed sim + portal included)</li>
             </ul>
             <p class="lead-capture-open-link" data-secplus-continue-free-sim hidden>
               In progress on this browser?
@@ -2329,7 +2311,7 @@
                 >
                 <p class="assessment-cta-note" data-secplus-free-sim-consumed-note hidden>
                   You have already completed the free sample on this browser.
-                  <a href="#purchase">Get the full 90-minute simulation or library access</a>.
+                  <a href="#purchase">Get 30-day full access — $19.99</a>.
                 </p>
               </div>
             </div>
@@ -2404,7 +2386,7 @@
                 <p class="purchase-label">Study plan</p>
                 <h2 class="purchase-heading">Match your prep to SY0-701</h2>
                 <p class="purchase-lead purchase-lead--tight">
-                  Domain weights and a suggested study order—unlock the full library from the purchase cards above.
+                  Domain weights and a suggested study order—unlock the full library with <a href="#purchase">30-day access ($19.99)</a> above.
                 </p>
                 <div class="purchase-blueprint-callout" aria-labelledby="purchase-blueprint-title">
                   <h3 class="purchase-blueprint-title" id="purchase-blueprint-title">
@@ -2485,7 +2467,7 @@
                   </p>
                 </div>
                 <div class="purchase-notes">
-                  <strong>No recurring membership.</strong> Choose a 10-day or 30-day access window—or a one-time timed simulation—and renew only if you want more time.
+                  <strong>No recurring membership.</strong> One-time <strong>30-day access ($19.99)</strong> includes the full library and timed simulation—renew only if you want another period.
                   <strong>No additional software</strong> is required; everything runs in your browser.
                 </div>
               </div>
@@ -2570,8 +2552,8 @@
                 <summary class="faq-summary">How much does access cost?</summary>
                 <div class="faq-answer">
                   <p>
-                    <strong>10-day pass:</strong> $9.99 · <strong>30-day pass:</strong> $19.99 · <strong>One-time timed simulation:</strong> $9.99.
-                    Prices are shown in the purchase section above before Stripe checkout. No recurring subscription.
+                    <strong>30-day all-access pass: $19.99</strong>—full SY0-701 question banks, labs, adaptive review, progress tracking, and the
+                    90-minute timed simulation in your browser. Price is shown in the purchase section above before Stripe checkout. No recurring subscription.
                   </p>
                 </div>
               </details>
@@ -2676,6 +2658,15 @@
         >Any questions?</a>
     </footer>
   </div>
+  <div id="secplusLeadStickyCta" class="secplus-lead-sticky-cta" hidden aria-hidden="true">
+    <a
+      class="cta-main"
+      href="/COMP_TIA_SEC+/test-simulation-runner.html?free=1"
+      data-secplus-start-free-sim
+      data-secplus-start-method="secplus_free_sim_sticky"
+      >Start free 35-min simulation</a
+    >
+  </div>
   <div
     id="secplusPortalGateRoot"
     class="ccna-sim-promo-root"
@@ -2715,13 +2706,13 @@
           data-secplus-portal-30d-checkout
           aria-label="Purchase 30-day Security+ library access and go to Stripe checkout"
         >
-          Purchase 30-day access
+          Start 30-day exam prep — $19.99
         </button>
         <a
           class="ccna-sim-promo-secondary"
-          href="/comptia-sec+-home.html"
+          href="/comptia-sec+-home.html#purchase"
           data-secplus-portal-gate-dismiss
-          >Return to Security+ home</a
+          >View pricing on Security+ home</a
         >
         <button type="button" class="ccna-sim-promo-secondary" data-secplus-portal-gate-dismiss>Close</button>
       </div>
@@ -2748,7 +2739,6 @@
   </script>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-checkout.js" defer></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-test-checkout.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-test-sim-storage.js" defer></script>
   <script src="/js/secplus-lead-capture.js" defer></script>
   <script>

@@ -26,6 +26,9 @@ Implement changes in Cursor under `public/`. Link to page notes in `06-website-o
 | 2026-05-31 | `robots.txt`, `sitemap.xml` | Disallow portals + legacy hub; sitemap prioritizes home pages + free assessment + OpenSSL PBQ; removed secplus-home | Crawl/index hygiene | all | no | |
 | 2026-05-31 | `/comptia-sec+-home.html`, sample JS | Homepage sample questions reduced to 2 MCQ; finish upsell modal → in-page free timed sim lead capture | Sample → lead magnet funnel | secplus_portal | no | |
 | 2026-05-31 | Guest sitemap pages + Obsidian ad exports | Guest page marketing sync on prod; ad-site verification; CCNA/ENCOR exports updated ($9.99 sim, lead URLs, 2-MCQ samples) | Ads paste-ready copy matches live site | all | yes — prod | |
+| 2026-06-03 | `/comptia-sec+-home.html` | Purchase fold: **$19.99 / 30-day only** CTA (`Start 30-day exam prep`); removed $9.99 sim + 10-day buttons; FAQ/schema/copy aligned; portal gate + free-sim upsell | Single paid CTA for lead-ads funnel — reduce choice paralysis | secplus_portal | no | |
+| 2026-06-03 | `test-simulation-runner.html`, OpenSSL PBQ landing | Upsell links → `#purchase` copy **$19.99 / 30-day** | Message match with Security+ home | secplus_portal, secplus_openssl_pbq | no | |
+| 2026-06-03 | `/comptia-sec+-home.html`, `secplus-lead-capture.js`, scorecard email JS | Free sim funnel: lead-first order, sticky mobile CTA, `generate_lead` on sim start, Ads copy sync in vault | `secplus_lead_free_sim` conversion + CVR | secplus_portal | no | |
 
 ---
 

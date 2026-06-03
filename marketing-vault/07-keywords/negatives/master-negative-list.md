@@ -2,7 +2,7 @@
 type: negative-keywords
 scope: all-campaigns
 status: active
-last_updated: 2026-05-30
+last_updated: 2026-06-03
 ---
 
 # Master negative keyword list
@@ -51,6 +51,22 @@ practice test pdf
 dumps pdf
 free pdf
 quizlet
+pass4sure
+exam questions and answers
+real exam questions
+sy0 701 dumps
+comptia dumps
+```
+
+## Competitor products / wrong exam (from Search terms 2026-05-31–06-03)
+
+```
+dion
+certmaster
+cysa
+sybex
+exam cram
+cyberkraft
 ```
 
 ## Jobs / wrong cert / voucher-only
@@ -76,10 +92,15 @@ Use cautiously—we still offer free samples. Negate only when query is clearly 
 ```
 homework
 assignment help
+free training
+flash cards
+study guide
 ```
 
 ## Change log
 
 | Date | Added | Removed | Notes |
 |------|-------|---------|-------|
+| 2026-06-03 | pass4sure, dumps, dion, certmaster, cysa, sybex, exam cram, cyberkraft, exam Q&A, real exam questions, free training, flash cards, study guide | — | Applied ad group **Broad** — see [[google-ads-applied-2026-06-03|applied snapshot]] |
+| 2026-06-03 | Campaign Phrase baseline (19) | — | [[google-ads-applied-2026-06-03|applied snapshot]] |
 | 2026-05-30 | Initial list from Security+ / OpenSSL CTA research | — | |

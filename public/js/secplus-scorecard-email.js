@@ -20,12 +20,20 @@
     }
   }
 
-  function trackEvent(name) {
+  function trackEvent(name, extra) {
     if (typeof window.bccShouldTrackAnalytics === "function" && !window.bccShouldTrackAnalytics()) {
       return;
     }
     if (typeof window.gtag !== "function") return;
-    window.gtag("event", name, { product: "secplus", lead_magnet: "secplus-free-simulation" });
+    var payload = Object.assign({ product: "secplus", lead_magnet: "secplus-free-simulation" }, extra || {});
+    window.gtag("event", name, payload);
+    if (name === "secplus_scorecard_email_sent") {
+      window.gtag(
+        "event",
+        "generate_lead",
+        Object.assign({}, payload, { lead_type: "scorecard_email", value: 0, currency: "USD" })
+      );
+    }
   }
 
   window.SECPLUS_SCORECARD_EMAIL = {

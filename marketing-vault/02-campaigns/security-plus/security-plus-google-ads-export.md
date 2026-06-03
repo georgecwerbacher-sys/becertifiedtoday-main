@@ -27,8 +27,8 @@ Copy blocks below into Google Ads (Search campaign) or Google Ads Editor. Parent
 | Networks             | Search only (uncheck Search partners until baseline CPA)                                                                  |
 | Locations            | United States (add geo ad groups below for defense metros)                                                                |
 | Language             | English                                                                                                                   |
-| Bidding              | **Start:** Maximize clicks, **max CPC $3.25**. See [[../../01-strategy/google-ads-bidding-strategy\|bidding strategy]] — split + Target IS when budget **≥ $20/day** |
-| Daily budget (start) | **$10.00/day** — one campaign; **`secplus_lead_free_sim`** + **`secplus_sim_purchase`** only first; 3–5 Exact Tier 1 keywords |
+| Bidding              | **Live (2026-06-03):** Maximize clicks, **max CPC $2.50** — see [[secplus-lead-free-sim-ad-group\|ad group config]] |
+| Daily budget (start) | **$10.00/day** — one campaign; **`secplus_lead_free_sim` only** (pause other ad groups) |
 | UTM campaign         | `secplus_portal` (PBQ group uses `secplus_openssl_pbq`)                                                                   |
 
 ### Campaign-level negative keywords (Phrase match)
@@ -52,6 +52,18 @@ Copy blocks below into Google Ads (Search campaign) or Google Ads Editor. Parent
 "sy0-601"
 "comptia a+"
 "network+"
+"dumps"
+"pass4sure"
+"dion"
+"certmaster"
+"cysa"
+"exam questions and answers"
+"real exam questions"
+"free training"
+"flash cards"
+"study guide"
+"sybex"
+"exam cram"
 ```
 
 ---
@@ -83,7 +95,7 @@ Back & Mark for Review
 Free Mock Exam — SY0-701
 CompTIA Security+ Practice
 Realistic Timed Sample
-Email Unlock · One Free Run
+No Email To Start
 Try Before You Buy
 Be Certified Today
 ```
@@ -91,13 +103,15 @@ Be Certified Today
 **RSA — Descriptions** (≤90 chars)
 
 ```
-Free 35-min SY0-701 sample: 20 MCQ + PBQ sim. Domain scorecard when you finish.
-Timed practice before test day. Back & mark for review. Full 90-min sim when ready.
-Exam prep—not a course. Verified explanations. No PDF dumps or third-party apps.
-Enter email to start free sim. One attempt per browser. Unsubscribe anytime.
+Free 35-min SY0-701 sample: 20 MCQ + PBQ. Domain scorecard. No email to start.
+Timed practice before test day. Back & mark for review. 30-day access when ready.
+Exam prep—not a course. Verified explanations. No PDF dumps. Browser-only.
+Free sample exam in your browser. One attempt per device. Scorecard at finish.
 ```
 
 **Pin suggestion:** Headline 1 → `Free Security+ Timed Sim` · Headline 2 → `Start Free SY0-701 Sample` · Headline 3 → `35-Min Practice + Scorecard`
+
+**Primary conversion in Ads:** GA4 **`generate_lead`** (fires when user taps **Start free timed simulation** — see [[../../05-playbooks/secplus-free-sim-funnel|free sim funnel]]).
 
 ### Keywords — `secplus_lead_free_sim`
 

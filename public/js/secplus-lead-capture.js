@@ -31,25 +31,28 @@
     return false;
   }
 
+  function campaignAttributionPayload() {
+    var attrs = typeof window.bccGetCampaignAttribution === "function" ? window.bccGetCampaignAttribution() || {} : {};
+    var out = { product: "secplus", landing_path: location.pathname };
+    if (attrs.utm_campaign) out.campaign_name = attrs.utm_campaign;
+    if (attrs.utm_content) out.campaign_content = attrs.utm_content;
+    if (attrs.utm_source) out.source = attrs.utm_source;
+    if (attrs.utm_medium) out.medium = attrs.utm_medium;
+    return out;
+  }
+
   function trackFreeSimStart(extra) {
     if (typeof window.bccShouldTrackAnalytics === "function" && !window.bccShouldTrackAnalytics()) {
       return;
     }
     if (typeof window.gtag !== "function") return;
-    var attrs = typeof window.bccGetCampaignAttribution === "function" ? window.bccGetCampaignAttribution() || {} : {};
-    window.gtag(
-      "event",
-      "secplus_free_sim_start",
-      Object.assign(
-        {
-          product: "secplus",
-          landing_path: location.pathname,
-        },
-        extra || {},
-        attrs.utm_campaign ? { campaign_name: attrs.utm_campaign } : {},
-        attrs.utm_content ? { campaign_content: attrs.utm_content } : {}
-      )
-    );
+    var payload = Object.assign({}, campaignAttributionPayload(), extra || {}, {
+      lead_type: "free_sim_start",
+      value: 0,
+      currency: "USD",
+    });
+    window.gtag("event", "secplus_free_sim_start", payload);
+    window.gtag("event", "generate_lead", payload);
   }
 
   function startSecplusFreeSimulation(options) {
@@ -123,19 +126,55 @@
       wireStartButtons();
     }
 
-    if (
-      section &&
-      (location.hash === HOME_ASSESSMENT_HASH ||
+    if (isLeadLanding && section) {
+      var scrollTarget =
+        location.hash === HOME_ASSESSMENT_HASH ||
         /lead-free-sim|free-sim|free\.simulation/i.test(
           (typeof window.bccGetCampaignAttribution === "function"
             ? window.bccGetCampaignAttribution() || {}
             : {}
           ).utm_content || ""
-        ))
-    ) {
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
+        );
+      if (scrollTarget) {
+        requestAnimationFrame(function () {
+          section.scrollIntoView({ behavior: "smooth", block: "start" });
+          var startBtn = section.querySelector("[data-secplus-start-free-sim]");
+          if (startBtn && typeof startBtn.focus === "function") {
+            setTimeout(function () {
+              try {
+                startBtn.focus({ preventScroll: true });
+              } catch (_) {
+                startBtn.focus();
+              }
+            }, 450);
+          }
+        });
+      }
+      wireLeadStickyCta(section);
     }
   });
+
+  function wireLeadStickyCta(section) {
+    var sticky = document.getElementById("secplusLeadStickyCta");
+    if (!sticky || !section) return;
+    if (freeSimWasConsumed()) return;
+    sticky.hidden = false;
+    sticky.setAttribute("aria-hidden", "false");
+    var panel = section.querySelector(".assessment-cta-panel");
+    if (!panel || typeof IntersectionObserver === "undefined") {
+      sticky.classList.add("secplus-lead-sticky-cta--visible");
+      return;
+    }
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          sticky.classList.toggle("secplus-lead-sticky-cta--visible", !entry.isIntersecting);
+        });
+      },
+      { root: null, threshold: 0, rootMargin: "0px 0px -40% 0px" }
+    );
+    observer.observe(panel);
+  }
 
   window.startSecplusFreeSimulation = startSecplusFreeSimulation;
   window.secplusHasFreeSimAccess = hasFreeSimAccess;
