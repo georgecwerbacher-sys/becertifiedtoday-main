@@ -377,11 +377,9 @@
       inset: 0;
       z-index: 10050;
       display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      background: rgba(11, 16, 32, 0.82);
-      backdrop-filter: blur(4px);
+      padding: 0;
+      background: transparent;
+      pointer-events: none;
     }
     .doc-modal.open {
       display: block;
@@ -390,16 +388,26 @@
       position: fixed;
       margin: 0;
       z-index: 1;
+      pointer-events: auto;
     }
     .doc-modal__panel {
+      position: relative;
+      display: flex;
+      flex-direction: column;
       width: min(720px, calc(100vw - 32px));
-      max-height: min(88vh, 900px);
-      overflow: auto;
+      max-width: calc(100vw - 16px);
+      max-height: calc(100vh - 16px);
+      min-width: 300px;
+      min-height: 220px;
+      overflow: hidden;
       background: #ffffff;
       color: #1e293b;
       border-radius: 12px;
-      border: 1px solid #e5e7eb;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      border: 1px solid #94a3b8;
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.28);
+    }
+    .doc-modal__panel.doc-modal__panel--report {
+      width: min(860px, calc(100vw - 32px));
     }
     .doc-modal__head {
       display: flex;
@@ -418,7 +426,7 @@
       user-select: none;
     }
     .doc-modal__head::after {
-      content: "Drag to move";
+      content: "Drag header to move · drag corner to resize";
       display: block;
       width: 100%;
       order: 3;
@@ -457,14 +465,31 @@
       outline: none;
     }
     .doc-modal__body {
+      flex: 1 1 auto;
+      min-height: 0;
       padding: 16px;
       font-size: 0.92rem;
       line-height: 1.55;
+      overflow: auto;
     }
     .doc-modal__body--report {
       padding: 12px 14px 16px;
-      max-height: min(72vh, 720px);
-      overflow: auto;
+    }
+    .doc-modal__resize {
+      position: absolute;
+      right: 2px;
+      bottom: 2px;
+      width: 22px;
+      height: 22px;
+      cursor: nwse-resize;
+      touch-action: none;
+      z-index: 2;
+      border-radius: 0 0 10px 0;
+      background:
+        linear-gradient(135deg, transparent 0 45%, #94a3b8 45% 52%, transparent 52% 62%, #94a3b8 62% 69%, transparent 69% 100%);
+    }
+    .doc-modal__panel.is-resizing .doc-modal__resize {
+      cursor: nwse-resize;
     }
     .doc-modal__body--report .report-sheet {
       max-width: none;
@@ -472,9 +497,6 @@
       padding: 0;
       border: 0;
       box-shadow: none;
-    }
-    .doc-modal__panel:has(.doc-modal__body--report) {
-      width: min(860px, 100%);
     }
     .doc-load-fallback {
       margin: 0;
@@ -787,6 +809,7 @@
         <button type="button" class="doc-modal__close" id="docModalClose">Close</button>
       </div>
       <div class="doc-modal__body" id="docModalBody"></div>
+      <div class="doc-modal__resize" id="docModalResize" title="Resize document" aria-hidden="true"></div>
     </div>
   </div>
 
@@ -929,9 +952,28 @@ Maximum password age ............... 90 days (expiration enforced)</div>
     const docModalClose = document.getElementById("docModalClose");
     const docModalPanel = document.getElementById("docModalPanel");
     const docModalHead = document.getElementById("docModalHead");
+    const docModalResize = document.getElementById("docModalResize");
+    const DOC_MODAL_MIN_W = 300;
+    const DOC_MODAL_MIN_H = 220;
     let docModalTrigger = null;
     let docModalDragged = false;
+    let docModalResized = false;
     let docModalBackdropSuppress = false;
+
+    function docModalMaxSize() {
+      return {
+        w: Math.max(DOC_MODAL_MIN_W, window.innerWidth - 16),
+        h: Math.max(DOC_MODAL_MIN_H, window.innerHeight - 16),
+      };
+    }
+
+    function clampDocModalSize(width, height) {
+      const max = docModalMaxSize();
+      return {
+        w: Math.min(Math.max(width, DOC_MODAL_MIN_W), max.w),
+        h: Math.min(Math.max(height, DOC_MODAL_MIN_H), max.h),
+      };
+    }
 
     function clampDocModalPos(left, top) {
       const rect = docModalPanel.getBoundingClientRect();
@@ -945,12 +987,20 @@ Maximum password age ............... 90 days (expiration enforced)</div>
 
     function resetDocModalPosition() {
       docModalDragged = false;
+      docModalResized = false;
       docModalPanel.style.left = "";
       docModalPanel.style.top = "";
+      docModalPanel.style.width = "";
+      docModalPanel.style.height = "";
       docModalPanel.style.margin = "";
       docModalPanel.style.transform = "";
-      docModalPanel.classList.remove("is-dragging");
+      docModalPanel.classList.remove("is-dragging", "is-resizing", "doc-modal__panel--report");
       docModalPanel.dataset.dragged = "";
+      docModalPanel.dataset.resized = "";
+    }
+
+    function syncDocModalBodyLayout(isReport) {
+      docModalPanel.classList.toggle("doc-modal__panel--report", !!isReport);
     }
 
     function centerDocModalPanel() {
@@ -1046,6 +1096,89 @@ Maximum password age ............... 90 days (expiration enforced)</div>
       });
     }
 
+    function initDocModalResize() {
+      if (!docModalResize || !docModalPanel || docModalResize.dataset.resizeReady === "1") return;
+      docModalResize.dataset.resizeReady = "1";
+
+      let resizing = false;
+      let pointerId = null;
+      let startX = 0;
+      let startY = 0;
+      let originW = 0;
+      let originH = 0;
+      let originLeft = 0;
+      let originTop = 0;
+      let moved = false;
+
+      function onResizeMove(e) {
+        if (!resizing || e.pointerId !== pointerId) return;
+        if (Math.abs(e.clientX - startX) > 3 || Math.abs(e.clientY - startY) > 3) {
+          moved = true;
+        }
+        const size = clampDocModalSize(
+          originW + (e.clientX - startX),
+          originH + (e.clientY - startY)
+        );
+        docModalPanel.style.width = size.w + "px";
+        docModalPanel.style.height = size.h + "px";
+        const pos = clampDocModalPos(originLeft, originTop);
+        docModalPanel.style.left = pos.left + "px";
+        docModalPanel.style.top = pos.top + "px";
+      }
+
+      function endResize(e) {
+        if (!resizing || e.pointerId !== pointerId) return;
+        resizing = false;
+        docModalPanel.classList.remove("is-resizing");
+        document.removeEventListener("pointermove", onResizeMove);
+        document.removeEventListener("pointerup", endResize);
+        document.removeEventListener("pointercancel", endResize);
+        try {
+          docModalResize.releasePointerCapture(pointerId);
+        } catch (err) {}
+        if (moved) {
+          docModalResized = true;
+          docModalPanel.dataset.resized = "1";
+          docModalBackdropSuppress = true;
+          window.setTimeout(function () {
+            docModalBackdropSuppress = false;
+          }, 0);
+        }
+        pointerId = null;
+      }
+
+      docModalResize.addEventListener("pointerdown", function (e) {
+        if (e.button !== 0 && e.pointerType !== "touch") return;
+
+        const rect = docModalPanel.getBoundingClientRect();
+        resizing = true;
+        moved = false;
+        pointerId = e.pointerId;
+        startX = e.clientX;
+        startY = e.clientY;
+        originW = rect.width;
+        originH = rect.height;
+        originLeft = rect.left;
+        originTop = rect.top;
+
+        docModalPanel.style.width = originW + "px";
+        docModalPanel.style.height = originH + "px";
+        docModalPanel.style.left = originLeft + "px";
+        docModalPanel.style.top = originTop + "px";
+        docModalPanel.classList.add("is-resizing");
+
+        document.addEventListener("pointermove", onResizeMove);
+        document.addEventListener("pointerup", endResize);
+        document.addEventListener("pointercancel", endResize);
+
+        try {
+          docModalResize.setPointerCapture(e.pointerId);
+        } catch (err) {}
+        e.preventDefault();
+        e.stopPropagation();
+      });
+    }
+
     function simDocumentBaseHref() {
       try {
         var path = (location.pathname || "").toLowerCase();
@@ -1087,6 +1220,7 @@ Maximum password age ............... 90 days (expiration enforced)</div>
       const linkLabel = reportLinkLabel || "document";
       docModalBody.innerHTML = "<p class=\"doc-load-fallback\">Loading document…</p>";
       docModalBody.classList.add("doc-modal__body--report");
+      syncDocModalBodyLayout(true);
       showDocModal({ title: docTitle }, trigger);
       fetch(reportUrl)
         .then(function (res) {
@@ -1123,6 +1257,7 @@ Maximum password age ............... 90 days (expiration enforced)</div>
       docModalTitle.textContent = doc.title;
       docModalBody.innerHTML = "";
       docModalBody.classList.remove("doc-modal__body--report");
+      syncDocModalBodyLayout(!!doc.report);
       if (doc.report) {
         const reportUrl = resolveSimDocUrl(doc.report);
         if (window.location.protocol === "file:") {
@@ -1155,13 +1290,19 @@ Maximum password age ............... 90 days (expiration enforced)</div>
       btn.addEventListener("click", () => openDoc(btn.getAttribute("data-doc"), btn));
     });
     initDocModalDrag();
+    initDocModalResize();
     docModalClose.addEventListener("click", closeDoc);
-    docModal.addEventListener("click", (ev) => {
-      if (docModalBackdropSuppress) return;
-      if (ev.target === docModal) closeDoc();
-    });
     window.addEventListener("resize", function () {
       if (!docModal.classList.contains("open")) return;
+      if (docModalResized) {
+        const w = parseFloat(docModalPanel.style.width);
+        const h = parseFloat(docModalPanel.style.height);
+        if (Number.isFinite(w) && Number.isFinite(h)) {
+          const size = clampDocModalSize(w, h);
+          docModalPanel.style.width = size.w + "px";
+          docModalPanel.style.height = size.h + "px";
+        }
+      }
       const left = parseFloat(docModalPanel.style.left);
       const top = parseFloat(docModalPanel.style.top);
       if (!Number.isFinite(left) || !Number.isFinite(top)) {
