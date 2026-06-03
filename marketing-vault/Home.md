@@ -33,6 +33,7 @@ Obsidian vault for data-driven marketing (Cursor + GA4 + Stripe + Google Ads). O
 - [[05-playbooks/keyword-collection-plan|Keyword collection plan]]
 - [[07-keywords/README|Keyword intelligence (07-keywords/)]]
 - [[08-8140-compliance/README|DoD 8140 compliance]] ← source PDFs reviewed; matrix snapshot pending
+- [[10-competitors/README|Competitors — PDF dump market]] ← SY0-701 analysis + CSV for Numbers
 
 ## Reports
 
