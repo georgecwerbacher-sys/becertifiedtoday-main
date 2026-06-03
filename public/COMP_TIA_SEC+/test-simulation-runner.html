@@ -501,11 +501,17 @@
       min-height: 44px;
     }
   </style>
+  <script src="/js/ga-site-config.js"></script>
+  <script src="/js/analytics-exclude.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTT6KBHX7V"></script>
+  <script src="/js/google-tag-gtag.js"></script>
+  <script src="/js/campaign-attribution.js"></script>
   <script src="/COMP_TIA_SEC+/js/secplus-test-sim-build.js"></script>
   <script src="/COMP_TIA_SEC+/js/secplus-test-sim-scorecard.js"></script>
   <script src="/js/secplus-scorecard-email.js"></script>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-test-sim-storage.js" defer></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-portal-checkout.js" defer></script>
 </head>
 <body>
   <div class="page-logo-watermark" aria-hidden="true">
@@ -636,7 +642,14 @@
       </ul>
       <div class="summary-actions">
         <button type="button" class="summary-close" id="freeSimUpsellDismiss">View my scorecard</button>
-        <a class="summary-home" id="freeSimUpsellPurchase" href="/comptia-sec+-home.html#purchase">Start 30-day full access — $19.99</a>
+        <button
+          type="button"
+          class="summary-home"
+          id="freeSimUpsellPurchase"
+          data-secplus-portal-30d-checkout
+        >
+          Start 30-day full access — $19.99
+        </button>
       </div>
     </div>
   </div>

@@ -29,32 +29,55 @@
     },
   };
 
-  function wireCheckout(btn, tier) {
+  function startSecplusPortalCheckout(tier, triggerEl) {
     var product = PRODUCTS[tier];
     var url = LINKS[tier];
-    if (!product || !url) return;
+    if (!product || !url) return false;
+
+    var trackEl = triggerEl || document.createElement("button");
+    if (typeof window.bccTrackBeginCheckout === "function") {
+      trackEl.setAttribute("data-bcc-item-id", product.id);
+      trackEl.setAttribute("data-bcc-item-name", product.name);
+      trackEl.setAttribute("data-bcc-value", product.value);
+      trackEl.setAttribute("data-bcc-currency", "USD");
+      window.bccTrackBeginCheckout(trackEl);
+    }
+    if (typeof window.bccSetSecplusPendingPortalTier === "function") {
+      window.bccSetSecplusPendingPortalTier(tier);
+    }
+    window.location.href = url;
+    return true;
+  }
+
+  function wireCheckout(btn, tier) {
+    var product = PRODUCTS[tier];
+    if (!product) return;
 
     if (!btn.dataset[product.labelKey]) {
       btn.dataset[product.labelKey] = btn.textContent.trim() || product.defaultLabel;
     }
 
-    btn.addEventListener("click", function () {
+    btn.addEventListener("click", function (ev) {
+      if (ev && typeof ev.preventDefault === "function") ev.preventDefault();
       if (btn.dataset.loading === "1") return;
-      if (typeof window.bccTrackBeginCheckout === "function") {
-        btn.setAttribute("data-bcc-item-id", product.id);
-        btn.setAttribute("data-bcc-item-name", product.name);
-        btn.setAttribute("data-bcc-value", product.value);
-        btn.setAttribute("data-bcc-currency", "USD");
-        window.bccTrackBeginCheckout(btn);
-      }
       btn.dataset.loading = "1";
-      btn.textContent = "Redirecting…";
-      btn.disabled = true;
-      if (typeof window.bccSetSecplusPendingPortalTier === "function") {
-        window.bccSetSecplusPendingPortalTier(tier);
+      var busyLabel = "Redirecting…";
+      if (btn.tagName === "BUTTON") {
+        btn.disabled = true;
+        btn.textContent = busyLabel;
+      } else {
+        btn.setAttribute("aria-busy", "true");
+        btn.textContent = busyLabel;
       }
-      window.location.href = url;
+      startSecplusPortalCheckout(tier, btn);
     });
+  }
+
+  function maybeAutoCheckoutFromUrl() {
+    if (location.pathname.indexOf("comptia-sec+-home") < 0) return;
+    var qs = new URLSearchParams(location.search);
+    if (qs.get("checkout") !== "30d" && qs.get("start_checkout") !== "30d") return;
+    startSecplusPortalCheckout("30d", null);
   }
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -64,5 +87,8 @@
     document.querySelectorAll("[data-secplus-portal-30d-checkout]").forEach(function (btn) {
       wireCheckout(btn, "30d");
     });
+    maybeAutoCheckoutFromUrl();
   });
+
+  window.bccStartSecplusPortalCheckout = startSecplusPortalCheckout;
 })();
