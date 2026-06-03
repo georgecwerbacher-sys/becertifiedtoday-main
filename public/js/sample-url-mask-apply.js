@@ -527,6 +527,7 @@
     var s = document.createElement("style");
     s.setAttribute("data-bcc-secplus-exam-sim-embed", "1");
     s.textContent =
+      ".page-logo-watermark,.site-logo-corner{display:none!important}" +
       ".question-nav{display:none!important}" +
       ".secplus-objective-tag{display:none!important}" +
       "a.nav-home{display:none!important}" +
@@ -535,11 +536,15 @@
     document.head.appendChild(s);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", applySecplusExamSimEmbedStyles);
-  } else {
+  function bootSecplusExamSimEmbedStyles() {
+    if (!examSimActive() || !isSecplusPaidPath()) return;
     applySecplusExamSimEmbedStyles();
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", applySecplusExamSimEmbedStyles);
+    }
   }
+
+  bootSecplusExamSimEmbedStyles();
 })();
 
 /** Guest sample pages: exam prep home links (not gated Training Portal). */
