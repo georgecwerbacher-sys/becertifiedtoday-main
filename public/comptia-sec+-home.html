@@ -74,7 +74,8 @@
     name="twitter:description"
     content="SY0-701 exam prep for federal, DoD, and defense contractors—practice tests, verified explanations, and timed simulation in your browser."
   />
-  <link rel="icon" href="images/logo/becertifiedtoday_logo_image_trans.png" type="image/png" />
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_image_trans.png" type="image/png" />
+  <meta property="og:locale" content="en_US" />
   <title>Security+ SY0-701 — 700+ Questions, Simulations &amp; Adaptive Testing | Be Certified Today</title>
   <script type="application/ld+json">
     {
@@ -82,19 +83,26 @@
       "@graph": [
         {
           "@type": "WebPage",
+          "@id": "https://becertifiedtoday.com/comptia-sec+-home.html#webpage",
           "name": "CompTIA Security+ SY0-701 Exam Prep — Practice Tests & Simulation",
           "url": "https://becertifiedtoday.com/comptia-sec+-home.html",
-          "description": "SY0-701 exam preparation with interactive practice tests, verified explanations, and a timed simulation. Browser-only exam prep for federal, DoD, and defense-contractor test-takers.",
+          "inLanguage": "en-US",
+          "description": "SY0-701 exam preparation with 700+ interactive practice questions, PBQ simulations, adaptive review, and a timed exam. Browser-only prep for federal, DoD, and defense-contractor test-takers.",
+          "isPartOf": {
+            "@type": "WebSite",
+            "@id": "https://becertifiedtoday.com/#website",
+            "name": "Be Certified Today",
+            "url": "https://becertifiedtoday.com/"
+          },
+          "about": {
+            "@type": "Thing",
+            "name": "CompTIA Security+ SY0-701"
+          },
           "primaryImageOfPage": {
             "@type": "ImageObject",
             "url": "https://becertifiedtoday.com/images/secplus-sample-questions-thumbnail.jpg",
             "width": 1024,
             "height": 591
-          },
-          "isPartOf": {
-            "@type": "WebSite",
-            "name": "Be Certified Today",
-            "url": "https://becertifiedtoday.com/"
           }
         },
         {
@@ -194,6 +202,14 @@
               "acceptedAnswer": {
                 "@type": "Answer",
                 "text": "No. Checkout is only through Stripe on this site. Be Certified Today will not call or email you to ask for card numbers."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do you collect, store, or sell my email or personal information?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Be Certified Today does not run a marketing email list, sell visitor data, or require your email for the free timed simulation or sample questions. Paid checkout email and payment details are handled by Stripe on their secure page—not collected by us for newsletters or resale. If you need portal access on a new device, you may submit the same email you used at checkout on our portal link page so we can send a one-time login link; that is for access only. Like most sites, we use basic traffic analytics (for example Google Analytics) that do not require an account."
               }
             }
           ]
@@ -1437,6 +1453,7 @@
       border: 1px solid rgba(96, 165, 250, 0.35);
       background: linear-gradient(165deg, #1e3a8a 0%, #1d4ed8 52%, #2563eb 100%);
       box-shadow: 0 8px 24px rgba(29, 78, 216, 0.22);
+      text-align: left;
     }
     .samples-block-title {
       margin: 0 0 8px;
@@ -1448,8 +1465,9 @@
     }
     .samples-block-intro .samples-block-lead {
       margin: 0;
-      max-width: none;
+      max-width: 62ch;
       color: #dbeafe;
+      line-height: 1.55;
     }
     .samples-block-intro .samples-block-lead strong {
       color: #fff;
@@ -1775,6 +1793,25 @@
       max-width: 1080px;
       margin: 0 auto;
       width: 100%;
+      text-align: left;
+    }
+    .secplus-compare-section .formats-head {
+      color: #475569;
+      text-align: left;
+    }
+    .secplus-compare-section h2 {
+      margin: 0 0 12px;
+      color: #0b1020;
+      line-height: 1.25;
+      max-width: 48rem;
+      text-align: left;
+    }
+    .secplus-compare-section .formats-lead {
+      margin: 0 0 clamp(20px, 3vw, 28px);
+      max-width: 48rem;
+      color: #334155;
+      line-height: 1.6;
+      text-align: left;
     }
     .secplus-compare-table-wrap {
       margin: 0 0 clamp(18px, 3vw, 24px);
@@ -1821,8 +1858,9 @@
         white-space: normal;
       }
     }
-    .secplus-compare-table tbody td {
+    .secplus-compare-table tbody td:not(.secplus-compare-cell-bct) {
       color: #b8c3d6;
+      font-weight: 700;
     }
     .secplus-compare-table tbody td.secplus-compare-cell-bct {
       color: #f4f7ff;
@@ -1835,24 +1873,30 @@
     }
     .secplus-compare-cta {
       margin: 0;
+      max-width: 48rem;
       font-size: clamp(0.92rem, 2.1vw, 0.98rem);
       line-height: 1.55;
-      color: #b8c3d6;
+      color: var(--page-muted);
+      font-weight: 600;
+      text-align: left;
     }
     .secplus-compare-cta a {
-      color: #c4b5fd;
+      color: #5b21b6;
       font-weight: 700;
       text-decoration: underline;
       text-underline-offset: 3px;
     }
     .secplus-compare-cta a:hover {
-      color: #e9d5ff;
+      color: #6d28d9;
     }
     .secplus-compare-note {
       margin: clamp(12px, 2vw, 16px) 0 0;
+      max-width: 48rem;
       font-size: 0.82rem;
-      line-height: 1.45;
-      color: #8899b5;
+      line-height: 1.5;
+      color: #64748b;
+      font-weight: 400;
+      text-align: left;
     }
     .faq-section {
       margin-top: clamp(32px, 5vw, 48px);
@@ -1863,9 +1907,21 @@
       max-width: 1080px;
       margin: 0 auto;
       width: 100%;
+      text-align: left;
+    }
+    .faq-section .formats-head,
+    .faq-section h2 {
+      text-align: left;
+    }
+    .faq-section h2 {
+      margin: 0 0 12px;
+      line-height: 1.25;
     }
     .faq-section .formats-lead {
-      margin-bottom: clamp(20px, 4vw, 28px);
+      margin: 0 0 clamp(20px, 4vw, 28px);
+      max-width: 48rem;
+      line-height: 1.6;
+      text-align: left;
     }
     .faq-list {
       margin: 0;
@@ -2462,7 +2518,7 @@
           data-secplus-portal-nav
           title="Security+ practice portal — library access required"
           aria-label="Open Security+ practice portal"
-          >Full library (paid access)</a
+          >Full Library (Paid Access)</a
         >
       </div>
     </header>
@@ -2492,7 +2548,7 @@
             After payment redirect: /COMP_TIA_SEC+/test-simulation-runner.html?session_id={CHECKOUT_SESSION_ID}
           -->
           <section class="card purchase-card purchase-fold purchase-fold--single-offer" id="purchase" aria-labelledby="purchase-fold-title">
-            <p class="purchase-fold-lead-note">When you are ready for the full library</p>
+            <p class="purchase-fold-lead-note">When you are ready for the full library.</p>
             <div class="purchase-cta-stack purchase-cta-stack--single">
               <div class="purchase-primary-cta">
                 <p class="purchase-tier-eyebrow">SY0-701 exam prep · one-time purchase</p>
@@ -2611,11 +2667,11 @@
             aria-labelledby="secplus-lead-capture-title"
           >
             <p class="lead-capture-badge">
-              Free · 35 minutes · no checkout · No email required
+              Free · 35 minutes · no checkout · no email required
             </p>
-            <h2 id="secplus-lead-capture-title">Try the free 35-minute SY0-701 practice exam</h2>
+            <h2 id="secplus-lead-capture-title">Try the Free 35-Minute SY0-701 Practice Exam</h2>
             <p class="lead-capture-lead">
-              Experience the same <strong>timed testing flow</strong> as the paid 90-minute simulation: 
+              Experience the same <strong>timed testing flow</strong> as the paid 90-minute simulation:
               <strong>20 multiple-choice questions</strong> (four per domain) plus the
               <strong>dark web account protection</strong> PBQ—then unlock <strong>700+ questions</strong>, all simulations, and
               <strong>adaptive review</strong> with 30-day access when you are ready.
@@ -2647,7 +2703,7 @@
               </div>
             </div>
             <p class="lead-capture-fine">
-              Exam prep only — not affiliated with CompTIA. Want a shorter preview first?
+              Exam prep only—not affiliated with CompTIA. Want a shorter preview first?
               <a href="/secplus-sample?track=questions">Try free sample questions</a>.
             </p>
           </section>
@@ -2655,16 +2711,16 @@
           <div class="samples-stack">
             <section class="samples-block" aria-labelledby="home-secplus-samples-title">
               <div class="samples-block-intro">
-                <h2 class="samples-block-title" id="home-secplus-samples-title"><strong>Preview quality—phone, tablet, or desktop</strong></h2>
+                <h2 class="samples-block-title" id="home-secplus-samples-title">Preview quality—phone, tablet, or desktop</h2>
                 <p class="samples-block-lead">
                   Two free previews from the <strong>700+ question</strong> library and simulation set—same verified explanations and browser UI you get after purchase.
-                  Open on your phone to confirm layout before you buy. Each activity has <strong>Home</strong> back here and <strong>Next</strong> (or <strong>Finish sample</strong>).
+                  Open on your phone to confirm layout before you buy. Each activity has <strong>Home</strong> back here and <strong>Next</strong> (or <strong>Finish Sample</strong>).
                 </p>
               </div>
               <ul class="formats-grid formats-grid--pair" aria-label="Security+ sample activities">
                 <li>
                   <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-secplus-q-title">
-                    <h3 id="home-secplus-q-title">Sample multiple-choice questions</h3>
+                    <h3 id="home-secplus-q-title">Sample Multiple-Choice Questions</h3>
                     <p class="format-card-device-note">Works on phone, tablet &amp; desktop</p>
                     <figure class="format-card-thumb">
                       <img
@@ -2687,7 +2743,7 @@
                 </li>
                 <li>
                   <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-secplus-darkweb-title">
-                    <h3 id="home-secplus-darkweb-title">Dark web IR simulation (PBQ-style)</h3>
+                    <h3 id="home-secplus-darkweb-title">Dark Web IR Simulation (PBQ-Style)</h3>
                     <p class="format-card-device-note">Touch-friendly on phone &amp; tablet</p>
                     <figure class="format-card-thumb">
                       <img
@@ -2701,7 +2757,7 @@
                     </figure>
                     <p>
                       Same <strong>performance-based simulation</strong> as the paid library: review leaked artifacts, mark weak password practices,
-                      and choose containment—drag-and-drop panels work with touch or mouse. Includes <strong>Deep dive explanation</strong> for scored review.
+                      and choose containment—drag-and-drop panels work with touch or mouse. Includes <strong>deep dive explanation</strong> for scored review.
                     </p>
                     <p class="format-sample format-sample--main-cta">
                       <a class="cta-secondary" href="/secplus-sample?track=sim-dark-web">Start dark web simulation →</a>
@@ -2718,7 +2774,7 @@
           <section class="secplus-compare-section" id="secplus-compare" aria-labelledby="secplus-compare-title">
             <div class="secplus-compare-inner">
               <p class="formats-head">Why interactive prep</p>
-              <h2 id="secplus-compare-title">Browser exam prep vs. PDF and test-engine question banks</h2>
+              <h2 id="secplus-compare-title">Browser Exam Prep vs. PDF and Test-Engine Question Banks</h2>
               <p class="formats-lead">
                 Many SY0-701 sites sell <strong>printable PDFs</strong> or <strong>VCE/ETE files</strong> that require desktop players.
                 Be Certified Today is built for <strong>interactive practice</strong>—the same device and format you use on test day.
@@ -2731,43 +2787,43 @@
                   <thead>
                     <tr>
                       <th scope="col">Capability</th>
-                      <th scope="col">Typical PDF / VCE site</th>
+                      <th scope="col">Typical PDF / VCE Site</th>
                       <th scope="col" class="secplus-compare-col-bct">Be Certified Today</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <th scope="row">Primary format</th>
+                      <th scope="row">Primary Format</th>
                       <td>PDF, VCE, or ETE download</td>
                       <td class="secplus-compare-cell-bct">Interactive HTML in your browser</td>
                     </tr>
                     <tr>
-                      <th scope="row">Mobile study</th>
+                      <th scope="row">Mobile Study</th>
                       <td>Often claimed; mostly PDF zoom or desktop-only player</td>
                       <td class="secplus-compare-cell-bct">Responsive UI on phone, tablet, and desktop</td>
                     </tr>
                     <tr>
-                      <th scope="row">PBQ / drag-and-drop</th>
+                      <th scope="row">PBQ / Drag-and-Drop</th>
                       <td>Usually 0–3 items in desktop engine marketing</td>
                       <td class="secplus-compare-cell-bct">Multiple hot-spot sims + free sample PBQ</td>
                     </tr>
                     <tr>
-                      <th scope="row">Timed 90-min exam</th>
+                      <th scope="row">Timed 90-Min Exam</th>
                       <td>Rare, or desktop test engine only</td>
                       <td class="secplus-compare-cell-bct">Free 35-min sample + full 90-min timed sim</td>
                     </tr>
                     <tr>
-                      <th scope="row">Adaptive weak-area loop</th>
+                      <th scope="row">Adaptive Weak-Area Loop</th>
                       <td>No—static Q&amp;A list</td>
                       <td class="secplus-compare-cell-bct">Yes—adaptive review in the portal</td>
                     </tr>
                     <tr>
-                      <th scope="row">Content updates</th>
+                      <th scope="row">Content Updates</th>
                       <td>“90 days free updates” on a PDF file</td>
                       <td class="secplus-compare-cell-bct">Living site—deployed improvements, 700+ bank</td>
                     </tr>
                     <tr>
-                      <th scope="row">Exam policy</th>
+                      <th scope="row">Exam Policy</th>
                       <td>Often markets “actual exam” memorization; CompTIA treats many PDF dumps as unauthorized</td>
                       <td class="secplus-compare-cell-bct">Exam prep only—verified practice, not actual exam questions</td>
                     </tr>
@@ -2776,8 +2832,7 @@
               </div>
               <p class="secplus-compare-cta">
                 <a href="#secplus-lead-capture">Start free 35-minute timed simulation →</a>
-                ·
-                <a href="#purchase" data-secplus-portal-30d-checkout>Unlock 30-day access — $19.99 →</a>
+                · <a href="#purchase" data-secplus-portal-30d-checkout>Unlock 30-day access — $19.99 →</a>
               </p>
               <p class="secplus-compare-note">
                 CompTIA does not endorse third-party dumps. Practice on this site is for preparation only; see the disclaimer below.
@@ -2789,7 +2844,7 @@
             <div class="purchase-card-inner">
               <div class="purchase-card-main">
                 <p class="purchase-label">Study plan</p>
-                <h2 class="purchase-heading">Match your prep to SY0-701</h2>
+                <h2 class="purchase-heading">Match Your Prep to SY0-701</h2>
                 <p class="purchase-lead purchase-lead--tight">
                   Domain weights and a suggested study order—unlock the full library with <a href="#purchase">30-day access ($19.99)</a> below.
                 </p>
@@ -2852,7 +2907,7 @@
                     build the language for everything else. Add security architecture (domain 3), then operations (domain 4)—the largest
                     slice on the exam—and program management (domain 5) for governance, risk, and compliance scenarios.
                   </p>
-                  <p class="purchase-blueprint-order-title">Suggested study order</p>
+                  <p class="purchase-blueprint-order-title">Suggested Study Order</p>
                   <ol class="purchase-blueprint-order">
                     <li>General security concepts (controls, CIA, AAA, cryptography basics)</li>
                     <li>Threats, vulnerabilities, and mitigations</li>
@@ -2884,7 +2939,7 @@
       <section class="faq-section" id="faq" aria-labelledby="faq-title">
         <div class="faq-inner">
           <p class="formats-head">FAQ</p>
-          <h2 id="faq-title">Security+ SY0-701 exam prep</h2>
+          <h2 id="faq-title">Security+ SY0-701 Exam Prep</h2>
           <p class="formats-lead">
             <strong>Exam prep in your browser—not PDF dumps or desktop test engines.</strong>
             <a class="faq-cta-link" href="#secplus-compare">See the comparison table</a>
@@ -2973,7 +3028,7 @@
             </li>
             <li>
               <details class="faq-details">
-                <summary class="faq-summary">Does practice work on a phone or tablet?</summary>
+                <summary class="faq-summary">Does Security+ practice work on a phone or tablet?</summary>
                 <div class="faq-answer">
                   <p>
                     <strong>Yes.</strong> The same UI runs on desktop, phone, and tablet—touch-friendly drag-and-drop and readable layouts.
@@ -3056,6 +3111,33 @@
                 </div>
               </details>
             </li>
+            <li>
+              <details class="faq-details">
+                <summary class="faq-summary">Do you collect, store, or sell my email or personal information?</summary>
+                <div class="faq-answer">
+                  <p>
+                    <strong>No marketing database.</strong> Be Certified Today does not ask for your email to try the
+                    <a class="faq-cta-link" href="#secplus-lead-capture">free timed simulation</a>
+                    or
+                    <a class="faq-cta-link" href="#home-secplus-samples-title">sample questions</a>,
+                    and we do not sell or share visitor data with third-party marketers.
+                  </p>
+                  <p>
+                    <strong>Checkout:</strong> If you purchase 30-day access, payment and receipt email are handled by
+                    <strong>Stripe</strong> on their secure checkout page—not collected by us for newsletters or resale.
+                  </p>
+                  <p>
+                    <strong>Portal access only:</strong> On a new device, you may optionally submit the
+                    <strong>same email you used at Stripe</strong> on our
+                    <a class="faq-cta-link" href="/COMP_TIA_SEC+/secplus-portal-request-link.html">portal link page</a>
+                    so we can send a one-time login link. That is for access restoration only.
+                  </p>
+                  <p>
+                    <strong>Analytics:</strong> Like most websites, we use basic traffic analytics (for example Google Analytics) that do not require you to create an account.
+                  </p>
+                </div>
+              </details>
+            </li>
           </ul>
         </div>
       </section>
@@ -3086,7 +3168,7 @@
       href="/COMP_TIA_SEC+/test-simulation-runner.html?free=1"
       data-secplus-start-free-sim
       data-secplus-start-method="secplus_free_sim_sticky"
-      >Start free 35-min simulation</a
+      >Start Free 35-Min Simulation</a
     >
   </div>
   <div
@@ -3108,7 +3190,7 @@
         ×
       </button>
       <p class="ccna-sim-promo-eyebrow">CompTIA Security+ Practice Portal</p>
-      <h2 id="secplusPortalGateTitle">30-day access required</h2>
+      <h2 id="secplusPortalGateTitle">30-Day Access Required</h2>
       <p class="ccna-sim-promo-lead">
         The Security+ practice portal is for learners with <strong>active library access</strong> on
         <strong>this browser</strong> (after Stripe checkout on this site). If you have not registered yet, get
