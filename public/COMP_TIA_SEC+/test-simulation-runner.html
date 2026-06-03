@@ -39,9 +39,6 @@
       position: relative;
       z-index: 1;
     }
-    body.secplus-runner-exam .page-logo-watermark {
-      display: none;
-    }
     .topbar {
       display: flex;
       align-items: center;
@@ -759,14 +756,12 @@
       }
 
       function showExamUi() {
-        document.body.classList.add("secplus-runner-exam");
         gatePanel.hidden = true;
         examPanel.hidden = false;
         resultsPanel.hidden = true;
       }
 
       function showGateUi() {
-        document.body.classList.remove("secplus-runner-exam");
         gatePanel.hidden = false;
         examPanel.hidden = true;
         resultsPanel.hidden = true;
@@ -1411,7 +1406,6 @@
         if (!doc) return;
         frame.classList.remove("runner-frame-loading");
         var selectors = [
-          ".page-logo-watermark",
           ".site-logo-corner",
           ".question-nav",
           ".secplus-objective-tag",
