@@ -1064,6 +1064,10 @@
     injectStyles();
     document.body.classList.add("ccnp-practice-ui");
 
+    if (document.body.classList.contains("encor-question-ui")) {
+      return;
+    }
+
     var card = document.querySelector("main.card");
     if (!card || document.getElementById("ccnpQToolbar")) return;
 

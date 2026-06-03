@@ -4,6 +4,7 @@
   var KEY = "encorHomeSample";
   var BLUEPRINT_URL = "/CCNP-ENCOR-Study/data/encor-home-sample-blueprint.json";
   var MCQ_DIR = "/CCNP-ENCOR-Study/ENCOR_Questions";
+  var SUBJECTS_URL = "/CCNP-ENCOR-Study/js/question-subjects.json";
   var HASH_PREFIX = "encorHS=";
 
   function shuffle(arr) {
@@ -56,6 +57,36 @@
     ];
   }
 
+  function enrichMcqOrder(order, subjects) {
+    var map = (subjects && subjects.questions) || {};
+    return order.map(function (item) {
+      if (!item || item.type !== "mcq" || item.id == null) return item;
+      var meta = map[String(item.id)];
+      if (!meta) return item;
+      return {
+        type: "mcq",
+        id: item.id,
+        domain: meta.section,
+        domainName: meta.name,
+      };
+    });
+  }
+
+  function domainsFromOrder(order) {
+    var seen = Object.create(null);
+    var list = [];
+    (order || []).forEach(function (item) {
+      if (!item || item.type !== "mcq" || !item.domain) return;
+      if (seen[item.domain]) return;
+      seen[item.domain] = true;
+      list.push(item.domain);
+    });
+    list.sort(function (a, b) {
+      return parseFloat(a) - parseFloat(b);
+    });
+    return list;
+  }
+
   function persistSession(order, finishHome, blueprint, kind) {
     if (!order.length) throw new Error("empty");
     var mcqCount = order.filter(function (item) {
@@ -65,6 +96,7 @@
       order: order,
       mcqCount: mcqCount,
       totalCount: order.length,
+      sampleDomains: domainsFromOrder(order),
       finishHome: finishHome || blueprint.finishHome || "/ccnp-home.html",
       leadCaptureHash: blueprint.leadCaptureHash || "#encor-lead-capture",
       title: blueprint.title || "ENCOR sample",
@@ -99,8 +131,17 @@
   }
 
   function startQuestionsSample(finishHome) {
-    return loadBlueprint().then(function (blueprint) {
-      persistSession(buildMcqOrder(blueprint), finishHome, blueprint, "encor-questions");
+    return Promise.all([
+      loadBlueprint(),
+      fetch(SUBJECTS_URL, { cache: "no-store" }).then(function (r) {
+        if (!r.ok) throw new Error("subjects");
+        return r.json();
+      }),
+    ]).then(function (results) {
+      var blueprint = results[0];
+      var subjects = results[1];
+      var order = enrichMcqOrder(buildMcqOrder(blueprint), subjects);
+      persistSession(order, finishHome, blueprint, "encor-questions");
     });
   }
 

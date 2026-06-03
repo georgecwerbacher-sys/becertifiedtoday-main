@@ -7,41 +7,131 @@
   <title>Question 417 - EEM SNMP trap and critical syslog on configure</title>
   <style>
     :root {
-      color-scheme: light dark;
+      color-scheme: light;
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bcc-outside-text: #1a3d6e;
+      --bcc-choice-bg: #254b8a;
+      --bcc-choice-border: #3d6dbb;
+      --bcc-box-text: #e6edf3;
     }
     body {
       margin: 0;
       min-height: 100vh;
       display: grid;
       place-items: center;
-      background: #0b1020;
-      color: #e6edf3;
+      position: relative;
+      background: #ffffff;
+      color: var(--bcc-outside-text);
+      padding: 16px;
+      padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+      box-sizing: border-box;
+    }
+    .page-logo-watermark {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .page-logo-watermark img {
+      width: min(85vw, 720px);
+      max-height: 85vh;
+      height: auto;
+      object-fit: contain;
+      opacity: 0.16;
+    }
+    .question-shell {
+      width: min(900px, 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      position: relative;
+      z-index: 1;
+    }
+    .question-shell .site-logo-corner {
+      position: static;
+      align-self: flex-end;
+      margin: 0 0 2rem;
+      display: inline-flex;
+      background: transparent;
+      border: none;
+      padding: 0;
+      text-decoration: none;
+    }
+    .question-shell .site-logo-corner img {
+      width: 52px;
+      height: 52px;
     }
     .card {
-      width: min(1040px, 98vw);
-      background: #121a2b;
-      border: 1px solid #2d3b5a;
-      border-radius: 14px;
-      padding: 24px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 0;
+      box-shadow: none;
+      color: var(--bcc-outside-text);
     }
     h1 {
-      margin: 0 0 12px;
+      margin: 0 0 16px;
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
+      color: var(--bcc-outside-text);
     }
+    h1.choose-two-stem {
+      line-height: 1.5;
+    }
+    .choice {
+      display: block;
+      margin: 10px 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: var(--bcc-choice-bg);
+      border: 1px solid var(--bcc-choice-border);
+      font-size: 1.02rem;
+      color: var(--bcc-box-text);
+      cursor: pointer;
+    }
+    .choice input {
+      margin-right: 10px;
+      transform: translateY(1px);
+    }
+    .answer {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+      line-height: 1.45;
+      color: var(--bcc-box-text);
+    }
+    .answer.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+    }
+    .answer.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+    }
+    .exhibit-ref,
+    .exhibit-ref-spaced,
+    .exhibit-section-caption {
+      color: var(--bcc-outside-text);
+    }
+  </style>
+  <style>
     .exhibit-region {
-      margin: 0 0 16px;
+margin: 0 0 16px;
     }
     .exhibit-ref {
-      margin: 0 0 10px;
+margin: 0 0 10px;
       font-size: 0.95rem;
       line-height: 1.45;
       color: #b8c3d6;
     }
     .exhibit-ios {
-      background: #0a0a0a;
+background: #0a0a0a;
       color: #f0f0f0;
       border-radius: 8px;
       border: 1px solid #333;
@@ -50,7 +140,7 @@
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
     }
     .exhibit-ios-label {
-      margin: 0 0 8px;
+margin: 0 0 8px;
       padding-bottom: 6px;
       border-bottom: 1px solid #333;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -61,7 +151,7 @@
       text-transform: uppercase;
     }
     .exhibit-ios .exhibit-cli {
-      margin: 0;
+margin: 0;
       padding: 10px 12px;
       background: #000;
       border: 1px solid #2a2a2a;
@@ -74,84 +164,29 @@
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
     }
-    .choice {
-      display: block;
-      margin: 10px 0;
-      padding: 12px 14px;
-      border-radius: 10px;
-      background: #1a253b;
-      border: 1px solid #2c3f62;
-      font-size: 1rem;
-      cursor: pointer;
-      line-height: 1.45;
-    }
-    .choice input {
-      margin-right: 10px;
-      transform: translateY(1px);
-      vertical-align: top;
-      margin-top: 6px;
-    }
-    .choice pre {
-      margin: 8px 0 0 28px;
-      padding: 10px 12px;
-      border-radius: 8px;
-      background: #0d1424;
-      border: 1px solid #2c3f62;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.76rem;
-      line-height: 1.4;
-      white-space: pre-wrap;
-      overflow-x: auto;
-    }
-    .actions {
-      margin-top: 14px;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    button,
-    .next-link {
-      background: #254b8a;
-      color: #e6edf3;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      text-decoration: none;
-      cursor: pointer;
-      display: inline-block;
-    }
-    .answer {
-      margin-top: 18px;
-      padding: 14px;
-      border-radius: 10px;
-      font-weight: 700;
-      display: none;
-      font-size: 0.95rem;
-      line-height: 1.45;
-    }
-    .answer.correct {
-      background: #113e2d;
-      border: 1px solid #1f7a58;
-    }
-    .answer.incorrect {
-      background: #442020;
-      border: 1px solid #8c3434;
-    }
-    .next-wrap {
-      margin-top: 18px;
-      display: none;
-    }
   </style>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/CCNP-ENCOR-Study/ENCOR_Samples/encor-sample-touch.css" />
 </head>
-<body class="ccnp-practice-ui">
-  <main class="card">
-    <h1>
-      A BeCertifiedToday network engineer must be notified when a user switches to configuration mode. Which script should be applied to receive an SNMP trap and a critical-level log message?
-    </h1>
-
-    <div class="exhibit-region">
+<body class="encor-question-ui">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <script src="/CCNP-ENCOR-Study/js/encor-practice-nav.js" defer></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell">
+    <a class="site-logo-corner" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html" aria-label="ENCOR training portal">
+      <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="card">
+    <nav class="question-nav" aria-label="Question navigation">
+      <div class="question-nav-links">
+      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-416.html">Back</a>
+      <a class="nav-link nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
+      <a class="nav-link nav-next next-link" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-418.html">Next</a>
+      </div>
+    </nav>
+<div class="exhibit-region">
       <p class="exhibit-ref">Refer to the exhibit.</p>
       <div class="exhibit-ios" role="region" aria-label="EEM applet config-alert partial configuration">
         <div class="exhibit-ios-label">IOS configuration</div>
@@ -159,6 +194,10 @@
 event cli pattern "conf t.*" sync yes</pre>
       </div>
     </div>
+
+    <h1>
+      A BeCertifiedToday network engineer must be notified when a user switches to configuration mode. Which script should be applied to receive an SNMP trap and a critical-level log message?
+    </h1>
 
     <label class="choice">
       <input type="radio" name="q417" value="A" />
@@ -187,78 +226,61 @@ action 1.0 syslog priority critical msg "Configuration change alarm"</pre>
 action 1.1 syslog priority critical msg "Configuration change alarm"</pre>
     </label>
 
-    <div class="actions">
-      <button id="checkBtn" type="button">Check Answer</button>
-      <button id="resetBtn" type="button">Reset</button>
+    <div class="answer-footer">
+      <div class="answer-actions">
+        <button id="checkBtn" type="button" class="nav-check">Check answer</button>
+        <div class="question-progress-block">
+          <span class="ccna-practice-progress" aria-live="polite"></span>
+          <p class="question-topic-meta">
+            <span class="question-topic-meta__version">350-401 ENCOR v1.2</span>
+            <span class="question-topic-meta__subject"></span>
+          </p>
+        </div>
+      </div>
+      <div class="answer-side-actions">
+        <button id="showBtn" type="button" class="nav-show-answer">Show Answer</button>
+        <label class="review-mark-box" id="reviewMarkWrap">
+          <input type="checkbox" id="reviewMark" aria-label="Mark for review" />
+          <span class="review-mark-box__label">Review</span>
+        </label>
+      </div>
     </div>
-
     <div id="answerBox" class="answer" aria-live="polite"></div>
-    <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-418.html">Next</a>
-    </div>
-  </main>
-
+    </main>
+  </div>
   <script>
-    const checkBtn = document.getElementById("checkBtn");
-    const resetBtn = document.getElementById("resetBtn");
-    const answerBox = document.getElementById("answerBox");
-    const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q417"]');
-    const correct = "D";
+    (function () {
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D.";
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var answerBox = document.getElementById("answerBox");
 
-    history.pushState(null, "", location.href);
-    window.addEventListener("popstate", () => {
-      history.pushState(null, "", location.href);
-    });
-
-    checkBtn.addEventListener("click", () => {
-      const selected = [...options].find((opt) => opt.checked);
-      if (!selected) {
+      checkBtn.addEventListener("click", function () {
+        var sel = document.querySelector('input[name="q417"]:checked');
         answerBox.style.display = "block";
-        answerBox.className = "answer incorrect";
-        answerBox.textContent = "Select an option before checking the answer.";
-        nextWrap.style.display = "none";
-        return;
-      }
-
-      const ok = selected.value === correct;
-      answerBox.style.display = "block";
-      answerBox.className = `answer ${ok ? "correct" : "incorrect"}`;
-      answerBox.textContent = ok
-        ? "Correct. D. Use a distinct second action (1.1) with syslog priority critical so the message is logged at critical severity, while action 1.0 raises the SNMP trap. Option C reuses action 1.0 twice, which is invalid. Option A’s syslog omits an explicit critical priority. Option B has no syslog action at all."
-        : "Incorrect. The correct answer is D. Pair snmp-trap on 1.0 with syslog priority critical on 1.1.";
-      nextWrap.style.display = "inline-block";
-    });
-
-    resetBtn.addEventListener("click", () => {
-      options.forEach((opt) => {
-        opt.checked = false;
+        if (!sel) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Select an answer.";
+          return;
+        }
+        if (sel.value === CORRECT) {
+          answerBox.className = "answer correct";
+          answerBox.textContent = CORRECT_MSG;
+        } else {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Incorrect.";
+        }
       });
-      answerBox.style.display = "none";
-      answerBox.textContent = "";
-      nextWrap.style.display = "none";
-    });
+
+      showBtn.addEventListener("click", function () {
+        var input = document.querySelector('input[name="q417"][value="' + CORRECT + '"]');
+        if (input) input.checked = true;
+        answerBox.style.display = "block";
+        answerBox.className = "answer correct";
+        answerBox.textContent = CORRECT_MSG;
+      });
+    })();
   </script>
-  <style>
-    .home-key {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 9999;
-      text-decoration: none;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      color: #e6edf3;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
-    }
-    .home-key:hover {
-      filter: brightness(1.08);
-    }
-  </style>
-  <a class="home-key" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-  <script src="/js/practice-questions.js"></script>
 </body>
 </html>

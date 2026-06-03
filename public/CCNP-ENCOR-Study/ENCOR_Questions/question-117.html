@@ -3,50 +3,99 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Question 117 - REST complete mediation</title>
   <style>
     :root {
-      color-scheme: light dark;
+      color-scheme: light;
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bcc-outside-text: #1a3d6e;
+      --bcc-choice-bg: #254b8a;
+      --bcc-choice-border: #3d6dbb;
+      --bcc-box-text: #e6edf3;
     }
     body {
       margin: 0;
       min-height: 100vh;
       display: grid;
       place-items: center;
-      background: #0b1020;
-      color: #e6edf3;
+      position: relative;
+      background: #ffffff;
+      color: var(--bcc-outside-text);
+      padding: 16px;
+      padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+      box-sizing: border-box;
+    }
+    .page-logo-watermark {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .page-logo-watermark img {
+      width: min(85vw, 720px);
+      max-height: 85vh;
+      height: auto;
+      object-fit: contain;
+      opacity: 0.16;
+    }
+    .question-shell {
+      width: min(900px, 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      position: relative;
+      z-index: 1;
+    }
+    .question-shell .site-logo-corner {
+      position: static;
+      align-self: flex-end;
+      margin: 0 0 2rem;
+      display: inline-flex;
+      background: transparent;
+      border: none;
+      padding: 0;
+      text-decoration: none;
+    }
+    .question-shell .site-logo-corner img {
+      width: 52px;
+      height: 52px;
     }
     .card {
-      width: min(920px, 94vw);
-      background: #121a2b;
-      border: 1px solid #2d3b5a;
-      border-radius: 14px;
-      padding: 24px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 0;
+      box-shadow: none;
+      color: var(--bcc-outside-text);
     }
     h1 {
-      margin: 0 0 14px;
+      margin: 0 0 16px;
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
+      color: var(--bcc-outside-text);
+    }
+    h1.choose-two-stem {
+      line-height: 1.5;
     }
     .choice {
       display: block;
       margin: 10px 0;
       padding: 12px 14px;
       border-radius: 10px;
-      background: #1a253b;
-      border: 1px solid #2c3f62;
-      font-size: 1rem;
+      background: var(--bcc-choice-bg);
+      border: 1px solid var(--bcc-choice-border);
+      font-size: 1.02rem;
+      color: var(--bcc-box-text);
       cursor: pointer;
-      line-height: 1.4;
     }
     .choice input {
       margin-right: 10px;
-      vertical-align: top;
-      margin-top: 3px;
+      transform: translateY(1px);
     }
     .answer {
       margin-top: 18px;
@@ -54,6 +103,8 @@
       border-radius: 10px;
       font-weight: 700;
       display: none;
+      line-height: 1.45;
+      color: var(--bcc-box-text);
     }
     .answer.correct {
       background: #113e2d;
@@ -63,83 +114,98 @@
       background: #442020;
       border: 1px solid #8c3434;
     }
-    .next-wrap {
-      margin-top: 18px;
-      display: none;
-    }
-    .next-link {
-      display: inline-block;
-      text-decoration: none;
-      color: #e6edf3;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
+    .exhibit-ref,
+    .exhibit-ref-spaced,
+    .exhibit-section-caption {
+      color: var(--bcc-outside-text);
     }
   </style>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/CCNP-ENCOR-Study/ENCOR_Samples/encor-sample-touch.css" />
 </head>
-<body>
-  <main class="card">
+<body class="encor-question-ui">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <script src="/CCNP-ENCOR-Study/js/encor-practice-nav.js" defer></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell">
+    <a class="site-logo-corner" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html" aria-label="ENCOR training portal">
+      <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="card">
+    <nav class="question-nav" aria-label="Question navigation">
+      <div class="question-nav-links">
+      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-116.html">Back</a>
+      <a class="nav-link nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
+      <a class="nav-link nav-next next-link" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-118.html">Next</a>
+      </div>
+    </nav>
     <h1>A system must validate access rights to all its resources and must not rely on a cached permission matrix. If the access level to a given resource is revoked but is not reflected in the permission matrix, the security is violated. Which term refers to this REST security design principle?</h1>
 
     <label class="choice"><input type="radio" name="q117" value="A" />A. least common mechanism</label>
+
     <label class="choice"><input type="radio" name="q117" value="B" />B. separation of privilege</label>
+
     <label class="choice"><input type="radio" name="q117" value="C" />C. Economy mechanism</label>
+
     <label class="choice"><input type="radio" name="q117" value="D" />D. Complete mediation</label>
 
-    <div id="answerBox" class="answer" aria-live="polite"></div>
-    <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-118.html">Next</a>
+    <div class="answer-footer">
+      <div class="answer-actions">
+        <button id="checkBtn" type="button" class="nav-check">Check answer</button>
+        <div class="question-progress-block">
+          <span class="ccna-practice-progress" aria-live="polite"></span>
+          <p class="question-topic-meta">
+            <span class="question-topic-meta__version">350-401 ENCOR v1.2</span>
+            <span class="question-topic-meta__subject"></span>
+          </p>
+        </div>
+      </div>
+      <div class="answer-side-actions">
+        <button id="showBtn" type="button" class="nav-show-answer">Show Answer</button>
+        <label class="review-mark-box" id="reviewMarkWrap">
+          <input type="checkbox" id="reviewMark" aria-label="Mark for review" />
+          <span class="review-mark-box__label">Review</span>
+        </label>
+      </div>
     </div>
-  </main>
-
+    <div id="answerBox" class="answer" aria-live="polite"></div>
+    </main>
+  </div>
   <script>
-    const answerBox = document.getElementById("answerBox");
-    const nextWrap = document.getElementById("nextWrap");
-    const options = document.querySelectorAll('input[name="q117"]');
+    (function () {
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D. Complete mediation requires that every access to every protected resource be authorized against current policy\u2014no shortcut that skips checks (such as a stale cached permission matrix after revocation). Least common mechanism limits shared facilities; separation of privilege splits authority across roles; economy of mechanism favors simplicity.";
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var answerBox = document.getElementById("answerBox");
 
-    history.pushState(null, "", location.href);
-    window.addEventListener("popstate", () => {
-      history.pushState(null, "", location.href);
-    });
-
-    options.forEach((option) => {
-      option.addEventListener("change", () => {
+      checkBtn.addEventListener("click", function () {
+        var sel = document.querySelector('input[name="q117"]:checked');
         answerBox.style.display = "block";
-        nextWrap.style.display = "block";
-        if (option.value === "D") {
+        if (!sel) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Select an answer.";
+          return;
+        }
+        if (sel.value === CORRECT) {
           answerBox.className = "answer correct";
-          answerBox.textContent =
-            "Correct. D. Complete mediation requires that every access to every protected resource be authorized against current policy—no shortcut that skips checks (such as a stale cached permission matrix after revocation). Least common mechanism limits shared facilities; separation of privilege splits authority across roles; economy of mechanism favors simplicity.";
+          answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
-          answerBox.textContent =
-            "Incorrect. The correct answer: D. Complete mediation.";
+          answerBox.textContent = "Incorrect.";
         }
       });
-    });
+
+      showBtn.addEventListener("click", function () {
+        var input = document.querySelector('input[name="q117"][value="' + CORRECT + '"]');
+        if (input) input.checked = true;
+        answerBox.style.display = "block";
+        answerBox.className = "answer correct";
+        answerBox.textContent = CORRECT_MSG;
+      });
+    })();
   </script>
-  <style>
-    .home-key {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 9999;
-      text-decoration: none;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      color: #e6edf3;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
-    }
-    .home-key:hover {
-      filter: brightness(1.08);
-    }
-  </style>
-  <a class="home-key" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-  <script src="/js/practice-questions.js"></script>
 </body>
 </html>

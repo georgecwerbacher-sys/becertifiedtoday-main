@@ -32,8 +32,9 @@ def main() -> None:
         "title": home.get("lab", {}).get("title", "ACL and CoPP CLI lab"),
     }
     home["notes"] = (
-        "Homepage tracks: 2 shuffled MCQ from encor-guest-sample-pool.json, two D&D items, ACL/CoPP lab. "
-        "Free timed simulation uses the same guest pool."
+        f"Homepage tracks: {home.get('homeSampleQuestionCountTotal', 10)} shuffled MCQ "
+        f"(homeSampleQuestionCountTotal) drawn from random 350-401 domains in encor-guest-sample-pool.json, "
+        f"two D&D items, ACL/CoPP lab. Free timed simulation uses the same guest pool."
     )
     HOME_BP.write_text(json.dumps(home, indent=2) + "\n", encoding="utf-8")
 

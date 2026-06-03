@@ -1,6 +1,15 @@
 (function () {
   "use strict";
 
+  var ENCOR_DOMAIN_NAMES = {
+    "1.0": "Architecture",
+    "2.0": "Virtualization",
+    "3.0": "Infrastructure",
+    "4.0": "Network Assurance",
+    "5.0": "Security",
+    "6.0": "Automation and Artificial Intelligence",
+  };
+
   var SESSIONS = {
     ccna: {
       key: "ccnaHomeSample",
@@ -465,6 +474,73 @@
     return el;
   }
 
+  function formatEncorDomainLabel(domainId) {
+    var name = ENCOR_DOMAIN_NAMES[domainId] || "";
+    return domainId + (name ? " " + name : "");
+  }
+
+  function domainsFromEncorOrder(order) {
+    var seen = Object.create(null);
+    var list = [];
+    (order || []).forEach(function (item) {
+      if (!item || item.type !== "mcq" || !item.domain) return;
+      if (seen[item.domain]) return;
+      seen[item.domain] = true;
+      list.push(item.domain);
+    });
+    list.sort(function (a, b) {
+      return parseFloat(a) - parseFloat(b);
+    });
+    return list;
+  }
+
+  function ensureSampleSubjectsFooter(session) {
+    var card = document.querySelector("main.card") || document.querySelector(".card");
+    if (!card) return null;
+    var footer = card.querySelector(".sample-subjects-footer");
+    if (!footer) {
+      footer = document.createElement("div");
+      footer.className = "sample-subjects-footer";
+      footer.setAttribute("aria-label", "350-401 domains in this sample");
+      var title = document.createElement("p");
+      title.className = "sample-subjects-footer__title";
+      title.textContent = "350-401 domains in this sample";
+      footer.appendChild(title);
+      var list = document.createElement("ul");
+      list.className = "sample-subjects-footer__list";
+      footer.appendChild(list);
+      card.appendChild(footer);
+    }
+    return footer.querySelector(".sample-subjects-footer__list");
+  }
+
+  function syncSampleSubjectsFooter(session) {
+    if (!session || session.product !== "encor") {
+      var stale = document.querySelector(".sample-subjects-footer");
+      if (stale) stale.remove();
+      return;
+    }
+    if (!session.order || !session.order.every(function (item) {
+      return item && item.type === "mcq";
+    })) {
+      return;
+    }
+
+    var listEl = ensureSampleSubjectsFooter(session);
+    if (!listEl) return;
+
+    var domains =
+      Array.isArray(session.sampleDomains) && session.sampleDomains.length
+        ? session.sampleDomains
+        : domainsFromEncorOrder(session.order);
+    listEl.textContent = "";
+    domains.forEach(function (domainId) {
+      var li = document.createElement("li");
+      li.textContent = formatEncorDomainLabel(domainId);
+      listEl.appendChild(li);
+    });
+  }
+
   function applyNav(session, index) {
     var order = session.order;
     var isLabOrDnd = order[index] && (order[index].type === "lab" || order[index].type === "dnd");
@@ -492,6 +568,10 @@
           if (order[p] && order[p].type === "mcq") mcqNum++;
         }
         els.progressEl.textContent = "Question " + mcqNum + " of " + session.mcqCount;
+      }
+      var encorFooterProgress = document.querySelector(".ccna-practice-progress");
+      if (encorFooterProgress && els.progressEl) {
+        encorFooterProgress.textContent = els.progressEl.textContent;
       }
     }
 
@@ -552,6 +632,8 @@
         clearSampleSession(session);
       };
     }
+
+    syncSampleSubjectsFooter(session);
   }
 
   function reconcileLocation(session) {
@@ -590,7 +672,11 @@
       ".cisco-sample-upsell-primary{display:inline-flex;justify-content:center;align-items:center;border:1px solid #4f84d8;background:#2f66bf;color:#f4f7ff;border-radius:10px;padding:12px 18px;font:inherit;font-weight:800;cursor:pointer;width:100%;box-sizing:border-box}" +
       ".cisco-sample-upsell-primary:hover{filter:brightness(1.08)}" +
       ".cisco-sample-upsell-secondary{border:1px solid rgba(159,176,204,.45);background:transparent;color:#e6edf3;border-radius:10px;padding:11px 18px;font:inherit;font-weight:700;cursor:pointer}" +
-      ".cisco-sample-upsell-secondary:hover{background:rgba(255,255,255,.06)}";
+      ".cisco-sample-upsell-secondary:hover{background:rgba(255,255,255,.06)}" +
+      ".sample-subjects-footer{margin-top:1.25rem;padding-top:1rem;border-top:1px solid rgba(159,176,204,.28)}" +
+      ".sample-subjects-footer__title{margin:0 0 .5rem;font-size:.85rem;font-weight:700;color:#9fb0cc}" +
+      ".sample-subjects-footer__list{margin:0;padding:0 0 0 1.25rem;font-size:.82rem;line-height:1.5;color:#b8c3d6}" +
+      ".sample-subjects-footer__list li+li{margin-top:.2rem}";
     document.head.appendChild(s);
   }
 
