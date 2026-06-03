@@ -66,7 +66,7 @@
       return;
     }
     if (!ensureGuestFreeSimAccess()) {
-      window.location.href = options.finishHome || HOME_PATH + HOME_ASSESSMENT_HASH;
+      window.location.href = options.finishHome || HOME_PATH;
       return;
     }
     persistFreeSimSessionFlags();
@@ -128,13 +128,8 @@
 
     if (isLeadLanding && section) {
       var scrollTarget =
-        location.hash === HOME_ASSESSMENT_HASH ||
-        /lead-free-sim|free-sim|free\.simulation/i.test(
-          (typeof window.bccGetCampaignAttribution === "function"
-            ? window.bccGetCampaignAttribution() || {}
-            : {}
-          ).utm_content || ""
-        );
+        typeof window.bccShouldScrollSecplusLeadCapture === "function" &&
+        window.bccShouldScrollSecplusLeadCapture();
       if (scrollTarget) {
         requestAnimationFrame(function () {
           section.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -147,6 +142,9 @@
                 startBtn.focus();
               }
             }, 450);
+          }
+          if (history.replaceState && location.hash === HOME_ASSESSMENT_HASH) {
+            history.replaceState(null, "", location.pathname + location.search);
           }
         });
       }
