@@ -384,10 +384,15 @@
       backdrop-filter: blur(4px);
     }
     .doc-modal.open {
-      display: flex;
+      display: block;
+    }
+    .doc-modal.open .doc-modal__panel {
+      position: fixed;
+      margin: 0;
+      z-index: 1;
     }
     .doc-modal__panel {
-      width: min(720px, 100%);
+      width: min(720px, calc(100vw - 32px));
       max-height: min(88vh, 900px);
       overflow: auto;
       background: #ffffff;
@@ -398,6 +403,7 @@
     }
     .doc-modal__head {
       display: flex;
+      flex-wrap: wrap;
       align-items: flex-start;
       justify-content: space-between;
       gap: 12px;
@@ -407,6 +413,24 @@
       position: sticky;
       top: 0;
       z-index: 1;
+      cursor: move;
+      touch-action: none;
+      user-select: none;
+    }
+    .doc-modal__head::after {
+      content: "Drag to move";
+      display: block;
+      width: 100%;
+      order: 3;
+      flex-basis: 100%;
+      margin-top: 4px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #64748b;
+      letter-spacing: 0.02em;
+    }
+    .doc-modal__panel.is-dragging .doc-modal__head {
+      cursor: grabbing;
     }
     .doc-modal__title {
       margin: 0;
@@ -757,8 +781,8 @@
   </main>
 
   <div id="docModal" class="doc-modal" role="dialog" aria-modal="true" aria-labelledby="docModalTitle" hidden>
-    <div class="doc-modal__panel">
-      <div class="doc-modal__head">
+    <div class="doc-modal__panel" id="docModalPanel">
+      <div class="doc-modal__head" id="docModalHead">
         <h2 class="doc-modal__title" id="docModalTitle">Document</h2>
         <button type="button" class="doc-modal__close" id="docModalClose">Close</button>
       </div>
@@ -903,7 +927,124 @@ Maximum password age ............... 90 days (expiration enforced)</div>
     const docModalTitle = document.getElementById("docModalTitle");
     const docModalBody = document.getElementById("docModalBody");
     const docModalClose = document.getElementById("docModalClose");
+    const docModalPanel = document.getElementById("docModalPanel");
+    const docModalHead = document.getElementById("docModalHead");
     let docModalTrigger = null;
+    let docModalDragged = false;
+    let docModalBackdropSuppress = false;
+
+    function clampDocModalPos(left, top) {
+      const rect = docModalPanel.getBoundingClientRect();
+      const maxLeft = Math.max(8, window.innerWidth - rect.width - 8);
+      const maxTop = Math.max(8, window.innerHeight - rect.height - 8);
+      return {
+        left: Math.min(Math.max(left, 8), maxLeft),
+        top: Math.min(Math.max(top, 8), maxTop),
+      };
+    }
+
+    function resetDocModalPosition() {
+      docModalDragged = false;
+      docModalPanel.style.left = "";
+      docModalPanel.style.top = "";
+      docModalPanel.style.margin = "";
+      docModalPanel.style.transform = "";
+      docModalPanel.classList.remove("is-dragging");
+      docModalPanel.dataset.dragged = "";
+    }
+
+    function centerDocModalPanel() {
+      if (docModalDragged) return;
+      requestAnimationFrame(function () {
+        if (docModalDragged || !docModal.classList.contains("open")) return;
+        const w = docModalPanel.offsetWidth;
+        const h = docModalPanel.offsetHeight;
+        const pos = clampDocModalPos(
+          (window.innerWidth - w) / 2,
+          (window.innerHeight - h) / 2
+        );
+        docModalPanel.style.margin = "0";
+        docModalPanel.style.transform = "none";
+        docModalPanel.style.left = pos.left + "px";
+        docModalPanel.style.top = pos.top + "px";
+      });
+    }
+
+    function initDocModalDrag() {
+      if (!docModalHead || !docModalPanel || docModalHead.dataset.dragReady === "1") return;
+      docModalHead.dataset.dragReady = "1";
+
+      let dragging = false;
+      let pointerId = null;
+      let startX = 0;
+      let startY = 0;
+      let originLeft = 0;
+      let originTop = 0;
+      let moved = false;
+
+      function onDocumentMove(e) {
+        if (!dragging || e.pointerId !== pointerId) return;
+        if (Math.abs(e.clientX - startX) > 3 || Math.abs(e.clientY - startY) > 3) {
+          moved = true;
+        }
+        const pos = clampDocModalPos(
+          originLeft + (e.clientX - startX),
+          originTop + (e.clientY - startY)
+        );
+        docModalPanel.style.left = pos.left + "px";
+        docModalPanel.style.top = pos.top + "px";
+      }
+
+      function endDrag(e) {
+        if (!dragging || e.pointerId !== pointerId) return;
+        dragging = false;
+        docModalPanel.classList.remove("is-dragging");
+        document.removeEventListener("pointermove", onDocumentMove);
+        document.removeEventListener("pointerup", endDrag);
+        document.removeEventListener("pointercancel", endDrag);
+        try {
+          docModalHead.releasePointerCapture(pointerId);
+        } catch (err) {}
+        if (moved) {
+          docModalDragged = true;
+          docModalPanel.dataset.dragged = "1";
+          docModalBackdropSuppress = true;
+          window.setTimeout(function () {
+            docModalBackdropSuppress = false;
+          }, 0);
+        }
+        pointerId = null;
+      }
+
+      docModalHead.addEventListener("pointerdown", function (e) {
+        if (e.button !== 0 && e.pointerType !== "touch") return;
+        if (e.target && e.target.closest(".doc-modal__close")) return;
+
+        const rect = docModalPanel.getBoundingClientRect();
+        dragging = true;
+        moved = false;
+        pointerId = e.pointerId;
+        startX = e.clientX;
+        startY = e.clientY;
+        originLeft = rect.left;
+        originTop = rect.top;
+
+        docModalPanel.style.margin = "0";
+        docModalPanel.style.transform = "none";
+        docModalPanel.style.left = originLeft + "px";
+        docModalPanel.style.top = originTop + "px";
+        docModalPanel.classList.add("is-dragging");
+
+        document.addEventListener("pointermove", onDocumentMove);
+        document.addEventListener("pointerup", endDrag);
+        document.addEventListener("pointercancel", endDrag);
+
+        try {
+          docModalHead.setPointerCapture(e.pointerId);
+        } catch (err) {}
+        e.preventDefault();
+      });
+    }
 
     function simDocumentBaseHref() {
       try {
@@ -937,6 +1078,7 @@ Maximum password age ............... 90 days (expiration enforced)</div>
     function showDocModal(doc, trigger) {
       docModal.removeAttribute("hidden");
       docModal.classList.add("open");
+      centerDocModalPanel();
       docModalClose.focus();
       if (trigger) trigger.classList.add("reviewed");
     }
@@ -958,6 +1100,7 @@ Maximum password age ............... 90 days (expiration enforced)</div>
           docModalBody.innerHTML = "";
           if (sheet) {
             docModalBody.appendChild(sheet.cloneNode(true));
+            centerDocModalPanel();
           } else {
             throw new Error("Report content not found");
           }
@@ -999,6 +1142,7 @@ Maximum password age ............... 90 days (expiration enforced)</div>
     function closeDoc() {
       docModal.setAttribute("hidden", "");
       docModal.classList.remove("open");
+      resetDocModalPosition();
       docModalBody.innerHTML = "";
       docModalBody.classList.remove("doc-modal__body--report");
       if (docModalTrigger) {
@@ -1010,9 +1154,23 @@ Maximum password age ............... 90 days (expiration enforced)</div>
     document.querySelectorAll(".artifact[data-doc]").forEach((btn) => {
       btn.addEventListener("click", () => openDoc(btn.getAttribute("data-doc"), btn));
     });
+    initDocModalDrag();
     docModalClose.addEventListener("click", closeDoc);
     docModal.addEventListener("click", (ev) => {
+      if (docModalBackdropSuppress) return;
       if (ev.target === docModal) closeDoc();
+    });
+    window.addEventListener("resize", function () {
+      if (!docModal.classList.contains("open")) return;
+      const left = parseFloat(docModalPanel.style.left);
+      const top = parseFloat(docModalPanel.style.top);
+      if (!Number.isFinite(left) || !Number.isFinite(top)) {
+        centerDocModalPanel();
+        return;
+      }
+      const pos = clampDocModalPos(left, top);
+      docModalPanel.style.left = pos.left + "px";
+      docModalPanel.style.top = pos.top + "px";
     });
     document.addEventListener("keydown", (ev) => {
       if (ev.key === "Escape" && docModal.classList.contains("open")) closeDoc();
