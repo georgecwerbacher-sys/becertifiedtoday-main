@@ -744,7 +744,27 @@
     "web-logs-databaseinfo-directory-traversal",
     "scap-automate-vulnerability-management",
     "container-security-limited-by-monolithic-code",
-    "backup-datacenter-rto-rpo-two-days-cold-site"
+    "backup-datacenter-rto-rpo-two-days-cold-site",
+    "database-lock-screen-ransomware-attack",
+    "web-server-unskilled-attacker-common-tools",
+    "administrator-non-repudiation-deny-action",
+    "preventive-control-decrease-breach-likelihood",
+    "ransomware-restore-data-backups",
+    "frank-vishing-authority-intimidation-urgency",
+    "alina-san-cert-multiple-domains-subdomains",
+    "pki-hierarchical-trust-root-ca",
+    "cp-cps-baseline-security-requirements",
+    "scada-ics-hardening-not-proprietary-protocols",
+    "vpn-split-tunnel-preserve-bandwidth",
+    "cloud-security-secrets-management-saas",
+    "vulnerability-scan-not-exploit-characteristic",
+    "asymmetric-cluster-standby-no-useful-work",
+    "it-asset-value-databases-highest-priority",
+    "construction-company-risk-avoidance-earthquake",
+    "hybrid-cloud-mixed-sensitivity-compliance",
+    "insider-investigation-application-logs-metadata",
+    "threat-actor-unsophisticated-automated-bots",
+    "password-complexity-technical-policy-enforcement"
   ];
 
   window.SECPLUS_PRACTICE._topicAssignments = null;

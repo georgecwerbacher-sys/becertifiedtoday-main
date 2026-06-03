@@ -1,0 +1,17 @@
+# Question sourcing (SY0-701)
+
+Research catalog for **where practice questions appear on the web** — for coverage gaps, objective mapping, and competitor sizing.
+
+**Policy:** **Uncredited sites** (Tier C — Reddit, forums, recall threads, dump indexes) feed **discovery only**: collect → compare vs BCT → review in Obsidian → **optionally add** original questions to the database. **Verify correctness only on Tier A** (CompTIA official).
+
+**Poll registry:** add sites under [[../10-competitors/sites/README|10-competitors/sites]] with `question_poll.enabled: true` — monthly collect polls them automatically.
+
+Workflow when you find a new source:
+
+1. Add a row to [[secplus-sy0-701-web-sources|SY0-701 web sources]] only if the source is **SY0-701** and stated refresh is **2026+** (Tier A blueprint PDF is the exception).
+2. Set `date_added` (vault) and **published version/date** the site states — **remove** rows when you later find the product is pre-2026.
+3. Map stems to `public/COMP_TIA_SEC+/data/secplus-exam-objectives-sy0-701.json` objective IDs when you adopt a question.
+
+Related: [[../10-competitors/practice-samples-competitors|Practice competitors]] · [[../10-competitors/pdf-dump-market-analysis|PDF dump market]] · [[../10-competitors/sites/examtopics|ExamTopics]] · in-repo bank `public/COMP_TIA_SEC+/SEC+_Questions/`.
+
+**Monthly process:** `npm run secplus:monthly` — collect → compare → save (Obsidian `.md`). Playbook: [[../05-playbooks/secplus-monthly-question-sourcing|secplus-monthly-question-sourcing]].

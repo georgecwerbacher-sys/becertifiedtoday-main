@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security+ — Vishing manipulation principles (Frank)</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #ffffff;
+      padding: 16px;
+      padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+      box-sizing: border-box;
+    }
+    .card {
+      width: min(900px, 100%);
+      display: flex;
+      flex-direction: column;
+    }
+    .secplus-exhibit {
+      margin: 0 0 18px;
+      overflow-x: auto;
+    }
+    .secplus-exhibit-lead {
+      margin: 0 0 12px;
+      color: #1a3d6e;
+      font-size: 1rem;
+      line-height: 1.45;
+    }
+    .secplus-exhibit-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+    .secplus-exhibit-table th,
+    .secplus-exhibit-table td {
+      border: 1px solid #2d3b5a;
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    .secplus-exhibit-table th {
+      background: #1a253b;
+      color: #e6edf3;
+      font-weight: 700;
+    }
+    .secplus-exhibit-table td {
+      background: #0f1729;
+      color: #d4dce8;
+    }
+    .secplus-exhibit-table td.hash-cell,
+    .secplus-exhibit-table td.mono-cell {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.84rem;
+      word-break: break-all;
+    }
+    .secplus-exhibit-question {
+      margin: 16px 0 0;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      font-weight: 700;
+      line-height: 1.35;
+      color: #1a3d6e;
+    }
+    .secplus-exhibit-log pre {
+      margin: 0;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid #2d3b5a;
+      background: #0a0e14;
+      color: #e6edf3;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      white-space: pre;
+      overflow-x: auto;
+    }
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+    }
+    .choice {
+      display: block;
+      margin: 10px 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 1.02rem;
+      cursor: pointer;
+    }
+    .choice input {
+      margin-right: 10px;
+      transform: translateY(1px);
+    }
+    .answer {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+      line-height: 1.45;
+    }
+    .answer.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      color: #ffffff;
+    }
+    .answer.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+      color: #fecaca;
+    }
+    h1.choose-two-stem {
+      line-height: 1.5;
+    }
+  </style>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
+</head>
+<body class="secplus-question-ui">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-practice-nav.js" defer></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell">
+    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ training portal">
+      <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="card">
+    <nav class="question-nav" aria-label="Question navigation">
+      <div class="question-nav-links">
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/ransomware-restore-data-backups.html">Back</a>
+      <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/alina-san-cert-multiple-domains-subdomains.html">Next</a>
+      </div>
+    </nav>
+    <h1 class="choose-two-stem">Frank was contacted by phone by a person claiming to be an executive vice president urgently requesting that his password be reset. The caller insisted on the security urgency at hand and informed Frank that his supervisor would be contacted unless he complied immediately. Frank suspected that this was a social engineering attack. Which principles of human manipulation did the attacker attempt on Frank? (Select three.)</h1>
+
+    <label class="choice"><input type="checkbox" name="secplus_q732" value="A" />A. Authority</label>
+    <label class="choice"><input type="checkbox" name="secplus_q732" value="B" />B. Fright</label>
+    <label class="choice"><input type="checkbox" name="secplus_q732" value="C" />C. Intimidation</label>
+    <label class="choice"><input type="checkbox" name="secplus_q732" value="D" />D. Urgency</label>
+    <label class="choice"><input type="checkbox" name="secplus_q732" value="E" />E. Scarcity</label>
+    <label class="choice"><input type="checkbox" name="secplus_q732" value="F" />F. Trust</label>
+
+    <div class="answer-footer">
+      <div class="answer-actions">
+        <button id="checkBtn" type="button" class="nav-check">Check answer</button>
+        <div class="question-progress-block">
+          <span class="ccna-practice-progress" aria-live="polite"></span>
+          <p class="question-topic-meta">
+            <span class="question-topic-meta__version">Version 1.1 2026</span>
+            <span class="question-topic-meta__subject"></span>
+          </p>
+        </div>
+      </div>
+      <div class="answer-side-actions">
+        <button id="showBtn" type="button" class="nav-show-answer">Show Answer</button>
+        <label class="review-mark-box" id="reviewMarkWrap">
+          <input type="checkbox" id="reviewMark" aria-label="Mark for review" />
+          <span class="review-mark-box__label">Review</span>
+        </label>
+      </div>
+    </div>
+
+    <div id="answerBox" class="answer" aria-live="polite"></div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      var CORRECT = ["A", "C", "D"];
+      var CORRECT_MSG = "Correct. A, C, and D \u2014 Authority applies because the caller impersonated a senior executive to pressure compliance. Intimidation applies because the caller threatened to contact Frank's supervisor if he did not obey. Urgency applies because the caller demanded immediate action under a fabricated security crisis. Fright is not a standard Security+ social engineering principle. Scarcity requires a limited supply or opportunity, which is not present. Trust involves exploiting an existing relationship; here the attacker fabricated authority rather than relying on prior trust.";
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var answerBox = document.getElementById("answerBox");
+
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="secplus_q732"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedValues();
+        answerBox.style.display = "block";
+        if (sel.length !== 3) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Choose exactly 3 answers.";
+          return;
+        }
+        if (arraysEqual(sel, CORRECT)) {
+          answerBox.className = "answer correct";
+          answerBox.textContent = CORRECT_MSG;
+        } else {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Incorrect.";
+        }
+      });
+
+      showBtn.addEventListener("click", function () {
+        CORRECT.forEach(function (value) {
+          var input = document.querySelector('input[name="secplus_q732"][value="' + value + '"]');
+          if (input) input.checked = true;
+        });
+        answerBox.style.display = "block";
+        answerBox.className = "answer correct";
+        answerBox.textContent = CORRECT_MSG;
+      });
+    })();
+  </script>
+</body>
+</html>

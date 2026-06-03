@@ -42,7 +42,8 @@ https://becertifiedtoday.com/comptia-sec+-home.html#secplus-lead-capture?utm_sou
 - [x] Campaign **Enabled** — Security+ only
 - [x] Daily budget **$10/day**
 - [x] Bidding **Maximize clicks** + max CPC **$2.50**
-- [x] Campaign negatives **32 Phrase** (campaign level only) — [[../../07-keywords/negatives/google-ads-applied-2026-06-03|list]]
+- [x] Campaign negatives **92** Phrase + Exact (campaign level only) — [[../../07-keywords/negatives/google-ads-applied-2026-06-03|list]]
+- [x] User applied full negative + positive sets in Ads UI (2026-06-03)
 - [x] Ad group negatives **none** (do not duplicate at ad group)
 - [x] CCNA / ENCOR campaigns **Paused** or not spending
 - [x] `secplus_sim_purchase` and other Sec+ ad groups **Paused** (lead group only)
@@ -59,23 +60,23 @@ https://becertifiedtoday.com/comptia-sec+-home.html#secplus-lead-capture?utm_sou
 - [x] Site: guest free sim + `generate_lead` on Start — prod deploy 2026-06-03
 - [x] Site: lead-first layout + sticky mobile CTA for ad traffic
 - [x] Site: post-sim upsell **$19.99 / 30-day**
-- [ ] Positive keywords trimmed to **target 6–8** (see below) — verify in next export
+- [x] Positive keywords trimmed to **6–7** — [[../../07-keywords/positives/secplus-keywords-verification-checklist|verification checklist]]
 - [ ] Search terms review **7 days** after negatives (re-export CSV)
 
 ---
 
 ## Positive keywords — target list (ad group)
 
-Paste at ad group level; remove all others.
+Full paste blocks (Phrase + Exact): [[../../07-keywords/positives/secplus-campaign-positive-keywords#Live now — `secplus_lead_free_sim` (7 Phrase + 2 Exact)|secplus-campaign-positive-keywords]].
 
-**Exact `[...]`**
+**Exact `[...]` (2)**
 
 ```
 [comptia security+ practice test]
 [sy0-701 practice test]
 ```
 
-**Phrase `"..."`**
+**Phrase `"..."` (5)**
 
 ```
 "security+ mock exam"
@@ -84,7 +85,7 @@ Paste at ad group level; remove all others.
 "security+ exam prep"
 ```
 
-Optional 6th Phrase: `"sy0-701 mock exam"` (pause if 0 clicks after 7 days).
+Optional 8th Phrase: `"sy0-701 mock exam"` (pause if 0 clicks after 7 days).
 
 **Do not use:** Phrase duplicates of Exact (`"comptia security+ practice test"`, `"sy0-701 practice test"`).
 

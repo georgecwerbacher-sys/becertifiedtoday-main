@@ -6,6 +6,15 @@ url: https://www.examtopics.com/exams/comptia/sy0-701/
 product: SY0-701
 category: community_braindump
 research_date: 2026-06-03
+question_poll:
+  enabled: true
+  tier: c
+  id: examtopics-research
+  sample_url: https://www.examtopics.com/exams/comptia/sy0-701/
+  parser: examtopics
+  max_pages: 1
+  version_note: community
+  topic_notes: Tier C research — community recall; verify answer on CompTIA Tier A only
 ---
 
 # ExamTopics — SY0-701 (adjacent competitor)
@@ -15,6 +24,7 @@ research_date: 2026-06-03
 - **Free** web access to community-contributed **“actual exam”** Q&A (**611+** visible for SY0-701)  
 - Paid **Pro** unlock (discussions, full set)  
 - **Not PDF-first** — competes for same **search intent** as dump sites  
+- **Monthly poll:** page 1 of `/view/1/` (10 questions) for discovery vs BCT — community votes **not** verification
 
 ## Positioning
 
@@ -41,3 +51,5 @@ CompTIA lists **brain dumps** and **actual exam questions** as unauthorized — 
 `id=15` in [[../competitors-pdf-dumps-tracker.csv]]
 
 **Ads:** keep **examtopics** as negative keyword.
+
+**Practice tracker row:** id **9** in [[../competitors-practice-samples-tracker.csv]] (dump tracker id **15**).

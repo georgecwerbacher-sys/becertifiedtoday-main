@@ -749,6 +749,7 @@ def render_page_choose_two(
     )
     cor_json = json.dumps(sorted(correct))
     msg_json = json.dumps(explain)
+    n_correct = len(correct)
     stem_h = html.escape(stem.strip())
     prepend = f"{prepend_html.rstrip()}\n" if prepend_html else ""
     shell_open = build_page_shell_open()
@@ -798,9 +799,9 @@ def render_page_choose_two(
       checkBtn.addEventListener("click", function () {{
         var sel = selectedValues();
         answerBox.style.display = "block";
-        if (sel.length !== 2) {{
+        if (sel.length !== {n_correct}) {{
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Choose exactly two answers.";
+          answerBox.textContent = "Choose exactly {n_correct} answers.";
           return;
         }}
         if (arraysEqual(sel, CORRECT)) {{
@@ -18937,6 +18938,521 @@ CHAIN: list[dict] = [
             "Warm",
         ],
         "objectives": ["3.4", "5.2"],
+    },
+    {
+        "slug": "database-lock-screen-ransomware-attack",
+        "title": "Security+ — Ransomware (lock screen / missing files)",
+        "stem": (
+            "A business development team reports that files are missing from the database system and the server "
+            "log-in screens are showing a lock symbol that requires users to contact an email address to access "
+            "the system and data. Which of the following attacks is the company facing?"
+        ),
+        "name": "secplus_q727",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Missing or encrypted data combined with a lock screen and instructions to contact an "
+            "attacker email for access are classic ransomware indicators. Attackers withhold availability of files "
+            "and systems until payment or other demands are met. A rootkit hides malicious activity on a host and "
+            "does not typically replace login screens with ransom contact instructions. Spyware covertly collects "
+            "information without locking users out of systems at scale. Bloatware is unwanted bundled software and "
+            "does not cause mass file loss with a lock symbol ransom message."
+        ),
+        "choices": [
+            "Rootkit",
+            "Ransomware",
+            "Spyware",
+            "Bloatware",
+        ],
+        "objectives": ["2.2", "2.4"],
+    },
+    {
+        "slug": "web-server-unskilled-attacker-common-tools",
+        "title": "Security+ — Unskilled attacker (common hacking tools)",
+        "stem": (
+            "Which of the following threat actors is the most likely to use common hacking tools found on the "
+            "internet to attempt to remotely compromise an organization's web server?"
+        ),
+        "name": "secplus_q728",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Unskilled attackers (often called script kiddies) frequently download and run widely "
+            "available tools and exploits against internet-facing systems such as web servers without developing "
+            "custom malware. Organized crime typically pursues financial gain with more structured operations "
+            "rather than opportunistic use of public tools alone. Insider threats already have internal access and "
+            "rarely need remote compromise of a public web server with commodity internet tools. Nation-state "
+            "actors use advanced, tailored capabilities for strategic targets rather than relying primarily on "
+            "common off-the-shelf hacking utilities."
+        ),
+        "choices": [
+            "Organized crime",
+            "Insider threat",
+            "Unskilled attacker",
+            "Nation-state",
+        ],
+        "objectives": ["2.1"],
+    },
+    {
+        "slug": "administrator-non-repudiation-deny-action",
+        "title": "Security+ — Non-repudiation (deny action)",
+        "stem": (
+            "A systems administrator would like to set up a system that will make it difficult or impossible to "
+            "deny that someone has performed an action. Which of the following is the administrator trying to "
+            "accomplish?"
+        ),
+        "name": "secplus_q729",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Non-repudiation provides proof that a specific party performed an action, so the actor "
+            "cannot credibly deny it later. Digital signatures, strong audit logging with integrity controls, and "
+            "similar mechanisms support non-repudiation. Adaptive identity adjusts authentication requirements based "
+            "on risk context rather than proving actions after the fact. Security zones segment networks or workloads "
+            "to limit trust boundaries. Deception and disruption are defensive strategies that mislead or impede "
+            "attackers, not a property that prevents users from denying their own actions."
+        ),
+        "choices": [
+            "Non-repudiation",
+            "Adaptive identity",
+            "Security zones",
+            "Deception and disruption",
+        ],
+        "objectives": ["1.2"],
+    },
+    {
+        "slug": "preventive-control-decrease-breach-likelihood",
+        "title": "Security+ — Preventive control (breach likelihood)",
+        "stem": (
+            "Which of the following types of controls decreases the likelihood of a cybersecurity breach occurring?"
+        ),
+        "name": "secplus_q730",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Preventive controls are designed to stop security incidents before they occur, which "
+            "directly lowers the probability that a breach will happen. Examples include firewalls, access controls, "
+            "patching, and security awareness training. Corrective controls remediate after an incident, such as "
+            "restoring from backup, and do not primarily reduce initial breach likelihood. Transfer shifts financial "
+            "or operational risk through insurance or contracts but does not by itself prevent attacks. Detective "
+            "controls identify events during or after they occur, such as SIEM alerts and log review, rather than "
+            "preventing the breach from starting."
+        ),
+        "choices": [
+            "Corrective",
+            "Transfer",
+            "Detective",
+            "Preventive",
+        ],
+        "objectives": ["1.1"],
+    },
+    {
+        "slug": "ransomware-restore-data-backups",
+        "title": "Security+ — Backups (ransomware recovery)",
+        "stem": (
+            "Which of the following would be the most helpful in restoring data in the event of a ransomware "
+            "infection?"
+        ),
+        "name": "secplus_q731",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Clean, offline or immutable backups let an organization recover encrypted or deleted data "
+            "without paying a ransom. Backup and restore is the primary corrective recovery path after ransomware. "
+            "Load balancing distributes traffic for availability and performance but does not recover encrypted files. "
+            "Geographic dispersion places resources in multiple regions for resilience and latency but is not by "
+            "itself data restoration after an attack. Encryption protects confidentiality; it does not undo "
+            "ransomware encryption or replace lost data unless separate backup copies exist."
+        ),
+        "choices": [
+            "Load balancing",
+            "Geographic dispersion",
+            "Encryption",
+            "Backups",
+        ],
+        "objectives": ["3.4"],
+    },
+    {
+        "slug": "frank-vishing-authority-intimidation-urgency",
+        "title": "Security+ — Vishing manipulation principles (Frank)",
+        "stem": (
+            "Frank was contacted by phone by a person claiming to be an executive vice president urgently "
+            "requesting that his password be reset. The caller insisted on the security urgency at hand and "
+            "informed Frank that his supervisor would be contacted unless he complied immediately. Frank "
+            "suspected that this was a social engineering attack. Which principles of human manipulation did "
+            "the attacker attempt on Frank? (Select three.)"
+        ),
+        "name": "secplus_q732",
+        "choose_two": True,
+        "correct": ["A", "C", "D"],
+        "explain": (
+            "Correct. A, C, and D — Authority applies because the caller impersonated a senior executive to "
+            "pressure compliance. Intimidation applies because the caller threatened to contact Frank's "
+            "supervisor if he did not obey. Urgency applies because the caller demanded immediate action "
+            "under a fabricated security crisis. Fright is not a standard Security+ social engineering "
+            "principle. Scarcity requires a limited supply or opportunity, which is not present. Trust "
+            "involves exploiting an existing relationship; here the attacker fabricated authority rather "
+            "than relying on prior trust."
+        ),
+        "choices": [
+            "Authority",
+            "Fright",
+            "Intimidation",
+            "Urgency",
+            "Scarcity",
+            "Trust",
+        ],
+        "objectives": ["2.2", "2.4"],
+    },
+    {
+        "slug": "alina-san-cert-multiple-domains-subdomains",
+        "title": "Security+ — SAN certificate (multiple domains)",
+        "stem": (
+            "Alina works for a company whose domains are domain.com and domain.org. She has been tasked to "
+            "acquire a digital certificate that will cover these domains as well as all the subdomains these "
+            "main domains have. Which of the following certificates would best fulfill the requirements?"
+        ),
+        "name": "secplus_q733",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A Subject Alternative Name (SAN) certificate can list multiple hostnames in one "
+            "certificate, including several base domains and wildcard entries such as *.domain.com and "
+            "*.domain.org. That matches the need to secure two different domains and all of their subdomains "
+            "in a single cert. A domain validation certificate describes how identity is verified (DV), not "
+            "how many names the certificate covers. A wildcard certificate typically covers one domain tree "
+            "for example *.domain.com but not a separate domain.org namespace. NAXX is not a certificate type."
+        ),
+        "choices": [
+            "Domain validation digital certificate",
+            "Wildcard digital certificate",
+            "SAN",
+            "NAXX",
+        ],
+        "objectives": ["1.4"],
+    },
+    {
+        "slug": "pki-hierarchical-trust-root-ca",
+        "title": "Security+ — Hierarchical PKI trust model",
+        "stem": (
+            "Which PKI trust model assigns a single hierarchy with one master CA called the root, who signs "
+            "all digital certificate authorities with a single key?"
+        ),
+        "name": "secplus_q734",
+        "correct": "C",
+        "explain": (
+            "Correct. C — In a hierarchical trust model, a single root CA sits at the top of the chain and "
+            "signs subordinate or intermediate CAs, which in turn issue end-entity certificates. Clients trust "
+            "the root public key and validate certificates by walking the chain upward. A distributed trust "
+            "model relies on multiple independent trust anchors without one master root signing all authorities. "
+            "A bridge trust model uses a bridge CA to cross-certify separate PKI hierarchies rather than one "
+            "root signing every CA in a single tree. Centralized trust model is not the standard Security+ "
+            "term for this root-and-subordinate PKI structure."
+        ),
+        "choices": [
+            "Distributed trust model.",
+            "Bridge trust model.",
+            "Hierarchical trust model.",
+            "Centralized trust model.",
+        ],
+        "objectives": ["1.4"],
+    },
+    {
+        "slug": "cp-cps-baseline-security-requirements",
+        "title": "Security+ — CP vs CPS distinction",
+        "stem": (
+            "What is the primary distinction between a Certificate Policy (CP) and a Certificate Practice "
+            "Statement (CPS)?"
+        ),
+        "name": "secplus_q735",
+        "correct": "D",
+        "explain": (
+            "Correct. D — A Certificate Policy (CP) defines recommended baseline security requirements and "
+            "rules for how PKI components are used and operated. It states what assurance level and "
+            "requirements apply. A Certificate Practice Statement (CPS) is the more detailed operational "
+            "document that describes how a specific CA implements those requirements when issuing, managing, "
+            "and revoking certificates. End-user registration steps are operational detail found in the CPS or "
+            "related registration practices, not the CP itself. A CPS covers the CA's practices broadly, not "
+            "only an intermediate CA."
+        ),
+        "choices": [
+            "A CP describes how end-users register for a digital certificate.",
+            "A CPS is a published set of rules that govern the operation of a PKI.",
+            "A CPS governs the operation of intermediate CA.",
+            "A CP provides recommended baseline security requirements for the use and operation of PKI components.",
+        ],
+        "objectives": ["1.4"],
+    },
+    {
+        "slug": "scada-ics-hardening-not-proprietary-protocols",
+        "title": "Security+ — SCADA/ICS hardening (NOT a step)",
+        "stem": (
+            "Several steps can be taken to harden SCADA and ICS systems. Which of the following is not such a step?"
+        ),
+        "name": "secplus_q736",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Relying on proprietary protocols for protection is security through obscurity, not "
+            "effective hardening. Obscure protocols provide little real protection, and you depend on the vendor "
+            "to fix flaws. CompTIA and OT guidance instead recommend defense in depth. Establishing policies and "
+            "training, testing attack scenarios, removing unnecessary services, and identifying all connections to "
+            "SCADA networks are recognized hardening and visibility steps for industrial control environments."
+        ),
+        "choices": [
+            "As much as possible rely on proprietary protocols to protect the network.",
+            "Establish clear policies and conduct training around the policies.",
+            "Test to identify and evaluate possible attack scenarios.",
+            "Remove or disable unnecessary services.",
+            "Identify all connections to SCADA networks.",
+        ],
+        "objectives": ["3.1"],
+    },
+    {
+        "slug": "vpn-split-tunnel-preserve-bandwidth",
+        "title": "Security+ — Split tunnel (preserve VPN bandwidth)",
+        "stem": (
+            "You have been tasked to configure the VPN to preserve bandwidth. Which configuration would you choose?"
+        ),
+        "name": "secplus_q737",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Split tunneling sends only traffic destined for the corporate network through the VPN "
+            "tunnel. Other traffic, such as general internet browsing, uses the local connection directly. That "
+            "reduces unnecessary load on the VPN and corporate gateway and preserves bandwidth. Full tunneling "
+            "routes all traffic through the VPN, which increases VPN usage and does not preserve bandwidth. "
+            "Point-to-Point Tunneling Protocol (PPTP) and Secure Socket Tunneling Protocol (SSTP) are VPN "
+            "protocols, not tunnel routing modes."
+        ),
+        "choices": [
+            "Point-to-Point Tunneling",
+            "Secure Socket Tunneling",
+            "Full tunnel",
+            "Split tunnel",
+        ],
+        "objectives": ["3.2"],
+    },
+    {
+        "slug": "cloud-security-secrets-management-saas",
+        "title": "Security+ — Cloud security (SASE/SSE/SWG)",
+        "stem": (
+            "When it comes to cloud computing and security, which of the following statements is correct?"
+        ),
+        "name": "secplus_q738",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Secrets management securely stores, rotates, and controls access to credentials, "
+            "API keys, and tokens used by cloud and SaaS integrations. Centralized secrets handling improves "
+            "operational security and administration compared with hard-coding or scattering secrets across "
+            "platforms. SSE is the security-focused subset of SASE and does not include WAN or SD-WAN "
+            "technologies. A secure web gateway can be deployed on endpoints, at the network edge, or as a "
+            "cloud-delivered service. SASE converges SD-WAN with security services such as SWG, CASB, and "
+            "ZTNA; SSE is the security-only portion, not a separate layer listed inside SASE."
+        ),
+        "choices": [
+            "Secrets management allows for improved administration of SaaS platforms.",
+            "SSE is the security component of SASE that unifies all security services, including WANs.",
+            "A SWG can be placed on endpoints, at the edge but not in the cloud.",
+            "A SASE includes SWG, CASB, ZTA, and SSE technologies.",
+        ],
+        "objectives": ["3.2"],
+    },
+    {
+        "slug": "vulnerability-scan-not-exploit-characteristic",
+        "title": "Security+ — Vulnerability scan (NOT a characteristic)",
+        "stem": (
+            "Which of the following is not a characteristic of a vulnerability scan?"
+        ),
+        "name": "secplus_q739",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Vulnerability scanning identifies and reports potential weaknesses; it does not "
+            "routinely gain unauthorized access or exploit flaws. Exploitation to prove impact is characteristic "
+            "of penetration testing, not standard vulnerability scanning. Reducing attack surface, identifying "
+            "risk by scanning systems and networks, and being performed by internal security teams are all "
+            "typical vulnerability-assessment characteristics."
+        ),
+        "choices": [
+            "It, on occasion, will gain unauthorized access and exploit vulnerabilities.",
+            "Its purpose is to reduce the attack surface.",
+            "Its objective is to identify risks by scanning systems and networks.",
+            "It is typically performed by internal security personnel.",
+        ],
+        "objectives": ["5.5"],
+    },
+    {
+        "slug": "asymmetric-cluster-standby-no-useful-work",
+        "title": "Security+ — Asymmetric server cluster",
+        "stem": (
+            "A method used for improved redundancy is to put in place a server cluster. There are two kinds of "
+            "server clusters: symmetric and asymmetric clusters. Which of the following is true about asymmetrical "
+            "clusters?"
+        ),
+        "name": "secplus_q740",
+        "correct": "B",
+        "explain": (
+            "Correct. B — In an asymmetric (active/passive) cluster, one node is active while the standby node "
+            "does not perform useful production work; it waits ready to take over if the active node fails. In a "
+            "symmetric (active/active) cluster, multiple nodes share the workload and all perform useful work. "
+            "Launching a VM copy on the failed server is not the defining behavior of asymmetric clustering. "
+            "Virtualization can reduce the need for large physical clusters because workloads can be moved "
+            "quickly to another host."
+        ),
+        "choices": [
+            "The standby server performs useful work in addition to supporting a failed server.",
+            "The standby server performs no useful work other than to be ready if it is needed.",
+            "The standby server launches a copy of the virtual machine the failed server.",
+            "Virtualization dramatically increases the number of server clusters that are needed for server redundancy.",
+        ],
+        "objectives": ["5.2"],
+    },
+    {
+        "slug": "it-asset-value-databases-highest-priority",
+        "title": "Security+ — Highest-value IT asset to secure",
+        "stem": (
+            "Below is a description of IT assets typically found in modern enterprises. Which of these has the "
+            "highest value and therefore justifies the most significant effort to secure?"
+        ),
+        "name": "secplus_q741",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Business databases holding sales, marketing, production, and finance data usually "
+            "contain the organization's most unique and irreplaceable information. Loss or compromise would "
+            "cause the greatest business impact, so they warrant the strongest protection. A custom order "
+            "fulfillment system is also valuable and proprietary but is typically less unique than core "
+            "business data stores. Operating systems and commodity hardware such as servers, routers, and "
+            "power supplies are more replaceable and justify less relative security investment than critical "
+            "data assets."
+        ),
+        "choices": [
+            "Operating System that provides the foundation for application software.",
+            "Custom-made order fulfillment system.",
+            "Servers, routers, and power supplies.",
+            "Sales, marketing, production, and finance databases.",
+        ],
+        "objectives": ["4.2"],
+    },
+    {
+        "slug": "construction-company-risk-avoidance-earthquake",
+        "title": "Security+ — Risk avoidance (earthquake site)",
+        "stem": (
+            "A building construction company has decided to reject a project for the construction of a data "
+            "center due to the potential high risks of earthquakes at the chosen site location that may result "
+            "in financial and reputational losses to their firm if a disaster is to occur. What risk management "
+            "strategy have they chosen?"
+        ),
+        "name": "secplus_q742",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Avoidance eliminates exposure to a risk by not engaging in the activity that creates "
+            "it. Declining the data center project at an earthquake-prone site removes the firm from that "
+            "hazard entirely. Mitigate would reduce likelihood or impact while still taking the project, such as "
+            "with seismic engineering or redundant design. Accept would proceed while acknowledging residual risk. "
+            "Transfer would shift financial impact to another party, such as through insurance or contractual "
+            "risk sharing, rather than rejecting the work."
+        ),
+        "choices": [
+            "Mitigate",
+            "Avoid",
+            "Accept",
+            "Transfer",
+        ],
+        "objectives": ["5.2"],
+    },
+    {
+        "slug": "hybrid-cloud-mixed-sensitivity-compliance",
+        "title": "Security+ — Hybrid cloud (mixed sensitivity)",
+        "stem": (
+            "Which cloud model is best suited for a global enterprise with a mixture of both critical sensitive "
+            "data and non-sensitive data who are concerned about their data security and compliance?"
+        ),
+        "name": "secplus_q743",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Hybrid cloud combines private and public cloud resources so sensitive workloads can "
+            "stay in a controlled private environment while less sensitive workloads use scalable public cloud "
+            "services. That split supports security and compliance for critical data without giving up cloud "
+            "flexibility for other systems. A public-only model places all data in shared provider infrastructure "
+            "with less isolation for regulated workloads. Community cloud serves a specific shared industry or "
+            "group and is not the general best fit for a diverse global enterprise. Private-only cloud maximizes "
+            "control but does not efficiently address mixed sensitivity and global scale the way hybrid does."
+        ),
+        "choices": [
+            "Hybrid",
+            "Public",
+            "Community",
+            "Private",
+        ],
+        "objectives": ["3.1"],
+    },
+    {
+        "slug": "insider-investigation-application-logs-metadata",
+        "title": "Security+ — Application logs (insider investigation)",
+        "stem": (
+            "A cybersecurity investigator is reviewing log data to trace the activities of a suspected malicious "
+            "insider after an incident occurred involving data alteration. Which logs could provide the necessary "
+            "metadata for the investigation?"
+        ),
+        "name": "secplus_q744",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Application logs with login and access information tie a user identity to "
+            "authentication events and specific actions on data or records, which is essential when tracing "
+            "insider data alteration. IDS logs focus on detected network threats and often miss authorized "
+            "insider misuse. Firewall logs show network connections such as IPs and ports but not which user "
+            "modified application data. Endpoint logs from workstations can supplement an investigation but "
+            "application access logs directly document who accessed and changed the affected data."
+        ),
+        "choices": [
+            "IDS logs with information on detected threats",
+            "Firewall logs with details on network activity",
+            "Application logs with login and access information",
+            "Endpoint logs from all user workstations",
+        ],
+        "objectives": ["4.9"],
+    },
+    {
+        "slug": "threat-actor-unsophisticated-automated-bots",
+        "title": "Security+ — Unsophisticated threat actors (bots)",
+        "stem": (
+            "What is the level of sophistication of threat actors whose attacks primarily consist of automated "
+            "bots attempting to exploit known vulnerabilities?"
+        ),
+        "name": "secplus_q745",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Unsophisticated actors rely on automated tools and bots to scan for and exploit "
+            "already-published vulnerabilities rather than developing custom exploits or advanced tradecraft. "
+            "State-sponsored actors pursue strategic objectives with significant resources and tailored capabilities. "
+            "Innovative is not a standard Security+ threat-actor sophistication category. Advanced actors use "
+            "custom malware, prolonged campaigns, and evasion techniques beyond mass automated exploitation of "
+            "known flaws."
+        ),
+        "choices": [
+            "State-sponsored",
+            "Unsophisticated",
+            "Innovative",
+            "Advanced",
+        ],
+        "objectives": ["2.1"],
+    },
+    {
+        "slug": "password-complexity-technical-policy-enforcement",
+        "title": "Security+ — Password complexity (technical policy)",
+        "stem": (
+            "What is the most effective way in which a company may ensure password complexity compliance after a "
+            "recent security audit revealed that some employees use weak passwords?"
+        ),
+        "name": "secplus_q746",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Technically enforcing a password policy through directory services, group policy, or "
+            "identity platforms requires minimum length, complexity, and history rules at the system level so "
+            "weak passwords cannot be set. Advising users to write passwords on paper increases exposure and "
+            "does not enforce complexity. More frequent audits detect noncompliance but do not prevent weak "
+            "passwords from being created. Training improves awareness but alone cannot guarantee compliance "
+            "without technical controls."
+        ),
+        "choices": [
+            "Advise the users to write down their long passwords on a piece of paper",
+            "Enforce a technical implementation of a password policy",
+            "Perform security audits more frequently",
+            "Provide training sessions to employees",
+        ],
+        "objectives": ["4.5"],
     },
 ]
 

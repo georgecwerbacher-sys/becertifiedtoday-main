@@ -9,6 +9,7 @@ Search terms, negatives, and landing-page keyword maps for Google Ads and organi
 | [[../05-playbooks/keyword-collection-plan\|keyword-collection-plan]] | How we collect, review, and promote keywords |
 | `search-terms/` | Weekly Google Ads search term exports (by campaign) |
 | `negatives/` | Shared and campaign-specific negative lists |
+| `positives/` | Paste-ready good keywords (Phrase + Exact) by ad group |
 | `landing-maps/` | High-value keywords tied to each CTA / landing URL |
 | `templates/search-terms-weekly-import.md` | Paste format for manual imports |
 

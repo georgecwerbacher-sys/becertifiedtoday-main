@@ -101,6 +101,7 @@ study guide
 
 | Date | Added | Removed | Notes |
 |------|-------|---------|-------|
+| 2026-06-03 | Course/vendor lockdown: course, training, online/virtual training, Pluralsight, LinkedIn Learning, Cybrary, Comptia learn/training, etc. | — | [[secplus-course-vendor-lockdown|lockdown doc]] → merged 56 in [[google-ads-applied-2026-06-03|applied snapshot]] |
 | 2026-06-03 | pass4sure, dumps, dion, certmaster, cysa, sybex, exam cram, cyberkraft, exam Q&A, real exam questions, free training, flash cards, study guide | — | Applied ad group **Broad** — see [[google-ads-applied-2026-06-03|applied snapshot]] |
-| 2026-06-03 | Campaign Phrase baseline (19) | — | [[google-ads-applied-2026-06-03|applied snapshot]] |
+| 2026-06-03 | Campaign Phrase baseline (32) | — | [[google-ads-applied-2026-06-03|applied snapshot]] |
 | 2026-05-30 | Initial list from Security+ / OpenSSL CTA research | — | |
