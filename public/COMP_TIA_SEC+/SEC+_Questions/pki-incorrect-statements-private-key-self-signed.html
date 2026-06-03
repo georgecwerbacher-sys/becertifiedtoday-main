@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — IR containment (Select two)</title>
+  <title>Security+ — PKI incorrect statements (Select two)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,18 +137,18 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/forensics-order-of-volatility-not-correct-backups-first.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/data-classification-public-open-distribution.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/least-privilege-service-accounts-minimum-permissions.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/hospital-infusion-pumps-vlan-segmentation.html">Next</a>
       </div>
     </nav>
-    <h1 class="choose-two-stem">Which of the following statements about containment during incident response are TRUE and best balance limiting damage with maintaining business operations? (Select two.)</h1>
+    <h1 class="choose-two-stem">Which TWO of the following statements about public key infrastructure (PKI), digital certificates, and certificate authorities are INCORRECT?</h1>
 
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="A" />A. Unplugging all systems from the network is the recommended first response to any suspected intrusion to guarantee containment.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="B" />B. Delaying containment until after a full forensic investigation is finished helps preserve evidence and reduce disruption.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="C" />C. Disabling a single compromised user account is usually preferable to shutting down an entire identity provider service.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="D" />D. Quarantining only confirmed compromised endpoints limits spread while avoiding unnecessary downtime for unaffected systems.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="E" />E. Containment actions should ignore business impact until full eradication is complete.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q797" value="A" />A. PKI allows clients to validate a server's identity and establish encrypted TLS connections by verifying the server's certificate back to a trusted CA.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q797" value="B" />B. Operating systems and browsers include a built-in trust store of root CA certificates, which they use to decide whether to trust a presented certificate chain.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q797" value="C" />C. In PKI, the private key is embedded inside the digital certificate so that anyone can encrypt data to the owner and verify the owner's signatures.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q797" value="D" />D. A certificate that is self-signed by an internal server is automatically trusted by all external internet clients just like a public CA-signed certificate.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q797" value="E" />E. A digital certificate is an electronic document that binds an entity's identity to its public key and is digitally signed by a certificate authority.</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -177,14 +177,14 @@
   <script>
     (function () {
       var CORRECT = ["C", "D"];
-      var CORRECT_MSG = "Correct. C and D \u2014 Disabling one compromised user account removes the attacker's access while keeping the identity provider available for other users. Quarantining only confirmed compromised endpoints isolates infected systems without unnecessary downtime on unaffected hosts. Unplugging all systems from the network is overly disruptive and is not the recommended first response to every suspected intrusion. Delaying containment until a full forensic investigation finishes allows further spread. Containment should consider business impact; ignoring it until eradication is complete is not sound incident response practice.";
+      var CORRECT_MSG = "Correct. C and D \u2014 Digital certificates contain the public key and identity information signed by a CA; the private key must remain secret and is never embedded in the certificate. Self-signed internal certificates are not automatically trusted by external browsers and operating systems, which rely on preconfigured public root trust stores. PKI enables TLS clients to validate server identity by chaining to a trusted CA. OS and browser trust stores determine whether a presented certificate chain is trusted. A certificate binds an entity identity to its public key and is signed by a CA.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       function selectedValues() {
         return []
-          .slice.call(document.querySelectorAll('input[name="secplus_q788"]:checked'))
+          .slice.call(document.querySelectorAll('input[name="secplus_q797"]:checked'))
           .map(function (el) { return el.value; })
           .sort();
       }
@@ -213,7 +213,7 @@
 
       showBtn.addEventListener("click", function () {
         CORRECT.forEach(function (value) {
-          var input = document.querySelector('input[name="secplus_q788"][value="' + value + '"]');
+          var input = document.querySelector('input[name="secplus_q797"][value="' + value + '"]');
           if (input) input.checked = true;
         });
         answerBox.style.display = "block";

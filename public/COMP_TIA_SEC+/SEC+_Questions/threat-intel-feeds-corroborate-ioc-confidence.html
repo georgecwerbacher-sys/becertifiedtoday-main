@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — IR containment (Select two)</title>
+  <title>Security+ — Threat intel IOC corroboration</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,18 +137,31 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/forensics-order-of-volatility-not-correct-backups-first.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/hospital-infusion-pumps-vlan-segmentation.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/least-privilege-service-accounts-minimum-permissions.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/siem-alert-most-incorrect-false-positive-dismissal.html">Next</a>
       </div>
     </nav>
-    <h1 class="choose-two-stem">Which of the following statements about containment during incident response are TRUE and best balance limiting damage with maintaining business operations? (Select two.)</h1>
+    <div class="secplus-exhibit" role="region" aria-label="Threat intelligence enrichment exhibit">
+      <p class="secplus-exhibit-lead">A SOC analyst is reviewing a SIEM alert showing outbound connections from an internal workstation to 203.0.113.55. The SIEM has automatically enriched the alert with several threat intelligence sources:</p>
+      <table class="secplus-exhibit-table">
+        <thead>
+          <tr><th scope="col">Source type</th><th scope="col">Indicator</th><th scope="col">Confidence</th><th scope="col">Note</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Open-source threat feed</td><td class="mono-cell">203.0.113.55</td><td>High</td><td>Listed as C2 server for current ransomware campaign</td></tr>
+          <tr><td>National CERT bulletin</td><td class="mono-cell">203.0.113.55</td><td>High</td><td>Involved in multiple confirmed incidents this week</td></tr>
+          <tr><td>Industry sharing community</td><td class="mono-cell">203.0.113.55</td><td>Medium</td><td>Reported by peers as active outbound beacon target</td></tr>
+          <tr><td>Internal firewall logs</td><td class="mono-cell">203.0.113.55</td><td>N/A</td><td>Repeated outbound connections from host WS-17</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h1>Which statement BEST explains the role of these threat intelligence feeds and information-sharing communities in identifying and correlating this IOC?</h1>
 
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="A" />A. Unplugging all systems from the network is the recommended first response to any suspected intrusion to guarantee containment.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="B" />B. Delaying containment until after a full forensic investigation is finished helps preserve evidence and reduce disruption.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="C" />C. Disabling a single compromised user account is usually preferable to shutting down an entire identity provider service.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="D" />D. Quarantining only confirmed compromised endpoints limits spread while avoiding unnecessary downtime for unaffected systems.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="E" />E. Containment actions should ignore business impact until full eradication is complete.</label>
+    <label class="choice"><input type="radio" name="secplus_q799" value="A" />A. They mainly provide long-term archival of firewall configurations, which helps reconstruct how 203.0.113.55 was originally allowed but does not affect IOC confidence.</label>
+    <label class="choice"><input type="radio" name="secplus_q799" value="B" />B. They independently corroborate the same IP as malicious, increasing confidence that 203.0.113.55 is a high-priority IOC to investigate and contain.</label>
+    <label class="choice"><input type="radio" name="secplus_q799" value="C" />C. They guarantee that any IP they list, including 203.0.113.55, can be automatically and permanently blocked without analyst review.</label>
+    <label class="choice"><input type="radio" name="secplus_q799" value="D" />D. They replace the need to review internal data sources, making the firewall logs for 203.0.113.55 unnecessary for confirming the IOC.</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -176,33 +189,21 @@
 
   <script>
     (function () {
-      var CORRECT = ["C", "D"];
-      var CORRECT_MSG = "Correct. C and D \u2014 Disabling one compromised user account removes the attacker's access while keeping the identity provider available for other users. Quarantining only confirmed compromised endpoints isolates infected systems without unnecessary downtime on unaffected hosts. Unplugging all systems from the network is overly disruptive and is not the recommended first response to every suspected intrusion. Delaying containment until a full forensic investigation finishes allows further spread. Containment should consider business impact; ignoring it until eradication is complete is not sound incident response practice.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 Multiple threat intelligence sources listing the same IP as malicious corroborate the indicator and raise confidence that 203.0.113.55 is a high-priority IOC to investigate and contain, especially when aligned with internal firewall logs. Threat feeds are not primarily archives of firewall configurations. Listing an IP in a feed does not guarantee automatic permanent blocking without analyst review. External intelligence enriches analysis but does not replace internal logs that confirm local behavior such as repeated outbound connections from WS-17.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValues() {
-        return []
-          .slice.call(document.querySelectorAll('input[name="secplus_q788"]:checked'))
-          .map(function (el) { return el.value; })
-          .sort();
-      }
-
-      function arraysEqual(a, b) {
-        if (a.length !== b.length) return false;
-        return a.every(function (v, i) { return v === b[i]; });
-      }
-
       checkBtn.addEventListener("click", function () {
-        var sel = selectedValues();
+        var sel = document.querySelector('input[name="secplus_q799"]:checked');
         answerBox.style.display = "block";
-        if (sel.length !== 2) {
+        if (!sel) {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Choose exactly 2 answers.";
+          answerBox.textContent = "Select an answer.";
           return;
         }
-        if (arraysEqual(sel, CORRECT)) {
+        if (sel.value === CORRECT) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
@@ -212,10 +213,8 @@
       });
 
       showBtn.addEventListener("click", function () {
-        CORRECT.forEach(function (value) {
-          var input = document.querySelector('input[name="secplus_q788"][value="' + value + '"]');
-          if (input) input.checked = true;
-        });
+        var input = document.querySelector('input[name="secplus_q799"][value="' + CORRECT + '"]');
+        if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
         answerBox.textContent = CORRECT_MSG;

@@ -503,6 +503,51 @@ def build_md5_local_password_exhibit() -> str:
     )
 
 
+def build_threat_intel_si_enrichment_exhibit() -> str:
+    rows = [
+        ("Open-source threat feed", "203.0.113.55", "High", "Listed as C2 server for current ransomware campaign"),
+        (
+            "National CERT bulletin",
+            "203.0.113.55",
+            "High",
+            "Involved in multiple confirmed incidents this week",
+        ),
+        (
+            "Industry sharing community",
+            "203.0.113.55",
+            "Medium",
+            "Reported by peers as active outbound beacon target",
+        ),
+        ("Internal firewall logs", "203.0.113.55", "N/A", "Repeated outbound connections from host WS-17"),
+    ]
+    body_rows = "\n".join(
+        "          <tr>"
+        f"<td>{html.escape(src)}</td>"
+        f'<td class="mono-cell">{html.escape(indicator)}</td>'
+        f"<td>{html.escape(conf)}</td>"
+        f"<td>{html.escape(note)}</td>"
+        "</tr>"
+        for src, indicator, conf, note in rows
+    )
+    return (
+        '    <div class="secplus-exhibit" role="region" aria-label="Threat intelligence enrichment exhibit">\n'
+        '      <p class="secplus-exhibit-lead">'
+        "A SOC analyst is reviewing a SIEM alert showing outbound connections from an internal workstation to "
+        "203.0.113.55. The SIEM has automatically enriched the alert with several threat intelligence sources:"
+        "</p>\n"
+        '      <table class="secplus-exhibit-table">\n'
+        "        <thead>\n"
+        "          <tr><th scope=\"col\">Source type</th><th scope=\"col\">Indicator</th>"
+        "<th scope=\"col\">Confidence</th><th scope=\"col\">Note</th></tr>\n"
+        "        </thead>\n"
+        "        <tbody>\n"
+        f"{body_rows}\n"
+        "        </tbody>\n"
+        "      </table>\n"
+        "    </div>"
+    )
+
+
 def build_question_nav(prev_slug: str | None, next_slug: str | None) -> str:
     parts: list[str] = []
     if prev_slug:
@@ -20632,6 +20677,1090 @@ CHAIN: list[dict] = [
             "Containment actions should ignore business impact until full eradication is complete.",
         ],
         "objectives": ["4.8"],
+    },
+    {
+        "slug": "least-privilege-service-accounts-minimum-permissions",
+        "title": "Security+ — Least privilege (service accounts)",
+        "stem": (
+            "Which statement BEST defines the principle of least privilege in the context of service accounts and "
+            "local administrator access?"
+        ),
+        "name": "secplus_q789",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Least privilege grants accounts only the minimum permissions required for their specific "
+            "tasks and no more, which applies to service accounts and local administrator access. Shared "
+            "administrative accounts among multiple technicians violate accountability and expand risk. Granting "
+            "all administrators full permissions on all systems exceeds what incident response requires and "
+            "increases exposure. Accessing only job-relevant data describes need-to-know for information "
+            "restrictions rather than the broader permission scope least privilege defines."
+        ),
+        "choices": [
+            "Administrative accounts are shared among multiple technicians to simplify operational tasks.",
+            (
+                "All administrators receive full permissions on all systems so they can respond to any incident "
+                "quickly."
+            ),
+            "Users are allowed to access only the specific data that is relevant to their job responsibilities.",
+            "Accounts are granted only the minimum permissions needed to perform their specific tasks and no more.",
+        ],
+        "tags": [
+            "Least privilege",
+        ],
+        "objectives": ["3.2", "4.6"],
+    },
+    {
+        "slug": "wifi-deauthentication-attack-unsolicited-disconnects",
+        "title": "Security+ — Deauthentication attack (Wi-Fi drops)",
+        "stem": (
+            "A security analyst is investigating user reports that their laptops are repeatedly dropped from the "
+            "corporate Wi-Fi even though the signal appears strong and the access point remains online. Logs show "
+            "many unsolicited disconnect events for affected clients. Which type of wireless attack is MOST likely "
+            "occurring?"
+        ),
+        "name": "secplus_q790",
+        "correct": "D",
+        "explain": (
+            "Correct. D — A deauthentication attack sends forged deauthentication or disassociation frames to clients "
+            "or the access point, causing repeated involuntary disconnects while the AP remains online and signal "
+            "strength looks normal. WPS brute-force attacks target Wi-Fi Protected Setup PINs to obtain the "
+            "passphrase, not repeated disconnect events on already associated clients. A rogue access point is an "
+            "unauthorized AP but does not by itself explain unsolicited disconnects from a legitimate corporate "
+            "SSID with strong signal. An evil twin mimics a legitimate network to lure connections; the stem "
+            "describes drops from the real corporate Wi-Fi rather than users joining a fake AP."
+        ),
+        "choices": [
+            "WPS brute-force attack",
+            "Rogue access point",
+            "Evil twin access point",
+            "Deauthentication attack",
+        ],
+        "tags": [
+            "802.11",
+            "Deauthentication",
+        ],
+        "objectives": ["2.2", "2.4"],
+    },
+    {
+        "slug": "bcp-dr-role-matrix-backup-delegation-triggers",
+        "title": "Security+ — BC/DR role matrix (succession)",
+        "stem": (
+            "A mid-sized company has a documented disaster recovery plan that lists systems, RTO/RPO targets, and an "
+            "incident commander role assigned to the operations director. However, during a recent regional power "
+            "outage, the operations director was unreachable while traveling, and no one was formally authorized to "
+            "take over their responsibilities. Senior leadership now wants to ensure that key leadership and "
+            "operational responsibilities are clearly covered if a primary role holder is unavailable during or after "
+            "a disruptive event, without significantly increasing cost or complexity. Which of the following changes "
+            "to the business continuity planning process would BEST meet this requirement?"
+        ),
+        "name": "secplus_q791",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A written role matrix with primary and backup owners, delegation triggers, and cross-training "
+            "implements succession planning so authority and duties transfer when a primary role holder is "
+            "unavailable. An undocumented co-commander leaves succession ambiguous when the primary is unreachable. "
+            "Twice-yearly full failover tests validate recovery capability but do not define who assumes leadership "
+            "roles during an outage. Updating emergency contact lists improves reachability but does not authorize "
+            "backups or define when they take over critical BC/DR responsibilities."
+        ),
+        "choices": [
+            (
+                "Appoint an additional co-incident commander at the same seniority level as the operations director, "
+                "but do not document responsibilities to keep the plan simple and flexible."
+            ),
+            (
+                "Schedule full failover tests to the disaster recovery site twice per year, including "
+                "infrastructure and application validation."
+            ),
+            (
+                "Create a written role matrix that identifies primary and backup owners for each critical BC/DR "
+                "role, defines delegation triggers (for example, unresponsive for 30 minutes), and requires "
+                "cross-training for all designated backups."
+            ),
+            (
+                "Update the emergency contact list so it includes personal phone numbers and email addresses for "
+                "all members of the existing BC/DR team."
+            ),
+        ],
+        "objectives": ["5.3", "5.5"],
+    },
+    {
+        "slug": "mdm-work-container-data-separation-byod",
+        "title": "Security+ — MDM work container (data separation)",
+        "stem": (
+            "An organization deploys a mobile device management (MDM) solution that creates a separate encrypted work "
+            "container on employee-owned smartphones. Corporate apps and data must run only inside this container, "
+            "which can be remotely wiped without affecting users' personal photos or apps. Which security concept is "
+            "MOST clearly illustrated by this control?"
+        ),
+        "name": "secplus_q792",
+        "correct": "B",
+        "explain": (
+            "Correct. B — An encrypted work container on a personally owned device isolates corporate apps and data "
+            "from personal content, enabling selective remote wipe of only the work profile. Non-repudiation proves "
+            "that an action occurred and who performed it; it is not the primary concept in container separation. "
+            "Single sign-on reduces authentication prompts across applications but does not isolate work and "
+            "personal data on the device. Job rotation limits how long one person holds a critical role; it is "
+            "unrelated to mobile container architecture."
+        ),
+        "choices": [
+            "Non-repudiation to prevent users from denying that they performed an action",
+            "Data separation and containerization to isolate corporate information from personal data",
+            "Single sign-on (SSO) to reduce the number of passwords users must remember",
+            "Job rotation to ensure that no single employee performs the same critical role for too long",
+        ],
+        "tags": [
+            "MDM",
+            "BYOD",
+        ],
+        "objectives": ["4.1", "2.5"],
+    },
+    {
+        "slug": "security-assessment-report-not-best-practices",
+        "title": "Security+ — Assessment reporting (NOT best practices)",
+        "stem": (
+            "Which of the following statements about communicating security assessment results are NOT appropriate "
+            "best practices? (Select two.)"
+        ),
+        "name": "secplus_q793",
+        "choose_two": True,
+        "correct": ["C", "D"],
+        "explain": (
+            "Correct. C and D — Assessment reports should use clear severity ratings, precise language, and "
+            "actionable remediation guidance backed by evidence. Vague phrasing such as \"might be an issue\" "
+            "downplays risk and can delay response. Omitting remediation guidance does not improve objectivity; "
+            "stakeholders need recommended fixes alongside findings. Clear severity with business impact, quick "
+            "win highlights, and prioritized timelines with realistic remediation schedules are appropriate "
+            "reporting practices."
+        ),
+        "choices": [
+            "Use clear severity ratings and explain the business impact for each finding.",
+            "Highlight any quick wins that can be fixed easily for rapid risk reduction.",
+            'Use vague language such as "might be an issue" to avoid alarming stakeholders.',
+            "Avoid including remediation guidance so the report stays purely objective.",
+            "Group findings by priority and suggest a realistic remediation timeline.",
+        ],
+        "objectives": ["5.1", "5.2"],
+    },
+    {
+        "slug": "ransomware-edr-isolate-workstation-payroll-continuity",
+        "title": "Security+ — EDR isolate workstation (ransomware)",
+        "stem": (
+            "A midsize company has a flat office LAN and handles security incidents with ad-hoc, manual steps. "
+            "During business hours, the EDR platform alerts on active ransomware behavior on a single accounting "
+            "workstation that is connected to a shared file server used by the entire finance team. The file server "
+            "shows no suspicious activity yet, and accounting is currently processing payroll, which must continue "
+            "with minimal disruption. Which containment action is the most appropriate next step to reduce risk "
+            "while maintaining business operations?"
+        ),
+        "name": "secplus_q794",
+        "correct": "A",
+        "explain": (
+            "Correct. A — EDR network isolation contains the single compromised workstation, blocking spread to the "
+            "shared file server while keeping the host powered on for investigation and volatile evidence. Powering "
+            "off every finance workstation is overly disruptive and halts payroll unnecessarily. Shutting down the "
+            "entire accounting switch port disconnects all finance users and stops business operations broadly. "
+            "Delaying containment until after hours allows ransomware to spread while payroll systems remain exposed."
+        ),
+        "choices": [
+            "Use the EDR tool to isolate the affected workstation from the network while keeping it powered on for analysis.",
+            "Power off every workstation in the finance department immediately to guarantee the malware cannot spread.",
+            (
+                "Shut down the core switch port for the entire accounting area, disconnecting all finance "
+                "workstations from the network."
+            ),
+            "Delay containment until after business hours to avoid interrupting payroll processing.",
+        ],
+        "tags": [
+            "EDR",
+            "Ransomware",
+        ],
+        "objectives": ["4.8"],
+    },
+    {
+        "slug": "incident-communication-internal-external-spokesperson",
+        "title": "Security+ — Incident communication plan",
+        "stem": (
+            "Which statement about internal and external communication during a cybersecurity incident is MOST "
+            "accurate according to a well-defined incident communication plan?"
+        ),
+        "name": "secplus_q795",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Incident communication plans give internal teams detailed technical and investigative "
+            "updates to respond effectively while restricting external messages to approved high-level facts delivered "
+            "by designated spokespersons. Individual analysts should not speak to customers or media without "
+            "authorization even if information is confirmed. Sharing full technical details externally increases "
+            "confusion, legal exposure, and leak risk. Internal notification typically precedes or aligns with "
+            "controlled external messaging rather than sending external communications first to prevent employee leaks."
+        ),
+        "choices": [
+            (
+                "Internal updates may include detailed technical and investigative information, while external "
+                "communications are limited to approved, high-level facts and are delivered by designated "
+                "spokespersons."
+            ),
+            (
+                "Individual analysts may answer questions from customers or the media as long as they share only "
+                "confirmed information about the incident."
+            ),
+            (
+                "Both internal and external communications should share full technical details of the incident to "
+                "ensure maximum transparency."
+            ),
+            (
+                "External communications should be sent before internal notifications so employees do not "
+                "accidentally leak preliminary information."
+            ),
+        ],
+        "objectives": ["4.8", "5.2"],
+    },
+    {
+        "slug": "data-classification-public-open-distribution",
+        "title": "Security+ — Public data classification label",
+        "stem": (
+            "Which data classification label is MOST appropriate for information that can be shared freely outside "
+            "the organization and does not require access controls to protect it?"
+        ),
+        "name": "secplus_q796",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Public data is intended for open distribution outside the organization and does not require "
+            "strict confidentiality controls because disclosure causes no harm. Internal data is for organization "
+            "members and should not be shared freely externally. Restricted data requires tighter controls than "
+            "public information. Confidential data must be protected from unauthorized disclosure and is not "
+            "designed for unrestricted external sharing."
+        ),
+        "choices": [
+            "Internal",
+            "Restricted",
+            "Public",
+            "Confidential",
+        ],
+        "objectives": ["3.3", "5.4"],
+    },
+    {
+        "slug": "pki-incorrect-statements-private-key-self-signed",
+        "title": "Security+ — PKI incorrect statements (Select two)",
+        "stem": (
+            "Which TWO of the following statements about public key infrastructure (PKI), digital certificates, "
+            "and certificate authorities are INCORRECT?"
+        ),
+        "name": "secplus_q797",
+        "choose_two": True,
+        "correct": ["C", "D"],
+        "explain": (
+            "Correct. C and D — Digital certificates contain the public key and identity information signed by a "
+            "CA; the private key must remain secret and is never embedded in the certificate. Self-signed internal "
+            "certificates are not automatically trusted by external browsers and operating systems, which rely on "
+            "preconfigured public root trust stores. PKI enables TLS clients to validate server identity by chaining "
+            "to a trusted CA. OS and browser trust stores determine whether a presented certificate chain is "
+            "trusted. A certificate binds an entity identity to its public key and is signed by a CA."
+        ),
+        "choices": [
+            (
+                "PKI allows clients to validate a server's identity and establish encrypted TLS connections by "
+                "verifying the server's certificate back to a trusted CA."
+            ),
+            (
+                "Operating systems and browsers include a built-in trust store of root CA certificates, which they "
+                "use to decide whether to trust a presented certificate chain."
+            ),
+            (
+                "In PKI, the private key is embedded inside the digital certificate so that anyone can encrypt data "
+                "to the owner and verify the owner's signatures."
+            ),
+            (
+                "A certificate that is self-signed by an internal server is automatically trusted by all external "
+                "internet clients just like a public CA-signed certificate."
+            ),
+            (
+                "A digital certificate is an electronic document that binds an entity's identity to its public key "
+                "and is digitally signed by a certificate authority."
+            ),
+        ],
+        "tags": [
+            "PKI",
+            "TLS",
+        ],
+        "objectives": ["1.4", "4.6"],
+    },
+    {
+        "slug": "hospital-infusion-pumps-vlan-segmentation",
+        "title": "Security+ — Infusion pumps VLAN isolation",
+        "stem": (
+            "A hospital installs network-connected infusion pumps that use outdated firmware and cannot run endpoint "
+            "protection. The security team's primary goal is to prevent any compromise of these pumps from reaching "
+            "other clinical or business systems. Which control best meets this goal?"
+        ),
+        "name": "secplus_q798",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A dedicated VLAN with strict firewall rules segments infusion pumps from other clinical and "
+            "business networks, limiting lateral movement if a pump is compromised while allowing only required "
+            "management traffic. Centralized syslog to a SIEM improves detection but does not block spread to other "
+            "systems. Quarterly vulnerability scans identify weaknesses but do not isolate compromised devices from "
+            "the broader network. Strong administrator passwords harden pump access but do not prevent a compromise "
+            "from reaching other systems once an attacker is inside the pump network path."
+        ),
+        "choices": [
+            "Enable centralized syslog forwarding from the infusion pumps to the hospital's SIEM for continuous monitoring.",
+            "Schedule quarterly internal vulnerability scans targeting all infusion pumps on the production network.",
+            (
+                "Place the infusion pumps on a dedicated VLAN with strict firewall rules allowing only required "
+                "traffic to the pump management servers."
+            ),
+            "Configure complex, unique administrator passwords on all infusion pumps.",
+        ],
+        "tags": [
+            "VLAN",
+            "IoT",
+        ],
+        "objectives": ["3.1", "3.2"],
+    },
+    {
+        "slug": "threat-intel-feeds-corroborate-ioc-confidence",
+        "title": "Security+ — Threat intel IOC corroboration",
+        "stem": (
+            "Which statement BEST explains the role of these threat intelligence feeds and information-sharing "
+            "communities in identifying and correlating this IOC?"
+        ),
+        "name": "secplus_q799",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Multiple threat intelligence sources listing the same IP as malicious corroborate the "
+            "indicator and raise confidence that 203.0.113.55 is a high-priority IOC to investigate and contain, "
+            "especially when aligned with internal firewall logs. Threat feeds are not primarily archives of firewall "
+            "configurations. Listing an IP in a feed does not guarantee automatic permanent blocking without analyst "
+            "review. External intelligence enriches analysis but does not replace internal logs that confirm local "
+            "behavior such as repeated outbound connections from WS-17."
+        ),
+        "choices": [
+            (
+                "They mainly provide long-term archival of firewall configurations, which helps reconstruct how "
+                "203.0.113.55 was originally allowed but does not affect IOC confidence."
+            ),
+            (
+                "They independently corroborate the same IP as malicious, increasing confidence that 203.0.113.55 "
+                "is a high-priority IOC to investigate and contain."
+            ),
+            (
+                "They guarantee that any IP they list, including 203.0.113.55, can be automatically and "
+                "permanently blocked without analyst review."
+            ),
+            (
+                "They replace the need to review internal data sources, making the firewall logs for 203.0.113.55 "
+                "unnecessary for confirming the IOC."
+            ),
+        ],
+        "prepend_html": build_threat_intel_si_enrichment_exhibit(),
+        "tags": [
+            "Threat intelligence",
+            "SIEM",
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "siem-alert-most-incorrect-false-positive-dismissal",
+        "title": "Security+ — SIEM alert (most incorrect response)",
+        "stem": (
+            "A SOC analyst reviews a SIEM alert: a user account shows multiple failed logins from a foreign IP, "
+            "then a successful VPN login, followed within minutes by large data downloads from a file server. The "
+            "user reports they did not log in at that time. Which response is the MOST INCORRECT interpretation of "
+            "this alert?"
+        ),
+        "name": "secplus_q800",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Closing the alert as a false positive because no malware was found and credentials were "
+            "valid ignores corroborating account-takeover indicators: foreign IP, failed attempts, successful VPN "
+            "access, large downloads, and the user's denial. Valid credentials are expected in credential theft. "
+            "Temporarily disabling the account and notifying IR treats the alert as a likely true positive pending "
+            "analysis. Immediate escalation for confirmed compromise is aggressive but not the most incorrect reading "
+            "given the evidence. Correlating logs and keeping the alert open as suspected true positive follows sound "
+            "triage until evidence confirms or clears the activity."
+        ),
+        "choices": [
+            (
+                "Temporarily disable the user account and VPN access, notify the incident response team, and "
+                "classify this as a likely true positive pending further analysis."
+            ),
+            (
+                "Mark the alert as a false positive and close it because no malware was detected on the user's "
+                "endpoint and the VPN login succeeded with valid credentials."
+            ),
+            (
+                "Treat this as a confirmed account compromise (true positive) and immediately escalate the "
+                "incident for containment and investigation."
+            ),
+            (
+                "Correlate the VPN, file server, and identity logs to confirm the timeline, and keep the alert open "
+                "as a suspected true positive until evidence proves otherwise."
+            ),
+        ],
+        "tags": [
+            "SIEM",
+            "Account takeover",
+        ],
+        "objectives": ["4.8"],
+    },
+    {
+        "slug": "usb-evidence-chain-of-custody-avoid-actions",
+        "title": "Security+ — USB evidence chain of custody (AVOID)",
+        "stem": (
+            "A junior analyst collects a USB drive from an employee's desk during an internal investigation. The "
+            "company wants to preserve the drive as potential legal evidence and maintain a clear chain of custody. "
+            "Which of the following actions should the analyst AVOID? (Select two.)"
+        ),
+        "name": "secplus_q801",
+        "choose_two": True,
+        "correct": ["A", "B"],
+        "explain": (
+            "Correct. A and B — Copying USB contents to a workstation desktop before formal imaging can alter "
+            "timestamps, metadata, and content, undermining evidence integrity. Handing the drive to a manager "
+            "without logging the transfer breaks chain of custody with no reliable custodian record. Recording each "
+            "handoff in an evidence log, using a tamper-evident bag with signed labels, and storing the drive in a "
+            "locked cabinet with sign-in and sign-out are appropriate preservation and custody practices."
+        ),
+        "choices": [
+            (
+                "Copy the contents of the USB drive onto the analyst's workstation desktop for a quick review "
+                "before any formal imaging or documentation"
+            ),
+            (
+                "Hand the USB drive to a manager in the hallway without logging the transfer, relying on the manager "
+                "to \"remember\" when they received it"
+            ),
+            (
+                "Record the collection and each subsequent handoff of the USB drive in an evidence log or ticketing "
+                "system, including dates, times, and names of custodians"
+            ),
+            (
+                "Place the USB drive in a tamper-evident evidence bag, label it with case ID, date, time, and "
+                "collector, and sign the label"
+            ),
+            (
+                "Store the USB drive in a locked evidence cabinet with restricted access and require sign-in/sign-out "
+                "for anyone who accesses it"
+            ),
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "siem-filter-user-account-all-log-sources",
+        "title": "Security+ — SIEM filter by user account",
+        "stem": (
+            "A SOC analyst is investigating a potentially compromised user account. The account is cloud-based and "
+            "can log in from multiple devices and IP addresses. In the SIEM, the analyst wants to see only events "
+            "related to that specific account from all log sources. Which configuration is MOST appropriate?"
+        ),
+        "name": "secplus_q802",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Filtering on the user field for the suspected account across all log sources provides a "
+            "complete view of activity regardless of device or IP, which fits cloud accounts that authenticate from "
+            "many locations. Severity-only filters may hide relevant account activity that is not tagged critical or "
+            "high. An IP filter tied to one workstation misses logins and actions from other devices and addresses. "
+            "Aggregating failed logons for all users does not isolate the specific account under investigation."
+        ),
+        "choices": [
+            "Show only events with critical or high severity from the last 24 hours",
+            "Filter events by the IP address of the workstation used in the most recent alert",
+            "Filter events where the user field matches the suspected account across all log sources",
+            "Aggregate all failed logon events from all users in the environment for the last hour",
+        ],
+        "tags": [
+            "SIEM",
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "web-app-assessment-monthly-scan-annual-pentest",
+        "title": "Security+ — Web app assessment plan (Select two)",
+        "stem": (
+            "A midsize online retailer is building its annual security assessment plan for its customer-facing web "
+            "applications. Management wants: 1) a routine, low-impact way to automatically identify missing patches "
+            "and common misconfigurations each month, and 2) a separate engagement once a year where testers attempt "
+            "to exploit weaknesses like real attackers, under tightly defined rules and change windows. Which of the "
+            "following actions/controls will BEST meet these requirements? (Select two.)"
+        ),
+        "name": "secplus_q803",
+        "choose_two": True,
+        "correct": ["A", "D"],
+        "explain": (
+            "Correct. A and D — Authenticated automated vulnerability scans each month with disruptive checks disabled "
+            "provide routine, low-impact identification of missing patches and misconfigurations. An annual external "
+            "penetration test with signed rules of engagement and defined maintenance windows delivers controlled "
+            "exploit-focused testing like real attackers. Firewall packet capture reviews detect traffic patterns but "
+            "do not replace scheduled patch and misconfiguration assessment. WAF default signatures block some attacks "
+            "but are not a substitute for vulnerability scanning and penetration testing. Running exploit tools in "
+            "production without approval violates change and assessment governance."
+        ),
+        "choices": [
+            (
+                "Schedule an authenticated, automated vulnerability scan of the web servers every month, with "
+                "potentially disruptive checks disabled."
+            ),
+            (
+                "Enable full packet capture on the internet firewall and review traffic samples quarterly for "
+                "suspicious patterns."
+            ),
+            (
+                "Rely on the web application firewall's default signatures to block attacks instead of performing "
+                "separate security assessments."
+            ),
+            (
+                "Contract an external firm to perform an annual manual penetration test with a signed "
+                "rules-of-engagement document and defined maintenance windows."
+            ),
+            (
+                "Run automated exploit tools against all production systems every weekend without prior approval "
+                "so issues are found quickly."
+            ),
+        ],
+        "objectives": ["4.7", "5.3"],
+    },
+    {
+        "slug": "linux-web-server-investigation-access-auth-logs",
+        "title": "Security+ — Linux web server investigation logs",
+        "stem": (
+            "A security analyst is investigating suspicious remote logins to a Linux web server from unfamiliar "
+            "IP addresses. The goal is to understand how accounts were accessed and whether the attacker moved "
+            "laterally from this host. Which TWO data sources should the analyst prioritize collecting to support "
+            "this investigation?"
+        ),
+        "name": "secplus_q804",
+        "choose_two": True,
+        "correct": ["A", "B"],
+        "explain": (
+            "Correct. A and B — Web server access logs show client IPs, timestamps, and requested URLs for HTTP(S) "
+            "activity around the suspicious period. Operating system authentication logs such as auth.log record SSH "
+            "and local logon attempts, usernames, source IPs, and success or failure, which are essential for "
+            "account access and lateral movement analysis. Switch and router configuration backups do not show who "
+            "authenticated to the web server. A quarterly vulnerability scan report identifies flaws but not live "
+            "login or access timelines. CPU and memory graphs show performance trends, not authentication or web "
+            "access details."
+        ),
+        "choices": [
+            "Web server access logs that record client IP addresses, timestamps, and requested URLs",
+            "Operating system authentication logs that record SSH and local logon attempts and results",
+            "Daily configuration backups from core switches and routers",
+            "Results of the last quarterly external vulnerability scan against the web server",
+            "Historical CPU and memory utilization graphs from the server monitoring tool",
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "office-security-cameras-deterrent-physical-control",
+        "title": "Security+ — Office cameras (deterrent physical)",
+        "stem": (
+            "A company installs security cameras throughout its office building to discourage unauthorized "
+            "access. What type of security control is this?"
+        ),
+        "name": "secplus_q805",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Security cameras are physical controls. When deployed to discourage unauthorized "
+            "access, their primary role in this scenario is deterrent: visible surveillance makes intruders "
+            "less likely to attempt entry. Cameras can also detect and record activity, but the stem emphasizes "
+            "discouraging behavior rather than investigation after the fact. Preventive controls actively block "
+            "or stop actions; cameras do not physically prevent entry. Compensating controls substitute for a "
+            "primary control that cannot be implemented; cameras are not filling that role here."
+        ),
+        "choices": [
+            "Preventive technical control",
+            "Detective physical control",
+            "Deterrent physical control",
+            "Compensating administrative control",
+        ],
+        "objectives": ["1.1", "3.10"],
+    },
+    {
+        "slug": "annual-security-awareness-training-administrative-preventive",
+        "title": "Security+ — Security awareness training (administrative preventive)",
+        "stem": (
+            "An organization requires all employees to complete annual security awareness training. Which "
+            "category and type of control does this represent?"
+        ),
+        "name": "secplus_q806",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Required security awareness training is an administrative control: a policy-driven "
+            "program that guides employee behavior through education and procedure. It is preventive because it "
+            "reduces risky actions such as phishing clicks and policy violations before incidents occur. "
+            "Technical controls are implemented in hardware or software, not through training requirements. "
+            "Physical detective controls involve facilities or tangible monitoring, not classroom or online "
+            "awareness programs. Corrective controls remediate issues after an event; training aims to prevent "
+            "them."
+        ),
+        "choices": [
+            "Technical preventive control",
+            "Administrative preventive control",
+            "Physical detective control",
+            "Operational corrective control",
+        ],
+        "objectives": ["1.1", "5.5"],
+    },
+    {
+        "slug": "firewall-restrictive-proxy-compensating-control",
+        "title": "Security+ — Proxy workaround (compensating control)",
+        "stem": (
+            "After a firewall rule is found to be too restrictive for a critical business application, the "
+            "security team implements a proxy-based workaround that still enforces security policies. What "
+            "type of control is this proxy solution?"
+        ),
+        "name": "secplus_q807",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A compensating control provides an alternate safeguard when the primary or preferred "
+            "control cannot fully meet business and security needs. Here the restrictive firewall rule cannot "
+            "be relaxed without unacceptable risk, so a proxy enforces policy while allowing the application to "
+            "function. Corrective controls remediate after an incident or flaw is found, not substitute for an "
+            "overly strict primary control. Preventive controls block threats before they occur; the proxy is "
+            "specifically substituting for a firewall limitation rather than serving as the primary preventive "
+            "mechanism. Directive controls are policies or instructions that guide behavior, not technical "
+            "workarounds."
+        ),
+        "choices": [
+            "Corrective control",
+            "Preventive control",
+            "Compensating control",
+            "Directive control",
+        ],
+        "objectives": ["1.1", "2.5"],
+    },
+    {
+        "slug": "siem-unusual-login-detective-technical-control",
+        "title": "Security+ — SIEM login alert (detective technical)",
+        "stem": (
+            "A SIEM system generates an alert when it detects unusual login patterns from a user account. What "
+            "type of security control does the SIEM represent in this scenario?"
+        ),
+        "name": "secplus_q808",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A SIEM aggregates logs, correlates events, and generates alerts when activity such as "
+            "unusual login patterns is detected. That is a detective control because it identifies suspicious "
+            "behavior for investigation rather than blocking it upfront. It is a technical control because it is "
+            "implemented in software that processes log data and automation. Preventive controls stop incidents "
+            "before they occur, such as MFA or firewall rules. Corrective controls remediate after damage, such "
+            "as restoring systems or resetting compromised credentials. Deterrent administrative controls discourage "
+            "misbehavior through policy or awareness, not automated log correlation."
+        ),
+        "choices": [
+            "Preventive technical control",
+            "Detective technical control",
+            "Corrective technical control",
+            "Deterrent administrative control",
+        ],
+        "objectives": ["1.1", "4.9"],
+    },
+    {
+        "slug": "malware-restore-backup-corrective-control",
+        "title": "Security+ — Backup restore after malware (corrective)",
+        "stem": (
+            "Following a malware infection, the IT team restores affected systems from clean backups. What type "
+            "of security control does this backup restoration represent?"
+        ),
+        "name": "secplus_q809",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Corrective controls remediate damage or restore normal operations after a security "
+            "incident. Restoring systems from clean backups removes malware and returns affected hosts to a "
+            "known-good state. Preventive controls stop incidents before they occur, such as antivirus blocking "
+            "or patch management. Detective controls identify events for investigation, such as SIEM alerts or "
+            "log review. Compensating controls substitute when a primary control cannot be implemented; backup "
+            "restoration is direct remediation after infection, not an alternate safeguard."
+        ),
+        "choices": [
+            "Preventive control",
+            "Detective control",
+            "Corrective control",
+            "Compensating control",
+        ],
+        "objectives": ["1.1", "3.11"],
+    },
+    {
+        "slug": "perimeter-hids-endpoint-defense-in-depth",
+        "title": "Security+ — Layered controls (defense in depth)",
+        "stem": (
+            "A security architect is designing a defense strategy that uses firewalls at the network perimeter, "
+            "host-based intrusion detection on servers, and endpoint protection on workstations. Which security "
+            "principle does this approach best illustrate?"
+        ),
+        "name": "secplus_q810",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Defense in depth layers multiple controls so that if one fails, others still protect "
+            "the environment. Perimeter firewalls, host-based IDS on servers, and endpoint protection on "
+            "workstations each address threats at different points in the attack path. Least privilege limits "
+            "access to only what is needed for a role or process, not the use of overlapping security tools. "
+            "Zero trust assumes no implicit trust and verifies every access attempt, which is a broader "
+            "architecture model than simply stacking perimeter, host, and endpoint controls. Separation of duties "
+            "divides critical tasks among different people to reduce fraud and error, not deploy layered "
+            "technical defenses."
+        ),
+        "choices": [
+            "Least privilege",
+            "Defense in depth",
+            "Zero trust",
+            "Separation of duties",
+        ],
+        "objectives": ["1.2", "5.5"],
+    },
+    {
+        "slug": "background-check-new-hires-managerial-control",
+        "title": "Security+ — Background checks (managerial control)",
+        "stem": (
+            "An organization classifies its security controls into categories: managerial, operational, and "
+            "technical. A policy requiring background checks for new hires falls under which category?"
+        ),
+        "name": "secplus_q811",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A policy requiring background checks for new hires is a managerial (administrative) "
+            "control. It is a documented governance requirement that sets hiring and personnel security "
+            "standards before employees receive access. Technical controls use technology such as firewalls, "
+            "encryption, or access management systems. Operational controls are day-to-day procedures performed "
+            "by people, such as backup runs or change-management steps. Physical controls protect facilities "
+            "and tangible assets with locks, guards, or fences, not HR screening policies."
+        ),
+        "choices": [
+            "Technical control",
+            "Operational control",
+            "Managerial (administrative) control",
+            "Physical control",
+        ],
+        "objectives": ["1.2", "5.5"],
+    },
+    {
+        "slug": "honeypot-vulnerable-database-detective-control",
+        "title": "Security+ — Honeypot database (detective control)",
+        "stem": (
+            "A security team deploys a honeypot server designed to appear as a vulnerable database server. What "
+            "is the PRIMARY control type this honeypot serves?"
+        ),
+        "name": "secplus_q812",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A honeypot is primarily a detective control. It is a decoy system that attracts "
+            "attackers so defenders can detect unauthorized activity, capture indicators, and analyze tools and "
+            "techniques. It does not prevent real production systems from being targeted. It may incidentally "
+            "deter some attackers who avoid obvious traps, but detection and intelligence gathering are its main "
+            "purpose. Corrective controls remediate damage after an incident; a honeypot does not restore "
+            "systems or remove malware from production hosts."
+        ),
+        "choices": [
+            "Preventive control",
+            "Deterrent control",
+            "Detective control",
+            "Corrective control",
+        ],
+        "objectives": ["1.1", "4.5"],
+    },
+    {
+        "slug": "hospital-encrypt-patient-records-confidentiality",
+        "title": "Security+ — Encrypted patient records (confidentiality)",
+        "stem": (
+            "A hospital encrypts all patient records stored in its database to ensure only authorized medical "
+            "staff can read the information. Which element of the CIA triad is this primarily protecting?"
+        ),
+        "name": "secplus_q813",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Confidentiality ensures information is accessible only to authorized parties and not "
+            "disclosed to others. Encrypting patient records at rest prevents unauthorized readers from "
+            "understanding the data even if storage is accessed. Integrity protects information from "
+            "unauthorized modification, such as tampering with diagnosis fields. Availability ensures timely "
+            "access for authorized users when needed. Non-repudiation proves that a specific party took an "
+            "action and cannot deny it later, such as with digital signatures on transactions."
+        ),
+        "choices": [
+            "Confidentiality",
+            "Integrity",
+            "Availability",
+            "Non-repudiation",
+        ],
+        "objectives": ["1.2"],
+    },
+    {
+        "slug": "wire-transfer-checksum-signature-integrity",
+        "title": "Security+ — Wire transfer checksums (integrity)",
+        "stem": (
+            "A financial institution implements checksums and digital signatures on all wire transfer "
+            "instructions. Which element of the CIA triad is being primarily addressed?"
+        ),
+        "name": "secplus_q814",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Integrity ensures data has not been altered in an unauthorized way. Checksums detect "
+            "accidental or malicious changes to transfer instructions in transit or storage. Digital signatures "
+            "verify that content has not been tampered with and bind the instruction to a trusted signer. "
+            "Confidentiality protects data from unauthorized disclosure, such as encrypting account numbers. "
+            "Availability ensures systems and data are accessible when needed. Authentication verifies identity, "
+            "which signatures can support, but the stem emphasizes protecting instructions from unauthorized "
+            "modification."
+        ),
+        "choices": [
+            "Confidentiality",
+            "Integrity",
+            "Availability",
+            "Authentication",
+        ],
+        "objectives": ["1.2"],
+    },
+    {
+        "slug": "ecommerce-redundant-servers-availability",
+        "title": "Security+ — Redundant e-commerce stack (availability)",
+        "stem": (
+            "An e-commerce company deploys redundant web servers, load balancers, and database clustering to "
+            "ensure its online store remains operational during peak traffic and server failures. Which CIA "
+            "triad element is the primary focus?"
+        ),
+        "name": "secplus_q815",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Availability ensures systems and data are accessible when needed by authorized users. "
+            "Redundant web servers, load balancers, and database clustering keep the store online during peak "
+            "demand and when individual components fail. Confidentiality protects information from unauthorized "
+            "disclosure. Integrity protects data from unauthorized modification. Non-repudiation proves that a "
+            "party performed an action and cannot deny it later, such as with signed transactions."
+        ),
+        "choices": [
+            "Confidentiality",
+            "Integrity",
+            "Availability",
+            "Non-repudiation",
+        ],
+        "objectives": ["1.2"],
+    },
+    {
+        "slug": "data-modified-in-transit-integrity-compromised",
+        "title": "Security+ — Data modified in transit (integrity)",
+        "stem": (
+            "An attacker modifies data in transit between a client application and a server without either "
+            "party's knowledge. Which element of the CIA triad has been compromised?"
+        ),
+        "name": "secplus_q816",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Integrity ensures data has not been altered in an unauthorized way. Modifying data "
+            "in transit without the client or server knowing is an unauthorized change to the information being "
+            "exchanged. Confidentiality would be compromised if an attacker read sensitive data without "
+            "authorization, not merely changed it. Availability would be compromised if systems or data became "
+            "unreachable or unusable. Accountability tracks actions to responsible parties; while tampering may "
+            "affect audit trails, the direct CIA violation described is unauthorized data modification."
+        ),
+        "choices": [
+            "Confidentiality",
+            "Integrity",
+            "Availability",
+            "Accountability",
+        ],
+        "objectives": ["1.2"],
+    },
+    {
+        "slug": "ransomware-file-server-confidentiality-availability",
+        "title": "Security+ — Ransomware on file server (CIA pair)",
+        "stem": (
+            "A ransomware attack encrypts all files on a company's file server, making them inaccessible to "
+            "employees. Which TWO elements of the CIA triad are MOST directly affected?"
+        ),
+        "name": "secplus_q817",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Confidentiality and availability — Availability is directly affected because employees "
+            "can no longer access or use the encrypted files for work. Confidentiality is affected because "
+            "authorized users lose readable access to their data and an unauthorized party controls whether "
+            "the information can be recovered. Integrity focuses on unauthorized modification of data content; "
+            "while encryption changes file form, the primary exam framing for ransomware is loss of access and "
+            "loss of authorized readability rather than tampering with data meaning. Non-repudiation concerns "
+            "proving who performed an action; ransomware does not primarily target that property."
+        ),
+        "choices": [
+            "Confidentiality and integrity",
+            "Integrity and availability",
+            "Confidentiality and availability",
+            "Availability and non-repudiation",
+        ],
+        "objectives": ["1.2"],
+    },
+    {
+        "slug": "dlp-block-ssn-email-confidentiality",
+        "title": "Security+ — DLP blocking SSN email (confidentiality)",
+        "stem": (
+            "A company implements data loss prevention (DLP) software that prevents employees from emailing "
+            "files containing Social Security numbers to external addresses. Which CIA triad element is this "
+            "primarily protecting?"
+        ),
+        "name": "secplus_q818",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Confidentiality ensures information is accessible only to authorized parties and not "
+            "disclosed to others. DLP that blocks outbound email containing Social Security numbers prevents "
+            "sensitive data from being sent to unauthorized external recipients. Integrity protects data from "
+            "unauthorized modification. Availability ensures timely access for authorized users. Authentication "
+            "verifies identity but is a mechanism; the primary goal here is preventing unauthorized disclosure "
+            "of sensitive personal data."
+        ),
+        "choices": [
+            "Confidentiality",
+            "Integrity",
+            "Availability",
+            "Authentication",
+        ],
+        "objectives": ["1.2", "3.3"],
+    },
+    {
+        "slug": "root-access-all-three-cia-triad",
+        "title": "Security+ — Root access (all three CIA elements)",
+        "stem": (
+            "Which of the following scenarios represents a threat to ALL THREE elements of the CIA triad "
+            "simultaneously?"
+        ),
+        "name": "secplus_q819",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Root access to a server with sensitive customer data threatens all three CIA elements "
+            "at once. The attacker can read and exfiltrate customer data, compromising confidentiality. Full "
+            "administrative control allows unauthorized modification or deletion of files and databases, "
+            "compromising integrity. The same access can stop services, wipe data, or encrypt files, "
+            "compromising availability. Accidentally deleting a database table primarily affects integrity and "
+            "availability, not confidentiality of remaining data in the same way. A DDoS attack mainly targets "
+            "availability. A power outage primarily affects availability unless paired with other failures."
+        ),
+        "choices": [
+            "An employee accidentally deletes a database table",
+            "A DDoS attack overwhelms a web server",
+            "An attacker gains root access to a server containing sensitive customer data",
+            "A power outage shuts down a data center",
+        ],
+        "objectives": ["1.2"],
+    },
+    {
+        "slug": "database-wal-integrity-recovery",
+        "title": "Security+ — Database WAL (integrity)",
+        "stem": (
+            "A database administrator implements write-ahead logging (WAL) to ensure that if a system crash "
+            "occurs during a transaction, the database can be recovered to a consistent state. Which CIA triad "
+            "element does this primarily support?"
+        ),
+        "name": "secplus_q820",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Integrity ensures data is accurate, complete, and trustworthy. Write-ahead logging "
+            "records changes before they are applied so that after a crash the database can roll forward or "
+            "roll back incomplete transactions and return to a consistent state without corruption or partial "
+            "updates. Confidentiality protects data from unauthorized disclosure. Availability ensures timely "
+            "access when needed; WAL aids recovery but the stem emphasizes consistent, trustworthy data rather "
+            "than uptime alone. Non-repudiation proves who performed an action and cannot be denied later."
+        ),
+        "choices": [
+            "Confidentiality",
+            "Integrity",
+            "Availability",
+            "Non-repudiation",
+        ],
+        "objectives": ["1.2"],
+    },
+    {
+        "slug": "vpn-password-authenticator-2fa",
+        "title": "Security+ — VPN password + authenticator (2FA)",
+        "stem": (
+            "A user logs into a corporate VPN using a password and a six-digit code from a mobile authenticator "
+            "app. What type of authentication is this?"
+        ),
+        "name": "secplus_q821",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Two-factor authentication uses two different factor categories. A password is something "
+            "you know. A time-based code from a mobile authenticator app is something you have because it is "
+            "generated on a registered device the user possesses. Single-factor authentication uses only one "
+            "category, such as a password alone. Three-factor authentication requires three distinct categories, "
+            "such as a password, a smart card, and a fingerprint. Passwordless authentication removes passwords "
+            "and relies on other methods such as biometrics, security keys, or magic links."
+        ),
+        "choices": [
+            "Single-factor authentication",
+            "Two-factor authentication (2FA)",
+            "Three-factor authentication",
+            "Passwordless authentication",
+        ],
+        "objectives": ["4.5"],
+    },
+    {
+        "slug": "kerberos-kdc-tickets-sso",
+        "title": "Security+ — Kerberos KDC tickets (SSO)",
+        "stem": (
+            "Which authentication framework uses tickets granted by a Key Distribution Center (KDC) to allow "
+            "users to access multiple services without re-entering credentials?"
+        ),
+        "name": "secplus_q822",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Kerberos is a ticket-based authentication protocol. A Key Distribution Center issues "
+            "tickets after initial login so users can access multiple services with single sign-on without "
+            "re-entering credentials for each resource. RADIUS provides centralized authentication, authorization, "
+            "and accounting for network access but does not use KDC-issued Kerberos tickets. LDAP is a directory "
+            "protocol for querying and managing identity information, not the ticket framework described here. "
+            "TACACS+ separates authentication, authorization, and accounting for device administration, typically "
+            "on network infrastructure, and does not use Kerberos tickets."
+        ),
+        "choices": [
+            "RADIUS",
+            "LDAP",
+            "Kerberos",
+            "TACACS+",
+        ],
+        "objectives": ["4.5"],
+    },
+    {
+        "slug": "fingerprint-scan-something-you-are-factor",
+        "title": "Security+ — Fingerprint (something you are)",
+        "stem": (
+            'Which of the following is an example of the "something you are" authentication factor?'
+        ),
+        "name": "secplus_q823",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Something you are is a biometric factor based on a physical characteristic of the "
+            "user. A fingerprint scan matches that category. A hardware security key is something you have. A "
+            "one-time password sent via SMS is typically something you have because it is delivered to a "
+            "registered device or phone number. A personal identification number (PIN) is something you know."
+        ),
+        "choices": [
+            "A hardware security key",
+            "A fingerprint scan",
+            "A one-time password sent via SMS",
+            "A personal identification number (PIN)",
+        ],
+        "objectives": ["4.5"],
+    },
+    {
+        "slug": "financial-transaction-separation-of-duties",
+        "title": "Security+ — Approve vs process (separation of duties)",
+        "stem": (
+            "An organization requires that no single employee can both approve and process a financial "
+            "transaction. Which security principle is being implemented?"
+        ),
+        "name": "secplus_q824",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Separation of duties divides conflicting responsibilities among different people so "
+            "one individual cannot complete a sensitive process alone. Requiring different employees to approve "
+            "and process financial transactions reduces fraud and error. Least privilege limits access to only "
+            "what a role needs, not necessarily splitting approval from processing. Defense in depth layers "
+            "multiple controls at different points. Dual control requires two authorized people to act together "
+            "on a single action, such as two keys for a safe, rather than assigning separate conflicting tasks "
+            "to different roles."
+        ),
+        "choices": [
+            "Least privilege",
+            "Defense in depth",
+            "Separation of duties",
+            "Dual control",
+        ],
+        "objectives": ["1.2", "5.5"],
     },
 ]
 

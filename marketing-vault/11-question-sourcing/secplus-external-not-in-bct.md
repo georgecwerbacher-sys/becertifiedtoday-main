@@ -81,6 +81,42 @@ Use **after** the monthly compare report — not during web discovery.
 | 2026-06-03 | mastery-public | SY0-701 | Cloud IAM — overly broad service account admin role | 2026-06-03 | in-bct (q786) |
 | 2026-06-03 | mastery-public | SY0-701 | Order of volatility — backups-before-processes is wrong | 2026-06-03 | in-bct (q787) |
 | 2026-06-03 | mastery-public | SY0-701 | IR containment — targeted quarantine + disable account | 2026-06-03 | in-bct (q788) |
+| 2026-06-03 | mastery-public | SY0-701 | Least privilege — minimum permissions for accounts | 2026-06-03 | in-bct (q789) |
+| 2026-06-03 | mastery-public | SY0-701 | Wi-Fi deauthentication — unsolicited disconnects | 2026-06-03 | in-bct (q790) |
+| 2026-06-03 | mastery-public | SY0-701 | BC/DR role matrix — backup owners and delegation | 2026-06-03 | in-bct (q791) |
+| 2026-06-03 | mastery-public | SY0-701 | MDM work container — data separation on BYOD | 2026-06-03 | in-bct (q792) |
+| 2026-06-03 | mastery-public | SY0-701 | Assessment reporting — vague language and no remediation | 2026-06-03 | in-bct (q793) |
+| 2026-06-03 | mastery-public | SY0-701 | Ransomware EDR isolate — payroll continuity | 2026-06-03 | in-bct (q794) |
+| 2026-06-03 | mastery-public | SY0-701 | Incident communication — internal detail, external spokesperson | 2026-06-03 | in-bct (q795) |
+| 2026-06-03 | mastery-public | SY0-701 | Data classification — Public label for open sharing | 2026-06-03 | in-bct (q796) |
+| 2026-06-03 | mastery-public | SY0-701 | PKI incorrect — private key in cert, self-signed trust | 2026-06-03 | in-bct (q797) |
+| 2026-06-03 | mastery-public | SY0-701 | Hospital infusion pumps — VLAN segmentation | 2026-06-03 | in-bct (q798) |
+| 2026-06-03 | mastery-public | SY0-701 | Threat intel feeds — corroborate IOC confidence | 2026-06-03 | in-bct (q799) |
+| 2026-06-03 | mastery-public | SY0-701 | SIEM alert — most incorrect false positive dismissal | 2026-06-03 | in-bct (q800) |
+| 2026-06-03 | mastery-public | SY0-701 | USB evidence — avoid breaking chain of custody | 2026-06-03 | in-bct (q801) |
+| 2026-06-03 | mastery-public | SY0-701 | SIEM filter — user account across log sources | 2026-06-03 | in-bct (q802) |
+| 2026-06-03 | mastery-public | SY0-701 | Web app assessment — monthly scan + annual pentest | 2026-06-03 | in-bct (q803) |
+| 2026-06-03 | mastery-public | SY0-701 | Linux web server — access and auth logs | 2026-06-03 | in-bct (q804) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | Office security cameras — deterrent physical control | 2026-06-03 | in-bct (q805) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | Annual security awareness training — administrative preventive | 2026-06-03 | in-bct (q806) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | Firewall proxy workaround — compensating control | 2026-06-03 | in-bct (q807) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | SIEM unusual login alert — detective technical control | 2026-06-03 | in-bct (q808) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | Malware restore from backup — corrective control | 2026-06-03 | in-bct (q809) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | Layered perimeter/HIDS/endpoint — defense in depth | 2026-06-03 | in-bct (q810) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | Background checks for new hires — managerial control | 2026-06-03 | in-bct (q811) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | Honeypot database server — detective control | 2026-06-03 | in-bct (q812) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | Hospital encrypted patient records — confidentiality | 2026-06-03 | in-bct (q813) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | Wire transfer checksums/signatures — integrity | 2026-06-03 | in-bct (q814) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | E-commerce redundancy — availability | 2026-06-03 | in-bct (q815) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | Data modified in transit — integrity compromised | 2026-06-03 | in-bct (q816) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | Ransomware file server — confidentiality and availability | 2026-06-03 | in-bct (q817) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | DLP blocking SSN email — confidentiality | 2026-06-03 | in-bct (q818) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | Root access — all three CIA elements | 2026-06-03 | in-bct (q819) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | Database WAL recovery — integrity | 2026-06-03 | in-bct (q820) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | VPN password + authenticator — 2FA | 2026-06-03 | in-bct (q821) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | Kerberos KDC tickets — SSO | 2026-06-03 | in-bct (q822) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | Fingerprint scan — something you are | 2026-06-03 | in-bct (q823) |
+| 2026-06-03 | openexamprep-secplus | SY0-701 | Financial approve/process — separation of duties | 2026-06-03 | in-bct (q824) |
 
 ---
 

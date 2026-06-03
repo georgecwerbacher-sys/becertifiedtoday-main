@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — IR containment (Select two)</title>
+  <title>Security+ — Assessment reporting (NOT best practices)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,18 +137,18 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/forensics-order-of-volatility-not-correct-backups-first.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/mdm-work-container-data-separation-byod.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/least-privilege-service-accounts-minimum-permissions.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/ransomware-edr-isolate-workstation-payroll-continuity.html">Next</a>
       </div>
     </nav>
-    <h1 class="choose-two-stem">Which of the following statements about containment during incident response are TRUE and best balance limiting damage with maintaining business operations? (Select two.)</h1>
+    <h1 class="choose-two-stem">Which of the following statements about communicating security assessment results are NOT appropriate best practices? (Select two.)</h1>
 
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="A" />A. Unplugging all systems from the network is the recommended first response to any suspected intrusion to guarantee containment.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="B" />B. Delaying containment until after a full forensic investigation is finished helps preserve evidence and reduce disruption.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="C" />C. Disabling a single compromised user account is usually preferable to shutting down an entire identity provider service.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="D" />D. Quarantining only confirmed compromised endpoints limits spread while avoiding unnecessary downtime for unaffected systems.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="E" />E. Containment actions should ignore business impact until full eradication is complete.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q793" value="A" />A. Use clear severity ratings and explain the business impact for each finding.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q793" value="B" />B. Highlight any quick wins that can be fixed easily for rapid risk reduction.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q793" value="C" />C. Use vague language such as "might be an issue" to avoid alarming stakeholders.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q793" value="D" />D. Avoid including remediation guidance so the report stays purely objective.</label>
+    <label class="choice"><input type="checkbox" name="secplus_q793" value="E" />E. Group findings by priority and suggest a realistic remediation timeline.</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -177,14 +177,14 @@
   <script>
     (function () {
       var CORRECT = ["C", "D"];
-      var CORRECT_MSG = "Correct. C and D \u2014 Disabling one compromised user account removes the attacker's access while keeping the identity provider available for other users. Quarantining only confirmed compromised endpoints isolates infected systems without unnecessary downtime on unaffected hosts. Unplugging all systems from the network is overly disruptive and is not the recommended first response to every suspected intrusion. Delaying containment until a full forensic investigation finishes allows further spread. Containment should consider business impact; ignoring it until eradication is complete is not sound incident response practice.";
+      var CORRECT_MSG = "Correct. C and D \u2014 Assessment reports should use clear severity ratings, precise language, and actionable remediation guidance backed by evidence. Vague phrasing such as \"might be an issue\" downplays risk and can delay response. Omitting remediation guidance does not improve objectivity; stakeholders need recommended fixes alongside findings. Clear severity with business impact, quick win highlights, and prioritized timelines with realistic remediation schedules are appropriate reporting practices.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       function selectedValues() {
         return []
-          .slice.call(document.querySelectorAll('input[name="secplus_q788"]:checked'))
+          .slice.call(document.querySelectorAll('input[name="secplus_q793"]:checked'))
           .map(function (el) { return el.value; })
           .sort();
       }
@@ -213,7 +213,7 @@
 
       showBtn.addEventListener("click", function () {
         CORRECT.forEach(function (value) {
-          var input = document.querySelector('input[name="secplus_q788"][value="' + value + '"]');
+          var input = document.querySelector('input[name="secplus_q793"][value="' + value + '"]');
           if (input) input.checked = true;
         });
         answerBox.style.display = "block";

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — IR containment (Select two)</title>
+  <title>Security+ — BC/DR role matrix (succession)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,18 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/forensics-order-of-volatility-not-correct-backups-first.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/wifi-deauthentication-attack-unsolicited-disconnects.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/least-privilege-service-accounts-minimum-permissions.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/mdm-work-container-data-separation-byod.html">Next</a>
       </div>
     </nav>
-    <h1 class="choose-two-stem">Which of the following statements about containment during incident response are TRUE and best balance limiting damage with maintaining business operations? (Select two.)</h1>
+    <h1>A mid-sized company has a documented disaster recovery plan that lists systems, RTO/RPO targets, and an incident commander role assigned to the operations director. However, during a recent regional power outage, the operations director was unreachable while traveling, and no one was formally authorized to take over their responsibilities. Senior leadership now wants to ensure that key leadership and operational responsibilities are clearly covered if a primary role holder is unavailable during or after a disruptive event, without significantly increasing cost or complexity. Which of the following changes to the business continuity planning process would BEST meet this requirement?</h1>
 
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="A" />A. Unplugging all systems from the network is the recommended first response to any suspected intrusion to guarantee containment.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="B" />B. Delaying containment until after a full forensic investigation is finished helps preserve evidence and reduce disruption.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="C" />C. Disabling a single compromised user account is usually preferable to shutting down an entire identity provider service.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="D" />D. Quarantining only confirmed compromised endpoints limits spread while avoiding unnecessary downtime for unaffected systems.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="E" />E. Containment actions should ignore business impact until full eradication is complete.</label>
+    <label class="choice"><input type="radio" name="secplus_q791" value="A" />A. Appoint an additional co-incident commander at the same seniority level as the operations director, but do not document responsibilities to keep the plan simple and flexible.</label>
+    <label class="choice"><input type="radio" name="secplus_q791" value="B" />B. Schedule full failover tests to the disaster recovery site twice per year, including infrastructure and application validation.</label>
+    <label class="choice"><input type="radio" name="secplus_q791" value="C" />C. Create a written role matrix that identifies primary and backup owners for each critical BC/DR role, defines delegation triggers (for example, unresponsive for 30 minutes), and requires cross-training for all designated backups.</label>
+    <label class="choice"><input type="radio" name="secplus_q791" value="D" />D. Update the emergency contact list so it includes personal phone numbers and email addresses for all members of the existing BC/DR team.</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -176,33 +175,21 @@
 
   <script>
     (function () {
-      var CORRECT = ["C", "D"];
-      var CORRECT_MSG = "Correct. C and D \u2014 Disabling one compromised user account removes the attacker's access while keeping the identity provider available for other users. Quarantining only confirmed compromised endpoints isolates infected systems without unnecessary downtime on unaffected hosts. Unplugging all systems from the network is overly disruptive and is not the recommended first response to every suspected intrusion. Delaying containment until a full forensic investigation finishes allows further spread. Containment should consider business impact; ignoring it until eradication is complete is not sound incident response practice.";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C \u2014 A written role matrix with primary and backup owners, delegation triggers, and cross-training implements succession planning so authority and duties transfer when a primary role holder is unavailable. An undocumented co-commander leaves succession ambiguous when the primary is unreachable. Twice-yearly full failover tests validate recovery capability but do not define who assumes leadership roles during an outage. Updating emergency contact lists improves reachability but does not authorize backups or define when they take over critical BC/DR responsibilities.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValues() {
-        return []
-          .slice.call(document.querySelectorAll('input[name="secplus_q788"]:checked'))
-          .map(function (el) { return el.value; })
-          .sort();
-      }
-
-      function arraysEqual(a, b) {
-        if (a.length !== b.length) return false;
-        return a.every(function (v, i) { return v === b[i]; });
-      }
-
       checkBtn.addEventListener("click", function () {
-        var sel = selectedValues();
+        var sel = document.querySelector('input[name="secplus_q791"]:checked');
         answerBox.style.display = "block";
-        if (sel.length !== 2) {
+        if (!sel) {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Choose exactly 2 answers.";
+          answerBox.textContent = "Select an answer.";
           return;
         }
-        if (arraysEqual(sel, CORRECT)) {
+        if (sel.value === CORRECT) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
@@ -212,10 +199,8 @@
       });
 
       showBtn.addEventListener("click", function () {
-        CORRECT.forEach(function (value) {
-          var input = document.querySelector('input[name="secplus_q788"][value="' + value + '"]');
-          if (input) input.checked = true;
-        });
+        var input = document.querySelector('input[name="secplus_q791"][value="' + CORRECT + '"]');
+        if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
         answerBox.textContent = CORRECT_MSG;

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — IR containment (Select two)</title>
+  <title>Security+ — Fingerprint (something you are)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,18 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/forensics-order-of-volatility-not-correct-backups-first.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/kerberos-kdc-tickets-sso.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/least-privilege-service-accounts-minimum-permissions.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/financial-transaction-separation-of-duties.html">Next</a>
       </div>
     </nav>
-    <h1 class="choose-two-stem">Which of the following statements about containment during incident response are TRUE and best balance limiting damage with maintaining business operations? (Select two.)</h1>
+    <h1>Which of the following is an example of the &quot;something you are&quot; authentication factor?</h1>
 
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="A" />A. Unplugging all systems from the network is the recommended first response to any suspected intrusion to guarantee containment.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="B" />B. Delaying containment until after a full forensic investigation is finished helps preserve evidence and reduce disruption.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="C" />C. Disabling a single compromised user account is usually preferable to shutting down an entire identity provider service.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="D" />D. Quarantining only confirmed compromised endpoints limits spread while avoiding unnecessary downtime for unaffected systems.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="E" />E. Containment actions should ignore business impact until full eradication is complete.</label>
+    <label class="choice"><input type="radio" name="secplus_q823" value="A" />A. A hardware security key</label>
+    <label class="choice"><input type="radio" name="secplus_q823" value="B" />B. A fingerprint scan</label>
+    <label class="choice"><input type="radio" name="secplus_q823" value="C" />C. A one-time password sent via SMS</label>
+    <label class="choice"><input type="radio" name="secplus_q823" value="D" />D. A personal identification number (PIN)</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -176,33 +175,21 @@
 
   <script>
     (function () {
-      var CORRECT = ["C", "D"];
-      var CORRECT_MSG = "Correct. C and D \u2014 Disabling one compromised user account removes the attacker's access while keeping the identity provider available for other users. Quarantining only confirmed compromised endpoints isolates infected systems without unnecessary downtime on unaffected hosts. Unplugging all systems from the network is overly disruptive and is not the recommended first response to every suspected intrusion. Delaying containment until a full forensic investigation finishes allows further spread. Containment should consider business impact; ignoring it until eradication is complete is not sound incident response practice.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 Something you are is a biometric factor based on a physical characteristic of the user. A fingerprint scan matches that category. A hardware security key is something you have. A one-time password sent via SMS is typically something you have because it is delivered to a registered device or phone number. A personal identification number (PIN) is something you know.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValues() {
-        return []
-          .slice.call(document.querySelectorAll('input[name="secplus_q788"]:checked'))
-          .map(function (el) { return el.value; })
-          .sort();
-      }
-
-      function arraysEqual(a, b) {
-        if (a.length !== b.length) return false;
-        return a.every(function (v, i) { return v === b[i]; });
-      }
-
       checkBtn.addEventListener("click", function () {
-        var sel = selectedValues();
+        var sel = document.querySelector('input[name="secplus_q823"]:checked');
         answerBox.style.display = "block";
-        if (sel.length !== 2) {
+        if (!sel) {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Choose exactly 2 answers.";
+          answerBox.textContent = "Select an answer.";
           return;
         }
-        if (arraysEqual(sel, CORRECT)) {
+        if (sel.value === CORRECT) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
@@ -212,10 +199,8 @@
       });
 
       showBtn.addEventListener("click", function () {
-        CORRECT.forEach(function (value) {
-          var input = document.querySelector('input[name="secplus_q788"][value="' + value + '"]');
-          if (input) input.checked = true;
-        });
+        var input = document.querySelector('input[name="secplus_q823"][value="' + CORRECT + '"]');
+        if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
         answerBox.textContent = CORRECT_MSG;

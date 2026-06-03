@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — IR containment (Select two)</title>
+  <title>Security+ — Kerberos KDC tickets (SSO)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,18 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/forensics-order-of-volatility-not-correct-backups-first.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/vpn-password-authenticator-2fa.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/least-privilege-service-accounts-minimum-permissions.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/fingerprint-scan-something-you-are-factor.html">Next</a>
       </div>
     </nav>
-    <h1 class="choose-two-stem">Which of the following statements about containment during incident response are TRUE and best balance limiting damage with maintaining business operations? (Select two.)</h1>
+    <h1>Which authentication framework uses tickets granted by a Key Distribution Center (KDC) to allow users to access multiple services without re-entering credentials?</h1>
 
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="A" />A. Unplugging all systems from the network is the recommended first response to any suspected intrusion to guarantee containment.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="B" />B. Delaying containment until after a full forensic investigation is finished helps preserve evidence and reduce disruption.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="C" />C. Disabling a single compromised user account is usually preferable to shutting down an entire identity provider service.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="D" />D. Quarantining only confirmed compromised endpoints limits spread while avoiding unnecessary downtime for unaffected systems.</label>
-    <label class="choice"><input type="checkbox" name="secplus_q788" value="E" />E. Containment actions should ignore business impact until full eradication is complete.</label>
+    <label class="choice"><input type="radio" name="secplus_q822" value="A" />A. RADIUS</label>
+    <label class="choice"><input type="radio" name="secplus_q822" value="B" />B. LDAP</label>
+    <label class="choice"><input type="radio" name="secplus_q822" value="C" />C. Kerberos</label>
+    <label class="choice"><input type="radio" name="secplus_q822" value="D" />D. TACACS+</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -176,33 +175,21 @@
 
   <script>
     (function () {
-      var CORRECT = ["C", "D"];
-      var CORRECT_MSG = "Correct. C and D \u2014 Disabling one compromised user account removes the attacker's access while keeping the identity provider available for other users. Quarantining only confirmed compromised endpoints isolates infected systems without unnecessary downtime on unaffected hosts. Unplugging all systems from the network is overly disruptive and is not the recommended first response to every suspected intrusion. Delaying containment until a full forensic investigation finishes allows further spread. Containment should consider business impact; ignoring it until eradication is complete is not sound incident response practice.";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C \u2014 Kerberos is a ticket-based authentication protocol. A Key Distribution Center issues tickets after initial login so users can access multiple services with single sign-on without re-entering credentials for each resource. RADIUS provides centralized authentication, authorization, and accounting for network access but does not use KDC-issued Kerberos tickets. LDAP is a directory protocol for querying and managing identity information, not the ticket framework described here. TACACS+ separates authentication, authorization, and accounting for device administration, typically on network infrastructure, and does not use Kerberos tickets.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function selectedValues() {
-        return []
-          .slice.call(document.querySelectorAll('input[name="secplus_q788"]:checked'))
-          .map(function (el) { return el.value; })
-          .sort();
-      }
-
-      function arraysEqual(a, b) {
-        if (a.length !== b.length) return false;
-        return a.every(function (v, i) { return v === b[i]; });
-      }
-
       checkBtn.addEventListener("click", function () {
-        var sel = selectedValues();
+        var sel = document.querySelector('input[name="secplus_q822"]:checked');
         answerBox.style.display = "block";
-        if (sel.length !== 2) {
+        if (!sel) {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Choose exactly 2 answers.";
+          answerBox.textContent = "Select an answer.";
           return;
         }
-        if (arraysEqual(sel, CORRECT)) {
+        if (sel.value === CORRECT) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
@@ -212,10 +199,8 @@
       });
 
       showBtn.addEventListener("click", function () {
-        CORRECT.forEach(function (value) {
-          var input = document.querySelector('input[name="secplus_q788"][value="' + value + '"]');
-          if (input) input.checked = true;
-        });
+        var input = document.querySelector('input[name="secplus_q822"][value="' + CORRECT + '"]');
+        if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
         answerBox.textContent = CORRECT_MSG;
