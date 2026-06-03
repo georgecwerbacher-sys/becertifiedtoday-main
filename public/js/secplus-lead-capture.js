@@ -94,6 +94,7 @@
         startBtn.classList.add("cta-main--muted");
       }
       if (consumedNote) consumedNote.hidden = false;
+      configureLeadStickyCta(document.getElementById("secplusLeadStickyCtaLink"));
     }
   }
 
@@ -126,6 +127,10 @@
       wireStartButtons();
     }
 
+    if (section) {
+      wireLeadStickyCta(section);
+    }
+
     if (isLeadLanding && section) {
       var scrollTarget =
         typeof window.bccShouldScrollSecplusLeadCapture === "function" &&
@@ -148,14 +153,47 @@
           }
         });
       }
-      wireLeadStickyCta(section);
     }
   });
 
+  function wireStickyUpgradeCheckout(link) {
+    if (!link || link.getAttribute("data-secplus-sticky-upgrade-wired") === "1") return;
+    link.setAttribute("data-secplus-sticky-upgrade-wired", "1");
+    link.addEventListener("click", function (ev) {
+      if (!link.hasAttribute("data-secplus-portal-30d-checkout")) return;
+      ev.preventDefault();
+      if (typeof window.bccStartSecplusPortalCheckout === "function") {
+        window.bccStartSecplusPortalCheckout("30d", link);
+        return;
+      }
+      window.location.href = "#purchase";
+    });
+  }
+
+  function configureLeadStickyCta(link) {
+    if (!link) return;
+    if (freeSimWasConsumed()) {
+      link.textContent = "Unlock 700+ questions — $19.99";
+      link.setAttribute("href", "#purchase");
+      link.removeAttribute("data-secplus-start-free-sim");
+      link.removeAttribute("data-secplus-start-method");
+      link.setAttribute("data-secplus-portal-30d-checkout", "");
+      wireStickyUpgradeCheckout(link);
+      return;
+    }
+    link.textContent = "Start free 35-min simulation";
+    link.setAttribute("href", "/COMP_TIA_SEC+/test-simulation-runner.html?free=1");
+    link.setAttribute("data-secplus-start-free-sim", "");
+    link.setAttribute("data-secplus-start-method", "secplus_free_sim_sticky");
+    link.removeAttribute("data-secplus-portal-30d-checkout");
+    link.removeAttribute("data-secplus-sticky-upgrade-wired");
+  }
+
   function wireLeadStickyCta(section) {
     var sticky = document.getElementById("secplusLeadStickyCta");
+    var link = document.getElementById("secplusLeadStickyCtaLink");
     if (!sticky || !section) return;
-    if (freeSimWasConsumed()) return;
+    configureLeadStickyCta(link);
     sticky.hidden = false;
     sticky.setAttribute("aria-hidden", "false");
     var panel = section.querySelector(".assessment-cta-panel");

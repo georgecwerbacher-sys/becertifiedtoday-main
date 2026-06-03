@@ -35,7 +35,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta
     name="description"
-    content="SY0-701 exam prep for federal, DoD, and defense contractors: interactive practice tests, verified explanations, and a timed simulation. Browser-only—study from duty station, CONUS, or TDY."
+    content="SY0-701 exam prep with 700+ recent practice questions, PBQ simulations, adaptive review, and timed testing—phone, tablet, and desktop. Pass Security+ before federal, DoD, and contractor cyber roles."
   />
   <meta
     name="keywords"
@@ -43,7 +43,7 @@
   />
   <link rel="canonical" href="https://becertifiedtoday.com/comptia-sec+-home.html" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="CompTIA Security+ SY0-701 Exam Prep — Practice Tests &amp; Simulation | Be Certified Today" />
+  <meta property="og:title" content="Security+ SY0-701 — 700+ Questions, Simulations &amp; Adaptive Testing | Be Certified Today" />
   <meta
     property="og:description"
     content="SY0-701 exam prep for federal, DoD, and defense contractors—practice tests, verified explanations, and timed simulation in your browser."
@@ -52,7 +52,7 @@
   <meta property="og:url" content="https://becertifiedtoday.com/comptia-sec+-home.html" />
   <meta
     property="og:image"
-    content="https://becertifiedtoday.com/images/comptia-training-card-thumbnail.png"
+    content="https://becertifiedtoday.com/images/secplus-sample-questions-thumbnail.jpg"
   />
   <meta property="og:image:width" content="1024" />
   <meta property="og:image:height" content="591" />
@@ -63,19 +63,19 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta
     name="twitter:image"
-    content="https://becertifiedtoday.com/images/comptia-training-card-thumbnail.png"
+    content="https://becertifiedtoday.com/images/secplus-sample-questions-thumbnail.jpg"
   />
   <meta
     name="twitter:image:alt"
     content="CompTIA Security+ SY0-701 exam prep preview — practice questions and exam-style simulation."
   />
-  <meta name="twitter:title" content="CompTIA Security+ SY0-701 Exam Prep — Practice Tests &amp; Simulation | Be Certified Today" />
+  <meta name="twitter:title" content="Security+ SY0-701 — 700+ Questions, Simulations &amp; Adaptive Testing | Be Certified Today" />
   <meta
     name="twitter:description"
     content="SY0-701 exam prep for federal, DoD, and defense contractors—practice tests, verified explanations, and timed simulation in your browser."
   />
   <link rel="icon" href="images/logo/becertifiedtoday_logo_image_trans.png" type="image/png" />
-  <title>CompTIA Security+ SY0-701 Exam Prep — Practice Tests &amp; Simulation | Be Certified Today</title>
+  <title>Security+ SY0-701 — 700+ Questions, Simulations &amp; Adaptive Testing | Be Certified Today</title>
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -87,7 +87,7 @@
           "description": "SY0-701 exam preparation with interactive practice tests, verified explanations, and a timed simulation. Browser-only exam prep for federal, DoD, and defense-contractor test-takers.",
           "primaryImageOfPage": {
             "@type": "ImageObject",
-            "url": "https://becertifiedtoday.com/images/comptia-training-card-thumbnail.png",
+            "url": "https://becertifiedtoday.com/images/secplus-sample-questions-thumbnail.jpg",
             "width": 1024,
             "height": 591
           },
@@ -129,7 +129,7 @@
               "name": "How much does Security+ exam prep access cost?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Full SY0-701 library access is $19.99 for 30 days—question banks, labs, adaptive review, progress tracking, and the 90-minute timed simulation in your browser. Price is shown before Stripe checkout. No recurring subscription."
+                "text": "Full SY0-701 library access is $19.99 for 30 days—700+ interactive practice questions, hot-spot simulations, adaptive review, progress tracking by domain, and the 90-minute timed simulation in your browser on phone, tablet, or desktop. Price is shown before Stripe checkout. No recurring subscription."
               }
             },
             {
@@ -398,8 +398,107 @@
       display: flex;
       flex-direction: column;
     }
+    .funnel > .funnel-intro {
+      order: 1;
+    }
+    .funnel > #secplus-lead-capture {
+      order: 2;
+    }
+    .funnel > .samples-stack {
+      order: 3;
+    }
+    .funnel > #purchase {
+      order: 4;
+    }
+    .funnel > #purchase-details {
+      order: 5;
+    }
     .funnel-intro {
       margin: 0 0 clamp(20px, 3.5vw, 28px);
+    }
+    .secplus-hero-grid {
+      display: grid;
+      gap: clamp(20px, 4vw, 32px);
+      align-items: start;
+    }
+    @media (min-width: 840px) {
+      .secplus-hero-grid {
+        grid-template-columns: minmax(0, 1.05fr) minmax(260px, 0.95fr);
+      }
+    }
+    .secplus-hero-visual {
+      margin: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(45, 59, 90, 0.9);
+      background: #0f1729;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+    }
+    .secplus-hero-visual img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 11;
+      object-fit: cover;
+      object-position: center top;
+    }
+    .secplus-hero-visual figcaption {
+      margin: 0;
+      padding: 10px 14px 12px;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: #9fb0cc;
+      border-top: 1px solid rgba(45, 59, 90, 0.75);
+      background: rgba(15, 23, 41, 0.65);
+    }
+    .secplus-hero-visual figcaption strong {
+      color: #d4e4ff;
+    }
+    .secplus-value-pillars {
+      margin: clamp(14px, 2.5vw, 20px) 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+    @media (min-width: 600px) {
+      .secplus-value-pillars {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    .secplus-value-pillars li {
+      margin: 0;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(120, 170, 255, 0.45);
+      background: linear-gradient(165deg, #8b5cf6 0%, #6d28d9 48%, #5b21b6 100%);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.14) inset,
+        0 6px 22px rgba(109, 40, 217, 0.35);
+      font-size: clamp(0.86rem, 2vw, 0.92rem);
+      line-height: 1.45;
+      color: #f4f7ff;
+    }
+    .secplus-value-pillars strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #fff;
+      font-size: clamp(0.92rem, 2.1vw, 1rem);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+    .secplus-hero-atf-cta {
+      margin: clamp(14px, 2.5vw, 18px) 0 0;
+      font-size: 0.95rem;
+    }
+    .secplus-hero-atf-cta a {
+      color: #c4b5fd;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .secplus-hero-atf-cta a:hover {
+      color: #e9d5ff;
     }
     .lead--lead-first {
       display: none;
@@ -414,20 +513,26 @@
     html.secplus-landing-lead-first .funnel-intro .benefits {
       display: none;
     }
-    html.secplus-landing-lead-first .funnel > #purchase {
-      order: 25;
+    html.secplus-landing-lead-first .secplus-hero-atf-cta {
+      display: block;
+    }
+    .secplus-hero-atf-cta {
+      display: none;
     }
     html.secplus-landing-lead-first .funnel > .funnel-intro {
-      order: 10;
+      order: 1;
     }
     html.secplus-landing-lead-first .funnel > #secplus-lead-capture {
-      order: 5;
+      order: 2;
     }
     html.secplus-landing-lead-first .funnel > .samples-stack {
-      order: 40;
+      order: 3;
+    }
+    html.secplus-landing-lead-first .funnel > #purchase {
+      order: 4;
     }
     html.secplus-landing-lead-first .funnel > #purchase-details {
-      order: 50;
+      order: 5;
     }
     .purchase-fold-lead-note {
       display: none;
@@ -484,9 +589,6 @@
     }
     .purchase-fold .purchase-track-box {
       margin-top: 0;
-    }
-    #purchase-details {
-      order: 1;
     }
     .formats-section {
       order: 2;
@@ -1029,7 +1131,8 @@
     .purchase-track-head .purchase-track-title {
       margin: 0;
     }
-    .encor-live-badge {
+    .encor-live-badge,
+    .secplus-live-badge {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -1044,6 +1147,19 @@
       box-shadow:
         0 0 0 1px rgba(74, 224, 146, 0.65),
         0 2px 16px rgba(31, 168, 85, 0.45);
+    }
+    .purchase-library-highlights {
+      margin: 0 0 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(79, 132, 216, 0.35);
+      background: rgba(30, 58, 95, 0.2);
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: #b8c3d6;
+    }
+    .purchase-library-highlights strong {
+      color: #e6edf3;
     }
     .purchase-track-title {
       margin: 0 0 6px;
@@ -1499,6 +1615,38 @@
       background: linear-gradient(165deg, #5a6a7a 0%, #475569 100%);
       box-shadow: none;
     }
+    a.cta-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 46px;
+      padding: 0.75rem 1.2rem;
+      border-radius: 10px;
+      border: 2px solid rgba(139, 92, 246, 0.55);
+      background: rgba(15, 23, 41, 0.35);
+      color: #e6edf3;
+      font-weight: 700;
+      font-size: clamp(0.92rem, 2.2vw, 1rem);
+      text-decoration: none;
+      text-align: center;
+      box-sizing: border-box;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    a.cta-secondary:hover {
+      border-color: rgba(167, 139, 250, 0.85);
+      background: rgba(91, 33, 182, 0.2);
+      color: #fff;
+    }
+    a.cta-secondary:focus-visible {
+      outline: 2px solid var(--accent-border);
+      outline-offset: 3px;
+    }
+    .format-sample--secondary-cta {
+      margin-top: 10px;
+      padding-top: 0;
+      border-top: 0;
+    }
     .format-card h3 {
       margin: 0 0 10px;
       font-size: clamp(1.02rem, 2.4vw, 1.12rem);
@@ -1521,13 +1669,23 @@
       background: #0f1729;
       line-height: 0;
     }
+    .format-card-thumb {
+      aspect-ratio: 16 / 11;
+    }
     .format-card-thumb img {
       display: block;
       width: 100%;
-      height: auto;
+      height: 100%;
       max-width: 100%;
       object-fit: cover;
       object-position: center top;
+    }
+    .format-card-device-note {
+      margin: 0 0 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #8ba3c7;
+      letter-spacing: 0.02em;
     }
     .format-sample {
       margin: 14px 0 0;
@@ -2187,7 +2345,7 @@
           data-secplus-portal-nav
           title="Security+ practice portal — library access required"
           aria-label="Open Security+ practice portal"
-          >COMPTIA SEC+ Practice Portal</a
+          >Full library (paid access)</a
         >
       </div>
     </header>
@@ -2227,16 +2385,19 @@
                 >
                   <div class="purchase-track-head">
                     <p class="purchase-track-title" id="purchase-fold-title">30-day all-access pass</p>
-                    <span class="encor-live-badge">Live</span>
+                    <span class="secplus-live-badge">Live</span>
                   </div>
                   <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
                     $19.99 <span>/ 30 days</span>
                   </p>
+                  <p class="purchase-library-highlights" role="note">
+                    <strong>700+ interactive SY0-701 questions</strong> (current objectives v5.0), hot-spot and PBQ-style
+                    <strong>simulations</strong>, <strong>adaptive review</strong> and domain study modes, plus the full
+                    <strong>90-minute timed exam</strong>—on phone, tablet, or desktop.
+                  </p>
                   <p class="purchase-track-sub">
-                    Full SY0-701 library for 30 days: latest-style question banks, performance-based and drag-and-drop labs,
-                    <strong>adaptive review</strong> that loops weak topics, <strong>progress tracking</strong> by domain, and the
-                    <strong>90-minute timed simulation</strong> (up to 90 questions)—all in your browser. Built to help you pass on the
-                    first attempt, not flip through a PDF.
+                    Unlock the full library for 30 days: verified explanations on recent-style items, progress tracking by domain,
+                    and study modes that loop weak topics until you are ready to pass—not a static PDF dump.
                   </p>
                   <p class="purchase-track-cta-wrap">
                     <button
@@ -2261,30 +2422,70 @@
             </div>
           </section>
           <div class="funnel-intro">
-          <p class="eyebrow">CompTIA Security+ SY0-701 · exam prep · practice tests</p>
-          <h1>Security+ SY0-701 Exam Prep — Practice Tests &amp; Simulation</h1>
-          <p class="lead lead--full">
-            <strong>Exam preparation</strong> for SY0-701—not a training course. Built for test-takers in
-            <strong>federal agencies, DoD, and defense-contractor</strong> roles where Security+ often supports workforce baseline qualification,
-            as well as anyone preparing for test day.
-            Practice with <strong>realistic practice tests</strong>, <strong>verified explanations</strong>, performance-based drag-and-drop items,
-            and a <strong>90-minute timed simulation</strong> built for the mix of multiple-choice and performance-based questions on test day.
-            <strong>No PDFs or third-party software:</strong> browser-only prep you can use on your schedule—from duty station, CONUS, or TDY.
-            Build confidence before you sit the exam and avoid paying for a retake—try the free timed sample first, then unlock the full library with <strong>30-day access for $19.99</strong> when you are ready.
-          </p>
-          <p class="lead lead--lead-first">
-            <strong>Exam preparation</strong> for SY0-701—not a training course.
-            <strong>No email required:</strong> tap <strong>Start free timed simulation</strong> for a
-            <strong>35-minute sample exam</strong> (20 MCQ + 1 PBQ) and a domain scorecard. Browser-only—no PDFs or third-party software.
-          </p>
-          <ul class="benefits" aria-label="What you get">
-            <li>Exam-realistic formats—timed sim, PBQ-style drag-and-drop, and domain-organized question banks.</li>
-            <li>Verified explanations aligned to CompTIA Security+ SY0-701 objectives (version 5.0)—not unvetted dumps.</li>
-            <li>100% interactive in the browser; not static PDFs, slide decks, or third-party apps.</li>
-            <li>Review modes loop missed answers back so weak topics get extra reps before test day.</li>
-            <li>Progress tracking helps you focus study time where it is needed most.</li>
-            <li>One-time access windows—no recurring subscription.</li>
-          </ul>
+            <div class="secplus-hero-grid">
+              <div class="secplus-hero-copy">
+                <p class="eyebrow">CompTIA Security+ SY0-701 · large question bank · exam simulations</p>
+                <h1>700+ SY0-701 Practice Questions, Simulations &amp; Adaptive Testing</h1>
+                <p class="lead lead--full">
+                  <strong>Exam preparation</strong> for SY0-701—not a training course. A <strong>large, current question bank</strong>
+                  (700+ interactive items aligned to objectives v5.0), <strong>performance-based simulations</strong>, and
+                  <strong>adaptive study modes</strong> that focus your time on weak domains until you pass.
+                  Built for people who <strong>must pass Security+ before they can work</strong> in many federal, DoD, and defense-contractor
+                  cyber roles—as well as anyone scheduling test day.
+                  <strong>No PDFs or third-party apps:</strong> study on <strong>phone, tablet, or desktop</strong> from duty station, CONUS, or TDY.
+                  Try free samples below, then unlock <strong>30-day full library access for $19.99</strong>.
+                </p>
+                <p class="lead lead--lead-first">
+                  <strong>700+ recent-style SY0-701 questions</strong>, hot-spot simulations, and adaptive testing in your browser.
+                  Many IT and cyber jobs require Security+ before you start—use the free samples to judge quality, then
+                  <strong>start the free 35-minute timed exam</strong> (no email, no checkout).
+                </p>
+                <ul class="secplus-value-pillars" aria-label="Security+ library highlights">
+                  <li>
+                    <strong>700+ practice questions</strong>
+                    Large SY0-701 bank with verified explanations—current objectives, not outdated dumps.
+                  </li>
+                  <li>
+                    <strong>Simulations &amp; timed exam</strong>
+                    PBQ-style hot spots plus a 90-minute practice test that mirrors exam-day item mix.
+                  </li>
+                  <li>
+                    <strong>Adaptive review</strong>
+                    Missed topics loop back; domain study and progress tracking target what you need to pass.
+                  </li>
+                  <li>
+                    <strong>Phone, tablet &amp; desktop</strong>
+                    Full interactive UI in the browser—touch-friendly drag-and-drop, no app install.
+                  </li>
+                </ul>
+                <p class="secplus-hero-atf-cta">
+                  <a href="#secplus-lead-capture">Start free 35-minute timed simulation ↓</a>
+                  · <a href="#home-secplus-samples-title">Preview sample questions first</a>
+                </p>
+                <ul class="benefits" aria-label="What you get">
+                  <li>700+ interactive questions and PBQ-style simulations—SY0-701 objectives v5.0.</li>
+                  <li>Adaptive review and domain testing loop weak topics until you are exam-ready.</li>
+                  <li>Verified explanations—not unvetted PDF dumps or third-party apps.</li>
+                  <li>Phone, tablet, and desktop; study from duty station, CONUS, or TDY.</li>
+                  <li>Pass Security+ to qualify for many federal, DoD, and contractor cyber roles.</li>
+                  <li>One-time 30-day access—no recurring subscription.</li>
+                </ul>
+              </div>
+              <figure class="secplus-hero-visual">
+                <img
+                  src="images/secplus-sample-questions-thumbnail.jpg"
+                  width="1024"
+                  height="919"
+                  alt="Security+ practice question on a phone-friendly layout with instant feedback and domain tags."
+                  decoding="async"
+                  loading="eager"
+                  fetchpriority="high"
+                />
+                <figcaption>
+                  <strong>Same UI on phone, tablet, and desktop</strong>—tap answers, drag-and-drop PBQs, and run timed tests in your browser.
+                </figcaption>
+              </figure>
+            </div>
           </div>
 
           <section
@@ -2295,17 +2496,18 @@
             <p class="lead-capture-badge">
               Free · 35 minutes · no checkout · No email required
             </p>
-            <h2 id="secplus-lead-capture-title">Start your free SY0-701 timed simulation</h2>
+            <h2 id="secplus-lead-capture-title">Try the free 35-minute SY0-701 practice exam</h2>
             <p class="lead-capture-lead">
-              Take a <strong>35-minute sample exam</strong> in your browser:
-              <strong>20 multiple-choice questions</strong> (four from each SY0-701 domain) plus the
-              <strong>dark web account protection</strong> performance-based simulation—the same mix of item types you will see on test day.
+              Experience the same <strong>timed testing flow</strong> as the paid 90-minute simulation: 
+              <strong>20 multiple-choice questions</strong> (four per domain) plus the
+              <strong>dark web account protection</strong> PBQ—then unlock <strong>700+ questions</strong>, all simulations, and
+              <strong>adaptive review</strong> with 30-day access when you are ready.
             </p>
             <ul class="lead-capture-list assessment-details">
-              <li><strong>Back</strong>, <strong>Mark for review</strong>, and <strong>Next</strong>—same navigation as the full 90-minute sim</li>
-              <li>Scaled score and domain breakdown on the results screen when you finish</li>
-              <li>One free attempt per browser</li>
-              <li>Ready for the full library? <a href="#purchase">30-day SY0-701 access — $19.99</a> (timed sim + portal included)</li>
+              <li><strong>Back</strong>, <strong>Mark for review</strong>, and <strong>Next</strong>—same navigation as the full library timed sim</li>
+              <li>Scaled score and SY0-701 domain breakdown when you finish—see where to focus study</li>
+              <li>Runs on phone, tablet, or desktop; one free attempt per browser</li>
+              <li>Full bank: <a href="#purchase">700+ questions + adaptive modes — $19.99 / 30 days</a></li>
             </ul>
             <p class="lead-capture-open-link" data-secplus-continue-free-sim hidden>
               In progress on this browser?
@@ -2336,15 +2538,17 @@
           <div class="samples-stack">
             <section class="samples-block" aria-labelledby="home-secplus-samples-title">
               <div class="samples-block-intro">
-                <h2 class="samples-block-title" id="home-secplus-samples-title"><strong>Try free Security+ samples</strong></h2>
+                <h2 class="samples-block-title" id="home-secplus-samples-title"><strong>Preview quality—phone, tablet, or desktop</strong></h2>
                 <p class="samples-block-lead">
-                  Interactive previews from the SY0-701 question bank and simulation hot spots—no checkout required. Each activity uses a <strong>Home</strong> tab back to this page and <strong>Next</strong> (or <strong>Finish sample</strong>) to move on.
+                  Two free previews from the <strong>700+ question</strong> library and simulation set—same verified explanations and browser UI you get after purchase.
+                  Open on your phone to confirm layout before you buy. Each activity has <strong>Home</strong> back here and <strong>Next</strong> (or <strong>Finish sample</strong>).
                 </p>
               </div>
               <ul class="formats-grid formats-grid--pair" aria-label="Security+ sample activities">
                 <li>
                   <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-secplus-q-title">
-                    <h3 id="home-secplus-q-title">Security+ · Sample questions</h3>
+                    <h3 id="home-secplus-q-title">Sample multiple-choice questions</h3>
+                    <p class="format-card-device-note">Works on phone, tablet &amp; desktop</p>
                     <figure class="format-card-thumb">
                       <img
                         src="images/secplus-sample-questions-thumbnail.jpg"
@@ -2352,21 +2556,22 @@
                         height="919"
                         alt="Security+ sample multiple-choice question with Back, Home, and Next navigation and instant feedback."
                         decoding="async"
-                        loading="eager"
-                        fetchpriority="high"
+                        loading="lazy"
                       />
                     </figure>
                     <p>
-                      Ten multiple-choice items from the SEC+_Questions bank—shuffled each run across SY0-701 domains (listed at the bottom of each question). Select an answer for instant feedback, then <strong>Next</strong>; when you finish, try the free 35-minute timed simulation.
+                      Ten items from the <strong>700+ SY0-701 bank</strong>—shuffled each run with domain tags and verified explanations.
+                      Recent-style wording and instant feedback; layout matches the full library on mobile and desktop.
                     </p>
                     <p class="format-sample format-sample--main-cta">
-                      <a class="cta-main cta-main--block" href="/secplus-sample?track=questions">Start sample questions →</a>
+                      <a class="cta-secondary" href="/secplus-sample?track=questions">Start sample questions →</a>
                     </p>
                   </article>
                 </li>
                 <li>
                   <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-secplus-darkweb-title">
-                    <h3 id="home-secplus-darkweb-title">Security+ · BeCertifiedToday.com dark web IR</h3>
+                    <h3 id="home-secplus-darkweb-title">Dark web IR simulation (PBQ-style)</h3>
+                    <p class="format-card-device-note">Touch-friendly on phone &amp; tablet</p>
                     <figure class="format-card-thumb">
                       <img
                         src="images/secplus-dark-web-sim-thumbnail.jpg"
@@ -2374,18 +2579,18 @@
                         height="779"
                         alt="Security+ dark web simulation with draggable compensation report window, leaked artifact tiles, and weak password practice checkboxes."
                         decoding="async"
-                        loading="eager"
+                        loading="lazy"
                       />
                     </figure>
                     <p>
-                      Same case as the paid library—<strong>priority ASAP</strong>, IR-2024-0847 for
-                      <strong>BeCertifiedToday.com</strong>: review the leaked directory, compensation report, and payroll
-                      credential export; identify weak password practices (Step 2); choose containment that protects
-                      accounts without wiping kiosk forensic images (Step 3). Use <strong>Deep dive explanation</strong> for
-                      the CISO addendum and answers. When you tap <strong>Finish sample</strong>, try the free 35-minute timed simulation next.
+                      Same <strong>performance-based simulation</strong> as the paid library: review leaked artifacts, mark weak password practices,
+                      and choose containment—drag-and-drop panels work with touch or mouse. Includes <strong>Deep dive explanation</strong> for scored review.
                     </p>
                     <p class="format-sample format-sample--main-cta">
-                      <a class="cta-main cta-main--block" href="/secplus-sample?track=sim-dark-web">Start dark web simulation →</a>
+                      <a class="cta-secondary" href="/secplus-sample?track=sim-dark-web">Start dark web simulation →</a>
+                    </p>
+                    <p class="format-sample format-sample--secondary-cta">
+                      Primary path: <a href="#secplus-lead-capture">free 35-minute timed exam</a> (MCQ + this PBQ).
                     </p>
                   </article>
                 </li>
@@ -2564,8 +2769,8 @@
                 <summary class="faq-summary">How much does access cost?</summary>
                 <div class="faq-answer">
                   <p>
-                    <strong>30-day all-access pass: $19.99</strong>—full SY0-701 question banks, labs, adaptive review, progress tracking, and the
-                    90-minute timed simulation in your browser. Price is shown in the purchase section above before Stripe checkout. No recurring subscription.
+                    <strong>30-day all-access pass: $19.99</strong>—<strong>700+ SY0-701 questions</strong>, hot-spot simulations, adaptive review,
+                    progress tracking, and the 90-minute timed simulation on phone, tablet, or desktop. Price is shown in the purchase section above before Stripe checkout. No recurring subscription.
                   </p>
                 </div>
               </details>
@@ -2672,6 +2877,7 @@
   </div>
   <div id="secplusLeadStickyCta" class="secplus-lead-sticky-cta" hidden aria-hidden="true">
     <a
+      id="secplusLeadStickyCtaLink"
       class="cta-main"
       href="/COMP_TIA_SEC+/test-simulation-runner.html?free=1"
       data-secplus-start-free-sim

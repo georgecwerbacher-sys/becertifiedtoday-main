@@ -42,11 +42,11 @@ Primary **Google Ads final URL** for [[../../02-campaigns/security-plus/security
 | Free sim blueprint | `public/COMP_TIA_SEC+/data/secplus-free-simulation-blueprint.json` |
 | GA4 + UTM | `public/js/campaign-attribution.js` ✓ |
 
-## Current hero / message (prod 2026-05-30)
+## Current hero / message (prod 2026-06-03)
 
-- **Page order:** Default — `#purchase` first, then intro, `#secplus-lead-capture`, samples. **Lead ad traffic** (`#secplus-lead-capture`, `utm_content=lead-free-sim`) — intro (compact) → lead capture → purchase (`html.secplus-landing-lead-first`)
-- **H1:** Security+ SY0-701 Exam Prep — Practice Tests & Simulation
-- **Lead:** Exam prep (not a course); verified explanations; 90-min timed sim; federal/DoD/contractor context in copy; no PDFs/third-party software
+- **Page order:** Intro → free sim → samples → `#purchase` → study plan (flex `order` on `.funnel` children)
+- **H1:** 700+ SY0-701 Practice Questions, Simulations & Adaptive Testing
+- **Lead:** 700+ current bank, simulations, adaptive review/testing, phone/tablet/desktop; must-pass-for-work (federal/DoD/contractor); free samples + 35-min timed exam
 - **Federal section:** Removed as dedicated block (2026-05-30); DoD/8140 still in hero, meta, keywords, FAQ
 - **Lead magnet:** `#secplus-lead-capture` — badge “Free · 35 minutes”; H2 “Start your free SY0-701 timed simulation”; **20 MCQ + 1 PBQ**; scorecard + optional email
 - **Sim runner nav (free + paid):** **Back**, **Mark for review**, **Next** / **Finish**; embedded question Back/Home hidden in exam mode
