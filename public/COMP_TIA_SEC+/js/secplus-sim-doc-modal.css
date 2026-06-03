@@ -1,0 +1,160 @@
+/* Floating document viewer — Security+ dark-web sim (guest sample + portal + timed exam) */
+.doc-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10050;
+  display: none;
+  padding: 0;
+  background: transparent;
+  pointer-events: none;
+}
+.doc-modal.open {
+  display: block;
+}
+.doc-modal.open .doc-modal__panel {
+  position: fixed;
+  margin: 0;
+  z-index: 1;
+  pointer-events: auto;
+}
+.doc-modal__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(720px, calc(100vw - 32px));
+  max-width: calc(100vw - 16px);
+  max-height: calc(100vh - 16px);
+  min-width: 300px;
+  min-height: 220px;
+  overflow: hidden;
+  background: #ffffff;
+  color: #1e293b;
+  border-radius: 12px;
+  border: 1px solid #94a3b8;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.28);
+}
+.doc-modal__panel.doc-modal__panel--report {
+  width: min(860px, calc(100vw - 32px));
+}
+.doc-modal__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f8fafc;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  cursor: move;
+  touch-action: none;
+  user-select: none;
+}
+.doc-modal__head::after {
+  content: "Drag header to move · drag corner to resize";
+  display: block;
+  width: 100%;
+  order: 3;
+  flex-basis: 100%;
+  margin-top: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.02em;
+}
+.doc-modal__panel.is-dragging .doc-modal__head {
+  cursor: grabbing;
+}
+.doc-modal__title {
+  margin: 0;
+  font-size: 1rem;
+  color: #0f172a;
+  line-height: 1.35;
+}
+.doc-modal__close {
+  border: 1px solid #005ecb;
+  background: rgba(0, 100, 230, 0.92);
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.doc-modal__close:hover,
+.doc-modal__close:focus-visible {
+  background: rgba(0, 82, 200, 0.98);
+  border-color: #004799;
+  outline: none;
+}
+.doc-modal__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 16px;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  overflow: auto;
+}
+.doc-modal__body--report {
+  padding: 12px 14px 16px;
+}
+.doc-modal__resize {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  width: 22px;
+  height: 22px;
+  cursor: nwse-resize;
+  touch-action: none;
+  z-index: 2;
+  border-radius: 0 0 10px 0;
+  background:
+    linear-gradient(135deg, transparent 0 45%, #94a3b8 45% 52%, transparent 52% 62%, #94a3b8 62% 69%, transparent 69% 100%);
+}
+.doc-modal__panel.is-resizing .doc-modal__resize {
+  cursor: nwse-resize;
+}
+.doc-modal__body--report .report-sheet {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+}
+.doc-load-fallback {
+  margin: 0;
+  line-height: 1.5;
+  color: #334155;
+}
+.doc-load-fallback a {
+  color: #005ecb;
+  font-weight: 600;
+}
+.doc-modal__body h3 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  color: #0f172a;
+}
+.doc-modal__body p {
+  margin: 0 0 12px;
+}
+.doc-modal__body ul {
+  margin: 0 0 12px;
+  padding-left: 1.25rem;
+}
+
+body.secplus-home-sample-sim .home-link[hidden] {
+  display: none !important;
+}
+
+body.secplus-exam-sim-embed .corner-actions {
+  display: none !important;
+}
+
+body.secplus-portal-sim:has(.secplus-sample-sim-nav) .corner-actions {
+  bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+}
