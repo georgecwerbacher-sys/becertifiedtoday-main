@@ -7,44 +7,132 @@
   <title>CCNA — R1 static route to 10.0.3.0/24 via R3</title>
   <style>
     :root {
-      color-scheme: light dark;
+      color-scheme: light;
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bcc-outside-text: #1a3d6e;
+      --bcc-choice-bg: #254b8a;
+      --bcc-choice-border: #3d6dbb;
+      --bcc-box-text: #e6edf3;
     }
     body {
       margin: 0;
       min-height: 100vh;
       display: grid;
       place-items: center;
+      position: relative;
       background: #ffffff;
-      color: #e6edf3;
+      color: var(--bcc-outside-text);
       padding: 16px;
+      padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
       box-sizing: border-box;
     }
-    .card {
+    .page-logo-watermark {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .page-logo-watermark img {
+      width: min(85vw, 720px);
+      max-height: 85vh;
+      height: auto;
+      object-fit: contain;
+      opacity: 0.16;
+    }
+    .question-shell {
       width: min(900px, 100%);
-      background: #121a2b;
-      border: 1px solid #2d3b5a;
-      border-radius: 14px;
-      padding: 28px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      position: relative;
+      z-index: 1;
+    }
+    .question-shell .site-logo-corner {
+      position: static;
+      align-self: flex-end;
+      margin: 0 0 2rem;
+      display: inline-flex;
+      background: transparent;
+      border: none;
+      padding: 0;
+      text-decoration: none;
+    }
+    .question-shell .site-logo-corner img {
+      width: 52px;
+      height: 52px;
+    }
+    .card {
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 0;
+      box-shadow: none;
+      color: var(--bcc-outside-text);
     }
     h1 {
-      margin: 0 0 8px;
+      margin: 0 0 16px;
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
+      color: var(--bcc-outside-text);
     }
     h1.choose-two-stem {
       line-height: 1.5;
     }
+    .choice {
+      display: block;
+      margin: 10px 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: var(--bcc-choice-bg);
+      border: 1px solid var(--bcc-choice-border);
+      font-size: 1.02rem;
+      color: var(--bcc-box-text);
+      cursor: pointer;
+    }
+    .choice input {
+      margin-right: 10px;
+      transform: translateY(1px);
+    }
+    .answer {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+      line-height: 1.45;
+      color: var(--bcc-box-text);
+    }
+    .answer.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+    }
+    .answer.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+    }
+    .exhibit-ref,
+    .exhibit-ref-spaced,
+    .exhibit-section-caption,
+    .stem-after-exhibit,
+    .stem-after-exhibit-list,
+    .stem-after-exhibit-tail {
+      color: var(--bcc-outside-text);
+    }
+  </style>
+  <style>
     .stem-after-exhibit {
-      margin: 12px 0 6px;
+margin: 12px 0 6px;
       font-size: clamp(1.02rem, 1.9vw, 1.32rem);
       line-height: 1.42;
       font-weight: 600;
       color: #e6edf3;
     }
     .stem-after-exhibit-list {
-      margin: 8px 0 12px;
+margin: 8px 0 12px;
       padding-left: 1.35rem;
       font-size: clamp(1.02rem, 1.9vw, 1.32rem);
       line-height: 1.45;
@@ -52,23 +140,13 @@
       color: #e6edf3;
     }
     .stem-after-exhibit-list li {
-      margin: 6px 0;
+margin: 6px 0;
     }
     .stem-after-exhibit-tail {
-      margin-top: 10px;
-    }
-    .choice {
-      display: block;
-      margin: 10px 0;
-      padding: 12px 14px;
-      border-radius: 10px;
-      background: #1a253b;
-      border: 1px solid #2c3f62;
-      font-size: 1.02rem;
-      cursor: pointer;
+margin-top: 10px;
     }
     .choice.mono.cli-router-choice {
-      display: flex;
+display: flex;
       flex-direction: column;
       align-items: stretch;
       width: 100%;
@@ -80,7 +158,7 @@
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
     .cli-router-choice-controls {
-      display: flex;
+display: flex;
       flex-wrap: wrap;
       align-items: center;
       gap: 10px;
@@ -91,12 +169,12 @@
       border-bottom: 1px solid #2a3f5c;
     }
     .cli-router-choice-controls input {
-      margin-right: 0;
+margin-right: 0;
       transform: none;
       flex-shrink: 0;
     }
     .cli-router-choice-badge {
-      flex: 0 0 auto;
+flex: 0 0 auto;
       min-width: 1.5rem;
       text-align: center;
       padding: 2px 7px;
@@ -109,7 +187,7 @@
       color: #e6edf3;
     }
     .cli-router-choice-title {
-      flex: 1 1 auto;
+flex: 1 1 auto;
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.06em;
@@ -117,7 +195,7 @@
       color: #8b9cc4;
     }
     pre.cli-router-console {
-      display: block;
+display: block;
       width: 100%;
       box-sizing: border-box;
       margin: 0;
@@ -134,115 +212,46 @@
       min-height: 2rem;
       align-self: stretch;
     }
-    .choice input {
-      margin-right: 10px;
-      transform: translateY(1px);
-    }
-    .question-nav {
-      margin: 0 0 20px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .question-nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .question-nav .nav-link,
-    .answer-actions .nav-check {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      color: #e6edf3;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      font-family: inherit;
-      cursor: pointer;
-    }
-    .answer-actions {
-      margin: 16px 0 0;
-      display: flex;
-      justify-content: flex-start;
-    }
-    .question-nav .nav-link--disabled {
-      opacity: 0.35;
-      pointer-events: none;
-      cursor: default;
-    }
-    .question-nav .nav-link:hover,
-    .answer-actions .nav-check:hover {
-      filter: brightness(1.08);
-    }
-    .answer {
-      margin-top: 18px;
-      padding: 14px;
-      border-radius: 10px;
-      font-weight: 700;
-      display: none;
-      line-height: 1.45;
-    }
-    .answer.correct {
-      background: #113e2d;
-      border: 1px solid #1f7a58;
-    }
-    .answer.incorrect {
-      background: #442020;
-      border: 1px solid #8c3434;
-    }
     .exhibit-stack {
-      margin: 14px 0 18px;
+margin: 14px 0 18px;
       display: flex;
       flex-direction: column;
       gap: 14px;
     }
     figure.exhibit-photo {
-      margin: 0;
+margin: 0;
       border-radius: 10px;
       border: 1px solid #2d3b5a;
       overflow: hidden;
       background: #0d1320;
     }
     figure.exhibit-photo img {
-      width: 100%;
+width: 100%;
       height: auto;
       display: block;
     }
     figure.exhibit-photo figcaption {
-      padding: 6px 10px;
+padding: 6px 10px;
       font-size: 0.78rem;
       color: #8b9cc4;
       border-top: 1px solid #2d3b5a;
       background: #0f1628;
     }
     .cli-grid {
-      display: grid;
+display: grid;
       grid-template-columns: 1fr;
       gap: 12px;
     }
-    @media (min-width: 720px) {
-      .cli-grid.two-cols {
-        grid-template-columns: 1fr 1fr;
-        align-items: stretch;
-      }
     }
     .cli-device {
-      border-radius: 10px;
+border-radius: 10px;
       border: 1px solid #2d3b5a;
       background: #0d1320;
       overflow: hidden;
       min-height: 0;
     }
     .cli-device h2 {
-      margin: 0;
+margin: 0;
       padding: 8px 12px;
       font-size: 0.8rem;
       font-weight: 700;
@@ -253,7 +262,7 @@
       color: #b6c8e8;
     }
     .cli-device pre {
-      margin: 0;
+margin: 0;
       padding: 12px 14px;
       font-size: 0.72rem;
       line-height: 1.4;
@@ -263,10 +272,10 @@
       color: #e6edf3;
     }
     .cli-device pre + pre {
-      border-top: 1px solid #2d3b5a;
+border-top: 1px solid #2d3b5a;
     }
     .exhibit-terminal-white {
-      margin: 0;
+margin: 0;
       border-radius: 10px;
       border: 1px solid #b8b8b8;
       overflow: hidden;
@@ -274,7 +283,7 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     }
     .exhibit-terminal-white pre {
-      margin: 0;
+margin: 0;
       padding: 14px 16px;
       font-size: 0.78rem;
       line-height: 1.45;
@@ -286,7 +295,7 @@
       tab-size: 8;
     }
     .exhibit-router-cli {
-      margin: 0;
+margin: 0;
       border-radius: 10px;
       border: 1px solid #2a2a2a;
       overflow: hidden;
@@ -294,7 +303,7 @@
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 4px 18px rgba(0, 0, 0, 0.45);
     }
     .exhibit-router-cli pre {
-      margin: 0;
+margin: 0;
       padding: 14px 16px;
       font-size: 0.72rem;
       line-height: 1.42;
@@ -306,57 +315,96 @@
       tab-size: 8;
     }
   </style>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
 </head>
-<body>
+<body class="ccna-question-ui">
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-  <main class="card">
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell">
+    <a class="site-logo-corner" href="/CCNA-Study/CCNA_Training_Portal.html" aria-label="CCNA training portal">
+      <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
       <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/ospf-r1-passive-priority-router-id-neighbor-r2-only.html">Back</a>
-      <a class="nav-link nav-home" href="/index.html">Home</a>
+      <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
       <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/r1-r2-floating-static-default-wan-failover.html">Next</a>
       </div>
     </nav>
-    <div class="exhibit-stack">
+<div class="exhibit-stack">
       <figure class="exhibit-photo">
         <img src="/CCNA-Study/CCNA_questions/images/r1-static-route-10-0-3-via-r3-10-0-4-3-topology.png" alt="Topology: R1 on 10.0.1.0/24 (Gig0/0) and 10.0.4.1/24 (Gig0/1); R2 on 10.0.2.0/24 and 10.0.4.2/24; R3 on 10.0.3.0/24 (Gig0/0) and 10.0.4.3/24 (Gig0/1); shared transit 10.0.4.0/24." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>
+
     <h1>Refer to the exhibit. Router R1 must be configured so that traffic from the 10.0.1.0/24 segment can reach networks on 10.0.3.0/24. Which command must be used to configure the route on R1?</h1>
 
     <label class="choice"><input type="radio" name="r1st1003" value="A" />A. route add 10.0.3.0 0.255.255.255 10.0.4.2</label>
+
     <label class="choice"><input type="radio" name="r1st1003" value="B" />B. route add 10.0.3.0 mask 255.255.255.0 10.0.4.3</label>
+
     <label class="choice"><input type="radio" name="r1st1003" value="C" />C. ip route 10.0.3.0 0.255.255.255 10.0.4.2</label>
+
     <label class="choice"><input type="radio" name="r1st1003" value="D" />D. ip route 10.0.3.0 255.255.255.0 10.0.4.3</label>
 
+    <div class="answer-footer">
+      <div class="answer-actions">
+        <button id="checkBtn" type="button" class="nav-check">Check answer</button>
+        <div class="question-progress-block">
+          <span class="ccna-practice-progress" aria-live="polite"></span>
+          <p class="question-topic-meta">
+            <span class="question-topic-meta__version">Version 1.1 2026</span>
+            <span class="question-topic-meta__subject"></span>
+          </p>
+        </div>
+      </div>
+      <div class="answer-side-actions">
+        <button id="showBtn" type="button" class="nav-show-answer">Show Answer</button>
+        <label class="review-mark-box" id="reviewMarkWrap">
+          <input type="checkbox" id="reviewMark" aria-label="Mark for review" />
+          <span class="review-mark-box__label">Review</span>
+        </label>
+      </div>
+    </div>
     <div id="answerBox" class="answer" aria-live="polite"></div>
-  </main>
-
+    </main>
+  </div>
   <script>
     (function () {
       var CORRECT = "D";
       var CORRECT_MSG = "Correct. D \u2014 On Cisco IOS the static route command is ip route *destination-prefix* *subnet-mask* *next-hop*. For 10.0.3.0/24 the mask is 255.255.255.0. Traffic toward that prefix should be forwarded to R3\u2019s address on the shared transit 10.0.4.0/24, 10.0.4.3. route add (A and B) is a host OS convention, not Cisco IOS configuration. C uses 0.255.255.255, which is not the /24 subnet mask (and points the route at 10.0.4.2, which is R2, not the router attached to 10.0.3.0/24).";
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      checkBtn.addEventListener("click", function () {
+        var sel = document.querySelector('input[name="r1st1003"]:checked');
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (!sel) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Select an answer.";
+          return;
+        }
+        if (sel.value === CORRECT) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
+      });
 
-      document.querySelectorAll('input[name="r1st1003"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
+      showBtn.addEventListener("click", function () {
+        var input = document.querySelector('input[name="r1st1003"][value="' + CORRECT + '"]');
+        if (input) input.checked = true;
+        answerBox.style.display = "block";
+        answerBox.className = "answer correct";
+        answerBox.textContent = CORRECT_MSG;
       });
     })();
   </script>

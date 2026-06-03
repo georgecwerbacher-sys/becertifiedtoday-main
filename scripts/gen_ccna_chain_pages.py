@@ -299,7 +299,7 @@ def build_question_nav(
         parts.append(
             '      <span class="nav-link nav-prev nav-link--disabled" aria-hidden="true">Back</span>'
         )
-    parts.append('      <a class="nav-link nav-home" href="/index.html">Home</a>')
+    parts.append('      <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>')
     if next_slug:
         parts.append(
             f'      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/{html.escape(next_slug)}.html">Next</a>'
@@ -385,39 +385,74 @@ def page(
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
 </head>
-<body>
+<body class="ccna-question-ui">
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-  <main class="card">
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell">
+    <a class="site-logo-corner" href="/CCNA-Study/CCNA_Training_Portal.html" aria-label="CCNA training portal">
+      <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="card">
 {nav}
 {main_open}{choices_html}
 
+    <div class="answer-footer">
+      <div class="answer-actions">
+        <button id="checkBtn" type="button" class="nav-check">Check answer</button>
+        <div class="question-progress-block">
+          <span class="ccna-practice-progress" aria-live="polite"></span>
+          <p class="question-topic-meta">
+            <span class="question-topic-meta__version">Version 1.1 2026</span>
+            <span class="question-topic-meta__subject"></span>
+          </p>
+        </div>
+      </div>
+      <div class="answer-side-actions">
+        <button id="showBtn" type="button" class="nav-show-answer">Show Answer</button>
+        <label class="review-mark-box" id="reviewMarkWrap">
+          <input type="checkbox" id="reviewMark" aria-label="Mark for review" />
+          <span class="review-mark-box__label">Review</span>
+        </label>
+      </div>
+    </div>
     <div id="answerBox" class="answer" aria-live="polite"></div>
-  </main>
+    </main>
+  </div>
 
   <script>
     (function () {{
       var CORRECT = {json.dumps(correct)};
       var CORRECT_MSG = {msg_json};
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {{
+      checkBtn.addEventListener("click", function () {{
+        var sel = document.querySelector('input[name="{name}"]:checked');
         answerBox.style.display = "block";
-        if (value === CORRECT) {{
+        if (!sel) {{
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Select an answer.";
+          return;
+        }}
+        if (sel.value === CORRECT) {{
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         }} else {{
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }}
-      }}
+      }});
 
-      document.querySelectorAll('input[name="{name}"]').forEach(function (el) {{
-        el.addEventListener("change", function () {{
-          if (el.checked) {{
-            applyFeedback(el.value);
-          }}
-        }});
+      showBtn.addEventListener("click", function () {{
+        var input = document.querySelector('input[name="{name}"][value="' + CORRECT + '"]');
+        if (input) input.checked = true;
+        answerBox.style.display = "block";
+        answerBox.className = "answer correct";
+        answerBox.textContent = CORRECT_MSG;
       }});
     }})();
   </script>
@@ -501,24 +536,50 @@ def page_checkbox(
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
 </head>
-<body>
+<body class="ccna-question-ui">
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-  <main class="card">
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell">
+    <a class="site-logo-corner" href="/CCNA-Study/CCNA_Training_Portal.html" aria-label="CCNA training portal">
+      <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="card">
 {nav}
 {main_open}
 {choices_html}
 
-    <div class="answer-actions">
-      <button id="checkBtn" type="button" class="nav-check">Check answer</button>
+    <div class="answer-footer">
+      <div class="answer-actions">
+        <button id="checkBtn" type="button" class="nav-check">Check answer</button>
+        <div class="question-progress-block">
+          <span class="ccna-practice-progress" aria-live="polite"></span>
+          <p class="question-topic-meta">
+            <span class="question-topic-meta__version">Version 1.1 2026</span>
+            <span class="question-topic-meta__subject"></span>
+          </p>
+        </div>
+      </div>
+      <div class="answer-side-actions">
+        <button id="showBtn" type="button" class="nav-show-answer">Show Answer</button>
+        <label class="review-mark-box" id="reviewMarkWrap">
+          <input type="checkbox" id="reviewMark" aria-label="Mark for review" />
+          <span class="review-mark-box__label">Review</span>
+        </label>
+      </div>
     </div>
     <div id="answerBox" class="answer" aria-live="polite"></div>
-  </main>
+    </main>
+  </div>
 
   <script>
     (function () {{
       var CORRECT = {cor_json};
+      var CORRECT_MSG = {msg_json};
       var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       function selectedValues() {{
@@ -543,11 +604,21 @@ def page_checkbox(
         }}
         if (arraysEqual(sel, CORRECT)) {{
           answerBox.className = "answer correct";
-          answerBox.textContent = {msg_json};
+          answerBox.textContent = CORRECT_MSG;
         }} else {{
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }}
+      }});
+
+      showBtn.addEventListener("click", function () {{
+        CORRECT.forEach(function (value) {{
+          var input = document.querySelector('input[name="{name}"][value="' + value + '"]');
+          if (input) input.checked = true;
+        }});
+        answerBox.style.display = "block";
+        answerBox.className = "answer correct";
+        answerBox.textContent = CORRECT_MSG;
       }});
     }})();
   </script>

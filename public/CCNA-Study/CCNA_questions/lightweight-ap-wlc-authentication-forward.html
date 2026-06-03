@@ -7,77 +7,95 @@
   <title>CCNA — Lightweight AP and AAA forwarding</title>
   <style>
     :root {
-      color-scheme: light dark;
+      color-scheme: light;
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bcc-outside-text: #1a3d6e;
+      --bcc-choice-bg: #254b8a;
+      --bcc-choice-border: #3d6dbb;
+      --bcc-box-text: #e6edf3;
     }
     body {
       margin: 0;
       min-height: 100vh;
       display: grid;
       place-items: center;
+      position: relative;
       background: #ffffff;
-      color: #e6edf3;
+      color: var(--bcc-outside-text);
       padding: 16px;
+      padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
       box-sizing: border-box;
     }
-    .card {
+    .page-logo-watermark {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .page-logo-watermark img {
+      width: min(85vw, 720px);
+      max-height: 85vh;
+      height: auto;
+      object-fit: contain;
+      opacity: 0.16;
+    }
+    .question-shell {
       width: min(900px, 100%);
-      background: #121a2b;
-      border: 1px solid #2d3b5a;
-      border-radius: 14px;
-      padding: 28px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      position: relative;
+      z-index: 1;
+    }
+    .question-shell .site-logo-corner {
+      position: static;
+      align-self: flex-end;
+      margin: 0 0 2rem;
+      display: inline-flex;
+      background: transparent;
+      border: none;
+      padding: 0;
+      text-decoration: none;
+    }
+    .question-shell .site-logo-corner img {
+      width: 52px;
+      height: 52px;
+    }
+    .card {
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 0;
+      box-shadow: none;
+      color: var(--bcc-outside-text);
     }
     h1 {
-      margin: 0 0 8px;
+      margin: 0 0 16px;
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
+      color: var(--bcc-outside-text);
     }
-.choice {
+    h1.choose-two-stem {
+      line-height: 1.5;
+    }
+    .choice {
       display: block;
       margin: 10px 0;
       padding: 12px 14px;
       border-radius: 10px;
-      background: #1a253b;
-      border: 1px solid #2c3f62;
+      background: var(--bcc-choice-bg);
+      border: 1px solid var(--bcc-choice-border);
       font-size: 1.02rem;
+      color: var(--bcc-box-text);
       cursor: pointer;
     }
     .choice input {
       margin-right: 10px;
       transform: translateY(1px);
-    }
-    .actions {
-      margin-top: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .actions button {
-      background: #254b8a;
-      color: #e6edf3;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 0.95rem;
-    }
-    .actions button:hover {
-      filter: brightness(1.08);
-    }
-    .home-link {
-      margin-left: auto;
-      background: #254b8a;
-      color: #e6edf3;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      text-decoration: none;
-      font-size: 0.95rem;
     }
     .answer {
       margin-top: 18px;
@@ -86,6 +104,7 @@
       font-weight: 700;
       display: none;
       line-height: 1.45;
+      color: var(--bcc-box-text);
     }
     .answer.correct {
       background: #113e2d;
@@ -95,80 +114,33 @@
       background: #442020;
       border: 1px solid #8c3434;
     }
-    .next-wrap {
-      margin-top: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .next-link {
-      display: inline-block;
-      text-decoration: none;
-      color: #e6edf3;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
-    }
-    .next-link:hover {
-      filter: brightness(1.08);
-    }
-
-    .question-nav {
-      margin: 0 0 20px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .question-nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .question-nav .nav-link,
-    .question-nav .nav-check {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      color: #e6edf3;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      font-family: inherit;
-      cursor: pointer;
-    }
-    .question-nav .nav-link--disabled {
-      opacity: 0.35;
-      pointer-events: none;
-      cursor: default;
-    }
-    .question-nav .nav-check {
-      margin-left: auto;
-    }
-    .question-nav .nav-link:hover,
-    .question-nav .nav-check:hover {
-      filter: brightness(1.08);
+    .exhibit-ref,
+    .exhibit-ref-spaced,
+    .exhibit-section-caption,
+    .stem-after-exhibit,
+    .stem-after-exhibit-list,
+    .stem-after-exhibit-tail {
+      color: var(--bcc-outside-text);
     }
   </style>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
 </head>
-<body>
+<body class="ccna-question-ui">
   <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/CCNA-Study/js/ccna-practice-100-nav.js" defer></script>
-  <main class="card">
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell">
+    <a class="site-logo-corner" href="/CCNA-Study/CCNA_Training_Portal.html" aria-label="CCNA training portal">
+      <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
       <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/firewall-stateful-connection-forwarding.html">Back</a>
-      <a class="nav-link nav-home" href="/index.html">Home</a>
+      <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
       <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/vty-access-list-ssh-secure.html">Next</a>
       </div>
     </nav>
@@ -176,38 +148,69 @@
       Which device controls the forwarding of authentication requests for users when connecting to the network using a lightweight
       access point?
     </h1>
-<label class="choice"><input type="radio" name="lapauth" value="A" />A. TACACS server</label>
-    <label class="choice"><input type="radio" name="lapauth" value="B" />B. wireless access point</label>
-    <label class="choice"><input type="radio" name="lapauth" value="C" />C. RADIUS server</label>
-    <label class="choice"><input type="radio" name="lapauth" value="D" />D. wireless LAN controller</label>
-<div id="answerBox" class="answer" aria-live="polite"></div>
-</main>
 
+    <label class="choice"><input type="radio" name="lapauth" value="A" />A. TACACS server</label>
+
+    <label class="choice"><input type="radio" name="lapauth" value="B" />B. wireless access point</label>
+
+    <label class="choice"><input type="radio" name="lapauth" value="C" />C. RADIUS server</label>
+
+    <label class="choice"><input type="radio" name="lapauth" value="D" />D. wireless LAN controller</label>
+
+    <div class="answer-footer">
+      <div class="answer-actions">
+        <button id="checkBtn" type="button" class="nav-check">Check answer</button>
+        <div class="question-progress-block">
+          <span class="ccna-practice-progress" aria-live="polite"></span>
+          <p class="question-topic-meta">
+            <span class="question-topic-meta__version">Version 1.1 2026</span>
+            <span class="question-topic-meta__subject"></span>
+          </p>
+        </div>
+      </div>
+      <div class="answer-side-actions">
+        <button id="showBtn" type="button" class="nav-show-answer">Show Answer</button>
+        <label class="review-mark-box" id="reviewMarkWrap">
+          <input type="checkbox" id="reviewMark" aria-label="Mark for review" />
+          <span class="review-mark-box__label">Review</span>
+        </label>
+      </div>
+    </div>
+    <div id="answerBox" class="answer" aria-live="polite"></div>
+    </main>
+  </div>
   <script>
     (function () {
       var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 With lightweight (CAPWAP) APs, the WLC is the central control point: it receives the client authentication flow from the AP and forwards RADIUS/AAA per policy. The RADIUS server terminates the request; TACACS+ is more common for device administration.";
-var answerBox = document.getElementById("answerBox");
+      var CORRECT_MSG = "Correct. D \\u2014 With lightweight (CAPWAP) APs, the WLC is the central control point: it receives the client authentication flow from the AP and forwards RADIUS/AAA per policy. The RADIUS server terminates the request";
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var answerBox = document.getElementById("answerBox");
 
-      function applyFeedback(value) {
+      checkBtn.addEventListener("click", function () {
+        var sel = document.querySelector('input[name="lapauth"]:checked');
         answerBox.style.display = "block";
-        if (value === CORRECT) {
+        if (!sel) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Select an answer.";
+          return;
+        }
+        if (sel.value === CORRECT) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent = "Incorrect.";
         }
-      }
-
-      document.querySelectorAll('input[name="lapauth"]').forEach(function (el) {
-        el.addEventListener("change", function () {
-          if (el.checked) {
-            applyFeedback(el.value);
-          }
-        });
       });
 
+      showBtn.addEventListener("click", function () {
+        var input = document.querySelector('input[name="lapauth"][value="' + CORRECT + '"]');
+        if (input) input.checked = true;
+        answerBox.style.display = "block";
+        answerBox.className = "answer correct";
+        answerBox.textContent = CORRECT_MSG;
+      });
     })();
   </script>
 </body>
