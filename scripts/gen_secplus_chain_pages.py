@@ -124,10 +124,12 @@ STYLE = r"""  <style>
     .answer.correct {
       background: #113e2d;
       border: 1px solid #1f7a58;
+      color: #ffffff;
     }
     .answer.incorrect {
       background: #442020;
       border: 1px solid #8c3434;
+      color: #fecaca;
     }
     h1.choose-two-stem {
       line-height: 1.5;
