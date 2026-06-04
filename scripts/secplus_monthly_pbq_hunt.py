@@ -120,10 +120,17 @@ def _extract_page_text(path: Path) -> tuple[str, str]:
 
 def load_bct_pbq_items() -> list[dict]:
     items: list[dict] = []
-    for directory in (PBQ_DIR, SIM_DIR):
-        if not directory.is_dir():
-            continue
-        for path in sorted(directory.glob("*.html")):
+    pbq_paths = sorted(PBQ_DIR.glob("*.html"))
+    sim_paths: list[Path] = []
+    if SIM_DIR.is_dir():
+        sim_paths = sorted(SIM_DIR.glob("*.html"))
+        for sub in ("pending", "PBQ_Production"):
+            extra = SIM_DIR / sub
+            if extra.is_dir():
+                sim_paths.extend(sorted(extra.rglob("*.html")))
+    scan_dirs = [("pbq", pbq_paths), ("sim", sim_paths)])
+    for _label, paths in scan_dirs:
+        for path in paths:
             slug, stem = _extract_page_text(path)
             if stem:
                 items.append(

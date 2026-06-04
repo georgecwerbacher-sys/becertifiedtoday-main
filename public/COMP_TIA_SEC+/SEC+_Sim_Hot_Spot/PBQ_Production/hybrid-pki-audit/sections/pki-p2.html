@@ -1,0 +1,158 @@
+<article class="pbq-section-fragment" data-id="pki-p2"><h1>BeCertifiedToday Hybrid PKI Audit — Part 2</h1>
+      <p class="pbq-sub">
+        Remediate audit findings by selecting the <strong>correct algorithm</strong> for each cryptographic use case.
+      </p>
+      <p class="pbq-instructions">
+        <strong>Part 2:</strong> Choose the best replacement for each row. All four selections must be correct to pass.
+      </p>
+
+      <div class="sim-frame">
+        <p class="pbq-pki-part-banner">Select the correct algorithm for each use case</p>
+        <div class="pbq-pki-algo-table-wrap">
+          <table class="pbq-pki-algo-table">
+            <thead>
+              <tr>
+                <th scope="col">Use case</th>
+                <th scope="col">Current (audit finding)</th>
+                <th scope="col">Correct algorithm</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <strong>TLS 1.3 key exchange</strong> for api.becertifiedtoday.com
+                  <span class="pbq-pki-use-hint">Forward secrecy required</span>
+                </td>
+                <td><span class="pbq-pki-finding pbq-pki-finding--bad">RSA-2048 key exchange</span></td>
+                <td>
+                  <select class="pbq-ai-select" data-algo="tls-kex" aria-label="TLS key exchange algorithm">
+                    <option value="">Select…</option>
+                    <option value="rsa">RSA-2048 (same as current)</option>
+                    <option value="ecdhe">ECDHE (Elliptic Curve Diffie-Hellman Ephemeral)</option>
+                    <option value="dhe">DHE (Diffie-Hellman Ephemeral)</option>
+                    <option value="aes-gcm">AES-256-GCM (symmetric cipher — not key exchange)</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Password hashing</strong> in the identity database
+                  <span class="pbq-pki-use-hint">Must resist offline brute-force</span>
+                </td>
+                <td><span class="pbq-pki-finding pbq-pki-finding--bad">MD5</span></td>
+                <td>
+                  <select class="pbq-ai-select" data-algo="password-hash" aria-label="Password hashing algorithm">
+                    <option value="">Select…</option>
+                    <option value="sha256">SHA-256 (fast hash — weak for passwords)</option>
+                    <option value="bcrypt">bcrypt (adaptive, salt + cost factor)</option>
+                    <option value="aes">AES-256 (encryption, not hashing)</option>
+                    <option value="sha1">SHA-1 (deprecated)</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Intermediate CA certificate signing</strong>
+                  <span class="pbq-pki-use-hint">Replace SHA-1 finding from audit</span>
+                </td>
+                <td><span class="pbq-pki-finding pbq-pki-finding--bad">SHA-1 (deprecated)</span></td>
+                <td>
+                  <select class="pbq-ai-select" data-algo="ca-signing" aria-label="CA signing algorithm">
+                    <option value="">Select…</option>
+                    <option value="sha1">SHA-1 (current — do not keep)</option>
+                    <option value="sha256">SHA-256 (NIST recommended minimum)</option>
+                    <option value="md5">MD5 (broken)</option>
+                    <option value="sha512">SHA-512 (acceptable, overkill for certs)</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Encrypting sensitive files at rest</strong> in Azure Blob
+                  <span class="pbq-pki-use-hint">Bulk data encryption — performance matters</span>
+                </td>
+                <td><span class="pbq-pki-finding pbq-pki-finding--ok">AES-128-CBC</span></td>
+                <td>
+                  <select class="pbq-ai-select" data-algo="blob-encrypt" aria-label="Data at rest encryption">
+                    <option value="">Select…</option>
+                    <option value="cbc">AES-128-CBC (current — acceptable but upgrade?)</option>
+                    <option value="gcm">AES-256-GCM (authenticated encryption, NIST preferred)</option>
+                    <option value="rsa4096">RSA-4096 (asymmetric — wrong for bulk data)</option>
+                    <option value="3des">3DES (legacy, deprecated by NIST 2023)</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="checkBtn" type="button">Check Answer</button>
+        <button id="showBtn" type="button">Show Answer</button>
+        <button id="resetBtn" type="button">Reset</button>
+        <span id="result" role="status" aria-live="polite"></span>
+      </div></article>
+<script>
+    (function () {
+      var ALGOS = {
+        "password-hash": "bcrypt",
+        "ca-signing": "sha256",
+        "blob-encrypt": "gcm"
+      };
+
+      function algoValueOk(key, value) {
+        if (key === "tls-kex") return value === "ecdhe" || value === "dhe";
+        return value === ALGOS[key];
+      }
+      var CORRECT_MSG =
+        "Correct. TLS 1.3 with forward secrecy: ECDHE (or DHE) ephemeral key exchange, not static RSA. Passwords: bcrypt (slow, salted). CA signing: SHA-256 minimum. Azure Blob at rest: AES-256-GCM for confidentiality and integrity.";
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var resetBtn = document.getElementById("resetBtn");
+      var result = document.getElementById("result");
+
+      function algosOk() {
+        var ok = true;
+        document.querySelectorAll("[data-algo]").forEach(function (sel) {
+          var key = sel.getAttribute("data-algo");
+          var pass = algoValueOk(key, sel.value);
+          sel.classList.toggle("pbq-ai-select--bad", sel.value && !pass);
+          sel.classList.toggle("pbq-ai-select--good", pass);
+          if (!pass) ok = false;
+        });
+        return ok;
+      }
+
+      checkBtn.addEventListener("click", function () {
+        if (algosOk()) {
+          result.className = "is-pass";
+          result.textContent = CORRECT_MSG;
+        } else {
+          result.className = "is-fail";
+          result.textContent =
+            "Incorrect. Review forward secrecy (ephemeral DH), password hashing (bcrypt/Argon2 class), CA digest (SHA-256+), and modern AEAD for cloud object encryption.";
+        }
+      });
+
+      showBtn.addEventListener("click", function () {
+        document.querySelectorAll("[data-algo]").forEach(function (sel) {
+          var key = sel.getAttribute("data-algo");
+          if (key === "tls-kex") sel.value = "ecdhe";
+          else if (ALGOS[key]) sel.value = ALGOS[key];
+        });
+        algosOk();
+        result.className = "is-pass";
+        result.textContent = CORRECT_MSG;
+      });
+
+      resetBtn.addEventListener("click", function () {
+        document.querySelectorAll("[data-algo]").forEach(function (sel) {
+          sel.value = "";
+          sel.classList.remove("pbq-ai-select--bad", "pbq-ai-select--good");
+        });
+        result.className = "";
+        result.textContent = "";
+      });
+    })();
+  </script>

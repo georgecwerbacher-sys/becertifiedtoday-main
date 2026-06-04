@@ -1,0 +1,266 @@
+<article class="pbq-section-fragment" data-id="zta-p2"><h1>BeCertifiedToday Zero Trust Architecture — Part 2</h1>
+      <p class="pbq-sub">
+        Continue the BeCertifiedToday ZTA migration. The network spans four zones: Internet, DMZ, Internal, and Cloud
+        (Azure). Place each of the eight ZTA controls into its <strong>optimal</strong> zone. Some controls could
+        plausibly fit two zones, but only one placement is correct under ZTA principles.
+      </p>
+      <p class="pbq-instructions">
+        <strong>Part 2:</strong> Drag each control from the bank into a zone drop slot (or tap a control, then tap a
+        slot). Every control is used exactly once. All eight placements must be correct to pass.
+      </p>
+
+      <div class="sim-frame">
+        <div class="layout layout--zt-map">
+          <section class="panel panel--zt-bank" aria-labelledby="zt-controls-heading">
+            <h2 id="zt-controls-heading">ZTA Controls</h2>
+            <div id="bank" class="bank bank--zt">
+              <div class="token token--ztna" draggable="true" data-value="ztna-gateway">ZTNA Gateway</div>
+              <div class="token token--micro" draggable="true" data-value="micro-segmentation">Micro-segmentation</div>
+              <div class="token token--cont" draggable="true" data-value="continuous-auth">Continuous Auth</div>
+              <div class="token token--jit" draggable="true" data-value="jit-access">JIT Access</div>
+              <div class="token token--dlp" draggable="true" data-value="dlp-proxy">DLP Proxy</div>
+              <div class="token token--pam" draggable="true" data-value="pam-vault">PAM Vault</div>
+              <div class="token token--casb" draggable="true" data-value="casb">CASB</div>
+              <div class="token token--idp" draggable="true" data-value="identity-provider">Identity Provider</div>
+            </div>
+          </section>
+
+          <section class="panel panel--zt-zones" aria-labelledby="zt-zones-heading">
+            <h2 id="zt-zones-heading">Network zones</h2>
+            <p class="panel-note">One control per slot — choose the best zone under ZTA.</p>
+            <div class="zt-zone-grid">
+              <article class="zt-zone zt-zone--internet">
+                <header class="zt-zone__head">
+                  <span class="zt-zone__label">Zone A</span>
+                  <h3 class="zt-zone__title">INTERNET (UNTRUSTED)</h3>
+                  <p class="zt-zone__desc">External users, remote workers, partners</p>
+                </header>
+                <p class="zt-zone__assets">External · BYOD · Remote</p>
+                <div class="zt-zone__slots">
+                  <div class="drop-slot" data-target="ztna-gateway" aria-label="Internet zone drop slot"></div>
+                </div>
+              </article>
+
+              <article class="zt-zone zt-zone--dmz">
+                <header class="zt-zone__head">
+                  <span class="zt-zone__label">Zone B</span>
+                  <h3 class="zt-zone__title">DMZ / EDGE</h3>
+                  <p class="zt-zone__desc">Public-facing services, access enforcement</p>
+                </header>
+                <p class="zt-zone__assets">Web Server · Load Balancer</p>
+                <div class="zt-zone__slots">
+                  <div class="drop-slot" data-target="identity-provider" aria-label="DMZ zone drop slot 1"></div>
+                  <div class="drop-slot" data-target="continuous-auth" aria-label="DMZ zone drop slot 2"></div>
+                </div>
+              </article>
+
+              <article class="zt-zone zt-zone--internal">
+                <header class="zt-zone__head">
+                  <span class="zt-zone__label">Zone C</span>
+                  <h3 class="zt-zone__title">INTERNAL NETWORK</h3>
+                  <p class="zt-zone__desc">Workstations, servers, lateral movement risk</p>
+                </header>
+                <p class="zt-zone__assets">Workstations · DB Server · File Server</p>
+                <div class="zt-zone__slots">
+                  <div class="drop-slot" data-target="micro-segmentation" aria-label="Internal zone drop slot 1"></div>
+                  <div class="drop-slot" data-target="pam-vault" aria-label="Internal zone drop slot 2"></div>
+                  <div class="drop-slot" data-target="jit-access" aria-label="Internal zone drop slot 3"></div>
+                </div>
+              </article>
+
+              <article class="zt-zone zt-zone--cloud">
+                <header class="zt-zone__head">
+                  <span class="zt-zone__label">Zone D</span>
+                  <h3 class="zt-zone__title">CLOUD (AZURE / SAAS)</h3>
+                  <p class="zt-zone__desc">Shadow IT risk, cloud app governance</p>
+                </header>
+                <p class="zt-zone__assets">Azure · SaaS Apps · Blob Storage</p>
+                <div class="zt-zone__slots">
+                  <div class="drop-slot" data-target="casb" aria-label="Cloud zone drop slot 1"></div>
+                  <div class="drop-slot" data-target="dlp-proxy" aria-label="Cloud zone drop slot 2"></div>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="checkBtn" type="button">Check Answer</button>
+        <button id="showBtn" type="button">Show Answer</button>
+        <button id="resetBtn" type="button">Reset</button>
+        <span id="result" role="status" aria-live="polite"></span>
+      </div></article>
+<script>
+    (function () {
+      var bank = document.getElementById("bank");
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var resetBtn = document.getElementById("resetBtn");
+      var result = document.getElementById("result");
+      var dragged = null;
+      var picked = null;
+
+      var CORRECT_MSG =
+        "Correct. Internet: ZTNA Gateway replaces broad VPN access for remote users. DMZ / edge: Identity Provider and Continuous Auth enforce verify-explicitly at the policy enforcement point. Internal: micro-segmentation limits east-west movement; PAM Vault and JIT Access govern privileged access to internal systems. Cloud: CASB governs SaaS/shadow IT; DLP Proxy inspects cloud egress and sensitive data in SaaS workflows.";
+
+      function allSlots() {
+        return document.querySelectorAll(".drop-slot[data-target]");
+      }
+
+      function clearPick() {
+        document.querySelectorAll(".token.is-picked").forEach(function (node) {
+          node.classList.remove("is-picked");
+        });
+        picked = null;
+      }
+
+      function setPick(token) {
+        clearPick();
+        picked = token;
+        if (picked) picked.classList.add("is-picked");
+      }
+
+      function moveTokenToSlot(slot, token) {
+        if (!token || !slot) return;
+        var existing = slot.querySelector(".token");
+        if (existing && existing !== token) bank.appendChild(existing);
+        slot.appendChild(token);
+      }
+
+      function shuffleBank() {
+        var nodes = [].slice.call(bank.querySelectorAll(".token"));
+        while (nodes.length) {
+          bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
+        }
+      }
+
+      shuffleBank();
+
+      document.querySelector(".pbq-card").addEventListener("click", function (event) {
+        var token = event.target.closest(".token");
+        if (token) {
+          if (picked === token) {
+            clearPick();
+            return;
+          }
+          var parentSlot =
+            token.parentNode &&
+            token.parentNode.classList &&
+            token.parentNode.classList.contains("drop-slot")
+              ? token.parentNode
+              : null;
+          if (picked && parentSlot) {
+            moveTokenToSlot(parentSlot, picked);
+            clearPick();
+            return;
+          }
+          setPick(token);
+          return;
+        }
+
+        var slot = event.target.closest(".drop-slot");
+        if (slot && picked) {
+          moveTokenToSlot(slot, picked);
+          clearPick();
+          return;
+        }
+
+        if (bank.contains(event.target) && picked && !bank.contains(picked)) {
+          bank.appendChild(picked);
+          clearPick();
+        }
+      });
+
+      document.querySelectorAll(".token").forEach(function (token) {
+        token.addEventListener("dragstart", function () {
+          clearPick();
+          dragged = token;
+        });
+      });
+
+      allSlots().forEach(function (slot) {
+        slot.addEventListener("dragover", function (event) {
+          event.preventDefault();
+          slot.classList.add("over");
+        });
+        slot.addEventListener("dragleave", function () {
+          slot.classList.remove("over");
+        });
+        slot.addEventListener("drop", function (event) {
+          event.preventDefault();
+          slot.classList.remove("over");
+          if (!dragged) return;
+          moveTokenToSlot(slot, dragged);
+          dragged = null;
+        });
+      });
+
+      bank.addEventListener("dragover", function (event) {
+        event.preventDefault();
+      });
+      bank.addEventListener("drop", function (event) {
+        event.preventDefault();
+        if (dragged) bank.appendChild(dragged);
+        dragged = null;
+      });
+
+      function takeFromBank(value) {
+        return [].slice.call(bank.querySelectorAll(".token")).find(function (token) {
+          return token.getAttribute("data-value") === value;
+        });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var allOk = true;
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var want = slot.getAttribute("data-target");
+          var token = slot.querySelector(".token");
+          if (!token) {
+            slot.classList.add("incorrect");
+            allOk = false;
+            return;
+          }
+          var ok = token.getAttribute("data-value") === want;
+          slot.classList.add(ok ? "correct" : "incorrect");
+          if (!ok) allOk = false;
+        });
+
+        result.className = allOk ? "is-pass" : "is-fail";
+        result.textContent = allOk
+          ? CORRECT_MSG
+          : "Incorrect. Some controls are missing or in the wrong zone. Remember: remote access enforcement at the Internet edge, identity and continuous verification at the DMZ PEP, lateral-movement and privileged access controls inside, and SaaS governance in Cloud.";
+      });
+
+      showBtn.addEventListener("click", function () {
+        clearPick();
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var token = slot.querySelector(".token");
+          if (token) bank.appendChild(token);
+        });
+        allSlots().forEach(function (slot) {
+          var token = takeFromBank(slot.getAttribute("data-target"));
+          if (token) {
+            slot.appendChild(token);
+            slot.classList.add("correct");
+          }
+        });
+        result.className = "is-pass";
+        result.textContent = CORRECT_MSG;
+      });
+
+      resetBtn.addEventListener("click", function () {
+        clearPick();
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var token = slot.querySelector(".token");
+          if (token) bank.appendChild(token);
+        });
+        result.className = "";
+        result.textContent = "";
+        shuffleBank();
+      });
+    })();
+  </script>

@@ -1,0 +1,73 @@
+<article class="pbq-section-fragment" data-id="zta-exhibit"><h1>Zero Trust — Reference exhibit</h1>
+      <p class="pbq-sub">Open the exhibit popup, then answer the question under <strong>Core concept</strong>.</p>
+      <div class="sim-frame">
+        <button type="button" class="btn btn-primary" data-pbq-modal="#zt-exhibit-panel">Open exhibit — perimeter vs ZTA</button>
+        <div class="pbq-exhibit-store" hidden aria-hidden="true"><figure class="pbq-exhibit pbq-exhibit--zt" aria-labelledby="zt-exhibit-title">
+          <p id="zt-exhibit-panel" class="pbq-exhibit__banner pbq-exhibit__banner--zt">
+            Zero Trust vs Traditional Perimeter Model + Network Segmentation
+          </p>
+          <div class="pbq-exhibit__body">
+            <div class="pbq-zt-grid">
+              <section class="pbq-zt-model pbq-zt-model--traditional" aria-labelledby="zt-traditional-heading">
+                <h2 id="zt-traditional-heading">Traditional Perimeter</h2>
+                <p class="pbq-zt-tagline">Implicit trust once inside firewall</p>
+                <div class="pbq-zt-zone pbq-zt-zone--trusted">
+                  <h3>Trusted zone (inside firewall)</h3>
+                  <ul>
+                    <li>Users and servers — full access assumed</li>
+                    <li class="zt-emphasis">Lateral movement easy once breached</li>
+                  </ul>
+                </div>
+                <div class="pbq-zt-zone pbq-zt-zone--untrusted">
+                  <h3>Untrusted (Internet)</h3>
+                  <p>Firewall blocks inbound — but insider threats?</p>
+                </div>
+                <p class="pbq-zt-weakness">
+                  <strong>Weakness:</strong> one breach = full internal access
+                </p>
+              </section>
+
+              <section class="pbq-zt-model pbq-zt-model--zero" aria-labelledby="zt-zero-heading">
+                <h2 id="zt-zero-heading">Zero Trust (NIST SP 800-207)</h2>
+                <p class="pbq-zt-tagline">Never trust, always verify — every request authenticated</p>
+                <ul class="pbq-zt-list pbq-zt-list--components">
+                  <li><strong>Policy Engine:</strong> evaluates who, what, when, from where</li>
+                  <li><strong>Policy Administrator:</strong> issues/destroys session credentials</li>
+                  <li><strong>Policy Enforcement Point:</strong> gateway, enforces decisions</li>
+                  <li><strong>Adaptive identity:</strong> MFA, device health, location risk</li>
+                  <li><strong>Micro-segmentation:</strong> limits lateral movement on breach</li>
+                </ul>
+                <p class="pbq-zt-philosophy">
+                  <strong>Assume breach</strong> — least privilege, verify explicitly
+                </p>
+                <ul class="pbq-zt-list pbq-zt-list--planes">
+                  <li><strong>Control Plane:</strong> policy decisions (brain)</li>
+                  <li><strong>Data Plane:</strong> traffic flow with enforcement (muscle)</li>
+                </ul>
+              </section>
+            </div>
+
+            <section class="pbq-zt-segmentation" aria-labelledby="zt-seg-heading">
+              <h3 id="zt-seg-heading">Segmentation types</h3>
+              <dl class="pbq-zt-seg-list">
+                <div>
+                  <dt>Air-gapped</dt>
+                  <dd>Physically isolated — no network (ICS/SCADA)</dd>
+                </div>
+                <div>
+                  <dt>VLAN</dt>
+                  <dd>Logical separation on same infrastructure</dd>
+                </div>
+                <div>
+                  <dt>Screened subnet</dt>
+                  <dd>DMZ — semi-trusted for public-facing servers</dd>
+                </div>
+                <div>
+                  <dt>SDN</dt>
+                  <dd>Software-defined — dynamic policy-based segmentation</dd>
+                </div>
+              </dl>
+            </section>
+          </div>
+        </figure></div>
+      </div></article>

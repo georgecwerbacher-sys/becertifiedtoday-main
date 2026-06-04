@@ -685,6 +685,587 @@ body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-exhibit-notes .note-muted {
   font-size: 0.76rem;
 }
 
+/* Vulnerability scanner exhibit (terminal-style) */
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-exhibit--scanner {
+  border-color: #1e293b;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-exhibit__banner--scanner {
+  color: #86efac;
+  background: #0f172a;
+  border-bottom-color: #334155;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-scanner {
+  padding: 14px 16px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #cbd5e1;
+  background: linear-gradient(180deg, #0f172a 0%, #1a1a2e 100%);
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 14px;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.74rem;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-table th,
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-table td {
+  padding: 6px 8px;
+  border: 1px solid #334155;
+  text-align: left;
+  vertical-align: top;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-table thead th {
+  color: #93c5fd;
+  background: #1e293b;
+  font-weight: 700;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-table .vuln-row-critical,
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-table .vuln-row-critical th {
+  color: #fca5a5;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-table .vuln-row-critical-alt {
+  color: #fdba74;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-table .vuln-row-high {
+  color: #fde047;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-table .vuln-row-critical-muted {
+  color: #e2e8f0;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-section h3 {
+  margin: 0 0 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #93c5fd;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-section + .pbq-vuln-section {
+  margin-top: 14px;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-summary-line {
+  margin: 0 0 6px;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-summary-line .count-critical {
+  color: #f87171;
+  font-weight: 700;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-summary-line .count-high {
+  color: #facc15;
+  font-weight: 700;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-risk {
+  margin: 0 0 6px;
+  color: #f87171;
+  font-weight: 700;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-meta {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.72rem;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-cvss {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: #e2e8f0;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-cvss li + li {
+  margin-top: 4px;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-remediation-order {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: #86efac;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-remediation-order li + li {
+  margin-top: 4px;
+}
+
+body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-footnotes {
+  margin: 14px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid #334155;
+  color: #64748b;
+  font-size: 0.7rem;
+}
+
+/* Quantitative risk analysis exhibit (SLE / ARO / ALE) */
+
+body.secplus-pbq-ui.pbq-risk-ale .pbq-exhibit__banner--risk {
+  background: #1e3a8a;
+  color: #ffffff;
+}
+
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-table-wrap {
+  overflow-x: auto;
+  margin: 0 0 12px;
+}
+
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-table th,
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-table td {
+  border: 1px solid #cbd5e1;
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-table thead th {
+  background: #1e3a8a;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-table .risk-row-critical td,
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-table .risk-row-critical th[scope="row"] {
+  background: #fef2f2;
+}
+
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-table .risk-row-high td,
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-table .risk-row-high th[scope="row"] {
+  background: #fffbeb;
+}
+
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-table .risk-row-low td,
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-table .risk-row-low th[scope="row"] {
+  background: #ecfdf5;
+}
+
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-table .risk-priority-critical {
+  color: #b91c1c;
+  font-weight: 800;
+}
+
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-table .risk-priority-high {
+  color: #a16207;
+  font-weight: 800;
+}
+
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-table .risk-priority-low {
+  color: #166534;
+  font-weight: 700;
+}
+
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-callout {
+  margin: 0 0 10px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-callout h3 {
+  margin: 0 0 8px;
+  font-size: 0.84rem;
+  color: #1a3d6e;
+}
+
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-callout p {
+  margin: 0 0 6px;
+}
+
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-callout p:last-child {
+  margin-bottom: 0;
+}
+
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-callout ul {
+  margin: 0;
+  padding-left: 1.15rem;
+}
+
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-callout li + li {
+  margin-top: 6px;
+}
+
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-callout--formula {
+  background: #eff6ff;
+  border: 1px solid #93c5fd;
+}
+
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-callout--notes {
+  background: #ecfdf5;
+  border: 1px solid #86efac;
+}
+
+/* Endpoint malware IOC exhibit (terminal-style) */
+
+body.secplus-pbq-ui.pbq-malware-ioc .pbq-exhibit__banner--malware {
+  background: #0f172a;
+  color: #86efac;
+  border-bottom: 1px solid #334155;
+}
+
+body.secplus-pbq-ui.pbq-malware-ioc .pbq-malware-console {
+  padding: 14px 16px;
+  background: #1a1a2e;
+  color: #ced4da;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+body.secplus-pbq-ui.pbq-malware-ioc .pbq-malware-section + .pbq-malware-section {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #334155;
+}
+
+body.secplus-pbq-ui.pbq-malware-ioc .pbq-malware-section h3 {
+  margin: 0 0 8px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #5c7cfa;
+}
+
+body.secplus-pbq-ui.pbq-malware-ioc .pbq-malware-section p {
+  margin: 0 0 6px;
+}
+
+body.secplus-pbq-ui.pbq-malware-ioc .pbq-malware-section p:last-child {
+  margin-bottom: 0;
+}
+
+body.secplus-pbq-ui.pbq-malware-ioc .ioc-alert {
+  color: #fa5252;
+}
+
+body.secplus-pbq-ui.pbq-malware-ioc .ioc-warn {
+  color: #fab005;
+}
+
+body.secplus-pbq-ui.pbq-malware-ioc .ioc-note {
+  color: #f783ac;
+}
+
+body.secplus-pbq-ui.pbq-malware-ioc .ioc-hash {
+  color: #74c0fc;
+}
+
+body.secplus-pbq-ui.pbq-malware-ioc .ioc-class-primary {
+  color: #74c0fc;
+}
+
+body.secplus-pbq-ui.pbq-malware-ioc .ioc-class-muted {
+  color: #64748b;
+  font-size: 0.72rem;
+}
+
+/* Zero Trust vs perimeter exhibit */
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-exhibit__banner--zt {
+  background: #1e3a8a;
+  color: #ffffff;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-grid {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+@media (min-width: 720px) {
+  body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-model {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 3px solid;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-model h2 {
+  margin: 0 0 6px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-tagline {
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-model--traditional {
+  border-color: #ca8a04;
+  background: #fffbeb;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-model--zero {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-zone {
+  margin: 0 0 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-zone h3 {
+  margin: 0 0 6px;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-zone ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-zone--trusted {
+  background: #ecfdf5;
+  border: 1px solid #86efac;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-zone--untrusted {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .zt-emphasis {
+  color: #b91c1c;
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-weakness {
+  margin: 8px 0 0;
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-list {
+  margin: 0 0 8px;
+  padding-left: 1.1rem;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-list li + li {
+  margin-top: 4px;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-philosophy {
+  margin: 0 0 8px;
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-list--planes li {
+  color: #c2410c;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-segmentation {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  font-size: 0.8rem;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-segmentation h3 {
+  margin: 0 0 8px;
+  font-size: 0.84rem;
+  color: #1a3d6e;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-seg-list {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+@media (min-width: 640px) {
+  body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-seg-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-seg-list dt {
+  font-weight: 800;
+  color: #1a3d6e;
+}
+
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-seg-list dd {
+  margin: 0;
+  color: #334155;
+}
+
+/* Data classification and protection exhibit */
+
+body.secplus-pbq-ui.pbq-data-protection .pbq-exhibit__banner--data {
+  background: #1e3a8a;
+  color: #ffffff;
+}
+
+body.secplus-pbq-ui.pbq-data-protection .pbq-data-section + .pbq-data-section {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e2e8f0;
+}
+
+body.secplus-pbq-ui.pbq-data-protection .pbq-data-section h3 {
+  margin: 0 0 8px;
+  font-size: 0.86rem;
+  color: #1a3d6e;
+}
+
+body.secplus-pbq-ui.pbq-data-protection .pbq-data-class-table-wrap {
+  overflow-x: auto;
+  margin: 0 0 8px;
+}
+
+body.secplus-pbq-ui.pbq-data-protection .pbq-data-class-table {
+  width: 100%;
+  min-width: 420px;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+body.secplus-pbq-ui.pbq-data-protection .pbq-data-class-table th,
+body.secplus-pbq-ui.pbq-data-protection .pbq-data-class-table td {
+  border: 1px solid #cbd5e1;
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+body.secplus-pbq-ui.pbq-data-protection .pbq-data-class-table thead th {
+  background: #1e3a8a;
+  color: #ffffff;
+}
+
+body.secplus-pbq-ui.pbq-data-protection .data-class-restricted th,
+body.secplus-pbq-ui.pbq-data-protection .data-class-restricted td {
+  background: #fef2f2;
+}
+
+body.secplus-pbq-ui.pbq-data-protection .data-class-confidential th,
+body.secplus-pbq-ui.pbq-data-protection .data-class-confidential td {
+  background: #fffbeb;
+}
+
+body.secplus-pbq-ui.pbq-data-protection .data-class-sensitive th,
+body.secplus-pbq-ui.pbq-data-protection .data-class-sensitive td {
+  background: #ecfdf5;
+}
+
+body.secplus-pbq-ui.pbq-data-protection .data-class-public th,
+body.secplus-pbq-ui.pbq-data-protection .data-class-public td {
+  background: #eff6ff;
+}
+
+body.secplus-pbq-ui.pbq-data-protection .pbq-data-note {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #475569;
+}
+
+body.secplus-pbq-ui.pbq-data-protection .pbq-data-states,
+body.secplus-pbq-ui.pbq-data-protection .pbq-data-methods {
+  margin: 0;
+  padding-left: 1.15rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #334155;
+}
+
+body.secplus-pbq-ui.pbq-data-protection .pbq-data-states li + li,
+body.secplus-pbq-ui.pbq-data-protection .pbq-data-methods li + li {
+  margin-top: 6px;
+}
+
+/* Security governance exhibit */
+
+body.secplus-pbq-ui.pbq-governance .pbq-exhibit__banner--gov {
+  background: #1e3a8a;
+  color: #ffffff;
+}
+
+body.secplus-pbq-ui.pbq-governance .pbq-gov-grid {
+  display: grid;
+  gap: 12px;
+}
+
+@media (min-width: 900px) {
+  body.secplus-pbq-ui.pbq-governance .pbq-gov-grid {
+    grid-template-columns: 1fr 1fr 1.1fr;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 899px) {
+  body.secplus-pbq-ui.pbq-governance .pbq-gov-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  body.secplus-pbq-ui.pbq-governance .pbq-gov-panel--policies {
+    grid-column: 1 / -1;
+  }
+}
+
+body.secplus-pbq-ui.pbq-governance .pbq-gov-panel {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+body.secplus-pbq-ui.pbq-governance .pbq-gov-panel h3 {
+  margin: 0 0 8px;
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: #1a3d6e;
+}
+
+body.secplus-pbq-ui.pbq-governance .pbq-gov-panel--policies {
+  background: #eff6ff;
+  border-color: #93c5fd;
+}
+
+body.secplus-pbq-ui.pbq-governance .pbq-gov-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: #334155;
+}
+
+body.secplus-pbq-ui.pbq-governance .pbq-gov-list li + li {
+  margin-top: 6px;
+}
+
 /* Phishing email exhibit + inline fill-in drag-and-drop */
 
 body.secplus-pbq-ui.pbq-phishing-analysis .pbq-email-exhibit {
@@ -802,4 +1383,1487 @@ body.secplus-pbq-ui.pbq-phishing-analysis .drop-slot--inline .token {
   font-size: 0.78rem;
   padding: 6px 8px;
   width: 100%;
+}
+
+/* Incident response exhibit + inline fill-in drag-and-drop */
+
+body.secplus-pbq-ui.pbq-incident-response .pbq-ir-exhibit {
+  margin: 0 0 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+body.secplus-pbq-ui.pbq-incident-response .pbq-ir-exhibit__banner {
+  margin: 0;
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  text-align: center;
+  color: #ffffff;
+  background: #1e3a8a;
+  border-bottom: 1px solid #1e40af;
+}
+
+body.secplus-pbq-ui.pbq-incident-response .pbq-ir-phase {
+  margin: 12px 14px 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 2px solid;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+body.secplus-pbq-ui.pbq-incident-response .pbq-ir-phase h2 {
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+
+body.secplus-pbq-ui.pbq-incident-response .pbq-ir-phase ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+body.secplus-pbq-ui.pbq-incident-response .pbq-ir-phase--prep {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  color: #1e3a8a;
+}
+
+body.secplus-pbq-ui.pbq-incident-response .pbq-ir-phase--detect {
+  background: #ecfdf5;
+  border-color: #22c55e;
+  color: #14532d;
+}
+
+body.secplus-pbq-ui.pbq-incident-response .pbq-ir-phase--contain {
+  background: #fff7ed;
+  border-color: #f97316;
+  color: #7c2d12;
+}
+
+body.secplus-pbq-ui.pbq-incident-response .pbq-ir-timeline time {
+  font-weight: 700;
+}
+
+body.secplus-pbq-ui.pbq-incident-response .pbq-ir-footer {
+  margin: 12px 14px 14px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #334155;
+}
+
+body.secplus-pbq-ui.pbq-incident-response .pbq-ir-flow {
+  margin: 0 0 10px;
+}
+
+body.secplus-pbq-ui.pbq-incident-response .pbq-ir-flow-step {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+body.secplus-pbq-ui.pbq-incident-response .pbq-ir-defs {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+body.secplus-pbq-ui.pbq-incident-response .pbq-fillin-panel {
+  border: 1px solid #ddd6fe;
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: #faf5ff;
+}
+
+body.secplus-pbq-ui.pbq-incident-response .pbq-fillin {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: #1a3d6e;
+}
+
+body.secplus-pbq-ui.pbq-incident-response .drop-slot--inline {
+  display: inline-flex;
+  vertical-align: middle;
+  min-width: 118px;
+  min-height: 36px;
+  max-width: 100%;
+  margin: 2px 4px;
+  padding: 4px 6px;
+}
+
+body.secplus-pbq-ui.pbq-incident-response .drop-slot--inline:empty::before {
+  font-size: 0.72rem;
+}
+
+body.secplus-pbq-ui.pbq-incident-response .drop-slot--inline .token {
+  font-size: 0.78rem;
+  padding: 6px 8px;
+  width: 100%;
+}
+
+/* BeCertifiedToday RAG HR AI PBQ — configuration, guardrails, attack mitigations */
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-sim {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-arch {
+  margin: 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-arch__banner {
+  margin: 0;
+  padding: 10px 14px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: #fff;
+  background: #4f46e5;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-arch__body {
+  padding: 14px 16px;
+  background: #eef2ff;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-arch__flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #312e81;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-node {
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid #a5b4fc;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-node--risk {
+  border-color: #f97316;
+  background: #fff7ed;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-arch__note {
+  margin: 10px 0 0;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #334155;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-section {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: #fff;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-section h2 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  color: #1a3d6e;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-section-lead {
+  margin: 0 0 12px;
+  font-size: 0.88rem;
+  color: #475569;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-config-grid {
+  display: grid;
+  gap: 10px;
+}
+
+@media (min-width: 720px) {
+  body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-config-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-config-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-config-label {
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #64748b;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 0.84rem;
+  background: #fff;
+  color: #0f172a;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-select--good {
+  border-color: #16a34a;
+  background: #f0fdf4;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-select--bad {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-guard-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+@media (min-width: 640px) {
+  body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-guard-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #f8fafc;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-toggle input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-toggle-ui {
+  flex-shrink: 0;
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  background: #cbd5e1;
+  position: relative;
+  transition: background 0.15s ease;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-toggle-ui::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s ease;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-toggle input:checked + .pbq-ai-toggle-ui {
+  background: #4f46e5;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-toggle input:checked + .pbq-ai-toggle-ui::after {
+  transform: translateX(20px);
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-toggle-text {
+  font-size: 0.84rem;
+  line-height: 1.35;
+  color: #334155;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-toggle--good {
+  border-color: #86efac;
+  background: #ecfdf5;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-toggle--bad {
+  border-color: #fca5a5;
+  background: #fef2f2;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-table-wrap {
+  overflow-x: auto;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-table th,
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-table td {
+  border: 1px solid #e2e8f0;
+  padding: 10px 12px;
+  vertical-align: top;
+  text-align: left;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-table thead th {
+  background: #1e3a8a;
+  color: #fff;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-part-banner {
+  margin: 0 0 4px;
+  padding: 10px 14px;
+  font-weight: 800;
+  font-size: 0.92rem;
+  text-align: center;
+  color: #fff;
+  background: #312e81;
+  border-radius: 10px;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-attack-mcq {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: #fff;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-attack-mcq + .pbq-ai-attack-mcq {
+  margin-top: 14px;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-attack-mcq h2 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  color: #4f46e5;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-scenario {
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border-left: 4px solid #818cf8;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #334155;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-attack-mcq .pbq-stem {
+  margin: 0 0 10px;
+  font-size: 0.92rem;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-attack-mcq .pbq-choices {
+  margin: 0;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag a.pbq-ai-node {
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag a.pbq-ai-node:hover,
+body.secplus-pbq-ui.pbq-ai-rag a.pbq-ai-node:focus-visible {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.25);
+  outline: none;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-exhibit-grid {
+  display: grid;
+  gap: 12px;
+}
+
+@media (min-width: 900px) {
+  body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-exhibit-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-exhibit--wide {
+    grid-column: 1 / -1;
+  }
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-exhibit {
+  margin: 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 0.82rem;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-exhibit__banner {
+  margin: 0;
+  padding: 8px 12px;
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: #fff;
+  background: #334155;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-exhibit__banner--warn {
+  background: #c2410c;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-exhibit__body {
+  padding: 12px 14px;
+  background: #f8fafc;
+  line-height: 1.45;
+  color: #1e293b;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-doc-table th,
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-doc-table td {
+  padding: 6px 8px;
+  border: 1px solid #e2e8f0;
+  text-align: left;
+  vertical-align: top;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-doc-table thead th {
+  background: #e2e8f0;
+  font-weight: 700;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-doc-table .status-quarantine {
+  color: #b45309;
+  font-weight: 700;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-doc-table .status-approved {
+  color: #047857;
+  font-weight: 700;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-doc-table a {
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-chunk {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #0f172a;
+  color: #e2e8f0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  white-space: pre-wrap;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-chunk__label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-hidden-line {
+  display: block;
+  margin-top: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  background: #fef3c7;
+  border: 1px dashed #d97706;
+  color: #92400e;
+  font-size: 0.72rem;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-chat-log {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-chat-log li {
+  margin: 0 0 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-chat-log .role {
+  font-weight: 700;
+  color: #4f46e5;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-exhibit-ref {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-exhibit-ref a {
+  color: #4f46e5;
+}
+
+/* BeCertifiedToday ZTA zone control map — drag-and-drop */
+
+body.secplus-pbq-ui.pbq-zta-zone-map .layout--zt-map {
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 960px) {
+  body.secplus-pbq-ui.pbq-zta-zone-map .layout--zt-map {
+    grid-template-columns: minmax(200px, 240px) 1fr;
+    align-items: start;
+  }
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .bank--zt {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .bank--zt .token {
+  width: 100%;
+  text-align: left;
+  border-left: 4px solid #64748b;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .token--ztna {
+  border-left-color: #2563eb;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .token--micro {
+  border-left-color: #16a34a;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .token--cont {
+  border-left-color: #7c3aed;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .token--jit {
+  border-left-color: #ea580c;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .token--dlp {
+  border-left-color: #dc2626;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .token--pam {
+  border-left-color: #0891b2;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .token--casb {
+  border-left-color: #ca8a04;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .token--idp {
+  border-left-color: #9333ea;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .zt-zone-grid {
+  display: grid;
+  gap: 12px;
+}
+
+@media (min-width: 720px) {
+  body.secplus-pbq-ui.pbq-zta-zone-map .zt-zone-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .zt-zone {
+  border: 2px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: #fff;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .zt-zone--internet {
+  border-color: #94a3b8;
+  background: #f8fafc;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .zt-zone--dmz {
+  border-color: #fb923c;
+  background: #fff7ed;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .zt-zone--internal {
+  border-color: #60a5fa;
+  background: #eff6ff;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .zt-zone--cloud {
+  border-color: #a78bfa;
+  background: #f5f3ff;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .zt-zone__label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .zt-zone__title {
+  margin: 4px 0 2px;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .zt-zone__desc {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #475569;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .zt-zone__assets {
+  margin: 8px 0 10px;
+  font-size: 0.72rem;
+  color: #64748b;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .zt-zone__slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+body.secplus-pbq-ui.pbq-zta-zone-map .zt-zone__slots .drop-slot {
+  flex: 1 1 140px;
+  min-height: 52px;
+  min-width: 120px;
+}
+
+/* BeCertifiedToday hybrid PKI audit PBQ */
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-audit-banner,
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-part-banner {
+  margin: 0 0 12px;
+  padding: 10px 14px;
+  font-weight: 800;
+  font-size: 0.88rem;
+  border-radius: 8px;
+  background: #1e3a5f;
+  color: #fff;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-part-banner--revoke {
+  background: #991b1b;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .layout--pki-chain {
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 900px) {
+  body.secplus-pbq-ui.pbq-pki-audit .layout--pki-chain {
+    grid-template-columns: minmax(240px, 1fr) minmax(280px, 1fr);
+    align-items: start;
+  }
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .bank--pki-certs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-cert-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 2px solid #cbd5e1;
+  background: #fff;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  cursor: grab;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-cert-card strong {
+  font-size: 0.82rem;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-cert-card span {
+  color: #475569;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-cert-card--root {
+  border-color: #ca8a04;
+  background: #fffbeb;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-cert-card--inter-azure {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-cert-card--leaf {
+  border-color: #16a34a;
+  background: #f0fdf4;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-cert-card--inter-warn,
+body.secplus-pbq-ui.pbq-pki-audit .pbq-cert-card--leaf-bad {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-chain-ladder {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-chain-ladder > li {
+  margin: 0;
+  padding: 0;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-chain-arrow {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #64748b;
+  padding: 4px 0;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-chain-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  font-weight: 800;
+  font-size: 0.85rem;
+  background: #ea580c;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-chain-step--inter {
+  background: #1d4ed8;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-chain-step--leaf {
+  background: #15803d;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-chain-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .drop-slot--chain {
+  min-height: 72px;
+  margin-bottom: 8px;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .drop-slot--chain .pbq-cert-card {
+  width: 100%;
+  cursor: grab;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-algo-table-wrap {
+  overflow-x: auto;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-algo-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-algo-table th,
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-algo-table td {
+  padding: 12px 10px;
+  border: 1px solid #e2e8f0;
+  vertical-align: top;
+  text-align: left;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-algo-table thead th {
+  background: #f1f5f9;
+  font-weight: 800;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-use-hint {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-finding {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-finding--bad {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-finding--warn {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-finding--ok {
+  background: #dcfce7;
+  color: #166534;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-algo-table .pbq-ai-select {
+  width: 100%;
+  max-width: 320px;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-revoke-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-revoke-card {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  background: #fff;
+  cursor: pointer;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-revoke-card input {
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-revoke-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.84rem;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-revoke-body span {
+  color: #64748b;
+  font-size: 0.78rem;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-revoke-card--bad {
+  border-color: #fca5a5;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-revoke-card--warn {
+  border-color: #fdba74;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-revoke-card--ok {
+  border-color: #86efac;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-revoke-card--correct {
+  border-color: #16a34a;
+  background: #f0fdf4;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-revoke-card--wrong {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+
+/* Ubuntu SSH breach hardening (tabbed sshd / fail2ban / UFW / MCQ) */
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-scenario {
+  margin-bottom: 16px;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-scenario__eyebrow {
+  margin: 0 0 6px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-scenario h1 {
+  margin: 0 0 8px;
+  font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-scenario__lead {
+  margin: 0;
+  line-height: 1.55;
+  color: #334155;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-score-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-score {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #475569;
+  background: #f8fafc;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-score strong {
+  color: #0f172a;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-sim {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0f172a;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border-bottom: 1px solid #1e293b;
+  background: #0f172a;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-tab {
+  flex: 1 1 auto;
+  min-width: 120px;
+  padding: 12px 14px;
+  border: none;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-tab.active {
+  color: #38bdf8;
+  border-bottom-color: #2563eb;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-tab--warn .pbq-ssh-tab__icon {
+  color: #fbbf24;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-panel {
+  display: none;
+  padding: 0;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-panel.active {
+  display: block;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-editor__bar,
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-ufw__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid #1e293b;
+  background: #0b1220;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-editor__path,
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-ufw__title {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  color: #cbd5e1;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-editor__hint {
+  font-size: 0.72rem;
+  font-style: italic;
+  color: #64748b;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-code {
+  margin: 0;
+  padding: 14px 16px 10px;
+  overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.84rem;
+  line-height: 1.85;
+  color: #e2e8f0;
+  background: #0f172a;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-code .ln {
+  display: inline-block;
+  width: 1.6em;
+  margin-right: 0.6em;
+  color: #475569;
+  user-select: none;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-code .kw {
+  color: #7dd3fc;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-code .val {
+  color: #6ee7b7;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-code .cm {
+  color: #64748b;
+  font-style: italic;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-code .sec {
+  color: #f472b6;
+  font-weight: 700;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-code--highlight {
+  display: inline-block;
+  padding: 0 4px;
+  border-radius: 4px;
+  background: rgba(127, 29, 29, 0.35);
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-select,
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-ufw-select {
+  min-width: 10em;
+  max-width: 100%;
+  padding: 2px 8px;
+  border: 1px solid #334155;
+  border-radius: 4px;
+  background: #1e293b;
+  color: #38bdf8;
+  font: inherit;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-select--ok,
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-ufw-select.pbq-ssh-select--ok {
+  border-color: #22c55e;
+  background: #14532d;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-select--bad,
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-ufw-select.pbq-ssh-select--bad {
+  border-color: #ef4444;
+  background: #450a0a;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-note {
+  margin: 0;
+  padding: 10px 14px 14px;
+  font-size: 0.8rem;
+  color: #fbbf24;
+  background: #0f172a;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-callout {
+  margin: 0 14px 14px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #0c4a6e;
+  background: #e0f2fe;
+  border: 1px solid #7dd3fc;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-ufw {
+  color: #e2e8f0;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-ufw__prompt {
+  margin: 0;
+  padding: 14px 16px 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.84rem;
+  color: #7dd3fc;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-ufw__list {
+  list-style: none;
+  margin: 0;
+  padding: 0 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-ufw__req {
+  display: block;
+  margin-bottom: 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  color: #7dd3fc;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-ufw-select {
+  width: 100%;
+  max-width: 520px;
+  padding: 8px 10px;
+  font-size: 0.82rem;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-cq-banner {
+  margin: 0;
+  padding: 12px 16px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #fef3c7;
+  background: #422006;
+  border-bottom: 1px solid #78350f;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-cq-list {
+  padding: 14px 16px 8px;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-cq {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fff;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-cq legend {
+  font-weight: 700;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  margin-bottom: 8px;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-cq label {
+  display: block;
+  margin: 6px 0;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-cq--ok {
+  border-color: #22c55e;
+  background: #f0fdf4;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-cq--bad {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 14px 16px;
+  background: #f1f5f9;
+  border-top: 1px solid #e2e8f0;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-actions + .result {
+  margin: 0 16px 14px;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-footer {
+  margin: 16px 0 0;
+  text-align: center;
+}
+
+/* PBQ Production suite — one page, folder sidebar, exhibit modals */
+body.secplus-pbq-ui.pbq-folder-suite .question-shell--suite {
+  max-width: 1280px;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-card--suite {
+  padding-bottom: 24px;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-header h1 {
+  margin: 0 0 8px;
+  font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-layout {
+  display: grid;
+  gap: 16px;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-layout {
+    grid-template-columns: minmax(220px, 260px) 1fr;
+  }
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-folders {
+  margin: 0;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-folders--flat .pbq-suite-folders__label {
+  margin: 0 0 10px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-folders__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+body.secplus-pbq-ui.pbq-hub .pbq-hub-list {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+body.secplus-pbq-ui.pbq-hub .pbq-hub-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+  text-decoration: none;
+  color: inherit;
+}
+
+body.secplus-pbq-ui.pbq-hub .pbq-hub-card:hover {
+  border-color: #254b8a;
+  background: #eff6ff;
+}
+
+body.secplus-pbq-ui.pbq-hub .pbq-hub-card strong {
+  color: #0f172a;
+}
+
+body.secplus-pbq-ui.pbq-hub .pbq-hub-card span {
+  font-size: 0.84rem;
+  color: #475569;
+  line-height: 1.45;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-scenario {
+  margin: 0 0 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-scenario__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  font-weight: 800;
+  font-size: 0.82rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-scenario__head::-webkit-details-marker {
+  display: none;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-scenario__sections {
+  list-style: none;
+  margin: 0;
+  padding: 0 8px 8px;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-folder__item {
+  display: block;
+  width: 100%;
+  margin: 4px 0;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #334155;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-folder__item:hover {
+  background: #eff6ff;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-folder__item.is-active {
+  background: #254b8a;
+  color: #fff;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-main {
+  min-width: 0;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-section {
+  display: none;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-section.is-active {
+  display: block;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-section__inner > h1:first-child {
+  margin-top: 0;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-footer {
+  margin: 20px 0 0;
+  text-align: center;
+}
+
+body.pbq-modal-open {
+  overflow: hidden;
+}
+
+.pbq-exhibit-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.pbq-exhibit-modal[hidden] {
+  display: none;
+}
+
+.pbq-exhibit-modal.is-open {
+  display: flex;
+}
+
+.pbq-exhibit-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.pbq-exhibit-modal__panel {
+  position: relative;
+  width: min(920px, 100%);
+  max-height: min(88vh, 900px);
+  overflow: auto;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.pbq-exhibit-modal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.pbq-exhibit-modal__title {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.pbq-exhibit-modal__close {
+  border: none;
+  background: transparent;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #64748b;
+}
+
+.pbq-exhibit-modal__body {
+  padding: 16px;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-exhibit-launchers {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-exhibit-store[hidden] {
+  display: none;
 }

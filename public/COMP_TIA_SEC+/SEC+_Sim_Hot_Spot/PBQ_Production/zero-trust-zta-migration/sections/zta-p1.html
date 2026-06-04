@@ -1,0 +1,161 @@
+<article class="pbq-section-fragment" data-id="zta-p1"><h1>BeCertifiedToday Zero Trust Architecture — Part 1</h1>
+      <p class="pbq-sub">
+        BeCertifiedToday is migrating from a perimeter-based model to Zero Trust Architecture (ZTA). Review the
+        reference exhibit (traditional perimeter vs NIST SP 800-207 and segmentation types), then answer the question
+        below.
+      </p>
+      <p class="pbq-instructions">
+        <strong>Part 1:</strong> Use the exhibit, then select the statement that best describes the fundamental change.
+      </p>
+
+      <div class="sim-frame">
+        <figure class="pbq-exhibit pbq-exhibit--zt" aria-labelledby="zt-exhibit-title">
+          <p id="zt-exhibit-title" class="pbq-exhibit__banner pbq-exhibit__banner--zt">
+            Zero Trust vs Traditional Perimeter Model + Network Segmentation
+          </p>
+          <div class="pbq-exhibit__body">
+            <div class="pbq-zt-grid">
+              <section class="pbq-zt-model pbq-zt-model--traditional" aria-labelledby="zt-traditional-heading">
+                <h2 id="zt-traditional-heading">Traditional Perimeter</h2>
+                <p class="pbq-zt-tagline">Implicit trust once inside firewall</p>
+                <div class="pbq-zt-zone pbq-zt-zone--trusted">
+                  <h3>Trusted zone (inside firewall)</h3>
+                  <ul>
+                    <li>Users and servers — full access assumed</li>
+                    <li class="zt-emphasis">Lateral movement easy once breached</li>
+                  </ul>
+                </div>
+                <div class="pbq-zt-zone pbq-zt-zone--untrusted">
+                  <h3>Untrusted (Internet)</h3>
+                  <p>Firewall blocks inbound — but insider threats?</p>
+                </div>
+                <p class="pbq-zt-weakness">
+                  <strong>Weakness:</strong> one breach = full internal access
+                </p>
+              </section>
+
+              <section class="pbq-zt-model pbq-zt-model--zero" aria-labelledby="zt-zero-heading">
+                <h2 id="zt-zero-heading">Zero Trust (NIST SP 800-207)</h2>
+                <p class="pbq-zt-tagline">Never trust, always verify — every request authenticated</p>
+                <ul class="pbq-zt-list pbq-zt-list--components">
+                  <li><strong>Policy Engine:</strong> evaluates who, what, when, from where</li>
+                  <li><strong>Policy Administrator:</strong> issues/destroys session credentials</li>
+                  <li><strong>Policy Enforcement Point:</strong> gateway, enforces decisions</li>
+                  <li><strong>Adaptive identity:</strong> MFA, device health, location risk</li>
+                  <li><strong>Micro-segmentation:</strong> limits lateral movement on breach</li>
+                </ul>
+                <p class="pbq-zt-philosophy">
+                  <strong>Assume breach</strong> — least privilege, verify explicitly
+                </p>
+                <ul class="pbq-zt-list pbq-zt-list--planes">
+                  <li><strong>Control Plane:</strong> policy decisions (brain)</li>
+                  <li><strong>Data Plane:</strong> traffic flow with enforcement (muscle)</li>
+                </ul>
+              </section>
+            </div>
+
+            <section class="pbq-zt-segmentation" aria-labelledby="zt-seg-heading">
+              <h3 id="zt-seg-heading">Segmentation types</h3>
+              <dl class="pbq-zt-seg-list">
+                <div>
+                  <dt>Air-gapped</dt>
+                  <dd>Physically isolated — no network (ICS/SCADA)</dd>
+                </div>
+                <div>
+                  <dt>VLAN</dt>
+                  <dd>Logical separation on same infrastructure</dd>
+                </div>
+                <div>
+                  <dt>Screened subnet</dt>
+                  <dd>DMZ — semi-trusted for public-facing servers</dd>
+                </div>
+                <div>
+                  <dt>SDN</dt>
+                  <dd>Software-defined — dynamic policy-based segmentation</dd>
+                </div>
+              </dl>
+            </section>
+          </div>
+        </figure>
+
+        <p class="pbq-stem">
+          BeCertifiedToday is moving from traditional perimeter to Zero Trust. Which statement <strong>BEST</strong>
+          describes the fundamental change?
+        </p>
+
+        <div class="pbq-choices" role="group" aria-labelledby="zt-stem-label">
+          <span id="zt-stem-label" class="visually-hidden">Answer choices</span>
+          <label class="pbq-choice">
+            <input type="radio" name="secplus_bct_zt_fundamental" value="A" />
+            Zero Trust only applies to cloud environments — on-premises networks keep traditional perimeter security.
+          </label>
+          <label class="pbq-choice">
+            <input type="radio" name="secplus_bct_zt_fundamental" value="B" />
+            Traditional models implicitly trust internal traffic. Zero Trust requires explicit verification of every
+            request regardless of location using a Policy Enforcement Point as gateway and adaptive identity to assess
+            risk on every access attempt — never trust, always verify.
+          </label>
+          <label class="pbq-choice">
+            <input type="radio" name="secplus_bct_zt_fundamental" value="C" />
+            Zero Trust requires all users on VPN at all times for encrypted communications.
+          </label>
+          <label class="pbq-choice">
+            <input type="radio" name="secplus_bct_zt_fundamental" value="D" />
+            Zero Trust means removing all firewalls since they represent the old perimeter model.
+          </label>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="checkBtn" type="button">Check Answer</button>
+        <button id="showBtn" type="button">Show Answer</button>
+        <button id="resetBtn" type="button">Reset</button>
+        <span id="result" role="status" aria-live="polite"></span>
+      </div></article>
+<script>
+    (function () {
+      var CORRECT = "B";
+      var CORRECT_MSG =
+        "Correct. Traditional perimeter models assume trust inside the firewall; one breach enables lateral movement. Zero Trust removes implicit trust: every request is verified (PEP gateway, adaptive identity, policy engine/administrator) regardless of network location. It is not cloud-only (A), mandatory always-on VPN (C), or firewall removal (D). Continue to Part 2 to place ZTA controls in each zone.";
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var resetBtn = document.getElementById("resetBtn");
+      var result = document.getElementById("result");
+
+      function selectedChoice() {
+        return document.querySelector('input[name="secplus_bct_zt_fundamental"]:checked');
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedChoice();
+        if (!sel) {
+          result.className = "is-fail";
+          result.textContent = "Select an answer, then check again.";
+          return;
+        }
+        if (sel.value === CORRECT) {
+          result.className = "is-pass";
+          result.textContent = CORRECT_MSG;
+        } else {
+          result.className = "is-fail";
+          result.textContent =
+            "Incorrect. Focus on never trust / always verify for every request, not cloud-only scope, VPN-only access, or eliminating firewalls.";
+        }
+      });
+
+      showBtn.addEventListener("click", function () {
+        var correctInput = document.querySelector('input[name="secplus_bct_zt_fundamental"][value="' + CORRECT + '"]');
+        if (correctInput) correctInput.checked = true;
+        result.className = "is-pass";
+        result.textContent = CORRECT_MSG;
+      });
+
+      resetBtn.addEventListener("click", function () {
+        document.querySelectorAll('input[name="secplus_bct_zt_fundamental"]').forEach(function (input) {
+          input.checked = false;
+        });
+        result.className = "";
+        result.textContent = "";
+      });
+    })();
+  </script>

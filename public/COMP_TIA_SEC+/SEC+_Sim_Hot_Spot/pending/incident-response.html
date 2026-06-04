@@ -3,42 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="index, follow" />
+  <meta name="robots" content="noindex, nofollow" />
   <meta
     name="description"
-    content="CompTIA Security+ SY0-701 PBQ practice: phishing email analysis exhibit and drag-and-drop social engineering term matching."
+    content="CompTIA Security+ SY0-701 PBQ practice: NIST SP 800-61 ransomware incident response exhibit and IR process fill-in drag-and-drop."
   />
   <link
     rel="canonical"
-    href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_PBQ/phishing-email-analysis.html"
+    href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/incident-response.html"
   />
-  <title>Security+ PBQ — Phishing Email Analysis | Be Certified Today</title>
+  <title>Security+ PBQ — Incident Response | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
 </head>
-<body class="secplus-question-ui secplus-pbq-ui pbq-phishing-analysis dragdrop-exercise">
+<body class="secplus-question-ui secplus-pbq-ui pbq-incident-response dragdrop-exercise">
   <script src="/js/sample-url-mask-apply.js"></script>
   <div class="page-logo-watermark" aria-hidden="true">
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
   <div class="question-shell">
-    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ training portal">
+    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ practice portal">
       <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
     </a>
     <main class="pbq-card">
       <nav class="question-nav" aria-label="Question navigation">
         <div class="question-nav-links">
-          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_PBQ/siem-security-alerts-dashboard.html">Back</a>
+          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/vulnerability-management.html">Back</a>
           <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-          <span class="nav-link nav-link--disabled nav-next" aria-hidden="true">Next</span>
+          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/quantitative-risk-ale.html">Next</a>
         </div>
       </nav>
 
-      <h1>Phishing Email Analysis</h1>
+      <h1>Incident Response</h1>
       <p class="pbq-sub">
-        Review the suspicious email and red-flag notes, then drag each term into the matching blank in the analysis
-        paragraph.
+        Review the ransomware incident timeline (NIST SP 800-61), then drag each term into the matching blank in the
+        IR process paragraph.
       </p>
       <p class="pbq-instructions">
         Drag each answer from the bank into the eight blanks (or tap a token, then tap a blank). Every term is used
@@ -46,79 +46,90 @@
       </p>
 
       <div class="sim-frame">
-        <figure class="pbq-email-exhibit" aria-labelledby="phishing-exhibit-title">
-          <p id="phishing-exhibit-title" class="pbq-email-exhibit__banner">
-            Phishing Email Analysis — Security Awareness Training
+        <figure class="pbq-ir-exhibit" aria-labelledby="ir-exhibit-title">
+          <p id="ir-exhibit-title" class="pbq-ir-exhibit__banner">
+            Incident Response — Ransomware Attack IR-2026-047 (NIST SP 800-61)
           </p>
-          <dl class="pbq-email-mock">
-            <dt>From:</dt>
-            <dd>security-alert@micros0ft-support.com</dd>
-            <dt>To:</dt>
-            <dd>employee@company.com</dd>
-            <dt>Subject:</dt>
-            <dd class="email-subject">URGENT: Your Microsoft 365 account will be SUSPENDED in 24 hours</dd>
-          </dl>
-          <div class="pbq-email-mock">
-            <p>Dear Valued Customer,</p>
-            <p>
-              We have detected suspicious activity on your account. Your access will be
-              <span class="email-urgent">SUSPENDED</span> unless you verify your credentials
-              <span class="email-urgent">IMMEDIATELY</span> by clicking the link below.
-            </p>
-            <p>
-              <span class="email-link">[CLICK HERE: http://micros0ft-login.ru/verify/account?ref=suspension]</span>
-            </p>
-            <p>Failure to act within 24 hours will result in permanent account deletion.</p>
-            <p>Microsoft Security Team | support@micros0ft-support.com</p>
-          </div>
-          <section class="pbq-red-flags" aria-labelledby="red-flags-heading">
-            <h2 id="red-flags-heading">RED FLAGS:</h2>
+
+          <section class="pbq-ir-phase pbq-ir-phase--prep" aria-labelledby="ir-prep-heading">
+            <h2 id="ir-prep-heading">1. PREPARATION</h2>
             <ul>
-              <li>
-                <strong>Typosquatting:</strong> micros0ft uses zero not letter O — not microsoft.com.
-              </li>
-              <li>
-                <strong>Urgency/fear:</strong> SUSPENDED in 24 hours, permanent deletion — pressure to bypass thinking.
-              </li>
-              <li>
-                <strong>Suspicious link:</strong> micros0ft-login.ru (Russia TLD) — hover to reveal real URL before
-                clicking.
-              </li>
-              <li>
-                <strong>Generic greeting:</strong> Valued Customer not your name — mass phishing, not targeted
-                spear-phishing.
-              </li>
-              <li><strong>Requesting credentials via email:</strong> Microsoft never asks for passwords this way.</li>
+              <li>IR plan documented, tested, and approved</li>
+              <li>Backups verified offsite — restore tested quarterly</li>
+              <li>Tabletop exercise completed Q1 2026 — all staff trained</li>
             </ul>
           </section>
+
+          <section class="pbq-ir-phase pbq-ir-phase--detect" aria-labelledby="ir-detect-heading">
+            <h2 id="ir-detect-heading">2. DETECTION &amp; ANALYSIS</h2>
+            <ul class="pbq-ir-timeline">
+              <li><time datetime="2026-04-08T06:14">Apr 08 06:14</time> — EDR alert: ransomware behaviour on WS-042</li>
+              <li>
+                <time datetime="2026-04-08T06:15">Apr 08 06:15</time> — SIEM correlates 47 file encryption events in 60
+                seconds
+              </li>
+              <li>
+                <time datetime="2026-04-08T06:16">Apr 08 06:16</time> — Root cause analysis begins | Scope: 1 endpoint
+                confirmed
+              </li>
+            </ul>
+          </section>
+
+          <section class="pbq-ir-phase pbq-ir-phase--contain" aria-labelledby="ir-contain-heading">
+            <h2 id="ir-contain-heading">3. CONTAINMENT</h2>
+            <ul class="pbq-ir-timeline">
+              <li>
+                <time datetime="2026-04-08T06:22">Apr 08 06:22</time> — WS-042 ISOLATED from network (preserve forensic
+                image first)
+              </li>
+              <li>
+                <time datetime="2026-04-08T06:35">Apr 08 06:35</time> — Affected file shares unmapped | C2 domain blocked
+                at firewall
+              </li>
+              <li>
+                <time datetime="2026-04-08T06:40">Apr 08 06:40</time> — Legal hold placed — chain of custody documentation
+                started
+              </li>
+            </ul>
+          </section>
+
+          <footer class="pbq-ir-footer">
+            <p class="pbq-ir-flow">
+              <strong>Post-containment steps:</strong> After containment:
+              <span class="pbq-ir-flow-step">Eradication (remove malware)</span>
+              <span aria-hidden="true">→</span>
+              <span class="pbq-ir-flow-step">Recovery (restore from backup)</span>
+              <span aria-hidden="true">→</span>
+              <span class="pbq-ir-flow-step">Lessons Learned (improve posture)</span>
+            </p>
+            <ul class="pbq-ir-defs">
+              <li><strong>Chain of custody:</strong> document who touched evidence and when</li>
+              <li><strong>Acquisition:</strong> forensic image before any changes</li>
+              <li><strong>Legal hold:</strong> preserve all relevant data</li>
+            </ul>
+          </footer>
         </figure>
 
         <div class="layout layout--two-col">
           <section class="panel" aria-labelledby="fillin-heading">
-            <h2 id="fillin-heading">Identify the techniques</h2>
+            <h2 id="fillin-heading">Complete the IR process</h2>
             <div class="pbq-fillin-panel">
               <p class="pbq-fillin">
-                Identify the techniques: micros0ft-support.com using zero instead of O is
-                <span class="drop-slot drop-slot--inline" data-target="typosquatting" aria-label="Blank 1"></span>.
-                Creating urgency with suspended in 24 hours to pressure victims is
-                <span class="drop-slot drop-slot--inline" data-target="pretexting" aria-label="Blank 2"></span>. This
-                email-based attack is
-                <span class="drop-slot drop-slot--inline" data-target="phishing" aria-label="Blank 3"></span>. A
-                targeted attack on a specific executive is
-                <span class="drop-slot drop-slot--inline" data-target="spear-phishing" aria-label="Blank 4"></span>.
-                SMS-based phishing is
-                <span class="drop-slot drop-slot--inline" data-target="smishing" aria-label="Blank 5"></span> and
-                phone-call phishing is
-                <span class="drop-slot drop-slot--inline" data-target="vishing" aria-label="Blank 6"></span>.
-                Impersonating the Microsoft brand is
-                <span
-                  class="drop-slot drop-slot--inline"
-                  data-target="brand-impersonation"
-                  aria-label="Blank 7"
-                ></span
-                >. The correct employee response is to
-                <span class="drop-slot drop-slot--inline" data-target="report" aria-label="Blank 8"></span> it to the
-                security team without clicking links.
+                The NIST IR process has 7 steps: Preparation, Detection,
+                <span class="drop-slot drop-slot--inline" data-target="analysis" aria-label="Blank 1"></span>,
+                <span class="drop-slot drop-slot--inline" data-target="containment" aria-label="Blank 2"></span>,
+                Eradication, Recovery, and
+                <span class="drop-slot drop-slot--inline" data-target="lessons-learned" aria-label="Blank 3"></span>.
+                Before isolating a host a forensic
+                <span class="drop-slot drop-slot--inline" data-target="image" aria-label="Blank 4"></span> should be
+                taken to preserve evidence. The documented record of who touched evidence and when is the
+                <span class="drop-slot drop-slot--inline" data-target="chain-of-custody" aria-label="Blank 5"></span>.
+                Placing a
+                <span class="drop-slot drop-slot--inline" data-target="legal-hold" aria-label="Blank 6"></span> prevents
+                evidence being destroyed. A
+                <span class="drop-slot drop-slot--inline" data-target="tabletop-exercise" aria-label="Blank 7"></span>
+                tests the IR plan without a real incident. The step of removing malware from systems is
+                <span class="drop-slot drop-slot--inline" data-target="eradication" aria-label="Blank 8"></span>.
               </p>
             </div>
           </section>
@@ -126,14 +137,14 @@
           <section class="panel" aria-labelledby="terms-heading">
             <h2 id="terms-heading">Answer bank</h2>
             <div id="bank" class="bank">
-              <div class="token" draggable="true" data-value="smishing">smishing</div>
-              <div class="token" draggable="true" data-value="report">report</div>
-              <div class="token" draggable="true" data-value="vishing">vishing</div>
-              <div class="token" draggable="true" data-value="pretexting">pretexting</div>
-              <div class="token" draggable="true" data-value="phishing">phishing</div>
-              <div class="token" draggable="true" data-value="typosquatting">typosquatting</div>
-              <div class="token" draggable="true" data-value="brand-impersonation">brand impersonation</div>
-              <div class="token" draggable="true" data-value="spear-phishing">spear phishing</div>
+              <div class="token" draggable="true" data-value="analysis">Analysis</div>
+              <div class="token" draggable="true" data-value="containment">Containment</div>
+              <div class="token" draggable="true" data-value="lessons-learned">Lessons Learned</div>
+              <div class="token" draggable="true" data-value="image">image</div>
+              <div class="token" draggable="true" data-value="chain-of-custody">chain of custody</div>
+              <div class="token" draggable="true" data-value="legal-hold">legal hold</div>
+              <div class="token" draggable="true" data-value="tabletop-exercise">tabletop exercise</div>
+              <div class="token" draggable="true" data-value="eradication">eradication</div>
             </div>
           </section>
         </div>
@@ -283,8 +294,8 @@
 
         result.className = allOk ? "is-pass" : "is-fail";
         result.textContent = allOk
-          ? "Correct. Typosquatting (micros0ft), pretexting (urgency), phishing (email attack), spear phishing (targeted executive), smishing (SMS), vishing (phone), brand impersonation (Microsoft), report (safe response)."
-          : "Incorrect. Some blanks are empty or mismatched — review the exhibit red flags and try again.";
+          ? "Correct. NIST steps: Analysis, Containment, Lessons Learned. Forensic image before isolation; chain of custody documents evidence handling; legal hold preserves data; tabletop exercise tests the plan; eradication removes malware."
+          : "Incorrect. Some blanks are empty or mismatched — review the exhibit timeline and footer definitions, then try again.";
       });
 
       showBtn.addEventListener("click", function () {
@@ -303,7 +314,7 @@
         });
         result.className = "is-pass";
         result.textContent =
-          "Answer shown. 1 typosquatting · 2 pretexting · 3 phishing · 4 spear phishing · 5 smishing · 6 vishing · 7 brand impersonation · 8 report.";
+          "Answer shown. 1 Analysis · 2 Containment · 3 Lessons Learned · 4 image · 5 chain of custody · 6 legal hold · 7 tabletop exercise · 8 eradication.";
       });
 
       resetBtn.addEventListener("click", function () {

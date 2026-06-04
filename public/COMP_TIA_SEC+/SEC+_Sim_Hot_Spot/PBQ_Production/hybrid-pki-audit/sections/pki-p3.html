@@ -1,0 +1,128 @@
+<article class="pbq-section-fragment" data-id="pki-p3"><h1>BeCertifiedToday Hybrid PKI Audit — Part 3</h1>
+      <p class="pbq-sub">
+        The audit found: an <strong>expired leaf cert</strong> still in the cert store, an intermediate CA using
+        <strong>SHA-1</strong>, and a CRL <strong>11 days stale</strong> (past the 7-day max). Select every certificate
+        requiring immediate revocation.
+      </p>
+      <p class="pbq-instructions">
+        <strong>Part 3:</strong> Check all that apply. Do <strong>not</strong> select valid certificates. Publish an
+        updated CRL after revocation.
+      </p>
+
+      <div class="sim-frame">
+        <p class="pbq-pki-part-banner pbq-pki-part-banner--revoke">
+          Select all certificates that must be immediately revoked
+        </p>
+
+        <ul class="pbq-pki-revoke-list">
+          <li>
+            <label class="pbq-pki-revoke-card pbq-pki-revoke-card--bad">
+              <input type="checkbox" name="secplus_bct_pki_revoke" value="code-sign" data-must-revoke="1" />
+              <span class="pbq-pki-revoke-body">
+                <strong>Code Signing Cert</strong>
+                <span>EXPIRED 2024-11-30 · RSA-1024 · Issued by On-Prem CA</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="pbq-pki-revoke-card pbq-pki-revoke-card--warn">
+              <input type="checkbox" name="secplus_bct_pki_revoke" value="onprem-inter" data-must-revoke="1" />
+              <span class="pbq-pki-revoke-body">
+                <strong>On-Prem Issuing CA Cert</strong>
+                <span>SHA-1 algorithm · Signed by Root CA · Issued weak code-signing leaf</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="pbq-pki-revoke-card pbq-pki-revoke-card--ok">
+              <input type="checkbox" name="secplus_bct_pki_revoke" value="root" data-must-revoke="0" />
+              <span class="pbq-pki-revoke-body">
+                <strong>Root CA Certificate</strong>
+                <span>SHA-256 · Offline · Expires 2044 · Valid</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="pbq-pki-revoke-card pbq-pki-revoke-card--ok">
+              <input type="checkbox" name="secplus_bct_pki_revoke" value="api-leaf" data-must-revoke="0" />
+              <span class="pbq-pki-revoke-body">
+                <strong>api.becertifiedtoday.com Leaf Cert</strong>
+                <span>Valid · SHA-256 · Expires 2026-06-01</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="pbq-pki-revoke-card pbq-pki-revoke-card--ok">
+              <input type="checkbox" name="secplus_bct_pki_revoke" value="azure-inter" data-must-revoke="0" />
+              <span class="pbq-pki-revoke-body">
+                <strong>Azure Issuing CA Cert</strong>
+                <span>SHA-256 · Valid · Expires 2034</span>
+              </span>
+            </label>
+          </li>
+        </ul>
+      </div>
+
+      <div class="actions">
+        <button id="checkBtn" type="button">Check Answer</button>
+        <button id="showBtn" type="button">Show Answer</button>
+        <button id="resetBtn" type="button">Reset</button>
+        <span id="result" role="status" aria-live="polite"></span>
+      </div></article>
+<script>
+    (function () {
+      var MUST_REVOKE = { "code-sign": true, "onprem-inter": true };
+      var CORRECT_MSG =
+        "Correct. Revoke immediately: expired code-signing leaf (RSA-1024) and the On-Prem intermediate CA using SHA-1 that issued it. Do not revoke the valid root, api.becertifiedtoday.com leaf, or Azure intermediate. After revocation, publish a fresh CRL within the 7-day policy.";
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var resetBtn = document.getElementById("resetBtn");
+      var result = document.getElementById("result");
+
+      function revocationOk() {
+        var ok = true;
+        document.querySelectorAll('input[name="secplus_bct_pki_revoke"]').forEach(function (input) {
+          var val = input.value;
+          var must = !!MUST_REVOKE[val];
+          var checked = input.checked;
+          var pass = checked === must;
+          input.closest(".pbq-pki-revoke-card").classList.toggle("pbq-pki-revoke-card--correct", pass && checked);
+          input.closest(".pbq-pki-revoke-card").classList.toggle("pbq-pki-revoke-card--wrong", !pass);
+          if (!pass) ok = false;
+        });
+        return ok;
+      }
+
+      checkBtn.addEventListener("click", function () {
+        if (revocationOk()) {
+          result.className = "is-pass";
+          result.textContent = CORRECT_MSG;
+        } else {
+          result.className = "is-fail";
+          result.textContent =
+            "Incorrect. Revoke the expired code-signing certificate and the SHA-1 On-Prem intermediate. Leave valid root, API leaf, and Azure intermediate unchecked.";
+        }
+      });
+
+      showBtn.addEventListener("click", function () {
+        document.querySelectorAll('input[name="secplus_bct_pki_revoke"]').forEach(function (input) {
+          input.checked = !!MUST_REVOKE[input.value];
+        });
+        revocationOk();
+        result.className = "is-pass";
+        result.textContent = CORRECT_MSG;
+      });
+
+      resetBtn.addEventListener("click", function () {
+        document.querySelectorAll('input[name="secplus_bct_pki_revoke"]').forEach(function (input) {
+          input.checked = false;
+          input.closest(".pbq-pki-revoke-card").classList.remove(
+            "pbq-pki-revoke-card--correct",
+            "pbq-pki-revoke-card--wrong"
+          );
+        });
+        result.className = "";
+        result.textContent = "";
+      });
+    })();
+  </script>

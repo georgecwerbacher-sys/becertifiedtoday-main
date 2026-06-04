@@ -26,13 +26,14 @@ Alias: `/ccna/practice-test` → same HTML (Vercel rewrite).
 
 Ad `utm_content=hl-free-practice` etc. maps to variants in `public/js/ccna-home-conversion.js`. See `scripts/ccna-google-ads-headline-suffixes.txt`.
 
-## Current message
+## Current message (prod 2026-06-04)
 
-- **Default H1:** Free CCNA Practice Assessment With Scorecard (variant via `ccna-home-conversion.js`)
-- **Title/meta:** CCNA 200-301 exam prep — free practice test & simulation
-- **Lead:** Free assessment; browser-only; no GNS3; exam prep not course
-- **Audience section:** `#exam-audience` — people, when, where (contractor/federal included)
-- **Primary CTA:** free assessment → `#purchase` for sim/portal
+- **H1:** CCNA 200-301 Exam Prep: Practice Tests & Simulation (variants via `ccna-home-conversion.js` may override)
+- **Lead:** You-focused exam prep; free 45-min sim; browser-only; federal context with “confirm with your manager”
+- **Writing rules:** [[../../12-Writing/_Writing-Rules|Guest page writing rules]] applied 2026-06-04
+- **Lead magnet:** `#ccna-lead-capture` — 45 min, 20 MCQ + 2 D&D + VLAN lab
+- **Samples:** 2 MCQ per run on `/sample?track=ccna-questions`
+- **Primary CTA:** free timed sim → `#purchase` (sim $9.99, 10d/30d portal)
 
 ## Keywords
 

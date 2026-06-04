@@ -1,0 +1,243 @@
+<article class="pbq-section-fragment" data-id="pki-p1"><h1>BeCertifiedToday Hybrid PKI Audit — Part 1</h1>
+      <p class="pbq-sub">
+        BeCertifiedToday runs a hybrid PKI: offline root on-premises, two intermediate CAs (on-prem and Azure), and leaf
+        certificates for TLS and code signing. An audit flagged a deprecated intermediate signing algorithm, an expired
+        leaf, and a CRL that is 11 days old (maximum allowed: 7 days).
+      </p>
+      <p class="pbq-instructions">
+        <strong>Part 1:</strong> Drag certificates into the trust chain for <strong>api.becertifiedtoday.com</strong> TLS
+        validation only (1 = trust anchor at top). Use exactly three certificates; leave unrelated certs in the bank.
+      </p>
+
+      <div class="sim-frame">
+        <p class="pbq-pki-audit-banner">
+          Chain goal: api.becertifiedtoday.com — Root → issuing intermediate → leaf
+        </p>
+        <div class="layout layout--pki-chain">
+          <section class="panel" aria-labelledby="certs-bank-heading">
+            <h2 id="certs-bank-heading">Certificates — drag to order</h2>
+            <div id="bank" class="bank bank--pki-certs">
+              <div class="token pbq-cert-card pbq-cert-card--leaf" draggable="true" data-value="leaf-api">
+                <strong>Leaf: api.becertifiedtoday.com</strong>
+                <span>Issued by: Azure Issuing CA</span>
+                <span>Expires: 2026-06-01 · SANs: api.becertifiedtoday.com</span>
+              </div>
+              <div class="token pbq-cert-card pbq-cert-card--root" draggable="true" data-value="root-ca">
+                <strong>Root CA: BeCertifiedToday Root CA</strong>
+                <span>Self-signed · SHA-256 · Offline</span>
+                <span>Expires: 2044-01-01</span>
+              </div>
+              <div class="token pbq-cert-card pbq-cert-card--inter-azure" draggable="true" data-value="azure-inter-ca">
+                <strong>Inter CA: Azure Issuing CA</strong>
+                <span>Signed by: BeCertifiedToday Root · SHA-256</span>
+                <span>Expires: 2034-01-01</span>
+              </div>
+              <div class="token pbq-cert-card pbq-cert-card--inter-warn" draggable="true" data-value="onprem-inter-ca">
+                <strong>Inter CA: On-Prem Issuing CA</strong>
+                <span>Signed by: BeCertifiedToday Root · <em>SHA-1 (deprecated)</em></span>
+                <span>Expires: 2029-01-01</span>
+              </div>
+              <div class="token pbq-cert-card pbq-cert-card--leaf-bad" draggable="true" data-value="leaf-code-sign">
+                <strong>Leaf: Code Signing Cert</strong>
+                <span>Issued by: On-Prem CA · <em>EXPIRED: 2024-11-30</em></span>
+                <span>RSA-1024 (weak)</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel panel--pki-chain" aria-labelledby="chain-heading">
+            <h2 id="chain-heading">Certificate trust chain (drag here)</h2>
+            <ol class="pbq-pki-chain-ladder">
+              <li>
+                <span class="pbq-pki-chain-step">1</span>
+                <div class="pbq-pki-chain-label">Trust anchor (top of chain)</div>
+                <div class="drop-slot drop-slot--chain" data-target="root-ca" aria-label="Trust anchor slot"></div>
+              </li>
+              <li class="pbq-pki-chain-arrow" aria-hidden="true">↓</li>
+              <li>
+                <span class="pbq-pki-chain-step pbq-pki-chain-step--inter">2</span>
+                <div class="pbq-pki-chain-label">Intermediate CA</div>
+                <div class="drop-slot drop-slot--chain" data-target="azure-inter-ca" aria-label="Intermediate CA slot"></div>
+              </li>
+              <li class="pbq-pki-chain-arrow" aria-hidden="true">↓</li>
+              <li>
+                <span class="pbq-pki-chain-step pbq-pki-chain-step--leaf">3</span>
+                <div class="pbq-pki-chain-label">Leaf / end-entity</div>
+                <div class="drop-slot drop-slot--chain" data-target="leaf-api" aria-label="Leaf certificate slot"></div>
+              </li>
+            </ol>
+          </section>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="checkBtn" type="button">Check Answer</button>
+        <button id="showBtn" type="button">Show Answer</button>
+        <button id="resetBtn" type="button">Reset</button>
+        <span id="result" role="status" aria-live="polite"></span>
+      </div></article>
+<script>
+    (function () {
+      var bank = document.getElementById("bank");
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var resetBtn = document.getElementById("resetBtn");
+      var result = document.getElementById("result");
+      var dragged = null;
+      var picked = null;
+      var CORRECT_MSG =
+        "Correct. Trust anchor: BeCertifiedToday Root CA. Intermediate: Azure Issuing CA (signs the api.becertifiedtoday.com leaf). Leaf: api.becertifiedtoday.com. On-Prem SHA-1 intermediate and expired code-signing cert are not in this TLS chain.";
+
+      function allSlots() {
+        return document.querySelectorAll(".drop-slot[data-target]");
+      }
+
+      function clearPick() {
+        document.querySelectorAll(".token.is-picked").forEach(function (n) {
+          n.classList.remove("is-picked");
+        });
+        picked = null;
+      }
+
+      function setPick(token) {
+        clearPick();
+        picked = token;
+        if (picked) picked.classList.add("is-picked");
+      }
+
+      function moveTokenToSlot(slot, token) {
+        if (!token || !slot) return;
+        var existing = slot.querySelector(".token");
+        if (existing && existing !== token) bank.appendChild(existing);
+        slot.appendChild(token);
+      }
+
+      function shuffleBank() {
+        var nodes = [].slice.call(bank.querySelectorAll(".token"));
+        while (nodes.length) {
+          bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
+        }
+      }
+
+      shuffleBank();
+
+      document.querySelector(".pbq-card").addEventListener("click", function (event) {
+        var token = event.target.closest(".token");
+        if (token) {
+          if (picked === token) {
+            clearPick();
+            return;
+          }
+          var parentSlot =
+            token.parentNode && token.parentNode.classList && token.parentNode.classList.contains("drop-slot")
+              ? token.parentNode
+              : null;
+          if (picked && parentSlot) {
+            moveTokenToSlot(parentSlot, picked);
+            clearPick();
+            return;
+          }
+          setPick(token);
+          return;
+        }
+        var slot = event.target.closest(".drop-slot");
+        if (slot && picked) {
+          moveTokenToSlot(slot, picked);
+          clearPick();
+          return;
+        }
+        if (bank.contains(event.target) && picked && !bank.contains(picked)) {
+          bank.appendChild(picked);
+          clearPick();
+        }
+      });
+
+      document.querySelectorAll(".token").forEach(function (token) {
+        token.addEventListener("dragstart", function () {
+          clearPick();
+          dragged = token;
+        });
+      });
+
+      allSlots().forEach(function (slot) {
+        slot.addEventListener("dragover", function (e) {
+          e.preventDefault();
+          slot.classList.add("over");
+        });
+        slot.addEventListener("dragleave", function () {
+          slot.classList.remove("over");
+        });
+        slot.addEventListener("drop", function (e) {
+          e.preventDefault();
+          slot.classList.remove("over");
+          if (!dragged) return;
+          moveTokenToSlot(slot, dragged);
+          dragged = null;
+        });
+      });
+
+      bank.addEventListener("dragover", function (e) {
+        e.preventDefault();
+      });
+      bank.addEventListener("drop", function (e) {
+        e.preventDefault();
+        if (dragged) bank.appendChild(dragged);
+        dragged = null;
+      });
+
+      function takeFromBank(value) {
+        return [].slice.call(bank.querySelectorAll(".token")).find(function (t) {
+          return t.getAttribute("data-value") === value;
+        });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var allOk = true;
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var want = slot.getAttribute("data-target");
+          var token = slot.querySelector(".token");
+          if (!token || token.getAttribute("data-value") !== want) {
+            slot.classList.add("incorrect");
+            allOk = false;
+          } else {
+            slot.classList.add("correct");
+          }
+        });
+        result.className = allOk ? "is-pass" : "is-fail";
+        result.textContent = allOk
+          ? CORRECT_MSG
+          : "Incorrect. Order: Root CA at top, Azure intermediate (issuer of the API leaf), then api.becertifiedtoday.com leaf.";
+      });
+
+      showBtn.addEventListener("click", function () {
+        clearPick();
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var t = slot.querySelector(".token");
+          if (t) bank.appendChild(t);
+        });
+        allSlots().forEach(function (slot) {
+          var token = takeFromBank(slot.getAttribute("data-target"));
+          if (token) {
+            slot.appendChild(token);
+            slot.classList.add("correct");
+          }
+        });
+        result.className = "is-pass";
+        result.textContent = CORRECT_MSG;
+      });
+
+      resetBtn.addEventListener("click", function () {
+        clearPick();
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var t = slot.querySelector(".token");
+          if (t) bank.appendChild(t);
+        });
+        result.className = "";
+        result.textContent = "";
+        shuffleBank();
+      });
+    })();
+  </script>

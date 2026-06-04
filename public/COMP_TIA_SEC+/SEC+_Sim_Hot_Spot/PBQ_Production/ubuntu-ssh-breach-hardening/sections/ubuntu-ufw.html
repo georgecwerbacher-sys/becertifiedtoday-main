@@ -1,0 +1,43 @@
+<article class="pbq-section-fragment" data-id="ubuntu-ufw"><h1>UFW rules</h1><div class="pbq-ssh-sim" data-ubuntu-harden><div id="panel-ufw" class="pbq-ssh-panel" role="tabpanel" aria-labelledby="tab-ufw" hidden>
+          <div class="pbq-ssh-ufw">
+            <div class="pbq-ssh-ufw__bar">
+              <span class="pbq-ssh-ufw__title">UFW Firewall Rules</span>
+              <span class="pbq-ssh-editor__hint">Select the correct UFW commands to apply — order matters</span>
+            </div>
+            <p class="pbq-ssh-ufw__prompt"># Select the correct UFW rule for each requirement:</p>
+            <ol class="pbq-ssh-ufw__list">
+              <li>
+                <span class="pbq-ssh-ufw__req"># 1. Allow SSH on new port (from management subnet only: 10.0.1.0/24)</span>
+                <select class="pbq-ssh-ufw-select" data-key="ufw-1" data-correct="ufw allow from 10.0.1.0/24 to any port 4422 proto tcp" aria-label="UFW rule 1">
+                  <option value="">-- select command --</option>
+                  <option>ufw allow 22/tcp</option>
+                  <option>ufw allow from 10.0.1.0/24 to any port 4422 proto tcp</option>
+                  <option>ufw allow 4422/tcp</option>
+                  <option>ufw allow from any to any port 4422</option>
+                </select>
+              </li>
+              <li>
+                <span class="pbq-ssh-ufw__req"># 2. Allow web traffic (HTTP + HTTPS) from anywhere</span>
+                <select class="pbq-ssh-ufw-select" data-key="ufw-2" data-correct="ufw allow 'Nginx Full'" aria-label="UFW rule 2">
+                  <option value="">-- select command --</option>
+                  <option>ufw allow 80,443/tcp</option>
+                  <option>ufw allow http &amp;&amp; ufw allow https</option>
+                  <option>ufw allow from any to any port 80,443</option>
+                  <option>ufw allow 'Nginx Full'</option>
+                </select>
+              </li>
+              <li>
+                <span class="pbq-ssh-ufw__req"># 3. Set default policies (deny inbound, allow outbound)</span>
+                <select class="pbq-ssh-ufw-select" data-key="ufw-3" data-correct="ufw default deny incoming &amp;&amp; ufw default allow outgoing" aria-label="UFW rule 3">
+                  <option value="">-- select command --</option>
+                  <option>ufw default deny incoming &amp;&amp; ufw default allow outgoing</option>
+                  <option>ufw default allow incoming &amp;&amp; ufw default deny outgoing</option>
+                  <option>ufw deny all &amp;&amp; ufw allow out</option>
+                  <option>ufw default deny &amp;&amp; ufw enable</option>
+                </select>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        </div></article>

@@ -99,6 +99,13 @@
 
 (function () {
   "use strict";
+  function isSecplusSimStagingPath(p) {
+    return (
+      p.indexOf("/sec+_sim_hot_spot/pbq_production/") !== -1 ||
+      p.indexOf("/sec+_sim_hot_spot/pending/") !== -1
+    );
+  }
+
   try {
     if (!sessionStorage.getItem("secplusHomeSample")) return;
     var path = (location.pathname || "").toLowerCase();
@@ -106,6 +113,7 @@
     try {
       remembered = (sessionStorage.getItem("ccnaLastRealPath") || "").toLowerCase();
     } catch (e) {}
+    if (isSecplusSimStagingPath(path) || isSecplusSimStagingPath(remembered)) return;
     var onSecplusPage =
       path.indexOf("/comp_tia_sec+/sec+_questions/") !== -1 ||
       path.indexOf("/comp_tia_sec+/sec+_sim_hot_spot/") !== -1 ||
@@ -466,9 +474,17 @@
 /** Security+ paid content: load portal storage + gate on question/sim pages. */
 (function () {
   "use strict";
+  function isSecplusSimStagingPath(pathLower) {
+    return (
+      pathLower.indexOf("/sec+_sim_hot_spot/pbq_production/") !== -1 ||
+      pathLower.indexOf("/sec+_sim_hot_spot/pending/") !== -1
+    );
+  }
+
   var p = (location.pathname || "").toLowerCase();
   if (p.indexOf("/comp_tia_sec+/") === -1) return;
   if (p.indexOf("/sec+_samples/") !== -1) return;
+  if (isSecplusSimStagingPath(p)) return;
   if (/sec\+_training_portal\.html$/i.test(p)) return;
   if (/secplus-portal-(magic|request-link|restore-access)\.html$/i.test(p)) return;
   if (

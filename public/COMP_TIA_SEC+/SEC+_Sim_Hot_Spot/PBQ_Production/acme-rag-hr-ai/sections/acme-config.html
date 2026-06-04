@@ -1,0 +1,127 @@
+<article class="pbq-section-fragment" data-id="acme-config"><h1>Task 1 — System configuration</h1><div data-acme-part1>aria-labelledby="config-heading">
+          <h2 id="config-heading">Task 1 — Fix system configuration</h2>
+          <p class="pbq-ai-section-lead">Select the <strong>most secure</strong> setting for each control.</p>
+          <div class="pbq-ai-config-grid">
+            <label class="pbq-ai-config-row" for="cfg-vector-access">
+              <span class="pbq-ai-config-label">Vector database API exposure</span>
+              <select id="cfg-vector-access" class="pbq-ai-select" data-setting="cfg-vector-access">
+                <option value="">Select…</option>
+                <option value="public">Public HTTPS endpoint with API key in client JavaScript</option>
+                <option value="secure">Private network only; require authentication and RBAC on every query</option>
+                <option value="anon">Anonymous read for faster retrieval</option>
+              </select>
+            </label>
+            <label class="pbq-ai-config-row" for="cfg-retrieval">
+              <span class="pbq-ai-config-label">Retrieval authorization</span>
+              <select id="cfg-retrieval" class="pbq-ai-select" data-setting="cfg-retrieval">
+                <option value="">Select…</option>
+                <option value="all">Return top-k chunks from entire index (fastest)</option>
+                <option value="filter">Filter chunks by user role and document classification metadata</option>
+                <option value="trust">Trust index labels set at upload time without re-checking identity</option>
+              </select>
+            </label>
+            <label class="pbq-ai-config-row" for="cfg-corpus">
+              <span class="pbq-ai-config-label">Document corpus scope</span>
+              <select id="cfg-corpus" class="pbq-ai-select" data-setting="cfg-corpus">
+                <option value="">Select…</option>
+                <option value="any">Any employee may upload files into the live index</option>
+                <option value="approved">Approved HR policy repository only; block ad-hoc uploads to production index</option>
+                <option value="share">Index full corporate file share for completeness</option>
+              </select>
+            </label>
+            <label class="pbq-ai-config-row" for="cfg-training">
+              <span class="pbq-ai-config-label">Prompt / conversation retention for model training</span>
+              <select id="cfg-training" class="pbq-ai-select" data-setting="cfg-training">
+                <option value="">Select…</option>
+                <option value="train">Use employee chats to fine-tune the model weekly</option>
+                <option value="no-train">Do not train or fine-tune on employee prompts or retrieved text</option>
+                <option value="pseudonym">Train on chats after removing employee names only</option>
+              </select>
+            </label>
+            <label class="pbq-ai-config-row" for="cfg-logging">
+              <span class="pbq-ai-config-label">Audit logging</span>
+              <select id="cfg-logging" class="pbq-ai-select" data-setting="cfg-logging">
+                <option value="">Select…</option>
+                <option value="none">Disable query logging to reduce storage cost</option>
+                <option value="full-plain">Log full prompts and answers in plain text for debugging</option>
+                <option value="redact">Log queries and retrieved sources with PII redaction</option>
+              </select>
+            </label>
+            <label class="pbq-ai-config-row" for="cfg-context">
+              <span class="pbq-ai-config-label">Retrieved context handling</span>
+              <select id="cfg-context" class="pbq-ai-select" data-setting="cfg-context">
+                <option value="">Select…</option>
+                <option value="trusted">Treat retrieved policy text as trusted system instructions</option>
+                <option value="untrusted">Treat retrieved text as untrusted data; isolate from system instructions</option>
+                <option value="hidden">Hide retrieval sources from the model to save tokens</option>
+              </select>
+            </label>
+          </div>
+        </section>
+
+        <section class="pbq-ai-section"<div class="actions">
+        <button id="checkBtn" type="button">Check Answer</button>
+        <button id="showBtn" type="button">Show Answer</button>
+        <button id="resetBtn" type="button">Reset</button>
+        <span id="result" role="status" aria-live="polite"></span></div></article>
+<script>
+(function () {
+  var CONFIG = {
+    "cfg-vector-access": "secure",
+    "cfg-retrieval": "filter",
+    "cfg-corpus": "approved",
+    "cfg-training": "no-train",
+    "cfg-logging": "redact",
+    "cfg-context": "untrusted"
+  };
+  var root = document.getElementById("acme-config");
+  if (!root) return;
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector(".actions + [id$='result']");
+  function configOk() {
+    var ok = true;
+    root.querySelectorAll("[data-setting]").forEach(function (sel) {
+      var key = sel.getAttribute("data-setting");
+      var pass = sel.value === CONFIG[key];
+      sel.classList.toggle("pbq-ai-select--bad", sel.value && !pass);
+      sel.classList.toggle("pbq-ai-select--good", pass);
+      if (!pass) ok = false;
+    });
+    return ok;
+  }
+  function clearMarks() {
+    root.querySelectorAll(".pbq-ai-select--bad, .pbq-ai-select--good").forEach(function (el) {
+      el.classList.remove("pbq-ai-select--bad", "pbq-ai-select--good");
+    });
+  }
+  checkBtn.addEventListener("click", function () {
+    clearMarks();
+    if (configOk()) {
+      result.className = "is-pass";
+      result.textContent = "Correct — system configuration settings are secure.";
+    } else {
+      result.className = "is-fail";
+      result.textContent = "Incorrect. Review vector API, retrieval filters, corpus scope, training, logging, and context handling.";
+    }
+  });
+  showBtn.addEventListener("click", function () {
+    Object.keys(CONFIG).forEach(function (key) {
+      var sel = root.querySelector('[data-setting="' + key + '"]');
+      if (sel) sel.value = CONFIG[key];
+    });
+    clearMarks();
+    configOk();
+    result.className = "is-pass";
+    result.textContent = "Configuration filled in. Continue to Guardrails.";
+  });
+  resetBtn.addEventListener("click", function () {
+    root.querySelectorAll("[data-setting]").forEach(function (sel) { sel.value = ""; });
+    clearMarks();
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>

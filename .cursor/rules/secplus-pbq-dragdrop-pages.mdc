@@ -6,7 +6,9 @@ alwaysApply: false
 
 # Security+ PBQ / drag-and-drop template
 
-When adding or editing **Security+ performance-based drag-and-drop** pages, use **`public/COMP_TIA_SEC+/SEC+_PBQ/`** only — not `SEC+_Questions/` or root `public/question-*.html`.
+When adding or editing **Security+ performance-based drag-and-drop** pages, build new scenarios in **`public/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/{scenario-slug}/`** (one folder per scenario, noindex), then ship published HTML in **`public/COMP_TIA_SEC+/SEC+_PBQ/`**. Legacy patterns: **`SEC+_Sim_Hot_Spot/pending/`**. Do not use `SEC+_Questions/` or root `public/question-*.html`.
+
+**Production layout:** One HTML page per scenario — **`PBQ_Production/{scenario-slug}/{scenario-slug}.html`** — with folder sidebar + exhibit modals (`pbq-folder-suite.js`). Hub: **`PBQ_Production/index.html`**. Edit **`{scenario-slug}/sections/{section-id}.html`**, then **`npm run build:pbq-suite`**. Legacy `*-partN.html` → `{slug}/{slug}.html#section-id`.
 
 ## Copy from
 
@@ -69,7 +71,7 @@ When adding or editing **Security+ performance-based drag-and-drop** pages, use 
 
 ## Chain navigation
 
-Wire **Back / Next** between pages in `SEC+_PBQ/`. Last page: disabled Next or link to portal. Update the previous page’s Next when adding a new slug.
+Wire **Back / Next** in the scenario folder (`PBQ_Production/{scenario-slug}/` while building, `SEC+_PBQ/` when published). Last page: disabled Next or portal. Update the previous page’s Next when adding a slug.
 
 ## Sourcing workflow
 

@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="index, follow" />
+  <meta name="robots" content="noindex, nofollow" />
   <meta
     name="description"
-    content="CompTIA Security+ SY0-701 PBQ practice: reorder SSH auth log snippets to reconstruct a brute-force attack ending in privilege escalation."
+    content="CompTIA Security+ SY0-701 PBQ practice: drag security controls onto a multi-layer network diagram (Perimeter, DMZ, Internal, Endpoint, Cloud)."
   />
-  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_PBQ/log-timeline-forensics.html" />
-  <title>Security+ PBQ — Log Timeline Forensics | Be Certified Today</title>
+  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/security-control-map.html" />
+  <title>Security+ PBQ — Security Control Map | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
@@ -26,104 +26,92 @@
     <main class="pbq-card">
       <nav class="question-nav" aria-label="Question navigation">
         <div class="question-nav-links">
-          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_PBQ/security-control-map.html">Back</a>
+          <span class="nav-link nav-link--disabled nav-prev" aria-hidden="true">Back</span>
           <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_PBQ/pki-certificate-chain-browser-error.html">Next</a>
+          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/log-timeline-forensics.html">Next</a>
         </div>
       </nav>
 
-      <h1>Log Timeline Forensics</h1>
+      <h1>Security Control Map</h1>
       <p class="pbq-sub">
-        Reorder six log snippets to reconstruct a successful brute-force SSH attack that ends in privilege escalation.
+        Place five security controls onto a multi-layer network diagram (Perimeter, DMZ, Internal, Endpoint, Cloud).
+        Drag each control from the bank (or tap to pick, then tap a layer).
       </p>
       <p class="pbq-instructions">
-        Drag each log snippet from the bank into the incident timeline in chronological order. Every snippet is used
-        exactly once.
+        Map each control to <strong>Perimeter</strong>, <strong>DMZ</strong>, <strong>Internal</strong>,
+        <strong>Endpoint</strong>, or <strong>Cloud</strong>. Every control is used exactly once.
       </p>
 
       <div class="sim-frame">
         <div class="layout layout--two-col">
-          <section class="panel" aria-labelledby="snippets-heading">
-            <h2 id="snippets-heading">Available Log Snippets</h2>
+          <section class="panel" aria-labelledby="controls-heading">
+            <h2 id="controls-heading">Security Controls</h2>
             <div id="bank" class="bank">
-              <div class="token token--mono" draggable="true" data-value="successful-login">
-                sshd[2841]: Accepted password for deploy from 203.0.113.45 port 44218 ssh2
-              </div>
-              <div class="token token--mono" draggable="true" data-value="multiple-retries">
-                sshd[2841]: message repeated 47 times: Failed password for root from 203.0.113.45
-              </div>
-              <div class="token token--mono" draggable="true" data-value="new-user">
-                useradd[9120]: new user: name=svc-backup, UID=1002, GID=1002, home=/home/svc-backup
-              </div>
-              <div class="token token--mono" draggable="true" data-value="cron-job">
-                crontab[9188]: (svc-backup) LIST ; */15 * * * * curl http://203.0.113.45/beacon
-              </div>
-              <div class="token token--mono" draggable="true" data-value="failed-login">
-                sshd[2841]: Failed password for root from 203.0.113.45 port 44218 ssh2
-              </div>
-              <div class="token token--mono" draggable="true" data-value="sudo-escalation">
-                sudo: deploy : TTY=pts/0 ; PWD=/home/deploy ; USER=root ; COMMAND=/bin/bash
-              </div>
+              <div class="token" draggable="true" data-value="ids-ips">IDS/IPS</div>
+              <div class="token" draggable="true" data-value="waf">Web Application Firewall</div>
+              <div class="token" draggable="true" data-value="edr-agent">EDR Agent</div>
+              <div class="token" draggable="true" data-value="border-firewall">Border Firewall</div>
+              <div class="token" draggable="true" data-value="vlan-segmentation">VLAN Segmentation</div>
             </div>
           </section>
 
-          <section class="panel panel--layers" aria-labelledby="timeline-heading">
-            <h2 id="timeline-heading">Incident Timeline</h2>
-            <p class="panel-note">Arrange the log snippets in the correct order.</p>
+          <section class="panel panel--layers" aria-labelledby="layers-heading">
+            <h2 id="layers-heading">Network Security Layers</h2>
             <div class="layer-list-box">
-            <div class="timeline">
-              <article class="timeline-step">
-                <span class="step-num" aria-hidden="true">1</span>
-                <div class="step-copy">
-                  <h3 class="step-title">First Event</h3>
-                  <p class="step-desc">Attack initiation</p>
+            <div class="layer-list">
+              <article class="layer-row">
+                <span class="layer-badge">Layer 5</span>
+                <div class="layer-copy">
+                  <div>
+                    <h3 class="layer-title">Perimeter Layer</h3>
+                    <p class="layer-desc">First line of defense at network edge</p>
+                  </div>
                 </div>
-                <div class="drop-slot" data-target="failed-login" aria-label="First event drop zone"></div>
+                <div class="drop-slot" data-target="border-firewall" aria-label="Perimeter layer drop zone"></div>
               </article>
 
-              <article class="timeline-step">
-                <span class="step-num" aria-hidden="true">2</span>
-                <div class="step-copy">
-                  <h3 class="step-title">Second Event</h3>
-                  <p class="step-desc">Attack escalation</p>
+              <article class="layer-row">
+                <span class="layer-badge">Layer 4</span>
+                <div class="layer-copy">
+                  <div>
+                    <h3 class="layer-title">DMZ Layer</h3>
+                    <p class="layer-desc">Isolated network segment for external services</p>
+                  </div>
                 </div>
-                <div class="drop-slot" data-target="multiple-retries" aria-label="Second event drop zone"></div>
+                <div class="drop-slot" data-target="waf" aria-label="DMZ layer drop zone"></div>
               </article>
 
-              <article class="timeline-step">
-                <span class="step-num" aria-hidden="true">3</span>
-                <div class="step-copy">
-                  <h3 class="step-title">Third Event</h3>
-                  <p class="step-desc">Initial compromise</p>
+              <article class="layer-row">
+                <span class="layer-badge">Layer 3</span>
+                <div class="layer-copy">
+                  <div>
+                    <h3 class="layer-title">Internal Network Layer</h3>
+                    <p class="layer-desc">Internal network segmentation and control</p>
+                  </div>
                 </div>
-                <div class="drop-slot" data-target="successful-login" aria-label="Third event drop zone"></div>
+                <div class="drop-slot" data-target="vlan-segmentation" aria-label="Internal network layer drop zone"></div>
               </article>
 
-              <article class="timeline-step">
-                <span class="step-num" aria-hidden="true">4</span>
-                <div class="step-copy">
-                  <h3 class="step-title">Fourth Event</h3>
-                  <p class="step-desc">Privilege escalation</p>
+              <article class="layer-row">
+                <span class="layer-badge">Layer 2</span>
+                <div class="layer-copy">
+                  <div>
+                    <h3 class="layer-title">Endpoint Layer</h3>
+                    <p class="layer-desc">Individual device protection</p>
+                  </div>
                 </div>
-                <div class="drop-slot" data-target="sudo-escalation" aria-label="Fourth event drop zone"></div>
+                <div class="drop-slot" data-target="edr-agent" aria-label="Endpoint layer drop zone"></div>
               </article>
 
-              <article class="timeline-step">
-                <span class="step-num" aria-hidden="true">5</span>
-                <div class="step-copy">
-                  <h3 class="step-title">Fifth Event</h3>
-                  <p class="step-desc">Persistence establishment</p>
+              <article class="layer-row">
+                <span class="layer-badge">Layer 1</span>
+                <div class="layer-copy">
+                  <div>
+                    <h3 class="layer-title">Cloud Layer</h3>
+                    <p class="layer-desc">Hosted services and virtual network security</p>
+                  </div>
                 </div>
-                <div class="drop-slot" data-target="new-user" aria-label="Fifth event drop zone"></div>
-              </article>
-
-              <article class="timeline-step">
-                <span class="step-num" aria-hidden="true">6</span>
-                <div class="step-copy">
-                  <h3 class="step-title">Sixth Event</h3>
-                  <p class="step-desc">Long-term access setup</p>
-                </div>
-                <div class="drop-slot" data-target="cron-job" aria-label="Sixth event drop zone"></div>
+                <div class="drop-slot" data-target="ids-ips" aria-label="Cloud layer drop zone"></div>
               </article>
             </div>
             </div>
@@ -275,8 +263,8 @@
 
         result.className = allOk ? "is-pass" : "is-fail";
         result.textContent = allOk
-          ? "Correct. Failed root login starts the attack; repeated failures show brute force; accepted deploy login is initial compromise; sudo to root is escalation; a new local user and cron job establish persistence."
-          : "Incorrect. One or more log snippets are out of order or missing — adjust and check again.";
+          ? "Correct. Border Firewall protects the edge; WAF shields DMZ web services; VLAN Segmentation isolates internal traffic; EDR Agent protects endpoints; IDS/IPS inspects cloud and virtual network traffic."
+          : "Incorrect. Some controls are missing or placed on the wrong layer — adjust and check again.";
       });
 
       showBtn.addEventListener("click", function () {
@@ -294,8 +282,7 @@
           }
         });
         result.className = "is-pass";
-        result.textContent =
-          "Answer shown. 1 Failed password → 2 repeated failures → 3 accepted login → 4 sudo to root → 5 new user → 6 cron persistence.";
+        result.textContent = "Answer shown. Perimeter: Border Firewall · DMZ: Web Application Firewall · Internal: VLAN Segmentation · Endpoint: EDR Agent · Cloud: IDS/IPS.";
       });
 
       resetBtn.addEventListener("click", function () {

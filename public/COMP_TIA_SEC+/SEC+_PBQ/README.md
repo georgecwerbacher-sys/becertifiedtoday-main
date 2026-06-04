@@ -1,43 +1,25 @@
-# Security+ PBQ — drag-and-drop pages
+# Security+ PBQ
 
-Official **SY0-701 PBQ / drag-and-drop template** for standalone practice items.
+**SY0-701 performance-based practice** pages ship as `*.html` in this directory (published, indexable when ready).
 
-## Reference pages
+Build new scenarios in **`../SEC+_Sim_Hot_Spot/PBQ_Production/`** — see [PBQ_Production/README.md](../SEC+_Sim_Hot_Spot/PBQ_Production/README.md). Legacy reference bank: [pending/README.md](../SEC+_Sim_Hot_Spot/pending/README.md).
 
-| File | Layout |
-|------|--------|
-| `security-control-map.html` | Token bank → purple layer blocks + blue drop slots |
-| `log-timeline-forensics.html` | Token bank → numbered timeline slots |
-| `pki-certificate-chain-browser-error.html` | HTML exhibit (PKI chain + browser error) + multiple choice |
-| `siem-security-alerts-dashboard.html` | HTML exhibit (SIEM alert table + logs) + multiple choice |
-| `phishing-email-analysis.html` | Email exhibit + red flags + inline fill-in drag-and-drop |
-| `TEMPLATE-dragdrop.html` | Copy skeleton (not linked in nav) |
-
-## Shared CSS
-
-`../js/secplus-pbq-page.css` — all PBQ styling. Do **not** re-add purple sim chrome or inline button colors.
-
-Also load:
-
-- `/css/bcc-question-link-nav.css`
-- `/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css`
+Shared styles: `../js/secplus-pbq-page.css` plus `/css/bcc-question-link-nav.css` and `/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css`.
 
 ## New page checklist
 
-1. Copy `TEMPLATE-dragdrop.html` or the closest reference page.
-2. Save as `{slug}.html` (kebab-case).
-3. Set `data-value` on tokens and matching `data-target` on drop slots.
-4. Wire Back / Home / Next; update previous page Next link.
-5. Implement Check / Show / Reset in page script (copy from neighbor).
-6. Run `python3 scripts/lint-practice-question-urls.py` on the new file.
-7. Log in `marketing-vault/11-question-sourcing/pbq/secplus-pbq-not-in-bct.md` when accepted from sourcing.
-
-## Sourcing
-
-`npm run secplus:pbq-monthly` — see `marketing-vault/11-question-sourcing/pbq/README.md`.
+1. Build in `../SEC+_Sim_Hot_Spot/PBQ_Production/` first (copy `TEMPLATE-dragdrop.html` or a neighbor in `pending/`).
+2. When ready, move `{slug}.html` here (kebab-case) and update URLs to `/SEC+_PBQ/`.
+3. Set `data-value` / `data-target` on drag-and-drop pages; wire Back / Home / Next under `/COMP_TIA_SEC+/SEC+_PBQ/`.
+4. Run `python3 scripts/lint-practice-question-urls.py` on the new file.
+5. Log in `marketing-vault/11-question-sourcing/pbq/secplus-pbq-not-in-bct.md` when accepted.
 
 ## Preview
 
 ```text
 http://localhost:3000/COMP_TIA_SEC+/SEC+_PBQ/{slug}.html
 ```
+
+## Sourcing
+
+`npm run secplus:pbq-monthly` — `marketing-vault/11-question-sourcing/pbq/README.md`.

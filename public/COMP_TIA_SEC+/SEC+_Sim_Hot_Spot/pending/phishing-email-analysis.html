@@ -3,18 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="index, follow" />
+  <meta name="robots" content="noindex, nofollow" />
   <meta
     name="description"
-    content="CompTIA Security+ SY0-701 PBQ practice: drag security controls onto a multi-layer network diagram (Perimeter, DMZ, Internal, Endpoint, Cloud)."
+    content="CompTIA Security+ SY0-701 PBQ practice: phishing email analysis exhibit and drag-and-drop social engineering term matching."
   />
-  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_PBQ/security-control-map.html" />
-  <title>Security+ PBQ — Security Control Map | Be Certified Today</title>
+  <link
+    rel="canonical"
+    href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/phishing-email-analysis.html"
+  />
+  <title>Security+ PBQ — Phishing Email Analysis | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
 </head>
-<body class="secplus-question-ui secplus-pbq-ui dragdrop-exercise">
+<body class="secplus-question-ui secplus-pbq-ui pbq-phishing-analysis dragdrop-exercise">
   <script src="/js/sample-url-mask-apply.js"></script>
   <div class="page-logo-watermark" aria-hidden="true">
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
@@ -26,94 +29,111 @@
     <main class="pbq-card">
       <nav class="question-nav" aria-label="Question navigation">
         <div class="question-nav-links">
-          <span class="nav-link nav-link--disabled nav-prev" aria-hidden="true">Back</span>
+          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/siem-security-alerts-dashboard.html">Back</a>
           <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_PBQ/log-timeline-forensics.html">Next</a>
+          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/vulnerability-management.html">Next</a>
         </div>
       </nav>
 
-      <h1>Security Control Map</h1>
+      <h1>Phishing Email Analysis</h1>
       <p class="pbq-sub">
-        Place five security controls onto a multi-layer network diagram (Perimeter, DMZ, Internal, Endpoint, Cloud).
-        Drag each control from the bank (or tap to pick, then tap a layer).
+        Review the suspicious email and red-flag notes, then drag each term into the matching blank in the analysis
+        paragraph.
       </p>
       <p class="pbq-instructions">
-        Map each control to <strong>Perimeter</strong>, <strong>DMZ</strong>, <strong>Internal</strong>,
-        <strong>Endpoint</strong>, or <strong>Cloud</strong>. Every control is used exactly once.
+        Drag each answer from the bank into the eight blanks (or tap a token, then tap a blank). Every term is used
+        exactly once.
       </p>
 
       <div class="sim-frame">
+        <figure class="pbq-email-exhibit" aria-labelledby="phishing-exhibit-title">
+          <p id="phishing-exhibit-title" class="pbq-email-exhibit__banner">
+            Phishing Email Analysis — Security Awareness Training
+          </p>
+          <dl class="pbq-email-mock">
+            <dt>From:</dt>
+            <dd>security-alert@micros0ft-support.com</dd>
+            <dt>To:</dt>
+            <dd>employee@company.com</dd>
+            <dt>Subject:</dt>
+            <dd class="email-subject">URGENT: Your Microsoft 365 account will be SUSPENDED in 24 hours</dd>
+          </dl>
+          <div class="pbq-email-mock">
+            <p>Dear Valued Customer,</p>
+            <p>
+              We have detected suspicious activity on your account. Your access will be
+              <span class="email-urgent">SUSPENDED</span> unless you verify your credentials
+              <span class="email-urgent">IMMEDIATELY</span> by clicking the link below.
+            </p>
+            <p>
+              <span class="email-link">[CLICK HERE: http://micros0ft-login.ru/verify/account?ref=suspension]</span>
+            </p>
+            <p>Failure to act within 24 hours will result in permanent account deletion.</p>
+            <p>Microsoft Security Team | support@micros0ft-support.com</p>
+          </div>
+          <section class="pbq-red-flags" aria-labelledby="red-flags-heading">
+            <h2 id="red-flags-heading">RED FLAGS:</h2>
+            <ul>
+              <li>
+                <strong>Typosquatting:</strong> micros0ft uses zero not letter O — not microsoft.com.
+              </li>
+              <li>
+                <strong>Urgency/fear:</strong> SUSPENDED in 24 hours, permanent deletion — pressure to bypass thinking.
+              </li>
+              <li>
+                <strong>Suspicious link:</strong> micros0ft-login.ru (Russia TLD) — hover to reveal real URL before
+                clicking.
+              </li>
+              <li>
+                <strong>Generic greeting:</strong> Valued Customer not your name — mass phishing, not targeted
+                spear-phishing.
+              </li>
+              <li><strong>Requesting credentials via email:</strong> Microsoft never asks for passwords this way.</li>
+            </ul>
+          </section>
+        </figure>
+
         <div class="layout layout--two-col">
-          <section class="panel" aria-labelledby="controls-heading">
-            <h2 id="controls-heading">Security Controls</h2>
-            <div id="bank" class="bank">
-              <div class="token" draggable="true" data-value="ids-ips">IDS/IPS</div>
-              <div class="token" draggable="true" data-value="waf">Web Application Firewall</div>
-              <div class="token" draggable="true" data-value="edr-agent">EDR Agent</div>
-              <div class="token" draggable="true" data-value="border-firewall">Border Firewall</div>
-              <div class="token" draggable="true" data-value="vlan-segmentation">VLAN Segmentation</div>
+          <section class="panel" aria-labelledby="fillin-heading">
+            <h2 id="fillin-heading">Identify the techniques</h2>
+            <div class="pbq-fillin-panel">
+              <p class="pbq-fillin">
+                Identify the techniques: micros0ft-support.com using zero instead of O is
+                <span class="drop-slot drop-slot--inline" data-target="typosquatting" aria-label="Blank 1"></span>.
+                Creating urgency with suspended in 24 hours to pressure victims is
+                <span class="drop-slot drop-slot--inline" data-target="pretexting" aria-label="Blank 2"></span>. This
+                email-based attack is
+                <span class="drop-slot drop-slot--inline" data-target="phishing" aria-label="Blank 3"></span>. A
+                targeted attack on a specific executive is
+                <span class="drop-slot drop-slot--inline" data-target="spear-phishing" aria-label="Blank 4"></span>.
+                SMS-based phishing is
+                <span class="drop-slot drop-slot--inline" data-target="smishing" aria-label="Blank 5"></span> and
+                phone-call phishing is
+                <span class="drop-slot drop-slot--inline" data-target="vishing" aria-label="Blank 6"></span>.
+                Impersonating the Microsoft brand is
+                <span
+                  class="drop-slot drop-slot--inline"
+                  data-target="brand-impersonation"
+                  aria-label="Blank 7"
+                ></span
+                >. The correct employee response is to
+                <span class="drop-slot drop-slot--inline" data-target="report" aria-label="Blank 8"></span> it to the
+                security team without clicking links.
+              </p>
             </div>
           </section>
 
-          <section class="panel panel--layers" aria-labelledby="layers-heading">
-            <h2 id="layers-heading">Network Security Layers</h2>
-            <div class="layer-list-box">
-            <div class="layer-list">
-              <article class="layer-row">
-                <span class="layer-badge">Layer 5</span>
-                <div class="layer-copy">
-                  <div>
-                    <h3 class="layer-title">Perimeter Layer</h3>
-                    <p class="layer-desc">First line of defense at network edge</p>
-                  </div>
-                </div>
-                <div class="drop-slot" data-target="border-firewall" aria-label="Perimeter layer drop zone"></div>
-              </article>
-
-              <article class="layer-row">
-                <span class="layer-badge">Layer 4</span>
-                <div class="layer-copy">
-                  <div>
-                    <h3 class="layer-title">DMZ Layer</h3>
-                    <p class="layer-desc">Isolated network segment for external services</p>
-                  </div>
-                </div>
-                <div class="drop-slot" data-target="waf" aria-label="DMZ layer drop zone"></div>
-              </article>
-
-              <article class="layer-row">
-                <span class="layer-badge">Layer 3</span>
-                <div class="layer-copy">
-                  <div>
-                    <h3 class="layer-title">Internal Network Layer</h3>
-                    <p class="layer-desc">Internal network segmentation and control</p>
-                  </div>
-                </div>
-                <div class="drop-slot" data-target="vlan-segmentation" aria-label="Internal network layer drop zone"></div>
-              </article>
-
-              <article class="layer-row">
-                <span class="layer-badge">Layer 2</span>
-                <div class="layer-copy">
-                  <div>
-                    <h3 class="layer-title">Endpoint Layer</h3>
-                    <p class="layer-desc">Individual device protection</p>
-                  </div>
-                </div>
-                <div class="drop-slot" data-target="edr-agent" aria-label="Endpoint layer drop zone"></div>
-              </article>
-
-              <article class="layer-row">
-                <span class="layer-badge">Layer 1</span>
-                <div class="layer-copy">
-                  <div>
-                    <h3 class="layer-title">Cloud Layer</h3>
-                    <p class="layer-desc">Hosted services and virtual network security</p>
-                  </div>
-                </div>
-                <div class="drop-slot" data-target="ids-ips" aria-label="Cloud layer drop zone"></div>
-              </article>
-            </div>
+          <section class="panel" aria-labelledby="terms-heading">
+            <h2 id="terms-heading">Answer bank</h2>
+            <div id="bank" class="bank">
+              <div class="token" draggable="true" data-value="smishing">smishing</div>
+              <div class="token" draggable="true" data-value="report">report</div>
+              <div class="token" draggable="true" data-value="vishing">vishing</div>
+              <div class="token" draggable="true" data-value="pretexting">pretexting</div>
+              <div class="token" draggable="true" data-value="phishing">phishing</div>
+              <div class="token" draggable="true" data-value="typosquatting">typosquatting</div>
+              <div class="token" draggable="true" data-value="brand-impersonation">brand impersonation</div>
+              <div class="token" draggable="true" data-value="spear-phishing">spear phishing</div>
             </div>
           </section>
         </div>
@@ -263,8 +283,8 @@
 
         result.className = allOk ? "is-pass" : "is-fail";
         result.textContent = allOk
-          ? "Correct. Border Firewall protects the edge; WAF shields DMZ web services; VLAN Segmentation isolates internal traffic; EDR Agent protects endpoints; IDS/IPS inspects cloud and virtual network traffic."
-          : "Incorrect. Some controls are missing or placed on the wrong layer — adjust and check again.";
+          ? "Correct. Typosquatting (micros0ft), pretexting (urgency), phishing (email attack), spear phishing (targeted executive), smishing (SMS), vishing (phone), brand impersonation (Microsoft), report (safe response)."
+          : "Incorrect. Some blanks are empty or mismatched — review the exhibit red flags and try again.";
       });
 
       showBtn.addEventListener("click", function () {
@@ -282,7 +302,8 @@
           }
         });
         result.className = "is-pass";
-        result.textContent = "Answer shown. Perimeter: Border Firewall · DMZ: Web Application Firewall · Internal: VLAN Segmentation · Endpoint: EDR Agent · Cloud: IDS/IPS.";
+        result.textContent =
+          "Answer shown. 1 typosquatting · 2 pretexting · 3 phishing · 4 spear phishing · 5 smishing · 6 vishing · 7 brand impersonation · 8 report.";
       });
 
       resetBtn.addEventListener("click", function () {

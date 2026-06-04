@@ -29,6 +29,8 @@ Disallow: /admin/analytics
 Disallow: /admin/analytics.html
 Disallow: /api/
 Disallow: /choose-training-path.html
+Disallow: /secplus-home.html
+Disallow: /*Training_Portal.html
 Disallow: /CCNP-ENCOR-Study/access-restricted.html
 Disallow: /CCNP-ENCOR-Study/admin-renew.html
 Disallow: /*portal-magic.html
@@ -42,6 +44,7 @@ Sitemap: https://becertifiedtoday.com/sitemap.xml
 """
 
 NOCRAWL_SUFFIXES = (
+    "Training_Portal.html",
     "portal-magic.html",
     "portal-restore-access.html",
     "portal-request-link.html",
@@ -52,18 +55,22 @@ NOCRAWL_SUFFIXES = (
 
 NOCRAWL_EXACT = {
     "choose-training-path.html",
+    "secplus-home.html",
     "CCNP-ENCOR-Study/access-restricted.html",
     "CCNP-ENCOR-Study/admin-renew.html",
 }
 
-NOCRAWL_PREFIXES = ("admin/",)
+NOCRAWL_PREFIXES = (
+    "admin/",
+    "COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/",
+    "COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/",
+)
 
 # Guest-facing pages promoted in sitemap (unregistered users, no portal purchase).
 SITEMAP_EXACT = {
     "index.html",
     "ccna-home.html",
     "ccnp-home.html",
-    "secplus-home.html",
     "comptia-sec+-home.html",
     "CCNA_Sim_EXAM/free-assessment.html",
     "CCNA_Sim_EXAM/test-simulation.html",
@@ -71,12 +78,25 @@ SITEMAP_EXACT = {
     "CCNP-ENCOR-Study/test-simulation.html",
     "CCNA-Study/CCNA_labs/cli-lab-trunk_lacp.html",
     "CCNA-Study/CCNA_labs/cli-lab-vlan-sim.html",
+    "COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html",
 }
 
 SITEMAP_PREFIXES = (
     "CCNA-Study/CCNA_Samples/",
     "CCNP-ENCOR-Study/ENCOR_Samples/",
     "COMP_TIA_SEC+/SEC+_Samples/",
+    "COMP_TIA_SEC+/SEC+_PBQ/",
+)
+
+# Vercel rewrite entry points (canonical path → source file for lastmod).
+SITEMAP_ALIASES: dict[str, str] = {
+    "sample": "CCNP-ENCOR-Study/ENCOR_Samples/sample.html",
+    "secplus-sample": "COMP_TIA_SEC+/SEC+_Samples/sample.html",
+    "ccna/practice-test": "ccna-home.html",
+}
+
+SITEMAP_SKIP_PREFIXES = (
+    "COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/reports/",
 )
 
 ROBOTS_META_RE = re.compile(
@@ -107,6 +127,8 @@ def is_indexable(rel: str) -> bool:
 def is_guest_sitemap_page(rel: str) -> bool:
     if not is_indexable(rel):
         return False
+    if any(rel.startswith(skip) for skip in SITEMAP_SKIP_PREFIXES):
+        return False
     if rel in SITEMAP_EXACT:
         return True
     return any(rel.startswith(prefix) for prefix in SITEMAP_PREFIXES)
@@ -123,13 +145,33 @@ def lastmod_for(path: Path) -> str:
     return stamp.strftime("%Y-%m-%d")
 
 
+def alias_public_url(alias_path: str) -> str:
+    return f"{SITE_ORIGIN}/{alias_path}"
+
+
 def build_sitemap() -> int:
     entries: list[tuple[str, str]] = []
+    seen_locs: set[str] = set()
+
+    def add_entry(loc: str, path: Path) -> None:
+        if loc in seen_locs:
+            return
+        seen_locs.add(loc)
+        entries.append((loc, lastmod_for(path)))
+
     for path in sorted(PUBLIC.rglob("*.html")):
         rel = rel_public(path)
         if not is_guest_sitemap_page(rel):
             continue
-        entries.append((public_url(rel), lastmod_for(path)))
+        add_entry(public_url(rel), path)
+
+    for alias_path, source_rel in sorted(SITEMAP_ALIASES.items()):
+        source = PUBLIC / source_rel
+        if not source.is_file():
+            continue
+        add_entry(alias_public_url(alias_path), source)
+
+    entries.sort(key=lambda pair: pair[0])
 
     lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',

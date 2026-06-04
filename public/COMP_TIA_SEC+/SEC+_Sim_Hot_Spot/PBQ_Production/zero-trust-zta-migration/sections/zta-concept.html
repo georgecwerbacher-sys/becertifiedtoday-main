@@ -1,0 +1,81 @@
+<article class="pbq-section-fragment" data-id="zta-concept"><h1>Zero Trust — Core concept</h1><div class="sim-frame"><p class="pbq-stem">
+          BeCertifiedToday is moving from traditional perimeter to Zero Trust. Which statement <strong>BEST</strong>
+          describes the fundamental change?
+        </p>
+
+        <div class="pbq-choices" role="group" aria-labelledby="zt-stem-label">
+          <span id="zt-stem-label" class="visually-hidden">Answer choices</span>
+          <label class="pbq-choice">
+            <input type="radio" name="secplus_bct_zt_fundamental" value="A" />
+            Zero Trust only applies to cloud environments — on-premises networks keep traditional perimeter security.
+          </label>
+          <label class="pbq-choice">
+            <input type="radio" name="secplus_bct_zt_fundamental" value="B" />
+            Traditional models implicitly trust internal traffic. Zero Trust requires explicit verification of every
+            request regardless of location using a Policy Enforcement Point as gateway and adaptive identity to assess
+            risk on every access attempt — never trust, always verify.
+          </label>
+          <label class="pbq-choice">
+            <input type="radio" name="secplus_bct_zt_fundamental" value="C" />
+            Zero Trust requires all users on VPN at all times for encrypted communications.
+          </label>
+          <label class="pbq-choice">
+            <input type="radio" name="secplus_bct_zt_fundamental" value="D" />
+            Zero Trust means removing all firewalls since they represent the old perimeter model.
+          </label>
+        </div>
+      </div><div class="actions">
+        <button id="checkBtn" type="button">Check Answer</button>
+        <button id="showBtn" type="button">Show Answer</button>
+        <button id="resetBtn" type="button">Reset</button>
+        <span id="result" role="status" aria-live="polite"></span></div></article>
+<script>
+    (function () {
+      var CORRECT = "B";
+      var CORRECT_MSG =
+        "Correct. Traditional perimeter models assume trust inside the firewall; one breach enables lateral movement. Zero Trust removes implicit trust: every request is verified (PEP gateway, adaptive identity, policy engine/administrator) regardless of network location. It is not cloud-only (A), mandatory always-on VPN (C), or firewall removal (D). Continue to Part 2 to place ZTA controls in each zone.";
+      var root = document.getElementById("zta-concept");
+      if (!root) return;
+      var actionBtns = root.querySelectorAll(".actions button");
+      var checkBtn = actionBtns[0];
+      var showBtn = actionBtns[1];
+      var resetBtn = actionBtns[2];
+      var result = root.querySelector(".actions + [id$='result']");
+
+      function selectedChoice() {
+        return root.querySelector('input[name="secplus_bct_zt_fundamental"]:checked');
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedChoice();
+        if (!sel) {
+          result.className = "is-fail";
+          result.textContent = "Select an answer, then check again.";
+          return;
+        }
+        if (sel.value === CORRECT) {
+          result.className = "is-pass";
+          result.textContent = CORRECT_MSG;
+        } else {
+          result.className = "is-fail";
+          result.textContent =
+            "Incorrect. Focus on never trust / always verify for every request, not cloud-only scope, VPN-only access, or eliminating firewalls.";
+        }
+      });
+
+      showBtn.addEventListener("click", function () {
+        var correctInput = root.querySelector('input[name="secplus_bct_zt_fundamental"][value="' + CORRECT + '"]');
+        if (correctInput) correctInput.checked = true;
+        result.className = "is-pass";
+        result.textContent = CORRECT_MSG;
+      });
+
+      resetBtn.addEventListener("click", function () {
+        root.querySelectorAll('input[name="secplus_bct_zt_fundamental"]').forEach(function (input) {
+          input.checked = false;
+        });
+        result.className = "";
+        result.textContent = "";
+      });
+    })();
+  </script>

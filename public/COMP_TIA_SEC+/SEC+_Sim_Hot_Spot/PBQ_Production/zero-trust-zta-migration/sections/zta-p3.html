@@ -1,0 +1,162 @@
+<article class="pbq-section-fragment" data-id="zta-p3"><h1>BeCertifiedToday Zero Trust Architecture — Part 3</h1>
+      <p class="pbq-sub">
+        Finish the BeCertifiedToday ZTA migration. Answer the trade-off questions below about control placement and Zero
+        Trust principles.
+      </p>
+      <p class="pbq-instructions">
+        <strong>Part 3:</strong> Choose the best answer for each question. All three must be correct to pass.
+      </p>
+
+      <div class="sim-frame pbq-ai-sim">
+        <p class="pbq-ai-part-banner">ZTA trade-off questions</p>
+
+        <section class="pbq-ai-attack-mcq" aria-labelledby="zt-q1-heading">
+          <h2 id="zt-q1-heading">Q1. ZTNA vs VPN</h2>
+          <p class="pbq-stem">
+            A ZTNA gateway and a traditional VPN both grant remote access. Under ZTA, why is ZTNA preferred?
+          </p>
+          <div class="pbq-choices" role="radiogroup" aria-labelledby="zt-q1-heading">
+            <label class="pbq-choice">
+              <input type="radio" name="secplus_bct_zt_q1" value="A" />
+              ZTNA is faster because it does not encrypt traffic.
+            </label>
+            <label class="pbq-choice">
+              <input type="radio" name="secplus_bct_zt_q1" value="B" />
+              ZTNA grants per-application access with continuous verification; VPN grants broad network access once
+              authenticated, which violates least privilege.
+            </label>
+            <label class="pbq-choice">
+              <input type="radio" name="secplus_bct_zt_q1" value="C" />
+              VPN requires MFA but ZTNA does not, making ZTNA simpler to deploy.
+            </label>
+            <label class="pbq-choice">
+              <input type="radio" name="secplus_bct_zt_q1" value="D" />
+              ZTNA is cheaper because it does not require a dedicated appliance.
+            </label>
+          </div>
+        </section>
+
+        <section class="pbq-ai-attack-mcq" aria-labelledby="zt-q2-heading">
+          <h2 id="zt-q2-heading">Q2. PAM Vault placement</h2>
+          <p class="pbq-stem">
+            Your security team wants to place the PAM Vault in the Cloud zone for accessibility. A senior engineer
+            objects. Who is correct and why?
+          </p>
+          <div class="pbq-choices" role="radiogroup" aria-labelledby="zt-q2-heading">
+            <label class="pbq-choice">
+              <input type="radio" name="secplus_bct_zt_q2" value="A" />
+              Security team — cloud provides better availability for the PAM Vault.
+            </label>
+            <label class="pbq-choice">
+              <input type="radio" name="secplus_bct_zt_q2" value="B" />
+              Senior engineer — the PAM Vault controls privileged credentials to internal systems; placing it in the
+              cloud increases attack surface and dependency on external connectivity for critical internal operations.
+            </label>
+            <label class="pbq-choice">
+              <input type="radio" name="secplus_bct_zt_q2" value="C" />
+              Both are equally valid — PAM placement is a preference decision with no security impact.
+            </label>
+            <label class="pbq-choice">
+              <input type="radio" name="secplus_bct_zt_q2" value="D" />
+              Senior engineer — cloud providers prohibit hosting PAM solutions under their terms of service.
+            </label>
+          </div>
+        </section>
+
+        <section class="pbq-ai-attack-mcq" aria-labelledby="zt-q3-heading">
+          <h2 id="zt-q3-heading">Q3. Never trust, always verify</h2>
+          <p class="pbq-stem">
+            Under ZTA, &ldquo;never trust, always verify&rdquo; means which of the following about internal network
+            traffic?
+          </p>
+          <div class="pbq-choices" role="radiogroup" aria-labelledby="zt-q3-heading">
+            <label class="pbq-choice">
+              <input type="radio" name="secplus_bct_zt_q3" value="A" />
+              Internal traffic is trusted by default — ZTA only applies to external access.
+            </label>
+            <label class="pbq-choice">
+              <input type="radio" name="secplus_bct_zt_q3" value="B" />
+              Internal traffic is also verified — micro-segmentation and continuous authentication apply to east-west
+              traffic too, preventing lateral movement.
+            </label>
+            <label class="pbq-choice">
+              <input type="radio" name="secplus_bct_zt_q3" value="C" />
+              Internal traffic is blocked until users re-authenticate every 24 hours.
+            </label>
+            <label class="pbq-choice">
+              <input type="radio" name="secplus_bct_zt_q3" value="D" />
+              ZTA eliminates the need for a firewall on the internal network.
+            </label>
+          </div>
+        </section>
+      </div>
+
+      <div class="actions">
+        <button id="checkBtn" type="button">Check Answer</button>
+        <button id="showBtn" type="button">Show Answer</button>
+        <button id="resetBtn" type="button">Reset</button>
+        <span id="result" role="status" aria-live="polite"></span>
+      </div></article>
+<script>
+    (function () {
+      var ANSWERS = {
+        secplus_bct_zt_q1: "B",
+        secplus_bct_zt_q2: "B",
+        secplus_bct_zt_q3: "B"
+      };
+      var CORRECT_MSG =
+        "Correct. Q1: ZTNA enforces least privilege with per-app access and ongoing verification instead of full network trust after VPN login. Q2: PAM Vault belongs with internal privileged assets, not in cloud for convenience. Q3: Zero Trust applies to east-west internal flows via micro-segmentation and continuous auth, not implicit internal trust.";
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var resetBtn = document.getElementById("resetBtn");
+      var result = document.getElementById("result");
+
+      function allAnswered() {
+        return Object.keys(ANSWERS).every(function (name) {
+          return document.querySelector('input[name="' + name + '"]:checked');
+        });
+      }
+
+      function allCorrect() {
+        return Object.keys(ANSWERS).every(function (name) {
+          var sel = document.querySelector('input[name="' + name + '"]:checked');
+          return sel && sel.value === ANSWERS[name];
+        });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        if (!allAnswered()) {
+          result.className = "is-fail";
+          result.textContent = "Answer all three questions, then check again.";
+          return;
+        }
+        if (allCorrect()) {
+          result.className = "is-pass";
+          result.textContent = CORRECT_MSG;
+        } else {
+          result.className = "is-fail";
+          result.textContent =
+            "Incorrect. Review ZTNA vs VPN least privilege, why PAM stays on internal systems, and that internal east-west traffic is verified under Zero Trust.";
+        }
+      });
+
+      showBtn.addEventListener("click", function () {
+        Object.keys(ANSWERS).forEach(function (name) {
+          var input = document.querySelector('input[name="' + name + '"][value="' + ANSWERS[name] + '"]');
+          if (input) input.checked = true;
+        });
+        result.className = "is-pass";
+        result.textContent = CORRECT_MSG;
+      });
+
+      resetBtn.addEventListener("click", function () {
+        Object.keys(ANSWERS).forEach(function (name) {
+          document.querySelectorAll('input[name="' + name + '"]').forEach(function (input) {
+            input.checked = false;
+          });
+        });
+        result.className = "";
+        result.textContent = "";
+      });
+    })();
+  </script>

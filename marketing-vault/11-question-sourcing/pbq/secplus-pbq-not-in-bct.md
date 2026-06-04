@@ -23,6 +23,13 @@ Use **after** the monthly PBQ compare report — not during web discovery.
 | 2026-06-03 | bct-internal | exhibit-mcq | PKI chain + ERR_CERT_AUTHORITY_INVALID | — | in-bct (pki-certificate-chain-browser-error.html) |
 | 2026-06-03 | bct-internal | exhibit-mcq | SIEM alerts dashboard — lateral movement prioritization | — | in-bct (siem-security-alerts-dashboard.html) |
 | 2026-06-03 | bct-internal | drag-drop | Phishing email analysis — social engineering terms | — | in-bct (phishing-email-analysis.html) |
+| 2026-06-04 | bct-internal | exhibit-mcq | Vulnerability management — Log4Shell compensating control (change freeze) | — | in-bct (vulnerability-management.html) |
+| 2026-06-04 | bct-internal | drag-drop | Incident response — NIST SP 800-61 steps and evidence terms | — | in-bct (incident-response.html) |
+| 2026-06-04 | bct-internal | exhibit-mcq | Quantitative risk — phishing ALE and awareness training ROI | — | in-bct (quantitative-risk-ale.html) |
+| 2026-06-04 | bct-internal | exhibit-mcq | Malware — endpoint IOCs (Trojan/RAT/ransomware staging) | — | in-bct (malware-ioc-analysis.html) |
+| 2026-06-04 | bct-internal | exhibit-mcq + zone-map + mcq | Zero Trust — 3-part migration (exhibit, 8-control zone map, trade-offs) | — | in-bct (`PBQ_Production/zero-trust-zta-migration/`) |
+| 2026-06-04 | bct-internal | exhibit-mcq | Data protection — PCI tokenization for test environments | — | in-bct (data-protection.html) |
+| 2026-06-04 | bct-internal | exhibit-mcq | Governance — GDPR and PCI DSS parallel breach notification | — | in-bct (governance.html) |
 
 ---
 

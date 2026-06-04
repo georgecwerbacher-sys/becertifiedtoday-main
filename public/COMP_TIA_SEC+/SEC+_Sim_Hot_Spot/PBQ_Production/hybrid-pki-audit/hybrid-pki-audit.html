@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ — Hybrid PKI audit for api.becertifiedtoday.com — chain order, algorithms, and revocation." />
+  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/hybrid-pki-audit/hybrid-pki-audit.html" />
+  <title>Security+ PBQ — Hybrid PKI audit | Be Certified Today</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+</head>
+<body class="secplus-question-ui secplus-pbq-ui pbq-folder-suite pbq-pki-audit dragdrop-exercise">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell question-shell--suite">
+    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ practice portal">
+      <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="pbq-card pbq-card--suite">
+      <nav class="question-nav" aria-label="Question navigation">
+        <div class="question-nav-links">
+          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/zero-trust-zta-migration/zero-trust-zta-migration.html">Back</a>
+          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/ubuntu-ssh-breach-hardening/ubuntu-ssh-breach-hardening.html">Next</a>
+        </div>
+      </nav>
+
+      <header class="pbq-suite-header">
+        <h1>Hybrid PKI audit</h1>
+        <p class="pbq-sub">Hybrid PKI audit for api.becertifiedtoday.com — chain order, algorithms, and revocation.</p>
+        <p class="pbq-instructions">
+          Use the <strong>folder sidebar</strong> to switch sections on this page. Open <strong>exhibits</strong> in
+          popups where available.
+        </p>
+      </header>
+
+      <div class="pbq-suite-layout">
+        <nav class="pbq-suite-folders pbq-suite-folders--flat" aria-label="Sections">
+<p class="pbq-suite-folders__label"><span aria-hidden="true">📁</span> Sections</p>
+<ul class="pbq-suite-folders__list">
+<li><button type="button" class="pbq-suite-folder__item" data-section="pki-p1">Certificate chain order</button></li>
+<li><button type="button" class="pbq-suite-folder__item" data-section="pki-p2">Algorithm review</button></li>
+<li><button type="button" class="pbq-suite-folder__item" data-section="pki-p3">Revocation scope</button></li>
+</ul></nav>
+        <div class="pbq-suite-main" id="pbqSuiteMain">
+          <article class="pbq-suite-section" id="pki-p1" data-scenario="hybrid-pki-audit" hidden><div class="pbq-suite-section__inner"><h1>BeCertifiedToday Hybrid PKI Audit — Part 1</h1>
+      <p class="pbq-sub">
+        BeCertifiedToday runs a hybrid PKI: offline root on-premises, two intermediate CAs (on-prem and Azure), and leaf
+        certificates for TLS and code signing. An audit flagged a deprecated intermediate signing algorithm, an expired
+        leaf, and a CRL that is 11 days old (maximum allowed: 7 days).
+      </p>
+      <p class="pbq-instructions">
+        <strong>Part 1:</strong> Drag certificates into the trust chain for <strong>api.becertifiedtoday.com</strong> TLS
+        validation only (1 = trust anchor at top). Use exactly three certificates; leave unrelated certs in the bank.
+      </p>
+
+      <div class="sim-frame">
+        <p class="pbq-pki-audit-banner">
+          Chain goal: api.becertifiedtoday.com — Root → issuing intermediate → leaf
+        </p>
+        <div class="layout layout--pki-chain">
+          <section class="panel" aria-labelledby="certs-bank-heading">
+            <h2 id="pki-p1-certs-bank-heading">Certificates — drag to order</h2>
+            <div id="pki-p1-bank" class="bank bank--pki-certs">
+              <div class="token pbq-cert-card pbq-cert-card--leaf" draggable="true" data-value="leaf-api">
+                <strong>Leaf: api.becertifiedtoday.com</strong>
+                <span>Issued by: Azure Issuing CA</span>
+                <span>Expires: 2026-06-01 · SANs: api.becertifiedtoday.com</span>
+              </div>
+              <div class="token pbq-cert-card pbq-cert-card--root" draggable="true" data-value="root-ca">
+                <strong>Root CA: BeCertifiedToday Root CA</strong>
+                <span>Self-signed · SHA-256 · Offline</span>
+                <span>Expires: 2044-01-01</span>
+              </div>
+              <div class="token pbq-cert-card pbq-cert-card--inter-azure" draggable="true" data-value="azure-inter-ca">
+                <strong>Inter CA: Azure Issuing CA</strong>
+                <span>Signed by: BeCertifiedToday Root · SHA-256</span>
+                <span>Expires: 2034-01-01</span>
+              </div>
+              <div class="token pbq-cert-card pbq-cert-card--inter-warn" draggable="true" data-value="onprem-inter-ca">
+                <strong>Inter CA: On-Prem Issuing CA</strong>
+                <span>Signed by: BeCertifiedToday Root · <em>SHA-1 (deprecated)</em></span>
+                <span>Expires: 2029-01-01</span>
+              </div>
+              <div class="token pbq-cert-card pbq-cert-card--leaf-bad" draggable="true" data-value="leaf-code-sign">
+                <strong>Leaf: Code Signing Cert</strong>
+                <span>Issued by: On-Prem CA · <em>EXPIRED: 2024-11-30</em></span>
+                <span>RSA-1024 (weak)</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel panel--pki-chain" aria-labelledby="chain-heading">
+            <h2 id="pki-p1-chain-heading">Certificate trust chain (drag here)</h2>
+            <ol class="pbq-pki-chain-ladder">
+              <li>
+                <span class="pbq-pki-chain-step">1</span>
+                <div class="pbq-pki-chain-label">Trust anchor (top of chain)</div>
+                <div class="drop-slot drop-slot--chain" data-target="root-ca" aria-label="Trust anchor slot"></div>
+              </li>
+              <li class="pbq-pki-chain-arrow" aria-hidden="true">↓</li>
+              <li>
+                <span class="pbq-pki-chain-step pbq-pki-chain-step--inter">2</span>
+                <div class="pbq-pki-chain-label">Intermediate CA</div>
+                <div class="drop-slot drop-slot--chain" data-target="azure-inter-ca" aria-label="Intermediate CA slot"></div>
+              </li>
+              <li class="pbq-pki-chain-arrow" aria-hidden="true">↓</li>
+              <li>
+                <span class="pbq-pki-chain-step pbq-pki-chain-step--leaf">3</span>
+                <div class="pbq-pki-chain-label">Leaf / end-entity</div>
+                <div class="drop-slot drop-slot--chain" data-target="leaf-api" aria-label="Leaf certificate slot"></div>
+              </li>
+            </ol>
+          </section>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="pki-p1-checkBtn" type="button">Check Answer</button>
+        <button id="pki-p1-showBtn" type="button">Show Answer</button>
+        <button id="pki-p1-resetBtn" type="button">Reset</button>
+        <span id="pki-p1-result" role="status" aria-live="polite"></span>
+      </div></div></article>
+<article class="pbq-suite-section" id="pki-p2" data-scenario="hybrid-pki-audit" hidden><div class="pbq-suite-section__inner"><div class="sim-frame">
+        <p class="pbq-pki-part-banner">Select the correct algorithm for each use case</p>
+        <div class="pbq-pki-algo-table-wrap">
+          <table class="pbq-pki-algo-table">
+            <thead>
+              <tr>
+                <th scope="col">Use case</th>
+                <th scope="col">Current (audit finding)</th>
+                <th scope="col">Correct algorithm</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <strong>TLS 1.3 key exchange</strong> for api.becertifiedtoday.com
+                  <span class="pbq-pki-use-hint">Forward secrecy required</span>
+                </td>
+                <td><span class="pbq-pki-finding pbq-pki-finding--bad">RSA-2048 key exchange</span></td>
+                <td>
+                  <select class="pbq-ai-select" data-algo="tls-kex" aria-label="TLS key exchange algorithm">
+                    <option value="">Select…</option>
+                    <option value="rsa">RSA-2048 (same as current)</option>
+                    <option value="ecdhe">ECDHE (Elliptic Curve Diffie-Hellman Ephemeral)</option>
+                    <option value="dhe">DHE (Diffie-Hellman Ephemeral)</option>
+                    <option value="aes-gcm">AES-256-GCM (symmetric cipher — not key exchange)</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Password hashing</strong> in the identity database
+                  <span class="pbq-pki-use-hint">Must resist offline brute-force</span>
+                </td>
+                <td><span class="pbq-pki-finding pbq-pki-finding--bad">MD5</span></td>
+                <td>
+                  <select class="pbq-ai-select" data-algo="password-hash" aria-label="Password hashing algorithm">
+                    <option value="">Select…</option>
+                    <option value="sha256">SHA-256 (fast hash — weak for passwords)</option>
+                    <option value="bcrypt">bcrypt (adaptive, salt + cost factor)</option>
+                    <option value="aes">AES-256 (encryption, not hashing)</option>
+                    <option value="sha1">SHA-1 (deprecated)</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Intermediate CA certificate signing</strong>
+                  <span class="pbq-pki-use-hint">Replace SHA-1 finding from audit</span>
+                </td>
+                <td><span class="pbq-pki-finding pbq-pki-finding--bad">SHA-1 (deprecated)</span></td>
+                <td>
+                  <select class="pbq-ai-select" data-algo="ca-signing" aria-label="CA signing algorithm">
+                    <option value="">Select…</option>
+                    <option value="sha1">SHA-1 (current — do not keep)</option>
+                    <option value="sha256">SHA-256 (NIST recommended minimum)</option>
+                    <option value="md5">MD5 (broken)</option>
+                    <option value="sha512">SHA-512 (acceptable, overkill for certs)</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Encrypting sensitive files at rest</strong> in Azure Blob
+                  <span class="pbq-pki-use-hint">Bulk data encryption — performance matters</span>
+                </td>
+                <td><span class="pbq-pki-finding pbq-pki-finding--ok">AES-128-CBC</span></td>
+                <td>
+                  <select class="pbq-ai-select" data-algo="blob-encrypt" aria-label="Data at rest encryption">
+                    <option value="">Select…</option>
+                    <option value="cbc">AES-128-CBC (current — acceptable but upgrade?)</option>
+                    <option value="gcm">AES-256-GCM (authenticated encryption, NIST preferred)</option>
+                    <option value="rsa4096">RSA-4096 (asymmetric — wrong for bulk data)</option>
+                    <option value="3des">3DES (legacy, deprecated by NIST 2023)</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="pki-p2-checkBtn" type="button">Check Answer</button>
+        <button id="pki-p2-showBtn" type="button">Show Answer</button>
+        <button id="pki-p2-resetBtn" type="button">Reset</button>
+        <span id="pki-p2-result" role="status" aria-live="polite"></span>
+      </div></div></article>
+<article class="pbq-suite-section" id="pki-p3" data-scenario="hybrid-pki-audit" hidden><div class="pbq-suite-section__inner"><div class="sim-frame">
+        <p class="pbq-pki-part-banner pbq-pki-part-banner--revoke">
+          Select all certificates that must be immediately revoked
+        </p>
+
+        <ul class="pbq-pki-revoke-list">
+          <li>
+            <label class="pbq-pki-revoke-card pbq-pki-revoke-card--bad">
+              <input type="checkbox" name="secplus_bct_pki_revoke" value="code-sign" data-must-revoke="1" />
+              <span class="pbq-pki-revoke-body">
+                <strong>Code Signing Cert</strong>
+                <span>EXPIRED 2024-11-30 · RSA-1024 · Issued by On-Prem CA</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="pbq-pki-revoke-card pbq-pki-revoke-card--warn">
+              <input type="checkbox" name="secplus_bct_pki_revoke" value="onprem-inter" data-must-revoke="1" />
+              <span class="pbq-pki-revoke-body">
+                <strong>On-Prem Issuing CA Cert</strong>
+                <span>SHA-1 algorithm · Signed by Root CA · Issued weak code-signing leaf</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="pbq-pki-revoke-card pbq-pki-revoke-card--ok">
+              <input type="checkbox" name="secplus_bct_pki_revoke" value="root" data-must-revoke="0" />
+              <span class="pbq-pki-revoke-body">
+                <strong>Root CA Certificate</strong>
+                <span>SHA-256 · Offline · Expires 2044 · Valid</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="pbq-pki-revoke-card pbq-pki-revoke-card--ok">
+              <input type="checkbox" name="secplus_bct_pki_revoke" value="api-leaf" data-must-revoke="0" />
+              <span class="pbq-pki-revoke-body">
+                <strong>api.becertifiedtoday.com Leaf Cert</strong>
+                <span>Valid · SHA-256 · Expires 2026-06-01</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="pbq-pki-revoke-card pbq-pki-revoke-card--ok">
+              <input type="checkbox" name="secplus_bct_pki_revoke" value="azure-inter" data-must-revoke="0" />
+              <span class="pbq-pki-revoke-body">
+                <strong>Azure Issuing CA Cert</strong>
+                <span>SHA-256 · Valid · Expires 2034</span>
+              </span>
+            </label>
+          </li>
+        </ul>
+      </div>
+
+      <div class="actions">
+        <button id="pki-p3-checkBtn" type="button">Check Answer</button>
+        <button id="pki-p3-showBtn" type="button">Show Answer</button>
+        <button id="pki-p3-resetBtn" type="button">Reset</button>
+        <span id="pki-p3-result" role="status" aria-live="polite"></span>
+      </div></div></article>
+        </div>
+      </div>
+
+      <p class="pbq-suite-footer">
+        <a class="btn btn-secondary" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/index.html">All PBQ Labs</a>
+      </p>
+    </main>
+  </div>
+
+  <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "pki-p1";</script>
+  <!-- pki-p1 -->
+<script>
+    (function () {
+      var bank = document.getElementById("bank");
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var resetBtn = document.getElementById("resetBtn");
+      var result = document.getElementById("result");
+      var dragged = null;
+      var picked = null;
+      var CORRECT_MSG =
+        "Correct. Trust anchor: BeCertifiedToday Root CA. Intermediate: Azure Issuing CA (signs the api.becertifiedtoday.com leaf). Leaf: api.becertifiedtoday.com. On-Prem SHA-1 intermediate and expired code-signing cert are not in this TLS chain.";
+
+      function allSlots() {
+        return document.querySelectorAll(".drop-slot[data-target]");
+      }
+
+      function clearPick() {
+        document.querySelectorAll(".token.is-picked").forEach(function (n) {
+          n.classList.remove("is-picked");
+        });
+        picked = null;
+      }
+
+      function setPick(token) {
+        clearPick();
+        picked = token;
+        if (picked) picked.classList.add("is-picked");
+      }
+
+      function moveTokenToSlot(slot, token) {
+        if (!token || !slot) return;
+        var existing = slot.querySelector(".token");
+        if (existing && existing !== token) bank.appendChild(existing);
+        slot.appendChild(token);
+      }
+
+      function shuffleBank() {
+        var nodes = [].slice.call(bank.querySelectorAll(".token"));
+        while (nodes.length) {
+          bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
+        }
+      }
+
+      shuffleBank();
+
+      document.querySelector(".pbq-card").addEventListener("click", function (event) {
+        var token = event.target.closest(".token");
+        if (token) {
+          if (picked === token) {
+            clearPick();
+            return;
+          }
+          var parentSlot =
+            token.parentNode && token.parentNode.classList && token.parentNode.classList.contains("drop-slot")
+              ? token.parentNode
+              : null;
+          if (picked && parentSlot) {
+            moveTokenToSlot(parentSlot, picked);
+            clearPick();
+            return;
+          }
+          setPick(token);
+          return;
+        }
+        var slot = event.target.closest(".drop-slot");
+        if (slot && picked) {
+          moveTokenToSlot(slot, picked);
+          clearPick();
+          return;
+        }
+        if (bank.contains(event.target) && picked && !bank.contains(picked)) {
+          bank.appendChild(picked);
+          clearPick();
+        }
+      });
+
+      document.querySelectorAll(".token").forEach(function (token) {
+        token.addEventListener("dragstart", function () {
+          clearPick();
+          dragged = token;
+        });
+      });
+
+      allSlots().forEach(function (slot) {
+        slot.addEventListener("dragover", function (e) {
+          e.preventDefault();
+          slot.classList.add("over");
+        });
+        slot.addEventListener("dragleave", function () {
+          slot.classList.remove("over");
+        });
+        slot.addEventListener("drop", function (e) {
+          e.preventDefault();
+          slot.classList.remove("over");
+          if (!dragged) return;
+          moveTokenToSlot(slot, dragged);
+          dragged = null;
+        });
+      });
+
+      bank.addEventListener("dragover", function (e) {
+        e.preventDefault();
+      });
+      bank.addEventListener("drop", function (e) {
+        e.preventDefault();
+        if (dragged) bank.appendChild(dragged);
+        dragged = null;
+      });
+
+      function takeFromBank(value) {
+        return [].slice.call(bank.querySelectorAll(".token")).find(function (t) {
+          return t.getAttribute("data-value") === value;
+        });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var allOk = true;
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var want = slot.getAttribute("data-target");
+          var token = slot.querySelector(".token");
+          if (!token || token.getAttribute("data-value") !== want) {
+            slot.classList.add("incorrect");
+            allOk = false;
+          } else {
+            slot.classList.add("correct");
+          }
+        });
+        result.className = allOk ? "is-pass" : "is-fail";
+        result.textContent = allOk
+          ? CORRECT_MSG
+          : "Incorrect. Order: Root CA at top, Azure intermediate (issuer of the API leaf), then api.becertifiedtoday.com leaf.";
+      });
+
+      showBtn.addEventListener("click", function () {
+        clearPick();
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var t = slot.querySelector(".token");
+          if (t) bank.appendChild(t);
+        });
+        allSlots().forEach(function (slot) {
+          var token = takeFromBank(slot.getAttribute("data-target"));
+          if (token) {
+            slot.appendChild(token);
+            slot.classList.add("correct");
+          }
+        });
+        result.className = "is-pass";
+        result.textContent = CORRECT_MSG;
+      });
+
+      resetBtn.addEventListener("click", function () {
+        clearPick();
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var t = slot.querySelector(".token");
+          if (t) bank.appendChild(t);
+        });
+        result.className = "";
+        result.textContent = "";
+        shuffleBank();
+      });
+    })();
+  </script>
+<!-- pki-p2 -->
+<script>
+    (function () {
+      var ALGOS = {
+        "password-hash": "bcrypt",
+        "ca-signing": "sha256",
+        "blob-encrypt": "gcm"
+      };
+
+      function algoValueOk(key, value) {
+        if (key === "tls-kex") return value === "ecdhe" || value === "dhe";
+        return value === ALGOS[key];
+      }
+      var CORRECT_MSG =
+        "Correct. TLS 1.3 with forward secrecy: ECDHE (or DHE) ephemeral key exchange, not static RSA. Passwords: bcrypt (slow, salted). CA signing: SHA-256 minimum. Azure Blob at rest: AES-256-GCM for confidentiality and integrity.";
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var resetBtn = document.getElementById("resetBtn");
+      var result = document.getElementById("result");
+
+      function algosOk() {
+        var ok = true;
+        document.querySelectorAll("[data-algo]").forEach(function (sel) {
+          var key = sel.getAttribute("data-algo");
+          var pass = algoValueOk(key, sel.value);
+          sel.classList.toggle("pbq-ai-select--bad", sel.value && !pass);
+          sel.classList.toggle("pbq-ai-select--good", pass);
+          if (!pass) ok = false;
+        });
+        return ok;
+      }
+
+      checkBtn.addEventListener("click", function () {
+        if (algosOk()) {
+          result.className = "is-pass";
+          result.textContent = CORRECT_MSG;
+        } else {
+          result.className = "is-fail";
+          result.textContent =
+            "Incorrect. Review forward secrecy (ephemeral DH), password hashing (bcrypt/Argon2 class), CA digest (SHA-256+), and modern AEAD for cloud object encryption.";
+        }
+      });
+
+      showBtn.addEventListener("click", function () {
+        document.querySelectorAll("[data-algo]").forEach(function (sel) {
+          var key = sel.getAttribute("data-algo");
+          if (key === "tls-kex") sel.value = "ecdhe";
+          else if (ALGOS[key]) sel.value = ALGOS[key];
+        });
+        algosOk();
+        result.className = "is-pass";
+        result.textContent = CORRECT_MSG;
+      });
+
+      resetBtn.addEventListener("click", function () {
+        document.querySelectorAll("[data-algo]").forEach(function (sel) {
+          sel.value = "";
+          sel.classList.remove("pbq-ai-select--bad", "pbq-ai-select--good");
+        });
+        result.className = "";
+        result.textContent = "";
+      });
+    })();
+  </script>
+<!-- pki-p3 -->
+<script>
+    (function () {
+      var MUST_REVOKE = { "code-sign": true, "onprem-inter": true };
+      var CORRECT_MSG =
+        "Correct. Revoke immediately: expired code-signing leaf (RSA-1024) and the On-Prem intermediate CA using SHA-1 that issued it. Do not revoke the valid root, api.becertifiedtoday.com leaf, or Azure intermediate. After revocation, publish a fresh CRL within the 7-day policy.";
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var resetBtn = document.getElementById("resetBtn");
+      var result = document.getElementById("result");
+
+      function revocationOk() {
+        var ok = true;
+        document.querySelectorAll('input[name="secplus_bct_pki_revoke"]').forEach(function (input) {
+          var val = input.value;
+          var must = !!MUST_REVOKE[val];
+          var checked = input.checked;
+          var pass = checked === must;
+          input.closest(".pbq-pki-revoke-card").classList.toggle("pbq-pki-revoke-card--correct", pass && checked);
+          input.closest(".pbq-pki-revoke-card").classList.toggle("pbq-pki-revoke-card--wrong", !pass);
+          if (!pass) ok = false;
+        });
+        return ok;
+      }
+
+      checkBtn.addEventListener("click", function () {
+        if (revocationOk()) {
+          result.className = "is-pass";
+          result.textContent = CORRECT_MSG;
+        } else {
+          result.className = "is-fail";
+          result.textContent =
+            "Incorrect. Revoke the expired code-signing certificate and the SHA-1 On-Prem intermediate. Leave valid root, API leaf, and Azure intermediate unchecked.";
+        }
+      });
+
+      showBtn.addEventListener("click", function () {
+        document.querySelectorAll('input[name="secplus_bct_pki_revoke"]').forEach(function (input) {
+          input.checked = !!MUST_REVOKE[input.value];
+        });
+        revocationOk();
+        result.className = "is-pass";
+        result.textContent = CORRECT_MSG;
+      });
+
+      resetBtn.addEventListener("click", function () {
+        document.querySelectorAll('input[name="secplus_bct_pki_revoke"]').forEach(function (input) {
+          input.checked = false;
+          input.closest(".pbq-pki-revoke-card").classList.remove(
+            "pbq-pki-revoke-card--correct",
+            "pbq-pki-revoke-card--wrong"
+          );
+        });
+        result.className = "";
+        result.textContent = "";
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -8,8 +8,9 @@ Performance-based question (PBQ) research — drag-and-drop, hot spot, ordered l
 
 | Path | Content |
 |------|---------|
-| `public/COMP_TIA_SEC+/SEC+_PBQ/README.md` | Drag-and-drop template doc + checklist |
-| `public/COMP_TIA_SEC+/SEC+_PBQ/TEMPLATE-dragdrop.html` | Copy skeleton for new drag-and-drop PBQs |
+| `public/COMP_TIA_SEC+/SEC+_PBQ/README.md` | Published PBQ bank + checklist |
+| `public/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/` | **New** PBQ scenarios in development (`TEMPLATE-dragdrop.html`) |
+| `public/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/` | Legacy staged PBQ reference bank |
 | `public/COMP_TIA_SEC+/js/secplus-pbq-page.css` | Shared PBQ layout (14% logo, purple blocks, blue drop slots, nav buttons) |
 | `public/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/` | Full simulations and hot spots |
 

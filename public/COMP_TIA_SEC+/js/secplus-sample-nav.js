@@ -109,6 +109,14 @@
     }
   }
 
+  function isSecplusSimStagingPath(path) {
+    var p = normalizePath(path);
+    return (
+      p.indexOf("/sec+_sim_hot_spot/pbq_production/") !== -1 ||
+      p.indexOf("/sec+_sim_hot_spot/pending/") !== -1
+    );
+  }
+
   function itemMatchesPath(item, path) {
     if (item.type === "sim") return path === normalizePath(item.path);
     return !!(item.slug && path.endsWith("/" + item.slug.toLowerCase() + ".html"));
@@ -562,6 +570,7 @@
   }
 
   function run() {
+    if (isSecplusSimStagingPath(pathnameForMatch())) return;
     var session = readSession();
     if (!session) return;
     injectStyles();

@@ -1,0 +1,131 @@
+<article class="pbq-section-fragment" data-id="acme-guardrails"><h1>Task 2 — Guardrails</h1><div data-acme-part1>aria-labelledby="guard-heading">
+          <h2 id="guard-heading">Task 2 — Guardrails (enable or disable)</h2>
+          <p class="pbq-ai-section-lead">Toggle each guardrail to the recommended production state.</p>
+          <ul class="pbq-ai-guard-list">
+            <li>
+              <label class="pbq-ai-toggle">
+                <input type="checkbox" id="gr-prompt-injection" data-guard="gr-prompt-injection" />
+                <span class="pbq-ai-toggle-ui" aria-hidden="true"></span>
+                <span class="pbq-ai-toggle-text">Prompt injection and jailbreak pattern detection (input)</span>
+              </label>
+            </li>
+            <li>
+              <label class="pbq-ai-toggle">
+                <input type="checkbox" id="gr-output-pii" data-guard="gr-output-pii" />
+                <span class="pbq-ai-toggle-ui" aria-hidden="true"></span>
+                <span class="pbq-ai-toggle-text">Output filter for PII and sensitive HR fields</span>
+              </label>
+            </li>
+            <li>
+              <label class="pbq-ai-toggle">
+                <input type="checkbox" id="gr-retrieval-filter" data-guard="gr-retrieval-filter" />
+                <span class="pbq-ai-toggle-ui" aria-hidden="true"></span>
+                <span class="pbq-ai-toggle-text">Enforce document classification filter at retrieval</span>
+              </label>
+            </li>
+            <li>
+              <label class="pbq-ai-toggle">
+                <input type="checkbox" id="gr-rate-limit" data-guard="gr-rate-limit" />
+                <span class="pbq-ai-toggle-ui" aria-hidden="true"></span>
+                <span class="pbq-ai-toggle-text">Per-user rate limiting on chat and retrieval APIs</span>
+              </label>
+            </li>
+            <li>
+              <label class="pbq-ai-toggle">
+                <input type="checkbox" id="gr-anonymous" data-guard="gr-anonymous" />
+                <span class="pbq-ai-toggle-ui" aria-hidden="true"></span>
+                <span class="pbq-ai-toggle-text">Allow anonymous access to the HR assistant</span>
+              </label>
+            </li>
+            <li>
+              <label class="pbq-ai-toggle">
+                <input type="checkbox" id="gr-debug-prompts" data-guard="gr-debug-prompts" />
+                <span class="pbq-ai-toggle-ui" aria-hidden="true"></span>
+                <span class="pbq-ai-toggle-text">Debug mode: return full system prompt to the browser</span>
+              </label>
+            </li>
+            <li>
+              <label class="pbq-ai-toggle">
+                <input type="checkbox" id="gr-external-tools" data-guard="gr-external-tools" />
+                <span class="pbq-ai-toggle-ui" aria-hidden="true"></span>
+                <span class="pbq-ai-toggle-text">Unrestricted outbound tools (email, HTTP fetch) from the model</span>
+              </label>
+            </li>
+            <li>
+              <label class="pbq-ai-toggle">
+                <input type="checkbox" id="gr-ingest-scan" data-guard="gr-ingest-scan" />
+                <span class="pbq-ai-toggle-ui" aria-hidden="true"></span>
+                <span class="pbq-ai-toggle-text">Scan and quarantine documents at ingestion</span>
+              </label>
+            </li>
+          </ul>
+        </section>
+
+        <section class="pbq-ai-section"<div class="actions">
+        <button id="checkBtn" type="button">Check Answer</button>
+        <button id="showBtn" type="button">Show Answer</button>
+        <button id="resetBtn" type="button">Reset</button>
+        <span id="result" role="status" aria-live="polite"></span></div></article>
+<script>
+(function () {
+  var GUARDS = {
+    "gr-prompt-injection": true,
+    "gr-output-pii": true,
+    "gr-retrieval-filter": true,
+    "gr-rate-limit": true,
+    "gr-ingest-scan": true,
+    "gr-anonymous": false,
+    "gr-debug-prompts": false,
+    "gr-external-tools": false
+  };
+  var root = document.getElementById("acme-guardrails");
+  if (!root) return;
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector(".actions + [id$='result']");
+  function guardsOk() {
+    var ok = true;
+    root.querySelectorAll("[data-guard]").forEach(function (input) {
+      var key = input.getAttribute("data-guard");
+      var pass = input.checked === GUARDS[key];
+      input.closest(".pbq-ai-toggle").classList.toggle("pbq-ai-toggle--bad", !pass);
+      input.closest(".pbq-ai-toggle").classList.toggle("pbq-ai-toggle--good", pass);
+      if (!pass) ok = false;
+    });
+    return ok;
+  }
+  function clearMarks() {
+    root.querySelectorAll(".pbq-ai-toggle--bad, .pbq-ai-toggle--good").forEach(function (el) {
+      el.classList.remove("pbq-ai-toggle--bad", "pbq-ai-toggle--good");
+    });
+  }
+  checkBtn.addEventListener("click", function () {
+    clearMarks();
+    if (guardsOk()) {
+      result.className = "is-pass";
+      result.textContent = "Correct — guardrails match recommended production state.";
+    } else {
+      result.className = "is-fail";
+      result.textContent = "Incorrect. Enable injection, PII, retrieval, rate-limit, and ingest scanning; disable anonymous access, debug prompts, and unrestricted tools.";
+    }
+  });
+  showBtn.addEventListener("click", function () {
+    Object.keys(GUARDS).forEach(function (key) {
+      var input = root.querySelector('[data-guard="' + key + '"]');
+      if (input) input.checked = GUARDS[key];
+    });
+    clearMarks();
+    guardsOk();
+    result.className = "is-pass";
+    result.textContent = "Guardrails set. Continue to Attack mitigations.";
+  });
+  resetBtn.addEventListener("click", function () {
+    root.querySelectorAll("[data-guard]").forEach(function (input) { input.checked = false; });
+    clearMarks();
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>

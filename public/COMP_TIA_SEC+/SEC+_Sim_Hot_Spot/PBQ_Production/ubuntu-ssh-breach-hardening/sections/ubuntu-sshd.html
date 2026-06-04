@@ -1,0 +1,36 @@
+<article class="pbq-section-fragment" data-id="ubuntu-sshd"><h1>sshd_config</h1><div class="pbq-ssh-sim" data-ubuntu-harden><div id="panel-sshd" class="pbq-ssh-panel active" role="tabpanel" aria-labelledby="tab-sshd">
+          <div class="pbq-ssh-editor">
+            <div class="pbq-ssh-editor__bar">
+              <span class="pbq-ssh-editor__path">/etc/ssh/sshd_config</span>
+              <span class="pbq-ssh-editor__hint">7 settings to fix — attacker used password auth + root login</span>
+            </div>
+            <pre class="pbq-ssh-code" aria-label="sshd_config"><code><span class="ln">1</span><span class="kw">Port</span> <select class="pbq-ssh-select" data-key="sshd-port" data-correct="4422" aria-label="Port">
+  <option value="">?</option><option>22</option><option>2222</option><option>4422</option>
+</select> <span class="cm"># attacker scanned default port — change it</span>
+<span class="ln">2</span><span class="kw">Protocol</span> <select class="pbq-ssh-select" data-key="sshd-protocol" data-correct="2" aria-label="Protocol">
+  <option value="">?</option><option>1</option><option>2</option><option>1,2</option>
+</select>
+<span class="ln">3</span><span class="kw">PermitRootLogin</span> <select class="pbq-ssh-select" data-key="sshd-root" data-correct="no" aria-label="PermitRootLogin">
+  <option value="">?</option><option>yes</option><option>no</option><option>prohibit-password</option><option>without-password</option>
+</select>
+<span class="ln">4</span><span class="kw">PasswordAuthentication</span> <select class="pbq-ssh-select" data-key="sshd-password" data-correct="no" aria-label="PasswordAuthentication">
+  <option value="">?</option><option>yes</option><option>no</option>
+</select> <span class="cm"># key vector of breach</span>
+<span class="ln">5</span><span class="kw">MaxAuthTries</span> <select class="pbq-ssh-select" data-key="sshd-maxauth" data-correct="3" aria-label="MaxAuthTries">
+  <option value="">?</option><option>10</option><option>6</option><option>3</option><option>1</option>
+</select>
+<span class="ln">6</span><span class="kw">LoginGraceTime</span> <select class="pbq-ssh-select" data-key="sshd-grace" data-correct="30" aria-label="LoginGraceTime">
+  <option value="">?</option><option>120</option><option>60</option><option>30</option>
+</select>
+<span class="ln">7</span><span class="kw">AllowUsers</span> <span class="val">webadmin deploy</span>
+<span class="ln">8</span><span class="kw">X11Forwarding</span> <select class="pbq-ssh-select" data-key="sshd-x11" data-correct="no" aria-label="X11Forwarding">
+  <option value="">?</option><option>yes</option><option>no</option>
+</select>
+<span class="ln">9</span><span class="kw">PubkeyAuthentication</span> <span class="val">yes</span>
+<span class="ln">10</span><span class="cm"># Require 2FA for non-key users</span>
+<span class="ln">11</span><span class="kw">AuthenticationMethods</span> <span class="val">publickey,keyboard-interactive</span></code></pre>
+            <p class="pbq-ssh-note">⚠️ Note: changing <code>Port</code> also requires updating the fail2ban jail port — they must match.</p>
+          </div>
+        </div>
+
+        </div></article>

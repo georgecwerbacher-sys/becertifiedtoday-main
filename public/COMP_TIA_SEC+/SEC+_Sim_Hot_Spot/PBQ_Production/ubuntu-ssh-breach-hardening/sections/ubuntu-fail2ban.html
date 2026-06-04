@@ -1,0 +1,33 @@
+<article class="pbq-section-fragment" data-id="ubuntu-fail2ban"><h1>jail.local (fail2ban)</h1><div class="pbq-ssh-sim" data-ubuntu-harden><div id="panel-fail2ban" class="pbq-ssh-panel" role="tabpanel" aria-labelledby="tab-fail2ban" hidden>
+          <div class="pbq-ssh-editor">
+            <div class="pbq-ssh-editor__bar">
+              <span class="pbq-ssh-editor__path">/etc/fail2ban/jail.local</span>
+              <span class="pbq-ssh-editor__hint">Brute-force protection — must match the SSH port you set</span>
+            </div>
+            <pre class="pbq-ssh-code" aria-label="jail.local"><code><span class="ln">1</span><span class="sec">[DEFAULT]</span>
+<span class="ln">2</span><span class="kw">bantime</span> = <span class="val">1h</span>
+<span class="ln">3</span><span class="kw">findtime</span> = <span class="val">10m</span>
+<span class="ln">4</span><span class="kw">maxretry</span> = <span class="val">5</span>
+<span class="ln">5</span>
+<span class="ln">6</span><span class="sec pbq-ssh-code--highlight">[sshd]</span>
+<span class="ln">7</span><span class="kw">enabled</span> = <select class="pbq-ssh-select" data-key="f2b-enabled" data-correct="true" aria-label="sshd jail enabled">
+  <option value="">?</option><option>true</option><option>false</option>
+</select>
+<span class="ln">8</span><span class="kw">port</span> = <select class="pbq-ssh-select" data-key="f2b-port" data-correct="4422" aria-label="sshd jail port">
+  <option value="">?</option><option>ssh (default 22)</option><option>2222</option><option>4422</option>
+</select> <span class="cm"># must match sshd_config Port</span>
+<span class="ln">9</span><span class="kw">maxretry</span> = <select class="pbq-ssh-select" data-key="f2b-maxretry" data-correct="3" aria-label="sshd jail maxretry">
+  <option value="">?</option><option>10</option><option>5</option><option>3</option>
+</select>
+<span class="ln">10</span><span class="kw">bantime</span> = <select class="pbq-ssh-select" data-key="f2b-bantime" data-correct="24h" aria-label="sshd jail bantime">
+  <option value="">?</option><option>1h</option><option>24h</option><option>1w</option><option>-1 (permanent)</option>
+</select></code></pre>
+            <div class="pbq-ssh-callout" role="note">
+              <strong>💡 Interdependency:</strong> If you changed SSH to port <code>4422</code> in <code>sshd_config</code>, the
+              fail2ban <code>port</code> must also be set to <code>4422</code> — otherwise fail2ban monitors the wrong port and
+              brute-force attempts go undetected.
+            </div>
+          </div>
+        </div>
+
+        </div></article>

@@ -1,0 +1,310 @@
+<article class="pbq-section-fragment" data-id="ubuntu-all"><header class="pbq-ssh-scenario">
+        <p class="pbq-ssh-scenario__eyebrow">Incident response · SY0-701 PBQ</p>
+        <h1>Ubuntu 22.04 web server — post-breach hardening</h1>
+        <p class="pbq-ssh-scenario__lead">
+          A threat actor gained SSH access using brute-forced credentials. Forensics shows the attacker pivoted to
+          root via a misconfigured sudo policy and established persistence with a malicious cron job. Harden all four
+          areas below — some fixes interact. Wrong changes in one file can break another control.
+        </p>
+      </header>
+
+      <div class="pbq-ssh-score-row" aria-label="Section scores">
+        <span class="pbq-ssh-score" id="score-sshd">sshd_config <strong>0</strong> / 7 pts</span>
+        <span class="pbq-ssh-score" id="score-f2b">fail2ban <strong>0</strong> / 4 pts</span>
+        <span class="pbq-ssh-score" id="score-ufw">ufw rules <strong>0</strong> / 3 pts</span>
+        <span class="pbq-ssh-score" id="score-cq">Consequence Qs <strong>0</strong> / 4 pts</span>
+      </div>
+
+      <div class="pbq-ssh-sim">
+        <div class="pbq-ssh-tabs" role="tablist" aria-label="Configuration areas">
+          <button type="button" class="pbq-ssh-tab active" role="tab" aria-selected="true" data-tab="sshd" id="tab-sshd">
+            <span class="pbq-ssh-tab__icon" aria-hidden="true">📄</span> sshd_config
+          </button>
+          <button type="button" class="pbq-ssh-tab" role="tab" aria-selected="false" data-tab="fail2ban" id="tab-fail2ban">
+            <span class="pbq-ssh-tab__icon" aria-hidden="true">📄</span> jail.local (fail2ban)
+          </button>
+          <button type="button" class="pbq-ssh-tab" role="tab" aria-selected="false" data-tab="ufw" id="tab-ufw">
+            <span class="pbq-ssh-tab__icon" aria-hidden="true">📄</span> UFW Rules
+          </button>
+          <button type="button" class="pbq-ssh-tab pbq-ssh-tab--warn" role="tab" aria-selected="false" data-tab="consequences" id="tab-consequences">
+            <span class="pbq-ssh-tab__icon" aria-hidden="true">⚠️</span> Consequence Qs
+          </button>
+        </div>
+
+        <div id="panel-sshd" class="pbq-ssh-panel active" role="tabpanel" aria-labelledby="tab-sshd">
+          <div class="pbq-ssh-editor">
+            <div class="pbq-ssh-editor__bar">
+              <span class="pbq-ssh-editor__path">/etc/ssh/sshd_config</span>
+              <span class="pbq-ssh-editor__hint">7 settings to fix — attacker used password auth + root login</span>
+            </div>
+            <pre class="pbq-ssh-code" aria-label="sshd_config"><code><span class="ln">1</span><span class="kw">Port</span> <select class="pbq-ssh-select" data-key="sshd-port" data-correct="4422" aria-label="Port">
+  <option value="">?</option><option>22</option><option>2222</option><option>4422</option>
+</select> <span class="cm"># attacker scanned default port — change it</span>
+<span class="ln">2</span><span class="kw">Protocol</span> <select class="pbq-ssh-select" data-key="sshd-protocol" data-correct="2" aria-label="Protocol">
+  <option value="">?</option><option>1</option><option>2</option><option>1,2</option>
+</select>
+<span class="ln">3</span><span class="kw">PermitRootLogin</span> <select class="pbq-ssh-select" data-key="sshd-root" data-correct="no" aria-label="PermitRootLogin">
+  <option value="">?</option><option>yes</option><option>no</option><option>prohibit-password</option><option>without-password</option>
+</select>
+<span class="ln">4</span><span class="kw">PasswordAuthentication</span> <select class="pbq-ssh-select" data-key="sshd-password" data-correct="no" aria-label="PasswordAuthentication">
+  <option value="">?</option><option>yes</option><option>no</option>
+</select> <span class="cm"># key vector of breach</span>
+<span class="ln">5</span><span class="kw">MaxAuthTries</span> <select class="pbq-ssh-select" data-key="sshd-maxauth" data-correct="3" aria-label="MaxAuthTries">
+  <option value="">?</option><option>10</option><option>6</option><option>3</option><option>1</option>
+</select>
+<span class="ln">6</span><span class="kw">LoginGraceTime</span> <select class="pbq-ssh-select" data-key="sshd-grace" data-correct="30" aria-label="LoginGraceTime">
+  <option value="">?</option><option>120</option><option>60</option><option>30</option>
+</select>
+<span class="ln">7</span><span class="kw">AllowUsers</span> <span class="val">webadmin deploy</span>
+<span class="ln">8</span><span class="kw">X11Forwarding</span> <select class="pbq-ssh-select" data-key="sshd-x11" data-correct="no" aria-label="X11Forwarding">
+  <option value="">?</option><option>yes</option><option>no</option>
+</select>
+<span class="ln">9</span><span class="kw">PubkeyAuthentication</span> <span class="val">yes</span>
+<span class="ln">10</span><span class="cm"># Require 2FA for non-key users</span>
+<span class="ln">11</span><span class="kw">AuthenticationMethods</span> <span class="val">publickey,keyboard-interactive</span></code></pre>
+            <p class="pbq-ssh-note">⚠️ Note: changing <code>Port</code> also requires updating the fail2ban jail port — they must match.</p>
+          </div>
+        </div>
+
+        <div id="panel-fail2ban" class="pbq-ssh-panel" role="tabpanel" aria-labelledby="tab-fail2ban" hidden>
+          <div class="pbq-ssh-editor">
+            <div class="pbq-ssh-editor__bar">
+              <span class="pbq-ssh-editor__path">/etc/fail2ban/jail.local</span>
+              <span class="pbq-ssh-editor__hint">Brute-force protection — must match the SSH port you set</span>
+            </div>
+            <pre class="pbq-ssh-code" aria-label="jail.local"><code><span class="ln">1</span><span class="sec">[DEFAULT]</span>
+<span class="ln">2</span><span class="kw">bantime</span> = <span class="val">1h</span>
+<span class="ln">3</span><span class="kw">findtime</span> = <span class="val">10m</span>
+<span class="ln">4</span><span class="kw">maxretry</span> = <span class="val">5</span>
+<span class="ln">5</span>
+<span class="ln">6</span><span class="sec pbq-ssh-code--highlight">[sshd]</span>
+<span class="ln">7</span><span class="kw">enabled</span> = <select class="pbq-ssh-select" data-key="f2b-enabled" data-correct="true" aria-label="sshd jail enabled">
+  <option value="">?</option><option>true</option><option>false</option>
+</select>
+<span class="ln">8</span><span class="kw">port</span> = <select class="pbq-ssh-select" data-key="f2b-port" data-correct="4422" aria-label="sshd jail port">
+  <option value="">?</option><option>ssh (default 22)</option><option>2222</option><option>4422</option>
+</select> <span class="cm"># must match sshd_config Port</span>
+<span class="ln">9</span><span class="kw">maxretry</span> = <select class="pbq-ssh-select" data-key="f2b-maxretry" data-correct="3" aria-label="sshd jail maxretry">
+  <option value="">?</option><option>10</option><option>5</option><option>3</option>
+</select>
+<span class="ln">10</span><span class="kw">bantime</span> = <select class="pbq-ssh-select" data-key="f2b-bantime" data-correct="24h" aria-label="sshd jail bantime">
+  <option value="">?</option><option>1h</option><option>24h</option><option>1w</option><option>-1 (permanent)</option>
+</select></code></pre>
+            <div class="pbq-ssh-callout" role="note">
+              <strong>💡 Interdependency:</strong> If you changed SSH to port <code>4422</code> in <code>sshd_config</code>, the
+              fail2ban <code>port</code> must also be set to <code>4422</code> — otherwise fail2ban monitors the wrong port and
+              brute-force attempts go undetected.
+            </div>
+          </div>
+        </div>
+
+        <div id="panel-ufw" class="pbq-ssh-panel" role="tabpanel" aria-labelledby="tab-ufw" hidden>
+          <div class="pbq-ssh-ufw">
+            <div class="pbq-ssh-ufw__bar">
+              <span class="pbq-ssh-ufw__title">UFW Firewall Rules</span>
+              <span class="pbq-ssh-editor__hint">Select the correct UFW commands to apply — order matters</span>
+            </div>
+            <p class="pbq-ssh-ufw__prompt"># Select the correct UFW rule for each requirement:</p>
+            <ol class="pbq-ssh-ufw__list">
+              <li>
+                <span class="pbq-ssh-ufw__req"># 1. Allow SSH on new port (from management subnet only: 10.0.1.0/24)</span>
+                <select class="pbq-ssh-ufw-select" data-key="ufw-1" data-correct="ufw allow from 10.0.1.0/24 to any port 4422 proto tcp" aria-label="UFW rule 1">
+                  <option value="">-- select command --</option>
+                  <option>ufw allow 22/tcp</option>
+                  <option>ufw allow from 10.0.1.0/24 to any port 4422 proto tcp</option>
+                  <option>ufw allow 4422/tcp</option>
+                  <option>ufw allow from any to any port 4422</option>
+                </select>
+              </li>
+              <li>
+                <span class="pbq-ssh-ufw__req"># 2. Allow web traffic (HTTP + HTTPS) from anywhere</span>
+                <select class="pbq-ssh-ufw-select" data-key="ufw-2" data-correct="ufw allow 'Nginx Full'" aria-label="UFW rule 2">
+                  <option value="">-- select command --</option>
+                  <option>ufw allow 80,443/tcp</option>
+                  <option>ufw allow http &amp;&amp; ufw allow https</option>
+                  <option>ufw allow from any to any port 80,443</option>
+                  <option>ufw allow 'Nginx Full'</option>
+                </select>
+              </li>
+              <li>
+                <span class="pbq-ssh-ufw__req"># 3. Set default policies (deny inbound, allow outbound)</span>
+                <select class="pbq-ssh-ufw-select" data-key="ufw-3" data-correct="ufw default deny incoming &amp;&amp; ufw default allow outgoing" aria-label="UFW rule 3">
+                  <option value="">-- select command --</option>
+                  <option>ufw default deny incoming &amp;&amp; ufw default allow outgoing</option>
+                  <option>ufw default allow incoming &amp;&amp; ufw default deny outgoing</option>
+                  <option>ufw deny all &amp;&amp; ufw allow out</option>
+                  <option>ufw default deny &amp;&amp; ufw enable</option>
+                </select>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div id="panel-consequences" class="pbq-ssh-panel" role="tabpanel" aria-labelledby="tab-consequences" hidden>
+          <p class="pbq-ssh-cq-banner">⚠️ CONFIGURATION CONSEQUENCE QUESTIONS — CHOOSE THE BEST ANSWER</p>
+          <div class="pbq-ssh-cq-list">
+            <fieldset class="pbq-ssh-cq" data-key="cq1" data-correct="b">
+              <legend>Q1. You set <code>PasswordAuthentication no</code> but a junior admin has not yet uploaded their SSH public key. What is the immediate consequence?</legend>
+              <label><input type="radio" name="cq1" value="a" /> The admin's password will be used as a fallback automatically.</label>
+              <label><input type="radio" name="cq1" value="b" /> The admin will be completely locked out until their public key is added to <code>authorized_keys</code>.</label>
+              <label><input type="radio" name="cq1" value="c" /> The admin can still log in with a password if they use the correct username.</label>
+              <label><input type="radio" name="cq1" value="d" /> SSH will revert to password auth automatically for users without keys.</label>
+            </fieldset>
+            <fieldset class="pbq-ssh-cq" data-key="cq2" data-correct="b">
+              <legend>Q2. You changed SSH to port 4422 in <code>sshd_config</code> but forgot to update fail2ban's port setting. What happens?</legend>
+              <label><input type="radio" name="cq2" value="a" /> fail2ban blocks attackers on port 22 instead, giving partial protection.</label>
+              <label><input type="radio" name="cq2" value="b" /> fail2ban monitors port 22 (no traffic), so brute-force attacks on port 4422 go completely undetected and are never banned.</label>
+              <label><input type="radio" name="cq2" value="c" /> fail2ban automatically detects the new port from the SSH log.</label>
+              <label><input type="radio" name="cq2" value="d" /> SSH refuses to start because fail2ban blocks the new port.</label>
+            </fieldset>
+            <fieldset class="pbq-ssh-cq" data-key="cq3" data-correct="c">
+              <legend>Q3. Which action is the <em>most effective single change</em> to prevent the original brute-force attack vector used in this breach?</legend>
+              <label><input type="radio" name="cq3" value="a" /> Change the SSH port to a non-standard port.</label>
+              <label><input type="radio" name="cq3" value="b" /> Set <code>MaxAuthTries</code> to 3.</label>
+              <label><input type="radio" name="cq3" value="c" /> Disable <code>PasswordAuthentication</code> and require SSH key pairs only.</label>
+              <label><input type="radio" name="cq3" value="d" /> Enable fail2ban with a 1-hour bantime.</label>
+            </fieldset>
+            <fieldset class="pbq-ssh-cq" data-key="cq4" data-correct="b">
+              <legend>Q4. The attacker established persistence by adding a cron job as root. After hardening SSH, what <em>additional</em> step must you take to remove this persistence?</legend>
+              <label><input type="radio" name="cq4" value="a" /> Restart the SSH daemon — this clears all running processes.</label>
+              <label><input type="radio" name="cq4" value="b" /> Run <code>crontab -l</code> for root and all users, audit <code>/etc/cron.*</code>, and remove malicious entries — then check for additional backdoors (authorized_keys, startup scripts).</label>
+              <label><input type="radio" name="cq4" value="c" /> Change the root password — this invalidates the attacker's session.</label>
+              <label><input type="radio" name="cq4" value="d" /> Enable UFW — the firewall will block outbound cron connections.</label>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="pbq-ssh-actions">
+          <button type="button" class="btn btn-primary" id="gradeAllBtn">▶ Submit All &amp; Grade</button>
+          <button type="button" class="btn btn-secondary" id="resetAllBtn">↺ Reset</button>
+        </div>
+        <p id="gradeResult" class="result" role="status" aria-live="polite"></p>
+      </div>
+
+      <p class="pbq-ssh-footer">
+        <a class="btn btn-secondary" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">All PBQ Labs</a>
+      </p></article>
+<script>
+    (function () {
+      var root = document.getElementById("ubuntu-all");
+      if (!root) return;
+      var tabs = root.querySelectorAll(".pbq-ssh-tab");
+      var panels = root.querySelectorAll(".pbq-ssh-panel");
+      var gradeBtn = root.querySelector(".pbq-ssh-actions .btn-primary");
+      var resetBtn = root.querySelector(".pbq-ssh-actions .btn-secondary");
+      var gradeResult = root.querySelector(".pbq-ssh-actions + .result, .result[role='status']");
+      var scoreSshd = root.querySelector("#score-sshd");
+      var scoreF2b = root.querySelector("#score-f2b");
+      var scoreUfw = root.querySelector("#score-ufw");
+      var scoreCq = root.querySelector("#score-cq");
+
+      var PASS_MSG =
+        "Correct — all four areas pass. SSH is on 4422 with keys-only auth, fail2ban watches the same port, UFW allows management SSH and public web only with default deny inbound, and you understand lockout and persistence cleanup.";
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener("click", function () {
+          var id = tab.getAttribute("data-tab");
+          tabs.forEach(function (t) {
+            var on = t === tab;
+            t.classList.toggle("active", on);
+            t.setAttribute("aria-selected", on ? "true" : "false");
+          });
+          panels.forEach(function (panel) {
+            var on = panel.id.slice(-("panel-" + id).length) === "panel-" + id;
+            panel.classList.toggle("active", on);
+            panel.hidden = !on;
+          });
+        });
+      });
+
+      function fieldOk(select) {
+        var val = select.value.trim();
+        var want = select.getAttribute("data-correct");
+        var pass = val !== "" && val === want;
+        select.classList.toggle("pbq-ssh-select--ok", pass);
+        select.classList.toggle("pbq-ssh-select--bad", val !== "" && !pass);
+        return pass ? 1 : 0;
+      }
+
+      function gradeSshd() {
+        var n = 0;
+        root.querySelectorAll('[id$="panel-sshd"] .pbq-ssh-select').forEach(function (sel) {
+          n += fieldOk(sel);
+        });
+        scoreSshd.innerHTML = "sshd_config <strong>" + n + "</strong> / 7 pts";
+        return n === 7;
+      }
+
+      function gradeFail2ban() {
+        var n = 0;
+        root.querySelectorAll('[id$="panel-fail2ban"] .pbq-ssh-select').forEach(function (sel) {
+          n += fieldOk(sel);
+        });
+        scoreF2b.innerHTML = "fail2ban <strong>" + n + "</strong> / 4 pts";
+        return n === 4;
+      }
+
+      function gradeUfw() {
+        var n = 0;
+        root.querySelectorAll(".pbq-ssh-ufw-select").forEach(function (sel) {
+          var val = sel.value.trim();
+          var want = sel.getAttribute("data-correct");
+          var pass = val !== "" && val === want;
+          sel.classList.toggle("pbq-ssh-select--ok", pass);
+          sel.classList.toggle("pbq-ssh-select--bad", val !== "" && !pass);
+          if (pass) n += 1;
+        });
+        scoreUfw.innerHTML = "ufw rules <strong>" + n + "</strong> / 3 pts";
+        return n === 3;
+      }
+
+      function gradeConsequences() {
+        var n = 0;
+        root.querySelectorAll(".pbq-ssh-cq").forEach(function (fs) {
+          var want = fs.getAttribute("data-correct");
+          var picked = fs.querySelector('input[type="radio"]:checked');
+          var pass = picked && picked.value === want;
+          fs.classList.toggle("pbq-ssh-cq--ok", !!pass);
+          fs.classList.toggle("pbq-ssh-cq--bad", picked && !pass);
+          if (pass) n += 1;
+        });
+        scoreCq.innerHTML = "Consequence Qs <strong>" + n + "</strong> / 4 pts";
+        return n === 4;
+      }
+
+      function gradeAll() {
+        var ok =
+          gradeSshd() && gradeFail2ban() && gradeUfw() && gradeConsequences();
+        if (ok) {
+          gradeResult.className = "result is-pass";
+          gradeResult.textContent = PASS_MSG;
+        } else {
+          gradeResult.className = "result is-fail";
+          gradeResult.textContent =
+            "Not yet correct. Check score badges — align Port 4422 across sshd, fail2ban, and UFW; disable password and root login; tighten fail2ban; set UFW defaults last in the list; answer all consequence questions.";
+        }
+        return ok;
+      }
+
+      gradeBtn.addEventListener("click", gradeAll);
+
+      resetBtn.addEventListener("click", function () {
+        root.querySelectorAll(".pbq-ssh-select, .pbq-ssh-ufw-select").forEach(function (sel) {
+          sel.selectedIndex = 0;
+          sel.classList.remove("pbq-ssh-select--ok", "pbq-ssh-select--bad");
+        });
+        root.querySelectorAll('.pbq-ssh-cq input[type="radio"]').forEach(function (r) {
+          r.checked = false;
+        });
+        root.querySelectorAll(".pbq-ssh-cq").forEach(function (fs) {
+          fs.classList.remove("pbq-ssh-cq--ok", "pbq-ssh-cq--bad");
+        });
+        scoreSshd.innerHTML = "sshd_config <strong>0</strong> / 7 pts";
+        scoreF2b.innerHTML = "fail2ban <strong>0</strong> / 4 pts";
+        scoreUfw.innerHTML = "ufw rules <strong>0</strong> / 3 pts";
+        scoreCq.innerHTML = "Consequence Qs <strong>0</strong> / 4 pts";
+        gradeResult.className = "";
+        gradeResult.textContent = "";
+      });
+    })();
+  </script>
