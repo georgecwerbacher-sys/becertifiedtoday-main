@@ -36,6 +36,7 @@ Obsidian vault for data-driven marketing (Cursor + GA4 + Stripe + Google Ads). O
 - [[10-competitors/README|Competitors — PDF dump market]] ← SY0-701 analysis + CSV for Numbers
 - [[11-question-sourcing/secplus-sy0-701-web-sources|SY0-701 question sources (web)]] ← verify vs CompTIA; version/date catalog
 - [[11-question-sourcing/pbq/README|SY0-701 PBQ sourcing]] ← `npm run secplus:pbq-monthly` · compare vs `SEC+_PBQ/`
+- [[11-question-sourcing/pbq/captures/README|SY0-701 PBQ screenshots]] ← PNG research vault · `npm run secplus:pbq-screenshot`
 
 ## Reports
 
