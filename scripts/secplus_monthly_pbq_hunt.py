@@ -43,6 +43,7 @@ CSV_FIELDS = [
     "tokens_or_items",
     "correct_mapping",
     "stated_answer",
+    "screenshot_path",
     "topic_notes",
     "date_found",
 ]
@@ -61,6 +62,8 @@ def read_import_csv(path: Path) -> list[dict]:
     with path.open(newline="", encoding="utf-8") as f:
         for raw in csv.DictReader(f):
             row = {k: (raw.get(k) or "").strip() for k in CSV_FIELDS if k != "discovered_at"}
+            if not row.get("screenshot_path"):
+                row["screenshot_path"] = (raw.get("capture_path") or "").strip()
             if row.get("stem"):
                 rows.append(row)
     return rows

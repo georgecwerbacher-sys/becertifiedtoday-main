@@ -40,6 +40,33 @@ Step 1 does **not** read BCT. Step 2 compares against `SEC+_PBQ/` and `SEC+_Sim_
 
 ---
 
+## Screenshot (drag-and-drop / sims)
+
+HTML collect only finds **catalog signals**. For the actual interaction, save a **PNG screenshot** and paraphrase from it.
+
+**Manual** (most PBQs — paid preview, CertMaster, VCE, Cmd+Shift+4):
+
+```bash
+python3 scripts/secplus_pbq_capture.py register \
+  --png ~/Desktop/pbq-preview.png \
+  --source-id crucial-exams-manual \
+  --notes "Paraphrase only — verify on Tier A"
+```
+
+**Automated** (optional, when preview is public):
+
+```bash
+pip install playwright && playwright install chromium
+npm run secplus:pbq-screenshot-list
+npm run secplus:pbq-screenshot
+```
+
+PNG + sidecar → `pbq/captures/YYYY-MM-DD/<source-id>/`. Add `screenshot_path` in `pbq/imports/` CSV, then collect with `--import`.
+
+See [[../11-question-sourcing/pbq/captures/README|captures/README]].
+
+---
+
 ## Three steps (manual)
 
 ### 1 — Collect (no BCT)

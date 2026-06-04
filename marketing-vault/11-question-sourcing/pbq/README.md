@@ -29,6 +29,8 @@ Performance-based question (PBQ) research — drag-and-drop, hot spot, ordered l
 
 When a page **advertises** PBQs but hides stems behind a paywall, collect still logs a **catalog row** (stated count + interaction style) so compare/save can track the gap. Paste full stems into `imports/` when you preview a site manually.
 
+**Screenshot:** PBQ / drag-and-drop / sim research is **PNG-based** — see [[captures/README|pbq/captures/]] · `npm run secplus:pbq-screenshot` (Playwright) or drop PNGs with `register`.
+
 **Monthly process:**
 
 ```bash
@@ -47,6 +49,8 @@ Playbook: [[../05-playbooks/secplus-monthly-pbq-sourcing|secplus-monthly-pbq-sou
 | [[secplus-pbq-not-in-bct\|PBQ net-new log]] | Accepted candidates after compare |
 | `config/secplus-pbq-sources.json` | Tier A notes + poll registry pointer |
 | `templates/discovered-pbq-import.csv` | Manual paste format |
+| `captures/` | PBQ / sim **screenshots** (PNG + sidecar JSON) — [[captures/README|captures/README]] |
+| `config/secplus-pbq-capture-targets.json` | Extra capture URLs (previews, localhost QA) |
 | `imports/` | Your paste CSVs |
 | `runs/` | `YYYY-MM-DD-discovered.csv`, compare, net-new `.md` |
 
@@ -60,6 +64,7 @@ Playbook: [[../05-playbooks/secplus-monthly-pbq-sourcing|secplus-monthly-pbq-sou
 | npm | `secplus:monthly` | `secplus:pbq-monthly` |
 | Poll key | `question_poll` | `pbq_poll` |
 | Compare vs | `SEC+_Questions/` | `SEC+_PBQ/` + `SEC+_Sim_Hot_Spot/` |
+| Screenshot | — | PNG in `pbq/captures/` · `npm run secplus:pbq-screenshot` or manual register |
 | Ship to | `gen_secplus_chain_pages.py` | `public/COMP_TIA_SEC+/SEC+_PBQ/*.html` |
 
 Related: [[../secplus-sy0-701-web-sources|MCQ source catalog]] · [[../10-competitors/practice-samples-competitors|Practice competitors]]
