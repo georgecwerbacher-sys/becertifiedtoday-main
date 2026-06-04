@@ -331,6 +331,7 @@ def cmd_collect(args: argparse.Namespace) -> tuple[int, str]:
                 "run_id": run_id,
                 "phase": "collect",
                 "count": len(all_rows),
+                "deep_scan": True,
                 "bct_read": False,
                 "discovered_csv": str(paths["discovered"].relative_to(ROOT)),
             },

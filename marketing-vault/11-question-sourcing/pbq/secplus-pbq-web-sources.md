@@ -52,10 +52,13 @@ Same tier policy as [[../secplus-sy0-701-web-sources|MCQ catalog]] — Tier C is
 |--------|-----|------------|-------|
 | DumpsMate | https://www.dumpsmate.com/SY0-701-exam.html | 2026-06-03 | 2 hotspot + 3 simulation stated — [[../../10-competitors/sites/dumpsmate\|dumpsmate]] · `pbq_poll` enabled |
 | PrepAway | https://www.prepaway.com/sy0-701-exam.html | 2026-06-03 | ETE drag-drop / sim claims — [[../../10-competitors/sites/prepaway-examcollection-network\|prepaway]] · `pbq_poll` enabled |
+| ExamCollection | https://www.examcollection.com/SY0-701.html | 2026-06-03 | VCE drag-drop claims — [[../../10-competitors/sites/examcollection\|examcollection]] · `pbq_poll` enabled |
+| Exam-Labs | https://www.exam-labs.com/dumps/SY0-701 | 2026-06-03 | VCE sim claims — [[../../10-competitors/sites/exam-labs\|exam-labs]] · `pbq_poll` enabled |
 | CertEmpire | https://certempire.com/exam/sy0-701-exam-questions/ | 2026-06-03 | Web simulator SKU — [[../../10-competitors/sites/certempire\|certempire]] · `pbq_poll` enabled |
 | ActualTests | https://www.actualtests.com/exam-SY0-701.htm | 2026-06-03 | PDF + engine SKU — [[../../10-competitors/sites/actualtests\|actualtests]] · `pbq_poll` enabled |
-| r/CompTIA | https://www.reddit.com/r/CompTIA/ | 2026-06-03 | “What PBQ did you get?” threads — paraphrase only · `pbq_poll` off |
-| r/SecurityPlus | https://www.reddit.com/r/SecurityPlus/ | 2026-06-03 | Exam experience / sim recall |
+| r/CompTIA | https://www.reddit.com/r/CompTIA/ | 2026-06-03 | PBQ recall search — [[../../10-competitors/sites/reddit-comptia\|reddit-comptia]] · `reddit_pbq` |
+| r/SecurityPlus | https://www.reddit.com/r/SecurityPlus/ | 2026-06-03 | PBQ recall search — [[../../10-competitors/sites/reddit-securityplus\|reddit-securityplus]] · `reddit_pbq` |
+| 9tut (CCNA engine) | https://www.9tut.com/ccna-testing-engine | 2026-06-03 | CCNA drag-drop + lab sim wording — [[../../10-competitors/sites/9tut\|9tut]] · interaction intel only |
 | ExamTopics | https://www.examtopics.com/exams/comptia/sy0-701/ | 2026-06-03 | Research index — [[../../10-competitors/sites/examtopics\|examtopics]] · `pbq_poll` enabled · Ads negative |
 
 **Import convention:** paste into [[templates/discovered-pbq-import|discovered-pbq-import.csv]] with `topic_notes`: `Tier C research — community recall; verify on CompTIA Tier A only`.

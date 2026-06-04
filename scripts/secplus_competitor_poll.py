@@ -5,6 +5,7 @@ import json
 import re
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 from html import unescape
 from pathlib import Path
@@ -13,10 +14,17 @@ ROOT = Path(__file__).resolve().parent.parent
 COMPETITOR_SITES = ROOT / "marketing-vault" / "10-competitors" / "sites"
 
 USER_AGENT = "BCT-SY0-701-Monthly-Hunt/1.0 (+https://becertifiedtoday.com; research)"
+REDDIT_USER_AGENT = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+)
 
 
-def fetch_url(url: str, timeout: int = 30) -> str:
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+def fetch_url(url: str, timeout: int = 30, extra_headers: dict | None = None) -> str:
+    headers = {"User-Agent": USER_AGENT}
+    if extra_headers:
+        headers.update(extra_headers)
+    req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         return resp.read().decode("utf-8", errors="replace")
 
@@ -407,8 +415,53 @@ PBQ_SIGNAL_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("drag-drop", re.compile(r"drag[- ]drop", re.I)),
     ("hot-spot", re.compile(r"hot[- ]?spot", re.I)),
     ("simulation", re.compile(r"\bsimulation[s]?\b", re.I)),
-    ("table-matching", re.compile(r"table matching", re.I)),
-    ("reorder", re.compile(r"\b(?:reorder|correct order|put in order)\b", re.I)),
+    ("simulator", re.compile(r"\b(?:exam|testing)\s+simulator\b|\btesting\s+engine\b", re.I)),
+    ("hands-on", re.compile(r"hands[- ]on\s+(?:exercise|question|lab|sim)", re.I)),
+    ("interactive", re.compile(r"interactive\s+(?:pbq|question|sim|item)", re.I)),
+    ("table-matching", re.compile(r"table\s+matching|match[- ]each", re.I)),
+    ("reorder", re.compile(r"\b(?:reorder|correct order|put in order|chronolog)\b", re.I)),
+    ("mini-game", re.compile(r"mini[- ]?games?", re.I)),
+    ("security-plus-pbq", re.compile(r"security\+?\s*(?:sy0[- ]?701)?[^.]{0,60}(?:pbq|performance[- ]based|simulation)", re.I)),
+]
+
+PBQ_DEEP_SNIPPET_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
+    (
+        "stated-count",
+        re.compile(
+            r"(\d+)\s+(?:PBQs?|performance[- ]based questions?|simulations?|hot[- ]?spots?|"
+            r"drag[- ]?(?:and|&)?[- ]?drops?|interactive questions?)",
+            re.I,
+        ),
+    ),
+    (
+        "combo-count",
+        re.compile(
+            r"(\d+\s+\w+\s*\+\s*\d+\s+\w+|(?:\d+\s+){1,4}(?:MCQ|simulation|hotspot|drag)[^.]{0,40})",
+            re.I,
+        ),
+    ),
+    (
+        "hands-on-sim",
+        re.compile(
+            r"hands[- ]on\s+(?:exercises?|mini[- ]?games?|simulations?)[^.]{0,120}",
+            re.I,
+        ),
+    ),
+    (
+        "engine-type",
+        re.compile(
+            r"(?:drag[- ]?(?:and|&)?[- ]?drop|simulation|hot[- ]?spot|performance[- ]based)"
+            r"[^.]{0,80}(?:engine|player|format|question type)",
+            re.I,
+        ),
+    ),
+    (
+        "sy0-sim",
+        re.compile(
+            r"sy0[- ]?701[^.]{0,80}(?:pbq|simulation|performance[- ]based|drag[- ]drop)",
+            re.I,
+        ),
+    ),
 ]
 
 
@@ -427,9 +480,37 @@ def scan_pbq_page_signals(text: str) -> dict:
         text,
         re.I,
     )
+    stated_counts: list[str] = []
+    for pat in (
+        r"\d+\s+PBQs?",
+        r"\d+\s+performance[- ]based questions?",
+        r"\d+\s+simulations?",
+        r"\d+\s+hot[- ]?spots?",
+        r"\d+\s+drag[- ]?(?:and|&)?[- ]?drops?",
+        r"\d+\s+interactive questions?",
+    ):
+        for m in re.finditer(pat, text, re.I):
+            snip = re.sub(r"\s+", " ", m.group(0)).strip()
+            if snip not in stated_counts:
+                stated_counts.append(snip)
+
+    deep_snippets: list[dict] = []
+    for label, pat in PBQ_DEEP_SNIPPET_PATTERNS:
+        for m in pat.finditer(text):
+            snip = re.sub(r"\s+", " ", m.group(0)).strip()
+            if len(snip) < 20:
+                continue
+            deep_snippets.append({"label": label, "snippet": snip[:220]})
+            if len(deep_snippets) >= 8:
+                break
+        if len(deep_snippets) >= 8:
+            break
+
     return {
         "terms": hits,
         "stated_pbq_count": count_match.group(1) if count_match else "",
+        "stated_counts": stated_counts[:6],
+        "deep_snippets": deep_snippets,
     }
 
 
@@ -446,12 +527,14 @@ def _pbq_stem_is_noise(stem: str) -> bool:
     return False
 
 
-def _pbq_stem_is_plausible(stem: str) -> bool:
+def _pbq_stem_is_plausible(stem: str, *, require_pbq_signal: bool = True) -> bool:
     if _pbq_stem_is_noise(stem):
         return False
     has_signal = any(pat.search(stem) for _, pat in PBQ_SIGNAL_PATTERNS)
     has_action = PBQ_STEM_ACTION.search(stem) is not None
     has_topic = PBQ_STEM_TOPIC.search(stem) is not None
+    if require_pbq_signal and not has_signal:
+        return False
     if has_signal and (has_action or has_topic):
         return True
     if has_action and has_topic:
@@ -476,38 +559,61 @@ def _infer_pbq_type(text: str) -> str:
     return "pbq-other"
 
 
-def _extract_pbq_catalog_row(text: str, src: dict, signals: dict) -> dict | None:
+def _extract_pbq_catalog_rows(text: str, src: dict, signals: dict) -> list[dict]:
+    rows: list[dict] = []
     count = signals.get("stated_pbq_count") or ""
-    if not count and not signals.get("terms"):
-        return None
     if count:
         stem = (
             f"Site advertises {count} performance-based question(s) (PBQ) for "
             f"{src.get('version_note', 'SY0-701')}"
         )
-    else:
-        stem = (
-            f"Page mentions PBQ / drag-and-drop style practice "
-            f"({', '.join(signals['terms'][:4])})"
+        styles: list[str] = []
+        if any(t in signals["terms"] for t in ("drag-and-drop", "drag-drop", "table-matching")):
+            styles.append("drag-and-drop")
+        if "hot-spot" in signals["terms"]:
+            styles.append("hot spot")
+        if "simulation" in signals["terms"] or "simulator" in signals["terms"]:
+            styles.append("simulation")
+        if "reorder" in signals["terms"]:
+            styles.append("ordered sequence")
+        if "hands-on" in signals["terms"] or "mini-game" in signals["terms"]:
+            styles.append("hands-on")
+        style_note = f" Stated styles: {', '.join(styles)}." if styles else ""
+        row = _base_row(src, "catalog", stem)
+        row["pbq_type"] = _infer_pbq_type(f"{stem} {style_note}")
+        row["interaction_notes"] = (
+            "Landing-page PBQ catalog signal — individual stems not in public HTML; "
+            "capture pbq-preview screenshot or import manually"
+            + style_note
         )
-    styles: list[str] = []
-    if any(t in signals["terms"] for t in ("drag-and-drop", "drag-drop", "table-matching")):
-        styles.append("drag-and-drop")
-    if "hot-spot" in signals["terms"]:
-        styles.append("hot spot")
-    if "simulation" in signals["terms"]:
-        styles.append("simulation")
-    if "reorder" in signals["terms"]:
-        styles.append("ordered sequence")
-    style_note = f" Stated styles: {', '.join(styles)}." if styles else ""
-    row = _base_row(src, "catalog", stem)
-    row["pbq_type"] = _infer_pbq_type(f"{stem} {style_note}")
-    row["interaction_notes"] = (
-        "Landing-page PBQ catalog signal — individual stems not in public HTML; "
-        "open preview or import manually"
-        + style_note
-    )
-    return row
+        rows.append(row)
+    elif signals.get("terms"):
+        stem = (
+            f"Page mentions Security+ PBQ / drag-and-drop / simulation practice "
+            f"({', '.join(signals['terms'][:6])})"
+        )
+        row = _base_row(src, "catalog", stem)
+        row["pbq_type"] = _infer_pbq_type(stem)
+        row["interaction_notes"] = (
+            "Deep scan catalog signal — marketing or FAQ copy; not an extractable PBQ stem"
+        )
+        rows.append(row)
+
+    for i, snip in enumerate(signals.get("stated_counts") or [], 1):
+        stem = f"Stated count on page: {snip} ({src.get('version_note', 'SY0-701')})"
+        row = _base_row(src, f"count-{i}", stem)
+        row["pbq_type"] = _infer_pbq_type(snip)
+        row["interaction_notes"] = "Deep scan — numeric PBQ/sim/hotspot/drag-drop claim on landing page"
+        rows.append(row)
+
+    for i, hit in enumerate(signals.get("deep_snippets") or [], 1):
+        stem = f"Deep scan ({hit['label']}): {hit['snippet']}"
+        row = _base_row(src, f"deep-{i}", stem[:480])
+        row["pbq_type"] = _infer_pbq_type(hit["snippet"])
+        row["interaction_notes"] = "Deep scan snippet — verify interaction type; pbq-preview screenshot if possible"
+        rows.append(row)
+
+    return _dedupe_rows(rows)
 
 
 def parse_generic_pbq(page_html: str, src: dict) -> list[dict]:
@@ -546,10 +652,115 @@ def parse_generic_pbq(page_html: str, src: dict) -> list[dict]:
     if rows:
         return _dedupe_rows(rows)
 
-    catalog = _extract_pbq_catalog_row(text, src, signals)
-    if catalog:
-        return [catalog]
+    catalog_rows = _extract_pbq_catalog_rows(text, src, signals)
+    if catalog_rows:
+        return catalog_rows
     return []
+
+
+REDDIT_PBQ_SEARCHES: dict[str, list[str]] = {
+    "reddit-comptia-pbq": [
+        "SY0-701 PBQ",
+        "SY0-701 performance based",
+        "SY0-701 simulation",
+        "SY0-701 drag drop",
+        "security+ PBQ",
+        "security+ performance based question",
+    ],
+    "reddit-securityplus-pbq": [
+        "SY0-701 PBQ",
+        "PBQ exam",
+        "performance based",
+        "simulation question",
+        "drag and drop",
+        "what PBQ",
+    ],
+}
+
+REDDIT_PBQ_DEFAULT_QUERIES = [
+    "SY0-701 PBQ",
+    "SY0-701 performance based",
+    "security+ simulation",
+]
+
+
+def _reddit_post_is_pbq_relevant(text: str) -> bool:
+    lower = text.lower()
+    exam_hit = re.search(r"sy0[- ]?701|security\+|sec\+", lower)
+    pbq_hit = re.search(
+        r"\b(?:pbq|performance[- ]based|simulation|simulated|drag[- ]?(?:and|&)?[- ]?drop|"
+        r"hot[- ]?spot|interactive question|lab question|what pbq)\b",
+        lower,
+    )
+    return bool(exam_hit and pbq_hit)
+
+
+def _reddit_search_url(subreddit: str, query: str, limit: int = 25) -> str:
+    q = urllib.parse.quote(query)
+    sr = urllib.parse.quote(subreddit.strip("/"))
+    return (
+        f"https://www.reddit.com/r/{sr}/search.json"
+        f"?q={q}&restrict_sr=on&sort=new&limit={limit}"
+    )
+
+
+def poll_reddit_pbq(src: dict, fetcher=fetch_url) -> list[dict]:
+    subreddit = (src.get("subreddit") or "").strip()
+    if not subreddit:
+        m = re.search(r"/r/([^/]+)/", src.get("sample_url", ""))
+        subreddit = m.group(1) if m else "CompTIA"
+    queries = REDDIT_PBQ_SEARCHES.get(src.get("id", ""), REDDIT_PBQ_DEFAULT_QUERIES)
+    limit = int(src.get("max_questions", 25) or 25)
+    rows: list[dict] = []
+    seen_ids: set[str] = set()
+
+    for query in queries:
+        url = _reddit_search_url(subreddit, query, limit=min(limit, 25))
+        try:
+            raw = fetcher(
+                url,
+                extra_headers={
+                    "User-Agent": REDDIT_USER_AGENT,
+                    "Accept": "application/json",
+                },
+            )
+            data = json.loads(raw)
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
+            print(f"  reddit search skip ({query!r}): {exc}", file=sys.stderr)
+            continue
+        for child in data.get("data", {}).get("children", []):
+            post = child.get("data") or {}
+            pid = post.get("id") or ""
+            if not pid or pid in seen_ids:
+                continue
+            title = (post.get("title") or "").strip()
+            body = (post.get("selftext") or "").strip()
+            combined = f"{title}. {body[:500]}".strip().strip(".")
+            if len(combined) < 25 or not _reddit_post_is_pbq_relevant(combined):
+                continue
+            seen_ids.add(pid)
+            permalink = post.get("permalink") or ""
+            post_url = f"https://www.reddit.com{permalink}" if permalink else url
+            row = _base_row(src, pid, combined[:480])
+            row["source_url"] = post_url
+            row["pbq_type"] = _infer_pbq_type(combined)
+            row["interaction_notes"] = (
+                f"Reddit r/{subreddit} recall — search {query!r}; paraphrase only; verify Tier A"
+            )
+            row["date_found"] = src.get("version_note", "")
+            rows.append(row)
+    if not rows:
+        print(
+            "  Reddit returned no posts (often HTTP 403 from datacenter IPs). "
+            "Paste PBQ recall threads into pbq/imports/ manually.",
+            file=sys.stderr,
+        )
+    return _dedupe_rows(rows)
+
+
+def parse_reddit_pbq(raw: str, src: dict) -> list[dict]:
+    """Unused directly — poll_source calls poll_reddit_pbq instead."""
+    return poll_reddit_pbq(src)
 
 
 PARSERS = {
@@ -562,6 +773,7 @@ PARSERS = {
     "examtopics": parse_examtopics,
     "generic_mcq": parse_generic_mcq,
     "generic_pbq": parse_generic_pbq,
+    "reddit_pbq": parse_reddit_pbq,
 }
 
 
@@ -589,6 +801,7 @@ def load_pbq_poll_sources() -> list[dict]:
                 "tier": poll.get("tier", "b"),
                 "max_pages": int(poll.get("max_pages", 1)),
                 "max_questions": int(poll.get("max_questions", 0)),
+                "subreddit": poll.get("subreddit", ""),
                 "topic_notes": poll.get("topic_notes")
                 or _default_topic_notes(poll.get("tier", "b")),
             }
@@ -610,22 +823,27 @@ def poll_all_pbq_sources(sources: list[dict] | None = None, fetcher=fetch_url) -
         for row in parsed:
             row.setdefault("pbq_type", _infer_pbq_type(row.get("stem", "")))
         if parsed:
-            print(f"  {len(parsed)} PBQ candidate(s)")
+            deep = sum(1 for r in parsed if str(r.get("source_question_id", "")).startswith(("deep-", "count-")))
+            print(f"  {len(parsed)} PBQ candidate(s)" + (f" ({deep} deep-scan)" if deep else ""))
         else:
             try:
                 page = fetcher(src["sample_url"])
                 sig = scan_pbq_page_signals(html_to_pbq_text(page))
             except (urllib.error.URLError, TimeoutError):
-                sig = {"terms": [], "stated_pbq_count": ""}
-            if sig["terms"] or sig["stated_pbq_count"]:
+                sig = {"terms": [], "stated_pbq_count": "", "stated_counts": [], "deep_snippets": []}
+            if sig.get("terms") or sig.get("stated_pbq_count") or sig.get("deep_snippets"):
                 bits = []
-                if sig["stated_pbq_count"]:
+                if sig.get("stated_pbq_count"):
                     bits.append(f"{sig['stated_pbq_count']} PBQ(s) stated")
-                if sig["terms"]:
+                if sig.get("stated_counts"):
+                    bits.append("counts: " + "; ".join(sig["stated_counts"][:3]))
+                if sig.get("terms"):
                     bits.append("signals: " + ", ".join(sig["terms"][:6]))
-                print(f"  0 extractable stems — page mentions PBQ/drag-drop ({'; '.join(bits)})")
+                if sig.get("deep_snippets"):
+                    bits.append(f"{len(sig['deep_snippets'])} deep snippet(s)")
+                print(f"  0 rows — page signals PBQ/sim/drag-drop ({'; '.join(bits)})")
             else:
-                print("  0 PBQ candidates (no PBQ/drag-drop signals on page)")
+                print("  0 PBQ candidates (no PBQ/drag-drop/sim signals on page)")
         all_rows.extend(parsed)
     return all_rows
 
@@ -652,6 +870,9 @@ def poll_source(src: dict, fetcher=fetch_url) -> list[dict]:
                 r["source_url"] = url
             rows.extend(parsed)
         return _dedupe_rows(rows)
+
+    if parser_name == "reddit_pbq":
+        return poll_reddit_pbq(src, fetcher=fetcher)
 
     try:
         html = fetcher(src["sample_url"])

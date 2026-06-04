@@ -13,7 +13,7 @@ Performance-based question (PBQ) research — drag-and-drop, hot spot, ordered l
 | `public/COMP_TIA_SEC+/js/secplus-pbq-page.css` | Shared PBQ layout (14% logo, purple blocks, blue drop slots, nav buttons) |
 | `public/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/` | Full simulations and hot spots |
 
-**Poll registry:** `marketing-vault/10-competitors/sites/*.md` with **`pbq_poll.enabled: true`** (separate from `question_poll` for MCQ). The PBQ pipeline does **not** reuse MCQ poll results — it only fetches sources with `pbq_poll`.
+**Poll registry:** `marketing-vault/10-competitors/sites/*.md` with **`pbq_poll.enabled: true`**. Includes Tier B practice sites, Tier C dumps/forums (**Reddit** `reddit_pbq`, **ExamCollection**, **Exam-Labs**, **9tut** CCNA engine reference), and deep HTML scan via `generic_pbq`.
 
 ### What collect searches for
 
