@@ -6,6 +6,14 @@ url: https://www.prepaway.com/sy0-701-exam.html
 product: SY0-701
 category: syndicated_marketplace
 research_date: 2026-06-03
+pbq_poll:
+  enabled: true
+  tier: c
+  id: prepaway-pbq
+  sample_url: https://www.prepaway.com/sy0-701-exam.html
+  parser: generic_pbq
+  version_note: SY0-701
+  topic_notes: Tier C catalog — ETE engine claims drag-drop / simulation types; discovery only
 ---
 
 # PrepAway ecosystem — SY0-701

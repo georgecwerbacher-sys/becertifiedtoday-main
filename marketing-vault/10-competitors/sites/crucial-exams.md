@@ -15,7 +15,7 @@ question_poll:
   version_note: SY0-701
   topic_notes: Tier B — verify answer on CompTIA Tier A
 pbq_poll:
-  enabled: false
+  enabled: true
   tier: b
   id: crucialexams-pbq
   sample_url: https://crucialexams.com/exams/comptia/security/sy0-701/practice-tests-practice-questions

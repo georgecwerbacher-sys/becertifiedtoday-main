@@ -14,6 +14,14 @@ question_poll:
   parser: mastery
   version_note: SY0-701
   topic_notes: Tier B — verify answer on CompTIA Tier A
+pbq_poll:
+  enabled: true
+  tier: b
+  id: mastery-pbq
+  sample_url: https://masteryexamprep.com/exams/comptia/sy0-701/
+  parser: generic_pbq
+  version_note: SY0-701
+  topic_notes: Tier B PBQ — scan landing for performance-based / sim copy
 ---
 
 # Mastery Exam Prep — SY0-701 public samples

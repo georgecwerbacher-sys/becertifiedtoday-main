@@ -14,6 +14,14 @@ question_poll:
   parser: certblaster
   version_note: SY0-701
   topic_notes: Tier B — verify answer on CompTIA Tier A
+pbq_poll:
+  enabled: true
+  tier: b
+  id: certblaster-pbq
+  sample_url: https://certblaster.com/free-security-sy0-701-practice-test/
+  parser: generic_pbq
+  version_note: SY0-701
+  topic_notes: Tier B PBQ — scan free test page for PBQ / simulation mentions
 ---
 
 # CertBlaster — free SY0-701 practice test

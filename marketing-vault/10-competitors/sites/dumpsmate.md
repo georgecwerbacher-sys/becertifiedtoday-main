@@ -6,6 +6,14 @@ url: https://www.dumpsmate.com/SY0-701-exam.html
 product: SY0-701
 category: pdf_dump_retailer
 research_date: 2026-06-03
+pbq_poll:
+  enabled: true
+  tier: c
+  id: dumpsmate-pbq
+  sample_url: https://www.dumpsmate.com/SY0-701-exam.html
+  parser: generic_pbq
+  version_note: SY0-701
+  topic_notes: Tier C catalog — 2 hotspot + 3 simulation stated in SKU; discovery only
 ---
 
 # DumpsMate — SY0-701

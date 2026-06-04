@@ -14,6 +14,14 @@ question_poll:
   parser: generic_mcq
   version_note: SY0-701
   topic_notes: Tier B — verify answer on CompTIA Tier A
+pbq_poll:
+  enabled: false
+  tier: b
+  id: examcompass-pbq
+  sample_url: https://www.examcompass.com/comptia-security-plus-practice-test-1-exam-sy0-701
+  parser: generic_pbq
+  version_note: SY0-701
+  topic_notes: Tier B PBQ — enable when paginated test UI parser works
 ---
 
 # ExamCompass — SY0-701 practice tests

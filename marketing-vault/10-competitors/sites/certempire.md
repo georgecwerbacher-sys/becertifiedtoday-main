@@ -6,6 +6,14 @@ url: https://certempire.com/exam/sy0-701-exam-questions/
 product: SY0-701
 category: pdf_dump_retailer
 research_date: 2026-06-03
+pbq_poll:
+  enabled: true
+  tier: c
+  id: certempire-pbq
+  sample_url: https://certempire.com/exam/sy0-701-exam-questions/
+  parser: generic_pbq
+  version_note: SY0-701
+  topic_notes: Tier C catalog — web simulator / exam mode claims; PBQ depth unknown
 ---
 
 # CertEmpire — SY0-701

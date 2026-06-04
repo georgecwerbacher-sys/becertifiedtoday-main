@@ -14,6 +14,14 @@ question_poll:
   parser: techexamlexicon
   version_note: 2026-04-25
   topic_notes: Tier B — verify answer on CompTIA Tier A
+pbq_poll:
+  enabled: true
+  tier: b
+  id: techexamlexicon-pbq
+  sample_url: https://techexamlexicon.com/comptia/sy0-701/sample-questions/
+  parser: generic_pbq
+  version_note: 2026-04-25
+  topic_notes: Tier B PBQ — scan sample page for performance-based / drag-and-drop copy
 ---
 
 # Tech Exam Lexicon — SY0-701 samples

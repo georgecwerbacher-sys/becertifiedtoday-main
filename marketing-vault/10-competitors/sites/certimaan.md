@@ -14,6 +14,14 @@ question_poll:
   parser: certimaan
   version_note: 2025-09-24
   topic_notes: Tier B — verify answer on CompTIA Tier A
+pbq_poll:
+  enabled: true
+  tier: b
+  id: certimaan-pbq
+  sample_url: https://www.certimaan.com/post/comptia-security-plus-certification-sample-questions
+  parser: generic_pbq
+  version_note: 2025-09-24
+  topic_notes: Tier B PBQ — static MCQ post; scan for PBQ / drag-and-drop mentions
 ---
 
 # CertiMaan — Security+ sample questions

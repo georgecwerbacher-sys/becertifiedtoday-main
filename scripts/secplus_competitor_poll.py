@@ -371,35 +371,157 @@ def parse_generic_mcq(page_html: str, src: dict) -> list[dict]:
     return _dedupe_rows(rows)
 
 
+PBQ_SECTION_SPLIT = re.compile(
+    r"(?:"
+    r"performance[- ]based(?:\s+question[s]?)?"
+    r"|PBQ[s]?"
+    r"|simulation(?:\s+question[s]?)?"
+    r"|hot[- ]?spot"
+    r"|drag[- ]?(?:and|&)[- ]?drop"
+    r"|drag[- ]drop"
+    r"|click[- ]and[- ]drag"
+    r")(?:\s*question[s]?)?\s*[:\-]?\s*",
+    re.I,
+)
+
+PBQ_STEM_ACTION = re.compile(
+    r"\b("
+    r"map|place|drag|drop|reorder|sort|select|configure|identify|match|arrange|move|click"
+    r")\b",
+    re.I,
+)
+
+PBQ_STEM_TOPIC = re.compile(
+    r"\b("
+    r"security|network|firewall|waf|ssh|log|sudo|user|cron|vlan|dns|tls|ssl|certificate|"
+    r"hash|malware|incident|access|control|risk|threat|encryption|auth|router|switch|"
+    r"port|protocol|ipsec|vpn|siem|edr|ids|ips|dmz|perimeter|endpoint|cloud"
+    r")\b",
+    re.I,
+)
+
+PBQ_SIGNAL_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
+    ("pbq", re.compile(r"\bPBQs?\b", re.I)),
+    ("performance-based", re.compile(r"performance[- ]based", re.I)),
+    ("drag-and-drop", re.compile(r"drag[- ]?(?:and|&)[- ]?drop", re.I)),
+    ("drag-drop", re.compile(r"drag[- ]drop", re.I)),
+    ("hot-spot", re.compile(r"hot[- ]?spot", re.I)),
+    ("simulation", re.compile(r"\bsimulation[s]?\b", re.I)),
+    ("table-matching", re.compile(r"table matching", re.I)),
+    ("reorder", re.compile(r"\b(?:reorder|correct order|put in order)\b", re.I)),
+]
+
+
+def html_to_pbq_text(page_html: str) -> str:
+    """Strip scripts/styles before PBQ heuristics so JSON-LD does not become fake stems."""
+    cleaned = re.sub(r"<script[^>]*>.*?</script>", " ", page_html, flags=re.I | re.S)
+    cleaned = re.sub(r"<style[^>]*>.*?</style>", " ", cleaned, flags=re.I | re.S)
+    cleaned = re.sub(r"<noscript[^>]*>.*?</noscript>", " ", cleaned, flags=re.I | re.S)
+    return html_to_text(cleaned)
+
+
+def scan_pbq_page_signals(text: str) -> dict:
+    hits = [label for label, pat in PBQ_SIGNAL_PATTERNS if pat.search(text)]
+    count_match = re.search(
+        r"(\d+)\s+(?:PBQs?|performance[- ]based questions?)",
+        text,
+        re.I,
+    )
+    return {
+        "terms": hits,
+        "stated_pbq_count": count_match.group(1) if count_match else "",
+    }
+
+
+def _pbq_stem_is_noise(stem: str) -> bool:
+    lower = stem.lower()
+    if len(stem) < 30:
+        return True
+    if re.search(r"\b(sameas|schema\.org|@type|read article|save big|mini-games|flashcards)\b", lower):
+        return True
+    if stem.count("http") >= 2:
+        return True
+    if re.search(r'[{}[\]"]', stem):
+        return True
+    return False
+
+
+def _pbq_stem_is_plausible(stem: str) -> bool:
+    if _pbq_stem_is_noise(stem):
+        return False
+    has_signal = any(pat.search(stem) for _, pat in PBQ_SIGNAL_PATTERNS)
+    has_action = PBQ_STEM_ACTION.search(stem) is not None
+    has_topic = PBQ_STEM_TOPIC.search(stem) is not None
+    if has_signal and (has_action or has_topic):
+        return True
+    if has_action and has_topic:
+        return True
+    return False
+
+
 def _infer_pbq_type(text: str) -> str:
     lower = text.lower()
-    if "drag" in lower and "drop" in lower:
+    if re.search(r"drag[- ]?(?:and|&)?[- ]?drop|drag[- ]drop|click[- ]and[- ]drag", lower):
+        return "drag-drop"
+    if "table matching" in lower:
         return "drag-drop"
     if "hot spot" in lower or "hotspot" in lower:
         return "hotspot"
-    if "reorder" in lower or "correct order" in lower or "timeline" in lower:
+    if re.search(r"\b(?:reorder|correct order|timeline|put in order|chronolog)\b", lower):
         return "ordered-sequence"
     if "fill" in lower and "blank" in lower:
         return "fill-in"
-    if "simulation" in lower or "performance-based" in lower or "pbq" in lower:
+    if re.search(r"\b(?:simulation|performance[- ]based|pbq)\b", lower):
         return "simulation"
     return "pbq-other"
 
 
+def _extract_pbq_catalog_row(text: str, src: dict, signals: dict) -> dict | None:
+    count = signals.get("stated_pbq_count") or ""
+    if not count and not signals.get("terms"):
+        return None
+    if count:
+        stem = (
+            f"Site advertises {count} performance-based question(s) (PBQ) for "
+            f"{src.get('version_note', 'SY0-701')}"
+        )
+    else:
+        stem = (
+            f"Page mentions PBQ / drag-and-drop style practice "
+            f"({', '.join(signals['terms'][:4])})"
+        )
+    styles: list[str] = []
+    if any(t in signals["terms"] for t in ("drag-and-drop", "drag-drop", "table-matching")):
+        styles.append("drag-and-drop")
+    if "hot-spot" in signals["terms"]:
+        styles.append("hot spot")
+    if "simulation" in signals["terms"]:
+        styles.append("simulation")
+    if "reorder" in signals["terms"]:
+        styles.append("ordered sequence")
+    style_note = f" Stated styles: {', '.join(styles)}." if styles else ""
+    row = _base_row(src, "catalog", stem)
+    row["pbq_type"] = _infer_pbq_type(f"{stem} {style_note}")
+    row["interaction_notes"] = (
+        "Landing-page PBQ catalog signal — individual stems not in public HTML; "
+        "open preview or import manually"
+        + style_note
+    )
+    return row
+
+
 def parse_generic_pbq(page_html: str, src: dict) -> list[dict]:
     rows: list[dict] = []
-    text = html_to_text(page_html)
-    blocks = re.split(
-        r"(?:performance[- ]based|PBQ|simulation|hot\s*spot|drag[- ]and[- ]drop)\s*[:\-]?\s*",
-        text,
-        flags=re.I,
-    )
+    text = html_to_pbq_text(page_html)
+    signals = scan_pbq_page_signals(text)
+
+    blocks = PBQ_SECTION_SPLIT.split(text)
     for i, block in enumerate(blocks[1:], 1):
         chunk = block.strip()
         if len(chunk) < 40:
             continue
         stem = chunk[:480].strip()
-        if not re.search(r"\b(map|place|drag|reorder|select|configure|identify)\b", stem, re.I):
+        if not _pbq_stem_is_plausible(stem):
             continue
         row = _base_row(src, str(i), stem)
         row["pbq_type"] = _infer_pbq_type(stem)
@@ -407,20 +529,27 @@ def parse_generic_pbq(page_html: str, src: dict) -> list[dict]:
         rows.append(row)
     if rows:
         return _dedupe_rows(rows)
+
     markers = re.findall(
-        r"((?:drag|place|reorder|map|hot\s*spot).{20,320}?)(?:\.|$)",
+        r"((?:drag|drop|place|reorder|sort|map|hot[- ]?spot|match each|put in order).{20,320}?)(?:\.|$)",
         text,
         re.I,
     )
     for i, stem in enumerate(markers[:12], 1):
         stem = stem.strip()
-        if len(stem) < 30:
+        if not _pbq_stem_is_plausible(stem):
             continue
         row = _base_row(src, str(i), stem)
         row["pbq_type"] = _infer_pbq_type(stem)
         row["interaction_notes"] = "Heuristic extract — review manually"
         rows.append(row)
-    return _dedupe_rows(rows)
+    if rows:
+        return _dedupe_rows(rows)
+
+    catalog = _extract_pbq_catalog_row(text, src, signals)
+    if catalog:
+        return [catalog]
+    return []
 
 
 PARSERS = {
@@ -480,7 +609,23 @@ def poll_all_pbq_sources(sources: list[dict] | None = None, fetcher=fetch_url) -
             continue
         for row in parsed:
             row.setdefault("pbq_type", _infer_pbq_type(row.get("stem", "")))
-        print(f"  {len(parsed)} PBQ candidates")
+        if parsed:
+            print(f"  {len(parsed)} PBQ candidate(s)")
+        else:
+            try:
+                page = fetcher(src["sample_url"])
+                sig = scan_pbq_page_signals(html_to_pbq_text(page))
+            except (urllib.error.URLError, TimeoutError):
+                sig = {"terms": [], "stated_pbq_count": ""}
+            if sig["terms"] or sig["stated_pbq_count"]:
+                bits = []
+                if sig["stated_pbq_count"]:
+                    bits.append(f"{sig['stated_pbq_count']} PBQ(s) stated")
+                if sig["terms"]:
+                    bits.append("signals: " + ", ".join(sig["terms"][:6]))
+                print(f"  0 extractable stems — page mentions PBQ/drag-drop ({'; '.join(bits)})")
+            else:
+                print("  0 PBQ candidates (no PBQ/drag-drop signals on page)")
         all_rows.extend(parsed)
     return all_rows
 

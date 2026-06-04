@@ -15,6 +15,14 @@ question_poll:
   version_note: 2026-01-03
   max_questions: 200
   topic_notes: Tier B — verify answer on CompTIA Tier A
+pbq_poll:
+  enabled: true
+  tier: b
+  id: openexamprep-pbq
+  sample_url: https://open-exam-prep.com/practice/comptia-security-plus
+  parser: generic_pbq
+  version_note: SY0-701
+  topic_notes: Tier B PBQ — scan for hot-spot / performance-based copy; verify on CompTIA Tier A
 ---
 
 # OpenExamPrep — Security+ (SY0-701)

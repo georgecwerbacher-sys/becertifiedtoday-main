@@ -33,7 +33,13 @@ Same tier policy as [[../secplus-sy0-701-web-sources|MCQ catalog]] — Tier C is
 
 | Source | URL | PBQ / sim (stated) | Source version | date_added | Notes |
 |--------|-----|---------------------|----------------|------------|-------|
-| Crucial Exams | https://crucialexams.com/exams/comptia/security/sy0-701/practice-tests-practice-questions | **9 PBQ** + 1400 MCQ | SY0-701 (V7) | 2026-06-03 | [[../../10-competitors/sites/crucial-exams\|crucial-exams]] · `pbq_poll` when sample URL confirmed |
+| Crucial Exams | https://crucialexams.com/exams/comptia/security/sy0-701/practice-tests-practice-questions | **9 PBQ** + 1400 MCQ | SY0-701 (V7) | 2026-06-03 | [[../../10-competitors/sites/crucial-exams\|crucial-exams]] · `pbq_poll` enabled |
+| OpenExamPrep | https://open-exam-prep.com/practice/comptia-security-plus | Scan landing | SY0-701 | 2026-06-03 | [[../../10-competitors/sites/open-exam-prep\|open-exam-prep]] · `pbq_poll` enabled |
+| PrepTIA | https://www.preptia.com/SY0-701-Comptia-Practice-Test | Scan landing | SY0-701 | 2026-06-03 | [[../../10-competitors/sites/preptia\|preptia]] · `pbq_poll` enabled |
+| Tech Exam Lexicon | https://techexamlexicon.com/comptia/sy0-701/sample-questions/ | Scan samples | SY0-701 | 2026-06-03 | [[../../10-competitors/sites/techexamlexicon\|techexamlexicon]] · `pbq_poll` enabled |
+| CertBlaster | https://certblaster.com/free-security-sy0-701-practice-test/ | Scan free test | SY0-701 | 2026-06-03 | [[../../10-competitors/sites/certblaster\|certblaster]] · `pbq_poll` enabled |
+| Mastery Exam Prep | https://masteryexamprep.com/exams/comptia/sy0-701/ | Scan landing | SY0-701 | 2026-06-03 | [[../../10-competitors/sites/mastery-exam-prep\|mastery-exam-prep]] · `pbq_poll` enabled |
+| CertiMaan | https://www.certimaan.com/post/comptia-security-plus-certification-sample-questions | Scan blog | SY0-701 | 2026-06-03 | [[../../10-competitors/sites/certimaan\|certimaan]] · `pbq_poll` enabled |
 | Professor Messer — Practice Exams | https://www.professormesser.com/amember/signup/sy0701pe | **3 × 90** exams (PBQ + MCQ) | SY0-701 | 2026-06-03 | Paid PDF; widely used PBQ style |
 | BCT OpenSSL PBQ landing | `/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html` | 2-part sim | SY0-701 | 2026-06-03 | In-repo reference implementation |
 | BCT SEC+_PBQ | `/COMP_TIA_SEC+/SEC+_PBQ/` | Growing set | SY0-701 | 2026-06-03 | security-control-map · log-timeline-forensics |
@@ -44,9 +50,13 @@ Same tier policy as [[../secplus-sy0-701-web-sources|MCQ catalog]] — Tier C is
 
 | Source | URL | date_added | Notes |
 |--------|-----|------------|-------|
-| r/CompTIA | https://www.reddit.com/r/CompTIA/ | 2026-06-03 | “What PBQ did you get?” threads — paraphrase only |
+| DumpsMate | https://www.dumpsmate.com/SY0-701-exam.html | 2026-06-03 | 2 hotspot + 3 simulation stated — [[../../10-competitors/sites/dumpsmate\|dumpsmate]] · `pbq_poll` enabled |
+| PrepAway | https://www.prepaway.com/sy0-701-exam.html | 2026-06-03 | ETE drag-drop / sim claims — [[../../10-competitors/sites/prepaway-examcollection-network\|prepaway]] · `pbq_poll` enabled |
+| CertEmpire | https://certempire.com/exam/sy0-701-exam-questions/ | 2026-06-03 | Web simulator SKU — [[../../10-competitors/sites/certempire\|certempire]] · `pbq_poll` enabled |
+| ActualTests | https://www.actualtests.com/exam-SY0-701.htm | 2026-06-03 | PDF + engine SKU — [[../../10-competitors/sites/actualtests\|actualtests]] · `pbq_poll` enabled |
+| r/CompTIA | https://www.reddit.com/r/CompTIA/ | 2026-06-03 | “What PBQ did you get?” threads — paraphrase only · `pbq_poll` off |
 | r/SecurityPlus | https://www.reddit.com/r/SecurityPlus/ | 2026-06-03 | Exam experience / sim recall |
-| ExamTopics | https://www.examtopics.com/exams/comptia/sy0-701/ | 2026-06-03 | Research index only — Ads negative |
+| ExamTopics | https://www.examtopics.com/exams/comptia/sy0-701/ | 2026-06-03 | Research index — [[../../10-competitors/sites/examtopics\|examtopics]] · `pbq_poll` enabled · Ads negative |
 
 **Import convention:** paste into [[templates/discovered-pbq-import|discovered-pbq-import.csv]] with `topic_notes`: `Tier C research — community recall; verify on CompTIA Tier A only`.
 

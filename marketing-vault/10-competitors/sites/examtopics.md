@@ -15,6 +15,15 @@ question_poll:
   max_pages: 1
   version_note: community
   topic_notes: Tier C research — community recall; verify answer on CompTIA Tier A only
+pbq_poll:
+  enabled: true
+  tier: c
+  id: examtopics-pbq
+  sample_url: https://www.examtopics.com/exams/comptia/sy0-701/
+  parser: generic_pbq
+  max_pages: 1
+  version_note: community
+  topic_notes: Tier C research — MCQ recall index; scan for PBQ / drag-and-drop thread mentions
 ---
 
 # ExamTopics — SY0-701 (adjacent competitor)

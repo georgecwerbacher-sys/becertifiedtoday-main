@@ -14,6 +14,14 @@ question_poll:
   parser: preptia
   version_note: 2026-05-25
   topic_notes: Tier B — verify answer on CompTIA Tier A
+pbq_poll:
+  enabled: true
+  tier: b
+  id: preptia-pbq
+  sample_url: https://www.preptia.com/SY0-701-Comptia-Practice-Test
+  parser: generic_pbq
+  version_note: 2026-05-25
+  topic_notes: Tier B PBQ — scan landing for timed sim / PBQ mentions; verify on CompTIA Tier A
 ---
 
 # PrepTIA — SY0-701 practice test

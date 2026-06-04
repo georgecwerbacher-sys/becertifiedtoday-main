@@ -13,7 +13,21 @@ Performance-based question (PBQ) research — drag-and-drop, hot spot, ordered l
 | `public/COMP_TIA_SEC+/js/secplus-pbq-page.css` | Shared PBQ layout (14% logo, purple blocks, blue drop slots, nav buttons) |
 | `public/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/` | Full simulations and hot spots |
 
-**Poll registry:** `marketing-vault/10-competitors/sites/*.md` with **`pbq_poll.enabled: true`** (separate from `question_poll` for MCQ).
+**Poll registry:** `marketing-vault/10-competitors/sites/*.md` with **`pbq_poll.enabled: true`** (separate from `question_poll` for MCQ). The PBQ pipeline does **not** reuse MCQ poll results — it only fetches sources with `pbq_poll`.
+
+### What collect searches for
+
+`generic_pbq` scans competitor pages for **performance-based** / **interactive** wording, especially:
+
+| Signal | Examples on practice sites |
+|--------|----------------------------|
+| PBQ | “9 PBQs”, “performance-based questions” |
+| Drag-and-drop | “drag and drop”, “drag-and-drop”, “table matching” |
+| Hot spot | “hot spot”, “click region” |
+| Ordered | “reorder”, “correct order”, “timeline” |
+| Simulation | “simulation”, hands-on mini-game copy |
+
+When a page **advertises** PBQs but hides stems behind a paywall, collect still logs a **catalog row** (stated count + interaction style) so compare/save can track the gap. Paste full stems into `imports/` when you preview a site manually.
 
 **Monthly process:**
 

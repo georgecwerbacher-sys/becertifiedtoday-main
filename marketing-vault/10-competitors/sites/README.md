@@ -66,7 +66,7 @@ Vault: [[../../11-question-sourcing/pbq/README|11-question-sourcing/pbq/]]
 | `certimaan` | CertiMaan blog sample questions (40 MCQs) |
 | `examtopics` | ExamTopics `/view/N/` pages (`max_pages: 1` recommended) |
 | `generic_mcq` | Fallback — try last |
-| `generic_pbq` | PBQ heuristic extract (drag/drop, reorder, sim keywords) |
+| `generic_pbq` | PBQ heuristic extract — **PBQ**, **performance-based**, **drag-and-drop**, hot spot, reorder, simulation |
 
 CompTIA official (Tier A) stays in `11-question-sourcing/config/secplus-web-sources.json` → `tier_a_fetch` (MCQ) and `11-question-sourcing/pbq/config/secplus-pbq-sources.json` (PBQ catalog).
 

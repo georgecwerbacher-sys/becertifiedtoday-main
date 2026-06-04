@@ -14,6 +14,14 @@ question_poll:
   parser: generic_mcq
   version_note: rolling threads
   topic_notes: Tier C research — community recall; verify answer on CompTIA Tier A only
+pbq_poll:
+  enabled: false
+  tier: c
+  id: reddit-comptia-pbq
+  sample_url: https://www.reddit.com/r/CompTIA/
+  parser: generic_pbq
+  version_note: rolling threads
+  topic_notes: Tier C PBQ recall — paraphrase into pbq/imports/; no stable HTML poll
 ---
 
 # r/CompTIA — SY0-701 recall threads
