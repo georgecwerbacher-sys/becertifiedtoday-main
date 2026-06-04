@@ -2,6 +2,8 @@
 
 **Active workspace** for new SY0-701 PBQ scenarios before they ship to the public bank.
 
+Answer keys were verified against CompTIA-aligned objectives and primary sources (NIST, RFC, OWASP, OpenSSH). See **[VERIFICATION.md](VERIFICATION.md)** (2026-06-04).
+
 ## Entry points
 
 | Page | Role |

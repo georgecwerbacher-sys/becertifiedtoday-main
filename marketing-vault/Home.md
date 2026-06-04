@@ -35,6 +35,7 @@ Obsidian vault for data-driven marketing (Cursor + GA4 + Stripe + Google Ads). O
 - [[08-8140-compliance/README|DoD 8140 compliance]] ← source PDFs reviewed; matrix snapshot pending
 - [[10-competitors/README|Competitors — PDF dump market]] ← SY0-701 analysis + CSV for Numbers
 - [[11-question-sourcing/secplus-sy0-701-web-sources|SY0-701 question sources (web)]] ← verify vs CompTIA; version/date catalog
+- [[SEC+/PBQ/README|Security+ PBQ production — study notes]] ← four `PBQ_Production` scenarios (notes · recommendations · solutions)
 - [[11-question-sourcing/pbq/README|SY0-701 PBQ sourcing]] ← `npm run secplus:pbq-monthly` · compare vs `SEC+_PBQ/`
 - [[11-question-sourcing/pbq/captures/README|SY0-701 PBQ captures]] ← `npm run secplus:pbq-capture` · PNG or link in Obsidian `INDEX.md`
 - [[12-Writing/_Writing-Rules|Guest page writing rules]] ← index & landing copy (exam prep voice, Ads message match)

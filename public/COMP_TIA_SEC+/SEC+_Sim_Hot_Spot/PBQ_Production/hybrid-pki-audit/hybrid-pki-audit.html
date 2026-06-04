@@ -518,7 +518,7 @@
     (function () {
       var MUST_REVOKE = { "code-sign": true, "onprem-inter": true };
       var CORRECT_MSG =
-        "Correct. Revoke immediately: expired code-signing leaf (RSA-1024) and the On-Prem intermediate CA using SHA-1 that issued it. Do not revoke the valid root, api.becertifiedtoday.com leaf, or Azure intermediate. After revocation, publish a fresh CRL within the 7-day policy.";
+        "Correct. Revoke immediately: expired code-signing leaf (RSA-1024) and the On-Prem intermediate CA using SHA-1 that issued it. Do not revoke the valid root, api.becertifiedtoday.com leaf, or Azure intermediate. In production you would also stand up a SHA-256 replacement intermediate and migrate issued certs before retiring the weak issuer; revocation removes trust for audit findings now. Publish a fresh CRL within the 7-day policy.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var resetBtn = document.getElementById("resetBtn");

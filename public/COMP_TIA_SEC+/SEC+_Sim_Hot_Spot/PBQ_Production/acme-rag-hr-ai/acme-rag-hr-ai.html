@@ -492,8 +492,9 @@ Top responses include partial redacted strings — rate limit not enforced on re
             </label>
             <label class="pbq-choice">
               <input type="radio" name="secplus_bct_rag_mi" value="B" />
-              Rate limiting per authenticated user, output PII redaction, and differential privacy techniques during
-              training to limit memorization of individual records.
+              Per-user rate limiting on chat and retrieval APIs, output PII redaction before responses are returned,
+              and differential privacy if the model is ever trained on sensitive data (secondary to query/output controls
+              in this RAG deployment).
             </label>
             <label class="pbq-choice">
               <input type="radio" name="secplus_bct_rag_mi" value="C" />
@@ -764,7 +765,7 @@ Top responses include partial redacted strings — rate limit not enforced on re
         secplus_bct_rag_mi: "B"
       };
       var CORRECT_MSG =
-        "Correct. Prompt injection: isolate system instructions from user input, sanitize input, and use an injection classifier (keyword filters and HTTPS alone do not stop override attacks). Data poisoning: control ingestion with hash verification, human approval, and output drift monitoring (encryption at rest and AV-only scans do not stop malicious approved content). Model inversion: rate limit queries, redact PII in outputs, and use differential privacy in training (CAPTCHA or keyword blocks are insufficient).";
+        "Correct. Prompt injection: isolate system instructions from user input, sanitize input, and use an injection classifier (keyword filters and HTTPS alone do not stop override attacks). Data poisoning: control ingestion with hash verification, human approval, and output drift monitoring (encryption at rest and AV-only scans do not stop malicious approved content). Model inversion: first throttle high-volume probing with per-user rate limits and redact PII in model outputs; differential privacy matters mainly if you fine-tune on sensitive data (this HR assistant does not). CAPTCHA-only or keyword blocks are insufficient.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var resetBtn = document.getElementById("resetBtn");
