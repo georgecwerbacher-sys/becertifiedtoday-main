@@ -40,28 +40,31 @@ Step 1 does **not** read BCT. Step 2 compares against `SEC+_PBQ/` and `SEC+_Sim_
 
 ---
 
-## Screenshot (drag-and-drop / sims)
+## Screenshot (actual PBQ UI only)
 
-HTML collect only finds **catalog signals**. For the actual interaction, save a **PNG screenshot** and paraphrase from it.
+HTML collect and **landing-catalog** shots are **not** PBQ question captures. For drag-and-drop / sim research you need a **`pbq-preview`** PNG — the interactive question UI.
 
-**Manual** (most PBQs — paid preview, CertMaster, VCE, Cmd+Shift+4):
+**Manual** (typical — Crucial preview, CertMaster, VCE, Cmd+Shift+4):
 
 ```bash
 python3 scripts/secplus_pbq_capture.py register \
-  --png ~/Desktop/pbq-preview.png \
+  --png ~/Desktop/pbq-control-map.png \
   --source-id crucial-exams-manual \
+  --kind pbq-preview \
   --notes "Paraphrase only — verify on Tier A"
 ```
 
-**Automated** (optional, when preview is public):
+**Automated** (only when `preview_url` / `preview_selector` is set in capture config):
 
 ```bash
-pip install playwright && playwright install chromium
-npm run secplus:pbq-screenshot-list
 npm run secplus:pbq-screenshot
 ```
 
-PNG + sidecar → `pbq/captures/YYYY-MM-DD/<source-id>/`. Add `screenshot_path` in `pbq/imports/` CSV, then collect with `--import`.
+**Optional** competitor marketing intel (NOT for imports):
+
+```bash
+npm run secplus:pbq-screenshot-landing
+```
 
 See [[../11-question-sourcing/pbq/captures/README|captures/README]].
 

@@ -1,29 +1,31 @@
 {
   "exam": "SY0-701",
   "content_type": "pbq",
-  "notes": "Extra capture targets beyond pbq_poll registry. Use for preview URLs, login flows, or multi-step sim entry points.",
-  "setup": "pip install playwright && playwright install chromium",
+  "notes": "Only targets with preview_url or preview_selector belong in pbq-preview. pbq_poll sample_url alone is landing-catalog (marketing), not a PBQ UI.",
+  "setup": "pip install playwright && python3 -m playwright install chromium",
   "targets": [
-    {
-      "id": "crucialexams-pbq-preview",
-      "url": "https://crucialexams.com/exams/comptia/security/sy0-701/practice-tests-practice-questions",
-      "tier": "b",
-      "pbq_type_hint": "drag-drop",
-      "notes": "Crucial Exams — 9 PBQ stated; open read-only PBQ preview if available before capture",
-      "wait_ms": 3500,
-      "full_page": true,
-      "viewport_shot": true,
-      "login_required": false
-    },
     {
       "id": "bct-secplus-pbq-map",
       "url": "http://localhost:3000/COMP_TIA_SEC+/SEC+_PBQ/security-control-map.html",
+      "capture_kind": "bct-reference",
       "tier": "a",
       "pbq_type_hint": "drag-drop",
-      "notes": "BCT reference — run npm run serve first; use for capture template QA only",
+      "notes": "BCT reference — run npm run serve first; template QA only",
       "wait_ms": 1500,
       "full_page": false,
       "viewport_shot": true
+    },
+    {
+      "id": "crucialexams-pbq-preview",
+      "capture_kind": "pbq-preview",
+      "enabled": false,
+      "url": "https://crucialexams.com/exams/comptia/security/sy0-701/practice-tests-practice-questions",
+      "preview_selector": "",
+      "tier": "b",
+      "pbq_type_hint": "drag-drop",
+      "notes": "Enable when read-only PBQ preview selector/URL is confirmed — until then use manual register",
+      "login_required": false,
+      "wait_ms": 4000
     }
   ]
 }
