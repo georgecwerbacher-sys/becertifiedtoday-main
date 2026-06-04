@@ -1,0 +1,157 @@
+<article class="pbq-section-fragment" data-id="dr-part3-tradeoffs">
+  <h1>Part 3 — Cost vs. recovery trade-offs</h1>
+  <p class="pbq-instructions"><strong>Part 3:</strong> Choose the best answer for each question. All three must be correct to pass.</p>
+
+  <div class="sim-frame pbq-dr-tradeoffs">
+    <section class="pbq-ai-attack-mcq" aria-labelledby="dr-q1-heading">
+      <h2 id="dr-q1-heading">Q1. Paying the ransom</h2>
+      <p class="pbq-stem">
+        After the ransomware incident, the CISO wants to pay the ransom to recover faster. The security team
+        recommends against it. What is the <strong>primary</strong> security reason?
+      </p>
+      <div class="pbq-choices" role="radiogroup" aria-labelledby="dr-q1-heading">
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q1" value="A" />
+          Paying the ransom is illegal in all jurisdictions.
+        </label>
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q1" value="B" />
+          Paying funds criminal organizations, provides no guarantee of key delivery, and signals willingness to pay —
+          increasing likelihood of future attacks on the same organization.
+        </label>
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q1" value="C" />
+          Decryption tools provided by attackers always contain backdoors.
+        </label>
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q1" value="D" />
+          Payment traceable via blockchain makes prosecution easy, so attackers won&rsquo;t provide keys.
+        </label>
+      </div>
+    </section>
+
+    <section class="pbq-ai-attack-mcq" aria-labelledby="dr-q2-heading">
+      <h2 id="dr-q2-heading">Q2. Reducing RPO</h2>
+      <p class="pbq-stem">
+        The 6-hour-old backup means up to 6 hours of transaction data is lost. What technology, if implemented
+        beforehand, would have reduced the RPO to near-zero?
+      </p>
+      <div class="pbq-choices" role="radiogroup" aria-labelledby="dr-q2-heading">
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q2" value="A" />
+          Full daily backups stored offsite on tape.
+        </label>
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q2" value="B" />
+          Continuous data protection (CDP) / synchronous replication to a secondary site — captures every write in real
+          time.
+        </label>
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q2" value="C" />
+          Incremental backups every 4 hours.
+        </label>
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q2" value="D" />
+          RAID 5 storage redundancy at the primary site.
+        </label>
+      </div>
+    </section>
+
+    <section class="pbq-ai-attack-mcq" aria-labelledby="dr-q3-heading">
+      <h2 id="dr-q3-heading">Q3. Before restoring from backup</h2>
+      <p class="pbq-stem">
+        Before restoring from backup, what is the <em>most critical</em> step to prevent immediate re-infection?
+      </p>
+      <div class="pbq-choices" role="radiogroup" aria-labelledby="dr-q3-heading">
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q3" value="A" />
+          Change all user passwords before restoration.
+        </label>
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q3" value="B" />
+          Completely isolate and re-image all affected systems, identify and close the initial attack vector (e.g., the
+          phishing entry point or vulnerable service), then restore from a verified clean backup.
+        </label>
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q3" value="C" />
+          Run antivirus on the backup files before restoring.
+        </label>
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q3" value="D" />
+          Restore the backup immediately — speed of recovery takes priority over re-infection risk during active
+          incident.
+        </label>
+      </div>
+    </section>
+  </div>
+
+  <div class="actions">
+    <button id="checkBtn" type="button">Check Answer</button>
+    <button id="showBtn" type="button">Show Answer</button>
+    <button id="resetBtn" type="button">Reset</button>
+    <span id="result" role="status" aria-live="polite"></span>
+  </div>
+</article>
+<script>
+(function () {
+  var ANSWERS = {
+    secplus_bct_dr_q1: "B",
+    secplus_bct_dr_q2: "B",
+    secplus_bct_dr_q3: "B"
+  };
+  var CORRECT_MSG =
+    "Correct. Q1: Do not pay ransom — no guarantee of recovery and it encourages repeat targeting. Q2: CDP/synchronous replication minimizes data loss (near-zero RPO). Q3: Eradicate the attack vector and re-image before restore, or ransomware reinfects immediately.";
+  var root = document.getElementById("dr-part3-tradeoffs");
+  if (!root) return;
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector("#result");
+
+  function allAnswered() {
+    return Object.keys(ANSWERS).every(function (name) {
+      return root.querySelector('input[name="' + name + '"]:checked');
+    });
+  }
+
+  function allCorrect() {
+    return Object.keys(ANSWERS).every(function (name) {
+      var sel = root.querySelector('input[name="' + name + '"]:checked');
+      return sel && sel.value === ANSWERS[name];
+    });
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (!allAnswered()) {
+      result.className = "is-fail";
+      result.textContent = "Answer all three questions, then check again.";
+      return;
+    }
+    if (allCorrect()) {
+      result.className = "is-pass";
+      result.textContent = CORRECT_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent = "Not quite. Review ransom policy, technologies that achieve near-zero RPO, and eradication before restore.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    Object.keys(ANSWERS).forEach(function (name) {
+      var input = root.querySelector('input[name="' + name + '"][value="' + ANSWERS[name] + '"]');
+      if (input) input.checked = true;
+    });
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    root.querySelectorAll('input[type="radio"]').forEach(function (r) {
+      r.checked = false;
+    });
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>

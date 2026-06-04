@@ -1,0 +1,118 @@
+<article class="pbq-section-fragment" data-id="siem-part1-sigma">
+  <h1>Part 1 — Sigma rule selection</h1>
+  <p class="pbq-instructions">
+    <strong>Part 1:</strong> Select the correct Sigma rule to detect the <strong>09:15</strong> event: Word spawning
+    PowerShell with a Base64-encoded command.
+  </p>
+
+  <div class="sim-frame pbq-siem-sigma">
+    <p class="pbq-stem">
+      Which Sigma rule best detects: <strong>Word spawning PowerShell with Base64-encoded command</strong>?
+    </p>
+
+    <div class="pbq-siem-sigma-choices" role="radiogroup" aria-labelledby="sigma-stem">
+      <span id="sigma-stem" class="visually-hidden">Sigma rule choices</span>
+
+      <label class="pbq-siem-sigma-card">
+        <input type="radio" name="secplus_bct_siem_sigma" value="A" />
+        <span class="pbq-siem-sigma-card__body">
+          <pre class="pbq-siem-yaml"><code>detection:
+  selection:
+    Image|endswith: '\powershell.exe'
+    CommandLine|contains: '-enc'
+  condition: selection</code></pre>
+          <span class="pbq-siem-sigma-note">Detects any PowerShell with <code>-enc</code> — too broad, many false positives</span>
+        </span>
+      </label>
+
+      <label class="pbq-siem-sigma-card">
+        <input type="radio" name="secplus_bct_siem_sigma" value="B" />
+        <span class="pbq-siem-sigma-card__body">
+          <pre class="pbq-siem-yaml"><code>detection:
+  selection:
+    ParentImage|endswith: '\winword.exe'
+    Image|endswith: '\powershell.exe'
+    CommandLine|contains: '-enc'
+  condition: selection</code></pre>
+          <span class="pbq-siem-sigma-note">Word spawning encoded PowerShell — precise parent-child chain</span>
+        </span>
+      </label>
+
+      <label class="pbq-siem-sigma-card">
+        <input type="radio" name="secplus_bct_siem_sigma" value="C" />
+        <span class="pbq-siem-sigma-card__body">
+          <pre class="pbq-siem-yaml"><code>detection:
+  selection:
+    Image|endswith: '\cmd.exe'
+    ParentImage|endswith: '\winword.exe'
+  condition: selection</code></pre>
+          <span class="pbq-siem-sigma-note">Only Word → cmd.exe; misses PowerShell execution stage</span>
+        </span>
+      </label>
+
+      <label class="pbq-siem-sigma-card">
+        <input type="radio" name="secplus_bct_siem_sigma" value="D" />
+        <span class="pbq-siem-sigma-card__body">
+          <pre class="pbq-siem-yaml"><code>detection:
+  keywords:
+    - 'powershell'
+    - 'base64'
+  condition: keywords</code></pre>
+          <span class="pbq-siem-sigma-note">Keyword match only — extremely noisy</span>
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="checkBtn" type="button">Check Answer</button>
+    <button id="showBtn" type="button">Show Answer</button>
+    <button id="resetBtn" type="button">Reset</button>
+    <span id="result" role="status" aria-live="polite"></span>
+  </div>
+</article>
+<script>
+(function () {
+  var CORRECT = "B";
+  var CORRECT_MSG =
+    "Correct. Rule B ties ParentImage winword.exe to powershell.exe with -enc in the command line — the exact 09:15 stager chain. Rule A is too broad; C stops at cmd.exe; D is keyword noise.";
+  var root = document.getElementById("siem-part1-sigma");
+  if (!root) return;
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector("#result");
+
+  checkBtn.addEventListener("click", function () {
+    var sel = root.querySelector('input[name="secplus_bct_siem_sigma"]:checked');
+    if (!sel) {
+      result.className = "is-fail";
+      result.textContent = "Select a Sigma rule, then check again.";
+      return;
+    }
+    if (sel.value === CORRECT) {
+      result.className = "is-pass";
+      result.textContent = CORRECT_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent = "Not quite. The rule must include Word as parent and encoded PowerShell as the child process.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    var input = root.querySelector('input[name="secplus_bct_siem_sigma"][value="' + CORRECT + '"]');
+    if (input) input.checked = true;
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    root.querySelectorAll('input[name="secplus_bct_siem_sigma"]').forEach(function (r) {
+      r.checked = false;
+    });
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>

@@ -1,0 +1,187 @@
+<article class="pbq-section-fragment" data-id="siem-part3-containment">
+  <h1>Part 3 — Containment decisions</h1>
+  <p class="pbq-instructions"><strong>Part 3:</strong> Answer all three items below to pass.</p>
+
+  <div class="sim-frame pbq-siem-contain">
+    <section class="pbq-siem-contain-block" aria-labelledby="contain-two-heading">
+      <h2 id="contain-two-heading">Earliest containment opportunities</h2>
+      <p class="pbq-stem">
+        Select the <strong>two alerts</strong> that represent the earliest points where automated containment would
+        have stopped the attack chain <strong>before</strong> credential theft and lateral movement.
+      </p>
+      <ul class="pbq-siem-contain-checks">
+        <li>
+          <label>
+            <input type="checkbox" name="secplus_bct_siem_contain_two" value="a001" data-correct="1" />
+            <strong>#A001</strong> — Macro execution (09:14) · HIGH
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox" name="secplus_bct_siem_contain_two" value="a002" data-correct="1" />
+            <strong>#A002</strong> — Word spawning encoded PowerShell (09:15) · CRITICAL
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox" name="secplus_bct_siem_contain_two" value="a003" />
+            <strong>#A003</strong> — LSASS memory access (09:22) · CRITICAL
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox" name="secplus_bct_siem_contain_two" value="a004" />
+            <strong>#A004</strong> — PsExec lateral movement (09:38) · CRITICAL
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox" name="secplus_bct_siem_contain_two" value="a005" />
+            <strong>#A005</strong> — DCSync replication (09:55) · CRITICAL
+          </label>
+        </li>
+      </ul>
+    </section>
+
+    <section class="pbq-siem-contain-block pbq-siem-contain-block--purple" aria-labelledby="contain-crit-heading">
+      <h2 id="contain-crit-heading">Earliest automated isolation (CRITICAL alerts)</h2>
+      <p class="pbq-stem">
+        If your SIEM/SOAR had automated <strong>host isolation on CRITICAL alerts</strong>, which alert — if acted upon
+        immediately — would have prevented the ransomware stage? Select the <em>earliest critical alert</em> that should
+        have triggered isolation of <strong>WS-JDOE</strong>.
+      </p>
+      <label class="pbq-siem-field">
+        <span class="visually-hidden">Earliest critical alert</span>
+        <select class="pbq-siem-select" data-key="earliest-critical" aria-label="Earliest critical alert for isolation">
+          <option value="">-- Select the alert --</option>
+          <option value="a001">#A001 — Macro execution (09:14)</option>
+          <option value="a002">#A002 — Word spawning encoded PowerShell (09:15) ← CRITICAL</option>
+          <option value="a003">#A003 — LSASS memory access (09:22) ← CRITICAL</option>
+          <option value="a004">#A004 — PsExec lateral movement (09:38) ← CRITICAL</option>
+          <option value="a005">#A005 — DCSync replication (09:55) ← CRITICAL</option>
+        </select>
+      </label>
+    </section>
+
+    <section class="pbq-siem-contain-block pbq-siem-contain-block--purple" aria-labelledby="soar-heading">
+      <h2 id="soar-heading">SOAR response on #A002</h2>
+      <p class="pbq-stem">What SOAR automated response should trigger on <strong>#A002</strong>?</p>
+      <label class="pbq-siem-field">
+        <span class="visually-hidden">SOAR action</span>
+        <select class="pbq-siem-select" data-key="soar-a002" aria-label="SOAR action for A002">
+          <option value="">-- Select action --</option>
+          <option value="email">Email the security team and wait for manual approval</option>
+          <option value="isolate">
+            Isolate WS-JDOE at the network layer (remove from VLAN/NAC), kill process, snapshot memory for forensics,
+            open P1 ticket
+          </option>
+          <option value="block-user">Block the user account jdoe in Active Directory only</option>
+          <option value="kill-resume">Delete the PowerShell process and resume normal operations</option>
+        </select>
+      </label>
+    </section>
+  </div>
+
+  <div class="actions">
+    <button id="checkBtn" type="button">Check Answer</button>
+    <button id="showBtn" type="button">Show Answer</button>
+    <button id="resetBtn" type="button">Reset</button>
+    <span id="result" role="status" aria-live="polite"></span>
+  </div>
+</article>
+<script>
+(function () {
+  var MUST_TWO = { a001: true, a002: true };
+  var SELECTS = { "earliest-critical": "a002", "soar-a002": "isolate" };
+  var CORRECT_MSG =
+    "Correct. Earliest chain stoppers: #A001 (macro/phish) and #A002 (encoded PowerShell stager) before cred access. Earliest CRITICAL for WS-JDOE isolation: #A002. SOAR on A002: network isolate, kill process, memory snapshot, P1 ticket — not email-only or resume ops.";
+  var root = document.getElementById("siem-part3-containment");
+  if (!root) return;
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector("#result");
+
+  function twoAlertsOk() {
+    var checked = root.querySelectorAll('input[name="secplus_bct_siem_contain_two"]:checked');
+    if (checked.length !== 2) return false;
+    var ok = true;
+    checked.forEach(function (cb) {
+      if (!MUST_TWO[cb.value]) ok = false;
+    });
+    root.querySelectorAll('input[name="secplus_bct_siem_contain_two"]').forEach(function (cb) {
+      var pass = cb.checked === !!MUST_TWO[cb.value];
+      cb.closest("label").classList.toggle("pbq-siem-check--ok", cb.checked && pass);
+      cb.closest("label").classList.toggle("pbq-siem-check--bad", cb.checked && !pass);
+    });
+    return ok;
+  }
+
+  function selectsOk() {
+    var ok = true;
+    root.querySelectorAll(".pbq-siem-select").forEach(function (sel) {
+      var key = sel.getAttribute("data-key");
+      var pass = sel.value === SELECTS[key];
+      sel.classList.toggle("pbq-siem-select--ok", pass);
+      sel.classList.toggle("pbq-siem-select--bad", sel.value && !pass);
+      if (!pass) ok = false;
+    });
+    return ok;
+  }
+
+  function allFilled() {
+    var n = root.querySelectorAll('input[name="secplus_bct_siem_contain_two"]:checked').length;
+    if (n !== 2) return false;
+    var filled = true;
+    root.querySelectorAll(".pbq-siem-select").forEach(function (sel) {
+      if (!sel.value) filled = false;
+    });
+    return filled;
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (!allFilled()) {
+      result.className = "is-fail";
+      result.textContent = "Select exactly two early alerts, both dropdowns, then check again.";
+      twoAlertsOk();
+      selectsOk();
+      return;
+    }
+    if (twoAlertsOk() && selectsOk()) {
+      result.className = "is-pass";
+      result.textContent = CORRECT_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent =
+        "Not quite. Early stops = A001 + A002. CRITICAL isolation = A002. SOAR = full host isolation workflow on A002.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    root.querySelectorAll('input[name="secplus_bct_siem_contain_two"]').forEach(function (cb) {
+      cb.checked = !!MUST_TWO[cb.value];
+    });
+    root.querySelectorAll(".pbq-siem-select").forEach(function (sel) {
+      sel.value = SELECTS[sel.getAttribute("data-key")];
+      sel.classList.add("pbq-siem-select--ok");
+    });
+    twoAlertsOk();
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    root.querySelectorAll('input[name="secplus_bct_siem_contain_two"]').forEach(function (cb) {
+      cb.checked = false;
+      cb.closest("label").classList.remove("pbq-siem-check--ok", "pbq-siem-check--bad");
+    });
+    root.querySelectorAll(".pbq-siem-select").forEach(function (sel) {
+      sel.selectedIndex = 0;
+      sel.classList.remove("pbq-siem-select--ok", "pbq-siem-select--bad");
+    });
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>

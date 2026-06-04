@@ -68,6 +68,40 @@
 
 ---
 
+## 5. Firewall ACL — Security Operations (`firewall-acl-secops/`)
+
+| Section | Key | Verdict | Primary sources |
+|---------|-----|---------|-----------------|
+| **ACL table** | R1–R3 permits + R4 deny as documented in scenario README | **Pass** | Least privilege; tiered segmentation; explicit default deny (CompTIA network/security operations) |
+
+**CompTIA SY0-701 fit:** **3.3** network implementation, **4.1** secure configuration, ACL evaluation order.
+
+---
+
+## 6. Ransomware DR — Acme Corp (`ransomware-dr-acme/`)
+
+| Part | Key | Verdict | Primary sources |
+|------|-----|---------|-----------------|
+| **Step order** | Mobilize → isolate → assess → declare → verify backup → failover warm → restore → validate | **Pass** | NIST SP 800-61 (contain before recovery); DR runbook sequencing |
+| **Targets** | RTO 4h · RPO 6h · backup ≤4h · warm site · why not hot = both | **Pass** | RTO/RPO definitions; hot/warm/cold cost vs. recovery time |
+| **Trade-offs** | Q1–Q3 all **B** | **Pass** | No ransom (FBI/CISA guidance); CDP for near-zero RPO; eradicate before restore |
+
+**CompTIA SY0-701 fit:** **3.4** resilience / BC-DR; **2.5** incident response; **4.6** recovery.
+
+---
+
+## 7. SIEM ransomware — Sigma & MITRE (`siem-ransomware-mitre/`)
+
+| Part | Key | Verdict |
+|------|-----|---------|
+| Sigma | **B** (winword → powershell -enc) | **Pass** | Sigma parent-child correlation |
+| MITRE table | See scenario README | **Pass** | MITRE ATT&CK mapping |
+| Containment | A001+A002 · isolate A002 · SOAR isolate workflow | **Pass** | NIST IR contain before impact; CISA ransomware guidance (no ransom) |
+
+**CompTIA SY0-701 fit:** **2.4** analysis; **2.5** incident response; **3.2** SIEM/SOAR; **4.5** detection engineering.
+
+---
+
 ## References (quick list)
 
 | Topic | Reference |

@@ -59,13 +59,56 @@ SCENARIOS = [
         "body_class": "pbq-ssh-harden",
         "description": "Ubuntu 22.04 post-breach hardening — sshd, fail2ban, UFW, and consequence questions.",
         "prev": "hybrid-pki-audit",
-        "next": None,
+        "next": "firewall-acl-secops",
         "sections": [
             {"id": "ubuntu-intro", "label": "Overview & scores", "path": "ubuntu-ssh-breach-hardening/sections/ubuntu-intro.html"},
             {"id": "ubuntu-sshd", "label": "sshd_config", "path": "ubuntu-ssh-breach-hardening/sections/ubuntu-sshd.html"},
             {"id": "ubuntu-fail2ban", "label": "jail.local (fail2ban)", "path": "ubuntu-ssh-breach-hardening/sections/ubuntu-fail2ban.html"},
             {"id": "ubuntu-ufw", "label": "UFW rules", "path": "ubuntu-ssh-breach-hardening/sections/ubuntu-ufw.html"},
             {"id": "ubuntu-consequences", "label": "Consequence Qs & grade", "path": "ubuntu-ssh-breach-hardening/sections/ubuntu-consequences.html"},
+        ],
+    },
+    {
+        "slug": "firewall-acl-secops",
+        "title": "Firewall ACL Configuration — Security Operations",
+        "body_class": "pbq-acl-secops",
+        "description": "Acme Corp firewall ACL — permit web and database tiers, explicit deny catch-all (top-down evaluation).",
+        "prev": "ubuntu-ssh-breach-hardening",
+        "next": "ransomware-dr-acme",
+        "sections": [
+            {
+                "id": "firewall-acl-config",
+                "label": "ACL rule table",
+                "path": "firewall-acl-secops/sections/firewall-acl-config.html",
+            },
+        ],
+    },
+    {
+        "slug": "ransomware-dr-acme",
+        "title": "Ransomware DR — Acme Corp",
+        "body_class": "pbq-dr-ransomware dragdrop-exercise",
+        "description": "Ransomware DR activation — order 8 steps, RTO/RPO and warm site tier, cost vs. recovery trade-offs.",
+        "prev": "firewall-acl-secops",
+        "next": "siem-ransomware-mitre",
+        "sections": [
+            {"id": "dr-overview", "label": "Scenario constraints", "path": "ransomware-dr-acme/sections/dr-overview.html"},
+            {"id": "dr-part1-order", "label": "Part 1 — DR step order", "path": "ransomware-dr-acme/sections/dr-part1-order.html"},
+            {"id": "dr-part2-targets", "label": "Part 2 — RTO/RPO & site", "path": "ransomware-dr-acme/sections/dr-part2-targets.html"},
+            {"id": "dr-part3-tradeoffs", "label": "Part 3 — Trade-offs", "path": "ransomware-dr-acme/sections/dr-part3-tradeoffs.html"},
+        ],
+    },
+    {
+        "slug": "siem-ransomware-mitre",
+        "title": "SIEM ransomware — Sigma & MITRE",
+        "body_class": "pbq-siem-ransomware",
+        "description": "7 SIEM alerts — Sigma rule for Word/PowerShell stager, MITRE ATT&CK classification, containment decisions.",
+        "prev": "ransomware-dr-acme",
+        "next": None,
+        "sections": [
+            {"id": "siem-overview", "label": "Attack timeline", "path": "siem-ransomware-mitre/sections/siem-overview.html"},
+            {"id": "siem-part1-sigma", "label": "Part 1 — Sigma rule", "path": "siem-ransomware-mitre/sections/siem-part1-sigma.html"},
+            {"id": "siem-part2-mitre", "label": "Part 2 — MITRE stages", "path": "siem-ransomware-mitre/sections/siem-part2-mitre.html"},
+            {"id": "siem-part3-containment", "label": "Part 3 — Containment", "path": "siem-ransomware-mitre/sections/siem-part3-containment.html"},
         ],
     },
 ]
@@ -84,7 +127,6 @@ LEGACY_REDIRECTS: dict[str, tuple[str, str]] = {
     "hybrid-pki-audit/hybrid-pki-audit-part1.html": ("hybrid-pki-audit/hybrid-pki-audit.html", "pki-p1"),
     "hybrid-pki-audit/hybrid-pki-audit-part2.html": ("hybrid-pki-audit/hybrid-pki-audit.html", "pki-p2"),
     "hybrid-pki-audit/hybrid-pki-audit-part3.html": ("hybrid-pki-audit/hybrid-pki-audit.html", "pki-p3"),
-    "ubuntu-ssh-breach-hardening/ubuntu-ssh-breach-hardening.html": ("ubuntu-ssh-breach-hardening/ubuntu-ssh-breach-hardening.html", "ubuntu-intro"),
 }
 
 REDIRECT_STUB = """<!doctype html>

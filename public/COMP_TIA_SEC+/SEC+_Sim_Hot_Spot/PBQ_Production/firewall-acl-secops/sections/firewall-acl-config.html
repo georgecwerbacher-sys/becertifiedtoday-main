@@ -1,0 +1,324 @@
+<article class="pbq-section-fragment" data-id="firewall-acl-config">
+  <h1>Firewall ACL Configuration — Security Operations</h1>
+  <p class="pbq-sub">
+    Configure inbound firewall ACL rules for Acme Corp internal hosts. Rules are evaluated <strong>top-down</strong> — the
+    first match wins.
+  </p>
+
+  <div class="sim-frame pbq-acl-sim">
+    <aside class="pbq-acl-policy" aria-labelledby="acl-policy-heading">
+      <h2 id="acl-policy-heading" class="visually-hidden">Security policy</h2>
+      <p>
+        You are a security analyst at <strong>Acme Corp</strong>. A new policy requires that:
+      </p>
+      <ul>
+        <li>
+          Only the web server (<strong>10.0.0.10</strong>) may accept inbound <strong>HTTP (port 80)</strong> and
+          <strong>HTTPS (port 443)</strong> traffic from <strong>any source</strong>.
+        </li>
+        <li>
+          The database server (<strong>10.0.0.20</strong>) must only accept connections from the web server
+          (<strong>10.0.0.10</strong>) on port <strong>3306</strong>.
+        </li>
+        <li>All other inbound traffic to internal hosts must be <strong>denied</strong>.</li>
+      </ul>
+      <p class="pbq-acl-policy__note">
+        Configure the firewall ACL rules below to enforce this policy. Place the most specific permits first, then an
+        explicit deny for everything else.
+      </p>
+    </aside>
+
+    <div class="pbq-acl-table-wrap">
+      <p class="pbq-acl-table-banner">
+        Configure rules — select action, protocol, source, destination, and port for each rule
+      </p>
+      <table class="pbq-acl-table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Action</th>
+            <th scope="col">Protocol</th>
+            <th scope="col">Source IP</th>
+            <th scope="col">Destination</th>
+            <th scope="col">Port</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-rule="1">
+            <th scope="row" class="pbq-acl-row-num">1</th>
+            <td>
+              <select class="pbq-acl-select" data-field="action" data-rule="1" aria-label="Rule 1 action">
+                <option value="">-- Select --</option>
+                <option value="allow">ALLOW</option>
+                <option value="deny">DENY</option>
+              </select>
+            </td>
+            <td>
+              <select class="pbq-acl-select" data-field="protocol" data-rule="1" aria-label="Rule 1 protocol">
+                <option value="">-- Select --</option>
+                <option value="tcp">TCP</option>
+                <option value="udp">UDP</option>
+                <option value="icmp">ICMP</option>
+                <option value="any">ANY</option>
+              </select>
+            </td>
+            <td>
+              <select class="pbq-acl-select" data-field="src" data-rule="1" aria-label="Rule 1 source IP">
+                <option value="">-- Select --</option>
+                <option value="any">ANY</option>
+                <option value="10.0.0.10">10.0.0.10 (Web)</option>
+                <option value="10.0.0.20">10.0.0.20 (DB)</option>
+              </select>
+            </td>
+            <td>
+              <select class="pbq-acl-select" data-field="dst" data-rule="1" aria-label="Rule 1 destination">
+                <option value="">-- Select --</option>
+                <option value="10.0.0.10">10.0.0.10 (Web)</option>
+                <option value="10.0.0.20">10.0.0.20 (DB)</option>
+                <option value="any">ANY</option>
+              </select>
+            </td>
+            <td>
+              <select class="pbq-acl-select" data-field="port" data-rule="1" aria-label="Rule 1 port">
+                <option value="">-- Select --</option>
+                <option value="80">80 (HTTP)</option>
+                <option value="443">443 (HTTPS)</option>
+                <option value="3306">3306 (MySQL)</option>
+                <option value="any">ANY</option>
+              </select>
+            </td>
+          </tr>
+          <tr data-rule="2">
+            <th scope="row" class="pbq-acl-row-num">2</th>
+            <td>
+              <select class="pbq-acl-select" data-field="action" data-rule="2" aria-label="Rule 2 action">
+                <option value="">-- Select --</option>
+                <option value="allow">ALLOW</option>
+                <option value="deny">DENY</option>
+              </select>
+            </td>
+            <td>
+              <select class="pbq-acl-select" data-field="protocol" data-rule="2" aria-label="Rule 2 protocol">
+                <option value="">-- Select --</option>
+                <option value="tcp">TCP</option>
+                <option value="udp">UDP</option>
+                <option value="icmp">ICMP</option>
+                <option value="any">ANY</option>
+              </select>
+            </td>
+            <td>
+              <select class="pbq-acl-select" data-field="src" data-rule="2" aria-label="Rule 2 source IP">
+                <option value="">-- Select --</option>
+                <option value="any">ANY</option>
+                <option value="10.0.0.10">10.0.0.10 (Web)</option>
+                <option value="10.0.0.20">10.0.0.20 (DB)</option>
+              </select>
+            </td>
+            <td>
+              <select class="pbq-acl-select" data-field="dst" data-rule="2" aria-label="Rule 2 destination">
+                <option value="">-- Select --</option>
+                <option value="10.0.0.10">10.0.0.10 (Web)</option>
+                <option value="10.0.0.20">10.0.0.20 (DB)</option>
+                <option value="any">ANY</option>
+              </select>
+            </td>
+            <td>
+              <select class="pbq-acl-select" data-field="port" data-rule="2" aria-label="Rule 2 port">
+                <option value="">-- Select --</option>
+                <option value="80">80 (HTTP)</option>
+                <option value="443">443 (HTTPS)</option>
+                <option value="3306">3306 (MySQL)</option>
+                <option value="any">ANY</option>
+              </select>
+            </td>
+          </tr>
+          <tr data-rule="3">
+            <th scope="row" class="pbq-acl-row-num">3</th>
+            <td>
+              <select class="pbq-acl-select" data-field="action" data-rule="3" aria-label="Rule 3 action">
+                <option value="">-- Select --</option>
+                <option value="allow">ALLOW</option>
+                <option value="deny">DENY</option>
+              </select>
+            </td>
+            <td>
+              <select class="pbq-acl-select" data-field="protocol" data-rule="3" aria-label="Rule 3 protocol">
+                <option value="">-- Select --</option>
+                <option value="tcp">TCP</option>
+                <option value="udp">UDP</option>
+                <option value="icmp">ICMP</option>
+                <option value="any">ANY</option>
+              </select>
+            </td>
+            <td>
+              <select class="pbq-acl-select" data-field="src" data-rule="3" aria-label="Rule 3 source IP">
+                <option value="">-- Select --</option>
+                <option value="any">ANY</option>
+                <option value="10.0.0.10">10.0.0.10 (Web)</option>
+                <option value="10.0.0.20">10.0.0.20 (DB)</option>
+              </select>
+            </td>
+            <td>
+              <select class="pbq-acl-select" data-field="dst" data-rule="3" aria-label="Rule 3 destination">
+                <option value="">-- Select --</option>
+                <option value="10.0.0.10">10.0.0.10 (Web)</option>
+                <option value="10.0.0.20">10.0.0.20 (DB)</option>
+                <option value="any">ANY</option>
+              </select>
+            </td>
+            <td>
+              <select class="pbq-acl-select" data-field="port" data-rule="3" aria-label="Rule 3 port">
+                <option value="">-- Select --</option>
+                <option value="80">80 (HTTP)</option>
+                <option value="443">443 (HTTPS)</option>
+                <option value="3306">3306 (MySQL)</option>
+                <option value="any">ANY</option>
+              </select>
+            </td>
+          </tr>
+          <tr class="pbq-acl-row--implicit" data-rule="4">
+            <th scope="row" class="pbq-acl-row-num">4</th>
+            <td>
+              <select class="pbq-acl-select" data-field="action" data-rule="4" aria-label="Rule 4 action">
+                <option value="">-- Select --</option>
+                <option value="allow">ALLOW</option>
+                <option value="deny">DENY</option>
+              </select>
+            </td>
+            <td><span class="pbq-acl-fixed">ANY</span></td>
+            <td><span class="pbq-acl-fixed">ANY</span></td>
+            <td><span class="pbq-acl-fixed">ANY</span></td>
+            <td><span class="pbq-acl-fixed">ANY</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="checkBtn" type="button">Check Answer</button>
+    <button id="showBtn" type="button">Show Answer</button>
+    <button id="resetBtn" type="button">Reset</button>
+    <span id="result" role="status" aria-live="polite"></span>
+  </div>
+</article>
+<script>
+(function () {
+  var CORRECT = {
+    1: { action: "allow", protocol: "tcp", src: "any", dst: "10.0.0.10", port: "80" },
+    2: { action: "allow", protocol: "tcp", src: "any", dst: "10.0.0.10", port: "443" },
+    3: { action: "allow", protocol: "tcp", src: "10.0.0.10", dst: "10.0.0.20", port: "3306" },
+    4: { action: "deny", protocol: "any", src: "any", dst: "any", port: "any" }
+  };
+  var CORRECT_MSG =
+    "Correct. Rule 1: permit HTTP to the web server from any source. Rule 2: permit HTTPS to the web server. Rule 3: permit MySQL (3306) only from the web server to the database. Rule 4: explicit deny all (implicit deny). Order matters — permits must appear before the catch-all deny.";
+
+  var root = document.getElementById("firewall-acl-config");
+  if (!root) return;
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector(".actions [id$='result'], .actions + [id$='result']") || root.querySelector("#result");
+
+  function ruleValues(ruleNum) {
+    var row = root.querySelector('tr[data-rule="' + ruleNum + '"]');
+    if (!row) return null;
+    var out = {};
+    row.querySelectorAll(".pbq-acl-select").forEach(function (sel) {
+      out[sel.getAttribute("data-field")] = sel.value;
+    });
+    if (ruleNum === 4) {
+      out.protocol = "any";
+      out.src = "any";
+      out.dst = "any";
+      out.port = "any";
+    }
+    return out;
+  }
+
+  function markSelect(sel, pass) {
+    var val = sel.value;
+    sel.classList.toggle("pbq-acl-select--ok", !!pass);
+    sel.classList.toggle("pbq-acl-select--bad", val !== "" && !pass);
+  }
+
+  function ruleOk(ruleNum) {
+    var want = CORRECT[ruleNum];
+    var got = ruleValues(ruleNum);
+    if (!got) return false;
+    var fields = ["action", "protocol", "src", "dst", "port"];
+    var ok = true;
+    fields.forEach(function (f) {
+      if (got[f] !== want[f]) ok = false;
+    });
+    var row = root.querySelector('tr[data-rule="' + ruleNum + '"]');
+    if (row) {
+      row.querySelectorAll(".pbq-acl-select").forEach(function (sel) {
+        var pass = sel.value === want[sel.getAttribute("data-field")];
+        markSelect(sel, pass);
+      });
+    }
+    return ok;
+  }
+
+  function allFilled() {
+    for (var n = 1; n <= 4; n++) {
+      var got = ruleValues(n);
+      if (!got || !got.action) return false;
+      if (n < 4) {
+        if (!got.protocol || !got.src || !got.dst || !got.port) return false;
+      }
+    }
+    return true;
+  }
+
+  function allCorrect() {
+    for (var n = 1; n <= 4; n++) {
+      if (!ruleOk(n)) return false;
+    }
+    return true;
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (!allFilled()) {
+      result.className = "is-fail";
+      result.textContent = "Complete every dropdown (rule 4: select DENY), then check again.";
+      for (var i = 1; i <= 4; i++) ruleOk(i);
+      return;
+    }
+    if (allCorrect()) {
+      result.className = "is-pass";
+      result.textContent = CORRECT_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent =
+        "Not quite. Permit web ports from ANY to 10.0.0.10, then DB 3306 only from 10.0.0.10, then explicit DENY ANY on row 4.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    for (var n = 1; n <= 4; n++) {
+      var want = CORRECT[n];
+      var row = root.querySelector('tr[data-rule="' + n + '"]');
+      if (!row) continue;
+      row.querySelectorAll(".pbq-acl-select").forEach(function (sel) {
+        var f = sel.getAttribute("data-field");
+        if (want[f]) sel.value = want[f];
+        markSelect(sel, true);
+      });
+    }
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    root.querySelectorAll(".pbq-acl-select").forEach(function (sel) {
+      sel.selectedIndex = 0;
+      sel.classList.remove("pbq-acl-select--ok", "pbq-acl-select--bad");
+    });
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>

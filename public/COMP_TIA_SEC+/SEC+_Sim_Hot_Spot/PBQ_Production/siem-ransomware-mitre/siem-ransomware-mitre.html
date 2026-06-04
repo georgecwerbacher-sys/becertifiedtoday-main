@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ — 7 SIEM alerts — Sigma rule for Word/PowerShell stager, MITRE ATT&CK classification, containment decisions." />
+  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/siem-ransomware-mitre/siem-ransomware-mitre.html" />
+  <title>Security+ PBQ — SIEM ransomware — Sigma & MITRE | Be Certified Today</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+</head>
+<body class="secplus-question-ui secplus-pbq-ui pbq-folder-suite pbq-siem-ransomware">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell question-shell--suite">
+    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ practice portal">
+      <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="pbq-card pbq-card--suite">
+      <nav class="question-nav" aria-label="Question navigation">
+        <div class="question-nav-links">
+          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/ransomware-dr-acme/ransomware-dr-acme.html">Back</a>
+          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <span class="nav-link nav-link--disabled" aria-hidden="true">Next</span>
+        </div>
+      </nav>
+
+      <header class="pbq-suite-header">
+        <h1>SIEM ransomware — Sigma & MITRE</h1>
+        <p class="pbq-sub">7 SIEM alerts — Sigma rule for Word/PowerShell stager, MITRE ATT&CK classification, containment decisions.</p>
+        <p class="pbq-instructions">
+          Use the <strong>folder sidebar</strong> to switch sections on this page. Open <strong>exhibits</strong> in
+          popups where available.
+        </p>
+      </header>
+
+      <div class="pbq-suite-layout">
+        <nav class="pbq-suite-folders pbq-suite-folders--flat" aria-label="Sections">
+<p class="pbq-suite-folders__label"><span aria-hidden="true">📁</span> Sections</p>
+<ul class="pbq-suite-folders__list">
+<li><button type="button" class="pbq-suite-folder__item" data-section="siem-overview">Attack timeline</button></li>
+<li><button type="button" class="pbq-suite-folder__item" data-section="siem-part1-sigma">Part 1 — Sigma rule</button></li>
+<li><button type="button" class="pbq-suite-folder__item" data-section="siem-part2-mitre">Part 2 — MITRE stages</button></li>
+<li><button type="button" class="pbq-suite-folder__item" data-section="siem-part3-containment">Part 3 — Containment</button></li>
+</ul></nav>
+        <div class="pbq-suite-main" id="pbqSuiteMain">
+          <article class="pbq-suite-section" id="siem-overview" data-scenario="siem-ransomware-mitre" hidden><div class="pbq-suite-section__inner"><h1>SIEM alert triage — multi-stage ransomware</h1>
+  <p class="pbq-sub">
+    Your SIEM generated <strong>7 alerts</strong> across a 4-hour window. Forensics confirms a multi-stage ransomware
+    attack with lateral movement via compromised credentials.
+  </p>
+
+  <aside class="pbq-siem-timeline" aria-labelledby="siem-timeline-heading">
+    <h2 id="siem-overview-siem-timeline-heading">Reconstructed attack timeline (read-only context)</h2>
+    <ol class="pbq-siem-timeline__list">
+      <li>
+        <time>09:14</time> <span class="pbq-siem-host">MAIL-SRV</span>
+        User <code>jdoe</code> opens phishing attachment <code>invoice_Q4.docm</code>.
+        <span class="pbq-siem-tag pbq-siem-tag--initial">Initial Access</span>
+      </li>
+      <li>
+        <time>09:15</time> <span class="pbq-siem-host">WS-JDOE</span>
+        Word spawns <code>cmd.exe</code> → <code>PowerShell -enc</code> [base64] downloads stager.
+        <span class="pbq-siem-tag pbq-siem-tag--exec">Execution</span>
+      </li>
+      <li>
+        <time>09:22</time> <span class="pbq-siem-host">WS-JDOE</span>
+        LSASS memory read via Mimikatz — credential dump.
+        <span class="pbq-siem-tag pbq-siem-tag--cred">Credential Access</span>
+      </li>
+      <li>
+        <time>09:38</time> <span class="pbq-siem-host">WS-JDOE</span>
+        PsExec lateral movement → 3 hosts (10.0.0.31–33).
+        <span class="pbq-siem-tag pbq-siem-tag--lat">Lateral Movement</span>
+      </li>
+      <li>
+        <time>09:55</time> <span class="pbq-siem-host">DC-01</span>
+        Mimikatz DCSync — dumps all AD hashes.
+        <span class="pbq-siem-tag pbq-siem-tag--cred">Credential Access</span>
+      </li>
+      <li>
+        <time>11:02</time> <span class="pbq-siem-host">FILE-SRV</span>
+        Bulk rename <code>*.docx</code> → <code>*.locked</code> — encryption begins.
+        <span class="pbq-siem-tag pbq-siem-tag--impact">Impact</span>
+      </li>
+      <li>
+        <time>11:04</time> <span class="pbq-siem-host">FILE-SRV</span>
+        <code>README_DECRYPT.txt</code> written to 847 directories.
+        <span class="pbq-siem-tag pbq-siem-tag--impact">Impact</span>
+      </li>
+    </ol>
+  </aside>
+
+  <p class="pbq-instructions">
+    Complete all three parts: <strong>Sigma rule</strong> for the 09:15 stager event, <strong>MITRE ATT&amp;CK
+    classification</strong> for each alert, then <strong>containment decisions</strong>.
+  </p></div></article>
+<article class="pbq-suite-section" id="siem-part1-sigma" data-scenario="siem-ransomware-mitre" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-siem-sigma">
+    <p class="pbq-stem">
+      Which Sigma rule best detects: <strong>Word spawning PowerShell with Base64-encoded command</strong>?
+    </p>
+
+    <div class="pbq-siem-sigma-choices" role="radiogroup" aria-labelledby="sigma-stem">
+      <span id="siem-part1-sigma-sigma-stem" class="visually-hidden">Sigma rule choices</span>
+
+      <label class="pbq-siem-sigma-card">
+        <input type="radio" name="secplus_bct_siem_sigma" value="A" />
+        <span class="pbq-siem-sigma-card__body">
+          <pre class="pbq-siem-yaml"><code>detection:
+  selection:
+    Image|endswith: '\powershell.exe'
+    CommandLine|contains: '-enc'
+  condition: selection</code></pre>
+          <span class="pbq-siem-sigma-note">Detects any PowerShell with <code>-enc</code> — too broad, many false positives</span>
+        </span>
+      </label>
+
+      <label class="pbq-siem-sigma-card">
+        <input type="radio" name="secplus_bct_siem_sigma" value="B" />
+        <span class="pbq-siem-sigma-card__body">
+          <pre class="pbq-siem-yaml"><code>detection:
+  selection:
+    ParentImage|endswith: '\winword.exe'
+    Image|endswith: '\powershell.exe'
+    CommandLine|contains: '-enc'
+  condition: selection</code></pre>
+          <span class="pbq-siem-sigma-note">Word spawning encoded PowerShell — precise parent-child chain</span>
+        </span>
+      </label>
+
+      <label class="pbq-siem-sigma-card">
+        <input type="radio" name="secplus_bct_siem_sigma" value="C" />
+        <span class="pbq-siem-sigma-card__body">
+          <pre class="pbq-siem-yaml"><code>detection:
+  selection:
+    Image|endswith: '\cmd.exe'
+    ParentImage|endswith: '\winword.exe'
+  condition: selection</code></pre>
+          <span class="pbq-siem-sigma-note">Only Word → cmd.exe; misses PowerShell execution stage</span>
+        </span>
+      </label>
+
+      <label class="pbq-siem-sigma-card">
+        <input type="radio" name="secplus_bct_siem_sigma" value="D" />
+        <span class="pbq-siem-sigma-card__body">
+          <pre class="pbq-siem-yaml"><code>detection:
+  keywords:
+    - 'powershell'
+    - 'base64'
+  condition: keywords</code></pre>
+          <span class="pbq-siem-sigma-note">Keyword match only — extremely noisy</span>
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="siem-part1-sigma-checkBtn" type="button">Check Answer</button>
+    <button id="siem-part1-sigma-showBtn" type="button">Show Answer</button>
+    <button id="siem-part1-sigma-resetBtn" type="button">Reset</button>
+    <span id="siem-part1-sigma-result" role="status" aria-live="polite"></span>
+  </div></div></article>
+<article class="pbq-suite-section" id="siem-part2-mitre" data-scenario="siem-ransomware-mitre" hidden><div class="pbq-suite-section__inner"><div class="sim-frame">
+    <div class="pbq-siem-alert-table-wrap">
+      <table class="pbq-siem-alert-table">
+        <thead>
+          <tr>
+            <th scope="col">Alert ID</th>
+            <th scope="col">Time</th>
+            <th scope="col">Signature</th>
+            <th scope="col">Sev</th>
+            <th scope="col">ATT&amp;CK stage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-alert="a001">
+            <th scope="row">#A001</th>
+            <td>09:14</td>
+            <td>Office document macro execution — .docm opened by jdoe</td>
+            <td><span class="pbq-siem-sev pbq-siem-sev--high">HIGH</span></td>
+            <td>
+              <select class="pbq-siem-mitre-select" data-alert="a001" aria-label="MITRE stage for A001">
+                <option value="">-- Select --</option>
+                <option value="initial-access">Initial Access (T1566)</option>
+                <option value="execution">Execution (T1059)</option>
+                <option value="credential-access">Credential Access (T1003)</option>
+                <option value="lateral-movement">Lateral Movement (T1570)</option>
+                <option value="impact">Impact (T1486)</option>
+              </select>
+            </td>
+          </tr>
+          <tr data-alert="a002">
+            <th scope="row">#A002</th>
+            <td>09:15</td>
+            <td>Suspicious parent-child: WINWORD.EXE → powershell.exe -enc [b64]</td>
+            <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+            <td>
+              <select class="pbq-siem-mitre-select" data-alert="a002" aria-label="MITRE stage for A002">
+                <option value="">-- Select --</option>
+                <option value="initial-access">Initial Access (T1566)</option>
+                <option value="execution">Execution (T1059)</option>
+                <option value="credential-access">Credential Access (T1003)</option>
+                <option value="lateral-movement">Lateral Movement (T1570)</option>
+                <option value="impact">Impact (T1486)</option>
+              </select>
+            </td>
+          </tr>
+          <tr data-alert="a003">
+            <th scope="row">#A003</th>
+            <td>09:22</td>
+            <td>LSASS process memory access — handle opened by non-system process</td>
+            <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+            <td>
+              <select class="pbq-siem-mitre-select" data-alert="a003" aria-label="MITRE stage for A003">
+                <option value="">-- Select --</option>
+                <option value="initial-access">Initial Access (T1566)</option>
+                <option value="execution">Execution (T1059)</option>
+                <option value="credential-access">Credential Access (T1003)</option>
+                <option value="lateral-movement">Lateral Movement (T1570)</option>
+                <option value="impact">Impact (T1486)</option>
+              </select>
+            </td>
+          </tr>
+          <tr data-alert="a004">
+            <th scope="row">#A004</th>
+            <td>09:38</td>
+            <td>PsExec service created on remote host 10.0.0.31</td>
+            <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+            <td>
+              <select class="pbq-siem-mitre-select" data-alert="a004" aria-label="MITRE stage for A004">
+                <option value="">-- Select --</option>
+                <option value="initial-access">Initial Access (T1566)</option>
+                <option value="execution">Execution (T1059)</option>
+                <option value="credential-access">Credential Access (T1003)</option>
+                <option value="lateral-movement">Lateral Movement (T1570)</option>
+                <option value="impact">Impact (T1486)</option>
+              </select>
+            </td>
+          </tr>
+          <tr data-alert="a005">
+            <th scope="row">#A005</th>
+            <td>09:55</td>
+            <td>DCSync detected — replication request from non-DC host WS-JDOE</td>
+            <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+            <td>
+              <select class="pbq-siem-mitre-select" data-alert="a005" aria-label="MITRE stage for A005">
+                <option value="">-- Select --</option>
+                <option value="initial-access">Initial Access (T1566)</option>
+                <option value="execution">Execution (T1059)</option>
+                <option value="credential-access">Credential Access (T1003)</option>
+                <option value="lateral-movement">Lateral Movement (T1570)</option>
+                <option value="impact">Impact (T1486)</option>
+              </select>
+            </td>
+          </tr>
+          <tr data-alert="a006">
+            <th scope="row">#A006</th>
+            <td>11:02</td>
+            <td>Mass file rename — 3,400 files renamed in 90 seconds on FILE-SRV</td>
+            <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+            <td>
+              <select class="pbq-siem-mitre-select" data-alert="a006" aria-label="MITRE stage for A006">
+                <option value="">-- Select --</option>
+                <option value="initial-access">Initial Access (T1566)</option>
+                <option value="execution">Execution (T1059)</option>
+                <option value="credential-access">Credential Access (T1003)</option>
+                <option value="lateral-movement">Lateral Movement (T1570)</option>
+                <option value="impact">Impact (T1486)</option>
+              </select>
+            </td>
+          </tr>
+          <tr data-alert="a007">
+            <th scope="row">#A007</th>
+            <td>11:04</td>
+            <td>Ransom note written to 847 directories — README_DECRYPT.txt</td>
+            <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+            <td>
+              <select class="pbq-siem-mitre-select" data-alert="a007" aria-label="MITRE stage for A007">
+                <option value="">-- Select --</option>
+                <option value="initial-access">Initial Access (T1566)</option>
+                <option value="execution">Execution (T1059)</option>
+                <option value="credential-access">Credential Access (T1003)</option>
+                <option value="lateral-movement">Lateral Movement (T1570)</option>
+                <option value="impact">Impact (T1486)</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="siem-part2-mitre-checkBtn" type="button">Check Answer</button>
+    <button id="siem-part2-mitre-showBtn" type="button">Show Answer</button>
+    <button id="siem-part2-mitre-resetBtn" type="button">Reset</button>
+    <span id="siem-part2-mitre-result" role="status" aria-live="polite"></span>
+  </div></div></article>
+<article class="pbq-suite-section" id="siem-part3-containment" data-scenario="siem-ransomware-mitre" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-siem-contain">
+    <section class="pbq-siem-contain-block" aria-labelledby="contain-two-heading">
+      <h2 id="siem-part3-containment-contain-two-heading">Earliest containment opportunities</h2>
+      <p class="pbq-stem">
+        Select the <strong>two alerts</strong> that represent the earliest points where automated containment would
+        have stopped the attack chain <strong>before</strong> credential theft and lateral movement.
+      </p>
+      <ul class="pbq-siem-contain-checks">
+        <li>
+          <label>
+            <input type="checkbox" name="secplus_bct_siem_contain_two" value="a001" data-correct="1" />
+            <strong>#A001</strong> — Macro execution (09:14) · HIGH
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox" name="secplus_bct_siem_contain_two" value="a002" data-correct="1" />
+            <strong>#A002</strong> — Word spawning encoded PowerShell (09:15) · CRITICAL
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox" name="secplus_bct_siem_contain_two" value="a003" />
+            <strong>#A003</strong> — LSASS memory access (09:22) · CRITICAL
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox" name="secplus_bct_siem_contain_two" value="a004" />
+            <strong>#A004</strong> — PsExec lateral movement (09:38) · CRITICAL
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox" name="secplus_bct_siem_contain_two" value="a005" />
+            <strong>#A005</strong> — DCSync replication (09:55) · CRITICAL
+          </label>
+        </li>
+      </ul>
+    </section>
+
+    <section class="pbq-siem-contain-block pbq-siem-contain-block--purple" aria-labelledby="contain-crit-heading">
+      <h2 id="siem-part3-containment-contain-crit-heading">Earliest automated isolation (CRITICAL alerts)</h2>
+      <p class="pbq-stem">
+        If your SIEM/SOAR had automated <strong>host isolation on CRITICAL alerts</strong>, which alert — if acted upon
+        immediately — would have prevented the ransomware stage? Select the <em>earliest critical alert</em> that should
+        have triggered isolation of <strong>WS-JDOE</strong>.
+      </p>
+      <label class="pbq-siem-field">
+        <span class="visually-hidden">Earliest critical alert</span>
+        <select class="pbq-siem-select" data-key="earliest-critical" aria-label="Earliest critical alert for isolation">
+          <option value="">-- Select the alert --</option>
+          <option value="a001">#A001 — Macro execution (09:14)</option>
+          <option value="a002">#A002 — Word spawning encoded PowerShell (09:15) ← CRITICAL</option>
+          <option value="a003">#A003 — LSASS memory access (09:22) ← CRITICAL</option>
+          <option value="a004">#A004 — PsExec lateral movement (09:38) ← CRITICAL</option>
+          <option value="a005">#A005 — DCSync replication (09:55) ← CRITICAL</option>
+        </select>
+      </label>
+    </section>
+
+    <section class="pbq-siem-contain-block pbq-siem-contain-block--purple" aria-labelledby="soar-heading">
+      <h2 id="siem-part3-containment-soar-heading">SOAR response on #A002</h2>
+      <p class="pbq-stem">What SOAR automated response should trigger on <strong>#A002</strong>?</p>
+      <label class="pbq-siem-field">
+        <span class="visually-hidden">SOAR action</span>
+        <select class="pbq-siem-select" data-key="soar-a002" aria-label="SOAR action for A002">
+          <option value="">-- Select action --</option>
+          <option value="email">Email the security team and wait for manual approval</option>
+          <option value="isolate">
+            Isolate WS-JDOE at the network layer (remove from VLAN/NAC), kill process, snapshot memory for forensics,
+            open P1 ticket
+          </option>
+          <option value="block-user">Block the user account jdoe in Active Directory only</option>
+          <option value="kill-resume">Delete the PowerShell process and resume normal operations</option>
+        </select>
+      </label>
+    </section>
+  </div>
+
+  <div class="actions">
+    <button id="siem-part3-containment-checkBtn" type="button">Check Answer</button>
+    <button id="siem-part3-containment-showBtn" type="button">Show Answer</button>
+    <button id="siem-part3-containment-resetBtn" type="button">Reset</button>
+    <span id="siem-part3-containment-result" role="status" aria-live="polite"></span>
+  </div></div></article>
+        </div>
+      </div>
+
+      <p class="pbq-suite-footer">
+        <a class="btn btn-secondary" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/index.html">All PBQ Labs</a>
+      </p>
+    </main>
+  </div>
+
+  <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "siem-overview";</script>
+  <!-- siem-part1-sigma -->
+<script>
+(function () {
+  var CORRECT = "B";
+  var CORRECT_MSG =
+    "Correct. Rule B ties ParentImage winword.exe to powershell.exe with -enc in the command line — the exact 09:15 stager chain. Rule A is too broad; C stops at cmd.exe; D is keyword noise.";
+  var root = document.getElementById("siem-part1-sigma");
+  if (!root) return;
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector("#result");
+
+  checkBtn.addEventListener("click", function () {
+    var sel = root.querySelector('input[name="secplus_bct_siem_sigma"]:checked');
+    if (!sel) {
+      result.className = "is-fail";
+      result.textContent = "Select a Sigma rule, then check again.";
+      return;
+    }
+    if (sel.value === CORRECT) {
+      result.className = "is-pass";
+      result.textContent = CORRECT_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent = "Not quite. The rule must include Word as parent and encoded PowerShell as the child process.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    var input = root.querySelector('input[name="secplus_bct_siem_sigma"][value="' + CORRECT + '"]');
+    if (input) input.checked = true;
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    root.querySelectorAll('input[name="secplus_bct_siem_sigma"]').forEach(function (r) {
+      r.checked = false;
+    });
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>
+<!-- siem-part2-mitre -->
+<script>
+(function () {
+  var CORRECT = {
+    a001: "initial-access",
+    a002: "execution",
+    a003: "credential-access",
+    a004: "lateral-movement",
+    a005: "credential-access",
+    a006: "impact",
+    a007: "impact"
+  };
+  var CORRECT_MSG =
+    "Correct. A001 macro/phishing = Initial Access; A002 encoded PowerShell = Execution; A003 LSASS = Credential Access; A004 PsExec = Lateral Movement; A005 DCSync = Credential Access; A006/A007 encryption and ransom note = Impact (T1486).";
+  var root = document.getElementById("siem-part2-mitre");
+  if (!root) return;
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector("#result");
+
+  function mark(sel, pass) {
+    sel.classList.toggle("pbq-siem-mitre-select--ok", pass);
+    sel.classList.toggle("pbq-siem-mitre-select--bad", sel.value && !pass);
+  }
+
+  function allFilled() {
+    var ok = true;
+    root.querySelectorAll(".pbq-siem-mitre-select").forEach(function (sel) {
+      if (!sel.value) ok = false;
+    });
+    return ok;
+  }
+
+  function allCorrect() {
+    var ok = true;
+    root.querySelectorAll(".pbq-siem-mitre-select").forEach(function (sel) {
+      var key = sel.getAttribute("data-alert");
+      var pass = sel.value === CORRECT[key];
+      mark(sel, pass);
+      if (!pass) ok = false;
+    });
+    return ok;
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (!allFilled()) {
+      result.className = "is-fail";
+      result.textContent = "Select a MITRE stage for every alert.";
+      allCorrect();
+      return;
+    }
+    if (allCorrect()) {
+      result.className = "is-pass";
+      result.textContent = CORRECT_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent = "Some classifications are wrong. Map macro/phish to Initial Access, stager to Execution, cred dumps to Credential Access, PsExec to Lateral Movement, encryption to Impact.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    root.querySelectorAll(".pbq-siem-mitre-select").forEach(function (sel) {
+      sel.value = CORRECT[sel.getAttribute("data-alert")];
+      mark(sel, true);
+    });
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    root.querySelectorAll(".pbq-siem-mitre-select").forEach(function (sel) {
+      sel.selectedIndex = 0;
+      sel.classList.remove("pbq-siem-mitre-select--ok", "pbq-siem-mitre-select--bad");
+    });
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>
+<!-- siem-part3-containment -->
+<script>
+(function () {
+  var MUST_TWO = { a001: true, a002: true };
+  var SELECTS = { "earliest-critical": "a002", "soar-a002": "isolate" };
+  var CORRECT_MSG =
+    "Correct. Earliest chain stoppers: #A001 (macro/phish) and #A002 (encoded PowerShell stager) before cred access. Earliest CRITICAL for WS-JDOE isolation: #A002. SOAR on A002: network isolate, kill process, memory snapshot, P1 ticket — not email-only or resume ops.";
+  var root = document.getElementById("siem-part3-containment");
+  if (!root) return;
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector("#result");
+
+  function twoAlertsOk() {
+    var checked = root.querySelectorAll('input[name="secplus_bct_siem_contain_two"]:checked');
+    if (checked.length !== 2) return false;
+    var ok = true;
+    checked.forEach(function (cb) {
+      if (!MUST_TWO[cb.value]) ok = false;
+    });
+    root.querySelectorAll('input[name="secplus_bct_siem_contain_two"]').forEach(function (cb) {
+      var pass = cb.checked === !!MUST_TWO[cb.value];
+      cb.closest("label").classList.toggle("pbq-siem-check--ok", cb.checked && pass);
+      cb.closest("label").classList.toggle("pbq-siem-check--bad", cb.checked && !pass);
+    });
+    return ok;
+  }
+
+  function selectsOk() {
+    var ok = true;
+    root.querySelectorAll(".pbq-siem-select").forEach(function (sel) {
+      var key = sel.getAttribute("data-key");
+      var pass = sel.value === SELECTS[key];
+      sel.classList.toggle("pbq-siem-select--ok", pass);
+      sel.classList.toggle("pbq-siem-select--bad", sel.value && !pass);
+      if (!pass) ok = false;
+    });
+    return ok;
+  }
+
+  function allFilled() {
+    var n = root.querySelectorAll('input[name="secplus_bct_siem_contain_two"]:checked').length;
+    if (n !== 2) return false;
+    var filled = true;
+    root.querySelectorAll(".pbq-siem-select").forEach(function (sel) {
+      if (!sel.value) filled = false;
+    });
+    return filled;
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (!allFilled()) {
+      result.className = "is-fail";
+      result.textContent = "Select exactly two early alerts, both dropdowns, then check again.";
+      twoAlertsOk();
+      selectsOk();
+      return;
+    }
+    if (twoAlertsOk() && selectsOk()) {
+      result.className = "is-pass";
+      result.textContent = CORRECT_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent =
+        "Not quite. Early stops = A001 + A002. CRITICAL isolation = A002. SOAR = full host isolation workflow on A002.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    root.querySelectorAll('input[name="secplus_bct_siem_contain_two"]').forEach(function (cb) {
+      cb.checked = !!MUST_TWO[cb.value];
+    });
+    root.querySelectorAll(".pbq-siem-select").forEach(function (sel) {
+      sel.value = SELECTS[sel.getAttribute("data-key")];
+      sel.classList.add("pbq-siem-select--ok");
+    });
+    twoAlertsOk();
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    root.querySelectorAll('input[name="secplus_bct_siem_contain_two"]').forEach(function (cb) {
+      cb.checked = false;
+      cb.closest("label").classList.remove("pbq-siem-check--ok", "pbq-siem-check--bad");
+    });
+    root.querySelectorAll(".pbq-siem-select").forEach(function (sel) {
+      sel.selectedIndex = 0;
+      sel.classList.remove("pbq-siem-select--ok", "pbq-siem-select--bad");
+    });
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>
+</body>
+</html>

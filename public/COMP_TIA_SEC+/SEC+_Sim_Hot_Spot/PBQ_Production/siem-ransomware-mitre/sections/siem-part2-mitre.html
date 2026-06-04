@@ -1,0 +1,223 @@
+<article class="pbq-section-fragment" data-id="siem-part2-mitre">
+  <h1>Part 2 — MITRE ATT&amp;CK classification</h1>
+  <p class="pbq-instructions">
+    <strong>Part 2:</strong> Classify each SIEM alert by MITRE ATT&amp;CK stage. All seven must be correct to pass.
+  </p>
+
+  <div class="sim-frame">
+    <div class="pbq-siem-alert-table-wrap">
+      <table class="pbq-siem-alert-table">
+        <thead>
+          <tr>
+            <th scope="col">Alert ID</th>
+            <th scope="col">Time</th>
+            <th scope="col">Signature</th>
+            <th scope="col">Sev</th>
+            <th scope="col">ATT&amp;CK stage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-alert="a001">
+            <th scope="row">#A001</th>
+            <td>09:14</td>
+            <td>Office document macro execution — .docm opened by jdoe</td>
+            <td><span class="pbq-siem-sev pbq-siem-sev--high">HIGH</span></td>
+            <td>
+              <select class="pbq-siem-mitre-select" data-alert="a001" aria-label="MITRE stage for A001">
+                <option value="">-- Select --</option>
+                <option value="initial-access">Initial Access (T1566)</option>
+                <option value="execution">Execution (T1059)</option>
+                <option value="credential-access">Credential Access (T1003)</option>
+                <option value="lateral-movement">Lateral Movement (T1570)</option>
+                <option value="impact">Impact (T1486)</option>
+              </select>
+            </td>
+          </tr>
+          <tr data-alert="a002">
+            <th scope="row">#A002</th>
+            <td>09:15</td>
+            <td>Suspicious parent-child: WINWORD.EXE → powershell.exe -enc [b64]</td>
+            <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+            <td>
+              <select class="pbq-siem-mitre-select" data-alert="a002" aria-label="MITRE stage for A002">
+                <option value="">-- Select --</option>
+                <option value="initial-access">Initial Access (T1566)</option>
+                <option value="execution">Execution (T1059)</option>
+                <option value="credential-access">Credential Access (T1003)</option>
+                <option value="lateral-movement">Lateral Movement (T1570)</option>
+                <option value="impact">Impact (T1486)</option>
+              </select>
+            </td>
+          </tr>
+          <tr data-alert="a003">
+            <th scope="row">#A003</th>
+            <td>09:22</td>
+            <td>LSASS process memory access — handle opened by non-system process</td>
+            <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+            <td>
+              <select class="pbq-siem-mitre-select" data-alert="a003" aria-label="MITRE stage for A003">
+                <option value="">-- Select --</option>
+                <option value="initial-access">Initial Access (T1566)</option>
+                <option value="execution">Execution (T1059)</option>
+                <option value="credential-access">Credential Access (T1003)</option>
+                <option value="lateral-movement">Lateral Movement (T1570)</option>
+                <option value="impact">Impact (T1486)</option>
+              </select>
+            </td>
+          </tr>
+          <tr data-alert="a004">
+            <th scope="row">#A004</th>
+            <td>09:38</td>
+            <td>PsExec service created on remote host 10.0.0.31</td>
+            <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+            <td>
+              <select class="pbq-siem-mitre-select" data-alert="a004" aria-label="MITRE stage for A004">
+                <option value="">-- Select --</option>
+                <option value="initial-access">Initial Access (T1566)</option>
+                <option value="execution">Execution (T1059)</option>
+                <option value="credential-access">Credential Access (T1003)</option>
+                <option value="lateral-movement">Lateral Movement (T1570)</option>
+                <option value="impact">Impact (T1486)</option>
+              </select>
+            </td>
+          </tr>
+          <tr data-alert="a005">
+            <th scope="row">#A005</th>
+            <td>09:55</td>
+            <td>DCSync detected — replication request from non-DC host WS-JDOE</td>
+            <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+            <td>
+              <select class="pbq-siem-mitre-select" data-alert="a005" aria-label="MITRE stage for A005">
+                <option value="">-- Select --</option>
+                <option value="initial-access">Initial Access (T1566)</option>
+                <option value="execution">Execution (T1059)</option>
+                <option value="credential-access">Credential Access (T1003)</option>
+                <option value="lateral-movement">Lateral Movement (T1570)</option>
+                <option value="impact">Impact (T1486)</option>
+              </select>
+            </td>
+          </tr>
+          <tr data-alert="a006">
+            <th scope="row">#A006</th>
+            <td>11:02</td>
+            <td>Mass file rename — 3,400 files renamed in 90 seconds on FILE-SRV</td>
+            <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+            <td>
+              <select class="pbq-siem-mitre-select" data-alert="a006" aria-label="MITRE stage for A006">
+                <option value="">-- Select --</option>
+                <option value="initial-access">Initial Access (T1566)</option>
+                <option value="execution">Execution (T1059)</option>
+                <option value="credential-access">Credential Access (T1003)</option>
+                <option value="lateral-movement">Lateral Movement (T1570)</option>
+                <option value="impact">Impact (T1486)</option>
+              </select>
+            </td>
+          </tr>
+          <tr data-alert="a007">
+            <th scope="row">#A007</th>
+            <td>11:04</td>
+            <td>Ransom note written to 847 directories — README_DECRYPT.txt</td>
+            <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+            <td>
+              <select class="pbq-siem-mitre-select" data-alert="a007" aria-label="MITRE stage for A007">
+                <option value="">-- Select --</option>
+                <option value="initial-access">Initial Access (T1566)</option>
+                <option value="execution">Execution (T1059)</option>
+                <option value="credential-access">Credential Access (T1003)</option>
+                <option value="lateral-movement">Lateral Movement (T1570)</option>
+                <option value="impact">Impact (T1486)</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="checkBtn" type="button">Check Answer</button>
+    <button id="showBtn" type="button">Show Answer</button>
+    <button id="resetBtn" type="button">Reset</button>
+    <span id="result" role="status" aria-live="polite"></span>
+  </div>
+</article>
+<script>
+(function () {
+  var CORRECT = {
+    a001: "initial-access",
+    a002: "execution",
+    a003: "credential-access",
+    a004: "lateral-movement",
+    a005: "credential-access",
+    a006: "impact",
+    a007: "impact"
+  };
+  var CORRECT_MSG =
+    "Correct. A001 macro/phishing = Initial Access; A002 encoded PowerShell = Execution; A003 LSASS = Credential Access; A004 PsExec = Lateral Movement; A005 DCSync = Credential Access; A006/A007 encryption and ransom note = Impact (T1486).";
+  var root = document.getElementById("siem-part2-mitre");
+  if (!root) return;
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector("#result");
+
+  function mark(sel, pass) {
+    sel.classList.toggle("pbq-siem-mitre-select--ok", pass);
+    sel.classList.toggle("pbq-siem-mitre-select--bad", sel.value && !pass);
+  }
+
+  function allFilled() {
+    var ok = true;
+    root.querySelectorAll(".pbq-siem-mitre-select").forEach(function (sel) {
+      if (!sel.value) ok = false;
+    });
+    return ok;
+  }
+
+  function allCorrect() {
+    var ok = true;
+    root.querySelectorAll(".pbq-siem-mitre-select").forEach(function (sel) {
+      var key = sel.getAttribute("data-alert");
+      var pass = sel.value === CORRECT[key];
+      mark(sel, pass);
+      if (!pass) ok = false;
+    });
+    return ok;
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (!allFilled()) {
+      result.className = "is-fail";
+      result.textContent = "Select a MITRE stage for every alert.";
+      allCorrect();
+      return;
+    }
+    if (allCorrect()) {
+      result.className = "is-pass";
+      result.textContent = CORRECT_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent = "Some classifications are wrong. Map macro/phish to Initial Access, stager to Execution, cred dumps to Credential Access, PsExec to Lateral Movement, encryption to Impact.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    root.querySelectorAll(".pbq-siem-mitre-select").forEach(function (sel) {
+      sel.value = CORRECT[sel.getAttribute("data-alert")];
+      mark(sel, true);
+    });
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    root.querySelectorAll(".pbq-siem-mitre-select").forEach(function (sel) {
+      sel.selectedIndex = 0;
+      sel.classList.remove("pbq-siem-mitre-select--ok", "pbq-siem-mitre-select--bad");
+    });
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>

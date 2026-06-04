@@ -1,0 +1,172 @@
+<article class="pbq-section-fragment" data-id="dr-part2-targets">
+  <h1>Part 2 — Recovery targets &amp; DR site</h1>
+  <p class="pbq-instructions">
+    <strong>Part 2:</strong> Select the correct DR targets given the constraints on the Overview section (4-hour SLA,
+    6-hour-old backup, $2M budget).
+  </p>
+
+  <div class="sim-frame pbq-dr-targets">
+    <div class="pbq-dr-targets-grid">
+      <section class="pbq-dr-targets-panel" aria-labelledby="recovery-targets-heading">
+        <h2 id="recovery-targets-heading">Recovery targets</h2>
+
+        <label class="pbq-dr-field">
+          <span class="pbq-dr-field__label">Recovery Time Objective (RTO)</span>
+          <span class="pbq-dr-field__hint">Max acceptable downtime for this SLA</span>
+          <select class="pbq-dr-select" data-key="rto" aria-label="RTO">
+            <option value="">-- Select RTO --</option>
+            <option value="15m">15 minutes</option>
+            <option value="2h">2 hours</option>
+            <option value="4h">4 hours (match SLA max)</option>
+            <option value="8h">8 hours</option>
+            <option value="24h">24 hours</option>
+          </select>
+        </label>
+
+        <label class="pbq-dr-field">
+          <span class="pbq-dr-field__label">Recovery Point Objective (RPO)</span>
+          <span class="pbq-dr-field__hint">Max acceptable data loss</span>
+          <select class="pbq-dr-select" data-key="rpo" aria-label="RPO">
+            <option value="">-- Select RPO --</option>
+            <option value="0">0 — no data loss tolerated</option>
+            <option value="1h">1 hour</option>
+            <option value="6h">6 hours (matches backup age)</option>
+            <option value="24h">24 hours</option>
+            <option value="72h">72 hours</option>
+          </select>
+        </label>
+
+        <label class="pbq-dr-field">
+          <span class="pbq-dr-field__label">Backup frequency needed to meet RPO</span>
+          <span class="pbq-dr-field__hint">How often must backups run going forward?</span>
+          <select class="pbq-dr-select" data-key="backup-freq" aria-label="Backup frequency">
+            <option value="">-- Select --</option>
+            <option value="weekly">Weekly</option>
+            <option value="daily">Daily (once)</option>
+            <option value="4h">Every 4 hours or less</option>
+            <option value="realtime">Real-time replication only</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="pbq-dr-targets-panel" aria-labelledby="dr-site-heading">
+        <h2 id="dr-site-heading">DR site selection</h2>
+
+        <label class="pbq-dr-field">
+          <span class="pbq-dr-field__label">Appropriate DR site tier given 4-hour RTO + $2M budget</span>
+          <span class="pbq-dr-field__hint">Hot = always-on mirror | Warm = partially ready | Cold = empty shell</span>
+          <select class="pbq-dr-select" data-key="site-tier" aria-label="DR site tier">
+            <option value="">-- Select site tier --</option>
+            <option value="hot">Hot site — full mirror, RTO minutes, cost ~$1.5M+/yr</option>
+            <option value="warm">Warm site — hardware ready, data synced daily, RTO 2–4 hrs, ~$200–500K/yr</option>
+            <option value="cold">Cold site — empty facility, RTO days/weeks, ~$50–100K/yr</option>
+            <option value="cloud">Cloud-based DR — auto-scalable, pay-per-use, RTO minutes–hours</option>
+          </select>
+        </label>
+
+        <label class="pbq-dr-field">
+          <span class="pbq-dr-field__label">Why NOT a hot site for Acme Corp?</span>
+          <span class="pbq-dr-field__hint">Select the most accurate reason</span>
+          <select class="pbq-dr-select" data-key="why-not-hot" aria-label="Why not hot site">
+            <option value="">-- Select reason --</option>
+            <option value="budget">
+              $2M total budget — a hot site alone costs $1.5M+/yr, consuming most of the IT budget and leaving no room
+              for other security investments
+            </option>
+            <option value="rto">Hot sites are overkill — 4-hour RTO does not require real-time mirroring</option>
+            <option value="both">Both A and B are valid reasons</option>
+            <option value="gov">Hot sites are only for government — not appropriate for private companies</option>
+          </select>
+        </label>
+      </section>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="checkBtn" type="button">Check Answer</button>
+    <button id="showBtn" type="button">Show Answer</button>
+    <button id="resetBtn" type="button">Reset</button>
+    <span id="result" role="status" aria-live="polite"></span>
+  </div>
+</article>
+<script>
+(function () {
+  var CORRECT = {
+    rto: "4h",
+    rpo: "6h",
+    "backup-freq": "4h",
+    "site-tier": "warm",
+    "why-not-hot": "both"
+  };
+  var CORRECT_MSG =
+    "Correct. RTO matches the 4-hour SLA. RPO reflects the 6-hour-old backup (current loss window). Backup every 4 hours or less tightens RPO going forward. A warm site meets ~4-hour RTO within budget; hot site is too costly and unnecessary for this RTO.";
+  var root = document.getElementById("dr-part2-targets");
+  if (!root) return;
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector("#result");
+
+  function mark(sel, pass) {
+    var val = sel.value;
+    sel.classList.toggle("pbq-dr-select--ok", pass);
+    sel.classList.toggle("pbq-dr-select--bad", val && !pass);
+  }
+
+  function allCorrect() {
+    var ok = true;
+    root.querySelectorAll(".pbq-dr-select").forEach(function (sel) {
+      var key = sel.getAttribute("data-key");
+      var pass = sel.value === CORRECT[key];
+      mark(sel, pass);
+      if (!pass) ok = false;
+    });
+    return ok;
+  }
+
+  function allFilled() {
+    var filled = true;
+    root.querySelectorAll(".pbq-dr-select").forEach(function (sel) {
+      if (!sel.value) filled = false;
+    });
+    return filled;
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (!allFilled()) {
+      result.className = "is-fail";
+      result.textContent = "Select an answer for every field, then check again.";
+      allCorrect();
+      return;
+    }
+    if (allCorrect()) {
+      result.className = "is-pass";
+      result.textContent = CORRECT_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent =
+        "Not quite. Align RTO with the 4-hour SLA, RPO with the 6-hour backup age, choose warm site for cost/RTO fit, and explain why hot site is wrong.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    root.querySelectorAll(".pbq-dr-select").forEach(function (sel) {
+      var key = sel.getAttribute("data-key");
+      sel.value = CORRECT[key];
+      mark(sel, true);
+    });
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    root.querySelectorAll(".pbq-dr-select").forEach(function (sel) {
+      sel.selectedIndex = 0;
+      sel.classList.remove("pbq-dr-select--ok", "pbq-dr-select--bad");
+    });
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>

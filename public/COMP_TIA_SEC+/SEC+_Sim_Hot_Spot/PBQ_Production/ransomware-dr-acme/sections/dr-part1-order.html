@@ -1,0 +1,264 @@
+<article class="pbq-section-fragment" data-id="dr-part1-order">
+  <h1>Part 1 — DR activation order</h1>
+  <p class="pbq-instructions">
+    <strong>Part 1:</strong> Drag the 8 DR steps into correct activation order (<strong>1 = first action</strong>). Every
+    step is used exactly once.
+  </p>
+
+  <div class="sim-frame">
+    <div class="layout layout--dr-order layout--two-col">
+      <section class="panel" aria-labelledby="dr-steps-heading">
+        <h2 id="dr-steps-heading">DR steps — drag to order</h2>
+        <div class="bank bank--dr-steps" data-dr-bank>
+          <div class="token token--dr" draggable="true" data-value="activate-team">
+            <strong>Activate DR team</strong>
+            <span>Assign roles per the DR runbook</span>
+          </div>
+          <div class="token token--dr" draggable="true" data-value="restore-backup">
+            <strong>Restore from verified backup</strong>
+            <span>Load last clean state to DR site systems</span>
+          </div>
+          <div class="token token--dr" draggable="true" data-value="isolate-systems">
+            <strong>Isolate affected systems</strong>
+            <span>Disconnect from network to prevent spread</span>
+          </div>
+          <div class="token token--dr" draggable="true" data-value="verify-backup">
+            <strong>Verify backup integrity</strong>
+            <span>Confirm last clean backup is untampered and accessible</span>
+          </div>
+          <div class="token token--dr" draggable="true" data-value="assess-scope">
+            <strong>Assess scope</strong>
+            <span>Determine affected systems; confirm ransomware containment</span>
+          </div>
+          <div class="token token--dr" draggable="true" data-value="validate-lessons">
+            <strong>Validate systems and conduct lessons-learned review</strong>
+          </div>
+          <div class="token token--dr" draggable="true" data-value="declare-disaster">
+            <strong>Declare disaster</strong>
+            <span>Activate DR plan and notify stakeholders</span>
+          </div>
+          <div class="token token--dr" draggable="true" data-value="failover-warm">
+            <strong>Failover to warm DR site</strong>
+            <span>Bring up hardware and begin data restoration</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel panel--dr-order" aria-labelledby="dr-order-heading">
+        <h2 id="dr-order-heading">DR activation order (1 = first action)</h2>
+        <p class="panel-note">Drop one step per slot — top-down execution.</p>
+        <ol class="pbq-dr-order-list">
+          <li>
+            <span class="pbq-dr-order-num">1</span>
+            <div class="drop-slot drop-slot--dr" data-target="activate-team" aria-label="Step 1"></div>
+          </li>
+          <li>
+            <span class="pbq-dr-order-num">2</span>
+            <div class="drop-slot drop-slot--dr" data-target="isolate-systems" aria-label="Step 2"></div>
+          </li>
+          <li>
+            <span class="pbq-dr-order-num">3</span>
+            <div class="drop-slot drop-slot--dr" data-target="assess-scope" aria-label="Step 3"></div>
+          </li>
+          <li>
+            <span class="pbq-dr-order-num">4</span>
+            <div class="drop-slot drop-slot--dr" data-target="declare-disaster" aria-label="Step 4"></div>
+          </li>
+          <li>
+            <span class="pbq-dr-order-num">5</span>
+            <div class="drop-slot drop-slot--dr" data-target="verify-backup" aria-label="Step 5"></div>
+          </li>
+          <li>
+            <span class="pbq-dr-order-num">6</span>
+            <div class="drop-slot drop-slot--dr" data-target="failover-warm" aria-label="Step 6"></div>
+          </li>
+          <li>
+            <span class="pbq-dr-order-num">7</span>
+            <div class="drop-slot drop-slot--dr" data-target="restore-backup" aria-label="Step 7"></div>
+          </li>
+          <li>
+            <span class="pbq-dr-order-num">8</span>
+            <div class="drop-slot drop-slot--dr" data-target="validate-lessons" aria-label="Step 8"></div>
+          </li>
+        </ol>
+      </section>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="checkBtn" type="button">Check Answer</button>
+    <button id="showBtn" type="button">Show Answer</button>
+    <button id="resetBtn" type="button">Reset</button>
+    <span id="result" role="status" aria-live="polite"></span>
+  </div>
+</article>
+<script>
+(function () {
+  var CORRECT_MSG =
+    "Correct. Mobilize the DR team, contain spread (isolate), assess impact, formally declare disaster, verify backups are clean, failover to warm DR, restore from verified backup, then validate and run lessons learned.";
+  var root = document.getElementById("dr-part1-order");
+  if (!root) return;
+  var bank = root.querySelector("[data-dr-bank]");
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector("#result");
+  var dragged = null;
+  var picked = null;
+
+  function allSlots() {
+    return root.querySelectorAll(".drop-slot[data-target]");
+  }
+
+  function clearPick() {
+    root.querySelectorAll(".token.is-picked").forEach(function (n) {
+      n.classList.remove("is-picked");
+    });
+    picked = null;
+  }
+
+  function setPick(token) {
+    clearPick();
+    picked = token;
+    if (picked) picked.classList.add("is-picked");
+  }
+
+  function moveTokenToSlot(slot, token) {
+    if (!token || !slot) return;
+    var existing = slot.querySelector(".token");
+    if (existing && existing !== token) bank.appendChild(existing);
+    slot.appendChild(token);
+  }
+
+  function shuffleBank() {
+    var nodes = [].slice.call(bank.querySelectorAll(".token"));
+    while (nodes.length) {
+      bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
+    }
+  }
+
+  shuffleBank();
+
+  root.querySelector(".sim-frame").addEventListener("click", function (event) {
+    var token = event.target.closest(".token");
+    if (token && bank.contains(token)) {
+      if (picked === token) {
+        clearPick();
+        return;
+      }
+      var parentSlot =
+        token.parentNode && token.parentNode.classList && token.parentNode.classList.contains("drop-slot")
+          ? token.parentNode
+          : null;
+      if (picked && parentSlot) {
+        moveTokenToSlot(parentSlot, picked);
+        clearPick();
+        return;
+      }
+      setPick(token);
+      return;
+    }
+    var slot = event.target.closest(".drop-slot");
+    if (slot && picked) {
+      moveTokenToSlot(slot, picked);
+      clearPick();
+      return;
+    }
+    if (bank.contains(event.target) && picked && !bank.contains(picked)) {
+      bank.appendChild(picked);
+      clearPick();
+    }
+  });
+
+  root.querySelectorAll(".token").forEach(function (token) {
+    token.addEventListener("dragstart", function () {
+      clearPick();
+      dragged = token;
+    });
+  });
+
+  allSlots().forEach(function (slot) {
+    slot.addEventListener("dragover", function (e) {
+      e.preventDefault();
+      slot.classList.add("over");
+    });
+    slot.addEventListener("dragleave", function () {
+      slot.classList.remove("over");
+    });
+    slot.addEventListener("drop", function (e) {
+      e.preventDefault();
+      slot.classList.remove("over");
+      if (!dragged) return;
+      moveTokenToSlot(slot, dragged);
+      dragged = null;
+    });
+  });
+
+  bank.addEventListener("dragover", function (e) {
+    e.preventDefault();
+  });
+  bank.addEventListener("drop", function (e) {
+    e.preventDefault();
+    if (dragged) bank.appendChild(dragged);
+    dragged = null;
+  });
+
+  function takeFromBank(value) {
+    return [].slice.call(bank.querySelectorAll(".token")).find(function (t) {
+      return t.getAttribute("data-value") === value;
+    });
+  }
+
+  checkBtn.addEventListener("click", function () {
+    var allOk = true;
+    allSlots().forEach(function (slot) {
+      slot.classList.remove("correct", "incorrect", "over");
+      var want = slot.getAttribute("data-target");
+      var token = slot.querySelector(".token");
+      if (!token) {
+        slot.classList.add("incorrect");
+        allOk = false;
+        return;
+      }
+      var ok = token.getAttribute("data-value") === want;
+      slot.classList.add(ok ? "correct" : "incorrect");
+      if (!ok) allOk = false;
+    });
+    result.className = allOk ? "is-pass" : "is-fail";
+    result.textContent = allOk
+      ? CORRECT_MSG
+      : "Incorrect. Contain first (isolate), verify backups before restore, and finish with validation — not restore before integrity checks or failover prep.";
+  });
+
+  showBtn.addEventListener("click", function () {
+    clearPick();
+    allSlots().forEach(function (slot) {
+      slot.classList.remove("correct", "incorrect", "over");
+      var token = slot.querySelector(".token");
+      if (token) bank.appendChild(token);
+    });
+    allSlots().forEach(function (slot) {
+      var token = takeFromBank(slot.getAttribute("data-target"));
+      if (token) {
+        slot.appendChild(token);
+        slot.classList.add("correct");
+      }
+    });
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    clearPick();
+    allSlots().forEach(function (slot) {
+      slot.classList.remove("correct", "incorrect", "over");
+      var token = slot.querySelector(".token");
+      if (token) bank.appendChild(token);
+    });
+    shuffleBank();
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>

@@ -21,6 +21,9 @@ Legacy `*-partN.html` URLs redirect to `{slug}/{slug}.html#section-id`.
 2. [Zero Trust migration](zero-trust-zta-migration/zero-trust-zta-migration.html)
 3. [Hybrid PKI audit](hybrid-pki-audit/hybrid-pki-audit.html)
 4. [Ubuntu SSH breach hardening](ubuntu-ssh-breach-hardening/ubuntu-ssh-breach-hardening.html)
+5. [Firewall ACL — Security Operations](firewall-acl-secops/firewall-acl-secops.html)
+6. [Ransomware DR — Acme Corp](ransomware-dr-acme/ransomware-dr-acme.html)
+7. [SIEM ransomware — Sigma & MITRE](siem-ransomware-mitre/siem-ransomware-mitre.html)
 
 ## Section source files
 
@@ -38,6 +41,9 @@ npm run build:pbq-suite
 | [`zero-trust-zta-migration/`](zero-trust-zta-migration/) | exhibit, concept, zone map, trade-offs |
 | [`hybrid-pki-audit/`](hybrid-pki-audit/) | chain, algorithms, revocation |
 | [`ubuntu-ssh-breach-hardening/`](ubuntu-ssh-breach-hardening/) | intro, sshd, fail2ban, ufw, consequences |
+| [`firewall-acl-secops/`](firewall-acl-secops/) | ACL rule table (web + DB tier) |
+| [`ransomware-dr-acme/`](ransomware-dr-acme/) | DR step order, RTO/RPO/site, trade-offs |
+| [`siem-ransomware-mitre/`](siem-ransomware-mitre/) | Sigma rule, MITRE classify, containment |
 
 ## Preview
 

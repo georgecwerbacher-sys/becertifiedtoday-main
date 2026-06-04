@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ — Ransomware DR activation — order 8 steps, RTO/RPO and warm site tier, cost vs. recovery trade-offs." />
+  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/ransomware-dr-acme/ransomware-dr-acme.html" />
+  <title>Security+ PBQ — Ransomware DR — Acme Corp | Be Certified Today</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+</head>
+<body class="secplus-question-ui secplus-pbq-ui pbq-folder-suite pbq-dr-ransomware dragdrop-exercise">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell question-shell--suite">
+    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ practice portal">
+      <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="pbq-card pbq-card--suite">
+      <nav class="question-nav" aria-label="Question navigation">
+        <div class="question-nav-links">
+          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/firewall-acl-secops/firewall-acl-secops.html">Back</a>
+          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/siem-ransomware-mitre/siem-ransomware-mitre.html">Next</a>
+        </div>
+      </nav>
+
+      <header class="pbq-suite-header">
+        <h1>Ransomware DR — Acme Corp</h1>
+        <p class="pbq-sub">Ransomware DR activation — order 8 steps, RTO/RPO and warm site tier, cost vs. recovery trade-offs.</p>
+        <p class="pbq-instructions">
+          Use the <strong>folder sidebar</strong> to switch sections on this page. Open <strong>exhibits</strong> in
+          popups where available.
+        </p>
+      </header>
+
+      <div class="pbq-suite-layout">
+        <nav class="pbq-suite-folders pbq-suite-folders--flat" aria-label="Sections">
+<p class="pbq-suite-folders__label"><span aria-hidden="true">📁</span> Sections</p>
+<ul class="pbq-suite-folders__list">
+<li><button type="button" class="pbq-suite-folder__item" data-section="dr-overview">Scenario constraints</button></li>
+<li><button type="button" class="pbq-suite-folder__item" data-section="dr-part1-order">Part 1 — DR step order</button></li>
+<li><button type="button" class="pbq-suite-folder__item" data-section="dr-part2-targets">Part 2 — RTO/RPO & site</button></li>
+<li><button type="button" class="pbq-suite-folder__item" data-section="dr-part3-tradeoffs">Part 3 — Trade-offs</button></li>
+</ul></nav>
+        <div class="pbq-suite-main" id="pbqSuiteMain">
+          <article class="pbq-suite-section" id="dr-overview" data-scenario="ransomware-dr-acme" hidden><div class="pbq-suite-section__inner"><h1>Ransomware disaster recovery — Acme Corp</h1>
+  <p class="pbq-sub">
+    A ransomware attack has encrypted Acme Corp&rsquo;s primary data center. The CISO must invoke the disaster recovery
+    (DR) plan under strict business constraints.
+  </p>
+
+  <div class="pbq-dr-metrics" role="group" aria-label="Scenario constraints">
+    <div class="pbq-dr-metric pbq-dr-metric--sla">
+      <span class="pbq-dr-metric__label">SLA requirement</span>
+      <strong class="pbq-dr-metric__value">4 hrs</strong>
+      <span class="pbq-dr-metric__hint">Max downtime (RTO)</span>
+    </div>
+    <div class="pbq-dr-metric pbq-dr-metric--rpo">
+      <span class="pbq-dr-metric__label">Last backup age</span>
+      <strong class="pbq-dr-metric__value">6 hrs</strong>
+      <span class="pbq-dr-metric__hint">Data loss window (RPO)</span>
+    </div>
+    <div class="pbq-dr-metric pbq-dr-metric--budget">
+      <span class="pbq-dr-metric__label">Annual IT budget</span>
+      <strong class="pbq-dr-metric__value">$2M</strong>
+      <span class="pbq-dr-metric__hint">Total IT spend</span>
+    </div>
+    <div class="pbq-dr-metric pbq-dr-metric--attack">
+      <span class="pbq-dr-metric__label">Attack type</span>
+      <strong class="pbq-dr-metric__value">Ransomware</strong>
+      <span class="pbq-dr-metric__hint">Primary site encrypted</span>
+    </div>
+  </div>
+
+  <p class="pbq-instructions">
+    Complete all three parts in order: <strong>DR activation steps</strong>, <strong>recovery targets &amp; site
+    tier</strong>, then <strong>cost vs. recovery trade-offs</strong>.
+  </p></div></article>
+<article class="pbq-suite-section" id="dr-part1-order" data-scenario="ransomware-dr-acme" hidden><div class="pbq-suite-section__inner"><div class="sim-frame">
+    <div class="layout layout--dr-order layout--two-col">
+      <section class="panel" aria-labelledby="dr-steps-heading">
+        <h2 id="dr-part1-order-dr-steps-heading">DR steps — drag to order</h2>
+        <div class="bank bank--dr-steps" data-dr-bank>
+          <div class="token token--dr" draggable="true" data-value="activate-team">
+            <strong>Activate DR team</strong>
+            <span>Assign roles per the DR runbook</span>
+          </div>
+          <div class="token token--dr" draggable="true" data-value="restore-backup">
+            <strong>Restore from verified backup</strong>
+            <span>Load last clean state to DR site systems</span>
+          </div>
+          <div class="token token--dr" draggable="true" data-value="isolate-systems">
+            <strong>Isolate affected systems</strong>
+            <span>Disconnect from network to prevent spread</span>
+          </div>
+          <div class="token token--dr" draggable="true" data-value="verify-backup">
+            <strong>Verify backup integrity</strong>
+            <span>Confirm last clean backup is untampered and accessible</span>
+          </div>
+          <div class="token token--dr" draggable="true" data-value="assess-scope">
+            <strong>Assess scope</strong>
+            <span>Determine affected systems; confirm ransomware containment</span>
+          </div>
+          <div class="token token--dr" draggable="true" data-value="validate-lessons">
+            <strong>Validate systems and conduct lessons-learned review</strong>
+          </div>
+          <div class="token token--dr" draggable="true" data-value="declare-disaster">
+            <strong>Declare disaster</strong>
+            <span>Activate DR plan and notify stakeholders</span>
+          </div>
+          <div class="token token--dr" draggable="true" data-value="failover-warm">
+            <strong>Failover to warm DR site</strong>
+            <span>Bring up hardware and begin data restoration</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel panel--dr-order" aria-labelledby="dr-order-heading">
+        <h2 id="dr-part1-order-dr-order-heading">DR activation order (1 = first action)</h2>
+        <p class="panel-note">Drop one step per slot — top-down execution.</p>
+        <ol class="pbq-dr-order-list">
+          <li>
+            <span class="pbq-dr-order-num">1</span>
+            <div class="drop-slot drop-slot--dr" data-target="activate-team" aria-label="Step 1"></div>
+          </li>
+          <li>
+            <span class="pbq-dr-order-num">2</span>
+            <div class="drop-slot drop-slot--dr" data-target="isolate-systems" aria-label="Step 2"></div>
+          </li>
+          <li>
+            <span class="pbq-dr-order-num">3</span>
+            <div class="drop-slot drop-slot--dr" data-target="assess-scope" aria-label="Step 3"></div>
+          </li>
+          <li>
+            <span class="pbq-dr-order-num">4</span>
+            <div class="drop-slot drop-slot--dr" data-target="declare-disaster" aria-label="Step 4"></div>
+          </li>
+          <li>
+            <span class="pbq-dr-order-num">5</span>
+            <div class="drop-slot drop-slot--dr" data-target="verify-backup" aria-label="Step 5"></div>
+          </li>
+          <li>
+            <span class="pbq-dr-order-num">6</span>
+            <div class="drop-slot drop-slot--dr" data-target="failover-warm" aria-label="Step 6"></div>
+          </li>
+          <li>
+            <span class="pbq-dr-order-num">7</span>
+            <div class="drop-slot drop-slot--dr" data-target="restore-backup" aria-label="Step 7"></div>
+          </li>
+          <li>
+            <span class="pbq-dr-order-num">8</span>
+            <div class="drop-slot drop-slot--dr" data-target="validate-lessons" aria-label="Step 8"></div>
+          </li>
+        </ol>
+      </section>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="dr-part1-order-checkBtn" type="button">Check Answer</button>
+    <button id="dr-part1-order-showBtn" type="button">Show Answer</button>
+    <button id="dr-part1-order-resetBtn" type="button">Reset</button>
+    <span id="dr-part1-order-result" role="status" aria-live="polite"></span>
+  </div></div></article>
+<article class="pbq-suite-section" id="dr-part2-targets" data-scenario="ransomware-dr-acme" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-dr-targets">
+    <div class="pbq-dr-targets-grid">
+      <section class="pbq-dr-targets-panel" aria-labelledby="recovery-targets-heading">
+        <h2 id="dr-part2-targets-recovery-targets-heading">Recovery targets</h2>
+
+        <label class="pbq-dr-field">
+          <span class="pbq-dr-field__label">Recovery Time Objective (RTO)</span>
+          <span class="pbq-dr-field__hint">Max acceptable downtime for this SLA</span>
+          <select class="pbq-dr-select" data-key="rto" aria-label="RTO">
+            <option value="">-- Select RTO --</option>
+            <option value="15m">15 minutes</option>
+            <option value="2h">2 hours</option>
+            <option value="4h">4 hours (match SLA max)</option>
+            <option value="8h">8 hours</option>
+            <option value="24h">24 hours</option>
+          </select>
+        </label>
+
+        <label class="pbq-dr-field">
+          <span class="pbq-dr-field__label">Recovery Point Objective (RPO)</span>
+          <span class="pbq-dr-field__hint">Max acceptable data loss</span>
+          <select class="pbq-dr-select" data-key="rpo" aria-label="RPO">
+            <option value="">-- Select RPO --</option>
+            <option value="0">0 — no data loss tolerated</option>
+            <option value="1h">1 hour</option>
+            <option value="6h">6 hours (matches backup age)</option>
+            <option value="24h">24 hours</option>
+            <option value="72h">72 hours</option>
+          </select>
+        </label>
+
+        <label class="pbq-dr-field">
+          <span class="pbq-dr-field__label">Backup frequency needed to meet RPO</span>
+          <span class="pbq-dr-field__hint">How often must backups run going forward?</span>
+          <select class="pbq-dr-select" data-key="backup-freq" aria-label="Backup frequency">
+            <option value="">-- Select --</option>
+            <option value="weekly">Weekly</option>
+            <option value="daily">Daily (once)</option>
+            <option value="4h">Every 4 hours or less</option>
+            <option value="realtime">Real-time replication only</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="pbq-dr-targets-panel" aria-labelledby="dr-site-heading">
+        <h2 id="dr-part2-targets-dr-site-heading">DR site selection</h2>
+
+        <label class="pbq-dr-field">
+          <span class="pbq-dr-field__label">Appropriate DR site tier given 4-hour RTO + $2M budget</span>
+          <span class="pbq-dr-field__hint">Hot = always-on mirror | Warm = partially ready | Cold = empty shell</span>
+          <select class="pbq-dr-select" data-key="site-tier" aria-label="DR site tier">
+            <option value="">-- Select site tier --</option>
+            <option value="hot">Hot site — full mirror, RTO minutes, cost ~$1.5M+/yr</option>
+            <option value="warm">Warm site — hardware ready, data synced daily, RTO 2–4 hrs, ~$200–500K/yr</option>
+            <option value="cold">Cold site — empty facility, RTO days/weeks, ~$50–100K/yr</option>
+            <option value="cloud">Cloud-based DR — auto-scalable, pay-per-use, RTO minutes–hours</option>
+          </select>
+        </label>
+
+        <label class="pbq-dr-field">
+          <span class="pbq-dr-field__label">Why NOT a hot site for Acme Corp?</span>
+          <span class="pbq-dr-field__hint">Select the most accurate reason</span>
+          <select class="pbq-dr-select" data-key="why-not-hot" aria-label="Why not hot site">
+            <option value="">-- Select reason --</option>
+            <option value="budget">
+              $2M total budget — a hot site alone costs $1.5M+/yr, consuming most of the IT budget and leaving no room
+              for other security investments
+            </option>
+            <option value="rto">Hot sites are overkill — 4-hour RTO does not require real-time mirroring</option>
+            <option value="both">Both A and B are valid reasons</option>
+            <option value="gov">Hot sites are only for government — not appropriate for private companies</option>
+          </select>
+        </label>
+      </section>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="dr-part2-targets-checkBtn" type="button">Check Answer</button>
+    <button id="dr-part2-targets-showBtn" type="button">Show Answer</button>
+    <button id="dr-part2-targets-resetBtn" type="button">Reset</button>
+    <span id="dr-part2-targets-result" role="status" aria-live="polite"></span>
+  </div></div></article>
+<article class="pbq-suite-section" id="dr-part3-tradeoffs" data-scenario="ransomware-dr-acme" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-dr-tradeoffs">
+    <section class="pbq-ai-attack-mcq" aria-labelledby="dr-q1-heading">
+      <h2 id="dr-part3-tradeoffs-dr-q1-heading">Q1. Paying the ransom</h2>
+      <p class="pbq-stem">
+        After the ransomware incident, the CISO wants to pay the ransom to recover faster. The security team
+        recommends against it. What is the <strong>primary</strong> security reason?
+      </p>
+      <div class="pbq-choices" role="radiogroup" aria-labelledby="dr-q1-heading">
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q1" value="A" />
+          Paying the ransom is illegal in all jurisdictions.
+        </label>
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q1" value="B" />
+          Paying funds criminal organizations, provides no guarantee of key delivery, and signals willingness to pay —
+          increasing likelihood of future attacks on the same organization.
+        </label>
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q1" value="C" />
+          Decryption tools provided by attackers always contain backdoors.
+        </label>
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q1" value="D" />
+          Payment traceable via blockchain makes prosecution easy, so attackers won&rsquo;t provide keys.
+        </label>
+      </div>
+    </section>
+
+    <section class="pbq-ai-attack-mcq" aria-labelledby="dr-q2-heading">
+      <h2 id="dr-part3-tradeoffs-dr-q2-heading">Q2. Reducing RPO</h2>
+      <p class="pbq-stem">
+        The 6-hour-old backup means up to 6 hours of transaction data is lost. What technology, if implemented
+        beforehand, would have reduced the RPO to near-zero?
+      </p>
+      <div class="pbq-choices" role="radiogroup" aria-labelledby="dr-q2-heading">
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q2" value="A" />
+          Full daily backups stored offsite on tape.
+        </label>
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q2" value="B" />
+          Continuous data protection (CDP) / synchronous replication to a secondary site — captures every write in real
+          time.
+        </label>
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q2" value="C" />
+          Incremental backups every 4 hours.
+        </label>
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q2" value="D" />
+          RAID 5 storage redundancy at the primary site.
+        </label>
+      </div>
+    </section>
+
+    <section class="pbq-ai-attack-mcq" aria-labelledby="dr-q3-heading">
+      <h2 id="dr-part3-tradeoffs-dr-q3-heading">Q3. Before restoring from backup</h2>
+      <p class="pbq-stem">
+        Before restoring from backup, what is the <em>most critical</em> step to prevent immediate re-infection?
+      </p>
+      <div class="pbq-choices" role="radiogroup" aria-labelledby="dr-q3-heading">
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q3" value="A" />
+          Change all user passwords before restoration.
+        </label>
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q3" value="B" />
+          Completely isolate and re-image all affected systems, identify and close the initial attack vector (e.g., the
+          phishing entry point or vulnerable service), then restore from a verified clean backup.
+        </label>
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q3" value="C" />
+          Run antivirus on the backup files before restoring.
+        </label>
+        <label class="pbq-choice">
+          <input type="radio" name="secplus_bct_dr_q3" value="D" />
+          Restore the backup immediately — speed of recovery takes priority over re-infection risk during active
+          incident.
+        </label>
+      </div>
+    </section>
+  </div>
+
+  <div class="actions">
+    <button id="dr-part3-tradeoffs-checkBtn" type="button">Check Answer</button>
+    <button id="dr-part3-tradeoffs-showBtn" type="button">Show Answer</button>
+    <button id="dr-part3-tradeoffs-resetBtn" type="button">Reset</button>
+    <span id="dr-part3-tradeoffs-result" role="status" aria-live="polite"></span>
+  </div></div></article>
+        </div>
+      </div>
+
+      <p class="pbq-suite-footer">
+        <a class="btn btn-secondary" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/index.html">All PBQ Labs</a>
+      </p>
+    </main>
+  </div>
+
+  <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "dr-overview";</script>
+  <!-- dr-part1-order -->
+<script>
+(function () {
+  var CORRECT_MSG =
+    "Correct. Mobilize the DR team, contain spread (isolate), assess impact, formally declare disaster, verify backups are clean, failover to warm DR, restore from verified backup, then validate and run lessons learned.";
+  var root = document.getElementById("dr-part1-order");
+  if (!root) return;
+  var bank = root.querySelector("[data-dr-bank]");
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector("#result");
+  var dragged = null;
+  var picked = null;
+
+  function allSlots() {
+    return root.querySelectorAll(".drop-slot[data-target]");
+  }
+
+  function clearPick() {
+    root.querySelectorAll(".token.is-picked").forEach(function (n) {
+      n.classList.remove("is-picked");
+    });
+    picked = null;
+  }
+
+  function setPick(token) {
+    clearPick();
+    picked = token;
+    if (picked) picked.classList.add("is-picked");
+  }
+
+  function moveTokenToSlot(slot, token) {
+    if (!token || !slot) return;
+    var existing = slot.querySelector(".token");
+    if (existing && existing !== token) bank.appendChild(existing);
+    slot.appendChild(token);
+  }
+
+  function shuffleBank() {
+    var nodes = [].slice.call(bank.querySelectorAll(".token"));
+    while (nodes.length) {
+      bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
+    }
+  }
+
+  shuffleBank();
+
+  root.querySelector(".sim-frame").addEventListener("click", function (event) {
+    var token = event.target.closest(".token");
+    if (token && bank.contains(token)) {
+      if (picked === token) {
+        clearPick();
+        return;
+      }
+      var parentSlot =
+        token.parentNode && token.parentNode.classList && token.parentNode.classList.contains("drop-slot")
+          ? token.parentNode
+          : null;
+      if (picked && parentSlot) {
+        moveTokenToSlot(parentSlot, picked);
+        clearPick();
+        return;
+      }
+      setPick(token);
+      return;
+    }
+    var slot = event.target.closest(".drop-slot");
+    if (slot && picked) {
+      moveTokenToSlot(slot, picked);
+      clearPick();
+      return;
+    }
+    if (bank.contains(event.target) && picked && !bank.contains(picked)) {
+      bank.appendChild(picked);
+      clearPick();
+    }
+  });
+
+  root.querySelectorAll(".token").forEach(function (token) {
+    token.addEventListener("dragstart", function () {
+      clearPick();
+      dragged = token;
+    });
+  });
+
+  allSlots().forEach(function (slot) {
+    slot.addEventListener("dragover", function (e) {
+      e.preventDefault();
+      slot.classList.add("over");
+    });
+    slot.addEventListener("dragleave", function () {
+      slot.classList.remove("over");
+    });
+    slot.addEventListener("drop", function (e) {
+      e.preventDefault();
+      slot.classList.remove("over");
+      if (!dragged) return;
+      moveTokenToSlot(slot, dragged);
+      dragged = null;
+    });
+  });
+
+  bank.addEventListener("dragover", function (e) {
+    e.preventDefault();
+  });
+  bank.addEventListener("drop", function (e) {
+    e.preventDefault();
+    if (dragged) bank.appendChild(dragged);
+    dragged = null;
+  });
+
+  function takeFromBank(value) {
+    return [].slice.call(bank.querySelectorAll(".token")).find(function (t) {
+      return t.getAttribute("data-value") === value;
+    });
+  }
+
+  checkBtn.addEventListener("click", function () {
+    var allOk = true;
+    allSlots().forEach(function (slot) {
+      slot.classList.remove("correct", "incorrect", "over");
+      var want = slot.getAttribute("data-target");
+      var token = slot.querySelector(".token");
+      if (!token) {
+        slot.classList.add("incorrect");
+        allOk = false;
+        return;
+      }
+      var ok = token.getAttribute("data-value") === want;
+      slot.classList.add(ok ? "correct" : "incorrect");
+      if (!ok) allOk = false;
+    });
+    result.className = allOk ? "is-pass" : "is-fail";
+    result.textContent = allOk
+      ? CORRECT_MSG
+      : "Incorrect. Contain first (isolate), verify backups before restore, and finish with validation — not restore before integrity checks or failover prep.";
+  });
+
+  showBtn.addEventListener("click", function () {
+    clearPick();
+    allSlots().forEach(function (slot) {
+      slot.classList.remove("correct", "incorrect", "over");
+      var token = slot.querySelector(".token");
+      if (token) bank.appendChild(token);
+    });
+    allSlots().forEach(function (slot) {
+      var token = takeFromBank(slot.getAttribute("data-target"));
+      if (token) {
+        slot.appendChild(token);
+        slot.classList.add("correct");
+      }
+    });
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    clearPick();
+    allSlots().forEach(function (slot) {
+      slot.classList.remove("correct", "incorrect", "over");
+      var token = slot.querySelector(".token");
+      if (token) bank.appendChild(token);
+    });
+    shuffleBank();
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>
+<!-- dr-part2-targets -->
+<script>
+(function () {
+  var CORRECT = {
+    rto: "4h",
+    rpo: "6h",
+    "backup-freq": "4h",
+    "site-tier": "warm",
+    "why-not-hot": "both"
+  };
+  var CORRECT_MSG =
+    "Correct. RTO matches the 4-hour SLA. RPO reflects the 6-hour-old backup (current loss window). Backup every 4 hours or less tightens RPO going forward. A warm site meets ~4-hour RTO within budget; hot site is too costly and unnecessary for this RTO.";
+  var root = document.getElementById("dr-part2-targets");
+  if (!root) return;
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector("#result");
+
+  function mark(sel, pass) {
+    var val = sel.value;
+    sel.classList.toggle("pbq-dr-select--ok", pass);
+    sel.classList.toggle("pbq-dr-select--bad", val && !pass);
+  }
+
+  function allCorrect() {
+    var ok = true;
+    root.querySelectorAll(".pbq-dr-select").forEach(function (sel) {
+      var key = sel.getAttribute("data-key");
+      var pass = sel.value === CORRECT[key];
+      mark(sel, pass);
+      if (!pass) ok = false;
+    });
+    return ok;
+  }
+
+  function allFilled() {
+    var filled = true;
+    root.querySelectorAll(".pbq-dr-select").forEach(function (sel) {
+      if (!sel.value) filled = false;
+    });
+    return filled;
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (!allFilled()) {
+      result.className = "is-fail";
+      result.textContent = "Select an answer for every field, then check again.";
+      allCorrect();
+      return;
+    }
+    if (allCorrect()) {
+      result.className = "is-pass";
+      result.textContent = CORRECT_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent =
+        "Not quite. Align RTO with the 4-hour SLA, RPO with the 6-hour backup age, choose warm site for cost/RTO fit, and explain why hot site is wrong.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    root.querySelectorAll(".pbq-dr-select").forEach(function (sel) {
+      var key = sel.getAttribute("data-key");
+      sel.value = CORRECT[key];
+      mark(sel, true);
+    });
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    root.querySelectorAll(".pbq-dr-select").forEach(function (sel) {
+      sel.selectedIndex = 0;
+      sel.classList.remove("pbq-dr-select--ok", "pbq-dr-select--bad");
+    });
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>
+<!-- dr-part3-tradeoffs -->
+<script>
+(function () {
+  var ANSWERS = {
+    secplus_bct_dr_q1: "B",
+    secplus_bct_dr_q2: "B",
+    secplus_bct_dr_q3: "B"
+  };
+  var CORRECT_MSG =
+    "Correct. Q1: Do not pay ransom — no guarantee of recovery and it encourages repeat targeting. Q2: CDP/synchronous replication minimizes data loss (near-zero RPO). Q3: Eradicate the attack vector and re-image before restore, or ransomware reinfects immediately.";
+  var root = document.getElementById("dr-part3-tradeoffs");
+  if (!root) return;
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector("#result");
+
+  function allAnswered() {
+    return Object.keys(ANSWERS).every(function (name) {
+      return root.querySelector('input[name="' + name + '"]:checked');
+    });
+  }
+
+  function allCorrect() {
+    return Object.keys(ANSWERS).every(function (name) {
+      var sel = root.querySelector('input[name="' + name + '"]:checked');
+      return sel && sel.value === ANSWERS[name];
+    });
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (!allAnswered()) {
+      result.className = "is-fail";
+      result.textContent = "Answer all three questions, then check again.";
+      return;
+    }
+    if (allCorrect()) {
+      result.className = "is-pass";
+      result.textContent = CORRECT_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent = "Not quite. Review ransom policy, technologies that achieve near-zero RPO, and eradication before restore.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    Object.keys(ANSWERS).forEach(function (name) {
+      var input = root.querySelector('input[name="' + name + '"][value="' + ANSWERS[name] + '"]');
+      if (input) input.checked = true;
+    });
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    root.querySelectorAll('input[type="radio"]').forEach(function (r) {
+      r.checked = false;
+    });
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>
+</body>
+</html>

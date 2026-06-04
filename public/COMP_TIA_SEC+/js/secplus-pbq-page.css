@@ -2631,6 +2631,562 @@ body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-footer {
   text-align: center;
 }
 
+/* Firewall ACL — Security Operations PBQ */
+body.secplus-pbq-ui.pbq-acl-secops .pbq-acl-sim {
+  display: grid;
+  gap: 20px;
+}
+
+body.secplus-pbq-ui.pbq-acl-secops .pbq-acl-policy {
+  margin: 0;
+  padding: 16px 18px;
+  border: 2px solid #3b82f6;
+  border-radius: 10px;
+  background: #f8fafc;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+body.secplus-pbq-ui.pbq-acl-secops .pbq-acl-policy ul {
+  margin: 10px 0;
+  padding-left: 1.25rem;
+}
+
+body.secplus-pbq-ui.pbq-acl-secops .pbq-acl-policy__note {
+  margin: 12px 0 0;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+body.secplus-pbq-ui.pbq-acl-secops .pbq-acl-table-wrap {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+
+body.secplus-pbq-ui.pbq-acl-secops .pbq-acl-table-banner {
+  margin: 0;
+  padding: 12px 14px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #fff;
+  background: #1e3a5f;
+}
+
+body.secplus-pbq-ui.pbq-acl-secops .pbq-acl-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+body.secplus-pbq-ui.pbq-acl-secops .pbq-acl-table thead th {
+  padding: 10px 8px;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+  background: #1e3a5f;
+  border-bottom: 1px solid #0f2744;
+}
+
+body.secplus-pbq-ui.pbq-acl-secops .pbq-acl-table tbody td,
+body.secplus-pbq-ui.pbq-acl-secops .pbq-acl-table tbody th {
+  padding: 10px 8px;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: middle;
+}
+
+body.secplus-pbq-ui.pbq-acl-secops .pbq-acl-row-num {
+  font-weight: 700;
+  color: #2563eb;
+  text-align: center;
+  width: 2.5rem;
+}
+
+body.secplus-pbq-ui.pbq-acl-secops .pbq-acl-select {
+  width: 100%;
+  min-width: 0;
+  max-width: 11rem;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  background: #fff;
+}
+
+body.secplus-pbq-ui.pbq-acl-secops .pbq-acl-select--ok {
+  border-color: #16a34a;
+  background: #f0fdf4;
+}
+
+body.secplus-pbq-ui.pbq-acl-secops .pbq-acl-select--bad {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+
+body.secplus-pbq-ui.pbq-acl-secops .pbq-acl-fixed {
+  display: inline-block;
+  padding: 8px 12px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #64748b;
+  background: #f1f5f9;
+  border-radius: 8px;
+}
+
+body.secplus-pbq-ui.pbq-acl-secops .pbq-acl-row--implicit {
+  background: #fafbfc;
+}
+
+@media (max-width: 720px) {
+  body.secplus-pbq-ui.pbq-acl-secops .pbq-acl-table-wrap {
+    overflow-x: auto;
+  }
+
+  body.secplus-pbq-ui.pbq-acl-secops .pbq-acl-table {
+    min-width: 640px;
+  }
+}
+
+/* Ransomware DR — Acme Corp */
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 16px 0 20px;
+}
+
+@media (min-width: 720px) {
+  body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-metrics {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-metric {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  text-align: center;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-metric--sla {
+  border-color: #93c5fd;
+  background: #eff6ff;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-metric--rpo {
+  border-color: #fcd34d;
+  background: #fffbeb;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-metric--budget {
+  border-color: #86efac;
+  background: #f0fdf4;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-metric--attack {
+  border-color: #fca5a5;
+  background: #fef2f2;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-metric__label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-metric__value {
+  display: block;
+  margin: 6px 0 2px;
+  font-size: 1.15rem;
+  color: #0f172a;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-metric__hint {
+  display: block;
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .layout--dr-order .bank--dr-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .token--dr {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  line-height: 1.35;
+  text-align: left;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .token--dr span {
+  font-size: 0.82rem;
+  color: #475569;
+  font-weight: 400;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-order-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-order-list > li {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 10px;
+  align-items: stretch;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-order-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1rem;
+  color: #2563eb;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .drop-slot--dr {
+  min-height: 3.5rem;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .drop-slot--dr:empty::before {
+  content: "Drop step here";
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-targets-grid {
+  display: grid;
+  gap: 20px;
+}
+
+@media (min-width: 800px) {
+  body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-targets-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-targets-panel {
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fafbfc;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-targets-panel h2 {
+  margin: 0 0 14px;
+  font-size: 1rem;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-field__label {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-field__hint {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  background: #fff;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-select--ok {
+  border-color: #16a34a;
+  background: #f0fdf4;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-select--bad {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-tradeoffs {
+  padding: 16px;
+  border: 2px solid #fbbf24;
+  border-radius: 10px;
+  background: #fffbeb;
+}
+
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-tradeoffs .pbq-ai-attack-mcq + .pbq-ai-attack-mcq {
+  margin-top: 20px;
+}
+
+/* SIEM ransomware — Sigma / MITRE PBQ */
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-timeline {
+  margin: 16px 0;
+  padding: 16px 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-timeline h2 {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-timeline__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-timeline__list li {
+  display: grid;
+  grid-template-columns: 3.5rem 5rem 1fr auto;
+  gap: 8px 10px;
+  align-items: start;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-timeline__list li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-timeline__list time {
+  font-weight: 700;
+  color: #334155;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-host {
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-tag--initial { background: #ffedd5; color: #9a3412; }
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-tag--exec { background: #fef3c7; color: #92400e; }
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-tag--cred { background: #ede9fe; color: #5b21b6; }
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-tag--lat { background: #e0e7ff; color: #3730a3; }
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-tag--impact { background: #fee2e2; color: #991b1b; }
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-sigma-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-sigma-card {
+  display: block;
+  cursor: pointer;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-sigma-card input {
+  position: absolute;
+  opacity: 0;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-sigma-card__body {
+  display: block;
+  padding: 12px 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fff;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-sigma-card:has(input:checked) .pbq-siem-sigma-card__body {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px #2563eb;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-yaml {
+  margin: 0 0 8px;
+  padding: 10px 12px;
+  background: #1e293b;
+  color: #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  overflow-x: auto;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-sigma-note {
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-alert-table-wrap {
+  overflow-x: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-alert-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-alert-table thead th {
+  padding: 10px 8px;
+  text-align: left;
+  background: #1e3a5f;
+  color: #fff;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-alert-table tbody td,
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-alert-table tbody th {
+  padding: 10px 8px;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: top;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-sev {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-sev--high {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-sev--crit {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-mitre-select,
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-select {
+  width: 100%;
+  min-width: 10rem;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-mitre-select--ok,
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-select--ok {
+  border-color: #16a34a;
+  background: #f0fdf4;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-mitre-select--bad,
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-select--bad {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-contain {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-contain-block {
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fafbfc;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-contain-block--purple {
+  border-color: #c4b5fd;
+  background: #faf5ff;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-contain-block h2 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-contain-checks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-contain-checks label {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware label.pbq-siem-check--ok {
+  border-color: #16a34a;
+  background: #f0fdf4;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware label.pbq-siem-check--bad {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+
+body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-field {
+  display: block;
+  margin-top: 10px;
+}
+
+@media (max-width: 800px) {
+  body.secplus-pbq-ui.pbq-siem-ransomware .pbq-siem-timeline__list li {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* PBQ Production suite — one page, folder sidebar, exhibit modals */
 body.secplus-pbq-ui.pbq-folder-suite .question-shell--suite {
   max-width: 1280px;
