@@ -1,0 +1,363 @@
+/* Security+ PBQ drag-and-drop template — SEC+ question nav + CCNA D&D chrome
+   Reference: public/COMP_TIA_SEC+/SEC+_PBQ/README.md
+   Pages: security-control-map.html · log-timeline-forensics.html · TEMPLATE-dragdrop.html */
+
+body.secplus-pbq-ui {
+  padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+body.secplus-pbq-ui .question-shell {
+  width: min(1180px, 100%);
+}
+
+body.secplus-pbq-ui .pbq-card {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body.secplus-pbq-ui .pbq-card h1 {
+  margin: 0 0 10px;
+  font-size: clamp(1.05rem, 2.3vw, 1.45rem);
+  line-height: 1.35;
+  color: #1a3d6e;
+}
+
+body.secplus-pbq-ui .pbq-sub {
+  margin: 0 0 14px;
+  line-height: 1.5;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+body.secplus-pbq-ui .pbq-instructions {
+  margin: 0 0 14px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #334155;
+  line-height: 1.5;
+  font-size: 0.92rem;
+}
+
+body.secplus-pbq-ui .page-logo-watermark {
+  display: flex;
+}
+
+body.secplus-pbq-ui .page-logo-watermark img {
+  opacity: 0.14;
+}
+
+body.secplus-pbq-ui .sim-frame {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+}
+
+body.secplus-pbq-ui .layout {
+  display: grid;
+  gap: 14px;
+  align-items: start;
+}
+
+body.secplus-pbq-ui .layout--two-col {
+  grid-template-columns: minmax(240px, 0.95fr) minmax(320px, 1.25fr);
+}
+
+@media (max-width: 900px) {
+  body.secplus-pbq-ui .layout--two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+body.secplus-pbq-ui .panel {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+}
+
+body.secplus-pbq-ui .panel h2 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+  color: #1a3d6e;
+}
+
+body.secplus-pbq-ui .panel-note {
+  margin: 0 0 12px;
+  font-size: 0.88rem;
+  color: #64748b;
+  line-height: 1.45;
+}
+
+body.secplus-pbq-ui .bank {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 48px;
+}
+
+body.secplus-pbq-ui .token {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #6384ba;
+  background: #cfe9ff;
+  color: #10243f;
+  font-weight: 700;
+  font-size: 0.86rem;
+  line-height: 1.38;
+  cursor: grab;
+  user-select: none;
+  text-align: left;
+}
+
+body.secplus-pbq-ui .token--mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.78rem;
+}
+
+body.secplus-pbq-ui .token:active {
+  cursor: grabbing;
+}
+
+body.secplus-pbq-ui .token.is-picked {
+  border-color: #4d89ff;
+  box-shadow: 0 0 0 2px rgba(77, 137, 255, 0.35);
+}
+
+body.secplus-pbq-ui .drop-slot {
+  display: flex;
+  min-height: 64px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px dashed #93c5fd;
+  background: #dbeafe;
+  color: #64748b;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+body.secplus-pbq-ui .drop-slot:empty::before {
+  content: "Drop here";
+  color: #475569;
+}
+
+body.secplus-pbq-ui .drop-slot.over {
+  border-style: solid;
+  border-color: #4d89ff;
+  background: #bfdbfe;
+}
+
+body.secplus-pbq-ui .drop-slot.correct {
+  border-color: #1f7a58;
+  background: #113e2d;
+  color: #e6edf3;
+}
+
+body.secplus-pbq-ui .drop-slot.incorrect {
+  border-color: #8c3434;
+  background: #442020;
+  color: #e6edf3;
+}
+
+body.secplus-pbq-ui .drop-slot .token {
+  width: 100%;
+  cursor: grab;
+}
+
+body.secplus-pbq-ui .layer-list-box {
+  border: 1px solid #ddd6fe;
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: #faf5ff;
+}
+
+body.secplus-pbq-ui .layer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+body.secplus-pbq-ui .layer-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(120px, 0.42fr);
+  gap: 12px;
+  align-items: stretch;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd6fe;
+  background: #f3e8ff;
+}
+
+body.secplus-pbq-ui .layer-row:last-child {
+  border-bottom: 1px solid #ddd6fe;
+}
+
+body.secplus-pbq-ui .layer-badge {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #7c3aed;
+}
+
+body.secplus-pbq-ui .layer-copy {
+  padding-right: 52px;
+}
+
+body.secplus-pbq-ui .layer-title {
+  margin: 0 0 4px;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #1a3d6e;
+}
+
+body.secplus-pbq-ui .layer-desc {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: #64748b;
+}
+
+body.secplus-pbq-ui .layer-list-box .timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+body.secplus-pbq-ui .timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+body.secplus-pbq-ui .layer-list-box .timeline-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(130px, 0.46fr);
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd6fe;
+  background: #f3e8ff;
+}
+
+body.secplus-pbq-ui .layer-list-box .timeline-step:not(:last-child)::after {
+  display: none;
+}
+
+body.secplus-pbq-ui .timeline-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(130px, 0.46fr);
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0 18px;
+}
+
+body.secplus-pbq-ui .timeline-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 42px;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, #3d6dbb 0%, #6384ba 100%);
+}
+
+body.secplus-pbq-ui .layer-list-box .step-num {
+  box-shadow: 0 0 0 4px #f3e8ff;
+}
+
+body.secplus-pbq-ui .step-num {
+  position: relative;
+  z-index: 1;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #254b8a;
+  border: 1px solid #3d6dbb;
+  color: #e6edf3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 4px #ffffff;
+}
+
+body.secplus-pbq-ui .step-title {
+  margin: 0 0 2px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1a3d6e;
+}
+
+body.secplus-pbq-ui .step-desc {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.4;
+  color: #64748b;
+}
+
+body.secplus-pbq-ui .timeline-step .drop-slot .token {
+  font-size: 0.72rem;
+}
+
+body.secplus-pbq-ui .actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+body.secplus-pbq-ui .actions button {
+  background: #254b8a;
+  color: #e6edf3;
+  border: 1px solid #3d6dbb;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.95rem;
+  min-height: 48px;
+  touch-action: manipulation;
+}
+
+body.secplus-pbq-ui .actions button:hover {
+  filter: brightness(1.08);
+}
+
+body.secplus-pbq-ui .actions #result {
+  font-weight: 700;
+  color: #1a3d6e;
+  flex: 1 1 240px;
+  min-width: 0;
+  font-size: 0.86rem;
+  line-height: 1.4;
+  background: transparent;
+  padding: 0;
+  border: 0;
+}
+
+body.secplus-pbq-ui .actions #result.is-pass {
+  color: #166534;
+}
+
+body.secplus-pbq-ui .actions #result.is-fail {
+  color: #991b1b;
+}

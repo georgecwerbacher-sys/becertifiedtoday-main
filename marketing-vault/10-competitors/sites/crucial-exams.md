@@ -14,6 +14,14 @@ question_poll:
   parser: generic_mcq
   version_note: SY0-701
   topic_notes: Tier B — verify answer on CompTIA Tier A
+pbq_poll:
+  enabled: false
+  tier: b
+  id: crucialexams-pbq
+  sample_url: https://crucialexams.com/exams/comptia/security/sy0-701/practice-tests-practice-questions
+  parser: generic_pbq
+  version_note: SY0-701
+  topic_notes: Tier B PBQ — 9 PBQ stated; verify on CompTIA Tier A
 ---
 
 # Crucial Exams — SY0-701

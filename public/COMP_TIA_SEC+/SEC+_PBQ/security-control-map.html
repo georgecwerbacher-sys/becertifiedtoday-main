@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <meta
+    name="description"
+    content="CompTIA Security+ SY0-701 PBQ practice: drag security controls onto a multi-layer network diagram (Perimeter, DMZ, Internal, Endpoint, Cloud)."
+  />
+  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_PBQ/security-control-map.html" />
+  <title>Security+ PBQ — Security Control Map | Be Certified Today</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+</head>
+<body class="secplus-question-ui secplus-pbq-ui dragdrop-exercise">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell">
+    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ training portal">
+      <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="pbq-card">
+      <nav class="question-nav" aria-label="Question navigation">
+        <div class="question-nav-links">
+          <span class="nav-link nav-link--disabled nav-prev" aria-hidden="true">Back</span>
+          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_PBQ/log-timeline-forensics.html">Next</a>
+        </div>
+      </nav>
+
+      <h1>Security Control Map</h1>
+      <p class="pbq-sub">
+        Place five security controls onto a multi-layer network diagram (Perimeter, DMZ, Internal, Endpoint, Cloud).
+        Drag each control from the bank (or tap to pick, then tap a layer).
+      </p>
+      <p class="pbq-instructions">
+        Map each control to <strong>Perimeter</strong>, <strong>DMZ</strong>, <strong>Internal</strong>,
+        <strong>Endpoint</strong>, or <strong>Cloud</strong>. Every control is used exactly once.
+      </p>
+
+      <div class="sim-frame">
+        <div class="layout layout--two-col">
+          <section class="panel" aria-labelledby="controls-heading">
+            <h2 id="controls-heading">Security Controls</h2>
+            <div id="bank" class="bank">
+              <div class="token" draggable="true" data-value="ids-ips">IDS/IPS</div>
+              <div class="token" draggable="true" data-value="waf">Web Application Firewall</div>
+              <div class="token" draggable="true" data-value="edr-agent">EDR Agent</div>
+              <div class="token" draggable="true" data-value="border-firewall">Border Firewall</div>
+              <div class="token" draggable="true" data-value="vlan-segmentation">VLAN Segmentation</div>
+            </div>
+          </section>
+
+          <section class="panel panel--layers" aria-labelledby="layers-heading">
+            <h2 id="layers-heading">Network Security Layers</h2>
+            <div class="layer-list-box">
+            <div class="layer-list">
+              <article class="layer-row">
+                <span class="layer-badge">Layer 5</span>
+                <div class="layer-copy">
+                  <div>
+                    <h3 class="layer-title">Perimeter Layer</h3>
+                    <p class="layer-desc">First line of defense at network edge</p>
+                  </div>
+                </div>
+                <div class="drop-slot" data-target="border-firewall" aria-label="Perimeter layer drop zone"></div>
+              </article>
+
+              <article class="layer-row">
+                <span class="layer-badge">Layer 4</span>
+                <div class="layer-copy">
+                  <div>
+                    <h3 class="layer-title">DMZ Layer</h3>
+                    <p class="layer-desc">Isolated network segment for external services</p>
+                  </div>
+                </div>
+                <div class="drop-slot" data-target="waf" aria-label="DMZ layer drop zone"></div>
+              </article>
+
+              <article class="layer-row">
+                <span class="layer-badge">Layer 3</span>
+                <div class="layer-copy">
+                  <div>
+                    <h3 class="layer-title">Internal Network Layer</h3>
+                    <p class="layer-desc">Internal network segmentation and control</p>
+                  </div>
+                </div>
+                <div class="drop-slot" data-target="vlan-segmentation" aria-label="Internal network layer drop zone"></div>
+              </article>
+
+              <article class="layer-row">
+                <span class="layer-badge">Layer 2</span>
+                <div class="layer-copy">
+                  <div>
+                    <h3 class="layer-title">Endpoint Layer</h3>
+                    <p class="layer-desc">Individual device protection</p>
+                  </div>
+                </div>
+                <div class="drop-slot" data-target="edr-agent" aria-label="Endpoint layer drop zone"></div>
+              </article>
+
+              <article class="layer-row">
+                <span class="layer-badge">Layer 1</span>
+                <div class="layer-copy">
+                  <div>
+                    <h3 class="layer-title">Cloud Layer</h3>
+                    <p class="layer-desc">Hosted services and virtual network security</p>
+                  </div>
+                </div>
+                <div class="drop-slot" data-target="ids-ips" aria-label="Cloud layer drop zone"></div>
+              </article>
+            </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="checkBtn" type="button">Check Answer</button>
+        <button id="showBtn" type="button">Show Answer</button>
+        <button id="resetBtn" type="button">Reset</button>
+        <span id="result" role="status" aria-live="polite"></span>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      var bank = document.getElementById("bank");
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var resetBtn = document.getElementById("resetBtn");
+      var result = document.getElementById("result");
+      var dragged = null;
+      var picked = null;
+
+      function allSlots() {
+        return document.querySelectorAll(".drop-slot[data-target]");
+      }
+
+      function clearPick() {
+        document.querySelectorAll(".token.is-picked").forEach(function (node) {
+          node.classList.remove("is-picked");
+        });
+        picked = null;
+      }
+
+      function setPick(token) {
+        clearPick();
+        picked = token;
+        if (picked) picked.classList.add("is-picked");
+      }
+
+      function moveTokenToSlot(slot, token) {
+        if (!token || !slot) return;
+        var existing = slot.querySelector(".token");
+        if (existing && existing !== token) bank.appendChild(existing);
+        slot.appendChild(token);
+      }
+
+      function shuffleBank() {
+        var nodes = [].slice.call(bank.querySelectorAll(".token"));
+        while (nodes.length) {
+          bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
+        }
+      }
+
+      shuffleBank();
+
+      document.querySelector(".pbq-card").addEventListener("click", function (event) {
+        var token = event.target.closest(".token");
+        if (token) {
+          if (picked === token) {
+            clearPick();
+            return;
+          }
+          var parentSlot =
+            token.parentNode &&
+            token.parentNode.classList &&
+            token.parentNode.classList.contains("drop-slot")
+              ? token.parentNode
+              : null;
+          if (picked && parentSlot) {
+            moveTokenToSlot(parentSlot, picked);
+            clearPick();
+            return;
+          }
+          setPick(token);
+          return;
+        }
+
+        var slot = event.target.closest(".drop-slot");
+        if (slot && picked) {
+          moveTokenToSlot(slot, picked);
+          clearPick();
+          return;
+        }
+
+        if (bank.contains(event.target) && picked && !bank.contains(picked)) {
+          bank.appendChild(picked);
+          clearPick();
+        }
+      });
+
+      document.querySelectorAll(".token").forEach(function (token) {
+        token.addEventListener("dragstart", function () {
+          clearPick();
+          dragged = token;
+        });
+      });
+
+      allSlots().forEach(function (slot) {
+        slot.addEventListener("dragover", function (event) {
+          event.preventDefault();
+          slot.classList.add("over");
+        });
+        slot.addEventListener("dragleave", function () {
+          slot.classList.remove("over");
+        });
+        slot.addEventListener("drop", function (event) {
+          event.preventDefault();
+          slot.classList.remove("over");
+          if (!dragged) return;
+          moveTokenToSlot(slot, dragged);
+          dragged = null;
+        });
+      });
+
+      bank.addEventListener("dragover", function (event) {
+        event.preventDefault();
+      });
+      bank.addEventListener("drop", function (event) {
+        event.preventDefault();
+        if (dragged) bank.appendChild(dragged);
+        dragged = null;
+      });
+
+      function takeFromBank(value) {
+        return [].slice.call(bank.querySelectorAll(".token")).find(function (token) {
+          return token.getAttribute("data-value") === value;
+        });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var allOk = true;
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var want = slot.getAttribute("data-target");
+          var token = slot.querySelector(".token");
+          if (!token) {
+            slot.classList.add("incorrect");
+            allOk = false;
+            return;
+          }
+          var ok = token.getAttribute("data-value") === want;
+          slot.classList.add(ok ? "correct" : "incorrect");
+          if (!ok) allOk = false;
+        });
+
+        result.className = allOk ? "is-pass" : "is-fail";
+        result.textContent = allOk
+          ? "Correct. Border Firewall protects the edge; WAF shields DMZ web services; VLAN Segmentation isolates internal traffic; EDR Agent protects endpoints; IDS/IPS inspects cloud and virtual network traffic."
+          : "Incorrect. Some controls are missing or placed on the wrong layer — adjust and check again.";
+      });
+
+      showBtn.addEventListener("click", function () {
+        clearPick();
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var token = slot.querySelector(".token");
+          if (token) bank.appendChild(token);
+        });
+        allSlots().forEach(function (slot) {
+          var token = takeFromBank(slot.getAttribute("data-target"));
+          if (token) {
+            slot.appendChild(token);
+            slot.classList.add("correct");
+          }
+        });
+        result.className = "is-pass";
+        result.textContent = "Answer shown. Perimeter: Border Firewall · DMZ: Web Application Firewall · Internal: VLAN Segmentation · Endpoint: EDR Agent · Cloud: IDS/IPS.";
+      });
+
+      resetBtn.addEventListener("click", function () {
+        clearPick();
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var token = slot.querySelector(".token");
+          if (token) bank.appendChild(token);
+        });
+        result.className = "";
+        result.textContent = "";
+        shuffleBank();
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <meta
+    name="description"
+    content="CompTIA Security+ SY0-701 PBQ practice: reorder SSH auth log snippets to reconstruct a brute-force attack ending in privilege escalation."
+  />
+  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_PBQ/log-timeline-forensics.html" />
+  <title>Security+ PBQ — Log Timeline Forensics | Be Certified Today</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+</head>
+<body class="secplus-question-ui secplus-pbq-ui dragdrop-exercise">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell">
+    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ training portal">
+      <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="pbq-card">
+      <nav class="question-nav" aria-label="Question navigation">
+        <div class="question-nav-links">
+          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_PBQ/security-control-map.html">Back</a>
+          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <span class="nav-link nav-link--disabled nav-next" aria-hidden="true">Next</span>
+        </div>
+      </nav>
+
+      <h1>Log Timeline Forensics</h1>
+      <p class="pbq-sub">
+        Reorder six log snippets to reconstruct a successful brute-force SSH attack that ends in privilege escalation.
+      </p>
+      <p class="pbq-instructions">
+        Drag each log snippet from the bank into the incident timeline in chronological order. Every snippet is used
+        exactly once.
+      </p>
+
+      <div class="sim-frame">
+        <div class="layout layout--two-col">
+          <section class="panel" aria-labelledby="snippets-heading">
+            <h2 id="snippets-heading">Available Log Snippets</h2>
+            <div id="bank" class="bank">
+              <div class="token token--mono" draggable="true" data-value="successful-login">
+                sshd[2841]: Accepted password for deploy from 203.0.113.45 port 44218 ssh2
+              </div>
+              <div class="token token--mono" draggable="true" data-value="multiple-retries">
+                sshd[2841]: message repeated 47 times: Failed password for root from 203.0.113.45
+              </div>
+              <div class="token token--mono" draggable="true" data-value="new-user">
+                useradd[9120]: new user: name=svc-backup, UID=1002, GID=1002, home=/home/svc-backup
+              </div>
+              <div class="token token--mono" draggable="true" data-value="cron-job">
+                crontab[9188]: (svc-backup) LIST ; */15 * * * * curl http://203.0.113.45/beacon
+              </div>
+              <div class="token token--mono" draggable="true" data-value="failed-login">
+                sshd[2841]: Failed password for root from 203.0.113.45 port 44218 ssh2
+              </div>
+              <div class="token token--mono" draggable="true" data-value="sudo-escalation">
+                sudo: deploy : TTY=pts/0 ; PWD=/home/deploy ; USER=root ; COMMAND=/bin/bash
+              </div>
+            </div>
+          </section>
+
+          <section class="panel panel--layers" aria-labelledby="timeline-heading">
+            <h2 id="timeline-heading">Incident Timeline</h2>
+            <p class="panel-note">Arrange the log snippets in the correct order.</p>
+            <div class="layer-list-box">
+            <div class="timeline">
+              <article class="timeline-step">
+                <span class="step-num" aria-hidden="true">1</span>
+                <div class="step-copy">
+                  <h3 class="step-title">First Event</h3>
+                  <p class="step-desc">Attack initiation</p>
+                </div>
+                <div class="drop-slot" data-target="failed-login" aria-label="First event drop zone"></div>
+              </article>
+
+              <article class="timeline-step">
+                <span class="step-num" aria-hidden="true">2</span>
+                <div class="step-copy">
+                  <h3 class="step-title">Second Event</h3>
+                  <p class="step-desc">Attack escalation</p>
+                </div>
+                <div class="drop-slot" data-target="multiple-retries" aria-label="Second event drop zone"></div>
+              </article>
+
+              <article class="timeline-step">
+                <span class="step-num" aria-hidden="true">3</span>
+                <div class="step-copy">
+                  <h3 class="step-title">Third Event</h3>
+                  <p class="step-desc">Initial compromise</p>
+                </div>
+                <div class="drop-slot" data-target="successful-login" aria-label="Third event drop zone"></div>
+              </article>
+
+              <article class="timeline-step">
+                <span class="step-num" aria-hidden="true">4</span>
+                <div class="step-copy">
+                  <h3 class="step-title">Fourth Event</h3>
+                  <p class="step-desc">Privilege escalation</p>
+                </div>
+                <div class="drop-slot" data-target="sudo-escalation" aria-label="Fourth event drop zone"></div>
+              </article>
+
+              <article class="timeline-step">
+                <span class="step-num" aria-hidden="true">5</span>
+                <div class="step-copy">
+                  <h3 class="step-title">Fifth Event</h3>
+                  <p class="step-desc">Persistence establishment</p>
+                </div>
+                <div class="drop-slot" data-target="new-user" aria-label="Fifth event drop zone"></div>
+              </article>
+
+              <article class="timeline-step">
+                <span class="step-num" aria-hidden="true">6</span>
+                <div class="step-copy">
+                  <h3 class="step-title">Sixth Event</h3>
+                  <p class="step-desc">Long-term access setup</p>
+                </div>
+                <div class="drop-slot" data-target="cron-job" aria-label="Sixth event drop zone"></div>
+              </article>
+            </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="checkBtn" type="button">Check Answer</button>
+        <button id="showBtn" type="button">Show Answer</button>
+        <button id="resetBtn" type="button">Reset</button>
+        <span id="result" role="status" aria-live="polite"></span>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      var bank = document.getElementById("bank");
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var resetBtn = document.getElementById("resetBtn");
+      var result = document.getElementById("result");
+      var dragged = null;
+      var picked = null;
+
+      function allSlots() {
+        return document.querySelectorAll(".drop-slot[data-target]");
+      }
+
+      function clearPick() {
+        document.querySelectorAll(".token.is-picked").forEach(function (node) {
+          node.classList.remove("is-picked");
+        });
+        picked = null;
+      }
+
+      function setPick(token) {
+        clearPick();
+        picked = token;
+        if (picked) picked.classList.add("is-picked");
+      }
+
+      function moveTokenToSlot(slot, token) {
+        if (!token || !slot) return;
+        var existing = slot.querySelector(".token");
+        if (existing && existing !== token) bank.appendChild(existing);
+        slot.appendChild(token);
+      }
+
+      function shuffleBank() {
+        var nodes = [].slice.call(bank.querySelectorAll(".token"));
+        while (nodes.length) {
+          bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
+        }
+      }
+
+      shuffleBank();
+
+      document.querySelector(".pbq-card").addEventListener("click", function (event) {
+        var token = event.target.closest(".token");
+        if (token) {
+          if (picked === token) {
+            clearPick();
+            return;
+          }
+          var parentSlot =
+            token.parentNode &&
+            token.parentNode.classList &&
+            token.parentNode.classList.contains("drop-slot")
+              ? token.parentNode
+              : null;
+          if (picked && parentSlot) {
+            moveTokenToSlot(parentSlot, picked);
+            clearPick();
+            return;
+          }
+          setPick(token);
+          return;
+        }
+
+        var slot = event.target.closest(".drop-slot");
+        if (slot && picked) {
+          moveTokenToSlot(slot, picked);
+          clearPick();
+          return;
+        }
+
+        if (bank.contains(event.target) && picked && !bank.contains(picked)) {
+          bank.appendChild(picked);
+          clearPick();
+        }
+      });
+
+      document.querySelectorAll(".token").forEach(function (token) {
+        token.addEventListener("dragstart", function () {
+          clearPick();
+          dragged = token;
+        });
+      });
+
+      allSlots().forEach(function (slot) {
+        slot.addEventListener("dragover", function (event) {
+          event.preventDefault();
+          slot.classList.add("over");
+        });
+        slot.addEventListener("dragleave", function () {
+          slot.classList.remove("over");
+        });
+        slot.addEventListener("drop", function (event) {
+          event.preventDefault();
+          slot.classList.remove("over");
+          if (!dragged) return;
+          moveTokenToSlot(slot, dragged);
+          dragged = null;
+        });
+      });
+
+      bank.addEventListener("dragover", function (event) {
+        event.preventDefault();
+      });
+      bank.addEventListener("drop", function (event) {
+        event.preventDefault();
+        if (dragged) bank.appendChild(dragged);
+        dragged = null;
+      });
+
+      function takeFromBank(value) {
+        return [].slice.call(bank.querySelectorAll(".token")).find(function (token) {
+          return token.getAttribute("data-value") === value;
+        });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var allOk = true;
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var want = slot.getAttribute("data-target");
+          var token = slot.querySelector(".token");
+          if (!token) {
+            slot.classList.add("incorrect");
+            allOk = false;
+            return;
+          }
+          var ok = token.getAttribute("data-value") === want;
+          slot.classList.add(ok ? "correct" : "incorrect");
+          if (!ok) allOk = false;
+        });
+
+        result.className = allOk ? "is-pass" : "is-fail";
+        result.textContent = allOk
+          ? "Correct. Failed root login starts the attack; repeated failures show brute force; accepted deploy login is initial compromise; sudo to root is escalation; a new local user and cron job establish persistence."
+          : "Incorrect. One or more log snippets are out of order or missing — adjust and check again.";
+      });
+
+      showBtn.addEventListener("click", function () {
+        clearPick();
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var token = slot.querySelector(".token");
+          if (token) bank.appendChild(token);
+        });
+        allSlots().forEach(function (slot) {
+          var token = takeFromBank(slot.getAttribute("data-target"));
+          if (token) {
+            slot.appendChild(token);
+            slot.classList.add("correct");
+          }
+        });
+        result.className = "is-pass";
+        result.textContent =
+          "Answer shown. 1 Failed password → 2 repeated failures → 3 accepted login → 4 sudo to root → 5 new user → 6 cron persistence.";
+      });
+
+      resetBtn.addEventListener("click", function () {
+        clearPick();
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var token = slot.querySelector(".token");
+          if (token) bank.appendChild(token);
+        });
+        result.className = "";
+        result.textContent = "";
+        shuffleBank();
+      });
+    })();
+  </script>
+</body>
+</html>

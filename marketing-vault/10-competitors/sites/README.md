@@ -1,8 +1,13 @@
 # Competitor sites — question poll registry
 
-Add one `.md` file per site. The monthly hunt script reads **YAML frontmatter** and polls every file with `question_poll.enabled: true`.
+Add one `.md` file per site. The monthly hunt scripts read **YAML frontmatter**:
 
-Script: `scripts/secplus_competitor_poll.py` · wired from `scripts/secplus_monthly_question_hunt.py collect`
+| Poll key | Script | npm |
+|----------|--------|-----|
+| `question_poll.enabled: true` | MCQ collect | `npm run secplus:monthly` |
+| `pbq_poll.enabled: true` | PBQ collect | `npm run secplus:pbq-monthly` |
+
+Script: `scripts/secplus_competitor_poll.py` · MCQ: `secplus_monthly_question_hunt.py` · PBQ: `secplus_monthly_pbq_hunt.py`
 
 ## Add a new site
 
@@ -30,7 +35,24 @@ question_poll:
 
 2. Set **`tier`**: `b` (credited practice samples) or `c` (uncredited / community recall — discovery only).
 3. Set **`parser`** (see below). Use `enabled: false` until a parser works or for manual-only sites.
-4. Run `npm run secplus:monthly` — collect polls all enabled sites automatically.
+4. Run `npm run secplus:monthly` (MCQ) or `npm run secplus:pbq-monthly` (PBQ) — collect polls enabled sites automatically.
+
+### PBQ poll block (optional)
+
+Same file can define **`pbq_poll`** separately from MCQ:
+
+```yaml
+pbq_poll:
+  enabled: true
+  tier: b
+  id: example-pbq-sy0-701
+  sample_url: https://example.com/sy0-701/pbq/
+  parser: generic_pbq
+  version_note: SY0-701
+  topic_notes: Tier B PBQ — verify on CompTIA Tier A
+```
+
+Vault: [[../../11-question-sourcing/pbq/README|11-question-sourcing/pbq/]]
 
 ## Parsers
 
@@ -44,8 +66,9 @@ question_poll:
 | `certimaan` | CertiMaan blog sample questions (40 MCQs) |
 | `examtopics` | ExamTopics `/view/N/` pages (`max_pages: 1` recommended) |
 | `generic_mcq` | Fallback — try last |
+| `generic_pbq` | PBQ heuristic extract (drag/drop, reorder, sim keywords) |
 
-CompTIA official (Tier A) stays in `11-question-sourcing/config/secplus-web-sources.json` → `tier_a_fetch`.
+CompTIA official (Tier A) stays in `11-question-sourcing/config/secplus-web-sources.json` → `tier_a_fetch` (MCQ) and `11-question-sourcing/pbq/config/secplus-pbq-sources.json` (PBQ catalog).
 
 ## Tiers (reminder)
 

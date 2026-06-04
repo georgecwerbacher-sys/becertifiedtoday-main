@@ -1,0 +1,84 @@
+---
+description: Security+ SY0-701 PBQ drag-and-drop pages under SEC+_PBQ — use the established template.
+globs: public/COMP_TIA_SEC+/SEC+_PBQ/**
+alwaysApply: false
+---
+
+# Security+ PBQ / drag-and-drop template
+
+When adding or editing **Security+ performance-based drag-and-drop** pages, use **`public/COMP_TIA_SEC+/SEC+_PBQ/`** only — not `SEC+_Questions/` or root `public/question-*.html`.
+
+## Copy from
+
+| Layout | Reference page | Use when |
+|--------|----------------|----------|
+| **Map / categories** | `security-control-map.html` | Tokens → labeled drop zones (layers, zones, roles) |
+| **Ordered timeline** | `log-timeline-forensics.html` | Tokens → numbered sequence slots |
+| **Skeleton** | `TEMPLATE-dragdrop.html` | Placeholders + checklist |
+
+**Shared assets (do not duplicate inline styles):**
+
+- `/css/bcc-question-link-nav.css` — Back / Home / Next link buttons
+- `/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css` — touch targets, watermark base
+- `/COMP_TIA_SEC+/js/secplus-pbq-page.css` — PBQ chrome (tokens, slots, layers, actions)
+
+## Required page structure
+
+```html
+<body class="secplus-question-ui secplus-pbq-ui dragdrop-exercise">
+  <div class="page-logo-watermark">…logo…</div>
+  <div class="question-shell">
+    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">…</a>
+    <main class="pbq-card">
+      <nav class="question-nav">Back · Home · Next</nav>
+      <h1>…</h1>
+      <p class="pbq-sub">…</p>
+      <p class="pbq-instructions">…</p>
+      <div class="sim-frame">
+        <div class="layout layout--two-col">…bank + targets…</div>
+      </div>
+      <div class="actions">
+        <button id="checkBtn">Check Answer</button>
+        <button id="showBtn">Show Answer</button>
+        <button id="resetBtn">Reset</button>
+        <span id="result"></span>
+      </div>
+    </main>
+  </div>
+</body>
+```
+
+## Visual spec (secplus-pbq-page.css)
+
+| Element | Style |
+|---------|--------|
+| Logo watermark | 14% opacity, centered |
+| Nav links | SEC+ question template (`#254b8a` / Home `#1a3d6e`) |
+| Action buttons | CCNA D&D blue (`#254b8a`), all three same style |
+| Draggable tokens | Light blue `#cfe9ff` |
+| Drop slots | Light blue `#dbeafe`, dashed `#93c5fd` |
+| Layer / timeline blocks | Light purple `#f3e8ff` inside `.layer-list-box` (map rows or timeline steps) |
+| Correct / incorrect slots | Green / red (unchanged) |
+
+## Interaction
+
+- Drag-and-drop + tap-to-pick (click token, click slot)
+- `#bank` + `.drop-slot[data-target="token-id"]` — slot `data-target` must match token `data-value`
+- Shuffle bank on load and reset
+- Inline script at bottom of page (copy from reference neighbor)
+
+## Chain navigation
+
+Wire **Back / Next** between pages in `SEC+_PBQ/`. Last page: disabled Next or link to portal. Update the previous page’s Next when adding a new slug.
+
+## Sourcing workflow
+
+After shipping a new page, log accepted concepts in `marketing-vault/11-question-sourcing/pbq/secplus-pbq-not-in-bct.md`. Compare bank: `npm run secplus:pbq-monthly`.
+
+## Answer verification
+
+Verify against **CompTIA Tier A / SY0-701 objectives v5.0** only. No dump URLs — run `python3 scripts/lint-practice-question-urls.py` after edits.
+
+## Multi-pane sims
+
+Full exam sims (dark web, OpenSSL, VPC) stay in `SEC+_Sim_Hot_Spot/` — not this template.

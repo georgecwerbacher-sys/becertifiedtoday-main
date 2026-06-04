@@ -14,4 +14,6 @@ Workflow when you find a new source:
 
 Related: [[../10-competitors/practice-samples-competitors|Practice competitors]] · [[../10-competitors/pdf-dump-market-analysis|PDF dump market]] · [[../10-competitors/sites/examtopics|ExamTopics]] · in-repo bank `public/COMP_TIA_SEC+/SEC+_Questions/`.
 
-**Monthly process:** `npm run secplus:monthly` — collect → compare → save (Obsidian `.md`). Playbook: [[../05-playbooks/secplus-monthly-question-sourcing|secplus-monthly-question-sourcing]].
+**Monthly process (MCQ):** `npm run secplus:monthly` — collect → compare → save (Obsidian `.md`). Playbook: [[../05-playbooks/secplus-monthly-question-sourcing|secplus-monthly-question-sourcing]].
+
+**Monthly process (PBQ):** `npm run secplus:pbq-monthly` — same three steps for performance-based items. Folder: [[pbq/README|pbq/]] · Playbook: [[../05-playbooks/secplus-monthly-pbq-sourcing|secplus-monthly-pbq-sourcing]].

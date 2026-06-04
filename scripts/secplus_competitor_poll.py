@@ -371,6 +371,58 @@ def parse_generic_mcq(page_html: str, src: dict) -> list[dict]:
     return _dedupe_rows(rows)
 
 
+def _infer_pbq_type(text: str) -> str:
+    lower = text.lower()
+    if "drag" in lower and "drop" in lower:
+        return "drag-drop"
+    if "hot spot" in lower or "hotspot" in lower:
+        return "hotspot"
+    if "reorder" in lower or "correct order" in lower or "timeline" in lower:
+        return "ordered-sequence"
+    if "fill" in lower and "blank" in lower:
+        return "fill-in"
+    if "simulation" in lower or "performance-based" in lower or "pbq" in lower:
+        return "simulation"
+    return "pbq-other"
+
+
+def parse_generic_pbq(page_html: str, src: dict) -> list[dict]:
+    rows: list[dict] = []
+    text = html_to_text(page_html)
+    blocks = re.split(
+        r"(?:performance[- ]based|PBQ|simulation|hot\s*spot|drag[- ]and[- ]drop)\s*[:\-]?\s*",
+        text,
+        flags=re.I,
+    )
+    for i, block in enumerate(blocks[1:], 1):
+        chunk = block.strip()
+        if len(chunk) < 40:
+            continue
+        stem = chunk[:480].strip()
+        if not re.search(r"\b(map|place|drag|reorder|select|configure|identify)\b", stem, re.I):
+            continue
+        row = _base_row(src, str(i), stem)
+        row["pbq_type"] = _infer_pbq_type(stem)
+        row["interaction_notes"] = "Extracted from page — confirm interaction type manually"
+        rows.append(row)
+    if rows:
+        return _dedupe_rows(rows)
+    markers = re.findall(
+        r"((?:drag|place|reorder|map|hot\s*spot).{20,320}?)(?:\.|$)",
+        text,
+        re.I,
+    )
+    for i, stem in enumerate(markers[:12], 1):
+        stem = stem.strip()
+        if len(stem) < 30:
+            continue
+        row = _base_row(src, str(i), stem)
+        row["pbq_type"] = _infer_pbq_type(stem)
+        row["interaction_notes"] = "Heuristic extract — review manually"
+        rows.append(row)
+    return _dedupe_rows(rows)
+
+
 PARSERS = {
     "techexamlexicon": parse_techexamlexicon,
     "certblaster": parse_certblaster,
@@ -380,7 +432,57 @@ PARSERS = {
     "certimaan": parse_certimaan,
     "examtopics": parse_examtopics,
     "generic_mcq": parse_generic_mcq,
+    "generic_pbq": parse_generic_pbq,
 }
+
+
+def load_pbq_poll_sources() -> list[dict]:
+    if not COMPETITOR_SITES.is_dir():
+        return []
+    sources: list[dict] = []
+    for path in sorted(COMPETITOR_SITES.glob("*.md")):
+        meta = parse_frontmatter(path)
+        poll = meta.get("pbq_poll")
+        if not isinstance(poll, dict) or not poll.get("enabled"):
+            continue
+        sample_url = poll.get("sample_url") or meta.get("url") or ""
+        if not sample_url:
+            print(f"[pbq-poll] skip {path.name}: no sample_url", file=sys.stderr)
+            continue
+        sources.append(
+            {
+                "file": path.name,
+                "brand": meta.get("brand", path.stem),
+                "id": poll.get("id") or f"{path.stem}-pbq",
+                "sample_url": sample_url,
+                "parser": poll.get("parser", "generic_pbq"),
+                "version_note": poll.get("version_note") or meta.get("product", "SY0-701"),
+                "tier": poll.get("tier", "b"),
+                "max_pages": int(poll.get("max_pages", 1)),
+                "max_questions": int(poll.get("max_questions", 0)),
+                "topic_notes": poll.get("topic_notes")
+                or _default_topic_notes(poll.get("tier", "b")),
+            }
+        )
+    return sources
+
+
+def poll_all_pbq_sources(sources: list[dict] | None = None, fetcher=fetch_url) -> list[dict]:
+    sources = sources if sources is not None else load_pbq_poll_sources()
+    all_rows: list[dict] = []
+    for src in sources:
+        sid = src.get("id", "?")
+        print(f"[collect] pbq poll: {sid} ({src.get('parser')}) …")
+        try:
+            parsed = poll_source(src, fetcher=fetcher)
+        except (urllib.error.URLError, TimeoutError) as exc:
+            print(f"  skip: {exc}", file=sys.stderr)
+            continue
+        for row in parsed:
+            row.setdefault("pbq_type", _infer_pbq_type(row.get("stem", "")))
+        print(f"  {len(parsed)} PBQ candidates")
+        all_rows.extend(parsed)
+    return all_rows
 
 
 def poll_source(src: dict, fetcher=fetch_url) -> list[dict]:
@@ -430,5 +532,14 @@ def poll_all_sources(sources: list[dict] | None = None, fetcher=fetch_url) -> li
 
 
 if __name__ == "__main__":
-    for s in load_poll_sources():
+    import argparse
+
+    ap = argparse.ArgumentParser(description="List enabled SY0-701 poll sources")
+    ap.add_argument("--pbq", action="store_true", help="List PBQ poll registry (pbq_poll.enabled)")
+    args = ap.parse_args()
+    loader = load_pbq_poll_sources if args.pbq else load_poll_sources
+    label = "PBQ" if args.pbq else "MCQ"
+    sources = loader()
+    print(f"[{label}] {len(sources)} enabled source(s)")
+    for s in sources:
         print(json.dumps({k: s[k] for k in ("id", "parser", "sample_url", "tier")}, indent=2))
