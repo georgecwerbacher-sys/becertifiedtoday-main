@@ -1,12 +1,11 @@
-# Run 2026-06-03 — landing catalog only
+# Run 2026-06-03
 
-**Not PBQ question screenshots.** Playwright hit public **marketing / SKU landing pages** from `pbq_poll` URLs. You see “9 PBQs”, pricing, and MCQ promos — not drag-and-drop UI, log timelines, or sim panes.
+Open **[[INDEX|INDEX.md]]** in Obsidian — the canonical index for this run.
 
-| Folder | What it actually is |
-|--------|---------------------|
-| `landing-catalog/*` | Competitor landing-page captures (research intel) |
-| `bct-secplus-pbq-map/` | BCT template QA reference (our own page) |
+| Result | Count |
+|--------|------:|
+| PBQ / sim UI (`captured-pbq`) | 4 (3 BCT + HowToNetwork H5P) |
+| Landing + link (`captured-landing`) | 15 competitors |
+| Link only (`link-only`) | 2 Reddit searches |
 
-**Real PBQ screenshots** go in `../YYYY-MM-DD/<source-id>/` with `capture_kind: pbq-preview` — use manual `register` after opening a read-only preview, CertMaster, or VCE player.
-
-See [[../README|captures README]] · `npm run secplus:pbq-screenshot` (preview targets only).
+Regenerate: `npm run secplus:pbq-capture` (with `npm run serve` for localhost BCT shots).

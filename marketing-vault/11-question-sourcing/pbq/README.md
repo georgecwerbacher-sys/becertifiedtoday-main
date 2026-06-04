@@ -29,13 +29,9 @@ Performance-based question (PBQ) research — drag-and-drop, hot spot, ordered l
 
 When a page **advertises** PBQs but hides stems behind a paywall, collect still logs a **catalog row** (stated count + interaction style) so compare/save can track the gap. Paste full stems into `imports/` when you preview a site manually.
 
-**Screenshot:** Real PBQ research uses **`pbq-preview`** PNGs (manual `register` from preview/player UI). `npm run secplus:pbq-screenshot-landing` is optional marketing intel only — see [[captures/README|captures/README]].
+**Capture vault:** `npm run secplus:pbq-capture` screenshots reachable PBQ/sim UI (or landing + link) into Obsidian — see [[captures/README|captures/README]] · [[captures/2026-06-03/INDEX|latest INDEX]].
 
-**Monthly process:**
-
-```bash
-npm run secplus:pbq-monthly
-```
+**Text catalog** (no images): `npm run secplus:pbq-monthly`
 
 Playbook: [[../05-playbooks/secplus-monthly-pbq-sourcing|secplus-monthly-pbq-sourcing]]
 

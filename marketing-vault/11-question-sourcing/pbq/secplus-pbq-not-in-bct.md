@@ -20,6 +20,9 @@ Use **after** the monthly PBQ compare report — not during web discovery.
 |---------------|-----------|----------|--------------|-------------|--------|
 | 2026-06-03 | bct-internal | drag-drop | Security control map — five layers | — | in-bct (security-control-map.html) |
 | 2026-06-03 | bct-internal | ordered-sequence | Log timeline forensics — SSH brute force | — | in-bct (log-timeline-forensics.html) |
+| 2026-06-03 | bct-internal | exhibit-mcq | PKI chain + ERR_CERT_AUTHORITY_INVALID | — | in-bct (pki-certificate-chain-browser-error.html) |
+| 2026-06-03 | bct-internal | exhibit-mcq | SIEM alerts dashboard — lateral movement prioritization | — | in-bct (siem-security-alerts-dashboard.html) |
+| 2026-06-03 | bct-internal | drag-drop | Phishing email analysis — social engineering terms | — | in-bct (phishing-email-analysis.html) |
 
 ---
 

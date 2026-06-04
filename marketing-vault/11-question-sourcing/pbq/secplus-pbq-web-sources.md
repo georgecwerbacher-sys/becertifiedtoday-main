@@ -34,6 +34,7 @@ Same tier policy as [[../secplus-sy0-701-web-sources|MCQ catalog]] — Tier C is
 | Source | URL | PBQ / sim (stated) | Source version | date_added | Notes |
 |--------|-----|---------------------|----------------|------------|-------|
 | Crucial Exams | https://crucialexams.com/exams/comptia/security/sy0-701/practice-tests-practice-questions | **9 PBQ** + 1400 MCQ | SY0-701 (V7) | 2026-06-03 | [[../../10-competitors/sites/crucial-exams\|crucial-exams]] · `pbq_poll` enabled |
+| HowToNetwork | https://www.howtonetwork.com/certifications/security/comptia-security-pbq-practice-test-free-sy0-701-questions/ | **Free H5P PBQ** Part 1 (interactive) | SY0-701 | 2026-06-03 | [[../../10-competitors/sites/howtonetwork\|howtonetwork]] · `pbq_poll` · embed id=8 |
 | OpenExamPrep | https://open-exam-prep.com/practice/comptia-security-plus | Scan landing | SY0-701 | 2026-06-03 | [[../../10-competitors/sites/open-exam-prep\|open-exam-prep]] · `pbq_poll` enabled |
 | PrepTIA | https://www.preptia.com/SY0-701-Comptia-Practice-Test | Scan landing | SY0-701 | 2026-06-03 | [[../../10-competitors/sites/preptia\|preptia]] · `pbq_poll` enabled |
 | Tech Exam Lexicon | https://techexamlexicon.com/comptia/sy0-701/sample-questions/ | Scan samples | SY0-701 | 2026-06-03 | [[../../10-competitors/sites/techexamlexicon\|techexamlexicon]] · `pbq_poll` enabled |
@@ -42,7 +43,7 @@ Same tier policy as [[../secplus-sy0-701-web-sources|MCQ catalog]] — Tier C is
 | CertiMaan | https://www.certimaan.com/post/comptia-security-plus-certification-sample-questions | Scan blog | SY0-701 | 2026-06-03 | [[../../10-competitors/sites/certimaan\|certimaan]] · `pbq_poll` enabled |
 | Professor Messer — Practice Exams | https://www.professormesser.com/amember/signup/sy0701pe | **3 × 90** exams (PBQ + MCQ) | SY0-701 | 2026-06-03 | Paid PDF; widely used PBQ style |
 | BCT OpenSSL PBQ landing | `/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html` | 2-part sim | SY0-701 | 2026-06-03 | In-repo reference implementation |
-| BCT SEC+_PBQ | `/COMP_TIA_SEC+/SEC+_PBQ/` | Growing set | SY0-701 | 2026-06-03 | security-control-map · log-timeline-forensics |
+| BCT SEC+_PBQ | `/COMP_TIA_SEC+/SEC+_PBQ/` | Growing set | SY0-701 | 2026-06-03 | security-control-map · log-timeline-forensics · pki-certificate-chain-browser-error · siem-security-alerts-dashboard · phishing-email-analysis |
 
 ---
 

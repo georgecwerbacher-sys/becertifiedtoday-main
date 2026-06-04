@@ -8,6 +8,9 @@ Official **SY0-701 PBQ / drag-and-drop template** for standalone practice items.
 |------|--------|
 | `security-control-map.html` | Token bank → purple layer blocks + blue drop slots |
 | `log-timeline-forensics.html` | Token bank → numbered timeline slots |
+| `pki-certificate-chain-browser-error.html` | HTML exhibit (PKI chain + browser error) + multiple choice |
+| `siem-security-alerts-dashboard.html` | HTML exhibit (SIEM alert table + logs) + multiple choice |
+| `phishing-email-analysis.html` | Email exhibit + red flags + inline fill-in drag-and-drop |
 | `TEMPLATE-dragdrop.html` | Copy skeleton (not linked in nav) |
 
 ## Shared CSS

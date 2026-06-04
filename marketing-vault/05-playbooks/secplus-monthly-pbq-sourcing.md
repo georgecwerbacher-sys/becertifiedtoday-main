@@ -40,33 +40,28 @@ Step 1 does **not** read BCT. Step 2 compares against `SEC+_PBQ/` and `SEC+_Sim_
 
 ---
 
-## Screenshot (actual PBQ UI only)
+## Screenshot vault (Obsidian)
 
-HTML collect and **landing-catalog** shots are **not** PBQ question captures. For drag-and-drop / sim research you need a **`pbq-preview`** PNG — the interactive question UI.
+Primary run — every `pbq_poll` site + config targets → **PBQ PNG**, **landing PNG**, or **reachable link**:
 
-**Manual** (typical — Crucial preview, CertMaster, VCE, Cmd+Shift+4):
+```bash
+npm run serve                 # BCT localhost pages
+npm run secplus:pbq-capture   # writes captures/YYYY-MM-DD/INDEX.md
+```
+
+**Manual** when a site shows read-only PBQ in the browser (Crucial preview, CertMaster, VCE):
 
 ```bash
 python3 scripts/secplus_pbq_capture.py register \
   --png ~/Desktop/pbq-control-map.png \
   --source-id crucial-exams-manual \
-  --kind pbq-preview \
+  --url "https://crucialexams.com/..." \
   --notes "Paraphrase only — verify on Tier A"
 ```
 
-**Automated** (only when `preview_url` / `preview_selector` is set in capture config):
+Add `preview_url` / `preview_selector` in `config/secplus-pbq-capture-targets.json` when automation can reach real PBQ UI.
 
-```bash
-npm run secplus:pbq-screenshot
-```
-
-**Optional** competitor marketing intel (NOT for imports):
-
-```bash
-npm run secplus:pbq-screenshot-landing
-```
-
-See [[../11-question-sourcing/pbq/captures/README|captures/README]].
+See [[../11-question-sourcing/pbq/captures/README|captures/README]] · latest [[../11-question-sourcing/pbq/captures/2026-06-03/INDEX|INDEX]].
 
 ---
 
