@@ -695,6 +695,127 @@
     #secplusLaunchDealRoot .ccna-sim-promo-panel {
       border-color: rgba(139, 92, 246, 0.55);
     }
+    .secplus-last-chance-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9500;
+      display: none;
+      padding: 0 max(12px, env(safe-area-inset-right, 0px)) max(12px, env(safe-area-inset-bottom, 0px))
+        max(12px, env(safe-area-inset-left, 0px));
+      pointer-events: none;
+      box-sizing: border-box;
+    }
+    .secplus-last-chance-bar.secplus-last-chance-bar--visible {
+      display: block;
+      pointer-events: auto;
+    }
+    html.secplus-last-chance-visible {
+      padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
+    }
+    .secplus-last-chance-bar__inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px 14px;
+      align-items: center;
+      padding: 12px 14px 12px 16px;
+      border-radius: 14px 14px 0 0;
+      border: 1px solid rgba(250, 204, 21, 0.45);
+      border-bottom: none;
+      background: linear-gradient(165deg, rgba(76, 29, 149, 0.98) 0%, rgba(18, 26, 43, 0.98) 100%);
+      box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.45);
+    }
+    .secplus-last-chance-bar__close {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      align-self: start;
+      margin: 0;
+      padding: 4px 10px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: #cbd5e1;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .secplus-last-chance-bar__close:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .secplus-last-chance-bar__eyebrow {
+      grid-column: 1;
+      margin: 0;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fde68a;
+    }
+    .secplus-last-chance-bar__copy {
+      grid-column: 1;
+      margin: 0;
+      font-size: clamp(0.88rem, 2.2vw, 0.98rem);
+      line-height: 1.4;
+      color: #f4f7ff;
+    }
+    .secplus-last-chance-bar__copy strong {
+      color: #fef9c3;
+      font-weight: 800;
+    }
+    .secplus-last-chance-bar__was {
+      text-decoration: line-through;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+    .secplus-last-chance-bar__cta {
+      grid-column: 1 / -1;
+      justify-self: start;
+      margin: 0;
+      padding: 0.65rem 1.1rem;
+      border: 0;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: #1e1b4b;
+      background: linear-gradient(180deg, #fde68a 0%, #fbbf24 100%);
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(251, 191, 36, 0.35);
+    }
+    .secplus-last-chance-bar__cta:hover {
+      filter: brightness(1.05);
+    }
+    @media (min-width: 720px) {
+      .secplus-last-chance-bar__inner {
+        grid-template-columns: auto 1fr auto auto;
+        gap: 8px 16px;
+        padding: 14px 18px;
+        border-radius: 12px;
+        border-bottom: 1px solid rgba(250, 204, 21, 0.45);
+        margin-bottom: 8px;
+      }
+      .secplus-last-chance-bar__eyebrow {
+        grid-column: 1;
+        grid-row: 1;
+        white-space: nowrap;
+      }
+      .secplus-last-chance-bar__copy {
+        grid-column: 2;
+        grid-row: 1;
+      }
+      .secplus-last-chance-bar__cta {
+        grid-column: 3;
+        grid-row: 1;
+        justify-self: end;
+      }
+      .secplus-last-chance-bar__close {
+        grid-column: 4;
+        grid-row: 1;
+      }
+    }
     .purchase-card .purchase-launch-pill {
       display: inline-block;
       margin-left: 8px;
@@ -1955,7 +2076,8 @@
     }
     .secplus-compare-table tbody th {
       width: 22%;
-      color: #a8c4f0;
+      color: #ffffff;
+      font-weight: 800;
       white-space: nowrap;
     }
     @media (max-width: 640px) {
@@ -1963,11 +2085,13 @@
         white-space: normal;
       }
     }
-    .secplus-compare-table tbody td:not(.secplus-compare-cell-bct) {
-      color: #b8c3d6;
+    .secplus-compare-table tbody td {
+      color: #ffffff;
+      font-weight: 700;
     }
     .secplus-compare-table tbody td.secplus-compare-cell-bct {
-      color: #f4f7ff;
+      color: #ffffff;
+      font-weight: 700;
       background: rgba(91, 33, 182, 0.12);
     }
     .secplus-compare-table tbody tr:last-child th,
@@ -3341,6 +3465,37 @@
       </div>
     </div>
   </div>
+  <div
+    id="secplusLastChanceBar"
+    class="secplus-last-chance-bar"
+    hidden
+    role="region"
+    aria-labelledby="secplusLastChanceTitle"
+    aria-live="polite"
+  >
+    <div class="secplus-last-chance-bar__inner">
+      <button type="button" class="secplus-last-chance-bar__close" data-secplus-last-chance-dismiss aria-label="Dismiss last chance offer">
+        ×
+      </button>
+      <p id="secplusLastChanceTitle" class="secplus-last-chance-bar__eyebrow">Last chance · launch rate</p>
+      <p class="secplus-last-chance-bar__copy">
+        <strong>$17.99</strong> for 30-day SY0-701 full access
+        <span class="secplus-last-chance-bar__was">$24.99</span>
+        · code <strong>ONETIMEDEAL</strong> at checkout
+      </p>
+      <button
+        type="button"
+        class="secplus-last-chance-bar__cta"
+        data-secplus-last-chance-checkout
+        data-bcc-item-id="secplus_portal_30d"
+        data-bcc-item-name="CompTIA Security+ 30-day access"
+        data-bcc-value="17.99"
+        data-bcc-currency="USD"
+      >
+        Claim $17.99 access
+      </button>
+    </div>
+  </div>
   <div id="secplusLeadStickyCta" class="secplus-lead-sticky-cta" hidden aria-hidden="true">
     <a
       id="secplusLeadStickyCtaLink"
@@ -3426,6 +3581,7 @@
   <script src="/COMP_TIA_SEC+/js/secplus-portal-checkout.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-test-sim-storage.js" defer></script>
   <script src="/js/secplus-launch-deal.js" defer></script>
+  <script src="/js/secplus-last-chance-bar.js" defer></script>
   <script src="/js/secplus-lead-capture.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {

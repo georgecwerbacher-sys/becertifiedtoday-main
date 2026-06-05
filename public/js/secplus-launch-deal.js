@@ -241,12 +241,22 @@
     if (link) link.hidden = true;
   }
 
+  function hideLastChanceBarForModal() {
+    var bar = document.getElementById("secplusLastChanceBar");
+    if (!bar) return;
+    bar.classList.remove("secplus-last-chance-bar--visible");
+    bar.hidden = true;
+    bar.setAttribute("hidden", "");
+    document.documentElement.classList.remove("secplus-last-chance-visible");
+  }
+
   function openPopup(options) {
     options = options || {};
     if (!ensureRoot()) return false;
     if (!options.force && !canOfferLaunchDeal()) return false;
     if (root.classList.contains("ccna-sim-promo-root--open")) return true;
 
+    hideLastChanceBarForModal();
     openedAt = Date.now();
     activateDealUi();
     root.removeAttribute("hidden");
