@@ -2,8 +2,8 @@
  * Launch-deal popup on comptia-sec+-home.html.
  * Opens ~5s after #purchase (pricing) is in view so list price is visible first, or after the free
  * 35-minute simulation
- * (via ?launch_deal=1 / session flag). ONETIMEDEAL ($17.99 on $24.99 list) stays active for
- * 1 minute while open. Dismiss, timer expiry, and "no thanks" return to /comptia-sec+-home.html.
+ * (via ?launch_deal=1 / session flag). ONETIMEDEAL ($17.99 on $24.99 list) while the offer is
+ * active. Dismiss and "no thanks" return to /comptia-sec+-home.html.
  */
 (function () {
   "use strict";
@@ -14,13 +14,10 @@
     dismissedKey: "bcc_secplus_launch_deal_dismissed_v2",
     afterSimKey: "bcc_secplus_launch_deal_after_sim",
     launchDealQuery: "launch_deal",
-    durationMs: 60000,
     purchasePopupDelayMs: 5000,
     homePath: "/comptia-sec+-home.html",
   };
 
-  var timerId = null;
-  var openedAt = null;
   var root = null;
   var panel = null;
   var popupShown = false;
@@ -50,23 +47,6 @@
     return !wasDismissed();
   }
 
-  function pad(n) {
-    return n < 10 ? "0" + n : String(n);
-  }
-
-  function formatRemaining(ms) {
-    if (ms < 0) ms = 0;
-    var totalSec = Math.floor(ms / 1000);
-    var m = Math.floor(totalSec / 60);
-    var s = totalSec % 60;
-    return pad(m) + ":" + pad(s);
-  }
-
-  function remainingMs() {
-    if (!openedAt) return 0;
-    return Math.max(0, DEAL.durationMs - (Date.now() - openedAt));
-  }
-
   function formatSavings() {
     var save = Math.round((DEAL.listPrice - DEAL.launchPrice) * 100) / 100;
     return save % 1 === 0 ? String(save.toFixed(0)) : save.toFixed(2);
@@ -75,10 +55,6 @@
   function setHidden(el, hidden) {
     if (!el) return;
     el.hidden = hidden;
-  }
-
-  function countdownEls() {
-    return document.querySelectorAll("[data-secplus-launch-countdown]");
   }
 
   function activateDealUi() {
@@ -101,7 +77,7 @@
     if (stickyNote) stickyNote.hidden = true;
   }
 
-  function updateStickyDealNote(label) {
+  function updateStickyDealNote() {
     var note = document.getElementById("secplusLeadStickyDealNote");
     if (!note || !document.documentElement.classList.contains("secplus-launch-deal-active")) return;
     var link = document.getElementById("secplusLeadStickyCtaLink");
@@ -109,47 +85,11 @@
       link &&
       (link.hasAttribute("data-secplus-portal-30d-checkout") || (link.getAttribute("href") || "").indexOf("#purchase") >= 0);
     if (isUpgrade) {
-      note.textContent = "Launch rate active · " + label + " · save $" + formatSavings();
+      note.textContent = "Launch rate active · save $" + formatSavings();
       note.hidden = false;
     } else {
       note.hidden = true;
     }
-  }
-
-  function tickCountdown() {
-    if (!openedAt) return;
-    var remaining = remainingMs();
-    if (remaining <= 0) {
-      handleTimerExpired();
-      return;
-    }
-    var label = formatRemaining(remaining);
-    countdownEls().forEach(function (el) {
-      el.textContent = label;
-    });
-    updateStickyDealNote(label);
-  }
-
-  function handleTimerExpired() {
-    stopTimer();
-    markDismissed();
-    if (ensureRoot()) {
-      root.classList.remove("ccna-sim-promo-root--open");
-      root.hidden = true;
-      root.setAttribute("hidden", "");
-      root.style.display = "";
-    }
-    document.body.style.overflow = "";
-    deactivateDealUi();
-    window.location.replace(DEAL.homePath);
-  }
-
-  function stopTimer() {
-    if (timerId != null) {
-      clearInterval(timerId);
-      timerId = null;
-    }
-    openedAt = null;
   }
 
   function ensureRoot() {
@@ -174,7 +114,6 @@
     root.setAttribute("aria-hidden", "true");
     root.style.display = "";
     document.body.style.overflow = "";
-    stopTimer();
     deactivateDealUi();
     if (dismissDeal) markDismissed();
   }
@@ -257,16 +196,14 @@
     if (root.classList.contains("ccna-sim-promo-root--open")) return true;
 
     hideLastChanceBarForModal();
-    openedAt = Date.now();
     activateDealUi();
+    updateStickyDealNote();
     root.removeAttribute("hidden");
     root.hidden = false;
     root.setAttribute("aria-hidden", "false");
     root.classList.add("ccna-sim-promo-root--open");
     root.style.display = "grid";
     document.body.style.overflow = "hidden";
-    tickCountdown();
-    timerId = setInterval(tickCountdown, 1000);
     try {
       panel.focus();
     } catch (_) {}
@@ -397,8 +334,8 @@
     var link = document.getElementById("secplusLeadStickyCtaLink");
     if (!link || typeof MutationObserver === "undefined") return;
     var observer = new MutationObserver(function () {
-      if (document.documentElement.classList.contains("secplus-launch-deal-active") && openedAt) {
-        updateStickyDealNote(formatRemaining(remainingMs()));
+      if (document.documentElement.classList.contains("secplus-launch-deal-active")) {
+        updateStickyDealNote();
       }
     });
     observer.observe(link, { attributes: true, attributeFilter: ["href", "data-secplus-portal-30d-checkout"] });
@@ -466,8 +403,8 @@
   };
 
   window.bccRefreshSecplusLaunchDealSticky = function () {
-    if (!document.documentElement.classList.contains("secplus-launch-deal-active") || !openedAt) return;
-    updateStickyDealNote(formatRemaining(remainingMs()));
+    if (!document.documentElement.classList.contains("secplus-launch-deal-active")) return;
+    updateStickyDealNote();
   };
 
   window.bccQueueSecplusLaunchDealAfterFreeSim = function () {

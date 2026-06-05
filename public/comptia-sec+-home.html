@@ -650,48 +650,6 @@
     .secplus-launch-urgency-bar strong {
       color: #fff;
     }
-    .secplus-launch-urgency-bar [data-secplus-launch-countdown] {
-      display: inline-block;
-      margin-left: 6px;
-      padding: 2px 8px;
-      border-radius: 6px;
-      font-variant-numeric: tabular-nums;
-      letter-spacing: 0.06em;
-      background: rgba(0, 0, 0, 0.28);
-      color: #fef9c3;
-    }
-    .secplus-launch-deal-timer {
-      margin: 0 0 14px;
-      padding: 12px 14px;
-      border-radius: 10px;
-      border: 1px solid rgba(250, 204, 21, 0.4);
-      background: rgba(250, 204, 21, 0.08);
-      text-align: center;
-    }
-    .secplus-launch-deal-timer-label {
-      display: block;
-      margin: 0 0 6px;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #fde68a;
-    }
-    .secplus-launch-deal-timer-value {
-      display: block;
-      font-size: clamp(1.6rem, 4vw, 2rem);
-      font-weight: 800;
-      font-variant-numeric: tabular-nums;
-      letter-spacing: 0.08em;
-      color: #fef9c3;
-    }
-    .secplus-launch-deal-timer-hint {
-      display: block;
-      margin: 8px 0 0;
-      font-size: 0.82rem;
-      line-height: 1.45;
-      color: #cbd5e1;
-    }
     #secplusLaunchDealRoot .ccna-sim-promo-panel {
       border-color: rgba(139, 92, 246, 0.55);
     }
@@ -1082,18 +1040,6 @@
       color: #b8c3d6;
       font-size: clamp(0.9rem, 2.1vw, 0.96rem);
       line-height: 1.55;
-    }
-    .purchase-card .purchase-live-countdown {
-      display: block;
-      margin-top: 10px;
-      font-variant-numeric: tabular-nums;
-      font-weight: 800;
-      font-size: clamp(1.05rem, 2.6vw, 1.35rem);
-      color: #e6edf3;
-      letter-spacing: 0.06em;
-    }
-    .purchase-card .purchase-live-countdown.portal-countdown--live {
-      color: #7dcea0;
     }
     .purchase-card .purchase-price {
       margin: 0 0 18px;
@@ -2729,8 +2675,7 @@
 <body>
   <div class="page">
     <p id="secplusLaunchUrgencyBar" class="secplus-launch-urgency-bar" hidden role="status" aria-live="polite">
-      <strong>Launch rate active</strong> · 30-day access <strong>$17.99</strong> (list $24.99) ·
-      <span data-secplus-launch-countdown>01:00</span> remaining
+      <strong>Launch rate active</strong> · 30-day access <strong>$17.99</strong> (list $24.99) · code <strong>ONETIMEDEAL</strong>
     </p>
     <header>
       <a class="brand" href="/index.html" aria-label="Be Certified Today home">
@@ -2798,9 +2743,7 @@
                     <p class="purchase-live-heading">Launch rate · $7 off with ONETIMEDEAL</p>
                     <p class="purchase-live-sub">
                       Lock in <strong>$17.99</strong> with code <strong>ONETIMEDEAL</strong> at checkout ($7 off $24.99 list).
-                      This rate is active for <strong>1 minute</strong> while the launch popup is open.
                     </p>
-                    <span class="purchase-live-countdown" data-secplus-launch-countdown>01:00</span>
                   </div>
                   <div class="purchase-track-head">
                     <p class="purchase-track-title" id="purchase-fold-title">
@@ -3430,11 +3373,9 @@
         <span class="ccna-sim-promo-price-now">$17.99</span>
         <span class="ccna-sim-promo-limited-pill">$7 off · ONETIMEDEAL</span>
       </p>
-      <div class="secplus-launch-deal-timer" role="status" aria-live="polite">
-        <span class="secplus-launch-deal-timer-label">Time remaining</span>
-        <span class="secplus-launch-deal-timer-value" data-secplus-launch-countdown>01:00</span>
-        <span class="secplus-launch-deal-timer-hint">One-minute launch deal. When the timer hits 0:00, this offer closes and you return to the Security+ home page. Code ONETIMEDEAL pre-fills at checkout.</span>
-      </div>
+      <p class="ccna-sim-promo-hint">
+        Use code <strong>ONETIMEDEAL</strong> at checkout for $7 off the $24.99 list price ($17.99 one-time).
+      </p>
       <p class="ccna-sim-promo-lead">
         You get <strong>800+ SY0-701 questions</strong>, PBQ simulations, adaptive review, and the full
         <strong>90-minute timed exam</strong> in your browser. One-time purchase. No subscription.
