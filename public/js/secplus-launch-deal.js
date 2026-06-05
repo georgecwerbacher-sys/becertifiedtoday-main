@@ -1,7 +1,7 @@
 /**
- * Launch-deal popup for Security+ ad traffic on comptia-sec+-home.html.
- * Opens when the user reaches #purchase (pricing). Launch pricing ($17.99 with ONETIMEDEAL
- * on $24.99 list) stays active only while the popup is open. Closing ends the offer for the session.
+ * Launch-deal popup on comptia-sec+-home.html.
+ * Opens when the user reaches #purchase (pricing). ONETIMEDEAL ($17.99 on $24.99 list)
+ * stays active only while the popup is open. Closing ends the offer for this session.
  */
 (function () {
   "use strict";
@@ -9,43 +9,19 @@
   var DEAL = {
     launchPrice: 17.99,
     listPrice: 24.99,
-    dismissedKey: "bcc_secplus_launch_deal_dismissed_v1",
+    dismissedKey: "bcc_secplus_launch_deal_dismissed_v2",
   };
 
   var timerId = null;
   var openedAt = null;
   var root = null;
   var panel = null;
-  var purchaseScrollTriggered = false;
+  var popupShown = false;
   var purchaseObserver = null;
-  var scrollListenerBound = false;
+  var wired = false;
 
   function isSecplusHome() {
     return (location.pathname || "").indexOf("comptia-sec+-home") >= 0;
-  }
-
-  function hasTrackingParamsInUrl() {
-    try {
-      var qs = new URLSearchParams(window.location.search);
-      return ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "gclid"].some(function (key) {
-        return !!qs.get(key);
-      });
-    } catch (_) {
-      return false;
-    }
-  }
-
-  function isNewAdTraffic() {
-    if (hasTrackingParamsInUrl()) return true;
-    if (typeof window.bccShouldScrollSecplusLeadCapture === "function" && window.bccShouldScrollSecplusLeadCapture()) {
-      return true;
-    }
-    var attrs = typeof window.bccGetCampaignAttribution === "function" ? window.bccGetCampaignAttribution() || {} : {};
-    if (attrs.gclid) return true;
-    if (/cpc|ppc|paid/i.test(attrs.utm_medium || "")) return true;
-    if (/secplus/i.test(attrs.utm_campaign || "")) return true;
-    if (/google/i.test(attrs.utm_source || "") && (attrs.utm_medium || attrs.utm_campaign)) return true;
-    return false;
   }
 
   function wasDismissed() {
@@ -60,6 +36,10 @@
     try {
       sessionStorage.setItem(DEAL.dismissedKey, "1");
     } catch (_) {}
+  }
+
+  function canOfferLaunchDeal() {
+    return !wasDismissed();
   }
 
   function pad(n) {
@@ -90,7 +70,6 @@
 
   function activateDealUi() {
     document.documentElement.classList.add("secplus-launch-deal-active");
-
     setHidden(document.getElementById("secplusLaunchUrgencyBar"), false);
     setHidden(document.getElementById("secplusLaunchDealCallout"), false);
     setHidden(document.getElementById("secplusPurchasePriceDeal"), false);
@@ -100,13 +79,11 @@
 
   function deactivateDealUi() {
     document.documentElement.classList.remove("secplus-launch-deal-active");
-
     setHidden(document.getElementById("secplusLaunchUrgencyBar"), true);
     setHidden(document.getElementById("secplusLaunchDealCallout"), true);
     setHidden(document.getElementById("secplusPurchasePriceDeal"), true);
     setHidden(document.getElementById("secplusPurchasePriceStandard"), false);
     setHidden(document.getElementById("secplusPurchaseLaunchPill"), true);
-
     var stickyNote = document.getElementById("secplusLeadStickyDealNote");
     if (stickyNote) stickyNote.hidden = true;
   }
@@ -143,35 +120,73 @@
     openedAt = null;
   }
 
+  function ensureRoot() {
+    if (!root) root = document.getElementById("secplusLaunchDealRoot");
+    if (!panel && root) panel = root.querySelector(".ccna-sim-promo-panel");
+    return root && panel;
+  }
+
   function closePopup(dismissDeal) {
-    if (!root) return;
+    if (!ensureRoot()) return;
     root.classList.remove("ccna-sim-promo-root--open");
     root.hidden = true;
+    root.setAttribute("hidden", "");
     root.setAttribute("aria-hidden", "true");
+    root.style.display = "";
+    document.body.style.overflow = "";
     stopTimer();
     deactivateDealUi();
     if (dismissDeal) markDismissed();
   }
 
   function openPopup() {
-    if (!root || !panel) return;
+    if (!ensureRoot() || !canOfferLaunchDeal()) return false;
+    if (root.classList.contains("ccna-sim-promo-root--open")) return true;
+
     openedAt = Date.now();
     activateDealUi();
-    root.hidden = false;
     root.removeAttribute("hidden");
+    root.hidden = false;
     root.setAttribute("aria-hidden", "false");
     root.classList.add("ccna-sim-promo-root--open");
+    root.style.display = "grid";
+    document.body.style.overflow = "hidden";
     tickCountdown();
     timerId = setInterval(tickCountdown, 1000);
     try {
       panel.focus();
     } catch (_) {}
+    return true;
+  }
+
+  function tryOpenPopupAtPurchase() {
+    if (popupShown || !canOfferLaunchDeal()) return;
+    if (!isPurchaseSectionInView()) return;
+    if (openPopup()) {
+      popupShown = true;
+      if (purchaseObserver) {
+        purchaseObserver.disconnect();
+        purchaseObserver = null;
+      }
+    }
+  }
+
+  function isPurchaseSectionInView() {
+    var purchase = document.getElementById("purchase");
+    if (!purchase) return false;
+    var rect = purchase.getBoundingClientRect();
+    var vh = window.innerHeight || document.documentElement.clientHeight || 0;
+    if (vh <= 0 || rect.height <= 0) return false;
+    var visiblePx = Math.min(rect.bottom, vh) - Math.max(rect.top, 0);
+    return visiblePx >= 48;
+  }
+
+  function checkPurchaseInView() {
+    tryOpenPopupAtPurchase();
   }
 
   function wirePopup() {
-    root = document.getElementById("secplusLaunchDealRoot");
-    panel = root && root.querySelector(".ccna-sim-promo-panel");
-    if (!root || !panel) return;
+    if (!ensureRoot()) return;
 
     root.querySelectorAll("[data-secplus-launch-deal-dismiss]").forEach(function (el) {
       el.addEventListener("click", function (ev) {
@@ -201,7 +216,7 @@
     }
 
     document.addEventListener("keydown", function (ev) {
-      if (ev.key !== "Escape" || root.hidden || !root.classList.contains("ccna-sim-promo-root--open")) return;
+      if (ev.key !== "Escape" || !root.classList.contains("ccna-sim-promo-root--open")) return;
       closePopup(true);
     });
   }
@@ -217,35 +232,6 @@
     observer.observe(link, { attributes: true, attributeFilter: ["href", "data-secplus-portal-30d-checkout"] });
   }
 
-  function canOfferLaunchDeal() {
-    return isNewAdTraffic() && !wasDismissed();
-  }
-
-  function tryOpenPopupAtPurchase() {
-    if (purchaseScrollTriggered || !canOfferLaunchDeal()) return;
-    if (root && !root.hidden && root.classList.contains("ccna-sim-promo-root--open")) return;
-    purchaseScrollTriggered = true;
-    if (purchaseObserver) {
-      purchaseObserver.disconnect();
-      purchaseObserver = null;
-    }
-    openPopup();
-  }
-
-  function isPurchaseSectionInView() {
-    var purchase = document.getElementById("purchase");
-    if (!purchase) return false;
-    var rect = purchase.getBoundingClientRect();
-    var vh = window.innerHeight || document.documentElement.clientHeight || 0;
-    if (vh <= 0 || rect.height <= 0) return false;
-    var visiblePx = Math.min(rect.bottom, vh) - Math.max(rect.top, 0);
-    return visiblePx >= Math.min(80, rect.height * 0.12);
-  }
-
-  function checkPurchaseInView() {
-    if (isPurchaseSectionInView()) tryOpenPopupAtPurchase();
-  }
-
   function wirePurchaseScrollTrigger() {
     var purchase = document.getElementById("purchase");
     if (!purchase) return;
@@ -257,44 +243,49 @@
             if (entry.isIntersecting) tryOpenPopupAtPurchase();
           });
         },
-        { root: null, rootMargin: "0px 0px -5% 0px", threshold: [0, 0.08, 0.15] }
+        { root: null, rootMargin: "0px", threshold: [0, 0.1, 0.25] }
       );
       purchaseObserver.observe(purchase);
     }
 
-    if (!scrollListenerBound) {
-      scrollListenerBound = true;
-      window.addEventListener("scroll", checkPurchaseInView, { passive: true });
-      window.addEventListener("resize", checkPurchaseInView, { passive: true });
-    }
+    window.addEventListener("scroll", checkPurchaseInView, { passive: true });
+    window.addEventListener("resize", checkPurchaseInView, { passive: true });
 
     document.addEventListener(
       "click",
       function (ev) {
-        var target = ev.target && ev.target.closest ? ev.target.closest("a[href*='#purchase'], [data-secplus-portal-30d-checkout]") : null;
+        var target =
+          ev.target && ev.target.closest
+            ? ev.target.closest("a[href*='#purchase'], [data-secplus-portal-30d-checkout]")
+            : null;
         if (!target) return;
-        window.setTimeout(checkPurchaseInView, 120);
-        window.setTimeout(checkPurchaseInView, 480);
+        window.setTimeout(checkPurchaseInView, 100);
+        window.setTimeout(checkPurchaseInView, 400);
+        window.setTimeout(checkPurchaseInView, 900);
       },
       true
     );
 
-    window.addEventListener("hashchange", function () {
-      if (location.hash === "#purchase") checkPurchaseInView();
-    });
+    window.addEventListener("hashchange", checkPurchaseInView);
 
-    window.requestAnimationFrame(function () {
-      checkPurchaseInView();
-      window.setTimeout(checkPurchaseInView, 300);
-    });
+    window.requestAnimationFrame(checkPurchaseInView);
+    window.setTimeout(checkPurchaseInView, 250);
+    window.setTimeout(checkPurchaseInView, 800);
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
-    if (!isSecplusHome()) return;
+  function init() {
+    if (!isSecplusHome() || wired) return;
+    wired = true;
     wirePopup();
     wireStickyObserver();
     wirePurchaseScrollTrigger();
-  });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 
   window.bccSecplusLaunchDealActive = function () {
     return document.documentElement.classList.contains("secplus-launch-deal-active");
