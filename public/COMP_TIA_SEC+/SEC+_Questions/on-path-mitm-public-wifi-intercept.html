@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Approve vs process (separation of duties)</title>
+  <title>Security+ — On-path attack (public Wi-Fi)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/fingerprint-scan-something-you-are-factor.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/ddos-botnet-flood-web-server-unavailable.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/tacacs-plus-aaa-encrypts-entire-packet-body.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/dns-poisoning-banking-a-record-redirect.html">Next</a>
       </div>
     </nav>
-    <h1>An organization requires that no single employee can both approve and process a financial transaction. Which security principle is being implemented?</h1>
+    <h1>An attacker positions themselves between a client and a server on a public Wi-Fi network, intercepting and potentially modifying communications in real time. What type of attack is this?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q824" value="A" />A. Least privilege</label>
-    <label class="choice"><input type="radio" name="secplus_q824" value="B" />B. Defense in depth</label>
-    <label class="choice"><input type="radio" name="secplus_q824" value="C" />C. Separation of duties</label>
-    <label class="choice"><input type="radio" name="secplus_q824" value="D" />D. Dual control</label>
+    <label class="choice"><input type="radio" name="secplus_q854" value="A" />A. Replay attack</label>
+    <label class="choice"><input type="radio" name="secplus_q854" value="B" />B. On-path (man-in-the-middle) attack</label>
+    <label class="choice"><input type="radio" name="secplus_q854" value="C" />C. Session hijacking</label>
+    <label class="choice"><input type="radio" name="secplus_q854" value="D" />D. Evil twin attack</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -175,14 +175,14 @@
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 Separation of duties divides conflicting responsibilities among different people so one individual cannot complete a sensitive process alone. Requiring different employees to approve and process financial transactions reduces fraud and error. Least privilege limits access to only what a role needs, not necessarily splitting approval from processing. Defense in depth layers multiple controls at different points. Dual control requires two authorized people to act together on a single action, such as two keys for a safe, rather than assigning separate conflicting tasks to different roles.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 An on-path (man-in-the-middle) attack places the attacker between two communicating parties so traffic passes through them, allowing interception and possible modification in real time. A replay attack reuses previously captured authentication data later rather than sitting inline during the live session. Session hijacking steals or reuses a valid session token to impersonate a user after authentication. An evil twin attack sets up a rogue wireless access point that mimics a legitimate network; it may enable on-path attacks but the stem describes inline interception between client and server, not merely deploying a fake AP.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q824"]:checked');
+        var sel = document.querySelector('input[name="secplus_q854"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -199,7 +199,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q824"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="secplus_q854"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Approve vs process (separation of duties)</title>
+  <title>Security+ — TOCTOU (permission check bypass)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/fingerprint-scan-something-you-are-factor.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/password-spraying-common-passwords-many-accounts.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/tacacs-plus-aaa-encrypts-entire-packet-body.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/dmz-public-web-servers-between-firewalls.html">Next</a>
       </div>
     </nav>
-    <h1>An organization requires that no single employee can both approve and process a financial transaction. Which security principle is being implemented?</h1>
+    <h1>An attacker exploits a race condition in an application that checks a user&#x27;s permissions and then performs a privileged action in two separate steps. By modifying data between the check and the action, the attacker bypasses the security control. What is this specific type of vulnerability called?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q824" value="A" />A. Least privilege</label>
-    <label class="choice"><input type="radio" name="secplus_q824" value="B" />B. Defense in depth</label>
-    <label class="choice"><input type="radio" name="secplus_q824" value="C" />C. Separation of duties</label>
-    <label class="choice"><input type="radio" name="secplus_q824" value="D" />D. Dual control</label>
+    <label class="choice"><input type="radio" name="secplus_q870" value="A" />A. Buffer overflow</label>
+    <label class="choice"><input type="radio" name="secplus_q870" value="B" />B. Time-of-check to time-of-use (TOCTOU)</label>
+    <label class="choice"><input type="radio" name="secplus_q870" value="C" />C. Integer overflow</label>
+    <label class="choice"><input type="radio" name="secplus_q870" value="D" />D. Use-after-free</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -175,14 +175,14 @@
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 Separation of duties divides conflicting responsibilities among different people so one individual cannot complete a sensitive process alone. Requiring different employees to approve and process financial transactions reduces fraud and error. Least privilege limits access to only what a role needs, not necessarily splitting approval from processing. Defense in depth layers multiple controls at different points. Dual control requires two authorized people to act together on a single action, such as two keys for a safe, rather than assigning separate conflicting tasks to different roles.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 Time-of-check to time-of-use (TOCTOU) occurs when a system validates a condition at one moment but uses stale data when it later performs the privileged action, allowing an attacker to change state between the check and the use. A buffer overflow writes beyond allocated memory bounds. An integer overflow results from arithmetic exceeding a variable's maximum value. Use-after-free accesses memory after it has been released, which is a different memory-management flaw than a check-then-act timing gap.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q824"]:checked');
+        var sel = document.querySelector('input[name="secplus_q870"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -199,7 +199,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q824"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="secplus_q870"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

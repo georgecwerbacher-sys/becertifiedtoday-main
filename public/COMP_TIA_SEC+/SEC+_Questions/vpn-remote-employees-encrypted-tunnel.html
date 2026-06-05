@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Approve vs process (separation of duties)</title>
+  <title>Security+ — VPN (remote encrypted tunnel)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/fingerprint-scan-something-you-are-factor.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/load-balancer-distribute-web-traffic-backends.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/tacacs-plus-aaa-encrypts-entire-packet-body.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/microsegmentation-lateral-movement-workload-policies.html">Next</a>
       </div>
     </nav>
-    <h1>An organization requires that no single employee can both approve and process a financial transaction. Which security principle is being implemented?</h1>
+    <h1>A company&#x27;s remote employees connect to the corporate network through an encrypted tunnel over the internet. Which technology is being used?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q824" value="A" />A. Least privilege</label>
-    <label class="choice"><input type="radio" name="secplus_q824" value="B" />B. Defense in depth</label>
-    <label class="choice"><input type="radio" name="secplus_q824" value="C" />C. Separation of duties</label>
-    <label class="choice"><input type="radio" name="secplus_q824" value="D" />D. Dual control</label>
+    <label class="choice"><input type="radio" name="secplus_q879" value="A" />A. VLAN</label>
+    <label class="choice"><input type="radio" name="secplus_q879" value="B" />B. VPN (Virtual Private Network)</label>
+    <label class="choice"><input type="radio" name="secplus_q879" value="C" />C. DMZ</label>
+    <label class="choice"><input type="radio" name="secplus_q879" value="D" />D. NAC</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -175,14 +175,14 @@
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 Separation of duties divides conflicting responsibilities among different people so one individual cannot complete a sensitive process alone. Requiring different employees to approve and process financial transactions reduces fraud and error. Least privilege limits access to only what a role needs, not necessarily splitting approval from processing. Defense in depth layers multiple controls at different points. Dual control requires two authorized people to act together on a single action, such as two keys for a safe, rather than assigning separate conflicting tasks to different roles.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 A VPN (Virtual Private Network) creates an encrypted tunnel over a public network such as the internet so remote users can securely reach corporate resources. A VLAN segments traffic logically on a local network and does not by itself provide remote encrypted access over the internet. A DMZ is a perimeter network segment for internet-facing services, not remote employee connectivity. NAC (Network Access Control) checks device posture and enforces admission policies but is not the encrypted tunnel technology described here.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q824"]:checked');
+        var sel = document.querySelector('input[name="secplus_q879"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -199,7 +199,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q824"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="secplus_q879"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

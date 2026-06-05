@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Approve vs process (separation of duties)</title>
+  <title>Security+ — SHA-256 (file integrity fingerprint)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/fingerprint-scan-something-you-are-factor.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/rsa-ecc-asymmetric-encryption.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/tacacs-plus-aaa-encrypts-entire-packet-body.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/software-release-digital-signature-non-repudiation.html">Next</a>
       </div>
     </nav>
-    <h1>An organization requires that no single employee can both approve and process a financial transaction. Which security principle is being implemented?</h1>
+    <h1>A security architect needs to verify that a large file has not been modified during download. Which cryptographic function should they use to generate a fixed-length fingerprint of the file?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q824" value="A" />A. Least privilege</label>
-    <label class="choice"><input type="radio" name="secplus_q824" value="B" />B. Defense in depth</label>
-    <label class="choice"><input type="radio" name="secplus_q824" value="C" />C. Separation of duties</label>
-    <label class="choice"><input type="radio" name="secplus_q824" value="D" />D. Dual control</label>
+    <label class="choice"><input type="radio" name="secplus_q892" value="A" />A. AES encryption</label>
+    <label class="choice"><input type="radio" name="secplus_q892" value="B" />B. RSA digital signature</label>
+    <label class="choice"><input type="radio" name="secplus_q892" value="C" />C. SHA-256 hash</label>
+    <label class="choice"><input type="radio" name="secplus_q892" value="D" />D. Diffie-Hellman key exchange</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -176,13 +176,13 @@
   <script>
     (function () {
       var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 Separation of duties divides conflicting responsibilities among different people so one individual cannot complete a sensitive process alone. Requiring different employees to approve and process financial transactions reduces fraud and error. Least privilege limits access to only what a role needs, not necessarily splitting approval from processing. Defense in depth layers multiple controls at different points. Dual control requires two authorized people to act together on a single action, such as two keys for a safe, rather than assigning separate conflicting tasks to different roles.";
+      var CORRECT_MSG = "Correct. C \u2014 SHA-256 is a cryptographic hash function that produces a fixed-length digest of file contents; comparing the computed hash to a trusted reference value detects accidental or malicious modification. AES encrypts data for confidentiality but does not by itself provide a standard integrity fingerprint for verification. RSA digital signatures prove authenticity and integrity when signed by a trusted key, but the stem asks for generating a file fingerprint, which hashing provides directly. Diffie-Hellman establishes shared secrets for key exchange and does not produce file integrity digests.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q824"]:checked');
+        var sel = document.querySelector('input[name="secplus_q892"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -199,7 +199,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q824"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="secplus_q892"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

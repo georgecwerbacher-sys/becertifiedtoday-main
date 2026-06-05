@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Approve vs process (separation of duties)</title>
+  <title>Security+ — Code signing (digital signatures)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/fingerprint-scan-something-you-are-factor.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/sha256-hash-file-integrity-fingerprint.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/tacacs-plus-aaa-encrypts-entire-packet-body.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/diffie-hellman-shared-secret-insecure-channel.html">Next</a>
       </div>
     </nav>
-    <h1>An organization requires that no single employee can both approve and process a financial transaction. Which security principle is being implemented?</h1>
+    <h1>A developer signs a software release with their private key. Users verify the signature using the developer&#x27;s public key. Which cryptographic concepts are being applied?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q824" value="A" />A. Least privilege</label>
-    <label class="choice"><input type="radio" name="secplus_q824" value="B" />B. Defense in depth</label>
-    <label class="choice"><input type="radio" name="secplus_q824" value="C" />C. Separation of duties</label>
-    <label class="choice"><input type="radio" name="secplus_q824" value="D" />D. Dual control</label>
+    <label class="choice"><input type="radio" name="secplus_q893" value="A" />A. Symmetric encryption and hashing</label>
+    <label class="choice"><input type="radio" name="secplus_q893" value="B" />B. Digital signatures and non-repudiation</label>
+    <label class="choice"><input type="radio" name="secplus_q893" value="C" />C. Steganography and obfuscation</label>
+    <label class="choice"><input type="radio" name="secplus_q893" value="D" />D. Key exchange and session management</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -175,14 +175,14 @@
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 Separation of duties divides conflicting responsibilities among different people so one individual cannot complete a sensitive process alone. Requiring different employees to approve and process financial transactions reduces fraud and error. Least privilege limits access to only what a role needs, not necessarily splitting approval from processing. Defense in depth layers multiple controls at different points. Dual control requires two authorized people to act together on a single action, such as two keys for a safe, rather than assigning separate conflicting tasks to different roles.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 Digital signatures use the signer's private key to prove authenticity and integrity of the release; verification with the public key also supports non-repudiation because only the holder of the private key could have created the signature. Symmetric encryption and hashing alone do not establish publisher identity with a key pair in this model. Steganography hides data inside other content and obfuscation makes code harder to read; neither describes signed software distribution. Key exchange and session management establish secure communications channels, not publisher attestation of a release.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q824"]:checked');
+        var sel = document.querySelector('input[name="secplus_q893"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -199,7 +199,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q824"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="secplus_q893"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

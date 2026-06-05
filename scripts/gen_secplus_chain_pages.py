@@ -21762,6 +21762,2513 @@ CHAIN: list[dict] = [
         ],
         "objectives": ["1.2", "5.5"],
     },
+    {
+        "slug": "tacacs-plus-aaa-encrypts-entire-packet-body",
+        "title": "Security+ — TACACS+ (AAA, full packet encryption)",
+        "stem": (
+            "A security administrator is evaluating AAA frameworks for network device management. Which protocol "
+            "provides separate authentication, authorization, and accounting processes and encrypts the ENTIRE "
+            "packet body?"
+        ),
+        "name": "secplus_q825",
+        "correct": "B",
+        "explain": (
+            "Correct. B — TACACS+ treats authentication, authorization, and accounting as separate processes and "
+            "encrypts the entire packet body between the client and server, which suits granular device "
+            "administration and command accounting. RADIUS combines authentication and authorization in the "
+            "access-request and access-accept exchange and encrypts only the password attribute, not the full "
+            "packet. Kerberos is a ticket-based single sign-on protocol for accessing services, not the typical "
+            "AAA model for network device management described here. LDAP is a directory access protocol for "
+            "querying identity data and is not an AAA protocol that encrypts administrative session payloads."
+        ),
+        "choices": [
+            "RADIUS",
+            "TACACS+",
+            "Kerberos",
+            "LDAP",
+        ],
+        "objectives": ["1.2", "4.5"],
+    },
+    {
+        "slug": "zero-trust-continuous-adaptive-risk-device-health",
+        "title": "Security+ — Zero Trust (continuous adaptive risk)",
+        "stem": (
+            "An enterprise deploys a zero trust solution that evaluates device health, user identity, and "
+            "behavioral analytics before granting access to each resource. A user on a corporate laptop in the "
+            "office is denied access to a sensitive database because the laptop's antivirus definitions are "
+            "outdated. What zero trust concept does this demonstrate?"
+        ),
+        "name": "secplus_q826",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Continuous adaptive risk assessment re-evaluates identity, device posture, and "
+            "behavior signals for each access attempt and adjusts the decision as conditions change. Outdated "
+            "antivirus definitions lower device health and can deny access even for an authenticated user on a "
+            "corporate laptop inside the office. Microsegmentation isolates workloads into smaller network zones "
+            "but does not by itself describe dynamic risk scoring from posture and behavior. A software-defined "
+            "perimeter hides infrastructure and brokers connections but is not the name for ongoing multi-signal "
+            "risk evaluation. Implicit trust zones assume trusted internal networks, which zero trust explicitly "
+            "rejects."
+        ),
+        "choices": [
+            "Microsegmentation",
+            "Continuous adaptive risk assessment",
+            "Software-defined perimeter",
+            "Implicit trust zones",
+        ],
+        "objectives": ["1.2", "3.1"],
+    },
+    {
+        "slug": "apt-defense-contractor-nation-state-actor",
+        "title": "Security+ — APT (nation-state actor)",
+        "stem": (
+            "A well-funded group of attackers targets a defense contractor's intellectual property using advanced "
+            "persistent threats (APTs) over several months. The attack shows sophisticated tradecraft and is "
+            "believed to be sponsored by a foreign government. What type of threat actor is this?"
+        ),
+        "name": "secplus_q827",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Nation-state actors are government-backed groups with long-term funding, advanced "
+            "capabilities, and strategic goals such as stealing defense or industrial intellectual property through "
+            "multi-month APT campaigns. Hacktivists are motivated by ideology or publicity, not sustained "
+            "state-sponsored espionage against defense contractors. Script kiddies use prebuilt tools with limited "
+            "skill and cannot sustain sophisticated APT tradecraft over months. Insider threats come from "
+            "employees or trusted insiders with legitimate access, not an external group described as "
+            "foreign-government sponsored."
+        ),
+        "choices": [
+            "Hacktivist",
+            "Script kiddie",
+            "Nation-state actor",
+            "Insider threat",
+        ],
+        "objectives": ["2.1"],
+    },
+    {
+        "slug": "hacktivist-website-defacement-environmental-protest",
+        "title": "Security+ — Hacktivist (website defacement)",
+        "stem": (
+            "A group defaces a major corporation's website to protest its environmental policies and posts the "
+            "company's internal communications online. What type of threat actor is MOST likely responsible?"
+        ),
+        "name": "secplus_q828",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Hacktivists are motivated by ideological or political causes and often deface websites "
+            "or leak internal data to publicize a protest and pressure the target. Organized crime groups "
+            "primarily pursue financial gain through fraud, ransomware, or theft rather than environmental "
+            "policy protests. Nation-state actors focus on espionage, disruption, or strategic advantage for a "
+            "government, not public activism over corporate environmental policies. Insider threats are trusted "
+            "employees or contractors with legitimate access; the stem describes an external group acting to "
+            "protest and expose communications."
+        ),
+        "choices": [
+            "Organized crime group",
+            "Hacktivist",
+            "Nation-state actor",
+            "Insider threat",
+        ],
+        "objectives": ["2.1", "2.4"],
+    },
+    {
+        "slug": "script-kiddie-free-exploit-tool-teenager",
+        "title": "Security+ — Script kiddie (free exploit tool)",
+        "stem": (
+            "A teenager uses a freely available exploit tool downloaded from the internet to compromise a small "
+            "business website without understanding how the exploit works. What type of threat actor is this?"
+        ),
+        "name": "secplus_q829",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Script kiddies (unskilled attackers) run prebuilt tools and public exploits without "
+            "deep technical understanding, often targeting opportunistic victims such as small business websites. "
+            "Advanced persistent threats are sophisticated, long-running campaigns backed by skilled operators, "
+            "not a teenager using a downloaded tool once. Insider threats are trusted insiders who abuse "
+            "legitimate access from inside the organization. Organized crime groups operate for financial gain "
+            "with structured criminal activity, not typical lone teenagers using free internet exploits."
+        ),
+        "choices": [
+            "Advanced persistent threat",
+            "Insider threat",
+            "Script kiddie",
+            "Organized crime",
+        ],
+        "objectives": ["2.1"],
+    },
+    {
+        "slug": "insider-threat-logic-bomb-disgruntled-administrator",
+        "title": "Security+ — Insider threat (logic bomb)",
+        "stem": (
+            "A disgruntled system administrator who was recently passed over for a promotion installs a logic bomb "
+            "on the company's server before resigning. What type of threat actor does this represent?"
+        ),
+        "name": "secplus_q830",
+        "correct": "C",
+        "explain": (
+            "Correct. C — An insider threat is a trusted employee or contractor who abuses legitimate access to "
+            "harm the organization. A disgruntled system administrator with server access who plants a logic bomb "
+            "before leaving fits that profile. Nation-state actors are government-backed external groups pursuing "
+            "strategic espionage or disruption, not personal retaliation over a missed promotion. Hacktivists act "
+            "on ideological causes and typically seek public protest rather than covert sabotage by a departing "
+            "administrator. Organized crime groups pursue financial gain through structured criminal operations, "
+            "not personal revenge by an internal IT employee."
+        ),
+        "choices": [
+            "Nation-state actor",
+            "Hacktivist",
+            "Insider threat",
+            "Organized crime",
+        ],
+        "objectives": ["2.1", "2.2"],
+    },
+    {
+        "slug": "organized-crime-raas-affiliate-platform",
+        "title": "Security+ — Organized crime (RaaS affiliates)",
+        "stem": (
+            "A cybercriminal group operates a ransomware-as-a-service (RaaS) platform, recruiting affiliates to "
+            "deploy ransomware and splitting the profits. What type of threat actor classification BEST describes "
+            "this group?"
+        ),
+        "name": "secplus_q831",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Organized crime groups run structured criminal enterprises for profit. A RaaS platform "
+            "that recruits affiliates and shares ransom payments is a commercial cybercriminal operation typical "
+            "of organized crime. Nation-state actors pursue government strategic goals such as espionage or "
+            "disruption, not profit-sharing affiliate ransomware businesses. Hacktivists are motivated by ideology "
+            "or publicity rather than scalable criminal revenue models. Script kiddies lack the resources and "
+            "organization to operate affiliate platforms and manage profit splits across a criminal network."
+        ),
+        "choices": [
+            "Nation-state actor",
+            "Hacktivist",
+            "Script kiddie",
+            "Organized crime",
+        ],
+        "objectives": ["2.1", "2.4"],
+    },
+    {
+        "slug": "xss-malicious-script-url-html-output",
+        "title": "Security+ — XSS (unsanitized HTML output)",
+        "stem": (
+            "A penetration tester discovers that a web application includes user-supplied input directly in HTML "
+            "output without sanitization. The tester crafts a URL containing a malicious script that executes in "
+            "the victim's browser when clicked. What type of attack is this?"
+        ),
+        "name": "secplus_q832",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Cross-site scripting (XSS) occurs when untrusted input is reflected or stored in HTML "
+            "and executed as script in a victim's browser. A crafted URL with malicious script that runs when "
+            "clicked is a classic reflected XSS scenario. SQL injection manipulates backend database queries "
+            "through untrusted input, not script execution in the browser. Cross-site request forgery (CSRF) "
+            "tricks an authenticated user's browser into submitting unwanted requests to a site where they are "
+            "already logged in; it does not require injecting script into HTML output. Server-side request "
+            "forgery (SSRF) makes the server send requests to internal or external resources, not execute script "
+            "in the victim's browser."
+        ),
+        "choices": [
+            "SQL injection",
+            "Cross-site scripting (XSS)",
+            "Cross-site request forgery (CSRF)",
+            "Server-side request forgery (SSRF)",
+        ],
+        "objectives": ["2.3", "2.5"],
+    },
+    {
+        "slug": "sqli-or-1-equals-1-login-form",
+        "title": "Security+ — SQL injection (OR 1=1 login bypass)",
+        "stem": (
+            "An attacker enters the following into a login form's username field: ' OR 1=1 --. The application "
+            "then returns all user records from the database. What type of vulnerability has been exploited?"
+        ),
+        "name": "secplus_q833",
+        "correct": "C",
+        "explain": (
+            "Correct. C — SQL injection sends crafted input into a database query. The classic ' OR 1=1 -- "
+            "payload closes the string, adds a always-true condition, and comments out the rest of the query, "
+            "which can bypass authentication or return every row. Cross-site scripting (XSS) injects script into "
+            "HTML viewed in a browser, not SQL logic in a backend database. Buffer overflow overwrites memory "
+            "by sending more data than a buffer can hold; it is not defined by SQL tautology strings in a login "
+            "field. Directory traversal uses path sequences such as ../ to read files outside an intended "
+            "directory, not manipulate database queries."
+        ),
+        "choices": [
+            "Cross-site scripting (XSS)",
+            "Buffer overflow",
+            "SQL injection",
+            "Directory traversal",
+        ],
+        "objectives": ["2.3", "2.5"],
+    },
+    {
+        "slug": "csrf-hidden-form-banking-fund-transfer",
+        "title": "Security+ — CSRF (hidden fund transfer form)",
+        "stem": (
+            "A user is logged into their banking website. They visit a malicious site that contains a hidden form "
+            "which automatically submits a fund transfer request to the banking site using the user's active "
+            "session. What type of attack is this?"
+        ),
+        "name": "secplus_q834",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Cross-site request forgery (CSRF) tricks a victim's browser into sending an authenticated "
+            "request to a site where they are already logged in. A hidden auto-submitting form on a malicious page "
+            "can initiate a fund transfer using the user's active banking session cookies. Cross-site scripting "
+            "(XSS) injects script into pages to run in the browser; CSRF abuses an existing session without "
+            "requiring script injection into the bank's site. Session hijacking steals or reuses a session token "
+            "to impersonate the user, rather than forging a request from the victim's own browser while they "
+            "remain logged in. Clickjacking overlays invisible UI elements to trick the user into clicking "
+            "something; the stem describes an automatic hidden form submission, not deceptive clicks."
+        ),
+        "choices": [
+            "Cross-site scripting (XSS)",
+            "Cross-site request forgery (CSRF)",
+            "Session hijacking",
+            "Clickjacking",
+        ],
+        "objectives": ["2.3", "2.5"],
+    },
+    {
+        "slug": "buffer-overflow-stack-return-address-c-program",
+        "title": "Security+ — Buffer overflow (stack return address)",
+        "stem": (
+            "An attacker sends a specially crafted input to a C program that writes data beyond the allocated "
+            "memory space, overwriting the return address on the stack. What type of attack is this?"
+        ),
+        "name": "secplus_q835",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A buffer overflow writes more data than a fixed memory buffer can hold, corrupting "
+            "adjacent memory such as the stack return address and potentially redirecting program execution. "
+            "SQL injection manipulates database queries through untrusted application input, not memory on the "
+            "stack of a C program. A race condition exploits timing between concurrent operations rather than "
+            "deliberately overflowing a buffer to overwrite a return address. An integer overflow occurs when "
+            "arithmetic exceeds a variable's maximum value, which may lead to other flaws but is not defined by "
+            "writing past an allocated buffer to overwrite stack control data."
+        ),
+        "choices": [
+            "SQL injection",
+            "Race condition",
+            "Buffer overflow",
+            "Integer overflow",
+        ],
+        "objectives": ["1.2", "2.3"],
+    },
+    {
+        "slug": "privilege-escalation-sudo-misconfiguration-linux",
+        "title": "Security+ — Privilege escalation (sudo misconfiguration)",
+        "stem": (
+            "A security analyst discovers that an attacker gained initial access as a regular user and then "
+            "exploited a misconfigured sudo rule to obtain root privileges on a Linux server. What type of attack "
+            "technique is this?"
+        ),
+        "name": "secplus_q836",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Privilege escalation increases an attacker's permissions after initial access. Exploiting "
+            "a misconfigured sudo rule to move from a regular user to root on the same Linux server is vertical "
+            "privilege escalation. Lateral movement spreads to other systems or accounts across the network after "
+            "compromise, not raising privileges on the same host. Directory traversal reads files outside an "
+            "intended path using sequences such as ../ and does not describe gaining root through sudo. Pass-the-hash "
+            "reuses captured password hashes to authenticate elsewhere without cracking plaintext passwords."
+        ),
+        "choices": [
+            "Lateral movement",
+            "Privilege escalation",
+            "Directory traversal",
+            "Pass-the-hash",
+        ],
+        "objectives": ["2.3", "2.4"],
+    },
+    {
+        "slug": "directory-traversal-etc-passwd-path-parameter",
+        "title": "Security+ — Directory traversal (/etc/passwd)",
+        "stem": (
+            "An attacker uses the URL https://example.com/files?path=../../../../etc/passwd to attempt to read "
+            "the server's password file. What type of attack is this?"
+        ),
+        "name": "secplus_q837",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Directory traversal (path traversal) uses ../ sequences in a file or path parameter to "
+            "climb out of the intended directory and read sensitive files such as /etc/passwd. SQL injection "
+            "embeds malicious SQL in input that reaches a database query, not filesystem path climbing in a URL "
+            "parameter. Cross-site scripting injects script into web content executed in a victim's browser. "
+            "Remote file inclusion causes a server to include a remote file in application processing; the stem "
+            "shows local path traversal to read a system file, not pulling in an external script URL."
+        ),
+        "choices": [
+            "SQL injection",
+            "Cross-site scripting",
+            "Directory traversal",
+            "Remote file inclusion",
+        ],
+        "objectives": ["2.3", "2.4"],
+    },
+    {
+        "slug": "replay-attack-kerberos-ticket-intercept",
+        "title": "Security+ — Replay attack (Kerberos ticket)",
+        "stem": (
+            "An attacker intercepts a Kerberos ticket and replays it to gain unauthorized access to a network "
+            "resource. What type of attack is this?"
+        ),
+        "name": "secplus_q838",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A replay attack captures a valid authentication artifact such as a Kerberos ticket and "
+            "reuses it later to impersonate the legitimate user. Pass-the-hash specifically reuses NTLM password "
+            "hashes to authenticate without recovering plaintext passwords, not replay of a captured Kerberos "
+            "service ticket as described here. Credential stuffing tries username and password pairs stolen from "
+            "other breaches across many accounts. A brute force attack systematically guesses passwords or keys "
+            "rather than retransmitting a previously captured valid ticket."
+        ),
+        "choices": [
+            "Pass-the-hash",
+            "Replay attack",
+            "Credential stuffing",
+            "Brute force attack",
+        ],
+        "objectives": ["2.3", "2.4"],
+    },
+    {
+        "slug": "ransomware-cryptocurrency-decryption-key-demand",
+        "title": "Security+ — Ransomware (crypto ransom demand)",
+        "stem": (
+            "An organization's files are suddenly encrypted and a ransom demand appears on affected workstations "
+            "demanding payment in cryptocurrency for the decryption key. What type of malware is responsible?"
+        ),
+        "name": "secplus_q839",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Ransomware encrypts files or systems and demands payment, often in cryptocurrency, in "
+            "exchange for a decryption key. A trojan horse disguises itself as legitimate software to trick users "
+            "into installing it; it is a delivery method, not the name for encrypt-and-extort behavior. A rootkit "
+            "hides malicious activity and maintains persistent privileged access on a system. Spyware covertly "
+            "collects information such as keystrokes or browsing habits rather than encrypting files and posting "
+            "a ransom note across workstations."
+        ),
+        "choices": [
+            "Trojan horse",
+            "Rootkit",
+            "Ransomware",
+            "Spyware",
+        ],
+        "objectives": ["2.3", "2.4"],
+    },
+    {
+        "slug": "trojan-horse-pdf-reader-backdoor",
+        "title": "Security+ — Trojan horse (PDF reader backdoor)",
+        "stem": (
+            "A user downloads what appears to be a legitimate PDF reader, but after installation, the software "
+            "secretly opens a backdoor allowing remote access to the system. What type of malware is this?"
+        ),
+        "name": "secplus_q840",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A Trojan horse masquerades as legitimate or useful software to trick users into "
+            "installing it, then performs hidden malicious actions such as opening a backdoor for remote access. "
+            "A worm self-replicates across networks without requiring a disguised installer. A virus attaches "
+            "to or infects other files and spreads, which is not the defining trait of software posing as a PDF "
+            "reader with a hidden backdoor. Adware displays unwanted advertisements and does not typically "
+            "describe covert remote-access backdoors installed through fake utilities."
+        ),
+        "choices": [
+            "Worm",
+            "Trojan horse",
+            "Virus",
+            "Adware",
+        ],
+        "objectives": ["2.3", "2.4"],
+    },
+    {
+        "slug": "rootkit-kernel-system-calls-hide-av",
+        "title": "Security+ — Rootkit (kernel hiding)",
+        "stem": (
+            "A security team discovers malware on a server that hides its presence by modifying system calls and "
+            "kernel data structures, making it invisible to standard antivirus tools. What type of malware is this?"
+        ),
+        "name": "secplus_q841",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A rootkit operates at a deep level of the operating system, often hooking system calls "
+            "or altering kernel data structures to conceal files, processes, and network activity from standard "
+            "security tools. Ransomware encrypts data and demands payment rather than hiding at the kernel layer. "
+            "A worm self-replicates across systems and networks; hiding via kernel modification is not its defining "
+            "behavior. A logic bomb waits for a specific trigger condition before executing destructive code, "
+            "rather than persistently evading detection by modifying the kernel."
+        ),
+        "choices": [
+            "Ransomware",
+            "Worm",
+            "Rootkit",
+            "Logic bomb",
+        ],
+        "objectives": ["2.3", "2.4"],
+    },
+    {
+        "slug": "worm-smb-self-replicate-no-user-interaction",
+        "title": "Security+ — Worm (SMB self-replication)",
+        "stem": (
+            "A piece of malware spreads across a corporate network without any user interaction, exploiting a "
+            "vulnerability in the SMB protocol to self-replicate from one machine to another. What type of malware "
+            "is this?"
+        ),
+        "name": "secplus_q842",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A worm self-replicates across networks, often by exploiting service vulnerabilities such "
+            "as SMB, without requiring a user to open a file or click a link. A virus typically needs user action "
+            "to execute an infected file and often attaches to other programs or files. A Trojan horse disguises "
+            "itself as legitimate software to trick users into installing it. Spyware covertly collects information "
+            "from a system; autonomous network-wide replication through an SMB flaw is the defining worm behavior "
+            "described here."
+        ),
+        "choices": [
+            "Virus",
+            "Trojan horse",
+            "Worm",
+            "Spyware",
+        ],
+        "objectives": ["2.3", "2.4"],
+    },
+    {
+        "slug": "logic-bomb-payroll-ad-removal-trigger",
+        "title": "Security+ — Logic bomb (AD removal trigger)",
+        "stem": (
+            "A former employee planted code in the company's payroll system that is set to delete all employee "
+            "records if the employee's name is removed from the active directory. What type of malware is this?"
+        ),
+        "name": "secplus_q843",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A logic bomb is malicious code that remains dormant until a specific trigger condition "
+            "occurs, such as the former employee's account being removed from Active Directory, and then executes "
+            "destructive actions like deleting payroll records. Ransomware encrypts data and demands payment for "
+            "decryption rather than waiting for an HR or directory event. A Trojan horse disguises itself as "
+            "legitimate software to trick users into installing it. A rootkit hides its presence by modifying "
+            "operating system components rather than executing a one-time destructive payload on a defined trigger."
+        ),
+        "choices": [
+            "Ransomware",
+            "Logic bomb",
+            "Trojan horse",
+            "Rootkit",
+        ],
+        "objectives": ["2.3", "2.4"],
+    },
+    {
+        "slug": "polymorphism-malware-signature-changes",
+        "title": "Security+ — Polymorphism (signature evasion)",
+        "stem": (
+            "A security researcher analyzes malware that uses polymorphic code to change its signature with each "
+            "infection while maintaining the same functionality. Which malware evasion technique does this describe?"
+        ),
+        "name": "secplus_q844",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Polymorphism changes the malware's code appearance or signature on each infection while "
+            "preserving the same behavior, helping it evade signature-based antivirus detection. Steganography "
+            "hides data inside other files such as images, not rewriting executable code to alter AV signatures. "
+            "Fileless execution runs malicious logic in memory using legitimate tools without writing a traditional "
+            "file to disk. Living off the land uses built-in system utilities such as PowerShell or WMI to carry "
+            "out attacks rather than mutating the malware's code signature each time."
+        ),
+        "choices": [
+            "Steganography",
+            "Fileless execution",
+            "Polymorphism",
+            "Living off the land",
+        ],
+        "objectives": ["2.3", "2.4"],
+    },
+    {
+        "slug": "phishing-fake-it-password-reset-login",
+        "title": "Security+ — Phishing (fake IT password reset)",
+        "stem": (
+            "An employee receives an email that appears to come from the IT department, requesting they click a "
+            "link to reset their password. The link leads to a fake login page that harvests credentials. What type "
+            "of social engineering attack is this?"
+        ),
+        "name": "secplus_q845",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Phishing uses deceptive email to trick users into revealing credentials or clicking "
+            "malicious links, such as a fake IT password-reset page that captures usernames and passwords. Vishing "
+            "is voice-based phishing over phone calls, not email. Smishing is phishing delivered by SMS text "
+            "message. Pretexting builds a fabricated scenario to manipulate someone into sharing information, but "
+            "the stem describes a credential-harvesting email link, which is the classic phishing pattern."
+        ),
+        "choices": [
+            "Vishing",
+            "Smishing",
+            "Phishing",
+            "Pretexting",
+        ],
+        "objectives": ["2.4"],
+    },
+    {
+        "slug": "whaling-cfo-linkedin-conference-email",
+        "title": "Security+ — Whaling (CFO conference email)",
+        "stem": (
+            "An attacker researches a company's CFO on LinkedIn and crafts a highly personalized email referencing "
+            "a recent conference the CFO attended, containing a malicious attachment disguised as conference "
+            "materials. What type of attack is this?"
+        ),
+        "name": "secplus_q846",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Whaling is targeted phishing aimed at senior executives such as a CFO. Research on LinkedIn "
+            "and a personalized lure referencing a recent conference are hallmarks of this high-value social "
+            "engineering. Generic phishing sends broad untargeted messages to many users. Spear phishing is "
+            "targeted at a specific person but whaling is the more precise term when the victim is a senior "
+            "executive. Smishing delivers phishing over SMS, not email with attachments."
+        ),
+        "choices": [
+            "Phishing",
+            "Spear phishing",
+            "Whaling",
+            "Smishing",
+        ],
+        "objectives": ["2.4"],
+    },
+    {
+        "slug": "vishing-pretexting-help-desk-executive-reset",
+        "title": "Security+ — Vishing with pretexting (help desk)",
+        "stem": (
+            "An attacker calls a help desk and pretends to be a senior executive who has been locked out of their "
+            "account, pressuring the help desk agent to reset the password immediately. What social engineering "
+            "technique is being used?"
+        ),
+        "name": "secplus_q847",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Vishing is voice-based phishing over a phone call. Pretexting creates a false scenario, "
+            "here a locked-out senior executive needing an urgent password reset, to manipulate the help desk agent. "
+            "Together they describe this attack. Phishing typically refers to deceptive email or web lures, not a "
+            "phone call to the help desk. Tailgating is unauthorized physical entry by following someone through a "
+            "secured door. A watering hole attack compromises a website that targets frequently visit rather than "
+            "calling the help desk with a fabricated identity."
+        ),
+        "choices": [
+            "Phishing",
+            "Tailgating",
+            "Vishing with pretexting",
+            "Watering hole attack",
+        ],
+        "objectives": ["2.4"],
+    },
+    {
+        "slug": "smishing-bank-suspicious-activity-text",
+        "title": "Security+ — Smishing (bank account text)",
+        "stem": (
+            "An employee receives a text message claiming to be from their bank, warning of suspicious activity and "
+            "asking them to click a link to verify their account. What type of social engineering attack is this?"
+        ),
+        "name": "secplus_q848",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Smishing is phishing delivered by SMS text message. A fake bank alert with a link to "
+            "verify an account fits that definition. Phishing is the broader category but when the lure arrives by "
+            "text, smishing is the more precise answer. Vishing uses voice calls, not SMS. Pharming redirects users "
+            "to fraudulent websites through DNS or host file manipulation rather than sending a text with a link."
+        ),
+        "choices": [
+            "Phishing",
+            "Smishing",
+            "Vishing",
+            "Pharming",
+        ],
+        "objectives": ["2.4"],
+    },
+    {
+        "slug": "tailgating-secure-door-badge-piggybacking",
+        "title": "Security+ — Tailgating (secure door entry)",
+        "stem": (
+            "An unauthorized person walks closely behind an authorized employee through a secure door, entering the "
+            "restricted area without using their own badge. What type of physical social engineering attack is this?"
+        ),
+        "name": "secplus_q849",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Tailgating (piggybacking) is when an unauthorized person enters a restricted area by "
+            "following closely behind someone who legitimately unlocked or opened the door, without presenting their "
+            "own credentials. Shoulder surfing observes someone entering a password or PIN over their shoulder. "
+            "Dumpster diving searches discarded materials for sensitive information. Impersonation involves posing "
+            "as someone else through appearance, voice, or identity claims; tailgating specifically exploits physical "
+            "entry timing rather than pretending to be another person."
+        ),
+        "choices": [
+            "Shoulder surfing",
+            "Dumpster diving",
+            "Tailgating",
+            "Impersonation",
+        ],
+        "objectives": ["2.4"],
+    },
+    {
+        "slug": "watering-hole-industry-news-website",
+        "title": "Security+ — Watering hole (industry news site)",
+        "stem": (
+            "Attackers identify that employees of a target organization frequently visit a specific industry news "
+            "website. They compromise that website and inject malicious code that targets visitors. What type of "
+            "attack is this?"
+        ),
+        "name": "secplus_q850",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A watering hole attack compromises a site that members of a target group are known to "
+            "visit, then serves malicious code to those visitors. Spear phishing sends personalized messages to "
+            "specific individuals rather than poisoning a shared website they browse. A drive-by download may occur "
+            "when a user visits a compromised page, but the defining strategy here is selecting and compromising "
+            "the frequently visited site itself. Typosquatting registers look-alike domain names to catch typos, "
+            "not hijacking a legitimate industry news website employees already trust."
+        ),
+        "choices": [
+            "Spear phishing",
+            "Drive-by download",
+            "Watering hole attack",
+            "Typosquatting",
+        ],
+        "objectives": ["2.2", "2.4"],
+    },
+    {
+        "slug": "phishing-urgency-account-suspended-24-hours",
+        "title": "Security+ — Urgency/scarcity (account suspension)",
+        "stem": (
+            "A social engineer sends a phishing email that creates urgency by stating the recipient's account will "
+            "be suspended within 24 hours unless they verify their credentials. Which social engineering principle "
+            "is PRIMARILY being exploited?"
+        ),
+        "name": "secplus_q851",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Urgency/scarcity pressures the victim to act quickly before a deadline, here a 24-hour "
+            "account suspension, reducing time to verify the request. Authority exploits perceived power or status, "
+            "such as impersonating an executive, which is not the primary lever in this message. Social proof "
+            "relies on the idea that others are doing the same thing, which is not described. Familiarity/liking "
+            "exploits trust or rapport with someone the victim knows, rather than a time-limited suspension threat."
+        ),
+        "choices": [
+            "Authority",
+            "Social proof",
+            "Urgency/scarcity",
+            "Familiarity/liking",
+        ],
+        "objectives": ["2.4"],
+    },
+    {
+        "slug": "misconfiguration-default-admin-credentials-web-server",
+        "title": "Security+ — Misconfiguration (default admin credentials)",
+        "stem": (
+            "A security auditor discovers that a production web server is still running with the default "
+            "administrator credentials that were set during installation. What type of vulnerability is this?"
+        ),
+        "name": "secplus_q852",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Leaving default administrator credentials in production is a misconfiguration vulnerability "
+            "because secure deployment requires changing factory defaults and hardening the system before exposure. "
+            "A zero-day vulnerability is an unknown flaw with no available patch. A race condition exploits timing "
+            "between concurrent operations in software. A memory leak is a programming flaw where allocated memory is "
+            "not released properly over time."
+        ),
+        "choices": [
+            "Zero-day vulnerability",
+            "Misconfiguration vulnerability",
+            "Race condition",
+            "Memory leak",
+        ],
+        "objectives": ["2.3", "4.2"],
+    },
+    {
+        "slug": "ddos-botnet-flood-web-server-unavailable",
+        "title": "Security+ — DDoS (botnet traffic flood)",
+        "stem": (
+            "An attacker uses a botnet of 50,000 compromised devices to flood a company's web server with traffic, "
+            "making the website unavailable to legitimate users. What type of attack is this?"
+        ),
+        "name": "secplus_q853",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A distributed denial-of-service (DDoS) attack uses many compromised systems, such as a "
+            "50,000-device botnet, to overwhelm a target with traffic and deny service to legitimate users. A "
+            "single-source denial-of-service (DoS) attack originates from one system rather than a large distributed "
+            "botnet. A man-in-the-middle attack intercepts or alters communications between two parties rather than "
+            "flooding a server with volume traffic. DNS amplification is a specific reflection technique that abuses "
+            "DNS resolvers to magnify traffic; the stem describes a general botnet flood, not DNS reflection alone."
+        ),
+        "choices": [
+            "Denial of Service (DoS)",
+            "Distributed Denial of Service (DDoS)",
+            "Man-in-the-middle attack",
+            "DNS amplification",
+        ],
+        "objectives": ["2.3", "2.4"],
+    },
+    {
+        "slug": "on-path-mitm-public-wifi-intercept",
+        "title": "Security+ — On-path attack (public Wi-Fi)",
+        "stem": (
+            "An attacker positions themselves between a client and a server on a public Wi-Fi network, intercepting "
+            "and potentially modifying communications in real time. What type of attack is this?"
+        ),
+        "name": "secplus_q854",
+        "correct": "B",
+        "explain": (
+            "Correct. B — An on-path (man-in-the-middle) attack places the attacker between two communicating parties "
+            "so traffic passes through them, allowing interception and possible modification in real time. A replay "
+            "attack reuses previously captured authentication data later rather than sitting inline during the live "
+            "session. Session hijacking steals or reuses a valid session token to impersonate a user after "
+            "authentication. An evil twin attack sets up a rogue wireless access point that mimics a legitimate "
+            "network; it may enable on-path attacks but the stem describes inline interception between client and "
+            "server, not merely deploying a fake AP."
+        ),
+        "choices": [
+            "Replay attack",
+            "On-path (man-in-the-middle) attack",
+            "Session hijacking",
+            "Evil twin attack",
+        ],
+        "objectives": ["2.3", "2.4"],
+    },
+    {
+        "slug": "dns-poisoning-banking-a-record-redirect",
+        "title": "Security+ — DNS poisoning (banking A record)",
+        "stem": (
+            "An attacker compromises a DNS server and modifies the A record for a banking website, redirecting users "
+            "to a fraudulent server that looks identical to the real site. What type of attack is this?"
+        ),
+        "name": "secplus_q855",
+        "correct": "A",
+        "explain": (
+            "Correct. A — DNS poisoning (or DNS spoofing) corrupts DNS responses so a hostname such as a banking site "
+            "resolves to an attacker-controlled IP address, sending users to a fraudulent look-alike server. ARP "
+            "poisoning manipulates MAC-to-IP mappings on a local network segment, not DNS A records on a DNS server. "
+            "URL redirection is a broad description of sending users elsewhere but is not the specific attack name for "
+            "compromising DNS records. Typosquatting registers misspelled domain names to catch user typing errors, "
+            "not altering legitimate DNS server records for the correct domain name."
+        ),
+        "choices": [
+            "DNS poisoning",
+            "ARP poisoning",
+            "URL redirection",
+            "Typosquatting",
+        ],
+        "objectives": ["2.3", "2.4"],
+    },
+    {
+        "slug": "arp-poisoning-default-gateway-mac-spoof",
+        "title": "Security+ — ARP poisoning (default gateway)",
+        "stem": (
+            "An attacker on a local network sends forged ARP reply messages to associate their MAC address with the "
+            "IP address of the default gateway, causing all traffic from other hosts to be sent through the "
+            "attacker's machine. What type of attack is this?"
+        ),
+        "name": "secplus_q856",
+        "correct": "B",
+        "explain": (
+            "Correct. B — ARP poisoning sends forged ARP replies to map the attacker's MAC address to another host's "
+            "IP address, such as the default gateway, enabling a man-in-the-middle attack on the local segment. DNS "
+            "poisoning corrupts DNS name resolution records, not Layer 2 ARP caches. MAC flooding overwhelms a switch "
+            "CAM table with many MAC addresses to force flooding behavior, not spoofing the gateway's ARP entry. VLAN "
+            "hopping crosses VLAN boundaries through switch misconfiguration or double-tagging, not forging gateway ARP "
+            "replies on the same broadcast domain."
+        ),
+        "choices": [
+            "DNS poisoning",
+            "ARP poisoning",
+            "MAC flooding",
+            "VLAN hopping",
+        ],
+        "objectives": ["2.3", "2.4"],
+    },
+    {
+        "slug": "brute-force-six-character-password-exhaust",
+        "title": "Security+ — Brute force (exhaust all combinations)",
+        "stem": (
+            "An attacker systematically tries every possible combination of characters to crack a user's password. "
+            "With a six-character password, the attacker estimates it will take several hours to exhaust all "
+            "possibilities. What type of password attack is this?"
+        ),
+        "name": "secplus_q857",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A brute force attack tries every possible password combination until the correct one is "
+            "found or the keyspace is exhausted. A dictionary attack uses a list of common or likely passwords rather "
+            "than systematically testing all character combinations. A rainbow table attack uses precomputed hash tables "
+            "to recover passwords from captured password hashes, not live guessing of every combination. Credential "
+            "stuffing reuses username and password pairs stolen from other breaches across many accounts."
+        ),
+        "choices": [
+            "Dictionary attack",
+            "Brute force attack",
+            "Rainbow table attack",
+            "Credential stuffing",
+        ],
+        "objectives": ["2.3", "2.4"],
+    },
+    {
+        "slug": "rainbow-table-password-hash-recovery",
+        "title": "Security+ — Rainbow table (hash recovery)",
+        "stem": (
+            "An attacker obtains a database of password hashes and uses precomputed tables that map hash values to "
+            "their plaintext equivalents to quickly recover the original passwords. What type of attack is this?"
+        ),
+        "name": "secplus_q858",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A rainbow table attack uses precomputed tables that map password hashes to likely "
+            "plaintext values so attackers can recover passwords from stolen hash databases quickly without guessing "
+            "each combination live. A brute force attack systematically tries every possible password combination. A "
+            "dictionary attack tries words from a prepared list rather than lookup tables of hash-to-plaintext pairs. "
+            "Pass-the-hash reuses captured password hashes to authenticate to systems without recovering the original "
+            "plaintext password."
+        ),
+        "choices": [
+            "Brute force attack",
+            "Dictionary attack",
+            "Rainbow table attack",
+            "Pass-the-hash attack",
+        ],
+        "objectives": ["2.3", "2.4"],
+    },
+    {
+        "slug": "credential-stuffing-breach-banking-email",
+        "title": "Security+ — Credential stuffing (breach reuse)",
+        "stem": (
+            "After a major data breach at a social media company exposes millions of usernames and passwords, an "
+            "attacker uses those stolen credentials to attempt logins on banking and email services. What type of "
+            "attack is this?"
+        ),
+        "name": "secplus_q859",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Credential stuffing reuses username and password pairs stolen from one breach to attempt "
+            "logins on other websites and services, exploiting password reuse across accounts. A brute force attack "
+            "systematically tries every possible password combination for an account. Password spraying tries one "
+            "common password against many accounts to avoid lockouts, rather than replaying full stolen credential "
+            "pairs from another breach. A dictionary attack tries words from a prepared list and is not defined by "
+            "reusing known username and password pairs from a prior compromise."
+        ),
+        "choices": [
+            "Brute force attack",
+            "Password spraying",
+            "Credential stuffing",
+            "Dictionary attack",
+        ],
+        "objectives": ["2.3", "2.4"],
+    },
+    {
+        "slug": "evil-twin-coffee-shop-ssid-capture",
+        "title": "Security+ — Evil twin (rogue AP, same SSID)",
+        "stem": (
+            "An attacker sets up a rogue wireless access point with the same SSID as a legitimate coffee shop "
+            "Wi-Fi network. When customers connect, the attacker captures their traffic. What type of wireless "
+            "attack is this?"
+        ),
+        "name": "secplus_q860",
+        "correct": "B",
+        "explain": (
+            "Correct. B — An evil twin attack deploys a rogue access point that mimics a legitimate network name "
+            "(SSID) so users connect to the attacker instead of the real AP, allowing traffic capture or "
+            "interception. A deauthentication attack sends forged disconnect frames to knock clients off the "
+            "legitimate network, not impersonate the SSID with a rogue AP. Bluejacking sends unsolicited Bluetooth "
+            "messages to nearby devices and is unrelated to Wi-Fi SSID spoofing. WPS brute force targets Wi-Fi "
+            "Protected Setup PINs on an access point rather than luring users to a fake network with a matching SSID."
+        ),
+        "choices": [
+            "Deauthentication attack",
+            "Evil twin attack",
+            "Bluejacking",
+            "WPS brute force",
+        ],
+        "objectives": ["2.2", "2.4"],
+    },
+    {
+        "slug": "deauthentication-wpa-handshake-offline-crack",
+        "title": "Security+ — Deauthentication attack (WPA handshake)",
+        "stem": (
+            "An attacker sends forged deauthentication frames to a wireless client, repeatedly disconnecting them from "
+            "the legitimate access point. The goal is to force the client to reconnect, capturing the WPA handshake "
+            "for offline cracking. What type of attack is this?"
+        ),
+        "name": "secplus_q861",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A deauthentication attack sends forged 802.11 deauthentication or disassociation frames to "
+            "knock clients off a legitimate access point. Forcing reconnects can let an attacker capture the WPA "
+            "four-way handshake for offline password cracking. An evil twin attack mimics a legitimate SSID with a "
+            "rogue access point rather than repeatedly disconnecting clients from the real AP. A jamming attack uses "
+            "RF interference to degrade or block wireless signals, not forged management frames. A replay attack "
+            "retransmits previously captured valid data rather than forging disconnect frames to trigger a new "
+            "handshake."
+        ),
+        "choices": [
+            "Evil twin attack",
+            "Deauthentication attack",
+            "Jamming attack",
+            "Replay attack",
+        ],
+        "objectives": ["2.2", "2.4"],
+    },
+    {
+        "slug": "supply-chain-library-backdoor-dev-pipeline",
+        "title": "Security+ — Supply chain (compromised library)",
+        "stem": (
+            "A software company discovers that a recently acquired third-party library contains a hidden backdoor "
+            "that was inserted by an attacker who compromised the library's development pipeline. What type of attack "
+            "is this?"
+        ),
+        "name": "secplus_q862",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A supply chain attack compromises trusted upstream software, hardware, or services so "
+            "malicious code such as a hidden backdoor reaches downstream customers through a third-party library. A "
+            "watering hole attack compromises a website that target users frequently visit, not a vendor's build "
+            "pipeline. A zero-day exploit is an unknown vulnerability with no patch available; the stem describes "
+            "intentional backdoor insertion through a compromised development process. A trojan horse disguises "
+            "malware as legitimate software for a user to install; supply chain attacks tamper with trusted "
+            "components before the customer receives them."
+        ),
+        "choices": [
+            "Watering hole attack",
+            "Supply chain attack",
+            "Zero-day exploit",
+            "Trojan horse",
+        ],
+        "objectives": ["2.2", "4.3"],
+    },
+    {
+        "slug": "zero-day-os-vulnerability-no-patch",
+        "title": "Security+ — Zero-day (OS, no patch)",
+        "stem": (
+            "A security researcher discovers a previously unknown vulnerability in a widely used operating system and "
+            "publishes details before the vendor has released a patch. What is this type of vulnerability called?"
+        ),
+        "name": "secplus_q863",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A zero-day vulnerability is a flaw disclosed or exploited before the vendor provides an "
+            "official patch, leaving defenders with zero days of advance protection. A legacy vulnerability affects "
+            "outdated or unsupported systems rather than a newly discovered unpatched flaw in current software. "
+            "Misconfiguration is an incorrect secure setting or deployment choice, not an unknown code defect. A "
+            "known vulnerability already has public documentation and typically an available patch or mitigation, "
+            "unlike a newly published flaw with no vendor fix yet."
+        ),
+        "choices": [
+            "Legacy vulnerability",
+            "Misconfiguration",
+            "Zero-day vulnerability",
+            "Known vulnerability",
+        ],
+        "objectives": ["2.3", "2.5"],
+    },
+    {
+        "slug": "unpatched-known-openssl-cve-delayed-patching",
+        "title": "Security+ — Unpatched/known vulnerability (OpenSSL)",
+        "stem": (
+            "A vulnerability scanner reports that multiple servers in the data center are running outdated versions "
+            "of OpenSSL with known CVEs. The security team has been aware of the patches for six months but has not "
+            "applied them due to compatibility concerns. What type of vulnerability does this represent?"
+        ),
+        "name": "secplus_q864",
+        "correct": "B",
+        "explain": (
+            "Correct. B — An unpatched or known vulnerability is a publicly documented flaw with an available fix "
+            "that the organization has not yet applied, such as outdated OpenSSL with known CVEs left unpatched for "
+            "months. A zero-day vulnerability is disclosed or exploited before the vendor releases a patch. "
+            "Misconfiguration is an incorrect setting or deployment choice, not simply running software versions with "
+            "published CVEs when patches exist. A design flaw is a weakness built into the architecture or product "
+            "design itself, not delayed installation of vendor patches for known issues."
+        ),
+        "choices": [
+            "Zero-day vulnerability",
+            "Unpatched/known vulnerability",
+            "Misconfiguration",
+            "Design flaw",
+        ],
+        "objectives": ["2.3", "4.2"],
+    },
+    {
+        "slug": "misconfiguration-apache-directory-listing-enabled",
+        "title": "Security+ — Misconfiguration (Apache directory listing)",
+        "stem": (
+            "During a vulnerability assessment, a scanner identifies that a web application running on Apache has "
+            "directory listing enabled, exposing internal file structures to anyone who visits the URL. What category "
+            "of vulnerability is this?"
+        ),
+        "name": "secplus_q865",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Misconfiguration is an insecure setting or deployment choice, such as leaving Apache "
+            "directory listing enabled so visitors can browse internal file structures. A zero-day vulnerability is "
+            "a newly disclosed flaw without an available vendor patch. A buffer overflow is a memory corruption "
+            "flaw from writing beyond allocated bounds, not an exposed directory index. An injection flaw occurs "
+            "when untrusted input is processed unsafely in queries or commands, such as SQL injection, rather than "
+            "a server option that exposes folder contents."
+        ),
+        "choices": [
+            "Zero-day vulnerability",
+            "Buffer overflow",
+            "Misconfiguration",
+            "Injection flaw",
+        ],
+        "objectives": ["2.3", "4.2"],
+    },
+    {
+        "slug": "vuln-scan-false-positive-no-software-installed",
+        "title": "Security+ — False positive (vuln scan)",
+        "stem": (
+            "An organization runs regular automated vulnerability scans on its network. The latest scan flagged a "
+            "critical vulnerability on a server. Upon investigation, the security team determines the server does not "
+            "actually have the flagged software installed. What is this finding called?"
+        ),
+        "name": "secplus_q866",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A false positive is when a scan or alert reports a problem that does not actually exist, "
+            "such as flagging software vulnerabilities on a server that does not have that software installed. A true "
+            "positive correctly identifies a real issue that requires action. A true negative correctly indicates that "
+            "no issue is present when none exists. A false negative misses a real vulnerability or problem that is "
+            "actually present."
+        ),
+        "choices": [
+            "True positive",
+            "False positive",
+            "True negative",
+            "False negative",
+        ],
+        "objectives": ["4.3", "5.2"],
+    },
+    {
+        "slug": "pretexting-tailgating-new-employee-door",
+        "title": "Security+ — Pretexting + tailgating (new employee)",
+        "stem": (
+            "An attacker uses a pretext of being a new employee and asks a colleague to hold the secured door open "
+            "while carrying a box of office supplies. Which TWO social engineering techniques are being combined?"
+        ),
+        "name": "secplus_q867",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Pretexting creates a false scenario, here claiming to be a new employee carrying supplies, "
+            "to manipulate the colleague. Tailgating enters a restricted area by following or being let through a "
+            "secured door without using their own credentials. Phishing uses deceptive email or web messages, not "
+            "physical entry at a door. Shoulder surfing observes credentials being entered; impersonation may overlap "
+            "with the story but the stem specifically pairs a fabricated scenario with unauthorized physical entry. "
+            "Vishing and smishing use phone and text channels, not holding a door on site."
+        ),
+        "choices": [
+            "Phishing and pretexting",
+            "Pretexting and tailgating",
+            "Shoulder surfing and impersonation",
+            "Vishing and smishing",
+        ],
+        "objectives": ["2.4"],
+    },
+    {
+        "slug": "authority-urgency-fake-browser-security-update",
+        "title": "Security+ — Authority + urgency (fake browser update)",
+        "stem": (
+            'An attacker convinces a user to install a "required browser security update" by displaying a fake pop-up '
+            "warning on a compromised website. Which social engineering principles are PRIMARILY at play?"
+        ),
+        "name": "secplus_q868",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Authority applies because the pop-up presents itself as an official required security update "
+            "from a trusted source. Urgency applies because a warning pop-up pressures the user to act immediately "
+            "without verifying the request. Social proof and scarcity rely on others acting or limited opportunity, "
+            "which are not the primary levers here. Reciprocity and liking exploit favors or personal rapport, not a "
+            "security warning. Consensus and familiarity involve group behavior or trust in someone known, not a "
+            "fake mandatory update prompt."
+        ),
+        "choices": [
+            "Authority and urgency",
+            "Social proof and scarcity",
+            "Reciprocity and liking",
+            "Consensus and familiarity",
+        ],
+        "objectives": ["2.4"],
+    },
+    {
+        "slug": "password-spraying-common-passwords-many-accounts",
+        "title": "Security+ — Password spraying (many accounts)",
+        "stem": (
+            'An attacker uses a technique where they try common passwords like "Password123" and "Summer2026!" against '
+            "a large number of user accounts rather than trying many passwords against a single account. What type of "
+            "attack is this?"
+        ),
+        "name": "secplus_q869",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Password spraying tries one or a few common passwords across many accounts to avoid account "
+            "lockouts that come from hammering a single account with many guesses. A brute force attack systematically "
+            "tries large numbers of combinations, usually against one target at a time. A dictionary attack uses a "
+            "word list against a target but still typically focuses repeated guesses on individual accounts rather "
+            "than spreading a few passwords across many users. Credential stuffing reuses username and password pairs "
+            "stolen from another breach, not guessing common passwords like Password123 across the user base."
+        ),
+        "choices": [
+            "Brute force attack",
+            "Dictionary attack",
+            "Password spraying",
+            "Credential stuffing",
+        ],
+        "objectives": ["2.3", "2.4"],
+    },
+    {
+        "slug": "toctou-permission-check-privileged-action",
+        "title": "Security+ — TOCTOU (permission check bypass)",
+        "stem": (
+            "An attacker exploits a race condition in an application that checks a user's permissions and then "
+            "performs a privileged action in two separate steps. By modifying data between the check and the action, "
+            "the attacker bypasses the security control. What is this specific type of vulnerability called?"
+        ),
+        "name": "secplus_q870",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Time-of-check to time-of-use (TOCTOU) occurs when a system validates a condition at one "
+            "moment but uses stale data when it later performs the privileged action, allowing an attacker to change "
+            "state between the check and the use. A buffer overflow writes beyond allocated memory bounds. An integer "
+            "overflow results from arithmetic exceeding a variable's maximum value. Use-after-free accesses memory "
+            "after it has been released, which is a different memory-management flaw than a check-then-act timing gap."
+        ),
+        "choices": [
+            "Buffer overflow",
+            "Time-of-check to time-of-use (TOCTOU)",
+            "Integer overflow",
+            "Use-after-free",
+        ],
+        "objectives": ["2.3", "2.5"],
+    },
+    {
+        "slug": "dmz-public-web-servers-between-firewalls",
+        "title": "Security+ — DMZ (public web servers)",
+        "stem": (
+            "A company places its public-facing web servers in a separate network segment between its external "
+            "firewall and internal firewall, isolating them from the internal corporate network. What is this network "
+            "segment called?"
+        ),
+        "name": "secplus_q871",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A DMZ (demilitarized zone), also called a screened subnet or perimeter network, sits between "
+            "external and internal firewalls so internet-facing systems such as web servers are isolated from the "
+            "internal corporate network. A VLAN is logical segmentation within or across switches but is not the name "
+            "for the classic dual-firewall perimeter segment described here. An intranet is an internal private network "
+            "for employees, not the public-facing zone between firewalls. A VPN tunnel is an encrypted connection "
+            "between endpoints, not a physical or logical network segment for hosted web servers."
+        ),
+        "choices": [
+            "VLAN",
+            "DMZ (demilitarized zone)",
+            "Intranet",
+            "VPN tunnel",
+        ],
+        "objectives": ["3.1"],
+    },
+    {
+        "slug": "des-56-bit-key-insecure-symmetric",
+        "title": "Security+ — DES (insecure 56-bit key)",
+        "stem": (
+            "Which of the following symmetric encryption algorithms is now considered insecure due to its short 56-bit "
+            "key length and should NOT be used for new implementations?"
+        ),
+        "name": "secplus_q872",
+        "correct": "B",
+        "explain": (
+            "Correct. B — DES (Data Encryption Standard) uses a 56-bit effective key length that is too short for "
+            "modern security and is considered broken for new deployments. AES-256 is a current strong symmetric "
+            "standard with a 256-bit key. ChaCha20 is a modern stream cipher used in protocols such as TLS and is "
+            "not deprecated because of a 56-bit key. Blowfish supports variable-length keys up to 448 bits; while "
+            "older, it is not the classic example of a 56-bit symmetric algorithm CompTIA flags as insecure here."
+        ),
+        "choices": [
+            "AES-256",
+            "DES (Data Encryption Standard)",
+            "ChaCha20",
+            "Blowfish",
+        ],
+        "objectives": ["1.4"],
+    },
+    {
+        "slug": "vlan-accounting-engineering-departments",
+        "title": "Security+ — VLAN (department segmentation)",
+        "stem": (
+            "A network administrator separates the accounting department from the engineering department using "
+            "different virtual networks on the same physical switch. What technology is being used?"
+        ),
+        "name": "secplus_q873",
+        "correct": "B",
+        "explain": (
+            "Correct. B — VLANs (Virtual Local Area Networks) logically segment traffic on the same physical switch "
+            "so departments such as accounting and engineering can be isolated without separate hardware. NAT "
+            "translates IP addresses between private and public networks and does not create departmental virtual "
+            "networks on a switch. A VPN creates an encrypted tunnel across networks for remote access, not "
+            "on-switch department separation. SDN separates the control plane from the data plane for centralized "
+            "policy management and is broader than assigning departments to virtual LANs on one switch."
+        ),
+        "choices": [
+            "Network Address Translation (NAT)",
+            "Virtual Local Area Network (VLAN)",
+            "Virtual Private Network (VPN)",
+            "Software-Defined Networking (SDN)",
+        ],
+        "objectives": ["3.1"],
+    },
+    {
+        "slug": "stateful-inspection-firewall-state-table",
+        "title": "Security+ — Stateful inspection firewall",
+        "stem": (
+            "Which type of firewall maintains a state table that tracks active connections and makes filtering "
+            "decisions based on the context of the traffic flow, not just individual packets?"
+        ),
+        "name": "secplus_q874",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A stateful inspection firewall tracks connection state in a table and permits or denies "
+            "traffic based on whether packets belong to an established, legitimate session. A stateless packet filter "
+            "evaluates each packet in isolation using rules such as IP address and port without connection context. "
+            "A web application firewall (WAF) inspects HTTP and HTTPS application traffic for web-specific attacks. "
+            "A next-generation firewall (NGFW) adds application awareness, IPS, and other features beyond basic "
+            "state tracking, but the stem describes classic stateful connection tracking."
+        ),
+        "choices": [
+            "Stateless packet filter firewall",
+            "Stateful inspection firewall",
+            "Web application firewall (WAF)",
+            "Next-generation firewall (NGFW)",
+        ],
+        "objectives": ["3.3", "4.1"],
+    },
+    {
+        "slug": "waf-blocks-sqli-xss-http-https",
+        "title": "Security+ — WAF (SQLi and XSS)",
+        "stem": (
+            "An organization deploys a security appliance that inspects HTTP and HTTPS traffic to web applications, "
+            "blocking SQL injection and XSS attempts. What type of device is this?"
+        ),
+        "name": "secplus_q875",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A web application firewall (WAF) analyzes HTTP and HTTPS requests and responses to protect "
+            "web applications from attacks such as SQL injection and cross-site scripting (XSS). A network firewall "
+            "filters traffic primarily by IP address, port, and protocol rather than deep web application payloads. "
+            "An intrusion detection system (IDS) detects suspicious activity and alerts or logs but is not defined by "
+            "blocking web application-layer injection attacks at the HTTP boundary. A proxy server forwards or caches "
+            "requests and may filter content, but a WAF is the specialized control for web app attack prevention "
+            "described here."
+        ),
+        "choices": [
+            "Network firewall",
+            "Intrusion Detection System (IDS)",
+            "Web Application Firewall (WAF)",
+            "Proxy server",
+        ],
+        "objectives": ["3.3", "4.1"],
+    },
+    {
+        "slug": "ids-alerts-only-upgrade-to-ips",
+        "title": "Security+ — IDS vs IPS (automatic blocking)",
+        "stem": (
+            "A security analyst notices that an IDS is generating alerts about suspicious network traffic but is NOT "
+            "taking any action to block the traffic. What type of system is this, and what would need to change for "
+            "automatic blocking?"
+        ),
+        "name": "secplus_q876",
+        "correct": "A",
+        "explain": (
+            "Correct. A — An intrusion detection system (IDS) is typically passive: it monitors traffic, detects "
+            "suspicious activity, and generates alerts without inline blocking. An intrusion prevention system (IPS) "
+            "can actively block or drop malicious traffic inline, so the organization would deploy or configure an IPS "
+            "for automatic blocking. An IPS in passive mode behaves like detection-only monitoring; the stem "
+            "describes an IDS role, not an IPS already deployed in prevention mode. A SIEM aggregates and correlates "
+            "logs for analysis and is not the inline sensor that blocks packets by itself. A WAF protects web "
+            "applications at the HTTP layer, not general network IDS alerting described here."
+        ),
+        "choices": [
+            "It is an IDS; it would need to be replaced with or configured as an IPS",
+            "It is an IPS in passive mode; enable active mode",
+            "It is a SIEM; integrate it with a firewall",
+            "It is a WAF; enable blocking rules",
+        ],
+        "objectives": ["3.3", "4.1"],
+    },
+    {
+        "slug": "forward-proxy-outbound-content-filtering-logging",
+        "title": "Security+ — Forward proxy (outbound web)",
+        "stem": (
+            "An organization uses a forward proxy server for all outbound internet traffic from employee workstations. "
+            "Which of the following is a security benefit of this configuration?"
+        ),
+        "name": "secplus_q877",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A forward proxy sits between internal clients and the internet, allowing the organization to "
+            "filter outbound web content, log user activity, and cache responses for efficiency and policy enforcement. "
+            "It does not encrypt all internal network traffic; internal LAN communication is outside the proxy's "
+            "primary role. Load balancing for internal applications is handled by load balancers or application delivery "
+            "controllers, not a forward web proxy for employee internet access. A proxy complements perimeter controls "
+            "such as firewalls but does not replace the need for a firewall."
+        ),
+        "choices": [
+            "It encrypts all internal network traffic",
+            "It enables content filtering, logging, and caching of outbound web requests",
+            "It provides load balancing for internal applications",
+            "It replaces the need for a firewall",
+        ],
+        "objectives": ["3.3", "4.1"],
+    },
+    {
+        "slug": "load-balancer-distribute-web-traffic-backends",
+        "title": "Security+ — Load balancer (web traffic)",
+        "stem": (
+            "A company distributes incoming web traffic across multiple backend servers to ensure no single server "
+            "becomes overwhelmed. What network device provides this functionality?"
+        ),
+        "name": "secplus_q878",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A load balancer distributes incoming client requests across a pool of backend servers to "
+            "improve performance, availability, and fault tolerance. A firewall filters traffic based on security "
+            "rules such as IP address, port, and protocol. An IPS detects or blocks malicious traffic inline but does "
+            "not spread legitimate web sessions across server farms. A DNS server resolves domain names to IP addresses "
+            "and may use round-robin records, but distributing live traffic across backends is the primary role of a "
+            "load balancer."
+        ),
+        "choices": [
+            "Firewall",
+            "IPS",
+            "Load balancer",
+            "DNS server",
+        ],
+        "objectives": ["3.2", "3.4"],
+    },
+    {
+        "slug": "vpn-remote-employees-encrypted-tunnel",
+        "title": "Security+ — VPN (remote encrypted tunnel)",
+        "stem": (
+            "A company's remote employees connect to the corporate network through an encrypted tunnel over the "
+            "internet. Which technology is being used?"
+        ),
+        "name": "secplus_q879",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A VPN (Virtual Private Network) creates an encrypted tunnel over a public network such as "
+            "the internet so remote users can securely reach corporate resources. A VLAN segments traffic logically "
+            "on a local network and does not by itself provide remote encrypted access over the internet. A DMZ is a "
+            "perimeter network segment for internet-facing services, not remote employee connectivity. NAC (Network "
+            "Access Control) checks device posture and enforces admission policies but is not the encrypted tunnel "
+            "technology described here."
+        ),
+        "choices": [
+            "VLAN",
+            "VPN (Virtual Private Network)",
+            "DMZ",
+            "NAC",
+        ],
+        "objectives": ["3.5", "4.5"],
+    },
+    {
+        "slug": "microsegmentation-lateral-movement-workload-policies",
+        "title": "Security+ — Microsegmentation (lateral movement)",
+        "stem": (
+            "A security architect implements microsegmentation in the data center, creating granular security policies "
+            "for individual workloads. What is the PRIMARY benefit of microsegmentation compared to traditional network "
+            "segmentation?"
+        ),
+        "name": "secplus_q880",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Microsegmentation applies security policies to individual workloads or applications, limiting "
+            "east-west lateral movement after a compromise and shrinking the blast radius compared with coarse VLAN-only "
+            "segmentation. It does not eliminate the need for firewalls; perimeter and internal controls still matter. "
+            "It complements rather than entirely replaces VLANs and other segmentation methods. Faster network throughput "
+            "is a performance goal, not the primary security benefit of workload-level policy enforcement."
+        ),
+        "choices": [
+            "It eliminates the need for firewalls",
+            "It limits lateral movement by enforcing policies at the workload level",
+            "It replaces VLANs entirely",
+            "It provides faster network throughput",
+        ],
+        "objectives": ["3.1", "3.4"],
+    },
+    {
+        "slug": "ngfw-application-awareness-ips-threat-intelligence",
+        "title": "Security+ — NGFW vs stateful firewall",
+        "stem": (
+            "A next-generation firewall (NGFW) differs from a traditional stateful firewall because it includes which of "
+            "the following capabilities?"
+        ),
+        "name": "secplus_q881",
+        "correct": "B",
+        "explain": (
+            "Correct. B — NGFWs extend stateful inspection with deep application awareness (Layer 7 identification), "
+            "integrated intrusion prevention, and threat intelligence feeds for known malicious indicators. Traditional "
+            "stateful firewalls already perform packet filtering on source and destination IP addresses and ports, and "
+            "many support NAT and port forwarding. VLAN tagging and trunking are switch functions, not distinguishing "
+            "NGFW capabilities."
+        ),
+        "choices": [
+            "Packet filtering based on source and destination IP addresses",
+            "Application awareness, integrated IPS, and threat intelligence feeds",
+            "NAT and port forwarding",
+            "VLAN tagging and trunking",
+        ],
+        "objectives": ["3.1", "3.4"],
+    },
+    {
+        "slug": "paas-provider-manages-runtime-customer-apps",
+        "title": "Security+ — Cloud service model (PaaS)",
+        "stem": (
+            "A company uses a cloud service where the provider manages the underlying infrastructure, operating systems, "
+            "and runtime, while the company deploys and manages its own applications. Which cloud service model is this?"
+        ),
+        "name": "secplus_q882",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Platform as a Service (PaaS) leaves application development and deployment to the customer "
+            "while the provider operates the infrastructure, OS, middleware, and runtime (for example managed "
+            "Kubernetes or an application platform). In IaaS the customer also manages the OS and runtime stack. "
+            "SaaS delivers a fully managed application to end users. Function as a Service is a serverless execution "
+            "model for individual functions, not the general PaaS shared-responsibility split described here."
+        ),
+        "choices": [
+            "Infrastructure as a Service (IaaS)",
+            "Platform as a Service (PaaS)",
+            "Software as a Service (SaaS)",
+            "Function as a Service (FaaS)",
+        ],
+        "objectives": ["3.4", "5.1"],
+    },
+    {
+        "slug": "iaas-customer-os-patching-access-control",
+        "title": "Security+ — Shared responsibility (IaaS customer)",
+        "stem": (
+            "In the shared responsibility model for IaaS cloud deployments, which of the following is the CUSTOMER's "
+            "responsibility?"
+        ),
+        "name": "secplus_q883",
+        "correct": "C",
+        "explain": (
+            "Correct. C — In IaaS the customer owns the guest operating system, applications, and data, including OS "
+            "patching and configuring access controls on workloads they deploy. The cloud provider is responsible for "
+            "physical data center security, hypervisor maintenance, and underlying network hardware. Those provider-side "
+            "duties sit below the virtualization layer in the shared responsibility model."
+        ),
+        "choices": [
+            "Physical security of the data center",
+            "Hypervisor patching and maintenance",
+            "Operating system patching and access control configuration",
+            "Network infrastructure hardware maintenance",
+        ],
+        "objectives": ["3.4", "5.1"],
+    },
+    {
+        "slug": "casb-users-cloud-policy-monitoring-dlp",
+        "title": "Security+ — CASB (cloud policy enforcement)",
+        "stem": (
+            "An organization deploys a solution that sits between its users and cloud services to enforce security "
+            "policies, monitor activity, and prevent data loss across all cloud applications. What type of solution "
+            "is this?"
+        ),
+        "name": "secplus_q884",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A cloud access security broker (CASB) acts as a policy enforcement point between users and "
+            "cloud services, providing visibility, access control, threat protection, and data loss prevention across "
+            "SaaS and other cloud applications. A WAF protects web applications at the HTTP layer, not all cloud app "
+            "traffic organization-wide. A SIEM aggregates and correlates logs for analysis but does not by itself sit "
+            "inline between users and cloud services enforcing app policies. DLP is a capability CASBs often include; "
+            "the described intermediary role across cloud applications defines a CASB."
+        ),
+        "choices": [
+            "Web Application Firewall (WAF)",
+            "Cloud Access Security Broker (CASB)",
+            "Security Information and Event Management (SIEM)",
+            "Data Loss Prevention (DLP)",
+        ],
+        "objectives": ["3.2", "4.9"],
+    },
+    {
+        "slug": "sase-sdwan-casb-fwaas-ztna-cloud-delivered",
+        "title": "Security+ — SASE (converged cloud security)",
+        "stem": (
+            "A company wants to consolidate its networking and security functions into a single cloud-delivered service "
+            "that includes SD-WAN, CASB, firewall-as-a-service, and zero trust network access. What architecture does "
+            "this describe?"
+        ),
+        "name": "secplus_q885",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Secure Access Service Edge (SASE) converges WAN connectivity (including SD-WAN) with "
+            "cloud-delivered security services such as CASB, firewall-as-a-service (FWaaS), and zero trust network "
+            "access (ZTNA) in one integrated architecture. SIEM aggregates and analyzes security events but does not "
+            "deliver converged network and edge security services. SOAR automates incident response workflows. SDN "
+            "virtualizes and programmatically controls network infrastructure but does not by itself define this "
+            "cloud-delivered bundle of SD-WAN plus CASB, FWaaS, and ZTNA."
+        ),
+        "choices": [
+            "SIEM",
+            "SOAR",
+            "SASE (Secure Access Service Edge)",
+            "SDN (Software-Defined Networking)",
+        ],
+        "objectives": ["3.1", "3.2"],
+    },
+    {
+        "slug": "cspm-cloud-config-misconfiguration-monitoring",
+        "title": "Security+ — CSPM (cloud misconfigurations)",
+        "stem": (
+            "A cloud security team uses an automated tool that continuously monitors cloud infrastructure configurations "
+            "against security best practices, identifying misconfigurations like open S3 buckets or overly permissive "
+            "IAM policies. What type of tool is this?"
+        ),
+        "name": "secplus_q886",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Cloud Security Posture Management (CSPM) continuously assesses cloud resource configurations "
+            "against benchmarks and best practices, flagging risks such as public storage buckets and excessive IAM "
+            "permissions. A CASB governs user access to cloud applications and data in use, not infrastructure "
+            "configuration drift across the cloud control plane. EDR protects endpoints from threats and does not "
+            "audit cloud platform settings. A SIEM collects and correlates logs for detection and investigation but "
+            "is not the primary tool category for ongoing cloud configuration posture assessment."
+        ),
+        "choices": [
+            "CASB",
+            "CSPM (Cloud Security Posture Management)",
+            "EDR",
+            "SIEM",
+        ],
+        "objectives": ["4.5", "4.9"],
+    },
+    {
+        "slug": "iaas-customer-controls-os-middleware-apps",
+        "title": "Security+ — Cloud service model (IaaS)",
+        "stem": (
+            "A company uses a cloud provider for compute resources (virtual machines) and has full control over the "
+            "operating systems, middleware, and applications. The provider manages only the physical hardware and the "
+            "virtualization layer. Which cloud service model is this?"
+        ),
+        "name": "secplus_q887",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Infrastructure as a Service (IaaS) delivers virtualized compute, storage, and networking "
+            "while the customer manages the guest OS, middleware, and applications. The provider maintains physical "
+            "facilities and the hypervisor or virtualization layer. SaaS delivers a fully managed application to users. "
+            "PaaS also manages the OS and runtime platform for the customer. Desktop as a Service (DaaS) provides "
+            "hosted virtual desktops, not the general VM infrastructure model described in the stem."
+        ),
+        "choices": [
+            "SaaS",
+            "PaaS",
+            "IaaS",
+            "DaaS",
+        ],
+        "objectives": ["3.4", "5.1"],
+    },
+    {
+        "slug": "multicloud-centralized-kms-customer-managed-keys",
+        "title": "Security+ — Multicloud KMS (customer-managed keys)",
+        "stem": (
+            "An organization stores sensitive data across multiple cloud providers. To ensure consistent encryption "
+            "and key management across all environments, which approach should they adopt?"
+        ),
+        "name": "secplus_q888",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A centralized key management system with customer-managed keys (CMK/BYOK) gives the "
+            "organization uniform control over key lifecycle, rotation, and access policies across heterogeneous cloud "
+            "platforms instead of relying on each vendor's separate defaults. Provider-managed keys alone leave key "
+            "governance fragmented and reduce portability across providers. Disabling encryption removes baseline "
+            "confidentiality and violates security best practices for sensitive data. Application-layer encryption "
+            "alone can help but does not by itself standardize enterprise-wide key management across all storage and "
+            "service layers in multiple clouds."
+        ),
+        "choices": [
+            "Use each cloud provider's default encryption with provider-managed keys",
+            "Implement a centralized key management system (KMS) with customer-managed keys across all providers",
+            "Disable encryption to simplify management across providers",
+            "Encrypt data only at the application layer",
+        ],
+        "objectives": ["1.4", "4.9"],
+    },
+    {
+        "slug": "private-cloud-dedicated-resources-control-customization",
+        "title": "Security+ — Cloud deployment model (private cloud)",
+        "stem": (
+            "Which cloud deployment model provides dedicated resources for a single organization and is hosted either "
+            "on-premises or by a third party, offering the highest level of control and customization?"
+        ),
+        "name": "secplus_q889",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A private cloud dedicates infrastructure to one organization, so it can be operated on "
+            "premises or by a third party while preserving strong control over architecture, security, and "
+            "customization. Public cloud shares multi-tenant provider resources among many customers. Hybrid cloud "
+            "combines on-premises and cloud environments rather than describing a single dedicated model. Community "
+            "cloud shares infrastructure among organizations with common interests, trading some isolation for shared "
+            "economics."
+        ),
+        "choices": [
+            "Public cloud",
+            "Private cloud",
+            "Hybrid cloud",
+            "Community cloud",
+        ],
+        "objectives": ["3.4", "5.1"],
+    },
+    {
+        "slug": "aes-advanced-encryption-standard-symmetric",
+        "title": "Security+ — AES (symmetric encryption)",
+        "stem": (
+            "AES (Advanced Encryption Standard) is an example of which type of encryption algorithm?"
+        ),
+        "name": "secplus_q890",
+        "correct": "B",
+        "explain": (
+            "Correct. B — AES is a symmetric encryption algorithm that uses the same secret key for encryption and "
+            "decryption and is widely used to protect data at rest and in transit. Asymmetric encryption uses public "
+            "and private key pairs, such as RSA or ECC. Hashing algorithms such as SHA-256 produce fixed-length "
+            "digests and are one-way functions, not reversible encryption. Key exchange protocols such as Diffie-Hellman "
+            "establish shared secrets; AES is the cipher that uses those secrets, not the exchange mechanism itself."
+        ),
+        "choices": [
+            "Asymmetric encryption",
+            "Symmetric encryption",
+            "Hashing algorithm",
+            "Key exchange protocol",
+        ],
+        "objectives": ["1.4"],
+    },
+    {
+        "slug": "rsa-ecc-asymmetric-encryption",
+        "title": "Security+ — RSA and ECC (asymmetric encryption)",
+        "stem": (
+            "RSA and Elliptic Curve Cryptography (ECC) are examples of which type of encryption?"
+        ),
+        "name": "secplus_q891",
+        "correct": "B",
+        "explain": (
+            "Correct. B — RSA and ECC are asymmetric (public-key) encryption algorithms that use mathematically related "
+            "public and private key pairs for confidentiality, digital signatures, and key exchange. Symmetric "
+            "encryption uses one shared secret key, such as AES. Stream ciphers encrypt data one bit or byte at a time "
+            "(for example ChaCha20) and describe a cipher mode, not the RSA/ECC key-pair model. Block ciphers such as "
+            "AES process fixed-size blocks and are typically symmetric, not public-key algorithms."
+        ),
+        "choices": [
+            "Symmetric encryption",
+            "Asymmetric encryption",
+            "Stream ciphers",
+            "Block ciphers",
+        ],
+        "objectives": ["1.4"],
+    },
+    {
+        "slug": "sha256-hash-file-integrity-fingerprint",
+        "title": "Security+ — SHA-256 (file integrity fingerprint)",
+        "stem": (
+            "A security architect needs to verify that a large file has not been modified during download. Which "
+            "cryptographic function should they use to generate a fixed-length fingerprint of the file?"
+        ),
+        "name": "secplus_q892",
+        "correct": "C",
+        "explain": (
+            "Correct. C — SHA-256 is a cryptographic hash function that produces a fixed-length digest of file contents; "
+            "comparing the computed hash to a trusted reference value detects accidental or malicious modification. AES "
+            "encrypts data for confidentiality but does not by itself provide a standard integrity fingerprint for "
+            "verification. RSA digital signatures prove authenticity and integrity when signed by a trusted key, but "
+            "the stem asks for generating a file fingerprint, which hashing provides directly. Diffie-Hellman establishes "
+            "shared secrets for key exchange and does not produce file integrity digests."
+        ),
+        "choices": [
+            "AES encryption",
+            "RSA digital signature",
+            "SHA-256 hash",
+            "Diffie-Hellman key exchange",
+        ],
+        "objectives": ["1.4"],
+    },
+    {
+        "slug": "software-release-digital-signature-non-repudiation",
+        "title": "Security+ — Code signing (digital signatures)",
+        "stem": (
+            "A developer signs a software release with their private key. Users verify the signature using the "
+            "developer's public key. Which cryptographic concepts are being applied?"
+        ),
+        "name": "secplus_q893",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Digital signatures use the signer's private key to prove authenticity and integrity of the "
+            "release; verification with the public key also supports non-repudiation because only the holder of the "
+            "private key could have created the signature. Symmetric encryption and hashing alone do not establish "
+            "publisher identity with a key pair in this model. Steganography hides data inside other content and "
+            "obfuscation makes code harder to read; neither describes signed software distribution. Key exchange and "
+            "session management establish secure communications channels, not publisher attestation of a release."
+        ),
+        "choices": [
+            "Symmetric encryption and hashing",
+            "Digital signatures and non-repudiation",
+            "Steganography and obfuscation",
+            "Key exchange and session management",
+        ],
+        "objectives": ["1.2", "1.4"],
+    },
+    {
+        "slug": "diffie-hellman-shared-secret-insecure-channel",
+        "title": "Security+ — Diffie-Hellman (key exchange)",
+        "stem": (
+            "Two parties need to establish a shared secret key over an insecure channel without having previously "
+            "exchanged any secret information. Which algorithm enables this?"
+        ),
+        "name": "secplus_q894",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Diffie-Hellman is a key exchange protocol that lets two parties derive a shared secret over "
+            "an untrusted network using public mathematical values, even when no pre-shared secret exists. AES is a "
+            "symmetric cipher that requires an already-established key. SHA-256 is a hash function used for integrity "
+            "digests, not negotiating session keys. MD5 is a deprecated hash algorithm and does not perform secure key "
+            "agreement."
+        ),
+        "choices": [
+            "AES",
+            "SHA-256",
+            "Diffie-Hellman (DH)",
+            "MD5",
+        ],
+        "objectives": ["1.4"],
+    },
+    {
+        "slug": "md5-unsalted-password-hash-rainbow-table",
+        "title": "Security+ — MD5 unsalted password hashes",
+        "stem": (
+            "A security auditor finds that an application stores password hashes using MD5 without salting. Which of "
+            "the following BEST describes why this is a significant security concern?"
+        ),
+        "name": "secplus_q895",
+        "correct": "B",
+        "explain": (
+            "Correct. B — MD5 is a fast, deprecated hash with known collision weaknesses and is unsuitable for modern "
+            "password storage; without unique salts, identical passwords produce identical hashes that attackers can "
+            "recover quickly using precomputed rainbow tables. MD5 is a hash function, not asymmetric encryption, and "
+            "speed is a problem because it aids offline cracking, not because it is too slow. MD5 digests are fixed "
+            "length and short (128 bits), not too long for databases. MD5 does not use public/private key pairs."
+        ),
+        "choices": [
+            "MD5 uses asymmetric encryption, which is too slow for password hashing",
+            "MD5 has known collision vulnerabilities and unsalted hashes are susceptible to rainbow table attacks",
+            "MD5 produces hashes that are too long to store in a database",
+            "MD5 requires a public/private key pair that is difficult to manage",
+        ],
+        "objectives": ["1.4", "2.3"],
+    },
+    {
+        "slug": "tls13-full-handshake-one-round-trip",
+        "title": "Security+ — TLS 1.3 (1-RTT full handshake)",
+        "stem": (
+            "During a TLS 1.3 handshake, the number of round trips required to establish a secure connection has been "
+            "reduced compared to TLS 1.2. How many round trips does a TLS 1.3 full handshake require?"
+        ),
+        "name": "secplus_q896",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A TLS 1.3 full handshake completes in one round trip (1-RTT), down from the two round trips "
+            "typical of a TLS 1.2 full handshake, because key agreement and cipher negotiation are streamlined. "
+            "Zero round trips (0-RTT) applies to resumed sessions with early data and is not the full initial "
+            "handshake. Two round trips describes TLS 1.2 full handshake behavior, not TLS 1.3. Three round trips "
+            "is not the standard TLS 1.3 full-handshake requirement."
+        ),
+        "choices": [
+            "Zero round trips (0-RTT)",
+            "One round trip (1-RTT)",
+            "Two round trips (2-RTT)",
+            "Three round trips (3-RTT)",
+        ],
+        "objectives": ["1.4", "3.3"],
+    },
+    {
+        "slug": "pki-certificate-authority-issues-signs-certificates",
+        "title": "Security+ — PKI (Certificate Authority role)",
+        "stem": (
+            "In a PKI (Public Key Infrastructure), which entity is responsible for issuing and signing digital "
+            "certificates?"
+        ),
+        "name": "secplus_q897",
+        "correct": "B",
+        "explain": (
+            "Correct. B — The certificate authority (CA) validates identity (directly or via delegated processes), "
+            "issues X.509 certificates, and signs them with the CA private key so relying parties can establish trust. "
+            "A registration authority (RA) often performs identity proofing and submits requests to the CA but does not "
+            "typically sign issued certificates. A certificate revocation list (CRL) publishes revoked certificate "
+            "serials. OCSP provides real-time certificate status queries; neither CRL nor OCSP issues certificates."
+        ),
+        "choices": [
+            "Registration Authority (RA)",
+            "Certificate Authority (CA)",
+            "Certificate Revocation List (CRL)",
+            "Online Certificate Status Protocol (OCSP)",
+        ],
+        "objectives": ["1.4", "4.6"],
+    },
+    {
+        "slug": "wildcard-certificate-multiple-subdomains",
+        "title": "Security+ — Wildcard certificate (subdomains)",
+        "stem": (
+            "A web administrator needs to secure multiple subdomains (mail.example.com, shop.example.com, "
+            "blog.example.com) with a single SSL/TLS certificate. Which certificate type should they use?"
+        ),
+        "name": "secplus_q898",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A wildcard certificate (for example *.example.com) covers multiple subdomains under one "
+            "domain with a single certificate and private key. Domain Validation (DV) and Extended Validation (EV) "
+            "describe how thoroughly the CA verifies the requester, not how many hostnames one certificate can "
+            "secure. A self-signed certificate is issued without a public CA and does not by itself provide the "
+            "multi-subdomain coverage model described in the stem."
+        ),
+        "choices": [
+            "Domain Validation (DV) certificate",
+            "Extended Validation (EV) certificate",
+            "Wildcard certificate",
+            "Self-signed certificate",
+        ],
+        "objectives": ["1.4", "4.6"],
+    },
+    {
+        "slug": "ev-certificate-green-address-bar-organization-name",
+        "title": "Security+ — EV certificate (organization validation)",
+        "stem": (
+            "A browser displays a green address bar with the organization's name when visiting a banking website. "
+            "What type of SSL/TLS certificate provides this level of validation?"
+        ),
+        "name": "secplus_q899",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Extended Validation (EV) certificates require the strictest identity verification process "
+            "and are the certificate type CompTIA associates with prominent organization-name display in the browser "
+            "UI for high-trust sites such as banking. Domain Validation (DV) only confirms domain control with "
+            "minimal identity checks. Organization Validation (OV) verifies some organizational details but does not "
+            "represent the highest validation tier described here. A wildcard certificate covers multiple subdomains "
+            "under one domain and is unrelated to validation level or address-bar organization branding."
+        ),
+        "choices": [
+            "Domain Validation (DV)",
+            "Organization Validation (OV)",
+            "Extended Validation (EV)",
+            "Wildcard certificate",
+        ],
+        "objectives": ["1.4", "4.6"],
+    },
+    {
+        "slug": "ocsp-real-time-certificate-revocation-check",
+        "title": "Security+ — OCSP (real-time revocation status)",
+        "stem": (
+            "A security administrator discovers that a certificate has been compromised and must be invalidated before "
+            "it expires. Which mechanism allows real-time checking of a certificate's revocation status?"
+        ),
+        "name": "secplus_q900",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Online Certificate Status Protocol (OCSP) lets clients query a responder in real time to "
+            "learn whether a certificate is still valid or has been revoked. A certificate signing request (CSR) is "
+            "used to request a new certificate from a CA, not to check revocation. A certificate revocation list (CRL) "
+            "is a periodically published list of revoked certificates and is not the real-time online query mechanism "
+            "described here. Key escrow stores copies of encryption keys for recovery and does not validate certificate "
+            "revocation status."
+        ),
+        "choices": [
+            "Certificate Signing Request (CSR)",
+            "Certificate Revocation List (CRL)",
+            "Online Certificate Status Protocol (OCSP)",
+            "Key escrow",
+        ],
+        "objectives": ["1.4", "4.6"],
+    },
+    {
+        "slug": "san-certificate-multiple-unrelated-domains",
+        "title": "Security+ — SAN certificate (multiple domains)",
+        "stem": (
+            "A company needs a single SSL/TLS certificate that covers both example.com and example.net (two completely "
+            "different domain names). Which certificate type supports this?"
+        ),
+        "name": "secplus_q901",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A Subject Alternative Name (SAN) certificate lists multiple distinct hostnames in one "
+            "certificate, so unrelated domains such as example.com and example.net can share a single cert. A wildcard "
+            "certificate covers subdomains of one domain (for example *.example.com) but not a separate top-level "
+            "domain such as example.net. Domain Validation (DV) describes how the CA verifies the requester, not how "
+            "many different domain names one certificate can secure. A self-signed certificate is issued without a "
+            "public CA trust chain and does not by itself enable multi-domain coverage."
+        ),
+        "choices": [
+            "Wildcard certificate",
+            "Subject Alternative Name (SAN) certificate",
+            "Domain Validation (DV) certificate",
+            "Self-signed certificate",
+        ],
+        "objectives": ["1.4", "4.6"],
+    },
+    {
+        "slug": "pki-registration-authority-identity-verification",
+        "title": "Security+ — PKI (Registration Authority role)",
+        "stem": (
+            "In a PKI hierarchy, what is the role of the Registration Authority (RA)?"
+        ),
+        "name": "secplus_q902",
+        "correct": "B",
+        "explain": (
+            "Correct. B — The registration authority (RA) performs identity proofing and validates certificate "
+            "requests, then forwards approved requests to the certificate authority (CA) for issuance. The CA, not "
+            "the RA, signs and issues digital certificates. The CA publishes certificate revocation lists (CRLs); "
+            "maintaining revocation status is not the RA's primary role. Users generate and protect their own private "
+            "keys; the RA does not centrally generate and store private keys for all users."
+        ),
+        "choices": [
+            "To sign and issue digital certificates",
+            "To verify the identity of certificate requestors before forwarding to the CA",
+            "To maintain the Certificate Revocation List",
+            "To generate and store private keys for all users",
+        ],
+        "objectives": ["1.4", "4.6"],
+    },
+    {
+        "slug": "network-segmentation-tier-firewalls-data-center",
+        "title": "Security+ — Network segmentation (tier firewalls)",
+        "stem": (
+            "A network architect is designing a new data center network. Which architecture concept places a firewall "
+            "between each network tier (web, application, database) to control traffic flow between them?"
+        ),
+        "name": "secplus_q903",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Network segmentation divides the environment into separate zones or tiers and enforces "
+            "policy between them, such as placing firewalls between web, application, and database layers to limit "
+            "lateral movement. An air gap is physical isolation with no network connectivity between systems. Defense "
+            "in depth layers multiple independent controls but is a broader strategy, not the specific tiered-zone "
+            "design described. Zero trust requires continuous verification of every access attempt and is a trust "
+            "model that can use segmentation but is not defined solely by tier firewalls."
+        ),
+        "choices": [
+            "Air gap",
+            "Defense in depth",
+            "Network segmentation",
+            "Zero trust",
+        ],
+        "objectives": ["3.2", "2.5"],
+    },
+    {
+        "slug": "client-side-encryption-customer-managed-keys-cloud",
+        "title": "Security+ — Client-side encryption (customer-managed keys)",
+        "stem": (
+            "An organization is migrating to a public cloud provider and wants to ensure that encryption keys are "
+            "managed exclusively by the organization, not the cloud provider. Which approach should they implement?"
+        ),
+        "name": "secplus_q904",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Client-side encryption with customer-managed keys keeps key material under organizational "
+            "control before data reaches the provider, so the cloud vendor cannot access plaintext or manage those "
+            "keys. Server-side encryption with provider-managed keys leaves key custody with the cloud provider. TLS "
+            "protects data in transit but does not address who owns encryption keys for data at rest in the cloud. "
+            "Cloud-native key management with default settings often still uses provider-managed keys unless explicitly "
+            "configured for customer control."
+        ),
+        "choices": [
+            "Server-side encryption with provider-managed keys",
+            "Client-side encryption with customer-managed keys",
+            "Transport Layer Security (TLS) for data in transit",
+            "Cloud-native key management with default settings",
+        ],
+        "objectives": ["1.4", "4.9"],
+    },
+    {
+        "slug": "diffie-hellman-key-exchange-insecure-channel",
+        "title": "Security+ — Diffie-Hellman (shared secret protocol)",
+        "stem": (
+            "A security engineer needs to implement encryption that allows two parties to establish a shared secret over "
+            "an insecure channel without prior key exchange. Which cryptographic protocol should be used?"
+        ),
+        "name": "secplus_q905",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Diffie-Hellman key exchange lets two parties derive a shared secret over an untrusted network "
+            "without having exchanged a pre-shared key. AES-256 is a symmetric cipher that requires an already-established "
+            "key. RSA digital signatures prove authenticity and integrity but do not by themselves negotiate a shared "
+            "symmetric secret for bulk encryption. SHA-256 produces integrity digests and is not a key agreement protocol."
+        ),
+        "choices": [
+            "AES-256",
+            "RSA digital signatures",
+            "Diffie-Hellman key exchange",
+            "SHA-256 hashing",
+        ],
+        "objectives": ["1.4"],
+    },
+    {
+        "slug": "intermediate-ca-certificate-chain-trust-verification",
+        "title": "Security+ — PKI (intermediate CA certificate chain)",
+        "stem": (
+            "A company's web server certificate has expired, and users are receiving browser warnings. The security team "
+            "discovers the certificate was issued by an intermediate CA. What must be included in the server's certificate "
+            "configuration to allow browsers to verify the full trust chain?"
+        ),
+        "name": "secplus_q906",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Browsers must receive the full certificate chain, including intermediate CA certificates, so "
+            "they can link the server certificate to a trusted root CA in the trust store. The root CA private key must "
+            "never be installed on a web server. A CRL supports revocation checking but does not by itself establish the "
+            "issuance chain. An OCSP responder URL enables online revocation status queries; it does not replace "
+            "presenting intermediate certificates needed for path validation."
+        ),
+        "choices": [
+            "The root CA's private key",
+            "The certificate revocation list (CRL)",
+            "The intermediate CA certificate (certificate chain)",
+            "The OCSP responder URL only",
+        ],
+        "objectives": ["1.4", "4.6"],
+    },
+    {
+        "slug": "siem-failed-logins-single-ip-brute-force",
+        "title": "Security+ — Brute force (failed login SIEM alert)",
+        "stem": (
+            "A security analyst receives a SIEM alert about multiple failed login attempts from a single IP address "
+            "within a five-minute window. What type of attack does this most likely indicate?"
+        ),
+        "name": "secplus_q907",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Repeated failed authentication attempts from one source in a short interval is a classic "
+            "indicator of a brute force attack trying many passwords or usernames against an account or service. "
+            "Phishing tricks users into revealing credentials through deceptive messages rather than generating many "
+            "failed logins from one IP. SQL injection manipulates database queries through application input and does "
+            "not typically appear as a burst of authentication failures. A man-in-the-middle attack intercepts or "
+            "alters communications in transit and is not characterized by multiple failed login events from one address."
+        ),
+        "choices": [
+            "Phishing",
+            "Brute force attack",
+            "SQL injection",
+            "Man-in-the-middle",
+        ],
+        "objectives": ["2.3", "2.4"],
+    },
+    {
+        "slug": "siem-event-correlation-rules-alerts",
+        "title": "Security+ — SIEM (event correlation)",
+        "stem": (
+            "Which SIEM function aggregates log data from multiple sources, applies correlation rules, and generates "
+            "alerts when suspicious patterns are detected?"
+        ),
+        "name": "secplus_q908",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Event correlation in a SIEM combines normalized logs from many sources, evaluates them against "
+            "rules or analytics, and raises alerts when related events form a suspicious pattern. Log forwarding moves "
+            "log data to a collector or SIEM but does not by itself analyze patterns or generate correlated alerts. "
+            "Data archiving retains logs for retention and compliance but is not the real-time detection function "
+            "described. Packet capture records network traffic at the frame or packet level and is not the SIEM "
+            "correlation capability that processes aggregated log events."
+        ),
+        "choices": [
+            "Log forwarding",
+            "Event correlation",
+            "Data archiving",
+            "Packet capture",
+        ],
+        "objectives": ["4.4", "4.9"],
+    },
+    {
+        "slug": "windows-event-4624-successful-logon",
+        "title": "Security+ — Windows Event ID 4624 (successful logon)",
+        "stem": (
+            "A Windows administrator needs to investigate a potential privilege escalation. Which Windows Event Log ID "
+            "should the analyst look for to find successful logon events?"
+        ),
+        "name": "secplus_q909",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Event ID 4624 records a successful logon in the Windows Security log and is used to trace "
+            "accounts that authenticated to a system. Event ID 4625 records a failed logon attempt. Event ID 4720 "
+            "indicates a user account was created. Event ID 1102 shows that the audit log was cleared, which is "
+            "suspicious but does not identify successful logons."
+        ),
+        "choices": [
+            "Event ID 4625",
+            "Event ID 4624",
+            "Event ID 4720",
+            "Event ID 1102",
+        ],
+        "objectives": ["2.4", "4.9"],
+    },
+    {
+        "slug": "systemd-journalctl-sshd-follow-auth-logs",
+        "title": "Security+ — journalctl (real-time SSH auth logs)",
+        "stem": (
+            "A Linux administrator wants to review system authentication logs in real time. On a system using systemd, "
+            "which command should be used?"
+        ),
+        "name": "secplus_q910",
+        "correct": "B",
+        "explain": (
+            "Correct. B — journalctl -u sshd -f queries the systemd journal for the sshd service and follows new entries "
+            "in real time, which fits authentication monitoring on systemd-based systems. cat /var/log/auth.log dumps a "
+            "traditional log file once and does not follow live events; auth.log is also more common on non-journal "
+            "syslog setups. tail /var/log/messages shows general system messages and is not the targeted systemd "
+            "approach for SSH authentication streams. dmesg --follow displays kernel ring buffer messages, not SSH "
+            "authentication logs."
+        ),
+        "choices": [
+            "cat /var/log/auth.log",
+            "journalctl -u sshd -f",
+            "tail /var/log/messages",
+            "dmesg --follow",
+        ],
+        "objectives": ["2.4", "4.9"],
+    },
+    {
+        "slug": "soar-automated-incident-response-playbooks",
+        "title": "Security+ — SOAR vs SIEM (response playbooks)",
+        "stem": (
+            "An organization is implementing a SOAR platform. Which capability distinguishes SOAR from a traditional SIEM?"
+        ),
+        "name": "secplus_q911",
+        "correct": "B",
+        "explain": (
+            "Correct. B — SOAR (security orchestration, automation, and response) runs automated incident response "
+            "playbooks that integrate tools and execute containment, enrichment, and remediation steps with minimal "
+            "manual effort. Traditional SIEM platforms aggregate logs from many sources but detection is their core "
+            "strength, not automated multi-tool response. Real-time event correlation is a primary SIEM function SOAR "
+            "may consume but does not uniquely define. Dashboard visualization of security metrics is common in both "
+            "SIEM and SOAR and is not the distinguishing SOAR capability."
+        ),
+        "choices": [
+            "Log aggregation from multiple sources",
+            "Automated incident response playbooks",
+            "Real-time event correlation",
+            "Dashboard visualization of security metrics",
+        ],
+        "objectives": ["4.9", "4.4"],
+    },
+    {
+        "slug": "syslog-tls-tcp-6514-encrypted-forwarding",
+        "title": "Security+ — Encrypted syslog (TLS port 6514)",
+        "stem": (
+            "A security team is configuring syslog forwarding from network devices to a centralized SIEM. Which protocol "
+            "and port combination is recommended for encrypted syslog transmission?"
+        ),
+        "name": "secplus_q912",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Syslog over TLS typically uses TCP port 6514, providing encrypted, reliable delivery of log "
+            "events to a centralized collector or SIEM. UDP port 514 is the legacy syslog transport and is not encrypted. "
+            "TCP port 514 may carry syslog without TLS and does not by itself guarantee encryption. UDP port 6514 is not "
+            "the standard encrypted syslog combination described in current best-practice guidance."
+        ),
+        "choices": [
+            "UDP port 514",
+            "TCP port 514",
+            "TCP port 6514 with TLS",
+            "UDP port 6514",
+        ],
+        "objectives": ["4.4", "4.9"],
+    },
+    {
+        "slug": "siem-false-positives-alert-fatigue",
+        "title": "Security+ — False positives (alert fatigue)",
+        "stem": (
+            "A SIEM analyst notices that the system is generating hundreds of alerts daily for non-malicious activity. "
+            "What term describes this situation, and what is the primary risk?"
+        ),
+        "name": "secplus_q913",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Alerts for benign activity are false positives; when they flood the queue, analysts suffer "
+            "alert fatigue and may ignore or deprioritize real incidents. True positives are correct detections of "
+            "malicious activity; the risk described is noise, not missing alerts because detections were accurate. "
+            "False negatives are missed real attacks and produce too few alerts, not hundreds of benign ones. True "
+            "negatives mean no alert when nothing is wrong and are not the source of excessive daily notifications."
+        ),
+        "choices": [
+            "True positives — risk of missing critical alerts",
+            "False positives — risk of alert fatigue",
+            "False negatives — risk of undetected attacks",
+            "True negatives — risk of over-confidence",
+        ],
+        "objectives": ["4.9", "4.4"],
+    },
+    {
+        "slug": "siem-ioc-sweeping-malicious-ip-matching",
+        "title": "Security+ — IoC sweeping (indicator matching)",
+        "stem": (
+            "A security analyst is performing threat hunting and wants to search for indicators of compromise (IoCs) "
+            "across the organization's log data. The analyst has a list of known malicious IP addresses. Which SIEM "
+            "technique should be used?"
+        ),
+        "name": "secplus_q914",
+        "correct": "B",
+        "explain": (
+            "Correct. B — IoC-based sweeping (indicator matching) searches aggregated logs for known bad indicators such "
+            "as malicious IP addresses, file hashes, or domains supplied by threat intelligence. Anomaly-based detection "
+            "flags deviations from baselines without requiring a predefined indicator list. Behavioral analysis focuses "
+            "on user or entity patterns over time rather than matching a static IoC catalog. Heuristic scanning applies "
+            "rule-of-thumb or pattern guesses and is not the standard SIEM term for hunting known malicious IPs across "
+            "historical log data."
+        ),
+        "choices": [
+            "Anomaly-based detection",
+            "IoC-based sweeping (indicator matching)",
+            "Behavioral analysis",
+            "Heuristic scanning",
+        ],
+        "objectives": ["4.4", "4.9"],
+    },
+    {
+        "slug": "soar-edr-playbook-automatic-endpoint-isolation",
+        "title": "Security+ — SOAR and EDR (auto isolation)",
+        "stem": (
+            "A security operations center (SOC) wants to ensure that when a SIEM detects a confirmed malware infection, "
+            "the affected endpoint is automatically isolated from the network. Which technology integration enables this?"
+        ),
+        "name": "secplus_q915",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A SOAR playbook can consume a SIEM alert and orchestrate an EDR action such as network "
+            "isolation on the affected host without waiting for manual analyst steps. SIEM and ticketing integration "
+            "creates or updates incidents but does not by itself quarantine endpoints. A firewall rule update triggered "
+            "only by email notification is manual and slow compared with automated orchestration. Manual quarantine by "
+            "the network team contradicts the requirement for automatic isolation when malware is confirmed."
+        ),
+        "choices": [
+            "SIEM and ticketing system integration",
+            "SOAR playbook with EDR orchestration",
+            "Firewall rule update via email notification",
+            "Manual quarantine by the network team",
+        ],
+        "objectives": ["4.9", "4.4"],
+    },
+    {
+        "slug": "linux-sshd-failed-password-syslog-auth-facility",
+        "title": "Security+ — Syslog (sshd auth failure)",
+        "stem": (
+            'An analyst observes the following log entry on a Linux system: "Feb 23 03:14:22 webserver sshd[4521]: '
+            'Failed password for root from 203.0.113.50 port 22 ssh2". Which log source generated this entry?'
+        ),
+        "name": "secplus_q916",
+        "correct": "C",
+        "explain": (
+            "Correct. C — SSH daemon authentication failures on Linux are written to syslog under the authentication "
+            "(authpriv) facility, often visible in /var/log/auth.log or the systemd journal. Windows Event Log records "
+            "Security events on Windows hosts, not Linux sshd messages. Apache access logs record HTTP client requests "
+            "and responses, not SSH password failures. The kernel ring buffer (dmesg) captures kernel messages, not "
+            "sshd login attempts."
+        ),
+        "choices": [
+            "Windows Event Log",
+            "Apache access log",
+            "Syslog (authentication facility)",
+            "Kernel ring buffer (dmesg)",
+        ],
+        "objectives": ["2.4", "4.9"],
+    },
+    {
+        "slug": "siem-exfiltration-firewall-flow-proxy-logs",
+        "title": "Security+ — Exfiltration detection (flow and proxy logs)",
+        "stem": (
+            "A security team is building a detection rule in their SIEM to identify potential data exfiltration. Which "
+            "combination of log sources would be MOST useful for detecting large outbound data transfers to unknown "
+            "destinations?"
+        ),
+        "name": "secplus_q917",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Firewall flow logs show connection volume, destinations, and protocols across the perimeter, "
+            "while proxy or secure web gateway logs record outbound web uploads, URLs, and bytes transferred—together "
+            "they best reveal large transfers to unfamiliar external hosts. DNS and DHCP logs help with name resolution "
+            "and address assignment, not measuring bulk egress volume. Windows Security and Active Directory logs focus "
+            "on authentication and directory activity rather than network byte counts to external destinations. Antivirus "
+            "and patch management logs report malware findings and update status, not sustained outbound data movement."
+        ),
+        "choices": [
+            "DNS query logs and DHCP lease logs",
+            "Firewall flow logs and proxy/web gateway logs",
+            "Windows Security Event Logs and Active Directory logs",
+            "Antivirus scan logs and patch management logs",
+        ],
+        "objectives": ["4.4", "4.9"],
+    },
+    {
+        "slug": "svchost-unusual-port-living-off-the-land",
+        "title": "Security+ — Living off the land (svchost)",
+        "stem": (
+            "During a threat hunting exercise, an analyst discovers that a legitimate Windows process (svchost.exe) is "
+            "communicating with an external IP address on an unusual port. This is an example of which threat technique?"
+        ),
+        "name": "secplus_q918",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Living off the land (LOtL) abuses trusted native tools and processes such as svchost.exe so "
+            "malicious activity blends with normal system behavior and evades simple blocklists. Rootkit installation "
+            "hides malware at the kernel or firmware level; the stem emphasizes a legitimate process with suspicious "
+            "network behavior, not kernel concealment. SQL injection targets database queries through application input. "
+            "Cross-site scripting injects malicious scripts into web pages viewed by other users."
+        ),
+        "choices": [
+            "Rootkit installation",
+            "Living off the land (LOtL)",
+            "SQL injection",
+            "Cross-site scripting",
+        ],
+        "objectives": ["2.3", "2.4"],
+    },
+    {
+        "slug": "incident-response-preparation-before-ransomware",
+        "title": "Security+ — IR lifecycle (Preparation phase)",
+        "stem": (
+            "An organization has just confirmed a ransomware infection on several servers. According to the incident "
+            "response lifecycle, which phase should have been completed before this event?"
+        ),
+        "name": "secplus_q919",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Preparation is the first incident response phase and should be completed before an incident "
+            "occurs, including plans, trained staff, backups, communication paths, and tools. Eradication removes the "
+            "threat after detection and containment. Recovery restores systems and data after eradication. Containment "
+            "limits spread during the active incident and comes after confirmation, not before the event."
+        ),
+        "choices": [
+            "Eradication",
+            "Recovery",
+            "Preparation",
+            "Containment",
+        ],
+        "objectives": ["4.8", "5.1"],
+    },
+    {
+        "slug": "incident-response-containment-prevent-spread",
+        "title": "Security+ — IR lifecycle (Containment phase)",
+        "stem": (
+            "During an active security incident, the IR team has identified the affected systems. What is the PRIMARY "
+            "goal of the containment phase?"
+        ),
+        "name": "secplus_q920",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Containment focuses on limiting damage by stopping the incident from spreading to additional "
+            "systems, networks, or accounts while investigation continues. Removing malware from affected systems is "
+            "the eradication phase. Restoring systems from clean backups is part of recovery after the threat is "
+            "addressed. Documenting lessons learned occurs in the post-incident review phase, not during active "
+            "containment."
+        ),
+        "choices": [
+            "Remove the malware from all affected systems",
+            "Prevent the incident from spreading to other systems",
+            "Restore systems from clean backups",
+            "Document lessons learned from the incident",
+        ],
+        "objectives": ["4.8", "5.1"],
+    },
+    {
+        "slug": "incident-response-eradication-remove-malware",
+        "title": "Security+ — IR lifecycle (Eradication phase)",
+        "stem": (
+            "After containing a malware outbreak, the IR team needs to remove all traces of the malicious software from "
+            "affected systems. Which incident response phase does this describe?"
+        ),
+        "name": "secplus_q921",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Eradication removes malware, unauthorized access, and persistence mechanisms from affected "
+            "systems after containment limits further spread. Identification (detection and analysis) determines that "
+            "an incident occurred and defines scope. Containment stops the outbreak from reaching additional systems but "
+            "does not fully remove the threat. Recovery restores normal operations and services after eradication is "
+            "complete."
+        ),
+        "choices": [
+            "Identification",
+            "Containment",
+            "Eradication",
+            "Recovery",
+        ],
+        "objectives": ["4.8", "5.1"],
+    },
+    {
+        "slug": "tabletop-exercise-validate-ir-plan-scenarios",
+        "title": "Security+ — Tabletop exercise (IR plan validation)",
+        "stem": (
+            "A company conducts an annual tabletop exercise for its incident response team. What is the PRIMARY purpose "
+            "of this exercise?"
+        ),
+        "name": "secplus_q922",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A tabletop exercise is a discussion-based walkthrough of incident scenarios that validates "
+            "roles, communications, decisions, and the incident response plan without disrupting live production "
+            "systems. Testing backup restoration speed is a technical recovery drill, not the primary goal of a "
+            "tabletop. A full penetration test actively probes vulnerabilities and is a separate security assessment. "
+            "Updating antivirus signatures is routine endpoint maintenance, not incident response plan rehearsal."
+        ),
+        "choices": [
+            "To test the organization's backup restoration speed",
+            "To walk through incident scenarios and validate the IR plan without live system testing",
+            "To perform a full penetration test of the network",
+            "To update the antivirus signature database",
+        ],
+        "objectives": ["4.8", "5.5"],
+    },
+    {
+        "slug": "incident-response-recovery-verify-eradication-clean",
+        "title": "Security+ — IR lifecycle (Recovery prerequisites)",
+        "stem": (
+            "During the recovery phase of incident response, which action should be performed BEFORE bringing affected "
+            "systems back online?"
+        ),
+        "name": "secplus_q923",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Before recovery brings systems back into production, the team must confirm eradication "
+            "succeeded and hosts are free of malware, backdoors, and unauthorized changes so reinfection does not occur. "
+            "Lessons learned is conducted after the incident is resolved, not before systems return online. Law "
+            "enforcement notification may be required by policy but is not the prerequisite step for safe restoration. "
+            "Deleting system logs destroys forensic evidence and violates sound incident handling practice."
+        ),
+        "choices": [
+            "Conduct a lessons-learned meeting",
+            "Verify that eradication was successful and systems are clean",
+            "Notify law enforcement of the incident",
+            "Delete all system logs to start fresh",
+        ],
+        "objectives": ["4.8", "5.1"],
+    },
+    {
+        "slug": "lessons-learned-document-improvements-after-breach",
+        "title": "Security+ — Lessons learned (post-incident outcomes)",
+        "stem": (
+            "After a major security breach, the IR team conducts a lessons-learned meeting. Which of the following is "
+            "the MOST important outcome of this meeting?"
+        ),
+        "name": "secplus_q924",
+        "correct": "B",
+        "explain": (
+            "Correct. B — The lessons-learned phase captures what worked, what failed, and actionable recommendations "
+            "so the organization improves detection, response, and prevention before the next incident. Assigning blame "
+            "discourages honest reporting and is not the purpose of a constructive post-incident review. Calculating "
+            "financial loss may support business impact analysis but is not the primary outcome of lessons learned. "
+            "Filing a police report may be required separately and does not replace documenting process improvements."
+        ),
+        "choices": [
+            "Assigning blame to the individuals responsible",
+            "Documenting what worked, what failed, and recommendations for improvement",
+            "Calculating the total financial loss from the breach",
+            "Filing a police report about the incident",
+        ],
+        "objectives": ["4.8", "5.1"],
+    },
 ]
 
 
