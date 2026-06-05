@@ -1299,19 +1299,17 @@
         return "complete";
       }
 
-      function showFreeSimUpsellModal() {
-        var modal = document.getElementById("freeSimUpsellModal");
-        if (!modal) return;
-        modal.hidden = false;
-        modal.classList.add("is-open");
-        var dismiss = document.getElementById("freeSimUpsellDismiss");
-        if (dismiss && !dismiss.getAttribute("data-wired")) {
-          dismiss.setAttribute("data-wired", "1");
-          dismiss.addEventListener("click", function () {
-            modal.hidden = true;
-            modal.classList.remove("is-open");
-          });
+      function redirectToLaunchDealOnHome() {
+        if (typeof window.bccQueueSecplusLaunchDealAfterFreeSim === "function") {
+          window.bccQueueSecplusLaunchDealAfterFreeSim();
+        } else {
+          try {
+            sessionStorage.setItem("bcc_secplus_launch_deal_after_sim", "1");
+          } catch (e) {}
         }
+        window.setTimeout(function () {
+          location.replace("/comptia-sec+-home.html?launch_deal=1");
+        }, 900);
       }
 
       function applyFreeModeResultsUi() {
@@ -1339,7 +1337,7 @@
                 window.SECPLUS_SCORECARD_EMAIL.init(pack, defaultEmail);
               }
               if (freeMode && reasonCode === "complete") {
-                showFreeSimUpsellModal();
+                redirectToLaunchDealOnHome();
               }
               return pack;
             }

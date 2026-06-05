@@ -1,7 +1,8 @@
 /**
  * Launch-deal popup on comptia-sec+-home.html.
- * Opens when the user reaches #purchase (pricing). ONETIMEDEAL ($17.99 on $24.99 list)
- * stays active for 1 minute while the popup is open, then redirects to /comptia-sec+-home.html.
+ * Opens when the user reaches #purchase (pricing), or after the free 35-minute simulation
+ * (via ?launch_deal=1 / session flag). ONETIMEDEAL ($17.99 on $24.99 list) stays active for
+ * 1 minute while open. Dismiss, timer expiry, and "no thanks" return to /comptia-sec+-home.html.
  */
 (function () {
   "use strict";
@@ -10,6 +11,8 @@
     launchPrice: 17.99,
     listPrice: 24.99,
     dismissedKey: "bcc_secplus_launch_deal_dismissed_v2",
+    afterSimKey: "bcc_secplus_launch_deal_after_sim",
+    launchDealQuery: "launch_deal",
     durationMs: 60000,
     homePath: "/comptia-sec+-home.html",
   };
@@ -165,8 +168,72 @@
     if (dismissDeal) markDismissed();
   }
 
-  function openPopup() {
-    if (!ensureRoot() || !canOfferLaunchDeal()) return false;
+  function isOnSecplusHomePath() {
+    var path = location.pathname || "";
+    return path.indexOf("comptia-sec+-home") >= 0;
+  }
+
+  function returnToSecplusHome() {
+    var target = DEAL.homePath;
+    if (isOnSecplusHomePath()) {
+      try {
+        var url = new URL(location.href);
+        url.searchParams.delete(DEAL.launchDealQuery);
+        url.hash = "";
+        target = url.pathname + (url.search || "");
+      } catch (_) {
+        target = DEAL.homePath;
+      }
+    }
+    window.location.replace(target);
+  }
+
+  function dismissToHome(dismissDeal) {
+    closePopup(!!dismissDeal);
+    returnToSecplusHome();
+  }
+
+  function shouldOpenFromPostSim() {
+    try {
+      var qs = new URLSearchParams(location.search || "");
+      if (qs.get(DEAL.launchDealQuery) === "1") return true;
+      return sessionStorage.getItem(DEAL.afterSimKey) === "1";
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function clearPostSimPending() {
+    try {
+      sessionStorage.removeItem(DEAL.afterSimKey);
+    } catch (_) {}
+    if (!isOnSecplusHomePath()) return;
+    try {
+      var qs = new URLSearchParams(location.search || "");
+      if (qs.get(DEAL.launchDealQuery) !== "1") return;
+      qs.delete(DEAL.launchDealQuery);
+      var next = location.pathname;
+      var rest = qs.toString();
+      if (rest) next += "?" + rest;
+      if (location.hash) next += location.hash;
+      history.replaceState(null, "", next);
+    } catch (_) {}
+  }
+
+  function freeSimAlreadyCompleted() {
+    return typeof window.secplusFreeSimWasConsumed === "function" && window.secplusFreeSimWasConsumed();
+  }
+
+  function hidePostSimFreeSimCta() {
+    if (!ensureRoot() || !freeSimAlreadyCompleted()) return;
+    var link = root.querySelector("[data-secplus-launch-deal-free-sim]");
+    if (link) link.hidden = true;
+  }
+
+  function openPopup(options) {
+    options = options || {};
+    if (!ensureRoot()) return false;
+    if (!options.force && !canOfferLaunchDeal()) return false;
     if (root.classList.contains("ccna-sim-promo-root--open")) return true;
 
     openedAt = Date.now();
@@ -197,6 +264,42 @@
     }
   }
 
+  function tryOpenPopupFromPostSim() {
+    if (popupShown || !shouldOpenFromPostSim()) return;
+    clearPostSimPending();
+    if (openPopup({ force: true })) {
+      popupShown = true;
+      if (purchaseObserver) {
+        purchaseObserver.disconnect();
+        purchaseObserver = null;
+      }
+    }
+  }
+
+  function isSecplusPortalMember() {
+    return (
+      typeof window.bccSecplusPortalAccessActive === "function" && window.bccSecplusPortalAccessActive()
+    );
+  }
+
+  function needsPortalRestoreNotLaunchDeal() {
+    return (
+      typeof window.bccSecplusPortalNeedsRestoreLink === "function" &&
+      window.bccSecplusPortalNeedsRestoreLink()
+    );
+  }
+
+  function tryOpenPopupFromPortalGate() {
+    if (!isSecplusHome() || isSecplusPortalMember() || needsPortalRestoreNotLaunchDeal()) return false;
+    if (!canOfferLaunchDeal()) return false;
+    if (ensureRoot() && root.classList.contains("ccna-sim-promo-root--open")) return true;
+    if (openPopup()) {
+      popupShown = true;
+      return true;
+    }
+    return false;
+  }
+
   function isPurchaseSectionInView() {
     var purchase = document.getElementById("purchase");
     if (!purchase) return false;
@@ -218,12 +321,16 @@
       el.addEventListener("click", function (ev) {
         if (el.hasAttribute("data-secplus-launch-deal-free-sim")) {
           ev.preventDefault();
+          if (freeSimAlreadyCompleted()) {
+            dismissToHome(true);
+            return;
+          }
           closePopup(true);
           var section = document.getElementById("secplus-lead-capture");
           if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
           return;
         }
-        closePopup(true);
+        dismissToHome(true);
       });
     });
 
@@ -243,7 +350,7 @@
 
     document.addEventListener("keydown", function (ev) {
       if (ev.key !== "Escape" || !root.classList.contains("ccna-sim-promo-root--open")) return;
-      closePopup(true);
+      dismissToHome(true);
     });
   }
 
@@ -303,8 +410,10 @@
     if (!isSecplusHome() || wired) return;
     wired = true;
     wirePopup();
+    hidePostSimFreeSimCta();
     wireStickyObserver();
     wirePurchaseScrollTrigger();
+    tryOpenPopupFromPostSim();
   }
 
   if (document.readyState === "loading") {
@@ -321,4 +430,12 @@
     if (!document.documentElement.classList.contains("secplus-launch-deal-active") || !openedAt) return;
     updateStickyDealNote(formatRemaining(remainingMs()));
   };
+
+  window.bccQueueSecplusLaunchDealAfterFreeSim = function () {
+    try {
+      sessionStorage.setItem(DEAL.afterSimKey, "1");
+    } catch (_) {}
+  };
+
+  window.bccTryOpenSecplusLaunchDealFromPortalGate = tryOpenPopupFromPortalGate;
 })();
