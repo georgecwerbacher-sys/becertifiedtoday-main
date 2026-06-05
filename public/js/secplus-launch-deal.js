@@ -1,6 +1,7 @@
 /**
  * Launch-deal popup on comptia-sec+-home.html.
- * Opens when the user reaches #purchase (pricing), or after the free 35-minute simulation
+ * Opens ~5s after #purchase (pricing) is in view so list price is visible first, or after the free
+ * 35-minute simulation
  * (via ?launch_deal=1 / session flag). ONETIMEDEAL ($17.99 on $24.99 list) stays active for
  * 1 minute while open. Dismiss, timer expiry, and "no thanks" return to /comptia-sec+-home.html.
  */
@@ -14,6 +15,7 @@
     afterSimKey: "bcc_secplus_launch_deal_after_sim",
     launchDealQuery: "launch_deal",
     durationMs: 60000,
+    purchasePopupDelayMs: 5000,
     homePath: "/comptia-sec+-home.html",
   };
 
@@ -23,6 +25,7 @@
   var panel = null;
   var popupShown = false;
   var purchaseObserver = null;
+  var purchasePopupDelayId = null;
   var wired = false;
 
   function isSecplusHome() {
@@ -155,7 +158,15 @@
     return root && panel;
   }
 
+  function clearPurchasePopupDelay() {
+    if (purchasePopupDelayId != null) {
+      clearTimeout(purchasePopupDelayId);
+      purchasePopupDelayId = null;
+    }
+  }
+
   function closePopup(dismissDeal) {
+    clearPurchasePopupDelay();
     if (!ensureRoot()) return;
     root.classList.remove("ccna-sim-promo-root--open");
     root.hidden = true;
@@ -252,28 +263,45 @@
     return true;
   }
 
-  function tryOpenPopupAtPurchase() {
-    if (popupShown || !canOfferLaunchDeal()) return;
-    if (!isPurchaseSectionInView()) return;
-    if (openPopup()) {
-      popupShown = true;
-      if (purchaseObserver) {
-        purchaseObserver.disconnect();
-        purchaseObserver = null;
-      }
+  function finishPurchasePopupTrigger() {
+    popupShown = true;
+    clearPurchasePopupDelay();
+    if (purchaseObserver) {
+      purchaseObserver.disconnect();
+      purchaseObserver = null;
     }
+  }
+
+  function schedulePurchasePopupDelay() {
+    if (popupShown || !canOfferLaunchDeal() || purchasePopupDelayId != null) return;
+    if (!isPurchaseSectionInView()) return;
+    purchasePopupDelayId = window.setTimeout(function () {
+      purchasePopupDelayId = null;
+      if (popupShown || !canOfferLaunchDeal() || !isPurchaseSectionInView()) return;
+      if (openPopup()) finishPurchasePopupTrigger();
+    }, DEAL.purchasePopupDelayMs);
+  }
+
+  function tryOpenPopupAtPurchase() {
+    if (popupShown || !canOfferLaunchDeal()) {
+      clearPurchasePopupDelay();
+      return;
+    }
+    if (!isPurchaseSectionInView()) {
+      clearPurchasePopupDelay();
+      return;
+    }
+    schedulePurchasePopupDelay();
   }
 
   function tryOpenPopupFromPostSim() {
     if (popupShown || !shouldOpenFromPostSim()) return;
     clearPostSimPending();
-    if (openPopup({ force: true })) {
-      popupShown = true;
-      if (purchaseObserver) {
-        purchaseObserver.disconnect();
-        purchaseObserver = null;
-      }
+    if (isPurchaseSectionInView()) {
+      schedulePurchasePopupDelay();
+      return;
     }
+    if (openPopup({ force: true })) finishPurchasePopupTrigger();
   }
 
   function isSecplusPortalMember() {
@@ -293,8 +321,9 @@
     if (!isSecplusHome() || isSecplusPortalMember() || needsPortalRestoreNotLaunchDeal()) return false;
     if (!canOfferLaunchDeal()) return false;
     if (ensureRoot() && root.classList.contains("ccna-sim-promo-root--open")) return true;
+    clearPurchasePopupDelay();
     if (openPopup()) {
-      popupShown = true;
+      finishPurchasePopupTrigger();
       return true;
     }
     return false;
