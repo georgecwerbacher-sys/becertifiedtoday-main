@@ -65,7 +65,11 @@
     clone.removeAttribute("id");
     clone.hidden = false;
     clone.style.display = "";
+    clone.querySelectorAll("[data-pbq-modal], a[href^='#exhibit-'], a[href^='#zt-']").forEach(function (el) {
+      delete el.dataset.pbqModalBound;
+    });
     modalBody.appendChild(clone);
+    bindModalTriggers(modalBody);
     modal.hidden = false;
     modal.classList.add("is-open");
     document.body.classList.add("pbq-modal-open");
