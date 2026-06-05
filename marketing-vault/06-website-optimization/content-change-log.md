@@ -35,7 +35,7 @@ Implement changes in Cursor under `public/`. Link to page notes in `06-website-o
 | 2026-06-04 | `/comptia-sec+-home.html` | Guest copy pass per `12-Writing/_Writing-Rules.md`: you-focused present tense, exam prep H1, no em dashes in visible prose, tighter hero/FAQ/meta/JSON-LD; softened pass guarantees | Writing rules trial + Ads message match | secplus_portal | no | |
 | 2026-06-04 | `/index.html`, `/ccna-home.html`, `/ccnp-home.html` | Same writing-rules pass: you-focused copy, ` | ` titles, no em dashes, practice portal wording, sample counts (2 MCQ where applicable), federal context softened | Guest page consistency | all | no | |
 | 2026-06-04 | `public/sitemap.xml`, `robots.txt`, `scripts/sync-public-crawl-access.py` | Regenerated sitemap (35 URLs): landings, samples, aliases `/sample`, `/secplus-sample`, `/ccna/practice-test`; `npm run sync:sitemap`; sitemap link on index | Crawl discovery | all | no | |
-| 2026-06-04 | `secplus-portal-checkout.js`, landing page | Stripe list **$24.99**; launch popup prefills **SECPLUS7** ($7 off → **$17.99** one-time deal) | Real coupon at checkout | secplus_portal | no | |
+| 2026-06-04 | `secplus-portal-checkout.js`, landing page | Stripe list **$24.99**; launch popup prefills **ONETIMEDEAL** ($7 off → **$17.99** one-time deal) | Real coupon at checkout | secplus_portal | no | |
 
 ---
 

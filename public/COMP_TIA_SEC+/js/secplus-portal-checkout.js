@@ -1,11 +1,11 @@
 /**
  * Stripe Payment Links for CompTIA Security+ portal access.
  *
- * 30-day list price: $24.99 on the Payment Link. Launch offer uses promotion code SECPLUS7
+ * 30-day list price: $24.99 on the Payment Link. Launch offer uses promotion code ONETIMEDEAL
  * ($7.00 off → $17.99 one-time deal at checkout). Create in Stripe Dashboard:
  *   1. Product price $24.99 on the 30-day Payment Link
  *   2. Coupon: $7.00 off (amount_off, USD), one-time, applies to that product
- *   3. Promotion code: SECPLUS7 (must match LAUNCH_PROMO_CODE below)
+ *   3. Promotion code: ONETIMEDEAL (must match LAUNCH_PROMO_CODE below)
  *   4. Payment Link → Allow promotion codes: ON
  *   5. Paste the live Payment Link URL into LINKS["30d"] below
  *
@@ -24,7 +24,7 @@
   };
 
   /** Must match a live Stripe promotion code tied to a $7.00-off coupon on the 30-day price. */
-  var LAUNCH_PROMO_CODE = "SECPLUS7";
+  var LAUNCH_PROMO_CODE = "ONETIMEDEAL";
 
   var PRODUCTS = {
     "10d": {

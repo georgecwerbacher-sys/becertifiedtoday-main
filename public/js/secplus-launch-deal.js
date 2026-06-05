@@ -1,6 +1,6 @@
 /**
  * Launch-deal popup for Security+ ad traffic on comptia-sec+-home.html.
- * Launch pricing ($17.99 with SECPLUS7 coupon on $24.99 list) stays active only while the popup is open.
+ * Launch pricing ($17.99 with ONETIMEDEAL coupon on $24.99 list) stays active only while the popup is open.
  * Closing the popup ends the offer for this browser session.
  */
 (function () {
