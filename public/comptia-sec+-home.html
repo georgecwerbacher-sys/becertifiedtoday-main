@@ -35,7 +35,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta
     name="description"
-    content="SY0-701 exam prep with 800+ practice questions, PBQ simulations, adaptive review, and timed tests in your browser on phone, tablet, or desktop. Free 35-minute sample exam. 30-day access $19.99."
+    content="SY0-701 exam prep with 800+ practice questions, PBQ simulations, adaptive review, and timed tests in your browser. Free 35-minute sample exam. 30-day access $24.99 (launch offer $17.99)."
   />
   <meta
     name="keywords"
@@ -87,7 +87,7 @@
           "name": "CompTIA Security+ SY0-701 Exam Prep: Practice Tests and Simulation",
           "url": "https://becertifiedtoday.com/comptia-sec+-home.html",
           "inLanguage": "en-US",
-          "description": "SY0-701 exam preparation with 800+ interactive practice questions, PBQ simulations, adaptive review, and timed exams in your browser. Free 35-minute sample. 30-day access $19.99. Not a training course.",
+          "description": "SY0-701 exam preparation with 800+ interactive practice questions, PBQ simulations, adaptive review, and timed exams in your browser. Free 35-minute sample. 30-day access $24.99 list ($17.99 with launch offer). Not a training course.",
           "isPartOf": {
             "@type": "WebSite",
             "@id": "https://becertifiedtoday.com/#website",
@@ -113,7 +113,7 @@
               "name": "Can I try Security+ practice before I pay?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Yes. Start the free 35-minute timed simulation on this page with no checkout, or open free sample questions and the dark web PBQ preview on your phone or laptop. Unlock the full 800+ question library with a separate 30-day purchase ($19.99) when you are ready."
+                "text": "Yes. Start the free 35-minute timed simulation on this page with no checkout, or open free sample questions and the dark web PBQ preview on your phone or laptop. Unlock the full 800+ question library with a separate 30-day purchase ($24.99 list; launch offer $17.99 with code SECPLUS7) when you are ready."
               }
             },
             {
@@ -169,7 +169,7 @@
               "name": "How much does full Security+ library access cost?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "30-day all-access is $19.99 one time. It includes 800+ questions, simulations, adaptive review, progress tracking, and the full timed exam. No recurring membership. Price is shown before Stripe checkout."
+                "text": "30-day all-access is $24.99 one time at list price. A launch popup applies promotion code SECPLUS7 for $7 off ($17.99). Includes 800+ questions, simulations, adaptive review, progress tracking, and the full timed exam. No recurring membership. Price is shown before Stripe checkout."
               }
             },
             {
@@ -621,6 +621,93 @@
       text-align: center;
       min-height: 48px;
       padding: 0.85rem 1.25rem;
+    }
+    .secplus-lead-sticky-cta__deal {
+      margin: 8px auto 0;
+      max-width: 28rem;
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.02em;
+      color: #fde68a;
+    }
+    .secplus-launch-urgency-bar {
+      display: none;
+      margin: 0;
+      padding: 10px clamp(16px, 4vw, 28px);
+      text-align: center;
+      font-size: clamp(0.78rem, 2vw, 0.88rem);
+      font-weight: 700;
+      line-height: 1.45;
+      color: #fef3c7;
+      background: linear-gradient(90deg, #4c1d95 0%, #6d28d9 50%, #4c1d95 100%);
+      border-bottom: 1px solid rgba(253, 224, 71, 0.35);
+    }
+    html.secplus-launch-deal-active .secplus-launch-urgency-bar {
+      display: block;
+    }
+    .secplus-launch-urgency-bar strong {
+      color: #fff;
+    }
+    .secplus-launch-urgency-bar [data-secplus-launch-countdown] {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.06em;
+      background: rgba(0, 0, 0, 0.28);
+      color: #fef9c3;
+    }
+    .secplus-launch-deal-timer {
+      margin: 0 0 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(250, 204, 21, 0.4);
+      background: rgba(250, 204, 21, 0.08);
+      text-align: center;
+    }
+    .secplus-launch-deal-timer-label {
+      display: block;
+      margin: 0 0 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fde68a;
+    }
+    .secplus-launch-deal-timer-value {
+      display: block;
+      font-size: clamp(1.6rem, 4vw, 2rem);
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.08em;
+      color: #fef9c3;
+    }
+    .secplus-launch-deal-timer-hint {
+      display: block;
+      margin: 8px 0 0;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: #cbd5e1;
+    }
+    #secplusLaunchDealRoot .ccna-sim-promo-panel {
+      border-color: rgba(139, 92, 246, 0.55);
+    }
+    .purchase-card .purchase-launch-pill {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      vertical-align: middle;
+      border: 1px solid rgba(250, 204, 21, 0.45);
+      background: rgba(250, 204, 21, 0.12);
+      color: #fde68a;
     }
     .purchase-fold {
       margin: 0 0 clamp(24px, 4vw, 32px);
@@ -2517,6 +2604,10 @@
 </head>
 <body>
   <div class="page">
+    <p id="secplusLaunchUrgencyBar" class="secplus-launch-urgency-bar" hidden role="status" aria-live="polite">
+      <strong>Launch rate active</strong> · 30-day access <strong>$17.99</strong> (list $24.99) · closes when you dismiss the popup ·
+      <span data-secplus-launch-countdown>00:00</span>
+    </p>
     <header>
       <a class="brand" href="/index.html" aria-label="Be Certified Today home">
         <img
@@ -2551,7 +2642,8 @@
 
             Stripe product (30-day all-access pass):
             Name: CompTIA Security+ SY0-701 — 30-day all-access pass
-            Description: 30 days of full SY0-701 library on Be Certified Today: question banks, hot-spot and drag-and-drop practice, portal study modes, and timed exam simulation—all in your browser. One-time purchase; no subscription. Access starts at checkout on your device and browser.
+            Description: 30 days of SY0-701 exam prep on Be Certified Today: 800+ interactive practice questions (objectives v5.0), PBQ-style hot-spot simulations, adaptive domain review, progress tracking, and a full 90-minute timed practice exam—all in your browser on phone, tablet, or desktop. One-time purchase; no subscription. Access starts at checkout on this device and browser.
+            Price: $24.99 USD (optional launch code SECPLUS7: $7 off → $17.99)
             Payment Link metadata (optional): productId = secplus-portal-30d
             Payment Link URL: https://buy.stripe.com/5kQ14mbwVgt93yEfo0c3m07
             After payment redirect: /COMP_TIA_SEC+/secplus-portal-checkout-success.html?session_id={CHECKOUT_SESSION_ID}
@@ -2572,12 +2664,34 @@
                   class="purchase-track-box purchase-track-box--thirty-day purchase-pricing-option"
                   aria-label="CompTIA Security+ 30-day all-access pass"
                 >
+                  <div
+                    id="secplusLaunchDealCallout"
+                    class="purchase-live-callout"
+                    hidden
+                    role="status"
+                    aria-live="polite"
+                  >
+                    <p class="purchase-live-heading">Launch rate · $7 off with SECPLUS7</p>
+                    <p class="purchase-live-sub">
+                      Lock in <strong>$17.99</strong> with code <strong>SECPLUS7</strong> at checkout ($7 off $24.99 list).
+                      This rate is active while the launch popup is open.
+                    </p>
+                    <span class="purchase-live-countdown" data-secplus-launch-countdown>00:00</span>
+                  </div>
                   <div class="purchase-track-head">
-                    <p class="purchase-track-title" id="purchase-fold-title">30-day all-access pass</p>
+                    <p class="purchase-track-title" id="purchase-fold-title">
+                      30-day all-access pass
+                      <span class="purchase-launch-pill" id="secplusPurchaseLaunchPill" hidden>Launch deal</span>
+                    </p>
                     <span class="secplus-live-badge">Live</span>
                   </div>
-                  <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
-                    $19.99 <span>/ 30 days</span>
+                  <p class="purchase-price" id="secplusPurchasePrice" aria-label="19 dollars and 99 cents for 30 days">
+                    <span id="secplusPurchasePriceDeal" hidden>
+                      <span class="purchase-price-old" aria-label="List price 24 dollars and 99 cents">$24.99</span>
+                      <span class="purchase-price-now" aria-label="Launch price 17 dollars and 99 cents">$17.99</span>
+                    </span>
+                    <span id="secplusPurchasePriceStandard">$24.99</span>
+                    <span>/ 30 days</span>
                   </p>
                   <p class="purchase-library-highlights" role="note">
                     <strong>800+ interactive SY0-701 questions</strong> (objectives v5.0), hot-spot and PBQ-style
@@ -2595,16 +2709,16 @@
                       data-secplus-portal-30d-checkout
                       data-bcc-item-id="secplus_portal_30d"
                       data-bcc-item-name="CompTIA Security+ 30-day access"
-                      data-bcc-value="19.99"
+                      data-bcc-value="24.99"
                       data-bcc-currency="USD"
-                      aria-label="Purchase 30-day Security+ library access for nineteen ninety-nine"
+                      aria-label="Purchase 30-day Security+ library access for twenty-four ninety-nine"
                     >
                       Start 30-day exam prep
                     </button>
                   </p>
                   <p class="purchase-access-disclaimer">
-                    <strong>$19.99 · 30 days · no subscription.</strong> Includes timed simulation and portal modes. Access is tied to
-                    this browser. Use the same device when you study.
+                    <strong>$24.99 · 30 days · no subscription.</strong> Launch popup applies code SECPLUS7 for $17.99.
+                    Includes timed simulation and portal modes. Access is tied to this browser.
                   </p>
                 </div>
               </div>
@@ -2620,7 +2734,7 @@
                 and <strong>adaptive study modes</strong> that focus your time on weak domains.
                 Practice on your <strong>phone, tablet, or desktop</strong>. No PDFs and no third-party apps.
                 Many federal, DoD, and defense-contractor roles expect Security+ before you start work. Confirm requirements with your manager.
-                Try free samples below, then unlock <strong>30-day full access for $19.99</strong>.
+                Try free samples below, then unlock <strong>30-day full access for $24.99</strong> (launch offer $17.99).
               </p>
               <p class="lead lead--lead-first">
                 You get <strong>800+ SY0-701 practice questions</strong>, hot-spot simulations, and adaptive testing in your browser.
@@ -2685,7 +2799,7 @@
               <li><strong>Back</strong>, <strong>Mark for review</strong>, and <strong>Next</strong>. Same navigation as the full timed sim.</li>
               <li>You get a scaled score and SY0-701 domain breakdown when you finish.</li>
               <li>Runs on phone, tablet, or desktop. One free attempt per browser.</li>
-              <li>Full bank: <a href="#purchase">800+ questions + adaptive modes · $19.99 / 30 days</a></li>
+              <li>Full bank: <a href="#purchase">800+ questions + adaptive modes · $24.99 / 30 days</a></li>
             </ul>
             <p class="lead-capture-open-link" data-secplus-continue-free-sim hidden>
               In progress on this browser?
@@ -2703,7 +2817,7 @@
                 >
                 <p class="assessment-cta-note" data-secplus-free-sim-consumed-note hidden>
                   You have already completed the free sample on this browser.
-                  <a href="#purchase" data-secplus-portal-30d-checkout>Get 30-day full access · $19.99</a>.
+                  <a href="#purchase" data-secplus-portal-30d-checkout>Get 30-day full access · $24.99</a>.
                 </p>
               </div>
             </div>
@@ -2837,7 +2951,7 @@
               </div>
               <p class="secplus-compare-cta">
                 <a href="#secplus-lead-capture">Start free 35-minute timed simulation →</a>
-                · <a href="#purchase" data-secplus-portal-30d-checkout>Unlock 30-day access · $19.99 →</a>
+                · <a href="#purchase" data-secplus-portal-30d-checkout>Unlock 30-day access · $24.99 →</a>
               </p>
               <p class="secplus-compare-note">
                 CompTIA does not endorse third-party dumps. Practice on this site is for preparation only; see the disclaimer below.
@@ -2851,7 +2965,7 @@
                 <p class="purchase-label">Study plan</p>
                 <h2 class="purchase-heading">Match Your Prep to SY0-701</h2>
                 <p class="purchase-lead purchase-lead--tight">
-                  Domain weights and a suggested study order. Unlock the full library with <a href="#purchase">30-day access ($19.99)</a> below.
+                  Domain weights and a suggested study order. Unlock the full library with <a href="#purchase">30-day access ($24.99)</a> below.
                 </p>
                 <div class="purchase-blueprint-callout" aria-labelledby="purchase-blueprint-title">
                   <h3 class="purchase-blueprint-title" id="purchase-blueprint-title">
@@ -2932,7 +3046,7 @@
                   </p>
                 </div>
                 <div class="purchase-notes">
-                  <strong>No recurring membership.</strong> One-time <strong>30-day access ($19.99)</strong> includes the full library and timed simulation. Renew only if you want another period.
+                  <strong>No recurring membership.</strong> One-time <strong>30-day access ($24.99 list)</strong> includes the full library and timed simulation. Launch popup applies SECPLUS7 for $17.99.
                   <strong>No additional software</strong> is required. Everything runs in your browser.
                 </div>
               </div>
@@ -2964,7 +3078,7 @@
                   </p>
                   <p>
                     When you are ready for the full <strong>800+</strong> bank,
-                    <a class="faq-cta-link" href="#purchase" data-secplus-portal-30d-checkout>unlock 30-day access · $19.99</a>.
+                    <a class="faq-cta-link" href="#purchase" data-secplus-portal-30d-checkout>unlock 30-day access · $24.99</a>.
                   </p>
                 </div>
               </details>
@@ -3008,7 +3122,7 @@
                     hot-spot simulations. That is a full bank for structured study, not a short PDF pack or a recycled file shared across discount sites.
                   </p>
                   <p>
-                    <a class="faq-cta-link" href="#purchase" data-secplus-portal-30d-checkout>Get 30-day full access · $19.99</a>
+                    <a class="faq-cta-link" href="#purchase" data-secplus-portal-30d-checkout>Get 30-day full access · $24.99</a>
                   </p>
                 </div>
               </details>
@@ -3051,7 +3165,7 @@
                   </p>
                   <p>
                     Included with
-                    <a class="faq-cta-link" href="#purchase" data-secplus-portal-30d-checkout>30-day library access ($19.99)</a>.
+                    <a class="faq-cta-link" href="#purchase" data-secplus-portal-30d-checkout>30-day library access ($24.99)</a>.
                   </p>
                 </div>
               </details>
@@ -3061,7 +3175,8 @@
                 <summary class="faq-summary">How much does full library access cost?</summary>
                 <div class="faq-answer">
                   <p>
-                    <strong>$19.99 for 30 days</strong>. One-time purchase, <strong>no subscription</strong>. Includes <strong>800+ questions</strong>,
+                    <strong>$24.99 for 30 days</strong> at list price. The launch popup pre-fills code <strong>SECPLUS7</strong> for <strong>$7 off ($17.99)</strong>.
+                    One-time purchase, <strong>no subscription</strong>. Includes <strong>800+ questions</strong>,
                     simulations, adaptive review, progress tracking, and the full timed exam. Price is shown before Stripe checkout.
                   </p>
                   <p>
@@ -3166,6 +3281,66 @@
         >Any questions?</a>
     </footer>
   </div>
+  <div
+    id="secplusLaunchDealRoot"
+    class="ccna-sim-promo-root"
+    hidden
+    role="presentation"
+    aria-hidden="true"
+  >
+    <div class="ccna-sim-promo-backdrop" data-secplus-launch-deal-dismiss tabindex="-1"></div>
+    <div
+      class="ccna-sim-promo-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="secplusLaunchDealTitle"
+      tabindex="-1"
+    >
+      <button type="button" class="ccna-sim-promo-close" data-secplus-launch-deal-dismiss aria-label="Close launch offer">
+        ×
+      </button>
+      <p class="ccna-sim-promo-eyebrow">CompTIA Security+ SY0-701</p>
+      <h2 id="secplusLaunchDealTitle">Launch rate · 30-day full access</h2>
+      <p class="ccna-sim-promo-price">
+        <span class="ccna-sim-promo-price-was">$24.99</span>
+        <span class="ccna-sim-promo-price-now">$17.99</span>
+        <span class="ccna-sim-promo-limited-pill">$7 off · SECPLUS7</span>
+      </p>
+      <div class="secplus-launch-deal-timer" role="status" aria-live="polite">
+        <span class="secplus-launch-deal-timer-label">Offer active</span>
+        <span class="secplus-launch-deal-timer-value" data-secplus-launch-countdown>00:00</span>
+        <span class="secplus-launch-deal-timer-hint">One-time launch deal. Close this popup and the $7-off rate goes away. Code SECPLUS7 pre-fills at checkout.</span>
+      </div>
+      <p class="ccna-sim-promo-lead">
+        You get <strong>800+ SY0-701 questions</strong>, PBQ simulations, adaptive review, and the full
+        <strong>90-minute timed exam</strong> in your browser. One-time purchase. No subscription.
+      </p>
+      <div class="ccna-sim-promo-actions">
+        <button
+          type="button"
+          class="ccna-sim-promo-primary"
+          data-secplus-launch-deal-checkout
+          data-bcc-item-id="secplus_portal_30d"
+          data-bcc-item-name="CompTIA Security+ 30-day access"
+          data-bcc-value="17.99"
+          data-bcc-currency="USD"
+          aria-label="Purchase 30-day Security+ library access for seventeen ninety-nine"
+        >
+          Start 30-day exam prep · $17.99
+        </button>
+        <a
+          class="ccna-sim-promo-secondary"
+          href="#secplus-lead-capture"
+          data-secplus-launch-deal-dismiss
+          data-secplus-launch-deal-free-sim
+          >Try free 35-min simulation first</a
+        >
+        <button type="button" class="ccna-sim-promo-secondary" data-secplus-launch-deal-dismiss>
+          No thanks, full price later
+        </button>
+      </div>
+    </div>
+  </div>
   <div id="secplusLeadStickyCta" class="secplus-lead-sticky-cta" hidden aria-hidden="true">
     <a
       id="secplusLeadStickyCtaLink"
@@ -3175,6 +3350,7 @@
       data-secplus-start-method="secplus_free_sim_sticky"
       >Start Free 35-Min Simulation</a
     >
+    <p id="secplusLeadStickyDealNote" class="secplus-lead-sticky-cta__deal" hidden></p>
   </div>
   <div
     id="secplusPortalGateRoot"
@@ -3215,7 +3391,7 @@
           data-secplus-portal-30d-checkout
           aria-label="Purchase 30-day Security+ library access and go to Stripe checkout"
         >
-          Start 30-day exam prep · $19.99
+          Start 30-day exam prep · $24.99
         </button>
         <a
           class="ccna-sim-promo-secondary"
@@ -3249,6 +3425,7 @@
   <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-checkout.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-test-sim-storage.js" defer></script>
+  <script src="/js/secplus-launch-deal.js" defer></script>
   <script src="/js/secplus-lead-capture.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {

@@ -137,9 +137,30 @@ Only after email + retargeting prove incremental lift at acceptable **ROAS**.
 
 | Product | List price (verify on site) | First promotion candidate |
 |---------|----------------------------|-------------------------|
-| Security+ SY0-701 | $9.99 sim · $19.99 portal | Email after free 35-min sim |
+| Security+ SY0-701 | $9.99 sim · **$24.99 portal list** · **SECPLUS7** ($7 off → $17.99 one-time launch popup) | Email after free 35-min sim |
 | CCNA 200-301 | $9.99 sim · $19.99 portal | After CCNA Ads launch + baseline |
 | ENCOR 350-401 | $9.99 sim · $19.99 portal | Same |
+
+---
+
+## Stripe setup — Security+ 30-day launch coupon (2026-06-04)
+
+Payment Link: `5kQ14mbwVgt93yEfo0c3m07` (see `secplus-portal-checkout.js`).
+
+| Step | Stripe Dashboard |
+|------|------------------|
+| 1 | **Products** → 30-day Security+ pass → set price to **$24.99** (new Price on Payment Link if needed) |
+| 2 | **Coupons** → Create → **Fixed amount** **$7.00** off (USD), one-time, optional expiry / max redemptions |
+| 3 | **Promotion codes** → Create code **`SECPLUS7`** linked to that coupon |
+| 4 | **Payment Links** → 30-day link → **Allow promotion codes**: ON |
+| 5 | Paste live Payment Link URL into `LINKS["30d"]` in `secplus-portal-checkout.js` |
+| 6 | Test: `{payment_link_url}?prefilled_promo_code=SECPLUS7` → total **$17.99** |
+
+**Math:** $24.99 − $7.00 = **$17.99** (one-time launch deal).
+
+Site behavior: launch popup open → checkout URL includes `prefilled_promo_code=SECPLUS7`. Popup closed → full **$24.99** link, no code.
+
+**If your Stripe promotion code is not `SECPLUS7`**, set `LAUNCH_PROMO_CODE` in `public/COMP_TIA_SEC+/js/secplus-portal-checkout.js` to match.
 
 ---
 
@@ -148,7 +169,7 @@ Only after email + retargeting prove incremental lift at acceptable **ROAS**.
 | Date | Decision | Rationale |
 |------|----------|-----------|
 | 2026-06-01 | **No coupon** during Security+ $10/day launch | Free sim is engagement; need clean CPA data at list price |
-| 2026-06-01 | First promotion test = **email nurture** to leads, not Search | Protects Ads learning; reaches warm audience |
+| 2026-06-04 | **SECPLUS7** on-site only (launch popup); list **$24.99** → **$17.99** with coupon | Coupon not in Search RSAs; prefilled when popup open |
 
 ## Open questions
 

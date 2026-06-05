@@ -173,12 +173,15 @@
   function configureLeadStickyCta(link) {
     if (!link) return;
     if (freeSimWasConsumed()) {
-      link.textContent = "Unlock 700+ questions — $19.99";
+      link.textContent = "Unlock 700+ questions — $24.99";
       link.setAttribute("href", "#purchase");
       link.removeAttribute("data-secplus-start-free-sim");
       link.removeAttribute("data-secplus-start-method");
       link.setAttribute("data-secplus-portal-30d-checkout", "");
       wireStickyUpgradeCheckout(link);
+      if (typeof window.bccRefreshSecplusLaunchDealSticky === "function") {
+        window.bccRefreshSecplusLaunchDealSticky();
+      }
       return;
     }
     link.textContent = "Start free 35-min simulation";

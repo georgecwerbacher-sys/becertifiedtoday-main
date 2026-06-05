@@ -1,0 +1,38 @@
+{
+	"nodes":[
+		{"id":"hub-readme","type":"file","file":"13-guest-site-map/README.md","x":-520,"y":-320,"width":380,"height":280,"color":"4"},
+		{"id":"n-index","type":"text","text":"# Site index\n\n`/index.html`\n\n**Guest hub** — track cards only go to exam prep landings, not Training Portals.\n\nSamples section links to `/sample` and `/secplus-sample`.","x":0,"y":200,"width":320,"height":220,"color":"5"},
+		{"id":"n-ccna-home","type":"text","text":"# CCNA landing\n\n`/ccna-home.html`\n\n`#ccna-lead-capture` · `#purchase`\n\nAds: `ccna_portal`","x":420,"y":0,"width":300,"height":200,"color":"6"},
+		{"id":"n-encor-home","type":"text","text":"# ENCOR landing\n\n`/ccnp-home.html`\n\n`#encor-lead-capture` · `#purchase`\n\nAds: `encor_portal`","x":420,"y":240,"width":300,"height":200,"color":"6"},
+		{"id":"n-sec-home","type":"text","text":"# Security+ landing\n\n`/comptia-sec+-home.html`\n\n**Primary Ads URL**\n\n`#secplus-lead-capture` · `#purchase`\n\nAds: `secplus_portal`","x":420,"y":480,"width":300,"height":220,"color":"6"},
+		{"id":"n-free-tier","type":"text","text":"# Free funnel (guest)\n\n**Samples**\n- `/sample?track=…`\n- `/secplus-sample?track=…`\n\n**Timed sims**\n- Sec+: `test-simulation-runner?free=1`\n- CCNA: `free-assessment.html`\n- ENCOR: `test-simulation-runner?free=1`\n\nNot in sitemap: runners (robots Disallow).","x":820,"y":120,"width":340,"height":320,"color":"3"},
+		{"id":"n-purchase","type":"text","text":"# Purchase\n\n`#purchase` on each landing\n\nStripe checkout\n\n30-day access · $19.99 (Sec+ / CCNA / ENCOR)\n\nOne-time; no subscription","x":1240,"y":200,"width":300,"height":240,"color":"2"},
+		{"id":"n-post-checkout","type":"text","text":"# Post-checkout (noindex)\n\n`*-portal-checkout-success.html`\n\nOptional:\n`*-portal-request-link.html`\n`*-portal-magic.html`\n\nAccess tied to **this browser**.","x":1620,"y":200,"width":320,"height":260,"color":"1"},
+		{"id":"n-portal-ccna","type":"text","text":"# CCNA Training Portal\n\n`/CCNA-Study/CCNA_Training_Portal.html`\n\n`noindex` · robots Disallow\n\nFull bank, labs, timed sim","x":2040,"y":0,"width":340,"height":200,"color":"1"},
+		{"id":"n-portal-encor","type":"text","text":"# ENCOR Training Portal\n\n`/CCNP-ENCOR-Study/ENCOR_Training_Portal.html`\n\n`noindex` · robots Disallow\n\nFull bank, D&D, timed sim","x":2040,"y":240,"width":340,"height":200,"color":"1"},
+		{"id":"n-portal-sec","type":"text","text":"# Security+ Training Portal\n\n`/COMP_TIA_SEC+/SEC+_Training_Portal.html`\n\n`noindex` · robots Disallow\n\n800+ questions · PBQ · adaptive","x":2040,"y":480,"width":340,"height":200,"color":"1"},
+		{"id":"n-legacy","type":"text","text":"# Legacy (avoid for Ads)\n\n`/secplus-home.html`\n\n`noindex` + Disallow\n\nUse `comptia-sec+-home` instead.","x":420,"y":760,"width":300,"height":160,"color":"1"},
+		{"id":"ref-pages","type":"file","file":"13-guest-site-map/guest-access-pages.md","x":820,"y":520,"width":400,"height":360,"color":"4"},
+		{"id":"ref-sitemap","type":"file","file":"13-guest-site-map/sitemap.md","x":1280,"y":520,"width":400,"height":360,"color":"4"}
+	],
+	"edges":[
+		{"id":"e-index-ccna","fromNode":"n-index","fromSide":"right","toNode":"n-ccna-home","toSide":"left","label":"CCNA exam prep"},
+		{"id":"e-index-encor","fromNode":"n-index","fromSide":"right","toNode":"n-encor-home","toSide":"left","label":"ENCOR exam prep"},
+		{"id":"e-index-sec","fromNode":"n-index","fromSide":"right","toNode":"n-sec-home","toSide":"left","label":"Security+ exam prep"},
+		{"id":"e-ccna-free","fromNode":"n-ccna-home","fromSide":"right","toNode":"n-free-tier","toSide":"left","label":"free sample / sim"},
+		{"id":"e-encor-free","fromNode":"n-encor-home","fromSide":"right","toNode":"n-free-tier","toSide":"left"},
+		{"id":"e-sec-free","fromNode":"n-sec-home","fromSide":"right","toNode":"n-free-tier","toSide":"left"},
+		{"id":"e-ccna-buy","fromNode":"n-ccna-home","fromSide":"right","toNode":"n-purchase","toSide":"left","label":"#purchase"},
+		{"id":"e-encor-buy","fromNode":"n-encor-home","fromSide":"right","toNode":"n-purchase","toSide":"left","label":"#purchase"},
+		{"id":"e-sec-buy","fromNode":"n-sec-home","fromSide":"right","toNode":"n-purchase","toSide":"left","label":"#purchase"},
+		{"id":"e-free-buy","fromNode":"n-free-tier","fromSide":"right","toNode":"n-purchase","toSide":"left","label":"ready to buy"},
+		{"id":"e-buy-success","fromNode":"n-purchase","fromSide":"right","toNode":"n-post-checkout","toSide":"left","label":"Stripe"},
+		{"id":"e-success-ccna","fromNode":"n-post-checkout","fromSide":"right","toNode":"n-portal-ccna","toSide":"left","label":"CCNA pass"},
+		{"id":"e-success-encor","fromNode":"n-post-checkout","fromSide":"right","toNode":"n-portal-encor","toSide":"left","label":"ENCOR pass"},
+		{"id":"e-success-sec","fromNode":"n-post-checkout","fromSide":"right","toNode":"n-portal-sec","toSide":"left","label":"Sec+ pass"},
+		{"id":"e-sec-legacy","fromNode":"n-sec-home","fromSide":"bottom","toNode":"n-legacy","toSide":"top","label":"do not use","color":"1"},
+		{"id":"e-hub-index","fromNode":"hub-readme","fromSide":"right","toNode":"n-index","toSide":"left","label":"start"},
+		{"id":"e-free-ref","fromNode":"n-free-tier","fromSide":"bottom","toNode":"ref-pages","toSide":"top"},
+		{"id":"e-buy-ref","fromNode":"n-purchase","fromSide":"bottom","toNode":"ref-sitemap","toSide":"top"}
+	]
+}
