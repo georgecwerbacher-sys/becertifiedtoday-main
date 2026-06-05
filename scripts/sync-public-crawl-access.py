@@ -106,6 +106,18 @@ ROBOTS_META_RE = re.compile(
 
 INDEXABLE = '<meta name="robots" content="index, follow" />'
 NOINDEX = '<meta name="robots" content="noindex, nofollow" />'
+NOINDEX_STRICT = (
+    '<meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />'
+)
+
+# Rewrite/canonical admin entry points — must never appear in sitemap.xml.
+SITEMAP_FORBIDDEN_LOCS = frozenset(
+    {
+        f"{SITE_ORIGIN}/admin/analytics",
+        f"{SITE_ORIGIN}/admin/analytics.html",
+        f"{SITE_ORIGIN}/admin",
+    }
+)
 
 
 def rel_public(path: Path) -> str:
@@ -187,7 +199,11 @@ def build_sitemap() -> int:
             ]
         )
     lines.append("</urlset>")
-    SITEMAP.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    xml = "\n".join(lines) + "\n"
+    for forbidden in SITEMAP_FORBIDDEN_LOCS:
+        if forbidden in xml:
+            raise RuntimeError(f"sitemap must not list admin URL: {forbidden}")
+    SITEMAP.write_text(xml, encoding="utf-8")
     return len(entries)
 
 
@@ -210,7 +226,9 @@ def insert_robots_after_charset(html: str, robots_line: str) -> str:
 def sync_html(path: Path) -> str | None:
     rel = rel_public(path)
     want_noindex = should_noindex(rel)
-    want_line = NOINDEX if want_noindex else INDEXABLE
+    want_line = (
+        NOINDEX_STRICT if rel.startswith("admin/") else NOINDEX if want_noindex else INDEXABLE
+    )
 
     original = path.read_text(encoding="utf-8")
     updated = original
