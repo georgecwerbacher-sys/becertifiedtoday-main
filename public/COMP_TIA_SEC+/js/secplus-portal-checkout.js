@@ -20,7 +20,7 @@
 (function () {
   var LINKS = {
     "10d": "https://buy.stripe.com/8x28wObwVfp54CIgs4c3m06",
-    "30d": "https://buy.stripe.com/5kQ14mbwVgt93yEfo0c3m07",
+    "30d": "https://buy.stripe.com/cNi28q6cB90H3yEdfSc3m0a",
   };
 
   /** Must match a live Stripe promotion code tied to a $7.00-off coupon on the 30-day price. */

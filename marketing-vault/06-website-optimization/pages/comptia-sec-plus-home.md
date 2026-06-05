@@ -44,7 +44,7 @@ Primary **Google Ads final URL** for [[../../02-campaigns/security-plus/security
 
 ## Current hero / message (prod 2026-06-04)
 
-- **Page order:** Intro → free sim → samples → `#purchase` → study plan (flex `order` on `.funnel` children)
+- **Page order:** `#purchase` (pricing) → intro → free sim → samples → compare → study plan — matches CCNA funnel (`order: 0` on `#purchase`)
 - **H1:** SY0-701 Security+ Exam Prep: 800+ Questions, Simulations & Adaptive Testing
 - **Lead:** You-focused exam prep (not a course); 800+ bank, simulations, adaptive modes; browser-only; federal/DoD context with “confirm with your manager”; free samples + 35-min timed exam
 - **Writing rules:** [[../../12-Writing/_Writing-Rules|Guest page writing rules]] applied 2026-06-04

@@ -145,7 +145,7 @@ Only after email + retargeting prove incremental lift at acceptable **ROAS**.
 
 ## Stripe setup — Security+ 30-day launch coupon (2026-06-04)
 
-Payment Link: `5kQ14mbwVgt93yEfo0c3m07` (see `secplus-portal-checkout.js`).
+Payment Link: `cNi28q6cB90H3yEdfSc3m0a` (see `secplus-portal-checkout.js`).
 
 | Step | Stripe Dashboard |
 |------|------------------|

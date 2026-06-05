@@ -1,7 +1,7 @@
 /**
  * Launch-deal popup on comptia-sec+-home.html.
  * Opens when the user reaches #purchase (pricing). ONETIMEDEAL ($17.99 on $24.99 list)
- * stays active only while the popup is open. Closing ends the offer for this session.
+ * stays active for 1 minute while the popup is open, then redirects to /comptia-sec+-home.html.
  */
 (function () {
   "use strict";
@@ -10,6 +10,8 @@
     launchPrice: 17.99,
     listPrice: 24.99,
     dismissedKey: "bcc_secplus_launch_deal_dismissed_v2",
+    durationMs: 60000,
+    homePath: "/comptia-sec+-home.html",
   };
 
   var timerId = null;
@@ -46,12 +48,17 @@
     return n < 10 ? "0" + n : String(n);
   }
 
-  function formatElapsed(ms) {
+  function formatRemaining(ms) {
     if (ms < 0) ms = 0;
     var totalSec = Math.floor(ms / 1000);
     var m = Math.floor(totalSec / 60);
     var s = totalSec % 60;
     return pad(m) + ":" + pad(s);
+  }
+
+  function remainingMs() {
+    if (!openedAt) return 0;
+    return Math.max(0, DEAL.durationMs - (Date.now() - openedAt));
   }
 
   function formatSavings() {
@@ -105,11 +112,30 @@
 
   function tickCountdown() {
     if (!openedAt) return;
-    var label = formatElapsed(Date.now() - openedAt);
+    var remaining = remainingMs();
+    if (remaining <= 0) {
+      handleTimerExpired();
+      return;
+    }
+    var label = formatRemaining(remaining);
     countdownEls().forEach(function (el) {
       el.textContent = label;
     });
     updateStickyDealNote(label);
+  }
+
+  function handleTimerExpired() {
+    stopTimer();
+    markDismissed();
+    if (ensureRoot()) {
+      root.classList.remove("ccna-sim-promo-root--open");
+      root.hidden = true;
+      root.setAttribute("hidden", "");
+      root.style.display = "";
+    }
+    document.body.style.overflow = "";
+    deactivateDealUi();
+    window.location.replace(DEAL.homePath);
   }
 
   function stopTimer() {
@@ -226,7 +252,7 @@
     if (!link || typeof MutationObserver === "undefined") return;
     var observer = new MutationObserver(function () {
       if (document.documentElement.classList.contains("secplus-launch-deal-active") && openedAt) {
-        updateStickyDealNote(formatElapsed(Date.now() - openedAt));
+        updateStickyDealNote(formatRemaining(remainingMs()));
       }
     });
     observer.observe(link, { attributes: true, attributeFilter: ["href", "data-secplus-portal-30d-checkout"] });
@@ -293,6 +319,6 @@
 
   window.bccRefreshSecplusLaunchDealSticky = function () {
     if (!document.documentElement.classList.contains("secplus-launch-deal-active") || !openedAt) return;
-    updateStickyDealNote(formatElapsed(Date.now() - openedAt));
+    updateStickyDealNote(formatRemaining(remainingMs()));
   };
 })();

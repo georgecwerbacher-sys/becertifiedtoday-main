@@ -425,19 +425,19 @@
       display: flex;
       flex-direction: column;
     }
-    .funnel > .funnel-intro {
-      order: 1;
+    .funnel > #purchase {
+      order: 0;
     }
-    .funnel > #secplus-lead-capture {
+    .funnel > .funnel-intro {
       order: 2;
     }
-    .funnel > .samples-stack {
+    .funnel > #secplus-lead-capture {
       order: 3;
     }
-    .funnel > #secplus-compare {
+    .funnel > .samples-stack {
       order: 4;
     }
-    .funnel > #purchase {
+    .funnel > #secplus-compare {
       order: 5;
     }
     .funnel > #purchase-details {
@@ -560,13 +560,13 @@
     html.secplus-landing-lead-first .funnel > #secplus-lead-capture {
       order: 2;
     }
-    html.secplus-landing-lead-first .funnel > .samples-stack {
-      order: 3;
+    html.secplus-landing-lead-first .funnel > #purchase {
+      order: 0;
     }
-    html.secplus-landing-lead-first .funnel > #secplus-compare {
+    html.secplus-landing-lead-first .funnel > .samples-stack {
       order: 4;
     }
-    html.secplus-landing-lead-first .funnel > #purchase {
+    html.secplus-landing-lead-first .funnel > #secplus-compare {
       order: 5;
     }
     html.secplus-landing-lead-first .funnel > #purchase-details {
@@ -582,7 +582,7 @@
       letter-spacing: 0.06em;
     }
     html.secplus-landing-lead-first .purchase-fold-lead-note {
-      display: block;
+      display: none;
     }
     html.secplus-landing-lead-first #secplus-lead-capture {
       margin-bottom: clamp(48px, 8vw, 64px);
@@ -2605,8 +2605,8 @@
 <body>
   <div class="page">
     <p id="secplusLaunchUrgencyBar" class="secplus-launch-urgency-bar" hidden role="status" aria-live="polite">
-      <strong>Launch rate active</strong> · 30-day access <strong>$17.99</strong> (list $24.99) · closes when you dismiss the popup ·
-      <span data-secplus-launch-countdown>00:00</span>
+      <strong>Launch rate active</strong> · 30-day access <strong>$17.99</strong> (list $24.99) ·
+      <span data-secplus-launch-countdown>01:00</span> remaining
     </p>
     <header>
       <a class="brand" href="/index.html" aria-label="Be Certified Today home">
@@ -2645,7 +2645,7 @@
             Description: 30 days of SY0-701 exam prep on Be Certified Today: 800+ interactive practice questions (objectives v5.0), PBQ-style hot-spot simulations, adaptive domain review, progress tracking, and a full 90-minute timed practice exam—all in your browser on phone, tablet, or desktop. One-time purchase; no subscription. Access starts at checkout on this device and browser.
             Price: $24.99 USD (optional launch code ONETIMEDEAL: $7 off → $17.99)
             Payment Link metadata (optional): productId = secplus-portal-30d
-            Payment Link URL: https://buy.stripe.com/5kQ14mbwVgt93yEfo0c3m07
+            Payment Link URL: https://buy.stripe.com/cNi28q6cB90H3yEdfSc3m0a
             After payment redirect: /COMP_TIA_SEC+/secplus-portal-checkout-success.html?session_id={CHECKOUT_SESSION_ID}
 
             Stripe product (one-time timed exam simulation voucher):
@@ -2674,9 +2674,9 @@
                     <p class="purchase-live-heading">Launch rate · $7 off with ONETIMEDEAL</p>
                     <p class="purchase-live-sub">
                       Lock in <strong>$17.99</strong> with code <strong>ONETIMEDEAL</strong> at checkout ($7 off $24.99 list).
-                      This rate is active while the launch popup is open.
+                      This rate is active for <strong>1 minute</strong> while the launch popup is open.
                     </p>
-                    <span class="purchase-live-countdown" data-secplus-launch-countdown>00:00</span>
+                    <span class="purchase-live-countdown" data-secplus-launch-countdown>01:00</span>
                   </div>
                   <div class="purchase-track-head">
                     <p class="purchase-track-title" id="purchase-fold-title">
@@ -2965,7 +2965,7 @@
                 <p class="purchase-label">Study plan</p>
                 <h2 class="purchase-heading">Match Your Prep to SY0-701</h2>
                 <p class="purchase-lead purchase-lead--tight">
-                  Domain weights and a suggested study order. Unlock the full library with <a href="#purchase">30-day access ($24.99)</a> below.
+                  Domain weights and a suggested study order. Unlock the full library with <a href="#purchase">30-day access ($24.99)</a> in the pricing section above.
                 </p>
                 <div class="purchase-blueprint-callout" aria-labelledby="purchase-blueprint-title">
                   <h3 class="purchase-blueprint-title" id="purchase-blueprint-title">
@@ -3307,9 +3307,9 @@
         <span class="ccna-sim-promo-limited-pill">$7 off · ONETIMEDEAL</span>
       </p>
       <div class="secplus-launch-deal-timer" role="status" aria-live="polite">
-        <span class="secplus-launch-deal-timer-label">Offer active</span>
-        <span class="secplus-launch-deal-timer-value" data-secplus-launch-countdown>00:00</span>
-        <span class="secplus-launch-deal-timer-hint">One-time launch deal. Close this popup and the $7-off rate goes away. Code ONETIMEDEAL pre-fills at checkout.</span>
+        <span class="secplus-launch-deal-timer-label">Time remaining</span>
+        <span class="secplus-launch-deal-timer-value" data-secplus-launch-countdown>01:00</span>
+        <span class="secplus-launch-deal-timer-hint">One-minute launch deal. When the timer hits 0:00, this offer closes and you return to the Security+ home page. Code ONETIMEDEAL pre-fills at checkout.</span>
       </div>
       <p class="ccna-sim-promo-lead">
         You get <strong>800+ SY0-701 questions</strong>, PBQ simulations, adaptive review, and the full

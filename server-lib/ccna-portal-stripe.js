@@ -11,6 +11,7 @@ const PAYMENT_LINK_SLUG_TO_PRODUCT = {
   "7sYcN4bwV1yf1qwb7Kc3m09": "encor-test-simulation",
   "3cIaEWbwVb8P8SYejWc3m01": "encor-test-simulation",
   "5kQ14mbwVgt93yEfo0c3m07": "secplus-portal-30d",
+  cNi28q6cB90H3yEdfSc3m0a: "secplus-portal-30d",
   "8x28wObwVfp54CIgs4c3m06": "secplus-portal-10d",
   "9B63cudF33Gnc5a1xac3m08": "secplus-test-simulation",
 };
@@ -74,6 +75,9 @@ function productIdFromAmountCents(amount, track, session = null) {
     if (track === "encor") return "encor-portal-10d";
     if (track === "secplus") return "secplus-portal-10d";
     return "ccna-portal-10d";
+  }
+  if (amount === 1799 && track === "secplus") {
+    return "secplus-portal-30d";
   }
   if (amount === 1999 || amount === 1499) {
     if (track === "encor") return "encor-portal-30d";
