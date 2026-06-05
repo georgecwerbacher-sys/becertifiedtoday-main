@@ -1,0 +1,122 @@
+<article class="pbq-section-fragment" data-id="harden-sshd">
+  <h1>SSH daemon configuration</h1>
+  <p class="pbq-sub">
+    Fix insecure values in <code>/etc/ssh/sshd_config</code> to meet CIS Benchmark standards. Red highlighted settings
+    in the audit report used weak defaults — select the secure value for each dropdown.
+  </p>
+
+  <div class="sim-frame pbq-ssh-sim">
+    <div class="pbq-ssh-editor">
+      <div class="pbq-ssh-editor__bar">
+        <span class="pbq-ssh-editor__path">/etc/ssh/sshd_config</span>
+        <span class="pbq-ssh-editor__hint">Change highlighted red values to secure settings</span>
+      </div>
+      <pre class="pbq-ssh-code" aria-label="sshd_config"><code><span class="ln">1</span><span class="cm"># SSH Server Configuration — CIS Benchmark</span>
+<span class="ln">2</span><span class="kw">Port</span> <span class="val">22</span>
+<span class="ln">3</span><span class="kw">Protocol</span> <select class="pbq-ssh-select" data-key="sshd-protocol" data-correct="2" aria-label="Protocol">
+  <option value="">select</option><option>1</option><option>2</option><option>1,2</option>
+</select>
+<span class="ln">4</span><span class="kw">PermitRootLogin</span> <select class="pbq-ssh-select" data-key="sshd-root" data-correct="no" aria-label="PermitRootLogin">
+  <option value="">select</option><option>yes</option><option>no</option><option>prohibit-password</option>
+</select>
+<span class="ln">5</span><span class="kw">PasswordAuthentication</span> <select class="pbq-ssh-select" data-key="sshd-password" data-correct="no" aria-label="PasswordAuthentication">
+  <option value="">select</option><option>yes</option><option>no</option>
+</select>
+<span class="ln">6</span><span class="kw">PermitEmptyPasswords</span> <select class="pbq-ssh-select" data-key="sshd-empty" data-correct="no" aria-label="PermitEmptyPasswords">
+  <option value="">select</option><option>yes</option><option>no</option>
+</select>
+<span class="ln">7</span><span class="kw">MaxAuthTries</span> <select class="pbq-ssh-select" data-key="sshd-maxauth" data-correct="3" aria-label="MaxAuthTries">
+  <option value="">select</option><option>10</option><option>6</option><option>3</option><option>1</option>
+</select>
+<span class="ln">8</span><span class="kw">X11Forwarding</span> <select class="pbq-ssh-select" data-key="sshd-x11" data-correct="no" aria-label="X11Forwarding">
+  <option value="">select</option><option>yes</option><option>no</option>
+</select>
+<span class="ln">9</span><span class="kw">LoginGraceTime</span> <select class="pbq-ssh-select" data-key="sshd-grace" data-correct="60" aria-label="LoginGraceTime">
+  <option value="">select</option><option>120</option><option>60</option><option>30</option>
+</select>
+<span class="ln">10</span><span class="kw">AllowUsers</span> <span class="val">webadmin svcuser</span></code></pre>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="checkBtn" type="button">Check Answer</button>
+    <button id="showBtn" type="button">Show Answer</button>
+    <button id="resetBtn" type="button">Reset</button>
+    <span id="result" role="status" aria-live="polite"></span>
+  </div>
+</article>
+<script>
+(function () {
+  var CORRECT_MSG =
+    "Correct. Protocol 2, root login disabled, password and empty-password auth denied, MaxAuthTries 3, X11Forwarding off, LoginGraceTime 60 — aligned with CIS SSH hardening.";
+
+  var root = document.getElementById("harden-sshd");
+  if (!root) return;
+
+  var selects = root.querySelectorAll(".pbq-ssh-select");
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector(".actions [role='status']");
+
+  function fieldOk(sel) {
+    var val = sel.value.trim();
+    var want = sel.getAttribute("data-correct");
+    var pass = val !== "" && val === want;
+    sel.classList.toggle("pbq-ssh-select--ok", pass);
+    sel.classList.toggle("pbq-ssh-select--bad", val !== "" && !pass);
+    return pass;
+  }
+
+  function allCorrect() {
+    var ok = true;
+    selects.forEach(function (sel) {
+      if (!fieldOk(sel)) ok = false;
+    });
+    return ok;
+  }
+
+  function allFilled() {
+    for (var i = 0; i < selects.length; i++) {
+      if (!selects[i].value) return false;
+    }
+    return true;
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (!allFilled()) {
+      result.className = "is-fail";
+      result.textContent = "Select a secure value for every sshd_config setting.";
+      allCorrect();
+      return;
+    }
+    if (allCorrect()) {
+      result.className = "is-pass";
+      result.textContent = CORRECT_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent =
+        "Not quite. CIS baseline: Protocol 2, no root login, no password/empty-password auth, MaxAuthTries 3, X11 off, LoginGraceTime 60.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    selects.forEach(function (sel) {
+      sel.value = sel.getAttribute("data-correct");
+      fieldOk(sel);
+    });
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    selects.forEach(function (sel) {
+      sel.selectedIndex = 0;
+      sel.classList.remove("pbq-ssh-select--ok", "pbq-ssh-select--bad");
+    });
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>

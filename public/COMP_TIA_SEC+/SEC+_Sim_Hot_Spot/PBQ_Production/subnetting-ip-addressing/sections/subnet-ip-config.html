@@ -1,0 +1,375 @@
+<article class="pbq-section-fragment" data-id="subnet-ip-config">
+  <h1>Subnetting &amp; IP Addressing Configuration</h1>
+  <p class="pbq-sub">
+    A small office is expanding and needs proper network segmentation. Subnet <strong>192.168.10.0/24</strong> to create
+    <strong>at least 6 usable subnets</strong> while <strong>maximizing hosts per subnet</strong>. Then assign the first
+    three subnets in order to the departments below.
+  </p>
+
+  <div class="pbq-subnet-depts" aria-label="Department host requirements">
+    <div class="pbq-subnet-dept pbq-subnet-dept--sales">
+      <strong>Sales</strong>
+      <span>needs 25 hosts</span>
+    </div>
+    <div class="pbq-subnet-dept pbq-subnet-dept--hr">
+      <strong>HR</strong>
+      <span>needs 20 hosts</span>
+    </div>
+    <div class="pbq-subnet-dept pbq-subnet-dept--it">
+      <strong>IT</strong>
+      <span>needs 10 hosts</span>
+    </div>
+  </div>
+
+  <div class="sim-frame pbq-subnet-sim">
+    <div class="pbq-subnet-layout">
+      <section class="pbq-subnet-calc" aria-labelledby="subnet-calc-heading">
+        <h2 id="subnet-calc-heading" class="pbq-subnet-panel-title">Subnet calculator</h2>
+        <dl class="pbq-subnet-fields">
+          <div class="pbq-subnet-field">
+            <dt>Base network (CIDR)</dt>
+            <dd><span class="pbq-subnet-fixed">192.168.10.0/24</span></dd>
+          </div>
+          <div class="pbq-subnet-field">
+            <dt><label for="subnetsNeeded">Subnets needed (min 6)</label></dt>
+            <dd>
+              <input class="pbq-subnet-input" id="subnetsNeeded" data-field="subnets-needed" type="number" min="1" max="64" placeholder="6" />
+            </dd>
+          </div>
+          <div class="pbq-subnet-field">
+            <dt><label for="newPrefix">New prefix (CIDR)</label></dt>
+            <dd>
+              <select class="pbq-subnet-select" id="newPrefix" data-field="new-prefix" aria-label="New prefix CIDR">
+                <option value="">-- Select --</option>
+                <option value="25">/25</option>
+                <option value="26">/26</option>
+                <option value="27">/27</option>
+                <option value="28">/28</option>
+                <option value="29">/29</option>
+                <option value="30">/30</option>
+              </select>
+            </dd>
+          </div>
+        </dl>
+        <div class="pbq-subnet-results" aria-live="polite">
+          <h3 class="pbq-subnet-results__title">Calculated results</h3>
+          <dl class="pbq-subnet-results__grid">
+            <div><dt>Borrowed bits</dt><dd data-result="borrowed">—</dd></div>
+            <div><dt>Subnet mask</dt><dd data-result="mask">—</dd></div>
+            <div><dt>Total subnets</dt><dd data-result="subnets">—</dd></div>
+            <div><dt>Usable hosts / subnet</dt><dd data-result="hosts">—</dd></div>
+            <div><dt>Block size (magic #)</dt><dd data-result="block">—</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="pbq-subnet-viz" aria-labelledby="subnet-viz-heading">
+        <h2 id="subnet-viz-heading" class="pbq-subnet-panel-title">Binary mask visualizer</h2>
+        <div class="pbq-subnet-bits" data-viz="bits" aria-hidden="true">
+          <span class="pbq-subnet-bit pbq-subnet-bit--net" data-bit="128">1</span>
+          <span class="pbq-subnet-bit pbq-subnet-bit--net" data-bit="64">1</span>
+          <span class="pbq-subnet-bit pbq-subnet-bit--net" data-bit="32">1</span>
+          <span class="pbq-subnet-bit pbq-subnet-bit--host" data-bit="16">0</span>
+          <span class="pbq-subnet-bit pbq-subnet-bit--host" data-bit="8">0</span>
+          <span class="pbq-subnet-bit pbq-subnet-bit--host" data-bit="4">0</span>
+          <span class="pbq-subnet-bit pbq-subnet-bit--host" data-bit="2">0</span>
+          <span class="pbq-subnet-bit pbq-subnet-bit--host" data-bit="1">0</span>
+        </div>
+        <p class="pbq-subnet-viz__summary" data-viz="summary">Select a new prefix to visualize the last-octet mask.</p>
+
+        <h3 class="pbq-subnet-panel-title pbq-subnet-panel-title--sub">Magic number reference</h3>
+        <table class="pbq-subnet-magic" data-viz="magic-table">
+          <thead>
+            <tr>
+              <th scope="col">Prefix</th>
+              <th scope="col">Mask (last octet)</th>
+              <th scope="col">Block</th>
+              <th scope="col">Usable hosts</th>
+              <th scope="col">Subnets from /24</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-prefix="25"><th scope="row">/25</th><td>.128</td><td>128</td><td>126</td><td>2</td></tr>
+            <tr data-prefix="26"><th scope="row">/26</th><td>.192</td><td>64</td><td>62</td><td>4</td></tr>
+            <tr data-prefix="27"><th scope="row">/27</th><td>.224</td><td>32</td><td>30</td><td>8</td></tr>
+            <tr data-prefix="28" class="pbq-subnet-magic--warn"><th scope="row">/28</th><td>.240</td><td>16</td><td>14</td><td>16</td></tr>
+            <tr data-prefix="29" class="pbq-subnet-magic--warn"><th scope="row">/29</th><td>.248</td><td>8</td><td>6</td><td>32</td></tr>
+            <tr data-prefix="30" class="pbq-subnet-magic--warn"><th scope="row">/30</th><td>.252</td><td>4</td><td>2</td><td>64</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+    <section class="pbq-subnet-assign" aria-labelledby="subnet-assign-heading">
+      <h2 id="subnet-assign-heading" class="pbq-subnet-panel-title">Department subnet assignment</h2>
+      <p class="pbq-subnet-assign__note">Assign the <strong>first three subnets</strong> (in order) to Sales, HR, and IT.</p>
+      <table class="pbq-subnet-assign__table">
+        <thead>
+          <tr>
+            <th scope="col">Department</th>
+            <th scope="col">Hosts required</th>
+            <th scope="col">Assigned subnet (network/prefix)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Sales</th>
+            <td>25</td>
+            <td>
+              <select class="pbq-subnet-select" data-field="assign-sales" aria-label="Sales subnet assignment">
+                <option value="">-- Select subnet --</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">HR</th>
+            <td>20</td>
+            <td>
+              <select class="pbq-subnet-select" data-field="assign-hr" aria-label="HR subnet assignment">
+                <option value="">-- Select subnet --</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">IT</th>
+            <td>10</td>
+            <td>
+              <select class="pbq-subnet-select" data-field="assign-it" aria-label="IT subnet assignment">
+                <option value="">-- Select subnet --</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <div class="actions">
+    <button id="checkBtn" type="button">Check Answer</button>
+    <button id="showBtn" type="button">Show Answer</button>
+    <button id="resetBtn" type="button">Reset</button>
+    <span id="result" role="status" aria-live="polite"></span>
+  </div>
+</article>
+<script>
+(function () {
+  var PREFIX = {
+    25: { borrowed: 1, mask: "255.255.255.128", lastOctet: 128, block: 128, hosts: 126, subnets: 2, bits: "10000000" },
+    26: { borrowed: 2, mask: "255.255.255.192", lastOctet: 192, block: 64, hosts: 62, subnets: 4, bits: "11000000" },
+    27: { borrowed: 3, mask: "255.255.255.224", lastOctet: 224, block: 32, hosts: 30, subnets: 8, bits: "11100000" },
+    28: { borrowed: 4, mask: "255.255.255.240", lastOctet: 240, block: 16, hosts: 14, subnets: 16, bits: "11110000" },
+    29: { borrowed: 5, mask: "255.255.255.248", lastOctet: 248, block: 8, hosts: 6, subnets: 32, bits: "11111000" },
+    30: { borrowed: 6, mask: "255.255.255.252", lastOctet: 252, block: 4, hosts: 2, subnets: 64, bits: "11111100" }
+  };
+  var CORRECT = {
+    subnetsNeeded: 6,
+    prefix: "27",
+    sales: "192.168.10.0/27",
+    hr: "192.168.10.32/27",
+    it: "192.168.10.64/27"
+  };
+  var CORRECT_MSG =
+    "Correct. /27 borrows 3 bits for 8 subnets (meets the minimum of 6) with 30 usable hosts each — the largest block that still satisfies Sales (25), HR (20), and IT (10). First subnets: Sales 192.168.10.0/27, HR 192.168.10.32/27, IT 192.168.10.64/27.";
+
+  var root = document.getElementById("subnet-ip-config");
+  if (!root) return;
+
+  var subnetsNeeded = root.querySelector('[data-field="subnets-needed"]');
+  var newPrefix = root.querySelector('[data-field="new-prefix"]');
+  var assignSales = root.querySelector('[data-field="assign-sales"]');
+  var assignHr = root.querySelector('[data-field="assign-hr"]');
+  var assignIt = root.querySelector('[data-field="assign-it"]');
+  var magicTable = root.querySelector('[data-viz="magic-table"]');
+  var bitViz = root.querySelector('[data-viz="bits"]');
+  var vizSummary = root.querySelector('[data-viz="summary"]');
+  var resBorrowed = root.querySelector('[data-result="borrowed"]');
+  var resMask = root.querySelector('[data-result="mask"]');
+  var resSubnets = root.querySelector('[data-result="subnets"]');
+  var resHosts = root.querySelector('[data-result="hosts"]');
+  var resBlock = root.querySelector('[data-result="block"]');
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector(".actions [role='status']");
+
+  function subnetOptions(prefix) {
+    var p = PREFIX[prefix];
+    if (!p) return [];
+    var out = [];
+    for (var i = 0; i < p.subnets; i++) {
+      var octet = i * p.block;
+      out.push("192.168.10." + octet + "/" + prefix);
+    }
+    return out;
+  }
+
+  function fillAssignOptions(prefix) {
+    var opts = subnetOptions(prefix);
+    [assignSales, assignHr, assignIt].forEach(function (sel) {
+      var cur = sel.value;
+      sel.innerHTML = '<option value="">-- Select subnet --</option>';
+      opts.forEach(function (cidr) {
+        var o = document.createElement("option");
+        o.value = cidr;
+        o.textContent = cidr;
+        sel.appendChild(o);
+      });
+      if (cur && opts.indexOf(cur) !== -1) sel.value = cur;
+    });
+  }
+
+  function updateBitViz(prefix) {
+    var p = PREFIX[prefix];
+    if (!p) {
+      bitViz.querySelectorAll(".pbq-subnet-bit").forEach(function (bit, idx) {
+        bit.textContent = "0";
+        bit.className = "pbq-subnet-bit pbq-subnet-bit--host";
+      });
+      vizSummary.textContent = "Select a new prefix to visualize the last-octet mask.";
+      return;
+    }
+    var bits = p.bits.split("");
+    var bitEls = bitViz.querySelectorAll(".pbq-subnet-bit");
+    bits.forEach(function (b, idx) {
+      bitEls[idx].textContent = b;
+      bitEls[idx].className = "pbq-subnet-bit " + (b === "1" ? "pbq-subnet-bit--net" : "pbq-subnet-bit--host");
+    });
+    vizSummary.innerHTML =
+      "Last octet mask bits: <strong>" +
+      p.bits +
+      " = " +
+      p.lastOctet +
+      "</strong> · New prefix: <strong>/" +
+      prefix +
+      "</strong> · Borrowed: <strong>" +
+      p.borrowed +
+      " bits</strong>";
+  }
+
+  function updateResults(prefix) {
+    var p = PREFIX[prefix];
+    if (!p) {
+      resBorrowed.textContent = "—";
+      resMask.textContent = "—";
+      resSubnets.textContent = "—";
+      resHosts.textContent = "—";
+      resBlock.textContent = "—";
+      return;
+    }
+    resBorrowed.textContent = String(p.borrowed);
+    resMask.textContent = p.mask;
+    resSubnets.textContent = p.subnets + " subnets";
+    resHosts.textContent = p.hosts + " hosts";
+    resBlock.textContent = String(p.block);
+  }
+
+  function highlightMagicRow(prefix) {
+    magicTable.querySelectorAll("tbody tr").forEach(function (row) {
+      row.classList.toggle("pbq-subnet-magic--active", row.getAttribute("data-prefix") === String(prefix));
+    });
+  }
+
+  function onPrefixChange() {
+    var prefix = newPrefix.value;
+    updateResults(prefix);
+    updateBitViz(prefix);
+    highlightMagicRow(prefix);
+    fillAssignOptions(prefix);
+  }
+
+  newPrefix.addEventListener("change", onPrefixChange);
+
+  magicTable.querySelectorAll("tbody tr").forEach(function (row) {
+    row.addEventListener("click", function () {
+      newPrefix.value = row.getAttribute("data-prefix");
+      onPrefixChange();
+    });
+  });
+
+  function normCidr(val) {
+    return (val || "").trim().toLowerCase().replace(/\s+/g, "");
+  }
+
+  function markField(el, ok) {
+    if (!el) return;
+    el.classList.toggle("pbq-subnet-input--ok", !!ok);
+    el.classList.toggle("pbq-subnet-input--bad", el.value !== "" && !ok);
+  }
+
+  function allFilled() {
+    return (
+      subnetsNeeded.value !== "" &&
+      newPrefix.value !== "" &&
+      assignSales.value !== "" &&
+      assignHr.value !== "" &&
+      assignIt.value !== ""
+    );
+  }
+
+  function grade() {
+    var got = {
+      subnetsNeeded: parseInt(subnetsNeeded.value, 10),
+      prefix: newPrefix.value,
+      sales: normCidr(assignSales.value),
+      hr: normCidr(assignHr.value),
+      it: normCidr(assignIt.value)
+    };
+    var pass =
+      got.subnetsNeeded === CORRECT.subnetsNeeded &&
+      got.prefix === CORRECT.prefix &&
+      got.sales === CORRECT.sales &&
+      got.hr === CORRECT.hr &&
+      got.it === CORRECT.it;
+    markField(subnetsNeeded, got.subnetsNeeded === CORRECT.subnetsNeeded);
+    markField(newPrefix, got.prefix === CORRECT.prefix);
+    markField(assignSales, got.sales === CORRECT.sales);
+    markField(assignHr, got.hr === CORRECT.hr);
+    markField(assignIt, got.it === CORRECT.it);
+    return pass;
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (!allFilled()) {
+      result.className = "is-fail";
+      result.textContent = "Complete subnets needed, new prefix, and all three department assignments.";
+      grade();
+      return;
+    }
+    if (grade()) {
+      result.className = "is-pass";
+      result.textContent = CORRECT_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent =
+        "Not quite. You need at least 6 subnets with the largest usable host block (/27). Assign the first three /27 networks to Sales, HR, and IT in order.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    subnetsNeeded.value = String(CORRECT.subnetsNeeded);
+    newPrefix.value = CORRECT.prefix;
+    onPrefixChange();
+    assignSales.value = CORRECT.sales;
+    assignHr.value = CORRECT.hr;
+    assignIt.value = CORRECT.it;
+    grade();
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    subnetsNeeded.value = "";
+    newPrefix.value = "";
+    assignSales.value = "";
+    assignHr.value = "";
+    assignIt.value = "";
+    onPrefixChange();
+    root.querySelectorAll(".pbq-subnet-input, .pbq-subnet-select").forEach(function (el) {
+      el.classList.remove("pbq-subnet-input--ok", "pbq-subnet-input--bad");
+    });
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>

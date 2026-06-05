@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ — PKI certificate chain exhibit and NET::ERR_CERT_AUTHORITY_INVALID troubleshooting." />
+  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/pki-certificate-chain-browser-error/pki-certificate-chain-browser-error.html" />
+  <title>Security+ PBQ — PKI Certificate Chain — Browser Error | Be Certified Today</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+</head>
+<body class="secplus-question-ui secplus-pbq-ui pbq-folder-suite pbq-exhibit-mcq">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell question-shell--suite">
+    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ practice portal">
+      <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="pbq-card pbq-card--suite">
+      <nav class="question-nav" aria-label="Question navigation">
+        <div class="question-nav-links">
+          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/log-timeline-forensics/log-timeline-forensics.html">Back</a>
+          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/phishing-email-analysis/phishing-email-analysis.html">Next</a>
+        </div>
+      </nav>
+
+      <header class="pbq-suite-header">
+        <h1>PKI Certificate Chain — Browser Error</h1>
+        <p class="pbq-sub">PKI certificate chain exhibit and NET::ERR_CERT_AUTHORITY_INVALID troubleshooting.</p>
+        <p class="pbq-instructions">
+          Use the <strong>folder sidebar</strong> to switch sections on this page. Open <strong>exhibits</strong> in
+          popups where available.
+        </p>
+      </header>
+
+      <div class="pbq-suite-layout">
+        <nav class="pbq-suite-folders pbq-suite-folders--flat" aria-label="Sections">
+<p class="pbq-suite-folders__label"><span aria-hidden="true">📁</span> Sections</p>
+<ul class="pbq-suite-folders__list">
+<li><button type="button" class="pbq-suite-folder__item" data-section="pki-browser-error">Browser cert error</button></li>
+</ul></nav>
+        <div class="pbq-suite-main" id="pbqSuiteMain">
+          <article class="pbq-suite-section" id="pki-browser-error" data-scenario="pki-certificate-chain-browser-error" hidden><div class="pbq-suite-section__inner"><h1>PKI Certificate Chain and Browser Error</h1>
+      <p class="pbq-sub">
+        Review the exhibit on PKI trust paths and browser certificate warnings, then choose the most likely cause and
+        fix for an intranet TLS error.
+      </p>
+      <p class="pbq-instructions">
+        Use the exhibit reference material, then answer the multiple-choice question below.
+      </p>
+
+      <div class="sim-frame">
+        <figure class="pbq-exhibit" aria-labelledby="pki-exhibit-title">
+          <p id="pki-browser-error-pki-exhibit-title" class="pbq-exhibit__banner">PKI Certificate Chain and Browser Certificate Error</p>
+          <div class="pbq-exhibit__grid">
+            <section class="pbq-browser-error" aria-labelledby="browser-error-heading">
+              <h2 id="pki-browser-error-browser-error-heading">BROWSER ERROR:</h2>
+              <p class="pbq-error-code">NET::ERR_CERT_AUTHORITY_INVALID</p>
+              <p class="pbq-error-headline">Your connection is not private</p>
+              <ul>
+                <li>Self-signed cert — no CA signed it</li>
+                <li>Missing intermediate CA in chain</li>
+                <li>Expired certificate (causes different error)</li>
+                <li>Root CA not in browser trust store</li>
+                <li>Certificate revoked via CRL/OCSP</li>
+              </ul>
+              <p class="pbq-error-note">CN mismatch = ERR_CERT_COMMON_NAME_INVALID</p>
+            </section>
+
+            <section class="pbq-chain-panel" aria-labelledby="chain-heading">
+              <h2 id="pki-browser-error-chain-heading" class="visually-hidden">PKI certificate chain</h2>
+              <div class="pbq-chain">
+                <article class="pbq-chain-step pbq-chain-step--root">
+                  <div>
+                    <strong>Root CA</strong>
+                    <span>Self-signed | In OS trust store</span>
+                  </div>
+                  <p class="pbq-chain-aside">Trusted by all browsers/OS</p>
+                </article>
+                <div class="pbq-chain-arrow" aria-hidden="true">↓</div>
+                <article class="pbq-chain-step pbq-chain-step--intermediate">
+                  <div>
+                    <strong>Intermediate CA</strong>
+                    <span>Signed by Root CA</span>
+                  </div>
+                  <p class="pbq-chain-aside">Signs end-entity certs — must be sent by server</p>
+                </article>
+                <div class="pbq-chain-arrow" aria-hidden="true">↓</div>
+                <article class="pbq-chain-step pbq-chain-step--entity">
+                  <div>
+                    <strong>End-Entity Cert</strong>
+                    <span>intranet.example.com</span>
+                  </div>
+                  <p class="pbq-chain-aside">Public key inside CSR sent to CA</p>
+                </article>
+              </div>
+            </section>
+          </div>
+          <p class="pbq-key-terms">
+            <strong>Key terms:</strong> CSR = Certificate Signing Request · CRL = Certificate Revocation List · OCSP =
+            Online Certificate Status Protocol · <strong>Symmetric:</strong> same key both sides (fast, AES-256) ·
+            <strong>Asymmetric:</strong> public/private key pair (RSA, used for key exchange) · <strong>Wildcard
+            cert:</strong> *.domain.com covers all subdomains · <strong>Key escrow:</strong> copy of private key held by
+            third party · <strong>Hashing:</strong> one-way (SHA-256) · <strong>Salting:</strong> random data added before
+            hash to defeat rainbow tables
+          </p>
+        </figure>
+
+        <p class="pbq-stem">
+          A user reports <strong>NET::ERR_CERT_AUTHORITY_INVALID</strong> when visiting the company intranet. What is the
+          MOST likely cause and correct fix?
+        </p>
+
+        <div class="pbq-choices" role="group" aria-labelledby="pki-stem-label">
+          <span id="pki-browser-error-pki-stem-label" class="visually-hidden">Answer choices</span>
+          <label class="pbq-choice">
+            <input type="radio" name="secplus_pbq_pki_chain" value="A" />
+            The CN does not match the URL — get a wildcard certificate covering all subdomains
+          </label>
+          <label class="pbq-choice">
+            <input type="radio" name="secplus_pbq_pki_chain" value="B" />
+            The server is not sending the intermediate CA certificate — the browser cannot verify trust back to the root
+            CA. Fix: configure the web server to serve the full chain, or push the root CA to endpoints via Group Policy
+          </label>
+          <label class="pbq-choice">
+            <input type="radio" name="secplus_pbq_pki_chain" value="C" />
+            The certificate has expired — renew it via the CA by submitting a new CSR
+          </label>
+          <label class="pbq-choice">
+            <input type="radio" name="secplus_pbq_pki_chain" value="D" />
+            The CRL server is unreachable — disable OCSP stapling to fix revocation checking
+          </label>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="pki-browser-error-checkBtn" type="button">Check Answer</button>
+        <button id="pki-browser-error-showBtn" type="button">Show Answer</button>
+        <button id="pki-browser-error-resetBtn" type="button">Reset</button>
+        <span id="pki-browser-error-result" role="status" aria-live="polite"></span>
+      </div>
+<script>
+(function () {
+  var root = document.getElementById("pki-browser-error");
+  if (!root) return;
+
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector(".actions [role='status']");
+var CORRECT = "B";
+      var CORRECT_MSG =
+        "Correct. B — ERR_CERT_AUTHORITY_INVALID means the browser cannot build a trusted chain to a root CA. A missing intermediate certificate is a common cause on intranet TLS; the fix is to install and serve the full chain on the web server, or distribute the enterprise root CA to clients via Group Policy. CN mismatch produces ERR_CERT_COMMON_NAME_INVALID, not an authority error. Expired certificates trigger a different browser warning. Disabling OCSP stapling does not fix an incomplete or untrusted certificate chain.";function selectedChoice() {
+        return root.querySelector('input[name="secplus_pbq_pki_chain"]:checked');
+      }
+
+      function clearResult() {
+        result.className = "";
+        result.textContent = "";
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedChoice();
+        if (!sel) {
+          result.className = "is-fail";
+          result.textContent = "Select an answer, then check again.";
+          return;
+        }
+        if (sel.value === CORRECT) {
+          result.className = "is-pass";
+          result.textContent = CORRECT_MSG;
+        } else {
+          result.className = "is-fail";
+          result.textContent =
+            "Incorrect. Review the exhibit: authority-invalid errors point to chain-of-trust problems, not CN mismatch, expiration, or CRL reachability alone.";
+        }
+      });
+
+      showBtn.addEventListener("click", function () {
+        var correctInput = root.querySelector('input[name="secplus_pbq_pki_chain"][value="' + CORRECT + '"]');
+        if (correctInput) correctInput.checked = true;
+        result.className = "is-pass";
+        result.textContent = CORRECT_MSG;
+      });
+
+      resetBtn.addEventListener("click", function () {
+        root.querySelectorAll('input[name="secplus_pbq_pki_chain"]').forEach(function (input) {
+          input.checked = false;
+        });
+        clearResult();
+      });
+})();
+</script></div></article>
+        </div>
+      </div>
+
+      <p class="pbq-suite-footer">
+        <a class="btn btn-secondary" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/index.html">All PBQ Labs</a>
+      </p>
+    </main>
+  </div>
+
+  <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "pki-browser-error";</script>
+  <!-- pki-browser-error -->
+<script>
+(function () {
+  var root = document.getElementById("pki-browser-error");
+  if (!root) return;
+
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector(".actions [role='status']");
+var CORRECT = "B";
+      var CORRECT_MSG =
+        "Correct. B — ERR_CERT_AUTHORITY_INVALID means the browser cannot build a trusted chain to a root CA. A missing intermediate certificate is a common cause on intranet TLS; the fix is to install and serve the full chain on the web server, or distribute the enterprise root CA to clients via Group Policy. CN mismatch produces ERR_CERT_COMMON_NAME_INVALID, not an authority error. Expired certificates trigger a different browser warning. Disabling OCSP stapling does not fix an incomplete or untrusted certificate chain.";function selectedChoice() {
+        return root.querySelector('input[name="secplus_pbq_pki_chain"]:checked');
+      }
+
+      function clearResult() {
+        result.className = "";
+        result.textContent = "";
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = selectedChoice();
+        if (!sel) {
+          result.className = "is-fail";
+          result.textContent = "Select an answer, then check again.";
+          return;
+        }
+        if (sel.value === CORRECT) {
+          result.className = "is-pass";
+          result.textContent = CORRECT_MSG;
+        } else {
+          result.className = "is-fail";
+          result.textContent =
+            "Incorrect. Review the exhibit: authority-invalid errors point to chain-of-trust problems, not CN mismatch, expiration, or CRL reachability alone.";
+        }
+      });
+
+      showBtn.addEventListener("click", function () {
+        var correctInput = root.querySelector('input[name="secplus_pbq_pki_chain"][value="' + CORRECT + '"]');
+        if (correctInput) correctInput.checked = true;
+        result.className = "is-pass";
+        result.textContent = CORRECT_MSG;
+      });
+
+      resetBtn.addEventListener("click", function () {
+        root.querySelectorAll('input[name="secplus_pbq_pki_chain"]').forEach(function (input) {
+          input.checked = false;
+        });
+        clearResult();
+      });
+})();
+</script>
+</body>
+</html>

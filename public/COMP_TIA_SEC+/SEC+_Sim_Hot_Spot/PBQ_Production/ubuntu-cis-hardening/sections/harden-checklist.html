@@ -1,0 +1,170 @@
+<article class="pbq-section-fragment" data-id="harden-checklist">
+  <h1>Ubuntu 22.04 baseline hardening</h1>
+  <p class="pbq-sub">
+    A newly provisioned Ubuntu 22.04 web server has failed its security baseline audit. Complete the required
+    hardening tasks, then fix the SSH and PAM configuration files in the following sections to meet
+    <strong>CIS Benchmark</strong> standards.
+  </p>
+  <p class="pbq-instructions">
+    <strong>Part 1:</strong> Check every required hardening task below as complete before moving to the configuration
+    files.
+  </p>
+
+  <div class="sim-frame pbq-cis-checklist">
+    <h2 class="pbq-cis-checklist__title">Hardening checklist</h2>
+    <ul class="pbq-cis-checklist__grid">
+      <li>
+        <label class="pbq-cis-checklist__tile">
+          <input type="checkbox" data-task="disable-services" />
+          <span class="pbq-cis-checklist__copy">
+            <strong>Disable unused services</strong>
+            <span>telnet, rsh, rlogin, vsftpd</span>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label class="pbq-cis-checklist__tile">
+          <input type="checkbox" data-task="auditd" />
+          <span class="pbq-cis-checklist__copy">
+            <strong>Enable auditd logging</strong>
+            <span>Track privilege escalation events</span>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label class="pbq-cis-checklist__tile">
+          <input type="checkbox" data-task="shadow-perms" />
+          <span class="pbq-cis-checklist__copy">
+            <strong>Set file permission on /etc/shadow</strong>
+            <span>chmod 640 /etc/shadow</span>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label class="pbq-cis-checklist__tile">
+          <input type="checkbox" data-task="ufw" />
+          <span class="pbq-cis-checklist__copy">
+            <strong>Enable UFW firewall</strong>
+            <span>ufw enable + default deny</span>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label class="pbq-cis-checklist__tile">
+          <input type="checkbox" data-task="aide" />
+          <span class="pbq-cis-checklist__copy">
+            <strong>Install AIDE (file integrity)</strong>
+            <span>Monitor critical system file changes</span>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label class="pbq-cis-checklist__tile">
+          <input type="checkbox" data-task="ntp" />
+          <span class="pbq-cis-checklist__copy">
+            <strong>Configure NTP time sync</strong>
+            <span>chronyc tracking</span>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label class="pbq-cis-checklist__tile">
+          <input type="checkbox" data-task="disable-ipv6" />
+          <span class="pbq-cis-checklist__copy">
+            <strong>Disable IPv6 if unused</strong>
+            <span>net.ipv6.conf.all.disable_ipv6=1</span>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label class="pbq-cis-checklist__tile">
+          <input type="checkbox" data-task="remove-default-accounts" />
+          <span class="pbq-cis-checklist__copy">
+            <strong>Remove default accounts</strong>
+            <span>userdel -r ubuntu</span>
+          </span>
+        </label>
+      </li>
+    </ul>
+  </div>
+
+  <div class="actions">
+    <button id="checkBtn" type="button">Check Answer</button>
+    <button id="showBtn" type="button">Show Answer</button>
+    <button id="resetBtn" type="button">Reset</button>
+    <span id="result" role="status" aria-live="polite"></span>
+  </div>
+</article>
+<script>
+(function () {
+  var TASKS = [
+    "disable-services",
+    "auditd",
+    "shadow-perms",
+    "ufw",
+    "aide",
+    "ntp",
+    "disable-ipv6",
+    "remove-default-accounts"
+  ];
+  var CORRECT_MSG =
+    "Correct. All eight baseline hardening tasks are marked complete — proceed to sshd_config and pwquality.conf.";
+
+  var root = document.getElementById("harden-checklist");
+  if (!root) return;
+
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector(".actions [role='status']");
+
+  function allChecked() {
+    return TASKS.every(function (id) {
+      var box = root.querySelector('[data-task="' + id + '"]');
+      return box && box.checked;
+    });
+  }
+
+  function markTiles(passAll) {
+    root.querySelectorAll(".pbq-cis-checklist__tile").forEach(function (tile) {
+      var checked = tile.querySelector("input").checked;
+      tile.classList.toggle("pbq-cis-checklist__tile--ok", passAll || checked);
+      tile.classList.toggle("pbq-cis-checklist__tile--bad", !passAll && !checked);
+    });
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (allChecked()) {
+      markTiles(true);
+      result.className = "is-pass";
+      result.textContent = CORRECT_MSG;
+    } else {
+      markTiles(false);
+      result.className = "is-fail";
+      result.textContent = "Check all eight hardening tasks before continuing.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    TASKS.forEach(function (id) {
+      var box = root.querySelector('[data-task="' + id + '"]');
+      if (box) box.checked = true;
+    });
+    markTiles(true);
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    root.querySelectorAll('[data-task]').forEach(function (box) {
+      box.checked = false;
+    });
+    root.querySelectorAll(".pbq-cis-checklist__tile").forEach(function (tile) {
+      tile.classList.remove("pbq-cis-checklist__tile--ok", "pbq-cis-checklist__tile--bad");
+    });
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>

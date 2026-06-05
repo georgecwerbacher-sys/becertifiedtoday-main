@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ — Failed baseline audit — hardening checklist, CIS sshd_config, and pwquality.conf password policy." />
+  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/ubuntu-cis-hardening/ubuntu-cis-hardening.html" />
+  <title>Security+ PBQ — Ubuntu 22.04 baseline hardening | Be Certified Today</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+</head>
+<body class="secplus-question-ui secplus-pbq-ui pbq-folder-suite pbq-cis-harden pbq-ssh-harden">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell question-shell--suite">
+    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ practice portal">
+      <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="pbq-card pbq-card--suite">
+      <nav class="question-nav" aria-label="Question navigation">
+        <div class="question-nav-links">
+          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/subnetting-ip-addressing/subnetting-ip-addressing.html">Back</a>
+          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/wap-secure-configuration/wap-secure-configuration.html">Next</a>
+        </div>
+      </nav>
+
+      <header class="pbq-suite-header">
+        <h1>Ubuntu 22.04 baseline hardening</h1>
+        <p class="pbq-sub">Failed baseline audit — hardening checklist, CIS sshd_config, and pwquality.conf password policy.</p>
+        <p class="pbq-instructions">
+          Use the <strong>folder sidebar</strong> to switch sections on this page. Open <strong>exhibits</strong> in
+          popups where available.
+        </p>
+      </header>
+
+      <div class="pbq-suite-layout">
+        <nav class="pbq-suite-folders pbq-suite-folders--flat" aria-label="Sections">
+<p class="pbq-suite-folders__label"><span aria-hidden="true">📁</span> Sections</p>
+<ul class="pbq-suite-folders__list">
+<li><button type="button" class="pbq-suite-folder__item" data-section="harden-checklist">Hardening checklist</button></li>
+<li><button type="button" class="pbq-suite-folder__item" data-section="harden-sshd">sshd_config</button></li>
+<li><button type="button" class="pbq-suite-folder__item" data-section="harden-pwquality">pwquality.conf</button></li>
+</ul></nav>
+        <div class="pbq-suite-main" id="pbqSuiteMain">
+          <article class="pbq-suite-section" id="harden-checklist" data-scenario="ubuntu-cis-hardening" hidden><div class="pbq-suite-section__inner"><h1>Ubuntu 22.04 baseline hardening</h1>
+  <p class="pbq-sub">
+    A newly provisioned Ubuntu 22.04 web server has failed its security baseline audit. Complete the required
+    hardening tasks, then fix the SSH and PAM configuration files in the following sections to meet
+    <strong>CIS Benchmark</strong> standards.
+  </p>
+  <p class="pbq-instructions">
+    <strong>Part 1:</strong> Check every required hardening task below as complete before moving to the configuration
+    files.
+  </p>
+
+  <div class="sim-frame pbq-cis-checklist">
+    <h2 class="pbq-cis-checklist__title">Hardening checklist</h2>
+    <ul class="pbq-cis-checklist__grid">
+      <li>
+        <label class="pbq-cis-checklist__tile">
+          <input type="checkbox" data-task="disable-services" />
+          <span class="pbq-cis-checklist__copy">
+            <strong>Disable unused services</strong>
+            <span>telnet, rsh, rlogin, vsftpd</span>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label class="pbq-cis-checklist__tile">
+          <input type="checkbox" data-task="auditd" />
+          <span class="pbq-cis-checklist__copy">
+            <strong>Enable auditd logging</strong>
+            <span>Track privilege escalation events</span>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label class="pbq-cis-checklist__tile">
+          <input type="checkbox" data-task="shadow-perms" />
+          <span class="pbq-cis-checklist__copy">
+            <strong>Set file permission on /etc/shadow</strong>
+            <span>chmod 640 /etc/shadow</span>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label class="pbq-cis-checklist__tile">
+          <input type="checkbox" data-task="ufw" />
+          <span class="pbq-cis-checklist__copy">
+            <strong>Enable UFW firewall</strong>
+            <span>ufw enable + default deny</span>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label class="pbq-cis-checklist__tile">
+          <input type="checkbox" data-task="aide" />
+          <span class="pbq-cis-checklist__copy">
+            <strong>Install AIDE (file integrity)</strong>
+            <span>Monitor critical system file changes</span>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label class="pbq-cis-checklist__tile">
+          <input type="checkbox" data-task="ntp" />
+          <span class="pbq-cis-checklist__copy">
+            <strong>Configure NTP time sync</strong>
+            <span>chronyc tracking</span>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label class="pbq-cis-checklist__tile">
+          <input type="checkbox" data-task="disable-ipv6" />
+          <span class="pbq-cis-checklist__copy">
+            <strong>Disable IPv6 if unused</strong>
+            <span>net.ipv6.conf.all.disable_ipv6=1</span>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label class="pbq-cis-checklist__tile">
+          <input type="checkbox" data-task="remove-default-accounts" />
+          <span class="pbq-cis-checklist__copy">
+            <strong>Remove default accounts</strong>
+            <span>userdel -r ubuntu</span>
+          </span>
+        </label>
+      </li>
+    </ul>
+  </div>
+
+  <div class="actions">
+    <button id="harden-checklist-checkBtn" type="button">Check Answer</button>
+    <button id="harden-checklist-showBtn" type="button">Show Answer</button>
+    <button id="harden-checklist-resetBtn" type="button">Reset</button>
+    <span id="harden-checklist-result" role="status" aria-live="polite"></span>
+  </div></div></article>
+<article class="pbq-suite-section" id="harden-sshd" data-scenario="ubuntu-cis-hardening" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-ssh-sim">
+    <div class="pbq-ssh-editor">
+      <div class="pbq-ssh-editor__bar">
+        <span class="pbq-ssh-editor__path">/etc/ssh/sshd_config</span>
+        <span class="pbq-ssh-editor__hint">Change highlighted red values to secure settings</span>
+      </div>
+      <pre class="pbq-ssh-code" aria-label="sshd_config"><code><span class="ln">1</span><span class="cm"># SSH Server Configuration — CIS Benchmark</span>
+<span class="ln">2</span><span class="kw">Port</span> <span class="val">22</span>
+<span class="ln">3</span><span class="kw">Protocol</span> <select class="pbq-ssh-select" data-key="sshd-protocol" data-correct="2" aria-label="Protocol">
+  <option value="">select</option><option>1</option><option>2</option><option>1,2</option>
+</select>
+<span class="ln">4</span><span class="kw">PermitRootLogin</span> <select class="pbq-ssh-select" data-key="sshd-root" data-correct="no" aria-label="PermitRootLogin">
+  <option value="">select</option><option>yes</option><option>no</option><option>prohibit-password</option>
+</select>
+<span class="ln">5</span><span class="kw">PasswordAuthentication</span> <select class="pbq-ssh-select" data-key="sshd-password" data-correct="no" aria-label="PasswordAuthentication">
+  <option value="">select</option><option>yes</option><option>no</option>
+</select>
+<span class="ln">6</span><span class="kw">PermitEmptyPasswords</span> <select class="pbq-ssh-select" data-key="sshd-empty" data-correct="no" aria-label="PermitEmptyPasswords">
+  <option value="">select</option><option>yes</option><option>no</option>
+</select>
+<span class="ln">7</span><span class="kw">MaxAuthTries</span> <select class="pbq-ssh-select" data-key="sshd-maxauth" data-correct="3" aria-label="MaxAuthTries">
+  <option value="">select</option><option>10</option><option>6</option><option>3</option><option>1</option>
+</select>
+<span class="ln">8</span><span class="kw">X11Forwarding</span> <select class="pbq-ssh-select" data-key="sshd-x11" data-correct="no" aria-label="X11Forwarding">
+  <option value="">select</option><option>yes</option><option>no</option>
+</select>
+<span class="ln">9</span><span class="kw">LoginGraceTime</span> <select class="pbq-ssh-select" data-key="sshd-grace" data-correct="60" aria-label="LoginGraceTime">
+  <option value="">select</option><option>120</option><option>60</option><option>30</option>
+</select>
+<span class="ln">10</span><span class="kw">AllowUsers</span> <span class="val">webadmin svcuser</span></code></pre>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="harden-sshd-checkBtn" type="button">Check Answer</button>
+    <button id="harden-sshd-showBtn" type="button">Show Answer</button>
+    <button id="harden-sshd-resetBtn" type="button">Reset</button>
+    <span id="harden-sshd-result" role="status" aria-live="polite"></span>
+  </div></div></article>
+<article class="pbq-suite-section" id="harden-pwquality" data-scenario="ubuntu-cis-hardening" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-ssh-sim">
+    <div class="pbq-ssh-editor">
+      <div class="pbq-ssh-editor__bar">
+        <span class="pbq-ssh-editor__path">/etc/security/pwquality.conf</span>
+        <span class="pbq-ssh-editor__hint">Select the secure value for each setting</span>
+      </div>
+      <pre class="pbq-ssh-code" aria-label="pwquality.conf"><code><span class="ln">1</span><span class="cm"># Password quality policy</span>
+<span class="ln">2</span><span class="kw">minlen</span> = <select class="pbq-ssh-select" data-key="pw-minlen" data-correct="14" aria-label="minlen">
+  <option value="">select</option><option>6</option><option>8</option><option>14</option><option>20</option>
+</select>
+<span class="ln">3</span><span class="kw">minclass</span> = <select class="pbq-ssh-select" data-key="pw-minclass" data-correct="4" aria-label="minclass">
+  <option value="">select</option><option>1</option><option>2</option><option>4</option>
+</select>
+<span class="ln">4</span><span class="kw">maxrepeat</span> = <select class="pbq-ssh-select" data-key="pw-maxrepeat" data-correct="2" aria-label="maxrepeat">
+  <option value="">select</option><option value="0">0 (no limit)</option><option value="3">3</option><option value="2">2</option>
+</select>
+<span class="ln">5</span><span class="kw">dcredit</span> = <select class="pbq-ssh-select" data-key="pw-dcredit" data-correct="-1" aria-label="dcredit">
+  <option value="">select</option><option value="0">0 (no requirement)</option><option value="1">1 (optional digit)</option><option value="-1">-1 (require ≥1 digit)</option>
+</select>
+<span class="ln">6</span><span class="kw">ucredit</span> = <select class="pbq-ssh-select" data-key="pw-ucredit" data-correct="-1" aria-label="ucredit">
+  <option value="">select</option><option value="0">0 (no requirement)</option><option value="-1">-1 (require ≥1 uppercase)</option>
+</select>
+<span class="ln">7</span><span class="kw">ocredit</span> = <select class="pbq-ssh-select" data-key="pw-ocredit" data-correct="-1" aria-label="ocredit">
+  <option value="">select</option><option value="0">0 (no requirement)</option><option value="-1">-1 (require ≥1 special char)</option>
+</select></code></pre>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="harden-pwquality-checkBtn" type="button">Submit Configuration</button>
+    <button id="harden-pwquality-showBtn" type="button">Show Answer</button>
+    <button id="harden-pwquality-resetBtn" type="button">Reset</button>
+    <span id="harden-pwquality-result" role="status" aria-live="polite"></span>
+  </div></div></article>
+        </div>
+      </div>
+
+      <p class="pbq-suite-footer">
+        <a class="btn btn-secondary" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/index.html">All PBQ Labs</a>
+      </p>
+    </main>
+  </div>
+
+  <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "harden-checklist";</script>
+  <!-- harden-checklist -->
+<script>
+(function () {
+  var TASKS = [
+    "disable-services",
+    "auditd",
+    "shadow-perms",
+    "ufw",
+    "aide",
+    "ntp",
+    "disable-ipv6",
+    "remove-default-accounts"
+  ];
+  var CORRECT_MSG =
+    "Correct. All eight baseline hardening tasks are marked complete — proceed to sshd_config and pwquality.conf.";
+
+  var root = document.getElementById("harden-checklist");
+  if (!root) return;
+
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector(".actions [role='status']");
+
+  function allChecked() {
+    return TASKS.every(function (id) {
+      var box = root.querySelector('[data-task="' + id + '"]');
+      return box && box.checked;
+    });
+  }
+
+  function markTiles(passAll) {
+    root.querySelectorAll(".pbq-cis-checklist__tile").forEach(function (tile) {
+      var checked = tile.querySelector("input").checked;
+      tile.classList.toggle("pbq-cis-checklist__tile--ok", passAll || checked);
+      tile.classList.toggle("pbq-cis-checklist__tile--bad", !passAll && !checked);
+    });
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (allChecked()) {
+      markTiles(true);
+      result.className = "is-pass";
+      result.textContent = CORRECT_MSG;
+    } else {
+      markTiles(false);
+      result.className = "is-fail";
+      result.textContent = "Check all eight hardening tasks before continuing.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    TASKS.forEach(function (id) {
+      var box = root.querySelector('[data-task="' + id + '"]');
+      if (box) box.checked = true;
+    });
+    markTiles(true);
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    root.querySelectorAll('[data-task]').forEach(function (box) {
+      box.checked = false;
+    });
+    root.querySelectorAll(".pbq-cis-checklist__tile").forEach(function (tile) {
+      tile.classList.remove("pbq-cis-checklist__tile--ok", "pbq-cis-checklist__tile--bad");
+    });
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>
+<!-- harden-sshd -->
+<script>
+(function () {
+  var CORRECT_MSG =
+    "Correct. Protocol 2, root login disabled, password and empty-password auth denied, MaxAuthTries 3, X11Forwarding off, LoginGraceTime 60 — aligned with CIS SSH hardening.";
+
+  var root = document.getElementById("harden-sshd");
+  if (!root) return;
+
+  var selects = root.querySelectorAll(".pbq-ssh-select");
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector(".actions [role='status']");
+
+  function fieldOk(sel) {
+    var val = sel.value.trim();
+    var want = sel.getAttribute("data-correct");
+    var pass = val !== "" && val === want;
+    sel.classList.toggle("pbq-ssh-select--ok", pass);
+    sel.classList.toggle("pbq-ssh-select--bad", val !== "" && !pass);
+    return pass;
+  }
+
+  function allCorrect() {
+    var ok = true;
+    selects.forEach(function (sel) {
+      if (!fieldOk(sel)) ok = false;
+    });
+    return ok;
+  }
+
+  function allFilled() {
+    for (var i = 0; i < selects.length; i++) {
+      if (!selects[i].value) return false;
+    }
+    return true;
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (!allFilled()) {
+      result.className = "is-fail";
+      result.textContent = "Select a secure value for every sshd_config setting.";
+      allCorrect();
+      return;
+    }
+    if (allCorrect()) {
+      result.className = "is-pass";
+      result.textContent = CORRECT_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent =
+        "Not quite. CIS baseline: Protocol 2, no root login, no password/empty-password auth, MaxAuthTries 3, X11 off, LoginGraceTime 60.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    selects.forEach(function (sel) {
+      sel.value = sel.getAttribute("data-correct");
+      fieldOk(sel);
+    });
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    selects.forEach(function (sel) {
+      sel.selectedIndex = 0;
+      sel.classList.remove("pbq-ssh-select--ok", "pbq-ssh-select--bad");
+    });
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>
+<!-- harden-pwquality -->
+<script>
+(function () {
+  var CORRECT_MSG =
+    "Correct. minlen 14, minclass 4, maxrepeat 2, and dcredit/ucredit/ocredit −1 enforce CIS password complexity (length, character classes, and no excessive repeats).";
+
+  var root = document.getElementById("harden-pwquality");
+  if (!root) return;
+
+  var selects = root.querySelectorAll(".pbq-ssh-select");
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector(".actions [role='status']");
+
+  function fieldOk(sel) {
+    var val = sel.value.trim();
+    var want = sel.getAttribute("data-correct");
+    var pass = val !== "" && val === want;
+    sel.classList.toggle("pbq-ssh-select--ok", pass);
+    sel.classList.toggle("pbq-ssh-select--bad", val !== "" && !pass);
+    return pass;
+  }
+
+  function allCorrect() {
+    var ok = true;
+    selects.forEach(function (sel) {
+      if (!fieldOk(sel)) ok = false;
+    });
+    return ok;
+  }
+
+  function allFilled() {
+    for (var i = 0; i < selects.length; i++) {
+      if (!selects[i].value) return false;
+    }
+    return true;
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (!allFilled()) {
+      result.className = "is-fail";
+      result.textContent = "Select a secure value for every pwquality.conf setting.";
+      allCorrect();
+      return;
+    }
+    if (allCorrect()) {
+      result.className = "is-pass";
+      result.textContent = CORRECT_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent =
+        "Not quite. CIS baseline: minlen 14, minclass 4, maxrepeat 2, require digits/uppercase/special characters (dcredit, ucredit, ocredit = −1).";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    selects.forEach(function (sel) {
+      sel.value = sel.getAttribute("data-correct");
+      fieldOk(sel);
+    });
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    selects.forEach(function (sel) {
+      sel.selectedIndex = 0;
+      sel.classList.remove("pbq-ssh-select--ok", "pbq-ssh-select--bad");
+    });
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>
+</body>
+</html>

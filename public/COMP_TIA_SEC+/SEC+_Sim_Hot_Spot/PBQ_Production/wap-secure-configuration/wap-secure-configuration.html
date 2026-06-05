@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ — Corporate WAP — WPA3-Enterprise, 802.1X, hidden SSID, guest isolation, 5 GHz channel 149." />
+  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/wap-secure-configuration/wap-secure-configuration.html" />
+  <title>Security+ PBQ — Wireless Access Point — Secure Configuration | Be Certified Today</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+</head>
+<body class="secplus-question-ui secplus-pbq-ui pbq-folder-suite pbq-wap-config">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell question-shell--suite">
+    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ practice portal">
+      <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="pbq-card pbq-card--suite">
+      <nav class="question-nav" aria-label="Question navigation">
+        <div class="question-nav-links">
+          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/ubuntu-cis-hardening/ubuntu-cis-hardening.html">Back</a>
+          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/log-timeline-forensics/log-timeline-forensics.html">Next</a>
+        </div>
+      </nav>
+
+      <header class="pbq-suite-header">
+        <h1>Wireless Access Point — Secure Configuration</h1>
+        <p class="pbq-sub">Corporate WAP — WPA3-Enterprise, 802.1X, hidden SSID, guest isolation, 5 GHz channel 149.</p>
+        <p class="pbq-instructions">
+          Use the <strong>folder sidebar</strong> to switch sections on this page. Open <strong>exhibits</strong> in
+          popups where available.
+        </p>
+      </header>
+
+      <div class="pbq-suite-layout">
+        <nav class="pbq-suite-folders pbq-suite-folders--flat" aria-label="Sections">
+<p class="pbq-suite-folders__label"><span aria-hidden="true">📁</span> Sections</p>
+<ul class="pbq-suite-folders__list">
+<li><button type="button" class="pbq-suite-folder__item" data-section="wap-secure-config">WAP settings</button></li>
+</ul></nav>
+        <div class="pbq-suite-main" id="pbqSuiteMain">
+          <article class="pbq-suite-section" id="wap-secure-config" data-scenario="wap-secure-configuration" hidden><div class="pbq-suite-section__inner"><h1>Wireless Access Point — Secure Configuration</h1>
+  <p class="pbq-sub">
+    You are a network administrator configuring a new corporate wireless access point. The security policy
+    requires the strongest encryption and authentication, an enterprise-grade auth server, no legacy insecure
+    protocols, a hidden corporate SSID, a separate isolated guest network, and the least congested 5 GHz channel.
+  </p>
+
+  <div class="sim-frame pbq-wap-sim">
+    <div class="pbq-wap-layout">
+      <section class="pbq-wap-panel" aria-labelledby="wap-security-heading">
+        <h2 id="wap-secure-config-wap-security-heading" class="pbq-wap-panel__title">Security &amp; authentication</h2>
+        <div class="pbq-wap-field">
+          <label for="wapEncryption">Encryption standard (choose strongest)</label>
+          <select class="pbq-wap-select" id="wap-secure-config-wapEncryption" data-field="encryption" data-correct="wpa3-enterprise">
+            <option value="">-- Select --</option>
+            <option value="wep">WEP (Wired Equivalent Privacy)</option>
+            <option value="wpa-tkip">WPA (TKIP)</option>
+            <option value="wpa2-personal">WPA2-Personal (AES)</option>
+            <option value="wpa2-enterprise">WPA2-Enterprise (802.1X)</option>
+            <option value="wpa3-enterprise">WPA3-Enterprise (SAE / 802.1X)</option>
+          </select>
+        </div>
+        <div class="pbq-wap-field">
+          <label for="wapAuth">Authentication method</label>
+          <select class="pbq-wap-select" id="wap-secure-config-wapAuth" data-field="auth" data-correct="802.1x-radius">
+            <option value="">-- Select --</option>
+            <option value="psk">Pre-Shared Key (PSK)</option>
+            <option value="802.1x-radius">802.1X with RADIUS server</option>
+            <option value="eap-tls">EAP-TLS (certificate-based)</option>
+            <option value="open">Open (no auth)</option>
+          </select>
+        </div>
+        <div class="pbq-wap-field">
+          <label for="wapSsid">SSID name (corporate)</label>
+          <input class="pbq-wap-input" id="wap-secure-config-wapSsid" data-field="ssid" type="text" placeholder="e.g. AcmeCorp_WiFi" maxlength="32" />
+        </div>
+        <div class="pbq-wap-field">
+          <label for="wapBand">Frequency band &amp; channel</label>
+          <select class="pbq-wap-select" id="wap-secure-config-wapBand" data-field="band" data-correct="5-ch149">
+            <option value="">-- Select --</option>
+            <option value="2.4-ch1">2.4 GHz — Channel 1</option>
+            <option value="2.4-ch6">2.4 GHz — Channel 6</option>
+            <option value="2.4-ch11">2.4 GHz — Channel 11</option>
+            <option value="5-ch36">5 GHz — Channel 36 (non-overlapping)</option>
+            <option value="5-ch149">5 GHz — Channel 149 (non-overlapping)</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="pbq-wap-panel" aria-labelledby="wap-features-heading">
+        <h2 id="wap-secure-config-wap-features-heading" class="pbq-wap-panel__title">Feature toggles</h2>
+        <div class="pbq-wap-toggles">
+          <div class="pbq-wap-toggle" data-field="broadcast" data-correct="off">
+            <div class="pbq-wap-toggle__copy">
+              <strong>Broadcast SSID</strong>
+              <span>Visible to all devices?</span>
+            </div>
+            <div class="pbq-wap-toggle__btns">
+              <button type="button" class="pbq-wap-toggle__btn" data-val="on">ON</button>
+              <button type="button" class="pbq-wap-toggle__btn" data-val="off">OFF</button>
+            </div>
+          </div>
+          <div class="pbq-wap-toggle" data-field="wps" data-correct="off">
+            <div class="pbq-wap-toggle__copy">
+              <strong>WPS (Wi-Fi Protected Setup)</strong>
+              <span>PIN/button-based pairing</span>
+            </div>
+            <div class="pbq-wap-toggle__btns">
+              <button type="button" class="pbq-wap-toggle__btn pbq-wap-toggle__btn--active" data-val="on">ON</button>
+              <button type="button" class="pbq-wap-toggle__btn" data-val="off">OFF</button>
+            </div>
+          </div>
+          <div class="pbq-wap-toggle" data-field="guest" data-correct="on">
+            <div class="pbq-wap-toggle__copy">
+              <strong>Guest network</strong>
+              <span>Isolated from corporate LAN?</span>
+            </div>
+            <div class="pbq-wap-toggle__btns">
+              <button type="button" class="pbq-wap-toggle__btn" data-val="on">ON</button>
+              <button type="button" class="pbq-wap-toggle__btn" data-val="off">OFF</button>
+            </div>
+          </div>
+          <div class="pbq-wap-toggle" data-field="rogue" data-correct="on">
+            <div class="pbq-wap-toggle__copy">
+              <strong>Rogue AP detection</strong>
+              <span>Alert on unauthorized APs</span>
+            </div>
+            <div class="pbq-wap-toggle__btns">
+              <button type="button" class="pbq-wap-toggle__btn" data-val="on">ON</button>
+              <button type="button" class="pbq-wap-toggle__btn" data-val="off">OFF</button>
+            </div>
+          </div>
+          <div class="pbq-wap-toggle" data-field="mgmt-vlan" data-correct="on">
+            <div class="pbq-wap-toggle__copy">
+              <strong>Management VLAN isolation</strong>
+              <span>Separate mgmt traffic</span>
+            </div>
+            <div class="pbq-wap-toggle__btns">
+              <button type="button" class="pbq-wap-toggle__btn" data-val="on">ON</button>
+              <button type="button" class="pbq-wap-toggle__btn" data-val="off">OFF</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pbq-wap-preview" aria-live="polite" aria-label="Configuration preview">
+          <p class="pbq-wap-preview__title">Configuration preview</p>
+          <dl class="pbq-wap-preview__list">
+            <div><dt>Encryption</dt><dd data-preview="encryption">—</dd></div>
+            <div><dt>Auth</dt><dd data-preview="auth">—</dd></div>
+            <div><dt>SSID broadcast</dt><dd data-preview="broadcast">—</dd></div>
+            <div><dt>WPS</dt><dd data-preview="wps">Enabled (ON)</dd></div>
+            <div><dt>Guest network</dt><dd data-preview="guest">—</dd></div>
+            <div><dt>Band / channel</dt><dd data-preview="band">—</dd></div>
+          </dl>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="wap-secure-config-checkBtn" type="button">Check Answer</button>
+    <button id="wap-secure-config-showBtn" type="button">Show Answer</button>
+    <button id="wap-secure-config-resetBtn" type="button">Reset</button>
+    <span id="wap-secure-config-result" role="status" aria-live="polite"></span>
+  </div></div></article>
+        </div>
+      </div>
+
+      <p class="pbq-suite-footer">
+        <a class="btn btn-secondary" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/index.html">All PBQ Labs</a>
+      </p>
+    </main>
+  </div>
+
+  <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "wap-secure-config";</script>
+  <!-- wap-secure-config -->
+<script>
+(function () {
+  var ENCRYPTION_LABELS = {
+    wep: "WEP",
+    "wpa-tkip": "WPA (TKIP)",
+    "wpa2-personal": "WPA2-Personal",
+    "wpa2-enterprise": "WPA2-Enterprise",
+    "wpa3-enterprise": "WPA3-Enterprise"
+  };
+  var AUTH_LABELS = {
+    psk: "PSK",
+    "802.1x-radius": "802.1X / RADIUS",
+    "eap-tls": "EAP-TLS",
+    open: "Open"
+  };
+  var BAND_LABELS = {
+    "2.4-ch1": "2.4 GHz / Ch 1",
+    "2.4-ch6": "2.4 GHz / Ch 6",
+    "2.4-ch11": "2.4 GHz / Ch 11",
+    "5-ch36": "5 GHz / Ch 36",
+    "5-ch149": "5 GHz / Ch 149"
+  };
+  var CORRECT_MSG =
+    "Correct. WPA3-Enterprise with 802.1X/RADIUS, hidden SSID, WPS disabled, guest network isolated, and 5 GHz channel 149 meet the corporate wireless policy.";
+
+  var root = document.getElementById("wap-secure-config");
+  if (!root) return;
+
+  var encryption = root.querySelector('[data-field="encryption"]');
+  var auth = root.querySelector('[data-field="auth"]');
+  var ssid = root.querySelector('[data-field="ssid"]');
+  var band = root.querySelector('[data-field="band"]');
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector(".actions [role='status']");
+
+  function toggleVal(field) {
+    var wrap = root.querySelector('.pbq-wap-toggle[data-field="' + field + '"]');
+    if (!wrap) return "";
+    var active = wrap.querySelector(".pbq-wap-toggle__btn--active");
+    return active ? active.getAttribute("data-val") : "";
+  }
+
+  function setToggle(field, val) {
+    var wrap = root.querySelector('.pbq-wap-toggle[data-field="' + field + '"]');
+    if (!wrap) return;
+    wrap.querySelectorAll(".pbq-wap-toggle__btn").forEach(function (btn) {
+      btn.classList.toggle("pbq-wap-toggle__btn--active", btn.getAttribute("data-val") === val);
+    });
+  }
+
+  function previewClass(field, secure) {
+    var el = root.querySelector('[data-preview="' + field + '"]');
+    if (!el) return;
+    el.classList.toggle("pbq-wap-preview__val--ok", secure === true);
+    el.classList.toggle("pbq-wap-preview__val--bad", secure === false);
+  }
+
+  function updatePreview() {
+    var enc = encryption.value;
+    var authVal = auth.value;
+    var bandVal = band.value;
+    var broadcast = toggleVal("broadcast");
+    var wps = toggleVal("wps");
+    var guest = toggleVal("guest");
+
+    root.querySelector('[data-preview="encryption"]').textContent = enc ? ENCRYPTION_LABELS[enc] : "—";
+    root.querySelector('[data-preview="auth"]').textContent = authVal ? AUTH_LABELS[authVal] : "—";
+    root.querySelector('[data-preview="band"]').textContent = bandVal ? BAND_LABELS[bandVal] : "—";
+
+    if (broadcast === "on") {
+      root.querySelector('[data-preview="broadcast"]').textContent = "Visible (ON)";
+      previewClass("broadcast", false);
+    } else if (broadcast === "off") {
+      root.querySelector('[data-preview="broadcast"]').textContent = "Hidden (OFF)";
+      previewClass("broadcast", true);
+    } else {
+      root.querySelector('[data-preview="broadcast"]').textContent = "—";
+      previewClass("broadcast", null);
+    }
+
+    if (wps === "on") {
+      root.querySelector('[data-preview="wps"]').textContent = "Enabled (ON)";
+      previewClass("wps", false);
+    } else if (wps === "off") {
+      root.querySelector('[data-preview="wps"]').textContent = "Disabled (OFF)";
+      previewClass("wps", true);
+    } else {
+      root.querySelector('[data-preview="wps"]').textContent = "—";
+      previewClass("wps", null);
+    }
+
+    if (guest === "on") {
+      root.querySelector('[data-preview="guest"]').textContent = "Enabled (isolated)";
+      previewClass("guest", true);
+    } else if (guest === "off") {
+      root.querySelector('[data-preview="guest"]').textContent = "Disabled";
+      previewClass("guest", false);
+    } else {
+      root.querySelector('[data-preview="guest"]').textContent = "—";
+      previewClass("guest", null);
+    }
+
+    previewClass("encryption", enc === "wpa3-enterprise" ? true : enc ? false : null);
+    previewClass(
+      "auth",
+      authVal === "802.1x-radius" || authVal === "eap-tls" ? true : authVal ? false : null
+    );
+    previewClass("band", bandVal === "5-ch149" ? true : bandVal ? false : null);
+  }
+
+  function markSelect(el, ok) {
+    if (!el) return;
+    el.classList.toggle("pbq-wap-select--ok", ok === true);
+    el.classList.toggle("pbq-wap-select--bad", ok === false);
+  }
+
+  function markInput(el, ok) {
+    if (!el) return;
+    el.classList.toggle("pbq-wap-input--ok", ok === true);
+    el.classList.toggle("pbq-wap-input--bad", ok === false);
+  }
+
+  function markToggle(field, ok) {
+    var wrap = root.querySelector('.pbq-wap-toggle[data-field="' + field + '"]');
+    if (!wrap) return;
+    wrap.classList.toggle("pbq-wap-toggle--ok", ok === true);
+    wrap.classList.toggle("pbq-wap-toggle--bad", ok === false);
+  }
+
+  function authOk(val) {
+    return val === "802.1x-radius" || val === "eap-tls";
+  }
+
+  function grade(showMarks) {
+    var encOk = encryption.value === "wpa3-enterprise";
+    var authValOk = authOk(auth.value);
+    var ssidOk = ssid.value.trim().length >= 3;
+    var bandOk = band.value === "5-ch149";
+    var broadcastOk = toggleVal("broadcast") === "off";
+    var wpsOk = toggleVal("wps") === "off";
+    var guestOk = toggleVal("guest") === "on";
+
+    if (showMarks) {
+      markSelect(encryption, encryption.value ? encOk : false);
+      markSelect(auth, auth.value ? authValOk : false);
+      markInput(ssid, ssid.value.trim() ? ssidOk : false);
+      markSelect(band, band.value ? bandOk : false);
+      markToggle("broadcast", toggleVal("broadcast") ? broadcastOk : false);
+      markToggle("wps", toggleVal("wps") ? wpsOk : false);
+      markToggle("guest", toggleVal("guest") ? guestOk : false);
+    }
+
+    return encOk && authValOk && ssidOk && bandOk && broadcastOk && wpsOk && guestOk;
+  }
+
+  function allFilled() {
+    return (
+      encryption.value &&
+      auth.value &&
+      ssid.value.trim() &&
+      band.value &&
+      toggleVal("broadcast") &&
+      toggleVal("wps") &&
+      toggleVal("guest")
+    );
+  }
+
+  root.querySelectorAll(".pbq-wap-toggle__btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var wrap = btn.closest(".pbq-wap-toggle");
+      wrap.querySelectorAll(".pbq-wap-toggle__btn").forEach(function (b) {
+        b.classList.remove("pbq-wap-toggle__btn--active");
+      });
+      btn.classList.add("pbq-wap-toggle__btn--active");
+      updatePreview();
+    });
+  });
+
+  [encryption, auth, band, ssid].forEach(function (el) {
+    el.addEventListener("input", updatePreview);
+    el.addEventListener("change", updatePreview);
+  });
+
+  checkBtn.addEventListener("click", function () {
+    if (!allFilled()) {
+      result.className = "is-fail";
+      result.textContent = "Complete every setting and toggle, then check again.";
+      grade(true);
+      return;
+    }
+    if (grade(true)) {
+      result.className = "is-pass";
+      result.textContent = CORRECT_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent =
+        "Not quite. Use WPA3-Enterprise, enterprise 802.1X auth, hidden SSID, WPS off, guest network on, and 5 GHz channel 149.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    encryption.value = "wpa3-enterprise";
+    auth.value = "802.1x-radius";
+    ssid.value = "AcmeCorp_WiFi";
+    band.value = "5-ch149";
+    setToggle("broadcast", "off");
+    setToggle("wps", "off");
+    setToggle("guest", "on");
+    setToggle("rogue", "on");
+    setToggle("mgmt-vlan", "on");
+    updatePreview();
+    grade(true);
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    encryption.value = "";
+    auth.value = "";
+    ssid.value = "";
+    band.value = "";
+    root.querySelectorAll(".pbq-wap-toggle").forEach(function (wrap) {
+      wrap.querySelectorAll(".pbq-wap-toggle__btn").forEach(function (btn) {
+        btn.classList.remove("pbq-wap-toggle__btn--active");
+      });
+      if (wrap.getAttribute("data-field") === "wps") {
+        wrap.querySelector('[data-val="on"]').classList.add("pbq-wap-toggle__btn--active");
+      }
+    });
+    root.querySelectorAll(".pbq-wap-select, .pbq-wap-input").forEach(function (el) {
+      el.classList.remove("pbq-wap-select--ok", "pbq-wap-select--bad", "pbq-wap-input--ok", "pbq-wap-input--bad");
+    });
+    root.querySelectorAll(".pbq-wap-toggle").forEach(function (wrap) {
+      wrap.classList.remove("pbq-wap-toggle--ok", "pbq-wap-toggle--bad");
+    });
+    updatePreview();
+    result.className = "";
+    result.textContent = "";
+  });
+
+  updatePreview();
+})();
+</script>
+</body>
+</html>

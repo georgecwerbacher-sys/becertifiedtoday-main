@@ -103,12 +103,232 @@ SCENARIOS = [
         "body_class": "pbq-siem-ransomware",
         "description": "7 SIEM alerts — Sigma rule for Word/PowerShell stager, MITRE ATT&CK classification, containment decisions.",
         "prev": "ransomware-dr-acme",
-        "next": None,
+        "next": "advanced-firewall-rule-configurator",
         "sections": [
             {"id": "siem-overview", "label": "Attack timeline", "path": "siem-ransomware-mitre/sections/siem-overview.html"},
             {"id": "siem-part1-sigma", "label": "Part 1 — Sigma rule", "path": "siem-ransomware-mitre/sections/siem-part1-sigma.html"},
             {"id": "siem-part2-mitre", "label": "Part 2 — MITRE stages", "path": "siem-ransomware-mitre/sections/siem-part2-mitre.html"},
             {"id": "siem-part3-containment", "label": "Part 3 — Containment", "path": "siem-ransomware-mitre/sections/siem-part3-containment.html"},
+        ],
+    },
+    {
+        "slug": "advanced-firewall-rule-configurator",
+        "title": "Advanced Firewall Rule Configurator",
+        "body_class": "pbq-afw-config",
+        "description": "Acme Corp perimeter firewall — inbound HTTPS/SSH, deny Telnet, outbound DNS, implicit deny-all (top-down ACL).",
+        "prev": "siem-ransomware-mitre",
+        "next": "security-control-placement",
+        "sections": [
+            {
+                "id": "advanced-firewall-config",
+                "label": "ACL rule configurator",
+                "path": "advanced-firewall-rule-configurator/sections/advanced-firewall-config.html",
+            },
+        ],
+    },
+    {
+        "slug": "security-control-placement",
+        "title": "Network Diagram — Security Control Placement",
+        "body_class": "pbq-sec-control-map dragdrop-exercise",
+        "description": "Acme Corp three-zone diagram — place firewall, WAF, IDS, honeypot, NAC, and SIEM in labeled slots.",
+        "prev": "advanced-firewall-rule-configurator",
+        "next": "subnetting-ip-addressing",
+        "sections": [
+            {
+                "id": "sec-control-placement",
+                "label": "Control placement map",
+                "path": "security-control-placement/sections/sec-control-placement.html",
+            },
+        ],
+    },
+    {
+        "slug": "subnetting-ip-addressing",
+        "title": "Subnetting & IP Addressing Configuration",
+        "body_class": "pbq-subnet-ip",
+        "description": "Subnet 192.168.10.0/24 for ≥6 networks (maximize hosts), assign first three /27 subnets to Sales, HR, IT.",
+        "prev": "security-control-placement",
+        "next": "ubuntu-cis-hardening",
+        "sections": [
+            {
+                "id": "subnet-ip-config",
+                "label": "Subnet calculator",
+                "path": "subnetting-ip-addressing/sections/subnet-ip-config.html",
+            },
+        ],
+    },
+    {
+        "slug": "ubuntu-cis-hardening",
+        "title": "Ubuntu 22.04 baseline hardening",
+        "body_class": "pbq-cis-harden pbq-ssh-harden",
+        "description": "Failed baseline audit — hardening checklist, CIS sshd_config, and pwquality.conf password policy.",
+        "prev": "subnetting-ip-addressing",
+        "next": "wap-secure-configuration",
+        "sections": [
+            {
+                "id": "harden-checklist",
+                "label": "Hardening checklist",
+                "path": "ubuntu-cis-hardening/sections/harden-checklist.html",
+            },
+            {
+                "id": "harden-sshd",
+                "label": "sshd_config",
+                "path": "ubuntu-cis-hardening/sections/harden-sshd.html",
+            },
+            {
+                "id": "harden-pwquality",
+                "label": "pwquality.conf",
+                "path": "ubuntu-cis-hardening/sections/harden-pwquality.html",
+            },
+        ],
+    },
+    {
+        "slug": "wap-secure-configuration",
+        "title": "Wireless Access Point — Secure Configuration",
+        "body_class": "pbq-wap-config",
+        "description": "Corporate WAP — WPA3-Enterprise, 802.1X, hidden SSID, guest isolation, 5 GHz channel 149.",
+        "prev": "ubuntu-cis-hardening",
+        "next": "log-timeline-forensics",
+        "sections": [
+            {
+                "id": "wap-secure-config",
+                "label": "WAP settings",
+                "path": "wap-secure-configuration/sections/wap-secure-config.html",
+            },
+        ],
+    },
+    {
+        "slug": "log-timeline-forensics",
+        "title": "Log Timeline Forensics",
+        "body_class": "dragdrop-exercise",
+        "description": "Reorder SSH auth log snippets to reconstruct a brute-force attack ending in privilege escalation.",
+        "prev": "wap-secure-configuration",
+        "next": "pki-certificate-chain-browser-error",
+        "sections": [
+            {
+                "id": "log-timeline",
+                "label": "Log timeline",
+                "path": "log-timeline-forensics/sections/log-timeline.html",
+            },
+        ],
+    },
+    {
+        "slug": "pki-certificate-chain-browser-error",
+        "title": "PKI Certificate Chain — Browser Error",
+        "body_class": "pbq-exhibit-mcq",
+        "description": "PKI certificate chain exhibit and NET::ERR_CERT_AUTHORITY_INVALID troubleshooting.",
+        "prev": "log-timeline-forensics",
+        "next": "phishing-email-analysis",
+        "sections": [
+            {
+                "id": "pki-browser-error",
+                "label": "Browser cert error",
+                "path": "pki-certificate-chain-browser-error/sections/pki-browser-error.html",
+            },
+        ],
+    },
+    {
+        "slug": "phishing-email-analysis",
+        "title": "Phishing Email Analysis",
+        "body_class": "pbq-phishing-analysis dragdrop-exercise",
+        "description": "Phishing email exhibit and drag-and-drop social engineering term matching.",
+        "prev": "pki-certificate-chain-browser-error",
+        "next": "vulnerability-management",
+        "sections": [
+            {
+                "id": "phishing-analysis",
+                "label": "Phishing analysis",
+                "path": "phishing-email-analysis/sections/phishing-analysis.html",
+            },
+        ],
+    },
+    {
+        "slug": "vulnerability-management",
+        "title": "Vulnerability Management",
+        "body_class": "pbq-exhibit-mcq",
+        "description": "Vulnerability scanner exhibit and Log4Shell compensating controls during a change freeze.",
+        "prev": "phishing-email-analysis",
+        "next": "incident-response",
+        "sections": [
+            {
+                "id": "vuln-management",
+                "label": "Vulnerability scan",
+                "path": "vulnerability-management/sections/vuln-management.html",
+            },
+        ],
+    },
+    {
+        "slug": "incident-response",
+        "title": "Incident Response — Ransomware IR",
+        "body_class": "pbq-incident-response dragdrop-exercise",
+        "description": "NIST SP 800-61 ransomware incident timeline and IR process fill-in drag-and-drop.",
+        "prev": "vulnerability-management",
+        "next": "quantitative-risk-ale",
+        "sections": [
+            {
+                "id": "incident-response",
+                "label": "NIST IR fill-in",
+                "path": "incident-response/sections/incident-response.html",
+            },
+        ],
+    },
+    {
+        "slug": "quantitative-risk-ale",
+        "title": "Quantitative Risk — ALE",
+        "body_class": "pbq-exhibit-mcq pbq-risk-ale",
+        "description": "Quantitative risk analysis exhibit (SLE, ARO, ALE) and security awareness training ROI.",
+        "prev": "incident-response",
+        "next": "malware-ioc-analysis",
+        "sections": [
+            {
+                "id": "risk-ale",
+                "label": "Risk & ALE",
+                "path": "quantitative-risk-ale/sections/risk-ale.html",
+            },
+        ],
+    },
+    {
+        "slug": "malware-ioc-analysis",
+        "title": "Malware IOC Analysis",
+        "body_class": "pbq-exhibit-mcq pbq-malware-ioc",
+        "description": "Endpoint malware IOC exhibit (process, network, persistence) and malware classification.",
+        "prev": "quantitative-risk-ale",
+        "next": "data-protection",
+        "sections": [
+            {
+                "id": "malware-ioc",
+                "label": "Malware IOCs",
+                "path": "malware-ioc-analysis/sections/malware-ioc.html",
+            },
+        ],
+    },
+    {
+        "slug": "data-protection",
+        "title": "Data Protection",
+        "body_class": "pbq-exhibit-mcq pbq-data-protection",
+        "description": "Data classification, states, and protection methods exhibit plus PCI test-data tokenization.",
+        "prev": "malware-ioc-analysis",
+        "next": "governance",
+        "sections": [
+            {
+                "id": "data-protection",
+                "label": "Data protection",
+                "path": "data-protection/sections/data-protection.html",
+            },
+        ],
+    },
+    {
+        "slug": "governance",
+        "title": "Governance",
+        "body_class": "pbq-exhibit-mcq pbq-governance",
+        "description": "Security governance frameworks, policies, vendor agreements, and breach notification obligations.",
+        "prev": "data-protection",
+        "next": None,
+        "sections": [
+            {
+                "id": "governance",
+                "label": "Governance",
+                "path": "governance/sections/governance.html",
+            },
         ],
     },
 ]

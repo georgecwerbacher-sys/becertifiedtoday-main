@@ -102,6 +102,191 @@
 
 ---
 
+## 8. Advanced Firewall Rule Configurator (`advanced-firewall-rule-configurator/`)
+
+| Section | Key | Verdict | Primary sources |
+|---------|-----|---------|-----------------|
+| **ACL table** | R1 HTTPS in · R2 SSH in from mgmt · R3 Telnet deny in · R4 DNS out · R5 deny-all last | **Pass** | Stateful/stateless firewall ACL order; least privilege; explicit default deny (RFC 2979 security policy concepts; CompTIA network operations) |
+
+**CompTIA SY0-701 fit:** **3.3** network implementation; **4.1** secure configuration; ACL evaluation order (first match wins).
+
+**Note:** Rules 1–4 may be ordered flexibly among themselves; the implicit deny-all must remain the final rule.
+
+---
+
+## 9. Network Diagram — Security Control Placement (`security-control-placement/`)
+
+| Slot | Control | Verdict | Primary sources |
+|------|---------|---------|-----------------|
+| Internet ↔ DMZ | Perimeter Firewall | **Pass** | Edge boundary control; first line of defense (defense in depth) |
+| Web Server HTTP attacks | WAF | **Pass** | OWASP / CompTIA — application-layer filtering for HTTP/HTTPS |
+| DMZ intrusions | Network IDS | **Pass** | Passive monitoring in DMZ segment |
+| Decoy | Honeypot | **Pass** | Deception technology; lure and detect attackers |
+| DMZ ↔ Internal | Internal Firewall | **Pass** | Segmentation between semi-trusted DMZ and trusted internal |
+| Endpoint access | NAC | **Pass** | 802.1X / posture assessment before network admission |
+| Log aggregation | SIEM | **Pass** | Centralized correlation and alerting |
+| Unused | Proxy Server | **Pass** | Not required for this topology (optional distractor) |
+
+**CompTIA SY0-701 fit:** **3.2** secure network architecture; **3.3** segmentation; **4.1** control placement.
+
+---
+
+## 10. Subnetting & IP Addressing Configuration (`subnetting-ip-addressing/`)
+
+| Field | Key | Verdict | Primary sources |
+|-------|-----|---------|-----------------|
+| Subnets needed | 6 | **Pass** | ceil(log₂(6)) = 3 borrowed bits minimum |
+| New prefix | /27 | **Pass** | 8 subnets ≥ 6; 30 usable hosts — largest block meeting host counts (Sales 25, HR 20, IT 10) |
+| Sales | 192.168.10.0/27 | **Pass** | First /27 block (magic # 32) |
+| HR | 192.168.10.32/27 | **Pass** | Second /27 block |
+| IT | 192.168.10.64/27 | **Pass** | Third /27 block |
+
+**CompTIA SY0-701 fit:** **1.4** cryptography & network addressing fundamentals; **3.3** segmentation.
+
+**Note:** /28 yields only 14 hosts — insufficient for Sales (25). /27 maximizes hosts while meeting the 6-subnet minimum.
+
+---
+
+## 11. Ubuntu 22.04 baseline hardening (`ubuntu-cis-hardening/`)
+
+| Section | Key | Verdict | Primary sources |
+|---------|-----|---------|-----------------|
+| **Checklist** | All 8 tasks checked | **Pass** | CIS Ubuntu 22.04 L1 — services, auditd, shadow perms, UFW, AIDE, NTP, IPv6, default accounts |
+| **sshd_config** | Protocol 2 · no root · no password/empty password · MaxAuthTries 3 · X11 no · LoginGraceTime 60 | **Pass** | OpenSSH sshd_config; CIS SSH recommendations |
+| **pwquality.conf** | minlen 14 · minclass 4 · maxrepeat 2 · dcredit/ucredit/ocredit −1 | **Pass** | pam_pwquality; CIS password complexity |
+
+**CompTIA SY0-701 fit:** **4.1** secure baselines; **4.4** host hardening; **1.4** authentication controls.
+
+**Note:** Distinct from post-breach `ubuntu-ssh-breach-hardening` (Port 4422, fail2ban, UFW ordering) — this scenario focuses on baseline CIS checklist + SSH/PAM policy only.
+
+---
+
+## 12. Wireless Access Point — Secure Configuration (`wap-secure-configuration/`)
+
+| Setting | Key | Verdict | Primary sources |
+|---------|-----|---------|-----------------|
+| Encryption | WPA3-Enterprise | **Pass** | WPA3 strongest Wi-Fi security; deprecates WEP/WPA/TKIP |
+| Authentication | 802.1X / RADIUS (EAP-TLS acceptable) | **Pass** | Enterprise-grade authentication server |
+| SSID broadcast | OFF | **Pass** | Hidden SSID policy |
+| WPS | OFF | **Pass** | WPS PIN vulnerability — disable legacy/insecure features |
+| Guest network | ON (isolated) | **Pass** | Segmented guest access |
+| Band / channel | 5 GHz channel 149 | **Pass** | 5 GHz non-overlapping; upper UNII-3 typically less congested |
+
+**CompTIA SY0-701 fit:** **1.4** wireless crypto; **3.3** network segmentation; **4.1** secure wireless configuration.
+
+---
+
+## 13. Log Timeline Forensics (`log-timeline-forensics/`)
+
+| Timeline slot | Log event | Verdict |
+|---------------|-----------|---------|
+| 1 | Failed password for root | **Pass** |
+| 2 | Multiple failed attempts (brute force) | **Pass** |
+| 3 | Accepted password for deploy | **Pass** |
+| 4 | sudo privilege escalation | **Pass** |
+| 5 | New user account created | **Pass** |
+| 6 | Cron job persistence | **Pass** |
+
+**CompTIA SY0-701 fit:** **2.4** log analysis; **2.5** incident response timeline reconstruction.
+
+**Note:** Complements `ubuntu-ssh-breach-hardening` (same attack narrative; this lab focuses on log ordering, not config hardening).
+
+---
+
+## 14. PKI Certificate Chain — Browser Error (`pki-certificate-chain-browser-error/`)
+
+| MCQ | Key | Verdict | Primary sources |
+|-----|-----|---------|-----------------|
+| ERR_CERT_AUTHORITY_INVALID cause/fix | **B** — missing intermediate; serve full chain or distribute root CA | **Pass** | RFC 8446 TLS; PKIX chain-of-trust |
+
+**CompTIA SY0-701 fit:** **1.4** PKI/TLS; distinct from `hybrid-pki-audit` (chain order / algorithms / revocation).
+
+---
+
+## 15. Phishing Email Analysis (`phishing-email-analysis/`)
+
+| Blank | Term | Verdict |
+|-------|------|---------|
+| 1 | typosquatting | **Pass** |
+| 2 | pretexting | **Pass** |
+| 3 | phishing | **Pass** |
+| 4 | spear phishing | **Pass** |
+| 5 | smishing | **Pass** |
+| 6 | vishing | **Pass** |
+| 7 | brand impersonation | **Pass** |
+| 8 | report | **Pass** |
+
+**CompTIA SY0-701 fit:** **2.1** social engineering; **4.3** security awareness.
+
+---
+
+## 16. Vulnerability Management (`vulnerability-management/`)
+
+| MCQ | Key | Verdict | Primary sources |
+|-----|-----|---------|-----------------|
+| Log4Shell compensating control during change freeze | **A** — WAF/IPS block JNDI + restrict outbound LDAP | **Pass** | NIST SP 800-40; compensating controls when patching blocked |
+
+**CompTIA SY0-701 fit:** **4.2** vulnerability management; **4.1** compensating controls.
+
+---
+
+## 17. Incident Response — Ransomware IR (`incident-response/`)
+
+| Blank | NIST IR term | Verdict |
+|-------|--------------|---------|
+| 1 | analysis | **Pass** |
+| 2 | containment | **Pass** |
+| 3 | lessons learned | **Pass** |
+| 4 | image | **Pass** |
+| 5 | chain of custody | **Pass** |
+| 6 | legal hold | **Pass** |
+| 7 | tabletop exercise | **Pass** |
+| 8 | eradication | **Pass** |
+
+**CompTIA SY0-701 fit:** **2.5** incident response (NIST SP 800-61 phases and forensics vocabulary).
+
+---
+
+## 18. Quantitative Risk — ALE (`quantitative-risk-ale/`)
+
+| MCQ | Key | Verdict |
+|-----|-----|---------|
+| Security awareness training ROI | **B** | **Pass** |
+
+**CompTIA SY0-701 fit:** **1.2** risk management; SLE × ARO = ALE; cost-benefit of controls.
+
+---
+
+## 19. Malware IOC Analysis (`malware-ioc-analysis/`)
+
+| MCQ | Key | Verdict |
+|-----|-----|---------|
+| Malware classification from IOC exhibit | **C** | **Pass** |
+
+**CompTIA SY0-701 fit:** **2.4** malware analysis; **4.5** endpoint detection.
+
+---
+
+## 20. Data Protection (`data-protection/`)
+
+| MCQ | Key | Verdict |
+|-----|-----|---------|
+| PCI test-data handling | **C** | **Pass** |
+
+**CompTIA SY0-701 fit:** **1.3** data sensitivity; **4.3** tokenization / data protection methods.
+
+---
+
+## 21. Governance (`governance/`)
+
+| MCQ | Key | Verdict | Primary sources |
+|-----|-----|---------|-----------------|
+| GDPR + PCI breach notification | **D** — both frameworks apply in parallel | **Pass** | GDPR Art. 33–34; PCI DSS incident reporting |
+
+**CompTIA SY0-701 fit:** **5.1** governance; **5.2** compliance frameworks; **5.5** policies and procedures.
+
+---
+
 ## References (quick list)
 
 | Topic | Reference |

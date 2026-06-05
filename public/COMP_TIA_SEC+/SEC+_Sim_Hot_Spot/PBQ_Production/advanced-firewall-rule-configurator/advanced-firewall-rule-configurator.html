@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ — Acme Corp perimeter firewall — inbound HTTPS/SSH, deny Telnet, outbound DNS, implicit deny-all (top-down ACL)." />
+  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/advanced-firewall-rule-configurator/advanced-firewall-rule-configurator.html" />
+  <title>Security+ PBQ — Advanced Firewall Rule Configurator | Be Certified Today</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+</head>
+<body class="secplus-question-ui secplus-pbq-ui pbq-folder-suite pbq-afw-config">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell question-shell--suite">
+    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ practice portal">
+      <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="pbq-card pbq-card--suite">
+      <nav class="question-nav" aria-label="Question navigation">
+        <div class="question-nav-links">
+          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/siem-ransomware-mitre/siem-ransomware-mitre.html">Back</a>
+          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/security-control-placement/security-control-placement.html">Next</a>
+        </div>
+      </nav>
+
+      <header class="pbq-suite-header">
+        <h1>Advanced Firewall Rule Configurator</h1>
+        <p class="pbq-sub">Acme Corp perimeter firewall — inbound HTTPS/SSH, deny Telnet, outbound DNS, implicit deny-all (top-down ACL).</p>
+        <p class="pbq-instructions">
+          Use the <strong>folder sidebar</strong> to switch sections on this page. Open <strong>exhibits</strong> in
+          popups where available.
+        </p>
+      </header>
+
+      <div class="pbq-suite-layout">
+        <nav class="pbq-suite-folders pbq-suite-folders--flat" aria-label="Sections">
+<p class="pbq-suite-folders__label"><span aria-hidden="true">📁</span> Sections</p>
+<ul class="pbq-suite-folders__list">
+<li><button type="button" class="pbq-suite-folder__item" data-section="advanced-firewall-config">ACL rule configurator</button></li>
+</ul></nav>
+        <div class="pbq-suite-main" id="pbqSuiteMain">
+          <article class="pbq-suite-section" id="advanced-firewall-config" data-scenario="advanced-firewall-rule-configurator" hidden><div class="pbq-suite-section__inner"><h1>Advanced Firewall Rule Configurator</h1>
+  <p class="pbq-sub">
+    You are a network security engineer configuring a perimeter firewall for <strong>Acme Corp</strong>. The web server
+    is at <strong>192.168.1.10</strong> (internal). The management workstation subnet is
+    <strong>10.0.0.0/24</strong>. Apply the security policy by adding the correct ACL rules below.
+  </p>
+
+  <div class="sim-frame pbq-afw-sim">
+    <section class="pbq-afw-policy" aria-labelledby="afw-policy-heading">
+      <h2 id="advanced-firewall-config-afw-policy-heading" class="pbq-afw-panel-title">Policy requirements — checked after grading</h2>
+      <ul class="pbq-afw-policy__list" id="advanced-firewall-config-policyList">
+        <li data-req="https">
+          <span class="pbq-afw-policy__check" aria-hidden="true"></span>
+          Allow inbound HTTPS (TCP 443) from any source to the web server
+        </li>
+        <li data-req="ssh">
+          <span class="pbq-afw-policy__check" aria-hidden="true"></span>
+          Allow inbound SSH (TCP 22) to the web server from the management subnet only
+        </li>
+        <li data-req="telnet">
+          <span class="pbq-afw-policy__check" aria-hidden="true"></span>
+          Deny all inbound Telnet (TCP 23) from any source
+        </li>
+        <li data-req="dns">
+          <span class="pbq-afw-policy__check" aria-hidden="true"></span>
+          Allow outbound DNS (UDP 53) from the internal network 192.168.1.0/24
+        </li>
+        <li data-req="deny-all">
+          <span class="pbq-afw-policy__check" aria-hidden="true"></span>
+          Implicit deny-all (last rule)
+        </li>
+      </ul>
+    </section>
+
+    <section class="pbq-afw-topology" aria-labelledby="afw-topo-heading">
+      <h2 id="advanced-firewall-config-afw-topo-heading" class="pbq-afw-panel-title">Network topology</h2>
+      <div class="pbq-afw-topo__grid">
+        <div class="pbq-afw-topo__node">
+          <span class="pbq-afw-topo__icon" aria-hidden="true">🌐</span>
+          <strong>Internet</strong>
+          <span class="pbq-afw-topo__meta">ANY</span>
+        </div>
+        <div class="pbq-afw-topo__arrow" aria-hidden="true">→</div>
+        <div class="pbq-afw-topo__node pbq-afw-topo__node--focus">
+          <span class="pbq-afw-topo__icon" aria-hidden="true">🛡️</span>
+          <strong>Firewall</strong>
+          <span class="pbq-afw-topo__meta">You configure this</span>
+        </div>
+        <div class="pbq-afw-topo__arrow" aria-hidden="true">→</div>
+        <div class="pbq-afw-topo__node">
+          <span class="pbq-afw-topo__icon" aria-hidden="true">🖥️</span>
+          <strong>Web Server</strong>
+          <span class="pbq-afw-topo__meta">192.168.1.10</span>
+        </div>
+        <div class="pbq-afw-topo__branch">
+          <div class="pbq-afw-topo__node pbq-afw-topo__node--focus pbq-afw-topo__node--small">
+            <span class="pbq-afw-topo__icon" aria-hidden="true">🛡️</span>
+            <strong>Firewall</strong>
+            <span class="pbq-afw-topo__meta">(same device)</span>
+          </div>
+          <div class="pbq-afw-topo__arrow pbq-afw-topo__arrow--down" aria-hidden="true">→</div>
+          <div class="pbq-afw-topo__node">
+            <span class="pbq-afw-topo__icon" aria-hidden="true">💻</span>
+            <strong>Mgmt Workstations</strong>
+            <span class="pbq-afw-topo__meta">10.0.0.0/24</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pbq-afw-rules" aria-labelledby="afw-rules-heading">
+      <div class="pbq-afw-rules__head">
+        <h2 id="advanced-firewall-config-afw-rules-heading" class="pbq-afw-panel-title">ACL rules — evaluated top-down, first match wins</h2>
+        <button type="button" class="pbq-afw-add-btn" id="advanced-firewall-config-addRuleBtn">+ Add Rule</button>
+      </div>
+      <div class="pbq-afw-table-wrap">
+        <table class="pbq-afw-table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Direction</th>
+              <th scope="col">Protocol</th>
+              <th scope="col">Source</th>
+              <th scope="col">Destination</th>
+              <th scope="col">Port</th>
+              <th scope="col">Action</th>
+              <th scope="col"><span class="visually-hidden">Remove</span></th>
+            </tr>
+          </thead>
+          <tbody id="advanced-firewall-config-rulesBody"></tbody>
+        </table>
+      </div>
+      <p class="pbq-afw-hint">
+        Use <strong>ANY</strong> for wildcard source/destination. CIDR notation accepted (e.g. 10.0.0.0/24).
+      </p>
+      <div class="pbq-afw-log" id="advanced-firewall-config-activityLog" role="log" aria-live="polite" aria-label="Activity log">
+        <p class="pbq-afw-log__title">Activity log</p>
+        <pre class="pbq-afw-log__body" id="advanced-firewall-config-logBody">00:00:00  Firewall configuration panel ready. Add rules to match the security policy.</pre>
+      </div>
+    </section>
+  </div>
+
+  <div class="actions">
+    <button id="advanced-firewall-config-checkBtn" type="button">Check Answer</button>
+    <button id="advanced-firewall-config-showBtn" type="button">Show Answer</button>
+    <button id="advanced-firewall-config-resetBtn" type="button">Reset</button>
+    <span id="advanced-firewall-config-result" role="status" aria-live="polite"></span>
+  </div></div></article>
+        </div>
+      </div>
+
+      <p class="pbq-suite-footer">
+        <a class="btn btn-secondary" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/index.html">All PBQ Labs</a>
+      </p>
+    </main>
+  </div>
+
+  <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "advanced-firewall-config";</script>
+  <!-- advanced-firewall-config -->
+<script>
+(function () {
+  var REQUIRED = [
+    { key: "https", dir: "in", proto: "tcp", src: "any", dst: "192.168.1.10", port: "443", action: "allow" },
+    { key: "ssh", dir: "in", proto: "tcp", src: "10.0.0.0/24", dst: "192.168.1.10", port: "22", action: "allow" },
+    { key: "telnet", dir: "in", proto: "tcp", src: "any", dst: "any", port: "23", action: "deny" },
+    { key: "dns", dir: "out", proto: "udp", src: "192.168.1.0/24", dst: "any", port: "53", action: "allow" },
+    { key: "deny-all", dir: "any", proto: "any", src: "any", dst: "any", port: "any", action: "deny" }
+  ];
+  var CORRECT_MSG =
+    "Correct. HTTPS and SSH permits are inbound to 192.168.1.10; Telnet is denied inbound; DNS is permitted outbound from 192.168.1.0/24; explicit deny-all is the final rule.";
+
+  var root = document.getElementById("advanced-firewall-config");
+  if (!root) return;
+
+  var rulesBody = root.querySelector(".pbq-afw-table tbody");
+  var addRuleBtn = root.querySelector(".pbq-afw-add-btn");
+  var logBody = root.querySelector(".pbq-afw-log__body");
+  var policyList = root.querySelector(".pbq-afw-policy__list");
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector(".actions [role='status']");
+  var ruleCount = 0;
+
+  function nowStamp() {
+    var d = new Date();
+    return (
+      String(d.getHours()).padStart(2, "0") +
+      ":" +
+      String(d.getMinutes()).padStart(2, "0") +
+      ":" +
+      String(d.getSeconds()).padStart(2, "0")
+    );
+  }
+
+  function appendLog(msg) {
+    logBody.textContent += "\n" + nowStamp() + "  " + msg;
+    logBody.parentElement.scrollTop = logBody.parentElement.scrollHeight;
+  }
+
+  function norm(val, field) {
+    var v = (val || "").trim().toLowerCase();
+    if (!v || v === "*" || v === "0.0.0.0/0") return "any";
+    if (field === "dir" && (v === "inbound" || v === "ingress")) return "in";
+    if (field === "dir" && (v === "outbound" || v === "egress")) return "out";
+    return v;
+  }
+
+  function ruleFromRow(row) {
+    return {
+      dir: norm(row.querySelector('[data-field="dir"]').value, "dir"),
+      proto: norm(row.querySelector('[data-field="proto"]').value, "proto"),
+      src: norm(row.querySelector('[data-field="src"]').value, "src"),
+      dst: norm(row.querySelector('[data-field="dst"]').value, "dst"),
+      port: norm(row.querySelector('[data-field="port"]').value, "port"),
+      action: norm(row.querySelector('[data-field="action"]').value, "action")
+    };
+  }
+
+  function ruleMatches(got, want) {
+    var fields = ["dir", "proto", "src", "dst", "port", "action"];
+    for (var i = 0; i < fields.length; i++) {
+      var f = fields[i];
+      if (want[f] === "any" && got[f] === "any") continue;
+      if (got[f] !== want[f]) return false;
+    }
+    return true;
+  }
+
+  function collectRules() {
+    var rows = rulesBody.querySelectorAll("tr");
+    var rules = [];
+    rows.forEach(function (row) {
+      rules.push(ruleFromRow(row));
+    });
+    return rules;
+  }
+
+  function renumberRows() {
+    var rows = rulesBody.querySelectorAll("tr");
+    rows.forEach(function (row, idx) {
+      var num = row.querySelector(".pbq-afw-row-num");
+      if (num) num.textContent = String(idx + 1);
+    });
+  }
+
+  function markRow(row, ok) {
+    row.querySelectorAll(".pbq-afw-field").forEach(function (el) {
+      el.classList.toggle("pbq-afw-field--ok", !!ok);
+      el.classList.toggle("pbq-afw-field--bad", !ok);
+    });
+  }
+
+  function clearMarks() {
+    rulesBody.querySelectorAll(".pbq-afw-field").forEach(function (el) {
+      el.classList.remove("pbq-afw-field--ok", "pbq-afw-field--bad");
+    });
+  }
+
+  function setPolicyChecks(matched) {
+    policyList.querySelectorAll("li").forEach(function (li) {
+      var key = li.getAttribute("data-req");
+      li.classList.toggle("pbq-afw-policy__item--pass", !!matched[key]);
+    });
+  }
+
+  function evaluateRules() {
+    var rules = collectRules();
+    var matched = {};
+    var used = {};
+    REQUIRED.forEach(function (want) {
+      matched[want.key] = false;
+    });
+    rules.forEach(function (got, idx) {
+      REQUIRED.forEach(function (want) {
+        if (!matched[want.key] && ruleMatches(got, want)) {
+          matched[want.key] = true;
+          used[want.key] = idx;
+        }
+      });
+    });
+    var last = rules[rules.length - 1];
+    var denyLast = last && ruleMatches(last, REQUIRED[4]);
+    return { rules: rules, matched: matched, used: used, denyLast: denyLast };
+  }
+
+  function allFilled() {
+    var rows = rulesBody.querySelectorAll("tr");
+    if (!rows.length) return false;
+    for (var i = 0; i < rows.length; i++) {
+      var row = rows[i];
+      var fields = row.querySelectorAll(".pbq-afw-field");
+      for (var j = 0; j < fields.length; j++) {
+        if (fields[j].tagName === "SELECT" && !fields[j].value) return false;
+        if (fields[j].tagName === "INPUT" && !fields[j].value.trim()) return false;
+      }
+    }
+    return true;
+  }
+
+  function buildRuleRow(data) {
+    ruleCount += 1;
+    var tr = document.createElement("tr");
+    tr.setAttribute("data-rule-id", String(ruleCount));
+    tr.innerHTML =
+      '<th scope="row" class="pbq-afw-row-num"></th>' +
+      '<td><select class="pbq-afw-field pbq-afw-select" data-field="dir" aria-label="Rule direction">' +
+      '<option value="">--</option><option value="in">IN</option><option value="out">OUT</option><option value="any">ANY</option>' +
+      "</select></td>" +
+      '<td><select class="pbq-afw-field pbq-afw-select" data-field="proto" aria-label="Rule protocol">' +
+      '<option value="">--</option><option value="tcp">TCP</option><option value="udp">UDP</option><option value="icmp">ICMP</option><option value="any">ANY</option>' +
+      "</select></td>" +
+      '<td><input class="pbq-afw-field pbq-afw-input" data-field="src" type="text" placeholder="ANY or IP/CIDR" aria-label="Rule source" /></td>' +
+      '<td><input class="pbq-afw-field pbq-afw-input" data-field="dst" type="text" placeholder="ANY or IP/CIDR" aria-label="Rule destination" /></td>' +
+      '<td><input class="pbq-afw-field pbq-afw-input" data-field="port" type="text" placeholder="ANY or 1-65535" aria-label="Rule port" /></td>' +
+      '<td><select class="pbq-afw-field pbq-afw-select" data-field="action" aria-label="Rule action">' +
+      '<option value="">--</option><option value="allow">ALLOW</option><option value="deny">DENY</option>' +
+      "</select></td>" +
+      '<td><button type="button" class="pbq-afw-del-btn" aria-label="Delete rule">&times;</button></td>';
+
+    if (data) {
+      tr.querySelector('[data-field="dir"]').value = data.dir;
+      tr.querySelector('[data-field="proto"]').value = data.proto;
+      tr.querySelector('[data-field="src"]').value = data.src === "any" ? "ANY" : data.src;
+      tr.querySelector('[data-field="dst"]').value = data.dst === "any" ? "ANY" : data.dst;
+      tr.querySelector('[data-field="port"]').value = data.port === "any" ? "ANY" : data.port;
+      tr.querySelector('[data-field="action"]').value = data.action;
+    }
+
+    tr.querySelector(".pbq-afw-del-btn").addEventListener("click", function () {
+      var num = tr.querySelector(".pbq-afw-row-num").textContent;
+      tr.remove();
+      renumberRows();
+      appendLog("Rule #" + num + " removed.");
+    });
+
+    return tr;
+  }
+
+  function addRule(data, silent) {
+    var row = buildRuleRow(data);
+    rulesBody.appendChild(row);
+    renumberRows();
+    if (!silent) {
+      appendLog("Rule #" + row.querySelector(".pbq-afw-row-num").textContent + " added.");
+    }
+  }
+
+  addRuleBtn.addEventListener("click", function () {
+    addRule(null, false);
+  });
+
+  checkBtn.addEventListener("click", function () {
+    clearMarks();
+    if (!allFilled()) {
+      result.className = "is-fail";
+      result.textContent = "Add and complete every rule field, then check again.";
+      setPolicyChecks({});
+      return;
+    }
+    var ev = evaluateRules();
+    var pass =
+      ev.denyLast &&
+      REQUIRED.every(function (r) {
+        return ev.matched[r.key];
+      });
+
+    var rows = rulesBody.querySelectorAll("tr");
+    rows.forEach(function (row, idx) {
+      var got = ruleFromRow(row);
+      var ok = false;
+      REQUIRED.forEach(function (want) {
+        if (ev.used[want.key] === idx && ruleMatches(got, want)) ok = true;
+      });
+      markRow(row, ok);
+    });
+
+    setPolicyChecks(ev.matched);
+
+    if (pass) {
+      result.className = "is-pass";
+      result.textContent = CORRECT_MSG;
+      appendLog("Policy check passed — all requirements satisfied.");
+    } else {
+      result.className = "is-fail";
+      var hints = [];
+      if (!ev.matched.https) hints.push("permit inbound HTTPS (TCP 443) to 192.168.1.10");
+      if (!ev.matched.ssh) hints.push("permit inbound SSH (TCP 22) from 10.0.0.0/24 to 192.168.1.10");
+      if (!ev.matched.telnet) hints.push("deny inbound Telnet (TCP 23)");
+      if (!ev.matched.dns) hints.push("permit outbound DNS (UDP 53) from 192.168.1.0/24");
+      if (!ev.matched["deny-all"] || !ev.denyLast) hints.push("end with an implicit deny-all rule");
+      result.textContent = "Not quite. Missing or out of order: " + hints.join("; ") + ".";
+      appendLog("Policy check failed — review requirements.");
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    rulesBody.innerHTML = "";
+    ruleCount = 0;
+    REQUIRED.forEach(function (r) {
+      addRule(
+        {
+          dir: r.dir,
+          proto: r.proto,
+          src: r.src,
+          dst: r.dst,
+          port: r.port,
+          action: r.action
+        },
+        true
+      );
+    });
+    clearMarks();
+    rulesBody.querySelectorAll("tr").forEach(function (row) {
+      markRow(row, true);
+    });
+    setPolicyChecks({ https: true, ssh: true, telnet: true, dns: true, "deny-all": true });
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+    appendLog("Solution applied — five rules configured.");
+  });
+
+  resetBtn.addEventListener("click", function () {
+    rulesBody.innerHTML = "";
+    ruleCount = 0;
+    clearMarks();
+    setPolicyChecks({});
+    result.className = "";
+    result.textContent = "";
+    logBody.textContent = "00:00:00  Firewall configuration panel ready. Add rules to match the security policy.";
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<article class="pbq-section-fragment" data-id="sec-control-placement">
+  <h1>Network Diagram — Security Control Placement</h1>
+  <p class="pbq-sub">
+    <strong>Acme Corp</strong> is redesigning its network security architecture. The network has three zones:
+    <strong>Internet</strong> (untrusted), a <strong>DMZ</strong> (hosts public-facing servers), and an
+    <strong>Internal</strong> network (hosts workstations and databases).
+  </p>
+  <p class="pbq-instructions">
+    Place each security control from the bank into the correct zone. Each zone has labeled slots — drag the right
+    control to the right slot (or tap a control, then tap a slot). <strong>Some controls may not be used.</strong>
+  </p>
+
+  <div class="sim-frame">
+    <div class="layout layout--sec-control-map">
+      <section class="panel panel--sec-bank" aria-labelledby="sec-controls-heading">
+        <h2 id="sec-controls-heading">Security controls</h2>
+        <div id="bank" class="bank bank--sec-controls">
+          <div class="token" draggable="true" data-value="perimeter-firewall">Perimeter Firewall</div>
+          <div class="token" draggable="true" data-value="waf">WAF</div>
+          <div class="token" draggable="true" data-value="network-ids">Network IDS</div>
+          <div class="token" draggable="true" data-value="nac">NAC</div>
+          <div class="token" draggable="true" data-value="honeypot">Honeypot</div>
+          <div class="token" draggable="true" data-value="proxy-server">Proxy Server</div>
+          <div class="token" draggable="true" data-value="siem">SIEM</div>
+          <div class="token" draggable="true" data-value="internal-firewall">Internal Firewall</div>
+        </div>
+      </section>
+
+      <section class="panel panel--sec-topology" aria-labelledby="sec-topology-heading">
+        <h2 id="sec-topology-heading">Network topology</h2>
+        <div class="sec-zone-flow">
+          <article class="sec-zone sec-zone--internet">
+            <header class="sec-zone__head">
+              <h3 class="sec-zone__title">Internet zone (untrusted)</h3>
+              <p class="sec-zone__assets">Internet / External Users</p>
+            </header>
+            <div class="sec-slot">
+              <p class="sec-slot__label">Between Internet ↔ DMZ</p>
+              <div class="drop-slot" data-target="perimeter-firewall" aria-label="Between Internet and DMZ"></div>
+            </div>
+          </article>
+
+          <div class="sec-zone-arrow" aria-hidden="true">→</div>
+
+          <article class="sec-zone sec-zone--dmz">
+            <header class="sec-zone__head">
+              <h3 class="sec-zone__title">DMZ</h3>
+              <p class="sec-zone__assets">Web Server (192.168.1.10) · Mail Server (192.168.1.20)</p>
+            </header>
+            <div class="sec-zone__slots">
+              <div class="sec-slot">
+                <p class="sec-slot__label">Protect Web Server (HTTP attacks)</p>
+                <div class="drop-slot" data-target="waf" aria-label="Protect Web Server from HTTP attacks"></div>
+              </div>
+              <div class="sec-slot">
+                <p class="sec-slot__label">Detect intrusions in DMZ</p>
+                <div class="drop-slot" data-target="network-ids" aria-label="Detect intrusions in DMZ"></div>
+              </div>
+              <div class="sec-slot">
+                <p class="sec-slot__label">Decoy to lure attackers</p>
+                <div class="drop-slot" data-target="honeypot" aria-label="Decoy to lure attackers"></div>
+              </div>
+            </div>
+          </article>
+
+          <div class="sec-zone-arrow" aria-hidden="true">→</div>
+
+          <article class="sec-zone sec-zone--internal">
+            <header class="sec-zone__head">
+              <h3 class="sec-zone__title">Internal network (trusted)</h3>
+              <p class="sec-zone__assets">Workstations · Database Server</p>
+            </header>
+            <div class="sec-zone__slots">
+              <div class="sec-slot">
+                <p class="sec-slot__label">Between DMZ ↔ Internal</p>
+                <div class="drop-slot" data-target="internal-firewall" aria-label="Between DMZ and Internal"></div>
+              </div>
+              <div class="sec-slot">
+                <p class="sec-slot__label">Endpoint access control</p>
+                <div class="drop-slot" data-target="nac" aria-label="Endpoint access control"></div>
+              </div>
+              <div class="sec-slot">
+                <p class="sec-slot__label">Log aggregation &amp; alerting</p>
+                <div class="drop-slot" data-target="siem" aria-label="Log aggregation and alerting"></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="checkBtn" type="button">Check Answer</button>
+    <button id="showBtn" type="button">Show Answer</button>
+    <button id="resetBtn" type="button">Reset</button>
+    <span id="result" role="status" aria-live="polite"></span>
+  </div>
+</article>
+<script>
+(function () {
+  var CORRECT_MSG =
+    "Correct. Perimeter Firewall guards the Internet–DMZ boundary; WAF filters HTTP attacks on the web server; Network IDS monitors DMZ traffic; Honeypot acts as a decoy; Internal Firewall separates DMZ from the trusted network; NAC enforces endpoint access; SIEM aggregates logs and alerts. Proxy Server is not required in this design.";
+
+  var root = document.getElementById("sec-control-placement");
+  if (!root) return;
+
+  var bank = root.querySelector(".bank");
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector(".actions [role='status']");
+  var dragged = null;
+  var picked = null;
+
+  function allSlots() {
+    return root.querySelectorAll(".drop-slot[data-target]");
+  }
+
+  function clearPick() {
+    root.querySelectorAll(".token.is-picked").forEach(function (node) {
+      node.classList.remove("is-picked");
+    });
+    picked = null;
+  }
+
+  function setPick(token) {
+    clearPick();
+    picked = token;
+    if (picked) picked.classList.add("is-picked");
+  }
+
+  function moveTokenToSlot(slot, token) {
+    if (!token || !slot) return;
+    var existing = slot.querySelector(".token");
+    if (existing && existing !== token) bank.appendChild(existing);
+    slot.appendChild(token);
+  }
+
+  function shuffleBank() {
+    var nodes = [].slice.call(bank.querySelectorAll(".token"));
+    while (nodes.length) {
+      bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
+    }
+  }
+
+  shuffleBank();
+
+  root.addEventListener("click", function (event) {
+    var token = event.target.closest(".token");
+    if (token && root.contains(token)) {
+      if (picked === token) {
+        clearPick();
+        return;
+      }
+      var parentSlot =
+        token.parentNode &&
+        token.parentNode.classList &&
+        token.parentNode.classList.contains("drop-slot")
+          ? token.parentNode
+          : null;
+      if (picked && parentSlot) {
+        moveTokenToSlot(parentSlot, picked);
+        clearPick();
+        return;
+      }
+      setPick(token);
+      return;
+    }
+
+    var slot = event.target.closest(".drop-slot");
+    if (slot && root.contains(slot) && picked) {
+      moveTokenToSlot(slot, picked);
+      clearPick();
+      return;
+    }
+
+    if (bank.contains(event.target) && picked && !bank.contains(picked)) {
+      bank.appendChild(picked);
+      clearPick();
+    }
+  });
+
+  root.querySelectorAll(".token").forEach(function (token) {
+    token.addEventListener("dragstart", function () {
+      clearPick();
+      dragged = token;
+    });
+  });
+
+  allSlots().forEach(function (slot) {
+    slot.addEventListener("dragover", function (event) {
+      event.preventDefault();
+      slot.classList.add("over");
+    });
+    slot.addEventListener("dragleave", function () {
+      slot.classList.remove("over");
+    });
+    slot.addEventListener("drop", function (event) {
+      event.preventDefault();
+      slot.classList.remove("over");
+      if (!dragged) return;
+      moveTokenToSlot(slot, dragged);
+      dragged = null;
+    });
+  });
+
+  bank.addEventListener("dragover", function (event) {
+    event.preventDefault();
+  });
+  bank.addEventListener("drop", function (event) {
+    event.preventDefault();
+    if (dragged) bank.appendChild(dragged);
+    dragged = null;
+  });
+
+  function takeFromBank(value) {
+    return [].slice.call(bank.querySelectorAll(".token")).find(function (token) {
+      return token.getAttribute("data-value") === value;
+    });
+  }
+
+  checkBtn.addEventListener("click", function () {
+    var allOk = true;
+    allSlots().forEach(function (slot) {
+      slot.classList.remove("correct", "incorrect", "over");
+      var want = slot.getAttribute("data-target");
+      var token = slot.querySelector(".token");
+      if (!token) {
+        slot.classList.add("incorrect");
+        allOk = false;
+        return;
+      }
+      var ok = token.getAttribute("data-value") === want;
+      slot.classList.add(ok ? "correct" : "incorrect");
+      if (!ok) allOk = false;
+    });
+
+    result.className = allOk ? "is-pass" : "is-fail";
+    result.textContent = allOk
+      ? CORRECT_MSG
+      : "Incorrect. Match each labeled slot to the control that best fits its role. Seven slots must be filled; Proxy Server is optional.";
+  });
+
+  showBtn.addEventListener("click", function () {
+    clearPick();
+    allSlots().forEach(function (slot) {
+      slot.classList.remove("correct", "incorrect", "over");
+      var token = slot.querySelector(".token");
+      if (token) bank.appendChild(token);
+    });
+    allSlots().forEach(function (slot) {
+      var token = takeFromBank(slot.getAttribute("data-target"));
+      if (token) {
+        slot.appendChild(token);
+        slot.classList.add("correct");
+      }
+    });
+    result.className = "is-pass";
+    result.textContent = CORRECT_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    clearPick();
+    allSlots().forEach(function (slot) {
+      slot.classList.remove("correct", "incorrect", "over");
+      var token = slot.querySelector(".token");
+      if (token) bank.appendChild(token);
+    });
+    result.className = "";
+    result.textContent = "";
+    shuffleBank();
+  });
+})();
+</script>
