@@ -1,7 +1,7 @@
 /**
  * Launch-deal popup for Security+ ad traffic on comptia-sec+-home.html.
- * Launch pricing ($17.99 with ONETIMEDEAL coupon on $24.99 list) stays active only while the popup is open.
- * Closing the popup ends the offer for this browser session.
+ * Opens when the user scrolls to #purchase (pricing). Launch pricing ($17.99 with ONETIMEDEAL
+ * on $24.99 list) stays active only while the popup is open. Closing ends the offer for the session.
  */
 (function () {
   "use strict";
@@ -16,6 +16,8 @@
   var openedAt = null;
   var root = null;
   var panel = null;
+  var purchaseScrollTriggered = false;
+  var purchaseObserver = null;
 
   function isSecplusHome() {
     return (location.pathname || "").indexOf("comptia-sec+-home") >= 0;
@@ -200,12 +202,46 @@
     observer.observe(link, { attributes: true, attributeFilter: ["href", "data-secplus-portal-30d-checkout"] });
   }
 
+  function canOfferLaunchDeal() {
+    return isNewAdTraffic() && !wasDismissed();
+  }
+
+  function tryOpenPopupAtPurchase() {
+    if (purchaseScrollTriggered || !canOfferLaunchDeal()) return;
+    if (root && !root.hidden && root.classList.contains("ccna-sim-promo-root--open")) return;
+    purchaseScrollTriggered = true;
+    if (purchaseObserver) {
+      purchaseObserver.disconnect();
+      purchaseObserver = null;
+    }
+    openPopup();
+  }
+
+  function wirePurchaseScrollTrigger() {
+    var purchase = document.getElementById("purchase");
+    if (!purchase || !canOfferLaunchDeal()) return;
+
+    if (typeof IntersectionObserver === "undefined") {
+      if (location.hash === "#purchase") tryOpenPopupAtPurchase();
+      return;
+    }
+
+    purchaseObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) tryOpenPopupAtPurchase();
+        });
+      },
+      { root: null, rootMargin: "0px 0px -8% 0px", threshold: 0.2 }
+    );
+    purchaseObserver.observe(purchase);
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     if (!isSecplusHome()) return;
     wirePopup();
     wireStickyObserver();
-    if (wasDismissed() || !isNewAdTraffic()) return;
-    openPopup();
+    wirePurchaseScrollTrigger();
   });
 
   window.bccSecplusLaunchDealActive = function () {

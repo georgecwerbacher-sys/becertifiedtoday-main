@@ -52,7 +52,7 @@ Primary **Google Ads final URL** for [[../../02-campaigns/security-plus/security
 - **Lead magnet:** `#secplus-lead-capture` — badge “Free · 35 minutes”; H2 “Start your free SY0-701 timed simulation”; **20 MCQ + 1 PBQ**; scorecard + optional email
 - **Sim runner nav (free + paid):** **Back**, **Mark for review**, **Next** / **Finish**; embedded question Back/Home hidden in exam mode
 - **Primary CTAs:** free sim (no checkout), free samples; **paid:** 30-day ($19.99) only on `#purchase` (2026-06-03)
-- **Launch deal (ad traffic):** popup on land — **$17.99** with **ONETIMEDEAL** ($7 off $24.99) while popup open; dismiss ends offer for session
+- **Launch deal (ad traffic):** popup when user scrolls to `#purchase` — **$17.99** with **ONETIMEDEAL** ($7 off $24.99) while popup open; dismiss ends offer for session
 
 ## Audit history
 
