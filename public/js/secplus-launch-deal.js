@@ -1,6 +1,6 @@
 /**
  * Launch-deal popup for Security+ ad traffic on comptia-sec+-home.html.
- * Opens when the user scrolls to #purchase (pricing). Launch pricing ($17.99 with ONETIMEDEAL
+ * Opens when the user reaches #purchase (pricing). Launch pricing ($17.99 with ONETIMEDEAL
  * on $24.99 list) stays active only while the popup is open. Closing ends the offer for the session.
  */
 (function () {
@@ -18,12 +18,25 @@
   var panel = null;
   var purchaseScrollTriggered = false;
   var purchaseObserver = null;
+  var scrollListenerBound = false;
 
   function isSecplusHome() {
     return (location.pathname || "").indexOf("comptia-sec+-home") >= 0;
   }
 
+  function hasTrackingParamsInUrl() {
+    try {
+      var qs = new URLSearchParams(window.location.search);
+      return ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "gclid"].some(function (key) {
+        return !!qs.get(key);
+      });
+    } catch (_) {
+      return false;
+    }
+  }
+
   function isNewAdTraffic() {
+    if (hasTrackingParamsInUrl()) return true;
     if (typeof window.bccShouldScrollSecplusLeadCapture === "function" && window.bccShouldScrollSecplusLeadCapture()) {
       return true;
     }
@@ -31,6 +44,7 @@
     if (attrs.gclid) return true;
     if (/cpc|ppc|paid/i.test(attrs.utm_medium || "")) return true;
     if (/secplus/i.test(attrs.utm_campaign || "")) return true;
+    if (/google/i.test(attrs.utm_source || "") && (attrs.utm_medium || attrs.utm_campaign)) return true;
     return false;
   }
 
@@ -144,6 +158,7 @@
     openedAt = Date.now();
     activateDealUi();
     root.hidden = false;
+    root.removeAttribute("hidden");
     root.setAttribute("aria-hidden", "false");
     root.classList.add("ccna-sim-promo-root--open");
     tickCountdown();
@@ -217,24 +232,61 @@
     openPopup();
   }
 
+  function isPurchaseSectionInView() {
+    var purchase = document.getElementById("purchase");
+    if (!purchase) return false;
+    var rect = purchase.getBoundingClientRect();
+    var vh = window.innerHeight || document.documentElement.clientHeight || 0;
+    if (vh <= 0 || rect.height <= 0) return false;
+    var visiblePx = Math.min(rect.bottom, vh) - Math.max(rect.top, 0);
+    return visiblePx >= Math.min(80, rect.height * 0.12);
+  }
+
+  function checkPurchaseInView() {
+    if (isPurchaseSectionInView()) tryOpenPopupAtPurchase();
+  }
+
   function wirePurchaseScrollTrigger() {
     var purchase = document.getElementById("purchase");
-    if (!purchase || !canOfferLaunchDeal()) return;
+    if (!purchase) return;
 
-    if (typeof IntersectionObserver === "undefined") {
-      if (location.hash === "#purchase") tryOpenPopupAtPurchase();
-      return;
+    if (typeof IntersectionObserver !== "undefined") {
+      purchaseObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) tryOpenPopupAtPurchase();
+          });
+        },
+        { root: null, rootMargin: "0px 0px -5% 0px", threshold: [0, 0.08, 0.15] }
+      );
+      purchaseObserver.observe(purchase);
     }
 
-    purchaseObserver = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) tryOpenPopupAtPurchase();
-        });
+    if (!scrollListenerBound) {
+      scrollListenerBound = true;
+      window.addEventListener("scroll", checkPurchaseInView, { passive: true });
+      window.addEventListener("resize", checkPurchaseInView, { passive: true });
+    }
+
+    document.addEventListener(
+      "click",
+      function (ev) {
+        var target = ev.target && ev.target.closest ? ev.target.closest("a[href*='#purchase'], [data-secplus-portal-30d-checkout]") : null;
+        if (!target) return;
+        window.setTimeout(checkPurchaseInView, 120);
+        window.setTimeout(checkPurchaseInView, 480);
       },
-      { root: null, rootMargin: "0px 0px -8% 0px", threshold: 0.2 }
+      true
     );
-    purchaseObserver.observe(purchase);
+
+    window.addEventListener("hashchange", function () {
+      if (location.hash === "#purchase") checkPurchaseInView();
+    });
+
+    window.requestAnimationFrame(function () {
+      checkPurchaseInView();
+      window.setTimeout(checkPurchaseInView, 300);
+    });
   }
 
   document.addEventListener("DOMContentLoaded", function () {
