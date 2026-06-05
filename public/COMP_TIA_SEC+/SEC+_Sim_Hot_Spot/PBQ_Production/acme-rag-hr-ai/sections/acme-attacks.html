@@ -86,6 +86,21 @@
                     </select>
                   </td>
                 </tr>
+                <tr>
+                  <td>
+                    The model is configured with unrestricted outbound tools (email, HTTP fetch). A user tricks the
+                    assistant into sending HR data to an external address.
+                  </td>
+                  <td>
+                    <select class="pbq-ai-select" data-attack="atk-6" aria-label="Mitigation for excessive agency (OWASP LLM06)">
+                      <option value="">Select…</option>
+                      <option value="disable-tools">Disable unrestricted outbound tools; enforce least-privilege tool allowlist</option>
+                      <option value="longer-prompt">Add a longer system prompt warning about email</option>
+                      <option value="waf">Deploy a WAF in front of the chat UI</option>
+                      <option value="md5">Hash outbound email bodies with MD5 before send</option>
+                    </select>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -120,8 +135,11 @@
     "atk-2": "ingest-sanitize",
     "atk-3": "ingest-controls",
     "atk-4": "minimize-dlp",
-    "atk-5": "rbac-retrieval"
+    "atk-5": "rbac-retrieval",
+    "atk-6": "disable-tools"
   };
+  var SHOW_ANSWER_NOTE =
+    " Distractor check: MD5-hashing PDFs does not remove hidden instruction text in indexed layers; a WAF on the chat UI does not stop poisoned embeddings or excessive tool use.";
   var CORRECT_MSG =
     "Correct. Part 1 complete: secure configuration, guardrails, and attack mitigations all pass.";
   var root = document.getElementById("acme-attacks");
@@ -178,7 +196,7 @@
     });
     attacksOk();
     result.className = "is-pass";
-    result.textContent = CORRECT_MSG;
+    result.textContent = CORRECT_MSG + SHOW_ANSWER_NOTE;
   });
   resetBtn.addEventListener("click", function () {
     root.querySelectorAll("[data-attack]").forEach(function (sel) { sel.value = ""; });

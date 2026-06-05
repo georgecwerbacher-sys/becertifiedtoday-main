@@ -827,6 +827,16 @@ body.secplus-pbq-ui.pbq-exhibit-mcq .pbq-vuln-footnotes {
 
 /* Quantitative risk analysis exhibit (SLE / ARO / ALE) */
 
+body.secplus-pbq-ui.pbq-risk-ale .pbq-risk-formula {
+  margin: 0 0 12px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #fcd34d;
+  background: #fffbeb;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
 body.secplus-pbq-ui.pbq-risk-ale .pbq-exhibit__banner--risk {
   background: #1e3a8a;
   color: #ffffff;
@@ -950,6 +960,17 @@ body.secplus-pbq-ui.pbq-malware-ioc .pbq-malware-section + .pbq-malware-section 
   margin-top: 14px;
   padding-top: 12px;
   border-top: 1px solid #334155;
+}
+
+body.secplus-pbq-ui.pbq-malware-ioc .pbq-malware-attck {
+  margin: 12px 0 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #93c5fd;
+  background: #eff6ff;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #1e3a5f;
 }
 
 body.secplus-pbq-ui.pbq-malware-ioc .pbq-malware-section h3 {
@@ -1099,6 +1120,18 @@ body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-list--planes li {
   color: #c2410c;
 }
 
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-exhibit-note,
+body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-slot-hint {
+  margin: 10px 0 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #93c5fd;
+  background: #eff6ff;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #1e3a5f;
+}
+
 body.secplus-pbq-ui.pbq-zero-trust .pbq-zt-segmentation {
   padding: 12px 14px;
   border-radius: 10px;
@@ -1199,10 +1232,18 @@ body.secplus-pbq-ui.pbq-data-protection .data-class-public td {
   background: #eff6ff;
 }
 
-body.secplus-pbq-ui.pbq-data-protection .pbq-data-note {
-  margin: 0;
+body.secplus-pbq-ui.pbq-data-protection .pbq-data-note,
+body.secplus-pbq-ui.pbq-data-protection .pbq-data-compare {
+  margin: 0 0 10px;
   font-size: 0.78rem;
   color: #475569;
+}
+
+body.secplus-pbq-ui.pbq-data-protection .pbq-data-compare {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #93c5fd;
+  background: #eff6ff;
 }
 
 body.secplus-pbq-ui.pbq-data-protection .pbq-data-states,
@@ -1576,6 +1617,17 @@ body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-arch__note {
   font-size: 0.8rem;
   line-height: 1.45;
   color: #334155;
+}
+
+body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-trust-boundary {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #93c5fd;
+  background: #eff6ff;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #1e3a5f;
 }
 
 body.secplus-pbq-ui.pbq-ai-rag .pbq-ai-section {
@@ -2082,6 +2134,44 @@ body.secplus-pbq-ui.pbq-zta-zone-map .zt-zone__slots .drop-slot {
 
 /* BeCertifiedToday hybrid PKI audit PBQ */
 
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-crl-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #fca5a5;
+  background: #fef2f2;
+  font-size: 0.82rem;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-crl-status__value strong {
+  color: #b91c1c;
+  font-size: 1.05rem;
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-crl-status--pulse {
+  animation: pbq-crl-pulse 0.6s ease;
+}
+
+@keyframes pbq-crl-pulse {
+  0%,
+  100% {
+    box-shadow: none;
+  }
+  50% {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.35);
+  }
+}
+
+body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-next-lab {
+  display: inline-block;
+  margin-top: 8px;
+  font-weight: 700;
+}
+
 body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-audit-banner,
 body.secplus-pbq-ui.pbq-pki-audit .pbq-pki-part-banner {
   margin: 0 0 12px;
@@ -2355,6 +2445,40 @@ body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-scenario__lead {
   margin: 0;
   line-height: 1.55;
   color: #334155;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-exhibit {
+  margin: 14px 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-exhibit__banner {
+  margin: 0;
+  padding: 8px 12px;
+  background: #1e293b;
+  color: #f8fafc;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-exhibit__body {
+  padding: 12px;
+  background: #0f172a;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-cron-line {
+  margin: 0;
+  color: #f87171;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+}
+
+body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-exhibit__note {
+  margin: 8px 0 0;
+  font-size: 0.78rem;
+  color: #94a3b8;
 }
 
 body.secplus-pbq-ui.pbq-ssh-harden .pbq-ssh-score-row {
@@ -3669,6 +3793,14 @@ body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-metric__hint {
   color: #64748b;
 }
 
+body.secplus-pbq-ui.pbq-dr-ransomware .pbq-dr-metrics--sticky {
+  position: sticky;
+  top: 8px;
+  z-index: 2;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
 body.secplus-pbq-ui.pbq-dr-ransomware .layout--dr-order .bank--dr-steps {
   display: flex;
   flex-direction: column;
@@ -4174,6 +4306,20 @@ body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-folder__item:hover {
 body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-folder__item.is-active {
   background: #254b8a;
   color: #fff;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-folder__item.is-complete::after {
+  content: " ✓";
+  color: #16a34a;
+  font-weight: 800;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-folder__item.is-active.is-complete::after {
+  color: #bbf7d0;
+}
+
+body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-layout--single {
+  grid-template-columns: 1fr;
 }
 
 body.secplus-pbq-ui.pbq-folder-suite .pbq-suite-main {

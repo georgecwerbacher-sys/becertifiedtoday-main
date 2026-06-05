@@ -118,6 +118,10 @@
                 </div>
               </dl>
             </section>
+            <p class="pbq-zt-exhibit-note" role="note">
+              <strong>Exam tip:</strong> Zero Trust does <em>not</em> mean removing all firewalls — PEPs, micro-segments,
+              and boundary controls still enforce policy (distractor D on the core-concept question).
+            </p>
           </div>
         </figure></div>
       </div></div></article>
@@ -171,6 +175,7 @@
           <section class="panel panel--zt-zones" aria-labelledby="zt-zones-heading">
             <h2 id="zta-p2-zt-zones-heading">Network zones</h2>
             <p class="panel-note">One control per slot — choose the best zone under ZTA.</p>
+            <p class="pbq-zt-slot-hint" id="zta-p2-ztSlotHint" role="note">Hint: Internet has one slot; DMZ has two; Internal has three; Cloud has two.</p>
             <div class="zt-zone-grid">
               <article class="zt-zone zt-zone--internet">
                 <header class="zt-zone__head">
@@ -231,7 +236,7 @@
       <div class="actions">
         <button id="zta-p2-checkBtn" type="button">Check Answer</button>
         <button id="zta-p2-showBtn" type="button">Show Answer</button>
-        <button id="zta-p2-resetBtn" type="button">Reset</button>
+        <button id="zta-p2-resetBtn" type="button">Shuffle controls</button>
         <span id="zta-p2-result" role="status" aria-live="polite"></span>
       </div></div></article>
 <article class="pbq-suite-section" id="zta-p3" data-scenario="zero-trust-zta-migration" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-ai-sim">
@@ -396,6 +401,8 @@
       var result = document.getElementById("result");
       var dragged = null;
       var picked = null;
+      var slotHint = document.getElementById("ztSlotHint");
+      var firstCheck = true;
 
       var CORRECT_MSG =
         "Correct. Internet: ZTNA Gateway replaces broad VPN access for remote users. DMZ / edge: Identity Provider and Continuous Auth enforce verify-explicitly at the policy enforcement point. Internal: micro-segmentation limits east-west movement; PAM Vault and JIT Access govern privileged access to internal systems. Cloud: CASB governs SaaS/shadow IT; DLP Proxy inspects cloud egress and sensitive data in SaaS workflows.";
@@ -508,6 +515,10 @@
       }
 
       checkBtn.addEventListener("click", function () {
+        if (firstCheck && slotHint) {
+          slotHint.hidden = true;
+          firstCheck = false;
+        }
         var allOk = true;
         allSlots().forEach(function (slot) {
           slot.classList.remove("correct", "incorrect", "over");

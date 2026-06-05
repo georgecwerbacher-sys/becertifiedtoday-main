@@ -59,6 +59,11 @@
       </p>
 
       <div class="sim-frame">
+        <div class="pbq-pki-crl-status" id="pki-p1-crlStatus" aria-live="polite">
+          <span class="pbq-pki-crl-status__label">CRL age (audit finding)</span>
+          <span class="pbq-pki-crl-status__value"><strong id="pki-p1-crlAgeDays">11</strong> days stale</span>
+          <span class="pbq-pki-crl-status__max">Policy maximum: 7 days</span>
+        </div>
         <p class="pbq-pki-audit-banner">
           Chain goal: api.becertifiedtoday.com — Root → issuing intermediate → leaf
         </p>
@@ -399,7 +404,18 @@
         });
       }
 
+      function animateCrlStatus() {
+        var crl = document.getElementById("crlStatus");
+        var days = document.getElementById("crlAgeDays");
+        if (!crl || !days) return;
+        crl.classList.remove("pbq-pki-crl-status--pulse");
+        void crl.offsetWidth;
+        crl.classList.add("pbq-pki-crl-status--pulse");
+        days.textContent = "11";
+      }
+
       checkBtn.addEventListener("click", function () {
+        animateCrlStatus();
         var allOk = true;
         allSlots().forEach(function (slot) {
           slot.classList.remove("correct", "incorrect", "over");
@@ -517,6 +533,8 @@
 <script>
     (function () {
       var MUST_REVOKE = { "code-sign": true, "onprem-inter": true };
+      var PKI_BROWSER_PBq =
+        "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/pki-certificate-chain-browser-error/pki-certificate-chain-browser-error.html";
       var CORRECT_MSG =
         "Correct. Revoke immediately: expired code-signing leaf (RSA-1024) and the On-Prem intermediate CA using SHA-1 that issued it. Do not revoke the valid root, api.becertifiedtoday.com leaf, or Azure intermediate. In production you would also stand up a SHA-256 replacement intermediate and migrate issued certs before retiring the weak issuer; revocation removes trust for audit findings now. Publish a fresh CRL within the 7-day policy.";
       var checkBtn = document.getElementById("checkBtn");
@@ -538,10 +556,18 @@
         return ok;
       }
 
+      function showPassWithLink() {
+        result.className = "is-pass";
+        result.innerHTML =
+          CORRECT_MSG +
+          ' <a class="pbq-pki-next-lab" href="' +
+          PKI_BROWSER_PBq +
+          '">Practice browser PKI error PBQ →</a>';
+      }
+
       checkBtn.addEventListener("click", function () {
         if (revocationOk()) {
-          result.className = "is-pass";
-          result.textContent = CORRECT_MSG;
+          showPassWithLink();
         } else {
           result.className = "is-fail";
           result.textContent =
@@ -554,8 +580,7 @@
           input.checked = !!MUST_REVOKE[input.value];
         });
         revocationOk();
-        result.className = "is-pass";
-        result.textContent = CORRECT_MSG;
+        showPassWithLink();
       });
 
       resetBtn.addEventListener("click", function () {

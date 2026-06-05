@@ -38,12 +38,8 @@
         </p>
       </header>
 
-      <div class="pbq-suite-layout">
-        <nav class="pbq-suite-folders pbq-suite-folders--flat" aria-label="Sections">
-<p class="pbq-suite-folders__label"><span aria-hidden="true">📁</span> Sections</p>
-<ul class="pbq-suite-folders__list">
-<li><button type="button" class="pbq-suite-folder__item" data-section="data-protection">Data protection</button></li>
-</ul></nav>
+      <div class="pbq-suite-layout pbq-suite-layout--single">
+        
         <div class="pbq-suite-main" id="pbqSuiteMain">
           <article class="pbq-suite-section" id="data-protection" data-scenario="data-protection" hidden><div class="pbq-suite-section__inner"><h1>Data Protection</h1>
       <p class="pbq-sub">
@@ -119,6 +115,13 @@
                 <li><strong>Salting:</strong> random data before hash — defeats rainbow tables</li>
                 <li><strong>Tokenization:</strong> replace data with token — PCI DSS preferred for card data</li>
                 <li><strong>Data masking:</strong> partial reveal only (e.g. last 4 digits) — test environments</li>
+              </ul>
+              <p class="pbq-data-compare" role="note">
+                <strong>Contrast:</strong> <em>Encryption</em> is reversible with a key; <em>tokenization</em> swaps
+                sensitive values for non-sensitive tokens; <em>masking</em> shows only a safe subset (ideal for
+                non-production test data).
+              </p>
+              <ul class="pbq-data-methods pbq-data-methods--continued">
                 <li><strong>Obfuscation:</strong> hard to understand without encryption</li>
                 <li><strong>Steganography:</strong> hide data inside image or audio</li>
                 <li><strong>DLP:</strong> detect/block unauthorized exfiltration</li>

@@ -38,18 +38,18 @@
         </p>
       </header>
 
-      <div class="pbq-suite-layout">
-        <nav class="pbq-suite-folders pbq-suite-folders--flat" aria-label="Sections">
-<p class="pbq-suite-folders__label"><span aria-hidden="true">📁</span> Sections</p>
-<ul class="pbq-suite-folders__list">
-<li><button type="button" class="pbq-suite-folder__item" data-section="subnet-ip-config">Subnet calculator</button></li>
-</ul></nav>
+      <div class="pbq-suite-layout pbq-suite-layout--single">
+        
         <div class="pbq-suite-main" id="pbqSuiteMain">
           <article class="pbq-suite-section" id="subnet-ip-config" data-scenario="subnetting-ip-addressing" hidden><div class="pbq-suite-section__inner"><h1>Subnetting &amp; IP Addressing Configuration</h1>
   <p class="pbq-sub">
     A small office is expanding and needs proper network segmentation. Subnet <strong>192.168.10.0/24</strong> to create
     <strong>at least 6 usable subnets</strong> while <strong>maximizing hosts per subnet</strong>. Then assign the first
     three subnets in order to the departments below.
+  </p>
+  <p class="pbq-instructions">
+    Borrowed-bits check: ⌈log₂(6)⌉ = 3 host bits → <strong>/27</strong> (not /28 — only 14 usable hosts, insufficient
+    for Sales at 25).
   </p>
 
   <div class="pbq-subnet-depts" aria-label="Department host requirements">

@@ -123,6 +123,35 @@
     if (panel) bindModalTriggers(panel);
   }
 
+  function markSectionProgress(sectionId) {
+    var btn = document.querySelector('.pbq-suite-folder__item[data-section="' + sectionId + '"]');
+    if (btn) btn.classList.add("is-complete");
+  }
+
+  function initSectionProgress() {
+    document.querySelectorAll(".pbq-suite-section").forEach(function (panel) {
+      var status = panel.querySelector('[role="status"]');
+      if (!status) return;
+      var observer = new MutationObserver(function () {
+        if (status.classList.contains("is-pass")) markSectionProgress(panel.id);
+      });
+      observer.observe(status, { attributes: true, attributeFilter: ["class"] });
+      if (status.classList.contains("is-pass")) markSectionProgress(panel.id);
+    });
+  }
+
+  function initDrStickyMetrics() {
+    if (!document.body.classList.contains("pbq-dr-ransomware")) return;
+    var source = document.querySelector("#dr-overview .pbq-dr-metrics");
+    var layout = document.querySelector(".pbq-suite-layout");
+    if (!source || !layout || document.getElementById("pbqDrStickyMetrics")) return;
+    var bar = source.cloneNode(true);
+    bar.id = "pbqDrStickyMetrics";
+    bar.classList.add("pbq-dr-metrics--sticky");
+    bar.setAttribute("aria-label", "Scenario constraints (sticky)");
+    layout.insertBefore(bar, layout.firstChild);
+  }
+
   function initFolders() {
     document.querySelectorAll(".pbq-suite-folder__item").forEach(function (btn) {
       btn.addEventListener("click", function () {
@@ -135,12 +164,18 @@
       document.querySelector('.pbq-suite-folder__item[data-section="' + hash + '"]') ||
       document.querySelector('.pbq-suite-folder__item[data-section="' + defaultId + '"]') ||
       document.querySelector(".pbq-suite-folder__item");
-    if (first) setActiveSection(first.getAttribute("data-section"));
+    if (first) {
+      setActiveSection(first.getAttribute("data-section"));
+    } else if (defaultId && document.getElementById(defaultId)) {
+      setActiveSection(defaultId);
+    }
     window.addEventListener("hashchange", function () {
       var id = (location.hash || "").replace(/^#/, "");
       if (id && document.getElementById(id)) setActiveSection(id);
     });
     bindModalTriggers(document);
+    initSectionProgress();
+    initDrStickyMetrics();
   }
 
   if (document.readyState === "loading") {

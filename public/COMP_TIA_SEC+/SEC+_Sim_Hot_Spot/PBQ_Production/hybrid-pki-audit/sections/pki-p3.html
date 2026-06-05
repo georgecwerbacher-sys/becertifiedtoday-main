@@ -72,6 +72,8 @@
 <script>
     (function () {
       var MUST_REVOKE = { "code-sign": true, "onprem-inter": true };
+      var PKI_BROWSER_PBq =
+        "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/pki-certificate-chain-browser-error/pki-certificate-chain-browser-error.html";
       var CORRECT_MSG =
         "Correct. Revoke immediately: expired code-signing leaf (RSA-1024) and the On-Prem intermediate CA using SHA-1 that issued it. Do not revoke the valid root, api.becertifiedtoday.com leaf, or Azure intermediate. In production you would also stand up a SHA-256 replacement intermediate and migrate issued certs before retiring the weak issuer; revocation removes trust for audit findings now. Publish a fresh CRL within the 7-day policy.";
       var checkBtn = document.getElementById("checkBtn");
@@ -93,10 +95,18 @@
         return ok;
       }
 
+      function showPassWithLink() {
+        result.className = "is-pass";
+        result.innerHTML =
+          CORRECT_MSG +
+          ' <a class="pbq-pki-next-lab" href="' +
+          PKI_BROWSER_PBq +
+          '">Practice browser PKI error PBQ →</a>';
+      }
+
       checkBtn.addEventListener("click", function () {
         if (revocationOk()) {
-          result.className = "is-pass";
-          result.textContent = CORRECT_MSG;
+          showPassWithLink();
         } else {
           result.className = "is-fail";
           result.textContent =
@@ -109,8 +119,7 @@
           input.checked = !!MUST_REVOKE[input.value];
         });
         revocationOk();
-        result.className = "is-pass";
-        result.textContent = CORRECT_MSG;
+        showPassWithLink();
       });
 
       resetBtn.addEventListener("click", function () {

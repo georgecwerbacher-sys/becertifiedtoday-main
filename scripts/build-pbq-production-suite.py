@@ -434,6 +434,8 @@ def load_section_content(sec: dict) -> tuple[str, str]:
 
 
 def build_folder_nav(scenario: dict) -> str:
+    if len(scenario["sections"]) <= 1:
+        return ""
     parts = [
         '<nav class="pbq-suite-folders pbq-suite-folders--flat" aria-label="Sections">',
         '<p class="pbq-suite-folders__label"><span aria-hidden="true">📁</span> Sections</p>',
@@ -483,6 +485,9 @@ def build_scenario_page(scenario: dict) -> str:
     panels, scripts = build_scenario_sections(scenario)
     nav = build_folder_nav(scenario)
     first_section = scenario["sections"][0]["id"]
+    layout_class = "pbq-suite-layout"
+    if len(scenario["sections"]) <= 1:
+        layout_class += " pbq-suite-layout--single"
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -523,7 +528,7 @@ def build_scenario_page(scenario: dict) -> str:
         </p>
       </header>
 
-      <div class="pbq-suite-layout">
+      <div class="{layout_class}">
         {nav}
         <div class="pbq-suite-main" id="pbqSuiteMain">
           {panels}

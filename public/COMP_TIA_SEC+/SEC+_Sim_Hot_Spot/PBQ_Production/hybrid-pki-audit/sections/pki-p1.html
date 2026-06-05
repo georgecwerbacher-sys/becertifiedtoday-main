@@ -10,6 +10,11 @@
       </p>
 
       <div class="sim-frame">
+        <div class="pbq-pki-crl-status" id="crlStatus" aria-live="polite">
+          <span class="pbq-pki-crl-status__label">CRL age (audit finding)</span>
+          <span class="pbq-pki-crl-status__value"><strong id="crlAgeDays">11</strong> days stale</span>
+          <span class="pbq-pki-crl-status__max">Policy maximum: 7 days</span>
+        </div>
         <p class="pbq-pki-audit-banner">
           Chain goal: api.becertifiedtoday.com — Root → issuing intermediate → leaf
         </p>
@@ -191,7 +196,18 @@
         });
       }
 
+      function animateCrlStatus() {
+        var crl = document.getElementById("crlStatus");
+        var days = document.getElementById("crlAgeDays");
+        if (!crl || !days) return;
+        crl.classList.remove("pbq-pki-crl-status--pulse");
+        void crl.offsetWidth;
+        crl.classList.add("pbq-pki-crl-status--pulse");
+        days.textContent = "11";
+      }
+
       checkBtn.addEventListener("click", function () {
+        animateCrlStatus();
         var allOk = true;
         allSlots().forEach(function (slot) {
           slot.classList.remove("correct", "incorrect", "over");
