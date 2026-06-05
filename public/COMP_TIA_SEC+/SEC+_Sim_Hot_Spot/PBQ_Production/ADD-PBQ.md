@@ -50,7 +50,7 @@ Each file: `sections/{section-id}.html`
 
 | Rule | Detail |
 |------|--------|
-| Source of truth | Edit `sections/*.html` only — **do not hand-edit** `{slug}/{slug}.html` or `index.html` |
+| Source of truth | Edit `sections/*.html` only — **do not hand-edit** `{slug}/{slug}.html` |
 | Article wrapper | Inner content must be inside `<article>…</article>`; inline `<script>` blocks are extracted to the built page |
 | First section | Keeps `<h1>`, `.pbq-sub`, `.pbq-instructions` |
 | Later sections | Duplicate `<h1>`, `.pbq-sub`, `.pbq-instructions` are stripped on build |
@@ -74,8 +74,32 @@ Copy interaction patterns from:
 
 - `/css/bcc-question-link-nav.css`
 - `/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css`
-- `/COMP_TIA_SEC+/js/secplus-pbq-page.css`
+- `/COMP_TIA_SEC+/js/secplus-sim-page.css` — white page chrome (shared with `simulation-*.html`)
+- `/COMP_TIA_SEC+/js/secplus-pbq-page.css` — PBQ interactions + **`.pbq-bct-sim`** BCT pattern overrides
 - `/COMP_TIA_SEC+/js/pbq-folder-suite.js` (included by build — folder sidebar)
+
+### 4b. BCT simulation pattern (visual consistency)
+
+Production pages match published sims under **`PBQ_Production/dark-web-account-protection/`** (and the other three published folders):
+
+| Element | Pattern |
+|---------|---------|
+| Body classes | `secplus-sim-page secplus-pbq-ui pbq-bct-sim pbq-folder-suite` |
+| Title | `Simulation: {scenario title}` + eyebrow `SY0-701 PBQ · BeCertifiedToday` |
+| Lead / instructions | `.lead` + `.instructions` card (bordered white panel) |
+| Exhibits | Blue artifact tiles (`#005ecb`) via `.pbq-exhibit-launchers` or `.btn` in `.sim-frame` |
+| Work area | `.sim-frame` and `.panel` = bordered white cards with light shadow |
+| Actions | Check / Show / Reset = BCT blue buttons (not CCNP `#254b8a`) |
+| Nav | Back / Home / Next use same BCT blue as simulation pages |
+
+Reference neighbor: `dark-web-account-protection/dark-web-account-protection.html`. CSS block: `secplus-pbq-page.css` → **BCT simulation pattern**.
+
+### 4c. Deep dive walkthrough
+
+- Source: `marketing-vault/SEC+/PBQ/{slug}/deep-dive-solution.md`
+- Build: `npm run build:pbq-suite` also writes `public/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js`
+- UI: **Deep dive explanation** button at the bottom of each scenario page → modal (`secplus-pbq-deep-dive.js` + `secplus-sim-deep-dive.css`)
+- Regenerate data only: `npm run build:pbq-deep-dive`
 
 ### 5. Drag-and-drop pages
 
@@ -105,7 +129,7 @@ Create `{scenario-slug}/README.md` with:
     "slug": "your-new-slug",
     "title": "Display title",
     "body_class": "pbq-your-hook dragdrop-exercise",  # optional CSS hooks
-    "description": "One-line meta description for hub card and meta tag",
+    "description": "One-line meta description (page meta tag)",
     "prev": "governance",  # current tail when appending
     "next": None,
     "sections": [
@@ -132,7 +156,6 @@ npm run build:pbq-suite
 **Generated automatically:**
 
 - `{slug}/{slug}.html` — one page, folder sidebar, Back / Home / Next
-- `index.html` hub card
 - Nav links from `prev` / `next` in `SCENARIOS`
 
 **Legacy `*-partN.html` redirects:** only if you add entries to `LEGACY_REDIRECTS` in the same script (optional; first three scenarios use this).
@@ -141,7 +164,8 @@ npm run build:pbq-suite
 
 - [ ] `PBQ_Production/README.md` — add row to scenario chain + scenarios table
 - [ ] `PBQ_Production/VERIFICATION.md` — new section with answer audit + primary sources
-- [ ] `marketing-vault/SEC+/PBQ/README.md` — hub table row
+- [ ] `marketing-vault/SEC+/PBQ/README.md` — scenario table row
+- [ ] `SEC+_Training_Portal.html` — link when the lab is ready to publish
 - [ ] `marketing-vault/SEC+/PBQ/{slug}/notes.md` (+ `recommendations.md`, `deep-dive-solution.md` when ready)
 
 ---
@@ -156,7 +180,6 @@ npm run serve
 Preview:
 
 ```text
-http://localhost:3000/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/index.html
 http://localhost:3000/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/{slug}/{slug}.html
 http://localhost:3000/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/{slug}/{slug}.html#{section-id}
 ```
@@ -200,7 +223,7 @@ npm run serve
 
 | File | Purpose |
 |------|---------|
-| `scripts/build-pbq-production-suite.py` | `SCENARIOS` registry, page assembly, hub, chain nav |
+| `scripts/build-pbq-production-suite.py` | `SCENARIOS` registry, page assembly, chain nav |
 | `VERIFICATION.md` | Answer audit log |
 | `../pending/README.md` | Legacy layout references (do not add new work there) |
 | `../../SEC+_PBQ/README.md` | Future publish checklist |

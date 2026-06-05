@@ -4,14 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <meta name="description" content="CompTIA Security+ SY0-701 PBQ — Corporate WAP — WPA3-Enterprise, 802.1X, hidden SSID, guest isolation, 5 GHz channel 149." />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ — Bring a corporate access point in line with policy: WPA3-Enterprise with 802.1X, disable WPS, hide the SSID, enable guest isolation, and pick the least-congested 5 GHz channel." />
   <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/wap-secure-configuration/wap-secure-configuration.html" />
-  <title>Security+ PBQ — Wireless Access Point — Secure Configuration | Be Certified Today</title>
+  <title>Security+ Simulation — Corporate Wireless — Secure AP Configuration | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
 </head>
-<body class="secplus-question-ui secplus-pbq-ui pbq-folder-suite pbq-wap-config">
+<body class="secplus-question-ui secplus-sim-page secplus-pbq-ui pbq-bct-sim pbq-folder-suite pbq-wap-config">
   <script src="/js/sample-url-mask-apply.js"></script>
   <div class="page-logo-watermark" aria-hidden="true">
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
@@ -21,20 +23,13 @@
       <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
     </a>
     <main class="pbq-card pbq-card--suite">
-      <nav class="question-nav" aria-label="Question navigation">
-        <div class="question-nav-links">
-          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/ubuntu-cis-hardening/ubuntu-cis-hardening.html">Back</a>
-          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/log-timeline-forensics/log-timeline-forensics.html">Next</a>
-        </div>
-      </nav>
-
       <header class="pbq-suite-header">
-        <h1>Wireless Access Point — Secure Configuration</h1>
-        <p class="pbq-sub">Corporate WAP — WPA3-Enterprise, 802.1X, hidden SSID, guest isolation, 5 GHz channel 149.</p>
-        <p class="pbq-instructions">
-          Use the <strong>folder sidebar</strong> to switch sections on this page. Open <strong>exhibits</strong> in
-          popups where available.
+        <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
+        <h1>Simulation: Corporate Wireless — Secure AP Configuration</h1>
+        <p class="lead pbq-sub">Bring a corporate access point in line with policy: WPA3-Enterprise with 802.1X, disable WPS, hide the SSID, enable guest isolation, and pick the least-congested 5 GHz channel.</p>
+        <p class="instructions pbq-instructions">
+          Use the <strong>section list</strong> to switch tasks on this page. Open <strong>exhibits</strong> (blue
+          tiles) before answering where shown.
         </p>
       </header>
 
@@ -75,7 +70,7 @@
         </div>
         <div class="pbq-wap-field">
           <label for="wapSsid">SSID name (corporate)</label>
-          <input class="pbq-wap-input" id="wap-secure-config-wapSsid" data-field="ssid" type="text" placeholder="e.g. AcmeCorp_WiFi" maxlength="32" />
+          <input class="pbq-wap-input" id="wap-secure-config-wapSsid" data-field="ssid" type="text" placeholder="e.g. BeCertifiedToday_WiFi" maxlength="32" />
         </div>
         <div class="pbq-wap-field">
           <label for="wapBand">Frequency band &amp; channel</label>
@@ -169,13 +164,25 @@
         </div>
       </div>
 
-      <p class="pbq-suite-footer">
-        <a class="btn btn-secondary" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/index.html">All PBQ Labs</a>
-      </p>
+      <div class="pbq-suite-footer">
+        <div class="pbq-suite-footer__deep-dive">
+          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn">Deep dive explanation</button>
+        </div>
+      <nav class="question-nav question-nav--footer" aria-label="Question navigation (footer)">
+        <div class="question-nav-links">
+          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/ubuntu-cis-hardening/ubuntu-cis-hardening.html">Back</a>
+          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/log-timeline-forensics/log-timeline-forensics.html">Next</a>
+        </div>
+      </nav>
+      </div>
     </main>
   </div>
 
   <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js" defer></script>
   <script>window.PBQ_SUITE_DEFAULT_SECTION = "wap-secure-config";</script>
   <!-- wap-secure-config -->
 <script>
@@ -384,7 +391,7 @@
   showBtn.addEventListener("click", function () {
     encryption.value = "wpa3-enterprise";
     auth.value = "802.1x-radius";
-    ssid.value = "AcmeCorp_WiFi";
+    ssid.value = "BeCertifiedToday_WiFi";
     band.value = "5-ch149";
     setToggle("broadcast", "off");
     setToggle("wps", "off");

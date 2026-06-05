@@ -42,7 +42,7 @@
     return !!(
       item &&
       item.type === "sim" &&
-      normalizePath(item.path).indexOf("simulation-dark-web-account-protection") !== -1
+      normalizePath(item.path).indexOf("dark-web-account-protection") !== -1
     );
   }
 

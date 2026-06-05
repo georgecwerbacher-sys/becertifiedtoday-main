@@ -1,4 +1,4 @@
-# Ransomware DR — Acme Corp (PBQ)
+# Ransomware DR — BeCertifiedToday (PBQ)
 
 SY0-701 performance-based practice: invoke DR after ransomware with budget, SLA, and backup-age constraints.
 

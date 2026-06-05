@@ -6,11 +6,23 @@ Answer keys were verified against CompTIA-aligned objectives and primary sources
 
 **Adding a new scenario:** follow **[ADD-PBQ.md](ADD-PBQ.md)**.
 
+## Published simulations (`index, follow`)
+
+Legacy `SEC+_Sim_Hot_Spot/simulation-*.html` URLs redirect here. Same folder convention as PBQ labs: `{slug}/{slug}.html`.
+
+| Slug | Page |
+|------|------|
+| `dark-web-account-protection` | [Dark Web IR](dark-web-account-protection/dark-web-account-protection.html) |
+| `malware-outbreak-classification` | [Malware outbreak](malware-outbreak-classification/malware-outbreak-classification.html) |
+| `secure-web-architecture-openssl` | [Secure web & OpenSSL](secure-web-architecture-openssl/secure-web-architecture-openssl.html) |
+| `vpc-payment-architecture` | [VPC payment network](vpc-payment-architecture/vpc-payment-architecture.html) |
+
 ## Entry points
+
+Labs are linked from [`SEC+_Training_Portal.html`](../../SEC+_Training_Portal.html). Each scenario is one page:
 
 | Page | Role |
 |------|------|
-| [`index.html`](index.html) | Hub — links to each scenario |
 | `{scenario-slug}/{scenario-slug}.html` | **One scenario, one page** — folder sidebar for all sections on that page |
 
 Example: [`acme-rag-hr-ai/acme-rag-hr-ai.html`](acme-rag-hr-ai/acme-rag-hr-ai.html) with sections `#acme-exhibits`, `#acme-config`, …
@@ -24,7 +36,7 @@ Legacy `*-partN.html` URLs redirect to `{slug}/{slug}.html#section-id`.
 3. [Hybrid PKI audit](hybrid-pki-audit/hybrid-pki-audit.html)
 4. [Ubuntu SSH breach hardening](ubuntu-ssh-breach-hardening/ubuntu-ssh-breach-hardening.html)
 5. [Firewall ACL — Security Operations](firewall-acl-secops/firewall-acl-secops.html)
-6. [Ransomware DR — Acme Corp](ransomware-dr-acme/ransomware-dr-acme.html)
+6. [Ransomware DR — BeCertifiedToday](ransomware-dr-acme/ransomware-dr-acme.html)
 7. [SIEM ransomware — Sigma & MITRE](siem-ransomware-mitre/siem-ransomware-mitre.html)
 8. [Advanced Firewall Rule Configurator](advanced-firewall-rule-configurator/advanced-firewall-rule-configurator.html)
 9. [Network Diagram — Security Control Placement](security-control-placement/security-control-placement.html)
@@ -78,7 +90,6 @@ npm run build:pbq-suite
 ## Preview
 
 ```text
-http://localhost:3000/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/index.html
 http://localhost:3000/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/acme-rag-hr-ai/acme-rag-hr-ai.html
 http://localhost:3000/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/acme-rag-hr-ai/acme-rag-hr-ai.html#acme-config
 ```

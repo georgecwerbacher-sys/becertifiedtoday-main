@@ -2,7 +2,7 @@
   "use strict";
 
   var CONTENT = {
-    "simulation-dark-web-account-protection.html": {
+    "dark-web-account-protection.html": {
       title: "Deep dive — BeCertifiedToday.com dark web IR",
       html:
         '<p>Use this walkthrough after you have opened all three leaked documents. Each step builds on the evidence.</p>' +
@@ -95,7 +95,7 @@
         "<li><h3>Verify</h3><p>All five rows must be correct. Use <strong>Show Answer</strong> to compare, then <strong>Reset</strong> to retry.</p></li>" +
         "</ol>",
     },
-    "simulation-malware-outbreak-classification.html": {
+    "malware-outbreak-classification.html": {
       title: "Deep dive — malware outbreak classification",
       html:
         "<p>Classify each host as <strong>Origin</strong>, <strong>Infected</strong>, or <strong>Clean</strong> using endpoint logs and AV events.</p>" +
@@ -114,7 +114,7 @@
         "<li><h3>Submit</h3><p>Every host needs a classification. <strong>Check Answers</strong> when all five are set.</p></li>" +
         "</ol>",
     },
-    "simulation-vpc-payment-architecture.html": {
+    "vpc-payment-architecture.html": {
       title: "Deep dive — VPC payment architecture",
       html:
         "<p>Place each component in the payment VPC and label the middle tier subnet correctly.</p>" +
@@ -134,7 +134,7 @@
         "<li><h3>Verify</h3><p>Fill every dropdown, then <strong>Check Answers</strong>. WAF at the edge, LB in public, apps in private, DB deepest.</p></li>" +
         "</ol>",
     },
-    "simulation-secure-web-architecture-openssl.html": {
+    "secure-web-architecture-openssl.html": {
       title: "Deep dive — secure web architecture and OpenSSL CSR",
       html:
         "<p>Complete <strong>Part 1</strong> (architecture) and <strong>Part 2</strong> (OpenSSL command snippets).</p>" +
@@ -192,75 +192,39 @@
     return actions;
   }
 
-  function ensureModal() {
-    var modal = document.getElementById("secplusDeepDiveModal");
-    if (modal) return modal;
-    modal = document.createElement("div");
-    modal.id = "secplusDeepDiveModal";
-    modal.className = "secplus-deep-dive-modal";
-    modal.setAttribute("role", "dialog");
-    modal.setAttribute("aria-modal", "true");
-    modal.setAttribute("aria-labelledby", "secplusDeepDiveTitle");
-    modal.hidden = true;
-    modal.innerHTML =
-      '<div class="secplus-deep-dive-modal__panel">' +
-      '<div class="secplus-deep-dive-modal__head">' +
-      '<h2 class="secplus-deep-dive-modal__title" id="secplusDeepDiveTitle">Deep dive</h2>' +
-      '<button type="button" class="secplus-deep-dive-modal__close" id="secplusDeepDiveClose">Close</button>' +
-      "</div>" +
-      '<div class="secplus-deep-dive-modal__body" id="secplusDeepDiveBody"></div>' +
-      "</div>";
-    document.body.appendChild(modal);
-    return modal;
+  function getEntry(key) {
+    return CONTENT[key || pageSlug()] || null;
   }
 
+  function openDeepDive(key, returnFocus) {
+    var modalApi = window.SecplusDeepDiveModal;
+    if (!modalApi) return false;
+    var entry = getEntry(key);
+    if (!entry) return false;
+    return modalApi.open({
+      title: entry.title,
+      html: entry.html,
+      returnFocus: returnFocus,
+    });
+  }
+
+  window.SecplusSimDeepDive = {
+    open: openDeepDive,
+    getEntry: getEntry,
+  };
+
   function init() {
-    var slug = pageSlug();
-    var entry = CONTENT[slug];
+    var entry = getEntry();
     if (!entry) return;
 
     ensureActionsLayout();
-    var modal = ensureModal();
-    var titleEl = document.getElementById("secplusDeepDiveTitle");
-    var bodyEl = document.getElementById("secplusDeepDiveBody");
-    var closeBtn = document.getElementById("secplusDeepDiveClose");
     var openBtn = document.getElementById("deepDiveBtn");
+    if (!openBtn || openBtn.dataset.deepDiveBound) return;
 
-    function openDeepDive() {
-      titleEl.textContent = entry.title;
-      bodyEl.innerHTML = entry.html;
-      modal.hidden = false;
-      modal.classList.add("open");
-      closeBtn.focus();
-    }
-
-    function closeDeepDive() {
-      modal.hidden = true;
-      modal.classList.remove("open");
-      bodyEl.innerHTML = "";
-      if (openBtn) openBtn.focus();
-    }
-
-    if (openBtn && !openBtn.dataset.deepDiveBound) {
-      openBtn.dataset.deepDiveBound = "1";
-      openBtn.addEventListener("click", openDeepDive);
-    }
-    if (closeBtn && !closeBtn.dataset.deepDiveBound) {
-      closeBtn.dataset.deepDiveBound = "1";
-      closeBtn.addEventListener("click", closeDeepDive);
-    }
-    if (!modal.dataset.deepDiveBound) {
-      modal.dataset.deepDiveBound = "1";
-      modal.addEventListener("click", function (ev) {
-        if (ev.target === modal) closeDeepDive();
-      });
-    }
-    if (!document.documentElement.dataset.secplusDeepDiveEsc) {
-      document.documentElement.dataset.secplusDeepDiveEsc = "1";
-      document.addEventListener("keydown", function (ev) {
-        if (ev.key === "Escape" && modal.classList.contains("open")) closeDeepDive();
-      });
-    }
+    openBtn.dataset.deepDiveBound = "1";
+    openBtn.addEventListener("click", function () {
+      openDeepDive(null, openBtn);
+    });
   }
 
   if (document.readyState === "loading") {

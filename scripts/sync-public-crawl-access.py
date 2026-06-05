@@ -78,7 +78,7 @@ SITEMAP_EXACT = {
     "CCNP-ENCOR-Study/test-simulation.html",
     "CCNA-Study/CCNA_labs/cli-lab-trunk_lacp.html",
     "CCNA-Study/CCNA_labs/cli-lab-vlan-sim.html",
-    "COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html",
+    "COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html",
 }
 
 SITEMAP_PREFIXES = (

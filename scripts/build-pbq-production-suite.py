@@ -13,66 +13,66 @@ BASE_URL = "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production"
 SCENARIOS = [
     {
         "slug": "acme-rag-hr-ai",
-        "title": "BeCertifiedToday RAG HR AI",
+        "title": "HR RAG Assistant — AI Security Hardening",
         "body_class": "pbq-ai-rag",
-        "description": "Secure BeCertifiedToday HR RAG — exhibits, configuration, guardrails, attack mitigations, and AI attack MCQs.",
+        "description": "BeCertifiedToday rolled out a generative HR assistant backed by a policy vector store. Review the case exhibits, secure configuration and guardrails, then match each AI attack to the right mitigation.",
         "prev": None,
         "next": "zero-trust-zta-migration",
         "sections": [
-            {"id": "acme-exhibits", "label": "Exhibits & architecture", "path": "acme-rag-hr-ai/sections/acme-exhibits.html"},
-            {"id": "acme-config", "label": "System configuration", "path": "acme-rag-hr-ai/sections/acme-config.html"},
-            {"id": "acme-guardrails", "label": "Guardrails", "path": "acme-rag-hr-ai/sections/acme-guardrails.html"},
-            {"id": "acme-attacks", "label": "Attack mitigations", "path": "acme-rag-hr-ai/sections/acme-attacks.html"},
-            {"id": "acme-p2", "label": "AI attack MCQs (Part 2)", "path": "acme-rag-hr-ai/sections/acme-p2.html"},
+            {"id": "acme-exhibits", "label": "Case exhibits", "path": "acme-rag-hr-ai/sections/acme-exhibits.html"},
+            {"id": "acme-config", "label": "Task 1 — Configuration", "path": "acme-rag-hr-ai/sections/acme-config.html"},
+            {"id": "acme-guardrails", "label": "Task 2 — Guardrails", "path": "acme-rag-hr-ai/sections/acme-guardrails.html"},
+            {"id": "acme-attacks", "label": "Task 3 — Attack mitigations", "path": "acme-rag-hr-ai/sections/acme-attacks.html"},
+            {"id": "acme-p2", "label": "Part 2 — AI attack MCQs", "path": "acme-rag-hr-ai/sections/acme-p2.html"},
         ],
     },
     {
         "slug": "zero-trust-zta-migration",
-        "title": "Zero Trust migration",
+        "title": "Zero Trust Architecture — Zone Migration",
         "body_class": "pbq-zta-zone-map pbq-zero-trust dragdrop-exercise",
-        "description": "BeCertifiedToday ZTA migration — exhibit, core concept, zone control map, and trade-off questions.",
+        "description": "BeCertifiedToday is replacing implicit perimeter trust with NIST SP 800-207 Zero Trust. Study the reference exhibit, answer the core concept question, then place eight controls in the correct network zones.",
         "prev": "acme-rag-hr-ai",
         "next": "hybrid-pki-audit",
         "sections": [
             {"id": "zta-exhibit", "label": "Reference exhibit", "path": "zero-trust-zta-migration/sections/zta-exhibit.html"},
-            {"id": "zta-concept", "label": "Core concept (MCQ)", "path": "zero-trust-zta-migration/sections/zta-concept.html"},
+            {"id": "zta-concept", "label": "Core concept", "path": "zero-trust-zta-migration/sections/zta-concept.html"},
             {"id": "zta-p2", "label": "Zone control map", "path": "zero-trust-zta-migration/sections/zta-p2.html"},
-            {"id": "zta-p3", "label": "Trade-off questions", "path": "zero-trust-zta-migration/sections/zta-p3.html"},
+            {"id": "zta-p3", "label": "Trade-off decisions", "path": "zero-trust-zta-migration/sections/zta-p3.html"},
         ],
     },
     {
         "slug": "hybrid-pki-audit",
-        "title": "Hybrid PKI audit",
+        "title": "Hybrid PKI — Certificate Audit & Revocation",
         "body_class": "pbq-pki-audit dragdrop-exercise",
-        "description": "Hybrid PKI audit for api.becertifiedtoday.com — chain order, algorithms, and revocation.",
+        "description": "An audit of BeCertifiedToday's hybrid PKI flagged weak algorithms, stale CRLs, and an expired leaf. Build the TLS chain for api.becertifiedtoday.com, review crypto choices, and select certificates to revoke.",
         "prev": "zero-trust-zta-migration",
         "next": "ubuntu-ssh-breach-hardening",
         "sections": [
-            {"id": "pki-p1", "label": "Certificate chain order", "path": "hybrid-pki-audit/sections/pki-p1.html"},
-            {"id": "pki-p2", "label": "Algorithm review", "path": "hybrid-pki-audit/sections/pki-p2.html"},
-            {"id": "pki-p3", "label": "Revocation scope", "path": "hybrid-pki-audit/sections/pki-p3.html"},
+            {"id": "pki-p1", "label": "Part 1 — Trust chain", "path": "hybrid-pki-audit/sections/pki-p1.html"},
+            {"id": "pki-p2", "label": "Part 2 — Algorithms", "path": "hybrid-pki-audit/sections/pki-p2.html"},
+            {"id": "pki-p3", "label": "Part 3 — Revocation", "path": "hybrid-pki-audit/sections/pki-p3.html"},
         ],
     },
     {
         "slug": "ubuntu-ssh-breach-hardening",
-        "title": "Ubuntu SSH breach hardening",
+        "title": "Linux Server Breach — SSH Hardening & IR",
         "body_class": "pbq-ssh-harden",
-        "description": "Ubuntu 22.04 post-breach hardening — sshd, fail2ban, UFW, and consequence questions.",
+        "description": "After brute-forced SSH credentials and attacker persistence on a Ubuntu 22.04 web server, harden sshd_config, fail2ban, and UFW — then answer consequence questions about lockout and eradication.",
         "prev": "hybrid-pki-audit",
         "next": "firewall-acl-secops",
         "sections": [
-            {"id": "ubuntu-intro", "label": "Overview & scores", "path": "ubuntu-ssh-breach-hardening/sections/ubuntu-intro.html"},
+            {"id": "ubuntu-intro", "label": "Case briefing", "path": "ubuntu-ssh-breach-hardening/sections/ubuntu-intro.html"},
             {"id": "ubuntu-sshd", "label": "sshd_config", "path": "ubuntu-ssh-breach-hardening/sections/ubuntu-sshd.html"},
-            {"id": "ubuntu-fail2ban", "label": "jail.local (fail2ban)", "path": "ubuntu-ssh-breach-hardening/sections/ubuntu-fail2ban.html"},
+            {"id": "ubuntu-fail2ban", "label": "fail2ban jail", "path": "ubuntu-ssh-breach-hardening/sections/ubuntu-fail2ban.html"},
             {"id": "ubuntu-ufw", "label": "UFW rules", "path": "ubuntu-ssh-breach-hardening/sections/ubuntu-ufw.html"},
-            {"id": "ubuntu-consequences", "label": "Consequence Qs & grade", "path": "ubuntu-ssh-breach-hardening/sections/ubuntu-consequences.html"},
+            {"id": "ubuntu-consequences", "label": "Consequence review", "path": "ubuntu-ssh-breach-hardening/sections/ubuntu-consequences.html"},
         ],
     },
     {
         "slug": "firewall-acl-secops",
-        "title": "Firewall ACL Configuration — Security Operations",
+        "title": "Three-Tier Firewall — ACL Rule Builder",
         "body_class": "pbq-acl-secops",
-        "description": "Acme Corp firewall ACL — permit web and database tiers, explicit deny catch-all (top-down evaluation).",
+        "description": "BeCertifiedToday needs inbound web access and database isolation between DMZ tiers. Write four top-down ACL rows: separate HTTP and HTTPS permits, scoped MySQL, then explicit deny-all.",
         "prev": "ubuntu-ssh-breach-hardening",
         "next": "ransomware-dr-acme",
         "sections": [
@@ -85,67 +85,67 @@ SCENARIOS = [
     },
     {
         "slug": "ransomware-dr-acme",
-        "title": "Ransomware DR — Acme Corp",
+        "title": "Ransomware Crisis — Disaster Recovery Plan",
         "body_class": "pbq-dr-ransomware dragdrop-exercise",
-        "description": "Ransomware DR activation — order 8 steps, RTO/RPO and warm site tier, cost vs. recovery trade-offs.",
+        "description": "Ransomware encrypted BeCertifiedToday's primary data center under a 4-hour RTO, 6-hour backup window, and $2M budget. Order DR activation steps, pick recovery targets, and justify cost trade-offs.",
         "prev": "firewall-acl-secops",
         "next": "siem-ransomware-mitre",
         "sections": [
             {"id": "dr-overview", "label": "Scenario constraints", "path": "ransomware-dr-acme/sections/dr-overview.html"},
-            {"id": "dr-part1-order", "label": "Part 1 — DR step order", "path": "ransomware-dr-acme/sections/dr-part1-order.html"},
+            {"id": "dr-part1-order", "label": "Part 1 — DR activation", "path": "ransomware-dr-acme/sections/dr-part1-order.html"},
             {"id": "dr-part2-targets", "label": "Part 2 — RTO/RPO & site", "path": "ransomware-dr-acme/sections/dr-part2-targets.html"},
-            {"id": "dr-part3-tradeoffs", "label": "Part 3 — Trade-offs", "path": "ransomware-dr-acme/sections/dr-part3-tradeoffs.html"},
+            {"id": "dr-part3-tradeoffs", "label": "Part 3 — Cost trade-offs", "path": "ransomware-dr-acme/sections/dr-part3-tradeoffs.html"},
         ],
     },
     {
         "slug": "siem-ransomware-mitre",
-        "title": "SIEM ransomware — Sigma & MITRE",
+        "title": "Ransomware Attack — SIEM Triage & MITRE Mapping",
         "body_class": "pbq-siem-ransomware",
-        "description": "7 SIEM alerts — Sigma rule for Word/PowerShell stager, MITRE ATT&CK classification, containment decisions.",
+        "description": "Seven correlated SIEM alerts trace a Word-to-PowerShell stager through lateral movement. Author a Sigma detection rule, map events to MITRE ATT&CK, and decide containment actions.",
         "prev": "ransomware-dr-acme",
         "next": "advanced-firewall-rule-configurator",
         "sections": [
             {"id": "siem-overview", "label": "Attack timeline", "path": "siem-ransomware-mitre/sections/siem-overview.html"},
             {"id": "siem-part1-sigma", "label": "Part 1 — Sigma rule", "path": "siem-ransomware-mitre/sections/siem-part1-sigma.html"},
-            {"id": "siem-part2-mitre", "label": "Part 2 — MITRE stages", "path": "siem-ransomware-mitre/sections/siem-part2-mitre.html"},
+            {"id": "siem-part2-mitre", "label": "Part 2 — MITRE mapping", "path": "siem-ransomware-mitre/sections/siem-part2-mitre.html"},
             {"id": "siem-part3-containment", "label": "Part 3 — Containment", "path": "siem-ransomware-mitre/sections/siem-part3-containment.html"},
         ],
     },
     {
         "slug": "advanced-firewall-rule-configurator",
-        "title": "Advanced Firewall Rule Configurator",
+        "title": "Perimeter Firewall — Policy Rule Configurator",
         "body_class": "pbq-afw-config",
-        "description": "Acme Corp perimeter firewall — inbound HTTPS/SSH, deny Telnet, outbound DNS, implicit deny-all (top-down ACL).",
+        "description": "Configure BeCertifiedToday's edge firewall with free-text CIDR and direction fields: permit inbound HTTPS and scoped SSH, deny Telnet, allow outbound DNS, and finish with implicit deny-all.",
         "prev": "siem-ransomware-mitre",
         "next": "security-control-placement",
         "sections": [
             {
                 "id": "advanced-firewall-config",
-                "label": "ACL rule configurator",
+                "label": "Rule builder",
                 "path": "advanced-firewall-rule-configurator/sections/advanced-firewall-config.html",
             },
         ],
     },
     {
         "slug": "security-control-placement",
-        "title": "Network Diagram — Security Control Placement",
+        "title": "Defense in Depth — Control Placement Map",
         "body_class": "pbq-sec-control-map dragdrop-exercise",
-        "description": "Acme Corp three-zone diagram — place firewall, WAF, IDS, honeypot, NAC, and SIEM in labeled slots.",
+        "description": "BeCertifiedToday's Internet, DMZ, and internal diagram needs the right controls in each zone. Drag firewall, WAF, IDS, honeypot, NAC, and SIEM into the slots that match the architecture.",
         "prev": "advanced-firewall-rule-configurator",
         "next": "subnetting-ip-addressing",
         "sections": [
             {
                 "id": "sec-control-placement",
-                "label": "Control placement map",
+                "label": "Zone placement map",
                 "path": "security-control-placement/sections/sec-control-placement.html",
             },
         ],
     },
     {
         "slug": "subnetting-ip-addressing",
-        "title": "Subnetting & IP Addressing Configuration",
+        "title": "Office Expansion — Subnet Design",
         "body_class": "pbq-subnet-ip",
-        "description": "Subnet 192.168.10.0/24 for ≥6 networks (maximize hosts), assign first three /27 subnets to Sales, HR, IT.",
+        "description": "A growing office must split 192.168.10.0/24 into at least six subnets while maximizing usable hosts. Choose the right prefix, then assign the first three /27 networks to Sales, HR, and IT.",
         "prev": "security-control-placement",
         "next": "ubuntu-cis-hardening",
         "sections": [
@@ -158,9 +158,9 @@ SCENARIOS = [
     },
     {
         "slug": "ubuntu-cis-hardening",
-        "title": "Ubuntu 22.04 baseline hardening",
+        "title": "Baseline Audit Failure — CIS Hardening",
         "body_class": "pbq-cis-harden pbq-ssh-harden",
-        "description": "Failed baseline audit — hardening checklist, CIS sshd_config, and pwquality.conf password policy.",
+        "description": "A Ubuntu 22.04 host failed its CIS baseline audit. Complete the hardening checklist, fix sshd_config to CIS expectations, and set pwquality.conf password requirements.",
         "prev": "subnetting-ip-addressing",
         "next": "wap-secure-configuration",
         "sections": [
@@ -183,24 +183,24 @@ SCENARIOS = [
     },
     {
         "slug": "wap-secure-configuration",
-        "title": "Wireless Access Point — Secure Configuration",
+        "title": "Corporate Wireless — Secure AP Configuration",
         "body_class": "pbq-wap-config",
-        "description": "Corporate WAP — WPA3-Enterprise, 802.1X, hidden SSID, guest isolation, 5 GHz channel 149.",
+        "description": "Bring a corporate access point in line with policy: WPA3-Enterprise with 802.1X, disable WPS, hide the SSID, enable guest isolation, and pick the least-congested 5 GHz channel.",
         "prev": "ubuntu-cis-hardening",
         "next": "log-timeline-forensics",
         "sections": [
             {
                 "id": "wap-secure-config",
-                "label": "WAP settings",
+                "label": "WAP settings panel",
                 "path": "wap-secure-configuration/sections/wap-secure-config.html",
             },
         ],
     },
     {
         "slug": "log-timeline-forensics",
-        "title": "Log Timeline Forensics",
+        "title": "SSH Breach Timeline — Log Reconstruction",
         "body_class": "dragdrop-exercise",
-        "description": "Reorder SSH auth log snippets to reconstruct a brute-force attack ending in privilege escalation.",
+        "description": "Six out-of-order SSH authentication log snippets describe a brute-force intrusion through privilege escalation. Drag them into chronological order to reconstruct the attack path.",
         "prev": "wap-secure-configuration",
         "next": "pki-certificate-chain-browser-error",
         "sections": [
@@ -213,120 +213,120 @@ SCENARIOS = [
     },
     {
         "slug": "pki-certificate-chain-browser-error",
-        "title": "PKI Certificate Chain — Browser Error",
+        "title": "TLS Browser Error — Certificate Chain Fix",
         "body_class": "pbq-exhibit-mcq",
-        "description": "PKI certificate chain exhibit and NET::ERR_CERT_AUTHORITY_INVALID troubleshooting.",
+        "description": "Users see NET::ERR_CERT_AUTHORITY_INVALID when connecting to an internal HTTPS service. Review the PKI chain exhibit and choose the fix that restores trust without weakening validation.",
         "prev": "log-timeline-forensics",
         "next": "phishing-email-analysis",
         "sections": [
             {
                 "id": "pki-browser-error",
-                "label": "Browser cert error",
+                "label": "Chain exhibit & MCQ",
                 "path": "pki-certificate-chain-browser-error/sections/pki-browser-error.html",
             },
         ],
     },
     {
         "slug": "phishing-email-analysis",
-        "title": "Phishing Email Analysis",
+        "title": "Suspicious Inbox — Phishing Email Analysis",
         "body_class": "pbq-phishing-analysis dragdrop-exercise",
-        "description": "Phishing email exhibit and drag-and-drop social engineering term matching.",
+        "description": "A suspicious message impersonates Microsoft 365 support. Study the email exhibit and drag each social-engineering term into the analysis paragraph that matches the red flags.",
         "prev": "pki-certificate-chain-browser-error",
         "next": "vulnerability-management",
         "sections": [
             {
                 "id": "phishing-analysis",
-                "label": "Phishing analysis",
+                "label": "Email analysis",
                 "path": "phishing-email-analysis/sections/phishing-analysis.html",
             },
         ],
     },
     {
         "slug": "vulnerability-management",
-        "title": "Vulnerability Management",
+        "title": "Critical CVE — Vulnerability Response",
         "body_class": "pbq-exhibit-mcq",
-        "description": "Vulnerability scanner exhibit and Log4Shell compensating controls during a change freeze.",
+        "description": "A credentialed scan found Log4Shell (CVSS 10) on production Java services during a change freeze. Review the scan exhibit and pick the best compensating control until patching is allowed.",
         "prev": "phishing-email-analysis",
         "next": "incident-response",
         "sections": [
             {
                 "id": "vuln-management",
-                "label": "Vulnerability scan",
+                "label": "Scan exhibit & response",
                 "path": "vulnerability-management/sections/vuln-management.html",
             },
         ],
     },
     {
         "slug": "incident-response",
-        "title": "Incident Response — Ransomware IR",
+        "title": "Active Ransomware — NIST Incident Response",
         "body_class": "pbq-incident-response dragdrop-exercise",
-        "description": "NIST SP 800-61 ransomware incident timeline and IR process fill-in drag-and-drop.",
+        "description": "A ransomware incident is underway at BeCertifiedToday. Use the NIST SP 800-61 timeline exhibit and fill in the correct IR and forensics terms for each phase of the response.",
         "prev": "vulnerability-management",
         "next": "quantitative-risk-ale",
         "sections": [
             {
                 "id": "incident-response",
-                "label": "NIST IR fill-in",
+                "label": "NIST IR timeline",
                 "path": "incident-response/sections/incident-response.html",
             },
         ],
     },
     {
         "slug": "quantitative-risk-ale",
-        "title": "Quantitative Risk — ALE",
+        "title": "Risk Register — ALE & Training ROI",
         "body_class": "pbq-exhibit-mcq pbq-risk-ale",
-        "description": "Quantitative risk analysis exhibit (SLE, ARO, ALE) and security awareness training ROI.",
+        "description": "The CISO needs quantitative justification for a $50,000 security awareness program. Work through the ALE worksheet (SLE × ARO) and select the calculation that supports the investment.",
         "prev": "incident-response",
         "next": "malware-ioc-analysis",
         "sections": [
             {
                 "id": "risk-ale",
-                "label": "Risk & ALE",
+                "label": "ALE worksheet",
                 "path": "quantitative-risk-ale/sections/risk-ale.html",
             },
         ],
     },
     {
         "slug": "malware-ioc-analysis",
-        "title": "Malware IOC Analysis",
+        "title": "Endpoint Alert — Malware IOC Triage",
         "body_class": "pbq-exhibit-mcq pbq-malware-ioc",
-        "description": "Endpoint malware IOC exhibit (process, network, persistence) and malware classification.",
+        "description": "SOC analysts pulled process, network, and persistence indicators from an infected Windows endpoint. Review the IOC exhibit and classify the malware combination that best fits the evidence.",
         "prev": "quantitative-risk-ale",
         "next": "data-protection",
         "sections": [
             {
                 "id": "malware-ioc",
-                "label": "Malware IOCs",
+                "label": "IOC exhibit & classification",
                 "path": "malware-ioc-analysis/sections/malware-ioc.html",
             },
         ],
     },
     {
         "slug": "data-protection",
-        "title": "Data Protection",
+        "title": "PCI Test Environment — Data Protection Methods",
         "body_class": "pbq-exhibit-mcq pbq-data-protection",
-        "description": "Data classification, states, and protection methods exhibit plus PCI test-data tokenization.",
+        "description": "Developers need realistic payment-card test data without exposing PANs. Review classification levels, data states, and protection methods, then choose the right approach for the sandbox.",
         "prev": "malware-ioc-analysis",
         "next": "governance",
         "sections": [
             {
                 "id": "data-protection",
-                "label": "Data protection",
+                "label": "Protection methods exhibit",
                 "path": "data-protection/sections/data-protection.html",
             },
         ],
     },
     {
         "slug": "governance",
-        "title": "Governance",
+        "title": "Security Program — Governance & Compliance",
         "body_class": "pbq-exhibit-mcq pbq-governance",
-        "description": "Security governance frameworks, policies, vendor agreements, and breach notification obligations.",
+        "description": "A new CISO must align policy, vendor risk, and breach notification with frameworks and regulations. Review the governance exhibit and answer the compliance scenario question.",
         "prev": "data-protection",
         "next": None,
         "sections": [
             {
                 "id": "governance",
-                "label": "Governance",
+                "label": "Governance exhibit",
                 "path": "governance/sections/governance.html",
             },
         ],
@@ -473,10 +473,24 @@ def build_scenario_sections(scenario: dict) -> tuple[str, str]:
 def nav_link(scenario: dict, which: str) -> str:
     slug = scenario.get(which)
     if not slug:
-        return '<span class="nav-link nav-link--disabled" aria-hidden="true">' + ("Back" if which == "prev" else "Next") + "</span>"
+        pos = "nav-prev" if which == "prev" else "nav-next"
+        label = "Back" if which == "prev" else "Next"
+        return f'<span class="nav-link {pos} nav-link--disabled" aria-hidden="true">{label}</span>'
     label = "Back" if which == "prev" else "Next"
     cls = "nav-link nav-prev" if which == "prev" else "nav-link nav-next next-link"
     return f'<a class="{cls}" href="{BASE_URL}/{slug}/{slug}.html">{label}</a>'
+
+
+def build_question_nav(scenario: dict, *, footer: bool = False) -> str:
+    modifier = " question-nav--footer" if footer else ""
+    label = "Question navigation (footer)" if footer else "Question navigation"
+    return f"""      <nav class="question-nav{modifier}" aria-label="{label}">
+        <div class="question-nav-links">
+          {nav_link(scenario, "prev")}
+          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          {nav_link(scenario, "next")}
+        </div>
+      </nav>"""
 
 
 def build_scenario_page(scenario: dict) -> str:
@@ -496,12 +510,14 @@ def build_scenario_page(scenario: dict) -> str:
   <meta name="robots" content="noindex, nofollow" />
   <meta name="description" content="CompTIA Security+ SY0-701 PBQ — {scenario['description']}" />
   <link rel="canonical" href="https://becertifiedtoday.com{page_url}" />
-  <title>Security+ PBQ — {scenario['title']} | Be Certified Today</title>
+  <title>Security+ Simulation — {scenario['title']} | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
 </head>
-<body class="secplus-question-ui secplus-pbq-ui pbq-folder-suite {scenario['body_class']}">
+<body class="secplus-question-ui secplus-sim-page secplus-pbq-ui pbq-bct-sim pbq-folder-suite {scenario['body_class']}">
   <script src="/js/sample-url-mask-apply.js"></script>
   <div class="page-logo-watermark" aria-hidden="true">
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
@@ -511,20 +527,13 @@ def build_scenario_page(scenario: dict) -> str:
       <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
     </a>
     <main class="pbq-card pbq-card--suite">
-      <nav class="question-nav" aria-label="Question navigation">
-        <div class="question-nav-links">
-          {nav_link(scenario, "prev")}
-          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-          {nav_link(scenario, "next")}
-        </div>
-      </nav>
-
       <header class="pbq-suite-header">
-        <h1>{scenario['title']}</h1>
-        <p class="pbq-sub">{scenario['description']}</p>
-        <p class="pbq-instructions">
-          Use the <strong>folder sidebar</strong> to switch sections on this page. Open <strong>exhibits</strong> in
-          popups where available.
+        <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
+        <h1>Simulation: {scenario['title']}</h1>
+        <p class="lead pbq-sub">{scenario['description']}</p>
+        <p class="instructions pbq-instructions">
+          Use the <strong>section list</strong> to switch tasks on this page. Open <strong>exhibits</strong> (blue
+          tiles) before answering where shown.
         </p>
       </header>
 
@@ -535,63 +544,21 @@ def build_scenario_page(scenario: dict) -> str:
         </div>
       </div>
 
-      <p class="pbq-suite-footer">
-        <a class="btn btn-secondary" href="{BASE_URL}/index.html">All PBQ Labs</a>
-      </p>
+      <div class="pbq-suite-footer">
+        <div class="pbq-suite-footer__deep-dive">
+          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn">Deep dive explanation</button>
+        </div>
+{build_question_nav(scenario, footer=True)}
+      </div>
     </main>
   </div>
 
   <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js" defer></script>
   <script>window.PBQ_SUITE_DEFAULT_SECTION = "{first_section}";</script>
   {scripts}
-</body>
-</html>
-"""
-
-
-def build_hub_index() -> str:
-    items = []
-    for sc in SCENARIOS:
-        slug = sc["slug"]
-        url = f"{BASE_URL}/{slug}/{slug}.html"
-        items.append(
-            f'<li><a class="pbq-hub-card" href="{url}">'
-            f'<strong>{sc["title"]}</strong>'
-            f'<span>{len(sc["sections"])} sections — {sc["description"][:80]}…</span>'
-            f"</a></li>"
-        )
-    first = SCENARIOS[0]["slug"]
-    return f"""<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex, nofollow" />
-  <meta name="description" content="CompTIA Security+ PBQ production labs — pick a scenario." />
-  <link rel="canonical" href="https://becertifiedtoday.com{BASE_URL}/index.html" />
-  <title>Security+ PBQ Production Labs | Be Certified Today</title>
-  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
-  <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
-  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
-</head>
-<body class="secplus-question-ui secplus-pbq-ui pbq-hub">
-  <script src="/js/sample-url-mask-apply.js"></script>
-  <div class="question-shell">
-    <main class="pbq-card">
-      <nav class="question-nav" aria-label="Question navigation">
-        <div class="question-nav-links">
-          <span class="nav-link nav-link--disabled nav-prev" aria-hidden="true">Back</span>
-          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-          <a class="nav-link nav-next next-link" href="{BASE_URL}/{first}/{first}.html">Next</a>
-        </div>
-      </nav>
-      <h1>Security+ PBQ production labs</h1>
-      <p class="pbq-sub">Each scenario is one page with folder sections. Legacy part URLs redirect into the matching scenario.</p>
-      <ul class="pbq-hub-list">
-        {"".join(items)}
-      </ul>
-    </main>
-  </div>
 </body>
 </html>
 """
@@ -604,17 +571,24 @@ def write_redirects() -> None:
 
 
 def main() -> None:
+    import importlib.util
+    import sys
+
     written: list[str] = []
     for scenario in SCENARIOS:
         slug = scenario["slug"]
         out = PBQ / slug / f"{slug}.html"
         out.write_text(build_scenario_page(scenario), encoding="utf-8")
         written.append(str(out.relative_to(ROOT)))
-    hub = PBQ / "index.html"
-    hub.write_text(build_hub_index(), encoding="utf-8")
     write_redirects()
     print("wrote " + ", ".join(written))
-    print(f"wrote {hub.relative_to(ROOT)}")
+
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from pbq_deep_dive_md import write_deep_dive_js
+
+    dive_out = ROOT / "public/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"
+    dive_count = write_deep_dive_js([sc["slug"] for sc in SCENARIOS], dive_out)
+    print(f"wrote {dive_out.relative_to(ROOT)} ({dive_count} scenarios)")
 
 
 if __name__ == "__main__":

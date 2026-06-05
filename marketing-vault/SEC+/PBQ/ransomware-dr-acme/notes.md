@@ -2,7 +2,7 @@
 type: pbq-scenario-notes
 exam: SY0-701
 scenario: ransomware-dr-acme
-title: Ransomware DR — Acme Corp
+title: Ransomware DR — BeCertifiedToday
 status: production
 last_updated: 2026-06-04
 ---
@@ -11,7 +11,7 @@ last_updated: 2026-06-04
 
 ## Scenario
 
-Ransomware encrypts Acme Corp primary DC. CISO invokes DR under:
+Ransomware encrypts BeCertifiedToday primary DC. CISO invokes DR under:
 
 - **RTO (SLA):** 4 hours
 - **Current RPO:** 6 hours (last verified backup age)

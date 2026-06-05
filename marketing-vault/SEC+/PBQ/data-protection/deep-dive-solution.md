@@ -7,34 +7,51 @@ last_updated: 2026-06-05
 
 # Data Protection — deep dive solution
 
-> Data classification/states exhibit plus PCI test-data tokenization MCQ.
+> PCI card data in a **non-production test** environment — pick the right protection method.
 
 ---
 
-## Correct answer
+## Step 1 — Classify the data
 
-MCQ **C** — tokenization for PCI test environments
-
----
-
-## Why it matters (exam lens)
-
-**1.3** data sensitivity · **4.3** protection methods
+Payment card numbers (PANs) are **restricted** data under PCI DSS. The developer wants values that **behave like production** in test without exposing real PANs.
 
 ---
 
-## Distractor patterns
+## Step 2 — Compare protection methods from the exhibit
 
-Review wrong choices in the live page — each MCQ/fill-in distractor targets a common SY0-701 misconception (wrong control order, wrong framework scope, or wrong IR phase).
+| Method | Reversible? | Test usability | PCI fit |
+|--------|-------------|----------------|---------|
+| **Tokenization** | Token maps to PAN in vault | Full test values, no real PAN in test DB | **Preferred for card data** |
+| Encryption | Yes, with key | Real PAN recoverable if dev holds key | PAN still in test if decrypted |
+| Hashing (SHA-256) | No | Cannot reproduce PAN-like behavior | Integrity only |
+| Masking (last 4) | N/A | Partial display | Not full test data |
 
 ---
 
-## Related labs
+## Step 3 — Apply the stem requirement
 
-Contrast tokenization vs encryption vs masking in exhibit.
+Developer needs **realistic card numbers** for functional testing **without** keeping production PANs in the test environment.
+
+**Correct: C — Tokenization**
+
+- Replace PANs with **format-preserving tokens** unrelated mathematically to the original.
+- Real PANs remain in a **PCI-compliant vault**.
+- Test apps use tokens that pass validation rules without exposing CHD in non-production.
 
 ---
 
-## Source
+## Step 4 — Eliminate distractors
 
-Ported from `public/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/data-protection.html` (2026-06-05).
+| Choice | Why wrong |
+|--------|-----------|
+| A — Hashing | One-way; cannot support full card-number test scenarios |
+| B — Encryption + dev key | Recoverable PANs still exist in test; key sprawl risk |
+| D — Masking last 4 | Does not provide complete test PANs |
+
+---
+
+## Exam takeaway
+
+**Tokenization** for PAN substitution in lower environments. **Masking** for display. **Hashing** for integrity. **Encryption** when authorized parties must recover the value under key management.
+
+**Objectives:** 3.2 data protection · PCI DSS tokenization guidance

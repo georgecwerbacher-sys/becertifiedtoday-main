@@ -17,7 +17,7 @@ last_updated: 2026-06-05
 |---------|-------|
 | Encryption | WPA3-Enterprise (SAE / 802.1X) |
 | Authentication | 802.1X with RADIUS server *(EAP-TLS also accepted)* |
-| SSID name | Any corporate name (≥3 characters), e.g. `AcmeCorp_WiFi` |
+| SSID name | Any corporate name (≥3 characters), e.g. `BeCertifiedToday_WiFi` |
 | Band / channel | 5 GHz — Channel 149 (non-overlapping) |
 | Broadcast SSID | **OFF** (hidden) |
 | WPS | **OFF** |

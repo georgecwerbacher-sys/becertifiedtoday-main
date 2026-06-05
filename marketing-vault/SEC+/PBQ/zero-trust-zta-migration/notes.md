@@ -37,7 +37,7 @@ Primary reference framed in the UI: **NIST SP 800-207**.
 | `zta-p2` | Zone control map (8 tokens, 8 slots) |
 | `zta-p3` | Three trade-off MCQs |
 
-**Previous:** [[../acme-rag-hr-ai/notes|Acme RAG]] · **Next:** [[../hybrid-pki-audit/notes|Hybrid PKI]]
+**Previous:** [[../acme-rag-hr-ai/notes|BeCertifiedToday RAG]] · **Next:** [[../hybrid-pki-audit/notes|Hybrid PKI]]
 
 ## Zone map (correct placement)
 

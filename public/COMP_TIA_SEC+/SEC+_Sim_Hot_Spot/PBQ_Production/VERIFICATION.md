@@ -78,7 +78,7 @@
 
 ---
 
-## 6. Ransomware DR — Acme Corp (`ransomware-dr-acme/`)
+## 6. Ransomware DR — BeCertifiedToday (`ransomware-dr-acme/`)
 
 | Part | Key | Verdict | Primary sources |
 |------|-----|---------|-----------------|

@@ -11,7 +11,7 @@ last_updated: 2026-06-05
 
 ## What this lab tests
 
-Configure a **perimeter firewall** for Acme Corp with **inbound/outbound direction**, **CIDR notation**, dynamic rule rows, and an **implicit deny-all** last rule:
+Configure a **perimeter firewall** for BeCertifiedToday with **inbound/outbound direction**, **CIDR notation**, dynamic rule rows, and an **implicit deny-all** last rule:
 
 - HTTPS inbound to web server `192.168.1.10`
 - SSH inbound from mgmt subnet `10.0.0.0/24` only

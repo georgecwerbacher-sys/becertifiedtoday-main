@@ -31,9 +31,20 @@
     { kind: "question", url: "/COMP_TIA_SEC+/SEC+_Questions/application-availability-load-balancing-replace-server.html" },
     { kind: "question", url: "/COMP_TIA_SEC+/SEC+_Questions/always-on-vpn-fail-host-content-filtering.html" },
     { kind: "question", url: "/COMP_TIA_SEC+/SEC+_Questions/aup-integrity-ethical-behavior-expectations.html" },
-    { kind: "sim", url: "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-dark-web-account-protection.html" },
+    {
+      kind: "sim",
+      url: "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/dark-web-account-protection/dark-web-account-protection.html",
+    },
   ];
   var SIM_BASE = "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/";
+
+  function simUrl(file) {
+    var path = String(file || "").replace(/^\//, "");
+    if (path.indexOf("PBQ_Production/") === 0) {
+      return SIM_BASE + path;
+    }
+    return SIM_BASE + path;
+  }
   var MCQ_BASE = "/COMP_TIA_SEC+/SEC+_Questions/";
 
   function shuffle(arr) {
@@ -100,9 +111,7 @@
     picked = picked.slice(0, mcqN);
 
     var simFiles = Array.isArray(bp.simFiles) && bp.simFiles.length ? bp.simFiles : [];
-    var simUrls = simFiles.map(function (f) {
-      return SIM_BASE + String(f).replace(/^\//, "");
-    });
+    var simUrls = simFiles.map(simUrl);
 
     var queue = picked
       .map(function (slug) {
@@ -131,9 +140,7 @@
     var simFiles = Array.isArray(bp.simFiles) && bp.simFiles.length ? bp.simFiles : [];
 
     var questionSlugs = pickRandom(slugPool, mcqN);
-    var simUrls = simFiles.map(function (f) {
-      return SIM_BASE + String(f).replace(/^\//, "");
-    });
+    var simUrls = simFiles.map(simUrl);
 
     var queue = []
       .concat(

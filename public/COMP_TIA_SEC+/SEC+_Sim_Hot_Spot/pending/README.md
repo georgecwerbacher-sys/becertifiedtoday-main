@@ -37,5 +37,5 @@ Vault notes: `marketing-vault/SEC+/PBQ/{slug}/`
 ## Preview (production)
 
 ```text
-http://localhost:3000/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/index.html
+http://localhost:3000/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/acme-rag-hr-ai/acme-rag-hr-ai.html
 ```

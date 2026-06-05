@@ -4,14 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <meta name="description" content="CompTIA Security+ SY0-701 PBQ — Reorder SSH auth log snippets to reconstruct a brute-force attack ending in privilege escalation." />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ — Six out-of-order SSH authentication log snippets describe a brute-force intrusion through privilege escalation. Drag them into chronological order to reconstruct the attack path." />
   <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/log-timeline-forensics/log-timeline-forensics.html" />
-  <title>Security+ PBQ — Log Timeline Forensics | Be Certified Today</title>
+  <title>Security+ Simulation — SSH Breach Timeline — Log Reconstruction | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
 </head>
-<body class="secplus-question-ui secplus-pbq-ui pbq-folder-suite dragdrop-exercise">
+<body class="secplus-question-ui secplus-sim-page secplus-pbq-ui pbq-bct-sim pbq-folder-suite dragdrop-exercise">
   <script src="/js/sample-url-mask-apply.js"></script>
   <div class="page-logo-watermark" aria-hidden="true">
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
@@ -21,20 +23,13 @@
       <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
     </a>
     <main class="pbq-card pbq-card--suite">
-      <nav class="question-nav" aria-label="Question navigation">
-        <div class="question-nav-links">
-          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/wap-secure-configuration/wap-secure-configuration.html">Back</a>
-          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/pki-certificate-chain-browser-error/pki-certificate-chain-browser-error.html">Next</a>
-        </div>
-      </nav>
-
       <header class="pbq-suite-header">
-        <h1>Log Timeline Forensics</h1>
-        <p class="pbq-sub">Reorder SSH auth log snippets to reconstruct a brute-force attack ending in privilege escalation.</p>
-        <p class="pbq-instructions">
-          Use the <strong>folder sidebar</strong> to switch sections on this page. Open <strong>exhibits</strong> in
-          popups where available.
+        <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
+        <h1>Simulation: SSH Breach Timeline — Log Reconstruction</h1>
+        <p class="lead pbq-sub">Six out-of-order SSH authentication log snippets describe a brute-force intrusion through privilege escalation. Drag them into chronological order to reconstruct the attack path.</p>
+        <p class="instructions pbq-instructions">
+          Use the <strong>section list</strong> to switch tasks on this page. Open <strong>exhibits</strong> (blue
+          tiles) before answering where shown.
         </p>
       </header>
 
@@ -324,13 +319,25 @@ var dragged = null;
         </div>
       </div>
 
-      <p class="pbq-suite-footer">
-        <a class="btn btn-secondary" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/index.html">All PBQ Labs</a>
-      </p>
+      <div class="pbq-suite-footer">
+        <div class="pbq-suite-footer__deep-dive">
+          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn">Deep dive explanation</button>
+        </div>
+      <nav class="question-nav question-nav--footer" aria-label="Question navigation (footer)">
+        <div class="question-nav-links">
+          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/wap-secure-configuration/wap-secure-configuration.html">Back</a>
+          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/pki-certificate-chain-browser-error/pki-certificate-chain-browser-error.html">Next</a>
+        </div>
+      </nav>
+      </div>
     </main>
   </div>
 
   <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js" defer></script>
   <script>window.PBQ_SUITE_DEFAULT_SECTION = "log-timeline";</script>
   <!-- log-timeline -->
 <script>
