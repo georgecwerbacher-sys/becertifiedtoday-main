@@ -1,4 +1,4 @@
-<article class="pbq-section-fragment" data-id="acme-config"><h1>Task 1 — System configuration</h1><div data-acme-part1>aria-labelledby="config-heading">
+<article class="pbq-section-fragment" data-id="acme-config"><h1>Task 1 — System configuration</h1><div data-acme-part1><section class="pbq-ai-section" aria-labelledby="config-heading">
           <h2 id="config-heading">Task 1 — Fix system configuration</h2>
           <p class="pbq-ai-section-lead">Select the <strong>most secure</strong> setting for each control.</p>
           <div class="pbq-ai-config-grid">
@@ -57,9 +57,7 @@
               </select>
             </label>
           </div>
-        </section>
-
-        <section class="pbq-ai-section"<div class="actions">
+        </section><div class="actions">
         <button id="checkBtn" type="button">Check Answer</button>
         <button id="showBtn" type="button">Show Answer</button>
         <button id="resetBtn" type="button">Reset</button>
@@ -80,7 +78,8 @@
   var checkBtn = actionBtns[0];
   var showBtn = actionBtns[1];
   var resetBtn = actionBtns[2];
-  var result = root.querySelector(".actions + [id$='result']");
+  var result = root.querySelector(".actions [id$='result']");
+  if (!checkBtn || !showBtn || !resetBtn || !result) return;
   function configOk() {
     var ok = true;
     root.querySelectorAll("[data-setting]").forEach(function (sel) {

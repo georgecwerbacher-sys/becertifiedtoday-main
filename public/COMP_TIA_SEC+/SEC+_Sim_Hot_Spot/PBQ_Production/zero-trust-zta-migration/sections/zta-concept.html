@@ -34,16 +34,13 @@
       var CORRECT = "B";
       var CORRECT_MSG =
         "Correct. Traditional perimeter models assume trust inside the firewall; one breach enables lateral movement. Zero Trust removes implicit trust: every request is verified (PEP gateway, adaptive identity, policy engine/administrator) regardless of network location. It is not cloud-only (A), mandatory always-on VPN (C), or firewall removal (D). Continue to Part 2 to place ZTA controls in each zone.";
-      var root = document.getElementById("zta-concept");
-      if (!root) return;
-      var actionBtns = root.querySelectorAll(".actions button");
-      var checkBtn = actionBtns[0];
-      var showBtn = actionBtns[1];
-      var resetBtn = actionBtns[2];
-      var result = root.querySelector(".actions + [id$='result']");
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var resetBtn = document.getElementById("resetBtn");
+      var result = document.getElementById("result");
 
       function selectedChoice() {
-        return root.querySelector('input[name="secplus_bct_zt_fundamental"]:checked');
+        return document.querySelector('input[name="secplus_bct_zt_fundamental"]:checked');
       }
 
       checkBtn.addEventListener("click", function () {
@@ -64,14 +61,14 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var correctInput = root.querySelector('input[name="secplus_bct_zt_fundamental"][value="' + CORRECT + '"]');
+        var correctInput = document.querySelector('input[name="secplus_bct_zt_fundamental"][value="' + CORRECT + '"]');
         if (correctInput) correctInput.checked = true;
         result.className = "is-pass";
         result.textContent = CORRECT_MSG;
       });
 
       resetBtn.addEventListener("click", function () {
-        root.querySelectorAll('input[name="secplus_bct_zt_fundamental"]').forEach(function (input) {
+        document.querySelectorAll('input[name="secplus_bct_zt_fundamental"]').forEach(function (input) {
           input.checked = false;
         });
         result.className = "";

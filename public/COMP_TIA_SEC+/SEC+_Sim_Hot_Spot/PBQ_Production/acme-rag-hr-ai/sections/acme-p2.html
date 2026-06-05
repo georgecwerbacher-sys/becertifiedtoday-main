@@ -126,6 +126,8 @@ Top responses include partial redacted strings — rate limit not enforced on re
         <button id="resetBtn" type="button">Reset</button>
         <span id="result" role="status" aria-live="polite"></span>
       </div>
+<div class="pbq-exhibit-store" hidden aria-hidden="true"><p><button type="button" class="btn btn-secondary" data-pbq-modal="#exhibit-part2-chat">Open exhibit — prompt injection chat log</button></p></div>
+<div class="pbq-exhibit-store" hidden aria-hidden="true"><p><button type="button" class="btn btn-secondary" data-pbq-modal="#exhibit-part2-chat">Open exhibit — prompt injection chat log</button></p></div>
 <div class="pbq-exhibit-store" hidden aria-hidden="true"><figure class="pbq-ai-exhibit pbq-ai-exhibit--wide" id="exhibit-part2-chat">
           <p class="pbq-ai-exhibit__banner">Exhibit — HR chat API (prompt injection attempt)</p>
           <div class="pbq-ai-exhibit__body">
@@ -147,20 +149,24 @@ Top responses include partial redacted strings — rate limit not enforced on re
       };
       var CORRECT_MSG =
         "Correct. Prompt injection: isolate system instructions from user input, sanitize input, and use an injection classifier (keyword filters and HTTPS alone do not stop override attacks). Data poisoning: control ingestion with hash verification, human approval, and output drift monitoring (encryption at rest and AV-only scans do not stop malicious approved content). Model inversion: first throttle high-volume probing with per-user rate limits and redact PII in model outputs; differential privacy matters mainly if you fine-tune on sensitive data (this HR assistant does not). CAPTCHA-only or keyword blocks are insufficient.";
-      var checkBtn = document.getElementById("checkBtn");
-      var showBtn = document.getElementById("showBtn");
-      var resetBtn = document.getElementById("resetBtn");
-      var result = document.getElementById("result");
+      var root = document.getElementById("acme-p2");
+      if (!root) return;
+      var actionBtns = root.querySelectorAll(".actions button");
+      var checkBtn = actionBtns[0];
+      var showBtn = actionBtns[1];
+      var resetBtn = actionBtns[2];
+      var result = root.querySelector(".actions [id$='result']");
+      if (!checkBtn || !showBtn || !resetBtn || !result) return;
 
       function allAnswered() {
         return Object.keys(ANSWERS).every(function (name) {
-          return document.querySelector('input[name="' + name + '"]:checked');
+          return root.querySelector('input[name="' + name + '"]:checked');
         });
       }
 
       function allCorrect() {
         return Object.keys(ANSWERS).every(function (name) {
-          var sel = document.querySelector('input[name="' + name + '"]:checked');
+          var sel = root.querySelector('input[name="' + name + '"]:checked');
           return sel && sel.value === ANSWERS[name];
         });
       }
@@ -183,7 +189,7 @@ Top responses include partial redacted strings — rate limit not enforced on re
 
       showBtn.addEventListener("click", function () {
         Object.keys(ANSWERS).forEach(function (name) {
-          var input = document.querySelector('input[name="' + name + '"][value="' + ANSWERS[name] + '"]');
+          var input = root.querySelector('input[name="' + name + '"][value="' + ANSWERS[name] + '"]');
           if (input) input.checked = true;
         });
         result.className = "is-pass";
@@ -192,7 +198,7 @@ Top responses include partial redacted strings — rate limit not enforced on re
 
       resetBtn.addEventListener("click", function () {
         Object.keys(ANSWERS).forEach(function (name) {
-          document.querySelectorAll('input[name="' + name + '"]').forEach(function (input) {
+          root.querySelectorAll('input[name="' + name + '"]').forEach(function (input) {
             input.checked = false;
           });
         });

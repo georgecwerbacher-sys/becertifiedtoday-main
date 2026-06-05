@@ -63,12 +63,7 @@
               <strong>Risk notes:</strong> Retrieved chunks are concatenated into the model prompt. Treat ingested
               documents and retrieval output as untrusted input. Select each component to jump to its exhibit.
             </p>
-            <p class="pbq-ai-trust-boundary" role="note">
-              <strong>Trust boundary:</strong> System prompt ≠ user input ≠ retrieved text — treat each as a separate
-              trust zone.
-            </p>
           </div>
-        </figure>
         <section class="pbq-ai-section" aria-labelledby="docs-heading">
           <h2 id="acme-exhibits-docs-heading">Policy corpus and retrieval exhibits</h2>
           <ul class="pbq-exhibit-launchers">
@@ -77,7 +72,7 @@
   <li><button type="button" class="btn btn-secondary" data-pbq-modal="#exhibit-retrieved-chunk">Exhibit C — Retrieved chunk</button></li>
   <li><button type="button" class="btn btn-secondary" data-pbq-modal="#exhibit-poisoned-pdf">Exhibit D — Quarantined upload</button></li>
 </ul>
-          <div class="pbq-exhibit-store" hidden aria-hidden="true"><div class="pbq-ai-exhibit-grid">
+          <div class="pbq-exhibit-store" hidden aria-hidden="true"><div class="pbq-ai-exhibit-grid"><div class="pbq-ai-exhibit-grid">
             <figure class="pbq-ai-exhibit pbq-ai-exhibit--wide" id="acme-exhibits-exhibit-corpus">
               <p class="pbq-ai-exhibit__banner">Exhibit A — Vector index: approved HR policy corpus</p>
               <div class="pbq-ai-exhibit__body">
@@ -95,7 +90,7 @@
                       <td>HR-PTO-2024.pdf</td>
                       <td>Internal — all employees</td>
                       <td class="status-approved">Approved / indexed</td>
-                      <td><button type="button" class="pbq-exhibit-cell-btn" data-pbq-modal="#exhibit-retrieved-chunk">Sample chunk</button></td>
+                      <td><a href="exhibits/HR-PTO-2024-sample-chunk.pdf" target="_blank" rel="noopener">Sample chunk</a></td>
                     </tr>
                     <tr>
                       <td>HR-BC-Policy-v3.pdf</td>
@@ -113,7 +108,7 @@
                       <td>PTO-FAQ-draft.pdf</td>
                       <td>Internal (unreviewed)</td>
                       <td class="status-quarantine">Quarantined — pending review</td>
-                      <td><button type="button" class="pbq-exhibit-cell-btn" data-pbq-modal="#exhibit-poisoned-pdf">Malicious upload</button></td>
+                      <td><a href="exhibits/PTO-FAQ-draft-malicious-upload.pdf" target="_blank" rel="noopener">Malicious upload</a></td>
                     </tr>
                   </tbody>
                 </table>
@@ -164,7 +159,7 @@ pro-rated limits in section 3.2. Requests must be submitted in the HR portal bef
             </figure></div></div>
         </section>
       </div></div></article>
-<article class="pbq-suite-section" id="acme-config" data-scenario="acme-rag-hr-ai" hidden><div class="pbq-suite-section__inner"><div data-acme-part1>aria-labelledby="config-heading">
+<article class="pbq-suite-section" id="acme-config" data-scenario="acme-rag-hr-ai" hidden><div class="pbq-suite-section__inner"><div data-acme-part1><section class="pbq-ai-section" aria-labelledby="config-heading">
           <h2 id="acme-config-config-heading">Task 1 — Fix system configuration</h2>
           <p class="pbq-ai-section-lead">Select the <strong>most secure</strong> setting for each control.</p>
           <div class="pbq-ai-config-grid">
@@ -223,14 +218,12 @@ pro-rated limits in section 3.2. Requests must be submitted in the HR portal bef
               </select>
             </label>
           </div>
-        </section>
-
-        <section class="pbq-ai-section"<div class="actions">
+        </section><div class="actions">
         <button id="acme-config-checkBtn" type="button">Check Answer</button>
         <button id="acme-config-showBtn" type="button">Show Answer</button>
         <button id="acme-config-resetBtn" type="button">Reset</button>
         <span id="acme-config-result" role="status" aria-live="polite"></span></div></div></article>
-<article class="pbq-suite-section" id="acme-guardrails" data-scenario="acme-rag-hr-ai" hidden><div class="pbq-suite-section__inner"><div data-acme-part1>aria-labelledby="guard-heading">
+<article class="pbq-suite-section" id="acme-guardrails" data-scenario="acme-rag-hr-ai" hidden><div class="pbq-suite-section__inner"><div data-acme-part1><section class="pbq-ai-section" aria-labelledby="guard-heading">
           <h2 id="acme-guardrails-guard-heading">Task 2 — Guardrails (enable or disable)</h2>
           <p class="pbq-ai-section-lead">Toggle each guardrail to the recommended production state.</p>
           <ul class="pbq-ai-guard-list">
@@ -291,14 +284,12 @@ pro-rated limits in section 3.2. Requests must be submitted in the HR portal bef
               </label>
             </li>
           </ul>
-        </section>
-
-        <section class="pbq-ai-section"<div class="actions">
+        </section><div class="actions">
         <button id="acme-guardrails-checkBtn" type="button">Check Answer</button>
         <button id="acme-guardrails-showBtn" type="button">Show Answer</button>
         <button id="acme-guardrails-resetBtn" type="button">Reset</button>
         <span id="acme-guardrails-result" role="status" aria-live="polite"></span></div></div></article>
-<article class="pbq-suite-section" id="acme-attacks" data-scenario="acme-rag-hr-ai" hidden><div class="pbq-suite-section__inner"><div data-acme-part1>aria-labelledby="attack-heading">
+<article class="pbq-suite-section" id="acme-attacks" data-scenario="acme-rag-hr-ai" hidden><div class="pbq-suite-section__inner"><div data-acme-part1><section class="pbq-ai-section" aria-labelledby="attack-heading">
           <h2 id="acme-attacks-attack-heading">Task 3 — AI attack scenarios and mitigations</h2>
           <p class="pbq-ai-section-lead">Select the <strong>best mitigation</strong> for each scenario.</p>
           <div class="pbq-ai-table-wrap">
@@ -383,21 +374,6 @@ pro-rated limits in section 3.2. Requests must be submitted in the HR portal bef
                       <option value="vpn">Require VPN for all HR users</option>
                       <option value="shorter-answers">Limit answer length to 50 characters</option>
                       <option value="md5-passwords">Store passwords as MD5 in the HR app</option>
-                    </select>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    The model is configured with unrestricted outbound tools (email, HTTP fetch). A user tricks the
-                    assistant into sending HR data to an external address.
-                  </td>
-                  <td>
-                    <select class="pbq-ai-select" data-attack="atk-6" aria-label="Mitigation for excessive agency (OWASP LLM06)">
-                      <option value="">Select…</option>
-                      <option value="disable-tools">Disable unrestricted outbound tools; enforce least-privilege tool allowlist</option>
-                      <option value="longer-prompt">Add a longer system prompt warning about email</option>
-                      <option value="waf">Deploy a WAF in front of the chat UI</option>
-                      <option value="md5">Hash outbound email bodies with MD5 before send</option>
                     </select>
                   </td>
                 </tr>
@@ -528,6 +504,8 @@ Top responses include partial redacted strings — rate limit not enforced on re
         <button id="acme-p2-resetBtn" type="button">Reset</button>
         <span id="acme-p2-result" role="status" aria-live="polite"></span>
       </div>
+<div class="pbq-exhibit-store" hidden aria-hidden="true"><p><button type="button" class="btn btn-secondary" data-pbq-modal="#exhibit-part2-chat">Open exhibit — prompt injection chat log</button></p></div>
+<div class="pbq-exhibit-store" hidden aria-hidden="true"><p><button type="button" class="btn btn-secondary" data-pbq-modal="#exhibit-part2-chat">Open exhibit — prompt injection chat log</button></p></div>
 <div class="pbq-exhibit-store" hidden aria-hidden="true"><figure class="pbq-ai-exhibit pbq-ai-exhibit--wide" id="acme-p2-exhibit-part2-chat">
           <p class="pbq-ai-exhibit__banner">Exhibit — HR chat API (prompt injection attempt)</p>
           <div class="pbq-ai-exhibit__body">
@@ -580,7 +558,8 @@ Top responses include partial redacted strings — rate limit not enforced on re
   var checkBtn = actionBtns[0];
   var showBtn = actionBtns[1];
   var resetBtn = actionBtns[2];
-  var result = root.querySelector(".actions + [id$='result']");
+  var result = root.querySelector(".actions [id$='result']");
+  if (!checkBtn || !showBtn || !resetBtn || !result) return;
   function configOk() {
     var ok = true;
     root.querySelectorAll("[data-setting]").forEach(function (sel) {
@@ -644,7 +623,8 @@ Top responses include partial redacted strings — rate limit not enforced on re
   var checkBtn = actionBtns[0];
   var showBtn = actionBtns[1];
   var resetBtn = actionBtns[2];
-  var result = root.querySelector(".actions + [id$='result']");
+  var result = root.querySelector(".actions [id$='result']");
+  if (!checkBtn || !showBtn || !resetBtn || !result) return;
   function guardsOk() {
     var ok = true;
     root.querySelectorAll("[data-guard]").forEach(function (input) {
@@ -715,11 +695,8 @@ Top responses include partial redacted strings — rate limit not enforced on re
     "atk-2": "ingest-sanitize",
     "atk-3": "ingest-controls",
     "atk-4": "minimize-dlp",
-    "atk-5": "rbac-retrieval",
-    "atk-6": "disable-tools"
+    "atk-5": "rbac-retrieval"
   };
-  var SHOW_ANSWER_NOTE =
-    " Distractor check: MD5-hashing PDFs does not remove hidden instruction text in indexed layers; a WAF on the chat UI does not stop poisoned embeddings or excessive tool use.";
   var CORRECT_MSG =
     "Correct. Part 1 complete: secure configuration, guardrails, and attack mitigations all pass.";
   var root = document.getElementById("acme-attacks");
@@ -728,7 +705,8 @@ Top responses include partial redacted strings — rate limit not enforced on re
   var checkBtn = actionBtns[0];
   var showBtn = actionBtns[1];
   var resetBtn = actionBtns[2];
-  var result = root.querySelector(".actions + [id$='result']");
+  var result = root.querySelector(".actions [id$='result']");
+  if (!checkBtn || !showBtn || !resetBtn || !result) return;
   function configOk() {
     var ok = true;
     document.querySelectorAll("#acme-config [data-setting]").forEach(function (sel) {
@@ -776,7 +754,7 @@ Top responses include partial redacted strings — rate limit not enforced on re
     });
     attacksOk();
     result.className = "is-pass";
-    result.textContent = CORRECT_MSG + SHOW_ANSWER_NOTE;
+    result.textContent = CORRECT_MSG;
   });
   resetBtn.addEventListener("click", function () {
     root.querySelectorAll("[data-attack]").forEach(function (sel) { sel.value = ""; });
@@ -795,20 +773,24 @@ Top responses include partial redacted strings — rate limit not enforced on re
       };
       var CORRECT_MSG =
         "Correct. Prompt injection: isolate system instructions from user input, sanitize input, and use an injection classifier (keyword filters and HTTPS alone do not stop override attacks). Data poisoning: control ingestion with hash verification, human approval, and output drift monitoring (encryption at rest and AV-only scans do not stop malicious approved content). Model inversion: first throttle high-volume probing with per-user rate limits and redact PII in model outputs; differential privacy matters mainly if you fine-tune on sensitive data (this HR assistant does not). CAPTCHA-only or keyword blocks are insufficient.";
-      var checkBtn = document.getElementById("checkBtn");
-      var showBtn = document.getElementById("showBtn");
-      var resetBtn = document.getElementById("resetBtn");
-      var result = document.getElementById("result");
+      var root = document.getElementById("acme-p2");
+      if (!root) return;
+      var actionBtns = root.querySelectorAll(".actions button");
+      var checkBtn = actionBtns[0];
+      var showBtn = actionBtns[1];
+      var resetBtn = actionBtns[2];
+      var result = root.querySelector(".actions [id$='result']");
+      if (!checkBtn || !showBtn || !resetBtn || !result) return;
 
       function allAnswered() {
         return Object.keys(ANSWERS).every(function (name) {
-          return document.querySelector('input[name="' + name + '"]:checked');
+          return root.querySelector('input[name="' + name + '"]:checked');
         });
       }
 
       function allCorrect() {
         return Object.keys(ANSWERS).every(function (name) {
-          var sel = document.querySelector('input[name="' + name + '"]:checked');
+          var sel = root.querySelector('input[name="' + name + '"]:checked');
           return sel && sel.value === ANSWERS[name];
         });
       }
@@ -831,7 +813,7 @@ Top responses include partial redacted strings — rate limit not enforced on re
 
       showBtn.addEventListener("click", function () {
         Object.keys(ANSWERS).forEach(function (name) {
-          var input = document.querySelector('input[name="' + name + '"][value="' + ANSWERS[name] + '"]');
+          var input = root.querySelector('input[name="' + name + '"][value="' + ANSWERS[name] + '"]');
           if (input) input.checked = true;
         });
         result.className = "is-pass";
@@ -840,7 +822,7 @@ Top responses include partial redacted strings — rate limit not enforced on re
 
       resetBtn.addEventListener("click", function () {
         Object.keys(ANSWERS).forEach(function (name) {
-          document.querySelectorAll('input[name="' + name + '"]').forEach(function (input) {
+          root.querySelectorAll('input[name="' + name + '"]').forEach(function (input) {
             input.checked = false;
           });
         });

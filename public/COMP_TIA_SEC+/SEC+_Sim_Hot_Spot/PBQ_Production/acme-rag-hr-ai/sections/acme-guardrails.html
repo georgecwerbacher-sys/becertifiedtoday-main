@@ -1,4 +1,4 @@
-<article class="pbq-section-fragment" data-id="acme-guardrails"><h1>Task 2 — Guardrails</h1><div data-acme-part1>aria-labelledby="guard-heading">
+<article class="pbq-section-fragment" data-id="acme-guardrails"><h1>Task 2 — Guardrails</h1><div data-acme-part1><section class="pbq-ai-section" aria-labelledby="guard-heading">
           <h2 id="guard-heading">Task 2 — Guardrails (enable or disable)</h2>
           <p class="pbq-ai-section-lead">Toggle each guardrail to the recommended production state.</p>
           <ul class="pbq-ai-guard-list">
@@ -59,9 +59,7 @@
               </label>
             </li>
           </ul>
-        </section>
-
-        <section class="pbq-ai-section"<div class="actions">
+        </section><div class="actions">
         <button id="checkBtn" type="button">Check Answer</button>
         <button id="showBtn" type="button">Show Answer</button>
         <button id="resetBtn" type="button">Reset</button>
@@ -84,7 +82,8 @@
   var checkBtn = actionBtns[0];
   var showBtn = actionBtns[1];
   var resetBtn = actionBtns[2];
-  var result = root.querySelector(".actions + [id$='result']");
+  var result = root.querySelector(".actions [id$='result']");
+  if (!checkBtn || !showBtn || !resetBtn || !result) return;
   function guardsOk() {
     var ok = true;
     root.querySelectorAll("[data-guard]").forEach(function (input) {

@@ -457,6 +457,7 @@ def build_scenario_sections(scenario: dict) -> tuple[str, str]:
     for sec in scenario["sections"]:
         inner, script = load_section_content(sec)
         inner = strip_duplicate_headers(inner, first)
+        inner_for_script = inner
         inner = prefix_section(inner, sec["id"])
         panels.append(
             f'<article class="pbq-suite-section" id="{sec["id"]}" '
@@ -465,7 +466,7 @@ def build_scenario_sections(scenario: dict) -> tuple[str, str]:
             f"</article>"
         )
         if script:
-            scripts.append(f"<!-- {sec['id']} -->\n{prefix_script(script, sec['id'], inner)}")
+            scripts.append(f"<!-- {sec['id']} -->\n{prefix_script(script, sec['id'], inner_for_script)}")
         first = False
     return "\n".join(panels), "\n".join(scripts)
 

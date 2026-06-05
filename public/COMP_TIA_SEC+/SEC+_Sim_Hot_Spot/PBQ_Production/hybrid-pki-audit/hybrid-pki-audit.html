@@ -298,11 +298,11 @@
   <!-- pki-p1 -->
 <script>
     (function () {
-      var bank = document.getElementById("bank");
-      var checkBtn = document.getElementById("checkBtn");
-      var showBtn = document.getElementById("showBtn");
-      var resetBtn = document.getElementById("resetBtn");
-      var result = document.getElementById("result");
+      var bank = document.getElementById("pki-p1-bank");
+      var checkBtn = document.getElementById("pki-p1-checkBtn");
+      var showBtn = document.getElementById("pki-p1-showBtn");
+      var resetBtn = document.getElementById("pki-p1-resetBtn");
+      var result = document.getElementById("pki-p1-result");
       var dragged = null;
       var picked = null;
       var CORRECT_MSG =
@@ -412,8 +412,8 @@
       }
 
       function animateCrlStatus() {
-        var crl = document.getElementById("crlStatus");
-        var days = document.getElementById("crlAgeDays");
+        var crl = document.getElementById("pki-p1-crlStatus");
+        var days = document.getElementById("pki-p1-crlAgeDays");
         if (!crl || !days) return;
         crl.classList.remove("pbq-pki-crl-status--pulse");
         void crl.offsetWidth;
@@ -487,10 +487,10 @@
       }
       var CORRECT_MSG =
         "Correct. TLS 1.3 with forward secrecy: ECDHE (or DHE) ephemeral key exchange, not static RSA. Passwords: bcrypt (slow, salted). CA signing: SHA-256 minimum. Azure Blob at rest: AES-256-GCM for confidentiality and integrity.";
-      var checkBtn = document.getElementById("checkBtn");
-      var showBtn = document.getElementById("showBtn");
-      var resetBtn = document.getElementById("resetBtn");
-      var result = document.getElementById("result");
+      var checkBtn = document.getElementById("pki-p2-checkBtn");
+      var showBtn = document.getElementById("pki-p2-showBtn");
+      var resetBtn = document.getElementById("pki-p2-resetBtn");
+      var result = document.getElementById("pki-p2-result");
 
       function algosOk() {
         var ok = true;
@@ -544,10 +544,10 @@
         "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/pki-certificate-chain-browser-error/pki-certificate-chain-browser-error.html";
       var CORRECT_MSG =
         "Correct. Revoke immediately: expired code-signing leaf (RSA-1024) and the On-Prem intermediate CA using SHA-1 that issued it. Do not revoke the valid root, api.becertifiedtoday.com leaf, or Azure intermediate. In production you would also stand up a SHA-256 replacement intermediate and migrate issued certs before retiring the weak issuer; revocation removes trust for audit findings now. Publish a fresh CRL within the 7-day policy.";
-      var checkBtn = document.getElementById("checkBtn");
-      var showBtn = document.getElementById("showBtn");
-      var resetBtn = document.getElementById("resetBtn");
-      var result = document.getElementById("result");
+      var checkBtn = document.getElementById("pki-p3-checkBtn");
+      var showBtn = document.getElementById("pki-p3-showBtn");
+      var resetBtn = document.getElementById("pki-p3-resetBtn");
+      var result = document.getElementById("pki-p3-result");
 
       function revocationOk() {
         var ok = true;

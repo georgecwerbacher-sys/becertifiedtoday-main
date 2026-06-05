@@ -416,7 +416,7 @@
   var checkBtn = actionBtns[0];
   var showBtn = actionBtns[1];
   var resetBtn = actionBtns[2];
-  var result = root.querySelector("#result");
+  var result = root.querySelector("#siem-part1-sigma-result");
 
   checkBtn.addEventListener("click", function () {
     var sel = root.querySelector('input[name="secplus_bct_siem_sigma"]:checked');
@@ -470,7 +470,7 @@
   var checkBtn = actionBtns[0];
   var showBtn = actionBtns[1];
   var resetBtn = actionBtns[2];
-  var result = root.querySelector("#result");
+  var result = root.querySelector("#siem-part2-mitre-result");
 
   function mark(sel, pass) {
     sel.classList.toggle("pbq-siem-mitre-select--ok", pass);
@@ -544,7 +544,7 @@
   var checkBtn = actionBtns[0];
   var showBtn = actionBtns[1];
   var resetBtn = actionBtns[2];
-  var result = root.querySelector("#result");
+  var result = root.querySelector("#siem-part3-containment-result");
 
   function twoAlertsOk() {
     var checked = root.querySelectorAll('input[name="secplus_bct_siem_contain_two"]:checked');

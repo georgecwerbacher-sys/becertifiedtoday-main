@@ -113,10 +113,6 @@
                 </div>
               </dl>
             </section>
-            <p class="pbq-zt-exhibit-note" role="note">
-              <strong>Exam tip:</strong> Zero Trust does <em>not</em> mean removing all firewalls — PEPs, micro-segments,
-              and boundary controls still enforce policy (distractor D on the core-concept question).
-            </p>
           </div>
         </figure></div>
       </div></div></article>
@@ -353,16 +349,13 @@
       var CORRECT = "B";
       var CORRECT_MSG =
         "Correct. Traditional perimeter models assume trust inside the firewall; one breach enables lateral movement. Zero Trust removes implicit trust: every request is verified (PEP gateway, adaptive identity, policy engine/administrator) regardless of network location. It is not cloud-only (A), mandatory always-on VPN (C), or firewall removal (D). Continue to Part 2 to place ZTA controls in each zone.";
-      var root = document.getElementById("zta-concept");
-      if (!root) return;
-      var actionBtns = root.querySelectorAll(".actions button");
-      var checkBtn = actionBtns[0];
-      var showBtn = actionBtns[1];
-      var resetBtn = actionBtns[2];
-      var result = root.querySelector(".actions + [id$='result']");
+      var checkBtn = document.getElementById("zta-concept-checkBtn");
+      var showBtn = document.getElementById("zta-concept-showBtn");
+      var resetBtn = document.getElementById("zta-concept-resetBtn");
+      var result = document.getElementById("zta-concept-result");
 
       function selectedChoice() {
-        return root.querySelector('input[name="secplus_bct_zt_fundamental"]:checked');
+        return document.querySelector('input[name="secplus_bct_zt_fundamental"]:checked');
       }
 
       checkBtn.addEventListener("click", function () {
@@ -383,14 +376,14 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var correctInput = root.querySelector('input[name="secplus_bct_zt_fundamental"][value="' + CORRECT + '"]');
+        var correctInput = document.querySelector('input[name="secplus_bct_zt_fundamental"][value="' + CORRECT + '"]');
         if (correctInput) correctInput.checked = true;
         result.className = "is-pass";
         result.textContent = CORRECT_MSG;
       });
 
       resetBtn.addEventListener("click", function () {
-        root.querySelectorAll('input[name="secplus_bct_zt_fundamental"]').forEach(function (input) {
+        document.querySelectorAll('input[name="secplus_bct_zt_fundamental"]').forEach(function (input) {
           input.checked = false;
         });
         result.className = "";
@@ -401,14 +394,14 @@
 <!-- zta-p2 -->
 <script>
     (function () {
-      var bank = document.getElementById("bank");
-      var checkBtn = document.getElementById("checkBtn");
-      var showBtn = document.getElementById("showBtn");
-      var resetBtn = document.getElementById("resetBtn");
-      var result = document.getElementById("result");
+      var bank = document.getElementById("zta-p2-bank");
+      var checkBtn = document.getElementById("zta-p2-checkBtn");
+      var showBtn = document.getElementById("zta-p2-showBtn");
+      var resetBtn = document.getElementById("zta-p2-resetBtn");
+      var result = document.getElementById("zta-p2-result");
       var dragged = null;
       var picked = null;
-      var slotHint = document.getElementById("ztSlotHint");
+      var slotHint = document.getElementById("zta-p2-ztSlotHint");
       var firstCheck = true;
 
       var CORRECT_MSG =
@@ -588,10 +581,10 @@
       };
       var CORRECT_MSG =
         "Correct. Q1: ZTNA enforces least privilege with per-app access and ongoing verification instead of full network trust after VPN login. Q2: PAM Vault belongs with internal privileged assets, not in cloud for convenience. Q3: Zero Trust applies to east-west internal flows via micro-segmentation and continuous auth, not implicit internal trust.";
-      var checkBtn = document.getElementById("checkBtn");
-      var showBtn = document.getElementById("showBtn");
-      var resetBtn = document.getElementById("resetBtn");
-      var result = document.getElementById("result");
+      var checkBtn = document.getElementById("zta-p3-checkBtn");
+      var showBtn = document.getElementById("zta-p3-showBtn");
+      var resetBtn = document.getElementById("zta-p3-resetBtn");
+      var result = document.getElementById("zta-p3-result");
 
       function allAnswered() {
         return Object.keys(ANSWERS).every(function (name) {

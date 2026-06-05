@@ -28,10 +28,12 @@ ACME_CONFIG_SCRIPT = """<script>
   };
   var root = document.getElementById("acme-config");
   if (!root) return;
-  var checkBtn = root.querySelector("#checkBtn");
-  var showBtn = root.querySelector("#showBtn");
-  var resetBtn = root.querySelector("#resetBtn");
-  var result = root.querySelector("#result");
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var showBtn = actionBtns[1];
+  var resetBtn = actionBtns[2];
+  var result = root.querySelector(".actions [id$='result']");
+  if (!checkBtn || !showBtn || !resetBtn || !result) return;
   function configOk() {
     var ok = true;
     root.querySelectorAll("[data-setting]").forEach(function (sel) {
@@ -95,7 +97,8 @@ ACME_GUARD_SCRIPT = """<script>
   var checkBtn = actionBtns[0];
   var showBtn = actionBtns[1];
   var resetBtn = actionBtns[2];
-  var result = root.querySelector(".actions + #result, .actions + [id$='result'], #result");
+  var result = root.querySelector(".actions [id$='result']");
+  if (!checkBtn || !showBtn || !resetBtn || !result) return;
   function guardsOk() {
     var ok = true;
     root.querySelectorAll("[data-guard]").forEach(function (input) {
@@ -176,7 +179,8 @@ ACME_ATTACKS_SCRIPT = """<script>
   var checkBtn = actionBtns[0];
   var showBtn = actionBtns[1];
   var resetBtn = actionBtns[2];
-  var result = root.querySelector(".actions + #result, .actions + [id$='result'], #result");
+  var result = root.querySelector(".actions [id$='result']");
+  if (!checkBtn || !showBtn || !resetBtn || !result) return;
   function configOk() {
     var ok = true;
     document.querySelectorAll("#acme-config [data-setting]").forEach(function (sel) {
@@ -348,9 +352,21 @@ def split_acme() -> None:
     base = PBQ / "acme-rag-hr-ai/sections"
     grid = between(html, '<div class="pbq-ai-exhibit-grid">', "</div>\n        </section>")
     arch = between(html, '<figure class="pbq-ai-arch"', "</figure>")
-    config = between(html, 'aria-labelledby="config-heading"', 'aria-labelledby="guard-heading"')
-    guard = between(html, 'aria-labelledby="guard-heading"', 'aria-labelledby="attack-heading"')
-    attacks = between(html, 'aria-labelledby="attack-heading"', '<div class="actions">')
+    config = between(
+        html,
+        '<section class="pbq-ai-section" aria-labelledby="config-heading">',
+        '<section class="pbq-ai-section" aria-labelledby="guard-heading">',
+    )
+    guard = between(
+        html,
+        '<section class="pbq-ai-section" aria-labelledby="guard-heading">',
+        '<section class="pbq-ai-section" aria-labelledby="attack-heading">',
+    )
+    attacks = between(
+        html,
+        '<section class="pbq-ai-section" aria-labelledby="attack-heading">',
+        '<div class="actions">',
+    )
     actions = between(html, '<div class="actions">', "</div>")
 
     exhibits = f"""<h1>Exhibits &amp; architecture</h1>
