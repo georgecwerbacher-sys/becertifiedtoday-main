@@ -156,11 +156,11 @@
 
     <header class="review-header">
       <h1>PBQ Production — scenario review</h1>
-      <p>25 labs total: 21 PBQ suite scenarios (chain order) plus 4 published simulations. Use <strong>Deep dive</strong> on any card to open the step-by-step explanation in a popup, or open the full lab.</p>
+      <p>24 labs total: 20 PBQ suite scenarios (chain order) plus 4 published simulations. Use <strong>Deep dive</strong> on any card to open the step-by-step explanation in a popup, or open the full lab.</p>
     </header>
 
     <section class="review-section" id="pbq-chain">
-      <h2>PBQ suite chain (21)</h2>
+      <h2>PBQ suite chain (20)</h2>
       <div class="review-grid" id="pbqChainGrid"></div>
     </section>
 
@@ -177,27 +177,26 @@
   <script>
     (function () {
       var PBQ_CHAIN = [
-        { n: 1, slug: "acme-rag-hr-ai", title: "HR RAG Assistant — AI Security Hardening", sections: 5, desc: "Generative HR assistant, guardrails, attack mitigations." },
-        { n: 2, slug: "zero-trust-zta-migration", title: "Zero Trust Architecture — Zone Migration", sections: 4, desc: "NIST SP 800-207 concepts and zone control placement." },
-        { n: 3, slug: "hybrid-pki-audit", title: "Hybrid PKI — Certificate Audit & Revocation", sections: 3, desc: "TLS chain, weak algorithms, revocation choices." },
-        { n: 4, slug: "ubuntu-ssh-breach-hardening", title: "Linux Server Breach — SSH Hardening & IR", sections: 5, desc: "sshd, fail2ban, UFW after brute-force breach." },
-        { n: 5, slug: "firewall-acl-secops", title: "Three-Tier Firewall — ACL Rule Builder", sections: 1, desc: "DMZ web and database tier ACL rows." },
-        { n: 6, slug: "ransomware-dr-acme", title: "Ransomware Crisis — Disaster Recovery Plan", sections: 4, desc: "DR activation order, RTO/RPO, cost trade-offs." },
-        { n: 7, slug: "siem-ransomware-mitre", title: "Ransomware Attack — SIEM Triage & MITRE Mapping", sections: 4, desc: "Sigma rule, ATT&CK mapping, containment." },
-        { n: 8, slug: "advanced-firewall-rule-configurator", title: "Perimeter Firewall — Policy Rule Configurator", sections: 1, desc: "Edge firewall free-text rule builder." },
-        { n: 9, slug: "security-control-placement", title: "Defense in Depth — Control Placement Map", sections: 1, desc: "Drag controls into Internet, DMZ, internal zones." },
-        { n: 10, slug: "subnetting-ip-addressing", title: "Office Expansion — Subnet Design", sections: 1, desc: "Split /24 into /27 department subnets." },
-        { n: 11, slug: "ubuntu-cis-hardening", title: "Baseline Audit Failure — CIS Hardening", sections: 3, desc: "Checklist, sshd_config, pwquality.conf." },
-        { n: 12, slug: "wap-secure-configuration", title: "Corporate Wireless — Secure AP Configuration", sections: 1, desc: "WPA3-Enterprise, WPS off, guest isolation." },
-        { n: 13, slug: "log-timeline-forensics", title: "SSH Breach Timeline — Log Reconstruction", sections: 1, desc: "Reorder SSH auth log snippets chronologically." },
-        { n: 14, slug: "pki-certificate-chain-browser-error", title: "TLS Browser Error — Certificate Chain Fix", sections: 1, desc: "ERR_CERT_AUTHORITY_INVALID chain diagnosis." },
-        { n: 15, slug: "phishing-email-analysis", title: "Suspicious Inbox — Phishing Email Analysis", sections: 1, desc: "Social-engineering term drag-and-drop." },
-        { n: 16, slug: "vulnerability-management", title: "Critical CVE — Vulnerability Response", sections: 1, desc: "Log4Shell compensating control during change freeze." },
-        { n: 17, slug: "incident-response", title: "Active Ransomware — NIST Incident Response", sections: 1, desc: "NIST SP 800-61 IR phase terminology." },
-        { n: 18, slug: "quantitative-risk-ale", title: "Risk Register — ALE & Training ROI", sections: 1, desc: "SLE × ARO worksheet and awareness ROI." },
-        { n: 19, slug: "malware-ioc-analysis", title: "Endpoint Alert — Malware IOC Triage", sections: 1, desc: "Process, network, persistence IOC classification." },
-        { n: 20, slug: "data-protection", title: "PCI Test Environment — Data Protection Methods", sections: 1, desc: "Tokenization for non-production card data." },
-        { n: 21, slug: "governance", title: "Security Program — Governance & Compliance", sections: 1, desc: "GDPR and PCI DSS parallel breach notification." }
+        { n: 1, slug: "zero-trust-zta-migration", title: "Zero Trust Architecture — Zone Migration", sections: 4, desc: "NIST SP 800-207 concepts and zone control placement." },
+        { n: 2, slug: "hybrid-pki-audit", title: "Hybrid PKI — Certificate Audit & Revocation", sections: 3, desc: "TLS chain, weak algorithms, revocation choices." },
+        { n: 3, slug: "ubuntu-ssh-breach-hardening", title: "Linux Server Breach — SSH Hardening & IR", sections: 5, desc: "sshd, fail2ban, UFW after brute-force breach." },
+        { n: 4, slug: "firewall-acl-secops", title: "Three-Tier Firewall — ACL Rule Builder", sections: 1, desc: "DMZ web and database tier ACL rows." },
+        { n: 5, slug: "ransomware-dr-acme", title: "Ransomware Crisis — Disaster Recovery Plan", sections: 4, desc: "DR activation order, RTO/RPO, cost trade-offs." },
+        { n: 6, slug: "siem-ransomware-mitre", title: "Ransomware Attack — SIEM Triage & MITRE Mapping", sections: 4, desc: "Sigma rule, ATT&CK mapping, containment." },
+        { n: 7, slug: "advanced-firewall-rule-configurator", title: "Perimeter Firewall — Policy Rule Configurator", sections: 1, desc: "Edge firewall free-text rule builder." },
+        { n: 8, slug: "security-control-placement", title: "Defense in Depth — Control Placement Map", sections: 1, desc: "Drag controls into Internet, DMZ, internal zones." },
+        { n: 9, slug: "subnetting-ip-addressing", title: "Office Expansion — Subnet Design", sections: 1, desc: "Split /24 into /27 department subnets." },
+        { n: 10, slug: "ubuntu-cis-hardening", title: "Baseline Audit Failure — CIS Hardening", sections: 3, desc: "Checklist, sshd_config, pwquality.conf." },
+        { n: 11, slug: "wap-secure-configuration", title: "Corporate Wireless — Secure AP Configuration", sections: 1, desc: "WPA3-Enterprise, WPS off, guest isolation." },
+        { n: 12, slug: "log-timeline-forensics", title: "SSH Breach Timeline — Log Reconstruction", sections: 1, desc: "Reorder SSH auth log snippets chronologically." },
+        { n: 13, slug: "pki-certificate-chain-browser-error", title: "TLS Browser Error — Certificate Chain Fix", sections: 1, desc: "ERR_CERT_AUTHORITY_INVALID chain diagnosis." },
+        { n: 14, slug: "phishing-email-analysis", title: "Suspicious Inbox — Phishing Email Analysis", sections: 1, desc: "Social-engineering term drag-and-drop." },
+        { n: 15, slug: "vulnerability-management", title: "Critical CVE — Vulnerability Response", sections: 1, desc: "Log4Shell compensating control during change freeze." },
+        { n: 16, slug: "incident-response", title: "Active Ransomware — NIST Incident Response", sections: 1, desc: "NIST SP 800-61 IR phase terminology." },
+        { n: 17, slug: "quantitative-risk-ale", title: "Risk Register — ALE & Training ROI", sections: 1, desc: "SLE × ARO worksheet and awareness ROI." },
+        { n: 18, slug: "malware-ioc-analysis", title: "Endpoint Alert — Malware IOC Triage", sections: 1, desc: "Process, network, persistence IOC classification." },
+        { n: 19, slug: "data-protection", title: "PCI Test Environment — Data Protection Methods", sections: 1, desc: "Tokenization for non-production card data." },
+        { n: 20, slug: "governance", title: "Security Program — Governance & Compliance", sections: 1, desc: "GDPR and PCI DSS parallel breach notification." }
       ];
 
       var PUBLISHED = [
