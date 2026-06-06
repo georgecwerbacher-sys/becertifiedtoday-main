@@ -3,168 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Question 2 - ACL JSON drag and drop</title>
-  <style>
-    :root {
-      color-scheme: light dark;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      background: #0b1020;
-      color: #e6edf3;
-      padding-bottom: 88px;
-      box-sizing: border-box;
-    }
-    .card {
-      width: min(1100px, 95vw);
-      background: #121a2b;
-      border: 1px solid #2d3b5a;
-      border-radius: 14px;
-      padding: 24px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    }
-    h1 {
-      margin: 0 0 8px;
-      font-size: clamp(1.02rem, 2vw, 1.4rem);
-      line-height: 1.35;
-    }
-    .instructions {
-      margin: 0 0 14px;
-      color: #b8c3d6;
-      font-size: 0.95rem;
-      line-height: 1.45;
-    }
-    .layout {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 16px;
-    }
-    .panel {
-      background: #0f1728;
-      border: 1px solid #2b3d5f;
-      border-radius: 12px;
-      padding: 14px;
-    }
-    .code {
-      white-space: pre-wrap;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      line-height: 1.5;
-      font-size: 0.95rem;
-      margin: 0;
-    }
-    .drop-slot {
-      display: inline-flex;
-      min-width: 150px;
-      min-height: 30px;
-      margin: 0 4px;
-      padding: 2px 8px;
-      border-radius: 8px;
-      border: 1px dashed #5378b6;
-      background: #1a2a45;
-      vertical-align: middle;
-      align-items: center;
-      justify-content: center;
-    }
-    .drop-slot.over {
-      border-style: solid;
-      border-color: #4d89ff;
-      background: #213861;
-    }
-    .drop-slot.correct {
-      border-color: #1f7a58;
-      background: #113e2d;
-    }
-    .drop-slot.incorrect {
-      border-color: #8c3434;
-      background: #442020;
-    }
-    .bank {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      min-height: 56px;
-    }
-    .token {
-      padding: 8px 12px;
-      border-radius: 9px;
-      background: #dff34c;
-      color: #000;
-      border: 1px solid #a5b727;
-      font-weight: 700;
-      cursor: grab;
-      user-select: none;
-    }
-    .token:active {
-      cursor: grabbing;
-    }
-    .actions {
-      margin-top: 14px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    button,
-    .next-link {
-      background: #254b8a;
-      color: #e6edf3;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-      font-family: inherit;
-      font-size: inherit;
-    }
-    #result {
-      font-weight: 700;
-      color: #e6edf3;
-    }
-    #result.answer {
-      flex: 1 1 100%;
-      margin: 0;
-      padding: 12px 14px;
-      border-radius: 10px;
-      line-height: 1.45;
-    }
-    #result.answer.correct {
-      background: #113e2d;
-      border: 1px solid #1f7a58;
-      color: #e6edf3;
-    }
-    #result.answer.incorrect {
-      background: #442020;
-      border: 1px solid #8c3434;
-      color: #e6edf3;
-    }
-    #answerDisplay {
-      margin-top: 8px;
-      color: #b8c3d6;
-      font-size: 0.92rem;
-      line-height: 1.45;
-    }
-    #nextWrap {
-      display: none;
-    }
-  </style>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/CCNP-ENCOR-Study/ENCOR_Samples/encor-sample-touch.css" />
+  <link rel="stylesheet" href="/CCNP-ENCOR-Study/js/encor-dnd-page.css" />
 </head>
-<body>
-  <main class="card">
-    <h1>
+<body class="encor-question-ui encor-dnd-ui dragdrop-exercise">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell">
+    <a class="site-logo-corner" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html" aria-label="ENCOR practice portal">
+      <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="card">
+<p class="dragdrop-touch-hint" aria-hidden="true">On a phone or tablet, tap a chip to pick it up, then tap a drop zone (or another chip to swap).</p>
+
+<h1>
       Drag and drop the code snippets from the bottom onto the blanks in the JSON template to build the extended ACL request. All four snippets are used.
     </h1>
     <p class="instructions">
       Fill all four blanks, then click Check Answer.
     </p>
-    <div class="layout">
+    <div class="layout dnd-split">
       <section class="panel">
         <h2 style="margin:0 0 10px;font-size:1rem;color:#f0c040;">JSON request template</h2>
 <pre class="code">"ip": {
@@ -191,20 +54,22 @@
           <div class="token" draggable="true" data-value="access-list-seq-rule">access-list-seq-rule</div>
           <div class="token" draggable="true" data-value="dst-any">dst-any</div>
           <div class="token" draggable="true" data-value="ip">ip</div>
-        </div>
         <div class="actions">
-          <button id="checkBtn" type="button">Check Answer</button>
-          <button id="showBtn" type="button">Show Answer</button>
-          <button id="resetBtn" type="button">Reset</button>
-          <span id="result"></span>
-          <span id="nextWrap"><a class="next-link" href="/question-3.html">Next</a></span>
-        </div>
+      <button id="checkBtn" type="button">Check Answer</button>
+      <button id="resetBtn" type="button">Reset</button>
+      <button id="showBtn" type="button">Show Answer</button>
+      <span id="result"></span>
+      <span id="nextWrap"><a class="next-link" href="/question-3.html">Next</a></span>
+    </div>
         <div id="answerDisplay"></div>
       </section>
     </div>
-  </main>
+</div>
+</div>
+    </main>
+  </div>
 
-  <script>
+<script>
     const bank = document.getElementById("bank");
     const slots = document.querySelectorAll(".drop-slot");
     const checkBtn = document.getElementById("checkBtn");
@@ -363,7 +228,7 @@
       background: #1a3d6e;
     }
   </style>
-  <nav class="sim-nav" aria-label="Simulation navigation">
+  <nav class="sim-nav encor-sample-sim-nav" aria-label="Simulation navigation">
     <a class="sim-nav-btn" href="/drag-drop-sample.html">Back</a>
     <a class="sim-nav-btn sim-nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
     <a class="sim-nav-btn" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Next</a>

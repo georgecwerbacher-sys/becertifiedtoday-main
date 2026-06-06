@@ -3,52 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Question 33 - BGP Drag and Drop</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/CCNP-ENCOR-Study/ENCOR_Samples/encor-sample-touch.css" />
+  <link rel="stylesheet" href="/CCNP-ENCOR-Study/js/encor-dnd-page.css" />
   <style>
-    :root {
-      color-scheme: light dark;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      background: #0b1020;
-      color: #e6edf3;
-    }
-    .card {
-      width: min(980px, 95vw);
-      background: #121a2b;
-      border: 1px solid #2d3b5a;
-      border-radius: 14px;
-      padding: 24px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    }
-    h1 {
-      margin: 0 0 10px;
-      font-size: clamp(1.05rem, 2vw, 1.45rem);
-      line-height: 1.35;
-    }
     .exhibit-region {
-      margin: 0 0 14px;
+margin: 0 0 14px;
     }
     .exhibit-ref {
-      margin: 0 0 10px;
+margin: 0 0 10px;
       font-size: 0.95rem;
       line-height: 1.45;
       color: #b8c3d6;
     }
     .exhibit-hint {
-      margin: 10px 0 0;
+margin: 10px 0 0;
       font-size: 0.88rem;
       line-height: 1.45;
       color: #9fb0cc;
     }
     .exhibit-light {
-      background: #fff;
+background: #fff;
       color: #111;
       border-radius: 8px;
       border: 1px solid #c8c8c8;
@@ -57,7 +34,7 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
     }
     .exhibit-light-label {
-      margin: 0 0 8px;
+margin: 0 0 8px;
       padding-bottom: 6px;
       border-bottom: 1px solid #ddd;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -68,7 +45,7 @@
       text-transform: uppercase;
     }
     .exhibit-light .exhibit-cli {
-      margin: 0;
+margin: 0;
       padding: 10px 12px;
       background: #fff;
       border: 1px solid #e0e0e0;
@@ -81,101 +58,25 @@
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
     }
-    .instructions {
-      margin: 0 0 14px;
-      color: #b8c3d6;
-    }
     .code-wrap {
-      border: 1px solid #2c3f62;
+border: 1px solid #2c3f62;
       border-radius: 10px;
       background: #0f1728;
       padding: 14px;
     }
-    .code {
-      margin: 0;
-      white-space: pre-wrap;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      line-height: 1.55;
-      font-size: 0.95rem;
-    }
-    .slot {
-      display: inline-flex;
-      min-width: 170px;
-      min-height: 30px;
-      border-radius: 8px;
-      border: 1px dashed #4d89ff;
-      background: #1a2a45;
-      vertical-align: middle;
-      align-items: center;
-      justify-content: center;
-      margin: 0 4px;
-      padding: 2px 8px;
-    }
-    .slot.over {
-      border-style: solid;
-      background: #213861;
-    }
-    .slot.correct {
-      border-color: #1f7a58;
-      background: #113e2d;
-    }
-    .slot.incorrect {
-      border-color: #8c3434;
-      background: #442020;
-    }
-    .bank {
-      margin-top: 14px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      min-height: 48px;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #2c3f62;
-      background: #1a253b;
-    }
-    .token {
-      padding: 8px 12px;
-      border-radius: 8px;
-      border: 1px solid #88b8c4;
-      background: #c8f7ff;
-      color: #06232b;
-      font-weight: 700;
-      cursor: grab;
-      user-select: none;
-    }
-    .token:active {
-      cursor: grabbing;
-    }
-    .actions {
-      margin-top: 14px;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-    button,
-    .next-link {
-      background: #254b8a;
-      color: #e6edf3;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      text-decoration: none;
-      cursor: pointer;
-      display: inline-block;
-    }
-    #result {
-      font-weight: 700;
-    }
-    #nextWrap {
-      display: none;
-    }
   </style>
 </head>
-<body>
-  <main class="card">
-    <div class="exhibit-region">
+<body class="encor-question-ui encor-dnd-ui dragdrop-exercise">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell">
+    <a class="site-logo-corner" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html" aria-label="ENCOR practice portal">
+      <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="card">
+<div class="exhibit-region">
       <p class="exhibit-ref">Refer to the exhibit.</p>
       <div class="exhibit-light" role="region" aria-label="NETCONF config excerpt for Cisco IOS-XE BGP IPv4 unicast network">
         <div class="exhibit-light-label">NETCONF / YANG (fragment)</div>
@@ -207,10 +108,16 @@
       </div>
       <p class="exhibit-hint">Blanks [1]–[3] match the three drop slots in the payload below.</p>
     </div>
-    <h1>Question 33: Drag and drop snippets to complete the NETCONF/YANG BGP payload.</h1>
+        <p class="dragdrop-touch-hint" aria-hidden="true">On a phone or tablet, tap a chip to pick it up, then tap a drop zone (or another chip to swap).</p>
+
+<h1>Question 33: Drag and drop snippets to complete the NETCONF/YANG BGP payload.</h1>
     <p class="instructions">Advertise prefix 192.168.5.0/24. Not all options are used.</p>
 
-    <div class="code-wrap">
+    <div class="layout dnd-split">
+      <div class="panel panel--solution">
+        <div class="layout dnd-split">
+      <div class="panel panel--solution">
+        <div class="code-wrap">
 <pre class="code">&lt;ios-bgp:network&gt;
   &lt;ios-bgp:with-mask&gt;
     &lt;ios-bgp:number&gt;<span class="slot drop-slot" data-target="192.168.5.0"></span>&lt;/ios-bgp:number&gt;
@@ -218,24 +125,30 @@
   &lt;/ios-bgp:with-mask&gt;
 &lt;/ios-bgp:network&gt;</pre>
     </div>
-
-    <div id="bank" class="bank">
+      </div>
+      <div class="panel panel--choices">
+        <h2>Choices</h2>
+        <div id="bank" class="bank">
       <div class="token" draggable="true" data-value="192.168.5.0">192.168.5.0</div>
       <div class="token" draggable="true" data-value="255.255.255.0">255.255.255.0</div>
       <div class="token" draggable="true" data-value="mask">mask</div>
       <div class="token" draggable="true" data-value="with-mask">with-mask</div>
       <div class="token" draggable="true" data-value="subnet-mask">subnet-mask</div>
     </div>
-
-    <div class="actions">
+      </div>
+</div>
+</div>
+      </div>
+<div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <span id="result"></span>
       <span id="nextWrap"><a class="next-link" href="/question-34.html">Next</a></span>
     </div>
-  </main>
+    </main>
+  </div>
 
-  <script>
+<script>
     const bank = document.getElementById("bank");
     const slots = document.querySelectorAll(".slot");
     const checkBtn = document.getElementById("checkBtn");
@@ -303,26 +216,9 @@
       nextWrap.style.display = "none";
     });
   </script>
-  <style>
-    .home-key {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 9999;
-      text-decoration: none;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      color: #e6edf3;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
-    }
-    .home-key:hover {
-      filter: brightness(1.08);
-    }
-  </style>
-  <a class="home-key" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
+    <nav class="sim-nav encor-sample-sim-nav" aria-label="Question navigation">
+    <a class="sim-nav-btn sim-nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
+  </nav>
   <script src="/js/practice-questions.js"></script>
 </body>
 </html>

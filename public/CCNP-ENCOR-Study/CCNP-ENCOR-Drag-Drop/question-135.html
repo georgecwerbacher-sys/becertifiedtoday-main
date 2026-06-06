@@ -3,157 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Question 135 - Ansible vs Puppet architecture</title>
-  <style>
-    :root {
-      color-scheme: light dark;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      background: #0b1020;
-      color: #e6edf3;
-    }
-    .card {
-      width: min(980px, 95vw);
-      background: #121a2b;
-      border: 1px solid #2d3b5a;
-      border-radius: 14px;
-      padding: 24px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    }
-    h1 {
-      margin: 0 0 10px;
-      font-size: clamp(1.05rem, 2vw, 1.45rem);
-      line-height: 1.35;
-    }
-    .instructions {
-      margin: 0 0 12px;
-      color: #b8c3d6;
-    }
-    .dd-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 14px;
-    }
-    .dd-col h2 {
-      margin: 0 0 10px;
-      padding: 8px 12px;
-      border-radius: 8px;
-      background: #c9a227;
-      color: #1a1508;
-      font-size: 1rem;
-      text-align: center;
-    }
-    .slot-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .drop-slot {
-      min-height: 52px;
-      padding: 8px;
-      border-radius: 10px;
-      border: 2px dashed #c97b9a;
-      background: #f5d0dc;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-    }
-    .drop-slot.over {
-      border-style: solid;
-      border-color: #4d89ff;
-    }
-    .drop-slot.correct {
-      border-color: #1f7a58;
-      background: #113e2d;
-    }
-    .drop-slot.incorrect {
-      border-color: #8c3434;
-      background: #442020;
-    }
-    .drop-slot.correct .token {
-      border-color: #43b689;
-      background: #174a38;
-      color: #dff5eb;
-    }
-    .drop-slot.incorrect .token {
-      border-color: #c55c5c;
-      background: #5c2626;
-      color: #fcdede;
-    }
-    .bank-wrap {
-      margin-top: 8px;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #2c3f62;
-      background: #1a253b;
-    }
-    .bank-wrap h3 {
-      margin: 0 0 10px;
-      font-size: 0.95rem;
-      color: #9fb0cc;
-    }
-    .bank {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      min-height: 46px;
-    }
-    .token {
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid #6384ba;
-      background: #cfe9ff;
-      color: #10243f;
-      font-weight: 700;
-      cursor: grab;
-      user-select: none;
-      font-size: 0.82rem;
-      line-height: 1.35;
-      max-width: 100%;
-    }
-    .token:active {
-      cursor: grabbing;
-    }
-    .actions {
-      margin-top: 14px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    button,
-    .next-link {
-      background: #254b8a;
-      color: #e6edf3;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      text-decoration: none;
-      cursor: pointer;
-      display: inline-block;
-      font-family: inherit;
-    }
-    #result {
-      font-weight: 700;
-      line-height: 1.4;
-    }
-    #nextWrap {
-      display: none;
-    }
-  </style>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/CCNP-ENCOR-Study/ENCOR_Samples/encor-sample-touch.css" />
+  <link rel="stylesheet" href="/CCNP-ENCOR-Study/js/encor-dnd-page.css" />
 </head>
-<body>
-  <main class="card">
-    <h1>Drag and drop the characteristics from the left onto the orchestration tools they describe on the right.</h1>
+<body class="encor-question-ui encor-dnd-ui dragdrop-exercise">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell">
+    <a class="site-logo-corner" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html" aria-label="ENCOR practice portal">
+      <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="card">
+    <p class="dragdrop-touch-hint" aria-hidden="true">On a phone or tablet, tap a chip to pick it up, then tap a drop zone (or another chip to swap).</p>
+
+<h1>Drag and drop the characteristics from the left onto the orchestration tools they describe on the right.</h1>
     <p class="instructions">Move each characteristic into <strong>Ansible</strong> or <strong>Puppet</strong>. Each item is used once. Within each tool’s two drop boxes, <strong>order does not matter</strong>—either slot may hold either of that tool’s two characteristics.</p>
 
     <div class="dd-grid">
@@ -185,14 +53,15 @@
 
     <div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
-      <button id="showBtn" type="button">Show Answer</button>
       <button id="resetBtn" type="button">Reset</button>
+      <button id="showBtn" type="button">Show Answer</button>
       <span id="result"></span>
       <span id="nextWrap"><a class="next-link" href="/question-136.html">Next</a></span>
     </div>
-  </main>
+    </main>
+  </div>
 
-  <script>
+<script>
     const bank = document.getElementById("bank");
     const slots = document.querySelectorAll(".drop-slot");
     const checkBtn = document.getElementById("checkBtn");
@@ -336,26 +205,9 @@
       nextWrap.style.display = "none";
     });
   </script>
-  <style>
-    .home-key {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 9999;
-      text-decoration: none;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      color: #e6edf3;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
-    }
-    .home-key:hover {
-      filter: brightness(1.08);
-    }
-  </style>
-  <a class="home-key" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
+    <nav class="sim-nav encor-sample-sim-nav" aria-label="Question navigation">
+    <a class="sim-nav-btn sim-nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
+  </nav>
   <script src="/js/practice-questions.js"></script>
 </body>
 </html>

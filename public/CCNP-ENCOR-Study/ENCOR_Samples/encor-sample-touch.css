@@ -56,7 +56,8 @@ body {
 
 body.encor-question-ui,
 body.encor-static-sample,
-body.encor-sample-guest-ui {
+body.encor-sample-guest-ui,
+body.encor-dnd-ui {
   padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
   background: #ffffff !important;
   color: #1a3d6e;
@@ -64,7 +65,8 @@ body.encor-sample-guest-ui {
 }
 
 body.encor-question-ui .question-shell,
-body.encor-static-sample .question-shell {
+body.encor-static-sample .question-shell,
+body.encor-dnd-ui .question-shell {
   width: min(900px, 100%);
   display: flex;
   flex-direction: column;
@@ -74,7 +76,8 @@ body.encor-static-sample .question-shell {
 }
 
 body.encor-question-ui .question-shell .site-logo-corner,
-body.encor-static-sample .question-shell .site-logo-corner {
+body.encor-static-sample .question-shell .site-logo-corner,
+body.encor-dnd-ui .question-shell .site-logo-corner {
   position: static !important;
   align-self: flex-end;
   margin: 0 0 2rem;
@@ -84,7 +87,8 @@ body.encor-static-sample .question-shell .site-logo-corner {
 }
 
 body.encor-question-ui .page-logo-watermark,
-body.encor-static-sample .page-logo-watermark {
+body.encor-static-sample .page-logo-watermark,
+body.encor-dnd-ui .page-logo-watermark {
   position: fixed;
   inset: 0;
   z-index: 0;
@@ -96,7 +100,8 @@ body.encor-static-sample .page-logo-watermark {
 }
 
 body.encor-question-ui .page-logo-watermark img,
-body.encor-static-sample .page-logo-watermark img {
+body.encor-static-sample .page-logo-watermark img,
+body.encor-dnd-ui .page-logo-watermark img {
   width: min(85vw, 720px);
   max-height: 85vh;
   height: auto;
@@ -107,7 +112,9 @@ body.encor-static-sample .page-logo-watermark img {
 body.encor-question-ui .card,
 body.encor-question-ui main.card,
 body.encor-static-sample .card,
-body.encor-static-sample main.card {
+body.encor-static-sample main.card,
+body.encor-dnd-ui .card,
+body.encor-dnd-ui main.card {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -116,7 +123,8 @@ body.encor-static-sample main.card {
 
 body.encor-question-ui h1,
 body.encor-static-sample h1,
-body.encor-sample-guest-ui h1 {
+body.encor-sample-guest-ui h1,
+body.encor-dnd-ui h1 {
   color: #1a3d6e;
 }
 
@@ -287,4 +295,76 @@ body.encor-question-ui .sample-subjects-footer__list {
 
 body.encor-question-ui .sample-subjects-footer__list li + li {
   margin-top: 0.2rem;
+}
+
+/* Drag-and-drop: short touch hint above the exercise (phones / tablets) */
+.dragdrop-touch-hint {
+  display: none;
+  margin: 0 0 8px;
+  padding: 0;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: #1a3d6e;
+  font-weight: 400;
+}
+
+@media (max-width: 900px), ((hover: none) and (pointer: coarse)) {
+  .dragdrop-touch-hint {
+    display: block;
+  }
+}
+
+/* Drag-and-drop exercise */
+body.dragdrop-exercise .token {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 14px 14px;
+  box-sizing: border-box;
+  width: 100%;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+body.dragdrop-exercise .token.is-picked {
+  outline: 3px solid #4d89ff;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px rgba(77, 137, 255, 0.35);
+}
+
+body.dragdrop-exercise .drop-slot,
+body.dragdrop-exercise .slot {
+  box-sizing: border-box;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+body.dragdrop-exercise .match-row .drop-slot,
+body.dragdrop-exercise .match-row .slot,
+body.dragdrop-exercise .row .drop-slot,
+body.dragdrop-exercise .category-box .drop-slot {
+  min-height: 48px;
+  height: auto;
+  padding: 8px 10px;
+}
+
+body.dragdrop-exercise pre .drop-slot,
+body.dragdrop-exercise pre .slot,
+body.dragdrop-exercise .code .drop-slot,
+body.dragdrop-exercise .code .slot {
+  min-height: 1.35em;
+  padding: 2px 6px;
+}
+
+body.dragdrop-exercise button,
+body.dragdrop-exercise .home-link,
+body.dragdrop-exercise .next-link {
+  min-height: 48px;
+  padding: 12px 18px;
+  box-sizing: border-box;
+  touch-action: manipulation;
+}
+
+body.dragdrop-exercise .panel h2 {
+  user-select: none;
 }

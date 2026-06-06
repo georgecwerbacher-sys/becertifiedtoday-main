@@ -1,15 +1,15 @@
-/* CCNA drag-and-drop — light shell matching SEC+ PBQ chrome (secplus-pbq-page.css) */
+/* ENCOR drag-and-drop — light shell matching CCNA / SEC+ PBQ chrome */
 
-body.ccna-dnd-ui {
+body.encor-dnd-ui {
   padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
-body.ccna-dnd-ui .question-shell {
+body.encor-dnd-ui .question-shell {
   width: min(1180px, 100%);
 }
 
-body.ccna-dnd-ui .card,
-body.ccna-dnd-ui main.card {
+body.encor-dnd-ui .card,
+body.encor-dnd-ui main.card {
   width: 100%;
   background: transparent;
   border: 0;
@@ -19,84 +19,107 @@ body.ccna-dnd-ui main.card {
   box-sizing: border-box;
 }
 
-body.ccna-dnd-ui .card h1,
-body.ccna-dnd-ui main.card h1 {
+body.encor-dnd-ui .card h1,
+body.encor-dnd-ui main.card h1 {
   margin: 0 0 10px;
   font-size: clamp(1.05rem, 2.3vw, 1.45rem);
   line-height: 1.35;
   color: #1a3d6e;
 }
 
-body.ccna-dnd-ui .sub {
+body.encor-dnd-ui .sub,
+body.encor-dnd-ui .instructions {
   margin: 0 0 14px;
   line-height: 1.5;
   color: #475569;
   font-size: 0.95rem;
 }
 
-body.ccna-dnd-ui .sub code {
+body.encor-dnd-ui .sub code {
   font-size: 0.9em;
 }
 
-body.ccna-dnd-ui .page-logo-watermark {
+body.encor-dnd-ui .page-logo-watermark {
   display: flex;
 }
 
-body.ccna-dnd-ui .page-logo-watermark img {
+body.encor-dnd-ui .page-logo-watermark img {
   opacity: 0.14;
 }
 
-body.ccna-dnd-ui .sim-frame {
+body.encor-dnd-ui .sim-frame {
   border: 0;
   border-radius: 0;
   background: transparent;
   padding: 0;
 }
 
-body.ccna-dnd-ui .layout {
+body.encor-dnd-ui .layout {
   display: grid;
   gap: 14px;
   align-items: start;
   grid-template-columns: minmax(0, 1.35fr) minmax(220px, 0.85fr);
 }
 
-body.ccna-dnd-ui .layout:has(.panel:first-child #bank),
-body.ccna-dnd-ui .layout:has(.panel:first-child .bank) {
+/* Wider column for whichever side holds drop zones / match targets */
+body.encor-dnd-ui .layout:has(.panel:first-child #bank),
+body.encor-dnd-ui .layout:has(.panel:first-child .bank) {
   grid-template-columns: minmax(220px, 0.85fr) minmax(0, 1.35fr);
 }
 
-body.ccna-dnd-ui .layout:has(.panel:last-child #bank),
-body.ccna-dnd-ui .layout:has(.panel:last-child .bank) {
+body.encor-dnd-ui .layout:has(.panel:last-child #bank),
+body.encor-dnd-ui .layout:has(.panel:last-child .bank) {
   grid-template-columns: minmax(0, 1.35fr) minmax(220px, 0.85fr);
 }
 
 @media (max-width: 900px) {
-  body.ccna-dnd-ui .layout {
+  body.encor-dnd-ui .layout {
     grid-template-columns: 1fr;
   }
 }
 
-body.ccna-dnd-ui .panel {
+body.encor-dnd-ui .panel {
   border: 0;
   border-radius: 0;
   padding: 0;
   background: transparent;
 }
 
-body.ccna-dnd-ui .panel h2 {
+body.encor-dnd-ui .panel h2 {
   margin: 0 0 10px;
   font-size: 1rem;
   color: #1a3d6e;
 }
 
-body.ccna-dnd-ui .bank {
+body.encor-dnd-ui pre,
+body.encor-dnd-ui .code-wrap pre,
+body.encor-dnd-ui .code {
+  margin: 0;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #2c3f62;
+  background: #0f1628;
+  color: #dfe7f3;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.89rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+body.encor-dnd-ui .bank {
   display: flex;
   flex-direction: column;
   gap: 10px;
   min-height: 48px;
 }
 
-body.ccna-dnd-ui .token {
+body.encor-dnd-ui .bank.bank--wrap {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+body.encor-dnd-ui .token {
   padding: 10px 12px;
   border-radius: 8px;
   border: 1px solid #3d6dbb;
@@ -110,22 +133,22 @@ body.ccna-dnd-ui .token {
   text-align: left;
 }
 
-body.ccna-dnd-ui .token--mono {
+body.encor-dnd-ui .token--mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   font-size: 0.78rem;
 }
 
-body.ccna-dnd-ui .token:active {
+body.encor-dnd-ui .token:active {
   cursor: grabbing;
 }
 
-body.ccna-dnd-ui .token.is-picked {
+body.encor-dnd-ui .token.is-picked {
   border-color: #1a3d6e;
   box-shadow: 0 0 0 2px rgba(26, 61, 110, 0.35);
 }
 
-body.ccna-dnd-ui .drop-slot,
-body.ccna-dnd-ui .slot {
+body.encor-dnd-ui .drop-slot,
+body.encor-dnd-ui .slot {
   display: flex;
   min-height: 48px;
   height: auto;
@@ -144,16 +167,16 @@ body.ccna-dnd-ui .slot {
   line-height: 1.4;
 }
 
-body.ccna-dnd-ui .drop-slot:not(:empty),
-body.ccna-dnd-ui .slot:not(:empty) {
+body.encor-dnd-ui .drop-slot:not(:empty),
+body.encor-dnd-ui .slot:not(:empty) {
   min-height: auto;
   padding: 6px 8px;
 }
 
-body.ccna-dnd-ui pre .drop-slot,
-body.ccna-dnd-ui pre .slot,
-body.ccna-dnd-ui .code .drop-slot,
-body.ccna-dnd-ui .code .slot {
+body.encor-dnd-ui pre .drop-slot,
+body.encor-dnd-ui pre .slot,
+body.encor-dnd-ui .code .drop-slot,
+body.encor-dnd-ui .code .slot {
   display: inline-flex;
   width: auto;
   min-width: 5ch;
@@ -168,39 +191,50 @@ body.ccna-dnd-ui .code .slot {
   text-align: center;
 }
 
-body.ccna-dnd-ui .drop-slot:empty::before {
+body.encor-dnd-ui .drop-slot:empty::before,
+body.encor-dnd-ui .slot:empty::before {
   content: "Drop here";
   color: #64748b;
 }
 
-body.ccna-dnd-ui .drop-slot.over {
+body.encor-dnd-ui pre .drop-slot:empty::before,
+body.encor-dnd-ui pre .slot:empty::before {
+  content: "";
+}
+
+body.encor-dnd-ui .drop-slot.over,
+body.encor-dnd-ui .slot.over {
   border-style: dashed;
   border-color: #1a3d6e;
   background: rgba(26, 61, 110, 0.06);
 }
 
-body.ccna-dnd-ui .drop-slot.correct {
+body.encor-dnd-ui .drop-slot.correct,
+body.encor-dnd-ui .slot.correct {
   border-color: #1f7a58;
   background: #113e2d;
   color: #e6edf3;
 }
 
-body.ccna-dnd-ui .drop-slot.correct::before {
+body.encor-dnd-ui .drop-slot.correct::before,
+body.encor-dnd-ui .slot.correct::before {
   content: none;
 }
 
-body.ccna-dnd-ui .drop-slot.incorrect {
+body.encor-dnd-ui .drop-slot.incorrect,
+body.encor-dnd-ui .slot.incorrect {
   border-color: #8c3434;
   background: #442020;
   color: #e6edf3;
 }
 
-body.ccna-dnd-ui .drop-slot.incorrect::before {
+body.encor-dnd-ui .drop-slot.incorrect::before,
+body.encor-dnd-ui .slot.incorrect::before {
   content: none;
 }
 
-body.ccna-dnd-ui .drop-slot .token,
-body.ccna-dnd-ui .slot .token {
+body.encor-dnd-ui .drop-slot .token,
+body.encor-dnd-ui .slot .token {
   width: 100%;
   height: auto;
   min-height: 40px;
@@ -213,38 +247,78 @@ body.ccna-dnd-ui .slot .token {
   text-align: left;
 }
 
-body.ccna-dnd-ui pre .drop-slot .token,
-body.ccna-dnd-ui .code .drop-slot .token {
+body.encor-dnd-ui pre .drop-slot .token,
+body.encor-dnd-ui .code .drop-slot .token {
   width: auto;
   min-height: 0;
   white-space: nowrap;
   text-align: center;
 }
 
-body.ccna-dnd-ui .panel--choices .bank,
-body.ccna-dnd-ui .panel--choices #bank {
+/* Row + bank matching (ENCOR) */
+body.encor-dnd-ui .row-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+body.encor-dnd-ui .row {
+  display: grid;
+  grid-template-columns: minmax(88px, 0.28fr) minmax(0, 1fr);
+  gap: 12px;
+  align-items: stretch;
+  padding: 10px 12px;
+  border: 1px solid #3d6dbb;
+  border-radius: 10px;
+  background: transparent;
+}
+
+body.encor-dnd-ui .left-box {
+  margin: 0;
+  color: #1a3d6e;
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+}
+
+body.encor-dnd-ui .row .drop-slot {
+  min-height: 48px;
+  height: auto;
+  align-self: stretch;
+}
+
+body.encor-dnd-ui .panel--choices .bank,
+body.encor-dnd-ui .panel--choices #bank {
   max-height: min(70vh, 640px);
   overflow-y: auto;
 }
 
+@media (max-width: 720px) {
+  body.encor-dnd-ui .row {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Category / match layouts */
-body.ccna-dnd-ui .category-grid,
-body.ccna-dnd-ui .category-stack {
+body.encor-dnd-ui .category-grid,
+body.encor-dnd-ui .category-stack {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-body.ccna-dnd-ui .category-box,
-body.ccna-dnd-ui .category-panel {
+body.encor-dnd-ui .category-box,
+body.encor-dnd-ui .category-panel {
   border: 1px solid #3d6dbb;
   border-radius: 10px;
   padding: 12px 14px;
   background: transparent;
 }
 
-body.ccna-dnd-ui .category-title,
-body.ccna-dnd-ui .category-panel h3 {
+body.encor-dnd-ui .category-title,
+body.encor-dnd-ui .category-panel h3 {
   margin: 0 0 10px;
   font-size: 0.98rem;
   font-weight: 700;
@@ -257,7 +331,7 @@ body.ccna-dnd-ui .category-panel h3 {
   letter-spacing: normal;
 }
 
-body.ccna-dnd-ui .slots-row {
+body.encor-dnd-ui .slots-row {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
@@ -265,18 +339,18 @@ body.ccna-dnd-ui .slots-row {
 }
 
 @media (max-width: 720px) {
-  body.ccna-dnd-ui .slots-row {
+  body.encor-dnd-ui .slots-row {
     grid-template-columns: 1fr;
   }
 }
 
-body.ccna-dnd-ui .match-list {
+body.encor-dnd-ui .match-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-body.ccna-dnd-ui .match-row {
+body.encor-dnd-ui .match-row {
   display: grid;
   grid-template-columns: minmax(88px, 0.32fr) minmax(0, 1fr);
   gap: 12px;
@@ -287,20 +361,20 @@ body.ccna-dnd-ui .match-row {
   background: transparent;
 }
 
-body.ccna-dnd-ui .match-row .drop-slot,
-body.ccna-dnd-ui .match-row .slot {
+body.encor-dnd-ui .match-row .drop-slot,
+body.encor-dnd-ui .match-row .slot {
   min-height: 48px;
   height: auto;
   align-self: stretch;
 }
 
 @media (max-width: 720px) {
-  body.ccna-dnd-ui .match-row {
+  body.encor-dnd-ui .match-row {
     grid-template-columns: 1fr;
   }
 }
 
-body.ccna-dnd-ui .match-desc {
+body.encor-dnd-ui .match-desc {
   margin: 0;
   color: #1a3d6e;
   background: transparent;
@@ -315,7 +389,7 @@ body.ccna-dnd-ui .match-desc {
   text-align: left;
 }
 
-body.ccna-dnd-ui .actions {
+body.encor-dnd-ui .actions {
   margin-top: 14px;
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -323,8 +397,9 @@ body.ccna-dnd-ui .actions {
   align-items: center;
 }
 
-body.ccna-dnd-ui .actions button,
-body.ccna-dnd-ui .actions .home-link {
+body.encor-dnd-ui .actions button,
+body.encor-dnd-ui .actions .home-link,
+body.encor-dnd-ui .actions .next-link {
   background: #1a3d6e;
   color: #e6edf3;
   border: 1px solid #1a3d6e;
@@ -342,31 +417,32 @@ body.ccna-dnd-ui .actions .home-link {
   justify-content: center;
 }
 
-body.ccna-dnd-ui .actions #checkBtn {
+body.encor-dnd-ui .actions #checkBtn {
   grid-column: 1;
   grid-row: 1;
   justify-self: start;
 }
 
-body.ccna-dnd-ui .actions #resetBtn {
+body.encor-dnd-ui .actions #resetBtn {
   grid-column: 2;
   grid-row: 1;
   justify-self: center;
 }
 
-body.ccna-dnd-ui .actions #showBtn {
+body.encor-dnd-ui .actions #showBtn {
   grid-column: 3;
   grid-row: 1;
   justify-self: end;
 }
 
-body.ccna-dnd-ui .actions button:hover,
-body.ccna-dnd-ui .actions .home-link:hover {
+body.encor-dnd-ui .actions button:hover,
+body.encor-dnd-ui .actions .home-link:hover,
+body.encor-dnd-ui .actions .next-link:hover {
   background: #254b8a;
   border-color: #254b8a;
 }
 
-body.ccna-dnd-ui .actions #result {
+body.encor-dnd-ui .actions #result {
   grid-column: 1 / -1;
   grid-row: 2;
   font-weight: 700;
@@ -379,16 +455,29 @@ body.ccna-dnd-ui .actions #result {
   border: 0;
 }
 
-body.ccna-dnd-ui .actions #result.is-pass {
+body.encor-dnd-ui .actions #result.is-pass {
   color: #166534;
 }
 
-body.ccna-dnd-ui .actions #result.is-fail {
+body.encor-dnd-ui .actions #result.is-fail {
   color: #991b1b;
 }
 
+body.encor-dnd-ui .actions #nextWrap {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  justify-self: start;
+}
+
+body.encor-dnd-ui #answerDisplay {
+  margin-top: 10px;
+  color: #1a3d6e;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
 /* Bottom nav — darker blue link buttons */
-body.ccna-dnd-ui nav.sim-nav.ccna-sample-sim-nav .sim-nav-btn {
+body.encor-dnd-ui nav.sim-nav.encor-sample-sim-nav .sim-nav-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -409,17 +498,17 @@ body.ccna-dnd-ui nav.sim-nav.ccna-sample-sim-nav .sim-nav-btn {
   font-size: 0.95rem;
 }
 
-body.ccna-dnd-ui nav.sim-nav.ccna-sample-sim-nav .sim-nav-btn:hover {
+body.encor-dnd-ui nav.sim-nav.encor-sample-sim-nav .sim-nav-btn:hover {
   background: #254b8a;
   border-color: #254b8a;
 }
 
-body.ccna-dnd-ui nav.sim-nav.ccna-sample-sim-nav .sim-nav-home {
+body.encor-dnd-ui nav.sim-nav.encor-sample-sim-nav .sim-nav-home {
   background: #1a3d6e;
   border-color: #1a3d6e;
 }
 
-body.ccna-dnd-ui nav.sim-nav.ccna-sample-sim-nav .sim-nav-btn--disabled {
+body.encor-dnd-ui nav.sim-nav.encor-sample-sim-nav .sim-nav-btn--disabled {
   opacity: 0.35;
   pointer-events: none;
   cursor: default;

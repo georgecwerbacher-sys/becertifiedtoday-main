@@ -1,17 +1,20 @@
 #!/usr/bin/env python3
-"""Migrate CCNA drag-and-drop pages to the light SEC+-style shell."""
+"""Migrate ENCOR drag-and-drop pages to the light SEC+-style shell."""
 from __future__ import annotations
 
 import re
+import subprocess
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DND_DIR = ROOT / "public" / "CCNA-Study" / "CCNA_D_D"
-SAMPLE_DND = ROOT / "public" / "CCNA-Study" / "CCNA_Samples" / "dragdrop-ftp-vs-tftp.html"
+DND_DIR = ROOT / "public" / "CCNP-ENCOR-Study" / "CCNP-ENCOR-Drag-Drop"
+SAMPLE_DND_FILES = (
+    ROOT / "public" / "CCNP-ENCOR-Study" / "ENCOR_Samples" / "question-365.html",
+)
 LOGO_IMG = "/images/logo/becertifiedtoday_logo_image_trans.png"
-PORTAL_HOME = "/CCNA-Study/CCNA_Training_Portal.html"
-SAMPLE_HOME = "/ccna-home.html"
+PORTAL_HOME = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html"
+SAMPLE_HOME = "/ccnp-home.html"
 
 KEEP_CSS_KEYWORDS = (
     "exhibit",
@@ -23,6 +26,10 @@ KEEP_CSS_KEYWORDS = (
     "debug-exhibit",
     "image-wrap",
     "visually-hidden",
+    "code-wrap",
+    "exhibit-light",
+    "exhibit-region",
+    "exhibit-hint",
 )
 
 TOUCH_HINT = (
@@ -34,6 +41,18 @@ TOUCH_HINT = (
 WATERMARK = f"""  <div class="page-logo-watermark" aria-hidden="true">
     <img src="{LOGO_IMG}" alt="" />
   </div>"""
+
+REQUIRED_STYLESHEETS = (
+    "/css/bcc-question-link-nav.css",
+    "/CCNP-ENCOR-Study/ENCOR_Samples/encor-sample-touch.css",
+    "/CCNP-ENCOR-Study/js/encor-dnd-page.css",
+)
+
+BUTTON_BY_ID_RE = {
+    "checkBtn": re.compile(r'<button id="checkBtn"[^>]*>.*?</button>', re.I | re.S),
+    "resetBtn": re.compile(r'<button id="resetBtn"[^>]*>.*?</button>', re.I | re.S),
+    "showBtn": re.compile(r'<button id="showBtn"[^>]*>.*?</button>', re.I | re.S),
+}
 
 
 def is_broken_layout_wrap(text: str) -> bool:
@@ -47,7 +66,11 @@ def is_broken_layout_wrap(text: str) -> bool:
 
 
 def needs_migration(text: str) -> bool:
-    if "ccna-dnd-page.css" not in text or "question-shell" not in text:
+    if "encor-dnd-page.css" not in text or "question-shell" not in text:
+        return True
+    if "home-key" in text:
+        return True
+    if re.search(r"background:\s*#0b1020", text, re.I):
         return True
     return is_broken_layout_wrap(text)
 
@@ -66,7 +89,7 @@ def extract_head_extras(text: str) -> str:
 
 def extract_title(text: str) -> str:
     m = re.search(r"<title>(.*?)</title>", text, re.S | re.I)
-    return m.group(1).strip() if m else "CCNA drag and drop"
+    return m.group(1).strip() if m else "ENCOR drag and drop"
 
 
 def extract_first_style(text: str) -> str:
@@ -122,7 +145,6 @@ def unwrap_sim_frame(main: str) -> str:
     if 'class="sim-frame"' not in main:
         return main
     main = re.sub(r'<div class="sim-frame">\s*', "", main, count=1, flags=re.I)
-    # Remove one trailing </div> immediately before actions or end of main content
     main = re.sub(
         r"</div>\s*(?=<div class=\"actions\")",
         "",
@@ -204,12 +226,13 @@ def build_split_block(*, solution_html: str, bank_html: str) -> str:
         '        <h2>Choices</h2>\n'
         f"        {bank_html}\n"
         '      </div>\n'
-         '</div>\n'
+        '</div>\n'
         '</div>'
     )
 
 
 def wrap_row_bank_split(main: str) -> str:
+    """Side-by-side: match rows (solution) left, token bank right."""
     if 'class="row-list"' in main and "drop-slot" in main:
         return main
     collected = collect_row_blocks(main)
@@ -227,6 +250,7 @@ def wrap_row_bank_split(main: str) -> str:
 
 
 def wrap_code_bank_split(main: str) -> str:
+    """Side-by-side: code/script panel left, token bank right."""
     if re.search(r'class="layout"', main, re.I) and "panel--solution" in main:
         return main
     code_m = re.search(r'<div class="code-wrap">', main, re.I)
@@ -258,52 +282,38 @@ def extract_tail(text: str) -> str:
     return m.group(1).strip() if m else ""
 
 
-ACTIONS_BLOCK_RE = re.compile(
-    r'(<div class="actions">\s*)'
-    r'(<button id="checkBtn"[^>]*>.*?</button>\s*)'
-    r'(?:<button id="resetBtn"[^>]*>.*?</button>\s*'
-    r'<button id="showBtn"[^>]*>.*?</button>\s*'
-    r'|<button id="showBtn"[^>]*>.*?</button>\s*'
-    r'<button id="resetBtn"[^>]*>.*?</button>\s*)'
-    r'(<span id="result"[^>]*></span>\s*)'
-    r'(</div>)',
-    re.I | re.S,
-)
-
-BUTTON_BY_ID_RE = {
-    "checkBtn": re.compile(r'<button id="checkBtn"[^>]*>.*?</button>', re.I | re.S),
-    "resetBtn": re.compile(r'<button id="resetBtn"[^>]*>.*?</button>', re.I | re.S),
-    "showBtn": re.compile(r'<button id="showBtn"[^>]*>.*?</button>', re.I | re.S),
-}
-
-REQUIRED_STYLESHEETS = (
-    '/css/bcc-question-link-nav.css',
-    '/CCNA-Study/CCNA_Samples/ccna-sample-touch.css',
-    '/CCNA-Study/js/ccna-dnd-page.css',
-)
+def strip_home_key(tail: str) -> str:
+    tail = re.sub(r"<style>[\s\S]*?\.home-key[\s\S]*?</style>\s*", "", tail, flags=re.I)
+    tail = re.sub(r'<a class="home-key"[^>]*>.*?</a>\s*', "", tail, flags=re.I)
+    return tail.strip()
 
 
 def normalize_actions(text: str) -> str:
-    """Template order: Check Answer · Reset · Show Answer · result."""
+    """Template order: Check Answer · Reset · Show Answer (optional) · result · nextWrap."""
 
-    def repl(match: re.Match[str]) -> str:
-        block = match.group(0)
-        check = BUTTON_BY_ID_RE["checkBtn"].search(block)
-        reset = BUTTON_BY_ID_RE["resetBtn"].search(block)
-        show = BUTTON_BY_ID_RE["showBtn"].search(block)
-        result = re.search(r'<span id="result"[^>]*></span>', block, re.I | re.S)
-        if not (check and reset and show and result):
-            return block
-        return (
-            '<div class="actions">\n'
-            f"      {check.group(0).strip()}\n"
-            f"      {reset.group(0).strip()}\n"
-            f"      {show.group(0).strip()}\n"
-            f"      {result.group(0).strip()}\n"
-            "    </div>"
-        )
-
-    return ACTIONS_BLOCK_RE.sub(repl, text, count=1)
+    m = re.search(r'<div class="actions">(.*?)</div>', text, re.I | re.S)
+    if not m:
+        return text
+    block = m.group(1)
+    check = BUTTON_BY_ID_RE["checkBtn"].search(block)
+    reset = BUTTON_BY_ID_RE["resetBtn"].search(block)
+    show = BUTTON_BY_ID_RE["showBtn"].search(block)
+    result = re.search(r'<span id="result"[^>]*></span>', block, re.I | re.S)
+    next_wrap = re.search(r'<span id="nextWrap"[^>]*>[\s\S]*?</span>', block, re.I | re.S)
+    if not check:
+        return text
+    parts = ["<div class=\"actions\">", f"      {check.group(0).strip()}"]
+    if reset:
+        parts.append(f"      {reset.group(0).strip()}")
+    if show:
+        parts.append(f"      {show.group(0).strip()}")
+    if result:
+        parts.append(f"      {result.group(0).strip()}")
+    if next_wrap:
+        parts.append(f"      {next_wrap.group(0).strip()}")
+    parts.append("    </div>")
+    replacement = "\n".join(parts)
+    return text[: m.start()] + replacement + text[m.end() :]
 
 
 def ensure_stylesheets(text: str) -> str:
@@ -315,56 +325,43 @@ def ensure_stylesheets(text: str) -> str:
 
 def ensure_body_classes(text: str, *, is_sample: bool) -> str:
     expected = (
-        "ccna-static-sample ccna-dnd-ui dragdrop-exercise"
+        "encor-static-sample encor-dnd-ui dragdrop-exercise"
         if is_sample
-        else "ccna-question-ui ccna-dnd-ui dragdrop-exercise"
+        else "encor-question-ui encor-dnd-ui dragdrop-exercise"
     )
-    if re.search(rf'<body class="[^"]*ccna-dnd-ui[^"]*"', text, re.I):
+    if re.search(rf'<body class="[^"]*encor-dnd-ui[^"]*"', text, re.I):
         return re.sub(r'<body class="[^"]*"', f'<body class="{expected}"', text, count=1, flags=re.I)
     return re.sub(r"<body>", f'<body class="{expected}">', text, count=1, flags=re.I)
 
 
-def apply_template(text: str, *, is_sample: bool) -> str:
-    text = ensure_stylesheets(text)
-    text = ensure_body_classes(text, is_sample=is_sample)
-    if "dragdrop-touch-hint" not in text:
-        text = re.sub(
-            r"(<main class=\"card\">)",
-            r"\1\n" + TOUCH_HINT,
-            text,
-            count=1,
-            flags=re.I,
-        )
-    m = re.search(r"<main class=\"card\">(.*?)</main>", text, re.I | re.S)
-    if m:
-        main_inner = m.group(1)
-        repaired = repair_broken_bank(main_inner)
-        repaired = wrap_row_bank_split(repaired)
-        repaired = wrap_code_bank_split(repaired)
-        repaired = wrap_layout_in_sim_frame(repaired)
-        repaired = normalize_actions(repaired)
-        if repaired != main_inner:
-            text = text[: m.start(1)] + repaired + text[m.end(1) :]
-    text = normalize_actions(text)
-    tail_m = re.search(r"</main>([\s\S]*)</body>", text, re.I)
-    if tail_m:
-        tail = normalize_sim_nav(tail_m.group(1), is_sample=is_sample)
-        if tail != tail_m.group(1).strip():
-            text = text[: tail_m.start(1)] + "\n" + tail + "\n" + text[tail_m.end(1) :]
-    return text
+def build_sim_nav(*, is_sample: bool) -> str:
+    home = SAMPLE_HOME if is_sample else PORTAL_HOME
+    return (
+        f'  <nav class="sim-nav encor-sample-sim-nav" aria-label="Question navigation">\n'
+        f'    <a class="sim-nav-btn sim-nav-home" href="{home}">Home</a>\n'
+        f"  </nav>"
+    )
 
 
 def normalize_sim_nav(tail: str, *, is_sample: bool) -> str:
+    tail = strip_home_key(tail)
     tail = re.sub(
         r'<a class="site-logo-corner"[\s\S]*?</a>\s*',
         "",
         tail,
         flags=re.I,
     )
-    if "ccna-sample-sim-nav" not in tail:
+    if "encor-sample-sim-nav" not in tail and 'class="sim-nav"' not in tail:
+        nav = build_sim_nav(is_sample=is_sample)
+        practice = '<script src="/js/practice-questions.js"></script>'
+        if practice in tail:
+            tail = tail.replace(practice, nav + "\n  " + practice)
+        else:
+            tail = (tail + "\n\n" + nav).strip()
+    else:
         tail = re.sub(
             r'<nav class="sim-nav"',
-            '<nav class="sim-nav ccna-sample-sim-nav"',
+            '<nav class="sim-nav encor-sample-sim-nav"',
             tail,
             count=1,
             flags=re.I,
@@ -374,7 +371,7 @@ def normalize_sim_nav(tail: str, *, is_sample: bool) -> str:
             continue
         tail = re.sub(
             rf'(<a class="sim-nav-btn)(?!\s+sim-nav-home)(" href="{re.escape(home_href)}")',
-            r'\1 sim-nav-home\2',
+            r"\1 sim-nav-home\2",
             tail,
             count=1,
             flags=re.I,
@@ -387,11 +384,7 @@ def normalize_sim_nav(tail: str, *, is_sample: bool) -> str:
     return tail.strip()
 
 
-def build_head(*, title: str, extras: str, exhibit_css: str, is_sample: bool) -> str:
-    nav_css = "/css/bcc-question-link-nav.css"
-    touch_css = "/CCNA-Study/CCNA_Samples/ccna-sample-touch.css"
-    dnd_css = "/CCNA-Study/js/ccna-dnd-page.css"
-    robots = "index, follow" if is_sample else "index, follow"
+def build_head(*, title: str, extras: str, exhibit_css: str) -> str:
     lines = [
         "<head>",
         '  <meta charset="UTF-8" />',
@@ -400,14 +393,13 @@ def build_head(*, title: str, extras: str, exhibit_css: str, is_sample: bool) ->
         lines.append(extras)
     lines.extend(
         [
-            f'  <meta name="robots" content="{robots}" />',
+            '  <meta name="robots" content="index, follow" />',
             '  <meta name="viewport" content="width=device-width, initial-scale=1.0" />',
             f"  <title>{title}</title>",
-            f'  <link rel="stylesheet" href="{nav_css}" />',
-            f'  <link rel="stylesheet" href="{touch_css}" />',
-            f'  <link rel="stylesheet" href="{dnd_css}" />',
         ]
     )
+    for href in REQUIRED_STYLESHEETS:
+        lines.append(f'  <link rel="stylesheet" href="{href}" />')
     if exhibit_css:
         lines.append(exhibit_css)
     lines.append("</head>")
@@ -422,9 +414,9 @@ def build_body_shell(
 ) -> str:
     home = SAMPLE_HOME if is_sample else PORTAL_HOME
     body_class = (
-        "ccna-static-sample ccna-dnd-ui dragdrop-exercise"
+        "encor-static-sample encor-dnd-ui dragdrop-exercise"
         if is_sample
-        else "ccna-question-ui ccna-dnd-ui dragdrop-exercise"
+        else "encor-question-ui encor-dnd-ui dragdrop-exercise"
     )
     if is_sample:
         logo_corner = (
@@ -435,7 +427,7 @@ def build_body_shell(
     else:
         logo_corner = (
             f'    <a class="site-logo-corner" href="{home}" '
-            f'aria-label="CCNA practice portal">\n'
+            f'aria-label="ENCOR practice portal">\n'
             f'      <img src="{LOGO_IMG}" width="52" height="52" alt="Be Certified Today" />\n'
             "    </a>"
         )
@@ -454,7 +446,6 @@ def build_body_shell(
 
 
 def repair_broken_bank(main: str) -> str:
-    """Re-close #bank when an earlier broken wrap split tokens outside the bank."""
     m = re.search(r'(<div id="bank" class="bank">)([\s\S]*?)(</div>)', main, re.I)
     if not m or not is_broken_layout_wrap(main):
         return main
@@ -477,6 +468,36 @@ def repair_broken_bank(main: str) -> str:
     return main
 
 
+def apply_template(text: str, *, is_sample: bool) -> str:
+    text = ensure_stylesheets(text)
+    text = ensure_body_classes(text, is_sample=is_sample)
+    if "dragdrop-touch-hint" not in text:
+        text = re.sub(
+            r'(<main class="card">)',
+            r"\1\n" + TOUCH_HINT,
+            text,
+            count=1,
+            flags=re.I,
+        )
+    m = re.search(r'<main class="card">(.*?)</main>', text, re.I | re.S)
+    if m:
+        main_inner = m.group(1)
+        repaired = repair_broken_bank(main_inner)
+        repaired = wrap_row_bank_split(repaired)
+        repaired = wrap_code_bank_split(repaired)
+        repaired = wrap_layout_in_sim_frame(repaired)
+        repaired = normalize_actions(repaired)
+        if repaired != main_inner:
+            text = text[: m.start(1)] + repaired + text[m.end(1) :]
+    text = normalize_actions(text)
+    tail_m = re.search(r"</main>([\s\S]*)</body>", text, re.I)
+    if tail_m:
+        tail = normalize_sim_nav(tail_m.group(1), is_sample=is_sample)
+        if tail != tail_m.group(1).strip():
+            text = text[: tail_m.start(1)] + "\n" + tail + "\n" + text[tail_m.end(1) :]
+    return text
+
+
 def migrate_text(text: str, *, is_sample: bool) -> str:
     if not needs_migration(text):
         return text
@@ -490,11 +511,12 @@ def migrate_text(text: str, *, is_sample: bool) -> str:
     main_inner = wrap_code_bank_split(main_inner)
     main_inner = wrap_layout_in_sim_frame(main_inner)
     main_inner = add_touch_hint(main_inner)
+    main_inner = normalize_actions(main_inner)
     tail = normalize_sim_nav(extract_tail(text), is_sample=is_sample)
 
-    head = build_head(title=title, extras=extras, exhibit_css=exhibit_css, is_sample=is_sample)
+    head = build_head(title=title, extras=extras, exhibit_css=exhibit_css)
     body = build_body_shell(main_inner, tail, is_sample=is_sample)
-    return f"<!doctype html>\n<html lang=\"en\">\n{head}\n{body}\n</html>\n"
+    return f'<!doctype html>\n<html lang="en">\n{head}\n{body}\n</html>\n'
 
 
 def migrate_file(path: Path, *, is_sample: bool = False) -> bool:
@@ -514,25 +536,108 @@ def apply_template_file(path: Path, *, is_sample: bool = False) -> bool:
     return True
 
 
+def is_broken_row_split(main: str) -> bool:
+    if 'class="row-list"' not in main:
+        return False
+    before_actions = main.split('<div class="actions"', 1)[0]
+    return "drop-slot" not in before_actions and 'class="slot"' not in before_actions
+
+
+def is_broken_split(main: str) -> bool:
+    if is_broken_row_split(main):
+        return True
+    before_actions = main.split('<div class="actions"', 1)[0]
+    token_total = len(re.findall(r'class="token"', before_actions, re.I))
+    bank_m = re.search(r'<div id="bank"', before_actions, re.I)
+    if not bank_m:
+        return False
+    bank_end = find_matching_div_close(before_actions, bank_m.start())
+    if bank_end < 0:
+        return False
+    bank_body = before_actions[bank_m.start() : bank_end]
+    token_in_bank = len(re.findall(r'class="token"', bank_body, re.I))
+    return token_total > token_in_bank
+
+
+def extract_work_region(main: str) -> tuple[str, str] | None:
+    start_m = re.search(
+        r"(?=<div class=\"(?:layout|row|sim-frame|code-wrap)\")",
+        main,
+        re.I,
+    )
+    end_m = re.search(r"<div class=\"actions\">", main, re.I)
+    if not start_m or not end_m or start_m.start() >= end_m.start():
+        return None
+    prefix = main[: start_m.start()]
+    suffix = main[end_m.start() :]
+    body = main[start_m.start() : end_m.start()]
+    return prefix + "%%WORK%%" + suffix, body
+
+
+def repair_broken_split(path: Path) -> bool:
+    text = path.read_text(encoding="utf-8")
+    try:
+        main_inner = extract_main_inner(text)
+    except ValueError:
+        return False
+    if not is_broken_split(main_inner):
+        return False
+    rel = path.relative_to(ROOT).as_posix()
+    try:
+        head_text = subprocess.check_output(
+            ["git", "show", f"HEAD:{rel}"],
+            cwd=ROOT,
+            text=True,
+        )
+    except subprocess.CalledProcessError:
+        return False
+    head_main = extract_main_inner(head_text)
+    shell = extract_work_region(main_inner)
+    if not shell:
+        return False
+    prefix_suffix, _ = shell
+    work = head_main
+    work = wrap_row_bank_split(work)
+    work = wrap_code_bank_split(work)
+    work = wrap_layout_in_sim_frame(work)
+    work_region = extract_work_region(work)
+    if not work_region:
+        return False
+    _, work_body = work_region
+    repaired_main = prefix_suffix.replace("%%WORK%%", work_body)
+    text = re.sub(
+        r"<main class=\"card\">.*?</main>",
+        f"<main class=\"card\">\n{repaired_main}\n    </main>",
+        text,
+        count=1,
+        flags=re.I | re.S,
+    )
+    path.write_text(text, encoding="utf-8")
+    return True
+
+
 def main() -> int:
     apply_all = "--apply-template" in sys.argv or "--all" in sys.argv
+    repair_only = "--repair" in sys.argv
     changed = 0
-    for html_path in sorted(DND_DIR.rglob("*.html")):
+    targets = sorted(DND_DIR.rglob("*.html"))
+    for sample_path in SAMPLE_DND_FILES:
+        if sample_path.exists():
+            targets.append(sample_path)
+    for html_path in targets:
+        is_sample = "ENCOR_Samples" in str(html_path)
+        if repair_only:
+            if repair_broken_split(html_path):
+                changed += 1
+                print(f"repaired: {html_path.relative_to(ROOT)}")
+            continue
         if apply_all:
-            if apply_template_file(html_path):
+            if apply_template_file(html_path, is_sample=is_sample):
                 changed += 1
                 print(f"template: {html_path.relative_to(ROOT)}")
-        elif migrate_file(html_path):
+        elif migrate_file(html_path, is_sample=is_sample):
             changed += 1
             print(f"migrated: {html_path.relative_to(ROOT)}")
-    if SAMPLE_DND.exists():
-        if apply_all:
-            if apply_template_file(SAMPLE_DND, is_sample=True):
-                changed += 1
-                print(f"template: {SAMPLE_DND.relative_to(ROOT)}")
-        elif migrate_file(SAMPLE_DND, is_sample=True):
-            changed += 1
-            print(f"migrated: {SAMPLE_DND.relative_to(ROOT)}")
     print(f"done — {changed} file(s) updated")
     return 0
 

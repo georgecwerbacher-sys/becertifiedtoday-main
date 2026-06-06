@@ -3,141 +3,50 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Question 18 - EEM Drag and Drop</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/CCNP-ENCOR-Study/ENCOR_Samples/encor-sample-touch.css" />
+  <link rel="stylesheet" href="/CCNP-ENCOR-Study/js/encor-dnd-page.css" />
   <style>
-    :root {
-      color-scheme: light dark;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      background: #0b1020;
-      color: #e6edf3;
-    }
-    .card {
-      width: min(980px, 94vw);
-      background: #121a2b;
-      border: 1px solid #2d3b5a;
-      border-radius: 14px;
-      padding: 24px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    }
-    h1 {
-      margin: 0 0 12px;
-      font-size: clamp(1.1rem, 2vw, 1.5rem);
-      line-height: 1.35;
-    }
-    .instructions {
-      margin: 0 0 12px;
-      color: #b8c3d6;
-    }
     .code-wrap {
-      border: 1px solid #2c3f62;
+border: 1px solid #2c3f62;
       border-radius: 10px;
       background: #0f1728;
       padding: 14px;
     }
-    .code {
-      margin: 0;
-      white-space: pre-wrap;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      line-height: 1.5;
-      font-size: 0.95rem;
-    }
-    .drop-slot {
-      display: inline-flex;
-      min-width: 175px;
-      min-height: 30px;
-      border-radius: 8px;
-      border: 1px dashed #4d89ff;
-      background: #1a2a45;
-      vertical-align: middle;
-      align-items: center;
-      justify-content: center;
-      margin: 0 4px;
-      padding: 2px 8px;
-    }
-    .drop-slot.over {
-      border-style: solid;
-      background: #213861;
-    }
-    .drop-slot.correct {
-      border-color: #1f7a58;
-      background: #113e2d;
-    }
-    .drop-slot.incorrect {
-      border-color: #8c3434;
-      background: #442020;
-    }
-    .bank {
-      margin-top: 14px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      min-height: 48px;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #2c3f62;
-      background: #1a253b;
-    }
-    .token {
-      padding: 8px 12px;
-      border-radius: 8px;
-      border: 1px solid #a5b727;
-      background: #dff34c;
-      color: #14190a;
-      font-weight: 700;
-      cursor: grab;
-      user-select: none;
-    }
-    .token:active {
-      cursor: grabbing;
-    }
-    .actions {
-      margin-top: 14px;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-    button,
-    .next-link {
-      background: #254b8a;
-      color: #e6edf3;
-      border: 1px solid #3d6dbb;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      text-decoration: none;
-      cursor: pointer;
-      display: inline-block;
-    }
-    #result {
-      font-weight: 700;
-    }
-    #nextWrap {
-      display: none;
-    }
   </style>
 </head>
-<body>
-  <main class="card">
-    <h1>Question 18: Complete the EEM script using drag and drop.</h1>
+<body class="encor-question-ui encor-dnd-ui dragdrop-exercise">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell">
+    <a class="site-logo-corner" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html" aria-label="ENCOR practice portal">
+      <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="card">
+<p class="dragdrop-touch-hint" aria-hidden="true">On a phone or tablet, tap a chip to pick it up, then tap a drop zone (or another chip to swap).</p>
+
+<h1>Question 18: Complete the EEM script using drag and drop.</h1>
     <p class="instructions">Drag tokens into the blanks.</p>
 
-    <div class="code-wrap">
+    <div class="layout dnd-split">
+      <div class="panel panel--solution">
+        <div class="layout dnd-split">
+      <div class="panel panel--solution">
+        <div class="code-wrap">
 <pre class="code">event manager applet CONF_CHANGE
 <span class="drop-slot" data-target="event syslog pattern"></span> "SYS-5-CONFIG_I"
 action 1.0 cli command <span class="drop-slot" data-target="&quot;enable&quot;"></span>
 action 2.0 cli command "show clock <span class="drop-slot" data-target="| append flash:"></span>ConfSave.txt"
 action 3.0 syslog priority informational msg "Configuration changed"</pre>
     </div>
-
-    <div id="bank" class="bank">
+      </div>
+      <div class="panel panel--choices">
+        <h2>Choices</h2>
+        <div id="bank" class="bank">
       <div class="token" draggable="true" data-value="event cli pattern">event cli pattern</div>
       <div class="token" draggable="true" data-value="&quot;enable&quot;">"enable"</div>
       <div class="token" draggable="true" data-value="event syslog pattern">event syslog pattern</div>
@@ -146,16 +55,20 @@ action 3.0 syslog priority informational msg "Configuration changed"</pre>
       <div class="token" draggable="true" data-value="| append flash:">| append flash:</div>
       <div class="token" draggable="true" data-value="flash">flash</div>
     </div>
-
-    <div class="actions">
+      </div>
+</div>
+</div>
+      </div>
+<div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <span id="result"></span>
       <span id="nextWrap"><a class="next-link" href="/question-19.html">Next</a></span>
     </div>
-  </main>
+    </main>
+  </div>
 
-  <script>
+<script>
     const bank = document.getElementById("bank");
     const slots = document.querySelectorAll(".drop-slot");
     const checkBtn = document.getElementById("checkBtn");
@@ -223,26 +136,9 @@ action 3.0 syslog priority informational msg "Configuration changed"</pre>
       nextWrap.style.display = "none";
     });
   </script>
-  <style>
-    .home-key {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 9999;
-      text-decoration: none;
-      background: #254b8a;
-      border: 1px solid #3d6dbb;
-      color: #e6edf3;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
-    }
-    .home-key:hover {
-      filter: brightness(1.08);
-    }
-  </style>
-  <a class="home-key" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
+    <nav class="sim-nav encor-sample-sim-nav" aria-label="Question navigation">
+    <a class="sim-nav-btn sim-nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
+  </nav>
   <script src="/js/practice-questions.js"></script>
 </body>
 </html>
