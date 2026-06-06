@@ -292,12 +292,12 @@
       <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/wred-actions-choose-two.html">Next</a>
       </div>
     </nav>
-    <h1>In which way does a spine-and-leaf architecture allow for scalability in a network when additional access ports are required?</h1>
+    <h1>Which way does a spine-and-leaf architecture allow for scalability in a network when additional access ports are required?</h1>
 
     <label class="choice"><input type="radio" name="spineleafscale1" value="A" />A. A spine switch and a leaf switch can be added with redundant connections between them.</label>
     <label class="choice"><input type="radio" name="spineleafscale1" value="B" />B. A spine switch can be added with at least 40 GB uplinks.</label>
-    <label class="choice"><input type="radio" name="spineleafscale1" value="C" />C. A leaf switch can be added with a single connection to a core spine switch.</label>
-    <label class="choice"><input type="radio" name="spineleafscale1" value="D" />D. A leaf switch can be added with connections to every spine switch</label>
+    <label class="choice"><input type="radio" name="spineleafscale1" value="C" />C. A leaf switch can be added with connections to every spine switch.</label>
+    <label class="choice"><input type="radio" name="spineleafscale1" value="D" />D. A leaf switch can be added with a single connection to a core spine switch.</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -324,8 +324,8 @@
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 To scale access port capacity, add leaf switches and connect each new leaf to every spine switch, preserving the full-mesh leaf-to-spine pattern, ECMP paths, and predictable two-hop east-west forwarding. Adding only one uplink to a single spine creates a bottleneck and breaks the design. Spine bandwidth upgrades or adding spines address fabric capacity, not the standard answer for growing access ports. Redundant spine-and-leaf pairs together is not the defining scale-out step described here.";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C \u2014 To scale access port capacity, add leaf switches and connect each new leaf to every spine switch, preserving the full-mesh leaf-to-spine pattern, ECMP paths, and predictable two-hop east-west forwarding. A single uplink to one spine (D) creates a bottleneck and breaks the design. Spine bandwidth upgrades or adding spines (B) address fabric capacity, not the standard scale-out step for more access ports. Adding a spine-and-leaf pair together with redundant links (A) is not the defining leaf-scale pattern described here.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");

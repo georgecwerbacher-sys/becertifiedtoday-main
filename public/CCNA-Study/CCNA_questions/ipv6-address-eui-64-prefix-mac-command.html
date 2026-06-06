@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Where to enable PortFast</title>
+  <title>CCNA — IPv6 EUI-64 from prefix and MAC</title>
   <style>
     :root {
       color-scheme: light;
@@ -287,17 +287,49 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/ml-algorithms-model-network-behavior-unusual-activity.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/hypervisor-virtualizes-cpu-memory-storage-vm.html">Back</a>
       <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/lldp-neighbors-detail-vendor-neutral-discovery.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/switch-cam-flood-attack-host-c-to-a-port-security.html">Next</a>
       </div>
     </nav>
-    <h1>On which type of switch interface should the PortFast feature be enabled to accelerate spanning tree convergence without risking Layer 2 loops?</h1>
+    <h1>Which command automatically generates an IPv6 address from a specified IPv6 prefix and the MAC address of an interface?</h1>
 
-    <label class="choice"><input type="radio" name="pfwhere1" value="A" />A. An uplink configured with Root Guard to another switch</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="B" />B. A Layer 2 access port that connects to a single workstation or server</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="C" />C. A trunk port carrying multiple VLANs between two switches</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="D" />D. A Layer 2 EtherChannel bundle between distribution and core switches</label>
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ipv6eui1" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. ipv6 address dhcp</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ipv6eui1" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. ipv6 address 2001:DB8:5:112::/64 eui-64</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ipv6eui1" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. ipv6 address autoconfig</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="ipv6eui1" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. ipv6 address 2001:DB8:5:112::2/64 link-local</pre>
+    </label>
+
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -325,13 +357,13 @@
   <script>
     (function () {
       var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 PortFast is for Layer 2 access (edge) ports connected to a single end station such as a workstation or server. It skips listening/learning so the host gets connectivity quickly. Do not use PortFast on switch-to-switch links: trunks, EtherChannels, or uplinks (even with Root Guard) can form loops if PortFast bypasses normal STP on those paths.";
+      var CORRECT_MSG = "Correct. B \u2014 ipv6 address <prefix>::/64 eui-64 applies the given prefix on the interface and builds the 64-bit interface ID from the interface MAC using the EUI-64 process (insert FFFE and flip the universal/local bit). ipv6 address dhcp (A) requests addresses from DHCPv6. ipv6 address autoconfig (C) enables SLAAC on a host from router advertisements; it is not the prefix-plus-MAC EUI-64 syntax on a router interface. ipv6 address ... link-local (D) configures only a link-local address with invalid mixed syntax for this task.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="pfwhere1"]:checked');
+        var sel = document.querySelector('input[name="ipv6eui1"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -348,7 +380,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="pfwhere1"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="ipv6eui1"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

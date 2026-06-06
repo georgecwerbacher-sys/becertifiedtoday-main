@@ -292,13 +292,13 @@
       <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/ssh-rsa-key-dns-domain-name-prerequisite.html">Next</a>
       </div>
     </nav>
-    <h1 class="choose-two-stem">A frame that enters a switch fails the Frame Check Sequence. Which two interface counters are incremented? (Choose two)</h1>
+    <h1 class="choose-two-stem">A frame that enters a switch fails the Frame Check Sequence. Which two interface counters are incremented?</h1>
 
-    <label class="choice"><input type="checkbox" name="fcsctr1" value="A" />A. runts</label>
-    <label class="choice"><input type="checkbox" name="fcsctr1" value="B" />B. giants</label>
-    <label class="choice"><input type="checkbox" name="fcsctr1" value="C" />C. frame</label>
+    <label class="choice"><input type="checkbox" name="fcsctr1" value="A" />A. input errors</label>
+    <label class="choice"><input type="checkbox" name="fcsctr1" value="B" />B. frame</label>
+    <label class="choice"><input type="checkbox" name="fcsctr1" value="C" />C. giants</label>
     <label class="choice"><input type="checkbox" name="fcsctr1" value="D" />D. CRC</label>
-    <label class="choice"><input type="checkbox" name="fcsctr1" value="E" />E. input errors</label>
+    <label class="choice"><input type="checkbox" name="fcsctr1" value="E" />E. runts</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -325,8 +325,8 @@
 
   <script>
     (function () {
-      var CORRECT = ["D", "E"];
-      var CORRECT_MSG = "Correct. D and E \u2014 An FCS mismatch is counted as a CRC error on Cisco interfaces. CRC errors are included in the aggregate input errors counter. Runts and giants relate to undersized or oversized frames, not FCS failure. The frame counter increments for alignment errors (frames not ending on an 8-bit boundary), a different defect than FCS/CRC.";
+      var CORRECT = ["A", "D"];
+      var CORRECT_MSG = "Correct. A and D \u2014 An FCS mismatch is counted as a CRC error on Cisco interfaces. CRC errors are included in the aggregate input errors counter. Runts (E) and giants (C) relate to undersized or oversized frames, not FCS failure. The frame counter (B) increments for alignment errors (frames not ending on an 8-bit boundary), a different defect than FCS/CRC.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");

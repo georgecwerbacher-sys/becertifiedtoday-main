@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Where to enable PortFast</title>
+  <title>CCNA — AI/ML application in network operations</title>
   <style>
     :root {
       color-scheme: light;
@@ -287,17 +287,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/ml-algorithms-model-network-behavior-unusual-activity.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/nat-pool-define-isp-209-165-200-range.html">Back</a>
       <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/lldp-neighbors-detail-vendor-neutral-discovery.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/layer3-switch-svi-inter-subnet-routing.html">Next</a>
       </div>
     </nav>
-    <h1>On which type of switch interface should the PortFast feature be enabled to accelerate spanning tree convergence without risking Layer 2 loops?</h1>
+    <h1>Which of the following is a primary application of Artificial Intelligence (AI) and Machine Learning (ML) in network operations?</h1>
 
-    <label class="choice"><input type="radio" name="pfwhere1" value="A" />A. An uplink configured with Root Guard to another switch</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="B" />B. A Layer 2 access port that connects to a single workstation or server</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="C" />C. A trunk port carrying multiple VLANs between two switches</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="D" />D. A Layer 2 EtherChannel bundle between distribution and core switches</label>
+    <label class="choice"><input type="radio" name="aimlops1" value="A" />A. The initial creation of network topology diagrams and documentation.</label>
+    <label class="choice"><input type="radio" name="aimlops1" value="B" />B. Manually configuring VLANs and access control lists on a switch.</label>
+    <label class="choice"><input type="radio" name="aimlops1" value="C" />C. Proactively identifying unusual traffic patterns that may indicate a security threat or performance issue.</label>
+    <label class="choice"><input type="radio" name="aimlops1" value="D" />D. Serving as the data encoding format for RESTful API calls.</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -324,14 +324,14 @@
 
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 PortFast is for Layer 2 access (edge) ports connected to a single end station such as a workstation or server. It skips listening/learning so the host gets connectivity quickly. Do not use PortFast on switch-to-switch links: trunks, EtherChannels, or uplinks (even with Root Guard) can form loops if PortFast bypasses normal STP on those paths.";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C \u2014 AI/ML in network operations is used to learn normal traffic and device behavior, then proactively flag anomalies that may signal security threats, outages, or performance degradation (assurance, analytics, and threat detection). Initial topology documentation (A) is largely manual or design-time work. Manually configuring VLANs and ACLs (B) is traditional CLI operations, not an ML use case. REST API data encoding (D) refers to formats such as JSON or XML, not AI/ML.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="pfwhere1"]:checked');
+        var sel = document.querySelector('input[name="aimlops1"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -348,7 +348,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="pfwhere1"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="aimlops1"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

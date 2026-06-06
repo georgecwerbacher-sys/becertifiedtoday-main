@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Where to enable PortFast</title>
+  <title>CCNA — Secure remote administration (choose two)</title>
   <style>
     :root {
       color-scheme: light;
@@ -287,17 +287,18 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/ml-algorithms-model-network-behavior-unusual-activity.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/layer3-interfaces-switch-router-choose-two.html">Back</a>
       <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/lldp-neighbors-detail-vendor-neutral-discovery.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/vlan-core-advantages-segmentation-choose-two.html">Next</a>
       </div>
     </nav>
-    <h1>On which type of switch interface should the PortFast feature be enabled to accelerate spanning tree convergence without risking Layer 2 loops?</h1>
+    <h1 class="choose-two-stem">To ensure secure remote administration of a Cisco network device, which two settings must be configured?</h1>
 
-    <label class="choice"><input type="radio" name="pfwhere1" value="A" />A. An uplink configured with Root Guard to another switch</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="B" />B. A Layer 2 access port that connects to a single workstation or server</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="C" />C. A trunk port carrying multiple VLANs between two switches</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="D" />D. A Layer 2 EtherChannel bundle between distribution and core switches</label>
+    <label class="choice"><input type="checkbox" name="secrmt1" value="A" />A. Enable SSH for encrypted administrative access</label>
+    <label class="choice"><input type="checkbox" name="secrmt1" value="B" />B. Use HTTP for web-based device access</label>
+    <label class="choice"><input type="checkbox" name="secrmt1" value="C" />C. Apply an access control list (ACL) to restrict access by IP address</label>
+    <label class="choice"><input type="checkbox" name="secrmt1" value="D" />D. Shut down all unused ports to block unauthorized local connections</label>
+    <label class="choice"><input type="checkbox" name="secrmt1" value="E" />E. Enable Telnet for basic management sessions</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -324,21 +325,33 @@
 
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 PortFast is for Layer 2 access (edge) ports connected to a single end station such as a workstation or server. It skips listening/learning so the host gets connectivity quickly. Do not use PortFast on switch-to-switch links: trunks, EtherChannels, or uplinks (even with Root Guard) can form loops if PortFast bypasses normal STP on those paths.";
+      var CORRECT = ["A", "C"];
+      var CORRECT_MSG = "Correct. A and C \u2014 SSH encrypts management sessions so credentials and commands are not sent in cleartext. An ACL applied to VTY lines (access-class) or management paths restricts which source IP addresses may connect, limiting exposure. HTTP (B) is cleartext web access unless HTTPS is used. Shutting down unused ports (D) hardens local physical access but is not a remote administration setting. Telnet (E) is cleartext and should be disabled in favor of SSH.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="secrmt1"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="pfwhere1"]:checked');
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (!sel) {
+        if (sel.length !== 2) {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select an answer.";
+          answerBox.textContent = "Choose exactly two answers.";
           return;
         }
-        if (sel.value === CORRECT) {
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
@@ -348,8 +361,10 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="pfwhere1"][value="' + CORRECT + '"]');
-        if (input) input.checked = true;
+        CORRECT.forEach(function (value) {
+          var input = document.querySelector('input[name="secrmt1"][value="' + value + '"]');
+          if (input) input.checked = true;
+        });
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
         answerBox.textContent = CORRECT_MSG;

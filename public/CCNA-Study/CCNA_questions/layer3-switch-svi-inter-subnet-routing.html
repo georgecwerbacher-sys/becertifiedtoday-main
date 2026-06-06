@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Where to enable PortFast</title>
+  <title>CCNA — Layer 3 switch vs Layer 2 switch</title>
   <style>
     :root {
       color-scheme: light;
@@ -287,17 +287,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/ml-algorithms-model-network-behavior-unusual-activity.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/ai-ml-proactive-unusual-traffic-patterns.html">Back</a>
       <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/lldp-neighbors-detail-vendor-neutral-discovery.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/stp-operation-layer2-root-priority-choose-two.html">Next</a>
       </div>
     </nav>
-    <h1>On which type of switch interface should the PortFast feature be enabled to accelerate spanning tree convergence without risking Layer 2 loops?</h1>
+    <h1>Which capability is provided by a Layer 3 switch but not by a Layer 2 switch?</h1>
 
-    <label class="choice"><input type="radio" name="pfwhere1" value="A" />A. An uplink configured with Root Guard to another switch</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="B" />B. A Layer 2 access port that connects to a single workstation or server</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="C" />C. A trunk port carrying multiple VLANs between two switches</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="D" />D. A Layer 2 EtherChannel bundle between distribution and core switches</label>
+    <label class="choice"><input type="radio" name="l3vsl21" value="A" />A. Adding and interpreting IEEE 802.1Q VLAN tags on trunk links</label>
+    <label class="choice"><input type="radio" name="l3vsl21" value="B" />B. Routing traffic between different IP subnets by using Switched Virtual Interfaces (SVIs)</label>
+    <label class="choice"><input type="radio" name="l3vsl21" value="C" />C. Forwarding frames within the same VLAN based on destination MAC address</label>
+    <label class="choice"><input type="radio" name="l3vsl21" value="D" />D. Learning source MAC addresses and populating a CAM table</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -325,13 +325,13 @@
   <script>
     (function () {
       var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 PortFast is for Layer 2 access (edge) ports connected to a single end station such as a workstation or server. It skips listening/learning so the host gets connectivity quickly. Do not use PortFast on switch-to-switch links: trunks, EtherChannels, or uplinks (even with Root Guard) can form loops if PortFast bypasses normal STP on those paths.";
+      var CORRECT_MSG = "Correct. B \u2014 A Layer 3 (multilayer) switch can route between VLANs using Switched Virtual Interfaces (SVIs) or routed ports, forwarding traffic between different IP subnets. Layer 2 switches bridge within VLANs only; inter-subnet forwarding requires an external router or an L3 switch. IEEE 802.1Q tagging on trunks (A), MAC-based switching within a VLAN (C), and CAM/MAC learning (D) are standard Layer 2 switch functions.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="pfwhere1"]:checked');
+        var sel = document.querySelector('input[name="l3vsl21"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -348,7 +348,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="pfwhere1"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="l3vsl21"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

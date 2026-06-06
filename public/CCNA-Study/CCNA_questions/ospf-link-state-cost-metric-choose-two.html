@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Where to enable PortFast</title>
+  <title>CCNA — OSPF nature and behavior (choose two)</title>
   <style>
     :root {
       color-scheme: light;
@@ -287,17 +287,18 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/ml-algorithms-model-network-behavior-unusual-activity.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/ipv6-addressing-features-choose-two.html">Back</a>
       <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/lldp-neighbors-detail-vendor-neutral-discovery.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/ios-static-ip-interface-commands-choose-two.html">Next</a>
       </div>
     </nav>
-    <h1>On which type of switch interface should the PortFast feature be enabled to accelerate spanning tree convergence without risking Layer 2 loops?</h1>
+    <h1 class="choose-two-stem">Which two statements correctly describe the nature and behavior of the OSPF routing protocol?</h1>
 
-    <label class="choice"><input type="radio" name="pfwhere1" value="A" />A. An uplink configured with Root Guard to another switch</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="B" />B. A Layer 2 access port that connects to a single workstation or server</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="C" />C. A trunk port carrying multiple VLANs between two switches</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="D" />D. A Layer 2 EtherChannel bundle between distribution and core switches</label>
+    <label class="choice"><input type="checkbox" name="ospfnat1" value="A" />A. OSPF functions as a distance-vector protocol</label>
+    <label class="choice"><input type="checkbox" name="ospfnat1" value="B" />B. OSPF is categorized as a link-state routing protocol</label>
+    <label class="choice"><input type="checkbox" name="ospfnat1" value="C" />C. OSPF calculates the best route using cost as its metric</label>
+    <label class="choice"><input type="checkbox" name="ospfnat1" value="D" />D. OSPF relies on broadcast communication for router updates</label>
+    <label class="choice"><input type="checkbox" name="ospfnat1" value="E" />E. OSPF does not support Variable Length Subnet Masking (VLSM)</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -324,21 +325,33 @@
 
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 PortFast is for Layer 2 access (edge) ports connected to a single end station such as a workstation or server. It skips listening/learning so the host gets connectivity quickly. Do not use PortFast on switch-to-switch links: trunks, EtherChannels, or uplinks (even with Root Guard) can form loops if PortFast bypasses normal STP on those paths.";
+      var CORRECT = ["B", "C"];
+      var CORRECT_MSG = "Correct. B and C \u2014 OSPF is a link-state IGP: routers flood link-state advertisements, build a synchronized topology database, and run SPF (Dijkstra) to compute shortest paths. OSPF uses cost as its metric (typically reference bandwidth divided by interface bandwidth; lower cost is preferred). OSPF is not distance-vector (A). Updates use IP multicast on multi-access segments (224.0.0.5 and 224.0.0.6), not generic broadcast delivery (D). OSPF is classless and supports VLSM and discontiguous networks (E is false).";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="ospfnat1"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="pfwhere1"]:checked');
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (!sel) {
+        if (sel.length !== 2) {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select an answer.";
+          answerBox.textContent = "Choose exactly two answers.";
           return;
         }
-        if (sel.value === CORRECT) {
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
@@ -348,8 +361,10 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="pfwhere1"][value="' + CORRECT + '"]');
-        if (input) input.checked = true;
+        CORRECT.forEach(function (value) {
+          var input = document.querySelector('input[name="ospfnat1"][value="' + value + '"]');
+          if (input) input.checked = true;
+        });
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
         answerBox.textContent = CORRECT_MSG;

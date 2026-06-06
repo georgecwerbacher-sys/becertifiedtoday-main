@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Where to enable PortFast</title>
+  <title>CCNA — Virtual machine functionality</title>
   <style>
     :root {
       color-scheme: light;
@@ -287,17 +287,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/ml-algorithms-model-network-behavior-unusual-activity.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/tcp-udp-connection-establishment-three-way-handshake.html">Back</a>
       <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/lldp-neighbors-detail-vendor-neutral-discovery.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/ipv6-address-eui-64-prefix-mac-command.html">Next</a>
       </div>
     </nav>
-    <h1>On which type of switch interface should the PortFast feature be enabled to accelerate spanning tree convergence without risking Layer 2 loops?</h1>
+    <h1>What identifies the functionality of virtual machines?</h1>
 
-    <label class="choice"><input type="radio" name="pfwhere1" value="A" />A. An uplink configured with Root Guard to another switch</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="B" />B. A Layer 2 access port that connects to a single workstation or server</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="C" />C. A trunk port carrying multiple VLANs between two switches</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="D" />D. A Layer 2 EtherChannel bundle between distribution and core switches</label>
+    <label class="choice"><input type="radio" name="vmfunc1" value="A" />A. The hypervisor communicates on Layer 3 without the need for additional resources.</label>
+    <label class="choice"><input type="radio" name="vmfunc1" value="B" />B. Each hypervisor supports a single virtual machine and a single software switch.</label>
+    <label class="choice"><input type="radio" name="vmfunc1" value="C" />C. The hypervisor virtualizes physical components, including CPU, memory, and storage.</label>
+    <label class="choice"><input type="radio" name="vmfunc1" value="D" />D. Virtualized servers run efficiently when physically connected to a switch that is separate from the hypervisor.</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -324,14 +324,14 @@
 
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 PortFast is for Layer 2 access (edge) ports connected to a single end station such as a workstation or server. It skips listening/learning so the host gets connectivity quickly. Do not use PortFast on switch-to-switch links: trunks, EtherChannels, or uplinks (even with Root Guard) can form loops if PortFast bypasses normal STP on those paths.";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C \u2014 A hypervisor abstracts and virtualizes physical host resources (CPU, memory, storage, and network interfaces) so multiple isolated virtual machines can run on one physical server. A is wrong: hypervisor networking still relies on virtual switches, VLANs, and physical connectivity; it does not magically operate at Layer 3 without resources. B is wrong: a hypervisor typically hosts many VMs and virtual switches. D describes a deployment topology, not what defines VM functionality.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="pfwhere1"]:checked');
+        var sel = document.querySelector('input[name="vmfunc1"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -348,7 +348,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="pfwhere1"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="vmfunc1"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — Where to enable PortFast</title>
+  <title>CCNA — Static IP on an interface (choose two)</title>
   <style>
     :root {
       color-scheme: light;
@@ -287,17 +287,58 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/ml-algorithms-model-network-behavior-unusual-activity.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/ospf-link-state-cost-metric-choose-two.html">Back</a>
       <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/lldp-neighbors-detail-vendor-neutral-discovery.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/switch-unknown-dest-mac-flood-except-ingress.html">Next</a>
       </div>
     </nav>
-    <h1>On which type of switch interface should the PortFast feature be enabled to accelerate spanning tree convergence without risking Layer 2 loops?</h1>
+    <h1 class="choose-two-stem">Which two commands are commonly used in Cisco IOS to assign a static IP address to a specific network interface?</h1>
 
-    <label class="choice"><input type="radio" name="pfwhere1" value="A" />A. An uplink configured with Root Guard to another switch</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="B" />B. A Layer 2 access port that connects to a single workstation or server</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="C" />C. A trunk port carrying multiple VLANs between two switches</label>
-    <label class="choice"><input type="radio" name="pfwhere1" value="D" />D. A Layer 2 EtherChannel bundle between distribution and core switches</label>
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="stipif1" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. ip address 192.168.1.1 255.255.255.0</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="stipif1" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. ip routing 192.168.1.1</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="stipif1" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. interface gigabitEthernet0/1</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="stipif1" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. interface vlan 1</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="checkbox" name="stipif1" value="E" aria-label="Select answer option E" />
+        <span class="cli-router-choice-badge" aria-hidden="true">E</span>
+        <span class="cli-router-choice-title">Switch CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">E. ip address dhcp</pre>
+    </label>
+
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -324,21 +365,33 @@
 
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 PortFast is for Layer 2 access (edge) ports connected to a single end station such as a workstation or server. It skips listening/learning so the host gets connectivity quickly. Do not use PortFast on switch-to-switch links: trunks, EtherChannels, or uplinks (even with Root Guard) can form loops if PortFast bypasses normal STP on those paths.";
+      var CORRECT = ["A", "C"];
+      var CORRECT_MSG = "Correct. A and C \u2014 Assigning a static IPv4 address is a two-step pattern: enter the target interface (interface gigabitEthernet0/1) in global configuration, then set the address with ip address <ip> <mask> in interface configuration mode. ip routing (B) globally enables the IP routing process; it does not configure an interface address. interface vlan 1 (D) is valid on switches for an SVI but is not the paired answer with the static ip address line in this item. ip address dhcp (E) requests an address via DHCP, not a static assignment.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="stipif1"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="pfwhere1"]:checked');
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (!sel) {
+        if (sel.length !== 2) {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select an answer.";
+          answerBox.textContent = "Choose exactly two answers.";
           return;
         }
-        if (sel.value === CORRECT) {
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
@@ -348,8 +401,10 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="pfwhere1"][value="' + CORRECT + '"]');
-        if (input) input.checked = true;
+        CORRECT.forEach(function (value) {
+          var input = document.querySelector('input[name="stipif1"][value="' + value + '"]');
+          if (input) input.checked = true;
+        });
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
         answerBox.textContent = CORRECT_MSG;
