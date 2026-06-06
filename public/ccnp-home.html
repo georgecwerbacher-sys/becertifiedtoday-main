@@ -2287,7 +2287,17 @@
       pointer-events: auto;
     }
     html.bcc-encor-lead-sticky-visible {
-      padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+      padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+    }
+    .bcc-lead-sticky-cta__note {
+      margin: 0 auto 8px;
+      max-width: 28rem;
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.02em;
+      color: #fde68a;
     }
     .bcc-lead-sticky-cta .cta-main {
       width: 100%;
@@ -2299,6 +2309,9 @@
       padding: 0.85rem 1.25rem;
       border: 0;
       border-radius: 12px;
+      font-family: inherit;
+      appearance: none;
+      -webkit-appearance: none;
       font-size: clamp(0.95rem, 2.4vw, 1.05rem);
       font-weight: 800;
       letter-spacing: 0.02em;
@@ -3144,14 +3157,17 @@
     </div>
   </div>
   <div id="encorLeadStickyCta" class="bcc-lead-sticky-cta" hidden aria-hidden="true">
-    <a
-      id="encorLeadStickyCtaLink"
+    <p class="bcc-lead-sticky-cta__note">One-time $9.99 · closes when you leave this page</p>
+    <button
+      type="button"
+      id="encorLeadStickyCtaBtn"
       class="cta-main"
-      href="/CCNP-ENCOR-Study/test-simulation-runner.html?free=1&welcome=1"
-      data-encor-start-free-sim
-      data-bcc-lead-sticky-start
-      >Start free 45-min simulation</a
+      data-encor-portal-10d-checkout
+      data-bcc-lead-sticky-checkout
+      aria-label="Purchase 10-day ENCOR library access for nine ninety-nine"
     >
+      Get 10-day access · $9.99
+    </button>
   </div>
   <div
     id="ccnp-portal-gate"
@@ -3204,8 +3220,6 @@
   <script src="/CCNP-ENCOR-Study/js/encor-portal-storage.js" defer></script>
   <script src="/CCNP-ENCOR-Study/js/encor-portal-30d-checkout.js" defer></script>
   <script src="/js/bcc-10d-one-time-offer.js" defer></script>
-  <script src="/CCNP-ENCOR-Study/js/encor-test-sim-storage.js" defer></script>
-  <script src="/js/encor-lead-capture.js" defer></script>
   <script src="/js/bcc-lead-sticky-cta.js" defer></script>
   <script src="/CCNP-ENCOR-Study/js/encor-test-checkout.js" defer></script>
   <script>

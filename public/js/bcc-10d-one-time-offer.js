@@ -82,6 +82,9 @@
     } catch (_) {}
     syncOfferUi();
     hideLastChanceBar();
+    try {
+      document.dispatchEvent(new CustomEvent("bcc-10d-offer-state-change"));
+    } catch (_) {}
   }
 
   function canOffer() {
@@ -398,6 +401,10 @@
 
   window.bcc10dOneTimeOfferActive = function () {
     return !!(cfg && canOffer());
+  };
+
+  window.bccMark10dOneTimeOfferDismissed = function () {
+    markDismissed();
   };
 
   window.bccClose10dOfferForPortalGate = function () {

@@ -2464,7 +2464,17 @@
       pointer-events: auto;
     }
     html.bcc-ccna-lead-sticky-visible {
-      padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+      padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+    }
+    .bcc-lead-sticky-cta__note {
+      margin: 0 auto 8px;
+      max-width: 28rem;
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.02em;
+      color: #fde68a;
     }
     .bcc-lead-sticky-cta .cta-main {
       width: 100%;
@@ -2476,6 +2486,9 @@
       padding: 0.85rem 1.25rem;
       border: 0;
       border-radius: 12px;
+      font-family: inherit;
+      appearance: none;
+      -webkit-appearance: none;
       font-size: clamp(0.95rem, 2.4vw, 1.05rem);
       font-weight: 800;
       letter-spacing: 0.02em;
@@ -3264,14 +3277,17 @@
     </div>
   </div>
   <div id="ccnaLeadStickyCta" class="bcc-lead-sticky-cta" hidden aria-hidden="true">
-    <a
-      id="ccnaLeadStickyCtaLink"
+    <p class="bcc-lead-sticky-cta__note">One-time $9.99 · closes when you leave this page</p>
+    <button
+      type="button"
+      id="ccnaLeadStickyCtaBtn"
       class="cta-main"
-      href="/CCNA_Sim_EXAM/free-assessment.html?welcome=1"
-      data-ccna-start-free-sim
-      data-bcc-lead-sticky-start
-      >Start free 45-min simulation</a
+      data-ccna-portal-10d-checkout
+      data-bcc-lead-sticky-checkout
+      aria-label="Purchase 10-day CCNA library access for nine ninety-nine"
     >
+      Get 10-day access · $9.99
+    </button>
   </div>
   <div
     id="ccna-portal-gate"
@@ -3463,7 +3479,6 @@
     });
   </script>
   <script src="/js/ccna-free-assessment-storage.js" defer></script>
-  <script src="/js/ccna-lead-capture.js" defer></script>
   <script src="/js/bcc-lead-sticky-cta.js" defer></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 /**
- * Bottom purple sticky free-simulation CTA on ccna-home.html and ccnp-home.html.
- * Mirrors SEC+ secplus-lead-sticky-cta behavior (shows after #purchase scrolls out of view).
+ * Bottom purple sticky $9.99 / 10-day offer on ccna-home.html and ccnp-home.html.
+ * Shows after #purchase scrolls out of view while the one-time offer is still active.
  */
 (function () {
   "use strict";
@@ -9,60 +9,43 @@
     ccna: {
       homeMatch: "ccna-home",
       stickyId: "ccnaLeadStickyCta",
-      linkId: "ccnaLeadStickyCtaLink",
+      btnId: "ccnaLeadStickyCtaBtn",
       observeId: "purchase",
       htmlPadClass: "bcc-ccna-lead-sticky-visible",
       lastChanceVisibleClass: "bcc-ccna-last-chance-visible",
-      freeLabel: "Start free 45-min simulation",
-      consumedLabel: "Get 30-day access",
-      runnerPath: "/CCNA_Sim_EXAM/free-assessment.html?welcome=1",
-      purchaseHash: "#purchase",
-      startMethod: "ccna_free_sim_sticky",
-      startAttr: "data-ccna-start-free-sim",
-      wasConsumed: function () {
+      dismissedKey: "bcc_ccna_10d_one_time_offer_v1",
+      checkoutAttr: "data-ccna-portal-10d-checkout",
+      offerLabel: "Get 10-day access · $9.99",
+      noteText: "One-time $9.99 · closes when you leave this page",
+      hasAccess: function () {
         return (
-          typeof window.ccnaFreeSimWasConsumed === "function" && window.ccnaFreeSimWasConsumed()
+          typeof window.bccPortalAccessActive === "function" && window.bccPortalAccessActive()
         );
-      },
-      startFree: function () {
-        if (typeof window.startCcnaFreeSimulation === "function") {
-          window.startCcnaFreeSimulation({ method: "ccna_free_sim_sticky" });
-        } else {
-          window.location.href = "/CCNA_Sim_EXAM/free-assessment.html?welcome=1";
-        }
       },
     },
     encor: {
       homeMatch: "ccnp-home",
       stickyId: "encorLeadStickyCta",
-      linkId: "encorLeadStickyCtaLink",
+      btnId: "encorLeadStickyCtaBtn",
       observeId: "purchase",
       htmlPadClass: "bcc-encor-lead-sticky-visible",
       lastChanceVisibleClass: "bcc-encor-last-chance-visible",
-      freeLabel: "Start free 45-min simulation",
-      consumedLabel: "Get 30-day access",
-      runnerPath: "/CCNP-ENCOR-Study/test-simulation-runner.html?free=1&welcome=1",
-      purchaseHash: "#purchase",
-      startMethod: "encor_free_sim_sticky",
-      startAttr: "data-encor-start-free-sim",
-      wasConsumed: function () {
+      dismissedKey: "bcc_encor_10d_one_time_offer_v1",
+      checkoutAttr: "data-encor-portal-10d-checkout",
+      offerLabel: "Get 10-day access · $9.99",
+      noteText: "One-time $9.99 · closes when you leave this page",
+      hasAccess: function () {
         return (
-          typeof window.encorFreeSimWasConsumed === "function" && window.encorFreeSimWasConsumed()
+          typeof window.bccEncorPortalAccessActive === "function" &&
+          window.bccEncorPortalAccessActive()
         );
-      },
-      startFree: function () {
-        if (typeof window.startEncorFreeSimulation === "function") {
-          window.startEncorFreeSimulation({ method: "encor_free_sim_sticky" });
-        } else {
-          window.location.href = "/CCNP-ENCOR-Study/test-simulation-runner.html?free=1&welcome=1";
-        }
       },
     },
   };
 
   var cfg = null;
   var sticky = null;
-  var link = null;
+  var btn = null;
   var wired = false;
 
   function detectConfig() {
@@ -70,6 +53,34 @@
     if (path.indexOf(CONFIGS.ccna.homeMatch) >= 0) return CONFIGS.ccna;
     if (path.indexOf(CONFIGS.encor.homeMatch) >= 0) return CONFIGS.encor;
     return null;
+  }
+
+  function wasDismissed() {
+    if (!cfg) return true;
+    try {
+      return localStorage.getItem(cfg.dismissedKey) === "1";
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function markDismissed() {
+    if (typeof window.bccMark10dOneTimeOfferDismissed === "function") {
+      window.bccMark10dOneTimeOfferDismissed();
+    } else if (cfg) {
+      try {
+        localStorage.setItem(cfg.dismissedKey, "1");
+      } catch (_) {}
+    }
+    setStickyVisible(false);
+  }
+
+  function canShowOffer() {
+    if (!cfg || wasDismissed() || cfg.hasAccess()) return false;
+    if (typeof window.bcc10dOneTimeOfferActive === "function") {
+      return window.bcc10dOneTimeOfferActive();
+    }
+    return true;
   }
 
   function offerModalOpen() {
@@ -96,7 +107,7 @@
   }
 
   function canShowSticky() {
-    return !offerModalOpen() && !portalGateOpen() && !lastChanceVisible();
+    return canShowOffer() && !offerModalOpen() && !portalGateOpen() && !lastChanceVisible();
   }
 
   function setStickyVisible(show) {
@@ -104,33 +115,26 @@
     var visible = !!show && canShowSticky();
     sticky.classList.toggle("bcc-lead-sticky-cta--visible", visible);
     document.documentElement.classList.toggle(cfg.htmlPadClass, visible);
-  }
-
-  function configureLink() {
-    if (!link || !cfg) return;
-    if (cfg.wasConsumed()) {
-      link.textContent = cfg.consumedLabel;
-      link.setAttribute("href", cfg.purchaseHash);
-      link.removeAttribute(cfg.startAttr);
-      link.removeAttribute("data-bcc-lead-sticky-start");
-      return;
+    if (!canShowOffer()) {
+      sticky.hidden = true;
+      sticky.setAttribute("aria-hidden", "true");
+      document.documentElement.classList.remove(cfg.htmlPadClass);
     }
-    link.textContent = cfg.freeLabel;
-    link.setAttribute("href", cfg.runnerPath);
-    link.setAttribute(cfg.startAttr, "");
-    link.setAttribute("data-bcc-lead-sticky-start", "");
   }
 
-  function wireLink() {
-    if (!link) return;
-    link.addEventListener("click", function (ev) {
-      if (!link.hasAttribute("data-bcc-lead-sticky-start")) return;
-      ev.preventDefault();
-      cfg.startFree();
+  function wireCheckout() {
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      markDismissed();
     });
   }
 
   function wireObserver() {
+    if (!canShowOffer()) {
+      sticky.hidden = true;
+      sticky.setAttribute("aria-hidden", "true");
+      return;
+    }
     var target = document.getElementById(cfg.observeId);
     if (!sticky || !target) {
       setStickyVisible(true);
@@ -157,13 +161,20 @@
     cfg = detectConfig();
     if (!cfg || wired) return;
     sticky = document.getElementById(cfg.stickyId);
-    link = document.getElementById(cfg.linkId);
-    if (!sticky || !link) return;
+    btn = document.getElementById(cfg.btnId);
+    if (!sticky || !btn) return;
     wired = true;
+    document.addEventListener("bcc-10d-offer-state-change", function () {
+      setStickyVisible(false);
+    });
+    if (!canShowOffer()) {
+      sticky.hidden = true;
+      sticky.setAttribute("aria-hidden", "true");
+      return;
+    }
     sticky.hidden = false;
     sticky.setAttribute("aria-hidden", "false");
-    configureLink();
-    wireLink();
+    wireCheckout();
     wireObserver();
   }
 
