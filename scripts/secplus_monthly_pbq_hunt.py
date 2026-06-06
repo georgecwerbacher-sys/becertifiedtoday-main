@@ -444,7 +444,7 @@ def main() -> int:
         ("collect", "Step 1 — collect PBQ candidates (no BCT)"),
         ("discover", "Alias for collect"),
         ("compare", "Step 2 — compare to BCT PBQ/sim bank"),
-        ("save", "Step 3 — save net-new as Obsidian .md"),
+        ("save", "Step 3 — save net-new as markdown"),
         ("pdf", "Alias for save"),
         ("run", "All three steps"),
     ):

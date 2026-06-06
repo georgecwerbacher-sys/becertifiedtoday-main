@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Lessons learned (post-incident outcomes)</title>
+  <title>Security+ — Server hardening (Least functionality)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/incident-response-recovery-verify-eradication-clean.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/dlp-block-ssn-personal-email-alert.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/incident-response-law-enforcement-preparation-phase.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/host-firewall-implicit-deny-default-deny.html">Next</a>
       </div>
     </nav>
-    <h1>After a major security breach, the IR team conducts a lessons-learned meeting. Which of the following is the MOST important outcome of this meeting?</h1>
+    <h1>A system administrator is hardening a Windows server. Which of the following actions is MOST aligned with the principle of least functionality?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q924" value="A" />A. Assigning blame to the individuals responsible</label>
-    <label class="choice"><input type="radio" name="secplus_q924" value="B" />B. Documenting what worked, what failed, and recommendations for improvement</label>
-    <label class="choice"><input type="radio" name="secplus_q924" value="C" />C. Calculating the total financial loss from the breach</label>
-    <label class="choice"><input type="radio" name="secplus_q924" value="D" />D. Filing a police report about the incident</label>
+    <label class="choice"><input type="radio" name="secplus_q946" value="A" />A. Installing additional monitoring tools for future use</label>
+    <label class="choice"><input type="radio" name="secplus_q946" value="B" />B. Disabling unnecessary services, removing unused software, and closing unused ports</label>
+    <label class="choice"><input type="radio" name="secplus_q946" value="C" />C. Enabling all logging features at maximum verbosity</label>
+    <label class="choice"><input type="radio" name="secplus_q946" value="D" />D. Adding the server to multiple network segments for redundancy</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -176,13 +176,13 @@
   <script>
     (function () {
       var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 The lessons-learned phase captures what worked, what failed, and actionable recommendations so the organization improves detection, response, and prevention before the next incident. Assigning blame discourages honest reporting and is not the purpose of a constructive post-incident review. Calculating financial loss may support business impact analysis but is not the primary outcome of lessons learned. Filing a police report may be required separately and does not replace documenting process improvements.";
+      var CORRECT_MSG = "Correct. B \u2014 Least functionality means a system provides only the capabilities required for its role, so disabling unneeded services, removing unused software, and closing unused ports reduces attack surface. Installing extra tools for possible future use expands functionality beyond current need. Enabling all logging at maximum verbosity increases overhead and data exposure without limiting services or ports. Connecting the server to multiple network segments for redundancy adds connectivity and complexity rather than restricting the server to essential functions.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q924"]:checked');
+        var sel = document.querySelector('input[name="secplus_q946"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -199,7 +199,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q924"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="secplus_q946"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

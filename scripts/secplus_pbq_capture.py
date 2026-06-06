@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Capture Security+ PBQ / drag-and-drop / sim screenshots into the Obsidian vault.
+"""Capture Security+ PBQ / drag-and-drop / sim screenshots into marketing-vault.
 
 For each registered site: try pbq-preview screenshot → landing fallback → link-only entry.
-Writes PNG + meta.json per source and generates captures/YYYY-MM-DD/INDEX.md for Obsidian.
+Writes PNG + meta.json per source and generates captures/YYYY-MM-DD/INDEX.md.
 
 Setup:
   pip install playwright
@@ -198,6 +198,10 @@ def _playwright_shot(target: dict, out_dir: Path, label: str, url: str, full_pag
     return None
 
 
+def _image_markdown(sid: str, filename: str) -> str:
+    return f"![{sid} {filename}]({sid}/{filename})"
+
+
 def capture_one_target(target: dict, run_id: str) -> dict:
     sid = target["id"]
     out_dir = source_dir(run_id, sid)
@@ -205,7 +209,7 @@ def capture_one_target(target: dict, run_id: str) -> dict:
     entry["screenshot_path"] = ""
     entry["landing_screenshot_path"] = ""
     entry["capture_status"] = STATUS_LINK
-    entry["obsidian_embed"] = ""
+    entry["image_markdown"] = ""
 
     if target.get("capture_mode") == "link-only" or (
         not target.get("try_preview") and not target.get("try_landing")
@@ -224,7 +228,7 @@ def capture_one_target(target: dict, run_id: str) -> dict:
         if rel:
             entry["screenshot_path"] = rel
             entry["capture_status"] = STATUS_PBq
-            entry["obsidian_embed"] = f"![[{sid}/pbq-preview.png]]"
+            entry["image_markdown"] = _image_markdown(sid, "pbq-preview.png")
             entry["status_note"] = "PBQ / sim UI screenshot — paraphrase for BCT; verify Tier A"
             write_json(out_dir / "meta.json", entry)
             print(f"  [{STATUS_PBq}] {sid} -> {rel}")
@@ -243,7 +247,7 @@ def capture_one_target(target: dict, run_id: str) -> dict:
             entry["landing_screenshot_path"] = rel
             entry["screenshot_path"] = rel
             entry["capture_status"] = STATUS_LANDING
-            entry["obsidian_embed"] = f"![[{sid}/landing.png]]"
+            entry["image_markdown"] = _image_markdown(sid, "landing.png")
             entry["status_note"] = (
                 "Marketing/landing page only — not PBQ UI. "
                 "Open link for preview or manual pbq-preview register."
@@ -260,7 +264,7 @@ def capture_one_target(target: dict, run_id: str) -> dict:
     return entry
 
 
-def build_obsidian_index(run_id: str, entries: list[dict]) -> Path:
+def build_capture_index(run_id: str, entries: list[dict]) -> Path:
     run_dir = CAPTURES / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
     lines = [
@@ -303,13 +307,14 @@ def build_obsidian_index(run_id: str, entries: list[dict]) -> Path:
             if link:
                 lines.append(f"**Open:** [{link}]({link})")
                 lines.append("")
-            embed = e.get("obsidian_embed")
+            embed = e.get("image_markdown") or e.get("obsidian_embed")
             if embed:
                 lines.append(embed)
                 lines.append("")
             elif e.get("screenshot_path"):
                 rel = Path(e["screenshot_path"]).relative_to(run_dir)
-                lines.append(f"![[{rel.as_posix()}]]")
+                sid = e.get("source_id", rel.parts[0] if rel.parts else "screenshot")
+                lines.append(_image_markdown(sid, rel.name))
                 lines.append("")
             lines.append(f"Folder: `captures/{run_id}/{sid}/`")
             lines.append("")
@@ -350,7 +355,7 @@ def cmd_run(args: argparse.Namespace) -> int:
 
     entries = sorted(entries_by_id.values(), key=lambda x: x.get("source_id", ""))
 
-    index_path = build_obsidian_index(run_id, entries)
+    index_path = build_capture_index(run_id, entries)
     write_json(
         manifest_path,
         {
@@ -362,10 +367,10 @@ def cmd_run(args: argparse.Namespace) -> int:
                 1 for e in entries if e.get("capture_status") in (STATUS_LINK, STATUS_FAILED)
             ),
             "entries": entries,
-            "obsidian_index": str(index_path.relative_to(ROOT)),
+            "capture_index": str(index_path.relative_to(ROOT)),
         },
     )
-    print(f"[capture] Obsidian index -> {index_path.relative_to(ROOT)}")
+    print(f"[capture] index -> {index_path.relative_to(ROOT)}")
     print(f"[capture] manifest -> {manifest_path.relative_to(ROOT)}")
     return 0
 
@@ -409,7 +414,7 @@ def cmd_register(args: argparse.Namespace) -> int:
     )
     entry["screenshot_path"] = rel
     entry["capture_status"] = STATUS_PBq
-    entry["obsidian_embed"] = f"![[{args.source_id}/{label}.png]]"
+    entry["image_markdown"] = _image_markdown(args.source_id, f"{label}.png")
     entry["status_note"] = "Manual pbq-preview register"
     entry["manual_drop"] = True
     write_json(out_dir / "meta.json", entry)
@@ -420,13 +425,13 @@ def cmd_register(args: argparse.Namespace) -> int:
     if manifest_path.is_file():
         entries = json.loads(manifest_path.read_text(encoding="utf-8")).get("entries", [])
     entries = [e for e in entries if e.get("source_id") != args.source_id] + [entry]
-    build_obsidian_index(run_id, entries)
+    build_capture_index(run_id, entries)
     write_json(manifest_path, {"run_id": run_id, "entries": entries})
     return 0
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Security+ PBQ screenshot vault for Obsidian")
+    parser = argparse.ArgumentParser(description="Security+ PBQ screenshot capture for marketing-vault")
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     p_run = sub.add_parser("run", help="Capture all targets → PNG or link + INDEX.md")

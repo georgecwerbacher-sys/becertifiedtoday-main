@@ -230,9 +230,84 @@ Free 45-min timed sample on same page. Try before you buy the full sim.
 
 ---
 
-## Ad group 3 — `ccna_portal_access`
+## Ad group 3 — `ccna_portal_10d` (10-day $9.99 primary CTA)
 
-**Intent:** Multi-day library access (10-day $9.99 · 30-day $19.99) — timed sim included.
+**Intent:** Multi-day library access — **10-day $9.99** as the only primary checkout CTA on the landing page.
+
+**Live config:** `scripts/ccna-portal-10d-google-ads.md` (standalone — not in Obsidian vault)
+
+**Final URL:**
+
+```
+https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=portal-10d
+```
+
+**Display path:** `CCNA` / `10-Day-Access`
+
+**RSA — Headlines** (canonical list: `scripts/ccna-portal-10d-google-ads.md` — 15 unique, page-keyword aligned)
+
+```
+CCNA 200-301 Practice Test
+CCNA 200-301 Exam Prep
+$9.99 for 10-Day Access
+CCNA Practice Questions
+Cisco CCNA Practice Test
+CCNA Question Bank Online
+Practice Tests & Simulation
+700+ Questions · v1.1 2026
+Drag-Drop + CLI Lab Prep
+Browser CCNA Exam Prep
+Timed CCNA Simulation
+Latest 200-301 Questions
+No PDFs — Interactive Prep
+10-Day Full Library Access
+Be Certified Today
+```
+
+**RSA — Descriptions** (≤90 chars)
+
+```
+CCNA 200-301 practice test bank: 700+ questions, v1.1 aligned. Labs & D&D included.
+$9.99 for 10-day access. Cisco CCNA exam prep—not a course. No PDFs or GNS3.
+CCNA practice questions with verified explanations. Timed simulation + portal modes.
+Try free CCNA samples first. Unlock 10-day question bank access at checkout.
+```
+
+**Pin suggestion:** H1 → `CCNA 200-301 Practice Test` · H2 → `$9.99 for 10-Day Access` · H3 → `CCNA 200-301 Exam Prep`
+
+### Keywords — `ccna_portal_10d`
+
+```
+"ccna exam prep online"
+"ccna practice test online"
+"ccna 200-301 prep"
+"ccna question bank"
+[ccna question bank]
+"ccna 200-301 question bank"
+[ccna 200-301 question bank]
+"cisco ccna practice portal"
+"ccna study prep online"
+```
+
+**Ad group negatives (Phrase):**
+
+```
+"free"
+"bootcamp"
+"course"
+"dump"
+"pdf"
+"jobs"
+"netacad"
+```
+
+**Primary conversion:** `begin_checkout` (`ccna_portal_10d`)
+
+---
+
+## Ad group 3b — `ccna_portal_access` (optional — dual-tier)
+
+**Paused by default.** Use only if testing 10-day + 30-day side-by-side on `#purchase` without `portal-10d` UTM.
 
 **Final URL:**
 
@@ -249,43 +324,11 @@ CCNA Full Question Bank
 10-Day CCNA Access
 30-Day CCNA Access
 Portal + Timed Sim Included
-CCNA Exam Prep Portal
-All Six CCNA Domains
-D&D & CLI Lab Practice
-No Subscription — One-Time
 $9.99 / 10 Days · From
 $19.99 / 30 Days · From
+No Subscription — One-Time
 Browser-Only Exam Prep
-Verified 200-301 Explanations
-Exam Prep — Not a Course
 Be Certified Today
-Free Assessment on Same Page
-```
-
-**RSA — Descriptions** (≤90 chars)
-
-```
-Full CCNA library: banks, D&D, CLI labs, portal modes, timed sim in browser.
-10-day ($9.99) or 30-day ($19.99). One-time purchase—no recurring membership.
-Exam prep aligned to Cisco objectives—not PDF dumps or instructor-led courses.
-120-min timed sim included with portal. Try free 45-min sample before checkout.
-```
-
-**Pin suggestion:** H1 → `CCNA Full Question Bank` · H2 → `Portal + Timed Sim Included`
-
-### Keywords — `ccna_portal_access`
-
-```
-"ccna study guide practice"
-"ccna 200-301 study prep online"
-"ccna question bank"
-"ccna 200-301 question bank"
-"cisco ccna practice portal"
-"ccna practice test online"
-"ccna 200-301 online practice"
-"ccna exam prep online"
-"ccna 30 day study"
-"ccna cram practice"
 ```
 
 **Primary conversion:** `begin_checkout` (`ccna_portal_10d` or `ccna_portal_30d`)
@@ -479,42 +522,42 @@ Paste each row into **Add products or services**. Names ≤120 chars; descriptio
 
 | # | Product / service name | Landing URL |
 |---|------------------------|-------------|
-| 1 | Free CCNA 200-301 Timed Simulation Sample | `https://becertifiedtoday.com/ccna-home.html#ccna-lead-capture` |
-| 2 | CCNA 200-301 120-Minute Timed Exam Simulation | `https://becertifiedtoday.com/ccna-home.html#purchase` |
-| 3 | CCNA 200-301 10-Day All-Access Practice Portal | `https://becertifiedtoday.com/ccna-home.html#purchase` |
-| 4 | CCNA 200-301 30-Day All-Access Practice Portal | `https://becertifiedtoday.com/ccna-home.html#purchase` |
-| 5 | Free CCNA 200-301 Sample Practice Questions | `https://becertifiedtoday.com/sample?track=ccna-questions` |
+| 1 | CCNA 200-301 10-Day All-Access Practice Portal | `https://becertifiedtoday.com/ccna-home.html#purchase` |
+| 2 | CCNA 200-301 30-Day All-Access Practice Portal | `https://becertifiedtoday.com/ccna-home.html#purchase` |
+| 3 | Free CCNA 200-301 Sample Practice Questions | `https://becertifiedtoday.com/sample?track=ccna-questions` |
+| 4 | Free CCNA 200-301 Sample Drag-and-Drop Practice | `https://becertifiedtoday.com/sample?track=ccna-dnd` |
+| 5 | Free CCNA 200-301 Sample VLAN CLI Lab | `https://becertifiedtoday.com/sample?track=ccna-vlan` |
 
-### Descriptions (copy under each name)
+### Descriptions (copy under each name — aligned to `ccna-home.html`)
 
-**1 — Free timed simulation sample**
-
-```
-Free 45-minute CCNA 200-301 exam prep sample in your browser: 20 multiple-choice questions (drawn across domains), 2 drag-and-drop items, and one VLAN CLI lab simulation. Includes a domain and objective scorecard when you finish. Email unlock; one free attempt per browser. Not a training course.
-```
-
-**2 — 120-minute timed exam simulation ($9.99)**
-
-```
-One full CCNA 200-301 timed practice exam: 120 minutes with 50 multiple-choice, drag-and-drop, and CLI lab items in one shuffled session. Ends with a study scorecard by CCNA domain. $9.99 one attempt; no subscription. Browser-only exam prep—no GNS3 required.
-```
-
-**3 — 10-day all-access portal ($9.99)**
+**1 — 10-day all-access portal ($9.99)**
 
 ```
 10 days of full Cisco CCNA 200-301 exam prep in your browser: domain question banks, drag-and-drop items, CLI labs, portal study modes, and the 120-minute timed exam simulation. Verified explanations aligned to objectives. $9.99 one-time; no recurring membership.
 ```
 
-**4 — 30-day all-access portal ($19.99)**
+**2 — 30-day all-access portal ($19.99)**
 
 ```
 30 days of full CCNA 200-301 exam preparation: question banks, drag-and-drop and CLI lab items, review modes, progress tracking, and the 120-minute timed simulation. Browser-only—no PDFs or GNS3. $19.99 one-time access; no subscription.
 ```
 
-**5 — Free sample practice questions**
+**3 — Free sample practice questions**
 
 ```
-Try two shuffled CCNA 200-301 multiple-choice practice questions per run—with instant feedback and verified explanations. No checkout required. Optional drag-and-drop and VLAN lab sample tracks on the same page. Interactive browser exam prep, not PDF dumps.
+Try shuffled CCNA 200-301 multiple-choice practice questions—with instant feedback and verified explanations. No checkout required. Interactive browser exam prep, not PDF dumps.
+```
+
+**4 — Free sample drag-and-drop**
+
+```
+Four performance-style CCNA drag-and-drop items in your browser, shuffled each run. Touch-friendly on phone and tablet. No checkout. Exam prep aligned to 200-301 objectives.
+```
+
+**5 — Free sample VLAN CLI lab**
+
+```
+Dual-switch VLAN CLI simulation in your browser: create VLANs, assign ports, and save. No GNS3 or Packet Tracer install. Free preview on ccna-home.html.
 ```
 
 ### If Google asks for a single category
@@ -523,11 +566,11 @@ Use: **Education & training → Test preparation** or **Educational software / O
 
 ### Priority order when the UI limits how many you can add
 
-1. Free timed simulation sample (lead magnet)  
-2. 120-minute timed exam simulation  
-3. 30-day all-access portal  
-4. 10-day all-access portal  
-5. Free sample questions  
+1. 10-day all-access portal (`ccna_portal_10d` primary)  
+2. 30-day all-access portal  
+3. Free sample practice questions  
+4. Free sample drag-and-drop  
+5. Free sample VLAN CLI lab  
 
 ---
 
@@ -543,7 +586,7 @@ Use: **Education & training → Test preparation** or **Educational software / O
 
 ## Launch checklist
 
-- [ ] **Enabled:** `ccna_lead_free_sim`, `ccna_sim_purchase` · **Paused:** `ccna_portal_access`, `ccna_labs_pbq`, `ccna_federal_dc` (and geo copies)
+- [ ] **Enabled:** `ccna_portal_10d` (or `ccna_lead_free_sim` + `ccna_sim_purchase` per launch plan) · **Paused:** `ccna_portal_access`, `ccna_labs_pbq`, `ccna_federal_dc` (and geo copies)
 - [ ] All RSA descriptions ≤90 characters; 6 sitelinks with URLs + 2 short descriptions each
 - [ ] Final URLs match table above (hash + UTMs)
 - [ ] Campaign negatives pasted

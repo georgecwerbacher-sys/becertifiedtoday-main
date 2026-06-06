@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Lessons learned (post-incident outcomes)</title>
+  <title>Security+ — APT response (Delayed containment)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/incident-response-recovery-verify-eradication-clean.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/incident-response-identification-scope-lateral-movement.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/incident-response-law-enforcement-preparation-phase.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/critical-incident-customer-data-notify-ir-legal-first.html">Next</a>
       </div>
     </nav>
-    <h1>After a major security breach, the IR team conducts a lessons-learned meeting. Which of the following is the MOST important outcome of this meeting?</h1>
+    <h1>An IR team is responding to an advanced persistent threat (APT) that has been present in the network for several months. During containment, why might the team choose a delayed containment strategy instead of immediate isolation?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q924" value="A" />A. Assigning blame to the individuals responsible</label>
-    <label class="choice"><input type="radio" name="secplus_q924" value="B" />B. Documenting what worked, what failed, and recommendations for improvement</label>
-    <label class="choice"><input type="radio" name="secplus_q924" value="C" />C. Calculating the total financial loss from the breach</label>
-    <label class="choice"><input type="radio" name="secplus_q924" value="D" />D. Filing a police report about the incident</label>
+    <label class="choice"><input type="radio" name="secplus_q927" value="A" />A. To save money on incident response costs</label>
+    <label class="choice"><input type="radio" name="secplus_q927" value="B" />B. To monitor the attacker's actions and gather intelligence before alerting them</label>
+    <label class="choice"><input type="radio" name="secplus_q927" value="C" />C. Because immediate containment is not possible with APTs</label>
+    <label class="choice"><input type="radio" name="secplus_q927" value="D" />D. To allow the attacker to finish their objectives</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -176,13 +176,13 @@
   <script>
     (function () {
       var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 The lessons-learned phase captures what worked, what failed, and actionable recommendations so the organization improves detection, response, and prevention before the next incident. Assigning blame discourages honest reporting and is not the purpose of a constructive post-incident review. Calculating financial loss may support business impact analysis but is not the primary outcome of lessons learned. Filing a police report may be required separately and does not replace documenting process improvements.";
+      var CORRECT_MSG = "Correct. B \u2014 With long-dwell APT activity, immediate isolation can alert the attacker, causing them to change tactics, destroy evidence, or activate dormant access before the full scope is understood. A delayed containment strategy monitors attacker activity under controlled conditions to gather intelligence, map compromised systems, and collect forensic evidence before cutting access. Cost reduction is not the primary driver of containment timing decisions. Immediate containment is possible with APTs when rapid stop is required; delay is a deliberate investigative choice, not a technical limitation. Allowing the attacker to complete objectives would increase harm and is never an acceptable containment goal.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q924"]:checked');
+        var sel = document.querySelector('input[name="secplus_q927"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -199,7 +199,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q924"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="secplus_q927"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

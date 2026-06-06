@@ -102,10 +102,19 @@
     } catch (_) {}
   }
 
+  function isPortal10dAdLanding() {
+    if (document.documentElement.classList.contains("ccna-landing-portal-10d")) return true;
+    if (typeof window.bccIsCcnaPortal10dLanding === "function" && window.bccIsCcnaPortal10dLanding()) {
+      return true;
+    }
+    return false;
+  }
+
   function canOffer() {
     if (!cfg || wasDismissed()) return false;
     if (cfg.hasAccess()) return false;
     if (portalGateOpen()) return false;
+    if (cfg.homeMatch === "ccna-home" && isPortal10dAdLanding()) return false;
     return true;
   }
 

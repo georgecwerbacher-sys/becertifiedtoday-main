@@ -72,7 +72,13 @@ Pinned headline variants map to `utm_content=hl-*` → `ccna-home-conversion.js`
 https://becertifiedtoday.com/CCNA_Sim_EXAM/free-assessment.html?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=free-simulation
 ```
 
-**Purchase intent (sim / portal ad groups):**
+**Purchase intent — 10-day portal (`ccna_portal_10d`):**
+
+```
+https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=portal-10d
+```
+
+**Purchase intent — timed sim:**
 
 ```
 https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sim-purchase
@@ -92,9 +98,10 @@ https://becertifiedtoday.com/ccna-home.html#exam-audience?utm_source=google&utm_
 
 | Ad group | Final URL / anchor | Intent | Start spend? |
 |----------|-------------------|--------|:------------:|
-| `ccna_lead_free_sim` | `#ccna-lead-capture` + `lead-free-sim` | Practice test, mock exam, free CCNA | **Yes** — primary launch |
-| `ccna_sim_purchase` | `#purchase` | Timed simulation, exam sim | Yes — tight keywords |
-| `ccna_portal_access` | `#purchase` | Multi-day study access | After baseline data |
+| `ccna_lead_free_sim` | `#ccna-lead-capture` + `lead-free-sim` | Practice test, mock exam, free CCNA | Optional — lead funnel |
+| `ccna_sim_purchase` | `#purchase` + `sim-purchase` | Timed simulation, exam sim | Optional — tight keywords |
+| `ccna_portal_10d` | `#purchase` + `portal-10d` | **10-day $9.99** portal access | **Yes** — primary paid CTA · config: `scripts/ccna-portal-10d-google-ads.md` |
+| `ccna_portal_access` | `#purchase` + `portal-access` | Dual-tier 10d/30d (legacy) | Paused — use `ccna_portal_10d` |
 | `ccna_labs_pbq` | Home (samples section) | Drag-and-drop, CLI lab practice | Optional mid-funnel |
 | `ccna_federal_*` | Home or `#exam-audience` | DoD / 8140 / contractor | Optional geo campaigns |
 
@@ -235,6 +242,7 @@ Before major ad spend increases, run the optimization workflow in [[../../06-web
 
 | Date | Change | Rationale |
 |------|--------|-----------|
+| 2026-06-06 | New ad group **`ccna_portal_10d`** — `portal-10d` UTM, site purchase fold = single $9.99 / 10-day CTA | Message match for paid portal intent; reduce choice paralysis vs dual-tier |
 | 2026-05-31 | Vault sync: Security+ playbook structure — ad groups, funnel, export, tracking checklist | Align active CCNA ads with proven Security+ campaign workflow |
 | 2026-05-30 | Active campaign doc; landing = `ccna-home.html` | User running CCNA ads; align with ENCOR/Security+ playbook |
 | 2026-05-30 | Removed training portal as ad final URL | Message match + conversion path |

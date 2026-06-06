@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Lessons learned (post-incident outcomes)</title>
+  <title>Security+ — Forensics (Volatile data first)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/incident-response-recovery-verify-eradication-clean.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/simulation-exercise-isolated-lab-ir-testing.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/incident-response-law-enforcement-preparation-phase.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/forensics-order-of-volatility-most-to-least.html">Next</a>
       </div>
     </nav>
-    <h1>After a major security breach, the IR team conducts a lessons-learned meeting. Which of the following is the MOST important outcome of this meeting?</h1>
+    <h1>A forensic investigator arrives at a scene where a computer suspected of containing evidence is still powered on. What should the investigator do FIRST?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q924" value="A" />A. Assigning blame to the individuals responsible</label>
-    <label class="choice"><input type="radio" name="secplus_q924" value="B" />B. Documenting what worked, what failed, and recommendations for improvement</label>
-    <label class="choice"><input type="radio" name="secplus_q924" value="C" />C. Calculating the total financial loss from the breach</label>
-    <label class="choice"><input type="radio" name="secplus_q924" value="D" />D. Filing a police report about the incident</label>
+    <label class="choice"><input type="radio" name="secplus_q931" value="A" />A. Immediately unplug the computer to preserve the hard drive</label>
+    <label class="choice"><input type="radio" name="secplus_q931" value="B" />B. Capture volatile data (RAM contents) before powering down</label>
+    <label class="choice"><input type="radio" name="secplus_q931" value="C" />C. Log into the system and browse files for evidence</label>
+    <label class="choice"><input type="radio" name="secplus_q931" value="D" />D. Reboot the computer into safe mode</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -176,13 +176,13 @@
   <script>
     (function () {
       var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 The lessons-learned phase captures what worked, what failed, and actionable recommendations so the organization improves detection, response, and prevention before the next incident. Assigning blame discourages honest reporting and is not the purpose of a constructive post-incident review. Calculating financial loss may support business impact analysis but is not the primary outcome of lessons learned. Filing a police report may be required separately and does not replace documenting process improvements.";
+      var CORRECT_MSG = "Correct. B \u2014 When a system is still running, the investigator should capture volatile data such as RAM contents, active processes, and network connections before shutdown because this evidence is lost when power is removed. Order of volatility prioritizes the most ephemeral sources first. Immediately unplugging the computer destroys volatile evidence and can alter disk state. Logging in and browsing files changes timestamps, access logs, and running processes, contaminating the scene. Rebooting or entering safe mode overwrites RAM and alters system state before volatile collection is complete.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q924"]:checked');
+        var sel = document.querySelector('input[name="secplus_q931"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -199,7 +199,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q924"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="secplus_q931"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

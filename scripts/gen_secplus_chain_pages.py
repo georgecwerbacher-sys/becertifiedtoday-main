@@ -24269,6 +24269,644 @@ CHAIN: list[dict] = [
         ],
         "objectives": ["4.8", "5.1"],
     },
+    {
+        "slug": "incident-response-law-enforcement-preparation-phase",
+        "title": "Security+ — IR lifecycle (Law enforcement decision)",
+        "stem": (
+            "A company experiences a data breach and must decide whether to involve law enforcement. During which phase "
+            "of incident response should this decision be made?"
+        ),
+        "name": "secplus_q925",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Criteria for contacting law enforcement—including thresholds, roles, and escalation paths—"
+            "should be defined during preparation and documented in the incident response plan before an incident occurs. "
+            "During an active breach the team executes that plan, but the decision framework is established upfront. "
+            "Containment limits spread of the incident and does not define legal notification policy. Eradication removes "
+            "malicious artifacts from affected systems. Lessons learned reviews response effectiveness after the incident "
+            "is resolved, not when to first establish law enforcement involvement criteria."
+        ),
+        "choices": [
+            "Preparation (pre-established in the IR plan)",
+            "Containment",
+            "Eradication",
+            "Lessons learned",
+        ],
+        "objectives": ["4.8", "5.1"],
+    },
+    {
+        "slug": "incident-response-identification-scope-lateral-movement",
+        "title": "Security+ — IR lifecycle (Scope and lateral movement)",
+        "stem": (
+            "During a security incident, the IR team needs to determine the scope of the compromise. They discover "
+            "that the attacker used lateral movement to access additional systems after the initial breach. Which "
+            "incident response phase are they currently in?"
+        ),
+        "name": "secplus_q926",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Identification (detection and analysis) investigates what happened, which systems and accounts "
+            "are affected, and how far the attacker moved—including lateral movement after the initial breach. Preparation "
+            "builds plans, tools, and training before an incident occurs. Containment limits further spread once scope is "
+            "understood enough to act, but mapping compromise breadth is identification work. Eradication removes malware "
+            "and persistence from affected systems after containment, not while scope is still being determined."
+        ),
+        "choices": [
+            "Preparation",
+            "Identification",
+            "Containment",
+            "Eradication",
+        ],
+        "objectives": ["4.8", "5.1"],
+    },
+    {
+        "slug": "apt-delayed-containment-monitor-intelligence",
+        "title": "Security+ — APT response (Delayed containment)",
+        "stem": (
+            "An IR team is responding to an advanced persistent threat (APT) that has been present in the network for "
+            "several months. During containment, why might the team choose a delayed containment strategy instead of "
+            "immediate isolation?"
+        ),
+        "name": "secplus_q927",
+        "correct": "B",
+        "explain": (
+            "Correct. B — With long-dwell APT activity, immediate isolation can alert the attacker, causing them to "
+            "change tactics, destroy evidence, or activate dormant access before the full scope is understood. A delayed "
+            "containment strategy monitors attacker activity under controlled conditions to gather intelligence, map "
+            "compromised systems, and collect forensic evidence before cutting access. Cost reduction is not the primary "
+            "driver of containment timing decisions. Immediate containment is possible with APTs when rapid stop is "
+            "required; delay is a deliberate investigative choice, not a technical limitation. Allowing the attacker "
+            "to complete objectives would increase harm and is never an acceptable containment goal."
+        ),
+        "choices": [
+            "To save money on incident response costs",
+            "To monitor the attacker's actions and gather intelligence before alerting them",
+            "Because immediate containment is not possible with APTs",
+            "To allow the attacker to finish their objectives",
+        ],
+        "objectives": ["4.8", "5.1"],
+    },
+    {
+        "slug": "critical-incident-customer-data-notify-ir-legal-first",
+        "title": "Security+ — Critical incident (First notification)",
+        "stem": (
+            "An organization's IR plan specifies different communication channels for different incident severity "
+            "levels. For a critical incident affecting customer data, who should be notified FIRST according to best "
+            "practices?"
+        ),
+        "name": "secplus_q928",
+        "correct": "C",
+        "explain": (
+            "Correct. C — For a critical customer-data incident, the first notifications go to internal points of "
+            "contact who can activate response and assess legal obligations: the incident response team lead to "
+            "coordinate containment and investigation, and legal counsel to advise on breach notification requirements, "
+            "regulatory timelines, and privileged communications. Media outreach follows a controlled, approved "
+            "message after facts are verified and is not the first step. Notifying all employees before leadership and "
+            "legal review can spread unverified details and increase leak risk. Customer notification is required when "
+            "applicable law or policy demands it, but it comes after internal assessment and legal guidance—not as the "
+            "very first contact."
+        ),
+        "choices": [
+            "The media/press team",
+            "All company employees",
+            "The incident response team lead and legal counsel",
+            "The affected customers",
+        ],
+        "objectives": ["4.8", "5.1"],
+    },
+    {
+        "slug": "tabletop-exercise-ir-plan-shutdown-authority",
+        "title": "Security+ — Tabletop exercise (Shutdown decision authority)",
+        "stem": (
+            "During a simulated incident in a tabletop exercise, a participant asks who has the authority to decide "
+            "whether to shut down a production server during an active attack. This decision authority should be "
+            "defined in which document?"
+        ),
+        "name": "secplus_q929",
+        "correct": "C",
+        "explain": (
+            "Correct. C — The incident response plan defines roles, responsibilities, escalation paths, and who may "
+            "authorize disruptive containment actions such as taking a production server offline during an active attack. "
+            "Tabletop exercises validate that these authorities are understood before a real incident. An acceptable use "
+            "policy governs how employees may use organizational resources, not emergency shutdown authority during "
+            "attacks. A business continuity plan focuses on maintaining or restoring operations after disruption, not "
+            "tactical decision authority during live incident containment. A service level agreement sets performance "
+            "and availability commitments between a provider and customer, not internal IR command structure."
+        ),
+        "choices": [
+            "Acceptable use policy",
+            "Business continuity plan",
+            "Incident response plan",
+            "Service level agreement",
+        ],
+        "objectives": ["4.8", "5.1", "5.5"],
+    },
+    {
+        "slug": "simulation-exercise-isolated-lab-ir-testing",
+        "title": "Security+ — IR exercise (Simulation in lab)",
+        "stem": (
+            "An organization wants to test its incident response capabilities more rigorously than a tabletop exercise "
+            "but without affecting production systems. Which exercise type should they conduct?"
+        ),
+        "name": "secplus_q930",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A simulation exercise in an isolated lab environment lets the IR team perform hands-on "
+            "response steps—detection, containment, and coordination—at a higher fidelity than a discussion-only "
+            "tabletop while keeping production systems out of scope. A full-scale live exercise on production systems "
+            "directly conflicts with the requirement to avoid production impact. A vulnerability scan identifies "
+            "weaknesses but does not exercise incident response roles, communications, or decision-making. Annual "
+            "security awareness training educates users about threats and reporting but is not a structured IR "
+            "capability test."
+        ),
+        "choices": [
+            "Full-scale live exercise on production systems",
+            "Simulation exercise in an isolated lab environment",
+            "Vulnerability scan of all systems",
+            "Annual security awareness training",
+        ],
+        "objectives": ["4.8", "5.5"],
+    },
+    {
+        "slug": "forensics-powered-on-capture-volatile-ram-first",
+        "title": "Security+ — Forensics (Volatile data first)",
+        "stem": (
+            "A forensic investigator arrives at a scene where a computer suspected of containing evidence is still "
+            "powered on. What should the investigator do FIRST?"
+        ),
+        "name": "secplus_q931",
+        "correct": "B",
+        "explain": (
+            "Correct. B — When a system is still running, the investigator should capture volatile data such as RAM "
+            "contents, active processes, and network connections before shutdown because this evidence is lost when "
+            "power is removed. Order of volatility prioritizes the most ephemeral sources first. Immediately unplugging "
+            "the computer destroys volatile evidence and can alter disk state. Logging in and browsing files changes "
+            "timestamps, access logs, and running processes, contaminating the scene. Rebooting or entering safe mode "
+            "overwrites RAM and alters system state before volatile collection is complete."
+        ),
+        "choices": [
+            "Immediately unplug the computer to preserve the hard drive",
+            "Capture volatile data (RAM contents) before powering down",
+            "Log into the system and browse files for evidence",
+            "Reboot the computer into safe mode",
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "forensics-order-of-volatility-most-to-least",
+        "title": "Security+ — Order of volatility (Most to least)",
+        "stem": (
+            "Which of the following correctly lists data types from MOST volatile to LEAST volatile according to the "
+            "order of volatility?"
+        ),
+        "name": "secplus_q932",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Order of volatility ranks evidence from most ephemeral to most persistent: CPU registers "
+            "and cache are lost immediately when power stops; RAM is lost at shutdown or reboot; temporary files and "
+            "swap may persist briefly on disk but change quickly; hard drive data remains until overwritten. Listing "
+            "hard drive before RAM reverses the priority for live-system collection. Placing RAM before CPU registers "
+            "ignores that register and cache contents are even more transient. Starting with backup tapes lists the "
+            "least volatile sources first, which is the opposite of forensic collection priority."
+        ),
+        "choices": [
+            "Hard drive → RAM → CPU cache → network connections",
+            "CPU registers → RAM → temporary files → hard drive",
+            "RAM → hard drive → CPU registers → backup tapes",
+            "Backup tapes → hard drive → RAM → CPU registers",
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "forensics-write-blocker-bit-for-bit-imaging",
+        "title": "Security+ — Forensics (Write blocker for imaging)",
+        "stem": (
+            "A forensic analyst needs to create an exact bit-for-bit copy of a suspect's hard drive. Which tool should "
+            "be used to prevent any writes to the original evidence drive during the imaging process?"
+        ),
+        "name": "secplus_q933",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A hardware or software write blocker allows read access for forensic imaging while blocking "
+            "write commands to the original evidence drive, preserving bit-for-bit integrity and admissibility. A disk "
+            "defragmenter reorganizes files and modifies the source drive, destroying forensic integrity. A file "
+            "compression utility reduces storage size but does not protect the original media from alteration during "
+            "acquisition. A disk encryption tool protects confidentiality of data at rest but does not prevent writes "
+            "to the evidence drive while creating a forensic image."
+        ),
+        "choices": [
+            "Disk defragmenter",
+            "Write blocker",
+            "File compression utility",
+            "Disk encryption tool",
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "forensics-image-hash-verify-exact-copy",
+        "title": "Security+ — Forensics (Image hash verification)",
+        "stem": (
+            "After creating a forensic disk image, the analyst generates an MD5 and SHA-256 hash of both the original "
+            "drive and the image. Why are these hashes important?"
+        ),
+        "name": "secplus_q934",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Matching cryptographic hashes on the original evidence and the forensic image prove the copy "
+            "is bit-for-bit identical and has not been altered during acquisition or storage, supporting integrity and "
+            "chain of custody. Hashing does not encrypt evidence; encryption is a separate confidentiality control. "
+            "Hashes do not compress data or reduce storage requirements. File-type identification uses content "
+            "analysis or metadata inspection, not hash comparison between source and image."
+        ),
+        "choices": [
+            "They encrypt the evidence to prevent unauthorized access",
+            "They verify that the image is an exact, unmodified copy of the original",
+            "They compress the image to save storage space",
+            "They identify the file types stored on the drive",
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "forensics-chain-of-custody-handler-log",
+        "title": "Security+ — Forensics (Chain of custody documentation)",
+        "stem": (
+            "A digital forensics investigator is documenting the chain of custody for a seized laptop. Which information "
+            "is MOST critical to record?"
+        ),
+        "name": "secplus_q935",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Chain of custody requires a continuous record of every person who possessed the evidence, "
+            "when each transfer occurred, and what actions were taken so the court can trust that the evidence was not "
+            "altered, replaced, or mishandled. Brand and model may support identification but do not prove integrity of "
+            "handling. Retail price is irrelevant to admissibility and forensic integrity. The installed operating "
+            "system may matter to analysis but is secondary to documenting who handled the device and when."
+        ),
+        "choices": [
+            "The brand and model of the laptop only",
+            "Every person who handled the evidence, when, and what actions they took",
+            "The retail price of the laptop",
+            "The operating system installed on the laptop",
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "forensics-analyze-log-copy-preserve-timestamps",
+        "title": "Security+ — Forensics (Log analysis without altering timestamps)",
+        "stem": (
+            "During a forensic investigation of a compromised web server, the analyst needs to examine log files without "
+            "modifying their timestamps. Which technique should be used?"
+        ),
+        "name": "secplus_q936",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Forensic best practice is to acquire evidence with write protection, create a verified copy or "
+            "image, and perform analysis on the duplicate in a controlled forensic workstation so the original logs and "
+            "timestamps remain unchanged. Opening logs directly on the live server with a text editor updates access "
+            "times and risks accidental modification. Drag-and-drop copying can alter metadata and lacks documented "
+            "chain of custody. Emailing logs to a personal computer introduces uncontrolled copies, potential data "
+            "loss, and improper evidence handling."
+        ),
+        "choices": [
+            "Open the logs directly on the live server using a text editor",
+            "Create a forensic image and analyze the copy in a forensic workstation",
+            "Copy the files using drag-and-drop to a USB drive",
+            "Email the log files to the analyst's personal computer",
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "forensics-dd-command-create-image-linux",
+        "title": "Security+ — Forensics (dd imaging command)",
+        "stem": (
+            "A forensic investigator needs to image a drive from a system suspected of being involved in corporate "
+            "espionage. The investigator uses the dd command on Linux. Which of the following commands correctly "
+            "creates a forensic image?"
+        ),
+        "name": "secplus_q937",
+        "correct": "A",
+        "explain": (
+            "Correct. A — dd if=/dev/sda reads from the evidence device (input file) and dd of=/forensics/image.dd "
+            "writes the bit-for-bit copy to the destination image file; bs=4096 sets the block size for efficient "
+            "transfer. Reversing if and of would write data onto the evidence drive and destroy original evidence. cp "
+            "is not the standard block-level forensic acquisition method and may not capture unallocated space the same "
+            "way. fdisk manages partition tables and does not provide a --clone option for forensic disk imaging."
+        ),
+        "choices": [
+            "dd if=/dev/sda of=/forensics/image.dd bs=4096",
+            "dd if=/forensics/image.dd of=/dev/sda bs=4096",
+            "cp /dev/sda /forensics/image.dd",
+            "fdisk /dev/sda --clone /forensics/image.dd",
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "forensics-tamper-evident-storage-preservation",
+        "title": "Security+ — Forensics (Tamper-evident evidence storage)",
+        "stem": (
+            "An organization has a policy requiring that digital evidence must be stored in a tamper-evident container "
+            "in a locked room with restricted access. This requirement is part of which forensic concept?"
+        ),
+        "name": "secplus_q938",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Tamper-evident bags, locked storage, and restricted access are physical controls that preserve "
+            "evidence integrity and support chain of custody by showing whether evidence was accessed or altered between "
+            "collection and analysis. Data recovery restores lost or damaged data after failure and is not the concept "
+            "governing secure evidence storage. Vulnerability scanning identifies weaknesses in systems and does not "
+            "define how collected evidence is protected. Penetration testing evaluates security controls through "
+            "authorized simulated attacks, not long-term evidence handling."
+        ),
+        "choices": [
+            "Data recovery",
+            "Evidence preservation and chain of custody",
+            "Vulnerability scanning",
+            "Penetration testing",
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "forensics-anti-forensics-free-space-wipe-evidence",
+        "title": "Security+ — Forensics (Anti-forensics free-space wipe)",
+        "stem": (
+            "A forensic analyst discovers that an attacker used anti-forensics techniques to wipe free space on a "
+            "compromised server. Which of the following evidence types would STILL be available despite the wiping?"
+        ),
+        "name": "secplus_q939",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Free-space wiping overwrites unallocated clusters to destroy recoverable remnants of deleted "
+            "data, but it does not remove allocated files that remain on the system. Active log files that were never "
+            "deleted are still present and can be collected for investigation. Deleted files in unallocated disk space "
+            "are precisely what free-space wiping targets and are unlikely to remain recoverable. File fragments in swap "
+            "space may be overwritten or cleared depending on the anti-forensics method and are not guaranteed to "
+            "survive. Recycle bin contents and their recoverable remnants in free space are also affected by wiping "
+            "unallocated areas."
+        ),
+        "choices": [
+            "Deleted files in unallocated disk space",
+            "Active log files that were not deleted",
+            "File fragments in the swap space",
+            "Files in the recycle bin",
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "forensics-insider-threat-legal-authorization-first",
+        "title": "Security+ — Forensics (Legal authorization before examination)",
+        "stem": (
+            "A forensic team is investigating a potential insider threat. They need to analyze a suspect's corporate "
+            "laptop but must ensure their actions are legally defensible. Which step is MOST important before beginning "
+            "the examination?"
+        ),
+        "name": "secplus_q940",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Forensic examination of employee-owned or corporate devices requires proper legal authority "
+            "such as applicable corporate policy and consent, a court warrant where required, or a legal hold that "
+            "preserves relevant data so collection and analysis are admissible and defensible. Installing tools directly "
+            "on the suspect laptop before authorization can alter evidence and may exceed permitted scope. Confronting "
+            "the suspect first can tip them off to destroy evidence and is not a substitute for legal clearance. "
+            "Formatting the device destroys forensic evidence and is never an appropriate first step."
+        ),
+        "choices": [
+            "Install forensic software directly on the suspect's laptop",
+            "Obtain proper legal authorization (e.g., corporate policy consent, warrant, or legal hold)",
+            "Immediately confront the suspect about the allegations",
+            "Format the laptop to remove any potential malware first",
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "forensics-mac-times-creation-after-modification",
+        "title": "Security+ — Forensics (MAC timestamp analysis)",
+        "stem": (
+            "During a forensic analysis, an investigator finds that a file's MAC times (Modified, Accessed, Created) "
+            "show the creation date is more recent than the modification date. What does this most likely indicate?"
+        ),
+        "name": "secplus_q941",
+        "correct": "B",
+        "explain": (
+            "Correct. B — When a file is copied or moved to a new location, many file systems set a new creation "
+            "timestamp while preserving the original last-modified time, so Created can appear newer than Modified. "
+            "That pattern suggests the file arrived on the volume later rather than being authored there. Malware "
+            "corruption may damage content but does not typically produce this specific timestamp relationship as the "
+            "most likely explanation. File system damage can cause inconsistent metadata but is not the usual forensic "
+            "interpretation of creation newer than modification. A misconfigured system clock would affect timestamps "
+            "broadly across many files, not usually a single file with logically inverted Created and Modified values."
+        ),
+        "choices": [
+            "The file was corrupted by malware",
+            "The file was copied from another location, resetting the creation timestamp",
+            "The file system is damaged",
+            "The system clock was never configured correctly",
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "forensics-court-hash-chain-of-custody-integrity",
+        "title": "Security+ — Forensics (Court evidence integrity proof)",
+        "stem": (
+            "A forensic examiner needs to present digital evidence in court. The opposing counsel challenges the "
+            "integrity of the evidence. Which of the following would BEST demonstrate that the evidence has not been "
+            "altered?"
+        ),
+        "name": "secplus_q942",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Consistent cryptographic hashes recorded at acquisition and verified again before and during "
+            "analysis, combined with a documented chain of custody, provide objective proof that the evidence is "
+            "bit-for-bit unchanged. A directory screenshot shows filenames at one moment but does not cryptographically "
+            "prove integrity over time. Verbal testimony alone lacks independent verification and is weaker than hash "
+            "values tied to custody records. Storing a copy on commercial cloud storage does not by itself prove the "
+            "evidence was not altered and may introduce additional custody and access concerns."
+        ),
+        "choices": [
+            "A screenshot of the file directory",
+            "Matching cryptographic hashes from collection through analysis with documented chain of custody",
+            "The examiner's verbal testimony that the evidence was not altered",
+            "A copy of the file on a commercial cloud storage service",
+        ],
+        "objectives": ["4.8", "4.9"],
+    },
+    {
+        "slug": "edr-real-time-behavioral-automated-response",
+        "title": "Security+ — EDR (Beyond traditional antivirus)",
+        "stem": (
+            "Which endpoint security solution provides real-time monitoring, behavioral analysis, and automated response "
+            "capabilities that go beyond traditional antivirus?"
+        ),
+        "name": "secplus_q943",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Endpoint Detection and Response (EDR) collects continuous endpoint telemetry, analyzes "
+            "behavior for suspicious activity beyond signature-based detection, and can automate containment actions "
+            "such as isolating a host or killing a process. A host-based firewall filters permitted traffic on the "
+            "endpoint but does not provide behavioral analytics or orchestrated incident response. Data Loss Prevention "
+            "(DLP) focuses on detecting and blocking unauthorized data exfiltration, not broad endpoint threat "
+            "monitoring and response. Full disk encryption protects data confidentiality at rest and does not monitor "
+            "runtime behavior or automate threat response."
+        ),
+        "choices": [
+            "Host-based firewall",
+            "Endpoint Detection and Response (EDR)",
+            "Data Loss Prevention (DLP)",
+            "Full disk encryption",
+        ],
+        "objectives": ["4.1", "4.4"],
+    },
+    {
+        "slug": "xdr-unified-visibility-correlated-detection",
+        "title": "Security+ — XDR (Unified cross-domain visibility)",
+        "stem": (
+            "An organization wants a security solution that provides unified visibility across endpoints, networks, and "
+            "cloud workloads with correlated threat detection. Which solution BEST meets this requirement?"
+        ),
+        "name": "secplus_q944",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Extended Detection and Response (XDR) integrates telemetry from endpoints, networks, cloud "
+            "workloads, and other sources to correlate alerts into unified incidents and support cross-domain "
+            "investigation and response. Traditional antivirus relies primarily on signature-based malware detection on "
+            "individual hosts and lacks broad correlated visibility. A host-based IDS monitors activity on a single "
+            "endpoint but does not unify network and cloud telemetry. A network-based firewall enforces traffic policy "
+            "at the network edge or segment boundary and is not a cross-domain detection and correlation platform."
+        ),
+        "choices": [
+            "Traditional antivirus",
+            "Host-based IDS",
+            "Extended Detection and Response (XDR)",
+            "Network-based firewall",
+        ],
+        "objectives": ["4.4", "4.7"],
+    },
+    {
+        "slug": "dlp-block-ssn-personal-email-alert",
+        "title": "Security+ — DLP (SSN exfiltration to personal email)",
+        "stem": (
+            "A company's DLP solution detects that an employee is attempting to email a spreadsheet containing customer "
+            "Social Security numbers to a personal email address. What action should the DLP system take based on best "
+            "practices?"
+        ),
+        "name": "secplus_q945",
+        "correct": "B",
+        "explain": (
+            "Correct. B — For high-risk regulated data such as Social Security numbers being sent to an unauthorized "
+            "personal destination, DLP best practice is to block the transmission and alert the security team for "
+            "investigation and possible HR or legal follow-up. Allowing the email while only logging the event fails to "
+            "prevent data loss. Encrypting and sending the message anyway still exfiltrates sensitive PII to an "
+            "unapproved recipient. Deleting the employee's entire email account is disproportionate and is not a "
+            "standard automated DLP enforcement action."
+        ),
+        "choices": [
+            "Allow the email but log the event",
+            "Block the email and alert the security team",
+            "Encrypt the email and send it anyway",
+            "Delete the employee's email account",
+        ],
+        "objectives": ["3.3", "4.4"],
+    },
+    {
+        "slug": "server-hardening-least-functionality-windows",
+        "title": "Security+ — Server hardening (Least functionality)",
+        "stem": (
+            "A system administrator is hardening a Windows server. Which of the following actions is MOST aligned with "
+            "the principle of least functionality?"
+        ),
+        "name": "secplus_q946",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Least functionality means a system provides only the capabilities required for its role, so "
+            "disabling unneeded services, removing unused software, and closing unused ports reduces attack surface. "
+            "Installing extra tools for possible future use expands functionality beyond current need. Enabling all "
+            "logging at maximum verbosity increases overhead and data exposure without limiting services or ports. "
+            "Connecting the server to multiple network segments for redundancy adds connectivity and complexity rather "
+            "than restricting the server to essential functions."
+        ),
+        "choices": [
+            "Installing additional monitoring tools for future use",
+            "Disabling unnecessary services, removing unused software, and closing unused ports",
+            "Enabling all logging features at maximum verbosity",
+            "Adding the server to multiple network segments for redundancy",
+        ],
+        "objectives": ["4.1", "4.2"],
+    },
+    {
+        "slug": "host-firewall-implicit-deny-default-deny",
+        "title": "Security+ — Host firewall (Implicit deny)",
+        "stem": (
+            "An organization implements a host-based firewall policy that blocks all inbound connections by default and "
+            "only allows specific approved services. This is an example of which security principle?"
+        ),
+        "name": "secplus_q947",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Implicit deny (default deny) means all traffic is blocked unless explicitly permitted by "
+            "rule, which is why only approved inbound services are allowed after the default block. Role-based access "
+            "control assigns permissions based on user roles, not firewall connection defaults. Separation of duties "
+            "divides critical tasks among different people to reduce fraud and error. Open design holds that security "
+            "should not depend on hiding system details, which is unrelated to firewall allow/deny policy structure."
+        ),
+        "choices": [
+            "Implicit deny (default deny)",
+            "Role-based access control",
+            "Separation of duties",
+            "Open design",
+        ],
+        "objectives": ["4.1", "3.4"],
+    },
+    {
+        "slug": "patch-management-process-testing-approval-timelines",
+        "title": "Security+ — Patch management (Formal process)",
+        "stem": (
+            "A vulnerability scanner reports that several servers are missing critical patches released three months ago. "
+            "The IT team says they delayed patching because they were concerned about application compatibility. What "
+            "process should be implemented to address this?"
+        ),
+        "name": "secplus_q948",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A formal patch management process balances security and stability with defined steps to test "
+            "patches in a representative environment, obtain approval, and deploy on scheduled timelines so critical "
+            "fixes are not indefinitely deferred. Disabling the scanner hides the problem without remediating "
+            "vulnerabilities. Applying all patches immediately without testing can break production applications and "
+            "cause outages. Permanently accepting the risk without a structured review bypasses ongoing vulnerability "
+            "management and is inappropriate for missing critical patches."
+        ),
+        "choices": [
+            "Disable the vulnerability scanner to stop generating reports",
+            "A formal patch management process with testing, approval, and deployment timelines",
+            "Immediately apply all patches without testing",
+            "Accept the risk permanently and document it",
+        ],
+        "objectives": ["4.3", "4.2"],
+    },
+    {
+        "slug": "configuration-drift-remediation-desired-state",
+        "title": "Security+ — Configuration drift (Desired state remediation)",
+        "stem": (
+            "An organization uses a configuration management tool to ensure all servers maintain a consistent security "
+            "baseline. When a server's configuration drifts from the baseline, the tool automatically remediates the "
+            "change. What is this automated process called?"
+        ),
+        "name": "secplus_q949",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Configuration drift remediation through desired state configuration continuously compares "
+            "systems to an approved baseline and automatically restores settings that deviate, keeping servers aligned "
+            "with the security standard. Change management governs how approved changes are planned and released but is "
+            "not the name for automated baseline enforcement. Incident response handles security events and breaches, "
+            "not routine configuration compliance. Vulnerability assessment identifies weaknesses such as missing patches "
+            "or misconfigurations but does not by itself automatically revert drift to a defined baseline."
+        ),
+        "choices": [
+            "Change management",
+            "Configuration drift remediation (desired state configuration)",
+            "Incident response",
+            "Vulnerability assessment",
+        ],
+        "objectives": ["4.2", "4.7"],
+    },
 ]
 
 

@@ -942,7 +942,32 @@
     "incident-response-eradication-remove-malware",
     "tabletop-exercise-validate-ir-plan-scenarios",
     "incident-response-recovery-verify-eradication-clean",
-    "lessons-learned-document-improvements-after-breach"
+    "lessons-learned-document-improvements-after-breach",
+    "incident-response-law-enforcement-preparation-phase",
+    "incident-response-identification-scope-lateral-movement",
+    "apt-delayed-containment-monitor-intelligence",
+    "critical-incident-customer-data-notify-ir-legal-first",
+    "tabletop-exercise-ir-plan-shutdown-authority",
+    "simulation-exercise-isolated-lab-ir-testing",
+    "forensics-powered-on-capture-volatile-ram-first",
+    "forensics-order-of-volatility-most-to-least",
+    "forensics-write-blocker-bit-for-bit-imaging",
+    "forensics-image-hash-verify-exact-copy",
+    "forensics-chain-of-custody-handler-log",
+    "forensics-analyze-log-copy-preserve-timestamps",
+    "forensics-dd-command-create-image-linux",
+    "forensics-tamper-evident-storage-preservation",
+    "forensics-anti-forensics-free-space-wipe-evidence",
+    "forensics-insider-threat-legal-authorization-first",
+    "forensics-mac-times-creation-after-modification",
+    "forensics-court-hash-chain-of-custody-integrity",
+    "edr-real-time-behavioral-automated-response",
+    "xdr-unified-visibility-correlated-detection",
+    "dlp-block-ssn-personal-email-alert",
+    "server-hardening-least-functionality-windows",
+    "host-firewall-implicit-deny-default-deny",
+    "patch-management-process-testing-approval-timelines",
+    "configuration-drift-remediation-desired-state"
   ];
 
   window.SECPLUS_PRACTICE._topicAssignments = null;

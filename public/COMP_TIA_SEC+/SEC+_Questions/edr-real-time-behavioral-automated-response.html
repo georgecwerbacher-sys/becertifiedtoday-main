@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Lessons learned (post-incident outcomes)</title>
+  <title>Security+ — EDR (Beyond traditional antivirus)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/incident-response-recovery-verify-eradication-clean.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/forensics-court-hash-chain-of-custody-integrity.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/incident-response-law-enforcement-preparation-phase.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/xdr-unified-visibility-correlated-detection.html">Next</a>
       </div>
     </nav>
-    <h1>After a major security breach, the IR team conducts a lessons-learned meeting. Which of the following is the MOST important outcome of this meeting?</h1>
+    <h1>Which endpoint security solution provides real-time monitoring, behavioral analysis, and automated response capabilities that go beyond traditional antivirus?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q924" value="A" />A. Assigning blame to the individuals responsible</label>
-    <label class="choice"><input type="radio" name="secplus_q924" value="B" />B. Documenting what worked, what failed, and recommendations for improvement</label>
-    <label class="choice"><input type="radio" name="secplus_q924" value="C" />C. Calculating the total financial loss from the breach</label>
-    <label class="choice"><input type="radio" name="secplus_q924" value="D" />D. Filing a police report about the incident</label>
+    <label class="choice"><input type="radio" name="secplus_q943" value="A" />A. Host-based firewall</label>
+    <label class="choice"><input type="radio" name="secplus_q943" value="B" />B. Endpoint Detection and Response (EDR)</label>
+    <label class="choice"><input type="radio" name="secplus_q943" value="C" />C. Data Loss Prevention (DLP)</label>
+    <label class="choice"><input type="radio" name="secplus_q943" value="D" />D. Full disk encryption</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -176,13 +176,13 @@
   <script>
     (function () {
       var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 The lessons-learned phase captures what worked, what failed, and actionable recommendations so the organization improves detection, response, and prevention before the next incident. Assigning blame discourages honest reporting and is not the purpose of a constructive post-incident review. Calculating financial loss may support business impact analysis but is not the primary outcome of lessons learned. Filing a police report may be required separately and does not replace documenting process improvements.";
+      var CORRECT_MSG = "Correct. B \u2014 Endpoint Detection and Response (EDR) collects continuous endpoint telemetry, analyzes behavior for suspicious activity beyond signature-based detection, and can automate containment actions such as isolating a host or killing a process. A host-based firewall filters permitted traffic on the endpoint but does not provide behavioral analytics or orchestrated incident response. Data Loss Prevention (DLP) focuses on detecting and blocking unauthorized data exfiltration, not broad endpoint threat monitoring and response. Full disk encryption protects data confidentiality at rest and does not monitor runtime behavior or automate threat response.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q924"]:checked');
+        var sel = document.querySelector('input[name="secplus_q943"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -199,7 +199,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q924"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="secplus_q943"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

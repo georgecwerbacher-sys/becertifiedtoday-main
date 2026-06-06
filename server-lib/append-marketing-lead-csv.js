@@ -1,5 +1,5 @@
 /**
- * Append marketing leads to marketing-vault/leads/*.csv (Obsidian-synced via git).
+ * Append marketing leads to marketing-vault/leads/*.csv (synced via git).
  *
  * Production (Vercel): set GITHUB_LEADS_TOKEN — commits each row via GitHub Contents API.
  * Local / vercel dev: appends to the CSV file on disk when no token is set.

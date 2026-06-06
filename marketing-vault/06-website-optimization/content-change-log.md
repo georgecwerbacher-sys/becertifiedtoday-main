@@ -10,6 +10,8 @@ Implement changes in Cursor under `public/`. Link to page notes in `06-website-o
 
 | Date | Page (path) | Change summary | Reason (QS / CVR / UX) | Campaign | Deployed | Ads LP exp. (before→after) |
 |------|-------------|----------------|------------------------|----------|----------|----------------------------|
+| 2026-06-06 | `/ccna-home.html`, `ccna-portal-10d-landing.js`, `bcc-10d-one-time-offer.js` | Ad group `ccna_portal_10d`: `#purchase` shows **$9.99 / 10-day** only when `utm_content=portal-10d`; scroll to purchase; suppress 10d popup | Message match — single paid CTA for portal intent | ccna_portal | no | |
+| 2026-06-06 | `scripts/ccna-portal-10d-google-ads.md` | Standalone `ccna_portal_10d` paste-ready doc (not Obsidian vault); products list aligned to ccna-home.html | Google Ads setup outside vault | ccna_portal | n/a | |
 | 2026-05-30 | `/ccna-home.html` | Exam prep meta/title; `#exam-audience` (people, when, where); federal/contractor keywords | Active ccna_portal Ads — message match + contractor segment | ccna_portal | no |
 | 2026-05-30 | `/ccnp-home.html` | `#exam-audience` section; federal/contractor lead + keywords; vault campaign docs active | Active encor_portal Ads — same guidelines as Security+ | encor_portal | no |
 | 2026-05-30 | `marketing-vault/` | Cisco exam prep foundation; CCNA/ENCOR campaign + keyword maps marked **active** | User runs CCNA + ENCOR Ads alongside Security+ | ccna_portal, encor_portal | no |

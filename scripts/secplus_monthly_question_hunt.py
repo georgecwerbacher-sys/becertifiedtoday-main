@@ -3,7 +3,7 @@
 
   collect  — web + optional import CSV (Tier B or Tier C research; does NOT read BCT)
   compare  — match collected rows against BCT bank
-  save     — write net-new candidates as Obsidian markdown
+  save     — write net-new candidates as markdown
   run      — all three steps in order
 """
 from __future__ import annotations
@@ -430,7 +430,7 @@ def cmd_compare(args: argparse.Namespace) -> tuple[int, str, list[dict], list[di
 
 
 def cmd_save(args: argparse.Namespace) -> int:
-    """Phase 3: Obsidian markdown for net-new candidates."""
+    """Phase 3: markdown notes for net-new candidates."""
     run_id = args.date or find_latest_run()
     if not run_id:
         print("[save] no run — run collect + compare first.", file=sys.stderr)
@@ -495,7 +495,7 @@ def main() -> int:
         ("collect", "Step 1 — collect from web/import (no BCT)"),
         ("discover", "Alias for collect"),
         ("compare", "Step 2 — compare to BCT bank"),
-        ("save", "Step 3 — save net-new as Obsidian .md"),
+        ("save", "Step 3 — save net-new as markdown"),
         ("pdf", "Alias for save"),
         ("run", "All three steps"),
     ):

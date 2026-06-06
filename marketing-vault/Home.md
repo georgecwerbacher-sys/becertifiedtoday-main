@@ -1,6 +1,6 @@
 # Marketing ops — Be Certified Today
 
-Obsidian vault for data-driven marketing (Cursor + GA4 + Stripe + Google Ads). Open this folder as an Obsidian vault: **File → Open folder as vault** → select `marketing-vault` inside the repo.
+Marketing notes for data-driven ops (Cursor + GA4 + Stripe + Google Ads).
 
 ## Project goal
 
@@ -25,6 +25,7 @@ Obsidian vault for data-driven marketing (Cursor + GA4 + Stripe + Google Ads). O
 - [[02-campaigns/security-plus/secplus-lead-free-sim-ad-group|secplus_lead_free_sim — live config]] ← budget · CPC · keywords · checklists
 - [[02-campaigns/security-plus/security-plus-lead-magnet-ads|Security+ lead magnet ads]] ← free 35-min sim CTA
 - [[02-campaigns/ccna/ccna-portal-google-ads|CCNA 200-301 — Google Ads]] ← active
+- `ccna_portal_10d` ad group: `scripts/ccna-portal-10d-google-ads.md` (not in vault)
 - [[02-campaigns/encor/ccnp-encor-google-ads|CCNP ENCOR — Google Ads]] ← active
 - [[05-playbooks/weekly-review-process|Weekly review process]]
 - [[05-playbooks/secplus-free-sim-funnel|Security+ free sim funnel]] ← lead ads + GA4 conversions
@@ -37,7 +38,7 @@ Obsidian vault for data-driven marketing (Cursor + GA4 + Stripe + Google Ads). O
 - [[11-question-sourcing/secplus-sy0-701-web-sources|SY0-701 question sources (web)]] ← verify vs CompTIA; version/date catalog
 - [[SEC+/PBQ/README|Security+ PBQ production — study notes]] ← four `PBQ_Production` scenarios (notes · recommendations · solutions)
 - [[11-question-sourcing/pbq/README|SY0-701 PBQ sourcing]] ← `npm run secplus:pbq-monthly` · compare vs `SEC+_PBQ/`
-- [[11-question-sourcing/pbq/captures/README|SY0-701 PBQ captures]] ← `npm run secplus:pbq-capture` · PNG or link in Obsidian `INDEX.md`
+- [[11-question-sourcing/pbq/captures/README|SY0-701 PBQ captures]] ← `npm run secplus:pbq-capture` · PNG or link in `INDEX.md`
 - [[12-Writing/_Writing-Rules|Guest page writing rules]] ← index & landing copy (exam prep voice, Ads message match)
 - [[13-guest-site-map/README|Guest site map]] ← guest URLs, sitemap, journey canvas → training portals
 
@@ -51,28 +52,3 @@ node scripts/marketing-weekly-report.mjs --range 28d
 ```
 
 Requires GA4 service account vars in `.env.local` (same as `/admin/analytics.html`).
-
-## Suggested Obsidian plugins
-
-- **Dataview** — query report frontmatter and campaign notes
-- **Templater** — apply `templates/weekly-marketing-review.md` after each new report
-
-## Dataview examples
-
-Active campaigns:
-
-```dataview
-TABLE channel, status, target_cpa, utm_campaign
-FROM "02-campaigns"
-WHERE type = "campaign" AND status = "active"
-```
-
-Recent weekly reports:
-
-```dataview
-TABLE range, sessions, begin_checkout, purchases, revenue_usd
-FROM "03-reports/weekly"
-WHERE type = "weekly-report"
-SORT date DESC
-LIMIT 8
-```

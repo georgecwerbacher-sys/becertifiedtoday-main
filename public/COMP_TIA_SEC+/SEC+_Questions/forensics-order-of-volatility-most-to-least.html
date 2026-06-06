@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Lessons learned (post-incident outcomes)</title>
+  <title>Security+ — Order of volatility (Most to least)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/incident-response-recovery-verify-eradication-clean.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/forensics-powered-on-capture-volatile-ram-first.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/incident-response-law-enforcement-preparation-phase.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/forensics-write-blocker-bit-for-bit-imaging.html">Next</a>
       </div>
     </nav>
-    <h1>After a major security breach, the IR team conducts a lessons-learned meeting. Which of the following is the MOST important outcome of this meeting?</h1>
+    <h1>Which of the following correctly lists data types from MOST volatile to LEAST volatile according to the order of volatility?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q924" value="A" />A. Assigning blame to the individuals responsible</label>
-    <label class="choice"><input type="radio" name="secplus_q924" value="B" />B. Documenting what worked, what failed, and recommendations for improvement</label>
-    <label class="choice"><input type="radio" name="secplus_q924" value="C" />C. Calculating the total financial loss from the breach</label>
-    <label class="choice"><input type="radio" name="secplus_q924" value="D" />D. Filing a police report about the incident</label>
+    <label class="choice"><input type="radio" name="secplus_q932" value="A" />A. Hard drive → RAM → CPU cache → network connections</label>
+    <label class="choice"><input type="radio" name="secplus_q932" value="B" />B. CPU registers → RAM → temporary files → hard drive</label>
+    <label class="choice"><input type="radio" name="secplus_q932" value="C" />C. RAM → hard drive → CPU registers → backup tapes</label>
+    <label class="choice"><input type="radio" name="secplus_q932" value="D" />D. Backup tapes → hard drive → RAM → CPU registers</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -176,13 +176,13 @@
   <script>
     (function () {
       var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 The lessons-learned phase captures what worked, what failed, and actionable recommendations so the organization improves detection, response, and prevention before the next incident. Assigning blame discourages honest reporting and is not the purpose of a constructive post-incident review. Calculating financial loss may support business impact analysis but is not the primary outcome of lessons learned. Filing a police report may be required separately and does not replace documenting process improvements.";
+      var CORRECT_MSG = "Correct. B \u2014 Order of volatility ranks evidence from most ephemeral to most persistent: CPU registers and cache are lost immediately when power stops; RAM is lost at shutdown or reboot; temporary files and swap may persist briefly on disk but change quickly; hard drive data remains until overwritten. Listing hard drive before RAM reverses the priority for live-system collection. Placing RAM before CPU registers ignores that register and cache contents are even more transient. Starting with backup tapes lists the least volatile sources first, which is the opposite of forensic collection priority.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q924"]:checked');
+        var sel = document.querySelector('input[name="secplus_q932"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -199,7 +199,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q924"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="secplus_q932"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

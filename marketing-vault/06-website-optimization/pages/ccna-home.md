@@ -33,7 +33,8 @@ Ad `utm_content=hl-free-practice` etc. maps to variants in `public/js/ccna-home-
 - **Writing rules:** [[../../12-Writing/_Writing-Rules|Guest page writing rules]] applied 2026-06-04
 - **Lead magnet:** `#ccna-lead-capture` — 45 min, 20 MCQ + 2 D&D + VLAN lab
 - **Samples:** 2 MCQ per run on `/sample?track=ccna-questions`
-- **Primary CTA:** free timed sim → `#purchase` (sim $9.99, 10d/30d portal)
+- **Primary CTA (default):** 30-day portal on `#purchase`; free samples below
+- **Primary CTA (`utm_content=portal-10d`):** **$9.99 / 10-day** only in purchase fold — Ads config: `scripts/ccna-portal-10d-google-ads.md`
 
 ## Keywords
 
