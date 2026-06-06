@@ -26,7 +26,15 @@ KEEP_CSS_KEYWORDS = (
     "answer-cli",
     "image-wrap",
     "instructions",
+    "stem-after",
     ".cfg",
+)
+
+OUTSIDE_TEXT_COLOR_SELECTORS = (
+    "stem-after-exhibit",
+    "exhibit-ref",
+    "exhibit-section-caption",
+    "instructions",
 )
 
 BASE_STYLE = r"""  <style>
@@ -142,7 +150,11 @@ BASE_STYLE = r"""  <style>
     }
     .exhibit-ref,
     .exhibit-ref-spaced,
-    .exhibit-section-caption {
+    .exhibit-section-caption,
+    .stem-after-exhibit,
+    .stem-after-exhibit-list,
+    .stem-after-exhibit-tail,
+    .instructions {
       color: var(--bcc-outside-text);
     }
   </style>"""
@@ -216,6 +228,24 @@ def extract_first_style(text: str) -> str:
     return m.group(1) if m else ""
 
 
+def normalize_outside_text_rule(selector: str, body: str) -> str:
+    sl = selector.lower()
+    if not any(k in sl for k in OUTSIDE_TEXT_COLOR_SELECTORS):
+        return body
+    body = re.sub(
+        r"color:\s*#e6edf3\s*;?",
+        "color: var(--bcc-outside-text);",
+        body,
+        flags=re.I,
+    )
+    return re.sub(
+        r"color:\s*#b8c3d6\s*;?",
+        "color: var(--bcc-outside-text);",
+        body,
+        flags=re.I,
+    )
+
+
 def extract_exhibit_css(style_text: str) -> str:
     if not style_text.strip():
         return ""
@@ -224,7 +254,8 @@ def extract_exhibit_css(style_text: str) -> str:
         sl = sel.lower()
         if not any(k in sl for k in KEEP_CSS_KEYWORDS):
             continue
-        kept.append(f"    {sel.strip()} {{\n{body.strip()}\n    }}")
+        body = normalize_outside_text_rule(sel, body.strip())
+        kept.append(f"    {sel.strip()} {{\n{body}\n    }}")
     if not kept:
         return ""
     return "  <style>\n" + "\n".join(kept) + "\n  </style>"
