@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Monthly SY0-701 question workflow: collect → compare → save (.md).
+"""Monthly CCNA 200-301 question workflow: collect → compare → save (.md).
 
-  collect  — web + optional import CSV (Tier B or Tier C research; does NOT read BCT)
-  compare  — match collected rows against BCT bank
+  collect  — competitor poll + optional import CSV (does NOT read BCT)
+  compare  — match collected rows against CCNA BCT bank
   save     — write net-new candidates as markdown
   run      — all three steps in order
 """
@@ -18,13 +18,15 @@ import urllib.request
 from datetime import date
 from pathlib import Path
 
+from net_new_markdown import write_net_new_md as write_net_new_review_md
 from secplus_competitor_poll import load_poll_sources, poll_all_sources
 
 ROOT = Path(__file__).resolve().parent.parent
-VAULT_RUNS = ROOT / "marketing-vault" / "11-question-sourcing" / "runs"
-VAULT_CONFIG = ROOT / "marketing-vault" / "11-question-sourcing" / "config" / "secplus-web-sources.json"
-CHAIN_PY = ROOT / "scripts" / "gen_secplus_chain_pages.py"
-QUESTIONS_DIR = ROOT / "public" / "COMP_TIA_SEC+" / "SEC+_Questions"
+VAULT_RUNS = ROOT / "marketing-vault" / "11-question-sourcing" / "ccna" / "runs"
+VAULT_CONFIG = ROOT / "marketing-vault" / "11-question-sourcing" / "config" / "ccna-web-sources.json"
+CHAIN_PY = ROOT / "scripts" / "gen_ccna_chain_pages.py"
+QUESTIONS_DIR = ROOT / "public" / "CCNA-Study" / "CCNA_questions"
+POLL_PRODUCT = "CCNA-200-301"
 
 CSV_FIELDS = [
     "discovered_at",
@@ -46,7 +48,104 @@ CSV_FIELDS = [
 COMPARE_EXTRA = ["bct_match_score", "bct_match_slug"]
 NET_NEW_FIELDS = CSV_FIELDS + COMPARE_EXTRA
 
-USER_AGENT = "BCT-SY0-701-Monthly-Hunt/1.0 (+https://becertifiedtoday.com; research)"
+USER_AGENT = "BCT-CCNA-200-301-Monthly-Hunt/1.0 (+https://becertifiedtoday.com; research)"
+
+EXHIBIT_PREFIX_RE = re.compile(
+    r"^(?:refer\s+to\s+)?(?:the\s+)?exhibit\.?\s*",
+    re.I,
+)
+
+
+def decode_py_string(value: str) -> str:
+    if "\\" in value:
+        return value.encode().decode("unicode_escape")
+    return value
+
+
+def strip_html_text(fragment: str) -> str:
+    text = re.sub(r"<[^>]+>", " ", fragment or "")
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def strip_exhibit_prefix(text: str) -> str:
+    cleaned = strip_html_text(text) if "<" in (text or "") else (text or "").strip()
+    return EXHIBIT_PREFIX_RE.sub("", cleaned).strip()
+
+
+def is_bare_exhibit_label(text: str) -> bool:
+    normalized = normalize_text(strip_exhibit_prefix(text))
+    return not normalized or normalized in {"refer to the exhibit", "the exhibit", "exhibit"}
+
+
+def effective_compare_stem(text: str) -> str:
+    return strip_exhibit_prefix(text)
+
+
+def extract_post_exhibit_stem_from_html(page: str) -> str:
+    """Return the verify stem: text after exhibit blocks, not the exhibit label."""
+    main_m = re.search(r"<main[^>]*>(.*)</main>", page, re.I | re.DOTALL)
+    body = main_m.group(1) if main_m else page
+    choice_m = re.search(r'<label\s+class="choice"', body, re.I)
+    content = body[: choice_m.start()] if choice_m else body
+
+    parts: list[str] = []
+    for m in re.finditer(
+        r'<p[^>]*class="[^"]*stem-after-exhibit[^"]*"[^>]*>(.*?)</p>',
+        content,
+        re.I | re.DOTALL,
+    ):
+        parts.append(strip_html_text(m.group(1)))
+    for m in re.finditer(
+        r'<ul[^>]*class="[^"]*stem-after-exhibit-list[^"]*"[^>]*>(.*?)</ul>',
+        content,
+        re.I | re.DOTALL,
+    ):
+        for li in re.finditer(r"<li[^>]*>(.*?)</li>", m.group(1), re.I | re.DOTALL):
+            parts.append(strip_html_text(li.group(1)))
+    if parts:
+        return " ".join(part for part in parts if part).strip()
+
+    hm = re.search(r"<h1[^>]*>(.*?)</h1>", content, re.I | re.DOTALL)
+    if hm:
+        return strip_html_text(hm.group(1))
+    return ""
+
+
+def chain_block_to_stem(block: str) -> str:
+    parts: list[str] = []
+    sae_m = re.search(r'"stem_after_exhibit":\s*"((?:\\.|[^"\\])*)"', block)
+    if sae_m:
+        parts.append(decode_py_string(sae_m.group(1)).strip())
+    bullets_m = re.search(r'"stem_after_exhibit_bullets":\s*\[(.*?)\]', block, re.DOTALL)
+    if bullets_m:
+        for bullet in re.findall(r'"((?:\\.|[^"\\])*)"', bullets_m.group(1)):
+            parts.append(decode_py_string(bullet).strip())
+    tail_m = re.search(r'"stem_after_exhibit_tail":\s*"((?:\\.|[^"\\])*)"', block)
+    if tail_m:
+        parts.append(decode_py_string(tail_m.group(1)).strip())
+    if parts:
+        return " ".join(part for part in parts if part).strip()
+
+    tuple_m = re.search(r'"stem":\s*\((.*?)\)\s*,', block, re.DOTALL)
+    if tuple_m:
+        return " ".join(re.findall(r'"([^"]*)"', tuple_m.group(1))).strip()
+    stem_m = re.search(r'"stem":\s*"((?:\\.|[^"\\])*)"', block)
+    if stem_m:
+        return decode_py_string(stem_m.group(1)).strip()
+    return ""
+
+
+def load_chain_stems(text: str) -> dict[str, str]:
+    stems: dict[str, str] = {}
+    slug_starts = list(re.finditer(r'\n\s+\{\s*\n\s+"slug":\s*"([^"]+)"', text))
+    for idx, match in enumerate(slug_starts):
+        start = match.start()
+        end = slug_starts[idx + 1].start() if idx + 1 < len(slug_starts) else len(text)
+        slug = match.group(1)
+        stem = chain_block_to_stem(text[start:end])
+        if stem:
+            stems[slug] = stem
+    return stems
 
 
 def normalize_text(text: str) -> str:
@@ -67,72 +166,9 @@ def jaccard(a: set[str], b: set[str]) -> float:
     return len(a & b) / len(a | b)
 
 
-def fetch_url(url: str, timeout: int = 30) -> str:
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return resp.read().decode("utf-8", errors="replace")
-
-
-def _split_inline_choices(stem: str) -> tuple[str, list[str]]:
-    m = re.search(r"\s+([A-F])\.\s", stem)
-    if not m:
-        return stem, []
-    idx = m.start()
-    head = stem[:idx].strip()
-    tail = stem[idx:]
-    choices = re.findall(r"([A-F])\.\s+(.+?)(?=\s+[A-F]\.\s+|$)", tail)
-    return head, [f"{letter}. {text.strip()}" for letter, text in choices]
-
-
-def parse_comptia_practice_questions(page_html: str) -> list[dict]:
-    rows: list[dict] = []
-    cut = re.split(
-        r"Answer\s+key|##\s*Answer|Shop\s+About\s+Us|self\.__next_f",
-        page_html,
-        maxsplit=1,
-        flags=re.I,
-    )[0]
-    blocks = re.findall(
-        r"margin-bottom:\s*30px.*?padding-bottom:\s*20px;?\">(.*?)</div>\s*</div>",
-        cut,
-        re.I | re.DOTALL,
-    )
-    qnum = 0
-    for block in blocks:
-        text = re.sub(r"<[^>]+>", " ", block)
-        text = re.sub(r"\s+", " ", text).strip()
-        if len(text) < 40 or text.startswith(":"):
-            continue
-        qnum += 1
-        stem, choices = _split_inline_choices(text)
-        stem = re.sub(r"^Question\s+\d+\s*", "", stem, flags=re.I).strip()
-        if len(stem) < 30:
-            continue
-        row = {
-            "source_id": "comptia-practice-questions",
-            "source_url": "https://www.comptia.org/en-us/certifications/security/practice-questions/",
-            "source_version": "V7",
-            "source_question_id": str(qnum),
-            "stem": stem,
-            "topic_notes": "Tier A — verify answer on CompTIA page",
-        }
-        for idx, ch in enumerate(choices[:6]):
-            row[f"choice_{chr(ord('a') + idx)}"] = ch
-        rows.append(row)
-    seen: set[str] = set()
-    unique: list[dict] = []
-    for r in rows:
-        key = normalize_text(r["stem"])[:120]
-        if key in seen:
-            continue
-        seen.add(key)
-        unique.append(r)
-    return unique[:20]
-
-
 def load_source_config() -> dict:
     if not VAULT_CONFIG.is_file():
-        return {"tier_a_fetch": [], "poll_registry": "marketing-vault/10-competitors/sites"}
+        return {"tier_a_fetch": [], "poll_product": POLL_PRODUCT}
     return json.loads(VAULT_CONFIG.read_text(encoding="utf-8"))
 
 
@@ -194,34 +230,33 @@ def load_discovered(run_id: str) -> list[dict]:
 
 
 def load_bct_stems() -> list[dict]:
-    items: list[dict] = []
-    if CHAIN_PY.is_file():
-        text = CHAIN_PY.read_text(encoding="utf-8")
-        for m in re.finditer(
-            r'"slug":\s*"([^"]+)".*?"stem":\s*\((.*?)\)\s*,\s*"name"',
-            text,
-            re.DOTALL,
-        ):
-            parts = re.findall(r'"([^"]*)"', m.group(2))
-            stem = " ".join(parts).strip()
-            if stem:
-                items.append({"slug": m.group(1), "stem": stem})
+    chain_stems = load_chain_stems(CHAIN_PY.read_text(encoding="utf-8")) if CHAIN_PY.is_file() else {}
+    by_slug: dict[str, dict] = {}
+
+    for slug, raw_stem in chain_stems.items():
+        stem = effective_compare_stem(raw_stem)
+        if stem and not is_bare_exhibit_label(raw_stem):
+            by_slug[slug] = {"slug": slug, "stem": stem}
+
     if QUESTIONS_DIR.is_dir():
         for path in sorted(QUESTIONS_DIR.glob("*.html")):
+            slug = path.stem
             page = path.read_text(encoding="utf-8", errors="replace")
-            hm = re.search(r"<h1[^>]*>(.*?)</h1>", page, re.I | re.DOTALL)
-            if hm:
-                stem = re.sub(r"<[^>]+>", " ", hm.group(1))
-                stem = re.sub(r"\s+", " ", stem).strip()
-                if stem:
-                    items.append({"slug": path.stem, "stem": stem})
-    by_slug: dict[str, dict] = {}
-    for it in items:
-        by_slug[it["slug"]] = it
+            raw_stem = extract_post_exhibit_stem_from_html(page)
+            stem = effective_compare_stem(raw_stem)
+            if stem and not is_bare_exhibit_label(raw_stem):
+                by_slug[slug] = {"slug": slug, "stem": stem}
+                continue
+            chain_raw = chain_stems.get(slug, "")
+            chain_stem = effective_compare_stem(chain_raw)
+            if chain_stem and not is_bare_exhibit_label(chain_raw):
+                by_slug[slug] = {"slug": slug, "stem": chain_stem}
+
     return list(by_slug.values())
 
 
 def best_bct_match(stem: str, bct_items: list[dict], threshold: float) -> tuple[float, str | None]:
+    stem = effective_compare_stem(stem)
     n_stem = normalize_text(stem)
     t_stem = token_set(stem)
     best_score = 0.0
@@ -266,7 +301,7 @@ def write_compare_report(
         "---",
         "type: question-compare-report",
         f"run: {run_id}",
-        "exam: SY0-701",
+        "exam: CCNA-200-301",
         f"discovered_count: {len(discovered)}",
         f"net_new_count: {len(net_new)}",
         f"likely_duplicate_count: {len(likely_dup)}",
@@ -275,7 +310,7 @@ def write_compare_report(
         f"net_new_md: {paths['net_new_md'].relative_to(ROOT)}",
         "---",
         "",
-        f"# SY0-701 compare — {run_id}",
+        f"# CCNA 200-301 compare — {run_id}",
         "",
         f"| Discovered | Likely in BCT | **Net-new** |",
         f"|-----------:|--------------:|------------:|",
@@ -286,84 +321,53 @@ def write_compare_report(
     write_csv(paths["net_new_csv"], net_new, NET_NEW_FIELDS)
 
 
+def net_new_md_settings(cfg: dict | None = None) -> dict:
+    product_cfg = cfg or load_source_config()
+    md = dict(product_cfg.get("net_new_markdown") or {})
+    return {
+        "exam": product_cfg.get("exam", POLL_PRODUCT),
+        "title": md.get("title", "CCNA 200-301 net-new candidates"),
+        "intro": md.get(
+            "intro",
+            "Collected from competitors, compared to BCT CCNA bank. "
+            "**Verify answers on Cisco Tier A** before drafting original stems.",
+        ),
+        "verify_tier": md.get("verify_tier", "Cisco Tier A"),
+        "draft_target": md.get("draft_target", "gen_ccna_chain_pages.py"),
+        "blueprint_by_source": md.get("blueprint_by_source") or {},
+    }
+
+
 def write_net_new_md(net_new: list[dict], run_id: str, discovered_count: int, dup_count: int, out_path: Path) -> None:
-    lines = [
-        "---",
-        "type: net-new-questions",
-        f"run: {run_id}",
-        "exam: SY0-701",
-        f"discovered_count: {discovered_count}",
-        f"net_new_count: {len(net_new)}",
-        f"likely_duplicate_count: {dup_count}",
-        "status: review",
-        "---",
-        "",
-        f"# SY0-701 net-new candidates — {run_id}",
-        "",
-        "Collected from the web, compared to BCT. **Verify answers on CompTIA Tier A** before drafting original stems.",
-        "",
-        f"- Discovered: **{discovered_count}**",
-        f"- Likely already in BCT: **{dup_count}**",
-        f"- Net-new below: **{len(net_new)}**",
-        "",
-        "Summary: [[" + run_id + "-compare|compare report]]",
-        "",
-    ]
-    if not net_new:
-        lines.append("_No net-new questions at this threshold._")
-    else:
-        for i, r in enumerate(net_new, 1):
-            lines.append(f"## Question {i}")
-            if r.get("topic_notes"):
-                lines.append(f"**Topic:** {r['topic_notes']}")
-            lines.append("")
-            lines.append(r.get("stem", ""))
-            lines.append("")
-            for letter in "abcdef":
-                ch = r.get(f"choice_{letter}")
-                if ch:
-                    lines.append(f"- {ch}")
-            lines.append("")
-            if r.get("stated_answer"):
-                lines.append(f"**Stated answer (external):** {r['stated_answer']}")
-                lines.append("")
-            lines.append(
-                f"**Source:** `{r.get('source_id', '')}` · v {r.get('source_version', '')} · "
-                f"[link]({r.get('source_url', '')})"
-            )
-            lines.append("")
-            lines.append(f"**BCT match score:** {r.get('bct_match_score', '—')}")
-            lines.append("")
-            lines.append("- [ ] Verified vs CompTIA Tier A")
-            lines.append("- [ ] Draft original stem in `gen_secplus_chain_pages.py`")
-            lines.append("")
-            lines.append("---")
-            lines.append("")
-    out_path.write_text("\n".join(lines), encoding="utf-8")
+    settings = net_new_md_settings()
+    write_net_new_review_md(
+        net_new,
+        run_id,
+        discovered_count,
+        dup_count,
+        out_path,
+        exam=settings["exam"],
+        title=settings["title"],
+        intro=settings["intro"],
+        draft_target=settings["draft_target"],
+        verify_tier=settings["verify_tier"],
+        blueprint_by_source=settings["blueprint_by_source"],
+    )
 
 
 def cmd_collect(args: argparse.Namespace) -> tuple[int, str]:
-    """Phase 1: collect from web + import. Does not read BCT."""
     run_id = args.date or date.today().isoformat()
     all_rows: list[dict] = []
 
-    for src in load_source_config().get("tier_a_fetch", []):
-        if not src.get("enabled", True):
-            continue
-        sid = src.get("id", "unknown")
-        print(f"[collect] Tier A: {sid} …")
-        try:
-            page = fetch_url(src["url"])
-        except (urllib.error.URLError, TimeoutError) as exc:
-            print(f"  skip: {exc}", file=sys.stderr)
-            continue
-        parsed = parse_comptia_practice_questions(page)
-        for r in parsed:
-            r.setdefault("source_version", src.get("version_note", ""))
-        print(f"  {len(parsed)} questions")
-        all_rows.extend(parsed)
-
-    polled = poll_all_sources(sources=load_poll_sources(product="SY0-701"))
+    cfg = load_source_config()
+    product = cfg.get("poll_product", POLL_PRODUCT)
+    sources = load_poll_sources(product=product)
+    if not sources:
+        print(
+            f"[collect] no enabled polls for product={product} — set question_poll.enabled in sites/*-ccna.md",
+            file=sys.stderr,
+        )
+    polled = poll_all_sources(sources=sources)
     all_rows.extend(polled)
 
     if args.import_path:
@@ -377,8 +381,7 @@ def cmd_collect(args: argparse.Namespace) -> tuple[int, str]:
 
     if not all_rows:
         print(
-            "[collect] no questions — enable question_poll in 10-competitors/sites, "
-            "add --import, or check Tier A fetch.",
+            "[collect] no questions — enable question_poll in 10-competitors/sites/*-ccna.md or add --import.",
             file=sys.stderr,
         )
         return 1, run_id
@@ -388,11 +391,12 @@ def cmd_collect(args: argparse.Namespace) -> tuple[int, str]:
     paths["meta"].write_text(
         json.dumps(
             {
-                "exam": "SY0-701",
+                "exam": "CCNA-200-301",
                 "run_id": run_id,
                 "phase": "collect",
                 "count": len(all_rows),
                 "bct_read": False,
+                "poll_product": product,
                 "discovered_csv": str(paths["discovered"].relative_to(ROOT)),
             },
             indent=2,
@@ -405,7 +409,6 @@ def cmd_collect(args: argparse.Namespace) -> tuple[int, str]:
 
 
 def cmd_compare(args: argparse.Namespace) -> tuple[int, str, list[dict], list[dict]]:
-    """Phase 2: compare collected rows to BCT."""
     run_id = args.date or find_latest_run()
     if not run_id:
         print("[compare] no run — run collect first.", file=sys.stderr)
@@ -418,7 +421,8 @@ def cmd_compare(args: argparse.Namespace) -> tuple[int, str, list[dict], list[di
         return 1, "", [], []
 
     threshold = args.threshold
-    print(f"[compare] BCT index loaded · run {run_id} · threshold {threshold}")
+    bct_count = len(load_bct_stems())
+    print(f"[compare] BCT index: {bct_count} stems · run {run_id} · threshold {threshold}")
     net_new, likely_dup = compare_discovered(discovered, threshold)
     write_compare_report(run_id, discovered, net_new, likely_dup, threshold)
     paths = run_id_to_paths(run_id)
@@ -430,7 +434,6 @@ def cmd_compare(args: argparse.Namespace) -> tuple[int, str, list[dict], list[di
 
 
 def cmd_save(args: argparse.Namespace) -> int:
-    """Phase 3: markdown notes for net-new candidates."""
     run_id = args.date or find_latest_run()
     if not run_id:
         print("[save] no run — run collect + compare first.", file=sys.stderr)
@@ -464,7 +467,6 @@ def cmd_save(args: argparse.Namespace) -> int:
 
 
 def cmd_run(args: argparse.Namespace) -> int:
-    """Collect → compare → save markdown."""
     code, run_id = cmd_collect(args)
     if code != 0:
         return code
@@ -478,11 +480,11 @@ def cmd_run(args: argparse.Namespace) -> int:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="SY0-701 monthly: collect → compare → save (.md)",
+        description="CCNA 200-301 monthly: collect → compare → save (.md)",
     )
     parent = argparse.ArgumentParser(add_help=False)
     parent.add_argument("--date", help="Run id YYYY-MM-DD (default: today)")
-    parent.add_argument("--import", dest="import_path", help="Manual import CSV (Tier B practice or Tier C research)")
+    parent.add_argument("--import", dest="import_path", help="Manual import CSV")
     parent.add_argument(
         "--threshold",
         type=float,
@@ -492,9 +494,9 @@ def main() -> int:
     sub = parser.add_subparsers(dest="command", required=True)
 
     for name, help_text in (
-        ("collect", "Step 1 — collect from web/import (no BCT)"),
+        ("collect", "Step 1 — collect from competitor polls (no BCT)"),
         ("discover", "Alias for collect"),
-        ("compare", "Step 2 — compare to BCT bank"),
+        ("compare", "Step 2 — compare to CCNA BCT bank"),
         ("save", "Step 3 — save net-new as markdown"),
         ("pdf", "Alias for save"),
         ("run", "All three steps"),

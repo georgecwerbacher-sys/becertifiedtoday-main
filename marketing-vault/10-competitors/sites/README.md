@@ -9,6 +9,8 @@ Add one `.md` file per site. The monthly hunt scripts read **YAML frontmatter**:
 
 Script: `scripts/secplus_competitor_poll.py` · MCQ: `secplus_monthly_question_hunt.py` · PBQ: `secplus_monthly_pbq_hunt.py`
 
+**CCNA 200-301:** site notes use `product: CCNA-200-301` and filenames `*-ccna.md` (plus [[9tut|9tut]]). MCQ: `npm run ccna:monthly` (`question_poll`) · Labs/sim: `npm run ccna:labs-monthly` (`pbq_poll`) · Catalogs: [[../../11-question-sourcing/ccna/ccna-200-301-web-sources|MCQ]] · [[../../11-question-sourcing/ccna/ccna-labs-sim-web-sources|labs/sim]].
+
 ## Add a new site
 
 1. Copy an existing note or use this frontmatter block:
@@ -70,6 +72,8 @@ Vault: [[../../11-question-sourcing/pbq/README|11-question-sourcing/pbq/]]
 | `reddit_pbq` | Reddit JSON search — SY0-701 / Security+ PBQ, sim, drag-and-drop recall threads |
 
 CompTIA official (Tier A) stays in `11-question-sourcing/config/secplus-web-sources.json` → `tier_a_fetch` (MCQ) and `11-question-sourcing/pbq/config/secplus-pbq-sources.json` (PBQ catalog).
+
+**CCNA Tier A:** Cisco official docs / Learning Network — verify keys before BCT HTML (no CCNA auto-fetch catalog yet).
 
 ## Tiers (reminder)
 

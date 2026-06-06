@@ -72,12 +72,14 @@ def parse_frontmatter(path: Path) -> dict:
     return parse_simple_yaml(text[3:end])
 
 
-def load_poll_sources() -> list[dict]:
+def load_poll_sources(product: str | None = None) -> list[dict]:
     if not COMPETITOR_SITES.is_dir():
         return []
     sources: list[dict] = []
     for path in sorted(COMPETITOR_SITES.glob("*.md")):
         meta = parse_frontmatter(path)
+        if product and meta.get("product") != product:
+            continue
         poll = meta.get("question_poll")
         if not isinstance(poll, dict) or not poll.get("enabled"):
             continue
@@ -332,6 +334,106 @@ def parse_preptia(page_html: str, src: dict) -> list[dict]:
         ans = re.search(r"Correct Option:\s*([A-D])\.", text, re.I)
         if ans:
             row["stated_answer"] = ans.group(1).upper()
+        rows.append(row)
+    return _dedupe_rows(rows)
+
+
+def _decode_json_string(raw: str) -> str:
+    return json.loads(f'"{raw}"')
+
+
+def crucial_demo_url(sample_url: str) -> str:
+    code_m = re.search(r"/(?:ccna|exams/cisco/ccna)/(\d{3}-\d{3})", sample_url, re.I)
+    if not code_m:
+        code_m = re.search(r"/(\d{3}-\d{3})/", sample_url)
+    code = code_m.group(1) if code_m else "200-301"
+    return f"https://crucialexams.com/study/tests/cisco/{code}/auto?DemoMode=True&ShowTest=True"
+
+
+def howtonetwork_page_slug(sample_url: str) -> str:
+    path = urllib.parse.urlparse(sample_url).path.strip("/")
+    return path.split("/")[-1] if path else ""
+
+
+def parse_crucialexams(page_html: str, src: dict) -> list[dict]:
+    text = unescape(page_html)
+    rows: list[dict] = []
+    letters = "ABCDEF"
+    for block in re.split(r'(?="questionHtml")', text)[1:]:
+        qh = re.search(r'"questionHtml"\s*:\s*"((?:\\.|[^"\\])*)"', block)
+        if not qh:
+            continue
+        stem = html_to_text(_decode_json_string(qh.group(1)))
+        if len(stem) < 15:
+            continue
+        answers = re.findall(
+            r'"html"\s*:\s*"((?:\\.|[^"\\])*)"\s*,\s*"isCorrect"\s*:\s*(true|false)',
+            block,
+            re.I,
+        )
+        opts: list[str] = []
+        correct: list[str] = []
+        for h, is_correct in answers[:6]:
+            opt = html_to_text(_decode_json_string(h))
+            if not opt:
+                continue
+            letter = letters[len(opts)]
+            opts.append(f"{letter}. {opt}")
+            if is_correct.lower() == "true":
+                correct.append(letter)
+        if len(opts) < 2:
+            continue
+        qurl = re.search(r'"questionUrl"\s*:\s*"([^"]+)"', block)
+        qid = str(len(rows) + 1)
+        if qurl:
+            tail = re.search(r"/(\d+)/?$", qurl.group(1).rstrip("/"))
+            if tail:
+                qid = tail.group(1)
+        row = _base_row(src, qid, stem)
+        _attach_choices(row, opts)
+        if correct:
+            row["stated_answer"] = ",".join(correct)
+        rows.append(row)
+    cap = int(src.get("max_questions", 0))
+    if cap > 0:
+        rows = rows[:cap]
+    return _dedupe_rows(rows)
+
+
+def parse_howtonetwork(page_html: str, src: dict) -> list[dict]:
+    rows: list[dict] = []
+    parts = re.split(
+        r"<div[^>]*class=['\"]watu-question\s*['\"][^>]*>",
+        page_html,
+        flags=re.I,
+    )
+    for part in parts[1:]:
+        if "watupro-matrix" in part.lower():
+            continue
+        qid_m = re.search(r"watupro-question-id-(\d+)", part)
+        qid = qid_m.group(1) if qid_m else str(len(rows) + 1)
+        heading = re.search(r"<h[45][^>]*>(.*?)</h[45]>", part, re.I | re.S)
+        if not heading:
+            continue
+        stem = re.sub(r"^\d+\.\s*", "", html_to_text(heading.group(1))).strip()
+        if len(stem) < 15:
+            continue
+        choices: list[str] = []
+        for m in re.finditer(
+            r"<label[^>]*class=['\"][^'\"]*answer[^'\"]*['\"][^>]*>\s*<span>(.*?)</span>",
+            part,
+            re.I | re.S,
+        ):
+            choice = html_to_text(m.group(1)).strip()
+            if choice:
+                choices.append(choice)
+        if len(choices) < 2:
+            continue
+        row = _base_row(src, qid, stem)
+        _attach_choices(
+            row,
+            [f"{chr(ord('A') + i)}. {choice}" for i, choice in enumerate(choices[:6])],
+        )
         rows.append(row)
     return _dedupe_rows(rows)
 
@@ -770,6 +872,8 @@ PARSERS = {
     "openexamprep": parse_openexamprep,
     "preptia": parse_preptia,
     "certimaan": parse_certimaan,
+    "crucialexams": parse_crucialexams,
+    "howtonetwork": parse_howtonetwork,
     "examtopics": parse_examtopics,
     "generic_mcq": parse_generic_mcq,
     "generic_pbq": parse_generic_pbq,
@@ -777,12 +881,14 @@ PARSERS = {
 }
 
 
-def load_pbq_poll_sources() -> list[dict]:
+def load_pbq_poll_sources(product: str | None = None) -> list[dict]:
     if not COMPETITOR_SITES.is_dir():
         return []
     sources: list[dict] = []
     for path in sorted(COMPETITOR_SITES.glob("*.md")):
         meta = parse_frontmatter(path)
+        if product and meta.get("product") != product:
+            continue
         poll = meta.get("pbq_poll")
         if not isinstance(poll, dict) or not poll.get("enabled"):
             continue
@@ -874,6 +980,27 @@ def poll_source(src: dict, fetcher=fetch_url) -> list[dict]:
     if parser_name == "reddit_pbq":
         return poll_reddit_pbq(src, fetcher=fetcher)
 
+    if parser_name == "crucialexams":
+        demo_url = src.get("poll_url") or crucial_demo_url(src["sample_url"])
+        html = fetcher(demo_url)
+        parsed = parser(html, src)
+        for row in parsed:
+            row["source_url"] = demo_url
+        return _dedupe_rows(parsed)
+
+    if parser_name == "howtonetwork":
+        slug = howtonetwork_page_slug(src["sample_url"])
+        rest_url = f"https://www.howtonetwork.com/wp-json/wp/v2/pages?slug={slug}"
+        raw = fetcher(rest_url)
+        pages = json.loads(raw)
+        if not pages:
+            return []
+        html = pages[0].get("content", {}).get("rendered", "")
+        parsed = parser(html, src)
+        for row in parsed:
+            row["source_url"] = src["sample_url"]
+        return _dedupe_rows(parsed)
+
     try:
         html = fetcher(src["sample_url"])
     except (urllib.error.URLError, TimeoutError) as exc:
@@ -900,12 +1027,20 @@ def poll_all_sources(sources: list[dict] | None = None, fetcher=fetch_url) -> li
 if __name__ == "__main__":
     import argparse
 
-    ap = argparse.ArgumentParser(description="List enabled SY0-701 poll sources")
+    ap = argparse.ArgumentParser(description="List enabled question poll sources")
     ap.add_argument("--pbq", action="store_true", help="List PBQ poll registry (pbq_poll.enabled)")
+    ap.add_argument(
+        "--product",
+        default="SY0-701",
+        help="Filter MCQ polls by frontmatter product (default: SY0-701; use CCNA-200-301 for CCNA)",
+    )
     args = ap.parse_args()
-    loader = load_pbq_poll_sources if args.pbq else load_poll_sources
+    product = args.product if args.product not in ("", "all") else None
+    if args.pbq:
+        sources = load_pbq_poll_sources(product=product)
+    else:
+        sources = load_poll_sources(product=product)
     label = "PBQ" if args.pbq else "MCQ"
-    sources = loader()
     print(f"[{label}] {len(sources)} enabled source(s)")
     for s in sources:
         print(json.dumps({k: s[k] for k in ("id", "parser", "sample_url", "tier")}, indent=2))

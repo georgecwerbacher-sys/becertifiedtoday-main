@@ -1,6 +1,18 @@
-# Question sourcing (SY0-701)
+# Question sourcing
 
 Research catalog for **where practice questions appear on the web** — for coverage gaps, objective mapping, and competitor sizing.
+
+## CCNA 200-301
+
+**MCQ catalog:** [[ccna/ccna-200-301-web-sources|CCNA web sources]] · `npm run ccna:monthly` · `ccna/runs/`  
+**Labs / sim catalog:** [[ccna/ccna-labs-sim-web-sources|CCNA labs & sim]] · `npm run ccna:labs-monthly` · `ccna/labs-sim/runs/`  
+**Net-new markdown layout:** `config/net-new-markdown.json` (shared) + `config/ccna-web-sources.json` → `net_new_markdown`
+
+## ENCOR 350-401 (planned)
+
+**Stub:** [[encor/README|encor/README]] · `config/encor-web-sources.json` — same net-new markdown settings as CCNA; monthly hunt **not** wired yet.
+
+## Security+ SY0-701
 
 **Policy:** **Uncredited sites** (Tier C — Reddit, forums, recall threads, dump indexes) feed **discovery only**: collect → compare vs BCT → review in Obsidian → **optionally add** original questions to the database. **Verify correctness only on Tier A** (CompTIA official).
 

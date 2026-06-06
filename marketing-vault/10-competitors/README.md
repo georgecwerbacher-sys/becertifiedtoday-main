@@ -4,21 +4,24 @@ status: active
 product: security-plus
 scope: pdf-dump-sellers-and-practice-samples
 created: 2026-06-03
-updated: 2026-06-03
+updated: 2026-06-06
 tags:
   - competitors
   - dumps
   - practice-samples
   - market-analysis
   - security+
+  - ccna
 ---
 
-# Competitors — Security+ SY0-701
+# Competitors — Security+ SY0-701 & CCNA 200-301
 
 Two competitor sets for the same exam-prep buyer intent:
 
 1. **PDF / braindump retailers** — unauthorized dump syndicates  
 2. **Practice-sample sites** — free or freemium web MCQ banks (direct BCT competitors)
+
+**CCNA practice samples:** [[practice-samples-ccna-competitors]] · `competitors-ccna-practice-samples-tracker.csv` · `sites/*-ccna.md`
 
 ## Files
 
@@ -26,11 +29,14 @@ Two competitor sets for the same exam-prep buyer intent:
 |------|-----|
 | [[pdf-dump-market-analysis]] | Dump market deep dive |
 | `competitors-pdf-dumps-tracker.csv` | Dump sellers master sheet |
-| [[practice-samples-competitors]] | Free/fremium practice bank competitors |
-| `competitors-practice-samples-tracker.csv` | Practice-sample master sheet |
+| [[practice-samples-competitors]] | Free/fremium practice bank competitors (SY0-701) |
+| `competitors-practice-samples-tracker.csv` | Security+ practice-sample master sheet |
+| [[practice-samples-ccna-competitors]] | CCNA 200-301 practice-sample competitors |
+| `competitors-ccna-practice-samples-tracker.csv` | CCNA practice-sample master sheet |
 | [[how-to-use-tracker-in-numbers]] | Import steps for Apple Numbers |
 | `sites/` | One note per competitor; **`question_poll.enabled`** drives monthly auto-fetch |
 | [[sites/README|sites/README]] | How to add a site + parser list |
+| `npm run ccna:monthly` | CCNA 200-301 collect → compare → save (`11-question-sourcing/ccna/runs/`) |
 
 ## Scope
 
