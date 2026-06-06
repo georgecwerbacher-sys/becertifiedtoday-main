@@ -463,17 +463,18 @@ body.encor-dnd-ui .actions #result.is-fail {
   color: #991b1b;
 }
 
-body.encor-dnd-ui .actions #nextWrap {
-  grid-column: 1 / -1;
-  grid-row: 3;
-  justify-self: start;
-}
-
 body.encor-dnd-ui #answerDisplay {
   margin-top: 10px;
   color: #1a3d6e;
   font-size: 0.9rem;
   line-height: 1.45;
+}
+
+/* Hide legacy top toolbar if practice-questions.js was cached */
+body.encor-dnd-ui #ccnpQToolbar,
+body.encor-dnd-ui #ccnpSolutionReveal,
+body.encor-dnd-ui.ccnp-practice-ui #ccnpQToolbar {
+  display: none !important;
 }
 
 /* Bottom nav — darker blue link buttons */

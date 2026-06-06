@@ -52,10 +52,9 @@
       <button id="resetBtn" type="button">Reset</button>
       <button id="showBtn" type="button">Show Answer</button>
       <span id="result"></span>
-      <span id="nextWrap"><a class="next-link" href="/question-310.html">Next</a></span>
     </div>
     </main>
-  </div>
+</div>
 
 <script>
     const bank = document.getElementById("bank");
@@ -64,8 +63,7 @@
     const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
-    const nextWrap = document.getElementById("nextWrap");
-    let dragged = null;
+let dragged = null;
 
     const NB_EXPECTED = ["intent-api", "json-only", "rest-http"];
     const NB_SET = new Set(NB_EXPECTED);
@@ -149,8 +147,7 @@
       } else {
         result.textContent = `Score: ${rightInSlots}/3 — Use Intent API, JSON-only payloads, and REST/HTTP (any order in the column); keep southbound and multivendor distractors in the bank.`;
       }
-      nextWrap.style.display = "inline-block";
-    });
+});
 
     showBtn.addEventListener("click", () => {
       slots.forEach((slot) => {
@@ -169,8 +166,7 @@
       });
 
       result.textContent = "Answer shown.";
-      nextWrap.style.display = "inline-block";
-    });
+});
 
     resetBtn.addEventListener("click", () => {
       slots.forEach((slot) => {
@@ -179,12 +175,11 @@
         if (token) bank.appendChild(token);
       });
       result.textContent = "";
-      nextWrap.style.display = "none";
-    });
+});
   </script>
-    <nav class="sim-nav encor-sample-sim-nav" aria-label="Question navigation">
-    <a class="sim-nav-btn sim-nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
+            <nav class="sim-nav encor-sample-sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">ENCOR Study</a>
   </nav>
-  <script src="/js/practice-questions.js"></script>
+<script src="/CCNP-ENCOR-Study/js/encor-dnd-nav.js" defer></script>
 </body>
 </html>

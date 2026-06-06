@@ -117,6 +117,12 @@ border: 1px solid #2c3f62;
       <div class="panel panel--solution">
         <div class="layout dnd-split">
       <div class="panel panel--solution">
+        <div class="layout dnd-split">
+      <div class="panel panel--solution">
+        <div class="layout dnd-split">
+      <div class="panel panel--solution">
+        <div class="layout dnd-split">
+      <div class="panel panel--solution">
         <div class="code-wrap">
 <pre class="code">&lt;ios-bgp:network&gt;
   &lt;ios-bgp:with-mask&gt;
@@ -139,14 +145,19 @@ border: 1px solid #2c3f62;
 </div>
 </div>
       </div>
+</div>
+</div>
+      </div>
+</div>
+</div>
+      </div>
 <div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
       <button id="resetBtn" type="button">Reset</button>
       <span id="result"></span>
-      <span id="nextWrap"><a class="next-link" href="/question-34.html">Next</a></span>
     </div>
     </main>
-  </div>
+</div>
 
 <script>
     const bank = document.getElementById("bank");
@@ -154,8 +165,7 @@ border: 1px solid #2c3f62;
     const checkBtn = document.getElementById("checkBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
-    const nextWrap = document.getElementById("nextWrap");
-    let dragged = null;
+let dragged = null;
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -203,8 +213,7 @@ border: 1px solid #2c3f62;
         }
       });
       result.textContent = `Score: ${correct}/${slots.length}`;
-      nextWrap.style.display = "inline-block";
-    });
+});
 
     resetBtn.addEventListener("click", () => {
       slots.forEach((slot) => {
@@ -213,12 +222,11 @@ border: 1px solid #2c3f62;
         if (token) bank.appendChild(token);
       });
       result.textContent = "";
-      nextWrap.style.display = "none";
-    });
+});
   </script>
-    <nav class="sim-nav encor-sample-sim-nav" aria-label="Question navigation">
-    <a class="sim-nav-btn sim-nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
+            <nav class="sim-nav encor-sample-sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">ENCOR Study</a>
   </nav>
-  <script src="/js/practice-questions.js"></script>
+<script src="/CCNP-ENCOR-Study/js/encor-dnd-nav.js" defer></script>
 </body>
 </html>

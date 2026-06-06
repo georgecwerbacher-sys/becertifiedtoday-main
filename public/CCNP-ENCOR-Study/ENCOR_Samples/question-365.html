@@ -59,10 +59,9 @@ interface GigabitEthernet0/0
       <button id="resetBtn" type="button">Reset</button>
       <button id="showBtn" type="button">Show Answer</button>
       <span id="result"></span>
-      <span id="nextWrap"><a class="next-link" href="/ccnp-home.html">Next</a></span>
     </div>
     </main>
-  </div>
+</div>
 
 <script>
     const bank = document.getElementById("bank");
@@ -71,8 +70,7 @@ interface GigabitEthernet0/0
     const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
-    const nextWrap = document.getElementById("nextWrap");
-    let dragged = null;
+let dragged = null;
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -132,8 +130,7 @@ interface GigabitEthernet0/0
       result.textContent = full
         ? "Correct. The issue is an OSPF MTU mismatch seen in EXSTART, and mtu-ignore is the interface workaround."
         : "Incorrect. Match EXSTART, MTU, MTU mismatch, and ip ospf mtu-ignore.";
-      nextWrap.style.display = "inline-block";
-    });
+});
 
     showBtn.addEventListener("click", () => {
       slots.forEach((slot) => {
@@ -152,8 +149,7 @@ interface GigabitEthernet0/0
       });
 
       result.textContent = "Answer shown.";
-      nextWrap.style.display = "inline-block";
-    });
+});
 
     resetBtn.addEventListener("click", () => {
       slots.forEach((slot) => {
@@ -162,10 +158,9 @@ interface GigabitEthernet0/0
         if (token) bank.appendChild(token);
       });
       result.textContent = "";
-      nextWrap.style.display = "none";
-    });
+});
   </script>
-    <nav class="sim-nav encor-sample-sim-nav" aria-label="Question navigation">
+            <nav class="sim-nav encor-sample-sim-nav" aria-label="Simulation navigation">
     <a class="sim-nav-btn sim-nav-home" href="/ccnp-home.html">Home</a>
   </nav>
   <script src="/js/practice-questions.js"></script>

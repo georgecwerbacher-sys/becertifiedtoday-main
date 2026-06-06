@@ -1044,6 +1044,9 @@
   }
 
   function init() {
+    if (document.body && document.body.classList.contains("encor-dnd-ui")) {
+      return;
+    }
     window.bccWireEncorPortalHomeLinks();
     var qid = questionIdFromPath();
     if (isSampleMode()) {

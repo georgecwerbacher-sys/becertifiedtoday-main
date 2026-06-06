@@ -59,10 +59,9 @@
       <button id="resetBtn" type="button">Reset</button>
       <button id="showBtn" type="button">Show Answer</button>
       <span id="result"></span>
-      <span id="nextWrap"><a class="next-link" href="/question-44.html">Next</a></span>
     </div>
     </main>
-  </div>
+</div>
 
 <script>
     const bank = document.getElementById("bank");
@@ -71,8 +70,7 @@
     const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
-    const nextWrap = document.getElementById("nextWrap");
-    let dragged = null;
+let dragged = null;
 
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", () => {
@@ -130,15 +128,13 @@
       });
       if (!allFilled) {
         result.textContent = `Place all four characteristics (${filled}/4 in slots).`;
-        nextWrap.style.display = "none";
-        return;
+return;
       }
       const allMatch = correct === slots.length;
       result.textContent = allMatch
         ? `Score: ${correct}/${slots.length} — Ansible is agentless over SSH, uses YAML playbooks, and is implemented in Python. Chef cookbooks and recipes use Ruby-style DSL.`
         : `Score: ${correct}/${slots.length} — Move mismatched items to the other column.`;
-      nextWrap.style.display = "inline-block";
-    });
+});
 
     showBtn.addEventListener("click", () => {
       slots.forEach((slot) => {
@@ -166,8 +162,7 @@
       });
 
       result.textContent = "Answer shown.";
-      nextWrap.style.display = "inline-block";
-    });
+});
 
     resetBtn.addEventListener("click", () => {
       slots.forEach((slot) => {
@@ -176,12 +171,11 @@
         if (token) bank.appendChild(token);
       });
       result.textContent = "";
-      nextWrap.style.display = "none";
-    });
+});
   </script>
-    <nav class="sim-nav encor-sample-sim-nav" aria-label="Question navigation">
-    <a class="sim-nav-btn sim-nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
+            <nav class="sim-nav encor-sample-sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">ENCOR Study</a>
   </nav>
-  <script src="/js/practice-questions.js"></script>
+<script src="/CCNP-ENCOR-Study/js/encor-dnd-nav.js" defer></script>
 </body>
 </html>

@@ -50,11 +50,8 @@
       <button id="showBtn" type="button">Show Answer</button>
     </div>
     <div id="result" class="answer" aria-live="polite"></div>
-    <div id="nextWrap" class="next-wrap">
-      <a class="next-link" href="/question-406.html">Next</a>
-    </div>
     </main>
-  </div>
+</div>
 
 <script>
     const bank = document.getElementById("bank");
@@ -63,8 +60,7 @@
     const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
-    const nextWrap = document.getElementById("nextWrap");
-    const CORRECT = new Set(["multivendor", "netconf-ssh-snmp", "device-packages"]);
+const CORRECT = new Set(["multivendor", "netconf-ssh-snmp", "device-packages"]);
 
     /** Row order for Show Answer to match the reference image (slots are still order-agnostic for Check). */
     const exhibitSlotOrder = ["device-packages", "netconf-ssh-snmp", "multivendor"];
@@ -151,8 +147,7 @@
       });
 
       result.style.display = "block";
-      nextWrap.style.display = "inline-block";
-      if (ok) {
+if (ok) {
         result.className = "answer correct";
         result.textContent =
           "Correct. Southbound communication is multivendor-capable, uses protocols such as NETCONF, SSH, and SNMP toward devices, and can be extended with device packages. Intent API is northbound; southbound is not limited to a single document encoding.";
@@ -182,8 +177,7 @@
       result.style.display = "block";
       result.className = "answer correct";
       result.textContent = "Answer shown.";
-      nextWrap.style.display = "inline-block";
-    });
+});
 
     resetBtn.addEventListener("click", () => {
       slots.forEach((slot) => {
@@ -193,12 +187,11 @@
       });
       result.style.display = "none";
       result.textContent = "";
-      nextWrap.style.display = "none";
-    });
+});
   </script>
-    <nav class="sim-nav encor-sample-sim-nav" aria-label="Question navigation">
-    <a class="sim-nav-btn sim-nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
+              <nav class="sim-nav encor-sample-sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">ENCOR Study</a>
   </nav>
-  <script src="/js/practice-questions.js"></script>
+<script src="/CCNP-ENCOR-Study/js/encor-dnd-nav.js" defer></script>
 </body>
 </html>

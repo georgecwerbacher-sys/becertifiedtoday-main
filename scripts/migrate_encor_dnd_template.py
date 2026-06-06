@@ -15,6 +15,8 @@ SAMPLE_DND_FILES = (
 LOGO_IMG = "/images/logo/becertifiedtoday_logo_image_trans.png"
 PORTAL_HOME = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html"
 SAMPLE_HOME = "/ccnp-home.html"
+ENCOR_DND_NAV_SCRIPT = '<script src="/CCNP-ENCOR-Study/js/encor-dnd-nav.js" defer></script>'
+PRACTICE_QUESTIONS_SCRIPT = '<script src="/js/practice-questions.js"></script>'
 
 KEEP_CSS_KEYWORDS = (
     "exhibit",
@@ -65,6 +67,22 @@ def is_broken_layout_wrap(text: str) -> bool:
     )
 
 
+def needs_nav_chrome_sync(text: str, *, is_sample: bool) -> bool:
+    if not is_sample and "encor-dnd-nav.js" not in text:
+        return True
+    if not is_sample and "practice-questions.js" in text:
+        return True
+    if 'aria-label="Question navigation"' in text:
+        return True
+    if re.search(r'sim-nav-home"[^>]*>\s*Home\s*</a>', text, re.I) and not is_sample:
+        return True
+    if 'id="nextWrap"' in text:
+        return True
+    if re.search(r"<style>[\s\S]*?\.sim-nav[\s\S]*?</style>", text, re.I):
+        return True
+    return False
+
+
 def needs_migration(text: str) -> bool:
     if "encor-dnd-page.css" not in text or "question-shell" not in text:
         return True
@@ -72,7 +90,9 @@ def needs_migration(text: str) -> bool:
         return True
     if re.search(r"background:\s*#0b1020", text, re.I):
         return True
-    return is_broken_layout_wrap(text)
+    if is_broken_layout_wrap(text):
+        return True
+    return False
 
 
 def extract_head_extras(text: str) -> str:
@@ -289,7 +309,7 @@ def strip_home_key(tail: str) -> str:
 
 
 def normalize_actions(text: str) -> str:
-    """Template order: Check Answer · Reset · Show Answer (optional) · result · nextWrap."""
+    """Template order: Check Answer · Reset · Show Answer (optional) · result (no nextWrap)."""
 
     m = re.search(r'<div class="actions">(.*?)</div>', text, re.I | re.S)
     if not m:
@@ -299,7 +319,6 @@ def normalize_actions(text: str) -> str:
     reset = BUTTON_BY_ID_RE["resetBtn"].search(block)
     show = BUTTON_BY_ID_RE["showBtn"].search(block)
     result = re.search(r'<span id="result"[^>]*></span>', block, re.I | re.S)
-    next_wrap = re.search(r'<span id="nextWrap"[^>]*>[\s\S]*?</span>', block, re.I | re.S)
     if not check:
         return text
     parts = ["<div class=\"actions\">", f"      {check.group(0).strip()}"]
@@ -309,8 +328,6 @@ def normalize_actions(text: str) -> str:
         parts.append(f"      {show.group(0).strip()}")
     if result:
         parts.append(f"      {result.group(0).strip()}")
-    if next_wrap:
-        parts.append(f"      {next_wrap.group(0).strip()}")
     parts.append("    </div>")
     replacement = "\n".join(parts)
     return text[: m.start()] + replacement + text[m.end() :]
@@ -336,38 +353,103 @@ def ensure_body_classes(text: str, *, is_sample: bool) -> str:
 
 def build_sim_nav(*, is_sample: bool) -> str:
     home = SAMPLE_HOME if is_sample else PORTAL_HOME
+    home_label = "Home" if is_sample else "ENCOR Study"
     return (
-        f'  <nav class="sim-nav encor-sample-sim-nav" aria-label="Question navigation">\n'
-        f'    <a class="sim-nav-btn sim-nav-home" href="{home}">Home</a>\n'
+        f'  <nav class="sim-nav encor-sample-sim-nav" aria-label="Simulation navigation">\n'
+        f'    <a class="sim-nav-btn sim-nav-home" href="{home}">{home_label}</a>\n'
         f"  </nav>"
     )
 
 
+def strip_standalone_nextwrap(text: str) -> str:
+    return re.sub(
+        r'<div id="nextWrap"[^>]*>[\s\S]*?</div>\s*',
+        "",
+        text,
+        flags=re.I,
+    )
+
+
+def strip_nextwrap_script_refs(text: str) -> str:
+    text = re.sub(
+        r"\s*(?:const|var|let)\s+nextWrap\s*=\s*document\.getElementById\([\"']nextWrap[\"']\)\s*;\s*",
+        "\n",
+        text,
+    )
+    text = re.sub(
+        r"\s*nextWrap\.style\.display\s*=\s*[\"'][^\"']*[\"']\s*;\s*",
+        "\n",
+        text,
+    )
+    text = re.sub(
+        r"\s*if\s*\(\s*nextWrap\s*\)\s*\{?\s*nextWrap\.style\.display\s*=\s*[\"'][^\"']*[\"']\s*;?\s*\}?\s*",
+        "\n",
+        text,
+    )
+    return text
+
+
+def strip_legacy_sim_nav_styles(tail: str) -> str:
+    return re.sub(
+        r"<style>[\s\S]*?\.sim-nav[\s\S]*?</style>\s*",
+        "",
+        tail,
+        flags=re.I,
+    )
+
+
+def swap_dnd_nav_script(tail: str, *, is_sample: bool) -> str:
+    tail = re.sub(
+        r'<script[^>]+src="/js/practice-questions\.js"[^>]*>\s*</script>\s*',
+        "",
+        tail,
+        flags=re.I,
+    )
+    tail = re.sub(
+        r'<script[^>]+src="/CCNP-ENCOR-Study/js/practice-questions\.js"[^>]*>\s*</script>\s*',
+        "",
+        tail,
+        flags=re.I,
+    )
+    if is_sample:
+        if PRACTICE_QUESTIONS_SCRIPT not in tail:
+            tail = (tail.rstrip() + "\n  " + PRACTICE_QUESTIONS_SCRIPT).strip()
+        return tail
+    if ENCOR_DND_NAV_SCRIPT not in tail:
+        tail = (tail.rstrip() + "\n  " + ENCOR_DND_NAV_SCRIPT).strip()
+    return tail
+
+
 def normalize_sim_nav(tail: str, *, is_sample: bool) -> str:
     tail = strip_home_key(tail)
+    tail = strip_legacy_sim_nav_styles(tail)
     tail = re.sub(
         r'<a class="site-logo-corner"[\s\S]*?</a>\s*',
         "",
         tail,
         flags=re.I,
     )
+    home = SAMPLE_HOME if is_sample else PORTAL_HOME
+    home_label = "Home" if is_sample else "ENCOR Study"
+    nav = build_sim_nav(is_sample=is_sample)
+    tail = re.sub(
+        r'<nav class="sim-nav[^"]*"[^>]*>[\s\S]*?</nav>\s*',
+        nav + "\n",
+        tail,
+        count=1,
+        flags=re.I,
+    )
     if "encor-sample-sim-nav" not in tail and 'class="sim-nav"' not in tail:
-        nav = build_sim_nav(is_sample=is_sample)
-        practice = '<script src="/js/practice-questions.js"></script>'
-        if practice in tail:
-            tail = tail.replace(practice, nav + "\n  " + practice)
-        else:
-            tail = (tail + "\n\n" + nav).strip()
-    else:
-        tail = re.sub(
-            r'<nav class="sim-nav"',
-            '<nav class="sim-nav encor-sample-sim-nav"',
-            tail,
-            count=1,
-            flags=re.I,
-        )
+        tail = (tail + "\n\n" + nav).strip()
+    tail = re.sub(
+        r'(<a class="sim-nav-btn sim-nav-home" href="[^"]+">)\s*Home\s*(</a>)',
+        rf"\1{home_label}\2",
+        tail,
+        count=1,
+        flags=re.I,
+    )
     for home_href in (SAMPLE_HOME, PORTAL_HOME):
-        if home_href not in tail or "sim-nav-home" in tail:
+        if home_href not in tail:
             continue
         tail = re.sub(
             rf'(<a class="sim-nav-btn)(?!\s+sim-nav-home)(" href="{re.escape(home_href)}")',
@@ -381,6 +463,7 @@ def normalize_sim_nav(tail: str, *, is_sample: bool) -> str:
         'class="sim-nav-btn sim-nav-home"',
         tail,
     )
+    tail = swap_dnd_nav_script(tail, is_sample=is_sample)
     return tail.strip()
 
 
@@ -469,6 +552,14 @@ def repair_broken_bank(main: str) -> str:
 
 
 def apply_template(text: str, *, is_sample: bool) -> str:
+    text = strip_standalone_nextwrap(text)
+    text = strip_nextwrap_script_refs(text)
+    if needs_nav_chrome_sync(text, is_sample=is_sample):
+        text = normalize_actions(text)
+        tail_m = re.search(r"</main>([\s\S]*)</body>", text, re.I)
+        if tail_m:
+            tail = normalize_sim_nav(tail_m.group(1), is_sample=is_sample)
+            text = text[: tail_m.start(1)] + "\n" + tail + "\n" + text[tail_m.end(1) :]
     text = ensure_stylesheets(text)
     text = ensure_body_classes(text, is_sample=is_sample)
     if "dragdrop-touch-hint" not in text:

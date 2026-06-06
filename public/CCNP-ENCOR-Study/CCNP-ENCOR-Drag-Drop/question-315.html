@@ -72,11 +72,10 @@ json.dump(dictionary_1, out_file, indent=4)
       <button id="resetBtn" type="button">Reset</button>
       <button id="showBtn" type="button">Show Answer</button>
       <span id="result"></span>
-      <span id="nextWrap"><a class="next-link" href="/question-316.html">Next</a></span>
     </div>
     <div id="answerDisplay"></div>
     </main>
-  </div>
+</div>
 
 <script>
     const bank = document.getElementById("bank");
@@ -86,8 +85,7 @@ json.dump(dictionary_1, out_file, indent=4)
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
     const answerDisplay = document.getElementById("answerDisplay");
-    const nextWrap = document.getElementById("nextWrap");
-    let dragged = null;
+let dragged = null;
     const expectedByBlank = [
       "with open(input_file) as text:",
       "out_file = open(\"Json-Output.json\", \"w\")",
@@ -155,8 +153,7 @@ json.dump(dictionary_1, out_file, indent=4)
         ? "Correct. Use with open(input_file), open output in write mode, then close with out_file.close()."
         : "Incorrect. Correct snippets are with open(input_file) as text:, out_file = open(\"Json-Output.json\", \"w\"), and out_file.close().";
       renderExpectedAnswers();
-      nextWrap.style.display = "inline-block";
-    });
+});
 
     showBtn.addEventListener("click", () => {
       slots.forEach((slot) => {
@@ -171,8 +168,7 @@ json.dump(dictionary_1, out_file, indent=4)
       });
       result.textContent = "Answer shown.";
       renderExpectedAnswers();
-      nextWrap.style.display = "inline-block";
-    });
+});
 
     resetBtn.addEventListener("click", () => {
       slots.forEach((slot) => {
@@ -182,12 +178,11 @@ json.dump(dictionary_1, out_file, indent=4)
       });
       result.textContent = "";
       answerDisplay.textContent = "";
-      nextWrap.style.display = "none";
-    });
+});
   </script>
-    <nav class="sim-nav encor-sample-sim-nav" aria-label="Question navigation">
-    <a class="sim-nav-btn sim-nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
+            <nav class="sim-nav encor-sample-sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">ENCOR Study</a>
   </nav>
-  <script src="/js/practice-questions.js"></script>
+<script src="/CCNP-ENCOR-Study/js/encor-dnd-nav.js" defer></script>
 </body>
 </html>

@@ -57,11 +57,10 @@ json_file.<span class="drop-slot" data-target="write"></span>(encoded_json_compa
       <button id="resetBtn" type="button">Reset</button>
       <button id="showBtn" type="button">Show Answer</button>
       <span id="result"></span>
-      <span id="nextWrap"><a class="next-link" href="/question-232.html">Next</a></span>
     </div>
     <div id="answerDisplay"></div>
     </main>
-  </div>
+</div>
 
 <script>
     const bank = document.getElementById("bank");
@@ -71,8 +70,7 @@ json_file.<span class="drop-slot" data-target="write"></span>(encoded_json_compa
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
     const answerDisplay = document.getElementById("answerDisplay");
-    const nextWrap = document.getElementById("nextWrap");
-    let dragged = null;
+let dragged = null;
     const expectedByBlank = ["read", "loads", "dumps", "write"];
 
     function renderExpectedAnswers() {
@@ -128,8 +126,7 @@ json_file.<span class="drop-slot" data-target="write"></span>(encoded_json_compa
       });
       result.textContent = `Score: ${correct}/${slots.length}`;
       renderExpectedAnswers();
-      nextWrap.style.display = "inline-block";
-    });
+});
 
     showBtn.addEventListener("click", () => {
       slots.forEach((slot) => {
@@ -144,8 +141,7 @@ json_file.<span class="drop-slot" data-target="write"></span>(encoded_json_compa
       });
       result.textContent = "Answer shown.";
       renderExpectedAnswers();
-      nextWrap.style.display = "inline-block";
-    });
+});
 
     resetBtn.addEventListener("click", () => {
       slots.forEach((slot) => {
@@ -155,12 +151,11 @@ json_file.<span class="drop-slot" data-target="write"></span>(encoded_json_compa
       });
       result.textContent = "";
       answerDisplay.textContent = "";
-      nextWrap.style.display = "none";
-    });
+});
   </script>
-    <nav class="sim-nav encor-sample-sim-nav" aria-label="Question navigation">
-    <a class="sim-nav-btn sim-nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
+            <nav class="sim-nav encor-sample-sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">ENCOR Study</a>
   </nav>
-  <script src="/js/practice-questions.js"></script>
+<script src="/CCNP-ENCOR-Study/js/encor-dnd-nav.js" defer></script>
 </body>
 </html>

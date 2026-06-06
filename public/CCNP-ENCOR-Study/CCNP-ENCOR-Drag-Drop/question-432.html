@@ -63,11 +63,8 @@
       <button id="showBtn" type="button">Show Answer</button>
     </div>
     <div id="result" aria-live="polite"></div>
-    <div id="nextWrap">
-      <a class="next-link" href="/question-433.html">Next</a>
-    </div>
     </main>
-  </div>
+</div>
 
 <script>
     const bank = document.getElementById("bank");
@@ -76,8 +73,7 @@
     const showBtn = document.getElementById("showBtn");
     const resetBtn = document.getElementById("resetBtn");
     const result = document.getElementById("result");
-    const nextWrap = document.getElementById("nextWrap");
-    /** Per-column row order for Show Answer to match the reference image (Check is still multiset / order-agnostic for Ansible). */
+/** Per-column row order for Show Answer to match the reference image (Check is still multiset / order-agnostic for Ansible). */
     const exhibitOrderByGroup = [
       [
         "does not require an admin account on the client",
@@ -208,8 +204,7 @@
       } else {
         result.classList.add("incorrect");
       }
-      nextWrap.style.display = "inline-block";
-    });
+});
 
     showBtn.addEventListener("click", () => {
       document.querySelectorAll(".target-group").forEach((group, gi) => {
@@ -231,8 +226,7 @@
       result.textContent = "Answer shown.";
       result.classList.remove("incorrect");
       result.classList.add("is-visible", "correct");
-      nextWrap.style.display = "inline-block";
-    });
+});
 
     resetBtn.addEventListener("click", () => {
       slots.forEach((slot) => {
@@ -242,12 +236,11 @@
       });
       result.textContent = "";
       result.classList.remove("correct", "incorrect", "is-visible");
-      nextWrap.style.display = "none";
-    });
+});
   </script>
-    <nav class="sim-nav encor-sample-sim-nav" aria-label="Question navigation">
-    <a class="sim-nav-btn sim-nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
+              <nav class="sim-nav encor-sample-sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">ENCOR Study</a>
   </nav>
-  <script src="/js/practice-questions.js"></script>
+<script src="/CCNP-ENCOR-Study/js/encor-dnd-nav.js" defer></script>
 </body>
 </html>
