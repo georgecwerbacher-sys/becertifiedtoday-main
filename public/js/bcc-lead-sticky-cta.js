@@ -1,6 +1,6 @@
 /**
  * Bottom purple sticky $9.99 / 10-day offer on ccna-home.html, ccnp-home.html, and comptia-sec+-home.html.
- * Shows after #purchase scrolls out of view while the one-time offer is still active.
+ * Shows after #purchase scrolls out of view while the visitor has no active portal access.
  */
 (function () {
   "use strict";
@@ -74,15 +74,6 @@
     return null;
   }
 
-  function wasDismissed() {
-    if (!cfg) return true;
-    try {
-      return localStorage.getItem(cfg.dismissedKey) === "1";
-    } catch (_) {
-      return false;
-    }
-  }
-
   function markDismissed() {
     if (typeof window.bccMark10dOneTimeOfferDismissed === "function") {
       window.bccMark10dOneTimeOfferDismissed();
@@ -95,11 +86,7 @@
   }
 
   function canShowOffer() {
-    if (!cfg || wasDismissed() || cfg.hasAccess()) return false;
-    if (typeof window.bcc10dOneTimeOfferActive === "function") {
-      return window.bcc10dOneTimeOfferActive();
-    }
-    return true;
+    return !!(cfg && !cfg.hasAccess());
   }
 
   function offerModalOpen() {
@@ -130,15 +117,38 @@
   }
 
   function setStickyVisible(show) {
-    if (!sticky) return;
+    if (!sticky || !cfg) return;
     var visible = !!show && canShowSticky();
     sticky.classList.toggle("bcc-lead-sticky-cta--visible", visible);
     document.documentElement.classList.toggle(cfg.htmlPadClass, visible);
+    if (visible) {
+      sticky.removeAttribute("hidden");
+      sticky.hidden = false;
+      sticky.setAttribute("aria-hidden", "false");
+      return;
+    }
     if (!canShowOffer()) {
       sticky.hidden = true;
+      sticky.setAttribute("hidden", "");
       sticky.setAttribute("aria-hidden", "true");
       document.documentElement.classList.remove(cfg.htmlPadClass);
     }
+  }
+
+  function refreshStickyFromScroll() {
+    if (!sticky || !cfg || !canShowOffer()) {
+      setStickyVisible(false);
+      return;
+    }
+    var target = document.getElementById(cfg.observeId);
+    if (!target) {
+      setStickyVisible(true);
+      return;
+    }
+    var rect = target.getBoundingClientRect();
+    var vh = window.innerHeight || document.documentElement.clientHeight || 0;
+    var purchaseInView = rect.bottom > 0 && rect.top < vh * 0.92;
+    setStickyVisible(!purchaseInView);
   }
 
   function wireCheckout() {
@@ -149,20 +159,20 @@
   }
 
   function wireObserver() {
-    if (!canShowOffer()) {
-      sticky.hidden = true;
-      sticky.setAttribute("aria-hidden", "true");
-      return;
-    }
+    if (!sticky) return;
     var target = document.getElementById(cfg.observeId);
-    if (!sticky || !target) {
-      setStickyVisible(true);
+    if (!target) {
+      if (canShowOffer()) {
+        sticky.hidden = false;
+        sticky.setAttribute("aria-hidden", "false");
+        setStickyVisible(true);
+      }
       return;
     }
     if (typeof IntersectionObserver === "undefined") {
-      sticky.hidden = false;
-      sticky.setAttribute("aria-hidden", "false");
-      setStickyVisible(true);
+      window.addEventListener("scroll", refreshStickyFromScroll, { passive: true });
+      window.addEventListener("resize", refreshStickyFromScroll, { passive: true });
+      refreshStickyFromScroll();
       return;
     }
     var observer = new IntersectionObserver(
@@ -174,6 +184,7 @@
       { root: null, threshold: 0, rootMargin: "0px 0px -8% 0px" }
     );
     observer.observe(target);
+    refreshStickyFromScroll();
   }
 
   function init() {
@@ -184,7 +195,14 @@
     if (!sticky || !btn) return;
     wired = true;
     document.addEventListener("bcc-10d-offer-state-change", function () {
-      setStickyVisible(false);
+      if (!canShowOffer()) setStickyVisible(false);
+      else refreshStickyFromScroll();
+    });
+    document.addEventListener("bcc-10d-popup-closed", function () {
+      if (!canShowOffer()) return;
+      sticky.hidden = false;
+      sticky.setAttribute("aria-hidden", "false");
+      refreshStickyFromScroll();
     });
     if (!canShowOffer()) {
       sticky.hidden = true;

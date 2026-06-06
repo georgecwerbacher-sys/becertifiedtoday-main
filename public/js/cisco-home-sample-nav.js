@@ -348,9 +348,9 @@
       "</strong> correct (" +
       pct +
       "%)</p>" +
-      '<p class="cisco-sample-scorecard-lead">You answered " +
+      '<p class="cisco-sample-scorecard-lead">You answered ' +
       totals.total +
-      ' multiple-choice items across the exam domains. Use the breakdown below to see where to review next.</p>' +
+      " multiple-choice items across the exam domains. Use the breakdown below to see where to review next.</p>" +
       '<div class="cisco-sample-scorecard-table-wrap"><table><thead><tr><th scope="col">Domain</th><th scope="col">Score</th><th scope="col">Notes</th></tr></thead><tbody>' +
       domainRowsHtml +
       "</tbody></table></div>" +

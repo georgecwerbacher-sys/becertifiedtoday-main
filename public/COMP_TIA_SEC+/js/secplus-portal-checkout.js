@@ -5,7 +5,7 @@
  * Paste the live Payment Link URL into LINKS["30d"] below.
  *
  * Stripe product name: CompTIA Security+ SY0-701 — 30-day all-access pass
- * Stripe description (≤500 chars): 30 days of SY0-701 exam prep on Be Certified Today: 800+ interactive practice questions (objectives v5.0), PBQ-style hot-spot simulations, adaptive domain review, progress tracking, and a full 90-minute timed practice exam—all in your browser on phone, tablet, or desktop. One-time purchase; no subscription. Access starts at checkout on this device and browser.
+ * Stripe description (≤500 chars): 30 days of SY0-701 exam prep on Be Certified Today: 1000+ interactive practice questions (objectives v5.0), PBQ-style hot-spot simulations, adaptive domain review, progress tracking, and a full 90-minute timed practice exam—all in your browser on phone, tablet, or desktop. One-time purchase; no subscription. Access starts at checkout on this device and browser.
  *
  * Redirect after payment:
  *   /COMP_TIA_SEC+/secplus-portal-checkout-success.html?session_id={CHECKOUT_SESSION_ID}

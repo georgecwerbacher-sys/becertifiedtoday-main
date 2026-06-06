@@ -233,6 +233,11 @@
       syncOfferUi();
       checkFaqInView();
     }
+    try {
+      document.dispatchEvent(
+        new CustomEvent("bcc-10d-popup-closed", { detail: { dismissed: !!dismissOffer } })
+      );
+    } catch (_) {}
   }
 
   function openPopup() {

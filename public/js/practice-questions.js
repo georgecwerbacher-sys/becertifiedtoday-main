@@ -1078,15 +1078,11 @@
     if (isTestSimulationMode()) return;
     renderObjectiveSection(card, qid);
 
-    var dragDropPage = isDragDropQuestion(card);
-    if (isSampleMode() && dragDropPage) {
-      return;
-    }
-
     var toolbar = document.createElement("div");
     toolbar.id = "ccnpQToolbar";
     toolbar.className = "ccnp-q-toolbar";
     toolbar.setAttribute("role", "toolbar");
+    var dragDropPage = isDragDropQuestion(card);
     if (!dragDropPage) {
       card
         .querySelectorAll("#resetBtn, .reset-btn, button[aria-label='Reset'], button[aria-label='Reset question']")
@@ -1134,7 +1130,9 @@
     if (dragDropPage && !isSampleMode()) {
       card.insertBefore(reveal, toolbar.nextSibling);
     }
-    /* Drag-and-drop samples use page actions + cisco-home-sample-nav only (no Finish sample bar). */
+    if (isSampleMode() && dragDropPage) {
+      initSampleDndBottomBar(card, btn);
+    }
     bindSampleMcqBottomNextReveal(card);
 
     btn.addEventListener("click", function () {
