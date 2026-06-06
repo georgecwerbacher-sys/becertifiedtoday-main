@@ -19,8 +19,12 @@ HUB_CHAIN_ANCHOR = "vty-access-list-ssh-secure"
 
 STYLE = r"""  <style>
     :root {
-      color-scheme: light dark;
+      color-scheme: light;
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bcc-outside-text: #1a3d6e;
+      --bcc-choice-bg: #254b8a;
+      --bcc-choice-border: #3d6dbb;
+      --bcc-box-text: #e6edf3;
     }
     body {
       margin: 0;
@@ -28,22 +32,24 @@ STYLE = r"""  <style>
       display: grid;
       place-items: center;
       background: #ffffff;
-      color: #e6edf3;
+      color: var(--bcc-outside-text);
       padding: 16px;
       box-sizing: border-box;
     }
     .card {
       width: min(900px, 100%);
-      background: #121a2b;
-      border: 1px solid #2d3b5a;
-      border-radius: 14px;
-      padding: 28px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      box-shadow: none;
+      color: var(--bcc-outside-text);
     }
     h1 {
-      margin: 0 0 8px;
+      margin: 0 0 16px;
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
+      color: var(--bcc-outside-text);
     }
     h1.choose-two-stem {
       line-height: 1.5;
@@ -53,7 +59,7 @@ STYLE = r"""  <style>
       font-size: clamp(1.02rem, 1.9vw, 1.32rem);
       line-height: 1.42;
       font-weight: 600;
-      color: #e6edf3;
+      color: var(--bcc-outside-text);
     }
     .stem-after-exhibit-list {
       margin: 8px 0 12px;
@@ -61,7 +67,7 @@ STYLE = r"""  <style>
       font-size: clamp(1.02rem, 1.9vw, 1.32rem);
       line-height: 1.45;
       font-weight: 600;
-      color: #e6edf3;
+      color: var(--bcc-outside-text);
     }
     .stem-after-exhibit-list li {
       margin: 6px 0;
@@ -74,9 +80,10 @@ STYLE = r"""  <style>
       margin: 10px 0;
       padding: 12px 14px;
       border-radius: 10px;
-      background: #1a253b;
-      border: 1px solid #2c3f62;
+      background: var(--bcc-choice-bg);
+      border: 1px solid var(--bcc-choice-border);
       font-size: 1.02rem;
+      color: var(--bcc-box-text);
       cursor: pointer;
     }
     .choice.mono.cli-router-choice {
