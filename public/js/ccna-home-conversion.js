@@ -495,7 +495,9 @@
     applyHeadlineVariant();
     wireFreeAssessmentLinks();
     bindConversionClicks();
-    initStickyMobileCta();
+    if (!document.getElementById("ccnaLeadStickyCta")) {
+      initStickyMobileCta();
+    }
   }
 
   if (document.readyState === "loading") {
