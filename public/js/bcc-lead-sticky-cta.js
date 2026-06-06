@@ -1,5 +1,5 @@
 /**
- * Bottom purple sticky $9.99 / 10-day offer on ccna-home.html and ccnp-home.html.
+ * Bottom purple sticky $9.99 / 10-day offer on ccna-home.html, ccnp-home.html, and comptia-sec+-home.html.
  * Shows after #purchase scrolls out of view while the one-time offer is still active.
  */
 (function () {
@@ -41,6 +41,24 @@
         );
       },
     },
+    secplus: {
+      homeMatch: "comptia-sec+-home",
+      stickyId: "secplusLeadStickyCta",
+      btnId: "secplusLeadStickyCtaBtn",
+      observeId: "purchase",
+      htmlPadClass: "bcc-secplus-lead-sticky-visible",
+      lastChanceVisibleClass: "bcc-secplus-last-chance-visible",
+      dismissedKey: "bcc_secplus_10d_one_time_offer_v1",
+      checkoutAttr: "data-secplus-portal-10d-checkout",
+      offerLabel: "Get 10-day access · $9.99",
+      noteText: "One-time $9.99 · closes when you leave this page",
+      hasAccess: function () {
+        return (
+          typeof window.bccSecplusPortalAccessActive === "function" &&
+          window.bccSecplusPortalAccessActive()
+        );
+      },
+    },
   };
 
   var cfg = null;
@@ -52,6 +70,7 @@
     var path = location.pathname || "";
     if (path.indexOf(CONFIGS.ccna.homeMatch) >= 0) return CONFIGS.ccna;
     if (path.indexOf(CONFIGS.encor.homeMatch) >= 0) return CONFIGS.encor;
+    if (path.indexOf(CONFIGS.secplus.homeMatch) >= 0) return CONFIGS.secplus;
     return null;
   }
 
@@ -84,7 +103,7 @@
   }
 
   function offerModalOpen() {
-    var ids = ["ccna10dOfferRoot", "encor10dOfferRoot"];
+    var ids = ["ccna10dOfferRoot", "encor10dOfferRoot", "secplus10dOfferRoot"];
     for (var i = 0; i < ids.length; i++) {
       var root = document.getElementById(ids[i]);
       if (root && root.classList.contains("ccna-sim-promo-root--open")) return true;
@@ -93,7 +112,7 @@
   }
 
   function portalGateOpen() {
-    var ids = ["ccna-portal-gate", "ccnp-portal-gate"];
+    var ids = ["ccna-portal-gate", "ccnp-portal-gate", "secplusPortalGateRoot"];
     for (var i = 0; i < ids.length; i++) {
       var gate = document.getElementById(ids[i]);
       if (gate && gate.classList.contains("ccna-sim-promo-root--open")) return true;

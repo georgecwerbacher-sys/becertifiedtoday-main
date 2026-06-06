@@ -1,13 +1,8 @@
 /**
  * Stripe Payment Links for CompTIA Security+ portal access.
  *
- * 30-day list price: $24.99 on the Payment Link. Launch offer uses promotion code ONETIMEDEAL
- * ($7.00 off → $17.99 one-time deal at checkout). Create in Stripe Dashboard:
- *   1. Product price $24.99 on the 30-day Payment Link
- *   2. Coupon: $7.00 off (amount_off, USD), one-time, applies to that product
- *   3. Promotion code: ONETIMEDEAL (must match LAUNCH_PROMO_CODE below)
- *   4. Payment Link → Allow promotion codes: ON
- *   5. Paste the live Payment Link URL into LINKS["30d"] below
+ * 30-day list price: $19.99 on the Payment Link (same pattern as CCNA/ENCOR portal pricing).
+ * Paste the live Payment Link URL into LINKS["30d"] below.
  *
  * Stripe product name: CompTIA Security+ SY0-701 — 30-day all-access pass
  * Stripe description (≤500 chars): 30 days of SY0-701 exam prep on Be Certified Today: 800+ interactive practice questions (objectives v5.0), PBQ-style hot-spot simulations, adaptive domain review, progress tracking, and a full 90-minute timed practice exam—all in your browser on phone, tablet, or desktop. One-time purchase; no subscription. Access starts at checkout on this device and browser.
@@ -20,7 +15,7 @@
 (function () {
   var LINKS = {
     "10d": "https://buy.stripe.com/8x28wObwVfp54CIgs4c3m06",
-    "30d": "https://buy.stripe.com/cNi28q6cB90H3yEdfSc3m0a",
+    "30d": "https://buy.stripe.com/5kQ14mbwVgt93yEfo0c3m07",
   };
 
   /** Must match a live Stripe promotion code tied to a $7.00-off coupon on the 30-day price. */
@@ -37,9 +32,9 @@
     "30d": {
       id: "secplus_portal_30d",
       name: "CompTIA Security+ 30-day access",
-      listValue: "24.99",
+      listValue: "19.99",
       launchValue: "17.99",
-      value: "24.99",
+      value: "19.99",
       defaultLabel: "Get 30-day access",
       labelKey: "secplusPortal30dCheckoutLabel",
     },

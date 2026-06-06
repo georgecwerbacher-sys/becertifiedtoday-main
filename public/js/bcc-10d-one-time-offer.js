@@ -1,5 +1,5 @@
 /**
- * One-time $9.99 / 10-day access on ccna-home.html and ccnp-home.html:
+ * One-time $9.99 / 10-day access on ccna-home.html, ccnp-home.html, and comptia-sec+-home.html:
  * - Modal popup 5s after page load (top-of-page timing)
  * - Bottom “last chance” bar after #faq is in view (~5s)
  * Both use the same localStorage dismiss flag (once per browser).
@@ -37,6 +37,21 @@
         );
       },
     },
+    secplus: {
+      dismissedKey: "bcc_secplus_10d_one_time_offer_v1",
+      rootId: "secplus10dOfferRoot",
+      lastChanceBarId: "secplus10dLastChanceBar",
+      lastChanceVisibleClass: "bcc-secplus-last-chance-visible",
+      homeMatch: "comptia-sec+-home",
+      checkoutAttr: "data-secplus-portal-10d-checkout",
+      samplesHref: "#home-secplus-samples-title",
+      hasAccess: function () {
+        return (
+          typeof window.bccSecplusPortalAccessActive === "function" &&
+          window.bccSecplusPortalAccessActive()
+        );
+      },
+    },
   };
 
   var PURCHASE_POPUP_DELAY_MS = 5000;
@@ -58,6 +73,7 @@
     var path = location.pathname || "";
     if (path.indexOf(CONFIGS.ccna.homeMatch) >= 0) return CONFIGS.ccna;
     if (path.indexOf(CONFIGS.encor.homeMatch) >= 0) return CONFIGS.encor;
+    if (path.indexOf(CONFIGS.secplus.homeMatch) >= 0) return CONFIGS.secplus;
     return null;
   }
 

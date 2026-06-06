@@ -7,35 +7,13 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTT6KBHX7V"></script>
   <script src="/js/google-tag-gtag.js"></script>
   <script src="/js/campaign-attribution.js"></script>
-  <script>
-    (function () {
-      document.documentElement.classList.add("secplus-landing-lead-first");
-      window.bccIsSecplusLeadLanding = function () {
-        return true;
-      };
-      window.bccShouldScrollSecplusLeadCapture = function () {
-        if (location.hash === "#secplus-lead-capture") return true;
-        try {
-          var qs = new URLSearchParams(location.search);
-          var fromQuery = qs.get("utm_content") || "";
-          if (/lead-free-sim|free-sim|free\.simulation/i.test(fromQuery)) return true;
-          var raw = sessionStorage.getItem("bcc_campaign_attribution_v1");
-          if (raw) {
-            var stored = JSON.parse(raw);
-            if (/lead-free-sim|free-sim|free\.simulation/i.test(stored.utm_content || "")) return true;
-          }
-        } catch (e) {}
-        return false;
-      };
-    })();
-  </script>
   <script src="/js/install-vercel-analytics.js"></script>
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta
     name="description"
-    content="SY0-701 exam prep with 800+ practice questions, PBQ simulations, adaptive review, and timed tests in your browser. Free 35-minute sample exam. 30-day access $24.99 (launch offer $17.99)."
+    content="SY0-701 exam prep with 800+ practice questions, PBQ simulations, adaptive review, and timed tests in your browser. Free sample questions and PBQ preview. 30-day access $19.99."
   />
   <meta
     name="keywords"
@@ -46,7 +24,7 @@
   <meta property="og:title" content="Security+ SY0-701 Exam Prep | 800+ Questions &amp; Timed Simulation | Be Certified Today" />
   <meta
     property="og:description"
-    content="SY0-701 exam prep in your browser: 800+ practice questions, verified explanations, PBQ simulations, and a free 35-minute timed sample. Not a training course."
+    content="SY0-701 exam prep in your browser: 800+ practice questions, verified explanations, PBQ simulations, and free sample previews. Not a training course."
   />
   <meta property="og:site_name" content="Be Certified Today" />
   <meta property="og:url" content="https://becertifiedtoday.com/comptia-sec+-home.html" />
@@ -72,7 +50,7 @@
   <meta name="twitter:title" content="Security+ SY0-701 Exam Prep | 800+ Questions &amp; Timed Simulation | Be Certified Today" />
   <meta
     name="twitter:description"
-    content="SY0-701 exam prep in your browser: 800+ practice questions, verified explanations, PBQ simulations, and a free 35-minute timed sample. Not a training course."
+    content="SY0-701 exam prep in your browser: 800+ practice questions, verified explanations, PBQ simulations, and free sample previews. Not a training course."
   />
   <link rel="icon" href="/images/logo/becertifiedtoday_logo_image_trans.png" type="image/png" />
   <meta property="og:locale" content="en_US" />
@@ -87,7 +65,7 @@
           "name": "CompTIA Security+ SY0-701 Exam Prep: Practice Tests and Simulation",
           "url": "https://becertifiedtoday.com/comptia-sec+-home.html",
           "inLanguage": "en-US",
-          "description": "SY0-701 exam preparation with 800+ interactive practice questions, PBQ simulations, adaptive review, and timed exams in your browser. Free 35-minute sample. 30-day access $24.99 list ($17.99 with launch offer). Not a training course.",
+          "description": "SY0-701 exam preparation with 800+ interactive practice questions, PBQ simulations, adaptive review, and timed exams in your browser. Free sample previews. 30-day access $19.99. Not a training course.",
           "isPartOf": {
             "@type": "WebSite",
             "@id": "https://becertifiedtoday.com/#website",
@@ -113,7 +91,7 @@
               "name": "Can I try Security+ practice before I pay?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Yes. Start the free 35-minute timed simulation on this page with no checkout, or open free sample questions and the dark web PBQ preview on your phone or laptop. Unlock the full 800+ question library with a separate 30-day purchase ($24.99 list; launch offer $17.99 with code ONETIMEDEAL) when you are ready."
+                "text": "Yes. Open free sample questions and the dark web PBQ preview on your phone or laptop with no checkout. Unlock the full 800+ question library with a separate 30-day purchase ($19.99) when you are ready."
               }
             },
             {
@@ -145,7 +123,7 @@
               "name": "Are performance-based simulations and a timed practice exam included?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Yes. The library includes PBQ-style hot-spot simulations and a 90-minute timed practice exam (up to 90 questions). A free 35-minute sample exam on the home page includes multiple-choice items plus one performance-based simulation."
+                "text": "Yes. The library includes PBQ-style hot-spot simulations and a 90-minute timed practice exam (up to 90 questions). Free sample questions and a dark web PBQ preview on the home page let you judge quality before you buy."
               }
             },
             {
@@ -169,7 +147,7 @@
               "name": "How much does full Security+ library access cost?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "30-day all-access is $24.99 one time at list price. When you reach pricing on this page, a launch offer may apply promotion code ONETIMEDEAL for $7 off ($17.99). Includes 800+ questions, simulations, adaptive review, progress tracking, and the full timed exam. No recurring membership. Price is shown before Stripe checkout."
+                "text": "30-day all-access is $19.99 one time. First-time visitors may see a one-time $9.99 / 10-day offer on this page. Includes 800+ questions, simulations, adaptive review, progress tracking, and the full timed exam. No recurring membership. Price is shown before Stripe checkout."
               }
             },
             {
@@ -209,7 +187,7 @@
               "name": "Do you collect, store, or sell my email or personal information?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Be Certified Today does not run a marketing email list, sell visitor data, or require your email for the free timed simulation or sample questions. Paid checkout email and payment details are handled by Stripe on their secure page, not collected by us for newsletters or resale. If you need portal access on a new device, submit the same email you used at checkout on our portal link page for a one-time login link. Like most sites, we use basic traffic analytics (for example Google Analytics) that do not require an account."
+                "text": "Be Certified Today does not run a marketing email list, sell visitor data, or require your email for free sample questions. Paid checkout email and payment details are handled by Stripe on their secure page, not collected by us for newsletters or resale. If you need portal access on a new device, submit the same email you used at checkout on our portal link page for a one-time login link. Like most sites, we use basic traffic analytics (for example Google Analytics) that do not require an account."
               }
             }
           ]
@@ -428,20 +406,17 @@
     .funnel > .funnel-intro {
       order: 1;
     }
-    .funnel > #secplus-lead-capture {
+    .funnel > #purchase {
       order: 2;
     }
-    .funnel > #purchase {
+    .funnel > .samples-stack {
       order: 3;
     }
-    .funnel > .samples-stack {
+    .funnel > #secplus-compare {
       order: 4;
     }
-    .funnel > #secplus-compare {
-      order: 5;
-    }
     .funnel > #purchase-details {
-      order: 6;
+      order: 5;
     }
     .funnel-intro {
       margin: 0 0 clamp(20px, 3.5vw, 28px);
@@ -535,125 +510,7 @@
     .secplus-hero-atf-cta a:hover {
       color: #6d28d9;
     }
-    .lead--lead-first {
-      display: none;
-      margin: 0 0 clamp(18px, 3vw, 24px);
-    }
-    html.secplus-landing-lead-first .lead--full {
-      display: none;
-    }
-    html.secplus-landing-lead-first .lead--lead-first {
-      display: block;
-    }
-    html.secplus-landing-lead-first .funnel-intro .benefits {
-      display: none;
-    }
-    html.secplus-landing-lead-first .secplus-hero-atf-cta {
-      display: block;
-    }
-    .secplus-hero-atf-cta {
-      display: none;
-    }
-    html.secplus-landing-lead-first .funnel > .funnel-intro {
-      order: 1;
-    }
-    html.secplus-landing-lead-first .funnel > #secplus-lead-capture {
-      order: 2;
-    }
-    html.secplus-landing-lead-first .funnel > #purchase {
-      order: 3;
-    }
-    html.secplus-landing-lead-first .funnel > .samples-stack {
-      order: 4;
-    }
-    html.secplus-landing-lead-first .funnel > #secplus-compare {
-      order: 5;
-    }
-    html.secplus-landing-lead-first .funnel > #purchase-details {
-      order: 6;
-    }
-    .purchase-fold-lead-note {
-      display: none;
-      margin: 0 0 14px;
-      font-size: 0.92rem;
-      font-weight: 700;
-      color: #6b8ab8;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-    html.secplus-landing-lead-first .purchase-fold-lead-note {
-      display: none;
-    }
-    html.secplus-landing-lead-first #secplus-lead-capture {
-      margin-bottom: clamp(48px, 8vw, 64px);
-      border-color: rgba(79, 132, 216, 0.55);
-      box-shadow: 0 0 0 1px rgba(79, 132, 216, 0.2) inset, 0 12px 40px rgba(0, 0, 0, 0.35);
-    }
-    html.secplus-landing-lead-first #secplus-lead-capture .assessment-cta-wrap {
-      margin-bottom: clamp(20px, 3vw, 28px);
-    }
-    html.secplus-landing-lead-first #secplus-lead-capture .assessment-cta-panel .cta-main {
-      font-size: clamp(1.05rem, 2.8vw, 1.2rem);
-      padding: 1rem 1.35rem;
-      min-height: 52px;
-    }
-    .secplus-lead-sticky-cta {
-      display: none;
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 9000;
-      padding: 12px max(16px, env(safe-area-inset-right, 0px)) max(12px, env(safe-area-inset-bottom, 0px))
-        max(16px, env(safe-area-inset-left, 0px));
-      background: linear-gradient(180deg, transparent 0%, rgba(8, 12, 22, 0.92) 28%, rgba(8, 12, 22, 0.98) 100%);
-      pointer-events: none;
-    }
-    html.secplus-landing-lead-first .secplus-lead-sticky-cta.secplus-lead-sticky-cta--visible {
-      display: block;
-      pointer-events: auto;
-    }
-    .secplus-lead-sticky-cta .cta-main {
-      width: 100%;
-      max-width: 28rem;
-      margin: 0 auto;
-      display: block;
-      text-align: center;
-      min-height: 48px;
-      padding: 0.85rem 1.25rem;
-    }
-    .secplus-lead-sticky-cta__deal {
-      margin: 8px auto 0;
-      max-width: 28rem;
-      text-align: center;
-      font-size: 0.78rem;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-      letter-spacing: 0.02em;
-      color: #fde68a;
-    }
-    .secplus-launch-urgency-bar {
-      display: none;
-      margin: 0;
-      padding: 10px clamp(16px, 4vw, 28px);
-      text-align: center;
-      font-size: clamp(0.78rem, 2vw, 0.88rem);
-      font-weight: 700;
-      line-height: 1.45;
-      color: #fef3c7;
-      background: linear-gradient(90deg, #4c1d95 0%, #6d28d9 50%, #4c1d95 100%);
-      border-bottom: 1px solid rgba(253, 224, 71, 0.35);
-    }
-    html.secplus-launch-deal-active .secplus-launch-urgency-bar {
-      display: block;
-    }
-    .secplus-launch-urgency-bar strong {
-      color: #fff;
-    }
-    #secplusLaunchDealRoot .ccna-sim-promo-panel {
-      border-color: rgba(139, 92, 246, 0.55);
-    }
-    .secplus-last-chance-bar {
+    .bcc-last-chance-bar {
       position: fixed;
       left: 0;
       right: 0;
@@ -665,14 +522,14 @@
       pointer-events: none;
       box-sizing: border-box;
     }
-    .secplus-last-chance-bar.secplus-last-chance-bar--visible {
+    .bcc-last-chance-bar.bcc-last-chance-bar--visible {
       display: block;
       pointer-events: auto;
     }
-    html.secplus-last-chance-visible {
+    html.bcc-secplus-last-chance-visible {
       padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
     }
-    .secplus-last-chance-bar__inner {
+    .bcc-last-chance-bar__inner {
       max-width: 1080px;
       margin: 0 auto;
       display: grid;
@@ -681,12 +538,12 @@
       align-items: center;
       padding: 12px 14px 12px 16px;
       border-radius: 14px 14px 0 0;
-      border: 1px solid rgba(250, 204, 21, 0.45);
+      border: 1px solid rgba(139, 92, 246, 0.45);
       border-bottom: none;
       background: linear-gradient(165deg, rgba(76, 29, 149, 0.98) 0%, rgba(18, 26, 43, 0.98) 100%);
       box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.45);
     }
-    .secplus-last-chance-bar__close {
+    .bcc-last-chance-bar__close {
       grid-column: 2;
       grid-row: 1 / span 2;
       align-self: start;
@@ -700,11 +557,11 @@
       line-height: 1;
       cursor: pointer;
     }
-    .secplus-last-chance-bar__close:hover {
+    .bcc-last-chance-bar__close:hover {
       color: #fff;
       background: rgba(255, 255, 255, 0.08);
     }
-    .secplus-last-chance-bar__eyebrow {
+    .bcc-last-chance-bar__eyebrow {
       grid-column: 1;
       margin: 0;
       font-size: 0.72rem;
@@ -713,23 +570,18 @@
       text-transform: uppercase;
       color: #fde68a;
     }
-    .secplus-last-chance-bar__copy {
+    .bcc-last-chance-bar__copy {
       grid-column: 1;
       margin: 0;
       font-size: clamp(0.88rem, 2.2vw, 0.98rem);
       line-height: 1.4;
       color: #f4f7ff;
     }
-    .secplus-last-chance-bar__copy strong {
+    .bcc-last-chance-bar__copy strong {
       color: #fef9c3;
       font-weight: 800;
     }
-    .secplus-last-chance-bar__was {
-      text-decoration: line-through;
-      color: #94a3b8;
-      font-weight: 600;
-    }
-    .secplus-last-chance-bar__cta {
+    .bcc-last-chance-bar__cta {
       grid-column: 1 / -1;
       justify-self: start;
       margin: 0;
@@ -743,36 +595,98 @@
       cursor: pointer;
       box-shadow: 0 4px 14px rgba(251, 191, 36, 0.35);
     }
-    .secplus-last-chance-bar__cta:hover {
+    .bcc-last-chance-bar__cta:hover {
       filter: brightness(1.05);
     }
     @media (min-width: 720px) {
-      .secplus-last-chance-bar__inner {
+      .bcc-last-chance-bar__inner {
         grid-template-columns: auto 1fr auto auto;
         gap: 8px 16px;
         padding: 14px 18px;
         border-radius: 12px;
-        border-bottom: 1px solid rgba(250, 204, 21, 0.45);
+        border-bottom: 1px solid rgba(139, 92, 246, 0.45);
         margin-bottom: 8px;
       }
-      .secplus-last-chance-bar__eyebrow {
+      .bcc-last-chance-bar__eyebrow {
         grid-column: 1;
         grid-row: 1;
         white-space: nowrap;
       }
-      .secplus-last-chance-bar__copy {
+      .bcc-last-chance-bar__copy {
         grid-column: 2;
         grid-row: 1;
       }
-      .secplus-last-chance-bar__cta {
+      .bcc-last-chance-bar__cta {
         grid-column: 3;
         grid-row: 1;
         justify-self: end;
       }
-      .secplus-last-chance-bar__close {
+      .bcc-last-chance-bar__close {
         grid-column: 4;
         grid-row: 1;
       }
+    }
+    .bcc-lead-sticky-cta {
+      display: none;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9000;
+      padding: 12px max(16px, env(safe-area-inset-right, 0px)) max(12px, env(safe-area-inset-bottom, 0px))
+        max(16px, env(safe-area-inset-left, 0px));
+      background: linear-gradient(180deg, transparent 0%, rgba(8, 12, 22, 0.92) 28%, rgba(8, 12, 22, 0.98) 100%);
+      pointer-events: none;
+    }
+    .bcc-lead-sticky-cta.bcc-lead-sticky-cta--visible {
+      display: block;
+      pointer-events: auto;
+    }
+    html.bcc-secplus-lead-sticky-visible {
+      padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+    }
+    .bcc-lead-sticky-cta__note {
+      margin: 0 auto 8px;
+      max-width: 28rem;
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.02em;
+      color: #fde68a;
+    }
+    .bcc-lead-sticky-cta .cta-main {
+      width: 100%;
+      max-width: 28rem;
+      margin: 0 auto;
+      display: block;
+      text-align: center;
+      min-height: 48px;
+      padding: 0.85rem 1.25rem;
+      border: 0;
+      border-radius: 12px;
+      font-family: inherit;
+      appearance: none;
+      -webkit-appearance: none;
+      font-size: clamp(0.95rem, 2.4vw, 1.05rem);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #fff;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(91, 33, 182, 0.45);
+      background: linear-gradient(165deg, #8b5cf6 0%, #6d28d9 48%, #5b21b6 100%);
+    }
+    .bcc-lead-sticky-cta .cta-main:hover {
+      filter: brightness(1.06);
+      color: #fff;
+    }
+    .bcc-lead-sticky-cta .cta-main:focus-visible {
+      outline: 2px solid #c4b5fd;
+      outline-offset: 3px;
+    }
+    #secplus10dOfferRoot .ccna-sim-promo-panel {
+      border-color: rgba(139, 92, 246, 0.55);
     }
     .purchase-card .purchase-launch-pill {
       display: inline-block;
@@ -2674,9 +2588,6 @@
 </head>
 <body>
   <div class="page">
-    <p id="secplusLaunchUrgencyBar" class="secplus-launch-urgency-bar" hidden role="status" aria-live="polite">
-      <strong>Launch rate active</strong> · 30-day access <strong>$17.99</strong> (list $24.99) · code <strong>ONETIMEDEAL</strong>
-    </p>
     <header>
       <a class="brand" href="/index.html" aria-label="Be Certified Today home">
         <img
@@ -2712,9 +2623,9 @@
             Stripe product (30-day all-access pass):
             Name: CompTIA Security+ SY0-701 — 30-day all-access pass
             Description: 30 days of SY0-701 exam prep on Be Certified Today: 800+ interactive practice questions (objectives v5.0), PBQ-style hot-spot simulations, adaptive domain review, progress tracking, and a full 90-minute timed practice exam—all in your browser on phone, tablet, or desktop. One-time purchase; no subscription. Access starts at checkout on this device and browser.
-            Price: $24.99 USD (optional launch code ONETIMEDEAL: $7 off → $17.99)
+            Price: $19.99 USD
             Payment Link metadata (optional): productId = secplus-portal-30d
-            Payment Link URL: https://buy.stripe.com/cNi28q6cB90H3yEdfSc3m0a
+            Payment Link URL: https://buy.stripe.com/5kQ14mbwVgt93yEfo0c3m07
             After payment redirect: /COMP_TIA_SEC+/secplus-portal-checkout-success.html?session_id={CHECKOUT_SESSION_ID}
 
             Stripe product (one-time timed exam simulation voucher):
@@ -2725,40 +2636,23 @@
             After payment redirect: /COMP_TIA_SEC+/test-simulation-runner.html?session_id={CHECKOUT_SESSION_ID}
           -->
           <section class="card purchase-card purchase-fold purchase-fold--single-offer" id="purchase" aria-labelledby="purchase-fold-title">
-            <p class="purchase-fold-lead-note">When you are ready for the full library.</p>
             <div class="purchase-cta-stack purchase-cta-stack--single">
               <div class="purchase-primary-cta">
-                <p class="purchase-tier-eyebrow">SY0-701 exam prep · one-time purchase</p>
+                <p class="purchase-label">Get Security+ access</p>
+                <h2 class="purchase-heading" id="purchase-fold-title">Get 30-day Security+ access</h2>
+                <p class="purchase-lead purchase-lead--tight">
+                  Full SY0-701 library and practice portal for thirty days.
+                </p>
                 <div
                   class="purchase-track-box purchase-track-box--thirty-day purchase-pricing-option"
                   aria-label="CompTIA Security+ 30-day all-access pass"
                 >
-                  <div
-                    id="secplusLaunchDealCallout"
-                    class="purchase-live-callout"
-                    hidden
-                    role="status"
-                    aria-live="polite"
-                  >
-                    <p class="purchase-live-heading">Launch rate · $7 off with ONETIMEDEAL</p>
-                    <p class="purchase-live-sub">
-                      Lock in <strong>$17.99</strong> with code <strong>ONETIMEDEAL</strong> at checkout ($7 off $24.99 list).
-                    </p>
-                  </div>
                   <div class="purchase-track-head">
-                    <p class="purchase-track-title" id="purchase-fold-title">
-                      30-day all-access pass
-                      <span class="purchase-launch-pill" id="secplusPurchaseLaunchPill" hidden>Launch deal</span>
-                    </p>
+                    <p class="purchase-track-title">30-day access</p>
                     <span class="secplus-live-badge">Live</span>
                   </div>
-                  <p class="purchase-price" id="secplusPurchasePrice" aria-label="19 dollars and 99 cents for 30 days">
-                    <span id="secplusPurchasePriceDeal" hidden>
-                      <span class="purchase-price-old" aria-label="List price 24 dollars and 99 cents">$24.99</span>
-                      <span class="purchase-price-now" aria-label="Launch price 17 dollars and 99 cents">$17.99</span>
-                    </span>
-                    <span id="secplusPurchasePriceStandard">$24.99</span>
-                    <span>/ 30 days</span>
+                  <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
+                    $19.99 <span>/ 30 days</span>
                   </p>
                   <p class="purchase-library-highlights" role="note">
                     <strong>800+ interactive SY0-701 questions</strong> (objectives v5.0), hot-spot and PBQ-style
@@ -2776,16 +2670,15 @@
                       data-secplus-portal-30d-checkout
                       data-bcc-item-id="secplus_portal_30d"
                       data-bcc-item-name="CompTIA Security+ 30-day access"
-                      data-bcc-value="24.99"
+                      data-bcc-value="19.99"
                       data-bcc-currency="USD"
-                      aria-label="Purchase 30-day Security+ library access for twenty-four ninety-nine"
+                      aria-label="Purchase 30-day Security+ library access for nineteen ninety-nine"
                     >
-                      Start 30-day exam prep
+                      Get 30-day access
                     </button>
                   </p>
                   <p class="purchase-access-disclaimer">
-                    <strong>$24.99 · 30 days · no subscription.</strong>
-                    Includes timed simulation and portal modes. Access is tied to this browser.
+                    <strong>$19.99 / 30 days.</strong> No subscription. Access is tied to this browser. Use the same device when you study.
                   </p>
                 </div>
               </div>
@@ -2801,11 +2694,7 @@
                 and <strong>adaptive study modes</strong> that focus your time on weak domains.
                 Practice on your <strong>phone, tablet, or desktop</strong>. No PDFs and no third-party apps.
                 Many federal, DoD, and defense-contractor roles expect Security+ before you start work. Confirm requirements with your manager.
-                Try free samples below, then unlock <strong>30-day full access for $24.99</strong> (launch offer $17.99).
-              </p>
-              <p class="lead lead--lead-first">
-                You get <strong>800+ SY0-701 practice questions</strong>, hot-spot simulations, and adaptive testing in your browser.
-                Open the free samples to judge quality, then <strong>start the free 35-minute timed exam</strong>. No email. No checkout.
+                Try the free samples below to judge quality, then unlock <strong>30-day full access for $19.99</strong>.
               </p>
             </div>
             <div class="secplus-hero-highlights">
@@ -2833,8 +2722,7 @@
             </div>
             <div class="secplus-hero-actions">
               <p class="secplus-hero-atf-cta">
-                <a href="#secplus-lead-capture">Start free 35-minute timed simulation ↓</a>
-                · <a href="#home-secplus-samples-title">Preview sample questions first</a>
+                <a href="#home-secplus-samples-title">Preview free sample questions ↓</a>
               </p>
               <ul class="benefits" aria-label="What you get">
                 <li>800+ interactive questions and PBQ-style simulations for SY0-701 objectives v5.0.</li>
@@ -2846,53 +2734,6 @@
               </ul>
             </div>
           </div>
-
-          <section
-            class="lead-capture-section assessment-card"
-            id="secplus-lead-capture"
-            aria-labelledby="secplus-lead-capture-title"
-          >
-            <p class="lead-capture-badge">
-              Free · 35 minutes · no checkout · no email required
-            </p>
-            <h2 id="secplus-lead-capture-title">Start Your Free 35-Minute SY0-701 Timed Simulation</h2>
-            <p class="lead-capture-lead">
-              You run the same <strong>timed testing flow</strong> as the paid 90-minute simulation:
-              <strong>20 multiple-choice questions</strong> (four per domain) plus one
-              <strong>dark web account protection</strong> PBQ. When you are ready, unlock <strong>800+ questions</strong>, all simulations,
-              and <strong>adaptive review</strong> with 30-day access.
-            </p>
-            <ul class="lead-capture-list assessment-details">
-              <li><strong>Back</strong>, <strong>Mark for review</strong>, and <strong>Next</strong>. Same navigation as the full timed sim.</li>
-              <li>You get a scaled score and SY0-701 domain breakdown when you finish.</li>
-              <li>Runs on phone, tablet, or desktop. One free attempt per browser.</li>
-              <li>Full bank: <a href="#purchase">800+ questions + adaptive modes · $24.99 / 30 days</a></li>
-            </ul>
-            <p class="lead-capture-open-link" data-secplus-continue-free-sim hidden>
-              In progress on this browser?
-              <a href="/COMP_TIA_SEC+/test-simulation-runner.html?free=1">Continue your free simulation →</a>
-            </p>
-            <div class="assessment-cta-wrap">
-              <div class="assessment-cta-panel">
-                <p class="assessment-cta-kicker">Free sample exam</p>
-                <a
-                  class="cta-main"
-                  href="/COMP_TIA_SEC+/test-simulation-runner.html?free=1"
-                  data-secplus-start-free-sim
-                  data-secplus-start-method="secplus_free_sim_landing"
-                  >Start free timed simulation</a
-                >
-                <p class="assessment-cta-note" data-secplus-free-sim-consumed-note hidden>
-                  You have already completed the free sample on this browser.
-                  <a href="#purchase" data-secplus-portal-30d-checkout>Get 30-day full access · $24.99</a>.
-                </p>
-              </div>
-            </div>
-            <p class="lead-capture-fine">
-              Exam prep only. Not affiliated with CompTIA. Want a shorter preview first?
-              <a href="/secplus-sample?track=questions">Try free sample questions</a>.
-            </p>
-          </section>
 
           <div class="samples-stack">
             <section class="samples-block" aria-labelledby="home-secplus-samples-title">
@@ -2948,9 +2789,6 @@
                     <p class="format-sample format-sample--main-cta">
                       <a class="cta-secondary" href="/secplus-sample?track=sim-dark-web">Start dark web simulation →</a>
                     </p>
-                    <p class="format-sample format-sample--secondary-cta">
-                      Primary path: <a href="#secplus-lead-capture">free 35-minute timed exam</a> (MCQ + this PBQ).
-                    </p>
                   </article>
                 </li>
               </ul>
@@ -2996,7 +2834,7 @@
                     <tr>
                       <th scope="row">Timed 90-Min Exam</th>
                       <td>Rare, or desktop test engine only</td>
-                      <td class="secplus-compare-cell-bct">Free 35-min sample + full 90-min timed sim</td>
+                      <td class="secplus-compare-cell-bct">Free sample questions + full 90-min timed sim</td>
                     </tr>
                     <tr>
                       <th scope="row">Adaptive Weak-Area Loop</th>
@@ -3017,8 +2855,8 @@
                 </table>
               </div>
               <p class="secplus-compare-cta">
-                <a href="#secplus-lead-capture">Start free 35-minute timed simulation →</a>
-                · <a href="#purchase" data-secplus-portal-30d-checkout>Unlock 30-day access · $24.99 →</a>
+                <a href="#home-secplus-samples-title">Preview free sample questions →</a>
+                · <a href="#purchase" data-secplus-portal-30d-checkout>Unlock 30-day access · $19.99 →</a>
               </p>
               <p class="secplus-compare-note">
                 CompTIA does not endorse third-party dumps. Practice on this site is for preparation only; see the disclaimer below.
@@ -3032,7 +2870,7 @@
                 <p class="purchase-label">Study plan</p>
                 <h2 class="purchase-heading">Match Your Prep to SY0-701</h2>
                 <p class="purchase-lead purchase-lead--tight">
-                  Domain weights and a suggested study order. Unlock the full library with <a href="#purchase">30-day access ($24.99)</a> in the pricing section above.
+                  Domain weights and a suggested study order. Unlock the full library with <a href="#purchase">30-day access ($19.99)</a> in the pricing section above.
                 </p>
                 <div class="purchase-blueprint-callout" aria-labelledby="purchase-blueprint-title">
                   <h3 class="purchase-blueprint-title" id="purchase-blueprint-title">
@@ -3113,7 +2951,7 @@
                   </p>
                 </div>
                 <div class="purchase-notes">
-                  <strong>No recurring membership.</strong> One-time <strong>30-day access ($24.99 list)</strong> includes the full library and timed simulation.
+                  <strong>No recurring membership.</strong> One-time <strong>30-day access ($19.99 list)</strong> includes the full library and timed simulation.
                   <strong>No additional software</strong> is required. Everything runs in your browser.
                 </div>
               </div>
@@ -3138,14 +2976,12 @@
                 <div class="faq-answer">
                   <p>
                     <strong>Yes. No checkout required.</strong>
-                    <a class="faq-cta-link" href="#secplus-lead-capture">Start the free 35-minute timed simulation</a>
-                    (20 MCQ + 1 PBQ + domain scorecard), or
-                    <a class="faq-cta-link" href="#home-secplus-samples-title">preview sample questions and the dark web simulation</a>
+                    <a class="faq-cta-link" href="#home-secplus-samples-title">Preview sample questions and the dark web simulation</a>
                     on your phone or laptop first.
                   </p>
                   <p>
                     When you are ready for the full <strong>800+</strong> bank,
-                    <a class="faq-cta-link" href="#purchase" data-secplus-portal-30d-checkout>unlock 30-day access · $24.99</a>.
+                    <a class="faq-cta-link" href="#purchase" data-secplus-portal-30d-checkout>unlock 30-day access · $19.99</a>.
                   </p>
                 </div>
               </details>
@@ -3175,7 +3011,7 @@
                     <strong>90-minute timed exam</strong> all run in Safari, Chrome, or Firefox. Useful when you cannot install tools on a work laptop or phone.
                   </p>
                   <p>
-                    <a class="faq-cta-link" href="#secplus-lead-capture">Start free timed simulation →</a>
+                    <a class="faq-cta-link" href="#home-secplus-samples-title">Try free sample questions →</a>
                   </p>
                 </div>
               </details>
@@ -3189,7 +3025,7 @@
                     hot-spot simulations. That is a full bank for structured study, not a short PDF pack or a recycled file shared across discount sites.
                   </p>
                   <p>
-                    <a class="faq-cta-link" href="#purchase" data-secplus-portal-30d-checkout>Get 30-day full access · $24.99</a>
+                    <a class="faq-cta-link" href="#purchase" data-secplus-portal-30d-checkout>Get 30-day full access · $19.99</a>
                   </p>
                 </div>
               </details>
@@ -3206,8 +3042,8 @@
                   <p>
                     Free on this page:
                     <a class="faq-cta-link" href="/secplus-sample?track=sim-dark-web">dark web IR simulation sample</a>
-                    and the
-                    <a class="faq-cta-link" href="#secplus-lead-capture">35-minute free timed exam</a>.
+                    and
+                    <a class="faq-cta-link" href="/secplus-sample?track=questions">sample multiple-choice questions</a>.
                   </p>
                 </div>
               </details>
@@ -3232,7 +3068,7 @@
                   </p>
                   <p>
                     Included with
-                    <a class="faq-cta-link" href="#purchase" data-secplus-portal-30d-checkout>30-day library access ($24.99)</a>.
+                    <a class="faq-cta-link" href="#purchase" data-secplus-portal-30d-checkout>30-day library access ($19.99)</a>.
                   </p>
                 </div>
               </details>
@@ -3242,7 +3078,7 @@
                 <summary class="faq-summary">How much does full library access cost?</summary>
                 <div class="faq-answer">
                   <p>
-                    <strong>$24.99 for 30 days</strong> at list price. When you reach the pricing section, a launch offer may pre-fill code <strong>ONETIMEDEAL</strong> for <strong>$7 off ($17.99)</strong>.
+                    <strong>$19.99 for 30 days</strong>. First-time visitors may see a one-time <strong>$9.99 / 10-day</strong> offer on this page.
                     One-time purchase, <strong>no subscription</strong>. Includes <strong>800+ questions</strong>,
                     simulations, adaptive review, progress tracking, and the full timed exam. Price is shown before Stripe checkout.
                   </p>
@@ -3271,7 +3107,7 @@
                   </p>
                   <p>
                     We provide <strong>exam prep only</strong>, not clearance or official qualification tracking.
-                    <a class="faq-cta-link" href="#secplus-lead-capture">Try the free timed sample →</a>
+                    <a class="faq-cta-link" href="#home-secplus-samples-title">Try the free samples →</a>
                   </p>
                 </div>
               </details>
@@ -3303,10 +3139,8 @@
                 <summary class="faq-summary">Do you collect, store, or sell my email or personal information?</summary>
                 <div class="faq-answer">
                   <p>
-                    <strong>No marketing database.</strong> Be Certified Today does not ask for your email to try the
-                    <a class="faq-cta-link" href="#secplus-lead-capture">free timed simulation</a>
-                    or
-                    <a class="faq-cta-link" href="#home-secplus-samples-title">sample questions</a>,
+                    <strong>No marketing database.</strong> Be Certified Today does not ask for your email to try
+                    <a class="faq-cta-link" href="#home-secplus-samples-title">free sample questions</a>
                     and we do not sell or share visitor data with third-party marketers.
                   </p>
                   <p>
@@ -3349,104 +3183,93 @@
     </footer>
   </div>
   <div
-    id="secplusLaunchDealRoot"
+    id="secplus10dOfferRoot"
     class="ccna-sim-promo-root"
     hidden
     role="presentation"
     aria-hidden="true"
   >
-    <div class="ccna-sim-promo-backdrop" data-secplus-launch-deal-dismiss tabindex="-1"></div>
+    <div class="ccna-sim-promo-backdrop" data-bcc-10d-offer-dismiss tabindex="-1"></div>
     <div
       class="ccna-sim-promo-panel"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="secplusLaunchDealTitle"
+      aria-labelledby="secplus10dOfferTitle"
       tabindex="-1"
     >
-      <button type="button" class="ccna-sim-promo-close" data-secplus-launch-deal-dismiss aria-label="Close launch offer">
+      <button type="button" class="ccna-sim-promo-close" data-bcc-10d-offer-dismiss aria-label="Close one-time offer">
         ×
       </button>
-      <p class="ccna-sim-promo-eyebrow">CompTIA Security+ SY0-701</p>
-      <h2 id="secplusLaunchDealTitle">Launch rate · 30-day full access</h2>
+      <p class="ccna-sim-promo-eyebrow">One-time visitor offer</p>
+      <h2 id="secplus10dOfferTitle">10-day Security+ full access</h2>
       <p class="ccna-sim-promo-price">
-        <span class="ccna-sim-promo-price-was">$24.99</span>
-        <span class="ccna-sim-promo-price-now">$17.99</span>
-        <span class="ccna-sim-promo-limited-pill">$7 off · ONETIMEDEAL</span>
+        <span class="ccna-sim-promo-price-now">$9.99</span>
+        <span class="ccna-sim-promo-limited-pill">10 days · one-time</span>
       </p>
-      <p class="ccna-sim-promo-hint">
-        Use code <strong>ONETIMEDEAL</strong> at checkout for $7 off the $24.99 list price ($17.99 one-time).
+      <p class="ccna-sim-promo-warning">
+        This is a one-time pop-up. When you close this box, it will not be shown again on this browser.
       </p>
       <p class="ccna-sim-promo-lead">
-        You get <strong>800+ SY0-701 questions</strong>, PBQ simulations, adaptive review, and the full
-        <strong>90-minute timed exam</strong> in your browser. One-time purchase. No subscription.
+        You get the full SY0-701 library for <strong>10 days</strong>: 800+ questions, PBQ simulations, adaptive review,
+        practice portal modes, and the 90-minute timed exam—all in your browser. No subscription.
       </p>
       <div class="ccna-sim-promo-actions">
         <button
           type="button"
           class="ccna-sim-promo-primary"
-          data-secplus-launch-deal-checkout
-          data-bcc-item-id="secplus_portal_30d"
-          data-bcc-item-name="CompTIA Security+ 30-day access"
-          data-bcc-value="17.99"
-          data-bcc-currency="USD"
-          aria-label="Purchase 30-day Security+ library access for seventeen ninety-nine"
+          data-secplus-portal-10d-checkout
+          aria-label="Purchase 10-day Security+ library access for nine ninety-nine"
         >
-          Start 30-day exam prep · $17.99
+          Get 10-day access · $9.99
         </button>
-        <a
-          class="ccna-sim-promo-secondary"
-          href="#secplus-lead-capture"
-          data-secplus-launch-deal-dismiss
-          data-secplus-launch-deal-free-sim
-          >Try free 35-min simulation first</a
-        >
-        <button type="button" class="ccna-sim-promo-secondary" data-secplus-launch-deal-dismiss>
-          No thanks, full price later
+        <a class="ccna-sim-promo-secondary" href="#home-secplus-samples-title" data-bcc-10d-offer-dismiss>
+          Try free samples first
+        </a>
+        <button type="button" class="ccna-sim-promo-secondary" data-bcc-10d-offer-dismiss>
+          No thanks
         </button>
       </div>
     </div>
   </div>
   <div
-    id="secplusLastChanceBar"
-    class="secplus-last-chance-bar"
+    id="secplus10dLastChanceBar"
+    class="bcc-last-chance-bar"
     hidden
     role="region"
-    aria-labelledby="secplusLastChanceTitle"
+    aria-labelledby="secplus10dLastChanceTitle"
     aria-live="polite"
   >
-    <div class="secplus-last-chance-bar__inner">
-      <button type="button" class="secplus-last-chance-bar__close" data-secplus-last-chance-dismiss aria-label="Dismiss last chance offer">
+    <div class="bcc-last-chance-bar__inner">
+      <button type="button" class="bcc-last-chance-bar__close" data-bcc-10d-last-chance-dismiss aria-label="Dismiss last chance offer">
         ×
       </button>
-      <p id="secplusLastChanceTitle" class="secplus-last-chance-bar__eyebrow">Last chance · launch rate</p>
-      <p class="secplus-last-chance-bar__copy">
-        <strong>$17.99</strong> for 30-day SY0-701 full access
-        <span class="secplus-last-chance-bar__was">$24.99</span>
-        · code <strong>ONETIMEDEAL</strong> at checkout
+      <p id="secplus10dLastChanceTitle" class="bcc-last-chance-bar__eyebrow">Last chance · one-time offer</p>
+      <p class="bcc-last-chance-bar__copy">
+        <strong>$9.99</strong> for 10-day Security+ full access — 800+ questions, PBQ sims &amp; timed exam
       </p>
       <button
         type="button"
-        class="secplus-last-chance-bar__cta"
-        data-secplus-last-chance-checkout
-        data-bcc-item-id="secplus_portal_30d"
-        data-bcc-item-name="CompTIA Security+ 30-day access"
-        data-bcc-value="17.99"
-        data-bcc-currency="USD"
+        class="bcc-last-chance-bar__cta"
+        data-bcc-10d-last-chance-checkout
+        data-secplus-portal-10d-checkout
+        aria-label="Purchase 10-day Security+ library access for nine ninety-nine"
       >
-        Claim $17.99 access
+        Claim 10-day access
       </button>
     </div>
   </div>
-  <div id="secplusLeadStickyCta" class="secplus-lead-sticky-cta" hidden aria-hidden="true">
-    <a
-      id="secplusLeadStickyCtaLink"
+  <div id="secplusLeadStickyCta" class="bcc-lead-sticky-cta" hidden aria-hidden="true">
+    <p class="bcc-lead-sticky-cta__note">One-time $9.99 · closes when you leave this page</p>
+    <button
+      type="button"
+      id="secplusLeadStickyCtaBtn"
       class="cta-main"
-      href="/COMP_TIA_SEC+/test-simulation-runner.html?free=1"
-      data-secplus-start-free-sim
-      data-secplus-start-method="secplus_free_sim_sticky"
-      >Start Free 35-Min Simulation</a
+      data-secplus-portal-10d-checkout
+      data-bcc-lead-sticky-checkout
+      aria-label="Purchase 10-day Security+ library access for nine ninety-nine"
     >
-    <p id="secplusLeadStickyDealNote" class="secplus-lead-sticky-cta__deal" hidden></p>
+      Get 10-day access · $9.99
+    </button>
   </div>
   <div
     id="secplusPortalGateRoot"
@@ -3516,10 +3339,8 @@
   </script>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-checkout.js" defer></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-test-sim-storage.js" defer></script>
-  <script src="/js/secplus-launch-deal.js" defer></script>
-  <script src="/js/secplus-last-chance-bar.js" defer></script>
-  <script src="/js/secplus-lead-capture.js" defer></script>
+  <script src="/js/bcc-10d-one-time-offer.js" defer></script>
+  <script src="/js/bcc-lead-sticky-cta.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       var gateRoot = document.getElementById("secplusPortalGateRoot");
@@ -3547,8 +3368,8 @@
 
       function openGate() {
         if (!gateRoot || !gatePanel || gateOpen) return;
-        if (typeof window.bccCloseSecplusLaunchDealForPortalGate === "function") {
-          window.bccCloseSecplusLaunchDealForPortalGate();
+        if (typeof window.bccClose10dOfferForPortalGate === "function") {
+          window.bccClose10dOfferForPortalGate();
         }
         gateOpen = true;
         prevOverflow = document.body.style.overflow;
