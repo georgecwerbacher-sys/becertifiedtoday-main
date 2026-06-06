@@ -1,0 +1,325 @@
+#!/usr/bin/env python3
+"""Migrate CCNA drag-and-drop pages to the light SEC+-style shell."""
+from __future__ import annotations
+
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+DND_DIR = ROOT / "public" / "CCNA-Study" / "CCNA_D_D"
+SAMPLE_DND = ROOT / "public" / "CCNA-Study" / "CCNA_Samples" / "dragdrop-ftp-vs-tftp.html"
+LOGO_IMG = "/images/logo/becertifiedtoday_logo_image_trans.png"
+PORTAL_HOME = "/CCNA-Study/CCNA_Training_Portal.html"
+SAMPLE_HOME = "/ccna-home.html"
+
+KEEP_CSS_KEYWORDS = (
+    "exhibit",
+    "cli-",
+    "topology",
+    "figure",
+    "route-exhibit",
+    "code-exhibit",
+    "debug-exhibit",
+    "image-wrap",
+    "visually-hidden",
+)
+
+TOUCH_HINT = (
+    '    <p class="dragdrop-touch-hint" aria-hidden="true">'
+    "On a phone or tablet, tap a chip to pick it up, then tap a drop zone "
+    "(or another chip to swap).</p>"
+)
+
+WATERMARK = f"""  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="{LOGO_IMG}" alt="" />
+  </div>"""
+
+
+def is_broken_layout_wrap(text: str) -> bool:
+    return bool(
+        re.search(
+            r'<div id="bank"[^>]*>\s*<div class="token"[^>]*>[\s\S]*?</div>\s*</div>\s*<div class="token"',
+            text,
+            re.I,
+        )
+    )
+
+
+def needs_migration(text: str) -> bool:
+    if "ccna-dnd-page.css" not in text or "question-shell" not in text:
+        return True
+    return is_broken_layout_wrap(text)
+
+
+def extract_head_extras(text: str) -> str:
+    bits: list[str] = []
+    for pat in (
+        r'<link rel="canonical"[^>]+>',
+        r'<meta name="description"[^>]+>',
+    ):
+        m = re.search(pat, text, re.I)
+        if m:
+            bits.append("  " + m.group(0))
+    return "\n".join(bits)
+
+
+def extract_title(text: str) -> str:
+    m = re.search(r"<title>(.*?)</title>", text, re.S | re.I)
+    return m.group(1).strip() if m else "CCNA drag and drop"
+
+
+def extract_first_style(text: str) -> str:
+    m = re.search(r"<style>(.*?)</style>", text, re.S | re.I)
+    return m.group(1) if m else ""
+
+
+def extract_exhibit_css(style_text: str) -> str:
+    if not style_text.strip():
+        return ""
+    kept: list[str] = []
+    for sel, body in re.findall(r"([^{]+)\{([^}]*)\}", style_text, re.S):
+        sl = sel.lower()
+        if not any(k in sl for k in KEEP_CSS_KEYWORDS):
+            continue
+        kept.append(f"    {sel.strip()} {{\n{body.strip()}\n    }}")
+    if not kept:
+        return ""
+    return "  <style>\n" + "\n".join(kept) + "\n  </style>"
+
+
+def extract_main_inner(text: str) -> str:
+    m = re.search(r'<main class="card">(.*?)</main>', text, re.S | re.I)
+    if not m:
+        raise ValueError("missing main.card")
+    return m.group(1).strip()
+
+
+def find_matching_div_close(text: str, open_start: int) -> int:
+    gt = text.find(">", open_start)
+    if gt < 0:
+        return -1
+    i = gt + 1
+    depth = 1
+    while i < len(text) and depth > 0:
+        next_open = text.find("<div", i)
+        next_close = text.find("</div>", i)
+        if next_close < 0:
+            return -1
+        if next_open >= 0 and next_open < next_close:
+            depth += 1
+            i = next_open + 4
+            continue
+        depth -= 1
+        end = next_close + len("</div>")
+        if depth == 0:
+            return end
+        i = end
+    return -1
+
+
+def unwrap_sim_frame(main: str) -> str:
+    if 'class="sim-frame"' not in main:
+        return main
+    main = re.sub(r'<div class="sim-frame">\s*', "", main, count=1, flags=re.I)
+    # Remove one trailing </div> immediately before actions or end of main content
+    main = re.sub(
+        r"</div>\s*(?=<div class=\"actions\")",
+        "",
+        main,
+        count=1,
+        flags=re.I,
+    )
+    return main
+
+
+def wrap_layout_in_sim_frame(main: str) -> str:
+    main = unwrap_sim_frame(main)
+    m = re.search(r'<div class="layout"[^>]*>', main, re.I)
+    if not m:
+        return main
+    end = find_matching_div_close(main, m.start())
+    if end < 0:
+        return main
+    layout = main[m.start() : end]
+    return main[: m.start()] + f'<div class="sim-frame">\n{layout}\n</div>' + main[end:]
+
+
+def add_touch_hint(main: str) -> str:
+    if "dragdrop-touch-hint" in main:
+        return main
+    m = re.search(r"(<h1[^>]*>)", main, re.I)
+    if not m:
+        return TOUCH_HINT + "\n" + main
+    return main[: m.start()] + TOUCH_HINT + "\n\n" + main[m.start() :]
+
+
+def extract_tail(text: str) -> str:
+    m = re.search(r"</main>([\s\S]*)</body>", text, re.I)
+    return m.group(1).strip() if m else ""
+
+
+def normalize_sim_nav(tail: str, *, is_sample: bool) -> str:
+    tail = re.sub(
+        r'<a class="site-logo-corner"[\s\S]*?</a>\s*',
+        "",
+        tail,
+        flags=re.I,
+    )
+    if "ccna-sample-sim-nav" not in tail:
+        tail = re.sub(
+            r'<nav class="sim-nav"',
+            '<nav class="sim-nav ccna-sample-sim-nav"',
+            tail,
+            count=1,
+            flags=re.I,
+        )
+    for home_href in (SAMPLE_HOME, PORTAL_HOME):
+        if home_href not in tail or "sim-nav-home" in tail:
+            continue
+        tail = re.sub(
+            rf'(<a class="sim-nav-btn)(?!\s+sim-nav-home)(" href="{re.escape(home_href)}")',
+            r'\1 sim-nav-home\2',
+            tail,
+            count=1,
+            flags=re.I,
+        )
+    tail = re.sub(
+        r'class="sim-nav-btn"\s+class="sim-nav-btn sim-nav-home"',
+        'class="sim-nav-btn sim-nav-home"',
+        tail,
+    )
+    return tail.strip()
+
+
+def build_head(*, title: str, extras: str, exhibit_css: str, is_sample: bool) -> str:
+    nav_css = "/css/bcc-question-link-nav.css"
+    touch_css = "/CCNA-Study/CCNA_Samples/ccna-sample-touch.css"
+    dnd_css = "/CCNA-Study/js/ccna-dnd-page.css"
+    robots = "index, follow" if is_sample else "index, follow"
+    lines = [
+        "<head>",
+        '  <meta charset="UTF-8" />',
+    ]
+    if extras:
+        lines.append(extras)
+    lines.extend(
+        [
+            f'  <meta name="robots" content="{robots}" />',
+            '  <meta name="viewport" content="width=device-width, initial-scale=1.0" />',
+            f"  <title>{title}</title>",
+            f'  <link rel="stylesheet" href="{nav_css}" />',
+            f'  <link rel="stylesheet" href="{touch_css}" />',
+            f'  <link rel="stylesheet" href="{dnd_css}" />',
+        ]
+    )
+    if exhibit_css:
+        lines.append(exhibit_css)
+    lines.append("</head>")
+    return "\n".join(lines)
+
+
+def build_body_shell(
+    main_inner: str,
+    tail: str,
+    *,
+    is_sample: bool,
+) -> str:
+    home = SAMPLE_HOME if is_sample else PORTAL_HOME
+    body_class = (
+        "ccna-static-sample ccna-dnd-ui dragdrop-exercise"
+        if is_sample
+        else "ccna-question-ui ccna-dnd-ui dragdrop-exercise"
+    )
+    if is_sample:
+        logo_corner = (
+            '    <span class="site-logo-corner" aria-hidden="true">\n'
+            f'      <img src="{LOGO_IMG}" width="52" height="52" alt="" />\n'
+            "    </span>"
+        )
+    else:
+        logo_corner = (
+            f'    <a class="site-logo-corner" href="{home}" '
+            f'aria-label="CCNA practice portal">\n'
+            f'      <img src="{LOGO_IMG}" width="52" height="52" alt="Be Certified Today" />\n'
+            "    </a>"
+        )
+    return f"""<body class="{body_class}">
+  <script src="/js/sample-url-mask-apply.js"></script>
+{WATERMARK}
+  <div class="question-shell">
+{logo_corner}
+    <main class="card">
+{main_inner}
+    </main>
+  </div>
+
+{tail}
+</body>"""
+
+
+def repair_broken_bank(main: str) -> str:
+    """Re-close #bank when an earlier broken wrap split tokens outside the bank."""
+    m = re.search(r'(<div id="bank" class="bank">)([\s\S]*?)(</div>)', main, re.I)
+    if not m or not is_broken_layout_wrap(main):
+        return main
+    bank_open, bank_body, bank_close = m.group(1), m.group(2), m.group(3)
+    tokens = re.findall(r'<div class="token"[\s\S]*?</div>', bank_body, re.I)
+    if len(tokens) <= 1:
+        return main
+    first = tokens[0]
+    rest = "".join(tokens[1:])
+    if rest not in main[m.end() : m.end() + len(rest) + 40]:
+        return main
+    repaired_bank = bank_open + "\n          " + first + "\n" + rest + "\n        " + bank_close
+    main = main[: m.start()] + repaired_bank + main[m.end() :]
+    main = re.sub(
+        r"</div>\s*<div class=\"token\"",
+        '<div class="token"',
+        main,
+        flags=re.I,
+    )
+    return main
+
+
+def migrate_text(text: str, *, is_sample: bool) -> str:
+    if not needs_migration(text):
+        return text
+
+    title = extract_title(text)
+    extras = extract_head_extras(text)
+    exhibit_css = extract_exhibit_css(extract_first_style(text))
+    main_inner = extract_main_inner(text)
+    main_inner = repair_broken_bank(main_inner)
+    main_inner = wrap_layout_in_sim_frame(main_inner)
+    main_inner = add_touch_hint(main_inner)
+    tail = normalize_sim_nav(extract_tail(text), is_sample=is_sample)
+
+    head = build_head(title=title, extras=extras, exhibit_css=exhibit_css, is_sample=is_sample)
+    body = build_body_shell(main_inner, tail, is_sample=is_sample)
+    return f"<!doctype html>\n<html lang=\"en\">\n{head}\n{body}\n</html>\n"
+
+
+def migrate_file(path: Path, *, is_sample: bool = False) -> bool:
+    text = path.read_text(encoding="utf-8")
+    if not needs_migration(text):
+        return False
+    path.write_text(migrate_text(text, is_sample=is_sample), encoding="utf-8")
+    return True
+
+
+def main() -> int:
+    changed = 0
+    for html_path in sorted(DND_DIR.rglob("*.html")):
+        if migrate_file(html_path):
+            changed += 1
+            print(f"migrated: {html_path.relative_to(ROOT)}")
+    if SAMPLE_DND.exists() and migrate_file(SAMPLE_DND, is_sample=True):
+        changed += 1
+        print(f"migrated: {SAMPLE_DND.relative_to(ROOT)}")
+    print(f"done — {changed} file(s) updated")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

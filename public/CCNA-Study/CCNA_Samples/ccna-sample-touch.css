@@ -3,7 +3,7 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-/* Site logo — top right, links to home (sample questions + drag-and-drop) */
+/* Site logo — top right (samples: decorative only; bank pages may link home) */
 .site-logo-corner {
   position: fixed;
   top: 12px;
@@ -141,17 +141,19 @@ code,
     justify-content: center;
   }
 
-  /* CCNA bank + guest sample — light question shell */
+  /* CCNA bank + guest sample + drag-and-drop — light question shell */
   body.ccna-question-ui,
   body.ccna-static-sample,
-  body.ccna-sample-guest-ui {
+  body.ccna-sample-guest-ui,
+  body.ccna-dnd-ui {
     padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
     background: #ffffff !important;
     color: #1a3d6e;
     position: relative;
   }
   body.ccna-question-ui .question-shell,
-  body.ccna-static-sample .question-shell {
+  body.ccna-static-sample .question-shell,
+  body.ccna-dnd-ui .question-shell {
     width: min(900px, 100%);
     display: flex;
     flex-direction: column;
@@ -160,7 +162,8 @@ code,
     z-index: 1;
   }
   body.ccna-question-ui .question-shell .site-logo-corner,
-  body.ccna-static-sample .question-shell .site-logo-corner {
+  body.ccna-static-sample .question-shell .site-logo-corner,
+  body.ccna-dnd-ui .question-shell .site-logo-corner {
     position: static !important;
     top: auto !important;
     right: auto !important;
@@ -172,7 +175,8 @@ code,
     backdrop-filter: none !important;
   }
   body.ccna-question-ui .page-logo-watermark,
-  body.ccna-static-sample .page-logo-watermark {
+  body.ccna-static-sample .page-logo-watermark,
+  body.ccna-dnd-ui .page-logo-watermark {
     position: fixed;
     inset: 0;
     z-index: 0;
@@ -183,7 +187,8 @@ code,
     overflow: hidden;
   }
   body.ccna-question-ui .page-logo-watermark img,
-  body.ccna-static-sample .page-logo-watermark img {
+  body.ccna-static-sample .page-logo-watermark img,
+  body.ccna-dnd-ui .page-logo-watermark img {
     width: min(85vw, 720px);
     max-height: 85vh;
     height: auto;
@@ -193,7 +198,9 @@ code,
   body.ccna-question-ui .card,
   body.ccna-question-ui main.card,
   body.ccna-static-sample .card,
-  body.ccna-static-sample main.card {
+  body.ccna-static-sample main.card,
+  body.ccna-dnd-ui .card,
+  body.ccna-dnd-ui main.card {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
@@ -201,7 +208,8 @@ code,
   }
   body.ccna-question-ui h1,
   body.ccna-static-sample h1,
-  body.ccna-sample-guest-ui h1 {
+  body.ccna-sample-guest-ui h1,
+  body.ccna-dnd-ui h1 {
     color: #1a3d6e;
   }
   /* Text on white / transparent question shell (matches SEC+ #1a3d6e) */

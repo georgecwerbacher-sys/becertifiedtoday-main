@@ -1,0 +1,335 @@
+/* CCNA drag-and-drop — light shell matching SEC+ PBQ chrome (secplus-pbq-page.css) */
+
+body.ccna-dnd-ui {
+  padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+body.ccna-dnd-ui .question-shell {
+  width: min(1180px, 100%);
+}
+
+body.ccna-dnd-ui .card,
+body.ccna-dnd-ui main.card {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  box-sizing: border-box;
+}
+
+body.ccna-dnd-ui .card h1,
+body.ccna-dnd-ui main.card h1 {
+  margin: 0 0 10px;
+  font-size: clamp(1.05rem, 2.3vw, 1.45rem);
+  line-height: 1.35;
+  color: #1a3d6e;
+}
+
+body.ccna-dnd-ui .sub {
+  margin: 0 0 14px;
+  line-height: 1.5;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+body.ccna-dnd-ui .sub code {
+  font-size: 0.9em;
+}
+
+body.ccna-dnd-ui .page-logo-watermark {
+  display: flex;
+}
+
+body.ccna-dnd-ui .page-logo-watermark img {
+  opacity: 0.14;
+}
+
+body.ccna-dnd-ui .sim-frame {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+}
+
+body.ccna-dnd-ui .layout {
+  display: grid;
+  gap: 14px;
+  align-items: start;
+  grid-template-columns: minmax(240px, 0.95fr) minmax(320px, 1.25fr);
+}
+
+@media (max-width: 900px) {
+  body.ccna-dnd-ui .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+body.ccna-dnd-ui .panel {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+}
+
+body.ccna-dnd-ui .panel h2 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+  color: #1a3d6e;
+}
+
+body.ccna-dnd-ui .bank {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 48px;
+}
+
+body.ccna-dnd-ui .token {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #6384ba;
+  background: #cfe9ff;
+  color: #10243f;
+  font-weight: 700;
+  font-size: 0.86rem;
+  line-height: 1.38;
+  cursor: grab;
+  user-select: none;
+  text-align: left;
+}
+
+body.ccna-dnd-ui .token--mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.78rem;
+}
+
+body.ccna-dnd-ui .token:active {
+  cursor: grabbing;
+}
+
+body.ccna-dnd-ui .token.is-picked {
+  border-color: #4d89ff;
+  box-shadow: 0 0 0 2px rgba(77, 137, 255, 0.35);
+}
+
+body.ccna-dnd-ui .drop-slot {
+  display: flex;
+  min-height: 64px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px dashed #93c5fd;
+  background: #dbeafe;
+  color: #64748b;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+body.ccna-dnd-ui .drop-slot:empty::before {
+  content: "Drop here";
+  color: #475569;
+}
+
+body.ccna-dnd-ui .drop-slot.over {
+  border-style: solid;
+  border-color: #4d89ff;
+  background: #bfdbfe;
+}
+
+body.ccna-dnd-ui .drop-slot.correct {
+  border-color: #1f7a58;
+  background: #113e2d;
+  color: #e6edf3;
+}
+
+body.ccna-dnd-ui .drop-slot.correct::before {
+  content: none;
+}
+
+body.ccna-dnd-ui .drop-slot.incorrect {
+  border-color: #8c3434;
+  background: #442020;
+  color: #e6edf3;
+}
+
+body.ccna-dnd-ui .drop-slot.incorrect::before {
+  content: none;
+}
+
+body.ccna-dnd-ui .drop-slot .token {
+  width: 100%;
+  cursor: grab;
+}
+
+/* Category / match layouts */
+body.ccna-dnd-ui .category-grid,
+body.ccna-dnd-ui .category-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+body.ccna-dnd-ui .category-box,
+body.ccna-dnd-ui .category-panel {
+  border: 1px solid #3d6dbb;
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: #cfe9ff;
+}
+
+body.ccna-dnd-ui .category-title,
+body.ccna-dnd-ui .category-panel h3 {
+  margin: 0 0 10px;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #1a3d6e;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  text-align: left;
+  letter-spacing: normal;
+}
+
+body.ccna-dnd-ui .slots-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  align-items: stretch;
+}
+
+@media (max-width: 720px) {
+  body.ccna-dnd-ui .slots-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+body.ccna-dnd-ui .match-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+body.ccna-dnd-ui .match-row {
+  display: grid;
+  grid-template-columns: minmax(88px, 0.22fr) minmax(200px, 1fr);
+  gap: 12px;
+  align-items: stretch;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #3d6dbb;
+  background: #cfe9ff;
+}
+
+@media (max-width: 720px) {
+  body.ccna-dnd-ui .match-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+body.ccna-dnd-ui .match-desc {
+  margin: 0;
+  color: #1a3d6e;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+body.ccna-dnd-ui .actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+body.ccna-dnd-ui .actions button,
+body.ccna-dnd-ui .actions .home-link {
+  background: #254b8a;
+  color: #e6edf3;
+  border: 1px solid #3d6dbb;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.95rem;
+  min-height: 48px;
+  touch-action: manipulation;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.ccna-dnd-ui .actions button:hover,
+body.ccna-dnd-ui .actions .home-link:hover {
+  filter: brightness(1.08);
+}
+
+body.ccna-dnd-ui .actions #result {
+  font-weight: 700;
+  color: #1a3d6e;
+  flex: 1 1 240px;
+  min-width: 0;
+  font-size: 0.86rem;
+  line-height: 1.4;
+  background: transparent;
+  padding: 0;
+  border: 0;
+}
+
+body.ccna-dnd-ui .actions #result.is-pass {
+  color: #166534;
+}
+
+body.ccna-dnd-ui .actions #result.is-fail {
+  color: #991b1b;
+}
+
+/* Bottom nav — match SEC+ sample sim-nav link buttons */
+body.ccna-dnd-ui nav.sim-nav.ccna-sample-sim-nav .sim-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: #254b8a;
+  border: 1px solid #3d6dbb;
+  color: #e6edf3;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-weight: 700;
+  min-width: 5.5rem;
+  min-height: 48px;
+  text-align: center;
+  box-sizing: border-box;
+  touch-action: manipulation;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+body.ccna-dnd-ui nav.sim-nav.ccna-sample-sim-nav .sim-nav-btn:hover {
+  filter: brightness(1.08);
+}
+
+body.ccna-dnd-ui nav.sim-nav.ccna-sample-sim-nav .sim-nav-home {
+  background: #1a3d6e;
+}
+
+body.ccna-dnd-ui nav.sim-nav.ccna-sample-sim-nav .sim-nav-btn--disabled {
+  opacity: 0.35;
+  pointer-events: none;
+  cursor: default;
+}

@@ -10,6 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MCQ_DIR = ROOT / "public" / "CCNP-ENCOR-Study" / "ENCOR_Questions"
+SAMPLES_DIR = ROOT / "public" / "CCNP-ENCOR-Study" / "ENCOR_Samples"
 PORTAL_HOME = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html"
 QUESTIONS_BASE = "/CCNP-ENCOR-Study/ENCOR_Questions/"
 LOGO_IMG = "/images/logo/becertifiedtoday_logo_image_trans.png"
@@ -198,17 +199,19 @@ def build_nav(prev_id: int | None, next_id: int | None) -> str:
     )
 
 
-def build_footer() -> str:
+def build_footer(*, progress_text: str = "", topic_subject: str = "") -> str:
     version = html.escape(VERSION_LABEL)
+    progress = html.escape(progress_text)
+    subject = html.escape(topic_subject)
     return (
         '    <div class="answer-footer">\n'
         '      <div class="answer-actions">\n'
         '        <button id="checkBtn" type="button" class="nav-check">Check answer</button>\n'
         '        <div class="question-progress-block">\n'
-        '          <span class="ccna-practice-progress" aria-live="polite"></span>\n'
+        f'          <span class="ccna-practice-progress" aria-live="polite">{progress}</span>\n'
         '          <p class="question-topic-meta">\n'
         f'            <span class="question-topic-meta__version">{version}</span>\n'
-        '            <span class="question-topic-meta__subject"></span>\n'
+        f'            <span class="question-topic-meta__subject">{subject}</span>\n'
         "          </p>\n"
         "        </div>\n"
         "      </div>\n"
@@ -221,6 +224,18 @@ def build_footer() -> str:
         "      </div>\n"
         "    </div>\n"
     )
+
+
+def extract_head_extras(text: str) -> str:
+    bits: list[str] = []
+    for pat in (
+        r'<link rel="canonical"[^>]+>',
+        r'<meta name="description"[^>]+>',
+    ):
+        m = re.search(pat, text, re.I)
+        if m:
+            bits.append("  " + m.group(0))
+    return "\n".join(bits)
 
 
 def extract_first_style(text: str) -> str:
@@ -337,6 +352,8 @@ def parse_script_answers(text: str, is_choose_two: bool) -> tuple[str | list[str
         m = re.search(
             r"(?:correct(?:Set)?|CORRECT)\s*=\s*new Set\(\[([^\]]+)\]\)", script
         )
+        if not m:
+            m = re.search(r"correctSet\s*=\s*new Set\(\[([^\]]+)\]\)", script)
         if not m:
             m = re.search(r"var CORRECT\s*=\s*\[([^\]]+)\]", script)
         if not m:
@@ -535,6 +552,117 @@ def render_page(
 """
 
 
+def render_static_sample(
+    *,
+    n: int,
+    title: str,
+    h1_html: str,
+    choices_html: str,
+    name: str,
+    is_choose_two: bool,
+    correct: str | list[str],
+    correct_msg: str,
+    head_extras: str,
+) -> str:
+    footer = build_footer(progress_text=f"Question {n} of 5")
+    script = (
+        choose_two_script(name, correct, correct_msg)
+        if is_choose_two
+        else radio_script(name, correct, correct_msg)
+    )
+    prev = f"sample-question-{n - 1}.html" if n > 1 else None
+    next_href = f"sample-question-{n + 1}.html" if n < 5 else None
+    prev_el = (
+        f'<a class="sim-nav-btn sim-nav-prev encor-sample-prev" href="{prev}">Back</a>'
+        if prev
+        else '<span class="sim-nav-btn sim-nav-prev encor-sample-prev sim-nav-btn--disabled" aria-hidden="true">Back</span>'
+    )
+    next_el = (
+        f'<a class="sim-nav-btn encor-sample-next nav-link nav-next next-link" href="{next_href}">Next</a>'
+        if next_href
+        else '<span class="sim-nav-btn encor-sample-next sim-nav-btn--disabled" aria-hidden="true">Next</span>'
+    )
+    head_extra_block = (head_extras + "\n") if head_extras else ""
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+{head_extra_block}  <meta name="robots" content="index, follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{html.escape(title)}</title>
+  <link rel="stylesheet" href="../../css/bcc-question-link-nav.css" />
+{BASE_STYLE}
+  <link rel="stylesheet" href="encor-sample-touch.css" />
+</head>
+<body class="encor-static-sample">
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="../../../images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <script src="../../../js/sample-url-mask-apply.js"></script>
+  <script src="../js/encor-practice-nav.js" defer></script>
+  <div class="question-shell">
+    <span class="site-logo-corner" aria-hidden="true">
+      <img src="../../../images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="" />
+    </span>
+    <main class="card">
+    {h1_html}
+
+{choices_html}
+
+{footer}    <div id="answerBox" class="answer" aria-live="polite"></div>
+  </main>
+  </div>
+  <nav id="encorSampleSimNav" class="sim-nav encor-sample-sim-nav" aria-label="Sample navigation">
+    {prev_el}
+    <a class="sim-nav-btn sim-nav-home" href="/ccnp-home.html">Home</a>
+    {next_el}
+  </nav>
+{script}
+</body>
+</html>
+"""
+
+
+def sample_needs_migration(text: str) -> bool:
+    if "encor-static-sample" not in text or "question-shell" not in text:
+        return True
+    if '<a class="site-logo-corner"' in text:
+        return True
+    return False
+
+
+def migrate_static_sample(path: Path) -> None:
+    text = path.read_text(encoding="utf-8")
+    if not sample_needs_migration(text):
+        return
+    m = re.match(r"sample-question-(\d+)\.html$", path.name, re.I)
+    if not m:
+        return
+    n = int(m.group(1))
+
+    title_m = re.search(r"<title>([\s\S]*?)</title>", text, re.I)
+    title = title_m.group(1).strip() if title_m else f"Sample question {n}"
+    head_extras = extract_head_extras(text)
+
+    main_raw = extract_main_content(text)
+    name = parse_input_name(main_raw)
+    _, choices_html, h1_html, is_choose_two = strip_old_chrome(main_raw)
+    correct, correct_msg = parse_script_answers(text, is_choose_two)
+
+    out = render_static_sample(
+        n=n,
+        title=title,
+        h1_html=h1_html,
+        choices_html=choices_html,
+        name=name,
+        is_choose_two=is_choose_two,
+        correct=correct,
+        correct_msg=correct_msg,
+        head_extras=head_extras,
+    )
+    path.write_text(out, encoding="utf-8")
+
+
 def migrate_file(path: Path, chain: list[int]) -> None:
     text = path.read_text(encoding="utf-8")
     if "encor-question-ui" in text and "question-shell" in text:
@@ -588,7 +716,20 @@ def main() -> int:
                 updated += 1
         except Exception as exc:
             errors.append(f"{path.name}: {exc}")
-    print(f"Updated {updated}, skipped {skipped}, errors {len(errors)}")
+    print(f"Bank: updated {updated}, skipped {skipped}, errors {len(errors)}")
+
+    sample_updated = 0
+    for path in sorted(SAMPLES_DIR.glob("sample-question-*.html")):
+        try:
+            before = path.read_text(encoding="utf-8")
+            migrate_static_sample(path)
+            after = path.read_text(encoding="utf-8")
+            if before != after:
+                sample_updated += 1
+        except Exception as exc:
+            errors.append(f"{path.name}: {exc}")
+
+    print(f"Static samples updated: {sample_updated}")
     if errors:
         for line in errors[:20]:
             print(" ", line)

@@ -195,9 +195,15 @@ def build_nav(prev_slug: str | None, next_slug: str | None) -> str:
     )
 
 
-def build_footer(*, progress_text: str = "", version: str = VERSION_LABEL) -> str:
+def build_footer(
+    *,
+    progress_text: str = "",
+    version: str = VERSION_LABEL,
+    topic_subject: str = "",
+) -> str:
     version_esc = html.escape(version)
     progress = html.escape(progress_text)
+    subject_esc = html.escape(topic_subject)
     return (
         '    <div class="answer-footer">\n'
         '      <div class="answer-actions">\n'
@@ -206,7 +212,7 @@ def build_footer(*, progress_text: str = "", version: str = VERSION_LABEL) -> st
         f'          <span class="ccna-practice-progress" aria-live="polite">{progress}</span>\n'
         '          <p class="question-topic-meta">\n'
         f'            <span class="question-topic-meta__version">{version_esc}</span>\n'
-        '            <span class="question-topic-meta__subject"></span>\n'
+        f'            <span class="question-topic-meta__subject">{subject_esc}</span>\n'
         "          </p>\n"
         "        </div>\n"
         "      </div>\n"
@@ -549,7 +555,11 @@ def render_static_sample(
     correct_msg: str,
     head_extras: str,
 ) -> str:
-    footer = build_footer(progress_text=f"Question {n} of 5")
+    topic_subject = "2.0 Network Access" if n == 1 else ""
+    footer = build_footer(
+        progress_text=f"Question {n} of 5",
+        topic_subject=topic_subject,
+    )
     script = (
         choose_two_script(name, correct, correct_msg)
         if is_choose_two
@@ -586,9 +596,9 @@ def render_static_sample(
   <script src="../../../js/sample-url-mask-apply.js"></script>
   <script src="../js/ccna-practice-100-nav.js" defer></script>
   <div class="question-shell">
-    <a class="site-logo-corner" href="../CCNA_Training_Portal.html" aria-label="CCNA training portal">
-      <img src="../../../images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
-    </a>
+    <span class="site-logo-corner" aria-hidden="true">
+      <img src="../../../images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="" />
+    </span>
     <main class="card">
     {h1_html}
 
@@ -644,16 +654,24 @@ def migrate_bank_file(path: Path, chain: list[str]) -> None:
     path.write_text(out, encoding="utf-8")
 
 
+def sample_needs_migration(text: str) -> bool:
+    if "ccna-static-sample" not in text or "question-shell" not in text:
+        return True
+    if '<a class="site-logo-corner"' in text:
+        return True
+    if ".answer-footer .nav-check" in text or "background: #0b1020" in text:
+        return True
+    return False
+
+
 def migrate_static_sample(path: Path) -> None:
     text = path.read_text(encoding="utf-8")
-    if "ccna-static-sample" in text and "question-shell" in text and "answer-footer" in text:
+    if not sample_needs_migration(text):
         return
     m = re.match(r"sample-question-(\d+)\.html$", path.name, re.I)
     if not m:
         return
     n = int(m.group(1))
-    if n == 1:
-        return
 
     title_m = re.search(r"<title>([\s\S]*?)</title>", text, re.I)
     title = title_m.group(1).strip() if title_m else f"Sample question {n}"
