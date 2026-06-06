@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Mitigate internet SPOF (redundant ISPs)</title>
+  <title>Security+ — Full-disk encryption (lost laptop)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/discontinue-medical-service-regulatory-avoidance.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/service-account-least-privilege-read-folder-only.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/nist-sp-800-53-federal-control-families.html">Next</a>
+      <span class="nav-link nav-next nav-link--disabled" aria-hidden="true">Next</span>
       </div>
     </nav>
-    <h1>A risk assessment reveals that the organization&#x27;s biggest risk is a single point of failure in its internet connectivity. The risk score on the heat map is in the red zone. Management asks for a risk mitigation plan. Which action would BEST mitigate this risk?</h1>
+    <h1>A company is concerned that lost laptops could expose locally stored customer data. Which control most directly protects the data if a device is stolen while powered off?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q974" value="A" />A. Accept the risk and document it</label>
-    <label class="choice"><input type="radio" name="secplus_q974" value="B" />B. Purchase cyber insurance for internet outages</label>
-    <label class="choice"><input type="radio" name="secplus_q974" value="C" />C. Implement redundant internet connections from different ISPs</label>
-    <label class="choice"><input type="radio" name="secplus_q974" value="D" />D. Disconnect from the internet entirely</label>
+    <label class="choice"><input type="radio" name="secplus_q1005" value="A" />A. A longer desktop wallpaper message.</label>
+    <label class="choice"><input type="radio" name="secplus_q1005" value="B" />B. Disabling screen lock timers.</label>
+    <label class="choice"><input type="radio" name="secplus_q1005" value="C" />C. Using a faster Wi-Fi standard.</label>
+    <label class="choice"><input type="radio" name="secplus_q1005" value="D" />D. Full-disk encryption with protected keys and enforced authentication.</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -175,14 +175,14 @@
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 Redundant internet links from different ISPs directly mitigates a connectivity single point of failure by keeping service available if one provider or circuit fails. Accepting and documenting the risk is risk acceptance, not mitigation. Cyber insurance for outages transfers financial impact but does not restore connectivity. Disconnecting from the internet entirely is risk avoidance and would cripple most business operations; it is not the best mitigation when continuity is required.";
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D \u2014 Full-disk encryption with protected keys and enforced authentication keeps stored data unreadable if a powered-off laptop is stolen and the drive is removed or accessed offline. A desktop wallpaper message does not encrypt data at rest. Disabling screen lock timers weakens protection when the device is in use. A faster Wi-Fi standard improves network performance and does not protect offline local storage.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q974"]:checked');
+        var sel = document.querySelector('input[name="secplus_q1005"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -199,7 +199,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q974"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="secplus_q1005"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

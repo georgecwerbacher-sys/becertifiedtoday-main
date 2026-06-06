@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Mitigate internet SPOF (redundant ISPs)</title>
+  <title>Security+ — GDPR (data controller)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/discontinue-medical-service-regulatory-avoidance.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/ssd-financial-records-cryptographic-erasure-destruction.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/nist-sp-800-53-federal-control-families.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/production-test-data-masking-fictitious-values.html">Next</a>
       </div>
     </nav>
-    <h1>A risk assessment reveals that the organization&#x27;s biggest risk is a single point of failure in its internet connectivity. The risk score on the heat map is in the red zone. Management asks for a risk mitigation plan. Which action would BEST mitigate this risk?</h1>
+    <h1>Under GDPR, a company that determines the purposes and means of processing personal data is classified as a:</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q974" value="A" />A. Accept the risk and document it</label>
-    <label class="choice"><input type="radio" name="secplus_q974" value="B" />B. Purchase cyber insurance for internet outages</label>
-    <label class="choice"><input type="radio" name="secplus_q974" value="C" />C. Implement redundant internet connections from different ISPs</label>
-    <label class="choice"><input type="radio" name="secplus_q974" value="D" />D. Disconnect from the internet entirely</label>
+    <label class="choice"><input type="radio" name="secplus_q993" value="A" />A. Data processor</label>
+    <label class="choice"><input type="radio" name="secplus_q993" value="B" />B. Data controller</label>
+    <label class="choice"><input type="radio" name="secplus_q993" value="C" />C. Data custodian</label>
+    <label class="choice"><input type="radio" name="secplus_q993" value="D" />D. Data steward</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -175,14 +175,14 @@
 
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C \u2014 Redundant internet links from different ISPs directly mitigates a connectivity single point of failure by keeping service available if one provider or circuit fails. Accepting and documenting the risk is risk acceptance, not mitigation. Cyber insurance for outages transfers financial impact but does not restore connectivity. Disconnecting from the internet entirely is risk avoidance and would cripple most business operations; it is not the best mitigation when continuity is required.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 A data controller decides why and how personal data is processed and carries primary accountability under GDPR. A data processor handles personal data on behalf of the controller under contract and does not determine purposes and means. A data custodian implements technical safeguards for data storage and access in enterprise governance models. A data steward manages data quality and policy adherence but is not the GDPR legal role for determining processing purposes.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q974"]:checked');
+        var sel = document.querySelector('input[name="secplus_q993"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -199,7 +199,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q974"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="secplus_q993"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

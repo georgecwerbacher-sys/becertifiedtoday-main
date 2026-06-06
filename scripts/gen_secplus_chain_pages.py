@@ -25526,6 +25526,776 @@ CHAIN: list[dict] = [
         ],
         "objectives": ["5.2", "5.1"],
     },
+    {
+        "slug": "nist-sp-800-53-federal-control-families",
+        "title": "Security+ — NIST SP 800-53 (control families)",
+        "stem": (
+            "Which governance framework provides a comprehensive set of security and privacy controls for federal "
+            "information systems and is organized into control families such as Access Control, Audit and "
+            "Accountability, and Incident Response?"
+        ),
+        "name": "secplus_q975",
+        "correct": "B",
+        "explain": (
+            "Correct. B — NIST Special Publication 800-53 defines security and privacy controls for U.S. federal "
+            "information systems, grouped into families such as AC (Access Control), AU (Audit and Accountability), "
+            "and IR (Incident Response). The NIST Cybersecurity Framework (CSF) is a high-level outcome-based "
+            "framework (Identify, Protect, Detect, Respond, Recover), not a detailed federal control catalog. "
+            "ISO 27001 is an international information security management standard with Annex A controls, not the "
+            "U.S. federal baseline. COBIT focuses on IT governance and management objectives for enterprise "
+            "alignment, not federal system control families."
+        ),
+        "choices": [
+            "NIST Cybersecurity Framework (CSF)",
+            "NIST SP 800-53",
+            "ISO 27001",
+            "COBIT",
+        ],
+        "objectives": ["5.5", "5.1"],
+    },
+    {
+        "slug": "nist-csf-five-core-functions",
+        "title": "Security+ — NIST CSF (five core functions)",
+        "stem": (
+            "The NIST Cybersecurity Framework (CSF) organizes cybersecurity activities into five core functions. "
+            "Which of the following lists these functions correctly?"
+        ),
+        "name": "secplus_q976",
+        "correct": "B",
+        "explain": (
+            "Correct. B — The NIST CSF core functions are Identify, Protect, Detect, Respond, and Recover. Identify "
+            "covers asset and risk understanding; Protect implements safeguards; Detect finds events; Respond takes "
+            "action on incidents; Recover restores capabilities. Plan, Build, Run, Monitor, Improve resembles IT "
+            "service lifecycle language, not the CSF. Assess, Implement, Verify, Maintain, Report is not the CSF "
+            "model. Prevent, Detect, Analyze, Contain, Remediate mixes incident-response phases with prevention but "
+            "is not the five CSF functions."
+        ),
+        "choices": [
+            "Plan, Build, Run, Monitor, Improve",
+            "Identify, Protect, Detect, Respond, Recover",
+            "Assess, Implement, Verify, Maintain, Report",
+            "Prevent, Detect, Analyze, Contain, Remediate",
+        ],
+        "objectives": ["5.5", "5.1"],
+    },
+    {
+        "slug": "iso-27001-isms-global-certification",
+        "title": "Security+ — ISO 27001 (ISMS certification)",
+        "stem": (
+            "An organization wants to achieve a globally recognized certification for its information security "
+            "management system (ISMS). Which standard should they pursue?"
+        ),
+        "name": "secplus_q977",
+        "correct": "C",
+        "explain": (
+            "Correct. C — ISO/IEC 27001 is the international standard for establishing, operating, and certifying an "
+            "information security management system (ISMS). Organizations can undergo accredited audits to earn "
+            "globally recognized ISO 27001 certification. NIST SP 800-53 is a U.S. federal control catalog, not an "
+            "ISMS certification scheme. PCI DSS governs payment card data security for merchants and processors. "
+            "CIS Controls are prioritized security best practices, not a certifiable ISMS standard."
+        ),
+        "choices": [
+            "NIST SP 800-53",
+            "PCI DSS",
+            "ISO 27001",
+            "CIS Controls",
+        ],
+        "objectives": ["5.5", "5.1"],
+    },
+    {
+        "slug": "retail-credit-card-pci-dss-cardholder-data",
+        "title": "Security+ — PCI DSS (cardholder data)",
+        "stem": (
+            "A retail company that accepts credit card payments must comply with which standard to protect "
+            "cardholder data?"
+        ),
+        "name": "secplus_q978",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Payment Card Industry Data Security Standard (PCI DSS) defines security requirements for "
+            "organizations that store, process, or transmit cardholder data. Retail merchants that accept credit cards "
+            "must comply with PCI DSS. HIPAA protects protected health information in healthcare contexts. SOX "
+            "(Sarbanes-Oxley) governs financial reporting controls for public companies. FERPA protects student "
+            "education records, not payment card data."
+        ),
+        "choices": [
+            "HIPAA",
+            "SOX",
+            "PCI DSS",
+            "FERPA",
+        ],
+        "objectives": ["5.5", "5.1"],
+    },
+    {
+        "slug": "hospital-ephi-hipaa-security-controls",
+        "title": "Security+ — HIPAA (ePHI protections)",
+        "stem": (
+            "A hospital is implementing new security controls to protect electronic protected health information "
+            "(ePHI). Which U.S. regulation mandates these protections?"
+        ),
+        "name": "secplus_q979",
+        "correct": "B",
+        "explain": (
+            "Correct. B — The Health Insurance Portability and Accountability Act (HIPAA) requires covered entities "
+            "and business associates to safeguard protected health information (PHI), including ePHI, through "
+            "administrative, physical, and technical controls. PCI DSS applies to payment card data, not medical "
+            "records. SOX governs financial reporting for public companies. GDPR is an EU privacy regulation and is "
+            "not the primary U.S. healthcare mandate for ePHI, though hospitals may also consider it for EU data "
+            "subjects."
+        ),
+        "choices": [
+            "PCI DSS",
+            "HIPAA",
+            "SOX",
+            "GDPR",
+        ],
+        "objectives": ["5.5", "5.1"],
+    },
+    {
+        "slug": "public-company-sox-internal-controls-financial-reporting",
+        "title": "Security+ — SOX (internal controls over financial reporting)",
+        "stem": (
+            "A publicly traded company must ensure the accuracy and reliability of its financial reporting systems. "
+            "Which U.S. regulation requires management to assess and report on internal controls over financial "
+            "reporting?"
+        ),
+        "name": "secplus_q980",
+        "correct": "C",
+        "explain": (
+            "Correct. C — The Sarbanes-Oxley Act (SOX), especially Section 404, requires public companies to assess "
+            "and report on the effectiveness of internal controls over financial reporting. HIPAA protects health "
+            "information. PCI DSS secures payment card data. The California Consumer Privacy Act (CCPA) governs "
+            "consumer privacy rights for California residents, not financial reporting controls."
+        ),
+        "choices": [
+            "HIPAA",
+            "PCI DSS",
+            "Sarbanes-Oxley Act (SOX)",
+            "CCPA",
+        ],
+        "objectives": ["5.5", "5.1"],
+    },
+    {
+        "slug": "gdpr-right-erasure-deletion-personal-data",
+        "title": "Security+ — GDPR (right to erasure)",
+        "stem": (
+            "A European company processes personal data of EU citizens. Under GDPR, what right allows individuals "
+            "to request the deletion of their personal data?"
+        ),
+        "name": "secplus_q981",
+        "correct": "C",
+        "explain": (
+            "Correct. C — The right to erasure, commonly called the right to be forgotten, lets data subjects "
+            "request deletion of personal data when conditions in GDPR apply. The right to access allows individuals "
+            "to obtain copies of their data. The right to portability lets them receive and transfer their data in "
+            "a usable format. The right to restrict processing limits how data is used but does not require "
+            "deletion."
+        ),
+        "choices": [
+            "Right to access",
+            "Right to portability",
+            "Right to be forgotten (right to erasure)",
+            "Right to restrict processing",
+        ],
+        "objectives": ["5.5", "5.1"],
+    },
+    {
+        "slug": "university-student-records-ferpa-privacy",
+        "title": "Security+ — FERPA (student education records)",
+        "stem": (
+            "A university stores students' academic records and financial aid information. Which U.S. regulation "
+            "protects the privacy of student education records?"
+        ),
+        "name": "secplus_q982",
+        "correct": "C",
+        "explain": (
+            "Correct. C — The Family Educational Rights and Privacy Act (FERPA) protects the privacy of student "
+            "education records at eligible schools and limits disclosure without consent. HIPAA applies to protected "
+            "health information, not general academic records. The California Consumer Privacy Act (CCPA) governs "
+            "consumer privacy rights for California residents broadly, not the specific U.S. framework for student "
+            "education records. The Gramm-Leach-Bliley Act (GLBA) requires financial institutions to protect "
+            "customer financial information, not university academic records."
+        ),
+        "choices": [
+            "HIPAA",
+            "CCPA",
+            "FERPA",
+            "GLBA",
+        ],
+        "objectives": ["5.5", "5.1"],
+    },
+    {
+        "slug": "multinational-data-sovereignty-border-storage",
+        "title": "Security+ — Data sovereignty (in-country storage)",
+        "stem": (
+            "A multinational company stores customer data in cloud servers located in multiple countries. Which "
+            "data governance concept addresses the requirement that data be stored and processed within a specific "
+            "country's borders?"
+        ),
+        "name": "secplus_q983",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Data sovereignty holds that digital information is subject to the laws of the country "
+            "where it is collected or stored, so some jurisdictions require in-country storage and processing. Data "
+            "retention defines how long data is kept before deletion or archival. Data minimization limits "
+            "collection to what is necessary for the stated purpose. Data masking obscures sensitive values in "
+            "non-production or shared datasets and does not govern cross-border location requirements."
+        ),
+        "choices": [
+            "Data retention",
+            "Data sovereignty",
+            "Data minimization",
+            "Data masking",
+        ],
+        "objectives": ["5.1", "5.6"],
+    },
+    {
+        "slug": "cis-controls-prioritized-practical-starting-point",
+        "title": "Security+ — CIS Controls (prioritized best practices)",
+        "stem": (
+            "The CIS Controls provide a prioritized set of security best practices. What is the PRIMARY advantage of "
+            "implementing CIS Controls compared to a comprehensive framework like NIST 800-53?"
+        ),
+        "name": "secplus_q984",
+        "correct": "B",
+        "explain": (
+            "Correct. B — CIS Controls are ordered by implementation priority (Implementation Groups) so "
+            "organizations can start with high-impact basics before tackling broader programs. NIST SP 800-53 is a "
+            "comprehensive federal control catalog with many more detailed controls across domains. CIS Controls are "
+            "not legally required for all organizations. NIST 800-53 covers more control detail and domains, not "
+            "fewer. CIS Controls complement other frameworks; they do not replace governance, risk, and compliance "
+            "programs entirely."
+        ),
+        "choices": [
+            "CIS Controls are legally required for all organizations",
+            "CIS Controls are prioritized and provide a practical starting point for improving security",
+            "CIS Controls cover more security domains than NIST 800-53",
+            "CIS Controls replace the need for all other security frameworks",
+        ],
+        "objectives": ["5.5", "5.1"],
+    },
+    {
+        "slug": "soc2-type-ii-trust-services-controls-effectiveness",
+        "title": "Security+ — SOC 2 Type II audit",
+        "stem": (
+            "An organization undergoes an annual SOC 2 Type II audit. What does this audit assess?"
+        ),
+        "name": "secplus_q985",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A SOC 2 Type II report evaluates whether controls related to selected Trust Services "
+            "Criteria (security, availability, processing integrity, confidentiality, and/or privacy) operated "
+            "effectively over the auditor's review period. Financial statement accuracy is the focus of financial "
+            "audits such as those under SOX, not SOC 2. PCI DSS compliance is assessed through PCI-specific "
+            "assessments and QSAs, not SOC 2. A network vulnerability review is technical testing, whereas SOC 2 "
+            "attests to control design and operating effectiveness for service organizations."
+        ),
+        "choices": [
+            "The organization's financial statements for accuracy",
+            (
+                "The operating effectiveness of controls related to security, availability, processing integrity, "
+                "confidentiality, and/or privacy over a period of time"
+            ),
+            "The organization's compliance with PCI DSS requirements",
+            "The organization's network architecture for vulnerabilities",
+        ],
+        "objectives": ["5.5", "5.1"],
+    },
+    {
+        "slug": "cobit-it-governance-business-alignment",
+        "title": "Security+ — COBIT (IT governance alignment)",
+        "stem": (
+            "A COBIT framework implementation helps an organization achieve which primary objective?"
+        ),
+        "name": "secplus_q986",
+        "correct": "B",
+        "explain": (
+            "Correct. B — COBIT (Control Objectives for Information and Related Technologies) is an IT governance "
+            "framework that helps organizations align IT goals, processes, and controls with business objectives. "
+            "Implementing specific technical security controls is operational work guided by many frameworks, not "
+            "COBIT's primary purpose. Penetration testing is a security assessment activity. Encrypting all data at "
+            "rest is one technical safeguard and not the overarching governance outcome COBIT provides."
+        ),
+        "choices": [
+            "Implementing specific technical security controls",
+            "Aligning IT governance with business objectives",
+            "Conducting penetration testing",
+            "Encrypting all data at rest",
+        ],
+        "objectives": ["5.5", "5.1"],
+    },
+    {
+        "slug": "ccpa-opt-out-sale-personal-information",
+        "title": "Security+ — CCPA (opt out of sale)",
+        "stem": (
+            "A California-based company collects personal information from California residents. Under the CCPA, "
+            "which right allows consumers to opt out of the sale of their personal information?"
+        ),
+        "name": "secplus_q987",
+        "correct": "C",
+        "explain": (
+            "Correct. C — The California Consumer Privacy Act (CCPA), as amended by CPRA, gives consumers the right "
+            "to opt out of the sale or sharing of their personal information. The right to access lets consumers "
+            "know what personal information is collected and how it is used. The right to delete allows request for "
+            "deletion of personal information, subject to exceptions. The right to portability is a GDPR term for "
+            "receiving transferable data; CCPA uses know, delete, correct, and opt-out language rather than "
+            "portability as the primary label for that concept."
+        ),
+        "choices": [
+            "Right to access",
+            "Right to delete",
+            "Right to opt out of sale",
+            "Right to portability",
+        ],
+        "objectives": ["5.5", "5.1"],
+    },
+    {
+        "slug": "employee-salary-confidential-data-classification",
+        "title": "Security+ — Data classification (salary information)",
+        "stem": (
+            "An organization classifies its data into four levels: Public, Internal, Confidential, and Restricted. "
+            "A document containing employee salary information would MOST likely be classified as which level?"
+        ),
+        "name": "secplus_q988",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Employee salary information is sensitive personal and financial data that requires limited "
+            "access on a need-to-know basis, so it typically fits the Confidential tier. Public data may be shared "
+            "externally without harm. Internal data is for general employee use but not public release. Restricted "
+            "is reserved for the highest-sensitivity data such as regulated secrets, credentials, or critical "
+            "security materials; routine payroll records are sensitive but not usually at that top tier."
+        ),
+        "choices": [
+            "Public",
+            "Internal",
+            "Confidential",
+            "Restricted",
+        ],
+        "objectives": ["5.4", "5.1"],
+    },
+    {
+        "slug": "data-owner-classification-access-controls",
+        "title": "Security+ — Data owner (classification and access)",
+        "stem": (
+            "In a data governance framework, who is responsible for determining the classification level and access "
+            "controls for a specific dataset?"
+        ),
+        "name": "secplus_q989",
+        "correct": "B",
+        "explain": (
+            "Correct. B — The data owner (often a business unit leader) is accountable for the dataset and decides "
+            "its classification, acceptable use, and required access controls. A data custodian implements and "
+            "maintains technical safeguards such as storage, backups, and enforcement of access rules set by the "
+            "owner. A data steward helps manage data quality, metadata, and policy adherence but does not typically "
+            "own classification decisions. A data processor handles personal data on behalf of a controller under "
+            "privacy law and is not the role that sets enterprise classification for a dataset."
+        ),
+        "choices": [
+            "Data custodian",
+            "Data owner",
+            "Data steward",
+            "Data processor",
+        ],
+        "objectives": ["5.4", "5.1"],
+    },
+    {
+        "slug": "it-administrator-data-custodian-technical-controls",
+        "title": "Security+ — Data custodian (technical implementation)",
+        "stem": (
+            "An IT administrator implements encryption, access controls, and backup procedures for a database as "
+            "specified by the data owner. Which data role does the administrator fulfill?"
+        ),
+        "name": "secplus_q990",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A data custodian implements and maintains technical controls such as encryption, access "
+            "enforcement, and backups according to requirements set by the data owner. The data owner defines "
+            "classification and policy for the dataset but typically does not perform hands-on implementation. A data "
+            "steward focuses on data quality, metadata, and governance processes rather than operating system and "
+            "database safeguards. A data controller is a privacy-law role that determines purposes and means of "
+            "processing personal data, not the IT role that configures database controls."
+        ),
+        "choices": [
+            "Data owner",
+            "Data custodian",
+            "Data steward",
+            "Data controller",
+        ],
+        "objectives": ["5.4", "5.1"],
+    },
+    {
+        "slug": "healthcare-patient-records-phi-classification",
+        "title": "Security+ — PHI (patient health records)",
+        "stem": (
+            "A healthcare organization processes patient records that include names, addresses, diagnoses, and "
+            "treatment plans. This data is classified as which type of sensitive information?"
+        ),
+        "name": "secplus_q991",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Protected health information (PHI) is individually identifiable health information held or "
+            "transmitted by a covered entity or business associate, including demographics, diagnoses, and treatment "
+            "plans. PII is a broader category of identifiable personal data; patient clinical records in healthcare "
+            "are specifically regulated as PHI under HIPAA. PCI data is payment card information subject to PCI DSS. "
+            "Public information may be released without restriction and does not describe regulated medical records."
+        ),
+        "choices": [
+            "PII (Personally Identifiable Information) only",
+            "PHI (Protected Health Information)",
+            "PCI (Payment Card Industry) data",
+            "Public information",
+        ],
+        "objectives": ["5.4", "5.1"],
+    },
+    {
+        "slug": "ssd-financial-records-cryptographic-erasure-destruction",
+        "title": "Security+ — SSD destruction (crypto-shredding)",
+        "stem": (
+            "An organization's data retention policy requires that financial records be kept for seven years and "
+            "then securely destroyed. Which of the following is the BEST method for destroying data on solid-state "
+            "drives (SSDs)?"
+        ),
+        "name": "secplus_q992",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Cryptographic erasure (crypto-shredding) destroys the encryption keys that protect data "
+            "at rest on the SSD, rendering stored ciphertext unreadable. This is often the most reliable sanitization "
+            "approach for flash media. Degaussing works on magnetic hard drives and does not effectively erase SSDs. "
+            "Single-pass overwrite is unreliable on SSDs because of wear leveling, over-provisioning, and blocks that "
+            "may not be reachable by standard overwrite tools. Reformatting removes file system pointers but leaves "
+            "recoverable data on the media."
+        ),
+        "choices": [
+            "Degaussing",
+            "Cryptographic erasure (crypto-shredding)",
+            "Single-pass overwrite",
+            "Reformatting the drive",
+        ],
+        "objectives": ["5.4", "4.2"],
+    },
+    {
+        "slug": "gdpr-data-controller-purposes-means-processing",
+        "title": "Security+ — GDPR (data controller)",
+        "stem": (
+            "Under GDPR, a company that determines the purposes and means of processing personal data is classified "
+            "as a:"
+        ),
+        "name": "secplus_q993",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A data controller decides why and how personal data is processed and carries primary "
+            "accountability under GDPR. A data processor handles personal data on behalf of the controller under "
+            "contract and does not determine purposes and means. A data custodian implements technical safeguards for "
+            "data storage and access in enterprise governance models. A data steward manages data quality and policy "
+            "adherence but is not the GDPR legal role for determining processing purposes."
+        ),
+        "choices": [
+            "Data processor",
+            "Data controller",
+            "Data custodian",
+            "Data steward",
+        ],
+        "objectives": ["5.5", "5.1"],
+    },
+    {
+        "slug": "production-test-data-masking-fictitious-values",
+        "title": "Security+ — Data masking (non-production testing)",
+        "stem": (
+            "An organization wants to use production data for software testing but needs to protect sensitive "
+            "customer information. Which technique replaces sensitive data with realistic but fictitious values while "
+            "maintaining data format and referential integrity?"
+        ),
+        "name": "secplus_q994",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Data masking substitutes sensitive values with realistic fictitious data so test environments "
+            "remain usable while protecting privacy and supporting format and referential integrity. Data encryption "
+            "protects confidentiality but does not produce anonymized test datasets developers can safely work with in "
+            "plain form. Data tokenization replaces values with surrogate tokens mapped to originals in a secure vault, "
+            "commonly for payment data, not the general test-data obfuscation described here. Data compression reduces "
+            "storage size and does not replace sensitive fields with fictitious values."
+        ),
+        "choices": [
+            "Data encryption",
+            "Data tokenization",
+            "Data masking",
+            "Data compression",
+        ],
+        "objectives": ["5.4", "5.1"],
+    },
+    {
+        "slug": "employee-computer-internet-acceptable-use-policy",
+        "title": "Security+ — Acceptable use policy (AUP)",
+        "stem": (
+            "An organization creates a document that defines acceptable behaviors for employees using company "
+            "computers and internet access. What is this document called?"
+        ),
+        "name": "secplus_q995",
+        "correct": "B",
+        "explain": (
+            "Correct. B — An acceptable use policy (AUP) defines permitted and prohibited use of organizational "
+            "systems such as computers, email, and internet access. A service level agreement (SLA) is a contractual "
+            "commitment for service performance between provider and customer. A non-disclosure agreement (NDA) "
+            "restricts sharing of confidential information with external parties. A memorandum of understanding (MOU) "
+            "documents mutual intent between organizations but does not typically define day-to-day employee system "
+            "use rules."
+        ),
+        "choices": [
+            "Service level agreement",
+            "Acceptable use policy (AUP)",
+            "Non-disclosure agreement",
+            "Memorandum of understanding",
+        ],
+        "objectives": ["1.2", "5.5"],
+    },
+    {
+        "slug": "lock-screen-clean-desk-sensitive-documents-policy",
+        "title": "Security+ — Clean desk policy",
+        "stem": (
+            "An organization requires that employees lock their screens when leaving their desks and not leave "
+            "sensitive documents unattended in common areas. This is part of which security policy?"
+        ),
+        "name": "secplus_q996",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A clean desk policy requires employees to secure workstations and sensitive materials when "
+            "unattended, such as locking screens and storing documents out of sight. A password policy defines "
+            "password complexity, rotation, and reuse rules. A remote access policy governs connecting to corporate "
+            "resources from outside the office. A data retention policy defines how long data is kept and when it must "
+            "be destroyed or archived."
+        ),
+        "choices": [
+            "Password policy",
+            "Remote access policy",
+            "Clean desk policy",
+            "Data retention policy",
+        ],
+        "objectives": ["1.2", "5.5"],
+    },
+    {
+        "slug": "simulated-phishing-susceptibility-awareness-training",
+        "title": "Security+ — Simulated phishing (awareness training)",
+        "stem": (
+            "An organization conducts simulated phishing campaigns in which IT security sends fake phishing emails to "
+            "employees and tracks who clicks the links. What is the PRIMARY purpose of this exercise?"
+        ),
+        "name": "secplus_q997",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Simulated phishing measures employee susceptibility to social engineering and supports "
+            "targeted security awareness training for users who need reinforcement. The goal is education and risk "
+            "reduction, not primarily punitive discipline. Spam filtering may be tested separately with controlled "
+            "messages, but click-rate tracking on fake lures is an awareness metric, not an email-gateway capability "
+            "test. PCI DSS does not require simulated phishing campaigns as a primary compliance control."
+        ),
+        "choices": [
+            "To identify and discipline employees who fail the test",
+            "To measure susceptibility and provide targeted security awareness training",
+            "To test the email server's spam filtering capabilities",
+            "To comply with PCI DSS requirements",
+        ],
+        "objectives": ["5.1", "2.2"],
+    },
+    {
+        "slug": "cloud-provider-vendor-assessment-third-party-risk",
+        "title": "Security+ — Third-party risk management (vendor assessment)",
+        "stem": (
+            "An organization is evaluating a new cloud service provider. The security team requests documentation of "
+            "the provider's security controls, certifications, and incident response procedures. This evaluation is "
+            "part of which process?"
+        ),
+        "name": "secplus_q998",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Third-party risk management (vendor assessment or due diligence) evaluates suppliers before "
+            "engagement, including review of security controls, certifications such as SOC 2, and incident response "
+            "capabilities. A vulnerability assessment scans systems for weaknesses, typically on owned assets. "
+            "Penetration testing actively exploits vulnerabilities to test defenses. A business impact analysis "
+            "identifies critical functions and recovery priorities after disruption, not pre-contract vendor review."
+        ),
+        "choices": [
+            "Vulnerability assessment",
+            "Third-party risk management (vendor assessment)",
+            "Penetration testing",
+            "Business impact analysis",
+        ],
+        "objectives": ["5.3", "5.5"],
+    },
+    {
+        "slug": "mssp-sla-response-time-uptime-requirements",
+        "title": "Security+ — SLA (MSSP response and uptime)",
+        "stem": (
+            "A contract between an organization and a managed security services provider (MSSP) specifies that the "
+            "MSSP must respond to critical alerts within 15 minutes and provide 99.9% uptime for its monitoring "
+            "platform. What type of agreement contains these requirements?"
+        ),
+        "name": "secplus_q999",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A service level agreement (SLA) defines measurable service commitments such as response "
+            "times, availability percentages, and escalation procedures between a provider and customer. A "
+            "non-disclosure agreement (NDA) restricts sharing of confidential information. An acceptable use policy "
+            "(AUP) governs employee use of organizational systems, not vendor performance metrics. A memorandum of "
+            "understanding (MOU) documents mutual intent to cooperate but typically lacks enforceable service metrics "
+            "like alert response times and uptime guarantees."
+        ),
+        "choices": [
+            "Non-disclosure agreement (NDA)",
+            "Acceptable use policy (AUP)",
+            "Service level agreement (SLA)",
+            "Memorandum of understanding (MOU)",
+        ],
+        "objectives": ["5.3", "5.5"],
+    },
+    {
+        "slug": "supply-chain-sbom-dependency-vulnerability-monitoring",
+        "title": "Security+ — SBOM (supply chain dependency risk)",
+        "stem": (
+            "A recent software supply chain attack compromised a widely used open-source library, affecting thousands "
+            "of organizations. Which risk management practice would BEST help an organization mitigate this type of "
+            "threat?"
+        ),
+        "name": "secplus_q1000",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A software bill of materials (SBOM) inventories components and dependencies so teams can "
+            "quickly identify affected libraries and monitor for known vulnerabilities after supply chain incidents. "
+            "A web application firewall filters web traffic but does not track third-party code embedded in "
+            "applications. Annual penetration testing finds exploitable weaknesses at a point in time but does not "
+            "provide continuous visibility into dependency risk across the software stack. Encrypting data at rest "
+            "protects stored data confidentiality and does not prevent compromise introduced through malicious or "
+            "vulnerable dependencies."
+        ),
+        "choices": [
+            "Implementing a web application firewall",
+            "Maintaining a software bill of materials (SBOM) and monitoring for vulnerabilities in dependencies",
+            "Conducting annual penetration tests",
+            "Encrypting all data at rest",
+        ],
+        "objectives": ["5.3", "5.5"],
+    },
+    {
+        "slug": "pentest-rules-of-engagement-scope-document",
+        "title": "Security+ — Rules of engagement (penetration test)",
+        "stem": (
+            "Before conducting a penetration test, the testing team and the organization agree on the IP ranges to be "
+            "tested, testing timeframes, prohibited techniques, and emergency contacts. What is this document called?"
+        ),
+        "name": "secplus_q1001",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Rules of engagement (ROE) define authorized scope, timing, methods, and communication for a "
+            "penetration test so testing stays legal, safe, and aligned with business expectations. An acceptable use "
+            "policy governs employee use of organizational systems. A service level agreement sets provider service "
+            "metrics such as uptime and response times. A business impact analysis identifies critical functions and "
+            "recovery priorities after disruption, not pre-test authorization boundaries."
+        ),
+        "choices": [
+            "Acceptable use policy",
+            "Rules of engagement (ROE)",
+            "Service level agreement",
+            "Business impact analysis",
+        ],
+        "objectives": ["4.3", "5.5"],
+    },
+    {
+        "slug": "pentest-black-box-zero-knowledge-external",
+        "title": "Security+ — Black box penetration test",
+        "stem": (
+            "An organization hires a penetration testing firm for a test where the testers are given no prior knowledge "
+            "of the target environment, simulating a real-world external attacker. What type of penetration test is "
+            "this?"
+        ),
+        "name": "secplus_q1002",
+        "correct": "C",
+        "explain": (
+            "Correct. C — A black box (zero-knowledge) penetration test gives testers no internal details about the "
+            "target, closely simulating an external attacker discovering and exploiting weaknesses. A white box test "
+            "provides full knowledge such as architecture diagrams and credentials. A gray box test provides partial "
+            "knowledge, such as a standard user account. A red team versus blue team exercise is a broader adversary "
+            "simulation with offensive and defensive teams, not defined solely by how much prior knowledge testers "
+            "receive."
+        ),
+        "choices": [
+            "White box (full knowledge)",
+            "Gray box (partial knowledge)",
+            "Black box (zero knowledge)",
+            "Red team vs. blue team exercise",
+        ],
+        "objectives": ["4.3", "5.5"],
+    },
+    {
+        "slug": "phishing-response-reset-credentials-revoke-sessions",
+        "title": "Security+ — Phishing response (credential compromise)",
+        "stem": (
+            "A user reports entering credentials into a suspicious login page. The user still has access to the "
+            "account. What should the security team do first?"
+        ),
+        "name": "secplus_q1003",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Treat the report as a potential credential compromise: reset the password, revoke active "
+            "sessions where possible, review account activity for unauthorized access, and preserve evidence for "
+            "investigation. Ignoring the report until financial loss occurs delays containment and increases risk. "
+            "Posting passwords in tickets exposes credentials to unauthorized staff. Disabling logging destroys "
+            "audit evidence needed to investigate and respond."
+        ),
+        "choices": [
+            "Ignore the report unless money has been stolen.",
+            "Reset the user’s credentials, revoke active sessions where possible, review account activity, and preserve evidence for investigation.",
+            "Post the user’s password in the ticket for visibility.",
+            "Disable logging to avoid storing sensitive data.",
+        ],
+        "objectives": ["4.6", "3.7"],
+    },
+    {
+        "slug": "service-account-least-privilege-read-folder-only",
+        "title": "Security+ — Least privilege (service account)",
+        "stem": (
+            "A service account only needs to read files from one application folder. It currently has administrator "
+            "permissions on the server. Which change best reduces risk?"
+        ),
+        "name": "secplus_q1004",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Least privilege means granting only the permissions required for the task. Scoped read "
+            "access to the one application folder removes unnecessary administrator rights if the account is "
+            "compromised. Sharing the administrator password with fewer people still leaves excessive privileges on "
+            "the account. Disabling file auditing reduces visibility into unauthorized access. Granting interactive "
+            "login rights expands attack surface and violates least privilege for a non-interactive service account."
+        ),
+        "choices": [
+            "Share the administrator password with fewer people but keep the same permissions.",
+            "Disable file auditing.",
+            "Replace administrator permissions with narrowly scoped read access to the required folder.",
+            "Give the service account interactive login rights for convenience.",
+        ],
+        "objectives": ["3.3", "5.1"],
+    },
+    {
+        "slug": "lost-laptop-full-disk-encryption-powered-off",
+        "title": "Security+ — Full-disk encryption (lost laptop)",
+        "stem": (
+            "A company is concerned that lost laptops could expose locally stored customer data. Which control most "
+            "directly protects the data if a device is stolen while powered off?"
+        ),
+        "name": "secplus_q1005",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Full-disk encryption with protected keys and enforced authentication keeps stored data "
+            "unreadable if a powered-off laptop is stolen and the drive is removed or accessed offline. A desktop "
+            "wallpaper message does not encrypt data at rest. Disabling screen lock timers weakens protection when "
+            "the device is in use. A faster Wi-Fi standard improves network performance and does not protect offline "
+            "local storage."
+        ),
+        "choices": [
+            "A longer desktop wallpaper message.",
+            "Disabling screen lock timers.",
+            "Using a faster Wi-Fi standard.",
+            "Full-disk encryption with protected keys and enforced authentication.",
+        ],
+        "objectives": ["1.4", "3.10"],
+    },
 ]
 
 
