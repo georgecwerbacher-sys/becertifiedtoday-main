@@ -526,6 +526,76 @@
   });
 })();
 
+/** CCNA paid content: load portal storage + gate on question/D&D/lab pages. */
+(function () {
+  "use strict";
+
+  var p = (location.pathname || "").toLowerCase();
+  if (
+    p.indexOf("/ccna-study/ccna_questions/") === -1 &&
+    p.indexOf("/ccna-study/ccna_d_d/") === -1 &&
+    p.indexOf("/ccna-study/ccna_labs/") === -1 &&
+    p.indexOf("/ccna_sim_exam/embed/dnd/") === -1 &&
+    p.indexOf("/ccna_sim_exam/embed/lab/") === -1
+  ) {
+    return;
+  }
+
+  function appendScript(src, next) {
+    if (document.querySelector('script[src="' + src + '"]')) {
+      if (next) next();
+      return;
+    }
+    var s = document.createElement("script");
+    s.src = src;
+    s.onload = function () {
+      if (next) next();
+    };
+    s.onerror = function () {
+      if (next) next();
+    };
+    (document.head || document.documentElement).appendChild(s);
+  }
+
+  appendScript("/CCNA-Study/js/ccna-portal-30d-storage.js", function () {
+    appendScript("/CCNA-Study/js/ccna-portal-gate.js");
+  });
+})();
+
+/** ENCOR paid content: load portal storage + gate on question/drag-drop/lab pages. */
+(function () {
+  "use strict";
+
+  var p = (location.pathname || "").toLowerCase();
+  if (
+    p.indexOf("/ccnp-encor-study/encor_questions/") === -1 &&
+    p.indexOf("/ccnp-encor-study/ccnp-encor-drag-drop/") === -1 &&
+    p.indexOf("/ccnp-encor-study/ccnp-encor-labs/") === -1
+  ) {
+    return;
+  }
+
+  function appendScript(src, next) {
+    if (document.querySelector('script[src="' + src + '"]')) {
+      if (next) next();
+      return;
+    }
+    var s = document.createElement("script");
+    s.src = src;
+    s.onload = function () {
+      if (next) next();
+    };
+    s.onerror = function () {
+      if (next) next();
+    };
+    (document.head || document.documentElement).appendChild(s);
+  }
+
+  appendScript("/CCNP-ENCOR-Study/js/encor-portal-storage.js", function () {
+    appendScript("/CCNP-ENCOR-Study/js/encor-portal-gate.js");
+  });
+})();
+
 /** Security+ timed exam embed (?examSim=1): hide question chrome in iframe runner */
 (function () {
   "use strict";

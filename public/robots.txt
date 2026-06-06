@@ -1,4 +1,4 @@
-# Public study content is crawlable; block admin, API, and auth/checkout-only flows.
+# Public samples and marketing pages are crawlable; block paid banks, admin, and auth flows.
 User-agent: *
 Allow: /
 
@@ -18,5 +18,22 @@ Disallow: /*portal-request-link.html
 Disallow: /*portal-30d-checkout-success.html
 Disallow: /*test-simulation-runner.html
 Disallow: /*test-simulation-purchase.html
+
+# Paid member banks (samples under *_Samples/ remain allowed)
+Disallow: /CCNA-Study/CCNA_questions/
+Disallow: /CCNA-Study/CCNA_D_D/
+Disallow: /CCNA-Study/CCNA_labs/
+Allow: /CCNA-Study/CCNA_labs/cli-lab-trunk_lacp.html
+Allow: /CCNA-Study/CCNA_labs/cli-lab-vlan-sim.html
+Disallow: /CCNA_Sim_EXAM/embed/
+
+Disallow: /CCNP-ENCOR-Study/ENCOR_Questions/
+Disallow: /CCNP-ENCOR-Study/CCNP-ENCOR-Drag-Drop/
+Disallow: /CCNP-ENCOR-Study/CCNP-ENCOR-Labs/
+
+Disallow: /COMP_TIA_SEC+/SEC+_Questions/
+Disallow: /COMP_TIA_SEC+/SEC+_D_D/
+Disallow: /COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/
+Allow: /COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html
 
 Sitemap: https://becertifiedtoday.com/sitemap.xml

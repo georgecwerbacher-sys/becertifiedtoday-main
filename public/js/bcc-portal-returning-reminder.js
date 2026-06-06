@@ -8,11 +8,12 @@
   var SHOW_DELAY_MS = 600;
   var ACCESS_POLL_MS = 120;
   var ACCESS_POLL_MAX = 50;
+  var REMINDER_COOLDOWN_MS = 3 * 24 * 60 * 60 * 1000;
 
   var CONFIGS = [
     {
       pathMatch: "CCNA_Training_Portal",
-      sessionKey: "bcc_portal_returning_reminder_v1_ccna",
+      dismissedAtKey: "bcc_portal_returning_reminder_v2_ccna",
       productLabel: "CCNA",
       hasAccess: function () {
         return typeof window.bccPortalAccessActive === "function" && window.bccPortalAccessActive();
@@ -28,7 +29,7 @@
     },
     {
       pathMatch: "ENCOR_Training_Portal",
-      sessionKey: "bcc_portal_returning_reminder_v1_encor",
+      dismissedAtKey: "bcc_portal_returning_reminder_v2_encor",
       productLabel: "CCNP ENCOR",
       hasAccess: function () {
         return (
@@ -46,7 +47,7 @@
     },
     {
       pathMatch: "SEC+_Training_Portal",
-      sessionKey: "bcc_portal_returning_reminder_v1_secplus",
+      dismissedAtKey: "bcc_portal_returning_reminder_v2_secplus",
       productLabel: "Security+",
       hasAccess: function () {
         return (
@@ -89,17 +90,21 @@
     return !!(banner && !banner.hidden);
   }
 
-  function alreadyShownThisSession() {
+  function reminderOnCooldown() {
     try {
-      return sessionStorage.getItem(cfg.sessionKey) === "1";
+      var raw = localStorage.getItem(cfg.dismissedAtKey);
+      if (!raw) return false;
+      var shownAt = parseInt(raw, 10);
+      if (!Number.isFinite(shownAt)) return false;
+      return Date.now() - shownAt < REMINDER_COOLDOWN_MS;
     } catch (e) {
       return false;
     }
   }
 
-  function markShownThisSession() {
+  function markReminderShown() {
     try {
-      sessionStorage.setItem(cfg.sessionKey, "1");
+      localStorage.setItem(cfg.dismissedAtKey, String(Date.now()));
     } catch (e) {}
   }
 
@@ -163,7 +168,7 @@
   function openModal() {
     if (!root || shown) return;
     shown = true;
-    markShownThisSession();
+    markReminderShown();
     root.classList.add("ccna-sim-promo-root--open");
     root.setAttribute("aria-hidden", "false");
     document.documentElement.classList.add("bcc-portal-reminder-open");
@@ -218,7 +223,7 @@
   function maybeShowReminder() {
     if (!cfg || shown) return;
     if (isFreshCheckoutActivation()) return;
-    if (alreadyShownThisSession()) return;
+    if (reminderOnCooldown()) return;
 
     waitForAccess().then(function (active) {
       if (!active || shown || isFreshCheckoutActivation()) return;

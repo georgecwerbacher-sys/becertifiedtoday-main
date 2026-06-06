@@ -511,7 +511,7 @@ def render_bank_page(
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-{head_extra_block}  <meta name="robots" content="index, follow" />
+{head_extra_block}  <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{html.escape(title)}</title>
 {BASE_STYLE}{extra_css_block}
@@ -582,7 +582,7 @@ def render_static_sample(
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-{head_extra_block}  <meta name="robots" content="index, follow" />
+{head_extra_block}  <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{html.escape(title)}</title>
   <link rel="stylesheet" href="../../css/bcc-question-link-nav.css" />

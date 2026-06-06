@@ -391,7 +391,7 @@ def build_head(*, title: str, extras: str, exhibit_css: str, is_sample: bool) ->
     nav_css = "/css/bcc-question-link-nav.css"
     touch_css = "/CCNA-Study/CCNA_Samples/ccna-sample-touch.css"
     dnd_css = "/CCNA-Study/js/ccna-dnd-page.css"
-    robots = "index, follow" if is_sample else "index, follow"
+    robots = "index, follow" if is_sample else "noindex, nofollow"
     lines = [
         "<head>",
         '  <meta charset="UTF-8" />',

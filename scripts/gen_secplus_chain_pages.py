@@ -717,7 +717,7 @@ def render_page(
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="robots" content="index, follow" />
+  <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{html.escape(title)}</title>
 {STYLE}
@@ -803,7 +803,7 @@ def render_page_choose_two(
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="robots" content="index, follow" />
+  <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{html.escape(title)}</title>
 {STYLE}

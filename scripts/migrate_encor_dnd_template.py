@@ -476,7 +476,7 @@ def build_head(*, title: str, extras: str, exhibit_css: str) -> str:
         lines.append(extras)
     lines.extend(
         [
-            '  <meta name="robots" content="index, follow" />',
+            '  <meta name="robots" content="noindex, nofollow" />',
             '  <meta name="viewport" content="width=device-width, initial-scale=1.0" />',
             f"  <title>{title}</title>",
         ]

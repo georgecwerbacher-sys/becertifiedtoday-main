@@ -19,7 +19,7 @@ SITEMAP = PUBLIC / "sitemap.xml"
 SITE_ORIGIN = "https://becertifiedtoday.com"
 
 ROBOTS_TXT = """\
-# Public study content is crawlable; block admin, API, and auth/checkout-only flows.
+# Public samples and marketing pages are crawlable; block paid banks, admin, and auth flows.
 User-agent: *
 Allow: /
 
@@ -39,6 +39,23 @@ Disallow: /*portal-request-link.html
 Disallow: /*portal-30d-checkout-success.html
 Disallow: /*test-simulation-runner.html
 Disallow: /*test-simulation-purchase.html
+
+# Paid member banks (samples under *_Samples/ remain allowed)
+Disallow: /CCNA-Study/CCNA_questions/
+Disallow: /CCNA-Study/CCNA_D_D/
+Disallow: /CCNA-Study/CCNA_labs/
+Allow: /CCNA-Study/CCNA_labs/cli-lab-trunk_lacp.html
+Allow: /CCNA-Study/CCNA_labs/cli-lab-vlan-sim.html
+Disallow: /CCNA_Sim_EXAM/embed/
+
+Disallow: /CCNP-ENCOR-Study/ENCOR_Questions/
+Disallow: /CCNP-ENCOR-Study/CCNP-ENCOR-Drag-Drop/
+Disallow: /CCNP-ENCOR-Study/CCNP-ENCOR-Labs/
+
+Disallow: /COMP_TIA_SEC+/SEC+_Questions/
+Disallow: /COMP_TIA_SEC+/SEC+_D_D/
+Disallow: /COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/
+Allow: /COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html
 
 Sitemap: https://becertifiedtoday.com/sitemap.xml
 """
@@ -62,8 +79,25 @@ NOCRAWL_EXACT = {
 
 NOCRAWL_PREFIXES = (
     "admin/",
-    "COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/",
-    "COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/",
+    "CCNA-Study/CCNA_questions/",
+    "CCNA-Study/CCNA_D_D/",
+    "CCNA-Study/CCNA_labs/",
+    "CCNA_Sim_EXAM/embed/",
+    "CCNP-ENCOR-Study/ENCOR_Questions/",
+    "CCNP-ENCOR-Study/CCNP-ENCOR-Drag-Drop/",
+    "CCNP-ENCOR-Study/CCNP-ENCOR-Labs/",
+    "COMP_TIA_SEC+/SEC+_Questions/",
+    "COMP_TIA_SEC+/SEC+_D_D/",
+    "COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/",
+)
+
+# Indexable pages inside otherwise noindex prefixes (guest samples).
+NOCRAWL_PREFIX_EXCEPTIONS = frozenset(
+    {
+        "CCNA-Study/CCNA_labs/cli-lab-trunk_lacp.html",
+        "CCNA-Study/CCNA_labs/cli-lab-vlan-sim.html",
+        "COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html",
+    }
 )
 
 # Guest-facing pages promoted in sitemap (unregistered users, no portal purchase).
@@ -125,6 +159,8 @@ def rel_public(path: Path) -> str:
 
 
 def should_noindex(rel: str) -> bool:
+    if rel in NOCRAWL_PREFIX_EXCEPTIONS:
+        return False
     if rel in NOCRAWL_EXACT:
         return True
     if any(rel.startswith(prefix) for prefix in NOCRAWL_PREFIXES):
