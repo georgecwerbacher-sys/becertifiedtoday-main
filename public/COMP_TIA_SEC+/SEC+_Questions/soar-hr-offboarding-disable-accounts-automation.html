@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Configuration drift (Desired state remediation)</title>
+  <title>Security+ — SOAR (HR offboarding account automation)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/patch-management-process-testing-approval-timelines.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/legacy-unpatchable-app-segmentation-compensating-control.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/polymorphic-malware-edr-behavioral-detection.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/security-automation-script-firewall-api-block-ips.html">Next</a>
       </div>
     </nav>
-    <h1>An organization uses a configuration management tool to ensure all servers maintain a consistent security baseline. When a server&#x27;s configuration drifts from the baseline, the tool automatically remediates the change. What is this automated process called?</h1>
+    <h1>A security team wants to automate the process of disabling user accounts when employees leave the organization. Which technology would BEST accomplish this through integration with the HR system?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q949" value="A" />A. Change management</label>
-    <label class="choice"><input type="radio" name="secplus_q949" value="B" />B. Configuration drift remediation (desired state configuration)</label>
-    <label class="choice"><input type="radio" name="secplus_q949" value="C" />C. Incident response</label>
-    <label class="choice"><input type="radio" name="secplus_q949" value="D" />D. Vulnerability assessment</label>
+    <label class="choice"><input type="radio" name="secplus_q953" value="A" />A. SIEM correlation rules</label>
+    <label class="choice"><input type="radio" name="secplus_q953" value="B" />B. SOAR playbook with identity provider API integration</label>
+    <label class="choice"><input type="radio" name="secplus_q953" value="C" />C. Network access control (NAC)</label>
+    <label class="choice"><input type="radio" name="secplus_q953" value="D" />D. Manual weekly account reviews</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -176,13 +176,13 @@
   <script>
     (function () {
       var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 Configuration drift remediation through desired state configuration continuously compares systems to an approved baseline and automatically restores settings that deviate, keeping servers aligned with the security standard. Change management governs how approved changes are planned and released but is not the name for automated baseline enforcement. Incident response handles security events and breaches, not routine configuration compliance. Vulnerability assessment identifies weaknesses such as missing patches or misconfigurations but does not by itself automatically revert drift to a defined baseline.";
+      var CORRECT_MSG = "Correct. B \u2014 A SOAR playbook can consume termination events from the HR system and orchestrate automated actions through identity provider APIs to disable accounts, revoke access, and notify stakeholders on departure. SIEM correlation rules detect and alert on security events but do not by themselves execute identity lifecycle changes from HR feeds. NAC controls network admission for devices and does not manage enterprise account deprovisioning tied to HR records. Manual weekly account reviews are detective and slow, leaving a window where former employees may retain access.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q949"]:checked');
+        var sel = document.querySelector('input[name="secplus_q953"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -199,7 +199,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q949"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="secplus_q953"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

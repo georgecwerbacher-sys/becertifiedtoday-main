@@ -967,7 +967,32 @@
     "server-hardening-least-functionality-windows",
     "host-firewall-implicit-deny-default-deny",
     "patch-management-process-testing-approval-timelines",
-    "configuration-drift-remediation-desired-state"
+    "configuration-drift-remediation-desired-state",
+    "polymorphic-malware-edr-behavioral-detection",
+    "change-management-production-review-approval",
+    "legacy-unpatchable-app-segmentation-compensating-control",
+    "soar-hr-offboarding-disable-accounts-automation",
+    "security-automation-script-firewall-api-block-ips",
+    "mdm-remote-wipe-lost-stolen-device",
+    "byod-mdm-containerization-work-profile",
+    "dr-hot-site-replication-four-hour-rto",
+    "differential-vs-incremental-backup-difference",
+    "backup-rule-3-2-1-strategy",
+    "powershell-password-age-compliance-monitoring-script",
+    "backup-restore-test-corrupted-backup-verification",
+    "mdm-conditional-access-compliance-enforcement",
+    "risk-register-document-risks-mitigation",
+    "risk-matrix-heatmap-likelihood-impact",
+    "sle-asset-value-exposure-factor-fire-loss",
+    "ale-aro-sle-data-breach-calculation",
+    "qualitative-risk-analysis-high-medium-low-ratings",
+    "bia-ecommerce-rto-two-hour-restore",
+    "rpo-one-hour-transaction-data-loss-tolerance",
+    "mtbf-mttr-server-reliability-interpretation",
+    "cyber-insurance-ransomware-risk-transference",
+    "low-impact-risk-cost-exceeds-loss-acceptance",
+    "discontinue-medical-service-regulatory-avoidance",
+    "internet-spof-redundant-isp-mitigation"
   ];
 
   window.SECPLUS_PRACTICE._topicAssignments = null;

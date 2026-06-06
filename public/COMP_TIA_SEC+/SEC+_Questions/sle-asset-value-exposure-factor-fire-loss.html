@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ — Configuration drift (Desired state remediation)</title>
+  <title>Security+ — SLE calculation (AV × EF)</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -137,17 +137,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/patch-management-process-testing-approval-timelines.html">Back</a>
+      <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/risk-matrix-heatmap-likelihood-impact.html">Back</a>
       <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/polymorphic-malware-edr-behavioral-detection.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/ale-aro-sle-data-breach-calculation.html">Next</a>
       </div>
     </nav>
-    <h1>An organization uses a configuration management tool to ensure all servers maintain a consistent security baseline. When a server&#x27;s configuration drifts from the baseline, the tool automatically remediates the change. What is this automated process called?</h1>
+    <h1>An organization calculates that a specific server has an asset value (AV) of $100,000 and a fire would destroy 40% of it. What is the single loss expectancy (SLE)?</h1>
 
-    <label class="choice"><input type="radio" name="secplus_q949" value="A" />A. Change management</label>
-    <label class="choice"><input type="radio" name="secplus_q949" value="B" />B. Configuration drift remediation (desired state configuration)</label>
-    <label class="choice"><input type="radio" name="secplus_q949" value="C" />C. Incident response</label>
-    <label class="choice"><input type="radio" name="secplus_q949" value="D" />D. Vulnerability assessment</label>
+    <label class="choice"><input type="radio" name="secplus_q965" value="A" />A. $100,000</label>
+    <label class="choice"><input type="radio" name="secplus_q965" value="B" />B. $40,000</label>
+    <label class="choice"><input type="radio" name="secplus_q965" value="C" />C. $60,000</label>
+    <label class="choice"><input type="radio" name="secplus_q965" value="D" />D. $400,000</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -176,13 +176,13 @@
   <script>
     (function () {
       var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 Configuration drift remediation through desired state configuration continuously compares systems to an approved baseline and automatically restores settings that deviate, keeping servers aligned with the security standard. Change management governs how approved changes are planned and released but is not the name for automated baseline enforcement. Incident response handles security events and breaches, not routine configuration compliance. Vulnerability assessment identifies weaknesses such as missing patches or misconfigurations but does not by itself automatically revert drift to a defined baseline.";
+      var CORRECT_MSG = "Correct. B \u2014 Single loss expectancy (SLE) equals asset value (AV) times exposure factor (EF). Here AV is $100,000 and EF is 40% (0.40), so SLE = $100,000 \u00d7 0.40 = $40,000. That is the monetary loss from one fire event, not the full asset value ($100,000), the remaining value after damage ($60,000), or an inflated figure ($400,000).";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="secplus_q949"]:checked');
+        var sel = document.querySelector('input[name="secplus_q965"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -199,7 +199,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="secplus_q949"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="secplus_q965"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

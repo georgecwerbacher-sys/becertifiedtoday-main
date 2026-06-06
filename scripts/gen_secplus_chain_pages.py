@@ -24907,6 +24907,625 @@ CHAIN: list[dict] = [
         ],
         "objectives": ["4.2", "4.7"],
     },
+    {
+        "slug": "polymorphic-malware-edr-behavioral-detection",
+        "title": "Security+ — Polymorphic malware (EDR behavioral detection)",
+        "stem": (
+            "A security analyst discovers that a new piece of malware is not detected by the organization's "
+            "signature-based antivirus. The malware uses polymorphic code to change its signature with each infection. "
+            "Which additional control would BEST detect this threat?"
+        ),
+        "name": "secplus_q950",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Polymorphic malware evades signature matching by changing its file hash while behavior "
+            "often remains similar. EDR with behavioral analysis monitors process activity, script execution, and "
+            "anomalous host actions to detect threats that lack a known signature. Updating signatures more often still "
+            "relies on known patterns and may miss novel polymorphic variants between releases. A second signature-based "
+            "AV engine has the same fundamental limitation against changing hashes. More frequent full scans increase "
+            "detection opportunities but do not add behavioral or heuristic analysis beyond signature matching."
+        ),
+        "choices": [
+            "Updating the antivirus signatures more frequently",
+            "Implementing an EDR solution with behavioral analysis",
+            "Adding a second signature-based antivirus product",
+            "Increasing the frequency of full system scans",
+        ],
+        "objectives": ["4.1", "4.4"],
+    },
+    {
+        "slug": "change-management-production-review-approval",
+        "title": "Security+ — Change management (Production approval)",
+        "stem": (
+            "A company requires that all changes to production systems go through a formal review and approval process "
+            "before implementation. This requirement is part of which management process?"
+        ),
+        "name": "secplus_q951",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Change management governs how modifications to production systems are requested, reviewed, "
+            "approved, tested, documented, and rolled back if needed before they are implemented. Incident management "
+            "responds to unplanned service disruptions and security events, not routine pre-approval of planned "
+            "changes. Problem management investigates root causes of recurring incidents to prevent future occurrences. "
+            "Release management coordinates packaging and deployment of software releases but the formal review and "
+            "approval gate for production changes is the change management process."
+        ),
+        "choices": [
+            "Incident management",
+            "Change management",
+            "Problem management",
+            "Release management",
+        ],
+        "objectives": ["4.1", "5.1"],
+    },
+    {
+        "slug": "legacy-unpatchable-app-segmentation-compensating-control",
+        "title": "Security+ — Legacy app (Segmentation compensating control)",
+        "stem": (
+            "An organization's vulnerability management program has identified a critical vulnerability in a legacy "
+            "application that cannot be patched because the vendor no longer supports the software. Which compensating "
+            "control would BEST reduce the risk?"
+        ),
+        "name": "secplus_q952",
+        "correct": "B",
+        "explain": (
+            "Correct. B — When patching is not possible, isolating the legacy system on a segmented network with strict "
+            "access controls and enhanced monitoring is a compensating control that limits exposure, restricts who can "
+            "reach the application, and improves detection of exploitation attempts while the business plans replacement. "
+            "Ignoring the vulnerability leaves critical risk unaddressed. Immediate replacement regardless of business "
+            "impact may be ideal long term but is not the best practical compensating control when the system must remain "
+            "in use. Disabling all network connectivity may break required business functions without the balanced "
+            "controls that segmentation and monitoring provide."
+        ),
+        "choices": [
+            "Ignore the vulnerability since patching is not possible",
+            "Isolate the legacy system on a segmented network with strict access controls and enhanced monitoring",
+            "Replace the application immediately, regardless of business impact",
+            "Disable the application's network connectivity entirely",
+        ],
+        "objectives": ["4.3", "4.1"],
+    },
+    {
+        "slug": "soar-hr-offboarding-disable-accounts-automation",
+        "title": "Security+ — SOAR (HR offboarding account automation)",
+        "stem": (
+            "A security team wants to automate the process of disabling user accounts when employees leave the "
+            "organization. Which technology would BEST accomplish this through integration with the HR system?"
+        ),
+        "name": "secplus_q953",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A SOAR playbook can consume termination events from the HR system and orchestrate automated "
+            "actions through identity provider APIs to disable accounts, revoke access, and notify stakeholders on "
+            "departure. SIEM correlation rules detect and alert on security events but do not by themselves execute "
+            "identity lifecycle changes from HR feeds. NAC controls network admission for devices and does not manage "
+            "enterprise account deprovisioning tied to HR records. Manual weekly account reviews are detective and slow, "
+            "leaving a window where former employees may retain access."
+        ),
+        "choices": [
+            "SIEM correlation rules",
+            "SOAR playbook with identity provider API integration",
+            "Network access control (NAC)",
+            "Manual weekly account reviews",
+        ],
+        "objectives": ["4.7", "4.5"],
+    },
+    {
+        "slug": "security-automation-script-firewall-api-block-ips",
+        "title": "Security+ — Security automation (Firewall API scripting)",
+        "stem": (
+            "A security administrator writes a Python script that queries the firewall API to block IP addresses flagged "
+            "by the threat intelligence feed. This is an example of which security operations concept?"
+        ),
+        "name": "secplus_q954",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Using a script to call the firewall API and automatically block indicators from a threat feed "
+            "is security automation through scripting, reducing manual response time and enforcing policy consistently. "
+            "Manual incident response relies on analysts performing each step by hand rather than an automated API "
+            "workflow. Vulnerability scanning identifies weaknesses on systems and does not push block rules to a "
+            "firewall from intelligence feeds. Penetration testing evaluates security through authorized simulated "
+            "attacks and is not the concept of operational automation described here."
+        ),
+        "choices": [
+            "Manual incident response",
+            "Security automation through scripting",
+            "Vulnerability scanning",
+            "Penetration testing",
+        ],
+        "objectives": ["4.7", "4.4"],
+    },
+    {
+        "slug": "mdm-remote-wipe-lost-stolen-device",
+        "title": "Security+ — MDM (Remote wipe)",
+        "stem": (
+            "An organization deploys a Mobile Device Management (MDM) solution to manage company-owned smartphones. "
+            "Which MDM capability allows the security team to erase all data on a lost or stolen device?"
+        ),
+        "name": "secplus_q955",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Remote wipe is an MDM feature that sends a command to a lost or stolen device to erase "
+            "stored data, reducing exposure of corporate information when the hardware cannot be recovered. Geofencing "
+            "applies policy based on device location boundaries but does not by itself erase data. Application "
+            "whitelisting restricts which apps may be installed or run on managed devices. Content filtering blocks "
+            "or limits access to specific web or data content and is not the MDM erase capability for a missing device."
+        ),
+        "choices": [
+            "Geofencing",
+            "Remote wipe",
+            "Application whitelisting",
+            "Content filtering",
+        ],
+        "objectives": ["4.1", "4.5"],
+    },
+    {
+        "slug": "byod-mdm-containerization-work-profile",
+        "title": "Security+ — BYOD (Containerization / work profile)",
+        "stem": (
+            "A company allows employees to use personal devices for work (BYOD). The MDM solution creates a separate "
+            "encrypted container for corporate data on each device. What is this approach called?"
+        ),
+        "name": "secplus_q956",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Containerization, often implemented as a work profile on mobile devices, isolates corporate "
+            "apps and data in an encrypted container separate from personal content so work data can be managed and "
+            "wiped without affecting personal files. Full device encryption protects all data on the device with one "
+            "encryption layer but does not separate work and personal spaces. Network segmentation divides network "
+            "traffic into zones and is unrelated to on-device data isolation. Virtual desktop infrastructure delivers "
+            "a hosted desktop session from a data center rather than creating a local encrypted work container on the "
+            "phone."
+        ),
+        "choices": [
+            "Full device encryption",
+            "Containerization (work profile)",
+            "Network segmentation",
+            "Virtual desktop infrastructure",
+        ],
+        "objectives": ["4.1", "2.5"],
+    },
+    {
+        "slug": "dr-hot-site-replication-four-hour-rto",
+        "title": "Security+ — DR backup (4-hour RTO)",
+        "stem": (
+            "An organization's disaster recovery plan requires that critical systems can be restored within 4 hours of "
+            "a failure. Which backup strategy BEST supports this requirement?"
+        ),
+        "name": "secplus_q957",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Daily incremental backups limit data loss between full copies, while real-time replication to "
+            "a hot site keeps standby systems current so failover can occur within a few hours or less, matching a "
+            "4-hour recovery time objective. Weekly full backups to offsite tape involve slow restore and transport "
+            "timelines unsuitable for a 4-hour RTO. Monthly full backups in the same data center provide infrequent "
+            "recovery points and no geographic redundancy if the site fails. Annual backups in cold storage are for "
+            "long-term retention, not rapid restoration of critical production systems."
+        ),
+        "choices": [
+            "Weekly full backups stored offsite on tape",
+            "Daily incremental backups with real-time replication to a hot site",
+            "Monthly full backups stored in the same data center",
+            "Annual full backups stored in a cold storage facility",
+        ],
+        "objectives": ["3.4", "5.2"],
+    },
+    {
+        "slug": "differential-vs-incremental-backup-difference",
+        "title": "Security+ — Backup types (Differential vs incremental)",
+        "stem": (
+            "What is the primary difference between a differential backup and an incremental backup?"
+        ),
+        "name": "secplus_q958",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A differential backup captures all changes since the last full backup, so each differential "
+            "grows until the next full run. An incremental backup captures only changes since the last backup of any "
+            "type (full or incremental), making each incremental smaller but restore requires the full backup plus "
+            "every incremental in sequence. Differential backups are not inherently faster to create nor are "
+            "incremental restores always faster; restore trade-offs depend on how many backup sets must be applied. "
+            "Both backup types can use tape or disk media. The terms describe different change-tracking scopes and "
+            "are not interchangeable."
+        ),
+        "choices": [
+            "Differential backups are faster to create; incremental backups are faster to restore",
+            "Differential backups capture changes since the last full backup; incremental backups capture changes since the last backup of any type",
+            "Differential backups only work with tape; incremental backups only work with disk",
+            "There is no difference; the terms are interchangeable",
+        ],
+        "objectives": ["3.4", "4.2"],
+    },
+    {
+        "slug": "backup-rule-3-2-1-strategy",
+        "title": "Security+ — 3-2-1 backup rule",
+        "stem": (
+            "A security team is implementing the 3-2-1 backup rule. Which of the following correctly describes this "
+            "strategy?"
+        ),
+        "name": "secplus_q959",
+        "correct": "A",
+        "explain": (
+            "Correct. A — The 3-2-1 backup rule means keeping three copies of data (production plus two backups), stored "
+            "on two different types of media, with at least one copy offsite to survive site loss or ransomware affecting "
+            "local systems. It is not a schedule of three full, two differential, and one incremental backup per time "
+            "period. It does not require three data centers, two cloud providers, and one on-premises site by definition. "
+            "It is not about counting encryption keys, backup administrators, and recovery sites."
+        ),
+        "choices": [
+            "3 copies of data, on 2 different media types, with 1 copy offsite",
+            "3 full backups per week, 2 differential backups per day, 1 incremental per hour",
+            "3 data centers, 2 cloud providers, 1 on-premises location",
+            "3 encryption keys, 2 backup administrators, 1 recovery site",
+        ],
+        "objectives": ["3.4", "4.2"],
+    },
+    {
+        "slug": "powershell-password-age-compliance-monitoring-script",
+        "title": "Security+ — Automated compliance monitoring (Password age script)",
+        "stem": (
+            "A PowerShell script runs nightly to check all domain accounts for passwords that haven't been changed in "
+            "over 90 days and generates a report for the security team. This is an example of which security practice?"
+        ),
+        "name": "secplus_q960",
+        "correct": "B",
+        "explain": (
+            "Correct. B — The script automatically verifies password-age policy compliance across domain accounts and "
+            "reports violations, which is automated compliance monitoring through scripting. Penetration testing "
+            "simulates attacks to find exploitable weaknesses, not routine policy adherence checks. Social engineering "
+            "assessment evaluates human susceptibility to manipulation. Vulnerability scanning discovers unpatched "
+            "flaws and misconfigurations on systems rather than auditing password rotation against an identity policy."
+        ),
+        "choices": [
+            "Penetration testing",
+            "Automated compliance monitoring through scripting",
+            "Social engineering assessment",
+            "Vulnerability scanning",
+        ],
+        "objectives": ["4.7", "5.4"],
+    },
+    {
+        "slug": "backup-restore-test-corrupted-backup-verification",
+        "title": "Security+ — Backup testing (Restore verification)",
+        "stem": (
+            "An organization is testing its backup restoration process and discovers that a critical database backup is "
+            "corrupted and cannot be restored. This finding highlights the importance of which practice?"
+        ),
+        "name": "secplus_q961",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Regular backup testing and verification confirms that backup files are intact and can be "
+            "restored before a real outage, exposing corruption or misconfiguration while there is still time to fix "
+            "the process. Encrypting backups protects confidentiality but does not prove restorability. Increasing "
+            "backup frequency creates more copies but does not detect corrupt media if restores are never tested. RAID "
+            "arrays improve availability and fault tolerance for live storage but do not replace validating offsite or "
+            "scheduled backup recoverability."
+        ),
+        "choices": [
+            "Encrypting all backup data",
+            "Regular backup testing and verification",
+            "Increasing backup frequency",
+            "Using RAID arrays for all storage",
+        ],
+        "objectives": ["3.4", "5.5"],
+    },
+    {
+        "slug": "mdm-conditional-access-compliance-enforcement",
+        "title": "Security+ — MDM (Conditional access / compliance enforcement)",
+        "stem": (
+            "An MDM policy requires that all managed devices must have a minimum OS version, screen lock enabled, and "
+            "encryption turned on. If a device falls out of compliance, it is automatically blocked from accessing "
+            "corporate email. What is this enforcement method called?"
+        ),
+        "name": "secplus_q962",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Conditional access (compliance-based access control) evaluates device posture from MDM—such as "
+            "OS version, screen lock, and encryption—and allows or blocks access to resources like corporate email "
+            "based on whether the device meets policy. Geofencing applies controls based on geographic location, not "
+            "device compliance state. Role-based access control assigns permissions by user role and does not continuously "
+            "enforce mobile device health requirements before email access. Time-based access control limits access by "
+            "schedule and is unrelated to encryption or OS version compliance checks."
+        ),
+        "choices": [
+            "Geofencing",
+            "Conditional access (compliance-based access control)",
+            "Role-based access control",
+            "Time-based access control",
+        ],
+        "objectives": ["4.1", "4.5"],
+    },
+    {
+        "slug": "risk-register-document-risks-mitigation",
+        "title": "Security+ — Risk register",
+        "stem": (
+            "A security manager maintains a document that lists all identified risks, their likelihood, impact, risk "
+            "owners, and planned mitigation strategies. What is this document called?"
+        ),
+        "name": "secplus_q963",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A risk register is the living document that records identified risks along with likelihood, "
+            "impact, owners, and planned treatments or mitigations so the organization can track and manage risk over "
+            "time. A security policy states high-level rules and requirements but is not the detailed inventory of "
+            "individual risks. An incident response plan defines how to handle security events and breaches. A business "
+            "continuity plan describes maintaining or restoring operations after disruption, not cataloging risk "
+            "assessment results."
+        ),
+        "choices": [
+            "Security policy",
+            "Risk register",
+            "Incident response plan",
+            "Business continuity plan",
+        ],
+        "objectives": ["5.2", "5.1"],
+    },
+    {
+        "slug": "risk-matrix-heatmap-likelihood-impact",
+        "title": "Security+ — Risk matrix (Heat map)",
+        "stem": (
+            "A risk assessment team categorizes risks using a grid with likelihood on one axis and impact on the other, "
+            "with colors ranging from green (low) to red (critical). What is this visualization called?"
+        ),
+        "name": "secplus_q964",
+        "correct": "B",
+        "explain": (
+            "Correct. B — A risk matrix (often shown as a heat map) plots likelihood against impact so teams can "
+            "prioritize risks by severity using color-coded cells from low to critical. A Gantt chart schedules project "
+            "tasks over time and is unrelated to risk scoring. A network topology diagram maps devices and connections in "
+            "a network. A data flow diagram shows how information moves between processes and systems, not risk "
+            "likelihood and impact ratings."
+        ),
+        "choices": [
+            "Gantt chart",
+            "Risk matrix (heat map)",
+            "Network topology diagram",
+            "Data flow diagram",
+        ],
+        "objectives": ["5.2", "5.1"],
+    },
+    {
+        "slug": "sle-asset-value-exposure-factor-fire-loss",
+        "title": "Security+ — SLE calculation (AV × EF)",
+        "stem": (
+            "An organization calculates that a specific server has an asset value (AV) of $100,000 and a fire would "
+            "destroy 40% of it. What is the single loss expectancy (SLE)?"
+        ),
+        "name": "secplus_q965",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Single loss expectancy (SLE) equals asset value (AV) times exposure factor (EF). Here "
+            "AV is $100,000 and EF is 40% (0.40), so SLE = $100,000 × 0.40 = $40,000. That is the monetary loss "
+            "from one fire event, not the full asset value ($100,000), the remaining value after damage ($60,000), "
+            "or an inflated figure ($400,000)."
+        ),
+        "choices": [
+            "$100,000",
+            "$40,000",
+            "$60,000",
+            "$400,000",
+        ],
+        "objectives": ["5.2", "5.1"],
+    },
+    {
+        "slug": "ale-aro-sle-data-breach-calculation",
+        "title": "Security+ — ALE calculation (ARO × SLE)",
+        "stem": (
+            "Using the formula ALE = ARO × SLE, if the SLE for a data breach is $50,000 and the estimated annualized "
+            "rate of occurrence (ARO) is 0.5 (once every two years), what is the annualized loss expectancy (ALE)?"
+        ),
+        "name": "secplus_q966",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Annualized loss expectancy (ALE) equals annualized rate of occurrence (ARO) times single "
+            "loss expectancy (SLE). Here ALE = 0.5 × $50,000 = $25,000. That is the expected average annual loss, "
+            "not SLE alone ($50,000), ARO inverted as if it occurred twice per year ($100,000), or an arbitrary "
+            "blend of the two figures ($75,000)."
+        ),
+        "choices": [
+            "$100,000",
+            "$25,000",
+            "$50,000",
+            "$75,000",
+        ],
+        "objectives": ["5.2", "5.1"],
+    },
+    {
+        "slug": "qualitative-risk-analysis-high-medium-low-ratings",
+        "title": "Security+ — Qualitative risk analysis",
+        "stem": (
+            "A risk assessment that uses subjective ratings such as \"High,\" \"Medium,\" and \"Low\" rather than "
+            "specific dollar amounts is classified as which type of analysis?"
+        ),
+        "name": "secplus_q967",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Qualitative risk analysis uses descriptive scales such as High, Medium, and Low to rank "
+            "likelihood and impact without assigning precise monetary values. Quantitative risk analysis relies on "
+            "numeric figures such as SLE, ARO, and ALE. Business impact analysis identifies critical functions and "
+            "recovery priorities after disruption; it is not defined by subjective rating scales alone. Cost-benefit "
+            "analysis compares control costs to expected savings or risk reduction, typically using numbers rather "
+            "than ordinal labels only."
+        ),
+        "choices": [
+            "Quantitative risk analysis",
+            "Qualitative risk analysis",
+            "Business impact analysis",
+            "Cost-benefit analysis",
+        ],
+        "objectives": ["5.2", "5.1"],
+    },
+    {
+        "slug": "bia-ecommerce-rto-two-hour-restore",
+        "title": "Security+ — RTO (BIA restore time)",
+        "stem": (
+            "A business impact analysis (BIA) determines that the organization's e-commerce platform must be restored "
+            "within 2 hours of a failure. What metric does this 2-hour requirement represent?"
+        ),
+        "name": "secplus_q968",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Recovery time objective (RTO) is the maximum acceptable downtime before a system or service "
+            "must be restored after a disruption. Here the BIA sets a 2-hour RTO for the e-commerce platform. "
+            "Recovery point objective (RPO) defines how much data loss is tolerable, measured in time or data "
+            "volume, not how long restoration may take. Mean time to repair (MTTR) is an operational reliability "
+            "metric for average repair duration, not a BIA-driven business tolerance. Mean time between failures "
+            "(MTBF) measures expected uptime between failures, not the allowed recovery window."
+        ),
+        "choices": [
+            "Recovery Point Objective (RPO)",
+            "Recovery Time Objective (RTO)",
+            "Mean Time to Repair (MTTR)",
+            "Mean Time Between Failures (MTBF)",
+        ],
+        "objectives": ["3.4", "5.2"],
+    },
+    {
+        "slug": "rpo-one-hour-transaction-data-loss-tolerance",
+        "title": "Security+ — RPO (data loss tolerance)",
+        "stem": (
+            "An organization determines that it can tolerate losing no more than 1 hour of transaction data in the "
+            "event of a system failure. Which metric defines this data loss tolerance?"
+        ),
+        "name": "secplus_q969",
+        "correct": "B",
+        "explain": (
+            "Correct. B — Recovery point objective (RPO) is the maximum acceptable amount of data loss measured in "
+            "time (or volume) before a failure. A 1-hour RPO means backups and replication must keep data no older "
+            "than one hour. Recovery time objective (RTO) defines how quickly systems must be restored, not how "
+            "much data may be lost. Mean time between failures (MTBF) is a reliability metric for expected uptime "
+            "between failures. A service level agreement (SLA) is a contractual performance commitment and may "
+            "reference RPO, but the specific data-loss tolerance metric itself is RPO."
+        ),
+        "choices": [
+            "Recovery Time Objective (RTO)",
+            "Recovery Point Objective (RPO)",
+            "Mean Time Between Failures (MTBF)",
+            "Service Level Agreement (SLA)",
+        ],
+        "objectives": ["3.4", "5.2"],
+    },
+    {
+        "slug": "mtbf-mttr-server-reliability-interpretation",
+        "title": "Security+ — MTBF and MTTR (reliability)",
+        "stem": (
+            "A server has a mean time between failures (MTBF) of 50,000 hours and a mean time to repair (MTTR) of "
+            "4 hours. What does this tell the organization about the server's reliability?"
+        ),
+        "name": "secplus_q970",
+        "correct": "B",
+        "explain": (
+            "Correct. B — MTBF is the average operational time between failures; MTTR is the average time to restore "
+            "the system after a failure. Here the server typically runs about 50,000 hours between failures and "
+            "repairs take roughly 4 hours on average. MTTR is repair duration, not failure frequency, so the server "
+            "does not fail every 4 hours. MTBF and MTTR are reliability and maintainability metrics, not a warranty "
+            "period or a total usable lifespan cap."
+        ),
+        "choices": [
+            "The server fails every 4 hours on average",
+            "The server runs for approximately 50,000 hours between failures and takes about 4 hours to repair",
+            "The server has a 50,000-hour warranty",
+            "The server can only be used for 50,000 hours total",
+        ],
+        "objectives": ["3.4", "5.2"],
+    },
+    {
+        "slug": "cyber-insurance-ransomware-risk-transference",
+        "title": "Security+ — Risk transference (cyber insurance)",
+        "stem": (
+            "An organization decides to purchase cyber insurance to cover potential losses from a ransomware attack. "
+            "Which risk response strategy does this represent?"
+        ),
+        "name": "secplus_q971",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Risk transference (transfer) shifts financial impact of a risk to another party, such as "
+            "an insurer that pays covered losses after a ransomware incident. Risk avoidance eliminates the activity "
+            "or exposure that creates the risk. Risk mitigation reduces likelihood or impact through controls such "
+            "as backups and endpoint protection. Risk acceptance acknowledges residual risk without additional "
+            "action beyond monitoring."
+        ),
+        "choices": [
+            "Risk avoidance",
+            "Risk mitigation",
+            "Risk transference",
+            "Risk acceptance",
+        ],
+        "objectives": ["5.2", "5.1"],
+    },
+    {
+        "slug": "low-impact-risk-cost-exceeds-loss-acceptance",
+        "title": "Security+ — Risk acceptance (cost vs. loss)",
+        "stem": (
+            "After evaluating the cost of mitigating a low-probability, low-impact risk, management decides that the "
+            "cost of controls exceeds the potential loss. They document the risk and choose not to implement "
+            "additional controls. Which risk response is this?"
+        ),
+        "name": "secplus_q972",
+        "correct": "D",
+        "explain": (
+            "Correct. D — Risk acceptance is the deliberate decision to live with a risk when mitigation cost "
+            "outweighs potential loss, typically after documenting the risk and obtaining management approval. Risk "
+            "avoidance eliminates the activity or asset that creates the exposure. Risk mitigation implements "
+            "controls to reduce likelihood or impact. Risk transference shifts financial impact to another party, "
+            "such as through insurance or contracts."
+        ),
+        "choices": [
+            "Risk avoidance",
+            "Risk mitigation",
+            "Risk transference",
+            "Risk acceptance",
+        ],
+        "objectives": ["5.2", "5.1"],
+    },
+    {
+        "slug": "discontinue-medical-service-regulatory-avoidance",
+        "title": "Security+ — Risk avoidance (discontinue service)",
+        "stem": (
+            "A company decides to discontinue a service that processes sensitive medical data because the regulatory "
+            "compliance costs are too high relative to the revenue it generates. Which risk response strategy is this?"
+        ),
+        "name": "secplus_q973",
+        "correct": "A",
+        "explain": (
+            "Correct. A — Risk avoidance eliminates the activity or exposure that creates the risk. Stopping a "
+            "medical-data service removes the regulatory and security burden tied to that business line. Risk "
+            "mitigation would keep the service and add controls to reduce likelihood or impact. Risk transference "
+            "would shift financial impact to another party, such as through insurance or outsourcing with contracts. "
+            "Risk acceptance would continue the service while documenting and tolerating residual risk."
+        ),
+        "choices": [
+            "Risk avoidance",
+            "Risk mitigation",
+            "Risk transference",
+            "Risk acceptance",
+        ],
+        "objectives": ["5.2", "5.1"],
+    },
+    {
+        "slug": "internet-spof-redundant-isp-mitigation",
+        "title": "Security+ — Mitigate internet SPOF (redundant ISPs)",
+        "stem": (
+            "A risk assessment reveals that the organization's biggest risk is a single point of failure in its "
+            "internet connectivity. The risk score on the heat map is in the red zone. Management asks for a risk "
+            "mitigation plan. Which action would BEST mitigate this risk?"
+        ),
+        "name": "secplus_q974",
+        "correct": "C",
+        "explain": (
+            "Correct. C — Redundant internet links from different ISPs directly mitigates a connectivity single point "
+            "of failure by keeping service available if one provider or circuit fails. Accepting and documenting the "
+            "risk is risk acceptance, not mitigation. Cyber insurance for outages transfers financial impact but does "
+            "not restore connectivity. Disconnecting from the internet entirely is risk avoidance and would cripple "
+            "most business operations; it is not the best mitigation when continuity is required."
+        ),
+        "choices": [
+            "Accept the risk and document it",
+            "Purchase cyber insurance for internet outages",
+            "Implement redundant internet connections from different ISPs",
+            "Disconnect from the internet entirely",
+        ],
+        "objectives": ["5.2", "5.1"],
+    },
 ]
 
 
