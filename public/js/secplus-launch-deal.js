@@ -43,8 +43,13 @@
     } catch (_) {}
   }
 
+  function portalGateOpen() {
+    var gate = document.getElementById("secplusPortalGateRoot");
+    return !!(gate && gate.classList.contains("ccna-sim-promo-root--open"));
+  }
+
   function canOfferLaunchDeal() {
-    return !wasDismissed();
+    return !wasDismissed() && !portalGateOpen();
   }
 
   function formatSavings() {
@@ -413,5 +418,17 @@
     } catch (_) {}
   };
 
-  window.bccTryOpenSecplusLaunchDealFromPortalGate = tryOpenPopupFromPortalGate;
+  window.bccCloseSecplusLaunchDealForPortalGate = function () {
+    clearPurchasePopupDelay();
+    if (ensureRoot() && root.classList.contains("ccna-sim-promo-root--open")) {
+      closePopup(false);
+    }
+    var bar = document.getElementById("secplusLastChanceBar");
+    if (bar && bar.classList.contains("secplus-last-chance-bar--visible")) {
+      bar.classList.remove("secplus-last-chance-bar--visible");
+      bar.hidden = true;
+      bar.setAttribute("hidden", "");
+      document.documentElement.classList.remove("secplus-last-chance-visible");
+    }
+  };
 })();

@@ -52,8 +52,13 @@
     return !!(root && root.classList.contains("ccna-sim-promo-root--open"));
   }
 
+  function portalGateOpen() {
+    var gate = document.getElementById("secplusPortalGateRoot");
+    return !!(gate && gate.classList.contains("ccna-sim-promo-root--open"));
+  }
+
   function canOfferLastChance() {
-    return !wasDismissed() && !isPortalMember() && !needsPortalRestore();
+    return !wasDismissed() && !isPortalMember() && !needsPortalRestore() && !portalGateOpen();
   }
 
   function ensureBar() {
@@ -77,7 +82,7 @@
   }
 
   function showBar() {
-    if (!ensureBar() || lastChanceShown || !canOfferLastChance() || launchModalOpen()) return false;
+    if (!ensureBar() || lastChanceShown || !canOfferLastChance() || launchModalOpen() || portalGateOpen()) return false;
     lastChanceShown = true;
     clearFaqDelay();
     if (faqObserver) {
@@ -102,7 +107,7 @@
   }
 
   function scheduleLastChanceDelay() {
-    if (lastChanceShown || !canOfferLastChance() || faqDelayId != null || launchModalOpen()) return;
+    if (lastChanceShown || !canOfferLastChance() || faqDelayId != null || launchModalOpen() || portalGateOpen()) return;
     if (!isFaqInView()) return;
     faqDelayId = window.setTimeout(function () {
       faqDelayId = null;

@@ -2320,6 +2320,133 @@
       margin: 0 0 14px;
       font-size: 0.76rem;
     }
+    .ccna-sim-promo-warning {
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(251, 191, 36, 0.42);
+      background: rgba(251, 191, 36, 0.12);
+      font-size: clamp(0.84rem, 2vw, 0.92rem);
+      line-height: 1.45;
+      color: #fde68a;
+      font-weight: 800;
+    }
+    .bcc-last-chance-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9500;
+      display: none;
+      padding: 0 max(12px, env(safe-area-inset-right, 0px)) max(12px, env(safe-area-inset-bottom, 0px))
+        max(12px, env(safe-area-inset-left, 0px));
+      pointer-events: none;
+      box-sizing: border-box;
+    }
+    .bcc-last-chance-bar.bcc-last-chance-bar--visible {
+      display: block;
+      pointer-events: auto;
+    }
+    html.bcc-ccna-last-chance-visible {
+      padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
+    }
+    .bcc-last-chance-bar__inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px 14px;
+      align-items: center;
+      padding: 12px 14px 12px 16px;
+      border-radius: 14px 14px 0 0;
+      border: 1px solid rgba(79, 132, 216, 0.45);
+      border-bottom: none;
+      background: linear-gradient(165deg, rgba(30, 64, 130, 0.98) 0%, rgba(18, 26, 43, 0.98) 100%);
+      box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.45);
+    }
+    .bcc-last-chance-bar__close {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      align-self: start;
+      margin: 0;
+      padding: 4px 10px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: #cbd5e1;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .bcc-last-chance-bar__close:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .bcc-last-chance-bar__eyebrow {
+      grid-column: 1;
+      margin: 0;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fde68a;
+    }
+    .bcc-last-chance-bar__copy {
+      grid-column: 1;
+      margin: 0;
+      font-size: clamp(0.88rem, 2.2vw, 0.98rem);
+      line-height: 1.4;
+      color: #f4f7ff;
+    }
+    .bcc-last-chance-bar__copy strong {
+      color: #fef9c3;
+      font-weight: 800;
+    }
+    .bcc-last-chance-bar__cta {
+      grid-column: 1 / -1;
+      justify-self: start;
+      margin: 0;
+      padding: 0.65rem 1.1rem;
+      border: 0;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: #0b1a33;
+      background: linear-gradient(180deg, #fde68a 0%, #fbbf24 100%);
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(251, 191, 36, 0.35);
+    }
+    .bcc-last-chance-bar__cta:hover {
+      filter: brightness(1.05);
+    }
+    @media (min-width: 720px) {
+      .bcc-last-chance-bar__inner {
+        grid-template-columns: auto 1fr auto auto;
+        gap: 8px 16px;
+        padding: 14px 18px;
+        border-radius: 12px;
+        border-bottom: 1px solid rgba(79, 132, 216, 0.45);
+        margin-bottom: 8px;
+      }
+      .bcc-last-chance-bar__eyebrow {
+        grid-column: 1;
+        grid-row: 1;
+        white-space: nowrap;
+      }
+      .bcc-last-chance-bar__copy {
+        grid-column: 2;
+        grid-row: 1;
+      }
+      .bcc-last-chance-bar__cta {
+        grid-column: 3;
+        grid-row: 1;
+        justify-self: end;
+      }
+      .bcc-last-chance-bar__close {
+        grid-column: 4;
+        grid-row: 1;
+      }
+    }
     .ccna-sim-promo-code-inline {
       display: flex;
       flex-wrap: wrap;
@@ -2482,42 +2609,11 @@
             <div class="purchase-card-inner">
               <div class="purchase-card-main">
                 <p class="purchase-label">Get CCNA access</p>
-                <h2 class="purchase-heading">Choose your CCNA access</h2>
+                <h2 class="purchase-heading">Get 30-day CCNA access</h2>
                 <p class="purchase-lead purchase-lead--tight">
-                  Pick a short access window or thirty days for the full practice library and practice portal.
+                  Full practice library and practice portal for thirty days.
                 </p>
-                <div class="purchase-cta-stack purchase-cta-stack--duo">
-                  <div class="purchase-secondary-shell">
-                    <div class="purchase-track-box purchase-track-box--ten-day purchase-pricing-option" aria-label="10-day CCNA access option">
-                      <div class="purchase-track-head">
-                        <p class="purchase-track-title">10-day access</p>
-                        <span class="encor-live-badge">Live</span>
-                      </div>
-                      <p class="purchase-price" aria-label="9 dollars and 99 cents for 10 days">
-                        $9.99 <span>/ 10 days</span>
-                      </p>
-                      <p class="purchase-track-sub">
-                        Full library access for 10 days: question banks, CLI labs, drag-and-drop sets, practice portal modes, and timed simulation practice.
-                      </p>
-                      <p class="purchase-version-plug">
-                        Tests: Version 1.1 2026. Study sessions: pre v1.0, with new questions added continuously.
-                      </p>
-                      <p class="purchase-track-cta-wrap">
-                        <button
-                          type="button"
-                          class="cta-main cta-main--block"
-                          id="ccnaPortal10dPurchaseBtn"
-                          data-ccna-portal-10d-checkout
-                          aria-label="Purchase 10-day CCNA library access for nine ninety-nine"
-                        >
-                          Get 10-day access
-                        </button>
-                      </p>
-                      <p class="purchase-access-disclaimer">
-                        <strong>$9.99 / 10 days.</strong> No subscription. Access is tied to this browser. Use the same device when you study.
-                      </p>
-                    </div>
-                  </div>
+                <div class="purchase-cta-stack">
                   <div class="purchase-secondary-shell">
                     <div class="purchase-track-box purchase-track-box--thirty-day purchase-pricing-option" aria-label="30-day CCNA access purchase">
                       <div class="purchase-track-head">
@@ -2841,7 +2937,7 @@
                   </p>
                 </div>
                 <div class="purchase-notes">
-                  <strong>No recurring membership.</strong> Choose a 10-day or 30-day access window. Renew only if you want more time.
+                  <strong>No recurring membership.</strong> Choose a 30-day access window. Renew only if you want more time.
                   <strong>No additional software</strong> is required. Everything runs in your browser.
                 </div>
               </div>
@@ -3046,6 +3142,82 @@
     </footer>
   </div>
   <div
+    id="ccna10dOfferRoot"
+    class="ccna-sim-promo-root"
+    hidden
+    role="presentation"
+    aria-hidden="true"
+  >
+    <div class="ccna-sim-promo-backdrop" data-bcc-10d-offer-dismiss tabindex="-1"></div>
+    <div
+      class="ccna-sim-promo-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="ccna10dOfferTitle"
+      tabindex="-1"
+    >
+      <button type="button" class="ccna-sim-promo-close" data-bcc-10d-offer-dismiss aria-label="Close one-time offer">
+        ×
+      </button>
+      <p class="ccna-sim-promo-eyebrow">One-time visitor offer</p>
+      <h2 id="ccna10dOfferTitle">10-day CCNA full access</h2>
+      <p class="ccna-sim-promo-price">
+        <span class="ccna-sim-promo-price-now">$9.99</span>
+        <span class="ccna-sim-promo-limited-pill">10 days · one-time</span>
+      </p>
+      <p class="ccna-sim-promo-warning">
+        This is a one-time pop-up. When you close this box, it will not be shown again on this browser.
+      </p>
+      <p class="ccna-sim-promo-lead">
+        You get the full CCNA 200-301 library for <strong>10 days</strong>: question banks, CLI labs, drag-and-drop sets,
+        practice portal modes, and timed simulation practice—all in your browser. No subscription.
+      </p>
+      <div class="ccna-sim-promo-actions">
+        <button
+          type="button"
+          class="ccna-sim-promo-primary"
+          data-ccna-portal-10d-checkout
+          aria-label="Purchase 10-day CCNA library access for nine ninety-nine"
+        >
+          Get 10-day access · $9.99
+        </button>
+        <a class="ccna-sim-promo-secondary" href="#home-ccna-samples-title" data-bcc-10d-offer-dismiss>
+          Try free samples first
+        </a>
+        <button type="button" class="ccna-sim-promo-secondary" data-bcc-10d-offer-dismiss>
+          No thanks
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    id="ccna10dLastChanceBar"
+    class="bcc-last-chance-bar"
+    hidden
+    role="region"
+    aria-labelledby="ccna10dLastChanceTitle"
+    aria-live="polite"
+  >
+    <div class="bcc-last-chance-bar__inner">
+      <button type="button" class="bcc-last-chance-bar__close" data-bcc-10d-last-chance-dismiss aria-label="Dismiss last chance offer">
+        ×
+      </button>
+      <p id="ccna10dLastChanceTitle" class="bcc-last-chance-bar__eyebrow">Last chance · one-time offer</p>
+      <p class="bcc-last-chance-bar__copy">
+        <strong>$9.99</strong> for 10-day CCNA full access — question banks, CLI labs, drag-and-drop &amp; timed sim
+      </p>
+      <button
+        type="button"
+        class="bcc-last-chance-bar__cta"
+        data-bcc-10d-last-chance-checkout
+        data-ccna-portal-10d-checkout
+        aria-label="Purchase 10-day CCNA library access for nine ninety-nine"
+      >
+        Claim 10-day access
+      </button>
+    </div>
+  </div>
+  <div
     id="ccna-portal-gate"
     class="ccna-sim-promo-root"
     hidden
@@ -3065,14 +3237,12 @@
         ×
       </button>
       <p class="ccna-sim-promo-eyebrow">CCNA practice portal</p>
-      <h2 id="ccnaPortalGateTitle">30-day access required</h2>
+      <h2 id="ccnaPortalGateTitle">Practice portal access required</h2>
       <p class="ccna-sim-promo-lead">
-        The CCNA practice portal is for learners with <strong>active 30-day</strong> library access on
-        <strong>this browser</strong> (after Stripe checkout on this site). If you have not purchased yet, get
-        <strong>30-day access</strong> below. No recurring subscription.
+        The CCNA practice portal is for learners with <strong>active library access</strong> on
+        <strong>this browser</strong> (after checkout on this site). To open the portal, verify the email you used at checkout.
       </p>
       <p class="ccna-portal-gate-help">
-        Already registered?
         <a class="ccna-portal-gate-email-link" href="/CCNA-Study/ccna-portal-request-link.html">Verify your email for a portal link</a>.
         After you confirm, we open the CCNA practice portal on this browser.
       </p>
@@ -3080,19 +3250,17 @@
         Already paid but blocked on this device? Submit the same checkout email from this browser and we’ll restore access here.
       </p>
       <div class="ccna-sim-promo-actions">
-        <button
-          type="button"
+        <a
           class="ccna-sim-promo-primary"
-          data-ccna-portal-30d-checkout
-          aria-label="Purchase 30-day CCNA library access and go to Stripe checkout"
+          href="/CCNA-Study/ccna-portal-request-link.html"
+          >Get a portal link</a
         >
-          Purchase 30-day access
-        </button>
         <a
           class="ccna-sim-promo-secondary"
-          href="https://becertifiedtoday.com/ccna-home.html"
+          href="/ccna-home.html"
           data-ccna-portal-gate-dismiss
-          >Return to CCNA home</a>
+          >Return to CCNA home</a
+        >
         <button type="button" class="ccna-sim-promo-secondary" data-ccna-portal-gate-dismiss>Close</button>
       </div>
     </div>
@@ -3100,6 +3268,7 @@
   <script src="/js/ccna-home-conversion.js" defer></script>
   <script src="/CCNA-Study/js/ccna-portal-30d-storage.js" defer></script>
   <script src="/CCNA-Study/js/ccna-portal-30d-checkout.js" defer></script>
+  <script src="/js/bcc-10d-one-time-offer.js" defer></script>
   <script>
     (function () {
       var p = location.pathname || "";
@@ -3141,6 +3310,9 @@
 
       function openGate() {
         if (!gateRoot || !gatePanel || gateOpen) return;
+        if (typeof window.bccClose10dOfferForPortalGate === "function") {
+          window.bccClose10dOfferForPortalGate();
+        }
         gateOpen = true;
         prevOverflow = document.body.style.overflow;
         document.body.style.overflow = "hidden";

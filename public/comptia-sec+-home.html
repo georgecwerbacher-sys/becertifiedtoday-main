@@ -3467,33 +3467,29 @@
         ×
       </button>
       <p class="ccna-sim-promo-eyebrow">CompTIA Security+ Practice Portal</p>
-      <h2 id="secplusPortalGateTitle">30-Day Access Required</h2>
+      <h2 id="secplusPortalGateTitle">Practice portal access required</h2>
       <p class="ccna-sim-promo-lead">
         The Security+ practice portal is for learners with <strong>active library access</strong> on
-        <strong>this browser</strong> (after Stripe checkout on this site). If you have not registered yet, get
-        <strong>30-day access</strong> below. No recurring subscription.
+        <strong>this browser</strong> (after checkout on this site). To open the portal, verify the email you used at checkout.
       </p>
       <p class="ccna-portal-gate-help">
-        Already paid but blocked?
-        <a class="ccna-portal-gate-email-link" href="/COMP_TIA_SEC+/secplus-portal-request-link.html">Email me a portal link</a>
+        <a class="ccna-portal-gate-email-link" href="/COMP_TIA_SEC+/secplus-portal-request-link.html">Verify your email for a portal link</a>.
+        After you confirm, we open the Security+ practice portal on this browser.
       </p>
       <p class="ccna-portal-gate-help ccna-portal-gate-help--secondary">
-        On a new device or browser? Submit your checkout email from this device and we’ll restore portal access here.
+        Already paid but blocked on this device? Submit the same checkout email from this browser and we’ll restore access here.
       </p>
       <div class="ccna-sim-promo-actions">
-        <button
-          type="button"
+        <a
           class="ccna-sim-promo-primary"
-          data-secplus-portal-30d-checkout
-          aria-label="Purchase 30-day Security+ library access and go to Stripe checkout"
+          href="/COMP_TIA_SEC+/secplus-portal-request-link.html"
+          >Get a portal link</a
         >
-          Start 30-day exam prep · $24.99
-        </button>
         <a
           class="ccna-sim-promo-secondary"
-          href="/comptia-sec+-home.html#purchase"
+          href="/comptia-sec+-home.html"
           data-secplus-portal-gate-dismiss
-          >View pricing on Security+ home</a
+          >Return to Security+ home</a
         >
         <button type="button" class="ccna-sim-promo-secondary" data-secplus-portal-gate-dismiss>Close</button>
       </div>
@@ -3547,17 +3543,13 @@
         gateRoot.setAttribute("aria-hidden", "true");
         document.body.style.overflow = prevOverflow;
         document.removeEventListener("keydown", onKeyGate);
-        if (!hasPortalAccess()) {
-          window.setTimeout(function () {
-            if (typeof window.bccTryOpenSecplusLaunchDealFromPortalGate === "function") {
-              window.bccTryOpenSecplusLaunchDealFromPortalGate();
-            }
-          }, 0);
-        }
       }
 
       function openGate() {
         if (!gateRoot || !gatePanel || gateOpen) return;
+        if (typeof window.bccCloseSecplusLaunchDealForPortalGate === "function") {
+          window.bccCloseSecplusLaunchDealForPortalGate();
+        }
         gateOpen = true;
         prevOverflow = document.body.style.overflow;
         document.body.style.overflow = "hidden";
