@@ -3,7 +3,7 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-/* Site logo — top right (samples: decorative only; bank pages may link home) */
+/* Site logo — bank pages: top right; guest samples override to top left (no link) */
 .site-logo-corner {
   position: fixed;
   top: 12px;
@@ -162,7 +162,6 @@ code,
     z-index: 1;
   }
   body.ccna-question-ui .question-shell .site-logo-corner,
-  body.ccna-static-sample .question-shell .site-logo-corner,
   body.ccna-dnd-ui .question-shell .site-logo-corner {
     position: static !important;
     top: auto !important;
@@ -173,6 +172,28 @@ code,
     border: none !important;
     padding: 0 !important;
     backdrop-filter: none !important;
+  }
+  body.ccna-static-sample .site-logo-corner,
+  body.ccna-sample-guest-ui .site-logo-corner,
+  body.bcc-sample-experience .site-logo-corner {
+    display: inline-flex !important;
+    position: fixed !important;
+    top: max(12px, env(safe-area-inset-top, 0px)) !important;
+    left: max(12px, env(safe-area-inset-left, 0px)) !important;
+    right: auto !important;
+    align-self: auto !important;
+    margin: 0 !important;
+    pointer-events: none !important;
+    cursor: default !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    backdrop-filter: none !important;
+  }
+  body.ccna-static-sample .question-shell .site-logo-corner,
+  body.ccna-sample-guest-ui .question-shell .site-logo-corner,
+  body.bcc-sample-experience .question-shell .site-logo-corner {
+    position: fixed !important;
   }
   body.ccna-question-ui .page-logo-watermark,
   body.ccna-static-sample .page-logo-watermark,
@@ -443,10 +464,6 @@ body.dragdrop-exercise .panel h2 {
     width: auto !important;
   }
 
-  .site-logo-corner {
-    top: max(8px, env(safe-area-inset-top, 0px)) !important;
-    right: max(8px, env(safe-area-inset-right, 0px)) !important;
-  }
 
   .site-logo-corner img {
     width: 44px !important;

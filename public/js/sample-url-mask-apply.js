@@ -639,3 +639,91 @@
   head.appendChild(s);
 })();
 
+/** Guest samples (CCNA, ENCOR, SEC+): top-left logo only (no link); remove top-right corner logos. */
+(function () {
+  "use strict";
+
+  function samplePathMatch(path) {
+    return (
+      path.indexOf("/ccna-study/ccna_samples/") !== -1 ||
+      path.indexOf("/ccnp-encor-study/encor_samples/") !== -1 ||
+      path.indexOf("/comp_tia_sec+/sec+_samples/") !== -1 ||
+      path === "/ccna-study/ccna_labs/cli-lab-trunk_lacp.html" ||
+      path === "/ccna-study/ccna_labs/cli-lab-vlan-sim.html"
+    );
+  }
+
+  function isSampleExperience() {
+    var path = (location.pathname || "").toLowerCase();
+    var remembered = "";
+    try {
+      remembered = (sessionStorage.getItem("ccnaLastRealPath") || "").toLowerCase();
+    } catch (e) {}
+    if (samplePathMatch(path) || samplePathMatch(remembered)) return true;
+    try {
+      if (sessionStorage.getItem("ccnaHomeSample")) return true;
+      if (sessionStorage.getItem("encorHomeSample")) return true;
+      if (sessionStorage.getItem("secplusHomeSample")) return true;
+      if (sessionStorage.getItem("ccnpUrlMaskPath") === "/sample") return true;
+      if (sessionStorage.getItem("secplusUrlMaskPath") === "/secplus-sample") return true;
+    } catch (e) {}
+    try {
+      if (new URLSearchParams(location.search).get("sample") === "1") return true;
+    } catch (e) {}
+    return false;
+  }
+
+  function stripSampleLogoLinks() {
+    document.querySelectorAll("a.site-logo-corner").forEach(function (a) {
+      var span = document.createElement("span");
+      span.className = a.className;
+      span.setAttribute("aria-hidden", "true");
+      span.innerHTML = a.innerHTML;
+      a.parentNode.replaceChild(span, a);
+    });
+  }
+
+  function injectSampleLogoStyles() {
+    if (document.head.querySelector("style[data-bcc-sample-logo]")) return;
+    var s = document.createElement("style");
+    s.setAttribute("data-bcc-sample-logo", "1");
+    s.textContent =
+      "body.bcc-sample-experience .site-logo-corner," +
+      "body.ccna-static-sample .site-logo-corner," +
+      "body.ccna-sample-guest-ui .site-logo-corner," +
+      "body.encor-static-sample .site-logo-corner," +
+      "body.encor-sample-guest-ui .site-logo-corner," +
+      "body.secplus-static-sample .site-logo-corner," +
+      "body.secplus-sample-guest-ui .site-logo-corner{" +
+      "display:inline-flex!important;" +
+      "position:fixed!important;" +
+      "top:max(12px,env(safe-area-inset-top,0px))!important;" +
+      "left:max(12px,env(safe-area-inset-left,0px))!important;" +
+      "right:auto!important;" +
+      "bottom:auto!important;" +
+      "align-self:auto!important;" +
+      "margin:0!important;" +
+      "pointer-events:none!important;" +
+      "cursor:default!important;" +
+      "background:transparent!important;" +
+      "border:none!important;" +
+      "padding:0!important;" +
+      "backdrop-filter:none!important;" +
+      "}";
+    document.head.appendChild(s);
+  }
+
+  function applySampleLogoChrome() {
+    if (!isSampleExperience()) return;
+    document.body.classList.add("bcc-sample-experience");
+    injectSampleLogoStyles();
+    stripSampleLogoLinks();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", applySampleLogoChrome);
+  } else {
+    applySampleLogoChrome();
+  }
+})();
+

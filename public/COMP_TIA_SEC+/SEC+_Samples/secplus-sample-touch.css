@@ -101,8 +101,7 @@ body.secplus-static-sample .question-shell {
   z-index: 1;
 }
 
-body.secplus-question-ui .question-shell .site-logo-corner,
-body.secplus-static-sample .question-shell .site-logo-corner {
+body.secplus-question-ui .question-shell .site-logo-corner {
   position: static !important;
   top: auto !important;
   right: auto !important;
@@ -112,6 +111,28 @@ body.secplus-static-sample .question-shell .site-logo-corner {
   border: none !important;
   padding: 0 !important;
   backdrop-filter: none !important;
+}
+body.secplus-static-sample .site-logo-corner,
+body.secplus-sample-guest-ui .site-logo-corner,
+body.bcc-sample-experience .site-logo-corner {
+  display: inline-flex !important;
+  position: fixed !important;
+  top: max(12px, env(safe-area-inset-top, 0px)) !important;
+  left: max(12px, env(safe-area-inset-left, 0px)) !important;
+  right: auto !important;
+  align-self: auto !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+  cursor: default !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  backdrop-filter: none !important;
+}
+body.secplus-static-sample .question-shell .site-logo-corner,
+body.secplus-sample-guest-ui .question-shell .site-logo-corner,
+body.bcc-sample-experience .question-shell .site-logo-corner {
+  position: fixed !important;
 }
 
 body.secplus-question-ui .page-logo-watermark,
@@ -295,10 +316,6 @@ nav.sim-nav.secplus-sample-sim-nav .sim-nav-btn--disabled {
     width: auto !important;
   }
 
-  .site-logo-corner {
-    top: max(8px, env(safe-area-inset-top, 0px)) !important;
-    right: max(8px, env(safe-area-inset-right, 0px)) !important;
-  }
 
   nav.sim-nav.secplus-sample-sim-nav {
     overflow-x: auto !important;

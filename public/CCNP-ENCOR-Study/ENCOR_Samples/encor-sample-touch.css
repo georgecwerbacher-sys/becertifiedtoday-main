@@ -76,7 +76,6 @@ body.encor-dnd-ui .question-shell {
 }
 
 body.encor-question-ui .question-shell .site-logo-corner,
-body.encor-static-sample .question-shell .site-logo-corner,
 body.encor-dnd-ui .question-shell .site-logo-corner {
   position: static !important;
   align-self: flex-end;
@@ -84,6 +83,28 @@ body.encor-dnd-ui .question-shell .site-logo-corner {
   background: transparent !important;
   border: none !important;
   padding: 0 !important;
+}
+body.encor-static-sample .site-logo-corner,
+body.encor-sample-guest-ui .site-logo-corner,
+body.bcc-sample-experience .site-logo-corner {
+  display: inline-flex !important;
+  position: fixed !important;
+  top: max(12px, env(safe-area-inset-top, 0px)) !important;
+  left: max(12px, env(safe-area-inset-left, 0px)) !important;
+  right: auto !important;
+  align-self: auto !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+  cursor: default !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  backdrop-filter: none !important;
+}
+body.encor-static-sample .question-shell .site-logo-corner,
+body.encor-sample-guest-ui .question-shell .site-logo-corner,
+body.bcc-sample-experience .question-shell .site-logo-corner {
+  position: fixed !important;
 }
 
 body.encor-question-ui .page-logo-watermark,
