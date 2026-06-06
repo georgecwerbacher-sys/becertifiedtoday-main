@@ -7,21 +7,6 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTT6KBHX7V"></script>
   <script src="/js/google-tag-gtag.js"></script>
   <script src="/js/campaign-attribution.js"></script>
-  <script>
-    (function () {
-      function isEncorLeadLanding() {
-        if (location.hash === "#encor-lead-capture") return true;
-        try {
-          var qs = new URLSearchParams(location.search);
-          if (/lead-free-sim|free-sim|free\.simulation/i.test(qs.get("utm_content") || "")) return true;
-        } catch (e) {}
-        return false;
-      }
-      if (isEncorLeadLanding()) {
-        document.documentElement.classList.add("encor-landing-lead-first");
-      }
-    })();
-  </script>
   <script src="/js/install-vercel-analytics.js"></script>
   <meta charset="UTF-8" />
   <meta name="robots" content="index, follow" />
@@ -270,25 +255,6 @@
     .funnel-intro {
       order: 2;
       margin: 0 0 clamp(20px, 3.5vw, 28px);
-    }
-    .lead--lead-first {
-      display: none;
-      margin: 0 0 clamp(18px, 3vw, 24px);
-    }
-    html.encor-landing-lead-first .lead--full {
-      display: none;
-    }
-    html.encor-landing-lead-first .lead--lead-first {
-      display: block;
-    }
-    html.encor-landing-lead-first .funnel-intro .benefits {
-      display: none;
-    }
-    html.encor-landing-lead-first .funnel > .funnel-intro {
-      order: 1;
-    }
-    .lead-capture-section {
-      order: 3;
     }
     .samples-stack {
       order: 4;
@@ -586,11 +552,12 @@
     .purchase-cta-stack {
       display: grid;
       grid-template-columns: 1fr;
-      gap: clamp(16px, 3vw, 22px);
+      gap: clamp(18px, 3vw, 24px);
     }
     @media (min-width: 860px) {
-      .purchase-cta-stack {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+      .purchase-cta-stack--duo {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: clamp(24px, 4vw, 36px);
       }
     }
     .purchase-primary-cta .purchase-track-box {
@@ -1089,116 +1056,6 @@
       outline-offset: 3px;
       border-radius: 4px;
     }
-    html.encor-landing-lead-first .funnel > #purchase {
-      order: 0;
-    }
-    html.encor-landing-lead-first .funnel > #encor-lead-capture {
-      order: 2;
-    }
-    html.encor-landing-lead-first .funnel > .samples-stack {
-      order: 4;
-    }
-    html.encor-landing-lead-first .funnel > #purchase-details {
-      order: 5;
-    }
-    .lead-capture-section {
-      margin: 0 0 clamp(24px, 4vw, 32px);
-      padding: clamp(18px, 3vw, 24px);
-      border-radius: 14px;
-      border: 1px solid rgba(47, 102, 191, 0.38);
-      background: linear-gradient(165deg, #eff6ff 0%, #f8fafc 55%, #ffffff 100%);
-      color: var(--page-text);
-    }
-    .lead-capture-badge {
-      display: inline-block;
-      margin: 0 0 10px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: #1e3a5f;
-      background: rgba(47, 102, 191, 0.14);
-      border: 1px solid rgba(47, 102, 191, 0.28);
-    }
-    .lead-capture-section h2 {
-      margin: 0 0 8px;
-      font-size: clamp(1.12rem, 2.5vw, 1.32rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.3;
-      color: var(--page-text);
-    }
-    .lead-capture-lead {
-      margin: 0 0 clamp(14px, 2.5vw, 18px);
-      color: var(--page-muted);
-      font-size: clamp(0.92rem, 2vw, 1rem);
-      line-height: 1.55;
-    }
-    .lead-capture-list {
-      margin: 0 0 clamp(14px, 2.5vw, 18px);
-      padding-left: 1.15rem;
-      color: var(--page-muted);
-      font-size: 0.92rem;
-      line-height: 1.55;
-    }
-    .lead-capture-list li + li { margin-top: 6px; }
-    .lead-capture-form {
-      display: grid;
-      gap: 12px;
-      max-width: 420px;
-    }
-    .lead-capture-form label {
-      display: grid;
-      gap: 6px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--page-text);
-    }
-    .lead-capture-form input[type="email"] {
-      width: 100%;
-      min-height: 48px;
-      padding: 12px 14px;
-      border-radius: 10px;
-      border: 1px solid #cbd5e1;
-      font: inherit;
-      color: var(--page-text);
-      background: #fff;
-    }
-    .lead-capture-consent {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      font-size: 0.84rem;
-      font-weight: 400;
-      color: var(--page-muted);
-      line-height: 1.45;
-    }
-    .lead-capture-consent input { margin-top: 0.2em; flex-shrink: 0; }
-    .lead-capture-honeypot {
-      position: absolute;
-      left: -9999px;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-    }
-    .lead-capture-message { margin: 0; font-size: 0.88rem; color: #166534; }
-    .lead-capture-message--error { color: #b91c1c; }
-    .lead-capture-open-link a { font-weight: 800; color: var(--accent); }
-    .lead-capture-list a {
-      font-weight: 700;
-      color: var(--accent);
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-    .lead-capture-fine {
-      margin: 10px 0 0;
-      font-size: 0.78rem;
-      color: #64748b;
-      line-height: 1.45;
-    }
-    .lead-capture-fine a { font-weight: 700; color: var(--accent); }
     .formats-section .format-card .portal-launch-callout {
       margin: 0 0 clamp(12px, 2vw, 16px);
       padding: 14px 16px;
@@ -1285,66 +1142,6 @@
     }
     .samples-stack .format-sample--main-cta .cta-main {
       width: 100%;
-    }
-    .assessment-card {
-      max-width: 760px;
-      margin: 0 auto;
-    }
-    .assessment-details {
-      margin: 14px 0 0;
-      padding-left: 1.2rem;
-      color: #b8c3d6;
-      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
-      line-height: 1.55;
-    }
-    .assessment-details li {
-      margin: 6px 0;
-    }
-    .assessment-cta-wrap {
-      margin: 22px 0 0;
-      text-align: center;
-    }
-    .assessment-cta-panel {
-      margin: 0;
-      padding: clamp(20px, 4vw, 28px);
-      border-radius: 14px;
-      border: 2px solid rgba(99, 179, 120, 0.55);
-      background: linear-gradient(180deg, rgba(35, 72, 52, 0.38) 0%, rgba(13, 21, 40, 0.72) 100%);
-      box-shadow:
-        0 0 0 1px rgba(99, 179, 120, 0.14),
-        0 14px 36px rgba(0, 0, 0, 0.32);
-    }
-    .assessment-cta-kicker {
-      margin: 0 0 14px;
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #8fd4a8;
-    }
-    .assessment-cta-panel .cta-main {
-      font-size: clamp(1.05rem, 2.8vw, 1.22rem);
-      padding: 18px 28px;
-      min-height: 58px;
-      letter-spacing: 0.03em;
-      border-color: rgba(140, 210, 170, 0.55);
-      background: linear-gradient(165deg, #45a872 0%, #2f8f58 42%, #247048 100%);
-      box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.18) inset,
-        0 10px 32px rgba(36, 112, 72, 0.48);
-    }
-    .assessment-cta-panel .cta-main:hover {
-      color: #fff;
-      filter: brightness(1.08);
-      box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.22) inset,
-        0 12px 38px rgba(36, 112, 72, 0.58);
-    }
-    .assessment-cta-note {
-      margin: 12px 0 0;
-      font-size: 0.88rem;
-      color: #b8dcc4;
-      line-height: 1.45;
     }
     .cta-main--muted {
       opacity: 0.92;
@@ -2104,45 +1901,9 @@
                 <p class="purchase-label">Get CCNP ENCOR access</p>
                 <h2 class="purchase-heading">Choose your ENCOR access</h2>
                 <p class="purchase-lead purchase-lead--tight">
-                  Pick a one-session simulated exam, a short access window, or thirty days for the full practice library and practice portal.
+                  Pick a short access window or thirty days for the full practice library and practice portal.
                 </p>
-                <div class="purchase-cta-stack">
-                  <div class="purchase-primary-cta">
-                    <div
-                      class="purchase-track-box purchase-track-box--one-time-live purchase-pricing-option"
-                      aria-label="One-time ENCOR simulation exam purchase"
-                    >
-                      <div class="purchase-track-head">
-                        <p class="purchase-track-title">120-minute simulation</p>
-                        <span class="encor-live-badge">Live</span>
-                      </div>
-                      <p class="purchase-price" aria-label="9 dollars and 99 cents for one timed test">
-                        $9.99 <span>/ one attempt</span>
-                      </p>
-                      <p class="purchase-track-sub">
-                        Same clock and mix as test day: <strong>120 minutes</strong>, <strong>50</strong> multiple-choice,
-                        <strong>5</strong> drag-and-drop, <strong>4</strong> CLI labs, randomized order, pass/fail-style summary when you finish.
-                        Checkout runs on this site.
-                      </p>
-                      <p class="purchase-track-cta-wrap">
-                        <button
-                          type="button"
-                          class="cta-main cta-main--block"
-                          data-encor-test-sim-checkout
-                          data-bcc-item-id="encor_timed_simulation"
-                          data-bcc-item-name="ENCOR Timed Test Simulation"
-                          data-bcc-value="9.99"
-                          data-bcc-currency="USD"
-                          aria-label="Purchase one-time ENCOR timed simulation for nine ninety-nine"
-                        >
-                          Get simulated exam
-                        </button>
-                      </p>
-                      <p class="purchase-access-disclaimer">
-                        <strong>One-time access.</strong> No subscription. Best when you want one serious dry run before you schedule the real exam.
-                      </p>
-                    </div>
-                  </div>
+                <div class="purchase-cta-stack purchase-cta-stack--duo">
                   <div class="purchase-secondary-shell">
                     <div class="purchase-track-box purchase-track-box--ten-day purchase-pricing-option" aria-label="10-day ENCOR access option">
                       <div class="purchase-track-head">
@@ -2208,18 +1969,13 @@
             <p class="lead lead--full">
               You prepare for ENCOR 350-401 in your browser. This is <strong>exam prep</strong>, not a training course.
               You get <strong>realistic practice tests</strong>, <strong>verified explanations</strong>, drag-and-drop items, CLI labs,
-              and a <strong>120-minute timed simulation</strong> that mirrors exam-day item mix.
+              and timed simulation practice with portal access.
               Practice on your phone, tablet, or desktop. No PDFs and no third-party software.
               Many federal, DoD, and defense-contractor roles use CCNP Enterprise toward professional-level qualification. Confirm requirements with your manager.
-              Try the free sample below, then choose a 10-day pass, 30-day pass, or one-time simulation above.
-            </p>
-            <p class="lead lead--lead-first">
-              You get <strong>exam prep</strong> for 350-401, not a course. Start the
-              <strong>free 45-minute timed simulation</strong> below: 20 multiple-choice questions, 2 drag-and-drop items, and an ACL/CoPP CLI lab.
-              Review your results when you finish. Browser-only. No PDFs or third-party software.
+              Try the free sample below, then choose a 10-day pass or 30-day pass above.
             </p>
             <ul class="benefits" aria-label="What you get">
-              <li>120-minute timed sim, drag-and-drop, CLI labs, and domain-organized question banks.</li>
+              <li>Timed simulation practice, drag-and-drop, CLI labs, and domain-organized question banks.</li>
               <li>Verified explanations aligned to Cisco ENCOR 350-401 objectives (v1.2). No unvetted dumps.</li>
               <li>100% interactive in the browser. No static PDFs, slide decks, or third-party apps.</li>
               <li>Review modes loop missed answers back so you focus weak topics before test day.</li>
@@ -2228,56 +1984,12 @@
             </ul>
           </div>
 
-          <section
-            class="lead-capture-section assessment-card"
-            id="encor-lead-capture"
-            aria-labelledby="encor-lead-capture-title"
-          >
-            <p class="lead-capture-badge">Free · 45 minutes · no checkout</p>
-            <h2 id="encor-lead-capture-title">Start your free ENCOR 350-401 timed simulation</h2>
-            <p class="lead-capture-lead">
-              You run a <strong>45-minute sample exam</strong> in your browser. No email required.
-              You get <strong>20 multiple-choice questions</strong>, <strong>2 drag-and-drop</strong> items, and the
-              <strong>ACL/CoPP CLI lab</strong>. Same mix of item types you will see on test day.
-            </p>
-            <ul class="lead-capture-list assessment-details">
-              <li><strong>Back</strong>, <strong>Home</strong>, and <strong>Next</strong> through the mixed set</li>
-              <li>Uses the same guest ENCOR sample pool as the previews below</li>
-              <li>One free attempt per browser</li>
-              <li>Ready for a full dry run? <a href="#purchase">120-minute simulation · $9.99</a> or portal access above</li>
-            </ul>
-            <p class="lead-capture-open-link" data-encor-continue-free-sim hidden>
-              In progress on this browser?
-              <a href="/CCNP-ENCOR-Study/test-simulation-runner.html?free=1&amp;welcome=1">Continue your free simulation →</a>
-            </p>
-            <div class="assessment-cta-wrap">
-              <div class="assessment-cta-panel">
-                <p class="assessment-cta-kicker">Free sample exam</p>
-                <a
-                  class="cta-main"
-                  href="/CCNP-ENCOR-Study/test-simulation-runner.html?free=1&amp;welcome=1"
-                  data-encor-start-free-sim
-                  data-encor-start-method="encor_free_sim_landing"
-                  >Start free timed simulation</a
-                >
-                <p class="assessment-cta-note" data-encor-free-sim-consumed-note hidden>
-                  You have already completed the free sample on this browser.
-                  <a href="#purchase">Get the full 120-minute simulation or portal access</a>.
-                </p>
-              </div>
-            </div>
-            <p class="lead-capture-fine">
-              Exam prep only. Not affiliated with Cisco. Want a shorter preview first?
-              <a href="/sample?track=encor-questions">Try free sample questions</a>.
-            </p>
-          </section>
-
           <div class="samples-stack" id="encor-samples">
             <section class="samples-block" aria-labelledby="home-encor-samples-title">
               <div class="samples-block-intro">
                 <h2 class="samples-block-title" id="home-encor-samples-title"><strong>Try free ENCOR samples</strong></h2>
                 <p class="samples-block-lead">
-                  You get interactive previews from the ENCOR question bank, drag-and-drop, and ACL/CoPP lab. No checkout required. Each activity has a <strong>Home</strong> tab back to this page and <strong>Next</strong> (or <strong>Finish sample</strong>). When you finish, try the free 45-minute timed simulation next.
+                  You get interactive previews from the ENCOR question bank, drag-and-drop, and ACL/CoPP lab. No checkout required. Each activity has a <strong>Home</strong> tab back to this page and <strong>Next</strong> (or <strong>Finish sample</strong>).
                 </p>
               </div>
               <ul class="formats-grid formats-grid--tri" aria-label="CCNP ENCOR sample activities">
@@ -2296,7 +2008,7 @@
                       />
                     </figure>
                     <p>
-                      You answer two multiple-choice items from the ENCOR guest pool, shuffled each run across 350-401 domains. Use <strong>Check answer</strong> for feedback, then <strong>Next</strong>. When you finish, try the free 45-minute timed simulation.
+                      You answer <strong>18 multiple-choice items</strong>—three random questions per ENCOR domain—then review a <strong>scorecard</strong> when you finish. Use <strong>Check answer</strong> for feedback, then <strong>Next</strong>.
                     </p>
                     <p class="format-sample format-sample--main-cta">
                       <a class="cta-main cta-main--block" href="/sample?track=encor-questions">Start sample questions →</a>
@@ -2316,7 +2028,7 @@
                         loading="eager"
                       />
                     </figure>
-                    <p>You try two performance-style drag-and-drop items, shuffled each run. Drag snippets into the blanks or tap to place on a phone. When you tap <strong>Finish sample</strong>, try the free timed simulation next.</p>
+                    <p>You try <strong>four</strong> performance-style drag-and-drop items, shuffled each run. Drag snippets into the blanks or tap to place on a phone.</p>
                     <p class="format-sample format-sample--main-cta">
                       <a class="cta-main cta-main--block" href="/sample?track=encor-dnd">Start sample drag-and-drop →</a>
                     </p>
@@ -2335,7 +2047,7 @@
                         loading="eager"
                       />
                     </figure>
-                    <p>You practice one hands-on CLI simulation: extended ACL on R10, CoPP on R20, and save checks in the browser. When you tap <strong>Finish sample</strong>, try the free timed simulation next.</p>
+                    <p>You practice one hands-on CLI simulation: extended ACL on R10, CoPP on R20, and save checks in the browser.</p>
                     <p class="format-sample format-sample--main-cta">
                       <a class="cta-main cta-main--block" href="/sample?track=encor-lab">Start sample lab →</a>
                     </p>
@@ -2427,14 +2139,14 @@
                   <p class="purchase-blueprint-lead">
                     Under time pressure, leaning hardest into <strong>Infrastructure</strong> and <strong>Security</strong>
                     before you polish lighter domains mirrors where Cisco weights the blueprint. The timed simulation on this site rehearses
-                    that mixed multiple-choice, drag-and-drop, and CLI lab pressure across all six domains in one 120-minute session.
+                    that mixed multiple-choice, drag-and-drop, and CLI lab pressure across all six domains in one exam-style session.
                   </p>
                   <p class="purchase-blueprint-note">
                     Source: Cisco ENCOR 350-401 exam blueprint, v1.2.
                   </p>
                 </div>
                 <div class="purchase-notes">
-                  <strong>No recurring membership.</strong> Choose a 10-day or 30-day access window, or a one-time timed simulation. Renew only if you want more time.
+                  <strong>No recurring membership.</strong> Choose a 10-day or 30-day access window. Renew only if you want more time.
                   <strong>No additional software</strong> is required. Everything runs in your browser.
                 </div>
               </div>
@@ -2560,60 +2272,6 @@
         >Any questions?</a>
     </footer>
   </div>
-  <div
-    id="ccnaSimPromoRoot"
-    class="ccna-sim-promo-root"
-    hidden
-    role="presentation"
-    aria-hidden="true"
-  >
-    <div class="ccna-sim-promo-backdrop" data-ccna-sim-promo-dismiss tabindex="-1"></div>
-    <div
-      class="ccna-sim-promo-panel"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="ccnaSimPromoTitle"
-      tabindex="-1"
-    >
-      <button type="button" class="ccna-sim-promo-close" data-ccna-sim-promo-dismiss aria-label="Close offer dialog">
-        ×
-      </button>
-      <p class="ccna-sim-promo-eyebrow">ENCOR timed simulation</p>
-      <h2 id="ccnaSimPromoTitle">Try the ENCOR timed simulation</h2>
-      <p class="ccna-sim-promo-price">
-        <span class="ccna-sim-promo-price-now">$9.99</span>
-        <span>/ one attempt</span>
-      </p>
-      <p class="ccna-sim-promo-price-note">
-        <strong>$9.99 one-time.</strong> No recurring membership.
-      </p>
-      <p class="ccna-sim-promo-purchase-origin">
-        Preparation and purchase open on
-        <a href="/ccnp-home.html">CCNP ENCOR exam prep</a>.
-      </p>
-      <p class="ccna-sim-promo-lead">
-        Full exam-style run in the browser: <strong>questions</strong>, <strong>drag-and-drop</strong>, and
-        <strong>CLI labs</strong>, then a <strong>comprehensive score card</strong> (overall score and objective breakdown)
-        when you finish. One <strong>2-hour</strong> clock for the whole session.
-      </p>
-      <ul class="ccna-sim-promo-list">
-        <li>No app downloads. Everything runs on BeCertifiedToday.com in your browser.</li>
-        <li>
-          No Be Certified Today email membership or site account: pay once through Stripe to unlock a run; take the test and
-          review results in your session on this device. BeCertifiedToday.com never requires a membership.
-        </li>
-      </ul>
-      <div class="ccna-sim-promo-actions">
-        <a
-          class="ccna-sim-promo-primary"
-          id="ccnaSimPromoCta"
-          href="/CCNP-ENCOR-Study/test-simulation.html"
-          >Continue to timed test</a
-        >
-        <button type="button" class="ccna-sim-promo-secondary" data-ccna-sim-promo-dismiss>Not now</button>
-      </div>
-    </div>
-  </div>
   <script>
     (function () {
       var p = location.pathname || "";
@@ -2703,83 +2361,6 @@
       var timerId = null;
       tick();
       timerId = setInterval(tick, 1000);
-    })();
-    (function () {
-      var root = document.getElementById("ccnaSimPromoRoot");
-      var panel = root && root.querySelector(".ccna-sim-promo-panel");
-      if (!root || !panel) return;
-
-      var path = location.pathname || "";
-      var onHome = path === "/ccna-home.html";
-      if (!onHome) return;
-
-      var prevOverflow = "";
-      var open = false;
-
-      function closePromo() {
-        if (!open) return;
-        open = false;
-        root.classList.remove("ccna-sim-promo-root--open");
-        root.setAttribute("hidden", "");
-        root.setAttribute("aria-hidden", "true");
-        document.body.style.overflow = prevOverflow;
-        document.removeEventListener("keydown", onKey);
-      }
-
-      function openPromo() {
-        if (open) return;
-        open = true;
-        prevOverflow = document.body.style.overflow;
-        document.body.style.overflow = "hidden";
-        root.removeAttribute("hidden");
-        root.classList.add("ccna-sim-promo-root--open");
-        root.setAttribute("aria-hidden", "false");
-        panel.focus();
-        document.addEventListener("keydown", onKey);
-      }
-
-      function onKey(ev) {
-        if (ev.key === "Escape") {
-          ev.preventDefault();
-          closePromo();
-        }
-      }
-
-      root.querySelectorAll("[data-ccna-sim-promo-dismiss]").forEach(function (el) {
-        el.addEventListener("click", function () {
-          closePromo();
-        });
-      });
-
-      var promoShowConsumed = false;
-      var promoTimer = null;
-
-      function disconnectPromoTriggers() {
-        if (promoTimer != null) {
-          clearTimeout(promoTimer);
-          promoTimer = null;
-        }
-        window.removeEventListener("scroll", onScrollPastFold);
-      }
-
-      function triggerPromoOnce() {
-        if (promoShowConsumed) return;
-        promoShowConsumed = true;
-        disconnectPromoTriggers();
-        openPromo();
-      }
-
-      function onScrollPastFold() {
-        var y = window.scrollY || document.documentElement.scrollTop || 0;
-        var vh = window.innerHeight || 0;
-        if (vh > 0 && y >= vh) {
-          triggerPromoOnce();
-        }
-      }
-
-      promoTimer = setTimeout(triggerPromoOnce, 10000);
-      window.addEventListener("scroll", onScrollPastFold, { passive: true });
-      onScrollPastFold();
     })();
   </script>
   <div
@@ -2984,6 +2565,5 @@
     });
   </script>
   <script src="/CCNP-ENCOR-Study/js/encor-test-sim-storage.js" defer></script>
-  <script src="/js/encor-lead-capture.js" defer></script>
 </body>
 </html>

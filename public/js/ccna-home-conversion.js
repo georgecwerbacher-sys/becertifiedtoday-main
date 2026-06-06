@@ -149,9 +149,9 @@
       id: "exam-practice",
       adHeadline: "CCNA Exam Practice",
       eyebrow: "CCNA exam practice · timed & scored",
-      headline: "CCNA Exam Practice — timed simulations from $9.99",
+      headline: "CCNA Exam Practice — free assessment, portal access from $9.99",
       lead:
-        "CCNA exam practice with a free 30-minute assessment or a full <strong>120-minute simulation</strong> from $9.99. " +
+        "CCNA exam practice with a free assessment or <strong>10-day portal access from $9.99</strong>. " +
         "Labs, drag-and-drop, and questions in your browser—no PDFs or extra apps.",
       ctaPrimary: "Start free exam practice",
       stickyPrimary: "Free exam practice",

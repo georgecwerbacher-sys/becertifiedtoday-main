@@ -8,21 +8,6 @@
   <script src="/js/google-tag-gtag.js"></script>
   <script src="/js/google-ads-purchase-conversion.js"></script>
   <script src="/js/campaign-attribution.js"></script>
-  <script>
-    (function () {
-      function isCcnaLeadLanding() {
-        if (location.hash === "#ccna-lead-capture") return true;
-        try {
-          var qs = new URLSearchParams(location.search);
-          if (/lead-free-sim|free-sim|free\.simulation/i.test(qs.get("utm_content") || "")) return true;
-        } catch (e) {}
-        return false;
-      }
-      if (isCcnaLeadLanding()) {
-        document.documentElement.classList.add("ccna-landing-lead-first");
-      }
-    })();
-  </script>
   <script src="/js/install-vercel-analytics.js"></script>
   <!-- Event snippet for Purchase conversion page -->
   <script>
@@ -59,7 +44,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta
     name="description"
-    content="CCNA 200-301 exam prep: free 45-minute timed sample with scorecard, plus labs, drag-and-drop, and simulation. Browser-only. No GNS3 or PDFs."
+    content="CCNA 200-301 exam prep: free sample questions, labs, and drag-and-drop in your browser. Browser-only. No GNS3 or PDFs."
   />
   <meta
     name="keywords"
@@ -67,10 +52,10 @@
   />
   <link rel="canonical" href="https://becertifiedtoday.com/ccna-home.html" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="CCNA 200-301 Exam Prep | Free Timed Sample &amp; Simulation | Be Certified Today" />
+  <meta property="og:title" content="CCNA 200-301 Exam Prep | Practice Tests &amp; Simulation | Be Certified Today" />
   <meta
     property="og:description"
-    content="CCNA 200-301 exam prep in your browser: free assessment with scorecard, labs, drag-and-drop, and timed simulation. No GNS3 required."
+    content="CCNA 200-301 exam prep in your browser: free sample questions, labs, drag-and-drop, and portal access. No GNS3 required."
   />
   <meta property="og:site_name" content="Be Certified Today" />
   <meta property="og:url" content="https://becertifiedtoday.com/ccna-home.html" />
@@ -82,7 +67,7 @@
   <meta property="og:image:height" content="591" />
   <meta
     property="og:image:alt"
-    content="Free 30-minute CCNA exam preview with timed exam controls, drag-and-drop items, and a VLAN CLI lab simulation."
+    content="CCNA sample questions, drag-and-drop items, and a VLAN CLI lab preview in the browser."
   />
   <meta name="twitter:card" content="summary_large_image" />
   <meta
@@ -91,15 +76,15 @@
   />
   <meta
     name="twitter:image:alt"
-    content="Free 30-minute CCNA exam preview with timed exam controls, drag-and-drop items, and a VLAN CLI lab simulation."
+    content="CCNA sample questions, drag-and-drop items, and a VLAN CLI lab preview in the browser."
   />
-  <meta name="twitter:title" content="CCNA 200-301 Exam Prep | Free Timed Sample &amp; Simulation | Be Certified Today" />
+  <meta name="twitter:title" content="CCNA 200-301 Exam Prep | Practice Tests &amp; Simulation | Be Certified Today" />
   <meta
     name="twitter:description"
-    content="CCNA 200-301 exam prep: free assessment with scorecard, browser labs, and timed simulation. No GNS3 required."
+    content="CCNA 200-301 exam prep: free sample questions, browser labs, and drag-and-drop. No GNS3 required."
   />
   <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
-  <title>CCNA 200-301 Exam Prep | Free Timed Sample &amp; Simulation | Be Certified Today</title>
+  <title>CCNA 200-301 Exam Prep | Practice Tests &amp; Simulation | Be Certified Today</title>
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -554,25 +539,6 @@
       order: 2;
       margin: 0 0 clamp(20px, 3.5vw, 28px);
     }
-    .lead--lead-first {
-      display: none;
-      margin: 0 0 clamp(18px, 3vw, 24px);
-    }
-    html.ccna-landing-lead-first .lead--full {
-      display: none;
-    }
-    html.ccna-landing-lead-first .lead--lead-first {
-      display: block;
-    }
-    html.ccna-landing-lead-first .funnel-intro .benefits {
-      display: none;
-    }
-    html.ccna-landing-lead-first .funnel > .funnel-intro {
-      order: 1;
-    }
-    .lead-capture-section {
-      order: 3;
-    }
     .samples-stack {
       order: 4;
     }
@@ -904,11 +870,12 @@
     .purchase-cta-stack {
       display: grid;
       grid-template-columns: 1fr;
-      gap: clamp(16px, 3vw, 22px);
+      gap: clamp(18px, 3vw, 24px);
     }
     @media (min-width: 860px) {
-      .purchase-cta-stack {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+      .purchase-cta-stack--duo {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: clamp(24px, 4vw, 36px);
       }
     }
     .purchase-primary-cta .purchase-track-box {
@@ -1426,115 +1393,6 @@
       outline-offset: 3px;
       border-radius: 4px;
     }
-    html.ccna-landing-lead-first .funnel > #purchase {
-      order: 0;
-    }
-    html.ccna-landing-lead-first .funnel > #ccna-lead-capture {
-      order: 2;
-    }
-    html.ccna-landing-lead-first .funnel > #ccna-samples {
-      order: 4;
-    }
-    html.ccna-landing-lead-first .funnel > #purchase-details {
-      order: 5;
-    }
-    .lead-capture-section {
-      margin: 0 0 clamp(24px, 4vw, 32px);
-      padding: clamp(18px, 3vw, 24px);
-      border-radius: 14px;
-      border: 1px solid rgba(47, 102, 191, 0.38);
-      background: linear-gradient(165deg, #eff6ff 0%, #f8fafc 55%, #ffffff 100%);
-    }
-    .lead-capture-badge {
-      display: inline-block;
-      margin: 0 0 10px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: #1e3a5f;
-      background: rgba(47, 102, 191, 0.14);
-      border: 1px solid rgba(47, 102, 191, 0.28);
-    }
-    .lead-capture-section h2 {
-      margin: 0 0 8px;
-      font-size: clamp(1.12rem, 2.5vw, 1.32rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.3;
-      color: var(--page-text);
-    }
-    .lead-capture-lead {
-      margin: 0 0 clamp(14px, 2.5vw, 18px);
-      color: var(--page-muted);
-      font-size: clamp(0.92rem, 2vw, 1rem);
-      line-height: 1.55;
-    }
-    .lead-capture-list {
-      margin: 0 0 clamp(14px, 2.5vw, 18px);
-      padding-left: 1.15rem;
-      color: var(--page-muted);
-      font-size: 0.92rem;
-      line-height: 1.55;
-    }
-    .lead-capture-list li + li { margin-top: 6px; }
-    .lead-capture-form {
-      display: grid;
-      gap: 12px;
-      max-width: 420px;
-    }
-    .lead-capture-form label {
-      display: grid;
-      gap: 6px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--page-text);
-    }
-    .lead-capture-form input[type="email"] {
-      width: 100%;
-      min-height: 48px;
-      padding: 12px 14px;
-      border-radius: 10px;
-      border: 1px solid #cbd5e1;
-      font: inherit;
-      color: var(--page-text);
-      background: #fff;
-    }
-    .lead-capture-consent {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      font-size: 0.84rem;
-      font-weight: 400;
-      color: var(--page-muted);
-      line-height: 1.45;
-    }
-    .lead-capture-consent input { margin-top: 0.2em; flex-shrink: 0; }
-    .lead-capture-honeypot {
-      position: absolute;
-      left: -9999px;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-    }
-    .lead-capture-message { margin: 0; font-size: 0.88rem; color: #166534; }
-    .lead-capture-message--error { color: #b91c1c; }
-    .lead-capture-open-link a { font-weight: 800; color: var(--accent); }
-    .lead-capture-list a {
-      font-weight: 700;
-      color: var(--accent);
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-    .lead-capture-fine {
-      margin: 10px 0 0;
-      font-size: 0.78rem;
-      color: #64748b;
-      line-height: 1.45;
-    }
-    .lead-capture-fine a { font-weight: 700; color: var(--accent); }
     .formats-section .format-card .portal-launch-callout {
       margin: 0 0 clamp(12px, 2vw, 16px);
       padding: 14px 16px;
@@ -1621,66 +1479,6 @@
     }
     .samples-stack .format-sample--main-cta .cta-main {
       width: 100%;
-    }
-    .assessment-card {
-      max-width: 760px;
-      margin: 0 auto;
-    }
-    .assessment-details {
-      margin: 14px 0 0;
-      padding-left: 1.2rem;
-      color: #b8c3d6;
-      font-size: clamp(0.9rem, 2.1vw, 0.96rem);
-      line-height: 1.55;
-    }
-    .assessment-details li {
-      margin: 6px 0;
-    }
-    .assessment-cta-wrap {
-      margin: 22px 0 0;
-      text-align: center;
-    }
-    .assessment-cta-panel {
-      margin: 0;
-      padding: clamp(20px, 4vw, 28px);
-      border-radius: 14px;
-      border: 2px solid rgba(99, 179, 120, 0.55);
-      background: linear-gradient(180deg, rgba(35, 72, 52, 0.38) 0%, rgba(13, 21, 40, 0.72) 100%);
-      box-shadow:
-        0 0 0 1px rgba(99, 179, 120, 0.14),
-        0 14px 36px rgba(0, 0, 0, 0.32);
-    }
-    .assessment-cta-kicker {
-      margin: 0 0 14px;
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #8fd4a8;
-    }
-    .assessment-cta-panel .cta-main {
-      font-size: clamp(1.05rem, 2.8vw, 1.22rem);
-      padding: 18px 28px;
-      min-height: 58px;
-      letter-spacing: 0.03em;
-      border-color: rgba(140, 210, 170, 0.55);
-      background: linear-gradient(165deg, #45a872 0%, #2f8f58 42%, #247048 100%);
-      box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.18) inset,
-        0 10px 32px rgba(36, 112, 72, 0.48);
-    }
-    .assessment-cta-panel .cta-main:hover {
-      color: #fff;
-      filter: brightness(1.08);
-      box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.22) inset,
-        0 12px 38px rgba(36, 112, 72, 0.58);
-    }
-    .assessment-cta-note {
-      margin: 12px 0 0;
-      font-size: 0.88rem;
-      color: #b8dcc4;
-      line-height: 1.45;
     }
     .cta-main--muted {
       opacity: 0.92;
@@ -2438,40 +2236,9 @@
                 <p class="purchase-label">Get CCNA access</p>
                 <h2 class="purchase-heading">Choose your CCNA access</h2>
                 <p class="purchase-lead purchase-lead--tight">
-                  Pick a one-session simulated exam, a short access window, or thirty days for the full practice library and practice portal.
+                  Pick a short access window or thirty days for the full practice library and practice portal.
                 </p>
-                <div class="purchase-cta-stack">
-                  <div class="purchase-primary-cta">
-                    <div
-                      class="purchase-track-box purchase-track-box--one-time-live purchase-pricing-option"
-                      aria-label="One-time CCNA simulation exam purchase"
-                    >
-                      <div class="purchase-track-head">
-                        <p class="purchase-track-title">120-minute simulation</p>
-                        <span class="encor-live-badge">Live</span>
-                      </div>
-                      <p class="purchase-price" aria-label="9 dollars and 99 cents for one timed test">
-                        $9.99 <span>/ one attempt</span>
-                      </p>
-                      <p class="purchase-track-sub">
-                        Same clock and mix as test day: <strong>120 minutes</strong>, <strong>50</strong> multiple-choice,
-                        <strong>5</strong> drag-and-drop, <strong>4</strong> CLI labs, randomized order, pass/fail-style summary when you finish.
-                        Checkout runs on this site.
-                      </p>
-                      <p class="purchase-version-plug">Version 1.1 2026. All timed test MCQs come from the current exam-aligned bank.</p>
-                      <p class="purchase-track-cta-wrap">
-                        <a
-                          class="cta-main cta-main--block"
-                          href="/CCNA_Sim_EXAM/begin-test-simulation.html"
-                          aria-label="Purchase one-time CCNA timed simulation for nine ninety-nine"
-                          >Get simulated exam</a
-                        >
-                      </p>
-                      <p class="purchase-access-disclaimer">
-                        <strong>One-time access.</strong> No subscription. Best when you want one serious dry run before you schedule the real exam.
-                      </p>
-                    </div>
-                  </div>
+                <div class="purchase-cta-stack purchase-cta-stack--duo">
                   <div class="purchase-secondary-shell">
                     <div class="purchase-track-box purchase-track-box--ten-day purchase-pricing-option" aria-label="10-day CCNA access option">
                       <div class="purchase-track-head">
@@ -2545,18 +2312,13 @@
             <p class="lead lead--full">
               You prepare for CCNA 200-301 in your browser. This is <strong>exam prep</strong>, not a training course.
               You get <strong>realistic practice tests</strong>, <strong>verified explanations</strong>, drag-and-drop items, CLI labs,
-              and a <strong>120-minute timed simulation</strong> that mirrors exam-day item mix.
+              and timed simulation practice with portal access.
               Practice on your phone, tablet, or desktop. No PDFs and no third-party software.
               Many federal, DoD, and defense-contractor roles use CCNA toward associate-level networking qualification. Confirm requirements with your manager.
-              Try the free sample below, then choose a 10-day pass, 30-day pass, or one-time simulation above.
-            </p>
-            <p class="lead lead--lead-first">
-              You get <strong>exam prep</strong> for 200-301, not a course. Start the
-              <strong>free 45-minute timed simulation</strong> below: 20 multiple-choice questions, 2 drag-and-drop items, and a VLAN CLI lab.
-              You receive a domain scorecard when you finish. Browser-only. No PDFs or third-party software.
+              Try the free sample below, then choose a 10-day pass or 30-day pass above.
             </p>
             <ul class="benefits" aria-label="What you get">
-              <li>120-minute timed sim, drag-and-drop, CLI labs, and domain-organized question banks.</li>
+              <li>Timed simulation practice, drag-and-drop, CLI labs, and domain-organized question banks.</li>
               <li>Verified explanations aligned to Cisco CCNA 200-301 objectives (v1.1). No unvetted dumps.</li>
               <li>100% interactive in the browser. No static PDFs, slide decks, or third-party apps.</li>
               <li>Review modes loop missed answers back so you focus weak topics before test day.</li>
@@ -2565,56 +2327,12 @@
             </ul>
           </div>
 
-          <section
-            class="lead-capture-section assessment-card"
-            id="ccna-lead-capture"
-            aria-labelledby="ccna-lead-capture-title"
-          >
-            <p class="lead-capture-badge">Free · 45 minutes · no checkout</p>
-            <h2 id="ccna-lead-capture-title">Start your free CCNA 200-301 timed simulation</h2>
-            <p class="lead-capture-lead">
-              You run a <strong>45-minute sample exam</strong> in your browser. No email required.
-              You get <strong>20 multiple-choice questions</strong>, <strong>2 drag-and-drop</strong> items, and the
-              <strong>VLAN CLI lab</strong>. Same mix of item types you will see on test day.
-            </p>
-            <ul class="lead-capture-list assessment-details">
-              <li><strong>Back</strong>, <strong>Home</strong>, and <strong>Next</strong> through the mixed set</li>
-              <li>You get a scaled score and domain breakdown when you finish</li>
-              <li>One free attempt per browser</li>
-              <li>Ready for a full dry run? <a href="#purchase">120-minute simulation · $9.99</a> or portal access above</li>
-            </ul>
-            <p class="lead-capture-open-link" data-ccna-continue-free-sim hidden>
-              In progress on this browser?
-              <a href="/CCNA_Sim_EXAM/free-assessment.html?welcome=1">Continue your free simulation →</a>
-            </p>
-            <div class="assessment-cta-wrap">
-              <div class="assessment-cta-panel">
-                <p class="assessment-cta-kicker">Free sample exam</p>
-                <a
-                  class="cta-main"
-                  href="/CCNA_Sim_EXAM/free-assessment.html?welcome=1"
-                  data-ccna-start-free-sim
-                  data-ccna-start-method="ccna_free_sim_landing"
-                  >Start free timed simulation</a
-                >
-                <p class="assessment-cta-note" data-ccna-free-sim-consumed-note hidden>
-                  You have already completed the free sample on this browser.
-                  <a href="#purchase">Get the full 120-minute simulation or portal access</a>.
-                </p>
-              </div>
-            </div>
-            <p class="lead-capture-fine">
-              Exam prep only. Not affiliated with Cisco. Want a shorter preview first?
-              <a href="/sample?track=ccna-questions">Try free sample questions</a>.
-            </p>
-          </section>
-
           <div class="samples-stack" id="ccna-samples">
             <section class="samples-block" aria-labelledby="home-ccna-samples-title">
               <div class="samples-block-intro">
                 <h2 class="samples-block-title" id="home-ccna-samples-title"><strong>Try free CCNA samples</strong></h2>
                 <p class="samples-block-lead">
-                  You get interactive previews from the CCNA question bank, drag-and-drop, and VLAN lab. No checkout required. Each activity has a <strong>Home</strong> tab back to this page and <strong>Next</strong> (or <strong>Finish sample</strong>). When you finish, try the free 45-minute timed simulation next.
+                  You get interactive previews from the CCNA question bank, drag-and-drop, and VLAN lab. No checkout required. Each activity has a <strong>Home</strong> tab back to this page and <strong>Next</strong> (or <strong>Finish sample</strong>).
                 </p>
               </div>
               <ul class="formats-grid formats-grid--tri" aria-label="CCNA sample activities">
@@ -2633,7 +2351,7 @@
                       />
                     </figure>
                     <p>
-                      You answer two multiple-choice items from the CCNA bank, shuffled each run. Select an answer for instant feedback, then <strong>Next</strong>. When you finish, try the free 45-minute timed simulation.
+                      You answer <strong>18 multiple-choice items</strong>—three random questions per CCNA domain—then review a <strong>scorecard</strong> when you finish. Select an answer for instant feedback, then <strong>Next</strong>.
                     </p>
                     <p class="format-sample format-sample--main-cta">
                       <a class="cta-main cta-main--block" href="/sample?track=ccna-questions">Start sample questions →</a>
@@ -2653,7 +2371,7 @@
                         loading="eager"
                       />
                     </figure>
-                    <p>Match file-transfer protocol descriptions to FTP and TFTP. When you tap <strong>Finish sample</strong>, try the free timed simulation next.</p>
+                    <p>You try <strong>four</strong> performance-style drag-and-drop items, shuffled each run. Drag snippets into the blanks or tap to place on a phone.</p>
                     <p class="format-sample format-sample--main-cta">
                       <a class="cta-main cta-main--block" href="/sample?track=ccna-dnd">Start sample drag-and-drop →</a>
                     </p>
@@ -2672,7 +2390,7 @@
                         loading="eager"
                       />
                     </figure>
-                    <p>You run a dual-switch VLAN CLI simulation: create VLANs, assign ports, and save in the browser. When you tap <strong>Finish sample</strong>, try the free timed simulation next.</p>
+                    <p>You run a dual-switch VLAN CLI simulation: create VLANs, assign ports, and save in the browser.</p>
                     <p class="format-sample format-sample--main-cta">
                       <a class="cta-main cta-main--block" href="/sample?track=ccna-vlan">Start sample lab →</a>
                     </p>
@@ -2765,14 +2483,14 @@
                   <p class="purchase-blueprint-lead">
                     Under time pressure, leaning hardest into <strong>IP connectivity</strong> and <strong>network fundamentals</strong>
                     before you polish lighter domains mirrors where Cisco weights the blueprint. The timed simulation on this site rehearses
-                    that mixed multiple-choice, drag-and-drop, and CLI lab pressure across all six domains in one 120-minute session.
+                    that mixed multiple-choice, drag-and-drop, and CLI lab pressure across all six domains in one exam-style session.
                   </p>
                   <p class="purchase-blueprint-note">
                     Source: Cisco CCNA 200-301 exam blueprint, v1.1.
                   </p>
                 </div>
                 <div class="purchase-notes">
-                  <strong>No recurring membership.</strong> Choose a 10-day or 30-day access window, or a one-time timed simulation. Renew only if you want more time.
+                  <strong>No recurring membership.</strong> Choose a 10-day or 30-day access window. Renew only if you want more time.
                   <strong>No additional software</strong> is required. Everything runs in your browser.
                 </div>
               </div>
@@ -3126,6 +2844,5 @@
     });
   </script>
   <script src="/js/ccna-free-assessment-storage.js" defer></script>
-  <script src="/js/ccna-lead-capture.js" defer></script>
 </body>
 </html>

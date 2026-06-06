@@ -64,6 +64,11 @@
       samplePath.indexOf("/ccna-study/") !== -1 || samplePath.indexOf("/ccna_sim_exam/") !== -1;
     var onEncorSample = samplePath.indexOf("/ccnp-encor-study/") !== -1;
     var encorKind = kind.indexOf("encor") === 0 || kind === "labs" || kind === "drag";
+    var onDragDropSample =
+      samplePath.indexOf("/ccna-study/ccna_d_d/") !== -1 ||
+      samplePath.indexOf("/ccna-study/ccna_samples/dragdrop-") !== -1 ||
+      samplePath.indexOf("/ccnp-encor-study/ccnp-encor-drag-drop/") !== -1 ||
+      samplePath.indexOf("/ccnp-encor-study/encor_samples/question-365") !== -1;
 
     var leadScript = null;
     if (onCcnaSample && (sessionStorage.getItem("ccnaHomeSample") || kind.indexOf("ccna") === 0)) {
@@ -75,7 +80,11 @@
     } else if (sessionStorage.getItem("encorHomeSample") || encorKind) {
       leadScript = "/js/encor-lead-capture.js";
     }
-    if (leadScript && !document.head.querySelector('script[src="' + leadScript + '"]')) {
+    if (
+      leadScript &&
+      !onDragDropSample &&
+      !document.head.querySelector('script[src="' + leadScript + '"]')
+    ) {
       var lead = document.createElement("script");
       lead.src = leadScript;
       lead.defer = true;

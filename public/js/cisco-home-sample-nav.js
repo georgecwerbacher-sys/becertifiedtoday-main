@@ -10,6 +10,15 @@
     "6.0": "Automation and Artificial Intelligence",
   };
 
+  var CCNA_DOMAIN_NAMES = {
+    "1.0": "Network Fundamentals",
+    "2.0": "Network Access",
+    "3.0": "IP Connectivity",
+    "4.0": "IP Services",
+    "5.0": "Security Fundamentals",
+    "6.0": "Automation and Programmability",
+  };
+
   var SESSIONS = {
     ccna: {
       key: "ccnaHomeSample",
@@ -187,12 +196,222 @@
     return -1;
   }
 
+  function saveSampleSession(session) {
+    if (!session || !session._cfg) return;
+    try {
+      sessionStorage.setItem(session._cfg.key, JSON.stringify(session));
+    } catch (e) {}
+  }
+
   function clearSampleSession(session) {
     try {
       sessionStorage.removeItem(session._cfg.key);
       sessionStorage.removeItem("ccnpUrlMaskPath");
       sessionStorage.removeItem("ccnpSampleKind");
     } catch (e) {}
+  }
+
+  function ensureSampleResults(session) {
+    if (!session.sampleResults || typeof session.sampleResults !== "object") {
+      session.sampleResults = {};
+    }
+    return session.sampleResults;
+  }
+
+  function domainLabel(session, domainId, domainName) {
+    if (domainName) return domainId + " " + domainName;
+    var names = session.product === "ccna" ? CCNA_DOMAIN_NAMES : ENCOR_DOMAIN_NAMES;
+    var label = names[domainId] || "";
+    return domainId + (label ? " " + label : "");
+  }
+
+  function captureCurrentAnswer(session, index) {
+    var item = session.order[index];
+    if (!item || item.type !== "mcq") return;
+
+    var results = ensureSampleResults(session);
+    var box = document.getElementById("answerBox");
+    var status = "unanswered";
+    if (box && box.style.display !== "none") {
+      if (box.classList.contains("correct")) status = "correct";
+      else if (box.classList.contains("incorrect")) status = "incorrect";
+    }
+
+    results[String(index)] = {
+      status: status,
+      domain: item.domain || "",
+      domainName: item.domainName || "",
+    };
+    saveSampleSession(session);
+  }
+
+  function finalizeSampleResults(session) {
+    session.order.forEach(function (item, index) {
+      if (!item || item.type !== "mcq") return;
+      var results = ensureSampleResults(session);
+      if (!results[String(index)]) {
+        results[String(index)] = {
+          status: "unanswered",
+          domain: item.domain || "",
+          domainName: item.domainName || "",
+        };
+      }
+    });
+    saveSampleSession(session);
+  }
+
+  function buildSampleScoreSummary(session) {
+    var results = ensureSampleResults(session);
+    var totals = { correct: 0, incorrect: 0, unanswered: 0, total: 0 };
+    var byDomain = Object.create(null);
+
+    session.order.forEach(function (item, index) {
+      if (!item || item.type !== "mcq") return;
+      totals.total++;
+      var row = results[String(index)] || { status: "unanswered", domain: item.domain, domainName: item.domainName };
+      if (row.status === "correct") totals.correct++;
+      else if (row.status === "incorrect") totals.incorrect++;
+      else totals.unanswered++;
+
+      var domainId = row.domain || item.domain || "other";
+      if (!byDomain[domainId]) {
+        byDomain[domainId] = {
+          domain: domainId,
+          domainName: row.domainName || item.domainName || "",
+          correct: 0,
+          incorrect: 0,
+          unanswered: 0,
+          total: 0,
+        };
+      }
+      byDomain[domainId].total++;
+      if (row.status === "correct") byDomain[domainId].correct++;
+      else if (row.status === "incorrect") byDomain[domainId].incorrect++;
+      else byDomain[domainId].unanswered++;
+    });
+
+    var domainRows = Object.keys(byDomain)
+      .map(function (k) {
+        return byDomain[k];
+      })
+      .sort(function (a, b) {
+        return parseFloat(a.domain) - parseFloat(b.domain);
+      });
+
+    return { totals: totals, domainRows: domainRows };
+  }
+
+  function showSampleScorecard(session, finishHome) {
+    if (document.getElementById("ciscoSampleScorecard")) return;
+
+    finalizeSampleResults(session);
+    var summary = buildSampleScoreSummary(session);
+    var totals = summary.totals;
+    var pct = totals.total ? Math.round((totals.correct / totals.total) * 100) : 0;
+    var examLabel = session.product === "ccna" ? "CCNA 200-301" : "ENCOR 350-401";
+
+    var domainRowsHtml = summary.domainRows
+      .map(function (row) {
+        var rowPct = row.total ? Math.round((row.correct / row.total) * 100) : 0;
+        return (
+          "<tr><th scope=\"row\">" +
+          domainLabel(session, row.domain, row.domainName) +
+          "</th><td>" +
+          row.correct +
+          "/" +
+          row.total +
+          " (" +
+          rowPct +
+          "%)</td><td>" +
+          (row.incorrect ? row.incorrect + " missed" : "—") +
+          (row.unanswered ? (row.incorrect ? ", " : "") + row.unanswered + " unanswered" : "") +
+          "</td></tr>"
+        );
+      })
+      .join("");
+
+    var root = document.createElement("div");
+    root.id = "ciscoSampleScorecard";
+    root.className = "cisco-sample-scorecard-root";
+    root.innerHTML =
+      '<div class="cisco-sample-scorecard-backdrop" data-cisco-scorecard-dismiss tabindex="-1"></div>' +
+      '<div class="cisco-sample-scorecard-panel" role="dialog" aria-modal="true" aria-labelledby="ciscoSampleScorecardTitle" tabindex="-1">' +
+      '<button type="button" class="cisco-sample-scorecard-close" data-cisco-scorecard-dismiss aria-label="Close scorecard">×</button>' +
+      '<p class="cisco-sample-scorecard-eyebrow">Sample complete</p>' +
+      '<h2 id="ciscoSampleScorecardTitle">' +
+      examLabel +
+      " sample scorecard</h2>" +
+      '<p class="cisco-sample-scorecard-score"><strong>' +
+      totals.correct +
+      "/" +
+      totals.total +
+      "</strong> correct (" +
+      pct +
+      "%)</p>" +
+      '<p class="cisco-sample-scorecard-lead">You answered " +
+      totals.total +
+      ' multiple-choice items across the exam domains. Use the breakdown below to see where to review next.</p>' +
+      '<div class="cisco-sample-scorecard-table-wrap"><table><thead><tr><th scope="col">Domain</th><th scope="col">Score</th><th scope="col">Notes</th></tr></thead><tbody>' +
+      domainRowsHtml +
+      "</tbody></table></div>" +
+      '<div class="cisco-sample-scorecard-actions">' +
+      '<button type="button" class="cisco-sample-scorecard-primary" data-cisco-scorecard-home>Return to home</button>' +
+      "</div></div>";
+
+    document.body.appendChild(root);
+    document.body.classList.add("cisco-sample-scorecard-open");
+
+    var panel = root.querySelector(".cisco-sample-scorecard-panel");
+    var prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    function closeScorecard(navigateHome) {
+      root.remove();
+      document.body.classList.remove("cisco-sample-scorecard-open");
+      document.body.style.overflow = prevOverflow;
+      document.removeEventListener("keydown", onKey);
+      if (navigateHome) navigateAfterSample(finishHome, session);
+    }
+
+    function onKey(ev) {
+      if (ev.key === "Escape") {
+        ev.preventDefault();
+        closeScorecard(false);
+      }
+    }
+
+    document.addEventListener("keydown", onKey);
+    root.querySelectorAll("[data-cisco-scorecard-dismiss]").forEach(function (el) {
+      el.addEventListener("click", function () {
+        closeScorecard(false);
+      });
+    });
+    root.querySelector("[data-cisco-scorecard-home]").addEventListener("click", function () {
+      closeScorecard(true);
+    });
+    if (panel) panel.focus();
+  }
+
+  function wireAnswerCapture(session, index) {
+    var checkBtn = document.getElementById("checkBtn");
+    if (!checkBtn || checkBtn.getAttribute("data-cisco-sample-wired") === "1") return;
+    checkBtn.setAttribute("data-cisco-sample-wired", "1");
+    checkBtn.addEventListener("click", function () {
+      window.setTimeout(function () {
+        captureCurrentAnswer(session, index);
+      }, 0);
+    });
+  }
+
+  function isMcqOnlySample(session) {
+    return (
+      session &&
+      Array.isArray(session.order) &&
+      session.order.length > 0 &&
+      session.order.every(function (item) {
+        return item && item.type === "mcq";
+      })
+    );
   }
 
   function navigateAfterSample(url, session) {
@@ -398,12 +617,19 @@
     if (panel) panel.focus();
   }
 
+  function isDragDropSampleItem(item) {
+    return !!(item && item.type === "dnd");
+  }
+
   function completeSample(session, finishHome) {
-    if (isSingleTrackSample(session)) {
-      showFreeSimUpsellModal(session, finishHome);
+    var home = finishHome || session.finishHome;
+    var index = currentItemIndex(session);
+    if (index >= 0) captureCurrentAnswer(session, index);
+    if (isMcqOnlySample(session)) {
+      showSampleScorecard(session, home);
       return;
     }
-    navigateAfterSample(finishHome || session.finishHome, session);
+    navigateAfterSample(home, session);
   }
 
   function wireNavLink(el, session, item, index) {
@@ -515,19 +741,30 @@
   }
 
   function syncSampleSubjectsFooter(session) {
-    if (!session || session.product !== "encor") {
+    if (!session || (session.product !== "encor" && session.product !== "ccna")) {
       var stale = document.querySelector(".sample-subjects-footer");
       if (stale) stale.remove();
       return;
     }
-    if (!session.order || !session.order.every(function (item) {
-      return item && item.type === "mcq";
-    })) {
+    if (
+      !session.order ||
+      !session.order.every(function (item) {
+        return item && item.type === "mcq";
+      })
+    ) {
       return;
     }
 
     var listEl = ensureSampleSubjectsFooter(session);
     if (!listEl) return;
+
+    var title = listEl.parentNode && listEl.parentNode.querySelector(".sample-subjects-footer__title");
+    if (title) {
+      title.textContent =
+        session.product === "ccna"
+          ? "200-301 domains in this sample"
+          : "350-401 domains in this sample";
+    }
 
     var domains =
       Array.isArray(session.sampleDomains) && session.sampleDomains.length
@@ -536,7 +773,11 @@
     listEl.textContent = "";
     domains.forEach(function (domainId) {
       var li = document.createElement("li");
-      li.textContent = formatEncorDomainLabel(domainId);
+      if (session.product === "ccna") {
+        li.textContent = domainLabel(session, domainId, CCNA_DOMAIN_NAMES[domainId]);
+      } else {
+        li.textContent = formatEncorDomainLabel(domainId);
+      }
       listEl.appendChild(li);
     });
   }
@@ -603,13 +844,32 @@
     }
 
     if (els.nextEl) {
+      var onDnd = isDragDropSampleItem(order[index]);
       if (index + 1 < order.length) {
+        els.nextEl.style.display = "";
         wireNavLink(els.nextEl, session, order[index + 1], index + 1);
         els.nextEl.textContent = "Next";
         els.nextEl.classList.remove("nav-link--disabled");
+        var nextItem = order[index + 1];
+        var nextIndex = index + 1;
+        els.nextEl.onclick = function (ev) {
+          ev.preventDefault();
+          captureCurrentAnswer(session, index);
+          location.assign(realItemHref(session, nextItem, nextIndex));
+        };
+      } else if (onDnd) {
+        els.nextEl.style.display = "none";
+        els.nextEl.href = "#";
+        els.nextEl.textContent = "Next";
+        els.nextEl.classList.add("nav-link--disabled");
+        els.nextEl.onclick = function (ev) {
+          ev.preventDefault();
+        };
       } else {
+        els.nextEl.style.display = "";
         els.nextEl.href = finishHome;
         els.nextEl.textContent = "Finish sample";
+        els.nextEl.classList.remove("nav-link--disabled");
         els.nextEl.onclick = function (ev) {
           ev.preventDefault();
           completeSample(session, finishHome);
@@ -634,6 +894,9 @@
     }
 
     syncSampleSubjectsFooter(session);
+    if (order[index] && order[index].type === "mcq") {
+      wireAnswerCapture(session, index);
+    }
   }
 
   function reconcileLocation(session) {
@@ -676,7 +939,23 @@
       ".sample-subjects-footer{margin-top:1.25rem;padding-top:1rem;border-top:1px solid rgba(159,176,204,.28)}" +
       ".sample-subjects-footer__title{margin:0 0 .5rem;font-size:.85rem;font-weight:700;color:#9fb0cc}" +
       ".sample-subjects-footer__list{margin:0;padding:0 0 0 1.25rem;font-size:.82rem;line-height:1.5;color:#b8c3d6}" +
-      ".sample-subjects-footer__list li+li{margin-top:.2rem}";
+      ".sample-subjects-footer__list li+li{margin-top:.2rem}" +
+      ".cisco-sample-scorecard-root{position:fixed;inset:0;z-index:20003;display:flex;align-items:center;justify-content:center;padding:16px}" +
+      ".cisco-sample-scorecard-backdrop{position:absolute;inset:0;background:rgba(8,12,24,.78);backdrop-filter:blur(4px)}" +
+      ".cisco-sample-scorecard-panel{position:relative;z-index:1;width:min(640px,100%);max-height:min(92vh,720px);overflow:auto;margin:0;padding:clamp(20px,4vw,28px);border-radius:16px;border:1px solid #4f84d8;background:linear-gradient(165deg,#f8fafc 0%,#eff6ff 55%,#fff 100%);color:#1e293b;box-shadow:0 24px 64px rgba(0,0,0,.35)}" +
+      ".cisco-sample-scorecard-close{position:absolute;top:10px;right:12px;border:0;background:transparent;color:#64748b;font-size:1.6rem;line-height:1;cursor:pointer;padding:4px 8px}" +
+      ".cisco-sample-scorecard-eyebrow{margin:0 0 8px;font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#2f66bf}" +
+      ".cisco-sample-scorecard-panel h2{margin:0 0 10px;font-size:clamp(1.15rem,3vw,1.45rem);line-height:1.25;color:#0f172a}" +
+      ".cisco-sample-scorecard-score{margin:0 0 10px;font-size:1.05rem;color:#0f172a}" +
+      ".cisco-sample-scorecard-lead{margin:0 0 16px;font-size:.92rem;line-height:1.55;color:#475569}" +
+      ".cisco-sample-scorecard-table-wrap{overflow:auto;border:1px solid #cbd5e1;border-radius:10px;background:#fff}" +
+      ".cisco-sample-scorecard-table-wrap table{width:100%;border-collapse:collapse;font-size:.88rem}" +
+      ".cisco-sample-scorecard-table-wrap th,.cisco-sample-scorecard-table-wrap td{padding:10px 12px;text-align:left;border-bottom:1px solid #e2e8f0;vertical-align:top}" +
+      ".cisco-sample-scorecard-table-wrap thead th{background:#f1f5f9;font-weight:800;color:#334155}" +
+      ".cisco-sample-scorecard-table-wrap tbody tr:last-child th,.cisco-sample-scorecard-table-wrap tbody tr:last-child td{border-bottom:none}" +
+      ".cisco-sample-scorecard-actions{margin-top:18px;display:flex;flex-direction:column;gap:10px}" +
+      ".cisco-sample-scorecard-primary{border:1px solid #2f66bf;background:#2f66bf;color:#f8fafc;border-radius:10px;padding:12px 18px;font:inherit;font-weight:800;cursor:pointer;width:100%}" +
+      ".cisco-sample-scorecard-primary:hover{filter:brightness(1.06)}";
     document.head.appendChild(s);
   }
 

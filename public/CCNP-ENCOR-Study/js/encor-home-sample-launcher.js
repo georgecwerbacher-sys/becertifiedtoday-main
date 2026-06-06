@@ -6,6 +6,7 @@
   var MCQ_DIR = "/CCNP-ENCOR-Study/ENCOR_Questions";
   var SUBJECTS_URL = "/CCNP-ENCOR-Study/js/question-subjects.json";
   var HASH_PREFIX = "encorHS=";
+  var ENCOR_DOMAINS = ["1.0", "2.0", "3.0", "4.0", "5.0", "6.0"];
 
   function shuffle(arr) {
     var a = arr.slice();
@@ -31,9 +32,53 @@
     return MCQ_DIR + "/question-" + item.id + ".html?sample=1" + hash;
   }
 
-  function buildMcqOrder(blueprint) {
+  function questionPool(blueprint, subjects) {
+    if (blueprint.useFullQuestionBank) {
+      return Object.keys((subjects && subjects.questions) || {}).map(function (id) {
+        return parseInt(id, 10);
+      });
+    }
+    return (blueprint.mcqIds || []).slice();
+  }
+
+  function buildMcqOrderPerDomain(blueprint, subjects) {
+    var perDomain = blueprint.homeSampleQuestionCountPerDomain;
+    if (perDomain == null || perDomain < 1) return null;
+
+    var byDomain = Object.create(null);
+    ENCOR_DOMAINS.forEach(function (domainId) {
+      byDomain[domainId] = [];
+    });
+
+    questionPool(blueprint, subjects).forEach(function (id) {
+      var meta = subjects.questions[String(id)];
+      if (!meta || !meta.section || !byDomain[meta.section]) return;
+      byDomain[meta.section].push(id);
+    });
+
+    var order = [];
+    ENCOR_DOMAINS.forEach(function (domainId) {
+      shuffle(byDomain[domainId] || [])
+        .slice(0, perDomain)
+        .forEach(function (id) {
+          var meta = subjects.questions[String(id)] || {};
+          order.push({
+            type: "mcq",
+            id: id,
+            domain: domainId,
+            domainName: meta.name || domainId,
+          });
+        });
+    });
+    return shuffle(order);
+  }
+
+  function buildMcqOrder(blueprint, subjects) {
+    var perDomainOrder = buildMcqOrderPerDomain(blueprint, subjects);
+    if (perDomainOrder && perDomainOrder.length) return perDomainOrder;
+
     var total = blueprint.homeSampleQuestionCountTotal;
-    var pool = (blueprint.mcqIds || []).slice();
+    var pool = questionPool(blueprint, subjects);
     var pick = typeof total === "number" && total > 0 ? shuffle(pool).slice(0, total) : shuffle(pool);
     return pick.map(function (id) {
       return { type: "mcq", id: id };
@@ -61,6 +106,7 @@
     var map = (subjects && subjects.questions) || {};
     return order.map(function (item) {
       if (!item || item.type !== "mcq" || item.id == null) return item;
+      if (item.domain) return item;
       var meta = map[String(item.id)];
       if (!meta) return item;
       return {
@@ -97,6 +143,7 @@
       mcqCount: mcqCount,
       totalCount: order.length,
       sampleDomains: domainsFromOrder(order),
+      sampleResults: {},
       finishHome: finishHome || blueprint.finishHome || "/ccnp-home.html",
       leadCaptureHash: blueprint.leadCaptureHash || "#encor-lead-capture",
       title: blueprint.title || "ENCOR sample",
@@ -140,7 +187,7 @@
     ]).then(function (results) {
       var blueprint = results[0];
       var subjects = results[1];
-      var order = enrichMcqOrder(buildMcqOrder(blueprint), subjects);
+      var order = enrichMcqOrder(buildMcqOrder(blueprint, subjects), subjects);
       persistSession(order, finishHome, blueprint, "encor-questions");
     });
   }
