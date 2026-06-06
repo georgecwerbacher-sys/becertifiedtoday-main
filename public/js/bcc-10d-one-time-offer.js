@@ -1,6 +1,6 @@
 /**
  * One-time $9.99 / 10-day access on ccna-home.html and ccnp-home.html:
- * - Modal popup after #purchase is in view (~5s)
+ * - Modal popup 5s after page load (top-of-page timing)
  * - Bottom “last chance” bar after #faq is in view (~5s)
  * Both use the same localStorage dismiss flag (once per browser).
  */
@@ -49,7 +49,6 @@
   var lastChanceBar = null;
   var popupShown = false;
   var lastChanceShown = false;
-  var purchaseObserver = null;
   var faqObserver = null;
   var purchasePopupDelayId = null;
   var lastChanceDelayId = null;
@@ -240,42 +239,15 @@
   function finishPurchasePopupTrigger() {
     popupShown = true;
     clearPurchasePopupDelay();
-    if (purchaseObserver) {
-      purchaseObserver.disconnect();
-      purchaseObserver = null;
-    }
   }
 
-  function isPurchaseSectionInView() {
-    var purchase = document.getElementById("purchase");
-    if (!purchase) return false;
-    var rect = purchase.getBoundingClientRect();
-    var vh = window.innerHeight || document.documentElement.clientHeight || 0;
-    if (vh <= 0 || rect.height <= 0) return false;
-    var visiblePx = Math.min(rect.bottom, vh) - Math.max(rect.top, 0);
-    return visiblePx >= 48;
-  }
-
-  function schedulePurchasePopupDelay() {
+  function wirePageLoadPopupTrigger() {
     if (popupShown || !canOffer() || purchasePopupDelayId != null) return;
-    if (!isPurchaseSectionInView()) return;
     purchasePopupDelayId = window.setTimeout(function () {
       purchasePopupDelayId = null;
-      if (popupShown || !canOffer() || !isPurchaseSectionInView()) return;
+      if (popupShown || !canOffer()) return;
       if (openPopup()) finishPurchasePopupTrigger();
     }, PURCHASE_POPUP_DELAY_MS);
-  }
-
-  function tryOpenPopupAtPurchase() {
-    if (popupShown || !canOffer()) {
-      clearPurchasePopupDelay();
-      return;
-    }
-    if (!isPurchaseSectionInView()) {
-      clearPurchasePopupDelay();
-      return;
-    }
-    schedulePurchasePopupDelay();
   }
 
   function dismissPopup(dismissOffer) {
@@ -357,31 +329,6 @@
     window.setTimeout(checkFaqInView, 800);
   }
 
-  function wirePurchaseScrollTrigger() {
-    var purchase = document.getElementById("purchase");
-    if (!purchase) return;
-
-    if (typeof IntersectionObserver !== "undefined") {
-      purchaseObserver = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) tryOpenPopupAtPurchase();
-          });
-        },
-        { root: null, rootMargin: "0px", threshold: [0, 0.1, 0.25] }
-      );
-      purchaseObserver.observe(purchase);
-    }
-
-    window.addEventListener("scroll", tryOpenPopupAtPurchase, { passive: true });
-    window.addEventListener("resize", tryOpenPopupAtPurchase, { passive: true });
-    window.addEventListener("hashchange", tryOpenPopupAtPurchase);
-
-    window.requestAnimationFrame(tryOpenPopupAtPurchase);
-    window.setTimeout(tryOpenPopupAtPurchase, 250);
-    window.setTimeout(tryOpenPopupAtPurchase, 800);
-  }
-
   function init() {
     cfg = detectConfig();
     if (!cfg || wired) return;
@@ -389,7 +336,7 @@
     syncOfferUi();
     wirePopup();
     wireLastChanceBar();
-    wirePurchaseScrollTrigger();
+    wirePageLoadPopupTrigger();
     wireFaqScrollTrigger();
   }
 
