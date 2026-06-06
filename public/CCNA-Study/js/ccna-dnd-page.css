@@ -89,9 +89,9 @@ body.ccna-dnd-ui .bank {
 body.ccna-dnd-ui .token {
   padding: 10px 12px;
   border-radius: 8px;
-  border: 1px solid #6384ba;
-  background: #cfe9ff;
-  color: #10243f;
+  border: 1px solid #3d6dbb;
+  background: #254b8a;
+  color: #e6edf3;
   font-weight: 700;
   font-size: 0.86rem;
   line-height: 1.38;
@@ -110,8 +110,8 @@ body.ccna-dnd-ui .token:active {
 }
 
 body.ccna-dnd-ui .token.is-picked {
-  border-color: #4d89ff;
-  box-shadow: 0 0 0 2px rgba(77, 137, 255, 0.35);
+  border-color: #1a3d6e;
+  box-shadow: 0 0 0 2px rgba(26, 61, 110, 0.35);
 }
 
 body.ccna-dnd-ui .drop-slot {
@@ -119,9 +119,9 @@ body.ccna-dnd-ui .drop-slot {
   min-height: 64px;
   padding: 6px 8px;
   border-radius: 8px;
-  border: 1px dashed #93c5fd;
-  background: #dbeafe;
-  color: #64748b;
+  border: 1px dashed #3d6dbb;
+  background: transparent;
+  color: #1a3d6e;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
@@ -131,13 +131,13 @@ body.ccna-dnd-ui .drop-slot {
 
 body.ccna-dnd-ui .drop-slot:empty::before {
   content: "Drop here";
-  color: #475569;
+  color: #64748b;
 }
 
 body.ccna-dnd-ui .drop-slot.over {
-  border-style: solid;
-  border-color: #4d89ff;
-  background: #bfdbfe;
+  border-style: dashed;
+  border-color: #1a3d6e;
+  background: rgba(26, 61, 110, 0.06);
 }
 
 body.ccna-dnd-ui .drop-slot.correct {
@@ -163,6 +163,9 @@ body.ccna-dnd-ui .drop-slot.incorrect::before {
 body.ccna-dnd-ui .drop-slot .token {
   width: 100%;
   cursor: grab;
+  background: #254b8a;
+  border-color: #3d6dbb;
+  color: #e6edf3;
 }
 
 /* Category / match layouts */
@@ -178,7 +181,7 @@ body.ccna-dnd-ui .category-panel {
   border: 1px solid #3d6dbb;
   border-radius: 10px;
   padding: 12px 14px;
-  background: #cfe9ff;
+  background: transparent;
 }
 
 body.ccna-dnd-ui .category-title,
@@ -222,7 +225,7 @@ body.ccna-dnd-ui .match-row {
   padding: 12px 14px;
   border-radius: 10px;
   border: 1px solid #3d6dbb;
-  background: #cfe9ff;
+  background: transparent;
 }
 
 @media (max-width: 720px) {
@@ -248,17 +251,17 @@ body.ccna-dnd-ui .match-desc {
 
 body.ccna-dnd-ui .actions {
   margin-top: 14px;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   gap: 10px;
   align-items: center;
-  flex-wrap: wrap;
 }
 
 body.ccna-dnd-ui .actions button,
 body.ccna-dnd-ui .actions .home-link {
-  background: #254b8a;
+  background: #1a3d6e;
   color: #e6edf3;
-  border: 1px solid #3d6dbb;
+  border: 1px solid #1a3d6e;
   border-radius: 10px;
   padding: 10px 14px;
   font-weight: 700;
@@ -273,15 +276,35 @@ body.ccna-dnd-ui .actions .home-link {
   justify-content: center;
 }
 
+body.ccna-dnd-ui .actions #checkBtn {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+}
+
+body.ccna-dnd-ui .actions #resetBtn {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: center;
+}
+
+body.ccna-dnd-ui .actions #showBtn {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+}
+
 body.ccna-dnd-ui .actions button:hover,
 body.ccna-dnd-ui .actions .home-link:hover {
-  filter: brightness(1.08);
+  background: #254b8a;
+  border-color: #254b8a;
 }
 
 body.ccna-dnd-ui .actions #result {
+  grid-column: 1 / -1;
+  grid-row: 2;
   font-weight: 700;
   color: #1a3d6e;
-  flex: 1 1 240px;
   min-width: 0;
   font-size: 0.86rem;
   line-height: 1.4;
@@ -298,14 +321,14 @@ body.ccna-dnd-ui .actions #result.is-fail {
   color: #991b1b;
 }
 
-/* Bottom nav — match SEC+ sample sim-nav link buttons */
+/* Bottom nav — darker blue link buttons */
 body.ccna-dnd-ui nav.sim-nav.ccna-sample-sim-nav .sim-nav-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  background: #254b8a;
-  border: 1px solid #3d6dbb;
+  background: #1a3d6e;
+  border: 1px solid #1a3d6e;
   color: #e6edf3;
   border-radius: 10px;
   padding: 10px 18px;
@@ -321,11 +344,13 @@ body.ccna-dnd-ui nav.sim-nav.ccna-sample-sim-nav .sim-nav-btn {
 }
 
 body.ccna-dnd-ui nav.sim-nav.ccna-sample-sim-nav .sim-nav-btn:hover {
-  filter: brightness(1.08);
+  background: #254b8a;
+  border-color: #254b8a;
 }
 
 body.ccna-dnd-ui nav.sim-nav.ccna-sample-sim-nav .sim-nav-home {
   background: #1a3d6e;
+  border-color: #1a3d6e;
 }
 
 body.ccna-dnd-ui nav.sim-nav.ccna-sample-sim-nav .sim-nav-btn--disabled {

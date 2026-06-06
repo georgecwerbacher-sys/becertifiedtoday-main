@@ -159,6 +159,100 @@ def extract_tail(text: str) -> str:
     return m.group(1).strip() if m else ""
 
 
+ACTIONS_BLOCK_RE = re.compile(
+    r'(<div class="actions">\s*)'
+    r'(<button id="checkBtn"[^>]*>.*?</button>\s*)'
+    r'(?:<button id="resetBtn"[^>]*>.*?</button>\s*'
+    r'<button id="showBtn"[^>]*>.*?</button>\s*'
+    r'|<button id="showBtn"[^>]*>.*?</button>\s*'
+    r'<button id="resetBtn"[^>]*>.*?</button>\s*)'
+    r'(<span id="result"[^>]*></span>\s*)'
+    r'(</div>)',
+    re.I | re.S,
+)
+
+BUTTON_BY_ID_RE = {
+    "checkBtn": re.compile(r'<button id="checkBtn"[^>]*>.*?</button>', re.I | re.S),
+    "resetBtn": re.compile(r'<button id="resetBtn"[^>]*>.*?</button>', re.I | re.S),
+    "showBtn": re.compile(r'<button id="showBtn"[^>]*>.*?</button>', re.I | re.S),
+}
+
+REQUIRED_STYLESHEETS = (
+    '/css/bcc-question-link-nav.css',
+    '/CCNA-Study/CCNA_Samples/ccna-sample-touch.css',
+    '/CCNA-Study/js/ccna-dnd-page.css',
+)
+
+
+def normalize_actions(text: str) -> str:
+    """Template order: Check Answer · Reset · Show Answer · result."""
+
+    def repl(match: re.Match[str]) -> str:
+        block = match.group(0)
+        check = BUTTON_BY_ID_RE["checkBtn"].search(block)
+        reset = BUTTON_BY_ID_RE["resetBtn"].search(block)
+        show = BUTTON_BY_ID_RE["showBtn"].search(block)
+        result = re.search(r'<span id="result"[^>]*></span>', block, re.I | re.S)
+        if not (check and reset and show and result):
+            return block
+        return (
+            '<div class="actions">\n'
+            f"      {check.group(0).strip()}\n"
+            f"      {reset.group(0).strip()}\n"
+            f"      {show.group(0).strip()}\n"
+            f"      {result.group(0).strip()}\n"
+            "    </div>"
+        )
+
+    return ACTIONS_BLOCK_RE.sub(repl, text, count=1)
+
+
+def ensure_stylesheets(text: str) -> str:
+    for href in REQUIRED_STYLESHEETS:
+        if href not in text:
+            text = text.replace("</head>", f'  <link rel="stylesheet" href="{href}" />\n</head>', 1)
+    return text
+
+
+def ensure_body_classes(text: str, *, is_sample: bool) -> str:
+    expected = (
+        "ccna-static-sample ccna-dnd-ui dragdrop-exercise"
+        if is_sample
+        else "ccna-question-ui ccna-dnd-ui dragdrop-exercise"
+    )
+    if re.search(rf'<body class="[^"]*ccna-dnd-ui[^"]*"', text, re.I):
+        return re.sub(r'<body class="[^"]*"', f'<body class="{expected}"', text, count=1, flags=re.I)
+    return re.sub(r"<body>", f'<body class="{expected}">', text, count=1, flags=re.I)
+
+
+def apply_template(text: str, *, is_sample: bool) -> str:
+    text = ensure_stylesheets(text)
+    text = ensure_body_classes(text, is_sample=is_sample)
+    if "dragdrop-touch-hint" not in text:
+        text = re.sub(
+            r"(<main class=\"card\">)",
+            r"\1\n" + TOUCH_HINT,
+            text,
+            count=1,
+            flags=re.I,
+        )
+    m = re.search(r"<main class=\"card\">(.*?)</main>", text, re.I | re.S)
+    if m:
+        main_inner = m.group(1)
+        repaired = repair_broken_bank(main_inner)
+        repaired = wrap_layout_in_sim_frame(repaired)
+        repaired = normalize_actions(repaired)
+        if repaired != main_inner:
+            text = text[: m.start(1)] + repaired + text[m.end(1) :]
+    text = normalize_actions(text)
+    tail_m = re.search(r"</main>([\s\S]*)</body>", text, re.I)
+    if tail_m:
+        tail = normalize_sim_nav(tail_m.group(1), is_sample=is_sample)
+        if tail != tail_m.group(1).strip():
+            text = text[: tail_m.start(1)] + "\n" + tail + "\n" + text[tail_m.end(1) :]
+    return text
+
+
 def normalize_sim_nav(tail: str, *, is_sample: bool) -> str:
     tail = re.sub(
         r'<a class="site-logo-corner"[\s\S]*?</a>\s*',
@@ -308,15 +402,34 @@ def migrate_file(path: Path, *, is_sample: bool = False) -> bool:
     return True
 
 
+def apply_template_file(path: Path, *, is_sample: bool = False) -> bool:
+    text = path.read_text(encoding="utf-8")
+    updated = apply_template(text, is_sample=is_sample)
+    if updated == text:
+        return False
+    path.write_text(updated, encoding="utf-8")
+    return True
+
+
 def main() -> int:
+    apply_all = "--apply-template" in sys.argv or "--all" in sys.argv
     changed = 0
     for html_path in sorted(DND_DIR.rglob("*.html")):
-        if migrate_file(html_path):
+        if apply_all:
+            if apply_template_file(html_path):
+                changed += 1
+                print(f"template: {html_path.relative_to(ROOT)}")
+        elif migrate_file(html_path):
             changed += 1
             print(f"migrated: {html_path.relative_to(ROOT)}")
-    if SAMPLE_DND.exists() and migrate_file(SAMPLE_DND, is_sample=True):
-        changed += 1
-        print(f"migrated: {SAMPLE_DND.relative_to(ROOT)}")
+    if SAMPLE_DND.exists():
+        if apply_all:
+            if apply_template_file(SAMPLE_DND, is_sample=True):
+                changed += 1
+                print(f"template: {SAMPLE_DND.relative_to(ROOT)}")
+        elif migrate_file(SAMPLE_DND, is_sample=True):
+            changed += 1
+            print(f"migrated: {SAMPLE_DND.relative_to(ROOT)}")
     print(f"done — {changed} file(s) updated")
     return 0
 
