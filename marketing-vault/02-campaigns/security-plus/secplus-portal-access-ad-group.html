@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ad Group Tracker — SEC+ Portal Access</title>
+  <style>
+    @page { size: letter; margin: 0.55in 0.6in; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 9.5pt;
+      line-height: 1.35;
+      color: #111;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      font-size: 17pt;
+      margin: 0 0 4px;
+      letter-spacing: -0.02em;
+    }
+    h2 {
+      font-size: 11pt;
+      margin: 14px 0 6px;
+      padding-bottom: 3px;
+      border-bottom: 1.5px solid #333;
+      page-break-after: avoid;
+    }
+    h3 {
+      font-size: 9.5pt;
+      margin: 10px 0 4px;
+      color: #333;
+      page-break-after: avoid;
+    }
+    .meta {
+      font-size: 8.5pt;
+      color: #444;
+      margin-bottom: 10px;
+    }
+    .meta strong { color: #111; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 6px 0 10px;
+      font-size: 8.5pt;
+    }
+    th, td {
+      border: 1px solid #bbb;
+      padding: 5px 7px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #f0f0f0;
+      font-weight: 700;
+    }
+    .checklist td:first-child { width: 22px; text-align: center; }
+    pre, .code {
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      font-size: 7.5pt;
+      line-height: 1.3;
+      background: #f7f7f7;
+      border: 1px solid #ccc;
+      padding: 8px 10px;
+      margin: 4px 0 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      page-break-inside: avoid;
+    }
+    .note {
+      font-size: 8.5pt;
+      color: #333;
+      margin: 4px 0 8px;
+      padding: 6px 8px;
+      background: #fffbe6;
+      border-left: 3px solid #c9a227;
+    }
+    .warn {
+      background: #fff0f0;
+      border-left-color: #c44;
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .metric-table td:nth-child(2),
+    .metric-table td:nth-child(3),
+    .metric-table td:nth-child(4),
+    .metric-table td:nth-child(5),
+    .metric-table td:nth-child(6) {
+      width: 11%;
+    }
+    .footer {
+      margin-top: 12px;
+      font-size: 7.5pt;
+      color: #666;
+      border-top: 1px solid #ccc;
+      padding-top: 6px;
+    }
+    .page-break { page-break-before: always; }
+    ul { margin: 4px 0 8px; padding-left: 18px; }
+    li { margin-bottom: 2px; }
+  </style>
+</head>
+<body>
+
+  <h1>Google Ads — Ad Group Setup &amp; Tracking Sheet</h1>
+  <p class="meta">
+    <strong>Ad group:</strong> SEC+ Portal Access &nbsp;·&nbsp;
+    <strong>Campaign:</strong> SEC+ SY0-701 · Exam prep · becertifiedtoday &nbsp;·&nbsp;
+    <strong>Channel:</strong> Search &nbsp;·&nbsp;
+    <strong>Product:</strong> CompTIA Security+ SY0-701 &nbsp;·&nbsp;
+    <strong>Site:</strong> becertifiedtoday.com
+  </p>
+  <p class="meta">
+    <strong>Document version:</strong> 2026-06-07 &nbsp;·&nbsp;
+    <strong>Landing page:</strong> /comptia-sec+-home.html &nbsp;·&nbsp;
+    <strong>Portal (post-purchase):</strong> /COMP_TIA_SEC+/SEC+_Training_Portal.html
+  </p>
+
+  <div class="note warn">
+    <strong>Do not advertise simulation-only.</strong> Timed exam is included with 10-day or 30-day full library access only.
+    List price on page: <strong>$19.99 / 30 days</strong>. One-time visitor offer while on site: <strong>$9.99 / 10 days</strong> (popup / sticky — not in ad headline alone).
+  </div>
+
+  <h2>1. Campaign settings (parent)</h2>
+  <table>
+    <tr><th>Setting</th><th>Value</th><th>Notes</th></tr>
+    <tr><td>Campaign name</td><td>SEC+ SY0-701 · Exam prep · becertifiedtoday</td><td>Security+ only — pause CCNA / ENCOR</td></tr>
+    <tr><td>Campaign type</td><td>Search</td><td>Not Display, not Performance Max for this group</td></tr>
+    <tr><td>Campaign status</td><td>Enabled</td><td>☐ Confirmed in Ads UI</td></tr>
+    <tr><td>Networks</td><td>Search Network only</td><td>☐ Uncheck Search partners until baseline data (optional)</td></tr>
+    <tr><td>Locations</td><td>United States (or your target geo)</td><td>☐ Set · ☐ Location options: Presence</td></tr>
+    <tr><td>Languages</td><td>English</td><td></td></tr>
+    <tr><td>Daily budget</td><td>$10.00 USD</td><td>Campaign-level budget</td></tr>
+    <tr><td>Bidding strategy</td><td>Maximize clicks</td><td>☐ Set max CPC bid limit</td></tr>
+    <tr><td>Max CPC bid limit</td><td>$2.50 USD</td><td>Campaign or ad group cap</td></tr>
+    <tr><td>Ad rotation</td><td>Optimize (default)</td><td></td></tr>
+    <tr><td>Start / end dates</td><td>No end date</td><td></td></tr>
+    <tr><td>UTM campaign</td><td>secplus_portal</td><td>Matches campaign-attribution.js / GA4</td></tr>
+  </table>
+
+  <h2>2. Ad group settings — SEC+ Portal Access</h2>
+  <table>
+    <tr><th>Setting</th><th>Value</th><th>Notes</th></tr>
+    <tr><td>Ad group name</td><td>SEC+ Portal Access</td><td>Full library / portal access purchase intent</td></tr>
+    <tr><td>Ad group status</td><td>Enabled</td><td>☐ Created · ☐ Enabled</td></tr>
+    <tr><td>Ad group type</td><td>Standard Search ad group</td><td>Not Dynamic Search Ads</td></tr>
+    <tr><td>Default max CPC</td><td>$2.50 USD</td><td>Match campaign cap or lower after data</td></tr>
+    <tr><td>Ad group bid strategy</td><td>Inherit campaign (Maximize clicks)</td><td></td></tr>
+    <tr><td>Intent</td><td>High — core exam / practice test queries</td><td>SY0-701, Security+ practice, exam prep</td></tr>
+    <tr><td>Negative keywords</td><td>Campaign level (recommended)</td><td>See Section 5 — do not duplicate at ad group unless testing</td></tr>
+  </table>
+
+  <h3>Final URL (paste into every RSA)</h3>
+  <pre>https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&amp;utm_medium=cpc&amp;utm_campaign=secplus_portal&amp;utm_content=portal-access</pre>
+
+  <h3>Display path (optional)</h3>
+  <table>
+    <tr><th>Path 1</th><th>Path 2</th></tr>
+    <tr><td>Security-Plus</td><td>SY0-701-Prep</td></tr>
+  </table>
+
+  <h2>3. Conversion &amp; tracking</h2>
+  <table>
+    <tr><th>Goal</th><th>Event / action</th><th>Primary?</th><th>Status</th></tr>
+    <tr><td>Purchase — 30-day</td><td>Stripe checkout secplus-portal-30d</td><td>☐ Primary</td><td>☐ Linked in Google Ads</td></tr>
+    <tr><td>Purchase — 10-day</td><td>Stripe checkout secplus-portal-10d</td><td>☐ Secondary</td><td>☐ Linked in Google Ads</td></tr>
+    <tr><td>Begin checkout</td><td>GA4 begin_checkout</td><td>☐ Secondary</td><td>☐ Imported</td></tr>
+    <tr><td>Free sample start</td><td>Sample questions / dark web PBQ</td><td>☐ Observation</td><td>Engagement signal</td></tr>
+    <tr><td>NOT a conversion</td><td>secplus-test-simulation (voucher only)</td><td>—</td><td>Do not bid or advertise</td></tr>
+  </table>
+  <p class="note">GA4 property: G-YTT6KBHX7V · Auto-tagging: ☐ ON · gclid persists via campaign-attribution.js</p>
+
+  <h2>4. Positive keywords — SEC+ Portal Access</h2>
+  <p>Paste one keyword per line in Google Ads → Keywords → Search keywords. Brackets = Exact; quotes = Phrase.</p>
+
+  <div class="two-col">
+    <div>
+      <h3>Exact match [ ] — 18 keywords</h3>
+      <pre>[comptia security+ sy0-701]
+[comptia security+ sy0-701 exam prep]
+[comptia security+ practice test]
+[comptia security+ practice questions]
+[comptia security+ exam prep]
+[security+ sy0-701]
+[security+ sy0-701 exam prep]
+[security+ sy0-701 practice test]
+[security+ sy0-701 practice questions]
+[security+ practice test]
+[security+ practice questions]
+[security+ exam prep]
+[security plus sy0-701]
+[security plus exam prep]
+[security plus practice test]
+[sy0-701 exam prep]
+[sy0-701 practice test]
+[sy0-701 practice questions]
+[sy0-701 security+]</pre>
+    </div>
+    <div>
+      <h3>Phrase match " " — 24 keywords</h3>
+      <pre>"comptia security+ sy0-701"
+"comptia security+ sy0-701 exam prep"
+"comptia security+ practice test"
+"comptia security+ practice questions"
+"comptia security+ exam prep"
+"security+ sy0-701"
+"security+ sy0-701 exam prep"
+"security+ sy0-701 practice test"
+"security+ sy0-701 practice questions"
+"security+ practice test"
+"security+ practice questions"
+"security+ exam prep"
+"security plus sy0-701"
+"security plus exam prep"
+"security plus practice test"
+"sy0-701 exam prep"
+"sy0-701 practice test"
+"sy0-701 practice questions"
+"sy0-701 security+"
+"comptia security plus sy0-701"
+"comptia sy0-701 exam prep"
+"study for security+ sy0-701"
+"prepare for security+ sy0-701"</pre>
+    </div>
+  </div>
+  <p><strong>Total positives:</strong> 18 Exact + 24 Phrase = <strong>42 keywords</strong> &nbsp;·&nbsp; ☐ Pasted in Ads UI &nbsp;·&nbsp; Date: __________</p>
+
+  <h2>5. Negative keywords — campaign level (full list)</h2>
+  <p>Apply at <strong>campaign</strong> level so all Security+ ad groups share them. 56 Exact + 52 Phrase = <strong>108 negatives</strong>.</p>
+  <pre>[simulation only]
+[practice exam only]
+[mock exam only]
+[single test]
+[one attempt]
+[voucher]
+[timed test only]
+[exam voucher]
+[course]
+[bootcamp]
+[instructor]
+[classroom]
+[training course]
+[certification program]
+[udemy]
+[coursera]
+[pluralsight]
+[linkedin learning]
+[pdf]
+[braindump]
+[brain dump]
+[dumps]
+[dump]
+[torrent]
+[crack]
+[cheat sheet]
+[printable]
+[vce]
+[vumingo]
+[avanset]
+[test engine]
+[desktop]
+[sy0-601]
+[sy0-501]
+[sy0-401]
+[network+]
+[a+]
+[cissp]
+[ceh]
+[cysa+]
+[pentest+]
+[cisco]
+[ccna]
+[jobs]
+[job]
+[salary]
+[hiring]
+[career]
+[resume]
+[requirements]
+[worth it]
+[official]
+[comptia store]
+[comptia certmaster]
+[certmaster]
+[voucher comptia]
+[login]
+[sign in]
+[portal link]
+[refund]
+[cancel]
+[password]
+[free course]
+[free training]
+[free pdf]
+[free dump]
+"simulation only"
+"practice exam only"
+"mock exam only"
+"one attempt"
+"simulation voucher"
+"timed test only"
+"buy timed test"
+"single practice exam"
+"training course"
+"instructor led"
+"online course"
+"video course"
+"boot camp"
+"bootcamp"
+"classroom training"
+"certification program"
+"learn security+"
+"security+ training"
+"security+ course"
+"free pdf"
+"pdf download"
+"question and answer pdf"
+"brain dump"
+"exam dumps"
+"dump download"
+"free download"
+"memorization pdf"
+"printable questions"
+"vce player"
+"vce file"
+"exam simulator download"
+"desktop test engine"
+"install test engine"
+"sy0-601"
+"old security+"
+"network plus"
+"comptia a+"
+"cissp exam"
+"certified ethical hacker"
+"security+ jobs"
+"security+ salary"
+"do i need security+"
+"is security+ worth it"
+"entry level cyber security jobs"
+"how to get security+ job"
+"comptia official"
+"buy voucher from comptia"
+"certmaster learn"
+"comptia training"
+"official study guide"
+"comptia exam voucher"
+"forgot password"
+"portal access email"
+"already purchased"
+"customer support"
+"free full access"
+"free question bank"
+"free exam prep download"
+"100% free security+"</pre>
+  <p>☐ Negatives pasted at campaign level &nbsp;·&nbsp; Date: __________ &nbsp;·&nbsp; ☐ No duplicate negatives at ad group level</p>
+
+  <div class="page-break"></div>
+
+  <h2>6. Responsive Search Ad (RSA) — copy</h2>
+  <p>Create <strong>1 RSA minimum</strong> (2 recommended for testing). Pin only if Quality Score needs alignment.</p>
+
+  <h3>Headlines (max 30 characters each — 15 slots)</h3>
+  <table>
+    <tr><th>#</th><th>Headline</th><th>Chars</th><th>Pinned?</th></tr>
+    <tr><td>1</td><td>SY0-701 Security+ Exam Prep</td><td>28</td><td>☐ H1 optional</td></tr>
+    <tr><td>2</td><td>1000+ Practice Questions</td><td>24</td><td></td></tr>
+    <tr><td>3</td><td>Full Library · 30 Days</td><td>22</td><td></td></tr>
+    <tr><td>4</td><td>$19.99 · All Access</td><td>19</td><td></td></tr>
+    <tr><td>5</td><td>PBQ Sims + Timed Exam</td><td>21</td><td></td></tr>
+    <tr><td>6</td><td>Free Sample Questions</td><td>21</td><td></td></tr>
+    <tr><td>7</td><td>Browser-Based · No VCE</td><td>22</td><td></td></tr>
+    <tr><td>8</td><td>Adaptive Review by Domain</td><td>25</td><td></td></tr>
+    <tr><td>9</td><td>Exam Prep — Not a Course</td><td>24</td><td></td></tr>
+    <tr><td>10</td><td>CompTIA Security+ SY0-701</td><td>25</td><td></td></tr>
+    <tr><td>11</td><td>Verified Explanations</td><td>21</td><td></td></tr>
+    <tr><td>12</td><td>Phone, Tablet &amp; Desktop</td><td>23</td><td></td></tr>
+    <tr><td>13</td><td>No PDF Dumps</td><td>12</td><td></td></tr>
+    <tr><td>14</td><td>90-Min Timed Practice Test</td><td>26</td><td></td></tr>
+    <tr><td>15</td><td>Be Certified Today</td><td>18</td><td></td></tr>
+  </table>
+
+  <h3>Descriptions (max 90 characters each — 4 slots)</h3>
+  <table>
+    <tr><th>#</th><th>Description</th><th>Chars</th></tr>
+    <tr><td>1</td><td>1000+ SY0-701 questions, PBQ sims, adaptive review &amp; 90-min timed exam. $19.99 / 30 days.</td><td>88</td></tr>
+    <tr><td>2</td><td>Exam prep in your browser — not a course. Try free samples. One-time $9.99 / 10-day offer on site.</td><td>90</td></tr>
+    <tr><td>3</td><td>Full library: questions, hot-spot PBQs, domain study &amp; timed test. No subscription.</td><td>82</td></tr>
+    <tr><td>4</td><td>Interactive practice aligned to objectives v5.0. No PDF dumps. Phone, tablet, and desktop.</td><td>87</td></tr>
+  </table>
+
+  <h2>7. Ad extensions (campaign or account level)</h2>
+  <table>
+    <tr><th>Extension</th><th>Text</th><th>URL / note</th></tr>
+    <tr><td>Sitelink 1</td><td>Free sample questions</td><td>…/comptia-sec+-home.html#home-secplus-samples-title</td></tr>
+    <tr><td>Sitelink 2</td><td>Get 30-day access · $19.99</td><td>…/comptia-sec+-home.html#purchase</td></tr>
+    <tr><td>Sitelink 3</td><td>Dark Web PBQ preview</td><td>…/secplus-sample?track=sim-dark-web</td></tr>
+    <tr><td>Sitelink 4</td><td>SY0-701 domain weights</td><td>…/comptia-sec+-home.html (blueprint section)</td></tr>
+    <tr><td>Callout 1</td><td>1000+ practice questions</td><td>—</td></tr>
+    <tr><td>Callout 2</td><td>PBQ sims included</td><td>—</td></tr>
+    <tr><td>Callout 3</td><td>90-min timed exam included</td><td>—</td></tr>
+    <tr><td>Callout 4</td><td>Free sample previews</td><td>—</td></tr>
+    <tr><td>Callout 5</td><td>No subscription</td><td>—</td></tr>
+    <tr><td>Callout 6</td><td>Browser-based · no VCE</td><td>—</td></tr>
+    <tr><td>Structured snippet</td><td>What's included: Question banks, PBQ simulations, Adaptive review, Timed exam, Domain study</td><td>Header: Services</td></tr>
+  </table>
+
+  <h2>8. On-site offer alignment (landing page)</h2>
+  <table>
+    <tr><th>Offer</th><th>Price</th><th>Where on site</th><th>Advertise?</th></tr>
+    <tr><td>30-day all-access (list)</td><td>$19.99</td><td>#purchase fold — always visible</td><td>Yes — primary price in ads</td></tr>
+    <tr><td>10-day all-access (visitor)</td><td>$9.99</td><td>One-time popup / sticky while on page</td><td>Mention in description only with qualifier</td></tr>
+    <tr><td>Free samples</td><td>$0</td><td>Sample questions + Dark Web PBQ</td><td>Yes — sitelinks / headlines</td></tr>
+    <tr><td>Timed sim voucher only</td><td>Checkout only</td><td>Not on landing UI</td><td><strong>No — do not advertise</strong></td></tr>
+  </table>
+
+  <h2>9. Setup checklist</h2>
+  <table class="checklist">
+    <tr><th>☐</th><th>Task</th><th>Date done</th><th>Owner</th></tr>
+    <tr><td>☐</td><td>Campaign created / enabled with $10/day budget</td><td></td><td></td></tr>
+    <tr><td>☐</td><td>Ad group SEC+ Portal Access created</td><td></td><td></td></tr>
+    <tr><td>☐</td><td>42 positive keywords pasted (18 Exact + 24 Phrase)</td><td></td><td></td></tr>
+    <tr><td>☐</td><td>108 campaign negatives pasted</td><td></td><td></td></tr>
+    <tr><td>☐</td><td>RSA live with Final URL + UTM utm_content=portal-access</td><td></td><td></td></tr>
+    <tr><td>☐</td><td>Sitelinks + callouts + structured snippets added</td><td></td><td></td></tr>
+    <tr><td>☐</td><td>Conversion actions imported (purchase, begin_checkout)</td><td></td><td></td></tr>
+    <tr><td>☐</td><td>Auto-tagging ON · GA4 linked</td><td></td><td></td></tr>
+    <tr><td>☐</td><td>Landing page loads · mobile check · free samples work</td><td></td><td></td></tr>
+    <tr><td>☐</td><td>Search terms review scheduled (7 days after launch)</td><td></td><td></td></tr>
+    <tr><td>☐</td><td>CCNA / ENCOR campaigns paused (no budget bleed)</td><td></td><td></td></tr>
+  </table>
+
+  <h2>10. Performance tracking — SEC+ Portal Access</h2>
+  <p>Update weekly from Google Ads + GA4. Currency: USD.</p>
+  <table class="metric-table">
+    <tr>
+      <th>Week ending</th>
+      <th>Impr.</th>
+      <th>Clicks</th>
+      <th>CTR %</th>
+      <th>Cost</th>
+      <th>Avg CPC</th>
+      <th>Conv.</th>
+      <th>CPA</th>
+      <th>Notes / search terms action</th>
+    </tr>
+    <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+  </table>
+
+  <h3>Search terms log (add negatives here)</h3>
+  <table>
+    <tr><th>Date</th><th>Search term</th><th>Clicks</th><th>Action (neg / keep / new kw)</th></tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+  </table>
+
+  <h3>Change log</h3>
+  <table>
+    <tr><th>Date</th><th>Change</th><th>Reason</th><th>Result (fill later)</th></tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td></tr>
+  </table>
+
+  <p class="footer">
+    Be Certified Today · marketing-vault/02-campaigns/security-plus/secplus-portal-access-ad-group.pdf ·
+    Source HTML: secplus-portal-access-ad-group.html · Generated 2026-06-07
+  </p>
+
+</body>
+</html>
