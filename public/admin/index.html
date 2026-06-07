@@ -6,7 +6,7 @@
   <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet" />
   <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Analytics admin | Be Certified Today</title>
+  <title>Admin dashboard | Be Certified Today</title>
   <script src="/js/analytics-exclude.js"></script>
   <style>
     :root {
@@ -124,20 +124,86 @@
       color: #c5d4f0;
     }
     .portal-table-wrap { overflow-x: auto; }
+    .admin-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 18px;
+    }
+    .admin-nav a {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid #cbd5e1;
+      color: #1e3a5f;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      background: #f8fafc;
+    }
+    .admin-nav a:hover { background: #e8f0fa; }
+    .link-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      margin-top: 10px;
+    }
+    .link-card {
+      background: #0f1729;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .link-card h3 {
+      margin: 0 0 6px;
+      font-size: 0.92rem;
+      color: #e6edf3;
+    }
+    .link-card p {
+      margin: 0 0 10px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .link-card .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .link-card button, .link-card a.btn {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      border: 1px solid #4f84d8;
+      background: var(--accent);
+      color: #f4f7ff;
+      cursor: pointer;
+    }
+    .link-card a.btn.secondary, .link-card button.secondary {
+      background: transparent;
+      border-color: var(--border);
+      color: #c5d4f0;
+    }
+    .section-note {
+      margin: 0 0 12px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <h1>Site analytics</h1>
+    <h1>Admin dashboard</h1>
     <p class="lead">
-      Reports exclude localhost, <code>/admin/</code> paths, and internal test emails. Signing in here also
-      opts this browser out of GA4 on the public site. To re-enable tracking, run
-      <code>localStorage.removeItem('bcc_analytics_exclude_v1')</code> in the browser console.
+      Owner-only access for <strong>georgecwerbacher@gmail.com</strong>. Traffic reports exclude localhost,
+      <code>/admin/</code>, and internal test emails. Signing in opts this browser out of GA4 on the public site.
     </p>
 
     <section id="loginPanel" class="panel">
       <form id="loginForm">
-        <label for="password">Admin password</label>
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="username" value="georgecwerbacher@gmail.com" required style="margin-bottom:12px" />
+        <label for="password">Password</label>
         <div class="row">
           <input id="password" name="password" type="password" autocomplete="current-password" required />
           <button type="submit">Sign in</button>
@@ -147,7 +213,16 @@
     </section>
 
     <section id="dashPanel" class="hidden">
-      <div class="panel">
+      <nav class="admin-nav" aria-label="Dashboard sections">
+        <a href="#section-traffic">Traffic</a>
+        <a href="#section-samples">Samples</a>
+        <a href="#section-questions">Questions</a>
+        <a href="#section-portal-access">Portal access</a>
+        <a href="#section-subscribers">Subscribers</a>
+        <a href="#section-preprod">Preproduction</a>
+      </nav>
+
+      <div class="panel" id="section-traffic">
         <div class="row">
           <div>
             <label for="range">Date range</label>
@@ -166,7 +241,22 @@
       </div>
 
       <div class="panel">
-        <h2 style="margin:0 0 10px;font-size:1.05rem">Top pages</h2>
+        <h2 style="margin:0 0 10px;font-size:1.05rem">Sample &amp; home traffic (from top pages)</h2>
+        <p class="section-note">
+          Paths matching free samples, sample hubs, or certification home pages in the selected date range.
+        </p>
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr><th>Page path</th><th>Views</th><th>Users</th></tr>
+            </thead>
+            <tbody id="sampleTrafficBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 style="margin:0 0 10px;font-size:1.05rem">Top pages (all)</h2>
         <div style="overflow-x:auto">
           <table>
             <thead>
@@ -178,7 +268,7 @@
       </div>
 
       <div class="panel" id="sampleLeadPanel">
-        <h2 style="margin:0 0 6px;font-size:1.05rem">Homepage sample → email capture</h2>
+        <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-samples">Homepage sample → email capture</h2>
         <p style="margin:0 0 16px;font-size:0.85rem;color:var(--muted)">
           After free sample questions (CCNA, ENCOR, Security+), who opened the email form and how many times they
           submitted. Data from <code>home-sample-email-capture.csv</code> (requires <code>GITHUB_LEADS_TOKEN</code> on
@@ -224,8 +314,45 @@
         <p id="sampleLeadStatus" class="status" aria-live="polite"></p>
       </div>
 
+      <div class="panel" id="visitorQuestionsPanel">
+        <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-questions">Visitor questions</h2>
+        <p class="section-note">
+          Messages from the site <strong>Ask a question</strong> footer form (replaces mailto). Stored in
+          <code>visitor-questions.csv</code> via <code>GITHUB_LEADS_TOKEN</code>.
+        </p>
+        <div class="cards" id="visitorQuestionsSummaryCards"></div>
+        <div class="portal-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>When (UTC)</th>
+                <th>Email</th>
+                <th>Product</th>
+                <th>Page</th>
+                <th>Message</th>
+              </tr>
+            </thead>
+            <tbody id="visitorQuestionsBody"></tbody>
+          </table>
+        </div>
+        <p id="visitorQuestionsStatus" class="status" aria-live="polite"></p>
+      </div>
+
+      <div class="panel" id="portalAccessPanel">
+        <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-portal-access">Training portal access (admin bypass)</h2>
+        <p class="section-note">
+          <strong>Owner-only.</strong> These links grant 90-day portal entitlement in this browser after you open them.
+          Bypass tokens expire in 2 hours if unused. This is the <em>only</em> supported credential bypass — not available on public pages.
+        </p>
+        <div class="row" style="margin-bottom:12px">
+          <button type="button" id="portalBypassRefreshBtn">Generate portal links</button>
+        </div>
+        <div class="link-grid" id="portalBypassLinks"></div>
+        <p id="portalBypassStatus" class="status" aria-live="polite"></p>
+      </div>
+
       <div class="panel" id="portalPanel">
-        <h2 style="margin:0 0 6px;font-size:1.05rem">Portal subscribers (CCNA · ENCOR · Security+)</h2>
+        <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-subscribers">Portal subscribers (CCNA · ENCOR · Security+)</h2>
         <p style="margin:0 0 16px;font-size:0.85rem;color:var(--muted)">
           Paid 10-day or 30-day library access from Stripe (checkout email). Not live “who is online” — use GA4
           Realtime for anonymous visitors.
@@ -284,6 +411,16 @@
         <p id="portalStatus" class="status" aria-live="polite"></p>
       </div>
 
+      <div class="panel" id="preprodPanel">
+        <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-preprod">Preproduction &amp; staging</h2>
+        <p class="section-note">
+          Preview work-in-progress before production release. PBQ staging paths are open without portal paywall.
+          Other links use the same admin bypass as training portals when noted.
+        </p>
+        <div class="link-grid" id="preprodLinks"></div>
+        <p id="preprodStatus" class="status" aria-live="polite"></p>
+      </div>
+
       <div class="panel">
         <h2 style="margin:0 0 10px;font-size:1.05rem">Daily trend</h2>
         <div style="overflow-x:auto">
@@ -300,9 +437,7 @@
     </section>
 
     <p style="margin-top:20px;font-size:0.85rem;color:var(--muted)">
-      <a href="/">← Home</a>
-      ·
-      <a href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/review-index.html" rel="nofollow noopener">Security+ PBQ review index</a>
+      <a href="/">← Public home</a>
     </p>
   </div>
 
@@ -331,7 +466,43 @@
         ccna: "CCNA",
         encor: "ENCOR",
         secplus: "Security+",
+        general: "General",
       };
+      var SAMPLE_PATH_RE =
+        /secplus-sample|\/ccna-home|\/ccnp-home|comptia-sec\+-home|\/ccna-study\/ccna_samples|\/ccnp-encor-study\/encor_samples|\/comp_tia_sec+\/sec\+_samples|sample-question|\/secplus-sample/i;
+      var PREPROD_ENTRIES = [
+        {
+          title: "Security+ PBQ — pending",
+          note: "Work-in-progress PBQ items before production publish. No portal required.",
+          path: "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/",
+          open: true,
+        },
+        {
+          title: "Security+ PBQ — production review",
+          note: "Review index for published PBQ simulations.",
+          path: "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/review-index.html",
+          open: true,
+        },
+        {
+          title: "CCNA home (pre-release copy)",
+          note: "Marketing / purchase landing for CCNA.",
+          path: "/ccna-home.html",
+          open: true,
+        },
+        {
+          title: "CCNP ENCOR home",
+          note: "Marketing / purchase landing for ENCOR.",
+          path: "/ccnp-home.html",
+          open: true,
+        },
+        {
+          title: "Security+ home",
+          note: "AdWords landing + samples + purchase.",
+          path: "/comptia-sec+-home.html",
+          open: true,
+        },
+      ];
+      var portalBypassCache = [];
 
       function token() {
         try {
@@ -392,6 +563,32 @@
           (data.measurementId || "—") +
           " · Updated " +
           (data.fetchedAt || "");
+      }
+
+      function renderSampleTraffic(rows) {
+        var body = document.getElementById("sampleTrafficBody");
+        if (!body) return;
+        var filtered = (rows || []).filter(function (r) {
+          return SAMPLE_PATH_RE.test(String(r.pagePath || ""));
+        });
+        if (!filtered.length) {
+          body.innerHTML =
+            '<tr><td colspan="3" style="color:var(--muted)">No sample/home paths in this range yet.</td></tr>';
+          return;
+        }
+        body.innerHTML = filtered
+          .map(function (r) {
+            return (
+              "<tr><td class=\"path\">" +
+              r.pagePath +
+              "</td><td>" +
+              fmt(r.screenPageViews) +
+              "</td><td>" +
+              fmt(r.activeUsers) +
+              "</td></tr>"
+            );
+          })
+          .join("");
       }
 
       function renderTopPages(rows) {
@@ -619,6 +816,57 @@
         });
       }
 
+      function renderVisitorQuestionsReport(data) {
+        var items = data.items || [];
+        document.getElementById("visitorQuestionsSummaryCards").innerHTML = [
+          ["Total questions", fmt(data.total)],
+          ["New (unreviewed)", fmt(data.newCount)],
+          ["Security+", fmt((data.byProduct && data.byProduct.secplus) || 0)],
+          ["CCNA", fmt((data.byProduct && data.byProduct.ccna) || 0)],
+        ]
+          .map(function (c) {
+            return (
+              '<div class="card"><div class="val">' +
+              c[1] +
+              '</div><div class="lbl">' +
+              c[0] +
+              "</div></div>"
+            );
+          })
+          .join("");
+
+        var body = document.getElementById("visitorQuestionsBody");
+        if (!items.length) {
+          body.innerHTML =
+            '<tr><td colspan="5" style="color:var(--muted)">No visitor questions yet.</td></tr>';
+        } else {
+          body.innerHTML = items
+            .map(function (q) {
+              return (
+                "<tr><td>" +
+                fmtIsoUtcShort(q.capturedAt) +
+                '</td><td class="email">' +
+                (q.email || "—") +
+                "</td><td>" +
+                (SAMPLE_PRODUCT_LABELS[q.product] || q.product) +
+                '</td><td class="path">' +
+                (q.pagePath || "—") +
+                '</td><td class="path">' +
+                (q.message || "").replace(/</g, "&lt;") +
+                "</td></tr>"
+              );
+            })
+            .join("");
+        }
+
+        var note = data.note || "";
+        if (!items.length) {
+          note += " Questions appear when visitors use Ask a question in the site footer.";
+        }
+        document.getElementById("visitorQuestionsStatus").textContent = note;
+        document.getElementById("visitorQuestionsStatus").className = "status ok";
+      }
+
       function loadReport() {
         dashStatus.textContent = "Loading…";
         dashStatus.className = "status";
@@ -626,16 +874,20 @@
         portalStatus.className = "status";
         document.getElementById("sampleLeadStatus").textContent = "Loading sample email capture…";
         document.getElementById("sampleLeadStatus").className = "status";
+        document.getElementById("visitorQuestionsStatus").textContent = "Loading visitor questions…";
+        document.getElementById("visitorQuestionsStatus").className = "status";
 
         Promise.all([
           postJson("/api/analytics-report", { range: rangeEl.value }),
           postJson("/api/portal-users-report", {}),
           postJson("/api/sample-lead", { action: "report" }),
+          postJson("/api/sample-lead", { action: "questions_report" }),
         ])
           .then(function (results) {
             var ga = results[0];
             var portal = results[1];
             var sampleLead = results[2];
+            var visitorQuestions = results[3];
 
             if (!ga.ok) {
               if (ga.body && ga.body.error === "Unauthorized") {
@@ -648,6 +900,7 @@
             }
 
             renderSummary(ga.body);
+            renderSampleTraffic(ga.body.topPages);
             renderTopPages(ga.body.topPages);
             renderTrend(ga.body.dailyTrend);
             dashStatus.textContent = "";
@@ -673,23 +926,110 @@
             } else {
               renderSampleLeadReport(sampleLead.body);
             }
+
+            if (!visitorQuestions.ok) {
+              document.getElementById("visitorQuestionsSummaryCards").innerHTML = "";
+              document.getElementById("visitorQuestionsBody").innerHTML = "";
+              var vq = (visitorQuestions.body && visitorQuestions.body.error) || "Visitor questions failed";
+              document.getElementById("visitorQuestionsStatus").textContent = vq;
+              document.getElementById("visitorQuestionsStatus").className = "status err";
+            } else {
+              renderVisitorQuestionsReport(visitorQuestions.body);
+            }
           })
           .catch(function (err) {
             dashStatus.textContent = err.message || "Failed to load report";
             dashStatus.className = "status err";
             portalStatus.textContent = "";
             document.getElementById("sampleLeadStatus").textContent = "";
+            document.getElementById("visitorQuestionsStatus").textContent = "";
           });
+      }
+
+      function renderPortalBypassLinks(links) {
+        var grid = document.getElementById("portalBypassLinks");
+        if (!grid) return;
+        portalBypassCache = links || [];
+        if (!portalBypassCache.length) {
+          grid.innerHTML = "";
+          return;
+        }
+        grid.innerHTML = portalBypassCache
+          .map(function (link, i) {
+            return (
+              '<article class="link-card"><h3>' +
+              link.label +
+              '</h3><p>' +
+              link.portalPath +
+              ' · link valid 2h · 90-day access after open</p><div class="actions">' +
+              '<a class="btn" href="' +
+              link.url +
+              '" target="_blank" rel="noopener noreferrer">Open portal</a>' +
+              '<button type="button" class="secondary" data-copy-bypass="' +
+              i +
+              '">Copy link</button></div></article>'
+            );
+          })
+          .join("");
+        grid.querySelectorAll("[data-copy-bypass]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var idx = parseInt(btn.getAttribute("data-copy-bypass") || "0", 10);
+            var url = portalBypassCache[idx] && portalBypassCache[idx].url;
+            if (!url) return;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(url);
+            }
+            document.getElementById("portalBypassStatus").textContent = "Copied portal link.";
+            document.getElementById("portalBypassStatus").className = "status ok";
+          });
+        });
+      }
+
+      function loadPortalBypassLinks() {
+        var status = document.getElementById("portalBypassStatus");
+        status.textContent = "Generating bypass links…";
+        status.className = "status";
+        return postJson("/api/admin-portal-bypass", { action: "link", track: "all" })
+          .then(function (res) {
+            if (!res.ok) throw new Error((res.body && res.body.error) || "Bypass links failed");
+            renderPortalBypassLinks(res.body.links || []);
+            status.textContent = res.body.note || "Portal links ready.";
+            status.className = "status ok";
+          })
+          .catch(function (err) {
+            status.textContent = err.message || "Failed to generate links";
+            status.className = "status err";
+          });
+      }
+
+      function renderPreprodLinks() {
+        var grid = document.getElementById("preprodLinks");
+        if (!grid) return;
+        grid.innerHTML = PREPROD_ENTRIES.map(function (entry, i) {
+          return (
+            '<article class="link-card"><h3>' +
+            entry.title +
+            '</h3><p>' +
+            entry.note +
+            '</p><div class="actions"><a class="btn" href="' +
+            entry.path +
+            '" target="_blank" rel="noopener noreferrer">Open</a></div></article>'
+          );
+        }).join("");
       }
 
       loginForm.addEventListener("submit", function (e) {
         e.preventDefault();
         loginStatus.textContent = "Signing in…";
         loginStatus.className = "status";
-        fetch("/api/analytics-admin-login", {
+        fetch("/api/analytics-report", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ password: document.getElementById("password").value }),
+          body: JSON.stringify({
+            action: "login",
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value,
+          }),
         })
           .then(function (r) {
             return r.json().then(function (j) {
@@ -709,6 +1049,8 @@
             document.getElementById("password").value = "";
             showDash(true);
             loginStatus.textContent = "";
+            renderPreprodLinks();
+            loadPortalBypassLinks();
             loadReport();
           })
           .catch(function (err) {
@@ -718,6 +1060,7 @@
       });
 
       document.getElementById("refreshBtn").addEventListener("click", loadReport);
+      document.getElementById("portalBypassRefreshBtn").addEventListener("click", loadPortalBypassLinks);
       document.getElementById("logoutBtn").addEventListener("click", function () {
         setToken("");
         showDash(false);
@@ -726,6 +1069,8 @@
 
       if (token()) {
         showDash(true);
+        renderPreprodLinks();
+        loadPortalBypassLinks();
         loadReport();
       } else {
         showDash(false);

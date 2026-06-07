@@ -59,7 +59,7 @@ Site tagging is already in the codebase. Confirm it works.
 
 ## Phase 2 — Google Analytics 4 (Data API for reports)
 
-Required for `/admin/analytics.html` and `npm run marketing:weekly-report`.
+Required for `/admin` and `npm run marketing:weekly-report`.
 
 ### 2a — Google Cloud project
 
@@ -108,7 +108,7 @@ Add to `.env.local` and **Vercel → Project → Settings → Environment Variab
 ### 2e — Verify
 
 - [ ] Redeploy Vercel after setting env vars
-- [ ] Open `https://becertifiedtoday.com/admin/analytics.html` → sign in → data loads
+- [ ] Open `https://becertifiedtoday.com/admin` → sign in → data loads
 - [ ] From repo root:
   ```bash
   npm run marketing:weekly-report
@@ -213,8 +213,8 @@ Configured in `public/COMP_TIA_SEC+/js/secplus-portal-checkout.js`. Verify in St
 - [ ] Webhook delivers without error (Stripe Dashboard → Webhooks → event log)
 - [ ] Portal access unlocks on site
 - [ ] Magic-link email received (if Resend configured)
-- [ ] `/admin/analytics.html` portal subscriber section shows purchasers for **CCNA, ENCOR, and Security+** (Stripe metadata per product)
-- [ ] `/admin/analytics.html` **Homepage sample → email capture** section lists who submitted and attempt counts (`marketing-vault/leads/home-sample-email-capture.csv` via `GITHUB_LEADS_TOKEN`)
+- [ ] `/admin` portal subscriber section shows purchasers for **CCNA, ENCOR, and Security+** (Stripe metadata per product)
+- [ ] `/admin` **Homepage sample → email capture** section lists who submitted and attempt counts (`marketing-vault/leads/home-sample-email-capture.csv` via `GITHUB_LEADS_TOKEN`)
 
 ---
 
@@ -249,7 +249,7 @@ Not required to launch Security+ ads.
 | `GA_PROPERTY_ID` | Data API reports |
 | `GA_INTERNAL_EMAILS` | Exclude owner/admin test emails (e.g. `georgecwerbacher@gmail.com`) from GA reports and portal subscriber table |
 | `GA_SERVICE_ACCOUNT_JSON_B64` | Server GA4 access |
-| `ADMIN_ANALYTICS_PASSWORD` | `/admin/analytics.html` login |
+| `ADMIN_ANALYTICS_PASSWORD` | `/admin` login |
 | `ADMIN_ANALYTICS_JWT_SECRET` | Admin API auth |
 | `STRIPE_SECRET_KEY` | Checkout, webhooks, portal lists |
 | `STRIPE_WEBHOOK_SECRET` | Webhook signature verify |

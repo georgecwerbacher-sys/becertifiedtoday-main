@@ -25,8 +25,6 @@ Allow: /
 
 Disallow: /admin
 Disallow: /admin/
-Disallow: /admin/analytics
-Disallow: /admin/analytics.html
 Disallow: /api/
 Disallow: /choose-training-path.html
 Disallow: /secplus-home.html
@@ -147,9 +145,8 @@ NOINDEX_STRICT = (
 # Rewrite/canonical admin entry points — must never appear in sitemap.xml.
 SITEMAP_FORBIDDEN_LOCS = frozenset(
     {
-        f"{SITE_ORIGIN}/admin/analytics",
-        f"{SITE_ORIGIN}/admin/analytics.html",
         f"{SITE_ORIGIN}/admin",
+        f"{SITE_ORIGIN}/admin/",
     }
 )
 

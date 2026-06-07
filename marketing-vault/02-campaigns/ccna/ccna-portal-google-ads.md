@@ -215,7 +215,7 @@ Landing page must answer AI-style questions clearly (see [[../../01-strategy/goo
 - [ ] Google Ads conversion: `ccna_free_assessment_click` (free group) + `begin_checkout` (purchase)
 - [ ] Weekly report: filter GA4 by campaign name matching `ccna*`
 - [ ] Stripe Payment Link confirms **$4.99** for timed sim in Dashboard
-- [ ] Stripe portal subscribers visible in `/admin/analytics.html` (CCNA product metadata)
+- [ ] Stripe portal subscribers visible in `/admin` (CCNA product metadata)
 - [ ] Landing page audits in [[../../06-website-optimization/landing-page-audit-checklist|audit checklist]] — log changes in [[../../06-website-optimization/content-change-log|content change log]]
 - [ ] Align `scripts/ccna-google-ads-headline-suffixes.txt` UTM campaign to `ccna_portal` (file still shows `ccna-practice-test`)
 

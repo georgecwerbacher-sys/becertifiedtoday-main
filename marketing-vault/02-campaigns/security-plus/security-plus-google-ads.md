@@ -195,7 +195,7 @@ Landing page must answer AI-style questions clearly (see [[../../01-strategy/goo
 - [ ] `begin_checkout` when purchase ad group launches (paused)
 - [ ] Weekly report: `npm run marketing:weekly-report` + GA4 vs Ads
 - [x] Stripe portal **30-day $19.99** primary on landing (`secplus_portal_30d`)
-- [ ] Stripe portal subscribers visible in `/admin/analytics.html`
+- [ ] Stripe portal subscribers visible in `/admin`
 - [x] Landing audits logged — [[../../06-website-optimization/content-change-log|content change log]] 2026-06-03
 
 ## Landing page optimization

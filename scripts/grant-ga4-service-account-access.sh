@@ -96,4 +96,4 @@ if echo "$RESP" | jq -e '.error' >/dev/null 2>&1; then
 fi
 
 echo ""
-echo "Done. Wait 2–5 minutes, set GA_PROPERTY_ID=$PROPERTY_ID on Vercel, then refresh /admin/analytics"
+echo "Done. Wait 2–5 minutes, set GA_PROPERTY_ID=$PROPERTY_ID on Vercel, then refresh /admin"

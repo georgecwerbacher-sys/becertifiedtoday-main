@@ -1,9 +1,11 @@
 /**
  * POST /api/analytics-report
- * Authorization: Bearer <admin JWT>
- * Body: { "range": "7d" | "28d" | "90d" | "today" }
+ *
+ * action "login" — Body: { "action": "login", "email", "password" }
+ * action "report" (default) — Authorization: Bearer <admin JWT>, Body: { "range": "7d"|... }
  */
-import { verifyAnalyticsAdminToken } from "../server-lib/analytics-admin-jwt.js";
+import crypto from "crypto";
+import { issueAnalyticsAdminToken, verifyAnalyticsAdminToken } from "../server-lib/analytics-admin-jwt.js";
 import {
   analyticsApiReady,
   fetchAnalyticsSummary,
@@ -32,14 +34,69 @@ function bearerToken(req) {
   return m ? m[1].trim() : "";
 }
 
+function safeEqual(a, b) {
+  const aa = Buffer.from(String(a), "utf8");
+  const bb = Buffer.from(String(b), "utf8");
+  if (aa.length !== bb.length) return false;
+  return crypto.timingSafeEqual(aa, bb);
+}
+
+async function handleLogin(req, res) {
+  const expected = (process.env.ADMIN_ANALYTICS_PASSWORD || "").trim();
+  const jwtSecret = (process.env.ADMIN_ANALYTICS_JWT_SECRET || "").trim();
+
+  if (!expected || !jwtSecret) {
+    return res.status(503).json({
+      ok: false,
+      error: "Admin analytics is not configured",
+      hint: "Set ADMIN_ANALYTICS_PASSWORD and ADMIN_ANALYTICS_JWT_SECRET on Vercel.",
+    });
+  }
+
+  const allowedEmail = (
+    process.env.ADMIN_ANALYTICS_EMAIL || "georgecwerbacher@gmail.com"
+  )
+    .trim()
+    .toLowerCase();
+
+  const body = readJsonBody(req);
+  const password = typeof body.password === "string" ? body.password : "";
+  const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+
+  if (!email || email !== allowedEmail) {
+    return res.status(401).json({ ok: false, error: "Unauthorized email" });
+  }
+
+  if (!password || !safeEqual(password, expected)) {
+    return res.status(401).json({ ok: false, error: "Invalid password" });
+  }
+
+  const token = issueAnalyticsAdminToken(jwtSecret, email);
+  return res.status(200).json({
+    ok: true,
+    token,
+    expiresInSeconds: 60 * 60 * 8,
+  });
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ ok: false, error: "Method not allowed" });
   }
 
+  const body = readJsonBody(req);
+  const action = typeof body.action === "string" ? body.action.trim().toLowerCase() : "";
+  const hasLoginBody =
+    typeof body.email === "string" &&
+    typeof body.password === "string" &&
+    !bearerToken(req);
+  if (action === "login" || hasLoginBody) {
+    return handleLogin(req, res);
+  }
+
   const jwtSecret = (process.env.ADMIN_ANALYTICS_JWT_SECRET || "").trim();
-  const token = bearerToken(req) || (readJsonBody(req).token || "");
+  const token = bearerToken(req) || (body.token || "");
 
   if (!jwtSecret) {
     return res.status(503).json({
@@ -80,7 +137,6 @@ export default async function handler(req, res) {
     });
   }
 
-  const body = readJsonBody(req);
   const range = rangeFromPreset(typeof body.range === "string" ? body.range : "7d");
   const client = getAnalyticsDataClient(env);
 

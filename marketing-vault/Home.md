@@ -51,4 +51,4 @@ node scripts/marketing-weekly-report.mjs
 node scripts/marketing-weekly-report.mjs --range 28d
 ```
 
-Requires GA4 service account vars in `.env.local` (same as `/admin/analytics.html`).
+Requires GA4 service account vars in `.env.local` (same as `/admin`).

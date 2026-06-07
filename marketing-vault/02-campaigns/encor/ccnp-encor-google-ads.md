@@ -202,7 +202,7 @@ Landing page must answer AI-style questions clearly (see [[../../01-strategy/goo
 - [ ] Google Ads conversion: sample engagement (engagement / page_view) + `begin_checkout` (purchase)
 - [ ] Weekly report: filter GA4 by campaign name matching `encor*`
 - [ ] Stripe Payment Link confirms **$4.99** for timed sim in Dashboard
-- [ ] Stripe portal subscribers visible in `/admin/analytics.html` (ENCOR product metadata)
+- [ ] Stripe portal subscribers visible in `/admin` (ENCOR product metadata)
 - [ ] Landing page audits in [[../../06-website-optimization/landing-page-audit-checklist|audit checklist]] — log changes in [[../../06-website-optimization/content-change-log|content change log]]
 - [ ] Consider dedicated GA4 event for sample CTA clicks (CCNA has `ccna_free_assessment_click`; ENCOR has no equivalent yet)
 

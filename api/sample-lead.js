@@ -1,7 +1,8 @@
 /**
  * POST /api/sample-lead
- * Event logging: { event, product, email?, sample_kind?, source?, utm?, company_website? }
- * Admin report: { action: "report" } with Bearer <admin JWT>
+ * Sample events: { event, product, email?, ... }
+ * Visitor question: { action: "submit_question", email, message, product?, page_path? }
+ * Admin reports: { action: "report" | "questions_report" } + Bearer <admin JWT>
  */
 import { verifyAnalyticsAdminToken } from "../server-lib/analytics-admin-jwt.js";
 import {
@@ -12,6 +13,12 @@ import {
   normalizeSampleProduct,
   readSampleLeadEvents,
 } from "../server-lib/sample-lead-analytics.js";
+import {
+  aggregateVisitorQuestionsReport,
+  appendVisitorQuestion,
+  normalizeQuestionProduct,
+  readVisitorQuestions,
+} from "../server-lib/visitor-questions.js";
 
 function readJsonBody(req) {
   try {
@@ -73,6 +80,74 @@ async function handleEvent(req, res, body) {
   });
 }
 
+async function handleQuestionSubmit(req, res, body) {
+  if (body.company_website) {
+    return res.status(200).json({ ok: true, skipped: "honeypot" });
+  }
+
+  const email = normalizeEmail(body.email);
+  const message = typeof body.message === "string" ? body.message.trim() : "";
+  if (!email) {
+    return res.status(400).json({ ok: false, error: "invalid_email" });
+  }
+  if (!message || message.length < 10) {
+    return res.status(400).json({ ok: false, error: "message_too_short" });
+  }
+  if (message.length > 2000) {
+    return res.status(400).json({ ok: false, error: "message_too_long" });
+  }
+
+  const result = await appendVisitorQuestion({
+    email,
+    message,
+    product: normalizeQuestionProduct(body.product),
+    page_path: body.page_path || body.pagePath || "",
+  });
+
+  if (!result.ok && result.reason === "not_configured") {
+    return res.status(503).json({
+      ok: false,
+      error: "Questions are not configured on this server",
+      hint: "Set GITHUB_LEADS_TOKEN on Vercel to persist visitor questions.",
+    });
+  }
+
+  return res.status(200).json({
+    ok: result.ok !== false,
+    skipped: result.skipped || null,
+    backend: result.backend || null,
+    reason: result.reason || null,
+  });
+}
+
+async function handleQuestionsReport(req, res, body) {
+  const jwtSecret = (process.env.ADMIN_ANALYTICS_JWT_SECRET || "").trim();
+  const token = bearerToken(req) || (body.token || "");
+
+  if (!jwtSecret) {
+    return res.status(503).json({ ok: false, error: "Admin analytics is not configured" });
+  }
+
+  if (!verifyAnalyticsAdminToken(token, jwtSecret)) {
+    return res.status(401).json({ ok: false, error: "Unauthorized" });
+  }
+
+  try {
+    const rows = await readVisitorQuestions();
+    const report = aggregateVisitorQuestionsReport(rows);
+    return res.status(200).json({
+      ok: true,
+      ...report,
+      fetchedAt: new Date().toISOString(),
+      note: "Visitor questions from site footers (replaces mailto). Stored in marketing-vault/leads/visitor-questions.csv.",
+      csvPath: "marketing-vault/leads/visitor-questions.csv",
+    });
+  } catch (err) {
+    const message = err && err.message ? String(err.message) : "Visitor questions report error";
+    return res.status(502).json({ ok: false, error: message });
+  }
+}
+
 async function handleReport(req, res, body) {
   const jwtSecret = (process.env.ADMIN_ANALYTICS_JWT_SECRET || "").trim();
   const token = bearerToken(req) || (body.token || "");
@@ -109,8 +184,18 @@ export default async function handler(req, res) {
   }
 
   const body = readJsonBody(req);
+  const action = typeof body.action === "string" ? body.action.trim().toLowerCase() : "";
+
+  if (action === "submit_question") {
+    return handleQuestionSubmit(req, res, body);
+  }
+
+  if (action === "questions_report") {
+    return handleQuestionsReport(req, res, body);
+  }
+
   const isReport =
-    body.action === "report" || (Boolean(bearerToken(req) || body.token) && !body.event);
+    action === "report" || (Boolean(bearerToken(req) || body.token) && !body.event && !action);
 
   if (isReport) {
     return handleReport(req, res, body);

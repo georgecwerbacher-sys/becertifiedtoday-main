@@ -163,7 +163,7 @@ Each includes disclaimer: confirm cert requirements with employer; we provide **
 | CCNA | `utm_campaign=ccna_portal` | `search-terms/YYYY-MM-DD-ccna_portal.md` |
 | ENCOR | `utm_campaign=encor_portal` | `search-terms/YYYY-MM-DD-encor_portal.md` |
 
-Compare free assessment starts (CCNA) vs checkout (both) in `/admin/analytics.html`.
+Compare free assessment starts (CCNA) vs checkout (both) in `/admin`.
 
 ---
 

@@ -7,7 +7,7 @@
  *   node scripts/marketing-weekly-report.mjs --range 28d
  *   node scripts/marketing-weekly-report.mjs --force
  *
- * Env: same as /admin/analytics — GA_PROPERTY_ID + service account in .env.local
+ * Env: same as /admin — GA_PROPERTY_ID + service account in .env.local
  */
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -117,7 +117,7 @@ function buildAutoBody(data) {
 
   if (!gaReady) {
     lines.push(
-      "> GA4 Data API not configured locally. Copy metrics from [/admin/analytics.html](/admin/analytics.html) or set `GA_PROPERTY_ID` + service account in `.env.local`, then re-run this script.",
+      "> GA4 Data API not configured locally. Copy metrics from [/admin](/admin) or set `GA_PROPERTY_ID` + service account in `.env.local`, then re-run this script.",
       ""
     );
   } else {
