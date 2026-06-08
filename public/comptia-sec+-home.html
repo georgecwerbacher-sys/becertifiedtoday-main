@@ -418,6 +418,9 @@
     .funnel > #purchase-details {
       order: 5;
     }
+    .funnel > .reviews-section {
+      order: 6;
+    }
     .funnel-intro {
       margin: 0 0 clamp(20px, 3.5vw, 28px);
     }
@@ -754,6 +757,237 @@
       margin-top: 0.45em;
       border-radius: 50%;
       background: linear-gradient(135deg, #4f84d8, #2f66bf);
+    }
+    .reviews-section {
+      margin: 0 0 clamp(48px, 7vw, 72px);
+      padding: clamp(20px, 3.5vw, 28px);
+      border-radius: 16px;
+      border: 1px solid rgba(139, 92, 246, 0.38);
+      background: linear-gradient(
+        165deg,
+        rgba(139, 92, 246, 0.12) 0%,
+        rgba(79, 132, 216, 0.08) 42%,
+        #f8fafc 100%
+      );
+      box-shadow: 0 10px 32px rgba(109, 40, 217, 0.1);
+    }
+    .reviews-section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: clamp(12px, 2.5vw, 18px);
+      margin: 0 0 clamp(16px, 3vw, 22px);
+    }
+    .reviews-section-title {
+      margin: 0;
+      font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #5b21b6;
+    }
+    .reviews-slider-nav {
+      display: flex;
+      flex-shrink: 0;
+      gap: 8px;
+    }
+    .reviews-slider-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      padding: 0;
+      border-radius: 999px;
+      border: 1px solid rgba(139, 92, 246, 0.5);
+      background: linear-gradient(165deg, #a78bfa 0%, #6d28d9 55%, #5b21b6 100%);
+      color: #fff;
+      font-size: 1.15rem;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(109, 40, 217, 0.28);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+    }
+    .reviews-slider-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(109, 40, 217, 0.36);
+    }
+    .reviews-slider-btn:disabled {
+      opacity: 0.38;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    .reviews-slider {
+      position: relative;
+    }
+    .reviews-slider::before,
+    .reviews-slider::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 8px;
+      width: clamp(18px, 4vw, 36px);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .reviews-slider::before {
+      left: 0;
+      background: linear-gradient(90deg, rgba(248, 250, 252, 0.95), transparent);
+    }
+    .reviews-slider::after {
+      right: 0;
+      background: linear-gradient(270deg, rgba(248, 250, 252, 0.95), transparent);
+    }
+    .reviews-track {
+      margin: 0;
+      padding: 4px 2px 10px;
+      list-style: none;
+      display: flex;
+      gap: clamp(14px, 2.5vw, 18px);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .reviews-track::-webkit-scrollbar {
+      display: none;
+    }
+    .reviews-slide {
+      flex: 0 0 min(88%, 300px);
+      scroll-snap-align: start;
+      margin: 0;
+    }
+    @media (min-width: 640px) {
+      .reviews-slide {
+        flex-basis: min(72%, 320px);
+      }
+    }
+    @media (min-width: 900px) {
+      .reviews-slide {
+        flex-basis: min(48%, 320px);
+      }
+    }
+    @media (min-width: 1200px) {
+      .reviews-slide {
+        flex-basis: min(32%, 300px);
+      }
+    }
+    .review-card {
+      --review-accent: #8b5cf6;
+      position: relative;
+      margin: 0;
+      padding: clamp(16px, 3vw, 20px);
+      border-radius: 14px;
+      border: 1px solid rgba(139, 92, 246, 0.22);
+      border-top: 3px solid var(--review-accent);
+      background: linear-gradient(180deg, #ffffff 0%, #f5f3ff 55%, #eef2ff 100%);
+      box-shadow: 0 6px 22px rgba(109, 40, 217, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 100%;
+      overflow: hidden;
+    }
+    .review-card::before {
+      content: "\201C";
+      position: absolute;
+      top: 8px;
+      right: 14px;
+      font-size: 2.4rem;
+      line-height: 1;
+      font-weight: 800;
+      color: rgba(139, 92, 246, 0.14);
+      pointer-events: none;
+    }
+    .reviews-slide:nth-child(1) .review-card {
+      --review-accent: #c4b5fd;
+    }
+    .reviews-slide:nth-child(2) .review-card {
+      --review-accent: #8b5cf6;
+    }
+    .reviews-slide:nth-child(3) .review-card {
+      --review-accent: #6d28d9;
+    }
+    .reviews-slide:nth-child(4) .review-card {
+      --review-accent: #4f84d8;
+    }
+    .reviews-slide:nth-child(5) .review-card {
+      --review-accent: #5b21b6;
+    }
+    .review-stars {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      color: #d97706;
+    }
+    .review-stars--3 {
+      color: #b45309;
+    }
+    .review-quote {
+      margin: 0;
+      flex: 1 1 auto;
+      color: var(--page-text);
+      font-size: clamp(0.92rem, 2vw, 0.98rem);
+      line-height: 1.55;
+    }
+    .review-quote p {
+      margin: 0;
+    }
+    .review-author {
+      margin: 0;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: #5b21b6;
+      font-style: normal;
+    }
+    .reviews-dots {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 4px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .reviews-dots li {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .reviews-dot {
+      width: 9px;
+      height: 9px;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(139, 92, 246, 0.28);
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .reviews-dot:hover {
+      background: rgba(109, 40, 217, 0.55);
+    }
+    .reviews-dot--active {
+      background: linear-gradient(165deg, #8b5cf6, #6d28d9);
+      transform: scale(1.2);
+    }
+    .reviews-cta {
+      margin: clamp(18px, 3vw, 24px) 0 0;
+      font-size: clamp(0.92rem, 2vw, 1rem);
+      line-height: 1.55;
+      color: var(--page-muted);
+      text-align: center;
+    }
+    .reviews-cta a {
+      color: #6d28d9;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .reviews-cta a:hover {
+      color: #5b21b6;
     }
     .lead-capture-section {
       margin: 0 0 clamp(24px, 4vw, 32px);
@@ -2957,6 +3191,90 @@
               </div>
             </div>
           </div>
+
+          <section class="reviews-section" aria-labelledby="home-secplus-reviews-title">
+            <div class="reviews-section-head">
+              <h2 class="reviews-section-title" id="home-secplus-reviews-title">What learners are saying</h2>
+              <div class="reviews-slider-nav" aria-label="Review slider controls">
+                <button
+                  type="button"
+                  class="reviews-slider-btn"
+                  data-reviews-prev
+                  aria-label="Previous review"
+                  disabled
+                >
+                  <span aria-hidden="true">‹</span>
+                </button>
+                <button type="button" class="reviews-slider-btn" data-reviews-next aria-label="Next review">
+                  <span aria-hidden="true">›</span>
+                </button>
+              </div>
+            </div>
+            <div class="reviews-slider" data-reviews-slider>
+              <ul class="reviews-track" data-reviews-track role="list">
+              <li class="reviews-slide">
+                <article class="review-card">
+                  <p class="review-stars review-stars--3" aria-label="3 out of 5 stars"><span aria-hidden="true">★★★☆☆</span></p>
+                  <blockquote class="review-quote">
+                    <p>
+                      The questions feel current and aligned with SY0-701. I would have liked a bit more depth in a few solutions — sometimes the explanation confirms the answer without walking through why the other options fail.
+                    </p>
+                  </blockquote>
+                  <footer><cite class="review-author">Henty B.</cite></footer>
+                </article>
+              </li>
+              <li class="reviews-slide">
+                <article class="review-card">
+                  <p class="review-stars" aria-label="5 out of 5 stars"><span aria-hidden="true">★★★★★</span></p>
+                  <blockquote class="review-quote">
+                    <p>
+                      I had taken several other courses and still felt shaky under exam pressure. This library closed the gap — realistic item mix, strong simulations — and I passed Security+ on my first attempt.
+                    </p>
+                  </blockquote>
+                  <footer><cite class="review-author">Maria I.</cite></footer>
+                </article>
+              </li>
+              <li class="reviews-slide">
+                <article class="review-card">
+                  <p class="review-stars" aria-label="4 out of 5 stars"><span aria-hidden="true">★★★★☆</span></p>
+                  <blockquote class="review-quote">
+                    <p>
+                      I loved the realistic format, especially the timed scenario test. That run made the real exam feel familiar instead of intimidating. Thank you for building something that prepares you to perform, not just memorize.
+                    </p>
+                  </blockquote>
+                  <footer><cite class="review-author">Tom L.</cite></footer>
+                </article>
+              </li>
+              <li class="reviews-slide">
+                <article class="review-card">
+                  <p class="review-stars" aria-label="4 out of 5 stars"><span aria-hidden="true">★★★★☆</span></p>
+                  <blockquote class="review-quote">
+                    <p>
+                      Very easy to follow online, and I appreciated being able to study on my phone between meetings. My schedule is hectic; short mobile sessions here added up faster than blocking out long desktop study blocks.
+                    </p>
+                  </blockquote>
+                  <footer><cite class="review-author">Michelle G.</cite></footer>
+                </article>
+              </li>
+              <li class="reviews-slide">
+                <article class="review-card">
+                  <p class="review-stars" aria-label="4 out of 5 stars"><span aria-hidden="true">★★★★☆</span></p>
+                  <blockquote class="review-quote">
+                    <p>
+                      Work required Security+ and I had been studying at home on my own. This gave me the extra boost I needed — enough volume, domain tracking, and a full timed test — to walk in confident and pass.
+                    </p>
+                  </blockquote>
+                  <footer><cite class="review-author">Lucas G.</cite></footer>
+                </article>
+              </li>
+              </ul>
+            </div>
+            <ul class="reviews-dots" data-reviews-dots aria-label="Review pagination"></ul>
+            <p class="reviews-cta">
+              <a href="#home-secplus-samples-title">Preview free sample questions</a>
+              · <a href="#purchase" data-secplus-portal-30d-checkout>Unlock 30-day access · $19.99</a>
+            </p>
+          </section>
         </div>
       </div>
 
@@ -3459,6 +3777,71 @@
       }
 
       restorePortalAccessOnLoad().finally(wirePortalNav);
+
+      var reviewsTrack = document.querySelector("[data-reviews-track]");
+      var reviewsPrev = document.querySelector("[data-reviews-prev]");
+      var reviewsNext = document.querySelector("[data-reviews-next]");
+      var reviewsDotsRoot = document.querySelector("[data-reviews-dots]");
+
+      if (reviewsTrack && reviewsPrev && reviewsNext && reviewsDotsRoot) {
+        var reviewSlides = Array.prototype.slice.call(
+          reviewsTrack.querySelectorAll(".reviews-slide")
+        );
+        var activeReviewIndex = 0;
+
+        function getReviewStep() {
+          var first = reviewSlides[0];
+          if (!first) return reviewsTrack.clientWidth;
+          var styles = window.getComputedStyle(reviewsTrack);
+          var gap = parseFloat(styles.columnGap || styles.gap || "0") || 0;
+          return first.offsetWidth + gap;
+        }
+
+        function clampReviewIndex(index) {
+          return Math.max(0, Math.min(index, reviewSlides.length - 1));
+        }
+
+        function syncReviewSlider() {
+          var maxScroll = reviewsTrack.scrollWidth - reviewsTrack.clientWidth;
+          var step = getReviewStep();
+          activeReviewIndex =
+            step > 0 ? clampReviewIndex(Math.round(reviewsTrack.scrollLeft / step)) : 0;
+
+          reviewsPrev.disabled = reviewsTrack.scrollLeft <= 2;
+          reviewsNext.disabled = reviewsTrack.scrollLeft >= maxScroll - 2;
+
+          reviewsDotsRoot.querySelectorAll(".reviews-dot").forEach(function (dot, i) {
+            var isActive = i === activeReviewIndex;
+            dot.classList.toggle("reviews-dot--active", isActive);
+            dot.setAttribute("aria-current", isActive ? "true" : "false");
+          });
+        }
+
+        reviewSlides.forEach(function (_, index) {
+          var dot = document.createElement("li");
+          var btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "reviews-dot" + (index === 0 ? " reviews-dot--active" : "");
+          btn.setAttribute("aria-label", "Go to review " + (index + 1));
+          btn.setAttribute("aria-current", index === 0 ? "true" : "false");
+          btn.addEventListener("click", function () {
+            var step = getReviewStep();
+            reviewsTrack.scrollTo({ left: step * index, behavior: "smooth" });
+          });
+          dot.appendChild(btn);
+          reviewsDotsRoot.appendChild(dot);
+        });
+
+        reviewsPrev.addEventListener("click", function () {
+          reviewsTrack.scrollBy({ left: -getReviewStep(), behavior: "smooth" });
+        });
+        reviewsNext.addEventListener("click", function () {
+          reviewsTrack.scrollBy({ left: getReviewStep(), behavior: "smooth" });
+        });
+        reviewsTrack.addEventListener("scroll", syncReviewSlider, { passive: true });
+        window.addEventListener("resize", syncReviewSlider);
+        syncReviewSlider();
+      }
     });
   </script>
   <script src="/js/visitor-question-widget.js" defer></script>
