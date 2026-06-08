@@ -4,17 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <meta name="description" content="CompTIA Security+ SY0-701 PBQ — Users see NET::ERR_CERT_AUTHORITY_INVALID when connecting to an internal HTTPS service. Review the PKI chain exhibit and choose the fix that restores trust without weakening validation." />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ: Users see NET::ERR_CERT_AUTHORITY_INVALID when connecting to an internal HTTPS service. Review the PKI chain exhibit and choose the fix that restores trust without weakening validation." />
   <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/pki-certificate-chain-browser-error/pki-certificate-chain-browser-error.html" />
-  <title>Security+ Simulation — TLS Browser Error — Certificate Chain Fix | Be Certified Today</title>
+  <title>Security+ Simulation: TLS Browser Error — Certificate Chain Fix | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.css" />
 </head>
 <body class="secplus-question-ui secplus-sim-page secplus-pbq-ui pbq-bct-sim pbq-folder-suite pbq-exhibit-mcq">
   <script src="/js/sample-url-mask-apply.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.js"></script>
   <div class="page-logo-watermark" aria-hidden="true">
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
@@ -25,11 +27,11 @@
     <main class="pbq-card pbq-card--suite">
       <header class="pbq-suite-header">
         <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
+        <p class="pbq-suite-objectives" aria-label="SY0-701 exam objectives covered">Covers SY0-701 objectives: 1.4</p>
         <h1>Simulation: TLS Browser Error — Certificate Chain Fix</h1>
         <p class="lead pbq-sub">Users see NET::ERR_CERT_AUTHORITY_INVALID when connecting to an internal HTTPS service. Review the PKI chain exhibit and choose the fix that restores trust without weakening validation.</p>
         <p class="instructions pbq-instructions">
-          Use the <strong>section list</strong> to switch tasks on this page. Open <strong>exhibits</strong> (blue
-          tiles) before answering where shown.
+          Review the <strong>certificate chain exhibit</strong>, then choose the fix that restores trust.
         </p>
       </header>
 
@@ -134,66 +136,13 @@
         <button id="pki-browser-error-showBtn" type="button">Show Answer</button>
         <button id="pki-browser-error-resetBtn" type="button">Reset</button>
         <span id="pki-browser-error-result" role="status" aria-live="polite"></span>
-      </div>
-<script>
-(function () {
-  var root = document.getElementById("pki-browser-error");
-  if (!root) return;
-
-  var actionBtns = root.querySelectorAll(".actions button");
-  var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
-  var result = root.querySelector(".actions [role='status']");
-var CORRECT = "B";
-      var CORRECT_MSG =
-        "Correct. B — ERR_CERT_AUTHORITY_INVALID means the browser cannot build a trusted chain to a root CA. A missing intermediate certificate is a common cause on intranet TLS; the fix is to install and serve the full chain on the web server, or distribute the enterprise root CA to clients via Group Policy. CN mismatch produces ERR_CERT_COMMON_NAME_INVALID, not an authority error. Expired certificates trigger a different browser warning. Disabling OCSP stapling does not fix an incomplete or untrusted certificate chain.";function selectedChoice() {
-        return root.querySelector('input[name="secplus_pbq_pki_chain"]:checked');
-      }
-
-      function clearResult() {
-        result.className = "";
-        result.textContent = "";
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedChoice();
-        if (!sel) {
-          result.className = "is-fail";
-          result.textContent = "Select an answer, then check again.";
-          return;
-        }
-        if (sel.value === CORRECT) {
-          result.className = "is-pass";
-          result.textContent = CORRECT_MSG;
-        } else {
-          result.className = "is-fail";
-          result.textContent =
-            "Incorrect. Review the exhibit: authority-invalid errors point to chain-of-trust problems, not CN mismatch, expiration, or CRL reachability alone.";
-        }
-      });
-
-      showBtn.addEventListener("click", function () {
-        var correctInput = root.querySelector('input[name="secplus_pbq_pki_chain"][value="' + CORRECT + '"]');
-        if (correctInput) correctInput.checked = true;
-        result.className = "is-pass";
-        result.textContent = CORRECT_MSG;
-      });
-
-      resetBtn.addEventListener("click", function () {
-        root.querySelectorAll('input[name="secplus_pbq_pki_chain"]').forEach(function (input) {
-          input.checked = false;
-        });
-        clearResult();
-      });
-})();
-</script></div></article>
+      </div></div></article>
         </div>
       </div>
 
       <div class="pbq-suite-footer">
         <div class="pbq-suite-footer__deep-dive">
-          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn">Deep dive explanation</button>
+          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn" data-deep-dive-key="pki-certificate-chain-browser-error.html">Deep dive explanation</button>
         </div>
       <nav class="question-nav question-nav--footer" aria-label="Question navigation (footer)">
         <div class="question-nav-links">
@@ -207,10 +156,7 @@ var CORRECT = "B";
   </div>
 
   <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js" defer></script>
-  <script>window.PBQ_SUITE_DEFAULT_SECTION = "pki-browser-error";</script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "pki-browser-error"; window.PBQ_DEEP_DIVE_KEY = "pki-certificate-chain-browser-error.html";</script>
   <!-- pki-browser-error -->
 <script>
 (function () {
@@ -265,5 +211,8 @@ var CORRECT = "B";
       });
 })();
 </script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js"></script>
 </body>
 </html>

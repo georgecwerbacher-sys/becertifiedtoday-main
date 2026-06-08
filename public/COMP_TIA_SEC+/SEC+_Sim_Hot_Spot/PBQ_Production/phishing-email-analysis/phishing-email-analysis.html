@@ -4,17 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <meta name="description" content="CompTIA Security+ SY0-701 PBQ — A suspicious message impersonates Microsoft 365 support. Study the email exhibit and drag each social-engineering term into the analysis paragraph that matches the red flags." />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ: A suspicious message impersonates Microsoft 365 support. Study the email exhibit and drag each social-engineering term into the analysis paragraph that matches the red flags." />
   <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/phishing-email-analysis/phishing-email-analysis.html" />
-  <title>Security+ Simulation — Suspicious Inbox — Phishing Email Analysis | Be Certified Today</title>
+  <title>Security+ Simulation: Suspicious Inbox — Phishing Email Analysis | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.css" />
 </head>
 <body class="secplus-question-ui secplus-sim-page secplus-pbq-ui pbq-bct-sim pbq-folder-suite pbq-phishing-analysis dragdrop-exercise">
   <script src="/js/sample-url-mask-apply.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.js"></script>
   <div class="page-logo-watermark" aria-hidden="true">
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
@@ -25,11 +27,11 @@
     <main class="pbq-card pbq-card--suite">
       <header class="pbq-suite-header">
         <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
+        <p class="pbq-suite-objectives" aria-label="SY0-701 exam objectives covered">Covers SY0-701 objectives: 2.1 · 4.3</p>
         <h1>Simulation: Suspicious Inbox — Phishing Email Analysis</h1>
         <p class="lead pbq-sub">A suspicious message impersonates Microsoft 365 support. Study the email exhibit and drag each social-engineering term into the analysis paragraph that matches the red flags.</p>
         <p class="instructions pbq-instructions">
-          Use the <strong>section list</strong> to switch tasks on this page. Open <strong>exhibits</strong> (blue
-          tiles) before answering where shown.
+          Study the <strong>email exhibit</strong>, then drag each term into the matching analysis sentence.
         </p>
       </header>
 
@@ -145,188 +147,13 @@
         <button id="phishing-analysis-showBtn" type="button">Show Answer</button>
         <button id="phishing-analysis-resetBtn" type="button">Reset</button>
         <span id="phishing-analysis-result" role="status" aria-live="polite"></span>
-      </div>
-<script>
-(function () {
-  var root = document.getElementById("phishing-analysis");
-  if (!root) return;
-
-  var bank = root.querySelector(".bank");
-  var actionBtns = root.querySelectorAll(".actions button");
-  var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
-  var result = root.querySelector(".actions [role='status']");
-var dragged = null;
-      var picked = null;
-
-      function allSlots() {
-        return root.querySelectorAll(".drop-slot[data-target]");
-      }
-
-      function clearPick() {
-        root.querySelectorAll(".token.is-picked").forEach(function (node) {
-          node.classList.remove("is-picked");
-        });
-        picked = null;
-      }
-
-      function setPick(token) {
-        clearPick();
-        picked = token;
-        if (picked) picked.classList.add("is-picked");
-      }
-
-      function moveTokenToSlot(slot, token) {
-        if (!token || !slot) return;
-        var existing = slot.querySelector(".token");
-        if (existing && existing !== token) bank.appendChild(existing);
-        slot.appendChild(token);
-      }
-
-      function shuffleBank() {
-        var nodes = [].slice.call(bank.querySelectorAll(".token"));
-        while (nodes.length) {
-          bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
-        }
-      }
-
-      shuffleBank();
-
-      root.addEventListener("click", function (event) {
-        var token = event.target.closest(".token");
-        if (token) {
-          if (picked === token) {
-            clearPick();
-            return;
-          }
-          var parentSlot =
-            token.parentNode &&
-            token.parentNode.classList &&
-            token.parentNode.classList.contains("drop-slot")
-              ? token.parentNode
-              : null;
-          if (picked && parentSlot) {
-            moveTokenToSlot(parentSlot, picked);
-            clearPick();
-            return;
-          }
-          setPick(token);
-          return;
-        }
-
-        var slot = event.target.closest(".drop-slot");
-        if (slot && picked) {
-          moveTokenToSlot(slot, picked);
-          clearPick();
-          return;
-        }
-
-        if (bank.contains(event.target) && picked && !bank.contains(picked)) {
-          bank.appendChild(picked);
-          clearPick();
-        }
-      });
-
-      root.querySelectorAll(".token").forEach(function (token) {
-        token.addEventListener("dragstart", function () {
-          clearPick();
-          dragged = token;
-        });
-      });
-
-      allSlots().forEach(function (slot) {
-        slot.addEventListener("dragover", function (event) {
-          event.preventDefault();
-          slot.classList.add("over");
-        });
-        slot.addEventListener("dragleave", function () {
-          slot.classList.remove("over");
-        });
-        slot.addEventListener("drop", function (event) {
-          event.preventDefault();
-          slot.classList.remove("over");
-          if (!dragged) return;
-          moveTokenToSlot(slot, dragged);
-          dragged = null;
-        });
-      });
-
-      bank.addEventListener("dragover", function (event) {
-        event.preventDefault();
-      });
-      bank.addEventListener("drop", function (event) {
-        event.preventDefault();
-        if (dragged) bank.appendChild(dragged);
-        dragged = null;
-      });
-
-      function takeFromBank(value) {
-        return [].slice.call(bank.querySelectorAll(".token")).find(function (token) {
-          return token.getAttribute("data-value") === value;
-        });
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var want = slot.getAttribute("data-target");
-          var token = slot.querySelector(".token");
-          if (!token) {
-            slot.classList.add("incorrect");
-            allOk = false;
-            return;
-          }
-          var ok = token.getAttribute("data-value") === want;
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
-        });
-
-        result.className = allOk ? "is-pass" : "is-fail";
-        result.textContent = allOk
-          ? "Correct. Typosquatting (micros0ft), pretexting (urgency), phishing (email attack), spear phishing (targeted executive), smishing (SMS), vishing (phone), brand impersonation (Microsoft), report (safe response)."
-          : "Incorrect. Some blanks are empty or mismatched — review the exhibit red flags and try again.";
-      });
-
-      showBtn.addEventListener("click", function () {
-        clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var token = slot.querySelector(".token");
-          if (token) bank.appendChild(token);
-        });
-        allSlots().forEach(function (slot) {
-          var token = takeFromBank(slot.getAttribute("data-target"));
-          if (token) {
-            slot.appendChild(token);
-            slot.classList.add("correct");
-          }
-        });
-        result.className = "is-pass";
-        result.textContent =
-          "Answer shown. 1 typosquatting · 2 pretexting · 3 phishing · 4 spear phishing · 5 smishing · 6 vishing · 7 brand impersonation · 8 report.";
-      });
-
-      resetBtn.addEventListener("click", function () {
-        clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var token = slot.querySelector(".token");
-          if (token) bank.appendChild(token);
-        });
-        result.className = "";
-        result.textContent = "";
-        shuffleBank();
-      });
-})();
-</script></div></article>
+      </div></div></article>
         </div>
       </div>
 
       <div class="pbq-suite-footer">
         <div class="pbq-suite-footer__deep-dive">
-          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn">Deep dive explanation</button>
+          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn" data-deep-dive-key="phishing-email-analysis.html">Deep dive explanation</button>
         </div>
       <nav class="question-nav question-nav--footer" aria-label="Question navigation (footer)">
         <div class="question-nav-links">
@@ -340,10 +167,7 @@ var dragged = null;
   </div>
 
   <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js" defer></script>
-  <script>window.PBQ_SUITE_DEFAULT_SECTION = "phishing-analysis";</script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "phishing-analysis"; window.PBQ_DEEP_DIVE_KEY = "phishing-email-analysis.html";</script>
   <!-- phishing-analysis -->
 <script>
 (function () {
@@ -520,5 +344,8 @@ var dragged = null;
       });
 })();
 </script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js"></script>
 </body>
 </html>

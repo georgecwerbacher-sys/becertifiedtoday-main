@@ -1,7 +1,7 @@
 ---
 type: pbq-index
 exam: SY0-701
-last_updated: 2026-06-05
+last_updated: 2026-06-08
 ---
 
 # Security+ PBQ — production labs (Obsidian)

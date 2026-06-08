@@ -1,0 +1,170 @@
+/* Shared Security+ PBQ portal chrome — in-flow top-left logo + malware-style bottom nav */
+body.pbq-portal-chrome {
+  padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+}
+
+body.pbq-portal-chrome .site-logo-corner {
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  align-self: flex-start !important;
+  margin: 0 0 1.25rem !important;
+  z-index: 2;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: flex-start;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  text-decoration: none;
+}
+
+body.pbq-portal-chrome .site-logo-corner img {
+  display: block;
+  width: 52px;
+  height: 52px;
+}
+
+body.pbq-portal-chrome .site-logo-corner:focus-visible {
+  outline: 2px solid #4f84d8;
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+body.pbq-portal-chrome.secplus-sim-page:not(.secplus-pbq-ui) .site-logo-corner--pbq {
+  margin: 0 0 16px 16px !important;
+}
+
+/* Suite pages — Back / Home / Next pill row (malware-outbreak family) */
+body.pbq-portal-chrome .pbq-suite-footer .question-nav--footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10001;
+  margin: 0;
+  padding: 0 14px calc(14px + env(safe-area-inset-bottom, 0px));
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+body.pbq-portal-chrome .pbq-suite-footer .question-nav .question-nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+
+body.pbq-portal-chrome .pbq-suite-footer .question-nav .nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid #7c3aed;
+  background: #5b21b6;
+  color: #f3e8ff;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  filter: none;
+}
+
+body.pbq-portal-chrome .pbq-suite-footer .question-nav .nav-link:hover {
+  background: #6d28d9;
+  border-color: #8b5cf6;
+  filter: none;
+}
+
+body.pbq-portal-chrome .pbq-suite-footer .question-nav .nav-prev,
+body.pbq-portal-chrome .pbq-suite-footer .question-nav .nav-next {
+  border-color: #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+body.pbq-portal-chrome .pbq-suite-footer .question-nav .nav-prev:hover,
+body.pbq-portal-chrome .pbq-suite-footer .question-nav .nav-next:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+body.pbq-portal-chrome .pbq-suite-footer .question-nav .nav-link--disabled {
+  opacity: 0.35;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+body.pbq-portal-chrome .pbq-suite-footer .question-nav .nav-prev {
+  margin-right: auto;
+}
+
+/* Standalone sims — single SEC+ Home pill, bottom-right */
+body.pbq-portal-chrome .pbq-portal-footer,
+body.pbq-portal-chrome .corner-actions {
+  position: fixed;
+  right: 14px;
+  left: auto;
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  z-index: 10002;
+  display: block;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+body.pbq-portal-chrome > .home-link {
+  position: fixed;
+  right: 14px;
+  left: auto;
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  transform: none;
+  z-index: 10002;
+  margin: 0;
+  padding: 10px 14px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+body.pbq-portal-chrome .pbq-portal-footer__home,
+body.pbq-portal-chrome > .home-link,
+body.pbq-portal-chrome .corner-actions .home-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #f3e8ff;
+  background: #5b21b6;
+  border: 1px solid #7c3aed;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+}
+
+body.pbq-portal-chrome .pbq-portal-footer__home:hover,
+body.pbq-portal-chrome > .home-link:hover,
+body.pbq-portal-chrome .corner-actions .home-link:hover {
+  background: #6d28d9;
+  border-color: #8b5cf6;
+}

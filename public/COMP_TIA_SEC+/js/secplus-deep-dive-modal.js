@@ -26,7 +26,8 @@
     modal.setAttribute("role", "dialog");
     modal.setAttribute("aria-modal", "true");
     modal.setAttribute("aria-labelledby", "secplusDeepDiveTitle");
-    modal.setAttribute("hidden", "");
+    modal.setAttribute("aria-hidden", "true");
+    modal.hidden = true;
     modal.innerHTML =
       '<div class="secplus-deep-dive-modal__panel">' +
       '<div class="secplus-deep-dive-modal__head">' +
@@ -52,7 +53,7 @@
     if (!document.documentElement.dataset.secplusDeepDiveEsc) {
       document.documentElement.dataset.secplusDeepDiveEsc = "1";
       document.addEventListener("keydown", function (ev) {
-        if (ev.key === "Escape" && modal.classList.contains("open")) close();
+        if (ev.key === "Escape" && modal && modal.classList.contains("is-open")) close();
       });
     }
 
@@ -65,8 +66,9 @@
     returnFocusEl = opts.returnFocus || null;
     titleEl.textContent = opts.title || "Deep dive";
     bodyEl.innerHTML = opts.html;
-    modal.removeAttribute("hidden");
-    modal.classList.add("open");
+    modal.hidden = false;
+    modal.setAttribute("aria-hidden", "false");
+    modal.classList.add("is-open");
     document.body.classList.add("secplus-deep-dive-open");
     closeBtn.focus();
     return true;
@@ -74,8 +76,9 @@
 
   function close() {
     if (!modal) return;
-    modal.classList.remove("open");
-    modal.setAttribute("hidden", "");
+    modal.classList.remove("is-open");
+    modal.hidden = true;
+    modal.setAttribute("aria-hidden", "true");
     if (bodyEl) bodyEl.innerHTML = "";
     document.body.classList.remove("secplus-deep-dive-open");
     if (returnFocusEl && typeof returnFocusEl.focus === "function") {

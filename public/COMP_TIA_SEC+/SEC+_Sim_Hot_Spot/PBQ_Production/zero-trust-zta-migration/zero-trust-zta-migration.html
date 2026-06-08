@@ -4,17 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <meta name="description" content="CompTIA Security+ SY0-701 PBQ — BeCertifiedToday is replacing implicit perimeter trust with NIST SP 800-207 Zero Trust. Study the reference exhibit, answer the core concept question, then place eight controls in the correct network zones." />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ: BeCertifiedToday replaces implicit perimeter trust with NIST SP 800-207 Zero Trust. Open the reference exhibit, answer the core concept question, then pick the best control for each zone slot." />
   <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/zero-trust-zta-migration/zero-trust-zta-migration.html" />
-  <title>Security+ Simulation — Zero Trust Architecture — Zone Migration | Be Certified Today</title>
+  <title>Security+ Simulation: Zero Trust Architecture: Zone Migration | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.css" />
 </head>
 <body class="secplus-question-ui secplus-sim-page secplus-pbq-ui pbq-bct-sim pbq-folder-suite pbq-zta-zone-map pbq-zero-trust dragdrop-exercise">
   <script src="/js/sample-url-mask-apply.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.js"></script>
   <div class="page-logo-watermark" aria-hidden="true">
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
@@ -25,11 +27,11 @@
     <main class="pbq-card pbq-card--suite">
       <header class="pbq-suite-header">
         <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
-        <h1>Simulation: Zero Trust Architecture — Zone Migration</h1>
-        <p class="lead pbq-sub">BeCertifiedToday is replacing implicit perimeter trust with NIST SP 800-207 Zero Trust. Study the reference exhibit, answer the core concept question, then place eight controls in the correct network zones.</p>
+        <p class="pbq-suite-objectives" aria-label="SY0-701 exam objectives covered">Covers SY0-701 objectives: 1.2 · 3.3 · 3.4</p>
+        <h1>Simulation: Zero Trust Architecture: Zone Migration</h1>
+        <p class="lead pbq-sub">BeCertifiedToday replaces implicit perimeter trust with NIST SP 800-207 Zero Trust. Open the reference exhibit, answer the core concept question, then pick the best control for each zone slot.</p>
         <p class="instructions pbq-instructions">
-          Use the <strong>section list</strong> to switch tasks on this page. Open <strong>exhibits</strong> (blue
-          tiles) before answering where shown.
+          Open the <strong>reference exhibit</strong>, answer the core concept question, then pick the best control for each zone.
         </p>
       </header>
 
@@ -43,10 +45,10 @@
 <li><button type="button" class="pbq-suite-folder__item" data-section="zta-p3">Trade-off decisions</button></li>
 </ul></nav>
         <div class="pbq-suite-main" id="pbqSuiteMain">
-          <article class="pbq-suite-section" id="zta-exhibit" data-scenario="zero-trust-zta-migration" hidden><div class="pbq-suite-section__inner"><h1>Zero Trust — Reference exhibit</h1>
+          <article class="pbq-suite-section" id="zta-exhibit" data-scenario="zero-trust-zta-migration" hidden><div class="pbq-suite-section__inner"><h1>Zero Trust: reference exhibit</h1>
       <p class="pbq-sub">Open the exhibit popup, then answer the question under <strong>Core concept</strong>.</p>
       <div class="sim-frame">
-        <button type="button" class="btn btn-primary" data-pbq-modal="#zt-exhibit-panel">Open exhibit — perimeter vs ZTA</button>
+        <button type="button" class="btn btn-primary" data-pbq-modal="#zt-exhibit-panel">Open exhibit: perimeter vs ZTA</button>
         <div class="pbq-exhibit-store" hidden aria-hidden="true"><figure class="pbq-exhibit pbq-exhibit--zt" aria-labelledby="zt-exhibit-title">
           <p id="zta-exhibit-zt-exhibit-panel" class="pbq-exhibit__banner pbq-exhibit__banner--zt">
             Zero Trust vs Traditional Perimeter Model + Network Segmentation
@@ -59,13 +61,13 @@
                 <div class="pbq-zt-zone pbq-zt-zone--trusted">
                   <h3>Trusted zone (inside firewall)</h3>
                   <ul>
-                    <li>Users and servers — full access assumed</li>
+                    <li>Users and servers: full access assumed</li>
                     <li class="zt-emphasis">Lateral movement easy once breached</li>
                   </ul>
                 </div>
                 <div class="pbq-zt-zone pbq-zt-zone--untrusted">
                   <h3>Untrusted (Internet)</h3>
-                  <p>Firewall blocks inbound — but insider threats?</p>
+                  <p>Firewall blocks inbound. Insider threats remain a risk.</p>
                 </div>
                 <p class="pbq-zt-weakness">
                   <strong>Weakness:</strong> one breach = full internal access
@@ -74,7 +76,7 @@
 
               <section class="pbq-zt-model pbq-zt-model--zero" aria-labelledby="zt-zero-heading">
                 <h2 id="zta-exhibit-zt-zero-heading">Zero Trust (NIST SP 800-207)</h2>
-                <p class="pbq-zt-tagline">Never trust, always verify — every request authenticated</p>
+                <p class="pbq-zt-tagline">Never trust, always verify. Every request is authenticated.</p>
                 <ul class="pbq-zt-list pbq-zt-list--components">
                   <li><strong>Policy Engine:</strong> evaluates who, what, when, from where</li>
                   <li><strong>Policy Administrator:</strong> issues/destroys session credentials</li>
@@ -83,7 +85,7 @@
                   <li><strong>Micro-segmentation:</strong> limits lateral movement on breach</li>
                 </ul>
                 <p class="pbq-zt-philosophy">
-                  <strong>Assume breach</strong> — least privilege, verify explicitly
+                  <strong>Assume breach.</strong> Least privilege. Verify explicitly.
                 </p>
                 <ul class="pbq-zt-list pbq-zt-list--planes">
                   <li><strong>Control Plane:</strong> policy decisions (brain)</li>
@@ -97,7 +99,7 @@
               <dl class="pbq-zt-seg-list">
                 <div>
                   <dt>Air-gapped</dt>
-                  <dd>Physically isolated — no network (ICS/SCADA)</dd>
+                  <dd>Physically isolated. No network (ICS/SCADA).</dd>
                 </div>
                 <div>
                   <dt>VLAN</dt>
@@ -105,11 +107,11 @@
                 </div>
                 <div>
                   <dt>Screened subnet</dt>
-                  <dd>DMZ — semi-trusted for public-facing servers</dd>
+                  <dd>DMZ: semi-trusted for public-facing servers</dd>
                 </div>
                 <div>
                   <dt>SDN</dt>
-                  <dd>Software-defined — dynamic policy-based segmentation</dd>
+                  <dd>Software-defined dynamic policy-based segmentation</dd>
                 </div>
               </dl>
             </section>
@@ -125,13 +127,13 @@
           <span id="zta-concept-zt-stem-label" class="visually-hidden">Answer choices</span>
           <label class="pbq-choice">
             <input type="radio" name="secplus_bct_zt_fundamental" value="A" />
-            Zero Trust only applies to cloud environments — on-premises networks keep traditional perimeter security.
+            Zero Trust only applies to cloud environments. On-premises networks keep traditional perimeter security.
           </label>
           <label class="pbq-choice">
             <input type="radio" name="secplus_bct_zt_fundamental" value="B" />
             Traditional models implicitly trust internal traffic. Zero Trust requires explicit verification of every
             request regardless of location using a Policy Enforcement Point as gateway and adaptive identity to assess
-            risk on every access attempt — never trust, always verify.
+            risk on every access attempt. Never trust, always verify.
           </label>
           <label class="pbq-choice">
             <input type="radio" name="secplus_bct_zt_fundamental" value="C" />
@@ -148,24 +150,10 @@
         <button id="zta-concept-resetBtn" type="button">Reset</button>
         <span id="zta-concept-result" role="status" aria-live="polite"></span></div></div></article>
 <article class="pbq-suite-section" id="zta-p2" data-scenario="zero-trust-zta-migration" hidden><div class="pbq-suite-section__inner"><div class="sim-frame">
-        <div class="layout layout--zt-map">
-          <section class="panel panel--zt-bank" aria-labelledby="zt-controls-heading">
-            <h2 id="zta-p2-zt-controls-heading">ZTA Controls</h2>
-            <div id="zta-p2-bank" class="bank bank--zt">
-              <div class="token token--ztna" draggable="true" data-value="ztna-gateway">ZTNA Gateway</div>
-              <div class="token token--micro" draggable="true" data-value="micro-segmentation">Micro-segmentation</div>
-              <div class="token token--cont" draggable="true" data-value="continuous-auth">Continuous Auth</div>
-              <div class="token token--jit" draggable="true" data-value="jit-access">JIT Access</div>
-              <div class="token token--dlp" draggable="true" data-value="dlp-proxy">DLP Proxy</div>
-              <div class="token token--pam" draggable="true" data-value="pam-vault">PAM Vault</div>
-              <div class="token token--casb" draggable="true" data-value="casb">CASB</div>
-              <div class="token token--idp" draggable="true" data-value="identity-provider">Identity Provider</div>
-            </div>
-          </section>
-
+        <div class="layout layout--zt-map layout--zt-choices">
           <section class="panel panel--zt-zones" aria-labelledby="zt-zones-heading">
             <h2 id="zta-p2-zt-zones-heading">Network zones</h2>
-            <p class="panel-note">One control per slot — choose the best zone under ZTA.</p>
+            <p class="panel-note">Choose the best control per slot. One answer per row under ZTA.</p>
             <p class="pbq-zt-slot-hint" id="zta-p2-ztSlotHint" role="note">Hint: Internet has one slot; DMZ has two; Internal has three; Cloud has two.</p>
             <div class="zt-zone-grid">
               <article class="zt-zone zt-zone--internet">
@@ -176,7 +164,19 @@
                 </header>
                 <p class="zt-zone__assets">External · BYOD · Remote</p>
                 <div class="zt-zone__slots">
-                  <div class="drop-slot" data-target="ztna-gateway" aria-label="Internet zone drop slot"></div>
+                  <fieldset class="zt-slot-choice" data-correct="ztna-gateway">
+                    <legend class="zt-slot-choice__legend">Remote access enforcement</legend>
+                    <div class="zt-slot-choice__options">
+                      <label class="zt-choice-card token--ztna">
+                        <input type="radio" name="zt-slot-internet-1" value="ztna-gateway" />
+                        <span class="zt-choice-card__text">ZTNA Gateway</span>
+                      </label>
+                      <label class="zt-choice-card token--idp">
+                        <input type="radio" name="zt-slot-internet-1" value="identity-provider" />
+                        <span class="zt-choice-card__text">Identity Provider</span>
+                      </label>
+                    </div>
+                  </fieldset>
                 </div>
               </article>
 
@@ -188,8 +188,32 @@
                 </header>
                 <p class="zt-zone__assets">Web Server · Load Balancer</p>
                 <div class="zt-zone__slots">
-                  <div class="drop-slot" data-target="identity-provider" aria-label="DMZ zone drop slot 1"></div>
-                  <div class="drop-slot" data-target="continuous-auth" aria-label="DMZ zone drop slot 2"></div>
+                  <fieldset class="zt-slot-choice" data-correct="identity-provider">
+                    <legend class="zt-slot-choice__legend">North-south authentication</legend>
+                    <div class="zt-slot-choice__options">
+                      <label class="zt-choice-card token--idp">
+                        <input type="radio" name="zt-slot-dmz-1" value="identity-provider" />
+                        <span class="zt-choice-card__text">Identity Provider</span>
+                      </label>
+                      <label class="zt-choice-card token--ztna">
+                        <input type="radio" name="zt-slot-dmz-1" value="ztna-gateway" />
+                        <span class="zt-choice-card__text">ZTNA Gateway</span>
+                      </label>
+                    </div>
+                  </fieldset>
+                  <fieldset class="zt-slot-choice" data-correct="continuous-auth">
+                    <legend class="zt-slot-choice__legend">Session risk re-verification</legend>
+                    <div class="zt-slot-choice__options">
+                      <label class="zt-choice-card token--cont">
+                        <input type="radio" name="zt-slot-dmz-2" value="continuous-auth" />
+                        <span class="zt-choice-card__text">Continuous Auth</span>
+                      </label>
+                      <label class="zt-choice-card token--jit">
+                        <input type="radio" name="zt-slot-dmz-2" value="jit-access" />
+                        <span class="zt-choice-card__text">JIT Access</span>
+                      </label>
+                    </div>
+                  </fieldset>
                 </div>
               </article>
 
@@ -201,9 +225,45 @@
                 </header>
                 <p class="zt-zone__assets">Workstations · DB Server · File Server</p>
                 <div class="zt-zone__slots">
-                  <div class="drop-slot" data-target="micro-segmentation" aria-label="Internal zone drop slot 1"></div>
-                  <div class="drop-slot" data-target="pam-vault" aria-label="Internal zone drop slot 2"></div>
-                  <div class="drop-slot" data-target="jit-access" aria-label="Internal zone drop slot 3"></div>
+                  <fieldset class="zt-slot-choice" data-correct="micro-segmentation">
+                    <legend class="zt-slot-choice__legend">East-west movement control</legend>
+                    <div class="zt-slot-choice__options">
+                      <label class="zt-choice-card token--micro">
+                        <input type="radio" name="zt-slot-internal-1" value="micro-segmentation" />
+                        <span class="zt-choice-card__text">Micro-segmentation</span>
+                      </label>
+                      <label class="zt-choice-card token--casb">
+                        <input type="radio" name="zt-slot-internal-1" value="casb" />
+                        <span class="zt-choice-card__text">CASB</span>
+                      </label>
+                    </div>
+                  </fieldset>
+                  <fieldset class="zt-slot-choice" data-correct="pam-vault">
+                    <legend class="zt-slot-choice__legend">Privileged credential storage</legend>
+                    <div class="zt-slot-choice__options">
+                      <label class="zt-choice-card token--pam">
+                        <input type="radio" name="zt-slot-internal-2" value="pam-vault" />
+                        <span class="zt-choice-card__text">PAM Vault</span>
+                      </label>
+                      <label class="zt-choice-card token--dlp">
+                        <input type="radio" name="zt-slot-internal-2" value="dlp-proxy" />
+                        <span class="zt-choice-card__text">DLP Proxy</span>
+                      </label>
+                    </div>
+                  </fieldset>
+                  <fieldset class="zt-slot-choice" data-correct="jit-access">
+                    <legend class="zt-slot-choice__legend">Time-bound privileged access</legend>
+                    <div class="zt-slot-choice__options">
+                      <label class="zt-choice-card token--jit">
+                        <input type="radio" name="zt-slot-internal-3" value="jit-access" />
+                        <span class="zt-choice-card__text">JIT Access</span>
+                      </label>
+                      <label class="zt-choice-card token--cont">
+                        <input type="radio" name="zt-slot-internal-3" value="continuous-auth" />
+                        <span class="zt-choice-card__text">Continuous Auth</span>
+                      </label>
+                    </div>
+                  </fieldset>
                 </div>
               </article>
 
@@ -215,8 +275,32 @@
                 </header>
                 <p class="zt-zone__assets">Azure · SaaS Apps · Blob Storage</p>
                 <div class="zt-zone__slots">
-                  <div class="drop-slot" data-target="casb" aria-label="Cloud zone drop slot 1"></div>
-                  <div class="drop-slot" data-target="dlp-proxy" aria-label="Cloud zone drop slot 2"></div>
+                  <fieldset class="zt-slot-choice" data-correct="casb">
+                    <legend class="zt-slot-choice__legend">SaaS / shadow IT governance</legend>
+                    <div class="zt-slot-choice__options">
+                      <label class="zt-choice-card token--casb">
+                        <input type="radio" name="zt-slot-cloud-1" value="casb" />
+                        <span class="zt-choice-card__text">CASB</span>
+                      </label>
+                      <label class="zt-choice-card token--micro">
+                        <input type="radio" name="zt-slot-cloud-1" value="micro-segmentation" />
+                        <span class="zt-choice-card__text">Micro-segmentation</span>
+                      </label>
+                    </div>
+                  </fieldset>
+                  <fieldset class="zt-slot-choice" data-correct="dlp-proxy">
+                    <legend class="zt-slot-choice__legend">Sensitive data egress to SaaS</legend>
+                    <div class="zt-slot-choice__options">
+                      <label class="zt-choice-card token--dlp">
+                        <input type="radio" name="zt-slot-cloud-2" value="dlp-proxy" />
+                        <span class="zt-choice-card__text">DLP Proxy</span>
+                      </label>
+                      <label class="zt-choice-card token--pam">
+                        <input type="radio" name="zt-slot-cloud-2" value="pam-vault" />
+                        <span class="zt-choice-card__text">PAM Vault</span>
+                      </label>
+                    </div>
+                  </fieldset>
                 </div>
               </article>
             </div>
@@ -227,7 +311,7 @@
       <div class="actions">
         <button id="zta-p2-checkBtn" type="button">Check Answer</button>
         <button id="zta-p2-showBtn" type="button">Show Answer</button>
-        <button id="zta-p2-resetBtn" type="button">Shuffle controls</button>
+        <button id="zta-p2-resetBtn" type="button">Reset choices</button>
         <span id="zta-p2-result" role="status" aria-live="polite"></span>
       </div></div></article>
 <article class="pbq-suite-section" id="zta-p3" data-scenario="zero-trust-zta-migration" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-ai-sim">
@@ -268,20 +352,20 @@
           <div class="pbq-choices" role="radiogroup" aria-labelledby="zt-q2-heading">
             <label class="pbq-choice">
               <input type="radio" name="secplus_bct_zt_q2" value="A" />
-              Security team — cloud provides better availability for the PAM Vault.
+              Security team: cloud provides better availability for the PAM Vault.
             </label>
             <label class="pbq-choice">
               <input type="radio" name="secplus_bct_zt_q2" value="B" />
-              Senior engineer — the PAM Vault controls privileged credentials to internal systems; placing it in the
+              Senior engineer: the PAM Vault controls privileged credentials to internal systems; placing it in the
               cloud increases attack surface and dependency on external connectivity for critical internal operations.
             </label>
             <label class="pbq-choice">
               <input type="radio" name="secplus_bct_zt_q2" value="C" />
-              Both are equally valid — PAM placement is a preference decision with no security impact.
+              Both are equally valid. PAM placement is a preference decision with no security impact.
             </label>
             <label class="pbq-choice">
               <input type="radio" name="secplus_bct_zt_q2" value="D" />
-              Senior engineer — cloud providers prohibit hosting PAM solutions under their terms of service.
+              Senior engineer: cloud providers prohibit hosting PAM solutions under their terms of service.
             </label>
           </div>
         </section>
@@ -295,11 +379,11 @@
           <div class="pbq-choices" role="radiogroup" aria-labelledby="zt-q3-heading">
             <label class="pbq-choice">
               <input type="radio" name="secplus_bct_zt_q3" value="A" />
-              Internal traffic is trusted by default — ZTA only applies to external access.
+              Internal traffic is trusted by default. ZTA only applies to external access.
             </label>
             <label class="pbq-choice">
               <input type="radio" name="secplus_bct_zt_q3" value="B" />
-              Internal traffic is also verified — micro-segmentation and continuous authentication apply to east-west
+              Internal traffic is also verified. Micro-segmentation and continuous authentication apply to east-west
               traffic too, preventing lateral movement.
             </label>
             <label class="pbq-choice">
@@ -325,7 +409,7 @@
 
       <div class="pbq-suite-footer">
         <div class="pbq-suite-footer__deep-dive">
-          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn">Deep dive explanation</button>
+          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn" data-deep-dive-key="zero-trust-zta-migration.html">Deep dive explanation</button>
         </div>
       <nav class="question-nav question-nav--footer" aria-label="Question navigation (footer)">
         <div class="question-nav-links">
@@ -339,16 +423,13 @@
   </div>
 
   <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js" defer></script>
-  <script>window.PBQ_SUITE_DEFAULT_SECTION = "zta-exhibit";</script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "zta-exhibit"; window.PBQ_DEEP_DIVE_KEY = "zero-trust-zta-migration.html";</script>
   <!-- zta-concept -->
 <script>
     (function () {
       var CORRECT = "B";
       var CORRECT_MSG =
-        "Correct. Traditional perimeter models assume trust inside the firewall; one breach enables lateral movement. Zero Trust removes implicit trust: every request is verified (PEP gateway, adaptive identity, policy engine/administrator) regardless of network location. It is not cloud-only (A), mandatory always-on VPN (C), or firewall removal (D). Continue to Part 2 to place ZTA controls in each zone.";
+        "Correct. Traditional perimeter models assume trust inside the firewall. One breach enables lateral movement. Zero Trust removes implicit trust: every request is verified (PEP gateway, adaptive identity, policy engine/administrator) regardless of network location. It is not cloud-only (A), mandatory always-on VPN (C), or firewall removal (D). Continue to Part 2 and pick the best control for each zone slot.";
       var checkBtn = document.getElementById("zta-concept-checkBtn");
       var showBtn = document.getElementById("zta-concept-showBtn");
       var resetBtn = document.getElementById("zta-concept-resetBtn");
@@ -394,124 +475,33 @@
 <!-- zta-p2 -->
 <script>
     (function () {
-      var bank = document.getElementById("zta-p2-bank");
       var checkBtn = document.getElementById("zta-p2-checkBtn");
       var showBtn = document.getElementById("zta-p2-showBtn");
       var resetBtn = document.getElementById("zta-p2-resetBtn");
       var result = document.getElementById("zta-p2-result");
-      var dragged = null;
-      var picked = null;
       var slotHint = document.getElementById("zta-p2-ztSlotHint");
       var firstCheck = true;
 
       var CORRECT_MSG =
-        "Correct. Internet: ZTNA Gateway replaces broad VPN access for remote users. DMZ / edge: Identity Provider and Continuous Auth enforce verify-explicitly at the policy enforcement point. Internal: micro-segmentation limits east-west movement; PAM Vault and JIT Access govern privileged access to internal systems. Cloud: CASB governs SaaS/shadow IT; DLP Proxy inspects cloud egress and sensitive data in SaaS workflows.";
+        "Correct. Internet: ZTNA Gateway replaces broad VPN access for remote users. DMZ / edge: Identity Provider and Continuous Auth sit at the north-south policy enforcement point. Authenticate at the boundary and re-verify session risk on every request, not only at VPN login. Internal: micro-segmentation limits east-west movement; PAM Vault and JIT Access govern privileged access to internal systems. Cloud: CASB governs SaaS/shadow IT; DLP Proxy inspects cloud egress and sensitive data in SaaS workflows.";
 
-      function allSlots() {
-        return document.querySelectorAll(".drop-slot[data-target]");
+      function allChoices() {
+        return document.querySelectorAll(".zt-slot-choice[data-correct]");
       }
 
-      function clearPick() {
-        document.querySelectorAll(".token.is-picked").forEach(function (node) {
-          node.classList.remove("is-picked");
-        });
-        picked = null;
+      function selectedValue(group) {
+        var picked = group.querySelector('input[type="radio"]:checked');
+        return picked ? picked.value : null;
       }
 
-      function setPick(token) {
-        clearPick();
-        picked = token;
-        if (picked) picked.classList.add("is-picked");
+      function clearMarks() {
+        allChoices().forEach(function (group) {
+          group.classList.remove("correct", "incorrect");
+        });
       }
 
-      function moveTokenToSlot(slot, token) {
-        if (!token || !slot) return;
-        var existing = slot.querySelector(".token");
-        if (existing && existing !== token) bank.appendChild(existing);
-        slot.appendChild(token);
-      }
-
-      function shuffleBank() {
-        var nodes = [].slice.call(bank.querySelectorAll(".token"));
-        while (nodes.length) {
-          bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
-        }
-      }
-
-      shuffleBank();
-
-      document.querySelector(".pbq-card").addEventListener("click", function (event) {
-        var token = event.target.closest(".token");
-        if (token) {
-          if (picked === token) {
-            clearPick();
-            return;
-          }
-          var parentSlot =
-            token.parentNode &&
-            token.parentNode.classList &&
-            token.parentNode.classList.contains("drop-slot")
-              ? token.parentNode
-              : null;
-          if (picked && parentSlot) {
-            moveTokenToSlot(parentSlot, picked);
-            clearPick();
-            return;
-          }
-          setPick(token);
-          return;
-        }
-
-        var slot = event.target.closest(".drop-slot");
-        if (slot && picked) {
-          moveTokenToSlot(slot, picked);
-          clearPick();
-          return;
-        }
-
-        if (bank.contains(event.target) && picked && !bank.contains(picked)) {
-          bank.appendChild(picked);
-          clearPick();
-        }
-      });
-
-      document.querySelectorAll(".token").forEach(function (token) {
-        token.addEventListener("dragstart", function () {
-          clearPick();
-          dragged = token;
-        });
-      });
-
-      allSlots().forEach(function (slot) {
-        slot.addEventListener("dragover", function (event) {
-          event.preventDefault();
-          slot.classList.add("over");
-        });
-        slot.addEventListener("dragleave", function () {
-          slot.classList.remove("over");
-        });
-        slot.addEventListener("drop", function (event) {
-          event.preventDefault();
-          slot.classList.remove("over");
-          if (!dragged) return;
-          moveTokenToSlot(slot, dragged);
-          dragged = null;
-        });
-      });
-
-      bank.addEventListener("dragover", function (event) {
-        event.preventDefault();
-      });
-      bank.addEventListener("drop", function (event) {
-        event.preventDefault();
-        if (dragged) bank.appendChild(dragged);
-        dragged = null;
-      });
-
-      function takeFromBank(value) {
-        return [].slice.call(bank.querySelectorAll(".token")).find(function (token) {
-          return token.getAttribute("data-value") === value;
-        });
+      function markGroup(group, ok) {
+        group.classList.add(ok ? "correct" : "incorrect");
       }
 
       checkBtn.addEventListener("click", function () {
@@ -519,55 +509,46 @@
           slotHint.hidden = true;
           firstCheck = false;
         }
+        clearMarks();
         var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var want = slot.getAttribute("data-target");
-          var token = slot.querySelector(".token");
-          if (!token) {
-            slot.classList.add("incorrect");
+        allChoices().forEach(function (group) {
+          var want = group.getAttribute("data-correct");
+          var got = selectedValue(group);
+          if (!got || got !== want) {
+            markGroup(group, false);
             allOk = false;
             return;
           }
-          var ok = token.getAttribute("data-value") === want;
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
+          markGroup(group, true);
         });
 
         result.className = allOk ? "is-pass" : "is-fail";
         result.textContent = allOk
           ? CORRECT_MSG
-          : "Incorrect. Some controls are missing or in the wrong zone. Remember: remote access enforcement at the Internet edge, identity and continuous verification at the DMZ PEP, lateral-movement and privileged access controls inside, and SaaS governance in Cloud.";
+          : "Incorrect. Some slots are missing a choice or picked the related-but-wrong control. Remember: ZTNA on Internet for remote users; DMZ holds Identity Provider and Continuous Auth at the north-south PEP; Internal gets micro-segmentation plus PAM and JIT; Cloud gets CASB and DLP.";
       });
 
       showBtn.addEventListener("click", function () {
-        clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var token = slot.querySelector(".token");
-          if (token) bank.appendChild(token);
-        });
-        allSlots().forEach(function (slot) {
-          var token = takeFromBank(slot.getAttribute("data-target"));
-          if (token) {
-            slot.appendChild(token);
-            slot.classList.add("correct");
-          }
+        clearMarks();
+        allChoices().forEach(function (group) {
+          var want = group.getAttribute("data-correct");
+          var radio = group.querySelector('input[type="radio"][value="' + want + '"]');
+          if (radio) radio.checked = true;
+          markGroup(group, true);
         });
         result.className = "is-pass";
         result.textContent = CORRECT_MSG;
       });
 
       resetBtn.addEventListener("click", function () {
-        clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var token = slot.querySelector(".token");
-          if (token) bank.appendChild(token);
+        clearMarks();
+        allChoices().forEach(function (group) {
+          group.querySelectorAll('input[type="radio"]').forEach(function (radio) {
+            radio.checked = false;
+          });
         });
         result.className = "";
         result.textContent = "";
-        shuffleBank();
       });
     })();
   </script>
@@ -635,5 +616,8 @@
       });
     })();
   </script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js"></script>
 </body>
 </html>

@@ -95,3 +95,40 @@ body.secplus-sim-page .deep-dive-btn:hover {
   background: #f0f9ff;
   border-color: #0ea5e9;
 }
+
+/* Action bar: Check left, Reset centered, Show Answer far right */
+body.secplus-sim-page .actions {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+body.secplus-sim-page .actions button[id$="checkBtn"],
+body.secplus-sim-page .actions button[id="checkBtn"] {
+  order: 1;
+  flex-shrink: 0;
+}
+
+body.secplus-sim-page .actions button[id$="resetBtn"] {
+  order: 2;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+body.secplus-sim-page .actions button[id$="showBtn"],
+body.secplus-sim-page .actions button[id="showAnswerBtn"] {
+  order: 4;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+body.secplus-sim-page .actions [role="status"] {
+  order: 3;
+  flex: 1 1 240px;
+  min-width: 0;
+}

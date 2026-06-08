@@ -4,17 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <meta name="description" content="CompTIA Security+ SY0-701 PBQ — The CISO needs quantitative justification for a $50,000 security awareness program. Work through the ALE worksheet (SLE × ARO) and select the calculation that supports the investment." />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ: The CISO needs quantitative justification for a $50,000 security awareness program. Work through the ALE worksheet (SLE × ARO) and select the calculation that supports the investment." />
   <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/quantitative-risk-ale/quantitative-risk-ale.html" />
-  <title>Security+ Simulation — Risk Register — ALE & Training ROI | Be Certified Today</title>
+  <title>Security+ Simulation: Risk Register — ALE & Training ROI | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.css" />
 </head>
 <body class="secplus-question-ui secplus-sim-page secplus-pbq-ui pbq-bct-sim pbq-folder-suite pbq-exhibit-mcq pbq-risk-ale">
   <script src="/js/sample-url-mask-apply.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.js"></script>
   <div class="page-logo-watermark" aria-hidden="true">
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
@@ -25,11 +27,11 @@
     <main class="pbq-card pbq-card--suite">
       <header class="pbq-suite-header">
         <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
+        <p class="pbq-suite-objectives" aria-label="SY0-701 exam objectives covered">Covers SY0-701 objectives: 1.2</p>
         <h1>Simulation: Risk Register — ALE & Training ROI</h1>
         <p class="lead pbq-sub">The CISO needs quantitative justification for a $50,000 security awareness program. Work through the ALE worksheet (SLE × ARO) and select the calculation that supports the investment.</p>
         <p class="instructions pbq-instructions">
-          Use the <strong>section list</strong> to switch tasks on this page. Open <strong>exhibits</strong> (blue
-          tiles) before answering where shown.
+          Work through the <strong>ALE worksheet</strong>, then select the calculation that supports the training investment.
         </p>
       </header>
 
@@ -186,66 +188,13 @@
         <button id="risk-ale-showBtn" type="button">Show Answer</button>
         <button id="risk-ale-resetBtn" type="button">Reset</button>
         <span id="risk-ale-result" role="status" aria-live="polite"></span>
-      </div>
-<script>
-(function () {
-  var root = document.getElementById("risk-ale");
-  if (!root) return;
-
-  var actionBtns = root.querySelectorAll(".actions button");
-  var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
-  var result = root.querySelector(".actions [role='status']");
-var CORRECT = "B";
-      var CORRECT_MSG =
-        "Correct. B — Use ALE for the risk you are mitigating: phishing ALE = $150,000 (5.0 × $30,000). If training drops ARO from 5.0 to 1.0, ALE falls to $30,000, saving $120,000/year. After the $50,000 training cost, net benefit is $70,000 in year one. SLE alone (A) ignores frequency. Highest ALE elsewhere (C) does not justify this control. Transfer (D) is a strategy, not the ROI math for awareness training.";function selectedChoice() {
-        return root.querySelector('input[name="secplus_pbq_risk_ale"]:checked');
-      }
-
-      function clearResult() {
-        result.className = "";
-        result.textContent = "";
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedChoice();
-        if (!sel) {
-          result.className = "is-fail";
-          result.textContent = "Select an answer, then check again.";
-          return;
-        }
-        if (sel.value === CORRECT) {
-          result.className = "is-pass";
-          result.textContent = CORRECT_MSG;
-        } else {
-          result.className = "is-fail";
-          result.textContent =
-            "Incorrect. Tie the business case to phishing ALE reduction (SLE × ARO before and after training), not single-event SLE, unrelated highest ALE, or risk transfer alone.";
-        }
-      });
-
-      showBtn.addEventListener("click", function () {
-        var correctInput = root.querySelector('input[name="secplus_pbq_risk_ale"][value="' + CORRECT + '"]');
-        if (correctInput) correctInput.checked = true;
-        result.className = "is-pass";
-        result.textContent = CORRECT_MSG;
-      });
-
-      resetBtn.addEventListener("click", function () {
-        root.querySelectorAll('input[name="secplus_pbq_risk_ale"]').forEach(function (input) {
-          input.checked = false;
-        });
-        clearResult();
-      });
-})();
-</script></div></article>
+      </div></div></article>
         </div>
       </div>
 
       <div class="pbq-suite-footer">
         <div class="pbq-suite-footer__deep-dive">
-          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn">Deep dive explanation</button>
+          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn" data-deep-dive-key="quantitative-risk-ale.html">Deep dive explanation</button>
         </div>
       <nav class="question-nav question-nav--footer" aria-label="Question navigation (footer)">
         <div class="question-nav-links">
@@ -259,10 +208,7 @@ var CORRECT = "B";
   </div>
 
   <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js" defer></script>
-  <script>window.PBQ_SUITE_DEFAULT_SECTION = "risk-ale";</script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "risk-ale"; window.PBQ_DEEP_DIVE_KEY = "quantitative-risk-ale.html";</script>
   <!-- risk-ale -->
 <script>
 (function () {
@@ -317,5 +263,8 @@ var CORRECT = "B";
       });
 })();
 </script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js"></script>
 </body>
 </html>

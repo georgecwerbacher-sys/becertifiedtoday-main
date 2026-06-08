@@ -4,7 +4,7 @@ exam: SY0-701
 scenario: advanced-firewall-rule-configurator
 title: Advanced Firewall Rule Configurator
 status: production
-last_updated: 2026-06-05
+last_updated: 2026-06-08
 ---
 
 # Advanced Firewall Rule Configurator — notes
@@ -30,7 +30,7 @@ Configure a **perimeter firewall** for BeCertifiedToday with **inbound/outbound 
 
 | Section ID | Content |
 |------------|---------|
-| `advanced-firewall-config` | Policy checklist, topology, ACL table, activity log |
+| `advanced-firewall-config` | Centered topology exhibit, policy checklist, ACL table, activity log |
 
 **Previous:** [[../siem-ransomware-mitre/notes|SIEM MITRE]] · **Next:** [[../security-control-placement/notes|Control placement]]
 

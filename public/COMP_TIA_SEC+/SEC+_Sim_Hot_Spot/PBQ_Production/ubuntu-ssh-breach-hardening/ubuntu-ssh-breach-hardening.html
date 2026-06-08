@@ -4,17 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <meta name="description" content="CompTIA Security+ SY0-701 PBQ — After brute-forced SSH credentials and attacker persistence on a Ubuntu 22.04 web server, harden sshd_config, fail2ban, and UFW — then answer consequence questions about lockout and eradication." />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ: After brute-forced SSH credentials and attacker persistence on a Ubuntu 22.04 web server, harden sshd_config, fail2ban, and UFW — then answer consequence questions about lockout and eradication." />
   <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/ubuntu-ssh-breach-hardening/ubuntu-ssh-breach-hardening.html" />
-  <title>Security+ Simulation — Linux Server Breach — SSH Hardening & IR | Be Certified Today</title>
+  <title>Security+ Simulation: Linux Server Breach — SSH Hardening & IR | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.css" />
 </head>
 <body class="secplus-question-ui secplus-sim-page secplus-pbq-ui pbq-bct-sim pbq-folder-suite pbq-ssh-harden">
   <script src="/js/sample-url-mask-apply.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.js"></script>
   <div class="page-logo-watermark" aria-hidden="true">
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
@@ -25,11 +27,11 @@
     <main class="pbq-card pbq-card--suite">
       <header class="pbq-suite-header">
         <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
+        <p class="pbq-suite-objectives" aria-label="SY0-701 exam objectives covered">Covers SY0-701 objectives: 2.4 · 4.1 · 4.4</p>
         <h1>Simulation: Linux Server Breach — SSH Hardening & IR</h1>
         <p class="lead pbq-sub">After brute-forced SSH credentials and attacker persistence on a Ubuntu 22.04 web server, harden sshd_config, fail2ban, and UFW — then answer consequence questions about lockout and eradication.</p>
         <p class="instructions pbq-instructions">
-          Use the <strong>section list</strong> to switch tasks on this page. Open <strong>exhibits</strong> (blue
-          tiles) before answering where shown.
+          Work through each config section, then grade your answers on <strong>Consequence review</strong>.
         </p>
       </header>
 
@@ -45,6 +47,7 @@
 </ul></nav>
         <div class="pbq-suite-main" id="pbqSuiteMain">
           <article class="pbq-suite-section" id="ubuntu-intro" data-scenario="ubuntu-ssh-breach-hardening" hidden><div class="pbq-suite-section__inner"><header class="pbq-ssh-scenario">
+  <meta name="robots" content="noindex, nofollow" />
         <p class="pbq-ssh-scenario__eyebrow">Incident response · SY0-701 PBQ</p>
         <h1>Ubuntu 22.04 web server — post-breach hardening</h1>
         <p class="pbq-ssh-scenario__lead">
@@ -267,7 +270,7 @@
 
       <div class="pbq-suite-footer">
         <div class="pbq-suite-footer__deep-dive">
-          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn">Deep dive explanation</button>
+          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn" data-deep-dive-key="ubuntu-ssh-breach-hardening.html">Deep dive explanation</button>
         </div>
       <nav class="question-nav question-nav--footer" aria-label="Question navigation (footer)">
         <div class="question-nav-links">
@@ -281,10 +284,7 @@
   </div>
 
   <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js" defer></script>
-  <script>window.PBQ_SUITE_DEFAULT_SECTION = "ubuntu-intro";</script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "ubuntu-intro"; window.PBQ_DEEP_DIVE_KEY = "ubuntu-ssh-breach-hardening.html";</script>
   <!-- ubuntu-consequences -->
 <script>
 (function () {
@@ -371,5 +371,8 @@
   });
 })();
 </script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js"></script>
 </body>
 </html>

@@ -4,17 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <meta name="description" content="CompTIA Security+ SY0-701 PBQ — Configure BeCertifiedToday's edge firewall with free-text CIDR and direction fields: permit inbound HTTPS and scoped SSH, deny Telnet, allow outbound DNS, and finish with implicit deny-all." />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ: Configure BeCertifiedToday's edge firewall with free-text CIDR and direction fields: permit inbound HTTPS and scoped SSH, deny Telnet, allow outbound DNS, and finish with implicit deny-all." />
   <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/advanced-firewall-rule-configurator/advanced-firewall-rule-configurator.html" />
-  <title>Security+ Simulation — Perimeter Firewall — Policy Rule Configurator | Be Certified Today</title>
+  <title>Security+ Simulation: Perimeter Firewall: Policy Rule Configurator | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.css" />
 </head>
 <body class="secplus-question-ui secplus-sim-page secplus-pbq-ui pbq-bct-sim pbq-folder-suite pbq-afw-config">
   <script src="/js/sample-url-mask-apply.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.js"></script>
   <div class="page-logo-watermark" aria-hidden="true">
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
@@ -25,11 +27,11 @@
     <main class="pbq-card pbq-card--suite">
       <header class="pbq-suite-header">
         <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
-        <h1>Simulation: Perimeter Firewall — Policy Rule Configurator</h1>
+        <p class="pbq-suite-objectives" aria-label="SY0-701 exam objectives covered">Covers SY0-701 objectives: 3.3 · 4.1</p>
+        <h1>Simulation: Perimeter Firewall: Policy Rule Configurator</h1>
         <p class="lead pbq-sub">Configure BeCertifiedToday's edge firewall with free-text CIDR and direction fields: permit inbound HTTPS and scoped SSH, deny Telnet, allow outbound DNS, and finish with implicit deny-all.</p>
         <p class="instructions pbq-instructions">
-          Use the <strong>section list</strong> to switch tasks on this page. Open <strong>exhibits</strong> (blue
-          tiles) before answering where shown.
+          Review the <strong>network topology</strong> exhibit, then add ACL rules to satisfy each policy requirement.
         </p>
       </header>
 
@@ -38,14 +40,54 @@
         <div class="pbq-suite-main" id="pbqSuiteMain">
           <article class="pbq-suite-section" id="advanced-firewall-config" data-scenario="advanced-firewall-rule-configurator" hidden><div class="pbq-suite-section__inner"><h1>Advanced Firewall Rule Configurator</h1>
   <p class="pbq-sub">
-    You are a network security engineer configuring a perimeter firewall for <strong>BeCertifiedToday</strong>. The web server
-    is at <strong>192.168.1.10</strong> (internal). The management workstation subnet is
-    <strong>10.0.0.0/24</strong>. Apply the security policy by adding the correct ACL rules below.
+    You are a network security engineer configuring a perimeter firewall for <strong>BeCertifiedToday</strong>.
+    Review the topology exhibit, then add ACL rules that match the security policy.
   </p>
 
   <div class="sim-frame pbq-afw-sim">
+    <section class="pbq-afw-topology pbq-afw-exhibit" aria-labelledby="afw-topo-heading">
+      <h2 id="advanced-firewall-config-afw-topo-heading" class="pbq-afw-panel-title">Reference exhibit: network topology</h2>
+      <div class="pbq-afw-topo__layout">
+        <div class="pbq-afw-topo__path" aria-label="North-south traffic path">
+          <div class="pbq-afw-topo__node">
+            <span class="pbq-afw-topo__icon" aria-hidden="true">🌐</span>
+            <strong>Internet</strong>
+            <span class="pbq-afw-topo__meta">ANY</span>
+          </div>
+          <span class="pbq-afw-topo__arrow" aria-hidden="true">→</span>
+          <div class="pbq-afw-topo__node pbq-afw-topo__node--focus">
+            <span class="pbq-afw-topo__icon" aria-hidden="true">🛡️</span>
+            <strong>Firewall</strong>
+            <span class="pbq-afw-topo__meta">You configure this</span>
+          </div>
+          <span class="pbq-afw-topo__arrow" aria-hidden="true">→</span>
+          <div class="pbq-afw-topo__node">
+            <span class="pbq-afw-topo__icon" aria-hidden="true">🖥️</span>
+            <strong>Web Server</strong>
+            <span class="pbq-afw-topo__meta">192.168.1.10</span>
+          </div>
+        </div>
+        <div class="pbq-afw-topo__path pbq-afw-topo__path--mgmt" aria-label="Management subnet path">
+          <div class="pbq-afw-topo__node">
+            <span class="pbq-afw-topo__icon" aria-hidden="true">💻</span>
+            <strong>Mgmt workstations</strong>
+            <span class="pbq-afw-topo__meta">10.0.0.0/24</span>
+          </div>
+          <span class="pbq-afw-topo__arrow" aria-hidden="true">→</span>
+          <div class="pbq-afw-topo__node pbq-afw-topo__node--focus">
+            <span class="pbq-afw-topo__icon" aria-hidden="true">🛡️</span>
+            <strong>Firewall</strong>
+            <span class="pbq-afw-topo__meta">SSH admin source</span>
+          </div>
+        </div>
+        <p class="pbq-afw-topo__note">
+          Internal LAN <strong>192.168.1.0/24</strong> includes the web server. Outbound DNS uses this segment as the source network.
+        </p>
+      </div>
+    </section>
+
     <section class="pbq-afw-policy" aria-labelledby="afw-policy-heading">
-      <h2 id="advanced-firewall-config-afw-policy-heading" class="pbq-afw-panel-title">Policy requirements — checked after grading</h2>
+      <h2 id="advanced-firewall-config-afw-policy-heading" class="pbq-afw-panel-title">Policy requirements (checked after grading)</h2>
       <ul class="pbq-afw-policy__list" id="advanced-firewall-config-policyList">
         <li data-req="https">
           <span class="pbq-afw-policy__check" aria-hidden="true"></span>
@@ -70,45 +112,9 @@
       </ul>
     </section>
 
-    <section class="pbq-afw-topology" aria-labelledby="afw-topo-heading">
-      <h2 id="advanced-firewall-config-afw-topo-heading" class="pbq-afw-panel-title">Network topology</h2>
-      <div class="pbq-afw-topo__grid">
-        <div class="pbq-afw-topo__node">
-          <span class="pbq-afw-topo__icon" aria-hidden="true">🌐</span>
-          <strong>Internet</strong>
-          <span class="pbq-afw-topo__meta">ANY</span>
-        </div>
-        <div class="pbq-afw-topo__arrow" aria-hidden="true">→</div>
-        <div class="pbq-afw-topo__node pbq-afw-topo__node--focus">
-          <span class="pbq-afw-topo__icon" aria-hidden="true">🛡️</span>
-          <strong>Firewall</strong>
-          <span class="pbq-afw-topo__meta">You configure this</span>
-        </div>
-        <div class="pbq-afw-topo__arrow" aria-hidden="true">→</div>
-        <div class="pbq-afw-topo__node">
-          <span class="pbq-afw-topo__icon" aria-hidden="true">🖥️</span>
-          <strong>Web Server</strong>
-          <span class="pbq-afw-topo__meta">192.168.1.10</span>
-        </div>
-        <div class="pbq-afw-topo__branch">
-          <div class="pbq-afw-topo__node pbq-afw-topo__node--focus pbq-afw-topo__node--small">
-            <span class="pbq-afw-topo__icon" aria-hidden="true">🛡️</span>
-            <strong>Firewall</strong>
-            <span class="pbq-afw-topo__meta">(same device)</span>
-          </div>
-          <div class="pbq-afw-topo__arrow pbq-afw-topo__arrow--down" aria-hidden="true">→</div>
-          <div class="pbq-afw-topo__node">
-            <span class="pbq-afw-topo__icon" aria-hidden="true">💻</span>
-            <strong>Mgmt Workstations</strong>
-            <span class="pbq-afw-topo__meta">10.0.0.0/24</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section class="pbq-afw-rules" aria-labelledby="afw-rules-heading">
       <div class="pbq-afw-rules__head">
-        <h2 id="advanced-firewall-config-afw-rules-heading" class="pbq-afw-panel-title">ACL rules — evaluated top-down, first match wins</h2>
+        <h2 id="advanced-firewall-config-afw-rules-heading" class="pbq-afw-panel-title">ACL rules: evaluated top-down, first match wins</h2>
         <button type="button" class="pbq-afw-add-btn" id="advanced-firewall-config-addRuleBtn">+ Add Rule</button>
       </div>
       <div class="pbq-afw-table-wrap">
@@ -128,7 +134,10 @@
           <tbody id="advanced-firewall-config-rulesBody"></tbody>
         </table>
       </div>
-      <p class="pbq-afw-hint">
+      <p class="pbq-afw-hint" id="advanced-firewall-config-afwRuleHint" role="note">
+        Hint: Add five rules. Rules 1 through 4 can be in any order; deny-all must be last.
+      </p>
+      <p class="pbq-afw-hint pbq-afw-hint--field">
         Use <strong>ANY</strong> for wildcard source/destination. CIDR notation accepted (e.g. 10.0.0.0/24).
       </p>
       <div class="pbq-afw-log" id="advanced-firewall-config-activityLog" role="log" aria-live="polite" aria-label="Activity log">
@@ -149,7 +158,7 @@
 
       <div class="pbq-suite-footer">
         <div class="pbq-suite-footer__deep-dive">
-          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn">Deep dive explanation</button>
+          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn" data-deep-dive-key="advanced-firewall-rule-configurator.html">Deep dive explanation</button>
         </div>
       <nav class="question-nav question-nav--footer" aria-label="Question navigation (footer)">
         <div class="question-nav-links">
@@ -163,10 +172,7 @@
   </div>
 
   <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js" defer></script>
-  <script>window.PBQ_SUITE_DEFAULT_SECTION = "advanced-firewall-config";</script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "advanced-firewall-config"; window.PBQ_DEEP_DIVE_KEY = "advanced-firewall-rule-configurator.html";</script>
   <!-- advanced-firewall-config -->
 <script>
 (function () {
@@ -192,6 +198,8 @@
   var showBtn = actionBtns[1];
   var resetBtn = actionBtns[2];
   var result = root.querySelector(".actions [role='status']");
+  var ruleHint = root.querySelector("#advanced-firewall-config-afwRuleHint");
+  var firstCheck = true;
   var ruleCount = 0;
 
   function nowStamp() {
@@ -363,6 +371,10 @@
   });
 
   checkBtn.addEventListener("click", function () {
+    if (firstCheck && ruleHint) {
+      ruleHint.hidden = true;
+      firstCheck = false;
+    }
     clearMarks();
     if (!allFilled()) {
       result.className = "is-fail";
@@ -392,7 +404,7 @@
     if (pass) {
       result.className = "is-pass";
       result.textContent = CORRECT_MSG;
-      appendLog("Policy check passed — all requirements satisfied.");
+      appendLog("Policy check passed. All requirements satisfied.");
     } else {
       result.className = "is-fail";
       var hints = [];
@@ -402,7 +414,7 @@
       if (!ev.matched.dns) hints.push("permit outbound DNS (UDP 53) from 192.168.1.0/24");
       if (!ev.matched["deny-all"] || !ev.denyLast) hints.push("end with an implicit deny-all rule");
       result.textContent = "Not quite. Missing or out of order: " + hints.join("; ") + ".";
-      appendLog("Policy check failed — review requirements.");
+      appendLog("Policy check failed. Review requirements.");
     }
   });
 
@@ -429,7 +441,7 @@
     setPolicyChecks({ https: true, ssh: true, telnet: true, dns: true, "deny-all": true });
     result.className = "is-pass";
     result.textContent = CORRECT_MSG;
-    appendLog("Solution applied — five rules configured.");
+    appendLog("Solution applied. Five rules configured.");
   });
 
   resetBtn.addEventListener("click", function () {
@@ -443,5 +455,8 @@
   });
 })();
 </script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js"></script>
 </body>
 </html>

@@ -14,7 +14,7 @@ last_updated: 2026-06-04
 Three-part **Zero Trust Architecture (ZTA)** migration for BeCertifiedToday:
 
 1. Fundamental shift vs traditional perimeter (MCQ + exhibit).
-2. **Drag-and-drop** — place eight controls into four network zones.
+2. **Zone map** — pick the best control per slot (two options per row, eight slots across four zones).
 3. **Trade-off MCQs** — ZTNA vs VPN, PAM placement, east-west traffic.
 
 Primary reference framed in the UI: **NIST SP 800-207**.
@@ -34,7 +34,7 @@ Primary reference framed in the UI: **NIST SP 800-207**.
 |------------|---------|
 | `zta-exhibit` | Traditional perimeter vs ZTA + segmentation glossary (modal/popup) |
 | `zta-concept` or `zta-p1` | Fundamental change MCQ |
-| `zta-p2` | Zone control map (8 tokens, 8 slots) |
+| `zta-p2` | Zone control map (8 slots, best-of-two per row) |
 | `zta-p3` | Three trade-off MCQs |
 
 **Previous:** [[../acme-rag-hr-ai/notes|BeCertifiedToday RAG]] · **Next:** [[../hybrid-pki-audit/notes|Hybrid PKI]]
@@ -51,7 +51,7 @@ Primary reference framed in the UI: **NIST SP 800-207**.
 ## Grading
 
 - Part 1: **B**
-- Part 2: every slot `data-target` must match dropped token value
+- Part 2: every slot `data-correct` must match the selected radio value
 - Part 3: Q1–Q3 all **B**
 
 ## Verification

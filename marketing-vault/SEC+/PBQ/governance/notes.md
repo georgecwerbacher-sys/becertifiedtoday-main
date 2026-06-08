@@ -4,7 +4,7 @@ exam: SY0-701
 scenario: governance
 title: Governance
 status: production
-last_updated: 2026-06-05
+last_updated: 2026-06-08
 ---
 
 # Governance — notes

@@ -4,17 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <meta name="description" content="CompTIA Security+ SY0-701 PBQ — Developers need realistic payment-card test data without exposing PANs. Review classification levels, data states, and protection methods, then choose the right approach for the sandbox." />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ: Developers need realistic payment-card test data without exposing PANs. Review classification levels, data states, and protection methods, then choose the right approach for the sandbox." />
   <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/data-protection/data-protection.html" />
-  <title>Security+ Simulation — PCI Test Environment — Data Protection Methods | Be Certified Today</title>
+  <title>Security+ Simulation: PCI Test Environment — Data Protection Methods | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.css" />
 </head>
 <body class="secplus-question-ui secplus-sim-page secplus-pbq-ui pbq-bct-sim pbq-folder-suite pbq-exhibit-mcq pbq-data-protection">
   <script src="/js/sample-url-mask-apply.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.js"></script>
   <div class="page-logo-watermark" aria-hidden="true">
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
@@ -25,11 +27,11 @@
     <main class="pbq-card pbq-card--suite">
       <header class="pbq-suite-header">
         <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
+        <p class="pbq-suite-objectives" aria-label="SY0-701 exam objectives covered">Covers SY0-701 objectives: 1.3 · 4.3</p>
         <h1>Simulation: PCI Test Environment — Data Protection Methods</h1>
         <p class="lead pbq-sub">Developers need realistic payment-card test data without exposing PANs. Review classification levels, data states, and protection methods, then choose the right approach for the sandbox.</p>
         <p class="instructions pbq-instructions">
-          Use the <strong>section list</strong> to switch tasks on this page. Open <strong>exhibits</strong> (blue
-          tiles) before answering where shown.
+          Review the <strong>data protection exhibit</strong>, then choose the best approach for PCI test data.
         </p>
       </header>
 
@@ -159,68 +161,13 @@
         <button id="data-protection-showBtn" type="button">Show Answer</button>
         <button id="data-protection-resetBtn" type="button">Reset</button>
         <span id="data-protection-result" role="status" aria-live="polite"></span>
-      </div>
-<script>
-(function () {
-  var root = document.getElementById("data-protection");
-  if (!root) return;
-
-  var actionBtns = root.querySelectorAll(".actions button");
-  var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
-  var result = root.querySelector(".actions [role='status']");
-var CORRECT = "C";
-      var CORRECT_MSG =
-        "Correct. C — Tokenization replaces PANs with unrelated tokens usable in test while real card data stays in a PCI vault. Hashing (A) is one-way and unsuitable for functional testing with card-like values. Encryption with dev keys (B) still exposes recoverable PANs in test. Masking last 4 digits (D) does not provide full test data.";function selectedChoice() {
-        return root.querySelector('input[name="secplus_pbq_data_protection"]:checked');
-      }
-
-      function clearResult() {
-        result.className = "";
-        result.textContent = "";
-      }
-
-      checkBtn.addEventListener("click", function () {
-        var sel = selectedChoice();
-        if (!sel) {
-          result.className = "is-fail";
-          result.textContent = "Select an answer, then check again.";
-          return;
-        }
-        if (sel.value === CORRECT) {
-          result.className = "is-pass";
-          result.textContent = CORRECT_MSG;
-        } else {
-          result.className = "is-fail";
-          result.textContent =
-            "Incorrect. For PCI card data in non-production testing, prefer tokenization over hashing, reversible encryption with shared keys, or partial masking.";
-        }
-      });
-
-      showBtn.addEventListener("click", function () {
-        var correctInput = root.querySelector(
-          'input[name="secplus_pbq_data_protection"][value="' + CORRECT + '"]'
-        );
-        if (correctInput) correctInput.checked = true;
-        result.className = "is-pass";
-        result.textContent = CORRECT_MSG;
-      });
-
-      resetBtn.addEventListener("click", function () {
-        root.querySelectorAll('input[name="secplus_pbq_data_protection"]').forEach(function (input) {
-          input.checked = false;
-        });
-        clearResult();
-      });
-})();
-</script></div></article>
+      </div></div></article>
         </div>
       </div>
 
       <div class="pbq-suite-footer">
         <div class="pbq-suite-footer__deep-dive">
-          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn">Deep dive explanation</button>
+          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn" data-deep-dive-key="data-protection.html">Deep dive explanation</button>
         </div>
       <nav class="question-nav question-nav--footer" aria-label="Question navigation (footer)">
         <div class="question-nav-links">
@@ -234,10 +181,7 @@ var CORRECT = "C";
   </div>
 
   <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js" defer></script>
-  <script>window.PBQ_SUITE_DEFAULT_SECTION = "data-protection";</script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "data-protection"; window.PBQ_DEEP_DIVE_KEY = "data-protection.html";</script>
   <!-- data-protection -->
 <script>
 (function () {
@@ -294,5 +238,8 @@ var CORRECT = "C";
       });
 })();
 </script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js"></script>
 </body>
 </html>
