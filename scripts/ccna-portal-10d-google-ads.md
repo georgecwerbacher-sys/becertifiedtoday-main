@@ -2,7 +2,7 @@
 
 Paste-ready setup for Google Ads UI. Landing: `public/ccna-home.html` with `utm_content=portal-10d` shows **$9.99 / 10-day** as the only primary purchase CTA.
 
-**Browser preview (local):** http://localhost:3000/ccna-portal-10d-google-ads.html
+**Source of truth:** this file in `scripts/` (not deployed to the public site).
 
 ---
 
