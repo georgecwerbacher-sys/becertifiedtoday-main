@@ -19,7 +19,7 @@ public/COMP_TIA_SEC+/
 
 | URL | File |
 |-----|------|
-| `/secplus-home.html` | Compact study hub (sample links) |
+| `/comptia-sec+-home.html` | Primary Security+ study hub |
 | `/comptia-sec+-home.html` | Full CCNA-style landing page (staging, `noindex`) |
 | `/secplus-sample` | *(rewrite removed — not public yet)* |
 | `/COMP_TIA_SEC+/SEC+_Training_Portal.html` | Full CCNA-style training portal (staging) |
@@ -62,14 +62,14 @@ Use these when tagging questions in a future `data/secplus-question-topic-map.js
 
 - [ ] Update internal links in migrated content to use `/COMP_TIA_SEC+/…` paths (if any ENCOR-style assets are reused)
 - [ ] `study-config.json` generator for Security+ question IDs (mirror `scripts/build-study-config.py`)
-- [ ] Hub copy on `index.html` / `secplus-home.html` when full library launches
+- [ ] Hub copy on `index.html` / `comptia-sec+-home.html` when full library launches
 - [ ] Replace “coming soon” badges on portal when modes go live
 
 ## Sample question chain
 
 1. `sample-question-1.html` — MFA  
 2. `sample-question-2.html` — AES  
-3. `sample-question-3.html` — Phishing → back to `/secplus-home.html`
+3. `sample-question-3.html` — Phishing → back to `/comptia-sec+-home.html`
 
 ## Conventions (match CCNA / ENCOR)
 

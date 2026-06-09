@@ -26,8 +26,6 @@ Allow: /
 Disallow: /admin
 Disallow: /admin/
 Disallow: /api/
-Disallow: /choose-training-path.html
-Disallow: /secplus-home.html
 Disallow: /*Training_Portal.html
 Disallow: /CCNP-ENCOR-Study/access-restricted.html
 Disallow: /CCNP-ENCOR-Study/admin-renew.html
@@ -69,8 +67,6 @@ NOCRAWL_SUFFIXES = (
 )
 
 NOCRAWL_EXACT = {
-    "choose-training-path.html",
-    "secplus-home.html",
     "CCNP-ENCOR-Study/access-restricted.html",
     "CCNP-ENCOR-Study/admin-renew.html",
 }
