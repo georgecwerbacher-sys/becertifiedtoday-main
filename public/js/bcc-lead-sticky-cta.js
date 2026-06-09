@@ -67,8 +67,13 @@
   var wired = false;
 
   function detectConfig() {
+    if (document.getElementById(CONFIGS.ccna.stickyId)) return CONFIGS.ccna;
+    if (document.getElementById(CONFIGS.encor.stickyId)) return CONFIGS.encor;
+    if (document.getElementById(CONFIGS.secplus.stickyId)) return CONFIGS.secplus;
     var path = location.pathname || "";
-    if (path.indexOf(CONFIGS.ccna.homeMatch) >= 0) return CONFIGS.ccna;
+    if (path.indexOf(CONFIGS.ccna.homeMatch) >= 0 || path.indexOf("/ccna/practice-test") >= 0) {
+      return CONFIGS.ccna;
+    }
     if (path.indexOf(CONFIGS.encor.homeMatch) >= 0) return CONFIGS.encor;
     if (path.indexOf(CONFIGS.secplus.homeMatch) >= 0) return CONFIGS.secplus;
     return null;

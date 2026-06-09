@@ -410,5 +410,5 @@ Timed Sim Included | 120-min exam-style run | With 10-day portal access | https:
 
 - Purchase fold: 10-day $9.99 only (30-day hidden)
 - Auto-scroll to `#purchase`
-- 10-day popup suppressed (script: `public/js/ccna-portal-10d-landing.js`)
+- One-time $9.99 / 10-day popup after 5s (same as organic traffic; `bcc-10d-one-time-offer.js`)
 - Mobile sticky: `Get 10-day access · $9.99`

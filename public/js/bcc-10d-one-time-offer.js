@@ -70,8 +70,13 @@
   var wired = false;
 
   function detectConfig() {
+    if (document.getElementById(CONFIGS.ccna.rootId)) return CONFIGS.ccna;
+    if (document.getElementById(CONFIGS.encor.rootId)) return CONFIGS.encor;
+    if (document.getElementById(CONFIGS.secplus.rootId)) return CONFIGS.secplus;
     var path = location.pathname || "";
-    if (path.indexOf(CONFIGS.ccna.homeMatch) >= 0) return CONFIGS.ccna;
+    if (path.indexOf(CONFIGS.ccna.homeMatch) >= 0 || path.indexOf("/ccna/practice-test") >= 0) {
+      return CONFIGS.ccna;
+    }
     if (path.indexOf(CONFIGS.encor.homeMatch) >= 0) return CONFIGS.encor;
     if (path.indexOf(CONFIGS.secplus.homeMatch) >= 0) return CONFIGS.secplus;
     return null;
@@ -102,19 +107,10 @@
     } catch (_) {}
   }
 
-  function isPortal10dAdLanding() {
-    if (document.documentElement.classList.contains("ccna-landing-portal-10d")) return true;
-    if (typeof window.bccIsCcnaPortal10dLanding === "function" && window.bccIsCcnaPortal10dLanding()) {
-      return true;
-    }
-    return false;
-  }
-
   function canOffer() {
     if (!cfg || wasDismissed()) return false;
     if (cfg.hasAccess()) return false;
     if (portalGateOpen()) return false;
-    if (cfg.homeMatch === "ccna-home" && isPortal10dAdLanding()) return false;
     return true;
   }
 

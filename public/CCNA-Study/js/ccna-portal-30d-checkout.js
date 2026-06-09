@@ -1,54 +1,71 @@
 /**
- * Opens Stripe Payment Links for CCNA 10-day and 30-day training portal access.
- * URLs come from:
- *   GET /api/ccna-portal-payment-link?plan=10d (Vercel env STRIPE_PAYMENT_LINK_CCNA_PORTAL_10D)
- *   GET /api/ccna-portal-payment-link?plan=30d (Vercel env STRIPE_PAYMENT_LINK_CCNA_PORTAL_30D)
- * Configure each Payment Link "After payment" redirect to:
+ * Stripe Payment Links for CCNA 10-day and 30-day full library access.
+ *
+ * Stripe Dashboard → each Payment Link → After payment → custom redirect URL:
  *   /CCNA-Study/CCNA_Training_Portal.html?session_id={CHECKOUT_SESSION_ID}
- * The portal page verifies the session, saves access in this browser (and the checkout session id for restore), then strips session_id from the URL.
- * If access disappears after clearing site data, use restore-access or email-link pages under /CCNA-Study/.
- * Magic-link email at checkout requires Stripe webhook + Resend + PORTAL_MAGIC_LINK_SECRET (same pattern as other training portals; see .env.example).
+ *
+ * Optional metadata on the link: productId = ccna-portal-10d or ccna-portal-30d
  */
 (function () {
-  function fetchPaymentLink(endpoint) {
-    return fetch(endpoint)
-      .then(function (r) {
-        return r.json().then(function (body) {
-          if (!r.ok) {
-            throw new Error((body && body.error) || "Could not load checkout link");
-          }
-          if (!body || typeof body.url !== "string" || !body.url.length) {
-            throw new Error("Invalid checkout link");
-          }
-          return body.url;
-        });
-      });
+  var LINKS = {
+    "10d": "https://buy.stripe.com/00wcN458x6Szglq6Ruc3m04",
+    "30d": "https://buy.stripe.com/14A7sK58xccT4CI8ZCc3m03",
+  };
+
+  var PRODUCTS = {
+    "10d": {
+      id: "ccna_portal_10d",
+      name: "CCNA 10-day access",
+      value: "9.99",
+      defaultLabel: "Get 10-day access",
+      labelKey: "ccnaPortal10dCheckoutLabel",
+    },
+    "30d": {
+      id: "ccna_portal_30d",
+      name: "CCNA 30-day access",
+      value: "19.99",
+      defaultLabel: "Get 30-day access",
+      labelKey: "ccnaPortal30dCheckoutLabel",
+    },
+  };
+
+  function wireCheckout(btn, tier) {
+    var product = PRODUCTS[tier];
+    var url = LINKS[tier];
+    if (!product || !url) return;
+
+    if (!btn.dataset[product.labelKey]) {
+      btn.dataset[product.labelKey] = btn.textContent.trim() || product.defaultLabel;
+    }
+
+    btn.addEventListener("click", function (ev) {
+      if (ev && typeof ev.preventDefault === "function") ev.preventDefault();
+      if (btn.dataset.loading === "1") return;
+      if (typeof window.bccTrackBeginCheckout === "function") {
+        btn.setAttribute("data-bcc-item-id", product.id);
+        btn.setAttribute("data-bcc-item-name", product.name);
+        btn.setAttribute("data-bcc-value", product.value);
+        btn.setAttribute("data-bcc-currency", "USD");
+        window.bccTrackBeginCheckout(btn);
+      }
+      btn.dataset.loading = "1";
+      if (btn.tagName === "BUTTON") {
+        btn.disabled = true;
+        btn.textContent = "Redirecting…";
+      } else {
+        btn.setAttribute("aria-busy", "true");
+        btn.textContent = "Redirecting…";
+      }
+      window.location.href = url;
+    });
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll("[data-ccna-portal-10d-checkout], [data-ccna-portal-30d-checkout]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        if (btn.dataset.loading === "1") return;
-        btn.dataset.loading = "1";
-        btn.textContent = "Redirecting…";
-        btn.disabled = true;
-        var endpoint = btn.hasAttribute("data-ccna-portal-10d-checkout")
-          ? "/api/ccna-portal-payment-link?plan=10d"
-          : "/api/ccna-portal-payment-link?plan=30d";
-        fetchPaymentLink(endpoint)
-          .then(function (url) {
-            window.location.href = url;
-          })
-          .catch(function () {
-            btn.dataset.loading = "0";
-            btn.disabled = false;
-            btn.textContent = btn.dataset.ccnaPortal30dCheckoutLabel || "Buy";
-            alert("Checkout is temporarily unavailable. Please try again in a moment.");
-          });
-      });
-      if (!btn.dataset.ccnaPortal30dCheckoutLabel) {
-        btn.dataset.ccnaPortal30dCheckoutLabel = btn.textContent.trim() || "Buy";
-      }
+    document.querySelectorAll("[data-ccna-portal-10d-checkout]").forEach(function (btn) {
+      wireCheckout(btn, "10d");
+    });
+    document.querySelectorAll("[data-ccna-portal-30d-checkout]").forEach(function (btn) {
+      wireCheckout(btn, "30d");
     });
   });
 })();
