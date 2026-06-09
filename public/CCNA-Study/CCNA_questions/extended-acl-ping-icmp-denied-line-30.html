@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST GET to retrieve interface list</title>
+  <title>CCNA — Extended ACL ping vs TCP ACEs</title>
   <style>
     :root {
       color-scheme: light;
@@ -287,17 +287,22 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/dna-center-northbound-rest-api.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/named-extended-acl-sequence-insert-entry.html">Back</a>
       <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/sdn-control-plane-forwarding-decisions-centralized.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/extended-acl-ssh-management-192-168-5-inbound.html">Next</a>
       </div>
     </nav>
-    <h1>A network engineer needs to retrieve a list of all interfaces on a Cisco device using a REST API call. Which HTTP method and response format are most appropriate?</h1>
+    <div class="exhibit-router-cli" role="region" aria-label="Extended ACL entries">
+        <pre>10 deny tcp any host 10.1.1.100 eq 80
+20 permit tcp any host 10.1.1.100 eq 443
+30 deny ip any any</pre>
+      </div>
+    <h1>An administrator applies an extended ACL to an interface. The ACL has the entries shown in the exhibit. A user at 192.168.1.50 tries to ping 10.1.1.100. What happens?</h1>
 
-    <label class="choice"><input type="radio" name="restgetif1" value="A" />A. POST method; response in XML only</label>
-    <label class="choice"><input type="radio" name="restgetif1" value="B" />B. GET method; response in JSON or XML</label>
-    <label class="choice"><input type="radio" name="restgetif1" value="C" />C. PUT method; response in JSON only</label>
-    <label class="choice"><input type="radio" name="restgetif1" value="D" />D. DELETE method; response in plain text</label>
+    <label class="choice"><input type="radio" name="aclping1" value="A" />A. The ping succeeds because ICMP is not explicitly denied</label>
+    <label class="choice"><input type="radio" name="aclping1" value="B" />B. The ping is denied by line 10</label>
+    <label class="choice"><input type="radio" name="aclping1" value="C" />C. The ping is denied by line 30</label>
+    <label class="choice"><input type="radio" name="aclping1" value="D" />D. The ping succeeds because of the implicit permit at the end</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -324,14 +329,14 @@
 
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 GET is the standard HTTP verb for read-only retrieval of resources such as an interface list. Cisco REST APIs commonly return structured data in JSON and may also support XML depending on the platform and Accept header. POST (A) is typically used to create resources or submit actions. PUT (C) updates or replaces resources. DELETE (D) removes resources.";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C \u2014 Ping uses ICMP, which is IP traffic but not TCP. Lines 10 and 20 match only TCP to 10.1.1.100 on ports 80 and 443, so the ICMP echo request does not match them. Line 30 deny ip any any matches all IP packets, including ICMP, and denies the ping. A is wrong because ICMP is covered by deny ip any any. B is wrong because line 10 is TCP port 80 only. D is wrong because extended ACLs end with an implicit deny all; here line 30 explicitly denies remaining IP traffic before the implicit deny.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="restgetif1"]:checked');
+        var sel = document.querySelector('input[name="aclping1"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -348,7 +353,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="restgetif1"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="aclping1"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

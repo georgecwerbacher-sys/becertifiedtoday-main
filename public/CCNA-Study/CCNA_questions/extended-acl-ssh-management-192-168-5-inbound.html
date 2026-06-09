@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST GET to retrieve interface list</title>
+  <title>CCNA — Extended ACL SSH from management subnet</title>
   <style>
     :root {
       color-scheme: light;
@@ -287,17 +287,49 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/dna-center-northbound-rest-api.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/extended-acl-ping-icmp-denied-line-30.html">Back</a>
       <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/sdn-control-plane-forwarding-decisions-centralized.html">Next</a>
+      <span class="nav-link nav-next nav-link--disabled" aria-hidden="true">Next</span>
       </div>
     </nav>
-    <h1>A network engineer needs to retrieve a list of all interfaces on a Cisco device using a REST API call. Which HTTP method and response format are most appropriate?</h1>
+    <h1>A network engineer needs to permit only SSH access to a router from the 192.168.5.0/24 management network. Which extended ACL correctly accomplishes this when applied inbound on the management interface?</h1>
 
-    <label class="choice"><input type="radio" name="restgetif1" value="A" />A. POST method; response in XML only</label>
-    <label class="choice"><input type="radio" name="restgetif1" value="B" />B. GET method; response in JSON or XML</label>
-    <label class="choice"><input type="radio" name="restgetif1" value="C" />C. PUT method; response in JSON only</label>
-    <label class="choice"><input type="radio" name="restgetif1" value="D" />D. DELETE method; response in plain text</label>
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="aclsshmgmt1" value="A" aria-label="Select answer option A" />
+        <span class="cli-router-choice-badge" aria-hidden="true">A</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">A. permit tcp 192.168.5.0 0.0.0.255 any eq 22</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="aclsshmgmt1" value="B" aria-label="Select answer option B" />
+        <span class="cli-router-choice-badge" aria-hidden="true">B</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">B. permit udp 192.168.5.0 0.0.0.255 any eq 22</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="aclsshmgmt1" value="C" aria-label="Select answer option C" />
+        <span class="cli-router-choice-badge" aria-hidden="true">C</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">C. permit tcp any 192.168.5.0 0.0.0.255 eq 22</pre>
+    </label>
+
+    <label class="choice mono cli-router-choice">
+      <span class="cli-router-choice-controls">
+        <input type="radio" name="aclsshmgmt1" value="D" aria-label="Select answer option D" />
+        <span class="cli-router-choice-badge" aria-hidden="true">D</span>
+        <span class="cli-router-choice-title">Router CLI — candidate config</span>
+      </span>
+      <pre class="cli-router-console">D. permit ip 192.168.5.0 0.0.0.255 any eq 22</pre>
+    </label>
+
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -324,14 +356,14 @@
 
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 GET is the standard HTTP verb for read-only retrieval of resources such as an interface list. Cisco REST APIs commonly return structured data in JSON and may also support XML depending on the platform and Accept header. POST (A) is typically used to create resources or submit actions. PUT (C) updates or replaces resources. DELETE (D) removes resources.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A \u2014 SSH uses TCP port 22. Applied inbound on the management interface, the permit must match sources in 192.168.5.0/24 (wildcard 0.0.0.255) initiating TCP to the router (destination any eq 22). B is wrong because SSH is TCP, not UDP. C reverses source and destination, permitting SSH to 192.168.5.0/24 from any source instead of SSH from the management subnet to the router. D is wrong because permit ip does not take a TCP port qualifier (eq 22); port matching requires a TCP or UDP ACE.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="restgetif1"]:checked');
+        var sel = document.querySelector('input[name="aclsshmgmt1"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -348,7 +380,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="restgetif1"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="aclsshmgmt1"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

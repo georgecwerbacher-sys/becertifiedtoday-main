@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST GET to retrieve interface list</title>
+  <title>CCNA — Port security restrict mode third MAC</title>
   <style>
     :root {
       color-scheme: light;
@@ -287,17 +287,26 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/dna-center-northbound-rest-api.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/port-security-mitigate-mac-flooding-dhcp-starvation.html">Back</a>
       <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/sdn-control-plane-forwarding-decisions-centralized.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/dai-dhcp-snooping-binding-table-arp-spoofing.html">Next</a>
       </div>
     </nav>
-    <h1>A network engineer needs to retrieve a list of all interfaces on a Cisco device using a REST API call. Which HTTP method and response format are most appropriate?</h1>
-
-    <label class="choice"><input type="radio" name="restgetif1" value="A" />A. POST method; response in XML only</label>
-    <label class="choice"><input type="radio" name="restgetif1" value="B" />B. GET method; response in JSON or XML</label>
-    <label class="choice"><input type="radio" name="restgetif1" value="C" />C. PUT method; response in JSON only</label>
-    <label class="choice"><input type="radio" name="restgetif1" value="D" />D. DELETE method; response in plain text</label>
+    <h1>An administrator configures port security on a switch port with the following commands:</h1>
+    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="Port security interface configuration">
+        <pre>switchport mode access
+switchport port-security
+switchport port-security maximum 2
+switchport port-security violation restrict
+switchport port-security mac-address sticky</pre>
+      </div>
+    </div>
+    <p class="stem-after-exhibit">What happens when a third unique MAC address is detected on this port?</p>
+    <label class="choice"><input type="radio" name="psmax2r1" value="A" />A. The port is shut down (err-disabled)</label>
+    <label class="choice"><input type="radio" name="psmax2r1" value="B" />B. Traffic from the third MAC address is dropped, and a syslog message and SNMP trap are generated, but the port remains operational</label>
+    <label class="choice"><input type="radio" name="psmax2r1" value="C" />C. Traffic from the third MAC address is silently dropped with no notification</label>
+    <label class="choice"><input type="radio" name="psmax2r1" value="D" />D. All traffic on the port is dropped until the violation is cleared</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -325,13 +334,13 @@
   <script>
     (function () {
       var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 GET is the standard HTTP verb for read-only retrieval of resources such as an interface list. Cisco REST APIs commonly return structured data in JSON and may also support XML depending on the platform and Accept header. POST (A) is typically used to create resources or submit actions. PUT (C) updates or replaces resources. DELETE (D) removes resources.";
+      var CORRECT_MSG = "Correct. B \u2014 With maximum 2 and violation restrict, a third unique MAC triggers a violation: traffic from that MAC is dropped, a syslog message and SNMP trap are sent, and the port stays up. A describes shutdown violation mode (default). C describes protect mode (drops violating traffic without notification). D is not standard restrict/shutdown/protect behavior for port security.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="restgetif1"]:checked');
+        var sel = document.querySelector('input[name="psmax2r1"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -348,7 +357,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="restgetif1"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="psmax2r1"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

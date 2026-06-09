@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — REST GET to retrieve interface list</title>
+  <title>CCNA — Unauthorized rogue access point threat</title>
   <style>
     :root {
       color-scheme: light;
@@ -287,17 +287,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/dna-center-northbound-rest-api.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/wpa3-enterprise-192-bit-gcmp-256-suite.html">Back</a>
       <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/sdn-control-plane-forwarding-decisions-centralized.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/wpa2-enterprise-8021x-eap-radius.html">Next</a>
       </div>
     </nav>
-    <h1>A network engineer needs to retrieve a list of all interfaces on a Cisco device using a REST API call. Which HTTP method and response format are most appropriate?</h1>
+    <h1>A network administrator discovers that an employee has connected an unauthorized access point to the corporate network. What is this type of security threat called?</h1>
 
-    <label class="choice"><input type="radio" name="restgetif1" value="A" />A. POST method; response in XML only</label>
-    <label class="choice"><input type="radio" name="restgetif1" value="B" />B. GET method; response in JSON or XML</label>
-    <label class="choice"><input type="radio" name="restgetif1" value="C" />C. PUT method; response in JSON only</label>
-    <label class="choice"><input type="radio" name="restgetif1" value="D" />D. DELETE method; response in plain text</label>
+    <label class="choice"><input type="radio" name="rogueap1" value="A" />A. Evil twin attack</label>
+    <label class="choice"><input type="radio" name="rogueap1" value="B" />B. Rogue access point</label>
+    <label class="choice"><input type="radio" name="rogueap1" value="C" />C. Deauthentication attack</label>
+    <label class="choice"><input type="radio" name="rogueap1" value="D" />D. War driving</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -325,13 +325,13 @@
   <script>
     (function () {
       var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B \u2014 GET is the standard HTTP verb for read-only retrieval of resources such as an interface list. Cisco REST APIs commonly return structured data in JSON and may also support XML depending on the platform and Accept header. POST (A) is typically used to create resources or submit actions. PUT (C) updates or replaces resources. DELETE (D) removes resources.";
+      var CORRECT_MSG = "Correct. B \u2014 A rogue access point is an unauthorized AP connected to the corporate network, creating an uncontrolled wireless entry point that can bypass security policies. An evil twin attack (A) impersonates a legitimate SSID to lure users to an attacker-controlled AP. A deauthentication attack (C) sends forged disconnect frames to knock clients off Wi-Fi. War driving (D) is the practice of scanning for wireless networks while mobile, not the name for an unauthorized AP on the LAN.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="restgetif1"]:checked');
+        var sel = document.querySelector('input[name="rogueap1"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -348,7 +348,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="restgetif1"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="rogueap1"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
