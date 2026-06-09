@@ -18,6 +18,36 @@ Copy blocks below into Google Ads (Search campaign) or Google Ads Editor. Parent
 
 ---
 
+## PBQ library update (2026-06-08) — refresh live Ads copy
+
+Paid portal now advertises **28 practice scenarios** on [[../../06-website-optimization/pages/comptia-sec-plus-home|comptia-sec+-home.html]] and groups labs by subject on `/COMP_TIA_SEC+/SEC+_Training_Portal.html`:
+
+| Bucket | Count | Examples |
+|--------|------:|----------|
+| Chained PBQ labs | **21** | ZTA, hybrid PKI, SIEM MITRE, Ubuntu SSH IR, governance (Back/Next chain) |
+| Standalone PBQs | **4** | Dark web IR, malware outbreak, secure web & OpenSSL, VPC payment |
+| Hot spot | **1** | Attack identification & remediation |
+| IR report exhibits | **2** | Compensation report Q3 addendum, employee credential audit |
+| **Total** | **28** | Plus legacy redirects and utility pages |
+
+**Canonical OpenSSL PBQ URL** (use in new sitelinks / `secplus_openssl_pbq`; old `simulation-secure-web-architecture-openssl.html` redirects here):
+
+```
+https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html
+```
+
+**Paste priority when editing live campaign:**
+
+1. **`secplus_portal_access`** — swap descriptions + add headlines `28 PBQ Practice Scenarios`, `21 Chain Labs + 4 Solo`
+2. **Campaign callouts** — add `28 PBQ Practice Scenarios`, `21 Chained PBQ Labs`, `Subject-Grouped Portal`
+3. **Product #4 (30-day portal)** — use description block below in **Products & services**
+4. **`secplus_openssl_pbq`** — update Final URL to canonical OpenSSL path above
+5. **Federal ad groups** — optional description line 4 swap to 28-scenario line
+
+Lead free-sim ad group copy is **unchanged** (still 20 MCQ + 1 dark web PBQ in the 35-min sample).
+
+---
+
 ## Campaign shell (create once)
 
 | Setting              | Value                                                                                                                     |
@@ -131,6 +161,7 @@ CompTIA Security+ Practice
 Realistic Timed Sample
 No Email To Start
 Try Before You Buy
+28 PBQs in Full Library
 Be Certified Today
 ```
 
@@ -284,7 +315,8 @@ SY0-701 Full Question Bank
 Portal + Timed Sim Included
 Security+ Exam Prep Portal
 All Five SY0-701 Domains
-PBQ & Drag-Drop Practice
+28 PBQ Practice Scenarios
+21 Chain Labs + 4 Solo
 No Subscription — One-Time
 $9.99 / 10 Days · From
 $19.99 / 30 Days · From
@@ -298,10 +330,10 @@ Free Sample on Same Page
 **RSA — Descriptions** (≤90 chars)
 
 ```
-Full SY0-701 library: banks, PBQ sims, portal modes, timed exam sim in browser.
-10-day ($9.99) or 30-day ($19.99). One-time purchase—no recurring membership.
+1000+ MCQ + 28 PBQ scenarios: 21 chain labs, 4 standalone, 1 hot spot, 2 reports.
+30-day ($19.99) portal: subject-grouped sims + timed exam. One-time. No sub.
 Exam prep aligned to CompTIA objectives—not PDF dumps or instructor-led courses.
-90-min timed sim included with portal. Try free 35-min sample before checkout.
+Try free 35-min sample or dark web PBQ preview on home before checkout.
 ```
 
 **Pin suggestion:** H1 → `SY0-701 Full Question Bank` · H2 → `Portal + Timed Sim Included`
@@ -332,7 +364,7 @@ Exam prep aligned to CompTIA objectives—not PDF dumps or instructor-led course
 **Final URL:**
 
 ```
-https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_openssl_pbq&utm_content=openssl-pbq
+https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_openssl_pbq&utm_content=openssl-pbq
 ```
 
 **Display path:** `Security+` / `OpenSSL-PBQ`
@@ -361,8 +393,8 @@ Free PBQ-Style Scenario
 
 ```
 SY0-701 PBQ: secure web, WAF, PKI/TLS, OpenSSL CSR steps in your browser.
-Exam prep—not a course. Deep-dive explanations. Portal & timed sim on Security+ home.
-Free sample questions on site. Timed 90-min simulation and domain banks on home.
+One of 28 portal scenarios—21 chain labs, 4 standalone, hot spot, 2 IR reports.
+Exam prep—not a course. Deep-dive explanations. Full library on Security+ home.
 Performance-based practice before test day. No PDFs or third-party lab software.
 ```
 
@@ -430,7 +462,7 @@ Study From Duty Station
 SY0-701 exam prep for federal, DoD, contractor cyber. Browser-only—your schedule.
 Free 35-min timed sample + domain scorecard. Full 90-min sim and portal when ready.
 Exam prep only. No clearance or DoD qualification processing. Confirm with org.
-Not a bootcamp or PDF dump. Realistic practice tests and PBQ items in your browser.
+Not a bootcamp or PDF dump. 28 PBQ scenarios + 1000+ MCQ in your browser.
 ```
 
 **Compliance:** Do not claim DoD endorsement. See [[../../01-strategy/security-plus-federal-defense-foundation|federal foundation]] disclaimer.
@@ -461,7 +493,7 @@ Minimum **6** sitelinks per campaign. Description lines ≤35 characters each.
 | 1   | Free timed simulation  | 35-min SY0-701 sample exam | Email unlock, one free try    | `https://becertifiedtoday.com/comptia-sec+-home.html#secplus-lead-capture?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-free-sim`                                    |
 | 2   | 90-minute timed sim    | Full SY0-701 practice exam | $9.99 one attempt, no sub     | `https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-sim`                                                     |
 | 3   | Sample questions       | Two MCQ per run, free      | Instant feedback, no checkout | `https://becertifiedtoday.com/secplus-sample?track=questions&utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-sample`                                                   |
-| 4   | OpenSSL PBQ simulation | Secure web & OpenSSL PBQ   | Free browser exam prep        | `https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-openssl` |
+| 4   | OpenSSL PBQ simulation | Secure web & OpenSSL PBQ   | 1 of 28 portal scenarios      | `https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-openssl` |
 | 5   | 30-day all-access      | Full SY0-701 question bank | $19.99 one-time, no sub       | `https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-portal-30d`                                              |
 | 6   | Pricing & access       | 10-day or 30-day access    | From $9.99, no subscription   | `https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pricing`                                                 |
 |     |                        |                            |                               |                                                                                                                                                                                                          |
@@ -480,7 +512,9 @@ Verified Explanations
 One-Time Pricing
 No Subscription
 SY0-701 Objectives Aligned
-PBQ & Simulation Items
+28 PBQ Practice Scenarios
+21 Chained PBQ Labs
+Subject-Grouped Portal
 ```
 
 ---
@@ -489,7 +523,7 @@ PBQ & Simulation Items
 
 **Types:** Courses → `SY0-701 Domain 1` · `Domain 2 Threats` · `Domain 3 Architecture` · `Domain 4 SecOps` · `Domain 5 Governance`
 
-**Types:** Types → `Timed simulation` · `Practice questions` · `PBQ simulations` · `Drag-and-drop items`
+**Types:** Types → `21 chain labs` · `4 standalone PBQs` · `Hot spot` · `IR report exhibits` · `Drag-and-drop`
 
 ---
 
@@ -504,7 +538,7 @@ Paste each row into **Add products or services**. Names ≤120 chars; descriptio
 | 3 | Security+ SY0-701 10-Day All-Access Practice Portal | `https://becertifiedtoday.com/comptia-sec+-home.html#purchase` |
 | 4 | Security+ SY0-701 30-Day All-Access Practice Portal | `https://becertifiedtoday.com/comptia-sec+-home.html#purchase` |
 | 5 | Free Security+ SY0-701 Sample Practice Questions | `https://becertifiedtoday.com/secplus-sample?track=questions` |
-| 6 | Security+ SY0-701 PBQ — Secure Web & OpenSSL Simulation | `https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html` |
+| 6 | Security+ SY0-701 PBQ — Secure Web & OpenSSL Simulation | `https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html` |
 
 ### Descriptions (copy under each name)
 
@@ -529,7 +563,7 @@ One full SY0-701 timed practice exam: up to 90 minutes with multiple-choice, sim
 **4 — 30-day all-access portal ($19.99)**
 
 ```
-30 days of full SY0-701 exam preparation: question banks, PBQ-style simulations and hot spots, review modes, progress tracking, and the 90-minute timed simulation. Browser-only—no PDFs or third-party apps. $19.99 one-time access; no subscription.
+30 days of full SY0-701 exam preparation: 1000+ question banks plus 28 PBQ practice scenarios (21 chained labs, 4 standalone simulations, 1 hot spot, and 2 IR report exhibits), subject-grouped in the practice portal, adaptive review, and the 90-minute timed simulation. Browser-only—no PDFs or third-party apps. $19.99 one-time access; no subscription.
 ```
 
 **5 — Free sample practice questions**
@@ -541,7 +575,7 @@ Try two shuffled SY0-701 multiple-choice practice questions per run—with insta
 **6 — PBQ: secure web architecture & OpenSSL**
 
 ```
-Free interactive SY0-701 performance-based practice: secure web architecture, WAF, PKI/TLS, and OpenSSL CSR steps in the browser. Exam prep with deep-dive explanations. Upgrade to the full portal or 90-minute timed simulation on the Security+ home page when ready.
+Free interactive SY0-701 performance-based practice: secure web architecture, WAF, PKI/TLS, and OpenSSL CSR steps in the browser. One of 28 portal scenarios (21 chain labs, 4 standalone, 1 hot spot, 2 IR reports). Exam prep with deep-dive explanations. Upgrade to the full portal on the Security+ home page when ready.
 ```
 
 ### If Google asks for a single category
@@ -588,6 +622,7 @@ Use: **Education & training → Test preparation** or **Educational software / O
 
 | Date | Note |
 |------|------|
+| 2026-06-08 | PBQ library refresh: **28 scenarios** (21 chain + 4 standalone + 1 hot spot + 2 reports); portal subject cards; canonical OpenSSL URL under `PBQ_Production/` |
 | 2026-05-31 | RSA descriptions trimmed to ≤90 chars; sitelinks expanded to 6 with Desc 1/2 + full URLs |
 | 2026-05-31 | Verified vs prod: homepage sample = 2 MCQ; lead sim 35 min / 20 MCQ + PBQ unchanged — see [[../../06-website-optimization/ad-site-verification-2026-05-31|ad-site verification]] |
 | 2026-05-30 | Initial paste-ready export; pricing $9.99 sim; free sim 35 min / 21 items |

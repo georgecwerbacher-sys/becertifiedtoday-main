@@ -1,11 +1,11 @@
 ---
 type: landing-page
 page_role: cta-landing
-url: /COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html
-canonical: https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html
+url: /COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html
+canonical: https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html
 campaign: secplus_openssl_pbq
 status: active
-repo_file: public/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html
+repo_file: public/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html
 last_audit: 2026-05-30
 quality_score_notes: CTA landing for PBQ/openssl ad group — message match on WAF, PKI/TLS, OpenSSL CSR
 ---
@@ -18,10 +18,10 @@ Campaign: [[../../02-campaigns/security-plus/security-plus-google-ads|Security+ 
 
 ## Live URLs
 
-- Page: `https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html`
+- Page: `https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html` (legacy `simulation-secure-web-architecture-openssl.html` redirects here)
 - **Ads final URL (recommended):**
   ```
-  https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_openssl_pbq&utm_content={creative}
+  https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_openssl_pbq&utm_content={creative}
   ```
 - **Primary conversion destination:** [[pages/comptia-sec-plus-home|comptia-sec+-home.html#purchase]]
 - **Free sample (questions):** `/secplus-sample?track=questions`

@@ -10,6 +10,8 @@ Implement changes in Cursor under `public/`. Link to page notes in `06-website-o
 
 | Date | Page (path) | Change summary | Reason (QS / CVR / UX) | Campaign | Deployed | Ads LP exp. (before→after) |
 |------|-------------|----------------|------------------------|----------|----------|----------------------------|
+| 2026-06-08 | `marketing-vault/02-campaigns/security-plus/security-plus-google-ads-export.md`, `security-plus-google-ads.md`, `secplus-portal-access-ad-group.html` | PBQ library refresh: **28 scenarios** (21 chain + 4 standalone + 1 hot spot + 2 reports); canonical OpenSSL URL; portal RSA/callouts/sitelinks | Message match after PBQ production + portal subject cards | secplus_portal, secplus_openssl_pbq | n/a | |
+| 2026-06-08 | `/comptia-sec+-home.html`, `/COMP_TIA_SEC+/SEC+_Training_Portal.html` | Home advertises 28 PBQ scenarios; portal sims grouped by subject with even card layout | PBQ depth proof + portal UX | secplus_portal | yes — prod | |
 | 2026-06-06 | `/ccna-home.html`, `ccna-portal-10d-landing.js`, `bcc-10d-one-time-offer.js` | Ad group `ccna_portal_10d`: `#purchase` shows **$9.99 / 10-day** only when `utm_content=portal-10d`; scroll to purchase; suppress 10d popup | Message match — single paid CTA for portal intent | ccna_portal | no | |
 | 2026-06-06 | `scripts/ccna-portal-10d-google-ads.md` | Standalone `ccna_portal_10d` paste-ready doc (not Obsidian vault); products list aligned to ccna-home.html | Google Ads setup outside vault | ccna_portal | n/a | |
 | 2026-05-30 | `/ccna-home.html` | Exam prep meta/title; `#exam-audience` (people, when, where); federal/contractor keywords | Active ccna_portal Ads — message match + contractor segment | ccna_portal | no |

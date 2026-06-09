@@ -24,7 +24,7 @@ Parent campaign: [[security-plus-google-ads|Security+ Google Ads]] · Paste-read
 | Results screen | **Email my scorecard** → HTML summary via Resend |
 | Post-results | Upsell modal → **30-day access $19.99** (`#purchase`) |
 
-Full library + **90-minute** sim included in **30-day portal** (`#purchase`, $19.99).
+Full library (**1000+ MCQ + 28 PBQ scenarios**: 21 chain labs, 4 standalone, 1 hot spot, 2 IR reports) + **90-minute** sim included in **30-day portal** (`#purchase`, $19.99).
 
 Blueprint: `public/COMP_TIA_SEC+/data/secplus-free-simulation-blueprint.json`  
 Runner: `public/COMP_TIA_SEC+/test-simulation-runner.html?free=1`

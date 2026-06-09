@@ -45,8 +45,8 @@ Primary **Google Ads final URL** for [[../../02-campaigns/security-plus/security
 ## Current hero / message (prod 2026-06-04)
 
 - **Page order:** `#purchase` (pricing) → intro → free sim → samples → compare → study plan — matches CCNA funnel (`order: 0` on `#purchase`)
-- **H1:** SY0-701 Security+ Exam Prep: 800+ Questions, Simulations & Adaptive Testing
-- **Lead:** You-focused exam prep (not a course); 800+ bank, simulations, adaptive modes; browser-only; federal/DoD context with “confirm with your manager”; free samples + 35-min timed exam
+- **H1:** SY0-701 Security+ Exam Prep: 1000+ Questions, Simulations & Adaptive Testing
+- **Lead:** You-focused exam prep (not a course); 1000+ bank, **28 PBQ practice scenarios** (21 chain labs, 4 standalone, 1 hot spot, 2 IR report exhibits), adaptive modes; browser-only; federal/DoD context with “confirm with your manager”; free samples + 35-min timed exam
 - **Writing rules:** [[../../12-Writing/_Writing-Rules|Guest page writing rules]] applied 2026-06-04
 - **Federal section:** Removed as dedicated block (2026-05-30); DoD/8140 still in hero, meta, keywords, FAQ
 - **Lead magnet:** `#secplus-lead-capture` — badge “Free · 35 minutes”; H2 “Start your free SY0-701 timed simulation”; **20 MCQ + 1 PBQ**; scorecard + optional email

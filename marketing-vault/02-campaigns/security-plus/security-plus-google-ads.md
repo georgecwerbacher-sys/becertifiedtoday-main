@@ -21,7 +21,7 @@ landing_pages:
   - /comptia-sec+-home.html
   - /comptia-sec+-home.html#purchase
   - /comptia-sec+-home.html#secplus-lead-capture
-  - /COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html
+  - /COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html
 sample_entry:
   - /secplus-sample?track=questions
   - /secplus-sample?home=secplus
@@ -68,7 +68,7 @@ https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&u
 Interactive **mid-funnel** landing for PBQ/openssl intent (not primary brand landing):
 
 ```
-https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/simulation-secure-web-architecture-openssl.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_openssl_pbq&utm_content={creative}
+https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_openssl_pbq&utm_content={creative}
 ```
 
 Page note: [[../../06-website-optimization/pages/simulation-secure-web-architecture-openssl|simulation-secure-web-architecture-openssl.md]] — high-value keywords, negatives, CTA map.
@@ -119,7 +119,7 @@ Post-purchase: `secplus-portal-checkout-success.html` → training portal at `/C
 
 - `/comptia-sec+-home.html` — **only** Security+ Google Ads final URL (exam prep + purchase + lead magnet).
 - `/secplus-home.html` — **legacy** sample hub; “launching soon” copy — **do not use for ads**. See [[../../06-website-optimization/pages/secplus-home-legacy|secplus-home legacy note]].
-- `/COMP_TIA_SEC+/SEC+_Training_Portal.html` — gated practice hub (checkout required).
+- `/COMP_TIA_SEC+/SEC+_Training_Portal.html` — gated practice hub (checkout required); **28 PBQ scenarios** in six subject-grouped simulation cards.
 - CCNP ENCOR ads → `/ccnp-home.html` — see [[../encor/ccnp-encor-google-ads|ENCOR campaign]] (not this Security+ campaign).
 
 ## Keywords & angles (draft)
@@ -154,7 +154,7 @@ National non-geo campaigns still run for generic `security+ practice test` keywo
 
 Message angles (aligned with [[../../01-strategy/positioning-and-messaging|positioning]]):
 
-- **Exam-realistic** — timed simulation, PBQ-style items, Back + mark for review
+- **Exam-realistic** — timed simulation, **28 PBQ scenarios** (21 chain + 4 standalone + 1 hot spot + 2 IR reports), Back + mark for review
 - **Verified solutions** — prep you can trust, not unvetted dumps
 - **Browser-only** — no PDF, no third-party software
 - **Free sim lead magnet** — 35 min, 20 MCQ + PBQ, domain scorecard
@@ -229,6 +229,7 @@ Before major ad spend increases, run the optimization workflow in [[../../06-web
 | 2026-05-30 | Campaign note created; primary landing = `comptia-sec+-home.html` | First marketing campaign focus |
 | 2026-06-03 | **$19.99-only** purchase CTA; free sim funnel + `generate_lead` on Start | Single paid SKU for growth |
 | 2026-06-03 | Ads: **$10/day**, Maximize clicks, **$2.50** max CPC, campaign negatives 32 | [[secplus-lead-free-sim-ad-group|lead ad group]] only |
+| 2026-06-08 | PBQ library: **28 scenarios** on home + subject-grouped portal; export RSA/callouts/sitelinks refreshed | Message match for portal-access ad group when enabled |
 
 ## Bidding verification
 
