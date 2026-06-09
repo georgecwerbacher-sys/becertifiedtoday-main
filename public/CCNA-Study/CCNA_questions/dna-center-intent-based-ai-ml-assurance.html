@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — After CAM flood: host C to host A</title>
+  <title>CCNA — DNA Center intent-based networking with AI/ML</title>
   <style>
     :root {
       color-scheme: light;
@@ -287,40 +287,17 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/ipv6-address-eui-64-prefix-mac-command.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/subnet-172-16-0-0-22-usable-host-addresses.html">Back</a>
       <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/rogue-dhcp-mitigate-snooping-dai-pair.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/terraform-plan-apply-create-modify-resources.html">Next</a>
       </div>
     </nav>
-    <h1>Refer to the exhibit.</h1>
-    <div class="exhibit-stack">
-      <div class="cli-device" role="region" aria-label="Switch 1 topology and CAM table after flooding attack">
-        <h2>Switch 1 topology</h2>
-        <pre>Host A ---- Fa0/1 ----+
-Host B ---- Fa0/2 ----+---- Switch 1 ---- Gi0/1 (uplink)
-Host C ---- Fa0/3 ----+      (host C just connected)
+    <h1>Which Cisco platform provides an intent-based networking approach that uses AI/ML to provide assurance, analytics, and automated remediation across the enterprise network?</h1>
 
-Switch1# show mac address-table count
-Mac Entries: 8192 (maximum reached)
-
-Switch1# show mac address-table dynamic
-          Mac Address Table
--------------------------------------------
-Vlan    Mac Address       Type        Ports
-----    -----------       --------    -----
-   1    0001.0001.0001    DYNAMIC     Fa0/2
-   1    0002.0002.0002    DYNAMIC     Fa0/3
-   1    ... (thousands of attack-learned MACs; host A MAC not present)
-
-Host C on Fa0/3 sends a unicast frame to host A (destination MAC not in table).</pre>
-      </div>
-    </div>
-    <p class="stem-after-exhibit">A frame flooding attack on Switch 1 just ended. Immediately afterward, a new host (host C) is connected and begins sending traffic to host A. What happens, and what can you do to prevent this from happening again?</p>
-    <label class="choice"><input type="radio" name="camflood1" value="A" />A. Switch 1 will forward the traffic just to host A. The best way to prevent this attack on the network is to use access lists on all switch ports.</label>
-    <label class="choice"><input type="radio" name="camflood1" value="B" />B. Switch 1 will forward the traffic to hosts A and B. The best way to prevent this attack on the network is to enable spanning-tree portfast on all switch ports.</label>
-    <label class="choice"><input type="radio" name="camflood1" value="C" />C. Switch 1 will forward the traffic to hosts A, B, and C. The best way to prevent this attack on the network is to use port security on all switch ports.</label>
-    <label class="choice"><input type="radio" name="camflood1" value="D" />D. Switch 1 will forward the traffic to all the ports, including hosts A, B, and the uplink port. The best way to prevent this attack on the network is to use port security on all switch ports except the uplink port.</label>
-    <label class="choice"><input type="radio" name="camflood1" value="E" />E. No packet will be forwarded until the switch is reloaded. The best way to prevent this attack on the network is to enable Spanning Tree BPDU Guard on all switch ports, except the uplink port.</label>
+    <label class="choice"><input type="radio" name="dnaiml1" value="A" />A. Cisco Meraki Dashboard</label>
+    <label class="choice"><input type="radio" name="dnaiml1" value="B" />B. Cisco DNA Center (Catalyst Center)</label>
+    <label class="choice"><input type="radio" name="dnaiml1" value="C" />C. Cisco Prime Infrastructure</label>
+    <label class="choice"><input type="radio" name="dnaiml1" value="D" />D. Cisco Packet Tracer</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -347,14 +324,14 @@ Host C on Fa0/3 sends a unicast frame to host A (destination MAC not in table).<
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 A MAC/frame flooding attack fills the CAM table with bogus entries, so legitimate addresses such as host A may be missing and new learning can fail while the table is saturated. Traffic from host C to an unknown destination MAC is flooded out every port in the VLAN except the ingress port (host C), including hosts A and B and the uplink. Port security on access ports limits how many MAC addresses each port may learn, stopping attackers from exhausting the CAM table; the uplink is typically excluded because it must carry many legitimate MACs. ACLs on switch ports (A) do not stop CAM flooding. PortFast (B) affects STP convergence, not CAM attacks. Flooding does not include the ingress port (C is wrong). Reloading is not required (E), and BPDU Guard targets STP BPDU risks, not CAM flooding.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B \u2014 Cisco DNA Center (now often called Catalyst Center) is the intent-based campus controller that uses telemetry, AI/ML-driven assurance, analytics, and automation to validate network intent and support remediation across the enterprise. Meraki Dashboard (A) is a cloud-managed platform but is not the primary DNA-style intent/assurance controller for enterprise campus automation in this context. Prime Infrastructure (C) is legacy management being superseded by DNA Center. Packet Tracer (D) is a learning/simulation tool, not a production operations platform.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="camflood1"]:checked');
+        var sel = document.querySelector('input[name="dnaiml1"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -371,7 +348,7 @@ Host C on Fa0/3 sends a unicast frame to host A (destination MAC not in table).<
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="camflood1"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="dnaiml1"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA — After CAM flood: host C to host A</title>
+  <title>CCNA — DNA Center API JSON health and issues</title>
   <style>
     :root {
       color-scheme: light;
@@ -287,40 +287,36 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/ipv6-address-eui-64-prefix-mac-command.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/ids-ml-anomaly-detection-unknown-attacks.html">Back</a>
       <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/rogue-dhcp-mitigate-snooping-dai-pair.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/ansible-vs-terraform-agentless-provisioning.html">Next</a>
       </div>
     </nav>
-    <h1>Refer to the exhibit.</h1>
+    <h1>A network engineer receives the following JSON data from a Cisco DNA Center API call:</h1>
     <div class="exhibit-stack">
-      <div class="cli-device" role="region" aria-label="Switch 1 topology and CAM table after flooding attack">
-        <h2>Switch 1 topology</h2>
-        <pre>Host A ---- Fa0/1 ----+
-Host B ---- Fa0/2 ----+---- Switch 1 ---- Gi0/1 (uplink)
-Host C ---- Fa0/3 ----+      (host C just connected)
-
-Switch1# show mac address-table count
-Mac Entries: 8192 (maximum reached)
-
-Switch1# show mac address-table dynamic
-          Mac Address Table
--------------------------------------------
-Vlan    Mac Address       Type        Ports
-----    -----------       --------    -----
-   1    0001.0001.0001    DYNAMIC     Fa0/2
-   1    0002.0002.0002    DYNAMIC     Fa0/3
-   1    ... (thousands of attack-learned MACs; host A MAC not present)
-
-Host C on Fa0/3 sends a unicast frame to host A (destination MAC not in table).</pre>
+      <div class="exhibit-router-cli" role="region" aria-label="Cisco DNA Center API JSON response">
+        <pre>{
+  "response": {
+    "deviceCount": 48,
+    "healthScore": {
+      "wired": 92,
+      "wireless": 87,
+      "overall": 90
+    },
+    "issueCount": {
+      "critical": 2,
+      "warning": 5,
+      "info": 12
+    }
+  }
+}</pre>
       </div>
     </div>
-    <p class="stem-after-exhibit">A frame flooding attack on Switch 1 just ended. Immediately afterward, a new host (host C) is connected and begins sending traffic to host A. What happens, and what can you do to prevent this from happening again?</p>
-    <label class="choice"><input type="radio" name="camflood1" value="A" />A. Switch 1 will forward the traffic just to host A. The best way to prevent this attack on the network is to use access lists on all switch ports.</label>
-    <label class="choice"><input type="radio" name="camflood1" value="B" />B. Switch 1 will forward the traffic to hosts A and B. The best way to prevent this attack on the network is to enable spanning-tree portfast on all switch ports.</label>
-    <label class="choice"><input type="radio" name="camflood1" value="C" />C. Switch 1 will forward the traffic to hosts A, B, and C. The best way to prevent this attack on the network is to use port security on all switch ports.</label>
-    <label class="choice"><input type="radio" name="camflood1" value="D" />D. Switch 1 will forward the traffic to all the ports, including hosts A, B, and the uplink port. The best way to prevent this attack on the network is to use port security on all switch ports except the uplink port.</label>
-    <label class="choice"><input type="radio" name="camflood1" value="E" />E. No packet will be forwarded until the switch is reloaded. The best way to prevent this attack on the network is to enable Spanning Tree BPDU Guard on all switch ports, except the uplink port.</label>
+    <p class="stem-after-exhibit">Based on this data, which statement is accurate?</p>
+    <label class="choice"><input type="radio" name="dnajson1" value="A" />A. The network has 48 critical issues and a health score of 87</label>
+    <label class="choice"><input type="radio" name="dnajson1" value="B" />B. The wireless health score is higher than the wired health score</label>
+    <label class="choice"><input type="radio" name="dnajson1" value="C" />C. There are 19 total issues, and the overall health score is 90</label>
+    <label class="choice"><input type="radio" name="dnajson1" value="D" />D. The wired network has 92 devices and 2 critical issues</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -347,14 +343,14 @@ Host C on Fa0/3 sends a unicast frame to host A (destination MAC not in table).<
 
   <script>
     (function () {
-      var CORRECT = "D";
-      var CORRECT_MSG = "Correct. D \u2014 A MAC/frame flooding attack fills the CAM table with bogus entries, so legitimate addresses such as host A may be missing and new learning can fail while the table is saturated. Traffic from host C to an unknown destination MAC is flooded out every port in the VLAN except the ingress port (host C), including hosts A and B and the uplink. Port security on access ports limits how many MAC addresses each port may learn, stopping attackers from exhausting the CAM table; the uplink is typically excluded because it must carry many legitimate MACs. ACLs on switch ports (A) do not stop CAM flooding. PortFast (B) affects STP convergence, not CAM attacks. Flooding does not include the ingress port (C is wrong). Reloading is not required (E), and BPDU Guard targets STP BPDU risks, not CAM flooding.";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C \u2014 issueCount totals 2 + 5 + 12 = 19 issues, and healthScore.overall is 90. A misreads deviceCount (48) as critical issues and uses the wireless score (87) as the overall health. B is wrong because wired (92) is higher than wireless (87). D misreads wired (92) as a device count; deviceCount is 48 at the top level.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="camflood1"]:checked');
+        var sel = document.querySelector('input[name="dnajson1"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -371,7 +367,7 @@ Host C on Fa0/3 sends a unicast frame to host A (destination MAC not in table).<
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="camflood1"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="dnajson1"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
