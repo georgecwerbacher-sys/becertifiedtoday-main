@@ -9,7 +9,7 @@
             <ol class="pbq-ssh-ufw__list">
               <li>
                 <span class="pbq-ssh-ufw__req"># 1. Allow SSH on new port (from management subnet only: 10.0.1.0/24)</span>
-                <select class="pbq-ssh-ufw-select" data-key="ufw-1" data-correct="ufw allow from 10.0.1.0/24 to any port 4422 proto tcp" aria-label="UFW rule 1">
+                <select class="pbq-ssh-ufw-select" data-key="ufw-1" aria-label="UFW rule 1">
                   <option value="">-- select command --</option>
                   <option>ufw allow 22/tcp</option>
                   <option>ufw allow from 10.0.1.0/24 to any port 4422 proto tcp</option>
@@ -19,7 +19,7 @@
               </li>
               <li>
                 <span class="pbq-ssh-ufw__req"># 2. Allow web traffic (HTTP + HTTPS) from anywhere</span>
-                <select class="pbq-ssh-ufw-select" data-key="ufw-2" data-correct="ufw allow 'Nginx Full'" aria-label="UFW rule 2">
+                <select class="pbq-ssh-ufw-select" data-key="ufw-2" aria-label="UFW rule 2">
                   <option value="">-- select command --</option>
                   <option>ufw allow 80,443/tcp</option>
                   <option>ufw allow http &amp;&amp; ufw allow https</option>
@@ -29,7 +29,7 @@
               </li>
               <li>
                 <span class="pbq-ssh-ufw__req"># 3. Set default policies (deny inbound, allow outbound)</span>
-                <select class="pbq-ssh-ufw-select" data-key="ufw-3" data-correct="ufw default deny incoming &amp;&amp; ufw default allow outgoing" aria-label="UFW rule 3">
+                <select class="pbq-ssh-ufw-select" data-key="ufw-3" aria-label="UFW rule 3">
                   <option value="">-- select command --</option>
                   <option>ufw default deny incoming &amp;&amp; ufw default allow outgoing</option>
                   <option>ufw default allow incoming &amp;&amp; ufw default deny outgoing</option>

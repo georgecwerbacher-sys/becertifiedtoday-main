@@ -136,12 +136,12 @@
               <h3 id="risk-ale-risk-notes-heading">Analyst notes</h3>
               <ul>
                 <li>
-                  <strong>Phishing ALE $150,000 is CRITICAL</strong> despite a lower SLE ($30,000) — high frequency (ARO
-                  5.0) drives annualized risk.
+                  <strong>Frequency matters:</strong> a lower SLE with a high ARO can still produce a high ALE (compare
+                  phishing vs ransomware rows).
                 </li>
                 <li>
-                  <strong>Security awareness training</strong> at $10,000/yr reducing ARO from 5.0 → 1.0 saves
-                  $120,000/yr = $70,000 net ROI (after $50,000 one-time cost in year one, still positive).
+                  <strong>Control ROI:</strong> estimate ALE before and after a control changes ARO, then compare to the
+                  control cost for the scenario in the question.
                 </li>
                 <li>
                   <strong>Acronyms:</strong> MTTR = Mean Time to Repair · MTBF = Mean Time Between Failures · RTO =
@@ -185,8 +185,9 @@
 
       <div class="actions">
         <button id="risk-ale-checkBtn" type="button">Check Answer</button>
-        <button id="risk-ale-showBtn" type="button">Show Answer</button>
         <button id="risk-ale-resetBtn" type="button">Reset</button>
+        <button id="risk-ale-showBtn" type="button">Show Answer</button>
+
         <span id="risk-ale-result" role="status" aria-live="polite"></span>
       </div></div></article>
         </div>
@@ -217,8 +218,8 @@
 
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [role='status']");
 var CORRECT = "B";
       var CORRECT_MSG =

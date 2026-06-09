@@ -13,7 +13,7 @@
         <h2 id="wap-security-heading" class="pbq-wap-panel__title">Security &amp; authentication</h2>
         <div class="pbq-wap-field">
           <label for="wapEncryption">Encryption standard (choose strongest)</label>
-          <select class="pbq-wap-select" id="wapEncryption" data-field="encryption" data-correct="wpa3-enterprise">
+          <select class="pbq-wap-select" id="wapEncryption" data-field="encryption">
             <option value="">-- Select --</option>
             <option value="wep">WEP (Wired Equivalent Privacy)</option>
             <option value="wpa-tkip">WPA (TKIP)</option>
@@ -24,7 +24,7 @@
         </div>
         <div class="pbq-wap-field">
           <label for="wapAuth">Authentication method</label>
-          <select class="pbq-wap-select" id="wapAuth" data-field="auth" data-correct="802.1x-radius">
+          <select class="pbq-wap-select" id="wapAuth" data-field="auth">
             <option value="">-- Select --</option>
             <option value="psk">Pre-Shared Key (PSK)</option>
             <option value="802.1x-radius">802.1X with RADIUS server</option>
@@ -38,7 +38,7 @@
         </div>
         <div class="pbq-wap-field">
           <label for="wapBand">Frequency band &amp; channel</label>
-          <select class="pbq-wap-select" id="wapBand" data-field="band" data-correct="5-ch149">
+          <select class="pbq-wap-select" id="wapBand" data-field="band">
             <option value="">-- Select --</option>
             <option value="2.4-ch1">2.4 GHz — Channel 1</option>
             <option value="2.4-ch6">2.4 GHz — Channel 6</option>
@@ -52,7 +52,7 @@
       <section class="pbq-wap-panel" aria-labelledby="wap-features-heading">
         <h2 id="wap-features-heading" class="pbq-wap-panel__title">Feature toggles</h2>
         <div class="pbq-wap-toggles">
-          <div class="pbq-wap-toggle" data-field="broadcast" data-correct="off">
+          <div class="pbq-wap-toggle" data-field="broadcast">
             <div class="pbq-wap-toggle__copy">
               <strong>Broadcast SSID</strong>
               <span>Visible to all devices?</span>
@@ -62,17 +62,17 @@
               <button type="button" class="pbq-wap-toggle__btn" data-val="off">OFF</button>
             </div>
           </div>
-          <div class="pbq-wap-toggle" data-field="wps" data-correct="off">
+          <div class="pbq-wap-toggle" data-field="wps">
             <div class="pbq-wap-toggle__copy">
               <strong>WPS (Wi-Fi Protected Setup)</strong>
               <span>PIN/button-based pairing</span>
             </div>
             <div class="pbq-wap-toggle__btns">
-              <button type="button" class="pbq-wap-toggle__btn pbq-wap-toggle__btn--active" data-val="on">ON</button>
+              <button type="button" class="pbq-wap-toggle__btn" data-val="on">ON</button>
               <button type="button" class="pbq-wap-toggle__btn" data-val="off">OFF</button>
             </div>
           </div>
-          <div class="pbq-wap-toggle" data-field="guest" data-correct="on">
+          <div class="pbq-wap-toggle" data-field="guest">
             <div class="pbq-wap-toggle__copy">
               <strong>Guest network</strong>
               <span>Isolated from corporate LAN?</span>
@@ -82,7 +82,7 @@
               <button type="button" class="pbq-wap-toggle__btn" data-val="off">OFF</button>
             </div>
           </div>
-          <div class="pbq-wap-toggle" data-field="rogue" data-correct="on">
+          <div class="pbq-wap-toggle" data-field="rogue">
             <div class="pbq-wap-toggle__copy">
               <strong>Rogue AP detection</strong>
               <span>Alert on unauthorized APs</span>
@@ -92,7 +92,7 @@
               <button type="button" class="pbq-wap-toggle__btn" data-val="off">OFF</button>
             </div>
           </div>
-          <div class="pbq-wap-toggle" data-field="mgmt-vlan" data-correct="on">
+          <div class="pbq-wap-toggle" data-field="mgmt-vlan">
             <div class="pbq-wap-toggle__copy">
               <strong>Management VLAN isolation</strong>
               <span>Separate mgmt traffic</span>
@@ -110,7 +110,7 @@
             <div><dt>Encryption</dt><dd data-preview="encryption">—</dd></div>
             <div><dt>Auth</dt><dd data-preview="auth">—</dd></div>
             <div><dt>SSID broadcast</dt><dd data-preview="broadcast">—</dd></div>
-            <div><dt>WPS</dt><dd data-preview="wps">Enabled (ON)</dd></div>
+            <div><dt>WPS</dt><dd data-preview="wps">—</dd></div>
             <div><dt>Guest network</dt><dd data-preview="guest">—</dd></div>
             <div><dt>Band / channel</dt><dd data-preview="band">—</dd></div>
           </dl>
@@ -121,8 +121,9 @@
 
   <div class="actions">
     <button id="checkBtn" type="button">Check Answer</button>
-    <button id="showBtn" type="button">Show Answer</button>
     <button id="resetBtn" type="button">Reset</button>
+    <button id="showBtn" type="button">Show Answer</button>
+
     <span id="result" role="status" aria-live="polite"></span>
   </div>
 </article>
@@ -160,8 +161,8 @@
   var band = root.querySelector('[data-field="band"]');
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [role='status']");
 
   function toggleVal(field) {
@@ -354,9 +355,7 @@
       wrap.querySelectorAll(".pbq-wap-toggle__btn").forEach(function (btn) {
         btn.classList.remove("pbq-wap-toggle__btn--active");
       });
-      if (wrap.getAttribute("data-field") === "wps") {
-        wrap.querySelector('[data-val="on"]').classList.add("pbq-wap-toggle__btn--active");
-      }
+      
     });
     root.querySelectorAll(".pbq-wap-select, .pbq-wap-input").forEach(function (el) {
       el.classList.remove("pbq-wap-select--ok", "pbq-wap-select--bad", "pbq-wap-input--ok", "pbq-wap-input--bad");

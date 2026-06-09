@@ -16,7 +16,7 @@
               <tr>
                 <th scope="col">Use case</th>
                 <th scope="col">Current (audit finding)</th>
-                <th scope="col">Correct algorithm</th>
+                <th scope="col">Replacement algorithm</th>
               </tr>
             </thead>
             <tbody>
@@ -29,10 +29,10 @@
                 <td>
                   <select class="pbq-ai-select" data-algo="tls-kex" aria-label="TLS key exchange algorithm">
                     <option value="">Select…</option>
-                    <option value="rsa">RSA-2048 (same as current)</option>
+                    <option value="rsa">RSA-2048</option>
                     <option value="ecdhe">ECDHE (Elliptic Curve Diffie-Hellman Ephemeral)</option>
                     <option value="dhe">DHE (Diffie-Hellman Ephemeral)</option>
-                    <option value="aes-gcm">AES-256-GCM (symmetric cipher — not key exchange)</option>
+                    <option value="aes-gcm">AES-256-GCM</option>
                   </select>
                 </td>
               </tr>
@@ -45,10 +45,10 @@
                 <td>
                   <select class="pbq-ai-select" data-algo="password-hash" aria-label="Password hashing algorithm">
                     <option value="">Select…</option>
-                    <option value="sha256">SHA-256 (fast hash — weak for passwords)</option>
+                    <option value="sha256">SHA-256</option>
                     <option value="bcrypt">bcrypt (adaptive, salt + cost factor)</option>
-                    <option value="aes">AES-256 (encryption, not hashing)</option>
-                    <option value="sha1">SHA-1 (deprecated)</option>
+                    <option value="aes">AES-256</option>
+                    <option value="sha1">SHA-1</option>
                   </select>
                 </td>
               </tr>
@@ -61,10 +61,10 @@
                 <td>
                   <select class="pbq-ai-select" data-algo="ca-signing" aria-label="CA signing algorithm">
                     <option value="">Select…</option>
-                    <option value="sha1">SHA-1 (current — do not keep)</option>
-                    <option value="sha256">SHA-256 (NIST recommended minimum)</option>
-                    <option value="md5">MD5 (broken)</option>
-                    <option value="sha512">SHA-512 (acceptable, overkill for certs)</option>
+                    <option value="sha1">SHA-1</option>
+                    <option value="sha256">SHA-256</option>
+                    <option value="md5">MD5</option>
+                    <option value="sha512">SHA-512</option>
                   </select>
                 </td>
               </tr>
@@ -77,10 +77,10 @@
                 <td>
                   <select class="pbq-ai-select" data-algo="blob-encrypt" aria-label="Data at rest encryption">
                     <option value="">Select…</option>
-                    <option value="cbc">AES-128-CBC (current — acceptable but upgrade?)</option>
-                    <option value="gcm">AES-256-GCM (authenticated encryption, NIST preferred)</option>
-                    <option value="rsa4096">RSA-4096 (asymmetric — wrong for bulk data)</option>
-                    <option value="3des">3DES (legacy, deprecated by NIST 2023)</option>
+                    <option value="cbc">AES-128-CBC</option>
+                    <option value="gcm">AES-256-GCM</option>
+                    <option value="rsa4096">RSA-4096</option>
+                    <option value="3des">3DES</option>
                   </select>
                 </td>
               </tr>
@@ -91,8 +91,9 @@
 
       <div class="actions">
         <button id="checkBtn" type="button">Check Answer</button>
-        <button id="showBtn" type="button">Show Answer</button>
         <button id="resetBtn" type="button">Reset</button>
+        <button id="showBtn" type="button">Show Answer</button>
+
         <span id="result" role="status" aria-live="polite"></span>
       </div></article>
 <script>

@@ -7,8 +7,7 @@
     three subnets in order to the departments below.
   </p>
   <p class="pbq-instructions">
-    Borrowed-bits check: ⌈log₂(6)⌉ = 3 host bits → <strong>/27</strong> (not /28 — only 14 usable hosts, insufficient
-    for Sales at 25).
+    Choose a prefix that yields at least 6 subnets and enough usable hosts per subnet for each department requirement.
   </p>
 
   <div class="pbq-subnet-depts" aria-label="Department host requirements">
@@ -97,9 +96,9 @@
             <tr data-prefix="25"><th scope="row">/25</th><td>.128</td><td>128</td><td>126</td><td>2</td></tr>
             <tr data-prefix="26"><th scope="row">/26</th><td>.192</td><td>64</td><td>62</td><td>4</td></tr>
             <tr data-prefix="27"><th scope="row">/27</th><td>.224</td><td>32</td><td>30</td><td>8</td></tr>
-            <tr data-prefix="28" class="pbq-subnet-magic--warn"><th scope="row">/28</th><td>.240</td><td>16</td><td>14</td><td>16</td></tr>
-            <tr data-prefix="29" class="pbq-subnet-magic--warn"><th scope="row">/29</th><td>.248</td><td>8</td><td>6</td><td>32</td></tr>
-            <tr data-prefix="30" class="pbq-subnet-magic--warn"><th scope="row">/30</th><td>.252</td><td>4</td><td>2</td><td>64</td></tr>
+            <tr data-prefix="28"><th scope="row">/28</th><td>.240</td><td>16</td><td>14</td><td>16</td></tr>
+            <tr data-prefix="29"><th scope="row">/29</th><td>.248</td><td>8</td><td>6</td><td>32</td></tr>
+            <tr data-prefix="30"><th scope="row">/30</th><td>.252</td><td>4</td><td>2</td><td>64</td></tr>
           </tbody>
         </table>
       </section>
@@ -151,8 +150,9 @@
 
   <div class="actions">
     <button id="checkBtn" type="button">Check Answer</button>
-    <button id="showBtn" type="button">Show Answer</button>
     <button id="resetBtn" type="button">Reset</button>
+    <button id="showBtn" type="button">Show Answer</button>
+
     <span id="result" role="status" aria-live="polite"></span>
   </div>
 </article>
@@ -194,8 +194,8 @@
   var resBlock = root.querySelector('[data-result="block"]');
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [role='status']");
 
   function subnetOptions(prefix) {

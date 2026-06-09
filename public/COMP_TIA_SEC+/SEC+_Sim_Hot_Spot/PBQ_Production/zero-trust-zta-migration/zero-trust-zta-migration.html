@@ -146,8 +146,9 @@
         </div>
       </div><div class="actions">
         <button id="zta-concept-checkBtn" type="button">Check Answer</button>
-        <button id="zta-concept-showBtn" type="button">Show Answer</button>
         <button id="zta-concept-resetBtn" type="button">Reset</button>
+        <button id="zta-concept-showBtn" type="button">Show Answer</button>
+
         <span id="zta-concept-result" role="status" aria-live="polite"></span></div></div></article>
 <article class="pbq-suite-section" id="zta-p2" data-scenario="zero-trust-zta-migration" hidden><div class="pbq-suite-section__inner"><div class="sim-frame">
         <div class="layout layout--zt-map layout--zt-choices">
@@ -164,8 +165,8 @@
                 </header>
                 <p class="zt-zone__assets">External · BYOD · Remote</p>
                 <div class="zt-zone__slots">
-                  <fieldset class="zt-slot-choice" data-correct="ztna-gateway">
-                    <legend class="zt-slot-choice__legend">Remote access enforcement</legend>
+                  <fieldset class="zt-slot-choice" data-slot="z1">
+                    <legend class="zt-slot-choice__legend">Internet slot A</legend>
                     <div class="zt-slot-choice__options">
                       <label class="zt-choice-card token--ztna">
                         <input type="radio" name="zt-slot-internet-1" value="ztna-gateway" />
@@ -188,8 +189,8 @@
                 </header>
                 <p class="zt-zone__assets">Web Server · Load Balancer</p>
                 <div class="zt-zone__slots">
-                  <fieldset class="zt-slot-choice" data-correct="identity-provider">
-                    <legend class="zt-slot-choice__legend">North-south authentication</legend>
+                  <fieldset class="zt-slot-choice" data-slot="z2">
+                    <legend class="zt-slot-choice__legend">DMZ slot A</legend>
                     <div class="zt-slot-choice__options">
                       <label class="zt-choice-card token--idp">
                         <input type="radio" name="zt-slot-dmz-1" value="identity-provider" />
@@ -201,8 +202,8 @@
                       </label>
                     </div>
                   </fieldset>
-                  <fieldset class="zt-slot-choice" data-correct="continuous-auth">
-                    <legend class="zt-slot-choice__legend">Session risk re-verification</legend>
+                  <fieldset class="zt-slot-choice" data-slot="z3">
+                    <legend class="zt-slot-choice__legend">DMZ slot B</legend>
                     <div class="zt-slot-choice__options">
                       <label class="zt-choice-card token--cont">
                         <input type="radio" name="zt-slot-dmz-2" value="continuous-auth" />
@@ -225,8 +226,8 @@
                 </header>
                 <p class="zt-zone__assets">Workstations · DB Server · File Server</p>
                 <div class="zt-zone__slots">
-                  <fieldset class="zt-slot-choice" data-correct="micro-segmentation">
-                    <legend class="zt-slot-choice__legend">East-west movement control</legend>
+                  <fieldset class="zt-slot-choice" data-slot="z4">
+                    <legend class="zt-slot-choice__legend">Internal slot A</legend>
                     <div class="zt-slot-choice__options">
                       <label class="zt-choice-card token--micro">
                         <input type="radio" name="zt-slot-internal-1" value="micro-segmentation" />
@@ -238,8 +239,8 @@
                       </label>
                     </div>
                   </fieldset>
-                  <fieldset class="zt-slot-choice" data-correct="pam-vault">
-                    <legend class="zt-slot-choice__legend">Privileged credential storage</legend>
+                  <fieldset class="zt-slot-choice" data-slot="z5">
+                    <legend class="zt-slot-choice__legend">Internal slot B</legend>
                     <div class="zt-slot-choice__options">
                       <label class="zt-choice-card token--pam">
                         <input type="radio" name="zt-slot-internal-2" value="pam-vault" />
@@ -251,8 +252,8 @@
                       </label>
                     </div>
                   </fieldset>
-                  <fieldset class="zt-slot-choice" data-correct="jit-access">
-                    <legend class="zt-slot-choice__legend">Time-bound privileged access</legend>
+                  <fieldset class="zt-slot-choice" data-slot="z6">
+                    <legend class="zt-slot-choice__legend">Internal slot C</legend>
                     <div class="zt-slot-choice__options">
                       <label class="zt-choice-card token--jit">
                         <input type="radio" name="zt-slot-internal-3" value="jit-access" />
@@ -275,8 +276,8 @@
                 </header>
                 <p class="zt-zone__assets">Azure · SaaS Apps · Blob Storage</p>
                 <div class="zt-zone__slots">
-                  <fieldset class="zt-slot-choice" data-correct="casb">
-                    <legend class="zt-slot-choice__legend">SaaS / shadow IT governance</legend>
+                  <fieldset class="zt-slot-choice" data-slot="z7">
+                    <legend class="zt-slot-choice__legend">Cloud slot A</legend>
                     <div class="zt-slot-choice__options">
                       <label class="zt-choice-card token--casb">
                         <input type="radio" name="zt-slot-cloud-1" value="casb" />
@@ -288,8 +289,8 @@
                       </label>
                     </div>
                   </fieldset>
-                  <fieldset class="zt-slot-choice" data-correct="dlp-proxy">
-                    <legend class="zt-slot-choice__legend">Sensitive data egress to SaaS</legend>
+                  <fieldset class="zt-slot-choice" data-slot="z8">
+                    <legend class="zt-slot-choice__legend">Cloud slot B</legend>
                     <div class="zt-slot-choice__options">
                       <label class="zt-choice-card token--dlp">
                         <input type="radio" name="zt-slot-cloud-2" value="dlp-proxy" />
@@ -310,8 +311,9 @@
 
       <div class="actions">
         <button id="zta-p2-checkBtn" type="button">Check Answer</button>
-        <button id="zta-p2-showBtn" type="button">Show Answer</button>
         <button id="zta-p2-resetBtn" type="button">Reset choices</button>
+        <button id="zta-p2-showBtn" type="button">Show Answer</button>
+
         <span id="zta-p2-result" role="status" aria-live="polite"></span>
       </div></div></article>
 <article class="pbq-suite-section" id="zta-p3" data-scenario="zero-trust-zta-migration" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-ai-sim">
@@ -400,8 +402,9 @@
 
       <div class="actions">
         <button id="zta-p3-checkBtn" type="button">Check Answer</button>
-        <button id="zta-p3-showBtn" type="button">Show Answer</button>
         <button id="zta-p3-resetBtn" type="button">Reset</button>
+        <button id="zta-p3-showBtn" type="button">Show Answer</button>
+
         <span id="zta-p3-result" role="status" aria-live="polite"></span>
       </div></div></article>
         </div>
@@ -475,6 +478,16 @@
 <!-- zta-p2 -->
 <script>
     (function () {
+      var SLOT_ANSWERS = {
+        z1: "ztna-gateway",
+        z2: "identity-provider",
+        z3: "continuous-auth",
+        z4: "micro-segmentation",
+        z5: "pam-vault",
+        z6: "jit-access",
+        z7: "casb",
+        z8: "dlp-proxy"
+      };
       var checkBtn = document.getElementById("zta-p2-checkBtn");
       var showBtn = document.getElementById("zta-p2-showBtn");
       var resetBtn = document.getElementById("zta-p2-resetBtn");
@@ -486,7 +499,7 @@
         "Correct. Internet: ZTNA Gateway replaces broad VPN access for remote users. DMZ / edge: Identity Provider and Continuous Auth sit at the north-south policy enforcement point. Authenticate at the boundary and re-verify session risk on every request, not only at VPN login. Internal: micro-segmentation limits east-west movement; PAM Vault and JIT Access govern privileged access to internal systems. Cloud: CASB governs SaaS/shadow IT; DLP Proxy inspects cloud egress and sensitive data in SaaS workflows.";
 
       function allChoices() {
-        return document.querySelectorAll(".zt-slot-choice[data-correct]");
+        return document.querySelectorAll(".zt-slot-choice[data-slot]");
       }
 
       function selectedValue(group) {
@@ -512,7 +525,7 @@
         clearMarks();
         var allOk = true;
         allChoices().forEach(function (group) {
-          var want = group.getAttribute("data-correct");
+          var want = SLOT_ANSWERS[group.getAttribute("data-slot")];
           var got = selectedValue(group);
           if (!got || got !== want) {
             markGroup(group, false);
@@ -531,7 +544,7 @@
       showBtn.addEventListener("click", function () {
         clearMarks();
         allChoices().forEach(function (group) {
-          var want = group.getAttribute("data-correct");
+          var want = SLOT_ANSWERS[group.getAttribute("data-slot")];
           var radio = group.querySelector('input[type="radio"][value="' + want + '"]');
           if (radio) radio.checked = true;
           markGroup(group, true);

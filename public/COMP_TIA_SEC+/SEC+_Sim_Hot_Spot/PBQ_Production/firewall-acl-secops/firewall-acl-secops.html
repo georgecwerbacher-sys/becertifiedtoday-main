@@ -236,8 +236,9 @@
 
   <div class="actions">
     <button id="firewall-acl-config-checkBtn" type="button">Check Answer</button>
-    <button id="firewall-acl-config-showBtn" type="button">Show Answer</button>
     <button id="firewall-acl-config-resetBtn" type="button">Reset</button>
+    <button id="firewall-acl-config-showBtn" type="button">Show Answer</button>
+
     <span id="firewall-acl-config-result" role="status" aria-live="polite"></span>
   </div></div></article>
         </div>
@@ -276,8 +277,8 @@
   if (!root) return;
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [id$='result'], .actions + [id$='result']") || root.querySelector("#firewall-acl-config-result");
 
   function ruleValues(ruleNum) {

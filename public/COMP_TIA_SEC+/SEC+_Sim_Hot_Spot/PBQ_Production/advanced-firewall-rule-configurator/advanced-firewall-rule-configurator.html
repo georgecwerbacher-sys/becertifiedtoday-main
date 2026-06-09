@@ -149,8 +149,9 @@
 
   <div class="actions">
     <button id="advanced-firewall-config-checkBtn" type="button">Check Answer</button>
-    <button id="advanced-firewall-config-showBtn" type="button">Show Answer</button>
     <button id="advanced-firewall-config-resetBtn" type="button">Reset</button>
+    <button id="advanced-firewall-config-showBtn" type="button">Show Answer</button>
+
     <span id="advanced-firewall-config-result" role="status" aria-live="polite"></span>
   </div></div></article>
         </div>
@@ -195,8 +196,8 @@
   var policyList = root.querySelector(".pbq-afw-policy__list");
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [role='status']");
   var ruleHint = root.querySelector("#advanced-firewall-config-afwRuleHint");
   var firstCheck = true;

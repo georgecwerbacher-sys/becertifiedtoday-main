@@ -4,7 +4,7 @@ exam: SY0-701
 scenario: siem-ransomware-mitre
 title: SIEM ransomware — Sigma & MITRE
 status: production
-last_updated: 2026-06-04
+last_updated: 2026-06-08
 ---
 
 # SIEM ransomware — notes

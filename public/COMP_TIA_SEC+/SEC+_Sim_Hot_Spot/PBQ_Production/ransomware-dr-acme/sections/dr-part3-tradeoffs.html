@@ -88,8 +88,9 @@
 
   <div class="actions">
     <button id="checkBtn" type="button">Check Answer</button>
-    <button id="showBtn" type="button">Show Answer</button>
     <button id="resetBtn" type="button">Reset</button>
+    <button id="showBtn" type="button">Show Answer</button>
+
     <span id="result" role="status" aria-live="polite"></span>
   </div>
 </article>
@@ -106,8 +107,8 @@
   if (!root) return;
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector("#result");
 
   function allAnswered() {

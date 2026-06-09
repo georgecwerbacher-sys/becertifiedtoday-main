@@ -4,6 +4,74 @@
   <p class="pbq-instructions"><strong>Part 3:</strong> Answer all three items below to pass.</p>
 
   <div class="sim-frame pbq-siem-contain">
+    <aside class="pbq-siem-alert-index" aria-labelledby="alert-index-heading">
+      <h2 id="alert-index-heading">Reference exhibit: SIEM alert index</h2>
+      <div class="pbq-siem-alert-table-wrap">
+        <table class="pbq-siem-alert-table pbq-siem-alert-table--index">
+          <thead>
+            <tr>
+              <th scope="col">Alert ID</th>
+              <th scope="col">Time</th>
+              <th scope="col">Host</th>
+              <th scope="col">Sev</th>
+              <th scope="col">Signature (summary)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">#A001</th>
+              <td>09:14</td>
+              <td>MAIL-SRV</td>
+              <td><span class="pbq-siem-sev pbq-siem-sev--high">HIGH</span></td>
+              <td>Office macro execution, .docm opened by jdoe</td>
+            </tr>
+            <tr>
+              <th scope="row">#A002</th>
+              <td>09:15</td>
+              <td>WS-JDOE</td>
+              <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+              <td>WINWORD.EXE spawned powershell.exe -enc</td>
+            </tr>
+            <tr>
+              <th scope="row">#A003</th>
+              <td>09:22</td>
+              <td>WS-JDOE</td>
+              <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+              <td>LSASS memory access by non-system process</td>
+            </tr>
+            <tr>
+              <th scope="row">#A004</th>
+              <td>09:38</td>
+              <td>WS-JDOE</td>
+              <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+              <td>PsExec service created on remote host 10.0.0.31</td>
+            </tr>
+            <tr>
+              <th scope="row">#A005</th>
+              <td>09:55</td>
+              <td>WS-JDOE</td>
+              <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+              <td>DCSync replication request from non-DC host</td>
+            </tr>
+            <tr>
+              <th scope="row">#A006</th>
+              <td>11:02</td>
+              <td>FILE-SRV</td>
+              <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+              <td>Mass file rename, 3,400 files in 90 seconds</td>
+            </tr>
+            <tr>
+              <th scope="row">#A007</th>
+              <td>11:04</td>
+              <td>FILE-SRV</td>
+              <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+              <td>Ransom note README_DECRYPT.txt in 847 directories</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </aside>
+
     <section class="pbq-siem-contain-block" aria-labelledby="contain-two-heading">
       <h2 id="contain-two-heading">Earliest containment opportunities</h2>
       <p class="pbq-stem">
@@ -13,32 +81,32 @@
       <ul class="pbq-siem-contain-checks">
         <li>
           <label>
-            <input type="checkbox" name="secplus_bct_siem_contain_two" value="a001" data-correct="1" />
-            <strong>#A001</strong> — Macro execution (09:14) · HIGH
+            <input type="checkbox" name="secplus_bct_siem_contain_two" value="a001" />
+            <strong>#A001</strong> — Macro execution (09:14)
           </label>
         </li>
         <li>
           <label>
-            <input type="checkbox" name="secplus_bct_siem_contain_two" value="a002" data-correct="1" />
-            <strong>#A002</strong> — Word spawning encoded PowerShell (09:15) · CRITICAL
+            <input type="checkbox" name="secplus_bct_siem_contain_two" value="a002" />
+            <strong>#A002</strong> — Word spawning encoded PowerShell (09:15)
           </label>
         </li>
         <li>
           <label>
             <input type="checkbox" name="secplus_bct_siem_contain_two" value="a003" />
-            <strong>#A003</strong> — LSASS memory access (09:22) · CRITICAL
+            <strong>#A003</strong> — LSASS memory access (09:22)
           </label>
         </li>
         <li>
           <label>
             <input type="checkbox" name="secplus_bct_siem_contain_two" value="a004" />
-            <strong>#A004</strong> — PsExec lateral movement (09:38) · CRITICAL
+            <strong>#A004</strong> — PsExec lateral movement (09:38)
           </label>
         </li>
         <li>
           <label>
             <input type="checkbox" name="secplus_bct_siem_contain_two" value="a005" />
-            <strong>#A005</strong> — DCSync replication (09:55) · CRITICAL
+            <strong>#A005</strong> — DCSync replication (09:55)
           </label>
         </li>
       </ul>
@@ -47,8 +115,8 @@
     <section class="pbq-siem-contain-block pbq-siem-contain-block--purple" aria-labelledby="contain-crit-heading">
       <h2 id="contain-crit-heading">Earliest automated isolation (CRITICAL alerts)</h2>
       <p class="pbq-stem">
-        If your SIEM/SOAR had automated <strong>host isolation on CRITICAL alerts</strong>, which alert — if acted upon
-        immediately — would have prevented the ransomware stage? Select the <em>earliest critical alert</em> that should
+        If your SIEM/SOAR had automated <strong>host isolation on CRITICAL alerts</strong>, which alert, if acted upon
+        immediately, would have prevented the ransomware stage? Select the <em>earliest critical alert</em> that should
         have triggered isolation of <strong>WS-JDOE</strong>.
       </p>
       <label class="pbq-siem-field">
@@ -56,10 +124,10 @@
         <select class="pbq-siem-select" data-key="earliest-critical" aria-label="Earliest critical alert for isolation">
           <option value="">-- Select the alert --</option>
           <option value="a001">#A001 — Macro execution (09:14)</option>
-          <option value="a002">#A002 — Word spawning encoded PowerShell (09:15) ← CRITICAL</option>
-          <option value="a003">#A003 — LSASS memory access (09:22) ← CRITICAL</option>
-          <option value="a004">#A004 — PsExec lateral movement (09:38) ← CRITICAL</option>
-          <option value="a005">#A005 — DCSync replication (09:55) ← CRITICAL</option>
+          <option value="a002">#A002 — Word spawning encoded PowerShell (09:15)</option>
+          <option value="a003">#A003 — LSASS memory access (09:22)</option>
+          <option value="a004">#A004 — PsExec lateral movement (09:38)</option>
+          <option value="a005">#A005 — DCSync replication (09:55)</option>
         </select>
       </label>
     </section>
@@ -85,8 +153,9 @@
 
   <div class="actions">
     <button id="checkBtn" type="button">Check Answer</button>
-    <button id="showBtn" type="button">Show Answer</button>
     <button id="resetBtn" type="button">Reset</button>
+    <button id="showBtn" type="button">Show Answer</button>
+
     <span id="result" role="status" aria-live="polite"></span>
   </div>
 </article>
@@ -95,13 +164,13 @@
   var MUST_TWO = { a001: true, a002: true };
   var SELECTS = { "earliest-critical": "a002", "soar-a002": "isolate" };
   var CORRECT_MSG =
-    "Correct. Earliest chain stoppers: #A001 (macro/phish) and #A002 (encoded PowerShell stager) before cred access. Earliest CRITICAL for WS-JDOE isolation: #A002. SOAR on A002: network isolate, kill process, memory snapshot, P1 ticket — not email-only or resume ops.";
+    "Correct. Earliest chain stoppers: #A001 (macro/phish) and #A002 (encoded PowerShell stager) before cred access. Earliest CRITICAL for WS-JDOE isolation: #A002. SOAR on A002: network isolate, kill process, memory snapshot, P1 ticket, not email-only or resume ops.";
   var root = document.getElementById("siem-part3-containment");
   if (!root) return;
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector("#result");
 
   function twoAlertsOk() {

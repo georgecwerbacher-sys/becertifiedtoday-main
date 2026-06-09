@@ -124,8 +124,9 @@
 
       <div class="actions">
         <button id="pki-p1-checkBtn" type="button">Check Answer</button>
-        <button id="pki-p1-showBtn" type="button">Show Answer</button>
         <button id="pki-p1-resetBtn" type="button">Reset</button>
+        <button id="pki-p1-showBtn" type="button">Show Answer</button>
+
         <span id="pki-p1-result" role="status" aria-live="polite"></span>
       </div></div></article>
 <article class="pbq-suite-section" id="pki-p2" data-scenario="hybrid-pki-audit" hidden><div class="pbq-suite-section__inner"><div class="sim-frame">
@@ -137,7 +138,7 @@
               <tr>
                 <th scope="col">Use case</th>
                 <th scope="col">Current (audit finding)</th>
-                <th scope="col">Correct algorithm</th>
+                <th scope="col">Replacement algorithm</th>
               </tr>
             </thead>
             <tbody>
@@ -150,10 +151,10 @@
                 <td>
                   <select class="pbq-ai-select" data-algo="tls-kex" aria-label="TLS key exchange algorithm">
                     <option value="">Select…</option>
-                    <option value="rsa">RSA-2048 (same as current)</option>
+                    <option value="rsa">RSA-2048</option>
                     <option value="ecdhe">ECDHE (Elliptic Curve Diffie-Hellman Ephemeral)</option>
                     <option value="dhe">DHE (Diffie-Hellman Ephemeral)</option>
-                    <option value="aes-gcm">AES-256-GCM (symmetric cipher — not key exchange)</option>
+                    <option value="aes-gcm">AES-256-GCM</option>
                   </select>
                 </td>
               </tr>
@@ -166,10 +167,10 @@
                 <td>
                   <select class="pbq-ai-select" data-algo="password-hash" aria-label="Password hashing algorithm">
                     <option value="">Select…</option>
-                    <option value="sha256">SHA-256 (fast hash — weak for passwords)</option>
+                    <option value="sha256">SHA-256</option>
                     <option value="bcrypt">bcrypt (adaptive, salt + cost factor)</option>
-                    <option value="aes">AES-256 (encryption, not hashing)</option>
-                    <option value="sha1">SHA-1 (deprecated)</option>
+                    <option value="aes">AES-256</option>
+                    <option value="sha1">SHA-1</option>
                   </select>
                 </td>
               </tr>
@@ -182,10 +183,10 @@
                 <td>
                   <select class="pbq-ai-select" data-algo="ca-signing" aria-label="CA signing algorithm">
                     <option value="">Select…</option>
-                    <option value="sha1">SHA-1 (current — do not keep)</option>
-                    <option value="sha256">SHA-256 (NIST recommended minimum)</option>
-                    <option value="md5">MD5 (broken)</option>
-                    <option value="sha512">SHA-512 (acceptable, overkill for certs)</option>
+                    <option value="sha1">SHA-1</option>
+                    <option value="sha256">SHA-256</option>
+                    <option value="md5">MD5</option>
+                    <option value="sha512">SHA-512</option>
                   </select>
                 </td>
               </tr>
@@ -198,10 +199,10 @@
                 <td>
                   <select class="pbq-ai-select" data-algo="blob-encrypt" aria-label="Data at rest encryption">
                     <option value="">Select…</option>
-                    <option value="cbc">AES-128-CBC (current — acceptable but upgrade?)</option>
-                    <option value="gcm">AES-256-GCM (authenticated encryption, NIST preferred)</option>
-                    <option value="rsa4096">RSA-4096 (asymmetric — wrong for bulk data)</option>
-                    <option value="3des">3DES (legacy, deprecated by NIST 2023)</option>
+                    <option value="cbc">AES-128-CBC</option>
+                    <option value="gcm">AES-256-GCM</option>
+                    <option value="rsa4096">RSA-4096</option>
+                    <option value="3des">3DES</option>
                   </select>
                 </td>
               </tr>
@@ -212,8 +213,9 @@
 
       <div class="actions">
         <button id="pki-p2-checkBtn" type="button">Check Answer</button>
-        <button id="pki-p2-showBtn" type="button">Show Answer</button>
         <button id="pki-p2-resetBtn" type="button">Reset</button>
+        <button id="pki-p2-showBtn" type="button">Show Answer</button>
+
         <span id="pki-p2-result" role="status" aria-live="polite"></span>
       </div></div></article>
 <article class="pbq-suite-section" id="pki-p3" data-scenario="hybrid-pki-audit" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-pki-p3-sim">
@@ -334,14 +336,13 @@
         Select all certificates that must be immediately revoked
       </p>
       <p class="pbq-pki-hint" role="note">
-        Hint: Revoke certificates tied to audit findings and policy failures. Keep the active
-        <strong>api.becertifiedtoday.com</strong> chain from Part 1 in service (root, Azure intermediate, API leaf).
+        Hint: Use the inventory exhibit and audit finding codes. Revoke only certificates that fail policy or trust requirements.
       </p>
 
       <ul class="pbq-pki-revoke-list">
         <li>
           <label class="pbq-pki-revoke-card">
-            <input type="checkbox" name="secplus_bct_pki_revoke" value="code-sign" data-must-revoke="1" />
+            <input type="checkbox" name="secplus_bct_pki_revoke" value="code-sign" />
             <span class="pbq-pki-revoke-body">
               <strong>Code Signing Cert</strong>
               <span>Inventory: EXPIRED 2024-11-30 · RSA-1024 · Issued by On-Prem CA</span>
@@ -350,7 +351,7 @@
         </li>
         <li>
           <label class="pbq-pki-revoke-card">
-            <input type="checkbox" name="secplus_bct_pki_revoke" value="onprem-inter" data-must-revoke="1" />
+            <input type="checkbox" name="secplus_bct_pki_revoke" value="onprem-inter" />
             <span class="pbq-pki-revoke-body">
               <strong>On-Prem Issuing CA Cert</strong>
               <span>Inventory: SHA-1 algorithm · Signed weak code-signing leaf</span>
@@ -359,28 +360,28 @@
         </li>
         <li>
           <label class="pbq-pki-revoke-card">
-            <input type="checkbox" name="secplus_bct_pki_revoke" value="root" data-must-revoke="0" />
+            <input type="checkbox" name="secplus_bct_pki_revoke" value="root" />
             <span class="pbq-pki-revoke-body">
               <strong>Root CA Certificate</strong>
-              <span>Inventory: SHA-256 · Offline · Expires 2044 · Valid</span>
+              <span>Inventory: SHA-256 · Offline · Expires 2044</span>
             </span>
           </label>
         </li>
         <li>
           <label class="pbq-pki-revoke-card">
-            <input type="checkbox" name="secplus_bct_pki_revoke" value="api-leaf" data-must-revoke="0" />
+            <input type="checkbox" name="secplus_bct_pki_revoke" value="api-leaf" />
             <span class="pbq-pki-revoke-body">
               <strong>api.becertifiedtoday.com Leaf Cert</strong>
-              <span>Inventory: Valid · SHA-256 · Expires 2026-06-01</span>
+              <span>Inventory: SHA-256 · Expires 2026-06-01</span>
             </span>
           </label>
         </li>
         <li>
           <label class="pbq-pki-revoke-card">
-            <input type="checkbox" name="secplus_bct_pki_revoke" value="azure-inter" data-must-revoke="0" />
+            <input type="checkbox" name="secplus_bct_pki_revoke" value="azure-inter" />
             <span class="pbq-pki-revoke-body">
               <strong>Azure Issuing CA Cert</strong>
-              <span>Inventory: SHA-256 · Valid · Expires 2034</span>
+              <span>Inventory: SHA-256 · Expires 2034</span>
             </span>
           </label>
         </li>
@@ -390,8 +391,9 @@
 
   <div class="actions">
     <button id="pki-p3-checkBtn" type="button">Check Answer</button>
-    <button id="pki-p3-showBtn" type="button">Show Answer</button>
     <button id="pki-p3-resetBtn" type="button">Reset</button>
+    <button id="pki-p3-showBtn" type="button">Show Answer</button>
+
     <span id="pki-p3-result" role="status" aria-live="polite"></span>
   </div></div></article>
         </div>

@@ -52,42 +52,35 @@
   </p>
 
   <aside class="pbq-siem-timeline" aria-labelledby="siem-timeline-heading">
-    <h2 id="siem-overview-siem-timeline-heading">Reconstructed attack timeline (read-only context)</h2>
+    <h2 id="siem-overview-siem-timeline-heading">Reference exhibit: attack timeline (read-only)</h2>
     <ol class="pbq-siem-timeline__list">
       <li>
         <time>09:14</time> <span class="pbq-siem-host">MAIL-SRV</span>
         User <code>jdoe</code> opens phishing attachment <code>invoice_Q4.docm</code>.
-        <span class="pbq-siem-tag pbq-siem-tag--initial">Initial Access</span>
       </li>
       <li>
         <time>09:15</time> <span class="pbq-siem-host">WS-JDOE</span>
-        Word spawns <code>cmd.exe</code> → <code>PowerShell -enc</code> [base64] downloads stager.
-        <span class="pbq-siem-tag pbq-siem-tag--exec">Execution</span>
+        Word spawns <code>cmd.exe</code>, then <code>PowerShell -enc</code> [base64] downloads stager.
       </li>
       <li>
         <time>09:22</time> <span class="pbq-siem-host">WS-JDOE</span>
-        LSASS memory read via Mimikatz — credential dump.
-        <span class="pbq-siem-tag pbq-siem-tag--cred">Credential Access</span>
+        LSASS memory read via Mimikatz. Credential dump.
       </li>
       <li>
         <time>09:38</time> <span class="pbq-siem-host">WS-JDOE</span>
-        PsExec lateral movement → 3 hosts (10.0.0.31–33).
-        <span class="pbq-siem-tag pbq-siem-tag--lat">Lateral Movement</span>
+        PsExec lateral movement to 3 hosts (10.0.0.31–33).
       </li>
       <li>
         <time>09:55</time> <span class="pbq-siem-host">DC-01</span>
-        Mimikatz DCSync — dumps all AD hashes.
-        <span class="pbq-siem-tag pbq-siem-tag--cred">Credential Access</span>
+        Mimikatz DCSync dumps all AD hashes.
       </li>
       <li>
         <time>11:02</time> <span class="pbq-siem-host">FILE-SRV</span>
-        Bulk rename <code>*.docx</code> → <code>*.locked</code> — encryption begins.
-        <span class="pbq-siem-tag pbq-siem-tag--impact">Impact</span>
+        Bulk rename <code>*.docx</code> to <code>*.locked</code>. Encryption begins.
       </li>
       <li>
         <time>11:04</time> <span class="pbq-siem-host">FILE-SRV</span>
         <code>README_DECRYPT.txt</code> written to 847 directories.
-        <span class="pbq-siem-tag pbq-siem-tag--impact">Impact</span>
       </li>
     </ol>
   </aside>
@@ -96,10 +89,22 @@
     Complete all three parts: <strong>Sigma rule</strong> for the 09:15 stager event, <strong>MITRE ATT&amp;CK
     classification</strong> for each alert, then <strong>containment decisions</strong>.
   </p></div></article>
-<article class="pbq-suite-section" id="siem-part1-sigma" data-scenario="siem-ransomware-mitre" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-siem-sigma">
+<article class="pbq-suite-section" id="siem-part1-sigma" data-scenario="siem-ransomware-mitre" hidden><div class="pbq-suite-section__inner"><aside class="pbq-siem-event-exhibit" aria-labelledby="sigma-event-heading">
+    <h2 id="siem-part1-sigma-sigma-event-heading">Reference exhibit: process creation event (09:15)</h2>
+    <pre class="pbq-siem-log"><code>Sysmon Event ID 1 — Process Create
+Time:        2026-06-04 09:15:02 UTC
+Host:        WS-JDOE
+User:        CORP\jdoe
+ParentImage: C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE
+Image:       C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+CommandLine: powershell.exe -NoP -W Hidden -enc JABjAGwAaQBlAG4AdAAgAD0A...</code></pre>
+  </aside>
+
+  <div class="sim-frame pbq-siem-sigma">
     <p class="pbq-stem">
-      Which Sigma rule best detects: <strong>Word spawning PowerShell with Base64-encoded command</strong>?
+      Which Sigma rule best detects: <strong>Word spawning PowerShell with a Base64-encoded command</strong>?
     </p>
+    <p class="pbq-hint">Hint: parent and child process fields matter more than keyword lists alone.</p>
 
     <div class="pbq-siem-sigma-choices" role="radiogroup" aria-labelledby="sigma-stem">
       <span id="siem-part1-sigma-sigma-stem" class="visually-hidden">Sigma rule choices</span>
@@ -112,7 +117,6 @@
     Image|endswith: '\powershell.exe'
     CommandLine|contains: '-enc'
   condition: selection</code></pre>
-          <span class="pbq-siem-sigma-note">Detects any PowerShell with <code>-enc</code> — too broad, many false positives</span>
         </span>
       </label>
 
@@ -125,7 +129,6 @@
     Image|endswith: '\powershell.exe'
     CommandLine|contains: '-enc'
   condition: selection</code></pre>
-          <span class="pbq-siem-sigma-note">Word spawning encoded PowerShell — precise parent-child chain</span>
         </span>
       </label>
 
@@ -137,7 +140,6 @@
     Image|endswith: '\cmd.exe'
     ParentImage|endswith: '\winword.exe'
   condition: selection</code></pre>
-          <span class="pbq-siem-sigma-note">Only Word → cmd.exe; misses PowerShell execution stage</span>
         </span>
       </label>
 
@@ -149,7 +151,6 @@
     - 'powershell'
     - 'base64'
   condition: keywords</code></pre>
-          <span class="pbq-siem-sigma-note">Keyword match only — extremely noisy</span>
         </span>
       </label>
     </div>
@@ -157,8 +158,9 @@
 
   <div class="actions">
     <button id="siem-part1-sigma-checkBtn" type="button">Check Answer</button>
-    <button id="siem-part1-sigma-showBtn" type="button">Show Answer</button>
     <button id="siem-part1-sigma-resetBtn" type="button">Reset</button>
+    <button id="siem-part1-sigma-showBtn" type="button">Show Answer</button>
+
     <span id="siem-part1-sigma-result" role="status" aria-live="polite"></span>
   </div></div></article>
 <article class="pbq-suite-section" id="siem-part2-mitre" data-scenario="siem-ransomware-mitre" hidden><div class="pbq-suite-section__inner"><div class="sim-frame">
@@ -293,11 +295,80 @@
 
   <div class="actions">
     <button id="siem-part2-mitre-checkBtn" type="button">Check Answer</button>
-    <button id="siem-part2-mitre-showBtn" type="button">Show Answer</button>
     <button id="siem-part2-mitre-resetBtn" type="button">Reset</button>
+    <button id="siem-part2-mitre-showBtn" type="button">Show Answer</button>
+
     <span id="siem-part2-mitre-result" role="status" aria-live="polite"></span>
   </div></div></article>
 <article class="pbq-suite-section" id="siem-part3-containment" data-scenario="siem-ransomware-mitre" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-siem-contain">
+    <aside class="pbq-siem-alert-index" aria-labelledby="alert-index-heading">
+      <h2 id="siem-part3-containment-alert-index-heading">Reference exhibit: SIEM alert index</h2>
+      <div class="pbq-siem-alert-table-wrap">
+        <table class="pbq-siem-alert-table pbq-siem-alert-table--index">
+          <thead>
+            <tr>
+              <th scope="col">Alert ID</th>
+              <th scope="col">Time</th>
+              <th scope="col">Host</th>
+              <th scope="col">Sev</th>
+              <th scope="col">Signature (summary)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">#A001</th>
+              <td>09:14</td>
+              <td>MAIL-SRV</td>
+              <td><span class="pbq-siem-sev pbq-siem-sev--high">HIGH</span></td>
+              <td>Office macro execution, .docm opened by jdoe</td>
+            </tr>
+            <tr>
+              <th scope="row">#A002</th>
+              <td>09:15</td>
+              <td>WS-JDOE</td>
+              <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+              <td>WINWORD.EXE spawned powershell.exe -enc</td>
+            </tr>
+            <tr>
+              <th scope="row">#A003</th>
+              <td>09:22</td>
+              <td>WS-JDOE</td>
+              <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+              <td>LSASS memory access by non-system process</td>
+            </tr>
+            <tr>
+              <th scope="row">#A004</th>
+              <td>09:38</td>
+              <td>WS-JDOE</td>
+              <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+              <td>PsExec service created on remote host 10.0.0.31</td>
+            </tr>
+            <tr>
+              <th scope="row">#A005</th>
+              <td>09:55</td>
+              <td>WS-JDOE</td>
+              <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+              <td>DCSync replication request from non-DC host</td>
+            </tr>
+            <tr>
+              <th scope="row">#A006</th>
+              <td>11:02</td>
+              <td>FILE-SRV</td>
+              <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+              <td>Mass file rename, 3,400 files in 90 seconds</td>
+            </tr>
+            <tr>
+              <th scope="row">#A007</th>
+              <td>11:04</td>
+              <td>FILE-SRV</td>
+              <td><span class="pbq-siem-sev pbq-siem-sev--crit">CRITICAL</span></td>
+              <td>Ransom note README_DECRYPT.txt in 847 directories</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </aside>
+
     <section class="pbq-siem-contain-block" aria-labelledby="contain-two-heading">
       <h2 id="siem-part3-containment-contain-two-heading">Earliest containment opportunities</h2>
       <p class="pbq-stem">
@@ -307,32 +378,32 @@
       <ul class="pbq-siem-contain-checks">
         <li>
           <label>
-            <input type="checkbox" name="secplus_bct_siem_contain_two" value="a001" data-correct="1" />
-            <strong>#A001</strong> — Macro execution (09:14) · HIGH
+            <input type="checkbox" name="secplus_bct_siem_contain_two" value="a001" />
+            <strong>#A001</strong> — Macro execution (09:14)
           </label>
         </li>
         <li>
           <label>
-            <input type="checkbox" name="secplus_bct_siem_contain_two" value="a002" data-correct="1" />
-            <strong>#A002</strong> — Word spawning encoded PowerShell (09:15) · CRITICAL
+            <input type="checkbox" name="secplus_bct_siem_contain_two" value="a002" />
+            <strong>#A002</strong> — Word spawning encoded PowerShell (09:15)
           </label>
         </li>
         <li>
           <label>
             <input type="checkbox" name="secplus_bct_siem_contain_two" value="a003" />
-            <strong>#A003</strong> — LSASS memory access (09:22) · CRITICAL
+            <strong>#A003</strong> — LSASS memory access (09:22)
           </label>
         </li>
         <li>
           <label>
             <input type="checkbox" name="secplus_bct_siem_contain_two" value="a004" />
-            <strong>#A004</strong> — PsExec lateral movement (09:38) · CRITICAL
+            <strong>#A004</strong> — PsExec lateral movement (09:38)
           </label>
         </li>
         <li>
           <label>
             <input type="checkbox" name="secplus_bct_siem_contain_two" value="a005" />
-            <strong>#A005</strong> — DCSync replication (09:55) · CRITICAL
+            <strong>#A005</strong> — DCSync replication (09:55)
           </label>
         </li>
       </ul>
@@ -341,8 +412,8 @@
     <section class="pbq-siem-contain-block pbq-siem-contain-block--purple" aria-labelledby="contain-crit-heading">
       <h2 id="siem-part3-containment-contain-crit-heading">Earliest automated isolation (CRITICAL alerts)</h2>
       <p class="pbq-stem">
-        If your SIEM/SOAR had automated <strong>host isolation on CRITICAL alerts</strong>, which alert — if acted upon
-        immediately — would have prevented the ransomware stage? Select the <em>earliest critical alert</em> that should
+        If your SIEM/SOAR had automated <strong>host isolation on CRITICAL alerts</strong>, which alert, if acted upon
+        immediately, would have prevented the ransomware stage? Select the <em>earliest critical alert</em> that should
         have triggered isolation of <strong>WS-JDOE</strong>.
       </p>
       <label class="pbq-siem-field">
@@ -350,10 +421,10 @@
         <select class="pbq-siem-select" data-key="earliest-critical" aria-label="Earliest critical alert for isolation">
           <option value="">-- Select the alert --</option>
           <option value="a001">#A001 — Macro execution (09:14)</option>
-          <option value="a002">#A002 — Word spawning encoded PowerShell (09:15) ← CRITICAL</option>
-          <option value="a003">#A003 — LSASS memory access (09:22) ← CRITICAL</option>
-          <option value="a004">#A004 — PsExec lateral movement (09:38) ← CRITICAL</option>
-          <option value="a005">#A005 — DCSync replication (09:55) ← CRITICAL</option>
+          <option value="a002">#A002 — Word spawning encoded PowerShell (09:15)</option>
+          <option value="a003">#A003 — LSASS memory access (09:22)</option>
+          <option value="a004">#A004 — PsExec lateral movement (09:38)</option>
+          <option value="a005">#A005 — DCSync replication (09:55)</option>
         </select>
       </label>
     </section>
@@ -379,8 +450,9 @@
 
   <div class="actions">
     <button id="siem-part3-containment-checkBtn" type="button">Check Answer</button>
-    <button id="siem-part3-containment-showBtn" type="button">Show Answer</button>
     <button id="siem-part3-containment-resetBtn" type="button">Reset</button>
+    <button id="siem-part3-containment-showBtn" type="button">Show Answer</button>
+
     <span id="siem-part3-containment-result" role="status" aria-live="polite"></span>
   </div></div></article>
         </div>
@@ -408,13 +480,13 @@
 (function () {
   var CORRECT = "B";
   var CORRECT_MSG =
-    "Correct. Rule B ties ParentImage winword.exe to powershell.exe with -enc in the command line — the exact 09:15 stager chain. Rule A is too broad; C stops at cmd.exe; D is keyword noise.";
+    "Correct. Rule B ties ParentImage winword.exe to powershell.exe with -enc in the command line, matching the 09:15 stager chain. Rule A is too broad; C stops at cmd.exe; D is keyword noise.";
   var root = document.getElementById("siem-part1-sigma");
   if (!root) return;
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector("#siem-part1-sigma-result");
 
   checkBtn.addEventListener("click", function () {
@@ -467,8 +539,8 @@
   if (!root) return;
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector("#siem-part2-mitre-result");
 
   function mark(sel, pass) {
@@ -536,13 +608,13 @@
   var MUST_TWO = { a001: true, a002: true };
   var SELECTS = { "earliest-critical": "a002", "soar-a002": "isolate" };
   var CORRECT_MSG =
-    "Correct. Earliest chain stoppers: #A001 (macro/phish) and #A002 (encoded PowerShell stager) before cred access. Earliest CRITICAL for WS-JDOE isolation: #A002. SOAR on A002: network isolate, kill process, memory snapshot, P1 ticket — not email-only or resume ops.";
+    "Correct. Earliest chain stoppers: #A001 (macro/phish) and #A002 (encoded PowerShell stager) before cred access. Earliest CRITICAL for WS-JDOE isolation: #A002. SOAR on A002: network isolate, kill process, memory snapshot, P1 ticket, not email-only or resume ops.";
   var root = document.getElementById("siem-part3-containment");
   if (!root) return;
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector("#siem-part3-containment-result");
 
   function twoAlertsOk() {

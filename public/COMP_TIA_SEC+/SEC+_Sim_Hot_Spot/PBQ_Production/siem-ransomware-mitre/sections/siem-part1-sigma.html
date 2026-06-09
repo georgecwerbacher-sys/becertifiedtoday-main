@@ -2,14 +2,26 @@
 <article class="pbq-section-fragment" data-id="siem-part1-sigma">
   <h1>Part 1 — Sigma rule selection</h1>
   <p class="pbq-instructions">
-    <strong>Part 1:</strong> Select the correct Sigma rule to detect the <strong>09:15</strong> event: Word spawning
-    PowerShell with a Base64-encoded command.
+    <strong>Part 1:</strong> Select the Sigma rule that best detects the <strong>09:15</strong> process-creation event
+    shown in the exhibit.
   </p>
+
+  <aside class="pbq-siem-event-exhibit" aria-labelledby="sigma-event-heading">
+    <h2 id="sigma-event-heading">Reference exhibit: process creation event (09:15)</h2>
+    <pre class="pbq-siem-log"><code>Sysmon Event ID 1 — Process Create
+Time:        2026-06-04 09:15:02 UTC
+Host:        WS-JDOE
+User:        CORP\jdoe
+ParentImage: C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE
+Image:       C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+CommandLine: powershell.exe -NoP -W Hidden -enc JABjAGwAaQBlAG4AdAAgAD0A...</code></pre>
+  </aside>
 
   <div class="sim-frame pbq-siem-sigma">
     <p class="pbq-stem">
-      Which Sigma rule best detects: <strong>Word spawning PowerShell with Base64-encoded command</strong>?
+      Which Sigma rule best detects: <strong>Word spawning PowerShell with a Base64-encoded command</strong>?
     </p>
+    <p class="pbq-hint">Hint: parent and child process fields matter more than keyword lists alone.</p>
 
     <div class="pbq-siem-sigma-choices" role="radiogroup" aria-labelledby="sigma-stem">
       <span id="sigma-stem" class="visually-hidden">Sigma rule choices</span>
@@ -22,7 +34,6 @@
     Image|endswith: '\powershell.exe'
     CommandLine|contains: '-enc'
   condition: selection</code></pre>
-          <span class="pbq-siem-sigma-note">Detects any PowerShell with <code>-enc</code> — too broad, many false positives</span>
         </span>
       </label>
 
@@ -35,7 +46,6 @@
     Image|endswith: '\powershell.exe'
     CommandLine|contains: '-enc'
   condition: selection</code></pre>
-          <span class="pbq-siem-sigma-note">Word spawning encoded PowerShell — precise parent-child chain</span>
         </span>
       </label>
 
@@ -47,7 +57,6 @@
     Image|endswith: '\cmd.exe'
     ParentImage|endswith: '\winword.exe'
   condition: selection</code></pre>
-          <span class="pbq-siem-sigma-note">Only Word → cmd.exe; misses PowerShell execution stage</span>
         </span>
       </label>
 
@@ -59,7 +68,6 @@
     - 'powershell'
     - 'base64'
   condition: keywords</code></pre>
-          <span class="pbq-siem-sigma-note">Keyword match only — extremely noisy</span>
         </span>
       </label>
     </div>
@@ -67,8 +75,9 @@
 
   <div class="actions">
     <button id="checkBtn" type="button">Check Answer</button>
-    <button id="showBtn" type="button">Show Answer</button>
     <button id="resetBtn" type="button">Reset</button>
+    <button id="showBtn" type="button">Show Answer</button>
+
     <span id="result" role="status" aria-live="polite"></span>
   </div>
 </article>
@@ -76,13 +85,13 @@
 (function () {
   var CORRECT = "B";
   var CORRECT_MSG =
-    "Correct. Rule B ties ParentImage winword.exe to powershell.exe with -enc in the command line — the exact 09:15 stager chain. Rule A is too broad; C stops at cmd.exe; D is keyword noise.";
+    "Correct. Rule B ties ParentImage winword.exe to powershell.exe with -enc in the command line, matching the 09:15 stager chain. Rule A is too broad; C stops at cmd.exe; D is keyword noise.";
   var root = document.getElementById("siem-part1-sigma");
   if (!root) return;
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector("#result");
 
   checkBtn.addEventListener("click", function () {

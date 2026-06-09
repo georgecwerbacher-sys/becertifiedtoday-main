@@ -7,7 +7,7 @@
       </p>
       <p class="pbq-instructions">
         Drag each answer from the bank into the eight blanks (or tap a token, then tap a blank). Every term is used
-        exactly once. The <strong>red-flag list</strong> in the exhibit maps directly to each blank.
+        exactly once. Use the email exhibit and your security awareness training to classify each technique.
       </p>
 
       <div class="sim-frame">
@@ -37,23 +37,13 @@
             <p>Microsoft Security Team | support@micros0ft-support.com</p>
           </div>
           <section class="pbq-red-flags" aria-labelledby="red-flags-heading">
-            <h2 id="red-flags-heading">RED FLAGS:</h2>
+            <h2 id="red-flags-heading">Analyst observations</h2>
             <ul>
-              <li>
-                <strong>Typosquatting:</strong> micros0ft uses zero not letter O — not microsoft.com.
-              </li>
-              <li>
-                <strong>Urgency/fear:</strong> SUSPENDED in 24 hours, permanent deletion — pressure to bypass thinking.
-              </li>
-              <li>
-                <strong>Suspicious link:</strong> micros0ft-login.ru (Russia TLD) — hover to reveal real URL before
-                clicking.
-              </li>
-              <li>
-                <strong>Generic greeting:</strong> Valued Customer not your name — mass phishing, not targeted
-                spear-phishing.
-              </li>
-              <li><strong>Requesting credentials via email:</strong> Microsoft never asks for passwords this way.</li>
+              <li>Sender domain uses the digit <code>0</code> instead of letter <code>O</code> in the vendor name.</li>
+              <li>Subject line threatens account suspension within 24 hours.</li>
+              <li>Link hostname uses <code>.ru</code> TLD and does not match the vendor's official domain.</li>
+              <li>Greeting says <em>Valued Customer</em> instead of the recipient's name.</li>
+              <li>Message asks the recipient to verify credentials through an external link.</li>
             </ul>
           </section>
         </figure>
@@ -64,25 +54,25 @@
             <div class="pbq-fillin-panel">
               <p class="pbq-fillin">
                 Identify the techniques: micros0ft-support.com using zero instead of O is
-                <span class="drop-slot drop-slot--inline" data-target="typosquatting" aria-label="Blank 1"></span>.
+                <span class="drop-slot drop-slot--inline" data-slot="b1" aria-label="Blank 1"></span>.
                 Creating urgency with suspended in 24 hours to pressure victims is
-                <span class="drop-slot drop-slot--inline" data-target="pretexting" aria-label="Blank 2"></span>. This
+                <span class="drop-slot drop-slot--inline" data-slot="b2" aria-label="Blank 2"></span>. This
                 email-based attack is
-                <span class="drop-slot drop-slot--inline" data-target="phishing" aria-label="Blank 3"></span>. A
+                <span class="drop-slot drop-slot--inline" data-slot="b3" aria-label="Blank 3"></span>. A
                 targeted attack on a specific executive is
-                <span class="drop-slot drop-slot--inline" data-target="spear-phishing" aria-label="Blank 4"></span>.
+                <span class="drop-slot drop-slot--inline" data-slot="b4" aria-label="Blank 4"></span>.
                 SMS-based phishing is
-                <span class="drop-slot drop-slot--inline" data-target="smishing" aria-label="Blank 5"></span> and
+                <span class="drop-slot drop-slot--inline" data-slot="b5" aria-label="Blank 5"></span> and
                 phone-call phishing is
-                <span class="drop-slot drop-slot--inline" data-target="vishing" aria-label="Blank 6"></span>.
+                <span class="drop-slot drop-slot--inline" data-slot="b6" aria-label="Blank 6"></span>.
                 Impersonating the Microsoft brand is
                 <span
                   class="drop-slot drop-slot--inline"
-                  data-target="brand-impersonation"
+                  data-slot="b7"
                   aria-label="Blank 7"
                 ></span
                 >. The correct employee response is to
-                <span class="drop-slot drop-slot--inline" data-target="report" aria-label="Blank 8"></span> it to the
+                <span class="drop-slot drop-slot--inline" data-slot="b8" aria-label="Blank 8"></span> it to the
                 security team without clicking links.
               </p>
             </div>
@@ -106,8 +96,9 @@
 
       <div class="actions">
         <button id="checkBtn" type="button">Check Answer</button>
-        <button id="showBtn" type="button">Show Answer</button>
         <button id="resetBtn" type="button">Reset</button>
+        <button id="showBtn" type="button">Show Answer</button>
+
         <span id="result" role="status" aria-live="polite"></span>
       </div></article>
 <script>
@@ -115,17 +106,31 @@
   var root = document.getElementById("phishing-analysis");
   if (!root) return;
 
+  var SLOT_ANSWERS = {
+    b1: "typosquatting",
+    b2: "pretexting",
+    b3: "phishing",
+    b4: "spear-phishing",
+    b5: "smishing",
+    b6: "vishing",
+    b7: "brand-impersonation",
+    b8: "report"
+  };
   var bank = root.querySelector(".bank");
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [role='status']");
 var dragged = null;
       var picked = null;
 
       function allSlots() {
-        return root.querySelectorAll(".drop-slot[data-target]");
+        return root.querySelectorAll(".drop-slot[data-slot]");
+      }
+
+      function slotAnswer(slot) {
+        return SLOT_ANSWERS[slot.getAttribute("data-slot")];
       }
 
       function clearPick() {
@@ -235,7 +240,7 @@ var dragged = null;
         var allOk = true;
         allSlots().forEach(function (slot) {
           slot.classList.remove("correct", "incorrect", "over");
-          var want = slot.getAttribute("data-target");
+          var want = slotAnswer(slot);
           var token = slot.querySelector(".token");
           if (!token) {
             slot.classList.add("incorrect");
@@ -250,7 +255,7 @@ var dragged = null;
         result.className = allOk ? "is-pass" : "is-fail";
         result.textContent = allOk
           ? "Correct. Typosquatting (micros0ft), pretexting (urgency), phishing (email attack), spear phishing (targeted executive), smishing (SMS), vishing (phone), brand impersonation (Microsoft), report (safe response)."
-          : "Incorrect. Some blanks are empty or mismatched — review the exhibit red flags and try again.";
+          : "Incorrect. Some blanks are empty or mismatched — review the email exhibit and try again.";
       });
 
       showBtn.addEventListener("click", function () {
@@ -261,7 +266,7 @@ var dragged = null;
           if (token) bank.appendChild(token);
         });
         allSlots().forEach(function (slot) {
-          var token = takeFromBank(slot.getAttribute("data-target"));
+          var token = takeFromBank(slotAnswer(slot));
           if (token) {
             slot.appendChild(token);
             slot.classList.add("correct");

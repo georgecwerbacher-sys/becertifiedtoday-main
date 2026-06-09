@@ -110,7 +110,7 @@
                       <td>PTO-FAQ-draft.pdf</td>
                       <td>Internal (unreviewed)</td>
                       <td class="status-quarantine">Quarantined — pending review</td>
-                      <td><a href="exhibits/PTO-FAQ-draft-malicious-upload.pdf" target="_blank" rel="noopener">Malicious upload</a></td>
+                      <td><a href="exhibits/PTO-FAQ-draft-malicious-upload.pdf" target="_blank" rel="noopener">PTO-FAQ-draft.pdf (pending review)</a></td>
                     </tr>
                   </tbody>
                 </table>
@@ -170,7 +170,7 @@ pro-rated limits in section 3.2. Requests must be submitted in the HR portal bef
               <select id="acme-config-cfg-vector-access" class="pbq-ai-select" data-setting="cfg-vector-access">
                 <option value="">Select…</option>
                 <option value="public">Public HTTPS endpoint with API key in client JavaScript</option>
-                <option value="secure">Private network only; require authentication and RBAC on every query</option>
+                <option value="secure">Private network only; authentication and RBAC on every query</option>
                 <option value="anon">Anonymous read for faster retrieval</option>
               </select>
             </label>
@@ -188,7 +188,7 @@ pro-rated limits in section 3.2. Requests must be submitted in the HR portal bef
               <select id="acme-config-cfg-corpus" class="pbq-ai-select" data-setting="cfg-corpus">
                 <option value="">Select…</option>
                 <option value="any">Any employee may upload files into the live index</option>
-                <option value="approved">Approved HR policy repository only; block ad-hoc uploads to production index</option>
+                <option value="approved">Approved HR policy repository only; controlled upload workflow</option>
                 <option value="share">Index full corporate file share for completeness</option>
               </select>
             </label>
@@ -197,7 +197,7 @@ pro-rated limits in section 3.2. Requests must be submitted in the HR portal bef
               <select id="acme-config-cfg-training" class="pbq-ai-select" data-setting="cfg-training">
                 <option value="">Select…</option>
                 <option value="train">Use employee chats to fine-tune the model weekly</option>
-                <option value="no-train">Do not train or fine-tune on employee prompts or retrieved text</option>
+                <option value="no-train">No training or fine-tuning on employee prompts or retrieved text</option>
                 <option value="pseudonym">Train on chats after removing employee names only</option>
               </select>
             </label>
@@ -222,12 +222,13 @@ pro-rated limits in section 3.2. Requests must be submitted in the HR portal bef
           </div>
         </section><div class="actions">
         <button id="acme-config-checkBtn" type="button">Check Answer</button>
-        <button id="acme-config-showBtn" type="button">Show Answer</button>
         <button id="acme-config-resetBtn" type="button">Reset</button>
+        <button id="acme-config-showBtn" type="button">Show Answer</button>
+
         <span id="acme-config-result" role="status" aria-live="polite"></span></div></div></article>
 <article class="pbq-suite-section" id="acme-guardrails" data-scenario="acme-rag-hr-ai" hidden><div class="pbq-suite-section__inner"><div data-acme-part1><section class="pbq-ai-section" aria-labelledby="guard-heading">
           <h2 id="acme-guardrails-guard-heading">Task 2 — Guardrails (enable or disable)</h2>
-          <p class="pbq-ai-section-lead">Toggle each guardrail to the recommended production state.</p>
+          <p class="pbq-ai-section-lead">Toggle each guardrail on or off per corporate AI policy.</p>
           <ul class="pbq-ai-guard-list">
             <li>
               <label class="pbq-ai-toggle">
@@ -288,8 +289,9 @@ pro-rated limits in section 3.2. Requests must be submitted in the HR portal bef
           </ul>
         </section><div class="actions">
         <button id="acme-guardrails-checkBtn" type="button">Check Answer</button>
-        <button id="acme-guardrails-showBtn" type="button">Show Answer</button>
         <button id="acme-guardrails-resetBtn" type="button">Reset</button>
+        <button id="acme-guardrails-showBtn" type="button">Show Answer</button>
+
         <span id="acme-guardrails-result" role="status" aria-live="polite"></span></div></div></article>
 <article class="pbq-suite-section" id="acme-attacks" data-scenario="acme-rag-hr-ai" hidden><div class="pbq-suite-section__inner"><div data-acme-part1><section class="pbq-ai-section" aria-labelledby="attack-heading">
           <h2 id="acme-attacks-attack-heading">Task 3 — AI attack scenarios and mitigations</h2>
@@ -385,8 +387,9 @@ pro-rated limits in section 3.2. Requests must be submitted in the HR portal bef
         </section>
       </div><div class="actions">
         <button id="acme-attacks-checkBtn" type="button">Check Answer</button>
-        <button id="acme-attacks-showBtn" type="button">Show Answer</button>
         <button id="acme-attacks-resetBtn" type="button">Reset</button>
+        <button id="acme-attacks-showBtn" type="button">Show Answer</button>
+
         <span id="acme-attacks-result" role="status" aria-live="polite"></span></div></div></article>
 <article class="pbq-suite-section" id="acme-p2" data-scenario="acme-rag-hr-ai" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-ai-sim">
         <p class="pbq-ai-part-banner">Part 2 — Identify the correct mitigation for each AI attack</p>
@@ -502,8 +505,9 @@ Top responses include partial redacted strings — rate limit not enforced on re
 
       <div class="actions">
         <button id="acme-p2-checkBtn" type="button">Check Answer</button>
-        <button id="acme-p2-showBtn" type="button">Show Answer</button>
         <button id="acme-p2-resetBtn" type="button">Reset</button>
+        <button id="acme-p2-showBtn" type="button">Show Answer</button>
+
         <span id="acme-p2-result" role="status" aria-live="polite"></span>
       </div>
 <div class="pbq-exhibit-store" hidden aria-hidden="true"><p><button type="button" class="btn btn-secondary" data-pbq-modal="#exhibit-part2-chat">Open exhibit — prompt injection chat log</button></p></div>
@@ -555,8 +559,8 @@ Top responses include partial redacted strings — rate limit not enforced on re
   if (!root) return;
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [id$='result']");
   if (!checkBtn || !showBtn || !resetBtn || !result) return;
   function configOk() {
@@ -620,8 +624,8 @@ Top responses include partial redacted strings — rate limit not enforced on re
   if (!root) return;
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [id$='result']");
   if (!checkBtn || !showBtn || !resetBtn || !result) return;
   function guardsOk() {
@@ -644,7 +648,7 @@ Top responses include partial redacted strings — rate limit not enforced on re
     clearMarks();
     if (guardsOk()) {
       result.className = "is-pass";
-      result.textContent = "Correct — guardrails match recommended production state.";
+      result.textContent = "Correct — guardrails match the required policy state.";
     } else {
       result.className = "is-fail";
       result.textContent = "Incorrect. Enable injection, PII, retrieval, rate-limit, and ingest scanning; disable anonymous access, debug prompts, and unrestricted tools.";
@@ -702,8 +706,8 @@ Top responses include partial redacted strings — rate limit not enforced on re
   if (!root) return;
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [id$='result']");
   if (!checkBtn || !showBtn || !resetBtn || !result) return;
   function configOk() {
@@ -776,8 +780,8 @@ Top responses include partial redacted strings — rate limit not enforced on re
       if (!root) return;
       var actionBtns = root.querySelectorAll(".actions button");
       var checkBtn = actionBtns[0];
-      var showBtn = actionBtns[1];
-      var resetBtn = actionBtns[2];
+      var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
       var result = root.querySelector(".actions [id$='result']");
       if (!checkBtn || !showBtn || !resetBtn || !result) return;
 

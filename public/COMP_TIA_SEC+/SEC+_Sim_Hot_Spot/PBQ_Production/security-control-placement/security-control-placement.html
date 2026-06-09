@@ -76,7 +76,7 @@
             </header>
             <div class="sec-slot">
               <p class="sec-slot__label">Between Internet ↔ DMZ</p>
-              <div class="drop-slot" data-target="perimeter-firewall" aria-label="Between Internet and DMZ"></div>
+              <div class="drop-slot" data-slot="s1" aria-label="Between Internet and DMZ"></div>
             </div>
           </article>
 
@@ -89,16 +89,16 @@
             </header>
             <div class="sec-zone__slots">
               <div class="sec-slot">
-                <p class="sec-slot__label">Protect Web Server (HTTP attacks)</p>
-                <div class="drop-slot" data-target="waf" aria-label="Protect Web Server from HTTP attacks"></div>
+                <p class="sec-slot__label">DMZ slot A — public web tier</p>
+                <div class="drop-slot" data-slot="s2" aria-label="DMZ slot A"></div>
               </div>
               <div class="sec-slot">
-                <p class="sec-slot__label">Detect intrusions in DMZ</p>
-                <div class="drop-slot" data-target="network-ids" aria-label="Detect intrusions in DMZ"></div>
+                <p class="sec-slot__label">DMZ slot B — traffic monitoring</p>
+                <div class="drop-slot" data-slot="s3" aria-label="DMZ slot B"></div>
               </div>
               <div class="sec-slot">
-                <p class="sec-slot__label">Decoy to lure attackers</p>
-                <div class="drop-slot" data-target="honeypot" aria-label="Decoy to lure attackers"></div>
+                <p class="sec-slot__label">DMZ slot C — deception / research</p>
+                <div class="drop-slot" data-slot="s4" aria-label="DMZ slot C"></div>
               </div>
             </div>
           </article>
@@ -113,15 +113,15 @@
             <div class="sec-zone__slots">
               <div class="sec-slot">
                 <p class="sec-slot__label">Between DMZ ↔ Internal</p>
-                <div class="drop-slot" data-target="internal-firewall" aria-label="Between DMZ and Internal"></div>
+                <div class="drop-slot" data-slot="s5" aria-label="Between DMZ and Internal"></div>
               </div>
               <div class="sec-slot">
-                <p class="sec-slot__label">Endpoint access control</p>
-                <div class="drop-slot" data-target="nac" aria-label="Endpoint access control"></div>
+                <p class="sec-slot__label">Internal slot B — workstation admission</p>
+                <div class="drop-slot" data-slot="s6" aria-label="Internal slot B"></div>
               </div>
               <div class="sec-slot">
-                <p class="sec-slot__label">Log aggregation &amp; alerting</p>
-                <div class="drop-slot" data-target="siem" aria-label="Log aggregation and alerting"></div>
+                <p class="sec-slot__label">Internal slot C — centralized monitoring</p>
+                <div class="drop-slot" data-slot="s7" aria-label="Internal slot C"></div>
               </div>
             </div>
           </article>
@@ -132,8 +132,9 @@
 
   <div class="actions">
     <button id="sec-control-placement-checkBtn" type="button">Check Answer</button>
-    <button id="sec-control-placement-showBtn" type="button">Show Answer</button>
     <button id="sec-control-placement-resetBtn" type="button">Reset</button>
+    <button id="sec-control-placement-showBtn" type="button">Show Answer</button>
+
     <span id="sec-control-placement-result" role="status" aria-live="polite"></span>
   </div></div></article>
         </div>
@@ -159,6 +160,15 @@
   <!-- sec-control-placement -->
 <script>
 (function () {
+  var SLOT_ANSWERS = {
+    s1: "perimeter-firewall",
+    s2: "waf",
+    s3: "network-ids",
+    s4: "honeypot",
+    s5: "internal-firewall",
+    s6: "nac",
+    s7: "siem"
+  };
   var CORRECT_MSG =
     "Correct. Perimeter Firewall guards the Internet–DMZ boundary; WAF filters HTTP attacks on the web server; Network IDS monitors DMZ traffic; Honeypot acts as a decoy; Internal Firewall separates DMZ from the trusted network; NAC enforces endpoint access; SIEM aggregates logs and alerts. Proxy Server is not required in this design.";
 
@@ -168,14 +178,18 @@
   var bank = root.querySelector(".bank");
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [role='status']");
   var dragged = null;
   var picked = null;
 
   function allSlots() {
-    return root.querySelectorAll(".drop-slot[data-target]");
+    return root.querySelectorAll(".drop-slot[data-slot]");
+  }
+
+  function slotAnswer(slot) {
+    return SLOT_ANSWERS[slot.getAttribute("data-slot")];
   }
 
   function clearPick() {
@@ -285,7 +299,7 @@
     var allOk = true;
     allSlots().forEach(function (slot) {
       slot.classList.remove("correct", "incorrect", "over");
-      var want = slot.getAttribute("data-target");
+      var want = slotAnswer(slot);
       var token = slot.querySelector(".token");
       if (!token) {
         slot.classList.add("incorrect");
@@ -311,7 +325,7 @@
       if (token) bank.appendChild(token);
     });
     allSlots().forEach(function (slot) {
-      var token = takeFromBank(slot.getAttribute("data-target"));
+      var token = takeFromBank(slotAnswer(slot));
       if (token) {
         slot.appendChild(token);
         slot.classList.add("correct");

@@ -14,25 +14,25 @@
       </div>
       <pre class="pbq-ssh-code" aria-label="sshd_config"><code><span class="ln">1</span><span class="cm"># SSH Server Configuration — CIS Benchmark</span>
 <span class="ln">2</span><span class="kw">Port</span> <span class="val">22</span>
-<span class="ln">3</span><span class="kw">Protocol</span> <select class="pbq-ssh-select" data-key="sshd-protocol" data-correct="2" aria-label="Protocol">
+<span class="ln">3</span><span class="kw">Protocol</span> <select class="pbq-ssh-select" data-key="sshd-protocol" aria-label="Protocol">
   <option value="">select</option><option>1</option><option>2</option><option>1,2</option>
 </select>
-<span class="ln">4</span><span class="kw">PermitRootLogin</span> <select class="pbq-ssh-select" data-key="sshd-root" data-correct="no" aria-label="PermitRootLogin">
+<span class="ln">4</span><span class="kw">PermitRootLogin</span> <select class="pbq-ssh-select" data-key="sshd-root" aria-label="PermitRootLogin">
   <option value="">select</option><option>yes</option><option>no</option><option>prohibit-password</option>
 </select>
-<span class="ln">5</span><span class="kw">PasswordAuthentication</span> <select class="pbq-ssh-select" data-key="sshd-password" data-correct="no" aria-label="PasswordAuthentication">
+<span class="ln">5</span><span class="kw">PasswordAuthentication</span> <select class="pbq-ssh-select" data-key="sshd-password" aria-label="PasswordAuthentication">
   <option value="">select</option><option>yes</option><option>no</option>
 </select>
-<span class="ln">6</span><span class="kw">PermitEmptyPasswords</span> <select class="pbq-ssh-select" data-key="sshd-empty" data-correct="no" aria-label="PermitEmptyPasswords">
+<span class="ln">6</span><span class="kw">PermitEmptyPasswords</span> <select class="pbq-ssh-select" data-key="sshd-empty" aria-label="PermitEmptyPasswords">
   <option value="">select</option><option>yes</option><option>no</option>
 </select>
-<span class="ln">7</span><span class="kw">MaxAuthTries</span> <select class="pbq-ssh-select" data-key="sshd-maxauth" data-correct="3" aria-label="MaxAuthTries">
+<span class="ln">7</span><span class="kw">MaxAuthTries</span> <select class="pbq-ssh-select" data-key="sshd-maxauth" aria-label="MaxAuthTries">
   <option value="">select</option><option>10</option><option>6</option><option>3</option><option>1</option>
 </select>
-<span class="ln">8</span><span class="kw">X11Forwarding</span> <select class="pbq-ssh-select" data-key="sshd-x11" data-correct="no" aria-label="X11Forwarding">
+<span class="ln">8</span><span class="kw">X11Forwarding</span> <select class="pbq-ssh-select" data-key="sshd-x11" aria-label="X11Forwarding">
   <option value="">select</option><option>yes</option><option>no</option>
 </select>
-<span class="ln">9</span><span class="kw">LoginGraceTime</span> <select class="pbq-ssh-select" data-key="sshd-grace" data-correct="60" aria-label="LoginGraceTime">
+<span class="ln">9</span><span class="kw">LoginGraceTime</span> <select class="pbq-ssh-select" data-key="sshd-grace" aria-label="LoginGraceTime">
   <option value="">select</option><option>120</option><option>60</option><option>30</option>
 </select>
 <span class="ln">10</span><span class="kw">AllowUsers</span> <span class="val">webadmin svcuser</span></code></pre>
@@ -41,13 +41,28 @@
 
   <div class="actions">
     <button id="checkBtn" type="button">Check Answer</button>
-    <button id="showBtn" type="button">Show Answer</button>
     <button id="resetBtn" type="button">Reset</button>
+    <button id="showBtn" type="button">Show Answer</button>
+
     <span id="result" role="status" aria-live="polite"></span>
   </div>
 </article>
 <script>
 (function () {
+  var FIELD_ANSWERS = {
+    "sshd-protocol": "2",
+    "sshd-root": "no",
+    "sshd-password": "no",
+    "sshd-empty": "no",
+    "sshd-maxauth": "3",
+    "sshd-x11": "no",
+    "sshd-grace": "60"
+  };
+  function expected(el) {
+    var key = el.getAttribute("data-key");
+    return key ? FIELD_ANSWERS[key] : null;
+  }
+
   var CORRECT_MSG =
     "Correct. Protocol 2, root login disabled, password and empty-password auth denied, MaxAuthTries 3, X11Forwarding off, LoginGraceTime 60 — aligned with CIS SSH hardening.";
 
@@ -57,13 +72,13 @@
   var selects = root.querySelectorAll(".pbq-ssh-select");
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [role='status']");
 
   function fieldOk(sel) {
     var val = sel.value.trim();
-    var want = sel.getAttribute("data-correct");
+    var want = expected(sel);
     var pass = val !== "" && val === want;
     sel.classList.toggle("pbq-ssh-select--ok", pass);
     sel.classList.toggle("pbq-ssh-select--bad", val !== "" && !pass);
@@ -104,7 +119,7 @@
 
   showBtn.addEventListener("click", function () {
     selects.forEach(function (sel) {
-      sel.value = sel.getAttribute("data-correct");
+      sel.value = expected(sel);
       fieldOk(sel);
     });
     result.className = "is-pass";

@@ -123,35 +123,35 @@
         <ol class="pbq-dr-order-list">
           <li>
             <span class="pbq-dr-order-num">1</span>
-            <div class="drop-slot drop-slot--dr" data-target="activate-team" aria-label="Step 1"></div>
+            <div class="drop-slot drop-slot--dr" data-slot="1" aria-label="Step 1"></div>
           </li>
           <li>
             <span class="pbq-dr-order-num">2</span>
-            <div class="drop-slot drop-slot--dr" data-target="isolate-systems" aria-label="Step 2"></div>
+            <div class="drop-slot drop-slot--dr" data-slot="2" aria-label="Step 2"></div>
           </li>
           <li>
             <span class="pbq-dr-order-num">3</span>
-            <div class="drop-slot drop-slot--dr" data-target="assess-scope" aria-label="Step 3"></div>
+            <div class="drop-slot drop-slot--dr" data-slot="3" aria-label="Step 3"></div>
           </li>
           <li>
             <span class="pbq-dr-order-num">4</span>
-            <div class="drop-slot drop-slot--dr" data-target="declare-disaster" aria-label="Step 4"></div>
+            <div class="drop-slot drop-slot--dr" data-slot="4" aria-label="Step 4"></div>
           </li>
           <li>
             <span class="pbq-dr-order-num">5</span>
-            <div class="drop-slot drop-slot--dr" data-target="verify-backup" aria-label="Step 5"></div>
+            <div class="drop-slot drop-slot--dr" data-slot="5" aria-label="Step 5"></div>
           </li>
           <li>
             <span class="pbq-dr-order-num">6</span>
-            <div class="drop-slot drop-slot--dr" data-target="failover-warm" aria-label="Step 6"></div>
+            <div class="drop-slot drop-slot--dr" data-slot="6" aria-label="Step 6"></div>
           </li>
           <li>
             <span class="pbq-dr-order-num">7</span>
-            <div class="drop-slot drop-slot--dr" data-target="restore-backup" aria-label="Step 7"></div>
+            <div class="drop-slot drop-slot--dr" data-slot="7" aria-label="Step 7"></div>
           </li>
           <li>
             <span class="pbq-dr-order-num">8</span>
-            <div class="drop-slot drop-slot--dr" data-target="validate-lessons" aria-label="Step 8"></div>
+            <div class="drop-slot drop-slot--dr" data-slot="8" aria-label="Step 8"></div>
           </li>
         </ol>
       </section>
@@ -160,8 +160,9 @@
 
   <div class="actions">
     <button id="dr-part1-order-checkBtn" type="button">Check Answer</button>
-    <button id="dr-part1-order-showBtn" type="button">Show Answer</button>
     <button id="dr-part1-order-resetBtn" type="button">Reset</button>
+    <button id="dr-part1-order-showBtn" type="button">Show Answer</button>
+
     <span id="dr-part1-order-result" role="status" aria-live="polite"></span>
   </div></div></article>
 <article class="pbq-suite-section" id="dr-part2-targets" data-scenario="ransomware-dr-acme" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-dr-targets">
@@ -176,7 +177,7 @@
             <option value="">-- Select RTO --</option>
             <option value="15m">15 minutes</option>
             <option value="2h">2 hours</option>
-            <option value="4h">4 hours (match SLA max)</option>
+            <option value="4h">4 hours</option>
             <option value="8h">8 hours</option>
             <option value="24h">24 hours</option>
           </select>
@@ -189,7 +190,7 @@
             <option value="">-- Select RPO --</option>
             <option value="0">0 — no data loss tolerated</option>
             <option value="1h">1 hour</option>
-            <option value="6h">6 hours (matches backup age)</option>
+            <option value="6h">6 hours</option>
             <option value="24h">24 hours</option>
             <option value="72h">72 hours</option>
           </select>
@@ -216,10 +217,10 @@
           <span class="pbq-dr-field__hint">Hot = always-on mirror | Warm = partially ready | Cold = empty shell</span>
           <select class="pbq-dr-select" data-key="site-tier" aria-label="DR site tier">
             <option value="">-- Select site tier --</option>
-            <option value="hot">Hot site — full mirror, RTO minutes, cost ~$1.5M+/yr</option>
-            <option value="warm">Warm site — hardware ready, data synced daily, RTO 2–4 hrs, ~$200–500K/yr</option>
-            <option value="cold">Cold site — empty facility, RTO days/weeks, ~$50–100K/yr</option>
-            <option value="cloud">Cloud-based DR — auto-scalable, pay-per-use, RTO minutes–hours</option>
+            <option value="hot">Hot site</option>
+            <option value="warm">Warm site</option>
+            <option value="cold">Cold site</option>
+            <option value="cloud">Cloud-based DR</option>
           </select>
         </label>
 
@@ -243,8 +244,9 @@
 
   <div class="actions">
     <button id="dr-part2-targets-checkBtn" type="button">Check Answer</button>
-    <button id="dr-part2-targets-showBtn" type="button">Show Answer</button>
     <button id="dr-part2-targets-resetBtn" type="button">Reset</button>
+    <button id="dr-part2-targets-showBtn" type="button">Show Answer</button>
+
     <span id="dr-part2-targets-result" role="status" aria-live="polite"></span>
   </div></div></article>
 <article class="pbq-suite-section" id="dr-part3-tradeoffs" data-scenario="ransomware-dr-acme" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-dr-tradeoffs">
@@ -332,8 +334,9 @@
 
   <div class="actions">
     <button id="dr-part3-tradeoffs-checkBtn" type="button">Check Answer</button>
-    <button id="dr-part3-tradeoffs-showBtn" type="button">Show Answer</button>
     <button id="dr-part3-tradeoffs-resetBtn" type="button">Reset</button>
+    <button id="dr-part3-tradeoffs-showBtn" type="button">Show Answer</button>
+
     <span id="dr-part3-tradeoffs-result" role="status" aria-live="polite"></span>
   </div></div></article>
         </div>
@@ -363,17 +366,31 @@
     "Correct. Mobilize the DR team, contain spread (isolate), assess impact, formally declare disaster, verify backups are clean, failover to warm DR, restore from verified backup, then validate and run lessons learned.";
   var root = document.getElementById("dr-part1-order");
   if (!root) return;
+  var SLOT_ANSWERS = {
+    "1": "activate-team",
+    "2": "isolate-systems",
+    "3": "assess-scope",
+    "4": "declare-disaster",
+    "5": "verify-backup",
+    "6": "failover-warm",
+    "7": "restore-backup",
+    "8": "validate-lessons"
+  };
   var bank = root.querySelector("[data-dr-bank]");
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector("#dr-part1-order-result");
   var dragged = null;
   var picked = null;
 
   function allSlots() {
-    return root.querySelectorAll(".drop-slot[data-target]");
+    return root.querySelectorAll(".drop-slot[data-slot]");
+  }
+
+  function slotAnswer(slot) {
+    return SLOT_ANSWERS[slot.getAttribute("data-slot")];
   }
 
   function clearPick() {
@@ -479,7 +496,7 @@
     var allOk = true;
     allSlots().forEach(function (slot) {
       slot.classList.remove("correct", "incorrect", "over");
-      var want = slot.getAttribute("data-target");
+      var want = slotAnswer(slot);
       var token = slot.querySelector(".token");
       if (!token) {
         slot.classList.add("incorrect");
@@ -504,7 +521,7 @@
       if (token) bank.appendChild(token);
     });
     allSlots().forEach(function (slot) {
-      var token = takeFromBank(slot.getAttribute("data-target"));
+      var token = takeFromBank(slotAnswer(slot));
       if (token) {
         slot.appendChild(token);
         slot.classList.add("correct");
@@ -543,8 +560,8 @@
   if (!root) return;
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector("#dr-part2-targets-result");
 
   function mark(sel, pass) {
@@ -623,8 +640,8 @@
   if (!root) return;
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector("#dr-part3-tradeoffs-result");
 
   function allAnswered() {

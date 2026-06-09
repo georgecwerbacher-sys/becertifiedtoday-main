@@ -44,54 +44,54 @@
                 <span class="step-num" aria-hidden="true">1</span>
                 <div class="step-copy">
                   <h3 class="step-title">First Event</h3>
-                  <p class="step-desc">Attack initiation</p>
+                  <p class="step-desc">Earliest log event in the sequence</p>
                 </div>
-                <div class="drop-slot" data-target="failed-login" aria-label="First event drop zone"></div>
+                <div class="drop-slot" data-slot="t1" aria-label="First event drop zone"></div>
               </article>
 
               <article class="timeline-step">
                 <span class="step-num" aria-hidden="true">2</span>
                 <div class="step-copy">
                   <h3 class="step-title">Second Event</h3>
-                  <p class="step-desc">Attack escalation</p>
+                  <p class="step-desc">Repeated authentication failures</p>
                 </div>
-                <div class="drop-slot" data-target="multiple-retries" aria-label="Second event drop zone"></div>
+                <div class="drop-slot" data-slot="t2" aria-label="Second event drop zone"></div>
               </article>
 
               <article class="timeline-step">
                 <span class="step-num" aria-hidden="true">3</span>
                 <div class="step-copy">
                   <h3 class="step-title">Third Event</h3>
-                  <p class="step-desc">Initial compromise</p>
+                  <p class="step-desc">Successful remote access</p>
                 </div>
-                <div class="drop-slot" data-target="successful-login" aria-label="Third event drop zone"></div>
+                <div class="drop-slot" data-slot="t3" aria-label="Third event drop zone"></div>
               </article>
 
               <article class="timeline-step">
                 <span class="step-num" aria-hidden="true">4</span>
                 <div class="step-copy">
                   <h3 class="step-title">Fourth Event</h3>
-                  <p class="step-desc">Privilege escalation</p>
+                  <p class="step-desc">Elevated command execution</p>
                 </div>
-                <div class="drop-slot" data-target="sudo-escalation" aria-label="Fourth event drop zone"></div>
+                <div class="drop-slot" data-slot="t4" aria-label="Fourth event drop zone"></div>
               </article>
 
               <article class="timeline-step">
                 <span class="step-num" aria-hidden="true">5</span>
                 <div class="step-copy">
                   <h3 class="step-title">Fifth Event</h3>
-                  <p class="step-desc">Persistence establishment</p>
+                  <p class="step-desc">Local account change</p>
                 </div>
-                <div class="drop-slot" data-target="new-user" aria-label="Fifth event drop zone"></div>
+                <div class="drop-slot" data-slot="t5" aria-label="Fifth event drop zone"></div>
               </article>
 
               <article class="timeline-step">
                 <span class="step-num" aria-hidden="true">6</span>
                 <div class="step-copy">
                   <h3 class="step-title">Sixth Event</h3>
-                  <p class="step-desc">Long-term access setup</p>
+                  <p class="step-desc">Scheduled task activity</p>
                 </div>
-                <div class="drop-slot" data-target="cron-job" aria-label="Sixth event drop zone"></div>
+                <div class="drop-slot" data-slot="t6" aria-label="Sixth event drop zone"></div>
               </article>
             </div>
             </div>
@@ -101,8 +101,9 @@
 
       <div class="actions">
         <button id="checkBtn" type="button">Check Answer</button>
-        <button id="showBtn" type="button">Show Answer</button>
         <button id="resetBtn" type="button">Reset</button>
+        <button id="showBtn" type="button">Show Answer</button>
+
         <span id="result" role="status" aria-live="polite"></span>
       </div></article>
 <script>
@@ -110,17 +111,29 @@
   var root = document.getElementById("log-timeline");
   if (!root) return;
 
+  var SLOT_ANSWERS = {
+    t1: "failed-login",
+    t2: "multiple-retries",
+    t3: "successful-login",
+    t4: "sudo-escalation",
+    t5: "new-user",
+    t6: "cron-job"
+  };
   var bank = root.querySelector(".bank");
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [role='status']");
 var dragged = null;
       var picked = null;
 
       function allSlots() {
-        return root.querySelectorAll(".drop-slot[data-target]");
+        return root.querySelectorAll(".drop-slot[data-slot]");
+      }
+
+      function slotAnswer(slot) {
+        return SLOT_ANSWERS[slot.getAttribute("data-slot")];
       }
 
       function clearPick() {
@@ -230,7 +243,7 @@ var dragged = null;
         var allOk = true;
         allSlots().forEach(function (slot) {
           slot.classList.remove("correct", "incorrect", "over");
-          var want = slot.getAttribute("data-target");
+          var want = slotAnswer(slot);
           var token = slot.querySelector(".token");
           if (!token) {
             slot.classList.add("incorrect");
@@ -256,7 +269,7 @@ var dragged = null;
           if (token) bank.appendChild(token);
         });
         allSlots().forEach(function (slot) {
-          var token = takeFromBank(slot.getAttribute("data-target"));
+          var token = takeFromBank(slotAnswer(slot));
           if (token) {
             slot.appendChild(token);
             slot.classList.add("correct");

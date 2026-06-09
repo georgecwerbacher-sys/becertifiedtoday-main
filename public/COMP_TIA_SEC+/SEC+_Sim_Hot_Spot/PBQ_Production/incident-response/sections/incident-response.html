@@ -59,19 +59,7 @@
           </section>
 
           <footer class="pbq-ir-footer">
-            <p class="pbq-ir-flow">
-              <strong>Post-containment steps:</strong> After containment:
-              <span class="pbq-ir-flow-step">Eradication (remove malware)</span>
-              <span aria-hidden="true">→</span>
-              <span class="pbq-ir-flow-step">Recovery (restore from backup)</span>
-              <span aria-hidden="true">→</span>
-              <span class="pbq-ir-flow-step">Lessons Learned (improve posture)</span>
-            </p>
-            <ul class="pbq-ir-defs">
-              <li><strong>Chain of custody:</strong> document who touched evidence and when</li>
-              <li><strong>Acquisition:</strong> forensic image before any changes</li>
-              <li><strong>Legal hold:</strong> preserve all relevant data</li>
-            </ul>
+            <p>Post-containment activities continue per the IR runbook after the timeline events above.</p>
           </footer>
         </figure>
 
@@ -81,20 +69,20 @@
             <div class="pbq-fillin-panel">
               <p class="pbq-fillin">
                 The NIST IR process has 7 steps: Preparation, Detection,
-                <span class="drop-slot drop-slot--inline" data-target="analysis" aria-label="Blank 1"></span>,
-                <span class="drop-slot drop-slot--inline" data-target="containment" aria-label="Blank 2"></span>,
+                <span class="drop-slot drop-slot--inline" data-slot="b1" aria-label="Blank 1"></span>,
+                <span class="drop-slot drop-slot--inline" data-slot="b2" aria-label="Blank 2"></span>,
                 Eradication, Recovery, and
-                <span class="drop-slot drop-slot--inline" data-target="lessons-learned" aria-label="Blank 3"></span>.
+                <span class="drop-slot drop-slot--inline" data-slot="b3" aria-label="Blank 3"></span>.
                 Before isolating a host a forensic
-                <span class="drop-slot drop-slot--inline" data-target="image" aria-label="Blank 4"></span> should be
+                <span class="drop-slot drop-slot--inline" data-slot="b4" aria-label="Blank 4"></span> should be
                 taken to preserve evidence. The documented record of who touched evidence and when is the
-                <span class="drop-slot drop-slot--inline" data-target="chain-of-custody" aria-label="Blank 5"></span>.
+                <span class="drop-slot drop-slot--inline" data-slot="b5" aria-label="Blank 5"></span>.
                 Placing a
-                <span class="drop-slot drop-slot--inline" data-target="legal-hold" aria-label="Blank 6"></span> prevents
+                <span class="drop-slot drop-slot--inline" data-slot="b6" aria-label="Blank 6"></span> prevents
                 evidence being destroyed. A
-                <span class="drop-slot drop-slot--inline" data-target="tabletop-exercise" aria-label="Blank 7"></span>
+                <span class="drop-slot drop-slot--inline" data-slot="b7" aria-label="Blank 7"></span>
                 tests the IR plan without a real incident. The step of removing malware from systems is
-                <span class="drop-slot drop-slot--inline" data-target="eradication" aria-label="Blank 8"></span>.
+                <span class="drop-slot drop-slot--inline" data-slot="b8" aria-label="Blank 8"></span>.
               </p>
             </div>
           </section>
@@ -117,8 +105,9 @@
 
       <div class="actions">
         <button id="checkBtn" type="button">Check Answer</button>
-        <button id="showBtn" type="button">Show Answer</button>
         <button id="resetBtn" type="button">Reset</button>
+        <button id="showBtn" type="button">Show Answer</button>
+
         <span id="result" role="status" aria-live="polite"></span>
       </div></article>
 <script>
@@ -126,17 +115,31 @@
   var root = document.getElementById("incident-response");
   if (!root) return;
 
+  var SLOT_ANSWERS = {
+    b1: "analysis",
+    b2: "containment",
+    b3: "lessons-learned",
+    b4: "image",
+    b5: "chain-of-custody",
+    b6: "legal-hold",
+    b7: "tabletop-exercise",
+    b8: "eradication"
+  };
   var bank = root.querySelector(".bank");
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [role='status']");
 var dragged = null;
       var picked = null;
 
       function allSlots() {
-        return root.querySelectorAll(".drop-slot[data-target]");
+        return root.querySelectorAll(".drop-slot[data-slot]");
+      }
+
+      function slotAnswer(slot) {
+        return SLOT_ANSWERS[slot.getAttribute("data-slot")];
       }
 
       function clearPick() {
@@ -246,7 +249,7 @@ var dragged = null;
         var allOk = true;
         allSlots().forEach(function (slot) {
           slot.classList.remove("correct", "incorrect", "over");
-          var want = slot.getAttribute("data-target");
+          var want = slotAnswer(slot);
           var token = slot.querySelector(".token");
           if (!token) {
             slot.classList.add("incorrect");
@@ -272,7 +275,7 @@ var dragged = null;
           if (token) bank.appendChild(token);
         });
         allSlots().forEach(function (slot) {
-          var token = takeFromBank(slot.getAttribute("data-target"));
+          var token = takeFromBank(slotAnswer(slot));
           if (token) {
             slot.appendChild(token);
             slot.classList.add("correct");

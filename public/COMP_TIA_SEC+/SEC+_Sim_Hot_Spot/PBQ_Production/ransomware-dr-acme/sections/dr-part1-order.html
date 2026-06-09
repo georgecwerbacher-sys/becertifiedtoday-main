@@ -51,35 +51,35 @@
         <ol class="pbq-dr-order-list">
           <li>
             <span class="pbq-dr-order-num">1</span>
-            <div class="drop-slot drop-slot--dr" data-target="activate-team" aria-label="Step 1"></div>
+            <div class="drop-slot drop-slot--dr" data-slot="1" aria-label="Step 1"></div>
           </li>
           <li>
             <span class="pbq-dr-order-num">2</span>
-            <div class="drop-slot drop-slot--dr" data-target="isolate-systems" aria-label="Step 2"></div>
+            <div class="drop-slot drop-slot--dr" data-slot="2" aria-label="Step 2"></div>
           </li>
           <li>
             <span class="pbq-dr-order-num">3</span>
-            <div class="drop-slot drop-slot--dr" data-target="assess-scope" aria-label="Step 3"></div>
+            <div class="drop-slot drop-slot--dr" data-slot="3" aria-label="Step 3"></div>
           </li>
           <li>
             <span class="pbq-dr-order-num">4</span>
-            <div class="drop-slot drop-slot--dr" data-target="declare-disaster" aria-label="Step 4"></div>
+            <div class="drop-slot drop-slot--dr" data-slot="4" aria-label="Step 4"></div>
           </li>
           <li>
             <span class="pbq-dr-order-num">5</span>
-            <div class="drop-slot drop-slot--dr" data-target="verify-backup" aria-label="Step 5"></div>
+            <div class="drop-slot drop-slot--dr" data-slot="5" aria-label="Step 5"></div>
           </li>
           <li>
             <span class="pbq-dr-order-num">6</span>
-            <div class="drop-slot drop-slot--dr" data-target="failover-warm" aria-label="Step 6"></div>
+            <div class="drop-slot drop-slot--dr" data-slot="6" aria-label="Step 6"></div>
           </li>
           <li>
             <span class="pbq-dr-order-num">7</span>
-            <div class="drop-slot drop-slot--dr" data-target="restore-backup" aria-label="Step 7"></div>
+            <div class="drop-slot drop-slot--dr" data-slot="7" aria-label="Step 7"></div>
           </li>
           <li>
             <span class="pbq-dr-order-num">8</span>
-            <div class="drop-slot drop-slot--dr" data-target="validate-lessons" aria-label="Step 8"></div>
+            <div class="drop-slot drop-slot--dr" data-slot="8" aria-label="Step 8"></div>
           </li>
         </ol>
       </section>
@@ -88,8 +88,9 @@
 
   <div class="actions">
     <button id="checkBtn" type="button">Check Answer</button>
-    <button id="showBtn" type="button">Show Answer</button>
     <button id="resetBtn" type="button">Reset</button>
+    <button id="showBtn" type="button">Show Answer</button>
+
     <span id="result" role="status" aria-live="polite"></span>
   </div>
 </article>
@@ -99,17 +100,31 @@
     "Correct. Mobilize the DR team, contain spread (isolate), assess impact, formally declare disaster, verify backups are clean, failover to warm DR, restore from verified backup, then validate and run lessons learned.";
   var root = document.getElementById("dr-part1-order");
   if (!root) return;
+  var SLOT_ANSWERS = {
+    "1": "activate-team",
+    "2": "isolate-systems",
+    "3": "assess-scope",
+    "4": "declare-disaster",
+    "5": "verify-backup",
+    "6": "failover-warm",
+    "7": "restore-backup",
+    "8": "validate-lessons"
+  };
   var bank = root.querySelector("[data-dr-bank]");
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector("#result");
   var dragged = null;
   var picked = null;
 
   function allSlots() {
-    return root.querySelectorAll(".drop-slot[data-target]");
+    return root.querySelectorAll(".drop-slot[data-slot]");
+  }
+
+  function slotAnswer(slot) {
+    return SLOT_ANSWERS[slot.getAttribute("data-slot")];
   }
 
   function clearPick() {
@@ -215,7 +230,7 @@
     var allOk = true;
     allSlots().forEach(function (slot) {
       slot.classList.remove("correct", "incorrect", "over");
-      var want = slot.getAttribute("data-target");
+      var want = slotAnswer(slot);
       var token = slot.querySelector(".token");
       if (!token) {
         slot.classList.add("incorrect");
@@ -240,7 +255,7 @@
       if (token) bank.appendChild(token);
     });
     allSlots().forEach(function (slot) {
-      var token = takeFromBank(slot.getAttribute("data-target"));
+      var token = takeFromBank(slotAnswer(slot));
       if (token) {
         slot.appendChild(token);
         slot.classList.add("correct");

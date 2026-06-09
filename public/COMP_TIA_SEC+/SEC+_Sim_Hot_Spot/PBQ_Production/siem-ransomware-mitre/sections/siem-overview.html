@@ -7,42 +7,35 @@
   </p>
 
   <aside class="pbq-siem-timeline" aria-labelledby="siem-timeline-heading">
-    <h2 id="siem-timeline-heading">Reconstructed attack timeline (read-only context)</h2>
+    <h2 id="siem-timeline-heading">Reference exhibit: attack timeline (read-only)</h2>
     <ol class="pbq-siem-timeline__list">
       <li>
         <time>09:14</time> <span class="pbq-siem-host">MAIL-SRV</span>
         User <code>jdoe</code> opens phishing attachment <code>invoice_Q4.docm</code>.
-        <span class="pbq-siem-tag pbq-siem-tag--initial">Initial Access</span>
       </li>
       <li>
         <time>09:15</time> <span class="pbq-siem-host">WS-JDOE</span>
-        Word spawns <code>cmd.exe</code> → <code>PowerShell -enc</code> [base64] downloads stager.
-        <span class="pbq-siem-tag pbq-siem-tag--exec">Execution</span>
+        Word spawns <code>cmd.exe</code>, then <code>PowerShell -enc</code> [base64] downloads stager.
       </li>
       <li>
         <time>09:22</time> <span class="pbq-siem-host">WS-JDOE</span>
-        LSASS memory read via Mimikatz — credential dump.
-        <span class="pbq-siem-tag pbq-siem-tag--cred">Credential Access</span>
+        LSASS memory read via Mimikatz. Credential dump.
       </li>
       <li>
         <time>09:38</time> <span class="pbq-siem-host">WS-JDOE</span>
-        PsExec lateral movement → 3 hosts (10.0.0.31–33).
-        <span class="pbq-siem-tag pbq-siem-tag--lat">Lateral Movement</span>
+        PsExec lateral movement to 3 hosts (10.0.0.31–33).
       </li>
       <li>
         <time>09:55</time> <span class="pbq-siem-host">DC-01</span>
-        Mimikatz DCSync — dumps all AD hashes.
-        <span class="pbq-siem-tag pbq-siem-tag--cred">Credential Access</span>
+        Mimikatz DCSync dumps all AD hashes.
       </li>
       <li>
         <time>11:02</time> <span class="pbq-siem-host">FILE-SRV</span>
-        Bulk rename <code>*.docx</code> → <code>*.locked</code> — encryption begins.
-        <span class="pbq-siem-tag pbq-siem-tag--impact">Impact</span>
+        Bulk rename <code>*.docx</code> to <code>*.locked</code>. Encryption begins.
       </li>
       <li>
         <time>11:04</time> <span class="pbq-siem-host">FILE-SRV</span>
         <code>README_DECRYPT.txt</code> written to 847 directories.
-        <span class="pbq-siem-tag pbq-siem-tag--impact">Impact</span>
       </li>
     </ol>
   </aside>

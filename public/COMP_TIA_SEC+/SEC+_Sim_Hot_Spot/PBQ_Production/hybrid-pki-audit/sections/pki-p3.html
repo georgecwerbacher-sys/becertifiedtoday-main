@@ -128,14 +128,13 @@
         Select all certificates that must be immediately revoked
       </p>
       <p class="pbq-pki-hint" role="note">
-        Hint: Revoke certificates tied to audit findings and policy failures. Keep the active
-        <strong>api.becertifiedtoday.com</strong> chain from Part 1 in service (root, Azure intermediate, API leaf).
+        Hint: Use the inventory exhibit and audit finding codes. Revoke only certificates that fail policy or trust requirements.
       </p>
 
       <ul class="pbq-pki-revoke-list">
         <li>
           <label class="pbq-pki-revoke-card">
-            <input type="checkbox" name="secplus_bct_pki_revoke" value="code-sign" data-must-revoke="1" />
+            <input type="checkbox" name="secplus_bct_pki_revoke" value="code-sign" />
             <span class="pbq-pki-revoke-body">
               <strong>Code Signing Cert</strong>
               <span>Inventory: EXPIRED 2024-11-30 · RSA-1024 · Issued by On-Prem CA</span>
@@ -144,7 +143,7 @@
         </li>
         <li>
           <label class="pbq-pki-revoke-card">
-            <input type="checkbox" name="secplus_bct_pki_revoke" value="onprem-inter" data-must-revoke="1" />
+            <input type="checkbox" name="secplus_bct_pki_revoke" value="onprem-inter" />
             <span class="pbq-pki-revoke-body">
               <strong>On-Prem Issuing CA Cert</strong>
               <span>Inventory: SHA-1 algorithm · Signed weak code-signing leaf</span>
@@ -153,28 +152,28 @@
         </li>
         <li>
           <label class="pbq-pki-revoke-card">
-            <input type="checkbox" name="secplus_bct_pki_revoke" value="root" data-must-revoke="0" />
+            <input type="checkbox" name="secplus_bct_pki_revoke" value="root" />
             <span class="pbq-pki-revoke-body">
               <strong>Root CA Certificate</strong>
-              <span>Inventory: SHA-256 · Offline · Expires 2044 · Valid</span>
+              <span>Inventory: SHA-256 · Offline · Expires 2044</span>
             </span>
           </label>
         </li>
         <li>
           <label class="pbq-pki-revoke-card">
-            <input type="checkbox" name="secplus_bct_pki_revoke" value="api-leaf" data-must-revoke="0" />
+            <input type="checkbox" name="secplus_bct_pki_revoke" value="api-leaf" />
             <span class="pbq-pki-revoke-body">
               <strong>api.becertifiedtoday.com Leaf Cert</strong>
-              <span>Inventory: Valid · SHA-256 · Expires 2026-06-01</span>
+              <span>Inventory: SHA-256 · Expires 2026-06-01</span>
             </span>
           </label>
         </li>
         <li>
           <label class="pbq-pki-revoke-card">
-            <input type="checkbox" name="secplus_bct_pki_revoke" value="azure-inter" data-must-revoke="0" />
+            <input type="checkbox" name="secplus_bct_pki_revoke" value="azure-inter" />
             <span class="pbq-pki-revoke-body">
               <strong>Azure Issuing CA Cert</strong>
-              <span>Inventory: SHA-256 · Valid · Expires 2034</span>
+              <span>Inventory: SHA-256 · Expires 2034</span>
             </span>
           </label>
         </li>
@@ -184,8 +183,9 @@
 
   <div class="actions">
     <button id="checkBtn" type="button">Check Answer</button>
-    <button id="showBtn" type="button">Show Answer</button>
     <button id="resetBtn" type="button">Reset</button>
+    <button id="showBtn" type="button">Show Answer</button>
+
     <span id="result" role="status" aria-live="polite"></span>
   </div>
 </article>

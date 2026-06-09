@@ -2,28 +2,28 @@
 <article class="pbq-section-fragment" data-id="ubuntu-consequences"><h1>Consequence questions</h1><div data-ubuntu-harden><div id="panel-consequences" class="pbq-ssh-panel" role="tabpanel" aria-labelledby="tab-consequences" hidden>
           <p class="pbq-ssh-cq-banner">⚠️ CONFIGURATION CONSEQUENCE QUESTIONS — CHOOSE THE BEST ANSWER</p>
           <div class="pbq-ssh-cq-list">
-            <fieldset class="pbq-ssh-cq" data-key="cq1" data-correct="b">
+            <fieldset class="pbq-ssh-cq" data-key="cq1">
               <legend>Q1. You set <code>PasswordAuthentication no</code> but a junior admin has not yet uploaded their SSH public key. What is the immediate consequence?</legend>
               <label><input type="radio" name="cq1" value="a" /> The admin's password will be used as a fallback automatically.</label>
               <label><input type="radio" name="cq1" value="b" /> The admin will be completely locked out until their public key is added to <code>authorized_keys</code>.</label>
               <label><input type="radio" name="cq1" value="c" /> The admin can still log in with a password if they use the correct username.</label>
               <label><input type="radio" name="cq1" value="d" /> SSH will revert to password auth automatically for users without keys.</label>
             </fieldset>
-            <fieldset class="pbq-ssh-cq" data-key="cq2" data-correct="b">
+            <fieldset class="pbq-ssh-cq" data-key="cq2">
               <legend>Q2. You changed SSH to port 4422 in <code>sshd_config</code> but forgot to update fail2ban's port setting. What happens?</legend>
               <label><input type="radio" name="cq2" value="a" /> fail2ban blocks attackers on port 22 instead, giving partial protection.</label>
               <label><input type="radio" name="cq2" value="b" /> fail2ban monitors port 22 (no traffic), so brute-force attacks on port 4422 go completely undetected and are never banned.</label>
               <label><input type="radio" name="cq2" value="c" /> fail2ban automatically detects the new port from the SSH log.</label>
               <label><input type="radio" name="cq2" value="d" /> SSH refuses to start because fail2ban blocks the new port.</label>
             </fieldset>
-            <fieldset class="pbq-ssh-cq" data-key="cq3" data-correct="c">
+            <fieldset class="pbq-ssh-cq" data-key="cq3">
               <legend>Q3. Which action is the <em>most effective single change</em> to prevent the original brute-force attack vector used in this breach?</legend>
               <label><input type="radio" name="cq3" value="a" /> Change the SSH port to a non-standard port.</label>
               <label><input type="radio" name="cq3" value="b" /> Set <code>MaxAuthTries</code> to 3.</label>
               <label><input type="radio" name="cq3" value="c" /> Disable <code>PasswordAuthentication</code> and require SSH key pairs only.</label>
               <label><input type="radio" name="cq3" value="d" /> Enable fail2ban with a 1-hour bantime.</label>
             </fieldset>
-            <fieldset class="pbq-ssh-cq" data-key="cq4" data-correct="b">
+            <fieldset class="pbq-ssh-cq" data-key="cq4">
               <legend>Q4. The attacker established persistence by adding a cron job as root. After hardening SSH, what <em>additional</em> step must you take to remove this persistence?</legend>
               <label><input type="radio" name="cq4" value="a" /> Restart the SSH daemon — this clears all running processes.</label>
               <label><input type="radio" name="cq4" value="b" /> Run <code>crontab -l</code> for root and all users, audit <code>/etc/cron.*</code>, and remove malicious entries — then check for additional backdoors (authorized_keys, startup scripts).</label>
@@ -40,6 +40,31 @@
         <p id="gradeResult" class="result" role="status" aria-live="polite"></p></div></article>
 <script>
 (function () {
+  var FIELD_ANSWERS = {
+    "sshd-port": "4422",
+    "sshd-protocol": "2",
+    "sshd-root": "no",
+    "sshd-password": "no",
+    "sshd-maxauth": "3",
+    "sshd-grace": "30",
+    "sshd-x11": "no",
+    "f2b-enabled": "true",
+    "f2b-port": "4422",
+    "f2b-maxretry": "3",
+    "f2b-bantime": "24h",
+    "ufw-1": "ufw allow from 10.0.1.0/24 to any port 4422 proto tcp",
+    "ufw-2": "ufw allow 'Nginx Full'",
+    "ufw-3": "ufw default deny incoming && ufw default allow outgoing",
+    "cq1": "b",
+    "cq2": "b",
+    "cq3": "c",
+    "cq4": "b"
+  };
+  function expected(el) {
+    var key = el.getAttribute("data-key");
+    return key ? FIELD_ANSWERS[key] : null;
+  }
+
   var root = document.querySelector("[data-ubuntu-harden]");
   if (!root) return;
   var gradeBtn = document.querySelector("#ubuntu-consequences .pbq-ssh-actions .btn-primary");
@@ -53,7 +78,7 @@
     "Correct — all four areas pass. SSH is on 4422 with keys-only auth, fail2ban watches the same port, UFW allows management SSH and public web only with default deny inbound, and you understand lockout and persistence cleanup.";
   function fieldOk(select) {
     var val = select.value.trim();
-    var want = select.getAttribute("data-correct");
+    var want = expected(select);
     var pass = val !== "" && val === want;
     select.classList.toggle("pbq-ssh-select--ok", pass);
     select.classList.toggle("pbq-ssh-select--bad", val !== "" && !pass);
@@ -75,7 +100,7 @@
     var n = 0;
     document.querySelectorAll("#ubuntu-ufw .pbq-ssh-ufw-select").forEach(function (sel) {
       var val = sel.value.trim();
-      var want = sel.getAttribute("data-correct");
+      var want = expected(sel);
       var pass = val !== "" && val === want;
       sel.classList.toggle("pbq-ssh-select--ok", pass);
       sel.classList.toggle("pbq-ssh-select--bad", val !== "" && !pass);
@@ -87,7 +112,7 @@
   function gradeConsequences() {
     var n = 0;
     document.querySelectorAll("#ubuntu-consequences .pbq-ssh-cq").forEach(function (fs) {
-      var want = fs.getAttribute("data-correct");
+      var want = expected(fs);
       var picked = fs.querySelector('input[type="radio"]:checked');
       var pass = picked && picked.value === want;
       fs.classList.toggle("pbq-ssh-cq--ok", !!pass);

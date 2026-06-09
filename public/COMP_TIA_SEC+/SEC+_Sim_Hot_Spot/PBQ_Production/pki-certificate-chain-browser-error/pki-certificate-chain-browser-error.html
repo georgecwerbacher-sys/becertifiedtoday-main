@@ -55,14 +55,7 @@
               <h2 id="pki-browser-error-browser-error-heading">BROWSER ERROR:</h2>
               <p class="pbq-error-code">NET::ERR_CERT_AUTHORITY_INVALID</p>
               <p class="pbq-error-headline">Your connection is not private</p>
-              <ul>
-                <li>Self-signed cert — no CA signed it</li>
-                <li>Missing intermediate CA in chain</li>
-                <li>Expired certificate (causes different error)</li>
-                <li>Root CA not in browser trust store</li>
-                <li>Certificate revoked via CRL/OCSP</li>
-              </ul>
-              <p class="pbq-error-note">CN mismatch = ERR_CERT_COMMON_NAME_INVALID</p>
+              <p class="pbq-error-note">Browser cannot validate the server certificate authority. Review the chain panel and match the symptom to the most likely trust-path failure.</p>
             </section>
 
             <section class="pbq-chain-panel" aria-labelledby="chain-heading">
@@ -133,8 +126,9 @@
 
       <div class="actions">
         <button id="pki-browser-error-checkBtn" type="button">Check Answer</button>
-        <button id="pki-browser-error-showBtn" type="button">Show Answer</button>
         <button id="pki-browser-error-resetBtn" type="button">Reset</button>
+        <button id="pki-browser-error-showBtn" type="button">Show Answer</button>
+
         <span id="pki-browser-error-result" role="status" aria-live="polite"></span>
       </div></div></article>
         </div>
@@ -165,8 +159,8 @@
 
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [role='status']");
 var CORRECT = "B";
       var CORRECT_MSG =

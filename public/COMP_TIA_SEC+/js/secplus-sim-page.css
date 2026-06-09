@@ -96,13 +96,14 @@ body.secplus-sim-page .deep-dive-btn:hover {
   border-color: #0ea5e9;
 }
 
-/* Action bar: Check left, Reset centered, Show Answer far right */
+/* Action bar: Check + Reset left, result center, Show Answer far right */
 body.secplus-sim-page .actions {
   position: relative;
   display: flex;
   gap: 10px;
   align-items: center;
   flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 body.secplus-sim-page .actions button[id$="checkBtn"],
@@ -113,10 +114,6 @@ body.secplus-sim-page .actions button[id="checkBtn"] {
 
 body.secplus-sim-page .actions button[id$="resetBtn"] {
   order: 2;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
   flex-shrink: 0;
 }
 
@@ -127,8 +124,11 @@ body.secplus-sim-page .actions button[id="showAnswerBtn"] {
   flex-shrink: 0;
 }
 
-body.secplus-sim-page .actions [role="status"] {
-  order: 3;
-  flex: 1 1 240px;
+body.secplus-sim-page .actions [role="status"],
+body.secplus-sim-page .actions #result {
+  order: 10;
+  flex: 1 1 100%;
+  width: 100%;
   min-width: 0;
+  margin-top: 2px;
 }

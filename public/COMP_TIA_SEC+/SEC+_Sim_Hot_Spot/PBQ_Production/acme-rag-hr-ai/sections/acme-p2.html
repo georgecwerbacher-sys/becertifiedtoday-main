@@ -123,8 +123,9 @@ Top responses include partial redacted strings — rate limit not enforced on re
 
       <div class="actions">
         <button id="checkBtn" type="button">Check Answer</button>
-        <button id="showBtn" type="button">Show Answer</button>
         <button id="resetBtn" type="button">Reset</button>
+        <button id="showBtn" type="button">Show Answer</button>
+
         <span id="result" role="status" aria-live="polite"></span>
       </div>
 <div class="pbq-exhibit-store" hidden aria-hidden="true"><p><button type="button" class="btn btn-secondary" data-pbq-modal="#exhibit-part2-chat">Open exhibit — prompt injection chat log</button></p></div>
@@ -154,8 +155,8 @@ Top responses include partial redacted strings — rate limit not enforced on re
       if (!root) return;
       var actionBtns = root.querySelectorAll(".actions button");
       var checkBtn = actionBtns[0];
-      var showBtn = actionBtns[1];
-      var resetBtn = actionBtns[2];
+      var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
       var result = root.querySelector(".actions [id$='result']");
       if (!checkBtn || !showBtn || !resetBtn || !result) return;
 

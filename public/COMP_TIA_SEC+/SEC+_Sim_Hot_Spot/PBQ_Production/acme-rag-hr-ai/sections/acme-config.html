@@ -8,7 +8,7 @@
               <select id="cfg-vector-access" class="pbq-ai-select" data-setting="cfg-vector-access">
                 <option value="">Select…</option>
                 <option value="public">Public HTTPS endpoint with API key in client JavaScript</option>
-                <option value="secure">Private network only; require authentication and RBAC on every query</option>
+                <option value="secure">Private network only; authentication and RBAC on every query</option>
                 <option value="anon">Anonymous read for faster retrieval</option>
               </select>
             </label>
@@ -26,7 +26,7 @@
               <select id="cfg-corpus" class="pbq-ai-select" data-setting="cfg-corpus">
                 <option value="">Select…</option>
                 <option value="any">Any employee may upload files into the live index</option>
-                <option value="approved">Approved HR policy repository only; block ad-hoc uploads to production index</option>
+                <option value="approved">Approved HR policy repository only; controlled upload workflow</option>
                 <option value="share">Index full corporate file share for completeness</option>
               </select>
             </label>
@@ -35,7 +35,7 @@
               <select id="cfg-training" class="pbq-ai-select" data-setting="cfg-training">
                 <option value="">Select…</option>
                 <option value="train">Use employee chats to fine-tune the model weekly</option>
-                <option value="no-train">Do not train or fine-tune on employee prompts or retrieved text</option>
+                <option value="no-train">No training or fine-tuning on employee prompts or retrieved text</option>
                 <option value="pseudonym">Train on chats after removing employee names only</option>
               </select>
             </label>
@@ -60,8 +60,9 @@
           </div>
         </section><div class="actions">
         <button id="checkBtn" type="button">Check Answer</button>
-        <button id="showBtn" type="button">Show Answer</button>
         <button id="resetBtn" type="button">Reset</button>
+        <button id="showBtn" type="button">Show Answer</button>
+
         <span id="result" role="status" aria-live="polite"></span></div></article>
 <script>
 (function () {
@@ -77,8 +78,8 @@
   if (!root) return;
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [id$='result']");
   if (!checkBtn || !showBtn || !resetBtn || !result) return;
   function configOk() {

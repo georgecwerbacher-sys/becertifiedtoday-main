@@ -136,8 +136,9 @@
 
   <div class="actions">
     <button id="governance-checkBtn" type="button">Check Answer</button>
-    <button id="governance-showBtn" type="button">Show Answer</button>
     <button id="governance-resetBtn" type="button">Reset</button>
+    <button id="governance-showBtn" type="button">Show Answer</button>
+
     <span id="governance-result" role="status" aria-live="polite"></span>
   </div></div></article>
         </div>
@@ -168,8 +169,8 @@
 
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [role='status']");
   var CORRECT = "D";
   var CORRECT_MSG =

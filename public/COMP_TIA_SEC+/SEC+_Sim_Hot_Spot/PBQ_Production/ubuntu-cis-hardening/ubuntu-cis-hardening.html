@@ -135,8 +135,9 @@
 
   <div class="actions">
     <button id="harden-checklist-checkBtn" type="button">Check Answer</button>
-    <button id="harden-checklist-showBtn" type="button">Show Answer</button>
     <button id="harden-checklist-resetBtn" type="button">Reset</button>
+    <button id="harden-checklist-showBtn" type="button">Show Answer</button>
+
     <span id="harden-checklist-result" role="status" aria-live="polite"></span>
   </div></div></article>
 <article class="pbq-suite-section" id="harden-sshd" data-scenario="ubuntu-cis-hardening" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-ssh-sim">
@@ -147,25 +148,25 @@
       </div>
       <pre class="pbq-ssh-code" aria-label="sshd_config"><code><span class="ln">1</span><span class="cm"># SSH Server Configuration — CIS Benchmark</span>
 <span class="ln">2</span><span class="kw">Port</span> <span class="val">22</span>
-<span class="ln">3</span><span class="kw">Protocol</span> <select class="pbq-ssh-select" data-key="sshd-protocol" data-correct="2" aria-label="Protocol">
+<span class="ln">3</span><span class="kw">Protocol</span> <select class="pbq-ssh-select" data-key="sshd-protocol" aria-label="Protocol">
   <option value="">select</option><option>1</option><option>2</option><option>1,2</option>
 </select>
-<span class="ln">4</span><span class="kw">PermitRootLogin</span> <select class="pbq-ssh-select" data-key="sshd-root" data-correct="no" aria-label="PermitRootLogin">
+<span class="ln">4</span><span class="kw">PermitRootLogin</span> <select class="pbq-ssh-select" data-key="sshd-root" aria-label="PermitRootLogin">
   <option value="">select</option><option>yes</option><option>no</option><option>prohibit-password</option>
 </select>
-<span class="ln">5</span><span class="kw">PasswordAuthentication</span> <select class="pbq-ssh-select" data-key="sshd-password" data-correct="no" aria-label="PasswordAuthentication">
+<span class="ln">5</span><span class="kw">PasswordAuthentication</span> <select class="pbq-ssh-select" data-key="sshd-password" aria-label="PasswordAuthentication">
   <option value="">select</option><option>yes</option><option>no</option>
 </select>
-<span class="ln">6</span><span class="kw">PermitEmptyPasswords</span> <select class="pbq-ssh-select" data-key="sshd-empty" data-correct="no" aria-label="PermitEmptyPasswords">
+<span class="ln">6</span><span class="kw">PermitEmptyPasswords</span> <select class="pbq-ssh-select" data-key="sshd-empty" aria-label="PermitEmptyPasswords">
   <option value="">select</option><option>yes</option><option>no</option>
 </select>
-<span class="ln">7</span><span class="kw">MaxAuthTries</span> <select class="pbq-ssh-select" data-key="sshd-maxauth" data-correct="3" aria-label="MaxAuthTries">
+<span class="ln">7</span><span class="kw">MaxAuthTries</span> <select class="pbq-ssh-select" data-key="sshd-maxauth" aria-label="MaxAuthTries">
   <option value="">select</option><option>10</option><option>6</option><option>3</option><option>1</option>
 </select>
-<span class="ln">8</span><span class="kw">X11Forwarding</span> <select class="pbq-ssh-select" data-key="sshd-x11" data-correct="no" aria-label="X11Forwarding">
+<span class="ln">8</span><span class="kw">X11Forwarding</span> <select class="pbq-ssh-select" data-key="sshd-x11" aria-label="X11Forwarding">
   <option value="">select</option><option>yes</option><option>no</option>
 </select>
-<span class="ln">9</span><span class="kw">LoginGraceTime</span> <select class="pbq-ssh-select" data-key="sshd-grace" data-correct="60" aria-label="LoginGraceTime">
+<span class="ln">9</span><span class="kw">LoginGraceTime</span> <select class="pbq-ssh-select" data-key="sshd-grace" aria-label="LoginGraceTime">
   <option value="">select</option><option>120</option><option>60</option><option>30</option>
 </select>
 <span class="ln">10</span><span class="kw">AllowUsers</span> <span class="val">webadmin svcuser</span></code></pre>
@@ -174,8 +175,9 @@
 
   <div class="actions">
     <button id="harden-sshd-checkBtn" type="button">Check Answer</button>
-    <button id="harden-sshd-showBtn" type="button">Show Answer</button>
     <button id="harden-sshd-resetBtn" type="button">Reset</button>
+    <button id="harden-sshd-showBtn" type="button">Show Answer</button>
+
     <span id="harden-sshd-result" role="status" aria-live="polite"></span>
   </div></div></article>
 <article class="pbq-suite-section" id="harden-pwquality" data-scenario="ubuntu-cis-hardening" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-ssh-sim">
@@ -185,22 +187,22 @@
         <span class="pbq-ssh-editor__hint">Select the secure value for each setting</span>
       </div>
       <pre class="pbq-ssh-code" aria-label="pwquality.conf"><code><span class="ln">1</span><span class="cm"># Password quality policy</span>
-<span class="ln">2</span><span class="kw">minlen</span> = <select class="pbq-ssh-select" data-key="pw-minlen" data-correct="14" aria-label="minlen">
+<span class="ln">2</span><span class="kw">minlen</span> = <select class="pbq-ssh-select" data-key="pw-minlen" aria-label="minlen">
   <option value="">select</option><option>6</option><option>8</option><option>14</option><option>20</option>
 </select>
-<span class="ln">3</span><span class="kw">minclass</span> = <select class="pbq-ssh-select" data-key="pw-minclass" data-correct="4" aria-label="minclass">
+<span class="ln">3</span><span class="kw">minclass</span> = <select class="pbq-ssh-select" data-key="pw-minclass" aria-label="minclass">
   <option value="">select</option><option>1</option><option>2</option><option>4</option>
 </select>
-<span class="ln">4</span><span class="kw">maxrepeat</span> = <select class="pbq-ssh-select" data-key="pw-maxrepeat" data-correct="2" aria-label="maxrepeat">
+<span class="ln">4</span><span class="kw">maxrepeat</span> = <select class="pbq-ssh-select" data-key="pw-maxrepeat" aria-label="maxrepeat">
   <option value="">select</option><option value="0">0 (no limit)</option><option value="3">3</option><option value="2">2</option>
 </select>
-<span class="ln">5</span><span class="kw">dcredit</span> = <select class="pbq-ssh-select" data-key="pw-dcredit" data-correct="-1" aria-label="dcredit">
+<span class="ln">5</span><span class="kw">dcredit</span> = <select class="pbq-ssh-select" data-key="pw-dcredit" aria-label="dcredit">
   <option value="">select</option><option value="0">0 (no requirement)</option><option value="1">1 (optional digit)</option><option value="-1">-1 (require ≥1 digit)</option>
 </select>
-<span class="ln">6</span><span class="kw">ucredit</span> = <select class="pbq-ssh-select" data-key="pw-ucredit" data-correct="-1" aria-label="ucredit">
+<span class="ln">6</span><span class="kw">ucredit</span> = <select class="pbq-ssh-select" data-key="pw-ucredit" aria-label="ucredit">
   <option value="">select</option><option value="0">0 (no requirement)</option><option value="-1">-1 (require ≥1 uppercase)</option>
 </select>
-<span class="ln">7</span><span class="kw">ocredit</span> = <select class="pbq-ssh-select" data-key="pw-ocredit" data-correct="-1" aria-label="ocredit">
+<span class="ln">7</span><span class="kw">ocredit</span> = <select class="pbq-ssh-select" data-key="pw-ocredit" aria-label="ocredit">
   <option value="">select</option><option value="0">0 (no requirement)</option><option value="-1">-1 (require ≥1 special char)</option>
 </select></code></pre>
     </div>
@@ -208,8 +210,9 @@
 
   <div class="actions">
     <button id="harden-pwquality-checkBtn" type="button">Submit Configuration</button>
-    <button id="harden-pwquality-showBtn" type="button">Show Answer</button>
     <button id="harden-pwquality-resetBtn" type="button">Reset</button>
+    <button id="harden-pwquality-showBtn" type="button">Show Answer</button>
+
     <span id="harden-pwquality-result" role="status" aria-live="polite"></span>
   </div></div></article>
         </div>
@@ -253,8 +256,8 @@
 
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [role='status']");
 
   function allChecked() {
@@ -309,6 +312,20 @@
 <!-- harden-sshd -->
 <script>
 (function () {
+  var FIELD_ANSWERS = {
+    "sshd-protocol": "2",
+    "sshd-root": "no",
+    "sshd-password": "no",
+    "sshd-empty": "no",
+    "sshd-maxauth": "3",
+    "sshd-x11": "no",
+    "sshd-grace": "60"
+  };
+  function expected(el) {
+    var key = el.getAttribute("data-key");
+    return key ? FIELD_ANSWERS[key] : null;
+  }
+
   var CORRECT_MSG =
     "Correct. Protocol 2, root login disabled, password and empty-password auth denied, MaxAuthTries 3, X11Forwarding off, LoginGraceTime 60 — aligned with CIS SSH hardening.";
 
@@ -318,13 +335,13 @@
   var selects = root.querySelectorAll(".pbq-ssh-select");
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [role='status']");
 
   function fieldOk(sel) {
     var val = sel.value.trim();
-    var want = sel.getAttribute("data-correct");
+    var want = expected(sel);
     var pass = val !== "" && val === want;
     sel.classList.toggle("pbq-ssh-select--ok", pass);
     sel.classList.toggle("pbq-ssh-select--bad", val !== "" && !pass);
@@ -365,7 +382,7 @@
 
   showBtn.addEventListener("click", function () {
     selects.forEach(function (sel) {
-      sel.value = sel.getAttribute("data-correct");
+      sel.value = expected(sel);
       fieldOk(sel);
     });
     result.className = "is-pass";
@@ -385,6 +402,19 @@
 <!-- harden-pwquality -->
 <script>
 (function () {
+  var FIELD_ANSWERS = {
+    "pw-minlen": "14",
+    "pw-minclass": "4",
+    "pw-maxrepeat": "2",
+    "pw-dcredit": "-1",
+    "pw-ucredit": "-1",
+    "pw-ocredit": "-1"
+  };
+  function expected(el) {
+    var key = el.getAttribute("data-key");
+    return key ? FIELD_ANSWERS[key] : null;
+  }
+
   var CORRECT_MSG =
     "Correct. minlen 14, minclass 4, maxrepeat 2, and dcredit/ucredit/ocredit −1 enforce CIS password complexity (length, character classes, and no excessive repeats).";
 
@@ -394,13 +424,13 @@
   var selects = root.querySelectorAll(".pbq-ssh-select");
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [role='status']");
 
   function fieldOk(sel) {
     var val = sel.value.trim();
-    var want = sel.getAttribute("data-correct");
+    var want = expected(sel);
     var pass = val !== "" && val === want;
     sel.classList.toggle("pbq-ssh-select--ok", pass);
     sel.classList.toggle("pbq-ssh-select--bad", val !== "" && !pass);
@@ -441,7 +471,7 @@
 
   showBtn.addEventListener("click", function () {
     selects.forEach(function (sel) {
-      sel.value = sel.getAttribute("data-correct");
+      sel.value = expected(sel);
       fieldOk(sel);
     });
     result.className = "is-pass";

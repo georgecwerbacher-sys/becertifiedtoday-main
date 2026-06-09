@@ -115,8 +115,8 @@
               </ul>
               <p class="pbq-data-compare" role="note">
                 <strong>Contrast:</strong> <em>Encryption</em> is reversible with a key; <em>tokenization</em> swaps
-                sensitive values for non-sensitive tokens; <em>masking</em> shows only a safe subset (ideal for
-                non-production test data).
+                sensitive values for non-sensitive tokens; <em>masking</em> shows only a partial or altered subset of the
+                original value.
               </p>
               <ul class="pbq-data-methods pbq-data-methods--continued">
                 <li><strong>Obfuscation:</strong> hard to understand without encryption</li>
@@ -158,8 +158,9 @@
 
       <div class="actions">
         <button id="data-protection-checkBtn" type="button">Check Answer</button>
-        <button id="data-protection-showBtn" type="button">Show Answer</button>
         <button id="data-protection-resetBtn" type="button">Reset</button>
+        <button id="data-protection-showBtn" type="button">Show Answer</button>
+
         <span id="data-protection-result" role="status" aria-live="polite"></span>
       </div></div></article>
         </div>
@@ -190,8 +191,8 @@
 
   var actionBtns = root.querySelectorAll(".actions button");
   var checkBtn = actionBtns[0];
-  var showBtn = actionBtns[1];
-  var resetBtn = actionBtns[2];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
   var result = root.querySelector(".actions [role='status']");
 var CORRECT = "C";
       var CORRECT_MSG =
