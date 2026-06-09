@@ -219,9 +219,10 @@ Step-by-step checklist (budget, Maximize clicks, max CPC cap, ad groups, 48h hea
 
 ### CCNA (`ccna_portal`)
 
-- Heroes: `ccna_lead_free_sim` + Exact Tier 1 in Visibility campaign.
-- Purchase ad group (`ccna_sim_purchase`): Tier2 Convert — tCPA toward **$10** on sim, **$20** on portal.
+- Heroes: **`ccna_portal_10d`** + Exact Tier 1 question-bank / prep keywords in Visibility campaign (when budget ≥ $20/day).
+- Optional: `ccna_sim_purchase` — Tier2 Convert — tCPA toward **$10** on sim, **$20** on portal.
 - Federal: separate ad groups; +20% geo on Tier 1 metros only.
+- **No** `ccna_lead_free_sim` ad group — free sim is on-site only, not paid Search.
 
 ### ENCOR (`encor_portal`)
 

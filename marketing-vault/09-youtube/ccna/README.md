@@ -23,7 +23,7 @@ Store **every CCNA video** under **`videos/`**. **Do not publish** until Securit
 ## Funnel (when live)
 
 ```
-Free 45-min sim → #ccna-lead-capture → generate_lead → $9.99 sim / portal
+Free samples on ccna-home → $9.99 / 10-day portal (`ccna_portal_10d`) → Training Portal
 ```
 
 ## Video library

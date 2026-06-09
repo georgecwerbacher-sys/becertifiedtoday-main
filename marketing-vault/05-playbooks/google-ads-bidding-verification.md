@@ -316,30 +316,27 @@ Repeat **Parts 1–9** per campaign with these substitutions:
 |---------|------|-------|
 | Daily budget (solo) | $10 | $10 |
 | Max CPC cap | **$2.75** | **$2.25** |
-| Lead ad group | `ccna_lead_free_sim` | `encor_lead_free_sim` |
+| Primary ad group | `ccna_portal_10d` | `encor_lead_free_sim` |
 | Purchase ad group | `ccna_sim_purchase` | `encor_sim_purchase` |
 | UTM campaign | `ccna_portal` | `encor_portal` |
 | Export | [[../02-campaigns/ccna/ccna-portal-google-ads-export\|CCNA export]] | [[../02-campaigns/encor/ccnp-encor-google-ads-export\|ENCOR export]] |
 
-### Ad groups — active vs paused at start (same pattern as Security+)
+### Ad groups — active vs paused at start
 
-Enable **only two** ad groups per campaign for the first **2–3 weeks** at $10/day. Pause the rest so budget concentrates on practice-test / simulation intent.
+**CCNA:** Enable **`ccna_portal_10d` only** at $10/day. No free-sim lead ad group.
+
+**ENCOR:** Enable **`encor_lead_free_sim`** + **`encor_sim_purchase`** for the first **2–3 weeks** at $10/day. Pause the rest.
 
 | Ad group | CCNA | ENCOR | At start |
 |----------|------|-------|----------|
-| Lead free timed sim | `ccna_lead_free_sim` | `encor_lead_free_sim` | **Enabled** |
-| Paid timed sim ($9.99) | `ccna_sim_purchase` | `encor_sim_purchase` | **Enabled** |
+| Portal 10d ($9.99) | `ccna_portal_10d` | — | **Enabled (CCNA)** |
+| Lead free timed sim | — | `encor_lead_free_sim` | **Enabled (ENCOR)** |
+| Paid timed sim ($9.99) | `ccna_sim_purchase` | `encor_sim_purchase` | **Paused (CCNA)** · **Enabled (ENCOR)** |
 | Portal 10d / 30d access | `ccna_portal_access` | `encor_portal_access` | **Paused** |
 | Labs / drag-and-drop / PBQ | `ccna_labs_pbq` | `encor_labs_pbq` | **Paused** |
 | Federal / geo metro | `ccna_federal_dc` (+ copies) | `encor_federal_dc` (+ copies) | **Paused** |
 
-**Enable next (one at a time, after heroes have clicks + conversions):**
-
-1. **`_*_labs_pbq`** — when search terms or site data show lab/D&D intent; overlaps purchase funnel but different keywords.
-2. **`_*_portal_access`** — when you want to push $19.99 portal, not only $9.99 sim (watch CPA).
-3. **`_*_federal_*` geo groups** — when budget ≥ **$20/day** and you target Tier 1 metros ([[../01-strategy/cisco-certifications-exam-prep-foundation#Shared geo ad groups|Cisco geo table]]).
-
-**Before CCNA/ENCOR launch:** complete [[../06-website-optimization/ad-site-verification-2026-05-31|ad-site verification]] — exports must match live lead URLs (`#ccna-lead-capture` / `#encor-lead-capture`) and **$9.99** sim pricing.
+**Before CCNA launch:** final URL = `#purchase` + `utm_content=portal-10d`; verify **$9.99** portal 10d checkout on live site.
 
 ---
 

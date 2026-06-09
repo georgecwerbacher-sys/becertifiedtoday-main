@@ -30,9 +30,9 @@ Exam-prep positioning: [[positioning-and-messaging|positioning]] · Paid launch:
 
 | Do now | Hold off |
 |--------|----------|
-| `secplus_lead_free_sim` / future `ccna_lead_free_sim`, `encor_lead_free_sim` | Coupon in RSA headlines (“50% off Security+”) |
-| Ad copy: free 35–45 min sample, $9.99 one attempt, no subscription | Sitewide discount banner on first visit from Ads |
-| Sitelinks to free sim and sample questions | Auto-applied checkout discount for all traffic |
+| `secplus_lead_free_sim` / `encor_lead_free_sim` | Coupon in RSA headlines (“50% off Security+”) |
+| **`ccna_portal_10d`** (direct purchase) | Sitewide discount banner on first visit from Ads |
+| Ad copy: free samples on landing, $9.99 / 10-day portal, no subscription | Auto-applied checkout discount for all traffic |
 | “Cheaper than a retake” angle (value, not coupon) | Competing on “cheapest Security+ course” keywords |
 
 **Why:**

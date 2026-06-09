@@ -15,7 +15,6 @@ landing_pages:
   - /ccna/practice-test
   - /ccna-home.html#purchase
   - /ccna-home.html#exam-audience
-  - /CCNA_Sim_EXAM/free-assessment.html
 sample_entry:
   - /sample?track=ccna-questions
   - /sample?track=ccna-dnd
@@ -32,11 +31,11 @@ Primary paid campaign for **Cisco CCNA 200-301** exam prep on Be Certified Today
 
 Send high-intent 200-301 **exam prep** traffic to the landing page. Convert via:
 
-1. **Free timed simulation** — 45-min browser sample + domain scorecard (email unlock at `#ccna-lead-capture`)
-2. **Free samples** — 2 shuffled MCQ per track, drag-and-drop, VLAN lab (no checkout)
-3. **Direct purchase** — $9.99 timed sim, 10-day, or 30-day portal access
+1. **Direct purchase** — **10-day $9.99** portal access (primary paid CTA for Ads)
+2. **Free samples** — 2 shuffled MCQ per track, drag-and-drop, VLAN lab (no checkout; on-page trust, not a paid ad group)
+3. **Optional upsells** — 30-day portal ($19.99) or standalone timed sim ($9.99) on `#purchase`
 
-Optimize toward `generate_lead`, `begin_checkout`, and purchases while building Quality Score.
+Optimize toward `begin_checkout` and purchases while building Quality Score.
 
 ## Primary landing URLs (use in Google Ads)
 
@@ -52,12 +51,6 @@ Alias (same page — Vercel rewrite):
 https://becertifiedtoday.com/ccna/practice-test?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content={creative}
 ```
 
-**Free timed simulation (top-of-funnel ad group):**
-
-```
-https://becertifiedtoday.com/ccna-home.html#ccna-lead-capture?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=lead-free-sim
-```
-
 **Pinned headline variants (home hero):**
 
 ```
@@ -65,12 +58,6 @@ https://becertifiedtoday.com/ccna-home.html?utm_source=google&utm_medium=cpc&utm
 ```
 
 Pinned headline variants map to `utm_content=hl-*` → `ccna-home-conversion.js`. See `scripts/ccna-google-ads-headline-suffixes.txt`.
-
-**Direct runner (return visits / email already unlocked):**
-
-```
-https://becertifiedtoday.com/CCNA_Sim_EXAM/free-assessment.html?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=free-simulation
-```
 
 **Purchase intent — 10-day portal (`ccna_portal_10d`):**
 
@@ -98,9 +85,8 @@ https://becertifiedtoday.com/ccna-home.html#exam-audience?utm_source=google&utm_
 
 | Ad group | Final URL / anchor | Intent | Start spend? |
 |----------|-------------------|--------|:------------:|
-| `ccna_lead_free_sim` | `#ccna-lead-capture` + `lead-free-sim` | Practice test, mock exam, free CCNA | Optional — lead funnel |
-| `ccna_sim_purchase` | `#purchase` + `sim-purchase` | Timed simulation, exam sim | Optional — tight keywords |
 | `ccna_portal_10d` | `#purchase` + `portal-10d` | **10-day $9.99** portal access | **Yes** — primary paid CTA · config: `scripts/ccna-portal-10d-google-ads.md` |
+| `ccna_sim_purchase` | `#purchase` + `sim-purchase` | Timed simulation, exam sim | Optional — tight keywords |
 | `ccna_portal_access` | `#purchase` + `portal-access` | Dual-tier 10d/30d (legacy) | Paused — use `ccna_portal_10d` |
 | `ccna_labs_pbq` | Home (samples section) | Drag-and-drop, CLI lab practice | Optional mid-funnel |
 | `ccna_federal_*` | Home or `#exam-audience` | DoD / 8140 / contractor | Optional geo campaigns |
@@ -111,18 +97,12 @@ https://becertifiedtoday.com/ccna-home.html#exam-audience?utm_source=google&utm_
 
 | Stage | Page / action | GA4 signal |
 |-------|----------------|------------|
-| Click | Google Ads → `ccna-home.html` | Session with `utm_campaign=ccna_portal` |
-| Lead capture | `#ccna-lead-capture` email form | `generate_lead` |
-| Free timed sim | 45 min · 23 items (20 MCQ + 2 D&D + 1 VLAN lab) | Engagement, completion |
-| Free samples | 2 MCQ / D&D / lab tracks (no email) | Sample completion |
-| Scorecard | Domain + objective breakdown on results | Scorecard render |
-| Upsell | Results modal or `#purchase` | `begin_checkout` |
+| Click | Google Ads → `ccna-home.html#purchase` | Session with `utm_campaign=ccna_portal` |
+| Free samples (on-page) | 2 MCQ / D&D / lab tracks (no checkout) | Sample completion |
 | Try free sample (no checkout) | `/sample?track=ccna-*` or in-page sample CTAs | Page views, engagement |
-| Begin checkout | Portal 10d / 30d or timed sim buttons | `begin_checkout` |
+| Begin checkout | Portal 10d / 30d buttons on `#purchase` | `begin_checkout` |
 | Purchase | Stripe Payment Link | Stripe + portal metadata; Google Ads conversion if configured |
-
-Blueprint: `public/CCNA-Study/data/ccna-free-assessment-blueprint.json` (free sim pool)  
-Runner: `public/CCNA_Sim_EXAM/free-assessment.html` · Lead: `#ccna-lead-capture` on `ccna-home.html`
+| Post-purchase | `/CCNA-Study/CCNA_Training_Portal.html` | Portal engagement |
 
 ## Products & checkout tracking
 
@@ -131,7 +111,6 @@ Runner: `public/CCNA_Sim_EXAM/free-assessment.html` · Lead: `#ccna-lead-capture
 | 10-day portal | $9.99 | `ccna_portal_10d` | `data-ccna-portal-10d-checkout` |
 | 30-day portal | $19.99 | `ccna_portal_30d` | `data-ccna-portal-30d-checkout` |
 | Timed simulation | $9.99 | `ccna_timed_simulation` | `data-bcc-item-id` on sim checkout |
-| Free timed sim | $0 | — | Email unlock at `#ccna-lead-capture`; one attempt per browser |
 
 Checkout wiring: `public/CCNA-Study/js/ccna-portal-30d-checkout.js`, `ccna-test-checkout.js`.
 
@@ -139,9 +118,8 @@ Post-purchase: portal access at `/CCNA-Study/CCNA_Training_Portal.html` (gated �
 
 ## Secondary pages (organic / retargeting — not primary ad landings)
 
-- `/ccna-home.html` / `/ccna/practice-test` — **only** CCNA Google Ads final URL (exam prep + purchase + free assessment CTA).
-- `/CCNA_Sim_EXAM/free-assessment.html` — optional direct final URL for free-practice ad group A/B tests.
-- `/CCNA-Study/CCNA_Training_Portal.html` — gated practice hub (checkout required).
+- `/ccna-home.html` / `/ccna/practice-test` — **only** CCNA Google Ads final URL (exam prep + purchase + free samples).
+- `/CCNA-Study/CCNA_Training_Portal.html` — gated practice hub (post-purchase; not an ad final URL).
 - CCNP ENCOR ads → `/ccnp-home.html` — see [[../encor/ccnp-encor-google-ads|ENCOR campaign]] (not this CCNA campaign).
 
 ## Keywords & angles (draft)
@@ -150,9 +128,9 @@ Intent themes to test in ad groups — **prep / practice / simulation**, not cou
 
 | Ad group | Keywords (examples) | Lead message |
 |----------|---------------------|--------------|
-| Free assessment | ccna practice test, ccna 200-301 practice exam, free ccna practice | Free 35-min assessment + domain scorecard |
+| Portal 10d | ccna question bank, ccna practice test online, ccna 200-301 prep | $9.99 / 10-day full library + timed sim |
 | Practice test | ccna practice questions, cisco ccna practice test | Verified explanations — not PDF dumps |
-| Simulation purchase | ccna exam simulation, ccna mock exam timed | 120-min sim, 50 MCQ + D&D + lab, $4.99 |
+| Simulation purchase | ccna exam simulation, ccna mock exam timed | 120-min sim, 50 MCQ + D&D + lab, $9.99 |
 | Retake / readiness | pass ccna first try, ccna exam prep | Exam-realistic format — save retake fees |
 | Labs / PBQ | ccna drag and drop, ccna cli lab practice | Browser labs — no GNS3 required |
 | Federal / DoD | ccna federal job, ccna defense contractor | Browser 200-301 prep — see [[../../01-strategy/cisco-certifications-exam-prep-foundation\|Cisco foundation]] |
@@ -179,24 +157,24 @@ Message angles (aligned with [[../../01-strategy/positioning-and-messaging|posit
 - **Exam-realistic** — timed simulation, drag-and-drop, CLI lab items
 - **Verified solutions** — prep you can trust, not unvetted dumps
 - **Browser-only** — no PDF, no GNS3, no third-party software
-- **Free assessment** — 35 min, 17 items across all six domains, objective scorecard
-- **Confidence / economics** — practice until ready; $4.99 full sim vs retake cost
+- **Free samples** — shuffled MCQ, D&D, VLAN lab previews before checkout
+- **Confidence / economics** — practice until ready; $9.99 portal vs retake cost
 - **Not a course** — say “exam prep” and “practice” in headlines; avoid “training program”
 
 ### Headline / description drafts (policy-safe)
 
-**Generic / home landing:**
+**Portal 10d (`#purchase` + `portal-10d`):**
 
-- H1 (on page): `Free CCNA Practice Assessment With Scorecard` (variant via `ccna-home-conversion.js`)
-- Ad headline 1: `CCNA 200-301 Practice Test — In Browser`
-- Ad headline 2: `Free CCNA Assessment + Scorecard`
-- Ad headline 3: `No GNS3 — CCNA Labs Online`
-- Description: `Realistic CCNA 200-301 practice with verified explanations. Free 35-min assessment or full 120-minute sim. No downloads.`
+- H1 (on page): `CCNA 200-301 Exam Prep: Practice Tests & Simulation` (variant via `ccna-home-conversion.js`)
+- Ad headline 1: `CCNA 200-301 Practice Test`
+- Ad headline 2: `$9.99 for 10-Day Access`
+- Ad headline 3: `CCNA 200-301 Exam Prep`
+- Description: `700+ CCNA 200-301 practice questions, labs & D&D. $9.99 for 10-day access. Browser-only—no PDFs.`
 
-**Sim purchase (`#purchase`):**
+**Sim purchase (`#purchase` + `sim-purchase`):**
 
 - `120-Min CCNA Exam Simulation`
-- `CCNA Timed Practice — $4.99`
+- `CCNA Timed Practice — $9.99`
 - `50 Questions + D&D + CLI Lab`
 - `Study Scorecard by Domain`
 
@@ -207,14 +185,14 @@ Landing page must answer AI-style questions clearly (see [[../../01-strategy/goo
 - [x] FAQ section on landing page implemented
 - [x] H1/lead use “exam prep” not “training course”
 - [x] Meta description mentions browser-based + practice test + 200-301
-- [x] Free assessment + scorecard offer live
+- [x] Free sample questions + purchase fold live
 
 ## Tracking checklist
 
 - [ ] Final URLs include `utm_campaign=ccna_portal` (or ad-group-specific `utm_content`)
-- [ ] Google Ads conversion: `ccna_free_assessment_click` (free group) + `begin_checkout` (purchase)
+- [ ] Google Ads conversion: `begin_checkout` (primary) + purchase (secondary)
 - [ ] Weekly report: filter GA4 by campaign name matching `ccna*`
-- [ ] Stripe Payment Link confirms **$4.99** for timed sim in Dashboard
+- [ ] Stripe Payment Link confirms **$9.99** for portal 10d and timed sim in Dashboard
 - [ ] Stripe portal subscribers visible in `/admin` (CCNA product metadata)
 - [ ] Landing page audits in [[../../06-website-optimization/landing-page-audit-checklist|audit checklist]] — log changes in [[../../06-website-optimization/content-change-log|content change log]]
 - [ ] Align `scripts/ccna-google-ads-headline-suffixes.txt` UTM campaign to `ccna_portal` (file still shows `ccna-practice-test`)
@@ -228,20 +206,20 @@ Before major ad spend increases, run the optimization workflow in [[../../06-web
 **Known LP items (2026-05-31):**
 
 - Headline pinning via `utm_content=hl-*` → `ccna-home-conversion.js` (14 variants)
-- Primary ATF CTA: free assessment; purchase secondary ATF
+- Primary ATF CTA (`portal-10d` UTM): **$9.99 / 10-day** purchase; free samples below fold
 - `#exam-audience` section for federal/contractor message match
 
 ## Creative / ad copy notes
 
 - Full RSA sets, keywords, negatives, extensions: [[ccna-portal-google-ads-export|paste-ready export]]
-- Launch with **`ccna_free_assessment`** + **`ccna_sim_purchase`** in parallel
-- A/B: home landing (`hl-free-practice`) vs direct `/free-assessment.html` final URL
-- Pin purchase URL to `#purchase` for sim ad group only
+- Launch with **`ccna_portal_10d`** only at $10/day; add **`ccna_sim_purchase`** after baseline CPA
+- Pin purchase URL to `#purchase` + `portal-10d` for primary ad group
 
 ## Decisions log
 
 | Date | Change | Rationale |
 |------|--------|-----------|
+| 2026-06-09 | Removed **`ccna_lead_free_sim`** ad group from campaign plan | Paid Ads funnel = direct purchase (`ccna_portal_10d`); free sim stays on-site only, not a Search ad group |
 | 2026-06-06 | New ad group **`ccna_portal_10d`** — `portal-10d` UTM, site purchase fold = single $9.99 / 10-day CTA | Message match for paid portal intent; reduce choice paralysis vs dual-tier |
 | 2026-05-31 | Vault sync: Security+ playbook structure — ad groups, funnel, export, tracking checklist | Align active CCNA ads with proven Security+ campaign workflow |
 | 2026-05-30 | Active campaign doc; landing = `ccna-home.html` | User running CCNA ads; align with ENCOR/Security+ playbook |
@@ -249,9 +227,8 @@ Before major ad spend increases, run the optimization workflow in [[../../06-web
 
 ## Open questions
 
-- **Launch strategy:** Lead with `ccna_free_assessment` for 1–2 weeks, then scale `ccna_sim_purchase` on simulation keywords — **recommended default**
-- **Target CPA:** See [[../../01-strategy/google-ads-bidding-strategy#Phase 2 — After 30+ conversions / product (efficiency)|bidding strategy]] — lead ~$4–7, sim ~$8–12, portal ~$15–22
+- **Launch strategy:** **`ccna_portal_10d` only** at $10/day; add `ccna_sim_purchase` after ~5 `begin_checkout` events in 7 days
+- **Target CPA:** See [[../../01-strategy/google-ads-bidding-strategy#Phase 2 — After 30+ conversions / product (efficiency)|bidding strategy]] — sim ~$8–12, portal ~$15–22
 - **Daily budget:** **$10/day** — one campaign; defer Visibility/Convert split until **$20+/day** per [[../../01-strategy/google-ads-bidding-strategy|bidding strategy]]
 - **Brand vs non-brand:** Start non-brand only; add brand campaign when search volume warrants
-- **Email lead magnet:** Security+ uses `#secplus-lead-capture` + `generate_lead`; CCNA is no-email today — evaluate email scorecard capture later for parity
 - **UTM campaign name:** Standardize on `ccna_portal` everywhere (headline suffixes file still uses `ccna-practice-test`)

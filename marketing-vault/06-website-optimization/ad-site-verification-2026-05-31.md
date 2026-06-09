@@ -13,7 +13,7 @@ Cross-check of paste-ready exports in `02-campaigns/*/` against production landi
 | Campaign | Landing URLs | Pricing | Top funnel | Sample counts | Verdict |
 |----------|--------------|---------|------------|---------------|---------|
 | **Security+** `secplus_portal` | ✅ Match | ✅ Match | ✅ Lead magnet aligned | ⚠️ Homepage samples = **2 MCQ** (export said 20) | **Ready** after export fix |
-| **CCNA** `ccna_portal` | ⚠️ Use `#ccna-lead-capture` | ❌ Sim was **$4.99** in export; site **$9.99** | ❌ Export said no-email 35-min assessment; site is **email 45-min sim** | ⚠️ Homepage samples = **2 MCQ** | **Update export before launch** |
+| **CCNA** `ccna_portal` | ✅ `#purchase` + `portal-10d` | ✅ **$9.99** portal 10d | ✅ Direct purchase funnel (no lead ad group) | ⚠️ Homepage samples = **2 MCQ** | **Ready** — `ccna_portal_10d` only |
 | **ENCOR** `encor_portal` | ⚠️ Add `#encor-lead-capture` | ❌ Sim was **$4.99** in export; site **$9.99** | ⚠️ Export emphasized 12 MCQ samples; site adds **45-min email sim** | ⚠️ Homepage samples = **2 MCQ** | **Update export before launch** |
 
 **Positioning (all three):** ✅ Live pages use exam prep / practice portal language; guest samples link to public homes, not Training Portal URLs.
@@ -54,24 +54,22 @@ Cross-check of paste-ready exports in `02-campaigns/*/` against production landi
 | `/sample?track=ccna-*` | ✅ |
 | Do not use Training Portal as final URL | ✅ Guest pages fixed |
 
-### Mismatches — update ads before launch
+### Campaign plan (2026-06-09)
 
-| Obsidian export (old) | Live site (2026-05-31) |
-|-----------------------|-------------------------|
-| Top funnel: **35-min free assessment**, no email | **45-min timed simulation**, email unlock at `#ccna-lead-capture` |
-| 12 MCQ + 4 D&D + 1 VLAN lab | **20 MCQ + 2 D&D + 1 VLAN lab** (`ccna-free-assessment-blueprint.json` → free-sim pool) |
-| Primary URL `hl-free-practice` → assessment hero | Header CTA → `#ccna-lead-capture`; `ccna-home-conversion.js` still references “assessment” (legacy) |
-| Timed sim **$4.99** | **$9.99** (`ccna-test-simulation`, purchase card, Stripe value in page) |
-| Conversion `ccna_free_assessment_click` | Prefer **`generate_lead`** for lead ad group; assessment click only if linking to runner directly |
-| Homepage samples “12 MCQ” in ENCOR-style copy | **2 MCQ** per sample run + optional D&D + lab tracks |
+| Ad claim | Live site |
+|----------|-----------|
+| Primary ad group **`ccna_portal_10d`** | ✅ Export updated |
+| Final URL `#purchase` + `utm_content=portal-10d` | ✅ 10-day $9.99 only in purchase fold (`ccna-portal-10d-landing.js`) |
+| Primary conversion **`begin_checkout`** | ✅ `ccna_portal_10d` item |
+| No **`ccna_lead_free_sim`** ad group | ✅ Removed from campaign plan — free sim not a paid Search funnel |
 
-**Recommended lead ad final URL:**
+**Recommended ad final URL:**
 
 ```
-https://becertifiedtoday.com/ccna-home.html#ccna-lead-capture?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=lead-free-sim
+https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=portal-10d
 ```
 
-**Note:** `free-assessment.html` still loads the same 45-min blueprint; initial timer display shows `00:35:00` while runtime uses 45 minutes — fix in site backlog, not ad copy.
+**Site backlog (not ad blockers):** `ccna-home-conversion.js` legacy “assessment” copy; homepage samples = **2 MCQ** per run.
 
 ---
 

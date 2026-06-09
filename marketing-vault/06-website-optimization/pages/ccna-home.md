@@ -29,10 +29,9 @@ Ad `utm_content=hl-free-practice` etc. maps to variants in `public/js/ccna-home-
 ## Current message (prod 2026-06-04)
 
 - **H1:** CCNA 200-301 Exam Prep: Practice Tests & Simulation (variants via `ccna-home-conversion.js` may override)
-- **Lead:** You-focused exam prep; free 45-min sim; browser-only; federal context with “confirm with your manager”
+- **Lead:** You-focused exam prep; browser-only; federal context with “confirm with your manager”
 - **Writing rules:** [[../../12-Writing/_Writing-Rules|Guest page writing rules]] applied 2026-06-04
-- **Lead magnet:** `#ccna-lead-capture` — 45 min, 20 MCQ + 2 D&D + VLAN lab
-- **Samples:** 2 MCQ per run on `/sample?track=ccna-questions`
+- **Samples:** 2 MCQ per run on `/sample?track=ccna-questions`; D&D and VLAN lab samples on-page
 - **Primary CTA (default):** 30-day portal on `#purchase`; free samples below
 - **Primary CTA (`utm_content=portal-10d`):** **$9.99 / 10-day** only in purchase fold — Ads config: `scripts/ccna-portal-10d-google-ads.md`
 

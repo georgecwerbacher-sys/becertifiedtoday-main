@@ -9,6 +9,8 @@ page_note: "[[../../06-website-optimization/pages/ccna-home]]"
 
 **Ad landing:** `ccna-home.html` or `/ccna/practice-test` (rewrite). **Not** `CCNA_Training_Portal.html` (gated hub).
 
+**Paid Search (2026-06):** Only **`ccna_portal_10d`** ad group — no `ccna_lead_free_sim`. Keywords below map to portal / prep intent; paste list in [[../../02-campaigns/ccna/ccna-portal-google-ads-export|CCNA export]].
+
 See [[../../01-strategy/cisco-certifications-exam-prep-foundation|Cisco exam prep foundation]].
 
 ## Tier 1 — highest intent

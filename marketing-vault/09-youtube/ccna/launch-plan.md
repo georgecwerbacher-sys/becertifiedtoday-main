@@ -15,14 +15,14 @@ Parent: [[README|CCNA YouTube]] · Videos: [[videos/README|video index]]
 
 | Pillar | Length | Examples |
 |--------|--------|----------|
-| A — Product commercial | 45–90s | Browser prep, free 45-min assessment, $9.99 sim, no GNS3 |
+| A — Product commercial | 45–90s | Browser prep, free samples, $9.99 / 10-day portal, no GNS3 |
 | B — Question / lab clip | 2–6 min | MCQ, drag-and-drop, VLAN CLI sample |
 | C — Shorts | 30–60s | PDF vs sim, mark for review |
 | D — Mobile / tablet | 60–120s | Practice on phone |
 
 ## Pre-launch gates
 
-- [ ] [[../../06-website-optimization/ad-site-verification-2026-05-31|Ad-site verification]] — lead URL `#ccna-lead-capture`, $9.99 sim
+- [ ] [[../../06-website-optimization/ad-site-verification-2026-05-31|Ad-site verification]] — `#purchase` + `portal-10d`, $9.99 portal 10d
 - [ ] Security+ YouTube: ≥8 videos or consistent `secplus_yt` traffic in GA4
 - [ ] Playlists created for CCNA in Studio
 

@@ -28,7 +28,7 @@ Cross-link: [[security-plus-federal-defense-foundation|Security+ federal foundat
 
 1. **Exam prep only** — practice tests, labs, drag-and-drop, timed simulation; not “Cisco training course” or bootcamp.
 2. **No GNS3 / IOU required** — major differentiator on landing pages and ad copy.
-3. **Free sample or free assessment** → portal/sim purchase (CCNA leads with free assessment + scorecard).
+3. **Free samples on landing** → **10-day portal** or timed sim purchase (CCNA Ads: **`ccna_portal_10d`** only — no free-sim lead ad group).
 4. **Headline pinning** — CCNA uses `?hl=` / `utm_content=hl-*` variants (`scripts/ccna-google-ads-headline-suffixes.txt`, `ccna-home-conversion.js`).
 5. **Keyword collection** — weekly search-term import per campaign in `07-keywords/search-terms/`.
 6. **Compliance language** — Cisco certs may appear in federal/contractor **IT** work roles under DoD 8140; confirm via your org and the [qualification matrix](https://public.cyber.mil/wid/dod8140/dod-cyber-workforce-qualifications-matrices-management/). Never claim we satisfy a specific contract or DoD baseline.
@@ -41,7 +41,7 @@ Cross-link: [[security-plus-federal-defense-foundation|Security+ federal foundat
 
 | Persona | Situation | Message |
 |---------|-----------|---------|
-| **Career changer** | First Cisco cert; needs exam-realistic practice | Free assessment + scorecard |
+| **Career changer** | First Cisco cert; needs exam-realistic practice | Free samples + $9.99 / 10-day portal |
 | **Network admin / NOC** | Employer or contract expects CCNA | Browser prep between shifts |
 | **Federal / defense contractor** | Network admin/engineer role on contract | Exam prep—not a video course |
 | **Help desk → network** | Moving into routing & switching | Labs + drag-and-drop in browser |
@@ -52,11 +52,11 @@ Cross-link: [[security-plus-federal-defense-foundation|Security+ federal foundat
 | Trigger | Window | CTA angle |
 |---------|--------|-----------|
 | Scheduled 200-301 | 2–8 weeks out | 30-day pass + timed sim |
-| DoD 8140 foundational window | **9 months** from assignment (DoD baseline—verify with org) | Start free assessment early |
-| New hire / contract | Component may set shorter than 9 months | Start free assessment |
+| DoD 8140 foundational window | **9 months** from assignment (DoD baseline—verify with org) | Start 10-day portal early |
+| New hire / contract | Component may set shorter than 9 months | Try free samples → portal |
 | Failed attempt | Retake scheduling | Domain scorecard → focus weak areas |
 | Night / weekend study | Ongoing | No installs—open browser |
-| Before buying full library | First visit | Free 30-min assessment |
+| Before buying full library | First visit | Free sample questions on page |
 
 ### Where (study + geo ads)
 
@@ -64,16 +64,14 @@ Cross-link: [[security-plus-federal-defense-foundation|Security+ federal foundat
 
 **Geo (Tier 1 bid boost):** DC/NoVA/MD, Colorado Springs, San Antonio, Norfolk, Huntsville, Tampa, San Diego, Atlanta, Dallas—plus **national** campaign for generic `ccna practice test`.
 
-### CCNA ad groups (draft)
+### CCNA ad groups
 
 | Ad group | Keywords (examples) | Landing |
 |----------|---------------------|---------|
-| Practice test | ccna practice test, ccna 200-301 practice exam | `ccna-home.html` |
-| Free practice | free ccna practice, free ccna exam | `ccna-home.html` |
-| Mock / sim | ccna mock exam, ccna exam simulation | `ccna-home.html#purchase` |
-| Exam prep | ccna 200-301 prep, cisco ccna exam prep | `ccna-home.html` |
-| Labs / PBQ | ccna drag and drop, ccna cli lab practice | samples on page |
-| Federal / contract | ccna federal job, ccna defense contractor | `ccna-home.html#exam-audience` |
+| **`ccna_portal_10d`** (primary) | ccna question bank, ccna practice test online, ccna 200-301 prep | `#purchase` + `portal-10d` |
+| Mock / sim (optional) | ccna mock exam, ccna exam simulation | `#purchase` + `sim-purchase` |
+| Labs / PBQ (optional) | ccna drag and drop, ccna cli lab practice | samples on page |
+| Federal / contract (optional) | ccna federal job, ccna defense contractor | `#exam-audience` |
 
 **CCNA negatives (add):** `ccna course free`, `cisco netacad`, `cisco learning network course`, `ine ccna`, `cbnuggets`, `gns3 tutorial`, `packet tracer download only`
 
