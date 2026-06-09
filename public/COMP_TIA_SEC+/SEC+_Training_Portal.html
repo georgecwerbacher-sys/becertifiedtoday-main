@@ -310,6 +310,33 @@
       margin: 0 0 8px;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     }
+    .sim-grid--pbq {
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+    @media (min-width: 900px) {
+      .sim-grid--pbq {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+    .sim-grid--pbq .study-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .sim-grid--pbq .study-actions .start-btn {
+      flex: none;
+      width: 100%;
+      min-width: 0;
+      min-height: 2.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 0.84rem;
+      line-height: 1.25;
+      padding: 8px 10px;
+      box-sizing: border-box;
+    }
     #secplus-practice-banks-grid {
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     }
@@ -1104,79 +1131,79 @@
             <p class="placeholder-strip">
               Performance-based matching, ordering, and classification items aligned to SY0-701 objectives.
             </p>
-            <div class="sim-grid" aria-label="Simulation groups">
-              <article class="sim-box" aria-labelledby="secplus-simulation-bank-title">
-                <h4 class="sim-box-title" id="secplus-simulation-bank-title">Simulation bank 1</h4>
+            <div class="sim-grid sim-grid--pbq" aria-label="Simulation groups by subject">
+              <article class="sim-box" aria-labelledby="secplus-sim-subject-network">
+                <h4 class="sim-box-title" id="secplus-sim-subject-network">Network &amp; Zero Trust</h4>
                 <p class="study-meta">
-                  Performance-based simulations: review artifacts, logs, and scenarios, then apply the correct controls or classifications.
+                  5 labs · VPC segmentation, subnet design, perimeter and DMZ firewall ACLs, and ZTA control placement.
                 </p>
-                <div class="study-actions" role="group" aria-label="Simulation bank 1">
-                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/acme-rag-hr-ai/acme-rag-hr-ai.html">HR RAG AI</a>
-                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/dark-web-account-protection/dark-web-account-protection.html">Dark Web IR</a>
-                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/malware-outbreak-classification/malware-outbreak-classification.html">Malware Outbreak</a>
-                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html">Secure Web &amp; OpenSSL</a>
+                <div class="study-actions" role="group" aria-label="Network and Zero Trust simulations">
                   <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/vpc-payment-architecture/vpc-payment-architecture.html">VPC Payment Network</a>
-                </div>
-              </article>
-              <article class="sim-box" aria-labelledby="secplus-simulation-bank-title-2">
-                <h4 class="sim-box-title" id="secplus-simulation-bank-title-2">Simulation bank 2</h4>
-                <p class="study-meta">
-                  Zero Trust migration, perimeter and DMZ firewall ACL builders, governance, and attack identification with remediation.
-                </p>
-                <div class="study-actions" role="group" aria-label="Simulation bank 2">
-                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/zero-trust-zta-migration/zero-trust-zta-migration.html">Zero Trust ZTA</a>
+                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/subnetting-ip-addressing/subnetting-ip-addressing.html">Subnet Design</a>
                   <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/advanced-firewall-rule-configurator/advanced-firewall-rule-configurator.html">Perimeter Firewall</a>
                   <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/firewall-acl-secops/firewall-acl-secops.html">DMZ Firewall ACL</a>
-                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/governance/governance.html">Governance</a>
-                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/hotspot-attack-identification-remediation.html">Attack ID Remediation</a>
+                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/zero-trust-zta-migration/zero-trust-zta-migration.html">Zero Trust ZTA</a>
                 </div>
               </article>
-              <article class="sim-box" aria-labelledby="secplus-simulation-bank-title-3">
-                <h4 class="sim-box-title" id="secplus-simulation-bank-title-3">Simulation bank 3</h4>
+              <article class="sim-box" aria-labelledby="secplus-sim-subject-crypto">
+                <h4 class="sim-box-title" id="secplus-sim-subject-crypto">PKI, TLS &amp; Wireless</h4>
                 <p class="study-meta">
-                  PKI audit, SIEM triage, incident response, phishing analysis, and vulnerability management from the PBQ production chain.
+                  4 labs · Certificate chains, browser trust errors, secure web architecture, and enterprise WAP policy.
                 </p>
-                <div class="study-actions" role="group" aria-label="Simulation bank 3">
+                <div class="study-actions" role="group" aria-label="PKI, TLS, and wireless simulations">
                   <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/hybrid-pki-audit/hybrid-pki-audit.html">Hybrid PKI</a>
+                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/pki-certificate-chain-browser-error/pki-certificate-chain-browser-error.html">PKI Browser Error</a>
+                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html">Secure Web &amp; OpenSSL</a>
+                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/wap-secure-configuration/wap-secure-configuration.html">WAP Config</a>
+                </div>
+              </article>
+              <article class="sim-box" aria-labelledby="secplus-sim-subject-detection">
+                <h4 class="sim-box-title" id="secplus-sim-subject-detection">Threat Detection &amp; Logs</h4>
+                <p class="study-meta">
+                  4 labs · SIEM/MITRE correlation, malware IOC and outbreak classification, and forensic log timelines.
+                </p>
+                <div class="study-actions" role="group" aria-label="Threat detection and log simulations">
                   <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/siem-ransomware-mitre/siem-ransomware-mitre.html">SIEM MITRE</a>
+                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/malware-ioc-analysis/malware-ioc-analysis.html">Malware IOC</a>
+                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/malware-outbreak-classification/malware-outbreak-classification.html">Malware Outbreak</a>
+                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/log-timeline-forensics/log-timeline-forensics.html">Log Timeline</a>
+                </div>
+              </article>
+              <article class="sim-box" aria-labelledby="secplus-sim-subject-ir">
+                <h4 class="sim-box-title" id="secplus-sim-subject-ir">Incident Response</h4>
+                <p class="study-meta">
+                  5 labs · IR playbooks, phishing and attack identification, dark-web credential exposure, and ransomware DR.
+                </p>
+                <div class="study-actions" role="group" aria-label="Incident response simulations">
                   <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/incident-response/incident-response.html">Incident Response</a>
                   <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/phishing-email-analysis/phishing-email-analysis.html">Phishing Analysis</a>
+                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/hotspot-attack-identification-remediation.html">Attack ID Remediation</a>
+                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/dark-web-account-protection/dark-web-account-protection.html">Dark Web IR</a>
+                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/ransomware-dr-acme/ransomware-dr-acme.html">Ransomware DR</a>
+                </div>
+              </article>
+              <article class="sim-box" aria-labelledby="secplus-sim-subject-hardening">
+                <h4 class="sim-box-title" id="secplus-sim-subject-hardening">Hardening &amp; Vulnerability Mgmt</h4>
+                <p class="study-meta">
+                  4 labs · Linux SSH breach recovery, CIS baseline, control placement, and vulnerability response.
+                </p>
+                <div class="study-actions" role="group" aria-label="Hardening and vulnerability management simulations">
+                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/ubuntu-ssh-breach-hardening/ubuntu-ssh-breach-hardening.html">Ubuntu SSH IR</a>
+                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/ubuntu-cis-hardening/ubuntu-cis-hardening.html">CIS Hardening</a>
+                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/security-control-placement/security-control-placement.html">Control Placement</a>
                   <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/vulnerability-management/vulnerability-management.html">Vuln Response</a>
                 </div>
               </article>
-              <article class="sim-box" aria-labelledby="secplus-simulation-bank-title-4">
-                <h4 class="sim-box-title" id="secplus-simulation-bank-title-4">Simulation bank 4</h4>
+              <article class="sim-box" aria-labelledby="secplus-sim-subject-governance">
+                <h4 class="sim-box-title" id="secplus-sim-subject-governance">Governance, Risk &amp; Data</h4>
                 <p class="study-meta">
-                  Linux breach hardening, disaster recovery, CIS baseline, control placement, and subnet design.
+                  4 labs · Policy governance, quantitative risk (ALE), PCI data protection, and enterprise AI guardrails.
                 </p>
-                <div class="study-actions" role="group" aria-label="Simulation bank 4">
-                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/ubuntu-ssh-breach-hardening/ubuntu-ssh-breach-hardening.html">Ubuntu SSH IR</a>
-                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/ransomware-dr-acme/ransomware-dr-acme.html">Ransomware DR</a>
-                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/ubuntu-cis-hardening/ubuntu-cis-hardening.html">CIS Hardening</a>
-                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/security-control-placement/security-control-placement.html">Control Placement</a>
-                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/subnetting-ip-addressing/subnetting-ip-addressing.html">Subnet Design</a>
-                </div>
-              </article>
-              <article class="sim-box" aria-labelledby="secplus-simulation-bank-title-5">
-                <h4 class="sim-box-title" id="secplus-simulation-bank-title-5">Simulation bank 5</h4>
-                <p class="study-meta">
-                  Wireless AP policy, log timeline forensics, PKI browser trust, quantitative risk, and malware IOC triage.
-                </p>
-                <div class="study-actions" role="group" aria-label="Simulation bank 5">
-                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/wap-secure-configuration/wap-secure-configuration.html">WAP Config</a>
-                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/log-timeline-forensics/log-timeline-forensics.html">Log Timeline</a>
-                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/pki-certificate-chain-browser-error/pki-certificate-chain-browser-error.html">PKI Browser Error</a>
+                <div class="study-actions" role="group" aria-label="Governance, risk, and data protection simulations">
+                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/governance/governance.html">Governance</a>
                   <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/quantitative-risk-ale/quantitative-risk-ale.html">Risk ALE</a>
-                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/malware-ioc-analysis/malware-ioc-analysis.html">Malware IOC</a>
-                </div>
-              </article>
-              <article class="sim-box" aria-labelledby="secplus-simulation-bank-title-6">
-                <h4 class="sim-box-title" id="secplus-simulation-bank-title-6">Simulation bank 6</h4>
-                <p class="study-meta">
-                  PCI test-environment data protection: the final lab in the PBQ production chain.
-                </p>
-                <div class="study-actions" role="group" aria-label="Simulation bank 6">
                   <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/data-protection/data-protection.html">Data Protection</a>
+                  <a class="start-btn" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/acme-rag-hr-ai/acme-rag-hr-ai.html">HR RAG AI</a>
                 </div>
               </article>
             </div>
