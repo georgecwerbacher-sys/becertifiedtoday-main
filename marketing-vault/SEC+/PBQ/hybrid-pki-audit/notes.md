@@ -34,7 +34,7 @@ Stem facts: offline root, on-prem + Azure intermediates, **SHA-1** on-prem inter
 |---------|------|
 | `pki-p1` | Chain ladder: root → intermediate → leaf |
 | `pki-p2` | Four algorithm dropdowns |
-| `pki-p3` | Revocation checkboxes |
+| `pki-p3` | Post-audit inventory exhibit (CRL, topology, table) + revocation checkboxes |
 
 **Previous:** [[../zero-trust-zta-migration/notes|ZTA]] · **Next:** [[../ubuntu-ssh-breach-hardening/notes|Ubuntu SSH]]
 

@@ -2,7 +2,7 @@
 type: pbq-scenario-recommendations
 exam: SY0-701
 scenario: hybrid-pki-audit
-last_updated: 2026-06-04
+last_updated: 2026-06-08
 ---
 
 # Hybrid PKI audit — recommendations
@@ -25,8 +25,12 @@ last_updated: 2026-06-04
 
 ## For product
 
-- Show **CRL age** countdown in exhibit (11 vs 7 days) — already in stem; could animate on Submit.
-- After Part 3 pass, optional link: “Practice browser PKI error PBQ” (`pki-certificate-chain-browser-error.html` in public bank).
+| Item | Status |
+|------|--------|
+| Part 3 post-audit inventory exhibit (CRL, topology, table) | Done |
+| Part 1 / Part 2 reference exhibit headings | Done |
+| CRL age in Part 3 exhibit (11 vs 7 days) | Done |
+| After Part 3 pass link to browser PKI PBQ | Done |
 
 ## Vault / ops
 

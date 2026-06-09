@@ -52,17 +52,23 @@ last_updated: 2026-06-04
 
 ## Part 3 — Immediate revocation (check both)
 
+Work from the **post-audit certificate inventory** exhibit:
+
+1. **CRL status:** 11 days stale; policy max 7 days. Plan to publish a fresh CRL after revocations.
+2. **Topology:** Two issuance paths under the same root. Part 1 validated TLS via Azure → api leaf; On-Prem issues the code-signing leaf separately.
+3. **Inventory findings:** Interpret **F-102** (deprecated SHA-1 CA) and **F-201/F-203** (expired + weak key). Rows with **None** are still in policy.
+
 | Certificate | Revoke? | Reason |
 |-------------|---------|--------|
-| **Code Signing Cert** | **YES** | Expired 2024-11-30, RSA-1024 weak; remove from trust stores / audit hygiene. |
+| **Code Signing Cert** | **YES** | Expired 2024-11-30, RSA-1024 weak; inventory row marked revoke now. |
 | **On-Prem Issuing CA** | **YES** | SHA-1 signing algorithm; issued weak code-signing leaf. |
 | Root CA | NO | Valid SHA-256, offline, long-lived anchor. |
-| api.becertifiedtoday.com leaf | NO | Valid SHA-256 leaf for production API. |
+| api.becertifiedtoday.com leaf | NO | Valid SHA-256 leaf for production API (Part 1 chain). |
 | Azure Issuing CA | NO | Valid SHA-256 intermediate for API chain. |
 
 **Production nuance (in-app pass message):** Stand up a **SHA-256 replacement intermediate**, re-issue affected certs, **then** retire the weak CA. The PBQ still selects on-prem intermediate for **immediate revocation** to satisfy audit findings and stop trusting SHA-1 issuers.
 
-**After revocation:** Publish updated **CRL** within **7-day** policy (stem: CRL was 11 days stale).
+**After revocation:** Publish updated **CRL** within **7-day** policy.
 
 ---
 
