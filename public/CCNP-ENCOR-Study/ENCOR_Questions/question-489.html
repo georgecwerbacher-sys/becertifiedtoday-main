@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BGP Sample Question</title>
+  <title>Question 489 - SD-WAN TLOC roles</title>
   <style>
     :root {
       color-scheme: light;
@@ -138,20 +138,32 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-445.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-488.html">Back</a>
       <a class="nav-link nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-447.html">Next</a>
+      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-490.html">Next</a>
       </div>
     </nav>
-    <h1>Which BGP path attribute is used to prevent routing loops between autonomous systems?</h1>
+    <h1>Which two roles best describe TLOCs in a Cisco Catalyst SD-WAN deployment? (Choose the best single answer.)</h1>
 
-    <label class="choice"><input type="radio" name="bgp" value="A" />A. MED</label>
+    <label class="choice">
+      <input type="radio" name="q489" value="A" />
+      <strong>A.</strong> TCP listening offsets used by vManage for management
+    </label>
 
-    <label class="choice"><input type="radio" name="bgp" value="B" />B. AS_PATH</label>
+    <label class="choice">
+      <input type="radio" name="q489" value="B" />
+      <strong>B.</strong> Transport locators identifying a WAN edge color, system IP, and encapsulation
+    </label>
 
-    <label class="choice"><input type="radio" name="bgp" value="C" />C. LOCAL_PREF</label>
+    <label class="choice">
+      <input type="radio" name="q489" value="C" />
+      <strong>C.</strong> Encryption keys distributed by vBond
+    </label>
 
-    <label class="choice"><input type="radio" name="bgp" value="D" />D. NEXT_HOP</label>
+    <label class="choice">
+      <input type="radio" name="q489" value="D" />
+      <strong>D.</strong> Tag-based segmentation labels for VPN traffic
+    </label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -178,13 +190,13 @@
   <script>
     (function () {
       var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B. AS_PATH";
+      var CORRECT_MSG = "Correct. B. A TLOC (transport locator) identifies a WAN Edge transport attachment by color, system IP, and encapsulation so OMP can advertise reachability across the overlay. vManage uses management protocols, not TLOC TCP offsets; vBond handles authentication, not TLOC key distribution; VPN segmentation uses VPN IDs, not TLOC labels.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="bgp"]:checked');
+        var sel = document.querySelector('input[name="q489"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -201,7 +213,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="bgp"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="q489"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

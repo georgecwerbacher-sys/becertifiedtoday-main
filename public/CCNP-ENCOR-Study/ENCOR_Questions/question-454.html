@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BGP Sample Question</title>
+  <title>Question 454 - Trunk and access port mismatch</title>
   <style>
     :root {
       color-scheme: light;
@@ -138,20 +138,32 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-445.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-453.html">Back</a>
       <a class="nav-link nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-447.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-455.html">Next</a>
       </div>
     </nav>
-    <h1>Which BGP path attribute is used to prevent routing loops between autonomous systems?</h1>
+    <h1>What happens when a port configured with <code>switchport mode trunk</code> connects to a port set to <code>switchport mode access</code>?</h1>
 
-    <label class="choice"><input type="radio" name="bgp" value="A" />A. MED</label>
+    <label class="choice">
+      <input type="radio" name="q454" value="A" />
+      <strong>A.</strong> Trunk is formed
+    </label>
 
-    <label class="choice"><input type="radio" name="bgp" value="B" />B. AS_PATH</label>
+    <label class="choice">
+      <input type="radio" name="q454" value="B" />
+      <strong>B.</strong> Access mode port is shut down
+    </label>
 
-    <label class="choice"><input type="radio" name="bgp" value="C" />C. LOCAL_PREF</label>
+    <label class="choice">
+      <input type="radio" name="q454" value="C" />
+      <strong>C.</strong> No trunking; connection remains access
+    </label>
 
-    <label class="choice"><input type="radio" name="bgp" value="D" />D. NEXT_HOP</label>
+    <label class="choice">
+      <input type="radio" name="q454" value="D" />
+      <strong>D.</strong> Both ports go to the blocking state
+    </label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -177,14 +189,14 @@
   </div>
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B. AS_PATH";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C. A statically configured trunk does not negotiate with an access port, so no trunk forms and the access side stays in access mode. VLAN tagging will not match, so traffic may fail even though the link is physically up.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="bgp"]:checked');
+        var sel = document.querySelector('input[name="q454"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -201,7 +213,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="bgp"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="q454"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

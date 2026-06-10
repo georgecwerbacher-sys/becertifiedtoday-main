@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BGP Sample Question</title>
+  <title>Question 468 - RIB vs FIB functions</title>
   <style>
     :root {
       color-scheme: light;
@@ -138,20 +138,32 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-445.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-467.html">Back</a>
       <a class="nav-link nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-447.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-469.html">Next</a>
       </div>
     </nav>
-    <h1>Which BGP path attribute is used to prevent routing loops between autonomous systems?</h1>
+    <h1>How do the Routing Information Base (RIB) and Forwarding Information Base (FIB) differ in their functions on a network device?</h1>
 
-    <label class="choice"><input type="radio" name="bgp" value="A" />A. MED</label>
+    <label class="choice">
+      <input type="radio" name="q468" value="A" />
+      <strong>A.</strong> The FIB is derived from and populated using the RIB&rsquo;s information.
+    </label>
 
-    <label class="choice"><input type="radio" name="bgp" value="B" />B. AS_PATH</label>
+    <label class="choice">
+      <input type="radio" name="q468" value="B" />
+      <strong>B.</strong> The RIB is an exact duplicate of the FIB.
+    </label>
 
-    <label class="choice"><input type="radio" name="bgp" value="C" />C. LOCAL_PREF</label>
+    <label class="choice">
+      <input type="radio" name="q468" value="C" />
+      <strong>C.</strong> The RIB is utilized for forwarding packets based on the source IP address.
+    </label>
 
-    <label class="choice"><input type="radio" name="bgp" value="D" />D. NEXT_HOP</label>
+    <label class="choice">
+      <input type="radio" name="q468" value="D" />
+      <strong>D.</strong> The FIB stores every route from all routing protocols.
+    </label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -177,14 +189,14 @@
   </div>
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B. AS_PATH";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A. The RIB (control plane) holds routing prefixes from all sources; the FIB (e.g. CEF) is built from the best RIB entries with resolved next hops and egress interfaces used for destination-based forwarding.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="bgp"]:checked');
+        var sel = document.querySelector('input[name="q468"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -201,7 +213,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="bgp"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="q468"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

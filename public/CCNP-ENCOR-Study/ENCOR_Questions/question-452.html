@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BGP Sample Question</title>
+  <title>Question 452 - Disable DTP trunk negotiation</title>
   <style>
     :root {
       color-scheme: light;
@@ -138,20 +138,32 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-445.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-451.html">Back</a>
       <a class="nav-link nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-447.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-453.html">Next</a>
       </div>
     </nav>
-    <h1>Which BGP path attribute is used to prevent routing loops between autonomous systems?</h1>
+    <h1>Which command disables trunk negotiation on a trunk port?</h1>
 
-    <label class="choice"><input type="radio" name="bgp" value="A" />A. MED</label>
+    <label class="choice">
+      <input type="radio" name="q452" value="A" />
+      <strong>A.</strong> switchport mode access
+    </label>
 
-    <label class="choice"><input type="radio" name="bgp" value="B" />B. AS_PATH</label>
+    <label class="choice">
+      <input type="radio" name="q452" value="B" />
+      <strong>B.</strong> switchport trunk encapsulation dot1q
+    </label>
 
-    <label class="choice"><input type="radio" name="bgp" value="C" />C. LOCAL_PREF</label>
+    <label class="choice">
+      <input type="radio" name="q452" value="C" />
+      <strong>C.</strong> switchport nonegotiate
+    </label>
 
-    <label class="choice"><input type="radio" name="bgp" value="D" />D. NEXT_HOP</label>
+    <label class="choice">
+      <input type="radio" name="q452" value="D" />
+      <strong>D.</strong> switchport disable trunking
+    </label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -177,14 +189,14 @@
   </div>
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B. AS_PATH";
+      var CORRECT = "C";
+      var CORRECT_MSG = "Correct. C. switchport nonegotiate stops DTP advertisements on the interface so the port will not negotiate trunking. Use it with switchport mode trunk on a statically configured trunk; access mode and encapsulation commands do not disable DTP.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="bgp"]:checked');
+        var sel = document.querySelector('input[name="q452"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -201,7 +213,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="bgp"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="q452"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

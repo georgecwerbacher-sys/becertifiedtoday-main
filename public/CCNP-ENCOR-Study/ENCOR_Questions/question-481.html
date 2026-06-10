@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BGP Sample Question</title>
+  <title>Question 481 - QoS traffic shaping</title>
   <style>
     :root {
       color-scheme: light;
@@ -138,20 +138,32 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-445.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-480.html">Back</a>
       <a class="nav-link nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-447.html">Next</a>
+      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-482.html">Next</a>
       </div>
     </nav>
-    <h1>Which BGP path attribute is used to prevent routing loops between autonomous systems?</h1>
+    <h1>How does QoS traffic shaping alleviate network congestion?</h1>
 
-    <label class="choice"><input type="radio" name="bgp" value="A" />A. MED</label>
+    <label class="choice">
+      <input type="radio" name="q481" value="A" />
+      <strong>A.</strong> It drops packets when traffic exceeds a certain bitrate.
+    </label>
 
-    <label class="choice"><input type="radio" name="bgp" value="B" />B. AS_PATH</label>
+    <label class="choice">
+      <input type="radio" name="q481" value="B" />
+      <strong>B.</strong> It buffers and queues packets above the committed rate.
+    </label>
 
-    <label class="choice"><input type="radio" name="bgp" value="C" />C. LOCAL_PREF</label>
+    <label class="choice">
+      <input type="radio" name="q481" value="C" />
+      <strong>C.</strong> It fragments large packets and queues them for delivery.
+    </label>
 
-    <label class="choice"><input type="radio" name="bgp" value="D" />D. NEXT_HOP</label>
+    <label class="choice">
+      <input type="radio" name="q481" value="D" />
+      <strong>D.</strong> It drops packets randomly from lower priority queues.
+    </label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -178,13 +190,13 @@
   <script>
     (function () {
       var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B. AS_PATH";
+      var CORRECT_MSG = "Correct. B. Shaping smooths bursts by buffering and queuing traffic above the committed rate, then releasing it at the configured rate to reduce downstream congestion. Immediate drops at a bitrate limit describe policing; random drops from low-priority queues describe mechanisms such as WRED.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="bgp"]:checked');
+        var sel = document.querySelector('input[name="q481"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -201,7 +213,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="bgp"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="q481"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

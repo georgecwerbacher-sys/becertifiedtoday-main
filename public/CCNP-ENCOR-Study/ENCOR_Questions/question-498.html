@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BGP Sample Question</title>
+  <title>Question 498 - AAA TACACS+ local fallback</title>
   <style>
     :root {
       color-scheme: light;
@@ -121,6 +121,18 @@
     .exhibit-section-caption {
       color: var(--bcc-outside-text);
     }
+    pre.exhibit-cli {
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #0d1117;
+      color: #e6edf3;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
   </style>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNP-ENCOR-Study/ENCOR_Samples/encor-sample-touch.css" />
@@ -138,20 +150,36 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-445.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-497.html">Back</a>
       <a class="nav-link nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-447.html">Next</a>
+      <span class="nav-link nav-next nav-link--disabled" aria-hidden="true">Next</span>
       </div>
     </nav>
-    <h1>Which BGP path attribute is used to prevent routing loops between autonomous systems?</h1>
+    <h1>An engineer configures the following AAA and VTY settings on a Cisco IOS-XE router. What is the resulting login behavior on the VTY lines?</h1>
 
-    <label class="choice"><input type="radio" name="bgp" value="A" />A. MED</label>
+    <pre class="exhibit-cli" aria-label="AAA and VTY configuration">aaa authentication login VTY-LIST group TACACS-SERVERS local
+line vty 0 4
+ login authentication VTY-LIST</pre>
 
-    <label class="choice"><input type="radio" name="bgp" value="B" />B. AS_PATH</label>
+    <label class="choice">
+      <input type="radio" name="q498" value="A" />
+      <strong>A.</strong> TACACS+ servers are tried first, then local username database if all TACACS+ servers are unreachable
+    </label>
 
-    <label class="choice"><input type="radio" name="bgp" value="C" />C. LOCAL_PREF</label>
+    <label class="choice">
+      <input type="radio" name="q498" value="B" />
+      <strong>B.</strong> Local users are tried first, then TACACS+
+    </label>
 
-    <label class="choice"><input type="radio" name="bgp" value="D" />D. NEXT_HOP</label>
+    <label class="choice">
+      <input type="radio" name="q498" value="C" />
+      <strong>C.</strong> Only TACACS+ is used; local fallback is ignored
+    </label>
+
+    <label class="choice">
+      <input type="radio" name="q498" value="D" />
+      <strong>D.</strong> Authentication is disabled
+    </label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -177,14 +205,14 @@
   </div>
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B. AS_PATH";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A. AAA method lists are evaluated left to right. group TACACS-SERVERS is tried first; if every server in that group is unreachable, IOS-XE falls back to the local username database. Local is not tried first, and authentication is enabled on VTY 0\u20134 via login authentication VTY-LIST.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="bgp"]:checked');
+        var sel = document.querySelector('input[name="q498"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -201,7 +229,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="bgp"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="q498"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

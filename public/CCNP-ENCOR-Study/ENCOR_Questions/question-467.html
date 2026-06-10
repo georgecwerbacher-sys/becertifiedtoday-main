@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BGP Sample Question</title>
+  <title>Question 467 - CCNP ENCOR exam preparation</title>
   <style>
     :root {
       color-scheme: light;
@@ -138,20 +138,27 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-445.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-466.html">Back</a>
       <a class="nav-link nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next next-link" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-447.html">Next</a>
+      <a class="nav-link nav-next next-link" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-468.html">Next</a>
       </div>
     </nav>
-    <h1>Which BGP path attribute is used to prevent routing loops between autonomous systems?</h1>
+    <h1 class="choose-two-stem">How should I prepare effectively for the CCNP ENCOR certification exam? A strong preparation strategy should include: (Choose three)</h1>
 
-    <label class="choice"><input type="radio" name="bgp" value="A" />A. MED</label>
+    <label class="choice">
+      <input type="checkbox" name="q467" value="A" />
+      <strong>A.</strong> Studying official exam topics
+    </label>
 
-    <label class="choice"><input type="radio" name="bgp" value="B" />B. AS_PATH</label>
+    <label class="choice">
+      <input type="checkbox" name="q467" value="B" />
+      <strong>B.</strong> Practicing enterprise networking labs
+    </label>
 
-    <label class="choice"><input type="radio" name="bgp" value="C" />C. LOCAL_PREF</label>
-
-    <label class="choice"><input type="radio" name="bgp" value="D" />D. NEXT_HOP</label>
+    <label class="choice">
+      <input type="checkbox" name="q467" value="C" />
+      <strong>C.</strong> Using mock exams and sample questions
+    </label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -177,21 +184,33 @@
   </div>
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B. AS_PATH";
+      var CORRECT = ["A", "B", "C"];
+      var CORRECT_MSG = "Correct. A, B, and C. Effective ENCOR prep aligns study to the official blueprint, reinforces skills with hands-on enterprise labs, and uses timed practice to gauge readiness and close knowledge gaps.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
+      function selectedValues() {
+        return []
+          .slice.call(document.querySelectorAll('input[name="q467"]:checked'))
+          .map(function (el) { return el.value; })
+          .sort();
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        return a.every(function (v, i) { return v === b[i]; });
+      }
+
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="bgp"]:checked');
+        var sel = selectedValues();
         answerBox.style.display = "block";
-        if (!sel) {
+        if (sel.length !== 3) {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select an answer.";
+          answerBox.textContent = "Choose exactly three answers.";
           return;
         }
-        if (sel.value === CORRECT) {
+        if (arraysEqual(sel, CORRECT)) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
@@ -201,8 +220,10 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="bgp"][value="' + CORRECT + '"]');
-        if (input) input.checked = true;
+        CORRECT.forEach(function (value) {
+          var input = document.querySelector('input[name="q467"][value="' + value + '"]');
+          if (input) input.checked = true;
+        });
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
         answerBox.textContent = CORRECT_MSG;

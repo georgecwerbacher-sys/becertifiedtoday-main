@@ -72,11 +72,15 @@ def parse_frontmatter(path: Path) -> dict:
     return parse_simple_yaml(text[3:end])
 
 
-def load_poll_sources(product: str | None = None) -> list[dict]:
-    if not COMPETITOR_SITES.is_dir():
+def load_poll_sources(
+    product: str | None = None,
+    sites_dir: Path | str | None = None,
+) -> list[dict]:
+    base = Path(sites_dir) if sites_dir else COMPETITOR_SITES
+    if not base.is_dir():
         return []
     sources: list[dict] = []
-    for path in sorted(COMPETITOR_SITES.glob("*.md")):
+    for path in sorted(base.glob("*.md")):
         meta = parse_frontmatter(path)
         if product and meta.get("product") != product:
             continue
@@ -343,10 +347,14 @@ def _decode_json_string(raw: str) -> str:
 
 
 def crucial_demo_url(sample_url: str) -> str:
-    code_m = re.search(r"/(?:ccna|exams/cisco/ccna)/(\d{3}-\d{3})", sample_url, re.I)
-    if not code_m:
-        code_m = re.search(r"/(\d{3}-\d{3})/", sample_url)
-    code = code_m.group(1) if code_m else "200-301"
+    slug_m = re.search(r"/(\d{3}-\d{3}-encor)/", sample_url, re.I)
+    if slug_m:
+        code = slug_m.group(1)
+    else:
+        code_m = re.search(r"/(?:ccna|exams/cisco/ccna)/(\d{3}-\d{3})", sample_url, re.I)
+        if not code_m:
+            code_m = re.search(r"/(\d{3}-\d{3})/", sample_url)
+        code = code_m.group(1) if code_m else "200-301"
     return f"https://crucialexams.com/study/tests/cisco/{code}/auto?DemoMode=True&ShowTest=True"
 
 
