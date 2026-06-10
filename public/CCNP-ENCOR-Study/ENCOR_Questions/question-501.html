@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 498 - AAA TACACS+ local fallback</title>
+  <title>Question 501 - VRF interface forwarding</title>
   <style>
     :root {
       color-scheme: light;
@@ -150,35 +150,36 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-497.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-500.html">Back</a>
       <a class="nav-link nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-499.html">Next</a>
+      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-502.html">Next</a>
       </div>
     </nav>
-    <h1>An engineer configures the following AAA and VTY settings on a Cisco IOS-XE router. What is the resulting login behavior on the VTY lines?</h1>
+    <h1>An engineer configures the following VRF commands on a Cisco IOS-XE router. What is the effect?</h1>
 
-    <pre class="exhibit-cli" aria-label="AAA and VTY configuration">aaa authentication login VTY-LIST group TACACS-SERVERS local
-line vty 0 4
- login authentication VTY-LIST</pre>
+    <pre class="exhibit-cli" aria-label="VRF configuration">ip vrf RED
+interface GigabitEthernet0/1
+ ip vrf forwarding RED
+ ip address 10.1.1.1 255.255.255.0</pre>
 
     <label class="choice">
-      <input type="radio" name="q498" value="A" />
-      <strong>A.</strong> TACACS+ servers are tried first, then local username database if all TACACS+ servers are unreachable
+      <input type="radio" name="q501" value="A" />
+      <strong>A.</strong> The interface is removed from the global routing table and placed into the RED VRF
     </label>
 
     <label class="choice">
-      <input type="radio" name="q498" value="B" />
-      <strong>B.</strong> Local users are tried first, then TACACS+
+      <input type="radio" name="q501" value="B" />
+      <strong>B.</strong> The interface is added to both the global table and the RED VRF
     </label>
 
     <label class="choice">
-      <input type="radio" name="q498" value="C" />
-      <strong>C.</strong> Only TACACS+ is used; local fallback is ignored
+      <input type="radio" name="q501" value="C" />
+      <strong>C.</strong> The IP address is translated by NAT
     </label>
 
     <label class="choice">
-      <input type="radio" name="q498" value="D" />
-      <strong>D.</strong> Authentication is disabled
+      <input type="radio" name="q501" value="D" />
+      <strong>D.</strong> The interface is shut down until VRF authentication completes
     </label>
 
     <div class="answer-footer">
@@ -206,13 +207,13 @@ line vty 0 4
   <script>
     (function () {
       var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A. AAA method lists are evaluated left to right. group TACACS-SERVERS is tried first; if every server in that group is unreachable, IOS-XE falls back to the local username database. Local is not tried first, and authentication is enabled on VTY 0\u20134 via login authentication VTY-LIST.";
+      var CORRECT_MSG = "Correct. A. ip vrf forwarding RED binds GigabitEthernet0/1 to the RED VRF routing instance, so its connected route and forwarding use the RED table instead of the global table. An interface belongs to one routing instance at a time; NAT and VRF authentication are unrelated.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="q498"]:checked');
+        var sel = document.querySelector('input[name="q501"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -229,7 +230,7 @@ line vty 0 4
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="q498"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="q501"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

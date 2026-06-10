@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 498 - AAA TACACS+ local fallback</title>
+  <title>Question 527 - HSRP version 2 command</title>
   <style>
     :root {
       color-scheme: light;
@@ -79,9 +79,6 @@
       line-height: 1.35;
       color: var(--bcc-outside-text);
     }
-    h1.choose-two-stem {
-      line-height: 1.5;
-    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -96,6 +93,12 @@
     .choice input {
       margin-right: 10px;
       transform: translateY(1px);
+    }
+    .choice-config {
+      display: block;
+      margin-top: 6px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.92em;
     }
     .answer {
       margin-top: 18px;
@@ -116,23 +119,6 @@
       border: 1px solid #8c3434;
       color: #fecaca;
     }
-    .exhibit-ref,
-    .exhibit-ref-spaced,
-    .exhibit-section-caption {
-      color: var(--bcc-outside-text);
-    }
-    pre.exhibit-cli {
-      margin: 0 0 16px;
-      padding: 12px 14px;
-      border-radius: 10px;
-      background: #0d1117;
-      color: #e6edf3;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: 0.95rem;
-      line-height: 1.45;
-      overflow-x: auto;
-      white-space: pre-wrap;
-    }
   </style>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNP-ENCOR-Study/ENCOR_Samples/encor-sample-touch.css" />
@@ -150,35 +136,35 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-497.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-526.html">Back</a>
       <a class="nav-link nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-499.html">Next</a>
+      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-528.html">Next</a>
       </div>
     </nav>
-    <h1>An engineer configures the following AAA and VTY settings on a Cisco IOS-XE router. What is the resulting login behavior on the VTY lines?</h1>
-
-    <pre class="exhibit-cli" aria-label="AAA and VTY configuration">aaa authentication login VTY-LIST group TACACS-SERVERS local
-line vty 0 4
- login authentication VTY-LIST</pre>
+    <h1>Which command on a Cisco IOS-XE router enables HSRP version 2 on an interface to support IPv6 and large group numbers?</h1>
 
     <label class="choice">
-      <input type="radio" name="q498" value="A" />
-      <strong>A.</strong> TACACS+ servers are tried first, then local username database if all TACACS+ servers are unreachable
+      <input type="radio" name="q527" value="A" />
+      <strong>A.</strong>
+      <span class="choice-config">standby version 2</span>
     </label>
 
     <label class="choice">
-      <input type="radio" name="q498" value="B" />
-      <strong>B.</strong> Local users are tried first, then TACACS+
+      <input type="radio" name="q527" value="B" />
+      <strong>B.</strong>
+      <span class="choice-config">HSRP version 2</span>
     </label>
 
     <label class="choice">
-      <input type="radio" name="q498" value="C" />
-      <strong>C.</strong> Only TACACS+ is used; local fallback is ignored
+      <input type="radio" name="q527" value="C" />
+      <strong>C.</strong>
+      <span class="choice-config">vrrp version 3</span>
     </label>
 
     <label class="choice">
-      <input type="radio" name="q498" value="D" />
-      <strong>D.</strong> Authentication is disabled
+      <input type="radio" name="q527" value="D" />
+      <strong>D.</strong>
+      <span class="choice-config">ip hsrp ipv6</span>
     </label>
 
     <div class="answer-footer">
@@ -206,13 +192,13 @@ line vty 0 4
   <script>
     (function () {
       var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A. AAA method lists are evaluated left to right. group TACACS-SERVERS is tried first; if every server in that group is unreachable, IOS-XE falls back to the local username database. Local is not tried first, and authentication is enabled on VTY 0\u20134 via login authentication VTY-LIST.";
+      var CORRECT_MSG = "Correct. A. standby version 2 under the interface enables HSRP version 2, which supports IPv6 FHRP and group numbers 0-4095. HSRP version 2 is not valid CLI syntax; vrrp version 3 is VRRP, not HSRP; ip hsrp ipv6 is not the IOS-XE command to set HSRP v2.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="q498"]:checked');
+        var sel = document.querySelector('input[name="q527"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -229,7 +215,7 @@ line vty 0 4
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="q498"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="q527"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
