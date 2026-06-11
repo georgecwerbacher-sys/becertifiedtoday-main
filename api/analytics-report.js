@@ -6,6 +6,7 @@
  */
 import crypto from "crypto";
 import { issueAnalyticsAdminToken, verifyAnalyticsAdminToken } from "../server-lib/analytics-admin-jwt.js";
+import { buildCampaignMarketingReport } from "../server-lib/campaign-marketing-report.js";
 import {
   analyticsApiReady,
   fetchAnalyticsSummary,
@@ -141,12 +142,14 @@ export default async function handler(req, res) {
   const client = getAnalyticsDataClient(env);
 
   try {
-    const [summary, topPages, dailyTrend, realtimeActiveUsers] = await Promise.all([
-      fetchAnalyticsSummary(client, env.propertyId, range),
-      fetchTopPages(client, env.propertyId, range, 20),
-      fetchDailyTrend(client, env.propertyId, range),
-      fetchRealtimeActiveUsers(client, env.propertyId),
-    ]);
+    const [summary, topPages, dailyTrend, realtimeActiveUsers, campaignMarketing] =
+      await Promise.all([
+        fetchAnalyticsSummary(client, env.propertyId, range),
+        fetchTopPages(client, env.propertyId, range, 20),
+        fetchDailyTrend(client, env.propertyId, range),
+        fetchRealtimeActiveUsers(client, env.propertyId),
+        buildCampaignMarketingReport(client, env.propertyId, range),
+      ]);
 
     return res.status(200).json({
       ok: true,
@@ -157,6 +160,13 @@ export default async function handler(req, res) {
       topPages,
       dailyTrend,
       realtimeActiveUsers,
+      campaignMarketing: {
+        ...campaignMarketing,
+        note:
+          "Sessions use GA4 sessionCampaignName (utm_campaign). begin_checkout counts are event totals in range. " +
+          "Google Ads click data is not pulled via API yet — use Ads UI for spend/impressions. " +
+          "Setup docs: scripts/*-google-ads.txt in the repo.",
+      },
       fetchedAt: new Date().toISOString(),
     });
   } catch (err) {

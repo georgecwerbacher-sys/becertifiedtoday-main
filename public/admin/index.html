@@ -1185,14 +1185,12 @@
           postJson("/api/portal-users-report", {}),
           postJson("/api/sample-lead", { action: "report" }),
           postJson("/api/sample-lead", { action: "questions_report" }),
-          postJson("/api/campaign-marketing-report", { range: rangeEl.value }),
         ])
           .then(function (results) {
             var ga = results[0];
             var portal = results[1];
             var sampleLead = results[2];
             var visitorQuestions = results[3];
-            var campaigns = results[4];
 
             if (!ga.ok) {
               if (ga.body && ga.body.error === "Unauthorized") {
@@ -1242,14 +1240,13 @@
               renderVisitorQuestionsReport(visitorQuestions.body);
             }
 
-            if (!campaigns.ok) {
-              clearCampaignMarketing();
-              var cm = (campaigns.body && campaigns.body.error) || "Campaign report failed";
-              if (campaigns.body && campaigns.body.hint) cm += " — " + campaigns.body.hint;
-              document.getElementById("campaignMarketingStatus").textContent = cm;
-              document.getElementById("campaignMarketingStatus").className = "status err";
+            if (ga.body && ga.body.campaignMarketing) {
+              renderCampaignMarketing(ga.body.campaignMarketing);
             } else {
-              renderCampaignMarketing(campaigns.body);
+              clearCampaignMarketing();
+              document.getElementById("campaignMarketingStatus").textContent =
+                "Campaign marketing data not included in analytics report.";
+              document.getElementById("campaignMarketingStatus").className = "status err";
             }
           })
           .catch(function (err) {
