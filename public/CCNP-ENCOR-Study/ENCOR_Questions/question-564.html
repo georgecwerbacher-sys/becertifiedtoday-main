@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 562 - HTTP 201 Created</title>
+  <title>Question 564 - RESTCONF PATCH partial update</title>
   <style>
     :root {
       color-scheme: light;
@@ -130,31 +130,31 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-561.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-563.html">Back</a>
       <a class="nav-link nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-563.html">Next</a>
+      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-565.html">Next</a>
       </div>
     </nav>
-    <h1>Which HTTP response code indicates a REST request was successful and a new resource was created?</h1>
+    <h1>Which HTTP method does RESTCONF use to PARTIALLY update a resource (modify selected fields without overwriting the whole object)?</h1>
 
     <label class="choice">
-      <input type="radio" name="q562" value="A" />
-      <strong>A.</strong> 200 OK
+      <input type="radio" name="q564" value="A" />
+      <strong>A.</strong> GET
     </label>
 
     <label class="choice">
-      <input type="radio" name="q562" value="B" />
-      <strong>B.</strong> 201 Created
+      <input type="radio" name="q564" value="B" />
+      <strong>B.</strong> POST
     </label>
 
     <label class="choice">
-      <input type="radio" name="q562" value="C" />
-      <strong>C.</strong> 204 No Content
+      <input type="radio" name="q564" value="C" />
+      <strong>C.</strong> PUT
     </label>
 
     <label class="choice">
-      <input type="radio" name="q562" value="D" />
-      <strong>D.</strong> 401 Unauthorized
+      <input type="radio" name="q564" value="D" />
+      <strong>D.</strong> PATCH
     </label>
 
     <div class="answer-footer">
@@ -181,14 +181,14 @@
   </div>
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B. HTTP 201 Created means the request succeeded and a new resource was created (typical POST response). 200 OK is general success; 204 No Content is success with no body; 401 Unauthorized indicates failed authentication.";
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D. RESTCONF uses PATCH to apply a partial update—only the fields in the request body are changed. PUT replaces the entire target resource. GET retrieves data; POST creates resources or invokes operations.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="q562"]:checked');
+        var sel = document.querySelector('input[name="q564"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -205,7 +205,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="q562"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="q564"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

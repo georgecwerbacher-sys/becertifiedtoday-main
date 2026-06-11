@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 562 - HTTP 201 Created</title>
+  <title>Question 582 - Catalyst Center NETCONF RESTCONF YANG</title>
   <style>
     :root {
       color-scheme: light;
@@ -130,31 +130,31 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-561.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-581.html">Back</a>
       <a class="nav-link nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-563.html">Next</a>
+      <span class="nav-link nav-next nav-link--disabled" aria-hidden="true">Next</span>
       </div>
     </nav>
-    <h1>Which HTTP response code indicates a REST request was successful and a new resource was created?</h1>
+    <h1>Which statement BEST summarizes the relationship among Cisco Catalyst Center, NETCONF/RESTCONF, and YANG?</h1>
 
     <label class="choice">
-      <input type="radio" name="q562" value="A" />
-      <strong>A.</strong> 200 OK
+      <input type="radio" name="q582" value="A" />
+      <strong>A.</strong> NETCONF/RESTCONF transports YANG-modeled config and state, while Catalyst Center wraps these and adds intent-based REST APIs and AI workflows for Day-N operations
     </label>
 
     <label class="choice">
-      <input type="radio" name="q562" value="B" />
-      <strong>B.</strong> 201 Created
+      <input type="radio" name="q582" value="B" />
+      <strong>B.</strong> Catalyst Center replaces YANG with proprietary CSV files
     </label>
 
     <label class="choice">
-      <input type="radio" name="q562" value="C" />
-      <strong>C.</strong> 204 No Content
+      <input type="radio" name="q582" value="C" />
+      <strong>C.</strong> YANG runs over SNMP only
     </label>
 
     <label class="choice">
-      <input type="radio" name="q562" value="D" />
-      <strong>D.</strong> 401 Unauthorized
+      <input type="radio" name="q582" value="D" />
+      <strong>D.</strong> NETCONF and RESTCONF cannot coexist on the same device
     </label>
 
     <div class="answer-footer">
@@ -181,14 +181,14 @@
   </div>
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B. HTTP 201 Created means the request succeeded and a new resource was created (typical POST response). 200 OK is general success; 204 No Content is success with no body; 401 Unauthorized indicates failed authentication.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A. YANG defines the structured data model; NETCONF and RESTCONF are standard southbound transports that read and write that modeled configuration and operational state on IOS-XE devices. Catalyst Center sits above the network as a controller—it can orchestrate device programmability while exposing higher-level intent-based REST APIs, templates, and AI/Assurance workflows for ongoing Day-N operations. YANG is not SNMP-only, and IOS-XE can expose both NETCONF and RESTCONF on the same platform.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="q562"]:checked');
+        var sel = document.querySelector('input[name="q582"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -205,7 +205,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="q562"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="q582"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

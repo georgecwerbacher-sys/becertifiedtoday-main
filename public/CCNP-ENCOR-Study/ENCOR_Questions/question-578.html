@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 562 - HTTP 201 Created</title>
+  <title>Question 578 - EtherChannel src-dst-ip load balance</title>
   <style>
     :root {
       color-scheme: light;
@@ -130,31 +130,31 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-561.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-577.html">Back</a>
       <a class="nav-link nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-563.html">Next</a>
+      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-579.html">Next</a>
       </div>
     </nav>
-    <h1>Which HTTP response code indicates a REST request was successful and a new resource was created?</h1>
+    <h1>Which two key fields uniquely identify an EtherChannel hashing decision when set to <code>port-channel load-balance src-dst-ip</code>? (Best answer.)</h1>
 
     <label class="choice">
-      <input type="radio" name="q562" value="A" />
-      <strong>A.</strong> 200 OK
+      <input type="radio" name="q578" value="A" />
+      <strong>A.</strong> Source IP and destination IP of the packet
     </label>
 
     <label class="choice">
-      <input type="radio" name="q562" value="B" />
-      <strong>B.</strong> 201 Created
+      <input type="radio" name="q578" value="B" />
+      <strong>B.</strong> Source MAC and VLAN ID
     </label>
 
     <label class="choice">
-      <input type="radio" name="q562" value="C" />
-      <strong>C.</strong> 204 No Content
+      <input type="radio" name="q578" value="C" />
+      <strong>C.</strong> Source TCP/UDP port only
     </label>
 
     <label class="choice">
-      <input type="radio" name="q562" value="D" />
-      <strong>D.</strong> 401 Unauthorized
+      <input type="radio" name="q578" value="D" />
+      <strong>D.</strong> Random number generator output
     </label>
 
     <div class="answer-footer">
@@ -181,14 +181,14 @@
   </div>
   <script>
     (function () {
-      var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B. HTTP 201 Created means the request succeeded and a new resource was created (typical POST response). 200 OK is general success; 204 No Content is success with no body; 401 Unauthorized indicates failed authentication.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A. With port-channel load-balance src-dst-ip, the switch hashes on the packet's source and destination IP addresses to select a member link in the Port-channel. MAC/VLAN-based methods use different load-balance keywords; src-dst-ip does not hash on L4 ports alone, and the algorithm is deterministic on header fields—not a standalone random pick.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="q562"]:checked');
+        var sel = document.querySelector('input[name="q578"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -205,7 +205,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="q562"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="q578"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
