@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 530 - MSDP anycast RP</title>
+  <title>Question 551 - Extended ACL HTTPS host</title>
   <style>
     :root {
       color-scheme: light;
@@ -79,6 +79,16 @@
       line-height: 1.35;
       color: var(--bcc-outside-text);
     }
+    .acl-exhibit {
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #1a1a1a;
+      color: #e6edf3;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.92em;
+      line-height: 1.55;
+    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -130,31 +140,34 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-529.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-550.html">Back</a>
       <a class="nav-link nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-531.html">Next</a>
+      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-552.html">Next</a>
       </div>
     </nav>
-    <h1>Which mechanism allows multiple routers to act as anycast RPs for the same group range and synchronize active sources between them?</h1>
+    <h1>An ACL is written as shown below. What does it accomplish?</h1>
+    <pre class="acl-exhibit" aria-label="Extended ACL entries">permit tcp any host 10.1.1.10 eq 443
+deny ip any host 10.1.1.10
+permit ip any any</pre>
 
     <label class="choice">
-      <input type="radio" name="q530" value="A" />
-      <strong>A.</strong> BSR alone
+      <input type="radio" name="q551" value="A" />
+      <strong>A.</strong> Allows only HTTPS to host 10.1.1.10 from any source, denies all other IP to that host, permits everything else
     </label>
 
     <label class="choice">
-      <input type="radio" name="q530" value="B" />
-      <strong>B.</strong> Auto-RP alone
+      <input type="radio" name="q551" value="B" />
+      <strong>B.</strong> Blocks all traffic
     </label>
 
     <label class="choice">
-      <input type="radio" name="q530" value="C" />
-      <strong>C.</strong> MSDP (Multicast Source Discovery Protocol)
+      <input type="radio" name="q551" value="C" />
+      <strong>C.</strong> Allows all traffic to host 10.1.1.10 because the last line permits any
     </label>
 
     <label class="choice">
-      <input type="radio" name="q530" value="D" />
-      <strong>D.</strong> PIM Snooping
+      <input type="radio" name="q551" value="D" />
+      <strong>D.</strong> Allows only ICMP to host 10.1.1.10
     </label>
 
     <div class="answer-footer">
@@ -181,14 +194,14 @@
   </div>
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C. MSDP peers exchange Source-Active (SA) messages so multiple anycast RPs learn the same active multicast sources. BSR and Auto-RP advertise RP-to-group mappings but do not synchronize source state between RPs; PIM Snooping is a Layer 2 switch feature for IGMP/PIM control.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A. ACLs are evaluated top to bottom; first match wins. TCP to 10.1.1.10 port 443 is permitted; any other IP to 10.1.1.10 hits the deny; all other destinations are permitted by the final line. The last permit does not override earlier denies for traffic to 10.1.1.10.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="q530"]:checked');
+        var sel = document.querySelector('input[name="q551"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -205,7 +218,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="q530"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="q551"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

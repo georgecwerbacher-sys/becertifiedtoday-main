@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 530 - MSDP anycast RP</title>
+  <title>Question 544 - Syslog severity level 5</title>
   <style>
     :root {
       color-scheme: light;
@@ -79,6 +79,10 @@
       line-height: 1.35;
       color: var(--bcc-outside-text);
     }
+    h1 code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.95em;
+    }
     .choice {
       display: block;
       margin: 10px 0;
@@ -130,31 +134,31 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-529.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-543.html">Back</a>
       <a class="nav-link nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-531.html">Next</a>
+      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-545.html">Next</a>
       </div>
     </nav>
-    <h1>Which mechanism allows multiple routers to act as anycast RPs for the same group range and synchronize active sources between them?</h1>
+    <h1>An engineer captures a syslog message: <code>%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/1, changed state to down</code>. What is the severity level (number) shown by <code>5</code>?</h1>
 
     <label class="choice">
-      <input type="radio" name="q530" value="A" />
-      <strong>A.</strong> BSR alone
+      <input type="radio" name="q544" value="A" />
+      <strong>A.</strong> 0 = emergencies
     </label>
 
     <label class="choice">
-      <input type="radio" name="q530" value="B" />
-      <strong>B.</strong> Auto-RP alone
+      <input type="radio" name="q544" value="B" />
+      <strong>B.</strong> 5 = notification
     </label>
 
     <label class="choice">
-      <input type="radio" name="q530" value="C" />
-      <strong>C.</strong> MSDP (Multicast Source Discovery Protocol)
+      <input type="radio" name="q544" value="C" />
+      <strong>C.</strong> 7 = debugging
     </label>
 
     <label class="choice">
-      <input type="radio" name="q530" value="D" />
-      <strong>D.</strong> PIM Snooping
+      <input type="radio" name="q544" value="D" />
+      <strong>D.</strong> 3 = error
     </label>
 
     <div class="answer-footer">
@@ -181,14 +185,14 @@
   </div>
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C. MSDP peers exchange Source-Active (SA) messages so multiple anycast RPs learn the same active multicast sources. BSR and Auto-RP advertise RP-to-group mappings but do not synchronize source state between RPs; PIM Snooping is a Layer 2 switch feature for IGMP/PIM control.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B. In Cisco syslog, severity 5 is notification (normal but significant condition). The scale runs 0 emergencies through 7 debugging; 3 is error and 7 is debugging, not what the digit 5 represents in this message.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="q530"]:checked');
+        var sel = document.querySelector('input[name="q544"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -205,7 +209,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="q530"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="q544"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

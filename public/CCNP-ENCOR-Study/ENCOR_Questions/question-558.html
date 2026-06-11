@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 530 - MSDP anycast RP</title>
+  <title>Question 558 - Python requests REST API</title>
   <style>
     :root {
       color-scheme: light;
@@ -130,31 +130,31 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-529.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-557.html">Back</a>
       <a class="nav-link nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-531.html">Next</a>
+      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-559.html">Next</a>
       </div>
     </nav>
-    <h1>Which mechanism allows multiple routers to act as anycast RPs for the same group range and synchronize active sources between them?</h1>
+    <h1>Which Python library is most commonly used to make REST API calls to Cisco Catalyst Center or RESTCONF endpoints?</h1>
 
     <label class="choice">
-      <input type="radio" name="q530" value="A" />
-      <strong>A.</strong> BSR alone
+      <input type="radio" name="q558" value="A" />
+      <strong>A.</strong> requests
     </label>
 
     <label class="choice">
-      <input type="radio" name="q530" value="B" />
-      <strong>B.</strong> Auto-RP alone
+      <input type="radio" name="q558" value="B" />
+      <strong>B.</strong> paramiko
     </label>
 
     <label class="choice">
-      <input type="radio" name="q530" value="C" />
-      <strong>C.</strong> MSDP (Multicast Source Discovery Protocol)
+      <input type="radio" name="q558" value="C" />
+      <strong>C.</strong> scapy
     </label>
 
     <label class="choice">
-      <input type="radio" name="q530" value="D" />
-      <strong>D.</strong> PIM Snooping
+      <input type="radio" name="q558" value="D" />
+      <strong>D.</strong> matplotlib
     </label>
 
     <div class="answer-footer">
@@ -181,14 +181,14 @@
   </div>
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C. MSDP peers exchange Source-Active (SA) messages so multiple anycast RPs learn the same active multicast sources. BSR and Auto-RP advertise RP-to-group mappings but do not synchronize source state between RPs; PIM Snooping is a Layer 2 switch feature for IGMP/PIM control.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A. The requests library is the standard Python HTTP client for REST APIs such as Catalyst Center northbound APIs and RESTCONF over HTTPS. paramiko is for SSH; scapy builds and parses packets; matplotlib plots data.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="q530"]:checked');
+        var sel = document.querySelector('input[name="q558"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -205,7 +205,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="q530"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="q558"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

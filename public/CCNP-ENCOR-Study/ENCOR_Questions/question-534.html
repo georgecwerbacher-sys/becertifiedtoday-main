@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 530 - MSDP anycast RP</title>
+  <title>Question 534 - OSPF cost 1 Gbps interface</title>
   <style>
     :root {
       color-scheme: light;
@@ -130,31 +130,31 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-529.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-533.html">Back</a>
       <a class="nav-link nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-531.html">Next</a>
+      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-535.html">Next</a>
       </div>
     </nav>
-    <h1>Which mechanism allows multiple routers to act as anycast RPs for the same group range and synchronize active sources between them?</h1>
+    <h1>Which OSPF metric (cost) is calculated by IOS for a default 1 Gbps interface using the standard reference bandwidth of 100 Mbps?</h1>
 
     <label class="choice">
-      <input type="radio" name="q530" value="A" />
-      <strong>A.</strong> BSR alone
+      <input type="radio" name="q534" value="A" />
+      <strong>A.</strong> 1
     </label>
 
     <label class="choice">
-      <input type="radio" name="q530" value="B" />
-      <strong>B.</strong> Auto-RP alone
+      <input type="radio" name="q534" value="B" />
+      <strong>B.</strong> 10
     </label>
 
     <label class="choice">
-      <input type="radio" name="q530" value="C" />
-      <strong>C.</strong> MSDP (Multicast Source Discovery Protocol)
+      <input type="radio" name="q534" value="C" />
+      <strong>C.</strong> 100
     </label>
 
     <label class="choice">
-      <input type="radio" name="q530" value="D" />
-      <strong>D.</strong> PIM Snooping
+      <input type="radio" name="q534" value="D" />
+      <strong>D.</strong> 1000
     </label>
 
     <div class="answer-footer">
@@ -181,14 +181,14 @@
   </div>
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C. MSDP peers exchange Source-Active (SA) messages so multiple anycast RPs learn the same active multicast sources. BSR and Auto-RP advertise RP-to-group mappings but do not synchronize source state between RPs; PIM Snooping is a Layer 2 switch feature for IGMP/PIM control.";
+      var CORRECT = "A";
+      var CORRECT_MSG = "Correct. A. IOS computes OSPF cost as reference bandwidth divided by interface bandwidth (default reference 100 Mbps). For 1 Gbps, 100/1000 = 0.1, which is floored to the minimum cost of 1. Cost 10 would be a 10 Mbps link; 100 is 1 Mbps; 1000 is not produced by this formula.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="q530"]:checked');
+        var sel = document.querySelector('input[name="q534"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -205,7 +205,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="q530"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="q534"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

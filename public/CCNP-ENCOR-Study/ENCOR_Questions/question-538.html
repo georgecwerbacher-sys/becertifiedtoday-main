@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question 530 - MSDP anycast RP</title>
+  <title>Question 538 - Named extended ACL inbound</title>
   <style>
     :root {
       color-scheme: light;
@@ -94,6 +94,13 @@
       margin-right: 10px;
       transform: translateY(1px);
     }
+    .choice-config {
+      display: block;
+      margin-top: 6px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.92em;
+      line-height: 1.5;
+    }
     .answer {
       margin-top: 18px;
       padding: 14px;
@@ -130,31 +137,44 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-529.html">Back</a>
+      <a class="nav-link nav-prev" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-537.html">Back</a>
       <a class="nav-link nav-home" href="/CCNP-ENCOR-Study/ENCOR_Training_Portal.html">Home</a>
-      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-531.html">Next</a>
+      <a class="nav-link nav-next" href="/CCNP-ENCOR-Study/ENCOR_Questions/question-539.html">Next</a>
       </div>
     </nav>
-    <h1>Which mechanism allows multiple routers to act as anycast RPs for the same group range and synchronize active sources between them?</h1>
+    <h1>Which command sequence places a named extended ACL on a Cisco IOS-XE router and applies it inbound on GigabitEthernet0/1?</h1>
 
     <label class="choice">
-      <input type="radio" name="q530" value="A" />
-      <strong>A.</strong> BSR alone
+      <input type="radio" name="q538" value="A" />
+      <strong>A.</strong>
+      <span class="choice-config">ip access-list standard BLOCK</span>
+      <span class="choice-config">deny 10.0.0.0 0.255.255.255</span>
+      <span class="choice-config">interface Gi0/1</span>
+      <span class="choice-config">ip access-group BLOCK in</span>
     </label>
 
     <label class="choice">
-      <input type="radio" name="q530" value="B" />
-      <strong>B.</strong> Auto-RP alone
+      <input type="radio" name="q538" value="B" />
+      <strong>B.</strong>
+      <span class="choice-config">ip access-list extended BLOCK</span>
+      <span class="choice-config">deny tcp any any eq 23</span>
+      <span class="choice-config">permit ip any any</span>
+      <span class="choice-config">interface Gi0/1</span>
+      <span class="choice-config">ip access-group BLOCK in</span>
     </label>
 
     <label class="choice">
-      <input type="radio" name="q530" value="C" />
-      <strong>C.</strong> MSDP (Multicast Source Discovery Protocol)
+      <input type="radio" name="q538" value="C" />
+      <strong>C.</strong>
+      <span class="choice-config">access-list 1 deny 10.0.0.0 0.255.255.255</span>
+      <span class="choice-config">interface Gi0/1</span>
+      <span class="choice-config">ip access-list BLOCK out</span>
     </label>
 
     <label class="choice">
-      <input type="radio" name="q530" value="D" />
-      <strong>D.</strong> PIM Snooping
+      <input type="radio" name="q538" value="D" />
+      <strong>D.</strong>
+      <span class="choice-config">ip access-group BLOCK any any</span>
     </label>
 
     <div class="answer-footer">
@@ -181,14 +201,14 @@
   </div>
   <script>
     (function () {
-      var CORRECT = "C";
-      var CORRECT_MSG = "Correct. C. MSDP peers exchange Source-Active (SA) messages so multiple anycast RPs learn the same active multicast sources. BSR and Auto-RP advertise RP-to-group mappings but do not synchronize source state between RPs; PIM Snooping is a Layer 2 switch feature for IGMP/PIM control.";
+      var CORRECT = "B";
+      var CORRECT_MSG = "Correct. B. A named extended ACL is created with ip access-list extended <name>, ACEs are added in ACL configuration mode, then the ACL is applied on the interface with ip access-group <name> in. Option A uses a standard ACL; C uses a numbered standard ACL and invalid syntax; D is not valid interface application syntax.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="q530"]:checked');
+        var sel = document.querySelector('input[name="q538"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -205,7 +225,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="q530"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="q538"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
