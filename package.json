@@ -4,9 +4,11 @@
   "type": "module",
   "scripts": {
     "dev": "npx --yes vercel dev",
-    "serve": "python3 scripts/sync-public-encor-assets.py && npx --yes serve public -l 3000 --no-port-switching",
+    "serve": "python3 scripts/sync-public-encor-assets.py && python3 scripts/sync-lab-build-preview.py && npx --yes serve public -l 3000 --no-port-switching",
+    "sync:lab-build": "python3 scripts/sync-lab-build-preview.py",
     "sync:encor-assets": "python3 scripts/sync-public-encor-assets.py",
     "sync:sitemap": "python3 scripts/sync-public-crawl-access.py",
+    "lab:build-wizard": "python3 scripts/cli_lab_build_wizard.py",
     "lint:question-urls": "python3 scripts/lint-practice-question-urls.py",
     "lint:ccna-urls": "python3 scripts/lint-practice-question-urls.py",
     "marketing:weekly-report": "node scripts/marketing-weekly-report.mjs",

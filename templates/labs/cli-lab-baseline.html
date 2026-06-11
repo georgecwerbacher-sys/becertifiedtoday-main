@@ -1,16 +1,13 @@
 <!doctype html>
 <!--
-  CLI lab baseline — patterns aligned with public/CCNA-Study/CCNA_labs/cli-lab-ip-services-sim-v2.html (multi-device,
-  tasks panel, spoiler terminal blocks, full IOS command forms). ENCOR reference:
-  public/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html.
+  CLI lab baseline — LEGACY hand-rolled submit handlers (~1800 lines).
 
-  Includes:
-  - Switch 1 (SW1): LAB_STEPS[] { mode, test(raw) }; mode drives prompt via promptForMode(); normalize() accepts common abbreviations
-  - Switch 2 (SW2): second IOS CLI — read-only exhibit + optional mode practice (same prompt helpers as SW1-style IOS)
-  - PC1 / PC2: one modal; device picker sets prompt (PC1> / PC2>); extend submitPc() for ping, ipconfig, etc.
-  - Device picker (SW1 / SW2 / PC1 / PC2), Helper / Spoiler modals, tasks-blue-box, draggable modals, command history
+  For new labs prefer: templates/lab-build/cli-lab-realistic.html
+  (uses /js/cli-lab-engine.js — boot banner, explore nav, graded steps, ~550 lines)
 
-  For a fifth IOS CLI (e.g. R3), copy the SW2 modal + submit/reset/open pattern from cli-lab-ip-services-sim-v2.html.
+  Reference labs:
+  - public/CCNA-Study/CCNA_labs/cli-lab-ip-services-sim-v2.html (multi-device)
+  - public/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/cli-lab-trunk-udld-lacp.html (phased ENCOR)
 -->
 <html lang="en">
 <head>

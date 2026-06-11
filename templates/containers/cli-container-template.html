@@ -1,63 +1,26 @@
 <!--
-  Reusable CLI container template for lab pages.
-  DOM: overlay → dialog → header (title + close) → body → .terminal → #swScrollback + .input-row (#swPrompt + #swCmdline).
-  Optional: add a .cli-modal-footer (e.g. Reset lab) like cli-lab-baseline / R1-only labs.
+  Reusable CLI container markup for lab pages.
 
-  Single graded device: keep this SW1 block only. Dual switch (Sw1 + Sw2): add the optional SW2 block below (same shape,
-  sw2* ids) and mirror submitSw() as submitSw2() with lab-specific SWITCH2_SHOW_RUNNING_SNAPSHOT, stepIndexSw2,
-  appendSw2, prompt overrides, and nvram flags. Always call expandInterfaceEcho(trimmed) in both submitters so Enter
-  does not throw (same helper as this template).
+  Preferred stack (templates/lab-build/cli-lab-realistic.html):
+    /css/cli-lab-container.css
+    /js/cli-lab-container.js
+    /js/cli-ios-mode.js
+    /js/cli-lab-engine.js
 
-  submitSw() IOS-like prompt navigation:
-  - exit from config -> exec
-  - end -> exec
-  - configure terminal from exec override -> config
+  Lab author workflow:
+  1. Copy templates/lab-build/cli-lab-realistic.html → public/.../cli-lab-*.html
+  2. Edit LAB CONFIG (steps, show running-config snapshots, PC handlers)
+  3. Replace topology image, tasks, sim-nav links
 
-  Shared IOS explore navigation (all ENCOR/CCNA CLI modals):
-  - Load in <head> before the inline lab script:
-      <script src="/js/cli-lab-container.js"></script>
-      <script src="/js/cli-ios-mode.js"></script>
-  - Per device: const r10ExploreNav = cliLabContainer.createExploreNav("R10");
-  - Prompt display: promptEl.textContent = r10ExploreNav.promptWith(labPromptFn());
-  - Before rejecting an unsupported command in every submit handler, call explore first:
-      if (r10ExploreNav.trySubmit(cmdR10.value, {
-        getLabPrompt: () => r10ExploreNav.promptWith(promptForMode("R10", modeR10)),
-        scrollEl: scrollR10,
-        appendLine: appendLine,
-        cmdInput: cmdR10,
-        normalize: normalize,
-        onExploreChange: setPrompts,
-      })) return;
-  - reset(): r10ExploreNav.reset() for each device explore helper.
-  - Handles conf t, interface e0/x, interface loopback N, exit, end without lab grading.
-  - Optional matchesLabStep: defer explore when the current lab step accepts the command.
-  - Optional alreadyEchoed: true when submit() echoed the line before calling trySubmit.
+  Legacy hand-rolled submit(): templates/labs/cli-lab-baseline.html
 
-  Labs with a completion gate (e.g. PC addressing) also call tryCompleteBaselineLab() when steps finish — see
-  templates/labs/cli-lab-baseline.html (sync block). The fragment below omits that if you paste into a minimal page.
+  Engine API (cli-lab-engine.js):
+  - createIosDevice({ host, deviceType, elements, steps, showRunningConfig, … })
+  - createPcSession({ host, elements, handlers })
+  - wireFloatingModal / openModal / closeModal
+  - normalizeIosCmd, matchShowRun, MSG.*
 
-  Local command history (ArrowUp / ArrowDown): register bindLocalHistory(swCmdline) — and bindLocalHistory(sw2Cmdline)
-  when using SW2 — before keydown Enter→submitSw / submitSw2 so history runs before submit clears the input.
-  Wire-up: templates/labs/cli-lab-baseline.html.
-
-  Draggable dialog + stacking: if pointerdown on the dialog calls bumpOverlayZ (raise modal), skip when the event target
-  is inside interactive controls (button, input, textarea, select, label, a[href]); otherwise z-index can reorder mid-tap
-  and drop clicks (Run, Enter). Example: public/CCNA-Study/CCNA_labs/cli-lab-trunk_lacp.html wireFloatingModal.
-
-  Unsupported IOS commands (defined in /js/cli-lab-container.js — do not hardcode strings):
-  - Generic: appendSw("line-bad", cliLabContainer.INVALID_INPUT_MSG);
-  - With digit hint: appendSw("line-bad", invalidInputMsgForNormalizedCmd(u));
-  - Wrong value, right shape: appendSw("line-sys", cliLabContainer.CLI_VERIFY_INSTRUCTIONS_MSG);
-  Generic invalid IOS commands that include digits (wrong VLAN, interface, etc.): use invalidInputMsgForNormalizedCmd(u)
-  instead of a bare cliLabContainer.INVALID_INPUT_MSG so learners see the Tasks/Verification hint (aligned with cli-lab-baseline / named-acl lab).
-
-  Wrong number / wrong token (tester uses plausible syntax but not the lab answer):
-  - LAB_STEPS still uses exact tests (only the correct value advances).
-  - Before if (LAB_STEPS[stepIndex].test(line)), add branches: for the current stepIndex, if normalize(line)
-    matches the *shape* of the command (e.g. /^router ospf \d+$/, /^router-id \S+$/, /^ip ospf (\d+) area 0$/)
-    but !== the required canonical string, append appendSw("line-sys", LAB_VERIFY_INSTRUCTIONS_MSG); return;
-  - Use one shared message: cliLabContainer.CLI_VERIFY_INSTRUCTIONS_MSG
-  - Full worked example: public/CCNA-Study/CCNA_labs/cli-lab-ospf_config_sim_v3.html (submitSw2, OSPF_LAB_VERIFY_INSTRUCTIONS_MSG).
+  DOM shape: overlay → dialog → header → body → .terminal → .scrollback-area + .input-row
 -->
 <div id="swCliOverlay" class="cli-modal-overlay" aria-hidden="true">
   <div
@@ -69,8 +32,8 @@
     tabindex="-1"
   >
     <header class="cli-modal-header">
-      <h2 id="swCliTitle">SW1 - CLI</h2>
-      <button type="button" class="cli-modal-close" id="swCliClose" aria-label="Close CLI window">x</button>
+      <h2 id="swCliTitle">SW1 — CLI</h2>
+      <button type="button" class="cli-modal-close" id="swCliClose" aria-label="Close CLI window">×</button>
     </header>
     <div class="cli-modal-body">
       <div class="terminal" id="swTerminal" aria-label="Simulated SW1 CLI">
@@ -89,10 +52,15 @@
         </div>
       </div>
     </div>
+    <footer class="cli-modal-footer">
+      <p class="cli-hint" style="margin:0;font-size:0.82rem;color:#9fb0cc;">
+        Wire with <code>cliLabEngine.createIosDevice()</code> — see templates/lab-build/cli-lab-realistic.html
+      </p>
+    </footer>
   </div>
 </div>
 
-<!-- Optional second CLI (SW2 / R2 / peer device): same overlay → dialog → .terminal shape as SW1; wire submitSw2 + bindLocalHistory(sw2Cmdline). -->
+<!-- Optional second IOS device (R1, SW2, …): duplicate block with unique ids; second createIosDevice(). -->
 <div id="sw2CliOverlay" class="cli-modal-overlay" aria-hidden="true">
   <div
     id="sw2CliDialog"
@@ -103,14 +71,14 @@
     tabindex="-1"
   >
     <header class="cli-modal-header">
-      <h2 id="sw2CliTitle">SW2 — CLI</h2>
-      <button type="button" class="cli-modal-close" id="sw2CliClose" aria-label="Close SW2 CLI window">×</button>
+      <h2 id="sw2CliTitle">R1 — CLI</h2>
+      <button type="button" class="cli-modal-close" id="sw2CliClose" aria-label="Close">×</button>
     </header>
     <div class="cli-modal-body">
-      <div class="terminal" id="sw2Terminal" aria-label="Simulated SW2 CLI">
+      <div class="terminal" id="sw2Terminal" aria-label="Simulated R1 CLI">
         <div id="sw2Scrollback" class="scrollback-area"></div>
         <div class="input-row">
-          <span id="sw2Prompt" class="prompt-el">SW2#</span>
+          <span id="sw2Prompt" class="prompt-el">R1#</span>
           <input
             id="sw2Cmdline"
             class="cmdline-input"
@@ -118,161 +86,10 @@
             spellcheck="false"
             autocomplete="off"
             autocapitalize="none"
-            aria-label="SW2 command line"
+            aria-label="R1 command line"
           />
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<!-- Load before inline lab script: unsupported-command text + expandInterfaceEcho + bindLocalHistory -->
-<script src="/js/cli-lab-container.js"></script>
-
-<script>
-  // expandInterfaceEcho, invalidInputMsgForNormalizedCmd, cliLabContainer.* — from cli-lab-container.js above.
-
-  function isModeNavigationCommand(normalizedCmd) {
-    return (
-      normalizedCmd === "configure terminal" ||
-      normalizedCmd === "end" ||
-      normalizedCmd === "exit" ||
-      normalizedCmd.indexOf("interface ") === 0
-    );
-  }
-
-  function expandInterfaceEcho(raw) {
-    var s = String(raw || "").trim();
-    var m = /^(interface|int)\s+e(\d+)\/(\d+)$/i.exec(s);
-    if (m) {
-      return "interface Ethernet" + m[2] + "/" + m[3];
-    }
-    return s;
-  }
-
-  // Drop-in block for submitSw() in lab pages.
-  function submitSw() {
-    var promptText = swPrompt.textContent;
-    var line = swCmdline.value;
-    var trimmed = String(line || "").trim();
-    var normalized = normalize(line);
-    var hideInputLine = isModeNavigationCommand(normalized);
-    var echoLine = expandInterfaceEcho(trimmed);
-    if (!hideInputLine || normalized.indexOf("interface ") === 0) {
-      appendSw("line-user", promptText + " " + echoLine);
-    }
-    swCmdline.value = "";
-    if (!trimmed) return;
-
-    if (normalize(line) === "?") {
-      appendSw("line-sys", HELP_DISABLED_MSG);
-      return;
-    }
-
-    if (matchShowRun(line)) {
-      appendSw("line-showrun", SWITCH_SHOW_RUNNING_SNAPSHOT);
-      return;
-    }
-
-    if (swInEnableMode() && matchShowVersion(line)) {
-      appendSw("line-sys", SHOW_VERSION_MSG);
-      return;
-    }
-
-    if (matchCopyRunStart(line)) {
-      if (!swInEnableMode()) {
-        appendSw("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
-        return;
-      }
-      if (stepIndex < LAB_STEPS.length) {
-        appendSw("line-sys", COPY_RUN_START_AFTER_STEPS_MSG);
-        return;
-      }
-      appendSw("line-sys", COPY_RUN_START_OK_MSG);
-      nvramSavedSw = true;
-      tryCompleteBaselineLab(function (cls, text) {
-        appendSw(cls, text);
-      });
-      return;
-    }
-
-    // IOS-like prompt navigation even when not matching the next lab step.
-    var u = normalized;
-    if (u === "end" && swPromptOverride !== "exec") {
-      swPromptOverride = "exec";
-      setSwPrompt();
-      return;
-    }
-    if (u === "exit") {
-      if (swPromptOverride === "config") {
-        swPromptOverride = "exec";
-        setSwPrompt();
-        return;
-      }
-      if (!swPromptOverride && stepIndex < LAB_STEPS.length && LAB_STEPS[stepIndex].mode === "config") {
-        swPromptOverride = "exec";
-        setSwPrompt();
-        return;
-      }
-    }
-    if (u === "configure terminal" && swPromptOverride === "exec") {
-      swPromptOverride = "config";
-      setSwPrompt();
-      return;
-    }
-    if (swInEnableMode() && (u.indexOf("show ") === 0 || u.indexOf("sh ") === 0)) {
-      appendSw("line-sys", SHOW_DISABLED_MSG);
-      return;
-    }
-
-    if (stepIndex >= LAB_STEPS.length) {
-      appendSw("line-bad", invalidInputMsgForNormalizedCmd(u));
-      return;
-    }
-
-    // Optional — wrong plausible value: prompt tester to re-read Tasks/Helper (see file header + OSPF lab).
-    // if (stepIndex === 1 && /^router ospf \d+$/.test(u) && u !== "router ospf " + REQUIRED_PROCESS_ID) {
-    //   appendSw("line-sys", cliLabContainer.CLI_VERIFY_INSTRUCTIONS_MSG);
-    //   return;
-    // }
-    // Add similar blocks per step (router-id token, ip ospf pid, priority, VLAN id, etc.).
-
-    if (LAB_STEPS[stepIndex].test(line)) {
-      stepIndex += 1;
-      swPromptOverride = null;
-      if (stepIndex >= LAB_STEPS.length) {
-        swPrompt.textContent = promptForMode(SWITCH_HOST, "exec");
-        appendSw("line-sys", BASELINE_SW_STEPS_OK_MSG);
-      } else {
-        setSwPrompt();
-      }
-    } else {
-      appendSw("line-bad", invalidInputMsgForNormalizedCmd(u));
-    }
-  }
-
-  /*
-   * IOS explore navigation — drop into every device submit() before lab grading:
-   *
-   *   const r10ExploreNav = cliLabContainer.createExploreNav("R10");
-   *   // reset(): r10ExploreNav.reset();
-   *   // setPrompts: promptR10.textContent = r10ExploreNav.promptWith(labPrompt);
-   *   if (r10ExploreNav.trySubmit(cmdR10.value, {
-   *     getLabPrompt: () => r10ExploreNav.promptWith(promptForMode("R10", modeR10)),
-   *     scrollEl: scrollR10, appendLine: appendLine, cmdInput: cmdR10,
-   *     normalize: normalize, onExploreChange: setPrompts,
-   *   })) return;
-   */
-
-  /*
-   * submitSw2 — mirror submitSw() for the second device:
-   * - Elements: sw2Prompt, sw2Cmdline, sw2Scrollback (appendSw2), sw2Terminal for flash, sw2CliOverlay / sw2CliDialog.
-   * - State: stepIndexSw2, sw2PromptOverride (if used), nvramSavedSw2, lab-specific SWITCH2_SHOW_RUNNING_SNAPSHOT.
-   * - Echo: var echoLine = expandInterfaceEcho(trimmed); (required; do not omit or Enter will throw ReferenceError.)
-   * - History + Enter (order matters): bindLocalHistory(sw2Cmdline) first, then:
-   *   sw2Cmdline.addEventListener("keydown", function (e) {
-   *     if (e.key === "Enter") { e.preventDefault(); submitSw2(); }
-   *   });
-   * Full dual-device example: templates/labs/cli-lab-baseline.html (submitSw2, openSw2Cli, Escape stack).
-   */
-</script>

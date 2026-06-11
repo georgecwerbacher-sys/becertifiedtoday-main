@@ -1,0 +1,33 @@
+---
+description: After editing lab-build templates, sync preview and show the localhost URL.
+globs:
+  - templates/lab-build/**
+  - public/lab-build/**
+  - scripts/sync-lab-build-preview.py
+---
+
+# Lab build — local preview
+
+When you modify files under `templates/lab-build/` (or `public/lab-build/`), **end the response with the local preview block** so the user can review in the browser.
+
+## Sync (source → preview)
+
+From repo root:
+
+```bash
+python3 scripts/sync-lab-build-preview.py
+# or: npm run sync:lab-build
+```
+
+`npm run serve` runs this sync automatically before starting the static server.
+
+## Preview URLs
+
+| File | URL |
+|------|-----|
+| `cli-lab-build-intake.html` | http://localhost:3000/lab-build/cli-lab-build-intake.html |
+| `cli-lab-realistic.html` | http://localhost:3000/lab-build/cli-lab-realistic.html |
+
+Hard refresh: **Cmd+Shift+R** (Mac) or **Ctrl+Shift+R** (Windows).
+
+Do not place lab-build authoring pages under `public/CCNA-Study/` — use `public/lab-build/` only for localhost preview copies.

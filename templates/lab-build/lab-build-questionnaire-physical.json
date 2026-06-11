@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "phase": "physical",
+  "title": "CLI lab build — physical layer (Phase 1)",
+  "description": "Answer these before writing lab HTML or LAB CONFIG. Later phases (L2/L3 tasks, grading) build on this spec.",
+  "outputPathPattern": "data/lab-builds/{slug}-physical.json",
+  "sections": [
+    {
+      "id": "meta",
+      "title": "Lab identity",
+      "questions": [
+        {
+          "id": "track",
+          "prompt": "Which track is this lab for?",
+          "type": "choice",
+          "options": ["CCNA", "ENCOR"],
+          "required": true
+        },
+        {
+          "id": "slug",
+          "prompt": "Lab filename slug (e.g. cli-lab-vlan-trunk-sim)",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "title",
+          "prompt": "Display title for the lab page",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "objective",
+          "prompt": "One-sentence learner objective",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "inventory",
+      "title": "Device inventory",
+      "questions": [
+        {
+          "id": "device_count",
+          "prompt": "How many network devices (routers + switches + WLC/AP) are in the topology?",
+          "type": "number",
+          "min": 1,
+          "required": true
+        },
+        {
+          "id": "devices",
+          "prompt": "List each device: hostname, role, and platform type",
+          "type": "device_list",
+          "required": true,
+          "deviceFields": {
+            "hostname": "Hostname (e.g. R1, SW1, SW2)",
+            "role": "Role",
+            "roleOptions": ["router", "switch", "wlc", "ap", "pc", "server"],
+            "notes": "Optional notes (model, exam topic)"
+          }
+        },
+        {
+          "id": "pc_count",
+          "prompt": "How many end hosts (PC / server) need a CLI or ping prompt?",
+          "type": "number",
+          "min": 0,
+          "default": 0
+        }
+      ]
+    },
+    {
+      "id": "interfaces",
+      "title": "Interface inventory per IOS device",
+      "questions": [
+        {
+          "id": "router_active_interfaces",
+          "prompt": "Default number of active router interfaces to configure?",
+          "type": "number",
+          "min": 1,
+          "max": 8,
+          "default": 6,
+          "help": "Routers use Ethernet0/0–0/3 first, then Serial0/0/0–0/1, etc."
+        },
+        {
+          "id": "switch_active_interfaces",
+          "prompt": "Default number of active switch interfaces to configure?",
+          "type": "number",
+          "min": 1,
+          "max": 8,
+          "default": 4,
+          "help": "Switches use Ethernet0/0 upward (E0/0, E0/1, …) for each active count."
+        },
+        {
+          "id": "per_device_active_overrides",
+          "prompt": "If any device needs a different active interface count, note hostname and count",
+          "type": "text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "cabling",
+      "title": "Physical connections",
+      "questions": [
+        {
+          "id": "links",
+          "prompt": "List each link: device A + interface → device B + interface",
+          "type": "link_list",
+          "required": true,
+          "linkFields": {
+            "fromDevice": "Device A",
+            "fromInterface": "Interface on A (e.g. Ethernet0/0)",
+            "toDevice": "Device B",
+            "toInterface": "Interface on B",
+            "cableType": "Cable / media type",
+            "cableTypeOptions": [
+              "straight-through",
+              "crossover",
+              "serial_dce",
+              "serial_dte",
+              "fiber",
+              "wireless",
+              "console"
+            ]
+          }
+        },
+        {
+          "id": "topology_image",
+          "prompt": "Topology diagram",
+          "type": "choice",
+          "options": [
+            "new_image_needed",
+            "reuse_existing",
+            "text_only_no_diagram"
+          ],
+          "required": true
+        },
+        {
+          "id": "topology_image_path",
+          "prompt": "If reusing, path under public/ (e.g. CCNA-Study/CCNA_labs/images/foo.png)",
+          "type": "text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "link_state",
+      "title": "Interface admin / line status at lab start",
+      "questions": [
+        {
+          "id": "interface_states",
+          "prompt": "For each used interface, initial status at lab open",
+          "type": "interface_state_list",
+          "required": true,
+          "stateFields": {
+            "device": "Device",
+            "interface": "Interface",
+            "adminStatus": "Admin",
+            "adminOptions": ["up", "down"],
+            "protocolStatus": "Line protocol",
+            "protocolOptions": ["up", "down"],
+            "notes": "Why (optional: err-disabled, shutdown, cable unplugged sim)"
+          },
+          "help": "Typical working link: admin up, protocol up. Break scenarios may use administratively down down."
+        },
+        {
+          "id": "speed_duplex",
+          "prompt": "Any speed/duplex details for the scenario? (auto, 100/full, mismatch, etc.)",
+          "type": "text",
+          "required": false
+        },
+        {
+          "id": "physical_faults",
+          "prompt": "Simulated physical faults to fix in the lab? (none, bad cable, wrong cable type, shutdown port, …)",
+          "type": "text",
+          "required": false
+        }
+      ]
+    }
+  ],
+  "agentInstructions": [
+    "Do not create or edit lab HTML until physical-layer answers are collected (unless the user explicitly says to skip).",
+    "Use AskQuestion for choice fields when possible; use chat for device_list, link_list, and interface_state_list.",
+    "After answers are confirmed, write data/lab-builds/{slug}-physical.json and summarize the topology before Phase 2 (L2/L3 tasks).",
+    "When implementing, copy templates/lab-build/cli-lab-realistic.html and map devices/links into LAB CONFIG and show running-config snapshots."
+  ]
+}

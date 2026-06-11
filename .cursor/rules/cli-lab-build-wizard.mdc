@@ -1,0 +1,77 @@
+---
+description: When building a new CCNA or ENCOR CLI lab, run the physical-layer questionnaire before writing HTML.
+globs:
+  - templates/lab-build/**
+  - templates/labs/**
+  - public/CCNA-Study/CCNA_labs/**
+  - public/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/**
+  - data/lab-builds/**
+  - scripts/cli_lab_build_wizard.py
+---
+
+# CLI lab build wizard — physical layer first
+
+When the user asks to **create, build, or add a CLI lab** (router/switch simulator under `CCNA_labs/` or `CCNP-ENCOR-Labs/`), **do not jump straight to HTML**. Collect **Phase 1 (physical layer)** answers first unless the user explicitly says to skip the questionnaire or already provided a complete spec file.
+
+## Question source
+
+Follow `templates/lab-build/lab-build-questionnaire-physical.json` and use the **browser intake page** when gathering specs interactively:
+
+- `templates/lab-build/cli-lab-build-intake.html`
+- Preview: http://localhost:3000/lab-build/cli-lab-build-intake.html (run `npm run sync:lab-build` or `npm run serve` first)
+
+Terminal wizard (optional):
+
+```bash
+python3 scripts/cli_lab_build_wizard.py
+# or
+npm run lab:build-wizard
+```
+
+Save answers to `data/lab-builds/{slug}-physical.json` (export from intake page or wizard).
+
+## Phase 1 — ask in order
+
+Use **AskQuestion** for single-choice fields when practical. Use chat (or numbered lists) for tables.
+
+### 1. Lab identity
+
+- Track: **CCNA** or **ENCOR**
+- Slug / filename (e.g. `cli-lab-vlan-trunk-sim`)
+- Display title and one-sentence objective
+
+### 2. Device inventory
+
+- How many **routers / switches / WLC / AP**?
+- Per device: **hostname**, **role** (router | switch | wlc | ap), optional notes
+- How many **PC / server** hosts need a prompt or ping?
+
+### 3. Interface inventory
+
+- Routers: default **Ethernet0/0–0/3 + Serial0/0/0–0/1** or custom?
+- Switches: default **Ethernet0/0–0/3** (no serial) or custom?
+
+### 4. Physical connections
+
+- Each **link**: device A + interface → device B + interface
+- **Cable type**: straight-through, crossover, serial DCE/DTE, fiber, wireless, console
+- Topology diagram: new image, reuse path under `public/`, or text-only
+
+### 5. Interface status at lab start
+
+- For **each used interface**: admin up/down, line protocol up/down
+- Optional: speed/duplex, simulated physical faults (shutdown port, wrong cable, etc.)
+
+## After Phase 1
+
+1. Write or update `data/lab-builds/{slug}-physical.json`.
+2. Summarize the topology in chat (device table + link list + interface states).
+3. Ask whether to continue to **Phase 2** (L2/L3 tasks, `LAB_STEPS`, grading) — not defined yet; do not invent tasks until user confirms.
+4. Only then copy `templates/lab-build/cli-lab-realistic.html` and map the spec into LAB CONFIG, snapshots, and tasks.
+
+## Guardrails
+
+- Match interface names to the spec (BCT defaults: 4 Ethernet + 2 Serial on routers).
+- Do not embed non-Cisco URLs in lab HTML.
+- CLI sessions use `cli-lab-engine.js`: BCT login banner, `#` prompt at open, no auto `show run`.
+- If the user pastes a full lab brief or existing `-physical.json`, confirm it is complete then proceed to implementation.
