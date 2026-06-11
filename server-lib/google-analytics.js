@@ -271,6 +271,140 @@ export async function fetchRealtimeActiveUsers(client, propertyId) {
   return Number(row?.metricValues?.[0]?.value || 0);
 }
 
+function mergeDimensionFilters(...filters) {
+  const expressions = [];
+  for (const f of filters) {
+    if (!f) continue;
+    if (f.andGroup && Array.isArray(f.andGroup.expressions)) {
+      expressions.push(...f.andGroup.expressions);
+    } else {
+      expressions.push(f);
+    }
+  }
+  if (!expressions.length) return undefined;
+  return { andGroup: { expressions } };
+}
+
+/**
+ * Sessions and users grouped by GA4 sessionCampaignName (utm_campaign).
+ */
+export async function fetchSessionsByCampaign(client, propertyId, range, limit = 25) {
+  const response = await runReportSafe(client, {
+    property: propertyName(propertyId),
+    dateRanges: [range],
+    dimensionFilter: gaCustomerTrafficDimensionFilter(),
+    dimensions: [{ name: "sessionCampaignName" }],
+    metrics: [
+      { name: "sessions" },
+      { name: "activeUsers" },
+      { name: "engagedSessions" },
+      { name: "screenPageViews" },
+    ],
+    orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+    limit,
+  });
+
+  return (response.rows || []).map((row) => ({
+    campaign: row.dimensionValues?.[0]?.value || "(not set)",
+    sessions: Number(row.metricValues?.[0]?.value || 0),
+    users: Number(row.metricValues?.[1]?.value || 0),
+    engagedSessions: Number(row.metricValues?.[2]?.value || 0),
+    pageViews: Number(row.metricValues?.[3]?.value || 0),
+  }));
+}
+
+/**
+ * begin_checkout event counts by session campaign (Google Ads attribution).
+ */
+export async function fetchBeginCheckoutByCampaign(client, propertyId, range, limit = 25) {
+  const response = await runReportSafe(client, {
+    property: propertyName(propertyId),
+    dateRanges: [range],
+    dimensionFilter: mergeDimensionFilters(gaCustomerTrafficDimensionFilter(), {
+      filter: {
+        fieldName: "eventName",
+        stringFilter: { matchType: "EXACT", value: "begin_checkout" },
+      },
+    }),
+    dimensions: [{ name: "sessionCampaignName" }],
+    metrics: [{ name: "eventCount" }],
+    orderBys: [{ metric: { metricName: "eventCount" }, desc: true }],
+    limit,
+  });
+
+  return (response.rows || []).map((row) => ({
+    campaign: row.dimensionValues?.[0]?.value || "(not set)",
+    beginCheckout: Number(row.metricValues?.[0]?.value || 0),
+  }));
+}
+
+/**
+ * Google Ads traffic: sessionSource = google, sessionMedium = cpc.
+ */
+export async function fetchGoogleCpcByCampaign(client, propertyId, range, limit = 25) {
+  const response = await runReportSafe(client, {
+    property: propertyName(propertyId),
+    dateRanges: [range],
+    dimensionFilter: mergeDimensionFilters(gaCustomerTrafficDimensionFilter(), {
+      filter: {
+        fieldName: "sessionSource",
+        stringFilter: { matchType: "EXACT", value: "google" },
+      },
+    }, {
+      filter: {
+        fieldName: "sessionMedium",
+        stringFilter: { matchType: "EXACT", value: "cpc" },
+      },
+    }),
+    dimensions: [{ name: "sessionCampaignName" }],
+    metrics: [{ name: "sessions" }, { name: "activeUsers" }],
+    orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+    limit,
+  });
+
+  return (response.rows || []).map((row) => ({
+    campaign: row.dimensionValues?.[0]?.value || "(not set)",
+    sessions: Number(row.metricValues?.[0]?.value || 0),
+    users: Number(row.metricValues?.[1]?.value || 0),
+  }));
+}
+
+/**
+ * Page views for certification home landing paths.
+ */
+export async function fetchHomeLandingPageViews(client, propertyId, range, paths) {
+  const pagePaths = Array.isArray(paths) ? paths.filter(Boolean) : [];
+  if (!pagePaths.length) return [];
+
+  const response = await runReportSafe(client, {
+    property: propertyName(propertyId),
+    dateRanges: [range],
+    dimensionFilter: mergeDimensionFilters(
+      gaCustomerTrafficDimensionFilter(),
+      {
+        orGroup: {
+          expressions: pagePaths.map((p) => ({
+            filter: {
+              fieldName: "pagePath",
+              stringFilter: { matchType: "EXACT", value: p },
+            },
+          })),
+        },
+      }
+    ),
+    dimensions: [{ name: "pagePath" }],
+    metrics: [{ name: "screenPageViews" }, { name: "activeUsers" }],
+    orderBys: [{ metric: { metricName: "screenPageViews" }, desc: true }],
+    limit: pagePaths.length,
+  });
+
+  return (response.rows || []).map((row) => ({
+    pagePath: row.dimensionValues?.[0]?.value || "",
+    screenPageViews: Number(row.metricValues?.[0]?.value || 0),
+    activeUsers: Number(row.metricValues?.[1]?.value || 0),
+  }));
+}
+
 export function rangeFromPreset(preset) {
   switch (preset) {
     case "today":

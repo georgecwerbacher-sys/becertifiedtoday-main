@@ -90,7 +90,10 @@
 
   function bindCheckoutTracking() {
     var selector =
-      "[data-bcc-track='begin_checkout'], .bcc-track-checkout, [data-ccna-portal-10d-checkout], [data-ccna-portal-30d-checkout]";
+      "[data-bcc-track='begin_checkout'], .bcc-track-checkout, " +
+      "[data-ccna-portal-10d-checkout], [data-ccna-portal-30d-checkout], " +
+      "[data-encor-portal-10d-checkout], [data-encor-portal-30d-checkout], " +
+      "[data-secplus-portal-10d-checkout], [data-secplus-portal-30d-checkout]";
     document.querySelectorAll(selector).forEach(function (el) {
       if (el.dataset.bccCheckoutBound === "1") return;
       el.dataset.bccCheckoutBound = "1";

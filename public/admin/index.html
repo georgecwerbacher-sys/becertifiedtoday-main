@@ -189,6 +189,83 @@
       color: var(--muted);
       line-height: 1.5;
     }
+    .campaign-grid {
+      display: grid;
+      gap: 14px;
+      margin-top: 12px;
+    }
+    .campaign-card {
+      background: #0f1729;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .campaign-card h3 {
+      margin: 0 0 4px;
+      font-size: 1rem;
+      color: #e6edf3;
+    }
+    .campaign-card .campaign-meta {
+      margin: 0 0 12px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .campaign-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .campaign-metric {
+      background: rgba(15, 23, 41, 0.6);
+      border: 1px solid rgba(45, 59, 90, 0.8);
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+    .campaign-metric .val {
+      font-size: 1.15rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+    .campaign-metric .lbl {
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-top: 2px;
+      line-height: 1.3;
+    }
+    .campaign-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .campaign-actions button,
+    .campaign-actions a.btn-inline {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: #c5d4f0;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .campaign-actions button.primary {
+      background: var(--accent);
+      border-color: #4f84d8;
+      color: #f4f7ff;
+    }
+    .campaign-url {
+      margin: 8px 0 0;
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      color: #9fb0cc;
+      word-break: break-all;
+      line-height: 1.45;
+    }
   </style>
 </head>
 <body>
@@ -219,6 +296,7 @@
         <a href="#section-questions">Questions</a>
         <a href="#section-portal-access">Portal access</a>
         <a href="#section-subscribers">Subscribers</a>
+        <a href="#section-campaigns">Campaigns</a>
         <a href="#section-preprod">Preproduction</a>
       </nav>
 
@@ -409,6 +487,49 @@
           </div>
         </div>
         <p id="portalStatus" class="status" aria-live="polite"></p>
+      </div>
+
+      <div class="panel" id="campaignMarketingPanel">
+        <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-campaigns">Campaign marketing</h2>
+        <p class="section-note">
+          Google Ads campaigns for CCNA, ENCOR, and Security+. Metrics from GA4 for the selected date range
+          (<code>sessionCampaignName</code> = <code>utm_campaign</code>). Setup paste docs live in
+          <code>scripts/*-google-ads.txt</code> in the repo. Google Ads spend and keyword clicks are not
+          pulled via API yet — export from Ads UI or Keyword Planner.
+        </p>
+        <div class="cards" id="campaignSummaryCards"></div>
+        <div class="campaign-grid" id="campaignCards"></div>
+        <div class="portal-product-block">
+          <h3 class="portal-product-title">Other campaigns (GA4 sessions)</h3>
+          <div class="portal-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Campaign</th>
+                  <th>Sessions</th>
+                  <th>Users</th>
+                  <th>Engaged sessions</th>
+                </tr>
+              </thead>
+              <tbody id="campaignOtherBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="portal-product-block">
+          <h3 class="portal-product-title">All begin_checkout events by campaign</h3>
+          <div class="portal-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Campaign</th>
+                  <th>begin_checkout</th>
+                </tr>
+              </thead>
+              <tbody id="campaignCheckoutBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <p id="campaignMarketingStatus" class="status" aria-live="polite"></p>
       </div>
 
       <div class="panel" id="preprodPanel">
@@ -816,6 +937,186 @@
         });
       }
 
+      function pctRate(rate) {
+        if (rate == null || !Number.isFinite(rate)) return "—";
+        return (rate * 100).toFixed(1) + "%";
+      }
+
+      function campaignMetricCell(label, value) {
+        return (
+          '<div class="campaign-metric"><div class="val">' +
+          value +
+          '</div><div class="lbl">' +
+          label +
+          "</div></div>"
+        );
+      }
+
+      function renderCampaignMarketing(data) {
+        var campaigns = data.campaigns || [];
+        var totalSessions = 0;
+        var totalCheckout = 0;
+        var totalCpc = 0;
+        campaigns.forEach(function (c) {
+          var m = c.metrics || {};
+          totalSessions += Number(m.sessions) || 0;
+          totalCheckout += Number(m.beginCheckout) || 0;
+          totalCpc += Number(m.googleCpcSessions) || 0;
+        });
+
+        document.getElementById("campaignSummaryCards").innerHTML = [
+          ["Tracked campaigns", fmt(campaigns.length)],
+          ["Sessions (utm campaigns)", fmt(totalSessions)],
+          ["begin_checkout", fmt(totalCheckout)],
+          ["Google CPC sessions", fmt(totalCpc)],
+        ]
+          .map(function (c) {
+            return (
+              '<div class="card"><div class="val">' +
+              c[1] +
+              '</div><div class="lbl">' +
+              c[0] +
+              "</div></div>"
+            );
+          })
+          .join("");
+
+        var cardsEl = document.getElementById("campaignCards");
+        if (!campaigns.length) {
+          cardsEl.innerHTML =
+            '<p class="section-note">No campaign definitions loaded.</p>';
+        } else {
+          cardsEl.innerHTML = campaigns
+            .map(function (c, idx) {
+              var m = c.metrics || {};
+              return (
+                '<article class="campaign-card" data-campaign-idx="' +
+                idx +
+                '"><h3>' +
+                c.label +
+                '</h3><p class="campaign-meta"><strong>utm_campaign:</strong> ' +
+                c.utmCampaign +
+                " · <strong>ad group:</strong> " +
+                c.adGroup +
+                " · <strong>budget:</strong> $" +
+                c.dailyBudgetUsd +
+                "/day · max CPC $" +
+                c.maxCpcUsd +
+                "<br><strong>Offer:</strong> " +
+                c.primaryOffer +
+                "<br><strong>Setup doc:</strong> <code>" +
+                c.setupDocTxt +
+                "</code></p>" +
+                '<div class="campaign-metrics">' +
+                campaignMetricCell("Sessions", fmt(m.sessions)) +
+                campaignMetricCell("Users", fmt(m.users)) +
+                campaignMetricCell("Google CPC", fmt(m.googleCpcSessions)) +
+                campaignMetricCell("Landing views", fmt(m.landingPageViews)) +
+                campaignMetricCell("begin_checkout", fmt(m.beginCheckout)) +
+                campaignMetricCell("Checkout / session", pctRate(m.checkoutRate)) +
+                "</div>" +
+                '<p class="campaign-url" id="campaignUrl' +
+                idx +
+                '">' +
+                c.finalUrl +
+                "</p>" +
+                '<div class="campaign-actions">' +
+                '<a class="btn-inline" href="' +
+                c.finalUrl.replace(/&/g, "&amp;") +
+                '" target="_blank" rel="noopener noreferrer">Open landing</a>' +
+                '<button type="button" class="primary" data-copy-campaign-url="' +
+                idx +
+                '">Copy final URL</button>' +
+                '<button type="button" data-copy-campaign-utm="' +
+                idx +
+                '">Copy utm_campaign</button>' +
+                "</div></article>"
+              );
+            })
+            .join("");
+
+          cardsEl.querySelectorAll("[data-copy-campaign-url]").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              var idx = parseInt(btn.getAttribute("data-copy-campaign-url") || "0", 10);
+              var c = campaigns[idx];
+              if (!c || !navigator.clipboard) return;
+              navigator.clipboard.writeText(c.finalUrl);
+              document.getElementById("campaignMarketingStatus").textContent =
+                "Copied final URL for " + c.label + ".";
+              document.getElementById("campaignMarketingStatus").className = "status ok";
+            });
+          });
+          cardsEl.querySelectorAll("[data-copy-campaign-utm]").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              var idx = parseInt(btn.getAttribute("data-copy-campaign-utm") || "0", 10);
+              var c = campaigns[idx];
+              if (!c || !navigator.clipboard) return;
+              navigator.clipboard.writeText(c.utmCampaign);
+              document.getElementById("campaignMarketingStatus").textContent =
+                "Copied utm_campaign: " + c.utmCampaign;
+              document.getElementById("campaignMarketingStatus").className = "status ok";
+            });
+          });
+        }
+
+        var other = data.otherCampaignSessions || [];
+        var otherBody = document.getElementById("campaignOtherBody");
+        if (!other.length) {
+          otherBody.innerHTML =
+            '<tr><td colspan="4" style="color:var(--muted)">No other named campaigns in this range.</td></tr>';
+        } else {
+          otherBody.innerHTML = other
+            .map(function (r) {
+              return (
+                "<tr><td>" +
+                r.campaign +
+                "</td><td>" +
+                fmt(r.sessions) +
+                "</td><td>" +
+                fmt(r.users) +
+                "</td><td>" +
+                fmt(r.engagedSessions) +
+                "</td></tr>"
+              );
+            })
+            .join("");
+        }
+
+        var checkoutRows = data.allBeginCheckout || [];
+        var checkoutBody = document.getElementById("campaignCheckoutBody");
+        if (!checkoutRows.length) {
+          checkoutBody.innerHTML =
+            '<tr><td colspan="2" style="color:var(--muted)">No begin_checkout events in this range.</td></tr>';
+        } else {
+          checkoutBody.innerHTML = checkoutRows
+            .map(function (r) {
+              return (
+                "<tr><td>" +
+                r.campaign +
+                "</td><td>" +
+                fmt(r.beginCheckout) +
+                "</td></tr>"
+              );
+            })
+            .join("");
+        }
+
+        var note = data.note || "";
+        if (!totalSessions && !totalCheckout) {
+          note +=
+            " No tagged campaign traffic yet — confirm ads use utm_campaign values ccna_portal, encor_portal, or secplus_portal.";
+        }
+        document.getElementById("campaignMarketingStatus").textContent = note;
+        document.getElementById("campaignMarketingStatus").className = "status ok";
+      }
+
+      function clearCampaignMarketing() {
+        document.getElementById("campaignSummaryCards").innerHTML = "";
+        document.getElementById("campaignCards").innerHTML = "";
+        document.getElementById("campaignOtherBody").innerHTML = "";
+        document.getElementById("campaignCheckoutBody").innerHTML = "";
+      }
+
       function renderVisitorQuestionsReport(data) {
         var items = data.items || [];
         document.getElementById("visitorQuestionsSummaryCards").innerHTML = [
@@ -876,18 +1177,22 @@
         document.getElementById("sampleLeadStatus").className = "status";
         document.getElementById("visitorQuestionsStatus").textContent = "Loading visitor questions…";
         document.getElementById("visitorQuestionsStatus").className = "status";
+        document.getElementById("campaignMarketingStatus").textContent = "Loading campaign marketing…";
+        document.getElementById("campaignMarketingStatus").className = "status";
 
         Promise.all([
           postJson("/api/analytics-report", { range: rangeEl.value }),
           postJson("/api/portal-users-report", {}),
           postJson("/api/sample-lead", { action: "report" }),
           postJson("/api/sample-lead", { action: "questions_report" }),
+          postJson("/api/campaign-marketing-report", { range: rangeEl.value }),
         ])
           .then(function (results) {
             var ga = results[0];
             var portal = results[1];
             var sampleLead = results[2];
             var visitorQuestions = results[3];
+            var campaigns = results[4];
 
             if (!ga.ok) {
               if (ga.body && ga.body.error === "Unauthorized") {
@@ -936,6 +1241,16 @@
             } else {
               renderVisitorQuestionsReport(visitorQuestions.body);
             }
+
+            if (!campaigns.ok) {
+              clearCampaignMarketing();
+              var cm = (campaigns.body && campaigns.body.error) || "Campaign report failed";
+              if (campaigns.body && campaigns.body.hint) cm += " — " + campaigns.body.hint;
+              document.getElementById("campaignMarketingStatus").textContent = cm;
+              document.getElementById("campaignMarketingStatus").className = "status err";
+            } else {
+              renderCampaignMarketing(campaigns.body);
+            }
           })
           .catch(function (err) {
             dashStatus.textContent = err.message || "Failed to load report";
@@ -943,6 +1258,8 @@
             portalStatus.textContent = "";
             document.getElementById("sampleLeadStatus").textContent = "";
             document.getElementById("visitorQuestionsStatus").textContent = "";
+            clearCampaignMarketing();
+            document.getElementById("campaignMarketingStatus").textContent = "";
           });
       }
 

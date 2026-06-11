@@ -16,6 +16,7 @@ import {
   analyticsApiReady,
   fetchAnalyticsSummary,
   fetchDailyTrend,
+  fetchSessionsByCampaign,
   fetchTopPages,
   getAnalyticsDataClient,
   getGoogleAnalyticsEnv,
@@ -89,26 +90,6 @@ function fmtDuration(sec) {
 function formatGaDate(yyyymmdd) {
   if (!yyyymmdd || yyyymmdd.length !== 8) return yyyymmdd;
   return `${yyyymmdd.slice(0, 4)}-${yyyymmdd.slice(4, 6)}-${yyyymmdd.slice(6, 8)}`;
-}
-
-async function fetchCampaignSessions(client, propertyId, range) {
-  try {
-    const [response] = await client.runReport({
-      property: `properties/${propertyId}`,
-      dateRanges: [range],
-      dimensions: [{ name: "sessionCampaignName" }],
-      metrics: [{ name: "sessions" }, { name: "activeUsers" }],
-      orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
-      limit: 15,
-    });
-    return (response.rows || []).map((row) => ({
-      campaign: row.dimensionValues?.[0]?.value || "(not set)",
-      sessions: Number(row.metricValues?.[0]?.value || 0),
-      users: Number(row.metricValues?.[1]?.value || 0),
-    }));
-  } catch {
-    return [];
-  }
 }
 
 function buildAutoBody(data) {
@@ -274,7 +255,7 @@ async function main() {
       fetchAnalyticsSummary(client, env.propertyId, range),
       fetchTopPages(client, env.propertyId, range, 15),
       fetchDailyTrend(client, env.propertyId, range),
-      fetchCampaignSessions(client, env.propertyId, range),
+      fetchSessionsByCampaign(client, env.propertyId, range, 15),
     ]);
   }
 

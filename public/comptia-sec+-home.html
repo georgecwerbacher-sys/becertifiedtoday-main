@@ -1280,6 +1280,23 @@
     .purchase-primary-cta .purchase-track-box {
       margin-top: 0;
     }
+    html.secplus-landing-portal-10d .purchase-card-main--30d {
+      display: none !important;
+    }
+    html.secplus-landing-portal-10d .purchase-card-main--10d[hidden] {
+      display: block !important;
+    }
+    .purchase-alt-tier-note {
+      margin: 14px 0 0;
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: var(--muted);
+      text-align: left;
+    }
+    .purchase-alt-tier-note a {
+      color: #8ab4ff;
+      font-weight: 700;
+    }
     .purchase-tier-eyebrow {
       margin: 0 0 8px;
       font-size: 0.72rem;
@@ -2861,53 +2878,105 @@
             Payment Link URL: https://buy.stripe.com/9B63cudF33Gnc5a1xac3m08
             After payment redirect: /COMP_TIA_SEC+/test-simulation-runner.html?session_id={CHECKOUT_SESSION_ID}
           -->
-          <section class="card purchase-card purchase-fold purchase-fold--single-offer" id="purchase" aria-labelledby="purchase-fold-title">
-            <div class="purchase-cta-stack purchase-cta-stack--single">
-              <div class="purchase-primary-cta">
+          <section class="card purchase-card purchase-fold" id="purchase" aria-labelledby="purchase-fold-title">
+            <div class="purchase-card-inner">
+              <div class="purchase-card-main purchase-card-main--30d" id="secplusPurchaseDefault">
                 <p class="purchase-label">Get Security+ access</p>
                 <h2 class="purchase-heading" id="purchase-fold-title">Get 30-day Security+ access</h2>
                 <p class="purchase-lead purchase-lead--tight">
                   Full SY0-701 library and practice portal for thirty days.
                 </p>
-                <div
-                  class="purchase-track-box purchase-track-box--thirty-day purchase-pricing-option"
-                  aria-label="CompTIA Security+ 30-day all-access pass"
-                >
-                  <div class="purchase-track-head">
-                    <p class="purchase-track-title">30-day access</p>
-                    <span class="secplus-live-badge">Live</span>
-                  </div>
-                  <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
-                    $19.99 <span>/ 30 days</span>
-                  </p>
-                  <p class="purchase-library-highlights" role="note">
-                    <strong>1000+ interactive SY0-701 questions</strong> (objectives v5.0),
-                    <strong>28 PBQ practice scenarios</strong> (21 chain labs, 4 standalone, 1 hot spot, 2 report exhibits),
-                    <strong>adaptive review</strong>, domain study modes, and the full
-                    <strong>90-minute timed exam</strong> on phone, tablet, or desktop.
-                  </p>
-                  <p class="purchase-track-sub">
-                    You unlock the full library for 30 days: verified explanations, progress tracking by domain, and study modes
-                    that loop weak topics until you are ready for test day. This is interactive prep, not a static PDF dump.
-                  </p>
-                  <p class="purchase-track-cta-wrap">
-                    <button
-                      type="button"
-                      class="cta-main cta-main--block"
-                      data-secplus-portal-30d-checkout
-                      data-bcc-item-id="secplus_portal_30d"
-                      data-bcc-item-name="CompTIA Security+ 30-day access"
-                      data-bcc-value="19.99"
-                      data-bcc-currency="USD"
-                      aria-label="Purchase 30-day Security+ library access for nineteen ninety-nine"
+                <div class="purchase-cta-stack purchase-cta-stack--single">
+                  <div class="purchase-primary-cta">
+                    <div
+                      class="purchase-track-box purchase-track-box--thirty-day purchase-pricing-option"
+                      aria-label="CompTIA Security+ 30-day all-access pass"
                     >
-                      Get 30-day access
-                    </button>
-                  </p>
-                  <p class="purchase-access-disclaimer">
-                    <strong>$19.99 / 30 days.</strong> No subscription. Access is tied to this browser. Use the same device when you study.
-                  </p>
+                      <div class="purchase-track-head">
+                        <p class="purchase-track-title">30-day access</p>
+                        <span class="secplus-live-badge">Live</span>
+                      </div>
+                      <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
+                        $19.99 <span>/ 30 days</span>
+                      </p>
+                      <p class="purchase-library-highlights" role="note">
+                        <strong>1000+ interactive SY0-701 questions</strong> (objectives v5.0),
+                        <strong>28 PBQ practice scenarios</strong> (21 chain labs, 4 standalone, 1 hot spot, 2 report exhibits),
+                        <strong>adaptive review</strong>, domain study modes, and the full
+                        <strong>90-minute timed exam</strong> on phone, tablet, or desktop.
+                      </p>
+                      <p class="purchase-track-sub">
+                        You unlock the full library for 30 days: verified explanations, progress tracking by domain, and study modes
+                        that loop weak topics until you are ready for test day. This is interactive prep, not a static PDF dump.
+                      </p>
+                      <p class="purchase-track-cta-wrap">
+                        <button
+                          type="button"
+                          class="cta-main cta-main--block"
+                          id="secplusPortal30dPurchaseBtn"
+                          data-secplus-portal-30d-checkout
+                          data-bcc-item-id="secplus_portal_30d"
+                          data-bcc-item-name="CompTIA Security+ 30-day access"
+                          data-bcc-value="19.99"
+                          data-bcc-currency="USD"
+                          aria-label="Purchase 30-day Security+ library access for nineteen ninety-nine"
+                        >
+                          Get 30-day access
+                        </button>
+                      </p>
+                      <p class="purchase-access-disclaimer">
+                        <strong>$19.99 / 30 days.</strong> No subscription. Access is tied to this browser. Use the same device when you study.
+                      </p>
+                    </div>
+                  </div>
                 </div>
+              </div>
+              <div class="purchase-card-main purchase-card-main--10d" id="secplusPurchase10d" hidden>
+                <p class="purchase-label">Get Security+ access</p>
+                <h2 class="purchase-heading">10-day Security+ full access · $9.99</h2>
+                <p class="purchase-lead purchase-lead--tight">
+                  Full SY0-701 library and practice portal for ten days—one-time purchase, no subscription.
+                </p>
+                <div class="purchase-cta-stack purchase-cta-stack--single">
+                  <div class="purchase-primary-cta">
+                    <div
+                      class="purchase-track-box purchase-track-box--ten-day purchase-pricing-option purchase-track-box--one-time-live"
+                      aria-label="10-day Security+ access purchase"
+                    >
+                      <div class="purchase-track-head">
+                        <p class="purchase-track-title">10-day access</p>
+                        <span class="secplus-live-badge">One-time</span>
+                      </div>
+                      <p class="purchase-price" aria-label="9 dollars and 99 cents for 10 days">
+                        $9.99 <span>/ 10 days</span>
+                      </p>
+                      <p class="purchase-track-sub">
+                        1000+ questions, 28 PBQ scenarios, adaptive review, practice portal modes, and the 90-minute timed exam—all in your browser.
+                      </p>
+                      <p class="purchase-track-cta-wrap">
+                        <button
+                          type="button"
+                          class="cta-main cta-main--block"
+                          id="secplusPortal10dPurchaseBtn"
+                          data-secplus-portal-10d-checkout
+                          data-bcc-item-id="secplus_portal_10d"
+                          data-bcc-item-name="CompTIA Security+ 10-day access"
+                          data-bcc-value="9.99"
+                          data-bcc-currency="USD"
+                          aria-label="Purchase 10-day Security+ library access for nine ninety-nine"
+                        >
+                          Get 10-day access · $9.99
+                        </button>
+                      </p>
+                      <p class="purchase-access-disclaimer">
+                        <strong>$9.99 / 10 days.</strong> No subscription. Access is tied to this browser. Use the same device when you study.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <p class="purchase-alt-tier-note">
+                  Need more time? <strong>30-day access ($19.99)</strong> uses the same library with a longer study window.
+                </p>
               </div>
             </div>
           </section>
@@ -3643,6 +3712,7 @@
   </script>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-checkout.js" defer></script>
+  <script src="/js/secplus-portal-10d-landing.js" defer></script>
   <script src="/js/bcc-10d-one-time-offer.js" defer></script>
   <script src="/js/bcc-lead-sticky-cta.js" defer></script>
   <script>
