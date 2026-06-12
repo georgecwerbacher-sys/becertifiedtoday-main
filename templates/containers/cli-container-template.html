@@ -1,18 +1,16 @@
 <!--
   Reusable CLI container markup for lab pages.
 
-  Preferred stack (templates/lab-build/cli-lab-realistic.html):
+  Stack:
     /css/cli-lab-container.css
     /js/cli-lab-container.js
     /js/cli-ios-mode.js
-    /js/cli-lab-engine.js
+    /js/cli-lab-engine.js (optional — or hand-roll submit handlers)
 
-  Lab author workflow:
-  1. Copy templates/lab-build/cli-lab-realistic.html → public/.../cli-lab-*.html
-  2. Edit LAB CONFIG (steps, show running-config snapshots, PC handlers)
-  3. Replace topology image, tasks, sim-nav links
+  Lab author workflow: copy an existing lab under public/CCNA-Study/CCNA_labs/ or
+  public/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/, or start from templates/labs/cli-lab-baseline.html.
 
-  Legacy hand-rolled submit(): templates/labs/cli-lab-baseline.html
+  Reference: public/CCNA-Study/CCNA_labs/cli-lab-ip-services-sim-v2.html
 
   Engine API (cli-lab-engine.js):
   - createIosDevice({ host, deviceType, elements, steps, showRunningConfig, … })
@@ -54,7 +52,7 @@
     </div>
     <footer class="cli-modal-footer">
       <p class="cli-hint" style="margin:0;font-size:0.82rem;color:#9fb0cc;">
-        Wire with <code>cliLabEngine.createIosDevice()</code> — see templates/lab-build/cli-lab-realistic.html
+        Wire with <code>cliLabEngine.createIosDevice()</code> or hand-rolled <code>submit*()</code>
       </p>
     </footer>
   </div>
