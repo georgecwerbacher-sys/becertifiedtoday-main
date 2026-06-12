@@ -413,12 +413,47 @@
     }
   }
 
-  function isCcnaLabPath() {
-    var p = (location.pathname || "").toLowerCase();
+  function pathLooksLikeCcnaLab(p) {
+    p = String(p || "").toLowerCase();
     return (
       p.indexOf("/ccna-study/ccna_labs/") !== -1 ||
       p.indexOf("/ccna_sim_exam/embed/lab/") !== -1
     );
+  }
+
+  function isCcnaLabPath() {
+    if (pathLooksLikeCcnaLab(location.pathname)) return true;
+    try {
+      if (pathLooksLikeCcnaLab(sessionStorage.getItem("ccnaLastRealPath"))) return true;
+    } catch (e) {}
+    return !!document.querySelector(".cli-modal-overlay .scrollback-area");
+  }
+
+  function bctCliBannerContextActive() {
+    var container = window.cliLabContainer;
+    if (container && typeof container.isBctCliBannerContext === "function") {
+      return container.isBctCliBannerContext();
+    }
+    try {
+      var params = new URLSearchParams(location.search);
+      if (params.get("examSim") === "1") return true;
+      if (!isCcnaLabPath()) return false;
+      if (params.get("sample") === "1") return true;
+      if (sessionStorage.getItem("ccnaHomeSample")) return true;
+    } catch (e) {}
+    return false;
+  }
+
+  var BCT_CLI_BANNER_LAB_CSS =
+    ".terminal .line-boot{white-space:pre-wrap;word-break:break-word;color:#94a3b8;font-size:.82rem;line-height:1.45;margin-bottom:10px;padding:10px 12px;border-radius:6px;background:#0a0e14;border:1px solid #1e293b}";
+
+  function injectBctCliBannerLabStyles() {
+    if (!bctCliBannerContextActive() || !isCcnaLabPath()) return;
+    if (document.head.querySelector("style[data-bcc-cli-banner-lab]")) return;
+    var s = document.createElement("style");
+    s.setAttribute("data-bcc-cli-banner-lab", "1");
+    s.textContent = BCT_CLI_BANNER_LAB_CSS;
+    document.head.appendChild(s);
   }
 
   function applyExamSimEmbedStyles() {
@@ -432,16 +467,48 @@
       "#showBtn,.nav-show-answer,.answer-side-actions .nav-show-answer{display:none!important}";
     if (isCcnaLabPath()) {
       css +=
-        "body{padding-bottom:max(16px,env(safe-area-inset-bottom,0px))!important}";
+        "body{padding-bottom:max(16px,env(safe-area-inset-bottom,0px))!important}" +
+        BCT_CLI_BANNER_LAB_CSS;
     }
     s.textContent = css;
     document.head.appendChild(s);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", applyExamSimEmbedStyles);
-  } else {
+  function wireExamSimCliOpenBanner() {
+    if (!bctCliBannerContextActive() || !isCcnaLabPath()) return;
+    var container = window.cliLabContainer;
+    if (!container || typeof container.showExamSimCliBanner !== "function") return;
+
+    function onOverlayOpened(overlay) {
+      if (!overlay || !overlay.classList.contains("is-open")) return;
+      requestAnimationFrame(function () {
+        var scroll = overlay.querySelector(".scrollback-area");
+        if (scroll) container.showExamSimCliBanner(scroll);
+      });
+    }
+
+    document.querySelectorAll(".cli-modal-overlay").forEach(function (overlay) {
+      if (overlay.dataset.bctExamSimCliBanner === "1") return;
+      overlay.dataset.bctExamSimCliBanner = "1";
+      new MutationObserver(function (mutations) {
+        mutations.forEach(function (m) {
+          if (m.attributeName === "class") onOverlayOpened(overlay);
+        });
+      }).observe(overlay, { attributes: true, attributeFilter: ["class"] });
+      if (overlay.classList.contains("is-open")) onOverlayOpened(overlay);
+    });
+  }
+
+  function bootExamSimEmbed() {
     applyExamSimEmbedStyles();
+    injectBctCliBannerLabStyles();
+    wireExamSimCliOpenBanner();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bootExamSimEmbed);
+  } else {
+    bootExamSimEmbed();
   }
 })();
 
@@ -743,6 +810,37 @@
     return false;
   }
 
+  function readSampleSessionHome(key, fallback) {
+    try {
+      var raw = sessionStorage.getItem(key);
+      if (!raw) return fallback;
+      var session = JSON.parse(raw);
+      if (session && session.finishHome) return session.finishHome;
+    } catch (e) {}
+    return fallback;
+  }
+
+  function sampleLogoHomeHref() {
+    try {
+      if (sessionStorage.getItem("ccnaHomeSample")) {
+        return readSampleSessionHome("ccnaHomeSample", "/ccna-home.html");
+      }
+      if (sessionStorage.getItem("encorHomeSample")) {
+        return readSampleSessionHome("encorHomeSample", "/ccnp-home.html");
+      }
+      var kind = sessionStorage.getItem("ccnpSampleKind") || "";
+      if (kind.indexOf("ccna") === 0) return "/ccna-home.html";
+      if (kind.indexOf("encor") === 0) return "/ccnp-home.html";
+    } catch (e) {}
+    return null;
+  }
+
+  function sampleLogoAriaLabel(href) {
+    if (href === "/ccna-home.html") return "Back to CCNA home";
+    if (href === "/ccnp-home.html") return "Back to ENCOR home";
+    return "Back to home";
+  }
+
   function stripSampleLogoLinks() {
     document.querySelectorAll("a.site-logo-corner").forEach(function (a) {
       var span = document.createElement("span");
@@ -750,6 +848,19 @@
       span.setAttribute("aria-hidden", "true");
       span.innerHTML = a.innerHTML;
       a.parentNode.replaceChild(span, a);
+    });
+  }
+
+  function wireSampleLogoLinks() {
+    var href = sampleLogoHomeHref();
+    if (!href) {
+      stripSampleLogoLinks();
+      return;
+    }
+    document.querySelectorAll("a.site-logo-corner").forEach(function (a) {
+      a.href = href;
+      a.setAttribute("aria-label", sampleLogoAriaLabel(href));
+      a.removeAttribute("aria-hidden");
     });
   }
 
@@ -773,12 +884,38 @@
       "bottom:auto!important;" +
       "align-self:auto!important;" +
       "margin:0!important;" +
-      "pointer-events:none!important;" +
-      "cursor:default!important;" +
       "background:transparent!important;" +
       "border:none!important;" +
       "padding:0!important;" +
       "backdrop-filter:none!important;" +
+      "}" +
+      "body.bcc-sample-experience span.site-logo-corner," +
+      "body.ccna-static-sample span.site-logo-corner," +
+      "body.ccna-sample-guest-ui span.site-logo-corner," +
+      "body.encor-static-sample span.site-logo-corner," +
+      "body.encor-sample-guest-ui span.site-logo-corner," +
+      "body.secplus-static-sample span.site-logo-corner," +
+      "body.secplus-sample-guest-ui span.site-logo-corner{" +
+      "pointer-events:none!important;" +
+      "cursor:default!important;" +
+      "}" +
+      "body.bcc-sample-experience a.site-logo-corner," +
+      "body.ccna-static-sample a.site-logo-corner," +
+      "body.ccna-sample-guest-ui a.site-logo-corner," +
+      "body.encor-static-sample a.site-logo-corner," +
+      "body.encor-sample-guest-ui a.site-logo-corner{" +
+      "pointer-events:auto!important;" +
+      "cursor:pointer!important;" +
+      "text-decoration:none!important;" +
+      "color:inherit!important;" +
+      "}" +
+      "body.bcc-sample-experience a.site-logo-corner:focus-visible," +
+      "body.ccna-static-sample a.site-logo-corner:focus-visible," +
+      "body.ccna-sample-guest-ui a.site-logo-corner:focus-visible," +
+      "body.encor-static-sample a.site-logo-corner:focus-visible," +
+      "body.encor-sample-guest-ui a.site-logo-corner:focus-visible{" +
+      "outline:2px solid #4f84d8!important;" +
+      "outline-offset:3px!important;" +
       "}";
     document.head.appendChild(s);
   }
@@ -787,7 +924,7 @@
     if (!isSampleExperience()) return;
     document.body.classList.add("bcc-sample-experience");
     injectSampleLogoStyles();
-    stripSampleLogoLinks();
+    wireSampleLogoLinks();
   }
 
   if (document.readyState === "loading") {

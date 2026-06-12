@@ -85,6 +85,66 @@
     });
   }
 
+  function pathLooksLikeCcnaLab(p) {
+    p = String(p || "").toLowerCase();
+    return (
+      p.indexOf("/ccna-study/ccna_labs/") !== -1 ||
+      p.indexOf("/ccna_sim_exam/embed/lab/") !== -1
+    );
+  }
+
+  function isCcnaLabEmbedPath() {
+    if (pathLooksLikeCcnaLab(location.pathname)) return true;
+    try {
+      return pathLooksLikeCcnaLab(sessionStorage.getItem("ccnaLastRealPath"));
+    } catch (_) {}
+    return !!document.querySelector(".cli-modal-overlay .scrollback-area");
+  }
+
+  function isExamSimEmbed() {
+    try {
+      return new URLSearchParams(location.search).get("examSim") === "1";
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /** Timed exam embed (?examSim=1) or CCNA home sample labs (?sample=1, /sample#ccnaHS=…). */
+  function isBctCliBannerContext() {
+    try {
+      var params = new URLSearchParams(location.search);
+      if (params.get("examSim") === "1") return true;
+      if (!isCcnaLabEmbedPath()) return false;
+      if (params.get("sample") === "1") return true;
+      if (sessionStorage.getItem("ccnaHomeSample")) return true;
+    } catch (_) {}
+    return false;
+  }
+
+  var EXAM_SIM_CLI_BANNER_TEXT =
+    "================================================================================\n" +
+    "  Be Certified Today — BCT Lab Simulator v.1_2026\n" +
+    "================================================================================\n" +
+    "\n" +
+    "Exam simulation environment. Help commands are disabled; only commands required\n" +
+    "for this lab scenario are available. Use the Helper button to review the lab\n" +
+    "outline and topology if needed.\n" +
+    "================================================================================";
+
+  /** Login-style banner when a CLI modal opens in exam sim or CCNA sample lab flows. */
+  function showExamSimCliBanner(scrollbackEl) {
+    if (!scrollbackEl || !isBctCliBannerContext()) return;
+    var prev = scrollbackEl.querySelector('[data-bct-exam-sim-banner="1"]');
+    if (prev) prev.remove();
+    var div = document.createElement("div");
+    div.className = "line-boot";
+    div.setAttribute("data-bct-exam-sim-banner", "1");
+    div.style.whiteSpace = "pre-wrap";
+    div.textContent = EXAM_SIM_CLI_BANNER_TEXT;
+    scrollbackEl.insertBefore(div, scrollbackEl.firstChild);
+    scrollbackEl.scrollTop = 0;
+  }
+
   /** Per-device IOS explore nav; delegates to cli-ios-mode.js when loaded. */
   function createExploreNav(host) {
     var iosMode =
@@ -118,6 +178,11 @@
     unsupportedCmdMsg: unsupportedCmdMsg,
     bindLocalHistory: bindLocalHistory,
     createExploreNav: createExploreNav,
+    isCcnaLabEmbedPath: isCcnaLabEmbedPath,
+    isExamSimEmbed: isExamSimEmbed,
+    isBctCliBannerContext: isBctCliBannerContext,
+    EXAM_SIM_CLI_BANNER_TEXT: EXAM_SIM_CLI_BANNER_TEXT,
+    showExamSimCliBanner: showExamSimCliBanner,
   };
 
   window.cliLabContainer = api;

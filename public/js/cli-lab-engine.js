@@ -141,7 +141,39 @@
     );
   }
 
+  function isBctCliBannerContext() {
+    if (container && typeof container.isBctCliBannerContext === "function") {
+      return container.isBctCliBannerContext();
+    }
+    try {
+      var params = new URLSearchParams(location.search);
+      if (params.get("examSim") === "1") return true;
+      var p = (location.pathname || "").toLowerCase();
+      var onLab =
+        p.indexOf("/ccna-study/ccna_labs/") !== -1 ||
+        p.indexOf("/ccna_sim_exam/embed/lab/") !== -1;
+      if (!onLab) return false;
+      if (params.get("sample") === "1") return true;
+      if (sessionStorage.getItem("ccnaHomeSample")) return true;
+    } catch (_) {}
+    return false;
+  }
+
   function defaultLoginBanner(host) {
+    if (isBctCliBannerContext()) {
+      return container && container.EXAM_SIM_CLI_BANNER_TEXT
+        ? container.EXAM_SIM_CLI_BANNER_TEXT
+        : (
+            "================================================================================\n" +
+            "  Be Certified Today — BCT Lab Simulator v.1_2026\n" +
+            "================================================================================\n" +
+            "\n" +
+            "Exam simulation environment. Help commands are disabled; only commands required\n" +
+            "for this lab scenario are available. Use the Helper button to review the lab\n" +
+            "outline and topology if needed.\n" +
+            "================================================================================"
+          );
+    }
     return (
       "================================================================================\n" +
       "  Be Certified Today (BCT) IOS Lab Simulator — " +
