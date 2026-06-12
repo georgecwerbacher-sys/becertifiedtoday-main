@@ -1458,31 +1458,21 @@ Sw2# copy running-config startup-config</pre>
         return false;
       }
 
-      /**
-       * After soft exit to (config)# (override "config"), re-enter the matching interface context so the
-       * next STEPS line can be entered from (config-if)# again — does not advance stepIndex.
-       */
-      function trySwReenterContextLine(line, stepIdx, getOvr, setOvrAndRefresh, swNum) {
-        if (stepIdx >= LAB_STEPS.length) return false;
-        if (getOvr() !== "config") return false;
-        var u = normalize(line);
-        if (stepIdx >= 4 && stepIdx <= 8 && u === "interface gigabitethernet0/1") {
-          setOvrAndRefresh(null);
-          return true;
-        }
-        if (stepIdx >= 10 && stepIdx <= 14 && u === "interface gigabitethernet0/2") {
-          setOvrAndRefresh(null);
-          return true;
-        }
-        if (stepIdx >= 16 && stepIdx <= 18 && u === LAB_INTERFACE_RANGE_GI012) {
-          setOvrAndRefresh(null);
-          return true;
-        }
-        if (stepIdx >= 20 && stepIdx <= 23 && u === "interface port-channel15") {
-          setOvrAndRefresh(null);
-          return true;
-        }
-        return false;
+      /** IOS-like direct interface switch + sub-mode re-entry (shared cli-lab-container.js). */
+      function trySwStepInterfaceNav(line, getStepIndex, setStepIndex, promptEl, getOvr, setOvrAndRefresh, refreshPrompt) {
+        return cliLabContainer.applyLabStepInterfaceNav({
+          steps: LAB_STEPS,
+          stepIndex: getStepIndex(),
+          line: line,
+          normalizedCmd: normalize(line),
+          promptText: promptEl.textContent,
+          overrideMode: getOvr(),
+          setStepIndex: setStepIndex,
+          clearOverride: function () {
+            setOvrAndRefresh(null);
+          },
+          refreshPrompt: refreshPrompt,
+        });
       }
 
       function promptForMode(host, mode) {
@@ -1747,12 +1737,24 @@ Sw2# copy running-config startup-config</pre>
         }
 
         if (
-          trySwReenterContextLine(line, stepIndexSw1, function () {
-            return sw1PromptOverride;
-          }, function (v) {
-            sw1PromptOverride = v;
-            setSw1Prompt();
-          }, 1)
+          trySwStepInterfaceNav(
+            line,
+            function () {
+              return stepIndexSw1;
+            },
+            function (n) {
+              stepIndexSw1 = n;
+            },
+            swPrompt,
+            function () {
+              return sw1PromptOverride;
+            },
+            function (v) {
+              sw1PromptOverride = v;
+              setSw1Prompt();
+            },
+            setSw1Prompt
+          )
         ) {
           return;
         }
@@ -1914,12 +1916,24 @@ Sw2# copy running-config startup-config</pre>
         }
 
         if (
-          trySwReenterContextLine(line, stepIndexSw2, function () {
-            return sw2PromptOverride;
-          }, function (v) {
-            sw2PromptOverride = v;
-            setSw2Prompt();
-          }, 2)
+          trySwStepInterfaceNav(
+            line,
+            function () {
+              return stepIndexSw2;
+            },
+            function (n) {
+              stepIndexSw2 = n;
+            },
+            sw2Prompt,
+            function () {
+              return sw2PromptOverride;
+            },
+            function (v) {
+              sw2PromptOverride = v;
+              setSw2Prompt();
+            },
+            setSw2Prompt
+          )
         ) {
           return;
         }

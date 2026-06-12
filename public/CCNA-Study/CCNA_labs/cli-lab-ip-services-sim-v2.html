@@ -1381,31 +1381,31 @@ R3(config-line)# end</pre>
         return swPrompt.textContent === SWITCH_HOST + "(config)#";
       }
 
-      /**
-       * After exit to (config)# without finishing a sub-mode step, re-enter ACL/interface context
-       * so the pending STEPS line can be retried — does not advance stepIndex.
-       */
-      function tryR2ReenterContextLine(line) {
-        if (stepIndex >= STEPS.length) return false;
-        if (swPromptOverride !== "config") return false;
-        var u = normalize(line);
-        var m = STEPS[stepIndex].mode;
-        if (m === "config-std-nacl" && u === "ip access-list standard xlate") {
-          swPromptOverride = null;
-          setSwPrompt();
-          return true;
-        }
-        if (m === "config-if" && u === "interface gigabitethernet0/1" && stepIndex >= 7 && stepIndex <= 8) {
-          swPromptOverride = null;
-          setSwPrompt();
-          return true;
-        }
-        if (m === "config-if" && u === "interface gigabitethernet0/0" && stepIndex >= 10 && stepIndex <= 11) {
-          swPromptOverride = null;
-          setSwPrompt();
-          return true;
-        }
-        return false;
+      function r2StepInterfaceNav(line, u) {
+        return cliLabContainer.applyLabStepInterfaceNav({
+          steps: STEPS,
+          stepIndex: stepIndex,
+          line: line,
+          normalizedCmd: u,
+          promptText: swPrompt.textContent,
+          overrideMode: swPromptOverride,
+          setStepIndex: function (n) {
+            stepIndex = n;
+          },
+          clearOverride: function () {
+            swPromptOverride = null;
+          },
+          refreshPrompt: setSwPrompt,
+          onStepAdvanced: function (_prev, next) {
+            if (next >= STEPS.length) {
+              task1R2NatComplete = true;
+              swPrompt.textContent = SWITCH_HOST + "#";
+              tryCompleteIpServicesLab(function (cls, text) {
+                appendSw(cls, text);
+              });
+            }
+          },
+        });
       }
 
       function r2FailedStepMsg(u) {
@@ -1632,7 +1632,7 @@ R3(config-line)# end</pre>
           }
         }
 
-        if (tryR2ReenterContextLine(line)) {
+        if (r2StepInterfaceNav(line, u)) {
           return;
         }
 

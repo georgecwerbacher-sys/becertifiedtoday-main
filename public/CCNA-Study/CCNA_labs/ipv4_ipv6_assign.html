@@ -1742,7 +1742,38 @@ R2# copy running-config startup-config</pre>
           return;
         }
 
-        // 2) Off-script navigation (exit/end/configure terminal/interface ... when not the next step).
+        // 2) IOS-like direct interface switch / sub-mode re-entry (shared cli-lab-container.js).
+        if (
+          stepIndex < LAB_STEPS.length &&
+          cliLabContainer.applyLabStepInterfaceNav({
+            steps: LAB_STEPS,
+            stepIndex: stepIndex,
+            line: line,
+            normalizedCmd: normalized,
+            promptText: swPrompt.textContent,
+            overrideMode: swPromptOverride,
+            setStepIndex: function (n) {
+              stepIndex = n;
+            },
+            clearOverride: function () {
+              swPromptOverride = null;
+            },
+            refreshPrompt: setSwPrompt,
+            onStepAdvanced: function (_prev, next) {
+              if (next >= LAB_STEPS.length) {
+                swPrompt.textContent = promptForMode(SWITCH_HOST, "exec");
+                appendSw("line-sys", BASELINE_SW_STEPS_OK_MSG);
+                tryCompleteBaselineLab(function (cls, text) {
+                  appendSw(cls, text);
+                });
+              }
+            },
+          })
+        ) {
+          return;
+        }
+
+        // 3) Off-script navigation (exit/end/configure terminal/interface ... when not the next step).
         if (trySwNavSoftLine(line)) return;
 
         // 3) Permissive accept for common interface/VLAN commands so the simulator stays usable.
@@ -1949,10 +1980,41 @@ R2# copy running-config startup-config</pre>
           return;
         }
 
-        // 2) Off-script navigation.
+        // 2) IOS-like direct interface switch / sub-mode re-entry (shared cli-lab-container.js).
+        if (
+          stepIndexSw2 < R2_STEPS.length &&
+          cliLabContainer.applyLabStepInterfaceNav({
+            steps: R2_STEPS,
+            stepIndex: stepIndexSw2,
+            line: line,
+            normalizedCmd: normalized,
+            promptText: sw2Prompt.textContent,
+            overrideMode: sw2PromptOverride,
+            setStepIndex: function (n) {
+              stepIndexSw2 = n;
+            },
+            clearOverride: function () {
+              sw2PromptOverride = null;
+            },
+            refreshPrompt: setSw2Prompt,
+            onStepAdvanced: function (_prev, next) {
+              if (next >= R2_STEPS.length) {
+                sw2Prompt.textContent = promptForMode(SWITCH2_HOST, "exec");
+                appendSw2("line-sys", BASELINE_SW_STEPS_OK_MSG);
+                tryCompleteBaselineLab(function (cls, text) {
+                  appendSw2(cls, text);
+                });
+              }
+            },
+          })
+        ) {
+          return;
+        }
+
+        // 3) Off-script navigation.
         if (trySw2NavSoftLine(line)) return;
 
-        // 3) Permissive accept for common interface/VLAN commands (strict steps or soft-nav).
+        // 4) Permissive accept for common interface/VLAN commands (strict steps or soft-nav).
         if (
           (currentSw2Mode() === "config-if" || currentSw2Mode() === "config-if-range") &&
           isPermissiveIfCommand(line)

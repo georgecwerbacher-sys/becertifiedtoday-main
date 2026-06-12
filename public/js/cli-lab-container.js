@@ -56,6 +56,174 @@
     return invalidInputMsgForNormalizedCmd(u);
   }
 
+  var LAB_SUBMODE_CONTEXT_MODES = {
+    "config-if": true,
+    "config-if-range": true,
+    "config-std-nacl": true,
+    "config-ext-nacl": true,
+    "config-vlan": true,
+    "config-line": true,
+    "config-router": true,
+  };
+
+  var LAB_INTERFACE_ENTRY_PROBES = [
+    "interface gigabitethernet0/0",
+    "interface gigabitethernet0/1",
+    "interface gigabitethernet0/2",
+    "interface ethernet0/0",
+    "interface ethernet0/1",
+    "interface ethernet0/2",
+    "interface range gigabitethernet0/1 - 2",
+    "interface port-channel15",
+    "interface loopback0",
+    "interface vlan1",
+  ];
+
+  function stepTestPasses(step, line) {
+    if (!step || typeof step.test !== "function") return false;
+    try {
+      return !!step.test(line);
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function findStepIndexMatchingLine(steps, fromIndex, line) {
+    if (!steps || fromIndex < 0) return -1;
+    for (var i = Math.max(0, fromIndex); i < steps.length; i++) {
+      if (stepTestPasses(steps[i], line)) return i;
+    }
+    return -1;
+  }
+
+  function isInterfaceNavCommand(u) {
+    return u.indexOf("interface ") === 0;
+  }
+
+  function promptEndsWithConfig(promptText) {
+    return /\(config\)#$/.test(String(promptText || ""));
+  }
+
+  function promptEndsWithConfigSubmode(promptText) {
+    return /\(config-[^)]+\)#$/.test(String(promptText || ""));
+  }
+
+  function isSkippableStepForInterfaceSwitch(step) {
+    if (!step) return false;
+    if (stepTestPasses(step, "exit")) return true;
+    if (step.mode === "config" || step.mode === "config-if-range") {
+      for (var i = 0; i < LAB_INTERFACE_ENTRY_PROBES.length; i++) {
+        if (stepTestPasses(step, LAB_INTERFACE_ENTRY_PROBES[i])) return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * IOS: from (config-if)# (or other config sub-mode), type the next interface command without exit.
+   * Also accepts interface entry from (config)# when a pending exit step was soft-skipped.
+   * @returns {{ newStepIndex: number }|null}
+   */
+  function tryLabDirectInterfaceSwitch(opts) {
+    var steps = opts.steps;
+    var stepIndex = opts.stepIndex;
+    var line = opts.line;
+    var u = String(opts.normalizedCmd != null ? opts.normalizedCmd : line || "");
+    var promptText = opts.promptText || "";
+
+    if (!steps || stepIndex >= steps.length) return null;
+    if (!isInterfaceNavCommand(u)) return null;
+
+    var inSubmode = promptEndsWithConfigSubmode(promptText);
+    var inConfig = promptEndsWithConfig(promptText);
+    if (!inSubmode && !inConfig) return null;
+
+    var targetIdx = findStepIndexMatchingLine(steps, stepIndex, line);
+    if (targetIdx === -1 || targetIdx < stepIndex) return null;
+
+    for (var j = stepIndex; j < targetIdx; j++) {
+      if (!isSkippableStepForInterfaceSwitch(steps[j])) return null;
+    }
+
+    return { newStepIndex: targetIdx + 1 };
+  }
+
+  /**
+   * After soft exit to (config)#, re-enter ACL/interface/router sub-mode for the pending step.
+   * @returns {{ reenter: true }|null}
+   */
+  function tryLabReenterSubmodeContext(opts) {
+    var steps = opts.steps;
+    var stepIndex = opts.stepIndex;
+    var line = opts.line;
+    var u = String(opts.normalizedCmd != null ? opts.normalizedCmd : line || "");
+    var overrideMode = opts.overrideMode;
+
+    if (!steps || stepIndex >= steps.length) return null;
+    if (overrideMode !== "config") return null;
+
+    var pending = steps[stepIndex];
+    var pendingMode = pending && pending.mode;
+    if (!LAB_SUBMODE_CONTEXT_MODES[pendingMode]) return null;
+
+    if (pendingMode === "config-std-nacl" && u.indexOf("ip access-list") === 0) {
+      for (var k = stepIndex - 1; k >= 0; k--) {
+        if (steps[k].mode === "config" && stepTestPasses(steps[k], line)) {
+          return { reenter: true };
+        }
+        if (steps[k].mode === "exec") break;
+      }
+    }
+
+    if (pendingMode === "config-router" && u.indexOf("router ") === 0) {
+      for (var r = stepIndex - 1; r >= 0; r--) {
+        if (steps[r].mode === "config" && stepTestPasses(steps[r], line)) {
+          return { reenter: true };
+        }
+        if (steps[r].mode === "exec") break;
+      }
+    }
+
+    if (isInterfaceNavCommand(u)) {
+      for (var n = stepIndex - 1; n >= 0; n--) {
+        if ((steps[n].mode === "config" || steps[n].mode === "config-if-range") && stepTestPasses(steps[n], line)) {
+          return { reenter: true };
+        }
+        if (steps[n].mode === "exec") break;
+      }
+      if (stepIndex > 0 && stepTestPasses(steps[stepIndex - 1], line)) {
+        return { reenter: true };
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Shared IOS-like interface context navigation for graded LAB_STEPS engines.
+   * @returns {boolean} true when the line was handled (direct switch or sub-mode re-entry)
+   */
+  function applyLabStepInterfaceNav(opts) {
+    var direct = tryLabDirectInterfaceSwitch(opts);
+    if (direct) {
+      var prevStepIndex = opts.stepIndex;
+      if (typeof opts.setStepIndex === "function") opts.setStepIndex(direct.newStepIndex);
+      if (typeof opts.clearOverride === "function") opts.clearOverride();
+      if (typeof opts.refreshPrompt === "function") opts.refreshPrompt();
+      if (typeof opts.onStepAdvanced === "function") {
+        opts.onStepAdvanced(prevStepIndex, direct.newStepIndex);
+      }
+      return true;
+    }
+    var reenter = tryLabReenterSubmodeContext(opts);
+    if (reenter) {
+      if (typeof opts.clearOverride === "function") opts.clearOverride();
+      if (typeof opts.refreshPrompt === "function") opts.refreshPrompt();
+      return true;
+    }
+    return false;
+  }
+
   var localHistoryByInput = new WeakMap();
 
   function getLocalHistoryState(input) {
@@ -455,6 +623,9 @@
     INVALID_INPUT_NUMERIC_HINT_MSG: INVALID_INPUT_NUMERIC_HINT_MSG,
     invalidInputMsgForNormalizedCmd: invalidInputMsgForNormalizedCmd,
     unsupportedCmdMsg: unsupportedCmdMsg,
+    tryLabDirectInterfaceSwitch: tryLabDirectInterfaceSwitch,
+    tryLabReenterSubmodeContext: tryLabReenterSubmodeContext,
+    applyLabStepInterfaceNav: applyLabStepInterfaceNav,
     bindLocalHistory: bindLocalHistory,
     createExploreNav: createExploreNav,
     isCcnaLabEmbedPath: isCcnaLabEmbedPath,

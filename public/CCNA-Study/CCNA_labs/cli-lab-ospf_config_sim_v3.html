@@ -1253,6 +1253,36 @@ R1(config-if)# ip ospf priority 255</pre>
           return;
         }
 
+        if (
+          stepIndex < LAB_STEPS.length &&
+          cliLabContainer.applyLabStepInterfaceNav({
+            steps: LAB_STEPS,
+            stepIndex: stepIndex,
+            line: line,
+            normalizedCmd: u,
+            promptText: sw2Prompt.textContent,
+            overrideMode: r1PromptOverride,
+            setStepIndex: function (n) {
+              stepIndex = n;
+            },
+            clearOverride: function () {
+              r1PromptOverride = null;
+            },
+            refreshPrompt: setR1Prompt,
+            onStepAdvanced: function (_prev, next) {
+              if (next >= LAB_STEPS.length) {
+                sw2Prompt.textContent = promptForMode(SWITCH2_HOST, "exec");
+                appendSw2("line-sys", BASELINE_SW_STEPS_OK_MSG);
+                tryCompleteBaselineLab(function (cls, text) {
+                  appendSw2(cls, text);
+                });
+              }
+            },
+          })
+        ) {
+          return;
+        }
+
         if (stepIndex >= LAB_STEPS.length) {
           appendSw2("line-bad", cliLabContainer.INVALID_INPUT_MSG);
           return;

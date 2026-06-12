@@ -371,6 +371,34 @@
         return;
       }
 
+      if (
+        stepIndex < steps.length &&
+        container &&
+        typeof container.applyLabStepInterfaceNav === "function" &&
+        container.applyLabStepInterfaceNav({
+          steps: steps,
+          stepIndex: stepIndex,
+          line: line,
+          normalizedCmd: normalized,
+          promptText: el.prompt ? el.prompt.textContent : "",
+          overrideMode: exploreNav ? exploreNav.getMode() : null,
+          setStepIndex: function (n) {
+            stepIndex = n;
+          },
+          clearOverride: function () {
+            if (exploreNav && typeof exploreNav.reset === "function") exploreNav.reset();
+          },
+          refreshPrompt: updatePrompt,
+          onStepAdvanced: function (_prev, next) {
+            if (next >= steps.length && typeof opts.onAllStepsComplete === "function") {
+              opts.onAllStepsComplete();
+            }
+          },
+        })
+      ) {
+        return;
+      }
+
       if (stepIndex >= steps.length) {
         appendLine(el.scroll, "line-bad", unsupportedMsg(normalized));
         return;
