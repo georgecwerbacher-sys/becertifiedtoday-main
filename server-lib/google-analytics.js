@@ -320,12 +320,7 @@ export async function fetchBeginCheckoutByCampaign(client, propertyId, range, li
   const response = await runReportSafe(client, {
     property: propertyName(propertyId),
     dateRanges: [range],
-    dimensionFilter: mergeDimensionFilters(gaCustomerTrafficDimensionFilter(), {
-      filter: {
-        fieldName: "eventName",
-        stringFilter: { matchType: "EXACT", value: "begin_checkout" },
-      },
-    }),
+    dimensionFilter: beginCheckoutEventFilter(),
     dimensions: [{ name: "sessionCampaignName" }],
     metrics: [{ name: "eventCount" }],
     orderBys: [{ metric: { metricName: "eventCount" }, desc: true }],
@@ -336,6 +331,76 @@ export async function fetchBeginCheckoutByCampaign(client, propertyId, range, li
     campaign: row.dimensionValues?.[0]?.value || "(not set)",
     beginCheckout: Number(row.metricValues?.[0]?.value || 0),
   }));
+}
+
+function beginCheckoutEventFilter() {
+  return mergeDimensionFilters(gaCustomerTrafficDimensionFilter(), {
+    filter: {
+      fieldName: "eventName",
+      stringFilter: { matchType: "EXACT", value: "begin_checkout" },
+    },
+  });
+}
+
+/** Total begin_checkout clicks and unique users (Stripe button → payment page). */
+export async function fetchBeginCheckoutSummary(client, propertyId, range) {
+  const response = await runReportSafe(client, {
+    property: propertyName(propertyId),
+    dateRanges: [range],
+    dimensionFilter: beginCheckoutEventFilter(),
+    metrics: [{ name: "eventCount" }, { name: "activeUsers" }],
+  });
+
+  const row = response.rows?.[0];
+  return {
+    checkoutClicks: Number(row?.metricValues?.[0]?.value || 0),
+    uniqueUsers: Number(row?.metricValues?.[1]?.value || 0),
+  };
+}
+
+/** begin_checkout for itemIds matching a prefix (e.g. ccna, encor, secplus). */
+export async function fetchBeginCheckoutByItemPrefix(client, propertyId, range, prefix) {
+  const p = String(prefix || "").trim();
+  if (!p) return { checkoutClicks: 0, uniqueUsers: 0 };
+
+  const response = await runReportSafe(client, {
+    property: propertyName(propertyId),
+    dateRanges: [range],
+    dimensionFilter: mergeDimensionFilters(beginCheckoutEventFilter(), {
+      filter: {
+        fieldName: "itemId",
+        stringFilter: { matchType: "BEGINS_WITH", value: p },
+      },
+    }),
+    metrics: [{ name: "eventCount" }, { name: "activeUsers" }],
+  });
+
+  const row = response.rows?.[0];
+  return {
+    checkoutClicks: Number(row?.metricValues?.[0]?.value || 0),
+    uniqueUsers: Number(row?.metricValues?.[1]?.value || 0),
+  };
+}
+
+/** begin_checkout by GA4 itemId (portal / simulation SKU from data-bcc-item-id). */
+export async function fetchBeginCheckoutByItemId(client, propertyId, range, limit = 30) {
+  const response = await runReportSafe(client, {
+    property: propertyName(propertyId),
+    dateRanges: [range],
+    dimensionFilter: beginCheckoutEventFilter(),
+    dimensions: [{ name: "itemId" }],
+    metrics: [{ name: "eventCount" }, { name: "activeUsers" }],
+    orderBys: [{ metric: { metricName: "eventCount" }, desc: true }],
+    limit,
+  });
+
+  return (response.rows || [])
+    .map((row) => ({
+      itemId: row.dimensionValues?.[0]?.value || "(not set)",
+      checkoutClicks: Number(row.metricValues?.[0]?.value || 0),
+      uniqueUsers: Number(row.metricValues?.[1]?.value || 0),
+    }))
+    .filter((row) => row.itemId && row.itemId !== "(not set)");
 }
 
 /**

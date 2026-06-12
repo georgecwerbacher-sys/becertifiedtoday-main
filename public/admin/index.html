@@ -292,12 +292,11 @@
     <section id="dashPanel" class="hidden">
       <nav class="admin-nav" aria-label="Dashboard sections">
         <a href="#section-traffic">Traffic</a>
-        <a href="#section-samples">Samples</a>
+        <a href="#section-samples">Checkout</a>
         <a href="#section-questions">Questions</a>
         <a href="#section-portal-access">Portal access</a>
         <a href="#section-subscribers">Subscribers</a>
         <a href="#section-campaigns">Campaigns</a>
-        <a href="#section-preprod">Preproduction</a>
       </nav>
 
       <div class="panel" id="section-traffic">
@@ -345,51 +344,46 @@
         </div>
       </div>
 
-      <div class="panel" id="sampleLeadPanel">
-        <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-samples">Homepage sample → email capture</h2>
+      <div class="panel" id="sampleCheckoutPanel">
+        <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-samples">Stripe checkout (from samples &amp; home)</h2>
         <p style="margin:0 0 16px;font-size:0.85rem;color:var(--muted)">
-          After free sample questions (CCNA, ENCOR, Security+), who opened the email form and how many times they
-          submitted. Data from <code>home-sample-email-capture.csv</code> (requires <code>GITHUB_LEADS_TOKEN</code> on
-          Vercel).
+          Visitors who clicked a <strong>Get access</strong> or timed-simulation checkout button and triggered GA4
+          <code>begin_checkout</code> (redirect to Stripe). Same date range as traffic above. Completed purchases are
+          listed under <a href="#section-subscribers">Portal subscribers</a>.
         </p>
-        <div class="cards" id="sampleLeadSummaryCards"></div>
+        <div class="cards" id="sampleCheckoutSummaryCards"></div>
         <div class="portal-product-block">
-          <h3 class="portal-product-title">By product (funnel)</h3>
+          <h3 class="portal-product-title">By product</h3>
           <div class="portal-table-wrap">
             <table>
               <thead>
                 <tr>
                   <th>Product</th>
-                  <th>Finished sample</th>
-                  <th>Email modal</th>
-                  <th>Submit attempts</th>
-                  <th>Successes</th>
-                  <th>Unique emails</th>
+                  <th>Checkout clicks</th>
+                  <th>Unique users</th>
                 </tr>
               </thead>
-              <tbody id="sampleLeadFunnelBody"></tbody>
+              <tbody id="sampleCheckoutProductBody"></tbody>
             </table>
           </div>
         </div>
         <div class="portal-product-block">
-          <h3 class="portal-product-title">By email (submit attempts)</h3>
+          <h3 class="portal-product-title">By offer (item ID)</h3>
           <div class="portal-table-wrap">
             <table>
               <thead>
                 <tr>
-                  <th>Product</th>
-                  <th>Email</th>
-                  <th>Attempts</th>
-                  <th>Successes</th>
-                  <th>Sample track</th>
-                  <th>Last activity (UTC)</th>
+                  <th>Offer</th>
+                  <th>Item ID</th>
+                  <th>Checkout clicks</th>
+                  <th>Unique users</th>
                 </tr>
               </thead>
-              <tbody id="sampleLeadPeopleBody"></tbody>
+              <tbody id="sampleCheckoutItemBody"></tbody>
             </table>
           </div>
         </div>
-        <p id="sampleLeadStatus" class="status" aria-live="polite"></p>
+        <p id="sampleCheckoutStatus" class="status" aria-live="polite"></p>
       </div>
 
       <div class="panel" id="visitorQuestionsPanel">
@@ -532,16 +526,6 @@
         <p id="campaignMarketingStatus" class="status" aria-live="polite"></p>
       </div>
 
-      <div class="panel" id="preprodPanel">
-        <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-preprod">Preproduction &amp; staging</h2>
-        <p class="section-note">
-          Preview work-in-progress before production release. PBQ staging paths are open without portal paywall.
-          Other links use the same admin bypass as training portals when noted.
-        </p>
-        <div class="link-grid" id="preprodLinks"></div>
-        <p id="preprodStatus" class="status" aria-live="polite"></p>
-      </div>
-
       <div class="panel">
         <h2 style="margin:0 0 10px;font-size:1.05rem">Daily trend</h2>
         <div style="overflow-x:auto">
@@ -591,38 +575,6 @@
       };
       var SAMPLE_PATH_RE =
         /secplus-sample|\/ccna-home|\/ccnp-home|comptia-sec\+-home|\/ccna-study\/ccna_samples|\/ccnp-encor-study\/encor_samples|\/comp_tia_sec+\/sec\+_samples|sample-question|\/secplus-sample/i;
-      var PREPROD_ENTRIES = [
-        {
-          title: "Security+ PBQ — pending",
-          note: "Work-in-progress PBQ items before production publish. No portal required.",
-          path: "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/",
-          open: true,
-        },
-        {
-          title: "Security+ PBQ — production review",
-          note: "Review index for published PBQ simulations.",
-          path: "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/review-index.html",
-          open: true,
-        },
-        {
-          title: "CCNA home (pre-release copy)",
-          note: "Marketing / purchase landing for CCNA.",
-          path: "/ccna-home.html",
-          open: true,
-        },
-        {
-          title: "CCNP ENCOR home",
-          note: "Marketing / purchase landing for ENCOR.",
-          path: "/ccnp-home.html",
-          open: true,
-        },
-        {
-          title: "Security+ home",
-          note: "AdWords landing + samples + purchase.",
-          path: "/comptia-sec+-home.html",
-          open: true,
-        },
-      ];
       var portalBypassCache = [];
 
       function token() {
@@ -839,22 +791,24 @@
         }
       }
 
-      function renderSampleLeadReport(data) {
-        var summary = data.summary || {};
-        var people = data.people || [];
-        var totalAttempts = 0;
-        var totalSuccess = 0;
-        ["ccna", "encor", "secplus"].forEach(function (p) {
-          var s = summary[p] || {};
-          totalAttempts += Number(s.submitAttempts) || 0;
-          totalSuccess += Number(s.captureSuccesses) || 0;
-        });
+      function renderSampleCheckoutReport(data) {
+        if (!data) {
+          document.getElementById("sampleCheckoutSummaryCards").innerHTML = "";
+          document.getElementById("sampleCheckoutProductBody").innerHTML = "";
+          document.getElementById("sampleCheckoutItemBody").innerHTML = "";
+          document.getElementById("sampleCheckoutStatus").textContent =
+            "Checkout metrics not included in analytics report.";
+          document.getElementById("sampleCheckoutStatus").className = "status err";
+          return;
+        }
 
-        document.getElementById("sampleLeadSummaryCards").innerHTML = [
-          ["Submit attempts (all)", fmt(totalAttempts)],
-          ["Successful unlocks", fmt(totalSuccess)],
-          ["Unique emails", fmt(people.length)],
-          ["Events logged", fmt(data.rowCount)],
+        var summary = data.summary || {};
+        var byProduct = data.byProduct || [];
+        var byItem = data.byItem || [];
+
+        document.getElementById("sampleCheckoutSummaryCards").innerHTML = [
+          ["Checkout clicks", fmt(summary.checkoutClicks)],
+          ["Unique users (payment page)", fmt(summary.uniqueUsers)],
         ]
           .map(function (c) {
             return (
@@ -867,59 +821,50 @@
           })
           .join("");
 
-        document.getElementById("sampleLeadFunnelBody").innerHTML = ["ccna", "encor", "secplus"]
-          .map(function (p) {
-            var s = summary[p] || {};
-            return (
-              "<tr><td>" +
-              (SAMPLE_PRODUCT_LABELS[p] || p) +
-              "</td><td>" +
-              fmt(s.sampleCompletions) +
-              "</td><td>" +
-              fmt(s.emailModalOpens) +
-              "</td><td>" +
-              fmt(s.submitAttempts) +
-              "</td><td>" +
-              fmt(s.captureSuccesses) +
-              "</td><td>" +
-              fmt(s.uniqueEmails) +
-              "</td></tr>"
-            );
-          })
-          .join("");
-
-        var peopleBody = document.getElementById("sampleLeadPeopleBody");
-        if (!people.length) {
-          peopleBody.innerHTML =
-            '<tr><td colspan="6" style="color:var(--muted)">No sample email submissions yet.</td></tr>';
+        var productBody = document.getElementById("sampleCheckoutProductBody");
+        if (!byProduct.length) {
+          productBody.innerHTML =
+            '<tr><td colspan="3" style="color:var(--muted)">No begin_checkout events in this range.</td></tr>';
         } else {
-          peopleBody.innerHTML = people
+          productBody.innerHTML = byProduct
             .map(function (r) {
               return (
                 "<tr><td>" +
-                (SAMPLE_PRODUCT_LABELS[r.product] || r.product) +
-                '</td><td class="email">' +
-                r.email +
+                (r.label || SAMPLE_PRODUCT_LABELS[r.product] || r.product) +
                 "</td><td>" +
-                fmt(r.submitAttempts) +
+                fmt(r.checkoutClicks) +
                 "</td><td>" +
-                fmt(r.successes) +
-                "</td><td>" +
-                (r.sampleKind || "—") +
-                "</td><td>" +
-                fmtIsoUtcShort(r.lastAt) +
+                fmt(r.uniqueUsers) +
                 "</td></tr>"
               );
             })
             .join("");
         }
 
-        var note = data.note || "";
-        if (!data.rowCount) {
-          note += " No events in CSV yet — finish a homepage sample and submit the email form to create rows.";
+        var itemBody = document.getElementById("sampleCheckoutItemBody");
+        if (!byItem.length) {
+          itemBody.innerHTML =
+            '<tr><td colspan="4" style="color:var(--muted)">No item-level checkout data yet — click a checkout button on a certification home page.</td></tr>';
+        } else {
+          itemBody.innerHTML = byItem
+            .map(function (r) {
+              return (
+                "<tr><td>" +
+                (r.label || r.itemId) +
+                '</td><td class="path">' +
+                (r.itemId || "—") +
+                "</td><td>" +
+                fmt(r.checkoutClicks) +
+                "</td><td>" +
+                fmt(r.uniqueUsers) +
+                "</td></tr>"
+              );
+            })
+            .join("");
         }
-        document.getElementById("sampleLeadStatus").textContent = note;
-        document.getElementById("sampleLeadStatus").className = "status ok";
+
+        document.getElementById("sampleCheckoutStatus").textContent = data.note || "";
+        document.getElementById("sampleCheckoutStatus").className = "status ok";
       }
 
       function postJson(url, payload) {
@@ -1173,8 +1118,8 @@
         dashStatus.className = "status";
         portalStatus.textContent = "Loading portal subscribers…";
         portalStatus.className = "status";
-        document.getElementById("sampleLeadStatus").textContent = "Loading sample email capture…";
-        document.getElementById("sampleLeadStatus").className = "status";
+        document.getElementById("sampleCheckoutStatus").textContent = "Loading Stripe checkout metrics…";
+        document.getElementById("sampleCheckoutStatus").className = "status";
         document.getElementById("visitorQuestionsStatus").textContent = "Loading visitor questions…";
         document.getElementById("visitorQuestionsStatus").className = "status";
         document.getElementById("campaignMarketingStatus").textContent = "Loading campaign marketing…";
@@ -1183,14 +1128,12 @@
         Promise.all([
           postJson("/api/analytics-report", { range: rangeEl.value }),
           postJson("/api/portal-users-report", {}),
-          postJson("/api/sample-lead", { action: "report" }),
           postJson("/api/sample-lead", { action: "questions_report" }),
         ])
           .then(function (results) {
             var ga = results[0];
             var portal = results[1];
-            var sampleLead = results[2];
-            var visitorQuestions = results[3];
+            var visitorQuestions = results[2];
 
             if (!ga.ok) {
               if (ga.body && ga.body.error === "Unauthorized") {
@@ -1206,6 +1149,7 @@
             renderSampleTraffic(ga.body.topPages);
             renderTopPages(ga.body.topPages);
             renderTrend(ga.body.dailyTrend);
+            renderSampleCheckoutReport(ga.body.sampleCheckout);
             dashStatus.textContent = "";
             dashStatus.className = "status ok";
 
@@ -1218,17 +1162,6 @@
               return;
             }
             renderPortalUsers(portal.body);
-
-            if (!sampleLead.ok) {
-              document.getElementById("sampleLeadSummaryCards").innerHTML = "";
-              document.getElementById("sampleLeadFunnelBody").innerHTML = "";
-              document.getElementById("sampleLeadPeopleBody").innerHTML = "";
-              var sm = (sampleLead.body && sampleLead.body.error) || "Sample lead report failed";
-              document.getElementById("sampleLeadStatus").textContent = sm;
-              document.getElementById("sampleLeadStatus").className = "status err";
-            } else {
-              renderSampleLeadReport(sampleLead.body);
-            }
 
             if (!visitorQuestions.ok) {
               document.getElementById("visitorQuestionsSummaryCards").innerHTML = "";
@@ -1253,7 +1186,7 @@
             dashStatus.textContent = err.message || "Failed to load report";
             dashStatus.className = "status err";
             portalStatus.textContent = "";
-            document.getElementById("sampleLeadStatus").textContent = "";
+            document.getElementById("sampleCheckoutStatus").textContent = "";
             document.getElementById("visitorQuestionsStatus").textContent = "";
             clearCampaignMarketing();
             document.getElementById("campaignMarketingStatus").textContent = "";
@@ -1316,22 +1249,6 @@
           });
       }
 
-      function renderPreprodLinks() {
-        var grid = document.getElementById("preprodLinks");
-        if (!grid) return;
-        grid.innerHTML = PREPROD_ENTRIES.map(function (entry, i) {
-          return (
-            '<article class="link-card"><h3>' +
-            entry.title +
-            '</h3><p>' +
-            entry.note +
-            '</p><div class="actions"><a class="btn" href="' +
-            entry.path +
-            '" target="_blank" rel="noopener noreferrer">Open</a></div></article>'
-          );
-        }).join("");
-      }
-
       loginForm.addEventListener("submit", function (e) {
         e.preventDefault();
         loginStatus.textContent = "Signing in…";
@@ -1363,7 +1280,6 @@
             document.getElementById("password").value = "";
             showDash(true);
             loginStatus.textContent = "";
-            renderPreprodLinks();
             loadPortalBypassLinks();
             loadReport();
           })
@@ -1383,7 +1299,6 @@
 
       if (token()) {
         showDash(true);
-        renderPreprodLinks();
         loadPortalBypassLinks();
         loadReport();
       } else {

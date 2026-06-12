@@ -7,6 +7,7 @@
 import crypto from "crypto";
 import { issueAnalyticsAdminToken, verifyAnalyticsAdminToken } from "../server-lib/analytics-admin-jwt.js";
 import { buildCampaignMarketingReport } from "../server-lib/campaign-marketing-report.js";
+import { buildSampleCheckoutReport } from "../server-lib/sample-checkout-report.js";
 import {
   analyticsApiReady,
   fetchAnalyticsSummary,
@@ -142,13 +143,14 @@ export default async function handler(req, res) {
   const client = getAnalyticsDataClient(env);
 
   try {
-    const [summary, topPages, dailyTrend, realtimeActiveUsers, campaignMarketing] =
+    const [summary, topPages, dailyTrend, realtimeActiveUsers, campaignMarketing, sampleCheckout] =
       await Promise.all([
         fetchAnalyticsSummary(client, env.propertyId, range),
         fetchTopPages(client, env.propertyId, range, 20),
         fetchDailyTrend(client, env.propertyId, range),
         fetchRealtimeActiveUsers(client, env.propertyId),
         buildCampaignMarketingReport(client, env.propertyId, range),
+        buildSampleCheckoutReport(client, env.propertyId, range),
       ]);
 
     return res.status(200).json({
@@ -167,6 +169,7 @@ export default async function handler(req, res) {
           "Google Ads click data is not pulled via API yet — use Ads UI for spend/impressions. " +
           "Setup docs: scripts/*-google-ads.txt in the repo.",
       },
+      sampleCheckout,
       fetchedAt: new Date().toISOString(),
     });
   } catch (err) {
