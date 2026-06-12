@@ -1182,7 +1182,7 @@ no shut</div>
         cmdR3.value = "";
         if (!line.trim()) return;
         if (matchCopy(line)) {
-          appendLine(scrollR3, "line-sys", "[OK] R3: configuration saved (simulated).");
+          appendLine(scrollR3, "line-sys", cliLabContainer.COPY_RUN_START_OK_MSG);
           phase = "R20_SAVE";
           appendLine(scrollR20, "line-sys", "Save with copy running-config startup-config.");
           const radR20Save = document.querySelector('input[name="ospfDrBdrDev"][value="R20"]');
@@ -1224,7 +1224,7 @@ no shut</div>
         cmdR20.value = "";
         if (!lineSave.trim()) return;
         if (matchCopy(lineSave)) {
-          appendLine(scrollR20, "line-sys", "[OK] R20: configuration saved (simulated).");
+          appendLine(scrollR20, "line-sys", cliLabContainer.COPY_RUN_START_OK_MSG);
           phase = "R10_SAVE";
           appendLine(scrollR10, "line-sys", "Save R10 configuration.");
           const radR10AfterR20 = document.querySelector('input[name="ospfDrBdrDev"][value="R10"]');
@@ -1439,7 +1439,7 @@ no shut</div>
         cmdR10.value = "";
         if (!line.trim()) return;
         if (matchCopy(line)) {
-          appendLine(scrollR10, "line-sys", "[OK] R10: configuration saved (simulated).");
+          appendLine(scrollR10, "line-sys", cliLabContainer.COPY_RUN_START_OK_MSG);
           phase = "DONE";
           passBanner.classList.add("visible");
           updatePrompts();

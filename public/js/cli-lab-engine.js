@@ -17,8 +17,7 @@
       "Version 17.9.4a, RELEASE SOFTWARE\n" +
       "Technical Support: help feature disabled for tester\n" +
       "Copyright (c) BeCertifiedToday. All rights reserved.",
-    COPY_OK:
-      "Destination filename [startup-config]?\nBuilding configuration...\n[OK]",
+    COPY_OK: container ? container.COPY_RUN_START_OK_MSG : "configuration has been written to memory",
     COPY_EXEC_ONLY:
       "% Error: Run copy running-configuration startup-configuration only from privileged EXEC (#), not from configuration mode.",
     COPY_STEPS_INCOMPLETE:

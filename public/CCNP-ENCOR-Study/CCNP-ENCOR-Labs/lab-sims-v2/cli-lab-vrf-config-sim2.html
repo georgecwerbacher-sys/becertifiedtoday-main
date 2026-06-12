@@ -1153,7 +1153,7 @@ R22# copy running-config startup-config</pre>
       if (R22_STEPS[stepR22].test(line)) {
         stepR22 += 1;
         if (stepR22 >= R22_STEPS.length) {
-          appendLine(scrollR22, "line-sys", "[OK] Configuration saved (simulated).");
+          appendLine(scrollR22, "line-sys", cliLabContainer.COPY_RUN_START_OK_MSG);
           cmdR22.disabled = true;
           passBanner.classList.add("visible");
         }
@@ -1218,7 +1218,7 @@ R22# copy running-config startup-config</pre>
         return;
       }
       if (matchCopy(line)) {
-        appendLine(scrollSw22, "line-sys", "[OK] Configuration saved (simulated).");
+        appendLine(scrollSw22, "line-sys", cliLabContainer.COPY_RUN_START_OK_MSG);
         return;
       }
       if (tryExploreSw22(line, { alreadyEchoed: true })) return;

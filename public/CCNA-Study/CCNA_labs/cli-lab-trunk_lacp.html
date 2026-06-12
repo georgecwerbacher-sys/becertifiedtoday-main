@@ -1372,9 +1372,12 @@ Sw2(config-if)# end</pre>
         return normalize(raw) === "switchport trunk native vlan 45";
       }
 
-      /** Per-switch global VLAN create pair: vlan 15 and vlan 45 may be entered in either order. */
+      /** Per-switch required VLAN pair: lab pass needs both vlan 15 and vlan 45 on each switch. */
       var globalVlanPairSw1 = { v15: false, v45: false };
       var globalVlanPairSw2 = { v15: false, v45: false };
+      /** Any other vlan id first-create echo per switch (steps 1–2 only). */
+      var optionalVlanCreatedSw1 = Object.create(null);
+      var optionalVlanCreatedSw2 = Object.create(null);
 
       function testGlobalVlanPair(raw, sw) {
         var pair = sw === 2 ? globalVlanPairSw2 : globalVlanPairSw1;
@@ -1392,15 +1395,60 @@ Sw2(config-if)# end</pre>
         return false;
       }
 
-      /** Recognize vlan 15/45 from (config)# or (config-vlan)#; track first create per switch. */
-      function markGlobalVlan(raw, sw) {
+      function formatVlanCreatedMsg(raw) {
+        var m = /^vlan (\d+)$/.exec(normalize(raw));
+        return m ? "vlan " + m[1] + " has been created" : null;
+      }
+
+      function isVlanCreateCommand(raw) {
+        return /^vlan \d+$/.test(normalize(raw));
+      }
+
+      function vlanIdFromCreate(raw) {
+        var m = /^vlan (\d+)$/.exec(normalize(raw));
+        return m ? m[1] : null;
+      }
+
+      function requiredVlansComplete(sw) {
         var pair = sw === 2 ? globalVlanPairSw2 : globalVlanPairSw1;
-        var u = normalize(raw);
-        if (u !== "vlan 15" && u !== "vlan 45") return { recognized: false, newlySet: false };
-        var key = u === "vlan 15" ? "v15" : "v45";
-        if (pair[key]) return { recognized: true, newlySet: false };
-        pair[key] = true;
-        return { recognized: true, newlySet: true };
+        return pair.v15 && pair.v45;
+      }
+
+      function resetOptionalVlanCreated() {
+        optionalVlanCreatedSw1 = Object.create(null);
+        optionalVlanCreatedSw2 = Object.create(null);
+      }
+
+      /**
+       * Steps 1–2: any vlan N echoes "vlan N has been created"; only vlan 15/45 advance STEPS.
+       * Step 3+: vlan create is unsupported (lab expects interface/trunk commands).
+       */
+      function handleVlanCreateLine(line, sw, stepIdx, mode, appendFn, setPromptFn) {
+        if (!isVlanCreateCommand(line)) return false;
+        if (mode !== "config" && mode !== "config-vlan") return false;
+        if (stepIdx >= 3) {
+          appendFn("line-bad", cliLabContainer.INVALID_INPUT_MSG);
+          setPromptFn();
+          return true;
+        }
+        var optional = sw === 2 ? optionalVlanCreatedSw2 : optionalVlanCreatedSw1;
+        var vlanId = vlanIdFromCreate(line);
+        if (!vlanId) return false;
+        if (!optional[vlanId]) {
+          optional[vlanId] = true;
+          var createdMsg = formatVlanCreatedMsg(line);
+          if (createdMsg) appendFn("line-sys", createdMsg);
+        }
+        invalidateNvramSave(sw);
+        if ((stepIdx === 1 || stepIdx === 2) && testGlobalVlanPair(line, sw)) {
+          if (sw === 1) stepIndexSw1 += 1;
+          else stepIndexSw2 += 1;
+        }
+        var newStep = sw === 1 ? stepIndexSw1 : stepIndexSw2;
+        if (sw === 1) sw1PromptOverride = newStep >= 3 ? null : "config-vlan";
+        else sw2PromptOverride = newStep >= 3 ? null : "config-vlan";
+        setPromptFn();
+        return true;
       }
 
       /** Per-switch Gi0/1, Gi0/2, Po15: native and allowed VLAN lines may be entered in either order. */
@@ -1488,12 +1536,9 @@ Sw2(config-if)# end</pre>
       var HELP_DISABLED_MSG = "help feature disabled for tester";
       var SHOW_DISABLED_MSG = "this command is disabled for this lab";
       var SHOW_VERSION_MSG = "BeCertifiedToday version 2026";
-      var COPY_RUN_START_OK_MSG =
-        "Destination filename [startup-config]?\nBuilding configuration...\n[OK]";
+      var COPY_RUN_START_OK_MSG = cliLabContainer.COPY_RUN_START_OK_MSG;
       var COPY_RUN_START_EXEC_ONLY_MSG =
         "% Error: Run copy running-configuration startup-configuration only from privileged EXEC (#), not from configuration mode.";
-      var COPY_RUN_START_AFTER_STEPS_MSG =
-        "% Error: Finish the full STEPS sequence on this switch until you return to privileged EXEC (#), then save to startup-config.";
       var TRUNK_LAB_ALL_DONE_MSG =
         "[OK] Lab complete: trunks + LACP on both switches, PC1 reachability verified, startup-config saved on Sw1 and Sw2.";
       var PASS_BANNER_TRUNK_PENDING =
@@ -1564,10 +1609,17 @@ Sw2(config-if)# end</pre>
       var nvramSavedSw2 = false;
       var pc1PingOk = false;
 
+      function invalidateNvramSave(sw) {
+        if (sw === 1) nvramSavedSw1 = false;
+        else if (sw === 2) nvramSavedSw2 = false;
+      }
+
       function tryCompleteTrunkLab(append) {
         if (
           stepIndexSw1 < LAB_STEPS.length ||
           stepIndexSw2 < LAB_STEPS.length ||
+          !requiredVlansComplete(1) ||
+          !requiredVlansComplete(2) ||
           !nvramSavedSw1 ||
           !nvramSavedSw2 ||
           !pc1PingOk
@@ -1624,10 +1676,12 @@ Sw2(config-if)# end</pre>
         if (u.indexOf("interface range ") === 0 && currentMode === "config") {
           // Let LAB_STEPS consume the exact expected command for progression.
           if (LAB_STEPS[stepIdx].test(line, swNum)) return false;
+          invalidateNvramSave(swNum);
           setOvrAndRefresh("config-if-range");
           return true;
         }
         if (u === "configure terminal" && stepIdx > 0 && getOvr() === "exec") {
+          invalidateNvramSave(swNum);
           setOvrAndRefresh(null);
           return true;
         }
@@ -1670,18 +1724,22 @@ Sw2(config-if)# end</pre>
         if (getOvr() !== "config") return false;
         var u = normalize(line);
         if (stepIdx >= 4 && stepIdx <= 8 && u === "interface gigabitethernet0/1") {
+          invalidateNvramSave(swNum);
           setOvrAndRefresh(null);
           return true;
         }
         if (stepIdx >= 10 && stepIdx <= 14 && u === "interface gigabitethernet0/2") {
+          invalidateNvramSave(swNum);
           setOvrAndRefresh(null);
           return true;
         }
         if (stepIdx >= 16 && stepIdx <= 18 && u === "interface range gigabitethernet0/1 - 2") {
+          invalidateNvramSave(swNum);
           setOvrAndRefresh(null);
           return true;
         }
         if (stepIdx >= 20 && stepIdx <= 23 && u === "interface port-channel15") {
+          invalidateNvramSave(swNum);
           setOvrAndRefresh(null);
           return true;
         }
@@ -1887,6 +1945,7 @@ Sw2(config-if)# end</pre>
         clearLocalHistory(swCmdline);
         clearLocalHistory(sw2Cmdline);
         resetAllGlobalVlanPairFlags();
+        resetOptionalVlanCreated();
         resetAllTrunkVlanPairFlags();
         setSw1Prompt();
         setSw2Prompt();
@@ -1941,10 +2000,6 @@ Sw2(config-if)# end</pre>
             appendSw("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
             return;
           }
-          if (stepIndexSw1 < LAB_STEPS.length) {
-            appendSw("line-sys", COPY_RUN_START_AFTER_STEPS_MSG);
-            return;
-          }
           appendSw("line-sys", COPY_RUN_START_OK_MSG);
           nvramSavedSw1 = true;
           tryCompleteTrunkLab(function (cls, text) {
@@ -1988,13 +2043,7 @@ Sw2(config-if)# end</pre>
 
         var sw1Mode =
           sw1PromptOverride || (stepIndexSw1 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw1].mode : "exec");
-        var sw1VlanMark = markGlobalVlan(line, 1);
-        if (sw1VlanMark.recognized && (sw1Mode === "config" || sw1Mode === "config-vlan")) {
-          if (sw1VlanMark.newlySet && (stepIndexSw1 === 1 || stepIndexSw1 === 2)) {
-            stepIndexSw1 += 1;
-          }
-          sw1PromptOverride = stepIndexSw1 >= 3 ? null : "config-vlan";
-          setSw1Prompt();
+        if (handleVlanCreateLine(line, 1, stepIndexSw1, sw1Mode, appendSw, setSw1Prompt)) {
           return;
         }
 
@@ -2004,7 +2053,8 @@ Sw2(config-if)# end</pre>
         }
 
         if (LAB_STEPS[stepIndexSw1].test(line, 1)) {
-          var isVlanCreateSw1 = /^vlan \d+$/.test(normalize(line));
+          var isVlanCreateSw1 = isVlanCreateCommand(line);
+          invalidateNvramSave(1);
           stepIndexSw1 += 1;
           if (stepIndexSw1 === 4) {
             trunkVlanPairSw1.gi1.n = trunkVlanPairSw1.gi1.a = false;
@@ -2076,10 +2126,6 @@ Sw2(config-if)# end</pre>
             appendSw2("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
             return;
           }
-          if (stepIndexSw2 < LAB_STEPS.length) {
-            appendSw2("line-sys", COPY_RUN_START_AFTER_STEPS_MSG);
-            return;
-          }
           appendSw2("line-sys", COPY_RUN_START_OK_MSG);
           nvramSavedSw2 = true;
           tryCompleteTrunkLab(function (cls, text) {
@@ -2123,13 +2169,7 @@ Sw2(config-if)# end</pre>
 
         var sw2ModeNow =
           sw2PromptOverride || (stepIndexSw2 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw2].mode : "exec");
-        var sw2VlanMark = markGlobalVlan(line, 2);
-        if (sw2VlanMark.recognized && (sw2ModeNow === "config" || sw2ModeNow === "config-vlan")) {
-          if (sw2VlanMark.newlySet && (stepIndexSw2 === 1 || stepIndexSw2 === 2)) {
-            stepIndexSw2 += 1;
-          }
-          sw2PromptOverride = stepIndexSw2 >= 3 ? null : "config-vlan";
-          setSw2Prompt();
+        if (handleVlanCreateLine(line, 2, stepIndexSw2, sw2ModeNow, appendSw2, setSw2Prompt)) {
           return;
         }
 
@@ -2139,7 +2179,8 @@ Sw2(config-if)# end</pre>
         }
 
         if (LAB_STEPS[stepIndexSw2].test(line, 2)) {
-          var isVlanCreateSw2 = /^vlan \d+$/.test(normalize(line));
+          var isVlanCreateSw2 = isVlanCreateCommand(line);
+          invalidateNvramSave(2);
           stepIndexSw2 += 1;
           if (stepIndexSw2 === 4) {
             trunkVlanPairSw2.gi1.n = trunkVlanPairSw2.gi1.a = false;

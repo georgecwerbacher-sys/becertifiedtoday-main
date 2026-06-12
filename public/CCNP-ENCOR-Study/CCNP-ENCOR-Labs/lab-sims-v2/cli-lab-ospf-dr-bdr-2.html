@@ -978,7 +978,7 @@
         cmdR3.value = "";
         if (!line.trim()) return;
         if (matchCopy(line)) {
-          appendLine(scrollR3, "line-sys", "[OK] R3 saved (simulated). Save on R10 next.");
+          appendLine(scrollR3, "line-sys", cliLabContainer.COPY_RUN_START_OK_MSG);
           phase = "SAVE_R10";
           appendLine(scrollR10, "line-sys", "copy running-config startup-config");
           applyPhaseUI();
@@ -1058,7 +1058,7 @@
         cmdR20.value = "";
         if (!line.trim()) return;
         if (matchCopy(line)) {
-          appendLine(scrollR20, "line-sys", "[OK] R20 saved (simulated).");
+          appendLine(scrollR20, "line-sys", cliLabContainer.COPY_RUN_START_OK_MSG);
           phase = "DONE";
           passBanner.classList.add("visible");
           disableAllInputs();
@@ -1126,7 +1126,7 @@
         cmdR10.value = "";
         if (!line.trim()) return;
         if (matchCopy(line)) {
-          appendLine(scrollR10, "line-sys", "[OK] R10 saved (simulated). Save on R20.");
+          appendLine(scrollR10, "line-sys", cliLabContainer.COPY_RUN_START_OK_MSG);
           phase = "SAVE_R20";
           appendLine(scrollR20, "line-sys", "copy running-config startup-config");
           applyPhaseUI();

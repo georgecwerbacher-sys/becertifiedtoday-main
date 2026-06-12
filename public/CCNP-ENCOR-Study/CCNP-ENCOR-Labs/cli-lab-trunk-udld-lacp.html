@@ -1097,7 +1097,7 @@ end`;
         appendLine(scrollSW10, "line-user", `SW10# ${line}`);
         cmdSW10.value = "";
         if (matchCopy(line)) {
-          appendLine(scrollSW10, "line-sys", "[OK] Building configuration... (simulated).");
+          appendLine(scrollSW10, "line-sys", cliLabContainer.COPY_RUN_START_OK_MSG);
           phase = "DONE";
           passBanner.classList.add("visible");
           cmdSW10.disabled = true;

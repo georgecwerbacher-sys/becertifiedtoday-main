@@ -1563,7 +1563,7 @@ SW20# copy running-config startup-config</pre>
         sw20PromptOverride = null;
         promptEl.textContent = "SW20#";
         passBanner.classList.add("visible");
-        appendLine("line-sys", "[OK] Building configuration...\r\n[OK] Complete (simulated).");
+        appendLine("line-sys", cliLabContainer.COPY_RUN_START_OK_MSG);
         appendLine(
           "line-sys",
           "Simulation complete — final command was copy running-config startup-config. You can still use show running-config or show etherchannel summary; click Reset lab to start over."
@@ -1708,7 +1708,7 @@ SW20# copy running-config startup-config</pre>
         if (stepIndex >= STEPS.length) {
           promptEl.textContent = "SW20#";
           passBanner.classList.add("visible");
-          appendLine("line-sys", "[OK] Building configuration...\r\n[OK] Complete (simulated).");
+          appendLine("line-sys", cliLabContainer.COPY_RUN_START_OK_MSG);
           appendLine(
             "line-sys",
             "Simulation complete — final command was copy running-config startup-config. You can still use show running-config or show etherchannel summary; click Reset lab to start over."

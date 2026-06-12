@@ -1280,7 +1280,7 @@ Sw1# copy running-config startup-config</pre>
       cmdR1.value = "";
       r1InConfig = false;
       r1ExploreNav.reset();
-      appendLine(scrollR1, "line-sys", "[OK] R1 saved (simulated). Save Sw1.");
+      appendLine(scrollR1, "line-sys", cliLabContainer.COPY_RUN_START_OK_MSG);
       if (sw1Saved) {
         finishLab();
       } else {
@@ -1404,7 +1404,7 @@ Sw1# copy running-config startup-config</pre>
       appendLine(scrollSw1, "line-user", `${sw1PromptForDisplay()} ${line}`);
       cmdSw1.value = "";
       sw1Saved = true;
-      appendLine(scrollSw1, "line-sys", "[OK] Sw1 saved (simulated).");
+      appendLine(scrollSw1, "line-sys", cliLabContainer.COPY_RUN_START_OK_MSG);
       if (phase === "SW1_SAVE") {
         finishLab();
       }

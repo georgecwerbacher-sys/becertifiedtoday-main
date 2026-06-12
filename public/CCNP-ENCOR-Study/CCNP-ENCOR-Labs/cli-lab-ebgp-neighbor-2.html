@@ -1066,7 +1066,7 @@ R1# copy running-config startup-config</pre>
     function tryR1SaveCopy(line) {
       if (!matchCopy(line) || r1Mode !== "exec") return false;
       if (phase !== "SAVE" && !(phase === "BGP" && r1BgpReadyForEnd())) return false;
-      appendLine(scrollback, "line-sys", "[OK] Building configuration... (simulated).");
+      appendLine(scrollback, "line-sys", cliLabContainer.COPY_RUN_START_OK_MSG);
       phase = "DONE";
       passBanner.classList.add("visible");
       cmdline.disabled = true;

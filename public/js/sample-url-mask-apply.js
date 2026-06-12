@@ -494,15 +494,30 @@
 
   function bootExamSimEmbed() {
     applyExamSimEmbedStyles();
+    if (window.cliLabContainer && typeof window.cliLabContainer.initBctCliBanner === "function") {
+      window.cliLabContainer.initBctCliBanner();
+      return;
+    }
     injectBctCliBannerLabStyles();
     wireExamSimCliOpenBanner();
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", bootExamSimEmbed);
-  } else {
-    bootExamSimEmbed();
+  function scheduleBootExamSimEmbed() {
+    function run() {
+      bootExamSimEmbed();
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", run, { once: true });
+      return;
+    }
+    if (document.querySelector(".cli-modal-overlay")) {
+      run();
+      return;
+    }
+    document.addEventListener("DOMContentLoaded", run, { once: true });
   }
+
+  scheduleBootExamSimEmbed();
 })();
 
 /** Google tag (gtag.js) on CCNA pages without static head snippet */

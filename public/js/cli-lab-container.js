@@ -28,6 +28,7 @@
     "% command not supported in this lab simulation — check the lab Tasks and Verification sections for the exact values.";
   var CLI_VERIFY_INSTRUCTIONS_MSG =
     "% command not supported in this lab simulation. Verify the lab instructions (Tasks and Helper) for the required values.";
+  var COPY_RUN_START_OK_MSG = "configuration has been written to memory";
 
   /** @deprecated use CLI_UNSUPPORTED_MSG */
   var INVALID_INPUT_MSG = CLI_UNSUPPORTED_MSG;
@@ -137,6 +138,64 @@
     scrollbackEl.scrollTop = 0;
   }
 
+  var BCT_CLI_BANNER_LAB_CSS =
+    ".terminal .line-boot{white-space:pre-wrap;word-break:break-word;color:#94a3b8;font-size:.82rem;line-height:1.45;margin-bottom:10px;padding:10px 12px;border-radius:6px;background:#0a0e14;border:1px solid #1e293b}";
+
+  function injectBctCliBannerLabStyles() {
+    if (!isBctCliBannerContext()) return;
+    if (document.head.querySelector("style[data-bcc-cli-banner-lab]")) return;
+    var s = document.createElement("style");
+    s.setAttribute("data-bcc-cli-banner-lab", "1");
+    s.textContent = BCT_CLI_BANNER_LAB_CSS;
+    document.head.appendChild(s);
+  }
+
+  function wireBctCliOpenBanner() {
+    if (!isBctCliBannerContext()) return;
+
+    function onOverlayOpened(overlay) {
+      if (!overlay || !overlay.classList.contains("is-open")) return;
+      requestAnimationFrame(function () {
+        var scroll = overlay.querySelector(".scrollback-area");
+        if (scroll) showExamSimCliBanner(scroll);
+      });
+    }
+
+    document.querySelectorAll(".cli-modal-overlay").forEach(function (overlay) {
+      if (overlay.dataset.bctExamSimCliBanner === "1") return;
+      overlay.dataset.bctExamSimCliBanner = "1";
+      new MutationObserver(function (mutations) {
+        mutations.forEach(function (m) {
+          if (m.attributeName === "class") onOverlayOpened(overlay);
+        });
+      }).observe(overlay, { attributes: true, attributeFilter: ["class"] });
+      if (overlay.classList.contains("is-open")) onOverlayOpened(overlay);
+    });
+  }
+
+  function initBctCliBanner() {
+    if (!isBctCliBannerContext()) return;
+    injectBctCliBannerLabStyles();
+    wireBctCliOpenBanner();
+  }
+
+  function scheduleBctCliBannerInit() {
+    function run() {
+      initBctCliBanner();
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", run, { once: true });
+      return;
+    }
+    if (document.querySelector(".cli-modal-overlay")) {
+      run();
+      return;
+    }
+    document.addEventListener("DOMContentLoaded", run, { once: true });
+  }
+
+  scheduleBctCliBannerInit();
+
   /** Per-device IOS explore nav; delegates to cli-ios-mode.js when loaded. */
   function createExploreNav(host) {
     var iosMode =
@@ -164,6 +223,7 @@
     CLI_UNSUPPORTED_MSG: CLI_UNSUPPORTED_MSG,
     CLI_UNSUPPORTED_NUMERIC_HINT_MSG: CLI_UNSUPPORTED_NUMERIC_HINT_MSG,
     CLI_VERIFY_INSTRUCTIONS_MSG: CLI_VERIFY_INSTRUCTIONS_MSG,
+    COPY_RUN_START_OK_MSG: COPY_RUN_START_OK_MSG,
     INVALID_INPUT_MSG: INVALID_INPUT_MSG,
     INVALID_INPUT_NUMERIC_HINT_MSG: INVALID_INPUT_NUMERIC_HINT_MSG,
     invalidInputMsgForNormalizedCmd: invalidInputMsgForNormalizedCmd,
@@ -175,6 +235,9 @@
     isBctCliBannerContext: isBctCliBannerContext,
     EXAM_SIM_CLI_BANNER_TEXT: EXAM_SIM_CLI_BANNER_TEXT,
     showExamSimCliBanner: showExamSimCliBanner,
+    injectBctCliBannerLabStyles: injectBctCliBannerLabStyles,
+    wireBctCliOpenBanner: wireBctCliOpenBanner,
+    initBctCliBanner: initBctCliBanner,
   };
 
   window.cliLabContainer = api;

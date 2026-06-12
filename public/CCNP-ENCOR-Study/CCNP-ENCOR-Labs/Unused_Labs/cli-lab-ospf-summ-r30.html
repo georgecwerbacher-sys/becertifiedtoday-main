@@ -734,7 +734,7 @@
 
       if (phase === "SAVE") {
         if (matchCopy(line)) {
-          appendLine("line-sys", "[OK] Building configuration... (simulated).");
+          appendLine("line-sys", cliLabContainer.COPY_RUN_START_OK_MSG);
           phase = "DONE";
           passBanner.classList.add("visible");
           cmdline.disabled = true;

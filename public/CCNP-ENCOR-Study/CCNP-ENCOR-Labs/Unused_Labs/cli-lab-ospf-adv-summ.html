@@ -695,7 +695,7 @@
 
       if (phase === "R1_SAVE") {
         if (matchCopy(line)) {
-          appendLine(scrollR1, "line-sys", "[OK] R1 saved (simulated).");
+          appendLine(scrollR1, "line-sys", cliLabContainer.COPY_RUN_START_OK_MSG);
           phase = "DONE";
           passBanner.classList.add("visible");
           applyPhaseUI();
