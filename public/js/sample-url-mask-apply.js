@@ -829,6 +829,9 @@
   }
 
   function sampleLogoHomeHref() {
+    if (/\/CCNA-Study\/CCNA_labs\//i.test(String(location.pathname || ""))) {
+      return "/CCNA-Study/CCNA_Training_Portal.html";
+    }
     try {
       if (sessionStorage.getItem("ccnaHomeSample")) {
         return readSampleSessionHome("ccnaHomeSample", "/ccna-home.html");
@@ -844,6 +847,7 @@
   }
 
   function sampleLogoAriaLabel(href) {
+    if (href === "/CCNA-Study/CCNA_Training_Portal.html") return "CCNA training portal";
     if (href === "/ccna-home.html") return "Back to CCNA home";
     if (href === "/ccnp-home.html") return "Back to ENCOR home";
     return "Back to home";
@@ -929,10 +933,16 @@
   }
 
   function applySampleLogoChrome() {
+    if (window.cliLabContainer && typeof window.cliLabContainer.initCcnaLabTopChrome === "function") {
+      window.cliLabContainer.initCcnaLabTopChrome();
+    }
     if (!isSampleExperience()) return;
     document.body.classList.add("bcc-sample-experience");
     injectSampleLogoStyles();
     wireSampleLogoLinks();
+    if (window.cliLabContainer && typeof window.cliLabContainer.initCcnaLabTopChrome === "function") {
+      window.cliLabContainer.initCcnaLabTopChrome();
+    }
   }
 
   if (document.readyState === "loading") {

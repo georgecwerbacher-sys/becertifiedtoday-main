@@ -429,25 +429,6 @@
     .sim-nav-home {
       background: #1a3d6e;
     }
-    .site-logo-corner {
-      position: fixed;
-      top: 12px;
-      right: 12px;
-      z-index: 12000;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 10px;
-      background: rgba(11, 16, 32, 0.55);
-      border: 1px solid #2d3b5a;
-      padding: 6px;
-      backdrop-filter: blur(4px);
-    }
-    .site-logo-corner img {
-      display: block;
-      width: 52px;
-      height: 52px;
-    }
     .cli-modal-dialog,
     .terminal {
       color-scheme: dark;
@@ -558,13 +539,14 @@
     }
   </style>
 </head>
-<body>
+<body class="bcc-ccna-lab-top-chrome ccna-question-ui">
   <script src="/js/sample-url-mask-apply.js"></script>
-  <div class="site-logo-corner" aria-hidden="true">
-    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="" />
-  </div>
-
   <div class="wrap">
+    <header class="lab-top-bar" aria-label="Lab navigation">
+    <a class="site-logo-corner" href="/CCNA-Study/CCNA_Training_Portal.html" aria-label="CCNA training portal">
+      <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    </header>
     <main class="card">
       <h1>REPLACE: Lab title</h1>
 

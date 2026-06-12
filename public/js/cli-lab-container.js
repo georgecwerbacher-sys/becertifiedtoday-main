@@ -29,6 +29,19 @@
   var CLI_VERIFY_INSTRUCTIONS_MSG =
     "% command not supported in this lab simulation. Verify the lab instructions (Tasks and Helper) for the required values.";
   var COPY_RUN_START_OK_MSG = "configuration has been written to memory";
+  var CCNA_TRAINING_PORTAL_HREF = "/CCNA-Study/CCNA_Training_Portal.html";
+  /** Order matches CCNA_Training_Portal.html Lab Simulations grid. */
+  var CCNA_LAB_CHAIN = [
+    "/CCNA-Study/CCNA_labs/cli-lab-trunk_lacp.html",
+    "/CCNA-Study/CCNA_labs/cli-lab-vlan-sim.html",
+    "/CCNA-Study/CCNA_labs/cli-lab-ip-services-sim-v2.html",
+    "/CCNA-Study/CCNA_labs/cli-lab-nat-dhcp-sim.html",
+    "/CCNA-Study/CCNA_labs/cli-lab-native_vlan_lacp.html",
+    "/CCNA-Study/CCNA_labs/cli-lab-static-routing.html",
+    "/CCNA-Study/CCNA_labs/ipv4_ipv6_assign.html",
+    "/CCNA-Study/CCNA_labs/cli-lab-ospf_config_sim_v3.html",
+    "/CCNA-Study/CCNA_labs/cli-lab-named-acl-snoopimg.html",
+  ];
 
   /** @deprecated use CLI_UNSUPPORTED_MSG */
   var INVALID_INPUT_MSG = CLI_UNSUPPORTED_MSG;
@@ -196,6 +209,217 @@
 
   scheduleBctCliBannerInit();
 
+  function normalizeLabPagePath(p) {
+    var s = String(p || "").split("#")[0].split("?")[0];
+    if (!s) return "";
+    if (s.length > 1 && s.charAt(s.length - 1) === "/") s = s.slice(0, -1);
+    return s;
+  }
+
+  function ccnaLabChainIndex(pathname) {
+    var cur = normalizeLabPagePath(pathname);
+    for (var i = 0; i < CCNA_LAB_CHAIN.length; i++) {
+      if (normalizeLabPagePath(CCNA_LAB_CHAIN[i]) === cur) return i;
+    }
+    return -1;
+  }
+
+  function ccnaLabTopChromeStyles() {
+    return (
+      "body.bcc-ccna-lab-top-chrome .page-logo-watermark{" +
+      "position:fixed;inset:0;z-index:0;pointer-events:none;display:flex;align-items:center;justify-content:center;overflow:hidden;" +
+      "}" +
+      "body.bcc-ccna-lab-top-chrome .page-logo-watermark img{" +
+      "width:min(85vw,720px);max-height:85vh;height:auto;object-fit:contain;opacity:0.16;" +
+      "}" +
+      "body.bcc-ccna-lab-top-chrome .wrap{position:relative;z-index:1;}" +
+      "body.bcc-ccna-lab-top-chrome .lab-top-bar{" +
+      "display:flex;justify-content:flex-end;align-items:center;flex-direction:row-reverse;gap:12px;width:100%;margin:0 0 2rem;" +
+      "}" +
+      "body.bcc-ccna-lab-top-chrome .lab-top-bar .site-logo-corner," +
+      "body.bcc-ccna-lab-top-chrome.bcc-sample-experience .lab-top-bar .site-logo-corner," +
+      "body.bcc-ccna-lab-top-chrome.ccna-sample-guest-ui .lab-top-bar .site-logo-corner{" +
+      "position:static!important;" +
+      "top:auto!important;" +
+      "left:auto!important;" +
+      "right:auto!important;" +
+      "bottom:auto!important;" +
+      "z-index:auto!important;" +
+      "display:inline-flex!important;" +
+      "align-items:center!important;" +
+      "justify-content:center!important;" +
+      "align-self:flex-end!important;" +
+      "margin:0!important;" +
+      "background:transparent!important;" +
+      "border:none!important;" +
+      "padding:0!important;" +
+      "backdrop-filter:none!important;" +
+      "box-shadow:none!important;" +
+      "border-radius:0!important;" +
+      "pointer-events:auto!important;" +
+      "}" +
+      "body.bcc-ccna-lab-top-chrome a.site-logo-corner{text-decoration:none!important;color:inherit!important;}" +
+      "body.bcc-ccna-lab-top-chrome a.site-logo-corner:focus-visible{outline:2px solid #4f84d8!important;outline-offset:3px!important;}" +
+      "body.bcc-ccna-lab-top-chrome .lab-top-bar .site-logo-corner img{display:block;width:52px;height:52px;background:transparent!important;}" +
+      "body.bcc-ccna-lab-top-chrome span.site-logo-corner{pointer-events:none!important;}" +
+      "body.bcc-ccna-lab-top-chrome .lab-top-bar .lab-top-next," +
+      "body.bcc-ccna-lab-top-chrome.bcc-sample-experience .lab-top-bar .lab-top-next{" +
+      "position:static!important;" +
+      "top:auto!important;" +
+      "right:auto!important;" +
+      "left:auto!important;" +
+      "z-index:auto!important;" +
+      "flex:0 0 auto!important;" +
+      "margin:0!important;" +
+      "text-decoration:none!important;" +
+      "background:#254b8a!important;" +
+      "border:1px solid #3d6dbb!important;" +
+      "color:#e6edf3!important;" +
+      "border-radius:10px!important;" +
+      "padding:10px 16px!important;" +
+      "font-weight:700!important;" +
+      "font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif!important;" +
+      "font-size:0.9rem!important;" +
+      "box-shadow:none!important;" +
+      "}" +
+      "body.bcc-ccna-lab-top-chrome .lab-top-bar .lab-top-next:hover{filter:brightness(1.08)!important;}" +
+      "body.bcc-ccna-lab-top-chrome .lab-top-bar .lab-top-next:focus-visible{outline:2px solid #4f84d8!important;outline-offset:3px!important;}" +
+      "body.bcc-ccna-lab-top-chrome.ccna-question-ui{" +
+      "background:#ffffff!important;color:#1a3d6e!important;position:relative!important;" +
+      "}" +
+      "body.bcc-ccna-lab-top-chrome .card,body.bcc-ccna-lab-top-chrome main.card{" +
+      "background:transparent!important;border:none!important;box-shadow:none!important;color:#1a3d6e!important;" +
+      "}" +
+      "body.bcc-ccna-lab-top-chrome h1,body.bcc-ccna-lab-top-chrome .wrap h2,body.bcc-ccna-lab-top-chrome .wrap h3,body.bcc-ccna-lab-top-chrome .wrap h4{" +
+      "color:#1a3d6e!important;" +
+      "}" +
+      "body.bcc-ccna-lab-top-chrome .wrap .objective,body.bcc-ccna-lab-top-chrome .wrap .tasks,body.bcc-ccna-lab-top-chrome .wrap .tasks li," +
+      "body.bcc-ccna-lab-top-chrome .wrap .study-meta,body.bcc-ccna-lab-top-chrome .wrap .lab-spoiler-note,body.bcc-ccna-lab-top-chrome .wrap p," +
+      "body.bcc-ccna-lab-top-chrome .wrap li,body.bcc-ccna-lab-top-chrome .wrap label,body.bcc-ccna-lab-top-chrome .wrap .device-pick," +
+      "body.bcc-ccna-lab-top-chrome .wrap .device-pick strong{" +
+      "color:#1a3d6e!important;" +
+      "}" +
+      "body.bcc-ccna-lab-top-chrome h1{color:#1a3d6e!important;}" +
+      "body.bcc-ccna-lab-top-chrome .wrap .tasks-blue-box,body.bcc-ccna-lab-top-chrome .wrap .device-pick,body.bcc-ccna-lab-top-chrome .wrap .topology-scrape," +
+      "body.bcc-ccna-lab-top-chrome .wrap .address-table-wrap,body.bcc-ccna-lab-top-chrome .wrap .lab-info-panel{" +
+      "background:transparent!important;border:1px solid #3d6dbb!important;color:#1a3d6e!important;" +
+      "}" +
+      "body.bcc-ccna-lab-top-chrome .tasks-blue-box .tasks,body.bcc-ccna-lab-top-chrome .tasks-blue-box ol.tasks," +
+      "body.bcc-ccna-lab-top-chrome .tasks-blue-box ol.tasks li,body.bcc-ccna-lab-top-chrome .tasks-blue-box .tasks strong," +
+      "body.bcc-ccna-lab-top-chrome .tasks-blue-box ol.tasks strong,body.bcc-ccna-lab-top-chrome .topology-scrape p.helper-cli-desc{" +
+      "color:#1a3d6e!important;" +
+      "}" +
+      "body.bcc-ccna-lab-top-chrome .wrap .diagram-wrap{" +
+      "background:#ffffff!important;border:1px solid #3d6dbb!important;" +
+      "}" +
+      "body.bcc-ccna-lab-top-chrome .sim-nav{" +
+      "background:rgba(255,255,255,0.94)!important;border-top:1px solid #3d6dbb!important;" +
+      "}" +
+      "body.bcc-ccna-lab-top-chrome .pass-banner{" +
+      "color:#ffffff!important;" +
+      "}"
+    );
+  }
+
+  function ensureLabPageWatermark() {
+    if (document.querySelector(".page-logo-watermark")) return;
+    var wm = document.createElement("div");
+    wm.className = "page-logo-watermark";
+    wm.setAttribute("aria-hidden", "true");
+    wm.innerHTML =
+      '<img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />';
+    document.body.insertBefore(wm, document.body.firstChild);
+  }
+
+  function ensureLabTopBar() {
+    var wrap = document.querySelector(".wrap");
+    if (!wrap) return null;
+    var bar = wrap.querySelector(".lab-top-bar");
+    if (!bar) {
+      bar = document.createElement("header");
+      bar.className = "lab-top-bar";
+      bar.setAttribute("aria-label", "Lab navigation");
+      wrap.insertBefore(bar, wrap.firstChild);
+    }
+    return bar;
+  }
+
+  function ensureCcnaLabLogoLink() {
+    var logo = document.querySelector(".site-logo-corner");
+    if (!logo || logo.tagName === "SPAN") return null;
+    var anchor = logo;
+    if (logo.tagName !== "A") {
+      anchor = document.createElement("a");
+      anchor.className = logo.className;
+      anchor.innerHTML = logo.innerHTML;
+      logo.parentNode.replaceChild(anchor, logo);
+    }
+    anchor.href = CCNA_TRAINING_PORTAL_HREF;
+    anchor.setAttribute("aria-label", "CCNA training portal");
+    anchor.removeAttribute("aria-hidden");
+    anchor.style.background = "transparent";
+    anchor.style.border = "none";
+    anchor.style.padding = "0";
+    anchor.style.backdropFilter = "none";
+    anchor.style.boxShadow = "none";
+    anchor.style.borderRadius = "0";
+    var logoImg = anchor.querySelector("img");
+    if (logoImg) logoImg.style.background = "transparent";
+    return anchor;
+  }
+
+  function wireCcnaLabNextButton(chainIdx, bar) {
+    if (chainIdx < 0 || !bar) return;
+    var existing = bar.querySelector(".lab-top-next");
+    if (existing) existing.remove();
+    var nextHref =
+      chainIdx < CCNA_LAB_CHAIN.length - 1
+        ? CCNA_LAB_CHAIN[chainIdx + 1]
+        : CCNA_TRAINING_PORTAL_HREF;
+    var label = chainIdx < CCNA_LAB_CHAIN.length - 1 ? "Next lab" : "Training portal";
+    var btn = document.createElement("a");
+    btn.className = "lab-top-next";
+    btn.href = nextHref;
+    btn.textContent = label;
+    btn.setAttribute(
+      "aria-label",
+      chainIdx < CCNA_LAB_CHAIN.length - 1 ? "Open next lab simulation" : "Back to CCNA training portal"
+    );
+    bar.appendChild(btn);
+  }
+
+  function initCcnaLabTopChrome() {
+    var chainIdx = ccnaLabChainIndex(location.pathname);
+    if (chainIdx < 0) return;
+    if (!document.head.querySelector("style[data-bcc-ccna-lab-top-chrome]")) {
+      var styleEl = document.createElement("style");
+      styleEl.setAttribute("data-bcc-ccna-lab-top-chrome", "1");
+      styleEl.textContent = ccnaLabTopChromeStyles();
+      document.head.appendChild(styleEl);
+    }
+    document.body.classList.add("bcc-ccna-lab-top-chrome", "ccna-question-ui");
+    ensureLabPageWatermark();
+    var bar = ensureLabTopBar();
+    var logo = ensureCcnaLabLogoLink();
+    if (logo && bar && logo.parentNode !== bar) {
+      bar.insertBefore(logo, bar.firstChild);
+    }
+    wireCcnaLabNextButton(chainIdx, bar);
+  }
+
+  function scheduleCcnaLabTopChromeInit() {
+    function run() {
+      initCcnaLabTopChrome();
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", run, { once: true });
+      return;
+    }
+    run();
+  }
+
+  scheduleCcnaLabTopChromeInit();
+
   /** Per-device IOS explore nav; delegates to cli-ios-mode.js when loaded. */
   function createExploreNav(host) {
     var iosMode =
@@ -224,6 +448,9 @@
     CLI_UNSUPPORTED_NUMERIC_HINT_MSG: CLI_UNSUPPORTED_NUMERIC_HINT_MSG,
     CLI_VERIFY_INSTRUCTIONS_MSG: CLI_VERIFY_INSTRUCTIONS_MSG,
     COPY_RUN_START_OK_MSG: COPY_RUN_START_OK_MSG,
+    CCNA_TRAINING_PORTAL_HREF: CCNA_TRAINING_PORTAL_HREF,
+    CCNA_LAB_CHAIN: CCNA_LAB_CHAIN,
+    initCcnaLabTopChrome: initCcnaLabTopChrome,
     INVALID_INPUT_MSG: INVALID_INPUT_MSG,
     INVALID_INPUT_NUMERIC_HINT_MSG: INVALID_INPUT_NUMERIC_HINT_MSG,
     invalidInputMsgForNormalizedCmd: invalidInputMsgForNormalizedCmd,

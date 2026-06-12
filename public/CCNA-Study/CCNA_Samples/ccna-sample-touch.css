@@ -31,6 +31,51 @@ html {
   outline-offset: 3px;
 }
 
+/* CCNA CLI labs — in-flow logo, no dark pill (loads before JS body classes) */
+.lab-top-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: row-reverse;
+  gap: 12px;
+  width: 100%;
+  margin: 0 0 2rem;
+}
+.lab-top-bar .site-logo-corner {
+  position: static !important;
+  top: auto !important;
+  right: auto !important;
+  left: auto !important;
+  z-index: auto !important;
+  align-self: flex-end !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+.lab-top-bar .site-logo-corner img {
+  display: block;
+  width: 52px;
+  height: 52px;
+  background: transparent !important;
+}
+
+/* CCNA CLI labs — logo only, no pill chrome (matches question-shell) */
+body.bcc-ccna-lab-top-chrome .site-logo-corner,
+body.bcc-ccna-lab-top-chrome .lab-top-bar .site-logo-corner {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+body.bcc-ccna-lab-top-chrome .site-logo-corner img {
+  background: transparent !important;
+}
+
 body {
   touch-action: manipulation;
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0.12);
