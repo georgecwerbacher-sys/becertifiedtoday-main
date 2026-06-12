@@ -1,5 +1,5 @@
 /**
- * Append marketing leads to marketing-vault/leads/*.csv (synced via git).
+ * Append marketing leads to data/leads/*.csv (synced via git).
  *
  * Production (Vercel): set GITHUB_LEADS_TOKEN — commits each row via GitHub Contents API.
  * Local / vercel dev: appends to the CSV file on disk when no token is set.
@@ -10,7 +10,7 @@ import path from "path";
 const CSV_HEADER =
   "captured_at_utc,event,email,magnet,product,source,utm_source,utm_medium,utm_campaign,utm_content";
 
-const DEFAULT_CSV_REL = "marketing-vault/leads/secplus-free-simulation-leads.csv";
+const DEFAULT_CSV_REL = "data/leads/secplus-free-simulation-leads.csv";
 
 function csvCell(value) {
   const s = value == null ? "" : String(value);

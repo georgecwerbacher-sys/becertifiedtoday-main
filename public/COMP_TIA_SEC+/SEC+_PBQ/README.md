@@ -12,7 +12,7 @@ Shared styles: `../js/secplus-pbq-page.css` plus `/css/bcc-question-link-nav.css
 2. When ready, move `{slug}.html` here (kebab-case) and update URLs to `/SEC+_PBQ/`.
 3. Set `data-value` / `data-target` on drag-and-drop pages; wire Back / Home / Next under `/COMP_TIA_SEC+/SEC+_PBQ/`.
 4. Run `python3 scripts/lint-practice-question-urls.py` on the new file.
-5. Log in `marketing-vault/11-question-sourcing/pbq/secplus-pbq-not-in-bct.md` when accepted.
+5. Log in `data/secplus-pbq-sourcing/secplus-pbq-not-in-bct.md` when accepted.
 
 ## Preview
 
@@ -22,4 +22,4 @@ http://localhost:3000/COMP_TIA_SEC+/SEC+_PBQ/{slug}.html
 
 ## Sourcing
 
-`npm run secplus:pbq-monthly` — `marketing-vault/11-question-sourcing/pbq/README.md`.
+`npm run secplus:pbq-monthly` — outputs under `data/secplus-pbq-sourcing/runs/`.

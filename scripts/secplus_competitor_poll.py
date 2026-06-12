@@ -1,4 +1,4 @@
-"""Load SY0-701 question poll targets from marketing-vault/10-competitors/sites/*.md."""
+"""Load question poll targets from data/competitor-sites/*.md (or product-specific dirs)."""
 from __future__ import annotations
 
 import json
@@ -11,7 +11,7 @@ from html import unescape
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-COMPETITOR_SITES = ROOT / "marketing-vault" / "10-competitors" / "sites"
+COMPETITOR_SITES = ROOT / "data" / "competitor-sites"
 
 USER_AGENT = "BCT-SY0-701-Monthly-Hunt/1.0 (+https://becertifiedtoday.com; research)"
 REDDIT_USER_AGENT = (

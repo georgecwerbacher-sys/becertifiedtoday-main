@@ -26,10 +26,9 @@ from secplus_monthly_pbq_hunt import (
     write_discovery_csv,
 )
 ROOT = Path(__file__).resolve().parent.parent
-VAULT_RUNS = ROOT / "marketing-vault" / "11-question-sourcing" / "ccna" / "labs-sim" / "runs"
-VAULT_CONFIG = (
-    ROOT / "marketing-vault" / "11-question-sourcing" / "ccna" / "config" / "ccna-labs-sim-sources.json"
-)
+SOURCING = ROOT / "data" / "ccna-question-sourcing" / "labs-sim"
+RUNS_DIR = SOURCING / "runs"
+CONFIG = ROOT / "data" / "ccna-question-sourcing" / "config" / "ccna-labs-sim-sources.json"
 DND_DIR = ROOT / "public" / "CCNA-Study" / "CCNA_D_D"
 LABS_DIR = ROOT / "public" / "CCNA-Study" / "CCNA_labs"
 SIM_DIR = ROOT / "public" / "CCNA_Sim_EXAM"
@@ -37,13 +36,13 @@ POLL_PRODUCT = "CCNA-200-301"
 
 
 def load_source_config() -> dict:
-    if not VAULT_CONFIG.is_file():
+    if not CONFIG.is_file():
         return {"poll_product": POLL_PRODUCT}
-    return json.loads(VAULT_CONFIG.read_text(encoding="utf-8"))
+    return json.loads(CONFIG.read_text(encoding="utf-8"))
 
 
 def find_latest_run() -> str | None:
-    runs = sorted(VAULT_RUNS.glob("*-discovered.csv"), reverse=True)
+    runs = sorted(RUNS_DIR.glob("*-discovered.csv"), reverse=True)
     if not runs:
         return None
     return runs[0].stem.replace("-discovered", "")
@@ -51,11 +50,11 @@ def find_latest_run() -> str | None:
 
 def run_id_to_paths(run_id: str) -> dict[str, Path]:
     return {
-        "discovered": VAULT_RUNS / f"{run_id}-discovered.csv",
-        "meta": VAULT_RUNS / f"{run_id}-discovered.meta.json",
-        "compare_md": VAULT_RUNS / f"{run_id}-compare.md",
-        "net_new_csv": VAULT_RUNS / f"{run_id}-net-new.csv",
-        "net_new_md": VAULT_RUNS / f"{run_id}-net-new.md",
+        "discovered": RUNS_DIR / f"{run_id}-discovered.csv",
+        "meta": RUNS_DIR / f"{run_id}-discovered.meta.json",
+        "compare_md": RUNS_DIR / f"{run_id}-compare.md",
+        "net_new_csv": RUNS_DIR / f"{run_id}-net-new.csv",
+        "net_new_md": RUNS_DIR / f"{run_id}-net-new.md",
     }
 
 

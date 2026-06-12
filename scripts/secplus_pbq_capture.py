@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Capture Security+ PBQ / drag-and-drop / sim screenshots into marketing-vault.
+"""Capture Security+ PBQ / drag-and-drop / sim screenshots into data/secplus-pbq-sourcing.
 
 For each registered site: try pbq-preview screenshot → landing fallback → link-only entry.
 Writes PNG + meta.json per source and generates captures/YYYY-MM-DD/INDEX.md.
@@ -24,8 +24,8 @@ from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-CAPTURES = ROOT / "marketing-vault" / "11-question-sourcing" / "pbq" / "captures"
-CONFIG = ROOT / "marketing-vault" / "11-question-sourcing" / "pbq" / "config" / "secplus-pbq-capture-targets.json"
+CAPTURES = ROOT / "data" / "secplus-pbq-sourcing" / "captures"
+CONFIG = ROOT / "data" / "secplus-pbq-sourcing" / "config" / "secplus-pbq-capture-targets.json"
 
 USER_AGENT = (
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
@@ -431,7 +431,7 @@ def cmd_register(args: argparse.Namespace) -> int:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Security+ PBQ screenshot capture for marketing-vault")
+    parser = argparse.ArgumentParser(description="Security+ PBQ screenshot capture for data/secplus-pbq-sourcing")
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     p_run = sub.add_parser("run", help="Capture all targets → PNG or link + INDEX.md")

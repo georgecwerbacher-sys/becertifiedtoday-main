@@ -22,8 +22,9 @@ from net_new_markdown import write_net_new_md as write_net_new_review_md
 from secplus_competitor_poll import load_poll_sources, poll_all_sources
 
 ROOT = Path(__file__).resolve().parent.parent
-VAULT_RUNS = ROOT / "marketing-vault" / "11-question-sourcing" / "ccna" / "runs"
-VAULT_CONFIG = ROOT / "marketing-vault" / "11-question-sourcing" / "config" / "ccna-web-sources.json"
+SOURCING = ROOT / "data" / "ccna-question-sourcing"
+RUNS_DIR = SOURCING / "runs"
+CONFIG = SOURCING / "config" / "ccna-web-sources.json"
 CHAIN_PY = ROOT / "scripts" / "gen_ccna_chain_pages.py"
 QUESTIONS_DIR = ROOT / "public" / "CCNA-Study" / "CCNA_questions"
 POLL_PRODUCT = "CCNA-200-301"
@@ -167,9 +168,9 @@ def jaccard(a: set[str], b: set[str]) -> float:
 
 
 def load_source_config() -> dict:
-    if not VAULT_CONFIG.is_file():
+    if not CONFIG.is_file():
         return {"tier_a_fetch": [], "poll_product": POLL_PRODUCT}
-    return json.loads(VAULT_CONFIG.read_text(encoding="utf-8"))
+    return json.loads(CONFIG.read_text(encoding="utf-8"))
 
 
 def read_import_csv(path: Path) -> list[dict]:
@@ -205,7 +206,7 @@ def write_discovery_csv(path: Path, rows: list[dict], discovered_at: str) -> Non
 
 
 def find_latest_run() -> str | None:
-    runs = sorted(VAULT_RUNS.glob("*-discovered.csv"), reverse=True)
+    runs = sorted(RUNS_DIR.glob("*-discovered.csv"), reverse=True)
     if not runs:
         return None
     return runs[0].stem.replace("-discovered", "")
@@ -213,11 +214,11 @@ def find_latest_run() -> str | None:
 
 def run_id_to_paths(run_id: str) -> dict[str, Path]:
     return {
-        "discovered": VAULT_RUNS / f"{run_id}-discovered.csv",
-        "meta": VAULT_RUNS / f"{run_id}-discovered.meta.json",
-        "compare_md": VAULT_RUNS / f"{run_id}-compare.md",
-        "net_new_csv": VAULT_RUNS / f"{run_id}-net-new.csv",
-        "net_new_md": VAULT_RUNS / f"{run_id}-net-new.md",
+        "discovered": RUNS_DIR / f"{run_id}-discovered.csv",
+        "meta": RUNS_DIR / f"{run_id}-discovered.meta.json",
+        "compare_md": RUNS_DIR / f"{run_id}-compare.md",
+        "net_new_csv": RUNS_DIR / f"{run_id}-net-new.csv",
+        "net_new_md": RUNS_DIR / f"{run_id}-net-new.md",
     }
 
 

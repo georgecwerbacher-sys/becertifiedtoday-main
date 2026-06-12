@@ -26,7 +26,7 @@ As of 2026-06-05, unique staged scenarios were **ported to production** (#13–#
 | `data-protection.html` | `data-protection/` |
 | `governance.html` | `governance/` |
 
-Vault notes: `marketing-vault/SEC+/PBQ/{slug}/`
+PBQ notes: `data/secplus-pbq/{slug}/`
 
 ## Remaining in this folder
 

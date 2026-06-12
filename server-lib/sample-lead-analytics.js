@@ -1,12 +1,12 @@
 /**
  * Homepage sample → email capture funnel (CCNA, ENCOR, Security+).
- * Persists to marketing-vault/leads/home-sample-email-capture.csv (GitHub API or local).
+ * Persists to data/leads/home-sample-email-capture.csv (GitHub API or local).
  */
 import fs from "fs";
 import path from "path";
 import { isInternalAnalyticsEmail } from "./analytics-internal.js";
 
-export const SAMPLE_LEAD_CSV_REL = "marketing-vault/leads/home-sample-email-capture.csv";
+export const SAMPLE_LEAD_CSV_REL = "data/leads/home-sample-email-capture.csv";
 
 const CSV_HEADER =
   "captured_at_utc,event,email,product,sample_kind,source,success,utm_source,utm_medium,utm_campaign,utm_content";

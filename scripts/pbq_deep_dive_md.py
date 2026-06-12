@@ -1,4 +1,4 @@
-"""Convert marketing-vault SEC+ PBQ deep-dive-solution.md to HTML for modals."""
+"""Convert data/secplus-pbq deep-dive-solution.md files to HTML for modals."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-VAULT_PBq = ROOT / "marketing-vault/SEC+/PBQ"
+PBQ_SOURCE = ROOT / "data" / "secplus-pbq"
 
 
 def _strip_frontmatter(text: str) -> str:
@@ -177,7 +177,7 @@ def _chunk_to_html(chunk: list[str]) -> str:
 def build_deep_dive_data(slugs: list[str]) -> dict[str, dict[str, str]]:
     data: dict[str, dict[str, str]] = {}
     for slug in slugs:
-        path = VAULT_PBq / slug / "deep-dive-solution.md"
+        path = PBQ_SOURCE / slug / "deep-dive-solution.md"
         if not path.is_file():
             continue
         title, body_html = md_to_deep_dive_html(path.read_text(encoding="utf-8"))

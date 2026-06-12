@@ -10,8 +10,8 @@ Checklist for shipping scenario **#8+** into `PBQ_Production/`. Cursor rule: `.c
 
 - [ ] Run monthly PBQ sourcing if needed: `npm run secplus:pbq-monthly`
 - [ ] Verify interaction and answer keys on **CompTIA SY0-701 objectives v5.0** and primary refs (NIST, RFC, OWASP, vendor-neutral hardening docs). **Do not use exam dumps.**
-- [ ] Log accepted concept in `marketing-vault/11-question-sourcing/pbq/secplus-pbq-not-in-bct.md`
-- [ ] Playbook reference: `marketing-vault/05-playbooks/secplus-monthly-pbq-sourcing.md`
+- [ ] Log accepted concept in `data/secplus-pbq-sourcing/secplus-pbq-not-in-bct.md`
+- [ ] Playbook reference: `data/secplus-pbq-sourcing/`
 
 ---
 
@@ -96,7 +96,7 @@ Reference neighbor: `dark-web-account-protection/dark-web-account-protection.htm
 
 ### 4c. Deep dive walkthrough
 
-- Source: `marketing-vault/SEC+/PBQ/{slug}/deep-dive-solution.md`
+- Source: `data/secplus-pbq/{slug}/deep-dive-solution.md`
 - Build: `npm run build:pbq-suite` also writes `public/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js`
 - UI: **Deep dive explanation** button at the bottom of each scenario page → modal (`secplus-pbq-deep-dive.js` + `secplus-sim-deep-dive.css`)
 - Regenerate data only: `npm run build:pbq-deep-dive`
@@ -164,9 +164,9 @@ npm run build:pbq-suite
 
 - [ ] `PBQ_Production/README.md` — add row to scenario chain + scenarios table
 - [ ] `PBQ_Production/VERIFICATION.md` — new section with answer audit + primary sources
-- [ ] `marketing-vault/SEC+/PBQ/README.md` — scenario table row
+- [ ] `data/secplus-pbq/README.md` — scenario table row (if present)
 - [ ] `SEC+_Training_Portal.html` — link when the lab is ready to publish
-- [ ] `marketing-vault/SEC+/PBQ/{slug}/notes.md` (+ `recommendations.md`, `deep-dive-solution.md` when ready)
+- [ ] `data/secplus-pbq/{slug}/notes.md` (+ `recommendations.md`, `deep-dive-solution.md` when ready)
 
 ---
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate secplus-pbq-deep-dive-data.js from marketing-vault deep-dive-solution.md files."""
+"""Generate secplus-pbq-deep-dive-data.js from data/secplus-pbq deep-dive-solution.md files."""
 
 from __future__ import annotations
 

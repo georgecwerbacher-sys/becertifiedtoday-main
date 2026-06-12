@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Pull GA4 summary + top pages and write marketing-vault/03-reports/weekly/YYYY-MM-DD.md
+ * Pull GA4 summary + top pages and write data/reports/weekly/YYYY-MM-DD.md
  *
  * Usage:
  *   node scripts/marketing-weekly-report.mjs
@@ -25,8 +25,7 @@ import {
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
-const VAULT = join(ROOT, "marketing-vault");
-const REPORTS_DIR = join(VAULT, "03-reports", "weekly");
+const REPORTS_DIR = join(ROOT, "data", "reports", "weekly");
 
 const AUTO_START = "<!-- auto:body -->";
 const AUTO_END = "<!-- /auto:body -->";

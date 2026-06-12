@@ -139,8 +139,8 @@ async function handleQuestionsReport(req, res, body) {
       ok: true,
       ...report,
       fetchedAt: new Date().toISOString(),
-      note: "Visitor questions from site footers (replaces mailto). Stored in marketing-vault/leads/visitor-questions.csv.",
-      csvPath: "marketing-vault/leads/visitor-questions.csv",
+      note: "Visitor questions from site footers (replaces mailto). Stored in data/leads/visitor-questions.csv.",
+      csvPath: "data/leads/visitor-questions.csv",
     });
   } catch (err) {
     const message = err && err.message ? String(err.message) : "Visitor questions report error";
@@ -169,7 +169,7 @@ async function handleReport(req, res, body) {
       fetchedAt: new Date().toISOString(),
       note:
         "Homepage sample questions → email capture for free timed simulation. Submit attempts count each form try; successes are completed unlocks.",
-      csvPath: "marketing-vault/leads/home-sample-email-capture.csv",
+      csvPath: "data/leads/home-sample-email-capture.csv",
     });
   } catch (err) {
     const message = err && err.message ? String(err.message) : "Sample lead report error";

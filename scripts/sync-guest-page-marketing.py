@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Align guest-facing HTML pages with marketing-vault/01-strategy positioning.
+"""Align guest-facing HTML pages with exam-prep positioning copy.
 
 Guest pages = public sitemap URLs (no login / paid portal). Applies exam-prep
 copy, landing-page home links, meta descriptions, and disclaimer language.

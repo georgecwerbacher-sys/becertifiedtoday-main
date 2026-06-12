@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-FORMAT_CONFIG = ROOT / "marketing-vault" / "11-question-sourcing" / "config" / "net-new-markdown.json"
+FORMAT_CONFIG = ROOT / "data" / "question-sourcing" / "config" / "net-new-markdown.json"
 
 
 def load_format_config() -> dict:

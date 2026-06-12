@@ -1,0 +1,81 @@
+{
+  "exam": "SY0-701",
+  "content_type": "pbq",
+  "notes": "Primary run: npm run secplus:pbq-capture. BCT localhost targets need npm run serve. Add preview_url / preview_selector when a competitor exposes read-only PBQ UI.",
+  "setup": "pip install playwright && python3 -m playwright install chromium",
+  "targets": [
+    {
+      "id": "bct-pbq-security-control-map",
+      "url": "http://localhost:3000/COMP_TIA_SEC+/SEC+_PBQ/security-control-map.html",
+      "link_url": "http://localhost:3000/COMP_TIA_SEC+/SEC+_PBQ/security-control-map.html",
+      "capture_kind": "pbq-preview",
+      "tier": "a",
+      "pbq_type_hint": "drag-drop",
+      "notes": "BCT reference drag-and-drop — template QA",
+      "wait_ms": 1500,
+      "try_preview": true,
+      "try_landing": false
+    },
+    {
+      "id": "bct-pbq-log-timeline",
+      "url": "http://localhost:3000/COMP_TIA_SEC+/SEC+_PBQ/log-timeline-forensics.html",
+      "link_url": "http://localhost:3000/COMP_TIA_SEC+/SEC+_PBQ/log-timeline-forensics.html",
+      "capture_kind": "pbq-preview",
+      "tier": "a",
+      "pbq_type_hint": "simulation",
+      "notes": "BCT log timeline / forensics PBQ",
+      "wait_ms": 1500,
+      "try_preview": true,
+      "try_landing": false
+    },
+    {
+      "id": "bct-pbq-dragdrop-template",
+      "url": "http://localhost:3000/COMP_TIA_SEC+/SEC+_PBQ/TEMPLATE-dragdrop.html",
+      "link_url": "http://localhost:3000/COMP_TIA_SEC+/SEC+_PBQ/TEMPLATE-dragdrop.html",
+      "capture_kind": "pbq-preview",
+      "tier": "a",
+      "pbq_type_hint": "drag-drop",
+      "notes": "BCT drag-drop template",
+      "wait_ms": 1500,
+      "try_preview": true,
+      "try_landing": false
+    },
+    {
+      "id": "crucialexams-pbq",
+      "url": "https://crucialexams.com/exams/comptia/security/sy0-701/practice-tests-practice-questions",
+      "link_url": "https://crucialexams.com/exams/comptia/security/sy0-701/practice-tests-practice-questions",
+      "tier": "b",
+      "pbq_type_hint": "drag-drop",
+      "notes": "Crucial Exams — open read-only PBQ preview in browser if automated shot is landing-only",
+      "wait_ms": 5000,
+      "try_preview": false,
+      "try_landing": true,
+      "full_page": true
+    },
+    {
+      "id": "certimaan-pbq",
+      "url": "https://www.certimaan.com/post/comptia-security-plus-certification-sample-questions",
+      "link_url": "https://www.certimaan.com/post/comptia-security-plus-certification-sample-questions",
+      "tier": "b",
+      "pbq_type_hint": "pbq",
+      "notes": "CertiMaan SY0-701 — PBQ count on landing; preview may need account",
+      "wait_ms": 5000,
+      "try_preview": false,
+      "try_landing": true,
+      "full_page": true
+    },
+    {
+      "id": "howtonetwork-pbq",
+      "url": "https://www.howtonetwork.com/certifications/security/comptia-security-pbq-practice-test-free-sy0-701-questions/",
+      "link_url": "https://www.howtonetwork.com/certifications/security/comptia-security-pbq-practice-test-free-sy0-701-questions/",
+      "preview_url": "https://www.howtonetwork.com/wp-admin/admin-ajax.php?action=h5p_embed&id=8",
+      "tier": "b",
+      "pbq_type_hint": "drag-drop",
+      "notes": "Free H5P PBQ Assessment Part 1 — embed URL bypasses lazy iframe",
+      "wait_ms": 6000,
+      "try_preview": true,
+      "try_landing": true,
+      "full_page": true
+    }
+  ]
+}

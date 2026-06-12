@@ -1,11 +1,11 @@
 /**
- * Visitor questions submitted from site footers → marketing-vault/leads/visitor-questions.csv
+ * Visitor questions submitted from site footers → data/leads/visitor-questions.csv
  */
 import fs from "fs";
 import path from "path";
 import { isInternalAnalyticsEmail } from "./analytics-internal.js";
 
-export const VISITOR_QUESTIONS_CSV_REL = "marketing-vault/leads/visitor-questions.csv";
+export const VISITOR_QUESTIONS_CSV_REL = "data/leads/visitor-questions.csv";
 
 const CSV_HEADER = "captured_at_utc,email,product,page_path,message,status";
 
