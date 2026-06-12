@@ -434,14 +434,7 @@
     if (container && typeof container.isBctCliBannerContext === "function") {
       return container.isBctCliBannerContext();
     }
-    try {
-      var params = new URLSearchParams(location.search);
-      if (params.get("examSim") === "1") return true;
-      if (!isCcnaLabPath()) return false;
-      if (params.get("sample") === "1") return true;
-      if (sessionStorage.getItem("ccnaHomeSample")) return true;
-    } catch (e) {}
-    return false;
+    return isCcnaLabPath();
   }
 
   var BCT_CLI_BANNER_LAB_CSS =

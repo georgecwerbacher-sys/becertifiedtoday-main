@@ -109,16 +109,9 @@
     }
   }
 
-  /** Timed exam embed (?examSim=1) or CCNA home sample labs (?sample=1, /sample#ccnaHS=…). */
+  /** CCNA CLI lab pages (portal, sample, timed exam embed). */
   function isBctCliBannerContext() {
-    try {
-      var params = new URLSearchParams(location.search);
-      if (params.get("examSim") === "1") return true;
-      if (!isCcnaLabEmbedPath()) return false;
-      if (params.get("sample") === "1") return true;
-      if (sessionStorage.getItem("ccnaHomeSample")) return true;
-    } catch (_) {}
-    return false;
+    return isCcnaLabEmbedPath();
   }
 
   var EXAM_SIM_CLI_BANNER_TEXT =
@@ -126,12 +119,11 @@
     "  Be Certified Today — BCT Lab Simulator v.1_2026\n" +
     "================================================================================\n" +
     "\n" +
-    "Exam simulation environment. Help commands are disabled; only commands required\n" +
-    "for this lab scenario are available. Use the Helper button to review the lab\n" +
-    "outline and topology if needed.\n" +
+    "Help commands are disabled; only commands required for this lab scenario are\n" +
+    "available. Use the Helper button to review the lab outline and topology if needed.\n" +
     "================================================================================";
 
-  /** Login-style banner when a CLI modal opens in exam sim or CCNA sample lab flows. */
+  /** Login-style banner when a CLI modal opens on CCNA lab pages. */
   function showExamSimCliBanner(scrollbackEl) {
     if (!scrollbackEl || !isBctCliBannerContext()) return;
     var prev = scrollbackEl.querySelector('[data-bct-exam-sim-banner="1"]');

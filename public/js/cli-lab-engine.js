@@ -145,18 +145,11 @@
     if (container && typeof container.isBctCliBannerContext === "function") {
       return container.isBctCliBannerContext();
     }
-    try {
-      var params = new URLSearchParams(location.search);
-      if (params.get("examSim") === "1") return true;
-      var p = (location.pathname || "").toLowerCase();
-      var onLab =
-        p.indexOf("/ccna-study/ccna_labs/") !== -1 ||
-        p.indexOf("/ccna_sim_exam/embed/lab/") !== -1;
-      if (!onLab) return false;
-      if (params.get("sample") === "1") return true;
-      if (sessionStorage.getItem("ccnaHomeSample")) return true;
-    } catch (_) {}
-    return false;
+    var p = (location.pathname || "").toLowerCase();
+    return (
+      p.indexOf("/ccna-study/ccna_labs/") !== -1 ||
+      p.indexOf("/ccna_sim_exam/embed/lab/") !== -1
+    );
   }
 
   function defaultLoginBanner(host) {
@@ -168,9 +161,8 @@
             "  Be Certified Today — BCT Lab Simulator v.1_2026\n" +
             "================================================================================\n" +
             "\n" +
-            "Exam simulation environment. Help commands are disabled; only commands required\n" +
-            "for this lab scenario are available. Use the Helper button to review the lab\n" +
-            "outline and topology if needed.\n" +
+            "Help commands are disabled; only commands required for this lab scenario are\n" +
+            "available. Use the Helper button to review the lab outline and topology if needed.\n" +
             "================================================================================"
           );
     }
