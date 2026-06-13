@@ -19,6 +19,13 @@
   - normalizeIosCmd, matchShowRun, MSG.*, cliLabContainer.COPY_RUN_START_OK_MSG
   - cliLabContainer.initCcnaLabTopChrome() — logo → CCNA_Training_Portal.html, Next lab top-right
 
+  IOS `?` help (cli-lab-container.js — required in <head> before lab script):
+  - DEFAULT_ROUTER_CLI_HELP / DEFAULT_SWITCH_CLI_HELP — shared lists (exec, show, configGlobal, ip, ipRoute, interface, …)
+  - tryAppendIosHelp(line, appendFn, cliLabContainer.iosHelpOpts("router"|"switch", promptText, labHelp))
+  - labHelp: null uses defaults; partial override e.g. { configGlobal: [...], ipRoute: [...] }
+  - Call tryAppendIosHelp early in each submit*() after echo, before grading / unsupported handlers
+  - PC prompts: keep HELP_DISABLED or custom handlers; do not use iosHelpOpts on PC sessions
+
   DOM shape: overlay → dialog → header → body → .terminal → .scrollback-area + .input-row
 -->
 <div id="swCliOverlay" class="cli-modal-overlay" aria-hidden="true">

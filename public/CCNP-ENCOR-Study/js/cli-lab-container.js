@@ -20,6 +20,14 @@
     if (m) {
       return "interface Ethernet" + m[2] + "/" + m[3];
     }
+    m = /^(interface|int)\s+ethernet\s+(\d+)\/(\d+)$/i.exec(s);
+    if (m) {
+      return "interface Ethernet" + m[2] + "/" + m[3];
+    }
+    m = /^ethernet\s+(\d+)\/(\d+)$/i.exec(s);
+    if (m) {
+      return "interface Ethernet" + m[1] + "/" + m[2];
+    }
     return s;
   }
 
@@ -691,6 +699,10 @@
       { cmd: "track" },
       { cmd: "multicast" },
     ],
+    /** Switch (config)# interface ? — empty on router; use lab override on router if needed */
+    interface: [],
+    interfaceEthernet: [],
+    switchport: [],
   };
 
   /** Baseline IOS `?` help for switch labs — override via opts.switchHelp (same key names). */
@@ -709,32 +721,81 @@
     ],
     configExec: DEFAULT_ROUTER_CLI_HELP.configExec,
     configGlobal: [
-      { cmd: "hostname <name>" },
-      { cmd: "vlan <vlan-id>" },
-      { cmd: "interface <interface-id>" },
-      { cmd: "spanning-tree" },
-      { cmd: "line con 0" },
-      { cmd: "line vty 0 4" },
-      { cmd: "exit" },
-      { cmd: "do <command>" },
+      { cmd: "aaa" },
+      { cmd: "access-list" },
+      { cmd: "banner" },
+      { cmd: "boot" },
+      { cmd: "cdp" },
+      { cmd: "crypto" },
+      { cmd: "do" },
+      { cmd: "enable" },
       { cmd: "end" },
+      { cmd: "exit" },
+      { cmd: "hostname" },
+      { cmd: "interface" },
+      { cmd: "ip" },
+      { cmd: "line" },
+      { cmd: "logging" },
+      { cmd: "mac" },
+      { cmd: "ntp" },
+      { cmd: "router" },
+      { cmd: "service" },
+      { cmd: "snmp-server" },
+      { cmd: "spanning-tree" },
+      { cmd: "username" },
+      { cmd: "vlan" },
+      { cmd: "vrf" },
     ],
     configIf: [
-      { cmd: "description <text>" },
-      { cmd: "switchport" },
+      { cmd: "arp" },
+      { cmd: "cdp" },
       { cmd: "channel-group" },
-      { cmd: "spanning-tree" },
-      { cmd: "shutdown" },
-      { cmd: "no shutdown" },
+      { cmd: "description" },
+      { cmd: "duplex" },
       { cmd: "exit" },
-      { cmd: "do <command>" },
-      { cmd: "end" },
+      { cmd: "ip" },
+      { cmd: "lldp" },
+      { cmd: "mac-address" },
+      { cmd: "mdix" },
+      { cmd: "no" },
+      { cmd: "shutdown" },
+      { cmd: "spanning-tree" },
+      { cmd: "speed" },
+      { cmd: "storm-control" },
+      { cmd: "switchport" },
+      { cmd: "tx-ring-limit" },
     ],
     configLine: DEFAULT_ROUTER_CLI_HELP.configLine,
     configRouter: [],
     configAcl: DEFAULT_ROUTER_CLI_HELP.configAcl,
     ip: [],
     ipRoute: [],
+    /** (config)# interface ? — interface types before entering config-if */
+    interface: [
+      { cmd: "port-channel" },
+      { cmd: "range" },
+      { cmd: "vlan" },
+      { cmd: "loopback" },
+      { cmd: "tunnel" },
+      { cmd: "ethernet" },
+    ],
+    /** (config)# interface ethernet ? — slot / port-channel / range */
+    interfaceEthernet: [
+      { cmd: "<0-9>" },
+      { cmd: "port-channel" },
+      { cmd: "range" },
+    ],
+    /** (config-if)# switchport ? */
+    switchport: [
+      { cmd: "access" },
+      { cmd: "trunk" },
+      { cmd: "mode" },
+      { cmd: "voice" },
+      { cmd: "port-security" },
+      { cmd: "nonegotiate" },
+      { cmd: "block" },
+      { cmd: "protected" },
+    ],
   };
 
   /** @deprecated use DEFAULT_ROUTER_CLI_HELP.show */
@@ -932,12 +993,135 @@
     return true;
   }
 
-  /** Handle `show ?`, `config ?`, `ip ?`, `ip route ?`, and config-mode `?` in one call. */
+  /** Switch global `interface ?` at host(config)# — interface types before config-if. */
+
+  function isInterfaceHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "interface ?" || t === "int ?" || t === "do interface ?" || t === "do int ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', interfaceExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function interfaceCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "interface"), opts.interfaceExtra);
+  }
+
+  /**
+   * `interface ?` at switch (config)# only.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendInterfaceHelp(raw, appendFn, opts) {
+    if (!isInterfaceHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "switch") return false;
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = interfaceCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Switch `interface ethernet ?` at host(config)# — slot number, port-channel, range. */
+
+  function isInterfaceEthernetHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return (
+      t === "interface ethernet ?" ||
+      t === "int ethernet ?" ||
+      t === "interface eth ?" ||
+      t === "int eth ?" ||
+      t === "do interface ethernet ?" ||
+      t === "do int ethernet ?" ||
+      t === "do interface eth ?" ||
+      t === "do int eth ?"
+    );
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', interfaceEthernetExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function interfaceEthernetCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "interfaceEthernet"),
+      opts.interfaceEthernetExtra
+    );
+  }
+
+  /**
+   * `interface ethernet ?` at switch (config)# only.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendInterfaceEthernetHelp(raw, appendFn, opts) {
+    if (!isInterfaceEthernetHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "switch") return false;
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = interfaceEthernetCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Switch `switchport ?` at host(config-if)#. */
+
+  function isSwitchportHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "switchport ?" || t === "do switchport ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', switchportExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function switchportCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "switchport"), opts.switchportExtra);
+  }
+
+  /**
+   * `switchport ?` at switch (config-if)# only.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendSwitchportHelp(raw, appendFn, opts) {
+    if (!isSwitchportHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "switch") return false;
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = switchportCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Handle partial-command `?` help and config-mode bare `?` in one call. */
   function tryAppendIosHelp(raw, appendFn, opts) {
     if (tryAppendShowHelp(raw, appendFn, opts)) return true;
     if (tryAppendConfigHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpRouteHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpHelp(raw, appendFn, opts)) return true;
+    if (tryAppendInterfaceEthernetHelp(raw, appendFn, opts)) return true;
+    if (tryAppendInterfaceHelp(raw, appendFn, opts)) return true;
+    if (tryAppendSwitchportHelp(raw, appendFn, opts)) return true;
     return tryAppendModeHelp(raw, appendFn, opts);
   }
 
@@ -1064,6 +1248,15 @@
     isIpRouteHelpQuery: isIpRouteHelpQuery,
     ipRouteCommandHelpText: ipRouteCommandHelpText,
     tryAppendIpRouteHelp: tryAppendIpRouteHelp,
+    isInterfaceHelpQuery: isInterfaceHelpQuery,
+    interfaceCommandHelpText: interfaceCommandHelpText,
+    tryAppendInterfaceHelp: tryAppendInterfaceHelp,
+    isInterfaceEthernetHelpQuery: isInterfaceEthernetHelpQuery,
+    interfaceEthernetCommandHelpText: interfaceEthernetCommandHelpText,
+    tryAppendInterfaceEthernetHelp: tryAppendInterfaceEthernetHelp,
+    isSwitchportHelpQuery: isSwitchportHelpQuery,
+    switchportCommandHelpText: switchportCommandHelpText,
+    tryAppendSwitchportHelp: tryAppendSwitchportHelp,
     tryAppendIosHelp: tryAppendIosHelp,
     isBareHelpQuery: isBareHelpQuery,
     parsePromptMode: parsePromptMode,

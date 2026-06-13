@@ -1161,12 +1161,19 @@ Sw2# copy running-config startup-config</pre>
         ) {
           t = "interface range gigabitethernet0/1 - 2";
         }
-        if (t === "interface e0/0" || t === "interface ethernet0/0") t = "interface gigabitethernet0/1";
-        if (t === "interface e0/1" || t === "interface ethernet0/1") t = "interface gigabitethernet0/2";
         if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
         /* Spoiler shorthand: Gi0/1–2 range plus optional e0/3 in the list → canonical lab string */
         if (/^interface range e0\/1 - 2(\s*,\s*e0\/3)?$/.test(t)) {
           t = "interface range gigabitethernet0/1 - 2";
+        }
+        if (/^interface ethernet \d+\/\d+$/.test(t)) {
+          t = t.replace(/^interface ethernet /, "interface ethernet");
+        }
+        if (/^interface eth \d+\/\d+$/.test(t)) {
+          t = t.replace(/^interface eth /, "interface ethernet");
+        }
+        if (/^ethernet \d+\/\d+$/.test(t)) {
+          t = "interface ethernet" + t.slice(8).replace(/\s+/g, "");
         }
         if (/^interface e\d+\/\d+$/.test(t)) {
           t = t.replace(/^interface e/, "interface ethernet");
@@ -1178,12 +1185,7 @@ Sw2# copy running-config startup-config</pre>
 
       /** Echo shorthand interfaces as full Ethernet names in the scrollback (submitSw / submitSw2). */
       function expandInterfaceEcho(raw) {
-        var s = String(raw || "").trim();
-        var m = /^(interface|int)\s+e(\d+)\/(\d+)$/i.exec(s);
-        if (m) {
-          return "interface Ethernet" + m[2] + "/" + m[3];
-        }
-        return s;
+        return cliLabContainer.expandInterfaceEcho(raw);
       }
 
       function matchTrunkAllowed1545(raw) {
@@ -1211,6 +1213,15 @@ Sw2# copy running-config startup-config</pre>
       ];
 
       var HELP_DISABLED_MSG = "help feature disabled for tester";
+      /**
+       * Per-lab switch `?` help overrides. null = use cliLabContainer.DEFAULT_SWITCH_CLI_HELP
+       * (config)# ? → aaa, access-list, … vlan, vrf
+       * (config)# interface ? → port-channel, range, vlan, loopback, tunnel, ethernet
+       * (config)# interface ethernet ? → <0-9>, port-channel, range
+       * (config-if)# ? → arp, cdp, channel-group, … switchport, tx-ring-limit
+       * (config-if)# switchport ? → access, trunk, mode, voice, port-security, nonegotiate, block, protected
+       */
+      var SWITCH_CLI_HELP = null;
       var SHOW_DISABLED_MSG = "this command is disabled for this lab";
       var SHOW_VERSION_MSG = "BeCertifiedToday version 2026";
       var COPY_RUN_START_OK_MSG = cliLabContainer.COPY_RUN_START_OK_MSG;
@@ -1669,16 +1680,23 @@ Sw2# copy running-config startup-config</pre>
         var normalized = normalize(line);
         var hideInputLine = isModeNavigationCommand(normalized);
         var echoLine = expandInterfaceEcho(trimmed);
-        if (!hideInputLine || normalized.indexOf("interface ") === 0) {
+        if (
+          !hideInputLine ||
+          normalized.indexOf("interface ") === 0 ||
+          /^ethernet \d+\/\d+$/.test(normalize(trimmed))
+        ) {
           appendSw("line-user", promptText + " " + echoLine);
         }
         swCmdline.value = "";
         if (!trimmed) return;
 
-        if (cliLabContainer.tryAppendIosHelp(line, appendSw, { deviceType: "switch", promptText: promptText })) return;
-
-        if (normalize(line) === "?") {
-          appendSw("line-sys", HELP_DISABLED_MSG);
+        if (
+          cliLabContainer.tryAppendIosHelp(
+            line,
+            appendSw,
+            cliLabContainer.iosHelpOpts("switch", promptText, SWITCH_CLI_HELP)
+          )
+        ) {
           return;
         }
 
@@ -1850,16 +1868,23 @@ Sw2# copy running-config startup-config</pre>
         var normalized = normalize(line);
         var hideInputLine = isModeNavigationCommand(normalized);
         var echoLine = expandInterfaceEcho(trimmed);
-        if (!hideInputLine || normalized.indexOf("interface ") === 0) {
+        if (
+          !hideInputLine ||
+          normalized.indexOf("interface ") === 0 ||
+          /^ethernet \d+\/\d+$/.test(normalize(trimmed))
+        ) {
           appendSw2("line-user", promptText + " " + echoLine);
         }
         sw2Cmdline.value = "";
         if (!trimmed) return;
 
-        if (cliLabContainer.tryAppendIosHelp(line, appendSw2, { deviceType: "switch", promptText: promptText })) return;
-
-        if (normalize(line) === "?") {
-          appendSw2("line-sys", HELP_DISABLED_MSG);
+        if (
+          cliLabContainer.tryAppendIosHelp(
+            line,
+            appendSw2,
+            cliLabContainer.iosHelpOpts("switch", promptText, SWITCH_CLI_HELP)
+          )
+        ) {
           return;
         }
 

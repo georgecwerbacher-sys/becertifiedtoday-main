@@ -5,8 +5,17 @@
   Copy this file or an existing lab under public/CCNA-Study/CCNA_labs/ or
   public/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/ and edit per scenario.
 
+  IOS `?` help (shared defaults in /js/cli-lab-container.js):
+  - DEFAULT_ROUTER_CLI_HELP — exec (# ?), show ?, configure ?, (config)# ?, ip ?, ip route ?, submodes
+  - DEFAULT_SWITCH_CLI_HELP — switch lists; (config-if)# ? → arp, cdp, channel-group, description,
+    duplex, exit, ip, lldp, mac-address, mdix, no, shutdown, spanning-tree, speed, storm-control,
+    switchport, tx-ring-limit
+  - Per lab: set ROUTER_CLI_HELP / SWITCH_CLI_HELP (null = defaults) and call
+    cliLabContainer.tryAppendIosHelp(line, appendFn, cliLabContainer.iosHelpOpts("router"|"switch", promptText, …))
+
   Reference labs:
-  - public/CCNA-Study/CCNA_labs/cli-lab-ip-services-sim-v2.html (multi-device)
+  - public/CCNA-Study/CCNA_labs/cli-lab-static-routing.html (multi-router + ROUTER_CLI_HELP override stub)
+  - public/CCNA-Study/CCNA_labs/cli-lab-vlan-sim.html (dual-switch + SWITCH_CLI_HELP override stub)
   - public/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/cli-lab-trunk-udld-lacp.html (phased ENCOR)
 -->
 <html lang="en">
@@ -319,6 +328,10 @@
     }
     .line-sys {
       color: #94a3b8;
+    }
+    .line-show-help {
+      white-space: pre-wrap;
+      margin: 4px 0 8px;
     }
     .line-showrun {
       white-space: pre-wrap;
@@ -1029,6 +1042,12 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
 
 
       var HELP_DISABLED_MSG = "help feature disabled for tester";
+      /**
+       * Per-lab IOS `?` help overrides. null = use cliLabContainer.DEFAULT_ROUTER_CLI_HELP /
+       * DEFAULT_SWITCH_CLI_HELP. Override one key at a time, e.g. { ipRoute: [{ cmd: "..." }] }.
+       */
+      var ROUTER_CLI_HELP = null;
+      var SWITCH_CLI_HELP = null;
       var SHOW_DISABLED_MSG = "this command is disabled for this lab";
       var SHOW_VERSION_MSG = "BeCertifiedToday version 2026";
       var COPY_RUN_START_OK_MSG = cliLabContainer.COPY_RUN_START_OK_MSG;
@@ -1343,8 +1362,13 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         swCmdline.value = "";
         if (!trimmed) return;
 
-        if (normalize(line) === "?") {
-          appendSw("line-sys", HELP_DISABLED_MSG);
+        if (
+          cliLabContainer.tryAppendIosHelp(
+            line,
+            appendSw,
+            cliLabContainer.iosHelpOpts("switch", promptText, SWITCH_CLI_HELP)
+          )
+        ) {
           return;
         }
 
@@ -1460,8 +1484,13 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
         sw2Cmdline.value = "";
         if (!trimmed) return;
 
-        if (normalize(line) === "?") {
-          appendSw2("line-sys", HELP_DISABLED_MSG);
+        if (
+          cliLabContainer.tryAppendIosHelp(
+            line,
+            appendSw2,
+            cliLabContainer.iosHelpOpts("router", promptText, ROUTER_CLI_HELP)
+          )
+        ) {
           return;
         }
 
