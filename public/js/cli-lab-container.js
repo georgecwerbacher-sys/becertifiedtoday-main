@@ -744,7 +744,7 @@
    *   switchport        — (config-if)# switchport ?
    *   switchportMode    — (config-if)# switchport mode ?
    *   switchportAccess  — (config-if)# switchport access ?
-   *   lldp              — (config)# lldp ?
+   *   lldp              — (config-if)# lldp ?
    */
   var DEFAULT_SWITCH_CLI_HELP = {
     exec: DEFAULT_ROUTER_CLI_HELP.exec,
@@ -846,7 +846,7 @@
     ],
     /** (config-if)# switchport access ? */
     switchportAccess: [{ cmd: "vlan (#)" }],
-    /** (config)# lldp ? */
+    /** (config-if)# lldp ? */
     lldp: [
       { cmd: "run" },
       { cmd: "no lldp run" },
@@ -1254,7 +1254,7 @@
     return true;
   }
 
-  /** Switch `lldp ?` at host(config)#. */
+  /** Switch `lldp ?` at host(config-if)#. */
 
   function isLldpHelpQuery(raw) {
     var t = String(raw || "")
@@ -1274,14 +1274,14 @@
   }
 
   /**
-   * `lldp ?` at switch (config)# only.
+   * `lldp ?` at switch (config-if)# only.
    * @param {Function} appendFn - (className, text) => void
    */
   function tryAppendLldpHelp(raw, appendFn, opts) {
     if (!isLldpHelpQuery(raw)) return false;
     opts = opts || {};
     if ((opts.deviceType || "router") !== "switch") return false;
-    if (parsePromptMode(opts.promptText) !== "config") return false;
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
     var text = lldpCommandHelpText(opts);
     if (!text) return false;
     if (typeof appendFn === "function") {
