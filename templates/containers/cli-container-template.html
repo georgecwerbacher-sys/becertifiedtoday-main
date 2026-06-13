@@ -10,7 +10,8 @@
   Lab author workflow: copy an existing lab under public/CCNA-Study/CCNA_labs/ or
   public/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/, or start from templates/labs/cli-lab-baseline.html.
 
-  Reference: public/CCNA-Study/CCNA_labs/cli-lab-ip-services-sim-v2.html
+  Reference: public/CCNA-Study/CCNA_labs/cli-lab-static-routing.html (router sample)
+  Reference: public/CCNA-Study/CCNA_labs/cli-lab-vlan-sim.html (switch sample)
 
   Engine API (cli-lab-engine.js):
   - createIosDevice({ host, deviceType, elements, steps, showRunningConfig, … })
@@ -20,11 +21,17 @@
   - cliLabContainer.initCcnaLabTopChrome() — logo → CCNA_Training_Portal.html, Next lab top-right
 
   IOS `?` help (cli-lab-container.js — required in <head> before lab script):
-  - DEFAULT_ROUTER_CLI_HELP / DEFAULT_SWITCH_CLI_HELP — shared lists (exec, show, configGlobal, ip, ipRoute, interface, …)
+  - DEFAULT_ROUTER_CLI_HELP — baseline for all routers (sample: cli-lab-static-routing.html)
+  - DEFAULT_SWITCH_CLI_HELP — baseline for all switches (sample: cli-lab-vlan-sim.html)
   - tryAppendIosHelp(line, appendFn, cliLabContainer.iosHelpOpts("router"|"switch", promptText, labHelp))
-  - labHelp: null uses defaults; partial override e.g. { configGlobal: [...], ipRoute: [...] }
-  - Call tryAppendIosHelp early in each submit*() after echo, before grading / unsupported handlers
-  - PC prompts: keep HELP_DISABLED or custom handlers; do not use iosHelpOpts on PC sessions
+  - ROUTER_CLI_HELP / SWITCH_CLI_HELP: null uses defaults; override keys per lab
+  - Router keys: exec, show, configGlobal, configIf, ip, ipRoute, …
+  - Switch keys: exec, show, configGlobal, configIf, interface, interfaceEthernet, switchport,
+    switchportMode, switchportAccess
+
+  CLI login banner (auto on CCNA lab pages when a modal opens):
+  - BCT_CLI_HELP_NOTICE / EXAM_SIM_CLI_BANNER_TEXT — context-sensitive help limited to scenario
+  - initBctCliBanner() runs from cli-lab-container.js on load; PC sessions use CLI_HELP_UNAVAILABLE_MSG
 
   DOM shape: overlay → dialog → header → body → .terminal → .scrollback-area + .input-row
 -->

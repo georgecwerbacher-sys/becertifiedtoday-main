@@ -36,6 +36,8 @@
     "% command not supported in this lab simulation — check the lab Tasks and Verification sections for the exact values.";
   var CLI_VERIFY_INSTRUCTIONS_MSG =
     "% command not supported in this lab simulation. Verify the lab instructions (Tasks and Helper) for the required values.";
+  var CLI_HELP_UNAVAILABLE_MSG =
+    "% Context-sensitive help is not available for this command in this scenario.";
   var COPY_RUN_START_OK_MSG = "configuration has been written to memory";
   var CCNA_TRAINING_PORTAL_HREF = "/CCNA-Study/CCNA_Training_Portal.html";
   /** Order matches CCNA_Training_Portal.html Lab Simulations grid. */
@@ -304,13 +306,18 @@
     return isCcnaLabEmbedPath();
   }
 
+  /** Shown in router/switch CLI login banners (CCNA lab modals and engine boot banner). */
+  var BCT_CLI_HELP_NOTICE =
+    "Some context-sensitive help (?) is limited in this scenario.\n" +
+    "Help for commands required to complete the lab remains available.";
+
   var EXAM_SIM_CLI_BANNER_TEXT =
     "================================================================================\n" +
     "  Be Certified Today — BCT Lab Simulator v.1_2026\n" +
     "================================================================================\n" +
     "\n" +
-    "Help commands are disabled; only commands required for this lab scenario are\n" +
-    "available. Use the Helper button to review the lab outline and topology if needed.\n" +
+    BCT_CLI_HELP_NOTICE +
+    "\n\nUse the Helper button to review the lab outline and topology if needed.\n" +
     "================================================================================";
 
   /** Login-style banner when a CLI modal opens on CCNA lab pages. */
@@ -598,9 +605,21 @@
   scheduleCcnaLabTopChromeInit();
 
   /**
-   * Baseline IOS `?` help for all router labs (privileged EXEC + config submodes).
-   * Override per lab: pass `routerHelp: { show: [...], configGlobal: [...], ... }` to tryAppendIosHelp,
-   * or set `var ROUTER_CLI_HELP = { ipRoute: [...] }` in the lab page (only overridden keys replace defaults).
+   * Baseline IOS `?` help for all router labs — shared on every router session (R1, R2, …).
+   * Override per lab: `var ROUTER_CLI_HELP = { ipRoute: [...] }` (null = all defaults) and
+   * `cliLabContainer.iosHelpOpts("router", promptText, ROUTER_CLI_HELP)`.
+   *
+   * Keys / triggers:
+   *   exec         — host# ?
+   *   show         — show ?
+   *   configExec   — configure ? / config ?
+   *   configGlobal — (config)# ?
+   *   configIf     — (config-if)# ?
+   *   configLine   — (config-line)# ?
+   *   configRouter — (config-router)# ?
+   *   configAcl    — (config-*-nacl)# ?
+   *   ip           — (config)# ip ?
+   *   ipRoute      — (config)# ip route ?
    */
   var DEFAULT_ROUTER_CLI_HELP = {
     /** Privileged EXEC — host# ? */
@@ -707,7 +726,24 @@
     switchportAccess: [],
   };
 
-  /** Baseline IOS `?` help for switch labs — override via opts.switchHelp (same key names). */
+  /**
+   * Baseline IOS `?` help for all switch labs — shared on every switch session (Sw1, Sw2, …).
+   * Override per lab: `var SWITCH_CLI_HELP = { configIf: [...] }` (null = all defaults) and
+   * `cliLabContainer.iosHelpOpts("switch", promptText, SWITCH_CLI_HELP)`.
+   *
+   * Keys / triggers:
+   *   exec              — host# ?
+   *   show              — show ?
+   *   configExec        — configure ? / config ?
+   *   configGlobal      — (config)# ?
+   *   configIf          — (config-if)# ?
+   *   configLine        — (config-line)# ?
+   *   interface         — (config)# interface ?
+   *   interfaceEthernet — (config)# interface ethernet ?
+   *   switchport        — (config-if)# switchport ?
+   *   switchportMode    — (config-if)# switchport mode ?
+   *   switchportAccess  — (config-if)# switchport access ?
+   */
   var DEFAULT_SWITCH_CLI_HELP = {
     exec: DEFAULT_ROUTER_CLI_HELP.exec,
     show: [
@@ -1315,6 +1351,7 @@
     CLI_UNSUPPORTED_MSG: CLI_UNSUPPORTED_MSG,
     CLI_UNSUPPORTED_NUMERIC_HINT_MSG: CLI_UNSUPPORTED_NUMERIC_HINT_MSG,
     CLI_VERIFY_INSTRUCTIONS_MSG: CLI_VERIFY_INSTRUCTIONS_MSG,
+    CLI_HELP_UNAVAILABLE_MSG: CLI_HELP_UNAVAILABLE_MSG,
     COPY_RUN_START_OK_MSG: COPY_RUN_START_OK_MSG,
     CCNA_TRAINING_PORTAL_HREF: CCNA_TRAINING_PORTAL_HREF,
     CCNA_LAB_CHAIN: CCNA_LAB_CHAIN,
@@ -1376,6 +1413,7 @@
     isExamSimEmbed: isExamSimEmbed,
     isBctCliBannerContext: isBctCliBannerContext,
     EXAM_SIM_CLI_BANNER_TEXT: EXAM_SIM_CLI_BANNER_TEXT,
+    BCT_CLI_HELP_NOTICE: BCT_CLI_HELP_NOTICE,
     showExamSimCliBanner: showExamSimCliBanner,
     injectBctCliBannerLabStyles: injectBctCliBannerLabStyles,
     wireBctCliOpenBanner: wireBctCliOpenBanner,

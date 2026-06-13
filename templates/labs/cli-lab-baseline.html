@@ -5,15 +5,15 @@
   Copy this file or an existing lab under public/CCNA-Study/CCNA_labs/ or
   public/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/ and edit per scenario.
 
-  IOS `?` help (shared defaults in /js/cli-lab-container.js):
-  - DEFAULT_ROUTER_CLI_HELP — exec (# ?), show ?, configure ?, (config)# ?, ip ?, ip route ?, submodes
-  - DEFAULT_SWITCH_CLI_HELP — switch lists; (config-if)# ? → arp, cdp, channel-group, description,
-    duplex, exit, ip, lldp, mac-address, mdix, no, shutdown, spanning-tree, speed, storm-control,
-    switchport, tx-ring-limit
-  - Per lab: set ROUTER_CLI_HELP / SWITCH_CLI_HELP (null = defaults) and call
-    cliLabContainer.tryAppendIosHelp(line, appendFn, cliLabContainer.iosHelpOpts("router"|"switch", promptText, …))
+  IOS `?` help + login banner (shared defaults in /js/cli-lab-container.js):
+  - DEFAULT_ROUTER_CLI_HELP — baseline for all routers; override with ROUTER_CLI_HELP
+  - DEFAULT_SWITCH_CLI_HELP — baseline for all switches (Sw1, Sw2, …); override with SWITCH_CLI_HELP
+  - Login banner (BCT_CLI_HELP_NOTICE) — auto-injected when each router/switch CLI modal opens
+  - Per device: cliLabContainer.tryAppendIosHelp(line, appendFn,
+    cliLabContainer.iosHelpOpts("router"|"switch", promptText, ROUTER_CLI_HELP|SWITCH_CLI_HELP))
+  - PC prompts: HELP_DISABLED_MSG = cliLabContainer.CLI_HELP_UNAVAILABLE_MSG
 
-  Reference labs:
+  Reference labs (router / switch samples):
   - public/CCNA-Study/CCNA_labs/cli-lab-static-routing.html (multi-router + ROUTER_CLI_HELP override stub)
   - public/CCNA-Study/CCNA_labs/cli-lab-vlan-sim.html (dual-switch + SWITCH_CLI_HELP override stub)
   - public/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/cli-lab-trunk-udld-lacp.html (phased ENCOR)
@@ -1041,12 +1041,13 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
       }
 
 
-      var HELP_DISABLED_MSG = "help feature disabled for tester";
+      var HELP_DISABLED_MSG = cliLabContainer.CLI_HELP_UNAVAILABLE_MSG;
       /**
-       * Per-lab IOS `?` help overrides. null = use cliLabContainer.DEFAULT_ROUTER_CLI_HELP /
-       * DEFAULT_SWITCH_CLI_HELP. Override one key at a time, e.g. { ipRoute: [{ cmd: "..." }] }.
+       * Per-lab IOS `?` help overrides. null = shared defaults in cli-lab-container.js.
+       * ROUTER_CLI_HELP → DEFAULT_ROUTER_CLI_HELP (all routers); SWITCH_CLI_HELP → DEFAULT_SWITCH_CLI_HELP (all switches).
        */
       var ROUTER_CLI_HELP = null;
+      /** null = DEFAULT_SWITCH_CLI_HELP (baseline for all switches). */
       var SWITCH_CLI_HELP = null;
       var SHOW_DISABLED_MSG = "this command is disabled for this lab";
       var SHOW_VERSION_MSG = "BeCertifiedToday version 2026";

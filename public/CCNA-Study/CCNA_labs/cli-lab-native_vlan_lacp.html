@@ -1216,7 +1216,9 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
       }
 
 
-      var HELP_DISABLED_MSG = "help feature disabled for tester";
+      var HELP_DISABLED_MSG = cliLabContainer.CLI_HELP_UNAVAILABLE_MSG;
+      /** null = DEFAULT_SWITCH_CLI_HELP (baseline for all switches). */
+      var SWITCH_CLI_HELP = null;
       var SHOW_DISABLED_MSG = "this command is disabled for this lab";
       var SHOW_VERSION_MSG = "BeCertifiedToday version 2026";
       var SHOW_INTERFACES_TRUNK_READY_MSG =
@@ -1552,12 +1554,7 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
         swCmdline.value = "";
         if (!trimmed) return;
 
-        if (cliLabContainer.tryAppendIosHelp(line, appendSw, { deviceType: "switch", promptText: promptText })) return;
-
-        if (normalize(line) === "?") {
-          appendSw("line-sys", HELP_DISABLED_MSG);
-          return;
-        }
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw, cliLabContainer.iosHelpOpts("switch", promptText, SWITCH_CLI_HELP))) return;
 
         if (matchShowRun(line)) {
           appendSw("line-showrun", getLabDev() === "SW3" ? SWITCH3_SHOW_RUNNING_SNAPSHOT : SWITCH_SHOW_RUNNING_SNAPSHOT);
@@ -1664,12 +1661,7 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
         sw2Cmdline.value = "";
         if (!trimmed) return;
 
-        if (cliLabContainer.tryAppendIosHelp(line, appendSw2, { deviceType: "switch", promptText: promptText })) return;
-
-        if (normalize(line) === "?") {
-          appendSw2("line-sys", HELP_DISABLED_MSG);
-          return;
-        }
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw2, cliLabContainer.iosHelpOpts("switch", promptText, SWITCH_CLI_HELP))) return;
 
         var u = normalize(line);
 

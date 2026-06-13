@@ -980,7 +980,9 @@ R1(config-if)# ip ospf priority 255</pre>
       }
 
 
-      var HELP_DISABLED_MSG = "help feature disabled for tester";
+      var HELP_DISABLED_MSG = cliLabContainer.CLI_HELP_UNAVAILABLE_MSG;
+      /** null = DEFAULT_ROUTER_CLI_HELP (baseline for all routers). */
+      var ROUTER_CLI_HELP = null;
       var SHOW_DISABLED_MSG = "this command is disabled for this lab";
       var SHOW_VERSION_MSG = "BeCertifiedToday version 2026";
       var COPY_RUN_START_OK_MSG = cliLabContainer.COPY_RUN_START_OK_MSG;
@@ -1188,12 +1190,7 @@ R1(config-if)# ip ospf priority 255</pre>
         sw2Cmdline.value = "";
         if (!trimmed) return;
 
-        if (cliLabContainer.tryAppendIosHelp(line, appendSw2, { deviceType: "router", promptText: promptText })) return;
-
-        if (normalize(line) === "?") {
-          appendSw2("line-sys", HELP_DISABLED_MSG);
-          return;
-        }
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw2, cliLabContainer.iosHelpOpts("router", promptText, ROUTER_CLI_HELP))) return;
 
         if (isOspfRouterNetworkStatement(normalized)) {
           appendSw2("line-sys", OSPF_NETWORK_FORBIDDEN_MSG);

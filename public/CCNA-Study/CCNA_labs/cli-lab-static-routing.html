@@ -1,5 +1,12 @@
 <!doctype html>
 <!--
+  Reference router sample lab — IOS `?` help and CLI login banner patterns for all routers.
+
+  Shared defaults (/js/cli-lab-container.js):
+  - DEFAULT_ROUTER_CLI_HELP — baseline for every router session; override with ROUTER_CLI_HELP
+  - Login banner (BCT_CLI_HELP_NOTICE) — injected when each router CLI modal opens
+  - tryAppendIosHelp(line, appendFn, cliLabContainer.iosHelpOpts("router", promptText, ROUTER_CLI_HELP))
+
   CLI lab baseline — patterns aligned with public/CCNA-Study/CCNA_labs/cli-lab-ip-services-sim-v2.html (multi-device,
   tasks panel, spoiler terminal blocks, full IOS command forms). ENCOR reference:
   public/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html.
@@ -1228,10 +1235,10 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
       }
 
 
-      var HELP_DISABLED_MSG = "help feature disabled for tester";
+      var HELP_DISABLED_MSG = cliLabContainer.CLI_HELP_UNAVAILABLE_MSG;
       /**
-       * Per-lab router `?` help overrides. null = use cliLabContainer.DEFAULT_ROUTER_CLI_HELP.
-       * Override one scenario at a time, e.g. { ipRoute: [{ cmd: "..." }] }.
+       * Per-lab router `?` help overrides. null = DEFAULT_ROUTER_CLI_HELP (baseline for all routers).
+       * Keys: exec, show, configExec, configGlobal, configIf, configLine, configRouter, configAcl, ip, ipRoute
        */
       var ROUTER_CLI_HELP = null;
       var SHOW_DISABLED_MSG = "this command is disabled for this lab";
@@ -1496,11 +1503,6 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
 
         if (cliLabContainer.tryAppendIosHelp(line, appendSw, cliLabContainer.iosHelpOpts("router", promptText, ROUTER_CLI_HELP))) return;
 
-        if (normalize(line) === "?") {
-          appendSw("line-sys", HELP_DISABLED_MSG);
-          return;
-        }
-
         if (matchShowRun(line)) {
           appendSw("line-showrun", SWITCH_SHOW_RUNNING_SNAPSHOT);
           return;
@@ -1658,11 +1660,6 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
         if (!trimmed) return;
 
         if (cliLabContainer.tryAppendIosHelp(line, appendSw3, cliLabContainer.iosHelpOpts("router", promptText, ROUTER_CLI_HELP))) return;
-
-        if (normalize(line) === "?") {
-          appendSw3("line-sys", HELP_DISABLED_MSG);
-          return;
-        }
 
         var u = normalize(line);
 

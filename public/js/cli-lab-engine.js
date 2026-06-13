@@ -10,12 +10,13 @@
   var iosMode = global.cliIosMode;
 
   var MSG = {
-    HELP_DISABLED: "help feature disabled for tester",
+    HELP_DISABLED:
+      "% Context-sensitive help is not available for this command in this scenario.",
     SHOW_DISABLED: "% Unrecognized show command in this lab simulation",
     SHOW_VERSION_DEFAULT:
       "Cisco IOS Software, BeCertifiedToday Lab Simulator\n" +
       "Version 17.9.4a, RELEASE SOFTWARE\n" +
-      "Technical Support: help feature disabled for tester\n" +
+      "Technical Support: context-sensitive help limited to scenario-required commands\n" +
       "Copyright (c) BeCertifiedToday. All rights reserved.",
     COPY_OK: container ? container.COPY_RUN_START_OK_MSG : "configuration has been written to memory",
     COPY_EXEC_ONLY:
@@ -160,11 +161,19 @@
             "  Be Certified Today — BCT Lab Simulator v.1_2026\n" +
             "================================================================================\n" +
             "\n" +
-            "Help commands are disabled; only commands required for this lab scenario are\n" +
-            "available. Use the Helper button to review the lab outline and topology if needed.\n" +
+            (container && container.BCT_CLI_HELP_NOTICE
+              ? container.BCT_CLI_HELP_NOTICE
+              : "Some context-sensitive help (?) is limited in this scenario.\n" +
+                "Help for commands required to complete the lab remains available.") +
+            "\n\nUse the Helper button to review the lab outline and topology if needed.\n" +
             "================================================================================"
           );
     }
+    var helpNotice =
+      container && container.BCT_CLI_HELP_NOTICE
+        ? container.BCT_CLI_HELP_NOTICE
+        : "Some context-sensitive help (?) is limited in this scenario.\n" +
+          "Help for commands required to complete the lab remains available.";
     return (
       "================================================================================\n" +
       "  Be Certified Today (BCT) IOS Lab Simulator — " +
@@ -173,7 +182,8 @@
       "================================================================================\n" +
       "\n" +
       "This is a browser-based training simulator, not a live Cisco device.\n" +
-      "Only commands required for this lab scenario are supported — designed\n" +
+      helpNotice +
+      "\n\nOnly commands required for this lab scenario are supported — designed\n" +
       "for realistic exam-style practice, not full IOS.\n" +
       "\n" +
       "Not affiliated with Cisco Systems, Inc.\n" +

@@ -1,5 +1,12 @@
 <!doctype html>
 <!--
+  Reference switch sample lab — IOS `?` help and CLI login banner patterns for all switches.
+
+  Shared defaults (/js/cli-lab-container.js):
+  - DEFAULT_SWITCH_CLI_HELP — baseline for every switch session; override with SWITCH_CLI_HELP
+  - Login banner (BCT_CLI_HELP_NOTICE) — injected when each switch CLI modal opens
+  - tryAppendIosHelp(line, appendFn, cliLabContainer.iosHelpOpts("switch", promptText, SWITCH_CLI_HELP))
+
   CCNA VLAN lab: dual switches Sw1/Sw2, VLANs 77/88 (data) and 177/188 (voice), access-mode interface
   assignments per topology. Optional LLDP/CDP tasks are permissive. Lab complete = copy run start on both switches.
 -->
@@ -1212,17 +1219,8 @@ Sw2# copy running-config startup-config</pre>
         { mode: "exec", test: function (raw) { return normalize(raw) === "configure terminal"; }},
       ];
 
-      var HELP_DISABLED_MSG = "help feature disabled for tester";
-      /**
-       * Per-lab switch `?` help overrides. null = use cliLabContainer.DEFAULT_SWITCH_CLI_HELP
-       * (config)# ? → aaa, access-list, … vlan, vrf
-       * (config)# interface ? → port-channel, range, vlan, loopback, tunnel, ethernet
-       * (config)# interface ethernet ? → <0-9>, port-channel, range
-       * (config-if)# ? → arp, cdp, channel-group, … switchport, tx-ring-limit
-       * (config-if)# switchport ? → access, trunk, mode, voice, port-security, nonegotiate, block, protected
-       * (config-if)# switchport mode ? → access, dot1q-tunnel, dynamic, private-vlan, trunk
-       * (config-if)# switchport access ? → vlan (#)
-       */
+      var HELP_DISABLED_MSG = cliLabContainer.CLI_HELP_UNAVAILABLE_MSG;
+      /** null = DEFAULT_SWITCH_CLI_HELP (baseline for all switches). See cli-lab-container.js for keys. */
       var SWITCH_CLI_HELP = null;
       var SHOW_DISABLED_MSG = "this command is disabled for this lab";
       var SHOW_VERSION_MSG = "BeCertifiedToday version 2026";
