@@ -725,6 +725,26 @@
     switchportMode: [],
     switchportAccess: [],
     lldp: [],
+    /** (config)# username ? */
+    username: [{ cmd: "<WORD>" }],
+    /** (config)# username <name> ? */
+    usernameName: [
+      { cmd: "algorithm-type" },
+      { cmd: "privilege" },
+      { cmd: "secret" },
+      { cmd: "password" },
+      { cmd: "nopassword" },
+      { cmd: "description" },
+    ],
+    /** (config)# username <name> privilege ? */
+    usernamePrivilege: [{ cmd: "<0-15>  User privilege level" }],
+    /** (config)# username <name> privilege <level> ? */
+    usernamePrivilegeLevel: [
+      { cmd: "autocommand" },
+      { cmd: "nocrop" },
+      { cmd: "password" },
+      { cmd: "secret" },
+    ],
   };
 
   /**
@@ -745,6 +765,10 @@
    *   switchportMode    — (config-if)# switchport mode ?
    *   switchportAccess  — (config-if)# switchport access ?
    *   lldp              — (config-if)# lldp ?
+   *   username          — (config)# username ?
+   *   usernameName      — (config)# username <name> ?
+   *   usernamePrivilege — (config)# username <name> privilege ?
+   *   usernamePrivilegeLevel — (config)# username <name> privilege <level> ?
    */
   var DEFAULT_SWITCH_CLI_HELP = {
     exec: DEFAULT_ROUTER_CLI_HELP.exec,
@@ -859,6 +883,14 @@
       { cmd: "reinit" },
       { cmd: "med-tlv-select" },
     ],
+    /** (config)# username ? */
+    username: DEFAULT_ROUTER_CLI_HELP.username,
+    /** (config)# username <name> ? */
+    usernameName: DEFAULT_ROUTER_CLI_HELP.usernameName,
+    /** (config)# username <name> privilege ? */
+    usernamePrivilege: DEFAULT_ROUTER_CLI_HELP.usernamePrivilege,
+    /** (config)# username <name> privilege <level> ? */
+    usernamePrivilegeLevel: DEFAULT_ROUTER_CLI_HELP.usernamePrivilegeLevel,
   };
 
   /** @deprecated use DEFAULT_ROUTER_CLI_HELP.show */
@@ -1254,6 +1286,161 @@
     return true;
   }
 
+  /** Switch `username <name> privilege <level> ?` at host(config)#. */
+
+  function isUsernamePrivilegeLevelHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return (
+      /^username \S+ priv(?:ilege|ledge) \d+ \?$/.test(t) ||
+      /^do username \S+ priv(?:ilege|ledge) \d+ \?$/.test(t)
+    );
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', usernamePrivilegeLevelExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function usernamePrivilegeLevelCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "usernamePrivilegeLevel"),
+      opts.usernamePrivilegeLevelExtra
+    );
+  }
+
+  /**
+   * `username <name> privilege <level> ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendUsernamePrivilegeLevelHelp(raw, appendFn, opts) {
+    if (!isUsernamePrivilegeLevelHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = usernamePrivilegeLevelCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Switch `username <name> privilege ?` at host(config)#. */
+
+  function isUsernamePrivilegeHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return (
+      /^username \S+ priv(?:ilege|ledge) \?$/.test(t) ||
+      /^do username \S+ priv(?:ilege|ledge) \?$/.test(t)
+    );
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', usernamePrivilegeExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function usernamePrivilegeCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "usernamePrivilege"),
+      opts.usernamePrivilegeExtra
+    );
+  }
+
+  /**
+   * `username <name> privilege ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendUsernamePrivilegeHelp(raw, appendFn, opts) {
+    if (!isUsernamePrivilegeHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = usernamePrivilegeCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Switch `username <name> ?` at host(config)#. */
+
+  function isUsernameNameHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return /^username \S+ \?$/.test(t) || /^do username \S+ \?$/.test(t);
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', usernameNameExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function usernameNameCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "usernameName"),
+      opts.usernameNameExtra
+    );
+  }
+
+  /**
+   * `username <name> ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendUsernameNameHelp(raw, appendFn, opts) {
+    if (!isUsernameNameHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = usernameNameCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Switch `username ?` at host(config)#. */
+
+  function isUsernameHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "username ?" || t === "do username ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', usernameExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function usernameCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "username"), opts.usernameExtra);
+  }
+
+  /**
+   * `username ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendUsernameHelp(raw, appendFn, opts) {
+    if (!isUsernameHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = usernameCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
   /** Switch `lldp ?` at host(config-if)#. */
 
   function isLldpHelpQuery(raw) {
@@ -1302,6 +1489,10 @@
     if (tryAppendSwitchportModeHelp(raw, appendFn, opts)) return true;
     if (tryAppendSwitchportHelp(raw, appendFn, opts)) return true;
     if (tryAppendLldpHelp(raw, appendFn, opts)) return true;
+    if (tryAppendUsernamePrivilegeLevelHelp(raw, appendFn, opts)) return true;
+    if (tryAppendUsernamePrivilegeHelp(raw, appendFn, opts)) return true;
+    if (tryAppendUsernameNameHelp(raw, appendFn, opts)) return true;
+    if (tryAppendUsernameHelp(raw, appendFn, opts)) return true;
     return tryAppendModeHelp(raw, appendFn, opts);
   }
 
@@ -1447,6 +1638,18 @@
     isLldpHelpQuery: isLldpHelpQuery,
     lldpCommandHelpText: lldpCommandHelpText,
     tryAppendLldpHelp: tryAppendLldpHelp,
+    isUsernameHelpQuery: isUsernameHelpQuery,
+    usernameCommandHelpText: usernameCommandHelpText,
+    tryAppendUsernameHelp: tryAppendUsernameHelp,
+    isUsernamePrivilegeHelpQuery: isUsernamePrivilegeHelpQuery,
+    usernamePrivilegeCommandHelpText: usernamePrivilegeCommandHelpText,
+    tryAppendUsernamePrivilegeHelp: tryAppendUsernamePrivilegeHelp,
+    isUsernamePrivilegeLevelHelpQuery: isUsernamePrivilegeLevelHelpQuery,
+    usernamePrivilegeLevelCommandHelpText: usernamePrivilegeLevelCommandHelpText,
+    tryAppendUsernamePrivilegeLevelHelp: tryAppendUsernamePrivilegeLevelHelp,
+    isUsernameNameHelpQuery: isUsernameNameHelpQuery,
+    usernameNameCommandHelpText: usernameNameCommandHelpText,
+    tryAppendUsernameNameHelp: tryAppendUsernameNameHelp,
     tryAppendIosHelp: tryAppendIosHelp,
     isBareHelpQuery: isBareHelpQuery,
     parsePromptMode: parsePromptMode,

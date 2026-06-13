@@ -810,7 +810,7 @@
             On <strong>Sw3</strong>, create the user, then allow Telnet only on VTY 0–4 with local login:
           </p>
           <pre class="spoiler-cli-pre">Sw3# configure terminal
-Sw3(config)# username devnet privilege 15 algorithm-type sha256 secret access8cli
+Sw3(config)# username devnet algorithm-type sha256 privilege 15 secret access8cli
 Sw3(config)# line vty 0 4
 Sw3(config-line)# transport input telnet
 Sw3(config-line)# login local
@@ -903,7 +903,7 @@ Sw3# copy running-config startup-config</pre>
         <div class="spoiler-task" aria-labelledby="spoiler-cap-t1">
           <p class="spoiler-terminal-cap" id="spoiler-cap-t1">Task 1 — Sw3</p>
           <pre class="spoiler-cli-pre">Sw3# configure terminal
-Sw3(config)# username devnet privilege 15 algorithm-type sha256 secret access8cli
+Sw3(config)# username devnet algorithm-type sha256 privilege 15 secret access8cli
 Sw3(config)# line vty 0 4
 Sw3(config-line)# transport input telnet
 Sw3(config-line)# login local
@@ -1398,11 +1398,11 @@ Sw3# copy running-config startup-config</pre>
         return false;
       }
 
-      /** Task 1 — local user on Sw1/Sw103-style CLI */
-      function matchSw1LocalUserCmd(u) {
+      /** Task 1 — local user on Sw3 (Telnet, VTY 0–4) */
+      function matchTask1LocalUserCmd(u) {
         return (
           u ===
-          "username devnet privilege 15 algorithm-type sha256 secret access8cli"
+          "username devnet algorithm-type sha256 privilege 15 secret access8cli"
         );
       }
 
@@ -1691,7 +1691,7 @@ Sw3# copy running-config startup-config</pre>
               "line-sys",
               "Trying " +
                 host +
-                " ...\nCould not open connection to the host, on port 23: Connect failed\n\n[Complete Task 1 on SW1: username, line vty 0 4, transport input telnet, login local.]"
+                " ...\nCould not open connection to the host, on port 23: Connect failed\n\n[Complete Task 1 on Sw3: username, line vty 0 4, transport input telnet, login local.]"
             );
             return;
           }
@@ -1818,47 +1818,8 @@ Sw3# copy running-config startup-config</pre>
           return;
         }
 
-        if (swPromptOverride === "config-line") {
-          if (u === "transport input telnet" || u === "login local") {
-            if (u === "transport input telnet") sw1Task1TransportTelnetDone = true;
-            if (u === "login local") sw1Task1LoginLocalDone = true;
-            return;
-          }
-          if (u === "exit") {
-            swPromptOverride = "config";
-            setSwPrompt();
-            return;
-          }
-          if (u === "end") {
-            swPromptOverride = "exec";
-            setSwPrompt();
-            return;
-          }
-          appendSw("line-bad", invalidInputMsgForNormalizedCmd(u));
-          return;
-        }
-
         if (sw1InGlobalConfig() && matchSw1DhcpSnoopingCmd(u)) {
           return;
-        }
-
-        var sw1GlobalConfig =
-          swPromptOverride === "config" ||
-          (stepIndex > 0 &&
-            stepIndex < LAB_STEPS.length &&
-            LAB_STEPS[stepIndex].mode === "config" &&
-            !swPromptOverride);
-        if (sw1GlobalConfig) {
-          if (matchSw1LocalUserCmd(u)) {
-            sw1Task1UserDone = true;
-            return;
-          }
-          if (u === "line vty 0 4") {
-            sw1Task1LineVtyDone = true;
-            swPromptOverride = "config-line";
-            setSwPrompt();
-            return;
-          }
         }
 
         if (
@@ -2036,6 +1997,10 @@ Sw3# copy running-config startup-config</pre>
         sw3Scrollback.innerHTML = "";
         sw3Mode = "exec";
         sw3Prompt.textContent = sw3PromptForMode();
+        sw1Task1UserDone = false;
+        sw1Task1LineVtyDone = false;
+        sw1Task1TransportTelnetDone = false;
+        sw1Task1LoginLocalDone = false;
       }
 
       function submitSw3() {
@@ -2062,6 +2027,10 @@ Sw3# copy running-config startup-config</pre>
 
         if (sw3Mode === "exec" && matchShowVersion(line)) {
           appendSw3("line-sys", SHOW_VERSION_MSG);
+          return;
+        }
+        if (sw3Mode === "exec" && matchShowIpInterfaceBrief(line)) {
+          appendSw3("line-showrun", SW1_SHOW_IP_INTERFACE_BRIEF);
           return;
         }
         if (sw3Mode === "exec" && (u.indexOf("show ") === 0 || u.indexOf("sh ") === 0)) {
@@ -2113,6 +2082,39 @@ Sw3# copy running-config startup-config</pre>
         }
         if (sw3Mode === "config-if" && u === "no shutdown") {
           return;
+        }
+
+        if (sw3Mode === "config-line") {
+          if (u === "transport input telnet" || u === "login local") {
+            if (u === "transport input telnet") sw1Task1TransportTelnetDone = true;
+            if (u === "login local") sw1Task1LoginLocalDone = true;
+            return;
+          }
+          if (u === "exit") {
+            sw3Mode = "config";
+            sw3Prompt.textContent = sw3PromptForMode();
+            return;
+          }
+          if (u === "end") {
+            sw3Mode = "exec";
+            sw3Prompt.textContent = sw3PromptForMode();
+            return;
+          }
+          appendSw3("line-bad", invalidInputMsgForNormalizedCmd(u));
+          return;
+        }
+
+        if (sw3Mode === "config") {
+          if (matchTask1LocalUserCmd(u)) {
+            sw1Task1UserDone = true;
+            return;
+          }
+          if (u === "line vty 0 4") {
+            sw1Task1LineVtyDone = true;
+            sw3Mode = "config-line";
+            sw3Prompt.textContent = sw3PromptForMode();
+            return;
+          }
         }
 
         appendSw3("line-bad", invalidInputMsgForNormalizedCmd(u));
