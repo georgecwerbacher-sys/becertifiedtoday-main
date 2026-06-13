@@ -703,6 +703,8 @@
     interface: [],
     interfaceEthernet: [],
     switchport: [],
+    switchportMode: [],
+    switchportAccess: [],
   };
 
   /** Baseline IOS `?` help for switch labs — override via opts.switchHelp (same key names). */
@@ -796,6 +798,16 @@
       { cmd: "block" },
       { cmd: "protected" },
     ],
+    /** (config-if)# switchport mode ? */
+    switchportMode: [
+      { cmd: "access" },
+      { cmd: "dot1q-tunnel" },
+      { cmd: "dynamic" },
+      { cmd: "private-vlan" },
+      { cmd: "trunk" },
+    ],
+    /** (config-if)# switchport access ? */
+    switchportAccess: [{ cmd: "vlan (#)" }],
   };
 
   /** @deprecated use DEFAULT_ROUTER_CLI_HELP.show */
@@ -1113,6 +1125,84 @@
     return true;
   }
 
+  /** Switch `switchport mode ?` at host(config-if)#. */
+
+  function isSwitchportModeHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "switchport mode ?" || t === "do switchport mode ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', switchportModeExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function switchportModeCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "switchportMode"),
+      opts.switchportModeExtra
+    );
+  }
+
+  /**
+   * `switchport mode ?` at switch (config-if)# only.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendSwitchportModeHelp(raw, appendFn, opts) {
+    if (!isSwitchportModeHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "switch") return false;
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = switchportModeCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Switch `switchport access ?` at host(config-if)#. */
+
+  function isSwitchportAccessHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "switchport access ?" || t === "do switchport access ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', switchportAccessExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function switchportAccessCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "switchportAccess"),
+      opts.switchportAccessExtra
+    );
+  }
+
+  /**
+   * `switchport access ?` at switch (config-if)# only.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendSwitchportAccessHelp(raw, appendFn, opts) {
+    if (!isSwitchportAccessHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "switch") return false;
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = switchportAccessCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
   /** Handle partial-command `?` help and config-mode bare `?` in one call. */
   function tryAppendIosHelp(raw, appendFn, opts) {
     if (tryAppendShowHelp(raw, appendFn, opts)) return true;
@@ -1121,6 +1211,8 @@
     if (tryAppendIpHelp(raw, appendFn, opts)) return true;
     if (tryAppendInterfaceEthernetHelp(raw, appendFn, opts)) return true;
     if (tryAppendInterfaceHelp(raw, appendFn, opts)) return true;
+    if (tryAppendSwitchportAccessHelp(raw, appendFn, opts)) return true;
+    if (tryAppendSwitchportModeHelp(raw, appendFn, opts)) return true;
     if (tryAppendSwitchportHelp(raw, appendFn, opts)) return true;
     return tryAppendModeHelp(raw, appendFn, opts);
   }
@@ -1257,6 +1349,12 @@
     isSwitchportHelpQuery: isSwitchportHelpQuery,
     switchportCommandHelpText: switchportCommandHelpText,
     tryAppendSwitchportHelp: tryAppendSwitchportHelp,
+    isSwitchportModeHelpQuery: isSwitchportModeHelpQuery,
+    switchportModeCommandHelpText: switchportModeCommandHelpText,
+    tryAppendSwitchportModeHelp: tryAppendSwitchportModeHelp,
+    isSwitchportAccessHelpQuery: isSwitchportAccessHelpQuery,
+    switchportAccessCommandHelpText: switchportAccessCommandHelpText,
+    tryAppendSwitchportAccessHelp: tryAppendSwitchportAccessHelp,
     tryAppendIosHelp: tryAppendIosHelp,
     isBareHelpQuery: isBareHelpQuery,
     parsePromptMode: parsePromptMode,

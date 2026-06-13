@@ -1220,6 +1220,8 @@ Sw2# copy running-config startup-config</pre>
        * (config)# interface ethernet ? → <0-9>, port-channel, range
        * (config-if)# ? → arp, cdp, channel-group, … switchport, tx-ring-limit
        * (config-if)# switchport ? → access, trunk, mode, voice, port-security, nonegotiate, block, protected
+       * (config-if)# switchport mode ? → access, dot1q-tunnel, dynamic, private-vlan, trunk
+       * (config-if)# switchport access ? → vlan (#)
        */
       var SWITCH_CLI_HELP = null;
       var SHOW_DISABLED_MSG = "this command is disabled for this lab";
