@@ -1229,6 +1229,11 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
 
 
       var HELP_DISABLED_MSG = "help feature disabled for tester";
+      /**
+       * Per-lab router `?` help overrides. null = use cliLabContainer.DEFAULT_ROUTER_CLI_HELP.
+       * Override one scenario at a time, e.g. { ipRoute: [{ cmd: "..." }] }.
+       */
+      var ROUTER_CLI_HELP = null;
       var SHOW_DISABLED_MSG = "this command is disabled for this lab";
       var SHOW_VERSION_MSG = "BeCertifiedToday version 2026";
       var SHOW_IP_INT_BRIEF_R1 = [
@@ -1489,7 +1494,7 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
         swCmdline.value = "";
         if (!trimmed) return;
 
-        if (cliLabContainer.tryAppendIosHelp(line, appendSw, { deviceType: "router", promptText: promptText })) return;
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw, cliLabContainer.iosHelpOpts("router", promptText, ROUTER_CLI_HELP))) return;
 
         if (normalize(line) === "?") {
           appendSw("line-sys", HELP_DISABLED_MSG);
@@ -1606,7 +1611,7 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
         sw2Cmdline.value = "";
         if (!trimmed) return;
 
-        if (cliLabContainer.tryAppendIosHelp(line, appendSw2, { deviceType: "router", promptText: promptText })) return;
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw2, cliLabContainer.iosHelpOpts("router", promptText, ROUTER_CLI_HELP))) return;
 
         if (matchShowIpInterfaceBrief(line)) {
           appendSw2("line-showrun", SHOW_IP_INT_BRIEF_R2);
@@ -1652,7 +1657,7 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
         sw3Cmdline.value = "";
         if (!trimmed) return;
 
-        if (cliLabContainer.tryAppendIosHelp(line, appendSw3, { deviceType: "router", promptText: promptText })) return;
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw3, cliLabContainer.iosHelpOpts("router", promptText, ROUTER_CLI_HELP))) return;
 
         if (normalize(line) === "?") {
           appendSw3("line-sys", HELP_DISABLED_MSG);

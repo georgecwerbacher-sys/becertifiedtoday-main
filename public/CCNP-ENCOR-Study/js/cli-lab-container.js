@@ -589,28 +589,213 @@
 
   scheduleCcnaLabTopChromeInit();
 
-  /** IOS-style `show ?` entries (listed for realism; most are not implemented per lab). */
-  var SHOW_HELP_ROUTER = [
-    { cmd: "clock", desc: "Display the system clock" },
-    { cmd: "history", desc: "System command history" },
-    { cmd: "ip interface brief", desc: "IP interface status and configuration" },
-    { cmd: "ip route", desc: "IP routing table" },
-    { cmd: "running-config", desc: "Current operating configuration" },
-    { cmd: "startup-config", desc: "Contents of startup configuration" },
-    { cmd: "version", desc: "System hardware and software status" },
-  ];
+  /**
+   * Baseline IOS `?` help for all router labs (privileged EXEC + config submodes).
+   * Override per lab: pass `routerHelp: { show: [...], configGlobal: [...], ... }` to tryAppendIosHelp,
+   * or set `var ROUTER_CLI_HELP = { ipRoute: [...] }` in the lab page (only overridden keys replace defaults).
+   */
+  var DEFAULT_ROUTER_CLI_HELP = {
+    /** Privileged EXEC — host# ? */
+    exec: [
+      { cmd: "configure" },
+      { cmd: "show" },
+      { cmd: "ping" },
+      { cmd: "traceroute" },
+      { cmd: "copy" },
+      { cmd: "erase" },
+      { cmd: "reload" },
+      { cmd: "exit" },
+      { cmd: "disable" },
+      { cmd: "terminal" },
+      { cmd: "ssh" },
+      { cmd: "telnet" },
+      { cmd: "debug" },
+      { cmd: "undebug" },
+    ],
+    show: [
+      { cmd: "clock" },
+      { cmd: "history" },
+      { cmd: "ip interface brief" },
+      { cmd: "ip route" },
+      { cmd: "running-config" },
+      { cmd: "startup-config" },
+      { cmd: "version" },
+    ],
+    configExec: [
+      { cmd: "memory" },
+      { cmd: "network" },
+      { cmd: "overwrite-network" },
+      { cmd: "terminal" },
+    ],
+    configGlobal: [
+      { cmd: "aaa" },
+      { cmd: "access-list" },
+      { cmd: "banner" },
+      { cmd: "boot" },
+      { cmd: "cdp" },
+      { cmd: "crypto" },
+      { cmd: "do" },
+      { cmd: "enable" },
+      { cmd: "end" },
+      { cmd: "exit" },
+      { cmd: "hostname" },
+      { cmd: "interface" },
+      { cmd: "ip" },
+      { cmd: "line" },
+      { cmd: "logging" },
+      { cmd: "mac" },
+      { cmd: "ntp" },
+      { cmd: "router" },
+      { cmd: "service" },
+      { cmd: "snmp-server" },
+      { cmd: "username" },
+      { cmd: "vlan" },
+      { cmd: "vrf" },
+    ],
+    configIf: [
+      { cmd: "ip address <ip-address> <subnet-mask>" },
+      { cmd: "description <text>" },
+      { cmd: "shutdown" },
+      { cmd: "no shutdown" },
+      { cmd: "exit" },
+      { cmd: "do <command>" },
+      { cmd: "end" },
+    ],
+    configLine: [
+      { cmd: "exec-timeout <minutes> <seconds>" },
+      { cmd: "logging synchronous" },
+      { cmd: "exit" },
+      { cmd: "do <command>" },
+      { cmd: "end" },
+    ],
+    configRouter: [
+      { cmd: "network" },
+      { cmd: "passive-interface" },
+      { cmd: "router-id" },
+      { cmd: "exit" },
+    ],
+    configAcl: [{ cmd: "deny" }, { cmd: "permit" }, { cmd: "exit" }],
+    ip: [
+      { cmd: "route" },
+      { cmd: "routing" },
+      { cmd: "cef" },
+      { cmd: "subnet-zero" },
+      { cmd: "default-gateway" },
+      { cmd: "default-network" },
+    ],
+    ipRoute: [
+      { cmd: "ip route <destination_network> <subnet_mask> <next_hop_or_interface>" },
+      { cmd: "<A.B.C.D>" },
+      { cmd: "vrf" },
+      { cmd: "profile" },
+      { cmd: "track" },
+      { cmd: "multicast" },
+    ],
+  };
 
-  var SHOW_HELP_SWITCH = [
-    { cmd: "history", desc: "System command history" },
-    { cmd: "interfaces trunk", desc: "Trunk port information" },
-    { cmd: "etherchannel summary", desc: "EtherChannel summary" },
-    { cmd: "ip interface brief", desc: "IP interface status and configuration" },
-    { cmd: "mac address-table", desc: "MAC address table" },
-    { cmd: "running-config", desc: "Current operating configuration" },
-    { cmd: "startup-config", desc: "Contents of startup configuration" },
-    { cmd: "version", desc: "System hardware and software status" },
-    { cmd: "vlan brief", desc: "VLAN information" },
-  ];
+  /** Baseline IOS `?` help for switch labs — override via opts.switchHelp (same key names). */
+  var DEFAULT_SWITCH_CLI_HELP = {
+    exec: DEFAULT_ROUTER_CLI_HELP.exec,
+    show: [
+      { cmd: "history" },
+      { cmd: "interfaces trunk" },
+      { cmd: "etherchannel summary" },
+      { cmd: "ip interface brief" },
+      { cmd: "mac address-table" },
+      { cmd: "running-config" },
+      { cmd: "startup-config" },
+      { cmd: "version" },
+      { cmd: "vlan brief" },
+    ],
+    configExec: DEFAULT_ROUTER_CLI_HELP.configExec,
+    configGlobal: [
+      { cmd: "hostname <name>" },
+      { cmd: "vlan <vlan-id>" },
+      { cmd: "interface <interface-id>" },
+      { cmd: "spanning-tree" },
+      { cmd: "line con 0" },
+      { cmd: "line vty 0 4" },
+      { cmd: "exit" },
+      { cmd: "do <command>" },
+      { cmd: "end" },
+    ],
+    configIf: [
+      { cmd: "description <text>" },
+      { cmd: "switchport" },
+      { cmd: "channel-group" },
+      { cmd: "spanning-tree" },
+      { cmd: "shutdown" },
+      { cmd: "no shutdown" },
+      { cmd: "exit" },
+      { cmd: "do <command>" },
+      { cmd: "end" },
+    ],
+    configLine: DEFAULT_ROUTER_CLI_HELP.configLine,
+    configRouter: [],
+    configAcl: DEFAULT_ROUTER_CLI_HELP.configAcl,
+    ip: [],
+    ipRoute: [],
+  };
+
+  /** @deprecated use DEFAULT_ROUTER_CLI_HELP.show */
+  var SHOW_HELP_ROUTER = DEFAULT_ROUTER_CLI_HELP.show;
+  /** @deprecated use DEFAULT_SWITCH_CLI_HELP.show */
+  var SHOW_HELP_SWITCH = DEFAULT_SWITCH_CLI_HELP.show;
+  /** @deprecated use DEFAULT_ROUTER_CLI_HELP.configExec */
+  var CONFIG_HELP_EXEC = DEFAULT_ROUTER_CLI_HELP.configExec;
+  /** @deprecated use DEFAULT_ROUTER_CLI_HELP.ip */
+  var IP_HELP_CONFIG_ROUTER = DEFAULT_ROUTER_CLI_HELP.ip;
+  /** @deprecated use DEFAULT_ROUTER_CLI_HELP.ipRoute */
+  var IP_ROUTE_HELP_CONFIG_ROUTER = DEFAULT_ROUTER_CLI_HELP.ipRoute;
+  /** @deprecated use DEFAULT_ROUTER_CLI_HELP.configGlobal */
+  var MODE_HELP_CONFIG_ROUTER = DEFAULT_ROUTER_CLI_HELP.configGlobal;
+  /** @deprecated use DEFAULT_SWITCH_CLI_HELP.configGlobal */
+  var MODE_HELP_CONFIG_SWITCH = DEFAULT_SWITCH_CLI_HELP.configGlobal;
+  /** @deprecated use DEFAULT_ROUTER_CLI_HELP.configIf */
+  var MODE_HELP_CONFIG_IF_ROUTER = DEFAULT_ROUTER_CLI_HELP.configIf;
+  /** @deprecated use DEFAULT_SWITCH_CLI_HELP.configIf */
+  var MODE_HELP_CONFIG_IF_SWITCH = DEFAULT_SWITCH_CLI_HELP.configIf;
+  /** @deprecated use DEFAULT_ROUTER_CLI_HELP.configLine */
+  var MODE_HELP_CONFIG_LINE = DEFAULT_ROUTER_CLI_HELP.configLine;
+  /** @deprecated use DEFAULT_ROUTER_CLI_HELP.configRouter */
+  var MODE_HELP_CONFIG_ROUTER_OSPF = DEFAULT_ROUTER_CLI_HELP.configRouter;
+  /** @deprecated use DEFAULT_ROUTER_CLI_HELP.configAcl */
+  var MODE_HELP_CONFIG_ACL = DEFAULT_ROUTER_CLI_HELP.configAcl;
+
+  function defaultHelpBundle(deviceType) {
+    return deviceType === "switch" ? DEFAULT_SWITCH_CLI_HELP : DEFAULT_ROUTER_CLI_HELP;
+  }
+
+  /**
+   * Resolve a help list: lab override (full replace for that key) or shared default.
+   * @param {object} opts - tryAppendIosHelp options
+   * @param {'router'|'switch'} deviceType
+   * @param {string} key - e.g. show, configGlobal, ipRoute
+   */
+  function resolveHelpList(opts, deviceType, key) {
+    opts = opts || {};
+    var labHelp = deviceType === "switch" ? opts.switchHelp : opts.routerHelp;
+    if (labHelp && Array.isArray(labHelp[key]) && labHelp[key].length) {
+      return labHelp[key];
+    }
+    var defaults = defaultHelpBundle(deviceType);
+    return defaults[key] || [];
+  }
+
+  /**
+   * Build tryAppendIosHelp options for a lab device session.
+   * @param {'router'|'switch'} deviceType
+   * @param {string} promptText
+   * @param {object|null|undefined} labHelp - partial override; null uses all defaults
+   */
+  function iosHelpOpts(deviceType, promptText, labHelp) {
+    var o = { deviceType: deviceType, promptText: promptText };
+    if (labHelp && typeof labHelp === "object") {
+      if (deviceType === "switch") o.switchHelp = labHelp;
+      else o.routerHelp = labHelp;
+    }
+    return o;
+  }
 
   function isShowHelpQuery(raw) {
     var t = String(raw || "")
@@ -621,24 +806,12 @@
   }
 
   /**
-   * @param {{deviceType?:'router'|'switch', extra?:Array<{cmd:string,desc:string}>}} [opts]
+   * @param {{deviceType?:'router'|'switch', extra?:Array<{cmd:string}>}} [opts]
    */
   function showCommandHelpText(opts) {
     opts = opts || {};
-    var base = opts.deviceType === "switch" ? SHOW_HELP_SWITCH : SHOW_HELP_ROUTER;
-    var extra = opts.extra || [];
-    var seen = {};
-    var lines = [];
-
-    function addEntry(entry) {
-      if (!entry || !entry.cmd || seen[entry.cmd]) return;
-      seen[entry.cmd] = true;
-      lines.push("  " + entry.cmd);
-    }
-
-    base.forEach(addEntry);
-    extra.forEach(addEntry);
-    return lines.join("\n");
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "show"), opts.extra);
   }
 
   /**
@@ -654,12 +827,6 @@
   }
 
   /** IOS-style `configure ?` / `config ?` at privileged EXEC (subcommands only). */
-  var CONFIG_HELP_EXEC = [
-    { cmd: "memory", desc: "Configure from NV memory" },
-    { cmd: "network", desc: "Configure from a network TFTP host" },
-    { cmd: "overwrite-network", desc: "Overwrite NV memory from TFTP network host" },
-    { cmd: "terminal", desc: "Configure from the terminal" },
-  ];
 
   function isConfigHelpQuery(raw) {
     var t = String(raw || "")
@@ -682,19 +849,9 @@
    */
   function configCommandHelpText(opts) {
     opts = opts || {};
+    var deviceType = opts.deviceType || "router";
     var extra = opts.configExtra || opts.extra || [];
-    var seen = {};
-    var lines = [];
-
-    function addEntry(entry) {
-      if (!entry || !entry.cmd || seen[entry.cmd]) return;
-      seen[entry.cmd] = true;
-      lines.push("  " + entry.cmd);
-    }
-
-    CONFIG_HELP_EXEC.forEach(addEntry);
-    extra.forEach(addEntry);
-    return lines.join("\n");
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "configExec"), extra);
   }
 
   /**
@@ -710,14 +867,6 @@
   }
 
   /** Router global `ip ?` at host(config)# — subcommands after `ip`. */
-  var IP_HELP_CONFIG_ROUTER = [
-    { cmd: "route" },
-    { cmd: "routing" },
-    { cmd: "cef" },
-    { cmd: "subnet-zero" },
-    { cmd: "default-gateway" },
-    { cmd: "default-network" },
-  ];
 
   function isIpHelpQuery(raw) {
     var t = String(raw || "")
@@ -732,7 +881,7 @@
    */
   function ipCommandHelpText(opts) {
     opts = opts || {};
-    return formatHelpEntries(IP_HELP_CONFIG_ROUTER, opts.ipExtra);
+    return formatHelpEntries(resolveHelpList(opts, "router", "ip"), opts.ipExtra);
   }
 
   /**
@@ -751,14 +900,6 @@
   }
 
   /** Router `ip route ?` at host(config)#. */
-  var IP_ROUTE_HELP_CONFIG_ROUTER = [
-    { cmd: "ip route <destination_network> <subnet_mask> <next_hop_or_interface>" },
-    { cmd: "<A.B.C.D>" },
-    { cmd: "vrf" },
-    { cmd: "profile" },
-    { cmd: "track" },
-    { cmd: "multicast" },
-  ];
 
   function isIpRouteHelpQuery(raw) {
     var t = String(raw || "")
@@ -773,7 +914,7 @@
    */
   function ipRouteCommandHelpText(opts) {
     opts = opts || {};
-    return formatHelpEntries(IP_ROUTE_HELP_CONFIG_ROUTER, opts.ipRouteExtra);
+    return formatHelpEntries(resolveHelpList(opts, "router", "ipRoute"), opts.ipRouteExtra);
   }
 
   /**
@@ -837,114 +978,32 @@
     return lines.join("\n");
   }
 
-  /** CCNA router global config (`?` at host(config)#) — not used when deviceType is switch. */
-  var MODE_HELP_CONFIG_ROUTER = [
-    { cmd: "hostname <name>" },
-    { cmd: "banner motd # <message> #" },
-    { cmd: "interface <interface-id>" },
-    { cmd: "ip" },
-    { cmd: "line con 0" },
-    { cmd: "line vty 0 4" },
-    { cmd: "exit" },
-    { cmd: "do <command>" },
-    { cmd: "end" },
-  ];
-
-  /** Switch global config (`?` at host(config)#) — separate from router list above. */
-  var MODE_HELP_CONFIG_SWITCH = [
-    { cmd: "hostname <name>" },
-    { cmd: "vlan <vlan-id>" },
-    { cmd: "interface <interface-id>" },
-    { cmd: "spanning-tree" },
-    { cmd: "line con 0" },
-    { cmd: "line vty 0 4" },
-    { cmd: "exit" },
-    { cmd: "do <command>" },
-    { cmd: "end" },
-  ];
-
-  /** Router interface config (`?` at host(config-if)#). */
-  var MODE_HELP_CONFIG_IF_ROUTER = [
-    { cmd: "ip address <ip-address> <subnet-mask>" },
-    { cmd: "description <text>" },
-    { cmd: "shutdown" },
-    { cmd: "no shutdown" },
-    { cmd: "exit" },
-    { cmd: "do <command>" },
-    { cmd: "end" },
-  ];
-
-  /** Switch interface config (`?` at host(config-if)#). */
-  var MODE_HELP_CONFIG_IF_SWITCH = [
-    { cmd: "description <text>" },
-    { cmd: "switchport" },
-    { cmd: "channel-group" },
-    { cmd: "spanning-tree" },
-    { cmd: "shutdown" },
-    { cmd: "no shutdown" },
-    { cmd: "exit" },
-    { cmd: "do <command>" },
-    { cmd: "end" },
-  ];
-
-  /** Line config (`?` at host(config-line)#) — console/VTY; used on routers and switches. */
-  var MODE_HELP_CONFIG_LINE = [
-    { cmd: "exec-timeout <minutes> <seconds>" },
-    { cmd: "logging synchronous" },
-    { cmd: "exit" },
-    { cmd: "do <command>" },
-    { cmd: "end" },
-  ];
-
-  var MODE_HELP_CONFIG_ROUTER_OSPF = [
-    { cmd: "network", desc: "Enable routing on an IP network" },
-    { cmd: "passive-interface", desc: "Suppress routing updates on an interface" },
-    { cmd: "router-id", desc: "router-id for this OSPF process" },
-    { cmd: "exit", desc: "Exit from router configuration mode" },
-  ];
-
-  var MODE_HELP_CONFIG_ACL = [
-    { cmd: "deny", desc: "Specify packets to reject" },
-    { cmd: "permit", desc: "Specify packets to forward" },
-    { cmd: "exit", desc: "Exit from ACL configuration mode" },
-  ];
-
   /**
-   * @param {{deviceType?:'router'|'switch', mode?:string, promptText?:string, modeExtra?:Array<{cmd:string,desc:string}>}} [opts]
+   * @param {{deviceType?:'router'|'switch', mode?:string, promptText?:string, modeExtra?:Array<{cmd:string}>}} [opts]
    */
   function modeCommandHelpText(opts) {
     opts = opts || {};
     var mode = opts.mode || parsePromptMode(opts.promptText);
     var deviceType = opts.deviceType || "router";
-    var base;
+    var key;
 
-    if (mode === "config-if") {
-      base = deviceType === "switch" ? MODE_HELP_CONFIG_IF_SWITCH : MODE_HELP_CONFIG_IF_ROUTER;
-    } else if (mode === "config-line") {
-      base = MODE_HELP_CONFIG_LINE;
-    } else if (mode === "config-router") {
-      base = MODE_HELP_CONFIG_ROUTER_OSPF;
-    } else if (mode === "config-acl") {
-      base = MODE_HELP_CONFIG_ACL;
-    } else if (mode === "config") {
-      base = deviceType === "switch" ? MODE_HELP_CONFIG_SWITCH : MODE_HELP_CONFIG_ROUTER;
-    } else if (mode !== "exec") {
-      base = deviceType === "switch" ? MODE_HELP_CONFIG_SWITCH : MODE_HELP_CONFIG_ROUTER;
-    } else {
-      return "";
-    }
+    if (mode === "config-if") key = "configIf";
+    else if (mode === "config-line") key = "configLine";
+    else if (mode === "config-router") key = "configRouter";
+    else if (mode === "config-acl") key = "configAcl";
+    else if (mode === "config") key = "configGlobal";
+    else if (mode === "exec") key = "exec";
+    else key = "configGlobal";
 
-    return formatHelpEntries(base, opts.modeExtra);
+    return formatHelpEntries(resolveHelpList(opts, deviceType, key), opts.modeExtra);
   }
 
   /**
-   * Bare `?` / `help` in a configuration submode (not privileged EXEC).
+   * Bare `?` / `help` at privileged EXEC (#) or in a configuration submode.
    * @param {Function} appendFn - (className, text) => void
    */
   function tryAppendModeHelp(raw, appendFn, opts) {
     if (!isBareHelpQuery(raw)) return false;
-    var mode = (opts && opts.mode) || parsePromptMode(opts && opts.promptText);
-    if (mode === "exec") return false;
     var text = modeCommandHelpText(opts);
     if (!text) return false;
     if (typeof appendFn === "function") {
@@ -1010,6 +1069,10 @@
     parsePromptMode: parsePromptMode,
     modeCommandHelpText: modeCommandHelpText,
     tryAppendModeHelp: tryAppendModeHelp,
+    DEFAULT_ROUTER_CLI_HELP: DEFAULT_ROUTER_CLI_HELP,
+    DEFAULT_SWITCH_CLI_HELP: DEFAULT_SWITCH_CLI_HELP,
+    resolveHelpList: resolveHelpList,
+    iosHelpOpts: iosHelpOpts,
     SHOW_HELP_ROUTER: SHOW_HELP_ROUTER,
     SHOW_HELP_SWITCH: SHOW_HELP_SWITCH,
     CONFIG_HELP_EXEC: CONFIG_HELP_EXEC,
