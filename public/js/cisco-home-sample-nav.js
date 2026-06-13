@@ -857,14 +857,6 @@
           captureCurrentAnswer(session, index);
           location.assign(realItemHref(session, nextItem, nextIndex));
         };
-      } else if (onDnd) {
-        els.nextEl.style.display = "none";
-        els.nextEl.href = "#";
-        els.nextEl.textContent = "Next";
-        els.nextEl.classList.add("nav-link--disabled");
-        els.nextEl.onclick = function (ev) {
-          ev.preventDefault();
-        };
       } else {
         els.nextEl.style.display = "";
         els.nextEl.href = finishHome;
@@ -924,6 +916,7 @@
       ".cisco-home-sample-nav a:hover{filter:brightness(1.08)}" +
       ".cisco-home-sample-nav a.nav-link--disabled{opacity:.45;pointer-events:none}" +
       "body.cisco-home-sample-active{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))!important}" +
+      "body.cisco-home-sample-active nav.sim-nav{display:none!important}" +
       ".cisco-sample-upsell-root{position:fixed;inset:0;z-index:20002;display:flex;align-items:center;justify-content:center;padding:16px}" +
       ".cisco-sample-upsell-backdrop{position:absolute;inset:0;background:rgba(8,12,24,.72);backdrop-filter:blur(4px)}" +
       ".cisco-sample-upsell-panel{position:relative;z-index:1;width:min(520px,100%);max-height:min(90vh,640px);overflow:auto;margin:0;padding:clamp(20px,4vw,28px) clamp(18px,3.5vw,26px) 22px;border-radius:16px;border:1px solid #4f84d8;background:linear-gradient(165deg,rgba(22,32,52,.98) 0%,rgba(14,20,36,.99) 100%);color:#e6edf3;box-shadow:0 24px 64px rgba(0,0,0,.45)}" +

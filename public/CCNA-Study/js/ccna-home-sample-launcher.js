@@ -204,6 +204,7 @@
       sessionStorage.setItem("ccnpSampleKind", kind || "ccna-home");
       sessionStorage.removeItem("encorHomeSample");
       sessionStorage.removeItem("ccnaPractice100");
+      sessionStorage.removeItem("ccnaDnd25");
       sessionStorage.removeItem("ccnpQuestionQueue");
     } catch (e) {}
     var singleTrack =

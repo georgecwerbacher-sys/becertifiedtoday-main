@@ -13,6 +13,37 @@
     }
   }
 
+  /** Homepage guest sample (masked /sample URL) — order comes from ccnaHomeSample, not ccnaDnd25. */
+  function homeGuestSampleActive() {
+    try {
+      if (new URLSearchParams(location.search).get("sample") === "1") return true;
+      if (sessionStorage.getItem("ccnpUrlMaskPath") !== "/sample") return false;
+      var raw = sessionStorage.getItem("ccnaHomeSample");
+      if (!raw) return false;
+      var s = JSON.parse(raw);
+      if (!s || !Array.isArray(s.order) || !s.order.length) return false;
+      var kind = sessionStorage.getItem("ccnpSampleKind") || "";
+      if (kind === "ccna-dnd") return true;
+      if (
+        !s.order.every(function (item) {
+          return item && item.type === "dnd";
+        })
+      ) {
+        return false;
+      }
+      var slug = slugFromPath();
+      if (!slug) return false;
+      var slugNeedle = "/" + slug.toLowerCase() + ".html";
+      for (var i = 0; i < s.order.length; i++) {
+        var item = s.order[i];
+        if (item && item.type === "dnd" && item.path && item.path.toLowerCase().indexOf(slugNeedle) !== -1) {
+          return true;
+        }
+      }
+    } catch (e) {}
+    return false;
+  }
+
   function applyExamSimEmbedStyles() {
     if (document.head.querySelector("style[data-ccna-dnd-exam-sim]")) return;
     var s = document.createElement("style");
@@ -64,6 +95,7 @@
       applyExamSimEmbedStyles();
       return;
     }
+    if (homeGuestSampleActive()) return;
     var slug = slugFromPath();
     if (!slug) return;
     var session = readSession();
