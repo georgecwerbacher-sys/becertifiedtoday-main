@@ -1567,6 +1567,8 @@ R3(config-line)# end</pre>
         swCmdline.value = "";
         if (!trimmed) return;
 
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw, { deviceType: "router", promptText: promptText })) return;
+
         if (normalize(line) === "?") {
           appendSw("line-sys", HELP_DISABLED_MSG);
           return;
@@ -1722,6 +1724,8 @@ R3(config-line)# end</pre>
         r1Cmdline.value = "";
         if (!trimmed) return;
 
+        if (cliLabContainer.tryAppendIosHelp(line, appendR1, { deviceType: "router", promptText: promptText })) return;
+
         if (normalize(line) === "?") {
           appendR1("line-sys", HELP_DISABLED_MSG);
           return;
@@ -1845,6 +1849,8 @@ R3(config-line)# end</pre>
         }
         r3Cmdline.value = "";
         if (!trimmed) return;
+
+        if (cliLabContainer.tryAppendIosHelp(line, appendR3, { deviceType: "router", promptText: promptText })) return;
 
         if (normalize(line) === "?") {
           appendR3("line-sys", HELP_DISABLED_MSG);

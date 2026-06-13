@@ -1663,6 +1663,8 @@ R2# copy running-config startup-config</pre>
         swCmdline.value = "";
         if (!trimmed) return;
 
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw, { deviceType: "router", promptText: promptText })) return;
+
         if (normalize(line) === "?") {
           appendSw("line-sys", HELP_DISABLED_MSG);
           return;
@@ -1909,6 +1911,8 @@ R2# copy running-config startup-config</pre>
         pushLocalHistory(sw2Cmdline, line);
         sw2Cmdline.value = "";
         if (!trimmed) return;
+
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw2, { deviceType: "router", promptText: promptText })) return;
 
         if (normalize(line) === "?") {
           appendSw2("line-sys", HELP_DISABLED_MSG);

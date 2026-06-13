@@ -340,6 +340,24 @@
         return;
       }
 
+      if (
+        container &&
+        typeof container.tryAppendIosHelp === "function" &&
+        container.tryAppendIosHelp(line, function (cls, text) {
+          appendBlock(el.scroll, cls, text);
+        }, {
+          deviceType: deviceType,
+          extra: opts.showHelpExtra,
+          configExtra: opts.configHelpExtra,
+          modeExtra: opts.modeHelpExtra,
+          promptText: el.prompt ? el.prompt.textContent : "",
+        })
+      ) {
+        echoCommand(line, normalized);
+        el.cmdline.value = "";
+        return;
+      }
+
       if (normalized === "?") {
         echoCommand(line, normalized);
         el.cmdline.value = "";

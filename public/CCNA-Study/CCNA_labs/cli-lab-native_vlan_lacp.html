@@ -1552,6 +1552,8 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
         swCmdline.value = "";
         if (!trimmed) return;
 
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw, { deviceType: "switch", promptText: promptText })) return;
+
         if (normalize(line) === "?") {
           appendSw("line-sys", HELP_DISABLED_MSG);
           return;
@@ -1661,6 +1663,8 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
         pushLocalHistory(sw2Cmdline, line);
         sw2Cmdline.value = "";
         if (!trimmed) return;
+
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw2, { deviceType: "switch", promptText: promptText })) return;
 
         if (normalize(line) === "?") {
           appendSw2("line-sys", HELP_DISABLED_MSG);

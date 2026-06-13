@@ -1675,6 +1675,8 @@ Sw2# copy running-config startup-config</pre>
         swCmdline.value = "";
         if (!trimmed) return;
 
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw, { deviceType: "switch", promptText: promptText })) return;
+
         if (normalize(line) === "?") {
           appendSw("line-sys", HELP_DISABLED_MSG);
           return;
@@ -1853,6 +1855,8 @@ Sw2# copy running-config startup-config</pre>
         }
         sw2Cmdline.value = "";
         if (!trimmed) return;
+
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw2, { deviceType: "switch", promptText: promptText })) return;
 
         if (normalize(line) === "?") {
           appendSw2("line-sys", HELP_DISABLED_MSG);

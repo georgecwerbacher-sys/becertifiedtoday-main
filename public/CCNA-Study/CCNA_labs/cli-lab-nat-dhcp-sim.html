@@ -1816,6 +1816,8 @@ Sw1#</pre>
         swCmdline.value = "";
         if (!trimmed) return;
 
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw, { deviceType: "router", promptText: promptText })) return;
+
         if (normalize(line) === "?") {
           appendSw("line-sys", HELP_DISABLED_MSG);
           return;
@@ -1988,6 +1990,19 @@ Sw1#</pre>
         }
         sw2Cmdline.value = "";
         if (!trimmed) return;
+
+        if (
+          cliLabContainer.tryAppendIosHelp(line, appendSw2, {
+            deviceType: "switch",
+            promptText: promptText,
+            extra: [
+              { cmd: "ntp status", desc: "NTP status and configuration" },
+              { cmd: "ip nat translations", desc: "NAT active translations" },
+            ],
+          })
+        ) {
+          return;
+        }
 
         if (normalize(line) === "?") {
           appendSw2("line-sys", HELP_DISABLED_MSG);

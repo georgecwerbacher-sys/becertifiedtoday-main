@@ -1926,6 +1926,8 @@ Sw2(config-if)# end</pre>
         swCmdline.value = "";
         if (!trimmed) return;
 
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw, { deviceType: "switch", promptText: promptText })) return;
+
         if (normalize(line) === "?") {
           appendSw("line-sys", HELP_DISABLED_MSG);
           return;
@@ -2064,6 +2066,8 @@ Sw2(config-if)# end</pre>
         appendSw2("line-user", promptText + " " + echoLine);
         sw2Cmdline.value = "";
         if (!trimmed) return;
+
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw2, { deviceType: "switch", promptText: promptText })) return;
 
         if (normalize(line) === "?") {
           appendSw2("line-sys", HELP_DISABLED_MSG);
