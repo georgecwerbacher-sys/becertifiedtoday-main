@@ -724,6 +724,7 @@
     switchport: [],
     switchportMode: [],
     switchportAccess: [],
+    lldp: [],
   };
 
   /**
@@ -743,6 +744,7 @@
    *   switchport        — (config-if)# switchport ?
    *   switchportMode    — (config-if)# switchport mode ?
    *   switchportAccess  — (config-if)# switchport access ?
+   *   lldp              — (config)# lldp ?
    */
   var DEFAULT_SWITCH_CLI_HELP = {
     exec: DEFAULT_ROUTER_CLI_HELP.exec,
@@ -844,6 +846,19 @@
     ],
     /** (config-if)# switchport access ? */
     switchportAccess: [{ cmd: "vlan (#)" }],
+    /** (config)# lldp ? */
+    lldp: [
+      { cmd: "run" },
+      { cmd: "no lldp run" },
+      { cmd: "transmit" },
+      { cmd: "no lldp transmit" },
+      { cmd: "receive" },
+      { cmd: "no lldp receive" },
+      { cmd: "timer" },
+      { cmd: "holdtime" },
+      { cmd: "reinit" },
+      { cmd: "med-tlv-select" },
+    ],
   };
 
   /** @deprecated use DEFAULT_ROUTER_CLI_HELP.show */
@@ -1239,6 +1254,42 @@
     return true;
   }
 
+  /** Switch `lldp ?` at host(config)#. */
+
+  function isLldpHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "lldp ?" || t === "do lldp ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', lldpExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function lldpCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "lldp"), opts.lldpExtra);
+  }
+
+  /**
+   * `lldp ?` at switch (config)# only.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendLldpHelp(raw, appendFn, opts) {
+    if (!isLldpHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "switch") return false;
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = lldpCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
   /** Handle partial-command `?` help and config-mode bare `?` in one call. */
   function tryAppendIosHelp(raw, appendFn, opts) {
     if (tryAppendShowHelp(raw, appendFn, opts)) return true;
@@ -1250,6 +1301,7 @@
     if (tryAppendSwitchportAccessHelp(raw, appendFn, opts)) return true;
     if (tryAppendSwitchportModeHelp(raw, appendFn, opts)) return true;
     if (tryAppendSwitchportHelp(raw, appendFn, opts)) return true;
+    if (tryAppendLldpHelp(raw, appendFn, opts)) return true;
     return tryAppendModeHelp(raw, appendFn, opts);
   }
 
@@ -1392,6 +1444,9 @@
     isSwitchportAccessHelpQuery: isSwitchportAccessHelpQuery,
     switchportAccessCommandHelpText: switchportAccessCommandHelpText,
     tryAppendSwitchportAccessHelp: tryAppendSwitchportAccessHelp,
+    isLldpHelpQuery: isLldpHelpQuery,
+    lldpCommandHelpText: lldpCommandHelpText,
+    tryAppendLldpHelp: tryAppendLldpHelp,
     tryAppendIosHelp: tryAppendIosHelp,
     isBareHelpQuery: isBareHelpQuery,
     parsePromptMode: parsePromptMode,
