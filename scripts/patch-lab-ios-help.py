@@ -16,10 +16,24 @@ ROUTER_HELP_DOC = """
   IOS `?` help — ROUTER_CLI_HELP = null → DEFAULT_ROUTER_CLI_HELP (/js/cli-lab-container.js):
   tryAppendIosHelp(..., iosHelpOpts("router", promptText, ROUTER_CLI_HELP)) in every router submit handler.
   Help is read-only — using ? does not change config, advance steps, or affect completion.
+  Interface/address: interface ?, interface ethernet ?, (config-if)# ip address ?,
+    (config-if)# ipv6 ?, ipv6 address ?
   OSPF chain: router ?, router ospf ?, (config-router)# ?, router-id ?,
-    (config-if)# ip ospf ?, ip ospf <pid> ?, ip ospf <pid> area ?, ip ospf priority ?"""
+    (config-if)# ip ospf ?, ip ospf <pid> ?, ip ospf <pid> area ?, ip ospf priority ?
+  IPv6 routing: (config)# ipv6 ? (unicast-routing)
+  Static route chain: ip route ?, ip route <dest> ?, ip route <dest> <mask> ?,
+    ip route <dest> <mask> <next-hop> ?
+  Reference labs: cli-lab-static-routing.html, cli-lab-ospf_config_sim_v3.html, ipv4_ipv6_assign.html"""
 
-ROUTER_HELP_MARKER = "OSPF chain:"
+ROUTER_HELP_MARKER = "Static route chain:"
+
+ROUTER_HELP_OLD_BLOCK = re.compile(
+    r"\n  IOS `\?` help — ROUTER_CLI_HELP[^\n]*\n"
+    r"(?:  tryAppendIosHelp[^\n]*\n)?"
+    r"(?:  Help is read-only[^\n]*\n)?"
+    r"  OSPF chain:[^\n]*\n(?:    [^\n]*\n)?",
+    re.MULTILINE,
+)
 
 ROUTER_VARS = """      /** null = DEFAULT_ROUTER_CLI_HELP (baseline for all routers). */
       var ROUTER_CLI_HELP = null;"""
@@ -168,18 +182,28 @@ def ensure_help_vars(text: str, need_router: bool, need_switch: bool) -> str:
 
 
 def patch_router_help_doc(path: Path) -> bool:
-    """Add OSPF router help doc block to lab HTML header when missing."""
+    """Add or refresh full router IOS help doc block in lab HTML header."""
     text = path.read_text(encoding="utf-8")
     if 'iosHelpOpts("router"' not in text:
         return False
     if ROUTER_HELP_MARKER in text:
         return False
-    m = re.search(r"<!--([\s\S]*?)-->", text)
-    if not m:
-        return False
-    insert = ROUTER_HELP_DOC + "\n"
-    new_text = text[: m.end(1)] + insert + text[m.end(1) :]
-    path.write_text(new_text, encoding="utf-8")
+    new_block = ROUTER_HELP_DOC + "\n"
+    if ROUTER_HELP_OLD_BLOCK.search(text):
+        text = ROUTER_HELP_OLD_BLOCK.sub("\n" + new_block.rstrip() + "\n", text, count=1)
+    else:
+        m = re.search(r"<!--([\s\S]*?)-->", text)
+        if m:
+            text = text[: m.end(1)] + new_block + text[m.end(1) :]
+        elif text.lower().startswith("<!doctype html>"):
+            text = text.replace(
+                "<!doctype html>\n",
+                "<!doctype html>\n<!--\n" + new_block + "-->\n",
+                1,
+            )
+        else:
+            return False
+    path.write_text(text, encoding="utf-8")
     return True
 
 

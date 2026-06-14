@@ -32,15 +32,22 @@
   - promptText: current prompt element .textContent (e.g. swPrompt.textContent, promptR1.textContent)
   - ROUTER_CLI_HELP / SWITCH_CLI_HELP: null uses all shared defaults; set { key: [...] } to override one list
   - Re-run scripts/patch-lab-ios-help.py when adding new IOS device submit handlers
-  - Router keys: exec, show, configGlobal, configIf, configLine, configRouter, configRouterRouterId, configIfIpOspf, configIfIpOspfProcess, configIfIpOspfProcessArea, configIfIpOspfPriority, configAcl, configAclPermit,
+  - Router keys: exec, show, configGlobal, configIf, configLine, configRouter, configRouterRouterId, configIfIpOspf, configIfIpOspfProcess, configIfIpOspfProcessArea, configIfIpOspfPriority, configIfIpv6, configIfIpv6Address, configIfIpAddress, configAcl, configAclPermit,
     configAclPermitTcp, configAclPermitTcpSrcWildcard, configAclPermitTcpDest, configAclPermitTcpDestAny,
-    configAclPermitTcpDestAnyEq, ip, ipRoute, router, routerOspf, ipAccessList, ipAccessListExtended, ipAccessGroup,
+    configAclPermitTcpDestAnyEq, ip, ipv6, ipRoute, ipRouteDest, ipRouteDestMask, ipRouteDestMaskNextHop, router, routerOspf, ipAccessList, ipAccessListExtended, ipAccessGroup,
     ipAccessGroupDir, ipDhcp, ipDhcpSnooping, noIpDhcpSnoopingInformation, ipDhcpSnoopingVerify, …
   - OSPF router `?` chain (DEFAULT_ROUTER_CLI_HELP — all routers when ROUTER_CLI_HELP = null):
       (config)# router ?  →  router ospf ?
       (config-router)# ?  |  router-id ?
       (config-if)# ip ospf ?  →  ip ospf <pid> ?  →  ip ospf <pid> area ?  |  ip ospf priority ?
-  - OSPF reference lab: public/CCNA-Study/CCNA_labs/cli-lab-ospf_config_sim_v3.html
+  - IPv4/IPv6 router `?` chain:
+      (config)# ipv6 ?  (unicast-routing)  |  (config-if)# ip address ?
+      (config-if)# ipv6 ?  →  ipv6 address ?
+  - Static route `?` chain:
+      (config)# ip route ?  →  ip route <dest> ?  →  ip route <dest> <mask> ?
+      →  ip route <dest> <mask> <next-hop> ?
+  - Reference labs: cli-lab-static-routing.html (static route), cli-lab-ospf_config_sim_v3.html (OSPF),
+    ipv4_ipv6_assign.html (IPv4/IPv6 addressing)
   - Switch keys: same router ACL/DHCP/ip keys where inherited, plus interface, interfaceEthernet,
     switchport, switchportMode, switchportAccess, lldp, line, lineVty, transport, transportInput,
     login, username, usernameName, usernamePrivilege, usernamePrivilegeLevel, usernameAlgorithmType,
@@ -88,8 +95,8 @@
         Sync block — after <code>if (!trimmed) return;</code>: switch
         <code>tryAppendIosHelp(..., iosHelpOpts("switch", promptText, SWITCH_CLI_HELP))</code>;
         router (R1, submitSw2, submitR10, …)
-        <code>iosHelpOpts("router", promptText, ROUTER_CLI_HELP)</code> — includes OSPF
-        <code>router ?</code> / <code>ip ospf ?</code> chain when <code>ROUTER_CLI_HELP = null</code>.
+        <code>iosHelpOpts("router", promptText, ROUTER_CLI_HELP)</code> — OSPF, IPv4/IPv6, static route,
+        ACL, and DHCP snooping chains when <code>ROUTER_CLI_HELP = null</code>.
       </p>
     </footer>
   </div>

@@ -6,9 +6,11 @@
   - DEFAULT_ROUTER_CLI_HELP — baseline for every router session; override with ROUTER_CLI_HELP
   - Login banner (BCT_CLI_HELP_NOTICE) — injected when each router CLI modal opens
   - tryAppendIosHelp(line, appendFn, cliLabContainer.iosHelpOpts("router", promptText, ROUTER_CLI_HELP))
-  - OSPF chain (ROUTER_CLI_HELP = null): router ?, router ospf ?,
-    (config-router)# ?, router-id ?, (config-if)# ip ospf ?, ip ospf <pid> ?, area ?, ip ospf priority ?
-  - OSPF lab reference: cli-lab-ospf_config_sim_v3.html
+  - Help is read-only — using ? does not change config, advance steps, or affect completion.
+  - Router `?` chains (ROUTER_CLI_HELP = null): interface/ethernet, ip address, ipv6/ipv6 address,
+    OSPF (router → ip ospf → area → priority), (config)# ipv6 ?, static route (4-step ip route chain)
+  - This lab (static route): ip route ? → <dest> ? → <dest> <mask> ? → <dest> <mask> <next-hop> ?
+  - Also see: cli-lab-ospf_config_sim_v3.html, ipv4_ipv6_assign.html
 
   CLI lab baseline — patterns aligned with public/CCNA-Study/CCNA_labs/cli-lab-ip-services-sim-v2.html (multi-device,
   tasks panel, spoiler terminal blocks, full IOS command forms). ENCOR reference:

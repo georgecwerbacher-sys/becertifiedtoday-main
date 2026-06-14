@@ -640,6 +640,9 @@
    *   configIfIpOspfProcess — (config-if)# ip ospf <process-id> ?
    *   configIfIpOspfProcessArea — (config-if)# ip ospf <process-id> area ?
    *   configIfIpOspfPriority — (config-if)# ip ospf priority ?
+   *   configIfIpv6 — (config-if)# ipv6 ?
+   *   configIfIpv6Address — (config-if)# ipv6 address ?
+   *   configIfIpAddress — (config-if)# ip address ?
    *   configAcl    — (config-*-nacl)# ?
    *   configAclPermit — (config-ext-nacl)# permit ?
    *   configAclPermitTcp — permit tcp ?
@@ -648,7 +651,11 @@
    *   configAclPermitTcpDestAny — permit tcp <src> <wildcard> any ?
    *   configAclPermitTcpDestAnyEq — permit tcp … any eq ?
    *   ip           — (config)# ip ?
+   *   ipv6         — (config)# ipv6 ?
    *   ipRoute      — (config)# ip route ?
+   *   ipRouteDest  — (config)# ip route <dest> ?
+   *   ipRouteDestMask — (config)# ip route <dest> <mask> ?
+   *   ipRouteDestMaskNextHop — (config)# ip route <dest> <mask> <next-hop> ?
    *   router       — (config)# router ?
    *   routerOspf   — (config)# router ospf ?
    *   ipAccessList — (config)# ip access-list ?
@@ -707,6 +714,7 @@
       { cmd: "hostname" },
       { cmd: "interface" },
       { cmd: "ip" },
+      { cmd: "ipv6" },
       { cmd: "line" },
       { cmd: "logging" },
       { cmd: "mac" },
@@ -848,6 +856,62 @@
     configIfIpOspfProcessArea: [{ cmd: "<0-4294967295>" }, { cmd: "A.B.C.D" }],
     /** (config-if)# ip ospf priority ? */
     configIfIpOspfPriority: [{ cmd: "<0-255>" }],
+    /** (config-if)# ipv6 ? */
+    configIfIpv6: [
+      { cmd: "<0-65535>" },
+      { cmd: "address" },
+      { cmd: "authentication" },
+      { cmd: "bfd" },
+      { cmd: "bandwidth-percent" },
+      { cmd: "ceil" },
+      { cmd: "cep" },
+      { cmd: "crypto" },
+      { cmd: "dead-interval" },
+      { cmd: "dhcp" },
+      { cmd: "enable" },
+      { cmd: "flowset" },
+      { cmd: "hello-interval" },
+      { cmd: "inspect" },
+      { cmd: "local-link" },
+      { cmd: "mft" },
+      { cmd: "mld" },
+      { cmd: "mobile" },
+      { cmd: "mtu" },
+      { cmd: "multicast" },
+      { cmd: "nd" },
+      { cmd: "nhrp" },
+      { cmd: "ospf" },
+      { cmd: "pass-by" },
+      { cmd: "path-mtu" },
+      { cmd: "pep" },
+      { cmd: "pim" },
+      { cmd: "policy-routing" },
+      { cmd: "port-map" },
+      { cmd: "prefix-list" },
+      { cmd: "protocols" },
+      { cmd: "pump" },
+      { cmd: "redirects" },
+      { cmd: "ripng" },
+      { cmd: "route" },
+      { cmd: "router" },
+      { cmd: "sec-tunnel" },
+      { cmd: "security" },
+      { cmd: "source-route" },
+      { cmd: "spdp" },
+      { cmd: "summary-address" },
+      { cmd: "traffic-filter" },
+      { cmd: "unreachables" },
+      { cmd: "vtp" },
+    ],
+    /** (config-if)# ipv6 address ? */
+    configIfIpv6Address: [
+      { cmd: "X:X:X:X::X" },
+      { cmd: "X:X:X:X::X/X" },
+      { cmd: "autoconfig" },
+      { cmd: "dhcp" },
+    ],
+    /** (config-if)# ip address ? */
+    configIfIpAddress: [{ cmd: "A.B.C.D" }, { cmd: "dhcp" }, { cmd: "pool" }],
     configAcl: [
       { cmd: "<10-2147483647>" },
       { cmd: "default" },
@@ -1032,13 +1096,85 @@
       { cmd: "vrf" },
       { cmd: "wccp" },
     ],
-    ipRoute: [
-      { cmd: "ip route <destination_network> <subnet_mask> <next_hop_or_interface>" },
-      { cmd: "<A.B.C.D>" },
-      { cmd: "vrf" },
-      { cmd: "profile" },
-      { cmd: "track" },
+    ipRoute: [{ cmd: "A.B.C.D" }, { cmd: "profile" }, { cmd: "vrf" }],
+    /** (config)# ip route <dest> ? — subnet mask */
+    ipRouteDest: [{ cmd: "A.B.C.D" }],
+    /** (config)# ip route <dest> <mask> ? — next-hop IP or outbound interface */
+    ipRouteDestMask: [
+      { cmd: "A.B.C.D" },
+      { cmd: "Async" },
+      { cmd: "BVI" },
+      { cmd: "CDMA-Ix" },
+      { cmd: "CTunnel" },
+      { cmd: "Dialer" },
+      { cmd: "FastEthernet" },
+      { cmd: "GigabitEthernet" },
+      { cmd: "Loopback" },
+      { cmd: "MFR" },
+      { cmd: "Multilink" },
+      { cmd: "Null" },
+      { cmd: "Tunnel" },
+      { cmd: "Vaccess" },
+      { cmd: "Vif" },
+      { cmd: "Virtual-Template" },
+      { cmd: "Virtual-TokenRing" },
+      { cmd: "Vlan" },
+    ],
+    /** (config)# ip route <dest> <mask> <next-hop> ? — admin distance and options */
+    ipRouteDestMaskNextHop: [
+      { cmd: "<1-255>" },
       { cmd: "multicast" },
+      { cmd: "name" },
+      { cmd: "permanent" },
+      { cmd: "tag" },
+      { cmd: "track" },
+      { cmd: "<cr>" },
+    ],
+    /** (config)# ipv6 ? */
+    ipv6: [
+      { cmd: "access-list" },
+      { cmd: "address" },
+      { cmd: "amqp" },
+      { cmd: "auto-config" },
+      { cmd: "banner" },
+      { cmd: "cef" },
+      { cmd: "cell-services" },
+      { cmd: "dhcp" },
+      { cmd: "dns" },
+      { cmd: "flow-export" },
+      { cmd: "general-prefix" },
+      { cmd: "hop-limit" },
+      { cmd: "host" },
+      { cmd: "icmp" },
+      { cmd: "inspect" },
+      { cmd: "local" },
+      { cmd: "mft" },
+      { cmd: "mld" },
+      { cmd: "mobile" },
+      { cmd: "mqtt" },
+      { cmd: "multicast" },
+      { cmd: "multicast-routing" },
+      { cmd: "neighbor" },
+      { cmd: "nd" },
+      { cmd: "nhrp" },
+      { cmd: "object-group" },
+      { cmd: "ospf" },
+      { cmd: "path-mtu" },
+      { cmd: "pim" },
+      { cmd: "policy-routing" },
+      { cmd: "port-map" },
+      { cmd: "prefix-list" },
+      { cmd: "protocols" },
+      { cmd: "pump" },
+      { cmd: "redirects" },
+      { cmd: "route" },
+      { cmd: "router" },
+      { cmd: "routing" },
+      { cmd: "source-route" },
+      { cmd: "tacacs" },
+      { cmd: "traffic" },
+      { cmd: "unicast-routing" },
+      { cmd: "unreachables" },
     ],
     /** (config)# router ? */
     router: [
@@ -1171,8 +1307,12 @@
    *   configIf          — (config-if)# ?
    *   configIfIpOspf    — (config-if)# ip ospf ?
    *   configIfIpOspfProcess — (config-if)# ip ospf <process-id> ?
+   *   configIfIpv6      — (config-if)# ipv6 ?
+   *   configIfIpv6Address — (config-if)# ipv6 address ?
+   *   configIfIpAddress  — (config-if)# ip address ?
    *   configLine        — (config-line)# ?
    *   ip                — (config)# ip ?
+   *   ipv6              — (config)# ipv6 ?
    *   ipAccessList      — (config)# ip access-list ?
    *   ipAccessListExtended — (config)# ip access-list extended ?
    *   ipAccessGroup     — (config-if)# ip access-group ?
@@ -1233,6 +1373,7 @@
       { cmd: "hostname" },
       { cmd: "interface" },
       { cmd: "ip" },
+      { cmd: "ipv6" },
       { cmd: "line" },
       { cmd: "logging" },
       { cmd: "mac" },
@@ -1271,6 +1412,9 @@
     configIfIpOspfProcess: DEFAULT_ROUTER_CLI_HELP.configIfIpOspfProcess,
     configIfIpOspfProcessArea: DEFAULT_ROUTER_CLI_HELP.configIfIpOspfProcessArea,
     configIfIpOspfPriority: DEFAULT_ROUTER_CLI_HELP.configIfIpOspfPriority,
+    configIfIpv6: DEFAULT_ROUTER_CLI_HELP.configIfIpv6,
+    configIfIpv6Address: DEFAULT_ROUTER_CLI_HELP.configIfIpv6Address,
+    configIfIpAddress: DEFAULT_ROUTER_CLI_HELP.configIfIpAddress,
     configAcl: DEFAULT_ROUTER_CLI_HELP.configAcl,
     configAclPermit: DEFAULT_ROUTER_CLI_HELP.configAclPermit,
     configAclPermitTcp: DEFAULT_ROUTER_CLI_HELP.configAclPermitTcp,
@@ -1279,7 +1423,11 @@
     configAclPermitTcpDestAny: DEFAULT_ROUTER_CLI_HELP.configAclPermitTcpDestAny,
     configAclPermitTcpDestAnyEq: DEFAULT_ROUTER_CLI_HELP.configAclPermitTcpDestAnyEq,
     ip: DEFAULT_ROUTER_CLI_HELP.ip,
+    ipv6: DEFAULT_ROUTER_CLI_HELP.ipv6,
     ipRoute: [],
+    ipRouteDest: [],
+    ipRouteDestMask: [],
+    ipRouteDestMaskNextHop: [],
     router: DEFAULT_ROUTER_CLI_HELP.router,
     routerOspf: DEFAULT_ROUTER_CLI_HELP.routerOspf,
     ipAccessList: DEFAULT_ROUTER_CLI_HELP.ipAccessList,
@@ -1507,6 +1655,120 @@
     if (!isConfigHelpQuery(raw)) return false;
     if (typeof appendFn === "function") {
       appendFn("line-sys line-show-help", configCommandHelpText(opts));
+    }
+    return true;
+  }
+
+  /** `(config-if)# ip address ?` — IPv4 address assignment. */
+
+  function isConfigIfIpAddressHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ip address ?" || t === "do ip address ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', configIfIpAddressExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function configIfIpAddressCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "configIfIpAddress"),
+      opts.configIfIpAddressExtra
+    );
+  }
+
+  /**
+   * `ip address ?` at (config-if)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendConfigIfIpAddressHelp(raw, appendFn, opts) {
+    if (!isConfigIfIpAddressHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = configIfIpAddressCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config-if)# ipv6 address ?` — IPv6 address assignment. */
+
+  function isConfigIfIpv6AddressHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ipv6 address ?" || t === "do ipv6 address ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', configIfIpv6AddressExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function configIfIpv6AddressCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "configIfIpv6Address"),
+      opts.configIfIpv6AddressExtra
+    );
+  }
+
+  /**
+   * `ipv6 address ?` at (config-if)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendConfigIfIpv6AddressHelp(raw, appendFn, opts) {
+    if (!isConfigIfIpv6AddressHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = configIfIpv6AddressCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config-if)# ipv6 ?` — IPv6 interface parameters. */
+
+  function isConfigIfIpv6HelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ipv6 ?" || t === "do ipv6 ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', configIfIpv6Extra?:Array<{cmd:string}>}} [opts]
+   */
+  function configIfIpv6CommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "configIfIpv6"),
+      opts.configIfIpv6Extra
+    );
+  }
+
+  /**
+   * `ipv6 ?` at (config-if)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendConfigIfIpv6Help(raw, appendFn, opts) {
+    if (!isConfigIfIpv6HelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = configIfIpv6CommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
     }
     return true;
   }
@@ -1923,6 +2185,41 @@
     return true;
   }
 
+  /** Global `ipv6 ?` at host(config)# — subcommands after `ipv6`. */
+
+  function isIpv6HelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ipv6 ?" || t === "do ipv6 ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', promptText?:string, ipv6Extra?:Array<{cmd:string}>}} [opts]
+   */
+  function ipv6CommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "ipv6"), opts.ipv6Extra);
+  }
+
+  /**
+   * `ipv6 ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendIpv6Help(raw, appendFn, opts) {
+    if (!isIpv6HelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipv6CommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
   /** Global `ip access-list extended ?` at host(config)#. */
 
   function isIpAccessListExtendedHelpQuery(raw) {
@@ -2101,6 +2398,111 @@
     if (parsePromptMode(opts.promptText) !== "config") return false;
     if (typeof appendFn === "function") {
       appendFn("line-sys line-show-help", ipRouteCommandHelpText(opts));
+    }
+    return true;
+  }
+
+  /** `(config)# ip route <dest> <mask> <next-hop> ?` — admin distance and route options. */
+
+  function isIpRouteDestMaskNextHopHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return /^(?:do )?ip route (?:\d{1,3}\.){3}\d{1,3} (?:\d{1,3}\.){3}\d{1,3} (?:\d{1,3}\.){3}\d{1,3} \?$/.test(t);
+  }
+
+  /**
+   * @param {{ipRouteDestMaskNextHopExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function ipRouteDestMaskNextHopCommandHelpText(opts) {
+    opts = opts || {};
+    return formatHelpEntries(
+      resolveHelpList(opts, "router", "ipRouteDestMaskNextHop"),
+      opts.ipRouteDestMaskNextHopExtra
+    );
+  }
+
+  /**
+   * `ip route <dest> <mask> <next-hop> ?` at router (config)# only.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendIpRouteDestMaskNextHopHelp(raw, appendFn, opts) {
+    if (!isIpRouteDestMaskNextHopHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "router") return false;
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", ipRouteDestMaskNextHopCommandHelpText(opts));
+    }
+    return true;
+  }
+
+  /** `(config)# ip route <dest> <mask> ?` — next-hop IP or outbound interface. */
+
+  function isIpRouteDestMaskHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return /^(?:do )?ip route (?:\d{1,3}\.){3}\d{1,3} (?:\d{1,3}\.){3}\d{1,3} \?$/.test(t);
+  }
+
+  /**
+   * @param {{ipRouteDestMaskExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function ipRouteDestMaskCommandHelpText(opts) {
+    opts = opts || {};
+    return formatHelpEntries(
+      resolveHelpList(opts, "router", "ipRouteDestMask"),
+      opts.ipRouteDestMaskExtra
+    );
+  }
+
+  /**
+   * `ip route <dest> <mask> ?` at router (config)# only.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendIpRouteDestMaskHelp(raw, appendFn, opts) {
+    if (!isIpRouteDestMaskHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "router") return false;
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", ipRouteDestMaskCommandHelpText(opts));
+    }
+    return true;
+  }
+
+  /** `(config)# ip route <dest> ?` — subnet mask after destination network. */
+
+  function isIpRouteDestHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return /^(?:do )?ip route (?:\d{1,3}\.){3}\d{1,3} \?$/.test(t);
+  }
+
+  /**
+   * @param {{ipRouteDestExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function ipRouteDestCommandHelpText(opts) {
+    opts = opts || {};
+    return formatHelpEntries(resolveHelpList(opts, "router", "ipRouteDest"), opts.ipRouteDestExtra);
+  }
+
+  /**
+   * `ip route <dest> ?` at router (config)# only.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendIpRouteDestHelp(raw, appendFn, opts) {
+    if (!isIpRouteDestHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "router") return false;
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", ipRouteDestCommandHelpText(opts));
     }
     return true;
   }
@@ -3175,6 +3577,9 @@
     if (tryAppendConfigHelp(raw, appendFn, opts)) return true;
     if (tryAppendRouterOspfHelp(raw, appendFn, opts)) return true;
     if (tryAppendRouterHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpRouteDestMaskNextHopHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpRouteDestMaskHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpRouteDestHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpRouteHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpAccessListExtendedHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpAccessListHelp(raw, appendFn, opts)) return true;
@@ -3182,12 +3587,16 @@
     if (tryAppendConfigIfIpOspfProcessHelp(raw, appendFn, opts)) return true;
     if (tryAppendConfigIfIpOspfPriorityHelp(raw, appendFn, opts)) return true;
     if (tryAppendConfigIfIpOspfHelp(raw, appendFn, opts)) return true;
+    if (tryAppendConfigIfIpAddressHelp(raw, appendFn, opts)) return true;
+    if (tryAppendConfigIfIpv6AddressHelp(raw, appendFn, opts)) return true;
+    if (tryAppendConfigIfIpv6Help(raw, appendFn, opts)) return true;
     if (tryAppendIpAccessGroupDirHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpAccessGroupHelp(raw, appendFn, opts)) return true;
     if (tryAppendNoIpDhcpSnoopingInformationHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpDhcpSnoopingVerifyHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpDhcpSnoopingHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpDhcpHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpv6Help(raw, appendFn, opts)) return true;
     if (tryAppendIpHelp(raw, appendFn, opts)) return true;
     if (tryAppendInterfaceEthernetHelp(raw, appendFn, opts)) return true;
     if (tryAppendInterfaceHelp(raw, appendFn, opts)) return true;
@@ -3350,9 +3759,21 @@
     isIpHelpQuery: isIpHelpQuery,
     ipCommandHelpText: ipCommandHelpText,
     tryAppendIpHelp: tryAppendIpHelp,
+    isIpv6HelpQuery: isIpv6HelpQuery,
+    ipv6CommandHelpText: ipv6CommandHelpText,
+    tryAppendIpv6Help: tryAppendIpv6Help,
     isIpRouteHelpQuery: isIpRouteHelpQuery,
     ipRouteCommandHelpText: ipRouteCommandHelpText,
     tryAppendIpRouteHelp: tryAppendIpRouteHelp,
+    isIpRouteDestHelpQuery: isIpRouteDestHelpQuery,
+    ipRouteDestCommandHelpText: ipRouteDestCommandHelpText,
+    tryAppendIpRouteDestHelp: tryAppendIpRouteDestHelp,
+    isIpRouteDestMaskHelpQuery: isIpRouteDestMaskHelpQuery,
+    ipRouteDestMaskCommandHelpText: ipRouteDestMaskCommandHelpText,
+    tryAppendIpRouteDestMaskHelp: tryAppendIpRouteDestMaskHelp,
+    isIpRouteDestMaskNextHopHelpQuery: isIpRouteDestMaskNextHopHelpQuery,
+    ipRouteDestMaskNextHopCommandHelpText: ipRouteDestMaskNextHopCommandHelpText,
+    tryAppendIpRouteDestMaskNextHopHelp: tryAppendIpRouteDestMaskNextHopHelp,
     isIpAccessListHelpQuery: isIpAccessListHelpQuery,
     ipAccessListCommandHelpText: ipAccessListCommandHelpText,
     tryAppendIpAccessListHelp: tryAppendIpAccessListHelp,
@@ -3377,6 +3798,15 @@
     isConfigIfIpOspfPriorityHelpQuery: isConfigIfIpOspfPriorityHelpQuery,
     configIfIpOspfPriorityCommandHelpText: configIfIpOspfPriorityCommandHelpText,
     tryAppendConfigIfIpOspfPriorityHelp: tryAppendConfigIfIpOspfPriorityHelp,
+    isConfigIfIpv6HelpQuery: isConfigIfIpv6HelpQuery,
+    configIfIpv6CommandHelpText: configIfIpv6CommandHelpText,
+    tryAppendConfigIfIpv6Help: tryAppendConfigIfIpv6Help,
+    isConfigIfIpv6AddressHelpQuery: isConfigIfIpv6AddressHelpQuery,
+    configIfIpv6AddressCommandHelpText: configIfIpv6AddressCommandHelpText,
+    tryAppendConfigIfIpv6AddressHelp: tryAppendConfigIfIpv6AddressHelp,
+    isConfigIfIpAddressHelpQuery: isConfigIfIpAddressHelpQuery,
+    configIfIpAddressCommandHelpText: configIfIpAddressCommandHelpText,
+    tryAppendConfigIfIpAddressHelp: tryAppendConfigIfIpAddressHelp,
     isIpDhcpHelpQuery: isIpDhcpHelpQuery,
     ipDhcpCommandHelpText: ipDhcpCommandHelpText,
     tryAppendIpDhcpHelp: tryAppendIpDhcpHelp,
