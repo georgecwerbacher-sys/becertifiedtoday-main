@@ -108,15 +108,23 @@ async function handleQuestionSubmit(req, res, body) {
     return res.status(503).json({
       ok: false,
       error: "Questions are not configured on this server",
-      hint: "Set GITHUB_LEADS_TOKEN on Vercel to persist visitor questions.",
+      hint: "Set GITHUB_LEADS_TOKEN (and GITHUB_LEADS_REPO if needed) on Vercel to persist visitor questions.",
+    });
+  }
+
+  if (!result.ok) {
+    return res.status(502).json({
+      ok: false,
+      error: "Could not save your question",
+      reason: result.reason || "error",
+      detail: result.detail || null,
+      hint: "Check Vercel logs for /api/sample-lead and GitHub token permissions on data/leads/visitor-questions.csv.",
     });
   }
 
   return res.status(200).json({
-    ok: result.ok !== false,
-    skipped: result.skipped || null,
+    ok: true,
     backend: result.backend || null,
-    reason: result.reason || null,
   });
 }
 
@@ -144,6 +152,13 @@ async function handleQuestionsReport(req, res, body) {
     });
   } catch (err) {
     const message = err && err.message ? String(err.message) : "Visitor questions report error";
+    if (err && err.code === "github_not_configured") {
+      return res.status(503).json({
+        ok: false,
+        error: "Visitor questions storage is not configured",
+        hint: "Set GITHUB_LEADS_TOKEN on Vercel (Contents read/write on this repo). Questions save to data/leads/visitor-questions.csv via the GitHub API.",
+      });
+    }
     return res.status(502).json({ ok: false, error: message });
   }
 }

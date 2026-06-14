@@ -3,7 +3,6 @@
  */
 import fs from "fs";
 import path from "path";
-import { isInternalAnalyticsEmail } from "./analytics-internal.js";
 
 export const VISITOR_QUESTIONS_CSV_REL = "data/leads/visitor-questions.csv";
 
@@ -226,19 +225,17 @@ export async function appendVisitorQuestion(body) {
   if (!row.email || !row.message) {
     return { ok: false, reason: "invalid_email_or_message" };
   }
-  if (isInternalAnalyticsEmail(row.email)) {
-    return { ok: true, skipped: "internal_email" };
-  }
 
   try {
     const token = (process.env.GITHUB_LEADS_TOKEN || "").trim();
-    if (token) return await appendToGithub(row);
+    const repoInfo = resolveGithubRepo();
+    if (token && repoInfo) return await appendToGithub(row);
     if (canWriteLocal()) return appendToLocal(row);
-    console.warn("[visitor-question] not persisted (no GITHUB_LEADS_TOKEN):", row.email);
+    console.warn("[visitor-question] not persisted (GITHUB_LEADS_TOKEN or repo):", row.email);
     return { ok: false, reason: "not_configured" };
   } catch (err) {
     console.error("[visitor-question] append failed:", err?.message || err);
-    return { ok: false, reason: "error" };
+    return { ok: false, reason: "error", detail: String(err?.message || err).slice(0, 200) };
   }
 }
 
@@ -249,9 +246,14 @@ export async function readVisitorQuestions() {
     const file = await fetchGithubFile({ token, ...repoInfo, filePath: VISITOR_QUESTIONS_CSV_REL });
     return parseCsvContent(file.content);
   }
-  const filePath = path.join(process.cwd(), VISITOR_QUESTIONS_CSV_REL);
-  if (!fs.existsSync(filePath)) return [];
-  return parseCsvContent(fs.readFileSync(filePath, "utf8"));
+  if (canWriteLocal()) {
+    const filePath = path.join(process.cwd(), VISITOR_QUESTIONS_CSV_REL);
+    if (!fs.existsSync(filePath)) return [];
+    return parseCsvContent(fs.readFileSync(filePath, "utf8"));
+  }
+  const err = new Error("github_not_configured");
+  err.code = "github_not_configured";
+  throw err;
 }
 
 export function aggregateVisitorQuestionsReport(rows) {
@@ -260,7 +262,7 @@ export function aggregateVisitorQuestionsReport(rows) {
     const email = String(row.email || "")
       .trim()
       .toLowerCase();
-    if (email && isInternalAnalyticsEmail(email)) continue;
+    if (!email) continue;
     items.push({
       capturedAt: row.captured_at_utc || "",
       email,

@@ -1167,6 +1167,7 @@
               document.getElementById("visitorQuestionsSummaryCards").innerHTML = "";
               document.getElementById("visitorQuestionsBody").innerHTML = "";
               var vq = (visitorQuestions.body && visitorQuestions.body.error) || "Visitor questions failed";
+              if (visitorQuestions.body && visitorQuestions.body.hint) vq += " — " + visitorQuestions.body.hint;
               document.getElementById("visitorQuestionsStatus").textContent = vq;
               document.getElementById("visitorQuestionsStatus").className = "status err";
             } else {
