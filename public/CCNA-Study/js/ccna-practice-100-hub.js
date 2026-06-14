@@ -4,9 +4,8 @@
   var KEY = "ccnaPractice100";
   var BANK_SIZE = 100;
   var FILTER_BANK_ID = "filter";
-  var VERSION_11_2026_MAX = 300;
-  var VERSION_20_MIN = 301;
   var TOPIC_MAP_URL = "/CCNA-Study/data/ccna-question-topic-map.json";
+  var VERSION_20_SLUGS_URL = "/CCNA-Study/data/ccna-version-2-0-slugs.json";
   var DOMAIN_NAMES = {
     "1": "Network fundamentals",
     "2": "LAN switching (network access)",
@@ -44,6 +43,33 @@
       window.CCNA_PRACTICE_100._topicAssignments = false;
       return false;
     });
+
+  /** @type {Record<string, true>|null|false} null = loading, false = failed */
+  window.CCNA_PRACTICE_100._version20SlugSet = null;
+  window.CCNA_PRACTICE_100._version20SlugsPromise = fetch(VERSION_20_SLUGS_URL, { credentials: "same-origin" })
+    .then(function (res) {
+      if (!res.ok) throw new Error("version 2.0 slugs http " + res.status);
+      return res.json();
+    })
+    .then(function (data) {
+      var set = {};
+      var slugs = data && data.slugs;
+      if (Array.isArray(slugs)) {
+        for (var vi = 0; vi < slugs.length; vi++) {
+          if (slugs[vi]) set[String(slugs[vi])] = true;
+        }
+      }
+      window.CCNA_PRACTICE_100._version20SlugSet = set;
+      return set;
+    })
+    .catch(function () {
+      window.CCNA_PRACTICE_100._version20SlugSet = false;
+      return false;
+    });
+
+  function isVersion20Slug(slug, v20Set) {
+    return !!(slug && v20Set && v20Set[slug]);
+  }
 
   function objectivesForSlug(assignments, slug) {
     if (!assignments || !slug) return null;
@@ -102,22 +128,22 @@
 
   function getSelectedPracticeFilter() {
     var sel = document.getElementById("ccna-practice-domain-select");
-    if (!sel) return { domain: null, versionMax: null, versionMin: null };
+    if (!sel) return { domain: null, version: null };
     var v = String(sel.value || "").trim();
-    if (v === "v11-2026") return { domain: null, versionMax: VERSION_11_2026_MAX, versionMin: null };
-    if (v === "v20") return { domain: null, versionMin: VERSION_20_MIN, versionMax: null };
-    if (/^[1-6]$/.test(v)) return { domain: v, versionMax: null, versionMin: null };
-    return { domain: null, versionMax: null, versionMin: null };
+    if (v === "v11-2026") return { domain: null, version: "v11" };
+    if (v === "v20") return { domain: null, version: "v20" };
+    if (/^[1-6]$/.test(v)) return { domain: v, version: null };
+    return { domain: null, version: null };
   }
 
   function hasActivePracticeFilter(filter) {
     filter = filter || getSelectedPracticeFilter();
-    return !!(filter.domain || filter.versionMax || filter.versionMin);
+    return !!(filter.domain || filter.version);
   }
 
   function filterSessionLabel(filter) {
-    if (filter.versionMax) return "Version 1.1 2026";
-    if (filter.versionMin) return "Version 2.0 2026";
+    if (filter.version === "v11") return "Version 1.1 2026";
+    if (filter.version === "v20") return "Version 2.0 2026";
     if (filter.domain) {
       var name = DOMAIN_NAMES[filter.domain] || "Domain " + filter.domain;
       return filter.domain + " — " + name;
@@ -125,17 +151,22 @@
     return "Filtered set";
   }
 
-  /** Hub-order slice for version filters (positions 1–300 = v1.1, 301+ = v2.0). */
+  /** Version filters use the explicit Version 2.0 slug list (~70 tagged questions). */
   function slugsForVersionBounds(filter) {
     var all = window.CCNA_PRACTICE_100.ALL_SLUGS;
     if (!Array.isArray(all)) return [];
-    if (filter.versionMin && filter.versionMin >= 1) {
-      return all.slice(filter.versionMin - 1);
+    if (!filter.version) return all.slice();
+    var v20Set = window.CCNA_PRACTICE_100._version20SlugSet;
+    if (v20Set === null) return null;
+    if (v20Set === false) return [];
+    var out = [];
+    for (var i = 0; i < all.length; i++) {
+      var slug = all[i];
+      var taggedV20 = isVersion20Slug(slug, v20Set);
+      if (filter.version === "v20" && taggedV20) out.push(slug);
+      if (filter.version === "v11" && !taggedV20) out.push(slug);
     }
-    if (filter.versionMax && filter.versionMax >= 1) {
-      return all.slice(0, filter.versionMax);
-    }
-    return all.slice();
+    return out;
   }
 
   function applySlugsFilters(slugs, filter, assignments) {
@@ -147,14 +178,16 @@
     return out;
   }
 
-  /** Full hub slice for an active portal filter; null when domain filter needs topic map still loading. */
+  /** Full hub slice for an active portal filter; null while topic map or version slug list is loading. */
   function collectFilteredSlugs(filter) {
     if (filter.domain) {
       var map = window.CCNA_PRACTICE_100._topicAssignments;
       if (map === null) return null;
       if (map === false) return [];
     }
+    if (filter.version && window.CCNA_PRACTICE_100._version20SlugSet === null) return null;
     var pool = slugsForVersionBounds(filter);
+    if (pool === null) return null;
     return applySlugsFilters(pool, filter, window.CCNA_PRACTICE_100._topicAssignments);
   }
 
@@ -175,12 +208,11 @@
   }
 
   function startWithOptionalDomain(mode, bankId, filter) {
-    filter = filter || { domain: null, versionMax: null, versionMin: null };
+    filter = filter || { domain: null, version: null };
     var domainMajor = filter.domain || null;
-    var versionMax = filter.versionMax || null;
-    var versionMin = filter.versionMin || null;
+    var version = filter.version || null;
     if (!domainMajor) {
-      start(mode, bankId, null, versionMax, versionMin);
+      start(mode, bankId, null, version);
       return;
     }
     var inst = window.CCNA_PRACTICE_100;
@@ -192,7 +224,7 @@
       return;
     }
     if (assign && typeof assign === "object") {
-      start(mode, bankId, domainMajor, versionMax, versionMin);
+      start(mode, bankId, domainMajor, version);
       return;
     }
     inst._topicAssignmentsPromise.then(function () {
@@ -202,7 +234,7 @@
         );
         return;
       }
-      start(mode, bankId, domainMajor, versionMax, versionMin);
+      start(mode, bankId, domainMajor, version);
     });
   }
 
@@ -223,18 +255,17 @@
     return Math.ceil(all.length / BANK_SIZE);
   }
 
-  function start(mode, bankId, domainMajor, versionMax, versionMin) {
+  function start(mode, bankId, domainMajor, version) {
     var filter = {
       domain: domainMajor || null,
-      versionMax: versionMax || null,
-      versionMin: versionMin || null
+      version: version || null
     };
     var useFilterPool = hasActivePracticeFilter(filter);
     var fixed;
     if (useFilterPool) {
       fixed = collectFilteredSlugs(filter);
       if (fixed === null) {
-        window.alert("Topic assignments are still loading. Try again in a moment.");
+        window.alert("Practice filters are still loading. Try again in a moment.");
         return;
       }
     } else {
@@ -266,8 +297,7 @@
       session.filterLabel = filterSessionLabel(filter);
     }
     if (domainMajor) session.domain = domainMajor;
-    if (versionMax) session.versionMax = versionMax;
-    if (versionMin) session.versionMin = versionMin;
+    if (version) session.version = version;
     if (getAdaptiveLearningEnabled()) {
       session.adaptive = true;
       session.adaptiveExtrasInjected = 0;
@@ -296,8 +326,7 @@
   window.CCNA_PRACTICE_100.bankSlugs = bankSlugs;
   window.CCNA_PRACTICE_100.practiceBankCount = practiceBankCount;
   window.CCNA_PRACTICE_100.filterSlugsByMajor = filterSlugsByMajor;
-  window.CCNA_PRACTICE_100.VERSION_11_2026_MAX = VERSION_11_2026_MAX;
-  window.CCNA_PRACTICE_100.VERSION_20_MIN = VERSION_20_MIN;
+  window.CCNA_PRACTICE_100.isVersion20Slug = isVersion20Slug;
   window.CCNA_PRACTICE_100.filterSlugsByHubMax = filterSlugsByHubMax;
   window.CCNA_PRACTICE_100.filterSlugsByHubMin = filterSlugsByHubMin;
   window.CCNA_PRACTICE_100.hubIndexForSlug = hubIndexForSlug;
@@ -322,7 +351,7 @@
         if (m === "random" || m === "review") {
           startWithOptionalDomain(m, bank, filter);
         } else {
-          start(m, bank, filter.domain, filter.versionMax, filter.versionMin);
+          start(m, bank, filter.domain, filter.version);
         }
       }
     },
@@ -358,18 +387,14 @@
     meta.className = "ccna-bank-version-tag";
     if (pending) {
       meta.textContent = "Loading question count…";
-    } else if (filter.versionMin) {
+    } else if (filter.version === "v20") {
       meta.textContent =
         (count === 1 ? "1 Version 2.0 2026 question" : count + " Version 2.0 2026 questions") +
-        " (hub positions " +
-        VERSION_20_MIN +
-        "+). Version 1.1 questions are excluded.";
-    } else if (filter.versionMax) {
+        " (tagged in the bank). Version 1.1 questions are excluded.";
+    } else if (filter.version === "v11") {
       meta.textContent =
         (count === 1 ? "1 Version 1.1 2026 question" : count + " Version 1.1 2026 questions") +
-        " (hub positions 1–" +
-        VERSION_11_2026_MAX +
-        "). Version 2.0 questions are excluded.";
+        " (default bank set). Version 2.0 questions are excluded.";
     } else if (count === 1) {
       meta.textContent = "1 question across the full hub (not a numbered bank)";
     } else {
@@ -464,6 +489,19 @@
     summary.hidden = false;
   }
 
+  function bankVersionTagForSlice(startIdx, endIdx, all, v20Set) {
+    var v20Count = 0;
+    var total = 0;
+    for (var i = startIdx; i < endIdx; i++) {
+      if (!all[i]) continue;
+      total++;
+      if (isVersion20Slug(all[i], v20Set)) v20Count++;
+    }
+    if (!total || !v20Count) return "Version 1.1 2026";
+    if (v20Count === total) return "Version 2.0 2026";
+    return "Version 1.1 2026 & Version 2.0 2026";
+  }
+
   /** CCNA_Training_Portal.html: numbered banks, or one temporary bank when a filter is active. */
   function injectPortalPracticeBanks() {
     var grid = document.getElementById("ccna-practice-banks-grid");
@@ -492,6 +530,19 @@
       );
       appendFilteredBankArticle(grid, filter, 0, true);
       window.CCNA_PRACTICE_100._topicAssignmentsPromise.then(function () {
+        injectPortalPracticeBanks();
+      });
+      return;
+    }
+
+    if (filterActive && filter.version && window.CCNA_PRACTICE_100._version20SlugSet === null) {
+      updatePortalBanksSummary(all, filter, 0, true);
+      grid.setAttribute(
+        "aria-label",
+        "Filtered practice set: " + filterSessionLabel(filter) + " (loading)"
+      );
+      appendFilteredBankArticle(grid, filter, 0, true);
+      window.CCNA_PRACTICE_100._version20SlugsPromise.then(function () {
         injectPortalPracticeBanks();
       });
       return;
@@ -557,13 +608,12 @@
       article.appendChild(h4);
       var verTag = document.createElement("p");
       verTag.className = "ccna-bank-version-tag";
-      if (firstNum >= VERSION_20_MIN) {
-        verTag.textContent = "Version 2.0 2026";
-      } else if (endIdx <= VERSION_11_2026_MAX) {
-        verTag.textContent = "Version 1.1 2026";
-      } else {
-        verTag.textContent = "Version 1.1 2026 & Version 2.0 2026";
-      }
+      verTag.textContent = bankVersionTagForSlice(
+        startIdx,
+        endIdx,
+        all,
+        window.CCNA_PRACTICE_100._version20SlugSet
+      );
       article.appendChild(verTag);
 
       var actions = document.createElement("div");

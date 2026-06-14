@@ -1,41 +1,39 @@
 /**
- * CCNA timed simulations: MCQ pool limited to Version 1.1 2026 (hub positions 1–300).
+ * CCNA timed simulations: MCQ pool limited to Version 1.1 2026 (excludes tagged v2.0 slugs).
  * Hub order matches ccna-practice-questions-manifest.json / ccna-practice-100-hub.js ALL_SLUGS.
  */
 (function () {
   "use strict";
 
-  var VERSION_11_2026_MAX = 300;
-  var MANIFEST_URL = "/CCNA-Study/data/ccna-practice-questions-manifest.json";
-  /** @type {Record<string, number>|null} slug → 1-based hub index */
-  var hubIndexBySlug = null;
+  var VERSION_20_SLUGS_URL = "/CCNA-Study/data/ccna-version-2-0-slugs.json";
+  /** @type {Record<string, true>|null} */
+  var version20SlugSet = null;
   var loadPromise = null;
 
-  function buildIndexMap(manifest) {
-    var map = Object.create(null);
-    var items = manifest && manifest.items;
-    if (!Array.isArray(items)) return map;
-    for (var i = 0; i < items.length; i++) {
-      var slug = items[i] && items[i].slug;
-      if (slug) map[slug] = i + 1;
+  function buildVersion20Set(data) {
+    var set = Object.create(null);
+    var slugs = data && data.slugs;
+    if (!Array.isArray(slugs)) return set;
+    for (var i = 0; i < slugs.length; i++) {
+      if (slugs[i]) set[String(slugs[i])] = true;
     }
-    return map;
+    return set;
   }
 
-  function loadHubIndexMap() {
+  function loadVersion20SlugSet() {
     if (loadPromise) return loadPromise;
-    loadPromise = fetch(MANIFEST_URL, { credentials: "same-origin" })
+    loadPromise = fetch(VERSION_20_SLUGS_URL, { credentials: "same-origin" })
       .then(function (r) {
-        if (!r.ok) throw new Error("manifest http " + r.status);
+        if (!r.ok) throw new Error("version 2.0 slugs http " + r.status);
         return r.json();
       })
-      .then(function (manifest) {
-        hubIndexBySlug = buildIndexMap(manifest);
-        return hubIndexBySlug;
+      .then(function (data) {
+        version20SlugSet = buildVersion20Set(data);
+        return version20SlugSet;
       })
       .catch(function () {
-        hubIndexBySlug = Object.create(null);
-        return hubIndexBySlug;
+        version20SlugSet = Object.create(null);
+        return version20SlugSet;
       });
     return loadPromise;
   }
@@ -44,14 +42,13 @@
     return String(fileName || "").replace(/\.html$/i, "");
   }
 
-  function hubIndexForFileName(fileName) {
-    if (!hubIndexBySlug) return null;
-    return hubIndexBySlug[slugFromFileName(fileName)] || null;
+  function isVersion20FileName(fileName) {
+    if (!version20SlugSet) return false;
+    return !!version20SlugSet[slugFromFileName(fileName)];
   }
 
   function isV11McqFileName(fileName) {
-    var idx = hubIndexForFileName(fileName);
-    return idx != null && idx <= VERSION_11_2026_MAX;
+    return !isVersion20FileName(fileName);
   }
 
   function filterMcqAssignmentKeys(assignments) {
@@ -73,9 +70,8 @@
   }
 
   window.CCNA_SIM_V11_POOL = {
-    VERSION_11_2026_MAX: VERSION_11_2026_MAX,
-    load: loadHubIndexMap,
-    hubIndexForFileName: hubIndexForFileName,
+    load: loadVersion20SlugSet,
+    isVersion20FileName: isVersion20FileName,
     isV11McqFileName: isV11McqFileName,
     filterMcqAssignmentKeys: filterMcqAssignmentKeys,
     filterMcqAssignments: filterMcqAssignments,

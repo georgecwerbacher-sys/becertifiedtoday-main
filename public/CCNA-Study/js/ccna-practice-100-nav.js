@@ -80,7 +80,15 @@
   var CCNA_VERSION_11_LABEL = "Version 1.1 2026";
   var CCNA_VERSION_20_LABEL = "Version 2.0 2026";
   var CCNA_UPDATED_LABEL = "Updated for 2026";
-  var CCNA_VERSION_20_MIN = 301;
+  var VERSION_20_SLUGS_URL = "/CCNA-Study/data/ccna-version-2-0-slugs.json";
+
+  function sessionVersionFilter(session) {
+    if (!session) return "";
+    if (session.version === "v20" || session.version === "v11") return session.version;
+    if (session.versionMin) return "v20";
+    if (session.versionMax) return "v11";
+    return "";
+  }
 
   function reviewMarkKey(slug, practiceIndex) {
     if (isStaticCcnaSamplePage()) return "static:" + slug;
@@ -305,13 +313,51 @@
     return meta;
   }
 
+  function getVersion20SlugSet() {
+    var inst = window.CCNA_PRACTICE_100;
+    if (inst._version20SlugSet && typeof inst._version20SlugSet === "object") {
+      return Promise.resolve(inst._version20SlugSet);
+    }
+    if (inst._version20SlugSet === false) return Promise.resolve(false);
+    if (inst._version20SlugsPromise && typeof inst._version20SlugsPromise.then === "function") {
+      return inst._version20SlugsPromise;
+    }
+    if (!inst._version20SlugsPromiseNav) {
+      inst._version20SlugsPromiseNav = fetch(VERSION_20_SLUGS_URL, { credentials: "same-origin" })
+        .then(function (res) {
+          if (!res.ok) throw new Error("version 2.0 slugs http " + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          var set = {};
+          var slugs = data && data.slugs;
+          if (Array.isArray(slugs)) {
+            for (var i = 0; i < slugs.length; i++) {
+              if (slugs[i]) set[String(slugs[i])] = true;
+            }
+          }
+          inst._version20SlugSet = set;
+          return set;
+        })
+        .catch(function () {
+          inst._version20SlugSet = false;
+          return false;
+        });
+    }
+    return inst._version20SlugsPromiseNav;
+  }
+
+  function isVersion20Slug(slug, v20Set) {
+    return !!(slug && v20Set && v20Set[slug]);
+  }
+
   function bakedVersionLabelFromDom() {
     var el = document.querySelector(".question-topic-meta__version");
     if (!el) return "";
     return String(el.textContent || "").trim();
   }
 
-  function versionLabelForSlug(slug) {
+  function versionLabelForSlug(slug, v20Set) {
     if (document.body && document.body.classList.contains("dragdrop-exercise")) {
       return CCNA_UPDATED_LABEL;
     }
@@ -319,17 +365,18 @@
       return CCNA_UPDATED_LABEL;
     }
     var session = readSession();
-    if (session && session.versionMin) return CCNA_VERSION_20_LABEL;
-    if (session && session.versionMax) return CCNA_VERSION_11_LABEL;
-    var hub = window.CCNA_PRACTICE_100 || {};
-    var minV20 = hub.VERSION_20_MIN || CCNA_VERSION_20_MIN;
-    var all = hub.ALL_SLUGS;
-    if (!Array.isArray(all) || !all.length) {
-      return bakedVersionLabelFromDom() || CCNA_VERSION_11_LABEL;
+    var versionFilter = sessionVersionFilter(session);
+    if (versionFilter === "v20") return CCNA_VERSION_20_LABEL;
+    if (versionFilter === "v11") return CCNA_VERSION_11_LABEL;
+    if (v20Set && typeof v20Set === "object") {
+      return isVersion20Slug(slug, v20Set) ? CCNA_VERSION_20_LABEL : CCNA_VERSION_11_LABEL;
     }
-    var idx = hubIndexForSlug(slug, all);
-    if (idx && idx >= minV20) return CCNA_VERSION_20_LABEL;
-    return CCNA_VERSION_11_LABEL;
+    var hub = window.CCNA_PRACTICE_100 || {};
+    var hubSet = hub._version20SlugSet;
+    if (hubSet && typeof hubSet === "object") {
+      return isVersion20Slug(slug, hubSet) ? CCNA_VERSION_20_LABEL : CCNA_VERSION_11_LABEL;
+    }
+    return bakedVersionLabelFromDom() || CCNA_VERSION_11_LABEL;
   }
 
   function subjectLabelForSlug(assignments, slug) {
@@ -355,12 +402,12 @@
     }
     if (!versionEl && !subjectEl) return;
 
-    function applyVersionLabel() {
-      if (versionEl) versionEl.textContent = versionLabelForSlug(slug);
+    function applyVersionLabel(v20Set) {
+      if (versionEl) versionEl.textContent = versionLabelForSlug(slug, v20Set);
     }
-    applyVersionLabel();
-    getAllSlugs().then(function () {
-      applyVersionLabel();
+    applyVersionLabel(null);
+    getVersion20SlugSet().then(function (v20Set) {
+      applyVersionLabel(v20Set && typeof v20Set === "object" ? v20Set : null);
     });
 
     getTopicAssignments().then(function (assignments) {
@@ -771,16 +818,19 @@
     for (var u = 0; u < session.order.length; u++) inOrder[session.order[u]] = true;
 
     var domainFilter = session.domain ? String(session.domain) : "";
-    var versionMax = session.versionMax ? parseInt(String(session.versionMax), 10) : 0;
-    var versionMin = session.versionMin ? parseInt(String(session.versionMin), 10) : 0;
+    var versionFilter = sessionVersionFilter(session);
+    var v20Set =
+      window.CCNA_PRACTICE_100 && window.CCNA_PRACTICE_100._version20SlugSet
+        ? window.CCNA_PRACTICE_100._version20SlugSet
+        : null;
 
-    if (session.filtered) {
+    if (session.filtered || versionFilter) {
       var filteredPool = [];
       for (var fj = 0; fj < allSlugs.length; fj++) {
         var fcand = allSlugs[fj];
         if (inOrder[fcand]) continue;
-        if (versionMax && hubIndexForSlug(fcand, allSlugs) > versionMax) continue;
-        if (versionMin && hubIndexForSlug(fcand, allSlugs) < versionMin) continue;
+        if (versionFilter === "v20" && !isVersion20Slug(fcand, v20Set)) continue;
+        if (versionFilter === "v11" && isVersion20Slug(fcand, v20Set)) continue;
         if (domainFilter && !slugMatchesMajor(assignments, fcand, domainFilter)) continue;
         if (!slugMatchesWeakMajors(assignments, fcand, majors)) continue;
         filteredPool.push(fcand);
@@ -806,8 +856,6 @@
     for (var j = 0; j < allSlugs.length; j++) {
       var cand = allSlugs[j];
       if (inOrder[cand]) continue;
-      if (versionMax && hubIndexForSlug(cand, allSlugs) > versionMax) continue;
-      if (versionMin && hubIndexForSlug(cand, allSlugs) < versionMin) continue;
       if (!slugMatchesWeakMajors(assignments, cand, majors)) continue;
       if (domainFilter && !slugMatchesMajor(assignments, cand, domainFilter)) continue;
       if (!inBank[cand]) outsiders.push(cand);

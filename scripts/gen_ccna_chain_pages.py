@@ -17,12 +17,19 @@ HUB_JS = ROOT / "public/CCNA-Study/js/ccna-practice-100-hub.js"
 HUB_CHAIN_ANCHOR = "vty-access-list-ssh-secure"
 VERSION_11_LABEL = "Version 1.1 2026"
 VERSION_20_LABEL = "Version 2.0 2026"
-VERSION_20_MIN = 301
+VERSION_20_SLUGS_JSON = ROOT / "public/CCNA-Study/data/ccna-version-2-0-slugs.json"
 # Topology / exhibit raster files live in OUT/images/ (see .cursor/rules/ccna-extra-question-chain.mdc).
 
 
-def version_label_for_hub_index(index_1based: int) -> str:
-    return VERSION_20_LABEL if index_1based >= VERSION_20_MIN else VERSION_11_LABEL
+def load_version_20_slugs() -> set[str]:
+    if not VERSION_20_SLUGS_JSON.is_file():
+        return set()
+    data = json.loads(VERSION_20_SLUGS_JSON.read_text(encoding="utf-8"))
+    return set(data.get("slugs") or [])
+
+
+def version_label_for_slug(slug: str, version_20_slugs: set[str]) -> str:
+    return VERSION_20_LABEL if slug in version_20_slugs else VERSION_11_LABEL
 
 STYLE = r"""  <style>
     :root {
@@ -16394,6 +16401,7 @@ line vty 0 4
 
     hub_text = HUB_JS.read_text(encoding="utf-8")
     hub_slugs = _slugs_from_hub_js(hub_text)
+    version_20_slugs = load_version_20_slugs()
     try:
         prefix_len = hub_slugs.index(HUB_CHAIN_ANCHOR) + 1
     except ValueError:
@@ -16401,9 +16409,8 @@ line vty 0 4
 
     prev = "vty-access-list-ssh-secure"
     for idx, q in enumerate(chain):
-        hub_index = prefix_len + idx + 1
-        version_label = version_label_for_hub_index(hub_index)
         slug = q["slug"]
+        version_label = version_label_for_slug(slug, version_20_slugs)
         next_slug = chain[idx + 1]["slug"] if idx + 1 < len(chain) else None
         if q.get("choose_two"):
             ch_fn = checkbox_choice_line_mono if q.get("mono") else checkbox_choice_line
