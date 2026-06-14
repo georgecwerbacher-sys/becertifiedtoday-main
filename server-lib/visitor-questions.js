@@ -261,6 +261,8 @@ export function normalizeQuestionProduct(raw) {
 }
 
 export function buildVisitorQuestionRow(body) {
+  const statusRaw = String(body?.status || "").trim().toLowerCase();
+  const status = statusRaw === "verified" ? "verified" : "new";
   return {
     captured_at_utc: new Date().toISOString(),
     email: String(body?.email || "")
@@ -273,7 +275,7 @@ export function buildVisitorQuestionRow(body) {
     message: String(body?.message || "")
       .trim()
       .slice(0, 2000),
-    status: "new",
+    status,
   };
 }
 
@@ -381,5 +383,6 @@ export function aggregateVisitorQuestionsReport(rows) {
     total: items.length,
     byProduct,
     newCount: items.filter((i) => i.status === "new").length,
+    verifiedCount: items.filter((i) => i.status === "verified").length,
   };
 }

@@ -1,7 +1,7 @@
 /**
  * POST /api/sample-lead
  * Sample events: { event, product, email?, ... }
- * Visitor question: { action: "submit_question", email, message, product?, page_path? }
+ * Visitor question: { action: "request_question_verification" | "confirm_question", ... }
  * Admin reports: { action: "report" | "questions_report" } + Bearer <admin JWT>
  */
 import { verifyAnalyticsAdminToken } from "../server-lib/analytics-admin-jwt.js";
@@ -16,11 +16,13 @@ import {
 } from "../server-lib/sample-lead-analytics.js";
 import {
   aggregateVisitorQuestionsReport,
-  appendVisitorQuestion,
-  normalizeQuestionProduct,
   readVisitorQuestions,
   resolveGithubRepo,
 } from "../server-lib/visitor-questions.js";
+import {
+  confirmVisitorQuestionVerification,
+  requestVisitorQuestionVerification,
+} from "../server-lib/visitor-question-verify.js";
 
 function readJsonBody(req) {
   try {
@@ -82,52 +84,96 @@ async function handleEvent(req, res, body) {
   });
 }
 
-async function handleQuestionSubmit(req, res, body) {
+async function handleQuestionVerifyRequest(req, res, body) {
   if (body.company_website) {
     return res.status(200).json({ ok: true, skipped: "honeypot" });
   }
 
-  const email = normalizeEmail(body.email);
-  const message = typeof body.message === "string" ? body.message.trim() : "";
-  if (!email) {
-    return res.status(400).json({ ok: false, error: "invalid_email" });
-  }
-  if (!message || message.length < 10) {
-    return res.status(400).json({ ok: false, error: "message_too_short" });
-  }
-  if (message.length > 2000) {
-    return res.status(400).json({ ok: false, error: "message_too_long" });
-  }
-
-  const result = await appendVisitorQuestion({
-    email,
-    message,
-    product: normalizeQuestionProduct(body.product),
-    page_path: body.page_path || body.pagePath || "",
-  });
-
-  if (!result.ok && result.reason === "not_configured") {
-    return res.status(503).json({
+  try {
+    const result = await requestVisitorQuestionVerification(body);
+    if (!result.ok) {
+      const reason = result.reason || "error";
+      if (reason === "honeypot") {
+        return res.status(200).json({ ok: true, skipped: "honeypot" });
+      }
+      const status =
+        reason === "verify_not_configured" || reason === "resend_not_configured" ? 503 : 400;
+      return res.status(status).json({
+        ok: false,
+        error: mapQuestionVerifyReason(reason),
+        reason,
+      });
+    }
+    return res.status(200).json({
+      ok: true,
+      pending: true,
+      verifyUrlSent: true,
+      email: result.email,
+    });
+  } catch (err) {
+    const code = err && err.code ? String(err.code) : "error";
+    const status = code === "verify_not_configured" || code === "resend_not_configured" ? 503 : 502;
+    return res.status(status).json({
       ok: false,
-      error: "Questions are not configured on this server",
-      hint: "Set GITHUB_LEADS_TOKEN (and GITHUB_LEADS_REPO if needed) on Vercel to persist visitor questions.",
+      error: mapQuestionVerifyReason(code),
+      reason: code,
     });
   }
+}
 
-  if (!result.ok) {
-    return res.status(502).json({
-      ok: false,
-      error: "Could not save your question",
-      reason: result.reason || "error",
-      detail: result.detail || null,
-      hint: "Check Vercel logs for /api/sample-lead and GitHub token permissions on data/leads/visitor-questions.csv.",
-    });
+async function handleQuestionConfirm(req, res, body) {
+  const token = typeof body.token === "string" ? body.token.trim() : "";
+  if (!token) {
+    return res.status(400).json({ ok: false, error: "Missing verification token", reason: "missing_token" });
   }
 
-  return res.status(200).json({
-    ok: true,
-    backend: result.backend || null,
-  });
+  try {
+    const result = await confirmVisitorQuestionVerification(token);
+    if (!result.ok) {
+      if (result.reason === "not_configured") {
+        return res.status(503).json({
+          ok: false,
+          error: "Questions are not configured on this server",
+          hint: "Set GITHUB_LEADS_TOKEN (and GITHUB_LEADS_REPO if needed) on Vercel to persist visitor questions.",
+        });
+      }
+      if (result.reason === "invalid_or_expired_token") {
+        return res.status(400).json({
+          ok: false,
+          error: mapQuestionVerifyReason("invalid_or_expired_token"),
+          reason: "invalid_or_expired_token",
+        });
+      }
+      return res.status(502).json({
+        ok: false,
+        error: "Could not save your question",
+        reason: result.reason || "error",
+        detail: result.detail || null,
+      });
+    }
+    return res.status(200).json({ ok: true, verified: true, email: result.email });
+  } catch (err) {
+    const message = err && err.message ? String(err.message) : "Verification failed";
+    return res.status(502).json({ ok: false, error: message });
+  }
+}
+
+function mapQuestionVerifyReason(reason) {
+  const map = {
+    consent_required: "Please confirm you are not a bot.",
+    too_fast: "Please take a moment to complete the form, then try again.",
+    timing_required: "Please reopen the form and try again.",
+    form_expired: "This form expired. Please reopen Ask a question and try again.",
+    invalid_email_or_message: "Enter a valid email and a message (at least 10 characters).",
+    message_too_short: "Your message must be at least 10 characters.",
+    message_too_long: "Your message is too long (max 2000 characters).",
+    resend_not_configured: "Email verification is temporarily unavailable. Try again later.",
+    resend_rejected: "We could not send the verification email. Check the address and try again.",
+    verify_not_configured: "Email verification is not configured on this server.",
+    invalid_or_expired_token: "This verification link is invalid or has expired. Submit your question again.",
+    missing_token: "Missing verification token.",
+  };
+  return map[reason] || reason;
 }
 
 function normalizeRangePreset(raw) {
@@ -152,7 +198,8 @@ async function handleQuestionsReport(req, res, body) {
 
   try {
     const allRows = await readVisitorQuestions();
-    const rows = filterRowsFromUtcStart(allRows, range);
+    const inRange = filterRowsFromUtcStart(allRows, range);
+    const rows = inRange.filter((r) => String(r.status || "").toLowerCase() === "verified");
     const report = aggregateVisitorQuestionsReport(rows);
     const repoInfo = resolveGithubRepo();
     return res.status(200).json({
@@ -161,7 +208,7 @@ async function handleQuestionsReport(req, res, body) {
       range,
       rangeLabel: rangePresetLabel(range),
       fetchedAt: new Date().toISOString(),
-      note: `Visitor questions (${rangePresetLabel(range)}). From site footer Ask a question form.`,
+      note: `Verified visitor questions (${rangePresetLabel(range)}). Submitted after email confirmation from Ask a question.`,
       csvPath: "data/leads/visitor-questions.csv",
       storageRepo: repoInfo ? `${repoInfo.owner}/${repoInfo.repo}` : null,
       rawRowCount: rows.length,
@@ -228,8 +275,12 @@ export default async function handler(req, res) {
   const body = readJsonBody(req);
   const action = typeof body.action === "string" ? body.action.trim().toLowerCase() : "";
 
-  if (action === "submit_question") {
-    return handleQuestionSubmit(req, res, body);
+  if (action === "submit_question" || action === "request_question_verification") {
+    return handleQuestionVerifyRequest(req, res, body);
+  }
+
+  if (action === "confirm_question") {
+    return handleQuestionConfirm(req, res, body);
   }
 
   if (action === "questions_report") {

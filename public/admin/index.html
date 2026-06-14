@@ -419,7 +419,8 @@
       <div class="panel" id="visitorQuestionsPanel">
         <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-questions">Visitor questions</h2>
         <p class="section-note">
-          Messages from the site <strong>Ask a question</strong> footer form. Filtered by the
+          Messages from the site <strong>Ask a question</strong> footer form, shown after visitors verify their email.
+          Filtered by the
           <strong>date range</strong> selector above (UTC).
         </p>
         <div class="row" style="margin-bottom:12px">
@@ -1109,8 +1110,8 @@
       function renderVisitorQuestionsReport(data) {
         var items = data.items || [];
         document.getElementById("visitorQuestionsSummaryCards").innerHTML = [
-          ["Total questions", fmt(data.total)],
-          ["New (unreviewed)", fmt(data.newCount)],
+          ["Verified questions", fmt(data.total)],
+          ["Email verified", fmt(data.verifiedCount != null ? data.verifiedCount : data.total)],
           ["Security+", fmt((data.byProduct && data.byProduct.secplus) || 0)],
           ["CCNA", fmt((data.byProduct && data.byProduct.ccna) || 0)],
         ]
@@ -1161,7 +1162,7 @@
           note += ".";
         }
         if (!items.length) {
-          note += " Questions appear when visitors use Ask a question in the site footer.";
+          note += " Questions appear after visitors verify their email from Ask a question in the site footer.";
         }
         document.getElementById("visitorQuestionsStatus").textContent = note;
         document.getElementById("visitorQuestionsStatus").className = "status ok";
